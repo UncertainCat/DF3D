@@ -49534,11 +49534,11 @@
         "audit": "Diagnostic owned-context adapter verified for baseline and Pet/cold two-handed Weapon branches; not yet wired to complete Items page."
       },
       "remaining": [
-        "Nested contained rows and spatters",
-        "All role descriptions with owned output and state guards",
-        "Item inspection actions and return navigation",
-        "Artwork, clipping, hover text, scrolling and resize",
-        "Actual DF3D rendered/live parity and lifecycle"
+        "Other inventory role, spatter material and contained creature variants",
+        "Native artwork, clothing/ownership indicators and hover text",
+        "Item/creature inspection navigation and return behavior",
+        "Row clipping, scrolling and resize",
+        "Product wire/model integration and actual rendered/live parity and lifecycle"
       ],
       "role_ownership_audit": {
         "pins": [
@@ -49912,6 +49912,112 @@
         },
         "scope": "Blood spatter with historical creature name; size24/25/49/50, absent body part, and internal exclusion. Other materials/states and public rendering/actions remain unverified.",
         "ownership": "Copies spatter_common; owned output strings; read-only body-part formatter. Historical material lookup may populate semantic world caches. Unit, spatters, native UI and random state guards pass."
+      },
+      "contents_reader": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261031-235949",
+        "cases": [
+          {
+            "contents": [
+              {
+                "caption": "(jute sock)",
+                "id": 32625,
+                "kind": 1
+              },
+              {
+                "caption": "Stodir Tangakurvad, bookkeeper, \u2642",
+                "id": 1017,
+                "kind": 2
+              },
+              {
+                "caption": "",
+                "id": -1,
+                "kind": 1
+              }
+            ],
+            "guards_unchanged": true,
+            "name": "item-creature-missing",
+            "native_captions": [
+              "(jute sock)",
+              "Stodir Tangakurvad, bookkeeper,",
+              ""
+            ]
+          },
+          {
+            "contents": [
+              {
+                "caption": "Stodir Tangakurvad, bookkeeper, \u2642",
+                "id": 1017,
+                "kind": 2
+              },
+              {
+                "caption": "(jute sock)",
+                "id": 32625,
+                "kind": 1
+              },
+              {
+                "caption": "",
+                "id": -1,
+                "kind": 1
+              }
+            ],
+            "guards_unchanged": true,
+            "name": "creature-item-missing",
+            "native_captions": [
+              "Stodir Tangakurvad, bookkeeper,",
+              "(jute sock)",
+              ""
+            ]
+          },
+          {
+            "contents": [],
+            "guards_unchanged": true,
+            "name": "container-flag-off",
+            "native_captions": []
+          }
+        ],
+        "source_save": "Owned source unchanged",
+        "diagnostics": {
+          "farm-item-carrier-unit-scene.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "farm-item-carrier-unit-wire.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "unit-header-wire": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          }
+        },
+        "semantics": "Container flag gates immediate general refs; item type10/getItem and creature type9/getUnit in vector order. No recursive expansion; unresolved refs occupy blank rows.",
+        "creature_caption": {
+          "rva": "1330c30",
+          "length": "688",
+          "fnv64": "0e165ee31decf426",
+          "arguments": "owned creature context, owned string, true",
+          "renderer": "16b601"
+        },
+        "ownership": "Contained creature uses copied name/identity/display fields and owned body caches; same guarded random-state restoration. No native sheet inputs.",
+        "scope": "Synthetic references on existing inventory items; selected creature supplies its own contained name. Mixed order, unresolved item ref, nested container non-recursion and flag gating verified. Natural cage/animal variants, rendered DF3D list and navigation remain unverified."
       }
     }
   }

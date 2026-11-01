@@ -79,6 +79,10 @@ local ok,err=xpcall(function()
    local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-items%-native.lua$','unit-items-spatters-native.lua')
    result.spatter_cases=assert(loadfile(source))(unit,pointer,read)
   end
+  if os.getenv('DF3D_UNIT_ITEMS_CONTENTS')=='1'then
+   local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-items%-native.lua$','unit-items-contents-native.lua')
+   result.contents_cases=assert(loadfile(source))(unit,pointer,read)
+  end
   if os.getenv('DF3D_UNIT_ITEMS_ROLES')=='1'then
    local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-items%-native.lua$','unit-items-roles-native.lua')
    result.role_cases=assert(loadfile(source))(unit,view,pointer,read)

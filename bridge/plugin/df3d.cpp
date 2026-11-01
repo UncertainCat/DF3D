@@ -1685,6 +1685,11 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           for(const auto& row:*rows) {
             Json::Value value(Json::objectValue);value["id"]=row.id;
             value["caption"]=DF2UTF(row.caption);value["role"]=DF2UTF(row.role);
+            value["contents"]=Json::Value(Json::arrayValue);
+            for(const auto& child:row.contents) {
+              Json::Value nested(Json::objectValue);nested["kind"]=child.kind;nested["id"]=child.id;
+              nested["caption"]=DF2UTF(child.caption);value["contents"].append(nested);
+            }
             result["rows"].append(value);
           }
           const auto spatters=df3d_creature::inventorySpatters(df::unit::find(id));if(!spatters)return CR_FAILURE;

@@ -2,6 +2,7 @@
 #include "building_item_native.h"
 #include "df/unit_inventory_item.h"
 #include "df/unit_spatter.h"
+#include "df/general_ref.h"
 #include <array>
 #include <cstring>
 
@@ -42,6 +43,14 @@ class InventoryDescriptionContext {
 public:
     explicit InventoryDescriptionContext(const df::unit& source) {
         owned.race=source.race;owned.caste=source.caste;
+        owned.id=source.id;owned.name=source.name;owned.custom_profession=source.custom_profession;
+        owned.hist_figure_id=source.hist_figure_id;owned.civ_id=source.civ_id;
+        owned.sex=source.sex;owned.training_level=source.training_level;
+        owned.relationship_ids=source.relationship_ids;
+        owned.uwss_use_display_name=source.uwss_use_display_name;
+        owned.uwss_display_name_sing=source.uwss_display_name_sing;
+        owned.uwss_display_name_plur=source.uwss_display_name_plur;
+        owned.uwss_display_name_adj=source.uwss_display_name_adj;
         owned.flags1=source.flags1;owned.flags2=source.flags2;
         owned.flags3=source.flags3;owned.flags4=source.flags4;
         owned.job=source.job;owned.body=source.body;owned.enemy=source.enemy;
@@ -80,6 +89,8 @@ inline bool inventoryDescriptionReady() {
             {0xc3a4f0,0x98,UINT64_C(0x90965a9fe84783f6)},
             {0x72570,0x98,UINT64_C(0xa69932c0f279084a)},
             {0xa946e0,0x7c2,UINT64_C(0xdbc3db5f052419ee)},
+            {0x1330c30,0x688,UINT64_C(0x0e165ee31decf426)},
+            {0x132f980,0x8de,UINT64_C(0x64c00c9b84e68e70)},
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -90,12 +101,18 @@ inline bool inventoryDescriptionReady() {
     }();
     return ready;
 }
+struct InventoryContainedRow {
+    int32_t kind=0,id=-1; // 1 item, 2 creature; unresolved refs still occupy a row.
+    std::string caption;
+};
 struct InventoryDescriptionRow {
     int32_t id=-1;
     std::string caption,role;
+    std::vector<InventoryContainedRow> contents;
 };
-// Diagnostic acceptance entry point, not yet a complete Items page: contained
-// objects and spatters are separate native rows and must be added before wiring.
+// Native16a7d2..16b8a0 interleaves immediate contained refs after each inventory
+// entry. It does not recurse; each matching ref consumes a row even if unresolved.
+// Creature captions include the native sex/training suffix (third argument true).
 inline std::optional<std::vector<InventoryDescriptionRow>> inventoryDescriptions(const df::unit* source) {
     if(!source||!inventoryDescriptionReady()||!source->body.body_plan||
        source->inventory.size()>10000||source->body.components.body_part_status.size()>32767)return std::nullopt;
@@ -116,6 +133,30 @@ inline std::optional<std::vector<InventoryDescriptionRow>> inventoryDescriptions
         auto input=entry;
         reinterpret_cast<Describe>(base+0x1393900)(context.unit(),&row.role,&input);
         if(row.caption.size()>4096||row.role.size()>4096)return std::nullopt;
+        if(entry.item->flags.bits.container) {
+            if(entry.item->general_refs.size()>10000)return std::nullopt;
+            for(auto* ref:entry.item->general_refs) {
+                if(!ref)return std::nullopt;
+                const auto type=ref->getType();
+                if(type!=df::general_ref_type::CONTAINS_ITEM&&type!=df::general_ref_type::CONTAINS_UNIT)continue;
+                InventoryContainedRow child;child.kind=type==df::general_ref_type::CONTAINS_ITEM?1:2;
+                if(child.kind==1) {
+                    if(auto* item=ref->getItem()) {
+                        auto caption=df3d_production::buildingItemCaption(item);if(!caption)return std::nullopt;
+                        child.id=item->id;child.caption=std::move(*caption);
+                    }
+                }else if(auto* creature=ref->getUnit()) {
+                    if(creature->inventory.size()>10000||!creature->body.body_plan)return std::nullopt;
+                    for(auto* held:creature->inventory)if(!held||!held->item)return std::nullopt;
+                    InventoryDescriptionContext contained(*creature);
+                    using Name=void (*)(df::unit*,std::string*,bool);
+                    reinterpret_cast<Name>(base+0x1330c30)(contained.unit(),&child.caption,true);
+                    child.id=creature->id;
+                }
+                if(child.caption.size()>4096)return std::nullopt;
+                row.contents.push_back(std::move(child));
+            }
+        }
         rows.push_back(std::move(row));
     }
     return rows;

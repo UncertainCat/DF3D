@@ -1441,8 +1441,25 @@ include spatter objects as well as unit/cache/UI/random state. All11 inventory
 rows and five Pet/Weapon cases also pass. DF12316 exits unsaved, source
 preservation passes, and both GPU logs plus paired header-wire logs contain
 only the known renderer notice. `unit_items_reference.spatter_reader` retains
-the scoped evidence. Other materials/states, contained-object and creature
-descriptions/order, nested actions and artwork still need native acceptance. The Items
+the scoped evidence. Other spatter materials/states remain unverified.
+
+Contained rows follow16a7d2..16b8a0: the container flag gates immediate general
+references, preserving mixed item(type10)/creature(type9) order. Native getters
+resolve each reference; unresolved references still consume a blank row. Items
+reuse c65450; creatures call1330c30 with true to include native suffixes. The
+creature call uses an owned context with copied name/identity/display inputs and
+body caches because its sex suffix can trigger native body-part refresh.
+The adapter does not recursively expand a contained container.
+
+Protected235949 starting2026-10-31 verifies both mixed-reference orders, unresolved
+item rows, non-recursion and container-flag gating against native screen text.
+The fixture uses synthetic containment links on existing inventory items and the
+selected creature as the name input; it does not establish natural cage/animal
+coverage. All11 inventory rows, five role cases and six spatter cases also pass.
+DF37816 exits unsaved with source preservation; both GPU processes and paired
+header-wire logs have only the known renderer notice. Results are retained in
+`unit_items_reference.contents_reader`. Product transport, artwork/indicators,
+inspection navigation, resize/scrolling and rendered lifecycle remain unfinished. The Items
 route remains staged with the rest of the incomplete creature sheet.
 
 The Overview hauling line uses native selector1324b50(unit), the same call made

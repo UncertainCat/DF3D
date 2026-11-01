@@ -2721,8 +2721,20 @@ The inspector preserves this navigation and retires its confirmation authority.
 The composed flow, existing Reports resize/overlay checks and native assertions
 pass; two GPU clients and the paired header client report only the known startup
 notice. unit-expel-reports passes core, controller and composition checks cleanly.
-Resize/scroll/hover variants, long names/animation, full failure/replacement
-lifecycle and active-job/squad/later-departure effect variants remain unfinished.
+Protected230908 records rendering-only repeated-ID overflow lists in an owned
+unsaved clone; these lists are never confirmed and do not establish semantic
+eligibility. At960x600,1200x720,1600x900 and1200x800, native displays10/13/18/15
+affected rows and11/14/19/16 destination rows. The view reserves36px for final
+controls, shortens overflow rows by16px, and positions the scrollbar8px farther
+left than the original draft. It uses installed interface scrollbar artwork and
+clamps the visible first row to keep the last page filled. Ten complete viewport
+and tail regions match native exactly in unit-expel-layout-art, alongside the
+four baseline cases. GPU diagnostics are the documented startup/shutdown issues;
+unit-expel-layout-final passes core, controller and composition checks cleanly.
+unit_expel_view_reference.layout_reference retains hashes and scope. Actual
+scrollbar pointer/wheel/drag behavior, long names/animation, full composed
+failure/replacement lifecycle and active-job/squad/later-departure effect variants
+remain unfinished.
 The full unit route is still staged; these are baseline view checks.
 
 ## Native item holder provider

@@ -251,6 +251,10 @@ local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
  assert(not sheet.unit_overview_expelling and sheet.open and sheet.active_id==unit.id,'Expel cancel did not restore Overview')
  record('cancel')
+ if os.getenv('DF3D_UNIT_EXPEL_LAYOUT')=='1' then
+  local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-expel%-native.lua$','unit-expel-layout-native.lua')
+  assert(loadfile(source))(unit,view,capture,out)
+ end
  if os.getenv('DF3D_UNIT_EXPEL_ELIGIBLE')=='1' then
   local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-expel%-native.lua$','unit-expel-eligible-native.lua')
   assert(loadfile(source))(unit,view,pointer,out)

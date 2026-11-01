@@ -48761,6 +48761,339 @@
           "long lists and resizing",
           "pending/rejected/unknown presentation and composed lifecycle"
         ]
+      },
+      "layout_reference": {
+        "status": "accepted exact rendered regions at four sizes and tail; pointer scrolling/dragging not accepted",
+        "run": "build/stockpile-storage-native-farm-discovery-20261031-230908",
+        "diagnostic_repeated_real_ids": true,
+        "count": 24,
+        "semantic_eligibility_evidence": false,
+        "cases": [
+          {
+            "name": "layout-group-small",
+            "phase": 3,
+            "first": 0,
+            "window": [
+              960,
+              600
+            ],
+            "region": [
+              184,
+              156,
+              472,
+              396
+            ],
+            "rgb_sha256": "97b63cb9c0828392ddf63157efc2725cbe480839f66f2a0c662d77b78ac5b663"
+          },
+          {
+            "name": "layout-group-medium",
+            "phase": 3,
+            "first": 0,
+            "window": [
+              1200,
+              720
+            ],
+            "region": [
+              424,
+              156,
+              472,
+              516
+            ],
+            "rgb_sha256": "9956dedef3329ecb94e185f048679199c7de9a5f645711171e75b8586a39c280"
+          },
+          {
+            "name": "layout-group-wide",
+            "phase": 3,
+            "first": 0,
+            "window": [
+              1600,
+              900
+            ],
+            "region": [
+              824,
+              156,
+              472,
+              696
+            ],
+            "rgb_sha256": "c18e4b8378e103501f1b568fe5c9f8f45b6c8173a792cb9063b94534bc70292c"
+          },
+          {
+            "name": "layout-group-default",
+            "phase": 3,
+            "first": 0,
+            "window": [
+              1200,
+              800
+            ],
+            "region": [
+              424,
+              160,
+              472,
+              588
+            ],
+            "rgb_sha256": "05b6609fbf7023bff6e78f5087a8a1645dbcf8f49b0f289cd02b72ffbd1ba1bf"
+          },
+          {
+            "name": "layout-group-tail",
+            "phase": 3,
+            "first": 23,
+            "window": [
+              1200,
+              800
+            ],
+            "region": [
+              424,
+              160,
+              472,
+              588
+            ],
+            "rgb_sha256": "36335cd62786d0ea4c0223213e9dca796be5108ebea64c17127c8b788c714ac2"
+          },
+          {
+            "name": "layout-destinations-small",
+            "phase": 2,
+            "first": 0,
+            "window": [
+              960,
+              600
+            ],
+            "region": [
+              184,
+              156,
+              472,
+              396
+            ],
+            "rgb_sha256": "adcce130844f783b4ea07c5fffe7a1a5447fccfcbc205ca0b30085654600e21a"
+          },
+          {
+            "name": "layout-destinations-medium",
+            "phase": 2,
+            "first": 0,
+            "window": [
+              1200,
+              720
+            ],
+            "region": [
+              424,
+              156,
+              472,
+              516
+            ],
+            "rgb_sha256": "1d35064d6bbbf13b156145e79f13a2aa7eb213cf26df077b5dbaf05c91fabaef"
+          },
+          {
+            "name": "layout-destinations-wide",
+            "phase": 2,
+            "first": 0,
+            "window": [
+              1600,
+              900
+            ],
+            "region": [
+              824,
+              156,
+              472,
+              696
+            ],
+            "rgb_sha256": "ad2b3de87d778915362de3ba4a9200d23639375a2f1f15f432a7645a21ffbf3c"
+          },
+          {
+            "name": "layout-destinations-default",
+            "phase": 2,
+            "first": 0,
+            "window": [
+              1200,
+              800
+            ],
+            "region": [
+              424,
+              160,
+              472,
+              588
+            ],
+            "rgb_sha256": "9eb4a97455c3b611bb0cf63223c139a76d10da2445e43018490412f9e4d3f261"
+          },
+          {
+            "name": "layout-destinations-tail",
+            "phase": 2,
+            "first": 23,
+            "window": [
+              1200,
+              800
+            ],
+            "region": [
+              424,
+              160,
+              472,
+              588
+            ],
+            "rgb_sha256": "a2d9c583f935845a47cd1600c56595fe6efa56045915f2d93befcebb82504365"
+          }
+        ],
+        "native_first_rows": [
+          {
+            "dragging": false,
+            "first": 0,
+            "grid": [
+              120,
+              50
+            ],
+            "name": "group-small"
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "grid": [
+              150,
+              60
+            ],
+            "name": "group-medium"
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "grid": [
+              200,
+              75
+            ],
+            "name": "group-wide"
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "group-default"
+          },
+          {
+            "dragging": false,
+            "first": 23,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "group-tail"
+          },
+          {
+            "dragging": false,
+            "first": 23,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "group-CONTEXT_SCROLL_UP"
+          },
+          {
+            "dragging": false,
+            "first": 23,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "group-CURSOR_UP"
+          },
+          {
+            "dragging": false,
+            "first": 23,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "group-STANDARDSCROLL_PAGEUP"
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "grid": [
+              120,
+              50
+            ],
+            "name": "destinations-small"
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "grid": [
+              150,
+              60
+            ],
+            "name": "destinations-medium"
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "grid": [
+              200,
+              75
+            ],
+            "name": "destinations-wide"
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "destinations-default"
+          },
+          {
+            "dragging": false,
+            "first": 23,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "destinations-tail"
+          },
+          {
+            "dragging": false,
+            "first": 23,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "destinations-CONTEXT_SCROLL_UP"
+          },
+          {
+            "dragging": false,
+            "first": 23,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "destinations-CURSOR_UP"
+          },
+          {
+            "dragging": false,
+            "first": 23,
+            "grid": [
+              150,
+              66
+            ],
+            "name": "destinations-STANDARDSCROLL_PAGEUP"
+          }
+        ],
+        "native_sha256": "e4fc90ae9f1c450ca3e0934a09d019e33dae48132d510ab86006631d82d11cba",
+        "gpu_check": "build/qa/unit-expel-layout-art",
+        "core_state_composition": "build/qa/unit-expel-layout-final",
+        "native_source_unchanged": true,
+        "owned_unsaved_exit": true,
+        "diagnostics": "native lane clients: known startup notice only; GPU check: documented startup/finalize/ObjectDB only",
+        "affected_row_capacities": {
+          "960x600": 10,
+          "1200x720": 13,
+          "1600x900": 18,
+          "1200x800": 15
+        },
+        "destination_row_capacities": {
+          "960x600": 11,
+          "1200x720": 14,
+          "1600x900": 19,
+          "1200x800": 16
+        }
       }
     }
   }

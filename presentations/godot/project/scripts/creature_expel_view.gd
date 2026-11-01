@@ -17,6 +17,7 @@ func configure(source,model) -> void:
 	preload("res://scripts/native_creature_text.gd").load_text(world)
 	texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST;mouse_filter=Control.MOUSE_FILTER_STOP
 	state.changed.connect(refresh);resized.connect(refresh)
+	scrollbar.use_standalone_sheet=false
 	scrollbar.configure(source);scrollbar.input_allowed=func():return _allowed() and state.phase in [State.Phase.Choosing,State.Phase.Confirming]
 	scrollbar.row_changed.connect(func(value):first=value;refresh())
 	refresh()
@@ -57,17 +58,19 @@ func refresh() -> void:
 	if state.phase not in [State.Phase.Choosing,State.Phase.Confirming,State.Phase.Applying]:return
 	var choosing: bool=state.phase==State.Phase.Choosing
 	rows=snapshot.get("destinations",[]) if choosing else snapshot.get("units",[])
-	var capacity:=maxi(0,int((size.y-(0 if choosing else 48))/36))
-	first=clampi(first,0,maxi(0,rows.size()-1))
+	var capacity:=maxi(0,int((size.y-(0 if choosing else 36))/36))
+	var overflow:=capacity>0 and rows.size()>capacity
+	var row_width:=size.x-(32 if overflow else 16)
+	first=clampi(first,0,maxi(0,rows.size()-capacity))
 	for index in range(first,mini(rows.size(),first+capacity)):
 		var row: Dictionary=rows[index];var y: int=(index-first)*36
-		var background:=Panel.new();background.position=Vector2(8,y);background.size=Vector2(size.x-16,36)
+		var background:=Panel.new();background.position=Vector2(8,y);background.size=Vector2(row_width,36)
 		background.add_theme_stylebox_override("panel",style("BUTTON_RECTANGLE"));background.mouse_filter=Control.MOUSE_FILTER_IGNORE;add_child(background)
 		if choosing:
 			var id: int=row.id
-			var hit:=button("",Rect2(8,y,size.x-16,36),"BUTTON_RECTANGLE",func():first=0;state.choose(id))
+			var hit:=button("",Rect2(8,y,row_width,36),"BUTTON_RECTANGLE",func():first=0;state.choose(id))
 			hit.name="Destination_"+str(id)
-			label("Expel" if id==-1 else "Send to "+str(row.name),Vector2(8,y+12),size.x-24)
+			label("Expel" if id==-1 else "Send to "+str(row.name),Vector2(8,y+12),row_width)
 		else:
 			var frame:=Panel.new();frame.position=Vector2(8,y);frame.size=Vector2(40,36)
 			var frame_style:=style("BUTTON_PICTURE_BOX");frame_style.texture=picture.texture(false)
@@ -82,8 +85,8 @@ func refresh() -> void:
 		var accept:=button("Expel" if state.destination_id==-1 else "Send away",Rect2(8,size.y-36,88,36),"HORIZONTAL_OPTION_CONFIRM",state.confirm)
 		accept.name="ConfirmExpel";accept.disabled=state.phase!=State.Phase.Confirming
 		button("Cancel",Rect2(size.x-72,size.y-36,64,36),"HORIZONTAL_OPTION_REMOVE",state.close).name="CancelExpel"
-	if capacity>0 and rows.size()>capacity:
-		add_child(scrollbar);scrollbar.position=Vector2(size.x-16,0);scrollbar.size=Vector2(16,capacity*36)
+	if overflow:
+		add_child(scrollbar);scrollbar.position=Vector2(size.x-24,0);scrollbar.size=Vector2(16,capacity*36)
 		scrollbar.count=rows.size();scrollbar.page=capacity;scrollbar.first=first;scrollbar.queue_redraw()
 	_process(0)
 func _process(_delta: float) -> void:

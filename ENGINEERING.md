@@ -3545,25 +3545,28 @@ No new runtime admission follows from this audit.
 
 ### Knowledge artifact initialization effects
 
-Protected native062834 on2026-11-01 tests temporary inorganic statues and
-figurines in three states: plain quality0, quality5 with one quality5 bands
-improvement, and worldgen-marked with an existing temporary world-object record.
+Protected native063142 on2026-11-01 tests temporary inorganic statues and
+figurines in four states: plain quality0, quality5 with one quality5 bands
+improvement, and worldgen-marked with either an existing or missing temporary
+world-object record.
 Each unnamed artifact is referenced by a temporary ARTIFACT_CREATED event in
-an existing dance form. All six variants run native-first and probe-first.
+an existing dance form. All eight variants run native-first and probe-first.
 Each cold description creates exactly one art record. Independent cold text
 matches the subsequently opened native detail exactly and leaves native UI
-bytes unchanged. Twenty-four warm comparisons preserve guarded item,
+bytes unchanged. Thirty-two warm comparisons preserve guarded item,
 improvement, art, UI and random state and allocate no additional art.
 `artifact_initialization_reference` retains case digests and allocation facts.
 
-In all four worldgen-marker cases, nativecc83e0 retains the world-object record,
+In all eight worldgen-marker cases, nativecc83e0 retains the world-object record,
 inserts sub-ID37 into its `altered_items` ledger once, sets item.world_data_id
 to -1 and preserves item.world_data_subid. The caption clears from_worldgen.
 Repeated reads leave the ledger with one entry. Static10aab0 is the read-only
 world-object lookup; 10a990 allocates/registers a record on a miss. Nativeb9e70
 performs sorted unique insertion, not backing-record deletion. This corrects
-older descriptions of the retirement operation. The missing-record allocation
-branch and contained-item/building recursion are not covered by this test.
+older descriptions of the retirement operation. The four missing-record cases
+verify native10a990 creates and registers exactly one record; warm reads neither
+create another record nor duplicate its ledger entry. Contained-item/building
+recursion is not covered by this test.
 
 Native semantic initialization and marker retirement are preserved, as in the
 existing BOX item provider. Owned formatter inputs/output do not imply that
@@ -3572,7 +3575,7 @@ remains staged; this is not blanket item/event admission. The test removes and
 frees its temporary world-object records, items, improvements, artifacts and
 events and restores the form reference. Generated art remains in the disposable
 session until unsaved exit; the harness does not roll back art allocations.
-Source preservation passes and owned DF37868 exits unsaved. All three Godot
+Source preservation passes and owned DF37648 exits unsaved. All three Godot
 processes contain only the known startup notice. Natural offloaded-item graphs,
 other decorations and other item-subtype paths remain unverified.
 

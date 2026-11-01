@@ -66610,7 +66610,7 @@
         "scope": "Test-owned MASTERPIECE_LOST and PERFORMANCE events, temporary occasion/schedule, existing CREATED_SITE leaf. Exact native description comparisons; missing reference/entity/occasion/schedule and nested performance-to-lost-to-leaf. Not natural-world occurrence, cycle handling, or blanket event acceptance."
       },
       "artifact_initialization_reference": {
-        "source": "build/stockpile-storage-native-farm-discovery-20261101-062834",
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-063142",
         "status": "passed_with_known_issues",
         "bridge_sha256": "8c8c3ba6f1d5e574e2b383b09458f88a881ff1872e2eb560cab46f16245f103d",
         "cases": [
@@ -66635,8 +66635,8 @@
             "properties": 0,
             "quality": 0,
             "variant": "statue",
-            "utf8_bytes": 1747,
-            "text_sha256": "0e5d2a41185d7163e6f9a8e5e92293f7d8167e00bacd573940e0b2503661ff6d"
+            "utf8_bytes": 1759,
+            "text_sha256": "4b64c9006d60b9447112f01e564eb170839559224f00eeaa1db7361a20f734f6"
           },
           {
             "after": {
@@ -66659,8 +66659,8 @@
             "properties": 0,
             "quality": 0,
             "variant": "statue",
-            "utf8_bytes": 1754,
-            "text_sha256": "518faaaf7b2a3c9789bc539af9b1be079f66fd366ece79e3adf11c3941d691fa"
+            "utf8_bytes": 1752,
+            "text_sha256": "57ae163e9295984109f7a25454e638873fc1a6f4da31db17ae004082b49c5cb0"
           },
           {
             "after": {
@@ -66683,8 +66683,8 @@
             "properties": 0,
             "quality": 0,
             "variant": "figurine",
-            "utf8_bytes": 1760,
-            "text_sha256": "62082dcffc1f8b88f51a7937ac6562a89c7c3d4189f5643946882c25385df140"
+            "utf8_bytes": 1756,
+            "text_sha256": "470e7bc3a122123bdfbe5d1dc22f718ddf2e4b7453828fe5b4344b90e63febe9"
           },
           {
             "after": {
@@ -66707,8 +66707,8 @@
             "properties": 0,
             "quality": 0,
             "variant": "figurine",
-            "utf8_bytes": 1752,
-            "text_sha256": "227efd16449e1d8c0d7b71934a31922ff831dd6732caab8565bebe5da7a0d171"
+            "utf8_bytes": 1761,
+            "text_sha256": "bc7516fa46f13083218c2ad4abf6638d5deee8224d362ff4f4da3cbcc2731d0c"
           },
           {
             "after": {
@@ -66731,8 +66731,8 @@
             "properties": 0,
             "quality": 5,
             "variant": "statue-bands",
-            "utf8_bytes": 1773,
-            "text_sha256": "f1be9561cdd6229d26fd718394944975fb2365c48d5d6dd7a868f5077ecdaae4"
+            "utf8_bytes": 1774,
+            "text_sha256": "ab6e6c7d495d9133427478e083f08471c4d26ea3d9483e47da0b9039515b32a7"
           },
           {
             "after": {
@@ -66755,8 +66755,8 @@
             "properties": 0,
             "quality": 5,
             "variant": "statue-bands",
-            "utf8_bytes": 1767,
-            "text_sha256": "b57f624290cc75153b3bcb2e6e74015b4a845c33ebf85cb9a2208b6e49997178"
+            "utf8_bytes": 1769,
+            "text_sha256": "b57a94020413b6edb9aee22ff4629306654fd2ce7b7a423c16358a52d059d9e7"
           },
           {
             "after": {
@@ -66779,8 +66779,8 @@
             "properties": 0,
             "quality": 5,
             "variant": "figurine-bands",
-            "utf8_bytes": 1774,
-            "text_sha256": "d1ed26a219a75de621515705dc30577c5b7703eaaa83d90f13f707593131c5a0"
+            "utf8_bytes": 1768,
+            "text_sha256": "8da80b70917e43c2d1693b7618d14872b94af9d94ee9067d0f151cb49a3fe42a"
           },
           {
             "after": {
@@ -66804,7 +66804,7 @@
             "quality": 5,
             "variant": "figurine-bands",
             "utf8_bytes": 1771,
-            "text_sha256": "da2031a780032f92711567c596e1667ab368e3b88723aa30b92c13a40211f068"
+            "text_sha256": "efe424a36aac619e34ed1ee97d9cf596bda0171409fffd146e439c46724a7c8c"
           },
           {
             "after": {
@@ -66832,13 +66832,14 @@
                 37
               ],
               "from_worldgen": false,
+              "record_created": false,
               "record_id": 4033280,
               "record_retained": true,
               "world_data_id": -1,
               "world_data_subid": 37
             },
             "utf8_bytes": 1753,
-            "text_sha256": "2b7bdd76cea0c5bb08d4de9b1b1d1dc6509074d475b9968091bc6f9e46435d4d"
+            "text_sha256": "fcded7952a61d20172f137bccd52b4d13f715236f2cc08e8bd8d87fad6ca9b55"
           },
           {
             "after": {
@@ -66866,13 +66867,14 @@
                 37
               ],
               "from_worldgen": false,
+              "record_created": false,
               "record_id": 4033280,
               "record_retained": true,
               "world_data_id": -1,
               "world_data_subid": 37
             },
-            "utf8_bytes": 1758,
-            "text_sha256": "c155deb473280abb5be11b0d2935f9dc918bc20ac888aedade4b98d35926ffa1"
+            "utf8_bytes": 1753,
+            "text_sha256": "7af90b2d417e15947fdba663fca64eea9d62364c15dbc7a99c7ea567a8f0c241"
           },
           {
             "after": {
@@ -66900,13 +66902,14 @@
                 37
               ],
               "from_worldgen": false,
+              "record_created": false,
               "record_id": 4033280,
               "record_retained": true,
               "world_data_id": -1,
               "world_data_subid": 37
             },
             "utf8_bytes": 1755,
-            "text_sha256": "4408a7cf35d892f42d3160fb5a2820a5743efdd6fdad96a24dfbcf511bd3c34d"
+            "text_sha256": "0f7f171a0c84f57f8cfa5f72311fa24d03c6bcb4ed719dc91a7b1cfde9c44bf9"
           },
           {
             "after": {
@@ -66934,13 +66937,154 @@
                 37
               ],
               "from_worldgen": false,
+              "record_created": false,
               "record_id": 4033280,
               "record_retained": true,
               "world_data_id": -1,
               "world_data_subid": 37
             },
-            "utf8_bytes": 1761,
-            "text_sha256": "bc7516fa46f13083218c2ad4abf6638d5deee8224d362ff4f4da3cbcc2731d0c"
+            "utf8_bytes": 1760,
+            "text_sha256": "18380de4b94d5d61bb1037181b7dc975254bc2c487124d3ee00f09efd94eab50"
+          },
+          {
+            "after": {
+              "id": 4,
+              "offset": 136
+            },
+            "before": {
+              "id": 4,
+              "offset": 135
+            },
+            "case": "statue-worldgen-missing-native-first",
+            "elements": 1,
+            "has_source": true,
+            "image": {
+              "id": 4,
+              "subid": 135
+            },
+            "improvements": 0,
+            "mode": "native-first",
+            "properties": 0,
+            "quality": 0,
+            "variant": "statue-worldgen-missing",
+            "worldgen": {
+              "altered_items": [
+                37
+              ],
+              "from_worldgen": false,
+              "record_created": true,
+              "record_id": 4033280,
+              "record_retained": true,
+              "world_data_id": -1,
+              "world_data_subid": 37
+            },
+            "utf8_bytes": 1759,
+            "text_sha256": "4b64c9006d60b9447112f01e564eb170839559224f00eeaa1db7361a20f734f6"
+          },
+          {
+            "after": {
+              "id": 4,
+              "offset": 137
+            },
+            "before": {
+              "id": 4,
+              "offset": 136
+            },
+            "case": "statue-worldgen-missing-probe-first",
+            "elements": 1,
+            "has_source": true,
+            "image": {
+              "id": 4,
+              "subid": 136
+            },
+            "improvements": 0,
+            "mode": "probe-first",
+            "properties": 0,
+            "quality": 0,
+            "variant": "statue-worldgen-missing",
+            "worldgen": {
+              "altered_items": [
+                37
+              ],
+              "from_worldgen": false,
+              "record_created": true,
+              "record_id": 4033280,
+              "record_retained": true,
+              "world_data_id": -1,
+              "world_data_subid": 37
+            },
+            "utf8_bytes": 1758,
+            "text_sha256": "c155deb473280abb5be11b0d2935f9dc918bc20ac888aedade4b98d35926ffa1"
+          },
+          {
+            "after": {
+              "id": 4,
+              "offset": 138
+            },
+            "before": {
+              "id": 4,
+              "offset": 137
+            },
+            "case": "figurine-worldgen-missing-native-first",
+            "elements": 1,
+            "has_source": true,
+            "image": {
+              "id": 4,
+              "subid": 137
+            },
+            "improvements": 0,
+            "mode": "native-first",
+            "properties": 0,
+            "quality": 0,
+            "variant": "figurine-worldgen-missing",
+            "worldgen": {
+              "altered_items": [
+                37
+              ],
+              "from_worldgen": false,
+              "record_created": true,
+              "record_id": 4033280,
+              "record_retained": true,
+              "world_data_id": -1,
+              "world_data_subid": 37
+            },
+            "utf8_bytes": 1751,
+            "text_sha256": "960fae66cac5c2066cd3d971ce30d585669cf6f7f1e1a95c54b7dcee5aeab340"
+          },
+          {
+            "after": {
+              "id": 4,
+              "offset": 139
+            },
+            "before": {
+              "id": 4,
+              "offset": 138
+            },
+            "case": "figurine-worldgen-missing-probe-first",
+            "elements": 1,
+            "has_source": true,
+            "image": {
+              "id": 4,
+              "subid": 138
+            },
+            "improvements": 0,
+            "mode": "probe-first",
+            "properties": 0,
+            "quality": 0,
+            "variant": "figurine-worldgen-missing",
+            "worldgen": {
+              "altered_items": [
+                37
+              ],
+              "from_worldgen": false,
+              "record_created": true,
+              "record_id": 4033280,
+              "record_retained": true,
+              "world_data_id": -1,
+              "world_data_subid": 37
+            },
+            "utf8_bytes": 1757,
+            "text_sha256": "5b5dde07933acb198d92b882ba441e4507609810ceae29d1ec5f2e5ed6ac9426"
           }
         ],
         "warm_checks": [
@@ -67039,9 +67183,41 @@
           {
             "case": "artifact-figurine-worldgen-probe-first-warm",
             "guards_unchanged": true
+          },
+          {
+            "case": "artifact-statue-worldgen-missing-native-first",
+            "guards_unchanged": true
+          },
+          {
+            "case": "artifact-statue-worldgen-missing-native-first-warm",
+            "guards_unchanged": true
+          },
+          {
+            "case": "artifact-statue-worldgen-missing-probe-first",
+            "guards_unchanged": true
+          },
+          {
+            "case": "artifact-statue-worldgen-missing-probe-first-warm",
+            "guards_unchanged": true
+          },
+          {
+            "case": "artifact-figurine-worldgen-missing-native-first",
+            "guards_unchanged": true
+          },
+          {
+            "case": "artifact-figurine-worldgen-missing-native-first-warm",
+            "guards_unchanged": true
+          },
+          {
+            "case": "artifact-figurine-worldgen-missing-probe-first",
+            "guards_unchanged": true
+          },
+          {
+            "case": "artifact-figurine-worldgen-missing-probe-first-warm",
+            "guards_unchanged": true
           }
         ],
-        "scope": "Temporary inorganic statues/figurines: plain quality0, quality5 bands, or worldgen-marked with existing temporary world_object_data. Native-first and probe-first each allocate one art record; cold independent text matches native/UI unchanged. Worldgen marker cases retain object record, insert sub-ID37 once, clear world_data_id/from_worldgen and preserve subid. Warm item/improvement/art/UI/random guards pass with no art or ledger duplication. Temporary inputs removed; generated art stays in owned unsaved clone. Missing world-object creation, containment recursion, other decorations/subtypes and natural offloaded-item graphs remain unverified."
+        "scope": "Temporary inorganic statues/figurines: plain quality0, quality5 bands, worldgen-marked with existing or missing world_object_data. Native-first and probe-first each allocate one art record; cold independent text matches native/UI unchanged. Missing world-object is created once. All marker cases retain record, insert sub-ID37 once, clear world_data_id/from_worldgen and preserve subid. Warm guards pass with no record/art/ledger duplication. Temporary inputs removed; generated art stays in owned unsaved clone. Containment recursion, other decorations/subtypes and natural offloaded-item graphs remain unverified."
       }
     }
   }

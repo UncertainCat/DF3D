@@ -3261,17 +3261,23 @@ syndrome/operation ties and absent positive caregiver IDs remain unverified.
 input handler1b2bc4 derives width from panel columns minus7;858550 formats tagged
 strings into color_text_linest records, using8599f0 for wrapping and8598a0 for
 line emission. These copied sheet vectors are diagnostic references only.
-Ordinary word wrapping differs on Description; rendered acceptance must compare
-these native lines/colors. The capture passes with known startup notices only,
-DF37820 exits unsaved and source preservation passes. Resize and input behavior
-remain unverified for the new Health rendering work.
+`creature_health_layout.gd` reproduces the captured wrapping and character
+colors. Native [P] inserts four spaces for width calculation before line
+emission trims them; ordinary word wrapping therefore differs. Native858550
+writes global color scratch, so product rendering uses local presentation state
+instead of calling that formatter. The native semantic paragraphs remain the
+source of all visible prose.
 
-These pages are not implemented by the current generic health renderer.
-`creature.lua` exposes observed wounds, body-part flags, treatment flags and
-operation records, explicitly noting the missing anatomical narrative. Trace
-native semantic formatters and their owned input requirements before extending
-Godot; raw fields do not establish native wording, order or grouping. Additional
-injury/treatment cases, empty history, overflow and interaction coverage remain.
+`creature_health_view.gd` renders the typed five-page payload and replaces the
+superseded generic Health facts view. The context inspector retains this control
+across detail refreshes and cancels its scrollbar gesture on panel retirement.
+`rendered_text_reference` records exact RGB matches for all five text-body crops
+at1200x800 against protected021536. QA `health-view-component` passes root/core,
+UI composition and real-renderer capture with documented Godot diagnostics only;
+the layout test also matches every captured line and color byte. These component
+checks exclude scrollbar artwork/input, resizing and the composed live Health
+workflow. Those remain required before acceptance, along with broader clinical
+variants and lifecycle coverage. The creature route remains staged.
 
 The full reference run passes with only the known startup notice in each Godot
 process; root/core QA `health-pages-reference` passes. DF38684 exits unsaved and

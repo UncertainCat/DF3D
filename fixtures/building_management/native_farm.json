@@ -54312,6 +54312,64 @@
         ],
         "color_encoding": "color_runs entries are [packed native color byte, character count]",
         "qa": "build/qa/health-text-layout-reference"
+      },
+      "rendered_text_reference": {
+        "native_run": "build/stockpile-storage-native-farm-discovery-20261101-021536",
+        "verification": "build/qa/health-view-initial",
+        "status": "passed_with_known_issues",
+        "scope": "Five text-body crops at 1200x800; excludes scrollbar, resize and composed main-scene interaction.",
+        "pages": [
+          {
+            "name": "status",
+            "rect": [
+              432,
+              244,
+              424,
+              312
+            ],
+            "sha256": "6b74ab2975c182847b4f9f782a9513f0457fafb982b2c633b54ab916bf5ff038"
+          },
+          {
+            "name": "wounds",
+            "rect": [
+              432,
+              244,
+              424,
+              312
+            ],
+            "sha256": "ccbe339d95b7dc618b6ceca4982fb46ca16b199bae210d4f13d12b9022781624"
+          },
+          {
+            "name": "treatment",
+            "rect": [
+              432,
+              244,
+              424,
+              312
+            ],
+            "sha256": "0229181d26d03be3d0e5098a981b1d0fd718ded9bbcbe902f0e1a79a5ef38ec8"
+          },
+          {
+            "name": "history",
+            "rect": [
+              432,
+              244,
+              424,
+              312
+            ],
+            "sha256": "fef6b31c536a8a075e3d6c5a2307a3dbc9342c60168ae24b8843df96a3896e06"
+          },
+          {
+            "name": "description",
+            "rect": [
+              432,
+              244,
+              424,
+              312
+            ],
+            "sha256": "9108ea93cef509c613ce6721b796dc3ff781892f408cc3c567603c7986b1fb03"
+          }
+        ]
       }
     }
   }

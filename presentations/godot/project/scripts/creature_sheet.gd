@@ -14,16 +14,19 @@ var unit_id := -1
 var scroll: ScrollContainer
 var scroll_location := ""
 var items_view
+var health_view
 var owner
 var sections := {}
 
 func reset(id: int):
  if unit_id == id: return
  unit_id=id;tab="Overview";subtabs.clear();scrolls.clear();scroll=null;scroll_location=""
+ if is_instance_valid(health_view):health_view.page_key="";health_view.first=0
 
 func location() -> String: return tab+"/"+str(subtabs.get(tab,""))
 
 func remember_scroll():
+ if is_instance_valid(health_view): scrolls[health_view.page_key]=health_view.first
  if is_instance_valid(scroll): scrolls[scroll_location]=scroll.scroll_vertical
 
 func change_tab(value: String, nested := false):
@@ -131,11 +134,6 @@ func filtered_records(key: String, records: Array) -> Array:
    var br: int=rank.get(str(fact_value(b,"relationship")).to_lower(),9)
    return ar<br if ar!=br else int(a.id)<int(b.id))
   return sorted
- if tab=="Health" and key=="health":
-  var wanted: String = {"Wounds":"wound","Description":"body_part"}.get(subtabs.get(tab,"Status"),"status")
-  return records.filter(func(row): return str(fact_value(row,"record_type"))==wanted and (wanted!="wound" or fact_value(row,"diagnosed")=="yes"))
- if tab=="Health" and key=="treatment":
-  return records.filter(func(row): return fact_value(row,"native_treatment")=="yes")
  if tab=="Overview" and key=="health": return records.filter(func(row): return str(fact_value(row,"record_type"))=="overview_health")
  if tab=="Skills" and key=="skills":
   var sub := str(subtabs.get(tab,"Labor"))
@@ -158,16 +156,8 @@ func section(parent: Node, key: String, heading := true, limit := 10000):
  if data.is_empty(): return
  if not data.get("available",false): return
  var records: Array = filtered_records(key,data.get("records",[]))
- if tab=="Health" and records.is_empty() and not data.get("truncated",false):
-  var native := NativeText.load_text(owner.world)
-  var empty: Dictionary=native.get("health_empty_labels",{}).get(str(subtabs.get(tab,"")),{})
-  if not empty.is_empty(): text(parent,str(empty.text).trim_prefix("[C:7:0:0]"),NativeText.colors[7])
  for i in mini(limit,records.size()):
   var record: Dictionary=records[i]
-  if tab=="Health" and key=="identity" and subtabs.get(tab,"")=="Description":
-   var description := str(fact_value(record,"caste_description",""))
-   if not description.is_empty(): text(parent,description)
-   continue
   var row_parent: Node=parent
   if key in ["inventory","skills","relationships","groups","labors","rooms","military","knowledge"]:
    row_parent=Style.row(parent,owner.world,36)
@@ -403,6 +393,19 @@ func render(controller, state: Dictionary):
   items_view.configure(owner.world,records_for("inventory"))
   items_view.scrollbar.row_changed.connect(func(value):scrolls["Items/"]=value)
   return
+ if tab=="Health":
+  scroll=null
+  var page_kind: int=["Status","Wounds","Treatment","History","Description"].find(str(subtabs.get(tab,"Status")))
+  var page_rows: Array=[]
+  for page in detail.get("health_pages",[]):
+   if int(page.kind)==page_kind:page_rows=page.rows;break
+  if not is_instance_valid(health_view):
+   health_view=preload("res://scripts/creature_health_view.gd").new()
+   owner.body.add_child(health_view);health_view.configure(owner.world)
+   health_view.input_allowed=func():return owner.ui_host==null or owner.ui_host.allows_panel_input(owner)
+  health_view.position=Vector2(0,y);health_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
+  health_view.present(page_rows,location(),int(scrolls.get(location(),0)))
+  return
  y+=4
  if tab=="Overview": y-=10
  var native_prose_layout := tab in ["Thoughts","Personality"]
@@ -458,9 +461,5 @@ func render(controller, state: Dictionary):
    var gap := Control.new();gap.custom_minimum_size.y=12;content.add_child(gap)
  else:
   var keys: Array=recipe.subtabs[tab][subtabs[tab]] if recipe.subtabs.has(tab) else recipe.sections.get(tab,[])
-  if tab=="Health" and subtabs.get(tab)=="Description": keys=["identity"]
   for key in keys: section(content,key,keys.size()>1)
-  if tab=="Health" and subtabs.get(tab)=="Description":
-   var gap := Control.new();gap.custom_minimum_size.y=12;content.add_child(gap)
-   paragraph(content,NativeText.attribute_description(self,int(detail.get("sex",-1))))
  scroll.set_deferred("scroll_vertical",int(scrolls.get(location(),0)))

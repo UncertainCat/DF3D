@@ -9,6 +9,19 @@
   },
   "checks": [
     {
+      "id": "creature_health_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/creature_health_capture.gd",
+      "completion": "CREATURE_HEALTH_CAPTURE_PASS",
+      "timeout": 60,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer"
+      ]
+    },
+    {
       "id": "creature_items_capture",
       "lane": "gpu",
       "kind": "godot",
@@ -1827,6 +1840,15 @@
         "extension_build",
         "corpse_handoff_fixture"
       ]
+    },
+    {
+      "id": "creature_health_layout_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/creature_health_layout_test.gd",
+      "completion": "^CREATURE_HEALTH_LAYOUT_PASS",
+      "timeout": 60,
+      "prerequisites": ["extension_build"]
     },
     {
       "id": "creature_thought_text_test",

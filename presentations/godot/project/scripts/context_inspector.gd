@@ -168,6 +168,10 @@ func cancel_gesture() -> void:
 		creature_sheet.items_view.scrollbar.dragging=false
 		creature_sheet.items_view.scrollbar.hover_cell=-1
 		creature_sheet.items_view.scrollbar.queue_redraw()
+	if is_instance_valid(creature_sheet.health_view):
+		creature_sheet.health_view.scrollbar.dragging=false
+		creature_sheet.health_view.scrollbar.hover_cell=-1
+		creature_sheet.health_view.scrollbar.queue_redraw()
 	if is_instance_valid(expel_view):
 		expel_view.scrollbar.dragging=false
 		expel_view.scrollbar.hover_cell=-1
@@ -327,9 +331,11 @@ func redraw():
 	# so rebuilding unrelated header controls does not retire pointer capture.
 	var retained_expel=expel_view if expel.phase!=expel.Phase.Closed and is_instance_valid(expel_view) else null
 	var retained_items=creature_sheet.items_view if int(selected.kind)==1 and creature_sheet.tab=="Items" and expel.phase==expel.Phase.Closed and is_instance_valid(creature_sheet.items_view) else null
+	var retained_health=creature_sheet.health_view if int(selected.kind)==1 and creature_sheet.tab=="Health" and expel.phase==expel.Phase.Closed and is_instance_valid(creature_sheet.health_view) else null
 	for child in body.get_children():
-		if child!=retained_expel and child!=retained_items:body.remove_child(child);child.queue_free()
+		if child!=retained_expel and child!=retained_items and child!=retained_health:body.remove_child(child);child.queue_free()
 	creature_sheet.items_view=retained_items
+	creature_sheet.health_view=retained_health
 	customize_view=null
 	customize_button=null
 	history_button=null

@@ -3276,6 +3276,15 @@ adapter is called. `dance_forms_reference` records the sample's limits. DF34116
 exits unsaved with source preservation and only known Godot startup notices;
 the existing poetry and music baseline probes also pass.
 
+Protected040918 adds native-only controlled event references to dance form0,
+restoring its original event ID after capture. Four distinct existing event types
+change the native text: CHANGE_HF_STATE/event0 uses phrase b77430,
+ADD_HF_ENTITY_LINK/event311 uses b80420, CREATED_SITE/event324 uses b69bb0,
+and CREATED_BUILDING/event325 uses b69d30. `dance_event_reference` retains the
+native descriptions and dispatch addresses. DF38300 exits unsaved with source
+preservation and only known Godot startup notices. This locates concrete event
+paths; it does not establish their owned-adapter or in-memory state preservation.
+
 ### Creature Health transport contract
 
 Management107 adds optional `CreatureState.health_pages`: either absent (not

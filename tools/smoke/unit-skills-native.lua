@@ -120,6 +120,7 @@ local ok,err=xpcall(function()
      for _,section in ipairs(form.sections)do detail.form.section_events[#detail.form.section_events+1]=section.acts_out_event end
      if form.event>=0 then
       local event=assert(df.history_event.find(form.event));detail.form.event_type=event:getType()
+      detail.form.event_type_name=df.history_event_type[detail.form.event_type]
       local _,address=df.sizeof(event);local vtable=df.reinterpret_cast('uint64_t',address).value
       detail.form.event_phrase_rva=df.reinterpret_cast('uint64_t',vtable+0xd8).value-dfhack.internal.getImageBase()
      end
@@ -153,6 +154,22 @@ local ok,err=xpcall(function()
     if kind==14 and os.getenv('DF3D_UNIT_POETIC_CASES')=='1'then
      local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-skills%-native.lua$','poetic-cases-native.lua')
      assert(loadfile(source))(unit,reference.knowledge_ids[index],function(variant)return capture_detail(index,kind,variant)end,baseline)
+    end
+    if kind==16 and os.getenv('DF3D_UNIT_DANCE_EVENTS')=='1'then
+     local form=assert(df.dance_form.find(reference.knowledge_ids[index]));local original=form.event
+     local events_ok,events_error=xpcall(function()
+      local seen_types={};local count=0
+      for _,event in ipairs(df.global.world.history.events)do
+       local kind=event:getType()
+       if not seen_types[kind]then
+        seen_types[kind]=true;form.event=event.id
+        assert(capture_detail(index,16,'event-'..kind)~=baseline,'Dance event did not change native text')
+        count=count+1;if count==4 then break end
+       end
+      end
+      assert(count==4,'Need four existing historical event types')
+     end,debug.traceback)
+     form.event=original;assert(events_ok,events_error)
     end
    end
   end

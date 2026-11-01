@@ -62262,6 +62262,96 @@
         "owned_df_pid": 34116,
         "source_unchanged": true,
         "exit_without_saving": true
+      },
+      "dance_event_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-040918",
+        "cases": [
+          {
+            "case": "event-44",
+            "form": {
+              "event": 0,
+              "event_phrase_rva": 12022832,
+              "event_type": 44,
+              "event_type_name": "CHANGE_HF_STATE",
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 4
+            },
+            "text": "[C:7:0:1]The Wispy Berry is a performance partner dance originating in The Big Channel.  The rules of the form are applied by choreographers to produce individual dances which can be performed.  The dance is accompanied by The Intricate Luxuries as the dancers act out the settling of the hydra Nolthag Tuftedchants the Larva of Strapping in Washedcrack in 1.  The dancers perform in a single line turning counterclockwise.  This dance is a refined artform, with one special position to be mastered.  The dance is punctuated by vivacious independent body movement.  [B]The dance begins with the introduction of the music.  The dancers perform quickly to the s\u00e1krith rhythm.  The partners dance closely, communicating intent by pulling away.  This section is punctuated by the sensual spins of the lead.  [B]The dance enters a new section with the verse of the music.  The dancers perform very quickly with the music.  The partners rarely make contact, communicating intent through visual cues.  This crude flamboyant section is punctuated by the forward bends of the lead, kicks and energetic counterclockwise eighth turns.  [B]The dance enters a new section with the chorus of the music.  The dancers perform slowly with the music.  The partners dance closely, communicating intent by pushing together.  This intense section is punctuated by softly percussive footwork.  [B]The dance enters a new section with the coda of the music.  The dancers perform slowly with the music.  The partners dance closely, communicating intent by pushing together.  This section is punctuated by vivacious leaps and serene counterclockwise eighth turns.  [B]The \u00e2trid the fundamental dance position.  There should be a passive hand gesture from the follower with a grotesque leg lift.  "
+          },
+          {
+            "case": "event-4",
+            "form": {
+              "event": 311,
+              "event_phrase_rva": 12059680,
+              "event_type": 4,
+              "event_type_name": "ADD_HF_ENTITY_LINK",
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 4
+            },
+            "text": "[C:7:0:1]The Wispy Berry is a performance partner dance originating in The Big Channel.  The rules of the form are applied by choreographers to produce individual dances which can be performed.  The dance is accompanied by The Intricate Luxuries as the dancers act out the appointment of the dwarf Edzul Roofboard to the position of general of The Big Channel in 1.  The dancers perform in a single line turning counterclockwise.  This dance is a refined artform, with one special position to be mastered.  The dance is punctuated by vivacious independent body movement.  [B]The dance begins with the introduction of the music.  The dancers perform quickly to the s\u00e1krith rhythm.  The partners dance closely, communicating intent by pulling away.  This section is punctuated by the sensual spins of the lead.  [B]The dance enters a new section with the verse of the music.  The dancers perform very quickly with the music.  The partners rarely make contact, communicating intent through visual cues.  This crude flamboyant section is punctuated by the forward bends of the lead, kicks and energetic counterclockwise eighth turns.  [B]The dance enters a new section with the chorus of the music.  The dancers perform slowly with the music.  The partners dance closely, communicating intent by pushing together.  This intense section is punctuated by softly percussive footwork.  [B]The dance enters a new section with the coda of the music.  The dancers perform slowly with the music.  The partners dance closely, communicating intent by pushing together.  This section is punctuated by vivacious leaps and serene counterclockwise eighth turns.  [B]The \u00e2trid the fundamental dance position.  There should be a passive hand gesture from the follower with a grotesque leg lift.  "
+          },
+          {
+            "case": "event-2",
+            "form": {
+              "event": 324,
+              "event_phrase_rva": 11967408,
+              "event_type": 2,
+              "event_type_name": "CREATED_SITE",
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 4
+            },
+            "text": "[C:7:0:1]The Wispy Berry is a performance partner dance originating in The Big Channel.  The rules of the form are applied by choreographers to produce individual dances which can be performed.  The dance is accompanied by The Intricate Luxuries as the dancers act out the foundation of Bridgestabs by The Learned Treasury of The Big Channel in 1.  The dancers perform in a single line turning counterclockwise.  This dance is a refined artform, with one special position to be mastered.  The dance is punctuated by vivacious independent body movement.  [B]The dance begins with the introduction of the music.  The dancers perform quickly to the s\u00e1krith rhythm.  The partners dance closely, communicating intent by pulling away.  This section is punctuated by the sensual spins of the lead.  [B]The dance enters a new section with the verse of the music.  The dancers perform very quickly with the music.  The partners rarely make contact, communicating intent through visual cues.  This crude flamboyant section is punctuated by the forward bends of the lead, kicks and energetic counterclockwise eighth turns.  [B]The dance enters a new section with the chorus of the music.  The dancers perform slowly with the music.  The partners dance closely, communicating intent by pushing together.  This intense section is punctuated by softly percussive footwork.  [B]The dance enters a new section with the coda of the music.  The dancers perform slowly with the music.  The partners dance closely, communicating intent by pushing together.  This section is punctuated by vivacious leaps and serene counterclockwise eighth turns.  [B]The \u00e2trid the fundamental dance position.  There should be a passive hand gesture from the follower with a grotesque leg lift.  "
+          },
+          {
+            "case": "event-30",
+            "form": {
+              "event": 325,
+              "event_phrase_rva": 11967792,
+              "event_type": 30,
+              "event_type_name": "CREATED_BUILDING",
+              "hfid": -1,
+              "moves": 1,
+              "race": -1,
+              "section_events": [
+                -1,
+                -1,
+                -1,
+                -1
+              ],
+              "sections": 4
+            },
+            "text": "[C:7:0:1]The Wispy Berry is a performance partner dance originating in The Big Channel.  The rules of the form are applied by choreographers to produce individual dances which can be performed.  The dance is accompanied by The Intricate Luxuries as the dancers act out the emergence of The Dreamy Bastion in Naildungeon from the underworld through the power of the skink brute Amug Lieconfused in 1.  The dancers perform in a single line turning counterclockwise.  This dance is a refined artform, with one special position to be mastered.  The dance is punctuated by vivacious independent body movement.  [B]The dance begins with the introduction of the music.  The dancers perform quickly to the s\u00e1krith rhythm.  The partners dance closely, communicating intent by pulling away.  This section is punctuated by the sensual spins of the lead.  [B]The dance enters a new section with the verse of the music.  The dancers perform very quickly with the music.  The partners rarely make contact, communicating intent through visual cues.  This crude flamboyant section is punctuated by the forward bends of the lead, kicks and energetic counterclockwise eighth turns.  [B]The dance enters a new section with the chorus of the music.  The dancers perform slowly with the music.  The partners dance closely, communicating intent by pushing together.  This intense section is punctuated by softly percussive footwork.  [B]The dance enters a new section with the coda of the music.  The dancers perform slowly with the music.  The partners dance closely, communicating intent by pushing together.  This section is punctuated by vivacious leaps and serene counterclockwise eighth turns.  [B]The \u00e2trid the fundamental dance position.  There should be a passive hand gesture from the follower with a grotesque leg lift.  "
+          }
+        ],
+        "scope": "Native-only captures with four existing historical event references temporarily assigned to dance form0 and restored. Each changes native text; no owned adapter or event-state preservation acceptance.",
+        "diagnostics": "passed_with_known_issues",
+        "owned_df_pid": 38300,
+        "source_unchanged": true,
+        "exit_without_saving": true
       }
     }
   }

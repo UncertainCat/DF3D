@@ -45964,7 +45964,275 @@
         "Active jobs, squads, family effects and relative thoughts",
         "Departure over simulation ticks and arrival",
         "Transport, lifecycle and viewer controls"
-      ]
+      ],
+      "family_reference": {
+        "cases": [
+          {
+            "affected": [
+              1017,
+              2345
+            ],
+            "after": {
+              "army_id": 1163542,
+              "civ_id": 245,
+              "controller": {
+                "entity_id": -1,
+                "goal": 12,
+                "id": 1163542,
+                "master_id": 1163542,
+                "site_id": -1,
+                "year": 106,
+                "year_tick": 157249
+              },
+              "controllers": 1690,
+              "flags1": 2147500033,
+              "flags2": 310386800,
+              "history_count": 54233,
+              "job_id": -1,
+              "offices": [],
+              "travel": {
+                "flags": 4,
+                "rumour_location_id": -1,
+                "rumour_type": -1,
+                "year": 106,
+                "year_tick": 157249
+              },
+              "emotion_count": 92
+            },
+            "before": {
+              "army_id": -1,
+              "civ_id": 245,
+              "controllers": 1689,
+              "flags1": 2147500033,
+              "flags2": 301998192,
+              "history_count": 54231,
+              "job_id": -1,
+              "offices": [
+                {
+                  "assignment": 3,
+                  "entity": 865,
+                  "histfig": 1217
+                }
+              ],
+              "emotion_count": 92
+            },
+            "destination": -1,
+            "events": [
+              {
+                "expelled": true,
+                "id": 64037,
+                "type": 111
+              },
+              {
+                "expelled": true,
+                "id": 64038,
+                "type": 111
+              }
+            ],
+            "expelling": false,
+            "histfig_id": 1217,
+            "legacy_list_count": 0,
+            "legacy_list_offset": 952,
+            "mode": "expel",
+            "relative_after": {
+              "army_id": 1163542,
+              "civ_id": 245,
+              "controller": {
+                "entity_id": -1,
+                "goal": 12,
+                "id": 1163542,
+                "master_id": 1163542,
+                "site_id": -1,
+                "year": 106,
+                "year_tick": 157249
+              },
+              "controllers": 1690,
+              "flags1": 2147500033,
+              "flags2": 310378560,
+              "history_count": 54233,
+              "job_id": -1,
+              "offices": [],
+              "travel": {
+                "flags": 4,
+                "rumour_location_id": -1,
+                "rumour_type": -1,
+                "year": 106,
+                "year_tick": 157249
+              },
+              "emotion_count": 109
+            },
+            "relative_before": {
+              "army_id": -1,
+              "civ_id": 245,
+              "controllers": 1689,
+              "flags1": 2147500033,
+              "flags2": 301989952,
+              "history_count": 54231,
+              "job_id": 382791,
+              "offices": [],
+              "emotion_count": 109
+            },
+            "relative_id": 2345,
+            "success": true,
+            "unit_id": 1017,
+            "new_emotions": [
+              {
+                "subthought": -1,
+                "thought": 241,
+                "type": 11
+              },
+              {
+                "subthought": 3,
+                "thought": 242,
+                "type": 11
+              }
+            ],
+            "relative_new_emotions": [
+              {
+                "subthought": 3,
+                "thought": 242,
+                "type": 69
+              },
+              {
+                "subthought": -1,
+                "thought": 241,
+                "type": 69
+              }
+            ],
+            "native_run": "build/stockpile-storage-native-farm-discovery-20261031-215532"
+          },
+          {
+            "affected": [
+              1017,
+              2345
+            ],
+            "after": {
+              "army_id": 1163542,
+              "civ_id": 245,
+              "controller": {
+                "entity_id": -1,
+                "goal": 12,
+                "id": 1163542,
+                "master_id": 1163542,
+                "site_id": -1,
+                "year": 106,
+                "year_tick": 157249
+              },
+              "controllers": 1690,
+              "flags1": 2147500033,
+              "flags2": 310386800,
+              "history_count": 54233,
+              "job_id": -1,
+              "offices": [],
+              "travel": {
+                "flags": 4,
+                "rumour_location_id": -1,
+                "rumour_type": -1,
+                "year": 106,
+                "year_tick": 157249
+              },
+              "emotion_count": 92
+            },
+            "before": {
+              "army_id": -1,
+              "civ_id": 245,
+              "controllers": 1689,
+              "flags1": 2147500033,
+              "flags2": 301998192,
+              "history_count": 54231,
+              "job_id": -1,
+              "offices": [
+                {
+                  "assignment": 3,
+                  "entity": 865,
+                  "histfig": 1217
+                }
+              ],
+              "emotion_count": 92
+            },
+            "destination": -1,
+            "events": [
+              {
+                "expelled": true,
+                "id": 64037,
+                "type": 111
+              },
+              {
+                "expelled": true,
+                "id": 64038,
+                "type": 111
+              }
+            ],
+            "expelling": false,
+            "histfig_id": 1217,
+            "legacy_diagnostic_group": true,
+            "legacy_list_count": 0,
+            "legacy_list_offset": 952,
+            "mode": "expel",
+            "relative_after": {
+              "army_id": 1163542,
+              "civ_id": 245,
+              "controller": {
+                "entity_id": -1,
+                "goal": 12,
+                "id": 1163542,
+                "master_id": 1163542,
+                "site_id": -1,
+                "year": 106,
+                "year_tick": 157249
+              },
+              "controllers": 1690,
+              "flags1": 2147500033,
+              "flags2": 310378560,
+              "history_count": 54233,
+              "job_id": -1,
+              "offices": [],
+              "travel": {
+                "flags": 4,
+                "rumour_location_id": -1,
+                "rumour_type": -1,
+                "year": 106,
+                "year_tick": 157249
+              },
+              "emotion_count": 109
+            },
+            "relative_before": {
+              "army_id": -1,
+              "civ_id": 245,
+              "controllers": 1689,
+              "flags1": 2147500033,
+              "flags2": 301989952,
+              "history_count": 54231,
+              "job_id": 382791,
+              "offices": [],
+              "emotion_count": 109
+            },
+            "relative_id": 2345,
+            "success": true,
+            "unit_id": 1017,
+            "new_emotions": [
+              {
+                "subthought": -1,
+                "thought": 241,
+                "type": 11
+              }
+            ],
+            "relative_new_emotions": [
+              {
+                "subthought": -1,
+                "thought": 241,
+                "type": 69
+              }
+            ],
+            "native_run": "build/stockpile-storage-native-farm-discovery-20261031-215707"
+          }
+        ],
+        "fixture": "Reciprocal temporary spouse links between1017 and2345; restore original HF links. Comparison populates only legacy view.expel_total_list with the two departing pointers and restores it afterward. Diagnostic native observation only, never runtime menu borrowing.",
+        "finding": "Default legacy vector is empty at game+0x3b8/RVA18a1988. Native1b1ab8..1b1aca checks that vector before emitting RelativeExpelled thoughts242, rather than the current affected group. Default both spouses get241+242; populated vector both get241 only. Both share one departure controller and produce their own history events.",
+        "approval": "Maintainer2026-10-31: Suppress the extra relative thoughts (Recommended). Approved pending implementation; use owned departing group, retain own Expelled thoughts.",
+        "verification": "Both protected lanes terminal0, paused frame unchanged, sources unchanged, owned DF11316/38076 exited unsaved. Two GPU and paired wire logs per lane have only known startup notice. Core19 passes.",
+        "qa": "build/qa/unit-expel-family-effects"
+      }
     },
     "unit_expel_eligible_reference": {
       "observations": [

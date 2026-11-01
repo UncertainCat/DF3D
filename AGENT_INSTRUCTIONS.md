@@ -159,6 +159,12 @@ copy, fabricated progress percentages or broader native-UI departures.
   row across the whole arrow. Do not reproduce native's two-row right-half click.
   This exception covers arrow stepping only; preserve track/drag behavior and
   record the correction in the native bug register.
+- Maintainer decision, 2026-10-31: suppress relative-expulsion thoughts for
+  creatures departing together in the same Expel group, while preserving each
+  creature's own expulsion thought. Native consults an obsolete menu vector and
+  gives departing relatives both thoughts. Use the owned departing group for
+  this exclusion; do not borrow native menu scratch. Record this correction in
+  the native bug register separately from the unresolved refusal-message bug.
 - Before extending an incomplete gameplay UI, locate the DF routine or existing
   semantic API that supplies its choices, eligibility, ordering and actions.
   Prefer exposing that behavior over reconstructing it in Godot or the bridge.

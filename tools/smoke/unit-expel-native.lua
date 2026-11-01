@@ -65,7 +65,7 @@ local function pointer(x,y)
  gui.simulateInput(view,{});view:render(dfhack.getTickCount())
 end
 local function vector(v)local r={}for _,x in ipairs(v)do r[#r+1]=x end return r end
-local function record(name)
+local function record(name,available_destinations)
  pointer(400,400);capture('unit-expel-'..name)
  local rows={}
  for y=0,g.dimy-1 do
@@ -160,7 +160,7 @@ local function record(name)
   end
   assert(status==0,output);assert(unchanged,'Destination reader changed guarded sites/entities/menu state')
   local result=json.decode(output)
-  assert(json.encode(result)==json.encode(vector(sheet.unit_overview_expel_dest_stid)),'Destination reader differs')
+  assert(json.encode(result)==json.encode(available_destinations or vector(sheet.unit_overview_expel_dest_stid)),'Destination reader differs')
   observations[#observations].destination_reader=result;observations[#observations].destination_guard_count=#guards
   observations[#observations].destination_guards_unchanged=true
  end
@@ -299,7 +299,25 @@ local ok,err=xpcall(function()
   observations[#observations].fixture_site=selected_site.id;observations[#observations].fixture_owner=owner.id
   local found=false;for _,id in ipairs(sheet.unit_overview_expel_dest_stid)do if id==selected_site.id then found=true end end
   assert(found and sheet.unit_overview_expel_dest_stid[0]==-1,'Native market-linked destination absent')
-  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+  if os.getenv('DF3D_UNIT_EXPEL_CHOICES')=='1' then
+   local choices=vector(sheet.unit_overview_expel_dest_stid)
+   for _,case in ipairs{{'send',214,selected_site.id},{'expel',178,-1}}do
+    if case[1]=='expel' then
+     pointer(856,100);df.global.enabler.mouse_lbut_lift=0
+     gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+     df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+    end
+    pointer(600,case[2]);df.global.enabler.mouse_lbut_lift=0
+    gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+    df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+    assert(sheet.unit_overview_expelling and #sheet.unit_overview_expel_dest_stid==0 and sheet.unit_overview_expel_selected_dest_stid==case[3],'Native destination choice did not enter confirmation')
+    record('destination-choice-'..case[1],choices)
+    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+    assert(not sheet.unit_overview_expelling and sheet.open and sheet.active_id==unit.id,'Choice cancellation did not restore Overview')
+    record('destination-choice-'..case[1]..'-cancel')
+   end
+  end
+  if sheet.unit_overview_expelling then gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())end
   restore_destination()
   if os.getenv('DF3D_UNIT_EXPEL_DESTINATION_CASES')=='1' then
    local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-expel%-native.lua$','unit-expel-destination-cases.lua')

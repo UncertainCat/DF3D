@@ -2479,7 +2479,7 @@ saves are unchanged and live logs contain only known startup notices. MSVC and
 core QA `unit-expel-destinations` pass. `unit_expel_destination_reference` retains
 IDs, native text, provenance and limitations. Enable
 `DF3D_UNIT_EXPEL_DESTINATIONS=1` and `DF3D_UNIT_EXPEL_DESTINATION_READER=1` for this
-capture. Captions, choice selection, confirmation,
+capture. Captions, confirmation effects,
 transport and the viewer remain unfinished; neither reader exposes an Expel UI.
 
 Protected213902 verifies shared-profile and subordinate-assignment eligibility,
@@ -2495,9 +2495,20 @@ passes in `unit-expel-destination-cases`. Evidence is retained in
 `unit_expel_destination_reference.branch_reference`. Multiple-site ordering and
 scrolling remain unverified.
 
-Confirmation1b1825..1b1c26 allocates an activity, records expulsion history when
+Protected214143 verifies native selection of site8 and the Expel sentinel.
+Both clear the native chooser vector and display the affected-creature list;
+the final button is Send away for a site and Expel for the sentinel. Escape
+returns directly to the same unit Overview in both cases. Reader comparisons
+retain the semantic available destinations after native clears its UI vector;
+all guards remain unchanged. No frames advance and no final action is submitted.
+The Send away screenshot was inspected. Enable `DF3D_UNIT_EXPEL_CHOICES=1` with
+the destination flags above. Source preservation and core19 pass; live logs have
+only known startup notices. `unit_expel_destination_reference.choice_reference`
+retains the native rows and state transitions. Confirmation effects remain absent.
+
+Confirmation1b1825..1b1c26 allocates an army controller with MOVE_TO_SITE goal, records expulsion history when
 there is no destination, invokes unit cleanup/assignment helpers, emits thoughts,
-and associates every departing unit with that activity. It is not equivalent to
+and associates every departing unit with that controller. It is not equivalent to
 setting a departure flag. These effects, remaining refusal/family cases and
 linked destinations still need native acceptance before implementation can be
 exposed. The current probe never confirms expulsion; no runtime control is added.

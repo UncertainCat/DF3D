@@ -45165,7 +45165,7 @@
       "remaining": [
         "Multiple-site order and scrolling",
         "Destination caption reader",
-        "Native choice selection and confirmation flow",
+        "Native confirmation effects",
         "Expel header eligibility, transport and viewer UI"
       ],
       "branch_reference": {
@@ -45297,6 +45297,531 @@
         "fixture": "Temporary sorted current-civilization site links, direct site-government parent, assignment and diplomacy records; restore all original vectors before deleting allocated records. No expulsion confirmation.",
         "verification": "Every native destination list matches the semantic reader; all byte guards unchanged. Source save unchanged, owned DF38348 exited unsaved. Two GPU logs and combined header-wire logs have only known startup notices. Core19 passed.",
         "qa": "build/qa/unit-expel-destination-cases"
+      },
+      "choice_reference": {
+        "native_run": "build/stockpile-storage-native-farm-discovery-20261031-214143",
+        "cases": [
+          {
+            "active_id": 1017,
+            "cold_cache_count": 0,
+            "destination_guard_count": 11854,
+            "destination_guards_unchanged": true,
+            "destination_reader": [
+              -1,
+              8
+            ],
+            "destinations": [],
+            "expelling": true,
+            "name": "destination-choice-send",
+            "open": true,
+            "reader": {
+              "reason": -1,
+              "unit_id": 1017,
+              "units": [
+                1017
+              ]
+            },
+            "reader_guards_unchanged": true,
+            "reason": -1,
+            "rows": [
+              {
+                "text": "                  Roder\u00c3\u00b2nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "                                                                  Stodir Tangakurvad, bookkeeper",
+                "y": 6
+              },
+              {
+                "text": "                                                                  \"Stodir Spotseals\"",
+                "y": 7
+              },
+              {
+                "text": "                                                                  Bookkeeper",
+                "y": 8
+              },
+              {
+                "text": "                                                                  No job",
+                "y": 9
+              },
+              {
+                "text": "                                                             Stodir Tangakurvad, bookkeeper",
+                "y": 14
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              },
+              {
+                "text": "                                                       Send away                                        Cancel",
+                "y": 60
+              }
+            ],
+            "selected_destination": 8,
+            "units": [
+              1017
+            ]
+          },
+          {
+            "active_id": 1017,
+            "destinations": [],
+            "expelling": false,
+            "name": "destination-choice-send-cancel",
+            "open": true,
+            "reason": -1,
+            "rows": [
+              {
+                "text": "                  Roder\u00c3\u00b2nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "                                                                  Stodir Tangakurvad, bookkeeper",
+                "y": 6
+              },
+              {
+                "text": "                                                                  \"Stodir Spotseals\"",
+                "y": 7
+              },
+              {
+                "text": "                                                                  Bookkeeper",
+                "y": 8
+              },
+              {
+                "text": "                                                                  No job",
+                "y": 9
+              },
+              {
+                "text": "                                                       Relations   Groups   Military   Thoughts   Personality",
+                "y": 13
+              },
+              {
+                "text": "                                                       Relations   Groups   Military   Thoughts   Personality",
+                "y": 14
+              },
+              {
+                "text": "                                                       Overview   Items   Health   Skills   Rooms   Labor",
+                "y": 15
+              },
+              {
+                "text": "                                                       Overview   Items   Health   Skills   Rooms   Labor                           Elevation 36",
+                "y": 16
+              },
+              {
+                "text": "                                                     96 Years Old,                 Values decorum",
+                "y": 17
+              },
+              {
+                "text": "                                                     7 children                    Values romance",
+                "y": 18
+              },
+              {
+                "text": "                                                                                   Recovers quickly",
+                "y": 19
+              },
+              {
+                "text": "                                                                                   Weak",
+                "y": 20
+              },
+              {
+                "text": "                                                                                   Low willpower",
+                "y": 21
+              },
+              {
+                "text": "                                                                                   Creative",
+                "y": 22
+              },
+              {
+                "text": "                                                     Healthy                       Bookkeeper",
+                "y": 24
+              },
+              {
+                "text": "                                                     Haul: sweet pod seeds         Squad: None",
+                "y": 31
+              },
+              {
+                "text": "                                                                                   Dabbling Armor User",
+                "y": 32
+              },
+              {
+                "text": "                                                                                   Dabbling Observer",
+                "y": 33
+              },
+              {
+                "text": "                                                                                   Dabbling Fighter",
+                "y": 34
+              },
+              {
+                "text": "                                                                                   Dabbling Dodger",
+                "y": 35
+              },
+              {
+                "text": "                                                     Talented Appraiser (V Rusty)  No unmet needs",
+                "y": 38
+              },
+              {
+                "text": "                                                     Proficient Organizer (V Rusty)",
+                "y": 39
+              },
+              {
+                "text": "                                                     Proficient Record Keeper (V Rusty)",
+                "y": 40
+              },
+              {
+                "text": "                                                     Adequate Mason (Rusty)",
+                "y": 41
+              },
+              {
+                "text": "                                                     Adequate Planter",
+                "y": 42
+              },
+              {
+                "text": "                                                     Dabbling Carpenter",
+                "y": 43
+              },
+              {
+                "text": "                                                     \"There's nothing like a good friend.\"",
+                "y": 45
+              },
+              {
+                "text": "                                                     He was interested near his own fine Cabinet.",
+                "y": 47
+              },
+              {
+                "text": "                                                     He didn't feel anything after seeing the cavy sow",
+                "y": 48
+              },
+              {
+                "text": "                                                     Vab\u00c3\u00b4k Copperlauded's dead body.",
+                "y": 49
+              },
+              {
+                "text": "                                                     He was interested near a fine tastefully arranged",
+                "y": 50
+              },
+              {
+                "text": "                                                     Door.",
+                "y": 51
+              },
+              {
+                "text": "                                                     He was interested near a fine tastefully arranged",
+                "y": 52
+              },
+              {
+                "text": "                                                     Slab.",
+                "y": 53
+              },
+              {
+                "text": "                                                     He was interested near a fine tastefully arranged",
+                "y": 54
+              },
+              {
+                "text": "                                                     Slab.",
+                "y": 55
+              },
+              {
+                "text": "                                                     He was interested near a fine tastefully arranged",
+                "y": 56
+              },
+              {
+                "text": "                                                     Cabinet.",
+                "y": 57
+              },
+              {
+                "text": "                                                     He felt satisfied discussing his problems with an",
+                "y": 58
+              },
+              {
+                "text": "                                                     acquaintance.",
+                "y": 59
+              },
+              {
+                "text": "                                                     He was content after eating a fine dish.",
+                "y": 60
+              }
+            ],
+            "selected_destination": 8,
+            "units": [
+              1017
+            ]
+          },
+          {
+            "active_id": 1017,
+            "cold_cache_count": 0,
+            "destination_guard_count": 11854,
+            "destination_guards_unchanged": true,
+            "destination_reader": [
+              -1,
+              8
+            ],
+            "destinations": [],
+            "expelling": true,
+            "name": "destination-choice-expel",
+            "open": true,
+            "reader": {
+              "reason": -1,
+              "unit_id": 1017,
+              "units": [
+                1017
+              ]
+            },
+            "reader_guards_unchanged": true,
+            "reason": -1,
+            "rows": [
+              {
+                "text": "                  Roder\u00c3\u00b2nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "                                                                  Stodir Tangakurvad, bookkeeper",
+                "y": 6
+              },
+              {
+                "text": "                                                                  \"Stodir Spotseals\"",
+                "y": 7
+              },
+              {
+                "text": "                                                                  Bookkeeper",
+                "y": 8
+              },
+              {
+                "text": "                                                                  No job",
+                "y": 9
+              },
+              {
+                "text": "                                                             Stodir Tangakurvad, bookkeeper",
+                "y": 14
+              },
+              {
+                "text": "                                                                                                                                    Elevation 36",
+                "y": 16
+              },
+              {
+                "text": "                                                         Expel                                          Cancel",
+                "y": 60
+              }
+            ],
+            "selected_destination": -1,
+            "units": [
+              1017
+            ]
+          },
+          {
+            "active_id": 1017,
+            "destinations": [],
+            "expelling": false,
+            "name": "destination-choice-expel-cancel",
+            "open": true,
+            "reason": -1,
+            "rows": [
+              {
+                "text": "                  Roder\u00c3\u00b2nul           Pop                                  Food  Drink           20th Malachite",
+                "y": 0
+              },
+              {
+                "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+                "y": 1
+              },
+              {
+                "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+                "y": 2
+              },
+              {
+                "text": "                                                                  Stodir Tangakurvad, bookkeeper",
+                "y": 6
+              },
+              {
+                "text": "                                                                  \"Stodir Spotseals\"",
+                "y": 7
+              },
+              {
+                "text": "                                                                  Bookkeeper",
+                "y": 8
+              },
+              {
+                "text": "                                                                  No job",
+                "y": 9
+              },
+              {
+                "text": "                                                       Relations   Groups   Military   Thoughts   Personality",
+                "y": 13
+              },
+              {
+                "text": "                                                       Relations   Groups   Military   Thoughts   Personality",
+                "y": 14
+              },
+              {
+                "text": "                                                       Overview   Items   Health   Skills   Rooms   Labor",
+                "y": 15
+              },
+              {
+                "text": "                                                       Overview   Items   Health   Skills   Rooms   Labor                           Elevation 36",
+                "y": 16
+              },
+              {
+                "text": "                                                     96 Years Old,                 Values decorum",
+                "y": 17
+              },
+              {
+                "text": "                                                     7 children                    Values romance",
+                "y": 18
+              },
+              {
+                "text": "                                                                                   Recovers quickly",
+                "y": 19
+              },
+              {
+                "text": "                                                                                   Weak",
+                "y": 20
+              },
+              {
+                "text": "                                                                                   Low willpower",
+                "y": 21
+              },
+              {
+                "text": "                                                                                   Creative",
+                "y": 22
+              },
+              {
+                "text": "                                                     Healthy                       Bookkeeper",
+                "y": 24
+              },
+              {
+                "text": "                                                     Haul: sweet pod seeds         Squad: None",
+                "y": 31
+              },
+              {
+                "text": "                                                                                   Dabbling Armor User",
+                "y": 32
+              },
+              {
+                "text": "                                                                                   Dabbling Observer",
+                "y": 33
+              },
+              {
+                "text": "                                                                                   Dabbling Fighter",
+                "y": 34
+              },
+              {
+                "text": "                                                                                   Dabbling Dodger",
+                "y": 35
+              },
+              {
+                "text": "                                                     Talented Appraiser (V Rusty)  No unmet needs",
+                "y": 38
+              },
+              {
+                "text": "                                                     Proficient Organizer (V Rusty)",
+                "y": 39
+              },
+              {
+                "text": "                                                     Proficient Record Keeper (V Rusty)",
+                "y": 40
+              },
+              {
+                "text": "                                                     Adequate Mason (Rusty)",
+                "y": 41
+              },
+              {
+                "text": "                                                     Adequate Planter",
+                "y": 42
+              },
+              {
+                "text": "                                                     Dabbling Carpenter",
+                "y": 43
+              },
+              {
+                "text": "                                                     \"There's nothing like a good friend.\"",
+                "y": 45
+              },
+              {
+                "text": "                                                     He was interested near his own fine Cabinet.",
+                "y": 47
+              },
+              {
+                "text": "                                                     He didn't feel anything after seeing the cavy sow",
+                "y": 48
+              },
+              {
+                "text": "                                                     Vab\u00c3\u00b4k Copperlauded's dead body.",
+                "y": 49
+              },
+              {
+                "text": "                                                     He was interested near a fine tastefully arranged",
+                "y": 50
+              },
+              {
+                "text": "                                                     Door.",
+                "y": 51
+              },
+              {
+                "text": "                                                     He was interested near a fine tastefully arranged",
+                "y": 52
+              },
+              {
+                "text": "                                                     Slab.",
+                "y": 53
+              },
+              {
+                "text": "                                                     He was interested near a fine tastefully arranged",
+                "y": 54
+              },
+              {
+                "text": "                                                     Slab.",
+                "y": 55
+              },
+              {
+                "text": "                                                     He was interested near a fine tastefully arranged",
+                "y": 56
+              },
+              {
+                "text": "                                                     Cabinet.",
+                "y": 57
+              },
+              {
+                "text": "                                                     He felt satisfied discussing his problems with an",
+                "y": 58
+              },
+              {
+                "text": "                                                     acquaintance.",
+                "y": 59
+              },
+              {
+                "text": "                                                     He was content after eating a fine dish.",
+                "y": 60
+              }
+            ],
+            "selected_destination": -1,
+            "units": [
+              1017
+            ]
+          }
+        ],
+        "verification": "Site8 choice enters affected-unit list with Send away; sentinel -1 enters same list with Expel. Escape closes each preview to the same unit Overview. No frames advanced or effects confirmed. Group and destination readers match, using retained chooser IDs after native clears its UI vector; byte guards unchanged. Source unchanged, owned DF38104 exited. Two GPU and paired header-wire logs have only known startup diagnostics; core19 passes.",
+        "qa": "build/qa/unit-expel-choices"
       }
     }
   }

@@ -128,6 +128,7 @@ func choose(row: Dictionary):
 
 func close_panel():
 	cancel_gesture()
+	creature_sheet.reset(-1)
 	expel.close()
 	if is_instance_valid(hover_help):hover_help.leave(get_instance_id())
 	customize.close()

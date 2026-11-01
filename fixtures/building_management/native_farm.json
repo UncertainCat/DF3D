@@ -54783,6 +54783,70 @@
         },
         "source_preserved": true,
         "scope": "Repeated33 existing operation pointers in owned paused clone, restored after client. Actual transport/rendering, wheel, drag through header redraw, scrolled native text pixels, Settings gate, resize, shared subtab scroll and explicit gesture cancellation. Close/reopen, disconnect and identity changes remain unverified."
+      },
+      "close_reopen_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-024320",
+        "status": "passed_with_known_issues",
+        "native": [
+          {
+            "dragging": false,
+            "first": 7,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 75,
+            "main_tab": 2,
+            "name": "closed",
+            "open": false,
+            "tab": 3,
+            "unit_id": 1017,
+            "width": 53
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 0,
+            "main_tab": 0,
+            "name": "reopened",
+            "open": true,
+            "tab": 0,
+            "unit_id": 1017,
+            "width": 0
+          },
+          {
+            "dragging": false,
+            "first": 0,
+            "grid": [
+              150,
+              66
+            ],
+            "line_count": 3,
+            "main_tab": 2,
+            "name": "reopened-health",
+            "open": true,
+            "tab": 0,
+            "unit_id": 1017,
+            "width": 53
+          }
+        ],
+        "scene": {
+          "close_retires_drag": true,
+          "health_reopens_status_top": true,
+          "native_drag_text": true,
+          "overlay_blocks_input": true,
+          "refresh_during_drag": true,
+          "reopen_resets_overview": true,
+          "resize_retains_scroll": true,
+          "shared_subtab_scroll": true,
+          "success": true
+        },
+        "source_preserved": true,
+        "scope": "Native Escape then actual map reselect of same creature; DF3D Escape while dragging then explicit same-target reopen. Overview resets, Health starts Status/top. Different identity and transport replacement remain unverified for Health."
       }
     }
   }

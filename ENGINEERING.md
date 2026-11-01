@@ -3302,9 +3302,17 @@ header redraw, exact native scrolled text pixels, Settings blocking input,
 resize retention, shared Health-subtab scroll and explicit gesture cancellation.
 `overflow_scene_reference` records this bounded evidence. All three Godot
 processes have only the known startup notice; owned DF28904 exits unsaved and
-the source-save manifest is unchanged. Actual close/reopen, disconnect/identity
-lifecycle and broader clinical variants remain required. The creature route
-remains staged.
+the source-save manifest is unchanged. Protected024320 verifies native Escape and actual map reselection of the same
+creature: Overview resets, and opening Health starts Status at row zero. The
+context inspector now resets local creature-sheet state when closing, including
+same-ID reopen. The live viewer closes History during an active drag, verifies
+owner/input retirement, explicitly reopens the same creature and matches those
+native resets. `close_reopen_reference` records the native and rendered outcomes.
+All three Godot processes have only the known startup notice; owned DF36888 exits
+unsaved and the source-save manifest is unchanged. The diagnostic map reselection
+restores its camera before returning to the parent oracle. Different creature
+identity, transport replacement and broader clinical variants remain required
+for Health. The creature route remains staged.
 
 The full reference run passes with only the known startup notice in each Godot
 process; root/core QA `health-pages-reference` passes. DF38684 exits unsaved and

@@ -289,11 +289,20 @@ func exercise_health_overflow(inspector) -> void:
 	motion=InputEventMouseMotion.new();motion.position=view.scrollbar.get_global_transform_with_canvas()*Vector2(8,(grip.x+grip.y*0.5)*12);root.push_input(motion,true)
 	press=InputEventMouseButton.new();press.position=motion.position;press.button_index=MOUSE_BUTTON_LEFT;press.pressed=true;root.push_input(press,true)
 	check(view.scrollbar.dragging,"Health close test drag missing")
-	inspector.cancel_gesture()
-	check(not view.scrollbar.dragging,"Health gesture cancellation retained drag")
+	var target:=int(inspector.selected.id)
+	var entity: Dictionary=world.inspect_entity(1,target)
+	key(KEY_ESCAPE);await process_frame
+	check(not inspector.is_open() and scene._ui.host.active==null and inspector.selected.is_empty(),"Health Escape retained panel owner")
+	check(not is_instance_valid(view) or (not view.scrollbar.dragging and not view.allowed()),"Health close retained drag or input")
 	press=InputEventMouseButton.new();press.position=motion.position;press.button_index=MOUSE_BUTTON_LEFT;root.push_input(press,true)
+	inspector.open_target(entity.tile,1,target)
+	var deadline:=Time.get_ticks_msec()+5000
+	while inspector.creature_display.get("detail",{}).is_empty() and Time.get_ticks_msec()<deadline:await create_timer(0.02).timeout
+	check(inspector.is_open() and inspector.creature_sheet.tab=="Overview","Same creature reopen did not reset to native Overview")
+	if not await health_tab(inspector,"Health"):return
+	check(inspector.creature_sheet.subtabs.Health=="Status" and inspector.creature_sheet.health_view.first==0,"Health reopen did not reset to native Status/top")
 	var evidence:=FileAccess.open(directory+"/unit-health-overflow-result.json",FileAccess.WRITE)
-	evidence.store_string(JSON.stringify({"success":not failed,"native_drag_text":true,"refresh_during_drag":true,"overlay_blocks_input":true,"resize_retains_scroll":true,"shared_subtab_scroll":true,"gesture_cancellation":true}));evidence.close()
+	evidence.store_string(JSON.stringify({"success":not failed,"native_drag_text":true,"refresh_during_drag":true,"overlay_blocks_input":true,"resize_retains_scroll":true,"shared_subtab_scroll":true,"close_retires_drag":true,"reopen_resets_overview":true,"health_reopens_status_top":true}));evidence.close()
 
 func items_lifecycle_transition(operation: String) -> void:
 	var file:=FileAccess.open(directory+"/unit-items-lifecycle-request.tmp",FileAccess.WRITE)

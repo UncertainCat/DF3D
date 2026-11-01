@@ -6,6 +6,7 @@ local sheet=df.global.game.main_interface.view_sheets;local g=df.global.gps;loca
 local health=assert(unit.health);local original={};for _,entry in ipairs(health.op_history)do original[#original+1]=entry end
 assert(#original>0,'Health overflow needs an existing operation')
 local frame=df.global.world.frame_counter;local observations={}
+local camera={x=df.global.window_x,y=df.global.window_y,z=df.global.window_z}
 local function pointer(x,y)
  e.mouse_focus=true;e.tracking_on=1;g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
  gui.simulateInput(view,{});view:render(dfhack.getTickCount())
@@ -37,7 +38,7 @@ local function record(name,skip_capture)
   local text={};for x=0,g.dimx-1 do local p=dfhack.screen.readTile(x,y);text[#text+1]=p.ch>=32 and string.char(p.ch%256)or' 'end
   text=dfhack.df2utf(table.concat(text)):gsub('%s+$','');if text~=''then rows[#rows+1]={y=y,text=text}end
  end
- observations[#observations+1]={name=name,grid={g.dimx,g.dimy},first=sheet.scroll_position_unit_health,dragging=sheet.scrolling_unit_health,tab=sheet.unit_health_active_tab,width=sheet.unit_health_width,line_count=count,rows=rows}
+ observations[#observations+1]={name=name,grid={g.dimx,g.dimy},first=sheet.scroll_position_unit_health,dragging=sheet.scrolling_unit_health,open=sheet.open,unit_id=sheet.active_id,main_tab=sheet.active_sub_tab,tab=sheet.unit_health_active_tab,width=sheet.unit_health_width,line_count=count,rows=rows}
  if not skip_capture then capture('unit-health-layout-'..name)end
  assert(df.global.pause_state and df.global.world.frame_counter==frame,'Health layout advanced simulation')
 end
@@ -66,10 +67,25 @@ local ok,err=xpcall(function()
  end
  sheet.scroll_position_unit_health=7;select('Status');record('status-after-scroll');select('History');record('history-return')
  sheet.scroll_position_unit_health=7;select('Overview');record('overview');select('Health');record('health-return')
+ select('History');sheet.scroll_position_unit_health=7
+ gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());record('closed')
+ assert(not sheet.open,'Native Health Escape did not close sheet')
+ local point={x=unit.pos.x,y=unit.pos.y,z=unit.pos.z}
+ dfhack.gui.revealInDwarfmodeMap(point,true);view:render(dfhack.getTickCount())
+ local found=false
+ for y=0,g.dimy-1 do for x=0,g.dimx-1 do
+  g.mouse_x=x;g.mouse_y=y;g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+6
+  local p=dfhack.gui.getMousePos(true)
+  if p and p.x==point.x and p.y==point.y and p.z==point.z then click(g.precise_mouse_x,g.precise_mouse_y);found=true;break end
+ end if found then break end end
+ assert(found and sheet.open and sheet.active_sheet==df.view_sheet_type.UNIT and sheet.active_id==unit.id,'Native map reopen did not select same creature')
+ record('reopened');select('Health');record('reopened-health')
+
 end,debug.traceback)
 e.mouse_lbut=0;e.mouse_lbut_down=0;e.mouse_lbut_lift=1
 health.op_history:resize(0);for _,entry in ipairs(original)do health.op_history:insert('#',entry)end
 resize('default');select('Health');select('Status');select('Description');sheet.scrolling_unit_health=false;pointer(400,400)
+df.global.window_x=camera.x;df.global.window_y=camera.y;df.global.window_z=camera.z;view:render(dfhack.getTickCount())
 local result={success=ok,diagnostic_repeated_operations=true,unit_id=unit.id,operation_count=33,observations=observations,error=not ok and err or nil}
 local file=assert(io.open(out..'/unit-health-layout-native.json','w'));file:write(json.encode(result));file:close()
 assert(ok,err);return result

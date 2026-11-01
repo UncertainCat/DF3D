@@ -3159,6 +3159,31 @@ been approved. Scrollbar hover pixels, long names/animation, this feedback gap
 and active-job/squad/later-departure effect variants remain unfinished.
 The full unit route is still staged; these are baseline view checks.
 
+### Creature Labor native workflow reference
+
+Protected095734 on2026-11-01 captures Work details, Workshops, Locations and
+Work animals. All four share the work-scope toggle. The baseline citizen has
+eleven Work details and no dedicated workshop, location or animal assignments;
+these empty pages do not establish populated-row behavior.
+
+Actual native clicks assign Miners, then Woodcutters. The second assignment
+removes the first; unassigning Woodcutters restores all captured memberships,
+detail flags and the unit's94 labor bits. The scope toggle changes
+only_do_assigned_jobs, recalculates labor, and toggles back to the same snapshot.
+`unit_labor_reference` retains these effects and page text. Owned DF38248 exits
+unsaved, source preservation passes, and all three Godot processes report only
+the known startup notice. Root/core passes in `creature-labor-native-reference`.
+
+The old semantic membership handler is incomplete: it edits one list and
+recalculates one unit. Native1b5c53..1b5f25 also removes conflicting specialized
+assignments, changes Everybody/OnlySelected mode on certain first/last-member
+transitions, and invokes4390d0 for every active unit. The mode transitions are
+statically traced but not exercised by this capture. Scope uses the inline
+flag toggle at1b4644 followed by4390d0. DFHack's setAutomaticProfessions calls
+the exported native function; its name alone does not cover the missing
+membership effects. Complete this semantic path before exposing the checkboxes.
+The creature Labor view and broader Work Details launcher remain unfinished.
+
 ### Creature Rooms native list
 
 The creature inspection's Rooms section now receives native-valued individual

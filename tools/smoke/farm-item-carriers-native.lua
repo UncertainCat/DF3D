@@ -407,6 +407,10 @@ local ok,err=xpcall(function()
     end
     assert(#old.temporary==2,'Syndrome fixture needs two named installed syndromes')
    end
+   if os.getenv('DF3D_UNIT_LABOR')=='1'then
+    local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-labor-native.lua')
+    linked.labor=assert(loadfile(source))(unit,view,capture,out)
+   end
    if os.getenv('DF3D_UNIT_ROOMS')=='1'then
     local source=debug.getinfo(1,'S').source:sub(2):gsub('farm%-item%-carriers%-native.lua$','unit-rooms-native.lua')
     linked.rooms=assert(loadfile(source))(unit,view,capture,out)

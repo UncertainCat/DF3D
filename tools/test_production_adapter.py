@@ -36,7 +36,7 @@ local refs_alive=0
 local function instance(k)return {is_instance=function(_,b)return b.kind==k end}end
 df={building_workshopst=instance('workshop'),building_furnacest=instance('furnace'),building_farmplotst=instance('farm'),
  workshop_type={[1]='Carpenters',[2]='Kitchen',[3]='Still'},furnace_type={},item_type={[5]='WOOD',[-1]='NONE'},biome_type={[0]='SUBTERRANEAN_WATER'},
- job_type={CustomReaction=99},reaction={find=function()return nil end},historical_entity={find=function()return {id=7,entity_raw={workshops={permitted_reaction_id=vec{0}}}}end}}
+ job_type={CustomReaction=99,ExtractFromPlants=149},reaction={find=function()return nil end},historical_entity={find=function()return {id=7,entity_raw={workshops={permitted_reaction_id=vec{0}}}}end}}
 -- DFHack LuaTypes.cpp:1161-1193 iterates bitfields by bit index, not Lua table order.
 -- job_item_flags1.h:51,60,67: unrotten=4, cookable=13, solid=20.
 local function input_flags()
@@ -103,6 +103,7 @@ local function req(action,p)
  -- Inject semantic output; this fixture tests ownership/transactions, not DF rules.
  local function native_requirements(job,building_id)
   assert(job.id==-1 and #job.job_items.elements==0)
+  if job.job_type==149 then return end
   if job.job_type==99 then
    reaction.reagents[0]:contribute_to_job_req(job.job_items,0,0)
    return
@@ -119,7 +120,7 @@ local function req(action,p)
   end
   error('Missing injected requirements')
  end
- return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements,workshop_caption=function(j)return 'Native task '..j.job_type end,workshop_reactions=function(id)assert(id==2);return {{raw_index=0,code=reaction.code,caption='Native task 99',available=not unavailable_reaction,objection=unavailable_reaction and '[Requires fixture reagent]' or ''}}end}
+ return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements,workshop_caption_less=function(a,b)return a:lower()<b:lower() end,workshop_caption=function(j)return 'Native task '..j.job_type end,workshop_reactions=function(id)assert(id==2);return {{raw_index=0,code=reaction.code,caption='Native task 99',available=not unavailable_reaction,objection=unavailable_reaction and '[Requires fixture reagent]' or ''}}end}
 end
 local list=req(15,{cursor=0,query='#0'})
 assert(list.ok and #list.buildings==1 and list.buildings[1].id==0,'ID zero and numeric search')
@@ -143,9 +144,9 @@ assert(req(18,{building_id=1,job_id=j.id,repeat_job=-1,suspend=1}).ok==false,'wr
 assert(req(18,{building_id=0,job_id=j.id,repeat_job=1,suspend=1}).ok and removed_worker and not j.worker and j.flags['repeat'],'suspend removes worker')
 assert(req(18,{building_id=0,job_id=j.id,cancel=true}).ok and #carp.jobs==0,'native cancellation')
 local still_state=req(16,{building_id=2})
-assert(still_state.ok and #still_state.recipes==1 and native_filter_calls==1,'permitted reaction uses native input generation')
+assert(still_state.ok and #still_state.recipes==2 and native_filter_calls==1,'permitted reaction uses native input generation')
 unavailable_reaction=true
-local unavailable=req(17,{building_id=2,recipe=still_state.recipes[1].key})
+local unavailable=req(17,{building_id=2,recipe='reaction:'..reaction.code})
 assert(not unavailable.ok and unavailable.message=='[Requires fixture reagent]' and #still.jobs==0,'native unavailable choice cannot queue')
 unavailable_reaction=false
 local kitchen_state=req(16,{building_id=1})
@@ -170,6 +171,7 @@ local function req(action,p)
  -- Inject semantic output; this fixture tests ownership/transactions, not DF rules.
  local function native_requirements(job,building_id)
   assert(job.id==-1 and #job.job_items.elements==0)
+  if job.job_type==149 then return end
   if job.job_type==99 then
    reaction.reagents[0]:contribute_to_job_req(job.job_items,0,0)
    return
@@ -186,7 +188,7 @@ local function req(action,p)
   end
   error('Missing injected requirements')
  end
- return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements,workshop_caption=function(j)return 'Native task '..j.job_type end,workshop_reactions=function(id)assert(id==2);return {{raw_index=0,code=reaction.code,caption='Native task 99',available=not unavailable_reaction,objection=unavailable_reaction and '[Requires fixture reagent]' or ''}}end}
+ return adapter{action=action,seq=seq,production=p or {},workshop_requirements=native_requirements,workshop_caption_less=function(a,b)return a:lower()<b:lower() end,workshop_caption=function(j)return 'Native task '..j.job_type end,workshop_reactions=function(id)assert(id==2);return {{raw_index=0,code=reaction.code,caption='Native task 99',available=not unavailable_reaction,objection=unavailable_reaction and '[Requires fixture reagent]' or ''}}end}
 end
 local function refusal(action,p,message)
  local result=req(action,p)
@@ -279,7 +281,7 @@ reaction.reagents[0].contribute_to_job_req=function(_,target,ri,rx)
  local f=df.job_item.new();f.reaction_id=rx;f.reagent_index=ri;f.quantity=3;f.item_type=5;target.elements:insert('#',f)
 end
 df.reaction.find=function(id)assert(id==0);return reaction end
-need=req(16,{building_id=2}).recipes[1].requirements[1]
+for _,row in ipairs(req(16,{building_id=2}).recipes)do if row.key=='reaction:'..reaction.code then need=row.requirements[1]end end
 assert(need.description=='native brew reagent' and need.quantity==3 and need.item_type==5)
 -- Reproduce the real Kitchen template; NONE requirement prose is a 06-B native gap.
 local kitchen_state=req(16,{building_id=1})

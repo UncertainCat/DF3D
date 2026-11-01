@@ -3751,6 +3751,14 @@ void run(color_ostream& out) {
       lua_pushlstring(state,caption->data(),caption->size());return 1;
     });lua_setfield(L,-2,"workshop_caption");
     lua_pushcfunction(L,[](lua_State* state)->int {
+      size_t leftSize=0;size_t rightSize=0;
+      const char* left=luaL_checklstring(state,1,&leftSize);
+      const char* right=luaL_checklstring(state,2,&rightSize);
+      const auto less=df3d_production::workshopCaptionLess(std::string(left,leftSize),std::string(right,rightSize));
+      if(!less)return luaL_error(state,"Native workshop ordering unavailable");
+      lua_pushboolean(state,*less);return 1;
+    });lua_setfield(L,-2,"workshop_caption_less");
+    lua_pushcfunction(L,[](lua_State* state)->int {
       const auto allowed=df3d_production::workshopReactionAllowed(int32_t(luaL_checkinteger(state,1)));
       if(!allowed)return luaL_error(state,"Native reaction permission unavailable");
       lua_pushboolean(state,*allowed);return 1;

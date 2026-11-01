@@ -55,7 +55,7 @@ local function template_job(recipe,b,native_requirements)
  if not ok then delete_template(j);return nil,tostring(err) end
  return j
 end
-local function recipes(b,native_requirements,native_caption,native_reactions)
+local function recipes(b,native_requirements,native_caption,native_reactions,native_less)
  local out,keys={},{}
  local k=kind(b)
  -- Reuse pinned builtin templates only for validated initial families.
@@ -69,6 +69,10 @@ local function recipes(b,native_requirements,native_caption,native_reactions)
  end
  -- Root reaction choices and current objections come from the native reader.
  if k=='Still' then
+  -- Native8cb3c9..8cb3e9: root category adds ExtractFromPlants directly.
+  -- Constructor8b169e leaves show_help_instead false; no inventory veto is
+  -- applied to this builtin. Native input generation still owns its filters.
+  out[#out+1]={key='builtin:'..df.job_type.ExtractFromPlants..':-1',fields={job_type=df.job_type.ExtractFromPlants},available=true,objection=''}
   for _,row in ipairs(native_reactions(b.id)) do
    local r=df.global.world.raws.reactions.reactions[row.raw_index]
    if not r or r.code~=row.code then return nil,'Native reaction identity changed' end
@@ -80,12 +84,18 @@ local function recipes(b,native_requirements,native_caption,native_reactions)
   keys[r.key]=true
   local j,err=template_job(r,b,native_requirements)
   if not j then return nil,'Unsupported native recipe: '..err end
-  local good,description,caption=pcall(function()return requirements(j),utf(native_caption(j))end)
+  local good,description,caption=pcall(function()return requirements(j),native_caption(j)end)
   delete_template(j)
   if not good then return nil,'Native input description failed: '..tostring(description) end
-  r.requirements=description;r.name=caption
+  r.requirements=description;r.native_caption=caption;r.name=utf(caption)
  end
- table.sort(out,function(a,c)return a.key<c.key end)
+ -- Match native insertion order for equal captions instead of Lua's unstable
+ -- table.sort. Compare DF-encoded captions before presentation UTF-8 conversion.
+ for i=2,#out do
+  local row=out[i];local at=i
+  while at>1 and native_less(row.native_caption,out[at-1].native_caption) do out[at]=out[at-1];at=at-1 end
+  out[at]=row
+ end
  if #out>128 then return nil,'Recipe catalog exceeds bounded 128 entries' end
  return out
 end
@@ -205,7 +215,7 @@ return function(request)
   seed_scan.cursor=finish
   if finish<#all then return {ok=true,pending=true,message='Counting available seeds'} end
  end
- local rs,err=recipes(b,request.workshop_requirements,request.workshop_caption,request.workshop_reactions);if not rs then return fail(err) end
+ local rs,err=recipes(b,request.workshop_requirements,request.workshop_caption,request.workshop_reactions,request.workshop_caption_less);if not rs then return fail(err) end
  if request.action==16 then return inspect(b,rs,request.workshop_caption) end
  if b:getBuildStage()~=b:getMaxBuildStage() then return fail('Building construction is unfinished') end
  local created=-1

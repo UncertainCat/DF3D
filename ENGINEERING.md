@@ -6471,7 +6471,7 @@ not use the old adapter's source-entity shortcut. Building type/subtype/custom
 matching follows native exact comparisons, without a custom-type wildcard.
 Protected145604 on2026-11-01 compares all three root-category Still reaction
 codes with native picker buttons. They match; the native screen also includes
-the builtin Extract from plants, which the current adapter still lacks. It
+the builtin Extract from plants, added by the implementation below. It
 shows missing-reagent objections for fruit brewing and mead. The fixture's
 `reaction_permission_reference` retains this bounded evidence. Owned DF44732
 exits unsaved, source remains unchanged, and all three Godot logs have only the
@@ -6530,6 +6530,24 @@ Priority and detail actions are signals awaiting their semantic integration.
 Search, categories, native ordering, complete builtin choices and sheet/header/
 contents composition remain unfinished; no public workshop route is enabled.
 The component capture is not complete screen parity or live mutation acceptance.
+
+Still root choices now include Extract from plants from native inline branch
+`8cb3c9..8cb3e9` (job149). The native constructor leaves its objection flag clear;
+DF's requirement builder supplies its inputs. Flat task choices retain native
+priority1000/alpha_order0, normalize owned DF-encoded captions through `52cee0`
+and compare with `b9d50`, as native `1adc50..1adc91` and `1a8c06..1a8c51` do.
+Stable insertion preserves equal-caption source order. No widgets or menu scratch
+are inputs; category priorities remain a separate pending contract.
+
+Protected153152 on2026-11-01 matches all four Still choices, exact order,
+captions and availability against native filtered buttons. The actual model/Godot
+wire creates an Extract from plants job, rereads its ID/type/caption, cancels that
+ID and rereads the original queue. Independent native observation confirms the
+restored job IDs/order. Owned DF29440 exits unsaved, source remains preserved,
+and all four Godot log groups have only the classified startup notice with no
+Unicode errors. `native_workshop.json.still_tasks_reference` retains evidence.
+Core `workshop-task-order` and the adapter check pass. This establishes typed
+queue/cancel effects, not rendered/live workshop-sheet acceptance.
 
 The native workshop catalog builder `8c5680` uses global building-menu vectors;
 its new-button constructor `8b1600` calls `7c5880`, which registers each button

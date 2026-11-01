@@ -679,5 +679,55 @@
       ],
       "name": "queued"
     }
+  },
+  "still_tasks_reference": {
+    "run": "build/stockpile-storage-native-farm-discovery-20261101-153152",
+    "plugin_sha256": "921a9308fd6cc2be93663318ce5a136a5b60c00778c61f17a33a759a5f3878ec",
+    "tasks": {
+      "building_id": 37,
+      "rows": [
+        {
+          "availability": {
+            "available": false,
+            "objection": "[Requires Unrotten fermentable leaf or fruit]"
+          },
+          "key": "reaction:BREW_DRINK_FROM_PLANT_GROWTH",
+          "name": "Brew drink from fruit"
+        },
+        {
+          "availability": {
+            "available": true,
+            "objection": ""
+          },
+          "key": "reaction:BREW_DRINK_FROM_PLANT",
+          "name": "Brew drink from plant"
+        },
+        {
+          "availability": {
+            "available": true,
+            "objection": ""
+          },
+          "key": "builtin:149:-1",
+          "name": "Extract from plants"
+        },
+        {
+          "availability": {
+            "available": false,
+            "objection": "[Requires Honey-containing item]"
+          },
+          "key": "reaction:MAKE_MEAD",
+          "name": "Make mead"
+        }
+      ]
+    },
+    "wire_result": {
+      "created_and_cancelled": 382797,
+      "objection": "[Requires Unrotten fermentable leaf or fruit]",
+      "reaction_count": 3,
+      "rejected_code": "BREW_DRINK_FROM_PLANT_GROWTH",
+      "success": true,
+      "task_count": 4
+    },
+    "scope": "Four Still root task choices/order/availability and actual typed extraction queue/cancel; other workshops/categories remain incomplete."
   }
 }

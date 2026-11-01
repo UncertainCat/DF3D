@@ -3,8 +3,20 @@
 #include "knowledge_detail_native.h"
 #include "df/historical_entity.h"
 #include "df/reaction.h"
+#include "location_staff_order_native.h"
 
 namespace df3d_production {
+// Native1adc50..1adc91 formats then normalizes each owned caption; the
+// equal-priority/alpha-order branch1a8c06..1a8c51 compares those strings.
+// Current flat task choices all retain constructor priority1000/alpha_order0.
+// Category priorities must be transported explicitly when categories are added.
+inline std::optional<bool> workshopCaptionLess(std::string left,std::string right) {
+    const auto& text=df3d_area::staffOrderingFunctions();
+    const auto& functions=farmFunctions();
+    if(!text || !functions)return std::nullopt;
+    text.normalize(&left);text.normalize(&right);
+    return functions.compare(&left,&right)<0;
+}
 // Native8c3f30 reads only fortress_entity from its context. Keep that input
 // explicit and owned; entity/raw permission vectors are read-only simulation
 // records. This includes fortress-acquired and FORTRESS_MODE_ENABLED reactions.

@@ -23,13 +23,12 @@ func run() -> void:
 	if service.intent.get("job_id")!=42 or not service.intent.get("cancel",false):fail("Workshop cancel click missed selected job");return
 	state.ticket=0;state.phase=state.Phase.Ready;service.intent={}
 	var fixture: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/production/native_workshop.json"))
-	for row in fixture.availability_wire_reference.native_reactions.rows:
-		state.snapshot.recipes.append({"key":"reaction:"+row.code,"name":row.caption,"availability":{"available":row.available,"objection":row.objection}})
+	state.snapshot.recipes=fixture.still_tasks_reference.tasks.rows.duplicate(true)
 	view.choose_mode(true)
 	await process_frame;await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../../../build/workshop-tasks-picker.png"))
-	click(Vector2(600,190))
-	if service.intent.get("recipe")!=state.snapshot.recipes[0].key:fail("Workshop recipe click missed selected task");return
+	click(Vector2(600,226))
+	if service.intent.get("recipe")!=state.snapshot.recipes[1].key:fail("Workshop recipe click missed selected task");return
 	state.ticket=0;state.service=null
 	view.queue_free();world.queue_free();background.queue_free();await process_frame
 	print("WORKSHOP_TASKS_CAPTURE_PASS");quit(0)

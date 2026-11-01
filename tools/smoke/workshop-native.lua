@@ -63,6 +63,14 @@ local ok,err=xpcall(function()
     objection=dfhack.df2utf(button.objection),available=not button.show_help_instead}
   end
  end
+ local tasks={}
+ for _,button in ipairs(df.global.game.main_interface.building.filtered_button)do
+  assert(df.interface_button_building_new_jobst:is_instance(button),'Unexpected Still task category')
+  local key=button.jobtype==df.job_type.CustomReaction and 'reaction:'..dfhack.df2utf(button.mstring) or 'builtin:'..button.jobtype..':'..button.material
+  tasks[#tasks+1]={key=key,name=dfhack.df2utf(utils.call_with_string(button,'text')),availability={available=not button.show_help_instead,objection=dfhack.df2utf(button.objection)}}
+  assert(button.list_priority==1000 and button.alpha_order==0,'Still ordering metadata changed')
+ end
+ result.task_reference={building_id=still.id,rows=tasks}
  local order=function(a,b)return a.code<b.code end;table.sort(rows,order)
  local permission_text,permission_code=dfhack.run_command_silent('df3d','workshop-reactions-probe',tostring(still.id))
  assert(permission_code==0,permission_text)

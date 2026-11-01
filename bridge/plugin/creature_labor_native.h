@@ -6,12 +6,15 @@
 #include "df/abstract_building.h"
 #include "df/abstract_building_contents.h"
 #include "df/world_site.h"
+#include "df/building_civzonest.h"
+#include "df/buildings_other_id.h"
 
 namespace df3d_creature {
 struct LaborLocation {
     int32_t id=-1,type=-1,siteId=-1,locationId=-1,locationType=-1,tier=-1;
     std::string role,name;
     bool removable=false;
+    int32_t zoneId=-1,x=0,y=0,z=0;
 };
 inline std::optional<std::vector<LaborLocation>> laborLocations(df::unit* unit) {
     static const bool supported=[] {
@@ -27,6 +30,7 @@ inline std::optional<std::vector<LaborLocation>> laborLocations(df::unit* unit) 
             {0x138ed20,0xff,UINT64_C(0x430951f9f3e403c2)},
             {0x1752cc,0x68,UINT64_C(0xd7b528da9895a0f2)},
             {0x19f47c,0x2c,UINT64_C(0x8a9ffc4374c47f93)},
+            {0x1b51cc,0x10c,UINT64_C(0x09421756d3340f65)},
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -55,6 +59,16 @@ inline std::optional<std::vector<LaborLocation>> laborLocations(df::unit* unit) 
             auto* place=reinterpret_cast<df::abstract_building* (*)(df::world_site*,int32_t)>(base+0x67e80)(site,row.locationId);
             if(place && !place->flags.is_set(df::abstract_building_flags::DOES_NOT_EXIST) && !place->flags.is_set(df::abstract_building_flags::WG_RUINED)) {
                 row.locationType=int32_t(place->getType());
+                static_assert(offsetof(df::building,site_id)==0x114 && offsetof(df::building,location_id)==0x118);
+                // Native navigation walks ACTIVITY_ZONE in simulation order,
+                // selecting the first zone linked to this actual location.
+                for(auto* entry:df::global::world->buildings.other[df::buildings_other_id::ACTIVITY_ZONE]) {
+                    auto* zone=static_cast<df::building_civzonest*>(entry);
+                    if(zone && zone->site_id==place->site_id && zone->location_id==place->id) {
+                        if(zone->centerx!=-30000){row.zoneId=zone->id;row.x=zone->centerx;row.y=zone->centery;row.z=zone->z;}
+                        break;
+                    }
+                }
                 if(const auto* contents=place->getContents())row.tier=contents->location_tier;
                 if(const auto* name=place->getName();name && name->has_name) {
                     auto owned=*name;

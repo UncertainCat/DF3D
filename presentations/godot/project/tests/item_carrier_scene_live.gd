@@ -148,6 +148,18 @@ func exercise_labor_locations(inspector,target: int) -> void:
 		check(inspector.creature_sheet.fact_value(rows[0],"location_name","")==str(reference.lines[2].text).strip_edges(),"Native location name differs")
 	await health_tab(inspector,"Labor");await drain();await health_tab(inspector,"Locations",true);await drain()
 	await labor_capture("location-assigned")
+	var camera_before:Vector3=scene.camera_rig.position
+	var level_before:int=world.get_top_z()
+	var view=inspector.creature_sheet.labor_view
+	await pointer(view.get_global_transform_with_canvas()*view.workshop_button(0,1).get_center());await drain()
+	var zones=scene._ui.controller("areas")
+	check(scene._ui.host.active==zones and int(zones.selected.get("id",-1))==int(reference.navigation.zone_id),"Location button did not open native zone target")
+	var tile:Array=reference.navigation.target
+	check(is_equal_approx(scene.camera_rig.position.x,float(tile[0])+0.5) and is_equal_approx(scene.camera_rig.position.z,float(tile[1])+0.5) and world.get_top_z()==int(tile[2]),"Location navigation focused wrong tile")
+	check(not inspector.is_open() and inspector.labor.phase==inspector.labor.Phase.Closed,"Location navigation retained creature panel")
+	zones.close_panel()
+	world.set_top_z(level_before);scene.camera_rig.follow_level(level_before)
+	scene.camera_rig.focus_on(camera_before,scene.camera_rig.current_distance())
 	var file:=FileAccess.open(directory+"/unit-labor-locations-wire.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"unit_id":actor,"rows":rows}));file.close()
 	inspector.open_target(Vector3i.ZERO,1,target);await drain()

@@ -161,6 +161,7 @@ func controller(id: String):
 			elif kind==3:
 				var target: Dictionary=world.inspect_entity(3,target_id)
 				if not target.is_empty():open_target(target.tile,3,target_id))
+		panel.zone_requested.connect(func(zone_id,tile):focus_tile(tile);controller("areas").open_zone(zone_id))
 		panel.action_service = actions
 		panel.hover_help=view._fortress_hud.native_help
 	if id in ["construction", "areas"]: panel.hud = view._fortress_hud

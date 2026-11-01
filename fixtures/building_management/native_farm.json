@@ -59305,11 +59305,26 @@
         "occupation_id": 93,
         "source_save_unchanged": true,
         "unfinished": [
-          "open location action",
           "remove action",
           "overflow and hover",
           "header/history workflow after switching creatures (112807/113009 failures; cause unresolved)"
-        ]
+        ],
+        "navigation_reference": {
+          "source": "build/stockpile-storage-native-farm-discovery-20261101-114006",
+          "native": {
+            "sheet_closed": true,
+            "target": [
+              129,
+              81,
+              165
+            ],
+            "zone_id": 496,
+            "zone_mode": true
+          },
+          "actual_button_matches_zone_and_camera": true,
+          "creature_panel_closed": true,
+          "source_save_unchanged": true
+        }
       }
     },
     "unit_rooms_reference": {

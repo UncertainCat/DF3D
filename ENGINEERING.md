@@ -3333,7 +3333,13 @@ two-line occupation/location captions, location artwork and button layout.
 Removal visibility follows renderer1752cc's role switch and native138ed20;
 mercenaries/monster slayers bypass that predicate, unused role6 has no button.
 These semantic facts come from the bridge, not reconstructed viewer eligibility.
-Open/remove signals are staged and are not yet connected to actions.
+The open-location signal uses an owned zone-navigation target. Native
+1b51cc..1b52d8 selects the first ACTIVITY_ZONE in simulation order matching the
+location's site/ID and focuses its center, unless that center is invalid. The
+provider reproduces this inline traversal with pinned evidence; the viewer
+closes the creature panel, focuses locally and opens that zone through AreaInspect.
+Pending zone navigation is retired on close/session change. The remove signal
+is still staged and is not connected to an action.
 
 Protected113357 on2026-11-01 matches the populated performer panel's456x528
 pixels exactly and restores the original creature. Owned DF19128 exits unsaved;
@@ -3346,7 +3352,15 @@ cause remains unresolved. The accepted run executes the existing header/history
 workflow before Locations and does not establish that reverse sequence.
 Run113221 additionally exposed a test error: detail.complete describes bounded
 record coverage, not whether loading settled. Restoration now checks identity
-and loading. Navigation, removal, overflow and hover remain unfinished.
+and loading. Removal, overflow and hover remain unfinished.
+
+Protected114006 on2026-11-01 exercises the native open-location button and the
+actual DF3D button. Both select the same zone and position; DF3D closes the
+creature request owner and opens the existing Zones panel. It does not invoke
+the native menu handler or write native camera state. Owned DF47280 exits
+unsaved, source preservation passes, and all three Godot processes have only
+the known startup notice. `location_panel_reference.navigation_reference`
+retains the exact zone and camera target.
 
 ### Creature Rooms native list
 

@@ -660,6 +660,7 @@ return function(request)
    fact(s,r,'occupation_type',v.type);fact(s,r,'location_type',v.location_type)
    fact(s,r,'location_tier',v.tier);fact(s,r,'location_name',utf(v.name))
    fact(s,r,'removable',v.removable)
+   fact(s,r,'zone_id',v.zone_id);fact(s,r,'x',v.x);fact(s,r,'y',v.y);fact(s,r,'z',v.z)
   end
  end)
  section(24,function(s)

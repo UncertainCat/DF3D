@@ -123,6 +123,19 @@ if os.getenv('DF3D_UNIT_LABOR_LOCATIONS')=='1'then
   end
   for y=19,g.dimy-1 do local text=dfhack.df2utf(row(y)):gsub('%s+$','');if text~=''then data.lines[#data.lines+1]={y=y,text=text}end end
   result.location_fixture=data;capture('unit-labor-location-assigned')
+  local main=df.global.game.main_interface
+  local zones=df.civzone_interfacest:new();zones:assign(main.civzone)
+  local mode=main.bottom_mode_selected;local window={df.global.window_x,df.global.window_y,df.global.window_z}
+  local opened,open_err=xpcall(function()
+   click(828,286)
+   local zone=assert(main.civzone.cur_bld,'Location navigation did not select a zone')
+   assert(not sheet.open and main.bottom_mode_selected==3,'Location navigation did not open Zones')
+   data.navigation={zone_id=zone.id,target={zone.centerx,zone.centery,zone.z},sheet_closed=true,zone_mode=true}
+   capture('unit-labor-location-open')
+  end,debug.traceback)
+  main.civzone:assign(zones);zones:delete();main.bottom_mode_selected=mode
+  df.global.window_x=window[1];df.global.window_y=window[2];df.global.window_z=window[3]
+  sheet.open=true;view:render(dfhack.getTickCount());assert(opened,open_err)
  end,debug.traceback)
  sheet.active_id=original;view:render(dfhack.getTickCount());assert(ok,err)
 end

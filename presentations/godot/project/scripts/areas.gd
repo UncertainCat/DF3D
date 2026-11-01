@@ -8,6 +8,7 @@ const Status = Contract.ManagementStatus
 const Selection = preload("res://scripts/interaction_state.gd")
 const MenuData = preload("res://scripts/area_menu_data.gd")
 var _open_stockpile_id: int=-1
+var _open_zone_id: int=-1
 var menu_data: Dictionary = MenuData.read()
 var category_labels: Array[String] = MenuData.category_labels_by_bit(menu_data)
 var world
@@ -361,7 +362,14 @@ func set_area_kind(value: int) -> void:
 	kind_picker.select(value)
 	launcher_destination = "Stockpiles" if value == 0 else "Zones"
 
+func open_zone(id: int) -> void:
+	if not play_enabled or id<0:return
+	if panel.visible:close_panel()
+	set_area_kind(1);open_panel()
+	if panel.visible:_open_zone_id=id
+
 func close_panel() -> void:
+	_open_zone_id=-1
 	_open_stockpile_id=-1
 	stockpile_help.reset()
 	_release_rename()
@@ -1576,6 +1584,10 @@ func _receive_result(s: Dictionary, _request: Dictionary, completed_ticket := 0)
 		for c in zone_types:
 			zone_picker.add_item(c.label, c.id)
 		available = true
+		if _open_zone_id>=0:
+			var target:=_open_zone_id;_open_zone_id=-1
+			send({"action":Action.AreaInspect,"id":target,"kind":1})
+			return
 		if _open_stockpile_id>=0:
 			var target:=_open_stockpile_id;_open_stockpile_id=-1
 			send({"action":Action.AreaInspect,"id":target,"kind":0})
@@ -1874,6 +1886,7 @@ func _detach_draft() -> void:
 	request_ticket = 0
 
 func _session_changed() -> void:
+	_open_zone_id=-1
 	_open_stockpile_id=-1
 	stockpile_help.reset()
 	paint_saved_corner = Vector3i(-1,-1,-1)

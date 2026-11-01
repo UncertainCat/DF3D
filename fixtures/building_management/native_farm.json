@@ -52227,6 +52227,124 @@
             "Drag retention across asynchronous header/detail refresh and other main-scene overflow inputs need coverage."
           ]
         }
+      },
+      "contained_navigation_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-014749",
+        "status": "passed_with_known_issues",
+        "scope": "Controlled synthetic containment references on existing inventory items; native target/tab/help and unresolved blank row. No gameplay containment action.",
+        "contents": [
+          {
+            "caption": "(jute sock)",
+            "id": 32625,
+            "kind": 1
+          },
+          {
+            "caption": "Stodir Tangakurvad, bookkeeper, \u2642",
+            "id": 1017,
+            "kind": 2
+          },
+          {
+            "caption": "",
+            "id": -1,
+            "kind": 1
+          }
+        ],
+        "navigation": {
+          "missing_hover": -1,
+          "targets": [
+            {
+              "hover": 295,
+              "id": 32625,
+              "kind": 1,
+              "lines": [
+                "View this item's sheet."
+              ],
+              "name": "item",
+              "open": true,
+              "tab": -1
+            },
+            {
+              "hover": 296,
+              "id": 1017,
+              "kind": 0,
+              "lines": [
+                "View this creature's",
+                "sheet."
+              ],
+              "name": "creature",
+              "open": true,
+              "tab": 0
+            }
+          ],
+          "weight_cache_items": [
+            32625,
+            16196
+          ]
+        },
+        "caption_regions": [
+          {
+            "name": "item",
+            "rect": [
+              488,
+              244,
+              384,
+              36
+            ],
+            "rgb_sha256": "dfff75337d7c08b0572fee1b4c03b2a584638cf18bc4ee41c9ef269148c2c245"
+          },
+          {
+            "name": "creature",
+            "rect": [
+              488,
+              280,
+              384,
+              36
+            ],
+            "rgb_sha256": "5056a39f2f9341cd978ce2e1ff5946aaa9c66c90a66aeee16adda268db279b51"
+          }
+        ],
+        "diagnostics": {
+          "farm-item-carrier-unit-scene.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "farm-item-carrier-unit-wire.godot.log": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          },
+          "unit-header-wire": {
+            "known_engine": [
+              {
+                "id": "godot-separate-thread-notice",
+                "count": 1,
+                "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+              }
+            ],
+            "unclassified": []
+          }
+        },
+        "source_save": "unchanged; owned DF35880 exited unsaved",
+        "gpu_reference": {
+          "qa": "build/qa/creature-items-contained-pixels",
+          "status": "passed_with_known_issues",
+          "scope": "Two 384x36 native caption/View-control crops exact, contained row indentation, distinct help strings, typed target signals, unresolved row blankness and non-navigation. All previous indicator/scrollbar checks also pass.",
+          "limitations": [
+            "Full icon/frame artwork is outside these crop comparisons.",
+            "Full composed nested transport/navigation, natural cage/animal cases and session lifecycle remain unverified."
+          ]
+        }
       }
     }
   }

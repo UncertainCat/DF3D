@@ -3,6 +3,40 @@ func motion(point: Vector2) -> void:
 	var event:=InputEventMouseMotion.new();event.position=point;root.push_input(event,true)
 func mouse(point: Vector2,button: int,pressed: bool,shift:=false) -> void:
 	var event:=InputEventMouseButton.new();event.position=point;event.button_index=button;event.pressed=pressed;event.shift_pressed=shift;root.push_input(event,true)
+func contained_cases(view,reference: Dictionary) -> bool:
+	root.size=Vector2i(1200,800);view.position=Vector2(424,208);view.size=Vector2(472,540);view.first=0
+	view.rows=[];view.icons=[]
+	for index in 16:
+		view.rows.append({"name":"","related_id":-1,"facts":[{"key":"row_kind","has_number":true,"number":1}]});view.icons.append(null)
+	for index in reference.contents.size():
+		var source: Dictionary=reference.contents[index]
+		view.rows[index+1]={"name":source.caption,"related_id":int(source.id),"facts":[{"key":"row_kind","has_number":true,"number":int(source.kind)}]}
+	view.layout();await process_frame;await process_frame;await RenderingServer.frame_post_draw
+	var image:=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+	image.save_png(ProjectSettings.globalize_path("res://../../../build/creature-items-contained.png"))
+	for sample in reference.caption_regions:
+		var r: Array=sample.rect;var hash:=HashingContext.new();hash.start(HashingContext.HASH_SHA256)
+		hash.update(image.get_region(Rect2i(r[0],r[1],r[2],r[3])).get_data())
+		if hash.finish().hex_encode()!=sample.rgb_sha256:fail("Native contained row caption/View pixels differ: "+sample.name);return false
+	var requests: Array=[]
+	var observe:=func(kind,id):requests.append([kind,id])
+	view.inspect_requested.connect(observe)
+	for index in 2:
+		var point: Vector2=view.inspect_rect(index+1).get_center()
+		var kind: String=view.hover_kind(point)
+		if preload("res://scripts/native_hover_view.gd").UNIT_HELP.get(kind,[])!=reference.navigation.targets[index].lines:fail("Contained View help differs");return false
+		click(view.get_global_transform_with_canvas()*point)
+	if requests!=[[2,int(reference.contents[0].id)],[1,int(reference.contents[1].id)]]:fail("Contained View targets differ");return false
+	var missing: Vector2=view.inspect_rect(3).get_center()
+	if not view.hover_kind(missing).is_empty():fail("Missing contained target exposes help");return false
+	click(view.get_global_transform_with_canvas()*missing)
+	if requests.size()!=2:fail("Missing contained target navigated");return false
+	var clear:=image.get_pixel(400,320)
+	for y in range(316,352):
+		for x in range(424,864):
+			if image.get_pixel(x,y)!=clear:fail("Unresolved contained row is not blank");return false
+	view.inspect_requested.disconnect(observe)
+	return true
 func layout_cases(view,reference: Dictionary) -> bool:
 	view.rows=[];view.icons=[]
 	for index in int(reference.count):
@@ -90,5 +124,7 @@ func run() -> void:
 	if requests!=[[2,32064]]:fail("Inventory View target differs");return
 	var layout_reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/building_management/native_farm.json")).chest_header_reference.unit_items_reference.layout_reference
 	if not await layout_cases(view,layout_reference):quit(1);return
+	var contained_reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/building_management/native_farm.json")).chest_header_reference.unit_items_reference.contained_navigation_reference
+	if not await contained_cases(view,contained_reference):quit(1);return
 	view.queue_free();help.queue_free();world.queue_free();await process_frame
 	print("CREATURE_ITEMS_CAPTURE_PASS");quit(0)

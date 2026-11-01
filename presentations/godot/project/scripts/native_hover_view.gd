@@ -18,6 +18,7 @@ const UNIT_HELP={"reports":["See this creature's","combat history."],"customize"
 	"inventory_tool":["This item is a tool","assigned by a work","detail."],
 	"inventory_symbol":["This item is a symbol","of a noble or","administrator."],
 	"inventory_view":["View this item's sheet."], # Native Items011141 and navigation000642.
+	"inventory_creature":["View this creature's","sheet."], # Native contained navigation014749.
 	"expel":["Send this creature to a","linked site, or expel","this creature entirely."], # Native EXPEL_UNIT, protected224634.
 	"camera":["Set the camera to","follow this creature."]} # Native289, protected105504.
 # Native item-sheet122502 instructions207..210/285.

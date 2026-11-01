@@ -1645,6 +1645,34 @@ during asynchronous refresh, and disconnect/epoch/late replies. Full inventory
 row pixels and every main-scene overflow input are not claimed; the route stays
 staged.
 
+Contained Items controls are recorded by
+`unit_items_reference.contained_navigation_reference`. Protected014749 on
+2026-11-01 uses controlled item/creature/unresolved references on existing
+inventory objects. Native View opens item32625's sheet or creature1017's Overview
+(tab0). Native295 says "View this item's sheet.";296 wraps "View this creature's"
+and "sheet.". The unresolved reference occupies a blank row with no tooltip.
+Both contained row types are indented one8px cell. Diagnostic restoration of the
+native selection is not a product Back action.
+
+The Items view uses those distinct hover keys and typed targets, indents both
+contained row types, and skips all drawing for unresolved contained references.
+GPU `creature-items-contained-pixels` matches both384x36 caption/View-control
+crops exactly, checks target signals and blank/inert missing rows, and retains
+all indicator/scrollbar comparisons. It passes with only documented engine
+diagnostics; core, inspector and UI composition checks pass separately in
+`creature-items-contained`. That initial GPU attempt had a test-lambda parse
+error, corrected before the passing GPU run. Frame/icon regions and full composed
+nested transport/navigation are outside this acceptance.
+
+The first native014509 attempt caught weight_computed changing on a nested shoe
+while inspecting its containing sock. The corrected diagnostic accepts only that
+bit for those two exact item IDs, records them, then restores the original flags.
+Other flag changes fail. Original synthetic refs/container flags are restored;
+this does not claim that cached weight values were unchanged. Both source saves
+are preserved; owned DF35880 exits unsaved and every Godot process has only the
+known startup notice. Natural cage/animal containment and broader lifecycle
+coverage remain unfinished.
+
 The item view places the name on the first header row when owner data exists,
 with the native yellow Owner line beneath and Weight on the third row. Without
 an owner it retains the native second-row name. Protected005142's368x36 header

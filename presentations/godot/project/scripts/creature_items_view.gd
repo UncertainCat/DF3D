@@ -45,10 +45,11 @@ func hover_kind(point: Vector2) -> String:
 	var index:=first+floori(point.y/36)
 	if index<first or index>=mini(rows.size(),first+capacity()):return ""
 	var row: Dictionary=rows[index]
-	if int(fact(row,"row_kind",0))!=0:return ""
+	var kind:=int(fact(row,"row_kind",0))
+	if kind==3 or int(row.get("related_id",-1))<0:return ""
 	var indicator:=int(fact(row,"assignment_indicator",-1))
-	if indicator>=0 and indicator<INDICATOR_HELP.size() and indicator_rect(index).has_point(point):return INDICATOR_HELP[indicator]
-	if int(row.get("related_id",-1))>=0 and inspect_rect(index).has_point(point):return "inventory_view"
+	if kind==0 and indicator>=0 and indicator<INDICATOR_HELP.size() and indicator_rect(index).has_point(point):return INDICATOR_HELP[indicator]
+	if inspect_rect(index).has_point(point):return "inventory_creature" if kind==2 else "inventory_view"
 	return ""
 func patch(texture: Texture2D,origin: Vector2,columns: int) -> void:
 	if texture==null:return
@@ -60,17 +61,20 @@ func _draw() -> void:
 	var width:=size.x-(32 if scrollbar.visible else 16)
 	for index in range(first,mini(rows.size(),first+capacity())):
 		var row: Dictionary=rows[index];var kind:=int(fact(row,"row_kind",0))
-		var top:=Vector2(8,(index-first)*36)
-		patch(art.texture("BUTTON_RECTANGLE"),top,int(width/8))
+		# An unresolved contained reference consumes a completely blank native row.
+		if kind in [1,2] and int(row.get("related_id",-1))<0:continue
+		var indent:=8 if kind in [1,2] else 0
+		var top:=Vector2(8+indent,(index-first)*36)
+		patch(art.texture("BUTTON_RECTANGLE"),top,int((width-indent)/8))
 		if kind!=3:
 			patch(picture.texture(false),top,5)
 			if icons[index]!=null:draw_texture_rect(icons[index],Rect2(top+Vector2(2,2),Vector2(32,32)),false)
-		var columns:=maxi(0,int(width/8)-14-(1 if kind==2 else 0))
+		var columns:=maxi(0,int((width-indent)/8)-14)
 		var caption:=str(row.get("name",""));var role:=str(fact(row,"native_role",""))
 		if caption.length()>=columns:caption=caption.left(maxi(0,columns-4))+"..." if columns>4 else caption.left(maxi(0,columns-1))
 		if role.length()>=columns:role=role.left(maxi(0,columns-4))+"..." if columns>4 else role.left(maxi(0,columns-1))
 		var color: Color=NativeText.colors[15 if kind==3 else 10 if kind==2 else 14]
-		theme.default_font.draw_string(get_canvas_item(),top+Vector2(56+(8 if kind==2 else 0),24),caption,HORIZONTAL_ALIGNMENT_LEFT,-1,12,color)
+		theme.default_font.draw_string(get_canvas_item(),top+Vector2(56,24),caption,HORIZONTAL_ALIGNMENT_LEFT,-1,12,color)
 		theme.default_font.draw_string(get_canvas_item(),top+Vector2(56,36),role,HORIZONTAL_ALIGNMENT_LEFT,-1,12,NativeText.colors[11])
 		if kind!=3 and int(row.get("related_id",-1))>=0:
 			var indicator:=int(fact(row,"assignment_indicator",-1))

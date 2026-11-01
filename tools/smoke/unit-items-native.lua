@@ -81,7 +81,7 @@ local ok,err=xpcall(function()
   end
   if os.getenv('DF3D_UNIT_ITEMS_CONTENTS')=='1'then
    local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-items%-native.lua$','unit-items-contents-native.lua')
-   result.contents_cases=assert(loadfile(source))(unit,pointer,read)
+   result.contents_cases=assert(loadfile(source))(unit,pointer,read,view,capture)
   end
   if os.getenv('DF3D_UNIT_ITEMS_ROLES')=='1'then
    local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-items%-native.lua$','unit-items-roles-native.lua')

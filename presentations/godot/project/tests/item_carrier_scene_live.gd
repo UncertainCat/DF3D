@@ -1785,10 +1785,10 @@ func exercise_personality(inspector) -> void:
 	var reference:Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-personality-native.json"))
 	var results:Array=[]
 	for page in reference.pages:
-		if page.name!="Values":continue
+		if page.name not in ["Traits","Values"]:continue
 		var target:=int(page.unit_id)
 		inspector.open_target(Vector3i.ZERO,1,target)
-		await health_tab(inspector,"Personality");await health_tab(inspector,"Values",true)
+		await health_tab(inspector,"Personality");await health_tab(inspector,page.name,true)
 		var deadline:=Time.get_ticks_msec()+10000
 		while Time.get_ticks_msec()<deadline:
 			world.poll();actions.poll(0.01)
@@ -1798,21 +1798,22 @@ func exercise_personality(inspector) -> void:
 		if not check(int(inspector.creature_display.get("detail",{}).get("unit_id",-1))==target,"Personality detail did not settle"):return
 		await process_frame;await RenderingServer.frame_post_draw
 		var view=inspector.creature_sheet.personality_view
-		if not check(is_instance_valid(view),"Native Values view missing"):return
-		check(view.rows==page.tagged_rows,"Native Values tagged text differs: "+str(target))
+		if not check(is_instance_valid(view),"Native Personality view missing"):return
+		var expected:Array=page.tagged_rows
+		check(view.rows==expected,"Native Personality tagged text differs: "+str(target))
 		var actual:=root.get_texture().get_image();actual.convert(Image.FORMAT_RGB8)
-		var name:="unit-personality-"+str(target)+"-values"
+		var name:="unit-personality-"+str(target)+"-"+str(page.name).to_lower()
 		actual.save_png(directory+"/"+name+"-scene.png")
 		var native_image:=Image.load_from_file(directory+"/"+name+".png");native_image.convert(Image.FORMAT_RGB8)
 		var rect:=Rect2i(432,232,456,504)
 		var same:=actual.get_region(rect).get_data()==native_image.get_region(rect).get_data()
-		check(same,"Native Values pixels differ: "+str(target))
+		check(same,"Native Personality pixels differ: "+str(target))
 		inspector.redraw();await process_frame
-		check(inspector.creature_sheet.personality_view==view,"Values refresh replaced view")
+		check(inspector.creature_sheet.personality_view==view,"Personality refresh replaced view")
 		view.scrollbar.dragging=true;inspector.cancel_gesture()
-		check(not view.scrollbar.dragging,"Values overlay retained drag")
-		results.append({"unit_id":target,"native_text":view.rows==page.tagged_rows,"native_pixels":same,"rows":view.rows})
-		await health_tab(inspector,"Traits",true);await process_frame
-		check(not is_instance_valid(inspector.creature_sheet.personality_view),"Leaving Values retained its visible view")
+		check(not view.scrollbar.dragging,"Personality overlay retained drag")
+		results.append({"unit_id":target,"page":page.name,"native_text":view.rows==expected,"native_pixels":same,"rows":view.rows})
+		await health_tab(inspector,"Preferences",true);await process_frame
+		check(not is_instance_valid(inspector.creature_sheet.personality_view),"Leaving native paragraphs retained its visible view")
 	var file:=FileAccess.open(directory+"/unit-personality-scene.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"cases":results}));file.close()

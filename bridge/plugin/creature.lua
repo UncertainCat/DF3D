@@ -300,6 +300,11 @@ return function(request)
    local r=record(s,2000+i,enum(df.mannerism_type,v.type))
    fact(s,r,'record_type','mannerism');fact(s,r,'mannerism_type',v.type);fact(s,r,'situation',v.situation)
   end)
+  local native=request.personality_traits(u.id)
+  for first=1,#native,256 do
+   local r=record(s,-1-(first-1)//256,'')
+   fact(s,r,'record_type','native_traits');fact(s,r,'native_text',native:sub(first,first+255))
+  end
  end)
  section(7,function(s)
   local p=personality(s);if not p then return end

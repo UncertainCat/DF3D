@@ -2,7 +2,6 @@ extends RefCounted
 const NativeText = preload("res://scripts/native_creature_text.gd")
 const Style = preload("res://scripts/creature_sheet_style.gd")
 const Thoughts = preload("res://scripts/creature_thought_text.gd")
-const Personality = preload("res://scripts/creature_personality_text.gd")
 # Presentation grouping is derived from the native creature-sheet reference.
 # Transport, semantic collection and cache ownership remain below this control.
 var recipe: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://panels/creature_sheet.json"))
@@ -456,7 +455,7 @@ func render(controller, state: Dictionary):
    knowledge_view.position=Vector2(0,y);knowledge_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
    knowledge_view.present([owner.knowledge.text] if showing else [],str(owner.knowledge.kind)+"/"+str(owner.knowledge.entry_id) if showing else "")
   return
- if tab=="Personality" and subtabs.get(tab)=="Values":
+ if tab=="Personality" and subtabs.get(tab) in ["Traits","Values"]:
   scroll=null
   if not is_instance_valid(personality_view):
    personality_view=preload("res://scripts/native_creature_paragraph_view.gd").new()
@@ -464,8 +463,18 @@ func render(controller, state: Dictionary):
    personality_view.input_allowed=func():return owner.ui_host==null or owner.ui_host.allows_panel_input(owner)
   personality_view.position=Vector2(0,y);personality_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
   var native_values:=""
-  for row in records_for("values"):native_values+=str(fact_value(row,"native_text",""))
-  personality_view.present([native_values] if not native_values.is_empty() else [],location());return
+  for row in records_for("personality" if subtabs.get(tab)=="Traits" else "values"):native_values+=str(fact_value(row,"native_text",""))
+  var paragraphs:Array=[]
+  if not native_values.is_empty():
+   if subtabs.get(tab)=="Traits":
+    # The bridge separates the native Traits formatter outputs with [B].
+    # Each native output starts with its own default color, including mannerisms.
+    for part in native_values.split("[B]"):
+     if not paragraphs.is_empty():paragraphs.append("")
+     paragraphs.append(part)
+   else:paragraphs.append(native_values)
+  if personality_view.page_key!=location():personality_view.first=0
+  personality_view.present(paragraphs,location());return
  if tab=="Thoughts":
   scroll=null
   if not is_instance_valid(thoughts_view):
@@ -560,11 +569,6 @@ func render(controller, state: Dictionary):
  inset.add_child(content)
  if detail.is_empty(): return
  if tab=="Overview": overview(content,detail)
- elif tab=="Personality" and subtabs.get(tab)=="Traits":
-  paragraph(content,NativeText.attribute_description(self,int(detail.get("sex",-1)),true))
-  paragraph(content,Personality.facet_description(self,int(detail.get("sex",-1))))
-  paragraph(content,Personality.mannerisms(self,int(detail.get("sex",-1))))
-  paragraph(content,Personality.conditions(self,int(detail.get("sex",-1))))
  elif tab=="Personality" and subtabs.get(tab)=="Preferences":
   paragraph(content,NativeText.preference_description(self,int(detail.get("sex",-1))))
  elif tab=="Personality" and subtabs.get(tab)=="Needs":

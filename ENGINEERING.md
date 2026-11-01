@@ -3444,33 +3444,39 @@ exceeded the30s combined-lane limit; this multi-panel lane now allows60s.
 
 ### Creature Personality
 
-`creature_personality_native.h` calls nativee248a0 for the entire Values page,
-using the same arguments as4815d6: an owned personality, owned unit containing
-race/sex for circumstance descriptions, soul race/sex, owned output string,
-true and flags3. The routine reads cultural/personal values, remembered causes
-and dreams, sorts owned temporary records and produces native paragraph/color
-tags. Referenced value, memory and cultural records are read-only; shared RNG
-and historical-material caches are restored. The full formatter and numeric
-formatters are pinned alongside the thought-description dependency graph.
-No native sheet state is supplied and UI wrapper47f680 is not invoked.
+`creature_personality_native.h` calls nativee248a0 for Values, with the same
+arguments as4815d6: an owned personality, owned unit race/sex, soul race/sex,
+owned output, true and flags3. DF supplies cultural/personal values, remembered
+causes and dreams. Traits calls13811b0 for mental attributes, e26ca0 for facets
+and their causes/conflicts, and10e3280 for mannerisms. Its unit owns the soul,
+optional curse attribute changes and the identity lookup's mutable historical
+figure index. Referenced personality records, identities and creature raws are
+read-only. Shared RNG and historical-material caches are restored. Complete
+formatter bodies and the identity/caste lookup helpers are pinned. UI wrapper
+47f680 is never called and no native sheet state is supplied.
 
-Section7 retains scalar value facts needed by other pages and adds bounded
-256-byte raw text chunks, converted once before transport. Godot joins them and
-uses the native paragraph view. Its reconstructed Values/dream sentence builder
-has been removed. Refresh retains the Values view, overlay cancellation releases
-its scrollbar, and leaving Values retires the view.
+Traits conditions have no independent formatter: the bridge reproduces the
+scalar composition in4818ee..481c71 with pinned installed literals and native
+pronouns. Sections6/7 retain scalar facts used by other pages and carry bounded
+256-byte native-text chunks, converted once before transport. Traits outputs
+are separated by[B]; the view restores their separate paragraph boundaries,
+blank rows and default colors. Godot's Traits and Values sentence builders have
+been removed. Refresh retains the native paragraph view; tab changes reset
+scrolling, overlay cancellation releases drag, and leaving Traits/Values retires
+it. Preferences and Needs still use reconstructed descriptions and remain
+unfinished. Personality and the creature route remain staged.
 
-Protected141102 on2026-11-01 verifies exact native tagged strings and456x504 body
-crops for both1017 and2905, including1017's remembered spouse-decay cause and
-creative dream. Refresh, overlay cancellation and actual navigation to Traits
-pass. Owned DF49032 exits unsaved and the source save is unchanged; all three
-Godot logs contain only the documented startup notice, with no Unicode errors.
-Plugin SHA256:
-`e928c15a79d9ffb45f4b020bc4c6d558c1dcbf998857d8a6803eee85f23717e3`.
-The protected native capture also records Traits, Preferences and Needs for
-both creatures. Those pages still use reconstructed descriptions and remain
-unfinished. Values tail/resize and broader lifecycle variants remain unverified;
-Personality and the creature route are not promoted by this milestone.
+Protected142009 on2026-11-01 verifies exact native tagged rows and456x504 body
+crops for Traits and Values on both1017 and2905. These include remembered causes,
+value conflicts, a creative dream and distinct mannerisms. Header refresh,
+overlay cancellation and navigation to Preferences pass. Owned DF41700 exits
+unsaved; the source save is unchanged. All three Godot logs contain only the
+known startup notice, with no Unicode errors. Plugin SHA256:
+`29ea6e72f16edd5e51ff77e4d56ec4ceff2853d729a762f36a1cc135125b9b61`.
+The earlier141824 comparison caught mannerisms inheriting the previous paragraph's
+color; separate paragraph rendering fixes that mismatch. Tail/resize and broader
+lifecycle variants remain unverified. Native captures include Preferences/Needs
+for the next implementation steps.
 
 ### Creature Thoughts and Memories
 

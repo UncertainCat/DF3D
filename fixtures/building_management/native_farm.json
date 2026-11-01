@@ -46229,7 +46229,7 @@
         ],
         "fixture": "Reciprocal temporary spouse links between1017 and2345; restore original HF links. Comparison populates only legacy view.expel_total_list with the two departing pointers and restores it afterward. Diagnostic native observation only, never runtime menu borrowing.",
         "finding": "Default legacy vector is empty at game+0x3b8/RVA18a1988. Native1b1ab8..1b1aca checks that vector before emitting RelativeExpelled thoughts242, rather than the current affected group. Default both spouses get241+242; populated vector both get241 only. Both share one departure controller and produce their own history events.",
-        "approval": "Maintainer2026-10-31: Suppress the extra relative thoughts (Recommended). Approved pending implementation; use owned departing group, retain own Expelled thoughts.",
+        "approval": "Maintainer2026-10-31 approved suppressing extra relative thoughts. Implemented in independent semantic action and verified in220152; public UI remains staged.",
         "verification": "Both protected lanes terminal0, paused frame unchanged, sources unchanged, owned DF11316/38076 exited unsaved. Two GPU and paired wire logs per lane have only known startup notice. Core19 passes.",
         "qa": "build/qa/unit-expel-family-effects"
       }
@@ -46310,6 +46310,66 @@
         "Pet/exotic-pet caste and CAN_SPEAK runtime variants",
         "Missing and noncitizen target variants",
         "Use eligibility in semantic action and transport/viewer"
+      ]
+    },
+    "unit_expel_action_reference": {
+      "cases": [
+        {
+          "native_run": "build/stockpile-storage-native-farm-discovery-20261031-215707",
+          "semantic_run": "build/stockpile-storage-native-farm-discovery-20261031-220152",
+          "mode": "expel",
+          "affected": [
+            1017,
+            2345
+          ],
+          "destination": -1,
+          "semantic_outcome": 2,
+          "rejections": [
+            1,
+            1,
+            1
+          ],
+          "repeat_outcome": 1,
+          "sheet_unchanged": true,
+          "exact_native_comparison_fields": [
+            "after",
+            "events",
+            "affected",
+            "relative_after"
+          ],
+          "exact_match": true
+        },
+        {
+          "native_run": "build/stockpile-storage-native-farm-discovery-20261031-214712",
+          "semantic_run": "build/stockpile-storage-native-farm-discovery-20261031-220305",
+          "mode": "send",
+          "affected": [
+            1017
+          ],
+          "destination": 8,
+          "semantic_outcome": 2,
+          "rejections": [
+            1,
+            1,
+            1
+          ],
+          "repeat_outcome": 1,
+          "sheet_unchanged": true,
+          "exact_native_comparison_fields": [
+            "after",
+            "events",
+            "affected"
+          ],
+          "exact_match": true
+        }
+      ],
+      "verification": "Native confirmation closed before independent action. Wrong group, invalid destination and missing target rejected with selected snapshot unchanged; already departing target rejected after one apply. Full captured post-state including emotions/history matches native corrected-family and Send away references exactly. Source saves unchanged; owned DF2696/34820 exited unsaved. Two GPU and paired header-wire logs per run have only known startup notice.",
+      "qa": "build/qa/unit-expel-action",
+      "msvc_log": "build/notes/pm/unit-expel-action-msvc.log",
+      "bridge_sha256": "c042909358ef6c3e4c2c7be52d7583fc765961335c0284c9db53d2ff37566b71",
+      "remaining": [
+        "Active-job, squad, nondeparting-relative thought and later departure variants",
+        "Typed transport, lifecycle and viewer controls"
       ]
     }
   }

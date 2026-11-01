@@ -99,7 +99,27 @@ local ok,err=xpcall(function()
   result.legacy_diagnostic_group=true
  end
  capture('unit-expel-effect-'..mode..'-before')
- click(476,730)
+ if os.getenv('DF3D_UNIT_EXPEL_EFFECT_SEMANTIC')=='1' then
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+  assert(not sheet.unit_overview_expelling)
+  local size,address=df.sizeof(sheet);local bytes=df.new('uint8_t',size)
+  dfhack.internal.memmove(bytes,address,size)
+  local function apply(id,dest,ids)
+   local args={'df3d','unit-expel-apply-probe',tostring(id),tostring(dest)}
+   for _,value in ipairs(ids)do args[#args+1]=tostring(value)end
+   local output,status=dfhack.run_command_silent(table.unpack(args));assert(status==0,output)
+   return json.decode(output).outcome
+  end
+  result.rejections={apply(unit.id,destination,{2147483000}),apply(unit.id,2147483000,result.affected),apply(2147483000,destination,result.affected)}
+  for _,outcome in ipairs(result.rejections)do assert(outcome==1,'Expected stale intent rejection')end
+  assert(json.encode(snapshot())==json.encode(result.before),'Rejected action changed selected creature')
+  result.semantic_outcome=apply(unit.id,destination,result.affected)
+  result.sheet_unchanged=dfhack.internal.memcmp(bytes,address,size)==0;df.delete(bytes)
+  assert(result.semantic_outcome==2,'Semantic Expel did not apply')
+  assert(result.sheet_unchanged,'Semantic Expel changed native sheet scratch')
+  result.repeat_outcome=apply(unit.id,destination,result.affected)
+  assert(result.repeat_outcome==1,'Already departing creature was accepted again')
+ else click(476,730)end
  result.after=snapshot();result.expelling=sheet.unit_overview_expelling
  if family then result.relative_after=snapshot(family.relative)end
  result.events={}

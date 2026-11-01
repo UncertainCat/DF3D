@@ -19,7 +19,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Minimum-height Zones palette extends behind the bottom toolbar, partly obscuring Sand and Clay. | Retain the scrolling palette wrapper within the space above the toolbar. | Implemented under approval2026-10-28; protected main-scene195546 verifies wheel scrolling, both type selections and cancellation at960x600. `native_zone_defaults.json.palette_resize_reference`, native154748. |
 | Unit Customize retains nickname focus after clicking profession, so subsequent typing changes the nickname. | Use the last field clicked. Implemented under approval2026-10-31; composed live085513 verifies nickname then profession edits. | Protected083457 on2026-10-31 verifies both click orders, typed effects and Enter focus; nickname dispatch8bb4af takes precedence. `native_farm.json.unit_header_dual_focus_reference`. |
 | Creature Combat history scroll arrows move one row on the left half but two on the right. | Keep one-row stepping across the arrow; preserve track and drag behavior. | Implemented under approval2026-10-31. Native121006/121720 confirms first rows6/5/0/1 for left/right/track/drag from7; composed live121720 verifies6/6/0/1 and released drag capture. `native_farm.json.unit_reports_scroll_reference`; QA `unit-reports-scroll-final` passes with documented Godot diagnostics only. |
-| Relatives expelled together receive extra RelativeExpelled thoughts because native checks the obsolete unit-menu list instead of the current departing group. | Exclude the owned departing group from relative-expulsion thoughts; preserve each creature's own Expelled thought. | Approved2026-10-31, implementation pending. Protected215532 gives both departing spouses241+242; diagnostic215707 populates legacy list and removes only242. Native1b1ab8 reads RVA18a1988, game.main_interface.view.expel_total_list; family_reference in unit_expel_effect_reference. |
+| Relatives expelled together receive extra RelativeExpelled thoughts because native checks the obsolete unit-menu list instead of the current departing group. | Exclude the owned departing group from relative-expulsion thoughts; preserve each creature's own Expelled thought. | Implemented in semantic action under approval2026-10-31; protected220152 matches the corrected reference. Public UI remains staged. Protected215532 gives both departing spouses241+242; diagnostic215707 populates legacy list and removes only242. Native1b1ab8 reads RVA18a1988, game.main_interface.view.expel_total_list; family_reference in unit_expel_effect_reference. |
 | Expel shows Nobility for elected-office and absent-family refusals despite distinct native reason codes. | No correction approved or implemented. | Controlled native211331 on2026-10-31 records elected/hereditary/both reason1/0/1 but identical Nobility text. Renderer15d7c8 loads global18a19c0 for its message switch instead of sheet reason192c. `native_farm.json.unit_expel_refusal_reference`; family211652 also renders Nobility for spouse-absent3 and child-absent7. |
 | Overview evaluates pain twice and can show duplicate Pain rows with different colors. | No correction authorized or implemented. | Confirmed native165937 on2026-10-30: pain50 displays palette6 then14. Reference branches165cfe and1662aa; `native_farm.json.unit_health_reference`. Preserve native behavior pending a separate maintainer decision. |
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
@@ -2546,9 +2546,9 @@ as a passing lane. All source saves were preserved. Final runs exit owned
 DF38428/32360 unsaved; screenshots were inspected and live logs contain only
 known startup notices. Core19 passes in unit-expel-effects. Effects are discarded
 by process exit, not structure rollback. Family/relative thoughts, active jobs,
-squad cleanup and later simulation remain unverified. Helper ownership audit,
-the semantic command, transport and viewer remain unfinished; no runtime Expel
-control is added.
+squad cleanup and later simulation remain unverified. The semantic action below
+implements these effects; transport and viewer remain unfinished, with no normal
+Expel control exposed.
 
 Protected215532 adds reciprocal spouses1017/2345 to native Expel. Both share one
 controller and receive their own expulsion history and thought241, plus an extra
@@ -2559,11 +2559,42 @@ which is empty rather than the current view_sheets departing group. Controlled
 241 and lose only242. Original legacy and relationship vectors are restored.
 This native diagnostic is not a runtime ownership exception. The maintainer
 approved using the owned departing group to suppress these extra relative thoughts;
-implementation remains pending. Both owned sessions exit unsaved, source checks
+the semantic action below implements it. Both owned sessions exit unsaved, source checks
 pass, and live logs have only known startup notices. Core19 passes in
 unit-expel-family-effects; family_reference retains the two observations. Enable
 DF3D_UNIT_EXPEL_EFFECT_FAMILY=1 and, for the comparison only,
 DF3D_UNIT_EXPEL_EFFECT_LEGACY_GROUP=1 with the Expel effect lane.
+
+`creature_expel_action_native.h::applyExpel` owns the departing IDs and validates
+current eligibility, family/office refusal, exact expected group and destination
+before mutation. Its caller must enforce epoch/save admission. Unsupported and
+Rejected occur before mutation; exceptions after mutation return Unknown and must
+never be replayed. The diagnostic command is unit-expel-apply-probe with selected
+ID, destination ID and expected departing IDs. Normal transport is not connected.
+
+The action follows1b1825..1b1c26 with pinned semantic helpers:13e720/fe960 create
+the army controller/goal;14dec0 creates and registers history;1349f20 retires
+assignments, room/equipment and fortress responsibilities; b989f0/138f430 retire
+HF site/entity links;13cbf10 and1325080 retire squad/job state. Job cancellation
+uses the existing location-staff signature and flags. Owned thought storage uses
+72510/13eff80/e198e0, already used by location recognition; bb2f30 resolves the
+relative relationship. fdbc0/fdc10 initialize or reset native-owned travel state,
+and a419f0 drops eligible inventory before association with the new controller.
+Cleanup's plotinfo globals include tax-collector/meeting responsibilities, not
+menu drafts. No native view, cursor, selection or camera state supplies inputs.
+The approved correction excludes the owned departing IDs from relative thoughts.
+
+Protected220152 (two spouses expelled) and220305 (Send away to site8) close the
+native confirmation before calling the action. Full recorded post-state for each
+creature, including emotions, plus history and affected IDs, matches native215707
+(corrected comparison) and214712 exactly. Native sheet bytes remain unchanged
+around the action. Wrong expected group, unavailable destination and missing unit
+are rejected without changing the selected snapshot; a repeat after departure is
+also rejected. Source preservation passes and owned processes exit unsaved.
+MSVC and core19 pass; live logs have only known startup notices. Evidence resides
+in unit_expel_action_reference. Enable DF3D_UNIT_EXPEL_EFFECT_SEMANTIC=1 with the
+effect lane. Actual active-job/squad variants, nondeparting-relative thoughts,
+later departure, typed transport, lifecycle and the viewer remain unfinished.
 
 ## Native item holder provider
 

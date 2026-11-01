@@ -88,7 +88,7 @@
 #include "creature_office_native.h"
 #include "creature_header_native.h"
 #include "creature_follow_native.h"
-#include "creature_expel_native.h"
+#include "creature_expel_action_native.h"
 #include "creature_health_native.h"
 #include "modules/Buildings.h"
 #endif
@@ -1637,6 +1637,21 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(!state.mapLoaded||df3d_session::saving())return CR_FAILURE;
           const auto destinations=df3d_creature::expelDestinations();if(!destinations)return CR_FAILURE;
           Json::Value result(Json::arrayValue);for(auto id:*destinations)result.append(id);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="unit-expel-apply-probe") {
+          if(parameters.size()<4 || parameters.size()>10003)return CR_WRONG_USAGE;
+          std::vector<int32_t> values;
+          for(size_t i=1;i<parameters.size();++i) {
+            int32_t value=-1;const auto& raw=parameters[i];
+            const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),value);
+            if(parsed.ec!=std::errc{}||parsed.ptr!=raw.data()+raw.size()||value<(i==2?-1:0))return CR_WRONG_USAGE;
+            values.push_back(value);
+          }
+          if(!state.mapLoaded||df3d_session::saving())return CR_FAILURE;
+          const std::vector<int32_t> expected(values.begin()+2,values.end());
+          const auto outcome=df3d_creature::applyExpel(df::unit::find(values[0]),values[1],expected);
+          Json::Value result(Json::objectValue);result["outcome"]=int(outcome);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="unit-expel-eligible-probe") {

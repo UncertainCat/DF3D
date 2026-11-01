@@ -19,6 +19,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Minimum-height Zones palette extends behind the bottom toolbar, partly obscuring Sand and Clay. | Retain the scrolling palette wrapper within the space above the toolbar. | Implemented under approval2026-10-28; protected main-scene195546 verifies wheel scrolling, both type selections and cancellation at960x600. `native_zone_defaults.json.palette_resize_reference`, native154748. |
 | Unit Customize retains nickname focus after clicking profession, so subsequent typing changes the nickname. | Use the last field clicked. Implemented under approval2026-10-31; composed live085513 verifies nickname then profession edits. | Protected083457 on2026-10-31 verifies both click orders, typed effects and Enter focus; nickname dispatch8bb4af takes precedence. `native_farm.json.unit_header_dual_focus_reference`. |
 | Creature Combat history scroll arrows move one row on the left half but two on the right. | Keep one-row stepping across the arrow; preserve track and drag behavior. | Implemented under approval2026-10-31. Native121006/121720 confirms first rows6/5/0/1 for left/right/track/drag from7; composed live121720 verifies6/6/0/1 and released drag capture. `native_farm.json.unit_reports_scroll_reference`; QA `unit-reports-scroll-final` passes with documented Godot diagnostics only. |
+| Expel shows Nobility for an elected-only office even though its preview reason is ELECTED. | No correction approved or implemented. | Controlled native211331 on2026-10-31 records elected/hereditary/both reason1/0/1 but identical Nobility text. Renderer15d7c8 loads global18a19c0 for its message switch instead of sheet reason192c. `native_farm.json.unit_expel_refusal_reference`. |
 | Overview evaluates pain twice and can show duplicate Pain rows with different colors. | No correction authorized or implemented. | Confirmed native165937 on2026-10-30: pain50 displays palette6 then14. Reference branches165cfe and1662aa; `native_farm.json.unit_health_reference`. Preserve native behavior pending a separate maintainer decision. |
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
@@ -2372,6 +2373,18 @@ paused frame. The source save is unchanged; owned DF exits unsaved. The two GPU
 logs and paired header-wire log contain only the known startup notice. Core QA
 `unit-expel-reference` passes. `unit_expel_navigation_reference` retains the
 bounded oracle; `DF3D_UNIT_EXPEL=1` enables the maintained diagnostic probe.
+
+Protected211331 adds controlled existing-office ELECTED, SUCCESSION_BY_HEIR,
+and combined flag cases. Native reasons are1/0/1, establishing elected precedence;
+all cancel back to the same Overview. Original position flags are restored on
+success/error. `DF3D_UNIT_EXPEL_REFUSALS=1` enables these cases, and
+`unit_expel_refusal_reference` stores the evidence. All three captures display
+Nobility despite the distinct reason codes; this is an uncorrected discovery in
+the native bug register, not authorization to substitute the expected message.
+Core QA `unit-expel-refusals` passes; live logs have only known startup notices
+and the owned source save is unchanged. Family, destinations and confirmation
+remain unverified. Direct roster selection experiments did not preserve native
+sheet identity and are excluded from acceptance and the maintained probe.
 
 The preview is inlined in input handler1aa060 at1b0a75..1b10ed. It resets its
 sheet-owned vectors, checks native role helpers13b9c00/138f4e0, expands historical

@@ -7,6 +7,10 @@ local main=df.global.game.main_interface
 local sheet=main.view_sheets
 local frame=df.global.world.frame_counter
 local observations={}
+local changed_positions={}
+local function restore_positions()
+ for _,saved in ipairs(changed_positions)do saved.position.flags.ELECTED=saved.elected;saved.position.flags.SUCCESSION_BY_HEIR=saved.hereditary end
+end
 local function pointer(x,y)
  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
  g.mouse_x=x//8;g.mouse_y=(y-4)//12;g.precise_mouse_x=x;g.precise_mouse_y=y
@@ -45,7 +49,25 @@ local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
  assert(not sheet.unit_overview_expelling and sheet.open and sheet.active_id==unit.id,'Expel cancel did not restore Overview')
  record('cancel')
+ if os.getenv('DF3D_UNIT_EXPEL_REFUSALS')=='1' then
+  local positions=dfhack.units.getNoblePositions(unit)
+  assert(positions and #positions>0,'Refusal fixture needs an existing native office')
+  local position=positions[1].position
+  changed_positions[1]={position=position,elected=position.flags.ELECTED,hereditary=position.flags.SUCCESSION_BY_HEIR}
+  for _,case in ipairs{{'elected',true,false,1},{'hereditary',false,true,0},{'both',true,true,1}}do
+   position.flags.ELECTED=case[2];position.flags.SUCCESSION_BY_HEIR=case[3]
+   pointer(856,100);df.global.enabler.mouse_lbut_lift=0
+   gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+   assert(sheet.unit_overview_expelling and sheet.unit_overview_expel_cannot_expel_reason==case[4],'Native office refusal differs')
+   record(case[1])
+   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+   assert(not sheet.unit_overview_expelling and sheet.open and sheet.active_id==unit.id,'Refusal cancel lost unit')
+  end
+  restore_positions()
+ end
 end,debug.traceback)
+restore_positions()
 if sheet.unit_overview_expelling then gui.simulateInput(view,'LEAVESCREEN')end
 pointer(400,400)
 local result={success=ok,unit_id=unit.id,observations=observations,error=not ok and err or nil}

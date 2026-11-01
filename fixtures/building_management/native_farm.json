@@ -44447,6 +44447,82 @@
         "Refusal reasons, family expansion, linked destinations and confirmation effects remain unverified.",
         "No runtime Expel API or viewer control implemented; native sheet state is diagnostic evidence only."
       ]
+    },
+    "unit_expel_refusal_reference": {
+      "native_run": "build/stockpile-storage-native-farm-discovery-20261031-211331",
+      "unit_id": 1017,
+      "cases": [
+        {
+          "active_id": 1017,
+          "destinations": [],
+          "expelling": true,
+          "name": "elected",
+          "open": true,
+          "reason": 1,
+          "selected_destination": -1,
+          "units": [],
+          "rows": [
+            {
+              "text": "                                                      Cannot expel or send away:",
+              "y": 13
+            },
+            {
+              "text": "                                                      Nobility",
+              "y": 15
+            }
+          ]
+        },
+        {
+          "active_id": 1017,
+          "destinations": [],
+          "expelling": true,
+          "name": "hereditary",
+          "open": true,
+          "reason": 0,
+          "selected_destination": -1,
+          "units": [],
+          "rows": [
+            {
+              "text": "                                                      Cannot expel or send away:",
+              "y": 13
+            },
+            {
+              "text": "                                                      Nobility",
+              "y": 15
+            }
+          ]
+        },
+        {
+          "active_id": 1017,
+          "destinations": [],
+          "expelling": true,
+          "name": "both",
+          "open": true,
+          "reason": 1,
+          "selected_destination": -1,
+          "units": [],
+          "rows": [
+            {
+              "text": "                                                      Cannot expel or send away:",
+              "y": 13
+            },
+            {
+              "text": "                                                      Nobility",
+              "y": 15
+            }
+          ]
+        }
+      ],
+      "fixture": "Temporarily toggle existing position ELECTED and SUCCESSION_BY_HEIR flags; restore both on success/error. No expulsion confirmation.",
+      "verification": "Native reason codes1/0/1, cancel returns same Overview, paused frame unchanged, source save unchanged; only known Godot startup diagnostics.",
+      "rendering_discrepancy": "All three native captures display Nobility. Renderer15d7c8 loads switch selector from global RVA18a19c0 rather than the sheet reason at192c. Jump table19eb80 maps reason1 to Holds elected office, but that text is not observed here. No correction approved or implemented.",
+      "qa": "build/qa/unit-expel-refusals",
+      "remaining": [
+        "Meeting-worker refusal",
+        "Spouse/child refusal and affected family expansion",
+        "Linked destination choices",
+        "Confirmation effects"
+      ]
     }
   }
 }

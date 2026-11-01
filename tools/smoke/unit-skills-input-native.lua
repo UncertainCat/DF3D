@@ -1,6 +1,6 @@
 -- Native input oracle only; does not alter skill or knowledge records.
 local unit,view,capture,out=...
-local gui=require('gui');local json=require('json')
+local gui=require('gui');local json=require('json');local script=require('gui.script')
 local sheet=df.global.game.main_interface.view_sheets;local g=df.global.gps;local e=df.global.enabler
 local frame=df.global.world.frame_counter;local observations={}
 local function pointer(x,y)
@@ -22,9 +22,17 @@ local function select(name)
  end
  error('Missing Skills input tab '..name)
 end
+local function resize(size)
+ local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('name-resize-'..size);f:close()
+ assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+ local deadline=dfhack.getTickCount()+30000
+ while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end
+  assert(dfhack.getTickCount()<deadline,'Skills resize acknowledgement timed out');script.sleep(1,'frames')end
+ assert(os.remove(out..'/owner-input-ack'));view:render(dfhack.getTickCount());script.sleep(2,'frames')
+end
 local function record(name,shot)
  view:render(dfhack.getTickCount())
- observations[#observations+1]={name=name,first=sheet.scroll_position_unit_skill,dragging=sheet.scrolling_unit_skill,tab=sheet.unit_skill_active_tab,main_tab=sheet.active_sub_tab}
+ observations[#observations+1]={name=name,first=sheet.scroll_position_unit_skill,dragging=sheet.scrolling_unit_skill,tab=sheet.unit_skill_active_tab,main_tab=sheet.active_sub_tab,grid={g.dimx,g.dimy}}
  if shot then capture('unit-skills-input-'..name)end
  assert(df.global.pause_state and df.global.world.frame_counter==frame,'Skills input advanced simulation')
 end
@@ -49,8 +57,14 @@ local ok,err=xpcall(function()
  reset();select('Labor');record('labor-after-scroll',true);select('Knowledge');record('knowledge-return',true)
  reset();select('Combat');record('combat-after-scroll',true);select('Knowledge');record('knowledge-from-combat',true)
  reset();select('Overview');record('overview');select('Skills');record('skills-return',true)
+ if os.getenv('DF3D_UNIT_SKILLS_RESIZE')=='1'then
+  select('Knowledge');sheet.scroll_position_unit_skill=31
+  for _,size in ipairs{'minimum','small','medium','wide','default'}do
+   resize(size);pointer(0,0);record('resize-'..size,true)
+  end
+ end
 end,debug.traceback)
-release();select('Skills');select('Labor');sheet.scroll_position_unit_skill=0;sheet.scrolling_unit_skill=false;pointer(400,400)
+release();if os.getenv('DF3D_UNIT_SKILLS_RESIZE')=='1'then resize('default')end;select('Skills');select('Labor');sheet.scroll_position_unit_skill=0;sheet.scrolling_unit_skill=false;pointer(400,400)
 local result={success=ok,unit_id=unit.id,observations=observations,error=not ok and err or nil}
 local f=assert(io.open(out..'/unit-skills-input-native.json','w'));f:write(json.encode(result));f:close()
 assert(ok,err);return result

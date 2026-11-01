@@ -57,6 +57,18 @@ func run() -> void:
   var r: Array=sample.rect;var hash:=HashingContext.new();hash.start(HashingContext.HASH_SHA256)
   hash.update(image.get_region(Rect2i(r[0],r[1],r[2],r[3])).get_data())
   if hash.finish().hex_encode()!=sample.rgb_sha256:push_error("Skills scrolled pixels differ: "+sample.name);failures+=1
+ var resizing: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/building_management/native_farm.json")).chest_header_reference.unit_skills_reference.resize_reference
+ view.first=31;view.present(fixture.cases[4].page)
+ for sample in resizing.cases:
+  root.size=Vector2i(sample.viewport[0],sample.viewport[1]);background.size=root.size
+  var v: Array=sample.view_rect;view.position=Vector2(v[0],v[1]);view.size=Vector2(v[2],v[3])
+  await process_frame;await process_frame;await RenderingServer.frame_post_draw
+  if view.first!=int(sample.first) or view.capacity()!=int(sample.capacity):push_error("Skills resize scroll/capacity differs: "+sample.name);failures+=1
+  var image:=root.get_texture().get_image();image.convert(Image.FORMAT_RGB8)
+  image.save_png(ProjectSettings.globalize_path("res://../../../build/creature-skills-"+sample.name+".png"))
+  var r: Array=sample.rect;var hash:=HashingContext.new();hash.start(HashingContext.HASH_SHA256)
+  hash.update(image.get_region(Rect2i(r[0],r[1],r[2],r[3])).get_data())
+  if hash.finish().hex_encode()!=sample.rgb_sha256:push_error("Skills resize pixels differ: "+sample.name);failures+=1
  view.queue_free();world.queue_free();background.queue_free();await process_frame
  if failures==0:print("CREATURE_SKILLS_CAPTURE_PASS")
  quit(1 if failures else 0)

@@ -65602,6 +65602,128 @@
           "initial_failed_run": "build/stockpile-storage-native-farm-discovery-20261101-052601",
           "initial_failure": "Diagnostic matched main Labor tab instead of Skills Labor subtab; corrected row range."
         }
+      },
+      "resize_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-053040",
+        "scope": "Actual minimum is912x552 despite640x480 resize request. Native Knowledge first31 across five viewport sizes; no long-caption clipping or panel lifecycle acceptance.",
+        "cases": [
+          {
+            "name": "resize-minimum",
+            "viewport": [
+              912,
+              552
+            ],
+            "view_rect": [
+              136,
+              228,
+              472,
+              276
+            ],
+            "first": 31,
+            "capacity": 7,
+            "rect": [
+              144,
+              228,
+              456,
+              252
+            ],
+            "rgb_sha256": "2a20c57bed685448f0bcd152da22df80ff0f225c70722ba738579741f5bd6801"
+          },
+          {
+            "name": "resize-small",
+            "viewport": [
+              960,
+              600
+            ],
+            "view_rect": [
+              184,
+              228,
+              472,
+              324
+            ],
+            "first": 31,
+            "capacity": 8,
+            "rect": [
+              192,
+              228,
+              456,
+              288
+            ],
+            "rgb_sha256": "2e92808c14f4ab2fe12991c916f70776e5ab2b1fcdcfe57b700e65ecdabc9f49"
+          },
+          {
+            "name": "resize-medium",
+            "viewport": [
+              1200,
+              720
+            ],
+            "view_rect": [
+              424,
+              228,
+              472,
+              444
+            ],
+            "first": 31,
+            "capacity": 12,
+            "rect": [
+              432,
+              228,
+              456,
+              432
+            ],
+            "rgb_sha256": "e30069111f96a4b17dd1c3ddd3cdbdc9c022f170745c1412d8a70f837b4e8ee5"
+          },
+          {
+            "name": "resize-wide",
+            "viewport": [
+              1600,
+              900
+            ],
+            "view_rect": [
+              824,
+              228,
+              472,
+              624
+            ],
+            "first": 31,
+            "capacity": 17,
+            "rect": [
+              832,
+              228,
+              456,
+              612
+            ],
+            "rgb_sha256": "f892791c47bc3fe41bd29924a74340b510dc3d7d32ff3fc56810a99ea997ea06"
+          },
+          {
+            "name": "resize-default",
+            "viewport": [
+              1200,
+              800
+            ],
+            "view_rect": [
+              424,
+              232,
+              472,
+              516
+            ],
+            "first": 31,
+            "capacity": 14,
+            "rect": [
+              432,
+              232,
+              456,
+              504
+            ],
+            "rgb_sha256": "223a30645a4278ff3d633f17d424c32f928e83d25efe99b23323e8cf1fd0ddd7"
+          }
+        ],
+        "verification": {
+          "run": "build/qa/skills-resize-render",
+          "status": "passed_with_known_issues",
+          "source_preservation": "Owned source unchanged",
+          "native_df_pid": 39672
+        }
       }
     }
   }

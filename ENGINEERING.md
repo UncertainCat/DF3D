@@ -3480,7 +3480,17 @@ source preservation. Final live logs contain only known startup notices;
 `skills-input-render` passes with known renderer diagnostics and
 `skills-input-core` passes cleanly.
 
-This view is not yet connected to `creature_sheet.gd`. Resize/clipping,
+Protected053040 resizes Knowledge with shared first31 through the native enforced
+minimum912x552,960x600,1200x720,1600x900 and1200x800. Native retains31 while
+clamping the visible start for each capacity7/8/12/17/14. The640x480 request is
+clamped by DF to912x552; tests use the observed size. `resize_reference` stores
+native body crop hashes and geometry. `skills-resize-render` matches all five
+standalone Godot crops and retained positions, passing with known renderer
+notices. `skills-resize-core` passes cleanly. DF39672 exits unsaved with source
+preservation; all three live Godot logs have only known startup notices. The
+panel width remains fixed, so this does not exercise long-caption clipping.
+
+This view is not yet connected to `creature_sheet.gd`. Long-caption clipping,
 hover/XP, on-demand Knowledge detail navigation and panel/session lifecycle
 remain unaccepted. Baseline captures do not cover music,
 dance or other race/caste colors. The creature route remains staged; this pixel

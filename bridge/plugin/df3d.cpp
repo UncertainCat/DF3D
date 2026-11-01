@@ -898,9 +898,9 @@ buildUnits(color_ostream& out, flatbuffers::FlatBufferBuilder& fbb, bool hintTer
     PerformanceStatuses performances;
 
     for (df::unit* u : world->units.active) {
-        // Active + alive only: corpses and off-map units are not part of the
-        // mirrored world yet.
-        if (!Units::isActive(u) || Units::isDead(u))
+        // Ghosts remain selectable native creatures. DFHack's isDead includes
+        // ghosts, so use the killed flag only for non-ghost corpse exclusion.
+        if (!Units::isActive(u) || (u->flags2.bits.killed && !u->flags3.bits.ghostly))
             continue;
         // getPosition resolves caged units to their cage's tile. Units with
         // any negative coordinate (pos sentinel is -30000) are in cages whose
@@ -944,7 +944,7 @@ buildUnits(color_ostream& out, flatbuffers::FlatBufferBuilder& fbb, bool hintTer
             const auto& attack = action->data.attack;
             if (attack.target_unit_id < 0 || attack.target_unit_id == u->id) continue;
             auto* target = df::unit::find(attack.target_unit_id);
-            if (!target || !Units::isActive(target) || Units::isDead(target)) continue;
+            if (!target || !Units::isActive(target) || (target->flags2.bits.killed && !target->flags3.bits.ghostly)) continue;
             const auto tp = Units::getPosition(target);
             const auto* tr = df::creature_raw::find(target->race);
             if (tp.x < 0 || tp.y < 0 || tp.z < 0 || tp.x >= mx || tp.y >= my || tp.z >= mz ||

@@ -18,6 +18,7 @@ func _initialize() -> void:
      push_error("Health native text/color differs: %s box%d line%d: %s" % [reference.name,box_index,i,actual[i].text]);failures+=1
  var additional_pages: Array=fixture.syndrome_history_reference.formatted_pages.duplicate()
  additional_pages.append_array(fixture.clinical_cases_reference.formatted_pages)
+ additional_pages.append_array(fixture.description_cases_reference.formatted_pages)
  for reference in additional_pages:
   for box_index in reference.boxes.size():
    var expected: Dictionary=reference.boxes[box_index]

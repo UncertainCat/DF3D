@@ -127,6 +127,21 @@ local ok,err=xpcall(function()
   pages[#pages+1]=sample
   capture('unit-health-page-'..name:lower())
  end
+ if os.getenv('DF3D_UNIT_HEALTH_CASE')=='ghost'then
+  local camera={x=df.global.window_x,y=df.global.window_y,z=df.global.window_z}
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+  dfhack.gui.revealInDwarfmodeMap({x=unit.pos.x+8,y=unit.pos.y,z=unit.pos.z},true);view:render(dfhack.getTickCount())
+  local found=false
+  for y=0,g.dimy-1 do for x=0,49 do
+   g.mouse_x=x;g.mouse_y=y;g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+6
+   local point=dfhack.gui.getMousePos(true)
+   if point and point.x==unit.pos.x and point.y==unit.pos.y and point.z==unit.pos.z then click(g.precise_mouse_x,g.precise_mouse_y);found=true;break end
+  end if found then break end end
+  local selected=found and sheet.open and sheet.active_sheet==df.view_sheet_type.UNIT and sheet.active_id==unit.id
+  df.global.window_x=camera.x;df.global.window_y=camera.y;df.global.window_z=camera.z;view:render(dfhack.getTickCount())
+  assert(selected,'Native map click did not select ghost')
+  capture('unit-health-ghost-map-selection')
+ end
  if os.getenv('DF3D_UNIT_HEALTH_LAYOUT')=='1'then
   local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-health%-pages%-native.lua$','unit-health-layout-native.lua')
   assert(loadfile(source))(unit,view,capture,out)

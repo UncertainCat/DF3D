@@ -94,9 +94,10 @@ func unit_carrier(expected: Dictionary) -> void:
 		if inspector.creature_sheet.fact_value(row,"record_type")=="overview_status":overview_status=row
 	var overview_case: String=expected.get("overview_case","child")
 	var cannot_learn: bool=expected.get("header_case","")=="cannot-learn"
-	check(inspector.creature_sheet.fact_value(overview_status,"needs_summary_eligible","")==("no" if overview_case=="child" or cannot_learn else "yes"),"Native needs gate differs")
+	var ghost: bool=expected.get("health_case","")=="ghost"
+	check(inspector.creature_sheet.fact_value(overview_status,"needs_summary_eligible","")==("no" if overview_case=="child" or cannot_learn or ghost else "yes"),"Native needs gate differs")
 	if overview_case=="squad-alias":check(inspector.creature_sheet.fact_value(overview_status,"squad_text","")=="Native squad alias","Native squad alias differs")
-	elif overview_case!="squad":check(inspector.creature_sheet.fact_value(overview_status,"squad_text","")==("" if cannot_learn else "None"),"Native unassigned squad summary differs")
+	elif overview_case!="squad":check(inspector.creature_sheet.fact_value(overview_status,"squad_text","")==("" if cannot_learn or ghost else "None"),"Native unassigned squad summary differs")
 	var focus_text: String={"focused":"Focused!","focused-mild":"Focused","distracted":"Distracted!","distracted-mild":"Distracted","fresh-focused":"Focused!","fresh-distracted":"Distracted!"}.get(overview_case,"")
 	check(inspector.creature_sheet.fact_value(overview_status,"focus_text","")==focus_text,"Native focus header differs")
 	var offices: Array=inspector.creature_sheet.records_for("identity").filter(func(row):return inspector.creature_sheet.fact_value(row,"record_type")=="overview_office")
@@ -185,7 +186,8 @@ func unit_carrier(expected: Dictionary) -> void:
 		if failed:return
 	if FileAccess.file_exists(directory+"/unit-customize-captions.json"):
 		await exercise_customize(inspector,int(expected.snapshot.id))
-	if overview_case=="neutral":await exercise_expel_preview(inspector,target)
+	if ghost:check(not is_instance_valid(inspector.expel_button) or not inspector.expel_button.is_visible_in_tree(),"Ghost exposed Expel absent from native")
+	elif overview_case=="neutral":await exercise_expel_preview(inspector,target)
 	key(KEY_ESCAPE);await process_frame
 	check(scene._ui.host.active==null and not inspector.panel.visible,"Unit sheet Escape did not release input")
 	for label in health_labels:

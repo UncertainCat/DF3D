@@ -3297,13 +3297,19 @@ Owned DF33788 exits unsaved with source preservation; all three Godot processes
 have only the known startup notice. These cases establish formatting, not ghost
 spawning/behavior or rendered parity for the variants. Controlled curse modifiers
 verify native text with guarded source records, not applying a curse.
-Protected031429 attempts the ghost variant through the main scene but fails
-before opening Health: collectUnits filters Units::isDead (including ghostly),
-so inspect_entity cannot resolve its mirrored position for carrier navigation.
-The owned formatter passes, but rendered ghost support remains unfinished.
-The source save is unchanged and owned DF40208 exits unsaved; the scene errors
-are classified as failures, not known engine diagnostics. Broader appearance
-coverage also remains open.
+Unit streaming retains active ghosts, including ghosts marked killed, while
+excluding inactive units and non-ghost corpses. Attack-target resolution uses
+the same eligibility. DFHack isDead includes ghostly and previously prevented
+carrier navigation from resolving a mirrored position (protected031429).
+Protected032126 verifies native map selection and actual DF3D carrier navigation
+for the controlled ForlornHaunt specimen. All five typed Health pages render
+with exact native text-body pixels; Description has5 wrapped lines. Its lines
+and character colors are regression fixtures. Native ghosts omit Overview
+needs/squad summary and Expel; the rendered checks preserve those gates.
+Owned DF12700 exits unsaved with source preservation and only known Godot
+startup notices. Bridge SHA065f825fdda593547115decf9aa31f68b845f960dc89cb525043572c9c30e9a9.
+This does not establish ghost behavior, combat execution, killed-flag variants
+or every ghost artwork case. Broader appearance coverage remains open.
 
 `formatted_text_reference` records protected021536 native text-box output:
 53-column boxes, exact wrapped lines and per-character packed colors. Native

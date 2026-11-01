@@ -3543,6 +3543,37 @@ Existing material-cache isolation covers14add70's semantic cache only; it does
 not isolate item/image mutations or establish the remaining subtype lifetimes.
 No new runtime admission follows from this audit.
 
+### Knowledge coin-caption source requirements
+
+The unnamed-artifact short-caption path can dispatch coin descriptionca0d00.
+The supported executable reads the signed coin-batch index at item offset0xe8;
+only -1 skips the lookup. Otherwise ca0d2e indexes `world.coin_batches.all`
+directly, without checking its length or the selected pointer. Issuer helper
+5be970 reads batch.entity at0x0c. An entity ID of -1 skips issuer formatting;
+other IDs use ba0a0, then pass entity.name to a94030 and dereference entity.raw
+without checking whether the lookup succeeded. Production admission must
+validate the batch index, selected batch, and nonnegative issuer reference/raw
+before this path runs. This is a source-validation obligation, not evidence of
+a naturally occurring native crash or authorization to change valid captions.
+
+Issuer formatting uses owned local strings and appends to the caller's output.
+The direct non-stack stores in5be970 write terminators/spaces into those local
+string buffers. CURRENCY_BY_YEAR (raw flag10) selects batch.year and52c2b0,
+which formats the integer using a stack-owned stream; it is not a historical
+figure lookup. Otherwise batch.ruler resolves a historical figure with a
+checked binary search, then formats its name. A missing ruler is skipped.
+The name formattera94030 is already pinned and used by the creature header and
+written-description adapters. These observations narrow the shared-helper
+review; they do not establish live coin-artifact text parity or arbitrary
+container/corpse caption acceptance.
+
+The local `knowledge-coin-audit.json` records executable and function hashes
+for5be970 (0x536 bytes) and52c2b0 (0xd8 bytes), with disassembly retained beside
+it. No formatter admission or UI exposure changes follow from this static
+review. Add valid coin-batch/issuer/year/ruler native comparisons before
+claiming the coin path accepted; malformed indices must not be sent to native
+as an experiment.
+
 ### Knowledge artifact initialization effects
 
 Protected native063142 on2026-11-01 tests temporary inorganic statues and

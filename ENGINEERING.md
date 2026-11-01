@@ -19,7 +19,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Minimum-height Zones palette extends behind the bottom toolbar, partly obscuring Sand and Clay. | Retain the scrolling palette wrapper within the space above the toolbar. | Implemented under approval2026-10-28; protected main-scene195546 verifies wheel scrolling, both type selections and cancellation at960x600. `native_zone_defaults.json.palette_resize_reference`, native154748. |
 | Unit Customize retains nickname focus after clicking profession, so subsequent typing changes the nickname. | Use the last field clicked. Implemented under approval2026-10-31; composed live085513 verifies nickname then profession edits. | Protected083457 on2026-10-31 verifies both click orders, typed effects and Enter focus; nickname dispatch8bb4af takes precedence. `native_farm.json.unit_header_dual_focus_reference`. |
 | Creature Combat history scroll arrows move one row on the left half but two on the right. | Keep one-row stepping across the arrow; preserve track and drag behavior. | Implemented under approval2026-10-31. Native121006/121720 confirms first rows6/5/0/1 for left/right/track/drag from7; composed live121720 verifies6/6/0/1 and released drag capture. `native_farm.json.unit_reports_scroll_reference`; QA `unit-reports-scroll-final` passes with documented Godot diagnostics only. |
-| Expel shows Nobility for an elected-only office even though its preview reason is ELECTED. | No correction approved or implemented. | Controlled native211331 on2026-10-31 records elected/hereditary/both reason1/0/1 but identical Nobility text. Renderer15d7c8 loads global18a19c0 for its message switch instead of sheet reason192c. `native_farm.json.unit_expel_refusal_reference`. |
+| Expel shows Nobility for elected-office and absent-family refusals despite distinct native reason codes. | No correction approved or implemented. | Controlled native211331 on2026-10-31 records elected/hereditary/both reason1/0/1 but identical Nobility text. Renderer15d7c8 loads global18a19c0 for its message switch instead of sheet reason192c. `native_farm.json.unit_expel_refusal_reference`; family211652 also renders Nobility for spouse-absent3 and child-absent7. |
 | Overview evaluates pain twice and can show duplicate Pain rows with different colors. | No correction authorized or implemented. | Confirmed native165937 on2026-10-30: pain50 displays palette6 then14. Reference branches165cfe and1662aa; `native_farm.json.unit_health_reference`. Preserve native behavior pending a separate maintainer decision. |
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
@@ -2382,9 +2382,24 @@ success/error. `DF3D_UNIT_EXPEL_REFUSALS=1` enables these cases, and
 Nobility despite the distinct reason codes; this is an uncorrected discovery in
 the native bug register, not authorization to substitute the expected message.
 Core QA `unit-expel-refusals` passes; live logs have only known startup notices
-and the owned source save is unchanged. Family, destinations and confirmation
+and the owned source save is unchanged. Basic family cases are covered below; destinations and confirmation
 remain unverified. Direct roster selection experiments did not preserve native
 sheet identity and are excluded from acceptance and the maintained probe.
+
+Protected211652 adds five controlled family cases on the same selected unit.
+A temporary historical spouse/child link points to adult citizen2345; the minor
+case temporarily changes the relative's profession, and absence toggles inactive.
+Native includes the present spouse/minor child after selected unit1017, refuses
+absent spouse/child with reasons3/7, and omits the adult child. All cases cancel
+back to Overview without advancing the paused frame. Original family links,
+relative flags and profession are restored on success/error; only newly allocated
+links are deleted. `DF3D_UNIT_EXPEL_FAMILY=1` enables the probe, and
+`unit_expel_family_reference` retains ordered unit IDs, captions and reason codes.
+Native absent-family messages also incorrectly say Nobility. Core QA
+`unit-expel-family` passes; live logs contain only known startup notices and the
+owned source save is unchanged. Multiple relatives, family office restrictions,
+missing/dead/off-site relatives, accompanying units, destinations and confirmation
+remain unverified. This evidence does not establish complete Expel functionality.
 
 The preview is inlined in input handler1aa060 at1b0a75..1b10ed. It resets its
 sheet-owned vectors, checks native role helpers13b9c00/138f4e0, expands historical
@@ -2396,7 +2411,7 @@ contracts. No standalone owned-preview API has been established. Sheet fields
 Confirmation1b1825..1b1c26 allocates an activity, records expulsion history when
 there is no destination, invokes unit cleanup/assignment helpers, emits thoughts,
 and associates every departing unit with that activity. It is not equivalent to
-setting a departure flag. These effects, refusal cases, family expansion and
+setting a departure flag. These effects, remaining refusal/family cases and
 linked destinations still need native acceptance before implementation can be
 exposed. The current probe never confirms expulsion; no runtime control is added.
 

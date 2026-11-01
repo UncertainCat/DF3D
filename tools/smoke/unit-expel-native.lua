@@ -8,6 +8,16 @@ local sheet=main.view_sheets
 local frame=df.global.world.frame_counter
 local observations={}
 local changed_positions={}
+local family
+local function restore_family()
+ if not family then return end
+ family.relative.flags1.whole=family.flags
+ family.relative.profession=family.profession
+ family.hf.histfig_links:resize(0)
+ for _,link in ipairs(family.links)do family.hf.histfig_links:insert('#',link)end
+ for _,link in ipairs(family.created)do link:delete()end
+ family=nil
+end
 local function restore_positions()
  for _,saved in ipairs(changed_positions)do saved.position.flags.ELECTED=saved.elected;saved.position.flags.SUCCESSION_BY_HEIR=saved.hereditary end
 end
@@ -66,7 +76,36 @@ local ok,err=xpcall(function()
   end
   restore_positions()
  end
+ if os.getenv('DF3D_UNIT_EXPEL_FAMILY')=='1' then
+  local relative
+  for _,candidate in ipairs(df.global.world.units.active)do
+   local positions=dfhack.units.getNoblePositions(candidate)
+   if candidate.id~=unit.id and dfhack.units.isCitizen(candidate) and dfhack.units.getAge(candidate)>18 and not candidate.flags1.inactive and (not positions or #positions==0) then relative=candidate;break end
+  end
+  assert(relative,'Family fixture needs another adult citizen without office')
+  local hf=assert(df.historical_figure.find(unit.hist_figure_id))
+  local related_hf=assert(df.historical_figure.find(relative.hist_figure_id))
+  family={hf=hf,relative=relative,flags=relative.flags1.whole,profession=relative.profession,links=vector(hf.histfig_links),created={}}
+  local spouse=df.histfig_hf_link_spousest:new();family.created[#family.created+1]=spouse
+  local child=df.histfig_hf_link_childst:new();family.created[#family.created+1]=child
+  for _,link in ipairs(family.created)do link.target_hf=related_hf.id;link.link_strength=100 end
+  for _,case in ipairs{{'spouse-present',spouse,false,false,-1,true},{'spouse-absent',spouse,true,false,3,false},{'child-present',child,false,true,-1,true},{'child-absent',child,true,true,7,false},{'adult-child',child,false,false,-1,false}}do
+   hf.histfig_links:resize(0);hf.histfig_links:insert('#',case[2])
+   relative.flags1.inactive=case[3];relative.profession=case[4] and df.profession.CHILD or family.profession
+   pointer(856,100);df.global.enabler.mouse_lbut_lift=0
+   gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+   record(case[1]);observations[#observations].relative_id=relative.id
+   assert(sheet.unit_overview_expelling and sheet.unit_overview_expel_cannot_expel_reason==case[5],'Native family refusal differs: '..case[1])
+   local included=false;for _,id in ipairs(sheet.unit_overview_expel_total_unid)do if id==relative.id then included=true end end
+   assert(included==case[6],'Native affected family list differs: '..case[1])
+   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+   assert(not sheet.unit_overview_expelling and sheet.open and sheet.active_id==unit.id,'Family cancel lost unit')
+  end
+  restore_family()
+ end
 end,debug.traceback)
+restore_family()
 restore_positions()
 if sheet.unit_overview_expelling then gui.simulateInput(view,'LEAVESCREEN')end
 pointer(400,400)

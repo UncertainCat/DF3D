@@ -44523,6 +44523,147 @@
         "Linked destination choices",
         "Confirmation effects"
       ]
+    },
+    "unit_expel_family_reference": {
+      "native_run": "build/stockpile-storage-native-farm-discovery-20261031-211652",
+      "unit_id": 1017,
+      "cases": [
+        {
+          "active_id": 1017,
+          "destinations": [],
+          "expelling": true,
+          "name": "spouse-present",
+          "open": true,
+          "reason": -1,
+          "relative_id": 2345,
+          "selected_destination": -1,
+          "units": [
+            1017,
+            2345
+          ],
+          "rows": [
+            {
+              "text": "                                                             Stodir Tangakurvad, bookkeeper",
+              "y": 14
+            },
+            {
+              "text": "                                                             Leto Jamaslonel, Human Bard",
+              "y": 17
+            },
+            {
+              "text": "                                                         Expel                                          Cancel",
+              "y": 60
+            }
+          ]
+        },
+        {
+          "active_id": 1017,
+          "destinations": [],
+          "expelling": true,
+          "name": "spouse-absent",
+          "open": true,
+          "reason": 3,
+          "relative_id": 2345,
+          "selected_destination": -1,
+          "units": [
+            1017
+          ],
+          "rows": [
+            {
+              "text": "                                                      Cannot expel or send away:",
+              "y": 13
+            },
+            {
+              "text": "                                                      Nobility",
+              "y": 15
+            }
+          ]
+        },
+        {
+          "active_id": 1017,
+          "destinations": [],
+          "expelling": true,
+          "name": "child-present",
+          "open": true,
+          "reason": -1,
+          "relative_id": 2345,
+          "selected_destination": -1,
+          "units": [
+            1017,
+            2345
+          ],
+          "rows": [
+            {
+              "text": "                                                             Stodir Tangakurvad, bookkeeper",
+              "y": 14
+            },
+            {
+              "text": "                                                             Leto Jamaslonel, Human Child",
+              "y": 17
+            },
+            {
+              "text": "                                                         Expel                                          Cancel",
+              "y": 60
+            }
+          ]
+        },
+        {
+          "active_id": 1017,
+          "destinations": [],
+          "expelling": true,
+          "name": "child-absent",
+          "open": true,
+          "reason": 7,
+          "relative_id": 2345,
+          "selected_destination": -1,
+          "units": [
+            1017
+          ],
+          "rows": [
+            {
+              "text": "                                                      Cannot expel or send away:",
+              "y": 13
+            },
+            {
+              "text": "                                                      Nobility",
+              "y": 15
+            }
+          ]
+        },
+        {
+          "active_id": 1017,
+          "destinations": [],
+          "expelling": true,
+          "name": "adult-child",
+          "open": true,
+          "reason": -1,
+          "relative_id": 2345,
+          "selected_destination": -1,
+          "units": [
+            1017
+          ],
+          "rows": [
+            {
+              "text": "                                                             Stodir Tangakurvad, bookkeeper",
+              "y": 14
+            },
+            {
+              "text": "                                                         Expel                                          Cancel",
+              "y": 60
+            }
+          ]
+        }
+      ],
+      "fixture": "Same selected unit; temporarily replace its historical family links with one controlled spouse/child link to adult citizen2345. Toggle relative inactive/profession for absent/minor cases. Restore all original links, flags and profession on success/error; delete only newly allocated links.",
+      "verification": "Each native preview and Escape matches expected reason/inclusion; paused frame unchanged. Owned source unchanged, exited unsaved. No confirmation. Live logs have only known startup notices.",
+      "qa": "build/qa/unit-expel-family",
+      "remaining": [
+        "Family office and meeting-worker refusals",
+        "Multiple family members, ordering and accompanying units",
+        "Missing/dead/off-site historical relatives",
+        "Linked destinations",
+        "Confirmation effects"
+      ]
     }
   }
 }

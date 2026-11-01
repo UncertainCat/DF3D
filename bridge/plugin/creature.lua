@@ -465,35 +465,14 @@ return function(request)
   end)
  end)
  section(15,function(s)
-  if not hf then return absent(s,'Creature has no historical figure')end
-  each(s,hf.entity_links,function(v,i)
-   local entity=df.historical_entity.find(v.entity_id)
-   local r=record(s,i,entity and dfhack.translation.translateName(entity.name,true) or '',v.entity_id)
-   local kind=v:getType()
-   local membership=enum(df.histfig_entity_link_type,kind)
-   if entity then
-    fact(s,r,'entity_type',enum(df.historical_entity_type,entity.type))
-    if entity.type==df.historical_entity_type.Guild and #entity.guild_professions>0 then
-     local profession=entity.guild_professions[0].profession
-     fact(s,r,'guild_profession',profession)
-     if df.profession.attrs[profession]then fact(s,r,'guild_profession_name',df.profession.attrs[profession].caption)end
-    end
-    if kind==df.histfig_entity_link_type.MEMBER and entity.type==df.historical_entity_type.Civilization then membership='Citizen' end
-    if kind==df.histfig_entity_link_type.POSITION or kind==df.histfig_entity_link_type.FORMER_POSITION then
-     local assignment=utils.binsearch(entity.positions.assignments,v.assignment_id,'id')
-     local position=assignment and utils.binsearch(entity.positions.own,assignment.position_id,'id')
-     if position then
-      local name=(u.sex==0 and position.name_female[0] or u.sex==1 and position.name_male[0] or '')
-      if name=='' then name=position.name[0]end
-      fact(s,r,'position',name);fact(s,r,'former',kind==df.histfig_entity_link_type.FORMER_POSITION and 'yes' or 'no')
-     end
-    end
-    if kind==df.histfig_entity_link_type.SQUAD or kind==df.histfig_entity_link_type.FORMER_SQUAD then
-     fact(s,r,'squad_id',v.squad_id);fact(s,r,'former',kind==df.histfig_entity_link_type.FORMER_SQUAD and 'yes' or 'no')
-    end
-   end
-   fact(s,r,'membership',membership);fact(s,r,'strength',v.link_strength)
-  end)
+  if not request.groups then return end
+  for i,value in ipairs(request.groups(u.id))do
+   local r=record(s,i-1,value.caption,value.entity_id)
+   fact(s,r,'native_type',value.type_caption);fact(s,r,'native_role',value.role)
+   fact(s,r,'link_type',value.link_type);fact(s,r,'position_id',value.position_id)
+   fact(s,r,'assignment_id',value.assignment_id);fact(s,r,'spouse',value.spouse)
+   fact(s,r,'reputation',value.reputation);fact(s,r,'reputation_level',value.reputation_level)
+  end
  end)
  section(16,function(s)
   local p=personality(s);if not p then return end

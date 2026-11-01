@@ -17,6 +17,7 @@ var items_view
 var health_view
 var kills_view
 var relations_view
+var groups_view
 var uniform_view
 var skills_view
 var knowledge_view
@@ -34,6 +35,7 @@ func reset(id: int):
  if is_instance_valid(health_view):health_view.page_key="";health_view.first=0
  if is_instance_valid(kills_view):kills_view.first=0;kills_view.scrollbar.dragging=false
  if is_instance_valid(relations_view):relations_view.first=0;relations_view.scrollbar.dragging=false
+ if is_instance_valid(groups_view):groups_view.first=0;groups_view.scrollbar.dragging=false
  if is_instance_valid(uniform_view):uniform_view.first=0;uniform_view.scrollbar.dragging=false
  if is_instance_valid(skills_view):skills_view.first=0;skills_view.scrollbar.dragging=false
  if is_instance_valid(rooms_view):rooms_view.first=0;rooms_view.scrollbar.dragging=false
@@ -182,25 +184,16 @@ func section(parent: Node, key: String, heading := true, limit := 10000):
   elif key not in ["inventory","uniform"]: title=title.left(1).to_upper()+title.substr(1)
   var caption: Control
   if key=="skills": caption=paragraph(row,skill_spans(record),0)
-  else: caption=text(row,title,Color(0,1,1) if key=="groups" else Color(1,.85,.25) if key=="inventory" else Color.WHITE)
+  else: caption=text(row,title,Color(1,.85,.25) if key=="inventory" else Color.WHITE)
   var facts := record_text(record,key)
-  if key=="groups": facts=display_word(fact_value(record,"position",fact_value(record,"membership")))
-  elif key=="relationships": facts=display_word(fact_value(record,"relationship"))
+  if key=="relationships": facts=display_word(fact_value(record,"relationship"))
   elif key in ["labors","military","rooms"]: facts=""
   elif key=="knowledge": facts=display_word(fact_value(record,"category"))
   caption.tooltip_text=facts
   caption.mouse_filter=Control.MOUSE_FILTER_PASS
   if key!="skills" and not facts.is_empty():
    text(row,facts,Color(0,1,1) if key in ["inventory","knowledge"] else Color(.7,.7,.7))
-  if key=="groups":
-   var kind := str(fact_value(record,"entity_type"))
-   var category_name := kind.left(1).to_upper()+kind.substr(1)
-   if kind=="guild" and str(fact_value(record,"guild_profession_name")).to_lower()=="farmer": category_name="Farmers guild"
-   var category := text(row_parent,category_name,Color(1,1,0))
-   category.custom_minimum_size.x=144
-   category.horizontal_alignment=HORIZONTAL_ALIGNMENT_RIGHT
-   category.size_flags_horizontal=Control.SIZE_SHRINK_END
-  elif key=="labors":
+  if key=="labors":
    var assigned: bool = fact_value(record,"assigned")=="yes"
    Style.icon(row_parent,owner.world.ui_texture("LABOR_WORKER_ASSIGNED" if assigned else "LABOR_WORKER_UNASSIGNED"))
 
@@ -459,6 +452,16 @@ func render(controller, state: Dictionary):
    knowledge_view.position=Vector2(0,y);knowledge_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
    knowledge_view.present([owner.knowledge.text] if showing else [],str(owner.knowledge.kind)+"/"+str(owner.knowledge.entry_id) if showing else "")
   return
+ if tab=="Groups":
+  scroll=null
+  if not is_instance_valid(groups_view):
+   groups_view=preload("res://scripts/creature_groups_view.gd").new()
+   owner.body.add_child(groups_view);groups_view.configure(owner.world,records_for("groups"))
+   groups_view.first=int(scrolls.get("Groups/",0));groups_view.layout()
+   groups_view.scrollbar.row_changed.connect(func(value):scrolls["Groups/"]=value)
+   groups_view.input_allowed=func():return owner.ui_host==null or owner.ui_host.allows_panel_input(owner)
+  groups_view.position=Vector2(0,y);groups_view.size=Vector2(owner.body.size.x,owner.body.size.y-y)
+  groups_view.present(records_for("groups"));return
  if tab=="Relations":
   scroll=null
   if not is_instance_valid(relations_view):

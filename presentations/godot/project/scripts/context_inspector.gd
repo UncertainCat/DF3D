@@ -209,6 +209,10 @@ func cancel_gesture() -> void:
 		creature_sheet.relations_view.scrollbar.dragging=false
 		creature_sheet.relations_view.scrollbar.hover_cell=-1
 		creature_sheet.relations_view.scrollbar.queue_redraw()
+	if is_instance_valid(creature_sheet.groups_view):
+		creature_sheet.groups_view.scrollbar.dragging=false
+		creature_sheet.groups_view.scrollbar.hover_cell=-1
+		creature_sheet.groups_view.scrollbar.queue_redraw()
 	if is_instance_valid(creature_sheet.uniform_view):
 		creature_sheet.uniform_view.scrollbar.dragging=false
 		creature_sheet.uniform_view.scrollbar.hover_cell=-1
@@ -395,10 +399,11 @@ func redraw():
 	var retained_rooms=creature_sheet.rooms_view if int(selected.kind)==1 and creature_sheet.tab=="Rooms" and expel.phase==expel.Phase.Closed and is_instance_valid(creature_sheet.rooms_view) else null
 	var retained_labor=creature_sheet.labor_view if int(selected.kind)==1 and creature_sheet.tab=="Labor" and expel.phase==expel.Phase.Closed and is_instance_valid(creature_sheet.labor_view) else null
 	var retained_relations=creature_sheet.relations_view if int(selected.kind)==1 and creature_sheet.tab=="Relations" and expel.phase==expel.Phase.Closed and is_instance_valid(creature_sheet.relations_view) else null
+	var retained_groups=creature_sheet.groups_view if int(selected.kind)==1 and creature_sheet.tab=="Groups" and expel.phase==expel.Phase.Closed and is_instance_valid(creature_sheet.groups_view) else null
 	var retained_uniform=creature_sheet.uniform_view if int(selected.kind)==1 and creature_sheet.tab=="Military" and creature_sheet.subtabs.get("Military")=="Uniform" and expel.phase==expel.Phase.Closed and is_instance_valid(creature_sheet.uniform_view) else null
 	var retained_kills=creature_sheet.kills_view if int(selected.kind)==1 and creature_sheet.tab=="Military" and creature_sheet.subtabs.get("Military")=="Kills" and expel.phase==expel.Phase.Closed and is_instance_valid(creature_sheet.kills_view) else null
 	for child in body.get_children():
-		if child!=retained_expel and child!=retained_items and child!=retained_health and child!=retained_skills and child!=retained_knowledge and child!=retained_rooms and child!=retained_labor and child!=retained_kills and child!=retained_uniform and child!=retained_relations:body.remove_child(child);child.queue_free()
+		if child!=retained_expel and child!=retained_items and child!=retained_health and child!=retained_skills and child!=retained_knowledge and child!=retained_rooms and child!=retained_labor and child!=retained_kills and child!=retained_uniform and child!=retained_relations and child!=retained_groups:body.remove_child(child);child.queue_free()
 	creature_sheet.items_view=retained_items
 	creature_sheet.health_view=retained_health
 	creature_sheet.skills_view=retained_skills
@@ -408,6 +413,7 @@ func redraw():
 	creature_sheet.kills_view=retained_kills
 	creature_sheet.uniform_view=retained_uniform
 	creature_sheet.relations_view=retained_relations
+	creature_sheet.groups_view=retained_groups
 	customize_view=null
 	customize_button=null
 	history_button=null

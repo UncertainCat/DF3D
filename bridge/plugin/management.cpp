@@ -88,6 +88,7 @@
 #include "creature_military_native.h"
 #include "creature_squad_native.h"
 #include "creature_relations_native.h"
+#include "creature_groups_native.h"
 #include "creature_skills_native.h"
 #include "creature_knowledge_native.h"
 #include "skills_caption_native.h"
@@ -3467,6 +3468,19 @@ void run(color_ostream& out) {
       }
       return 1;
     });lua_setfield(L,-2,"relations");
+    lua_pushcfunction(L,[](lua_State* state)->int {
+      const auto rows=df3d_creature::nativeGroups(df::unit::find(int32_t(luaL_checkinteger(state,1))));
+      if(!rows)return luaL_error(state,"Native creature groups unavailable");
+      lua_newtable(state);int index=0;
+      for(const auto& row:*rows) {
+        lua_newtable(state);field(state,"entity_id",row.entityId);field(state,"link_type",row.linkType);
+        field(state,"position_id",row.positionId);field(state,"assignment_id",row.assignmentId);
+        field(state,"spouse",row.spouse?1:0);field(state,"reputation",row.reputation);field(state,"reputation_level",row.reputationLevel);
+        field(state,"caption",row.caption);field(state,"type_caption",row.typeCaption);field(state,"role",row.role);
+        lua_rawseti(state,-2,++index);
+      }
+      return 1;
+    });lua_setfield(L,-2,"groups");
     lua_pushcfunction(L,([](lua_State* state)->int {
       const auto page=df3d_creature::militarySquad(df::unit::find(int32_t(luaL_checkinteger(state,1))));
       if(!page)return luaL_error(state,"Native creature squad unavailable");

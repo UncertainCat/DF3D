@@ -3442,6 +3442,37 @@ not live-covered here. Initial121533 caught missing diagnostic camera restoratio
 after native Inspect.121729's client passed, but its completion acknowledgement
 exceeded the30s combined-lane limit; this multi-panel lane now allows60s.
 
+### Creature Groups
+
+`creature_groups_native.h` replaces the generic entity-link summary with native
+Groups ordering: own memberships/offices and squad positions, spouse titles,
+then positive reputation rows admitted by the native switch. The producer is
+inline1a4cbb..1a5369; DF3D traverses semantic records into owned rows without
+reading sheet vectors. Nativeb98d30 resolves the spouse; a946e0 formats owned
+entity names, 99a3c0 selects titles, 9bdfb0 appends land-holder titles, and132cc10
+formats guild professions using the fortress race. These calls and the inline
+producer/renderer tables are pinned. The profession path reads installed raws
+and writes owned strings; it does not use native menu state.
+
+Section15 transports native captions, entity types, roles and row identities.
+Godot draws the native two-line rows, palette, right-aligned type and scrollbar;
+it preserves the view across header refresh and retires drag on overlays. The
+former enum-name formatter and hard-coded farmer guild caption are removed.
+
+Protected134949 on2026-11-01 verifies all six rows for both bookkeeper1017 and
+soldier2905, including office and squad position/assignment IDs. Both456x528
+Groups body crops match native exactly. Header refresh retains the view and
+overlay cancellation clears drag. The owned DF3424 exits unsaved; the source
+save is unchanged. Plugin SHA256:
+`f2fc389e59f3392523f762df82dc88c88467c80c7c7e55a3fee594c5bbfcf4c2`.
+The overall lane failed its existing Relations tail screenshot assertion:
+1144 pixels differ solely between the two valid palette phases of animated
+names133 and138 for2905. Groups has no differing pixels; all other Godot logs
+have only the documented startup notice, with no Unicode errors. This is bounded
+Groups evidence, not a clean full-lane result. Spouse/reputation/guild variants,
+empty groups, overflow scrolling and resize remain without rendered live
+acceptance. The creature route remains staged. Core creature-groups-native passes.
+
 ### Creature Relations
 
 `creature_relations_native.h` calls nativebb37d0 with a historical figure and

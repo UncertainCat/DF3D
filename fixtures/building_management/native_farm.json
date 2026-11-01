@@ -59592,6 +59592,33 @@
           165
         ],
         "source_preserved": true
+      },
+      "groups_reference": {
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-134949",
+        "date": "2026-11-01",
+        "unit_ids": [
+          1017,
+          2905
+        ],
+        "rows_per_unit": [
+          6,
+          6
+        ],
+        "row_facts_match": true,
+        "body_pixels_match": true,
+        "header_refresh_retains_view": true,
+        "overlay_retires_drag": true,
+        "source_save_unchanged": true,
+        "plugin_sha256": "f2fc389e59f3392523f762df82dc88c88467c80c7c7e55a3fee594c5bbfcf4c2",
+        "overall_lane": "failed: existing Relations tail screenshot captured different animated name color phases",
+        "omissions": [
+          "spouse titles",
+          "reputation rows",
+          "guild professions",
+          "empty groups",
+          "overflow scrolling",
+          "resize"
+        ]
       }
     },
     "unit_military_reference": {

@@ -59126,6 +59126,53 @@
           "subtype": 2
         },
         "scope": "Controlled dedicated assignment in owned paused clone, restored afterward; native populated row/layout only, not semantic provider or button acceptance."
+      },
+      "workshop_provider_reference": {
+        "run": "stockpile-storage-native-farm-discovery-20261101-104754",
+        "bridge_sha256": "429d9455daf32c3fcdd2d5289add7cd7bd2e0ac7bb8306a8df56f6976995a056",
+        "result": {
+          "rows": [
+            {
+              "facts": [
+                {
+                  "has_number": true,
+                  "key": "building_type",
+                  "number": 13,
+                  "text": ""
+                },
+                {
+                  "has_number": true,
+                  "key": "building_subtype",
+                  "number": 2,
+                  "text": ""
+                },
+                {
+                  "has_number": true,
+                  "key": "x",
+                  "number": 106,
+                  "text": ""
+                },
+                {
+                  "has_number": true,
+                  "key": "y",
+                  "number": 95,
+                  "text": ""
+                },
+                {
+                  "has_number": true,
+                  "key": "z",
+                  "number": 165,
+                  "text": ""
+                }
+              ],
+              "id": 3,
+              "name": "Stoneworker's Workshop",
+              "related_id": 3
+            }
+          ],
+          "success": true
+        },
+        "coverage": "Native owned collector and building virtual name through actual main-scene creature info; controlled assignment restored. One populated ordinary workshop. Workshop view/actions remain unfinished."
       }
     },
     "unit_rooms_reference": {

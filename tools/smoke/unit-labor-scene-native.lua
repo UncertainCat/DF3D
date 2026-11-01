@@ -57,12 +57,28 @@ local function snapshot()
  return state
 end
 local file=assert(io.open(out..'/unit-labor-native.json'));local native=json.decode(file:read('*a'));file:close()
+local workshop_profile,workshop_workers
+local function workshop_fixture(enabled)
+ if not workshop_profile then
+  local building=assert(df.building.find(native.workshop_fixture.building_id))
+  workshop_profile=assert(building:getWorkshopProfile());workshop_workers={}
+  for _,id in ipairs(workshop_profile.permitted_workers)do workshop_workers[#workshop_workers+1]=id end
+ end
+ local ids={};for _,id in ipairs(workshop_workers)do ids[#ids+1]=id end
+ if enabled then
+  for _,id in ipairs(ids)do assert(id~=unit.id,'Workshop fixture already assigned')end
+  ids[#ids+1]=unit.id;table.sort(ids)
+ end
+ workshop_profile.permitted_workers:resize(0);for _,id in ipairs(ids)do workshop_profile.permitted_workers:insert('#',id)end
+end
 local function service()
  local f=io.open(out..'/unit-labor-request.json');if not f then return end
  local request=json.decode(f:read('*a'));f:close();assert(os.remove(out..'/unit-labor-request.json'))
  assert(request.unit_id==unit.id and request.serial==#observations+1,'Invalid labor observation')
  assert(df.global.pause_state and df.global.world.frame_counter==frame,'Labor scene advanced simulation')
- if request.stage=='eligibility_on' or request.stage=='eligibility_off' then
+ if request.stage=='workshop_on' or request.stage=='workshop_off' then
+  workshop_fixture(request.stage=='workshop_on');observations[#observations+1]={stage=request.stage}
+ elseif request.stage=='eligibility_on' or request.stage=='eligibility_off' then
   observations[#observations+1]={stage=request.stage,native_scope=exemption_probe(request.stage=='eligibility_on')}
  else
   local state=snapshot();local expected=native.actions[request.stage]
@@ -74,8 +90,10 @@ local function service()
 end
 local ok,err=xpcall(function()capture('farm-item-carrier-unit-scene',service)end,debug.traceback)
 if exemption then exemption.flags.MENIAL_WORK_EXEMPTION=old_exemption end
+if workshop_profile then workshop_fixture(false)end
 assert(ok,err)
-assert(#observations==(os.getenv('DF3D_UNIT_LABOR_ELIGIBILITY')=='1' and 7 or 5) and json.encode(snapshot())==json.encode(native.actions.before),'Labor scene did not restore baseline')
+local count=os.getenv('DF3D_UNIT_LABOR_WORKSHOP_WIRE')=='1' and 9 or os.getenv('DF3D_UNIT_LABOR_ELIGIBILITY')=='1' and 7 or 5
+assert(#observations==count and json.encode(snapshot())==json.encode(native.actions.before),'Labor scene did not restore baseline')
 local result={success=true,observations=observations,restored=true}
 file=assert(io.open(out..'/unit-labor-scene-native.json','w'));file:write(json.encode(result));file:close()
 return result

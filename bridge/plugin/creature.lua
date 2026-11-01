@@ -640,15 +640,14 @@ return function(request)
   end)
  end)
  section(22,function(s)
-  for _,all in ipairs{df.global.world.buildings.other.WORKSHOP_ANY,df.global.world.buildings.other.FURNACE_ANY}do
-  local limit=math.min(#all,512)
-  for i=0,limit-1 do local b=all[i]
-   if df.building_workshopst:is_instance(b) or df.building_furnacest:is_instance(b) then
-    local profile=b:getWorkshopProfile()
-    if profile then for _,id in ipairs(profile.permitted_workers)do if id==u.id then record(s,b.id,dfhack.buildings.getName(b),b.id);break end end end
-   end
-  end
-  if #all>limit then s.truncated=true;result.complete=false end
+  if not request.workshop_list then return end
+  for i,v in ipairs(request.workshop_list(u.id))do
+   if i>256 then s.truncated=true;result.complete=false;break end
+   local r=record(s,v.id,utf(v.caption),v.id)
+   fact(s,r,'building_type',v.type);fact(s,r,'building_subtype',v.subtype)
+   fact(s,r,'x',v.x);fact(s,r,'y',v.y);fact(s,r,'z',v.z)
+   local raw=v.custom>=0 and df.global.world.raws.buildings.all[v.custom] or nil
+   if raw then fact(s,r,'custom_code',raw.code)end
   end
  end)
  section(23,function(s)

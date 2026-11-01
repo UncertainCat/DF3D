@@ -3,6 +3,47 @@
 #include "df/histfig_entity_link_positionst.h"
 
 namespace df3d_creature {
+struct LaborWorkshop {
+    int32_t id=-1,type=-1,subtype=-1,custom=-1,x=0,y=0,z=0;
+    std::string caption;
+};
+// Native47dfc0's Workshops branch touches only these owned vectors and reads
+// simulation building profiles. It never receives the live creature sheet.
+inline std::optional<std::vector<LaborWorkshop>> laborWorkshops(df::unit* unit) {
+    static const bool supported=[] {
+        if(!df3d_production::farmFunctions())return false;
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        const auto hash=[&](size_t rva,size_t length) {
+            uint64_t value=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<length;++i){value^=base[rva+i];value*=UINT64_C(1099511628211);}
+            return value;
+        };
+        return hash(0x47dfc0,0x2ae)==UINT64_C(0xe5aeb067816dc769) &&
+               hash(0xb9e70,0xf8)==UINT64_C(0x7dab880be6ec9cba) &&
+               hash(0x173ed8,0x33)==UINT64_C(0x85034fcd774d5e9b);
+    }();
+    if(!supported || !unit || !df::global::world)return std::nullopt;
+    struct Context {
+        std::array<uint8_t,0x1ac4> prefix{};
+        int32_t page=1;
+        std::array<uint8_t,8> unused{};
+        std::vector<int32_t> workshops,assignedAnimals,availableAnimals;
+    } context;
+    static_assert(offsetof(Context,workshops)==0x1ad0 && offsetof(Context,availableAnimals)==0x1b00);
+    // At most one ID per building (native insertion deduplicates). Reserving
+    // this owned storage keeps native code out of its vector allocation path.
+    context.workshops.reserve(df::global::world->buildings.all.size());
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    reinterpret_cast<void (*)(Context*,df::unit*)>(base+0x47dfc0)(&context,unit);
+    std::vector<LaborWorkshop> rows;rows.reserve(context.workshops.size());
+    for(const auto id:context.workshops) {
+        auto* building=df::building::find(id);if(!building)return std::nullopt;
+        LaborWorkshop row;row.id=id;row.type=int32_t(building->getType());row.subtype=building->getSubtype();row.custom=building->getCustomType();
+        row.x=building->centerx;row.y=building->centery;row.z=building->z;
+        building->getName(&row.caption);rows.push_back(std::move(row));
+    }
+    return rows;
+}
 // Creature Labor input1b4580..1b45e1. DF owns caste, unit and office/spouse
 // eligibility. Its office predicate refreshes lookup indices; restore only
 // those semantic caches, without borrowing any sheet or menu state.

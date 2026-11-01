@@ -3253,12 +3253,29 @@ processes have only the known startup notice. `exempt_panel_reference` and
 
 Native47dfc0 builds Labor workshop/animal IDs into three vectors at1ad0/1ae8/1b00
 using the local page discriminator1ac4. The workshop path scans workshop
-profiles and inserts matching IDs in sorted order; an independently owned
-context can replace the current Lua reconstruction. Native173ed8..173f04 calls
-building virtual49 getName for the row caption. The current section22 still
-uses its old traversal, and section24 incorrectly supplies training assignments
+profiles and inserts matching IDs in sorted order. `laborWorkshops` now calls
+that routine with an independently owned context, reserving enough vector
+storage for every building so DF does not allocate it. Native173ed8..173f04 calls
+building virtual49 getName for the row caption; the provider calls that same
+method. Section22 now receives native IDs/order/captions and building type,
+subtype, custom code and coordinates through an owned Lua callback, replacing
+its reconstructed workshop/furnace traversal. Existing section truncation limits
+remain explicit. Section24 still incorrectly supplies training assignments
 instead of the native assigned/assignable work-animal lists. These providers
 and their corresponding controls remain required work.
+
+Protected104754 on2026-11-01 confirms the actual main-scene creature-info
+transport for dedicated workshop3: exact native ID/order/caption and
+coordinates106,95,165. The controlled assignment is restored after inspection.
+Owned DF17152 exits unsaved, source preservation passes, and three Godot
+processes have only the known startup notice. `workshop_provider_reference`
+retains this bounded evidence. Initial104512 is excluded from acceptance because
+the auxiliary header client logged an unclassified DummyMesh RID leak and
+render-storage update_end diagnostic at shutdown. The repeated run has neither.
+Workshops rendering and editing remain unfinished.
+The native remove button calls14ddb0(profile,unit_id), removing the last matching
+worker entry; the surrounding input1b58b1..1b5913 separately retires the native
+menu row. Expose the semantic routine without borrowing that menu state.
 
 ### Creature Rooms native list
 

@@ -74,6 +74,28 @@ func exercise_labor_view(inspector,target: int) -> void:
 		var restored: Dictionary=await labor_request({"action":29,"unit_id":target})
 		check(restored.citizens[0].eligible,"Restored office did not enable Labor")
 		inspector.labor.refresh();await drain();await labor_capture("before")
+	if OS.get_environment("DF3D_UNIT_LABOR_WORKSHOP_WIRE")=="1":
+		await labor_observe(target,8,"workshop_on")
+		var native: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/unit-labor-native.json"))
+		world.demand_creature_info(-1);world.demand_creature_info(target)
+		var deadline:=Time.get_ticks_msec()+10000
+		var rows: Array=[]
+		while Time.get_ticks_msec()<deadline:
+			world.poll()
+			for section in world.creature_info_state(target).get("detail",{}).get("sections",[]):
+				if section.key=="workshops":rows=section.records
+			if rows.size()==native.workshop_fixture.ids.size():break
+			await create_timer(0.02).timeout
+		check(rows.size()==native.workshop_fixture.ids.size(),"Native workshop list did not reach creature info")
+		for index in mini(rows.size(),native.workshop_fixture.ids.size()):
+			check(rows[index].id==native.workshop_fixture.ids[index],"Native workshop order differs")
+			check(rows[index].name==str(native.workshop_fixture.lines[index+1].text).strip_edges(),"Native workshop caption differs")
+			var position: Array=native.workshop_fixture.position
+			for axis in 3:check(int(inspector.creature_sheet.fact_value(rows[index],["x","y","z"][axis],-1))==int(position[axis]),"Workshop coordinates differ")
+		var evidence:=FileAccess.open(directory+"/unit-labor-workshop-wire.json",FileAccess.WRITE)
+		evidence.store_string(JSON.stringify({"success":not failed,"rows":rows}));evidence.close()
+		await labor_observe(target,9,"workshop_off")
+		world.demand_creature_info(-1);world.demand_creature_info(target)
 	await health_tab(inspector,"Overview")
 	check(inspector.labor.phase==inspector.labor.Phase.Closed,"Leaving Labor retained request state")
 	var file:=FileAccess.open(directory+"/unit-labor-view-result.json",FileAccess.WRITE)

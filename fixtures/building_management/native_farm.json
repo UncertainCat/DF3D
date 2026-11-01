@@ -53163,7 +53163,7 @@
         "scope": "Diagnostic read of native Health output vectors after actual page clicks. Reference only; these menu vectors must never be product inputs."
       },
       "owned_probe_reference": {
-        "run": "build/stockpile-storage-native-farm-discovery-20261101-014925",
+        "run": "build/stockpile-storage-native-farm-discovery-20261101-015330",
         "status": "passed_with_known_issues",
         "pages": [
           {
@@ -53211,6 +53211,38 @@
             "guards_unchanged": true
           },
           {
+            "name": "History",
+            "probe": {
+              "page": 3,
+              "rows": [
+                "[C:2:0:1]9th Hematite, 106: [C:7:0:1]Brought to rest in Bed[R]",
+                "[C:0:0:1]-                       Melbil Cattenlush\u00f4n, Planter",
+                "[C:2:0:1]10th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+                "[C:2:0:1]10th Hematite, 106: [C:3:0:1]Cleaned[R]",
+                "[C:0:0:1]-                       Urvad Kad\u00f4lbisek, Diagnostician",
+                "[C:2:0:1]10th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Urvad Kad\u00f4lbisek, Diagnostician",
+                "[C:2:0:1]11th Hematite, 106: [C:4:0:1]Compound fracture of fourth toe, left foot repaired[R]",
+                "[C:0:0:1]-                       \u00e8rith Mamotavuz, Surgeon",
+                "[C:2:0:1]12th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+                "[C:2:0:1]12th Hematite, 106: [C:4:0:1]Received pig tail sutures on fourth toe, left foot[R]",
+                "[C:0:0:1]-                       Rig\u00f2th Shinat\u00edr, sacred call",
+                "[C:2:0:1]13th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+                "[C:2:0:1]13th Hematite, 106: [C:7:0:1]Received cave spider silk dressing on fourth toe, left foot[R]",
+                "[C:0:0:1]-                       Olon Arzesnil, Miner",
+                "[C:2:0:1]14th Hematite, 106: [C:7:0:1]Evaluated[R]",
+                "[C:0:0:1]-                       Rith Suluslogem, chief medical dwarf",
+                "[C:2:0:1]14th Hematite, 106: [C:7:0:1]Received persimmon wood crutch[R]",
+                "[C:0:0:1]-                       Rovod Gusiletes, Leatherworker"
+              ],
+              "unit_id": 1017
+            },
+            "guards_unchanged": true
+          },
+          {
             "name": "Description",
             "probe": {
               "page": 4,
@@ -53222,8 +53254,8 @@
             "guards_unchanged": true
           }
         ],
-        "bridge_sha256": "731c17794eab41f35f4813514c8b1578c1a747294e8efdebbb84cc55639c9348",
-        "scope": "Diagnostic Status0/Wounds1/Treatment2/Description4 with independently owned formatter context and copied semantic unit, health, wound, appearance, age, curse-attribute and ghost inputs. Exact tagged rows match native; guards include wound layers/effects and appearance/modifier vector backing.",
+        "bridge_sha256": "0fbda0424105cbdc8ec99a8e5458ca7c92fe37ba1d07efc067da69615f70087e",
+        "scope": "All five diagnostic pages match native tagged rows. History uses native qsort/comparator on owned metadata, native event formatting on copied records with caregiver ID -1, then native caregiver names on copied units. Guards include history records and caregiver unit structs.",
         "diagnostics": {
           "farm-item-carrier-unit-scene.godot.log": {
             "known_engine": [
@@ -53256,11 +53288,11 @@
             "unclassified": []
           }
         },
-        "source_save": "Owned source unchanged; DF18812 exits unsaved.",
-        "qa": "build/qa/health-description-probe",
+        "source_save": "Owned source unchanged; DF15312 exits unsaved.",
+        "qa": "build/qa/health-history-probe",
         "limitations": [
-          "One living citizen with existing impairment, diagnosed wounds, empty scheduled treatment and populated description; no acceptance of all clinical, curse, ghost, age or appearance variants.",
-          "History remains rejected: global caregiver lookup and name cache writes require a separate owned solution.",
+          "One living citizen with impairment, diagnosed wounds, empty scheduled treatment, 22 history rows and populated description; clinical, curse, ghost, age and appearance variants remain.",
+          "History empty/missing-caregiver/syndrome/equal-date ordering and cold caregiver-cache variants still need controlled native comparison.",
           "No management wire or rendered Godot Health implementation; creature route remains staged."
         ]
       }

@@ -42,7 +42,7 @@ local ok,err=xpcall(function()
   local sample={name=name,lines={},tagged_rows={}}
   for _,text in ipairs(sheet.unit_health_raw_str)do sample.tagged_rows[#sample.tagged_rows+1]=native_string(text)end
   sample.color_box_count=#sheet.unit_health_box
-  if os.getenv('DF3D_UNIT_HEALTH_PROBE')=='1' and name~='History'then
+  if os.getenv('DF3D_UNIT_HEALTH_PROBE')=='1'then
    local guards={}
    local function guard(address,size)
     if size==0 then return end;assert(size>0 and size<1048576,'Invalid Health guard size')
@@ -77,8 +77,17 @@ local ok,err=xpcall(function()
      end
     end
    end
+   if unit.health then
+    for _,field in ipairs{'op_history','syndrome_diagnosis'}do
+     for _,event in ipairs(unit.health[field])do
+      local size,address=df.sizeof(event);guard(address,size)
+      local worker=df.unit.find(field=='op_history' and event.doctor_id or event.worker_unid)
+      if worker then size,address=df.sizeof(worker);guard(address,size)end
+     end
+    end
+   end
    for _,range in ipairs{{0x234e990,0x6180},{0x2131b30,40},{0x2159084,2},{0x18adf98,8}}do guard(base+range[1],range[2])end
-   local text,status=dfhack.run_command_silent('df3d','unit-health-page-probe',tostring(unit.id),name=='Status' and '0' or name=='Wounds' and '1' or name=='Treatment' and '2' or '4')
+   local text,status=dfhack.run_command_silent('df3d','unit-health-page-probe',tostring(unit.id),name=='Status' and '0' or name=='Wounds' and '1' or name=='Treatment' and '2' or name=='History' and '3' or '4')
    local unchanged=true
    for _,g in ipairs(guards)do if dfhack.internal.memcmp(g.bytes,g.address,g.size)~=0 then unchanged=false end;df.delete(g.bytes)end
    assert(status==0,text);assert(unchanged,'Health probe changed guarded source/UI/random state')

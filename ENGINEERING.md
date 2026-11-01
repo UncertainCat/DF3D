@@ -3189,19 +3189,19 @@ Native caller cleanup uses bb9b0 for string pointers and14ed20 for each color
 box, then6f290 to clear the pointer vector.14ed20 destroys box contents and frees
 its0x20-byte allocation. Description helper13b3030 passes unit+1274 to b530b0
 as a mutable historical-figure lookup cache; a copied unit must own that cache.
-Further transitive writes and independent vector cleanup remain under audit.
-This is a candidate for independently owned formatter storage, not permission
-to borrow the native sheet or its populated vectors. Transitive mutation/global
-reads and native allocation cleanup still need audit before a runtime call.
+The diagnostic adapter below owns formatter allocations and the identified
+mutable inputs. Its specimen coverage does not establish every clinical branch;
+additional variants need verification before product integration. Native sheet
+storage and populated output vectors remain prohibited product inputs.
 
 `unit-health-page-probe <unit> <page>` is a diagnostic adapter, currently
-allowing Status0, Wounds1, Treatment2 and Description4. It calls479f40 using independent zeroed
+allowing all five Health pages. It calls479f40 using independent zeroed
 formatter storage and copied unit/status/counters/health data, then returns
 pointer-free tagged strings and destroys native output allocations. It never
-reads the live sheet or its output vectors. Other page paths are rejected until
-their additional input and helper ownership requirements are established.
-Protected014925 verifies exact native output for existing standing/nerve damage,
-ten diagnosed tissue-wound rows, no scheduled treatment and the complete tagged
+reads the live sheet or its output vectors. History separates event formatting
+from caregiver naming as described below.
+Protected015330 verifies exact native output for existing standing/nerve damage,
+ten diagnosed tissue-wound rows, no scheduled treatment,22 History rows and the complete tagged
 Description paragraph. Wounds owns each wound, tissue layer and effect array.
 Description additionally copies appearance/modifier vectors, birth year/time,
 curse attribute arrays and ghost data. Compile-time offsets confirm the input
@@ -3211,16 +3211,22 @@ records,712370 formats them and5c0b20 destroys their pointees before vector clea
 Its indirect sorting call is the qsort import over an owned descriptor vector.
 Guards preserve source structs, wound/appearance/modifier backing, sheet/plotinfo
 and random streams. `owned_probe_reference` records scope and bridge hash.
-MSVC and root/core QA `health-description-probe` pass; all three live Godot
-processes have only the startup notice. DF18812 exits unsaved; source preservation
+MSVC and root/core QA `health-history-probe` pass; all three live Godot
+processes have only the startup notice. DF15312 exits unsaved; source preservation
 passes. This specimen does not establish all clinical, curse, ghost or appearance
 variants, management transport or rendered Health behavior.
 
-History remains excluded: builder47ae79..47aed2 resolves caregivers from the
-world and calls1330c30, which passes their unit+1274 cache to b530b0. Copying
-only the patient cannot own those writes. Resolve this dependency without
-substituting global world pointers or borrowing native UI storage before enabling
-History.
+History's monolithic builder resolves caregivers from the world at47ae79..47aed2;
+1330c30 then passes their unit+1274 cache to b530b0. The adapter avoids these
+live cache writes by sorting owned event metadata with native comparator479f00
+and DF's qsort import, preserving native insertion order before sorting. Each
+copied event is formatted by479f40 with its caregiver ID set to-1. The matching
+caregiver is resolved read-only and copied before native1330c30 formats the name;
+the prefix comes from the installed native literal16402c0. No global lookup table
+or UI state is substituted. The internal event path rejects non-neutralized IDs.
+Protected015330 compares all22 resulting rows and guards the original history
+records and caregiver unit structs. Empty history, missing caregivers, syndrome
+records, equal-date sorting and cold caregiver caches need separate coverage.
 
 These pages are not implemented by the current generic health renderer.
 `creature.lua` exposes observed wounds, body-part flags, treatment flags and

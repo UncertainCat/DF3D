@@ -3411,6 +3411,29 @@ known Godot startup notices. `category_reference` retains the row mappings and
 controlled results. Topic categories absent from this world, other races/castes,
 hover/artwork, transport and Godot rendering retain their separate acceptance gaps.
 
+### Selected Knowledge detail membership
+
+`creature_knowledge_native.h` adds a diagnostic selected-entry adapter. It
+rebuilds Knowledge through the owned native Skills page helper, matches both
+kind and ID, and only then dispatches the existing owned poetic/musical/dance/
+written formatter. It neither reads sheet selection nor trusts the client's
+previous row list. `unit-knowledge-detail-probe` reports availability without
+text for rejected membership; it is not a production management action.
+
+Protected054128 checks nine cases for each of four native magnifier details:
+known entry, missing creature, missing entry, scholarly/invalid kinds, negative
+ID, no soul, removed membership and restored membership. All36 results match;
+accepted prose exactly matches native. The diagnostic restores soul pointers
+and known-entry vectors. Selected unit/soul/HF/knowledge storage and UI/random
+byte guards remain unchanged during calls; existing per-form probes separately
+retain their deeper formatter guards. `selected_detail_reference` records this
+bounded coverage. DF34564 exits unsaved with source preservation and only known
+Godot startup notices. Root/core passes in `knowledge-selection-core`.
+
+This membership wrapper does not establish new dance-event or written-reference
+formatter coverage. Production request/response identity, payload limits after
+UTF-8 conversion, cancellation/late replies and detail rendering remain pending.
+
 ### Creature Skills transport contract
 
 Management108 adds optional `CreatureState.skills_pages`: absent means not captured;

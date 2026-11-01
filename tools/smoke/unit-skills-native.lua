@@ -228,6 +228,10 @@ local ok,err=xpcall(function()
      local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-skills%-native.lua$','written-detail-native.lua')
      detail.probe=assert(loadfile(source))(unit,detail)
     end
+    if os.getenv('DF3D_UNIT_KNOWLEDGE_SELECTION')=='1'then
+     local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-skills%-native.lua$','knowledge-selection-native.lua')
+     detail.selection_probe=assert(loadfile(source))(unit,detail)
+    end
     details[#details+1]=detail;capture('unit-skills-detail-'..kind..'-'..detail.id..(variant and('-'..variant)or''))
     return detail.tagged_rows[1]
   end

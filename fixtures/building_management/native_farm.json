@@ -65766,6 +65766,254 @@
         "scope": "Actual main-scene Skills tab clicks, native body pixels, readonly native rows, refresh/scroll/overlay drag behavior. Knowledge detail actions and hover remain incomplete; creature route stays staged.",
         "initial_failed_run": "build/stockpile-storage-native-farm-discovery-20261101-053445",
         "initial_failure": "Test script suffix type inference, corrected to explicit String."
+      },
+      "selected_detail_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-054128",
+        "status": "passed_with_known_issues",
+        "bridge_sha256": "9eec1abcac2229274e3b11777afae2b1b5dec463baf21883fc72ef0f61102896",
+        "cases": [
+          {
+            "kind": 14,
+            "id": 0,
+            "checks": [
+              {
+                "available": true,
+                "case": "known-entry",
+                "guards_unchanged": true,
+                "length": 504
+              },
+              {
+                "available": false,
+                "case": "missing-creature",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": false,
+                "case": "missing-entry",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": false,
+                "case": "scholarly-kind",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": false,
+                "case": "invalid-kind",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": false,
+                "case": "negative-entry",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": false,
+                "case": "no-soul",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": false,
+                "case": "removed-membership",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": true,
+                "case": "restored-membership",
+                "guards_unchanged": true,
+                "length": 504
+              }
+            ]
+          },
+          {
+            "kind": 15,
+            "id": 0,
+            "checks": [
+              {
+                "available": true,
+                "case": "known-entry",
+                "guards_unchanged": true,
+                "length": 3121
+              },
+              {
+                "available": false,
+                "case": "missing-creature",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": false,
+                "case": "missing-entry",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": false,
+                "case": "scholarly-kind",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": false,
+                "case": "invalid-kind",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": false,
+                "case": "negative-entry",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": false,
+                "case": "no-soul",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": false,
+                "case": "removed-membership",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": true,
+                "case": "restored-membership",
+                "guards_unchanged": true,
+                "length": 3121
+              }
+            ]
+          },
+          {
+            "kind": 16,
+            "id": 0,
+            "checks": [
+              {
+                "available": true,
+                "case": "known-entry",
+                "guards_unchanged": true,
+                "length": 1659
+              },
+              {
+                "available": false,
+                "case": "missing-creature",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": false,
+                "case": "missing-entry",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": false,
+                "case": "scholarly-kind",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": false,
+                "case": "invalid-kind",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": false,
+                "case": "negative-entry",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": false,
+                "case": "no-soul",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": false,
+                "case": "removed-membership",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": true,
+                "case": "restored-membership",
+                "guards_unchanged": true,
+                "length": 1659
+              }
+            ]
+          },
+          {
+            "kind": 17,
+            "id": 302,
+            "checks": [
+              {
+                "available": true,
+                "case": "known-entry",
+                "guards_unchanged": true,
+                "length": 190
+              },
+              {
+                "available": false,
+                "case": "missing-creature",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": false,
+                "case": "missing-entry",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": false,
+                "case": "scholarly-kind",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": false,
+                "case": "invalid-kind",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": false,
+                "case": "negative-entry",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": false,
+                "case": "no-soul",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": false,
+                "case": "removed-membership",
+                "guards_unchanged": true,
+                "length": 0
+              },
+              {
+                "available": true,
+                "case": "restored-membership",
+                "guards_unchanged": true,
+                "length": 190
+              }
+            ]
+          }
+        ],
+        "scope": "Diagnostic owned native Knowledge membership plus existing owned detail adapters. Guards cover selected unit/soul/HF/knowledge vector storage and UI/random; per-form probes retain their separate deeper guard scopes. No production detail transport or widened event/ref acceptance."
       }
     }
   }

@@ -94,6 +94,7 @@
 #include "creature_health_pages_native.h"
 #include "creature_skills_native.h"
 #include "skills_caption_native.h"
+#include "creature_knowledge_native.h"
 #include "knowledge_detail_native.h"
 #include "musical_detail_native.h"
 #include "dance_detail_native.h"
@@ -1704,6 +1705,20 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               parameters[0]=="dance-detail-probe" ? df3d_creature::danceDetailProbe(df::dance_form::find(id)) :
               df3d_creature::writtenDetailProbe(df::written_content::find(id));if(!text)return CR_FAILURE;
           Json::Value result(Json::objectValue);result["id"]=id;result["text"]=DF2UTF(*text);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="unit-knowledge-detail-probe") {
+          if(parameters.size()!=4)return CR_WRONG_USAGE;
+          std::array<int32_t,3> values{};
+          for(size_t i=0;i<values.size();++i){
+            const auto& raw=parameters[i+1];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i]);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
+          }
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto text=df3d_creature::selectedKnowledgeDetailProbe(df::unit::find(values[0]),values[1],values[2]);
+          Json::Value result(Json::objectValue);result["available"]=bool(text);
+          result["unit_id"]=values[0];result["kind"]=values[1];result["id"]=values[2];
+          if(text)result["text"]=DF2UTF(*text);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="unit-skills-page-probe") {
@@ -3511,6 +3526,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d zone-animal-status-read <zone id> <entity 1|2> <id>\n"
         "df3d zone-animal-unit-display-read <unit id> <columns>\n"
         "df3d zone-owner-name-color-read <unit id>\n"
+        "df3d unit-knowledge-detail-probe <unit id> <kind> <entry id>\n"
         "df3d zone-owner-profession-color-read <unit id> <profession>\n"
         "df3d zone-owner-query-read <query>\n"
         "    Read-only diagnostic: semantic room observation and traversal mask as JSON.\n"

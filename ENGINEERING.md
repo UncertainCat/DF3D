@@ -3434,6 +3434,24 @@ This membership wrapper does not establish new dance-event or written-reference
 formatter coverage. Production request/response identity, payload limits after
 UTF-8 conversion, cancellation/late replies and detail rendering remain pending.
 
+### Knowledge detail paragraph rendering
+
+`native_creature_paragraph_view.gd` shares the existing Health paragraph renderer
+with Knowledge detail presentation. `creature_health_view.gd` inherits it without
+changing Health behavior. The same native53-column wrapping, tagged colors,
+12-pixel rows and scrollbar geometry match four native054128 detail captures:
+poetry, music, dance and written content. `detail_render_reference` stores the
+native tagged rows and RGB crop hashes for432,244,456,492 at1200x800. The new
+`creature_knowledge_capture` real-renderer check matches all four first-page
+crops exactly. Existing `creature_health_capture` also passes after extraction;
+both report only known startup/render-device shutdown/object diagnostics in
+`knowledge-detail-render`. Root/core passes in `knowledge-detail-render-core`.
+
+This verifies baseline text and scrollbar rendering only. Detail requests,
+selection/navigation state, scrolling through long details, resizing, stale
+responses and broader formatter ownership coverage remain unfinished. No
+Knowledge magnifier is connected by this renderer extraction.
+
 ### Creature Skills transport contract
 
 Management108 adds optional `CreatureState.skills_pages`: absent means not captured;

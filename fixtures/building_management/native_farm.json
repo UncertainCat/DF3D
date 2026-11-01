@@ -63771,6 +63771,393 @@
             ]
           }
         ]
+      },
+      "category_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261101-044843",
+        "df_pid": 31724,
+        "bridge_sha256": "250db91094b4b4addd83555e43f884a4d146051d6b819b62d9105f6f21de8f03",
+        "status": "passed_with_known_issues",
+        "source_preservation": "Owned source unchanged; owned DF exited unsaved",
+        "diagnostics": "skills-diagnostics.json: three Godot processes, known startup notices only",
+        "scope": "Primary and secondary captions compared against native rows for47 Knowledge entries including temporary music/dance entries; all26 written-type subtitles and Untitled primary fallback checked through30 restored controlled cases. No complete race/caste/topic/hover/artwork or Godot parity claim.",
+        "knowledge_types": [
+          5,
+          8,
+          14,
+          14,
+          14,
+          14,
+          14,
+          14,
+          14,
+          14,
+          14,
+          14,
+          14,
+          14,
+          14,
+          14,
+          15,
+          16,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17,
+          17
+        ],
+        "knowledge_ids": [
+          -1,
+          -1,
+          0,
+          4,
+          15,
+          23,
+          25,
+          26,
+          27,
+          41,
+          46,
+          49,
+          50,
+          51,
+          63,
+          64,
+          0,
+          0,
+          302,
+          617,
+          660,
+          973,
+          1023,
+          1083,
+          1131,
+          1141,
+          1144,
+          1165,
+          1241,
+          1312,
+          1351,
+          1411,
+          1417,
+          1445,
+          1449,
+          1509,
+          1585,
+          1615,
+          1632,
+          1640,
+          1738,
+          1754,
+          1760,
+          1766,
+          1770,
+          1836,
+          1892
+        ],
+        "captions": [
+          "The geocentric model",
+          "Surveying",
+          "The Valley of Winds",
+          "The Style of Prophecies",
+          "The Umber Learning",
+          "The Chartreuse Visionary",
+          "The Truth of Poets",
+          "The Desks of Convenience",
+          "The South Stranger",
+          "The Knowledge of Pantomiming",
+          "The Intricate Joke",
+          "The Suitor of Luxury",
+          "The Pantomime of Festivals",
+          "The Book of Quiescence",
+          "The Flowery Truth",
+          "The Russet Luxuries",
+          "The Intricate Luxuries",
+          "The Wispy Berry",
+          "Commentary on Surveying",
+          "Crushers and the Oblivion",
+          "The Denial: Problems And Solutions",
+          "Sacrifices Slick",
+          "Baths and the Malicious Families",
+          "Suddenly The Wise Know",
+          "The Past Foretells In The Beginning",
+          "The Birth of Pranks",
+          "Larvae Feverish",
+          "Suddenly It Can Say There",
+          "The Phantom and Evisceration",
+          "The Threat and Amethyst",
+          "The Chasms and Sports",
+          "Banded Floor",
+          "Sandals Ever Onward",
+          "Perfection and the Nourishing Naughtiness",
+          "The Child and Miseries",
+          "The Doomed Pattern",
+          "Slowly The Wind Can Say",
+          "The Birth of Trance",
+          "My Friend Thunders",
+          "My Friend Cut",
+          "The Sun Sets on Gleam",
+          "The Day Mourns",
+          "Nobody Knows",
+          "It Must Have Been Larvae",
+          "It Must Have Been Flax",
+          "The Birth of Jades",
+          "The Study of the Moving Sun"
+        ],
+        "subtitles": [
+          "Astronomy",
+          "Geography",
+          "Poetic form",
+          "Poetic form",
+          "Poetic form",
+          "Poetic form",
+          "Poetic form",
+          "Poetic form",
+          "Poetic form",
+          "Poetic form",
+          "Poetic form",
+          "Poetic form",
+          "Poetic form",
+          "Poetic form",
+          "Poetic form",
+          "Poetic form",
+          "Musical form",
+          "Dance form",
+          "Manual",
+          "Poem",
+          "Essay",
+          "Poem",
+          "Poem",
+          "Poem",
+          "Poem",
+          "Poem",
+          "Poem",
+          "Poem",
+          "Poem",
+          "Poem",
+          "Poem",
+          "Poem",
+          "Poem",
+          "Poem",
+          "Poem",
+          "Poem",
+          "Poem",
+          "Poem",
+          "Poem",
+          "Poem",
+          "Poem",
+          "Poem",
+          "Poem",
+          "Poem",
+          "Poem",
+          "Poem",
+          "Manual"
+        ],
+        "controlled_cases": [
+          {
+            "case": "untitled",
+            "native_caption": "Untitled",
+            "native_subtitle": "Manual",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "no-author",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Manual",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "missing-author",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Manual",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "selected-author",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Manual",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-0-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Manual",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-1-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Guide",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-2-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Chronicle",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-3-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Short story",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-4-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Novel",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-5-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Biography",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-6-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Autobiography",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-7-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Poem",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-8-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Play",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-9-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Letter",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-10-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Essay",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-11-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Dialog",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-12-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Musical composition",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-13-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Choreography",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-14-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Comparative biography",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-15-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Biographical dictionary",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-16-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Genealogy",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-17-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Encyclopedia",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-18-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Cultural history",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-19-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Cultural comparison",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-20-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Alternate history",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-21-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Treatise on technological evolution",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-22-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Dictionary",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-23-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Star chart",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-24-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Star catalogue",
+            "detail_guards_unchanged": true
+          },
+          {
+            "case": "type-25-missing-form",
+            "native_caption": "Commentary on Surveying",
+            "native_subtitle": "Atlas",
+            "detail_guards_unchanged": true
+          }
+        ]
       }
     }
   }

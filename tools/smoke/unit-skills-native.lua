@@ -60,7 +60,7 @@ local function observe(name)
    for _,field in ipairs{'skills','values','rust_values','knowledge_types','knowledge_ids','knowledge_bits'}do assert(json.encode(page[field])==json.encode(page.probe[field]),'Skills probe differs: '..name..' '..field)end
   end
   if page.probe and os.getenv('DF3D_UNIT_SKILLS_CAPTIONS')=='1'then
-   local captions=page.probe.captions;local count=#captions;page.caption_rows={}
+   local captions=page.probe.captions;local count=#captions;page.caption_rows={};page.subtitle_rows={}
    for start=0,count-1,14 do
     local first=math.max(0,math.min(start,count-14));sheet.scroll_position_unit_skill=first;view:render(dfhack.getTickCount())
     for index=first,math.min(first+13,count-1)do
@@ -68,6 +68,11 @@ local function observe(name)
      local caption=captions[index+1]
      assert(caption~='' and text:find(caption,1,true),'Native Skills caption differs: '..name..' row '..index..' expected '..caption..' visible '..text)
      page.caption_rows[index+1]=text
+     if name=='Knowledge'then
+      local subtitle=dfhack.df2utf(row(21+3*(index-first))):gsub('^%s+',''):gsub('%s+$','')
+      assert(subtitle==page.probe.subtitles[index+1],'Native Knowledge subtitle differs: '..index..' expected '..page.probe.subtitles[index+1]..' visible '..subtitle)
+      page.subtitle_rows[index+1]=subtitle
+     end
     end
    end
    sheet.scroll_position_unit_skill=page.first;view:render(dfhack.getTickCount())
@@ -75,7 +80,7 @@ local function observe(name)
   for y=17,g.dimy-1 do local text=dfhack.df2utf(row(y)):gsub('%s+$','');if text~=''then page.lines[#page.lines+1]={y=y,text=text}end end
  return page
 end
-local pages={};local cases={};local details={}
+local pages={};local cases={};local details={};local detail_page
 local ok,err=xpcall(function()
  assert(sheet.open and sheet.active_id==unit.id,'Expected creature sheet')
  select('Skills',15,16)
@@ -130,15 +135,19 @@ local ok,err=xpcall(function()
     end
    end
   end
-  local reference=observe('Knowledge');local seen={}
+  local reference=observe('Knowledge');detail_page=reference;local seen={}
   local function capture_detail(index,kind,variant)
-    observe('Knowledge')
+    local captured_page=observe('Knowledge')
     sheet.scroll_position_unit_skill=index-1;view:render(dfhack.getTickCount())
     local first=sheet.scroll_position_unit_skill
     local count=#sheet.unit_knowledge_type;first=math.max(0,math.min(first,count-14))
     click(852,250+36*(index-1-first))
     assert(#sheet.skill_description_raw_str>0,'Knowledge detail did not open')
     local detail={kind=kind,id=reference.knowledge_ids[index],case=variant,tagged_rows={},lines={}}
+    if captured_page.caption_rows then
+     detail.native_caption=captured_page.caption_rows[index]
+     detail.native_subtitle=captured_page.subtitle_rows[index]
+    end
     if kind==16 then
      local form=assert(df.dance_form.find(detail.id))
      detail.form={sections=#form.sections,moves=#form.moves,event=form.event,hfid=form.hfid,race=form.race,section_events={}}
@@ -270,6 +279,6 @@ local ok,err=xpcall(function()
 end,debug.traceback)
 select('Overview',15,16)
 assert(df.global.pause_state and df.global.world.frame_counter==frame,'Skills reference advanced simulation')
-local result={success=ok,unit_id=unit.id,pages=pages,cases=cases,details=details,error=not ok and err or nil}
+local result={success=ok,unit_id=unit.id,pages=pages,cases=cases,details=details,detail_page=detail_page,error=not ok and err or nil}
 local f=assert(io.open(out..'/unit-skills-native.json','w'));f:write(json.encode(result));f:close()
 assert(ok,err);return result

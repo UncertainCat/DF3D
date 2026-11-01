@@ -1722,6 +1722,8 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           auto* source=df::unit::find(id);result["captions"]=Json::Value(Json::arrayValue);
           for(size_t i=0;i<value->skills.size();++i)result["captions"].append(DF2UTF(df3d_creature::nativeSkillCaption(value->skills[i],value->values[i],source->race,source->caste)));
           for(size_t i=0;i<value->knowledgeTypes.size();++i)result["captions"].append(DF2UTF(df3d_creature::nativeKnowledgeCaption(value->knowledgeTypes[i],value->knowledgeIds[i],value->knowledgeBits[i])));
+          result["subtitles"]=Json::Value(Json::arrayValue);
+          for(size_t i=0;i<value->knowledgeTypes.size();++i)result["subtitles"].append(DF2UTF(df3d_creature::nativeKnowledgeCategory(value->knowledgeTypes[i],value->knowledgeIds[i])));
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="unit-health-page-probe") {

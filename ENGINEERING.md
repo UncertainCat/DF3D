@@ -3372,6 +3372,16 @@ source preservation and only known Godot startup notices. `caption_reference`
 retains captions and observed rows. This does not establish secondary category
 labels, rust/hover/artwork, every race/caste, production transport or Godot parity.
 
+Knowledge subtitles follow native renderer switches19f098 (topic/art category)
+and19f0e0 (all26 written-work types), using installed native literals. Protected044843
+compares primary and secondary captions for47 Knowledge rows, including temporarily
+added music/dance entries. Thirty restored written-work cases also verify every
+type subtitle and the primary Untitled fallback. All descriptions still match and
+guards stay unchanged. DF31724 exits unsaved with source preservation and only
+known Godot startup notices. `category_reference` retains the row mappings and
+controlled results. Topic categories absent from this world, other races/castes,
+hover/artwork, transport and Godot rendering retain their separate acceptance gaps.
+
 ### Creature Health transport contract
 
 Management107 adds optional `CreatureState.health_pages`: either absent (not

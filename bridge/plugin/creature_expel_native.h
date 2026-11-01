@@ -10,6 +10,44 @@
 #include "df/histfig_entity_link_positionst.h"
 
 namespace df3d_creature {
+// Header/input eligibility1b0916..1b097d, before family/office refusals.
+// All three helpers read unit/caste semantics; no viewscreen or cursor input.
+inline std::optional<bool> expelEligible(df::unit* unit) {
+    static const bool supported=[] {
+        if(!df3d_production::farmFunctions())return false;
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        struct Pin {size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={
+            {0x1b0916,0x67,UINT64_C(0x21fc7f9d1fc0b2cd)},
+            {0x138ed20,0xff,UINT64_C(0x430951f9f3e403c2)},
+            {0x1376500,0xf0,UINT64_C(0x2c5ca25b0abc0a79)},
+            {0x73760,0x4c,UINT64_C(0xd6e159fb1367c80e)},
+            {0x1b9874,0xc,UINT64_C(0xb9431422bbe29198)},
+            {0x1b9880,0x87,UINT64_C(0x19fd684bc16ee4b1)},
+        };
+        for(const auto& pin:pins) {
+            uint64_t hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin.length;++i){hash^=base[pin.rva+i];hash*=UINT64_C(1099511628211);}
+            if(hash!=pin.hash)return false;
+        }
+        return true;
+    }();
+    if(!supported)return std::nullopt;
+    if(!unit)return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    if(!reinterpret_cast<bool (*)(df::unit*)>(base+0x138ed20)(unit) ||
+       reinterpret_cast<bool (*)(int16_t,int16_t)>(base+0x1376500)(unit->race,unit->caste) ||
+       !reinterpret_cast<bool (*)(df::unit*)>(base+0x73760)(unit))return false;
+    // Native profession jump table: all0..134 except these six classes.
+    const int profession=int(unit->profession);
+    if(profession<0 || profession>134)return false;
+    switch(unit->profession) {
+    case df::profession::TRAINED_HUNTER:case df::profession::TRAINED_WAR:
+    case df::profession::MASTER_THIEF:case df::profession::THIEF:
+    case df::profession::CHILD:case df::profession::BABY:return false;
+    default:return true;
+    }
+}
 // Native1b0abd..1b0f02 builds refusal and departing IDs inline. This owns the
 // result and mutable assignment lookup scratch. It does not read view_sheets.
 // Destination selection and confirmation are separate, not implemented here.

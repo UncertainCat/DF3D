@@ -2457,6 +2457,23 @@ control or confirmation operation is added. Existing HF without a local unit, ad
 simultaneous family refusals and
 deeper accompanying-unit chains remain unverified.
 
+`expelEligible` follows native header/input1b0916..1b097d with pinned
+fortress-control138ed20, pet/exotic-pet caste1376500, and CAN_SPEAK73760 helpers.
+The native profession tables allow0..134 except TRAINED_HUNTER, TRAINED_WAR,
+MASTER_THIEF, THIEF, CHILD and BABY. Input/table bytes are pinned with the helpers;
+no native menu state supplies eligibility. The control helper also rejects
+non-fortress game mode. Nullopt means unsupported; missing units return false.
+This check is separate from the office/family refusal reader.
+
+Protected215156 compares `df3d unit-expel-eligible-probe` with the native Expel
+hover/button for adult, standard profession, six excluded professions and visitor.
+All nine match, with unit, plotinfo and sheet bytes unchanged. Temporary profession
+and visitor flags are restored. Source preservation passes; owned DF37616 exits
+unsaved. MSVC and core19 pass; live logs have only known startup notices.
+`unit_expel_eligible_reference` retains evidence. Enable DF3D_UNIT_EXPEL_ELIGIBLE=1
+with the native Expel lane. Pet/caste capability and additional target variants
+remain unverified. This reader is not yet connected to runtime submission.
+
 The separate `expelDestinations` reader follows native1b0f02..1b10ed using
 pinned site-owner9b4e70, parent-civilization93ce30, site-link9364d0, diplomacy
 ffa80 and market9b4e40 calls. Site-link creation is always false. Assignment and

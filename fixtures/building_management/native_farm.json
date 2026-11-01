@@ -45965,6 +45965,84 @@
         "Departure over simulation ticks and arrival",
         "Transport, lifecycle and viewer controls"
       ]
+    },
+    "unit_expel_eligible_reference": {
+      "observations": [
+        {
+          "guards_unchanged": true,
+          "name": "adult",
+          "native_visible": true,
+          "profession": 68,
+          "reader": true
+        },
+        {
+          "guards_unchanged": true,
+          "name": "child",
+          "native_visible": false,
+          "profession": 103,
+          "reader": false
+        },
+        {
+          "guards_unchanged": true,
+          "name": "baby",
+          "native_visible": false,
+          "profession": 104,
+          "reader": false
+        },
+        {
+          "guards_unchanged": true,
+          "name": "trained-hunter",
+          "native_visible": false,
+          "profession": 98,
+          "reader": false
+        },
+        {
+          "guards_unchanged": true,
+          "name": "trained-war",
+          "native_visible": false,
+          "profession": 99,
+          "reader": false
+        },
+        {
+          "guards_unchanged": true,
+          "name": "master-thief",
+          "native_visible": false,
+          "profession": 100,
+          "reader": false
+        },
+        {
+          "guards_unchanged": true,
+          "name": "thief",
+          "native_visible": false,
+          "profession": 101,
+          "reader": false
+        },
+        {
+          "guards_unchanged": true,
+          "name": "standard",
+          "native_visible": true,
+          "profession": 102,
+          "reader": true
+        },
+        {
+          "guards_unchanged": true,
+          "name": "visitor",
+          "native_visible": false,
+          "profession": 68,
+          "reader": false
+        }
+      ],
+      "success": true,
+      "native_run": "build/stockpile-storage-native-farm-discovery-20261031-215156",
+      "qa": "build/qa/unit-expel-eligible",
+      "msvc_log": "build/notes/pm/unit-expel-eligible-msvc.log",
+      "bridge_sha256": "53b00e9b93d57aef1e5bb6b2902500eb1c897a6cc2afddea3d526dc68fed1b2d",
+      "verification": "Nine native hover/button eligibility cases exactly match semantic reader; unit, plotinfo and sheet guards unchanged. Source unchanged; owned DF37616 exited unsaved. Two GPU and paired header-wire logs have only known startup notice. Core19 passes.",
+      "remaining": [
+        "Pet/exotic-pet caste and CAN_SPEAK runtime variants",
+        "Missing and noncitizen target variants",
+        "Use eligibility in semantic action and transport/viewer"
+      ]
     }
   }
 }

@@ -59079,6 +59079,53 @@
         "semantic_eligibility_matches": true,
         "restored": true,
         "coverage": "Local office MENIAL_WORK_EXEMPTION toggled in paused owned clone; actual native scope gating and semantic CitizenInspect agree. Selected unit and office lookup caches preserved. Spouse/caste branches statically traced and pinned, not exercised by this capture. Exempt panel rendering not yet matched."
+      },
+      "exempt_panel_reference": {
+        "run": "stockpile-storage-native-farm-discovery-20261101-103923",
+        "native": {
+          "lines": [
+            {
+              "text": "                                                      Cannot assign work details",
+              "y": 20
+            }
+          ]
+        },
+        "body": [
+          432,
+          208,
+          456,
+          528
+        ],
+        "pixels_match": true,
+        "eligibility_restored": true,
+        "assignment_rows_hidden": true
+      },
+      "workshop_assignment_reference": {
+        "run": "stockpile-storage-native-farm-discovery-20261101-103923",
+        "native": {
+          "building_id": 3,
+          "building_type": 13,
+          "ids": [
+            3
+          ],
+          "lines": [
+            {
+              "text": "                                                             Will do available tasks anywhere",
+              "y": 20
+            },
+            {
+              "text": "                                                              Stoneworker's Workshop",
+              "y": 23
+            }
+          ],
+          "position": [
+            106,
+            95,
+            165
+          ],
+          "subtype": 2
+        },
+        "scope": "Controlled dedicated assignment in owned paused clone, restored afterward; native populated row/layout only, not semantic provider or button acceptance."
       }
     },
     "unit_rooms_reference": {

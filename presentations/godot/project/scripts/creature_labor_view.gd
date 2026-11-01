@@ -5,7 +5,7 @@ var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
 func configure(world) -> void:
  super.configure(world);picture.configure(world)
 func present_labor(model) -> void:
- state=model;rows=model.rows;layout()
+ state=model;rows=model.rows if model.citizen.get("eligible",false) else [];layout()
 func capacity() -> int:return maxi(0,int((size.y-48)/36))
 func layout() -> void:
  super.layout();scrollbar.position.y=36
@@ -14,6 +14,9 @@ func scope_rect() -> Rect2:return Rect2(8,0,32,36)
 func _draw() -> void:
  if state==null or theme==null or theme.default_font==null:return
  if state.citizen.is_empty():return
+ if not state.citizen.get("eligible",false):
+  if state.citizen.get("reason","")=="Citizen is not eligible for ordinary labor":draw_text("Cannot assign work details",Vector2(8,24),71)
+  return
  var assigned: bool=state.citizen.only_assigned_jobs
  var scope: Texture2D=art.texture("WORKER_ONLY_DO_ASSIGNED_JOBS" if assigned else "WORKER_DO_ANY_AVAILABLE_JOB")
  if scope!=null:draw_texture_rect(scope,scope_rect(),false)
@@ -37,6 +40,7 @@ func _draw() -> void:
   if checkbox!=null:draw_texture_rect(checkbox,check_rect(index),false)
 func _gui_input(event: InputEvent) -> void:
  if not allowed() or state==null or not event is InputEventMouseButton or not event.pressed:return
+ if not state.citizen.get("eligible",false):return
  if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
   if rows.size()<=capacity() or event.position.y<36 or event.position.y>=36+capacity()*36:return
   scrollbar.move_to(first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1)*(capacity() if event.shift_pressed else 1));accept_event();return

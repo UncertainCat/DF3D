@@ -3235,10 +3235,30 @@ caches remain unchanged by the query. Owned DF47120 exits unsaved, source
 preservation passes, and three Godot processes report only the known startup
 notice. `eligibility_reference` retains the evidence. Root/core, Labor lifecycle
 and citizen adapter checks pass. Spouse/caste branches are statically traced
-and pinned, not live-covered here. Exempt panel rendering remains unfinished;
-the view currently disables writes but has not adopted the native refusal layout.
+and pinned, not live-covered here.
 Initial103049 is excluded: the diagnostic read a partially written request;
 the harness now publishes that file by rename.
+
+The Work details view now hides scope, assignments and scrollbar for a native
+ineligible unit and draws "Cannot assign work details" at the native position.
+Unavailable eligibility stays blank instead of asserting that native refusal.
+Protected103923 on2026-11-01 matches all456x528 body pixels in the exempt state,
+then restores eligibility and the normal panel. The same run captures a populated
+Workshops row: building3, Stoneworker's Workshop, position106,95,165, with
+recenter, inspect and remove controls. Its controlled dedicated-worker assignment
+is restored; this is native reference evidence, not completed Workshops editing.
+Owned DF1276 exits unsaved, source preservation passes, and all three Godot
+processes have only the known startup notice. `exempt_panel_reference` and
+`workshop_assignment_reference` retain these bounded observations.
+
+Native47dfc0 builds Labor workshop/animal IDs into three vectors at1ad0/1ae8/1b00
+using the local page discriminator1ac4. The workshop path scans workshop
+profiles and inserts matching IDs in sorted order; an independently owned
+context can replace the current Lua reconstruction. Native173ed8..173f04 calls
+building virtual49 getName for the row caption. The current section22 still
+uses its old traversal, and section24 incorrectly supplies training assignments
+instead of the native assigned/assignable work-animal lists. These providers
+and their corresponding controls remain required work.
 
 ### Creature Rooms native list
 

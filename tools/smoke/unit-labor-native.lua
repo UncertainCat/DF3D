@@ -59,6 +59,43 @@ if os.getenv('DF3D_UNIT_LABOR_ACTIONS')=='1'then
  click(448,250);assert(json.encode(snapshot())==json.encode(before),'Scope toggle did not restore baseline')
  result.actions.restored=true
 end
+if os.getenv('DF3D_UNIT_LABOR_ELIGIBILITY')=='1'then
+ select('Work details',17,20)
+ local position
+ for _,role in ipairs(dfhack.units.getNoblePositions(unit))do
+  if role.entity.id==df.global.plotinfo.group_id then position=role.position;break end
+ end
+ assert(position and not position.flags.MENIAL_WORK_EXEMPTION,'Expected non-exempt local office')
+ local ok,err=xpcall(function()
+  position.flags.MENIAL_WORK_EXEMPTION=true;view:render(dfhack.getTickCount())
+  result.exempt={lines={}}
+  for y=19,g.dimy-1 do local text=dfhack.df2utf(row(y)):gsub('%s+$','');if text~=''then result.exempt.lines[#result.exempt.lines+1]={y=y,text=text}end end
+  capture('unit-labor-exempt')
+ end,debug.traceback)
+ position.flags.MENIAL_WORK_EXEMPTION=false;view:render(dfhack.getTickCount());assert(ok,err)
+end
+if os.getenv('DF3D_UNIT_LABOR_WORKSHOP')=='1'then
+ local building,profile
+ for _,candidate in ipairs(df.global.world.buildings.other.WORKSHOP_ANY)do
+  local p=candidate:getWorkshopProfile()
+  if p then building=candidate;profile=p;break end
+ end
+ assert(building,'Expected workshop with worker profile')
+ local old={};for _,id in ipairs(profile.permitted_workers)do old[#old+1]=id end
+ local ok,err=xpcall(function()
+  local ids={};for _,id in ipairs(old)do if id~=unit.id then ids[#ids+1]=id end end
+  ids[#ids+1]=unit.id;table.sort(ids);profile.permitted_workers:resize(0)
+  for _,id in ipairs(ids)do profile.permitted_workers:insert('#',id)end
+  select('Workshops',17,20)
+  local data={building_id=building.id,building_type=building:getType(),subtype=building:getSubtype(),position={building.centerx,building.centery,building.z},ids={},lines={}}
+  for _,id in ipairs(sheet.unit_workshop_id)do data.ids[#data.ids+1]=id end
+  assert(#data.ids>0,'Native workshop list omitted dedicated worker')
+  for y=19,g.dimy-1 do local text=dfhack.df2utf(row(y)):gsub('%s+$','');if text~=''then data.lines[#data.lines+1]={y=y,text=text}end end
+  result.workshop_fixture=data;capture('unit-labor-workshop-assigned')
+ end,debug.traceback)
+ profile.permitted_workers:resize(0);for _,id in ipairs(old)do profile.permitted_workers:insert('#',id)end
+ assert(ok,err)
+end
 select('Overview',15,16)
 assert(df.global.pause_state and df.global.world.frame_counter==frame,'Labor capture advanced simulation')
 local file=assert(io.open(out..'/unit-labor-native.json','w'));file:write(json.encode(result));file:close()

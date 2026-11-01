@@ -45163,12 +45163,141 @@
       "qa": "build/qa/unit-expel-destinations",
       "msvc_log": "build/notes/pm/unit-expel-destinations-msvc.log",
       "remaining": [
-        "Shared profile, vassal assignment and tribute/civilization branches",
         "Multiple-site order and scrolling",
         "Destination caption reader",
         "Native choice selection and confirmation flow",
         "Expel header eligibility, transport and viewer UI"
-      ]
+      ],
+      "branch_reference": {
+        "native_run": "build/stockpile-storage-native-farm-discovery-20261031-213902",
+        "cases": [
+          {
+            "name": "open",
+            "destinations": [],
+            "destination_reader": [],
+            "destination_guard_count": 11853,
+            "destination_guards_unchanged": true
+          },
+          {
+            "name": "destination-market-link",
+            "destinations": [
+              -1,
+              8
+            ],
+            "destination_reader": [
+              -1,
+              8
+            ],
+            "destination_guard_count": 11854,
+            "destination_guards_unchanged": true
+          },
+          {
+            "name": "destination-shared-profile",
+            "destinations": [
+              -1,
+              8
+            ],
+            "destination_reader": [
+              -1,
+              8
+            ],
+            "destination_guard_count": 11856,
+            "destination_guards_unchanged": true
+          },
+          {
+            "name": "destination-unmatched-profile",
+            "destinations": [],
+            "destination_reader": [],
+            "destination_guard_count": 11856,
+            "destination_guards_unchanged": true
+          },
+          {
+            "name": "destination-vassal-profile",
+            "destinations": [
+              -1,
+              8
+            ],
+            "destination_reader": [
+              -1,
+              8
+            ],
+            "destination_guard_count": 11857,
+            "destination_guards_unchanged": true
+          },
+          {
+            "name": "destination-vassal-wrong-entity",
+            "destinations": [],
+            "destination_reader": [],
+            "destination_guard_count": 11857,
+            "destination_guards_unchanged": true
+          },
+          {
+            "name": "destination-vassal-wrong-profile",
+            "destinations": [],
+            "destination_reader": [],
+            "destination_guard_count": 11857,
+            "destination_guards_unchanged": true
+          },
+          {
+            "name": "destination-current-link-wrong-entity",
+            "destinations": [],
+            "destination_reader": [],
+            "destination_guard_count": 11857,
+            "destination_guards_unchanged": true
+          },
+          {
+            "name": "destination-no-current-profile",
+            "destinations": [],
+            "destination_reader": [],
+            "destination_guard_count": 11857,
+            "destination_guards_unchanged": true
+          },
+          {
+            "name": "destination-tribute-same-civilization",
+            "destinations": [
+              -1,
+              8
+            ],
+            "destination_reader": [
+              -1,
+              8
+            ],
+            "destination_guard_count": 11857,
+            "destination_guards_unchanged": true
+          },
+          {
+            "name": "destination-tribute-foreign-civilization",
+            "destinations": [],
+            "destination_reader": [],
+            "destination_guard_count": 11858,
+            "destination_guards_unchanged": true
+          },
+          {
+            "name": "destination-offering-tribute",
+            "destinations": [],
+            "destination_reader": [],
+            "destination_guard_count": 11857,
+            "destination_guards_unchanged": true
+          },
+          {
+            "name": "destination-branches-restored",
+            "destinations": [],
+            "destination_reader": [],
+            "destination_guard_count": 11853,
+            "destination_guards_unchanged": true
+          },
+          {
+            "name": "destination-restored",
+            "destinations": [],
+            "destination_reader": [],
+            "destination_guard_count": 11853,
+            "destination_guards_unchanged": true
+          }
+        ],
+        "fixture": "Temporary sorted current-civilization site links, direct site-government parent, assignment and diplomacy records; restore all original vectors before deleting allocated records. No expulsion confirmation.",
+        "verification": "Every native destination list matches the semantic reader; all byte guards unchanged. Source save unchanged, owned DF38348 exited unsaved. Two GPU logs and combined header-wire logs have only known startup notices. Core19 passed.",
+        "qa": "build/qa/unit-expel-destination-cases"
+      }
     }
   }
 }

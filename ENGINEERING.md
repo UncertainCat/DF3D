@@ -2463,7 +2463,7 @@ ffa80 and market9b4e40 calls. Site-link creation is always false. Assignment and
 sorted unique insertion useb9dc0/b9e70. It owns the result, prepending the native
 Expel sentinel-1 only when at least one site is available. Shared position-profile,
 vassal-assignment and accepting-tribute conditions follow the native inline
-orchestration; controlled branch acceptance remains outstanding. No native menu
+orchestration, with controlled branch acceptance below. No native menu
 or selection fields supply the result.
 
 Protected213118 captures the actual native destination chooser. A temporary
@@ -2479,8 +2479,21 @@ saves are unchanged and live logs contain only known startup notices. MSVC and
 core QA `unit-expel-destinations` pass. `unit_expel_destination_reference` retains
 IDs, native text, provenance and limitations. Enable
 `DF3D_UNIT_EXPEL_DESTINATIONS=1` and `DF3D_UNIT_EXPEL_DESTINATION_READER=1` for this
-capture. Other destination branches, captions, choice selection, confirmation,
+capture. Captions, choice selection, confirmation,
 transport and the viewer remain unfinished; neither reader exposes an Expel UI.
+
+Protected213902 verifies shared-profile and subordinate-assignment eligibility,
+wrong entity/profile and absent current-profile rejection, accepting tribute from
+the same civilization, and rejection for foreign civilization or offering tribute.
+All14 previews match the reader, including baseline, market and restored states;
+all11853..11858 guarded records remain unchanged. The maintained
+`unit-expel-destination-cases.lua` fixture replaces sorted semantic vectors,
+restores original contents before deleting allocated records, and never confirms
+expulsion. Enable `DF3D_UNIT_EXPEL_DESTINATION_CASES=1` with the flags above.
+Source preservation passes, live logs have only known startup notices, and core19
+passes in `unit-expel-destination-cases`. Evidence is retained in
+`unit_expel_destination_reference.branch_reference`. Multiple-site ordering and
+scrolling remain unverified.
 
 Confirmation1b1825..1b1c26 allocates an activity, records expulsion history when
 there is no destination, invokes unit cleanup/assignment helpers, emits thoughts,

@@ -301,6 +301,10 @@ local ok,err=xpcall(function()
   assert(found and sheet.unit_overview_expel_dest_stid[0]==-1,'Native market-linked destination absent')
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
   restore_destination()
+  if os.getenv('DF3D_UNIT_EXPEL_DESTINATION_CASES')=='1' then
+   local source=debug.getinfo(1,'S').source:sub(2):gsub('unit%-expel%-native.lua$','unit-expel-destination-cases.lua')
+   assert(loadfile(source))(selected_site,owner,view,pointer,record)
+  end
   pointer(856,100);df.global.enabler.mouse_lbut_lift=0
   gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1

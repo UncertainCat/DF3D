@@ -388,6 +388,10 @@ local ok,err=xpcall(function()
   local text,code=dfhack.run_command_silent('df3d','work-order-suggestions-probe',tostring(next_id));assert(code==0,text)
   local owned=json.decode(text).rows
   assert(#owned==#native_suggestions,'Owned native suggestion count differs')
+  local rendered={};for _,line in ipairs(lines())do rendered[#rendered+1]=line.text end
+  local rendered_text=table.concat(rendered,'\n')
+  for _,row in ipairs(owned)do assert(row.item_caption and rendered_text:find(row.item_caption,1,true),'Condition caption differs from native screen')end
+  expected.suggestions=owned
   for i,c in ipairs(native_suggestions)do for key,value in pairs(c)do
    if key=='contains' then assert(json.encode(value)==json.encode(owned[i][key]),'Suggestion contained identities differ')
    else assert(value==owned[i][key],'Suggestion '..i..' '..key..' differs')end

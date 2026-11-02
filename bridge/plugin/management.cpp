@@ -99,6 +99,7 @@
 #include "workshop_orders_native.h"
 #include "work_order_catalog_native.h"
 #include "work_order_rows_native.h"
+#include "work_order_conditions_native.h"
 #include "creature_skills_native.h"
 #include "creature_knowledge_native.h"
 #include "skills_caption_native.h"
@@ -2681,6 +2682,51 @@ BridgeWorkOrderInfo copyNativeWorkOrder(const df3d_production::NativeWorkOrderRo
 void run(color_ostream& out) {
   areaPaintRetired=nullptr;areaPaintCommitted=false;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
+  // Conditions inspect is explicit: list refreshes do not rebuild suggestions.
+  if(r->work_order() && r->work_order()->workshop_id()>=0 && r->action()==m::ManagementAction::WorkOrderInspect) {
+    const auto* q=r->work_order();message.clear();status=m::ManagementStatus::Rejected;workOrders={};
+    const bool extra=q->id()<0 || q->remaining()!=-1 || q->frequency()!=-1 || q->max_workshops()!=-1 ||
+      q->expected_revision() || q->cursor() || q->expected_list_revision() ||
+      (q->recipe() && q->recipe()->size()) || (q->query() && q->query()->size()) ||
+      q->condition_kind() || q->condition_index()!=-1 || q->remove_condition() || q->compare()!=-1 ||
+      q->threshold()!=-1 || q->item_type()!=-1 || q->target_order()!=-1 || q->dependency()!=-1 ||
+      q->candidate_kind() || q->move() || q->expected_neighbor()!=-1 || q->item_subtype()!=-1 ||
+      q->mat_type()!=-1 || q->mat_index()!=-1 || (q->traits() && q->traits()->size()) ||
+      q->input_index()!=-1 || q->group_type()!=-1 || q->group_subtype()!=-1 || q->group_custom()!=-1 || q->encrust_flags()!=-1;
+    if(extra){publish();return;}
+    try {
+      auto* building=df::building::find(q->workshop_id());
+      auto* tile=building?Maps::getTileDesignation(building->centerx,building->centery,building->z):nullptr;
+      if(!tile || tile->bits.hidden || !df3d_production::workshopOrdersProfile(building)){publish();return;}
+      const auto& all=df::global::world->manager_orders.all;
+      const auto found=std::find_if(all.begin(),all.end(),[&](const auto* order){return order && order->id==q->id() && order->workshop_id==q->workshop_id();});
+      if(found==all.end()){publish();return;}
+      const auto observed=df3d_production::nativeWorkOrderRow(**found,int32_t(found-all.begin()));
+      const auto suggestions=df3d_production::nativeWorkOrderSuggestions(**found);
+      if(!observed || !suggestions || observed->itemConditions.size()+observed->orderConditions.size()+suggestions->size()>128){publish();return;}
+      auto row=copyNativeWorkOrder(*observed);
+      for(size_t i=0;i<observed->itemConditions.size();++i) {
+        const auto caption=df3d_production::nativeWorkOrderConditionCaption(observed->itemConditions[i]);
+        if(!caption){publish();return;}
+        row.conditions[i].itemCaption=DF2UTF(*caption);
+        if(row.conditions[i].itemCaption->size()>1024){publish();return;}
+      }
+      row.suggestedConditions.emplace();
+      for(size_t i=0;i<suggestions->size();++i) {
+        const auto& source=(*suggestions)[i];
+        const auto caption=df3d_production::nativeWorkOrderConditionCaption(source);
+        if(!caption){publish();return;}
+        BridgeWorkOrderCondition value;value.index=uint16_t(i);value.itemCaption=DF2UTF(*caption);
+        if(value.itemCaption->size()>1024){publish();return;}
+        value.compare=int8_t(source.compare_type);value.threshold=source.compare_val;
+        value.itemType=int16_t(source.item_type);value.itemSubtype=source.item_subtype;
+        value.matType=source.mat_type;value.matIndex=source.mat_index;
+        row.suggestedConditions->push_back(std::move(value));
+      }
+      workOrders.orders.push_back(std::move(row));status=m::ManagementStatus::Ok;
+    }catch(...) {workOrders={};status=m::ManagementStatus::Rejected;}
+    publish();return;
+  }
   // Workshop rows are native observations, independent of any open DF sheet.
   if(r->work_order() && r->work_order()->workshop_id()>=0 && (r->action()==m::ManagementAction::WorkOrderList || r->action()==m::ManagementAction::WorkOrderUpdate || r->action()==m::ManagementAction::WorkOrderDelete)) {
     const auto* q=r->work_order();message.clear();status=m::ManagementStatus::Rejected;workOrders={};

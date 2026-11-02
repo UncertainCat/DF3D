@@ -2084,6 +2084,8 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           Json::Value result(Json::objectValue);result["rows"]=Json::Value(Json::arrayValue);
           for(const auto& row:*rows) {
             Json::Value value;
+            const auto caption=df3d_production::nativeWorkOrderConditionCaption(row);if(!caption)return CR_FAILURE;
+            value["item_caption"]=DF2UTF(*caption);
             value["compare"]=int(row.compare_type);value["threshold"]=row.compare_val;
             value["item_type"]=int(row.item_type);value["item_subtype"]=row.item_subtype;
             value["mat_type"]=row.mat_type;value["mat_index"]=row.mat_index;

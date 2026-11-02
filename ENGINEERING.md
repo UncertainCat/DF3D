@@ -6767,8 +6767,23 @@ so DF builds temporary inputs. Native d160c0 supplies outputs and d09ca0 supplie
 inputs; installed raws remain authoritative. Material lookup scratch is restored.
 The result contains owned condition values; native strings/contained-ID vectors
 and allocations are released by the same leaves used at14eda2..14edca. No native
-panel, widget or staged edit supplies runtime inputs. This is a backend adapter,
-not yet management-wire or rendered Conditions support.
+panel, widget or staged edit supplies runtime inputs. Management120 exposes this
+through explicit workshop WorkOrderInspect; ordinary row reads do not rebuild
+suggestions. Optional captions and suggestion arrays preserve absent versus
+observed-empty data across the bridge, model and Godot extension.
+
+Condition item wording uses native a2adb0 with an owned job_item_filter initialized
+by1fb050. The adapter composes the condition-field mapping at3926b1..39289a,
+including all five flag words, reaction/product restrictions, contained IDs,
+dimension, ore, tool use and dye color; it never calls the renderer. The formatter
+and mapping are pinned, and material scratch is restored.
+
+Protected200556 on2026-11-01 compares both Extract suggestion captions with the
+actual native screen and verifies typed inspection through Godot against those
+suggestions. Existing create, quantity and removal actions still pass. Owned
+DF45948 exits unsaved, source preservation passes, and all five Godot log groups
+have only documented diagnostics. This is read transport acceptance; the
+Conditions controls and edits are not yet implemented.
 
 Protected194413 on2026-11-01 matches both Extract-from-plants suggestions against
 native pointer elements on every captured condition field, including all five
@@ -6787,8 +6802,8 @@ with Specify glass and Specify plant. Captures were inspected. Initial193708
 assumed Conditions returned directly to the workshop and missed Details; it is
 not acceptance. Owned DF37772 exits unsaved, source preservation passes, all five
 Godot groups have known diagnostics only, and core19/19/composition pass in
-`build/qa/workshop-order-suggestions`. Conditions wording/transport, frequency
-writes, condition edits and Details controls remain unfinished.
+`build/qa/workshop-order-suggestions`. Frequency writes, condition edits, rendered
+Conditions and Details controls remain unfinished.
 
 Protected183314 on2026-11-01 compares all2658 global rows and the37 Carpenter/4
 Still rows with the actual native picker: job/reaction/item/material fields,

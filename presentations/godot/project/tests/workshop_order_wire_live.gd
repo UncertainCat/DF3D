@@ -72,6 +72,14 @@ func run() -> void:
 	root.get_texture().get_image().save_png(directory+"/workshop-order-quantity-live.png")
 	number_key(KEY_ENTER)
 	check(not owner.panel.orders.editing,"Enter did not release order quantity focus")
+	var inspected:=await request("work_orders",{"action":C.ManagementAction.WorkOrderInspect,"workshop_id":int(expected.building_id),"id":created_order.id})
+	var inspected_rows: Array=inspected.get("work_order",{}).get("orders",[])
+	if not check(inspected.get("status",-1)==C.ManagementStatus.Ok and inspected_rows.size()==1,"Native Conditions inspection failed"):quit(1);return
+	var suggestions: Array=inspected_rows[0].get("suggested_conditions",[])
+	check(suggestions.size()==expected.suggestions.size(),"Conditions suggestion count differs")
+	for index in mini(suggestions.size(),expected.suggestions.size()):
+		for key in ["item_caption","compare","threshold","item_type","item_subtype","mat_type","mat_index"]:
+			check(suggestions[index].get(key)!=null and suggestions[index][key]==expected.suggestions[index][key],"Native Conditions field differs: "+str(key))
 	click(Vector2(872,190))
 	if not check(await settle(service,func():return owner.orders.phase==owner.orders.Phase.Ready and owner.orders.rows_available and owner.orders.row_ticket==0),"Order removal was not confirmed; no retry"):quit(1);return
 	check(not owner.orders.snapshot.order_ids.has(created_order.id) and owner.orders.row_total==0 and owner.orders.rows.is_empty(),"Removed order retained in workshop list")

@@ -584,7 +584,13 @@ local ok,err=xpcall(function()
    screen_text=table.concat(screen_text,'\n')
    for _,caption in ipairs(owned.captions)do assert(screen_text:find(caption:sub(1,70),1,true),'Native artwork subject caption differs')end
    assert(artwork.open and artwork.current_option==kind and #subjects==#ids,'Owned artwork reader changed native menu')
-   expected.artwork_subjects[#expected.artwork_subjects+1]={kind=kind,count=#ids,list_revision=owned.list_revision}
+   expected.artwork_subjects[#expected.artwork_subjects+1]={kind=kind,count=#ids,list_revision=owned.list_revision,first=ids[1],later=ids[129],captions=owned.captions}
+   if kind==2 then
+    local filtered_text,filtered_code=dfhack.run_command_silent('df3d','work-order-art-subjects-probe',tostring(improved.id),'2','a')
+    assert(filtered_code==0,filtered_text)
+    local filtered=json.decode(filtered_text);assert(#filtered.ids>0,'Site search fixture is empty')
+    expected.artwork_search={query='a',first=filtered.ids[1],count=#filtered.ids}
+   end
    shot('order-artwork-subject-'..tostring(kind)..'-native')
    art_back()
    assert(artwork.open and artwork.current_option==-1,'Artwork subject Back did not return to root')
@@ -737,8 +743,8 @@ local ok,err=xpcall(function()
   local file=assert(io.open(out..'/workshop-order-expected.json','w'));file:write(json.encode(expected));file:close()
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
   capture('workshop-order-wire')
-  assert(improved.specdata.improvement==expected.improvement.rows[expected.improvement.choice+1].index,'Viewer improvement effect missing')
-  assert(improved.art_spec.type==-1 and improved.art_spec.id==-1 and improved.art_spec.subid==-1,'Viewer improvement retained artwork selection')
+  assert(improved.specdata.improvement==0,'Viewer Image entry effect missing')
+  assert(improved.art_spec.type==1 and improved.art_spec.id==expected.artwork_search.first,'Viewer artwork site selection effect missing')
   assert(#df.global.world.manager_orders.all==orders_before,'Viewer removal did not restore order count')
   for i,id in ipairs(prior_order_ids)do assert(df.global.world.manager_orders.all[i-1].id==id,'Viewer removal changed unrelated order sequence')end
   assert(#dependent.order_conditions==prior_dependencies,'Viewer removal retained incoming dependency')

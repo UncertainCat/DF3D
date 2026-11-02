@@ -31,6 +31,9 @@ inline bool workOrderArtSubjectsReady() {
             {0x20a515,0x94,UINT64_C(0x887e8ee07510f16a)}, // site selection
             {0x20a844,0x90,UINT64_C(0x21fb16abe2986637)}, // entity selection
             {0x20f179,0x91,UINT64_C(0xd457c7675c96d8cb)}, // artist choice
+            {0x1ffced,0x216,UINT64_C(0xbccd02d40a931fd0)}, // order artwork heading composition
+            {0x1fff6d,0x14,UINT64_C(0xd97688af8b65493a)}, // heading limit
+            {0x1615350,0xc8,UINT64_C(0x227f3ddd70cde8fd)}, // root option literals
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -127,6 +130,51 @@ inline WorkOrderDetailEditResult setWorkOrderArtSubject(df::manager_order& order
     // Native related-subject actions leave subid intact; artist choice clears it.
     if(kind==0)order.art_spec.subid=-1;
     if(order.items)rebuildWorkOrderDetailRequirements(order);
+    result.observation=nativeWorkOrderDetails(order);
+    if(result.observation)result.outcome=WorkshopOrdersOutcome::Applied;
+    return result;
+}
+struct WorkOrderArtPage {
+    int16_t page=-1;std::string caption;
+    std::vector<std::pair<int32_t,std::string>> rows;
+    uint64_t listRevision=0;uint32_t total=0,nextCursor=0;
+};
+inline std::optional<WorkOrderArtPage> nativeWorkOrderArtPage(df::manager_order& order,int16_t page,const std::string& query,uint32_t cursor,uint64_t listRevision) {
+    if(!workOrderArtSubjectsReady())return std::nullopt;
+    const auto row=nativeWorkOrderRow(order,-1,true);if(!row)return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    WorkOrderArtPage result;result.page=page;
+    result.caption=reinterpret_cast<const char*>(base+0x1615548);result.caption+=row->caption;
+    if(order.amount_total>0)result.caption+=" ("+std::to_string(order.amount_total)+")";
+    if(result.caption.size()>78)result.caption.resize(78);
+    if(page==-1) {
+        if(!query.empty() || cursor || listRevision)return std::nullopt;
+        constexpr std::pair<int32_t,size_t> options[]={{1,0x1615360},{2,0x16153c8},{3,0x16153a0},{5,0x16153f0},{6,0x16153d8},{0,0x1615400}};
+        for(const auto& [id,rva]:options)result.rows.emplace_back(id,reinterpret_cast<const char*>(base+rva));
+        result.total=uint32_t(result.rows.size());return result;
+    }
+    const auto subjects=nativeWorkOrderArtSubjects(order,page,query);
+    if(!subjects || cursor>subjects->ids.size() || (listRevision && listRevision!=subjects->listRevision))return std::nullopt;
+    result.listRevision=subjects->listRevision;result.total=uint32_t(subjects->ids.size());
+    const auto end=std::min(size_t(cursor)+128,subjects->ids.size());
+    for(size_t i=cursor;i<end;++i) {
+        auto caption=nativeWorkOrderArtSubjectCaption(page,subjects->ids[i]);
+        if(!caption || caption->size()>1024)return std::nullopt;
+        result.rows.emplace_back(subjects->ids[i],std::move(*caption));
+    }
+    result.nextCursor=end<subjects->ids.size()?uint32_t(end):0;return result;
+}
+inline WorkOrderDetailEditResult beginWorkOrderArt(df::manager_order& order,uint64_t revision,int32_t option) {
+    WorkOrderDetailEditResult result;
+    if(!workOrderArtSubjectsReady())return result;
+    const auto before=nativeWorkOrderDetails(order);
+    if(!before || option<0 || size_t(option)>=before->options.size())return result;
+    if(!revision || revision!=before->revision){result.outcome=WorkshopOrdersOutcome::Stale;return result;}
+    const auto kind=before->options[size_t(option)].kind;if(kind!=1 && kind!=3)return result;
+    // Native21931f writes Image before entering the editor, without rebuilding
+    // requirements or clearing the existing art specifier. Back retains this.
+    result.outcome=WorkshopOrdersOutcome::Unknown;
+    if(kind==3)order.specdata.improvement=df::improvement_type(0);
     result.observation=nativeWorkOrderDetails(order);
     if(result.observation)result.outcome=WorkshopOrdersOutcome::Applied;
     return result;

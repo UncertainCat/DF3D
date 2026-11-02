@@ -7102,14 +7102,35 @@ The diagnostic `work-order-art-subjects-probe` returns ordered stable IDs,
 revisions and native name captions. Subject selection composes the pinned native
 art-specifier writes and requirement rebuild, with order/list revision checks.
 Related-subject selection preserves native subid behavior; artist choice clears
-all three fields. Transport and viewer navigation are still unfinished, so these
-helpers do not yet expose an artwork picker to the player.
+all three fields. Management125 carries the separate artwork intent and paged
+observations through the model into the shared Details viewer. Entering Image
+applies the native improvement-type write before opening the picker; backing out
+does not roll that write back. Figure, site and entity pages use native captions,
+ordering and filtering, with at most128 rows requested as the player scrolls.
+Selection validates both the order and filtered list revisions, rebuilds native
+requirements, then closes Details and refreshes the parent order list.
+
+The artwork root uses installed BUTTON_CATEGORY_RECTANGLE_ON artwork. Right-click
+returns subjects to the root and closes Details from the root; native Escape is
+non-dismissive. The viewer owns search, navigation and paging, and retires late
+responses with its parent. Existing-image selection and the new-image editor
+remain unfinished, so the complete Work orders surface remains staged.
 
 Protected001535 on2026-11-02 compares subject captions and historical-figure,
 site and entity selection effects against actual native clicks, then completes
 the existing Work orders workflow. Owned DF38148 exits unsaved; paired viewer
 logs contain only documented engine diagnostics. Artist-choice effects are not
 covered by that native-click comparison.
+
+Protected003558 on2026-11-02 exercises the actual viewer's Image entry, first and
+later figure pages, Back, site search and selection, and return to the global
+order list. DF readback confirms improvement Image and the selected site art
+specifier. The full existing Work orders workflow passes; owned DF44508 exits
+unsaved with source preservation. Paired viewer diagnostics are known-only.
+Screenshot review corrected the root's button token and heading baseline; the
+subsequent actual-viewer render verifies that correction. Core19/19 and UI
+composition pass. This does not establish existing/new-image editing, artist
+choice live effects, or complete responsive/hover acceptance.
 
 Protected000623 on2026-11-02 matches all10563 historical figures,680 sites and
 1263 entities against native picker order without changing the native picker.

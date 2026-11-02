@@ -328,6 +328,37 @@ func run() -> void:
 	root.get_texture().get_image().save_png(directory+"/work-order-details-improvement-live.png")
 	click(Vector2(200,142+int(expected.improvement.choice)*36))
 	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Closed and global.phase==global.Phase.Ready and global.ticket==0),"Improvement selection did not close and refresh"):quit(1);return
+	improvement_row=global.find_order(int(expected.improvement.id))
+	click(Vector2(584,142+(improvement_row.position-global.first)*36))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready),"Artwork parent did not reopen"):quit(1);return
+	click(Vector2(200,106+int(expected.improvement.option)*36))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.snapshot.get("selected_option",-1)==int(expected.improvement.option)),"Artwork type chooser did not open"):quit(1);return
+	click(Vector2(200,142))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.has_art()),"Image did not enter artwork picker"):quit(1);return
+	check(owner.details.art_page()==-1 and owner.details.rows.size()==6,"Artwork root differs")
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/work-order-art-root-live.png")
+	click(Vector2(200,154))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.art_page()==1),"Figure subjects did not open"):quit(1);return
+	check(owner.details.snapshot.art.total==expected.artwork_subjects[0].count and owner.details.rows.size()==128 and owner.details.rows[0].id==expected.artwork_subjects[0].first,"Figure page differs from native")
+	owner.details.seek(128)
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.first==128),"Artwork page did not advance"):quit(1);return
+	check(owner.details.rows[0].id==expected.artwork_subjects[0].later,"Artwork paging changed subject identity")
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/work-order-art-figures-live.png")
+	var back:=InputEventMouseButton.new();back.button_index=MOUSE_BUTTON_RIGHT;back.pressed=true;root.push_input(back,true);back=back.duplicate();back.pressed=false;root.push_input(back,true)
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.art_page()==-1),"Artwork Back did not return to root"):quit(1);return
+	click(Vector2(200,190))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.art_page()==2),"Site subjects did not open"):quit(1);return
+	click(Vector2(200,154))
+	for character in expected.artwork_search.query:number_key(KEY_A,character.unicode_at(0))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.ticket==0),"Artwork search did not finish"):quit(1);return
+	check(owner.details.rows[0].id==expected.artwork_search.first and owner.details.snapshot.art.total==expected.artwork_search.count,"Native artwork search differs")
+	number_key(KEY_ENTER)
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/work-order-art-search-live.png")
+	click(Vector2(200,190))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Closed and global.phase==global.Phase.Ready and global.ticket==0),"Artwork selection did not close and refresh"):quit(1);return
 	number_key(KEY_ESCAPE)
 	if not check(await settle(service,func():return owner.orders.phase==owner.orders.Phase.Ready and owner.orders.rows_available and owner.orders.row_ticket==0),"Workshop list did not refresh after global removal"):quit(1);return
 	check(not owner.orders.snapshot.order_ids.has(created_order.id) and owner.orders.row_total==0 and owner.orders.rows.is_empty(),"Removed order retained in workshop list")

@@ -100,7 +100,7 @@
 #include "work_order_catalog_native.h"
 #include "work_order_rows_native.h"
 #include "work_order_conditions_native.h"
-#include "work_order_details_native.h"
+#include "work_order_art_native.h"
 #include "creature_skills_native.h"
 #include "creature_knowledge_native.h"
 #include "skills_caption_native.h"
@@ -214,6 +214,7 @@ struct BridgeWorkOrderInfo : WorkOrderInfo {
 };
 struct BridgeWorkOrderState : WorkOrderState {
   std::optional<df3d_production::WorkOrderDetailsObservation> details;
+  std::optional<df3d_production::WorkOrderArtPage> art;
   int32_t detailsId=-1;
   int16_t detailsOption=-1;
   uint32_t detailsCursor=0;
@@ -808,7 +809,7 @@ void publish() {
     for(const auto& o:d.options)options.push_back(m::CreateWorkOrderDetailsOption(b,uint8_t(o.kind),o.index,b.CreateString(DF2UTF(o.caption))));
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<m::WorkOrderDetailsChoice>>> choices;
     uint32_t next=0;
-    if(workOrders.detailsOption>=0) {
+    if(workOrders.detailsOption>=0 && !workOrders.art) {
       std::vector<flatbuffers::Offset<m::WorkOrderDetailsChoice>> rows;
       const auto end=std::min(size_t(workOrders.detailsCursor)+128,d.materials.size());
       for(size_t i=workOrders.detailsCursor;i<end;++i) {
@@ -817,7 +818,13 @@ void publish() {
       }
       choices=b.CreateVector(rows);next=end<d.materials.size()?uint32_t(end):0;
     }
-    workOrderDetails=m::CreateWorkOrderDetailsState(b,workOrders.detailsId,d.revision,b.CreateString(DF2UTF(d.caption)),b.CreateVector(options),workOrders.detailsOption,choices,d.choicesRevision,uint32_t(d.materials.size()),next);
+    flatbuffers::Offset<m::WorkOrderArtState> art;
+    if(workOrders.art) {
+      const auto& a=*workOrders.art;std::vector<flatbuffers::Offset<m::WorkOrderArtRow>> rows;
+      for(const auto& [id,caption]:a.rows)rows.push_back(m::CreateWorkOrderArtRow(b,id,b.CreateString(DF2UTF(caption))));
+      art=m::CreateWorkOrderArtState(b,a.page,b.CreateString(DF2UTF(a.caption)),b.CreateVector(rows),a.listRevision,a.total,a.nextCursor);
+    }
+    workOrderDetails=m::CreateWorkOrderDetailsState(b,workOrders.detailsId,d.revision,b.CreateString(DF2UTF(d.caption)),b.CreateVector(options),workOrders.detailsOption,choices,d.choicesRevision,uint32_t(d.materials.size()),next,art);
   }
   auto workOrderResult=m::CreateWorkOrderState(b,b.CreateVector(wo),b.CreateVector(wr),b.CreateVector(wc),b.CreateVector(wm),workOrders.nextCursor,b.CreateString(workOrders.detail),b.CreateVector(wo_materials),b.CreateVector(wo_traits),b.CreateVector(wo_types),b.CreateVector(wo_groups),b.CreateVector(wo_tasks),workOrders.total,workOrders.listRevision,workOrders.buildPhase,workOrders.buildDone,workOrders.buildTotal,workOrderNative,workOrderDetails);
   std::vector<flatbuffers::Offset<m::CitizenInfo>> citizenRows;
@@ -2871,6 +2878,30 @@ void run(color_ostream& out) {
       const auto found=std::find_if(all.begin(),all.end(),[&](const auto* value){return value && value->id==q->id();});
       auto* order=found==all.end()?nullptr:*found;
       if(!order || (q->workshop_id()!=-2 && order->workshop_id!=q->workshop_id())){publish();return;}
+      if(const auto* a=d->art()) {
+        auto observed=df3d_production::nativeWorkOrderDetails(*order);
+        if(!observed || q->expected_revision()!=observed->revision || d->option()<0 || size_t(d->option())>=observed->options.size()){publish();return;}
+        const auto kind=observed->options[size_t(d->option())].kind;
+        if(kind!=1 && kind!=3){publish();return;}
+        const auto query=a->query()?UTF2DF(a->query()->str()):std::string{};
+        if(writing) {
+          mutated=true;
+          auto result=a->page()==-1?df3d_production::beginWorkOrderArt(*order,q->expected_revision(),d->option()):
+            df3d_production::setWorkOrderArtSubject(*order,q->expected_revision(),d->option(),a->page(),a->subject(),a->expected_list_revision(),query);
+          using O=df3d_production::WorkshopOrdersOutcome;
+          mutated=result.outcome==O::Applied || result.outcome==O::Unknown;
+          if(result.outcome!=O::Applied || !result.observation){publish();return;}
+          observed=std::move(result.observation);
+        }
+        if(!writing || a->page()==-1) {
+          if(kind==3 && int(order->specdata.improvement)!=0){publish();return;}
+          workOrders.art=df3d_production::nativeWorkOrderArtPage(*order,a->page(),query,a->cursor(),a->expected_list_revision());
+          if(!workOrders.art){publish();return;}
+          workOrders.detailsOption=d->option();
+        }
+        workOrders.details=std::move(observed);workOrders.detailsId=q->id();status=m::ManagementStatus::Ok;
+        publish();return;
+      }
       auto observed=df3d_production::nativeWorkOrderDetails(*order,d->option(),d->query()?UTF2DF(d->query()->str()):std::string{});
       if(!observed || (q->expected_revision() && q->expected_revision()!=observed->revision) ||
          (d->expected_choices_revision() && d->expected_choices_revision()!=observed->choicesRevision) || d->cursor()>observed->materials.size()){publish();return;}

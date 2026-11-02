@@ -7024,9 +7024,10 @@ The Details reader composes the pinned inline option enumeration213552 and its
 job-family dispatch data. It never calls opener213420, which changes global screen
 state. For material and plant choices only, population21d190 receives a private
 Details context and copies of the order and its job inputs; native inventory
-collection and sorting supply the ordered choices and counts. The IMAGE branch
-opens another global picker and is explicitly excluded. Other option families
-are enumerated but their choice readers remain unfinished.
+collection and sorting supply the ordered choices and counts. Improvement types
+also use21d190's native enumeration. The IMAGE branch opens another global picker
+and is explicitly excluded. Other option families are enumerated but their
+choice readers remain unfinished.
 
 Protected231539 on2026-11-01 compares Extract from plants' two native options and
 all material/plant choices against this reader: Clear/Crystal/Green glass in
@@ -7075,10 +7076,22 @@ text alignment are rendered; the full workflow passes and owned DF43608 exits
 unsaved with source preservation. This zero-stock fixture does not establish
 live positive/estimated count rendering.
 
-This is an editable staged workflow, not complete Details acceptance. Other
-choice families remain unfinished. The current fixed frame uses the workshop
-reference; global and responsive geometry, hover and navigation parity still
-need completion before exposure.
+Improvement type captions use the installed native literals. Non-image choices
+apply the pinned inline specdata edit, clear all three artwork fields and rebuild
+requirements through d09ca0. Image selection remains unfinished and is rejected
+before changing the order; it requires an owned artwork picker. Protected235642
+on2026-11-01 observes all five native types on an existing Encrust order, selects
+Bands through the viewer, and checks the resulting simulation type and cleared
+artwork fields. The same run passes material/plant search and the other Work
+orders flows; owned DF45040 exits unsaved with source preservation. Wire logs
+contain only known Godot diagnostics. Native Back returns from a type list to
+options before closing; the preceding235440 reference stopped at an incorrect
+one-Back-close assertion and is not a passing full workflow.
+
+Global Details now uses its observed larger frame at1200x800, separately from
+the workshop frame. This is an editable staged workflow, not complete Details
+acceptance. Image, clothing size and dye families, responsive geometry, hover
+and broader navigation parity still need completion before exposure.
 
 These screens remain staged. Details, full responsive layout, tooltip coverage
 and tab navigation are unfinished. Quantity drafts currently support four digits; native increment

@@ -248,33 +248,33 @@ func run() -> void:
 	check(owner.details.snapshot.id==created_order.id and owner.details.snapshot.options.size()==expected.details.options.size(),"Details target/options differ")
 	await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/work-order-details-live.png")
-	click(Vector2(200,118))
+	click(Vector2(200,106))
 	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.snapshot.get("selected_option",-1)==0),"Details material choices did not open"):quit(1);return
 	check(owner.details.rows.size()==expected.details.choices[0].rows.size(),"Details material choice count differs")
 	await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/work-order-details-material-live.png")
-	click(Vector2(200,154))
+	click(Vector2(200,142))
 	for character in expected.details.choices[0].search:number_key(KEY_A,character.unicode_at(0))
 	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.ticket==0),"Details search did not finish"):quit(1);return
 	if not check(owner.details.rows.size()==expected.details.choices[0].filtered.size() and owner.details.rows.size()==1 and owner.details.rows[0].id==1,"Native Details filtered identity differs"):quit(1);return
 	number_key(KEY_ENTER)
 	await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/work-order-details-search-live.png")
-	click(Vector2(200,190))
+	click(Vector2(200,178))
 	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Closed and global.phase==global.Phase.Ready and global.ticket==0),"Details material selection did not close and refresh"):quit(1);return
 	global_row=global.find_order(created_order.id);global_y=142+(global_row.position-global.first)*36
 	click(Vector2(584,global_y))
 	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready),"Details did not reopen after material selection"):quit(1);return
-	click(Vector2(200,154))
+	click(Vector2(200,142))
 	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.snapshot.get("selected_option",-1)==1),"Details plant choices did not open"):quit(1);return
-	click(Vector2(200,154))
+	click(Vector2(200,142))
 	for character in expected.details.choices[1].search:number_key(KEY_A,character.unicode_at(0))
 	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.ticket==0),"Details plant search did not finish"):quit(1);return
 	check(owner.details.rows.size()==expected.details.choices[1].filtered.size(),"Native plant search count differs")
 	number_key(KEY_ENTER)
 	await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/work-order-details-plant-live.png")
-	click(Vector2(200,190))
+	click(Vector2(200,178))
 	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Closed and global.phase==global.Phase.Ready and global.ticket==0),"Details plant selection did not close and refresh"):quit(1);return
 	global_row=global.find_order(created_order.id);global_y=142+(global_row.position-global.first)*36
 	click(Vector2(888,global_y))
@@ -315,6 +315,19 @@ func run() -> void:
 	root.get_texture().get_image().save_png(directory+"/global-order-created-live.png")
 	click(Vector2(888,142+(global_created_row.position-global.first)*36))
 	if not check(await settle(service,func():return global.phase==global.Phase.Ready and global.ticket==0),"Global created order removal failed"):quit(1);return
+	global.seek(int(expected.improvement.position),owner.global_orders_view.page_rows)
+	if not check(await settle(service,func():return global.phase==global.Phase.Ready and global.ticket==0 and not global.find_order(int(expected.improvement.id)).is_empty()),"Encrust order did not load"):quit(1);return
+	var improvement_row: Dictionary=global.find_order(int(expected.improvement.id))
+	click(Vector2(584,142+(improvement_row.position-global.first)*36))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready),"Encrust Details did not open"):quit(1);return
+	click(Vector2(200,106+int(expected.improvement.option)*36))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.snapshot.get("selected_option",-1)==int(expected.improvement.option)),"Improvement choices did not open"):quit(1);return
+	check(owner.details.rows.size()==expected.improvement.rows.size(),"Improvement choices differ")
+	for index in mini(owner.details.rows.size(),expected.improvement.rows.size()):check(owner.details.rows[index].caption==expected.improvement.rows[index].caption,"Improvement caption differs")
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/work-order-details-improvement-live.png")
+	click(Vector2(200,142+int(expected.improvement.choice)*36))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Closed and global.phase==global.Phase.Ready and global.ticket==0),"Improvement selection did not close and refresh"):quit(1);return
 	number_key(KEY_ESCAPE)
 	if not check(await settle(service,func():return owner.orders.phase==owner.orders.Phase.Ready and owner.orders.rows_available and owner.orders.row_ticket==0),"Workshop list did not refresh after global removal"):quit(1);return
 	check(not owner.orders.snapshot.order_ids.has(created_order.id) and owner.orders.row_total==0 and owner.orders.rows.is_empty(),"Removed order retained in workshop list")

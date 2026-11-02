@@ -19,14 +19,20 @@ func configure_details(source,model) -> void:
 func open(building: int,order: int) -> void:
 	state.open(building,order);show();queue_redraw()
 func layout(view: Vector2) -> void:
-	var rows_count:=maxi(13,floori(view.y/12)-10)
-	var origin:=Vector2(72,48+fposmod(view.y,12)*0.5)
-	if position==origin and size==Vector2(832,rows_count*12):return
-	position=origin;frame_rows=rows_count;size=Vector2(832,frame_rows*12);sync_scroll();queue_redraw()
+	var global: bool=state!=null and state.building_id==-2
+	var rows_count:=maxi(13,floori(view.y/12)-(5 if global else 10))
+	var origin:=Vector2(16 if global else 72,(36 if global else 48)+fposmod(view.y,12)*0.5)
+	var width:=976 if global else 832
+	if position==origin and size==Vector2(width,rows_count*12):return
+	position=origin;frame_rows=rows_count;size=Vector2(width,frame_rows*12);sync_scroll();queue_redraw()
+func selected_kind() -> int:
+	var selected: int=state.snapshot.get("selected_option",-1) if state!=null else -1
+	return int(state.snapshot.options[selected].kind) if selected>=0 else -1
+func list_top() -> int:return 84 if selected_kind()==3 else 120
 func sync_scroll() -> void:
 	if state==null or scrollbar==null:return
-	page_rows=maxi(1,int((size.y-144)/36))
-	scrollbar.position=Vector2(800,120);scrollbar.size=Vector2(16,page_rows*36);scrollbar.page=page_rows
+	page_rows=maxi(1,int((size.y-list_top()-24)/36))
+	scrollbar.position=Vector2(size.x-32,list_top());scrollbar.size=Vector2(16,page_rows*36);scrollbar.page=page_rows
 	if state.snapshot.get("selected_option",-1)>=0:scrollbar.set_rows(state.rows.size(),state.first)
 	else:scrollbar.hide()
 func back() -> void:
@@ -60,10 +66,10 @@ func _gui_input(event: InputEvent) -> void:
 	if selected>=0 and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
 		scrollbar.move_to(state.first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1));accept_event();return
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
-	if selected>=0 and Rect2(16,84,800,36).has_point(event.position):
+	if selected_kind() in [0,6] and Rect2(16,84,size.x-32,36).has_point(event.position):
 		search_focused=not search_focused;queue_redraw();accept_event();return
-	var top:=120 if selected>=0 else 48
-	if not Rect2(16,top,784,size.y-top-24).has_point(event.position):return
+	var top:=list_top() if selected>=0 else 48
+	if not Rect2(16,top,size.x-48,size.y-top-24).has_point(event.position):return
 	var index:=int((event.position.y-top)/36)
 	if selected>=0:
 		index+=state.first
@@ -74,7 +80,7 @@ func text(value: String,point: Vector2,color:=15) -> void:
 	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point+Vector2(0,4),value,HORIZONTAL_ALIGNMENT_LEFT,size.x-point.x-16,12,colors[color] if colors.size()>color else Color.WHITE)
 func _draw() -> void:
 	if world==null or state==null:return
-	patch("HOVER_RECTANGLE",Vector2i.ZERO,104,frame_rows)
+	patch("HOVER_RECTANGLE",Vector2i.ZERO,int(size.x/8),frame_rows)
 	if state.snapshot.is_empty():return
 	text(state.snapshot.get("caption",""),Vector2(16,32))
 	var selected: int=state.snapshot.get("selected_option",-1)
@@ -84,15 +90,18 @@ func _draw() -> void:
 	var kind: int=state.snapshot.options[selected].kind
 	# Captured native setting headings for the two wired semantic families.
 	if kind in [0,6]:text("Setting material" if kind==0 else "Setting plant",Vector2(16,68))
-	var filter: Texture2D=art.texture("BUTTON_FILTER")
-	if filter!=null:
-		for y in 3:
-			for x in 100:
-				var sx:=0 if x==0 else x-94 if x>=96 else 1
-				draw_texture_rect_region(filter,Rect2(16+x*8,84+y*12,8,12),Rect2(sx*8,y*12,8,12))
-	text(state.query+("_" if search_focused and blink else "") if search_focused or not state.query.is_empty() else "...",Vector2(32,104),15 if search_focused or not state.query.is_empty() else 8)
+	if kind==3:text("Setting type",Vector2(16,68)) # Native literal1615920.
+	if kind in [0,6]:
+		var filter: Texture2D=art.texture("BUTTON_FILTER")
+		var columns:=int((size.x-32)/8)
+		if filter!=null:
+			for y in 3:
+				for x in columns:
+					var sx:=0 if x==0 else x-columns+6 if x>=columns-4 else 1
+					draw_texture_rect_region(filter,Rect2(16+x*8,84+y*12,8,12),Rect2(sx*8,y*12,8,12))
+		text(state.query+("_" if search_focused and blink else "") if search_focused or not state.query.is_empty() else "...",Vector2(32,104),15 if search_focused or not state.query.is_empty() else 8)
 	for index in mini(page_rows,state.rows.size()-state.first):
 		var row: Dictionary=state.rows[state.first+index]
-		patch("BUTTON_RECTANGLE_DARK",Vector2i(2,10+index*3),98 if scrollbar.visible else 100,3)
-		text(row.caption,Vector2(16,140+index*36))
-		if row.has("count_caption"):text(row.count_caption,Vector2((800 if scrollbar.visible else 816)-str(row.count_caption).length()*8,140+index*36),13 if row.get("estimated",false) else 14)
+		patch("BUTTON_RECTANGLE_DARK",Vector2i(2,int(list_top()/12)+index*3),int((size.x-32)/8)-(2 if scrollbar.visible else 0),3)
+		text(row.caption,Vector2(16,list_top()+20+index*36))
+		if row.has("count_caption"):text(row.count_caption,Vector2(size.x-(32 if scrollbar.visible else 16)-str(row.count_caption).length()*8,list_top()+20+index*36),13 if row.get("estimated",false) else 14)

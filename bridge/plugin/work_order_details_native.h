@@ -35,6 +35,9 @@ inline bool workOrderDetailsReady() {
             {0x2230f0,0x8ec,UINT64_C(0xf7ba06a257bfe54c)}, // material sorting/filter
             {0x2239e0,0x706,UINT64_C(0x0cbc46c3d2089dc0)}, // plant sorting/filter
             {0x74f430,0x1d3,UINT64_C(0x79707f49e13c9401)}, // bookkeeper count estimate
+            {0x21517c,0x274,UINT64_C(0x6901b2ef5ade89fb)}, // improvement captions
+            {0x21931f,0x11,UINT64_C(0xfe95d347f9ba7430)}, // selected improvement effect
+            {0x2193bd,0x94,UINT64_C(0xddbadbcbf283ad20)}, // non-image art reset/rebuild
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -76,8 +79,8 @@ inline std::string nativeDetailInputCaption(const df::job_item& item) {
 // The opener213420 changes global screen state and is never called. Compose its
 // pinned semantic option enumeration over initialized simulation requirements.
 // Choice population21d190 receives an independently owned context/order/inputs.
-// Only MATERIAL and PLANT are admitted: IMAGE opens a separate global picker.
-// Other option families are reported but their choices are not implemented here.
+// IMAGE opens a separate global picker and is not called here. Improvement
+// choices are observed, but their Image choice still needs an owned art editor.
 inline std::optional<WorkOrderDetailsObservation> nativeWorkOrderDetails(df::manager_order& source,int32_t selected=-1,const std::string& query={}) {
     if(!workOrderDetailsReady() || !df::global::world || !df::global::plotinfo ||
        !df::global::plotinfo->main.fortress_entity)return std::nullopt;
@@ -126,7 +129,8 @@ inline std::optional<WorkOrderDetailsObservation> nativeWorkOrderDetails(df::man
     if(selected==-1)return result;
     if(selected<0 || size_t(selected)>=result.options.size())return std::nullopt;
     const auto option=result.options[size_t(selected)];
-    if(option.kind!=0 && option.kind!=6)return std::nullopt;
+    if(option.kind!=0 && option.kind!=3 && option.kind!=6)return std::nullopt;
+    if(option.kind==3 && !query.empty())return std::nullopt;
     std::vector<df::job_item> inputs;inputs.reserve(source.items->elements.size());
     for(const auto* item:source.items->elements)inputs.push_back(*item);
     df::job_reqst requirements;for(auto& item:inputs)requirements.elements.push_back(&item);
@@ -142,6 +146,19 @@ inline std::optional<WorkOrderDetailsObservation> nativeWorkOrderDetails(df::man
         df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
         using Populate=void (*)(df::job_details_interfacest*);
         reinterpret_cast<Populate>(base+0x21d190)(&context);
+    }
+    if(option.kind==3) {
+        constexpr size_t captions[]={0x16157d4,0x16157f0,0x16157e0,0x16157cc,0x161580c};
+        if(context.improvement_type.size()>5)return std::nullopt;
+        hash=result.revision;add(option.kind);add(option.index);add(context.improvement_type.size());
+        for(const auto value:context.improvement_type) {
+            const int type=int(value);if(type<0 || type>=int(std::size(captions)))return std::nullopt;
+            WorkOrderDetailMaterial row;row.id=int32_t(result.materials.size());row.index=type;
+            row.caption=reinterpret_cast<const char*>(base+captions[type]);
+            add(type);result.materials.push_back(std::move(row));
+        }
+        result.choicesRevision=(hash&INT64_MAX)?(hash&INT64_MAX):1;
+        return result;
     }
     const auto& types=option.kind==0?context.material:context.plant_mat;
     const auto& indices=option.kind==0?context.matgloss:context.plant_matgloss;
@@ -201,6 +218,12 @@ struct WorkOrderDetailEditResult {
     WorkshopOrdersOutcome outcome=WorkshopOrdersOutcome::Rejected;
     std::optional<WorkOrderDetailsObservation> observation;
 };
+inline void rebuildWorkOrderDetailRequirements(df::manager_order& order) {
+    using Fill=void (*)(df::job_reqst*,int16_t,int16_t,int16_t,int16_t,int32_t,const std::string*,uint32_t,uint32_t,int32_t,df::building*,int32_t,int32_t,int32_t);
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
+    reinterpret_cast<Fill>(base+0xd09ca0)(order.items,int16_t(order.job_type),int16_t(order.item_type),order.item_subtype,order.mat_type,order.mat_index,&order.reaction_name,order.material_category.whole,order.specflag.whole,order.specdata.hist_figure_id,nullptr,int32_t(order.art_spec.type),order.art_spec.id,order.art_spec.subid);
+}
 inline WorkOrderDetailEditResult setWorkOrderDetailMaterial(df::manager_order& order,uint64_t revision,int32_t option,uint64_t choicesRevision,int32_t choice) {
     WorkOrderDetailEditResult result;
     const auto before=nativeWorkOrderDetails(order,option);
@@ -209,6 +232,17 @@ inline WorkOrderDetailEditResult setWorkOrderDetailMaterial(df::manager_order& o
     if(choice<0 || size_t(choice)>=before->materials.size())return result;
     const auto selected=before->options[size_t(option)];
     const auto material=before->materials[size_t(choice)];
+    if(selected.kind==3) {
+        // Image requires a further user selection; do not borrow its native UI.
+        if(material.index<=0 || material.index>4)return result;
+        result.outcome=WorkshopOrdersOutcome::Unknown;
+        order.specdata.improvement=df::improvement_type(material.index);
+        order.art_spec.type=df::job_art_specifier_type(-1);order.art_spec.id=-1;order.art_spec.subid=-1;
+        if(order.items)rebuildWorkOrderDetailRequirements(order);
+        result.observation=nativeWorkOrderDetails(order);
+        if(result.observation)result.outcome=WorkshopOrdersOutcome::Applied;
+        return result;
+    }
     const size_t index=selected.kind==6?0:size_t(selected.index);
     if(!order.items || index>=order.items->elements.size() || !order.items->elements[index])return result;
     auto& item=*order.items->elements[index];
@@ -221,10 +255,7 @@ inline WorkOrderDetailEditResult setWorkOrderDetailMaterial(df::manager_order& o
     item.mat_type=material.type;item.mat_index=material.index;
     if(index==0) {
         order.mat_type=material.type;order.mat_index=material.index;
-        using Fill=void (*)(df::job_reqst*,int16_t,int16_t,int16_t,int16_t,int32_t,const std::string*,uint32_t,uint32_t,int32_t,df::building*,int32_t,int32_t,int32_t);
-        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
-        df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
-        reinterpret_cast<Fill>(base+0xd09ca0)(order.items,int16_t(order.job_type),int16_t(order.item_type),order.item_subtype,order.mat_type,order.mat_index,&order.reaction_name,order.material_category.whole,order.specflag.whole,order.specdata.hist_figure_id,nullptr,int32_t(order.art_spec.type),order.art_spec.id,order.art_spec.subid);
+        rebuildWorkOrderDetailRequirements(order);
     }
     result.observation=nativeWorkOrderDetails(order);
     if(result.observation)result.outcome=WorkshopOrdersOutcome::Applied;

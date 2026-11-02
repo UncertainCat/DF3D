@@ -534,6 +534,36 @@ local ok,err=xpcall(function()
   expected.global_order_ids={}
   for _,order in ipairs(df.global.world.manager_orders.all)do expected.global_order_ids[#expected.global_order_ids+1]=order.id end
   shot('global-work-orders-native')
+  -- Reuse an existing visible Encrust order for the native type chooser.
+  local improvement_y
+  for _,line in ipairs(lines())do if line.text:find('Encrust',1,true)then improvement_y=line.y*12+6;break end end
+  assert(improvement_y,'Fixture needs a visible Encrust order')
+  mouse(584,improvement_y)
+  local improvement=df.global.game.main_interface.job_details
+  assert(improvement.open and improvement.wq,'Encrust Details did not open')
+  local improved=improvement.wq
+  local improvement_slot
+  for i,kind in ipairs(improvement.option)do if kind==3 then improvement_slot=i;break end end
+  assert(improvement_slot,'Encrust type option missing')
+  mouse(200,106+improvement_slot*36)
+  assert(improvement.current_option==3,'Improvement type chooser did not open')
+  local probe_text,probe_code=dfhack.run_command_silent('df3d','work-order-details-probe',tostring(improved.id),tostring(improvement_slot))
+  assert(probe_code==0,probe_text)
+  local observed=json.decode(probe_text)
+  assert(#observed.materials==#improvement.improvement_type,'Improvement choice count differs')
+  local pick
+  for i,row in ipairs(observed.materials)do
+   assert(row.index==improvement.improvement_type[i-1],'Improvement order differs')
+   if not pick and row.index>0 then pick=i-1 end
+  end
+  assert(pick,'No direct improvement choice available')
+  expected.improvement={id=improved.id,option=improvement_slot,choice=pick,rows=observed.materials}
+  for i,order in ipairs(df.global.world.manager_orders.all)do if order.id==improved.id then expected.improvement.position=i;break end end
+  shot('order-details-improvement-native')
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+  assert(improvement.open and improvement.current_option==-1,'Improvement Back did not return to options')
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+  assert(not improvement.open,'Improvement Back did not close Details')
   mouse(944,142);assert(picker.open and picker.forced_bld_id==-1,'Native global picker did not open')
   local groups={}
   for _,group in ipairs(picker.building)do
@@ -653,6 +683,8 @@ local ok,err=xpcall(function()
   local file=assert(io.open(out..'/workshop-order-expected.json','w'));file:write(json.encode(expected));file:close()
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
   capture('workshop-order-wire')
+  assert(improved.specdata.improvement==expected.improvement.rows[expected.improvement.choice+1].index,'Viewer improvement effect missing')
+  assert(improved.art_spec.type==-1 and improved.art_spec.id==-1 and improved.art_spec.subid==-1,'Viewer improvement retained artwork selection')
   assert(#df.global.world.manager_orders.all==orders_before,'Viewer removal did not restore order count')
   for i,id in ipairs(prior_order_ids)do assert(df.global.world.manager_orders.all[i-1].id==id,'Viewer removal changed unrelated order sequence')end
   assert(#dependent.order_conditions==prior_dependencies,'Viewer removal retained incoming dependency')

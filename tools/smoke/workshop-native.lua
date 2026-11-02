@@ -421,12 +421,13 @@ local ok,err=xpcall(function()
   local added_contains={};for _,value in ipairs(added.contains)do added_contains[#added_contains+1]=value end
   assert(json.encode(added_contains)==json.encode(wanted.contains))
   expected.added_condition=owned[1]
+  expected.added_condition.satisfied=conditions.item_condition_satisfied[0]
   result.order_conditions.added={frequency=native.frequency,condition=owned[1],lines=lines()}
   shot('order-condition-added-native')
   expected.condition_steps={}
   for _,x in ipairs{672,704,736,736,736,736,736,736}do
    mouse(x,178)
-   expected.condition_steps[#expected.condition_steps+1]={x=x,compare=added.compare_type,threshold=added.compare_val}
+   expected.condition_steps[#expected.condition_steps+1]={x=x,compare=added.compare_type,threshold=added.compare_val,satisfied=conditions.item_condition_satisfied[0]}
   end
   assert(added.compare_type==wanted.compare and added.compare_val==wanted.threshold,'Native amount/comparison cycle did not restore original values')
   result.order_conditions.edit_steps=expected.condition_steps
@@ -495,6 +496,7 @@ local ok,err=xpcall(function()
   local manual=native.item_conditions[0]
   assert(manual.compare_type==0 and manual.compare_val==0 and manual.min_dimension==-1)
   expected.manual_condition={compare=manual.compare_type,threshold=manual.compare_val,item_type=manual.item_type,item_subtype=manual.item_subtype,mat_type=manual.mat_type,mat_index=manual.mat_index}
+  expected.manual_satisfied=conditions.item_condition_satisfied[0]
   shot('order-condition-manual-native')
   mouse(896,178)
   assert(#native.item_conditions==0)

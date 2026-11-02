@@ -106,6 +106,7 @@ func run() -> void:
 		if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.orders.phase==owner.orders.Phase.Ready and owner.orders.row_ticket==0),"Condition amount/comparison edit was not confirmed; no retry"):quit(1);return
 		var condition: Dictionary=owner.conditions.snapshot.conditions[0]
 		check(condition.compare==int(step.compare) and condition.threshold==int(step.threshold),"Condition amount/comparison differs from native")
+		check(condition.satisfied==step.satisfied,"Condition satisfaction differs from native")
 		for key in ["item_caption","item_type","item_subtype","mat_type","mat_index"]:
 			check(condition[key]==expected.added_condition[key],"Condition amount edit changed filter: "+key)
 	click(Vector2(640,178))
@@ -156,6 +157,7 @@ func run() -> void:
 	if not check(owner.conditions.snapshot.conditions.size()==1,"Manual condition missing"):quit(1);return
 	for key in expected.manual_condition:
 		check(owner.conditions.snapshot.conditions[0][key]==int(expected.manual_condition[key]),"Manual condition differs from native: "+key)
+	check(owner.conditions.snapshot.conditions[0].satisfied==expected.manual_satisfied,"Manual condition satisfaction differs from native")
 	await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/workshop-order-condition-manual-live.png")
 	click(Vector2(896,178))

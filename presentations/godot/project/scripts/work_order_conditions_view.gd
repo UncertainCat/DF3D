@@ -139,6 +139,7 @@ func condition(row: Dictionary,y: float,suggested: bool) -> void:
 		patch("BUTTON_RECTANGLE_DARK",Vector2i(90,int(y/12)),4,3)
 		icon("WORK_ORDERS_ADD_SUGGESTED_CONDITION",Vector2(720,y))
 	elif not suggested:
+		text("Satisfied for next check" if row.satisfied else "Not satisfied for next check",Vector2(416,y+24),10 if row.satisfied else 12)
 		icon("WORK_ORDERS_ENTER_AMOUNT",Vector2(592,y))
 		icon("WORK_ORDERS_INCREASE_AMOUNT",Vector2(624,y))
 		icon("WORK_ORDERS_DECREASE_AMOUNT",Vector2(656,y))

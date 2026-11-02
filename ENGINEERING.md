@@ -6915,7 +6915,7 @@ action without a schema change. Protected213905 on2026-11-01 compares native
 and rendered-viewer manual creation/removal alongside the existing filter
 workflow. Source preservation passes, owned DF49000 exits unsaved, all five
 Godot process groups have only known diagnostics, and root CTest19/19 passes.
-The paired render still lacks native satisfaction feedback; that remains open.
+That paired render predates the satisfaction feedback implemented below.
 
 Dependencies use native3c4fd0..5029's world-order candidate predicate, excluding
 the current order and existing targets. The picker pages native order rows with
@@ -6934,7 +6934,22 @@ separately in `dependency-layout.gd`. `build/qa/work-order-dependencies` passes
 core19/19 and composition. Candidate pages contain at most15 rows plus the source
 order; larger-height page filling and scroll lifecycle still need completion.
 
-This screen remains staged. Item satisfaction feedback,
+Item satisfaction now calls nativead0bc0 with an owned condition and filter.
+The shared native condition-to-filter mapping initializes every filter field;
+a9d929..967 selects the simulation item index (including cc04e0's item-type
+dispatch), which is copied for the call. The native menu updater a9d6a0 is never
+called. Evaluation happens during explicit Conditions inspection, not background
+order-list reads, and does not change order scheduling or condition records.
+The cc04e0 pin includes its complete dispatch table rather than the first leaf.
+
+Protected215253 on2026-11-01 compares satisfied/unsatisfied results against native
+DF through all six comparison modes and blank-condition creation. The composed
+viewer workflow and paired rendered feedback pass, including the existing
+filter/dependency/removal actions. Owned DF37680 exits unsaved with the source
+unchanged; all five Godot groups contain only known diagnostics. Root CTest19/19
+passes. This is not exhaustive acceptance of every reaction/trait family.
+
+This screen remains staged. Main-list and suggestion scrolling,
 overflow, tooltip coverage, tab navigation and exact native back navigation are
 unfinished. Current close returns to the workshop; this is not native navigation
 acceptance. Fixed frame geometry and bounded displayed rows still need the full

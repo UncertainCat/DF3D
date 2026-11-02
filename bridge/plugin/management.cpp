@@ -2859,6 +2859,9 @@ void run(color_ostream& out) {
         if(!caption){publish();return;}
         row.conditions[i].itemCaption=DF2UTF(*caption);
         if(row.conditions[i].itemCaption->size()>1024){publish();return;}
+        const auto satisfied=df3d_production::nativeWorkOrderConditionSatisfied(observed->itemConditions[i]);
+        if(!satisfied){publish();return;}
+        row.conditions[i].satisfied=*satisfied;
       }
       row.suggestedConditions.emplace();
       for(size_t i=0;i<suggestions->size();++i) {

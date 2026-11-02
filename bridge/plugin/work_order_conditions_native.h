@@ -44,6 +44,9 @@ inline bool workOrderSuggestionsSupported() {
             {0x3c4697,0x58,UINT64_C(0xafad4184748341ea)},
             {0x3c5323,0x16,UINT64_C(0x21f1af3720d24795)},
             {0x391c9e,0xf1,UINT64_C(0x22aeac4a07ddd4bc)},
+            {0xcc04e0,0x484,UINT64_C(0x2ae4ffc04f8e77d3)},
+            {0xad0bc0,0x1678,UINT64_C(0xf00d7e1eb18c456f)},
+            {0xa9d7b8,0x1bc,UINT64_C(0x3a41bd1d85a2df1d)},
             {0x3c5671,0x1ae,UINT64_C(0xf630e9734b5a8891)},
             {0x3c534d,0xbf,UINT64_C(0xa3ed7f994900fc90)},
             {0x3c5273,0x4,UINT64_C(0x53530d88aba7d93d)},
@@ -217,16 +220,12 @@ inline NativeWorkOrderEdit selectNativeWorkOrderFilter(int32_t buildingId,int32_
     return result;
 }
 
-// Compose the renderer's condition-to-filter mapping (3926b1..39289a),
-// then call its item-description leaf. All filter storage belongs to this call.
-inline std::optional<std::string> nativeWorkOrderConditionCaption(const df::manager_order_condition_item& source) {
-    if(!workOrderSuggestionsSupported() || !df::global::world || source.contains.size()>64 ||
-       source.reaction_class.size()>128 || source.has_material_reaction_product.size()>128)return std::nullopt;
+// Shared native condition-to-filter mapping3926b1..39289a/a9d7b8..a9d926.
+// All strings/vectors are owned; callers supply freshly constructed storage.
+inline void initializeNativeWorkOrderFilter(df::job_item_filter& filter,const df::manager_order_condition_item& source) {
     static_assert(sizeof(df::job_item_filter)==0x110);
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     using Init=void (*)(df::job_item_filter*);
-    using Describe=void (*)(df::job_item_filter*,std::string*,int16_t);
-    df::job_item_filter filter;
     reinterpret_cast<Init>(base+0x1fb050)(&filter);
     filter.item_type=source.item_type;filter.item_subtype=source.item_subtype;
     filter.mat_type=source.mat_type;filter.mat_index=source.mat_index;filter.use_mat_index=source.mat_index!=-1;
@@ -242,6 +241,36 @@ inline std::optional<std::string> nativeWorkOrderConditionCaption(const df::mana
     filter.min_dimension=source.min_dimension;filter.reaction_id=source.reaction_id;
     filter.contains=source.contains;filter.use_contains=!source.contains.empty();
     filter.has_tool_use=source.has_tool_use;filter.dye_color=source.dye_color;
+}
+inline std::optional<bool> nativeWorkOrderConditionSatisfied(const df::manager_order_condition_item& source) {
+    if(!workOrderSuggestionsSupported() || !df::global::world || source.contains.size()>64 ||
+       source.reaction_class.size()>128 || source.has_material_reaction_product.size()>128)return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    df::job_item_filter filter;initializeNativeWorkOrderFilter(filter,source);
+    using Items=std::vector<df::item*>;
+    const Items* items=nullptr;
+    // Nativea9d929..967 selects authoritative simulation item indexes, never
+    // menu scratch. Copy the selected index for this owned filter invocation.
+    if(source.flags2.whole&0x2000000)items=reinterpret_cast<const Items*>(base+0x23e56c0);
+    else if(source.flags3.whole&0x80)items=reinterpret_cast<const Items*>(base+0x23e60b0);
+    else if(!source.contains.empty())items=reinterpret_cast<const Items*>(base+0x23e6098);
+    else {
+        using Select=const Items* (*)(void*,int16_t);
+        items=reinterpret_cast<Select>(base+0xcc04e0)(nullptr,int16_t(source.item_type));
+    }
+    if(!items)return std::nullopt;
+    Items ownedItems(*items);filter.item_vector=&ownedItems;
+    df::manager_order_condition_item condition(source);
+    df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
+    using Check=bool (*)(df::job_item_filter*,df::manager_order_condition_item*);
+    return reinterpret_cast<Check>(base+0xad0bc0)(&filter,&condition);
+}
+inline std::optional<std::string> nativeWorkOrderConditionCaption(const df::manager_order_condition_item& source) {
+    if(!workOrderSuggestionsSupported() || !df::global::world || source.contains.size()>64 ||
+       source.reaction_class.size()>128 || source.has_material_reaction_product.size()>128)return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    df::job_item_filter filter;initializeNativeWorkOrderFilter(filter,source);
+    using Describe=void (*)(df::job_item_filter*,std::string*,int16_t);
     df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
     std::string result;
     reinterpret_cast<Describe>(base+0xa2adb0)(&filter,&result,-1);

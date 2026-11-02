@@ -1,7 +1,7 @@
 extends Control
 signal choose_requested
 # Native renderer1882fe/189a22 and protected workshop-work-orders reference.
-# Order creation and row details are still staged.
+# Row actions and details are still staged.
 var art=preload("res://scripts/original_ui.gd").new()
 var state
 var input_allowed: Callable
@@ -9,6 +9,7 @@ var colors: Array[Color]=[]
 var editing:=false
 var draft:=""
 var cursor_visible:=true
+var visible_rows:=0
 func configure(source,model) -> void:
 	state=model;art.configure(source);theme=art.theme;colors=art.installed_palette(source.assets_root())
 	texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST;mouse_filter=Control.MOUSE_FILTER_STOP
@@ -34,6 +35,9 @@ func feed_key(event: InputEventKey) -> void:
 	queue_redraw()
 func _process(_delta: float) -> void:
 	if not is_visible_in_tree():editing=false;return
+	var capacity:=maxi(0,int((size.y-72)/36))
+	if visible_rows!=capacity:
+		visible_rows=capacity;state.seek_rows(state.row_offset,capacity)
 	if editing:
 		var phase:=Time.get_ticks_msec()%1000<500
 		if phase!=cursor_visible:cursor_visible=phase;queue_redraw()
@@ -41,7 +45,10 @@ func button_rect(index: int) -> Rect2:return Rect2(360+index*32,size.y-36,32,36)
 func _gui_input(event: InputEvent) -> void:
 	if input_allowed.is_valid() and not input_allowed.call():return
 	if state.phase!=state.Phase.Ready:return
-	if not event is InputEventMouseButton or not event.pressed or event.button_index!=MOUSE_BUTTON_LEFT:return
+	if not event is InputEventMouseButton or not event.pressed:return
+	if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
+		finish_entry();state.seek_rows(state.row_offset+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1),visible_rows);accept_event();return
+	if event.button_index!=MOUSE_BUTTON_LEFT:return
 	if state.snapshot.get("manager_available",false) and Rect2(424,0,32,36).has_point(event.position):finish_entry();choose_requested.emit();accept_event();return
 	if button_rect(0).has_point(event.position):editing=true;draft="";queue_redraw();accept_event();return
 	for index in [1,2]:
@@ -56,7 +63,36 @@ func _draw() -> void:
 		caption("Work orders can be added specifically for this shop.",Vector2(0,22),Color.WHITE)
 		var add: Texture2D=art.texture("WORK_ORDERS_CREATE_NEW")
 		if add!=null:draw_texture_rect(add,Rect2(424,0,32,36),false)
+	for index in visible_rows:
+		var row: Dictionary=state.rows.get(state.row_offset+index,{})
+		if row.is_empty():continue
+		var native: Dictionary=row.native_state
+		var y:=36+index*36
+		row_background(y)
+		var phases: Array=["","WORK_ORDERS_ACTIVE","WORK_ORDERS_WAITING","WORK_ORDERS_CHECKING","WORK_ORDERS_READY"]
+		row_icon(phases[native.phase],Vector2(0,y))
+		var name: String=row.name
+		if name.length()>=29:name=name.left(25)+"..."
+		var cyan: Color=colors[11] if colors.size()>11 else Color.WHITE
+		caption(name,Vector2(48,y+22),cyan)
+		caption(("∞" if row.remaining==0 and row.total==0 else str(row.remaining))+"/"+("∞" if row.total==0 else str(row.total)),Vector2(48,y+34),cyan)
+		if native.validation_required:row_icon("WORK_ORDERS_VALIDATED" if row.validated else "WORK_ORDERS_NOT_VALIDATED",Vector2(296,y))
+		row_icon("WORK_ORDERS_ENTER_AMOUNT",Vector2(328,y))
+		row_icon("WORK_ORDERS_CONDITIONS",Vector2(360,y))
+		if native.details_available:row_icon("WORK_ORDERS_DETAILS",Vector2(392,y))
+		row_icon("WORK_ORDERS_REMOVE",Vector2(424,y))
 	caption("General work orders allowed: "+(draft+("_" if cursor_visible else "") if editing else str(state.snapshot.general_order_limit)),Vector2(0,size.y-14),Color.WHITE)
 	for index in 3:
 		var texture: Texture2D=art.texture(["WORK_ORDERS_ENTER_AMOUNT","WORK_ORDERS_INCREASE_AMOUNT","WORK_ORDERS_DECREASE_AMOUNT"][index])
 		if texture!=null:draw_texture_rect(texture,button_rect(index),false)
+
+func row_icon(token: String,point: Vector2) -> void:
+	var texture: Texture2D=art.texture(token)
+	if texture!=null:draw_texture_rect(texture,Rect2(point,Vector2(32,36)),false)
+
+func row_background(top: int) -> void:
+	var texture: Texture2D=art.texture("BUTTON_RECTANGLE")
+	if texture==null:return
+	for y in 3:
+		for x in 57:
+			draw_texture_rect_region(texture,Rect2(x*8,top+y*12,8,12),Rect2(0 if x==0 else 16 if x==56 else 8,y*12,8,12))

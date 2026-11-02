@@ -10,6 +10,51 @@ var snapshot: Dictionary={}
 var ticket:=0
 var generation:=0
 var pending_value: int=-1
+var row_ticket:=0
+var row_generation:=0
+var row_revision:=0
+var rows: Dictionary={}
+var row_total:=0
+var row_offset:=0
+var row_capacity:=1
+var rows_available:=false
+
+func _retire_rows() -> void:
+	row_generation+=1
+	var previous:=row_ticket;row_ticket=0
+	if service!=null and previous!=0:service.detach(previous)
+	rows={};row_revision=0;row_total=0;rows_available=false
+func seek_rows(offset: int,capacity: int) -> void:
+	row_capacity=maxi(0,capacity)
+	row_offset=clampi(offset,0,maxi(0,row_total-row_capacity))
+	_fill_rows();changed.emit()
+func _fill_rows() -> void:
+	if service==null or row_ticket!=0 or not rows_available:return
+	for index in range(row_offset,mini(row_total,row_offset+row_capacity)):
+		if not rows.has(index):_read_rows(index);return
+func _read_rows(offset: int) -> void:
+	if service==null:return
+	var owner:=row_generation
+	row_ticket=service.submit("work_orders",{"action":C.ManagementAction.WorkOrderList,"workshop_id":building_id,"cursor":offset,"expected_list_revision":row_revision},func(received,result,sent):
+		if owner!=row_generation or received!=row_ticket:return
+		row_ticket=0
+		var value: Dictionary=result.get("work_order",{})
+		var page: Array=value.get("orders",[])
+		var revision: int=value.get("list_revision",0)
+		var total: int=value.get("total",-1)
+		var start: int=sent.cursor
+		var next: int=value.get("next_cursor",0)
+		if result.get("status",-1)!=C.ManagementStatus.Ok or result.get("action",-1)!=C.ManagementAction.WorkOrderList or revision<=0 or (row_revision!=0 and row_revision!=revision) or total<0 or total>16384 or page.size()>16 or start+page.size()>total or (page.is_empty() and start<total) or next!=(start+page.size() if start+page.size()<total else 0):
+			_retire_rows();changed.emit();return
+		for row in page:
+			if row.get("workshop_id",-1)!=building_id or row.get("id",-1)<0 or row.get("native_state",{}).get("phase",0) not in [C.WorkOrderPhase.Active,C.WorkOrderPhase.Waiting,C.WorkOrderPhase.Checking,C.WorkOrderPhase.Ready]:
+				_retire_rows();changed.emit();return
+		row_revision=revision;row_total=total;rows_available=true
+		for index in page.size():rows[start+index]=page[index].duplicate(true)
+		row_offset=clampi(row_offset,0,maxi(0,row_total-row_capacity))
+		_fill_rows();changed.emit())
+	if row_ticket==0:_retire_rows();changed.emit()
+
 
 func configure(source) -> void:
 	dispose();service=source
@@ -19,6 +64,7 @@ func dispose() -> void:
 	if service!=null and service.session_changed.is_connected(_session_changed):service.session_changed.disconnect(_session_changed)
 	service=null
 func close() -> void:
+	_retire_rows();row_offset=0
 	generation+=1
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
@@ -31,6 +77,7 @@ func open(id: int) -> void:
 	building_id=id;refresh()
 func refresh() -> void:
 	if building_id<0 or ticket!=0:return
+	_retire_rows()
 	snapshot={};phase=Phase.Reading
 	_send({"action":C.ManagementAction.ProductionInspect,"workshop_orders":true,"building_id":building_id})
 func step(delta: int) -> void:
@@ -67,7 +114,9 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 		if value.get("outcome",0)!=C.FarmEditOutcome.Completed or value.get("delta",0)!=delta or value.get("value",-1)!=absolute or value.get("general_order_limit",-1)!=expected:
 			_fail(Phase.Unknown);return
 	elif value.get("outcome",-1)!=C.FarmEditOutcome.None:_fail(Phase.Rejected);return
-	snapshot=value.duplicate(true);phase=Phase.Ready;changed.emit()
+	snapshot=value.duplicate(true);phase=Phase.Ready
+	if not editing:_read_rows(0)
+	changed.emit()
 	if editing:applied.emit()
 	# A later local draft is a new intent, sent only after a confirmed receipt.
 	# Failure clears it above; never retry a rejected or uncertain write.

@@ -3205,5 +3205,18 @@
     "source_preserved": true,
     "owned_exit": "unsaved",
     "godot_diagnostics": "known only"
+  },
+  "work_order_rows_reference": {
+    "build": "DF 53.16 Steam 24557528",
+    "run": "build/stockpile-storage-native-farm-discovery-20261101-192054",
+    "scope": "Native-created and viewer-created Extract rows: captions, quantity, Ready phase, validation and Details indicators; actual creation workflow. Row actions, other phases, overflow and full-sheet visual acceptance remain incomplete.",
+    "files": {
+      "workshop-orders-created-native.png": "14ea3faf547cafedcd7ef8bea0fe5c1dad75fe763051b5358d233a7660b9c8cc",
+      "workshop-order-created-live.png": "5e15b1b88538f757be926bd2994c41736f01beaa04bdd3ccc0af0266c0bdb5db",
+      "workshop-order-wire-result.json": "6c383dce32d263d0df05f39b0159154c8a084ff2cc360d1f0f9b4b1b4a72a048",
+      "workshop-order-creation-comparison.json": "3b9c0f40ebc9b39c92771772b72b9e06a518f5b4c16de37b75158d4153630370",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "godot-diagnostics.json": "edafb1af8c5609a654cee690f3ea0440427a3e78fd0e71187796d20ecb88f5f9"
+    }
   }
 }

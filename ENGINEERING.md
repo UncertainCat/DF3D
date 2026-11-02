@@ -6672,8 +6672,8 @@ from plants through native DF and through the actual composed DF3D picker.
 Exactly one viewer order is added and appears in refreshed workshop membership;
 recipe/status/default fields, empty condition counts and initialized requirement
 presence match native. Full requirement-element equivalence is not claimed.
-The picker capture was inspected. The created-order view still has no populated
-rows; row rendering/details, full keyboard and narrow layout are unfinished.
+The picker capture was inspected. That capture predates populated rows, described below. Row actions/details,
+full keyboard and narrow layout remain unfinished.
 Owned DF45160 exits unsaved, source preservation passes, and all five Godot log
 groups have known diagnostics only. The public route stays hidden.
 
@@ -6696,6 +6696,26 @@ created-sheet captures were inspected; full overflow/keyboard/layout parity is
 not claimed. Owned DF41804 exits unsaved with source preservation and known-only
 diagnostics in all five Godot log groups. Core and composition checks pass in
 `build/qa/workshop-order-search`.
+
+Workshop WorkOrderList reads now use `work_order_rows_native.h`. Owned rows
+preserve world order and call the native caption and Details helpers; pinned
+renderer branches supply Active/Waiting/Checking/Ready and the population-based
+validation indicator. Management119 carries these optional native observations;
+legacy rows do not acquire invented state. Pages hold at most16 rows and respect
+the condition aggregate bound. These are list observations, not full Details
+inspection or edit authority. Condition identities have no fabricated descriptions.
+The controller requests visible missing pages, retires reads on refresh/close and
+renders native captions, amounts and installed row artwork. Row action icons
+remain staged and unconnected.
+
+Protected192054 on2026-11-01 repeats native/viewer search and creation, then
+verifies both native-created109 and viewer-created110 in the actual workshop row
+reader, including the new order's caption,10/10 and Ready state. The row capture
+was inspected against native. Its header/contents capture is incomplete despite
+populated owner state, so this is not full-sheet visual acceptance. No additional
+status, scrolling or row-edit acceptance is claimed. Owned DF39064 exits unsaved,
+source preservation passes and all five Godot groups have known diagnostics only.
+Core19/19 and composition pass in `build/qa/workshop-order-rows`.
 
 Protected183314 on2026-11-01 compares all2658 global rows and the37 Carpenter/4
 Still rows with the actual native picker: job/reaction/item/material fields,

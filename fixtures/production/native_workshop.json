@@ -3055,5 +3055,79 @@
     "fixture": "Temporarily granted an occupied office MANAGE_PRODUCTION; restored after native open/cancel. No orders created.",
     "godot_diagnostics": "known only",
     "source_preserved": true
+  },
+  "work_order_creation_reference": {
+    "evidence": "build/stockpile-storage-native-farm-discovery-20261101-185122",
+    "date": "2026-11-01",
+    "building_id": 37,
+    "caption": "Extract from plants",
+    "native": {
+      "amount_left": 10,
+      "amount_total": 10,
+      "art_id": -1,
+      "art_subid": -1,
+      "art_type": -1,
+      "finished_tick": -1,
+      "finished_year": -1,
+      "frequency": 0,
+      "item_conditions": 0,
+      "item_subtype": -1,
+      "item_type": -1,
+      "items": true,
+      "job_type": 149,
+      "mat_index": -1,
+      "mat_type": -1,
+      "material_category": 0,
+      "max_workshops": 0,
+      "order_conditions": 0,
+      "reaction": "",
+      "specdata": -1,
+      "specflag": 0,
+      "status": 0,
+      "workshop_id": 37
+    },
+    "viewer": {
+      "created": {
+        "active": false,
+        "conditions": [],
+        "detail_kind": 0,
+        "editable": false,
+        "encrust_flags": 0,
+        "finished_tick": -1,
+        "finished_year": -1,
+        "frequency": 0,
+        "generated_jobs": [],
+        "id": 110,
+        "inputs": [],
+        "mat_index": -1,
+        "mat_type": -1,
+        "material_category": 0,
+        "max_workshops": 0,
+        "name": "Extract from plants",
+        "position": -1,
+        "reason": "",
+        "remaining": 10,
+        "revision": 1646907521894223465,
+        "size_raw": -1,
+        "total": 10,
+        "validated": false,
+        "workshop_id": 37
+      },
+      "order_ids": [
+        109,
+        110
+      ],
+      "success": true
+    },
+    "captures": {
+      "workshop-orders-created-native.png": "14ea3faf547cafedcd7ef8bea0fe5c1dad75fe763051b5358d233a7660b9c8cc",
+      "workshop-order-picker-live.png": "d2495ad2e9758b764df3998872f2c1e1d4ac0bab44a7cd922edbc64886ea9a65",
+      "workshop-order-created-live.png": "7b7710d9ecfc448b290be8b8153732ed304739a6f81c27b345334d7f22fd5ac3"
+    },
+    "scope": "Actual composed Add, native catalog, recipe click, exactly one order creation and refreshed membership. Compared scalar recipe/status/default fields, empty condition counts and initialized requirement presence; not full requirement element equivalence. Search, populated row rendering/details, keyboard and narrow layout remain unfinished.",
+    "godot_diagnostics": "known only",
+    "source_preserved": true,
+    "owned_exit": "unsaved",
+    "native_helper": "30fe90 allocation;31f5cd..31f731 creation effects;d15cf0 lazy requirements/details eligibility on new order"
   }
 }

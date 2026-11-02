@@ -318,10 +318,49 @@ local ok,err=xpcall(function()
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());assert(not picker.open)
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
  end
- local catalog_ok,catalog_err=xpcall(function()catalog(building);catalog(still)end,debug.traceback)
+ local function order_values(order)
+  return {job_type=order.job_type,reaction=order.reaction_name,item_type=order.item_type,item_subtype=order.item_subtype,
+   mat_type=order.mat_type,mat_index=order.mat_index,specflag=order.specflag.whole,specdata=order.specdata.hist_figure_id,
+   material_category=order.material_category.whole,art_type=order.art_spec.type,art_id=order.art_spec.id,art_subid=order.art_spec.subid,
+   amount_left=order.amount_left,amount_total=order.amount_total,status=order.status.whole,frequency=order.frequency,
+   finished_year=order.finished_year,finished_tick=order.finished_year_tick,workshop_id=order.workshop_id,max_workshops=order.max_workshops,
+   item_conditions=#order.item_conditions,order_conditions=#order.order_conditions,items=order.items~=nil}
+ end
+ local catalog_ok,catalog_err=xpcall(function()
+  catalog(building);catalog(still)
+  assert(#df.global.world.manager_orders.all==orders_before,'Opening/cancelling picker created an order')
+  select_map(still);assert(click_label('Work orders'))
+  local function mouse(x,y)
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=math.floor(x/8);g.mouse_y=math.floor(y/12)
+   df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+  end
+  mouse(880,154);assert(picker.open)
+  local chosen=picker.building[0].jminfo[2];assert(chosen.name=='Extract from plants')
+  local next_id=df.global.world.manager_orders.manager_order_next_id
+  mouse(600,202);assert(not picker.open,'Native recipe click did not close picker')
+  assert(#df.global.world.manager_orders.all==orders_before+1)
+  local native=df.global.world.manager_orders.all[orders_before];assert(native.id==next_id)
+  local expected={building_id=still.id,choice=2,caption='Extract from plants',native=order_values(native),native_id=native.id}
+  shot('orders-created-native')
+  local file=assert(io.open(out..'/workshop-order-expected.json','w'));file:write(json.encode(expected));file:close()
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+  capture('workshop-order-wire')
+  assert(#df.global.world.manager_orders.all==orders_before+2,'Viewer did not create exactly one order')
+  local actual=df.global.world.manager_orders.all[orders_before+1]
+  assert(actual.id==next_id+1,'Viewer order id differs')
+  local actual_values=order_values(actual)
+  local comparison=assert(io.open(out..'/workshop-order-creation-comparison.json','w'))
+  comparison:write(json.encode({native=expected.native,viewer=actual_values}));comparison:close()
+  for key,value in pairs(expected.native)do
+   assert(actual_values[key]==value,'Viewer order '..key..' differs: '..tostring(actual_values[key])..' ~= '..tostring(value))
+  end
+  assert(df.global.plotinfo.nobles.manager_cooldown==0,'Viewer creation did not reset manager cooldown')
+  result.order_creation={native_id=native.id,viewer_id=actual.id,values=order_values(actual),all_equal=true}
+ end,debug.traceback)
  position.responsibilities[responsibility]=prior_responsibility;indexed:resize(0)
  for _,a in ipairs(prior_index)do indexed:insert('#',a)end
- assert(#df.global.world.manager_orders.all==orders_before,'Opening/cancelling picker created an order')
  assert(catalog_ok,catalog_err)
 end,debug.traceback)
 assert(#building.jobs==#jobs,'Workshop capture changed job count')

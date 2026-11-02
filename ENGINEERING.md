@@ -6652,6 +6652,31 @@ their exact raw building/type/custom restrictions. The diagnostic
 `df3d work-orders-catalog-probe [building-id]` reads the global or filtered result.
 It does not create orders or expose the incomplete picker.
 
+The staged workshop picker uses the existing WorkOrderCatalog/Create transport
+with a concrete workshop ID and opaque native recipe keys. Catalog pages retain
+one revision covering the workshop profile and ordered recipe values. Creation
+rebuilds and validates that catalog, calls native30fe90 to allocate/register the
+order, and composes only the semantic effects pinned at31f5cd..31f731. Recipe
+strings and vector capacity are prepared before registration. Native defaults
+are ten items, population-dependent validation and a reset manager cooldown;
+artwork specifiers retain the native allocator defaults. The native Details
+eligibility helper d15cf0 initializes the new order's requirements, matching
+the native sheet's first observation at1896ca. It delegates to the already
+fingerprinted d09ca0 requirement builder and uses only the explicit order record;
+material lookup scratch is restored. No native menu scratch
+or whole input handler is used. Failed creation replies are conservatively
+treated as unknown by the picker controller and never retried automatically.
+The controller, native two-column picker shell, recipe clicks and workshop Add
+button are connected internally. Protected185122 on2026-11-01 creates Extract
+from plants through native DF and through the actual composed DF3D picker.
+Exactly one viewer order is added and appears in refreshed workshop membership;
+recipe/status/default fields, empty condition counts and initialized requirement
+presence match native. Full requirement-element equivalence is not claimed.
+The picker capture was inspected. The created-order view still has no populated
+rows; search, row rendering/details, keyboard and narrow layout are unfinished.
+Owned DF45160 exits unsaved, source preservation passes, and all five Godot log
+groups have known diagnostics only. The public route stays hidden.
+
 Protected183314 on2026-11-01 compares all2658 global rows and the37 Carpenter/4
 Still rows with the actual native picker: job/reaction/item/material fields,
 caption, normalized search string and ordering match. Both native picker captures

@@ -17,6 +17,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <charconv>
 #include <type_traits>
 #include <array>
 #include <deque>
@@ -96,6 +97,7 @@
 #include "workshop_catalog_native.h"
 #include "workshop_workers_page.h"
 #include "workshop_orders_native.h"
+#include "work_order_catalog_native.h"
 #include "creature_skills_native.h"
 #include "creature_knowledge_native.h"
 #include "skills_caption_native.h"
@@ -2648,6 +2650,62 @@ std::optional<IndependentItemSnapshot> independentItemSnapshot(const df3d_produc
 void run(color_ostream& out) {
   areaPaintRetired=nullptr;areaPaintCommitted=false;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
+  // Workshop picker uses the existing opaque recipe/catalog transport. Native
+  // creation owns its default quantity; no Lua recipe reconstruction is used.
+  if(r->work_order() && r->work_order()->workshop_id()>=0 &&
+     (r->action()==m::ManagementAction::WorkOrderCatalog || r->action()==m::ManagementAction::WorkOrderCreate)) {
+    const auto* q=r->work_order();const bool creating=r->action()==m::ManagementAction::WorkOrderCreate;
+    message.clear();status=m::ManagementStatus::Rejected;workOrders={};
+    const bool extra=q->id()!=-1 || q->frequency()!=-1 || q->max_workshops()!=-1 ||
+      q->condition_kind() || q->condition_index()!=-1 || q->remove_condition() || q->compare()!=-1 ||
+      q->threshold()!=-1 || q->item_type()!=-1 || q->target_order()!=-1 || q->dependency()!=-1 ||
+      q->candidate_kind() || q->move() || q->expected_neighbor()!=-1 || q->item_subtype()!=-1 ||
+      q->mat_type()!=-1 || q->mat_index()!=-1 || (q->traits() && q->traits()->size()) ||
+      q->input_index()!=-1 || q->group_type()!=-1 || q->group_subtype()!=-1 || q->group_custom()!=-1 ||
+      q->encrust_flags()!=-1 || (q->query() && q->query()->size());
+    if(extra || (creating?(q->remaining()!=10 || q->cursor() || q->expected_list_revision()):
+      (q->remaining()!=-1 || q->expected_revision() || (q->recipe() && q->recipe()->size())))) {publish();return;}
+    try {
+      auto* building=df::building::find(q->workshop_id());
+      auto* tile=building?Maps::getTileDesignation(building->centerx,building->centery,building->z):nullptr;
+      if(!tile || tile->bits.hidden){publish();return;}
+      if(!creating) {
+        const auto catalog=df3d_production::workshopOrderCatalog(building);
+        if(!catalog || q->cursor()>catalog->rows.size() ||
+           (q->cursor() && q->expected_list_revision()!=catalog->revision) ||
+           (q->expected_list_revision() && q->expected_list_revision()!=catalog->revision)){publish();return;}
+        workOrders.listRevision=catalog->revision;workOrders.total=uint32_t(catalog->rows.size());
+        const size_t end=std::min(catalog->rows.size(),size_t(q->cursor())+128);
+        for(size_t i=q->cursor();i<end;++i) {
+          const auto& row=catalog->rows[i];
+          workOrders.recipes.push_back({"native-workshop:"+std::to_string(catalog->revision)+":"+std::to_string(i),DF2UTF(row.name),{}});
+        }
+        workOrders.nextCursor=end<catalog->rows.size()?uint32_t(end):0;status=m::ManagementStatus::Ok;
+      } else {
+        const std::string key=q->recipe()?q->recipe()->str():"";
+        const std::string prefix="native-workshop:"+std::to_string(q->expected_revision())+":";
+        int32_t choice=-1;
+        if(key.compare(0,prefix.size(),prefix)!=0){publish();return;}
+        const auto parsed=std::from_chars(key.data()+prefix.size(),key.data()+key.size(),choice);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=key.data()+key.size() || choice<0){publish();return;}
+        // Mark entry into the effect boundary before invoking it. Any escaping
+        // exception is uncertain, and must not become a safe-to-retry rejection.
+        mutated=true;
+        const auto result=df3d_production::createWorkshopOrder(q->workshop_id(),q->expected_revision(),choice);
+        using O=df3d_production::WorkshopOrdersOutcome;
+        mutated=result.outcome==O::Applied || result.outcome==O::Unknown;
+        if(result.outcome==O::Applied) {
+          // A successful create returns the new identity. Subsequent inspection
+          // supplies the full order and its own edit receipt.
+          BridgeWorkOrderInfo row;row.id=result.orderId;row.workshopId=q->workshop_id();
+          row.total=10;row.remaining=10;row.revision=result.profile->revision;
+          row.name=DF2UTF(result.caption);row.validated=result.validated;
+          workOrders.orders.push_back(std::move(row));status=m::ManagementStatus::Ok;
+        }
+      }
+    }catch(...) {workOrders={};status=m::ManagementStatus::Rejected;}
+    publish();return;
+  }
   if(r->production() && r->production()->workshop_orders()) {
     const auto* q=r->production();const bool editing=r->action()==m::ManagementAction::FarmEdit;
     message.clear();status=m::ManagementStatus::Rejected;production={};

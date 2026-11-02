@@ -1,5 +1,6 @@
 #pragma once
 #include "workshop_job_native.h"
+#include "workshop_orders_native.h"
 #include "df/manager_order_template.h"
 #include <cstdlib>
 
@@ -18,6 +19,12 @@ inline bool workOrderCatalogSupported() {
             {0x311580,0x68c,UINT64_C(0x47301c66334c61ee)},
             {0x3769cf,0x4d,UINT64_C(0x7e38a43365dc1161)},
             {0x37683f,0x4a,UINT64_C(0x659f0f1773728921)},
+            {0x30fe90,0xbe,UINT64_C(0x977bec31a3f05304)}, // allocate/register order
+            {0x31f5cd,0x164,UINT64_C(0xe533c103b392863b)}, // selected-template effects
+            {0xd15cf0,0x1f6,UINT64_C(0x00a3647b8c63120e)}, // details eligibility/requirements
+            {0xd09ca0,0x2f52,UINT64_C(0x2e65a5a8b4f5a1c5)},
+            {0xa676c0,0xa0,UINT64_C(0xcf5d67f71c5b901e)},
+            {0xcc0110,0xa0,UINT64_C(0xdb71755904d0cf88)},
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -111,6 +118,103 @@ inline std::optional<std::vector<df::manager_order_template>> nativeWorkshopOrde
         }
         if(allowed)result.push_back(std::move(row));
     }
+    return result;
+}
+
+struct WorkshopOrderCatalog {
+    uint64_t revision=0;
+    std::vector<df::manager_order_template> rows;
+};
+
+// The receipt covers the current workshop and every ordered recipe value. A
+// row index is meaningful only with this receipt; callers never supply recipes.
+inline std::optional<WorkshopOrderCatalog> workshopOrderCatalog(df::building* building) {
+    const auto profile=workshopOrdersProfile(building);
+    if(!profile || !profile->managerAvailable)return std::nullopt;
+    auto rows=nativeWorkshopOrderCatalog(building);if(!rows)return std::nullopt;
+    uint64_t hash=UINT64_C(14695981039346656037);
+    const auto add=[&](uint64_t value) {
+        for(unsigned shift=0;shift<64;shift+=8){hash^=(value>>shift)&255;hash*=UINT64_C(1099511628211);}
+    };
+    const auto text=[&](const std::string& value) {
+        add(value.size());for(unsigned char c:value){hash^=c;hash*=UINT64_C(1099511628211);}
+    };
+    add(profile->revision);add(rows->size());
+    for(const auto& row:*rows) {
+        add(int(row.job_type));text(row.reaction_name);add(int(row.item_type));add(row.item_subtype);
+        add(row.mat_type);add(row.mat_index);add(row.specflag.whole);
+        uint32_t data=0;static_assert(sizeof(row.specdata)==sizeof(data));
+        std::memcpy(&data,&row.specdata,sizeof(data));add(data);add(row.material_category.whole);
+        add(int(row.art_specifier));add(row.art_specifier_id1);add(row.art_specifier_id2);
+        text(row.name);text(row.compare_str);
+    }
+    return WorkshopOrderCatalog{(hash&INT64_MAX)?(hash&INT64_MAX):1,std::move(*rows)};
+}
+
+struct WorkshopOrderCreateResult {
+    WorkshopOrdersOutcome outcome=WorkshopOrdersOutcome::Rejected;
+    int32_t orderId=-1;
+    std::string caption;
+    bool validated=false;
+    std::optional<WorkshopOrdersProfile> profile;
+};
+
+inline WorkshopOrderCreateResult createWorkshopOrder(int32_t buildingId,uint64_t revision,int32_t choice) {
+    WorkshopOrderCreateResult result;
+    if(!workOrderCatalogSupported()){result.outcome=WorkshopOrdersOutcome::Unavailable;return result;}
+    if(choice<0 || !revision)return result;
+    auto* building=df::building::find(buildingId);
+    auto catalog=workshopOrderCatalog(building);if(!catalog)return result;
+    if(catalog->revision!=revision){result.outcome=WorkshopOrdersOutcome::Stale;return result;}
+    if(size_t(choice)>=catalog->rows.size())return result;
+    auto& orders=df::global::world->manager_orders;
+    if(orders.manager_order_next_id<0 || orders.manager_order_next_id==INT32_MAX || orders.all.size()>=65536)return result;
+    static_assert(sizeof(df::manager_order)==0xa8);
+    static_assert(offsetof(df::manager_order,reaction_name)==0x10);
+    static_assert(offsetof(df::manager_order,amount_left)==0x50);
+    static_assert(offsetof(df::manager_order,status)==0x54);
+    static_assert(offsetof(df::plotinfost,tasks)+offsetof(df::entity_activity_statistics,population)==0x35c);
+    static_assert(offsetof(df::plotinfost,nobles)+offsetof(df::plotinfo_positionst,manager_cooldown)==0x74);
+    static_assert(offsetof(df::workquota_handlerst,manager_order_next_id)==0x18);
+    const auto& recipe=catalog->rows[size_t(choice)];
+    // Complete potentially throwing preparation before native registration.
+    // The native allocator then appends into reserved capacity; string swap and
+    // scalar writes below cannot leave a partially initialized registered order.
+    std::string reaction=recipe.reaction_name;
+    result.caption=recipe.name;
+    orders.all.reserve(orders.all.size()+1);
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    using Allocate=df::manager_order* (*)();
+    result.outcome=WorkshopOrdersOutcome::Unknown;
+    try {
+        auto* order=reinterpret_cast<Allocate>(base+0x30fe90)();
+        if(!order)return result;
+        order->id=orders.manager_order_next_id++;
+        order->workshop_id=buildingId;
+        order->job_type=recipe.job_type;order->reaction_name.swap(reaction);
+        order->item_type=recipe.item_type;order->item_subtype=recipe.item_subtype;
+        order->mat_type=recipe.mat_type;order->mat_index=recipe.mat_index;
+        order->specflag=recipe.specflag;order->specdata=recipe.specdata;
+        order->material_category=recipe.material_category;
+        order->amount_left=10;order->amount_total=10;
+        order->status.bits.validated=df::global::plotinfo->tasks.population<20;
+        df::global::plotinfo->nobles.manager_cooldown=0;
+        // Native leaves art_spec at the allocator defaults for this action.
+        // Its first order-row observation (1896ca) calls this semantic helper
+        // to populate the order's own requirements and determine whether it
+        // offers Details. It accepts only the selected simulation record.
+        using Details=bool (*)(df::manager_order*);
+        {
+            df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
+            reinterpret_cast<Details>(base+0xd15cf0)(order);
+        }
+        result.orderId=order->id;
+        result.validated=order->status.bits.validated;
+        auto after=workshopOrdersProfile(building);
+        if(after && std::find(after->orderIds.begin(),after->orderIds.end(),order->id)!=after->orderIds.end()) {
+            result.profile=std::move(after);result.outcome=WorkshopOrdersOutcome::Applied;
+        }
+    }catch(...) {} // A potentially registered effect must never be replayed.
     return result;
 }
 }

@@ -60,8 +60,20 @@ func run() -> void:
 	check(found,"New order missing from rendered native row data")
 	await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/workshop-order-created-live.png")
+	click(Vector2(775,226))
+	check(owner.panel.orders.editing and owner.panel.orders.quantity_order==created_order.id,"Order quantity field did not focus")
+	number_key(KEY_1,49);number_key(KEY_2,50)
+	if not check(await settle(service,func():return owner.orders.phase==owner.orders.Phase.Ready and owner.orders.ticket==0),"Order quantity was not confirmed; no retry"):quit(1);return
+	var edited: Dictionary={}
+	for row in owner.orders.rows.values():
+		if row.id==created_order.id:edited=row
+	check(edited.get("remaining",-1)==12 and edited.get("total",-1)==12,"Order quantity differs from native")
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/workshop-order-quantity-live.png")
+	number_key(KEY_ENTER)
+	check(not owner.panel.orders.editing,"Enter did not release order quantity focus")
 	var file:=FileAccess.open(directory+"/workshop-order-wire-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"created":created_order,"rows":displayed,"order_ids":owner.orders.snapshot.order_ids,"search_names":names,"query":owner.order_picker.query_text(),"header":owner.state.snapshot,"title":owner.panel.title,"contents_page":owner.panel.contents.page,"header_font":owner.panel.theme.default_font!=null}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"created":created_order,"rows":displayed,"quantity":edited,"order_ids":owner.orders.snapshot.order_ids,"search_names":names,"query":owner.order_picker.query_text(),"header":owner.state.snapshot,"title":owner.panel.title,"contents_page":owner.panel.contents.page,"header_font":owner.panel.theme.default_font!=null}));file.close()
 	owner.close_panel();owner.queue_free();host.interaction.panel.free();host.queue_free();service.queue_free();await process_frame
 	world.detach_live();world.queue_free();await process_frame
 	quit(1 if failed else 0)

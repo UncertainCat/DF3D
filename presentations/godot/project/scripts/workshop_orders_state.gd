@@ -10,6 +10,8 @@ var snapshot: Dictionary={}
 var ticket:=0
 var generation:=0
 var pending_value: int=-1
+var quantity_id: int=-1
+var pending_quantity: int=-1
 var row_ticket:=0
 var row_generation:=0
 var row_revision:=0
@@ -64,7 +66,7 @@ func dispose() -> void:
 	if service!=null and service.session_changed.is_connected(_session_changed):service.session_changed.disconnect(_session_changed)
 	service=null
 func close() -> void:
-	_retire_rows();row_offset=0
+	_retire_rows();row_offset=0;quantity_id=-1;pending_quantity=-1
 	generation+=1
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
@@ -90,6 +92,35 @@ func set_limit(value: int) -> void:
 	if phase!=Phase.Ready or ticket!=0:return
 	pending_value=-1;phase=Phase.Applying
 	_send({"action":C.ManagementAction.FarmEdit,"workshop_orders":true,"building_id":building_id,"expected_revision":snapshot.revision,"general_order_value":value})
+func set_quantity(id: int,value: int) -> void:
+	if value<0 or value>9999:return
+	if phase==Phase.Applying:
+		if quantity_id==id:pending_quantity=value
+		return
+	if phase!=Phase.Ready or ticket!=0 or service==null:return
+	var row: Dictionary={}
+	for candidate in rows.values():
+		if candidate.id==id:row=candidate;break
+	if row.is_empty():return
+	# Retire list reads so an older observation cannot replace the edit receipt.
+	row_generation+=1
+	if row_ticket!=0:service.detach(row_ticket);row_ticket=0
+	quantity_id=id;pending_quantity=-1;phase=Phase.Applying
+	var owner:=generation
+	ticket=service.submit("work_orders",{"action":C.ManagementAction.WorkOrderUpdate,"workshop_id":building_id,"id":id,"remaining":value,"expected_revision":row.revision},func(received,result,sent):
+		if owner!=generation or received!=ticket:return
+		ticket=0
+		var page: Array=result.get("work_order",{}).get("orders",[])
+		if result.get("status",-1)!=C.ManagementStatus.Ok or result.get("action",-1)!=C.ManagementAction.WorkOrderUpdate or page.size()!=1 or page[0].get("id",-1)!=quantity_id or page[0].get("workshop_id",-1)!=building_id or page[0].get("remaining",-1)!=sent.remaining or page[0].get("total",-1)!=sent.remaining or page[0].get("revision",0)<=0 or page[0].get("native_state",{}).is_empty():
+			quantity_id=-1;pending_quantity=-1;_retire_rows();_fail(Phase.Unknown);return
+		for index in rows:
+			if rows[index].id==quantity_id:rows[index]=page[0].duplicate(true);break
+		var next:=pending_quantity;var target:=quantity_id
+		quantity_id=-1;pending_quantity=-1;phase=Phase.Ready;changed.emit();applied.emit()
+		if next>=0:set_quantity(target,next)
+		else:_fill_rows())
+	if ticket==0:quantity_id=-1;pending_quantity=-1;_retire_rows();_fail(Phase.Unavailable);return
+	changed.emit()
 func _send(intent: Dictionary) -> void:
 	if service==null:_fail(Phase.Unavailable);return
 	var owner:=generation
@@ -116,6 +147,7 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 	elif value.get("outcome",-1)!=C.FarmEditOutcome.None:_fail(Phase.Rejected);return
 	snapshot=value.duplicate(true);phase=Phase.Ready
 	if not editing:_read_rows(0)
+	elif row_revision!=0 and row_revision!=int(value.revision):_retire_rows();_read_rows(0)
 	changed.emit()
 	if editing:applied.emit()
 	# A later local draft is a new intent, sent only after a confirmed receipt.

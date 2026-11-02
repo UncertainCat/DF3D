@@ -2652,14 +2652,36 @@ std::optional<IndependentItemSnapshot> independentItemSnapshot(const df3d_produc
      (value.holder && value.holder->name.size()>512) || (value.stockpile && value.stockpile->name.size()>512) || (value.carrier && value.carrier->name.size()>512))return std::nullopt;
   return value;
 }
+BridgeWorkOrderInfo copyNativeWorkOrder(const df3d_production::NativeWorkOrderRow& native) {
+  BridgeWorkOrderInfo row;
+  row.id=native.id;row.workshopId=native.workshopId;row.position=native.position;row.revision=native.revision;
+  row.name=DF2UTF(native.caption);row.total=native.total;row.remaining=native.remaining;
+  row.frequency=native.frequency;row.validated=native.validated;row.active=native.active;
+  row.finishedYear=native.finishedYear;row.finishedTick=native.finishedTick;row.maxWorkshops=native.maxWorkshops;
+  row.matType=native.matType;row.matIndex=native.matIndex;row.materialCategory=native.materialCategory;
+  row.nativeState=BridgeWorkOrderInfo::NativeState{m::WorkOrderPhase(native.phase),native.validationRequired,native.detailsAvailable};
+  for(size_t i=0;i<native.itemConditions.size();++i) {
+    const auto& c=native.itemConditions[i];BridgeWorkOrderCondition value;value.index=uint16_t(i);
+    value.compare=int8_t(c.compare_type);value.threshold=c.compare_val;value.itemType=int16_t(c.item_type);
+    value.itemSubtype=c.item_subtype;value.matType=c.mat_type;value.matIndex=c.mat_index;
+    row.conditions.push_back(std::move(value));
+  }
+  for(size_t i=0;i<native.orderConditions.size();++i) {
+    const auto& c=native.orderConditions[i];BridgeWorkOrderCondition value;value.kind=1;value.index=uint16_t(i);
+    value.targetOrder=c.order_id;value.dependency=int8_t(c.condition);value.satisfied=c.flags.bits.satisfied;
+    row.conditions.push_back(std::move(value));
+  }
+  return row;
+}
 void run(color_ostream& out) {
   areaPaintRetired=nullptr;areaPaintCommitted=false;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
   // Workshop rows are native observations, independent of any open DF sheet.
-  if(r->work_order() && r->work_order()->workshop_id()>=0 && r->action()==m::ManagementAction::WorkOrderList) {
+  if(r->work_order() && r->work_order()->workshop_id()>=0 && (r->action()==m::ManagementAction::WorkOrderList || r->action()==m::ManagementAction::WorkOrderUpdate)) {
     const auto* q=r->work_order();message.clear();status=m::ManagementStatus::Rejected;workOrders={};
-    const bool extra=q->id()!=-1 || q->remaining()!=-1 || q->frequency()!=-1 || q->max_workshops()!=-1 ||
-      q->expected_revision() || (q->recipe() && q->recipe()->size()) || (q->query() && q->query()->size()) ||
+    const bool editing=r->action()==m::ManagementAction::WorkOrderUpdate;
+    const bool extra=(editing?(q->id()<0 || q->remaining()<0 || q->remaining()>9999 || !q->expected_revision() || q->cursor() || q->expected_list_revision()):
+      (q->id()!=-1 || q->remaining()!=-1 || q->expected_revision())) || q->frequency()!=-1 || q->max_workshops()!=-1 || (q->recipe() && q->recipe()->size()) || (q->query() && q->query()->size()) ||
       q->condition_kind() || q->condition_index()!=-1 || q->remove_condition() || q->compare()!=-1 ||
       q->threshold()!=-1 || q->item_type()!=-1 || q->target_order()!=-1 || q->dependency()!=-1 ||
       q->candidate_kind() || q->move() || q->expected_neighbor()!=-1 || q->item_subtype()!=-1 ||
@@ -2669,30 +2691,23 @@ void run(color_ostream& out) {
     try {
       auto* building=df::building::find(q->workshop_id());
       auto* tile=building?Maps::getTileDesignation(building->centerx,building->centery,building->z):nullptr;
+      if(editing) {
+        if(!tile || tile->bits.hidden){publish();return;}
+        mutated=true;
+        const auto result=df3d_production::setWorkshopOrderQuantity(q->workshop_id(),q->id(),q->expected_revision(),q->remaining());
+        using O=df3d_production::WorkshopOrdersOutcome;
+        mutated=result.outcome==O::Applied || result.outcome==O::Unknown;
+        if(result.outcome==O::Applied && result.row) {
+          workOrders.orders.push_back(copyNativeWorkOrder(*result.row));status=m::ManagementStatus::Ok;
+        }
+        publish();return;
+      }
       const auto page=tile && !tile->bits.hidden?
         df3d_production::nativeWorkshopOrderPage(building,q->cursor(),q->expected_list_revision()):std::nullopt;
       if(!page){publish();return;}
       workOrders.listRevision=page->revision;workOrders.total=page->total;workOrders.nextCursor=page->nextCursor;
       for(const auto& native:page->rows) {
-        BridgeWorkOrderInfo row;
-        row.id=native.id;row.workshopId=native.workshopId;row.position=native.position;row.revision=native.revision;
-        row.name=DF2UTF(native.caption);row.total=native.total;row.remaining=native.remaining;
-        row.frequency=native.frequency;row.validated=native.validated;row.active=native.active;
-        row.finishedYear=native.finishedYear;row.finishedTick=native.finishedTick;row.maxWorkshops=native.maxWorkshops;
-        row.matType=native.matType;row.matIndex=native.matIndex;row.materialCategory=native.materialCategory;
-        row.nativeState=BridgeWorkOrderInfo::NativeState{m::WorkOrderPhase(native.phase),native.validationRequired,native.detailsAvailable};
-        for(size_t i=0;i<native.itemConditions.size();++i) {
-          const auto& c=native.itemConditions[i];BridgeWorkOrderCondition value;value.index=uint16_t(i);
-          value.compare=int8_t(c.compare_type);value.threshold=c.compare_val;value.itemType=int16_t(c.item_type);
-          value.itemSubtype=c.item_subtype;value.matType=c.mat_type;value.matIndex=c.mat_index;
-          row.conditions.push_back(std::move(value));
-        }
-        for(size_t i=0;i<native.orderConditions.size();++i) {
-          const auto& c=native.orderConditions[i];BridgeWorkOrderCondition value;value.kind=1;value.index=uint16_t(i);
-          value.targetOrder=c.order_id;value.dependency=int8_t(c.condition);value.satisfied=c.flags.bits.satisfied;
-          row.conditions.push_back(std::move(value));
-        }
-        workOrders.orders.push_back(std::move(row));
+        workOrders.orders.push_back(copyNativeWorkOrder(native));
       }
       status=m::ManagementStatus::Ok;
     }catch(...) {workOrders={};status=m::ManagementStatus::Rejected;}

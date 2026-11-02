@@ -33,6 +33,8 @@ inline bool workOrderRowsSupported() {
             {0x188772,0xcc,UINT64_C(0xc7837322ac1ef8e5)}, // caption inputs
             {0x14e390,0x7c,UINT64_C(0xb8a8a91a69a0fa86)}, // blank template art
             {0x189294,0x10,UINT64_C(0xd9286ad1fc626d1f)}, // validation indicator
+            {0x8bb2b0,0x2b,UINT64_C(0xea4ef7a5efaa728d)}, // quantity effect
+            {0x8bb257,0x17,UINT64_C(0x07b3cf4277462958)}, // four-character input
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -129,4 +131,34 @@ inline std::optional<NativeWorkOrderPage> nativeWorkshopOrderPage(df::building* 
     page.nextCursor=next<page.total?next:0;
     return page;
 }
+struct NativeWorkOrderEdit {
+    WorkshopOrdersOutcome outcome=WorkshopOrdersOutcome::Rejected;
+    std::optional<NativeWorkOrderRow> row;
+};
+inline NativeWorkOrderEdit setWorkshopOrderQuantity(int32_t buildingId,int32_t id,uint64_t revision,int32_t quantity) {
+    NativeWorkOrderEdit result;
+    if(quantity<0 || quantity>9999 || !workshopOrdersProfile(df::building::find(buildingId)))return result;
+    const auto& all=df::global::world->manager_orders.all;
+    const auto it=std::find_if(all.begin(),all.end(),[&](const auto* value){return value && value->id==id;});
+    if(it==all.end() || (*it)->workshop_id!=buildingId)return result;
+    auto* order=*it;
+    const int32_t position=int32_t(it-all.begin());
+    const auto before=nativeWorkOrderRow(*order,position);
+    if(!before)return result;
+    if(!revision || revision!=before->revision){result.outcome=WorkshopOrdersOutcome::Stale;return result;}
+    static_assert(offsetof(df::manager_order,amount_left)==0x50);
+    static_assert(offsetof(df::manager_order,amount_total)==0x52);
+    // Native8bb2b0..8bb2d6 applies every changed draft, with no status reset.
+    // The caller owns/parses the four-character draft; no menu storage is read.
+    order->amount_left=int16_t(quantity);order->amount_total=int16_t(quantity);
+    result.outcome=WorkshopOrdersOutcome::Unknown;
+    try {
+        auto after=nativeWorkOrderRow(*order,position);
+        if(after && after->remaining==quantity && after->total==quantity) {
+            result.row=std::move(after);result.outcome=WorkshopOrdersOutcome::Applied;
+        }
+    }catch(...) {}
+    return result;
+}
+
 }

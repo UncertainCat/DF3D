@@ -7,6 +7,7 @@ var state
 var input_allowed: Callable
 var colors: Array[Color]=[]
 var editing:=false
+var quantity_order: int=-1
 var draft:=""
 var cursor_visible:=true
 var visible_rows:=0
@@ -16,13 +17,13 @@ func configure(source,model) -> void:
 	state.changed.connect(func():
 		if state.phase not in [state.Phase.Ready,state.Phase.Applying]:editing=false
 		queue_redraw())
-func finish_entry() -> void:editing=false;queue_redraw()
+func finish_entry() -> void:editing=false;quantity_order=-1;queue_redraw()
 func feed_key(event: InputEventKey) -> void:
 	if not editing or not event.pressed or event.ctrl_pressed or event.alt_pressed or event.meta_pressed:return
 	if event.keycode in [KEY_ENTER,KEY_KP_ENTER,KEY_ESCAPE]:finish_entry();return
 	var before:=draft
 	if event.keycode==KEY_BACKSPACE:draft=draft.left(maxi(0,draft.length()-1))
-	elif draft.length()<2 and ((event.unicode>=48 and event.unicode<=57) or (event.unicode>=65 and event.unicode<=90)):
+	elif draft.length()<(4 if quantity_order>=0 else 2) and ((event.unicode>=48 and event.unicode<=57) or (event.unicode>=65 and event.unicode<=90)):
 		# Native c39700 flags4 also accepts uppercase ASCII; preserve its filter.
 		draft+=String.chr(event.unicode)
 	if before!=draft:
@@ -31,7 +32,8 @@ func feed_key(event: InputEventKey) -> void:
 			var digit:=draft.unicode_at(index)-48
 			if digit<0 or digit>9:break
 			value=value*10+digit
-		state.set_limit(value)
+		if quantity_order>=0:state.set_quantity(quantity_order,value)
+		else:state.set_limit(value)
 	queue_redraw()
 func _process(_delta: float) -> void:
 	if not is_visible_in_tree():editing=false;return
@@ -50,7 +52,11 @@ func _gui_input(event: InputEvent) -> void:
 		finish_entry();state.seek_rows(state.row_offset+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1),visible_rows);accept_event();return
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
 	if state.snapshot.get("manager_available",false) and Rect2(424,0,32,36).has_point(event.position):finish_entry();choose_requested.emit();accept_event();return
-	if button_rect(0).has_point(event.position):editing=true;draft="";queue_redraw();accept_event();return
+	for index in visible_rows:
+		var row: Dictionary=state.rows.get(state.row_offset+index,{})
+		if not row.is_empty() and Rect2(328,36+index*36,32,36).has_point(event.position):
+			quantity_order=row.id;editing=true;draft="";queue_redraw();accept_event();return
+	if button_rect(0).has_point(event.position):quantity_order=-1;editing=true;draft="";queue_redraw();accept_event();return
 	for index in [1,2]:
 		if button_rect(index).has_point(event.position):finish_entry();state.step(1 if index==1 else -1);accept_event();return
 func caption(value: String,point: Vector2,color: Color) -> void:
@@ -75,13 +81,15 @@ func _draw() -> void:
 		if name.length()>=29:name=name.left(25)+"..."
 		var cyan: Color=colors[11] if colors.size()>11 else Color.WHITE
 		caption(name,Vector2(48,y+22),cyan)
-		caption(("∞" if row.remaining==0 and row.total==0 else str(row.remaining))+"/"+("∞" if row.total==0 else str(row.total)),Vector2(48,y+34),cyan)
+		var quantity: String="∞/∞" if row.total==0 else str(row.remaining)+"/"+str(row.total)
+		if editing and quantity_order==row.id:quantity=draft+("_" if cursor_visible else "")
+		caption(quantity,Vector2(48,y+34),cyan)
 		if native.validation_required:row_icon("WORK_ORDERS_VALIDATED" if row.validated else "WORK_ORDERS_NOT_VALIDATED",Vector2(296,y))
 		row_icon("WORK_ORDERS_ENTER_AMOUNT",Vector2(328,y))
 		row_icon("WORK_ORDERS_CONDITIONS",Vector2(360,y))
 		if native.details_available:row_icon("WORK_ORDERS_DETAILS",Vector2(392,y))
 		row_icon("WORK_ORDERS_REMOVE",Vector2(424,y))
-	caption("General work orders allowed: "+(draft+("_" if cursor_visible else "") if editing else str(state.snapshot.general_order_limit)),Vector2(0,size.y-14),Color.WHITE)
+	caption("General work orders allowed: "+(draft+("_" if cursor_visible else "") if editing and quantity_order<0 else str(state.snapshot.general_order_limit)),Vector2(0,size.y-14),Color.WHITE)
 	for index in 3:
 		var texture: Texture2D=art.texture(["WORK_ORDERS_ENTER_AMOUNT","WORK_ORDERS_INCREASE_AMOUNT","WORK_ORDERS_DECREASE_AMOUNT"][index])
 		if texture!=null:draw_texture_rect(texture,button_rect(index),false)

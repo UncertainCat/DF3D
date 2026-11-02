@@ -3218,5 +3218,18 @@
       "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
       "godot-diagnostics.json": "edafb1af8c5609a654cee690f3ea0440427a3e78fd0e71187796d20ecb88f5f9"
     }
+  },
+  "work_order_quantity_reference": {
+    "build": "DF 53.16 Steam 24557528",
+    "run": "build/stockpile-storage-native-farm-discovery-20261101-192737",
+    "scope": "Native and composed viewer type1 then2, apply12 to remaining and total, release focus with Enter. Recorded recipe/status/scheduling fields agree. Other row controls and full lifecycle remain unfinished.",
+    "files": {
+      "workshop-order-quantity-native.png": "ccaf8a31df52af80546a23b660befa1a5f160c8ff2bdea6e510d0c854e3c154d",
+      "workshop-order-quantity-live.png": "57680e558c7ed5213e2d7d59c7a33da90189e87a9ee0307505e8c2c686458078",
+      "workshop-order-wire-result.json": "dc6155e141b4f8d678df8bb95f39e3f505d19cd7f8ee7c6201b536078f28369d",
+      "workshop-order-creation-comparison.json": "f9b11f883c5e0e869b7eacbb625a4c1300c5975768ea5c4d044dbe410d3f457f",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "godot-diagnostics.json": "edafb1af8c5609a654cee690f3ea0440427a3e78fd0e71187796d20ecb88f5f9"
+    }
   }
 }

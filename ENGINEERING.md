@@ -6705,8 +6705,8 @@ legacy rows do not acquire invented state. Pages hold at most16 rows and respect
 the condition aggregate bound. These are list observations, not full Details
 inspection or edit authority. Condition identities have no fabricated descriptions.
 The controller requests visible missing pages, retires reads on refresh/close and
-renders native captions, amounts and installed row artwork. Row action icons
-remain staged and unconnected.
+renders native captions, amounts and installed row artwork. Quantity editing is connected as described below; conditions, Details and
+removal icons remain staged and unconnected.
 
 Protected192054 on2026-11-01 repeats native/viewer search and creation, then
 verifies both native-created109 and viewer-created110 in the actual workshop row
@@ -6716,6 +6716,27 @@ populated owner state, so this is not full-sheet visual acceptance. No additiona
 status, scrolling or row-edit acceptance is claimed. Owned DF39064 exits unsaved,
 source preservation passes and all five Godot groups have known diagnostics only.
 Core19/19 and composition pass in `build/qa/workshop-order-rows`.
+
+The workshop quantity field uses native8bb2b0..8bb2d6's inline semantic effect:
+set both remaining and total to the parsed value, clamped to0..9999, without
+resetting status or scheduling fields. The viewer owns the four-character draft
+and native flags4 input filter; each changed value is an intent and Enter only
+releases focus. WorkOrderUpdate with a concrete workshop ID accepts this exclusive
+quantity intent, re-finds the order and checks its current row revision. A fresh
+row confirms both values. Failed/uncertain replies retire edit authority without
+replay. Rapid typing keeps the latest local value behind the in-flight edit;
+list observations cannot overwrite its confirmed receipt.
+
+Protected192737 on2026-11-01 types1 then2 in native DF and the composed viewer,
+verifies12/12 and unchanged recorded recipe/status/scheduling fields, and releases
+focus with Enter. Native and viewer edit captures were inspected; the final
+viewer capture includes header and contents. Core19/19 and composition pass in
+`build/qa/workshop-order-quantity`. The initial192630 harness overlapped a direct
+verification request with the new list refresh; it is not acceptance. The harness
+now drains that refresh before its independent read. Owned DF45072 exits unsaved,
+source preservation passes, and all five Godot groups have known diagnostics
+only. This covers normal quantity editing, not every condition/status/input or
+transport transition. Conditions, Details, removal and overflow remain unfinished.
 
 Protected183314 on2026-11-01 compares all2658 global rows and the37 Carpenter/4
 Still rows with the actual native picker: job/reaction/item/material fields,

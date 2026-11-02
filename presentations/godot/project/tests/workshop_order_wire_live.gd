@@ -101,6 +101,13 @@ func run() -> void:
 	check(not owner.conditions.snapshot.suggested_conditions[0].editable,"Duplicate native suggestion remains available")
 	await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/workshop-order-condition-added-live.png")
+	for step in expected.condition_steps:
+		click(Vector2(step.x,178))
+		if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.orders.phase==owner.orders.Phase.Ready and owner.orders.row_ticket==0),"Condition amount/comparison edit was not confirmed; no retry"):quit(1);return
+		var condition: Dictionary=owner.conditions.snapshot.conditions[0]
+		check(condition.compare==int(step.compare) and condition.threshold==int(step.threshold),"Condition amount/comparison differs from native")
+		for key in ["item_caption","item_type","item_subtype","mat_type","mat_index"]:
+			check(condition[key]==expected.added_condition[key],"Condition amount edit changed filter: "+key)
 	click(Vector2(896,178))
 	if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.orders.phase==owner.orders.Phase.Ready and owner.orders.row_ticket==0),"Condition removal was not confirmed; no retry"):quit(1);return
 	check(owner.conditions.snapshot.conditions.is_empty() and owner.conditions.snapshot.frequency==1,"Condition removal differs from native")

@@ -46,6 +46,12 @@ func remove_condition(row: Dictionary) -> void:
 	if phase!=Phase.Ready or ticket!=0 or not snapshot.conditions.has(row):return
 	phase=Phase.Applying
 	_send({"action":C.ManagementAction.WorkOrderCondition,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"condition_kind":row.kind,"condition_index":row.index,"remove_condition":true})
+func edit_amount(row: Dictionary,delta: int,cycle:=false) -> void:
+	if phase!=Phase.Ready or ticket!=0 or not snapshot.conditions.has(row) or row.kind!=0:return
+	var amount: int=row.threshold+delta
+	if amount<0 or amount>2147483647:return
+	phase=Phase.Applying
+	_send({"action":C.ManagementAction.WorkOrderCondition,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"condition_index":row.index,"compare":(int(row.compare)+1)%6 if cycle else row.compare,"threshold":amount})
 func _send(intent: Dictionary) -> void:
 	if service==null:_fail(Phase.Unavailable);return
 	var owner:=generation
@@ -66,6 +72,11 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 			if rows[0].get("frequency",-1)!=sent.frequency:_fail(Phase.Unknown);return
 		elif sent.get("remove_condition",false):
 			if rows[0].get("conditions",[]).size()!=snapshot.conditions.size()-1 or rows[0].get("frequency",-1)!=snapshot.frequency:_fail(Phase.Unknown);return
+		elif sent.get("condition_index",-1)>=0:
+			var confirmed:=false
+			for condition in rows[0].get("conditions",[]):
+				if condition.kind==0 and condition.index==sent.condition_index:confirmed=condition.compare==sent.compare and condition.threshold==sent.threshold
+			if not confirmed or rows[0].conditions.size()!=snapshot.conditions.size() or rows[0].frequency!=snapshot.frequency:_fail(Phase.Unknown);return
 		elif rows[0].get("conditions",[]).size()!=snapshot.conditions.size()+1 or rows[0].get("frequency",-1)!=(1 if snapshot.frequency==0 else snapshot.frequency):
 			_fail(Phase.Unknown);return
 		applied.emit();_read();return

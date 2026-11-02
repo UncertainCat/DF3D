@@ -35,6 +35,11 @@ func _gui_input(event: InputEvent) -> void:
 			if Rect2(720,size.y-192+index*36,32,36).has_point(event.position):state.add_suggestion(index)
 		if state.phase==state.Phase.Ready:
 			for index in mini(state.snapshot.conditions.size(),maxi(0,int((size.y-300)/36))):
+				var row: Dictionary=state.snapshot.conditions[index]
+				if row.kind==0:
+					if Rect2(624,108+index*36,32,36).has_point(event.position):state.edit_amount(row,1);break
+					if Rect2(656,108+index*36,32,36).has_point(event.position):state.edit_amount(row,-1);break
+					if Rect2(688,108+index*36,32,36).has_point(event.position):state.edit_amount(row,0,true);break
 				if Rect2(848,108+index*36,32,36).has_point(event.position):state.remove_condition(state.snapshot.conditions[index]);break
 		accept_event()
 func text(value: String,point: Vector2,color: int=15) -> void:
@@ -68,7 +73,11 @@ func condition(row: Dictionary,y: float,suggested: bool) -> void:
 	if suggested and row.get("editable",false):
 		patch("BUTTON_RECTANGLE_DARK",Vector2i(90,int(y/12)),4,3)
 		icon("WORK_ORDERS_ADD_SUGGESTED_CONDITION",Vector2(720,y))
-	elif not suggested:icon("WORK_ORDERS_REMOVE",Vector2(848,y))
+	elif not suggested:
+		icon("WORK_ORDERS_INCREASE_AMOUNT",Vector2(624,y))
+		icon("WORK_ORDERS_DECREASE_AMOUNT",Vector2(656,y))
+		icon("WORK_ORDERS_CONDITIONS",Vector2(688,y))
+		icon("WORK_ORDERS_REMOVE",Vector2(848,y))
 func _draw() -> void:
 	if world==null:return
 	patch("HOVER_RECTANGLE",Vector2i.ZERO,118,frame_rows)

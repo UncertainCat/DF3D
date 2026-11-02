@@ -6835,7 +6835,20 @@ all five Godot groups have only documented diagnostics, and root CTest19/19 pass
 The backend also handles order-condition indices; that branch and dependency-row
 rendering have not yet received live acceptance.
 
-This screen remains staged. Editing conditions, manual item conditions, dependencies,
+Existing item conditions support plus/minus quantity and the six-way comparison
+cycle. An exclusive WorkOrderCondition edit supplies the current revision,
+condition index, desired comparison and quantity; copied filter fields are rejected.
+The bridge composes the scalar effects pinned at3c5273,3c528d and3c52b5, preserving
+the filter, frequency and scheduling. The controller confirms the receipt then
+re-inspects; it never optimistically changes authoritative condition values.
+Protected204751 on2026-11-01 compares native and rendered-viewer quantity10->11->10
+and comparison2->3->4->5->0->1->2, with unchanged transported filter fields.
+Rendered control crops were inspected against native. Subsequent condition and
+order removals pass, DF47508 exits unsaved, the source is preserved, all five
+Godot groups have only known diagnostics, and root CTest19/19 passes. Extreme
+quantity values and the native numeric-entry editor remain unverified.
+
+This screen remains staged. Direct condition number entry, filter editing, manual item conditions, dependencies,
 overflow, tooltip coverage, tab navigation and exact native back navigation are
 unfinished. Current close returns to the workshop; this is not native navigation
 acceptance. Fixed frame geometry and bounded displayed rows still need the full

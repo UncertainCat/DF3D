@@ -423,6 +423,13 @@ local ok,err=xpcall(function()
   expected.added_condition=owned[1]
   result.order_conditions.added={frequency=native.frequency,condition=owned[1],lines=lines()}
   shot('order-condition-added-native')
+  expected.condition_steps={}
+  for _,x in ipairs{672,704,736,736,736,736,736,736}do
+   mouse(x,178)
+   expected.condition_steps[#expected.condition_steps+1]={x=x,compare=added.compare_type,threshold=added.compare_val}
+  end
+  assert(added.compare_type==wanted.compare and added.compare_val==wanted.threshold,'Native amount/comparison cycle did not restore original values')
+  result.order_conditions.edit_steps=expected.condition_steps
   mouse(896,178)
   assert(#native.item_conditions==0 and native.frequency==1,'Native condition removal changed frequency or retained the row')
   result.order_conditions.removed={frequency=native.frequency,status=native.status.whole,finished_year=native.finished_year,finished_tick=native.finished_year_tick}

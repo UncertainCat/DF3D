@@ -7093,6 +7093,23 @@ the workshop frame. This is an editable staged workflow, not complete Details
 acceptance. Image, clothing size and dye families, responsive geometry, hover
 and broader navigation parity still need completion before exposure.
 
+`work_order_art_native.h` starts the owned artwork path with subject-list leaves:
+20f300 supplies historical figures,20f6b0 sites and20fa90 entities, including
+native sorting/filtering. Each call owns its image context and releases native
+master-row allocations through pinned1fb1c0. No live native menu is an input;
+neither opener1ffae0 nor mixed navigation/action dispatcher20ed00 is invoked.
+The diagnostic `work-order-art-subjects-probe` returns ordered stable IDs and
+revisions. Captions, transport, viewer navigation and artwork effects are still
+unfinished, so this reader grants no artwork-editing capability.
+
+Protected000623 on2026-11-02 matches all10563 historical figures,680 sites and
+1263 entities against native picker order without changing the native picker.
+It captures the artwork root and subject pages, then completes the existing
+Work orders workflow; owned DF47304 exits unsaved with source preservation.
+Right-click returns a subject list to the artwork root, then exits from the root.
+The preceding000406 run matched historical figures but stopped at an incorrect
+Escape-navigation assumption; it is not a passing complete workflow.
+
 These screens remain staged. Details, full responsive layout, tooltip coverage
 and tab navigation are unfinished. Quantity drafts currently support four digits; native increment
 behavior beyond that range remains unfinished. Fixed frame geometry still needs

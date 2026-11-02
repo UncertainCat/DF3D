@@ -102,6 +102,7 @@
 #include "work_order_catalog_native.h"
 #include "work_order_conditions_native.h"
 #include "work_order_details_native.h"
+#include "work_order_art_native.h"
 #include "df/job_item.h"
 #include "musical_detail_native.h"
 #include "dance_detail_native.h"
@@ -2126,6 +2127,23 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             value["contains"]=Json::Value(Json::arrayValue);for(auto id:row.contains)value["contains"].append(id);
             result["rows"].append(value);
           }
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="work-order-art-subjects-probe") {
+          if(parameters.size()<3 || parameters.size()>4)return CR_WRONG_USAGE;
+          int32_t id=-1,kind=-1;
+          for(size_t i=1;i<3;++i) {
+            auto& value=i==1?id:kind;const auto& raw=parameters[i];
+            const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),value);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || value<0)return CR_WRONG_USAGE;
+          }
+          df::manager_order* order=nullptr;
+          if(df::global::world)for(auto* candidate:df::global::world->manager_orders.all)if(candidate && candidate->id==id){order=candidate;break;}
+          if(!order)return CR_FAILURE;
+          const auto observed=df3d_production::nativeWorkOrderArtSubjects(*order,kind,parameters.size()==4?UTF2DF(parameters[3]):std::string{});
+          if(!observed)return CR_FAILURE;
+          Json::Value result;result["order_revision"]=std::to_string(observed->orderRevision);result["list_revision"]=std::to_string(observed->listRevision);result["ids"]=Json::Value(Json::arrayValue);
+          for(auto value:observed->ids)result["ids"].append(value);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="work-order-details-probe") {

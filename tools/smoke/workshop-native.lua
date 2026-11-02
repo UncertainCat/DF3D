@@ -560,6 +560,40 @@ local ok,err=xpcall(function()
   expected.improvement={id=improved.id,option=improvement_slot,choice=pick,rows=observed.materials}
   for i,order in ipairs(df.global.world.manager_orders.all)do if order.id==improved.id then expected.improvement.position=i;break end end
   shot('order-details-improvement-native')
+  local prior_improvement=improved.specdata.hist_figure_id
+  mouse(200,142)
+  local artwork=df.global.game.main_interface.image_creator
+  local function art_back()
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   df.global.enabler.mouse_rbut_lift=0;gui.simulateInput(view,'_MOUSE_R');view:render(dfhack.getTickCount())
+   df.global.enabler.mouse_rbut=0;df.global.enabler.mouse_rbut_down=0;df.global.enabler.mouse_rbut_lift=1
+  end
+  assert(artwork.open,'Image improvement did not open artwork picker')
+  shot('order-artwork-native')
+  expected.artwork_subjects={}
+  for kind,label in ipairs({'Related to historical figure','Related to site','Related to civilization or other group'})do
+   assert(click_label(label),'Artwork subject control missing: '..label)
+   assert(artwork.current_option==kind,'Artwork subject page differs')
+   local subjects=kind==1 and artwork.hf or kind==2 and artwork.st or artwork.ent
+   local ids={};for _,subject in ipairs(subjects)do ids[#ids+1]=subject.id end
+   local text,code=dfhack.run_command_silent('df3d','work-order-art-subjects-probe',tostring(improved.id),tostring(kind))
+   assert(code==0,text)
+   local owned=json.decode(text)
+   assert(json.encode(ids)==json.encode(owned.ids),'Owned artwork subject order differs')
+   assert(artwork.open and artwork.current_option==kind and #subjects==#ids,'Owned artwork reader changed native menu')
+   expected.artwork_subjects[#expected.artwork_subjects+1]={kind=kind,count=#ids,list_revision=owned.list_revision}
+   shot('order-artwork-subject-'..tostring(kind)..'-native')
+   art_back()
+   assert(artwork.open and artwork.current_option==-1,'Artwork subject Back did not return to root')
+  end
+  art_back()
+  if artwork.open then assert(click_label('Leave editor and discard data'),'Artwork exit confirmation missing')end
+  assert(not artwork.open,'Artwork picker did not close')
+  improved.specdata.hist_figure_id=prior_improvement
+  if not improvement.open then
+   mouse(584,improvement_y);assert(improvement.open,'Details did not reopen after artwork exit')
+   mouse(200,106+improvement_slot*36);assert(improvement.current_option==3)
+  end
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
   assert(improvement.open and improvement.current_option==-1,'Improvement Back did not return to options')
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())

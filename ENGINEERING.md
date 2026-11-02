@@ -7128,9 +7128,27 @@ when elements are deleted. Local editing and discard do not install world images
 Done uses native allocation/deep-copy leaves and the pinned commissioned-image
 registration effects, then assigns the image pair and rebuilds order requirements.
 Name generation and Done are write intents with no automatic uncertain replay.
-The new-image Name component editor remains unfinished, so Work orders remains
-staged. Initial name generation currently occurs on New image entry; matching
-native initialization on the artwork root is also still pending.
+Management128 carries artwork name queries, native word pages and component edits.
+The artwork-root entry generates the initial name through DF; navigation and
+discard retain that name. The shared name editor uses native word selection and
+formatting from the location naming provider, with independent artwork draft
+ownership. Clear and explicit word selection edit only the draft; component and
+whole-name Random consume DF RNG as write intents. Name Done returns to the draft;
+artwork Done installs the image and its edited name. Work orders remains staged
+pending the remaining Details families and broader presentation acceptance.
+
+Protected022823 on2026-11-02 exercises actual Name selection, Clear, whole-name
+Random, return to the draft and artwork Done. Independent DF readback confirms
+the selected native word and grammatical form in the installed image. Owned
+DF43596 exits unsaved with source preservation; paired logs are known-only.
+The native artwork Name reference is022118. The initial viewer capture exposed
+missing controls at the wider frame despite functioning input. Tiled StyleBox
+drawing replaces thousands of individual patch draws; the inspected full-width
+component capture in `build/qa/artwork-name-render` renders the controls and rows.
+`build/qa/artwork-name-ready` passes core19/19, UI composition and the existing
+location-name pixel/input checks (known engine diagnostics only). The corrected
+full-width rendering has component evidence; the live effect run predates that
+drawing correction. Complete responsive and hover acceptance remains pending.
 
 Protected020406 on2026-11-02 exercises draft creation, native descriptions,
 relationships, deletion, discard and actual Done in the shared viewer. DF readback
@@ -7138,8 +7156,7 @@ confirms the installed plant image, generated name, commissioned entity referenc
 and registration, and the order's image pair. The Done panel was inspected.
 Owned DF44340 exits unsaved with source preservation. Plugin build and UI
 composition pass; paired viewer logs contain only documented engine diagnostics.
-This verifies the assembled workflow, not the still-missing Name editor or
-complete responsive/hover parity.
+This verifies the assembled draft workflow, not complete responsive/hover parity.
 
 Protected010525 on2026-11-02 exercises Existing image in the shared viewer after
 the assembled Work orders/conditions/Details workflow. Hover text and wrapping

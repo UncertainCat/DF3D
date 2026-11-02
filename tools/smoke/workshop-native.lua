@@ -626,6 +626,16 @@ local ok,err=xpcall(function()
   assert(click_label('Specify a new image'));assert(artwork.current_option==6)
   shot('order-artwork-new-native')
   expected.artwork_draft={}
+  mouse(56,418)
+  local name_creator=df.global.game.main_interface.name_creator
+  assert(name_creator.open and name_creator.context==2,'Artwork Name did not open')
+  shot('order-artwork-name-native')
+  mouse(400,166)
+  expected.artwork_draft.name_word=artwork.new_image.name.words[0]
+  expected.artwork_draft.name_part=artwork.new_image.name.parts_of_speech[0]
+  assert(expected.artwork_draft.name_word>=0,'Artwork name word was not selected')
+  mouse(912,82)
+  assert(not name_creator.open and artwork.open and artwork.current_option==6,'Name Done did not return to artwork')
   local function draft_text()local lines={};for _,line in ipairs(artwork.art_box.text)do lines[#lines+1]=dfhack.df2utf(line.value)end;return lines end
   -- Observe one complete draft-editing path before implementing the owned editor.
   assert(click_label('Creature'));assert(artwork.current_option==7)
@@ -794,6 +804,7 @@ local ok,err=xpcall(function()
   local installed=assert(chunk.images[improved.art_spec.subid].art_image,'Viewer image missing')
   assert(#installed.elements==1 and df.art_image_element_plantst:is_instance(installed.elements[0]),'Viewer image lost its plant')
   assert(#installed.properties==0 and installed.name.has_name,'Viewer image name or relationship state differs')
+  assert(installed.name.words[0]==expected.artwork_draft.name_word and installed.name.parts_of_speech[0]==expected.artwork_draft.name_part,'Viewer artwork name edit was not installed')
   local resources=df.global.plotinfo.main.fortress_entity.resources
   local ref=installed.ref
   assert(ref and df.general_ref_entity_art_image:is_instance(ref) and ref.entity_id==df.global.plotinfo.main.fortress_entity.id,'Viewer commissioned image reference missing')

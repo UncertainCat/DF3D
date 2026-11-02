@@ -429,6 +429,23 @@ func run() -> void:
 	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.art_page()==9),"Commit draft plants did not load"):quit(1);return
 	click(Vector2(300,190))
 	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.art_page()==6),"Commit draft plant was not added"):quit(1);return
+	click(Vector2(56,418))
+	var artwork_names=owner.details_view.name_state
+	if not check(await settle(service,func():return artwork_names.active and artwork_names.phase==artwork_names.Phase.Ready),"Artwork Name editor did not load"):quit(1);return
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/work-order-art-name-live.png")
+	click(Vector2(400,166))
+	if not check(await settle(service,func():return artwork_names.phase==artwork_names.Phase.Ready and owner.details.ticket==0),"Artwork name selection did not complete"):quit(1);return
+	check(owner.details.draft_value.name.words[0]==int(expected.artwork_draft.name_word),"Artwork name word differs from native")
+	click(Vector2(312,130))
+	if not check(await settle(service,func():return artwork_names.phase==artwork_names.Phase.Ready and owner.details.ticket==0),"Artwork name Clear did not complete"):quit(1);return
+	check(owner.details.draft_value.name.words[0]==-1,"Artwork name Clear retained its word")
+	click(Vector2(848,70))
+	if not check(await settle(service,func():return artwork_names.phase==artwork_names.Phase.Ready and owner.details.ticket==0),"Artwork random name did not complete"):quit(1);return
+	click(Vector2(400,166))
+	if not check(await settle(service,func():return artwork_names.phase==artwork_names.Phase.Ready and owner.details.ticket==0),"Artwork final name selection did not complete"):quit(1);return
+	click(Vector2(928,70))
+	if not check(await settle(service,func():return not artwork_names.active and owner.details.phase==owner.details.Phase.Ready and owner.details.art_page()==6),"Name Done did not return to artwork"):quit(1);return
 	await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/work-order-art-draft-done-live.png")
 	click(Vector2(112,418))

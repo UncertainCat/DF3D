@@ -112,8 +112,7 @@ func choose(id: int) -> void:
 			query="";first=0;art_base=0;rows=[]
 			if id==0:_write_art(0,-1)
 			elif id==6:
-				draft_value={"elements":[],"relationships":[]};draft_relation={};draft_dirty=false;draft_discard=false
-				_read_draft(6,0,{"action":4})
+				draft_relation={};draft_discard=false;_read_draft(6)
 			else:_read_art(id)
 		else:_write_art(art_page(),id)
 		return
@@ -122,6 +121,7 @@ func choose(id: int) -> void:
 	_send({"action":C.ManagementAction.WorkOrderUpdate,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"details":{"option":snapshot.selected_option,"choice":id,"expected_choices_revision":snapshot.choices_revision}})
 func _enter_art(option: int) -> void:
 	first=0;art_base=0;rows=[];query="";phase=Phase.Applying
+	draft_value={"elements":[],"relationships":[]};draft_dirty=false;draft_discard=false
 	_send({"action":C.ManagementAction.WorkOrderUpdate,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"details":{"option":option,"art":{}}})
 func _write_art(page: int,subject: int) -> void:
 	phase=Phase.Applying
@@ -129,7 +129,7 @@ func _write_art(page: int,subject: int) -> void:
 	if page>0:art.merge({"query":query,"expected_list_revision":snapshot.art.list_revision})
 	_send({"action":C.ManagementAction.WorkOrderUpdate,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"details":{"option":snapshot.selected_option,"art":art}})
 func _read_art(page: int,cursor:=0) -> void:
-	if page>=6:_read_draft(page,cursor);return
+	if page>=6 or (page==-1 and draft_value.has("name")):_read_draft(page,cursor);return
 	phase=Phase.Reading
 	var art: Dictionary={"page":page,"query":query,"cursor":cursor}
 	if cursor>0:art.expected_list_revision=snapshot.art.list_revision
@@ -145,10 +145,11 @@ func draft_navigate(page: int) -> void:
 	query="";first=0;art_base=0;draft_quantity=1;rows=[];_read_draft(page)
 func discard_draft() -> void:
 	if ticket!=0:return
-	draft_value={"elements":[],"relationships":[]};draft_relation={};draft_dirty=false;draft_discard=false
+	draft_value.elements=[];draft_value.relationships=[];draft_relation={};draft_dirty=false;draft_discard=false
 	art_back()
 func _read_draft(page: int,cursor:=0,edit: Dictionary={}) -> void:
-	var writing: bool=int(edit.get("action",0))>=4
+	var action: int=edit.get("action",0)
+	var writing: bool=action in [4,5] or (action==6 and int(edit.get("name_edit",{}).get("mode",0))>=2)
 	phase=Phase.Applying if writing else Phase.Reading
 	var draft: Dictionary={"value":draft_value.duplicate(true),"columns":draft_columns}
 	draft.merge(edit)
@@ -192,7 +193,7 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 	if result.get("status",-1)!=C.ManagementStatus.Ok or result.get("action",-1)!=sent.action or result.get("outcome","")=="unknown":_fail(failure);return
 	var value: Dictionary=result.get("work_order",{}).get("details",{})
 	var entering: bool=writing and sent.details.has("art") and sent.details.art.get("page",-1)==-1
-	var naming: bool=writing and sent.details.get("art",{}).get("draft",{}).get("action",0)==4
+	var naming: bool=writing and sent.details.get("art",{}).get("draft",{}).get("action",0) in [4,6]
 	var selected: int=-1 if writing and not entering and not naming else sent.details.get("option",-1)
 	if value.get("id",-1)!=order_id or value.get("revision",0)<=0 or value.get("selected_option",-2)!=selected or not value.get("options") is Array:_fail(failure);return
 	if value.has("art"):
@@ -208,7 +209,7 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 		if page>=0 and art.get("list_revision",0)<=0:_fail(failure);return
 		if cursor>0 and (value.revision!=snapshot.revision or art.list_revision!=sent.details.art.expected_list_revision):_fail(failure);return
 		snapshot=value.duplicate(true)
-		if page>=6:
+		if page>=6 or art.has("draft"):
 			if not art.get("draft") is Dictionary or not art.get("draft_description") is Array:_fail(failure);return
 			draft_value=art.draft.duplicate(true)
 			if draft_action in [1,2,3]:draft_dirty=true

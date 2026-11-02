@@ -13,6 +13,8 @@
 #include "df/art_image_property_intransitive_verbst.h"
 
 namespace df3d_production {
+struct WorkOrderArtNameQuery {uint8_t component=0;std::string query;uint32_t cursor=0;};
+struct WorkOrderArtNameEdit {uint8_t mode=0;int32_t target=-1,displayed=-1,word=-1,part=-1;std::string query;};
 inline bool workOrderArtDraftReady() {
     static const bool ready=[] {
         if(!workOrderArtSubjectsReady())return false;
@@ -63,6 +65,7 @@ inline bool workOrderArtDraftReady() {
             {0x1fa3d0,0xe,UINT64_C(0xc117a55367e0c2ac)}, // entity artwork reference
             {0x20b02b,0x2ba,UINT64_C(0xbb08464ccb024519)}, // image registration effects
             {0x71f30,0x53,UINT64_C(0x5eb4fcfbdedb7745)}, // native bounded symbol selection
+            {0x1fe5c0,0x1382,UINT64_C(0x3326cd7614642632)}, // shared name component edits
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -151,6 +154,34 @@ public:
         for(size_t i=0;i<7;++i)if(name.words[i] < -1 || int(name.parts_of_speech[i])<0 || int(name.parts_of_speech[i])>8 ||
            (name.words[i]>=0 && (size_t(name.words[i])>=words.size() || !words[size_t(name.words[i])])))return false;
         context.new_image.name=name;return true;
+    }
+    bool editName(uint8_t mode,int target,int displayed,int word,int part,const std::string& query) {
+        if(mode>3 || query.size()>4096)return false;
+        if(mode==3)return target==-1 && displayed==-1 && word==-1 && part==-1 && query.empty() && generateName();
+        if(target<0 || target>6 || displayed<0 || displayed>6)return false;
+        if(mode==1) {
+            const auto choices=df3d_area::observeNativeLocationNameWords(uint8_t(displayed),query);
+            if(target!=displayed || !choices || std::none_of(choices->begin(),choices->end(),[&](const auto& row){return row.word==word && row.partOfSpeech==part;}))return false;
+        } else if(mode==2) {
+            const auto choice=df3d_area::chooseNativeLocationNameWord(uint8_t(displayed),query);
+            if(!choice)return false;word=choice->word;part=choice->partOfSpeech;
+        } else {word=-1;part=0;}
+        context.new_image.name.words[size_t(target)]=word;
+        context.new_image.name.parts_of_speech[size_t(target)]=df::part_of_speech(part);return true;
+    }
+    std::optional<WorkOrderArtNamePage> namePage(uint8_t component,const std::string& query,uint32_t cursor) {
+        const auto& name=context.new_image.name;df3d_area::LocationNameValue value;
+        value.firstNameCp437=name.first_name;value.nicknameCp437=name.nickname;value.words=name.words;
+        for(size_t i=0;i<7;++i)value.parts[i]=int16_t(name.parts_of_speech[i]);
+        value.language=name.language;value.type=int16_t(name.type);value.hasName=name.has_name;
+        const auto text=df3d_area::formatNativeLocationName(value);
+        const auto choices=df3d_area::observeNativeLocationNameWords(component,query,name.language);
+        if(!text || !choices || choices->size()>262144 || cursor>choices->size())return std::nullopt;
+        WorkOrderArtNamePage page;page.nativeHeader=text->native;page.englishHeader=text->english;
+        page.component=component;page.query=query;page.cursor=cursor;page.total=uint32_t(choices->size());
+        const auto end=std::min(choices->size(),size_t(cursor)+128);
+        page.choices.assign(choices->begin()+cursor,choices->begin()+end);page.nextCursor=end<choices->size()?uint32_t(end):0;
+        return page;
     }
     std::optional<std::string> draftRowCaption(size_t index) {
         df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
@@ -326,13 +357,18 @@ public:
 inline std::optional<WorkOrderArtPage> nativeWorkOrderArtDraftPage(df::manager_order& order,int16_t page,
     WorkOrderArtDraftValue value,uint8_t action,const std::optional<WorkOrderArtDraftElementValue>& element,
     const std::optional<WorkOrderArtDraftRelationshipValue>& relationship,int32_t deleteIndex,
-    const std::string& query,uint32_t cursor,uint64_t listRevision,uint16_t columns) {
-    if(page<6 || page>17 || action>4 || query.size()>128 || !columns || columns>256 ||
+    const std::string& query,uint32_t cursor,uint64_t listRevision,uint16_t columns,
+    const WorkOrderArtNameQuery* nameQuery=nullptr,const WorkOrderArtNameEdit* nameEdit=nullptr) {
+    if((page<6 && page!=-1) || page>18 || (action>4 && action!=6) || query.size()>128 || !columns || columns>256 ||
        value.elements.size()>256 || value.relationships.size()>256)return std::nullopt;
     auto draft=WorkOrderArtDraft::create();if(!draft)return std::nullopt;
     if(value.name && !draft->setName(*value.name))return std::nullopt;
     for(const auto& e:value.elements)if(!draft->addElement(e.kind,e.id,e.secondary,e.quantity))return std::nullopt;
     for(const auto& r:value.relationships)if(!draft->addRelationship(r.verb,r.transitive,r.actor,r.target))return std::nullopt;
+    if(action==6) {
+        if(!nameEdit || !draft->editName(nameEdit->mode,nameEdit->target,nameEdit->displayed,nameEdit->word,nameEdit->part,nameEdit->query))return std::nullopt;
+        value.name=draft->image().name;
+    }
     if(action==4){if(!draft->generateName())return std::nullopt;value.name=draft->image().name;page=6;}
     if(action==1) {
         if(!element || !draft->addElement(element->kind,element->id,element->secondary,element->quantity))return std::nullopt;
@@ -356,11 +392,16 @@ inline std::optional<WorkOrderArtPage> nativeWorkOrderArtDraftPage(df::manager_o
         page=value.elements.empty()?6:17;
     }
     auto result=nativeWorkOrderArtPage(order,-1,{},0,0);if(!result)return std::nullopt;
+    if(page==-1){result->draft=value;result->draftDescription=std::vector<std::string>{};return result;}
     result->page=page;result->rows.clear();result->draft=value;
     result->draftDescription=draft->preview(columns);if(!result->draftDescription)return std::nullopt;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     std::vector<std::pair<int32_t,int32_t>> candidates;
-    if(page==6) {
+    if(page==18) {
+        if(!nameQuery || !value.name)return std::nullopt;
+        result->name=draft->namePage(nameQuery->component,nameQuery->query,nameQuery->cursor);
+        if(!result->name)return std::nullopt;
+    } else if(page==6) {
         constexpr std::pair<int32_t,size_t> options[]={{7,0x15f7220},{8,0x16156e8},{9,0x16156e0},{10,0x1615704},{11,0x16156fc},{12,0x1615728},{13,0x15edd20},{14,0x1615710},{17,0x1615738}};
         for(const auto& [id,rva]:options){candidates.emplace_back(id,-1);result->rows.push_back({id,reinterpret_cast<const char*>(base+rva),std::nullopt});}
     } else if(page<=14) {
@@ -381,7 +422,7 @@ inline std::optional<WorkOrderArtPage> nativeWorkOrderArtDraftPage(df::manager_o
     result->listRevision=(hash&INT64_MAX)?(hash&INT64_MAX):1;
     if(cursor>candidates.size() || (action==0 && listRevision && listRevision!=result->listRevision))return std::nullopt;
     result->total=uint32_t(candidates.size());
-    if(page!=6) {
+    if(page!=6 && page!=18) {
         const auto end=std::min(size_t(cursor)+128,candidates.size());
         for(size_t i=cursor;i<end;++i) {
             const auto [id,secondary]=candidates[i];

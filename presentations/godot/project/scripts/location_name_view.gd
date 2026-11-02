@@ -17,6 +17,8 @@ var _query:=PackedByteArray()
 var _component:=-1
 var ticks_override:=-1
 var _blink:=-1
+var heading:="Name the location"
+var _patches: Dictionary={}
 
 func _process(_delta: float) -> void:
 	if not is_visible_in_tree() or not entering_filter:return
@@ -39,8 +41,11 @@ func reset_input() -> void:
 
 func layout(view: Vector2) -> void:
 	# Native214020 uses the compact placement below150 text columns.
-	position=Vector2(368 if floori(view.x/8)>=150 else 32,48+fposmod(view.y,12)*0.5)
-	size=Vector2(floori(view.x/8)*8-224-position.x,floori(view.y/12)*12-132)
+	var origin:=Vector2(368 if floori(view.x/8)>=150 else 32,48+fposmod(view.y,12)*0.5)
+	layout_frame(origin,Vector2(floori(view.x/8)*8-224-origin.x,floori(view.y/12)*12-132))
+func layout_frame(origin: Vector2,extent: Vector2) -> void:
+	if position==origin and size==extent and page==maxi(1,floori((extent.y-120)/36)):return
+	position=origin;size=extent
 	page=maxi(1,floori((size.y-120)/36))
 	scrollbar.position=Vector2(size.x-32,108);scrollbar.size=Vector2(16,page*36);scrollbar.page=page
 	scrollbar.set_rows(state.rows.size(),first);first=scrollbar.first;queue_redraw()
@@ -100,13 +105,16 @@ func _input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
 func patch(token: String, rect: Rect2) -> void:
-	var texture: Texture2D=art.texture(token)
-	if texture==null:return
-	var columns:=int(rect.size.x/8);var lines:=int(rect.size.y/12)
-	for y in lines:
-		for x in columns:
-			draw_texture_rect_region(texture,Rect2(rect.position+Vector2(x*8,y*12),Vector2(8,12)),
-				Rect2(0 if x==0 else 16 if x==columns-1 else 8,0 if y==0 else 24 if y==lines-1 else 12,8,12))
+	if not _patches.has(token):
+		var texture: Texture2D=art.texture(token)
+		if texture==null:return
+		var style:=StyleBoxTexture.new();style.texture=texture
+		style.texture_margin_left=8;style.texture_margin_right=8
+		style.texture_margin_top=12;style.texture_margin_bottom=12
+		style.axis_stretch_horizontal=StyleBoxTexture.AXIS_STRETCH_MODE_TILE
+		style.axis_stretch_vertical=StyleBoxTexture.AXIS_STRETCH_MODE_TILE
+		_patches[token]=style
+	draw_style_box(_patches[token],rect)
 
 func text(value: String, point: Vector2, color:=Color.WHITE) -> void:
 	if theme!=null and theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point,value,HORIZONTAL_ALIGNMENT_LEFT,-1,12,color)
@@ -122,7 +130,7 @@ func _draw() -> void:
 	if state==null:return
 	patch("HOVER_RECTANGLE",Rect2(Vector2.ZERO,size))
 	var center:=floori(size.x/16)*8-8
-	text("Name the location",Vector2(center-72,24))
+	text(heading,Vector2(center-(floori(heading.length()/2.0)+1)*8,24))
 	button("HORIZONTAL_OPTION_CONFIRM",Rect2(size.x-184,12,80,36),"Random")
 	button("HORIZONTAL_OPTION_CONFIRM",Rect2(size.x-96,12,64,36),"Done")
 	var native: String=state.snapshot.get("native_header","")

@@ -8,8 +8,17 @@ var colors: Array[Color]=[]
 var search_focused:=false
 var blink:=false
 var quantity_focused:=false
+var name_state=preload("res://scripts/work_order_art_name_state.gd").new()
+var name_view
 func configure_details(source,model) -> void:
 	super.configure(source);state=model;colors=art.installed_palette(source.assets_root())
+	name_state.configure(state)
+	name_view=preload("res://scripts/location_name_view.gd").new();add_child(name_view)
+	name_view.heading="Name the image" # Native literal16152c8; shared name renderer1fc5c0.
+	name_view.configure(source,name_state);name_view.hide()
+	name_view.input_allowed=func():return name_state.active and (not input_allowed.is_valid() or input_allowed.call())
+	name_view.cancelled.connect(name_state.close)
+	name_state.changed.connect(func():name_view.visible=name_state.active;queue_redraw())
 	mouse_filter=Control.MOUSE_FILTER_STOP
 	mouse_exited.connect(func():if state!=null:state.hover_art(-1,0))
 	scrollbar.row_changed.connect(func(value):state.seek(value))
@@ -26,6 +35,7 @@ func layout(view: Vector2) -> void:
 	var rows_count:=maxi(13,floori(view.y/12)-(5 if global else 10))
 	var origin:=Vector2(16 if global else 72,(36 if global else 48)+fposmod(view.y,12)*0.5)
 	var width:=976 if global else 832
+	name_view.layout_frame(Vector2.ZERO,Vector2(width,rows_count*12))
 	if position==origin and size==Vector2(width,rows_count*12):return
 	state.hover_art(-1,0)
 	position=origin;frame_rows=rows_count;size=Vector2(width,frame_rows*12);sync_scroll();queue_redraw()
@@ -49,6 +59,7 @@ func sync_scroll() -> void:
 	else:scrollbar.hide()
 func back() -> void:
 	if state.ticket!=0:return
+	if name_state.active:name_state.close();return
 	if state.has_art():
 		search_focused=false;quantity_focused=false
 		if state.art_page()>=0:state.art_back()
@@ -72,6 +83,7 @@ func feed_search(event: InputEventKey) -> void:
 	state.set_query(value)
 func _input(event: InputEvent) -> void:
 	if not is_visible_in_tree() or (input_allowed.is_valid() and not input_allowed.call()):return
+	if name_state.active:return
 	# Artwork's native Back route is right-click; Escape does not leave it.
 	if state.has_art() and event is InputEventKey and event.keycode==KEY_ESCAPE:get_viewport().set_input_as_handled();return
 	if quantity_focused and event is InputEventKey and event.pressed:
@@ -85,6 +97,7 @@ func _input(event: InputEvent) -> void:
 		back();get_viewport().set_input_as_handled()
 func _gui_input(event: InputEvent) -> void:
 	if input_allowed.is_valid() and not input_allowed.call():return
+	if name_state.active:accept_event();return
 	if event is InputEventMouseMotion and state.phase==state.Phase.Ready and state.has_art() and state.art_page()==5:
 		var id: int=-1
 		if Rect2(16,list_top(),size.x-48,page_rows*36).has_point(event.position):
@@ -114,6 +127,7 @@ func text(value: String,point: Vector2,color:=15) -> void:
 	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point+Vector2(0,4),value,HORIZONTAL_ALIGNMENT_LEFT,size.x-point.x-16,12,colors[color] if colors.size()>color else Color.WHITE)
 func _draw() -> void:
 	if world==null or state==null:return
+	if name_state.active:return
 	patch("HOVER_RECTANGLE",Vector2i.ZERO,int(size.x/8),frame_rows)
 	if state.snapshot.is_empty():return
 	if state.has_art():draw_art();return
@@ -189,8 +203,7 @@ func draw_draft() -> void:
 	for i in mini(2,description.size()):text(description[i],Vector2(16,80+i*12),14)
 	for category in DRAFT_CATEGORIES:draft_button(category[1],category[2],draft_enabled(category[0]),category[0]==17,page==category[0])
 	if page==6:
-		# The component name editor remains staged; Done uses the native draft name.
-		draft_button("Name",Vector2i(2,30),false)
+		draft_button("Name",Vector2i(2,30),state.draft_value.has("name"))
 		draft_button("Done",Vector2i(9,30),not state.draft_value.elements.is_empty() and state.draft_value.has("name"))
 		draft_button("Back",Vector2i(16,30),true,true)
 	else:draft_button("Stop deleting" if page==17 else "Cancel",Vector2i(2,30),true,true)
@@ -239,6 +252,7 @@ func draft_input(event: InputEventMouseButton) -> void:
 			if draft_enabled(category[0]):search_focused=false;quantity_focused=false;state.draft_navigate(category[0])
 			accept_event();return
 	var page: int=state.art_page()
+	if page==6 and Rect2(16,360,48,36).has_point(event.position):name_state.open();accept_event();return
 	if page==6 and Rect2(72,360,48,36).has_point(event.position):state.commit_draft();accept_event();return
 	if (Rect2(128,360,48,36) if page==6 else Rect2(16,360,120,36)).has_point(event.position):back();accept_event();return
 	if page>=7 and page<=14 and Rect2(232,96,size.x-248,36).has_point(event.position):

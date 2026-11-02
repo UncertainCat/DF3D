@@ -841,7 +841,14 @@ void publish() {
         draft=m::CreateWorkOrderArtDraftValue(b,b.CreateVector(elements),b.CreateVector(relationships),name);
       }
       if(a.draftDescription){std::vector<flatbuffers::Offset<flatbuffers::String>> lines;for(const auto& line:*a.draftDescription)lines.push_back(b.CreateString(DF2UTF(line)));description=b.CreateVector(lines);}
-      art=m::CreateWorkOrderArtState(b,a.page,b.CreateString(DF2UTF(a.caption)),b.CreateVector(rows),a.listRevision,a.total,a.nextCursor,a.hovered,preview,draft,description);
+      flatbuffers::Offset<m::WorkOrderArtName> namePage;
+      if(a.name) {
+        const auto& n=*a.name;std::vector<flatbuffers::Offset<m::LocationNameChoice>> choices;
+        for(const auto& row:n.choices)choices.push_back(m::CreateLocationNameChoice(b,row.word,int16_t(row.partOfSpeech),b.CreateString(row.english),b.CreateString(row.translated)));
+        namePage=m::CreateWorkOrderArtName(b,b.CreateString(n.nativeHeader),b.CreateString(n.englishHeader),n.component,
+          b.CreateVector(reinterpret_cast<const uint8_t*>(n.query.data()),n.query.size()),n.cursor,n.total,n.nextCursor,b.CreateVector(choices));
+      }
+      art=m::CreateWorkOrderArtState(b,a.page,b.CreateString(DF2UTF(a.caption)),b.CreateVector(rows),a.listRevision,a.total,a.nextCursor,a.hovered,preview,draft,description,namePage);
     }
     workOrderDetails=m::CreateWorkOrderDetailsState(b,workOrders.detailsId,d.revision,b.CreateString(DF2UTF(d.caption)),b.CreateVector(options),workOrders.detailsOption,choices,d.choicesRevision,uint32_t(d.materials.size()),next,art);
   }
@@ -2907,7 +2914,8 @@ void run(color_ostream& out) {
           // Name generation and world-image installation have their own write
           // paths. Local draft operations never claim a simulation mutation.
           const auto draftAction=uint8_t(draft->action());
-          if(writing!=(draftAction>=4) || (kind==3 && int(order->specdata.improvement)!=0)){publish();return;}
+          const bool worldWrite=draftAction==4 || draftAction==5 || (draftAction==6 && draft->name_edit() && uint8_t(draft->name_edit()->mode())>=2);
+          if(writing!=worldWrite || (kind==3 && int(order->specdata.improvement)!=0)){publish();return;}
           df3d_production::WorkOrderArtDraftValue value;
           const auto element=[](const m::WorkOrderArtDraftElement& e){return df3d_production::WorkOrderArtDraftElementValue{e.kind(),e.id(),e.secondary(),e.quantity()};};
           const auto relationship=[](const m::WorkOrderArtDraftRelationship& r){return df3d_production::WorkOrderArtDraftRelationshipValue{r.verb(),r.transitive(),r.actor(),r.target()};};
@@ -2934,7 +2942,11 @@ void run(color_ostream& out) {
           }
           // Generating a name advances DF's RNG. A failed receipt must not replay it.
           if(writing)mutated=true;
-          workOrders.art=df3d_production::nativeWorkOrderArtDraftPage(*order,a->page(),std::move(value),uint8_t(draft->action()),added,relation,draft->delete_index(),query,a->cursor(),a->expected_list_revision(),draft->columns());
+          std::optional<df3d_production::WorkOrderArtNameQuery> nameQuery;
+          std::optional<df3d_production::WorkOrderArtNameEdit> nameEdit;
+          if(const auto* n=draft->name_query())nameQuery=df3d_production::WorkOrderArtNameQuery{n->component(),std::string(reinterpret_cast<const char*>(n->query_bytes()->data()),n->query_bytes()->size()),n->cursor()};
+          if(const auto* n=draft->name_edit())nameEdit=df3d_production::WorkOrderArtNameEdit{uint8_t(n->mode()),n->target(),n->displayed(),n->word(),n->part(),std::string(reinterpret_cast<const char*>(n->query_bytes()->data()),n->query_bytes()->size())};
+          workOrders.art=df3d_production::nativeWorkOrderArtDraftPage(*order,a->page(),std::move(value),uint8_t(draft->action()),added,relation,draft->delete_index(),query,a->cursor(),a->expected_list_revision(),draft->columns(),nameQuery?&*nameQuery:nullptr,nameEdit?&*nameEdit:nullptr);
           if(!workOrders.art){publish();return;}
           workOrders.details=std::move(observed);workOrders.detailsId=q->id();workOrders.detailsOption=d->option();
           status=m::ManagementStatus::Ok;publish();return;
@@ -2953,6 +2965,12 @@ void run(color_ostream& out) {
           workOrders.art=df3d_production::nativeWorkOrderArtPage(*order,a->page(),query,a->cursor(),a->expected_list_revision(),a->hovered(),a->preview_columns());
           if(!workOrders.art){publish();return;}
           workOrders.detailsOption=d->option();
+          if(writing && a->page()==-1) {
+            auto draft=df3d_production::WorkOrderArtDraft::create();
+            if(!draft || !draft->generateName()){workOrders={};publish();return;}
+            workOrders.art->draft.emplace();workOrders.art->draft->name=draft->image().name;
+            workOrders.art->draftDescription=std::vector<std::string>{};
+          }
         }
         workOrders.details=std::move(observed);workOrders.detailsId=q->id();status=m::ManagementStatus::Ok;
         publish();return;

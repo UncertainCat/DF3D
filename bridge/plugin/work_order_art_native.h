@@ -1,5 +1,6 @@
 #pragma once
 #include "work_order_details_native.h"
+#include "location_details_native.h"
 #include "df/image_creator_interfacest.h"
 #include "df/historical_figure.h"
 #include "df/historical_entity.h"
@@ -220,6 +221,11 @@ struct WorkOrderArtDraftValue {
     std::optional<df::language_name> name;
 };
 struct WorkOrderArtDisplayRow {int32_t id;std::string caption;std::optional<std::string> badge;int32_t secondary=-1;};
+struct WorkOrderArtNamePage {
+    std::string nativeHeader,englishHeader,query;
+    uint8_t component=0;uint32_t cursor=0,total=0,nextCursor=0;
+    std::vector<df3d_area::LocationNameWord> choices;
+};
 struct WorkOrderArtPage {
     int16_t page=-1;std::string caption;
     std::vector<WorkOrderArtDisplayRow> rows;
@@ -227,6 +233,7 @@ struct WorkOrderArtPage {
     int32_t hovered=-1;std::optional<std::vector<std::string>> preview;
     std::optional<WorkOrderArtDraftValue> draft;
     std::optional<std::vector<std::string>> draftDescription;
+    std::optional<WorkOrderArtNamePage> name;
 };
 inline std::optional<WorkOrderArtPage> nativeWorkOrderArtPage(df::manager_order& order,int16_t page,const std::string& query,uint32_t cursor,uint64_t listRevision,int32_t hovered=-1,uint16_t columns=0) {
     if(!workOrderArtSubjectsReady())return std::nullopt;

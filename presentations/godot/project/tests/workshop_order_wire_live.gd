@@ -101,6 +101,14 @@ func run() -> void:
 	check(not owner.conditions.snapshot.suggested_conditions[0].editable,"Duplicate native suggestion remains available")
 	await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/workshop-order-condition-added-live.png")
+	click(Vector2(896,178))
+	if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.orders.phase==owner.orders.Phase.Ready and owner.orders.row_ticket==0),"Condition removal was not confirmed; no retry"):quit(1);return
+	check(owner.conditions.snapshot.conditions.is_empty() and owner.conditions.snapshot.frequency==1,"Condition removal differs from native")
+	check(owner.conditions.snapshot.suggested_conditions[0].editable,"Removed condition did not restore native suggestion availability")
+	for key in ["remaining","total","active","validated","finished_year","finished_tick"]:
+		check(owner.conditions.snapshot[key]==edited[key],"Condition removal changed unrelated order field: "+key)
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/workshop-order-condition-removed-live.png")
 	number_key(KEY_ESCAPE)
 	check(not owner.conditions_view.visible and owner.conditions.phase==owner.conditions.Phase.Closed,"Conditions did not retire on close")
 	click(Vector2(872,190))

@@ -42,6 +42,10 @@ func add_suggestion(index: int) -> void:
 	_send({"action":C.ManagementAction.WorkOrderCondition,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"suggestion_index":index})
 func _fail(next: Phase) -> void:
 	snapshot={};phase=next;changed.emit()
+func remove_condition(row: Dictionary) -> void:
+	if phase!=Phase.Ready or ticket!=0 or not snapshot.conditions.has(row):return
+	phase=Phase.Applying
+	_send({"action":C.ManagementAction.WorkOrderCondition,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"condition_kind":row.kind,"condition_index":row.index,"remove_condition":true})
 func _send(intent: Dictionary) -> void:
 	if service==null:_fail(Phase.Unavailable);return
 	var owner:=generation
@@ -60,6 +64,8 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 	if writing:
 		if sent.action==C.ManagementAction.WorkOrderUpdate:
 			if rows[0].get("frequency",-1)!=sent.frequency:_fail(Phase.Unknown);return
+		elif sent.get("remove_condition",false):
+			if rows[0].get("conditions",[]).size()!=snapshot.conditions.size()-1 or rows[0].get("frequency",-1)!=snapshot.frequency:_fail(Phase.Unknown);return
 		elif rows[0].get("conditions",[]).size()!=snapshot.conditions.size()+1 or rows[0].get("frequency",-1)!=(1 if snapshot.frequency==0 else snapshot.frequency):
 			_fail(Phase.Unknown);return
 		applied.emit();_read();return

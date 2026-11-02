@@ -423,6 +423,10 @@ local ok,err=xpcall(function()
   expected.added_condition=owned[1]
   result.order_conditions.added={frequency=native.frequency,condition=owned[1],lines=lines()}
   shot('order-condition-added-native')
+  mouse(896,178)
+  assert(#native.item_conditions==0 and native.frequency==1,'Native condition removal changed frequency or retained the row')
+  result.order_conditions.removed={frequency=native.frequency,status=native.status.whole,finished_year=native.finished_year,finished_tick=native.finished_year_tick}
+  shot('order-condition-removed-native')
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());assert(not conditions.open)
   if df.global.game.main_interface.info.open then gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())end
   select_map(still);assert(click_label('Work orders'))

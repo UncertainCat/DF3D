@@ -19,6 +19,7 @@ inline bool workOrderSuggestionsSupported() {
             {0x3926b1,0x1ef,UINT64_C(0x07d2b75807214414)},
             {0x3c54b5,0x160,UINT64_C(0x4656e100c0a9d60c)},
             {0x3c5671,0x1ae,UINT64_C(0xf630e9734b5a8891)},
+            {0x3c534d,0xbf,UINT64_C(0xa3ed7f994900fc90)},
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -150,6 +151,36 @@ inline NativeWorkOrderEdit addNativeWorkOrderSuggestion(int32_t buildingId,int32
         auto after=nativeWorkOrderRow(order,position);
         if(after && order.item_conditions.back()==added && sameNativeSuggestedFilter(*added,source) &&
            added->compare_type==source.compare_type && added->compare_val==source.compare_val && added->contains==source.contains) {
+            result.row=std::move(after);result.outcome=WorkshopOrdersOutcome::Applied;
+        }
+    }catch(...) {}
+    return result;
+}
+inline NativeWorkOrderEdit removeNativeWorkOrderCondition(int32_t buildingId,int32_t id,uint64_t revision,uint8_t kind,int16_t index,
+    void** holding,size_t& held,size_t capacity) {
+    NativeWorkOrderEdit result;
+    if(index<0 || kind>1 || held>=capacity || !workOrderSuggestionsSupported() || !workshopOrdersProfile(df::building::find(buildingId)))return result;
+    const auto& all=df::global::world->manager_orders.all;
+    const auto found=std::find_if(all.begin(),all.end(),[&](const auto* row){return row && row->id==id && row->workshop_id==buildingId;});
+    if(found==all.end())return result;
+    auto& order=**found;const int32_t position=int32_t(found-all.begin());
+    const auto before=nativeWorkOrderRow(order,position);if(!before)return result;
+    if(!revision || before->revision!=revision){result.outcome=WorkshopOrdersOutcome::Stale;return result;}
+    if(size_t(index)>=(kind?order.order_conditions.size():order.item_conditions.size()))return result;
+    // Native3c534d..3c540c removes only this condition, preserving frequency,
+    // order status and scheduled date. Retain retired storage as for order
+    // removal: native sheets may still hold borrowed pointers to these records.
+    if(kind) {
+        holding[held++]=order.order_conditions[size_t(index)];
+        order.order_conditions.erase(order.order_conditions.begin()+index);
+    } else {
+        holding[held++]=order.item_conditions[size_t(index)];
+        order.item_conditions.erase(order.item_conditions.begin()+index);
+    }
+    result.outcome=WorkshopOrdersOutcome::Unknown;
+    try {
+        auto after=nativeWorkOrderRow(order,position);
+        if(after && after->itemConditions.size()+after->orderConditions.size()+1==before->itemConditions.size()+before->orderConditions.size()) {
             result.row=std::move(after);result.outcome=WorkshopOrdersOutcome::Applied;
         }
     }catch(...) {}

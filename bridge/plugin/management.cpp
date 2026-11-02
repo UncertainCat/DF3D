@@ -2682,6 +2682,30 @@ BridgeWorkOrderInfo copyNativeWorkOrder(const df3d_production::NativeWorkOrderRo
 void run(color_ostream& out) {
   areaPaintRetired=nullptr;areaPaintCommitted=false;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
+  if(r->action()==m::ManagementAction::WorkOrderCondition && r->work_order() &&
+     r->work_order()->workshop_id()>=0 && r->work_order()->remove_condition()) {
+    const auto* q=r->work_order();message.clear();status=m::ManagementStatus::Rejected;workOrders={};
+    const bool extra=q->remaining()!=-1 || q->frequency()!=-1 || q->max_workshops()!=-1 ||
+      q->cursor() || q->expected_list_revision() || q->suggestion_index()!=-1 ||
+      (q->recipe() && q->recipe()->size()) || (q->query() && q->query()->size()) ||
+      q->compare()!=-1 || q->threshold()!=-1 || q->item_type()!=-1 || q->target_order()!=-1 || q->dependency()!=-1 ||
+      q->candidate_kind() || q->move() || q->expected_neighbor()!=-1 || q->item_subtype()!=-1 ||
+      q->mat_type()!=-1 || q->mat_index()!=-1 || (q->traits() && q->traits()->size()) ||
+      q->input_index()!=-1 || q->group_type()!=-1 || q->group_subtype()!=-1 || q->group_custom()!=-1 || q->encrust_flags()!=-1;
+    if(extra){publish();return;}
+    try {
+      auto* building=df::building::find(q->workshop_id());
+      auto* tile=building?Maps::getTileDesignation(building->centerx,building->centery,building->z):nullptr;
+      if(!tile || tile->bits.hidden){publish();return;}
+      mutated=true;
+      const auto result=df3d_production::removeNativeWorkOrderCondition(q->workshop_id(),q->id(),q->expected_revision(),q->condition_kind(),q->condition_index(),
+        workOrderHolding.data(),workOrderHoldingCount,workOrderHolding.size());
+      using O=df3d_production::WorkshopOrdersOutcome;
+      mutated=result.outcome==O::Applied || result.outcome==O::Unknown;
+      if(result.outcome==O::Applied && result.row){workOrders.orders.push_back(copyNativeWorkOrder(*result.row));status=m::ManagementStatus::Ok;}
+    }catch(...) {workOrders={};status=m::ManagementStatus::Rejected;}
+    publish();return;
+  }
   // Native suggestion identity never falls through to manual-filter Lua.
   if(r->work_order() && r->work_order()->suggestion_index()>=0) {
     const auto* q=r->work_order();message.clear();status=m::ManagementStatus::Rejected;workOrders={};

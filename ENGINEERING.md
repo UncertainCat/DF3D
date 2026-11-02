@@ -6822,7 +6822,20 @@ Godot log groups contain only documented diagnostics. The native post-add captur
 also establishes the conditional frequency wording and the existing-row origin.
 This is acceptance for the first suggested add, not every recipe/filter family.
 
-This screen remains staged. Removing/editing conditions, manual item conditions, dependencies,
+Condition removal composes native3c534d..3c540c from the selected condition kind
+and index under the observed order revision. It preserves frequency, status and
+scheduled date. Removed records enter the existing bounded retired-object storage
+to protect native borrowed pointers; the bridge does not read native panels.
+The controller re-inspects after confirmation, restoring suggestion availability.
+Protected204249 on2026-11-01 adds and removes the first Extract condition in both
+native DF and the rendered viewer. The empty condition list, daily frequency,
+unchanged quantity/status/date and restored suggestion match. Subsequent order
+removal also passes. Owned DF49828 exits unsaved, source preservation passes,
+all five Godot groups have only documented diagnostics, and root CTest19/19 passes.
+The backend also handles order-condition indices; that branch and dependency-row
+rendering have not yet received live acceptance.
+
+This screen remains staged. Editing conditions, manual item conditions, dependencies,
 overflow, tooltip coverage, tab navigation and exact native back navigation are
 unfinished. Current close returns to the workshop; this is not native navigation
 acceptance. Fixed frame geometry and bounded displayed rows still need the full

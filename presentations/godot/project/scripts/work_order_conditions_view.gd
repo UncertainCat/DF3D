@@ -33,6 +33,9 @@ func _gui_input(event: InputEvent) -> void:
 		if Rect2(832,72,32,36).has_point(event.position):state.cycle_frequency()
 		for index in 5:
 			if Rect2(720,size.y-192+index*36,32,36).has_point(event.position):state.add_suggestion(index)
+		if state.phase==state.Phase.Ready:
+			for index in mini(state.snapshot.conditions.size(),maxi(0,int((size.y-300)/36))):
+				if Rect2(848,108+index*36,32,36).has_point(event.position):state.remove_condition(state.snapshot.conditions[index]);break
 		accept_event()
 func text(value: String,point: Vector2,color: int=15) -> void:
 	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point,value,HORIZONTAL_ALIGNMENT_LEFT,-1,12,colors[color] if colors.size()>color else Color.WHITE)
@@ -65,6 +68,7 @@ func condition(row: Dictionary,y: float,suggested: bool) -> void:
 	if suggested and row.get("editable",false):
 		patch("BUTTON_RECTANGLE_DARK",Vector2i(90,int(y/12)),4,3)
 		icon("WORK_ORDERS_ADD_SUGGESTED_CONDITION",Vector2(720,y))
+	elif not suggested:icon("WORK_ORDERS_REMOVE",Vector2(848,y))
 func _draw() -> void:
 	if world==null:return
 	patch("HOVER_RECTANGLE",Vector2i.ZERO,118,frame_rows)

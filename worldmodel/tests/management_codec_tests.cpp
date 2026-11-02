@@ -4156,3 +4156,30 @@ TEST_CASE("artwork previews require read-only revision and width authority") {
   CHECK_FALSE(error());w.details->art->previewColumns=0;CHECK(error());
   w.details->art->previewColumns=118;request.action=wm::ManagementAction::WorkOrderUpdate;w.details->art->subject=0;CHECK(error());
 }
+TEST_CASE("artwork drafts preserve compound choices and separate world writes") {
+  wm::ManagementRequest request;request.action=wm::ManagementAction::WorkOrderInspect;
+  auto& w=request.workOrder;w.id=37;w.workshopId=-2;w.expectedRevision=9007199254740993ULL;
+  w.details.emplace();w.details->option=0;w.details->art.emplace();auto& art=*w.details->art;
+  art.page=6;art.draft.emplace();auto& draft=*art.draft;draft.columns=118;
+  draft.value.elements={{7,42,-1,1},{7,42,1,0}};
+  draft.value.relationships={{3,true,0,1}};
+  const auto error=[&](){
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+    const auto* encoded=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    const auto* value=encoded->work_order()->details()->art()->draft()->value();
+    CHECK(value->elements()->Get(1)->secondary()==1);
+    CHECK(value->elements()->Get(1)->quantity()==0);
+    CHECK(value->relationships()->Get(0)->target()==draft.value.relationships[0].target);
+    return wire::validateConstructionRequest(*encoded);
+  };
+  CHECK_FALSE(error());
+  draft.value.relationships[0].target=0;CHECK(error());
+  draft.value.relationships[0].target=1;
+  draft.action=wm::WorkOrderArtDraftAction::GenerateName;CHECK(error());
+  request.action=wm::ManagementAction::WorkOrderUpdate;CHECK_FALSE(error());
+  draft.action=wm::WorkOrderArtDraftAction::Commit;CHECK(error()); // A name has not been observed.
+  draft.value.name.emplace();auto& name=*draft.value.name;
+  name.words.assign(7,-1);name.parts.assign(7,0);name.type=11;
+  CHECK_FALSE(error());
+  name.parts.pop_back();CHECK(error());
+}

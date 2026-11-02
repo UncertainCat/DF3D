@@ -8,6 +8,28 @@
 #include "location_name_util.h"
 #include "location_recognition_util.h"
 namespace df3d::mirror {
+inline bool validArtDraftElement(const WorkOrderArtDraftElement* e) {
+  return e && e->kind()>=7 && e->kind()<=13 && e->id()>=0 && e->secondary()>=-1 &&
+    e->quantity()>=0 && e->quantity()<=1000000000 &&
+    ((e->kind()==8 || e->kind()==9 || e->kind()==10 || e->kind()==13)?e->secondary()==-1:e->secondary()<=32767);
+}
+inline bool validArtDraftRelationship(const WorkOrderArtDraftRelationship* r,size_t elements) {
+  return r && r->verb()>=0 && r->verb()<=32767 && r->actor()>=0 && size_t(r->actor())<elements &&
+    (r->transitive()?(r->target()>=0 && size_t(r->target())<elements && r->target()!=r->actor()):r->target()==-1);
+}
+inline bool validArtDraftValue(const WorkOrderArtDraftValue* v) {
+  if(!v || !v->elements() || !v->relationships() || v->elements()->size()>256 || v->relationships()->size()>256)return false;
+  for(const auto* e:*v->elements())if(!validArtDraftElement(e))return false;
+  for(const auto* r:*v->relationships())if(!validArtDraftRelationship(r,v->elements()->size()))return false;
+  if(const auto* n=v->name()) {
+    if(!n->first_name_bytes() || !n->nickname_bytes() || n->first_name_bytes()->size()>kLocationNameBytes ||
+       n->nickname_bytes()->size()>kLocationNameBytes || !n->words() || n->words()->size()!=7 ||
+       !n->parts() || n->parts()->size()!=7 || n->language()<-1 || n->type()<-1)return false;
+    for(auto word:*n->words())if(word<-1)return false;
+    for(auto part:*n->parts())if(part<0 || part>8)return false;
+  }
+  return true;
+}
 // Shared by wire validation and the private Lua builder's owned recipe blobs.
 inline const char* validateOwnerAppearance(const SelectionAppearance& image,size_t& payload) {
   const auto* p=&image;
@@ -30,8 +52,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 126;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v126";
+inline constexpr uint32_t kManagementVersion = 127;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v127";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -552,15 +574,34 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
          w->filter_choice()!=-1 || w->suggestion_index()!=-1)return "invalid exclusive native Details intent";
       if(const auto* a=d->art()) {
         if(d->option()<0 || d->choice()!=-1 || d->expected_choices_revision() || d->cursor() || (d->query() && d->query()->size()) ||
-           a->page() < -1 || a->page()>6 || a->subject() < -1 || a->expected_list_revision()>INT64_MAX ||
+           a->page() < -1 || a->page()>17 || a->subject() < -1 || a->expected_list_revision()>INT64_MAX ||
            a->cursor()>262144 || (a->query() && a->query()->size()>128) || !w->expected_revision() ||
-           (!writing && (a->subject()!=-1 || a->page()==0)) ||
-           (a->page()<=0 && (a->subject()!=-1 || a->expected_list_revision() || a->cursor() || (a->query() && a->query()->size()))) ||
-           (writing && (a->cursor() || (a->page()>0 && (a->subject()<0 || !a->expected_list_revision())))) ||
            (a->cursor() && !a->expected_list_revision()))return "invalid exclusive artwork intent";
-        if(a->hovered() < -1 || a->preview_columns()>256 ||
-           (a->hovered()==-1 ? a->preview_columns()!=0 :
-            (writing || a->page()<1 || !a->preview_columns() || !a->expected_list_revision())))return "invalid artwork preview intent";
+        if(const auto* draft=a->draft()) {
+          const auto op=draft->action();
+          const bool changesWorld=op==WorkOrderArtDraftAction::GenerateName || op==WorkOrderArtDraftAction::Commit;
+          if(a->page()<6 || a->subject()!=-1 || a->hovered()!=-1 || a->preview_columns() ||
+             !validArtDraftValue(draft->value()) || op>WorkOrderArtDraftAction::Commit ||
+             writing!=changesWorld || !draft->columns() || draft->columns()>256 ||
+             (op!=WorkOrderArtDraftAction::Inspect && (a->cursor() || (a->query() && a->query()->size()))))return "invalid artwork draft intent";
+          if(op==WorkOrderArtDraftAction::AddElement ? !validArtDraftElement(draft->element()) : draft->element()!=nullptr)return "invalid artwork draft element intent";
+          if(op==WorkOrderArtDraftAction::AddRelationship) {
+            if(!validArtDraftRelationship(draft->relationship(),draft->value()->elements()->size()))return "invalid artwork draft relationship intent";
+          } else if(draft->relationship()) {
+            const auto* r=draft->relationship();
+            if(op!=WorkOrderArtDraftAction::Inspect || (a->page()!=15 && a->page()!=16) || r->verb()<0 || r->verb()>32767 ||
+               r->target()!=-1 || (a->page()==15?r->actor()!=-1:(!r->transitive() || r->actor()<0 || size_t(r->actor())>=draft->value()->elements()->size())))return "invalid artwork relationship selection";
+          }
+          if(op==WorkOrderArtDraftAction::Delete ? (draft->delete_index()<0 || size_t(draft->delete_index())>=draft->value()->elements()->size()+draft->value()->relationships()->size()) : draft->delete_index()!=-1)return "invalid artwork draft delete intent";
+          if(op==WorkOrderArtDraftAction::Commit && (draft->value()->elements()->size()==0 || !draft->value()->name()))return "invalid artwork draft commit";
+        } else {
+          if(a->page()>5 || (!writing && (a->subject()!=-1 || a->page()==0)) ||
+             (a->page()<=0 && (a->subject()!=-1 || a->expected_list_revision() || a->cursor() || (a->query() && a->query()->size()))) ||
+             (writing && (a->cursor() || (a->page()>0 && (a->subject()<0 || !a->expected_list_revision())))))return "invalid exclusive artwork intent";
+          if(a->hovered() < -1 || a->preview_columns()>256 ||
+             (a->hovered()==-1 ? a->preview_columns()!=0 :
+              (writing || a->page()<1 || !a->preview_columns() || !a->expected_list_revision())))return "invalid artwork preview intent";
+        }
       }
     }
     if(w && (w->filter_choice() < -1 || w->filter_choice()>32767))return "invalid native filter choice";
@@ -1831,17 +1872,21 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
          !choice->caption() || !textOk(choice->caption(),512) || !textOk(choice->count_caption(),32) || (choice->estimated() && !choice->count_caption()))return "invalid native Details choice";
       if(const auto* a=d->art()) {
         if(d->selected_option()<0 || d->choices() || d->choices_revision() || d->total() || d->next_cursor() ||
-           a->page() < -1 || a->page()==0 || a->page()>6 || !a->caption() || !textOk(a->caption(),1024) ||
+           a->page() < -1 || a->page()==0 || a->page()>17 || !a->caption() || !textOk(a->caption(),1024) ||
            !a->rows() || a->rows()->size()>128 || a->total()>262144 || a->rows()->size()>a->total() ||
            a->next_cursor()>a->total() || a->list_revision()>INT64_MAX ||
            (a->page()==-1 && (a->list_revision() || a->next_cursor() || a->rows()->size()!=a->total())) ||
            (a->page()>0 && !a->list_revision()))return "invalid artwork state";
-        std::set<int32_t> ids;
-        for(const auto* row:*a->rows())if(!row || row->id()<0 || !ids.insert(row->id()).second ||
+        std::set<int32_t> ids;std::set<std::pair<int32_t,int32_t>> pairs;
+        for(const auto* row:*a->rows())if(!row || row->id()<0 || row->secondary() < -1 || !pairs.emplace(row->id(),row->secondary()).second || (a->page()<6 && (!ids.insert(row->id()).second || row->secondary()!=-1)) ||
            !row->caption() || !textOk(row->caption(),1024) || !textOk(row->badge(),128) || (a->page()==-1 && row->id()>6))return "invalid artwork row";
         if(a->hovered() < -1 || (a->hovered()==-1 ? a->preview()!=nullptr :
            (a->page()<1 || !a->preview() || !ids.count(a->hovered()))) || (a->preview() && a->preview()->size()>128))return "invalid artwork preview";
         if(a->preview())for(const auto* line:*a->preview())if(!line || line->size()>2048)return "invalid artwork preview line";
+        if(a->page()>=6) {
+          if(!validArtDraftValue(a->draft()) || !a->draft_description() || a->draft_description()->size()>128 || a->hovered()!=-1)return "invalid artwork draft observation";
+          for(const auto* line:*a->draft_description())if(!line || line->size()>2048)return "invalid artwork draft description";
+        } else if(a->draft() || a->draft_description())return "unexpected artwork draft observation";
         const auto kind=d->options()->Get(d->selected_option())->kind();
         if(kind!=1 && kind!=3)return "invalid artwork parent";
       }

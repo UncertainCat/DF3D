@@ -468,7 +468,21 @@ struct CitizenState {
   int64_t detailListRevision=0;
   std::string recalcError;
 };
-struct WorkOrderArtRequest {int16_t page=-1;int32_t subject=-1;uint64_t expectedListRevision=0;std::string query;uint32_t cursor=0;int32_t hovered=-1;uint16_t previewColumns=0;};
+enum class WorkOrderArtDraftAction:uint8_t {Inspect,AddElement,AddRelationship,Delete,GenerateName,Commit};
+struct WorkOrderArtDraftElement {int16_t kind=0;int32_t id=-1,secondary=-1,quantity=1;};
+struct WorkOrderArtDraftRelationship {int32_t verb=-1;bool transitive=false;int32_t actor=-1,target=-1;};
+struct WorkOrderArtDraftValue {
+  std::vector<WorkOrderArtDraftElement> elements;
+  std::vector<WorkOrderArtDraftRelationship> relationships;
+  std::optional<LocationNameValue> name;
+};
+struct WorkOrderArtDraftRequest {
+  WorkOrderArtDraftValue value;WorkOrderArtDraftAction action=WorkOrderArtDraftAction::Inspect;
+  std::optional<WorkOrderArtDraftElement> element;
+  std::optional<WorkOrderArtDraftRelationship> relationship;
+  int32_t deleteIndex=-1;uint16_t columns=0;
+};
+struct WorkOrderArtRequest {int16_t page=-1;int32_t subject=-1;uint64_t expectedListRevision=0;std::string query;uint32_t cursor=0;int32_t hovered=-1;uint16_t previewColumns=0;std::optional<WorkOrderArtDraftRequest> draft;};
 struct WorkOrderDetailsRequest {int16_t option=-1;int32_t choice=-1;uint64_t expectedChoicesRevision=0;std::string query;uint32_t cursor=0;std::optional<WorkOrderArtRequest> art;};
 struct WorkOrderRequest {
   int32_t id=-1,remaining=-1,workshopId=-2,maxWorkshops=-1,threshold=-1,targetOrder=-1;
@@ -527,11 +541,13 @@ struct WorkOrderInfo {
 struct ManagerRole { int32_t unitId=-1; std::string name,position,job; std::vector<int32_t> offices; };
 struct WorkOrderDetailsOption {uint8_t kind=0;int32_t index=-1;std::string caption;};
 struct WorkOrderDetailsChoice {int32_t id=-1;std::string caption;std::optional<std::string> countCaption;bool estimated=false;};
-struct WorkOrderArtRow {int32_t id=-1;std::string caption;std::optional<std::string> badge;};
+struct WorkOrderArtRow {int32_t id=-1;std::string caption;std::optional<std::string> badge;int32_t secondary=-1;};
 struct WorkOrderArtState {
   int16_t page=-1;std::string caption;std::vector<WorkOrderArtRow> rows;
   uint64_t listRevision=0;uint32_t total=0,nextCursor=0;
   int32_t hovered=-1;std::optional<std::vector<std::string>> preview;
+  std::optional<WorkOrderArtDraftValue> draft;
+  std::optional<std::vector<std::string>> draftDescription;
 };
 struct WorkOrderDetailsState {
   int32_t id=-1;uint64_t revision=0;std::string caption;

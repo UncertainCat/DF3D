@@ -1670,16 +1670,37 @@ table ProductionState {
 // Details is a distinct intent; choice IDs refer to the observed native catalog.
 // Artwork subject IDs are simulation IDs, not Details choice ordinals.
 // Update with page=-1 enters Image; page=0 delegates to the artist.
+// Draft values are viewer-owned semantic data. Native pointers and editor
+// scratch never cross the wire. Only Commit installs an image in the world.
+enum WorkOrderArtDraftAction:uint8 { Inspect, AddElement, AddRelationship, Delete, GenerateName, Commit }
+table WorkOrderArtDraftElement { kind:int16; id:int32 = -1; secondary:int32 = -1; quantity:int32 = 1; }
+table WorkOrderArtDraftRelationship { verb:int32 = -1; transitive:bool; actor:int32 = -1; target:int32 = -1; }
+table WorkOrderArtDraftValue {
+  elements:[WorkOrderArtDraftElement] (required);
+  relationships:[WorkOrderArtDraftRelationship] (required);
+  name:LocationNameValue;
+}
+table WorkOrderArtDraftRequest {
+  value:WorkOrderArtDraftValue (required);
+  action:WorkOrderArtDraftAction;
+  element:WorkOrderArtDraftElement;
+  relationship:WorkOrderArtDraftRelationship;
+  delete_index:int32 = -1;
+  columns:uint16;
+}
 table WorkOrderArtRequest {
   page:int16 = -1; subject:int32 = -1;
   expected_list_revision:uint64; query:string; cursor:uint32;
   hovered:int32 = -1; preview_columns:uint16;
+  draft:WorkOrderArtDraftRequest;
 }
-table WorkOrderArtRow { id:int32; caption:string; badge:string; }
+table WorkOrderArtRow { id:int32; caption:string; badge:string; secondary:int32 = -1; }
 table WorkOrderArtState {
   page:int16 = -1; caption:string; rows:[WorkOrderArtRow];
   list_revision:uint64; total:uint32; next_cursor:uint32;
   hovered:int32 = -1; preview:[string];
+  draft:WorkOrderArtDraftValue;
+  draft_description:[string];
 }
 table WorkOrderDetailsRequest {
   option:int16 = -1;
@@ -2050,7 +2071,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 126;
+  schema_version:uint32 = 127;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2102,7 +2123,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 126;
+  schema_version:uint32 = 127;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

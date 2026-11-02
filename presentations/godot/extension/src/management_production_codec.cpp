@@ -12,6 +12,61 @@ constexpr int actionValue(wm::ManagementAction a) {
   return static_cast<int>(a);
 }
 using Action = wm::ManagementAction;
+int64_t draftNumber(const Dictionary& d,const char* key,int64_t fallback,int64_t low,int64_t high,bool& valid) {
+  if(!d.has(key))return fallback;
+  if(d[key].get_type()!=Variant::INT){valid=false;return fallback;}
+  int64_t value=d[key];if(value<low || value>high)valid=false;return value;
+}
+wm::WorkOrderArtDraftElement readDraftElement(const Dictionary& d,bool& valid) {
+  return {int16_t(draftNumber(d,"kind",0,7,13,valid)),int32_t(draftNumber(d,"id",-1,0,INT32_MAX,valid)),
+    int32_t(draftNumber(d,"secondary",-1,-1,32767,valid)),int32_t(draftNumber(d,"quantity",1,0,1000000000,valid))};
+}
+wm::WorkOrderArtDraftRelationship readDraftRelationship(const Dictionary& d,bool& valid) {
+  bool transitive=false;
+  if(d.has("transitive")){if(d["transitive"].get_type()!=Variant::BOOL)valid=false;else transitive=d["transitive"];}
+  return {int32_t(draftNumber(d,"verb",-1,0,32767,valid)),transitive,
+    int32_t(draftNumber(d,"actor",-1,-1,255,valid)),int32_t(draftNumber(d,"target",-1,-1,255,valid))};
+}
+wm::WorkOrderArtDraftValue readDraftValue(const Dictionary& d,bool& valid) {
+  wm::WorkOrderArtDraftValue value;
+  for(const char* key:{"elements","relationships"}) {
+    if(!d.has(key) || d[key].get_type()!=Variant::ARRAY){valid=false;return value;}
+    Array rows=d[key];if(rows.size()>256){valid=false;return value;}
+    for(int i=0;i<rows.size();++i) {
+      if(rows[i].get_type()!=Variant::DICTIONARY){valid=false;return value;}
+      if(std::string(key)=="elements")value.elements.push_back(readDraftElement(Dictionary(rows[i]),valid));
+      else value.relationships.push_back(readDraftRelationship(Dictionary(rows[i]),valid));
+    }
+  }
+  if(d.has("name")) {
+    if(d["name"].get_type()!=Variant::DICTIONARY){valid=false;return value;}
+    Dictionary name=d["name"];value.name.emplace();auto& n=*value.name;
+    const auto integers=[&](const char* key,auto& target,int64_t low,int64_t high,int count) {
+      if(!name.has(key) || name[key].get_type()!=Variant::ARRAY){valid=false;return;}
+      Array rows=name[key];if(rows.size()>4096 || (count>=0 && rows.size()!=count)){valid=false;return;}
+      for(int i=0;i<rows.size();++i){if(rows[i].get_type()!=Variant::INT){valid=false;return;}int64_t number=rows[i];if(number<low || number>high){valid=false;return;}target.push_back(number);}
+    };
+    integers("first_name_bytes",n.firstNameBytes,0,255,-1);integers("nickname_bytes",n.nicknameBytes,0,255,-1);
+    integers("words",n.words,-1,INT32_MAX,7);integers("parts",n.parts,0,8,7);
+    n.language=int32_t(draftNumber(name,"language",-1,-1,INT32_MAX,valid));n.type=int16_t(draftNumber(name,"type",-1,-1,32767,valid));
+    if(!name.has("has_name") || name["has_name"].get_type()!=Variant::BOOL)valid=false;else n.hasName=name["has_name"];
+  }
+  return value;
+}
+Dictionary writeDraftValue(const wm::WorkOrderArtDraftValue& value) {
+  Dictionary result;Array elements,relationships;
+  for(const auto& e:value.elements){Dictionary row;row["kind"]=e.kind;row["id"]=e.id;row["secondary"]=e.secondary;row["quantity"]=e.quantity;elements.push_back(row);}
+  for(const auto& r:value.relationships){Dictionary row;row["verb"]=r.verb;row["transitive"]=r.transitive;row["actor"]=r.actor;row["target"]=r.target;relationships.push_back(row);}
+  result["elements"]=elements;result["relationships"]=relationships;
+  if(value.name){
+    const auto& n=*value.name;Dictionary name;
+    const auto integers=[](const auto& values){Array out;for(auto v:values)out.push_back(int64_t(v));return out;};
+    name["first_name_bytes"]=integers(n.firstNameBytes);name["nickname_bytes"]=integers(n.nicknameBytes);
+    name["words"]=integers(n.words);name["parts"]=integers(n.parts);name["language"]=n.language;name["type"]=n.type;name["has_name"]=n.hasName;result["name"]=name;
+  }
+  return result;
+}
+
 }  // namespace
 
 void writeProduction(Dictionary& result, const wm::ProductionState& s) {
@@ -230,7 +285,10 @@ void writeWorkOrder(Dictionary& result, const wm::WorkOrderState& s) {
       art["list_revision"]=int64_t(a.listRevision);art["total"]=int64_t(a.total);art["next_cursor"]=int64_t(a.nextCursor);
       art["hovered"]=a.hovered;
       if(a.preview){Array lines;for(const auto& line:*a.preview)lines.push_back(String::utf8(line.c_str()));art["preview"]=lines;}
-      Array rows;for(const auto& r:a.rows){Dictionary row;row["id"]=r.id;row["caption"]=String::utf8(r.caption.c_str());if(r.badge)row["badge"]=String::utf8(r.badge->c_str());rows.push_back(row);}art["rows"]=rows;details["art"]=art;
+      Array rows;for(const auto& r:a.rows){Dictionary row;row["id"]=r.id;row["secondary"]=r.secondary;row["caption"]=String::utf8(r.caption.c_str());if(r.badge)row["badge"]=String::utf8(r.badge->c_str());rows.push_back(row);}art["rows"]=rows;
+      if(a.draft)art["draft"]=writeDraftValue(*a.draft);
+      if(a.draftDescription){Array lines;for(const auto& line:*a.draftDescription)lines.push_back(String::utf8(line.c_str()));art["draft_description"]=lines;}
+      details["art"]=art;
     }
     Array options;for(const auto& o:d.options){Dictionary option;option["kind"]=o.kind;option["index"]=o.index;option["caption"]=String::utf8(o.caption.c_str());options.push_back(option);}details["options"]=options;
     if(d.choices) {
@@ -442,10 +500,22 @@ bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& err
     if(details.has("art")) {
       Dictionary art=details["art"];d.art.emplace();auto& a=*d.art;
       const auto artNumber=[&](const char* key,int64_t def,int64_t low,int64_t high){int64_t v=art.get(key,def);if(v<low || v>high)valid=false;return v;};
-      a.page=int16_t(artNumber("page",-1,-1,6));a.subject=int32_t(artNumber("subject",-1,-1,INT32_MAX));
+      a.page=int16_t(artNumber("page",-1,-1,17));a.subject=int32_t(artNumber("subject",-1,-1,INT32_MAX));
       a.expectedListRevision=uint64_t(artNumber("expected_list_revision",0,0,INT64_MAX));a.cursor=uint32_t(artNumber("cursor",0,0,262144));
       a.hovered=int32_t(artNumber("hovered",-1,-1,INT32_MAX));a.previewColumns=uint16_t(artNumber("preview_columns",0,0,256));
       String artQuery=art.get("query",String());a.query=artQuery.utf8().get_data();if(a.query.size()>128)valid=false;
+      if(art.has("draft")) {
+        if(art["draft"].get_type()!=Variant::DICTIONARY)valid=false;
+        else {
+          Dictionary draft=art["draft"];a.draft.emplace();auto& v=*a.draft;
+          v.action=wm::WorkOrderArtDraftAction(draftNumber(draft,"action",0,0,5,valid));
+          v.deleteIndex=int32_t(draftNumber(draft,"delete_index",-1,-1,511,valid));v.columns=uint16_t(draftNumber(draft,"columns",0,1,256,valid));
+          if(!draft.has("value") || draft["value"].get_type()!=Variant::DICTIONARY)valid=false;
+          else v.value=readDraftValue(Dictionary(draft["value"]),valid);
+          if(draft.has("element")){if(draft["element"].get_type()!=Variant::DICTIONARY)valid=false;else v.element=readDraftElement(Dictionary(draft["element"]),valid);}
+          if(draft.has("relationship")){if(draft["relationship"].get_type()!=Variant::DICTIONARY)valid=false;else v.relationship=readDraftRelationship(Dictionary(draft["relationship"]),valid);}
+        }
+      }
     }
   }
   w.traits.reset();

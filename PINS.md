@@ -22,6 +22,12 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management127 carries viewer-owned artwork drafts, compound candidate IDs, and
+separate draft editing, name generation and image commit intents. Draft previews
+retain native text without installing an image. Rebuild/install both peers on
+`Local\\df3d_management_v127`. Earlier recordings have no draft observations;
+do not synthesize names, elements, relationships or commit authority.
+
 Management126 adds optional native artwork row labels and revision-checked hover
 previews, including the requested text width. Preview reads cannot carry a
 selection. Rebuild/install both peers on `Local\\df3d_management_v126`. Missing

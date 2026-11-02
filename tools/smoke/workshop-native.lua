@@ -530,6 +530,10 @@ local ok,err=xpcall(function()
   mouse(896,178)
   assert(#native.order_conditions==0,'Native dependency removal failed')
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());assert(not conditions.open)
+  assert(df.global.game.main_interface.info.open,'Conditions Back did not open global work orders')
+  expected.global_order_ids={}
+  for _,order in ipairs(df.global.world.manager_orders.all)do expected.global_order_ids[#expected.global_order_ids+1]=order.id end
+  shot('global-work-orders-native')
   if df.global.game.main_interface.info.open then gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())end
   select_map(still);assert(click_label('Work orders'))
   mouse(840,190)

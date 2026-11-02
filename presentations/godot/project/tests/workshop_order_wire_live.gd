@@ -145,6 +145,9 @@ func run() -> void:
 		root.get_texture().get_image().save_png(directory+"/workshop-order-filter-applied-"+str(int(step.kind))+"-live.png")
 		if int(step.kind)==2:
 			number_key(KEY_ESCAPE)
+			if not check(await settle(service,func():return owner.global_orders.phase==owner.global_orders.Phase.Ready),"Global list did not open after Conditions Back"):quit(1);return
+			number_key(KEY_ESCAPE)
+			if not check(await settle(service,func():return owner.orders.phase==owner.orders.Phase.Ready and owner.orders.row_ticket==0),"Workshop list did not refresh after global Back"):quit(1);return
 			click(Vector2(816,190))
 			if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready),"Conditions did not reopen after trait picker"):quit(1);return
 	click(Vector2(896,178))
@@ -217,8 +220,34 @@ func run() -> void:
 	check(owner.conditions.snapshot.conditions.is_empty(),"Dependency retained after removal")
 	number_key(KEY_ESCAPE)
 	check(not owner.conditions_view.visible and owner.conditions.phase==owner.conditions.Phase.Closed,"Conditions did not retire on close")
-	click(Vector2(872,190))
-	if not check(await settle(service,func():return owner.orders.phase==owner.orders.Phase.Ready and owner.orders.rows_available and owner.orders.row_ticket==0),"Order removal was not confirmed; no retry"):quit(1);return
+	if not check(await settle(service,func():return owner.global_orders.phase==owner.global_orders.Phase.Ready),"Global orders did not open"):quit(1);return
+	var global=owner.global_orders
+	check(owner.global_orders_view.visible and global.total==expected.global_order_ids.size(),"Global list count/navigation differs from native")
+	global.seek(global.total-1,owner.global_orders_view.page_rows)
+	if not check(await settle(service,func():return global.phase==global.Phase.Ready and global.ticket==0 and not global.find_order(created_order.id).is_empty()),"Global last page did not load"):quit(1);return
+	var global_row: Dictionary=global.find_order(created_order.id)
+	var global_y: float=142+(global_row.position-global.first)*36
+	click(Vector2(424,global_y))
+	if not check(await settle(service,func():return global.phase==global.Phase.Ready and global.ticket==0),"Global quantity edit failed"):quit(1);return
+	check(global.find_order(created_order.id).remaining==edited.remaining+1,"Global quantity effect missing")
+	click(Vector2(488,global_y))
+	if not check(await settle(service,func():return global.phase==global.Phase.Ready and global.ticket==0),"Global priority move failed"):quit(1);return
+	global_row=global.find_order(created_order.id)
+	check(global_row.position==global.total-2,"Global priority effect missing")
+	global_y=142+(global_row.position-global.first)*36
+	click(Vector2(552,global_y))
+	if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready),"Global Conditions did not open"):quit(1);return
+	check(owner.conditions.building_id==-2 and owner.conditions.snapshot.id==created_order.id,"Global Conditions targeted another order")
+	number_key(KEY_ESCAPE)
+	if not check(await settle(service,func():return global.phase==global.Phase.Ready and global.ticket==0),"Conditions Back did not refresh global orders"):quit(1);return
+	global_row=global.find_order(created_order.id);global_y=142+(global_row.position-global.first)*36
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/global-work-orders-live.png")
+	click(Vector2(888,global_y))
+	if not check(await settle(service,func():return global.phase==global.Phase.Ready and global.ticket==0),"Global removal failed; no retry"):quit(1);return
+	check(global.find_order(created_order.id).is_empty(),"Global removed identity retained")
+	number_key(KEY_ESCAPE)
+	if not check(await settle(service,func():return owner.orders.phase==owner.orders.Phase.Ready and owner.orders.rows_available and owner.orders.row_ticket==0),"Workshop list did not refresh after global removal"):quit(1);return
 	check(not owner.orders.snapshot.order_ids.has(created_order.id) and owner.orders.row_total==0 and owner.orders.rows.is_empty(),"Removed order retained in workshop list")
 	await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/workshop-order-removed-live.png")

@@ -2694,7 +2694,7 @@ void run(color_ostream& out) {
     try {
       auto* building=df::building::find(q->workshop_id());
       auto* tile=building?Maps::getTileDesignation(building->centerx,building->centery,building->z):nullptr;
-      if(!tile || tile->bits.hidden){publish();return;}
+      if(q->workshop_id()!=-2 && (!tile || tile->bits.hidden)){publish();return;}
       mutated=true;
       const auto result=df3d_production::selectNativeWorkOrderFilter(q->workshop_id(),q->id(),q->expected_revision(),q->condition_index(),int(q->candidate_kind())-3,q->filter_choice(),q->expected_list_revision());
       using O=df3d_production::WorkshopOrdersOutcome;
@@ -2703,7 +2703,7 @@ void run(color_ostream& out) {
     }catch(...) {workOrders={};status=m::ManagementStatus::Rejected;}
     publish();return;
   }
-  if(r->action()==m::ManagementAction::WorkOrderCandidates && r->work_order() && r->work_order()->workshop_id()>=0) {
+  if(r->action()==m::ManagementAction::WorkOrderCandidates && r->work_order() && (r->work_order()->workshop_id()==-2 || r->work_order()->workshop_id()>=0)) {
     const auto* q=r->work_order();message.clear();status=m::ManagementStatus::Rejected;workOrders={};
     const bool dependencies=q->condition_kind()==1 && q->candidate_kind()==0;
     const bool extra=q->id()<0 || (dependencies?(q->condition_index()!=-1 || (q->query() && q->query()->size())):
@@ -2716,9 +2716,9 @@ void run(color_ostream& out) {
     try {
       auto* building=df::building::find(q->workshop_id());
       auto* tile=building?Maps::getTileDesignation(building->centerx,building->centery,building->z):nullptr;
-      if(!tile || tile->bits.hidden || !df3d_production::workshopOrdersProfile(building)){publish();return;}
+      if(!df3d_production::nativeWorkOrderScope(q->workshop_id()) || (q->workshop_id()!=-2 && (!tile || tile->bits.hidden))){publish();return;}
       const auto& all=df::global::world->manager_orders.all;
-      const auto found=std::find_if(all.begin(),all.end(),[&](const auto* order){return order && order->id==q->id() && order->workshop_id==q->workshop_id();});
+      const auto found=std::find_if(all.begin(),all.end(),[&](const auto* order){return order && order->id==q->id() && (q->workshop_id()==-2 || order->workshop_id==q->workshop_id());});
       if(found==all.end()){publish();return;}
       const auto observed=df3d_production::nativeWorkOrderRow(**found,int32_t(found-all.begin()));
       if(!observed || observed->revision!=q->expected_revision() || (!dependencies && size_t(q->condition_index())>=observed->itemConditions.size())){publish();return;}
@@ -2767,7 +2767,7 @@ void run(color_ostream& out) {
     }catch(...) {workOrders={};status=m::ManagementStatus::Rejected;}
     publish();return;
   }
-  if(r->action()==m::ManagementAction::WorkOrderCondition && r->work_order() && r->work_order()->workshop_id()>=0 &&
+  if(r->action()==m::ManagementAction::WorkOrderCondition && r->work_order() && (r->work_order()->workshop_id()==-2 || r->work_order()->workshop_id()>=0) &&
      r->work_order()->condition_kind()==1 && !r->work_order()->remove_condition()) {
     const auto* q=r->work_order();message.clear();status=m::ManagementStatus::Rejected;workOrders={};
     const bool extra=q->remaining()!=-1 || q->frequency()!=-1 || q->max_workshops()!=-1 || q->cursor() ||
@@ -2779,7 +2779,7 @@ void run(color_ostream& out) {
     try {
       auto* building=df::building::find(q->workshop_id());
       auto* tile=building?Maps::getTileDesignation(building->centerx,building->centery,building->z):nullptr;
-      if(!tile || tile->bits.hidden){publish();return;}
+      if(q->workshop_id()!=-2 && (!tile || tile->bits.hidden)){publish();return;}
       mutated=true;
       const auto result=df3d_production::setNativeWorkOrderDependency(q->workshop_id(),q->id(),q->expected_revision(),q->condition_index(),q->target_order(),q->dependency(),q->expected_list_revision());
       using O=df3d_production::WorkshopOrdersOutcome;
@@ -2789,7 +2789,7 @@ void run(color_ostream& out) {
     publish();return;
   }
   if(r->action()==m::ManagementAction::WorkOrderCondition && r->work_order() &&
-     r->work_order()->workshop_id()>=0 && (r->work_order()->remove_condition() ||
+     (r->work_order()->workshop_id()==-2 || r->work_order()->workshop_id()>=0) && (r->work_order()->remove_condition() ||
        (!r->work_order()->condition_kind() && r->work_order()->suggestion_index()<0))) {
     const auto* q=r->work_order();message.clear();status=m::ManagementStatus::Rejected;workOrders={};
     const bool extra=q->remaining()!=-1 || q->frequency()!=-1 || q->max_workshops()!=-1 ||
@@ -2803,7 +2803,7 @@ void run(color_ostream& out) {
     try {
       auto* building=df::building::find(q->workshop_id());
       auto* tile=building?Maps::getTileDesignation(building->centerx,building->centery,building->z):nullptr;
-      if(!tile || tile->bits.hidden){publish();return;}
+      if(q->workshop_id()!=-2 && (!tile || tile->bits.hidden)){publish();return;}
       mutated=true;
       const auto result=q->remove_condition()?
         df3d_production::removeNativeWorkOrderCondition(q->workshop_id(),q->id(),q->expected_revision(),q->condition_kind(),q->condition_index(),
@@ -2822,7 +2822,7 @@ void run(color_ostream& out) {
     try {
       auto* building=df::building::find(q->workshop_id());
       auto* tile=building?Maps::getTileDesignation(building->centerx,building->centery,building->z):nullptr;
-      if(!tile || tile->bits.hidden){publish();return;}
+      if(q->workshop_id()!=-2 && (!tile || tile->bits.hidden)){publish();return;}
       mutated=true;
       const auto result=df3d_production::addNativeWorkOrderItemCondition(q->workshop_id(),q->id(),q->expected_revision(),q->suggestion_index());
       using O=df3d_production::WorkshopOrdersOutcome;
@@ -2832,7 +2832,7 @@ void run(color_ostream& out) {
     publish();return;
   }
   // Conditions inspect is explicit: list refreshes do not rebuild suggestions.
-  if(r->work_order() && r->work_order()->workshop_id()>=0 && r->action()==m::ManagementAction::WorkOrderInspect) {
+  if(r->work_order() && (r->work_order()->workshop_id()==-2 || r->work_order()->workshop_id()>=0) && r->action()==m::ManagementAction::WorkOrderInspect) {
     const auto* q=r->work_order();message.clear();status=m::ManagementStatus::Rejected;workOrders={};
     const bool extra=q->id()<0 || q->remaining()!=-1 || q->frequency()!=-1 || q->max_workshops()!=-1 ||
       q->expected_revision() || q->cursor() || q->expected_list_revision() ||
@@ -2846,9 +2846,9 @@ void run(color_ostream& out) {
     try {
       auto* building=df::building::find(q->workshop_id());
       auto* tile=building?Maps::getTileDesignation(building->centerx,building->centery,building->z):nullptr;
-      if(!tile || tile->bits.hidden || !df3d_production::workshopOrdersProfile(building)){publish();return;}
+      if(!df3d_production::nativeWorkOrderScope(q->workshop_id()) || (q->workshop_id()!=-2 && (!tile || tile->bits.hidden))){publish();return;}
       const auto& all=df::global::world->manager_orders.all;
-      const auto found=std::find_if(all.begin(),all.end(),[&](const auto* order){return order && order->id==q->id() && order->workshop_id==q->workshop_id();});
+      const auto found=std::find_if(all.begin(),all.end(),[&](const auto* order){return order && order->id==q->id() && (q->workshop_id()==-2 || order->workshop_id==q->workshop_id());});
       if(found==all.end()){publish();return;}
       const auto observed=df3d_production::nativeWorkOrderRow(**found,int32_t(found-all.begin()));
       const auto suggestions=df3d_production::nativeWorkOrderSuggestions(**found);
@@ -2880,8 +2880,29 @@ void run(color_ostream& out) {
     }catch(...) {workOrders={};status=m::ManagementStatus::Rejected;}
     publish();return;
   }
-  // Workshop rows are native observations, independent of any open DF sheet.
-  if(r->work_order() && r->work_order()->workshop_id()>=0 && (r->action()==m::ManagementAction::WorkOrderList || r->action()==m::ManagementAction::WorkOrderUpdate || r->action()==m::ManagementAction::WorkOrderDelete)) {
+  // Global numeric/priority edits use native inline effects on simulation data.
+  if(r->action()==m::ManagementAction::WorkOrderUpdate && r->work_order() && r->work_order()->workshop_id()==-2) {
+    const auto* q=r->work_order();message.clear();status=m::ManagementStatus::Rejected;workOrders={};
+    const bool extra=q->id()<0 || !q->expected_revision() || q->cursor() ||
+      (q->recipe() && q->recipe()->size()) || (q->query() && q->query()->size()) ||
+      q->condition_kind() || q->condition_index()!=-1 || q->remove_condition() || q->compare()!=-1 ||
+      q->threshold()!=-1 || q->item_type()!=-1 || q->target_order()!=-1 || q->dependency()!=-1 ||
+      q->candidate_kind() || q->item_subtype()!=-1 || q->mat_type()!=-1 || q->mat_index()!=-1 ||
+      (q->traits() && q->traits()->size()) || q->input_index()!=-1 || q->group_type()!=-1 ||
+      q->group_subtype()!=-1 || q->group_custom()!=-1 || q->encrust_flags()!=-1;
+    if(extra){publish();return;}
+    try {
+      const auto result=df3d_production::setGlobalOrderFields(q->id(),q->expected_revision(),q->remaining(),q->max_workshops(),q->move(),q->expected_list_revision(),q->expected_neighbor(),q->frequency());
+      using O=df3d_production::WorkshopOrdersOutcome;
+      mutated=result.outcome==O::Applied || result.outcome==O::Unknown;
+      if(result.outcome==O::Applied && result.row) {
+        workOrders.orders.push_back(copyNativeWorkOrder(*result.row));status=m::ManagementStatus::Ok;
+      }
+    }catch(...) {status=m::ManagementStatus::Rejected;}
+    publish();return;
+  }
+  // Rows are native observations, independent of any open DF sheet.
+  if(r->work_order() && (r->work_order()->workshop_id()>=0 || (r->work_order()->workshop_id()==-2 && (r->action()==m::ManagementAction::WorkOrderList || r->action()==m::ManagementAction::WorkOrderDelete))) && (r->action()==m::ManagementAction::WorkOrderList || r->action()==m::ManagementAction::WorkOrderUpdate || r->action()==m::ManagementAction::WorkOrderDelete)) {
     const auto* q=r->work_order();message.clear();status=m::ManagementStatus::Rejected;workOrders={};
     const bool deleting=r->action()==m::ManagementAction::WorkOrderDelete;
     const bool editing=deleting || r->action()==m::ManagementAction::WorkOrderUpdate;
@@ -2898,13 +2919,17 @@ void run(color_ostream& out) {
       auto* building=df::building::find(q->workshop_id());
       auto* tile=building?Maps::getTileDesignation(building->centerx,building->centery,building->z):nullptr;
       if(editing) {
-        if(!tile || tile->bits.hidden){publish();return;}
+        if(q->workshop_id()!=-2 && (!tile || tile->bits.hidden)){publish();return;}
         mutated=true;
         if(deleting) {
           const auto result=df3d_production::removeWorkshopOrder(q->workshop_id(),q->id(),q->expected_revision(),
               workOrderHolding.data(),workOrderHoldingCount,workOrderHolding.size());
           using O=df3d_production::WorkshopOrdersOutcome;
           mutated=result.outcome==O::Applied || result.outcome==O::Unknown;
+          if(result.outcome==O::Applied && result.page) {
+            workOrders.listRevision=result.page->revision;workOrders.total=result.page->total;
+            status=m::ManagementStatus::Ok;
+          }
           if(result.outcome==O::Applied && result.profile) {
             workOrders.listRevision=result.profile->revision;workOrders.total=uint32_t(result.profile->orderIds.size());
             status=m::ManagementStatus::Ok;
@@ -2919,7 +2944,7 @@ void run(color_ostream& out) {
         }
         publish();return;
       }
-      const auto page=tile && !tile->bits.hidden?
+      const auto page=q->workshop_id()==-2?df3d_production::nativeGlobalOrderPage(q->cursor(),q->expected_list_revision()):tile && !tile->bits.hidden?
         df3d_production::nativeWorkshopOrderPage(building,q->cursor(),q->expected_list_revision()):std::nullopt;
       if(!page){publish();return;}
       workOrders.listRevision=page->revision;workOrders.total=page->total;workOrders.nextCursor=page->nextCursor;

@@ -1,0 +1,139 @@
+extends "res://scripts/location_staff_candidates_frame.gd"
+# Native global renderer392f00; protected global-work-orders-native capture.
+# Staged until creation, Details, workshop captions, hover and navigation pass.
+signal cancelled
+signal conditions_requested(id: int,workshop: int)
+signal details_requested(id: int)
+var state
+var input_allowed: Callable
+var colors: Array[Color]=[]
+var editing_id: int=-1
+var editing_limit:=false
+var draft:=""
+var blink:=false
+func configure_orders(source,model) -> void:
+	super.configure(source);state=model;colors=art.installed_palette(source.assets_root())
+	mouse_filter=Control.MOUSE_FILTER_STOP
+	scrollbar.row_changed.connect(func(value):finish_entry();state.seek(value,page_rows))
+	scrollbar.input_allowed=func():return state.phase==state.Phase.Ready and (not input_allowed.is_valid() or input_allowed.call())
+	state.changed.connect(func():
+		if state.phase in [state.Phase.Closed,state.Phase.Unavailable]:hide()
+		if state.phase not in [state.Phase.Ready,state.Phase.Applying]:finish_entry()
+		sync_scroll();queue_redraw())
+func open() -> void:
+	finish_entry();state.open();show();queue_redraw()
+func layout(view: Vector2) -> void:
+	frame_rows=maxi(13,floori(view.y/12)-7)
+	position=Vector2(32,48+fposmod(view.y,12)*0.5);size=Vector2(944,frame_rows*12)
+	page_rows=maxi(0,int((size.y-156)/36));sync_scroll();queue_redraw()
+func sync_scroll() -> void:
+	if scrollbar==null or state==null:return
+	scrollbar.position=Vector2(872,72);scrollbar.size=Vector2(16,page_rows*36);scrollbar.page=page_rows
+	scrollbar.set_rows(state.total,state.first)
+	if state.capacity!=page_rows or state.first!=scrollbar.first:state.seek(scrollbar.first,page_rows)
+func finish_entry() -> void:
+	editing_id=-1;draft="";queue_redraw()
+func _process(_delta: float) -> void:
+	if editing_id<0:return
+	var next:=Time.get_ticks_msec()%1000<500
+	if next!=blink:blink=next;queue_redraw()
+func _input(event: InputEvent) -> void:
+	if not is_visible_in_tree() or (input_allowed.is_valid() and not input_allowed.call()):return
+	if event is InputEventKey and event.pressed:
+		if event.keycode==KEY_ESCAPE:finish_entry();cancelled.emit();get_viewport().set_input_as_handled();return
+		if editing_id<0:return
+		if event.keycode in [KEY_ENTER,KEY_KP_ENTER]:finish_entry()
+		elif not event.ctrl_pressed and not event.alt_pressed and not event.meta_pressed:
+			var before:=draft
+			if event.keycode==KEY_BACKSPACE:draft=draft.left(maxi(0,draft.length()-1))
+			elif draft.length()<(3 if editing_limit else 4) and ((event.unicode>=48 and event.unicode<=57) or (event.unicode>=65 and event.unicode<=90)):draft+=String.chr(event.unicode)
+			if draft!=before:
+				var value:=0
+				for index in draft.length():
+					var digit:=draft.unicode_at(index)-48
+					if digit<0 or digit>9:break
+					value=value*10+digit
+				if editing_limit:state.set_limit(editing_id,value)
+				else:state.set_quantity(editing_id,value)
+				queue_redraw()
+		get_viewport().set_input_as_handled()
+	elif event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_RIGHT:
+		finish_entry();cancelled.emit();get_viewport().set_input_as_handled()
+func _gui_input(event: InputEvent) -> void:
+	if state==null or state.phase!=state.Phase.Ready or (input_allowed.is_valid() and not input_allowed.call()):return
+	if not event is InputEventMouseButton or not event.pressed:return
+	if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
+		finish_entry();state.seek(state.first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1),page_rows);accept_event();return
+	if event.button_index!=MOUSE_BUTTON_LEFT:return
+	for index in page_rows:
+		var row: Dictionary=state.rows.get(state.first+index,{})
+		if row.is_empty():continue
+		var y:=72+index*36
+		for x in [344,376,408,440,472,504,536,736,768,800,840]:
+			if not Rect2(x,y,32,36).has_point(event.position):continue
+			if x>=736 and x<=800 and row.workshop_id!=-1:return
+			finish_entry()
+			match x:
+				344,736:editing_id=row.id;editing_limit=x==736
+				376:state.set_quantity(row.id,row.remaining+1)
+				408:state.set_quantity(row.id,maxi(0,row.remaining-1))
+				440:state.move_order(row.id,-1)
+				472:state.move_order(row.id,1)
+				504:conditions_requested.emit(row.id,row.workshop_id)
+				536:
+					if row.native_state.details_available:details_requested.emit(row.id)
+				768:state.set_limit(row.id,mini(999,row.max_workshops+1))
+				800:state.set_limit(row.id,maxi(0,row.max_workshops-1))
+				840:state.remove_order(row.id)
+			queue_redraw();accept_event();return
+func text(value: String,point: Vector2,color: int=15) -> void:
+	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point,value,HORIZONTAL_ALIGNMENT_LEFT,-1,12,colors[color] if colors.size()>color else Color.WHITE)
+func icon(token: String,point: Vector2) -> void:
+	var texture: Texture2D=art.texture(token)
+	if texture!=null:draw_texture_rect(texture,Rect2(point,Vector2(32,36)),false)
+func tab(value: String,point: Vector2,selected:=false) -> float:
+	var width:=value.length()+4
+	var texture: Texture2D=art.texture("SHORT_TAB_SELECTED" if selected else "SHORT_TAB")
+	if texture!=null:
+		for y in 2:
+			for x in width:
+				var sx:=x if x<2 else x-width+5 if x>=width-2 else 2
+				draw_texture_rect_region(texture,Rect2(point+Vector2(x*8,y*12),Vector2(8,12)),Rect2(sx*8,y*12,8,12))
+	text(value,point+Vector2(16,16),0 if selected else 15)
+	return width*8
+func _draw() -> void:
+	if world==null:return
+	patch("HOVER_RECTANGLE",Vector2i.ZERO,118,frame_rows)
+	var x:=8.0
+	for value in ["Nobles and administrators","Objects","Justice"]:x+=tab(value,Vector2(x,12))
+	x=8.0
+	for value in ["Creatures","Tasks","Places","Labor","Work orders"]:x+=tab(value,Vector2(x,36),value=="Work orders")
+	if state==null:return
+	var phases: Array=["","WORK_ORDERS_ACTIVE","WORK_ORDERS_WAITING","WORK_ORDERS_CHECKING","WORK_ORDERS_READY"]
+	for index in page_rows:
+		var row: Dictionary=state.rows.get(state.first+index,{})
+		if row.is_empty():continue
+		var y:=72+index*36
+		patch("BUTTON_RECTANGLE_DARK",Vector2i(2,int(y/12)),107,3)
+		icon(phases[row.native_state.phase],Vector2(16,y))
+		var name: String=row.name
+		if name.length()>=29:name=name.left(25)+"..."
+		text(name,Vector2(64,y+24),11)
+		var quantity: String="∞/∞" if row.total==0 else str(row.remaining)+"/"+str(row.total)
+		if editing_id==row.id and not editing_limit:quantity=draft+("_" if blink else "")
+		text(quantity,Vector2(64,y+36),11)
+		if row.native_state.validation_required:icon("WORK_ORDERS_VALIDATED" if row.validated else "WORK_ORDERS_NOT_VALIDATED",Vector2(296,y))
+		for button in 3:icon(["WORK_ORDERS_ENTER_AMOUNT","WORK_ORDERS_INCREASE_AMOUNT","WORK_ORDERS_DECREASE_AMOUNT"][button],Vector2(344+button*32,y))
+		if row.position>0:icon("WORK_ORDERS_PRIORITY_UP",Vector2(440,y))
+		if row.position<state.total-1:icon("WORK_ORDERS_PRIORITY_DOWN",Vector2(472,y))
+		icon("WORK_ORDERS_CONDITIONS",Vector2(504,y))
+		if row.native_state.details_available:icon("WORK_ORDERS_DETAILS",Vector2(536,y))
+		if row.workshop_id==-1:
+			# Native393e31..393fcc, literals162b5d8..162b620.
+			var limit: String="Can use any shop" if row.max_workshops<=0 else str(row.max_workshops)+(" shop" if row.max_workshops==1 else " shops")+" max"
+			if editing_id==row.id and editing_limit:
+				limit=draft+("_" if blink else "")+" shop(s) max"
+				text("0 = Can use any shop",Vector2(576,y+36))
+			text(limit,Vector2(576,y+24))
+			for button in 3:icon(["WORK_ORDERS_ENTER_AMOUNT","WORK_ORDERS_INCREASE_AMOUNT","WORK_ORDERS_DECREASE_AMOUNT"][button],Vector2(736+button*32,y))
+		icon("WORK_ORDERS_REMOVE",Vector2(840,y))

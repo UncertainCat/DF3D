@@ -6964,11 +6964,32 @@ after capture and viewer mouse motion/wheel release. They are not acceptance.
 Suggestion overflow beyond four rows, drag/resize retirement and other native
 window geometries still require integrated acceptance.
 
-This screen remains staged. Full responsive layout, tooltip coverage,
-tab navigation and exact native back navigation are
-unfinished. Current close returns to the workshop; this is not native navigation
-acceptance. Fixed frame geometry and bounded displayed rows still need the full
-responsive/scrolling implementation before exposure.
+Conditions Back opens the staged global Work orders list. Both screens own
+request generations and retire them on close/session changes; refresh preserves
+the global panel and its scroll offset. Global scope uses the same native
+condition routines as workshop scope, with order identity/revision guards.
+
+The global reader follows DF's simulation priority vector (392fcb), with owned
+16-row pages and an aggregate128-condition transport bound. It preserves the
+global caption's artwork inputs (3932f0), unlike the workshop caption. Quantity,
+workshop limit, frequency and adjacent priority changes compose pinned native
+inline effects without resetting status or scheduling. Priority writes require
+both the list revision and expected neighbor. Removal shares native unlink and
+incoming-dependency cleanup with workshop removal; generated jobs remain intact.
+
+Protected223716 on2026-11-01 verifies the connected rendered workflow: workshop
+Conditions Back to global, paging to the created order, quantity12->13, moving it
+up one priority, reopening Conditions from global, Back, global removal and the
+refreshed empty workshop list. Owned DF46812 exits unsaved; source preservation
+passes and all five Godot groups have only known diagnostics. Core/composition
+and extension build pass in `build/qa/global-orders-navigation`. This evidence
+does not establish all global-scope filter writes or workshop-limit editing.
+
+These screens remain staged. Global creation, Details, assigned-workshop labels,
+manager footer, full responsive layout, tooltip coverage and tab navigation are
+unfinished. Quantity drafts currently support four digits; native increment
+behavior beyond that range remains unfinished. Fixed frame geometry still needs
+responsive acceptance before exposure.
 
 Protected194413 on2026-11-01 matches both Extract-from-plants suggestions against
 native pointer elements on every captured condition field, including all five
@@ -6987,8 +7008,9 @@ with Specify glass and Specify plant. Captures were inspected. Initial193708
 assumed Conditions returned directly to the workshop and missed Details; it is
 not acceptance. Owned DF37772 exits unsaved, source preservation passes, all five
 Godot groups have known diagnostics only, and core19/19/composition pass in
-`build/qa/workshop-order-suggestions`. Frequency writes, condition edits, rendered
-Conditions and Details controls remain unfinished.
+`build/qa/workshop-order-suggestions`. Details controls remain unfinished; the
+subsequent condition/frequency and global-navigation evidence above covers those
+implemented workflows.
 
 Protected183314 on2026-11-01 compares all2658 global rows and the37 Carpenter/4
 Still rows with the actual native picker: job/reaction/item/material fields,

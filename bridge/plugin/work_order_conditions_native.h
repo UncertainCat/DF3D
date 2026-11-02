@@ -180,9 +180,9 @@ inline uint64_t nativeWorkOrderFilterRevision(const std::vector<WorkOrderFilterC
 }
 inline NativeWorkOrderEdit selectNativeWorkOrderFilter(int32_t buildingId,int32_t id,uint64_t revision,int16_t conditionIndex,int kind,int32_t choice,uint64_t catalogRevision) {
     NativeWorkOrderEdit result;
-    if(conditionIndex<0 || choice<0 || kind<0 || kind>2 || !workOrderSuggestionsSupported() || !workshopOrdersProfile(df::building::find(buildingId)))return result;
+    if(conditionIndex<0 || choice<0 || kind<0 || kind>2 || !workOrderSuggestionsSupported() || !nativeWorkOrderScope(buildingId))return result;
     const auto& all=df::global::world->manager_orders.all;
-    const auto found=std::find_if(all.begin(),all.end(),[&](const auto* row){return row && row->id==id && row->workshop_id==buildingId;});
+    const auto found=std::find_if(all.begin(),all.end(),[&](const auto* row){return row && row->id==id && (buildingId==-2 || row->workshop_id==buildingId);});
     if(found==all.end())return result;
     auto& order=**found;const int32_t position=int32_t(found-all.begin());
     const auto before=nativeWorkOrderRow(order,position);if(!before)return result;
@@ -338,9 +338,9 @@ inline bool nativeSuggestionAvailable(const df::manager_order& order,const df::m
 }
 inline NativeWorkOrderEdit addNativeWorkOrderItemCondition(int32_t buildingId,int32_t id,uint64_t revision,int16_t index=-1) {
     NativeWorkOrderEdit result;
-    if(index<-1 || !workOrderSuggestionsSupported() || !workshopOrdersProfile(df::building::find(buildingId)))return result;
+    if(index<-1 || !workOrderSuggestionsSupported() || !nativeWorkOrderScope(buildingId))return result;
     const auto& all=df::global::world->manager_orders.all;
-    const auto found=std::find_if(all.begin(),all.end(),[&](const auto* row){return row && row->id==id && row->workshop_id==buildingId;});
+    const auto found=std::find_if(all.begin(),all.end(),[&](const auto* row){return row && row->id==id && (buildingId==-2 || row->workshop_id==buildingId);});
     if(found==all.end())return result;
     auto& order=**found;const int32_t position=int32_t(found-all.begin());
     const auto before=nativeWorkOrderRow(order,position);if(!before)return result;
@@ -411,9 +411,9 @@ inline std::optional<NativeDependencyChoices> nativeWorkOrderDependencies(const 
 }
 inline NativeWorkOrderEdit setNativeWorkOrderDependency(int32_t buildingId,int32_t id,uint64_t revision,int16_t index,int32_t target,int8_t dependency,uint64_t listRevision) {
     NativeWorkOrderEdit result;
-    if(index<-1 || target<0 || target==id || dependency<0 || dependency>1 || !workOrderSuggestionsSupported() || !workshopOrdersProfile(df::building::find(buildingId)))return result;
+    if(index<-1 || target<0 || target==id || dependency<0 || dependency>1 || !workOrderSuggestionsSupported() || !nativeWorkOrderScope(buildingId))return result;
     const auto& all=df::global::world->manager_orders.all;
-    const auto found=std::find_if(all.begin(),all.end(),[&](const auto* row){return row && row->id==id && row->workshop_id==buildingId;});
+    const auto found=std::find_if(all.begin(),all.end(),[&](const auto* row){return row && row->id==id && (buildingId==-2 || row->workshop_id==buildingId);});
     if(found==all.end())return result;
     auto& order=**found;const int32_t position=int32_t(found-all.begin());
     const auto before=nativeWorkOrderRow(order,position);if(!before)return result;
@@ -451,9 +451,9 @@ inline NativeWorkOrderEdit setNativeWorkOrderDependency(int32_t buildingId,int32
 }
 inline NativeWorkOrderEdit setNativeWorkOrderConditionAmount(int32_t buildingId,int32_t id,uint64_t revision,int16_t index,int8_t comparison,int32_t threshold) {
     NativeWorkOrderEdit result;
-    if(index<0 || comparison<0 || comparison>5 || threshold<0 || !workOrderSuggestionsSupported() || !workshopOrdersProfile(df::building::find(buildingId)))return result;
+    if(index<0 || comparison<0 || comparison>5 || threshold<0 || !workOrderSuggestionsSupported() || !nativeWorkOrderScope(buildingId))return result;
     const auto& all=df::global::world->manager_orders.all;
-    const auto found=std::find_if(all.begin(),all.end(),[&](const auto* row){return row && row->id==id && row->workshop_id==buildingId;});
+    const auto found=std::find_if(all.begin(),all.end(),[&](const auto* row){return row && row->id==id && (buildingId==-2 || row->workshop_id==buildingId);});
     if(found==all.end())return result;
     auto& order=**found;const int32_t position=int32_t(found-all.begin());
     const auto before=nativeWorkOrderRow(order,position);if(!before)return result;
@@ -475,9 +475,9 @@ inline NativeWorkOrderEdit setNativeWorkOrderConditionAmount(int32_t buildingId,
 inline NativeWorkOrderEdit removeNativeWorkOrderCondition(int32_t buildingId,int32_t id,uint64_t revision,uint8_t kind,int16_t index,
     void** holding,size_t& held,size_t capacity) {
     NativeWorkOrderEdit result;
-    if(index<0 || kind>1 || held>=capacity || !workOrderSuggestionsSupported() || !workshopOrdersProfile(df::building::find(buildingId)))return result;
+    if(index<0 || kind>1 || held>=capacity || !workOrderSuggestionsSupported() || !nativeWorkOrderScope(buildingId))return result;
     const auto& all=df::global::world->manager_orders.all;
-    const auto found=std::find_if(all.begin(),all.end(),[&](const auto* row){return row && row->id==id && row->workshop_id==buildingId;});
+    const auto found=std::find_if(all.begin(),all.end(),[&](const auto* row){return row && row->id==id && (buildingId==-2 || row->workshop_id==buildingId);});
     if(found==all.end())return result;
     auto& order=**found;const int32_t position=int32_t(found-all.begin());
     const auto before=nativeWorkOrderRow(order,position);if(!before)return result;

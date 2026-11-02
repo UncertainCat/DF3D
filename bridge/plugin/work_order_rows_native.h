@@ -37,6 +37,13 @@ inline bool workOrderRowsSupported() {
             {0x8bb2b0,0x2b,UINT64_C(0xea4ef7a5efaa728d)}, // quantity effect
             {0x8bb257,0x17,UINT64_C(0x07b3cf4277462958)}, // four-character input
             {0x3c4e27,0x24,UINT64_C(0x908b3fe9767059e1)}, // frequency effect
+            {0x3932f0,0xaa,UINT64_C(0x488bb44c4f121aed)}, // global caption inputs, including art
+            {0x39349d,0x628,UINT64_C(0x9c80a6c288418e61)}, // global phase branches
+            {0x392fcb,0x30,UINT64_C(0xd523110d3d117e40)}, // global simulation list
+            {0x3c5fae,0x31,UINT64_C(0x47edd132aec68aa8)}, // workshop limit
+            {0x3c601f,0x33,UINT64_C(0xaf2b866bf2de5927)}, // global quantity
+            {0x3c605e,0x9d,UINT64_C(0xa2b0d60e558c1329)}, // priority up
+            {0x3c611f,0xa2,UINT64_C(0x9da1ef82bea13f58)}, // priority down
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -47,10 +54,16 @@ inline bool workOrderRowsSupported() {
     }();return ready;
 }
 
-// Safe-point observation. Native keeps phase selection inline in its renderer;
-// compose those semantic branches from simulation records, not menu row caches.
+// -2 is the global simulation list; nonnegative scopes require a live workshop.
+inline bool nativeWorkOrderScope(int32_t buildingId) {
+    return buildingId==-2 ? workOrderRowsSupported() && df::global::world && df::global::plotinfo :
+        buildingId>=0 && bool(workshopOrdersProfile(df::building::find(buildingId)));
+}
+
+// Native keeps phase selection inline in its renderer; compose those semantic
+// branches from simulation records, not menu row caches.
 // d15cf0 initializes the order's own requirements, as native row observation does.
-inline std::optional<NativeWorkOrderRow> nativeWorkOrderRow(df::manager_order& order,int32_t position) {
+inline std::optional<NativeWorkOrderRow> nativeWorkOrderRow(df::manager_order& order,int32_t position,bool global=false) {
     if(!workOrderRowsSupported() || !df::global::world || !df::global::plotinfo ||
        !df::global::cur_year || !df::global::cur_year_tick || order.id<0 ||
        order.reaction_name.size()>128 || order.item_conditions.size()+order.order_conditions.size()>64)return std::nullopt;
@@ -82,6 +95,11 @@ inline std::optional<NativeWorkOrderRow> nativeWorkOrderRow(df::manager_order& o
     captionInput.specflag=order.specflag;captionInput.specdata=order.specdata;captionInput.material_category=order.material_category;
     // Native188772 uses a blank template and does not copy the order's art fields.
     captionInput.art_spec.type=df::job_art_specifier_type(-1);captionInput.art_spec.id=-1;captionInput.art_spec.subid=-1;
+    // Global39337a copies the order's art fields, unlike the workshop sheet.
+    if(global) {
+        captionInput.art_spec.type=order.art_spec.type;
+        captionInput.art_spec.id=order.art_spec.id;captionInput.art_spec.subid=order.art_spec.subid;
+    }
     const auto caption=workshopJobCaption(captionInput);if(!caption || caption->size()>512)return std::nullopt;
     row.caption=*caption;
     uint64_t hash=UINT64_C(14695981039346656037);
@@ -107,6 +125,31 @@ inline std::optional<NativeWorkOrderRow> nativeWorkOrderRow(df::manager_order& o
     }
     row.revision=(hash&INT64_MAX)?(hash&INT64_MAX):1;
     return row;
+}
+
+// Global392fcb reads the simulation vector directly, in priority order.
+// Hash identities, not menu scroll/search storage; row edits retain their own revisions.
+inline std::optional<NativeWorkOrderPage> nativeGlobalOrderPage(uint32_t cursor,uint64_t revision) {
+    if(!workOrderRowsSupported() || !df::global::world)return std::nullopt;
+    const auto& all=df::global::world->manager_orders.all;
+    if(all.size()>16384 || cursor>all.size() || (cursor && !revision))return std::nullopt;
+    uint64_t hash=UINT64_C(14695981039346656037);
+    for(const auto* order:all) {
+        if(!order || order->id<0)return std::nullopt;
+        for(unsigned shift=0;shift<32;shift+=8){hash^=(uint32_t(order->id)>>shift)&255;hash*=UINT64_C(1099511628211);}
+    }
+    NativeWorkOrderPage page;page.revision=(hash&INT64_MAX)?(hash&INT64_MAX):1;
+    if(revision && revision!=page.revision)return std::nullopt;
+    page.total=uint32_t(all.size());size_t conditions=0;
+    for(size_t index=cursor;index<all.size() && page.rows.size()<16;++index) {
+        auto row=nativeWorkOrderRow(*all[index],int32_t(index),true);if(!row)return std::nullopt;
+        const size_t count=row->itemConditions.size()+row->orderConditions.size();
+        if(conditions+count>128)break;
+        conditions+=count;page.rows.push_back(std::move(*row));
+    }
+    if(page.rows.empty() && cursor<page.total)return std::nullopt;
+    const auto next=cursor+uint32_t(page.rows.size());page.nextCursor=next<page.total?next:0;
+    return page;
 }
 
 inline std::optional<NativeWorkOrderPage> nativeWorkshopOrderPage(df::building* building,uint32_t cursor,uint64_t revision) {
@@ -137,6 +180,40 @@ struct NativeWorkOrderEdit {
     WorkshopOrdersOutcome outcome=WorkshopOrdersOutcome::Rejected;
     std::optional<NativeWorkOrderRow> row;
 };
+inline NativeWorkOrderEdit setGlobalOrderFields(int32_t id,uint64_t revision,int32_t quantity,
+    int32_t maxWorkshops,int32_t move,uint64_t listRevision,int32_t neighbor,int32_t frequency) {
+    NativeWorkOrderEdit result;
+    if(!workOrderRowsSupported() || !df::global::world ||
+       int(quantity>=0)+int(maxWorkshops>=0)+int(move!=0)+int(frequency>=0)!=1 || frequency < -1 || frequency>4 ||
+       quantity < -1 || quantity>9999 || maxWorkshops < -1 || maxWorkshops>999 ||
+       move < -1 || move>1 || (!move && (listRevision || neighbor!=-1)))return result;
+    auto& all=df::global::world->manager_orders.all;
+    const auto it=std::find_if(all.begin(),all.end(),[&](const auto* order){return order && order->id==id;});
+    if(it==all.end())return result;
+    auto* order=*it;int32_t position=int32_t(it-all.begin());
+    const auto before=nativeWorkOrderRow(*order,position,true);if(!before)return result;
+    if(!revision || revision!=before->revision){result.outcome=WorkshopOrdersOutcome::Stale;return result;}
+    if(maxWorkshops>=0 && order->workshop_id!=-1)return result;
+    if(move) {
+        const auto page=nativeGlobalOrderPage(0,listRevision);
+        const int32_t target=position+move;
+        if(!listRevision || !page || target<0 || size_t(target)>=all.size() || !all[target] || all[target]->id!=neighbor) {
+            result.outcome=WorkshopOrdersOutcome::Stale;return result;
+        }
+        // Native removes/reinserts the adjacent entry. A swap has the same
+        // simulation effect without touching menu scrolling or reallocating.
+        std::swap(all[position],all[target]);position=target;
+    } else if(quantity>=0) {
+        order->amount_left=int16_t(quantity);order->amount_total=int16_t(quantity);
+    } else if(frequency>=0)order->frequency=df::workquota_frequency_type(frequency);
+    else order->max_workshops=maxWorkshops;
+    result.outcome=WorkshopOrdersOutcome::Unknown;
+    try {
+        auto after=nativeWorkOrderRow(*order,position,true);
+        if(after){result.row=std::move(after);result.outcome=WorkshopOrdersOutcome::Applied;}
+    }catch(...) {}
+    return result;
+}
 inline NativeWorkOrderEdit setWorkshopOrderFields(int32_t buildingId,int32_t id,uint64_t revision,int32_t quantity,int32_t frequency) {
     NativeWorkOrderEdit result;
     const bool frequencyEdit=frequency>=0;
@@ -167,13 +244,18 @@ inline NativeWorkOrderEdit setWorkshopOrderFields(int32_t buildingId,int32_t id,
     return result;
 }
 
-inline WorkshopOrdersResult removeWorkshopOrder(int32_t buildingId,int32_t id,uint64_t revision,
+struct NativeWorkOrderRemoval {
+    WorkshopOrdersOutcome outcome=WorkshopOrdersOutcome::Rejected;
+    std::optional<WorkshopOrdersProfile> profile;
+    std::optional<NativeWorkOrderPage> page;
+};
+inline NativeWorkOrderRemoval removeWorkshopOrder(int32_t buildingId,int32_t id,uint64_t revision,
     void** holding,size_t& held,size_t capacity) {
-    WorkshopOrdersResult result;
-    if(!workshopOrdersProfile(df::building::find(buildingId)))return result;
+    NativeWorkOrderRemoval result;
+    if(!nativeWorkOrderScope(buildingId))return result;
     auto& all=df::global::world->manager_orders.all;
     const auto it=std::find_if(all.begin(),all.end(),[&](const auto* value){return value && value->id==id;});
-    if(it==all.end() || (*it)->workshop_id!=buildingId)return result;
+    if(it==all.end() || (buildingId!=-2 && (*it)->workshop_id!=buildingId))return result;
     auto* order=*it;
     const auto before=nativeWorkOrderRow(*order,int32_t(it-all.begin()));if(!before)return result;
     if(!revision || revision!=before->revision){result.outcome=WorkshopOrdersOutcome::Stale;return result;}
@@ -201,6 +283,11 @@ inline WorkshopOrdersResult removeWorkshopOrder(int32_t buildingId,int32_t id,ui
     holding[held++]=order;
     result.outcome=WorkshopOrdersOutcome::Unknown;
     try {
+        if(buildingId==-2) {
+            result.page=nativeGlobalOrderPage(0,0);
+            if(result.page)result.outcome=WorkshopOrdersOutcome::Applied;
+            return result;
+        }
         auto after=workshopOrdersProfile(df::building::find(buildingId));
         if(after && std::find(after->orderIds.begin(),after->orderIds.end(),id)==after->orderIds.end()) {
             result.profile=std::move(after);result.outcome=WorkshopOrdersOutcome::Applied;

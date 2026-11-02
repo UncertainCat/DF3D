@@ -535,7 +535,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     const auto* w=r.work_order();
     if(w && (w->filter_choice() < -1 || w->filter_choice()>32767))return "invalid native filter choice";
     if(w && w->filter_choice()>=0 &&
-       (r.action()!=ManagementAction::WorkOrderCondition || w->id()<0 || w->workshop_id()<0 || !w->expected_revision() || !w->expected_list_revision() ||
+       (r.action()!=ManagementAction::WorkOrderCondition || w->id()<0 || (w->workshop_id()<0 && w->workshop_id()!=-2) || !w->expected_revision() || !w->expected_list_revision() ||
         w->candidate_kind()<3 || w->candidate_kind()>5 || w->condition_kind() || w->condition_index()<0 ||
         w->suggestion_index()!=-1 || w->remove_condition() || w->remaining()!=-1 || w->frequency()!=-1 || w->max_workshops()!=-1 ||
         (w->recipe() && w->recipe()->size()) || (w->query() && w->query()->size()) || w->cursor() ||
@@ -545,7 +545,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
       return "native filter choice must be an exclusive condition edit";
     if(w && (w->suggestion_index() < -1 || w->suggestion_index()>127))return "invalid native suggestion index";
     if(w && w->suggestion_index()>=0 &&
-       (r.action()!=ManagementAction::WorkOrderCondition || w->id()<0 || w->workshop_id()<0 || !w->expected_revision() ||
+       (r.action()!=ManagementAction::WorkOrderCondition || w->id()<0 || (w->workshop_id()<0 && w->workshop_id()!=-2) || !w->expected_revision() ||
         w->remaining()!=-1 || w->frequency()!=-1 || w->max_workshops()!=-1 ||
         (w->recipe() && w->recipe()->size()) || (w->query() && w->query()->size()) ||
         w->cursor() || w->expected_list_revision() || w->condition_kind() || w->condition_index()!=-1 || w->remove_condition() ||

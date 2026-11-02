@@ -41,7 +41,7 @@ func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
 func open(building: int,order: int) -> void:
 	close()
-	if building<0 or order<0:return
+	if (building<0 and building!=-2) or order<0:return
 	building_id=building;order_id=order;_read()
 func _read() -> void:
 	phase=Phase.Reading
@@ -148,7 +148,7 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 		_fail(Phase.Unknown if writing else Phase.Rejected);return
 	var rows: Array=result.get("work_order",{}).get("orders",[])
 	var dependency_read: bool=sent.action==C.ManagementAction.WorkOrderCandidates and sent.get("condition_kind",0)==1
-	if rows.is_empty() or (not dependency_read and rows.size()!=1) or rows[0].get("id",-1)!=order_id or rows[0].get("workshop_id",-1)!=building_id or rows[0].get("revision",0)<=0:
+	if rows.is_empty() or (not dependency_read and rows.size()!=1) or rows[0].get("id",-1)!=order_id or (building_id!=-2 and rows[0].get("workshop_id",-1)!=building_id) or rows[0].get("revision",0)<=0:
 		_fail(Phase.Unknown if writing else Phase.Rejected);return
 	if writing:
 		if sent.action==C.ManagementAction.WorkOrderUpdate:

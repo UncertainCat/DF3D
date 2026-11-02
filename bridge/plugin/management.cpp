@@ -197,12 +197,14 @@ struct WorkOrderItemType { int16_t itemType=-1,itemSubtype=-1; std::string name;
 struct WorkOrderGroup { int16_t type=-1,subtype=-1; int32_t custom=-1; std::string name; uint32_t count=0; };
 struct WorkOrderTask { std::string key,name; int16_t jobType=-1; std::string reaction; int16_t itemType=-1,itemSubtype=-1,matType=-1; int32_t matIndex=-1; };
 struct BridgeWorkOrderCondition : WorkOrderCondition {
+  std::optional<std::string> itemCaption;
   int16_t itemSubtype=-1,matType=-1; int32_t matIndex=-1;
   std::vector<std::string> traits; uint8_t satisfaction=0; bool estimated=false; int32_t estimateCount=-1;
 };
 struct BridgeWorkOrderInfo : WorkOrderInfo {
   struct NativeState {m::WorkOrderPhase phase=m::WorkOrderPhase::Unknown;bool validationRequired=false,detailsAvailable=false;};
   std::optional<NativeState> nativeState;
+  std::optional<std::vector<BridgeWorkOrderCondition>> suggestedConditions;
   int32_t position=-1; uint8_t detailKind=0; int32_t sizeRaw=-1,encrustFlags=0;
   int16_t matType=-1; int32_t matIndex=-1; uint32_t materialCategory=0;
   std::vector<WorkOrderInput> inputs;
@@ -767,12 +769,15 @@ void publish() {
   std::vector<flatbuffers::Offset<m::WorkOrderInfo>> wo;
   for(const auto& o:workOrders.orders){
     std::vector<flatbuffers::Offset<m::WorkOrderCondition>> cs;
-    for(const auto& c:o.conditions)cs.push_back(m::CreateWorkOrderCondition(b,c.kind,c.index,b.CreateString(c.description),c.editable,c.compare,c.threshold,c.itemType,c.targetOrder,c.dependency,c.satisfied,c.itemSubtype,c.matType,c.matIndex,b.CreateVectorOfStrings(c.traits),c.satisfaction,c.estimated,c.estimateCount));
+    const auto condition=[&](const auto& c){return m::CreateWorkOrderCondition(b,c.kind,c.index,b.CreateString(c.description),c.editable,c.compare,c.threshold,c.itemType,c.targetOrder,c.dependency,c.satisfied,c.itemSubtype,c.matType,c.matIndex,b.CreateVectorOfStrings(c.traits),c.satisfaction,c.estimated,c.estimateCount,c.itemCaption?b.CreateString(*c.itemCaption):0);};
+    for(const auto& c:o.conditions)cs.push_back(condition(c));
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<m::WorkOrderCondition>>> suggestions;
+    if(o.suggestedConditions){std::vector<flatbuffers::Offset<m::WorkOrderCondition>> values;for(const auto& c:*o.suggestedConditions)values.push_back(condition(c));suggestions=b.CreateVector(values);}
     std::vector<flatbuffers::Offset<m::WorkOrderInput>> wi;
     for(const auto& v:o.inputs)wi.push_back(m::CreateWorkOrderInput(b,v.index,b.CreateString(v.description),v.matType,v.matIndex,v.editable));
     flatbuffers::Offset<m::WorkOrderNativeState> native;
     if(o.nativeState)native=m::CreateWorkOrderNativeState(b,o.nativeState->phase,o.nativeState->validationRequired,o.nativeState->detailsAvailable);
-    wo.push_back(m::CreateWorkOrderInfo(b,o.id,o.revision,b.CreateString(o.name),o.total,o.remaining,o.frequency,o.validated,o.active,o.finishedYear,o.finishedTick,o.workshopId,o.maxWorkshops,b.CreateVector(o.generatedJobs),b.CreateVector(cs),o.editable,b.CreateString(o.reason),o.position,o.detailKind,o.sizeRaw,o.encrustFlags,o.matType,o.matIndex,o.materialCategory,b.CreateVector(wi),native));
+    wo.push_back(m::CreateWorkOrderInfo(b,o.id,o.revision,b.CreateString(o.name),o.total,o.remaining,o.frequency,o.validated,o.active,o.finishedYear,o.finishedTick,o.workshopId,o.maxWorkshops,b.CreateVector(o.generatedJobs),b.CreateVector(cs),o.editable,b.CreateString(o.reason),o.position,o.detailKind,o.sizeRaw,o.encrustFlags,o.matType,o.matIndex,o.materialCategory,b.CreateVector(wi),native,suggestions));
   }
   std::vector<flatbuffers::Offset<m::ProductionRecipe>> wr;for(const auto& r:workOrders.recipes)wr.push_back(m::CreateProductionRecipe(b,b.CreateString(r.key),b.CreateString(r.name)));
   std::vector<flatbuffers::Offset<m::AreaChoice>> wc;for(const auto& c:workOrders.choices)wc.push_back(m::CreateAreaChoice(b,c.id,b.CreateString(c.name)));

@@ -491,6 +491,7 @@ struct WorkOrderCondition {
   int32_t threshold=-1,targetOrder=-1;
   int16_t itemSubtype=-1,matType=-1; int32_t matIndex=-1;
   std::vector<std::string> traits; uint8_t satisfaction=0; bool estimated=false; int32_t estimateCount=-1;
+  std::optional<std::string> itemCaption;
 };
 struct WorkOrderInput { uint16_t index=0; std::string description; int16_t matType=-1; int32_t matIndex=-1; bool editable=false; };
 struct WorkOrderMaterial { int16_t matType=-1; int32_t matIndex=-1; std::string name; };
@@ -504,6 +505,7 @@ struct WorkOrderNativeState {
 };
 struct WorkOrderInfo {
   std::optional<WorkOrderNativeState> nativeState;
+  std::optional<std::vector<WorkOrderCondition>> suggestedConditions;
   int32_t id=-1,finishedYear=-1,finishedTick=-1,workshopId=-1,maxWorkshops=0;
   uint64_t revision=0;
   std::string name,reason;

@@ -22,6 +22,11 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management120 adds optional native condition item captions and suggested-condition
+observations. Rebuild/install both peers on `Local\\df3d_management_v120`.
+Absence in older recordings remains unknown, distinct from an observed empty list.
+Other channels are unchanged.
+
 Management119 adds optional native work-order phase, validation requirement and
 Details availability observations. Rebuild/install both peers on
 `Local\\df3d_management_v119`. Legacy rows lack this observation; do not infer it

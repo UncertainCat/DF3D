@@ -175,15 +175,20 @@ WorkOrderState decodeWorkOrder(const m::WorkOrderState* w) {
       if(v->inputs())for(const auto* i:*v->inputs())o.inputs.push_back({i->index(),str(i->description()),i->mat_type(),i->mat_index(),i->editable()});
       if (v->generated_jobs())
         o.generatedJobs.assign(v->generated_jobs()->begin(), v->generated_jobs()->end());
-      if (v->conditions())
-        for (const auto* c : *v->conditions()) {
-          o.conditions.emplace_back();
-          auto& row=o.conditions.back();row.kind=c->kind();row.index=c->index();row.description=str(c->description());
+      const auto decodeConditions=[&](const auto* values,auto& destination) {
+        if(!values)return;
+        for (const auto* c : *values) {
+          destination.emplace_back();
+          auto& row=destination.back();row.kind=c->kind();row.index=c->index();row.description=str(c->description());
           row.editable=c->editable();row.satisfied=c->satisfied();row.compare=c->compare();row.dependency=c->dependency();
           row.itemType=c->item_type();row.threshold=c->threshold();row.targetOrder=c->target_order();row.itemSubtype=c->item_subtype();row.matType=c->mat_type();row.matIndex=c->mat_index();
           row.satisfaction=c->satisfaction();row.estimated=c->estimated();row.estimateCount=c->estimate_count();
+          if(c->item_caption())row.itemCaption=str(c->item_caption());
           if(c->traits())for(const auto* t:*c->traits())row.traits.push_back(str(t));
         }
+      };
+      decodeConditions(v->conditions(),o.conditions);
+      if(v->suggested_conditions()){o.suggestedConditions.emplace();decodeConditions(v->suggested_conditions(),*o.suggestedConditions);}
       n.orders.push_back(std::move(o));
     }
   if (w->recipes())

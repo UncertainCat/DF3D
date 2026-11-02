@@ -250,7 +250,9 @@ void writeWorkOrder(Dictionary& result, const wm::WorkOrderState& s) {
     Array ids, cs;
     for (auto id : o.generatedJobs)
       ids.push_back(id);
-    for (const auto& c : o.conditions) {
+    const auto encodeConditions=[&](const auto& values) {
+    Array converted;
+    for (const auto& c : values) {
       Dictionary v;
       v["kind"] = c.kind;
       v["index"] = c.index;
@@ -265,8 +267,13 @@ void writeWorkOrder(Dictionary& result, const wm::WorkOrderState& s) {
       v["item_subtype"]=c.itemSubtype;v["mat_type"]=c.matType;v["mat_index"]=c.matIndex;
       v["satisfaction"]=c.satisfaction;v["estimated"]=c.estimated;v["estimate_count"]=c.estimateCount;
       Array traits;for(const auto& t:c.traits)traits.push_back(String::utf8(t.c_str()));v["traits"]=traits;
-      cs.push_back(v);
+      if(c.itemCaption)v["item_caption"]=String::utf8(c.itemCaption->c_str());
+      converted.push_back(v);
     }
+    return converted;
+    };
+    cs=encodeConditions(o.conditions);
+    if(o.suggestedConditions)row["suggested_conditions"]=encodeConditions(*o.suggestedConditions);
     row["generated_jobs"] = ids;
     row["conditions"] = cs;
     orders.push_back(row);

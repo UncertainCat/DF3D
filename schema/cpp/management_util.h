@@ -30,8 +30,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 119;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v119";
+inline constexpr uint32_t kManagementVersion = 120;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v120";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -1803,11 +1803,15 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         ++inputCount;
       }
       std::set<int32_t> jobs; if(o->generated_jobs()) for(auto id:*o->generated_jobs()) {if(id<0 || !jobs.insert(id).second)return "invalid generated job";++jobCount;}
+      for(bool suggested:{false,true}) {
+      const auto* group=suggested?o->suggested_conditions():o->conditions();
+      if(!group)continue;
+      if(suggested && group->size()>128)return "too many suggested conditions";
       std::set<uint32_t> conditions;
-      if(o->conditions()) for(const auto* c:*o->conditions()) {
+      for(const auto* c:*group) {
         if(!c || c->estimate_count() < -1 || c->item_subtype() < -1 || c->mat_type() < -1 || c->mat_index() < -1 ||
-           c->satisfaction()>2 || c->kind()>1 || c->index()>63 || !conditions.insert(uint32_t(c->kind())*64+c->index()).second ||
-           !textOk(c->description(),1024) || c->compare() < -1 || c->compare()>5 || c->threshold() < -1 || c->item_type() < -1 ||
+           c->satisfaction()>2 || c->kind()>1 || c->index()>(suggested?127:63) || !conditions.insert(uint32_t(c->kind())*128+c->index()).second ||
+           !textOk(c->description(),1024) || !textOk(c->item_caption(),1024) || (suggested && (c->kind()!=0 || !c->item_caption() || c->compare()<0 || c->threshold()<0)) || c->compare() < -1 || c->compare()>5 || c->threshold() < -1 || c->item_type() < -1 ||
            c->target_order() < -1 || c->dependency() < -1 || c->dependency()>1) return "invalid work order condition";
         if(c->editable() && ((c->kind()==0 && (c->compare()<0 || c->threshold()<0)) ||
           (c->kind()==1 && (c->target_order()<0 || c->dependency()<0 || c->target_order()==o->id())))) return "invalid editable condition";
@@ -1817,6 +1821,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
           for(const auto* t:*c->traits())if(!t || !textOk(t,64))return "invalid condition trait";
         }
         ++conditionCount;
+      }
       }
     }
     if(conditionCount>128 || jobCount>2048 || traitCount>2048 || inputCount>128)return "work order aggregate limit exceeded";

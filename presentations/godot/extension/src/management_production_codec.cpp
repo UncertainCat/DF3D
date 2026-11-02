@@ -285,6 +285,7 @@ void writeWorkOrder(Dictionary& result, const wm::WorkOrderState& s) {
     details["id"]=d.id;details["revision"]=int64_t(d.revision);details["caption"]=String::utf8(d.caption.c_str());
     details["selected_option"]=d.selectedOption;details["choices_revision"]=int64_t(d.choicesRevision);
     details["total"]=int64_t(d.total);details["next_cursor"]=int64_t(d.nextCursor);
+    if(d.currentValue)details["current_value"]=String::utf8(d.currentValue->c_str());
     if(d.art) {
       const auto& a=*d.art;Dictionary art;art["page"]=a.page;art["caption"]=String::utf8(a.caption.c_str());
       art["list_revision"]=int64_t(a.listRevision);art["total"]=int64_t(a.total);art["next_cursor"]=int64_t(a.nextCursor);

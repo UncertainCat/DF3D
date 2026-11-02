@@ -22,6 +22,10 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management129 adds optional native current-setting text to Work order Details.
+Rebuild/install both peers on `Local\\df3d_management_v129`. Earlier recordings
+leave the current setting unobserved; do not infer it from labels or choices.
+
 Management128 adds artwork name queries, component edits and native word pages,
 and permits the owned initial draft on the artwork root. Rebuild/install both
 peers on `Local\\df3d_management_v128`. Older observations have no name-editor

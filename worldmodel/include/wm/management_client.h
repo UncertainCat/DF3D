@@ -565,6 +565,7 @@ struct WorkOrderDetailsState {
   std::optional<std::vector<WorkOrderDetailsChoice>> choices;
   uint64_t choicesRevision=0;uint32_t total=0,nextCursor=0;
   std::optional<WorkOrderArtState> art;
+  std::optional<std::string> currentValue;
 };
 struct WorkOrderListNativeState { bool managerAvailable=false,validationRequired=false; };
 struct WorkOrderState {

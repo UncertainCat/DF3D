@@ -52,8 +52,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 128;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v128";
+inline constexpr uint32_t kManagementVersion = 129;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v129";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -1866,13 +1866,14 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   if(const auto* w=s.work_order()) {
     auto textOk=[](const flatbuffers::String* v,size_t max){return !v || v->size()<=max;};
     if(const auto* d=w->details()) {
-      if(d->id()<0 || !d->revision() || d->revision()>INT64_MAX || !d->caption() || !textOk(d->caption(),1024) ||
+      if(d->id()<0 || !d->revision() || d->revision()>INT64_MAX || !d->caption() || !textOk(d->caption(),1024) || !textOk(d->current_value(),512) ||
          !d->options() || d->options()->size()>65 || d->selected_option() < -1 ||
          (d->selected_option()>=0 && size_t(d->selected_option())>=d->options()->size()) ||
          d->choices_revision()>INT64_MAX || d->total()>16384 || d->next_cursor()>d->total() ||
          (d->selected_option()==-1 && (d->choices() || d->choices_revision() || d->total() || d->next_cursor())) ||
          (d->selected_option()>=0 && !d->art() && (!d->choices() || !d->choices_revision())) ||
          (d->choices() && (d->choices()->size()>128 || d->choices()->size()>d->total())))return "invalid native Details state";
+      if(d->current_value() && (d->selected_option()<0 || d->art()))return "unexpected current Details value";
       for(const auto* option:*d->options())if(!option || option->kind()>6 || option->index() < -1 || !option->caption() || !textOk(option->caption(),512))return "invalid native Details option";
       std::set<int32_t> choices;
       if(d->choices())for(const auto* choice:*d->choices())if(!choice || choice->id()<0 || choice->id()>16383 || !choices.insert(choice->id()).second ||

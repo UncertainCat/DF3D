@@ -177,6 +177,7 @@ WorkOrderState decodeWorkOrder(const m::WorkOrderState* w) {
     n.details.emplace();auto& details=*n.details;
     details.id=d->id();details.revision=d->revision();details.caption=str(d->caption());details.selectedOption=d->selected_option();
     details.choicesRevision=d->choices_revision();details.total=d->total();details.nextCursor=d->next_cursor();
+    if(d->current_value())details.currentValue=str(d->current_value());
     if(const auto* a=d->art()) {
       details.art.emplace();auto& art=*details.art;
       art.page=a->page();art.caption=str(a->caption());art.listRevision=a->list_revision();art.total=a->total();art.nextCursor=a->next_cursor();

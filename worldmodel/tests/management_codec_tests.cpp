@@ -4112,10 +4112,12 @@ TEST_CASE("native Details decoding distinguishes unobserved and empty choices") 
     const auto options=b.CreateVector(std::vector{option});
     flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<wire::WorkOrderDetailsChoice>>> choices;
     if(selected)choices=b.CreateVector(std::vector<flatbuffers::Offset<wire::WorkOrderDetailsChoice>>{});
-    const auto details=wire::CreateWorkOrderDetailsState(b,37,1,caption,options,selected?0:-1,choices,selected?2:0);
+    const auto details=wire::CreateWorkOrderDetailsState(b,37,1,caption,options,selected?0:-1,choices,selected?2:0,0,0,0,selected?caption:0);
     wire::WorkOrderStateBuilder state(b);state.add_details(details);b.Finish(state.Finish());
     const auto decoded=codec::decodeWorkOrder(flatbuffers::GetRoot<wire::WorkOrderState>(b.GetBufferPointer()));
     REQUIRE(decoded.details);CHECK(decoded.details->choices.has_value()==selected);
+    CHECK(decoded.details->currentValue.has_value()==selected);
+    if(selected)CHECK(*decoded.details->currentValue=="Specify glass");
     REQUIRE(decoded.details->options.size()==1);CHECK(decoded.details->options[0].index==1);
   }
 }

@@ -2682,6 +2682,11 @@ BridgeWorkOrderInfo copyNativeWorkOrder(const df3d_production::NativeWorkOrderRo
 void run(color_ostream& out) {
   areaPaintRetired=nullptr;areaPaintCommitted=false;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
+  // Fail closed until the native suggested-condition transaction is installed;
+  // this intent must never fall through to the legacy manual-filter Lua path.
+  if(r->work_order() && r->work_order()->suggestion_index()>=0) {
+    message.clear();status=m::ManagementStatus::Rejected;workOrders={};publish();return;
+  }
   // Conditions inspect is explicit: list refreshes do not rebuild suggestions.
   if(r->work_order() && r->work_order()->workshop_id()>=0 && r->action()==m::ManagementAction::WorkOrderInspect) {
     const auto* q=r->work_order();message.clear();status=m::ManagementStatus::Rejected;workOrders={};

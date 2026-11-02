@@ -327,7 +327,7 @@ bool validateWorkOrderShape(const Dictionary& data, String& error) {
            "max_workshops", "condition_kind", "condition_index", "compare", "threshold",
            "item_type", "target_order", "dependency", "candidate_kind", "move", "expected_neighbor",
            "expected_list_revision", "item_subtype", "mat_type", "mat_index", "input_index",
-           "group_type", "group_subtype", "group_custom", "encrust_flags"},
+           "group_type", "group_subtype", "group_custom", "encrust_flags", "suggestion_index"},
           error) ||
       !managementRequiredFields(data, error))
     return false;
@@ -394,6 +394,7 @@ bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& err
   w.itemSubtype=int16_t(n("item_subtype",-1,-1,INT16_MAX));w.matType=int16_t(n("mat_type",-1,-1,INT16_MAX));w.matIndex=int32_t(n("mat_index",-1,-1,INT32_MAX));
   w.inputIndex=int16_t(n("input_index",-1,-1,INT16_MAX));w.groupType=int16_t(n("group_type",-1,-1,INT16_MAX));w.groupSubtype=int16_t(n("group_subtype",-1,-1,INT16_MAX));
   w.groupCustom=int32_t(n("group_custom",-1,-1,INT32_MAX));w.encrustFlags=int32_t(n("encrust_flags",-1,-1,INT32_MAX));
+  w.suggestionIndex=int16_t(n("suggestion_index",-1,-1,127));
   w.traits.reset();
   if(data.has("traits")) {
     Array values=data["traits"];w.traits.emplace();

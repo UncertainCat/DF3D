@@ -667,6 +667,16 @@ TEST_CASE("work order inputs reject narrowing overflow and ambiguous condition e
   forever.workOrder.recipe="builtin:69:-1";forever.workOrder.remaining=0;forever.workOrder.frequency=0;
   REQUIRE(c->send(forever)>seq);CHECK(p.pop()->work_order()->remaining()==0);
 }
+TEST_CASE("native suggestion add keeps its index and rejects copied filters") {
+  ManagementPublisher p;p.publish(1);auto c=openClient(p);claim(p,*c);
+  wm::ManagementRequest add;add.action=wm::ManagementAction::WorkOrderCondition;
+  add.workOrder.id=10;add.workOrder.workshopId=37;add.workOrder.expectedRevision=19;
+  add.workOrder.suggestionIndex=1;
+  auto mixed=add;mixed.workOrder.threshold=10;CHECK(c->send(mixed)==0);
+  REQUIRE(c->send(add)>0);const auto* request=p.pop();REQUIRE(request->work_order());
+  CHECK(request->work_order()->suggestion_index()==1);
+  CHECK(request->work_order()->threshold()==-1);CHECK(request->work_order()->compare()==-1);
+}
 TEST_CASE("work order response keeps native authorization conditions and manager observations") {
   ManagementPublisher p;p.publish(1);auto c=openClient(p);
   auto [seq,client]=claim(p,*c);

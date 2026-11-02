@@ -30,8 +30,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 120;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v120";
+inline constexpr uint32_t kManagementVersion = 121;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v121";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -533,6 +533,17 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
   } else if(r.production()) return "unexpected production payload";
   if(r.action()>=ManagementAction::WorkOrderList && r.action()<=ManagementAction::WorkOrderCatalog) {
     const auto* w=r.work_order();
+    if(w && (w->suggestion_index() < -1 || w->suggestion_index()>127))return "invalid native suggestion index";
+    if(w && w->suggestion_index()>=0 &&
+       (r.action()!=ManagementAction::WorkOrderCondition || w->id()<0 || w->workshop_id()<0 || !w->expected_revision() ||
+        w->remaining()!=-1 || w->frequency()!=-1 || w->max_workshops()!=-1 ||
+        (w->recipe() && w->recipe()->size()) || (w->query() && w->query()->size()) ||
+        w->cursor() || w->expected_list_revision() || w->condition_kind() || w->condition_index()!=-1 || w->remove_condition() ||
+        w->compare()!=-1 || w->threshold()!=-1 || w->item_type()!=-1 || w->item_subtype()!=-1 ||
+        w->mat_type()!=-1 || w->mat_index()!=-1 || w->target_order()!=-1 || w->dependency()!=-1 ||
+        w->candidate_kind() || w->move() || w->expected_neighbor()!=-1 || w->traits() ||
+        w->input_index()!=-1 || w->group_type()!=-1 || w->group_subtype()!=-1 || w->group_custom()!=-1 || w->encrust_flags()!=-1))
+      return "native suggestion must be an exclusive condition add";
     if(!w || w->expected_revision()>INT64_MAX || w->id() < -1 || w->remaining() < -1 || w->remaining()>32767 || w->frequency() < -1 || w->frequency()>4 ||
        w->workshop_id() < -2 || w->max_workshops() < -1 || w->max_workshops()>32767 || w->condition_kind()>1 ||
        w->condition_index() < -1 || w->condition_index()>63 || w->compare() < -1 || w->compare()>5 ||
@@ -569,7 +580,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     if((r.action()==ManagementAction::WorkOrderInspect || r.action()==ManagementAction::WorkOrderUpdate || r.action()==ManagementAction::WorkOrderDelete || r.action()==ManagementAction::WorkOrderCondition) && w->id()<0) return "work order id required";
     if((r.action()==ManagementAction::WorkOrderUpdate || r.action()==ManagementAction::WorkOrderDelete || r.action()==ManagementAction::WorkOrderCondition) && !w->expected_revision()) return "work order revision required";
     if(r.action()==ManagementAction::WorkOrderCreate && (!w->recipe() || !w->recipe()->size() || w->remaining()<0)) return "new work order recipe and quantity required";
-    if(r.action()==ManagementAction::WorkOrderCondition) {
+    if(r.action()==ManagementAction::WorkOrderCondition && w->suggestion_index()<0) {
       if(w->remove_condition() && w->condition_index()<0) return "condition identity required";
       if(!w->remove_condition() && ((w->condition_kind()==0 && (w->compare()<0 || w->threshold()<0)) ||
         (w->condition_kind()==1 && (w->target_order()<0 || w->target_order()==w->id() || w->dependency()<0)))) return "invalid work order condition";

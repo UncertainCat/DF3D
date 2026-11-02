@@ -22,6 +22,11 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management121 adds an exclusive native suggested-condition intent, carrying the
+suggestion index, target order/workshop and observed order revision. It carries
+no copied filter fields. Rebuild/install both peers on `Local\\df3d_management_v121`.
+Older recordings omit this intent; other channels are unchanged.
+
 Management120 adds optional native condition item captions and suggested-condition
 observations. Rebuild/install both peers on `Local\\df3d_management_v120`.
 Absence in older recordings remains unknown, distinct from an observed empty list.

@@ -37,17 +37,25 @@ func run() -> void:
 	await process_frame;click(Vector2(880,154))
 	if not check(await settle(service,func():return owner.order_choices.phase==owner.order_choices.Phase.Ready),"Native order catalog did not reach picker; phase="+str(owner.order_choices.phase)+" visible="+str(owner.order_picker.visible)):quit(1);return
 	check(owner.order_picker.visible and owner.order_choices.rows.size()==4,"Wrong forced-workshop picker")
+	click(Vector2(600,94))
+	for char in str(expected.query):number_key(KEY_A,char.unicode_at(0))
+	if not check(await settle(service,func():return owner.order_choices.phase==owner.order_choices.Phase.Ready),"Order search did not complete"):quit(1);return
+	var names: Array=[]
+	for row in owner.order_choices.rows:names.append(row.name)
+	check(names==expected.search_names and owner.order_picker.query_text()==str(expected.query).to_upper(),"Order search differs from native")
+	number_key(KEY_ENTER)
+	check(not owner.order_picker.search_focused and owner.order_picker.visible,"Enter did not release order search focus")
 	check(owner.order_choices.rows[int(expected.choice)].name==expected.caption,"Recipe order changed")
 	await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/workshop-order-picker-live.png")
-	click(Vector2(600,202))
+	click(Vector2(600,130))
 	if not check(await settle(service,func():return not created_order.is_empty() and owner.orders.phase==owner.orders.Phase.Ready),"Order creation was not confirmed; no retry"):quit(1);return
 	check(created_order.name==expected.caption and created_order.id==int(expected.native_id)+1,"Created order receipt differs")
 	check(not owner.order_picker.visible and owner.orders.snapshot.order_ids.has(created_order.id),"Created order absent from refreshed workshop")
 	await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/workshop-order-created-live.png")
 	var file:=FileAccess.open(directory+"/workshop-order-wire-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"created":created_order,"order_ids":owner.orders.snapshot.order_ids}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"created":created_order,"order_ids":owner.orders.snapshot.order_ids,"search_names":names,"query":owner.order_picker.query_text(),"header":owner.state.snapshot,"title":owner.panel.title,"contents_page":owner.panel.contents.page,"header_font":owner.panel.theme.default_font!=null}));file.close()
 	owner.close_panel();owner.queue_free();host.interaction.panel.free();host.queue_free();service.queue_free();await process_frame
 	world.detach_live();world.queue_free();await process_frame
 	quit(1 if failed else 0)

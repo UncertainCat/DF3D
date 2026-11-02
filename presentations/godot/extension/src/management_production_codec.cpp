@@ -395,7 +395,7 @@ bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& err
   String recipe = data.get("recipe", String()), query = data.get("query", String());
   w.recipe = recipe.utf8().get_data();
   w.query = query.utf8().get_data();
-  if (w.recipe.size() > 128 || w.query.size() > 64) valid = false;
+  if (w.recipe.size() > 128 || w.query.size() > (r.action==wm::ManagementAction::WorkOrderCatalog && w.workshopId>=0?76:64)) valid = false;
   if (!valid) {
     error = "Invalid bounded work order request";
     return false;

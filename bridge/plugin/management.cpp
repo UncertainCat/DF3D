@@ -2662,7 +2662,7 @@ void run(color_ostream& out) {
       q->candidate_kind() || q->move() || q->expected_neighbor()!=-1 || q->item_subtype()!=-1 ||
       q->mat_type()!=-1 || q->mat_index()!=-1 || (q->traits() && q->traits()->size()) ||
       q->input_index()!=-1 || q->group_type()!=-1 || q->group_subtype()!=-1 || q->group_custom()!=-1 ||
-      q->encrust_flags()!=-1 || (q->query() && q->query()->size());
+      q->encrust_flags()!=-1 || (creating && q->query() && q->query()->size());
     if(extra || (creating?(q->remaining()!=10 || q->cursor() || q->expected_list_revision()):
       (q->remaining()!=-1 || q->expected_revision() || (q->recipe() && q->recipe()->size())))) {publish();return;}
     try {
@@ -2670,17 +2670,30 @@ void run(color_ostream& out) {
       auto* tile=building?Maps::getTileDesignation(building->centerx,building->centery,building->z):nullptr;
       if(!tile || tile->bits.hidden){publish();return;}
       if(!creating) {
+        const auto query=q->query()?q->query()->str():std::string{};
+        const auto nativeQuery=UTF2DF(query);
+        if(nativeQuery.size()>76 || DF2UTF(nativeQuery)!=query){publish();return;}
         const auto catalog=df3d_production::workshopOrderCatalog(building);
-        if(!catalog || q->cursor()>catalog->rows.size() ||
+        if(!catalog ||
            (q->cursor() && q->expected_list_revision()!=catalog->revision) ||
            (q->expected_list_revision() && q->expected_list_revision()!=catalog->revision)){publish();return;}
-        workOrders.listRevision=catalog->revision;workOrders.total=uint32_t(catalog->rows.size());
-        const size_t end=std::min(catalog->rows.size(),size_t(q->cursor())+128);
-        for(size_t i=q->cursor();i<end;++i) {
+        // Native3c31a0 normalizes the query and searches the pre-normalized
+        // caption with e1990. The existing owned-caption helper calls these
+        // same leaves; never construct or borrow its picker context.
+        std::vector<size_t> matches;
+        for(size_t i=0;i<catalog->rows.size();++i) {
+          const auto match=df3d_production::workshopCaptionMatches(catalog->rows[i].name,nativeQuery);
+          if(!match){publish();return;}if(*match)matches.push_back(i);
+        }
+        if(q->cursor()>matches.size()){publish();return;}
+        workOrders.listRevision=catalog->revision;workOrders.total=uint32_t(matches.size());
+        const size_t end=std::min(matches.size(),size_t(q->cursor())+128);
+        for(size_t at=q->cursor();at<end;++at) {
+          const size_t i=matches[at];
           const auto& row=catalog->rows[i];
           workOrders.recipes.push_back({"native-workshop:"+std::to_string(catalog->revision)+":"+std::to_string(i),DF2UTF(row.name),{}});
         }
-        workOrders.nextCursor=end<catalog->rows.size()?uint32_t(end):0;status=m::ManagementStatus::Ok;
+        workOrders.nextCursor=end<matches.size()?uint32_t(end):0;status=m::ManagementStatus::Ok;
       } else {
         const std::string key=q->recipe()?q->recipe()->str():"";
         const std::string prefix="native-workshop:"+std::to_string(q->expected_revision())+":";

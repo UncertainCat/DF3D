@@ -19,6 +19,7 @@ inline bool workOrderCatalogSupported() {
             {0x311580,0x68c,UINT64_C(0x47301c66334c61ee)},
             {0x3769cf,0x4d,UINT64_C(0x7e38a43365dc1161)},
             {0x37683f,0x4a,UINT64_C(0x659f0f1773728921)},
+            {0x3c31a0,0x155,UINT64_C(0x2eafe9596f5d778c)}, // native picker search composition
             {0x30fe90,0xbe,UINT64_C(0x977bec31a3f05304)}, // allocate/register order
             {0x31f5cd,0x164,UINT64_C(0xe533c103b392863b)}, // selected-template effects
             {0xd15cf0,0x1f6,UINT64_C(0x00a3647b8c63120e)}, // details eligibility/requirements

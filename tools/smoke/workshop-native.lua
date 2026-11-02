@@ -338,11 +338,18 @@ local ok,err=xpcall(function()
   end
   mouse(880,154);assert(picker.open)
   local chosen=picker.building[0].jminfo[2];assert(chosen.name=='Extract from plants')
+  mouse(600,94)
+  for char in ('extract'):gmatch('.')do gui.simulateInput(view,('STRING_A%03d'):format(char:byte()))end
+  view:render(dfhack.getTickCount())
+  local matches={};for _,row in ipairs(picker.building[0].jminfo)do if row.on then matches[#matches+1]=dfhack.df2utf(row.name)end end
+  assert(#matches==1 and matches[1]=='Extract from plants','Native order search changed')
+  shot('order-search-native')
+  gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount());assert(picker.open,'Search Enter unexpectedly closed picker')
   local next_id=df.global.world.manager_orders.manager_order_next_id
-  mouse(600,202);assert(not picker.open,'Native recipe click did not close picker')
+  mouse(600,130);assert(not picker.open,'Native recipe click did not close picker')
   assert(#df.global.world.manager_orders.all==orders_before+1)
   local native=df.global.world.manager_orders.all[orders_before];assert(native.id==next_id)
-  local expected={building_id=still.id,choice=2,caption='Extract from plants',native=order_values(native),native_id=native.id}
+  local expected={building_id=still.id,choice=0,query='extract',search_names=matches,caption='Extract from plants',native=order_values(native),native_id=native.id}
   shot('orders-created-native')
   local file=assert(io.open(out..'/workshop-order-expected.json','w'));file:write(json.encode(expected));file:close()
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())

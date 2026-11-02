@@ -3797,6 +3797,11 @@
   ],
   "exclusions": [
     {
+      "path": "presentations/godot/project/tests/workshop_order_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected composed workshop order creation/search through stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader -FarmItemCarriers -FarmItemCarrierArt with DF3D_WORKSHOP_NATIVE=1; owned unsaved clone and temporary manager-office fixture."
+    },
+    {
       "path": "presentations/godot/project/tests/connected_track_preview_live.gd",
       "status": "manual",
       "reason": "Protected owned no-save Track Preview acceptance. Requires Df3dLane, a verified disposable clone, native oracle preview-cases.json and DF3D_TRACK_PREVIEW_ACCEPTANCE. Compares ordered native paths through the real Godot and bridge transport; never attach to a user game."

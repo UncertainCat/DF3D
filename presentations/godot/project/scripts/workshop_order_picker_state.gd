@@ -11,6 +11,7 @@ var revision: int=0
 var rows: Array=[]
 var ticket:=0
 var generation:=0
+var query:=""
 func configure(source) -> void:
 	dispose();service=source
 	if service!=null:service.session_changed.connect(_session_changed)
@@ -22,7 +23,7 @@ func close() -> void:
 	generation+=1
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
-	building_id=-1;revision=0;rows=[];phase=Phase.Closed;changed.emit()
+	building_id=-1;revision=0;rows=[];query="";phase=Phase.Closed;changed.emit()
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
 func open(id: int) -> void:
@@ -30,7 +31,13 @@ func open(id: int) -> void:
 	if id<0 or id>2147483647:return
 	building_id=id;phase=Phase.Reading;_read(0)
 func _read(cursor: int) -> void:
-	_send({"action":C.ManagementAction.WorkOrderCatalog,"workshop_id":building_id,"cursor":cursor,"expected_list_revision":revision})
+	_send({"action":C.ManagementAction.WorkOrderCatalog,"workshop_id":building_id,"cursor":cursor,"expected_list_revision":revision,"query":query})
+func set_query(value: String) -> void:
+	if value==query or building_id<0 or phase not in [Phase.Ready,Phase.Reading]:return
+	generation+=1
+	var previous:=ticket;ticket=0
+	if service!=null and previous!=0:service.detach(previous)
+	query=value;revision=0;rows=[];phase=Phase.Reading;_read(0)
 func choose(key: String) -> void:
 	if phase!=Phase.Ready or ticket!=0:return
 	var found:=false

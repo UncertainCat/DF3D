@@ -3129,5 +3129,81 @@
     "source_preserved": true,
     "owned_exit": "unsaved",
     "native_helper": "30fe90 allocation;31f5cd..31f731 creation effects;d15cf0 lazy requirements/details eligibility on new order"
+  },
+  "work_order_search_reference": {
+    "evidence": "build/stockpile-storage-native-farm-discovery-20261101-190122",
+    "date": "2026-11-01",
+    "building_id": 37,
+    "typed_query": "extract",
+    "native_display_query": "EXTRACT",
+    "matching_names": [
+      "Extract from plants"
+    ],
+    "capacity_bytes": 76,
+    "native_input_flags": 11,
+    "native_filter_rva": "3c31a0",
+    "native_input_rva": "8bc1d4",
+    "scope": "Native and composed picker search, Enter focus release and one matching order creation. Capacity and character filter sourced from native input code; no exhaustive input or overflow visual acceptance.",
+    "viewer": {
+      "contents_page": 6,
+      "created": {
+        "active": false,
+        "conditions": [],
+        "detail_kind": 0,
+        "editable": false,
+        "encrust_flags": 0,
+        "finished_tick": -1,
+        "finished_year": -1,
+        "frequency": 0,
+        "generated_jobs": [],
+        "id": 110,
+        "inputs": [],
+        "mat_index": -1,
+        "mat_type": -1,
+        "material_category": 0,
+        "max_workshops": 0,
+        "name": "Extract from plants",
+        "position": -1,
+        "reason": "",
+        "remaining": 10,
+        "revision": 1646907521894223465,
+        "size_raw": -1,
+        "total": 10,
+        "validated": false,
+        "workshop_id": 37
+      },
+      "header": {
+        "custom_name": "",
+        "has_worker": false,
+        "header_name": "Still",
+        "id": 37,
+        "max_stage": 3,
+        "native_name": "Still",
+        "removing": false,
+        "revision": 8392837920780898625,
+        "stage": 3,
+        "suspended": false,
+        "type": 13
+      },
+      "header_font": true,
+      "order_ids": [
+        109,
+        110
+      ],
+      "query": "EXTRACT",
+      "search_names": [
+        "Extract from plants"
+      ],
+      "success": true,
+      "title": "Still"
+    },
+    "captures": {
+      "workshop-order-search-native.png": "a43c65203963b14bb0b27211a219363edc8ce2a33b17bc083b37c46046f5fb36",
+      "workshop-order-picker-live.png": "40e7cb86acaca7c8895bc3cab9883fcd5729b4162aa0871c1e3f8504738ae2b5",
+      "workshop-order-created-live.png": "7b7710d9ecfc448b290be8b8153732ed304739a6f81c27b345334d7f22fd5ac3"
+    },
+    "source_preserved": true,
+    "owned_exit": "unsaved",
+    "godot_diagnostics": "known only"
   }
 }

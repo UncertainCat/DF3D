@@ -6673,9 +6673,29 @@ Exactly one viewer order is added and appears in refreshed workshop membership;
 recipe/status/default fields, empty condition counts and initialized requirement
 presence match native. Full requirement-element equivalence is not claimed.
 The picker capture was inspected. The created-order view still has no populated
-rows; search, row rendering/details, keyboard and narrow layout are unfinished.
+rows; row rendering/details, full keyboard and narrow layout are unfinished.
 Owned DF45160 exits unsaved, source preservation passes, and all five Godot log
 groups have known diagnostics only. The public route stays hidden.
+
+Picker search follows native3c31a0: normalize the owned query with52cee0 and
+search the normalized caption with e1990. Runtime calls these semantic leaves,
+never the picker-context routine. Filtered pages preserve native order and keep
+their original opaque recipe identities. Query changes retire the previous
+read generation, so late pages cannot replace the new search. Native8bc1d4
+supplies capacity76 and flags0xb to the textbox: ASCII letters and spaces only,
+with lowercase folded to uppercase. The viewer owns that draft and focus;
+Enter releases focus without creating an order. The existing concrete-workshop
+WorkOrderCatalog query bound is76 bytes; other work-order requests retain64.
+
+Protected190122 on2026-11-01 types lowercase `extract` through native and
+composed picker input, observes the same single Extract from plants result,
+releases text focus with Enter and creates exactly one matching viewer order.
+The final sheet capture has its header/tabs/contents intact. Earlier short
+captures with missing header art are not visual acceptance. Search input and
+created-sheet captures were inspected; full overflow/keyboard/layout parity is
+not claimed. Owned DF41804 exits unsaved with source preservation and known-only
+diagnostics in all five Godot log groups. Core and composition checks pass in
+`build/qa/workshop-order-search`.
 
 Protected183314 on2026-11-01 compares all2658 global rows and the37 Carpenter/4
 Still rows with the actual native picker: job/reaction/item/material fields,

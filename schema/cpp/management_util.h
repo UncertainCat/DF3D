@@ -537,7 +537,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        w->workshop_id() < -2 || w->max_workshops() < -1 || w->max_workshops()>32767 || w->condition_kind()>1 ||
        w->condition_index() < -1 || w->condition_index()>63 || w->compare() < -1 || w->compare()>5 ||
        w->threshold() < -1 || w->item_type() < -1 || w->target_order() < -1 || w->dependency() < -1 || w->dependency()>1 ||
-       w->candidate_kind()>5 || (w->recipe() && w->recipe()->size()>128) || (w->query() && w->query()->size()>64)) return "invalid work order request";
+       w->candidate_kind()>5 || (w->recipe() && w->recipe()->size()>128) || (w->query() && w->query()->size()>(r.action()==ManagementAction::WorkOrderCatalog && w->workshop_id()>=0?76:64))) return "invalid work order request";
     if(w->move() < -1 || w->move()>1 || w->expected_list_revision()>INT64_MAX ||
        w->expected_neighbor() < -1 || w->input_index() < -1 || w->item_subtype() < -1 ||
        w->mat_type() < -1 || w->mat_index() < -1 || w->group_type() < -1 ||

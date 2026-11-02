@@ -88,6 +88,14 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
   prod["selected_building"] = p.selectedBuilding;
   prod["created_job"] = p.createdJob;
   prod["detail"] = String::utf8(p.detail.c_str());
+  if(p.workshopOrders) {
+    const auto& c=*p.workshopOrders;Dictionary v;Array ids;
+    v["building_id"]=c.buildingId;v["revision"]=int64_t(c.revision);
+    v["manager_available"]=c.managerAvailable;v["general_order_limit"]=c.generalOrderLimit;
+    v["outcome"]=int(c.outcome);v["delta"]=c.delta;
+    for(const auto id:c.orderIds)ids.append(id);
+    v["order_ids"]=ids;prod["workshop_orders"]=v;
+  }
   if(p.workshopWorkers) {
     const auto& c=*p.workshopWorkers;Dictionary v;Array rows,permitted;
     v["building_id"]=c.buildingId;v["profile_revision"]=int64_t(c.profileRevision);
@@ -396,6 +404,8 @@ bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& err
 }
 
 bool validateProductionShape(const Dictionary& data, String& error) {
+  if(data.has("workshop_orders") && data["workshop_orders"].get_type()!=Variant::BOOL){error="Wrong management field type: workshop_orders";return false;}
+  if(!managementDictionaryTypes(data, {"general_order_delta"}, error))return false;
   if(data.has("workshop_workers") && data["workshop_workers"].get_type()!=Variant::BOOL){error="Wrong management field type: workshop_workers";return false;}
   if(data.has("building_header") && data["building_header"].get_type()!=Variant::BOOL){error="Wrong management field type: building_header";return false;}
   if(data.has("independent_item") && data["independent_item"].get_type()!=Variant::BOOL){error="Wrong management field type: independent_item";return false;}
@@ -439,6 +449,9 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
   if(data.has("workshop_workers") && data["workshop_workers"].get_type()!=Variant::BOOL){error="Wrong management field type: workshop_workers";return false;}
   if(data.has("building_header") && data["building_header"].get_type()!=Variant::BOOL){error="Wrong management field type: building_header";return false;}
   value.buildingHeader=data.get("building_header",false);
+  if(data.has("workshop_orders") && data["workshop_orders"].get_type()!=Variant::BOOL){error="Wrong management field type: workshop_orders";return false;}
+  value.workshopOrders=data.get("workshop_orders",false);
+  value.generalOrderDelta=int8_t(n("general_order_delta",0,-1,1));
   value.workshopWorkers=data.get("workshop_workers",false);
   value.workerId=int32_t(n("worker_id",-1,-1,INT32_MAX));value.workerListRevision=uint64_t(n("worker_list_revision",0,0,INT64_MAX));value.workerValue=int8_t(n("worker_value",-1,-1,1));
   value.farmOperation=wm::FarmOperation(n("farm_operation",0,0,12));

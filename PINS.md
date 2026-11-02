@@ -22,6 +22,11 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management117 adds native workshop order-profile reads and general-order limit steps.
+Rebuild/install both peers on `Local\\df3d_management_v117`. Older recordings
+cannot supply manager availability or limit authority; do not synthesize them.
+Other channels are unchanged.
+
 Management116 adds native assignment membership to each workshop candidate row.
 Rebuild/install both peers on `Local\\df3d_management_v116`. Older rows cannot
 synthesize occupation/workshop/furnace/work-detail indicators; no recording is

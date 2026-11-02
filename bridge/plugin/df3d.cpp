@@ -98,6 +98,7 @@
 #include "knowledge_detail_native.h"
 #include "workshop_catalog_native.h"
 #include "workshop_workers_native.h"
+#include "workshop_orders_native.h"
 #include "df/job_item.h"
 #include "musical_detail_native.h"
 #include "dance_detail_native.h"
@@ -2067,6 +2068,21 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           facts["melt"]=observed->melt;facts["hidden"]=observed->hidden;
           facts["can_dump"]=observed->canDump;facts["can_melt"]=observed->canMelt;
           result["facts"]=std::move(facts);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="workshop-orders-probe") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];
+          const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0)return CR_WRONG_USAGE;
+          const auto profile=df3d_production::workshopOrdersProfile(df::building::find(id));
+          if(!profile)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["building_id"]=profile->buildingId;
+          result["revision"]=std::to_string(profile->revision);
+          result["manager_available"]=profile->managerAvailable;
+          result["general_order_limit"]=profile->generalOrderLimit;
+          result["order_ids"]=Json::Value(Json::arrayValue);
+          for(const auto order:profile->orderIds)result["order_ids"].append(order);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="workshop-workers-probe") {

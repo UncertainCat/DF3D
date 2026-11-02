@@ -148,7 +148,14 @@ struct WorkshopWorkersState {
   std::vector<df3d_area::LocationStaffCandidate> rows;
   df3d::mirror::FarmEditOutcome outcome=df3d::mirror::FarmEditOutcome::None;
 };
+struct WorkshopOrdersState {
+  int32_t buildingId=-1,generalOrderLimit=0;
+  uint64_t revision=0;bool managerAvailable=false;
+  std::vector<int32_t> orderIds;int8_t delta=0;
+  df3d::mirror::FarmEditOutcome outcome=df3d::mirror::FarmEditOutcome::None;
+};
 struct ProductionState {
+  std::optional<WorkshopOrdersState> workshopOrders;
   std::optional<WorkshopWorkersState> workshopWorkers;
   std::optional<BuildingHeaderState> buildingHeader;
   std::optional<IndependentItemState> independentItem;

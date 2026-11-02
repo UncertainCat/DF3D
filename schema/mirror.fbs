@@ -1539,6 +1539,8 @@ table ProductionRequest {
   worker_id:int32 = -1;
   worker_list_revision:uint64;
   worker_value:int8 = -1;
+  workshop_orders:bool;
+  general_order_delta:int8;
 }
 table ProductionRequirement { description:string; quantity:int32; item_type:int16 = -1; }
 // Absent on legacy observations and providers without native availability evidence.
@@ -1642,6 +1644,11 @@ table WorkshopWorkersState {
   rows:[LocationStaffCandidate]; outcome:FarmEditOutcome; unit_id:int32 = -1;
   assigned:WorkshopAssignedWorker; operation:FarmOperation;
 }
+table WorkshopOrdersState {
+  building_id:int32 = -1; revision:uint64; manager_available:bool;
+  general_order_limit:int32; order_ids:[int32];
+  outcome:FarmEditOutcome; delta:int8;
+}
 table ProductionState {
   buildings:[ProductionBuilding]; next_cursor:uint32;
   recipes:[ProductionRecipe]; jobs:[ProductionJob]; crops:[FarmCrop];
@@ -1657,6 +1664,7 @@ table ProductionState {
   independent_item:IndependentItemState;
   building_header:BuildingHeaderState;
   workshop_workers:WorkshopWorkersState;
+  workshop_orders:WorkshopOrdersState;
 }
 table WorkOrderRequest {
   id:int32 = -1;
@@ -1985,7 +1993,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 116;
+  schema_version:uint32 = 117;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2037,7 +2045,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 116;
+  schema_version:uint32 = 117;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

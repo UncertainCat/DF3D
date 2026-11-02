@@ -30,8 +30,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 116;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v116";
+inline constexpr uint32_t kManagementVersion = 117;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v117";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -464,7 +464,19 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
         p->repeat() < -1 || p->repeat()>1 || p->suspend() < -1 || p->suspend()>1 ||
         p->season() < -1 || p->season()>3 || (p->query() && p->query()->size()>(r.action()==ManagementAction::ProductionInspect?138:128)) ||
         (p->recipe() && p->recipe()->size()>128)) return "invalid production request";
-    if(p->workshop_workers()) {
+    if(!p->workshop_orders() && p->general_order_delta())return "unexpected workshop order step";
+    if(p->workshop_orders()) {
+      const bool edit=r.action()==ManagementAction::FarmEdit;
+      if((!edit && r.action()!=ManagementAction::ProductionInspect) || p->building_id()<0 ||
+         p->workshop_workers() || p->building_header() || p->independent_item() || p->locate_item() || p->contents() ||
+         p->worker_id()!=-1 || p->worker_value()!=-1 || p->worker_list_revision() ||
+         p->item_id()!=-1 || p->item_value()!=-1 || p->season()!=-1 || p->crop_id()!=-1 || p->seasonal_fertilization()!=-1 ||
+         p->job_id()!=-1 || p->repeat()!=-1 || p->suspend()!=-1 || p->cancel() || p->farm_name() || p->cursor() ||
+         p->farm_operation()!=FarmOperation::Crop || (p->recipe() && p->recipe()->size()) || (p->query() && p->query()->size()) ||
+         p->expected_revision()>INT64_MAX ||
+         (edit ? (!p->expected_revision() || (p->general_order_delta()!=-1 && p->general_order_delta()!=1))
+               : (p->expected_revision() || p->general_order_delta())))return "invalid workshop orders intent";
+    } else if(p->workshop_workers()) {
       const bool edit=r.action()==ManagementAction::FarmEdit;
       if((!edit && r.action()!=ManagementAction::ProductionInspect) || p->building_id()<0 ||
          p->building_header() || p->independent_item() || p->locate_item() || p->contents() ||
@@ -1496,7 +1508,22 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   }
   if(s.action()==ManagementAction::FarmEdit && s.status()==ManagementStatus::Ok && !s.production())return "missing farm edit result";
   if (const auto* p=s.production()) {
-    if(const auto* state=p->workshop_workers()) {
+    if(const auto* state=p->workshop_orders()) {
+      if(p->workshop_workers() || p->building_header() || p->independent_item() || p->item() || p->item_position() || p->farm() || p->contents() || p->contents_edit() || p->farm_edit_outcome()!=FarmEditOutcome::None ||
+         p->selected_building()!=-1 || p->created_job()!=-1 || p->current_season()!=-1 || p->next_cursor() ||
+         (p->buildings() && p->buildings()->size()) || (p->recipes() && p->recipes()->size()) ||
+         (p->jobs() && p->jobs()->size()) || (p->crops() && p->crops()->size()) ||
+         (p->seasonal_crops() && p->seasonal_crops()->size()) || (p->detail() && p->detail()->size()))return "mixed workshop orders response";
+      const bool edit=s.action()==ManagementAction::FarmEdit,ok=s.status()==ManagementStatus::Ok;
+      if((!edit && s.action()!=ManagementAction::ProductionInspect) || state->building_id()<0 || static_cast<uint8_t>(state->outcome())>4 ||
+         (edit ? (state->outcome()==FarmEditOutcome::None || ok!=(state->outcome()==FarmEditOutcome::Completed)) : state->outcome()!=FarmEditOutcome::None))return "invalid workshop orders outcome";
+      if(ok) {
+        if(!state->revision() || state->revision()>INT64_MAX || !state->order_ids() || state->order_ids()->size()>16384 ||
+           (edit ? (state->delta()!=-1 && state->delta()!=1) : state->delta()!=0))return "invalid workshop orders profile";
+        for(const auto id:*state->order_ids())if(id<0)return "invalid workshop order id";
+      } else if(state->revision() || state->manager_available() || state->general_order_limit() || state->delta() ||
+                (state->order_ids() && state->order_ids()->size()))return "unconfirmed workshop orders authority";
+    } else if(const auto* state=p->workshop_workers()) {
       if(p->building_header() || p->independent_item() || p->item() || p->item_position() || p->farm() || p->contents() || p->contents_edit() || p->farm_edit_outcome()!=FarmEditOutcome::None ||
          p->selected_building()!=-1 || p->created_job()!=-1 || p->current_season()!=-1 || p->next_cursor() ||
          (p->buildings() && p->buildings()->size()) || (p->recipes() && p->recipes()->size()) ||

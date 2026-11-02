@@ -95,6 +95,7 @@
 #include "creature_needs_native.h"
 #include "workshop_catalog_native.h"
 #include "workshop_workers_page.h"
+#include "workshop_orders_native.h"
 #include "creature_skills_native.h"
 #include "creature_knowledge_native.h"
 #include "skills_caption_native.h"
@@ -734,6 +735,11 @@ void publish() {
     }
     buildingHeader=m::CreateBuildingHeaderState(b,snapshot,state.outcome,state.operation);
   }
+  flatbuffers::Offset<m::WorkshopOrdersState> workshopOrders;
+  if(production.workshopOrders) {
+    const auto& p=*production.workshopOrders;
+    workshopOrders=m::CreateWorkshopOrdersState(b,p.buildingId,p.revision,p.managerAvailable,p.generalOrderLimit,b.CreateVector(p.orderIds),p.outcome,p.delta);
+  }
   flatbuffers::Offset<m::WorkshopWorkersState> workshopWorkers;
   if(production.workshopWorkers) {
     const auto& p=*production.workshopWorkers;
@@ -752,7 +758,7 @@ void publish() {
     if(p.assigned){const auto& a=*p.assigned;assigned=m::CreateWorkshopAssignedWorker(b,a.id,b.CreateString(a.caption),a.specializationVisible,a.canSpecialize,a.specialized);}
     workshopWorkers=m::CreateWorkshopWorkersState(b,p.buildingId,p.profileRevision,b.CreateVector(p.permittedWorkers),p.revision,p.cursor,p.nextCursor,p.total,b.CreateVector(rows),p.outcome,p.unitId,assigned,p.operation);
   }
-  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot,itemPosition,independentItem,buildingHeader,workshopWorkers);
+  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot,itemPosition,independentItem,buildingHeader,workshopWorkers,workshopOrders);
   std::vector<flatbuffers::Offset<m::WorkOrderInfo>> wo;
   for(const auto& o:workOrders.orders){
     std::vector<flatbuffers::Offset<m::WorkOrderCondition>> cs;
@@ -2642,6 +2648,37 @@ std::optional<IndependentItemSnapshot> independentItemSnapshot(const df3d_produc
 void run(color_ostream& out) {
   areaPaintRetired=nullptr;areaPaintCommitted=false;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
+  if(r->production() && r->production()->workshop_orders()) {
+    const auto* q=r->production();const bool editing=r->action()==m::ManagementAction::FarmEdit;
+    message.clear();status=m::ManagementStatus::Rejected;production={};
+    auto& response=production.workshopOrders.emplace();response.buildingId=q->building_id();
+    response.outcome=editing?m::FarmEditOutcome::Rejected:m::FarmEditOutcome::None;
+    const auto copy=[&](const df3d_production::WorkshopOrdersProfile& p) {
+      response.revision=p.revision;response.managerAvailable=p.managerAvailable;
+      response.generalOrderLimit=p.generalOrderLimit;response.orderIds=p.orderIds;
+    };
+    try {
+      auto* building=df::building::find(q->building_id());
+      auto* tile=building?Maps::getTileDesignation(building->centerx,building->centery,building->z):nullptr;
+      if(!tile || tile->bits.hidden){publish();return;}
+      if(!editing) {
+        if(const auto p=df3d_production::workshopOrdersProfile(building)){copy(*p);status=m::ManagementStatus::Ok;}
+      } else {
+        const auto result=df3d_production::stepWorkshopGeneralOrders(q->building_id(),q->expected_revision(),q->general_order_delta());
+        using O=df3d_production::WorkshopOrdersOutcome;
+        mutated=result.outcome==O::Applied || result.outcome==O::Unknown;
+        if(result.outcome==O::Applied && result.profile) {
+          copy(*result.profile);response.delta=q->general_order_delta();response.outcome=m::FarmEditOutcome::Completed;status=m::ManagementStatus::Ok;
+        } else if(result.outcome==O::Unknown)response.outcome=m::FarmEditOutcome::Unknown;
+        else if(result.outcome==O::Stale)response.outcome=m::FarmEditOutcome::Stale;
+      }
+    }catch(...) {
+      response={};response.buildingId=q->building_id();
+      response.outcome=editing?(mutated?m::FarmEditOutcome::Unknown:m::FarmEditOutcome::Rejected):m::FarmEditOutcome::None;
+      status=m::ManagementStatus::Rejected;
+    }
+    publish();return;
+  }
   if(r->production() && r->production()->workshop_workers()) {
     static df3d_production::WorkshopWorkerSnapshot workers;
     const auto* q=r->production();const bool editing=r->action()==m::ManagementAction::FarmEdit;

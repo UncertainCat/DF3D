@@ -22,6 +22,12 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management124 adds optional native Work order Details reads and exclusive selections,
+with separate order and choice revisions, native option captions and paged choices.
+Rebuild/install both peers on `Local\\df3d_management_v124`. Older recordings have
+no Details observation or selection authority; absent choice/count observations
+remain absent. Other channels are unchanged.
+
 Management123 adds optional native global work-order availability and validation
 observations, assigned-workshop names, and custom building raw codes for categories.
 Rebuild/install both peers on `Local\\df3d_management_v123`. Missing observations

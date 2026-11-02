@@ -30,8 +30,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 123;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v123";
+inline constexpr uint32_t kManagementVersion = 124;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v124";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -533,6 +533,24 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
   } else if(r.production()) return "unexpected production payload";
   if(r.action()>=ManagementAction::WorkOrderList && r.action()<=ManagementAction::WorkOrderCatalog) {
     const auto* w=r.work_order();
+    if(w && w->details()) {
+      const auto* d=w->details();
+      const bool writing=r.action()==ManagementAction::WorkOrderUpdate;
+      if((r.action()!=ManagementAction::WorkOrderInspect && !writing) || w->id()<0 ||
+         (w->workshop_id()<0 && w->workshop_id()!=-2) || d->option() < -1 || d->option()>64 ||
+         d->choice() < -1 || d->choice()>16383 || d->expected_choices_revision()>INT64_MAX ||
+         d->cursor()>16384 || (d->query() && d->query()->size()>128) ||
+         (d->option()==-1 && (d->choice()!=-1 || d->cursor() || d->expected_choices_revision() || (d->query() && d->query()->size()))) ||
+         (writing && (d->choice()<0 || !w->expected_revision() || !d->expected_choices_revision() || d->cursor() || (d->query() && d->query()->size()))) ||
+         (!writing && d->choice()!=-1) || (d->cursor() && (!w->expected_revision() || !d->expected_choices_revision())) ||
+         w->remaining()!=-1 || w->frequency()!=-1 || w->max_workshops()!=-1 ||
+         (w->recipe() && w->recipe()->size()) || (w->query() && w->query()->size()) ||
+         w->cursor() || w->expected_list_revision() || w->condition_kind() || w->condition_index()!=-1 || w->remove_condition() ||
+         w->compare()!=-1 || w->threshold()!=-1 || w->item_type()!=-1 || w->item_subtype()!=-1 || w->mat_type()!=-1 || w->mat_index()!=-1 ||
+         w->target_order()!=-1 || w->dependency()!=-1 || w->candidate_kind() || w->move() || w->expected_neighbor()!=-1 || w->traits() ||
+         w->input_index()!=-1 || w->group_type()!=-1 || w->group_subtype()!=-1 || w->group_custom()!=-1 || w->encrust_flags()!=-1 ||
+         w->filter_choice()!=-1 || w->suggestion_index()!=-1)return "invalid exclusive native Details intent";
+    }
     if(w && (w->filter_choice() < -1 || w->filter_choice()>32767))return "invalid native filter choice";
     if(w && w->filter_choice()>=0 &&
        (r.action()!=ManagementAction::WorkOrderCondition || w->id()<0 || (w->workshop_id()<0 && w->workshop_id()!=-2) || !w->expected_revision() || !w->expected_list_revision() ||
@@ -1787,6 +1805,19 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   }
   if(const auto* w=s.work_order()) {
     auto textOk=[](const flatbuffers::String* v,size_t max){return !v || v->size()<=max;};
+    if(const auto* d=w->details()) {
+      if(d->id()<0 || !d->revision() || d->revision()>INT64_MAX || !d->caption() || !textOk(d->caption(),1024) ||
+         !d->options() || d->options()->size()>65 || d->selected_option() < -1 ||
+         (d->selected_option()>=0 && size_t(d->selected_option())>=d->options()->size()) ||
+         d->choices_revision()>INT64_MAX || d->total()>16384 || d->next_cursor()>d->total() ||
+         (d->selected_option()==-1 && (d->choices() || d->choices_revision() || d->total() || d->next_cursor())) ||
+         (d->selected_option()>=0 && (!d->choices() || !d->choices_revision())) ||
+         (d->choices() && (d->choices()->size()>128 || d->choices()->size()>d->total())))return "invalid native Details state";
+      for(const auto* option:*d->options())if(!option || option->kind()>6 || option->index() < -1 || !option->caption() || !textOk(option->caption(),512))return "invalid native Details option";
+      std::set<int32_t> choices;
+      if(d->choices())for(const auto* choice:*d->choices())if(!choice || choice->id()<0 || choice->id()>16383 || !choices.insert(choice->id()).second ||
+         !choice->caption() || !textOk(choice->caption(),512) || !textOk(choice->count_caption(),32) || (choice->estimated() && !choice->count_caption()))return "invalid native Details choice";
+    }
     if((w->orders() && w->orders()->size()>16) || (w->recipes() && w->recipes()->size()>128) ||
        (w->choices() && w->choices()->size()>128) || (w->managers() && w->managers()->size()>32) || !textOk(w->detail(),2048)) return "work order response too large";
     if(w->build_phase()>3 || w->build_done()>w->build_total() || w->list_revision()>INT64_MAX)

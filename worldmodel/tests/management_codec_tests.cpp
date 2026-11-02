@@ -4088,3 +4088,34 @@ TEST_CASE("native work order list observations preserve absence and supplied nam
     }
   }
 }
+
+TEST_CASE("native Details choices preserve revisions and reject mixed edits") {
+  wm::ManagementRequest request;request.action=wm::ManagementAction::WorkOrderUpdate;
+  auto& w=request.workOrder;w.id=37;w.expectedRevision=9007199254740993ULL;
+  w.details=wm::WorkOrderDetailsRequest{1,2,9007199254740995ULL,"",0};
+  for(bool mixed:{false,true}) {
+    w.remaining=mixed?10:-1;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(wire::validateConstructionRequest(*value).has_value()==mixed);
+    REQUIRE(value->work_order()->details());
+    CHECK(value->work_order()->expected_revision()==9007199254740993ULL);
+    CHECK(value->work_order()->details()->expected_choices_revision()==9007199254740995ULL);
+    CHECK(value->work_order()->details()->choice()==2);
+  }
+}
+TEST_CASE("native Details decoding distinguishes unobserved and empty choices") {
+  for(bool selected:{false,true}) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto caption=b.CreateString("Specify glass");
+    const auto option=wire::CreateWorkOrderDetailsOption(b,0,1,caption);
+    const auto options=b.CreateVector(std::vector{option});
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<wire::WorkOrderDetailsChoice>>> choices;
+    if(selected)choices=b.CreateVector(std::vector<flatbuffers::Offset<wire::WorkOrderDetailsChoice>>{});
+    const auto details=wire::CreateWorkOrderDetailsState(b,37,1,caption,options,selected?0:-1,choices,selected?2:0);
+    wire::WorkOrderStateBuilder state(b);state.add_details(details);b.Finish(state.Finish());
+    const auto decoded=codec::decodeWorkOrder(flatbuffers::GetRoot<wire::WorkOrderState>(b.GetBufferPointer()));
+    REQUIRE(decoded.details);CHECK(decoded.details->choices.has_value()==selected);
+    REQUIRE(decoded.details->options.size()==1);CHECK(decoded.details->options[0].index==1);
+  }
+}

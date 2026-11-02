@@ -468,6 +468,7 @@ struct CitizenState {
   int64_t detailListRevision=0;
   std::string recalcError;
 };
+struct WorkOrderDetailsRequest {int16_t option=-1;int32_t choice=-1;uint64_t expectedChoicesRevision=0;std::string query;uint32_t cursor=0;};
 struct WorkOrderRequest {
   int32_t id=-1,remaining=-1,workshopId=-2,maxWorkshops=-1,threshold=-1,targetOrder=-1;
   uint64_t expectedRevision=0;
@@ -483,6 +484,7 @@ struct WorkOrderRequest {
   int16_t inputIndex=-1,groupType=-1,groupSubtype=-1; int32_t groupCustom=-1,encrustFlags=-1;
   int16_t suggestionIndex=-1;
   int32_t filterChoice=-1;
+  std::optional<WorkOrderDetailsRequest> details;
 };
 struct WorkOrderCondition {
   uint8_t kind=0; uint16_t index=0;
@@ -522,6 +524,15 @@ struct WorkOrderInfo {
   std::vector<WorkOrderInput> inputs;
 };
 struct ManagerRole { int32_t unitId=-1; std::string name,position,job; std::vector<int32_t> offices; };
+struct WorkOrderDetailsOption {uint8_t kind=0;int32_t index=-1;std::string caption;};
+struct WorkOrderDetailsChoice {int32_t id=-1;std::string caption;std::optional<std::string> countCaption;bool estimated=false;};
+struct WorkOrderDetailsState {
+  int32_t id=-1;uint64_t revision=0;std::string caption;
+  std::vector<WorkOrderDetailsOption> options;
+  int16_t selectedOption=-1;
+  std::optional<std::vector<WorkOrderDetailsChoice>> choices;
+  uint64_t choicesRevision=0;uint32_t total=0,nextCursor=0;
+};
 struct WorkOrderListNativeState { bool managerAvailable=false,validationRequired=false; };
 struct WorkOrderState {
   std::vector<WorkOrderInfo> orders;
@@ -537,6 +548,7 @@ struct WorkOrderState {
   std::vector<WorkOrderTask> tasks;
   uint32_t total=0; int64_t listRevision=0; uint8_t buildPhase=0; uint32_t buildDone=0,buildTotal=0;
   std::optional<WorkOrderListNativeState> nativeState;
+  std::optional<WorkOrderDetailsState> details;
 };
 struct ConstructionSelection {
   int16_t filter=-1,itemType=-1,itemSubtype=-1,matType=-1; int32_t matIndex=-1; uint32_t count=1;

@@ -144,6 +144,15 @@ WorkOrderState decodeWorkOrder(const m::WorkOrderState* w) {
   auto& n = out;
   auto str = [](const flatbuffers::String* s) { return s ? s->str() : std::string(); };
   if(const auto* native=w->native_state())n.nativeState=WorkOrderListNativeState{native->manager_available(),native->validation_required()};
+  if(const auto* d=w->details()) {
+    n.details.emplace();auto& details=*n.details;
+    details.id=d->id();details.revision=d->revision();details.caption=str(d->caption());details.selectedOption=d->selected_option();
+    details.choicesRevision=d->choices_revision();details.total=d->total();details.nextCursor=d->next_cursor();
+    if(d->options())for(const auto* option:*d->options())details.options.push_back({option->kind(),option->index(),str(option->caption())});
+    if(d->choices()) {
+      details.choices.emplace();for(const auto* choice:*d->choices())details.choices->push_back({choice->id(),str(choice->caption()),choice->count_caption()?std::optional<std::string>(str(choice->count_caption())):std::nullopt,choice->estimated()});
+    }
+  }
   n.nextCursor = w->next_cursor();
   n.detail = str(w->detail());
   n.total=w->total();n.listRevision=int64_t(w->list_revision());n.buildPhase=w->build_phase();
@@ -253,6 +262,8 @@ flatbuffers::Offset<m::ProductionRequest> encodeProduction(flatbuffers::FlatBuff
 flatbuffers::Offset<m::WorkOrderRequest> encodeWorkOrder(flatbuffers::FlatBufferBuilder& b,
                                                          const WorkOrderRequest& value) {
   const auto& w = value;
+  flatbuffers::Offset<m::WorkOrderDetailsRequest> details;
+  if(w.details){const auto& d=*w.details;details=m::CreateWorkOrderDetailsRequest(b,d.option,d.choice,d.expectedChoicesRevision,b.CreateString(d.query),d.cursor);}
   return m::CreateWorkOrderRequest(b, w.id, w.expectedRevision, b.CreateString(w.recipe),
                                    b.CreateString(w.query), w.cursor, w.remaining, w.frequency,
                                    w.workshopId, w.maxWorkshops, w.conditionKind, w.conditionIndex,
@@ -261,7 +272,7 @@ flatbuffers::Offset<m::WorkOrderRequest> encodeWorkOrder(flatbuffers::FlatBuffer
                                    uint64_t(w.expectedListRevision), w.itemSubtype, w.matType, w.matIndex,
                                    w.traits && (!w.traits->empty() || (!w.move && w.inputIndex < 0))
                                        ? b.CreateVectorOfStrings(*w.traits) : 0,
-                                   w.inputIndex, w.groupType, w.groupSubtype, w.groupCustom, w.encrustFlags, w.suggestionIndex, w.filterChoice);
+                                   w.inputIndex, w.groupType, w.groupSubtype, w.groupCustom, w.encrustFlags, w.suggestionIndex, w.filterChoice,details);
 }
 
 flatbuffers::Offset<m::KitchenRequest> encodeKitchen(flatbuffers::FlatBufferBuilder& b,

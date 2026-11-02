@@ -500,6 +500,20 @@ local ok,err=xpcall(function()
   shot('order-condition-manual-native')
   mouse(896,178)
   assert(#native.item_conditions==0)
+  for i=1,14 do mouse(912,142)end
+  assert(#native.item_conditions==14)
+  shot('order-conditions-overflow-native')
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  g.precise_mouse_x=400;g.precise_mouse_y=240;g.mouse_x=50;g.mouse_y=20
+  gui.simulateInput(view,'CONTEXT_SCROLL_DOWN');view:render(dfhack.getTickCount())
+  expected.condition_scroll={wheel=conditions.scroll_position_conditions}
+  mouse(912,550)
+  expected.condition_scroll.first=conditions.scroll_position_conditions
+  shot('order-conditions-scrolled-native')
+  -- Retire diagnostic blank rows before the independent dependency reference.
+  while #native.item_conditions>0 do local c=native.item_conditions[0];native.item_conditions:erase(0);c:delete()end
+  conditions.scroll_position_conditions=0
+  view:render(dfhack.getTickCount())
   mouse(944,142)
   assert(conditions.selecting_order_condition and #conditions.condition_wq>0)
   expected.dependency_candidates={}

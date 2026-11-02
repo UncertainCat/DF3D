@@ -1,5 +1,8 @@
 extends "res://tests/workshop_wire_live.gd"
 var created_order: Dictionary={}
+func click(point: Vector2) -> void:
+	var motion:=InputEventMouseMotion.new();motion.position=point;motion.global_position=point
+	root.push_input(motion,true);super.click(point)
 func settle(service,ready: Callable) -> bool:
 	var deadline:=Time.get_ticks_msec()+10000
 	while Time.get_ticks_msec()<deadline:
@@ -163,12 +166,37 @@ func run() -> void:
 	click(Vector2(896,178))
 	if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.orders.phase==owner.orders.Phase.Ready and owner.orders.row_ticket==0),"Manual condition removal was not confirmed"):quit(1);return
 	check(owner.conditions.snapshot.conditions.is_empty(),"Manual condition retained after removal")
+	for index in 14:
+		click(Vector2(912,142))
+		if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.orders.phase==owner.orders.Phase.Ready and owner.orders.row_ticket==0),"Overflow condition creation failed"):quit(1);return
+	check(owner.conditions_view.condition_scroll.visible,"Condition scrollbar missing")
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/workshop-order-conditions-overflow-live.png")
+	var wheel:=InputEventMouseButton.new();wheel.position=Vector2(400,240);wheel.global_position=wheel.position;wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN;wheel.pressed=true
+	root.push_input(wheel,true)
+	wheel.pressed=false;root.push_input(wheel,true)
+	check(owner.conditions_view.condition_first==int(expected.condition_scroll.wheel),"Condition wheel differs from native: "+str(owner.conditions_view.condition_first)+" / "+str(expected.condition_scroll.wheel))
+	click(Vector2(912,550))
+	check(owner.conditions_view.condition_first==int(expected.condition_scroll.first),"Condition arrow differs from native")
+	var selected: int=owner.conditions_view.condition_first
+	click(Vector2(656,178))
+	if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.orders.phase==owner.orders.Phase.Ready and owner.orders.row_ticket==0),"Scrolled condition edit failed"):quit(1);return
+	for index in owner.conditions.snapshot.conditions.size():check(owner.conditions.snapshot.conditions[index].threshold==(1 if index==selected else 0),"Scrolled edit targeted wrong condition")
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/workshop-order-conditions-scrolled-live.png")
+	while not owner.conditions.snapshot.conditions.is_empty():
+		click(Vector2(880 if owner.conditions_view.condition_scroll.visible else 896,178))
+		if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.orders.phase==owner.orders.Phase.Ready and owner.orders.row_ticket==0),"Scrolled condition removal failed"):quit(1);return
+	check(owner.conditions_view.condition_first==0 and not owner.conditions_view.condition_scroll.visible,"Condition scroll did not reset after removal")
 	click(Vector2(944,142))
 	if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready),"Dependency picker did not load"):quit(1);return
 	check(owner.conditions.filter_kind==3,"Dependency picker not open")
 	check(owner.conditions.filter_total==expected.dependency_candidates.size(),"Dependency candidate count differs")
+	root.size=Vector2i(1200,900);await process_frame;await process_frame
+	if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.conditions.filter_rows.size()>=owner.conditions_view.page_rows),"Tall dependency picker did not fill across transport pages"):quit(1);return
 	for index in owner.conditions.filter_rows.size():
 		check(owner.conditions.filter_rows[index].id==int(expected.dependency_candidates[index]),"Dependency candidate order differs")
+	root.size=Vector2i(1200,800);await process_frame;await process_frame
 	await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/workshop-order-dependency-picker-live.png")
 	click(Vector2(400,202))

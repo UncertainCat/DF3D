@@ -6931,8 +6931,8 @@ effects, alongside manual and suggested conditions, filters and order removal.
 Owned DF48844 exits unsaved with the source unchanged; all five Godot groups
 have only known diagnostics. The final row clock artwork correction is rendered
 separately in `dependency-layout.gd`. `build/qa/work-order-dependencies` passes
-core19/19 and composition. Candidate pages contain at most15 rows plus the source
-order; larger-height page filling and scroll lifecycle still need completion.
+core19/19 and composition. Transport pages contain at most15 rows plus the source
+order; the viewer now accumulates revision-matched pages to fill its viewport.
 
 Item satisfaction now calls nativead0bc0 with an owned condition and filter.
 The shared native condition-to-filter mapping initializes every filter field;
@@ -6949,8 +6949,23 @@ filter/dependency/removal actions. Owned DF37680 exits unsaved with the source
 unchanged; all five Godot groups contain only known diagnostics. Root CTest19/19
 passes. This is not exhaustive acceptance of every reaction/trait family.
 
-This screen remains staged. Main-list and suggestion scrolling,
-overflow, tooltip coverage, tab navigation and exact native back navigation are
+Conditions owns separate main-list and suggestion offsets and scrollbars. Row
+controls shift16px left when their scrollbar is present; edits retain the native
+condition kind/index after scrolling. Removing rows clamps the offset, and close
+retires it. Native3c483c..3c4944 establishes four visible suggestion rows.
+Protected221324 on2026-11-01 verifies14 manual conditions, wheel/arrow offsets1/2,
+editing the scrolled row, removing all rows and restoring the empty view. The
+dependency picker also fills across transport pages at1200x900 and returns to
+1200x800 with native candidate order intact. Owned DF19392 exits unsaved with the
+source unchanged; all five Godot groups have only known diagnostics. Root
+CTest19/19 and `build/qa/work-order-condition-scrolling` core/composition pass.
+Runs220105/220723/221051 exposed diagnostic input omissions: native mouse tracking
+after capture and viewer mouse motion/wheel release. They are not acceptance.
+Suggestion overflow beyond four rows, drag/resize retirement and other native
+window geometries still require integrated acceptance.
+
+This screen remains staged. Full responsive layout, tooltip coverage,
+tab navigation and exact native back navigation are
 unfinished. Current close returns to the workshop; this is not native navigation
 acceptance. Fixed frame geometry and bounded displayed rows still need the full
 responsive/scrolling implementation before exposure.

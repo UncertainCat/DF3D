@@ -1,6 +1,6 @@
 extends "res://scripts/location_staff_candidates_frame.gd"
 # Native Conditions reference: protected200556; comparison strings392edc.
-# Staged: item/dependency editing, tab navigation and overflow remain unfinished.
+# Staged: tab navigation and integrated resize/hover acceptance remain unfinished.
 signal cancelled
 var state
 var input_allowed: Callable
@@ -8,6 +8,12 @@ var colors: Array[Color]=[]
 var editing_index: int=-1
 var number_draft:=""
 var blink:=false
+var condition_scroll
+var suggestion_scroll
+var condition_first:=0
+var suggestion_first:=0
+func condition_capacity() -> int:return maxi(0,int((size.y-300)/36))
+func row_shift(suggested: bool) -> int:return 16 if (suggestion_scroll.visible if suggested else condition_scroll.visible) else 0
 const COMPARISONS=["at least","at most","greater than","less than","exactly","not"]
 const FREQUENCIES=["One-time order","Restarts if completed, checked daily","Restarts if completed, checked monthly","Restarts if completed, checked seasonally","Restarts if completed, checked yearly"]
 func configure_conditions(source,model) -> void:
@@ -15,16 +21,32 @@ func configure_conditions(source,model) -> void:
 	mouse_filter=Control.MOUSE_FILTER_STOP
 	scrollbar.row_changed.connect(func(value):state.seek_filter(value))
 	scrollbar.input_allowed=func():return state.phase==state.Phase.Ready and (not input_allowed.is_valid() or input_allowed.call())
+	condition_scroll=preload("res://scripts/area_location_scrollbar.gd").new()
+	suggestion_scroll=preload("res://scripts/area_location_scrollbar.gd").new()
+	for bar in [condition_scroll,suggestion_scroll]:
+		add_child(bar);bar.configure(source);bar.hide();bar.input_allowed=scrollbar.input_allowed
+	condition_scroll.row_changed.connect(func(value):finish_entry();condition_first=value;queue_redraw())
+	suggestion_scroll.row_changed.connect(func(value):finish_entry();suggestion_first=value;queue_redraw())
 	state.changed.connect(func():
-		if state.phase in [state.Phase.Closed,state.Phase.Unavailable]:hide()
+		if state.phase in [state.Phase.Closed,state.Phase.Unavailable]:condition_first=0;suggestion_first=0;hide()
 		if state.phase not in [state.Phase.Ready,state.Phase.Reading,state.Phase.Applying]:finish_entry()
 		sync_filter_scroll();queue_redraw())
 func sync_filter_scroll() -> void:
 	if scrollbar==null or state==null:return
 	page_rows=maxi(1,int((size.y-168)/36))
+	state.set_filter_capacity(page_rows)
 	scrollbar.position=Vector2(912,144);scrollbar.size=Vector2(16,page_rows*36);scrollbar.page=page_rows
-	if state.filter_kind>=0:scrollbar.set_rows(state.filter_total,state.filter_first)
+	if state.filter_kind>=0:
+		scrollbar.set_rows(state.filter_total,state.filter_first)
+		if scrollbar.first!=state.filter_first:state.seek_filter(scrollbar.first)
 	else:scrollbar.hide()
+	if condition_scroll==null:return
+	condition_scroll.position=Vector2(872,108);condition_scroll.size=Vector2(16,condition_capacity()*36);condition_scroll.page=condition_capacity()
+	suggestion_scroll.position=Vector2(872,size.y-192);suggestion_scroll.size=Vector2(16,144);suggestion_scroll.page=4
+	if state.filter_kind<0 and not state.snapshot.is_empty():
+		condition_scroll.set_rows(state.snapshot.get("conditions",[]).size(),condition_first);condition_first=condition_scroll.first
+		suggestion_scroll.set_rows(state.snapshot.get("suggested_conditions",[]).size(),suggestion_first);suggestion_first=suggestion_scroll.first
+	else:condition_scroll.hide();suggestion_scroll.hide()
 func _process(_delta: float) -> void:
 	var next:=Time.get_ticks_msec()%1000<500
 	if state!=null and state.filter_kind>=0 and blink!=next:blink=next;queue_redraw()
@@ -39,7 +61,7 @@ func feed_filter(event: InputEventKey) -> void:
 		if value.length()<40 and (code==32 or (code>=65 and code<=90)):value+=String.chr(code)
 	state.set_filter_query(value)
 func open(building: int,order: int) -> void:
-	finish_entry();state.open(building,order);show();queue_redraw()
+	condition_first=0;suggestion_first=0;finish_entry();state.open(building,order);show();queue_redraw()
 func finish_entry() -> void:editing_index=-1;number_draft="";queue_redraw()
 func feed_number(event: InputEventKey) -> void:
 	if not event.pressed or event.ctrl_pressed or event.alt_pressed or event.meta_pressed:return
@@ -83,24 +105,30 @@ func _gui_input(event: InputEvent) -> void:
 				if index<state.filter_rows.size():state.choose_filter(state.filter_rows[index].id)
 			accept_event()
 		return
+	if event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
+		if state.phase==state.Phase.Ready:
+			var bar=condition_scroll if event.position.y<size.y-192 else suggestion_scroll
+			if Rect2(16,108,872,size.y-156).has_point(event.position):bar.move_to(bar.first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1)*(bar.page if event.shift_pressed else 1))
+		accept_event();return
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
 		if Rect2(832,72,32,36).has_point(event.position):state.cycle_frequency()
 		if Rect2(864,72,32,36).has_point(event.position):finish_entry();state.add_item_condition()
 		if Rect2(896,72,32,36).has_point(event.position):finish_entry();state.open_dependencies()
-		for index in 5:
-			if Rect2(720,size.y-192+index*36,32,36).has_point(event.position):state.add_suggestion(index)
+		for index in 4:
+			if Rect2(720-row_shift(true),size.y-192+index*36,32,36).has_point(event.position):state.add_suggestion(suggestion_first+index)
 		if state.phase==state.Phase.Ready:
-			for index in mini(state.snapshot.conditions.size(),maxi(0,int((size.y-300)/36))):
-				var row: Dictionary=state.snapshot.conditions[index]
+			for index in mini(state.snapshot.conditions.size()-condition_first,condition_capacity()):
+				var row: Dictionary=state.snapshot.conditions[condition_first+index]
+				var shift:=row_shift(false)
 				if row.kind==0:
-					if Rect2(592,108+index*36,32,36).has_point(event.position):editing_index=row.index;number_draft="";queue_redraw();break
-					if Rect2(624,108+index*36,32,36).has_point(event.position):state.edit_amount(row,1);break
-					if Rect2(656,108+index*36,32,36).has_point(event.position):state.edit_amount(row,-1);break
-					if Rect2(688,108+index*36,32,36).has_point(event.position):state.edit_amount(row,0,true);break
+					if Rect2(592-shift,108+index*36,32,36).has_point(event.position):editing_index=row.index;number_draft="";queue_redraw();break
+					if Rect2(624-shift,108+index*36,32,36).has_point(event.position):state.edit_amount(row,1);break
+					if Rect2(656-shift,108+index*36,32,36).has_point(event.position):state.edit_amount(row,-1);break
+					if Rect2(688-shift,108+index*36,32,36).has_point(event.position):state.edit_amount(row,0,true);break
 					for kind in 3:
-						if Rect2(720+kind*32,108+index*36,32,36).has_point(event.position):finish_entry();state.open_filter(row.index,kind);break
-				elif Rect2(592,108+index*36,32,36).has_point(event.position):state.edit_dependency(row);break
-				if Rect2(848,108+index*36,32,36).has_point(event.position):state.remove_condition(state.snapshot.conditions[index]);break
+						if Rect2(720+kind*32-shift,108+index*36,32,36).has_point(event.position):finish_entry();state.open_filter(row.index,kind);break
+				elif Rect2(592-shift,108+index*36,32,36).has_point(event.position):state.edit_dependency(row);break
+				if Rect2(848-shift,108+index*36,32,36).has_point(event.position):finish_entry();state.remove_condition(row);break
 		accept_event()
 func text(value: String,point: Vector2,color: int=15) -> void:
 	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point,value,HORIZONTAL_ALIGNMENT_LEFT,-1,12,colors[color] if colors.size()>color else Color.WHITE)
@@ -118,15 +146,16 @@ func tab(value: String,point: Vector2,selected:=false) -> float:
 	text(value,point+Vector2(16,16),0 if selected else 15)
 	return width*8
 func condition(row: Dictionary,y: float,suggested: bool) -> void:
+	var shift:=row_shift(suggested)
 	var background: Texture2D=art.texture("BUTTON_RECTANGLE_DARK")
 	if background!=null:
 		for dy in 2:
-			for dx in 109:draw_texture_rect_region(background,Rect2(16+dx*8,y+6+dy*12,8,12),Rect2(8,12,8,12))
+			for dx in 109-int(shift/8):draw_texture_rect_region(background,Rect2(16+dx*8,y+6+dy*12,8,12),Rect2(8,12,8,12))
 	if row.get("kind",0)==1:
 		text(row.get("description",""),Vector2(16,y+24),11)
 		text("must first be completed" if row.dependency==1 else "must first be activated",Vector2(16,y+36))
 		text("Satisfied for next check" if row.satisfied else "Not satisfied for next check",Vector2(416,y+24),10 if row.satisfied else 12)
-		icon("WORK_ORDERS_CHANGE_ORDER_CONDITION_CHECK_TYPE",Vector2(592,y));icon("WORK_ORDERS_REMOVE",Vector2(848,y))
+		icon("WORK_ORDERS_CHANGE_ORDER_CONDITION_CHECK_TYPE",Vector2(592-shift,y));icon("WORK_ORDERS_REMOVE",Vector2(848-shift,y))
 		return
 	text("Amount of ",Vector2(16,y+24),11)
 	text(row.get("item_caption",""),Vector2(96,y+24),14)
@@ -136,16 +165,16 @@ func condition(row: Dictionary,y: float,suggested: bool) -> void:
 		text(COMPARISONS[comparison],Vector2(120,y+36),13)
 		text(number_draft if not suggested and row.index==editing_index else str(row.threshold),Vector2(128+COMPARISONS[comparison].length()*8,y+36),12)
 	if suggested and row.get("editable",false):
-		patch("BUTTON_RECTANGLE_DARK",Vector2i(90,int(y/12)),4,3)
-		icon("WORK_ORDERS_ADD_SUGGESTED_CONDITION",Vector2(720,y))
+		patch("BUTTON_RECTANGLE_DARK",Vector2i(90-int(shift/8),int(y/12)),4,3)
+		icon("WORK_ORDERS_ADD_SUGGESTED_CONDITION",Vector2(720-shift,y))
 	elif not suggested:
 		text("Satisfied for next check" if row.satisfied else "Not satisfied for next check",Vector2(416,y+24),10 if row.satisfied else 12)
-		icon("WORK_ORDERS_ENTER_AMOUNT",Vector2(592,y))
-		icon("WORK_ORDERS_INCREASE_AMOUNT",Vector2(624,y))
-		icon("WORK_ORDERS_DECREASE_AMOUNT",Vector2(656,y))
-		icon("WORK_ORDERS_CONDITIONS",Vector2(688,y))
-		for kind in 3:icon(["WORK_ORDERS_CHANGE_TYPE","WORK_ORDERS_CHANGE_MAT","WORK_ORDERS_CHANGE_ADJ"][kind],Vector2(720+kind*32,y))
-		icon("WORK_ORDERS_REMOVE",Vector2(848,y))
+		icon("WORK_ORDERS_ENTER_AMOUNT",Vector2(592-shift,y))
+		icon("WORK_ORDERS_INCREASE_AMOUNT",Vector2(624-shift,y))
+		icon("WORK_ORDERS_DECREASE_AMOUNT",Vector2(656-shift,y))
+		icon("WORK_ORDERS_CONDITIONS",Vector2(688-shift,y))
+		for kind in 3:icon(["WORK_ORDERS_CHANGE_TYPE","WORK_ORDERS_CHANGE_MAT","WORK_ORDERS_CHANGE_ADJ"][kind],Vector2(720+kind*32-shift,y))
+		icon("WORK_ORDERS_REMOVE",Vector2(848-shift,y))
 func draw_filter() -> void:
 	var condition_row: Dictionary={}
 	for row in state.snapshot.get("conditions",[]):
@@ -210,5 +239,5 @@ func _draw() -> void:
 	icon("WORK_ORDERS_ADD_ORDER_CONDITION",Vector2(896,72))
 	var top:=size.y-192
 	text("Suggested conditions",Vector2(16,top))
-	for index in mini(5,row.get("suggested_conditions",[]).size()):condition(row.suggested_conditions[index],top+index*36,true)
-	for index in mini(row.conditions.size(),maxi(0,int((top-108)/36))):condition(row.conditions[index],108+index*36,false)
+	for index in mini(4,row.get("suggested_conditions",[]).size()-suggestion_first):condition(row.suggested_conditions[suggestion_first+index],top+index*36,true)
+	for index in mini(row.conditions.size()-condition_first,condition_capacity()):condition(row.conditions[condition_first+index],108+index*36,false)

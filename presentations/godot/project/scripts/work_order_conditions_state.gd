@@ -19,6 +19,10 @@ var filter_total:=0
 var filter_first:=0
 var filter_revision: int=0
 var filter_query:=""
+var filter_capacity:=15
+func set_filter_capacity(value: int) -> void:
+	filter_capacity=maxi(1,value)
+	if filter_kind==3 and phase==Phase.Ready and ticket==0 and filter_rows.size()<mini(filter_capacity,filter_total-filter_first):_read()
 func configure(source) -> void:
 	dispose();service=source
 	if service!=null:service.session_changed.connect(_session_changed)
@@ -42,7 +46,7 @@ func open(building: int,order: int) -> void:
 func _read() -> void:
 	phase=Phase.Reading
 	if filter_kind==3:
-		_send({"action":C.ManagementAction.WorkOrderCandidates,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"condition_kind":1,"cursor":filter_first,"expected_list_revision":filter_revision})
+		_send({"action":C.ManagementAction.WorkOrderCandidates,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"condition_kind":1,"cursor":filter_first+filter_rows.size(),"expected_list_revision":filter_revision})
 		return
 	if filter_kind>=0:
 		_send({"action":C.ManagementAction.WorkOrderCandidates,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"condition_index":filter_index,"candidate_kind":filter_kind+3,"query":filter_query,"cursor":filter_first,"expected_list_revision":filter_revision})
@@ -176,8 +180,14 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 		var total: int=value.get("total",-1)
 		if revision<=0 or (filter_revision!=0 and filter_revision!=revision) or total<0 or total>32768 or page.size()>128 or sent.cursor+page.size()>total:_fail(Phase.Rejected);return
 		filter_revision=revision;snapshot=rows[0].duplicate(true)
-		if sent.get("query","")!=filter_query or sent.cursor!=filter_first:_read();return
+		if sent.get("query","")!=filter_query or sent.cursor!=filter_first+(filter_rows.size() if dependency_read else 0):_read();return
 		if dependency_read and total==0:filter_kind=-1;_read();return
-		filter_rows=page.duplicate(true);filter_total=total;phase=Phase.Ready;changed.emit();return
+		filter_total=total
+		if dependency_read:
+			if page.is_empty() and sent.cursor<total:_fail(Phase.Rejected);return
+			filter_rows.append_array(page.duplicate(true))
+			if filter_rows.size()<mini(filter_capacity,total-filter_first):_read();return
+		else:filter_rows=page.duplicate(true)
+		phase=Phase.Ready;changed.emit();return
 	if not rows[0].get("suggested_conditions") is Array or rows[0].get("frequency",-1) not in [0,1,2,3,4]:_fail(Phase.Rejected);return
 	snapshot=rows[0].duplicate(true);phase=Phase.Ready;_flush_threshold();changed.emit()

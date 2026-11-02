@@ -2144,6 +2144,16 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             value["caption"]=DF2UTF(row.name);value["compare"]=DF2UTF(row.compare_str);
             result["rows"].append(value);
           }
+          if(id<0) {
+            const auto groups=df3d_production::nativeWorkOrderGroups(*catalog);if(!groups)return CR_FAILURE;
+            result["groups"]=Json::Value(Json::arrayValue);
+            for(const auto& group:*groups) {
+              Json::Value value;value["type"]=group.type;value["subtype"]=group.subtype;value["custom"]=group.custom;
+              value["name"]=DF2UTF(group.name);value["rows"]=Json::Value(Json::arrayValue);
+              for(auto index:group.rows)value["rows"].append(result["rows"][Json::ArrayIndex(index)]);
+              result["groups"].append(std::move(value));
+            }
+          }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="workshop-orders-probe") {

@@ -246,6 +246,40 @@ func run() -> void:
 	click(Vector2(888,global_y))
 	if not check(await settle(service,func():return global.phase==global.Phase.Ready and global.ticket==0),"Global removal failed; no retry"):quit(1);return
 	check(global.find_order(created_order.id).is_empty(),"Global removed identity retained")
+	# Staged owner entry while the global Create availability contract is pending.
+	owner.open_global_order_picker()
+	if not check(await settle(service,func():return owner.order_choices.phase==owner.order_choices.Phase.Ready),"Global creation catalog did not load"):quit(1);return
+	var native_groups: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/global-work-order-picker.json"))
+	check(owner.order_choices.groups.size()==native_groups.groups.size(),"Global category count differs")
+	var still_group: int=-1
+	for index in owner.order_choices.groups.size():
+		var group: Dictionary=owner.order_choices.groups[index]
+		check(group.name==native_groups.groups[index].name and group.count==native_groups.groups[index].rows.size(),"Global category differs from native")
+		if group.type==13 and group.subtype==15 and group.custom==-1:still_group=index
+	if not check(still_group>=0,"Global Still category missing"):quit(1);return
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/global-order-picker-live.png")
+	owner.order_picker.group_scroll.move_to(still_group)
+	click(Vector2(200,94+(still_group-owner.order_picker.group_first)*36))
+	if not check(await settle(service,func():return owner.order_choices.phase==owner.order_choices.Phase.Ready),"Global category selection failed"):quit(1);return
+	check(owner.order_choices.rows.size()==4,"Global Still catalog differs")
+	click(Vector2(600,94))
+	for char in "extract":number_key(KEY_A,char.unicode_at(0))
+	if not check(await settle(service,func():return owner.order_choices.phase==owner.order_choices.Phase.Ready),"Global search failed"):quit(1);return
+	check(owner.order_choices.rows.size()==1 and owner.order_choices.rows[0].name=="Extract from plants","Global search differs")
+	number_key(KEY_ENTER)
+	var global_created: Dictionary={}
+	owner.order_choices.created.connect(func(receipt):global_created.merge(receipt,true),CONNECT_ONE_SHOT)
+	click(Vector2(600,130))
+	if not check(await settle(service,func():return not global_created.is_empty() and global.phase==global.Phase.Ready and global.ticket==0),"Global creation was not confirmed; no retry"):quit(1);return
+	check(global_created.workshop_id==-1 and global_created.total==10 and global_created.remaining==10,"Global creation defaults differ")
+	global.seek(global.total-1,owner.global_orders_view.page_rows)
+	if not check(await settle(service,func():return global.phase==global.Phase.Ready and global.ticket==0 and not global.find_order(global_created.id).is_empty()),"Created global order not visible"):quit(1);return
+	var global_created_row: Dictionary=global.find_order(global_created.id)
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/global-order-created-live.png")
+	click(Vector2(888,142+(global_created_row.position-global.first)*36))
+	if not check(await settle(service,func():return global.phase==global.Phase.Ready and global.ticket==0),"Global created order removal failed"):quit(1);return
 	number_key(KEY_ESCAPE)
 	if not check(await settle(service,func():return owner.orders.phase==owner.orders.Phase.Ready and owner.orders.rows_available and owner.orders.row_ticket==0),"Workshop list did not refresh after global removal"):quit(1);return
 	check(not owner.orders.snapshot.order_ids.has(created_order.id) and owner.orders.row_total==0 and owner.orders.rows.is_empty(),"Removed order retained in workshop list")

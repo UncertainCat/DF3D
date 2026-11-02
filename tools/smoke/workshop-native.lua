@@ -534,6 +534,17 @@ local ok,err=xpcall(function()
   expected.global_order_ids={}
   for _,order in ipairs(df.global.world.manager_orders.all)do expected.global_order_ids[#expected.global_order_ids+1]=order.id end
   shot('global-work-orders-native')
+  mouse(944,142);assert(picker.open and picker.forced_bld_id==-1,'Native global picker did not open')
+  local groups={}
+  for _,group in ipairs(picker.building)do
+   groups[#groups+1]={type=group.type,subtype=group.subtype,custom=group.custom_id,name=dfhack.df2utf(group.name),rows=read_rows(group.jminfo)}
+  end
+  local global_file=assert(io.open(out..'/global-work-order-picker.json','w'))
+  global_file:write(json.encode({selected=picker.selected_building_index,groups=groups}));global_file:close()
+  local grouped_text,grouped_code=dfhack.run_command_silent('df3d','work-orders-catalog-probe');assert(grouped_code==0,grouped_text)
+  assert(json.encode(groups)==json.encode(json.decode(grouped_text).groups),'Owned global categories differ from native picker')
+  shot('global-order-picker-native')
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());assert(not picker.open)
   if df.global.game.main_interface.info.open then gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())end
   select_map(still);assert(click_label('Work orders'))
   mouse(840,190)

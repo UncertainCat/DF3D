@@ -37,11 +37,13 @@ func configure(world,service,host,help=null) -> void:
 	conditions.applied.connect(orders.refresh)
 	order_picker=preload("res://scripts/workshop_order_picker_view.gd").new();canvas.add_child(order_picker);order_picker.configure_picker(world,order_choices);order_picker.hide()
 	order_picker.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self)
-	order_picker.cancelled.connect(_close_order_picker)
+	order_picker.cancelled.connect(_back_order_picker)
 	panel.orders.choose_requested.connect(func():
 		if orders.phase==orders.Phase.Ready and orders.snapshot.get("manager_available",false):
 			order_picker.open(state.building_id,state.snapshot.get("native_name",""),panel.building_icon))
-	order_choices.created.connect(func(_receipt):orders.refresh())
+	order_choices.created.connect(func(receipt):
+		orders.refresh()
+		if receipt.get("workshop_id",-1)==-1:global_orders.refresh();global_orders_view.show())
 	selector=preload("res://scripts/workshop_candidates_view.gd").new();canvas.add_child(selector);selector.configure(world);selector.extra_columns=2;selector.responsive_height=true;selector.configure_modes(candidate_modes,help);selector.hide()
 	selector.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self) and workers.phase==workers.Phase.Ready and not candidate_modes.applying
 	selector.cancelled.connect(_close_picker)
@@ -87,6 +89,15 @@ func _exit_tree() -> void:
 func _close_order_picker() -> void:
 	order_choices.close()
 	if order_picker!=null:order_picker.hide()
+
+func open_global_order_picker() -> void:
+	if global_orders.phase!=global_orders.Phase.Ready:return
+	global_orders_view.hide();order_picker.open(-2,"","")
+
+func _back_order_picker() -> void:
+	var global: bool=order_choices.building_id==-2
+	_close_order_picker()
+	if global:global_orders.refresh();global_orders_view.show()
 
 func _close_conditions() -> void:
 	conditions.close()
@@ -151,7 +162,7 @@ func _input(event: InputEvent) -> void:
 func handle_escape() -> void:
 	if conditions_view!=null and conditions_view.visible:_back_conditions()
 	elif global_orders_view!=null and global_orders_view.visible:_close_global_orders()
-	elif order_picker!=null and order_picker.visible:_close_order_picker()
+	elif order_picker!=null and order_picker.visible:_back_order_picker()
 	elif panel!=null and panel.orders.editing:panel.orders.finish_entry()
 	elif selector!=null and selector.visible:_close_picker()
 	else:super.handle_escape()

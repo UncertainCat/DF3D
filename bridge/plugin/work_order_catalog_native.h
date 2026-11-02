@@ -2,6 +2,9 @@
 #include "workshop_job_native.h"
 #include "workshop_orders_native.h"
 #include "df/manager_order_template.h"
+#include "df/cwo_buildingst.h"
+#include "df/entity_raw.h"
+#include "df/building_def.h"
 #include <cstdlib>
 
 namespace df3d_production {
@@ -26,6 +29,9 @@ inline bool workOrderCatalogSupported() {
             {0xd09ca0,0x2f52,UINT64_C(0x2e65a5a8b4f5a1c5)},
             {0xa676c0,0xa0,UINT64_C(0xcf5d67f71c5b901e)},
             {0xcc0110,0xa0,UINT64_C(0xdb71755904d0cf88)},
+            {0x54d320,0x16b4,UINT64_C(0x13ca7481db9a2123)}, // category names
+            {0x376270,0x82,UINT64_C(0x394e638a27d80d31)}, // category ordering
+            {0x376b0a,0xedb,UINT64_C(0x2cf08d51d161f014)}, // category enumeration/membership
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -127,12 +133,90 @@ struct WorkshopOrderCatalog {
     std::vector<df::manager_order_template> rows;
 };
 
+struct NativeWorkOrderGroup {
+    int32_t type=-1,subtype=-1,custom=-1;
+    std::string name;
+    std::vector<size_t> rows;
+};
+// Native376b0a..3779e5 groups a fresh catalog. The surrounding picker opener
+// changes unrelated menus and must not be called, even with an owned context.
+// Classification, naming and comparison use native semantic leaves; only the
+// inline group enumeration/membership is composed here from simulation raws.
+inline std::optional<std::vector<NativeWorkOrderGroup>> nativeWorkOrderGroups(const std::vector<df::manager_order_template>& catalog) {
+    if(!workOrderCatalogSupported() || !df::global::world || !df::global::plotinfo)return std::nullopt;
+    const auto* entity=df::global::plotinfo->main.fortress_entity;
+    if(!entity || !entity->entity_raw || catalog.size()>65536)return std::nullopt;
+    static_assert(offsetof(df::entity_raw,workshops)+offsetof(df::entity_raw::T_workshops,permitted_building_id)==0x3cb8);
+    static_assert(offsetof(df::cwo_buildingst,name)==0x28);
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    using Classify=void (*)(int16_t,int16_t,int16_t,int32_t,uint32_t,int32_t*,int32_t*);
+    using Name=void (*)(std::string*,int16_t,int16_t,int16_t,int32_t);
+    const auto classify=reinterpret_cast<Classify>(base+0x311580);
+    const auto name=reinterpret_cast<Name>(base+0x54d320);
+    df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
+    std::vector<df::cwo_buildingst> groups;
+    const auto& permitted=entity->entity_raw->workshops.permitted_building_id;
+    if(permitted.size()>4096)return std::nullopt;
+    groups.reserve(29+permitted.size());
+    const auto append=[&](int32_t type,int32_t subtype,int32_t custom) {
+        df::cwo_buildingst group;group.type=type;group.subtype=subtype;group.custom_id=custom;
+        name(&group.name,int16_t(type),int16_t(subtype),df::global::plotinfo->race_id,custom);
+        groups.push_back(std::move(group));
+    };
+    for(int32_t subtype=0;subtype<25;++subtype)if(subtype!=6 && subtype!=23)append(13,subtype,-1);
+    for(int32_t subtype=0;subtype<4;++subtype)append(5,subtype,-1);
+    for(auto id:permitted) {
+        const auto* raw=df::building_def::find(id);
+        if(raw && (raw->building_type==df::building_type::Workshop || raw->building_type==df::building_type::Furnace))
+            append(int32_t(raw->building_type),raw->building_subtype,raw->id);
+    }
+    std::vector<df::cwo_buildingst*> sorted;sorted.reserve(groups.size());
+    for(auto& group:groups)sorted.push_back(&group);
+    using Compare=int (*)(const void*,const void*);
+    if(!sorted.empty())std::qsort(sorted.data(),sorted.size(),sizeof(sorted[0]),reinterpret_cast<Compare>(base+0x376270));
+    std::vector<std::pair<int32_t,int32_t>> builtin(catalog.size(),{-1,-1});
+    for(size_t i=0;i<catalog.size();++i) {
+        const auto& row=catalog[i];
+        if(row.job_type!=df::job_type::CustomReaction)
+            classify(int16_t(row.job_type),row.item_subtype,row.mat_type,row.mat_index,row.material_category.whole,&builtin[i].first,&builtin[i].second);
+    }
+    std::vector<NativeWorkOrderGroup> result;
+    if(!catalog.empty()) {
+        NativeWorkOrderGroup all;all.name="All tasks"; // Native literal162a138.
+        for(size_t i=0;i<catalog.size();++i)all.rows.push_back(i);
+        result.push_back(std::move(all));
+    }
+    for(const auto* group:sorted) {
+        NativeWorkOrderGroup output{group->type,group->subtype,group->custom_id,group->name,{}};
+        if(output.name.size()>512)return std::nullopt;
+        for(size_t i=0;i<catalog.size();++i) {
+            const auto& row=catalog[i];bool allowed=false;
+            if(row.job_type==df::job_type::CustomReaction) {
+                const auto& reactions=df::global::world->raws.reactions.reactions;
+                const auto found=std::find_if(reactions.begin(),reactions.end(),[&](const auto* reaction){return reaction && reaction->code==row.reaction_name;});
+                if(found!=reactions.end()) {
+                    const auto& match=(*found)->building;
+                    if(match.type.size()!=match.subtype.size() || match.type.size()!=match.custom.size())return std::nullopt;
+                    for(size_t j=0;j<match.type.size();++j)
+                        if(int32_t(match.type[j])==output.type && match.subtype[j]==output.subtype && match.custom[j]==output.custom){allowed=true;break;}
+                }
+            } else allowed=output.custom==-1 && builtin[i].first==output.type && builtin[i].second==output.subtype;
+            if(allowed)output.rows.push_back(i);
+        }
+        if(!output.rows.empty())result.push_back(std::move(output));
+    }
+    return result;
+}
+
 // The receipt covers the current workshop and every ordered recipe value. A
 // row index is meaningful only with this receipt; callers never supply recipes.
-inline std::optional<WorkshopOrderCatalog> workshopOrderCatalog(df::building* building) {
+inline std::optional<WorkshopOrderCatalog> workshopOrderCatalog(df::building* building,bool global=false) {
     const auto profile=workshopOrdersProfile(building);
-    if(!profile || !profile->managerAvailable)return std::nullopt;
-    auto rows=nativeWorkshopOrderCatalog(building);if(!rows)return std::nullopt;
+    if(global) {
+        const auto* entity=df::global::plotinfo?df::global::plotinfo->main.fortress_entity:nullptr;
+        if(!entity || entity->assignments_by_type[df::entity_position_responsibility::MANAGE_PRODUCTION].empty())return std::nullopt;
+    } else if(!profile || !profile->managerAvailable)return std::nullopt;
+    auto rows=global?nativeWorkOrderCatalog():nativeWorkshopOrderCatalog(building);if(!rows)return std::nullopt;
     uint64_t hash=UINT64_C(14695981039346656037);
     const auto add=[&](uint64_t value) {
         for(unsigned shift=0;shift<64;shift+=8){hash^=(value>>shift)&255;hash*=UINT64_C(1099511628211);}
@@ -140,7 +224,7 @@ inline std::optional<WorkshopOrderCatalog> workshopOrderCatalog(df::building* bu
     const auto text=[&](const std::string& value) {
         add(value.size());for(unsigned char c:value){hash^=c;hash*=UINT64_C(1099511628211);}
     };
-    add(profile->revision);add(rows->size());
+    add(global?UINT64_MAX:profile->revision);add(rows->size());
     for(const auto& row:*rows) {
         add(int(row.job_type));text(row.reaction_name);add(int(row.item_type));add(row.item_subtype);
         add(row.mat_type);add(row.mat_index);add(row.specflag.whole);
@@ -165,7 +249,8 @@ inline WorkshopOrderCreateResult createWorkshopOrder(int32_t buildingId,uint64_t
     if(!workOrderCatalogSupported()){result.outcome=WorkshopOrdersOutcome::Unavailable;return result;}
     if(choice<0 || !revision)return result;
     auto* building=df::building::find(buildingId);
-    auto catalog=workshopOrderCatalog(building);if(!catalog)return result;
+    const bool global=buildingId==-2;
+    auto catalog=workshopOrderCatalog(building,global);if(!catalog)return result;
     if(catalog->revision!=revision){result.outcome=WorkshopOrdersOutcome::Stale;return result;}
     if(size_t(choice)>=catalog->rows.size())return result;
     auto& orders=df::global::world->manager_orders;
@@ -191,7 +276,7 @@ inline WorkshopOrderCreateResult createWorkshopOrder(int32_t buildingId,uint64_t
         auto* order=reinterpret_cast<Allocate>(base+0x30fe90)();
         if(!order)return result;
         order->id=orders.manager_order_next_id++;
-        order->workshop_id=buildingId;
+        order->workshop_id=global?-1:buildingId;
         order->job_type=recipe.job_type;order->reaction_name.swap(reaction);
         order->item_type=recipe.item_type;order->item_subtype=recipe.item_subtype;
         order->mat_type=recipe.mat_type;order->mat_index=recipe.mat_index;
@@ -211,6 +296,10 @@ inline WorkshopOrderCreateResult createWorkshopOrder(int32_t buildingId,uint64_t
         }
         result.orderId=order->id;
         result.validated=order->status.bits.validated;
+        if(global) {
+            if(std::find(orders.all.begin(),orders.all.end(),order)!=orders.all.end())result.outcome=WorkshopOrdersOutcome::Applied;
+            return result;
+        }
         auto after=workshopOrdersProfile(building);
         if(after && std::find(after->orderIds.begin(),after->orderIds.end(),order->id)!=after->orderIds.end()) {
             result.profile=std::move(after);result.outcome=WorkshopOrdersOutcome::Applied;

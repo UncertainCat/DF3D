@@ -12,6 +12,8 @@ var rows: Array=[]
 var ticket:=0
 var generation:=0
 var query:=""
+var groups: Array=[]
+var selected_group:=0
 func configure(source) -> void:
 	dispose();service=source
 	if service!=null:service.session_changed.connect(_session_changed)
@@ -23,17 +25,24 @@ func close() -> void:
 	generation+=1
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
-	building_id=-1;revision=0;rows=[];query="";phase=Phase.Closed;changed.emit()
+	building_id=-1;revision=0;rows=[];query="";groups=[];selected_group=0;phase=Phase.Closed;changed.emit()
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
 func open(id: int) -> void:
 	close()
-	if id<0 or id>2147483647:return
+	if (id<0 and id!=-2) or id>2147483647:return
 	building_id=id;phase=Phase.Reading;_read(0)
 func _read(cursor: int) -> void:
-	_send({"action":C.ManagementAction.WorkOrderCatalog,"workshop_id":building_id,"cursor":cursor,"expected_list_revision":revision,"query":query})
+	var intent: Dictionary={"action":C.ManagementAction.WorkOrderCatalog,"workshop_id":building_id,"cursor":cursor,"expected_list_revision":revision,"query":query}
+	if building_id==-2 and not groups.is_empty():
+		var group: Dictionary=groups[selected_group]
+		intent.group_type=group.type;intent.group_subtype=group.subtype;intent.group_custom=group.custom
+	_send(intent)
+func select_group(index: int) -> void:
+	if building_id!=-2 or phase!=Phase.Ready or index<0 or index>=groups.size() or index==selected_group:return
+	selected_group=index;rows=[];phase=Phase.Reading;_read(0)
 func set_query(value: String) -> void:
-	if value==query or building_id<0 or phase not in [Phase.Ready,Phase.Reading]:return
+	if value==query or (building_id<0 and building_id!=-2) or phase not in [Phase.Ready,Phase.Reading]:return
 	generation+=1
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
@@ -66,7 +75,7 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 	var value: Dictionary=result.get("work_order",{})
 	if applying:
 		var orders: Array=value.get("orders",[])
-		if orders.size()!=1 or orders[0].get("id",-1)<0 or orders[0].get("workshop_id",-1)!=building_id or orders[0].get("total",-1)!=10:
+		if orders.size()!=1 or orders[0].get("id",-1)<0 or orders[0].get("workshop_id",-1)!=(-1 if building_id==-2 else building_id) or orders[0].get("total",-1)!=10:
 			_fail(Phase.Unknown);return
 		var receipt: Dictionary=orders[0].duplicate(true)
 		close();created.emit(receipt);return
@@ -74,6 +83,12 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 	var page: Array=value.get("recipes",[])
 	var next: int=value.get("next_cursor",0)
 	var total: int=value.get("total",-1)
+	if building_id==-2:
+		var categories: Array=value.get("groups",[])
+		if categories.is_empty() or categories.size()>128 or (not groups.is_empty() and categories!=groups):_fail(Phase.Rejected);return
+		for group in categories:
+			if not group is Dictionary or not group.get("name") is String or group.get("count",0)<=0:_fail(Phase.Rejected);return
+		groups=categories.duplicate(true)
 	if received_revision<=0 or (revision!=0 and revision!=received_revision) or total<0 or total>65536 or page.size()>128 or rows.size()+page.size()>total:
 		_fail(Phase.Rejected);return
 	for row in page:

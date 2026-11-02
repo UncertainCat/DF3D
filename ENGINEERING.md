@@ -6985,9 +6985,28 @@ passes and all five Godot groups have only known diagnostics. Core/composition
 and extension build pass in `build/qa/global-orders-navigation`. This evidence
 does not establish all global-scope filter writes or workshop-limit editing.
 
-These screens remain staged. Global creation, Details, assigned-workshop labels,
-manager footer, full responsive layout, tooltip coverage and tab navigation are
-unfinished. Quantity drafts currently support four digits; native increment
+The staged global picker reads the fortress-wide native catalog and groups it
+with native job classification311580, category naming54d320 and comparator376270.
+The surrounding picker opener376390 changes unrelated native menus and is never
+called. Its pinned inline category enumeration/membership uses independently
+owned records, civilization-permitted custom buildings and reaction restrictions.
+Global creation uses the native allocation/template effects with workshop_id=-1;
+its opaque recipe keys are distinct from workshop-specific keys. Category and
+search changes retire old requests; uncertain creation is never replayed.
+
+Protected225032 on2026-11-01 compares all29 native categories (including All tasks)
+and their recipe membership/order with the owned reader. The viewer selects Still,
+searches Extract, creates an unassigned order with quantity10, returns to the
+global list and removes it. Existing workshop/Conditions workflows also pass.
+Owned DF44848 exits unsaved, source preservation passes, and all five Godot groups
+have only known diagnostics. Native and viewer captures were inspected. A subsequent
+render using the captured catalog corrects category backgrounds, All tasks artwork,
+icon placement and text baseline without changing actions.
+
+These screens remain staged. The global creation workflow currently uses a staged
+owner entry; its manager-dependent Create button is not yet connected. Details,
+assigned-workshop labels, manager footer, custom category artwork, full responsive
+layout, tooltip coverage and tab navigation are unfinished. Quantity drafts currently support four digits; native increment
 behavior beyond that range remains unfinished. Fixed frame geometry still needs
 responsive acceptance before exposure.
 

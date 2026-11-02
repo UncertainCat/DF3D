@@ -2955,38 +2955,51 @@ void run(color_ostream& out) {
     }catch(...) {workOrders={};status=m::ManagementStatus::Rejected;}
     publish();return;
   }
-  // Workshop picker uses the existing opaque recipe/catalog transport. Native
+  // Order picker uses the existing opaque recipe/catalog transport. Native
   // creation owns its default quantity; no Lua recipe reconstruction is used.
-  if(r->work_order() && r->work_order()->workshop_id()>=0 &&
+  if(r->work_order() && (r->work_order()->workshop_id()==-2 || r->work_order()->workshop_id()>=0) &&
      (r->action()==m::ManagementAction::WorkOrderCatalog || r->action()==m::ManagementAction::WorkOrderCreate)) {
-    const auto* q=r->work_order();const bool creating=r->action()==m::ManagementAction::WorkOrderCreate;
+    const auto* q=r->work_order();const bool creating=r->action()==m::ManagementAction::WorkOrderCreate;const bool global=q->workshop_id()==-2;
     message.clear();status=m::ManagementStatus::Rejected;workOrders={};
     const bool extra=q->id()!=-1 || q->frequency()!=-1 || q->max_workshops()!=-1 ||
       q->condition_kind() || q->condition_index()!=-1 || q->remove_condition() || q->compare()!=-1 ||
       q->threshold()!=-1 || q->item_type()!=-1 || q->target_order()!=-1 || q->dependency()!=-1 ||
       q->candidate_kind() || q->move() || q->expected_neighbor()!=-1 || q->item_subtype()!=-1 ||
       q->mat_type()!=-1 || q->mat_index()!=-1 || (q->traits() && q->traits()->size()) ||
-      q->input_index()!=-1 || q->group_type()!=-1 || q->group_subtype()!=-1 || q->group_custom()!=-1 ||
+      q->input_index()!=-1 || ((!global || creating) && (q->group_type()!=-1 || q->group_subtype()!=-1 || q->group_custom()!=-1)) ||
       q->encrust_flags()!=-1 || (creating && q->query() && q->query()->size());
     if(extra || (creating?(q->remaining()!=10 || q->cursor() || q->expected_list_revision()):
       (q->remaining()!=-1 || q->expected_revision() || (q->recipe() && q->recipe()->size())))) {publish();return;}
     try {
       auto* building=df::building::find(q->workshop_id());
       auto* tile=building?Maps::getTileDesignation(building->centerx,building->centery,building->z):nullptr;
-      if(!tile || tile->bits.hidden){publish();return;}
+      if(!global && (!tile || tile->bits.hidden)){publish();return;}
       if(!creating) {
         const auto query=q->query()?q->query()->str():std::string{};
         const auto nativeQuery=UTF2DF(query);
         if(nativeQuery.size()>76 || DF2UTF(nativeQuery)!=query){publish();return;}
-        const auto catalog=df3d_production::workshopOrderCatalog(building);
+        const auto catalog=df3d_production::workshopOrderCatalog(building,global);
         if(!catalog ||
            (q->cursor() && q->expected_list_revision()!=catalog->revision) ||
            (q->expected_list_revision() && q->expected_list_revision()!=catalog->revision)){publish();return;}
         // Native3c31a0 normalizes the query and searches the pre-normalized
         // caption with e1990. The existing owned-caption helper calls these
         // same leaves; never construct or borrow its picker context.
+        std::vector<size_t> candidates;
+        if(global) {
+          const auto groups=df3d_production::nativeWorkOrderGroups(catalog->rows);
+          if(!groups || groups->size()>128){publish();return;}
+          bool selected=false;
+          for(const auto& group:*groups) {
+            workOrders.groups.push_back({int16_t(group.type),int16_t(group.subtype),group.custom,DF2UTF(group.name),uint32_t(group.rows.size())});
+            if(group.type==q->group_type() && group.subtype==q->group_subtype() && group.custom==q->group_custom()) {
+              candidates=group.rows;selected=true;
+            }
+          }
+          if(!selected){workOrders={};publish();return;}
+        } else for(size_t i=0;i<catalog->rows.size();++i)candidates.push_back(i);
         std::vector<size_t> matches;
-        for(size_t i=0;i<catalog->rows.size();++i) {
+        for(size_t i:candidates) {
           const auto match=df3d_production::workshopCaptionMatches(catalog->rows[i].name,nativeQuery);
           if(!match){publish();return;}if(*match)matches.push_back(i);
         }
@@ -2996,12 +3009,12 @@ void run(color_ostream& out) {
         for(size_t at=q->cursor();at<end;++at) {
           const size_t i=matches[at];
           const auto& row=catalog->rows[i];
-          workOrders.recipes.push_back({"native-workshop:"+std::to_string(catalog->revision)+":"+std::to_string(i),DF2UTF(row.name),{}});
+          workOrders.recipes.push_back({std::string(global?"native-global:":"native-workshop:")+std::to_string(catalog->revision)+":"+std::to_string(i),DF2UTF(row.name),{}});
         }
         workOrders.nextCursor=end<matches.size()?uint32_t(end):0;status=m::ManagementStatus::Ok;
       } else {
         const std::string key=q->recipe()?q->recipe()->str():"";
-        const std::string prefix="native-workshop:"+std::to_string(q->expected_revision())+":";
+        const std::string prefix=std::string(global?"native-global:":"native-workshop:")+std::to_string(q->expected_revision())+":";
         int32_t choice=-1;
         if(key.compare(0,prefix.size(),prefix)!=0){publish();return;}
         const auto parsed=std::from_chars(key.data()+prefix.size(),key.data()+key.size(),choice);
@@ -3015,6 +3028,13 @@ void run(color_ostream& out) {
         if(result.outcome==O::Applied) {
           // A successful create returns the new identity. Subsequent inspection
           // supplies the full order and its own edit receipt.
+          if(global) {
+            const auto& all=df::global::world->manager_orders.all;
+            const auto found=std::find_if(all.begin(),all.end(),[&](const auto* order){return order && order->id==result.orderId;});
+            const auto row=found!=all.end()?df3d_production::nativeWorkOrderRow(**found,int32_t(found-all.begin()),true):std::nullopt;
+            if(row){workOrders.orders.push_back(copyNativeWorkOrder(*row));status=m::ManagementStatus::Ok;}
+            publish();return;
+          }
           BridgeWorkOrderInfo row;row.id=result.orderId;row.workshopId=q->workshop_id();
           row.total=10;row.remaining=10;row.revision=result.profile->revision;
           row.name=DF2UTF(result.caption);row.validated=result.validated;

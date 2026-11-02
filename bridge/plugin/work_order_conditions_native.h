@@ -1,6 +1,8 @@
 #pragma once
 #include "work_order_rows_native.h"
 #include "df/job_item_filter.h"
+#include <new>
+#include <type_traits>
 
 namespace df3d_production {
 inline bool workOrderSuggestionsSupported() {
@@ -15,6 +17,8 @@ inline bool workOrderSuggestionsSupported() {
             {0x1fb050,0x123,UINT64_C(0x3ea393db12f2c677)},
             {0xa2adb0,0x185c,UINT64_C(0x236e98c86197e94e)},
             {0x3926b1,0x1ef,UINT64_C(0x07d2b75807214414)},
+            {0x3c54b5,0x160,UINT64_C(0x4656e100c0a9d60c)},
+            {0x3c5671,0x1ae,UINT64_C(0xf630e9734b5a8891)},
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -99,6 +103,56 @@ inline std::optional<std::vector<df::manager_order_condition_item>> nativeWorkOr
         if(!row || row->contains.size()>64 || row->reaction_class.size()>128 || row->has_material_reaction_product.size()>128)return std::nullopt;
         result.push_back(*row);
     }
+    return result;
+}
+// Native duplicate predicate3c54b5..3c5615 intentionally does not compare
+// threshold, comparison, or contains. Preserve the actual suggestion rule.
+inline bool sameNativeSuggestedFilter(const df::manager_order_condition_item& a,const df::manager_order_condition_item& b) {
+    return a.item_type==b.item_type && a.item_subtype==b.item_subtype && a.mat_type==b.mat_type && a.mat_index==b.mat_index &&
+        a.flags1.whole==b.flags1.whole && a.flags2.whole==b.flags2.whole && a.flags3.whole==b.flags3.whole &&
+        a.flags4==b.flags4 && a.flags5==b.flags5 && a.reaction_class==b.reaction_class &&
+        a.has_material_reaction_product==b.has_material_reaction_product && a.metal_ore==b.metal_ore &&
+        a.min_dimension==b.min_dimension && a.reaction_id==b.reaction_id && a.has_tool_use==b.has_tool_use && a.dye_color==b.dye_color;
+}
+inline bool nativeSuggestionAvailable(const df::manager_order& order,const df::manager_order_condition_item& suggestion) {
+    for(const auto* condition:order.item_conditions)if(!condition || sameNativeSuggestedFilter(*condition,suggestion))return false;
+    return true;
+}
+inline NativeWorkOrderEdit addNativeWorkOrderSuggestion(int32_t buildingId,int32_t id,uint64_t revision,int16_t index) {
+    NativeWorkOrderEdit result;
+    if(index<0 || !workOrderSuggestionsSupported() || !workshopOrdersProfile(df::building::find(buildingId)))return result;
+    const auto& all=df::global::world->manager_orders.all;
+    const auto found=std::find_if(all.begin(),all.end(),[&](const auto* row){return row && row->id==id && row->workshop_id==buildingId;});
+    if(found==all.end())return result;
+    auto& order=**found;const int32_t position=int32_t(found-all.begin());
+    const auto before=nativeWorkOrderRow(order,position);if(!before)return result;
+    if(!revision || before->revision!=revision){result.outcome=WorkshopOrdersOutcome::Stale;return result;}
+    const auto suggestions=nativeWorkOrderSuggestions(order);
+    const size_t count=order.item_conditions.size()+order.order_conditions.size();
+    if(!suggestions || size_t(index)>=suggestions->size() || count>=64 || count+1+suggestions->size()>128)return result;
+    const auto& source=(*suggestions)[size_t(index)];
+    if(!nativeSuggestionAvailable(order,source))return result;
+    // Complete all throwing copies/reservations before registration. Allocate
+    // the record using DF's allocator, then transfer the owned string/vector
+    // storage without throwing, as the native inline deep copy does.
+    df::manager_order_condition_item prepared(source);
+    static_assert(std::is_nothrow_move_constructible_v<df::manager_order_condition_item>);
+    order.item_conditions.reserve(order.item_conditions.size()+1);
+    using Allocate=void* (*)(size_t);
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    void* memory=reinterpret_cast<Allocate>(base+0x1539690)(sizeof(prepared));
+    if(!memory)return result;
+    auto* added=new(memory) df::manager_order_condition_item(std::move(prepared));
+    order.item_conditions.push_back(added);
+    if(order.frequency==df::workquota_frequency_type::OneTime)order.frequency=df::workquota_frequency_type::Daily;
+    result.outcome=WorkshopOrdersOutcome::Unknown;
+    try {
+        auto after=nativeWorkOrderRow(order,position);
+        if(after && order.item_conditions.back()==added && sameNativeSuggestedFilter(*added,source) &&
+           added->compare_type==source.compare_type && added->compare_val==source.compare_val && added->contains==source.contains) {
+            result.row=std::move(after);result.outcome=WorkshopOrdersOutcome::Applied;
+        }
+    }catch(...) {}
     return result;
 }
 }

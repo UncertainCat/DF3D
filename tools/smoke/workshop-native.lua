@@ -409,6 +409,20 @@ local ok,err=xpcall(function()
   end
   shot('order-conditions-frequency-native')
   assert(native.frequency==expected.native.frequency,'Frequency cycle did not return to original value')
+  assert(#native.item_conditions==0)
+  mouse(768,586)
+  assert(#native.item_conditions==1 and native.frequency==1,'Native suggestion did not append and enable daily frequency')
+  local added=native.item_conditions[0]
+  local wanted=native_suggestions[1]
+  assert(added.compare_type==wanted.compare and added.compare_val==wanted.threshold)
+  for _,key in ipairs{'item_type','item_subtype','mat_type','mat_index','flags4','flags5','reaction_class','metal_ore','min_dimension','reaction_id','dye_color'}do assert(added[key]==wanted[key],'Native suggested add differs: '..key)end
+  assert(added.flags1.whole==wanted.flags1 and added.flags2.whole==wanted.flags2 and added.flags3.whole==wanted.flags3)
+  assert(added.has_material_reaction_product==wanted.material_product and added.has_tool_use==wanted.tool_use)
+  local added_contains={};for _,value in ipairs(added.contains)do added_contains[#added_contains+1]=value end
+  assert(json.encode(added_contains)==json.encode(wanted.contains))
+  expected.added_condition=owned[1]
+  result.order_conditions.added={frequency=native.frequency,condition=owned[1],lines=lines()}
+  shot('order-condition-added-native')
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());assert(not conditions.open)
   if df.global.game.main_interface.info.open then gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())end
   select_map(still);assert(click_label('Work orders'))

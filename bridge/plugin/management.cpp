@@ -2682,10 +2682,20 @@ BridgeWorkOrderInfo copyNativeWorkOrder(const df3d_production::NativeWorkOrderRo
 void run(color_ostream& out) {
   areaPaintRetired=nullptr;areaPaintCommitted=false;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
-  // Fail closed until the native suggested-condition transaction is installed;
-  // this intent must never fall through to the legacy manual-filter Lua path.
+  // Native suggestion identity never falls through to manual-filter Lua.
   if(r->work_order() && r->work_order()->suggestion_index()>=0) {
-    message.clear();status=m::ManagementStatus::Rejected;workOrders={};publish();return;
+    const auto* q=r->work_order();message.clear();status=m::ManagementStatus::Rejected;workOrders={};
+    try {
+      auto* building=df::building::find(q->workshop_id());
+      auto* tile=building?Maps::getTileDesignation(building->centerx,building->centery,building->z):nullptr;
+      if(!tile || tile->bits.hidden){publish();return;}
+      mutated=true;
+      const auto result=df3d_production::addNativeWorkOrderSuggestion(q->workshop_id(),q->id(),q->expected_revision(),q->suggestion_index());
+      using O=df3d_production::WorkshopOrdersOutcome;
+      mutated=result.outcome==O::Applied || result.outcome==O::Unknown;
+      if(result.outcome==O::Applied && result.row){workOrders.orders.push_back(copyNativeWorkOrder(*result.row));status=m::ManagementStatus::Ok;}
+    }catch(...) {workOrders={};status=m::ManagementStatus::Rejected;}
+    publish();return;
   }
   // Conditions inspect is explicit: list refreshes do not rebuild suggestions.
   if(r->work_order() && r->work_order()->workshop_id()>=0 && r->action()==m::ManagementAction::WorkOrderInspect) {
@@ -2724,6 +2734,7 @@ void run(color_ostream& out) {
         BridgeWorkOrderCondition value;value.index=uint16_t(i);value.itemCaption=DF2UTF(*caption);
         if(value.itemCaption->size()>1024){publish();return;}
         value.compare=int8_t(source.compare_type);value.threshold=source.compare_val;
+        value.editable=df3d_production::nativeSuggestionAvailable(**found,source);
         value.itemType=int16_t(source.item_type);value.itemSubtype=source.item_subtype;
         value.matType=source.mat_type;value.matIndex=source.mat_index;
         row.suggestedConditions->push_back(std::move(value));

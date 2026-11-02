@@ -6802,7 +6802,27 @@ No engine workaround is needed. Later202429 also passes the workshop checks but
 fails in the separate carrier scene with unclassified rendering breadcrumbs;
 that full run is not acceptance.
 
-This screen remains staged. Adding/removing/editing conditions, dependencies,
+Management121 adds native suggestions by index, never by viewer-authored filters.
+The bridge re-finds the workshop/order, validates its revision, rebuilds owned
+native suggestions, and applies the inline native duplicate predicate3c54b5.
+That predicate excludes comparison, threshold and contains; do not substitute a
+generic full-record equality. Preparation copies all fields, including contains,
+before registration, reserves vector capacity, allocates the record through DF,
+and moves the prepared storage without throwing. Native3c5671..3c581f appends the
+condition and changes OneTime to Daily; status/date are not reset. Suggestions
+expose native duplicate availability through editable, and the controller
+re-inspects after a confirmed add. Unsuccessful writes are not replayed.
+
+Protected203740 on2026-11-01 clicks the first Extract suggestion in native DF and
+DF3D. Native observation checks all copied filter fields; the viewer receipt and
+fresh inspection match the transported caption/filter/count/frequency fields,
+and the duplicate suggestion becomes unavailable. Subsequent order removal still
+passes. Owned DF47644 exits unsaved, the source remains unchanged, and all five
+Godot log groups contain only documented diagnostics. The native post-add capture
+also establishes the conditional frequency wording and the existing-row origin.
+This is acceptance for the first suggested add, not every recipe/filter family.
+
+This screen remains staged. Removing/editing conditions, manual item conditions, dependencies,
 overflow, tooltip coverage, tab navigation and exact native back navigation are
 unfinished. Current close returns to the workshop; this is not native navigation
 acceptance. Fixed frame geometry and bounded displayed rows still need the full

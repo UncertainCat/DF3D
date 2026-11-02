@@ -31,6 +31,8 @@ func _gui_input(event: InputEvent) -> void:
 	if input_allowed.is_valid() and not input_allowed.call():return
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
 		if Rect2(832,72,32,36).has_point(event.position):state.cycle_frequency()
+		for index in 5:
+			if Rect2(720,size.y-192+index*36,32,36).has_point(event.position):state.add_suggestion(index)
 		accept_event()
 func text(value: String,point: Vector2,color: int=15) -> void:
 	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point,value,HORIZONTAL_ALIGNMENT_LEFT,-1,12,colors[color] if colors.size()>color else Color.WHITE)
@@ -60,7 +62,7 @@ func condition(row: Dictionary,y: float,suggested: bool) -> void:
 	if comparison>=0 and comparison<COMPARISONS.size():
 		text(COMPARISONS[comparison],Vector2(120,y+36),13)
 		text(str(row.threshold),Vector2(128+COMPARISONS[comparison].length()*8,y+36),12)
-	if suggested:
+	if suggested and row.get("editable",false):
 		patch("BUTTON_RECTANGLE_DARK",Vector2i(90,int(y/12)),4,3)
 		icon("WORK_ORDERS_ADD_SUGGESTED_CONDITION",Vector2(720,y))
 func _draw() -> void:
@@ -76,12 +78,14 @@ func _draw() -> void:
 	var phase: int=row.get("native_state",{}).get("phase",0)
 	if phase>0 and phase<phases.size():icon(phases[phase],Vector2(16,72))
 	text(row.name,Vector2(64,96),11)
-	text("âˆž/âˆž" if row.total==0 else str(row.remaining)+"/"+str(row.total),Vector2(64,108),11)
-	text(FREQUENCIES[row.frequency],Vector2(256,96))
+	text("∞/∞" if row.total==0 else str(row.remaining)+"/"+str(row.total),Vector2(64,108),11)
+	var frequency_caption: String=FREQUENCIES[row.frequency]
+	if not row.conditions.is_empty():frequency_caption=frequency_caption.replace(", checked",", conditions checked")
+	text(frequency_caption,Vector2(256,96))
 	icon("WORK_ORDERS_CHANGE_FREQUENCY",Vector2(832,72))
 	icon("WORK_ORDERS_ADD_ITEM_CONDITION",Vector2(864,72))
 	icon("WORK_ORDERS_ADD_ORDER_CONDITION",Vector2(896,72))
 	var top:=size.y-192
 	text("Suggested conditions",Vector2(16,top))
 	for index in mini(5,row.suggested_conditions.size()):condition(row.suggested_conditions[index],top+index*36,true)
-	for index in mini(row.conditions.size(),maxi(0,int((top-120)/36))):condition(row.conditions[index],120+index*36,false)
+	for index in mini(row.conditions.size(),maxi(0,int((top-108)/36))):condition(row.conditions[index],108+index*36,false)

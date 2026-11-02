@@ -92,6 +92,15 @@ func run() -> void:
 		check(owner.conditions.snapshot.frequency==frequency,"Clock frequency differs from native")
 		for key in ["remaining","total","active","validated","finished_year","finished_tick"]:
 			check(owner.conditions.snapshot[key]==edited[key],"Frequency changed unrelated order field: "+key)
+	click(Vector2(768,586))
+	if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.orders.phase==owner.orders.Phase.Ready and owner.orders.row_ticket==0),"Suggested condition add was not confirmed; no retry"):quit(1);return
+	check(owner.conditions.snapshot.frequency==1 and owner.conditions.snapshot.conditions.size()==1,"Suggested add did not match native count/frequency")
+	if owner.conditions.snapshot.conditions.size()==1:
+		for key in ["item_caption","compare","threshold","item_type","item_subtype","mat_type","mat_index"]:
+			check(owner.conditions.snapshot.conditions[0][key]==expected.added_condition[key],"Added condition differs from native: "+key)
+	check(not owner.conditions.snapshot.suggested_conditions[0].editable,"Duplicate native suggestion remains available")
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/workshop-order-condition-added-live.png")
 	number_key(KEY_ESCAPE)
 	check(not owner.conditions_view.visible and owner.conditions.phase==owner.conditions.Phase.Closed,"Conditions did not retire on close")
 	click(Vector2(872,190))

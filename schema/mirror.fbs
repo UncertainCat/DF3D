@@ -1721,6 +1721,11 @@ table WorkOrderNativeState {
   phase:WorkOrderPhase;
   validation_required:bool;
   details_available:bool;
+  workshop_name:string; // absent means not observed; <=512 B
+}
+table WorkOrderListNativeState {
+  manager_available:bool;
+  validation_required:bool;
 }
 table WorkOrderInfo {
   id:int32; revision:uint64; name:string;
@@ -1751,6 +1756,7 @@ table WorkOrderState {
   total:uint32; list_revision:uint64;
   build_phase:uint8; // 0 done, 1 read, 2 sort, 3 filter
   build_done:uint32; build_total:uint32;
+  native_state:WorkOrderListNativeState; // absent in legacy observations
 }
 table CitizenRequest {
   unit_id:int32 = -1;
@@ -2009,7 +2015,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 122;
+  schema_version:uint32 = 123;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2061,7 +2067,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 122;
+  schema_version:uint32 = 123;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;
@@ -2108,7 +2114,7 @@ table WorkOrderInput { index:uint16; description:string; mat_type:int16 = -1; ma
 table WorkOrderMaterial { mat_type:int16 = -1; mat_index:int32 = -1; name:string; }
 table WorkOrderTrait { key:string; name:string; }
 table WorkOrderItemType { item_type:int16 = -1; item_subtype:int16 = -1; name:string; }
-table WorkOrderGroup { type:int16 = -1; subtype:int16 = -1; custom:int32 = -1; name:string; count:uint32; }
+table WorkOrderGroup { type:int16 = -1; subtype:int16 = -1; custom:int32 = -1; name:string; count:uint32; custom_code:string; }
 // Task keys and reactions <=64 B; names <=128 B. Identity fields must be >= -1.
 table WorkOrderTask { key:string; name:string; job_type:int16 = -1; reaction:string; item_type:int16 = -1; item_subtype:int16 = -1; mat_type:int16 = -1; mat_index:int32 = -1; }
 

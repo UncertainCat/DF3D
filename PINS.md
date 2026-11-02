@@ -22,6 +22,12 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management123 adds optional native global work-order availability and validation
+observations, assigned-workshop names, and custom building raw codes for categories.
+Rebuild/install both peers on `Local\\df3d_management_v123`. Missing observations
+in older recordings remain unknown and grant no Create authority. Other channels
+are unchanged.
+
 Management122 adds an exclusive native condition-filter choice, identified by
 catalog kind/index and both order/catalog revisions. It carries no copied filter
 values. Rebuild/install both peers on `Local\\df3d_management_v122`; old recordings

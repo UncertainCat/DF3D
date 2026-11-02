@@ -143,6 +143,7 @@ WorkOrderState decodeWorkOrder(const m::WorkOrderState* w) {
     return out;
   auto& n = out;
   auto str = [](const flatbuffers::String* s) { return s ? s->str() : std::string(); };
+  if(const auto* native=w->native_state())n.nativeState=WorkOrderListNativeState{native->manager_available(),native->validation_required()};
   n.nextCursor = w->next_cursor();
   n.detail = str(w->detail());
   n.total=w->total();n.listRevision=int64_t(w->list_revision());n.buildPhase=w->build_phase();
@@ -150,12 +151,12 @@ WorkOrderState decodeWorkOrder(const m::WorkOrderState* w) {
   if(w->materials())for(const auto* v:*w->materials())n.materials.push_back({v->mat_type(),v->mat_index(),str(v->name())});
   if(w->traits())for(const auto* v:*w->traits())n.traits.push_back({str(v->key()),str(v->name())});
   if(w->types())for(const auto* v:*w->types())n.types.push_back({v->item_type(),v->item_subtype(),str(v->name())});
-  if(w->groups())for(const auto* v:*w->groups())n.groups.push_back({v->type(),v->subtype(),v->custom(),str(v->name()),v->count()});
+  if(w->groups())for(const auto* v:*w->groups())n.groups.push_back({v->type(),v->subtype(),v->custom(),str(v->name()),v->count(),v->custom_code()?std::optional<std::string>(str(v->custom_code())):std::nullopt});
   if(w->tasks())for(const auto* v:*w->tasks())n.tasks.push_back({str(v->key()),str(v->name()),v->job_type(),str(v->reaction()),v->item_type(),v->item_subtype(),v->mat_type(),v->mat_index()});
   if (w->orders())
     for (const auto* v : *w->orders()) {
       WorkOrderInfo o;
-      if(const auto* n=v->native_state())o.nativeState=WorkOrderNativeState{static_cast<WorkOrderPhase>(n->phase()),n->validation_required(),n->details_available()};
+      if(const auto* n=v->native_state())o.nativeState=WorkOrderNativeState{static_cast<WorkOrderPhase>(n->phase()),n->validation_required(),n->details_available(),n->workshop_name()?std::optional<std::string>(str(n->workshop_name())):std::nullopt};
       o.id = v->id();
       o.revision = v->revision();
       o.name = str(v->name());

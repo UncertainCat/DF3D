@@ -30,8 +30,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 122;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v122";
+inline constexpr uint32_t kManagementVersion = 123;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v123";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -1804,7 +1804,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
          !textOk(row->name(),128))return "invalid work order type";
     if(w->groups())for(const auto* row:*w->groups())
       if(!row || row->type() < -1 || row->subtype() < -1 || row->custom() < -1 ||
-         !textOk(row->name(),128))return "invalid work order group";
+         !textOk(row->name(),128) || !textOk(row->custom_code(),128))return "invalid work order group";
     if(w->tasks())for(const auto* row:*w->tasks())
       if(!row || row->job_type() < -1 || row->item_type() < -1 || row->item_subtype() < -1 ||
          row->mat_type() < -1 || row->mat_index() < -1 || !textOk(row->reaction(),64) ||
@@ -1817,7 +1817,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
          o->finished_year() < -1 || o->finished_tick() < -1 || o->workshop_id() < -1 || o->max_workshops()<0 ||
          (o->inputs() && o->inputs()->size()>64) || (o->conditions() && o->conditions()->size()>64) || (o->generated_jobs() && o->generated_jobs()->size()>1024)) return "invalid work order";
       if(const auto* native=o->native_state())
-        if(native->phase()<WorkOrderPhase::Active || native->phase()>WorkOrderPhase::Ready)return "invalid native work order phase";
+        if(native->phase()<WorkOrderPhase::Active || native->phase()>WorkOrderPhase::Ready || !textOk(native->workshop_name(),512))return "invalid native work order state";
       if(o->inputs())for(const auto* input:*o->inputs()) {
         if(!input || input->mat_type() < -1 || input->mat_index() < -1 ||
            !textOk(input->description(),1024))return "invalid work order input";

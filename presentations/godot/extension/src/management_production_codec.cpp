@@ -216,12 +216,17 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
 void writeWorkOrder(Dictionary& result, const wm::WorkOrderState& s) {
   Dictionary work;
   const auto& ws = s;
+  if(ws.nativeState) {
+    Dictionary native;native["manager_available"]=ws.nativeState->managerAvailable;
+    native["validation_required"]=ws.nativeState->validationRequired;work["native_state"]=native;
+  }
   Array orders, orderRecipes, orderChoices, managers;
   for (const auto& o : ws.orders) {
     Dictionary row;
     if(o.nativeState) {
       Dictionary native;native["phase"]=int(o.nativeState->phase);
       native["validation_required"]=o.nativeState->validationRequired;native["details_available"]=o.nativeState->detailsAvailable;
+      if(o.nativeState->workshopName)native["workshop_name"]=String::utf8(o.nativeState->workshopName->c_str());
       row["native_state"]=native;
     }
     row["id"] = o.id;
@@ -306,7 +311,7 @@ void writeWorkOrder(Dictionary& result, const wm::WorkOrderState& s) {
   for(const auto& r:ws.materials){Dictionary v;v["mat_type"]=r.matType;v["mat_index"]=r.matIndex;v["name"]=String::utf8(r.name.c_str());materials.push_back(v);}
   for(const auto& r:ws.traits){Dictionary v;v["key"]=String::utf8(r.key.c_str());v["name"]=String::utf8(r.name.c_str());traits.push_back(v);}
   for(const auto& r:ws.types){Dictionary v;v["item_type"]=r.itemType;v["item_subtype"]=r.itemSubtype;v["name"]=String::utf8(r.name.c_str());types.push_back(v);}
-  for(const auto& r:ws.groups){Dictionary v;v["type"]=r.type;v["subtype"]=r.subtype;v["custom"]=r.custom;v["name"]=String::utf8(r.name.c_str());v["count"]=int64_t(r.count);groups.push_back(v);}
+  for(const auto& r:ws.groups){Dictionary v;v["type"]=r.type;v["subtype"]=r.subtype;v["custom"]=r.custom;v["name"]=String::utf8(r.name.c_str());v["count"]=int64_t(r.count);if(r.customCode)v["custom_code"]=String::utf8(r.customCode->c_str());groups.push_back(v);}
   for(const auto& r:ws.tasks){Dictionary v;v["key"]=String::utf8(r.key.c_str());v["name"]=String::utf8(r.name.c_str());v["job_type"]=r.jobType;v["reaction"]=String::utf8(r.reaction.c_str());v["item_type"]=r.itemType;v["item_subtype"]=r.itemSubtype;v["mat_type"]=r.matType;v["mat_index"]=r.matIndex;tasks.push_back(v);}
   work["materials"]=materials;work["traits"]=traits;work["types"]=types;work["groups"]=groups;work["tasks"]=tasks;
   work["total"]=int64_t(ws.total);work["list_revision"]=ws.listRevision;work["build_phase"]=ws.buildPhase;

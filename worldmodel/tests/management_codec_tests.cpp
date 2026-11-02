@@ -4061,3 +4061,30 @@ TEST_CASE("work animal edit acknowledges application only with a successful enve
       CHECK(decoded.creatureAnimal->outcome==wm::CreatureAnimalOutcome::Applied);}
   }
 }
+
+TEST_CASE("native work order list observations preserve absence and supplied names") {
+  for(bool observed:{false,true}) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto name=b.CreateString("Assigned workshop");
+    const auto code=b.CreateString("SOAP_MAKER");
+    const auto native=wire::CreateWorkOrderNativeState(b,wire::WorkOrderPhase::Ready,true,true,observed?name:0);
+    wire::WorkOrderInfoBuilder row(b);row.add_id(1);row.add_revision(1);row.add_native_state(native);
+    const auto order=row.Finish();
+    const auto group=wire::CreateWorkOrderGroup(b,0,23,0,0,1,observed?code:0);
+    const auto orders=b.CreateVector(std::vector{order});
+    const auto groups=b.CreateVector(std::vector{group});
+    const auto list=observed?wire::CreateWorkOrderListNativeState(b,true,true):flatbuffers::Offset<wire::WorkOrderListNativeState>();
+    wire::WorkOrderStateBuilder state(b);state.add_orders(orders);state.add_groups(groups);state.add_native_state(list);
+    b.Finish(state.Finish());
+    const auto decoded=codec::decodeWorkOrder(flatbuffers::GetRoot<wire::WorkOrderState>(b.GetBufferPointer()));
+    CHECK(decoded.nativeState.has_value()==observed);
+    REQUIRE(decoded.orders.size()==1);REQUIRE(decoded.orders[0].nativeState);
+    CHECK(decoded.orders[0].nativeState->workshopName.has_value()==observed);
+    REQUIRE(decoded.groups.size()==1);CHECK(decoded.groups[0].customCode.has_value()==observed);
+    if(observed) {
+      CHECK(decoded.nativeState->managerAvailable);CHECK(decoded.nativeState->validationRequired);
+      CHECK(*decoded.orders[0].nativeState->workshopName=="Assigned workshop");
+      CHECK(*decoded.groups[0].customCode=="SOAP_MAKER");
+    }
+  }
+}

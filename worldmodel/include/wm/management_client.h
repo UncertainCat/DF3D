@@ -499,11 +499,12 @@ struct WorkOrderInput { uint16_t index=0; std::string description; int16_t matTy
 struct WorkOrderMaterial { int16_t matType=-1; int32_t matIndex=-1; std::string name; };
 struct WorkOrderTrait { std::string key,name; };
 struct WorkOrderItemType { int16_t itemType=-1,itemSubtype=-1; std::string name; };
-struct WorkOrderGroup { int16_t type=-1,subtype=-1; int32_t custom=-1; std::string name; uint32_t count=0; };
+struct WorkOrderGroup { int16_t type=-1,subtype=-1; int32_t custom=-1; std::string name; uint32_t count=0; std::optional<std::string> customCode; };
 struct WorkOrderTask { std::string key,name; int16_t jobType=-1; std::string reaction; int16_t itemType=-1,itemSubtype=-1,matType=-1; int32_t matIndex=-1; };
 struct WorkOrderNativeState {
   WorkOrderPhase phase=WorkOrderPhase::Unknown;
   bool validationRequired=false,detailsAvailable=false;
+  std::optional<std::string> workshopName;
 };
 struct WorkOrderInfo {
   std::optional<WorkOrderNativeState> nativeState;
@@ -521,6 +522,7 @@ struct WorkOrderInfo {
   std::vector<WorkOrderInput> inputs;
 };
 struct ManagerRole { int32_t unitId=-1; std::string name,position,job; std::vector<int32_t> offices; };
+struct WorkOrderListNativeState { bool managerAvailable=false,validationRequired=false; };
 struct WorkOrderState {
   std::vector<WorkOrderInfo> orders;
   std::vector<ProductionRecipe> recipes;
@@ -534,6 +536,7 @@ struct WorkOrderState {
   std::vector<WorkOrderGroup> groups;
   std::vector<WorkOrderTask> tasks;
   uint32_t total=0; int64_t listRevision=0; uint8_t buildPhase=0; uint32_t buildDone=0,buildTotal=0;
+  std::optional<WorkOrderListNativeState> nativeState;
 };
 struct ConstructionSelection {
   int16_t filter=-1,itemType=-1,itemSubtype=-1,matType=-1; int32_t matIndex=-1; uint32_t count=1;

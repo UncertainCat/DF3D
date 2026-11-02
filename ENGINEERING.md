@@ -6846,9 +6846,20 @@ and comparison2->3->4->5->0->1->2, with unchanged transported filter fields.
 Rendered control crops were inspected against native. Subsequent condition and
 order removals pass, DF47508 exits unsaved, the source is preserved, all five
 Godot groups have only known diagnostics, and root CTest19/19 passes. Extreme
-quantity values and the native numeric-entry editor remain unverified.
+quantity values remain unverified.
 
-This screen remains staged. Direct condition number entry, filter editing, manual item conditions, dependencies,
+The number editor owns an initially empty six-character draft, matching native
+8baf38 input capacity and numeric-prefix parsing. Each changed draft uses the
+existing revision-checked quantity command. While a write is pending, the owner
+retains only the latest desired value and submits it after fresh inspection;
+rejection, unknown outcome or close discards pending edits without replay.
+Enter releases local focus. Protected205647 on2026-11-01 verifies rapid typing
+of12, authoritative readback, Enter, then condition/order removal against native.
+Rendered captures were inspected; caret blinking is not yet reproduced. Owned
+DF45004 exits unsaved, source preservation passes, all five Godot log groups
+have only documented diagnostics, and root CTest19/19 passes.
+
+This screen remains staged. Filter editing, manual item conditions, dependencies,
 overflow, tooltip coverage, tab navigation and exact native back navigation are
 unfinished. Current close returns to the workshop; this is not native navigation
 acceptance. Fixed frame geometry and bounded displayed rows still need the full

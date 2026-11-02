@@ -10,6 +10,8 @@ var order_id: int=-1
 var snapshot: Dictionary={}
 var ticket:=0
 var generation:=0
+var draft_index: int=-1
+var pending_threshold: int=-1
 func configure(source) -> void:
 	dispose();service=source
 	if service!=null:service.session_changed.connect(_session_changed)
@@ -18,6 +20,7 @@ func dispose() -> void:
 	if service!=null and service.session_changed.is_connected(_session_changed):service.session_changed.disconnect(_session_changed)
 	service=null
 func close() -> void:
+	draft_index=-1;pending_threshold=-1
 	generation+=1
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
@@ -41,6 +44,7 @@ func add_suggestion(index: int) -> void:
 	phase=Phase.Applying
 	_send({"action":C.ManagementAction.WorkOrderCondition,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"suggestion_index":index})
 func _fail(next: Phase) -> void:
+	draft_index=-1;pending_threshold=-1
 	snapshot={};phase=next;changed.emit()
 func remove_condition(row: Dictionary) -> void:
 	if phase!=Phase.Ready or ticket!=0 or not snapshot.conditions.has(row):return
@@ -52,6 +56,25 @@ func edit_amount(row: Dictionary,delta: int,cycle:=false) -> void:
 	if amount<0 or amount>2147483647:return
 	phase=Phase.Applying
 	_send({"action":C.ManagementAction.WorkOrderCondition,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"condition_index":row.index,"compare":(int(row.compare)+1)%6 if cycle else row.compare,"threshold":amount})
+func set_threshold(index: int,value: int) -> void:
+	if value<0 or value>999999 or phase not in [Phase.Ready,Phase.Applying,Phase.Reading]:return
+	if phase!=Phase.Ready and draft_index!=index:return
+	var found:=false
+	for row in snapshot.get("conditions",[]):
+		if row.kind==0 and row.index==index:found=true;break
+	if not found:return
+	draft_index=index;pending_threshold=value;_flush_threshold()
+func _flush_threshold() -> void:
+	if phase!=Phase.Ready or ticket!=0:return
+	if pending_threshold<0:draft_index=-1;return
+	var selected: Dictionary={}
+	for row in snapshot.get("conditions",[]):
+		if row.kind==0 and row.index==draft_index:selected=row;break
+	if selected.is_empty():draft_index=-1;pending_threshold=-1;return
+	var value:=pending_threshold;pending_threshold=-1
+	if selected.threshold==value:draft_index=-1;return
+	phase=Phase.Applying
+	_send({"action":C.ManagementAction.WorkOrderCondition,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"condition_index":draft_index,"compare":selected.compare,"threshold":value})
 func _send(intent: Dictionary) -> void:
 	if service==null:_fail(Phase.Unavailable);return
 	var owner:=generation
@@ -81,4 +104,4 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 			_fail(Phase.Unknown);return
 		applied.emit();_read();return
 	if not rows[0].get("suggested_conditions") is Array or rows[0].get("frequency",-1) not in [0,1,2,3,4]:_fail(Phase.Rejected);return
-	snapshot=rows[0].duplicate(true);phase=Phase.Ready;changed.emit()
+	snapshot=rows[0].duplicate(true);phase=Phase.Ready;_flush_threshold();changed.emit()

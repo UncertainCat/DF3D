@@ -108,6 +108,15 @@ func run() -> void:
 		check(condition.compare==int(step.compare) and condition.threshold==int(step.threshold),"Condition amount/comparison differs from native")
 		for key in ["item_caption","item_type","item_subtype","mat_type","mat_index"]:
 			check(condition[key]==expected.added_condition[key],"Condition amount edit changed filter: "+key)
+	click(Vector2(640,178))
+	check(owner.conditions_view.editing_index==0 and owner.conditions_view.number_draft.is_empty(),"Condition number field did not focus with an empty draft")
+	number_key(KEY_1,49);number_key(KEY_2,50)
+	if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.orders.phase==owner.orders.Phase.Ready and owner.orders.row_ticket==0),"Condition number edit was not confirmed; no retry"):quit(1);return
+	check(owner.conditions.snapshot.conditions[0].threshold==int(expected.condition_number) and owner.conditions_view.number_draft=="12","Condition number differs from native or dropped input")
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/workshop-order-condition-number-live.png")
+	number_key(KEY_ENTER)
+	check(owner.conditions_view.editing_index==-1 and owner.conditions_view.visible,"Enter did not release condition number focus")
 	click(Vector2(896,178))
 	if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.orders.phase==owner.orders.Phase.Ready and owner.orders.row_ticket==0),"Condition removal was not confirmed; no retry"):quit(1);return
 	check(owner.conditions.snapshot.conditions.is_empty() and owner.conditions.snapshot.frequency==1,"Condition removal differs from native")

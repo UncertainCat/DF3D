@@ -430,6 +430,17 @@ local ok,err=xpcall(function()
   end
   assert(added.compare_type==wanted.compare and added.compare_val==wanted.threshold,'Native amount/comparison cycle did not restore original values')
   result.order_conditions.edit_steps=expected.condition_steps
+  mouse(640,178)
+  assert(conditions.entering_logic_number and conditions.logic_number_str=='','Condition number entry did not start empty')
+  shot('order-condition-number-empty-native')
+  gui.simulateInput(view,'STRING_A049');view:render(dfhack.getTickCount())
+  assert(added.compare_val==1)
+  gui.simulateInput(view,'STRING_A050');view:render(dfhack.getTickCount())
+  assert(added.compare_val==12)
+  shot('order-condition-number-native')
+  gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount())
+  assert(not conditions.entering_logic_number and conditions.open)
+  expected.condition_number=12
   mouse(896,178)
   assert(#native.item_conditions==0 and native.frequency==1,'Native condition removal changed frequency or retained the row')
   result.order_conditions.removed={frequency=native.frequency,status=native.status.whole,finished_year=native.finished_year,finished_tick=native.finished_year_tick}

@@ -5,6 +5,8 @@ signal cancelled
 var state
 var input_allowed: Callable
 var colors: Array[Color]=[]
+var editing_index: int=-1
+var number_draft:=""
 const COMPARISONS=["at least","at most","greater than","less than","exactly","not"]
 const FREQUENCIES=["One-time order","Restarts if completed, checked daily","Restarts if completed, checked monthly","Restarts if completed, checked seasonally","Restarts if completed, checked yearly"]
 func configure_conditions(source,model) -> void:
@@ -12,9 +14,26 @@ func configure_conditions(source,model) -> void:
 	mouse_filter=Control.MOUSE_FILTER_STOP
 	state.changed.connect(func():
 		if state.phase in [state.Phase.Closed,state.Phase.Unavailable]:hide()
+		if state.phase not in [state.Phase.Ready,state.Phase.Reading,state.Phase.Applying]:finish_entry()
 		queue_redraw())
 func open(building: int,order: int) -> void:
-	state.open(building,order);show();queue_redraw()
+	finish_entry();state.open(building,order);show();queue_redraw()
+func finish_entry() -> void:editing_index=-1;number_draft="";queue_redraw()
+func feed_number(event: InputEventKey) -> void:
+	if not event.pressed or event.ctrl_pressed or event.alt_pressed or event.meta_pressed:return
+	if event.keycode in [KEY_ENTER,KEY_KP_ENTER]:finish_entry();return
+	var before:=number_draft
+	if event.keycode==KEY_BACKSPACE:number_draft=number_draft.left(maxi(0,number_draft.length()-1))
+	elif number_draft.length()<6 and ((event.unicode>=48 and event.unicode<=57) or (event.unicode>=65 and event.unicode<=90)):
+		# Native8baf38 uses capacity6, flags4; parse its numeric prefix.
+		number_draft+=String.chr(event.unicode)
+	if number_draft!=before:
+		var value:=0
+		for index in number_draft.length():
+			var digit:=number_draft.unicode_at(index)-48
+			if digit<0 or digit>9:break
+			value=value*10+digit
+		state.set_threshold(editing_index,value);queue_redraw()
 func layout(view: Vector2) -> void:
 	var rows:=maxi(13,floori(view.y/12)-7)
 	var origin:=Vector2(32,48+fposmod(view.y,12)*0.5)
@@ -23,6 +42,8 @@ func layout(view: Vector2) -> void:
 	position=origin;size=Vector2(944,frame_rows*12);queue_redraw()
 func _input(event: InputEvent) -> void:
 	if not is_visible_in_tree() or (input_allowed.is_valid() and not input_allowed.call()):return
+	if editing_index>=0 and event is InputEventKey and event.keycode!=KEY_ESCAPE:
+		feed_number(event);get_viewport().set_input_as_handled();return
 	if event is InputEventKey and event.pressed and event.keycode==KEY_ESCAPE:
 		cancelled.emit();get_viewport().set_input_as_handled()
 	elif event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_RIGHT:
@@ -37,6 +58,7 @@ func _gui_input(event: InputEvent) -> void:
 			for index in mini(state.snapshot.conditions.size(),maxi(0,int((size.y-300)/36))):
 				var row: Dictionary=state.snapshot.conditions[index]
 				if row.kind==0:
+					if Rect2(592,108+index*36,32,36).has_point(event.position):editing_index=row.index;number_draft="";queue_redraw();break
 					if Rect2(624,108+index*36,32,36).has_point(event.position):state.edit_amount(row,1);break
 					if Rect2(656,108+index*36,32,36).has_point(event.position):state.edit_amount(row,-1);break
 					if Rect2(688,108+index*36,32,36).has_point(event.position):state.edit_amount(row,0,true);break
@@ -69,11 +91,12 @@ func condition(row: Dictionary,y: float,suggested: bool) -> void:
 	var comparison: int=row.get("compare",-1)
 	if comparison>=0 and comparison<COMPARISONS.size():
 		text(COMPARISONS[comparison],Vector2(120,y+36),13)
-		text(str(row.threshold),Vector2(128+COMPARISONS[comparison].length()*8,y+36),12)
+		text(number_draft if not suggested and row.index==editing_index else str(row.threshold),Vector2(128+COMPARISONS[comparison].length()*8,y+36),12)
 	if suggested and row.get("editable",false):
 		patch("BUTTON_RECTANGLE_DARK",Vector2i(90,int(y/12)),4,3)
 		icon("WORK_ORDERS_ADD_SUGGESTED_CONDITION",Vector2(720,y))
 	elif not suggested:
+		icon("WORK_ORDERS_ENTER_AMOUNT",Vector2(592,y))
 		icon("WORK_ORDERS_INCREASE_AMOUNT",Vector2(624,y))
 		icon("WORK_ORDERS_DECREASE_AMOUNT",Vector2(656,y))
 		icon("WORK_ORDERS_CONDITIONS",Vector2(688,y))

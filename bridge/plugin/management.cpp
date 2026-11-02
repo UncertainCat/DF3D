@@ -100,6 +100,7 @@
 #include "work_order_catalog_native.h"
 #include "work_order_rows_native.h"
 #include "work_order_conditions_native.h"
+#include "work_order_details_native.h"
 #include "creature_skills_native.h"
 #include "creature_knowledge_native.h"
 #include "skills_caption_native.h"
@@ -212,6 +213,10 @@ struct BridgeWorkOrderInfo : WorkOrderInfo {
   std::vector<BridgeWorkOrderCondition> conditions;
 };
 struct BridgeWorkOrderState : WorkOrderState {
+  std::optional<df3d_production::WorkOrderDetailsObservation> details;
+  int32_t detailsId=-1;
+  int16_t detailsOption=-1;
+  uint32_t detailsCursor=0;
   std::optional<df3d_production::NativeWorkOrderListState> nativeState;
   std::vector<BridgeWorkOrderInfo> orders;
   std::vector<WorkOrderMaterial> materials;
@@ -796,7 +801,22 @@ void publish() {
   for(const auto& v:workOrders.tasks)wo_tasks.push_back(m::CreateWorkOrderTask(b,b.CreateString(v.key),b.CreateString(v.name),v.jobType,b.CreateString(v.reaction),v.itemType,v.itemSubtype,v.matType,v.matIndex));
   flatbuffers::Offset<m::WorkOrderListNativeState> workOrderNative;
   if(workOrders.nativeState)workOrderNative=m::CreateWorkOrderListNativeState(b,workOrders.nativeState->managerAvailable,workOrders.nativeState->validationRequired);
-  auto workOrderResult=m::CreateWorkOrderState(b,b.CreateVector(wo),b.CreateVector(wr),b.CreateVector(wc),b.CreateVector(wm),workOrders.nextCursor,b.CreateString(workOrders.detail),b.CreateVector(wo_materials),b.CreateVector(wo_traits),b.CreateVector(wo_types),b.CreateVector(wo_groups),b.CreateVector(wo_tasks),workOrders.total,workOrders.listRevision,workOrders.buildPhase,workOrders.buildDone,workOrders.buildTotal,workOrderNative);
+  flatbuffers::Offset<m::WorkOrderDetailsState> workOrderDetails;
+  if(workOrders.details) {
+    const auto& d=*workOrders.details;
+    std::vector<flatbuffers::Offset<m::WorkOrderDetailsOption>> options;
+    for(const auto& o:d.options)options.push_back(m::CreateWorkOrderDetailsOption(b,uint8_t(o.kind),o.index,b.CreateString(DF2UTF(o.caption))));
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<m::WorkOrderDetailsChoice>>> choices;
+    uint32_t next=0;
+    if(workOrders.detailsOption>=0) {
+      std::vector<flatbuffers::Offset<m::WorkOrderDetailsChoice>> rows;
+      const auto end=std::min(size_t(workOrders.detailsCursor)+128,d.materials.size());
+      for(size_t i=workOrders.detailsCursor;i<end;++i)rows.push_back(m::CreateWorkOrderDetailsChoice(b,int32_t(i),b.CreateString(DF2UTF(d.materials[i].caption))));
+      choices=b.CreateVector(rows);next=end<d.materials.size()?uint32_t(end):0;
+    }
+    workOrderDetails=m::CreateWorkOrderDetailsState(b,workOrders.detailsId,d.revision,b.CreateString(DF2UTF(d.caption)),b.CreateVector(options),workOrders.detailsOption,choices,d.choicesRevision,uint32_t(d.materials.size()),next);
+  }
+  auto workOrderResult=m::CreateWorkOrderState(b,b.CreateVector(wo),b.CreateVector(wr),b.CreateVector(wc),b.CreateVector(wm),workOrders.nextCursor,b.CreateString(workOrders.detail),b.CreateVector(wo_materials),b.CreateVector(wo_traits),b.CreateVector(wo_types),b.CreateVector(wo_groups),b.CreateVector(wo_tasks),workOrders.total,workOrders.listRevision,workOrders.buildPhase,workOrders.buildDone,workOrders.buildTotal,workOrderNative,workOrderDetails);
   std::vector<flatbuffers::Offset<m::CitizenInfo>> citizenRows;
   for(const auto& u:citizens.citizens) {
     std::vector<flatbuffers::Offset<m::CitizenRole>> roles;
@@ -2831,6 +2851,38 @@ void run(color_ostream& out) {
       using O=df3d_production::WorkshopOrdersOutcome;
       mutated=result.outcome==O::Applied || result.outcome==O::Unknown;
       if(result.outcome==O::Applied && result.row){workOrders.orders.push_back(copyNativeWorkOrder(*result.row));status=m::ManagementStatus::Ok;}
+    }catch(...) {workOrders={};status=m::ManagementStatus::Rejected;}
+    publish();return;
+  }
+  // Details uses independently owned native inputs, never the open native sheet.
+  if(r->work_order() && r->work_order()->details()) {
+    const auto* q=r->work_order();const auto* d=q->details();
+    message.clear();status=m::ManagementStatus::Rejected;workOrders={};
+    const bool writing=r->action()==m::ManagementAction::WorkOrderUpdate;
+    if((!writing && r->action()!=m::ManagementAction::WorkOrderInspect) || (d->query() && d->query()->size())){publish();return;}
+    try {
+      auto* building=df::building::find(q->workshop_id());
+      auto* tile=building?Maps::getTileDesignation(building->centerx,building->centery,building->z):nullptr;
+      if(!df3d_production::nativeWorkOrderScope(q->workshop_id()) || (q->workshop_id()!=-2 && (!tile || tile->bits.hidden))){publish();return;}
+      const auto& all=df::global::world->manager_orders.all;
+      const auto found=std::find_if(all.begin(),all.end(),[&](const auto* value){return value && value->id==q->id();});
+      auto* order=found==all.end()?nullptr:*found;
+      if(!order || (q->workshop_id()!=-2 && order->workshop_id!=q->workshop_id())){publish();return;}
+      auto observed=df3d_production::nativeWorkOrderDetails(*order,d->option());
+      if(!observed || (q->expected_revision() && q->expected_revision()!=observed->revision) ||
+         (d->expected_choices_revision() && d->expected_choices_revision()!=observed->choicesRevision) || d->cursor()>observed->materials.size()){publish();return;}
+      if(writing) {
+        // Once the semantic helper starts, exceptions cannot prove no effects.
+        mutated=true;
+        auto result=df3d_production::setWorkOrderDetailMaterial(*order,q->expected_revision(),d->option(),d->expected_choices_revision(),d->choice());
+        using O=df3d_production::WorkshopOrdersOutcome;
+        mutated=result.outcome==O::Applied || result.outcome==O::Unknown;
+        if(result.outcome!=O::Applied || !result.observation){publish();return;}
+        observed=std::move(result.observation);
+      }
+      workOrders.details=std::move(observed);workOrders.detailsId=q->id();
+      workOrders.detailsOption=writing?-1:d->option();workOrders.detailsCursor=writing?0:d->cursor();
+      status=m::ManagementStatus::Ok;
     }catch(...) {workOrders={};status=m::ManagementStatus::Rejected;}
     publish();return;
   }

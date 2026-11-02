@@ -7049,10 +7049,26 @@ selections through native clicks and the semantic helper from restored inputs.
 All observed requirement fields, saved-original fields, order materials, status,
 frequency and quantities match. Owned DF45448 exits unsaved, source preservation
 and the combined Work orders workflow pass; all five Godot groups have only known
-diagnostics. This is native backend acceptance, not an editable Details screen.
-Search, transport, viewer and other choice families remain unfinished. The old
+diagnostics. This establishes the native backend effects. The old
 Lua Details write stores selected materials in native saved-original fields;
 that path must not supply the new editor's effects.
+
+Management124 carries optional Details observations and separate read/selection
+intents. The bridge resolves the current order/scope, checks order and choice
+revisions, and invokes the owned native helper. The shared Details state/view is
+connected to workshop and global row buttons; generation retirement detaches late
+replies, selections are not replayed, and successful selection closes the panel
+and refreshes its parent list. Protected233944 on2026-11-01 exercises the global
+row button, material picker and selection through actual pointer input. The
+combined workflow passes; owned DF904 exits unsaved with the source preserved.
+Paired wire-process logs contain only classified known Godot diagnostics.
+Core and composition checks pass in `work-order-details-wiring`.
+
+This is an editable staged workflow, not complete Details acceptance. Search,
+native count captions, other choice families, row backgrounds and text alignment
+remain unfinished. The current fixed frame uses the workshop reference; global
+and responsive geometry, plant selection through the viewer, and navigation
+parity still need completion before exposure.
 
 These screens remain staged. Details, full responsive layout, tooltip coverage
 and tab navigation are unfinished. Quantity drafts currently support four digits; native increment

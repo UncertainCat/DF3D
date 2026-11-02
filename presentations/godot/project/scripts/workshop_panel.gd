@@ -13,6 +13,8 @@ var conditions=preload("res://scripts/work_order_conditions_state.gd").new()
 var conditions_view
 var global_orders=preload("res://scripts/global_work_orders_state.gd").new()
 var global_orders_view
+var details=preload("res://scripts/work_order_details_state.gd").new()
+var details_view
 
 func _init() -> void:
 	state=preload("res://scripts/building_header_state.gd").new()
@@ -21,13 +23,14 @@ func configure(world,service,host,help=null) -> void:
 	tasks.configure(service);workers.configure(service);orders.configure(service);candidate_modes.configure(service);order_choices.configure(service)
 	conditions.configure(service)
 	global_orders.configure(service)
+	details.configure(service)
 	candidate_modes.applied.connect(func():refreshing_modes=true;candidate_modes.clear();workers.refresh())
 	super.configure(world,service,host,help)
 	panel.configure_tasks(world,tasks,"")
 	panel.configure_workers(world,workers)
 	panel.configure_orders(world,orders)
 	global_orders_view=preload("res://scripts/global_work_orders_view.gd").new();canvas.add_child(global_orders_view);global_orders_view.configure_orders(world,global_orders);global_orders_view.hide()
-	global_orders_view.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self) and not conditions_view.visible
+	global_orders_view.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self) and not conditions_view.visible and not details_view.visible
 	global_orders_view.cancelled.connect(_close_global_orders)
 	global_orders_view.create_requested.connect(open_global_order_picker)
 	global_orders_view.conditions_requested.connect(func(id,_workshop):global_orders_view.hide();conditions_view.open(-2,id))
@@ -36,6 +39,12 @@ func configure(world,service,host,help=null) -> void:
 	conditions_view.cancelled.connect(_back_conditions)
 	panel.orders.conditions_requested.connect(func(id):conditions_view.open(state.building_id,id))
 	conditions.applied.connect(orders.refresh)
+	details_view=preload("res://scripts/work_order_details_view.gd").new();canvas.add_child(details_view);details_view.configure_details(world,details);details_view.hide()
+	details_view.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self)
+	details_view.cancelled.connect(_back_details)
+	details.applied.connect(_back_details)
+	global_orders_view.details_requested.connect(func(id):global_orders_view.hide();details_view.open(-2,id))
+	panel.orders.details_requested.connect(func(id):details_view.open(state.building_id,id))
 	order_picker=preload("res://scripts/workshop_order_picker_view.gd").new();canvas.add_child(order_picker);order_picker.configure_picker(world,order_choices);order_picker.hide()
 	order_picker.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self)
 	order_picker.cancelled.connect(_back_order_picker)
@@ -53,7 +62,7 @@ func configure(world,service,host,help=null) -> void:
 	panel.workers.choose_requested.connect(_open_picker)
 	panel.workers.unit_requested.connect(func(id):unit_requested.emit(id))
 	panel.tab_requested.connect(_select_tab)
-	panel.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self) and not selector.visible and not order_picker.visible and not conditions_view.visible and not global_orders_view.visible
+	panel.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self) and not selector.visible and not order_picker.visible and not conditions_view.visible and not global_orders_view.visible and not details_view.visible
 	workers.changed.connect(_workers_changed)
 	workers.applied.connect(state.refresh)
 	workers.applied.connect(contents.refresh)
@@ -83,6 +92,7 @@ func close_panel() -> void:
 	_close_order_picker();_close_picker();workers.close();tasks.close();orders.close();super.close_panel()
 
 func _exit_tree() -> void:
+	details.dispose()
 	global_orders.dispose()
 	conditions.dispose()
 	order_choices.dispose();candidate_modes.dispose();workers.dispose();tasks.dispose();orders.dispose();super._exit_tree()
@@ -101,6 +111,8 @@ func _back_order_picker() -> void:
 	if global:global_orders.refresh();global_orders_view.show()
 
 func _close_conditions() -> void:
+	details.close()
+	if details_view!=null:details_view.hide()
 	conditions.close()
 	if conditions_view!=null:conditions_view.hide()
 	global_orders.close()
@@ -109,6 +121,12 @@ func _close_conditions() -> void:
 func _back_conditions() -> void:
 	conditions.close();conditions_view.hide()
 	global_orders.refresh();global_orders_view.show()
+
+func _back_details() -> void:
+	var global: bool=details.building_id==-2
+	details.close();details_view.hide()
+	if global:global_orders.refresh();global_orders_view.show()
+	elif orders.building_id>=0:orders.refresh()
 
 func _close_global_orders() -> void:
 	global_orders.close();global_orders_view.hide()
@@ -135,6 +153,9 @@ func _workers_changed() -> void:
 	if selector!=null and selector.visible and workers.phase!=workers.Phase.Ready:_close_picker()
 func _process(delta: float) -> void:
 	super._process(delta)
+	if details_view!=null:
+		var viewport:=get_viewport().get_visible_rect().size
+		details_view.layout(viewport/Preferences.effective_scale_vector(viewport))
 	if global_orders_view!=null:
 		var viewport:=get_viewport().get_visible_rect().size
 		global_orders_view.layout(viewport/Preferences.effective_scale_vector(viewport))
@@ -149,6 +170,7 @@ func _process(delta: float) -> void:
 		var view:=viewport/Preferences.effective_scale_vector(viewport)
 		selector.layout(view);selector.position=Vector2(32,48+fposmod(view.y,12)*0.5)
 func _input(event: InputEvent) -> void:
+	if details_view!=null and details_view.visible:return
 	if global_orders_view!=null and global_orders_view.visible:return
 	if conditions_view!=null and conditions_view.visible:return
 	if order_picker!=null and order_picker.visible:return
@@ -161,7 +183,8 @@ func _input(event: InputEvent) -> void:
 		return
 	super._input(event)
 func handle_escape() -> void:
-	if conditions_view!=null and conditions_view.visible:_back_conditions()
+	if details_view!=null and details_view.visible:details_view.back()
+	elif conditions_view!=null and conditions_view.visible:_back_conditions()
 	elif global_orders_view!=null and global_orders_view.visible:_close_global_orders()
 	elif order_picker!=null and order_picker.visible:_back_order_picker()
 	elif panel!=null and panel.orders.editing:panel.orders.finish_entry()

@@ -243,6 +243,19 @@ func run() -> void:
 	global_row=global.find_order(created_order.id);global_y=142+(global_row.position-global.first)*36
 	await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/global-work-orders-live.png")
+	click(Vector2(584,global_y))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready),"Details did not open through global row"):quit(1);return
+	check(owner.details.snapshot.id==created_order.id and owner.details.snapshot.options.size()==expected.details.options.size(),"Details target/options differ")
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/work-order-details-live.png")
+	click(Vector2(200,118))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.snapshot.get("selected_option",-1)==0),"Details material choices did not open"):quit(1);return
+	check(owner.details.rows.size()==expected.details.choices[0].rows.size(),"Details material choice count differs")
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/work-order-details-material-live.png")
+	click(Vector2(200,190))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Closed and global.phase==global.Phase.Ready and global.ticket==0),"Details material selection did not close and refresh"):quit(1);return
+	global_row=global.find_order(created_order.id);global_y=142+(global_row.position-global.first)*36
 	click(Vector2(888,global_y))
 	if not check(await settle(service,func():return global.phase==global.Phase.Ready and global.ticket==0),"Global removal failed; no retry"):quit(1);return
 	check(global.find_order(created_order.id).is_empty(),"Global removed identity retained")

@@ -580,11 +580,31 @@ local ok,err=xpcall(function()
    assert(code==0,text)
    local owned=json.decode(text)
    assert(json.encode(ids)==json.encode(owned.ids),'Owned artwork subject order differs')
+   local screen_text={};for _,line in ipairs(lines())do screen_text[#screen_text+1]=line.text end
+   screen_text=table.concat(screen_text,'\n')
+   for _,caption in ipairs(owned.captions)do assert(screen_text:find(caption:sub(1,70),1,true),'Native artwork subject caption differs')end
    assert(artwork.open and artwork.current_option==kind and #subjects==#ids,'Owned artwork reader changed native menu')
    expected.artwork_subjects[#expected.artwork_subjects+1]={kind=kind,count=#ids,list_revision=owned.list_revision}
    shot('order-artwork-subject-'..tostring(kind)..'-native')
    art_back()
    assert(artwork.open and artwork.current_option==-1,'Artwork subject Back did not return to root')
+   assert(click_label(label));assert(#ids>0,'Artwork fixture needs a subject')
+   local prior_art={type=improved.art_spec.type,id=improved.art_spec.id,subid=improved.art_spec.subid}
+   local prior_inputs={};for _,item in ipairs(improved.items.elements)do local copy=df.job_item:new();copy:assign(item);prior_inputs[#prior_inputs+1]=copy end
+   local function restore_art()
+    improved.art_spec.type=prior_art.type;improved.art_spec.id=prior_art.id;improved.art_spec.subid=prior_art.subid
+    assert(#improved.items.elements==#prior_inputs,'Artwork changed requirement count')
+    for i,item in ipairs(improved.items.elements)do item:assign(prior_inputs[i+1])end
+   end
+   local function art_effect()return {type=improved.art_spec.type,id=improved.art_spec.id,subid=improved.art_spec.subid,specdata=improved.specdata.hist_figure_id,amount=improved.amount_total,remaining=improved.amount_left,frequency=improved.frequency}end
+   mouse(200,190);assert(not artwork.open,'Native subject selection did not close artwork')
+   local native_effect=art_effect();restore_art()
+   local edit_text,edit_code=dfhack.run_command_silent('df3d','work-order-art-select-probe',tostring(improved.id),tostring(improvement_slot),tostring(kind),tostring(ids[1]))
+   assert(edit_code==0,edit_text)
+   assert(json.encode(art_effect())==json.encode(native_effect),'Semantic artwork subject effect differs')
+   restore_art();for _,item in ipairs(prior_inputs)do item:delete()end
+   mouse(584,improvement_y);assert(improvement.open)
+   mouse(200,106+improvement_slot*36);mouse(200,142);assert(artwork.open and artwork.current_option==-1)
   end
   art_back()
   if artwork.open then assert(click_label('Leave editor and discard data'),'Artwork exit confirmation missing')end

@@ -2129,6 +2129,22 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="work-order-art-select-probe") {
+          if(parameters.size()!=5)return CR_WRONG_USAGE;
+          int32_t values[4];
+          for(size_t i=1;i<5;++i) {
+            const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
+          }
+          df::manager_order* order=nullptr;
+          if(df::global::world)for(auto* candidate:df::global::world->manager_orders.all)if(candidate && candidate->id==values[0]){order=candidate;break;}
+          if(!order)return CR_FAILURE;
+          const auto details=df3d_production::nativeWorkOrderDetails(*order);if(!details)return CR_FAILURE;
+          uint64_t revision=0;
+          if(values[2]!=0){const auto subjects=df3d_production::nativeWorkOrderArtSubjects(*order,values[2]);if(!subjects)return CR_FAILURE;revision=subjects->listRevision;}
+          const auto edited=df3d_production::setWorkOrderArtSubject(*order,details->revision,values[1],values[2],values[3],revision);
+          return edited.outcome==df3d_production::WorkshopOrdersOutcome::Applied?CR_OK:CR_FAILURE;
+        }
         if(parameters[0]=="work-order-art-subjects-probe") {
           if(parameters.size()<3 || parameters.size()>4)return CR_WRONG_USAGE;
           int32_t id=-1,kind=-1;
@@ -2144,6 +2160,11 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(!observed)return CR_FAILURE;
           Json::Value result;result["order_revision"]=std::to_string(observed->orderRevision);result["list_revision"]=std::to_string(observed->listRevision);result["ids"]=Json::Value(Json::arrayValue);
           for(auto value:observed->ids)result["ids"].append(value);
+          result["captions"]=Json::Value(Json::arrayValue);
+          for(size_t i=0;i<std::min(size_t(8),observed->ids.size());++i) {
+            const auto caption=df3d_production::nativeWorkOrderArtSubjectCaption(kind,observed->ids[i]);if(!caption)return CR_FAILURE;
+            result["captions"].append(DF2UTF(*caption));
+          }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="work-order-details-probe") {

@@ -7098,9 +7098,18 @@ and broader navigation parity still need completion before exposure.
 native sorting/filtering. Each call owns its image context and releases native
 master-row allocations through pinned1fb1c0. No live native menu is an input;
 neither opener1ffae0 nor mixed navigation/action dispatcher20ed00 is invoked.
-The diagnostic `work-order-art-subjects-probe` returns ordered stable IDs and
-revisions. Captions, transport, viewer navigation and artwork effects are still
-unfinished, so this reader grants no artwork-editing capability.
+The diagnostic `work-order-art-subjects-probe` returns ordered stable IDs,
+revisions and native name captions. Subject selection composes the pinned native
+art-specifier writes and requirement rebuild, with order/list revision checks.
+Related-subject selection preserves native subid behavior; artist choice clears
+all three fields. Transport and viewer navigation are still unfinished, so these
+helpers do not yet expose an artwork picker to the player.
+
+Protected001535 on2026-11-02 compares subject captions and historical-figure,
+site and entity selection effects against actual native clicks, then completes
+the existing Work orders workflow. Owned DF38148 exits unsaved; paired viewer
+logs contain only documented engine diagnostics. Artist-choice effects are not
+covered by that native-click comparison.
 
 Protected000623 on2026-11-02 matches all10563 historical figures,680 sites and
 1263 entities against native picker order without changing the native picker.

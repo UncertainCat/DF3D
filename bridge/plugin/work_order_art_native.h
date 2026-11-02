@@ -22,6 +22,15 @@ inline bool workOrderArtSubjectsReady() {
             {0x20fa90,0x37c,UINT64_C(0x8972bb117b3367d0)}, // entities
             {0x1fc0c0,0x8c,UINT64_C(0xd79cbc6ebdc2073a)}, // native name comparator
             {0x1fb1c0,0x345,UINT64_C(0x2cdbd88b294d4dae)}, // owned master-row cleanup
+            {0x201320,0x79,UINT64_C(0x9eedf99c8af9aefb)}, // figure caption composition
+            {0x201976,0x60,UINT64_C(0xd99b90c0338c328e)}, // site caption composition
+            {0x201fb6,0x62,UINT64_C(0xef66198fb280beac)}, // entity caption composition
+            {0xa94030,0x6a1,UINT64_C(0xd81db68b3c9b33d2)}, // simple native name
+            {0xc0f630,0x2c,UINT64_C(0x2f03e40b0a07e0bf)}, // historical identity
+            {0x20a1df,0x94,UINT64_C(0xda14704e2a7596a2)}, // figure selection
+            {0x20a515,0x94,UINT64_C(0x887e8ee07510f16a)}, // site selection
+            {0x20a844,0x90,UINT64_C(0x21fb16abe2986637)}, // entity selection
+            {0x20f179,0x91,UINT64_C(0xd457c7675c96d8cb)}, // artist choice
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -68,6 +77,58 @@ inline std::optional<WorkOrderArtSubjects> nativeWorkOrderArtSubjects(df::manage
     const auto add=[&](uint64_t value){for(unsigned shift=0;shift<64;shift+=8){hash^=(value>>shift)&255;hash*=UINT64_C(1099511628211);}};
     add(kind);add(result.ids.size());for(auto id:result.ids)add(id);
     result.listRevision=(hash&INT64_MAX)?(hash&INT64_MAX):1;
+    return result;
+}
+inline std::optional<std::string> nativeWorkOrderArtSubjectCaption(int32_t kind,int32_t id) {
+    if(!workOrderArtSubjectsReady() || !df::global::world)return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
+    df::language_name* name=nullptr;
+    if(kind==1) {
+        auto* figure=df::historical_figure::find(id);if(!figure)return std::nullopt;
+        name=&figure->name;
+        auto* identity=reinterpret_cast<df::identity*(*)(df::historical_figure*)>(base+0xc0f630)(figure);
+        if(identity)name=reinterpret_cast<df::language_name*(*)(df::identity*)>(base+0xc3a4f0)(identity);
+    } else if(kind==2) {
+        auto* site=df::world_site::find(id);if(!site)return std::nullopt;name=&site->name;
+    } else if(kind==3) {
+        auto* entity=df::historical_entity::find(id);if(!entity)return std::nullopt;name=&entity->name;
+    }
+    if(!name)return std::nullopt;
+    df::language_name owned=*name;
+    std::string caption,translated;
+    reinterpret_cast<void(*)(df::language_name*,std::string*)>(base+0xa94030)(&owned,&caption);
+    reinterpret_cast<void(*)(df::language_name*,std::string*,bool,bool)>(base+0xa946e0)(&owned,&translated,true,false);
+    caption+=reinterpret_cast<const char*>(base+0x1602dbc);
+    caption+=translated;caption+=reinterpret_cast<const char*>(base+0x15e9718);
+    return caption;
+}
+
+inline WorkOrderDetailEditResult setWorkOrderArtSubject(df::manager_order& order,uint64_t revision,int32_t option,int32_t kind,int32_t id,uint64_t listRevision,const std::string& query={}) {
+    WorkOrderDetailEditResult result;
+    if(!workOrderArtSubjectsReady() || kind<0 || kind>3)return result;
+    const auto before=nativeWorkOrderDetails(order);
+    if(!before || option<0 || size_t(option)>=before->options.size())return result;
+    if(!revision || revision!=before->revision){result.outcome=WorkshopOrdersOutcome::Stale;return result;}
+    const auto optionKind=before->options[size_t(option)].kind;
+    if(optionKind!=1 && optionKind!=3)return result;
+    // The improvement Image entry applies its own type edit before opening art.
+    if(optionKind==3 && int(order.specdata.improvement)!=0)return result;
+    if(kind==0) {
+        if(id!=-1 || listRevision || !query.empty())return result;
+    } else {
+        const auto choices=nativeWorkOrderArtSubjects(order,kind,query);
+        if(!choices)return result;
+        if(!listRevision || choices->listRevision!=listRevision){result.outcome=WorkshopOrdersOutcome::Stale;return result;}
+        if(std::find(choices->ids.begin(),choices->ids.end(),id)==choices->ids.end())return result;
+    }
+    result.outcome=WorkshopOrdersOutcome::Unknown;
+    order.art_spec.type=df::job_art_specifier_type(kind-1);order.art_spec.id=id;
+    // Native related-subject actions leave subid intact; artist choice clears it.
+    if(kind==0)order.art_spec.subid=-1;
+    if(order.items)rebuildWorkOrderDetailRequirements(order);
+    result.observation=nativeWorkOrderDetails(order);
+    if(result.observation)result.outcome=WorkshopOrdersOutcome::Applied;
     return result;
 }
 }

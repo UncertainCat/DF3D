@@ -272,6 +272,57 @@ local ok,err=xpcall(function()
  assert(#still.jobs==#before_jobs,'Rejected workshop task changed native queue size')
  for i,id in ipairs(before_jobs)do assert(still.jobs[i-1].id==id,'Rejected workshop task changed native queue order')end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+ -- Controlled clone fixture: grant an occupied fortress office the manager
+ -- responsibility, as in the existing petition panel oracle. Restore it after
+ -- opening/cancelling the real native picker; no orders are created here.
+ local fortress=assert(df.global.plotinfo.main.fortress_entity)
+ local responsibility=df.entity_position_responsibility.MANAGE_PRODUCTION
+ local position,assignment
+ for _,a in ipairs(fortress.positions.assignments)do
+  if a.histfig>=0 then
+   local present=false;for _,u in ipairs(df.global.world.units.active)do if u.hist_figure_id==a.histfig then present=true;break end end
+   if present then for _,p in ipairs(fortress.positions.own)do if p.id==a.position_id then position=p;assignment=a;break end end end
+  end
+  if position then break end
+ end
+ assert(position,'Order picker reference needs an occupied fortress office')
+ local indexed=fortress.assignments_by_type[responsibility];local prior_index={}
+ for _,a in ipairs(indexed)do prior_index[#prior_index+1]=a end
+ local prior_responsibility=position.responsibilities[responsibility]
+ position.responsibilities[responsibility]=true;indexed:insert('#',assignment)
+ local orders_before=#df.global.world.manager_orders.all
+ local picker=df.global.game.main_interface.create_work_order
+ local function read_rows(rows)
+  local values={}
+  for _,r in ipairs(rows)do values[#values+1]={job_type=r.job_type,reaction=r.reaction_name,item_type=r.item_type,item_subtype=r.item_subtype,mat_type=r.mat_type,mat_index=r.mat_index,caption=dfhack.df2utf(r.name),compare=dfhack.df2utf(r.compare_str)}end
+  return values
+ end
+ local function catalog(target)
+  select_map(target);assert(click_label('Work orders'));shot('order-picker-entry-'..target.id)
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  g.precise_mouse_x=880;g.precise_mouse_y=154;g.mouse_x=110;g.mouse_y=12
+  df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+  assert(picker.open and picker.forced_bld_id==target.id,'Native forced workshop picker did not open')
+  local text,code=dfhack.run_command_silent('df3d','work-orders-catalog-probe');assert(code==0,text)
+  local global=json.decode(text).rows;local native_global=read_rows(picker.jminfo_master)
+  assert(json.encode(global)==json.encode(native_global),'Owned global order catalog differs from native picker')
+  assert(#picker.building==1,'Forced workshop picker should have one group')
+  text,code=dfhack.run_command_silent('df3d','work-orders-catalog-probe',tostring(target.id));assert(code==0,text)
+  local filtered=json.decode(text).rows;local native_filtered=read_rows(picker.building[0].jminfo)
+  local comparison=assert(io.open(out..'/work-order-catalog-'..target.id..'.json','w'))
+  comparison:write(json.encode({native=native_filtered,owned=filtered}));comparison:close()
+  assert(json.encode(filtered)==json.encode(native_filtered),'Owned workshop order catalog differs from native picker')
+  result.order_catalogs=result.order_catalogs or {};result.order_catalogs[#result.order_catalogs+1]={building_id=target.id,global_count=#global,filtered_count=#filtered,rows=filtered}
+  shot('order-picker-'..target.id)
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());assert(not picker.open)
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+ end
+ local catalog_ok,catalog_err=xpcall(function()catalog(building);catalog(still)end,debug.traceback)
+ position.responsibilities[responsibility]=prior_responsibility;indexed:resize(0)
+ for _,a in ipairs(prior_index)do indexed:insert('#',a)end
+ assert(#df.global.world.manager_orders.all==orders_before,'Opening/cancelling picker created an order')
+ assert(catalog_ok,catalog_err)
 end,debug.traceback)
 assert(#building.jobs==#jobs,'Workshop capture changed job count')
 for i,id in ipairs(jobs)do assert(building.jobs[i-1].id==id,'Workshop capture changed job order')end

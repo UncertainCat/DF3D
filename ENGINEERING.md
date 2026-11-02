@@ -6640,6 +6640,29 @@ groups contain known diagnostics only. Core/composition pass in
 `build/qa/workshop-order-number`; this is normal numeric-entry acceptance, not
 complete Work orders or all input-transition acceptance.
 
+The order-picker backend in `work_order_catalog_native.h` calls native
+a97150 with an independently owned vector of `manager_order_template` pointers.
+Civilization resources, installed raws and acquired reaction permissions remain
+DF-owned inputs; native picker storage is never passed. Captions reuse d032b0,
+normalized search strings use52cee0, and native376300 sorts the owned pointers.
+Native3113b0 releases every template, including on early return, and material
+lookup scratch is restored. Native311580 classifies builtin jobs for workshop
+filtering, with native3769cf's magma subtype mapping; custom reactions retain
+their exact raw building/type/custom restrictions. The diagnostic
+`df3d work-orders-catalog-probe [building-id]` reads the global or filtered result.
+It does not create orders or expose the incomplete picker.
+
+Protected183314 on2026-11-01 compares all2658 global rows and the37 Carpenter/4
+Still rows with the actual native picker: job/reaction/item/material fields,
+caption, normalized search string and ordering match. Both native picker captures
+were inspected. The clone temporarily grants an occupied office the manager
+responsibility, then restores its original responsibility and index after
+opening/cancelling both pickers. No orders are created. Owned DF43432 exits
+unsaved, source preservation passes and all four Godot log groups contain known
+diagnostics only. The earlier183157 run missed the native add button and is not
+acceptance. Other workshop variants, creation, management-wire transport and the
+DF3D picker remain unfinished; this evidence does not expose a public route.
+
 The staged workshop owner now connects Workers to this channel and the shared
 staff selector. Protected164826 on2026-11-01 exercises actual tab/picker clicks,
 all116 native candidate IDs, assignment of5573 and removal by selecting5573 again.

@@ -2616,5 +2616,444 @@
     "source_preserved": true,
     "godot_diagnostics": "known only",
     "scope": "Normal two-digit entry, immediate edits, Enter release and restoration; not complete Work orders acceptance"
+  },
+  "work_order_catalog_reference": {
+    "run": "build/stockpile-storage-native-farm-discovery-20261101-183314",
+    "native_builder": "a97150",
+    "workshop_classifier": "311580",
+    "catalogs": [
+      {
+        "building_id": 4,
+        "filtered_count": 37,
+        "global_count": 2658,
+        "rows": [
+          {
+            "caption": "Make bed",
+            "compare": "make bed",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 69,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make display case",
+            "compare": "make display case",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 209,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": "MAKE WOODEN DISPLAY CASE"
+          },
+          {
+            "caption": "Make enormous wooden corkscrew",
+            "compare": "make enormous wooden corkscrew",
+            "item_subtype": 1,
+            "item_type": -1,
+            "job_type": 140,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make four wooden blocks",
+            "compare": "make four wooden blocks",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 80,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make menacing wooden spike",
+            "compare": "make menacing wooden spike",
+            "item_subtype": 4,
+            "item_type": -1,
+            "job_type": 140,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make rít body",
+            "compare": "make rit body",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 209,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": "MAKE_ENT245 INS3_BODY"
+          },
+          {
+            "caption": "Make spiked wooden ball",
+            "compare": "make spiked wooden ball",
+            "item_subtype": 2,
+            "item_type": -1,
+            "job_type": 140,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden altar",
+            "compare": "make wooden altar",
+            "item_subtype": 28,
+            "item_type": -1,
+            "job_type": 216,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden animal trap",
+            "compare": "make wooden animal trap",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 124,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden armor stand",
+            "compare": "make wooden armor stand",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 76,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden barrel",
+            "compare": "make wooden barrel",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 125,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden bin",
+            "compare": "make wooden bin",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 75,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden bookcase",
+            "compare": "make wooden bookcase",
+            "item_subtype": 23,
+            "item_type": -1,
+            "job_type": 216,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden bucket",
+            "compare": "make wooden bucket",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 126,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden buckler",
+            "compare": "make wooden buckler",
+            "item_subtype": 1,
+            "item_type": -1,
+            "job_type": 118,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden cabinet",
+            "compare": "make wooden cabinet",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 78,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden cage",
+            "compare": "make wooden cage",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 119,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden casket",
+            "compare": "make wooden casket",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 71,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden chair",
+            "compare": "make wooden chair",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 70,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden chest",
+            "compare": "make wooden chest",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 73,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden crutch",
+            "compare": "make wooden crutch",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 204,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden door",
+            "compare": "make wooden door",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 67,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden floodgate",
+            "compare": "make wooden floodgate",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 68,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden grate",
+            "compare": "make wooden grate",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 199,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden hatch cover",
+            "compare": "make wooden hatch cover",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 198,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden minecart",
+            "compare": "make wooden minecart",
+            "item_subtype": 16,
+            "item_type": -1,
+            "job_type": 216,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden pedestal",
+            "compare": "make wooden pedestal",
+            "item_subtype": 26,
+            "item_type": -1,
+            "job_type": 216,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden pipe section",
+            "compare": "make wooden pipe section",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 193,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden shield",
+            "compare": "make wooden shield",
+            "item_subtype": 0,
+            "item_type": -1,
+            "job_type": 118,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden splint",
+            "compare": "make wooden splint",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 203,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden stepladder",
+            "compare": "make wooden stepladder",
+            "item_subtype": 18,
+            "item_type": -1,
+            "job_type": 216,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden table",
+            "compare": "make wooden table",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 72,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden training axe",
+            "compare": "make wooden training axe",
+            "item_subtype": 21,
+            "item_type": -1,
+            "job_type": 96,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden training spear",
+            "compare": "make wooden training spear",
+            "item_subtype": 23,
+            "item_type": -1,
+            "job_type": 96,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden training sword",
+            "compare": "make wooden training sword",
+            "item_subtype": 22,
+            "item_type": -1,
+            "job_type": 96,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden weapon rack",
+            "compare": "make wooden weapon rack",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 77,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make wooden wheelbarrow",
+            "compare": "make wooden wheelbarrow",
+            "item_subtype": 17,
+            "item_type": -1,
+            "job_type": 216,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          }
+        ]
+      },
+      {
+        "building_id": 37,
+        "filtered_count": 4,
+        "global_count": 2658,
+        "rows": [
+          {
+            "caption": "Brew drink from fruit",
+            "compare": "brew drink from fruit",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 209,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": "BREW_DRINK_FROM_PLANT_GROWTH"
+          },
+          {
+            "caption": "Brew drink from plant",
+            "compare": "brew drink from plant",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 209,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": "BREW_DRINK_FROM_PLANT"
+          },
+          {
+            "caption": "Extract from plants",
+            "compare": "extract from plants",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 149,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": ""
+          },
+          {
+            "caption": "Make mead",
+            "compare": "make mead",
+            "item_subtype": -1,
+            "item_type": -1,
+            "job_type": 209,
+            "mat_index": -1,
+            "mat_type": -1,
+            "reaction": "MAKE_MEAD"
+          }
+        ]
+      }
+    ],
+    "captures": {
+      "workshop-order-picker-4.png": "ae5213ce276b765f6dbd7a94e66f7e00048daf6108e26d40a07df551f40d8aa1",
+      "workshop-order-picker-37.png": "578bf838af76abb596860ef82268004b45aecaca5b080012e7270ae92c2a7498"
+    },
+    "scope": "Global catalog and Carpenter/Still filtered identity/material/caption/search/order comparison. Creation, other workshop types and DF3D picker UI remain unfinished.",
+    "fixture": "Temporarily granted an occupied office MANAGE_PRODUCTION; restored after native open/cancel. No orders created.",
+    "godot_diagnostics": "known only",
+    "source_preserved": true
   }
 }

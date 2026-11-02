@@ -99,6 +99,7 @@
 #include "workshop_catalog_native.h"
 #include "workshop_workers_native.h"
 #include "workshop_orders_native.h"
+#include "work_order_catalog_native.h"
 #include "df/job_item.h"
 #include "musical_detail_native.h"
 #include "dance_detail_native.h"
@@ -2068,6 +2069,25 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           facts["melt"]=observed->melt;facts["hidden"]=observed->hidden;
           facts["can_dump"]=observed->canDump;facts["can_melt"]=observed->canMelt;
           result["facts"]=std::move(facts);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="work-orders-catalog-probe") {
+          if(parameters.size()>2)return CR_WRONG_USAGE;
+          int32_t id=-1;
+          if(parameters.size()==2) {
+            const auto& raw=parameters[1];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0)return CR_WRONG_USAGE;
+          }
+          const auto catalog=id<0?df3d_production::nativeWorkOrderCatalog():df3d_production::nativeWorkshopOrderCatalog(df::building::find(id));
+          if(!catalog)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["rows"]=Json::Value(Json::arrayValue);
+          for(const auto& row:*catalog) {
+            Json::Value value;value["job_type"]=int(row.job_type);value["reaction"]=row.reaction_name;
+            value["item_type"]=int(row.item_type);value["item_subtype"]=row.item_subtype;
+            value["mat_type"]=row.mat_type;value["mat_index"]=row.mat_index;
+            value["caption"]=DF2UTF(row.name);value["compare"]=DF2UTF(row.compare_str);
+            result["rows"].append(value);
+          }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="workshop-orders-probe") {

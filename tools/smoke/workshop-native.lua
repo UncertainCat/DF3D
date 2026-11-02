@@ -116,6 +116,17 @@ local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(click_label('Work orders'),'Native Work orders tab not found')
  shot('work-orders')
+ local limit_before=building:getWorkshopProfile().max_general_orders
+ local function order_click(x)
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  g.precise_mouse_x=x;g.precise_mouse_y=478;g.mouse_x=math.floor(x/8);g.mouse_y=39
+  df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+ end
+ assert(limit_before>=0 and limit_before<99,'Reference needs a reversible general-order increment')
+ order_click(840);assert(building:getWorkshopProfile().max_general_orders==limit_before+1,'Native general-order increase failed')
+ order_click(872);assert(building:getWorkshopProfile().max_general_orders==limit_before,'Native general-order decrease failed')
+ result.general_order_steps={before=limit_before,increased=limit_before+1,restored=limit_before}
  assert(click_label('Tasks'),'Native Tasks tab not found')
  assert(click_label('Add new task'),'Native Add new task control not found')
  shot('add-task')
@@ -138,6 +149,12 @@ local ok,err=xpcall(function()
  assert(still,'Workshop reference needs a completed Still')
  select_map(still)
  assert(sheet.active_id==still.id,'Native Still selection missed')
+ local order_text,order_code=dfhack.run_command_silent('df3d','workshop-orders-probe',tostring(still.id))
+ assert(order_code==0,order_text);result.still_orders_reference=json.decode(order_text)
+ assert(result.still_orders_reference.general_order_limit==still:getWorkshopProfile().max_general_orders,'Order limit reader differs')
+ assert(result.still_orders_reference.manager_available==(#df.global.plotinfo.main.fortress_entity.assignments_by_type[df.entity_position_responsibility.MANAGE_PRODUCTION]>0),'Manager prerequisite reader differs')
+ local expected_orders={};for _,order in ipairs(df.global.world.manager_orders.all)do if order.workshop_id==still.id then expected_orders[#expected_orders+1]=order.id end end
+ assert(json.encode(result.still_orders_reference.order_ids)==json.encode(expected_orders),'Workshop order membership differs')
  assert(click_label('Workers'),'Native Still Workers tab not found')
  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
  g.precise_mouse_x=448;g.precise_mouse_y=154;g.mouse_x=56;g.mouse_y=12

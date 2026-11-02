@@ -6596,6 +6596,33 @@ the native creature name formatters and shared staff sorting keys. Protected
 rendered candidate text, sorting, or assignment effects. The staged paging owner
 reuses bounded staff pages with separate profile/list revisions.
 
+The staged Work orders backend in `workshop_orders_native.h` reads the manager
+prerequisite from `plotinfo.main.fortress_entity.assignments_by_type[MANAGE_PRODUCTION]`,
+matching renderer1882a2. This is simulation state, not the legacy reconstructed
+manager scan. Workshop order IDs retain world order and filter `workshop_id`, as
+native1aca10 does. General-order plus/minus composes the native inline profile
+write at1acb79/1acbc7, with limits0..99 and a current profile revision; it does not
+call the building input handler. Fingerprints and compile-time layout checks bind
+these reads/effects to the supported executable. `df3d workshop-orders-probe <id>`
+exposes the read for protected verification. Management117 carries an independent
+order-profile receipt and signed limit step through the model to the staged Work
+orders tab. Reads and edits reject mixed intents; failed/unknown outcomes retain
+no usable authority and are never replayed. Order IDs are bounded to16384; older
+recordings cannot supply manager or profile authority. Closing or changing session
+retires pending UI requests. The native numeric-entry artwork is present but its
+action, order creation, populated order rows and order details remain unfinished;
+no public route is enabled.
+
+Protected180849 on2026-11-01 compares the manager prerequisite and order membership
+with semantic DF records, exercises native Carpenter limit5->6->5, then performs
+the same changes on the Still through actual Godot Work orders tab/button clicks.
+Independent transport reads confirm both effects. Owned DF37476 exits unsaved,
+the source manifest is unchanged, and all four Godot log groups have only classified
+known diagnostics. The rendered capture was inspected; its warning color was then
+corrected from palette6 to native bright-red12 (renderer1882c8), without another
+capture. This is normal-flow limit acceptance, not full Work orders acceptance.
+Core and composition checks pass in `build/qa/workshop-orders-wired`.
+
 The staged workshop owner now connects Workers to this channel and the shared
 staff selector. Protected164826 on2026-11-01 exercises actual tab/picker clicks,
 all116 native candidate IDs, assignment of5573 and removal by selecting5573 again.

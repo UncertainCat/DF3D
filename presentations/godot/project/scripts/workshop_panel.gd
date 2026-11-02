@@ -6,16 +6,18 @@ var candidate_modes=preload("res://scripts/workshop_candidate_modes.gd").new()
 var refreshing_modes:=false
 var selector
 var tasks=preload("res://scripts/workshop_tasks_state.gd").new()
+var orders=preload("res://scripts/workshop_orders_state.gd").new()
 
 func _init() -> void:
 	state=preload("res://scripts/building_header_state.gd").new()
 
 func configure(world,service,host,help=null) -> void:
-	tasks.configure(service);workers.configure(service);candidate_modes.configure(service)
+	tasks.configure(service);workers.configure(service);orders.configure(service);candidate_modes.configure(service)
 	candidate_modes.applied.connect(func():refreshing_modes=true;candidate_modes.clear();workers.refresh())
 	super.configure(world,service,host,help)
 	panel.configure_tasks(world,tasks,"")
 	panel.configure_workers(world,workers)
+	panel.configure_orders(world,orders)
 	selector=preload("res://scripts/workshop_candidates_view.gd").new();canvas.add_child(selector);selector.configure(world);selector.extra_columns=2;selector.responsive_height=true;selector.configure_modes(candidate_modes,help);selector.hide()
 	selector.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self) and workers.phase==workers.Phase.Ready and not candidate_modes.applying
 	selector.cancelled.connect(_close_picker)
@@ -33,7 +35,7 @@ func configure(world,service,host,help=null) -> void:
 
 func _create_view():return preload("res://scripts/workshop_sheet_view.gd").new()
 func _open_state(id: int,_season: int) -> void:
-	_close_picker();workers.close();tasks.close();panel.selected_tab=0;state.open(id)
+	_close_picker();workers.close();tasks.close();orders.close();panel.selected_tab=0;state.open(id)
 func _contents_supported() -> bool:return true
 
 func open_workshop(id: int,icon: String) -> void:
@@ -44,19 +46,20 @@ func _state_changed() -> void:
 	super._state_changed()
 	if opening:return
 	if state.building_id<0 or state.snapshot.get("removing",false):
-		_close_picker();workers.close();tasks.close()
+		_close_picker();workers.close();tasks.close();orders.close()
 	elif not state.snapshot.is_empty() and tasks.building_id!=state.building_id:tasks.open(state.building_id)
 
 func close_panel() -> void:
-	_close_picker();workers.close();tasks.close();super.close_panel()
+	_close_picker();workers.close();tasks.close();orders.close();super.close_panel()
 
 func _exit_tree() -> void:
-	candidate_modes.dispose();workers.dispose();tasks.dispose();super._exit_tree()
+	candidate_modes.dispose();workers.dispose();tasks.dispose();orders.dispose();super._exit_tree()
 
 func _select_tab(index: int) -> void:
-	if index not in [0,1] or not panel.tasks_allowed() or tasks.phase==tasks.Phase.Applying:return
+	if index not in [0,1,2] or not panel.tasks_allowed() or tasks.phase==tasks.Phase.Applying:return
 	_close_picker();panel.tasks.choose_mode(false);panel.selected_tab=index
 	if index==1 and workers.building_id!=state.building_id:workers.open(state.building_id)
+	if index==2:orders.open(state.building_id)
 	panel.refresh()
 func _open_picker() -> void:
 	if workers.phase!=workers.Phase.Ready or not panel.tasks_allowed():return

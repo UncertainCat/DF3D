@@ -6,6 +6,7 @@ signal connections_requested
 const TABS=["Tasks","Workers","Work orders"]
 var tasks
 var workers
+var orders
 var selected_tab:=0
 
 func configure_tasks(source,model,icon: String) -> void:
@@ -25,10 +26,15 @@ func configure_workers(source,model) -> void:
 	workers.input_allowed=tasks_allowed;_layout_body()
 
 func tasks_allowed() -> bool:
-	return allowed() and not removing and state.phase==state.Phase.Ready and state.ticket==0 and (workers==null or workers.state.phase!=workers.state.Phase.Applying) and (contents==null or contents.state.phase!=contents.state.Phase.Applying)
+	return allowed() and not removing and state.phase==state.Phase.Ready and state.ticket==0 and (orders==null or orders.state.phase!=orders.state.Phase.Applying) and (workers==null or workers.state.phase!=workers.state.Phase.Applying) and (contents==null or contents.state.phase!=contents.state.Phase.Applying)
+
+func configure_orders(source,model) -> void:
+	orders=preload("res://scripts/workshop_orders_view.gd").new();add_child(orders)
+	orders.configure(source,model);orders.position=Vector2(16,84);orders.size=Vector2(464,360)
+	orders.input_allowed=tasks_allowed;_layout_body()
 
 func contents_allowed() -> bool:
-	return super.contents_allowed() and (workers==null or workers.state.phase!=workers.state.Phase.Applying) and (tasks==null or tasks.state.phase!=tasks.state.Phase.Applying)
+	return super.contents_allowed() and (orders==null or orders.state.phase!=orders.state.Phase.Applying) and (workers==null or workers.state.phase!=workers.state.Phase.Applying) and (tasks==null or tasks.state.phase!=tasks.state.Phase.Applying)
 
 func show_contents_separator() -> bool:return tasks==null or not tasks.picking
 
@@ -46,6 +52,9 @@ func refresh() -> void:
 func _layout_body() -> void:
 	if tasks==null:return
 	if workers!=null:workers.visible=not removing and selected_tab==1 and not state.snapshot.is_empty()
+	if orders!=null:
+		orders.visible=not removing and selected_tab==2 and not state.snapshot.is_empty()
+		orders.size=Vector2(464,maxf(36,size.y-96) if int(size.y/12)<45 else 360)
 	tasks.visible=not removing and selected_tab==0 and not state.snapshot.is_empty()
 	var expanded: bool=tasks.picking or int(size.y/12)<45
 	tasks.size=Vector2(464,maxf(0,size.y-66 if expanded else 390))

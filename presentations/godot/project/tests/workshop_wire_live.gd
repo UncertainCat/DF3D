@@ -38,6 +38,28 @@ func composed_sheet(id: int) -> void:
 	check(not owner.panel.contents.visible,"Workshop picker retained contents")
 	click(Vector2(848,118))
 	check(owner.panel.contents.visible and not owner.panel.tasks.picking,"Workshop Cancel did not restore contents")
+	# Exercise the native-backed Work orders limit through rendered controls.
+	click(Vector2(640,112))
+	deadline=Time.get_ticks_msec()+10000
+	while Time.get_ticks_msec()<deadline and owner.orders.phase==owner.orders.Phase.Reading:
+		world.poll();service.poll(0.01);await create_timer(0.01).timeout
+	if not check(owner.orders.phase==owner.orders.Phase.Ready,"Workshop orders did not load"):
+		owner.close_panel();return
+	var order_reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/workshop-native.json")).still_orders_reference
+	check(owner.orders.snapshot.manager_available==order_reference.manager_available and owner.orders.snapshot.general_order_limit==int(order_reference.general_order_limit),"Workshop order profile differs from native")
+	var original_limit: int=owner.orders.snapshot.general_order_limit
+	check(original_limit<99,"Workshop fixture limit cannot be incremented reversibly")
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/workshop-orders-live.png")
+	for delta in [1,-1]:
+		click(Vector2(840 if delta==1 else 872,478))
+		deadline=Time.get_ticks_msec()+10000
+		while Time.get_ticks_msec()<deadline and owner.orders.phase==owner.orders.Phase.Applying:
+			world.poll();service.poll(0.01);await create_timer(0.01).timeout
+		if not check(owner.orders.phase==owner.orders.Phase.Ready and owner.orders.snapshot.general_order_limit==original_limit+(1 if delta==1 else 0),"Rendered general-order step failed"):
+			owner.close_panel();return
+		var observed:=await request("production",{"action":C.ManagementAction.ProductionInspect,"workshop_orders":true,"building_id":id})
+		check(observed.get("production",{}).get("workshop_orders",{}).get("general_order_limit",-1)==owner.orders.snapshot.general_order_limit,"General-order step missing from authoritative reread")
 	# Exercise the rendered Workers route through the real action service.
 	click(Vector2(536,112))
 	deadline=Time.get_ticks_msec()+10000

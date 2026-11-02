@@ -2536,5 +2536,38 @@
       "workshop-worker-small-live.png": "bad5b3ca44339a4ce7bdd74d9ddaa240d957d46a41eadefd15e38b921e0ef49d",
       "workshop-still-worker-selector-small.png": "5cc1e423a15317e64ab15c96edd0cc4e902b8baea90e4666cccdeeaa34ddedd4"
     }
+  },
+  "work_orders_limit_reference": {
+    "source": "DF53.16 Steam build24557528",
+    "run": "build/stockpile-storage-native-farm-discovery-20261101-180849",
+    "management_version": 117,
+    "native_steps": {
+      "before": 5,
+      "increased": 6,
+      "restored": 5
+    },
+    "still_profile": {
+      "building_id": 37,
+      "general_order_limit": 5,
+      "manager_available": false,
+      "order_ids": [],
+      "revision": "5123862991700078089"
+    },
+    "rendered_limit_steps": [
+      5,
+      6,
+      5
+    ],
+    "source_preserved": true,
+    "godot_diagnostics": "known only",
+    "captures": {
+      "workshop-work-orders.png": "53ab6df7e037c77c167632509ade4966ca522241489e495610de481db3bb7adf",
+      "workshop-orders-live.png": "879a3a934151f7712ae21d6141b40f970f6008acb1daecb63b37c0c11c733c55"
+    },
+    "limitations": [
+      "No manager-present or populated-order acceptance",
+      "Numeric entry, order creation and details unfinished",
+      "Warning palette corrected to native12 after capture"
+    ]
   }
 }

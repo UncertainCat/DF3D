@@ -1,5 +1,6 @@
 extends Control
 signal choose_requested
+signal conditions_requested(id: int)
 # Native renderer1882fe/189a22 and protected workshop-work-orders reference.
 # Row actions and details are still staged.
 var art=preload("res://scripts/original_ui.gd").new()
@@ -54,6 +55,8 @@ func _gui_input(event: InputEvent) -> void:
 	if state.snapshot.get("manager_available",false) and Rect2(424,0,32,36).has_point(event.position):finish_entry();choose_requested.emit();accept_event();return
 	for index in visible_rows:
 		var row: Dictionary=state.rows.get(state.row_offset+index,{})
+		if not row.is_empty() and Rect2(360,36+index*36,32,36).has_point(event.position):
+			finish_entry();conditions_requested.emit(row.id);accept_event();return
 		if not row.is_empty() and Rect2(424,36+index*36,32,36).has_point(event.position):
 			finish_entry();state.remove_order(row.id);accept_event();return
 		if not row.is_empty() and Rect2(328,36+index*36,32,36).has_point(event.position):

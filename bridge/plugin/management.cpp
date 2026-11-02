@@ -2732,8 +2732,9 @@ void run(color_ostream& out) {
     const auto* q=r->work_order();message.clear();status=m::ManagementStatus::Rejected;workOrders={};
     const bool deleting=r->action()==m::ManagementAction::WorkOrderDelete;
     const bool editing=deleting || r->action()==m::ManagementAction::WorkOrderUpdate;
-    const bool extra=(editing?(q->id()<0 || (deleting?q->remaining()!=-1:(q->remaining()<0 || q->remaining()>9999)) || !q->expected_revision() || q->cursor() || q->expected_list_revision()):
-      (q->id()!=-1 || q->remaining()!=-1 || q->expected_revision())) || q->frequency()!=-1 || q->max_workshops()!=-1 || (q->recipe() && q->recipe()->size()) || (q->query() && q->query()->size()) ||
+    const bool frequencyEdit=!deleting && editing && q->frequency()>=0;
+    const bool extra=(editing?(q->id()<0 || (deleting || frequencyEdit?q->remaining()!=-1:(q->remaining()<0 || q->remaining()>9999)) || !q->expected_revision() || q->cursor() || q->expected_list_revision()):
+      (q->id()!=-1 || q->remaining()!=-1 || q->expected_revision())) || (frequencyEdit?q->frequency()>4:q->frequency()!=-1) || q->max_workshops()!=-1 || (q->recipe() && q->recipe()->size()) || (q->query() && q->query()->size()) ||
       q->condition_kind() || q->condition_index()!=-1 || q->remove_condition() || q->compare()!=-1 ||
       q->threshold()!=-1 || q->item_type()!=-1 || q->target_order()!=-1 || q->dependency()!=-1 ||
       q->candidate_kind() || q->move() || q->expected_neighbor()!=-1 || q->item_subtype()!=-1 ||
@@ -2757,7 +2758,7 @@ void run(color_ostream& out) {
           }
           publish();return;
         }
-        const auto result=df3d_production::setWorkshopOrderQuantity(q->workshop_id(),q->id(),q->expected_revision(),q->remaining());
+        const auto result=df3d_production::setWorkshopOrderFields(q->workshop_id(),q->id(),q->expected_revision(),q->remaining(),q->frequency());
         using O=df3d_production::WorkshopOrdersOutcome;
         mutated=result.outcome==O::Applied || result.outcome==O::Unknown;
         if(result.outcome==O::Applied && result.row) {

@@ -6783,7 +6783,30 @@ actual native screen and verifies typed inspection through Godot against those
 suggestions. Existing create, quantity and removal actions still pass. Owned
 DF45948 exits unsaved, source preservation passes, and all five Godot log groups
 have only documented diagnostics. This is read transport acceptance; the
-Conditions controls and edits are not yet implemented.
+Conditions read controls and the frequency action are implemented in the staged
+workshop owner; item/dependency editing remains unfinished.
+
+The Conditions view opens from the workshop row, owns its inspection generation,
+and displays native captions/suggestions in the captured Work orders frame.
+The clock submits an exclusive desired frequency with the current row revision.
+The bridge composes native3c4e27..3c4e4b, changing frequency alone, and returns a
+fresh row. The controller then re-inspects suggestions; unsuccessful writes
+retire authority and are never replayed. Close/session/target changes detach old
+observers. Protected201724 on2026-11-01 exercises opening, all five clock states,
+unchanged quantity/status/date, closing, and subsequent removal. Its owned
+DF43740 exits unsaved with source preservation and only known Godot diagnostics.
+The rendered frame, labels and icon pixels were compared with native evidence.
+Earlier apparent missing icons were a misreading of the scaled preview: exact
+clock crops from201223/201724/201951 match the installed texture byte-for-byte.
+No engine workaround is needed. Later202429 also passes the workshop checks but
+fails in the separate carrier scene with unclassified rendering breadcrumbs;
+that full run is not acceptance.
+
+This screen remains staged. Adding/removing/editing conditions, dependencies,
+overflow, tooltip coverage, tab navigation and exact native back navigation are
+unfinished. Current close returns to the workshop; this is not native navigation
+acceptance. Fixed frame geometry and bounded displayed rows still need the full
+responsive/scrolling implementation before exposure.
 
 Protected194413 on2026-11-01 matches both Extract-from-plants suggestions against
 native pointer elements on every captured condition field, including all five

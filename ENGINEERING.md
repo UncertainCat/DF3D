@@ -7113,8 +7113,25 @@ requirements, then closes Details and refreshes the parent order list.
 The artwork root uses installed BUTTON_CATEGORY_RECTANGLE_ON artwork. Right-click
 returns subjects to the root and closes Details from the root; native Escape is
 non-dismissive. The viewer owns search, navigation and paging, and retires late
-responses with its parent. Existing-image selection and the new-image editor
-remain unfinished, so the complete Work orders surface remains staged.
+responses with its parent. Existing-image selection uses native20fe10 with an
+owned context. Filtered row ordinals are guarded by a revision of the complete
+image ID/sub-ID list; selection resolves and writes both native identifiers.
+Native entity records supply group/civilization provenance badges. Management126
+carries optional badges and hover descriptions. Description1451b10 and native
+wrapping8e7310 operate on owned inputs; allocated text is released through bb9b0.
+The viewer owns a separate hover request, so waiting for a description does not
+block selection, and late previews cannot replace a newer page or selection.
+The new-image editor remains unfinished, so Work orders remains staged.
+
+Protected010525 on2026-11-02 exercises Existing image in the shared viewer after
+the assembled Work orders/conditions/Details workflow. Hover text and wrapping
+match the native observation, and group/civilization badges match. Selection
+closes Details and refreshes the order list; DF readback confirms Image and the
+selected image pair (2,340). The rendered panel was inspected. Owned DF4140 exits
+unsaved with source preservation; paired viewer logs contain only documented
+engine diagnostics. Core19/19 and UI composition pass. Figure/site/entity hover
+descriptions, artist-choice live effects and broader responsive acceptance remain
+unfinished alongside the new-image editor.
 
 Protected001535 on2026-11-02 compares subject captions and historical-figure,
 site and entity selection effects against actual native clicks, then completes
@@ -7129,7 +7146,7 @@ specifier. The full existing Work orders workflow passes; owned DF44508 exits
 unsaved with source preservation. Paired viewer diagnostics are known-only.
 Screenshot review corrected the root's button token and heading baseline; the
 subsequent actual-viewer render verifies that correction. Core19/19 and UI
-composition pass. This does not establish existing/new-image editing, artist
+composition pass. This does not establish new-image editing, artist
 choice live effects, or complete responsive/hover acceptance.
 
 Protected000623 on2026-11-02 matches all10563 historical figures,680 sites and

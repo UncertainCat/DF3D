@@ -612,7 +612,21 @@ local ok,err=xpcall(function()
    mouse(584,improvement_y);assert(improvement.open)
    mouse(200,106+improvement_slot*36);mouse(200,142);assert(artwork.open and artwork.current_option==-1)
   end
+  assert(click_label('Existing image'));assert(artwork.current_option==5)
+  expected.artwork_images={}
+  for _,image in ipairs(artwork.art_image)do expected.artwork_images[#expected.artwork_images+1]={id=image.id,subid=image.subid}end
+  assert(#expected.artwork_images>0,'Fixture needs an existing image')
+  shot('order-artwork-existing-native')
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  g.precise_mouse_x=200;g.precise_mouse_y=190;g.mouse_x=25;g.mouse_y=15;view:render(dfhack.getTickCount())
+  expected.artwork_preview={};for _,line in ipairs(artwork.selected_box.text)do expected.artwork_preview[#expected.artwork_preview+1]=dfhack.df2utf(line.value)end
+  assert(#expected.artwork_preview>0,'Existing image hover description missing')
+  shot('order-artwork-existing-preview-native')
+  art_back();assert(artwork.open and artwork.current_option==-1)
+  assert(click_label('Specify a new image'));assert(artwork.current_option==6)
+  shot('order-artwork-new-native')
   art_back()
+  if artwork.open and artwork.current_option==-1 then art_back()end
   if artwork.open then assert(click_label('Leave editor and discard data'),'Artwork exit confirmation missing')end
   assert(not artwork.open,'Artwork picker did not close')
   improved.specdata.hist_figure_id=prior_improvement
@@ -744,7 +758,7 @@ local ok,err=xpcall(function()
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
   capture('workshop-order-wire')
   assert(improved.specdata.improvement==0,'Viewer Image entry effect missing')
-  assert(improved.art_spec.type==1 and improved.art_spec.id==expected.artwork_search.first,'Viewer artwork site selection effect missing')
+  assert(improved.art_spec.type==3 and improved.art_spec.id==expected.artwork_images[1].id and improved.art_spec.subid==expected.artwork_images[1].subid,'Viewer existing image selection effect missing')
   assert(#df.global.world.manager_orders.all==orders_before,'Viewer removal did not restore order count')
   for i,id in ipairs(prior_order_ids)do assert(df.global.world.manager_orders.all[i-1].id==id,'Viewer removal changed unrelated order sequence')end
   assert(#dependent.order_conditions==prior_dependencies,'Viewer removal retained incoming dependency')

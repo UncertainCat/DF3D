@@ -15,6 +15,36 @@ var rows: Array=[]
 var query:=""
 var art_base:=0
 var visible_rows:=16
+var preview_ticket:=0
+var hovered: int=-1
+var preview_columns:=0
+var preview_lines: Array=[]
+func _cancel_preview() -> void:
+	if service!=null and preview_ticket!=0:service.detach(preview_ticket)
+	preview_ticket=0;hovered=-1;preview_columns=0;preview_lines=[]
+func hover_art(id: int,columns: int) -> void:
+	if phase!=Phase.Ready or not has_art() or art_page()!=5 or service==null:return
+	if id==hovered and (id<0 or columns==preview_columns):return
+	_cancel_preview();hovered=id;preview_columns=columns;changed.emit()
+	if id<0:return
+	var found:=false
+	for row in rows:
+		if row.id==id:found=true;break
+	if not found:return
+	var owner:=generation
+	var revision: int=snapshot.revision
+	var list_revision: int=snapshot.art.list_revision
+	var current_query:=query
+	var intent: Dictionary={"action":C.ManagementAction.WorkOrderInspect,"workshop_id":building_id,"id":order_id,"expected_revision":revision,"details":{"option":snapshot.selected_option,"art":{"page":5,"query":query,"cursor":art_base,"expected_list_revision":list_revision,"hovered":id,"preview_columns":columns}}}
+	preview_ticket=service.submit("work_orders",intent,func(received,result,_sent):
+		if owner!=generation or received!=preview_ticket:return
+		preview_ticket=0
+		if phase!=Phase.Ready or not has_art() or art_page()!=5 or snapshot.revision!=revision or snapshot.art.list_revision!=list_revision or query!=current_query or hovered!=id:return
+		if result.get("status",-1)!=C.ManagementStatus.Ok or result.get("action",-1)!=C.ManagementAction.WorkOrderInspect:return
+		var details: Dictionary=result.get("work_order",{}).get("details",{})
+		var art: Dictionary=details.get("art",{})
+		if details.get("id",-1)!=order_id or details.get("revision",0)!=revision or art.get("page",-1)!=5 or art.get("list_revision",0)!=list_revision or art.get("hovered",-1)!=id or not art.get("preview") is Array:return
+		preview_lines=art.preview.duplicate();changed.emit())
 func has_art() -> bool:return snapshot.has("art")
 func art_page() -> int:return int(snapshot.get("art",{}).get("page",-1))
 func row_base() -> int:return art_base if has_art() else 0
@@ -26,6 +56,7 @@ func dispose() -> void:
 	if service!=null and service.session_changed.is_connected(close):service.session_changed.disconnect(close)
 	service=null
 func close() -> void:
+	_cancel_preview()
 	generation+=1
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
@@ -55,6 +86,7 @@ func _read_choices(cursor:=0) -> void:
 	_send({"action":C.ManagementAction.WorkOrderInspect,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"details":{"option":snapshot.selected_option,"query":query,"cursor":cursor,"expected_choices_revision":snapshot.choices_revision}})
 func seek(value: int) -> void:
 	if phase!=Phase.Ready or ticket!=0 or snapshot.get("selected_option",-1)<0:return
+	_cancel_preview()
 	if has_art():
 		if art_page()<0:return
 		value=clampi(value,0,maxi(0,int(snapshot.art.total)-visible_rows))
@@ -96,6 +128,7 @@ func art_back() -> void:
 func _fail(next: Phase) -> void:
 	snapshot={};rows=[];phase=next;changed.emit()
 func _send(intent: Dictionary) -> void:
+	_cancel_preview()
 	if service==null:_fail(Phase.Unavailable);return
 	var owner:=generation
 	ticket=service.submit("work_orders",intent,func(received,result,sent):

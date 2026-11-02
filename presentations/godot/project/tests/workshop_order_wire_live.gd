@@ -359,6 +359,24 @@ func run() -> void:
 	root.get_texture().get_image().save_png(directory+"/work-order-art-search-live.png")
 	click(Vector2(200,190))
 	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Closed and global.phase==global.Phase.Ready and global.ticket==0),"Artwork selection did not close and refresh"):quit(1);return
+	improvement_row=global.find_order(int(expected.improvement.id))
+	click(Vector2(584,142+(improvement_row.position-global.first)*36))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready),"Existing image parent did not reopen"):quit(1);return
+	click(Vector2(200,106+int(expected.improvement.option)*36))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.snapshot.get("selected_option",-1)==int(expected.improvement.option)),"Existing image type chooser did not open"):quit(1);return
+	click(Vector2(200,142))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.has_art()),"Existing image root did not open"):quit(1);return
+	click(Vector2(200,262))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.art_page()==5),"Existing images did not load"):quit(1);return
+	check(owner.details.snapshot.art.total==expected.artwork_images.size(),"Native existing image count differs")
+	var image_motion:=InputEventMouseMotion.new();image_motion.position=Vector2(200,190);image_motion.global_position=image_motion.position;root.push_input(image_motion,true)
+	if not check(await settle(service,func():return owner.details.preview_ticket==0 and not owner.details.preview_lines.is_empty()),"Existing image preview did not load"):quit(1);return
+	check(owner.details.preview_lines==expected.artwork_preview,"Native image description/wrapping differs")
+	check(owner.details.rows[0].get("badge","")=="Group symbol" and owner.details.rows[1].get("badge","")=="Civilization symbol","Native image symbol labels differ")
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/work-order-art-existing-live.png")
+	click(Vector2(200,190))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Closed and global.phase==global.Phase.Ready and global.ticket==0),"Existing image selection did not close and refresh"):quit(1);return
 	number_key(KEY_ESCAPE)
 	if not check(await settle(service,func():return owner.orders.phase==owner.orders.Phase.Ready and owner.orders.rows_available and owner.orders.row_ticket==0),"Workshop list did not refresh after global removal"):quit(1);return
 	check(not owner.orders.snapshot.order_ids.has(created_order.id) and owner.orders.row_total==0 and owner.orders.rows.is_empty(),"Removed order retained in workshop list")

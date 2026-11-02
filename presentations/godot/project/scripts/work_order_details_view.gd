@@ -10,6 +10,7 @@ var blink:=false
 func configure_details(source,model) -> void:
 	super.configure(source);state=model;colors=art.installed_palette(source.assets_root())
 	mouse_filter=Control.MOUSE_FILTER_STOP
+	mouse_exited.connect(func():if state!=null:state.hover_art(-1,0))
 	scrollbar.row_changed.connect(func(value):state.seek(value))
 	scrollbar.input_allowed=func():return state.phase==state.Phase.Ready and (not input_allowed.is_valid() or input_allowed.call())
 	state.changed.connect(func():
@@ -25,6 +26,7 @@ func layout(view: Vector2) -> void:
 	var origin:=Vector2(16 if global else 72,(36 if global else 48)+fposmod(view.y,12)*0.5)
 	var width:=976 if global else 832
 	if position==origin and size==Vector2(width,rows_count*12):return
+	state.hover_art(-1,0)
 	position=origin;frame_rows=rows_count;size=Vector2(width,frame_rows*12);sync_scroll();queue_redraw()
 func selected_kind() -> int:
 	var selected: int=state.snapshot.get("selected_option",-1) if state!=null else -1
@@ -34,7 +36,7 @@ func list_top() -> int:
 	return 84 if selected_kind()==3 else 120
 func sync_scroll() -> void:
 	if state==null or scrollbar==null:return
-	page_rows=maxi(1,int((size.y-list_top()-24)/36))
+	page_rows=maxi(1,int((size.y-list_top()-(60 if state.has_art() and state.art_page()==5 else 24))/36))
 	state.visible_rows=page_rows
 	scrollbar.position=Vector2(size.x-32,list_top());scrollbar.size=Vector2(16,page_rows*36);scrollbar.page=page_rows
 	if state.has_art():
@@ -75,6 +77,12 @@ func _input(event: InputEvent) -> void:
 		back();get_viewport().set_input_as_handled()
 func _gui_input(event: InputEvent) -> void:
 	if input_allowed.is_valid() and not input_allowed.call():return
+	if event is InputEventMouseMotion and state.phase==state.Phase.Ready and state.has_art() and state.art_page()==5:
+		var id: int=-1
+		if Rect2(16,list_top(),size.x-48,page_rows*36).has_point(event.position):
+			var index: int=int((event.position.y-list_top())/36)+state.first-state.row_base()
+			if index>=0 and index<state.rows.size():id=state.rows[index].id
+		state.hover_art(id,int((size.x-32)/8));return
 	if state.phase!=state.Phase.Ready or not event is InputEventMouseButton or not event.pressed:return
 	var selected: int=state.snapshot.get("selected_option",-1)
 	if selected>=0 and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
@@ -146,3 +154,5 @@ func draw_art() -> void:
 		var label: String=row.caption
 		if label.length()>width-2:label=label.left(maxi(0,width-5))+"..."
 		text(label,Vector2(16,152+index*36),11)
+		if row.has("badge"):text(row.badge,Vector2(size.x-24-21*8-(16 if scrollbar.visible else 0),152+index*36),14)
+	for index in mini(3,state.preview_lines.size()):text(state.preview_lines[index],Vector2(16,size.y-52+index*12),14)

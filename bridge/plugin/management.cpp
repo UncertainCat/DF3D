@@ -821,8 +821,10 @@ void publish() {
     flatbuffers::Offset<m::WorkOrderArtState> art;
     if(workOrders.art) {
       const auto& a=*workOrders.art;std::vector<flatbuffers::Offset<m::WorkOrderArtRow>> rows;
-      for(const auto& [id,caption]:a.rows)rows.push_back(m::CreateWorkOrderArtRow(b,id,b.CreateString(DF2UTF(caption))));
-      art=m::CreateWorkOrderArtState(b,a.page,b.CreateString(DF2UTF(a.caption)),b.CreateVector(rows),a.listRevision,a.total,a.nextCursor);
+      for(const auto& row:a.rows)rows.push_back(m::CreateWorkOrderArtRow(b,row.id,b.CreateString(DF2UTF(row.caption)),row.badge?b.CreateString(DF2UTF(*row.badge)):0));
+      flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> preview;
+      if(a.preview){std::vector<flatbuffers::Offset<flatbuffers::String>> lines;for(const auto& line:*a.preview)lines.push_back(b.CreateString(DF2UTF(line)));preview=b.CreateVector(lines);}
+      art=m::CreateWorkOrderArtState(b,a.page,b.CreateString(DF2UTF(a.caption)),b.CreateVector(rows),a.listRevision,a.total,a.nextCursor,a.hovered,preview);
     }
     workOrderDetails=m::CreateWorkOrderDetailsState(b,workOrders.detailsId,d.revision,b.CreateString(DF2UTF(d.caption)),b.CreateVector(options),workOrders.detailsOption,choices,d.choicesRevision,uint32_t(d.materials.size()),next,art);
   }
@@ -2895,7 +2897,7 @@ void run(color_ostream& out) {
         }
         if(!writing || a->page()==-1) {
           if(kind==3 && int(order->specdata.improvement)!=0){publish();return;}
-          workOrders.art=df3d_production::nativeWorkOrderArtPage(*order,a->page(),query,a->cursor(),a->expected_list_revision());
+          workOrders.art=df3d_production::nativeWorkOrderArtPage(*order,a->page(),query,a->cursor(),a->expected_list_revision(),a->hovered(),a->preview_columns());
           if(!workOrders.art){publish();return;}
           workOrders.detailsOption=d->option();
         }

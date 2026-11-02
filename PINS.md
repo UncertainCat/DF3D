@@ -22,6 +22,11 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management122 adds an exclusive native condition-filter choice, identified by
+catalog kind/index and both order/catalog revisions. It carries no copied filter
+values. Rebuild/install both peers on `Local\\df3d_management_v122`; old recordings
+omit this intent and do not acquire filter-edit authority.
+
 Management121 adds an exclusive native suggested-condition intent, carrying the
 suggestion index, target order/workshop and observed order revision. It carries
 no copied filter fields. Rebuild/install both peers on `Local\\df3d_management_v121`.

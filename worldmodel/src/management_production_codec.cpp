@@ -260,7 +260,7 @@ flatbuffers::Offset<m::WorkOrderRequest> encodeWorkOrder(flatbuffers::FlatBuffer
                                    uint64_t(w.expectedListRevision), w.itemSubtype, w.matType, w.matIndex,
                                    w.traits && (!w.traits->empty() || (!w.move && w.inputIndex < 0))
                                        ? b.CreateVectorOfStrings(*w.traits) : 0,
-                                   w.inputIndex, w.groupType, w.groupSubtype, w.groupCustom, w.encrustFlags, w.suggestionIndex);
+                                   w.inputIndex, w.groupType, w.groupSubtype, w.groupCustom, w.encrustFlags, w.suggestionIndex, w.filterChoice);
 }
 
 flatbuffers::Offset<m::KitchenRequest> encodeKitchen(flatbuffers::FlatBufferBuilder& b,

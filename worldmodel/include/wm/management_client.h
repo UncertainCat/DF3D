@@ -482,6 +482,7 @@ struct WorkOrderRequest {
   std::optional<std::vector<std::string>> traits;
   int16_t inputIndex=-1,groupType=-1,groupSubtype=-1; int32_t groupCustom=-1,encrustFlags=-1;
   int16_t suggestionIndex=-1;
+  int32_t filterChoice=-1;
 };
 struct WorkOrderCondition {
   uint8_t kind=0; uint16_t index=0;

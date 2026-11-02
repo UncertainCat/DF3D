@@ -1700,6 +1700,8 @@ table WorkOrderRequest {
   encrust_flags:int32 = -1;
   // Add this freshly rebuilt native suggestion; exclusive of manual filters.
   suggestion_index:int16 = -1;
+  // Native filter catalog identity; candidate_kind 3=type, 4=material, 5=trait.
+  filter_choice:int32 = -1;
 }
 table WorkOrderCondition {
   kind:uint8; index:uint16; description:string; editable:bool;
@@ -2007,7 +2009,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 121;
+  schema_version:uint32 = 122;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2059,7 +2061,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 121;
+  schema_version:uint32 = 122;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

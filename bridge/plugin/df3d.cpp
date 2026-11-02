@@ -2072,6 +2072,34 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           result["facts"]=std::move(facts);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="work-order-filter-choices-probe") {
+          if(parameters.size()!=3 || !df::global::world)return CR_WRONG_USAGE;
+          int kind=-1;const auto& raw=parameters[1];
+          const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),kind);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || kind<0 || kind>2)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& rawId=parameters[2];
+          const auto parsedId=std::from_chars(rawId.data(),rawId.data()+rawId.size(),id);
+          if(parsedId.ec!=std::errc{} || parsedId.ptr!=rawId.data()+rawId.size() || id<0)return CR_WRONG_USAGE;
+          const auto& all=df::global::world->manager_orders.all;
+          const auto found=std::find_if(all.begin(),all.end(),[&](const auto* row){return row && row->id==id;});
+          if(found==all.end())return CR_FAILURE;
+          const auto choices=df3d_production::nativeWorkOrderFilterChoices(**found,kind);if(!choices)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["rows"]=Json::Value(Json::arrayValue);
+          for(const auto& row:*choices) {
+            Json::Value value;value["search"]=DF2UTF(row.search);
+            value["item_type"]=row.itemType;value["item_subtype"]=row.itemSubtype;
+            value["mat_type"]=row.materialType;value["mat_index"]=row.materialIndex;value["mat_state"]=row.materialState;
+            if(row.trait) {
+              const auto& t=*row.trait;value["caption"]=DF2UTF(t.display_string);
+              value["flag"]=t.flg;value["flag_word"]=t.flgn;
+              value["reaction_class"]=t.reaction_class;value["reaction_product"]=t.reaction_product_class;
+              value["metal_ore"]=t.metal_ore;value["reaction_index"]=t.contains_reaction_index;
+              value["reagent_index"]=t.contains_reagent_index;value["tool_use"]=int(t.tool_use);value["dye_color"]=t.dye_color;
+            }
+            result["rows"].append(value);
+          }
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="work-order-suggestions-probe") {
           if(parameters.size()!=2)return CR_WRONG_USAGE;
           int32_t id=-1;const auto& raw=parameters[1];

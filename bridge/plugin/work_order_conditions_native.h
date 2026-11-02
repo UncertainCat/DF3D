@@ -1,10 +1,18 @@
 #pragma once
 #include "work_order_rows_native.h"
 #include "df/job_item_filter.h"
+#include "df/work_orders_conditions_interfacest.h"
+#include "df/wqc_item_traitst.h"
 #include <new>
 #include <type_traits>
 
 namespace df3d_production {
+struct WorkOrderFilterChoice {
+    std::string search;
+    int16_t itemType=-1,itemSubtype=-1,materialType=-1;
+    int32_t materialIndex=-1,materialState=-1;
+    std::optional<df::wqc_item_traitst> trait;
+};
 inline bool workOrderSuggestionsSupported() {
     static const bool supported=[] {
         if(!workOrderRowsSupported())return false;
@@ -23,6 +31,8 @@ inline bool workOrderSuggestionsSupported() {
             {0x3c5273,0x4,UINT64_C(0x53530d88aba7d93d)},
             {0x3c528d,0x12,UINT64_C(0x1e833228f3884819)},
             {0x3c52b5,0x1d,UINT64_C(0xaa03b472cb42644f)},
+            {0xa9daa0,0x26c1,UINT64_C(0xb1841e71e0165504)},
+            {0x3c3300,0x3b7,UINT64_C(0x0524ef1750a9c49a)},
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -31,6 +41,61 @@ inline bool workOrderSuggestionsSupported() {
         }
         return true;
     }();return supported;
+}
+// A9daa0 builds the three filter catalogs from world raws. Its tail3c3300
+// filters the supplied catalog, not a global menu. The fresh context is owned,
+// never copied from game.main_interface. Traits additionally read the owned
+// recipe's job type/reaction to include reaction-specific reagent restrictions.
+inline std::optional<std::vector<WorkOrderFilterChoice>> nativeWorkOrderFilterChoices(const df::manager_order& source,int kind) {
+    if(kind<0 || kind>2 || source.reaction_name.size()>128 || !workOrderSuggestionsSupported() || !df::global::world)return std::nullopt;
+    static_assert(offsetof(df::work_orders_conditions_interfacest,filter)==0x78);
+    static_assert(offsetof(df::work_orders_conditions_interfacest,change_type)==0xb0);
+    static_assert(offsetof(df::work_orders_conditions_interfacest,item_trait_master)==0x180);
+    static_assert(sizeof(df::wqc_item_traitst)==0x88);
+    df::work_orders_conditions_interfacest scratch;
+    df::manager_order recipe;recipe.job_type=source.job_type;recipe.reaction_name=source.reaction_name;
+    scratch.wq=&recipe;
+    scratch.change_type=static_cast<df::work_order_condition_change_type>(kind);
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    struct Cleanup {
+        df::work_orders_conditions_interfacest& s;const uint8_t* base;
+        ~Cleanup() {
+            using Clear=void (*)(void*);using Free=void (*)(void*,size_t);
+            auto clear=[&](size_t rva,void* value){reinterpret_cast<Clear>(base+rva)(value);};
+            for(auto* row:s.item_trait_master)if(row) {
+                clear(0x6f850,&row->reaction_class);clear(0x6f850,&row->reaction_product_class);
+                clear(0x6f850,&row->display_string);
+                reinterpret_cast<Free>(base+0x1539680)(row,0x88);
+            }
+            clear(0x66b70,&s.item_trait_master);
+            clear(0xbb9b0,&s.compare_master);clear(0x66b70,&s.compare_master);
+            clear(0x6f7b0,&s.item_type_master);clear(0x6f7b0,&s.item_subtype_master);
+            clear(0x6f7b0,&s.item_material_master);clear(0x6f750,&s.item_matgloss_master);
+            clear(0x6f7b0,&s.item_matstate_master);
+            // MSVC vector<bool> stores its owned word vector first, followed by
+            // bit count. Clear native allocations before the C++ owner dies.
+            clear(0x6f750,&s.item_type_on);s.item_type_on.clear();
+            clear(0x6f750,&s.item_material_on);s.item_material_on.clear();
+            clear(0x6f850,&s.filter);
+        }
+    } cleanup{scratch,base};
+    df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
+    using Build=void (*)(df::work_orders_conditions_interfacest*);
+    reinterpret_cast<Build>(base+0xa9daa0)(&scratch);
+    const auto count=scratch.compare_master.size();
+    if(count>32768 || (kind==0 && (scratch.item_type_master.size()!=count || scratch.item_subtype_master.size()!=count)) ||
+       (kind==1 && (scratch.item_material_master.size()!=count || scratch.item_matgloss_master.size()!=count || scratch.item_matstate_master.size()!=count)) ||
+       (kind==2 && scratch.item_trait_master.size()!=count))return std::nullopt;
+    std::vector<WorkOrderFilterChoice> result;result.reserve(count);
+    for(size_t i=0;i<count;++i) {
+        if(!scratch.compare_master[i] || scratch.compare_master[i]->size()>2048)return std::nullopt;
+        WorkOrderFilterChoice row;row.search=*scratch.compare_master[i];
+        if(kind==0){row.itemType=int16_t(scratch.item_type_master[i]);row.itemSubtype=scratch.item_subtype_master[i];}
+        else if(kind==1){row.materialType=scratch.item_material_master[i];row.materialIndex=scratch.item_matgloss_master[i];row.materialState=int32_t(scratch.item_matstate_master[i]);}
+        else {if(!scratch.item_trait_master[i])return std::nullopt;row.trait=*scratch.item_trait_master[i];}
+        result.push_back(std::move(row));
+    }
+    return result;
 }
 // Compose the renderer's condition-to-filter mapping (3926b1..39289a),
 // then call its item-description leaf. All filter storage belongs to this call.

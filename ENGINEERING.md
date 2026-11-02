@@ -6859,6 +6859,25 @@ Rendered captures were inspected; caret blinking is not yet reproduced. Owned
 DF45004 exits unsaved, source preservation passes, all five Godot log groups
 have only documented diagnostics, and root CTest19/19 passes.
 
+The filter catalog reader calls nativea9daa0 with independent context and an
+owned recipe copy. Type/material/trait vectors, search strings and trait records
+belong to that call; native allocations are cleared before their C++ owners die.
+The tail3c3300 filters supplied storage and does not read a global menu. Traits
+require recipe job type/reaction to include reaction-specific reagent options;
+omitting that input caused the observed a9e9da access violation in210451. That
+failed run is not acceptance; its source-save preservation passed after teardown.
+
+`df3d work-order-filter-choices-probe <kind> <order-id>` exposes this reader for
+integration. Protected210925 on2026-11-01 compares745 type/subtype pairs,28326
+material/state identities and238 full trait records in native order against the
+three actual selectors for Extract from plants. Captures establish their layout;
+right-click Back closes Conditions, and reopening from the workshop resets the
+selector. Owned DF18228 exits unsaved, source preservation passes, all five Godot
+log groups contain only documented diagnostics, and root CTest19/19 passes.
+This establishes the owned catalogs; transport, display captions for type/material,
+search, selected-trait state and picker actions remain to be connected. Existing
+Lua-generated candidates are not native acceptance and are not used by this reader.
+
 This screen remains staged. Filter editing, manual item conditions, dependencies,
 overflow, tooltip coverage, tab navigation and exact native back navigation are
 unfinished. Current close returns to the workshop; this is not native navigation

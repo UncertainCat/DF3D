@@ -441,6 +441,34 @@ local ok,err=xpcall(function()
   gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount())
   assert(not conditions.entering_logic_number and conditions.open)
   expected.condition_number=12
+  result.order_conditions.filter_catalogs={}
+  for kind=0,2 do
+   mouse(768+kind*32,178)
+   assert(conditions.change_type==kind,'Native condition selector did not open')
+   shot('order-condition-filter-'..kind..'-native')
+   local catalog_text,catalog_code=dfhack.run_command_silent('df3d','work-order-filter-choices-probe',tostring(kind),tostring(next_id))
+   assert(catalog_code==0,catalog_text)
+   local choices=json.decode(catalog_text).rows
+   assert(#choices==#conditions.compare_master,'Owned filter catalog size differs')
+   for i,row in ipairs(choices)do
+    local at=i-1
+    if kind==0 then
+     assert(row.item_type==conditions.item_type_master[at] and row.item_subtype==conditions.item_subtype_master[at],'Owned item type order differs')
+    elseif kind==1 then
+     assert(row.mat_type==conditions.item_material_master[at] and row.mat_index==conditions.item_matgloss_master[at] and row.mat_state==conditions.item_matstate_master[at],'Owned material order differs')
+    else
+     local t=conditions.item_trait_master[at]
+     assert(row.caption==dfhack.df2utf(t.display_string) and row.flag==t.flg and row.flag_word==t.flgn and row.reaction_class==t.reaction_class and row.reaction_product==t.reaction_product_class and row.metal_ore==t.metal_ore and row.reaction_index==t.contains_reaction_index and row.reagent_index==t.contains_reagent_index and row.tool_use==t.tool_use and row.dye_color==t.dye_color,'Owned trait differs')
+    end
+   end
+   result.order_conditions.filter_catalogs[#result.order_conditions.filter_catalogs+1]={kind=kind,rows=choices,lines=lines()}
+   df.global.enabler.mouse_rbut_lift=0;gui.simulateInput(view,'_MOUSE_R');view:render(dfhack.getTickCount())
+   df.global.enabler.mouse_rbut=0;df.global.enabler.mouse_rbut_down=0;df.global.enabler.mouse_rbut_lift=1
+   assert(not conditions.open,'Native selector Back did not close Conditions')
+   if df.global.game.main_interface.info.open then gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())end
+   select_map(still);assert(click_label('Work orders'));mouse(808,190)
+   assert(conditions.open and conditions.wq.id==next_id and conditions.change_type==-1,'Conditions did not reopen after selector Back')
+  end
   mouse(896,178)
   assert(#native.item_conditions==0 and native.frequency==1,'Native condition removal changed frequency or retained the row')
   result.order_conditions.removed={frequency=native.frequency,status=native.status.whole,finished_year=native.finished_year,finished_tick=native.finished_year_tick}

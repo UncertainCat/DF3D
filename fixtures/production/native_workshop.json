@@ -3231,5 +3231,18 @@
       "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
       "godot-diagnostics.json": "edafb1af8c5609a654cee690f3ea0440427a3e78fd0e71187796d20ecb88f5f9"
     }
+  },
+  "work_order_removal_reference": {
+    "build": "DF 53.16 Steam 24557528",
+    "run": "build/stockpile-storage-native-farm-discovery-20261101-193333",
+    "scope": "Create, edit quantity and remove through workshop controls. Native and viewer each remove one incoming dependency on the removed order; all51 unrelated order IDs retain their sequence. Active generated jobs and general lifecycle remain unverified.",
+    "files": {
+      "workshop-order-removed-native.png": "2eaa5cd90670949a81bb16cccc005a0cf7adf2a1290522bd6e2031d486f98057",
+      "workshop-order-removed-live.png": "7b7710d9ecfc448b290be8b8153732ed304739a6f81c27b345334d7f22fd5ac3",
+      "workshop-order-wire-result.json": "5b92d88a82a74f2aaaae0d3def6b33a29e01284affc89c71e7e48feaa50539ed",
+      "workshop-order-removal-comparison.json": "4efb1b1c5976890465cdaed72c83cfea2f6d310ad775b1fb5c42d0bf302d3731",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "godot-diagnostics.json": "edafb1af8c5609a654cee690f3ea0440427a3e78fd0e71187796d20ecb88f5f9"
+    }
   }
 }

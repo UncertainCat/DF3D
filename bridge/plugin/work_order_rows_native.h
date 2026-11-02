@@ -33,6 +33,7 @@ inline bool workOrderRowsSupported() {
             {0x188772,0xcc,UINT64_C(0xc7837322ac1ef8e5)}, // caption inputs
             {0x14e390,0x7c,UINT64_C(0xb8a8a91a69a0fa86)}, // blank template art
             {0x189294,0x10,UINT64_C(0xd9286ad1fc626d1f)}, // validation indicator
+            {0x14365ae,0xf0,UINT64_C(0x4e201b1c577b0f8d)}, // removal and incoming dependencies
             {0x8bb2b0,0x2b,UINT64_C(0xea4ef7a5efaa728d)}, // quantity effect
             {0x8bb257,0x17,UINT64_C(0x07b3cf4277462958)}, // four-character input
         };
@@ -156,6 +157,48 @@ inline NativeWorkOrderEdit setWorkshopOrderQuantity(int32_t buildingId,int32_t i
         auto after=nativeWorkOrderRow(*order,position);
         if(after && after->remaining==quantity && after->total==quantity) {
             result.row=std::move(after);result.outcome=WorkshopOrdersOutcome::Applied;
+        }
+    }catch(...) {}
+    return result;
+}
+
+inline WorkshopOrdersResult removeWorkshopOrder(int32_t buildingId,int32_t id,uint64_t revision,
+    void** holding,size_t& held,size_t capacity) {
+    WorkshopOrdersResult result;
+    if(!workshopOrdersProfile(df::building::find(buildingId)))return result;
+    auto& all=df::global::world->manager_orders.all;
+    const auto it=std::find_if(all.begin(),all.end(),[&](const auto* value){return value && value->id==id;});
+    if(it==all.end() || (*it)->workshop_id!=buildingId)return result;
+    auto* order=*it;
+    const auto before=nativeWorkOrderRow(*order,int32_t(it-all.begin()));if(!before)return result;
+    if(!revision || revision!=before->revision){result.outcome=WorkshopOrdersOutcome::Stale;return result;}
+    size_t count=1;
+    for(const auto* other:all) {
+        if(!other)return result;
+        if(other==order)continue;
+        for(const auto* condition:other->order_conditions) {
+            if(!condition)return result;
+            if(condition->order_id==id)++count;
+        }
+    }
+    if(held>capacity || count>capacity-held)return result;
+    // Native14365ae..143669e unlinks this identity and incoming dependencies.
+    // Its destructor then frees storage. Native sheets can retain borrowed
+    // pointers, so retain removed objects in the bridge's existing holding area.
+    // Generated jobs are untouched, matching the native destructor.
+    all.erase(it);
+    for(auto* other:all) {
+        auto& conditions=other->order_conditions;
+        for(size_t i=conditions.size();i>0;--i)if(conditions[i-1]->order_id==id) {
+            holding[held++]=conditions[i-1];conditions.erase(conditions.begin()+i-1);
+        }
+    }
+    holding[held++]=order;
+    result.outcome=WorkshopOrdersOutcome::Unknown;
+    try {
+        auto after=workshopOrdersProfile(df::building::find(buildingId));
+        if(after && std::find(after->orderIds.begin(),after->orderIds.end(),id)==after->orderIds.end()) {
+            result.profile=std::move(after);result.outcome=WorkshopOrdersOutcome::Applied;
         }
     }catch(...) {}
     return result;

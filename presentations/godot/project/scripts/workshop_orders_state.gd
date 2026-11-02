@@ -92,6 +92,24 @@ func set_limit(value: int) -> void:
 	if phase!=Phase.Ready or ticket!=0:return
 	pending_value=-1;phase=Phase.Applying
 	_send({"action":C.ManagementAction.FarmEdit,"workshop_orders":true,"building_id":building_id,"expected_revision":snapshot.revision,"general_order_value":value})
+func remove_order(id: int) -> void:
+	if phase!=Phase.Ready or ticket!=0 or service==null:return
+	var row: Dictionary={}
+	for candidate in rows.values():
+		if candidate.id==id:row=candidate;break
+	if row.is_empty():return
+	row_generation+=1
+	if row_ticket!=0:service.detach(row_ticket);row_ticket=0
+	phase=Phase.Applying
+	var owner:=generation
+	ticket=service.submit("work_orders",{"action":C.ManagementAction.WorkOrderDelete,"workshop_id":building_id,"id":id,"expected_revision":row.revision},func(received,result,_sent):
+		if owner!=generation or received!=ticket:return
+		ticket=0
+		if result.get("status",-1)!=C.ManagementStatus.Ok or result.get("action",-1)!=C.ManagementAction.WorkOrderDelete or result.get("work_order",{}).get("list_revision",0)<=0:
+			_retire_rows();_fail(Phase.Unknown);return
+		applied.emit();refresh())
+	if ticket==0:_retire_rows();_fail(Phase.Unavailable);return
+	changed.emit()
 func set_quantity(id: int,value: int) -> void:
 	if value<0 or value>9999:return
 	if phase==Phase.Applying:

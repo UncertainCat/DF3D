@@ -6705,8 +6705,8 @@ legacy rows do not acquire invented state. Pages hold at most16 rows and respect
 the condition aggregate bound. These are list observations, not full Details
 inspection or edit authority. Condition identities have no fabricated descriptions.
 The controller requests visible missing pages, retires reads on refresh/close and
-renders native captions, amounts and installed row artwork. Quantity editing is connected as described below; conditions, Details and
-removal icons remain staged and unconnected.
+renders native captions, amounts and installed row artwork. Quantity editing and removal are connected as described below; conditions and
+Details icons remain staged and unconnected.
 
 Protected192054 on2026-11-01 repeats native/viewer search and creation, then
 verifies both native-created109 and viewer-created110 in the actual workshop row
@@ -6736,7 +6736,27 @@ verification request with the new list refresh; it is not acceptance. The harnes
 now drains that refresh before its independent read. Owned DF45072 exits unsaved,
 source preservation passes, and all five Godot groups have known diagnostics
 only. This covers normal quantity editing, not every condition/status/input or
-transport transition. Conditions, Details, removal and overflow remain unfinished.
+transport transition. Conditions, Details and overflow remain unfinished.
+
+Workshop removal uses exclusive WorkOrderDelete with workshop/order identity
+and current row revision. Native14de80 invokes destructor1436590; its pinned
+14365ae..143669e removes the world-order pointer and incoming order dependencies.
+The bridge composes these effects with the existing bounded holding area instead
+of freeing objects that native sheets may still reference. Capacity is checked
+before effects; generated jobs are untouched. The controller waits for confirmed
+removal and refreshes membership/rows; failures retire authority without replay.
+No native sheet state is inspected or edited at runtime.
+
+Protected193333 on2026-11-01 exercises create, quantity12 and remove through
+the actual workshop controls. Native and viewer deletion each remove an injected
+incoming dependency from a separate existing order. All51 preexisting order IDs
+retain their sequence after both temporary orders are removed. The native and
+viewer empty-list captures were inspected; the viewer retains header/contents.
+This does not establish active generated-job or every dependency/lifecycle case.
+Owned DF4780 exits unsaved, source preservation passes, all five Godot log groups
+have known diagnostics only, and core19/19 plus composition pass in
+`build/qa/workshop-order-removal`. The workshop route remains staged pending
+conditions, Details and the other unfinished workshop controls.
 
 Protected183314 on2026-11-01 compares all2658 global rows and the37 Carpenter/4
 Still rows with the actual native picker: job/reaction/item/material fields,

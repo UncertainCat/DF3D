@@ -291,6 +291,7 @@ local ok,err=xpcall(function()
  local prior_responsibility=position.responsibilities[responsibility]
  position.responsibilities[responsibility]=true;indexed:insert('#',assignment)
  local orders_before=#df.global.world.manager_orders.all
+ local prior_order_ids={};for _,o in ipairs(df.global.world.manager_orders.all)do prior_order_ids[#prior_order_ids+1]=o.id end
  local picker=df.global.game.main_interface.create_work_order
  local function read_rows(rows)
   local values={}
@@ -359,20 +360,32 @@ local ok,err=xpcall(function()
   shot('order-quantity-native')
   gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount())
   expected.quantity_native=order_values(native)
+  local dependent=assert(df.global.world.manager_orders.all[0]);assert(dependent.id~=next_id)
+  local prior_dependencies=#dependent.order_conditions
+  local function dependency(target)
+   local c=df.manager_order_condition_order:new();c.order_id=target;c.condition=0;c.flags.whole=0
+   dependent.order_conditions:insert('#',c)
+  end
+  dependency(next_id)
+  mouse(872,190)
+  assert(#df.global.world.manager_orders.all==orders_before,'Native remove retained order')
+  assert(#dependent.order_conditions==prior_dependencies,'Native remove retained incoming dependency')
+  shot('order-removed-native')
+  -- The new viewer order will receive the next identity. Keep this paused
+  -- diagnostic dependency so removal is checked against an independent record.
+  dependency(next_id+1)
+
   local file=assert(io.open(out..'/workshop-order-expected.json','w'));file:write(json.encode(expected));file:close()
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
   capture('workshop-order-wire')
-  assert(#df.global.world.manager_orders.all==orders_before+2,'Viewer did not create exactly one order')
-  local actual=df.global.world.manager_orders.all[orders_before+1]
-  assert(actual.id==next_id+1,'Viewer order id differs')
-  local actual_values=order_values(actual)
-  local comparison=assert(io.open(out..'/workshop-order-creation-comparison.json','w'))
-  comparison:write(json.encode({native=expected.quantity_native,viewer=actual_values}));comparison:close()
-  for key,value in pairs(expected.quantity_native)do
-   assert(actual_values[key]==value,'Viewer order '..key..' differs: '..tostring(actual_values[key])..' ~= '..tostring(value))
-  end
+  assert(#df.global.world.manager_orders.all==orders_before,'Viewer removal did not restore order count')
+  for i,id in ipairs(prior_order_ids)do assert(df.global.world.manager_orders.all[i-1].id==id,'Viewer removal changed unrelated order sequence')end
+  assert(#dependent.order_conditions==prior_dependencies,'Viewer removal retained incoming dependency')
+  local comparison=assert(io.open(out..'/workshop-order-removal-comparison.json','w'))
+  comparison:write(json.encode({native_removed=next_id,viewer_removed=next_id+1,remaining_ids=prior_order_ids,dependencies_restored=true}));comparison:close()
   assert(df.global.plotinfo.nobles.manager_cooldown==0,'Viewer creation did not reset manager cooldown')
-  result.order_creation={native_id=native.id,viewer_id=actual.id,values=order_values(actual),all_equal=true}
+  result.order_removal={native_id=next_id,viewer_id=next_id+1,unrelated_ids_unchanged=true,dependencies_restored=true}
+
  end,debug.traceback)
  position.responsibilities[responsibility]=prior_responsibility;indexed:resize(0)
  for _,a in ipairs(prior_index)do indexed:insert('#',a)end

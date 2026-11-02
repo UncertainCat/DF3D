@@ -54,6 +54,8 @@ func _gui_input(event: InputEvent) -> void:
 	if state.snapshot.get("manager_available",false) and Rect2(424,0,32,36).has_point(event.position):finish_entry();choose_requested.emit();accept_event();return
 	for index in visible_rows:
 		var row: Dictionary=state.rows.get(state.row_offset+index,{})
+		if not row.is_empty() and Rect2(424,36+index*36,32,36).has_point(event.position):
+			finish_entry();state.remove_order(row.id);accept_event();return
 		if not row.is_empty() and Rect2(328,36+index*36,32,36).has_point(event.position):
 			quantity_order=row.id;editing=true;draft="";queue_redraw();accept_event();return
 	if button_rect(0).has_point(event.position):quantity_order=-1;editing=true;draft="";queue_redraw();accept_event();return

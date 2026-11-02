@@ -7020,6 +7020,25 @@ Final text brightness follows the native bright palette observation. No-manager
 and low-population branches are sourced from pinned native predicates but are not
 separately exercised by this live workflow.
 
+The Details reader composes the pinned inline option enumeration213552 and its
+job-family dispatch data. It never calls opener213420, which changes global screen
+state. For material and plant choices only, population21d190 receives a private
+Details context and copies of the order and its job inputs; native inventory
+collection and sorting supply the ordered choices and counts. The IMAGE branch
+opens another global picker and is explicitly excluded. Other option families
+are enumerated but their choice readers remain unfinished.
+
+Protected231539 on2026-11-01 compares Extract from plants' two native options and
+all material/plant choices against this reader: Clear/Crystal/Green glass in
+native order, and Kobold bulb. Counts and observed native picker state match.
+Paired choice screenshots establish the native search/list layout. The combined
+workshop/Conditions/global creation workflow passes; owned DF44856 exits unsaved,
+the source is preserved, and all five Godot groups have only known diagnostics.
+This is native reader acceptance, not an editable Details screen. The old Lua
+Details write stores selected materials in native saved-original fields; native
+219911 instead saves original values once and then edits active requirement
+fields. That Lua path must not supply the new editor's effects.
+
 These screens remain staged. Details, full responsive layout, tooltip coverage
 and tab navigation are unfinished. Quantity drafts currently support four digits; native increment
 behavior beyond that range remains unfinished. Fixed frame geometry still needs

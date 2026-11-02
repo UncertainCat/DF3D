@@ -550,6 +550,38 @@ local ok,err=xpcall(function()
   mouse(840,190)
   assert(df.global.game.main_interface.job_details.open,'Native order Details did not open')
   shot('order-details-native')
+  local details=df.global.game.main_interface.job_details
+  local detail_options={}
+  for i,kind in ipairs(details.option)do detail_options[#detail_options+1]={kind=kind,index=details.option_index[i]}end
+  local function detail_probe(selected)
+   local args={'df3d','work-order-details-probe',tostring(native.id)}
+   if selected then args[#args+1]=tostring(selected)end
+   local text,code=dfhack.run_command_silent(table.unpack(args));assert(code==0,text)
+   return json.decode(text)
+  end
+  assert(json.encode(detail_probe().options)==json.encode(detail_options),'Native Details options differ')
+  expected.details={options=detail_options,choices={}}
+  for slot,option in ipairs(detail_options)do
+   if option.kind==0 or option.kind==6 then
+    mouse(200,118+(slot-1)*36)
+    assert(details.current_option==option.kind and details.current_option_index==option.index)
+    local types=option.kind==0 and details.material or details.plant_mat
+    local indices=option.kind==0 and details.matgloss or details.plant_matgloss
+    local counts=option.kind==0 and details.material_count or details.plant_count
+    local rows={}
+    for i,kind in ipairs(types)do rows[#rows+1]={type=kind,index=indices[i],count=counts[i]}end
+    local before=json.encode({options=detail_options,rows=rows,current=details.current_option,index=details.current_option_index})
+    local owned=detail_probe(slot-1)
+    assert(json.encode(owned.materials)==json.encode(rows),'Owned Details material/plant choices differ')
+    local after_rows={}
+    for i,kind in ipairs(types)do after_rows[#after_rows+1]={type=kind,index=indices[i],count=counts[i]}end
+    assert(before==json.encode({options=detail_options,rows=after_rows,current=details.current_option,index=details.current_option_index}),'Details reader changed native picker')
+    expected.details.choices[#expected.details.choices+1]={option=slot-1,kind=option.kind,rows=rows}
+    shot('order-details-choice-'..tostring(option.kind)..'-native')
+    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+    assert(details.open and details.current_option==-1,'Details Back did not return to options')
+   end
+  end
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
   select_map(still);assert(click_label('Work orders'))
   local dependent=assert(df.global.world.manager_orders.all[0]);assert(dependent.id~=next_id)

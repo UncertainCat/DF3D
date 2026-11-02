@@ -39,6 +39,7 @@ inline bool workOrderSuggestionsSupported() {
             {0xa2adb0,0x185c,UINT64_C(0x236e98c86197e94e)},
             {0x3926b1,0x1ef,UINT64_C(0x07d2b75807214414)},
             {0x3c54b5,0x160,UINT64_C(0x4656e100c0a9d60c)},
+            {0x3c4e85,0xcc,UINT64_C(0xcbb60c7f02383afe)},
             {0x3c5671,0x1ae,UINT64_C(0xf630e9734b5a8891)},
             {0x3c534d,0xbf,UINT64_C(0xa3ed7f994900fc90)},
             {0x3c5273,0x4,UINT64_C(0x53530d88aba7d93d)},
@@ -302,9 +303,9 @@ inline bool nativeSuggestionAvailable(const df::manager_order& order,const df::m
     for(const auto* condition:order.item_conditions)if(!condition || sameNativeSuggestedFilter(*condition,suggestion))return false;
     return true;
 }
-inline NativeWorkOrderEdit addNativeWorkOrderSuggestion(int32_t buildingId,int32_t id,uint64_t revision,int16_t index) {
+inline NativeWorkOrderEdit addNativeWorkOrderItemCondition(int32_t buildingId,int32_t id,uint64_t revision,int16_t index=-1) {
     NativeWorkOrderEdit result;
-    if(index<0 || !workOrderSuggestionsSupported() || !workshopOrdersProfile(df::building::find(buildingId)))return result;
+    if(index<-1 || !workOrderSuggestionsSupported() || !workshopOrdersProfile(df::building::find(buildingId)))return result;
     const auto& all=df::global::world->manager_orders.all;
     const auto found=std::find_if(all.begin(),all.end(),[&](const auto* row){return row && row->id==id && row->workshop_id==buildingId;});
     if(found==all.end())return result;
@@ -313,9 +314,18 @@ inline NativeWorkOrderEdit addNativeWorkOrderSuggestion(int32_t buildingId,int32
     if(!revision || before->revision!=revision){result.outcome=WorkshopOrdersOutcome::Stale;return result;}
     const auto suggestions=nativeWorkOrderSuggestions(order);
     const size_t count=order.item_conditions.size()+order.order_conditions.size();
-    if(!suggestions || size_t(index)>=suggestions->size() || count>=64 || count+1+suggestions->size()>128)return result;
-    const auto& source=(*suggestions)[size_t(index)];
-    if(!nativeSuggestionAvailable(order,source))return result;
+    if(!suggestions || (index>=0 && size_t(index)>=suggestions->size()) || count>=64 || count+1+suggestions->size()>128)return result;
+    // Native manual-add branch3c4e85..3c4f51. In particular min_dimension
+    // starts at -1; do not substitute the generated constructor's defaults.
+    df::manager_order_condition_item blank;
+    blank.compare_type=df::logic_condition_type(0);blank.compare_val=0;
+    blank.item_type=df::item_type(-1);blank.item_subtype=-1;
+    blank.mat_type=-1;blank.mat_index=-1;
+    blank.flags1.whole=0;blank.flags2.whole=0;blank.flags3.whole=0;blank.flags4=0;blank.flags5=0;
+    blank.reaction_class.clear();blank.has_material_reaction_product.clear();blank.contains.clear();
+    blank.metal_ore=-1;blank.min_dimension=-1;blank.reaction_id=-1;blank.has_tool_use=df::tool_uses(-1);blank.dye_color=-1;
+    const auto& source=index<0?blank:(*suggestions)[size_t(index)];
+    if(index>=0 && !nativeSuggestionAvailable(order,source))return result;
     // Complete all throwing copies/reservations before registration. Allocate
     // the record using DF's allocator, then transfer the owned string/vector
     // storage without throwing, as the native inline deep copy does.

@@ -85,6 +85,7 @@ func _gui_input(event: InputEvent) -> void:
 		return
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
 		if Rect2(832,72,32,36).has_point(event.position):state.cycle_frequency()
+		if Rect2(864,72,32,36).has_point(event.position):finish_entry();state.add_item_condition()
 		for index in 5:
 			if Rect2(720,size.y-192+index*36,32,36).has_point(event.position):state.add_suggestion(index)
 		if state.phase==state.Phase.Ready:

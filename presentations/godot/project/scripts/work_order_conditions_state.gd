@@ -76,6 +76,10 @@ func cycle_frequency() -> void:
 	if phase!=Phase.Ready or ticket!=0:return
 	phase=Phase.Applying
 	_send({"action":C.ManagementAction.WorkOrderUpdate,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"frequency":(int(snapshot.frequency)+1)%5})
+func add_item_condition() -> void:
+	if phase!=Phase.Ready or ticket!=0:return
+	phase=Phase.Applying
+	_send({"action":C.ManagementAction.WorkOrderCondition,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"compare":0,"threshold":0})
 func add_suggestion(index: int) -> void:
 	if phase!=Phase.Ready or ticket!=0 or index<0 or index>=snapshot.suggested_conditions.size():return
 	if not snapshot.suggested_conditions[index].get("editable",false):return

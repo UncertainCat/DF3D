@@ -6907,7 +6907,17 @@ JSON numeric-type mismatch in the ID assertion; it is not acceptance. Tail-page
 scroll gestures, reaction-specific trait toggles, resize and selector tooltips
 still need integrated acceptance; this does not claim every trait family.
 
-This screen remains staged. Manual item conditions, dependencies,
+Manual item creation uses the pinned native inline branch3c4e85..3c4f51,
+with owned record storage and native allocation. Blank conditions start with
+comparison/threshold0, unrestricted filters and min_dimension=-1; adding one
+changes OneTime to Daily. The existing guarded condition intent carries this
+action without a schema change. Protected213905 on2026-11-01 compares native
+and rendered-viewer manual creation/removal alongside the existing filter
+workflow. Source preservation passes, owned DF49000 exits unsaved, all five
+Godot process groups have only known diagnostics, and root CTest19/19 passes.
+The paired render still lacks native satisfaction feedback; that remains open.
+
+This screen remains staged. Dependencies, satisfaction feedback,
 overflow, tooltip coverage, tab navigation and exact native back navigation are
 unfinished. Current close returns to the workshop; this is not native navigation
 acceptance. Fixed frame geometry and bounded displayed rows still need the full

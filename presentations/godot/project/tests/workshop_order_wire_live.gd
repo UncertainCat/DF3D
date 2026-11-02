@@ -151,6 +151,16 @@ func run() -> void:
 		check(owner.conditions.snapshot[key]==edited[key],"Condition removal changed unrelated order field: "+key)
 	await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/workshop-order-condition-removed-live.png")
+	click(Vector2(912,142))
+	if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.orders.phase==owner.orders.Phase.Ready and owner.orders.row_ticket==0),"Manual condition was not confirmed; no retry"):quit(1);return
+	if not check(owner.conditions.snapshot.conditions.size()==1,"Manual condition missing"):quit(1);return
+	for key in expected.manual_condition:
+		check(owner.conditions.snapshot.conditions[0][key]==int(expected.manual_condition[key]),"Manual condition differs from native: "+key)
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/workshop-order-condition-manual-live.png")
+	click(Vector2(896,178))
+	if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.orders.phase==owner.orders.Phase.Ready and owner.orders.row_ticket==0),"Manual condition removal was not confirmed"):quit(1);return
+	check(owner.conditions.snapshot.conditions.is_empty(),"Manual condition retained after removal")
 	number_key(KEY_ESCAPE)
 	check(not owner.conditions_view.visible and owner.conditions.phase==owner.conditions.Phase.Closed,"Conditions did not retire on close")
 	click(Vector2(872,190))

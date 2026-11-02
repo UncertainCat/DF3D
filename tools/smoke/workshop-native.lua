@@ -604,6 +604,17 @@ local ok,err=xpcall(function()
     assert(before==json.encode({options=detail_options,rows=after_rows,current=details.current_option,index=details.current_option_index}),'Details reader changed native picker')
     expected.details.choices[#expected.details.choices+1]={option=slot-1,kind=option.kind,rows=rows}
     shot('order-details-choice-'..tostring(option.kind)..'-native')
+    local search=option.kind==0 and 'crystal' or 'kobold'
+    mouse(200,154)
+    for i=1,#search do gui.simulateInput(view,('STRING_A%03d'):format(search:byte(i)))end
+    view:render(dfhack.getTickCount())
+    local filtered={};for i,kind in ipairs(types)do filtered[#filtered+1]={type=kind,index=indices[i]}end
+    expected.details.choices[#expected.details.choices].search=search
+    expected.details.choices[#expected.details.choices].filtered=filtered
+    shot('order-details-search-'..tostring(option.kind)..'-native')
+    for i=1,#search do gui.simulateInput(view,'STRING_A000')end
+    gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount())
+    assert(#types==#rows,'Native Details search did not clear')
     local prior_type,prior_index=native.mat_type,native.mat_index
     local prior_inputs={};for _,item in ipairs(native.items.elements)do local copy=df.job_item:new();copy:assign(item);prior_inputs[#prior_inputs+1]=copy end
     local function restore_inputs()

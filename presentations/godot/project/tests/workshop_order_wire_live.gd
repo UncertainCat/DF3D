@@ -253,8 +253,29 @@ func run() -> void:
 	check(owner.details.rows.size()==expected.details.choices[0].rows.size(),"Details material choice count differs")
 	await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/work-order-details-material-live.png")
+	click(Vector2(200,154))
+	for character in expected.details.choices[0].search:number_key(KEY_A,character.unicode_at(0))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.ticket==0),"Details search did not finish"):quit(1);return
+	if not check(owner.details.rows.size()==expected.details.choices[0].filtered.size() and owner.details.rows.size()==1 and owner.details.rows[0].id==1,"Native Details filtered identity differs"):quit(1);return
+	number_key(KEY_ENTER)
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/work-order-details-search-live.png")
 	click(Vector2(200,190))
 	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Closed and global.phase==global.Phase.Ready and global.ticket==0),"Details material selection did not close and refresh"):quit(1);return
+	global_row=global.find_order(created_order.id);global_y=142+(global_row.position-global.first)*36
+	click(Vector2(584,global_y))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready),"Details did not reopen after material selection"):quit(1);return
+	click(Vector2(200,154))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.snapshot.get("selected_option",-1)==1),"Details plant choices did not open"):quit(1);return
+	click(Vector2(200,154))
+	for character in expected.details.choices[1].search:number_key(KEY_A,character.unicode_at(0))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.ticket==0),"Details plant search did not finish"):quit(1);return
+	check(owner.details.rows.size()==expected.details.choices[1].filtered.size(),"Native plant search count differs")
+	number_key(KEY_ENTER)
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/work-order-details-plant-live.png")
+	click(Vector2(200,190))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Closed and global.phase==global.Phase.Ready and global.ticket==0),"Details plant selection did not close and refresh"):quit(1);return
 	global_row=global.find_order(created_order.id);global_y=142+(global_row.position-global.first)*36
 	click(Vector2(888,global_y))
 	if not check(await settle(service,func():return global.phase==global.Phase.Ready and global.ticket==0),"Global removal failed; no retry"):quit(1);return

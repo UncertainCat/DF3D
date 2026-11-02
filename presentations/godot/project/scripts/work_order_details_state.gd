@@ -12,6 +12,7 @@ var ticket:=0
 var generation:=0
 var first:=0
 var rows: Array=[]
+var query:=""
 func configure(source) -> void:
 	dispose();service=source
 	if service!=null:service.session_changed.connect(close)
@@ -23,19 +24,27 @@ func close() -> void:
 	generation+=1
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
-	building_id=-1;order_id=-1;snapshot={};rows=[];first=0;phase=Phase.Closed;changed.emit()
+	building_id=-1;order_id=-1;snapshot={};rows=[];first=0;query="";phase=Phase.Closed;changed.emit()
 func open(building: int,order: int) -> void:
 	close()
 	if (building<0 and building!=-2) or order<0:return
 	building_id=building;order_id=order;read_root()
 func read_root() -> void:
 	if ticket!=0:return
-	first=0;rows=[];phase=Phase.Reading
+	first=0;rows=[];query="";phase=Phase.Reading
 	_send({"action":C.ManagementAction.WorkOrderInspect,"workshop_id":building_id,"id":order_id,"details":{}})
 func select_option(index: int) -> void:
 	if phase!=Phase.Ready or ticket!=0 or index<0 or index>=snapshot.get("options",[]).size():return
-	first=0;rows=[];phase=Phase.Reading
+	first=0;rows=[];query="";phase=Phase.Reading
 	_send({"action":C.ManagementAction.WorkOrderInspect,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"details":{"option":index}})
+func set_query(value: String) -> void:
+	if phase not in [Phase.Ready,Phase.Reading] or snapshot.get("selected_option",-1)<0 or value==query:return
+	query=value;first=0;rows=[]
+	if ticket==0:_read_choices()
+	changed.emit()
+func _read_choices(cursor:=0) -> void:
+	phase=Phase.Reading
+	_send({"action":C.ManagementAction.WorkOrderInspect,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"details":{"option":snapshot.selected_option,"query":query,"cursor":cursor,"expected_choices_revision":snapshot.choices_revision}})
 func seek(value: int) -> void:
 	if phase!=Phase.Ready or ticket!=0 or snapshot.get("selected_option",-1)<0:return
 	first=clampi(value,0,maxi(0,rows.size()-1));changed.emit()
@@ -65,6 +74,8 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 	var selected: int=-1 if writing else sent.details.get("option",-1)
 	if value.get("id",-1)!=order_id or value.get("revision",0)<=0 or value.get("selected_option",-2)!=selected or not value.get("options") is Array:_fail(failure);return
 	if selected>=0:
+		if sent.details.get("query","")!=query:
+			snapshot=value.duplicate(true);rows=[];_read_choices();return
 		var cursor: int=sent.details.get("cursor",0)
 		if not value.get("choices") is Array or value.get("choices_revision",0)<=0 or cursor!=rows.size():_fail(failure);return
 		if cursor>0 and (value.revision!=snapshot.revision or value.choices_revision!=snapshot.choices_revision):_fail(failure);return
@@ -74,7 +85,7 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 		var next: int=value.get("next_cursor",0)
 		if next>0:
 			if next!=rows.size() or value.choices.is_empty():_fail(failure);return
-			_send({"action":C.ManagementAction.WorkOrderInspect,"workshop_id":building_id,"id":order_id,"expected_revision":value.revision,"details":{"option":selected,"cursor":next,"expected_choices_revision":value.choices_revision}});return
+			_read_choices(next);return
 		if rows.size()!=value.total:_fail(failure);return
 	else:
 		rows=[];first=0;snapshot=value.duplicate(true)

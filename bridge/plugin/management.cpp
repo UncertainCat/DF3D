@@ -811,7 +811,10 @@ void publish() {
     if(workOrders.detailsOption>=0) {
       std::vector<flatbuffers::Offset<m::WorkOrderDetailsChoice>> rows;
       const auto end=std::min(size_t(workOrders.detailsCursor)+128,d.materials.size());
-      for(size_t i=workOrders.detailsCursor;i<end;++i)rows.push_back(m::CreateWorkOrderDetailsChoice(b,int32_t(i),b.CreateString(DF2UTF(d.materials[i].caption))));
+      for(size_t i=workOrders.detailsCursor;i<end;++i) {
+        const auto& row=d.materials[i];
+        rows.push_back(m::CreateWorkOrderDetailsChoice(b,row.id,b.CreateString(DF2UTF(row.caption)),row.countCaption?b.CreateString(DF2UTF(*row.countCaption)):0,row.estimated));
+      }
       choices=b.CreateVector(rows);next=end<d.materials.size()?uint32_t(end):0;
     }
     workOrderDetails=m::CreateWorkOrderDetailsState(b,workOrders.detailsId,d.revision,b.CreateString(DF2UTF(d.caption)),b.CreateVector(options),workOrders.detailsOption,choices,d.choicesRevision,uint32_t(d.materials.size()),next);
@@ -2859,7 +2862,7 @@ void run(color_ostream& out) {
     const auto* q=r->work_order();const auto* d=q->details();
     message.clear();status=m::ManagementStatus::Rejected;workOrders={};
     const bool writing=r->action()==m::ManagementAction::WorkOrderUpdate;
-    if((!writing && r->action()!=m::ManagementAction::WorkOrderInspect) || (d->query() && d->query()->size())){publish();return;}
+    if(!writing && r->action()!=m::ManagementAction::WorkOrderInspect){publish();return;}
     try {
       auto* building=df::building::find(q->workshop_id());
       auto* tile=building?Maps::getTileDesignation(building->centerx,building->centery,building->z):nullptr;
@@ -2868,7 +2871,7 @@ void run(color_ostream& out) {
       const auto found=std::find_if(all.begin(),all.end(),[&](const auto* value){return value && value->id==q->id();});
       auto* order=found==all.end()?nullptr:*found;
       if(!order || (q->workshop_id()!=-2 && order->workshop_id!=q->workshop_id())){publish();return;}
-      auto observed=df3d_production::nativeWorkOrderDetails(*order,d->option());
+      auto observed=df3d_production::nativeWorkOrderDetails(*order,d->option(),d->query()?UTF2DF(d->query()->str()):std::string{});
       if(!observed || (q->expected_revision() && q->expected_revision()!=observed->revision) ||
          (d->expected_choices_revision() && d->expected_choices_revision()!=observed->choicesRevision) || d->cursor()>observed->materials.size()){publish();return;}
       if(writing) {

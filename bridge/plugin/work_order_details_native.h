@@ -4,10 +4,11 @@
 #include "df/job_details_interfacest.h"
 #include "df/job_reqst.h"
 #include "df/job_item.h"
+#include <map>
 
 namespace df3d_production {
 struct WorkOrderDetailOption {int32_t kind=-1,index=-1;std::string caption;};
-struct WorkOrderDetailMaterial {int16_t type=-1;int32_t index=-1,count=0;std::string caption;};
+struct WorkOrderDetailMaterial {int16_t type=-1;int32_t index=-1,count=0;std::string caption;int32_t id=-1;std::optional<std::string> countCaption;bool estimated=false;};
 struct WorkOrderDetailsObservation {
     uint64_t revision=0,choicesRevision=0;
     std::string caption;
@@ -33,6 +34,7 @@ inline bool workOrderDetailsReady() {
             {0x21d050,0x13f,UINT64_C(0xa1141eef0dbe8cf1)}, // material amount
             {0x2230f0,0x8ec,UINT64_C(0xf7ba06a257bfe54c)}, // material sorting/filter
             {0x2239e0,0x706,UINT64_C(0x0cbc46c3d2089dc0)}, // plant sorting/filter
+            {0x74f430,0x1d3,UINT64_C(0x79707f49e13c9401)}, // bookkeeper count estimate
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -76,7 +78,7 @@ inline std::string nativeDetailInputCaption(const df::job_item& item) {
 // Choice population21d190 receives an independently owned context/order/inputs.
 // Only MATERIAL and PLANT are admitted: IMAGE opens a separate global picker.
 // Other option families are reported but their choices are not implemented here.
-inline std::optional<WorkOrderDetailsObservation> nativeWorkOrderDetails(df::manager_order& source,int32_t selected=-1) {
+inline std::optional<WorkOrderDetailsObservation> nativeWorkOrderDetails(df::manager_order& source,int32_t selected=-1,const std::string& query={}) {
     if(!workOrderDetailsReady() || !df::global::world || !df::global::plotinfo ||
        !df::global::plotinfo->main.fortress_entity)return std::nullopt;
     const auto observation=nativeWorkOrderRow(source,-1,true);
@@ -159,9 +161,39 @@ inline std::optional<WorkOrderDetailsObservation> nativeWorkOrderDetails(df::man
         }
         if(caption.size()>512)return std::nullopt;
         add(types[i]);add(indices[i]);
-        result.materials.push_back({types[i],indices[i],counts[i],std::move(caption)});
+        WorkOrderDetailMaterial row{types[i],indices[i],counts[i],std::move(caption)};
+        row.id=int32_t(i);
+        if(counts[i]>0) {
+            const auto amount=reinterpret_cast<int32_t(*)(int32_t,int32_t,int32_t,bool*)>(base+0x74f430)(counts[i],df::global::plotinfo->nobles.bookkeeper_precision,0,&row.estimated);
+            row.countCaption.emplace();
+            reinterpret_cast<void(*)(int32_t,std::string*)>(base+0x52c2b0)(amount,&*row.countCaption);
+            if(row.estimated)row.countCaption->append(reinterpret_cast<const char*>(base+0x1614d50),1);
+        }
+        result.materials.push_back(std::move(row));
     }
     result.choicesRevision=(hash&INT64_MAX)?(hash&INT64_MAX):1;
+    if(!query.empty()) {
+        if(query.size()>128)return std::nullopt;
+        if(option.kind==0)context.material_filter=query;else context.plant_filter=query;
+        {
+            df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
+            reinterpret_cast<void(*)(df::job_details_interfacest*)>(base+(option.kind==0?0x2230f0:0x2239e0))(&context);
+        }
+        if(types.size()!=indices.size() || types.size()>result.materials.size())return std::nullopt;
+        // Preserve unfiltered identities: selection rechecks the full native list.
+        std::map<std::pair<int16_t,int32_t>,size_t> identities;
+        for(size_t i=0;i<result.materials.size();++i) {
+            const auto& row=result.materials[i];
+            if(!identities.emplace(std::make_pair(row.type,row.index),i).second)return std::nullopt;
+        }
+        std::vector<WorkOrderDetailMaterial> filtered;filtered.reserve(types.size());
+        for(size_t i=0;i<types.size();++i) {
+            const auto found=identities.find({types[i],indices[i]});
+            if(found==identities.end())return std::nullopt;
+            filtered.push_back(std::move(result.materials[found->second]));
+        }
+        result.materials=std::move(filtered);
+    }
     return result;
 }
 

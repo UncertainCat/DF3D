@@ -1,17 +1,20 @@
 extends "res://scripts/location_staff_candidates_frame.gd"
 # Native Details renderer2143b0; workshop reference232341. Other option
-# families, native search/counts and global/responsive geometry remain staged.
+# families and global/responsive geometry remain staged.
 signal cancelled
 var state
 var input_allowed: Callable
 var colors: Array[Color]=[]
+var search_focused:=false
+var blink:=false
 func configure_details(source,model) -> void:
 	super.configure(source);state=model;colors=art.installed_palette(source.assets_root())
 	mouse_filter=Control.MOUSE_FILTER_STOP
 	scrollbar.row_changed.connect(func(value):state.seek(value))
 	scrollbar.input_allowed=func():return state.phase==state.Phase.Ready and (not input_allowed.is_valid() or input_allowed.call())
 	state.changed.connect(func():
-		if state.phase==state.Phase.Closed:hide()
+		if state.phase==state.Phase.Closed:search_focused=false;hide()
+		if state.snapshot.get("selected_option",-1)<0:search_focused=false
 		sync_scroll();queue_redraw())
 func open(building: int,order: int) -> void:
 	state.open(building,order);show();queue_redraw()
@@ -30,8 +33,24 @@ func back() -> void:
 	if state.ticket!=0:return
 	if state.snapshot.get("selected_option",-1)>=0:state.read_root()
 	else:cancelled.emit()
+func _process(_delta: float) -> void:
+	var value:=Time.get_ticks_msec()%1000<500
+	if search_focused and value!=blink:blink=value;queue_redraw()
+func feed_search(event: InputEventKey) -> void:
+	if not event.pressed or event.ctrl_pressed or event.alt_pressed or event.meta_pressed:return
+	if event.keycode in [KEY_ENTER,KEY_KP_ENTER]:search_focused=false;queue_redraw();return
+	var value: String=state.query
+	if event.keycode==KEY_BACKSPACE:value=value.left(maxi(0,value.length()-1))
+	elif event.unicode>=32:
+		# Native8b9c67/8b9d03: capacity20, flags0x17, raw text bytes.
+		for byte in String.chr(event.unicode).to_utf8_buffer():
+			if value.length()>=20:break
+			value+=String.chr(byte if byte<128 else art.CP437_HIGH[byte-128])
+	state.set_query(value)
 func _input(event: InputEvent) -> void:
 	if not is_visible_in_tree() or (input_allowed.is_valid() and not input_allowed.call()):return
+	if search_focused and event is InputEventKey and event.keycode!=KEY_ESCAPE:
+		feed_search(event);get_viewport().set_input_as_handled();return
 	if (event is InputEventKey and event.pressed and event.keycode==KEY_ESCAPE) or (event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_RIGHT):
 		back();get_viewport().set_input_as_handled()
 func _gui_input(event: InputEvent) -> void:
@@ -41,6 +60,8 @@ func _gui_input(event: InputEvent) -> void:
 	if selected>=0 and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
 		scrollbar.move_to(state.first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1));accept_event();return
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
+	if selected>=0 and Rect2(16,84,800,36).has_point(event.position):
+		search_focused=not search_focused;queue_redraw();accept_event();return
 	var top:=120 if selected>=0 else 48
 	if not Rect2(16,top,784,size.y-top-24).has_point(event.position):return
 	var index:=int((event.position.y-top)/36)
@@ -50,7 +71,7 @@ func _gui_input(event: InputEvent) -> void:
 	elif index<state.snapshot.get("options",[]).size():state.select_option(index)
 	accept_event()
 func text(value: String,point: Vector2,color:=15) -> void:
-	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point,value,HORIZONTAL_ALIGNMENT_LEFT,size.x-point.x-16,12,colors[color] if colors.size()>color else Color.WHITE)
+	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point+Vector2(0,4),value,HORIZONTAL_ALIGNMENT_LEFT,size.x-point.x-16,12,colors[color] if colors.size()>color else Color.WHITE)
 func _draw() -> void:
 	if world==null or state==null:return
 	patch("HOVER_RECTANGLE",Vector2i.ZERO,104,frame_rows)
@@ -63,7 +84,15 @@ func _draw() -> void:
 	var kind: int=state.snapshot.options[selected].kind
 	# Captured native setting headings for the two wired semantic families.
 	if kind in [0,6]:text("Setting material" if kind==0 else "Setting plant",Vector2(16,68))
+	var filter: Texture2D=art.texture("BUTTON_FILTER")
+	if filter!=null:
+		for y in 3:
+			for x in 100:
+				var sx:=0 if x==0 else x-94 if x>=96 else 1
+				draw_texture_rect_region(filter,Rect2(16+x*8,84+y*12,8,12),Rect2(sx*8,y*12,8,12))
+	text(state.query+("_" if search_focused and blink else "") if search_focused or not state.query.is_empty() else "...",Vector2(32,104),15 if search_focused or not state.query.is_empty() else 8)
 	for index in mini(page_rows,state.rows.size()-state.first):
 		var row: Dictionary=state.rows[state.first+index]
+		patch("BUTTON_RECTANGLE_DARK",Vector2i(2,10+index*3),98 if scrollbar.visible else 100,3)
 		text(row.caption,Vector2(16,140+index*36))
-		if row.has("count_caption"):text(row.count_caption,Vector2(720,140+index*36),13 if row.get("estimated",false) else 14)
+		if row.has("count_caption"):text(row.count_caption,Vector2((800 if scrollbar.visible else 816)-str(row.count_caption).length()*8,140+index*36),13 if row.get("estimated",false) else 14)

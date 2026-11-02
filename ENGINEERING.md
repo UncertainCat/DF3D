@@ -7064,11 +7064,21 @@ combined workflow passes; owned DF904 exits unsaved with the source preserved.
 Paired wire-process logs contain only classified known Godot diagnostics.
 Core and composition checks pass in `work-order-details-wiring`.
 
-This is an editable staged workflow, not complete Details acceptance. Search,
-native count captions, other choice families, row backgrounds and text alignment
-remain unfinished. The current fixed frame uses the workshop reference; global
-and responsive geometry, plant selection through the viewer, and navigation
-parity still need completion before exposure.
+Details search calls native2230f0/2239e0 on the private context and maps filtered
+material tuples back to unfiltered choice IDs. Search text uses native capacity20
+and flags0x17; queued typing discards superseded results without replaying edits.
+Positive counts use native74f430 with the current bookkeeper precision, native
+number formatting and the estimated suffix; zero counts remain absent.
+Protected234640 on2026-11-01 compares native searches and exercises both crystal
+glass and Kobold bulb selection through the viewer. Search, row backgrounds and
+text alignment are rendered; the full workflow passes and owned DF43608 exits
+unsaved with source preservation. This zero-stock fixture does not establish
+live positive/estimated count rendering.
+
+This is an editable staged workflow, not complete Details acceptance. Other
+choice families remain unfinished. The current fixed frame uses the workshop
+reference; global and responsive geometry, hover and navigation parity still
+need completion before exposure.
 
 These screens remain staged. Details, full responsive layout, tooltip coverage
 and tab navigation are unfinished. Quantity drafts currently support four digits; native increment

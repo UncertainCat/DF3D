@@ -40,6 +40,10 @@ inline bool workOrderSuggestionsSupported() {
             {0x3926b1,0x1ef,UINT64_C(0x07d2b75807214414)},
             {0x3c54b5,0x160,UINT64_C(0x4656e100c0a9d60c)},
             {0x3c4e85,0xcc,UINT64_C(0xcbb60c7f02383afe)},
+            {0x3c4fd0,0x59,UINT64_C(0x413dd0b9aaf2c9e8)},
+            {0x3c4697,0x58,UINT64_C(0xafad4184748341ea)},
+            {0x3c5323,0x16,UINT64_C(0x21f1af3720d24795)},
+            {0x391c9e,0xf1,UINT64_C(0x22aeac4a07ddd4bc)},
             {0x3c5671,0x1ae,UINT64_C(0xf630e9734b5a8891)},
             {0x3c534d,0xbf,UINT64_C(0xa3ed7f994900fc90)},
             {0x3c5273,0x4,UINT64_C(0x53530d88aba7d93d)},
@@ -344,6 +348,73 @@ inline NativeWorkOrderEdit addNativeWorkOrderItemCondition(int32_t buildingId,in
         auto after=nativeWorkOrderRow(order,position);
         if(after && order.item_conditions.back()==added && sameNativeSuggestedFilter(*added,source) &&
            added->compare_type==source.compare_type && added->compare_val==source.compare_val && added->contains==source.contains) {
+            result.row=std::move(after);result.outcome=WorkshopOrdersOutcome::Applied;
+        }
+    }catch(...) {}
+    return result;
+}
+struct NativeDependencyChoices {
+    uint64_t revision=0;
+    std::vector<NativeWorkOrderRow> rows;
+};
+inline std::optional<NativeDependencyChoices> nativeWorkOrderDependencies(const df::manager_order& source) {
+    if(!workOrderSuggestionsSupported() || !df::global::world)return std::nullopt;
+    NativeDependencyChoices result;uint64_t hash=UINT64_C(14695981039346656037);
+    const auto add=[&](uint64_t v){for(unsigned s=0;s<64;s+=8){hash^=(v>>s)&255;hash*=UINT64_C(1099511628211);}};
+    int32_t position=0;
+    // Native3c4fd0..5029: world order, excluding self and existing targets.
+    for(auto* candidate:df::global::world->manager_orders.all) {
+        const auto at=position++;
+        if(!candidate)return std::nullopt;
+        if(candidate==&source)continue;
+        bool linked=false;
+        for(const auto* condition:source.order_conditions) {
+            if(!condition)return std::nullopt;
+            if(condition->order_id==candidate->id){linked=true;break;}
+        }
+        if(linked)continue;
+        auto row=nativeWorkOrderRow(*candidate,at);if(!row)return std::nullopt;
+        add(row->id);add(row->revision);result.rows.push_back(std::move(*row));
+        if(result.rows.size()>32768)return std::nullopt;
+    }
+    add(result.rows.size());result.revision=hash&INT64_MAX;if(!result.revision)result.revision=1;
+    return result;
+}
+inline NativeWorkOrderEdit setNativeWorkOrderDependency(int32_t buildingId,int32_t id,uint64_t revision,int16_t index,int32_t target,int8_t dependency,uint64_t listRevision) {
+    NativeWorkOrderEdit result;
+    if(index<-1 || target<0 || target==id || dependency<0 || dependency>1 || !workOrderSuggestionsSupported() || !workshopOrdersProfile(df::building::find(buildingId)))return result;
+    const auto& all=df::global::world->manager_orders.all;
+    const auto found=std::find_if(all.begin(),all.end(),[&](const auto* row){return row && row->id==id && row->workshop_id==buildingId;});
+    if(found==all.end())return result;
+    auto& order=**found;const int32_t position=int32_t(found-all.begin());
+    const auto before=nativeWorkOrderRow(order,position);if(!before)return result;
+    if(!revision || before->revision!=revision){result.outcome=WorkshopOrdersOutcome::Stale;return result;}
+    df::manager_order_condition_order* condition=nullptr;
+    if(index<0) {
+        if(dependency!=1 || order.item_conditions.size()+order.order_conditions.size()>=64)return result;
+        const auto candidates=nativeWorkOrderDependencies(order);
+        if(!candidates || !listRevision || candidates->revision!=listRevision){result.outcome=WorkshopOrdersOutcome::Stale;return result;}
+        if(std::none_of(candidates->rows.begin(),candidates->rows.end(),[&](const auto& row){return row.id==target;}))return result;
+        order.order_conditions.reserve(order.order_conditions.size()+1);
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        using Allocate=void* (*)(size_t);
+        void* memory=reinterpret_cast<Allocate>(base+0x1539690)(sizeof(df::manager_order_condition_order));
+        if(!memory)return result;
+        condition=new(memory) df::manager_order_condition_order;
+        condition->order_id=target;condition->condition=df::workquota_order_condition_type::Completed;condition->flags.whole=0;
+        order.order_conditions.push_back(condition);
+    } else {
+        if(listRevision || size_t(index)>=order.order_conditions.size())return result;
+        condition=order.order_conditions[size_t(index)];
+        if(!condition || condition->order_id!=target)return result;
+        // Native toggle only changes the condition enum, preserving satisfied.
+        condition->condition=df::workquota_order_condition_type(dependency);
+    }
+    // Unlike item conditions, dependencies do not alter order frequency.
+    result.outcome=WorkshopOrdersOutcome::Unknown;
+    try {
+        auto after=nativeWorkOrderRow(order,position);
+        if(after && condition->order_id==target && int(condition->condition)==dependency) {
             result.row=std::move(after);result.outcome=WorkshopOrdersOutcome::Applied;
         }
     }catch(...) {}

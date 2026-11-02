@@ -498,6 +498,21 @@ local ok,err=xpcall(function()
   shot('order-condition-manual-native')
   mouse(896,178)
   assert(#native.item_conditions==0)
+  mouse(944,142)
+  assert(conditions.selecting_order_condition and #conditions.condition_wq>0)
+  expected.dependency_candidates={}
+  for _,candidate in ipairs(conditions.condition_wq)do expected.dependency_candidates[#expected.dependency_candidates+1]=candidate.id end
+  shot('order-dependency-picker-native')
+  mouse(400,202)
+  assert(#native.order_conditions==1 and not conditions.selecting_order_condition,'Native dependency selection failed')
+  local linked=native.order_conditions[0]
+  expected.dependency={target=linked.order_id,condition=linked.condition,frequency=native.frequency}
+  shot('order-dependency-added-native')
+  mouse(640,178)
+  expected.dependency.toggled=linked.condition
+  shot('order-dependency-toggled-native')
+  mouse(896,178)
+  assert(#native.order_conditions==0,'Native dependency removal failed')
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());assert(not conditions.open)
   if df.global.game.main_interface.info.open then gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())end
   select_map(still);assert(click_label('Work orders'))

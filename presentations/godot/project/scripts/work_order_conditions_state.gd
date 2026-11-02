@@ -41,10 +41,20 @@ func open(building: int,order: int) -> void:
 	building_id=building;order_id=order;_read()
 func _read() -> void:
 	phase=Phase.Reading
+	if filter_kind==3:
+		_send({"action":C.ManagementAction.WorkOrderCandidates,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"condition_kind":1,"cursor":filter_first,"expected_list_revision":filter_revision})
+		return
 	if filter_kind>=0:
 		_send({"action":C.ManagementAction.WorkOrderCandidates,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"condition_index":filter_index,"candidate_kind":filter_kind+3,"query":filter_query,"cursor":filter_first,"expected_list_revision":filter_revision})
 		return
 	_send({"action":C.ManagementAction.WorkOrderInspect,"workshop_id":building_id,"id":order_id})
+func open_dependencies() -> void:
+	if phase!=Phase.Ready or ticket!=0:return
+	filter_kind=3;filter_index=-1;filter_rows=[];filter_query="";filter_first=0;filter_total=0;filter_revision=0;_read()
+func edit_dependency(row: Dictionary) -> void:
+	if phase!=Phase.Ready or ticket!=0 or not snapshot.conditions.has(row) or row.kind!=1:return
+	phase=Phase.Applying
+	_send({"action":C.ManagementAction.WorkOrderCondition,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"condition_kind":1,"condition_index":row.index,"target_order":row.target_order,"dependency":(int(row.dependency)+1)%2})
 func open_filter(index: int,kind: int) -> void:
 	if phase!=Phase.Ready or ticket!=0 or kind<0 or kind>2:return
 	var found:=false
@@ -71,6 +81,9 @@ func choose_filter(id: int) -> void:
 		if row.id==id:found=true;break
 	if not found:return
 	phase=Phase.Applying
+	if filter_kind==3:
+		_send({"action":C.ManagementAction.WorkOrderCondition,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"condition_kind":1,"target_order":id,"dependency":1,"expected_list_revision":filter_revision})
+		return
 	_send({"action":C.ManagementAction.WorkOrderCondition,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"condition_index":filter_index,"candidate_kind":filter_kind+3,"filter_choice":id,"expected_list_revision":filter_revision})
 func cycle_frequency() -> void:
 	if phase!=Phase.Ready or ticket!=0:return
@@ -130,7 +143,8 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 	if result.get("status",-1)!=C.ManagementStatus.Ok or result.get("action",-1)!=sent.action or result.get("outcome","")=="unknown":
 		_fail(Phase.Unknown if writing else Phase.Rejected);return
 	var rows: Array=result.get("work_order",{}).get("orders",[])
-	if rows.size()!=1 or rows[0].get("id",-1)!=order_id or rows[0].get("workshop_id",-1)!=building_id or rows[0].get("revision",0)<=0:
+	var dependency_read: bool=sent.action==C.ManagementAction.WorkOrderCandidates and sent.get("condition_kind",0)==1
+	if rows.is_empty() or (not dependency_read and rows.size()!=1) or rows[0].get("id",-1)!=order_id or rows[0].get("workshop_id",-1)!=building_id or rows[0].get("revision",0)<=0:
 		_fail(Phase.Unknown if writing else Phase.Rejected);return
 	if writing:
 		if sent.action==C.ManagementAction.WorkOrderUpdate:
@@ -141,6 +155,12 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 			if filter_kind!=2:filter_kind=-1;filter_rows=[]
 		elif sent.get("remove_condition",false):
 			if rows[0].get("conditions",[]).size()!=snapshot.conditions.size()-1 or rows[0].get("frequency",-1)!=snapshot.frequency:_fail(Phase.Unknown);return
+		elif sent.get("condition_kind",0)==1:
+			var confirmed:=false
+			for condition in rows[0].get("conditions",[]):
+				if condition.kind==1 and condition.target_order==sent.target_order and condition.dependency==sent.dependency:confirmed=true
+			if not confirmed or rows[0].conditions.size()!=snapshot.conditions.size()+(1 if sent.get("condition_index",-1)<0 else 0) or rows[0].frequency!=snapshot.frequency:_fail(Phase.Unknown);return
+			filter_kind=-1;filter_rows=[]
 		elif sent.get("condition_index",-1)>=0:
 			var confirmed:=false
 			for condition in rows[0].get("conditions",[]):
@@ -151,12 +171,13 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 		applied.emit();_read();return
 	if sent.action==C.ManagementAction.WorkOrderCandidates:
 		var value: Dictionary=result.get("work_order",{})
-		var page: Array=value.get("choices",[])
+		var page: Array=rows.slice(1) if dependency_read else value.get("choices",[])
 		var revision: int=value.get("list_revision",0)
 		var total: int=value.get("total",-1)
 		if revision<=0 or (filter_revision!=0 and filter_revision!=revision) or total<0 or total>32768 or page.size()>128 or sent.cursor+page.size()>total:_fail(Phase.Rejected);return
 		filter_revision=revision;snapshot=rows[0].duplicate(true)
-		if sent.query!=filter_query or sent.cursor!=filter_first:_read();return
+		if sent.get("query","")!=filter_query or sent.cursor!=filter_first:_read();return
+		if dependency_read and total==0:filter_kind=-1;_read();return
 		filter_rows=page.duplicate(true);filter_total=total;phase=Phase.Ready;changed.emit();return
 	if not rows[0].get("suggested_conditions") is Array or rows[0].get("frequency",-1) not in [0,1,2,3,4]:_fail(Phase.Rejected);return
 	snapshot=rows[0].duplicate(true);phase=Phase.Ready;_flush_threshold();changed.emit()

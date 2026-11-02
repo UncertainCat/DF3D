@@ -161,6 +161,30 @@ func run() -> void:
 	click(Vector2(896,178))
 	if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.orders.phase==owner.orders.Phase.Ready and owner.orders.row_ticket==0),"Manual condition removal was not confirmed"):quit(1);return
 	check(owner.conditions.snapshot.conditions.is_empty(),"Manual condition retained after removal")
+	click(Vector2(944,142))
+	if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready),"Dependency picker did not load"):quit(1);return
+	check(owner.conditions.filter_kind==3,"Dependency picker not open")
+	check(owner.conditions.filter_total==expected.dependency_candidates.size(),"Dependency candidate count differs")
+	for index in owner.conditions.filter_rows.size():
+		check(owner.conditions.filter_rows[index].id==int(expected.dependency_candidates[index]),"Dependency candidate order differs")
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/workshop-order-dependency-picker-live.png")
+	click(Vector2(400,202))
+	if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.orders.phase==owner.orders.Phase.Ready and owner.orders.row_ticket==0),"Dependency addition was not confirmed"):quit(1);return
+	if not check(owner.conditions.snapshot.conditions.size()==1,"Dependency missing"):quit(1);return
+	var dependency: Dictionary=owner.conditions.snapshot.conditions[0]
+	check(dependency.kind==1 and dependency.target_order==int(expected.dependency.target) and dependency.dependency==int(expected.dependency.condition),"Dependency differs from native")
+	check(owner.conditions.snapshot.frequency==int(expected.dependency.frequency),"Dependency addition changed frequency")
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/workshop-order-dependency-added-live.png")
+	click(Vector2(640,178))
+	if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.orders.phase==owner.orders.Phase.Ready and owner.orders.row_ticket==0),"Dependency toggle was not confirmed"):quit(1);return
+	check(owner.conditions.snapshot.conditions[0].dependency==int(expected.dependency.toggled),"Dependency toggle differs from native")
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/workshop-order-dependency-toggled-live.png")
+	click(Vector2(896,178))
+	if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.orders.phase==owner.orders.Phase.Ready and owner.orders.row_ticket==0),"Dependency removal was not confirmed"):quit(1);return
+	check(owner.conditions.snapshot.conditions.is_empty(),"Dependency retained after removal")
 	number_key(KEY_ESCAPE)
 	check(not owner.conditions_view.visible and owner.conditions.phase==owner.conditions.Phase.Closed,"Conditions did not retire on close")
 	click(Vector2(872,190))

@@ -6917,7 +6917,24 @@ workflow. Source preservation passes, owned DF49000 exits unsaved, all five
 Godot process groups have only known diagnostics, and root CTest19/19 passes.
 The paired render still lacks native satisfaction feedback; that remains open.
 
-This screen remains staged. Dependencies, satisfaction feedback,
+Dependencies use native3c4fd0..5029's world-order candidate predicate, excluding
+the current order and existing targets. The picker pages native order rows with
+source and list revisions. Selection composes3c4697..46ef's Completed condition
+and zero flags; toggling composes3c5323..5339 and preserves satisfaction flags.
+Neither action changes frequency or scheduling. Dependency captions use the
+native job formatter and total suffix from391c9e..391e67; satisfaction comes from
+the condition's simulation flag, matching a9d730..a9d775. No native menu is read.
+
+Protected214225 establishes the dependency picker/row reference. Protected214702
+on2026-11-01 verifies the rendered picker candidate order and add/toggle/remove
+effects, alongside manual and suggested conditions, filters and order removal.
+Owned DF48844 exits unsaved with the source unchanged; all five Godot groups
+have only known diagnostics. The final row clock artwork correction is rendered
+separately in `dependency-layout.gd`. `build/qa/work-order-dependencies` passes
+core19/19 and composition. Candidate pages contain at most15 rows plus the source
+order; larger-height page filling and scroll lifecycle still need completion.
+
+This screen remains staged. Item satisfaction feedback,
 overflow, tooltip coverage, tab navigation and exact native back navigation are
 unfinished. Current close returns to the workshop; this is not native navigation
 acceptance. Fixed frame geometry and bounded displayed rows still need the full

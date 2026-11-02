@@ -2675,6 +2675,12 @@ BridgeWorkOrderInfo copyNativeWorkOrder(const df3d_production::NativeWorkOrderRo
   for(size_t i=0;i<native.orderConditions.size();++i) {
     const auto& c=native.orderConditions[i];BridgeWorkOrderCondition value;value.kind=1;value.index=uint16_t(i);
     value.targetOrder=c.order_id;value.dependency=int8_t(c.condition);value.satisfied=c.flags.bits.satisfied;
+    const auto& all=df::global::world->manager_orders.all;
+    const auto target=std::find_if(all.begin(),all.end(),[&](const auto* order){return order && order->id==c.order_id;});
+    if(target!=all.end()) {
+      const auto named=df3d_production::nativeWorkOrderRow(**target,int32_t(target-all.begin()));
+      if(named)value.description=DF2UTF(named->caption)+(named->total>0?" ("+std::to_string(named->total)+")":"");
+    }
     row.conditions.push_back(std::move(value));
   }
   return row;
@@ -2699,7 +2705,9 @@ void run(color_ostream& out) {
   }
   if(r->action()==m::ManagementAction::WorkOrderCandidates && r->work_order() && r->work_order()->workshop_id()>=0) {
     const auto* q=r->work_order();message.clear();status=m::ManagementStatus::Rejected;workOrders={};
-    const bool extra=q->id()<0 || q->condition_index()<0 || q->condition_kind() || q->candidate_kind()<3 || q->candidate_kind()>5 || !q->expected_revision() ||
+    const bool dependencies=q->condition_kind()==1 && q->candidate_kind()==0;
+    const bool extra=q->id()<0 || (dependencies?(q->condition_index()!=-1 || (q->query() && q->query()->size())):
+      (q->condition_index()<0 || q->condition_kind() || q->candidate_kind()<3 || q->candidate_kind()>5)) || !q->expected_revision() ||
       q->remaining()!=-1 || q->frequency()!=-1 || q->max_workshops()!=-1 || (q->recipe() && q->recipe()->size()) || q->remove_condition() ||
       q->compare()!=-1 || q->threshold()!=-1 || q->item_type()!=-1 || q->item_subtype()!=-1 || q->mat_type()!=-1 || q->mat_index()!=-1 ||
       q->target_order()!=-1 || q->dependency()!=-1 || q->move() || q->expected_neighbor()!=-1 || (q->traits() && q->traits()->size()) ||
@@ -2713,7 +2721,23 @@ void run(color_ostream& out) {
       const auto found=std::find_if(all.begin(),all.end(),[&](const auto* order){return order && order->id==q->id() && order->workshop_id==q->workshop_id();});
       if(found==all.end()){publish();return;}
       const auto observed=df3d_production::nativeWorkOrderRow(**found,int32_t(found-all.begin()));
-      if(!observed || observed->revision!=q->expected_revision() || size_t(q->condition_index())>=observed->itemConditions.size()){publish();return;}
+      if(!observed || observed->revision!=q->expected_revision() || (!dependencies && size_t(q->condition_index())>=observed->itemConditions.size())){publish();return;}
+      if(dependencies) {
+        const auto catalog=df3d_production::nativeWorkOrderDependencies(**found);
+        if(!catalog || q->cursor()>catalog->rows.size() || (q->expected_list_revision() && q->expected_list_revision()!=catalog->revision)){publish();return;}
+        workOrders.orders.push_back(copyNativeWorkOrder(*observed));
+        size_t conditionCount=observed->itemConditions.size()+observed->orderConditions.size();
+        size_t at=q->cursor();
+        for(;at<catalog->rows.size() && workOrders.orders.size()<16;++at) {
+          const auto& candidate=catalog->rows[at];
+          const auto count=candidate.itemConditions.size()+candidate.orderConditions.size();
+          if(conditionCount+count>128)break;
+          conditionCount+=count;workOrders.orders.push_back(copyNativeWorkOrder(candidate));
+        }
+        if(at==q->cursor() && at<catalog->rows.size()){workOrders={};publish();return;}
+        workOrders.total=uint32_t(catalog->rows.size());workOrders.nextCursor=at<catalog->rows.size()?uint32_t(at):0;
+        workOrders.listRevision=int64_t(catalog->revision);status=m::ManagementStatus::Ok;publish();return;
+      }
       const int kind=int(q->candidate_kind())-3;
       const auto query=q->query()?UTF2DF(q->query()->str()):std::string{};
       if(query.size()>40){publish();return;}
@@ -2740,6 +2764,27 @@ void run(color_ostream& out) {
       workOrders.total=count;workOrders.listRevision=int64_t(revision);
       workOrders.nextCursor=q->cursor()+workOrders.choices.size()<count?uint32_t(q->cursor()+workOrders.choices.size()):0;
       workOrders.orders.push_back(std::move(row));status=m::ManagementStatus::Ok;
+    }catch(...) {workOrders={};status=m::ManagementStatus::Rejected;}
+    publish();return;
+  }
+  if(r->action()==m::ManagementAction::WorkOrderCondition && r->work_order() && r->work_order()->workshop_id()>=0 &&
+     r->work_order()->condition_kind()==1 && !r->work_order()->remove_condition()) {
+    const auto* q=r->work_order();message.clear();status=m::ManagementStatus::Rejected;workOrders={};
+    const bool extra=q->remaining()!=-1 || q->frequency()!=-1 || q->max_workshops()!=-1 || q->cursor() ||
+      q->suggestion_index()!=-1 || q->filter_choice()!=-1 || (q->recipe() && q->recipe()->size()) || (q->query() && q->query()->size()) ||
+      q->compare()!=-1 || q->threshold()!=-1 || q->item_type()!=-1 || q->candidate_kind() || q->move() || q->expected_neighbor()!=-1 ||
+      q->item_subtype()!=-1 || q->mat_type()!=-1 || q->mat_index()!=-1 || (q->traits() && q->traits()->size()) ||
+      q->input_index()!=-1 || q->group_type()!=-1 || q->group_subtype()!=-1 || q->group_custom()!=-1 || q->encrust_flags()!=-1;
+    if(extra){publish();return;}
+    try {
+      auto* building=df::building::find(q->workshop_id());
+      auto* tile=building?Maps::getTileDesignation(building->centerx,building->centery,building->z):nullptr;
+      if(!tile || tile->bits.hidden){publish();return;}
+      mutated=true;
+      const auto result=df3d_production::setNativeWorkOrderDependency(q->workshop_id(),q->id(),q->expected_revision(),q->condition_index(),q->target_order(),q->dependency(),q->expected_list_revision());
+      using O=df3d_production::WorkshopOrdersOutcome;
+      mutated=result.outcome==O::Applied || result.outcome==O::Unknown;
+      if(result.outcome==O::Applied && result.row){workOrders.orders.push_back(copyNativeWorkOrder(*result.row));status=m::ManagementStatus::Ok;}
     }catch(...) {workOrders={};status=m::ManagementStatus::Rejected;}
     publish();return;
   }

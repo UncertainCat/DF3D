@@ -64,7 +64,7 @@ func layout(view: Vector2) -> void:
 	position=origin;size=Vector2(944,frame_rows*12);sync_filter_scroll();queue_redraw()
 func _input(event: InputEvent) -> void:
 	if not is_visible_in_tree() or (input_allowed.is_valid() and not input_allowed.call()):return
-	if state.filter_kind>=0 and event is InputEventKey and event.keycode!=KEY_ESCAPE:
+	if state.filter_kind>=0 and state.filter_kind<3 and event is InputEventKey and event.keycode!=KEY_ESCAPE:
 		feed_filter(event);get_viewport().set_input_as_handled();return
 	if editing_index>=0 and event is InputEventKey and event.keycode!=KEY_ESCAPE:
 		feed_number(event);get_viewport().set_input_as_handled();return
@@ -86,6 +86,7 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
 		if Rect2(832,72,32,36).has_point(event.position):state.cycle_frequency()
 		if Rect2(864,72,32,36).has_point(event.position):finish_entry();state.add_item_condition()
+		if Rect2(896,72,32,36).has_point(event.position):finish_entry();state.open_dependencies()
 		for index in 5:
 			if Rect2(720,size.y-192+index*36,32,36).has_point(event.position):state.add_suggestion(index)
 		if state.phase==state.Phase.Ready:
@@ -98,6 +99,7 @@ func _gui_input(event: InputEvent) -> void:
 					if Rect2(688,108+index*36,32,36).has_point(event.position):state.edit_amount(row,0,true);break
 					for kind in 3:
 						if Rect2(720+kind*32,108+index*36,32,36).has_point(event.position):finish_entry();state.open_filter(row.index,kind);break
+				elif Rect2(592,108+index*36,32,36).has_point(event.position):state.edit_dependency(row);break
 				if Rect2(848,108+index*36,32,36).has_point(event.position):state.remove_condition(state.snapshot.conditions[index]);break
 		accept_event()
 func text(value: String,point: Vector2,color: int=15) -> void:
@@ -116,11 +118,16 @@ func tab(value: String,point: Vector2,selected:=false) -> float:
 	text(value,point+Vector2(16,16),0 if selected else 15)
 	return width*8
 func condition(row: Dictionary,y: float,suggested: bool) -> void:
-	if row.get("kind",0)!=0:return
 	var background: Texture2D=art.texture("BUTTON_RECTANGLE_DARK")
 	if background!=null:
 		for dy in 2:
 			for dx in 109:draw_texture_rect_region(background,Rect2(16+dx*8,y+6+dy*12,8,12),Rect2(8,12,8,12))
+	if row.get("kind",0)==1:
+		text(row.get("description",""),Vector2(16,y+24),11)
+		text("must first be completed" if row.dependency==1 else "must first be activated",Vector2(16,y+36))
+		text("Satisfied for next check" if row.satisfied else "Not satisfied for next check",Vector2(416,y+24),10 if row.satisfied else 12)
+		icon("WORK_ORDERS_CHANGE_ORDER_CONDITION_CHECK_TYPE",Vector2(592,y));icon("WORK_ORDERS_REMOVE",Vector2(848,y))
+		return
 	text("Amount of ",Vector2(16,y+24),11)
 	text(row.get("item_caption",""),Vector2(96,y+24),14)
 	text("available is ",Vector2(16,y+36),11)
@@ -163,6 +170,21 @@ func draw_filter() -> void:
 		var selected: bool=condition_row.get("traits",[]).has(str(row.id))
 		if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),Vector2(16,y+24),row.name,HORIZONTAL_ALIGNMENT_LEFT,832 if state.filter_kind==2 else 888,12,colors[10 if selected else 6] if state.filter_kind==2 and colors.size()>10 else Color.WHITE)
 		if state.filter_kind==2:icon("WORK_ORDERS_ADJECTIVE_SELECTED" if selected else "WORK_ORDERS_ADJECTIVE_NOT_SELECTED",Vector2(856 if state.filter_total>page_rows else 872,y))
+func draw_dependency_picker() -> void:
+	var phases: Array=["","WORK_ORDERS_ACTIVE","WORK_ORDERS_WAITING","WORK_ORDERS_CHECKING","WORK_ORDERS_READY"]
+	for index in mini(page_rows,state.filter_rows.size()):
+		var row: Dictionary=state.filter_rows[index]
+		var y:=144+index*36
+		patch("BUTTON_RECTANGLE_DARK",Vector2i(2,int(y/12)),112 if state.filter_total>page_rows else 114,3)
+		var phase: int=row.get("native_state",{}).get("phase",0)
+		if phase>0 and phase<phases.size():icon(phases[phase],Vector2(16,y))
+		var name: String=row.name
+		if name.length()>=22:name=name.left(18)+"..."
+		text(name,Vector2(64,y+24),11)
+		text("∞/∞" if row.total==0 else str(row.remaining)+"/"+str(row.total),Vector2(64,y+36),11)
+		var frequency: String=FREQUENCIES[row.frequency]
+		if not row.conditions.is_empty():frequency=frequency.replace(", checked",", conditions checked")
+		text(frequency,Vector2(256,y+24))
 func _draw() -> void:
 	if world==null:return
 	patch("HOVER_RECTANGLE",Vector2i.ZERO,118,frame_rows)
@@ -171,7 +193,7 @@ func _draw() -> void:
 	x=8.0
 	for value in ["Creatures","Tasks","Places","Labor","Work orders"]:x+=tab(value,Vector2(x,36),value=="Work orders")
 	if state==null or state.snapshot.is_empty():return
-	if state.filter_kind>=0:draw_filter();return
+	if state.filter_kind>=0 and state.filter_kind<3:draw_filter();return
 	var row: Dictionary=state.snapshot
 	var phases: Array=["","WORK_ORDERS_ACTIVE","WORK_ORDERS_WAITING","WORK_ORDERS_CHECKING","WORK_ORDERS_READY"]
 	var phase: int=row.get("native_state",{}).get("phase",0)
@@ -181,6 +203,7 @@ func _draw() -> void:
 	var frequency_caption: String=FREQUENCIES[row.frequency]
 	if not row.conditions.is_empty():frequency_caption=frequency_caption.replace(", checked",", conditions checked")
 	text(frequency_caption,Vector2(256,96))
+	if state.filter_kind==3:draw_dependency_picker();return
 	icon("WORK_ORDERS_CHANGE_FREQUENCY",Vector2(832,72))
 	icon("WORK_ORDERS_ADD_ITEM_CONDITION",Vector2(864,72))
 	icon("WORK_ORDERS_ADD_ORDER_CONDITION",Vector2(896,72))

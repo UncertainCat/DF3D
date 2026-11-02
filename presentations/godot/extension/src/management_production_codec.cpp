@@ -228,7 +228,9 @@ void writeWorkOrder(Dictionary& result, const wm::WorkOrderState& s) {
     if(d.art) {
       const auto& a=*d.art;Dictionary art;art["page"]=a.page;art["caption"]=String::utf8(a.caption.c_str());
       art["list_revision"]=int64_t(a.listRevision);art["total"]=int64_t(a.total);art["next_cursor"]=int64_t(a.nextCursor);
-      Array rows;for(const auto& r:a.rows){Dictionary row;row["id"]=r.id;row["caption"]=String::utf8(r.caption.c_str());rows.push_back(row);}art["rows"]=rows;details["art"]=art;
+      art["hovered"]=a.hovered;
+      if(a.preview){Array lines;for(const auto& line:*a.preview)lines.push_back(String::utf8(line.c_str()));art["preview"]=lines;}
+      Array rows;for(const auto& r:a.rows){Dictionary row;row["id"]=r.id;row["caption"]=String::utf8(r.caption.c_str());if(r.badge)row["badge"]=String::utf8(r.badge->c_str());rows.push_back(row);}art["rows"]=rows;details["art"]=art;
     }
     Array options;for(const auto& o:d.options){Dictionary option;option["kind"]=o.kind;option["index"]=o.index;option["caption"]=String::utf8(o.caption.c_str());options.push_back(option);}details["options"]=options;
     if(d.choices) {
@@ -351,7 +353,7 @@ bool validateWorkOrderShape(const Dictionary& data, String& error) {
     if(details.has("art")) {
       if(details["art"].get_type()!=Variant::DICTIONARY){error="Artwork must be a Dictionary";return false;}
       Dictionary art=details["art"];
-      for(const char* key:{"page","subject","expected_list_revision","cursor"})
+      for(const char* key:{"page","subject","expected_list_revision","cursor","hovered","preview_columns"})
         if(art.has(key) && art[key].get_type()!=Variant::INT){error=String("Wrong artwork field type: ")+key;return false;}
       if(art.has("query") && art["query"].get_type()!=Variant::STRING){error="Artwork query must be a String";return false;}
     }
@@ -442,6 +444,7 @@ bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& err
       const auto artNumber=[&](const char* key,int64_t def,int64_t low,int64_t high){int64_t v=art.get(key,def);if(v<low || v>high)valid=false;return v;};
       a.page=int16_t(artNumber("page",-1,-1,6));a.subject=int32_t(artNumber("subject",-1,-1,INT32_MAX));
       a.expectedListRevision=uint64_t(artNumber("expected_list_revision",0,0,INT64_MAX));a.cursor=uint32_t(artNumber("cursor",0,0,262144));
+      a.hovered=int32_t(artNumber("hovered",-1,-1,INT32_MAX));a.previewColumns=uint16_t(artNumber("preview_columns",0,0,256));
       String artQuery=art.get("query",String());a.query=artQuery.utf8().get_data();if(a.query.size()>128)valid=false;
     }
   }

@@ -1673,11 +1673,13 @@ table ProductionState {
 table WorkOrderArtRequest {
   page:int16 = -1; subject:int32 = -1;
   expected_list_revision:uint64; query:string; cursor:uint32;
+  hovered:int32 = -1; preview_columns:uint16;
 }
-table WorkOrderArtRow { id:int32; caption:string; }
+table WorkOrderArtRow { id:int32; caption:string; badge:string; }
 table WorkOrderArtState {
   page:int16 = -1; caption:string; rows:[WorkOrderArtRow];
   list_revision:uint64; total:uint32; next_cursor:uint32;
+  hovered:int32 = -1; preview:[string];
 }
 table WorkOrderDetailsRequest {
   option:int16 = -1;
@@ -2048,7 +2050,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 125;
+  schema_version:uint32 = 126;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2100,7 +2102,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 125;
+  schema_version:uint32 = 126;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

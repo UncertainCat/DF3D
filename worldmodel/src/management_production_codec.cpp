@@ -151,7 +151,9 @@ WorkOrderState decodeWorkOrder(const m::WorkOrderState* w) {
     if(const auto* a=d->art()) {
       details.art.emplace();auto& art=*details.art;
       art.page=a->page();art.caption=str(a->caption());art.listRevision=a->list_revision();art.total=a->total();art.nextCursor=a->next_cursor();
-      if(a->rows())for(const auto* row:*a->rows())art.rows.push_back({row->id(),str(row->caption())});
+      art.hovered=a->hovered();
+      if(a->preview()){art.preview.emplace();for(const auto* line:*a->preview())art.preview->push_back(str(line));}
+      if(a->rows())for(const auto* row:*a->rows())art.rows.push_back({row->id(),str(row->caption()),row->badge()?std::optional<std::string>(str(row->badge())):std::nullopt});
     }
     if(d->options())for(const auto* option:*d->options())details.options.push_back({option->kind(),option->index(),str(option->caption())});
     if(d->choices()) {
@@ -270,7 +272,7 @@ flatbuffers::Offset<m::WorkOrderRequest> encodeWorkOrder(flatbuffers::FlatBuffer
   flatbuffers::Offset<m::WorkOrderDetailsRequest> details;
   if(w.details){const auto& d=*w.details;
     flatbuffers::Offset<m::WorkOrderArtRequest> art;
-    if(d.art){const auto& a=*d.art;art=m::CreateWorkOrderArtRequest(b,a.page,a.subject,a.expectedListRevision,b.CreateString(a.query),a.cursor);}
+    if(d.art){const auto& a=*d.art;art=m::CreateWorkOrderArtRequest(b,a.page,a.subject,a.expectedListRevision,b.CreateString(a.query),a.cursor,a.hovered,a.previewColumns);}
     details=m::CreateWorkOrderDetailsRequest(b,d.option,d.choice,d.expectedChoicesRevision,b.CreateString(d.query),d.cursor,art);
   }
   return m::CreateWorkOrderRequest(b, w.id, w.expectedRevision, b.CreateString(w.recipe),

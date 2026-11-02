@@ -22,6 +22,12 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management126 adds optional native artwork row labels and revision-checked hover
+previews, including the requested text width. Preview reads cannot carry a
+selection. Rebuild/install both peers on `Local\\df3d_management_v126`. Missing
+labels and previews in earlier recordings remain unobserved. Other channels are
+unchanged.
+
 Management125 adds a distinct artwork intent and observation under Work order
 Details. Subject IDs retain their full simulation range; pages carry native
 captions, bounded rows and separate list revisions. Entering Image is an explicit

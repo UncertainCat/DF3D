@@ -30,8 +30,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 125;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v125";
+inline constexpr uint32_t kManagementVersion = 126;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v126";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -558,6 +558,9 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
            (a->page()<=0 && (a->subject()!=-1 || a->expected_list_revision() || a->cursor() || (a->query() && a->query()->size()))) ||
            (writing && (a->cursor() || (a->page()>0 && (a->subject()<0 || !a->expected_list_revision())))) ||
            (a->cursor() && !a->expected_list_revision()))return "invalid exclusive artwork intent";
+        if(a->hovered() < -1 || a->preview_columns()>256 ||
+           (a->hovered()==-1 ? a->preview_columns()!=0 :
+            (writing || a->page()<1 || !a->preview_columns() || !a->expected_list_revision())))return "invalid artwork preview intent";
       }
     }
     if(w && (w->filter_choice() < -1 || w->filter_choice()>32767))return "invalid native filter choice";
@@ -1835,7 +1838,10 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
            (a->page()>0 && !a->list_revision()))return "invalid artwork state";
         std::set<int32_t> ids;
         for(const auto* row:*a->rows())if(!row || row->id()<0 || !ids.insert(row->id()).second ||
-           !row->caption() || !textOk(row->caption(),1024) || (a->page()==-1 && row->id()>6))return "invalid artwork row";
+           !row->caption() || !textOk(row->caption(),1024) || !textOk(row->badge(),128) || (a->page()==-1 && row->id()>6))return "invalid artwork row";
+        if(a->hovered() < -1 || (a->hovered()==-1 ? a->preview()!=nullptr :
+           (a->page()<1 || !a->preview() || !ids.count(a->hovered()))) || (a->preview() && a->preview()->size()>128))return "invalid artwork preview";
+        if(a->preview())for(const auto* line:*a->preview())if(!line || line->size()>2048)return "invalid artwork preview line";
         const auto kind=d->options()->Get(d->selected_option())->kind();
         if(kind!=1 && kind!=3)return "invalid artwork parent";
       }

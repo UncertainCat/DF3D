@@ -4134,8 +4134,9 @@ TEST_CASE("artwork retains simulation IDs and guards separate selection authorit
   }
   flatbuffers::FlatBufferBuilder b;
   const auto caption=b.CreateString("Fixture artwork");
-  const auto rows=b.CreateVector(std::vector{wire::CreateWorkOrderArtRow(b,200000,caption)});
-  const auto art=wire::CreateWorkOrderArtState(b,1,caption,rows,9007199254740995ULL,1);
+  const auto rows=b.CreateVector(std::vector{wire::CreateWorkOrderArtRow(b,200000,caption,caption)});
+  const auto preview=b.CreateVector(std::vector{caption});
+  const auto art=wire::CreateWorkOrderArtState(b,1,caption,rows,9007199254740995ULL,1,0,200000,preview);
   const auto options=b.CreateVector(std::vector{wire::CreateWorkOrderDetailsOption(b,1,0,caption)});
   const auto details=wire::CreateWorkOrderDetailsState(b,37,1,caption,options,0,0,0,0,0,art);
   wire::WorkOrderStateBuilder state(b);state.add_details(details);b.Finish(state.Finish());
@@ -4143,4 +4144,15 @@ TEST_CASE("artwork retains simulation IDs and guards separate selection authorit
   REQUIRE(decoded.details);REQUIRE(decoded.details->art);CHECK_FALSE(decoded.details->choices);
   REQUIRE(decoded.details->art->rows.size()==1);CHECK(decoded.details->art->rows[0].id==200000);
   CHECK(decoded.details->art->listRevision==9007199254740995ULL);
+  CHECK(decoded.details->art->hovered==200000);REQUIRE(decoded.details->art->preview);
+  CHECK(decoded.details->art->preview->at(0)=="Fixture artwork");
+  CHECK(decoded.details->art->rows[0].badge==std::optional<std::string>("Fixture artwork"));
+}
+TEST_CASE("artwork previews require read-only revision and width authority") {
+  wm::ManagementRequest request;request.action=wm::ManagementAction::WorkOrderInspect;
+  auto& w=request.workOrder;w.id=37;w.workshopId=-2;w.expectedRevision=1;
+  w.details.emplace();w.details->option=0;w.details->art=wm::WorkOrderArtRequest{5,-1,2,"",0,0,118};
+  const auto error=[&](){flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);return wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer()));};
+  CHECK_FALSE(error());w.details->art->previewColumns=0;CHECK(error());
+  w.details->art->previewColumns=118;request.action=wm::ManagementAction::WorkOrderUpdate;w.details->art->subject=0;CHECK(error());
 }

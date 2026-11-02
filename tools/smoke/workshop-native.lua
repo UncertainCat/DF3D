@@ -553,13 +553,33 @@ local ok,err=xpcall(function()
   local details=df.global.game.main_interface.job_details
   local detail_options={}
   for i,kind in ipairs(details.option)do detail_options[#detail_options+1]={kind=kind,index=details.option_index[i]}end
-  local function detail_probe(selected)
+  local function detail_probe(selected,choice)
    local args={'df3d','work-order-details-probe',tostring(native.id)}
    if selected then args[#args+1]=tostring(selected)end
+   if choice then args[#args+1]=tostring(choice)end
    local text,code=dfhack.run_command_silent(table.unpack(args));assert(code==0,text)
    return json.decode(text)
   end
-  assert(json.encode(detail_probe().options)==json.encode(detail_options),'Native Details options differ')
+  local root_details=detail_probe()
+  local root_text={};for _,line in ipairs(lines())do root_text[#root_text+1]=line.text end
+  root_text=table.concat(root_text,'\n')
+  assert(root_text:find(root_details.caption,1,true),'Details heading differs')
+  for i,row in ipairs(root_details.options)do
+   assert(row.kind==detail_options[i].kind and row.index==detail_options[i].index,'Native Details options differ')
+   assert(root_text:find(row.caption,1,true),'Native Details option caption differs')
+  end
+  local function detail_effect()
+   local inputs={}
+   for _,item in ipairs(native.items.elements)do
+    local row={}
+    for _,key in ipairs{'item_type','item_subtype','mat_type','mat_index','quantity','vector_id','flags4','flags5','metal_ore','reaction_class','has_material_reaction_product','min_dimension','reagent_index','reaction_id','has_tool_use','dye_color','job_details_mat_type','job_details_mat_index'}do row[key]=item[key]end
+    row.flags1=item.flags1.whole;row.flags2=item.flags2.whole;row.flags3=item.flags3.whole
+    row.saved=item.job_details_flags.whole;row.saved_flags2=item.job_details_item_flags2.whole
+    row.contains={};for _,id in ipairs(item.contains)do row.contains[#row.contains+1]=id end
+    inputs[#inputs+1]=row
+   end
+   return {mat_type=native.mat_type,mat_index=native.mat_index,inputs=inputs,status=native.status.whole,frequency=native.frequency,amount_left=native.amount_left,amount_total=native.amount_total}
+  end
   expected.details={options=detail_options,choices={}}
   for slot,option in ipairs(detail_options)do
    if option.kind==0 or option.kind==6 then
@@ -572,14 +592,34 @@ local ok,err=xpcall(function()
     for i,kind in ipairs(types)do rows[#rows+1]={type=kind,index=indices[i],count=counts[i]}end
     local before=json.encode({options=detail_options,rows=rows,current=details.current_option,index=details.current_option_index})
     local owned=detail_probe(slot-1)
-    assert(json.encode(owned.materials)==json.encode(rows),'Owned Details material/plant choices differ')
+    local choice_text={};for _,line in ipairs(lines())do choice_text[#choice_text+1]=line.text end
+    choice_text=table.concat(choice_text,'\n')
+    assert(#owned.materials==#rows,'Details choice count differs')
+    for i,row in ipairs(owned.materials)do
+     assert(row.type==rows[i].type and row.index==rows[i].index and row.count==rows[i].count,'Owned Details material/plant choices differ')
+     assert(choice_text:find(row.caption,1,true),'Details material/plant caption differs')
+    end
     local after_rows={}
     for i,kind in ipairs(types)do after_rows[#after_rows+1]={type=kind,index=indices[i],count=counts[i]}end
     assert(before==json.encode({options=detail_options,rows=after_rows,current=details.current_option,index=details.current_option_index}),'Details reader changed native picker')
     expected.details.choices[#expected.details.choices+1]={option=slot-1,kind=option.kind,rows=rows}
     shot('order-details-choice-'..tostring(option.kind)..'-native')
-    gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
-    assert(details.open and details.current_option==-1,'Details Back did not return to options')
+    local prior_type,prior_index=native.mat_type,native.mat_index
+    local prior_inputs={};for _,item in ipairs(native.items.elements)do local copy=df.job_item:new();copy:assign(item);prior_inputs[#prior_inputs+1]=copy end
+    local function restore_inputs()
+     assert(#prior_inputs==#native.items.elements,'Details changed input count; cannot restore this reference')
+     native.mat_type=prior_type;native.mat_index=prior_index
+     for i,item in ipairs(native.items.elements)do item:assign(prior_inputs[i+1])end
+    end
+    mouse(200,190);assert(not details.open,'Native Details choice did not close')
+    local native_effect=detail_effect()
+    restore_inputs()
+    detail_probe(slot-1,0)
+    assert(json.encode(detail_effect())==json.encode(native_effect),'Details selection effects differ')
+    expected.details.choices[#expected.details.choices].effect=native_effect
+    restore_inputs();for _,item in ipairs(prior_inputs)do item:delete()end
+    select_map(still);assert(click_label('Work orders'));mouse(840,190)
+    assert(details.open and details.current_option==-1,'Details reopen did not return to options')
    end
   end
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())

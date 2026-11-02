@@ -7034,10 +7034,25 @@ native order, and Kobold bulb. Counts and observed native picker state match.
 Paired choice screenshots establish the native search/list layout. The combined
 workshop/Conditions/global creation workflow passes; owned DF44856 exits unsaved,
 the source is preserved, and all five Godot groups have only known diagnostics.
-This is native reader acceptance, not an editable Details screen. The old Lua
-Details write stores selected materials in native saved-original fields; native
-219911 instead saves original values once and then edits active requirement
-fields. That Lua path must not supply the new editor's effects.
+Native Details captions compose the renderer's original-input classification,
+installed literals, material-name leaf and native capitalization. Plant names
+come from the native plant raw name. Details revisions include active and saved
+input material fields; choice revisions cover the ordered native material IDs.
+The guarded selection helper saves original requirement fields once, changes the
+active material, and for the first input updates the order and calls native
+requirement rebuilding d09ca0. Plant selection preserves native's separate backup
+sequence. No native menu state supplies the selection or effect.
+
+Protected232341 on2026-11-01 compares the heading, option and material/plant
+captions against native screen text, then applies the same glass and plant
+selections through native clicks and the semantic helper from restored inputs.
+All observed requirement fields, saved-original fields, order materials, status,
+frequency and quantities match. Owned DF45448 exits unsaved, source preservation
+and the combined Work orders workflow pass; all five Godot groups have only known
+diagnostics. This is native backend acceptance, not an editable Details screen.
+Search, transport, viewer and other choice families remain unfinished. The old
+Lua Details write stores selected materials in native saved-original fields;
+that path must not supply the new editor's effects.
 
 These screens remain staged. Details, full responsive layout, tooltip coverage
 and tab navigation are unfinished. Quantity drafts currently support four digits; native increment

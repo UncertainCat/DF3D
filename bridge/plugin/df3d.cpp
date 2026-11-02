@@ -2129,10 +2129,10 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="work-order-details-probe") {
-          if(parameters.size()<2 || parameters.size()>3)return CR_WRONG_USAGE;
-          int32_t id=-1,selected=-1;
+          if(parameters.size()<2 || parameters.size()>4)return CR_WRONG_USAGE;
+          int32_t id=-1,selected=-1,choice=-1;
           for(size_t i=1;i<parameters.size();++i) {
-            auto& value=i==1?id:selected;const auto& raw=parameters[i];
+            auto& value=i==1?id:i==2?selected:choice;const auto& raw=parameters[i];
             const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),value);
             if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || value<0)return CR_WRONG_USAGE;
           }
@@ -2140,9 +2140,13 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(df::global::world)for(auto* candidate:df::global::world->manager_orders.all)if(candidate && candidate->id==id){order=candidate;break;}
           if(!order)return CR_FAILURE;
           const auto observed=df3d_production::nativeWorkOrderDetails(*order,selected);if(!observed)return CR_FAILURE;
-          Json::Value result;result["options"]=Json::Value(Json::arrayValue);result["materials"]=Json::Value(Json::arrayValue);
-          for(const auto& row:observed->options) {Json::Value value;value["kind"]=row.kind;value["index"]=row.index;result["options"].append(value);}
-          for(const auto& row:observed->materials) {Json::Value value;value["type"]=row.type;value["index"]=row.index;value["count"]=row.count;result["materials"].append(value);}
+          if(choice>=0) {
+            const auto applied=df3d_production::setWorkOrderDetailMaterial(*order,observed->revision,selected,observed->choicesRevision,choice);
+            if(applied.outcome!=df3d_production::WorkshopOrdersOutcome::Applied)return CR_FAILURE;
+          }
+          Json::Value result;result["revision"]=std::to_string(observed->revision);result["choices_revision"]=std::to_string(observed->choicesRevision);result["caption"]=DF2UTF(observed->caption);result["options"]=Json::Value(Json::arrayValue);result["materials"]=Json::Value(Json::arrayValue);
+          for(const auto& row:observed->options) {Json::Value value;value["kind"]=row.kind;value["index"]=row.index;value["caption"]=DF2UTF(row.caption);result["options"].append(value);}
+          for(const auto& row:observed->materials) {Json::Value value;value["type"]=row.type;value["index"]=row.index;value["count"]=row.count;value["caption"]=DF2UTF(row.caption);result["materials"].append(value);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="work-orders-catalog-probe") {

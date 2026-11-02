@@ -1672,7 +1672,7 @@ table ProductionState {
 // Update with page=-1 enters Image; page=0 delegates to the artist.
 // Draft values are viewer-owned semantic data. Native pointers and editor
 // scratch never cross the wire. Only Commit installs an image in the world.
-enum WorkOrderArtDraftAction:uint8 { Inspect, AddElement, AddRelationship, Delete, GenerateName, Commit }
+enum WorkOrderArtDraftAction:uint8 { Inspect, AddElement, AddRelationship, Delete, GenerateName, Commit, EditName }
 table WorkOrderArtDraftElement { kind:int16; id:int32 = -1; secondary:int32 = -1; quantity:int32 = 1; }
 table WorkOrderArtDraftRelationship { verb:int32 = -1; transitive:bool; actor:int32 = -1; target:int32 = -1; }
 table WorkOrderArtDraftValue {
@@ -1687,6 +1687,13 @@ table WorkOrderArtDraftRequest {
   relationship:WorkOrderArtDraftRelationship;
   delete_index:int32 = -1;
   columns:uint16;
+  name_query:LocationNameQuery;
+  name_edit:LocationNameEdit;
+}
+table WorkOrderArtName {
+  native_header:string; english_header:string;
+  component:uint8; query_bytes:[uint8]; cursor:uint32; total:uint32; next_cursor:uint32;
+  choices:[LocationNameChoice];
 }
 table WorkOrderArtRequest {
   page:int16 = -1; subject:int32 = -1;
@@ -1701,6 +1708,7 @@ table WorkOrderArtState {
   hovered:int32 = -1; preview:[string];
   draft:WorkOrderArtDraftValue;
   draft_description:[string];
+  name:WorkOrderArtName;
 }
 table WorkOrderDetailsRequest {
   option:int16 = -1;
@@ -2071,7 +2079,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 127;
+  schema_version:uint32 = 128;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2123,7 +2131,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 127;
+  schema_version:uint32 = 128;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

@@ -17,6 +17,11 @@ int64_t draftNumber(const Dictionary& d,const char* key,int64_t fallback,int64_t
   if(d[key].get_type()!=Variant::INT){valid=false;return fallback;}
   int64_t value=d[key];if(value<low || value>high)valid=false;return value;
 }
+std::vector<uint8_t> draftQueryBytes(const Dictionary& d,bool& valid) {
+  if(!d.has("query_bytes") || d["query_bytes"].get_type()!=Variant::PACKED_BYTE_ARRAY){valid=false;return {};}
+  PackedByteArray bytes=d["query_bytes"];if(bytes.size()>4096){valid=false;return {};}
+  std::vector<uint8_t> result;for(int i=0;i<bytes.size();++i)result.push_back(bytes[i]);return result;
+}
 wm::WorkOrderArtDraftElement readDraftElement(const Dictionary& d,bool& valid) {
   return {int16_t(draftNumber(d,"kind",0,7,13,valid)),int32_t(draftNumber(d,"id",-1,0,INT32_MAX,valid)),
     int32_t(draftNumber(d,"secondary",-1,-1,32767,valid)),int32_t(draftNumber(d,"quantity",1,0,1000000000,valid))};
@@ -288,6 +293,12 @@ void writeWorkOrder(Dictionary& result, const wm::WorkOrderState& s) {
       Array rows;for(const auto& r:a.rows){Dictionary row;row["id"]=r.id;row["secondary"]=r.secondary;row["caption"]=String::utf8(r.caption.c_str());if(r.badge)row["badge"]=String::utf8(r.badge->c_str());rows.push_back(row);}art["rows"]=rows;
       if(a.draft)art["draft"]=writeDraftValue(*a.draft);
       if(a.draftDescription){Array lines;for(const auto& line:*a.draftDescription)lines.push_back(String::utf8(line.c_str()));art["draft_description"]=lines;}
+      if(a.name) {
+        const auto& n=*a.name;Dictionary name;name["native_header"]=String::utf8(n.nativeHeader.c_str());name["english_header"]=String::utf8(n.englishHeader.c_str());
+        name["component"]=n.component;PackedByteArray bytes;for(auto byte:n.queryBytes)bytes.push_back(byte);name["query_bytes"]=bytes;
+        name["cursor"]=int64_t(n.cursor);name["total"]=int64_t(n.total);name["next_cursor"]=int64_t(n.nextCursor);
+        Array choices;for(const auto& r:n.choices){Dictionary row;row["word"]=r.word;row["part"]=r.part;row["english"]=String::utf8(r.english.c_str());row["translated"]=String::utf8(r.translated.c_str());choices.push_back(row);}name["choices"]=choices;art["name"]=name;
+      }
       details["art"]=art;
     }
     Array options;for(const auto& o:d.options){Dictionary option;option["kind"]=o.kind;option["index"]=o.index;option["caption"]=String::utf8(o.caption.c_str());options.push_back(option);}details["options"]=options;
@@ -500,7 +511,7 @@ bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& err
     if(details.has("art")) {
       Dictionary art=details["art"];d.art.emplace();auto& a=*d.art;
       const auto artNumber=[&](const char* key,int64_t def,int64_t low,int64_t high){int64_t v=art.get(key,def);if(v<low || v>high)valid=false;return v;};
-      a.page=int16_t(artNumber("page",-1,-1,17));a.subject=int32_t(artNumber("subject",-1,-1,INT32_MAX));
+      a.page=int16_t(artNumber("page",-1,-1,18));a.subject=int32_t(artNumber("subject",-1,-1,INT32_MAX));
       a.expectedListRevision=uint64_t(artNumber("expected_list_revision",0,0,INT64_MAX));a.cursor=uint32_t(artNumber("cursor",0,0,262144));
       a.hovered=int32_t(artNumber("hovered",-1,-1,INT32_MAX));a.previewColumns=uint16_t(artNumber("preview_columns",0,0,256));
       String artQuery=art.get("query",String());a.query=artQuery.utf8().get_data();if(a.query.size()>128)valid=false;
@@ -508,12 +519,23 @@ bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& err
         if(art["draft"].get_type()!=Variant::DICTIONARY)valid=false;
         else {
           Dictionary draft=art["draft"];a.draft.emplace();auto& v=*a.draft;
-          v.action=wm::WorkOrderArtDraftAction(draftNumber(draft,"action",0,0,5,valid));
+          v.action=wm::WorkOrderArtDraftAction(draftNumber(draft,"action",0,0,6,valid));
           v.deleteIndex=int32_t(draftNumber(draft,"delete_index",-1,-1,511,valid));v.columns=uint16_t(draftNumber(draft,"columns",0,1,256,valid));
           if(!draft.has("value") || draft["value"].get_type()!=Variant::DICTIONARY)valid=false;
           else v.value=readDraftValue(Dictionary(draft["value"]),valid);
           if(draft.has("element")){if(draft["element"].get_type()!=Variant::DICTIONARY)valid=false;else v.element=readDraftElement(Dictionary(draft["element"]),valid);}
           if(draft.has("relationship")){if(draft["relationship"].get_type()!=Variant::DICTIONARY)valid=false;else v.relationship=readDraftRelationship(Dictionary(draft["relationship"]),valid);}
+          if(draft.has("name_query")) {
+            if(draft["name_query"].get_type()!=Variant::DICTIONARY)valid=false;
+            else {Dictionary n=draft["name_query"];v.nameQuery.emplace();v.nameQuery->component=uint8_t(draftNumber(n,"component",0,0,6,valid));v.nameQuery->cursor=uint32_t(draftNumber(n,"cursor",0,0,262144,valid));v.nameQuery->queryBytes=draftQueryBytes(n,valid);}
+          }
+          if(draft.has("name_edit")) {
+            if(draft["name_edit"].get_type()!=Variant::DICTIONARY)valid=false;
+            else {Dictionary n=draft["name_edit"];v.nameEdit.emplace();auto& e=*v.nameEdit;
+              e.mode=wm::LocationNameMode(draftNumber(n,"mode",0,0,3,valid));e.target=int8_t(draftNumber(n,"target",-1,-1,6,valid));e.displayed=int8_t(draftNumber(n,"displayed",-1,-1,6,valid));
+              e.word=int32_t(draftNumber(n,"word",-1,-1,INT32_MAX,valid));e.part=int16_t(draftNumber(n,"part",-1,-1,8,valid));e.queryBytes=draftQueryBytes(n,valid);
+            }
+          }
         }
       }
     }

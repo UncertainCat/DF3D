@@ -4182,4 +4182,13 @@ TEST_CASE("artwork drafts preserve compound choices and separate world writes") 
   name.words.assign(7,-1);name.parts.assign(7,0);name.type=11;
   CHECK_FALSE(error());
   name.parts.pop_back();CHECK(error());
+  name.parts.push_back(0);
+  art.page=18;draft.action=wm::WorkOrderArtDraftAction::EditName;
+  draft.nameQuery=wm::LocationNameQuery{2,{'A'},0};
+  draft.nameEdit=wm::LocationNameEdit{wm::LocationNameMode::SelectWord,2,2,42,2,{'A'}};
+  CHECK(error()); // Selecting a component is local; randomization advances DF RNG.
+  request.action=wm::ManagementAction::WorkOrderInspect;CHECK_FALSE(error());
+  draft.nameEdit->mode=wm::LocationNameMode::RandomComponent;draft.nameEdit->word=-1;draft.nameEdit->part=-1;
+  CHECK(error());request.action=wm::ManagementAction::WorkOrderUpdate;CHECK_FALSE(error());
+  draft.nameQuery->cursor=128;CHECK(error());
 }

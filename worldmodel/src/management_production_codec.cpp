@@ -185,6 +185,12 @@ WorkOrderState decodeWorkOrder(const m::WorkOrderState* w) {
       if(a->rows())for(const auto* row:*a->rows())art.rows.push_back({row->id(),str(row->caption()),row->badge()?std::optional<std::string>(str(row->badge())):std::nullopt,row->secondary()});
       if(a->draft())art.draft=decodeArtDraft(*a->draft());
       if(a->draft_description()){art.draftDescription.emplace();for(const auto* line:*a->draft_description())art.draftDescription->push_back(str(line));}
+      if(const auto* n=a->name()) {
+        art.name.emplace();auto& v=*art.name;v.nativeHeader=str(n->native_header());v.englishHeader=str(n->english_header());
+        v.component=n->component();v.queryBytes.assign(n->query_bytes()->begin(),n->query_bytes()->end());
+        v.cursor=n->cursor();v.total=n->total();v.nextCursor=n->next_cursor();
+        for(const auto* row:*n->choices())v.choices.push_back({row->word(),row->part(),str(row->english()),str(row->translated())});
+      }
     }
     if(d->options())for(const auto* option:*d->options())details.options.push_back({option->kind(),option->index(),str(option->caption())});
     if(d->choices()) {
@@ -309,7 +315,10 @@ flatbuffers::Offset<m::WorkOrderRequest> encodeWorkOrder(flatbuffers::FlatBuffer
         const auto& v=*a.draft;
         const auto element=v.element?encodeArtElement(b,*v.element):flatbuffers::Offset<m::WorkOrderArtDraftElement>{};
         const auto relationship=v.relationship?encodeArtRelationship(b,*v.relationship):flatbuffers::Offset<m::WorkOrderArtDraftRelationship>{};
-        draft=m::CreateWorkOrderArtDraftRequest(b,encodeArtDraft(b,v.value),m::WorkOrderArtDraftAction(v.action),element,relationship,v.deleteIndex,v.columns);
+        flatbuffers::Offset<m::LocationNameQuery> nameQuery;flatbuffers::Offset<m::LocationNameEdit> nameEdit;
+        if(v.nameQuery){const auto& n=*v.nameQuery;nameQuery=m::CreateLocationNameQuery(b,n.component,b.CreateVector(n.queryBytes),n.cursor);}
+        if(v.nameEdit){const auto& n=*v.nameEdit;nameEdit=m::CreateLocationNameEdit(b,m::LocationNameMode(n.mode),n.target,n.displayed,n.word,n.part,b.CreateVector(n.queryBytes));}
+        draft=m::CreateWorkOrderArtDraftRequest(b,encodeArtDraft(b,v.value),m::WorkOrderArtDraftAction(v.action),element,relationship,v.deleteIndex,v.columns,nameQuery,nameEdit);
       }
       art=m::CreateWorkOrderArtRequest(b,a.page,a.subject,a.expectedListRevision,b.CreateString(a.query),a.cursor,a.hovered,a.previewColumns,draft);
     }

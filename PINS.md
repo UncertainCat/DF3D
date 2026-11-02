@@ -22,6 +22,11 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management128 adds artwork name queries, component edits and native word pages,
+and permits the owned initial draft on the artwork root. Rebuild/install both
+peers on `Local\\df3d_management_v128`. Older observations have no name-editor
+state; do not synthesize word choices or editable name components.
+
 Management127 carries viewer-owned artwork drafts, compound candidate IDs, and
 separate draft editing, name generation and image commit intents. Draft previews
 retain native text without installing an image. Rebuild/install both peers on

@@ -498,7 +498,12 @@ struct WorkOrderTrait { std::string key,name; };
 struct WorkOrderItemType { int16_t itemType=-1,itemSubtype=-1; std::string name; };
 struct WorkOrderGroup { int16_t type=-1,subtype=-1; int32_t custom=-1; std::string name; uint32_t count=0; };
 struct WorkOrderTask { std::string key,name; int16_t jobType=-1; std::string reaction; int16_t itemType=-1,itemSubtype=-1,matType=-1; int32_t matIndex=-1; };
+struct WorkOrderNativeState {
+  WorkOrderPhase phase=WorkOrderPhase::Unknown;
+  bool validationRequired=false,detailsAvailable=false;
+};
 struct WorkOrderInfo {
+  std::optional<WorkOrderNativeState> nativeState;
   int32_t id=-1,finishedYear=-1,finishedTick=-1,workshopId=-1,maxWorkshops=0;
   uint64_t revision=0;
   std::string name,reason;

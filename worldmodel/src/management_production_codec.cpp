@@ -155,6 +155,7 @@ WorkOrderState decodeWorkOrder(const m::WorkOrderState* w) {
   if (w->orders())
     for (const auto* v : *w->orders()) {
       WorkOrderInfo o;
+      if(const auto* n=v->native_state())o.nativeState=WorkOrderNativeState{static_cast<WorkOrderPhase>(n->phase()),n->validation_required(),n->details_available()};
       o.id = v->id();
       o.revision = v->revision();
       o.name = str(v->name());

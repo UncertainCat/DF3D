@@ -30,8 +30,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 118;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v118";
+inline constexpr uint32_t kManagementVersion = 119;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v119";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -1795,6 +1795,8 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
          o->detail_kind()>6 || o->total()<0 || o->remaining()<0 || o->remaining()>o->total() || o->frequency() < -1 || o->frequency()>4 ||
          o->finished_year() < -1 || o->finished_tick() < -1 || o->workshop_id() < -1 || o->max_workshops()<0 ||
          (o->inputs() && o->inputs()->size()>64) || (o->conditions() && o->conditions()->size()>64) || (o->generated_jobs() && o->generated_jobs()->size()>1024)) return "invalid work order";
+      if(const auto* native=o->native_state())
+        if(native->phase()<WorkOrderPhase::Active || native->phase()>WorkOrderPhase::Ready)return "invalid native work order phase";
       if(o->inputs())for(const auto* input:*o->inputs()) {
         if(!input || input->mat_type() < -1 || input->mat_index() < -1 ||
            !textOk(input->description(),1024))return "invalid work order input";

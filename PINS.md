@@ -22,6 +22,11 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management119 adds optional native work-order phase, validation requirement and
+Details availability observations. Rebuild/install both peers on
+`Local\\df3d_management_v119`. Legacy rows lack this observation; do not infer it
+from old order flags or a viewer clock. Other channels are unchanged.
+
 Management118 adds absolute general-order limit updates for native numeric entry.
 Rebuild/install both peers on `Local\\df3d_management_v118`; management117 cannot
 execute this intent. Older recordings do not supply numeric-edit receipts.

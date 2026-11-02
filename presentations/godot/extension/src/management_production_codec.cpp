@@ -219,6 +219,11 @@ void writeWorkOrder(Dictionary& result, const wm::WorkOrderState& s) {
   Array orders, orderRecipes, orderChoices, managers;
   for (const auto& o : ws.orders) {
     Dictionary row;
+    if(o.nativeState) {
+      Dictionary native;native["phase"]=int(o.nativeState->phase);
+      native["validation_required"]=o.nativeState->validationRequired;native["details_available"]=o.nativeState->detailsAvailable;
+      row["native_state"]=native;
+    }
     row["id"] = o.id;
     row["revision"] = int64_t(o.revision);
     row["name"] = String::utf8(o.name.c_str());

@@ -1,4 +1,10 @@
 // Generated exhaustive model/wire correspondence checks.
+static_assert(static_cast<int>(wm::WorkOrderPhase::Unknown) == static_cast<int>(df3d::mirror::WorkOrderPhase::Unknown));
+static_assert(static_cast<int>(wm::WorkOrderPhase::Active) == static_cast<int>(df3d::mirror::WorkOrderPhase::Active));
+static_assert(static_cast<int>(wm::WorkOrderPhase::Waiting) == static_cast<int>(df3d::mirror::WorkOrderPhase::Waiting));
+static_assert(static_cast<int>(wm::WorkOrderPhase::Checking) == static_cast<int>(df3d::mirror::WorkOrderPhase::Checking));
+static_assert(static_cast<int>(wm::WorkOrderPhase::Ready) == static_cast<int>(df3d::mirror::WorkOrderPhase::Ready));
+static_assert(sizeof(df3d::mirror::EnumValuesWorkOrderPhase()) / sizeof(df3d::mirror::WorkOrderPhase) == 5);
 static_assert(static_cast<int>(wm::CreatureAnimalOutcome::Rejected) == static_cast<int>(df3d::mirror::CreatureAnimalOutcome::Rejected));
 static_assert(static_cast<int>(wm::CreatureAnimalOutcome::Applied) == static_cast<int>(df3d::mirror::CreatureAnimalOutcome::Applied));
 static_assert(static_cast<int>(wm::CreatureAnimalOutcome::Unavailable) == static_cast<int>(df3d::mirror::CreatureAnimalOutcome::Unavailable));

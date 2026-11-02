@@ -1709,6 +1709,14 @@ table WorkOrderCondition {
   estimated:bool;
   estimate_count:int32 = -1;
 }
+enum WorkOrderPhase : uint8 { Unknown, Active, Waiting, Checking, Ready }
+// Native observation, absent in legacy recordings. A stale clock or locally
+// rendered controls cannot supply these facts.
+table WorkOrderNativeState {
+  phase:WorkOrderPhase;
+  validation_required:bool;
+  details_available:bool;
+}
 table WorkOrderInfo {
   id:int32; revision:uint64; name:string;
   total:int16; remaining:int16; frequency:int8;
@@ -1724,6 +1732,7 @@ table WorkOrderInfo {
   mat_type:int16 = -1; mat_index:int32 = -1;
   material_category:uint32;
   inputs:[WorkOrderInput]; // <=64 per order, <=128 across the page; descriptions <=1024 B
+  native_state:WorkOrderNativeState;
 }
 table ManagerRole {
   unit_id:int32; name:string; position:string; offices:[int32]; job:string;
@@ -1994,7 +2003,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 118;
+  schema_version:uint32 = 119;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2046,7 +2055,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 118;
+  schema_version:uint32 = 119;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

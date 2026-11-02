@@ -2,6 +2,13 @@
 #pragma once
 #include <cstdint>
 namespace wm {
+enum class WorkOrderPhase : uint8_t {
+  Unknown = 0,
+  Active = 1,
+  Waiting = 2,
+  Checking = 3,
+  Ready = 4,
+};
 enum class CreatureAnimalOutcome : uint8_t {
   Rejected = 0,
   Applied = 1,

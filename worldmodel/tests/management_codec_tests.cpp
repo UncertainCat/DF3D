@@ -1777,6 +1777,29 @@ TEST_CASE("work-order default catalog identities and per-condition trait boundar
   }
 }
 
+TEST_CASE("native work-order state remains optional and rejects unknown observations") {
+  for(int mode=0;mode<3;++mode) {
+    flatbuffers::FlatBufferBuilder b;
+    flatbuffers::Offset<mm::WorkOrderNativeState> native;
+    if(mode)native=mm::CreateWorkOrderNativeState(b,mode==1?mm::WorkOrderPhase::Ready:mm::WorkOrderPhase::Unknown,true,true);
+    mm::WorkOrderInfoBuilder row(b);row.add_revision(1);row.add_native_state(native);
+    const auto rows=b.CreateVector(std::vector{row.Finish()});
+    mm::WorkOrderStateBuilder work(b);work.add_orders(rows);const auto orders=work.Finish();
+    mm::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(mm::ManagementAction::WorkOrderList);
+    state.add_status(mm::ManagementStatus::Ok);state.add_work_order(orders);b.Finish(state.Finish());
+    const auto* wire=flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer());
+    CHECK(mm::validateManagementState(*wire).has_value()==(mode==2));
+    const auto decoded=codec::decodeWorkOrder(wire->work_order());
+    REQUIRE(decoded.orders.size()==1);
+    CHECK(decoded.orders[0].nativeState.has_value()==(mode!=0));
+    if(mode==1) {
+      CHECK(decoded.orders[0].nativeState->phase==wm::WorkOrderPhase::Ready);
+      CHECK(decoded.orders[0].nativeState->validationRequired);
+      CHECK(decoded.orders[0].nativeState->detailsAvailable);
+    }
+  }
+}
+
 TEST_CASE("exact construction item identities survive encoding without aggregate fallback") {
   wm::ManagementRequest r;r.action=wm::ManagementAction::Place;r.definition="Chair";
   r.selections={{0,0,-1,0,1,2,42}};

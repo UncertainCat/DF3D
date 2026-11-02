@@ -1668,12 +1668,24 @@ table ProductionState {
   workshop_orders:WorkshopOrdersState;
 }
 // Details is a distinct intent; choice IDs refer to the observed native catalog.
+// Artwork subject IDs are simulation IDs, not Details choice ordinals.
+// Update with page=-1 enters Image; page=0 delegates to the artist.
+table WorkOrderArtRequest {
+  page:int16 = -1; subject:int32 = -1;
+  expected_list_revision:uint64; query:string; cursor:uint32;
+}
+table WorkOrderArtRow { id:int32; caption:string; }
+table WorkOrderArtState {
+  page:int16 = -1; caption:string; rows:[WorkOrderArtRow];
+  list_revision:uint64; total:uint32; next_cursor:uint32;
+}
 table WorkOrderDetailsRequest {
   option:int16 = -1;
   choice:int32 = -1;
   expected_choices_revision:uint64;
   query:string;
   cursor:uint32;
+  art:WorkOrderArtRequest;
 }
 table WorkOrderDetailsOption { kind:uint8; index:int32 = -1; caption:string; }
 table WorkOrderDetailsChoice { id:int32; caption:string; count_caption:string; estimated:bool; }
@@ -1684,6 +1696,7 @@ table WorkOrderDetailsState {
   choices:[WorkOrderDetailsChoice]; // absent until a choice catalog is observed
   choices_revision:uint64;
   total:uint32; next_cursor:uint32;
+  art:WorkOrderArtState;
 }
 table WorkOrderRequest {
   id:int32 = -1;
@@ -2035,7 +2048,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 124;
+  schema_version:uint32 = 125;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2087,7 +2100,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 124;
+  schema_version:uint32 = 125;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

@@ -4119,3 +4119,28 @@ TEST_CASE("native Details decoding distinguishes unobserved and empty choices") 
     REQUIRE(decoded.details->options.size()==1);CHECK(decoded.details->options[0].index==1);
   }
 }
+TEST_CASE("artwork retains simulation IDs and guards separate selection authority") {
+  wm::ManagementRequest request;request.action=wm::ManagementAction::WorkOrderUpdate;
+  auto& w=request.workOrder;w.id=37;w.workshopId=-2;w.expectedRevision=9007199254740993ULL;
+  w.details.emplace();w.details->option=0;w.details->art=wm::WorkOrderArtRequest{1,200000,9007199254740995ULL,"name",0};
+  for(bool mixed:{false,true}) {
+    w.details->choice=mixed?2:-1;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(wire::validateConstructionRequest(*value).has_value()==mixed);
+    REQUIRE(value->work_order()->details()->art());
+    CHECK(value->work_order()->details()->art()->subject()==200000);
+    CHECK(value->work_order()->details()->art()->expected_list_revision()==9007199254740995ULL);
+  }
+  flatbuffers::FlatBufferBuilder b;
+  const auto caption=b.CreateString("Fixture artwork");
+  const auto rows=b.CreateVector(std::vector{wire::CreateWorkOrderArtRow(b,200000,caption)});
+  const auto art=wire::CreateWorkOrderArtState(b,1,caption,rows,9007199254740995ULL,1);
+  const auto options=b.CreateVector(std::vector{wire::CreateWorkOrderDetailsOption(b,1,0,caption)});
+  const auto details=wire::CreateWorkOrderDetailsState(b,37,1,caption,options,0,0,0,0,0,art);
+  wire::WorkOrderStateBuilder state(b);state.add_details(details);b.Finish(state.Finish());
+  const auto decoded=codec::decodeWorkOrder(flatbuffers::GetRoot<wire::WorkOrderState>(b.GetBufferPointer()));
+  REQUIRE(decoded.details);REQUIRE(decoded.details->art);CHECK_FALSE(decoded.details->choices);
+  REQUIRE(decoded.details->art->rows.size()==1);CHECK(decoded.details->art->rows[0].id==200000);
+  CHECK(decoded.details->art->listRevision==9007199254740995ULL);
+}

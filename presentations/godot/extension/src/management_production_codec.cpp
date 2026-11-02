@@ -225,6 +225,11 @@ void writeWorkOrder(Dictionary& result, const wm::WorkOrderState& s) {
     details["id"]=d.id;details["revision"]=int64_t(d.revision);details["caption"]=String::utf8(d.caption.c_str());
     details["selected_option"]=d.selectedOption;details["choices_revision"]=int64_t(d.choicesRevision);
     details["total"]=int64_t(d.total);details["next_cursor"]=int64_t(d.nextCursor);
+    if(d.art) {
+      const auto& a=*d.art;Dictionary art;art["page"]=a.page;art["caption"]=String::utf8(a.caption.c_str());
+      art["list_revision"]=int64_t(a.listRevision);art["total"]=int64_t(a.total);art["next_cursor"]=int64_t(a.nextCursor);
+      Array rows;for(const auto& r:a.rows){Dictionary row;row["id"]=r.id;row["caption"]=String::utf8(r.caption.c_str());rows.push_back(row);}art["rows"]=rows;details["art"]=art;
+    }
     Array options;for(const auto& o:d.options){Dictionary option;option["kind"]=o.kind;option["index"]=o.index;option["caption"]=String::utf8(o.caption.c_str());options.push_back(option);}details["options"]=options;
     if(d.choices) {
       Array choices;for(const auto& c:*d.choices){Dictionary choice;choice["id"]=c.id;choice["caption"]=String::utf8(c.caption.c_str());if(c.countCaption)choice["count_caption"]=String::utf8(c.countCaption->c_str());choice["estimated"]=c.estimated;choices.push_back(choice);}details["choices"]=choices;
@@ -343,6 +348,13 @@ bool validateWorkOrderShape(const Dictionary& data, String& error) {
     for(const char* key:{"option","choice","expected_choices_revision","cursor"})
       if(details.has(key) && details[key].get_type()!=Variant::INT){error=String("Wrong Details field type: ")+key;return false;}
     if(details.has("query") && details["query"].get_type()!=Variant::STRING){error="Details query must be a String";return false;}
+    if(details.has("art")) {
+      if(details["art"].get_type()!=Variant::DICTIONARY){error="Artwork must be a Dictionary";return false;}
+      Dictionary art=details["art"];
+      for(const char* key:{"page","subject","expected_list_revision","cursor"})
+        if(art.has(key) && art[key].get_type()!=Variant::INT){error=String("Wrong artwork field type: ")+key;return false;}
+      if(art.has("query") && art["query"].get_type()!=Variant::STRING){error="Artwork query must be a String";return false;}
+    }
   }
   if (!managementDictionaryTypes(
           data,
@@ -425,6 +437,13 @@ bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& err
     d.option=int16_t(number("option",-1,-1,64));d.choice=int32_t(number("choice",-1,-1,16383));
     d.expectedChoicesRevision=uint64_t(number("expected_choices_revision",0,0,INT64_MAX));d.cursor=uint32_t(number("cursor",0,0,16384));
     String query=details.get("query",String());d.query=query.utf8().get_data();if(d.query.size()>128)valid=false;
+    if(details.has("art")) {
+      Dictionary art=details["art"];d.art.emplace();auto& a=*d.art;
+      const auto artNumber=[&](const char* key,int64_t def,int64_t low,int64_t high){int64_t v=art.get(key,def);if(v<low || v>high)valid=false;return v;};
+      a.page=int16_t(artNumber("page",-1,-1,6));a.subject=int32_t(artNumber("subject",-1,-1,INT32_MAX));
+      a.expectedListRevision=uint64_t(artNumber("expected_list_revision",0,0,INT64_MAX));a.cursor=uint32_t(artNumber("cursor",0,0,262144));
+      String artQuery=art.get("query",String());a.query=artQuery.utf8().get_data();if(a.query.size()>128)valid=false;
+    }
   }
   w.traits.reset();
   if(data.has("traits")) {

@@ -148,6 +148,11 @@ WorkOrderState decodeWorkOrder(const m::WorkOrderState* w) {
     n.details.emplace();auto& details=*n.details;
     details.id=d->id();details.revision=d->revision();details.caption=str(d->caption());details.selectedOption=d->selected_option();
     details.choicesRevision=d->choices_revision();details.total=d->total();details.nextCursor=d->next_cursor();
+    if(const auto* a=d->art()) {
+      details.art.emplace();auto& art=*details.art;
+      art.page=a->page();art.caption=str(a->caption());art.listRevision=a->list_revision();art.total=a->total();art.nextCursor=a->next_cursor();
+      if(a->rows())for(const auto* row:*a->rows())art.rows.push_back({row->id(),str(row->caption())});
+    }
     if(d->options())for(const auto* option:*d->options())details.options.push_back({option->kind(),option->index(),str(option->caption())});
     if(d->choices()) {
       details.choices.emplace();for(const auto* choice:*d->choices())details.choices->push_back({choice->id(),str(choice->caption()),choice->count_caption()?std::optional<std::string>(str(choice->count_caption())):std::nullopt,choice->estimated()});
@@ -263,7 +268,11 @@ flatbuffers::Offset<m::WorkOrderRequest> encodeWorkOrder(flatbuffers::FlatBuffer
                                                          const WorkOrderRequest& value) {
   const auto& w = value;
   flatbuffers::Offset<m::WorkOrderDetailsRequest> details;
-  if(w.details){const auto& d=*w.details;details=m::CreateWorkOrderDetailsRequest(b,d.option,d.choice,d.expectedChoicesRevision,b.CreateString(d.query),d.cursor);}
+  if(w.details){const auto& d=*w.details;
+    flatbuffers::Offset<m::WorkOrderArtRequest> art;
+    if(d.art){const auto& a=*d.art;art=m::CreateWorkOrderArtRequest(b,a.page,a.subject,a.expectedListRevision,b.CreateString(a.query),a.cursor);}
+    details=m::CreateWorkOrderDetailsRequest(b,d.option,d.choice,d.expectedChoicesRevision,b.CreateString(d.query),d.cursor,art);
+  }
   return m::CreateWorkOrderRequest(b, w.id, w.expectedRevision, b.CreateString(w.recipe),
                                    b.CreateString(w.query), w.cursor, w.remaining, w.frequency,
                                    w.workshopId, w.maxWorkshops, w.conditionKind, w.conditionIndex,

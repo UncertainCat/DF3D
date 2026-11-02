@@ -30,8 +30,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 124;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v124";
+inline constexpr uint32_t kManagementVersion = 125;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v125";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -541,7 +541,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
          d->choice() < -1 || d->choice()>16383 || d->expected_choices_revision()>INT64_MAX ||
          d->cursor()>16384 || (d->query() && d->query()->size()>128) ||
          (d->option()==-1 && (d->choice()!=-1 || d->cursor() || d->expected_choices_revision() || (d->query() && d->query()->size()))) ||
-         (writing && (d->choice()<0 || !w->expected_revision() || !d->expected_choices_revision() || d->cursor() || (d->query() && d->query()->size()))) ||
+         (writing && !d->art() && (d->choice()<0 || !w->expected_revision() || !d->expected_choices_revision() || d->cursor() || (d->query() && d->query()->size()))) ||
          (!writing && d->choice()!=-1) || (d->cursor() && (!w->expected_revision() || !d->expected_choices_revision())) ||
          w->remaining()!=-1 || w->frequency()!=-1 || w->max_workshops()!=-1 ||
          (w->recipe() && w->recipe()->size()) || (w->query() && w->query()->size()) ||
@@ -550,6 +550,15 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
          w->target_order()!=-1 || w->dependency()!=-1 || w->candidate_kind() || w->move() || w->expected_neighbor()!=-1 || w->traits() ||
          w->input_index()!=-1 || w->group_type()!=-1 || w->group_subtype()!=-1 || w->group_custom()!=-1 || w->encrust_flags()!=-1 ||
          w->filter_choice()!=-1 || w->suggestion_index()!=-1)return "invalid exclusive native Details intent";
+      if(const auto* a=d->art()) {
+        if(d->option()<0 || d->choice()!=-1 || d->expected_choices_revision() || d->cursor() || (d->query() && d->query()->size()) ||
+           a->page() < -1 || a->page()>6 || a->subject() < -1 || a->expected_list_revision()>INT64_MAX ||
+           a->cursor()>262144 || (a->query() && a->query()->size()>128) || !w->expected_revision() ||
+           (!writing && (a->subject()!=-1 || a->page()==0)) ||
+           (a->page()<=0 && (a->subject()!=-1 || a->expected_list_revision() || a->cursor() || (a->query() && a->query()->size()))) ||
+           (writing && (a->cursor() || (a->page()>0 && (a->subject()<0 || !a->expected_list_revision())))) ||
+           (a->cursor() && !a->expected_list_revision()))return "invalid exclusive artwork intent";
+      }
     }
     if(w && (w->filter_choice() < -1 || w->filter_choice()>32767))return "invalid native filter choice";
     if(w && w->filter_choice()>=0 &&
@@ -1811,12 +1820,25 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
          (d->selected_option()>=0 && size_t(d->selected_option())>=d->options()->size()) ||
          d->choices_revision()>INT64_MAX || d->total()>16384 || d->next_cursor()>d->total() ||
          (d->selected_option()==-1 && (d->choices() || d->choices_revision() || d->total() || d->next_cursor())) ||
-         (d->selected_option()>=0 && (!d->choices() || !d->choices_revision())) ||
+         (d->selected_option()>=0 && !d->art() && (!d->choices() || !d->choices_revision())) ||
          (d->choices() && (d->choices()->size()>128 || d->choices()->size()>d->total())))return "invalid native Details state";
       for(const auto* option:*d->options())if(!option || option->kind()>6 || option->index() < -1 || !option->caption() || !textOk(option->caption(),512))return "invalid native Details option";
       std::set<int32_t> choices;
       if(d->choices())for(const auto* choice:*d->choices())if(!choice || choice->id()<0 || choice->id()>16383 || !choices.insert(choice->id()).second ||
          !choice->caption() || !textOk(choice->caption(),512) || !textOk(choice->count_caption(),32) || (choice->estimated() && !choice->count_caption()))return "invalid native Details choice";
+      if(const auto* a=d->art()) {
+        if(d->selected_option()<0 || d->choices() || d->choices_revision() || d->total() || d->next_cursor() ||
+           a->page() < -1 || a->page()==0 || a->page()>6 || !a->caption() || !textOk(a->caption(),1024) ||
+           !a->rows() || a->rows()->size()>128 || a->total()>262144 || a->rows()->size()>a->total() ||
+           a->next_cursor()>a->total() || a->list_revision()>INT64_MAX ||
+           (a->page()==-1 && (a->list_revision() || a->next_cursor() || a->rows()->size()!=a->total())) ||
+           (a->page()>0 && !a->list_revision()))return "invalid artwork state";
+        std::set<int32_t> ids;
+        for(const auto* row:*a->rows())if(!row || row->id()<0 || !ids.insert(row->id()).second ||
+           !row->caption() || !textOk(row->caption(),1024) || (a->page()==-1 && row->id()>6))return "invalid artwork row";
+        const auto kind=d->options()->Get(d->selected_option())->kind();
+        if(kind!=1 && kind!=3)return "invalid artwork parent";
+      }
     }
     if((w->orders() && w->orders()->size()>16) || (w->recipes() && w->recipes()->size()>128) ||
        (w->choices() && w->choices()->size()>128) || (w->managers() && w->managers()->size()>32) || !textOk(w->detail(),2048)) return "work order response too large";

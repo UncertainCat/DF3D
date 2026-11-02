@@ -22,6 +22,13 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management125 adds a distinct artwork intent and observation under Work order
+Details. Subject IDs retain their full simulation range; pages carry native
+captions, bounded rows and separate list revisions. Entering Image is an explicit
+update, distinct from browsing and selecting a subject. Rebuild/install both peers
+on `Local\\df3d_management_v125`. Older recordings have no artwork observation or
+selection authority; do not synthesize it. Other channels are unchanged.
+
 Management124 adds optional native Work order Details reads and exclusive selections,
 with separate order and choice revisions, native option captions and paged choices.
 Rebuild/install both peers on `Local\\df3d_management_v124`. Older recordings have

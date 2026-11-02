@@ -6609,9 +6609,8 @@ order-profile receipt and signed limit step through the model to the staged Work
 orders tab. Reads and edits reject mixed intents; failed/unknown outcomes retain
 no usable authority and are never replayed. Order IDs are bounded to16384; older
 recordings cannot supply manager or profile authority. Closing or changing session
-retires pending UI requests. The native numeric-entry artwork is present but its
-action, order creation, populated order rows and order details remain unfinished;
-no public route is enabled.
+retires pending UI requests. Order creation, populated order rows and order details
+remain unfinished; no public route is enabled.
 
 Protected180849 on2026-11-01 compares the manager prerequisite and order membership
 with semantic DF records, exercises native Carpenter limit5->6->5, then performs
@@ -6622,6 +6621,24 @@ known diagnostics. The rendered capture was inspected; its warning color was the
 corrected from palette6 to native bright-red12 (renderer1882c8), without another
 capture. This is normal-flow limit acceptance, not full Work orders acceptance.
 Core and composition checks pass in `build/qa/workshop-orders-wired`.
+
+Management118 adds absolute limit updates for numeric entry. Native8bb328..8bb3d4
+applies each changed draft via atoi and clamps0..99; Enter only releases focus.
+The two-character draft, append/backspace handling and blinking cursor belong to
+the presentation. Its flags4 filter follows nativec39700, including uppercase
+ASCII. The bridge receives only the parsed value and a current revision. While a
+write is pending, the newest draft is retained locally and sent as a new intent
+only after a confirmed receipt. Rejection, uncertainty or retirement discards it.
+Native keyboard/menu callbacks are never invoked by runtime reads or writes.
+
+Protected182302 on2026-11-01 verifies native1->12 typing effects, Enter focus
+release, then restoration to5. Actual Godot input types both digits before polling
+the first receipt and reaches12, releases focus, and restores5 with an independent
+readback. The rendered cursor and corrected palette12 warning were inspected.
+Owned DF34208 exits unsaved, source preservation passes, and all four Godot log
+groups contain known diagnostics only. Core/composition pass in
+`build/qa/workshop-order-number`; this is normal numeric-entry acceptance, not
+complete Work orders or all input-transition acceptance.
 
 The staged workshop owner now connects Workers to this channel and the shared
 staff selector. Protected164826 on2026-11-01 exercises actual tab/picker clicks,

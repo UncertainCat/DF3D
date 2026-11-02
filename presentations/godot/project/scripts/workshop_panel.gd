@@ -81,11 +81,15 @@ func _process(delta: float) -> void:
 		var view:=viewport/Preferences.effective_scale_vector(viewport)
 		selector.layout(view);selector.position=Vector2(32,48+fposmod(view.y,12)*0.5)
 func _input(event: InputEvent) -> void:
+	if panel!=null and panel.selected_tab==2 and panel.orders.editing and event is InputEventKey:
+		if play_enabled and ui_host.allows_panel_input(self):panel.orders.feed_key(event)
+		get_viewport().set_input_as_handled();return
 	if selector!=null and selector.visible:
 		if event is InputEventKey and event.pressed and event.keycode==KEY_ESCAPE:
 			_close_picker();get_viewport().set_input_as_handled()
 		return
 	super._input(event)
 func handle_escape() -> void:
-	if selector!=null and selector.visible:_close_picker()
+	if panel!=null and panel.orders.editing:panel.orders.finish_entry()
+	elif selector!=null and selector.visible:_close_picker()
 	else:super.handle_escape()

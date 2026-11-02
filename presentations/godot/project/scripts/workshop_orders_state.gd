@@ -9,6 +9,7 @@ var building_id: int=-1
 var snapshot: Dictionary={}
 var ticket:=0
 var generation:=0
+var pending_value: int=-1
 
 func configure(source) -> void:
 	dispose();service=source
@@ -21,7 +22,7 @@ func close() -> void:
 	generation+=1
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
-	building_id=-1;snapshot={};phase=Phase.Closed;changed.emit()
+	building_id=-1;snapshot={};pending_value=-1;phase=Phase.Closed;changed.emit()
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
 func open(id: int) -> void:
@@ -36,6 +37,12 @@ func step(delta: int) -> void:
 	if phase!=Phase.Ready or ticket!=0 or delta not in [-1,1]:return
 	phase=Phase.Applying
 	_send({"action":C.ManagementAction.FarmEdit,"workshop_orders":true,"building_id":building_id,"expected_revision":snapshot.revision,"general_order_delta":delta})
+func set_limit(value: int) -> void:
+	if value<0 or value>99:return
+	if phase==Phase.Applying:pending_value=value;return
+	if phase!=Phase.Ready or ticket!=0:return
+	pending_value=-1;phase=Phase.Applying
+	_send({"action":C.ManagementAction.FarmEdit,"workshop_orders":true,"building_id":building_id,"expected_revision":snapshot.revision,"general_order_value":value})
 func _send(intent: Dictionary) -> void:
 	if service==null:_fail(Phase.Unavailable);return
 	var owner:=generation
@@ -44,7 +51,7 @@ func _send(intent: Dictionary) -> void:
 	if ticket==0:_fail(Phase.Unavailable);return
 	changed.emit()
 func _fail(next: Phase) -> void:
-	snapshot={};phase=next;changed.emit()
+	snapshot={};pending_value=-1;phase=next;changed.emit()
 func _receive(result: Dictionary,sent: Dictionary) -> void:
 	ticket=0
 	var editing: bool=sent.action==C.ManagementAction.FarmEdit
@@ -54,8 +61,15 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 	if result.get("action",-1)!=sent.action or value.get("building_id",-1)!=building_id or value.get("revision",0)<=0 or not value.get("order_ids") is Array:
 		_fail(Phase.Unknown if editing else Phase.Rejected);return
 	if editing:
-		if value.get("outcome",0)!=C.FarmEditOutcome.Completed or value.get("delta",0)!=sent.general_order_delta or value.get("general_order_limit",-1)!=clampi(int(snapshot.general_order_limit)+int(sent.general_order_delta),0,99):
+		var absolute: int=sent.get("general_order_value",-1)
+		var delta: int=sent.get("general_order_delta",0)
+		var expected: int=absolute if absolute>=0 else clampi(int(snapshot.general_order_limit)+delta,0,99)
+		if value.get("outcome",0)!=C.FarmEditOutcome.Completed or value.get("delta",0)!=delta or value.get("value",-1)!=absolute or value.get("general_order_limit",-1)!=expected:
 			_fail(Phase.Unknown);return
 	elif value.get("outcome",-1)!=C.FarmEditOutcome.None:_fail(Phase.Rejected);return
 	snapshot=value.duplicate(true);phase=Phase.Ready;changed.emit()
 	if editing:applied.emit()
+	# A later local draft is a new intent, sent only after a confirmed receipt.
+	# Failure clears it above; never retry a rejected or uncertain write.
+	if pending_value>=0:
+		var next:=pending_value;pending_value=-1;set_limit(next)

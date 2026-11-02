@@ -1,6 +1,11 @@
 extends "res://tests/item_carrier_wire_live.gd"
 
 var worker_evidence: Dictionary={}
+var orders_evidence: Dictionary={}
+
+func number_key(code: Key,unicode_value: int=0) -> void:
+	for pressed in [true,false]:
+		var event:=InputEventKey.new();event.keycode=code;event.unicode=unicode_value;event.pressed=pressed;root.push_input(event,true)
 
 class Interaction:
 	extends RefCounted
@@ -60,6 +65,28 @@ func composed_sheet(id: int) -> void:
 			owner.close_panel();return
 		var observed:=await request("production",{"action":C.ManagementAction.ProductionInspect,"workshop_orders":true,"building_id":id})
 		check(observed.get("production",{}).get("workshop_orders",{}).get("general_order_limit",-1)==owner.orders.snapshot.general_order_limit,"General-order step missing from authoritative reread")
+	click(Vector2(808,478))
+	check(owner.panel.orders.editing and owner.panel.orders.draft=="","Number editor did not start empty")
+	number_key(KEY_1,49);number_key(KEY_2,50)
+	deadline=Time.get_ticks_msec()+10000
+	while Time.get_ticks_msec()<deadline and owner.orders.phase==owner.orders.Phase.Applying:
+		world.poll();service.poll(0.01);await create_timer(0.01).timeout
+	if not check(owner.orders.phase==owner.orders.Phase.Ready and owner.orders.snapshot.general_order_limit==12,"Numeric draft did not apply through native receipt"):
+		owner.close_panel();return
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/workshop-orders-number-live.png")
+	number_key(KEY_ENTER)
+	check(not owner.panel.orders.editing and owner.orders.snapshot.general_order_limit==12,"Enter changed the value or retained number focus")
+	click(Vector2(808,478))
+	for digit in str(original_limit):number_key(KEY_0,digit.unicode_at(0))
+	number_key(KEY_ENTER)
+	deadline=Time.get_ticks_msec()+10000
+	while Time.get_ticks_msec()<deadline and owner.orders.phase==owner.orders.Phase.Applying:
+		world.poll();service.poll(0.01);await create_timer(0.01).timeout
+	check(owner.orders.phase==owner.orders.Phase.Ready and owner.orders.snapshot.general_order_limit==original_limit,"Numeric editor failed to restore original limit")
+	var numeric_read:=await request("production",{"action":C.ManagementAction.ProductionInspect,"workshop_orders":true,"building_id":id})
+	check(numeric_read.get("production",{}).get("workshop_orders",{}).get("general_order_limit",-1)==original_limit,"Numeric restoration missing from authoritative reread")
+	orders_evidence={"building_id":id,"before":original_limit,"typed":12,"restored":original_limit,"enter_released":not owner.panel.orders.editing}
 	# Exercise the rendered Workers route through the real action service.
 	click(Vector2(536,112))
 	deadline=Time.get_ticks_msec()+10000
@@ -242,6 +269,6 @@ func run() -> void:
 	check(restored.get("production",{}).get("jobs")==before.jobs,"Queue/cancel failed to restore original jobs")
 	await composed_sheet(int(expected.building_id))
 	var file:=FileAccess.open(directory+"/workshop-wire-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"workers":worker_evidence,"reaction_count":expected.rows.size(),"task_count":before.recipes.size(),"search_cases":reference.search_reference.cases.size(),"full_query_bytes":full_query.to_utf8_buffer().size(),"created_and_cancelled":created,"rejected_code":unavailable.code,"objection":rejected.get("message")}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"orders":orders_evidence,"workers":worker_evidence,"reaction_count":expected.rows.size(),"task_count":before.recipes.size(),"search_cases":reference.search_reference.cases.size(),"full_query_bytes":full_query.to_utf8_buffer().size(),"created_and_cancelled":created,"rejected_code":unavailable.code,"objection":rejected.get("message")}));file.close()
 	world.detach_live();world.queue_free();await process_frame
 	quit(1 if failed else 0)

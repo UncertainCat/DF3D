@@ -127,6 +127,21 @@ local ok,err=xpcall(function()
  order_click(840);assert(building:getWorkshopProfile().max_general_orders==limit_before+1,'Native general-order increase failed')
  order_click(872);assert(building:getWorkshopProfile().max_general_orders==limit_before,'Native general-order decrease failed')
  result.general_order_steps={before=limit_before,increased=limit_before+1,restored=limit_before}
+ -- Numeric entry applies each changed draft; SELECT only ends editing.
+ order_click(808)
+ local numeric={}
+ local function number_key(key)
+  gui.simulateInput(view,key);view:render(dfhack.getTickCount())
+  numeric[#numeric+1]={key=key,draft=sheet.gen_work_order_num_str,editing=sheet.entering_gen_work_order_num,value=building:getWorkshopProfile().max_general_orders}
+ end
+ assert(sheet.entering_gen_work_order_num and sheet.gen_work_order_num_str=='','Native number editor did not start empty')
+ number_key('STRING_A049');assert(building:getWorkshopProfile().max_general_orders==1,'Native first digit did not apply')
+ number_key('STRING_A050');assert(building:getWorkshopProfile().max_general_orders==12,'Native second digit did not apply')
+ number_key('SELECT');assert(not sheet.entering_gen_work_order_num,'Native number Enter did not release editing')
+ order_click(808)
+ for digit in tostring(limit_before):gmatch('.')do number_key(('STRING_A%03d'):format(digit:byte()))end
+ number_key('SELECT');assert(building:getWorkshopProfile().max_general_orders==limit_before,'Native number editor failed to restore limit')
+ result.general_order_numeric=numeric
  assert(click_label('Tasks'),'Native Tasks tab not found')
  assert(click_label('Add new task'),'Native Add new task control not found')
  shot('add-task')

@@ -2569,5 +2569,52 @@
       "Numeric entry, order creation and details unfinished",
       "Warning palette corrected to native12 after capture"
     ]
+  },
+  "work_orders_number_reference": {
+    "run": "build/stockpile-storage-native-farm-discovery-20261101-182302",
+    "management_version": 118,
+    "native": [
+      {
+        "draft": "1",
+        "editing": true,
+        "key": "STRING_A049",
+        "value": 1
+      },
+      {
+        "draft": "12",
+        "editing": true,
+        "key": "STRING_A050",
+        "value": 12
+      },
+      {
+        "draft": "12",
+        "editing": false,
+        "key": "SELECT",
+        "value": 12
+      },
+      {
+        "draft": "5",
+        "editing": true,
+        "key": "STRING_A053",
+        "value": 5
+      },
+      {
+        "draft": "5",
+        "editing": false,
+        "key": "SELECT",
+        "value": 5
+      }
+    ],
+    "rendered": {
+      "before": 5,
+      "building_id": 37,
+      "enter_released": true,
+      "restored": 5,
+      "typed": 12
+    },
+    "capture_sha256": "c79ae416f77f6536828ef37f06d12e91379c9fff5e5d2b993beba0b020472587",
+    "source_preserved": true,
+    "godot_diagnostics": "known only",
+    "scope": "Normal two-digit entry, immediate edits, Enter release and restoration; not complete Work orders acceptance"
   }
 }

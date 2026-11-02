@@ -212,12 +212,21 @@ inline std::optional<std::vector<std::string>> nativeWorkOrderArtPreview(const d
     for(const auto* line:box.text){if(!line || line->size()>2048)return std::nullopt;lines.push_back(*line);}
     return lines;
 }
-struct WorkOrderArtDisplayRow {int32_t id;std::string caption;std::optional<std::string> badge;};
+struct WorkOrderArtDraftElementValue {int16_t kind=0;int32_t id=-1,secondary=-1,quantity=1;};
+struct WorkOrderArtDraftRelationshipValue {int32_t verb=-1;bool transitive=false;int32_t actor=-1,target=-1;};
+struct WorkOrderArtDraftValue {
+    std::vector<WorkOrderArtDraftElementValue> elements;
+    std::vector<WorkOrderArtDraftRelationshipValue> relationships;
+    std::optional<df::language_name> name;
+};
+struct WorkOrderArtDisplayRow {int32_t id;std::string caption;std::optional<std::string> badge;int32_t secondary=-1;};
 struct WorkOrderArtPage {
     int16_t page=-1;std::string caption;
     std::vector<WorkOrderArtDisplayRow> rows;
     uint64_t listRevision=0;uint32_t total=0,nextCursor=0;
     int32_t hovered=-1;std::optional<std::vector<std::string>> preview;
+    std::optional<WorkOrderArtDraftValue> draft;
+    std::optional<std::vector<std::string>> draftDescription;
 };
 inline std::optional<WorkOrderArtPage> nativeWorkOrderArtPage(df::manager_order& order,int16_t page,const std::string& query,uint32_t cursor,uint64_t listRevision,int32_t hovered=-1,uint16_t columns=0) {
     if(!workOrderArtSubjectsReady())return std::nullopt;

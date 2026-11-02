@@ -625,9 +625,40 @@ local ok,err=xpcall(function()
   art_back();assert(artwork.open and artwork.current_option==-1)
   assert(click_label('Specify a new image'));assert(artwork.current_option==6)
   shot('order-artwork-new-native')
+  expected.artwork_draft={}
+  local function draft_text()local lines={};for _,line in ipairs(artwork.art_box.text)do lines[#lines+1]=dfhack.df2utf(line.value)end;return lines end
+  -- Observe one complete draft-editing path before implementing the owned editor.
+  assert(click_label('Creature'));assert(artwork.current_option==7)
+  shot('order-artwork-new-creature-native')
+  mouse(300,190);assert(artwork.current_option==6 and #artwork.new_image.elements==1,'Creature did not enter draft')
+  expected.artwork_draft.one=draft_text()
+  shot('order-artwork-new-one-element-native')
+  assert(click_label('Plant'));assert(artwork.current_option==9)
+  shot('order-artwork-new-plant-native')
+  mouse(300,190);assert(artwork.current_option==6 and #artwork.new_image.elements==2,'Plant did not enter draft')
+  expected.artwork_draft.two=draft_text()
+  shot('order-artwork-new-two-elements-native')
+  assert(click_label('Action or relationship'));assert(artwork.current_option==14)
+  shot('order-artwork-new-relationship-native')
+  mouse(300,190);assert(artwork.current_option==15,'Relationship did not request actor')
+  shot('order-artwork-new-actor-native')
+  mouse(300,190)
+  if artwork.current_option==16 then
+   shot('order-artwork-new-target-native');mouse(300,190)
+  end
+  assert(artwork.current_option==6 and #artwork.new_image.properties==1,'Relationship did not enter draft')
+  expected.artwork_draft.related=draft_text()
+  shot('order-artwork-new-related-native')
+  assert(click_label('Delete element'));assert(artwork.current_option==17)
+  shot('order-artwork-new-delete-native')
+  mouse(960,154);assert(#artwork.new_image.elements==1,'Element was not deleted')
+  expected.artwork_draft.deleted=draft_text()
+  shot('order-artwork-new-deleted-native')
+  if artwork.current_option==17 then art_back()end
   art_back()
   if artwork.open and artwork.current_option==-1 then art_back()end
   if artwork.open then assert(click_label('Leave editor and discard data'),'Artwork exit confirmation missing')end
+  if artwork.open and artwork.current_option==-1 then art_back()end
   assert(not artwork.open,'Artwork picker did not close')
   improved.specdata.hist_figure_id=prior_improvement
   if not improvement.open then
@@ -758,7 +789,15 @@ local ok,err=xpcall(function()
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
   capture('workshop-order-wire')
   assert(improved.specdata.improvement==0,'Viewer Image entry effect missing')
-  assert(improved.art_spec.type==3 and improved.art_spec.id==expected.artwork_images[1].id and improved.art_spec.subid==expected.artwork_images[1].subid,'Viewer existing image selection effect missing')
+  assert(improved.art_spec.type==3,'Viewer Done did not select a specific image')
+  local chunk=assert(df.art_image_chunk.find(improved.art_spec.id),'Viewer image chunk missing')
+  local installed=assert(chunk.images[improved.art_spec.subid].art_image,'Viewer image missing')
+  assert(#installed.elements==1 and df.art_image_element_plantst:is_instance(installed.elements[0]),'Viewer image lost its plant')
+  assert(#installed.properties==0 and installed.name.has_name,'Viewer image name or relationship state differs')
+  local resources=df.global.plotinfo.main.fortress_entity.resources
+  local ref=installed.ref
+  assert(ref and df.general_ref_entity_art_image:is_instance(ref) and ref.entity_id==df.global.plotinfo.main.fortress_entity.id,'Viewer commissioned image reference missing')
+  assert(resources.art_image_types[ref.index]==1 and resources.art_image_ids[ref.index]==installed.id and resources.art_image_subids[ref.index]==installed.subid,'Viewer commissioned image registration missing')
   assert(#df.global.world.manager_orders.all==orders_before,'Viewer removal did not restore order count')
   for i,id in ipairs(prior_order_ids)do assert(df.global.world.manager_orders.all[i-1].id==id,'Viewer removal changed unrelated order sequence')end
   assert(#dependent.order_conditions==prior_dependencies,'Viewer removal retained incoming dependency')

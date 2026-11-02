@@ -19,6 +19,13 @@ var preview_ticket:=0
 var hovered: int=-1
 var preview_columns:=0
 var preview_lines: Array=[]
+var draft_value: Dictionary={"elements":[],"relationships":[]}
+var draft_relation: Dictionary={}
+var draft_relation_caption:=""
+var draft_quantity:=1
+var draft_dirty:=false
+var draft_discard:=false
+var draft_columns:=118
 func _cancel_preview() -> void:
 	if service!=null and preview_ticket!=0:service.detach(preview_ticket)
 	preview_ticket=0;hovered=-1;preview_columns=0;preview_lines=[]
@@ -61,6 +68,7 @@ func close() -> void:
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
 	building_id=-1;order_id=-1;snapshot={};rows=[];first=0;art_base=0;query="";phase=Phase.Closed;changed.emit()
+	draft_value={"elements":[],"relationships":[]};draft_relation={};draft_dirty=false;draft_discard=false;draft_quantity=1
 func open(building: int,order: int) -> void:
 	close()
 	if (building<0 and building!=-2) or order<0:return
@@ -103,6 +111,9 @@ func choose(id: int) -> void:
 		if art_page()==-1:
 			query="";first=0;art_base=0;rows=[]
 			if id==0:_write_art(0,-1)
+			elif id==6:
+				draft_value={"elements":[],"relationships":[]};draft_relation={};draft_dirty=false;draft_discard=false
+				_read_draft(6,0,{"action":4})
 			else:_read_art(id)
 		else:_write_art(art_page(),id)
 		return
@@ -118,13 +129,52 @@ func _write_art(page: int,subject: int) -> void:
 	if page>0:art.merge({"query":query,"expected_list_revision":snapshot.art.list_revision})
 	_send({"action":C.ManagementAction.WorkOrderUpdate,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"details":{"option":snapshot.selected_option,"art":art}})
 func _read_art(page: int,cursor:=0) -> void:
+	if page>=6:_read_draft(page,cursor);return
 	phase=Phase.Reading
 	var art: Dictionary={"page":page,"query":query,"cursor":cursor}
 	if cursor>0:art.expected_list_revision=snapshot.art.list_revision
 	_send({"action":C.ManagementAction.WorkOrderInspect,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"details":{"option":snapshot.selected_option,"art":art}})
 func art_back() -> void:
 	if ticket!=0 or not has_art() or art_page()<0:return
+	if art_page()>6:draft_navigate(6);return
+	if art_page()==6 and draft_dirty:
+		draft_discard=true;changed.emit();return
 	query="";first=0;art_base=0;rows=[];_read_art(-1)
+func draft_navigate(page: int) -> void:
+	if ticket!=0:return
+	query="";first=0;art_base=0;draft_quantity=1;rows=[];_read_draft(page)
+func discard_draft() -> void:
+	if ticket!=0:return
+	draft_value={"elements":[],"relationships":[]};draft_relation={};draft_dirty=false;draft_discard=false
+	art_back()
+func _read_draft(page: int,cursor:=0,edit: Dictionary={}) -> void:
+	var writing: bool=int(edit.get("action",0))>=4
+	phase=Phase.Applying if writing else Phase.Reading
+	var draft: Dictionary={"value":draft_value.duplicate(true),"columns":draft_columns}
+	draft.merge(edit)
+	if page in [15,16] and not draft.has("relationship"):draft.relationship=draft_relation.duplicate(true)
+	var art: Dictionary={"page":page,"query":query,"cursor":cursor,"draft":draft}
+	if cursor>0:art.expected_list_revision=snapshot.art.list_revision
+	_send({"action":C.ManagementAction.WorkOrderUpdate if writing else C.ManagementAction.WorkOrderInspect,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"details":{"option":snapshot.selected_option,"art":art}})
+func commit_draft() -> void:
+	if phase!=Phase.Ready or ticket!=0 or art_page()!=6 or draft_value.elements.is_empty() or not draft_value.has("name"):return
+	query="";first=0;art_base=0;_read_draft(6,0,{"action":5})
+func choose_draft(row: Dictionary) -> void:
+	if phase!=Phase.Ready or ticket!=0:return
+	var page:=art_page()
+	query="";first=0;art_base=0
+	if page==6:draft_navigate(row.id)
+	elif page>=7 and page<=13:
+		_read_draft(page,0,{"action":1,"element":{"kind":page,"id":row.id,"secondary":row.get("secondary",-1),"quantity":draft_quantity}})
+	elif page==14:
+		draft_relation={"verb":row.id,"transitive":row.secondary==1,"actor":-1,"target":-1};draft_relation_caption=row.caption;_read_draft(15)
+	elif page==15:
+		draft_relation.actor=row.id
+		if draft_relation.transitive:_read_draft(16)
+		else:_read_draft(6,0,{"action":2,"relationship":draft_relation})
+	elif page==16:
+		draft_relation.target=row.id;_read_draft(6,0,{"action":2,"relationship":draft_relation})
+	elif page==17:_read_draft(17,0,{"action":3,"delete_index":row.id})
 func _fail(next: Phase) -> void:
 	snapshot={};rows=[];phase=next;changed.emit()
 func _send(intent: Dictionary) -> void:
@@ -142,20 +192,29 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 	if result.get("status",-1)!=C.ManagementStatus.Ok or result.get("action",-1)!=sent.action or result.get("outcome","")=="unknown":_fail(failure);return
 	var value: Dictionary=result.get("work_order",{}).get("details",{})
 	var entering: bool=writing and sent.details.has("art") and sent.details.art.get("page",-1)==-1
-	var selected: int=-1 if writing and not entering else sent.details.get("option",-1)
+	var naming: bool=writing and sent.details.get("art",{}).get("draft",{}).get("action",0)==4
+	var selected: int=-1 if writing and not entering and not naming else sent.details.get("option",-1)
 	if value.get("id",-1)!=order_id or value.get("revision",0)<=0 or value.get("selected_option",-2)!=selected or not value.get("options") is Array:_fail(failure);return
 	if value.has("art"):
 		if not sent.details.has("art"):_fail(failure);return
 		var art: Dictionary=value.art
 		var page: int=sent.details.art.get("page",-1)
 		var cursor: int=sent.details.art.get("cursor",0)
+		var draft_action: int=sent.details.art.get("draft",{}).get("action",0)
+		if draft_action in [1,2,4]:page=6
+		elif draft_action==3:
+			page=6 if art.get("draft",{}).get("elements",[]).is_empty() else 17
 		if art.get("page",-2)!=page or not art.get("rows") is Array or art.get("total",-1)<cursor+art.rows.size():_fail(failure);return
 		if page>=0 and art.get("list_revision",0)<=0:_fail(failure);return
 		if cursor>0 and (value.revision!=snapshot.revision or art.list_revision!=sent.details.art.expected_list_revision):_fail(failure);return
 		snapshot=value.duplicate(true)
+		if page>=6:
+			if not art.get("draft") is Dictionary or not art.get("draft_description") is Array:_fail(failure);return
+			draft_value=art.draft.duplicate(true)
+			if draft_action in [1,2,3]:draft_dirty=true
 		if sent.details.art.get("query","")!=query:rows=[];_read_art(page);return
 		rows=art.rows.duplicate(true);art_base=cursor;first=cursor;phase=Phase.Ready;changed.emit();return
-	if sent.details.has("art") and (not writing or entering):_fail(failure);return
+	if sent.details.has("art") and (not writing or entering or naming):_fail(failure);return
 	if selected>=0:
 		if sent.details.get("query","")!=query:
 			snapshot=value.duplicate(true);rows=[];_read_choices();return

@@ -7121,7 +7121,25 @@ carries optional badges and hover descriptions. Description1451b10 and native
 wrapping8e7310 operate on owned inputs; allocated text is released through bb9b0.
 The viewer owns a separate hover request, so waiting for a description does not
 block selection, and late previews cannot replace a newer page or selection.
-The new-image editor remains unfinished, so Work orders remains staged.
+Management127 carries owned new-image draft elements, relationships and names.
+`work_order_art_draft_native.h` reconstructs native objects for one safe point,
+uses native candidate lists and descriptions, and repairs relationship indices
+when elements are deleted. Local editing and discard do not install world images.
+Done uses native allocation/deep-copy leaves and the pinned commissioned-image
+registration effects, then assigns the image pair and rebuilds order requirements.
+Name generation and Done are write intents with no automatic uncertain replay.
+The new-image Name component editor remains unfinished, so Work orders remains
+staged. Initial name generation currently occurs on New image entry; matching
+native initialization on the artwork root is also still pending.
+
+Protected020406 on2026-11-02 exercises draft creation, native descriptions,
+relationships, deletion, discard and actual Done in the shared viewer. DF readback
+confirms the installed plant image, generated name, commissioned entity reference
+and registration, and the order's image pair. The Done panel was inspected.
+Owned DF44340 exits unsaved with source preservation. Plugin build and UI
+composition pass; paired viewer logs contain only documented engine diagnostics.
+This verifies the assembled workflow, not the still-missing Name editor or
+complete responsive/hover parity.
 
 Protected010525 on2026-11-02 exercises Existing image in the shared viewer after
 the assembled Work orders/conditions/Details workflow. Hover text and wrapping

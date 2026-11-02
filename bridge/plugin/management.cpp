@@ -2682,6 +2682,67 @@ BridgeWorkOrderInfo copyNativeWorkOrder(const df3d_production::NativeWorkOrderRo
 void run(color_ostream& out) {
   areaPaintRetired=nullptr;areaPaintCommitted=false;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
+
+  if(r->work_order() && r->work_order()->filter_choice()>=0) {
+    const auto* q=r->work_order();message.clear();status=m::ManagementStatus::Rejected;workOrders={};
+    try {
+      auto* building=df::building::find(q->workshop_id());
+      auto* tile=building?Maps::getTileDesignation(building->centerx,building->centery,building->z):nullptr;
+      if(!tile || tile->bits.hidden){publish();return;}
+      mutated=true;
+      const auto result=df3d_production::selectNativeWorkOrderFilter(q->workshop_id(),q->id(),q->expected_revision(),q->condition_index(),int(q->candidate_kind())-3,q->filter_choice(),q->expected_list_revision());
+      using O=df3d_production::WorkshopOrdersOutcome;
+      mutated=result.outcome==O::Applied || result.outcome==O::Unknown;
+      if(result.outcome==O::Applied && result.row){workOrders.orders.push_back(copyNativeWorkOrder(*result.row));status=m::ManagementStatus::Ok;}
+    }catch(...) {workOrders={};status=m::ManagementStatus::Rejected;}
+    publish();return;
+  }
+  if(r->action()==m::ManagementAction::WorkOrderCandidates && r->work_order() && r->work_order()->workshop_id()>=0) {
+    const auto* q=r->work_order();message.clear();status=m::ManagementStatus::Rejected;workOrders={};
+    const bool extra=q->id()<0 || q->condition_index()<0 || q->condition_kind() || q->candidate_kind()<3 || q->candidate_kind()>5 || !q->expected_revision() ||
+      q->remaining()!=-1 || q->frequency()!=-1 || q->max_workshops()!=-1 || (q->recipe() && q->recipe()->size()) || q->remove_condition() ||
+      q->compare()!=-1 || q->threshold()!=-1 || q->item_type()!=-1 || q->item_subtype()!=-1 || q->mat_type()!=-1 || q->mat_index()!=-1 ||
+      q->target_order()!=-1 || q->dependency()!=-1 || q->move() || q->expected_neighbor()!=-1 || (q->traits() && q->traits()->size()) ||
+      q->input_index()!=-1 || q->group_type()!=-1 || q->group_subtype()!=-1 || q->group_custom()!=-1 || q->encrust_flags()!=-1 || q->suggestion_index()!=-1;
+    if(extra){publish();return;}
+    try {
+      auto* building=df::building::find(q->workshop_id());
+      auto* tile=building?Maps::getTileDesignation(building->centerx,building->centery,building->z):nullptr;
+      if(!tile || tile->bits.hidden || !df3d_production::workshopOrdersProfile(building)){publish();return;}
+      const auto& all=df::global::world->manager_orders.all;
+      const auto found=std::find_if(all.begin(),all.end(),[&](const auto* order){return order && order->id==q->id() && order->workshop_id==q->workshop_id();});
+      if(found==all.end()){publish();return;}
+      const auto observed=df3d_production::nativeWorkOrderRow(**found,int32_t(found-all.begin()));
+      if(!observed || observed->revision!=q->expected_revision() || size_t(q->condition_index())>=observed->itemConditions.size()){publish();return;}
+      const int kind=int(q->candidate_kind())-3;
+      const auto query=q->query()?UTF2DF(q->query()->str()):std::string{};
+      if(query.size()>40){publish();return;}
+      const auto catalog=df3d_production::nativeWorkOrderFilterChoices(**found,kind,query);
+      if(!catalog){publish();return;}
+      const auto revision=df3d_production::nativeWorkOrderFilterRevision(*catalog,kind);
+      if(q->expected_list_revision() && q->expected_list_revision()!=revision){publish();return;}
+      auto row=copyNativeWorkOrder(*observed);
+      const auto& condition=observed->itemConditions[size_t(q->condition_index())];
+      const auto caption=df3d_production::nativeWorkOrderConditionCaption(condition);
+      if(!caption){publish();return;}
+      row.conditions[size_t(q->condition_index())].itemCaption=DF2UTF(*caption);
+      uint32_t count=0;
+      for(size_t i=0;i<catalog->size();++i) {
+        const auto& choice=(*catalog)[i];if(!choice.matches)continue;
+        const auto offset=count++;
+        if(offset<q->cursor() || offset>=uint64_t(q->cursor())+128)continue;
+        const auto name=df3d_production::nativeWorkOrderFilterCaption(choice,kind);
+        if(!name || DF2UTF(*name).size()>512){workOrders={};publish();return;}
+        workOrders.choices.push_back({int32_t(i),DF2UTF(*name)});
+        if(kind==2 && choice.trait && df3d_production::nativeWorkOrderTraitSelected(condition,*choice.trait))row.conditions[size_t(q->condition_index())].traits.push_back(std::to_string(i));
+      }
+      if(q->cursor()>count){workOrders={};publish();return;}
+      workOrders.total=count;workOrders.listRevision=int64_t(revision);
+      workOrders.nextCursor=q->cursor()+workOrders.choices.size()<count?uint32_t(q->cursor()+workOrders.choices.size()):0;
+      workOrders.orders.push_back(std::move(row));status=m::ManagementStatus::Ok;
+    }catch(...) {workOrders={};status=m::ManagementStatus::Rejected;}
+    publish();return;
+  }
   if(r->action()==m::ManagementAction::WorkOrderCondition && r->work_order() &&
      r->work_order()->workshop_id()>=0 && (r->work_order()->remove_condition() ||
        (r->work_order()->condition_index()>=0 && !r->work_order()->condition_kind() && r->work_order()->suggestion_index()<0))) {

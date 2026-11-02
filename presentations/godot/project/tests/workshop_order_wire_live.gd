@@ -117,6 +117,32 @@ func run() -> void:
 	root.get_texture().get_image().save_png(directory+"/workshop-order-condition-number-live.png")
 	number_key(KEY_ENTER)
 	check(owner.conditions_view.editing_index==-1 and owner.conditions_view.visible,"Enter did not release condition number focus")
+	for step in expected.filter_steps:
+		click(Vector2(768+int(step.kind)*32,178))
+		if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready),"Filter picker did not load"):quit(1);return
+		check(owner.conditions.filter_kind==int(step.kind),"Wrong filter picker")
+		for char in str(step.query):number_key(KEY_A,char.unicode_at(0))
+		if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready),"Filter search did not finish"):quit(1);return
+		var ids: Array=[]
+		for choice in owner.conditions.filter_rows:
+			ids.append(choice.id);check(str(step.text).contains(choice.name),"Filter display caption differs from native: "+choice.name)
+		var native_ids: Array=[]
+		for id in step.ids:native_ids.append(int(id))
+		check(ids==native_ids,"Filter search order differs from native: "+str(ids)+" / "+str(native_ids))
+		await process_frame;await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/workshop-order-filter-search-"+str(int(step.kind))+"-live.png")
+		click(Vector2(400,214))
+		if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.orders.phase==owner.orders.Phase.Ready and owner.orders.row_ticket==0),"Filter selection was not confirmed; no retry"):quit(1);return
+		var condition: Dictionary=owner.conditions.snapshot.conditions[0]
+		for key in ["item_type","item_subtype","mat_type","mat_index"]:check(condition[key]==int(step[key]),"Filter selection differs from native: "+key)
+		check(owner.conditions.filter_kind==(2 if int(step.kind)==2 else -1),"Filter selection close behavior differs")
+		if int(step.kind)==2:check(condition.traits.has(str(ids[0])),"Selected trait indicator absent")
+		await process_frame;await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/workshop-order-filter-applied-"+str(int(step.kind))+"-live.png")
+		if int(step.kind)==2:
+			number_key(KEY_ESCAPE)
+			click(Vector2(816,190))
+			if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready),"Conditions did not reopen after trait picker"):quit(1);return
 	click(Vector2(896,178))
 	if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.orders.phase==owner.orders.Phase.Ready and owner.orders.row_ticket==0),"Condition removal was not confirmed; no retry"):quit(1);return
 	check(owner.conditions.snapshot.conditions.is_empty() and owner.conditions.snapshot.frequency==1,"Condition removal differs from native")

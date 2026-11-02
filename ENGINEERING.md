@@ -6874,11 +6874,40 @@ three actual selectors for Extract from plants. Captures establish their layout;
 right-click Back closes Conditions, and reopening from the workshop resets the
 selector. Owned DF18228 exits unsaved, source preservation passes, all five Godot
 log groups contain only documented diagnostics, and root CTest19/19 passes.
-This establishes the owned catalogs; transport, display captions for type/material,
-search, selected-trait state and picker actions remain to be connected. Existing
-Lua-generated candidates are not native acceptance and are not used by this reader.
+The owned catalogs now supply the staged Conditions selectors through explicit
+WorkOrderCandidates reads. The concrete workshop/order and current order revision
+are required. Candidate kinds3/4/5 select type/material/traits; replies contain
+at most128 ordered choices, a filtered total/cursor and a catalog revision.
+Search calls native3c3300 on owned storage; the local40-character draft matches
+native8baba4 letters/spaces and ASCII case folding. Type captions call a82c10;
+material captions compose38f544..38f754 with native material/name leaves and the
+catalog's matter state. Trait captions come directly from the native builder.
+The selected condition carries selected trait indices for that catalog page.
+The legacy Lua-generated lists do not supply this concrete-workshop path.
 
-This screen remains staged. Filter editing, manual item conditions, dependencies,
+Management122 filter_choice writes carry the native entry index, kind, condition
+index and both order/catalog revisions. The bridge rebuilds the catalog, rejects
+stale identities and composes native3c4110..4221 type/material assignments or
+3c3da8..4065 trait toggles on a prepared condition copy. Registration does not
+change quantity, comparison or order scheduling. The viewer waits for confirmation
+and re-reads; unknown effects are not replayed. Type/material choices return to
+Conditions; traits remain open. Search changes coalesce during pending reads,
+and close/session changes retire observers. Scroll requests own their page offset.
+
+Protected213012 on2026-11-01 exercises native and actual rendered-viewer searches
+BARS/GRANITE/FIRE, matching choice identities/order and visible captions, then
+applies each selection and verifies resulting type/material fields and the active
+trait indicator. Subsequent condition/order removal passes. Owned DF49600 exits
+unsaved, source preservation passes, and all five Godot groups contain only known
+diagnostics. Core/composition pass in `build/qa/work-order-filter-workflow`;
+final CTest19/19 passes. The no-scrollbar row width/checkbox position was corrected
+from the paired captures and rendered separately in `filter-layout.gd`, with only
+known diagnostics. Initial212819 exposed a pending-inspection redraw error and a
+JSON numeric-type mismatch in the ID assertion; it is not acceptance. Tail-page
+scroll gestures, reaction-specific trait toggles, resize and selector tooltips
+still need integrated acceptance; this does not claim every trait family.
+
+This screen remains staged. Manual item conditions, dependencies,
 overflow, tooltip coverage, tab navigation and exact native back navigation are
 unfinished. Current close returns to the workshop; this is not native navigation
 acceptance. Fixed frame geometry and bounded displayed rows still need the full

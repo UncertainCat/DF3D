@@ -442,6 +442,7 @@ local ok,err=xpcall(function()
   assert(not conditions.entering_logic_number and conditions.open)
   expected.condition_number=12
   result.order_conditions.filter_catalogs={}
+  expected.filter_steps={}
   for kind=0,2 do
    mouse(768+kind*32,178)
    assert(conditions.change_type==kind,'Native condition selector did not open')
@@ -462,6 +463,22 @@ local ok,err=xpcall(function()
     end
    end
    result.order_conditions.filter_catalogs[#result.order_conditions.filter_catalogs+1]={kind=kind,rows=choices,lines=lines()}
+   local query=({'BARS','GRANITE','FIRE'})[kind+1]
+   for char in query:gmatch('.')do gui.simulateInput(view,('STRING_A%03d'):format(char:byte()))end
+   view:render(dfhack.getTickCount())
+   assert(conditions.filter==query,'Native selector query differs')
+   local matched={}
+   for at=0,#conditions.compare_master-1 do
+    local on=kind==0 and conditions.item_type_on[at] or kind==1 and conditions.item_material_on[at] or kind==2 and conditions.item_trait_master[at].on
+    if on then matched[#matched+1]=at end
+   end
+   assert(#matched>0,'Native selector query found no rows')
+   local text_lines={};for _,line in ipairs(lines())do text_lines[#text_lines+1]=line.text end
+   shot('order-condition-filter-search-'..kind..'-native')
+   mouse(400,214)
+   assert(conditions.open and conditions.change_type==(kind==2 and 2 or -1),'Native selection close behavior differs')
+   expected.filter_steps[#expected.filter_steps+1]={kind=kind,query=query,ids=matched,text=table.concat(text_lines,'\n'),item_type=added.item_type,item_subtype=added.item_subtype,mat_type=added.mat_type,mat_index=added.mat_index}
+   shot('order-condition-filter-applied-'..kind..'-native')
    df.global.enabler.mouse_rbut_lift=0;gui.simulateInput(view,'_MOUSE_R');view:render(dfhack.getTickCount())
    df.global.enabler.mouse_rbut=0;df.global.enabler.mouse_rbut_down=0;df.global.enabler.mouse_rbut_lift=1
    assert(not conditions.open,'Native selector Back did not close Conditions')

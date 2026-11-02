@@ -3,12 +3,15 @@
 #include "df/job_item_filter.h"
 #include "df/work_orders_conditions_interfacest.h"
 #include "df/wqc_item_traitst.h"
+#include "df/material.h"
+#include "df/historical_figure.h"
 #include <new>
 #include <type_traits>
 
 namespace df3d_production {
 struct WorkOrderFilterChoice {
     std::string search;
+    bool matches=true;
     int16_t itemType=-1,itemSubtype=-1,materialType=-1;
     int32_t materialIndex=-1,materialState=-1;
     std::optional<df::wqc_item_traitst> trait;
@@ -19,6 +22,16 @@ inline bool workOrderSuggestionsSupported() {
         const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
         struct Pin {size_t rva,length;uint64_t hash;};
         constexpr Pin pins[]={
+            {0xa82c10,0x56ec,UINT64_C(0x66347214dfd39a0b)},
+            {0x52d650,0x2b4,UINT64_C(0x9e8023d09def7af9)},
+            {0x14add70,0x12f,UINT64_C(0x01f897b15772d540)},
+            {0xc0f660,0x4e,UINT64_C(0x4ffd6c6ce672159c)},
+            {0xa946e0,0x7c2,UINT64_C(0xdbc3db5f052419ee)},
+            {0x38f544,0x215,UINT64_C(0x5a27ad0b21e66940)},
+            {0x38f997,0x5f,UINT64_C(0xd9357b81d8117080)},
+            {0x3c3da8,0x2c3,UINT64_C(0x49faa50979ab577b)},
+            {0x3c4110,0x33,UINT64_C(0xea60fbd7c5fc7e60)},
+            {0x3c41f0,0x31,UINT64_C(0x55e0471e2eac3bdb)},
             {0xa9ce10,0x890,UINT64_C(0x45f247042723739d)},
             {0xd160c0,0x1047,UINT64_C(0x824b3791b709c77c)},
             {0x14eda2,0x28,UINT64_C(0x9eb9c219b43e040e)},
@@ -46,8 +59,8 @@ inline bool workOrderSuggestionsSupported() {
 // filters the supplied catalog, not a global menu. The fresh context is owned,
 // never copied from game.main_interface. Traits additionally read the owned
 // recipe's job type/reaction to include reaction-specific reagent restrictions.
-inline std::optional<std::vector<WorkOrderFilterChoice>> nativeWorkOrderFilterChoices(const df::manager_order& source,int kind) {
-    if(kind<0 || kind>2 || source.reaction_name.size()>128 || !workOrderSuggestionsSupported() || !df::global::world)return std::nullopt;
+inline std::optional<std::vector<WorkOrderFilterChoice>> nativeWorkOrderFilterChoices(const df::manager_order& source,int kind,const std::string& query={}) {
+    if(kind<0 || kind>2 || query.size()>40 || source.reaction_name.size()>128 || !workOrderSuggestionsSupported() || !df::global::world)return std::nullopt;
     static_assert(offsetof(df::work_orders_conditions_interfacest,filter)==0x78);
     static_assert(offsetof(df::work_orders_conditions_interfacest,change_type)==0xb0);
     static_assert(offsetof(df::work_orders_conditions_interfacest,item_trait_master)==0x180);
@@ -82,6 +95,7 @@ inline std::optional<std::vector<WorkOrderFilterChoice>> nativeWorkOrderFilterCh
     df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
     using Build=void (*)(df::work_orders_conditions_interfacest*);
     reinterpret_cast<Build>(base+0xa9daa0)(&scratch);
+    if(!query.empty()){scratch.filter=query;reinterpret_cast<Build>(base+0x3c3300)(&scratch);}
     const auto count=scratch.compare_master.size();
     if(count>32768 || (kind==0 && (scratch.item_type_master.size()!=count || scratch.item_subtype_master.size()!=count)) ||
        (kind==1 && (scratch.item_material_master.size()!=count || scratch.item_matgloss_master.size()!=count || scratch.item_matstate_master.size()!=count)) ||
@@ -93,10 +107,111 @@ inline std::optional<std::vector<WorkOrderFilterChoice>> nativeWorkOrderFilterCh
         if(kind==0){row.itemType=int16_t(scratch.item_type_master[i]);row.itemSubtype=scratch.item_subtype_master[i];}
         else if(kind==1){row.materialType=scratch.item_material_master[i];row.materialIndex=scratch.item_matgloss_master[i];row.materialState=int32_t(scratch.item_matstate_master[i]);}
         else {if(!scratch.item_trait_master[i])return std::nullopt;row.trait=*scratch.item_trait_master[i];}
+        row.matches=kind==0?scratch.item_type_on[i]:kind==1?scratch.item_material_on[i]:scratch.item_trait_master[i]->on;
         result.push_back(std::move(row));
     }
     return result;
 }
+
+inline std::optional<std::string> nativeWorkOrderFilterCaption(const WorkOrderFilterChoice& row,int kind) {
+    if(!workOrderSuggestionsSupported())return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
+    std::string caption;
+    if(kind==0) {
+        using Item=void(*)(std::string*,int16_t,int16_t,int16_t,int32_t,int32_t,int32_t,bool,void*,int32_t,int32_t,bool,int32_t,int32_t);
+        reinterpret_cast<Item>(base+0xa82c10)(&caption,row.itemType,row.itemSubtype,-1,-1,-1,0,false,nullptr,-1,-1,true,0,0);
+    }else if(kind==1) {
+        // Renderer38f544..38f754: first sentinel, named historical material,
+        // material prefix, then the exact state selected by the native catalog.
+        if(row.materialType==-1)caption=reinterpret_cast<const char*>(base+0x162b700);
+        else {
+            if(row.materialState<0 || row.materialState>5)return std::nullopt;
+            if(row.materialType>=219 && row.materialType<=418) {
+                auto* figure=df::historical_figure::find(row.materialIndex);
+                if(figure && figure->name.has_name) {
+                    auto* name=reinterpret_cast<df::language_name*(*)(df::historical_figure*)>(base+0xc0f660)(figure);
+                    if(name && name->has_name)reinterpret_cast<void(*)(df::language_name*,std::string*,bool,bool)>(base+0xa946e0)(name,&caption,true,false);
+                    caption+=reinterpret_cast<const char*>(base+0x15edb24);
+                }
+            }
+            auto* material=reinterpret_cast<df::material*(*)(df::world*,int16_t,int32_t)>(base+0x14add70)(df::global::world,row.materialType,row.materialIndex);
+            if(material) {
+                if(!material->prefix.empty()){caption+=material->prefix;caption+=' ';}
+                caption+=material->state_name[size_t(row.materialState)];
+            }else caption+=reinterpret_cast<const char*>(base+0x1789108);
+        }
+    }else if(kind==2 && row.trait)caption=row.trait->display_string;
+    else return std::nullopt;
+    if(kind!=2)reinterpret_cast<void(*)(std::string*)>(base+0x52d650)(&caption);
+    if(caption.size()>512)return std::nullopt;
+    return caption;
+}
+inline bool nativeWorkOrderTraitSelected(const df::manager_order_condition_item& c,const df::wqc_item_traitst& t) {
+    if(t.flg) {
+        const uint32_t flags[]={c.flags1.whole,c.flags2.whole,c.flags3.whole,c.flags4,c.flags5};
+        return t.flgn>=1 && t.flgn<=5 && (flags[t.flgn-1]&t.flg)!=0;
+    }
+    if(!t.reaction_class.empty())return c.reaction_class==t.reaction_class;
+    if(!t.reaction_product_class.empty())return c.has_material_reaction_product==t.reaction_product_class;
+    if(t.metal_ore!=-1)return c.metal_ore==t.metal_ore;
+    if(t.contains_reaction_index!=-1)return c.reaction_id==t.contains_reaction_index && !c.contains.empty() && c.contains.front()==t.contains_reagent_index;
+    if(int(t.tool_use)!=-1)return c.has_tool_use==t.tool_use;
+    return t.dye_color!=-1 && c.dye_color==t.dye_color;
+}
+inline uint64_t nativeWorkOrderFilterRevision(const std::vector<WorkOrderFilterChoice>& rows,int kind) {
+    uint64_t hash=UINT64_C(14695981039346656037);
+    const auto add=[&](uint64_t value){for(unsigned n=0;n<64;n+=8){hash^=(value>>n)&255;hash*=UINT64_C(1099511628211);}};
+    const auto text=[&](const std::string& value){add(value.size());for(unsigned char c:value){hash^=c;hash*=UINT64_C(1099511628211);}};
+    add(kind);add(rows.size());
+    for(const auto& row:rows) {
+        text(row.search);add(row.itemType);add(row.itemSubtype);add(row.materialType);add(row.materialIndex);add(row.materialState);
+        if(row.trait) {const auto& t=*row.trait;add(t.flg);add(t.flgn);text(t.reaction_class);text(t.reaction_product_class);add(t.metal_ore);add(t.contains_reaction_index);add(t.contains_reagent_index);add(int(t.tool_use));add(t.dye_color);text(t.display_string);}
+    }
+    return (hash&INT64_MAX)?(hash&INT64_MAX):1;
+}
+inline NativeWorkOrderEdit selectNativeWorkOrderFilter(int32_t buildingId,int32_t id,uint64_t revision,int16_t conditionIndex,int kind,int32_t choice,uint64_t catalogRevision) {
+    NativeWorkOrderEdit result;
+    if(conditionIndex<0 || choice<0 || kind<0 || kind>2 || !workOrderSuggestionsSupported() || !workshopOrdersProfile(df::building::find(buildingId)))return result;
+    const auto& all=df::global::world->manager_orders.all;
+    const auto found=std::find_if(all.begin(),all.end(),[&](const auto* row){return row && row->id==id && row->workshop_id==buildingId;});
+    if(found==all.end())return result;
+    auto& order=**found;const int32_t position=int32_t(found-all.begin());
+    const auto before=nativeWorkOrderRow(order,position);if(!before)return result;
+    if(!revision || before->revision!=revision){result.outcome=WorkshopOrdersOutcome::Stale;return result;}
+    if(size_t(conditionIndex)>=order.item_conditions.size())return result;
+    const auto rows=nativeWorkOrderFilterChoices(order,kind);
+    if(!rows || size_t(choice)>=rows->size())return result;
+    if(!catalogRevision || nativeWorkOrderFilterRevision(*rows,kind)!=catalogRevision){result.outcome=WorkshopOrdersOutcome::Stale;return result;}
+    auto* target=order.item_conditions[size_t(conditionIndex)];
+    df::manager_order_condition_item prepared=*target;
+    const auto& row=(*rows)[size_t(choice)];
+    // Compose native3c4110..4221 and3c3da8..4065. Prepare allocations before
+    // publishing the selected scalars/strings, without native menu state.
+    if(kind==0){prepared.item_type=df::item_type(row.itemType);prepared.item_subtype=row.itemSubtype;}
+    else if(kind==1){prepared.mat_type=row.materialType;prepared.mat_index=row.materialIndex;}
+    else {
+        if(!row.trait)return result;const auto& t=*row.trait;
+        if(t.flg) {
+            switch(t.flgn){case 1:prepared.flags1.whole^=t.flg;break;case 2:prepared.flags2.whole^=t.flg;break;case 3:prepared.flags3.whole^=t.flg;break;case 4:prepared.flags4^=t.flg;break;case 5:prepared.flags5^=t.flg;break;default:return result;}
+        }else if(!t.reaction_class.empty())prepared.reaction_class=prepared.reaction_class==t.reaction_class?std::string{}:t.reaction_class;
+        else if(!t.reaction_product_class.empty())prepared.has_material_reaction_product=prepared.has_material_reaction_product==t.reaction_product_class?std::string{}:t.reaction_product_class;
+        else if(t.metal_ore!=-1)prepared.metal_ore=prepared.metal_ore==t.metal_ore?-1:t.metal_ore;
+        else if(t.contains_reaction_index!=-1) {
+            const bool selected=nativeWorkOrderTraitSelected(prepared,t);
+            prepared.reaction_id=selected?-1:t.contains_reaction_index;prepared.contains.clear();
+            if(!selected)prepared.contains.push_back(t.contains_reagent_index);
+        }else if(int(t.tool_use)!=-1)prepared.has_tool_use=prepared.has_tool_use==t.tool_use?df::tool_uses(-1):t.tool_use;
+        else if(t.dye_color!=-1)prepared.dye_color=prepared.dye_color==t.dye_color?-1:t.dye_color;
+        else return result;
+    }
+    static_assert(std::is_nothrow_move_assignable_v<df::manager_order_condition_item>);
+    *target=std::move(prepared);
+    result.outcome=WorkshopOrdersOutcome::Unknown;
+    try {auto after=nativeWorkOrderRow(order,position);if(after){result.row=std::move(after);result.outcome=WorkshopOrdersOutcome::Applied;}}catch(...) {}
+    return result;
+}
+
 // Compose the renderer's condition-to-filter mapping (3926b1..39289a),
 // then call its item-description leaf. All filter storage belongs to this call.
 inline std::optional<std::string> nativeWorkOrderConditionCaption(const df::manager_order_condition_item& source) {

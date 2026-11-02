@@ -15,10 +15,13 @@ struct NativeWorkOrderRow {
     NativeWorkOrderPhase phase=NativeWorkOrderPhase::Ready;
     uint64_t revision=0;
     std::string caption;
+    std::optional<std::string> workshopName;
     std::vector<df::manager_order_condition_item> itemConditions;
     std::vector<df::manager_order_condition_order> orderConditions;
 };
+struct NativeWorkOrderListState {bool managerAvailable=false,validationRequired=false;};
 struct NativeWorkOrderPage {
+    std::optional<NativeWorkOrderListState> nativeState;
     uint64_t revision=0;
     uint32_t total=0,nextCursor=0;
     std::vector<NativeWorkOrderRow> rows;
@@ -40,6 +43,10 @@ inline bool workOrderRowsSupported() {
             {0x3932f0,0xaa,UINT64_C(0x488bb44c4f121aed)}, // global caption inputs, including art
             {0x39349d,0x628,UINT64_C(0x9c80a6c288418e61)}, // global phase branches
             {0x392fcb,0x30,UINT64_C(0xd523110d3d117e40)}, // global simulation list
+            {0x393002,0x24,UINT64_C(0x68cb06110592f47c)}, // Create manager predicate
+            {0x3945e0,0xb3,UINT64_C(0x858e64d76718528d)}, // assigned workshop native name
+            {0x395c22,0x22,UINT64_C(0xc7381afdecf04261)}, // footer manager predicate
+            {0x395dca,0xe,UINT64_C(0x719da5ffde72c97e)}, // footer population predicate
             {0x3c5fae,0x31,UINT64_C(0x47edd132aec68aa8)}, // workshop limit
             {0x3c601f,0x33,UINT64_C(0xaf2b866bf2de5927)}, // global quantity
             {0x3c605e,0x9d,UINT64_C(0xa2b0d60e558c1329)}, // priority up
@@ -102,6 +109,11 @@ inline std::optional<NativeWorkOrderRow> nativeWorkOrderRow(df::manager_order& o
     }
     const auto caption=workshopJobCaption(captionInput);if(!caption || caption->size()>512)return std::nullopt;
     row.caption=*caption;
+    if(order.workshop_id>=0) {
+        row.workshopName.emplace();
+        if(auto* building=df::building::find(order.workshop_id))building->getName(&*row.workshopName);
+        if(row.workshopName->size()>512)return std::nullopt;
+    }
     uint64_t hash=UINT64_C(14695981039346656037);
     const auto add=[&](uint64_t value){for(unsigned shift=0;shift<64;shift+=8){hash^=(value>>shift)&255;hash*=UINT64_C(1099511628211);}};
     const auto text=[&](const std::string& value){add(value.size());for(unsigned char c:value){hash^=c;hash*=UINT64_C(1099511628211);}};
@@ -109,6 +121,7 @@ inline std::optional<NativeWorkOrderRow> nativeWorkOrderRow(df::manager_order& o
     add(order.mat_type);add(order.mat_index);add(order.specflag.whole);add(order.specdata.hist_figure_id);add(order.material_category.whole);
     add(int(order.art_spec.type));add(order.art_spec.id);add(order.art_spec.subid);
     add(row.total);add(row.remaining);add(order.status.whole);add(row.frequency);add(row.finishedYear);add(row.finishedTick);
+    if(row.workshopName)text(*row.workshopName);
     add(row.workshopId);add(row.maxWorkshops);add(int(row.phase));add(row.validationRequired);add(row.detailsAvailable);
     add(order.item_conditions.size());add(order.order_conditions.size());
     for(const auto* c:order.item_conditions) {
@@ -130,7 +143,9 @@ inline std::optional<NativeWorkOrderRow> nativeWorkOrderRow(df::manager_order& o
 // Global392fcb reads the simulation vector directly, in priority order.
 // Hash identities, not menu scroll/search storage; row edits retain their own revisions.
 inline std::optional<NativeWorkOrderPage> nativeGlobalOrderPage(uint32_t cursor,uint64_t revision) {
-    if(!workOrderRowsSupported() || !df::global::world)return std::nullopt;
+    if(!workOrderRowsSupported() || !df::global::world || !df::global::plotinfo)return std::nullopt;
+    const auto* entity=df::global::plotinfo->main.fortress_entity;
+    if(!entity)return std::nullopt;
     const auto& all=df::global::world->manager_orders.all;
     if(all.size()>16384 || cursor>all.size() || (cursor && !revision))return std::nullopt;
     uint64_t hash=UINT64_C(14695981039346656037);
@@ -139,6 +154,7 @@ inline std::optional<NativeWorkOrderPage> nativeGlobalOrderPage(uint32_t cursor,
         for(unsigned shift=0;shift<32;shift+=8){hash^=(uint32_t(order->id)>>shift)&255;hash*=UINT64_C(1099511628211);}
     }
     NativeWorkOrderPage page;page.revision=(hash&INT64_MAX)?(hash&INT64_MAX):1;
+    page.nativeState=NativeWorkOrderListState{!entity->assignments_by_type[df::entity_position_responsibility::MANAGE_PRODUCTION].empty(),df::global::plotinfo->tasks.population>=20};
     if(revision && revision!=page.revision)return std::nullopt;
     page.total=uint32_t(all.size());size_t conditions=0;
     for(size_t index=cursor;index<all.size() && page.rows.size()<16;++index) {

@@ -7003,10 +7003,25 @@ have only known diagnostics. Native and viewer captures were inspected. A subseq
 render using the captured catalog corrects category backgrounds, All tasks artwork,
 icon placement and text baseline without changing actions.
 
-These screens remain staged. The global creation workflow currently uses a staged
-owner entry; its manager-dependent Create button is not yet connected. Details,
-assigned-workshop labels, manager footer, custom category artwork, full responsive
-layout, tooltip coverage and tab navigation are unfinished. Quantity drafts currently support four digits; native increment
+Management123 carries optional native global manager/validation observations,
+assigned-workshop names and custom category raw codes. Create uses the native
+manager predicate393002; footer predicates395c22/395dca distinguish absent manager
+from population-dependent validation. Assigned names call the building's native
+getName virtual, as39468d does. No native menu state is read. Missing observations
+grant no Create authority; custom icons resolve from the installed raw code.
+
+Protected230731 on2026-11-01 enters the picker through the visible Create button,
+selects Still, searches Extract, creates an unassigned quantity10 order, returns
+to the list and removes it. Existing workshop/Conditions flows pass; assigned
+workshop names and manager footer are rendered. Owned DF48164 exits unsaved with
+the source unchanged. All five Godot groups have only known diagnostics. The
+management123 core/extension/composition gate passes in `work-order-list-contract`.
+Final text brightness follows the native bright palette observation. No-manager
+and low-population branches are sourced from pinned native predicates but are not
+separately exercised by this live workflow.
+
+These screens remain staged. Details, full responsive layout, tooltip coverage
+and tab navigation are unfinished. Quantity drafts currently support four digits; native increment
 behavior beyond that range remains unfinished. Fixed frame geometry still needs
 responsive acceptance before exposure.
 

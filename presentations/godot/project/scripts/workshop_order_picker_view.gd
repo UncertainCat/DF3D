@@ -104,6 +104,7 @@ func _draw() -> void:
 			var token: String="BUILDING_ICON_WORKSHOPS"
 			if group.type==13:token=icons.WORKSHOPS.get(str(group.subtype),token)
 			elif group.type==5:token=icons.FURNACES.get(str(group.subtype),token)
+			if group.has("custom_code"):token="CUSTOM_WORKSHOP_LIST_ICON:"+group.custom_code
 			var icon: Texture2D=art.texture(token)
 			if icon!=null:draw_texture_rect(icon,Rect2(16,y+2,32,32),false)
 			caption(group.name,Vector2(72,y+24),368)

@@ -12,6 +12,7 @@ var total:=0
 var first:=0
 var capacity:=15
 var rows: Dictionary={}
+var native_state: Dictionary={}
 var pending: Dictionary={}
 var editing_id: int=-1
 var editing_field:=""
@@ -27,7 +28,7 @@ func close() -> void:
 	generation+=1
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
-	revision=0;total=0;first=0;rows={};pending={};editing_id=-1;editing_field="";phase=Phase.Closed;changed.emit()
+	revision=0;total=0;first=0;rows={};native_state={};pending={};editing_id=-1;editing_field="";phase=Phase.Closed;changed.emit()
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
 func open() -> void:
@@ -37,7 +38,7 @@ func refresh() -> void:
 	generation+=1
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
-	revision=0;rows={};pending={};editing_id=-1;editing_field=""
+	revision=0;rows={};native_state={};pending={};editing_id=-1;editing_field=""
 	if service==null:phase=Phase.Unavailable;changed.emit();return
 	phase=Phase.Reading;_read(0);changed.emit()
 func seek(offset: int,count: int) -> void:
@@ -50,7 +51,7 @@ func _fill() -> void:
 		if not rows.has(index):_read(index);return
 	phase=Phase.Ready
 func _reject() -> void:
-	rows={};revision=0;total=0;phase=Phase.Rejected;changed.emit()
+	rows={};native_state={};revision=0;total=0;phase=Phase.Rejected;changed.emit()
 func find_order(id: int) -> Dictionary:
 	for row in rows.values():
 		if row.id==id:return row
@@ -130,6 +131,7 @@ func _read(offset: int) -> void:
 			if id<0 or identities.has(id) or row.get("position",-1)!=start+index or row.get("revision",0)<=0 or row.get("native_state",{}).get("phase",0) not in [C.WorkOrderPhase.Active,C.WorkOrderPhase.Waiting,C.WorkOrderPhase.Checking,C.WorkOrderPhase.Ready]:
 				_reject();return
 			identities[id]=true
+		native_state=value.get("native_state",{}).duplicate(true)
 		revision=observed;total=count;first=clampi(first,0,maxi(0,total-capacity))
 		for index in page.size():rows[start+index]=page[index].duplicate(true)
 		_fill();changed.emit())

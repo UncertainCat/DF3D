@@ -29,6 +29,7 @@ func configure(world,service,host,help=null) -> void:
 	global_orders_view=preload("res://scripts/global_work_orders_view.gd").new();canvas.add_child(global_orders_view);global_orders_view.configure_orders(world,global_orders);global_orders_view.hide()
 	global_orders_view.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self) and not conditions_view.visible
 	global_orders_view.cancelled.connect(_close_global_orders)
+	global_orders_view.create_requested.connect(open_global_order_picker)
 	global_orders_view.conditions_requested.connect(func(id,_workshop):global_orders_view.hide();conditions_view.open(-2,id))
 	conditions_view=preload("res://scripts/work_order_conditions_view.gd").new();canvas.add_child(conditions_view);conditions_view.configure_conditions(world,conditions);conditions_view.hide()
 	conditions_view.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self)
@@ -91,7 +92,7 @@ func _close_order_picker() -> void:
 	if order_picker!=null:order_picker.hide()
 
 func open_global_order_picker() -> void:
-	if global_orders.phase!=global_orders.Phase.Ready:return
+	if global_orders.phase!=global_orders.Phase.Ready or not global_orders.native_state.get("manager_available",false):return
 	global_orders_view.hide();order_picker.open(-2,"","")
 
 func _back_order_picker() -> void:

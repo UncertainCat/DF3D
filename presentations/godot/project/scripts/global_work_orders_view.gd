@@ -1,7 +1,8 @@
 extends "res://scripts/location_staff_candidates_frame.gd"
 # Native global renderer392f00; protected global-work-orders-native capture.
-# Staged until creation, Details, workshop captions, hover and navigation pass.
+# Staged until Details, hover, responsive layout and navigation pass.
 signal cancelled
+signal create_requested
 signal conditions_requested(id: int,workshop: int)
 signal details_requested(id: int)
 var state
@@ -65,6 +66,8 @@ func _gui_input(event: InputEvent) -> void:
 	if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
 		finish_entry();state.seek(state.first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1),page_rows);accept_event();return
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
+	if Rect2(896,72,32,36).has_point(event.position) and state.native_state.get("manager_available",false):
+		finish_entry();create_requested.emit();accept_event();return
 	for index in page_rows:
 		var row: Dictionary=state.rows.get(state.first+index,{})
 		if row.is_empty():continue
@@ -109,6 +112,17 @@ func _draw() -> void:
 	x=8.0
 	for value in ["Creatures","Tasks","Places","Labor","Work orders"]:x+=tab(value,Vector2(x,36),value=="Work orders")
 	if state==null:return
+	if state.native_state.get("manager_available",false):
+		icon("WORK_ORDERS_CREATE_NEW",Vector2(896,72))
+		if state.total==0:text("There are no active work orders.",Vector2(16,96))
+	if state.native_state.has("manager_available"):
+		if not state.native_state.manager_available:
+			text("A manager is required to coordinate",Vector2(16,size.y-48),12)
+			text("work orders.",Vector2(16,size.y-36),12)
+		elif state.native_state.validation_required:
+			text("All work orders must be validated",Vector2(16,size.y-48))
+			text("by the manager before they become",Vector2(16,size.y-36))
+			text("active.",Vector2(16,size.y-24))
 	var phases: Array=["","WORK_ORDERS_ACTIVE","WORK_ORDERS_WAITING","WORK_ORDERS_CHECKING","WORK_ORDERS_READY"]
 	for index in page_rows:
 		var row: Dictionary=state.rows.get(state.first+index,{})
@@ -136,4 +150,7 @@ func _draw() -> void:
 				text("0 = Can use any shop",Vector2(576,y+36))
 			text(limit,Vector2(576,y+24))
 			for button in 3:icon(["WORK_ORDERS_ENTER_AMOUNT","WORK_ORDERS_INCREASE_AMOUNT","WORK_ORDERS_DECREASE_AMOUNT"][button],Vector2(736+button*32,y))
+		elif row.native_state.has("workshop_name"):
+			var workshop: String=row.native_state.workshop_name
+			text(workshop,Vector2(576,y+24))
 		icon("WORK_ORDERS_REMOVE",Vector2(840,y))

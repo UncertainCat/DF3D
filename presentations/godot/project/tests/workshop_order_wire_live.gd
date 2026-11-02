@@ -246,8 +246,9 @@ func run() -> void:
 	click(Vector2(888,global_y))
 	if not check(await settle(service,func():return global.phase==global.Phase.Ready and global.ticket==0),"Global removal failed; no retry"):quit(1);return
 	check(global.find_order(created_order.id).is_empty(),"Global removed identity retained")
-	# Staged owner entry while the global Create availability contract is pending.
-	owner.open_global_order_picker()
+	# Enter the global picker through its visible native Create control.
+	check(global.native_state.get("manager_available",false),"Native global manager observation missing")
+	click(Vector2(944,142))
 	if not check(await settle(service,func():return owner.order_choices.phase==owner.order_choices.Phase.Ready),"Global creation catalog did not load"):quit(1);return
 	var native_groups: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/global-work-order-picker.json"))
 	check(owner.order_choices.groups.size()==native_groups.groups.size(),"Global category count differs")

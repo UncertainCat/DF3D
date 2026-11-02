@@ -195,7 +195,7 @@ struct WorkOrderInput { uint16_t index=0; std::string description; int16_t matTy
 struct WorkOrderMaterial { int16_t matType=-1; int32_t matIndex=-1; std::string name; };
 struct WorkOrderTrait { std::string key,name; };
 struct WorkOrderItemType { int16_t itemType=-1,itemSubtype=-1; std::string name; };
-struct WorkOrderGroup { int16_t type=-1,subtype=-1; int32_t custom=-1; std::string name; uint32_t count=0; };
+struct WorkOrderGroup { int16_t type=-1,subtype=-1; int32_t custom=-1; std::string name; uint32_t count=0; std::optional<std::string> customCode; };
 struct WorkOrderTask { std::string key,name; int16_t jobType=-1; std::string reaction; int16_t itemType=-1,itemSubtype=-1,matType=-1; int32_t matIndex=-1; };
 struct BridgeWorkOrderCondition : WorkOrderCondition {
   std::optional<std::string> itemCaption;
@@ -203,7 +203,7 @@ struct BridgeWorkOrderCondition : WorkOrderCondition {
   std::vector<std::string> traits; uint8_t satisfaction=0; bool estimated=false; int32_t estimateCount=-1;
 };
 struct BridgeWorkOrderInfo : WorkOrderInfo {
-  struct NativeState {m::WorkOrderPhase phase=m::WorkOrderPhase::Unknown;bool validationRequired=false,detailsAvailable=false;};
+  struct NativeState {m::WorkOrderPhase phase=m::WorkOrderPhase::Unknown;bool validationRequired=false,detailsAvailable=false;std::optional<std::string> workshopName;};
   std::optional<NativeState> nativeState;
   std::optional<std::vector<BridgeWorkOrderCondition>> suggestedConditions;
   int32_t position=-1; uint8_t detailKind=0; int32_t sizeRaw=-1,encrustFlags=0;
@@ -212,6 +212,7 @@ struct BridgeWorkOrderInfo : WorkOrderInfo {
   std::vector<BridgeWorkOrderCondition> conditions;
 };
 struct BridgeWorkOrderState : WorkOrderState {
+  std::optional<df3d_production::NativeWorkOrderListState> nativeState;
   std::vector<BridgeWorkOrderInfo> orders;
   std::vector<WorkOrderMaterial> materials;
   std::vector<WorkOrderTrait> traits;
@@ -777,7 +778,7 @@ void publish() {
     std::vector<flatbuffers::Offset<m::WorkOrderInput>> wi;
     for(const auto& v:o.inputs)wi.push_back(m::CreateWorkOrderInput(b,v.index,b.CreateString(v.description),v.matType,v.matIndex,v.editable));
     flatbuffers::Offset<m::WorkOrderNativeState> native;
-    if(o.nativeState)native=m::CreateWorkOrderNativeState(b,o.nativeState->phase,o.nativeState->validationRequired,o.nativeState->detailsAvailable);
+    if(o.nativeState)native=m::CreateWorkOrderNativeState(b,o.nativeState->phase,o.nativeState->validationRequired,o.nativeState->detailsAvailable,o.nativeState->workshopName?b.CreateString(*o.nativeState->workshopName):0);
     wo.push_back(m::CreateWorkOrderInfo(b,o.id,o.revision,b.CreateString(o.name),o.total,o.remaining,o.frequency,o.validated,o.active,o.finishedYear,o.finishedTick,o.workshopId,o.maxWorkshops,b.CreateVector(o.generatedJobs),b.CreateVector(cs),o.editable,b.CreateString(o.reason),o.position,o.detailKind,o.sizeRaw,o.encrustFlags,o.matType,o.matIndex,o.materialCategory,b.CreateVector(wi),native,suggestions));
   }
   std::vector<flatbuffers::Offset<m::ProductionRecipe>> wr;for(const auto& r:workOrders.recipes)wr.push_back(m::CreateProductionRecipe(b,b.CreateString(r.key),b.CreateString(r.name)));
@@ -790,10 +791,12 @@ void publish() {
   std::vector<flatbuffers::Offset<m::WorkOrderItemType>> wo_types;
   for(const auto& v:workOrders.types)wo_types.push_back(m::CreateWorkOrderItemType(b,v.itemType,v.itemSubtype,b.CreateString(v.name)));
   std::vector<flatbuffers::Offset<m::WorkOrderGroup>> wo_groups;
-  for(const auto& v:workOrders.groups)wo_groups.push_back(m::CreateWorkOrderGroup(b,v.type,v.subtype,v.custom,b.CreateString(v.name),v.count));
+  for(const auto& v:workOrders.groups)wo_groups.push_back(m::CreateWorkOrderGroup(b,v.type,v.subtype,v.custom,b.CreateString(v.name),v.count,v.customCode?b.CreateString(*v.customCode):0));
   std::vector<flatbuffers::Offset<m::WorkOrderTask>> wo_tasks;
   for(const auto& v:workOrders.tasks)wo_tasks.push_back(m::CreateWorkOrderTask(b,b.CreateString(v.key),b.CreateString(v.name),v.jobType,b.CreateString(v.reaction),v.itemType,v.itemSubtype,v.matType,v.matIndex));
-  auto workOrderResult=m::CreateWorkOrderState(b,b.CreateVector(wo),b.CreateVector(wr),b.CreateVector(wc),b.CreateVector(wm),workOrders.nextCursor,b.CreateString(workOrders.detail),b.CreateVector(wo_materials),b.CreateVector(wo_traits),b.CreateVector(wo_types),b.CreateVector(wo_groups),b.CreateVector(wo_tasks),workOrders.total,workOrders.listRevision,workOrders.buildPhase,workOrders.buildDone,workOrders.buildTotal);
+  flatbuffers::Offset<m::WorkOrderListNativeState> workOrderNative;
+  if(workOrders.nativeState)workOrderNative=m::CreateWorkOrderListNativeState(b,workOrders.nativeState->managerAvailable,workOrders.nativeState->validationRequired);
+  auto workOrderResult=m::CreateWorkOrderState(b,b.CreateVector(wo),b.CreateVector(wr),b.CreateVector(wc),b.CreateVector(wm),workOrders.nextCursor,b.CreateString(workOrders.detail),b.CreateVector(wo_materials),b.CreateVector(wo_traits),b.CreateVector(wo_types),b.CreateVector(wo_groups),b.CreateVector(wo_tasks),workOrders.total,workOrders.listRevision,workOrders.buildPhase,workOrders.buildDone,workOrders.buildTotal,workOrderNative);
   std::vector<flatbuffers::Offset<m::CitizenInfo>> citizenRows;
   for(const auto& u:citizens.citizens) {
     std::vector<flatbuffers::Offset<m::CitizenRole>> roles;
@@ -2665,7 +2668,7 @@ BridgeWorkOrderInfo copyNativeWorkOrder(const df3d_production::NativeWorkOrderRo
   row.frequency=native.frequency;row.validated=native.validated;row.active=native.active;
   row.finishedYear=native.finishedYear;row.finishedTick=native.finishedTick;row.maxWorkshops=native.maxWorkshops;
   row.matType=native.matType;row.matIndex=native.matIndex;row.materialCategory=native.materialCategory;
-  row.nativeState=BridgeWorkOrderInfo::NativeState{m::WorkOrderPhase(native.phase),native.validationRequired,native.detailsAvailable};
+  row.nativeState=BridgeWorkOrderInfo::NativeState{m::WorkOrderPhase(native.phase),native.validationRequired,native.detailsAvailable,native.workshopName?std::optional<std::string>(DF2UTF(*native.workshopName)):std::nullopt};
   for(size_t i=0;i<native.itemConditions.size();++i) {
     const auto& c=native.itemConditions[i];BridgeWorkOrderCondition value;value.index=uint16_t(i);
     value.compare=int8_t(c.compare_type);value.threshold=c.compare_val;value.itemType=int16_t(c.item_type);
@@ -2947,6 +2950,7 @@ void run(color_ostream& out) {
       const auto page=q->workshop_id()==-2?df3d_production::nativeGlobalOrderPage(q->cursor(),q->expected_list_revision()):tile && !tile->bits.hidden?
         df3d_production::nativeWorkshopOrderPage(building,q->cursor(),q->expected_list_revision()):std::nullopt;
       if(!page){publish();return;}
+      workOrders.nativeState=page->nativeState;
       workOrders.listRevision=page->revision;workOrders.total=page->total;workOrders.nextCursor=page->nextCursor;
       for(const auto& native:page->rows) {
         workOrders.orders.push_back(copyNativeWorkOrder(native));
@@ -2991,7 +2995,13 @@ void run(color_ostream& out) {
           if(!groups || groups->size()>128){publish();return;}
           bool selected=false;
           for(const auto& group:*groups) {
-            workOrders.groups.push_back({int16_t(group.type),int16_t(group.subtype),group.custom,DF2UTF(group.name),uint32_t(group.rows.size())});
+            std::optional<std::string> customCode;
+            if(group.custom>=0) {
+              const auto* raw=df::building_def::find(group.custom);
+              if(!raw || raw->code.size()>128){workOrders={};publish();return;}
+              customCode=raw->code;
+            }
+            workOrders.groups.push_back({int16_t(group.type),int16_t(group.subtype),group.custom,DF2UTF(group.name),uint32_t(group.rows.size()),customCode});
             if(group.type==q->group_type() && group.subtype==q->group_subtype() && group.custom==q->group_custom()) {
               candidates=group.rows;selected=true;
             }

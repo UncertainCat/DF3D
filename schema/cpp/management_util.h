@@ -30,8 +30,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 117;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v117";
+inline constexpr uint32_t kManagementVersion = 118;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v118";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -464,7 +464,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
         p->repeat() < -1 || p->repeat()>1 || p->suspend() < -1 || p->suspend()>1 ||
         p->season() < -1 || p->season()>3 || (p->query() && p->query()->size()>(r.action()==ManagementAction::ProductionInspect?138:128)) ||
         (p->recipe() && p->recipe()->size()>128)) return "invalid production request";
-    if(!p->workshop_orders() && p->general_order_delta())return "unexpected workshop order step";
+    if(!p->workshop_orders() && (p->general_order_delta() || p->general_order_value()!=-1))return "unexpected workshop order step";
     if(p->workshop_orders()) {
       const bool edit=r.action()==ManagementAction::FarmEdit;
       if((!edit && r.action()!=ManagementAction::ProductionInspect) || p->building_id()<0 ||
@@ -473,9 +473,9 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
          p->item_id()!=-1 || p->item_value()!=-1 || p->season()!=-1 || p->crop_id()!=-1 || p->seasonal_fertilization()!=-1 ||
          p->job_id()!=-1 || p->repeat()!=-1 || p->suspend()!=-1 || p->cancel() || p->farm_name() || p->cursor() ||
          p->farm_operation()!=FarmOperation::Crop || (p->recipe() && p->recipe()->size()) || (p->query() && p->query()->size()) ||
-         p->expected_revision()>INT64_MAX ||
-         (edit ? (!p->expected_revision() || (p->general_order_delta()!=-1 && p->general_order_delta()!=1))
-               : (p->expected_revision() || p->general_order_delta())))return "invalid workshop orders intent";
+         p->expected_revision()>INT64_MAX || p->general_order_value()<-1 || p->general_order_value()>99 ||
+         (edit ? (!p->expected_revision() || (p->general_order_value()>=0 ? p->general_order_delta()!=0 : (p->general_order_delta()!=-1 && p->general_order_delta()!=1)))
+               : (p->expected_revision() || p->general_order_delta() || p->general_order_value()!=-1)))return "invalid workshop orders intent";
     } else if(p->workshop_workers()) {
       const bool edit=r.action()==ManagementAction::FarmEdit;
       if((!edit && r.action()!=ManagementAction::ProductionInspect) || p->building_id()<0 ||
@@ -1519,9 +1519,10 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
          (edit ? (state->outcome()==FarmEditOutcome::None || ok!=(state->outcome()==FarmEditOutcome::Completed)) : state->outcome()!=FarmEditOutcome::None))return "invalid workshop orders outcome";
       if(ok) {
         if(!state->revision() || state->revision()>INT64_MAX || !state->order_ids() || state->order_ids()->size()>16384 ||
-           (edit ? (state->delta()!=-1 && state->delta()!=1) : state->delta()!=0))return "invalid workshop orders profile";
+           state->value()<-1 || state->value()>99 ||
+           (edit ? (state->value()>=0 ? (state->delta()!=0 || state->general_order_limit()!=state->value()) : (state->delta()!=-1 && state->delta()!=1)) : (state->delta()!=0 || state->value()!=-1)))return "invalid workshop orders profile";
         for(const auto id:*state->order_ids())if(id<0)return "invalid workshop order id";
-      } else if(state->revision() || state->manager_available() || state->general_order_limit() || state->delta() ||
+      } else if(state->revision() || state->manager_available() || state->general_order_limit() || state->delta() || state->value()!=-1 ||
                 (state->order_ids() && state->order_ids()->size()))return "unconfirmed workshop orders authority";
     } else if(const auto* state=p->workshop_workers()) {
       if(p->building_header() || p->independent_item() || p->item() || p->item_position() || p->farm() || p->contents() || p->contents_edit() || p->farm_edit_outcome()!=FarmEditOutcome::None ||

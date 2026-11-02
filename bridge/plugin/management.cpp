@@ -738,7 +738,7 @@ void publish() {
   flatbuffers::Offset<m::WorkshopOrdersState> workshopOrders;
   if(production.workshopOrders) {
     const auto& p=*production.workshopOrders;
-    workshopOrders=m::CreateWorkshopOrdersState(b,p.buildingId,p.revision,p.managerAvailable,p.generalOrderLimit,b.CreateVector(p.orderIds),p.outcome,p.delta);
+    workshopOrders=m::CreateWorkshopOrdersState(b,p.buildingId,p.revision,p.managerAvailable,p.generalOrderLimit,b.CreateVector(p.orderIds),p.outcome,p.delta,p.value);
   }
   flatbuffers::Offset<m::WorkshopWorkersState> workshopWorkers;
   if(production.workshopWorkers) {
@@ -2664,11 +2664,13 @@ void run(color_ostream& out) {
       if(!editing) {
         if(const auto p=df3d_production::workshopOrdersProfile(building)){copy(*p);status=m::ManagementStatus::Ok;}
       } else {
-        const auto result=df3d_production::stepWorkshopGeneralOrders(q->building_id(),q->expected_revision(),q->general_order_delta());
+        const auto result=q->general_order_value()>=0?
+          df3d_production::setWorkshopGeneralOrders(q->building_id(),q->expected_revision(),q->general_order_value()):
+          df3d_production::stepWorkshopGeneralOrders(q->building_id(),q->expected_revision(),q->general_order_delta());
         using O=df3d_production::WorkshopOrdersOutcome;
         mutated=result.outcome==O::Applied || result.outcome==O::Unknown;
         if(result.outcome==O::Applied && result.profile) {
-          copy(*result.profile);response.delta=q->general_order_delta();response.outcome=m::FarmEditOutcome::Completed;status=m::ManagementStatus::Ok;
+          copy(*result.profile);response.delta=q->general_order_delta();response.value=q->general_order_value();response.outcome=m::FarmEditOutcome::Completed;status=m::ManagementStatus::Ok;
         } else if(result.outcome==O::Unknown)response.outcome=m::FarmEditOutcome::Unknown;
         else if(result.outcome==O::Stale)response.outcome=m::FarmEditOutcome::Stale;
       }

@@ -24,6 +24,7 @@ inline bool workshopOrdersSupported() {
             {0x1aca10,0x32,UINT64_C(0x902eac70d5324069)}, // workshop order membership
             {0x1acb79,0x21,UINT64_C(0x2c2ba9cf7b6977b7)}, // increment, capped at99
             {0x1acbc7,0x14,UINT64_C(0xf50c0075ec5c3a97)}, // decrement, floored at0
+            {0x8bb3a6,0x2e,UINT64_C(0x9e4d7f48566ff24a)}, // numeric editor write/clamp
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -76,15 +77,15 @@ struct WorkshopOrdersResult {
     WorkshopOrdersOutcome outcome=WorkshopOrdersOutcome::Rejected;
     std::optional<WorkshopOrdersProfile> profile;
 };
-inline WorkshopOrdersResult stepWorkshopGeneralOrders(int32_t buildingId,uint64_t revision,int32_t delta) {
+inline WorkshopOrdersResult editWorkshopGeneralOrders(int32_t buildingId,uint64_t revision,int32_t value,bool relative) {
     WorkshopOrdersResult result;
     if(!workshopOrdersSupported()){result.outcome=WorkshopOrdersOutcome::Unavailable;return result;}
-    if(delta!=-1 && delta!=1)return result;
+    if(relative ? (value!=-1 && value!=1) : (value<0 || value>99))return result;
     auto* building=df::building::find(buildingId);
     const auto before=workshopOrdersProfile(building);if(!before)return result;
     if(!revision || revision!=before->revision){result.outcome=WorkshopOrdersOutcome::Stale;return result;}
     if(before->generalOrderLimit<0 || before->generalOrderLimit>99)return result;
-    const int32_t desired=std::clamp(before->generalOrderLimit+delta,0,99);
+    const int32_t desired=relative?std::clamp(before->generalOrderLimit+value,0,99):value;
     // Native keeps this effect inline in the input handler. Compose only that
     // semantic write; the handler itself owns forbidden menu/input state.
     building->getWorkshopProfile()->max_general_orders=desired;
@@ -96,5 +97,14 @@ inline WorkshopOrdersResult stepWorkshopGeneralOrders(int32_t buildingId,uint64_
         }
     }catch(...) {} // Never replay an effect whose observation failed.
     return result;
+}
+inline WorkshopOrdersResult stepWorkshopGeneralOrders(int32_t buildingId,uint64_t revision,int32_t delta) {
+    return editWorkshopGeneralOrders(buildingId,revision,delta,true);
+}
+// Native8bb328..8bb3d4 applies after every changed text value. The presentation
+// owns the two-character draft; only its parsed/clamped value crosses the bridge.
+// Enter releases the editor; it is not the simulation commit boundary.
+inline WorkshopOrdersResult setWorkshopGeneralOrders(int32_t buildingId,uint64_t revision,int32_t value) {
+    return editWorkshopGeneralOrders(buildingId,revision,value,false);
 }
 }

@@ -282,7 +282,7 @@ struct ProductionRequest {
   int32_t itemId=-1;int8_t itemValue=-1;
   bool contents=false,locateItem=false,independentItem=false,buildingHeader=false,workshopWorkers=false;
   int32_t workerId=-1;uint64_t workerListRevision=0;int8_t workerValue=-1;
-  bool workshopOrders=false;int8_t generalOrderDelta=0;
+  bool workshopOrders=false;int8_t generalOrderDelta=0;int16_t generalOrderValue=-1;
   FarmOperation farmOperation=FarmOperation::Crop;
   int8_t seasonalFertilization=-1;
   std::string farmName;
@@ -389,7 +389,7 @@ struct WorkshopWorkersState {
 struct WorkshopOrdersState {
   int32_t buildingId=-1,generalOrderLimit=0;
   uint64_t revision=0;bool managerAvailable=false;
-  std::vector<int32_t> orderIds;int8_t delta=0;
+  std::vector<int32_t> orderIds;int8_t delta=0;int16_t value=-1;
   FarmEditOutcome outcome=FarmEditOutcome::None;
 };
 struct ProductionState {

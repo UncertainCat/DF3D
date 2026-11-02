@@ -22,6 +22,10 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management118 adds absolute general-order limit updates for native numeric entry.
+Rebuild/install both peers on `Local\\df3d_management_v118`; management117 cannot
+execute this intent. Older recordings do not supply numeric-edit receipts.
+
 Management117 adds native workshop order-profile reads and general-order limit steps.
 Rebuild/install both peers on `Local\\df3d_management_v117`. Older recordings
 cannot supply manager availability or limit authority; do not synthesize them.

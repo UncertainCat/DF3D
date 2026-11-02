@@ -92,7 +92,7 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
     const auto& c=*p.workshopOrders;Dictionary v;Array ids;
     v["building_id"]=c.buildingId;v["revision"]=int64_t(c.revision);
     v["manager_available"]=c.managerAvailable;v["general_order_limit"]=c.generalOrderLimit;
-    v["outcome"]=int(c.outcome);v["delta"]=c.delta;
+    v["outcome"]=int(c.outcome);v["delta"]=c.delta;v["value"]=c.value;
     for(const auto id:c.orderIds)ids.append(id);
     v["order_ids"]=ids;prod["workshop_orders"]=v;
   }
@@ -405,7 +405,7 @@ bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& err
 
 bool validateProductionShape(const Dictionary& data, String& error) {
   if(data.has("workshop_orders") && data["workshop_orders"].get_type()!=Variant::BOOL){error="Wrong management field type: workshop_orders";return false;}
-  if(!managementDictionaryTypes(data, {"general_order_delta"}, error))return false;
+  if(!managementDictionaryTypes(data, {"general_order_delta", "general_order_value"}, error))return false;
   if(data.has("workshop_workers") && data["workshop_workers"].get_type()!=Variant::BOOL){error="Wrong management field type: workshop_workers";return false;}
   if(data.has("building_header") && data["building_header"].get_type()!=Variant::BOOL){error="Wrong management field type: building_header";return false;}
   if(data.has("independent_item") && data["independent_item"].get_type()!=Variant::BOOL){error="Wrong management field type: independent_item";return false;}
@@ -452,6 +452,7 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
   if(data.has("workshop_orders") && data["workshop_orders"].get_type()!=Variant::BOOL){error="Wrong management field type: workshop_orders";return false;}
   value.workshopOrders=data.get("workshop_orders",false);
   value.generalOrderDelta=int8_t(n("general_order_delta",0,-1,1));
+  value.generalOrderValue=int16_t(n("general_order_value",-1,-1,99));
   value.workshopWorkers=data.get("workshop_workers",false);
   value.workerId=int32_t(n("worker_id",-1,-1,INT32_MAX));value.workerListRevision=uint64_t(n("worker_list_revision",0,0,INT64_MAX));value.workerValue=int8_t(n("worker_value",-1,-1,1));
   value.farmOperation=wm::FarmOperation(n("farm_operation",0,0,12));

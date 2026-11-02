@@ -100,6 +100,7 @@
 #include "workshop_workers_native.h"
 #include "workshop_orders_native.h"
 #include "work_order_catalog_native.h"
+#include "work_order_conditions_native.h"
 #include "df/job_item.h"
 #include "musical_detail_native.h"
 #include "dance_detail_native.h"
@@ -2069,6 +2070,31 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           facts["melt"]=observed->melt;facts["hidden"]=observed->hidden;
           facts["can_dump"]=observed->canDump;facts["can_melt"]=observed->canMelt;
           result["facts"]=std::move(facts);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="work-order-suggestions-probe") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];
+          const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0 || !df::global::world)return CR_WRONG_USAGE;
+          const auto& all=df::global::world->manager_orders.all;
+          const auto it=std::find_if(all.begin(),all.end(),[&](const auto* row){return row && row->id==id;});
+          if(it==all.end())return CR_FAILURE;
+          const auto rows=df3d_production::nativeWorkOrderSuggestions(**it);if(!rows)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["rows"]=Json::Value(Json::arrayValue);
+          for(const auto& row:*rows) {
+            Json::Value value;
+            value["compare"]=int(row.compare_type);value["threshold"]=row.compare_val;
+            value["item_type"]=int(row.item_type);value["item_subtype"]=row.item_subtype;
+            value["mat_type"]=row.mat_type;value["mat_index"]=row.mat_index;
+            value["flags1"]=row.flags1.whole;value["flags2"]=row.flags2.whole;value["flags3"]=row.flags3.whole;
+            value["flags4"]=row.flags4;value["flags5"]=row.flags5;
+            value["reaction_class"]=row.reaction_class;value["material_product"]=row.has_material_reaction_product;
+            value["metal_ore"]=row.metal_ore;value["min_dimension"]=row.min_dimension;
+            value["reaction_id"]=row.reaction_id;value["tool_use"]=int(row.has_tool_use);value["dye_color"]=row.dye_color;
+            value["contains"]=Json::Value(Json::arrayValue);for(auto id:row.contains)value["contains"].append(id);
+            result["rows"].append(value);
+          }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="work-orders-catalog-probe") {

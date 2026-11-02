@@ -6758,6 +6758,38 @@ have known diagnostics only, and core19/19 plus composition pass in
 `build/qa/workshop-order-removal`. The workshop route remains staged pending
 conditions, Details and the other unfinished workshop controls.
 
+`work_order_conditions_native.h` exposes native suggested conditions through
+`df3d work-order-suggestions-probe <order-id>`. Nativea9ce10 is a bounded-purpose
+suggestion builder: its context reads only the explicit order at+8 and appends
+condition pointers at+58. It is not a renderer or input handler. The adapter
+provides an independent scratch layout and recipe copy, with null requirements
+so DF builds temporary inputs. Native d160c0 supplies outputs and d09ca0 supplies
+inputs; installed raws remain authoritative. Material lookup scratch is restored.
+The result contains owned condition values; native strings/contained-ID vectors
+and allocations are released by the same leaves used at14eda2..14edca. No native
+panel, widget or staged edit supplies runtime inputs. This is a backend adapter,
+not yet management-wire or rendered Conditions support.
+
+Protected194413 on2026-11-01 matches both Extract-from-plants suggestions against
+native pointer elements on every captured condition field, including all five
+flag words, material/reaction restrictions and contained IDs. The checked source
+order fields and the first0x70 native context bytes remain unchanged. The current
+DFHack declaration incorrectly describes suggestion elements as values; native
+stores pointers, confirmed by a9ce10/14ed50 and this diagnostic observation.
+Runtime uses its own explicit layout and does not depend on that declaration.
+Other recipe families and nested restriction combinations remain unverified.
+
+The same capture establishes Conditions navigation into the main Work orders
+information panel, its suggested rows, and all five clock-button captions.
+Native3c4e27..3c4e47 cycles frequency modulo5; observed status and scheduled date
+remain unchanged across the cycle. Details for Extract opens a separate panel
+with Specify glass and Specify plant. Captures were inspected. Initial193708
+assumed Conditions returned directly to the workshop and missed Details; it is
+not acceptance. Owned DF37772 exits unsaved, source preservation passes, all five
+Godot groups have known diagnostics only, and core19/19/composition pass in
+`build/qa/workshop-order-suggestions`. Conditions wording/transport, frequency
+writes, condition edits and Details controls remain unfinished.
+
 Protected183314 on2026-11-01 compares all2658 global rows and the37 Carpenter/4
 Still rows with the actual native picker: job/reaction/item/material fields,
 caption, normalized search string and ordering match. Both native picker captures

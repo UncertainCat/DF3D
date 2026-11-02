@@ -3244,5 +3244,99 @@
       "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
       "godot-diagnostics.json": "edafb1af8c5609a654cee690f3ea0440427a3e78fd0e71187796d20ecb88f5f9"
     }
+  },
+  "work_order_conditions_reference": {
+    "build": "DF 53.16 Steam 24557528",
+    "run": "build/stockpile-storage-native-farm-discovery-20261101-194413",
+    "scope": "Owned native suggestion builder matches both Extract-from-plants conditions; checked order/context unchanged. Native frequency cycle and Conditions/Details layout captured. No management-wire or viewer Conditions/Details acceptance.",
+    "suggestions": [
+      {
+        "compare": 2,
+        "contains": [],
+        "dye_color": -1,
+        "flags1": 16400,
+        "flags2": 0,
+        "flags3": 0,
+        "flags4": 0,
+        "flags5": 0,
+        "item_subtype": -1,
+        "item_type": 54,
+        "mat_index": -1,
+        "mat_type": -1,
+        "material_product": "",
+        "metal_ore": -1,
+        "min_dimension": -1,
+        "reaction_class": "",
+        "reaction_id": -1,
+        "threshold": 10,
+        "tool_use": -1
+      },
+      {
+        "compare": 2,
+        "contains": [],
+        "dye_color": -1,
+        "flags1": 16778240,
+        "flags2": 0,
+        "flags3": 0,
+        "flags4": 0,
+        "flags5": 0,
+        "item_subtype": -1,
+        "item_type": 11,
+        "mat_index": -1,
+        "mat_type": -1,
+        "material_product": "",
+        "metal_ore": -1,
+        "min_dimension": -1,
+        "reaction_class": "",
+        "reaction_id": -1,
+        "threshold": 10,
+        "tool_use": -1
+      }
+    ],
+    "frequency_steps": [
+      {
+        "finished_tick": -1,
+        "finished_year": -1,
+        "frequency": 1,
+        "status": 0,
+        "caption": "Restarts if completed, checked daily"
+      },
+      {
+        "finished_tick": -1,
+        "finished_year": -1,
+        "frequency": 2,
+        "status": 0,
+        "caption": "Restarts if completed, checked monthly"
+      },
+      {
+        "finished_tick": -1,
+        "finished_year": -1,
+        "frequency": 3,
+        "status": 0,
+        "caption": "Restarts if completed, checked seasonally"
+      },
+      {
+        "finished_tick": -1,
+        "finished_year": -1,
+        "frequency": 4,
+        "status": 0,
+        "caption": "Restarts if completed, checked yearly"
+      },
+      {
+        "finished_tick": -1,
+        "finished_year": -1,
+        "frequency": 0,
+        "status": 0,
+        "caption": "One-time order"
+      }
+    ],
+    "files": {
+      "workshop-order-conditions-native.png": "ddd1c8169e4f16debe5820f81a7fc8eb5b2800c3754031fd825193952ef04e24",
+      "workshop-order-conditions-frequency-native.png": "ddd1c8169e4f16debe5820f81a7fc8eb5b2800c3754031fd825193952ef04e24",
+      "workshop-order-details-native.png": "149baf9bf59538996f751329fe8f07c85a8fddab11d3501c0abc839d73ae8337",
+      "workshop-native.json": "191f41c7899dfc1a56fc54f1626679c2697198dfd20fcdbbad368f69290e6363",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "godot-diagnostics.json": "edafb1af8c5609a654cee690f3ea0440427a3e78fd0e71187796d20ecb88f5f9"
+    }
   }
 }

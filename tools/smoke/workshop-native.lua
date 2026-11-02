@@ -360,6 +360,59 @@ local ok,err=xpcall(function()
   shot('order-quantity-native')
   gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount())
   expected.quantity_native=order_values(native)
+  mouse(808,190)
+  local conditions=df.global.game.main_interface.info.work_orders.conditions
+  assert(conditions.open and conditions.wq.id==next_id,'Native work-order conditions did not open')
+  result.order_conditions={order_id=next_id,frequency=native.frequency,suggested_count=#conditions.suggested_item_condition}
+  shot('order-conditions-native')
+  -- The supported XML declares value elements here, but native stores pointers.
+  -- This raw diagnostic observation never supplies runtime UI state.
+  local _,condition_address=df.sizeof(conditions)
+  local first=df.reinterpret_cast('uint64_t',condition_address+0x58).value
+  local finish=df.reinterpret_cast('uint64_t',condition_address+0x60).value
+  assert(finish>=first and (finish-first)%8==0 and finish-first<=1024)
+  local native_suggestions={}
+  for at=first,finish-1,8 do
+   local pointer=df.reinterpret_cast('uint64_t',at).value
+   local c=df.reinterpret_cast(df.manager_order_condition_item,pointer)
+   local contained={};for _,value in ipairs(c.contains)do contained[#contained+1]=value end
+   native_suggestions[#native_suggestions+1]={compare=c.compare_type,threshold=c.compare_val,item_type=c.item_type,item_subtype=c.item_subtype,
+    mat_type=c.mat_type,mat_index=c.mat_index,flags1=c.flags1.whole,flags2=c.flags2.whole,flags3=c.flags3.whole,flags4=c.flags4,flags5=c.flags5,
+    reaction_class=c.reaction_class,material_product=c.has_material_reaction_product,metal_ore=c.metal_ore,min_dimension=c.min_dimension,
+    reaction_id=c.reaction_id,tool_use=c.has_tool_use,dye_color=c.dye_color,contains=contained}
+  end
+  local function context_bytes()
+   local values={};for i=0,0x6f do values[#values+1]=df.reinterpret_cast('uint8_t',condition_address+i).value end;return table.concat(values,',')
+  end
+  local before_context=context_bytes();local before_order=json.encode(order_values(native))
+  local text,code=dfhack.run_command_silent('df3d','work-order-suggestions-probe',tostring(next_id));assert(code==0,text)
+  local owned=json.decode(text).rows
+  assert(#owned==#native_suggestions,'Owned native suggestion count differs')
+  for i,c in ipairs(native_suggestions)do for key,value in pairs(c)do
+   if key=='contains' then assert(json.encode(value)==json.encode(owned[i][key]),'Suggestion contained identities differ')
+   else assert(value==owned[i][key],'Suggestion '..i..' '..key..' differs')end
+  end end
+  assert(before_context==context_bytes() and before_order==json.encode(order_values(native)),'Owned suggestions changed source order or native context')
+  result.order_conditions.suggested_count=#native_suggestions
+  result.order_conditions.suggestions=native_suggestions
+  result.order_conditions.owned_suggestions=owned
+  result.order_conditions.source_unchanged=true
+
+  result.order_conditions.frequency_steps={}
+  for i=1,5 do
+   mouse(880,142)
+   result.order_conditions.frequency_steps[#result.order_conditions.frequency_steps+1]={frequency=native.frequency,status=native.status.whole,finished_year=native.finished_year,finished_tick=native.finished_year_tick,lines=lines()}
+  end
+  shot('order-conditions-frequency-native')
+  assert(native.frequency==expected.native.frequency,'Frequency cycle did not return to original value')
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());assert(not conditions.open)
+  if df.global.game.main_interface.info.open then gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())end
+  select_map(still);assert(click_label('Work orders'))
+  mouse(840,190)
+  assert(df.global.game.main_interface.job_details.open,'Native order Details did not open')
+  shot('order-details-native')
+  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+  select_map(still);assert(click_label('Work orders'))
   local dependent=assert(df.global.world.manager_orders.all[0]);assert(dependent.id~=next_id)
   local prior_dependencies=#dependent.order_conditions
   local function dependency(target)

@@ -1,10 +1,10 @@
 extends RefCounted
 # Shared job-backed Details state. Native owns choices, filtering and ordering.
-# Edits are not routed until their native effects have been accepted.
+# Material edits carry both displayed revisions; the service owns sent outcomes.
 signal changed
-signal choice_requested(intent: Dictionary)
+signal applied
 const C=preload("res://scripts/management_contract.gd")
-enum Phase { Closed, Reading, Ready, Rejected, Unavailable }
+enum Phase { Closed, Reading, Ready, Rejected, Unavailable, Applying, Unknown }
 var service
 var phase:=Phase.Closed
 var building_id:=-1
@@ -41,7 +41,7 @@ func open(building: int,job: int,unit: int=-1) -> void:
 func has_art() -> bool:return false
 func row_base() -> int:return 0
 func read_root() -> void:
-	if job_id<0:return
+	if job_id<0 or phase in [Phase.Applying,Phase.Unknown]:return
 	selected=-1;query="";_restart()
 func select_option(index: int) -> void:
 	if phase!=Phase.Ready or index<0 or index>=snapshot.get("options",[]).size():return
@@ -87,5 +87,17 @@ func choose(id: int) -> void:
 	if phase!=Phase.Ready or selected<0:return
 	for row: Dictionary in rows:
 		if row.id==id:
-			choice_requested.emit({"job_id":job_id,"building_id":building_id,"unit_id":unit_id,"expected_revision":snapshot.revision,"option":selected,"expected_choices_revision":snapshot.choices_revision,"choice":id})
+			var intent: Dictionary={"action":C.ManagementAction.JobSettingsApply,"job_id":job_id,"building_id":building_id,"unit_id":unit_id,"expected_revision":snapshot.revision,"option":selected,"expected_choices_revision":snapshot.choices_revision,"choice":id}
+			retire();phase=Phase.Applying
+			var owner:=generation
+			ticket=service.submit("job_settings",intent,func(received,result,_sent):
+				if owner!=generation or received!=ticket:return
+				ticket=0
+				if result.get("outcome","")=="unknown":_fail(Phase.Unknown);return
+				var value: Dictionary=result.get("job_settings_edit",{})
+				if result.get("action",-1)==C.ManagementAction.JobSettingsApply and result.get("status",-1)==C.ManagementStatus.Ok and value.get("job_id")==job_id and value.get("building_id")==building_id and value.get("unit_id")==unit_id and value.get("outcome",-1)==C.JobSettingsEditOutcome.Applied:
+					close();applied.emit();return
+				_fail(Phase.Rejected if result.get("status",-1)==C.ManagementStatus.Rejected else Phase.Unknown))
+			if ticket==0:_fail(Phase.Unavailable)
+			else:changed.emit()
 			return

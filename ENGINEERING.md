@@ -8,7 +8,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | --- | --- | --- |
 | Residents accented search can miss the matching native activity caption. | No correction approved or implemented; retain native input and normalization. | Protected023145 on2026-11-06 types through the owned window: `Tâmol` returns no rows, while `tamol` finds two “Pray to Tâmol” rows. The textbox retains UTF-8, then callback1432700 applies the byte normalizer52cee0; normalized query bytes are116,195,111,109,111,108. The owned query provider matches both outcomes. |
 | Global Work orders quantity increment wraps32767 to-32768. | No correction approved or implemented; decision pending. | Protected003417 on2026-11-06 sets controlled quantities in the paused clone and clicks the native plus button.9999 becomes10000;32767 becomes-32768 in both total and remaining. Quantities are restored and DF40708 exits unsaved with source preservation. |
-| Minimum-width global Work orders overlaps workshop-limit controls/text with other row controls. | No correction approved; native drawing geometry is retained. Visible-button priority is pending maintainer decision before exposure. | Native000121 on2026-11-06 at912x552 establishes drawing overlap.010434 independently clicks the actual minimum-width Conditions center456,426: native enters workshop-limit input for that order, and typing1 changes max_workshops to1. The value is restored and the source save is preserved. Input3c5dc5..3c5dde checks the broad workshop-limit region before Conditions. Earlier000636 used the default-width x552 after shrinking, so it alone did not prove a Conditions hitbox defect;000739 opens Conditions before shrinking. |
+| Minimum-width global Work orders overlaps workshop-limit controls/text with other row controls. | Visible buttons take priority over overlapping workshop-limit text and controls; approved2026-11-06, implementation pending. Native drawing geometry is retained. | Native000121 on2026-11-06 at912x552 establishes drawing overlap.010434 independently clicks the actual minimum-width Conditions center456,426: native enters workshop-limit input for that order, and typing1 changes max_workshops to1. The value is restored and the source save is preserved. Input3c5dc5..3c5dde checks the broad workshop-limit region before Conditions. Earlier000636 used the default-width x552 after shrinking, so it alone did not prove a Conditions hitbox defect;000739 opens Conditions before shrinking. |
 | Work order tint ingredient captions repeat the source color where the target color would be expected. | No correction implemented; preserve native captions. | Native dye capture `build/stockpile-storage-native-input-20261105-223741`: target cerulean displays “Tint white cloth white using midnight blue dye”. Renderer2160f5/2161c7 reads the source color both times. |
 | Track material ordering depends on stale distances left by unrelated menus. | Request fresh native distances for each intent. | Implemented; construction Track distance evidence below and `fixtures/construction/connected_track.json`. |
 | First Track preview overwrites active search costs during lazy walkability rebuilding. | Preserve the stable route on the first preview. | Implemented; Track initialization evidence below and `fixtures/construction/track_route_initialization_probes.json.gz`. |
@@ -75,7 +75,8 @@ eligibility. Pinned job-side inline option enumeration is retained because the
 whole opener cannot be called;21d190 supplies choices using owned job/context
 storage. A sole option auto-selects as native does. Material, improvement and
 plant code paths exist; only the controlled material path is accepted. Clothing
-and artwork selection remain unsupported. No command edits a job.
+and artwork selection remain unsupported. The diagnostic is read-only; the staged
+Management137 material edit path is described below.
 Protected064001 on2026-11-06 matches all83 native material identities/counts/order,
 job/holder/search identity, and preserves native Details storage on a cold call.
 DF2896 exits unsaved with source preservation; GPU samples38C at30FPS, no
@@ -88,7 +89,8 @@ an exact native holder match. Results contain separate job/choice revisions,
 native options, original choice IDs, count captions and64-row pages. The reader
 fingerprints job requirements independently of the query; native2230f0/2239e0
 filter copied catalogs while preserving unfiltered choice IDs. Every result
-retires prior settings. There is no job-edit action or exposed UI route yet.
+retires prior settings. Management136 reads remain read-only; Management137 adds the staged edit path
+described below. Public Residents exposure remains pending.
 
 Protected070022 on2026-11-06 verifies all83 choices over two typed pages,
 identity/revision/title/count-caption preservation, Dolomite filtering, rejected
@@ -107,7 +109,7 @@ GPU samples36–37C with serial30FPS native graphics and a headless client.
 The staged shared job-settings state collects all pages under one job/choice
 revision and retires superseded searches, closes and session changes. The
 existing Details view has a job context with native layout, title and count
-alignment; job selections emit a staged intent and never call manager-order
+alignment; job selections use job-specific intents and never call manager-order
 writes. Protected071227 on2026-11-06 composes the real shared service/state/view
 headlessly: all83 choices, pointer wheel, typed Dolomite search and Escape pass.
 The controlled job is restored and owned DF38108 exits unsaved with source
@@ -131,7 +133,7 @@ Installed bridge SHA256 is
 652629A77559980CD476E153EAACBC65C71B2F155D3D320B29AC90841628E3E6.
 Owned DF37760 exits unsaved with source preservation; joined Godot logs have
 only the known thread notice. GPU samples35–36C, brief serial30FPS native and
-headless Godot. Edits, clothing/artwork and other job-family acceptance remain
+headless Godot. Clothing/artwork and other job-family acceptance remain
 unfinished; the public Residents route is still unchanged.
 
 Protected072540 on2026-11-06 exercises the complete staged Residents owner
@@ -163,7 +165,7 @@ inline effects2198df..2199ab are pinned (length0xcc, FNV0835284909b8e4cc): save
 original requirement material/flags2 once, change requirement material, and
 change job material for input0. No allocation or fallible operation follows
 the first write. Membership resolution remains the eventual safe-point caller's
-responsibility; no wire mutation or material-row submission exists yet.
+responsibility, enforced by the Management137 handler described below.
 `df3d residents-job-material-copy-probe <unit> <option> <choice>` applies the
 adapter exclusively to an independently copied job and requirements. With
 `DF3D_RESIDENTS_JOB_SETTINGS_EFFECT_ADAPTER=1`, protected073206 on2026-11-06
@@ -175,6 +177,35 @@ SHA256 is4737794A16D7A7224DCB1B60A40E9D92083280F7001A95C1A26AFDA3D05E79F8.
 DF22872 exits unsaved with source preservation. GPU samples36–37C during brief
 serial30FPS native graphics; no Godot graphics. Repeated changes, nonzero input
 indices, ordinary jobs and other option families remain unaccepted.
+
+Management137 adds `JobSettingsApply` to `job_settings`, with a separate typed
+request and Applied/Stale/Rejected result. Requests preserve exact job/holder/
+resident IDs, option, job/choice revisions and original choice ID. The safe-point
+handler rechecks Residents membership/current job or building job membership,
+then calls the validated job material adapter. Results retire independently of
+read catalogs. Both peers use Local\df3d_management_v137; rebuild together.
+The shared UI submits once, blocks further choices while pending, closes only
+on an exact Applied receipt, then refreshes the retained roster. Unknown outcomes
+remain noninteractive and are never replayed. Closing detaches the observer;
+the shared service retains sent mutation ownership. Other setting families and
+public Residents exposure are still unfinished.
+
+Protected074639 on2026-11-06 verifies stale job/holder/resident/revision rejection
+without changed job data, native paged reads, full headless owner navigation,
+then a pointer click on Dolomite through the actual shared service. The UI returns
+to the refreshed roster and native readback confirms job/input material0/169,
+details flag1 and original saved input0/-1/flags2. This is still the controlled
+unlinked job, not ordinary workshop execution acceptance. DF38528 exits unsaved
+with source preservation. Joined logs have only the known thread notice.
+Initial074520 applied correctly but caught an oracle Lua flag-access error and
+an owner teardown focus-release error; both were corrected before the final run.
+The view now releases focus only while its search control remains in the tree.
+Root19, extension and management-contract checks pass in job-edit-contract-20261106;
+root19 and both UI state checks pass in job-edit-ui-final-20261106. Native MSVC
+build passes; installed bridge SHA256 is
+87F74956DDD1DACA1639C3AAE313A1F58C2F086C89E4B043D3EC49C53F9B09E3.
+GPU samples35–38C; native graphics were brief/serial30FPS and Godot headless.
+
 
 
 

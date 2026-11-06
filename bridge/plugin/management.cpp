@@ -452,6 +452,8 @@ struct ResidentsActivityResult {int32_t unitId;df3d_residents::ActivityDescripti
 std::optional<ResidentsActivityResult> residentsActivity;
 struct JobSettingsResult {int32_t unitId=-1;uint32_t cursor=0;df3d_production::JobSettingsObservation value;};
 std::optional<JobSettingsResult> jobSettings;
+struct JobSettingsEditResult {int32_t jobId,buildingId,unitId;m::JobSettingsEditOutcome outcome;};
+std::optional<JobSettingsEditResult> jobSettingsEdit;
 m::TilePos worldHoverTile;
 void clearResult() {
   creatureHeader.reset();
@@ -465,7 +467,7 @@ void clearResult() {
   residentsRows.reset();
   residentsSpecialization.reset();
   residentsActivity.reset();
-  jobSettings.reset();
+  jobSettings.reset();jobSettingsEdit.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -971,6 +973,8 @@ void publish() {
     }
     residentsRowsResult=m::CreateResidentsRowsState(b,b.CreateVector(rows));
   }
+  flatbuffers::Offset<m::JobSettingsEditState> jobSettingsEditResult;
+  if(jobSettingsEdit) {const auto& v=*jobSettingsEdit;jobSettingsEditResult=m::CreateJobSettingsEditState(b,v.jobId,v.buildingId,v.unitId,v.outcome);}
   flatbuffers::Offset<m::JobSettingsState> jobSettingsResult;
   if(jobSettings) {
     const auto& v=jobSettings->value;
@@ -1013,7 +1017,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult);
   b.Finish(s);
   if (auto e = m::validateManagementState(
           *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()))) {
@@ -3809,6 +3813,32 @@ void run(color_ostream& out) {
       case O::Unknown:result.outcome=m::ResidentsSpecializationOutcome::Unknown;mutated=true;break;
       default:break;
     }
+    publish();return;
+  }
+  if(r->action()==m::ManagementAction::JobSettingsApply) {
+    message.clear();status=m::ManagementStatus::Rejected;
+    const auto& q=*r->job_settings_edit();
+    jobSettingsEdit=JobSettingsEditResult{q.job_id(),q.building_id(),q.unit_id(),m::JobSettingsEditOutcome::Stale};
+    try {
+      df::job* source=nullptr;
+      if(q.unit_id()>=0) {
+        const auto eligible=df3d_residents::orderedResidents(0,false);auto* unit=df::unit::find(q.unit_id());
+        if(eligible && unit && std::find(eligible->begin(),eligible->end(),q.unit_id())!=eligible->end() &&
+           unit->job.current_job && unit->job.current_job->id==q.job_id())source=unit->job.current_job;
+      } else if(auto* holder=df::building::find(q.building_id())) {
+        for(auto* job:holder->jobs)if(job && job->id==q.job_id()){source=job;break;}
+      }
+      if(source) {
+        const auto outcome=df3d_production::applyJobMaterial(*source,{q.job_id(),q.building_id()},q.expected_revision(),q.option(),q.expected_choices_revision(),q.choice());
+        switch(outcome) {
+          case df3d_production::JobMaterialOutcome::Applied:jobSettingsEdit->outcome=m::JobSettingsEditOutcome::Applied;status=m::ManagementStatus::Ok;break;
+          case df3d_production::JobMaterialOutcome::Stale:jobSettingsEdit->outcome=m::JobSettingsEditOutcome::Stale;break;
+          default:jobSettingsEdit->outcome=m::JobSettingsEditOutcome::Rejected;break;
+        }
+      }
+    } catch(...) {jobSettingsEdit->outcome=m::JobSettingsEditOutcome::Rejected;}
+    // The adapter performs no allocation/fallible operation after its first
+    // write. Publication failure is reconciled by the transport, never replayed.
     publish();return;
   }
   if(r->action()==m::ManagementAction::JobSettingsRead) {

@@ -42,7 +42,9 @@ func configure_residents(source,model) -> void:
 	scrollbar.input_allowed=allowed
 	state.changed.connect(refresh)
 	visibility_changed.connect(func():
-		if not is_visible_in_tree():search.release_focus();_leave_hover())
+		if not is_visible_in_tree():
+			if search.is_inside_tree():search.release_focus()
+			_leave_hover())
 	mouse_exited.connect(_leave_hover)
 	refresh()
 func allowed() -> bool:

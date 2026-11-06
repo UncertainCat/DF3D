@@ -53,6 +53,13 @@ func run() -> void:
 		var stale:=intent.duplicate();stale[field]=2147483647
 		var rejected:=await request("job_settings",stale)
 		check(rejected.get("status")==C.ManagementStatus.Rejected and not rejected.has("job_settings"),"Stale job setting retained choices: "+field)
+	var edit_intent: Dictionary={"action":C.ManagementAction.JobSettingsApply,"job_id":int(reference.job_id),"building_id":int(reference.building_id),"unit_id":int(reference.unit_id),"option":0,"expected_revision":int(expected.revision),"expected_choices_revision":int(expected.choices_revision),"choice":1}
+	for field in ["job_id","building_id","unit_id","expected_revision","expected_choices_revision"]:
+		var stale:=edit_intent.duplicate();stale[field]=2147483647
+		var rejected:=await request("job_settings",stale)
+		check(rejected.get("status")==C.ManagementStatus.Rejected and rejected.get("job_settings_edit",{}).get("outcome")==C.JobSettingsEditOutcome.Stale,"Stale job edit not rejected: "+field)
+	var unchanged:=await request("job_settings",intent)
+	check(str(unchanged.get("job_settings",{}).get("revision"))==expected.revision,"Rejected edits changed the job")
 	var unrelated:=await request("construction",{"action":C.ManagementAction.Catalog})
 	check(not unrelated.has("job_settings"),"Unrelated reply retained job settings")
 	var composed:=await composed_read(reference)
@@ -111,6 +118,20 @@ func composed_read(reference: Dictionary) -> Dictionary:
 	host.reset_local_views()
 	for frame in 5:world.poll();await process_frame
 	check(not owner.job_open() and not owner.panel.visible and not view.visible and host.active==null and not interaction.construction_active,"Owner reset retained job details or world-input lock")
+	# Submit the actual material choice through the assembled owner after the
+	# read/navigation checks. The native oracle verifies the final job fields.
+	owner.open_panel();check(await ready(owner.state),"Reopen roster for material edit failed")
+	row_index=owner.state.ids.find(int(reference.unit_id));owner.state.seek(row_index,owner.state.capacity)
+	check(await ready(owner.state),"Material edit row load failed")
+	await pointer(owner.panel,Vector2(540,owner.panel.list_top()+(row_index-owner.state.first)*36+18))
+	check(await ready(state),"Material edit Details load failed")
+	check(state.rows.size()>1 and state.rows[1].caption=="Dolomite","Material edit choice changed")
+	await pointer(view,Vector2(120,view.list_top()+36+18))
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline and state.phase==state.Phase.Applying:
+		world.poll();await create_timer(0.01).timeout
+	check(state.phase==state.Phase.Closed and await ready(owner.state) and owner.panel.visible,"Confirmed material edit did not return to refreshed roster")
+	var edited: bool=state.phase==state.Phase.Closed
 	var closed: bool=state.phase==state.Phase.Closed
 	owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();await process_frame
-	return {"choices":count,"filtered":filtered,"closed":closed,"returned_to_roster":returned,"resident_id":int(reference.unit_id)}
+	return {"choices":count,"filtered":filtered,"closed":closed,"returned_to_roster":returned,"resident_id":int(reference.unit_id),"material_applied":edited}

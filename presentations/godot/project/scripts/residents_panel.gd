@@ -15,6 +15,8 @@ var opening:=false
 func _init() -> void:
 	state.changed.connect(_sync)
 	job_state.changed.connect(_sync)
+	job_state.applied.connect(func():
+		if state.phase==state.Phase.Ready:state.refresh())
 	state.inspect_ready.connect(func(tile,id):
 		if allowed():inspect_requested.emit(tile,id))
 func configure(world,service,host) -> void:

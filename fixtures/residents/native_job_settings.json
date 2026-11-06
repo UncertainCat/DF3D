@@ -1473,5 +1473,40 @@
       "info_open": true
     },
     "scope": "Native material selection compared with applyJobMaterial on an independent copy of the controlled unlinked job. Wrong identities, stale job/choice revisions and absent choice reject without changed receipts; source job unchanged. No wire mutation or ordinary job effect acceptance."
+  },
+  "edit_wire_reference": {
+    "source": "build/stockpile-storage-native-input-20261106-074639",
+    "bridge_sha256": "87F74956DDD1DACA1639C3AAE313A1F58C2F086C89E4B043D3EC49C53F9B09E3",
+    "result": {
+      "choices": 83,
+      "composed": {
+        "choices": 83,
+        "closed": true,
+        "filtered": true,
+        "material_applied": true,
+        "resident_id": 6534,
+        "returned_to_roster": true
+      },
+      "filtered": [
+        {
+          "caption": "Dolomite",
+          "count_caption": "200?",
+          "estimated": true,
+          "id": 1
+        }
+      ],
+      "success": true
+    },
+    "effect": {
+      "details_flags": 1,
+      "input_index": 169,
+      "input_type": 0,
+      "mat_index": 169,
+      "mat_type": 0,
+      "saved_flags2": 0,
+      "saved_index": -1,
+      "saved_type": 0
+    },
+    "scope": "Management137 rejects stale edit identity/receipts, then actual headless Residents owner material-row pointer applies Dolomite and returns to refreshed roster. Native oracle verifies job/input/saved material fields. Controlled unlinked job only; no ordinary execution, other setting families or rendered owner acceptance."
   }
 }

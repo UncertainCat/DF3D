@@ -110,6 +110,14 @@ while true do
  local ack=io.open(out..'/ack-residents-job-settings');if ack then ack:close();break end
  assert(dfhack.getTickCount()<deadline,'Job settings capture timeout');script.sleep(1,'frames')
 end
+if os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_WIRE')=='1' then
+ assert(controlled and job==controlled,'Wire mutation requires the disposable unlinked job')
+ local input=job.job_items.elements[0]
+ evidence.wire_material_effect={mat_type=job.mat_type,mat_index=job.mat_index,input_type=input.mat_type,input_index=input.mat_index,
+  saved_type=input.job_details_mat_type,saved_index=input.job_details_mat_index,saved_flags2=input.job_details_item_flags2.whole,details_flags=input.job_details_flags.whole}
+ assert(job.mat_type==evidence.materials[2].type and job.mat_index==evidence.materials[2].index and input.mat_type==job.mat_type and input.mat_index==job.mat_index,'Wire material click did not match native effect')
+ assert((input.job_details_flags.whole&1)~=0 and input.job_details_mat_type==0 and input.job_details_mat_index==-1,'Wire material edit lost original requirement')
+end
 owner.job.current_job=wire_original
 if os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_EFFECTS')=='1' then
  assert(controlled and job==controlled,'Effect oracle requires the disposable unlinked job')

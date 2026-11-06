@@ -192,6 +192,11 @@ copy, fabricated progress percentages or broader native-UI departures.
 
 ## 3. Assets and native UI
 
+- Maintainer decision, 2026-11-06: at narrow widths, visible Work orders
+  buttons take priority over overlapping workshop-limit text and controls.
+  Do not reproduce native Conditions clicks editing the workshop limit.
+  Preserve other actions and record this input correction in the bug register.
+
 - Maintainer direction, 2026-10-12: expose a focused, viewer-owned 3D settings menu.
   Display, camera and audio preferences may use custom labels and layout; native
   gameplay/options surfaces retain the native-parity rules below.

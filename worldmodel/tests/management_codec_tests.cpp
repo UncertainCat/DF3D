@@ -329,7 +329,34 @@ TEST_CASE("Residents query preserves native textbox bytes and validates its doma
   CHECK(*wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer()))=="unexpected residents query");
 }
 
+TEST_CASE("Work-detail worker queries bind native bytes to a selected detail receipt") {
+  wm::ManagementRequest request;request.action=wm::ManagementAction::WorkDetailWorkersQuery;
+  request.workDetailWorkers={7,9007199254740993ull,wm::WorkDetailWorkerSort::Skills,true,{'T',0xc3}};
+  for(int variant=0;variant<8;++variant) {
+    auto r=request;
+    if(variant==1)r.workDetailWorkers.detailIndex=-1;
+    if(variant==2)r.workDetailWorkers.detailIndex=128;
+    if(variant==3)r.workDetailWorkers.expectedRevision=0;
+    if(variant==4)r.workDetailWorkers.expectedRevision=uint64_t(INT64_MAX)+1;
+    if(variant==5)r.workDetailWorkers.sort=wm::WorkDetailWorkerSort(4);
+    if(variant==6)r.workDetailWorkers.queryBytes={0};
+    if(variant==7)r.workDetailWorkers.queryBytes.resize(wire::kResidentsQueryBytes+1,'x');
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,11,12,13);
+    const auto* encoded=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    REQUIRE(encoded->work_detail_workers());const auto* q=encoded->work_detail_workers();
+    CHECK(q->detail_index()==r.workDetailWorkers.detailIndex);CHECK(q->expected_revision()==r.workDetailWorkers.expectedRevision);
+    CHECK(q->descending());CHECK(std::vector<uint8_t>(q->query_bytes()->begin(),q->query_bytes()->end())==r.workDetailWorkers.queryBytes);
+    CHECK(bool(wire::validateConstructionRequest(*encoded))==(variant!=0));
+  }
+  flatbuffers::FlatBufferBuilder b;
+  const auto q=wire::CreateWorkDetailWorkersRequest(b,0,1,wire::WorkDetailWorkerSort::Skills,false,b.CreateVector(std::vector<uint8_t>{}));
+  wire::ConstructionRequestBuilder r(b);r.add_client_id(1);r.add_seq(1);r.add_work_detail_workers(q);b.Finish(r.Finish());
+  REQUIRE(wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer())));
+  CHECK(*wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer()))=="unexpected work-detail worker query");
+}
+
 TEST_CASE("Residents reply retains complete order and rejects duplicate or truncated identities") {
+ for(auto action:{wire::ManagementAction::ResidentsQuery,wire::ManagementAction::WorkDetailWorkersQuery}) {
   for(int variant=0;variant<7;++variant) {
     std::vector<int32_t> ids={7,2,9};
     if(variant==1)ids={7,2,7};
@@ -339,7 +366,7 @@ TEST_CASE("Residents reply retains complete order and rejects duplicate or trunc
     flatbuffers::FlatBufferBuilder b;
     const auto rows=wire::CreateResidentsState(b,variant==5?flatbuffers::Offset<flatbuffers::Vector<int32_t>>{}:b.CreateVector(ids));
     wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_world_epoch(13);state.add_request_seq(12);
-    state.add_action(variant==6?wire::ManagementAction::Catalog:wire::ManagementAction::ResidentsQuery);
+    state.add_action(variant==6?wire::ManagementAction::Catalog:action);
     state.add_status(wire::ManagementStatus::Ok);state.add_residents(rows);b.Finish(state.Finish());
     const auto error=wire::validateManagementState(*flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer()));
     const bool valid=variant==0 || variant==3;
@@ -349,6 +376,7 @@ TEST_CASE("Residents reply retains complete order and rejects duplicate or trunc
       REQUIRE(decoded.residents);CHECK(decoded.residents->unitIds==ids);
     }
   }
+ }
 }
 
 TEST_CASE("farm edits require exact revisions owned only by crop requests") {

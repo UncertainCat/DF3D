@@ -393,6 +393,7 @@ func run() -> void:
 		assert(knowledge.unit_id==86 and knowledge.kind==kind and knowledge.id==42)
 		assert(knowledge.outcome==(Contract.CreatureKnowledgeOutcome.Unavailable if kind==15 else Contract.CreatureKnowledgeOutcome.Rejected if kind==16 else Contract.CreatureKnowledgeOutcome.Ready))
 		assert(knowledge.text==("" if kind in [15,16] else "[B]Synthetic detail"))
+	await test_work_detail_workers()
 	# Host signals only after validating every expected payload.
 	for i in 300:
 		if FileAccess.get_file_as_string(status_path) == "passed": break
@@ -1047,3 +1048,13 @@ func test_location_staff_assignments() -> void:
 		if not occupation:
 			for i in 4:assert(observed.entries[i].kind==i and observed.entries[i].id==i)
 			assert(observed.entries[3].name=="Synthetic detail" and observed.entries[1].subtype==23 and observed.entries[1].custom==7 and observed.entries[1].custom_code=="SYNTHETIC_WORKSHOP")
+
+func test_work_detail_workers() -> void:
+	var request: Dictionary={"action":A.WorkDetailWorkersQuery,"detail_index":7,"expected_revision":9007199254740993,"sort":Contract.WorkDetailWorkerSort.Skills,"descending":true,"query_bytes":PackedByteArray([84,195])}
+	for patch in [{"detail_index":-1},{"detail_index":128},{"expected_revision":0},{"expected_revision":1.5},{"sort":4},{"descending":1},{"query_bytes":PackedByteArray([0])},{"query_bytes":[84,195]},{"cursor":1}]:
+		var invalid:=request.duplicate();invalid.merge(patch,true)
+		assert(world.management_request("work_detail_workers",invalid)==0)
+	var sequence: int=world.management_request("work_detail_workers",request)
+	assert(sequence>0)
+	var state:=await receipt(sequence)
+	assert(state.get("residents",{}).get("unit_ids",PackedInt32Array())==PackedInt32Array([7,2,9]))

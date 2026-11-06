@@ -22,6 +22,12 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management141 adds `WorkDetailWorkersQuery`: a selected detail index and exact
+inspection revision, native sort/direction and bounded raw textbox bytes. It
+returns the complete ordered-ID `ResidentsState` payload. Rebuild both peers;
+`Local\df3d_management_v141` rejects older Management140 peers. There is no
+migration of an old query into a guessed work-detail target.
+
 Management140 adds exclusive nested artwork draft intents to job settings reads
 and edits, with exact source revisions and shared bounded draft/name payloads.
 Job draft writes can return their updated draft plus an Applied receipt, or an

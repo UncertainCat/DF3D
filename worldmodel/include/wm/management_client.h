@@ -413,6 +413,7 @@ struct ProductionState {
   int32_t selectedBuilding=-1,createdJob=-1;
   std::string detail;
 };
+struct WorkDetailWorkersRequest { int32_t detailIndex=-1; uint64_t expectedRevision=0; WorkDetailWorkerSort sort=WorkDetailWorkerSort::Skills; bool descending=false; std::vector<uint8_t> queryBytes; };
 struct ResidentsRequest { ResidentsSort sort=ResidentsSort::Category; bool descending=false; std::vector<uint8_t> queryBytes; };
 struct ResidentsState { std::vector<int32_t> unitIds; };
 struct ResidentsRowsRequest { std::vector<int32_t> unitIds; uint16_t columns=30; bool showGender=false; };
@@ -794,6 +795,7 @@ struct ManagementRequest {
   CreatureLocationRequest creatureLocation;
   CreatureAnimalRequest creatureAnimal;
   ResidentsRequest residents;
+  WorkDetailWorkersRequest workDetailWorkers;
   ResidentsRowsRequest residentsRows;
   ResidentsSpecializationRequest residentsSpecialization;
   ResidentsActivityRequest residentsActivity;

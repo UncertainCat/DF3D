@@ -229,7 +229,10 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
           flatbuffers::Offset<m::JobSettingsRequest>{},
       r.action==ManagementAction::JobSettingsApply?
           m::CreateJobSettingsEditRequest(b,r.jobSettingsEdit.jobId,r.jobSettingsEdit.buildingId,r.jobSettingsEdit.unitId,r.jobSettingsEdit.option,r.jobSettingsEdit.expectedRevision,r.jobSettingsEdit.expectedChoicesRevision,r.jobSettingsEdit.choice,r.jobSettingsEdit.artPage,b.CreateString(r.jobSettingsEdit.query),r.jobSettingsEdit.art?encodeArtRequest(b,*r.jobSettingsEdit.art):0):
-          flatbuffers::Offset<m::JobSettingsEditRequest>{});
+          flatbuffers::Offset<m::JobSettingsEditRequest>{},
+      r.action==ManagementAction::WorkDetailWorkersQuery?
+          m::CreateWorkDetailWorkersRequest(b,r.workDetailWorkers.detailIndex,r.workDetailWorkers.expectedRevision,m::WorkDetailWorkerSort(r.workDetailWorkers.sort),r.workDetailWorkers.descending,b.CreateVector(r.workDetailWorkers.queryBytes)):
+          flatbuffers::Offset<m::WorkDetailWorkersRequest>{});
   b.Finish(request);
 }
 }  // namespace wm::detail::management

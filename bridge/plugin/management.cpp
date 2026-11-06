@@ -83,6 +83,7 @@
 #include "creature_header_native.h"
 #include "residents_query_native.h"
 #include "residents_row_native.h"
+#include "residents_specialization_native.h"
 #include "creature_follow_native.h"
 #include "creature_expel_preview_native.h"
 #include "creature_expel_action_native.h"
@@ -441,8 +442,10 @@ struct CreatureAnimalResult {
 std::optional<CreatureAnimalResult> creatureAnimal;
 std::optional<std::vector<int32_t>> residents;
 // Strings are converted to UTF-8 and bounded before publishing this batch.
-struct ResidentRowResult { int32_t id; df3d_residents::RowText text; std::optional<ResidentAppearanceRecipe> icon; };
+struct ResidentRowResult { int32_t id; df3d_residents::RowText text; std::optional<ResidentAppearanceRecipe> icon; df3d_residents::Specialization specialization; };
 std::optional<std::vector<ResidentRowResult>> residentsRows;
+struct ResidentsSpecializationResult {int32_t id=-1;m::ResidentsSpecializationOutcome outcome=m::ResidentsSpecializationOutcome::Rejected;bool onlyAssigned=false;};
+std::optional<ResidentsSpecializationResult> residentsSpecialization;
 m::TilePos worldHoverTile;
 void clearResult() {
   creatureHeader.reset();
@@ -454,6 +457,7 @@ void clearResult() {
   creatureAnimal.reset();
   residents.reset();
   residentsRows.reset();
+  residentsSpecialization.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -941,6 +945,8 @@ void publish() {
   }
   flatbuffers::Offset<m::CreatureAnimalState> creatureAnimalResult;
   const auto residentsResult=residents?m::CreateResidentsState(b,b.CreateVector(*residents)):flatbuffers::Offset<m::ResidentsState>{};
+  const auto residentsSpecializationResult=residentsSpecialization?
+      m::CreateResidentsSpecializationState(b,residentsSpecialization->id,residentsSpecialization->outcome,residentsSpecialization->onlyAssigned):flatbuffers::Offset<m::ResidentsSpecializationState>{};
   flatbuffers::Offset<m::ResidentsRowsState> residentsRowsResult;
   if(residentsRows) {
     std::vector<flatbuffers::Offset<m::ResidentRow>> rows;
@@ -950,7 +956,7 @@ void publish() {
       const auto color=m::CreateAreaNameColor(b,c.color[0],c.color[1],c.color[2],c.alternate[0],c.alternate[1],c.alternate[2],c.effect);
       rows.push_back(m::CreateResidentRow(b,id,b.CreateString(n.combined),b.CreateString(n.name),b.CreateString(n.profession),
           b.CreateString(n.firstLine),b.CreateString(n.secondLine),color,b.CreateString(a.caption),uint8_t(a.foreground),uint8_t(a.background),a.bright,
-          value.icon?value.icon->build(b):flatbuffers::Offset<m::SelectionAppearance>{},int8_t(row.happiness)));
+          value.icon?value.icon->build(b):flatbuffers::Offset<m::SelectionAppearance>{},int8_t(row.happiness),m::CreateResidentSpecialization(b,value.specialization.onlyAssigned,value.specialization.revision)));
     }
     residentsRowsResult=m::CreateResidentsRowsState(b,b.CreateVector(rows));
   }
@@ -976,7 +982,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult);
   b.Finish(s);
   if (auto e = m::validateManagementState(
           *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()))) {
@@ -3758,6 +3764,22 @@ void run(color_ostream& out) {
     } else if(snapshot) {areaPage.locationName=std::move(snapshot);status=m::ManagementStatus::Ok;}
     publish();return;
   }
+  if(r->action()==m::ManagementAction::ResidentsSpecialize) {
+    message.clear();status=m::ManagementStatus::Rejected;
+    const auto& query=*r->residents_specialization();
+    residentsSpecialization.emplace();auto& result=*residentsSpecialization;
+    result.id=query.unit_id();result.onlyAssigned=query.only_assigned();
+    const auto outcome=df3d_residents::setSpecialization(result.id,query.expected_revision(),result.onlyAssigned);
+    using O=df3d_residents::SpecializationOutcome;
+    switch(outcome) {
+      case O::Applied:result.outcome=m::ResidentsSpecializationOutcome::Applied;status=m::ManagementStatus::Ok;mutated=true;break;
+      case O::Stale:result.outcome=m::ResidentsSpecializationOutcome::Stale;break;
+      case O::Unavailable:result.outcome=m::ResidentsSpecializationOutcome::Unavailable;break;
+      case O::Unknown:result.outcome=m::ResidentsSpecializationOutcome::Unknown;mutated=true;break;
+      default:break;
+    }
+    publish();return;
+  }
   if(r->action()==m::ManagementAction::ResidentsRowsRead) {
     message.clear();status=m::ManagementStatus::Rejected;
     const auto& query=*r->residents_rows();
@@ -3783,7 +3805,8 @@ void run(color_ostream& out) {
             if(m::validateOwnerAppearance(*flatbuffers::GetRoot<m::SelectionAppearance>(check.GetBufferPointer()),appearanceBytes) || appearanceBytes>131072)break;
             icon=std::move(recipe);
           }
-          rows.push_back({id,std::move(*row),std::move(icon)});
+          const auto specialization=df3d_residents::specialization(df::unit::find(id));if(!specialization)break;
+          rows.push_back({id,std::move(*row),std::move(icon),*specialization});
         }
         if(rows.size()==query.unit_ids()->size()) {residentsRows=std::move(rows);status=m::ManagementStatus::Ok;}
       }

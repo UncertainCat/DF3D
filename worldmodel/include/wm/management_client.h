@@ -416,8 +416,12 @@ struct ProductionState {
 struct ResidentsRequest { ResidentsSort sort=ResidentsSort::Category; bool descending=false; std::vector<uint8_t> queryBytes; };
 struct ResidentsState { std::vector<int32_t> unitIds; };
 struct ResidentsRowsRequest { std::vector<int32_t> unitIds; uint16_t columns=30; bool showGender=false; };
+struct ResidentSpecialization { bool onlyAssigned=false;uint64_t revision=0; };
+struct ResidentsSpecializationRequest { int32_t unitId=-1;uint64_t expectedRevision=0;bool onlyAssigned=false; };
+struct ResidentsSpecializationState { int32_t unitId=-1;ResidentsSpecializationOutcome outcome=ResidentsSpecializationOutcome::Rejected;bool onlyAssigned=false; };
 struct ResidentRow {
   int32_t id=-1;
+  std::optional<ResidentSpecialization> specialization;
   int8_t happiness=-1; // Unobserved, or native happiest0 through most distressed6.
   std::string combined,name,profession,firstLine,secondLine;
   AreaNameColor nameColor;
@@ -767,6 +771,7 @@ struct ManagementRequest {
   CreatureAnimalRequest creatureAnimal;
   ResidentsRequest residents;
   ResidentsRowsRequest residentsRows;
+  ResidentsSpecializationRequest residentsSpecialization;
   uint16_t depth=1; bool retracting=false; int16_t filter=-1;
   uint32_t rollerSpeed=0;
   bool cancelRemoval=false;
@@ -822,6 +827,7 @@ struct ManagementState {
   std::optional<CreatureAnimalState> creatureAnimal;
   std::optional<ResidentsState> residents;
   std::optional<ResidentsRowsState> residentsRows;
+  std::optional<ResidentsSpecializationState> residentsSpecialization;
   ConstructionState construction;
   std::optional<WorldHover> worldHover;
 };

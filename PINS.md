@@ -22,6 +22,16 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management133 adds ResidentsSpecialize, a dedicated native Residents action,
+and optional per-row specialization receipts. Rebuild both bridge and viewer for
+`Local\\df3d_management_v133`; Management132 peers are incompatible with this
+channel and must not be mixed. Existing action ordinals are unchanged; the new
+action is82. An edit carries the stable unit ID, positive observed revision and
+desired only-assigned value. Applied, Rejected, Stale, Unavailable and Unknown
+are explicit outcomes; Unknown must never be automatically replayed. Successful
+edits require a fresh read before another edit. An absent row receipt conveys no
+editing authority; do not invent it when reading older observations.
+
 Management132 adds ResidentsRowsRead for native row content in explicit batches
 of1–64 unique unit IDs, with a3–30-column name width and gender-display flag.
 Rebuild both peers for `Local\\df3d_management_v132`. A successful reply contains

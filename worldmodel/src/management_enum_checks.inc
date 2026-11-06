@@ -1,4 +1,10 @@
 // Generated exhaustive model/wire correspondence checks.
+static_assert(static_cast<int>(wm::ResidentsSpecializationOutcome::Applied) == static_cast<int>(df3d::mirror::ResidentsSpecializationOutcome::Applied));
+static_assert(static_cast<int>(wm::ResidentsSpecializationOutcome::Rejected) == static_cast<int>(df3d::mirror::ResidentsSpecializationOutcome::Rejected));
+static_assert(static_cast<int>(wm::ResidentsSpecializationOutcome::Stale) == static_cast<int>(df3d::mirror::ResidentsSpecializationOutcome::Stale));
+static_assert(static_cast<int>(wm::ResidentsSpecializationOutcome::Unavailable) == static_cast<int>(df3d::mirror::ResidentsSpecializationOutcome::Unavailable));
+static_assert(static_cast<int>(wm::ResidentsSpecializationOutcome::Unknown) == static_cast<int>(df3d::mirror::ResidentsSpecializationOutcome::Unknown));
+static_assert(sizeof(df3d::mirror::EnumValuesResidentsSpecializationOutcome()) / sizeof(df3d::mirror::ResidentsSpecializationOutcome) == 5);
 static_assert(static_cast<int>(wm::ResidentsSort::Category) == static_cast<int>(df3d::mirror::ResidentsSort::Category));
 static_assert(static_cast<int>(wm::ResidentsSort::Name) == static_cast<int>(df3d::mirror::ResidentsSort::Name));
 static_assert(static_cast<int>(wm::ResidentsSort::Profession) == static_cast<int>(df3d::mirror::ResidentsSort::Profession));
@@ -148,7 +154,8 @@ static_assert(static_cast<int>(wm::ManagementAction::CreatureLocationRemove) == 
 static_assert(static_cast<int>(wm::ManagementAction::CreatureAnimalEdit) == static_cast<int>(df3d::mirror::ManagementAction::CreatureAnimalEdit));
 static_assert(static_cast<int>(wm::ManagementAction::ResidentsQuery) == static_cast<int>(df3d::mirror::ManagementAction::ResidentsQuery));
 static_assert(static_cast<int>(wm::ManagementAction::ResidentsRowsRead) == static_cast<int>(df3d::mirror::ManagementAction::ResidentsRowsRead));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 82);
+static_assert(static_cast<int>(wm::ManagementAction::ResidentsSpecialize) == static_cast<int>(df3d::mirror::ManagementAction::ResidentsSpecialize));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 83);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -437,3 +444,4 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::CreatureLocationRemove) 
 static_assert(wm::isRuntimeAction(wm::ManagementAction::CreatureAnimalEdit) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::CreatureAnimalEdit));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::ResidentsQuery) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ResidentsQuery));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::ResidentsRowsRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ResidentsRowsRead));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::ResidentsSpecialize) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ResidentsSpecialize));

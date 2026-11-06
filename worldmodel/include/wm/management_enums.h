@@ -2,6 +2,13 @@
 #pragma once
 #include <cstdint>
 namespace wm {
+enum class ResidentsSpecializationOutcome : uint8_t {
+  Applied = 0,
+  Rejected = 1,
+  Stale = 2,
+  Unavailable = 3,
+  Unknown = 4,
+};
 enum class ResidentsSort : uint8_t {
   Category = 0,
   Name = 1,
@@ -163,6 +170,7 @@ enum class ManagementAction : uint8_t {
   CreatureAnimalEdit = 79,
   ResidentsQuery = 80,
   ResidentsRowsRead = 81,
+  ResidentsSpecialize = 82,
 };
 enum class ManagementStatus : uint8_t {
   Idle = 0,
@@ -455,11 +463,13 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::CreatureAnimalEdit: return true;
   case ManagementAction::ResidentsQuery: return true;
   case ManagementAction::ResidentsRowsRead: return true;
+  case ManagementAction::ResidentsSpecialize: return true;
   default: return false;
   }
 }
 constexpr const char* managementDomain(ManagementAction action) {
   switch (action) {
+  case ManagementAction::ResidentsSpecialize: return "residents_specialization";
   case ManagementAction::ResidentsQuery: return "residents";
   case ManagementAction::ResidentsRowsRead: return "residents_rows";
   case ManagementAction::CreatureAnimalEdit: return "creature_animal";

@@ -31,14 +31,31 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Residents native list discovery
 
+Management133 ResidentsRowsRead includes optional specialization receipts with
+a positive signed-range revision and current only-assigned value. The dedicated
+ResidentsSpecialize request uses the stable unit ID, that revision and desired
+value. Safe-point dispatch calls the owned native adapter; Applied maps to Ok,
+other explicit outcomes to Rejected, and potentially changed state is invalidated
+for Applied or Unknown. Unrelated replies retire this payload. Typed Godot input
+requires integer identity/revision and a boolean value; model/wire validators
+reject missing/invalid authority. This does not replace CitizenWorkScope.
+
+Protected042405 on2026-11-06 exercises all six adult/child/baby toggles through
+the real typed channel, checks readback and rejects each old receipt as Stale.
+It also passes11 query and13 row comparisons. DF25948 exits unsaved; source
+unchanged; paired logs contain only the known separate-thread notice. MSVC and
+`residents-specialization-wire` core19/19/extension/controller checks pass.
+Installed Management133 bridge SHA256:
+5367A8FEC6FB4D8AF2B418B45F0D4F76DE8F14B010D0C11296998B87215031B5.
+
 Residents specialization uses native action1431c60 with an owned two-word
 input containing the target unit at+8. The pinned body reads no widget/menu
 state: it toggles flags4 bit10 and calls native labor recalculation4390d0.
 Membership is rechecked with the owned Residents provider, and a receipt hashes
 identity, profession, specialization and current labors. A stale receipt or a
 request for the current value rejects without invoking the action; uncertain
-completion is never automatically replayed. This adapter is diagnostic-only;
-management transport and staged button integration remain unfinished.
+completion is never automatically replayed. Management133 exposes this adapter through ResidentsSpecialize, separate from
+the older CitizenWorkScope eligibility policy.
 
 Do not reuse CitizenWorkScope unchanged for this screen. Native14290b0 creates
 Specialization button without ordinary-labor eligibility filtering. Protected

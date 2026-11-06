@@ -175,6 +175,11 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         for(auto id:s.residents->unitIds)ids.push_back(id);
         value["unit_ids"]=ids;result["residents"]=value;
     }
+    if(s.residentsSpecialization) {
+        const auto& v=*s.residentsSpecialization;Dictionary value;
+        value["unit_id"]=v.unitId;value["outcome"]=int(v.outcome);value["only_assigned"]=v.onlyAssigned;
+        result["residents_specialization"]=value;
+    }
     if(s.residentsRows) {
         Dictionary value;Array rows;
         for(const auto& v:s.residentsRows->rows) {
@@ -182,6 +187,7 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
             row["id"]=v.id;row["combined"]=String::utf8(v.combined.c_str());row["name"]=String::utf8(v.name.c_str());
             row["profession"]=String::utf8(v.profession.c_str());row["first_line"]=String::utf8(v.firstLine.c_str());
             row["second_line"]=String::utf8(v.secondLine.c_str());
+            if(v.specialization) {Dictionary state;state["only_assigned"]=v.specialization->onlyAssigned;state["revision"]=int64_t(v.specialization->revision);row["specialization"]=state;}
             if(v.happiness>=0)row["happiness"]=int(v.happiness);
             for(auto c:v.nameColor.color)primary.push_back(int(c));
             for(auto c:v.nameColor.alternate)alternate.push_back(int(c));
@@ -296,6 +302,19 @@ bool validateCreatureLocation(const Dictionary& data,String& error) {
 bool readCreatureLocation(const Dictionary& data,wm::ManagementRequest& request,String&) {
     request.action=wm::ManagementAction::CreatureLocationRemove;
     request.creatureLocation={int32_t(int64_t(data["unit_id"])),int32_t(int64_t(data["occupation_id"])),uint64_t(int64_t(data["expected_revision"]))};return true;
+}
+bool validateResidentsSpecialization(const Dictionary& data,String& error) {
+    if(data.size()!=4 || !data.has("unit_id") || !data.has("expected_revision") || !data.has("only_assigned") ||
+       data["unit_id"].get_type()!=Variant::INT || data["expected_revision"].get_type()!=Variant::INT || data["only_assigned"].get_type()!=Variant::BOOL) {
+        error="Invalid residents specialization fields";return false;
+    }
+    const int64_t id=data["unit_id"],revision=data["expected_revision"];
+    if(id<0 || id>INT32_MAX || revision<=0) {error="Invalid residents specialization identity or revision";return false;}
+    return true;
+}
+bool readResidentsSpecialization(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction::ResidentsSpecialize;
+    request.residentsSpecialization={int32_t(int64_t(data["unit_id"])),uint64_t(int64_t(data["expected_revision"])),bool(data["only_assigned"])};return true;
 }
 bool validateResidents(const Dictionary& data,String& error) {
     if(data.size()!=4 || !data.has("sort") || !data.has("descending") || !data.has("query_bytes") ||
@@ -443,6 +462,7 @@ const ManagementCodec managementCodecs[] = {
     {"creature_animal",validateCreatureAnimal,readCreatureAnimal},
     {"residents",validateResidents,readResidents},
     {"residents_rows",validateResidentsRows,readResidentsRows},
+    {"residents_specialization",validateResidentsSpecialization,readResidentsSpecialization},
     {"creature_knowledge",validateCreatureKnowledge,readCreatureKnowledge},
     {"creature_expel",validateCreatureExpel,readCreatureExpel},
 };
@@ -455,7 +475,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::ResidentsRowsRead)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::ResidentsSpecialize)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

@@ -9,6 +9,27 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("Residents specialization binds edits to positive revisions and validates outcomes") {
+  wm::ManagementRequest request;request.action=wm::ManagementAction::ResidentsSpecialize;
+  request.residentsSpecialization={42,91,true};
+  for(int variant=0;variant<3;++variant) {
+    auto r=request;if(variant==1)r.residentsSpecialization.expectedRevision=0;if(variant==2)r.residentsSpecialization.unitId=-1;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(variant!=0));
+    if(!variant){REQUIRE(value->residents_specialization());CHECK(value->residents_specialization()->expected_revision()==91);CHECK(value->residents_specialization()->only_assigned());}
+  }
+  for(int outcome=0;outcome<5;++outcome) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto payload=wire::CreateResidentsSpecializationState(b,42,wire::ResidentsSpecializationOutcome(outcome),true);
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(wire::ManagementAction::ResidentsSpecialize);
+    state.add_status(outcome==0?wire::ManagementStatus::Ok:wire::ManagementStatus::Rejected);state.add_residents_specialization(payload);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());CHECK_FALSE(wire::validateManagementState(*value));
+    const auto decoded=codec::decodeState(value);REQUIRE(decoded.residentsSpecialization);
+    CHECK(decoded.residentsSpecialization->unitId==42);CHECK(int(decoded.residentsSpecialization->outcome)==outcome);CHECK(decoded.residentsSpecialization->onlyAssigned);
+  }
+}
+
 TEST_CASE("Residents happiness preserves absence and rejects unknown tiers") {
   for(int tier=-2;tier<=7;++tier) {
     flatbuffers::FlatBufferBuilder b;

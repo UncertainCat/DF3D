@@ -49,7 +49,9 @@ ManagementState decodeState(const m::ManagementState* s) {
   if(const auto* r=s->residents_rows()) {
     next.residentsRows.emplace();
     for(const auto* v:*r->rows()) {
-      ResidentRow row;row.id=v->id();row.happiness=v->happiness();row.combined=v->combined()->str();row.name=v->name()->str();
+      ResidentRow row;
+      if(const auto* state=v->specialization())row.specialization=ResidentSpecialization{state->only_assigned(),state->revision()};
+      row.id=v->id();row.happiness=v->happiness();row.combined=v->combined()->str();row.name=v->name()->str();
       row.profession=v->profession()->str();row.firstLine=v->first_line()->str();row.secondLine=v->second_line()->str();
       const auto* c=v->name_color();
       row.nameColor={{c->foreground(),c->background(),c->bright()},
@@ -66,6 +68,8 @@ ManagementState decodeState(const m::ManagementState* s) {
       next.residentsRows->rows.push_back(std::move(row));
     }
   }
+  if(const auto* v=s->residents_specialization())
+    next.residentsSpecialization=ResidentsSpecializationState{v->unit_id(),ResidentsSpecializationOutcome(v->outcome()),v->only_assigned()};
   next.citizen = decodeCitizen(s->citizen());
   next.appointments = decodeAppointments(s->appointments());
   next.production = decodeProduction(s->production());
@@ -189,7 +193,10 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
           flatbuffers::Offset<m::ResidentsRequest>{},
       r.action==ManagementAction::ResidentsRowsRead?
           m::CreateResidentsRowsRequest(b,b.CreateVector(r.residentsRows.unitIds),r.residentsRows.columns,r.residentsRows.showGender):
-          flatbuffers::Offset<m::ResidentsRowsRequest>{});
+          flatbuffers::Offset<m::ResidentsRowsRequest>{},
+      r.action==ManagementAction::ResidentsSpecialize?
+          m::CreateResidentsSpecializationRequest(b,r.residentsSpecialization.unitId,r.residentsSpecialization.expectedRevision,r.residentsSpecialization.onlyAssigned):
+          flatbuffers::Offset<m::ResidentsSpecializationRequest>{});
   b.Finish(request);
 }
 }  // namespace wm::detail::management

@@ -17,6 +17,9 @@ func run() -> void:
  if not check(bootstrap.get("status")==C.ManagementStatus.Ok and world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Dye bootstrap/assets failed"):quit(1);return
  var preferences=preload("res://scripts/presentation_settings.gd");preferences.loaded=true;preferences.ui_scale=1.0
  root.size=Vector2i(1200,800)
+ # Settle the separate renderer's viewport resize before creating canvas items.
+ for _frame in 3:await process_frame
+ await RenderingServer.frame_post_draw
  var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true);service.set_process(false)
  var state=preload("res://scripts/work_order_details_state.gd").new();state.configure(service)
  var view=preload("res://scripts/work_order_details_view.gd").new();root.add_child(view);view.configure_details(world,state)
@@ -31,6 +34,12 @@ func run() -> void:
   for subject in plan.subjects:
    click(Vector2(200,154+(int(subject.page)-1)*36))
    if not check(await settle(service,func():return state.phase==state.Phase.Ready and state.art_page()==int(subject.page)),"Subject list failed"):quit(1);return
+   if state.snapshot.art.total>view.page_rows:
+    check(view.scrollbar.visible,"Artwork scrollbar hidden despite overflowing rows")
+    click(view.position+view.scrollbar.position+Vector2(8,view.scrollbar.size.y-6))
+    check(state.first==1,"Artwork scrollbar down arrow did not move one row")
+    click(view.position+view.scrollbar.position+Vector2(8,6))
+    check(state.first==0,"Artwork scrollbar up arrow did not restore first row")
    var motion:=InputEventMouseMotion.new();motion.position=Vector2(200,190);motion.global_position=motion.position;root.push_input(motion,true)
    if not check(await settle(service,func():return state.preview_ticket==0 and not state.preview_lines.is_empty()),"Subject preview failed"):quit(1);return
    check(state.preview_lines==subject.preview,"Subject preview differs from native")

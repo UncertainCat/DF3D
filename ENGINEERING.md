@@ -7260,8 +7260,12 @@ Protected233154 on2026-11-05 compares the first figure/site/entity preview
 verbatim against native selected_box text through real pointer motion, verifies
 clearing on pointer leave and Back, and independently confirms unchanged order
 fields. Native glyph observations place previews on row59. The figure viewer
-capture was inspected; its scrollbar artwork was absent in the focused capture
-and remains to be resolved before complete screen acceptance. Pointer seeding
+capture was inspected. The focused harness now settles its viewport resize before
+creating canvas items: protected234558 restores the visible scrollbar in normal
+separate-renderer mode and verifies one-row down/up arrow input on all three
+subject pages. DF39208 exits unsaved with source preservation; paired logs contain
+only documented engine diagnostics. No runtime renderer change was needed.
+Pointer seeding
 must happen after the native capture's settling frames;232444 did not establish
 hover activation, while232630 records selected index0 and width118 with native
 biography/site/group text. Add `DF3D_WORK_ORDER_ARTWORK_SUBJECT_HOVER=1` to the

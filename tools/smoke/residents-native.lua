@@ -4,6 +4,10 @@ local out,view,records=...
 local gui=require('gui');local script=require('gui.script');local json=require('json')
 df.global.enabler.gfps=30
 df.global.enabler.fps_per_gfps=df.global.enabler.fps/30
+if os.getenv('DF3D_WORK_DETAILS_NATIVE')=='1' then
+ local path=debug.getinfo(1,'S').source:sub(2):gsub('residents%-native.lua$','work-details-native.lua')
+ assert(loadfile(path))(out,view,records);return
+end
 local activity_provider
 local residents_hover_finish
 if os.getenv('DF3D_RESIDENTS_ACTIVITY')=='1' then

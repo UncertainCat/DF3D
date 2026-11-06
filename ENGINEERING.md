@@ -29,6 +29,32 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
 
+## Work Details native discovery
+
+`DF3D_WORK_DETAILS_NATIVE=1` with the protected Residents reference launcher
+opens native Labor through D_LABOR. Capture102804 on2026-11-06 records the root,
+active widget callbacks and an actual Add new work detail click. The list has11
+entries; the appended detail is index11, Custom Detail1, icon11, flags4, with no
+labors or assignments. The screen uses an ordered left detail list, name editor
+and settings button, three assignment modes, and a filtered/sorted unit list
+with specialization and occupation indicators. Source/save preservation passes;
+DF4928 exits unsaved, native30FPS, GPU49C sampled. The durable semantic reference
+is fixtures/production/native_work_details.json; native artwork stays ignored.
+
+Add activation4683e0 delegates to42f8a0. This routine constructs the record,
+searches names Custom Detail1 through99 for the first unused exact name (fallback
+Custom Detail), sets mode1 and empty labors, chooses the least-used custom icon
+10..17 with first-index tie breaking, and appends it to the simulation vector.
+It then invokes42f190 to rebuild the Labor widget tree. Consequently the whole
+callback is not an authorized runtime entry point. Existing citizens.lua action64
+instead uses custom-detail count for naming and count modulo8 for the icon;
+those policies differ after renames/deletions or uneven icon use. This is a DF3D
+implementation gap, not a native bug or accepted exception. Runtime replacement
+must preserve the simulation semantics with owned inputs without invoking the
+screen rebuild. Native string suffix helper52c130 is separate; allocation,
+uniqueness selection and icon balancing are inline in42f8a0. Other Work Details
+actions and rendered editor acceptance remain pending.
+
 ## Residents native list discovery
 
 Residents Activity has distinct job-settings and event-description routes.

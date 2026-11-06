@@ -1,0 +1,509 @@
+{
+  "capture": "build/stockpile-storage-native-input-20261106-102804",
+  "scope": "Protected native Work Details root and actual Add new work detail. Runtime replacement and other interactions not accepted.",
+  "mode": 3,
+  "details_before": [
+    {
+      "assigned_count": 8,
+      "flags": 15,
+      "icon": 0,
+      "index": 0,
+      "labors": [
+        0
+      ],
+      "name": "Miners"
+    },
+    {
+      "assigned_count": 6,
+      "flags": 15,
+      "icon": 1,
+      "index": 1,
+      "labors": [
+        10
+      ],
+      "name": "Woodcutters"
+    },
+    {
+      "assigned_count": 0,
+      "flags": 15,
+      "icon": 2,
+      "index": 2,
+      "labors": [
+        44
+      ],
+      "name": "Hunters"
+    },
+    {
+      "assigned_count": 1,
+      "flags": 5,
+      "icon": 3,
+      "index": 3,
+      "labors": [
+        39
+      ],
+      "name": "Planters"
+    },
+    {
+      "assigned_count": 0,
+      "flags": 15,
+      "icon": 4,
+      "index": 4,
+      "labors": [
+        41
+      ],
+      "name": "Fisherdwarves"
+    },
+    {
+      "assigned_count": 0,
+      "flags": 5,
+      "icon": 7,
+      "index": 5,
+      "labors": [
+        40
+      ],
+      "name": "Plant gatherers"
+    },
+    {
+      "assigned_count": 0,
+      "flags": 5,
+      "icon": 5,
+      "index": 6,
+      "labors": [
+        12
+      ],
+      "name": "Stonecutters"
+    },
+    {
+      "assigned_count": 0,
+      "flags": 5,
+      "icon": 6,
+      "index": 7,
+      "labors": [
+        14
+      ],
+      "name": "Engravers"
+    },
+    {
+      "assigned_count": 0,
+      "flags": 5,
+      "icon": 8,
+      "index": 8,
+      "labors": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        73,
+        74,
+        77
+      ],
+      "name": "Haulers"
+    },
+    {
+      "assigned_count": 0,
+      "flags": 5,
+      "icon": 9,
+      "index": 9,
+      "labors": [
+        21,
+        22,
+        23,
+        24
+      ],
+      "name": "Orderlies"
+    },
+    {
+      "assigned_count": 3,
+      "flags": 4,
+      "icon": 10,
+      "index": 10,
+      "labors": [
+        45,
+        46,
+        47,
+        48,
+        49
+      ],
+      "name": "Metalworks"
+    }
+  ],
+  "created": {
+    "assigned_count": 0,
+    "flags": 4,
+    "icon": 11,
+    "index": 11,
+    "labors": [],
+    "name": "Custom Detail 1"
+  },
+  "root_lines": [
+    {
+      "text": "                  Roderònul           Pop                                  Food  Drink           20th Malachite",
+      "y": 0
+    },
+    {
+      "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+      "y": 1
+    },
+    {
+      "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+      "y": 2
+    },
+    {
+      "text": "",
+      "y": 3
+    },
+    {
+      "text": "",
+      "y": 4
+    },
+    {
+      "text": "       Nobles and administrators    Objects    Justice",
+      "y": 5
+    },
+    {
+      "text": "       Nobles and administrators    Objects    Justice",
+      "y": 6
+    },
+    {
+      "text": "       Creatures    Tasks    Places    Labor    Work orders",
+      "y": 7
+    },
+    {
+      "text": "       Creatures    Tasks    Places    Labor    Work orders",
+      "y": 8
+    },
+    {
+      "text": "       Work Details    Standing orders    Kitchen    Stone use",
+      "y": 9
+    },
+    {
+      "text": "       Work Details    Standing orders    Kitchen    Stone use",
+      "y": 10
+    },
+    {
+      "text": "",
+      "y": 11
+    },
+    {
+      "text": "",
+      "y": 12
+    },
+    {
+      "text": "            Add new work detail         Miners",
+      "y": 13
+    },
+    {
+      "text": "",
+      "y": 14
+    },
+    {
+      "text": "",
+      "y": 15
+    },
+    {
+      "text": "             Miners                                                                                                                 Elevation 36",
+      "y": 16
+    },
+    {
+      "text": "",
+      "y": 17
+    },
+    {
+      "text": "                                                         Everybody does this  Only selected do this  Nobody does this",
+      "y": 18
+    },
+    {
+      "text": "             Woodcutters",
+      "y": 19
+    },
+    {
+      "text": "",
+      "y": 20
+    },
+    {
+      "text": "                                               Name      Cat      Prof",
+      "y": 21
+    },
+    {
+      "text": "             Hunters",
+      "y": 22
+    },
+    {
+      "text": "",
+      "y": 23
+    },
+    {
+      "text": "                                          Olon Arzesnil, Miner           Legendary Miner",
+      "y": 24
+    },
+    {
+      "text": "             Planters",
+      "y": 25
+    },
+    {
+      "text": "",
+      "y": 26
+    },
+    {
+      "text": "                                          Asmel Akrulokol, Miner         Legendary Miner",
+      "y": 27
+    },
+    {
+      "text": "             Fisherdwarves",
+      "y": 28
+    },
+    {
+      "text": "",
+      "y": 29
+    },
+    {
+      "text": "                                          Kogan Atîsteling, Miner        Master Miner",
+      "y": 30
+    },
+    {
+      "text": "             Plant gatherers",
+      "y": 31
+    },
+    {
+      "text": "",
+      "y": 32
+    },
+    {
+      "text": "                                          Uzol Bardumtekkud, Miner       Accomplished Miner",
+      "y": 33
+    },
+    {
+      "text": "             Stonecutters",
+      "y": 34
+    },
+    {
+      "text": "",
+      "y": 35
+    },
+    {
+      "text": "                                          Kumil Dorenothlest             Expert Miner",
+      "y": 36
+    },
+    {
+      "text": "             Engravers                    Animal Trainer",
+      "y": 37
+    },
+    {
+      "text": "",
+      "y": 38
+    },
+    {
+      "text": "                                          Ingish Imikfikod               Skilled Miner",
+      "y": 39
+    },
+    {
+      "text": "             Haulers                      Siege Engineer",
+      "y": 40
+    },
+    {
+      "text": "",
+      "y": 41
+    },
+    {
+      "text": "                                          Stodir Tangakurvad, bookkeeper",
+      "y": 42
+    },
+    {
+      "text": "             Orderlies",
+      "y": 43
+    },
+    {
+      "text": "",
+      "y": 44
+    },
+    {
+      "text": "                                          Leto Jamaslonel, Human Bard",
+      "y": 45
+    },
+    {
+      "text": "             Metalworks",
+      "y": 46
+    },
+    {
+      "text": "",
+      "y": 47
+    },
+    {
+      "text": "                                          Rûxu Kodkasprax",
+      "y": 48
+    },
+    {
+      "text": "                                          Porcupine Man Bard",
+      "y": 49
+    },
+    {
+      "text": "",
+      "y": 50
+    },
+    {
+      "text": "                                          Jasro Thersetdak, Human Poet",
+      "y": 51
+    },
+    {
+      "text": "",
+      "y": 52
+    },
+    {
+      "text": "",
+      "y": 53
+    },
+    {
+      "text": "",
+      "y": 54
+    },
+    {
+      "text": "",
+      "y": 55
+    },
+    {
+      "text": "",
+      "y": 56
+    },
+    {
+      "text": "",
+      "y": 57
+    },
+    {
+      "text": "",
+      "y": 58
+    },
+    {
+      "text": "",
+      "y": 59
+    },
+    {
+      "text": "",
+      "y": 60
+    },
+    {
+      "text": "",
+      "y": 61
+    },
+    {
+      "text": "",
+      "y": 62
+    },
+    {
+      "text": "",
+      "y": 63
+    },
+    {
+      "text": "",
+      "y": 64
+    },
+    {
+      "text": "",
+      "y": 65
+    }
+  ],
+  "callbacks": [
+    {
+      "name": "",
+      "rect": [
+        7,
+        12,
+        36,
+        14
+      ],
+      "rva": 4621280
+    },
+    {
+      "name": "",
+      "rect": [
+        84,
+        12,
+        87,
+        14
+      ],
+      "rva": 4622464
+    },
+    {
+      "name": "",
+      "rect": [
+        56,
+        17,
+        76,
+        19
+      ],
+      "rva": 4622176
+    },
+    {
+      "name": "",
+      "rect": [
+        77,
+        17,
+        99,
+        19
+      ],
+      "rva": 4621920
+    },
+    {
+      "name": "",
+      "rect": [
+        100,
+        17,
+        117,
+        19
+      ],
+      "rva": 4621664
+    },
+    {
+      "name": "Name",
+      "rect": [
+        42,
+        21,
+        51,
+        21
+      ],
+      "rva": 4022496
+    },
+    {
+      "name": "Cat",
+      "rect": [
+        52,
+        21,
+        60,
+        21
+      ],
+      "rva": 4022496
+    },
+    {
+      "name": "Prof",
+      "rect": [
+        61,
+        21,
+        70,
+        21
+      ],
+      "rva": 4022496
+    },
+    {
+      "name": "Skills",
+      "rect": [
+        73,
+        21,
+        92,
+        21
+      ],
+      "rva": 4022496
+    }
+  ],
+  "ownership": {
+    "activation_rva": "4683e0",
+    "implementation_rva": "42f8a0",
+    "native_name_suffix_rva": "52c130",
+    "widget_refresh_rva": "42f190",
+    "runtime_callback_allowed": false
+  },
+  "source_preserved": true,
+  "owned_df_closed": true
+}

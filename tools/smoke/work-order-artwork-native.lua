@@ -56,13 +56,14 @@ if os.getenv('DF3D_WORK_ORDER_HOVER')=='1' then
   end
   local deadline=dfhack.getTickCount()+650
   repeat move();script.sleep(1,'frames')until dfhack.getTickCount()>=deadline
-  move();assert(m.current_hover==expected and m.last_displayed_hover_inst==expected,'Unexpected work order hover: '..name..' '..tostring(m.current_hover))
+  move();assert(m.current_hover==expected and (expected<0 or m.last_displayed_hover_inst==expected),'Unexpected work order hover: '..name..' '..tostring(m.current_hover))
   local text={}
   for y=0,17 do
    local chars={};for x=g.dimx-24,g.dimx-1 do local ch=dfhack.screen.readTile(x,y).ch;chars[#chars+1]=ch>=32 and ch<127 and string.char(ch)or' 'end
    text[#text+1]=table.concat(chars):gsub('%s+$','')
   end
   while #text>0 and text[#text]==''do table.remove(text)end
+  if expected<0 then text={}end
   hover[#hover+1]={name=name,instruction=expected,point={x,y},lines=text}
   local f=assert(io.open(out..'/work-order-hover-reference.json','w'));f:write(json.encode(hover));f:close()
  end
@@ -96,6 +97,7 @@ if os.getenv('DF3D_WORK_ORDER_HOVER')=='1' then
  managers:resize(0);for _,v in ipairs(original_managers)do managers:insert('#',v)end
  assert(ok,err)
  mouse(552,430);assert(m.info.work_orders.conditions.open)
+ probe('conditions_active',64,142,212)
  for _,p in ipairs{{'frequency',880,142,224},{'add_item',912,142,225},{'add_order',944,142,226},{'condition_amount',640,178,227},{'comparison',736,178,228},{'item_type',768,178,229},{'material',800,178,230},{'traits',832,178,231},{'remove_condition',896,178,233}}do probe(table.unpack(p))end
  local dependencies=#order.order_conditions
  mouse(944,142);assert(m.info.work_orders.conditions.selecting_order_condition)
@@ -105,6 +107,22 @@ if os.getenv('DF3D_WORK_ORDER_HOVER')=='1' then
  assert(dependency_y,'Missing native dependency row')
  probe('dependency',640,dependency_y,232)
  mouse(896,dependency_y);assert(#order.order_conditions==dependencies)
+ assert(#order.item_conditions==2)
+ mouse(896,214);assert(#order.item_conditions==1)
+ probe('suggested_no_help',768,586,-1)
+ -- Native suggested action restores the removed requirement, then inspect
+ -- quantity button boundaries separately from four-character keyboard input.
+ mouse(768,586);assert(#order.item_conditions==2)
+ key('LEAVESCREEN');assert(not m.info.work_orders.conditions.open)
+ local amount,left=order.amount_total,order.amount_left
+ local quantities={}
+ for _,value in ipairs({9999,32767})do
+  order.amount_total=value;order.amount_left=value;view:render(dfhack.getTickCount())
+  mouse(424,430)
+  quantities[#quantities+1]={before=value,total=order.amount_total,remaining=order.amount_left}
+ end
+ order.amount_total=amount;order.amount_left=left
+ local q=assert(io.open(out..'/work-order-quantity-boundaries.json','w'));q:write(json.encode(quantities));q:close()
  local f=assert(io.open(out..'/work-order-hover-reference.json','w'));f:write(json.encode(hover));f:close()
  shot('work-order-hover-list')
  records[#records+1]={name='work-order-hover',controls=#hover}

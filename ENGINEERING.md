@@ -6,6 +6,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
+| Global Work orders quantity increment wraps32767 to-32768. | No correction approved or implemented; decision pending. | Protected003417 on2026-11-06 sets controlled quantities in the paused clone and clicks the native plus button.9999 becomes10000;32767 becomes-32768 in both total and remaining. Quantities are restored and DF40708 exits unsaved with source preservation. |
 | Minimum-width global Work orders overlaps workshop-limit controls with other row controls. | No correction approved; native drawing geometry is retained. Overlapping input precedence remains unresolved before exposure. | Native000121 on2026-11-06 at912x552, `work-order-list-minimum.png`; renderer392f00 distributes fixed-size controls across narrow thirds. In000636, clicking the visible Conditions location changed the workshop limit instead of opening Conditions. The later000739 capture opens Conditions before shrinking and verifies unchanged workshop limits. |
 | Work order tint ingredient captions repeat the source color where the target color would be expected. | No correction implemented; preserve native captions. | Native dye capture `build/stockpile-storage-native-input-20261105-223741`: target cerulean displays “Tint white cloth white using midnight blue dye”. Renderer2160f5/2161c7 reads the source color both times. |
 | Track material ordering depends on stale distances left by unrelated menus. | Request fresh native distances for each intent. | Implemented; construction Track distance evidence below and `fixtures/construction/connected_track.json`. |
@@ -7435,9 +7436,16 @@ has no manager, explaining002603's absent New tooltip. Local rendered checks in
 `build/qa/work-orders-status-hover` verify New, unvalidated, waiting/checking/ready,
 New eligibility retirement and a dependency tooltip, plus prior resize/retirement
 checks. Root19/19 and headless composition pass; paired rendered logs have only
-documented diagnostics. Conditions-header status, suggested-condition hover and
-workshop-specific help still need acceptance. Minimum-width overlapping control
-precedence remains unresolved.
+documented diagnostics. Conditions header and dependency-picker status icons
+also share the four status messages (native38dfc5..38e252 and38fc7b..39014c).
+Protected003417 verifies the actual active header hitbox and confirms that an
+available suggested-condition button sets no hover instruction. DF3D preserves
+that absence. The native suggestion is removed and re-added through its controls
+in the unsaved clone. Local `build/qa/conditions-status-hover` checks header Ready,
+dependency candidate Waiting, existing three-size properties/amount controls,
+and retirement on item-filter entry. Core19/19 and composition pass; paired
+rendered logs have only documented diagnostics. Workshop-specific help still
+needs acceptance. Minimum-width overlapping control precedence remains unresolved.
 
 These screens remain staged. Details, full responsive layout, tooltip coverage
 and tab navigation are unfinished. Quantity drafts currently support four digits; native increment

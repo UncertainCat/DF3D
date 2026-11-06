@@ -150,7 +150,15 @@ func _gui_input(event: InputEvent) -> void:
 				if Rect2(right_x(848)-shift,condition_top()+index*36,32,36).has_point(event.position):finish_entry();state.remove_condition(row);break
 		accept_event()
 func hover_kind(point: Vector2) -> String:
-	if state==null or state.phase!=state.Phase.Ready or state.filter_kind>=0 or state.snapshot.is_empty():return ""
+	if state==null or state.phase!=state.Phase.Ready or state.snapshot.is_empty():return ""
+	if state.filter_kind>=0 and state.filter_kind<3:return ""
+	var phase: int=state.snapshot.get("native_state",{}).get("phase",0)
+	if phase in [1,2,3,4] and Rect2(16,header_top(),32,36).has_point(point):return ["","active","waiting","checking","ready"][phase]
+	if state.filter_kind==3:
+		for index in mini(page_rows,state.filter_rows.size()):
+			phase=state.filter_rows[index].get("native_state",{}).get("phase",0)
+			if phase in [1,2,3,4] and Rect2(16,filter_top()+index*36,32,36).has_point(point):return ["","active","waiting","checking","ready"][phase]
+		return ""
 	for index in 3:
 		if Rect2(right_x(832)+index*32,header_top(),32,36).has_point(point):return ["frequency","add_item","add_order"][index]
 	var shift:=row_shift(false)

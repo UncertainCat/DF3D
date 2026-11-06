@@ -335,6 +335,20 @@ bool readCreatureLocation(const Dictionary& data,wm::ManagementRequest& request,
     request.creatureLocation={int32_t(int64_t(data["unit_id"])),int32_t(int64_t(data["occupation_id"])),uint64_t(int64_t(data["expected_revision"]))};return true;
 }
 bool validateJobSettings(const Dictionary& data,String& error) {
+    if(data.has("art")) {
+        if(data.size()!=7 || data["art"].get_type()!=Variant::DICTIONARY){error="Invalid job draft fields";return false;}
+        for(const char* key:{"job_id","building_id","unit_id","option","expected_revision"})
+            if(!data.has(key) || data[key].get_type()!=Variant::INT){error="Invalid job draft authority";return false;}
+        const int64_t job=data["job_id"],building=data["building_id"],unit=data["unit_id"],option=data["option"];
+        if(job<0 || job>INT32_MAX || building<0 || building>INT32_MAX || unit < -1 || unit>INT32_MAX || option<0 || option>64 || int64_t(data["expected_revision"])<=0){error="Invalid job draft bounds";return false;}
+        const Dictionary art=data["art"];
+        for(const char* key:{"page","subject","expected_list_revision","cursor","hovered","preview_columns"})
+            if(art.has(key) && art[key].get_type()!=Variant::INT){error="Invalid draft field type";return false;}
+        if(!art.has("draft") || (art.has("query") && art["query"].get_type()!=Variant::STRING)){error="Invalid draft payload";return false;}
+        wm::WorkOrderArtRequest value;
+        if(!management::readArtRequest(art,value)){error="Invalid draft payload bounds";return false;}
+        return true;
+    }
     if(int64_t(data["action"])==int64_t(wm::ManagementAction::JobSettingsApply)) {
         const bool art=data.has("art_page");
         if(data.size()!=(art?10:8)){error="Invalid job edit fields";return false;}
@@ -372,6 +386,16 @@ bool validateJobSettings(const Dictionary& data,String& error) {
     return true;
 }
 bool readJobSettings(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    if(data.has("art")) {
+        wm::WorkOrderArtRequest art;if(!management::readArtRequest(Dictionary(data["art"]),art))return false;
+        request.action=wm::ManagementAction(int64_t(data["action"]));
+        if(request.action==wm::ManagementAction::JobSettingsApply) {
+            auto& q=request.jobSettingsEdit;q.jobId=int32_t(int64_t(data["job_id"]));q.buildingId=int32_t(int64_t(data["building_id"]));q.unitId=int32_t(int64_t(data["unit_id"]));q.option=int16_t(int64_t(data["option"]));q.expectedRevision=uint64_t(int64_t(data["expected_revision"]));q.art=std::move(art);
+        } else {
+            auto& q=request.jobSettings;q.jobId=int32_t(int64_t(data["job_id"]));q.buildingId=int32_t(int64_t(data["building_id"]));q.unitId=int32_t(int64_t(data["unit_id"]));q.option=int16_t(int64_t(data["option"]));q.expectedRevision=uint64_t(int64_t(data["expected_revision"]));q.art=std::move(art);
+        }
+        return true;
+    }
     if(int64_t(data["action"])==int64_t(wm::ManagementAction::JobSettingsApply)) {
         request.action=wm::ManagementAction::JobSettingsApply;
         request.jobSettingsEdit={int32_t(int64_t(data["job_id"])),int32_t(int64_t(data["building_id"])),int32_t(int64_t(data["unit_id"])),int16_t(int64_t(data["option"])),uint64_t(int64_t(data["expected_revision"])),uint64_t(int64_t(data["expected_choices_revision"])),int32_t(int64_t(data["choice"]))};

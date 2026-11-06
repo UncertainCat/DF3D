@@ -1843,14 +1843,14 @@ table ResidentsSpecializationState { unit_id:int32 = -1; outcome:ResidentsSpecia
 table ResidentJobTarget { job_id:int32 = -1; building_id:int32 = -1; }
 table ResidentActivityTarget { activity_id:int32 = -1; event_id:int32 = -1; }
 // Shared job-backed settings; IDs refer to simulation jobs, never manager orders.
-enum JobSettingsEditOutcome : uint8 { Rejected, Stale, Applied }
+enum JobSettingsEditOutcome : uint8 { Rejected, Stale, Applied, Unknown }
 table JobSettingsEditRequest {
   job_id:int32 = -1; building_id:int32 = -1; unit_id:int32 = -1;
   option:int16 = -1; expected_revision:uint64; expected_choices_revision:uint64; choice:int32 = -1;
-  art_page:int16 = -2; query:string;
+  art_page:int16 = -2; query:string; art:WorkOrderArtRequest;
 }
 table JobSettingsEditState { job_id:int32 = -1; building_id:int32 = -1; unit_id:int32 = -1; outcome:JobSettingsEditOutcome; }
-table JobSettingsRequest { job_id:int32 = -1; building_id:int32 = -1; unit_id:int32 = -1; option:int16 = -1; query:string; cursor:uint32; art_page:int16 = -2; expected_list_revision:uint64; hovered:int32 = -1; preview_columns:uint16; }
+table JobSettingsRequest { job_id:int32 = -1; building_id:int32 = -1; unit_id:int32 = -1; option:int16 = -1; query:string; cursor:uint32; art_page:int16 = -2; expected_list_revision:uint64; hovered:int32 = -1; preview_columns:uint16; expected_revision:uint64; art:WorkOrderArtRequest; }
 table JobSettingsChoice { id:int32 = -1; caption:string; count_caption:string; estimated:bool; }
 table JobSettingsState {
   job_id:int32 = -1; building_id:int32 = -1; unit_id:int32 = -1;
@@ -2144,7 +2144,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 139;
+  schema_version:uint32 = 140;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2202,7 +2202,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 139;
+  schema_version:uint32 = 140;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

@@ -225,10 +225,10 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
           m::CreateResidentsActivityRequest(b,r.residentsActivity.unitId,r.residentsActivity.activityId,r.residentsActivity.eventId,r.residentsActivity.columns):
           flatbuffers::Offset<m::ResidentsActivityRequest>{},
       r.action==ManagementAction::JobSettingsRead?
-          m::CreateJobSettingsRequest(b,r.jobSettings.jobId,r.jobSettings.buildingId,r.jobSettings.unitId,r.jobSettings.option,b.CreateString(r.jobSettings.query),r.jobSettings.cursor,r.jobSettings.artPage,r.jobSettings.expectedListRevision,r.jobSettings.hovered,r.jobSettings.previewColumns):
+          m::CreateJobSettingsRequest(b,r.jobSettings.jobId,r.jobSettings.buildingId,r.jobSettings.unitId,r.jobSettings.option,b.CreateString(r.jobSettings.query),r.jobSettings.cursor,r.jobSettings.artPage,r.jobSettings.expectedListRevision,r.jobSettings.hovered,r.jobSettings.previewColumns,r.jobSettings.expectedRevision,r.jobSettings.art?encodeArtRequest(b,*r.jobSettings.art):0):
           flatbuffers::Offset<m::JobSettingsRequest>{},
       r.action==ManagementAction::JobSettingsApply?
-          m::CreateJobSettingsEditRequest(b,r.jobSettingsEdit.jobId,r.jobSettingsEdit.buildingId,r.jobSettingsEdit.unitId,r.jobSettingsEdit.option,r.jobSettingsEdit.expectedRevision,r.jobSettingsEdit.expectedChoicesRevision,r.jobSettingsEdit.choice,r.jobSettingsEdit.artPage,b.CreateString(r.jobSettingsEdit.query)):
+          m::CreateJobSettingsEditRequest(b,r.jobSettingsEdit.jobId,r.jobSettingsEdit.buildingId,r.jobSettingsEdit.unitId,r.jobSettingsEdit.option,r.jobSettingsEdit.expectedRevision,r.jobSettingsEdit.expectedChoicesRevision,r.jobSettingsEdit.choice,r.jobSettingsEdit.artPage,b.CreateString(r.jobSettingsEdit.query),r.jobSettingsEdit.art?encodeArtRequest(b,*r.jobSettingsEdit.art):0):
           flatbuffers::Offset<m::JobSettingsEditRequest>{});
   b.Finish(request);
 }

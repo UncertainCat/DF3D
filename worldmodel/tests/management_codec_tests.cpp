@@ -9,6 +9,34 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("Job draft requests share bounded artwork semantics and preserve source receipts") {
+  for(bool writing:{false,true})for(int fault=0;fault<7;++fault) {
+    wm::ManagementRequest r;r.action=writing?wm::ManagementAction::JobSettingsApply:wm::ManagementAction::JobSettingsRead;
+    wm::WorkOrderArtRequest art;art.page=6;art.draft.emplace();art.draft->columns=118;
+    art.draft->action=writing?wm::WorkOrderArtDraftAction::GenerateName:wm::WorkOrderArtDraftAction::Inspect;
+    if(fault==1)art.page=19;
+    if(fault==2)art.draft->columns=0;
+    if(fault==3)art.draft->action=writing?wm::WorkOrderArtDraftAction::Inspect:wm::WorkOrderArtDraftAction::GenerateName;
+    if(fault==4)art.draft->value.elements.push_back({7,-1,-1,1});
+    if(writing){auto& q=r.jobSettingsEdit;q.jobId=71;q.buildingId=3;q.unitId=42;q.option=0;q.expectedRevision=fault==5?0:91;q.art=art;if(fault==6)q.choice=0;}
+    else {auto& q=r.jobSettings;q.jobId=71;q.buildingId=3;q.unitId=42;q.option=0;q.expectedRevision=fault==5?0:91;q.art=art;if(fault==6)q.query="mixed";}
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    const auto* encoded=writing?value->job_settings_edit()->art():value->job_settings()->art();
+    REQUIRE(encoded);REQUIRE(encoded->draft());CHECK(encoded->draft()->columns()==art.draft->columns);
+  }
+}
+TEST_CASE("Job draft unknown outcome is explicit and cannot claim success") {
+  for(bool ok:{false,true}) {
+    flatbuffers::FlatBufferBuilder b;auto edit=wire::CreateJobSettingsEditState(b,71,3,42,wire::JobSettingsEditOutcome::Unknown);
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(wire::ManagementAction::JobSettingsApply);
+    state.add_status(ok?wire::ManagementStatus::Ok:wire::ManagementStatus::Rejected);state.add_job_settings_edit(edit);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());CHECK(bool(wire::validateManagementState(*value))==ok);
+    if(!ok){auto decoded=codec::decodeState(value);REQUIRE(decoded.jobSettingsEdit);CHECK(decoded.jobSettingsEdit->outcome==wm::JobSettingsEditOutcome::Unknown);}
+  }
+}
+
 TEST_CASE("Job artwork edit modes preserve authority and reject malformed choices") {
   for(int16_t page:{int16_t(-1),int16_t(0),int16_t(1),int16_t(2),int16_t(3),int16_t(5)}) {
     wm::ManagementRequest base;base.action=wm::ManagementAction::JobSettingsApply;

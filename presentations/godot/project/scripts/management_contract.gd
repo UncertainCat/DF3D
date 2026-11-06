@@ -4,6 +4,7 @@ enum JobSettingsEditOutcome {
 	Rejected = 0,
 	Stale = 1,
 	Applied = 2,
+	Unknown = 3,
 }
 enum ResidentsSpecializationOutcome {
 	Applied = 0,

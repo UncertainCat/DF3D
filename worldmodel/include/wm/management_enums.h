@@ -6,6 +6,7 @@ enum class JobSettingsEditOutcome : uint8_t {
   Rejected = 0,
   Stale = 1,
   Applied = 2,
+  Unknown = 3,
 };
 enum class ResidentsSpecializationOutcome : uint8_t {
   Applied = 0,

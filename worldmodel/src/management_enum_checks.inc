@@ -2,7 +2,8 @@
 static_assert(static_cast<int>(wm::JobSettingsEditOutcome::Rejected) == static_cast<int>(df3d::mirror::JobSettingsEditOutcome::Rejected));
 static_assert(static_cast<int>(wm::JobSettingsEditOutcome::Stale) == static_cast<int>(df3d::mirror::JobSettingsEditOutcome::Stale));
 static_assert(static_cast<int>(wm::JobSettingsEditOutcome::Applied) == static_cast<int>(df3d::mirror::JobSettingsEditOutcome::Applied));
-static_assert(sizeof(df3d::mirror::EnumValuesJobSettingsEditOutcome()) / sizeof(df3d::mirror::JobSettingsEditOutcome) == 3);
+static_assert(static_cast<int>(wm::JobSettingsEditOutcome::Unknown) == static_cast<int>(df3d::mirror::JobSettingsEditOutcome::Unknown));
+static_assert(sizeof(df3d::mirror::EnumValuesJobSettingsEditOutcome()) / sizeof(df3d::mirror::JobSettingsEditOutcome) == 4);
 static_assert(static_cast<int>(wm::ResidentsSpecializationOutcome::Applied) == static_cast<int>(df3d::mirror::ResidentsSpecializationOutcome::Applied));
 static_assert(static_cast<int>(wm::ResidentsSpecializationOutcome::Rejected) == static_cast<int>(df3d::mirror::ResidentsSpecializationOutcome::Rejected));
 static_assert(static_cast<int>(wm::ResidentsSpecializationOutcome::Stale) == static_cast<int>(df3d::mirror::ResidentsSpecializationOutcome::Stale));

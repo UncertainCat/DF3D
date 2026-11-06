@@ -22,6 +22,13 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management140 adds exclusive nested artwork draft intents to job settings reads
+and edits, with exact source revisions and shared bounded draft/name payloads.
+Job draft writes can return their updated draft plus an Applied receipt, or an
+explicit Unknown outcome after uncertain registration/RNG work. Unknown writes
+must never be replayed. Both peers require rebuilding and use
+`Local\df3d_management_v140`; older Management139 peers are incompatible.
+
 Management139 extends `JobSettingsApply` with optional artwork page and query.
 Ordinary edits retain their existing shape. Artwork entry, artist choice and
 related-subject/image assignments have distinct choice/revision bounds and use

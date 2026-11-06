@@ -7407,6 +7407,19 @@ Use `DF3D_WORK_ORDER_NAVIGATION=1` with the focused artwork-reference lane.
 This establishes navigation/input ownership, not resized writes or epoch-change
 acceptance for every child panel.
 
+The global Work orders view uses the shared native hover service for active
+status, quantity, priority, Conditions, Details, removal and workshop limits.
+Protected002223 on2026-11-06 captures exact native24-cell text and instruction
+IDs212/216/219..223 from real control hitboxes. DF36580 closes unsaved and the
+source save is unchanged. The oracle limits its owned session to30 graphics FPS.
+Hover regions follow the same responsive geometry and eligibility as the drawn
+controls, and hiding or retiring the view releases its hover owner. Local rendered
+acceptance in `build/qa/work-orders-hover` exercises native Conditions coordinates,
+resized Details coordinates and hide retirement; the Conditions render was
+visually inspected. Paired logs contain only documented Godot diagnostics.
+Other status indicators, New, and Conditions-page help still require coverage;
+minimum-width overlapping control precedence remains unresolved.
+
 These screens remain staged. Details, full responsive layout, tooltip coverage
 and tab navigation are unfinished. Quantity drafts currently support four digits; native increment
 behavior beyond that range remains unfinished. Remaining fixed frame geometry

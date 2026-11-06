@@ -2,6 +2,9 @@
 local out,view,records=...
 local gui=require('gui');local script=require('gui.script');local json=require('json')
 local g=df.global.gps;local m=df.global.game.main_interface
+-- This oracle runs only in the owned unsaved session; limit render load.
+df.global.enabler.gfps=30
+df.global.enabler.fps_per_gfps=df.global.enabler.fps/df.global.enabler.gfps
 local function key(k)gui.simulateInput(view,k);view:render(dfhack.getTickCount())end
 local function mouse(x,y)
  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
@@ -42,6 +45,33 @@ key('D_ORDERS');assert(m.info.open)
 assert(click_label('Encrust',584),'Fixture needs visible Encrust order')
 local details=m.job_details;assert(details.open and details.wq)
 local order=details.wq;local before={spec=order.specdata.hist_figure_id,typ=order.art_spec.type,id=order.art_spec.id,subid=order.art_spec.subid}
+if os.getenv('DF3D_WORK_ORDER_HOVER')=='1' then
+ key('LEAVESCREEN');assert(not details.open)
+ local hover={}
+ local function probe(name,x,y,expected)
+  local function move()
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=math.floor(x/8);g.mouse_y=math.floor((y-4)/12)
+   gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+  end
+  local deadline=dfhack.getTickCount()+650
+  repeat move();script.sleep(1,'frames')until dfhack.getTickCount()>=deadline
+  move();assert(m.current_hover==expected and m.last_displayed_hover_inst==expected,'Unexpected work order hover: '..name..' '..tostring(m.current_hover))
+  local text={}
+  for y=0,17 do
+   local chars={};for x=g.dimx-24,g.dimx-1 do local ch=dfhack.screen.readTile(x,y).ch;chars[#chars+1]=ch>=32 and ch<127 and string.char(ch)or' 'end
+   text[#text+1]=table.concat(chars):gsub('%s+$','')
+  end
+  while #text>0 and text[#text]==''do table.remove(text)end
+  hover[#hover+1]={name=name,instruction=expected,point={x,y},lines=text}
+  local f=assert(io.open(out..'/work-order-hover-reference.json','w'));f:write(json.encode(hover));f:close()
+ end
+ for _,p in ipairs{{'active',64,430,212},{'amount',392,430,219},{'priority',488,430,220},{'conditions',552,430,221},{'details',584,430,222},{'remove',888,430,223},{'shop_limit',784,430,216}}do probe(table.unpack(p))end
+ local f=assert(io.open(out..'/work-order-hover-reference.json','w'));f:write(json.encode(hover));f:close()
+ shot('work-order-hover-list')
+ records[#records+1]={name='work-order-hover',controls=#hover}
+ return
+end
 if os.getenv('DF3D_WORK_ORDER_NAVIGATION')=='1' then
  local quantity,remaining,limit,frequency=order.amount_total,order.amount_left,order.max_workshops,order.frequency
  local f=assert(io.open(out..'/work-order-navigation-expected.json','w'));f:write(json.encode({id=order.id}));f:close()

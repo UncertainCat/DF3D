@@ -9,6 +9,15 @@ const ACCESS_HELP = [
 	["This option indicates","that the location is","only open to members."]]
 const OWNER_RECENTER_HELP = ["Leave this menu and","recenter on this","creature."]
 const OWNER_FILTER_HELP = ["Filter the unit list by","name or job."]
+# Native Work orders instructions212/216/219..223, protected002223 text cells.
+const WORK_ORDER_HELP={
+	"active":["This work order is","active."],
+	"amount":["Change the number of","times the task will be","performed."],
+	"priority":["Change the work order","priority.  Work orders","at the top of the list","will use workshops","first."],
+	"conditions":["Set the conditions for","work order activation.","This can involve needed","materials, the current","stock of products, or","the completion of other","work orders."],
+	"details":["Set the material used","or other details of the","task."],
+	"remove":["Remove this work order."],
+	"shop_limit":["Set the maximum number","of workshops that can","be used by the work","order."]}
 # Native farm-header214429, instructions301/302, exact24-cell text.
 const BUILDING_HELP={"rename":["Name this building."],"remove":["Remove this building."]}
 # Native Customize instruction287, protected085935 text-cell readback.
@@ -157,6 +166,9 @@ func enter_access(owner: int, mode: int) -> void:
 func enter_item(owner: int, kind: String) -> void:
 	if ITEM_HELP.has(kind):state.enter(owner,"item_"+kind,Time.get_ticks_msec());_process(0)
 
+func enter_work_order(owner: int, kind: String) -> void:
+	if WORK_ORDER_HELP.has(kind):state.enter(owner,"work_order_"+kind,Time.get_ticks_msec());_process(0)
+
 func enter_contents(owner: int, kind: String) -> void:
 	if CONTENTS_HELP.has(kind):state.enter(owner,"contents_"+kind,Time.get_ticks_msec());_process(0)
 
@@ -216,6 +228,7 @@ func _draw() -> void:
 			draw_texture_rect_region(frame,Rect2(x*8,y*12,8,12),Rect2(0 if x==0 else 8,frame_y,8,12))
 	var lines: Array
 	if displayed.begins_with("item_"): lines=ITEM_HELP[displayed.trim_prefix("item_")]
+	elif displayed.begins_with("work_order_"): lines=WORK_ORDER_HELP[displayed.trim_prefix("work_order_")]
 	elif displayed.begins_with("contents_"): lines=CONTENTS_HELP[displayed.trim_prefix("contents_")]
 	elif displayed.begins_with("building_"): lines=BUILDING_HELP[displayed.trim_prefix("building_")]
 	elif displayed.begins_with("unit_"): lines=UNIT_HELP[displayed.trim_prefix("unit_")]

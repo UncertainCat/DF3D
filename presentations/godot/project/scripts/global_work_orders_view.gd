@@ -13,6 +13,9 @@ var editing_limit:=false
 var draft:=""
 var blink:=false
 var wide_tabs:=false
+var hover_help
+var pointer_known:=false
+var pointer_global:=Vector2.ZERO
 func list_top() -> int:return 48 if wide_tabs else 72
 # Native392f79..39315f divides the available row into thirds; coordinates here
 # are relative to the frame's four-column left margin.
@@ -23,9 +26,13 @@ func button_positions() -> Array:
 	var first:=controls_x()+48
 	var second:=workshop_x()+160
 	return [first,first+32,first+64,first+96,first+128,first+160,first+192,second,second+32,second+64,(row_end()-3)*8]
-func configure_orders(source,model) -> void:
+func configure_orders(source,model,help=null) -> void:
+	hover_help=help
 	super.configure(source);state=model;colors=art.installed_palette(source.assets_root())
 	mouse_filter=Control.MOUSE_FILTER_STOP
+	mouse_exited.connect(leave_hover)
+	visibility_changed.connect(func():
+		if not is_visible_in_tree():leave_hover())
 	scrollbar.row_changed.connect(func(value):finish_entry();state.seek(value,page_rows))
 	scrollbar.input_allowed=func():return state.phase==state.Phase.Ready and (not input_allowed.is_valid() or input_allowed.call())
 	state.changed.connect(func():
@@ -47,6 +54,7 @@ func sync_scroll() -> void:
 func finish_entry() -> void:
 	editing_id=-1;draft="";queue_redraw()
 func _process(_delta: float) -> void:
+	update_hover()
 	if editing_id<0:return
 	var next:=Time.get_ticks_msec()%1000<500
 	if next!=blink:blink=next;queue_redraw()
@@ -73,6 +81,8 @@ func _input(event: InputEvent) -> void:
 	elif event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_RIGHT:
 		finish_entry();cancelled.emit();get_viewport().set_input_as_handled()
 func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion or event is InputEventMouseButton:
+		pointer_known=true;pointer_global=get_global_transform()*event.position;update_hover()
 	if state==null or state.phase!=state.Phase.Ready or (input_allowed.is_valid() and not input_allowed.call()):return
 	if not event is InputEventMouseButton or not event.pressed:return
 	if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
@@ -103,6 +113,34 @@ func _gui_input(event: InputEvent) -> void:
 				9:state.set_limit(row.id,maxi(0,row.max_workshops-1))
 				10:state.remove_order(row.id)
 			queue_redraw();accept_event();return
+func hover_kind(point: Vector2) -> String:
+	if state==null or state.phase!=state.Phase.Ready:return ""
+	for index in page_rows:
+		var row: Dictionary=state.rows.get(state.first+index,{})
+		if row.is_empty():continue
+		var y:=list_top()+index*36
+		if row.native_state.phase==1 and Rect2(16,y,32,36).has_point(point):return "active"
+		var buttons:=button_positions()
+		for button in buttons.size():
+			if not Rect2(buttons[button],y,32,36).has_point(point):continue
+			if button==3 and row.position==0:continue
+			if button==4 and row.position==state.total-1:continue
+			if button==6 and not row.native_state.details_available:continue
+			if button>=7 and button<=9 and row.workshop_id!=-1:continue
+			return ["amount","amount","amount","priority","priority","conditions","details","shop_limit","shop_limit","shop_limit","remove"][button]
+	return ""
+func update_hover() -> void:
+	if not is_instance_valid(hover_help):return
+	var kind:=""
+	if pointer_known and is_visible_in_tree() and (not input_allowed.is_valid() or input_allowed.call()):
+		kind=hover_kind(get_global_transform().affine_inverse()*pointer_global)
+	if kind.is_empty():hover_help.leave(get_instance_id())
+	else:hover_help.enter_work_order(get_instance_id(),kind)
+func leave_hover() -> void:
+	pointer_known=false
+	if is_instance_valid(hover_help):hover_help.leave(get_instance_id())
+func _exit_tree() -> void:
+	leave_hover()
 func text(value: String,point: Vector2,color: int=15) -> void:
 	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point,value,HORIZONTAL_ALIGNMENT_LEFT,-1,12,colors[color] if colors.size()>color else Color.WHITE)
 func icon(token: String,point: Vector2) -> void:

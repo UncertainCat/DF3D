@@ -160,7 +160,7 @@ brief serial30FPS native graphics and headless clients; samples36–38C.
 
 The staged `applyJobSetting` adapter validates job/holder identity, native
 eligibility, the job revision, full choice revision and original choice ID
-before any write. It supports input-material and clothing-size options. Native
+before any write. It supports input-material, clothing-size and non-image improvement options. Native
 inline effects2198df..2199ab are pinned (length0xcc, FNV0835284909b8e4cc): save
 original requirement material/flags2 once, change requirement material, and
 change job material for input0. No allocation or fallible operation follows
@@ -231,6 +231,29 @@ logs contain only the known thread notice. Installed bridge SHA256 is
 No graphical Godot run was used. Native captures were brief serial30FPS; GPU
 samples56–61C, ending57C. Rendered owner/resize, ordinary jobs with requirements,
 remaining option families and complete Residents exposure remain unfinished.
+
+Non-image job improvement types now use the pinned native inline job effect:
+21931f writes the improvement kind and219386..2193bd clears all three job
+artwork fields. The latter span is pinned independently of the manager branch.
+Choices still come from native21d190 in an owned job context. Image is excluded
+from this terminal edit path because native opens its artwork editor after
+setting ART_IMAGE; that editor remains separate unfinished work.
+Protected080349 on2026-11-06 captures the native EncrustWithGems page, ordered
+Image/Bands/Covered/Hanging rings/Spikes choices, and actual Bands selection.
+It changes improvement0 to3 and clears prior HistoricalFigure art9996/subid7
+to None/-1/-1, retains zero requirements, and returns to Residents. The image
+was inspected. Protected080629 matches the owned choices and verifies the typed
+headless owner click plus native field readback. No search is offered on this
+native page. Both runs use a disposable unlinked job; ordinary encrusting and
+the Image path are not accepted by this evidence. DF2720/36724 exit unsaved with
+source preservation; joined client logs contain only the known thread notice.
+Native build and root19/extension/both state checks pass in job-improvement-20261106.
+Installed bridge SHA256 is
+27DCD2913F268E40C6AE1E354117E83F24014F1EF435DED25DC1634471EA62E8.
+Graphics were brief serial30FPS native only; GPU samples59–61C. Public Residents
+remains staged while artwork, plant effects and broader owner/job acceptance
+are incomplete.
+
 
 
 

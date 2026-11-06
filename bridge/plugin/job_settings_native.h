@@ -24,6 +24,7 @@ inline bool jobSettingsReady() {
             {0x213f74,0xac,UINT64_C(0xbc878cc2d1caf065)},
             {0x2198df,0xcc,UINT64_C(0x0835284909b8e4cc)},
             {0x21bd53,0x28,UINT64_C(0x33033347c20397f2)},
+            {0x219386,0x37,UINT64_C(0x5648d69c12ce8e22)},
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -202,9 +203,17 @@ inline JobSettingsOutcome applyJobSetting(df::job& job,const JobSettingsTarget& 
         return JobSettingsOutcome::Stale;
     if(size_t(option)>=observed->options.size())return JobSettingsOutcome::Rejected;
     const auto kind=observed->options[size_t(option)].kind;
-    if(kind!=0 && kind!=2)return JobSettingsOutcome::Rejected;
+    if(kind!=0 && kind!=2 && kind!=3)return JobSettingsOutcome::Rejected;
     const auto found=std::find_if(observed->materials.begin(),observed->materials.end(),[&](const auto& row){return row.id==choice;});
     if(found==observed->materials.end())return JobSettingsOutcome::Rejected;
+    if(kind==3) {
+        // Native21931f writes the chosen kind. Image opens its own editor;
+        // only non-image kinds take219386's job artwork-reset/close branch.
+        if(found->index<1 || found->index>4)return JobSettingsOutcome::Rejected;
+        job.specdata.improvement=df::improvement_type(found->index);
+        job.art_spec.type=df::job_art_specifier_type(-1);job.art_spec.id=-1;job.art_spec.subid=-1;
+        return JobSettingsOutcome::Applied;
+    }
     if(kind==2) {
         // Native21bd73 updates the job's size-race union and closes Details.
         // Requirement rebuilding at21bd7b belongs only to manager orders.

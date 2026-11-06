@@ -4,6 +4,7 @@ local gui=require('gui');local script=require('gui.script');local json=require('
 local button,owner,scroller,row_index
 local controlled,prior_job,controlled_unit,provider
 local clothing=os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_CLOTHING')=='1'
+local improvement=os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_IMPROVEMENT')=='1'
 local function find(widget,unit,scroll,index)
  if (widget.flag.whole&1)==0 or button then return end
  if df.widget_job_details_button:is_instance(widget) and widget.jb then
@@ -39,6 +40,10 @@ if not button then
  local input=df.job_item:new();input.item_type=df.item_type.BOULDER;input.mat_type=0;input.mat_index=-1;input.quantity=1
  if clothing then
   controlled.job_type=df.job_type.MakeArmor;controlled.item_subtype=0;controlled.mat_type=-1;controlled.specdata.hist_figure_id=-1
+  input:delete()
+ elseif improvement then
+  controlled.job_type=df.job_type.EncrustWithGems;controlled.mat_type=-1;controlled.specdata.improvement=df.improvement_type.ART_IMAGE
+  controlled.art_spec.type=df.job_art_specifier_type.HistoricalFigure;controlled.art_spec.id=controlled_unit.hist_figure_id;controlled.art_spec.subid=7
   input:delete()
  else controlled.job_items.elements:insert('#',input)end
  prior_job=controlled_unit.job.current_job;controlled_unit.job.current_job=controlled
@@ -96,12 +101,18 @@ if clothing then
  evidence.clothing_current_race=job.specdata.hist_figure_id
  assert(#evidence.options==1 and evidence.options[1].kind==2 and #evidence.clothing_races>1,'Native clothing option did not open')
 end
-evidence.materials={}
+if improvement then
+ evidence.improvements={};for _,kind in ipairs(details.improvement_type)do evidence.improvements[#evidence.improvements+1]=kind end
+ assert(#evidence.options==1 and evidence.options[1].kind==3 and #evidence.improvements>1,'Native improvement option did not open')
+ evidence.improvement_before={kind=job.specdata.improvement,art_type=job.art_spec.type,art_id=job.art_spec.id,art_subid=job.art_spec.subid}
+end
+evidence.materials={} 
 for i,kind in ipairs(details.material)do evidence.materials[#evidence.materials+1]={type=kind,index=details.matgloss[i],count=details.material_count[i]}end
 if provider then
  assert(provider.job_id==job.id and provider.building_id==evidence.building_id and json.encode(provider.search)==json.encode(evidence.search),'Owned job settings identity/location differs')
- assert(#provider.options==#evidence.options and #provider.materials==#(clothing and evidence.clothing_races or evidence.materials),'Owned job settings list sizes differ')
+ assert(#provider.options==#evidence.options and #provider.materials==#(clothing and evidence.clothing_races or improvement and evidence.improvements or evidence.materials),'Owned job settings list sizes differ')
  for i,option in ipairs(evidence.options)do assert(provider.options[i].kind==option.kind and provider.options[i].index==option.index,'Owned job option differs')end
+ if improvement then for i,kind in ipairs(evidence.improvements)do assert(provider.materials[i].index==kind,'Owned improvement differs')end end
  if clothing then
   for i,row in ipairs(evidence.clothing_races)do assert(provider.materials[i].index==row.id and provider.materials[i].caption==row.caption,'Owned clothing size differs at '..i)end
  end
@@ -125,7 +136,7 @@ while true do
  local ack=io.open(out..'/ack-residents-job-settings');if ack then ack:close();break end
  assert(dfhack.getTickCount()<deadline,'Job settings capture timeout');script.sleep(1,'frames')
 end
-if os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_WIRE')=='1' and not clothing then
+if os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_WIRE')=='1' and not clothing and not improvement then
  assert(controlled and job==controlled,'Wire mutation requires the disposable unlinked job')
  local input=job.job_items.elements[0]
  evidence.wire_material_effect={mat_type=job.mat_type,mat_index=job.mat_index,input_type=input.mat_type,input_index=input.mat_index,
@@ -136,6 +147,25 @@ end
 if clothing and os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_WIRE')=='1' then
  evidence.wire_clothing_effect={race=job.specdata.hist_figure_id,requirements=#job.job_items.elements}
  assert(job.specdata.hist_figure_id==evidence.clothing_races[2].id and #job.job_items.elements==0,'Wire clothing effect differs from native')
+end
+if improvement then
+ if os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_WIRE')~='1' then
+  g.precise_mouse_x=10*8+4;g.precise_mouse_y=14*12+6;g.mouse_x=10;g.mouse_y=14
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+  gui.simulateInput(view,'_MOUSE_L')
+  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+  for _=1,3 do script.sleep(1,'frames')end
+ end
+ evidence.improvement_effect={kind=job.specdata.improvement,art_type=job.art_spec.type,art_id=job.art_spec.id,art_subid=job.art_spec.subid,requirements=#job.job_items.elements}
+ assert(job.specdata.improvement==evidence.improvements[2] and job.art_spec.type==-1 and job.art_spec.id==-1 and job.art_spec.subid==-1,'Improvement effect or artwork clearing differs')
+ if os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_WIRE')~='1' then
+  assert(not details.open and info.open,'Native improvement selection did not return to Residents')
+  g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+6;g.mouse_x=x;g.mouse_y=y
+  df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L')
+  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+  for _=1,3 do script.sleep(1,'frames')end
+  assert(details.open and details.jb==job,'Improvement button did not reopen')
+ end
 end
 owner.job.current_job=wire_original
 if clothing and os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_WIRE')~='1' then

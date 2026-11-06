@@ -2644,5 +2644,378 @@
       "requirements": 0
     },
     "scope": "Owned reader matches complete native clothing race IDs/captions/order; typed current caption, pagination, search and actual Residents owner choice verified headlessly. Result material_applied field denotes the shared setting submission here. No rendered clothing owner or ordinary production acceptance."
+  },
+  "improvement_reference": {
+    "source": "build/stockpile-storage-native-input-20261106-080349",
+    "reference": {
+      "building_id": 3,
+      "button": [
+        70,
+        14,
+        72,
+        16
+      ],
+      "button_context": 1,
+      "context": 1,
+      "controlled_job": true,
+      "current_option": 3,
+      "current_option_index": -1,
+      "escape_details_open": false,
+      "escape_info_open": true,
+      "improvement_before": {
+        "art_id": 9996,
+        "art_subid": 7,
+        "art_type": 0,
+        "kind": 0
+      },
+      "improvement_effect": {
+        "art_id": -1,
+        "art_subid": -1,
+        "art_type": -1,
+        "kind": 3,
+        "requirements": 0
+      },
+      "improvements": [
+        0,
+        3,
+        1,
+        2,
+        4
+      ],
+      "job_id": 2000000000,
+      "job_type": 86,
+      "lines": [
+        {
+          "text": "                  Roderònul           Pop                                  Food  Drink           20th Malachite",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+          "y": 2
+        },
+        {
+          "text": "",
+          "y": 3
+        },
+        {
+          "text": "",
+          "y": 4
+        },
+        {
+          "text": "    Encrust  with cut gems",
+          "y": 5
+        },
+        {
+          "text": "",
+          "y": 6
+        },
+        {
+          "text": "",
+          "y": 7
+        },
+        {
+          "text": "    Setting type",
+          "y": 8
+        },
+        {
+          "text": "",
+          "y": 9
+        },
+        {
+          "text": "",
+          "y": 10
+        },
+        {
+          "text": "    Image",
+          "y": 11
+        },
+        {
+          "text": "",
+          "y": 12
+        },
+        {
+          "text": "",
+          "y": 13
+        },
+        {
+          "text": "    Bands",
+          "y": 14
+        },
+        {
+          "text": "",
+          "y": 15
+        },
+        {
+          "text": "                                                                                                                                    Elevation 36",
+          "y": 16
+        },
+        {
+          "text": "    Covered",
+          "y": 17
+        },
+        {
+          "text": "",
+          "y": 18
+        },
+        {
+          "text": "",
+          "y": 19
+        },
+        {
+          "text": "    Hanging rings",
+          "y": 20
+        },
+        {
+          "text": "",
+          "y": 21
+        },
+        {
+          "text": "",
+          "y": 22
+        },
+        {
+          "text": "    Spikes",
+          "y": 23
+        },
+        {
+          "text": "",
+          "y": 24
+        },
+        {
+          "text": "",
+          "y": 25
+        },
+        {
+          "text": "",
+          "y": 26
+        },
+        {
+          "text": "",
+          "y": 27
+        },
+        {
+          "text": "",
+          "y": 28
+        },
+        {
+          "text": "",
+          "y": 29
+        },
+        {
+          "text": "",
+          "y": 30
+        },
+        {
+          "text": "",
+          "y": 31
+        },
+        {
+          "text": "",
+          "y": 32
+        },
+        {
+          "text": "",
+          "y": 33
+        },
+        {
+          "text": "",
+          "y": 34
+        },
+        {
+          "text": "",
+          "y": 35
+        },
+        {
+          "text": "",
+          "y": 36
+        },
+        {
+          "text": "",
+          "y": 37
+        },
+        {
+          "text": "",
+          "y": 38
+        },
+        {
+          "text": "",
+          "y": 39
+        },
+        {
+          "text": "",
+          "y": 40
+        },
+        {
+          "text": "",
+          "y": 41
+        },
+        {
+          "text": "",
+          "y": 42
+        },
+        {
+          "text": "",
+          "y": 43
+        },
+        {
+          "text": "",
+          "y": 44
+        },
+        {
+          "text": "",
+          "y": 45
+        },
+        {
+          "text": "",
+          "y": 46
+        },
+        {
+          "text": "",
+          "y": 47
+        },
+        {
+          "text": "",
+          "y": 48
+        },
+        {
+          "text": "",
+          "y": 49
+        },
+        {
+          "text": "",
+          "y": 50
+        },
+        {
+          "text": "",
+          "y": 51
+        },
+        {
+          "text": "",
+          "y": 52
+        },
+        {
+          "text": "",
+          "y": 53
+        },
+        {
+          "text": "",
+          "y": 54
+        },
+        {
+          "text": "",
+          "y": 55
+        },
+        {
+          "text": "",
+          "y": 56
+        },
+        {
+          "text": "",
+          "y": 57
+        },
+        {
+          "text": "",
+          "y": 58
+        },
+        {
+          "text": "",
+          "y": 59
+        },
+        {
+          "text": "",
+          "y": 60
+        },
+        {
+          "text": "",
+          "y": 61
+        },
+        {
+          "text": "",
+          "y": 62
+        },
+        {
+          "text": "",
+          "y": 63
+        },
+        {
+          "text": "",
+          "y": 64
+        },
+        {
+          "text": "",
+          "y": 65
+        }
+      ],
+      "materials": [],
+      "options": [
+        {
+          "index": -1,
+          "kind": 3
+        }
+      ],
+      "search": [
+        106,
+        95,
+        165
+      ],
+      "unit_id": 6534
+    },
+    "scope": "Actual native job button and Bands selection on a disposable unlinked EncrustWithGems job. Existing historical-figure art target is cleared. No requirements or ordinary execution; Image editor remains unaccepted."
+  },
+  "improvement_wire_reference": {
+    "source": "build/stockpile-storage-native-input-20261106-080629",
+    "bridge_sha256": "27DCD2913F268E40C6AE1E354117E83F24014F1EF435DED25DC1634471EA62E8",
+    "result": {
+      "choices": 5,
+      "composed": {
+        "choices": 5,
+        "closed": true,
+        "filter_supported": false,
+        "filtered": false,
+        "material_applied": true,
+        "resident_id": 6534,
+        "returned_to_roster": true
+      },
+      "filtered": [
+        {
+          "caption": "Image",
+          "estimated": false,
+          "id": 0
+        },
+        {
+          "caption": "Bands",
+          "estimated": false,
+          "id": 1
+        },
+        {
+          "caption": "Covered",
+          "estimated": false,
+          "id": 2
+        },
+        {
+          "caption": "Hanging rings",
+          "estimated": false,
+          "id": 3
+        },
+        {
+          "caption": "Spikes",
+          "estimated": false,
+          "id": 4
+        }
+      ],
+      "success": true
+    },
+    "effect": {
+      "art_id": -1,
+      "art_subid": -1,
+      "art_type": -1,
+      "kind": 3,
+      "requirements": 0
+    },
+    "scope": "Owned choice IDs/order match native improvement list. Headless Residents owner selects Bands through typed edit; native readback matches improvement and all artwork reset fields. No search on this native page; Image editor and ordinary production not accepted."
   }
 }

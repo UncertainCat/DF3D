@@ -104,8 +104,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 142;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v142";
+inline constexpr uint32_t kManagementVersion = 143;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v143";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -403,7 +403,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::WorkDetailRowsRead &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::WorkDetailSettingsToggle &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -459,7 +459,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::WorkDetailRowsRead)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::WorkDetailSettingsToggle)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -553,6 +553,14 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     const auto* q=r.residents_specialization();
     if(!q || q->unit_id()<0 || !q->expected_revision() || q->expected_revision()>INT64_MAX)return "invalid residents specialization request";
   } else if(r.residents_specialization())return "unexpected residents specialization request";
+  if(r.action()==ManagementAction::WorkDetailSettingsRead || r.action()==ManagementAction::WorkDetailSettingsToggle) {
+    const auto* q=r.work_detail_settings();
+    if(!q || q->detail_index()<0 || q->detail_index()>=128 || !q->expected_revision() || q->expected_revision()>INT64_MAX)
+      return "invalid work-detail settings authority";
+    if(r.action()==ManagementAction::WorkDetailSettingsRead ? q->setting_id()!=-1 :
+       !((q->setting_id()>=-13 && q->setting_id()<=-2) || (q->setting_id()>=1 && q->setting_id()<=93)))
+      return "invalid work-detail setting target";
+  } else if(r.work_detail_settings())return "unexpected work-detail settings request";
   if(r.action()==ManagementAction::WorkDetailWorkersQuery) {
     const auto* q=r.work_detail_workers();
     if(!q || q->detail_index()<0 || q->detail_index()>=128 || !q->expected_revision() || q->expected_revision()>INT64_MAX ||
@@ -1008,7 +1016,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::WorkDetailRowsRead ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::WorkDetailSettingsToggle ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -1084,6 +1092,23 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     for(auto id:*r->unit_ids())if(id<0 || !ids.insert(id).second)return "invalid residents identity";
   } else if((s.action()==ManagementAction::ResidentsQuery || s.action()==ManagementAction::WorkDetailWorkersQuery) && s.status()==ManagementStatus::Ok)
     return "residents result required";
+  if(const auto* r=s.work_detail_settings()) {
+    if((s.action()!=ManagementAction::WorkDetailSettingsRead && s.action()!=ManagementAction::WorkDetailSettingsToggle) ||
+       s.status()!=ManagementStatus::Ok || r->detail_index()<0 || r->detail_index()>=128 || !r->revision() || r->revision()>INT64_MAX ||
+       !r->labors() || r->labors()->size()>94 || !r->catalog() || r->catalog()->size()!=91)
+      return "invalid work-detail settings result";
+    int previous=-1;
+    for(auto id:*r->labors()){if(id<0 || id>=94 || id<=previous)return "invalid settings labors";previous=id;}
+    std::array<bool,107> seen{};int groups=0,labors=0;
+    for(const auto* entry:*r->catalog()) {
+      if(!entry || !entry->caption() || entry->caption()->size()==0 || entry->caption()->size()>512 ||
+         !((entry->id()>=-13 && entry->id()<=-2) || (entry->id()>=1 && entry->id()<=93)))return "invalid settings catalog entry";
+      const size_t slot=size_t(entry->id()+13);if(seen[slot])return "duplicate settings catalog entry";seen[slot]=true;
+      if(entry->id()<0)++groups;else {if(groups==0)return "settings labor precedes its category";++labors;}
+    }
+    if(groups!=12 || labors!=79)return "incomplete settings catalog";
+  } else if((s.action()==ManagementAction::WorkDetailSettingsRead || s.action()==ManagementAction::WorkDetailSettingsToggle) && s.status()==ManagementStatus::Ok)
+    return "missing work-detail settings result";
   if(const auto* r=s.residents_rows()) {
     if((s.action()!=ManagementAction::ResidentsRowsRead && s.action()!=ManagementAction::WorkDetailRowsRead) || s.status()!=ManagementStatus::Ok ||
        !r->rows() || r->rows()->size()==0 || r->rows()->size()>kResidentsRowsLimit)return "invalid residents rows result";

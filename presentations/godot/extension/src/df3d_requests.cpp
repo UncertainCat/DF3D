@@ -203,6 +203,13 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         for(const auto& l:v.links){Dictionary link;link["type"]=l.type;link["id"]=l.id;link["subid"]=l.subid;links.push_back(link);}
         value["words"]=words;value["links"]=links;result["residents_activity"]=value;
     }
+    if(s.workDetailSettings) {
+        const auto& v=*s.workDetailSettings;Dictionary value;Array catalog;PackedInt32Array labors;
+        value["detail_index"]=v.detailIndex;value["revision"]=int64_t(v.revision);value["editable"]=v.editable;value["no_modify"]=v.noModify;
+        for(auto id:v.labors)labors.push_back(id);
+        for(const auto& entry:v.catalog){Dictionary row;row["id"]=entry.id;row["caption"]=String::utf8(entry.caption.c_str());catalog.push_back(row);}
+        value["labors"]=labors;value["catalog"]=catalog;result["work_detail_settings"]=value;
+    }
     if(s.residentsRows) {
         Dictionary value;Array rows;
         for(const auto& v:s.residentsRows->rows) {
@@ -438,6 +445,22 @@ bool readResidentsSpecialization(const Dictionary& data,wm::ManagementRequest& r
     request.action=wm::ManagementAction::ResidentsSpecialize;
     request.residentsSpecialization={int32_t(int64_t(data["unit_id"])),uint64_t(int64_t(data["expected_revision"])),bool(data["only_assigned"])};return true;
 }
+bool validateWorkDetailSettings(const Dictionary& data,String& error) {
+    const bool toggle=int64_t(data["action"])==int64_t(wm::ManagementAction::WorkDetailSettingsToggle);
+    if(data.size()!=(toggle?4:3) || !data.has("detail_index") || !data.has("expected_revision") ||
+       data["detail_index"].get_type()!=Variant::INT || data["expected_revision"].get_type()!=Variant::INT ||
+       int64_t(data["detail_index"])<0 || int64_t(data["detail_index"])>=128 || int64_t(data["expected_revision"])<=0) {error="Invalid work-detail settings authority";return false;}
+    if(toggle){
+        if(!data.has("setting_id") || data["setting_id"].get_type()!=Variant::INT){error="Invalid setting identity";return false;}
+        const int64_t id=data["setting_id"];
+        if(!((id>=-13 && id<=-2) || (id>=1 && id<=93))){error="Invalid setting identity";return false;}
+    }
+    return true;
+}
+bool readWorkDetailSettings(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction(int64_t(data["action"]));
+    request.workDetailSettings={int32_t(int64_t(data["detail_index"])),uint64_t(int64_t(data["expected_revision"])),data.has("setting_id")?int32_t(int64_t(data["setting_id"])):-1};return true;
+}
 bool validateWorkDetailWorkers(const Dictionary& data,String& error) {
     if(data.size()!=6 || !data.has("detail_index") || !data.has("expected_revision") || !data.has("sort") || !data.has("descending") || !data.has("query_bytes") ||
        data["detail_index"].get_type()!=Variant::INT || data["expected_revision"].get_type()!=Variant::INT || data["sort"].get_type()!=Variant::INT ||
@@ -610,6 +633,7 @@ const ManagementCodec managementCodecs[] = {
     {"work_detail_workers",validateWorkDetailWorkers,readWorkDetailWorkers},
     {"residents_rows",validateResidentsRows,readResidentsRows},
     {"work_detail_rows",validateResidentsRows,readResidentsRows},
+    {"work_detail_settings",validateWorkDetailSettings,readWorkDetailSettings},
     {"residents_specialization",validateResidentsSpecialization,readResidentsSpecialization},
     {"residents_activity",validateResidentsActivity,readResidentsActivity},
     {"job_settings",validateJobSettings,readJobSettings},
@@ -625,7 +649,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::WorkDetailRowsRead)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::WorkDetailSettingsToggle)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

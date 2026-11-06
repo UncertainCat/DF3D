@@ -4720,3 +4720,41 @@ TEST_CASE("Residents activity markup rejects malformed or foreign results") {
   const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
   CHECK_FALSE(wire::validateManagementState(*value));CHECK_FALSE(codec::decodeState(value).residentsActivity);
 }
+
+TEST_CASE("Work Details settings requests preserve authority and isolate toggles") {
+  for(bool toggle:{false,true})for(int fault=0;fault<6;++fault) {
+    wm::ManagementRequest request;request.action=toggle?wm::ManagementAction::WorkDetailSettingsToggle:wm::ManagementAction::WorkDetailSettingsRead;
+    request.workDetailSettings={7,UINT64_C(9007199254740993),toggle?-2:-1};
+    if(fault==1)request.workDetailSettings.detailIndex=128;
+    if(fault==2)request.workDetailSettings.expectedRevision=0;
+    if(fault==3)request.workDetailSettings.expectedRevision=uint64_t(INT64_MAX)+1;
+    if(fault==4)request.workDetailSettings.settingId=toggle?-1:11;
+    if(fault==5)request.workDetailSettings.settingId=94;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    if(!fault)CHECK(value->work_detail_settings()->expected_revision()==UINT64_C(9007199254740993));
+  }
+}
+TEST_CASE("Work Details settings reject partial catalogs and retire foreign results") {
+  for(int fault=0;fault<9;++fault) {
+    flatbuffers::FlatBufferBuilder b;std::vector<flatbuffers::Offset<wire::WorkDetailSetting>> entries;
+    for(int id=-13;id<=-2;++id)entries.push_back(wire::CreateWorkDetailSetting(b,id,b.CreateString("Synthetic group")));
+    for(int id=1;id<=79;++id)entries.push_back(wire::CreateWorkDetailSetting(b,fault==1 && id==79?1:id,b.CreateString(fault==2?"":"Synthetic labor")));
+    if(fault==3)entries.pop_back();
+    const auto settings=wire::CreateWorkDetailSettingsState(b,7,fault==4?0:UINT64_C(9007199254740993),true,false,
+      b.CreateVector(std::vector<int16_t>{11,int16_t(fault==5?11:59)}),b.CreateVector(entries));
+    wire::ManagementStateBuilder state(b);state.add_revision(1);
+    state.add_action(fault==6?wire::ManagementAction::ResidentsQuery:wire::ManagementAction::WorkDetailSettingsRead);
+    state.add_status(fault==7?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);
+    if(fault!=8)state.add_work_detail_settings(settings);
+    b.Finish(state.Finish());const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){const auto decoded=codec::decodeState(value);REQUIRE(decoded.workDetailSettings);
+      CHECK(decoded.workDetailSettings->revision==UINT64_C(9007199254740993));CHECK(decoded.workDetailSettings->catalog.size()==91);}
+  }
+  flatbuffers::FlatBufferBuilder b;wire::ManagementStateBuilder state(b);state.add_revision(2);
+  state.add_action(wire::ManagementAction::WorkDetailSettingsToggle);state.add_status(wire::ManagementStatus::Rejected);b.Finish(state.Finish());
+  const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+  CHECK_FALSE(wire::validateManagementState(*value));CHECK_FALSE(codec::decodeState(value).workDetailSettings);
+}

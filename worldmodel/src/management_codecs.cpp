@@ -46,6 +46,12 @@ ManagementState decodeState(const m::ManagementState* s) {
     next.creatureHeader=std::move(header);
   }
   if(const auto* r=s->residents())next.residents=ResidentsState{{r->unit_ids()->begin(),r->unit_ids()->end()}};
+  if(const auto* r=s->work_detail_settings()) {
+    next.workDetailSettings.emplace();auto& out=*next.workDetailSettings;
+    out.detailIndex=r->detail_index();out.revision=r->revision();out.editable=r->editable();out.noModify=r->no_modify();
+    out.labors.assign(r->labors()->begin(),r->labors()->end());
+    for(const auto* entry:*r->catalog())out.catalog.push_back({entry->id(),entry->caption()->str()});
+  }
   if(const auto* r=s->residents_rows()) {
     next.residentsRows.emplace();
     for(const auto* v:*r->rows()) {
@@ -236,7 +242,10 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
           flatbuffers::Offset<m::JobSettingsEditRequest>{},
       r.action==ManagementAction::WorkDetailWorkersQuery?
           m::CreateWorkDetailWorkersRequest(b,r.workDetailWorkers.detailIndex,r.workDetailWorkers.expectedRevision,m::WorkDetailWorkerSort(r.workDetailWorkers.sort),r.workDetailWorkers.descending,b.CreateVector(r.workDetailWorkers.queryBytes)):
-          flatbuffers::Offset<m::WorkDetailWorkersRequest>{});
+          flatbuffers::Offset<m::WorkDetailWorkersRequest>{},
+      (r.action==ManagementAction::WorkDetailSettingsRead || r.action==ManagementAction::WorkDetailSettingsToggle)?
+          m::CreateWorkDetailSettingsRequest(b,r.workDetailSettings.detailIndex,r.workDetailSettings.expectedRevision,r.workDetailSettings.settingId):
+          flatbuffers::Offset<m::WorkDetailSettingsRequest>{});
   b.Finish(request);
 }
 }  // namespace wm::detail::management

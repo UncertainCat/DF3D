@@ -830,6 +830,16 @@ int main(int argc,char** argv) {
         const auto outcome=k->kind()==15?m::CreatureKnowledgeOutcome::Unavailable:k->kind()==16?m::CreatureKnowledgeOutcome::Rejected:m::CreatureKnowledgeOutcome::Ready;
         knowledge=m::CreateCreatureKnowledgeState(b,k->unit_id(),k->kind(),k->id(),outcome,b.CreateString(knowledgeRejected?"":"[B]Synthetic detail"));
       }
+      flatbuffers::Offset<m::WorkDetailSettingsState> settings;
+      if(request && (request->action()==m::ManagementAction::WorkDetailSettingsRead || request->action()==m::ManagementAction::WorkDetailSettingsToggle)) {
+        const auto* q=request->work_detail_settings();const bool toggle=request->action()==m::ManagementAction::WorkDetailSettingsToggle;
+        require(q && q->detail_index()==7 && q->expected_revision()==9007199254740993ull && q->setting_id()==(toggle?-2:-1),"settings authority and target");
+        std::vector<flatbuffers::Offset<m::WorkDetailSetting>> catalog;
+        for(int id=-13;id<=-2;++id)catalog.push_back(m::CreateWorkDetailSetting(b,id,b.CreateString("Synthetic group")));
+        for(int id=1;id<=79;++id)catalog.push_back(m::CreateWorkDetailSetting(b,id,b.CreateString("Synthetic labor")));
+        settings=m::CreateWorkDetailSettingsState(b,7,9007199254740993ull,true,false,
+            b.CreateVector(std::vector<int16_t>{11,59}),b.CreateVector(catalog));
+      }
       flatbuffers::Offset<m::ResidentsState> workers;
       if(request && request->action()==m::ManagementAction::WorkDetailWorkersQuery) {
         const auto* q=request->work_detail_workers();
@@ -838,7 +848,7 @@ int main(int argc,char** argv) {
         require(q->query_bytes()->size()==2 && q->query_bytes()->Get(0)=='T' && q->query_bytes()->Get(1)==0xc3,"work-detail query bytes");
         workers=m::CreateResidentsState(b,b.CreateVector(std::vector<int32_t>{7,2,9}));
       }
-      m::ManagementStateBuilder state(b);state.add_residents(workers);state.add_agreement(agreements);state.add_report(reports);state.add_production(production);state.add_construction(construction);state.add_citizen(citizens);state.add_work_order(work);state.add_schema_version(m::kManagementVersion);
+      m::ManagementStateBuilder state(b);state.add_work_detail_settings(settings);state.add_residents(workers);state.add_agreement(agreements);state.add_report(reports);state.add_production(production);state.add_construction(construction);state.add_citizen(citizens);state.add_work_order(work);state.add_schema_version(m::kManagementVersion);
       state.add_revision(revision);state.add_world_epoch(epoch);state.add_client_id(request?request->client_id():0);
       state.add_request_seq(request?request->seq():0);state.add_action(request?request->action():m::ManagementAction::Catalog);
       state.add_creature_knowledge(knowledge);
@@ -875,7 +885,7 @@ int main(int argc,char** argv) {
         A::AreaCreate,A::AreaUpdate,A::AreaUpdate,
         A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaCreate,A::AreaInspect,
         A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,
-        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::PrepareAlertDismissal,A::DismissAlert,A::ProductionInspect,A::ProductionInspect,A::ProductionInspect,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::WorkDetailWorkersQuery};
+        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::PrepareAlertDismissal,A::DismissAlert,A::ProductionInspect,A::ProductionInspect,A::ProductionInspect,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::WorkDetailWorkersQuery,A::WorkDetailSettingsRead,A::WorkDetailSettingsToggle};
     publish(1,nullptr);signal("ready");size_t received=0;
     const auto stop=std::chrono::steady_clock::now()+std::chrono::seconds(30);
     std::vector<uint8_t> bytes(m::kManagementCommandCapacity);
@@ -1032,7 +1042,7 @@ int main(int argc,char** argv) {
         case A::TradeUpdate: {
           auto* v=r->trade();require(v && v->depot_id()==2147483000 && v->expected_revision()==epoch && v->requested()==1 && v->anyone()==-1 && v->item_id()==-1,"trade payload");break;
         }
-        case A::CreatureKnowledgeRead: case A::WorkDetailWorkersQuery: break; // Full identity is checked while constructing the reply.
+        case A::CreatureKnowledgeRead: case A::WorkDetailWorkersQuery: case A::WorkDetailSettingsRead: case A::WorkDetailSettingsToggle: break; // Full identity is checked while constructing the reply.
         default: throw std::runtime_error("unexpected action");
         }
         publish(received+1,r);

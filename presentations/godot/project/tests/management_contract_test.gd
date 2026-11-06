@@ -394,6 +394,7 @@ func run() -> void:
 		assert(knowledge.outcome==(Contract.CreatureKnowledgeOutcome.Unavailable if kind==15 else Contract.CreatureKnowledgeOutcome.Rejected if kind==16 else Contract.CreatureKnowledgeOutcome.Ready))
 		assert(knowledge.text==("" if kind in [15,16] else "[B]Synthetic detail"))
 	await test_work_detail_workers()
+	await test_work_detail_settings()
 	# Host signals only after validating every expected payload.
 	for i in 300:
 		if FileAccess.get_file_as_string(status_path) == "passed": break
@@ -1058,3 +1059,16 @@ func test_work_detail_workers() -> void:
 	assert(sequence>0)
 	var state:=await receipt(sequence)
 	assert(state.get("residents",{}).get("unit_ids",PackedInt32Array())==PackedInt32Array([7,2,9]))
+
+func test_work_detail_settings() -> void:
+	for action in [A.WorkDetailSettingsRead,A.WorkDetailSettingsToggle]:
+		var request: Dictionary={"action":action,"detail_index":7,"expected_revision":9007199254740993}
+		if action==A.WorkDetailSettingsToggle:request.setting_id=-2
+		for patch in [{"detail_index":128},{"expected_revision":0},{"expected_revision":1.5},{"setting_id":-1},{"setting_id":94},{"cursor":1}]:
+			var invalid:=request.duplicate();invalid.merge(patch,true)
+			assert(world.management_request("work_detail_settings",invalid)==0)
+		var sequence: int=world.management_request("work_detail_settings",request);assert(sequence>0)
+		var state:=await receipt(sequence);var value: Dictionary=state.get("work_detail_settings",{})
+		assert(value.get("revision")==9007199254740993 and value.get("detail_index")==7)
+		assert(value.get("labors")==PackedInt32Array([11,59]) and value.get("catalog",[]).size()==91)
+		assert(Contract.is_mutation(action)==(action==A.WorkDetailSettingsToggle))

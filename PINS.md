@@ -22,6 +22,14 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management143 adds revision-bound `WorkDetailSettingsRead` and
+`WorkDetailSettingsToggle` in `work_detail_settings`. Read returns the complete
+native catalog and current allowed labors; Toggle is a one-shot definition edit,
+not a bulk replacement or forced worker recalculation. Both require the selected
+detail's exact revision. Rebuild both peers; `Local\df3d_management_v143` rejects
+Management142 peers. Older snapshots do not imply an empty catalog or disabled
+labors. Runtime handlers and editor exposure require separate live acceptance.
+
 Management142 adds `WorkDetailRowsRead` using bounded worker IDs and an exact
 selected-detail revision. Shared row observations gain ordered native skills
 and membership; Work Details rows do not observe activity or happiness. Older

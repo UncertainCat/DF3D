@@ -11,6 +11,14 @@ const OWNER_RECENTER_HELP = ["Leave this menu and","recenter on this","creature.
 const OWNER_FILTER_HELP = ["Filter the unit list by","name or job."]
 # Native Work orders instructions212/216/219..223, protected002223 text cells.
 const WORK_ORDER_HELP={
+	# Native status/dependency instructions213..218/232, protected003053.
+	"ready":["This work order is","ready to activate."],
+	"new":["Create a new work","order.  Work orders are","like workshop jobs but","they are assigned to","shops automatically and","can be activated with","various conditions."],
+	"checking":["This work order is","checking its conditions","for activation."],
+	"waiting":["This work order is","waiting for its next","scheduled check."],
+	"validated":["This work order has","been validated by the","manager."],
+	"not_validated":["This work order has not","been validated by the","manager.  A manager can","be employed in the","nobles and","administrators menu,","and they must have an","assigned office where","they will work to","validate orders."],
+	"dependency":["Change whether the work","order must be activated","or completed to satisfy","this condition."],
 	# Conditions instructions224..231/233, protected002646 text cells.
 	"frequency":["Change the frequency","that the conditions are","checked."],
 	"add_item":["Add a condition to the","work order that checks","the amount of some item."],

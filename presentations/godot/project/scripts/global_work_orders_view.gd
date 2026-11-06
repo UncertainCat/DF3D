@@ -115,11 +115,13 @@ func _gui_input(event: InputEvent) -> void:
 			queue_redraw();accept_event();return
 func hover_kind(point: Vector2) -> String:
 	if state==null or state.phase!=state.Phase.Ready:return ""
+	if state.native_state.get("manager_available",false) and Rect2(size.x-48,list_top(),32,36).has_point(point):return "new"
 	for index in page_rows:
 		var row: Dictionary=state.rows.get(state.first+index,{})
 		if row.is_empty():continue
 		var y:=list_top()+index*36
-		if row.native_state.phase==1 and Rect2(16,y,32,36).has_point(point):return "active"
+		if row.native_state.phase in [1,2,3,4] and Rect2(16,y,32,36).has_point(point):return ["","active","waiting","checking","ready"][row.native_state.phase]
+		if row.native_state.validation_required and Rect2(controls_x(),y,32,36).has_point(point):return "validated" if row.validated else "not_validated"
 		var buttons:=button_positions()
 		for button in buttons.size():
 			if not Rect2(buttons[button],y,32,36).has_point(point):continue

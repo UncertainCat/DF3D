@@ -67,8 +67,44 @@ if os.getenv('DF3D_WORK_ORDER_HOVER')=='1' then
   local f=assert(io.open(out..'/work-order-hover-reference.json','w'));f:write(json.encode(hover));f:close()
  end
  for _,p in ipairs{{'active',64,430,212},{'amount',392,430,219},{'priority',488,430,220},{'conditions',552,430,221},{'details',584,430,222},{'remove',888,430,223},{'shop_limit',784,430,216}}do probe(table.unpack(p))end
+ -- Controlled native status display in the owned paused clone only.
+ local status,frequency,year,tick=order.status.whole,order.frequency,order.finished_year,order.finished_year_tick
+ local population=df.global.plotinfo.tasks.population
+ local items,links=values(order.item_conditions),values(order.order_conditions)
+ local managers=df.global.plotinfo.main.fortress_entity.assignments_by_type[df.entity_position_responsibility.MANAGE_PRODUCTION]
+ local original_managers=values(managers)
+ local ok,err=xpcall(function()
+  order.status.active=false;order.frequency=1;order.finished_year=-1;order.finished_year_tick=-1
+  probe('checking',64,430,214)
+  order.frequency=2;order.finished_year=df.global.cur_year+1;order.finished_year_tick=0
+  probe('waiting',64,430,213)
+  df.global.plotinfo.tasks.population=20
+  order.status.validated=true;probe('validated',344,430,217)
+  order.status.validated=false;probe('not_validated',344,430,218)
+  order.frequency=1;order.item_conditions:resize(0);order.order_conditions:resize(0)
+  probe('ready',64,430,215)
+  for _,assignment in ipairs(df.global.plotinfo.main.fortress_entity.positions.assignments)do
+   if assignment.histfig>=0 then managers:insert('#',assignment);break end
+  end
+  assert(#managers>0,'Hover fixture needs an occupied office')
+  probe('new',944,142,211)
+ end,debug.traceback)
+ order.status.whole=status;order.frequency=frequency;order.finished_year=year;order.finished_year_tick=tick
+ df.global.plotinfo.tasks.population=population
+ order.item_conditions:resize(0);for _,v in ipairs(items)do order.item_conditions:insert('#',v)end
+ order.order_conditions:resize(0);for _,v in ipairs(links)do order.order_conditions:insert('#',v)end
+ managers:resize(0);for _,v in ipairs(original_managers)do managers:insert('#',v)end
+ assert(ok,err)
  mouse(552,430);assert(m.info.work_orders.conditions.open)
  for _,p in ipairs{{'frequency',880,142,224},{'add_item',912,142,225},{'add_order',944,142,226},{'condition_amount',640,178,227},{'comparison',736,178,228},{'item_type',768,178,229},{'material',800,178,230},{'traits',832,178,231},{'remove_condition',896,178,233}}do probe(table.unpack(p))end
+ local dependencies=#order.order_conditions
+ mouse(944,142);assert(m.info.work_orders.conditions.selecting_order_condition)
+ mouse(400,202);assert(#order.order_conditions==dependencies+1)
+ local dependency_y
+ for _,row in ipairs(lines())do if row.text:find('must first be',1,true)then dependency_y=row.y*12-2;break end end
+ assert(dependency_y,'Missing native dependency row')
+ probe('dependency',640,dependency_y,232)
+ mouse(896,dependency_y);assert(#order.order_conditions==dependencies)
  local f=assert(io.open(out..'/work-order-hover-reference.json','w'));f:write(json.encode(hover));f:close()
  shot('work-order-hover-list')
  records[#records+1]={name='work-order-hover',controls=#hover}

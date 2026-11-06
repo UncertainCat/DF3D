@@ -7425,11 +7425,19 @@ DF7000 closes unsaved with source preservation. Local rendered acceptance in
 912x552, amount-entry hitboxes at those sizes, and tooltip retirement when a
 filter opens. The1200x800 render was visually inspected. Root19/19 and headless
 composition pass; paired rendered logs contain only documented diagnostics.
-Other status indicators, New, dependency-check help and suggested-condition
-hover behavior still require coverage. The current native fixture has no
-manager, so its New button is absent (002603's attempted hover correctly
-reported no instruction). Minimum-width overlapping control precedence remains
-unresolved.
+Global New, all four status indicators, manager validation and the Conditions
+dependency-check control also use native help. Protected003053 captures their
+instructions211/213..218/232 through actual native hitboxes. Diagnostic status,
+population, condition-vector and manager-index changes are confined to the
+paused owned clone and restored; the added native dependency is removed after
+capture. DF5716 closes unsaved and the source save is unchanged. The base fixture
+has no manager, explaining002603's absent New tooltip. Local rendered checks in
+`build/qa/work-orders-status-hover` verify New, unvalidated, waiting/checking/ready,
+New eligibility retirement and a dependency tooltip, plus prior resize/retirement
+checks. Root19/19 and headless composition pass; paired rendered logs have only
+documented diagnostics. Conditions-header status, suggested-condition hover and
+workshop-specific help still need acceptance. Minimum-width overlapping control
+precedence remains unresolved.
 
 These screens remain staged. Details, full responsive layout, tooltip coverage
 and tab navigation are unfinished. Quantity drafts currently support four digits; native increment

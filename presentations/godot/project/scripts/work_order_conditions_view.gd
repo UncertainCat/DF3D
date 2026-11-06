@@ -158,7 +158,9 @@ func hover_kind(point: Vector2) -> String:
 		var row: Dictionary=state.snapshot.conditions[condition_first+index]
 		var y:=condition_top()+index*36
 		if Rect2(right_x(848)-shift,y,32,36).has_point(point):return "remove_condition"
-		if row.kind!=0:continue
+		if row.kind!=0:
+			if Rect2(right_x(592)-shift,y,32,36).has_point(point):return "dependency"
+			continue
 		for button in 7:
 			if Rect2(right_x(592)+button*32-shift,y,32,36).has_point(point):
 				return ["condition_amount","condition_amount","condition_amount","comparison","item_type","material","traits"][button]

@@ -3,6 +3,7 @@ local out,view,info=...
 local gui=require('gui');local script=require('gui.script');local json=require('json')
 local button,owner,scroller,row_index
 local controlled,prior_job,controlled_unit,provider
+local artwork=os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_ART')=='1'
 local plant=os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_PLANT')=='1'
 local clothing=os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_CLOTHING')=='1'
 local improvement=os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_IMPROVEMENT')=='1'
@@ -39,7 +40,10 @@ if not button then
  controlled.completion_timer=-1;controlled.mat_type=0;controlled.mat_index=-1
  local holder=df.general_ref_building_holderst:new();holder.building_id=building.id;controlled.general_refs:insert('#',holder)
  local input=df.job_item:new();input.item_type=df.item_type.BOULDER;input.mat_type=0;input.mat_index=-1;input.quantity=1
- if plant then
+ if artwork then
+  controlled.job_type=df.job_type.ConstructStatue;input:delete()
+  controlled.art_spec.type=df.job_art_specifier_type.HistoricalFigure;controlled.art_spec.id=controlled_unit.hist_figure_id;controlled.art_spec.subid=7
+ elseif plant then
   controlled.job_type=df.job_type.MillPlants;controlled.mat_type=-1
   input.item_type=df.item_type.PLANT;input.mat_type=-1;input.job_details_item_flags2.whole=123
   controlled.job_items.elements:insert('#',input)
@@ -93,6 +97,13 @@ gui.simulateInput(view,'_MOUSE_L')
 df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
 for _=1,3 do script.sleep(1,'frames')end
 local details=df.global.game.main_interface.job_details
+if artwork then
+ assert(controlled and job==controlled,'Artwork oracle requires disposable job')
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('residents%-job%-settings%-native.lua$','residents-job-art-native.lua')
+ assert(loadfile(source))(out,view,info,job,button,evidence)
+ if scroller then scroller.scroll=previous_scroll end
+ return
+end
 assert(details.open and details.jb==job and not details.wq,'Residents did not open job-backed Details')
 evidence.context=details.context;evidence.current_option=details.current_option;evidence.current_option_index=details.current_option_index
 evidence.building_id=details.bld and details.bld.id or -1

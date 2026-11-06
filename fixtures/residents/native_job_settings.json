@@ -3859,5 +3859,627 @@
       "saved_type": -1
     },
     "scope": "Owned native choice identity/count/order and typed filtering; headless Residents owner pointer selects Dimple cup. Native readback matches job/input material and saved fields. Generic material_applied means plant selection applied here. No graphical Godot, ordinary production, repeat edits or other plant families accepted."
+  },
+  "artwork_reference": {
+    "source": "build/stockpile-storage-native-input-20261106-081948",
+    "reference": {
+      "artwork": {
+        "artist_effect": {
+          "art_open": false,
+          "details_open": false,
+          "id": -1,
+          "info_open": true,
+          "requirements": 0,
+          "subid": -1,
+          "type": -1
+        },
+        "before": {
+          "art_open": true,
+          "details_open": true,
+          "id": 9996,
+          "info_open": true,
+          "requirements": 0,
+          "subid": 7,
+          "type": 0
+        },
+        "context": 1,
+        "escape": {
+          "art_open": true,
+          "details_open": true,
+          "id": -1,
+          "info_open": true,
+          "requirements": 0,
+          "subid": -1,
+          "type": -1
+        },
+        "figure_choice": 9876,
+        "figure_effect": {
+          "art_open": false,
+          "details_open": false,
+          "id": 9876,
+          "info_open": true,
+          "requirements": 0,
+          "subid": 7,
+          "type": 0
+        },
+        "figure_lines": [
+          {
+            "text": "                  Roderònul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "",
+            "y": 3
+          },
+          {
+            "text": "                                           Image information for Make rock statue",
+            "y": 4
+          },
+          {
+            "text": "",
+            "y": 5
+          },
+          {
+            "text": "",
+            "y": 6
+          },
+          {
+            "text": "",
+            "y": 7
+          },
+          {
+            "text": "",
+            "y": 8
+          },
+          {
+            "text": "",
+            "y": 9
+          },
+          {
+            "text": "",
+            "y": 10
+          },
+          {
+            "text": "",
+            "y": 11
+          },
+          {
+            "text": "      ...",
+            "y": 12
+          },
+          {
+            "text": "",
+            "y": 13
+          },
+          {
+            "text": "",
+            "y": 14
+          },
+          {
+            "text": "    , \"\"",
+            "y": 15
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          },
+          {
+            "text": "",
+            "y": 17
+          },
+          {
+            "text": "    , \"\"",
+            "y": 18
+          },
+          {
+            "text": "",
+            "y": 19
+          },
+          {
+            "text": "",
+            "y": 20
+          },
+          {
+            "text": "    , \"\"",
+            "y": 21
+          },
+          {
+            "text": "",
+            "y": 22
+          },
+          {
+            "text": "",
+            "y": 23
+          },
+          {
+            "text": "    , \"\"",
+            "y": 24
+          },
+          {
+            "text": "",
+            "y": 25
+          },
+          {
+            "text": "",
+            "y": 26
+          },
+          {
+            "text": "    , \"\"",
+            "y": 27
+          },
+          {
+            "text": "",
+            "y": 28
+          },
+          {
+            "text": "",
+            "y": 29
+          },
+          {
+            "text": "    , \"\"",
+            "y": 30
+          },
+          {
+            "text": "",
+            "y": 31
+          },
+          {
+            "text": "",
+            "y": 32
+          },
+          {
+            "text": "    , \"\"",
+            "y": 33
+          },
+          {
+            "text": "",
+            "y": 34
+          },
+          {
+            "text": "",
+            "y": 35
+          },
+          {
+            "text": "    , \"\"",
+            "y": 36
+          },
+          {
+            "text": "",
+            "y": 37
+          },
+          {
+            "text": "",
+            "y": 38
+          },
+          {
+            "text": "    , \"\"",
+            "y": 39
+          },
+          {
+            "text": "",
+            "y": 40
+          },
+          {
+            "text": "",
+            "y": 41
+          },
+          {
+            "text": "    , \"\"",
+            "y": 42
+          },
+          {
+            "text": "",
+            "y": 43
+          },
+          {
+            "text": "",
+            "y": 44
+          },
+          {
+            "text": "    , \"\"",
+            "y": 45
+          },
+          {
+            "text": "",
+            "y": 46
+          },
+          {
+            "text": "",
+            "y": 47
+          },
+          {
+            "text": "    , \"\"",
+            "y": 48
+          },
+          {
+            "text": "",
+            "y": 49
+          },
+          {
+            "text": "",
+            "y": 50
+          },
+          {
+            "text": "    , \"\"",
+            "y": 51
+          },
+          {
+            "text": "",
+            "y": 52
+          },
+          {
+            "text": "",
+            "y": 53
+          },
+          {
+            "text": "    , \"\"",
+            "y": 54
+          },
+          {
+            "text": "",
+            "y": 55
+          },
+          {
+            "text": "",
+            "y": 56
+          },
+          {
+            "text": "",
+            "y": 57
+          },
+          {
+            "text": "",
+            "y": 58
+          },
+          {
+            "text": "",
+            "y": 59
+          },
+          {
+            "text": "",
+            "y": 60
+          },
+          {
+            "text": "",
+            "y": 61
+          },
+          {
+            "text": "",
+            "y": 62
+          },
+          {
+            "text": "",
+            "y": 63
+          },
+          {
+            "text": "",
+            "y": 64
+          },
+          {
+            "text": "",
+            "y": 65
+          }
+        ],
+        "header": "Image information for Make rock statue",
+        "right_click": {
+          "art_open": false,
+          "details_open": false,
+          "id": -1,
+          "info_open": true,
+          "requirements": 0,
+          "subid": -1,
+          "type": -1
+        },
+        "root": [
+          {
+            "text": "                  Roderònul           Pop                                  Food  Drink           20th Malachite",
+            "y": 0
+          },
+          {
+            "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+            "y": 1
+          },
+          {
+            "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+            "y": 2
+          },
+          {
+            "text": "",
+            "y": 3
+          },
+          {
+            "text": "                                           Image information for Make rock statue",
+            "y": 4
+          },
+          {
+            "text": "",
+            "y": 5
+          },
+          {
+            "text": "",
+            "y": 6
+          },
+          {
+            "text": "",
+            "y": 7
+          },
+          {
+            "text": "",
+            "y": 8
+          },
+          {
+            "text": "",
+            "y": 9
+          },
+          {
+            "text": "",
+            "y": 10
+          },
+          {
+            "text": "",
+            "y": 11
+          },
+          {
+            "text": "     Related to historical figure",
+            "y": 12
+          },
+          {
+            "text": "",
+            "y": 13
+          },
+          {
+            "text": "",
+            "y": 14
+          },
+          {
+            "text": "     Related to site",
+            "y": 15
+          },
+          {
+            "text": "                                                                                                                                    Elevation 36",
+            "y": 16
+          },
+          {
+            "text": "",
+            "y": 17
+          },
+          {
+            "text": "     Related to civilization or other group",
+            "y": 18
+          },
+          {
+            "text": "",
+            "y": 19
+          },
+          {
+            "text": "",
+            "y": 20
+          },
+          {
+            "text": "     Existing image",
+            "y": 21
+          },
+          {
+            "text": "",
+            "y": 22
+          },
+          {
+            "text": "",
+            "y": 23
+          },
+          {
+            "text": "     Specify a new image",
+            "y": 24
+          },
+          {
+            "text": "",
+            "y": 25
+          },
+          {
+            "text": "",
+            "y": 26
+          },
+          {
+            "text": "     Allow artist to choose",
+            "y": 27
+          },
+          {
+            "text": "",
+            "y": 28
+          },
+          {
+            "text": "",
+            "y": 29
+          },
+          {
+            "text": "",
+            "y": 30
+          },
+          {
+            "text": "",
+            "y": 31
+          },
+          {
+            "text": "",
+            "y": 32
+          },
+          {
+            "text": "",
+            "y": 33
+          },
+          {
+            "text": "",
+            "y": 34
+          },
+          {
+            "text": "",
+            "y": 35
+          },
+          {
+            "text": "",
+            "y": 36
+          },
+          {
+            "text": "",
+            "y": 37
+          },
+          {
+            "text": "",
+            "y": 38
+          },
+          {
+            "text": "",
+            "y": 39
+          },
+          {
+            "text": "",
+            "y": 40
+          },
+          {
+            "text": "",
+            "y": 41
+          },
+          {
+            "text": "",
+            "y": 42
+          },
+          {
+            "text": "",
+            "y": 43
+          },
+          {
+            "text": "",
+            "y": 44
+          },
+          {
+            "text": "",
+            "y": 45
+          },
+          {
+            "text": "",
+            "y": 46
+          },
+          {
+            "text": "",
+            "y": 47
+          },
+          {
+            "text": "",
+            "y": 48
+          },
+          {
+            "text": "",
+            "y": 49
+          },
+          {
+            "text": "",
+            "y": 50
+          },
+          {
+            "text": "",
+            "y": 51
+          },
+          {
+            "text": "",
+            "y": 52
+          },
+          {
+            "text": "",
+            "y": 53
+          },
+          {
+            "text": "",
+            "y": 54
+          },
+          {
+            "text": "",
+            "y": 55
+          },
+          {
+            "text": "",
+            "y": 56
+          },
+          {
+            "text": "",
+            "y": 57
+          },
+          {
+            "text": "",
+            "y": 58
+          },
+          {
+            "text": "",
+            "y": 59
+          },
+          {
+            "text": "",
+            "y": 60
+          },
+          {
+            "text": "",
+            "y": 61
+          },
+          {
+            "text": "",
+            "y": 62
+          },
+          {
+            "text": "",
+            "y": 63
+          },
+          {
+            "text": "",
+            "y": 64
+          },
+          {
+            "text": "",
+            "y": 65
+          }
+        ],
+        "figure_catalog": {
+          "count": 10563,
+          "first_ids": [
+            9876,
+            9637,
+            9635,
+            10400,
+            10402,
+            9371,
+            9373,
+            10232,
+            9770,
+            10183,
+            9548,
+            10181,
+            9546,
+            10094,
+            9768,
+            10172
+          ],
+          "ordered_ids_sha256": "d83ed43b0a5d1508fefbeb8a1a319d0543f4c947ceca4cc0ec1b23c81b4f9df2"
+        }
+      },
+      "button": [
+        70,
+        14,
+        72,
+        16
+      ],
+      "button_context": 1,
+      "controlled_job": true,
+      "job_id": 2000000000,
+      "job_type": 79,
+      "options": [],
+      "unit_id": 6534
+    },
+    "scope": "Native discovery only. Controlled unlinked ConstructStatue with zero requirements. Actual job button, artwork root/figure pages, first figure effect, artist choice, Escape and right-click; full ordered figure IDs remain in ignored capture. No runtime job artwork adapter, other subject families, new-image draft or ordinary production acceptance."
   }
 }

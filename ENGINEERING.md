@@ -823,6 +823,30 @@ serial30FPS, GPU samples59-60C, and Godot was headless. This does not establish
 ordinary workshop execution, repeated edits, other plant families or full rendered
 Residents acceptance. Artwork editing and public Residents exposure remain pending.
 
+Job artwork discovery uses `DF3D_RESIDENTS_JOB_SETTINGS_ART=1` without the
+material provider/wire flags. Protected081948 on2026-11-06 clicks the native
+Residents button for a controlled unlinked ConstructStatue with no requirements.
+It opens image_creator context1 directly, with job identity and no manager order;
+the underlying job Details stays open until selection or right-click closes both.
+The header is "Image information for Make rock statue". Native1ffc7b..1ffced
+composes the job header through d03170, while the manager branch is separate.
+The whole opener1ffae0 remains prohibited as a runtime API.
+
+The figure page contains10563 native-ordered IDs. Clicking its first row selects
+figure9876: native20a197..20a1cf writes job art type0 and ID only, preserving the
+prior sub-ID7. Artist choice20f131..20f169 clears type/ID/sub-ID to-1. Both close
+the editor and Details while retaining Residents. Escape at the root leaves the
+editor open; right-click closes it without changing the job specification.
+The semantic fixture stores layout/effect observations and the ordered-list digest;
+full IDs and inspected screenshots stay in the ignored capture. Earlier081805
+stopped on a wrong oracle label;081856 established both effects but stopped on
+an incorrect Escape expectation.081948 corrects those assumptions and passes.
+All owned processes exited unsaved with source preservation; native30FPS runs
+were serial, GPU samples60C, with no Godot rendering. This is native discovery,
+not a completed job artwork adapter or public UI acceptance. Figure/site/entity
+lists and image/draft helpers may be shared only through owned job contexts;
+manager proxies and manager-only requirement rebuilding remain forbidden.
+
 
 ## Farm removal native entry points
 

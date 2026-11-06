@@ -2,6 +2,8 @@ extends "res://scripts/location_staff_candidates_frame.gd"
 # Native Conditions reference: protected200556; comparison strings392edc.
 # Staged: tab navigation and integrated resize/hover acceptance remain unfinished.
 signal cancelled
+signal information_requested(caption: String)
+const InfoTabs=preload("res://scripts/work_order_info_tabs.gd")
 var state
 var input_allowed: Callable
 var colors: Array[Color]=[]
@@ -115,6 +117,11 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion or event is InputEventMouseButton:
 		pointer_known=true;pointer_global=get_global_transform()*event.position;update_hover()
 	if input_allowed.is_valid() and not input_allowed.call():return
+	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
+		var caption:=InfoTabs.caption_at(event.position,wide_tabs)
+		if not caption.is_empty():
+			if caption!="Work orders":information_requested.emit(caption)
+			accept_event();return
 	if state.filter_kind>=0:
 		if event is InputEventMouseButton and event.pressed:
 			if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN] and state.phase==state.Phase.Ready:
@@ -274,13 +281,10 @@ func draw_dependency_picker() -> void:
 func _draw() -> void:
 	if world==null:return
 	patch("HOVER_RECTANGLE",Vector2i.ZERO,int(size.x/8),frame_rows)
-	var x:=8.0
-	if wide_tabs:
-		for value in ["Creatures","Tasks","Places","Labor","Work orders","Nobles and administrators","Objects","Justice"]:x+=tab(value,Vector2(x,12),value=="Work orders")
-	else:
-		for value in ["Nobles and administrators","Objects","Justice"]:x+=tab(value,Vector2(x,12))
-		x=8.0
-		for value in ["Creatures","Tasks","Places","Labor","Work orders"]:x+=tab(value,Vector2(x,36),value=="Work orders")
+	var groups:=InfoTabs.rows(wide_tabs)
+	for row in groups.size():
+		var x:=8.0
+		for value in groups[row]:x+=tab(value,Vector2(x,12+row*24),value=="Work orders")
 	if state==null or state.snapshot.is_empty():return
 	if state.filter_kind>=0 and state.filter_kind<3:draw_filter();return
 	var row: Dictionary=state.snapshot

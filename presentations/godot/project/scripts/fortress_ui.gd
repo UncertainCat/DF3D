@@ -130,7 +130,9 @@ func controller(id: String):
 		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
 		ensure_follow()
 		panel.holder_requested.connect(open_building_holder)
-		if id=="workshop":panel.unit_requested.connect(func(unit_id):open_item_carrier(2,unit_id))
+		if id=="workshop":
+			panel.unit_requested.connect(func(unit_id):open_item_carrier(2,unit_id))
+			panel.information_requested.connect(open_destination)
 		panel.item_owner.configure_follow(item_follow)
 		panel.item_owner.carrier_requested.connect(open_item_carrier)
 		panel.item_owner.stockpile_requested.connect(func(target):controller("areas").open_stockpile(target))

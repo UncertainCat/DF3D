@@ -5,6 +5,8 @@ signal cancelled
 signal create_requested
 signal conditions_requested(id: int,workshop: int)
 signal details_requested(id: int)
+signal information_requested(caption: String)
+const InfoTabs=preload("res://scripts/work_order_info_tabs.gd")
 var state
 var input_allowed: Callable
 var colors: Array[Color]=[]
@@ -83,6 +85,12 @@ func _input(event: InputEvent) -> void:
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion or event is InputEventMouseButton:
 		pointer_known=true;pointer_global=get_global_transform()*event.position;update_hover()
+	if input_allowed.is_valid() and not input_allowed.call():return
+	if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
+		var caption:=InfoTabs.caption_at(event.position,wide_tabs)
+		if not caption.is_empty():
+			if caption!="Work orders":information_requested.emit(caption)
+			accept_event();return
 	if state==null or state.phase!=state.Phase.Ready or (input_allowed.is_valid() and not input_allowed.call()):return
 	if not event is InputEventMouseButton or not event.pressed:return
 	if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
@@ -161,13 +169,10 @@ func tab(value: String,point: Vector2,selected:=false) -> float:
 func _draw() -> void:
 	if world==null:return
 	patch("HOVER_RECTANGLE",Vector2i.ZERO,int(size.x/8),frame_rows)
-	var x:=8.0
-	if wide_tabs:
-		for value in ["Creatures","Tasks","Places","Labor","Work orders","Nobles and administrators","Objects","Justice"]:x+=tab(value,Vector2(x,12),value=="Work orders")
-	else:
-		for value in ["Nobles and administrators","Objects","Justice"]:x+=tab(value,Vector2(x,12))
-		x=8.0
-		for value in ["Creatures","Tasks","Places","Labor","Work orders"]:x+=tab(value,Vector2(x,36),value=="Work orders")
+	var groups:=InfoTabs.rows(wide_tabs)
+	for row in groups.size():
+		var x:=8.0
+		for value in groups[row]:x+=tab(value,Vector2(x,12+row*24),value=="Work orders")
 	if state==null:return
 	if state.native_state.get("manager_available",false):
 		icon("WORK_ORDERS_CREATE_NEW",Vector2(size.x-48,list_top()))

@@ -127,6 +127,23 @@ func run():
 			check(not ui.actions._queue.has(ticket) and not ui.actions._requests.has(ticket),"retired order read cannot dispatch later")
 		check(workshop.conditions.order_id==-1 and workshop.conditions.filter_query.is_empty(),"session change clears condition target/search")
 		check(workshop.details.order_id==-1 and not workshop.details.draft_dirty and not workshop.details.draft_discard and workshop.details.draft_value.elements.is_empty(),"session change clears artwork draft")
+	for dimensions in [Vector2(1200,800),Vector2(1600,900)]:
+		workshop.open_global_orders();workshop.global_orders_view.layout(dimensions)
+		var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=true
+		click.position=Vector2(200,48 if dimensions.x==1200 else 24)
+		workshop.global_orders_view._gui_input(click)
+		check(ui.host.active==workshop,"Places tab cannot expose unfinished Zones")
+		click.position=Vector2(24,48 if dimensions.x==1200 else 24)
+		workshop.global_orders_view._gui_input(click)
+		check(ui.host.active==readout and readout.page=="Residents" and not workshop.global_orders_view.visible,"Creatures tab routes and retires standalone orders")
+		workshop.open_global_orders();workshop.global_orders_view.hide();workshop.conditions_view.open(-2,27);workshop.conditions_view.layout(dimensions)
+		click.position=Vector2(352,48 if dimensions.x==1200 else 24)
+		workshop.conditions_view._gui_input(click)
+		check(ui.host.active==workshop and workshop.conditions_view.visible and workshop.conditions.order_id==27,"selected Work orders tab retains Conditions")
+		click.position=Vector2(280,48 if dimensions.x==1200 else 24)
+		workshop.conditions_view._gui_input(click)
+		check(ui.host.active==readout and readout.page=="Work Details" and not workshop.conditions_view.visible and workshop.conditions.order_id==-1,"Labor tab routes and retires Conditions")
+	ui.host.close_active()
 	print("ui_composition_test: ", "PASS" if failures == 0 else "FAIL", " failures=", failures)
 	scene.queue_free()
 	await process_frame

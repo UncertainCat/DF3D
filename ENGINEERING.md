@@ -7444,6 +7444,19 @@ passes core19/19 and composition with no diagnostics. This proves queued-read
 retirement and composed UI cleanup; it does not establish sent-write retirement,
 late transport replies or actual producer replacement.
 
+The global list and Conditions share native information-tab row geometry for
+drawing and hit testing. Creatures and Labor navigate through the shared UI host
+to the existing Residents and Work Details readouts, retiring the order panel.
+The selected Work orders tab does nothing, preserving an open Conditions page.
+Protected005417 on2026-11-06 confirms that native behavior and both destinations;
+DF40612 exits unsaved with source preservation. Other information destinations
+remain gated; in particular Places must not expose the unfinished Zones route.
+`build/qa/work-orders-tabs-gated` passes core19/19 and the actual main-scene
+composition check at both narrow/two-row and wide/one-row layouts, including
+target retirement, selected-tab behavior and the Places gate. These checks use
+the existing readouts; they do not complete the remaining information screens
+or authorize promotion of the staged editable Work orders route.
+
 The global Work orders view uses the shared native hover service for active
 status, quantity, priority, Conditions, Details, removal and workshop limits.
 Protected002223 on2026-11-06 captures exact native24-cell text and instruction

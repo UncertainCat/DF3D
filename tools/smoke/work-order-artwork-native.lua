@@ -45,6 +45,14 @@ key('D_ORDERS');assert(m.info.open)
 assert(click_label('Encrust',584),'Fixture needs visible Encrust order')
 local details=m.job_details;assert(details.open and details.wq)
 local order=details.wq;local before={spec=order.specdata.hist_figure_id,typ=order.art_spec.type,id=order.art_spec.id,subid=order.art_spec.subid}
+if os.getenv('DF3D_WORK_ORDER_TAB_REFERENCE')=='1' then
+ key('LEAVESCREEN');mouse(552,430);assert(m.info.work_orders.conditions.open)
+ assert(click_label('Work orders'));shot('work-order-tab-self')
+ records[#records+1]={name='work-order-tab-self',conditions_open=m.info.work_orders.conditions.open}
+ assert(click_label('Creatures'));shot('work-order-tab-creatures')
+ assert(click_label('Labor'));shot('work-order-tab-labor')
+ return
+end
 if os.getenv('DF3D_WORK_ORDER_HOVER')=='1' then
  key('LEAVESCREEN');assert(not details.open)
  local hover={}

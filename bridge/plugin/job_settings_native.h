@@ -119,7 +119,8 @@ inline std::optional<JobSettingsObservation> nativeJobSettings(const df::job& so
         result.selected=selected;result.currentValue=std::move(sizes->currentValue);
         result.choicesRevision=sizes->revision;result.materials=std::move(sizes->materials);return result;
     }
-    // Artwork still needs its job-specific adapter.
+    // Expose an artwork option root; its separate read contract supplies pages.
+    if(option.kind==1)return query.empty()?std::optional<JobSettingsObservation>(result):std::nullopt;
     if(option.kind!=0 && option.kind!=3 && option.kind!=6)return std::nullopt;
     if(option.kind==3 && !query.empty())return std::nullopt;
     df::job_details_interfacest context;

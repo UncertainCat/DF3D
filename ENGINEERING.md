@@ -919,6 +919,35 @@ exits unsaved with source preservation; native30FPS, GPU56C sampled, and Godot
 headless. The shared artwork formatter parameter name was also clarified to avoid
 shadowing its row-caption locals; behavior is unchanged.
 
+The staged Residents job owner now connects artwork navigation to the shared
+Details view. A sole native Image option returns its option root, then the local
+state opens the separate artwork read page. Figure/site/entity/image categories
+use bounded pages, owned search text, revision-checked page replacement and a
+separate hover request. Navigation, query changes, close and session replacement
+retire old reads/previews; late replies cannot restore prior data. Source-job
+revision changes reject rather than merging observations. Ordinary material edit
+and unknown-outcome handling remain separate. Native Escape retains artwork;
+right-click returns from a category to the root and then to the same roster.
+
+Protected084918 on2026-11-06 exercises the headless real Residents owner: actual
+job-row pointer opens the six-choice artwork root, Escape retains it, figure
+button opens128 rows, pointer hover supplies native text, seek128 loads a later
+page, typing zzzznomatch publishes an empty filtered list, and right-click Back
+clears search and restores the root/retained roster. Owner reset while opening
+retires the view/input boundary. The typed four-category paging/preview checks
+also pass. Unit lifecycle checks cover superseded filters, late hover, list
+receipt preservation and session retirement. No graphical Godot comparison is
+claimed. Subject assignment, artist choice, improvement Image entry mutation,
+new-image drafts and ordinary job workflows remain unfinished; public Residents
+is still hidden.
+
+MSVC job-art-owner-build and root19/extension/job-settings/Residents state checks
+pass in job-art-owner-20261106. Built/installed bridge SHA256 is
+6A0EC8C50DFC58B0A57872AC972AC2F5DFFAC907E6F75A0688C06E30FD9EEC7E.
+Joined client logs contain only the known separate-render-thread notice. DF24364
+closes unsaved with source preservation; native30FPS, Godot headless, GPU51C after
+exit. The fixture retains composed-owner evidence separately from typed reads.
+
 
 ## Farm removal native entry points
 

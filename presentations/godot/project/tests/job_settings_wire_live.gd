@@ -188,6 +188,46 @@ func artwork_read() -> void:
 		check(rejected.get("status")==C.ManagementStatus.Rejected and not rejected.has("job_settings"),"Wrong artwork target retained page")
 	var unrelated:=await request("construction",{"action":C.ManagementAction.Catalog})
 	check(not unrelated.has("job_settings"),"Unrelated reply retained artwork")
+	var composed:=await composed_artwork(reference)
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"artwork_pages":pages}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"artwork_pages":pages,"composed":composed}));file.close()
 	world.queue_free();await process_frame;quit(1 if failed else 0)
+
+func composed_artwork(reference: Dictionary) -> Dictionary:
+	if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Artwork assets unavailable"):return {}
+	root.size=Vector2i(1200,800)
+	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
+	for frame in 5:world.poll();await process_frame
+	var interaction:=Interaction.new();root.add_child(interaction)
+	var host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)
+	var owner=preload("res://scripts/residents_panel.gd").new();root.add_child(owner);owner.configure(world,service,host);owner.open_panel()
+	check(await ready(owner.state),"Artwork Residents roster failed")
+	var index: int=owner.state.ids.find(int(reference.unit_id));owner.state.seek(index,owner.state.capacity)
+	check(await ready(owner.state),"Artwork resident row failed")
+	var first: int=owner.state.first
+	await pointer(owner.panel,Vector2(540,owner.panel.list_top()+(index-first)*36+18))
+	var state=owner.job_state;var view=owner.job_panel
+	check(await ready(state) and state.has_art() and state.art_page()==-1 and state.rows.size()==6,"Resident job button did not open artwork root")
+	check(view.visible and not owner.panel.visible and host.active==owner,"Artwork lost owner/input boundary")
+	var escape:=InputEventKey.new();escape.pressed=true;escape.keycode=KEY_ESCAPE;Input.parse_input_event(escape);await process_frame
+	check(state.has_art() and state.phase==state.Phase.Ready,"Escape left native artwork root")
+	await pointer(view,Vector2(120,114));check(await ready(state) and state.art_page()==1 and state.rows.size()==128,"Artwork figure button did not open first page")
+	var motion:=InputEventMouseMotion.new();motion.position=view.get_global_transform_with_canvas()*Vector2(120,view.list_top()+18);motion.global_position=motion.position
+	Input.parse_input_event(motion);await process_frame
+	var deadline:=Time.get_ticks_msec()+5000
+	while state.preview_ticket!=0 and Time.get_ticks_msec()<deadline:world.poll();await create_timer(0.01).timeout
+	check(not state.preview_lines.is_empty(),"Artwork pointer hover did not populate native preview")
+	state.seek(128);check(await ready(state) and state.row_base()==128,"Artwork owner did not fetch later page")
+	await pointer(view,Vector2(120,114))
+	for character in "zzzznomatch":
+		var key:=InputEventKey.new();key.pressed=true;key.unicode=character.unicode_at(0);Input.parse_input_event(key);await process_frame
+	check(await ready(state) and state.query=="zzzznomatch" and state.rows.is_empty(),"Artwork search did not replace the page")
+	await pointer(view,Vector2(120,180),MOUSE_BUTTON_RIGHT)
+	check(await ready(state) and state.art_page()==-1 and state.query.is_empty(),"Artwork Back did not clear search and restore root")
+	await pointer(view,Vector2(120,180),MOUSE_BUTTON_RIGHT)
+	check(state.phase==state.Phase.Closed and owner.panel.visible and owner.state.first==first and host.active==owner,"Artwork root Back did not restore same roster")
+	await pointer(owner.panel,Vector2(540,owner.panel.list_top()+(index-first)*36+18));host.reset_local_views()
+	for frame in 5:world.poll();await process_frame
+	check(state.phase==state.Phase.Closed and not view.visible and host.active==null,"Owner reset retained pending artwork")
+	owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();await process_frame
+	return {"root":true,"category":true,"hover":true,"paging":true,"search":true,"back":true,"reset":true}

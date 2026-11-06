@@ -44,5 +44,35 @@ func run() -> void:
 	view.cancelled.connect(state.close);view.back();service.reply(service.next,page())
 	check(state.phase==State.Phase.Closed,"Escape can retire a pending read")
 	view.free();state.dispose()
+	artwork_lifecycle()
 	if failures==0:print("JOB_SETTINGS_STATE_PASS")
 	quit(1 if failures else 0)
+
+func artwork_page(kind: int=-1,cursor: int=0) -> Dictionary:
+	var value:=page();value.options=[{"kind":1,"index":-1,"caption":"Fixture artwork"}];value.choices=[];value.choices_revision=0;value.total=0;value.cursor=0;value.next_cursor=0
+	var rows: Array=[]
+	if kind==-1:rows=[{"id":1,"caption":"Fixture figures"}]
+	else:
+		for i in 128:rows.append({"id":cursor+i,"caption":"Fixture figure"})
+	value.art={"page":kind,"caption":"Fixture art","list_revision":0 if kind==-1 else 93,"rows":rows,"total":1 if kind==-1 else 300,"next_cursor":0 if kind==-1 else cursor+128,"hovered":-1}
+	return value
+func artwork_lifecycle() -> void:
+	var service:=Service.new();var state:=State.new();state.configure(service);state.open(3,42,6534)
+	var initial:=artwork_page();initial.erase("art");initial.selected_option=-1
+	service.reply(state.ticket,initial)
+	check(service.calls[state.ticket].request.art_page==-1,"Single Image option opens its owned artwork root")
+	service.reply(state.ticket,artwork_page());state.choose(1);service.reply(state.ticket,artwork_page(1))
+	check(state.has_art() and state.rows.size()==128,"Artwork publishes one bounded page")
+	state.hover_art(0,118);var preview: int=state.preview_ticket
+	state.seek(128);var next: int=state.ticket
+	check(service.calls[next].request.expected_list_revision==93 and service.detached.has(preview),"Paging preserves receipt and retires hover")
+	var late:=artwork_page(1);late.art.hovered=0;late.art.preview=["old"]
+	service.reply(preview,late);check(state.preview_lines.is_empty(),"Late hover cannot repopulate a new page")
+	service.reply(next,artwork_page(1,128));check(state.first==128 and state.row_base()==128,"Artwork page origin retained")
+	state.set_query("a");var old: int=state.ticket;state.set_query("ab")
+	service.reply(old,artwork_page(1));check(state.rows.is_empty(),"Superseded artwork filter cannot publish")
+	var fresh:=artwork_page(1);fresh.art.rows=[];fresh.art.total=0;fresh.art.next_cursor=0;service.reply(state.ticket,fresh)
+	check(state.phase==State.Phase.Ready and state.query=="ab" and state.rows.is_empty(),"Latest empty artwork filter accepted")
+	state.art_back();var pending: int=state.ticket;service.session_changed.emit();service.reply(pending,artwork_page())
+	check(state.phase==State.Phase.Closed and state.snapshot.is_empty(),"Session change retires artwork navigation")
+	state.dispose()

@@ -4593,5 +4593,44 @@
       "success": true
     },
     "scope": "Headless actual Management138 transport: root header/six choices, all subject/image totals, second subject pages retain list receipts,118-column first previews match recorded native reference, stale receipts and wrong job/holder/resident reject with empty results, unrelated response retires artwork. Read only; no owner UI, search, edits or draft acceptance."
+  },
+  "artwork_owner_reference": {
+    "source": "build/stockpile-storage-native-input-20261106-084918",
+    "bridge_sha256": "6A0EC8C50DFC58B0A57872AC972AC2F5DFFAC907E6F75A0688C06E30FD9EEC7E",
+    "result": {
+      "artwork_pages": [
+        {
+          "page": 1.0,
+          "preview": true,
+          "total": 10563
+        },
+        {
+          "page": 2.0,
+          "preview": true,
+          "total": 680
+        },
+        {
+          "page": 3.0,
+          "preview": true,
+          "total": 1263
+        },
+        {
+          "page": 5.0,
+          "preview": true,
+          "total": 2
+        }
+      ],
+      "composed": {
+        "back": true,
+        "category": true,
+        "hover": true,
+        "paging": true,
+        "reset": true,
+        "root": true,
+        "search": true
+      },
+      "success": true
+    },
+    "scope": "Headless real Residents owner: visible job button opens artwork root, Escape retains it, figure button/hover, seek into later page, typed empty-result search, right-click category/root Back restores roster, owner reset retires pending reads. Typed category transport checks remain. No graphical Godot parity, artwork assignment, artist choice, improvement Image entry mutation, new-image draft or ordinary job acceptance."
   }
 }

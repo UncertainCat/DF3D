@@ -200,8 +200,7 @@ duplicate actions and unknown outcomes; core19 passes. Protected114241 compares
 the controller's11 definitions and14 native query orders through the real action
 service, with exact equality. DF9752 closes unsaved with source preservation;
 headless client has only the known separate-renderer notice, GPU44C/0percent
-sampled. This is read-only controller acceptance. Native worker skill captions,
-row transport, rendered Work Details and controller-driven edits remain pending;
+sampled. This is read-only controller acceptance. Rendered Work Details and controller-driven edits remain pending;
 the public route stays on the existing readout.
 
 `work_detail_row_native.h` supplies complete ordered skill captions using native
@@ -212,7 +211,7 @@ constructing native UI. Only positive weights and positive ratings participate;
 there is no single-best-skill reduction or local rating cap. Sort dependencies
 1432920/1434180/1434d90 are pinned as well. Query and row providers share the
 same recovered labor-to-skill weights. Diagnostic `work-detail-row-probe` exposes
-these facts; presentation row transport remains pending.
+these facts; Management142 also carries them through `WorkDetailRowsRead`.
 
 Protected114839 sets all94 labors on detail0 before native Labor opens in the
 unsaved clone. All72 full native captions across10 visible workers (2–11 each)
@@ -224,6 +223,31 @@ Management141 hash06FDC3876B827285E1E9253D90AB79A549D60DE58599B0657AC7A6023F89D8
 matches the build. DF25324 closes unsaved with source preservation; no Godot ran,
 GPU44C/1percent sampled during the native30FPS run. This does not establish
 rendered DF3D rows, clipping, tooltip behavior or complete Work Details.
+
+Management142 `WorkDetailRowsRead` reuses shared name/portrait/indicator row
+observations and adds the complete ordered skill list and selected membership.
+The request requires a detail index and exact inspection revision; the bridge
+checks that revision, active-unit membership and native worker eligibility before
+publishing the complete requested batch. Work Details does not observe Residents
+activity/happiness or event/job targets. Validators reject those mixed facts,
+missing skill lists, duplicate skills and invalid membership. Existing Residents
+rows reject Work Details fields and retain their previous meaning.
+
+The Work Details controller now fills only its visible worker range, preserves
+native ID order, and retires row reads when selection/search changes. Reordered
+or incomplete content cannot acquire authority. Protected120321 runs the real
+controller/service against the mixed-labor native oracle: all10 rows/72 captions
+and membership flags match; shared name, portrait, specialization and assignment
+observations are present. Mismatched detail revisions and nonexistent workers
+reject without rows; malformed adapter inputs never enter transport. This does
+not establish the visible renderer or new mutation workflows.
+
+Core19, typed contract, Work Details state and existing Residents state checks
+pass in work-detail-rows-wire-final-20261106. MSVC passes; installed Management142
+hashEC584A83B8828FE2C13314A2472497DBD0DA3D23AC387451A8639326056AA761 matches the build.
+DF23068 closes unsaved with source preservation and no owned processes left.
+Joined headless client logs contain only the known separate-renderer notice;
+GPU43C sampled during and after native30FPS execution.
 
 ## Residents native list discovery
 

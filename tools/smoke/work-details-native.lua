@@ -61,7 +61,8 @@ local function walk(widget,depth)
    local provider=json.decode(text).skills
    assert(#native==#provider,'Work Details skill count differs for '..widget.u.id)
    for i,line in ipairs(native)do assert(line==provider[i].caption,'Work Details skill caption/order differs: '..line)end
-   result.worker_skill_rows[#result.worker_skill_rows+1]={unit_id=widget.u.id,native=native,provider=provider}
+   local member=false;for _,id in ipairs(df.global.plotinfo.labor_info.work_details[0].assigned_units)do if id==widget.u.id then member=true end end
+   result.worker_skill_rows[#result.worker_skill_rows+1]={unit_id=widget.u.id,native=native,provider=provider,member=member}
   end
   for _,child in ipairs(dfhack.gui.getWidgetChildren(widget.parent))do
    if child.name=='Selected' and (not result.first_visible or child.rect.y1<result.first_visible.y)then

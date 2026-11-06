@@ -14,6 +14,8 @@ func pointer(view,point: Vector2,button: int=MOUSE_BUTTON_LEFT) -> void:
 	click=click.duplicate();click.pressed=false;Input.parse_input_event(click);await process_frame
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
+	if OS.get_environment("DF3D_WORK_DETAILS_ROWS_WIRE")=="1":
+		await work_detail_rows();return
 	if OS.get_environment("DF3D_WORK_DETAILS_QUERY_WIRE")=="1":
 		await work_detail_query();return
 	if OS.get_environment("DF3D_WORK_DETAILS_DEFAULTS")=="1" or OS.get_environment("DF3D_WORK_DETAILS_MEMBERSHIP")=="1" or OS.get_environment("DF3D_WORK_DETAILS_EDITS")=="1":
@@ -76,6 +78,40 @@ func run() -> void:
 	var composed:=await composed_read(reference)
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"choices":rows.size(),"filtered":choices,"composed":composed}));file.close()
+	world.queue_free();await process_frame;quit(1 if failed else 0)
+
+func work_detail_rows() -> void:
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/work-details-native.json"))
+	world=Df3dWorld.new();root.add_child(world)
+	if not check(world.attach(),"Work Details rows attach failed"):quit(1);return
+	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
+	for frame in 5:world.poll();await process_frame
+	var state=preload("res://scripts/work_details_state.gd").new();state.configure(service);state.open()
+	if not check(await ready(state),"Work Details rows owner failed"):quit(1);return
+	var rows: Array=[]
+	for index in reference.worker_skill_rows.size():
+		var expected: Dictionary=reference.worker_skill_rows[index]
+		var row: Dictionary=state.row_at(index)
+		if not check(row.get("id")==int(expected.unit_id),"Worker row identity/order differs"):break
+		var captions: Array=[]
+		for skill in row.skills:captions.append(skill.caption)
+		check(captions==expected.native and row.member==expected.member,"Worker skill list or membership differs")
+		check(not row.first_line.is_empty() and row.has("sheet_icon") and row.has("assignments") and int(row.specialization.revision)>0,"Shared worker row observations missing")
+		check(not row.has("happiness") and not row.has("activity_target") and row.activity.caption.is_empty(),"Work Details row invented Residents observations")
+		rows.append({"id":row.id,"skills":row.skills,"member":row.member,"first_line":row.first_line,"second_line":row.second_line})
+	var revision: int=state.selected.revision
+	state.close();state.dispose();service.queue_free();await process_frame
+	var intent: Dictionary={"action":C.ManagementAction.WorkDetailRowsRead,"detail_index":0,"expected_revision":revision,"unit_ids":PackedInt32Array([int(reference.worker_skill_rows[0].unit_id)]),"columns":30,"show_gender":false}
+	for patch in [{"detail_index":-1},{"expected_revision":0},{"expected_revision":1.0},{"unit_ids":[7]},{"columns":31},{"extra":true}]:
+		var invalid:=intent.duplicate(true);invalid.merge(patch,true);check(world.management_request("work_detail_rows",invalid)==0,"Invalid worker row request was sent")
+	intent.expected_revision=revision^1
+	var rejected:=await request("work_detail_rows",intent)
+	check(rejected.get("status")==C.ManagementStatus.Rejected and not rejected.has("residents_rows"),"Stale worker content retained rows")
+	intent.expected_revision=revision;intent.unit_ids=PackedInt32Array([2147483647])
+	rejected=await request("work_detail_rows",intent)
+	check(rejected.get("status")==C.ManagementStatus.Rejected and not rejected.has("residents_rows"),"Missing worker retained rows")
+	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"rows":rows,"revision":str(revision),"stale_rejected":true,"missing_rejected":true}));file.close()
 	world.queue_free();await process_frame;quit(1 if failed else 0)
 
 func work_detail_query() -> void:

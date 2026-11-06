@@ -105,6 +105,7 @@
 #include "workshop_orders_native.h"
 #include "work_detail_native.h"
 #include "work_detail_query_native.h"
+#include "work_detail_row_native.h"
 #include "work_order_catalog_native.h"
 #include "work_order_rows_native.h"
 #include "work_order_conditions_native.h"
@@ -447,7 +448,7 @@ struct CreatureAnimalResult {
 std::optional<CreatureAnimalResult> creatureAnimal;
 std::optional<std::vector<int32_t>> residents;
 // Strings are converted to UTF-8 and bounded before publishing this batch.
-struct ResidentRowResult { int32_t id; df3d_residents::RowText text; std::optional<ResidentAppearanceRecipe> icon; df3d_residents::Specialization specialization; std::vector<df3d_area::LocationStaffAssignment> assignments; df::coord position; std::optional<df3d_residents::ActivityTarget> activityTarget; std::optional<df3d_production::JobSettingsTarget> jobTarget; };
+struct ResidentRowResult { int32_t id; df3d_residents::RowText text; std::optional<ResidentAppearanceRecipe> icon; df3d_residents::Specialization specialization; std::vector<df3d_area::LocationStaffAssignment> assignments; df::coord position; std::optional<df3d_residents::ActivityTarget> activityTarget; std::optional<df3d_production::JobSettingsTarget> jobTarget; std::optional<std::vector<df3d_production::WorkDetailSkillText>> workDetailSkills; int8_t detailMember=-1; };
 std::optional<std::vector<ResidentRowResult>> residentsRows;
 struct ResidentsSpecializationResult {int32_t id=-1;m::ResidentsSpecializationOutcome outcome=m::ResidentsSpecializationOutcome::Rejected;bool onlyAssigned=false;};
 std::optional<ResidentsSpecializationResult> residentsSpecialization;
@@ -1028,10 +1029,14 @@ void publish() {
       const auto color=m::CreateAreaNameColor(b,c.color[0],c.color[1],c.color[2],c.alternate[0],c.alternate[1],c.alternate[2],c.effect);
       std::vector<flatbuffers::Offset<m::LocationStaffAssignment>> assignments;
       for(const auto& e:value.assignments)assignments.push_back(m::CreateLocationStaffAssignment(b,m::LocationStaffAssignmentKind(e.kind),e.id,e.type,e.subtype,e.custom,b.CreateString(e.name),b.CreateString(e.customCode)));
+      flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<m::WorkDetailSkill>>> skills;
+      if(value.workDetailSkills){std::vector<flatbuffers::Offset<m::WorkDetailSkill>> items;
+        for(const auto& skill:*value.workDetailSkills)items.push_back(m::CreateWorkDetailSkill(b,skill.skill,skill.rating,b.CreateString(skill.caption)));
+        skills=b.CreateVector(items);}
       const m::TilePos position(value.position.x,value.position.y,value.position.z);
       rows.push_back(m::CreateResidentRow(b,id,b.CreateString(n.combined),b.CreateString(n.name),b.CreateString(n.profession),
           b.CreateString(n.firstLine),b.CreateString(n.secondLine),color,b.CreateString(a.caption),uint8_t(a.foreground),uint8_t(a.background),a.bright,
-          value.icon?value.icon->build(b):flatbuffers::Offset<m::SelectionAppearance>{},int8_t(row.happiness),m::CreateResidentSpecialization(b,value.specialization.onlyAssigned,value.specialization.revision),b.CreateVector(assignments),&position,value.activityTarget?m::CreateResidentActivityTarget(b,value.activityTarget->activityId,value.activityTarget->eventId):flatbuffers::Offset<m::ResidentActivityTarget>{},value.jobTarget?m::CreateResidentJobTarget(b,value.jobTarget->jobId,value.jobTarget->buildingId):flatbuffers::Offset<m::ResidentJobTarget>{}));
+          value.icon?value.icon->build(b):flatbuffers::Offset<m::SelectionAppearance>{},int8_t(row.happiness),m::CreateResidentSpecialization(b,value.specialization.onlyAssigned,value.specialization.revision),b.CreateVector(assignments),&position,value.activityTarget?m::CreateResidentActivityTarget(b,value.activityTarget->activityId,value.activityTarget->eventId):flatbuffers::Offset<m::ResidentActivityTarget>{},value.jobTarget?m::CreateResidentJobTarget(b,value.jobTarget->jobId,value.jobTarget->buildingId):flatbuffers::Offset<m::ResidentJobTarget>{},skills,value.detailMember));
     }
     residentsRowsResult=m::CreateResidentsRowsState(b,b.CreateVector(rows));
   }
@@ -3978,17 +3983,27 @@ void run(color_ostream& out) {
     } catch(...) {residentsActivity.reset();}
     publish();return;
   }
-  if(r->action()==m::ManagementAction::ResidentsRowsRead) {
+  if(r->action()==m::ManagementAction::ResidentsRowsRead || r->action()==m::ManagementAction::WorkDetailRowsRead) {
     message.clear();status=m::ManagementStatus::Rejected;
     const auto& query=*r->residents_rows();
+    const bool detail=r->action()==m::ManagementAction::WorkDetailRowsRead;
     try {
-      const auto eligible=df3d_residents::orderedResidents(0,false);
+      std::optional<std::vector<int32_t>> eligible;
+      if(!detail)eligible=df3d_residents::orderedResidents(0,false);
+      else {
+        const auto receipt=df3d_production::workDetailReceipt(query.detail_index());
+        if(receipt && *receipt==query.expected_revision())eligible.emplace(query.unit_ids()->begin(),query.unit_ids()->end());
+      }
       if(eligible) {
         std::vector<ResidentRowResult> rows;size_t bytes=0,appearanceBytes=0;
         for(auto id:*query.unit_ids()) {
           if(std::find(eligible->begin(),eligible->end(),id)==eligible->end())break;
           auto* unit=df::unit::find(id);if(!unit)break;
-          auto row=df3d_residents::rowText(unit,query.columns(),query.show_gender());
+          if(detail){
+            if(!df::global::world || std::find(df::global::world->units.active.begin(),df::global::world->units.active.end(),unit)==df::global::world->units.active.end())break;
+            const auto allowed=df3d_production::workshopWorkerAllowed(unit);if(!allowed || !*allowed)break;
+          }
+          auto row=df3d_residents::rowText(unit,query.columns(),query.show_gender(),!detail);
           if(!row || row->activity.foreground<0 || row->activity.foreground>7 ||
              row->activity.background<0 || row->activity.background>7)break;
           bool bounded=true;
@@ -4012,7 +4027,17 @@ void run(color_ostream& out) {
           }
           if(!bounded || bytes>131072)break;
           // Native142a4f1 captures unit.pos for Recenter; no holder or follow filter.
-          rows.push_back({id,std::move(*row),std::move(icon),*specialization,std::move(*assignments),unit->pos,df3d_residents::activityDescriptionTarget(unit),df3d_production::jobSettingsTarget(unit->job.current_job)});
+          rows.push_back({id,std::move(*row),std::move(icon),*specialization,std::move(*assignments),unit->pos,detail?std::nullopt:df3d_residents::activityDescriptionTarget(unit),detail?std::nullopt:df3d_production::jobSettingsTarget(unit->job.current_job)});
+          if(detail) {
+            auto skills=df3d_production::workDetailSkillText(query.detail_index(),unit);
+            if(!skills || skills->size()>149){rows.pop_back();break;}
+            for(auto& skill:*skills){skill.caption=DF2UTF(skill.caption);bytes+=skill.caption.size();
+              if(skill.caption.size()>4096 || skill.caption.find('\0')!=std::string::npos)bounded=false;}
+            if(!bounded || bytes>131072){rows.pop_back();break;}
+            rows.back().workDetailSkills=std::move(*skills);
+            const auto& members=df::global::plotinfo->labor_info.work_details[size_t(query.detail_index())]->assigned_units;
+            rows.back().detailMember=std::binary_search(members.begin(),members.end(),id)?1:0;
+          }
         }
         if(rows.size()==query.unit_ids()->size()) {residentsRows=std::move(rows);status=m::ManagementStatus::Ok;}
       }

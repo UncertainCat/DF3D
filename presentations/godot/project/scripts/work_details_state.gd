@@ -13,6 +13,10 @@ var details: Array=[]
 var list_revision:=0
 var selected: Dictionary={}
 var ids:=PackedInt32Array()
+var rows: Dictionary={}
+var roster_ready:=false
+var columns:=30
+var show_gender:=false
 var sort:=C.WorkDetailWorkerSort.Skills
 var directions: Array[bool]=[false,false,false,false]
 var query:=PackedByteArray()
@@ -34,7 +38,7 @@ func _retire() -> void:
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
 func close() -> void:
-	_retire();details=[];_collecting=[];list_revision=0;selected={};ids=PackedInt32Array();first=0
+	_retire();details=[];_collecting=[];list_revision=0;selected={};ids=PackedInt32Array();rows={};roster_ready=false;first=0
 	last_result={};phase=Phase.Closed;changed.emit()
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
@@ -45,7 +49,7 @@ func refresh() -> void:
 	if phase in [Phase.Closed,Phase.Applying]:return
 	_reload(int(selected.get("index",0)))
 func _reject(result: Dictionary={}) -> void:
-	selected={};ids=PackedInt32Array();last_result=result.duplicate(true);phase=Phase.Rejected;changed.emit()
+	selected={};ids=PackedInt32Array();rows={};roster_ready=false;last_result=result.duplicate(true);phase=Phase.Rejected;changed.emit()
 func _submit(domain: String,intent: Dictionary,accept: Callable) -> void:
 	if service==null:phase=Phase.Unavailable;changed.emit();return
 	var owner:=generation
@@ -58,7 +62,7 @@ func _submit(domain: String,intent: Dictionary,accept: Callable) -> void:
 	if ticket==0:phase=Phase.Unavailable
 	changed.emit()
 func _reload(preferred: int) -> void:
-	_retire();details=[];_collecting=[];list_revision=0;selected={};ids=PackedInt32Array();phase=Phase.Reading
+	_retire();details=[];_collecting=[];list_revision=0;selected={};ids=PackedInt32Array();rows={};roster_ready=false;phase=Phase.Reading
 	_read_list(0,preferred)
 func _read_list(cursor: int,preferred: int) -> void:
 	_submit("citizens",{"action":A.WorkDetailList,"cursor":cursor,"expected_list_revision":list_revision},func(result):
@@ -90,12 +94,31 @@ func set_query(value: PackedByteArray) -> void:
 	if selected.is_empty() or phase in [Phase.Closed,Phase.Applying] or value==query or value.size()>128 or value.has(0):return
 	query=value.duplicate();first=0;_read_workers()
 func seek(offset: int,count: int) -> void:
-	capacity=clampi(count,0,64);first=clampi(offset,0,maxi(0,ids.size()-capacity));changed.emit()
+	capacity=clampi(count,0,64);first=clampi(offset,0,maxi(0,ids.size()-capacity));_fill();changed.emit()
 func _read_workers() -> void:
-	_retire();ids=PackedInt32Array();phase=Phase.Reading
+	_retire();ids=PackedInt32Array();rows={};roster_ready=false;phase=Phase.Reading
 	_submit("work_detail_workers",{"action":A.WorkDetailWorkersQuery,"detail_index":int(selected.index),"expected_revision":int(selected.revision),"sort":sort,"descending":directions[sort],"query_bytes":query},func(result):
 		if not result.has("residents"):_reject();return
-		ids=result.residents.unit_ids.duplicate();first=clampi(first,0,maxi(0,ids.size()-capacity));phase=Phase.Ready;changed.emit())
+		ids=result.residents.unit_ids.duplicate();roster_ready=true;first=clampi(first,0,maxi(0,ids.size()-capacity));_fill();changed.emit())
+func row_at(index: int) -> Dictionary:
+	return rows.get(ids[index],{}) if index>=0 and index<ids.size() else {}
+func _fill() -> void:
+	if phase not in [Phase.Reading,Phase.Ready] or not roster_ready or ticket!=0:return
+	var wanted:=PackedInt32Array()
+	for index in range(first,mini(ids.size(),first+capacity)):
+		if not rows.has(ids[index]):wanted.append(ids[index])
+	if wanted.is_empty():phase=Phase.Ready;return
+	phase=Phase.Reading
+	_submit("work_detail_rows",{"action":A.WorkDetailRowsRead,"detail_index":int(selected.index),"expected_revision":int(selected.revision),"unit_ids":wanted,"columns":columns,"show_gender":show_gender},func(result):
+		var page: Array=result.get("residents_rows",{}).get("rows",[])
+		if page.size()!=wanted.size():_reject();return
+		for index in page.size():
+			if int(page[index].get("id",-1))!=wanted[index] or not page[index].has("skills") or not page[index].has("member"):_reject();return
+		var retained: Dictionary={}
+		for index in range(first,mini(ids.size(),first+capacity)):
+			if rows.has(ids[index]):retained[ids[index]]=rows[ids[index]]
+		for row: Dictionary in page:retained[int(row.id)]=row.duplicate(true)
+		rows=retained;_fill();changed.emit())
 func can_edit() -> bool:
 	return phase==Phase.Ready and ticket==0 and not external_controller and not selected.is_empty() and bool(selected.get("editable",false)) and str(selected.get("row_error","")).is_empty()
 func create_detail() -> void:

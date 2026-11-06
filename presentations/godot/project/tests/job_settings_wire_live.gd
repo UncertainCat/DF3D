@@ -14,6 +14,8 @@ func pointer(view,point: Vector2,button: int=MOUSE_BUTTON_LEFT) -> void:
 	click=click.duplicate();click.pressed=false;Input.parse_input_event(click);await process_frame
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
+	if OS.get_environment("DF3D_WORK_DETAILS_RENAME_WIRE")=="1":
+		await work_detail_name_session();return
 	if OS.get_environment("DF3D_WORK_DETAILS_DELETE_WIRE")=="1":
 		await work_detail_delete_scene();return
 	if OS.get_environment("DF3D_WORK_DETAILS_SETTINGS_RENDER")=="1":
@@ -752,3 +754,31 @@ func work_detail_delete_scene() -> void:
 				check(await ready(owner.state) and not owner.state.editing_settings and owner.state.selected.get("index",-1)==0 and owner.state.details.size()==reference.after.details.size(),"Delete did not return to first detail roster")
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"delete_owner":true}));file.close()
 	owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)
+
+func work_detail_name_session() -> void:
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/work-details-native.json")).rename
+	world=Df3dWorld.new();root.add_child(world)
+	if not check(world.attach(),"Rename attach failed"):quit(1);return
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline:
+		world.poll()
+		if world.poll_management().get("transport_alive",false):break
+		await create_timer(0.01).timeout
+	await request("construction",{"action":C.ManagementAction.Catalog})
+	var response: Dictionary=await request("citizens",{"action":C.ManagementAction.WorkDetailInspect,"detail_index":int(reference.index)})
+	var rows: Array=response.get("citizen",{}).get("details",[])
+	if not check(rows.size()==1,"Rename detail unavailable"):quit(1);return
+	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
+	var naming=preload("res://scripts/work_detail_name_session.gd").new();service.add_child(naming);naming.configure(service,rows[0])
+	var outcome: Dictionary={"finished":false,"failed":false}
+	naming.finished.connect(func():outcome.finished=true)
+	naming.failed.connect(func(_result):outcome.failed=true)
+	# Queue explicit native-observed names while the first write is outstanding,
+	# then finish. The service owns draining even after the editor would close.
+	for step: Dictionary in reference.steps:check(naming.edit(step.name),"Native rename text rejected")
+	naming.finish();deadline=Time.get_ticks_msec()+8000
+	while not outcome.finished and not outcome.failed and Time.get_ticks_msec()<deadline:
+		world.poll();await process_frame
+	check(outcome.finished and not outcome.failed,"Buffered rename session did not finish")
+	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"rename_session":true}));file.close()
+	service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)

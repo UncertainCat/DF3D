@@ -227,6 +227,58 @@ local function click_handler(rva)
   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
   for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
  end
+if os.getenv('DF3D_WORK_DETAILS_RENAME')=='1' then
+ local function input(action,clear,text)
+  if text then local f=assert(io.open(out..'/residents-search-input.json','w'));f:write(json.encode({clear_count=clear or 0,text=text}));f:close()end
+  local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write(action);f:close();assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+  local deadline=dfhack.getTickCount()+30000
+  while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Rename input timeout');script.sleep(1,'frames')end
+  assert(os.remove(out..'/owner-input-ack'))
+  for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
+ end
+ local function click_name()
+  g.precise_mouse_x=500;g.precise_mouse_y=166;g.mouse_x=62;g.mouse_y=13
+  df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L')
+  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+  for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
+ end
+ result.rename={index=#all-1,steps={}}
+ local function observe(label)
+  local bytes={};for i=1,#d.name do bytes[#bytes+1]=d.name:byte(i)end
+  result.rename.steps[#result.rename.steps+1]={label=label,name=dfhack.df2utf(d.name),bytes=bytes,info_open=info.open}
+  shot('work-details-rename-'..label)
+ end
+ click_name();observe('focused')
+ assert(loadfile(path))(out..'/work-details-rename-widgets.json','templates')
+ result.rename.callbacks={}
+ local function trace(widget)
+  if widget.rect.x1==38 and widget.rect.y1==12 then
+   local _,address=df.sizeof(widget);local vt=df.reinterpret_cast('uint64_t',address).value
+   result.rename.name_vtable=vt-base;result.rename.name_virtuals={}
+   for offset=0,120,8 do result.rename.name_virtuals[#result.rename.name_virtuals+1]=df.reinterpret_cast('uint64_t',vt+offset).value-base end
+  end
+  if widget.rect.y1<=14 then
+   result.rename.callbacks[#result.rename.callbacks+1]={name=widget.name,rect={widget.rect.x1,widget.rect.y1,widget.rect.x2,widget.rect.y2},feed=callbacks(widget.custom_feed),activated=callbacks(widget.custom_activated)}
+  end
+  if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do trace(child)end end
+ end
+ trace(info.labor)
+ input('residents-search',0,' a Z09-_.');observe('typed')
+ input('enter');observe('enter')
+ input('ascii');observe('after-enter-typing')
+ click_name();input('residents-search',128,string.rep('q',45));observe('limit')
+ input('backspace');observe('backspace')
+ input('nonascii');observe('nonascii')
+ input('escape');observe('escape')
+ if os.getenv('DF3D_WORK_DETAILS_RENAME_WIRE')=='1' then
+  result.rename.expected_name=dfhack.df2utf(d.name);d.name='Custom Detail 1'
+  shot('work-details-rename-wire')
+  result.rename.semantic_name=dfhack.df2utf(d.name)
+  assert(result.rename.semantic_name==result.rename.expected_name,'Semantic rename differs from native bytes')
+  shot('work-details-rename-result')
+ end
+ records[#records+1]={name='work-details-rename'};return
+end
 if os.getenv('DF3D_WORK_DETAILS_DELETE')=='1' then
  local function snapshot()
   local state={details={},units={}}

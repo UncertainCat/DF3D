@@ -183,7 +183,7 @@ try {
  $limit=(Get-Date).AddSeconds(600)
  while(-not(Test-Path "$out/result.json") -and (Get-Date) -lt $limit){
   if($owned.HasExited){throw 'Owned DF exited before the native capture completed'}
-  if(($ZoneOwner -or $ZoneAnimals -or $ZoneDefaults -or $LocationSupplies -or $LocationNames -or $FarmResize -or $FarmHeader -or $env:DF3D_WORK_ORDER_ARTWORK_RESIZE -eq '1' -or $env:DF3D_WORK_ORDER_LAYOUT -eq '1' -or $env:DF3D_RESIDENTS_QUERY -eq '1' -or $env:DF3D_WORK_DETAILS_QUERY_PROVIDER -eq '1' -or $env:DF3D_RESIDENTS_JOB_ART_RENDER -eq '1') -and (Test-Path "$out/owner-input-request")) {
+  if(($ZoneOwner -or $ZoneAnimals -or $ZoneDefaults -or $LocationSupplies -or $LocationNames -or $FarmResize -or $FarmHeader -or $env:DF3D_WORK_ORDER_ARTWORK_RESIZE -eq '1' -or $env:DF3D_WORK_ORDER_LAYOUT -eq '1' -or $env:DF3D_RESIDENTS_QUERY -eq '1' -or $env:DF3D_WORK_DETAILS_QUERY_PROVIDER -eq '1' -or $env:DF3D_WORK_DETAILS_RENAME -eq '1' -or $env:DF3D_RESIDENTS_JOB_ART_RENDER -eq '1') -and (Test-Path "$out/owner-input-request")) {
    $action=(Get-Content "$out/owner-input-request" -Raw).Trim()
    $window=[Shot]::Find($owned.Id)
    switch($action) {
@@ -218,7 +218,7 @@ try {
   if(Test-Path "$out/shot") {
    $name=(Get-Content "$out/shot" -Raw).Trim()
    if(-not(Test-Path "$out/ack-$name")) {
-    if(($env:DF3D_WORK_DETAILS_DELETE_WIRE -eq '1' -and $name -eq 'work-details-delete-wire') -or ($env:DF3D_WORK_DETAILS_SETTINGS_WIRE -eq '1' -and $name -match '^work-details-settings-wire-(normal|locked)$') -or ($env:DF3D_WORK_DETAILS_ROWS_WIRE -eq '1' -and $name -eq 'work-details-root') -or ($env:DF3D_WORK_DETAILS_QUERY_WIRE -eq '1' -and $name -eq 'work-details-query') -or ($env:DF3D_RESIDENTS_JOB_SETTINGS_WIRE -eq '1' -and $name -eq 'residents-job-settings') -or ($env:DF3D_RESIDENTS_JOB_ART_WIRE -eq '1' -and $name -eq 'residents-job-art-root') -or ($env:DF3D_RESIDENTS_JOB_PRODUCTION_WIRE -eq '1' -and $name -eq 'residents-job-production-wire') -or ($env:DF3D_WORK_DETAILS_DEFAULTS -eq '1' -and $name -eq 'work-details-defaults-wire') -or ($env:DF3D_WORK_DETAILS_MEMBERSHIP -eq '1' -and $name -eq 'work-details-membership-wire') -or ($env:DF3D_WORK_DETAILS_EDITS -eq '1' -and $name -match '^work-details-edit-[1-4]-wire$')) {
+    if(($env:DF3D_WORK_DETAILS_RENAME_WIRE -eq '1' -and $name -eq 'work-details-rename-wire') -or ($env:DF3D_WORK_DETAILS_DELETE_WIRE -eq '1' -and $name -eq 'work-details-delete-wire') -or ($env:DF3D_WORK_DETAILS_SETTINGS_WIRE -eq '1' -and $name -match '^work-details-settings-wire-(normal|locked)$') -or ($env:DF3D_WORK_DETAILS_ROWS_WIRE -eq '1' -and $name -eq 'work-details-root') -or ($env:DF3D_WORK_DETAILS_QUERY_WIRE -eq '1' -and $name -eq 'work-details-query') -or ($env:DF3D_RESIDENTS_JOB_SETTINGS_WIRE -eq '1' -and $name -eq 'residents-job-settings') -or ($env:DF3D_RESIDENTS_JOB_ART_WIRE -eq '1' -and $name -eq 'residents-job-art-root') -or ($env:DF3D_RESIDENTS_JOB_PRODUCTION_WIRE -eq '1' -and $name -eq 'residents-job-production-wire') -or ($env:DF3D_WORK_DETAILS_DEFAULTS -eq '1' -and $name -eq 'work-details-defaults-wire') -or ($env:DF3D_WORK_DETAILS_MEMBERSHIP -eq '1' -and $name -eq 'work-details-membership-wire') -or ($env:DF3D_WORK_DETAILS_EDITS -eq '1' -and $name -match '^work-details-edit-[1-4]-wire$')) {
      $env:DF3D_CARRIER_DIRECTORY=$out;$env:DF3D_DF_PATH=$dfPath
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
      $clientArgs=@('--headless')

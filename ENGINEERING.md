@@ -306,6 +306,32 @@ lacks a distinct native post-write Unknown outcome; receipt failures retire UI
 authority without replay, but richer outcome reporting and full lifecycle
 acceptance remain unfinished before screen exposure.
 
+Work Details renaming uses immediate byte edits, not an Enter-time commit.
+Protected132059 and132356 on2026-11-06 type into the actual native field through
+the owned window: mixed ASCII appends immediately; Enter stops subsequent typing
+until the field is clicked again; Backspace removes one byte;40 bytes are allowed.
+With39 ASCII bytes present, typing accented e appends only the first UTF-8 byte
+195, displayed as CP437 U+251C. Escape closes Labor without reverting that name.
+The name widget vtable1710d18 dispatches feed1419080/render14191e0. The feed calls
+141b1d0 using global input scratch, so it is not an admissible runtime API.
+Local byte editing can reuse the existing area-name primitive; semantic name
+assignment already uses revision-checked WorkDetailEdit(edit1).
+
+`work_detail_name_session.gd` now owns asynchronous explicit typing independently
+of a panel. It buffers the latest intended name while one write is pending, then
+uses the exact returned detail revision for a continuation. Finishing drains
+already-entered text; rejected, malformed or uncertain replies discard buffered
+text without retry. The session belongs to the action service when integrated.
+Headless work-details-rename-session-20261106 passes core19/extension/controller
+checks, including receipt chaining and uncertain-outcome retirement. Protected
+132356 exercises the real service with native-observed names queued behind the
+first edit and a finish request while pending. Final native name bytes match.
+DF37080 exits unsaved with source preservation; no DF/Godot remains. Native uses
+30FPS, viewer is headless, GPU46C sampled, and joined final client logs contain
+only the known separate-renderer notice. `rename_reference` records scope.
+The visible DF3D name field, actual panel closure/navigation, rendering and
+broader lifecycle acceptance are still pending; this is session acceptance only.
+
 `work_detail_query_native.h` supplies an owned Work Details worker query.
 Native142c4b0 performs filtering, stable sorting and its selected-worker
 partition over caller-owned vectors, functions and map storage. The explicit

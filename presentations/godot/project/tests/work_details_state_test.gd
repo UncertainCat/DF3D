@@ -11,6 +11,7 @@ class Service extends RefCounted:
 	var detached: Array=[]
 	func submit(domain: String,intent: Dictionary,observer: Callable) -> int:
 		next+=1;calls[next]={"domain":domain,"intent":intent.duplicate(true),"observer":observer};return next
+	func submit_continuation(_previous: int,domain: String,intent: Dictionary,observer: Callable) -> int:return submit(domain,intent,observer)
 	func detach(ticket: int) -> void:detached.append(ticket)
 	func reply(ticket: int,payload: Dictionary) -> void:
 		var call: Dictionary=calls[ticket];var result:=payload.duplicate(true)
@@ -117,6 +118,17 @@ func run() -> void:
 	state.delete_detail();state.create_detail();check(state.ticket==old,"Pending Delete blocks duplicate and conflicting writes")
 	service.reply(old,{"citizen":{"selected_detail":0}});service.reply(state.ticket,page([detail(0,57)]));complete_workers(service,state,[])
 	check(state.selected.index==0 and state.roster_ready and not state.editing_settings,"Delete returns to first detail roster")
+	var naming=preload("res://scripts/work_detail_name_session.gd").new();root.add_child(naming);naming.configure(service,detail(0,57))
+	naming.edit("First");old=naming.ticket;naming.edit("Second");naming.finish()
+	check(naming.ticket==old and service.calls[old].intent.name=="First","Typing buffers behind one exact rename request")
+	var renamed:=detail(0,59);renamed.name="First";service.reply(old,{"citizen":{"details":[renamed]}})
+	check(service.calls[naming.ticket].intent.name=="Second" and service.calls[naming.ticket].intent.expected_revision==59,"Buffered typing uses confirmed rename receipt")
+	renamed=detail(0,61);renamed.name="Second";service.reply(naming.ticket,{"citizen":{"details":[renamed]}})
+	check(naming.stopped,"Finishing waits for buffered explicit typing")
+	naming=preload("res://scripts/work_detail_name_session.gd").new();root.add_child(naming);naming.configure(service,detail(0,61));naming.edit("First");old=naming.ticket;naming.edit("Second");count=service.next
+	service.reply(old,{"status":C.ManagementStatus.Rejected,"outcome":"unknown"})
+	check(naming.stopped and naming.snapshot.is_empty() and service.next==count,"Uncertain rename discards buffered typing without replay")
+	await process_frame
 	state.dispose()
 	if failures==0:print("WORK_DETAILS_STATE_PASS")
 	quit(0 if failures==0 else 1)

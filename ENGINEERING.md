@@ -1100,6 +1100,34 @@ MSVC job-art-draft-wire-final-build passes. Built/installed SHA256 is
 C57012532E2F632E5EA50319FB26A9588B7971FEA31607A1129A8BBE094DAB02.
 
 
+The staged job Details owner connects new-image drafts to the shared artwork
+view and native name editor. Native opener1ffff7..200038 generates the initial
+name using931860 when artwork opens; job state now requests that write once,
+then returns to the artwork root carrying the owned draft. Root/category Back
+retains the name. Dirty draft Back asks Keep working/Discard, with Discard
+removing local elements and relationships. Closing/session retirement clears
+all draft state; late replies cannot restore it. Local draft pages/search/paging,
+quantity, elements/relationships/deletion and naming use the shared semantic
+transport. Confirmed Done closes Details and refreshes Residents; unknown writes
+cannot be replayed. The shared view now initializes its name child and preview
+column count for job contexts too.
+
+Protected095229 on2026-11-06 exercises the assembled headless Residents owner
+through actual pointer events: job entry initializes a native name, Specify new
+image opens the draft, Creature selection adds an aardvark, Keep working retains
+it, Discard returns to the root with no elements, then recreating/naming/selecting
+word0 and Done returns to the refreshed roster. Native readback confirms final
+image4/sub-ID124 is registered and assigned; the preceding direct wire check
+registered its separate image4/sub-ID123. Unit state checks cover draft retirement,
+late replies, initialized-name preservation, duplicate Done and unknown no-replay.
+Core19/root/extension/job-state checks pass in job-art-draft-owner-20261106.
+Only the known separate-thread notice occurs in joined client logs. DF38516
+closes unsaved with source preservation; native30FPS/headless viewer, GPU53C
+sampled after exit. No rendered/resize acceptance, relationship/other-category
+workflow acceptance or ordinary production job acceptance is claimed. Residents
+remains hidden; the fixture retains artwork_draft_owner_reference.
+
+
 ## Farm removal native entry points
 
 The diagnostic `df3d farm-contents-read <farm>` returns contained items in native

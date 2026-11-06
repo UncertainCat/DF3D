@@ -274,6 +274,42 @@ func artwork_draft(reference: Dictionary,root_value: Dictionary) -> void:
 	reply=await request("job_settings",stale);check(reply.get("job_settings_edit",{}).get("outcome")==C.JobSettingsEditOutcome.Stale,"Stale job draft commit was not rejected")
 	reply=await request("job_settings",intent)
 	check(reply.get("status")==C.ManagementStatus.Ok and reply.get("job_settings_edit",{}).get("outcome")==C.JobSettingsEditOutcome.Applied and not reply.has("job_settings"),"Job draft Done failed")
+	var owner_result:=await composed_draft(reference)
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"draft":{"race":row.id,"caste":row.secondary,"description":description,"name_page":true,"done":reply.get("job_settings_edit",{})}}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"owner":owner_result,"draft":{"race":row.id,"caste":row.secondary,"description":description,"name_page":true,"done":reply.get("job_settings_edit",{})}}));file.close()
 	world.queue_free();await process_frame;quit(1 if failed else 0)
+
+func composed_draft(reference: Dictionary) -> Dictionary:
+	if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Draft owner assets unavailable"):return {}
+	root.size=Vector2i(1200,800)
+	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
+	for frame in 5:world.poll();await process_frame
+	var interaction:=Interaction.new();root.add_child(interaction)
+	var host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)
+	var owner=preload("res://scripts/residents_panel.gd").new();root.add_child(owner);owner.configure(world,service,host);owner.open_panel()
+	check(await ready(owner.state),"Draft owner roster failed")
+	var index: int=owner.state.ids.find(int(reference.unit_id));owner.state.seek(index,owner.state.capacity);check(await ready(owner.state),"Draft owner row failed")
+	await pointer(owner.panel,Vector2(540,owner.panel.list_top()+(index-owner.state.first)*36+18))
+	var state=owner.job_state;var view=owner.job_panel
+	if not check(await ready(state) and state.art_page()==-1 and state.draft_value.has("name"),"Artwork root did not initialize native draft name"):
+		owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();await process_frame;return {}
+	await pointer(view,Vector2(120,258));check(await ready(state) and state.art_page()==6,"Specify new image did not open draft")
+	await pointer(view,Vector2(48,114));check(await ready(state) and state.art_page()==7,"Draft Creature control failed")
+	await pointer(view,Vector2(300,view.list_top()+18));check(await ready(state) and state.art_page()==6 and state.draft_value.elements.size()==1,"Draft creature selection failed")
+	await pointer(view,Vector2(152,378));check(state.draft_discard,"Dirty draft Back did not ask to discard")
+	await pointer(view,Vector2(120,150));check(not state.draft_discard and state.draft_value.elements.size()==1,"Keep working lost draft")
+	await pointer(view,Vector2(152,378));await pointer(view,Vector2(120,102));check(await ready(state) and state.art_page()==-1 and state.draft_value.elements.is_empty(),"Discard did not return to artwork root")
+	await pointer(view,Vector2(120,258));check(await ready(state),"Draft reopen failed")
+	await pointer(view,Vector2(48,114));check(await ready(state),"Creature list reopen failed")
+	await pointer(view,Vector2(300,view.list_top()+18));check(await ready(state) and state.draft_value.elements.size()==1,"Creature re-add failed")
+	await pointer(view,Vector2(40,378));check(await ready(state) and view.name_state.active and view.name_state.phase==view.name_state.Phase.Ready,"Native name editor did not open")
+	var word: int=view.name_state.rows[0].word
+	await pointer(view.name_view,view.name_view.row_rect(0).get_center());check(await ready(state) and state.draft_value.name.words[0]==word,"Native name word selection failed")
+	await pointer(view.name_view,Vector2(view.name_view.size.x-64,30));check(await ready(state) and state.art_page()==6 and not view.name_state.active,"Name Done did not restore draft")
+	await pointer(view,Vector2(96,378))
+	var deadline:=Time.get_ticks_msec()+5000
+	while state.phase==state.Phase.Applying and Time.get_ticks_msec()<deadline:world.poll();await create_timer(0.01).timeout
+	check(state.phase==state.Phase.Closed and await ready(owner.state) and owner.panel.visible,"Draft Done did not return to refreshed Residents")
+	var result: Dictionary={"initialized_name":true,"discard":true,"kept":true,"named_word":word,"done":state.phase==state.Phase.Closed}
+	owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();await process_frame
+	return result

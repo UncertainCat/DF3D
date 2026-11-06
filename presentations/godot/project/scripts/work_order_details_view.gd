@@ -13,14 +13,13 @@ var name_state=preload("res://scripts/work_order_art_name_state.gd").new()
 var name_view
 func configure_details(source,model) -> void:
 	super.configure(source);state=model;colors=art.installed_palette(source.assets_root())
-	if not job_context:
-		name_state.configure(state)
-		name_view=preload("res://scripts/location_name_view.gd").new();add_child(name_view)
-		name_view.heading="Name the image" # Native literal16152c8; shared name renderer1fc5c0.
-		name_view.configure(source,name_state);name_view.hide()
-		name_view.input_allowed=func():return name_state.active and (not input_allowed.is_valid() or input_allowed.call())
-		name_view.cancelled.connect(name_state.close)
-		name_state.changed.connect(func():name_view.visible=name_state.active;queue_redraw())
+	name_state.configure(state)
+	name_view=preload("res://scripts/location_name_view.gd").new();add_child(name_view)
+	name_view.heading="Name the image" # Native literal16152c8; shared name renderer1fc5c0.
+	name_view.configure(source,name_state);name_view.hide()
+	name_view.input_allowed=func():return name_state.active and (not input_allowed.is_valid() or input_allowed.call())
+	name_view.cancelled.connect(name_state.close)
+	name_state.changed.connect(func():name_view.visible=name_state.active;queue_redraw())
 	mouse_filter=Control.MOUSE_FILTER_STOP
 	mouse_exited.connect(func():if state!=null and state.has_art():state.hover_art(-1,0))
 	scrollbar.row_changed.connect(func(value):state.seek(value))
@@ -57,7 +56,7 @@ func sync_scroll() -> void:
 	# cells for unique figures/artifacts, which have no quantity controls.
 	if state.has_art() and state.art_page()>=7 and state.art_page()<=13:footer=108 if draft_has_quantity() else 72
 	page_rows=maxi(1,int((size.y-list_top()-footer)/36))
-	if not job_context:state.draft_columns=maxi(1,int((size.x-32)/8))
+	state.draft_columns=maxi(1,int((size.x-32)/8))
 	state.visible_rows=page_rows
 	scrollbar.position=Vector2(size.x-32,list_top());scrollbar.size=Vector2(16,page_rows*36);scrollbar.page=page_rows
 	if state.has_art():

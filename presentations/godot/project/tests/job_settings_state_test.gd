@@ -46,6 +46,7 @@ func run() -> void:
 	view.free();state.dispose()
 	artwork_lifecycle()
 	artwork_edits()
+	draft_lifecycle()
 	if failures==0:print("JOB_SETTINGS_STATE_PASS")
 	quit(1 if failures else 0)
 
@@ -62,7 +63,7 @@ func artwork_lifecycle() -> void:
 	var initial:=artwork_page();initial.erase("art");initial.selected_option=-1
 	service.reply(state.ticket,initial)
 	check(service.calls[state.ticket].request.art_page==-1,"Single Image option opens its owned artwork root")
-	service.reply(state.ticket,artwork_page());state.choose(1);service.reply(state.ticket,artwork_page(1))
+	reply_art_root(service,state,artwork_page());state.choose(1);service.reply(state.ticket,artwork_page(1))
 	check(state.has_art() and state.rows.size()==128,"Artwork publishes one bounded page")
 	state.hover_art(0,118);var preview: int=state.preview_ticket
 	state.seek(128);var next: int=state.ticket
@@ -85,7 +86,7 @@ func artwork_edits() -> void:
 	check(state.phase==State.Phase.Applying and state.ticket==edit and service.calls[edit].request.art_page==-1,"Image submits one entry edit")
 	var applied: Dictionary={"action":C.ManagementAction.JobSettingsApply,"status":C.ManagementStatus.Ok,"job_settings_edit":{"job_id":42,"building_id":3,"unit_id":6534,"outcome":C.JobSettingsEditOutcome.Applied}}
 	service.calls[edit].callback.call(edit,applied,service.calls[edit].request)
-	var root:=artwork_page();root.revision=22;root.options[0].kind=3;service.reply(state.ticket,root)
+	var root:=artwork_page();root.revision=22;root.options[0].kind=3;reply_art_root(service,state,root)
 	check(state.phase==State.Phase.Ready and state.has_art() and state.snapshot.revision==22,"Confirmed Image entry reads fresh revision and stays open")
 	state.choose(1);var figures:=artwork_page(1);figures.revision=22;figures.options[0].kind=3;service.reply(state.ticket,figures)
 	state.choose(0);edit=state.ticket
@@ -93,4 +94,33 @@ func artwork_edits() -> void:
 	service.calls[edit].callback.call(edit,{"outcome":"unknown"},service.calls[edit].request)
 	var count: int=service.next;state.choose(0);state.read_root()
 	check(state.phase==State.Phase.Unknown and service.next==count,"Uncertain artwork assignment is never replayed")
+	state.dispose()
+
+func reply_art_root(service,state,value: Dictionary) -> void:
+	service.reply(state.ticket,value)
+	check(state.phase==State.Phase.Applying and service.calls[state.ticket].request.art.draft.action==4,"Artwork entry generates its native name once")
+	var generated:=value.duplicate(true);generated.art.page=6;generated.art.rows=[];generated.art.total=0;generated.art.next_cursor=0;generated.art.list_revision=93
+	generated.art.draft={"elements":[],"relationships":[],"name":{}};generated.art.draft_description=[]
+	var sent: Dictionary=service.calls[state.ticket].request
+	service.calls[state.ticket].callback.call(state.ticket,{"action":C.ManagementAction.JobSettingsApply,"status":C.ManagementStatus.Ok,"job_settings_edit":{"job_id":42,"building_id":3,"unit_id":6534,"outcome":C.JobSettingsEditOutcome.Applied},"job_settings":generated},sent)
+	var named:=value.duplicate(true);named.art.draft=generated.art.draft;named.art.draft_description=[]
+	service.reply(state.ticket,named)
+
+func draft_lifecycle() -> void:
+	var service:=Service.new();var state:=State.new();state.configure(service);state.open(3,42,6534)
+	var initial:=artwork_page();initial.erase("art");initial.selected_option=-1;service.reply(state.ticket,initial)
+	var root_value:=artwork_page();root_value.art.rows=[{"id":6,"caption":"Fixture draft"}];reply_art_root(service,state,root_value)
+	state.choose(6);var value:=root_value.duplicate(true);value.art.page=6;value.art.list_revision=93;value.art.rows=[];value.art.total=0
+	value.art.draft={"elements":[{"kind":7,"id":755,"secondary":-1,"quantity":1}],"relationships":[],"name":{}};value.art.draft_description=["Fixture description"]
+	service.reply(state.ticket,value);state.draft_dirty=true;state.art_back()
+	check(state.draft_discard and state.ticket==0 and state.draft_value.elements.size()==1,"Draft Back asks before discarding local elements")
+	state.discard_draft();check(service.calls[state.ticket].request.art.page==-1 and state.draft_value.elements.is_empty() and state.draft_value.has("name"),"Discard preserves initialized name and returns to root")
+	var old: int=state.ticket;service.session_changed.emit();service.reply(old,value)
+	check(state.phase==State.Phase.Closed and state.draft_value.elements.is_empty() and not state.draft_value.has("name"),"Session retirement cannot restore a draft")
+	state.open(3,42,6534);service.reply(state.ticket,initial);reply_art_root(service,state,root_value);state.choose(6);service.reply(state.ticket,value)
+	state.commit_draft();var edit: int=state.ticket;state.commit_draft()
+	check(state.phase==State.Phase.Applying and state.ticket==edit and service.calls[edit].request.art.draft.action==5,"Done submits once")
+	service.calls[edit].callback.call(edit,{"outcome":"unknown"},service.calls[edit].request)
+	var count: int=service.next;state.commit_draft();state.draft_navigate(6)
+	check(state.phase==State.Phase.Unknown and service.next==count,"Unknown Done cannot replay or reopen draft")
 	state.dispose()

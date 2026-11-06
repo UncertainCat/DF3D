@@ -5852,5 +5852,47 @@
     "diagnostics": "Known separate-render-thread notice only",
     "source_preserved": true,
     "owned_df_closed": true
+  },
+  "artwork_draft_owner_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-095229",
+    "date": "2026-11-06",
+    "client": {
+      "draft": {
+        "caste": -1,
+        "description": [
+          "It is an image of a aardvark.  "
+        ],
+        "done": {
+          "building_id": 3,
+          "job_id": 2000000000,
+          "outcome": 2,
+          "unit_id": 6534
+        },
+        "name_page": true,
+        "race": 755
+      },
+      "owner": {
+        "discard": true,
+        "done": true,
+        "initialized_name": true,
+        "kept": true,
+        "named_word": 0
+      },
+      "success": true
+    },
+    "native_effect": {
+      "art_open": true,
+      "details_open": true,
+      "id": 4,
+      "info_open": true,
+      "requirements": 0,
+      "specdata": -1,
+      "subid": 124,
+      "type": 3
+    },
+    "scope": "Headless assembled Residents owner: pointer job entry initializes native name, Specify new image, Creature/add, Back/Keep working, Back/Discard, recreate, Name/native word selection/Done, draft Done returns to refreshed roster. Direct wire checks also retained. Native oracle confirms final registered image matches controlled job. No rendered/resize or other-category/relationship/ordinary-production acceptance.",
+    "diagnostics": "Known separate-render-thread notice only",
+    "source_preserved": true,
+    "owned_df_closed": true
   }
 }

@@ -206,6 +206,59 @@ for _,name in ipairs{'Name','Cat','Prof','Job','Stress'}do
   view:render(dfhack.getTickCount());observe(name..'-'..direction)
  end
 end
+if os.getenv('DF3D_RESIDENTS_SPECIALIZATION')=='1' then
+ local targets={}
+ local function collect(widget,active)
+  active=active and (widget.flag.whole&1)==1
+  if active and df.widget_unit_name:is_instance(widget) and widget.u and widget.rect.y1>=14 and widget.rect.y1<df.global.gps.dimy-8 then
+   local kind=widget.u.profession==df.profession.CHILD and 'child' or widget.u.profession==df.profession.BABY and 'baby' or 'adult'
+   for _,child in ipairs(dfhack.gui.getWidgetChildren(widget.parent))do
+    if child.name=='Specialization button' and not targets[kind] then targets[kind]={unit=widget.u,button=child}end
+   end
+  end
+  if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do collect(child,active)end end
+ end
+ collect(active_list,true)
+ local function snapshot(unit)
+  local labors={};for i=0,#unit.status.labors-1 do labors[#labors+1]=unit.status.labors[i]end
+  local _,address=df.sizeof(unit)
+  return {only_assigned=unit.flags4.only_do_assigned_jobs,labors=labors,pickup_flags=df.reinterpret_cast('uint32_t',address+0x280).value}
+ end
+ local function restore(unit,value)
+  unit.flags4.only_do_assigned_jobs=value.only_assigned
+  local _,address=df.sizeof(unit);df.reinterpret_cast('uint32_t',address+0x280).value=value.pickup_flags
+  for i,value in ipairs(value.labors)do unit.status.labors[i-1]=value end
+ end
+ local function read(unit,revision,value)
+  local args={'df3d','residents-specialization',tostring(unit.id)}
+  if revision then args[#args+1]=revision;args[#args+1]=value and '1' or '0'end
+  local text,rc=dfhack.run_command_silent(table.unpack(args));assert(rc==0,text);return json.decode(text)
+ end
+ local evidence={}
+ for _,kind in ipairs{'adult','child','baby'}do
+  local target=assert(targets[kind],'Missing native specialization target '..kind)
+  local unit,button=target.unit,target.button;local original=snapshot(unit)
+  assert(not unit.job.current_job or unit.job.current_job.job_type~=51,'Equipment pickup cancellation requires a separate effect reference')
+  local cases={}
+  for direction=1,2 do
+   local before=snapshot(unit);local receipt=read(unit)
+   local g=df.global.gps;g.precise_mouse_x=button.rect.x1*8+12;g.precise_mouse_y=button.rect.y1*12+12
+   g.mouse_x=button.rect.x1+1;g.mouse_y=button.rect.y1+1
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L')
+   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+   local native=snapshot(unit)
+   assert(native.only_assigned~=before.only_assigned,'Native specialization click had no effect '..kind)
+   restore(unit,before)
+   local actual=read(unit,receipt.revision,native.only_assigned)
+   assert(actual.outcome==0 and json.encode(snapshot(unit))==json.encode(native),'Native specialization effects differ '..kind)
+   cases[#cases+1]={before=before,native=native,provider=actual}
+  end
+  restore(unit,original)
+  evidence[#evidence+1]={kind=kind,id=unit.id,cases=cases,restored=json.encode(snapshot(unit))==json.encode(original)}
+ end
+ local file=assert(io.open(out..'/residents-specialization-reference.json','w'));file:write(json.encode(evidence));file:close()
+end
 if os.getenv('DF3D_RESIDENTS_QUERY')=='1' then
  assert(filter_box,'Native Residents filter missing')
  local function click(widget)

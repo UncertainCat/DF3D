@@ -114,6 +114,7 @@
 #include "residents_activity_native.h"
 #include "residents_query_native.h"
 #include "residents_row_native.h"
+#include "residents_specialization_native.h"
 #include "modules/Buildings.h"
 #endif
 
@@ -2132,6 +2133,24 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             value["contains"]=Json::Value(Json::arrayValue);for(auto id:row.contains)value["contains"].append(id);
             result["rows"].append(value);
           }
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="residents-specialization") {
+          if(parameters.size()!=2 && parameters.size()!=4)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];
+          const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0)return CR_WRONG_USAGE;
+          Json::Value result(Json::objectValue);result["id"]=id;
+          if(parameters.size()==4) {
+            uint64_t revision=0;const auto& token=parameters[2];
+            const auto number=std::from_chars(token.data(),token.data()+token.size(),revision);
+            if(number.ec!=std::errc{} || number.ptr!=token.data()+token.size() || (parameters[3]!="0" && parameters[3]!="1"))return CR_WRONG_USAGE;
+            result["outcome"]=int(df3d_residents::setSpecialization(id,revision,parameters[3]=="1"));
+          }
+          auto* unit=df::unit::find(id);const auto state=df3d_residents::specialization(unit);
+          if(!state)return CR_FAILURE;
+          result["only_assigned"]=state->onlyAssigned;result["revision"]=std::to_string(state->revision);
+          result["labors"]=Json::Value(Json::arrayValue);for(bool labor:unit->status.labors)result["labors"].append(labor);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="residents-row-read") {

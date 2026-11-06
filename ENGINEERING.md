@@ -31,6 +31,30 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Residents native list discovery
 
+Residents specialization uses native action1431c60 with an owned two-word
+input containing the target unit at+8. The pinned body reads no widget/menu
+state: it toggles flags4 bit10 and calls native labor recalculation4390d0.
+Membership is rechecked with the owned Residents provider, and a receipt hashes
+identity, profession, specialization and current labors. A stale receipt or a
+request for the current value rejects without invoking the action; uncertain
+completion is never automatically replayed. This adapter is diagnostic-only;
+management transport and staged button integration remain unfinished.
+
+Do not reuse CitizenWorkScope unchanged for this screen. Native14290b0 creates
+Specialization button without ordinary-labor eligibility filtering. Protected
+041053 on2026-11-06 verifies actual native clicks and owned action calls for
+adult6534, child7049 and baby7190, each in both directions. Native permits all
+six toggles. Enabled labors become0/87 for the adult, stay14 for the child and0
+for the baby. Labors and equipment-refresh flags match, and original observed
+state is restored. Equipment-pickup jobs are excluded from this reference:
+recalculation can call133ead0 to cancel an incompatible pickup job, which still
+needs separate effect acceptance. The existing CitizenWorkScope path applies
+extra eligibility/external-controller restrictions and is not Residents parity.
+`fixtures/residents/native_rows.json.specialization_reference` retains semantic
+evidence, no game artwork. MSVC and `residents-specialization-native` core19/19
+pass. Installed bridge SHA256 is716FA2A7FDA7139EDA211361CA4658176D1752D2B0B90BAA8CE9ECE61E80FA56.
+DF36784 exits unsaved; source unchanged; brief native30FPS at36–37C.
+
 Residents happiness comes from native1428db0 acting on an independently owned
 row container. The reader copies the indicator enum and destroys the tree without
 feeding, arranging, rendering or invoking its retained tooltip callback. Native

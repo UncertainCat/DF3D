@@ -9,6 +9,25 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("Job artwork edit modes preserve authority and reject malformed choices") {
+  for(int16_t page:{int16_t(-1),int16_t(0),int16_t(1),int16_t(2),int16_t(3),int16_t(5)}) {
+    wm::ManagementRequest base;base.action=wm::ManagementAction::JobSettingsApply;
+    base.jobSettingsEdit={71,3,42,0,UINT64_C(9007199254740993),page==0?0u:92u,page<=0?-1:page==5?0:9876,page,page>0?"query":""};
+    for(int fault=0;fault<6;++fault) {
+      auto r=base;auto& q=r.jobSettingsEdit;
+      if(fault==1)q.artPage=6;
+      if(fault==2)q.expectedRevision=0;
+      if(fault==3)q.query=std::string(129,'x');
+      if(fault==4)q.choice=page<=0?0:-1;
+      if(fault==5)q.expectedChoicesRevision=page==0?1:0;
+      flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+      const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+      CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+      REQUIRE(value->job_settings_edit());CHECK(value->job_settings_edit()->art_page()==q.artPage);CHECK(value->job_settings_edit()->query()->str()==q.query);
+    }
+  }
+}
+
 TEST_CASE("Job artwork reads preserve receipts and reject mixed request fields") {
   wm::ManagementRequest base;base.action=wm::ManagementAction::JobSettingsRead;
   base.jobSettings={42,3,6534,0,"",128,1,UINT64_C(9007199254740993),9876,118};

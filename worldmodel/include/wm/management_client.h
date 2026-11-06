@@ -600,7 +600,7 @@ struct WorkOrderDetailsState {
   std::optional<std::string> settingHeading;
   int32_t dyeTarget=-1;
 };
-struct JobSettingsEditRequest {int32_t jobId=-1,buildingId=-1,unitId=-1;int16_t option=-1;uint64_t expectedRevision=0,expectedChoicesRevision=0;int32_t choice=-1;};
+struct JobSettingsEditRequest {int32_t jobId=-1,buildingId=-1,unitId=-1;int16_t option=-1;uint64_t expectedRevision=0,expectedChoicesRevision=0;int32_t choice=-1;int16_t artPage=-2;std::string query;};
 struct JobSettingsEditState {int32_t jobId=-1,buildingId=-1,unitId=-1;JobSettingsEditOutcome outcome=JobSettingsEditOutcome::Rejected;};
 struct JobSettingsRequest {int32_t jobId=-1,buildingId=-1,unitId=-1;int16_t option=-1;std::string query;uint32_t cursor=0;int16_t artPage=-2;uint64_t expectedListRevision=0;int32_t hovered=-1;uint16_t previewColumns=0;};
 struct JobSettingsChoice {int32_t id=-1;std::string caption;std::optional<std::string> countCaption;bool estimated=false;};

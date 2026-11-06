@@ -342,12 +342,22 @@ bool readCreatureLocation(const Dictionary& data,wm::ManagementRequest& request,
 }
 bool validateJobSettings(const Dictionary& data,String& error) {
     if(int64_t(data["action"])==int64_t(wm::ManagementAction::JobSettingsApply)) {
-        if(data.size()!=8){error="Invalid job edit fields";return false;}
+        const bool art=data.has("art_page");
+        if(data.size()!=(art?10:8)){error="Invalid job edit fields";return false;}
         for(const char* key:{"job_id","building_id","unit_id","option","expected_revision","expected_choices_revision","choice"})
             if(!data.has(key) || data[key].get_type()!=Variant::INT){error="Invalid job edit fields";return false;}
         const int64_t job=data["job_id"],building=data["building_id"],unit=data["unit_id"],option=data["option"],choice=data["choice"];
-        if(job<0 || job>INT32_MAX || building<0 || building>INT32_MAX || unit < -1 || unit>INT32_MAX || option<0 || option>64 || choice<0 || choice>=16384 ||
-           int64_t(data["expected_revision"])<=0 || int64_t(data["expected_choices_revision"])<=0){error="Invalid job edit bounds";return false;}
+        if(job<0 || job>INT32_MAX || building<0 || building>INT32_MAX || unit < -1 || unit>INT32_MAX || option<0 || option>64 || choice < -1 || choice>INT32_MAX ||
+           int64_t(data["expected_revision"])<=0 || int64_t(data["expected_choices_revision"])<0){error="Invalid job edit bounds";return false;}
+        const int64_t receipt=data["expected_choices_revision"];
+        if(!art){if(choice<0 || choice>=16384 || receipt<=0){error="Invalid ordinary job choice";return false;}}
+        else {
+            if(data["art_page"].get_type()!=Variant::INT || !data.has("query") || data["query"].get_type()!=Variant::STRING){error="Invalid artwork edit fields";return false;}
+            const int64_t page=data["art_page"];const String query=data["query"];const auto bytes=query.utf8();
+            if(bytes.length()>128 || std::string(bytes.get_data(),bytes.length()).find('\0')!=std::string::npos ||
+               (page==-1 || page==0 ? (choice!=-1 || bytes.length()!=0 || (page==-1 ? receipt<=0 : receipt!=0)) :
+                ((page!=1 && page!=2 && page!=3 && page!=5) || receipt<=0 || choice<0 || (page==5 && choice>=262144)))){error="Invalid artwork edit bounds";return false;}
+        }
         return true;
     }
     const bool art=data.has("art_page");
@@ -370,7 +380,9 @@ bool validateJobSettings(const Dictionary& data,String& error) {
 bool readJobSettings(const Dictionary& data,wm::ManagementRequest& request,String&) {
     if(int64_t(data["action"])==int64_t(wm::ManagementAction::JobSettingsApply)) {
         request.action=wm::ManagementAction::JobSettingsApply;
-        request.jobSettingsEdit={int32_t(int64_t(data["job_id"])),int32_t(int64_t(data["building_id"])),int32_t(int64_t(data["unit_id"])),int16_t(int64_t(data["option"])),uint64_t(int64_t(data["expected_revision"])),uint64_t(int64_t(data["expected_choices_revision"])),int32_t(int64_t(data["choice"]))};return true;
+        request.jobSettingsEdit={int32_t(int64_t(data["job_id"])),int32_t(int64_t(data["building_id"])),int32_t(int64_t(data["unit_id"])),int16_t(int64_t(data["option"])),uint64_t(int64_t(data["expected_revision"])),uint64_t(int64_t(data["expected_choices_revision"])),int32_t(int64_t(data["choice"]))};
+        if(data.has("art_page")){request.jobSettingsEdit.artPage=int16_t(int64_t(data["art_page"]));const String query=data["query"];request.jobSettingsEdit.query=query.utf8().get_data();}
+        return true;
     }
     request.action=wm::ManagementAction::JobSettingsRead;
     request.jobSettings.jobId=int32_t(int64_t(data["job_id"]));request.jobSettings.buildingId=int32_t(int64_t(data["building_id"]));request.jobSettings.unitId=int32_t(int64_t(data["unit_id"]));

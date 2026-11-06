@@ -53,8 +53,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 138;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v138";
+inline constexpr uint32_t kManagementVersion = 139;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v139";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -454,8 +454,16 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
   if(r.action()==ManagementAction::JobSettingsApply) {
     const auto* q=r.job_settings_edit();
     if(!q || q->job_id()<0 || q->building_id()<0 || q->unit_id() < -1 || q->option()<0 || q->option()>64 ||
-       !q->expected_revision() || q->expected_revision()>INT64_MAX || !q->expected_choices_revision() ||
-       q->expected_choices_revision()>INT64_MAX || q->choice()<0 || q->choice()>=16384)return "invalid job settings edit request";
+       !q->expected_revision() || q->expected_revision()>INT64_MAX || q->expected_choices_revision()>INT64_MAX ||
+       (q->query() && (q->query()->size()>128 || q->query()->str().find('\0')!=std::string::npos)))return "invalid job settings edit request";
+    const auto page=q->art_page();const bool query=q->query() && q->query()->size();
+    if(page==-2) {
+      if(!q->expected_choices_revision() || q->choice()<0 || q->choice()>=16384 || query)return "invalid ordinary job edit";
+    } else if(page==-1 || page==0) {
+      if(q->choice()!=-1 || query || (page==-1 ? !q->expected_choices_revision() : q->expected_choices_revision()!=0))return "invalid artwork entry or artist choice";
+    } else if(page==1 || page==2 || page==3 || page==5) {
+      if(!q->expected_choices_revision() || q->choice()<0 || (page==5 && q->choice()>=262144))return "invalid artwork subject choice";
+    } else return "invalid artwork edit page";
   } else if(r.job_settings_edit())return "unexpected job settings edit request";
   if(r.action()==ManagementAction::JobSettingsRead) {
     const auto* q=r.job_settings();

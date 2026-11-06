@@ -4036,7 +4036,7 @@ TEST_CASE("creature sheet locate has a separate identity and native sentinel rul
   const auto* wireRequest=flatbuffers::GetRoot<wire::ConstructionRequest>(encoded.GetBufferPointer());
   CHECK_FALSE(wire::validateConstructionRequest(*wireRequest));
   REQUIRE(wireRequest->creature());CHECK(wireRequest->creature()->unit_id()==86);
-  CHECK(wireRequest->schema_version()==135);
+  CHECK(wireRequest->schema_version()==wire::kManagementVersion);
   for(int x:{126,-1,-30000,32768}) {
     flatbuffers::FlatBufferBuilder b;const wire::TilePos tile(x,75,165);
     const auto position=wire::CreateCreaturePosition(b,86,&tile);
@@ -4448,6 +4448,44 @@ TEST_CASE("Residents activity requests retain event identity and bounded width")
     REQUIRE(value->residents_activity());CHECK(value->residents_activity()->event_id()==r.residentsActivity.eventId);
   }
   CHECK(std::string(wm::managementDomain(request.action))=="residents_activity");
+}
+TEST_CASE("Job settings read preserves simulation identity and bounds") {
+  wm::ManagementRequest request;request.action=wm::ManagementAction::JobSettingsRead;
+  request.jobSettings={42,3,6534,0,"stone",0};
+  for(int fault=0;fault<7;++fault) {
+    auto r=request;
+    if(fault==1)r.jobSettings.jobId=-1;
+    if(fault==2)r.jobSettings.buildingId=-1;
+    if(fault==3)r.jobSettings.unitId=-2;
+    if(fault==4)r.jobSettings.option=65;
+    if(fault==5)r.jobSettings.query=std::string(129,'x');
+    if(fault==6)r.jobSettings.cursor=16385;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    REQUIRE(value->job_settings());CHECK(value->job_settings()->unit_id()==r.jobSettings.unitId);
+  }
+  CHECK(std::string(wm::managementDomain(request.action))=="job_settings");
+}
+TEST_CASE("Job settings rejects foreign replies and inconsistent pagination") {
+  for(int fault=0;fault<7;++fault) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto option=wire::CreateWorkOrderDetailsOption(b,0,0,b.CreateString("Specify stone"));
+    const auto choice=wire::CreateJobSettingsChoice(b,7,b.CreateString("Dolomite"),b.CreateString("200?"),true);
+    const auto options=b.CreateVector(std::vector<flatbuffers::Offset<wire::WorkOrderDetailsOption>>{option});
+    const auto choices=b.CreateVector(std::vector<flatbuffers::Offset<wire::JobSettingsChoice>>{choice});
+    const auto page=wire::CreateJobSettingsState(b,42,3,6534,fault==1?0:91,b.CreateString("Make rock door"),options,0,choices,92,2,0,fault==2?0:1);
+    wire::ManagementStateBuilder state(b);state.add_revision(1);
+    state.add_action(fault==3?wire::ManagementAction::Catalog:wire::ManagementAction::JobSettingsRead);
+    state.add_status(fault==4?wire::ManagementStatus::Rejected:fault==6?wire::ManagementStatus::Pending:wire::ManagementStatus::Ok);
+    if(fault!=5)state.add_job_settings(page);
+    b.Finish(state.Finish());const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){const auto decoded=codec::decodeState(value);REQUIRE(decoded.jobSettings);CHECK(decoded.jobSettings->choices[0].countCaption=="200?");CHECK(decoded.jobSettings->choices[0].estimated);CHECK(decoded.jobSettings->nextCursor==1);}
+  }
+  flatbuffers::FlatBufferBuilder b;wire::ManagementStateBuilder state(b);state.add_revision(2);state.add_action(wire::ManagementAction::JobSettingsRead);state.add_status(wire::ManagementStatus::Rejected);b.Finish(state.Finish());
+  const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+  CHECK_FALSE(wire::validateManagementState(*value));CHECK_FALSE(codec::decodeState(value).jobSettings);
 }
 TEST_CASE("Residents activity markup rejects malformed or foreign results") {
   for(int fault=0;fault<9;++fault) {

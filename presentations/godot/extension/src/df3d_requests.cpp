@@ -180,6 +180,16 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         value["unit_id"]=v.unitId;value["outcome"]=int(v.outcome);value["only_assigned"]=v.onlyAssigned;
         result["residents_specialization"]=value;
     }
+    if(s.jobSettings) {
+        const auto& v=*s.jobSettings;Dictionary value;Array options,choices;
+        value["job_id"]=v.jobId;value["building_id"]=v.buildingId;value["unit_id"]=v.unitId;value["revision"]=int64_t(v.revision);value["caption"]=String::utf8(v.caption.c_str());
+        value["selected_option"]=int(v.selectedOption);value["choices_revision"]=int64_t(v.choicesRevision);value["total"]=int64_t(v.total);value["cursor"]=int64_t(v.cursor);value["next_cursor"]=int64_t(v.nextCursor);
+        for(const auto& o:v.options){Dictionary row;row["kind"]=int(o.kind);row["index"]=o.index;row["caption"]=String::utf8(o.caption.c_str());options.push_back(row);}
+        for(const auto& c:v.choices){Dictionary row;row["id"]=c.id;row["caption"]=String::utf8(c.caption.c_str());row["estimated"]=c.estimated;if(c.countCaption)row["count_caption"]=String::utf8(c.countCaption->c_str());choices.push_back(row);}
+        if(v.currentValue)value["current_value"]=String::utf8(v.currentValue->c_str());
+        if(v.settingHeading)value["setting_heading"]=String::utf8(v.settingHeading->c_str());
+        value["options"]=options;value["choices"]=choices;result["job_settings"]=value;
+    }
     if(s.residentsActivity) {
         const auto& v=*s.residentsActivity;Dictionary value;Array words,links;
         value["unit_id"]=v.unitId;value["activity_id"]=v.activityId;value["event_id"]=v.eventId;value["columns"]=int(v.columns);value["max_y"]=v.maxY;
@@ -317,6 +327,23 @@ bool validateCreatureLocation(const Dictionary& data,String& error) {
 bool readCreatureLocation(const Dictionary& data,wm::ManagementRequest& request,String&) {
     request.action=wm::ManagementAction::CreatureLocationRemove;
     request.creatureLocation={int32_t(int64_t(data["unit_id"])),int32_t(int64_t(data["occupation_id"])),uint64_t(int64_t(data["expected_revision"]))};return true;
+}
+bool validateJobSettings(const Dictionary& data,String& error) {
+    if(data.size()!=7){error="Invalid job settings fields";return false;}
+    for(const char* key:{"job_id","building_id","unit_id","option","cursor"})
+        if(!data.has(key) || data[key].get_type()!=Variant::INT){error="Invalid job settings fields";return false;}
+    const int64_t job=data["job_id"],building=data["building_id"],unit=data["unit_id"],option=data["option"],cursor=data["cursor"];
+    if(job<0 || job>INT32_MAX || building<0 || building>INT32_MAX || unit < -1 || unit>INT32_MAX || option < -1 || option>64 || cursor<0 || cursor>16384 ||
+       !data.has("query") || data["query"].get_type()!=Variant::STRING){error="Invalid job settings identity or bounds";return false;}
+    const String query=data["query"];const auto bytes=query.utf8();
+    if(bytes.length()>128 || std::string(bytes.get_data(),bytes.length()).find('\0')!=std::string::npos){error="Invalid job settings query";return false;}
+    return true;
+}
+bool readJobSettings(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction::JobSettingsRead;
+    request.jobSettings.jobId=int32_t(int64_t(data["job_id"]));request.jobSettings.buildingId=int32_t(int64_t(data["building_id"]));request.jobSettings.unitId=int32_t(int64_t(data["unit_id"]));
+    request.jobSettings.option=int16_t(int64_t(data["option"]));request.jobSettings.cursor=uint32_t(int64_t(data["cursor"]));
+    const String query=data["query"];request.jobSettings.query=query.utf8().get_data();return true;
 }
 bool validateResidentsActivity(const Dictionary& data,String& error) {
     if(data.size()!=5){error="Invalid residents activity fields";return false;}
@@ -496,6 +523,7 @@ const ManagementCodec managementCodecs[] = {
     {"residents_rows",validateResidentsRows,readResidentsRows},
     {"residents_specialization",validateResidentsSpecialization,readResidentsSpecialization},
     {"residents_activity",validateResidentsActivity,readResidentsActivity},
+    {"job_settings",validateJobSettings,readJobSettings},
     {"creature_knowledge",validateCreatureKnowledge,readCreatureKnowledge},
     {"creature_expel",validateCreatureExpel,readCreatureExpel},
 };
@@ -508,7 +536,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::ResidentsActivityRead)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::JobSettingsRead)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

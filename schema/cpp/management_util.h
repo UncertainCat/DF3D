@@ -53,8 +53,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 135;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v135";
+inline constexpr uint32_t kManagementVersion = 136;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v136";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -352,7 +352,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::ResidentsActivityRead &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::JobSettingsRead &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -408,7 +408,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::ResidentsActivityRead)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::JobSettingsRead)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -451,6 +451,12 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     if(!w || w->unit_id()<0 || w->occupation_id()<0 || !w->expected_revision() || w->expected_revision()>INT64_MAX)
       return "invalid creature location request";
   } else if(r.creature_location())return "unexpected creature location request";
+  if(r.action()==ManagementAction::JobSettingsRead) {
+    const auto* q=r.job_settings();
+    if(!q || q->job_id()<0 || q->building_id()<0 || q->unit_id() < -1 || q->option() < -1 || q->option()>64 ||
+       q->cursor()>16384 || !q->query() || q->query()->size()>128 || q->query()->str().find('\0')!=std::string::npos)
+      return "invalid job settings request";
+  } else if(r.job_settings())return "unexpected job settings request";
   if(r.action()==ManagementAction::ResidentsActivityRead) {
     const auto* q=r.residents_activity();
     if(!q || q->unit_id()<0 || q->activity_id()<0 || q->event_id()<0 || q->columns()<1 || q->columns()>1024)
@@ -927,7 +933,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::ResidentsActivityRead ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::JobSettingsRead ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -1044,6 +1050,22 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     if(appearanceBytes>131072)return "residents row appearance budget exceeded";
   } else if(s.action()==ManagementAction::ResidentsRowsRead && s.status()==ManagementStatus::Ok)
     return "residents rows result required";
+  if(const auto* v=s.job_settings()) {
+    if(s.action()!=ManagementAction::JobSettingsRead || s.status()!=ManagementStatus::Ok ||
+       v->job_id()<0 || v->building_id()<0 || v->unit_id() < -1 || !v->revision() || v->revision()>INT64_MAX ||
+       !v->caption() || v->caption()->size()>512 || !v->options() || v->options()->size()>65 ||
+       v->selected_option() < -1 || (v->selected_option()>=0 && size_t(v->selected_option())>=v->options()->size()) ||
+       !v->choices() || v->choices()->size()>64 || v->total()>16384 || v->cursor()>v->total() ||
+       v->choices()->size()>v->total()-v->cursor() || (v->cursor()<v->total() && v->choices()->size()==0) ||
+       v->next_cursor()!=(v->cursor()+v->choices()->size()<v->total()?v->cursor()+v->choices()->size():0))return "invalid job settings result";
+    if(v->selected_option()<0 ? (v->choices_revision()!=0 || v->total()!=0 || v->cursor()!=0 || v->choices()->size()!=0) :
+       (!v->choices_revision() || v->choices_revision()>INT64_MAX))return "invalid job settings choice revision";
+    for(const auto* o:*v->options())if(!o || o->kind()>6 || o->index() < -1 || !o->caption() || o->caption()->size()>512)return "invalid job settings option";
+    std::unordered_set<int32_t> choices;
+    for(const auto* c:*v->choices())if(!c || c->id()<0 || c->id()>=16384 || !choices.insert(c->id()).second ||
+       !c->caption() || c->caption()->size()>512 || (c->count_caption() && c->count_caption()->size()>128))return "invalid job settings choice";
+    if((v->current_value() && v->current_value()->size()>512) || (v->setting_heading() && v->setting_heading()->size()>512))return "invalid job settings heading";
+  } else if(s.action()==ManagementAction::JobSettingsRead && s.status()==ManagementStatus::Ok)return "job settings result required";
   if(const auto* value=s.residents_activity()) {
     if(s.action()!=ManagementAction::ResidentsActivityRead || s.status()!=ManagementStatus::Ok ||
        value->unit_id()<0 || value->activity_id()<0 || value->event_id()<0 || value->columns()<1 || value->columns()>1024 ||

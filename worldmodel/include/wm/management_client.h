@@ -598,6 +598,14 @@ struct WorkOrderDetailsState {
   std::optional<std::string> settingHeading;
   int32_t dyeTarget=-1;
 };
+struct JobSettingsRequest {int32_t jobId=-1,buildingId=-1,unitId=-1;int16_t option=-1;std::string query;uint32_t cursor=0;};
+struct JobSettingsChoice {int32_t id=-1;std::string caption;std::optional<std::string> countCaption;bool estimated=false;};
+struct JobSettingsState {
+  int32_t jobId=-1,buildingId=-1,unitId=-1;uint64_t revision=0;std::string caption;
+  std::vector<WorkOrderDetailsOption> options;int16_t selectedOption=-1;
+  std::vector<JobSettingsChoice> choices;uint64_t choicesRevision=0;uint32_t total=0,cursor=0,nextCursor=0;
+  std::optional<std::string> currentValue,settingHeading;
+};
 struct WorkOrderListNativeState { bool managerAvailable=false,validationRequired=false; };
 struct WorkOrderState {
   std::vector<WorkOrderInfo> orders;
@@ -784,6 +792,7 @@ struct ManagementRequest {
   ResidentsRowsRequest residentsRows;
   ResidentsSpecializationRequest residentsSpecialization;
   ResidentsActivityRequest residentsActivity;
+  JobSettingsRequest jobSettings;
   uint16_t depth=1; bool retracting=false; int16_t filter=-1;
   uint32_t rollerSpeed=0;
   bool cancelRemoval=false;
@@ -841,6 +850,7 @@ struct ManagementState {
   std::optional<ResidentsRowsState> residentsRows;
   std::optional<ResidentsSpecializationState> residentsSpecialization;
   std::optional<ResidentsActivityState> residentsActivity;
+  std::optional<JobSettingsState> jobSettings;
   ConstructionState construction;
   std::optional<WorldHover> worldHover;
 };

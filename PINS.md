@@ -22,6 +22,14 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management136 adds read-only JobSettingsRead (action85), domain `job_settings`.
+Rebuild both peers for `Local\df3d_management_v136`; do not mix Management135
+peers. Requests identify the job, holder building and optional current resident,
+with a selected option, bounded query and cursor. Results carry separate job and
+choice revisions, native options/captions, and up to64 choices per page. Rejected
+or unrelated results carry no job settings. This staged contract does not expose
+unfinished Residents or workshop Tasks controls, or authorize job edits.
+
 Management135 adds read-only ResidentsActivityRead (action84) on the
 `residents_activity` domain. Rebuild both peers for
 `Local\df3d_management_v135`; Management134 peers must not be mixed.

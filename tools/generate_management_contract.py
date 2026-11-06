@@ -10,6 +10,7 @@ ENUMS = ("ResidentsSpecializationOutcome", "ResidentsSort", "WorkOrderPhase", "C
          "SelectionOperation", "SelectionKind", "SelectionSection", "CreatureSectionKind", "ReportView", "ReportTab", "ReportZoom")
 
 DOMAINS = {
+    "job_settings": ("JobSettingsRead", "JobSettingsRead"),
     "residents_activity": ("ResidentsActivityRead", "ResidentsActivityRead"),
     "residents_specialization": ("ResidentsSpecialize", "ResidentsSpecialize"),
     "residents": ("ResidentsQuery", "ResidentsQuery"),

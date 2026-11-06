@@ -157,7 +157,8 @@ static_assert(static_cast<int>(wm::ManagementAction::ResidentsRowsRead) == stati
 static_assert(static_cast<int>(wm::ManagementAction::ResidentsSpecialize) == static_cast<int>(df3d::mirror::ManagementAction::ResidentsSpecialize));
 static_assert(static_cast<int>(wm::ManagementAction::CreatureSheetLocate) == static_cast<int>(df3d::mirror::ManagementAction::CreatureSheetLocate));
 static_assert(static_cast<int>(wm::ManagementAction::ResidentsActivityRead) == static_cast<int>(df3d::mirror::ManagementAction::ResidentsActivityRead));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 85);
+static_assert(static_cast<int>(wm::ManagementAction::JobSettingsRead) == static_cast<int>(df3d::mirror::ManagementAction::JobSettingsRead));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 86);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -449,3 +450,4 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::ResidentsRowsRead) == df
 static_assert(wm::isRuntimeAction(wm::ManagementAction::ResidentsSpecialize) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ResidentsSpecialize));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::CreatureSheetLocate) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::CreatureSheetLocate));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::ResidentsActivityRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ResidentsActivityRead));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::JobSettingsRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::JobSettingsRead));

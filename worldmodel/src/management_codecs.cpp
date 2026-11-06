@@ -76,6 +76,15 @@ ManagementState decodeState(const m::ManagementState* s) {
   }
   if(const auto* v=s->residents_specialization())
     next.residentsSpecialization=ResidentsSpecializationState{v->unit_id(),ResidentsSpecializationOutcome(v->outcome()),v->only_assigned()};
+  if(const auto* v=s->job_settings()) {
+    JobSettingsState value;value.jobId=v->job_id();value.buildingId=v->building_id();value.unitId=v->unit_id();value.revision=v->revision();value.caption=v->caption()->str();
+    value.selectedOption=v->selected_option();value.choicesRevision=v->choices_revision();value.total=v->total();value.cursor=v->cursor();value.nextCursor=v->next_cursor();
+    for(const auto* o:*v->options())value.options.push_back({o->kind(),o->index(),o->caption()->str()});
+    for(const auto* c:*v->choices())value.choices.push_back({c->id(),c->caption()->str(),c->count_caption()?std::optional<std::string>(c->count_caption()->str()):std::nullopt,c->estimated()});
+    if(v->current_value())value.currentValue=v->current_value()->str();
+    if(v->setting_heading())value.settingHeading=v->setting_heading()->str();
+    next.jobSettings=std::move(value);
+  }
   if(const auto* v=s->residents_activity()) {
     ResidentsActivityState value;value.unitId=v->unit_id();value.activityId=v->activity_id();value.eventId=v->event_id();value.columns=v->columns();value.maxY=v->max_y();
     for(const auto* w:*v->words())value.words.push_back({w->text()->str(),w->red(),w->green(),w->blue(),w->link(),w->flags(),w->x(),w->y()});
@@ -211,7 +220,10 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
           flatbuffers::Offset<m::ResidentsSpecializationRequest>{},
       r.action==ManagementAction::ResidentsActivityRead?
           m::CreateResidentsActivityRequest(b,r.residentsActivity.unitId,r.residentsActivity.activityId,r.residentsActivity.eventId,r.residentsActivity.columns):
-          flatbuffers::Offset<m::ResidentsActivityRequest>{});
+          flatbuffers::Offset<m::ResidentsActivityRequest>{},
+      r.action==ManagementAction::JobSettingsRead?
+          m::CreateJobSettingsRequest(b,r.jobSettings.jobId,r.jobSettings.buildingId,r.jobSettings.unitId,r.jobSettings.option,b.CreateString(r.jobSettings.query),r.jobSettings.cursor):
+          flatbuffers::Offset<m::JobSettingsRequest>{});
   b.Finish(request);
 }
 }  // namespace wm::detail::management

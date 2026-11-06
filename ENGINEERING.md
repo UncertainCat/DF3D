@@ -7351,6 +7351,22 @@ this is not a full-panel pixel match. Owned DF22128 exits unsaved with the sourc
 unchanged; paired logs contain only documented diagnostics. Core19/19 and
 composition pass in `build/qa/artwork-caption-width`.
 
+Artwork list resizing reconciles the controller's visible range, not just the
+scrollbar thumb. `fit_visible_rows` clamps the displayed start and uses the
+ordinary revision-checked reader if the expanded range lies outside the cached
+page; it also runs after a reply so a resize during a read is reconciled.
+`DF3D_WORK_ORDER_ARTWORK_TAIL_RESIZE=1` with the category flags seeds native's
+last eight artifact rows at912x552, then expands to1600x900. Native013157 renders
+the final17 rows even though its stored scroll index remains253; the effective
+first row is244 for261 artifacts. Runtime owns that effective index directly.
+Protected013356 drives the real viewer/controller from the uncached eight-row
+tail through resize, verifies17 fetched rows and matching scrollbar/controller
+offsets, and captures the same first/last entries as native. The image was
+inspected. DF34480 exits unsaved with source preservation; paired logs contain
+only documented diagnostics. Core19/19 and composition pass in
+`build/qa/artwork-tail-reflow`. Resize during an outstanding wire read is covered
+by the shared reflow path but is not separately exercised by this live capture.
+
 Protected010525 on2026-11-02 exercises Existing image in the shared viewer after
 the assembled Work orders/conditions/Details workflow. Hover text and wrapping
 match the native observation, and group/civilization badges match. Selection

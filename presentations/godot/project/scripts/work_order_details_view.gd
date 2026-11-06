@@ -63,6 +63,7 @@ func sync_scroll() -> void:
 		else:scrollbar.hide()
 	elif state.snapshot.get("selected_option",-1)>=0:scrollbar.set_rows(state.rows.size(),state.first)
 	else:scrollbar.hide()
+	state.fit_visible_rows(page_rows)
 func back() -> void:
 	if state.ticket!=0:return
 	if name_state.active:name_state.close();return

@@ -64,6 +64,16 @@ func run() -> void:
    check(view.quantity_focused==numbered,"Category quantity focus differs from native: "+str(page))
    number_key(KEY_ENTER)
    if page in [8,13]:await capture("category-"+str(page),"minimum")
+   if page==13 and OS.get_environment("DF3D_WORK_ORDER_ARTWORK_TAIL_RESIZE")=="1":
+    state.seek(int(state.snapshot.art.total)-view.page_rows)
+    if not check(await settle(service,func():return state.phase==state.Phase.Ready),"Artifact tail read failed"):quit(1);return
+    check(state.first==int(state.snapshot.art.total)-8,"Minimum tail offset differs")
+    root.size=Vector2i(1600,900);await create_timer(0.3).timeout
+    view.layout(Vector2(root.size))
+    if not check(await settle(service,func():return state.phase==state.Phase.Ready),"Artifact resize reflow failed"):quit(1);return
+    check(state.first==int(state.snapshot.art.total)-17 and view.scrollbar.first==state.first,"Resize left list and scrollbar at different offsets")
+    check(state.rows.size()>=17 and state.row_base()==state.first,"Resize did not fetch earlier tail rows")
+    await capture("tail","wide")
    click(view.position+Vector2(32,378))
    if not check(await settle(service,func():return state.phase==state.Phase.Ready and state.art_page()==6),"Category Cancel failed"):quit(1);return
    check(not view.quantity_focused,"Quantity focus survived Cancel")

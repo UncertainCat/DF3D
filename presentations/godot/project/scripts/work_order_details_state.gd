@@ -112,6 +112,14 @@ func seek(value: int) -> void:
 		if value<art_base or mini(value+visible_rows,int(snapshot.art.total))>art_base+rows.size():_read_art(art_page(),value);return
 		first=value;changed.emit();return
 	first=clampi(value,0,maxi(0,rows.size()-1));changed.emit()
+func fit_visible_rows(count: int) -> void:
+	visible_rows=maxi(1,count)
+	if phase!=Phase.Ready or ticket!=0 or not has_art() or art_page()<0 or art_page() in [6,18]:return
+	var total: int=snapshot.art.total
+	var start:=clampi(first,0,maxi(0,total-visible_rows))
+	# A wider viewport can expose rows before the cached tail page. Re-read
+	# through the ordinary revision-checked path instead of moving only the thumb.
+	if start!=first or start<art_base or mini(start+visible_rows,total)>art_base+rows.size():seek(start)
 func choose(id: int) -> void:
 	if phase!=Phase.Ready or ticket!=0:return
 	var chosen: Dictionary={}

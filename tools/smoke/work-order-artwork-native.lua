@@ -334,6 +334,18 @@ if os.getenv('DF3D_WORK_ORDER_ARTWORK_RESIZE')=='1' then
     end
     assert(clicked and art.current_option==category[1],'Wrong draft category: '..category[2])
     shot('work-order-artwork-'..size..'-'..category[3])
+    if size=='minimum' and category[1]==13 and os.getenv('DF3D_WORK_ORDER_ARTWORK_TAIL_RESIZE')=='1' then
+     art.scroll_position_list=math.max(0,#art.new_image_artifact-8)
+     shot('work-order-artwork-tail-minimum')
+     local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('name-resize-wide');f:close()
+     assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+     local deadline=dfhack.getTickCount()+30000
+     while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end
+      assert(dfhack.getTickCount()<deadline,'Tail resize timeout');script.sleep(1,'frames')end
+     assert(os.remove(out..'/owner-input-ack'))
+     shot('work-order-artwork-tail-wide')
+     records[#records+1]={name='artwork-tail-resize',total=#art.new_image_artifact,first=art.scroll_position_list}
+    end
     assert(click_label('Cancel'));assert(art.current_option==6)
    end
    back()

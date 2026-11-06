@@ -1849,7 +1849,7 @@ table JobSettingsEditRequest {
   option:int16 = -1; expected_revision:uint64; expected_choices_revision:uint64; choice:int32 = -1;
 }
 table JobSettingsEditState { job_id:int32 = -1; building_id:int32 = -1; unit_id:int32 = -1; outcome:JobSettingsEditOutcome; }
-table JobSettingsRequest { job_id:int32 = -1; building_id:int32 = -1; unit_id:int32 = -1; option:int16 = -1; query:string; cursor:uint32; }
+table JobSettingsRequest { job_id:int32 = -1; building_id:int32 = -1; unit_id:int32 = -1; option:int16 = -1; query:string; cursor:uint32; art_page:int16 = -2; expected_list_revision:uint64; hovered:int32 = -1; preview_columns:uint16; }
 table JobSettingsChoice { id:int32 = -1; caption:string; count_caption:string; estimated:bool; }
 table JobSettingsState {
   job_id:int32 = -1; building_id:int32 = -1; unit_id:int32 = -1;
@@ -1857,6 +1857,7 @@ table JobSettingsState {
   selected_option:int16 = -1; choices:[JobSettingsChoice]; choices_revision:uint64;
   total:uint32; cursor:uint32; next_cursor:uint32;
   current_value:string; setting_heading:string;
+  art:WorkOrderArtState;
 }
 table ResidentsActivityRequest { unit_id:int32 = -1; activity_id:int32 = -1; event_id:int32 = -1; columns:uint16; }
 table ActivityDescriptionWord { text:string (required); red:uint8; green:uint8; blue:uint8; link:int32 = -1; flags:uint8; x:int32 = -1; y:int32 = -1; }
@@ -2142,7 +2143,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 137;
+  schema_version:uint32 = 138;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2200,7 +2201,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 137;
+  schema_version:uint32 = 138;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

@@ -22,6 +22,13 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management138 adds read-only artwork pages to `JobSettingsRead`. Optional page,
+list revision, hovered subject and preview width inputs produce a separate artwork
+payload with bounded rows and previews. Material reads keep their existing fields;
+artwork drafts/edits are not part of this addition. Rebuild both peers for
+`Local\df3d_management_v138`; Management137 peers are incompatible. No migration
+fabricates job or list authority from older recordings.
+
 Management137 adds `JobSettingsApply` (action86) to `job_settings`, with a
 separate edit request containing exact job/holder/resident IDs, selected option,
 job and choice revisions and original choice ID. Its result distinguishes

@@ -602,13 +602,14 @@ struct WorkOrderDetailsState {
 };
 struct JobSettingsEditRequest {int32_t jobId=-1,buildingId=-1,unitId=-1;int16_t option=-1;uint64_t expectedRevision=0,expectedChoicesRevision=0;int32_t choice=-1;};
 struct JobSettingsEditState {int32_t jobId=-1,buildingId=-1,unitId=-1;JobSettingsEditOutcome outcome=JobSettingsEditOutcome::Rejected;};
-struct JobSettingsRequest {int32_t jobId=-1,buildingId=-1,unitId=-1;int16_t option=-1;std::string query;uint32_t cursor=0;};
+struct JobSettingsRequest {int32_t jobId=-1,buildingId=-1,unitId=-1;int16_t option=-1;std::string query;uint32_t cursor=0;int16_t artPage=-2;uint64_t expectedListRevision=0;int32_t hovered=-1;uint16_t previewColumns=0;};
 struct JobSettingsChoice {int32_t id=-1;std::string caption;std::optional<std::string> countCaption;bool estimated=false;};
 struct JobSettingsState {
   int32_t jobId=-1,buildingId=-1,unitId=-1;uint64_t revision=0;std::string caption;
   std::vector<WorkOrderDetailsOption> options;int16_t selectedOption=-1;
   std::vector<JobSettingsChoice> choices;uint64_t choicesRevision=0;uint32_t total=0,cursor=0,nextCursor=0;
   std::optional<std::string> currentValue,settingHeading;
+  std::optional<WorkOrderArtState> art;
 };
 struct WorkOrderListNativeState { bool managerAvailable=false,validationRequired=false; };
 struct WorkOrderState {

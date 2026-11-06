@@ -53,8 +53,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 137;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v137";
+inline constexpr uint32_t kManagementVersion = 138;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v138";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -460,8 +460,16 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
   if(r.action()==ManagementAction::JobSettingsRead) {
     const auto* q=r.job_settings();
     if(!q || q->job_id()<0 || q->building_id()<0 || q->unit_id() < -1 || q->option() < -1 || q->option()>64 ||
-       q->cursor()>16384 || !q->query() || q->query()->size()>128 || q->query()->str().find('\0')!=std::string::npos)
+       q->cursor()>(q->art_page()==-2?16384u:262144u) || !q->query() || q->query()->size()>128 || q->query()->str().find('\0')!=std::string::npos)
       return "invalid job settings request";
+    if(q->art_page()==-2) {
+      if(q->expected_list_revision() || q->hovered()!=-1 || q->preview_columns())return "unexpected job artwork fields";
+    } else {
+      if(q->option()<0 || (q->art_page()!=-1 && q->art_page()!=1 && q->art_page()!=2 && q->art_page()!=3 && q->art_page()!=5) ||
+         q->expected_list_revision()>INT64_MAX || q->hovered() < -1 || q->preview_columns()>1024 ||
+         (q->hovered()>=0 ? (!q->expected_list_revision() || !q->preview_columns()) : q->preview_columns()!=0))return "invalid job artwork request";
+      if(q->art_page()==-1 && (q->cursor() || q->query()->size() || q->expected_list_revision() || q->hovered()!=-1))return "invalid job artwork root";
+    }
   } else if(r.job_settings())return "unexpected job settings request";
   if(r.action()==ManagementAction::ResidentsActivityRead) {
     const auto* q=r.residents_activity();
@@ -1073,9 +1081,26 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
        !v->choices() || v->choices()->size()>64 || v->total()>16384 || v->cursor()>v->total() ||
        v->choices()->size()>v->total()-v->cursor() || (v->cursor()<v->total() && v->choices()->size()==0) ||
        v->next_cursor()!=(v->cursor()+v->choices()->size()<v->total()?v->cursor()+v->choices()->size():0))return "invalid job settings result";
-    if(v->selected_option()<0 ? (v->choices_revision()!=0 || v->total()!=0 || v->cursor()!=0 || v->choices()->size()!=0) :
+    if((v->selected_option()<0 || v->art()) ? (v->choices_revision()!=0 || v->total()!=0 || v->cursor()!=0 || v->choices()->size()!=0) :
        (!v->choices_revision() || v->choices_revision()>INT64_MAX))return "invalid job settings choice revision";
     for(const auto* o:*v->options())if(!o || o->kind()>6 || o->index() < -1 || !o->caption() || o->caption()->size()>512)return "invalid job settings option";
+    if(const auto* a=v->art()) {
+      if(v->selected_option()<0 || (v->options()->Get(v->selected_option())->kind()!=1 && v->options()->Get(v->selected_option())->kind()!=3) ||
+         (a->page()!=-1 && a->page()!=1 && a->page()!=2 && a->page()!=3 && a->page()!=5) ||
+         !a->caption() || a->caption()->size()>512 || !a->rows() || a->rows()->size()>128 || a->total()>262144 || a->rows()->size()>a->total() ||
+         a->next_cursor()>a->total() || (a->next_cursor() && (a->next_cursor()>=a->total() || !a->rows()->size())) ||
+         a->hovered() < -1 || a->draft() || a->draft_description() || a->name())return "invalid job artwork page";
+      if(a->page()==-1 ? (a->list_revision()!=0 || a->total()!=6 || a->rows()->size()!=6 || a->next_cursor()!=0 || a->hovered()!=-1 || a->preview()!=nullptr) :
+         (!a->list_revision() || a->list_revision()>INT64_MAX))return "invalid job artwork receipt";
+      std::unordered_set<int32_t> ids;bool hovered=a->hovered()==-1;
+      for(const auto* row:*a->rows()) {
+        if(!row || row->id()<0 || !ids.insert(row->id()).second || !row->caption() || row->caption()->size()>1024 ||
+           (row->badge() && row->badge()->size()>128) || row->secondary()!=-1)return "invalid job artwork row";
+        if(row->id()==a->hovered())hovered=true;
+      }
+      if(!hovered || ((a->hovered()>=0)!=(a->preview()!=nullptr)))return "invalid job artwork hover";
+      if(a->preview()) {if(a->preview()->size()>128)return "invalid job artwork preview";for(const auto* line:*a->preview())if(!line || line->size()>2048)return "invalid job artwork preview line";}
+    }
     std::unordered_set<int32_t> choices;
     for(const auto* c:*v->choices())if(!c || c->id()<0 || c->id()>=16384 || !choices.insert(c->id()).second ||
        !c->caption() || c->caption()->size()>512 || (c->count_caption() && c->count_caption()->size()>128))return "invalid job settings choice";

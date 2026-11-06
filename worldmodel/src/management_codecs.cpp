@@ -85,6 +85,12 @@ ManagementState decodeState(const m::ManagementState* s) {
     for(const auto* c:*v->choices())value.choices.push_back({c->id(),c->caption()->str(),c->count_caption()?std::optional<std::string>(c->count_caption()->str()):std::nullopt,c->estimated()});
     if(v->current_value())value.currentValue=v->current_value()->str();
     if(v->setting_heading())value.settingHeading=v->setting_heading()->str();
+    if(const auto* a=v->art()) {
+      value.art.emplace();auto& art=*value.art;art.page=a->page();art.caption=a->caption()->str();art.listRevision=a->list_revision();
+      art.total=a->total();art.nextCursor=a->next_cursor();art.hovered=a->hovered();
+      for(const auto* row:*a->rows())art.rows.push_back({row->id(),row->caption()->str(),row->badge()?std::optional<std::string>(row->badge()->str()):std::nullopt,row->secondary()});
+      if(a->preview()){art.preview.emplace();for(const auto* line:*a->preview())art.preview->push_back(line->str());}
+    }
     next.jobSettings=std::move(value);
   }
   if(const auto* v=s->residents_activity()) {
@@ -224,7 +230,7 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
           m::CreateResidentsActivityRequest(b,r.residentsActivity.unitId,r.residentsActivity.activityId,r.residentsActivity.eventId,r.residentsActivity.columns):
           flatbuffers::Offset<m::ResidentsActivityRequest>{},
       r.action==ManagementAction::JobSettingsRead?
-          m::CreateJobSettingsRequest(b,r.jobSettings.jobId,r.jobSettings.buildingId,r.jobSettings.unitId,r.jobSettings.option,b.CreateString(r.jobSettings.query),r.jobSettings.cursor):
+          m::CreateJobSettingsRequest(b,r.jobSettings.jobId,r.jobSettings.buildingId,r.jobSettings.unitId,r.jobSettings.option,b.CreateString(r.jobSettings.query),r.jobSettings.cursor,r.jobSettings.artPage,r.jobSettings.expectedListRevision,r.jobSettings.hovered,r.jobSettings.previewColumns):
           flatbuffers::Offset<m::JobSettingsRequest>{},
       r.action==ManagementAction::JobSettingsApply?
           m::CreateJobSettingsEditRequest(b,r.jobSettingsEdit.jobId,r.jobSettingsEdit.buildingId,r.jobSettingsEdit.unitId,r.jobSettingsEdit.option,r.jobSettingsEdit.expectedRevision,r.jobSettingsEdit.expectedChoicesRevision,r.jobSettingsEdit.choice):

@@ -192,6 +192,13 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         for(const auto& c:v.choices){Dictionary row;row["id"]=c.id;row["caption"]=String::utf8(c.caption.c_str());row["estimated"]=c.estimated;if(c.countCaption)row["count_caption"]=String::utf8(c.countCaption->c_str());choices.push_back(row);}
         if(v.currentValue)value["current_value"]=String::utf8(v.currentValue->c_str());
         if(v.settingHeading)value["setting_heading"]=String::utf8(v.settingHeading->c_str());
+        if(v.art) {
+            const auto& a=*v.art;Dictionary art;Array rows;
+            art["page"]=a.page;art["caption"]=String::utf8(a.caption.c_str());art["list_revision"]=int64_t(a.listRevision);art["total"]=int64_t(a.total);art["next_cursor"]=int64_t(a.nextCursor);art["hovered"]=a.hovered;
+            for(const auto& r:a.rows){Dictionary row;row["id"]=r.id;row["caption"]=String::utf8(r.caption.c_str());if(r.badge)row["badge"]=String::utf8(r.badge->c_str());rows.push_back(row);}art["rows"]=rows;
+            if(a.preview){Array lines;for(const auto& line:*a.preview)lines.push_back(String::utf8(line.c_str()));art["preview"]=lines;}
+            value["art"]=art;
+        }
         value["options"]=options;value["choices"]=choices;result["job_settings"]=value;
     }
     if(s.residentsActivity) {
@@ -343,14 +350,21 @@ bool validateJobSettings(const Dictionary& data,String& error) {
            int64_t(data["expected_revision"])<=0 || int64_t(data["expected_choices_revision"])<=0){error="Invalid job edit bounds";return false;}
         return true;
     }
-    if(data.size()!=7){error="Invalid job settings fields";return false;}
+    const bool art=data.has("art_page");
+    if(data.size()!=(art?11:7)){error="Invalid job settings fields";return false;}
     for(const char* key:{"job_id","building_id","unit_id","option","cursor"})
         if(!data.has(key) || data[key].get_type()!=Variant::INT){error="Invalid job settings fields";return false;}
     const int64_t job=data["job_id"],building=data["building_id"],unit=data["unit_id"],option=data["option"],cursor=data["cursor"];
-    if(job<0 || job>INT32_MAX || building<0 || building>INT32_MAX || unit < -1 || unit>INT32_MAX || option < -1 || option>64 || cursor<0 || cursor>16384 ||
+    if(job<0 || job>INT32_MAX || building<0 || building>INT32_MAX || unit < -1 || unit>INT32_MAX || option < -1 || option>64 || cursor<0 || cursor>(art?262144:16384) ||
        !data.has("query") || data["query"].get_type()!=Variant::STRING){error="Invalid job settings identity or bounds";return false;}
     const String query=data["query"];const auto bytes=query.utf8();
     if(bytes.length()>128 || std::string(bytes.get_data(),bytes.length()).find('\0')!=std::string::npos){error="Invalid job settings query";return false;}
+    if(art) {
+        for(const char* key:{"art_page","expected_list_revision","hovered","preview_columns"})if(!data.has(key) || data[key].get_type()!=Variant::INT){error="Invalid job artwork fields";return false;}
+        const int64_t page=data["art_page"],revision=data["expected_list_revision"],hovered=data["hovered"],columns=data["preview_columns"];
+        if(option<0 || (page!=-1 && page!=1 && page!=2 && page!=3 && page!=5) || revision<0 || hovered < -1 || hovered>INT32_MAX || columns<0 || columns>1024 ||
+           (hovered>=0 ? (!revision || !columns) : columns!=0) || (page==-1 && (cursor || bytes.length() || revision || hovered!=-1))){error="Invalid job artwork bounds";return false;}
+    }
     return true;
 }
 bool readJobSettings(const Dictionary& data,wm::ManagementRequest& request,String&) {
@@ -361,6 +375,7 @@ bool readJobSettings(const Dictionary& data,wm::ManagementRequest& request,Strin
     request.action=wm::ManagementAction::JobSettingsRead;
     request.jobSettings.jobId=int32_t(int64_t(data["job_id"]));request.jobSettings.buildingId=int32_t(int64_t(data["building_id"]));request.jobSettings.unitId=int32_t(int64_t(data["unit_id"]));
     request.jobSettings.option=int16_t(int64_t(data["option"]));request.jobSettings.cursor=uint32_t(int64_t(data["cursor"]));
+    if(data.has("art_page")){auto& q=request.jobSettings;q.artPage=int16_t(int64_t(data["art_page"]));q.expectedListRevision=uint64_t(int64_t(data["expected_list_revision"]));q.hovered=int32_t(int64_t(data["hovered"]));q.previewColumns=uint16_t(int64_t(data["preview_columns"]));}
     const String query=data["query"];request.jobSettings.query=query.utf8().get_data();return true;
 }
 bool validateResidentsActivity(const Dictionary& data,String& error) {

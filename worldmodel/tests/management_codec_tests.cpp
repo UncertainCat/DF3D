@@ -9,6 +9,43 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("Job artwork reads preserve receipts and reject mixed request fields") {
+  wm::ManagementRequest base;base.action=wm::ManagementAction::JobSettingsRead;
+  base.jobSettings={42,3,6534,0,"",128,1,UINT64_C(9007199254740993),9876,118};
+  for(int fault=0;fault<9;++fault) {
+    auto r=base;auto& q=r.jobSettings;
+    if(fault==1)q.artPage=-2;
+    if(fault==2)q.artPage=6;
+    if(fault==3)q.option=-1;
+    if(fault==4)q.expectedListRevision=0;
+    if(fault==5)q.previewColumns=0;
+    if(fault==6)q.cursor=262145;
+    if(fault==7)q.artPage=-1;
+    if(fault==8)q.hovered=-1;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    REQUIRE(value->job_settings());CHECK(value->job_settings()->expected_list_revision()==q.expectedListRevision);
+  }
+}
+TEST_CASE("Job artwork results decode and reject malformed previews") {
+  for(int fault=0;fault<7;++fault) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto row=wire::CreateWorkOrderArtRow(b,9876,b.CreateString("Subject"));
+    const auto rows=b.CreateVector(std::vector<flatbuffers::Offset<wire::WorkOrderArtRow>>{row});
+    const auto preview=b.CreateVector(std::vector<flatbuffers::Offset<flatbuffers::String>>{b.CreateString("Description")});
+    const auto art=wire::CreateWorkOrderArtState(b,fault==1?6:1,b.CreateString("Image information"),rows,fault==2?0:92,1,0,fault==3?9999:9876,fault==4?0:preview);
+    const auto option=wire::CreateWorkOrderDetailsOption(b,fault==5?0:1,-1,b.CreateString("Image"));
+    const auto options=b.CreateVector(std::vector<flatbuffers::Offset<wire::WorkOrderDetailsOption>>{option});
+    const auto empty=b.CreateVector(std::vector<flatbuffers::Offset<wire::JobSettingsChoice>>{});
+    const auto job=wire::CreateJobSettingsState(b,42,3,6534,91,b.CreateString("Make statue"),options,0,empty,0,0,0,0,0,0,art);
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(fault==6?wire::ManagementAction::Catalog:wire::ManagementAction::JobSettingsRead);state.add_status(wire::ManagementStatus::Ok);state.add_job_settings(job);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){const auto decoded=codec::decodeState(value);REQUIRE(decoded.jobSettings);REQUIRE(decoded.jobSettings->art);CHECK(decoded.jobSettings->art->rows[0].id==9876);REQUIRE(decoded.jobSettings->art->preview);CHECK(decoded.jobSettings->art->preview->at(0)=="Description");}
+  }
+}
+
 TEST_CASE("Job edits preserve exact authority and reject invalid request bounds") {
   wm::ManagementRequest base;base.action=wm::ManagementAction::JobSettingsApply;
   base.jobSettingsEdit={71,3,42,0,UINT64_C(9007199254740993),INT64_MAX,1};

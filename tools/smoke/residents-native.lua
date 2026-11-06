@@ -60,7 +60,18 @@ local function observe(name)
  end
  collect(active_list,true)
  local sorting={};for _,entry in ipairs(active_list.sorting_by)do sorting[#sorting+1]=entry.ident end
- snapshots[#snapshots+1]={name=name,ids=ids,sorting=sorting,callbacks=callbacks(active_list.sorting_by,96)}
+ local observed={name=name,ids=ids,sorting=sorting,callbacks=callbacks(active_list.sorting_by,96)}
+ if os.getenv('DF3D_RESIDENTS_PROVIDER')=='1' then
+  local kind=name:match('^([^%-]+)')
+  local sorts={initial=0,Cat=0,Name=1,Prof=2,Stress=3}
+  if sorts[kind] then
+   local text,code=dfhack.run_command_silent('df3d','residents-order-probe',tostring(sorts[kind]),name:find('%-2$') and '1' or '0')
+   assert(code==0,'Residents provider failed: '..text)
+   observed.provider=json.decode(text).ids
+   observed.matches=json.encode(observed.provider)==json.encode(ids)
+  end
+ end
+ snapshots[#snapshots+1]=observed
 end
 observe('initial')
 for _,name in ipairs{'Name','Cat','Prof','Job','Stress'}do
@@ -78,6 +89,7 @@ for _,name in ipairs{'Name','Cat','Prof','Job','Stress'}do
 end
 local file=assert(io.open(out..'/residents-list-reference.json','w'))
 file:write(json.encode({mode=info.creatures.current_mode,lists=lists,snapshots=snapshots}));file:close()
+for _,snapshot in ipairs(snapshots)do assert(snapshot.matches~=false,'Residents order differs: '..snapshot.name)end
 file=assert(io.open(out..'/shot.tmp','w'));file:write('residents-root');file:close()
 assert(os.rename(out..'/shot.tmp',out..'/shot'))
 local deadline=dfhack.getTickCount()+30000

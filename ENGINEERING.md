@@ -61,6 +61,27 @@ No runtime provider may read the captured widgets or their cache. Do not replace
 native filtering or ordering with Godot string comparisons when extending this
 screen. Runtime integration and public exposure remain unfinished.
 
+`residents_order_native.h` provides a safe-point diagnostic path using the
+native exclusion predicate and Category/Name/Profession/Stress comparators.
+It creates its own tagged unit entries from world active units and owns the
+stable-sort storage; comparator calls receive no widget/callback context.
+Executable identity and function hashes gate calls, reusing the pinned staff
+ordering readers for transitive name/profession/category dependencies. The
+`df3d residents-order-probe <sort> <descending>` command returns ordered IDs;
+sort0/1/2/3 means Category/Name/Profession/Stress, direction0/1 ascending/descending.
+It does not support Activity or search yet and is not connected to the public
+readout or management protocol.
+
+`DF3D_RESIDENTS_PROVIDER=1` with the native reference compares this owned result
+against actual active widget rows after native sorting. Protected015429 on
+2026-11-06 matches all141 identities in default Category order and both directions
+of all four supported sorts (nine complete ordered comparisons, including ties).
+DF27036 exits unsaved with the source unchanged. MSVC build and core19/19 pass
+(`build/qa/residents-owned-ordering`); installed bridge SHA256 is
+9071184b9e7207fac4b70010bc4746f91647603b20095be03d8732b9568623f2.
+This proves the captured fortress's membership/order, not every unit-state
+transition, other Creatures tabs, owned activity/search behavior, transport or UI.
+
 ## Farm removal native entry points
 
 The diagnostic `df3d farm-contents-read <farm>` returns contained items in native

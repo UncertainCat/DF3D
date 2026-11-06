@@ -15,6 +15,7 @@ var global_orders=preload("res://scripts/global_work_orders_state.gd").new()
 var global_orders_view
 var details=preload("res://scripts/work_order_details_state.gd").new()
 var details_view
+var global_orders_mode:=false
 
 func _init() -> void:
 	state=preload("res://scripts/building_header_state.gd").new()
@@ -23,6 +24,7 @@ func configure(world,service,host,help=null) -> void:
 	tasks.configure(service);workers.configure(service);orders.configure(service);candidate_modes.configure(service);order_choices.configure(service)
 	conditions.configure(service)
 	global_orders.configure(service)
+	global_orders.changed.connect(func():if global_orders_mode:_release_if_closed.call_deferred())
 	details.configure(service)
 	candidate_modes.applied.connect(func():refreshing_modes=true;candidate_modes.clear();workers.refresh())
 	super.configure(world,service,host,help)
@@ -80,6 +82,8 @@ func open_workshop(id: int,icon: String) -> void:
 	panel.building_icon=icon;open_target(id)
 
 func _state_changed() -> void:
+	if global_orders_mode:
+		_release_if_closed.call_deferred();return
 	super._state_changed()
 	if opening:return
 	if state.building_id<0 or state.snapshot.get("removing",false):
@@ -88,6 +92,7 @@ func _state_changed() -> void:
 	elif not state.snapshot.is_empty() and tasks.building_id!=state.building_id:tasks.open(state.building_id)
 
 func close_panel() -> void:
+	global_orders_mode=false
 	_close_conditions()
 	_close_order_picker();_close_picker();workers.close();tasks.close();orders.close();super.close_panel()
 
@@ -130,7 +135,24 @@ func _back_details() -> void:
 
 func _close_global_orders() -> void:
 	global_orders.close();global_orders_view.hide()
+	if global_orders_mode:
+		global_orders_mode=false;ui_host.release(self);return
 	if orders.building_id>=0:orders.refresh()
+
+func open_global_orders() -> void:
+	if not play_enabled:return
+	close_panel()
+	if not ui_host.activate(self):return
+	global_orders_mode=true;global_orders_view.open()
+
+func _release_if_closed() -> void:
+	# A standalone global list has no selected workshop. Keep its owner while
+	# navigating child panels; deferred checks also allow close/read transitions.
+	if global_orders_mode:
+		for model in [global_orders,conditions,details,order_choices]:
+			if model.phase not in [model.Phase.Closed,model.Phase.Unavailable]:return
+		global_orders_mode=false;ui_host.release(self);return
+	super._release_if_closed()
 
 func _select_tab(index: int) -> void:
 	if index not in [0,1,2] or not panel.tasks_allowed() or tasks.phase==tasks.Phase.Applying:return

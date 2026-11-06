@@ -299,7 +299,7 @@ try {
      if(-not $client.WaitForExit($waitMs)){$client.Kill();$client.WaitForExit();throw 'Unit Expel client timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/$name.json")){throw 'Unit Expel client failed'}
     }
-    if($name -in @('work-order-dye-wire','work-order-artwork-wire')) {
+    if($name -in @('work-order-dye-wire','work-order-artwork-wire','work-order-navigation-wire')) {
      $env:DF3D_CARRIER_DIRECTORY=$out
      $env:DF3D_DF_PATH=$dfPath
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'

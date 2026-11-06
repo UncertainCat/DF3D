@@ -3797,6 +3797,11 @@
   ],
   "exclusions": [
     {
+      "path": "presentations/godot/project/tests/work_order_navigation_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected assembled Work orders navigation via stockpile_storage_native.ps1 with DF3D_WORK_ORDER_ARTWORK_REFERENCE=1 and DF3D_WORK_ORDER_NAVIGATION=1; owned unsaved clone and 30 FPS client."
+    },
+    {
       "path": "presentations/godot/project/tests/work_order_artwork_wire_live.gd",
       "status": "manual",
       "reason": "Focused native artwork discard comparison via protected stockpile_storage_native.ps1 with DF3D_WORK_ORDER_ARTWORK_REFERENCE=1 and DF3D_WORK_ORDER_ARTWORK_WIRE=1; owned unsaved session and30 FPS rendered client."

@@ -7388,6 +7388,25 @@ filter pages, dependencies and overlapping narrow text/input remain unverified.
 Paired renderer logs contain only documented diagnostics. Root19/19 and headless
 composition pass in `build/qa/conditions-responsive-gate`.
 
+The workshop panel controller also owns a standalone global Work orders mode.
+`open_global_orders()` retires prior workshop/picker state and claims the UI host
+without requiring a selected building. Deferred release checks retain that claim
+through list/Conditions/Details/picker transitions; closing the standalone list
+releases it. Workshop-origin navigation keeps its existing refresh behavior.
+This entry point remains staged and does not replace the public read-only route.
+Protected001512 on2026-11-06 exercises the actual controller, host, service and
+views: standalone open, Conditions and Back, Details and Back, resizing1200x800
+to1600x900 to912x552, Escape close, reopen and host-level close. Native readback
+confirms unchanged quantity, remaining amount, workshop limit, frequency,
+improvement and art fields. DF23112 closes unsaved with source preservation;
+paired logs contain only documented diagnostics. The earlier001349 workflow
+passed but leaked the harness's unattached Interaction panel; cleanup was fixed
+before the accepted run. The wide Conditions capture was visually inspected.
+Root19/19 and headless composition pass in `build/qa/work-orders-navigation`.
+Use `DF3D_WORK_ORDER_NAVIGATION=1` with the focused artwork-reference lane.
+This establishes navigation/input ownership, not resized writes or epoch-change
+acceptance for every child panel.
+
 These screens remain staged. Details, full responsive layout, tooltip coverage
 and tab navigation are unfinished. Quantity drafts currently support four digits; native increment
 behavior beyond that range remains unfinished. Remaining fixed frame geometry

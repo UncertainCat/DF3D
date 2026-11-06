@@ -7434,6 +7434,16 @@ allocation form; neither established UI failure.004859 passed effects but its
 screenshot preceded the redraw. These checks do not cover all filter kinds,
 page boundaries, minimum-size editing or epoch-change behavior.
 
+The headless composition check also covers standalone Work orders session
+retirement through the actual main-scene controller, host and semantic service.
+For the list, Conditions, Details and recipe picker, it emits session change
+while initial reads are queued and verifies hidden children, released map input,
+cleared targets/search/artwork drafts, and removal of those reads from both the
+service queue and request table. `build/qa/work-orders-session-retirement-final`
+passes core19/19 and composition with no diagnostics. This proves queued-read
+retirement and composed UI cleanup; it does not establish sent-write retirement,
+late transport replies or actual producer replacement.
+
 The global Work orders view uses the shared native hover service for active
 status, quantity, priority, Conditions, Details, removal and workshop limits.
 Protected002223 on2026-11-06 captures exact native24-cell text and instruction

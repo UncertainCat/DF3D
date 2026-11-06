@@ -98,6 +98,35 @@ func run():
 	check(hud.native_help.state.key.is_empty(),"closing selector releases tooltip ownership")
 	ui.actions.session_changed.emit()
 	check(ui.host.active==null and workshop.state.building_id==-1 and workshop.workers.building_id==-1,"session change retires composed workshop")
+	# A standalone list has no selected building to drive its retirement. Cover
+	# each child while its first read is still queued in the real shared service.
+	for child in ["list","conditions","details","picker"]:
+		workshop.open_global_orders()
+		check(ui.host.active==workshop and workshop.global_orders_mode,"standalone orders claim input")
+		match child:
+			"conditions":
+				workshop.global_orders_view.hide();workshop.conditions_view.open(-2,27)
+				workshop.conditions.filter_query="IRON"
+			"details":
+				workshop.global_orders_view.hide();workshop.details_view.open(-2,27)
+				workshop.details.draft_dirty=true;workshop.details.draft_discard=true
+				workshop.details.draft_value={"elements":[{"kind":1}],"relationships":[]}
+			"picker":
+				workshop.global_orders_view.hide();workshop.order_picker.open(-2,"","")
+		var order_reads: Array=[]
+		for model in [workshop.global_orders,workshop.conditions,workshop.details,workshop.order_choices]:
+			if model.ticket!=0:order_reads.append(model.ticket)
+		check(not order_reads.is_empty(),"standalone retirement starts with queued reads")
+		ui.actions.session_changed.emit()
+		await process_frame;await process_frame
+		check(ui.host.active==null and not workshop.global_orders_mode and not scene._interaction.construction_active,"session change releases standalone "+child)
+		for view in [workshop.global_orders_view,workshop.conditions_view,workshop.details_view,workshop.order_picker]:
+			check(not view.visible,"session change hides standalone "+child)
+		check(workshop.global_orders.ticket==0 and workshop.conditions.ticket==0 and workshop.details.ticket==0 and workshop.order_choices.ticket==0,"session change retires order reads")
+		for ticket in order_reads:
+			check(not ui.actions._queue.has(ticket) and not ui.actions._requests.has(ticket),"retired order read cannot dispatch later")
+		check(workshop.conditions.order_id==-1 and workshop.conditions.filter_query.is_empty(),"session change clears condition target/search")
+		check(workshop.details.order_id==-1 and not workshop.details.draft_dirty and not workshop.details.draft_discard and workshop.details.draft_value.elements.is_empty(),"session change clears artwork draft")
 	print("ui_composition_test: ", "PASS" if failures == 0 else "FAIL", " failures=", failures)
 	scene.queue_free()
 	await process_frame

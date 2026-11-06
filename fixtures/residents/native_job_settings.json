@@ -5816,5 +5816,41 @@
     "scope": "Owned draft registration and copied-job assignment after independent native Done. Exact registered IDs match each respective job; separate new images have distinct sub-IDs. Rejected stale target/revision and invalid element preserve copy and catalog. Source job unchanged. Controlled no-requirement statue job; no typed/UI Done, names/relationships/other categories or uncertainty fault injection acceptance.",
     "source_preserved": true,
     "owned_df_closed": true
+  },
+  "artwork_draft_wire_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-094615",
+    "date": "2026-11-06",
+    "management_version": 140,
+    "client": {
+      "draft": {
+        "caste": -1,
+        "description": [
+          "It is an image of a aardvark.  "
+        ],
+        "done": {
+          "building_id": 3,
+          "job_id": 2000000000,
+          "outcome": 2,
+          "unit_id": 6534
+        },
+        "name_page": true,
+        "race": 755
+      },
+      "success": true
+    },
+    "native_effect": {
+      "art_open": true,
+      "details_open": true,
+      "id": 4,
+      "info_open": true,
+      "requirements": 0,
+      "specdata": -1,
+      "subid": 123,
+      "type": 3
+    },
+    "scope": "Real headless extension/model/bridge transport: nine-category draft root, creature count2394 and first element755/-1, native description, generated name returned with Applied receipt, name page, stale commit rejection, then actual registered image assigned to controlled job. Native oracle restores only disposable job fields afterward for independent navigation checks. No assembled draft editor, other category effects, relationships, resize/render or uncertainty fault injection acceptance.",
+    "diagnostics": "Known separate-render-thread notice only",
+    "source_preserved": true,
+    "owned_df_closed": true
   }
 }

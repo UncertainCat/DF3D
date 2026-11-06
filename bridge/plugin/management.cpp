@@ -486,6 +486,94 @@ void clearResult() {
   building = stage = maxStage = -1;
   valid = removing = terrainConstructed = false;
 }
+flatbuffers::Offset<m::WorkOrderArtState> encodeNativeArt(flatbuffers::FlatBufferBuilder& b,const df3d_production::WorkOrderArtPage& a,bool utf8=false) {
+  const auto text=[&](const std::string& value){return utf8?value:DF2UTF(value);};
+std::vector<flatbuffers::Offset<m::WorkOrderArtRow>> rows;
+      for(const auto& row:a.rows)rows.push_back(m::CreateWorkOrderArtRow(b,row.id,b.CreateString(text(row.caption)),row.badge?b.CreateString(text(*row.badge)):0,row.secondary));
+      flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> preview;
+      if(a.preview){std::vector<flatbuffers::Offset<flatbuffers::String>> lines;for(const auto& line:*a.preview)lines.push_back(b.CreateString(text(line)));preview=b.CreateVector(lines);}
+      flatbuffers::Offset<m::WorkOrderArtDraftValue> draft;
+      flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> description;
+      if(a.draft) {
+        std::vector<flatbuffers::Offset<m::WorkOrderArtDraftElement>> elements;
+        std::vector<flatbuffers::Offset<m::WorkOrderArtDraftRelationship>> relationships;
+        for(const auto& e:a.draft->elements)elements.push_back(m::CreateWorkOrderArtDraftElement(b,e.kind,e.id,e.secondary,e.quantity));
+        for(const auto& r:a.draft->relationships)relationships.push_back(m::CreateWorkOrderArtDraftRelationship(b,r.verb,r.transitive,r.actor,r.target));
+        flatbuffers::Offset<m::LocationNameValue> name;
+        if(a.draft->name) {
+          const auto& n=*a.draft->name;std::vector<int16_t> parts;for(auto part:n.parts_of_speech)parts.push_back(int16_t(part));
+          name=m::CreateLocationNameValue(b,b.CreateVector(reinterpret_cast<const uint8_t*>(n.first_name.data()),n.first_name.size()),
+            b.CreateVector(reinterpret_cast<const uint8_t*>(n.nickname.data()),n.nickname.size()),b.CreateVector(n.words.data(),n.words.size()),b.CreateVector(parts),n.language,int16_t(n.type),n.has_name);
+        }
+        draft=m::CreateWorkOrderArtDraftValue(b,b.CreateVector(elements),b.CreateVector(relationships),name);
+      }
+      if(a.draftDescription){std::vector<flatbuffers::Offset<flatbuffers::String>> lines;for(const auto& line:*a.draftDescription)lines.push_back(b.CreateString(text(line)));description=b.CreateVector(lines);}
+      flatbuffers::Offset<m::WorkOrderArtName> namePage;
+      if(a.name) {
+        const auto& n=*a.name;std::vector<flatbuffers::Offset<m::LocationNameChoice>> choices;
+        for(const auto& row:n.choices)choices.push_back(m::CreateLocationNameChoice(b,row.word,int16_t(row.partOfSpeech),b.CreateString(row.english),b.CreateString(row.translated)));
+        namePage=m::CreateWorkOrderArtName(b,b.CreateString(n.nativeHeader),b.CreateString(n.englishHeader),n.component,
+          b.CreateVector(reinterpret_cast<const uint8_t*>(n.query.data()),n.query.size()),n.cursor,n.total,n.nextCursor,b.CreateVector(choices));
+      }
+      return m::CreateWorkOrderArtState(b,a.page,b.CreateString(text(a.caption)),b.CreateVector(rows),a.listRevision,a.total,a.nextCursor,a.hovered,preview,draft,description,namePage);
+}
+
+void processJobDraft(df::job& source,int32_t unitId,int32_t buildingId,int16_t option,uint64_t revision,const m::WorkOrderArtRequest& art,bool writing) {
+  bool uncertain=false;
+  try {
+    auto root=df3d_production::nativeJobSettings(source,-1,{},false);
+    if(!root || root->buildingId!=buildingId || root->revision!=revision)return;
+    if(writing)jobSettingsEdit->outcome=m::JobSettingsEditOutcome::Rejected;
+    if(option<0 || size_t(option)>=root->options.size())return;
+    const auto kind=root->options[size_t(option)].kind;
+    if((kind!=1 && kind!=3) || (kind==3 && int(source.specdata.improvement)!=0))return;
+    const auto* a=&art;const auto* draft=a->draft();if(!draft)return;
+    const auto draftAction=uint8_t(draft->action());
+    const bool worldWrite=draftAction==4 || draftAction==5 || (draftAction==6 && draft->name_edit() && uint8_t(draft->name_edit()->mode())>=2);
+    if(writing!=worldWrite)return;
+    df3d_production::WorkOrderArtDraftValue value;
+    const auto element=[](const m::WorkOrderArtDraftElement& e){return df3d_production::WorkOrderArtDraftElementValue{e.kind(),e.id(),e.secondary(),e.quantity()};};
+    const auto relationship=[](const m::WorkOrderArtDraftRelationship& r){return df3d_production::WorkOrderArtDraftRelationshipValue{r.verb(),r.transitive(),r.actor(),r.target()};};
+    for(const auto* e:*draft->value()->elements())value.elements.push_back(element(*e));
+    for(const auto* r:*draft->value()->relationships())value.relationships.push_back(relationship(*r));
+    if(const auto* n=draft->value()->name()) {
+      value.name.emplace();auto& name=*value.name;
+      name.first_name.assign(reinterpret_cast<const char*>(n->first_name_bytes()->data()),n->first_name_bytes()->size());
+      name.nickname.assign(reinterpret_cast<const char*>(n->nickname_bytes()->data()),n->nickname_bytes()->size());
+      for(size_t i=0;i<7;++i){name.words[i]=n->words()->Get(i);name.parts_of_speech[i]=df::part_of_speech(n->parts()->Get(i));}
+      name.language=n->language();name.type=df::language_name_type(n->type());name.has_name=n->has_name();
+    }
+    std::optional<df3d_production::WorkOrderArtDraftElementValue> added;
+    std::optional<df3d_production::WorkOrderArtDraftRelationshipValue> relation;
+    if(draft->element())added=element(*draft->element());if(draft->relationship())relation=relationship(*draft->relationship());
+
+    if(draftAction==5) {
+      using O=df3d_production::JobArtDraftOutcome;
+      const auto outcome=df3d_production::commitJobArtDraft(source,{source.id,buildingId},revision,option,value);
+      jobSettingsEdit->outcome=outcome==O::Applied?m::JobSettingsEditOutcome::Applied:outcome==O::Unknown?m::JobSettingsEditOutcome::Unknown:outcome==O::Stale?m::JobSettingsEditOutcome::Stale:m::JobSettingsEditOutcome::Rejected;
+      if(outcome==O::Applied)status=m::ManagementStatus::Ok;
+      return;
+    }
+    std::optional<df3d_production::WorkOrderArtNameQuery> nameQuery;
+    std::optional<df3d_production::WorkOrderArtNameEdit> nameEdit;
+    if(const auto* n=draft->name_query())nameQuery=df3d_production::WorkOrderArtNameQuery{n->component(),std::string(reinterpret_cast<const char*>(n->query_bytes()->data()),n->query_bytes()->size()),n->cursor()};
+    if(const auto* n=draft->name_edit())nameEdit=df3d_production::WorkOrderArtNameEdit{uint8_t(n->mode()),n->target(),n->displayed(),n->word(),n->part(),std::string(reinterpret_cast<const char*>(n->query_bytes()->data()),n->query_bytes()->size())};
+
+    uncertain=writing;
+    auto page=df3d_production::nativeJobArtDraftPage(source,a->page(),std::move(value),draftAction,added,relation,draft->delete_index(),a->query()?UTF2DF(a->query()->str()):std::string{},a->cursor(),a->expected_list_revision(),draft->columns(),nameQuery?&*nameQuery:nullptr,nameEdit?&*nameEdit:nullptr);
+    if(!page){if(uncertain)jobSettingsEdit->outcome=m::JobSettingsEditOutcome::Unknown;return;}
+    const auto convert=[](std::string& text,size_t limit){text=DF2UTF(text);return text.size()<=limit && text.find('\0')==std::string::npos;};
+    bool bounded=page->revision==revision && convert(root->caption,512) && convert(page->page.caption,512);
+    for(auto& o:root->options)if(!convert(o.caption,512))bounded=false;
+    for(auto& row:page->page.rows)if(!convert(row.caption,1024) || (row.badge && !convert(*row.badge,128)))bounded=false;
+    if(page->page.draftDescription)for(auto& line:*page->page.draftDescription)if(!convert(line,2048))bounded=false;
+    if(!bounded){if(uncertain)jobSettingsEdit->outcome=m::JobSettingsEditOutcome::Unknown;return;}
+    root->selected=option;jobSettings=JobSettingsResult{unitId,0,std::move(*root),std::move(page->page)};
+    if(writing)jobSettingsEdit->outcome=m::JobSettingsEditOutcome::Applied;
+    status=m::ManagementStatus::Ok;
+  } catch(...) {jobSettings.reset();if(writing)jobSettingsEdit->outcome=uncertain?m::JobSettingsEditOutcome::Unknown:m::JobSettingsEditOutcome::Rejected;}
+}
+
 void publish() {
   flatbuffers::FlatBufferBuilder b;
   std::vector<flatbuffers::Offset<m::BuildingDefinition>> ds;
@@ -845,36 +933,7 @@ void publish() {
       choices=b.CreateVector(rows);next=end<d.materials.size()?uint32_t(end):0;
     }
     flatbuffers::Offset<m::WorkOrderArtState> art;
-    if(workOrders.art) {
-      const auto& a=*workOrders.art;std::vector<flatbuffers::Offset<m::WorkOrderArtRow>> rows;
-      for(const auto& row:a.rows)rows.push_back(m::CreateWorkOrderArtRow(b,row.id,b.CreateString(DF2UTF(row.caption)),row.badge?b.CreateString(DF2UTF(*row.badge)):0,row.secondary));
-      flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> preview;
-      if(a.preview){std::vector<flatbuffers::Offset<flatbuffers::String>> lines;for(const auto& line:*a.preview)lines.push_back(b.CreateString(DF2UTF(line)));preview=b.CreateVector(lines);}
-      flatbuffers::Offset<m::WorkOrderArtDraftValue> draft;
-      flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> description;
-      if(a.draft) {
-        std::vector<flatbuffers::Offset<m::WorkOrderArtDraftElement>> elements;
-        std::vector<flatbuffers::Offset<m::WorkOrderArtDraftRelationship>> relationships;
-        for(const auto& e:a.draft->elements)elements.push_back(m::CreateWorkOrderArtDraftElement(b,e.kind,e.id,e.secondary,e.quantity));
-        for(const auto& r:a.draft->relationships)relationships.push_back(m::CreateWorkOrderArtDraftRelationship(b,r.verb,r.transitive,r.actor,r.target));
-        flatbuffers::Offset<m::LocationNameValue> name;
-        if(a.draft->name) {
-          const auto& n=*a.draft->name;std::vector<int16_t> parts;for(auto part:n.parts_of_speech)parts.push_back(int16_t(part));
-          name=m::CreateLocationNameValue(b,b.CreateVector(reinterpret_cast<const uint8_t*>(n.first_name.data()),n.first_name.size()),
-            b.CreateVector(reinterpret_cast<const uint8_t*>(n.nickname.data()),n.nickname.size()),b.CreateVector(n.words.data(),n.words.size()),b.CreateVector(parts),n.language,int16_t(n.type),n.has_name);
-        }
-        draft=m::CreateWorkOrderArtDraftValue(b,b.CreateVector(elements),b.CreateVector(relationships),name);
-      }
-      if(a.draftDescription){std::vector<flatbuffers::Offset<flatbuffers::String>> lines;for(const auto& line:*a.draftDescription)lines.push_back(b.CreateString(DF2UTF(line)));description=b.CreateVector(lines);}
-      flatbuffers::Offset<m::WorkOrderArtName> namePage;
-      if(a.name) {
-        const auto& n=*a.name;std::vector<flatbuffers::Offset<m::LocationNameChoice>> choices;
-        for(const auto& row:n.choices)choices.push_back(m::CreateLocationNameChoice(b,row.word,int16_t(row.partOfSpeech),b.CreateString(row.english),b.CreateString(row.translated)));
-        namePage=m::CreateWorkOrderArtName(b,b.CreateString(n.nativeHeader),b.CreateString(n.englishHeader),n.component,
-          b.CreateVector(reinterpret_cast<const uint8_t*>(n.query.data()),n.query.size()),n.cursor,n.total,n.nextCursor,b.CreateVector(choices));
-      }
-      art=m::CreateWorkOrderArtState(b,a.page,b.CreateString(DF2UTF(a.caption)),b.CreateVector(rows),a.listRevision,a.total,a.nextCursor,a.hovered,preview,draft,description,namePage);
-    }
+    if(workOrders.art)art=encodeNativeArt(b,*workOrders.art);
     workOrderDetails=m::CreateWorkOrderDetailsState(b,workOrders.detailsId,d.revision,b.CreateString(DF2UTF(d.caption)),b.CreateVector(options),workOrders.detailsOption,choices,d.choicesRevision,uint32_t(d.materials.size()),next,art,d.currentValue?b.CreateString(DF2UTF(*d.currentValue)):0,d.settingHeading?b.CreateString(DF2UTF(*d.settingHeading)):0,d.dyeTarget);
   }
   auto workOrderResult=m::CreateWorkOrderState(b,b.CreateVector(wo),b.CreateVector(wr),b.CreateVector(wc),b.CreateVector(wm),workOrders.nextCursor,b.CreateString(workOrders.detail),b.CreateVector(wo_materials),b.CreateVector(wo_traits),b.CreateVector(wo_types),b.CreateVector(wo_groups),b.CreateVector(wo_tasks),workOrders.total,workOrders.listRevision,workOrders.buildPhase,workOrders.buildDone,workOrders.buildTotal,workOrderNative,workOrderDetails);
@@ -985,13 +1044,7 @@ void publish() {
     const size_t end=std::min(size_t(jobSettings->cursor)+64,v.materials.size());
     for(size_t i=jobSettings->cursor;i<end;++i){const auto& c=v.materials[i];choices.push_back(m::CreateJobSettingsChoice(b,c.id,b.CreateString(c.caption),c.countCaption?b.CreateString(*c.countCaption):0,c.estimated));}
     flatbuffers::Offset<m::WorkOrderArtState> art;
-    if(jobSettings->art) {
-      const auto& a=*jobSettings->art;std::vector<flatbuffers::Offset<m::WorkOrderArtRow>> rows;
-      for(const auto& row:a.rows)rows.push_back(m::CreateWorkOrderArtRow(b,row.id,b.CreateString(row.caption),row.badge?b.CreateString(*row.badge):0));
-      flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> preview;
-      if(a.preview){std::vector<flatbuffers::Offset<flatbuffers::String>> lines;for(const auto& line:*a.preview)lines.push_back(b.CreateString(line));preview=b.CreateVector(lines);}
-      art=m::CreateWorkOrderArtState(b,a.page,b.CreateString(a.caption),b.CreateVector(rows),a.listRevision,a.total,a.nextCursor,a.hovered,preview);
-    }
+    if(jobSettings->art)art=encodeNativeArt(b,*jobSettings->art,true);
     jobSettingsResult=m::CreateJobSettingsState(b,v.jobId,v.buildingId,jobSettings->unitId,v.revision,b.CreateString(v.caption),
       b.CreateVector(options),int16_t(v.selected),b.CreateVector(choices),v.choicesRevision,uint32_t(v.materials.size()),jobSettings->cursor,end<v.materials.size()?uint32_t(end):0,v.currentValue?b.CreateString(*v.currentValue):0,0,art);
   }
@@ -1038,7 +1091,10 @@ void publish() {
     publishingFallback = true;
     const auto placed=construction.placed,skipped=construction.skipped;
     const auto first=construction.first_building;
+    auto jobWrite=jobSettingsEdit;
+    if(jobWrite && jobWrite->outcome!=m::JobSettingsEditOutcome::Applied && jobWrite->outcome!=m::JobSettingsEditOutcome::Unknown)jobWrite.reset();
     clearResult();
+    if(jobWrite){jobWrite->outcome=m::JobSettingsEditOutcome::Unknown;jobSettingsEdit=jobWrite;}
     construction.placed=placed;construction.skipped=skipped;construction.first_building=first;
     status = m::ManagementStatus::Rejected;
     message = "Invalid native management response: " + *e;
@@ -3838,6 +3894,7 @@ void run(color_ostream& out) {
         for(auto* job:holder->jobs)if(job && job->id==q.job_id()){source=job;break;}
       }
       if(source) {
+        if(q.art()){processJobDraft(*source,q.unit_id(),q.building_id(),q.option(),q.expected_revision(),*q.art(),true);publish();return;}
         const auto outcome=q.art_page()==-2?
           df3d_production::applyJobSetting(*source,{q.job_id(),q.building_id()},q.expected_revision(),q.option(),q.expected_choices_revision(),q.choice()):
           q.art_page()==-1?df3d_production::beginJobArt(*source,{q.job_id(),q.building_id()},q.expected_revision(),q.option(),q.expected_choices_revision()):
@@ -3848,9 +3905,13 @@ void run(color_ostream& out) {
           default:jobSettingsEdit->outcome=m::JobSettingsEditOutcome::Rejected;break;
         }
       }
-    } catch(...) {jobSettingsEdit->outcome=m::JobSettingsEditOutcome::Rejected;}
-    // The adapter performs no allocation/fallible operation after its first
-    // write. Publication failure is reconciled by the transport, never replayed.
+    } catch(...) {
+      jobSettings.reset();
+      if(!jobSettingsEdit)jobSettingsEdit=JobSettingsEditResult{q.job_id(),q.building_id(),q.unit_id(),m::JobSettingsEditOutcome::Unknown};
+      jobSettingsEdit->outcome=(jobSettingsEdit->outcome==m::JobSettingsEditOutcome::Applied || jobSettingsEdit->outcome==m::JobSettingsEditOutcome::Unknown)?m::JobSettingsEditOutcome::Unknown:m::JobSettingsEditOutcome::Rejected;
+    }
+    // Confirmed/uncertain writes retain an Unknown receipt if publication fails.
+    // Ordinary field edits perform no fallible work after their first write.
     publish();return;
   }
   if(r->action()==m::ManagementAction::JobSettingsRead) {
@@ -3867,6 +3928,7 @@ void run(color_ostream& out) {
         for(auto* job:holder->jobs)if(job && job->id==q.job_id()){source=job;break;}
       }
       if(source) {
+        if(q.art()){processJobDraft(*source,q.unit_id(),q.building_id(),q.option(),q.expected_revision(),*q.art(),false);publish();return;}
         if(q.art_page()!=-2) {
           auto root=df3d_production::nativeJobSettings(*source,-1,{},false);
           if(root && root->buildingId==q.building_id() && q.option()>=0 && size_t(q.option())<root->options.size() &&

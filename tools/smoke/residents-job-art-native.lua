@@ -46,6 +46,15 @@ end
 shot('residents-job-art-root')
 owner.job.current_job=wire_original
 if os.getenv('DF3D_RESIDENTS_JOB_ART_WIRE')=='1' then result.wire_effect=effect() end
+if os.getenv('DF3D_RESIDENTS_JOB_ART_DRAFT_WIRE')=='1' then
+ local r=df.global.plotinfo.main.fortress_entity.resources
+ assert(result.wire_effect.type==3 and r.art_image_ids[#r.art_image_ids-1]==job.art_spec.id and r.art_image_subids[#r.art_image_subids-1]==job.art_spec.subid,'Wire draft did not register/assign image')
+ result.wire_draft_effect=result.wire_effect;result.wire_effect=nil
+ -- Restore only this disposable job for the subsequent independent native oracle.
+ job.art_spec.type=result.before.type;job.art_spec.id=result.before.id;job.art_spec.subid=result.before.subid
+ job.specdata.hist_figure_id=result.before.specdata
+end
+
 if os.getenv('DF3D_RESIDENTS_JOB_ART_PROVIDER')=='1' then
  result.provider={}
  for kind,caption in ipairs({'Related to historical figure','Related to site','Related to civilization or other group'})do

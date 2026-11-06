@@ -162,6 +162,8 @@ func artwork_read() -> void:
 	var value: Dictionary=response.get("job_settings",{})
 	check(response.get("status")==C.ManagementStatus.Ok and value.get("art",{}).get("caption")==reference.artwork.header,"Typed job artwork root/header differs")
 	check(value.get("art",{}).get("rows",[]).size()==6 and value.get("choices",[]).is_empty(),"Artwork payload mixed ordinary choices")
+	if OS.get_environment("DF3D_RESIDENTS_JOB_ART_DRAFT_WIRE")=="1":
+		await artwork_draft(reference,value);return
 	var pages: Array=[]
 	for expected: Dictionary in fixture.artwork_pages_reference.pages:
 		intent.art_page=int(expected.page);intent.cursor=0;intent.expected_list_revision=0;intent.hovered=-1;intent.preview_columns=0
@@ -246,3 +248,32 @@ func composed_artwork(reference: Dictionary) -> Dictionary:
 	check(state.phase==state.Phase.Closed and await ready(owner.state) and owner.panel.visible,"Confirmed artwork assignment did not refresh roster")
 	owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();await process_frame
 	return {"root":true,"category":true,"hover":true,"paging":true,"search":true,"back":true,"reset":true,"began_image":began,"assigned_figure":chosen}
+
+func artwork_draft(reference: Dictionary,root_value: Dictionary) -> void:
+	var intent: Dictionary={"action":C.ManagementAction.JobSettingsRead,"job_id":int(reference.job_id),"building_id":int(reference.building_id),"unit_id":int(reference.unit_id),"option":0,"expected_revision":int(root_value.revision),"art":{"page":6,"draft":{"value":{"elements":[],"relationships":[]},"columns":118}}}
+	var reply:=await request("job_settings",intent)
+	var art: Dictionary=reply.get("job_settings",{}).get("art",{})
+	if not check(reply.get("status")==C.ManagementStatus.Ok and art.get("rows",[]).size()==9,"Job draft root rejected"):world.queue_free();await process_frame;quit(1);return
+	intent.art.page=7
+	reply=await request("job_settings",intent);art=reply.get("job_settings",{}).get("art",{})
+	if not check(art.get("total")==2394 and not art.get("rows",[]).is_empty(),"Job draft creature list differs"):world.queue_free();await process_frame;quit(1);return
+	var row: Dictionary=art.rows[0]
+	intent.art.draft.action=1;intent.art.draft.element={"kind":7,"id":row.id,"secondary":row.secondary,"quantity":1}
+	reply=await request("job_settings",intent);art=reply.get("job_settings",{}).get("art",{})
+	if not check(art.get("draft",{}).get("elements",[]).size()==1 and not art.get("draft_description",[]).is_empty(),"Job draft addition lost value/description"):world.queue_free();await process_frame;quit(1);return
+	var description: Array=art.draft_description
+	intent.action=C.ManagementAction.JobSettingsApply;intent.art={"page":6,"draft":{"value":art.draft,"columns":118,"action":4}}
+	reply=await request("job_settings",intent);art=reply.get("job_settings",{}).get("art",{})
+	if not check(reply.get("job_settings_edit",{}).get("outcome")==C.JobSettingsEditOutcome.Applied and art.get("draft",{}).has("name"),"Job draft name generation failed"):world.queue_free();await process_frame;quit(1);return
+	var draft: Dictionary=art.draft
+	intent.action=C.ManagementAction.JobSettingsRead;intent.art={"page":18,"draft":{"value":draft,"columns":118,"name_query":{"component":0,"query_bytes":PackedByteArray(),"cursor":0}}}
+	reply=await request("job_settings",intent);art=reply.get("job_settings",{}).get("art",{})
+	check(art.get("name",{}).has("native_header") and not art.get("name",{}).get("choices",[]).is_empty(),"Job draft native name page missing")
+	intent.action=C.ManagementAction.JobSettingsApply;intent.art={"page":6,"draft":{"value":draft,"columns":118,"action":5}}
+	var stale:=intent.duplicate(true);stale.expected_revision=1
+	reply=await request("job_settings",stale);check(reply.get("job_settings_edit",{}).get("outcome")==C.JobSettingsEditOutcome.Stale,"Stale job draft commit was not rejected")
+	reply=await request("job_settings",intent)
+	check(reply.get("status")==C.ManagementStatus.Ok and reply.get("job_settings_edit",{}).get("outcome")==C.JobSettingsEditOutcome.Applied and not reply.has("job_settings"),"Job draft Done failed")
+	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"draft":{"race":row.id,"caste":row.secondary,"description":description,"name_page":true,"done":reply.get("job_settings_edit",{})}}));file.close()
+	world.queue_free();await process_frame;quit(1 if failed else 0)

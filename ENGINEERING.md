@@ -1043,8 +1043,7 @@ assignment pin is20b2b1 length0x31 hash33f0e4648341c604. Registration reuses the
 native-backed owned draft installer. Once installation begins, allocation or
 registration failures return JobArtDraftOutcome::Unknown; callers must not retry.
 Successful registration writes only job artwork type/id/sub-ID, with no manager
-requirement rebuild. This helper is staged until the typed contract handles its
-separate uncertain outcome.
+requirement rebuild. Management140 carries its separate uncertain outcome through the typed contract.
 
 Protected092512 on2026-11-06 exercises residents-job-art-draft-commit-probe after
 independent native Done. A new owned one-creature image is registered exactly
@@ -1065,10 +1064,40 @@ handle lists, hover, draft values/descriptions and native names. Dictionary read
 retain the caller's shape-validation prerequisite. validateArtDraftRequest owns
 the common read/write, element, relationship, deletion and name-intent checks;
 callers still validate their source identity/revision and exclusive envelope.
-Management139 continues to reject job draft requests/results until the job wire
-migration; sharing codecs does not expose the unfinished editor. Core19, root,
+Management140 carries job draft requests/results; sharing codecs does not expose
+the unfinished editor. Core19, root,
 extension, management-contract and job-settings state checks pass in
 shared-artwork-codecs-20261106. This refactor has no schema or native effect change.
+
+
+Management140 job draft intents contain exactly action, job_id, building_id,
+unit_id, option, expected_revision and art in the Godot dictionary. The nested
+art value reuses the bounded WorkOrderArtRequest draft payload; legacy material
+and subject requests retain their existing shapes. Source membership, holder,
+revision and improvement Image eligibility are checked before draft processing.
+Local inspection/add/delete/name-selection operations are reads; name generation,
+random name edits and Done are writes. A name write returns the updated draft
+with an exact Applied receipt. Done returns its edit receipt without a draft.
+Unknown registration/RNG outcomes are explicit, map to the service's unknown
+state, and must not be replayed. Response-validation fallback and publication
+exceptions preserve uncertainty after confirmed/uncertain writes.
+
+Protected094615 on2026-11-06 passes real headless job draft transport: root nine
+categories,2394 creature choices/first755/-1, addition and native description,
+name generation, native name page, stale Done rejection and successful Done.
+The oracle independently verifies registered image ID/sub-ID matches the job,
+then restores only that disposable job's fields for subsequent native navigation.
+DF10940 exits unsaved with source preservation. Only the known separate-thread
+notice appears in joined Godot logs. Native30FPS, headless viewer, GPU59C sampled.
+The fixture retains artwork_draft_wire_reference. This does not establish the
+assembled draft editor, other element/relationship effects or uncertainty fault
+injection. Public Residents remains hidden.
+
+Root19/extension/management-contract/job-settings state checks pass in
+job-art-draft-contract-fixed-20261106; the first build identified stale generated
+enum bindings, regenerated with tools/generate_management_contract.py. Native
+MSVC job-art-draft-wire-final-build passes. Built/installed SHA256 is
+C57012532E2F632E5EA50319FB26A9588B7971FEA31607A1129A8BBE094DAB02.
 
 
 ## Farm removal native entry points

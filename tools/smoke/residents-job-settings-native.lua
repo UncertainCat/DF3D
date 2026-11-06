@@ -100,13 +100,17 @@ for row=0,g.dimy-1 do
  local chars={};for col=0,g.dimx-1 do local ch=dfhack.screen.readTile(col,row).ch;chars[#chars+1]=ch>=32 and ch<=255 and string.char(ch) or ' 'end
  evidence.lines[#evidence.lines+1]={y=row,text=dfhack.df2utf(table.concat(chars)):gsub('%s+$','')}
 end
-local file=assert(io.open(out..'/shot.tmp','w'));file:write('residents-job-settings');file:close()
+local file=assert(io.open(out..'/residents-job-settings-reference.json','w'));file:write(json.encode(evidence));file:close()
+local wire_original=owner.job.current_job
+if os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_WIRE')=='1' then owner.job.current_job=job end
+file=assert(io.open(out..'/shot.tmp','w'));file:write('residents-job-settings');file:close()
 assert(os.rename(out..'/shot.tmp',out..'/shot'))
 local deadline=dfhack.getTickCount()+10000
 while true do
  local ack=io.open(out..'/ack-residents-job-settings');if ack then ack:close();break end
  assert(dfhack.getTickCount()<deadline,'Job settings capture timeout');script.sleep(1,'frames')
 end
+owner.job.current_job=wire_original
 gui.simulateInput(view,'LEAVESCREEN')
 for _=1,3 do script.sleep(1,'frames')end
 evidence.escape_details_open=details.open;evidence.escape_info_open=info.open

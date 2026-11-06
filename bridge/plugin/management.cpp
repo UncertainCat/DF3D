@@ -85,6 +85,7 @@
 #include "residents_row_native.h"
 #include "residents_specialization_native.h"
 #include "residents_activity_description_native.h"
+#include "job_settings_native.h"
 #include "creature_follow_native.h"
 #include "creature_expel_preview_native.h"
 #include "creature_expel_action_native.h"
@@ -449,6 +450,8 @@ struct ResidentsSpecializationResult {int32_t id=-1;m::ResidentsSpecializationOu
 std::optional<ResidentsSpecializationResult> residentsSpecialization;
 struct ResidentsActivityResult {int32_t unitId;df3d_residents::ActivityDescription description;};
 std::optional<ResidentsActivityResult> residentsActivity;
+struct JobSettingsResult {int32_t unitId=-1;uint32_t cursor=0;df3d_production::JobSettingsObservation value;};
+std::optional<JobSettingsResult> jobSettings;
 m::TilePos worldHoverTile;
 void clearResult() {
   creatureHeader.reset();
@@ -462,6 +465,7 @@ void clearResult() {
   residentsRows.reset();
   residentsSpecialization.reset();
   residentsActivity.reset();
+  jobSettings.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -967,6 +971,17 @@ void publish() {
     }
     residentsRowsResult=m::CreateResidentsRowsState(b,b.CreateVector(rows));
   }
+  flatbuffers::Offset<m::JobSettingsState> jobSettingsResult;
+  if(jobSettings) {
+    const auto& v=jobSettings->value;
+    std::vector<flatbuffers::Offset<m::WorkOrderDetailsOption>> options;
+    std::vector<flatbuffers::Offset<m::JobSettingsChoice>> choices;
+    for(const auto& o:v.options)options.push_back(m::CreateWorkOrderDetailsOption(b,uint8_t(o.kind),o.index,b.CreateString(o.caption)));
+    const size_t end=std::min(size_t(jobSettings->cursor)+64,v.materials.size());
+    for(size_t i=jobSettings->cursor;i<end;++i){const auto& c=v.materials[i];choices.push_back(m::CreateJobSettingsChoice(b,c.id,b.CreateString(c.caption),c.countCaption?b.CreateString(*c.countCaption):0,c.estimated));}
+    jobSettingsResult=m::CreateJobSettingsState(b,v.jobId,v.buildingId,jobSettings->unitId,v.revision,b.CreateString(v.caption),
+      b.CreateVector(options),int16_t(v.selected),b.CreateVector(choices),v.choicesRevision,uint32_t(v.materials.size()),jobSettings->cursor,end<v.materials.size()?uint32_t(end):0);
+  }
   flatbuffers::Offset<m::ResidentsActivityState> residentsActivityResult;
   if(residentsActivity) {
     const auto& value=residentsActivity->description;
@@ -998,7 +1013,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult);
   b.Finish(s);
   if (auto e = m::validateManagementState(
           *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()))) {
@@ -3794,6 +3809,32 @@ void run(color_ostream& out) {
       case O::Unknown:result.outcome=m::ResidentsSpecializationOutcome::Unknown;mutated=true;break;
       default:break;
     }
+    publish();return;
+  }
+  if(r->action()==m::ManagementAction::JobSettingsRead) {
+    message.clear();status=m::ManagementStatus::Rejected;
+    const auto& q=*r->job_settings();
+    try {
+      df::job* source=nullptr;
+      if(q.unit_id()>=0) {
+        const auto eligible=df3d_residents::orderedResidents(0,false);
+        auto* unit=df::unit::find(q.unit_id());
+        if(eligible && unit && std::find(eligible->begin(),eligible->end(),q.unit_id())!=eligible->end() &&
+           unit->job.current_job && unit->job.current_job->id==q.job_id())source=unit->job.current_job;
+      } else if(auto* holder=df::building::find(q.building_id())) {
+        for(auto* job:holder->jobs)if(job && job->id==q.job_id()){source=job;break;}
+      }
+      if(source) {
+        auto value=df3d_production::nativeJobSettings(*source,q.option(),UTF2DF(q.query()->str()));
+        if(value && value->buildingId==q.building_id() && q.cursor()<=value->materials.size()) {
+          const auto convert=[](std::string& text,size_t limit){text=DF2UTF(text);return text.size()<=limit && text.find('\0')==std::string::npos;};
+          bool bounded=convert(value->caption,512) && value->options.size()<=65;
+          for(auto& o:value->options)if(!convert(o.caption,512))bounded=false;
+          for(auto& c:value->materials)if(!convert(c.caption,512) || (c.countCaption && !convert(*c.countCaption,128)))bounded=false;
+          if(bounded){jobSettings=JobSettingsResult{q.unit_id(),q.cursor(),std::move(*value)};status=m::ManagementStatus::Ok;}
+        }
+      }
+    } catch(...) {jobSettings.reset();}
     publish();return;
   }
   if(r->action()==m::ManagementAction::ResidentsActivityRead) {

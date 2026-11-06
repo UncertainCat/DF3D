@@ -1254,5 +1254,32 @@
       "Controlled material-input job only; clothing/artwork, other job families, filtering and edit effects remain unfinished.",
       "Diagnostic adapter only; no typed transport or public UI route."
     ]
+  },
+  "wire_reference": {
+    "native_run": "build/stockpile-storage-native-input-20261106-070022",
+    "management_version": 136,
+    "bridge_sha256": "655F4BE733BE5BB583AD003EC357A75033074D693886E1CE0F76EA74A3511257",
+    "result": {
+      "choices": 83,
+      "filtered": [
+        {
+          "caption": "Dolomite",
+          "count_caption": "200?",
+          "estimated": true,
+          "id": 1
+        }
+      ],
+      "success": true
+    },
+    "acceptance": [
+      "All83 choices across64-row pages match native provider identities, captions and count captions",
+      "Stable job and choice revisions survive pagination",
+      "Native Dolomite filtering returns original choice ID1 and estimated200? caption",
+      "Changed job, holder and resident IDs reject without settings; Catalog retires settings"
+    ],
+    "limitations": [
+      "Controlled unlinked job held temporarily as the resident current job during headless client requests; restored afterward.",
+      "No job edits, Residents row target, composed UI or other job-family acceptance."
+    ]
   }
 }

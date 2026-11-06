@@ -217,6 +217,14 @@ try {
   if(Test-Path "$out/shot") {
    $name=(Get-Content "$out/shot" -Raw).Trim()
    if(-not(Test-Path "$out/ack-$name")) {
+    if($env:DF3D_RESIDENTS_JOB_SETTINGS_WIRE -eq '1' -and $name -eq 'residents-job-settings') {
+     $env:DF3D_CARRIER_DIRECTORY=$out;$env:DF3D_DF_PATH=$dfPath
+     $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
+     $client=Start-Process -FilePath $engine -ArgumentList @('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/job_settings_wire_live.gd') -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/job-settings-wire.stdout.log" -RedirectStandardError "$out/job-settings-wire.stderr.log"
+     $null=$client.Handle
+     if(-not $client.WaitForExit(25000)){$client.Kill();$client.WaitForExit();throw 'Job settings wire client timed out; no replay'}
+     if($client.ExitCode -ne 0 -or -not (Test-Path "$out/job-settings-wire-result.json")){throw 'Job settings wire client failed'}
+    }
     if($env:DF3D_RESIDENTS_WIRE -eq '1' -and $name -eq 'residents-root') {
      $env:DF3D_CARRIER_DIRECTORY=$out
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'

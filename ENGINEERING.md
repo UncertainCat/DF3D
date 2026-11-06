@@ -81,8 +81,31 @@ job/holder/search identity, and preserves native Details storage on a cold call.
 DF2896 exits unsaved with source preservation; GPU samples38C at30FPS, no
 Godot graphics. Native build passes; installed bridge SHA256 is
 9F8FDFE6EB21A245B8F66B44ACDFCCD1C839DA29180B69D24E0D0D0352CF2FB5.
-Typed transport, other families, filters, edits and complete shared UI remain
-unfinished in Residents and workshop Tasks; diagnostic acceptance is not exposure.
+Management136 adds `JobSettingsRead` on `job_settings`. Resident requests must
+match that resident's current job and native Residents membership; building
+requests resolve the job from the specified building's job list. Both require
+an exact native holder match. Results contain separate job/choice revisions,
+native options, original choice IDs, count captions and64-row pages. The reader
+fingerprints job requirements independently of the query; native2230f0/2239e0
+filter copied catalogs while preserving unfiltered choice IDs. Every result
+retires prior settings. There is no job-edit action or exposed UI route yet.
+
+Protected070022 on2026-11-06 verifies all83 choices over two typed pages,
+identity/revision/title/count-caption preservation, Dolomite filtering, rejected
+job/building/resident mismatches, and unrelated-result retirement. The fixture
+records that this uses a controlled unlinked job, temporarily held on the
+resident during headless client requests and restored afterward. DF16880 exits
+unsaved with source preservation; joined Godot logs have only the known thread
+notice. Native build and root core19/19 pass. `job-settings-contract-final-20261106`
+also passes extension build and headless management-contract checks. The first
+contract core run caught an obsolete135 version assertion, corrected to the
+current contract constant. Initial live065857 stopped before client launch due
+to an unset launcher variable, fixed before the accepted run.
+Installed bridge SHA256 is
+655F4BE733BE5BB583AD003EC357A75033074D693886E1CE0F76EA74A3511257.
+GPU samples36–37C with serial30FPS native graphics and a headless client.
+Residents row job-target publication, shared UI, edits, clothing/artwork and
+other job-family acceptance remain unfinished; typed read success is not exposure.
 
 The menu actions themselves clear live markup and build widgets: do not call
 them from the bridge. The formatter output is `markup_text_boxst`, not a vector

@@ -2200,10 +2200,11 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           const auto observed=df3d_production::nativeJobSettings(*unit->job.current_job,selected);if(!observed)return CR_FAILURE;
           Json::Value result;result["job_id"]=observed->jobId;result["building_id"]=observed->buildingId;
           result["selected"]=observed->selected;result["caption"]=DF2UTF(observed->caption);
+          result["revision"]=std::to_string(observed->revision);result["choices_revision"]=std::to_string(observed->choicesRevision);
           result["search"].append(observed->search.x);result["search"].append(observed->search.y);result["search"].append(observed->search.z);
           result["options"]=Json::Value(Json::arrayValue);result["materials"]=Json::Value(Json::arrayValue);
           for(const auto& row:observed->options){Json::Value value;value["kind"]=row.kind;value["index"]=row.index;value["caption"]=DF2UTF(row.caption);result["options"].append(value);}
-          for(const auto& row:observed->materials){Json::Value value;value["type"]=row.type;value["index"]=row.index;value["count"]=row.count;value["caption"]=DF2UTF(row.caption);result["materials"].append(value);}
+          for(const auto& row:observed->materials){Json::Value value;value["type"]=row.type;value["index"]=row.index;value["count"]=row.count;value["caption"]=DF2UTF(row.caption);value["id"]=row.id;value["estimated"]=row.estimated;if(row.countCaption)value["count_caption"]=DF2UTF(*row.countCaption);result["materials"].append(value);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="residents-activity-description-probe") {

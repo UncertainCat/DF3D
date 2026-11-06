@@ -6,6 +6,7 @@
 namespace df3d_production {
 struct JobSettingsObservation {
     int32_t jobId=-1,buildingId=-1,selected=-1;
+    uint64_t revision=0,choicesRevision=0;
     df::coord search;
     std::string caption;
     std::vector<WorkOrderDetailOption> options;
@@ -32,8 +33,8 @@ inline bool jobSettingsReady() {
 // Staged read adapter. Never invokes the global opener213420, widgets, or their
 // callbacks. The job and requirement containers are owned; holder/item/raw
 // records are read-only simulation inputs. No job is linked or reserved here.
-inline std::optional<JobSettingsObservation> nativeJobSettings(const df::job& source,int32_t selected=-1) {
-    if(!jobSettingsReady() || !df::global::world || source.job_items.elements.size()>64)return std::nullopt;
+inline std::optional<JobSettingsObservation> nativeJobSettings(const df::job& source,int32_t selected=-1,const std::string& query={}) {
+    if(!jobSettingsReady() || !df::global::world || !df::global::plotinfo || source.job_items.elements.size()>64 || query.size()>128)return std::nullopt;
     std::vector<df::job_item> inputs;inputs.reserve(source.job_items.elements.size());
     for(const auto* item:source.job_items.elements){if(!item)return std::nullopt;inputs.push_back(*item);}
     df::job job=source;job.job_items.elements.clear();
@@ -46,6 +47,22 @@ inline std::optional<JobSettingsObservation> nativeJobSettings(const df::job& so
     const auto caption=workshopJobCaption(job);if(!caption)return std::nullopt;
     JobSettingsObservation result;result.jobId=job.id;result.buildingId=holder->id;result.caption=*caption;
     result.search.x=holder->centerx;result.search.y=holder->centery;result.search.z=holder->z;
+    uint64_t hash=UINT64_C(14695981039346656037);
+    const auto add=[&](uint64_t value){for(unsigned shift=0;shift<64;shift+=8){hash^=(value>>shift)&255;hash*=UINT64_C(1099511628211);}};
+    const auto mix=[&](auto... values){(add(uint64_t(values)),...);};
+    const auto text=[&](const std::string& value){add(value.size());for(unsigned char ch:value){hash^=ch;hash*=UINT64_C(1099511628211);}};
+    mix(job.id,holder->id,result.search.x,result.search.y,result.search.z,int(job.job_type),job.mat_type,job.mat_index,
+        int(job.item_type),job.item_subtype,job.specflag.whole,job.specdata.hist_figure_id,job.material_category.whole,
+        int(job.art_spec.type),job.art_spec.id,job.art_spec.subid);
+    text(job.reaction_name);add(inputs.size());
+    for(const auto& item:inputs) {
+        mix(int(item.item_type),item.item_subtype,item.mat_type,item.mat_index,item.flags1.whole,item.quantity,int(item.vector_id),
+            item.flags2.whole,item.flags3.whole,item.flags4,item.flags5,item.metal_ore,item.min_dimension,item.reagent_index,
+            item.reaction_id,int(item.has_tool_use),item.dye_color,item.job_details_flags.whole,item.job_details_mat_type,
+            item.job_details_mat_index,item.job_details_item_flags2.whole);
+        text(item.reaction_class);text(item.has_material_reaction_product);add(item.contains.size());for(auto id:item.contains)add(id);
+    }
+    result.revision=(hash&INT64_MAX)?(hash&INT64_MAX):1;
     // No separately callable enumeration leaf exists: these are the pinned
     // job-side opener's input predicates and dispatch data, not order families.
     for(size_t i=0;i<inputs.size();++i) {
@@ -71,11 +88,12 @@ inline std::optional<JobSettingsObservation> nativeJobSettings(const df::job& so
         }
     }
     if(selected==-1 && result.options.size()==1)selected=0;
-    if(selected==-1)return result;
+    if(selected==-1)return query.empty()?std::optional<JobSettingsObservation>(result):std::nullopt;
     if(selected<0 || size_t(selected)>=result.options.size())return std::nullopt;
     const auto option=result.options[size_t(selected)];
     // Artwork/clothing and job effects still need their job-specific adapter.
     if(option.kind!=0 && option.kind!=3 && option.kind!=6)return std::nullopt;
+    if(option.kind==3 && !query.empty())return std::nullopt;
     df::job_details_interfacest context;
     context.jb=&job;context.wq=nullptr;context.bld=holder;context.search=result.search;
     context.context=df::job_details_context_type::CREATURES_LIST_TASK;
@@ -86,6 +104,7 @@ inline std::optional<JobSettingsObservation> nativeJobSettings(const df::job& so
         reinterpret_cast<void(*)(df::job_details_interfacest*)>(base+0x21d190)(&context);
     }
     result.selected=selected;
+    hash=result.revision;mix(option.kind,option.index);
     if(option.kind==3) {
         constexpr size_t captions[]={0x16157d4,0x16157f0,0x16157e0,0x16157cc,0x161580c};
         if(context.improvement_type.size()>5)return std::nullopt;
@@ -93,7 +112,9 @@ inline std::optional<JobSettingsObservation> nativeJobSettings(const df::job& so
             if(int(kind)<0 || int(kind)>=int(std::size(captions)))return std::nullopt;
             WorkOrderDetailMaterial row;row.id=int32_t(result.materials.size());row.index=int(kind);
             row.caption=reinterpret_cast<const char*>(base+captions[int(kind)]);result.materials.push_back(std::move(row));
+            add(int(kind));
         }
+        result.choicesRevision=(hash&INT64_MAX)?(hash&INT64_MAX):1;
         return result;
     }
     const auto& types=option.kind==0?context.material:context.plant_mat;
@@ -111,7 +132,30 @@ inline std::optional<JobSettingsObservation> nativeJobSettings(const df::job& so
             row.caption=plants[size_t(indices[i])]->name;reinterpret_cast<void(*)(std::string*)>(base+0x52d650)(&row.caption);
         }
         if(row.caption.size()>512)return std::nullopt;
+        if(row.count>0) {
+            const auto amount=reinterpret_cast<int32_t(*)(int32_t,int32_t,int32_t,bool*)>(base+0x74f430)(row.count,df::global::plotinfo->nobles.bookkeeper_precision,0,&row.estimated);
+            row.countCaption.emplace();reinterpret_cast<void(*)(int32_t,std::string*)>(base+0x52c2b0)(amount,&*row.countCaption);
+            if(row.estimated)row.countCaption->append(reinterpret_cast<const char*>(base+0x1614d50),1);
+        }
+        mix(row.type,row.index,row.count,row.estimated);text(row.caption);if(row.countCaption)text(*row.countCaption);
         result.materials.push_back(std::move(row));
+    }
+    result.choicesRevision=(hash&INT64_MAX)?(hash&INT64_MAX):1;
+    if(!query.empty()) {
+        if(option.kind==0)context.material_filter=query;else context.plant_filter=query;
+        {
+            df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
+            reinterpret_cast<void(*)(df::job_details_interfacest*)>(base+(option.kind==0?0x2230f0:0x2239e0))(&context);
+        }
+        if(types.size()!=indices.size() || types.size()>result.materials.size())return std::nullopt;
+        std::map<std::pair<int16_t,int32_t>,size_t> identities;
+        for(size_t i=0;i<result.materials.size();++i)if(!identities.emplace(std::make_pair(result.materials[i].type,result.materials[i].index),i).second)return std::nullopt;
+        std::vector<WorkOrderDetailMaterial> filtered;
+        for(size_t i=0;i<types.size();++i) {
+            const auto found=identities.find({types[i],indices[i]});if(found==identities.end())return std::nullopt;
+            filtered.push_back(std::move(result.materials[found->second]));
+        }
+        result.materials=std::move(filtered);
     }
     return result;
 }

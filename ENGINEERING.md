@@ -7215,6 +7215,21 @@ Owned DF44340 exits unsaved with source preservation. Plugin build and UI
 composition pass; paired viewer logs contain only documented engine diagnostics.
 This verifies the assembled draft workflow, not complete responsive/hover parity.
 
+Artwork draft controls use the installed BUTTON_FILTER search/quantity frame,
+shared quantity increment/decrement artwork, and shared8:3 removal artwork (the
+LOCATION_OCCUPATION_REMOVE_WORKER alias). Native renderer2092be draws that4x3
+removal grid. Draft descriptions occupy the two rows beneath the title; subject
+lists reserve the native extra row above the quantity controls. At1200x800,
+local rendered comparison `build/qa/artwork-controls-verified` matches the native
+020406 search field26208 pixels, quantity field21312 pixels, and each amount
+button1152 pixels exactly. The removal sprite's724 opaque pixels also match;
+78 surrounding row-background pixels still differ. This remaining background
+mismatch, discard confirmation geometry, subject hover and other window sizes
+remain unfinished. The local capture reuses native observed content and installed
+assets without launching DF; it is appearance evidence, not new live-effect
+acceptance. Root19/19 and headless composition pass, with only documented engine
+diagnostics in the short30 FPS rendered check.
+
 Protected010525 on2026-11-02 exercises Existing image in the shared viewer after
 the assembled Work orders/conditions/Details workflow. Hover text and wrapping
 match the native observation, and group/civilization badges match. Selection

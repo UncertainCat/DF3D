@@ -48,7 +48,7 @@ func list_top() -> int:
 	return 84 if selected_kind()==3 else 120
 func sync_scroll() -> void:
 	if state==null or scrollbar==null:return
-	page_rows=maxi(1,int((size.y-list_top()-(96 if state.has_art() and state.art_page()>=6 else 60 if state.has_art() and state.art_page()==5 else 24))/36))
+	page_rows=maxi(1,int((size.y-list_top()-(132 if state.has_art() and state.art_page()>=7 and state.art_page()<=13 else 96 if state.has_art() and state.art_page()>=6 else 60 if state.has_art() and state.art_page()==5 else 24))/36))
 	state.draft_columns=maxi(1,int((size.x-32)/8))
 	state.visible_rows=page_rows
 	scrollbar.position=Vector2(size.x-32,list_top());scrollbar.size=Vector2(16,page_rows*36);scrollbar.page=page_rows
@@ -174,13 +174,8 @@ func draw_art() -> void:
 			patch("BUTTON_CATEGORY_RECTANGLE_ON",Vector2i(2,8+index*3),43,3)
 			text(state.rows[index].caption,Vector2(24,116+index*36))
 		return
-	var filter: Texture2D=art.texture("BUTTON_FILTER")
 	var columns:=int((size.x-32)/8)
-	if filter!=null:
-		for y in 3:
-			for x in columns:
-				var sx:=0 if x==0 else x-columns+6 if x>=columns-4 else 1
-				draw_texture_rect_region(filter,Rect2(16+x*8,96+y*12,8,12),Rect2(sx*8,y*12,8,12))
+	filter_frame(Vector2i(2,8),columns)
 	text(state.query+("_" if search_focused and blink else "") if search_focused or not state.query.is_empty() else "...",Vector2(32,116),15 if search_focused or not state.query.is_empty() else 8)
 	var offset: int=state.first-state.row_base()
 	for index in mini(page_rows,state.rows.size()-offset):
@@ -208,10 +203,17 @@ func draft_button(label: String,cell: Vector2i,enabled:=true,red:=false,selected
 	return Rect2(cell.x*8,cell.y*12,(label.length()+2)*8,36)
 func draft_enabled(id: int) -> bool:
 	return id not in [14,17] or not state.draft_value.elements.is_empty()
+func filter_frame(cell: Vector2i,columns: int) -> void:
+	var filter: Texture2D=art.texture("BUTTON_FILTER")
+	if filter==null:return
+	for y in 3:
+		for x in columns:
+			var sx:=0 if x==0 else x-columns+6 if x>=columns-4 else 1
+			draw_texture_rect_region(filter,Rect2((cell.x+x)*8,(cell.y+y)*12,8,12),Rect2(sx*8,y*12,8,12))
 func draw_draft() -> void:
 	var page: int=state.art_page()
 	var description: Array=state.snapshot.art.get("draft_description",[])
-	for i in mini(2,description.size()):text(description[i],Vector2(16,80+i*12),14)
+	for i in mini(2,description.size()):text(description[i],Vector2(16,44+i*12),14)
 	for category in DRAFT_CATEGORIES:draft_button(category[1],category[2],draft_enabled(category[0]),category[0]==17,page==category[0])
 	if page==6:
 		draft_button("Name",Vector2i(2,30),state.draft_value.has("name"))
@@ -219,12 +221,12 @@ func draw_draft() -> void:
 		draft_button("Back",Vector2i(16,30),true,true)
 	else:draft_button("Stop deleting" if page==17 else "Cancel",Vector2i(2,30),true,true)
 	if page>=7 and page<=14:
-		patch("BUTTON_RECTANGLE",Vector2i(29,8),int((size.x-248)/8),3)
+		filter_frame(Vector2i(29,8),int((size.x-248)/8))
 		text(state.query+("_" if search_focused and blink else "") if search_focused or not state.query.is_empty() else "...",Vector2(248,116),15 if search_focused else 8)
 	elif page in [15,16]:text(("Choose X: " if page==15 else "Choose Y: ")+state.draft_relation_caption,Vector2(232,116))
 	if page!=6:
 		var offset: int=state.first-state.row_base()
-		var width:=int((size.x-248)/8)-(2 if scrollbar.visible else 0)
+		var width:=int((size.x-248)/8)-(4 if page==17 else 2 if scrollbar.visible else 0)
 		for i in mini(page_rows,state.rows.size()-offset):
 			var row: Dictionary=state.rows[offset+i]
 			patch("BUTTON_RECTANGLE_DARK",Vector2i(29,int(list_top()/12)+i*3),width,3)
@@ -232,16 +234,19 @@ func draw_draft() -> void:
 			if label.length()>width-2:label=label.left(maxi(0,width-5))+"..."
 			text(label,Vector2(232,list_top()+20+i*36),11)
 			if page==17:
-				var remove: Texture2D=art.texture("BUILDING_JOBS_REMOVE")
+				# Native2092be uses the shared8:3 four-by-three removal artwork.
+				var remove: Texture2D=art.texture("LOCATION_OCCUPATION_REMOVE_WORKER")
 				if remove!=null:draw_texture_rect(remove,Rect2(size.x-48,list_top()+i*36,32,36),false)
 	if page>=7 and page<=13:
 		text("Number:",Vector2(232,size.y-28))
-		patch("BUTTON_RECTANGLE",Vector2i(37,int(size.y/12)-4),int((size.x-392)/8),3)
+		filter_frame(Vector2i(37,int(size.y/12)-4),int((size.x-384)/8))
 		text(str(state.draft_quantity)+("_" if quantity_focused and blink else ""),Vector2(312,size.y-28))
-		text("(0 for unnumbered plural)",Vector2(size.x-328,size.y-28))
-		for entry in [["BUTTON_ADD",size.x-80],["BUTTON_SUBTRACT",size.x-48]]:
+		text("(0 for unnumbered plural)",Vector2(size.x-328,size.y-28),7)
+		for entry in [["WORK_ORDERS_INCREASE_AMOUNT",size.x-80],["WORK_ORDERS_DECREASE_AMOUNT",size.x-48]]:
 			var texture: Texture2D=art.texture(entry[0])
-			if texture!=null:draw_texture_rect(texture,Rect2(entry[1],size.y-48,32,36),false)
+			if texture!=null:
+				draw_rect(Rect2(entry[1],size.y-48,32,36),Color.BLACK)
+				draw_texture_rect(texture,Rect2(entry[1],size.y-48,32,36),false)
 	if state.draft_discard:
 		patch("HOVER_RECTANGLE",Vector2i(20,18),80,15)
 		text("Any image data you've changed will be lost.",Vector2(176,244))

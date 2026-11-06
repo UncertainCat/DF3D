@@ -30,7 +30,7 @@
     "job_type": 67,
     "lines": [
       {
-        "text": "                  Roder\u00f2nul           Pop                                  Food  Drink           20th Malachite",
+        "text": "                  Roderònul           Pop                                  Food  Drink           20th Malachite",
         "y": 0
       },
       {
@@ -1281,5 +1281,28 @@
       "Controlled unlinked job held temporarily as the resident current job during headless client requests; restored afterward.",
       "No job edits, Residents row target, composed UI or other job-family acceptance."
     ]
+  },
+  "composed_read_reference": {
+    "source": "build/stockpile-storage-native-input-20261106-071227",
+    "result": {
+      "choices": 83,
+      "composed": {
+        "choices": 83,
+        "closed": true,
+        "filtered": true
+      },
+      "filtered": [
+        {
+          "caption": "Dolomite",
+          "count_caption": "200?",
+          "estimated": true,
+          "id": 1
+        }
+      ],
+      "success": true
+    },
+    "scope": "Headless shared service, job state and Details view: paged read, pointer wheel, typed native search and Escape. Controlled unlinked job; no edits or public Residents entry.",
+    "render_reference": "build/qa/job-settings-view-20261106",
+    "render_scope": "Offline component capture inspected against native063337; full scrollbar/owner/responsive parity remains unaccepted."
   }
 }

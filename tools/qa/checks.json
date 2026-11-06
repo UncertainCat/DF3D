@@ -117,6 +117,24 @@
       "prerequisites": ["extension_build", "df_assets", "real_renderer"]
     },
     {
+      "id": "job_settings_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/job_settings_state_test.gd",
+      "completion": "^JOB_SETTINGS_STATE_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
+      "id": "job_settings_view_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/job_settings_view_capture.gd",
+      "completion": "^JOB_SETTINGS_VIEW_CAPTURE_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build", "df_assets", "real_renderer"]
+    },
+    {
       "id": "residents_state_test",
       "lane": "core",
       "kind": "godot",

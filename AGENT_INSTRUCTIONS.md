@@ -267,6 +267,10 @@ copy, fabricated progress percentages or broader native-UI departures.
 
 ## 6. Local execution and save protection
 
+- Maintainer reported a GPU overheating/crash incident on 2026-11-06. Prefer
+  headless checks; keep necessary graphical runs brief, serial and capped at
+  30 FPS. Monitor GPU temperature/load during graphical work and close owned
+  test processes afterward. Do not infer the crash cause from later idle readings.
 - Prepend your MinGW bin directory to PATH (the gate reads `DF3D_MINGW_BIN`, default
   `C:/msys64/mingw64/bin`); other installed compiler/runtime DLLs can shadow it. Close Godot before
   replacing its loaded extension DLL.

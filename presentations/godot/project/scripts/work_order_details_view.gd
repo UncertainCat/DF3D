@@ -3,6 +3,7 @@ extends "res://scripts/location_staff_candidates_frame.gd"
 # families and global/responsive geometry remain staged.
 signal cancelled
 var state
+var job_context:=false
 var input_allowed: Callable
 var colors: Array[Color]=[]
 var search_focused:=false
@@ -12,15 +13,16 @@ var name_state=preload("res://scripts/work_order_art_name_state.gd").new()
 var name_view
 func configure_details(source,model) -> void:
 	super.configure(source);state=model;colors=art.installed_palette(source.assets_root())
-	name_state.configure(state)
-	name_view=preload("res://scripts/location_name_view.gd").new();add_child(name_view)
-	name_view.heading="Name the image" # Native literal16152c8; shared name renderer1fc5c0.
-	name_view.configure(source,name_state);name_view.hide()
-	name_view.input_allowed=func():return name_state.active and (not input_allowed.is_valid() or input_allowed.call())
-	name_view.cancelled.connect(name_state.close)
-	name_state.changed.connect(func():name_view.visible=name_state.active;queue_redraw())
+	if not job_context:
+		name_state.configure(state)
+		name_view=preload("res://scripts/location_name_view.gd").new();add_child(name_view)
+		name_view.heading="Name the image" # Native literal16152c8; shared name renderer1fc5c0.
+		name_view.configure(source,name_state);name_view.hide()
+		name_view.input_allowed=func():return name_state.active and (not input_allowed.is_valid() or input_allowed.call())
+		name_view.cancelled.connect(name_state.close)
+		name_state.changed.connect(func():name_view.visible=name_state.active;queue_redraw())
 	mouse_filter=Control.MOUSE_FILTER_STOP
-	mouse_exited.connect(func():if state!=null:state.hover_art(-1,0))
+	mouse_exited.connect(func():if state!=null and state.has_art():state.hover_art(-1,0))
 	scrollbar.row_changed.connect(func(value):state.seek(value))
 	scrollbar.input_allowed=func():return state.phase==state.Phase.Ready and (not input_allowed.is_valid() or input_allowed.call())
 	state.changed.connect(func():
@@ -32,14 +34,14 @@ func configure_details(source,model) -> void:
 func open(building: int,order: int) -> void:
 	state.open(building,order);show();queue_redraw()
 func layout(view: Vector2) -> void:
-	var global: bool=state!=null and (state.building_id==-2 or state.has_art())
+	var global: bool=job_context or (state!=null and (state.building_id==-2 or state.has_art()))
 	var rows_count:=maxi(13,floori(view.y/12)-(5 if global else 10))
 	var origin:=Vector2(16 if global else 72,(36 if global else 48)+fposmod(view.y,12)*0.5)
 	# Native image renderer200070/geometry2142a0 follows the available map width.
 	var width:=floori(view.x/8)*8-224 if global else 832
-	name_view.layout_frame(Vector2.ZERO,Vector2(width,rows_count*12))
+	if name_view!=null:name_view.layout_frame(Vector2.ZERO,Vector2(width,rows_count*12))
 	if position==origin and size==Vector2(width,rows_count*12):return
-	state.hover_art(-1,0)
+	if state.has_art():state.hover_art(-1,0)
 	position=origin;frame_rows=rows_count;size=Vector2(width,frame_rows*12);sync_scroll();queue_redraw()
 func selected_kind() -> int:
 	var selected: int=state.snapshot.get("selected_option",-1) if state!=null else -1
@@ -55,7 +57,7 @@ func sync_scroll() -> void:
 	# cells for unique figures/artifacts, which have no quantity controls.
 	if state.has_art() and state.art_page()>=7 and state.art_page()<=13:footer=108 if draft_has_quantity() else 72
 	page_rows=maxi(1,int((size.y-list_top()-footer)/36))
-	state.draft_columns=maxi(1,int((size.x-32)/8))
+	if not job_context:state.draft_columns=maxi(1,int((size.x-32)/8))
 	state.visible_rows=page_rows
 	scrollbar.position=Vector2(size.x-32,list_top());scrollbar.size=Vector2(16,page_rows*36);scrollbar.page=page_rows
 	if state.has_art():
@@ -65,7 +67,9 @@ func sync_scroll() -> void:
 	else:scrollbar.hide()
 	state.fit_visible_rows(page_rows)
 func back() -> void:
-	if state.ticket!=0:return
+	if state.ticket!=0:
+		if job_context:cancelled.emit()
+		return
 	if name_state.active:name_state.close();return
 	if state.has_art():
 		search_focused=false;quantity_focused=false
@@ -138,10 +142,11 @@ func text(value: String,point: Vector2,color:=15) -> void:
 func _draw() -> void:
 	if world==null or state==null:return
 	if name_state.active:return
+	if job_context:draw_rect(Rect2(Vector2(4,4),size-Vector2(8,8)),Color8(28,28,28))
 	patch("HOVER_RECTANGLE",Vector2i.ZERO,int(size.x/8),frame_rows)
 	if state.snapshot.is_empty():return
 	if state.has_art():draw_art();return
-	text(state.snapshot.get("caption",""),Vector2(16,32))
+	text(state.snapshot.get("caption",""),Vector2(16,32),11 if job_context else 15)
 	var selected: int=state.snapshot.get("selected_option",-1)
 	if selected<0:
 		for index in state.snapshot.options.size():text(state.snapshot.options[index].caption,Vector2(16,68+index*36))
@@ -174,7 +179,7 @@ func _draw() -> void:
 		text(row.caption,Vector2(label_x,list_top()+20+index*36))
 		if row.has("count_caption"):
 			if kind in [4,5]:text(row.count_caption,Vector2(label_x+8,list_top()+32+index*36),11)
-			else:text(row.count_caption,Vector2(size.x-(32 if scrollbar.visible else 16)-str(row.count_caption).length()*8,list_top()+20+index*36),13 if row.get("estimated",false) else 14)
+			else:text(row.count_caption,Vector2(size.x-(32 if scrollbar.visible else 16)-(8 if job_context else 0)-str(row.count_caption).length()*8,list_top()+20+index*36),13 if row.get("estimated",false) else 14)
 func draw_art() -> void:
 	var caption: String=state.snapshot.art.caption
 	text(caption,Vector2(maxf(16,(size.x-caption.length()*8)*0.5),20))

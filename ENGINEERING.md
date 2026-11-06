@@ -104,8 +104,20 @@ to an unset launcher variable, fixed before the accepted run.
 Installed bridge SHA256 is
 655F4BE733BE5BB583AD003EC357A75033074D693886E1CE0F76EA74A3511257.
 GPU samples36–37C with serial30FPS native graphics and a headless client.
-Residents row job-target publication, shared UI, edits, clothing/artwork and
-other job-family acceptance remain unfinished; typed read success is not exposure.
+The staged shared job-settings state collects all pages under one job/choice
+revision and retires superseded searches, closes and session changes. The
+existing Details view has a job context with native layout, title and count
+alignment; job selections emit a staged intent and never call manager-order
+writes. Protected071227 on2026-11-06 composes the real shared service/state/view
+headlessly: all83 choices, pointer wheel, typed Dolomite search and Escape pass.
+The controlled job is restored and owned DF38108 exits unsaved with source
+preservation. Joined logs contain only the known thread notice. Core19 and
+state checks pass in job-settings-composed-20261106. The offline component
+capture job-settings-view-20261106 passes with documented engine diagnostics
+and was inspected against native063337; full scrollbar/owner/responsive parity
+is not yet accepted. Native graphics ran briefly at30FPS, GPU samples36–37C.
+Residents row job-target publication, owner integration, edits, clothing/artwork
+and other job-family acceptance remain unfinished; this component is not exposed.
 
 The menu actions themselves clear live markup and build widgets: do not call
 them from the bridge. The formatter output is `markup_text_boxst`, not a vector

@@ -39,6 +39,41 @@ func run() -> void:
 		check(rejected.get("status")==C.ManagementStatus.Rejected and not rejected.has("job_settings"),"Stale job setting retained choices: "+field)
 	var unrelated:=await request("construction",{"action":C.ManagementAction.Catalog})
 	check(not unrelated.has("job_settings"),"Unrelated reply retained job settings")
+	var composed:=await composed_read(reference)
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"choices":rows.size(),"filtered":choices}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"choices":rows.size(),"filtered":choices,"composed":composed}));file.close()
 	world.queue_free();await process_frame;quit(1 if failed else 0)
+
+func ready(state) -> bool:
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline and state.phase==state.Phase.Reading:
+		world.poll();await create_timer(0.01).timeout
+	return state.phase==state.Phase.Ready
+
+func composed_read(reference: Dictionary) -> Dictionary:
+	if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Job settings assets unavailable"):return {}
+	root.size=Vector2i(1200,800)
+	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
+	for frame in 5:world.poll();await process_frame
+	var state=preload("res://scripts/job_settings_state.gd").new();state.configure(service)
+	var view=preload("res://scripts/work_order_details_view.gd").new();view.job_context=true;root.add_child(view);view.configure_details(world,state)
+	view.cancelled.connect(state.close)
+	state.open(int(reference.building_id),int(reference.job_id),int(reference.unit_id));view.show();view.layout(Vector2(1200,800))
+	var opened:=await ready(state)
+	check(opened and state.rows.size()==reference.provider.materials.size(),"Composed job settings pagination failed")
+	var count: int=state.rows.size()
+	var wheel:=InputEventMouseButton.new();wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN;wheel.pressed=true;wheel.position=view.position+Vector2(120,180);wheel.global_position=wheel.position
+	Input.parse_input_event(wheel);await process_frame
+	check(state.first==1,"Job settings wheel did not scroll")
+	var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=true;click.position=view.position+Vector2(120,100);click.global_position=click.position
+	Input.parse_input_event(click);await process_frame
+	click=click.duplicate();click.pressed=false;Input.parse_input_event(click);await process_frame
+	for character in "Dolomite":
+		var key:=InputEventKey.new();key.pressed=true;key.unicode=character.unicode_at(0);Input.parse_input_event(key)
+		await process_frame
+	var filtered:=await ready(state)
+	check(filtered and state.query=="Dolomite" and state.rows.size()==1 and state.rows[0].caption=="Dolomite","Composed native job filter failed")
+	var escape:=InputEventKey.new();escape.pressed=true;escape.keycode=KEY_ESCAPE;Input.parse_input_event(escape);await process_frame
+	check(state.phase==state.Phase.Closed and not view.visible,"Job settings Escape did not retire the page")
+	state.dispose();view.queue_free();service.queue_free();await process_frame
+	return {"choices":count,"filtered":filtered,"closed":state.phase==state.Phase.Closed}

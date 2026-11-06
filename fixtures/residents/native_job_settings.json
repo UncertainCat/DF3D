@@ -1508,5 +1508,1141 @@
       "saved_type": 0
     },
     "scope": "Management137 rejects stale edit identity/receipts, then actual headless Residents owner material-row pointer applies Dolomite and returns to refreshed roster. Native oracle verifies job/input/saved material fields. Controlled unlinked job only; no ordinary execution, other setting families or rendered owner acceptance."
+  },
+  "clothing_reference": {
+    "source": "build/stockpile-storage-native-input-20261106-075350",
+    "reference": {
+      "building_id": 3,
+      "button": [
+        70,
+        14,
+        72,
+        16
+      ],
+      "button_context": 1,
+      "clothing_current_race": -1,
+      "clothing_effect": {
+        "after": 756,
+        "before": -1,
+        "choice": 756,
+        "details_open": false,
+        "info_open": true,
+        "requirements": 0
+      },
+      "clothing_races": [
+        {
+          "caption": "dwarves",
+          "id": 572
+        },
+        {
+          "caption": "aardvark men",
+          "id": 756
+        },
+        {
+          "caption": "adder men",
+          "id": 651
+        },
+        {
+          "caption": "albatross men",
+          "id": 101
+        },
+        {
+          "caption": "alligator men",
+          "id": 303
+        },
+        {
+          "caption": "amphibian men",
+          "id": 633
+        },
+        {
+          "caption": "anaconda men",
+          "id": 708
+        },
+        {
+          "caption": "anole men",
+          "id": 489
+        },
+        {
+          "caption": "antmen",
+          "id": 636
+        },
+        {
+          "caption": "armadillo men",
+          "id": 388
+        },
+        {
+          "caption": "axolotl men",
+          "id": 509
+        },
+        {
+          "caption": "aye-aye men",
+          "id": 741
+        },
+        {
+          "caption": "badger men",
+          "id": 315
+        },
+        {
+          "caption": "bark scorpion men",
+          "id": 128
+        },
+        {
+          "caption": "barn owl men",
+          "id": 59
+        },
+        {
+          "caption": "bat men",
+          "id": 624
+        },
+        {
+          "caption": "beaver men",
+          "id": 503
+        },
+        {
+          "caption": "beetle men",
+          "id": 203
+        },
+        {
+          "caption": "black bear men",
+          "id": 279
+        },
+        {
+          "caption": "black mamba men",
+          "id": 735
+        },
+        {
+          "caption": "bluejay men",
+          "id": 6
+        },
+        {
+          "caption": "bobcat men",
+          "id": 666
+        },
+        {
+          "caption": "brown recluse spider men",
+          "id": 156
+        },
+        {
+          "caption": "bushmaster men",
+          "id": 744
+        },
+        {
+          "caption": "bushtit men",
+          "id": 116
+        },
+        {
+          "caption": "buzzard men",
+          "id": 306
+        },
+        {
+          "caption": "capuchin men",
+          "id": 723
+        },
+        {
+          "caption": "capybara men",
+          "id": 313
+        },
+        {
+          "caption": "cardinal men",
+          "id": 9
+        },
+        {
+          "caption": "cassowary men",
+          "id": 41
+        },
+        {
+          "caption": "cave fish men",
+          "id": 618
+        },
+        {
+          "caption": "cave swallow men",
+          "id": 631
+        },
+        {
+          "caption": "chameleon men",
+          "id": 486
+        },
+        {
+          "caption": "cheetah men",
+          "id": 342
+        },
+        {
+          "caption": "chinchilla men",
+          "id": 403
+        },
+        {
+          "caption": "chipmunk men",
+          "id": 526
+        },
+        {
+          "caption": "coati men",
+          "id": 696
+        },
+        {
+          "caption": "cockatiel men",
+          "id": 89
+        },
+        {
+          "caption": "copperhead snake men",
+          "id": 684
+        },
+        {
+          "caption": "cougar men",
+          "id": 294
+        },
+        {
+          "caption": "coyote men",
+          "id": 642
+        },
+        {
+          "caption": "crab men",
+          "id": 441
+        },
+        {
+          "caption": "crow men",
+          "id": 35
+        },
+        {
+          "caption": "cuttlefish men",
+          "id": 447
+        },
+        {
+          "caption": "damselfly men",
+          "id": 119
+        },
+        {
+          "caption": "deer men",
+          "id": 282
+        },
+        {
+          "caption": "desert tortoise men",
+          "id": 165
+        },
+        {
+          "caption": "dingo men",
+          "id": 693
+        },
+        {
+          "caption": "dragonfly men",
+          "id": 213
+        },
+        {
+          "caption": "eagle men",
+          "id": 107
+        },
+        {
+          "caption": "echidna men",
+          "id": 654
+        },
+        {
+          "caption": "elephant men",
+          "id": 324
+        },
+        {
+          "caption": "elephant seal men",
+          "id": 462
+        },
+        {
+          "caption": "elves",
+          "id": 574
+        },
+        {
+          "caption": "elk men",
+          "id": 394
+        },
+        {
+          "caption": "emu men",
+          "id": 86
+        },
+        {
+          "caption": "firefly men",
+          "id": 210
+        },
+        {
+          "caption": "fly men",
+          "id": 197
+        },
+        {
+          "caption": "flying squirrel men",
+          "id": 535
+        },
+        {
+          "caption": "fox men",
+          "id": 285
+        },
+        {
+          "caption": "gazelle men",
+          "id": 345
+        },
+        {
+          "caption": "giant tortoise men",
+          "id": 385
+        },
+        {
+          "caption": "gila monster men",
+          "id": 168
+        },
+        {
+          "caption": "giraffe men",
+          "id": 379
+        },
+        {
+          "caption": "goblins",
+          "id": 575
+        },
+        {
+          "caption": "gorlaks",
+          "id": 432
+        },
+        {
+          "caption": "grackle men",
+          "id": 12
+        },
+        {
+          "caption": "grasshopper men",
+          "id": 125
+        },
+        {
+          "caption": "gray langur men",
+          "id": 663
+        },
+        {
+          "caption": "gray squirrel men",
+          "id": 520
+        },
+        {
+          "caption": "great horned owl men",
+          "id": 104
+        },
+        {
+          "caption": "green tree frog men",
+          "id": 672
+        },
+        {
+          "caption": "grey parrot men",
+          "id": 68
+        },
+        {
+          "caption": "grizzly bear men",
+          "id": 276
+        },
+        {
+          "caption": "groundhog men",
+          "id": 300
+        },
+        {
+          "caption": "hamster men",
+          "id": 529
+        },
+        {
+          "caption": "hare men",
+          "id": 675
+        },
+        {
+          "caption": "harp seal men",
+          "id": 465
+        },
+        {
+          "caption": "hedgehog men",
+          "id": 532
+        },
+        {
+          "caption": "hippo men",
+          "id": 266
+        },
+        {
+          "caption": "hoary marmot men",
+          "id": 221
+        },
+        {
+          "caption": "honey badger men",
+          "id": 382
+        },
+        {
+          "caption": "hornbill men",
+          "id": 110
+        },
+        {
+          "caption": "horseshoe crab men",
+          "id": 456
+        },
+        {
+          "caption": "humans",
+          "id": 573
+        },
+        {
+          "caption": "hyena men",
+          "id": 705
+        },
+        {
+          "caption": "ibex men",
+          "id": 687
+        },
+        {
+          "caption": "iguana men",
+          "id": 492
+        },
+        {
+          "caption": "impala men",
+          "id": 753
+        },
+        {
+          "caption": "jackal men",
+          "id": 720
+        },
+        {
+          "caption": "jaguar men",
+          "id": 336
+        },
+        {
+          "caption": "jumping spider men",
+          "id": 149
+        },
+        {
+          "caption": "kakapo men",
+          "id": 65
+        },
+        {
+          "caption": "kangaroo men",
+          "id": 645
+        },
+        {
+          "caption": "kea men",
+          "id": 44
+        },
+        {
+          "caption": "kestrel men",
+          "id": 98
+        },
+        {
+          "caption": "king cobra men",
+          "id": 714
+        },
+        {
+          "caption": "kingsnake men",
+          "id": 660
+        },
+        {
+          "caption": "kiwi men",
+          "id": 29
+        },
+        {
+          "caption": "koala men",
+          "id": 648
+        },
+        {
+          "caption": "kobolds",
+          "id": 576
+        },
+        {
+          "caption": "leech men",
+          "id": 506
+        },
+        {
+          "caption": "leopard gecko men",
+          "id": 162
+        },
+        {
+          "caption": "leopard men",
+          "id": 333
+        },
+        {
+          "caption": "leopard seal men",
+          "id": 444
+        },
+        {
+          "caption": "lion men",
+          "id": 330
+        },
+        {
+          "caption": "lion tamarin men",
+          "id": 759
+        },
+        {
+          "caption": "lizard men",
+          "id": 480
+        },
+        {
+          "caption": "loon men",
+          "id": 56
+        },
+        {
+          "caption": "lorikeet men",
+          "id": 77
+        },
+        {
+          "caption": "louse men",
+          "id": 137
+        },
+        {
+          "caption": "lynx men",
+          "id": 765
+        },
+        {
+          "caption": "magpie men",
+          "id": 95
+        },
+        {
+          "caption": "mandrill men",
+          "id": 348
+        },
+        {
+          "caption": "mantis men",
+          "id": 131
+        },
+        {
+          "caption": "masked lovebird men",
+          "id": 113
+        },
+        {
+          "caption": "mink men",
+          "id": 512
+        },
+        {
+          "caption": "monarch butterfly men",
+          "id": 207
+        },
+        {
+          "caption": "mongoose men",
+          "id": 702
+        },
+        {
+          "caption": "monitor lizard men",
+          "id": 711
+        },
+        {
+          "caption": "moon snail men",
+          "id": 153
+        },
+        {
+          "caption": "moose men",
+          "id": 318
+        },
+        {
+          "caption": "mosquito men",
+          "id": 146
+        },
+        {
+          "caption": "moth men",
+          "id": 122
+        },
+        {
+          "caption": "mountain goat men",
+          "id": 218
+        },
+        {
+          "caption": "muskox men",
+          "id": 391
+        },
+        {
+          "caption": "narwhal men",
+          "id": 263
+        },
+        {
+          "caption": "nautilus men",
+          "id": 468
+        },
+        {
+          "caption": "ocelot men",
+          "id": 717
+        },
+        {
+          "caption": "octopus men",
+          "id": 438
+        },
+        {
+          "caption": "olm men",
+          "id": 622
+        },
+        {
+          "caption": "one-humped camel men",
+          "id": 364
+        },
+        {
+          "caption": "opossum men",
+          "id": 699
+        },
+        {
+          "caption": "orca men",
+          "id": 450
+        },
+        {
+          "caption": "oriole men",
+          "id": 15
+        },
+        {
+          "caption": "osprey men",
+          "id": 83
+        },
+        {
+          "caption": "ostrich men",
+          "id": 32
+        },
+        {
+          "caption": "otter men",
+          "id": 496
+        },
+        {
+          "caption": "panda men",
+          "id": 310
+        },
+        {
+          "caption": "pangolin men",
+          "id": 732
+        },
+        {
+          "caption": "parakeet men",
+          "id": 62
+        },
+        {
+          "caption": "peach-faced lovebird men",
+          "id": 92
+        },
+        {
+          "caption": "penguin men",
+          "id": 23
+        },
+        {
+          "caption": "peregrine falcon men",
+          "id": 26
+        },
+        {
+          "caption": "platypus men",
+          "id": 273
+        },
+        {
+          "caption": "plump helmet men",
+          "id": 434
+        },
+        {
+          "caption": "polar bear men",
+          "id": 397
+        },
+        {
+          "caption": "pond turtle men",
+          "id": 515
+        },
+        {
+          "caption": "porcupine men",
+          "id": 657
+        },
+        {
+          "caption": "puffin men",
+          "id": 71
+        },
+        {
+          "caption": "python men",
+          "id": 747
+        },
+        {
+          "caption": "raccoon men",
+          "id": 288
+        },
+        {
+          "caption": "rat men",
+          "id": 518
+        },
+        {
+          "caption": "rattlesnake men",
+          "id": 678
+        },
+        {
+          "caption": "raven men",
+          "id": 38
+        },
+        {
+          "caption": "red panda men",
+          "id": 321
+        },
+        {
+          "caption": "red squirrel men",
+          "id": 523
+        },
+        {
+          "caption": "red-winged blackbird men",
+          "id": 18
+        },
+        {
+          "caption": "reptile men",
+          "id": 634
+        },
+        {
+          "caption": "rhesus macaque men",
+          "id": 291
+        },
+        {
+          "caption": "rhinoceros men",
+          "id": 376
+        },
+        {
+          "caption": "roach men",
+          "id": 200
+        },
+        {
+          "caption": "rodent men",
+          "id": 637
+        },
+        {
+          "caption": "saltwater crocodile men",
+          "id": 370
+        },
+        {
+          "caption": "serpent men",
+          "id": 635
+        },
+        {
+          "caption": "skink men",
+          "id": 483
+        },
+        {
+          "caption": "skunk men",
+          "id": 669
+        },
+        {
+          "caption": "sloth bear men",
+          "id": 738
+        },
+        {
+          "caption": "sloth men",
+          "id": 726
+        },
+        {
+          "caption": "slug men",
+          "id": 143
+        },
+        {
+          "caption": "snail men",
+          "id": 159
+        },
+        {
+          "caption": "snapping turtle men",
+          "id": 500
+        },
+        {
+          "caption": "snowy owl men",
+          "id": 47
+        },
+        {
+          "caption": "sparrow men",
+          "id": 50
+        },
+        {
+          "caption": "sperm whale men",
+          "id": 459
+        },
+        {
+          "caption": "spider monkey men",
+          "id": 729
+        },
+        {
+          "caption": "sponge men",
+          "id": 453
+        },
+        {
+          "caption": "squid men",
+          "id": 559
+        },
+        {
+          "caption": "stoat men",
+          "id": 762
+        },
+        {
+          "caption": "swan men",
+          "id": 74
+        },
+        {
+          "caption": "tapir men",
+          "id": 750
+        },
+        {
+          "caption": "Thadar's hands",
+          "id": 1124
+        },
+        {
+          "caption": "thrips men",
+          "id": 140
+        },
+        {
+          "caption": "tick men",
+          "id": 134
+        },
+        {
+          "caption": "tiger men",
+          "id": 339
+        },
+        {
+          "caption": "toad men",
+          "id": 1
+        },
+        {
+          "caption": "two-humped camel men",
+          "id": 367
+        },
+        {
+          "caption": "vulture men",
+          "id": 373
+        },
+        {
+          "caption": "walrus men",
+          "id": 226
+        },
+        {
+          "caption": "warriors of night",
+          "id": 1127
+        },
+        {
+          "caption": "warthog men",
+          "id": 327
+        },
+        {
+          "caption": "weasel men",
+          "id": 681
+        },
+        {
+          "caption": "white stork men",
+          "id": 53
+        },
+        {
+          "caption": "wild boar men",
+          "id": 639
+        },
+        {
+          "caption": "wolf men",
+          "id": 297
+        },
+        {
+          "caption": "wolverine men",
+          "id": 400
+        },
+        {
+          "caption": "wombat men",
+          "id": 690
+        },
+        {
+          "caption": "worm men",
+          "id": 4
+        },
+        {
+          "caption": "wren men",
+          "id": 80
+        }
+      ],
+      "context": 1,
+      "controlled_job": true,
+      "current_option": 2,
+      "current_option_index": -1,
+      "escape_details_open": false,
+      "escape_info_open": true,
+      "job_id": 2000000000,
+      "job_type": 100,
+      "lines": [
+        {
+          "text": "                  Roderònul           Pop                                  Food  Drink           20th Malachite",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+          "y": 2
+        },
+        {
+          "text": "",
+          "y": 3
+        },
+        {
+          "text": "",
+          "y": 4
+        },
+        {
+          "text": "    Make unknown material breastplate",
+          "y": 5
+        },
+        {
+          "text": "",
+          "y": 6
+        },
+        {
+          "text": "",
+          "y": 7
+        },
+        {
+          "text": "    For dwarves",
+          "y": 8
+        },
+        {
+          "text": "",
+          "y": 9
+        },
+        {
+          "text": "",
+          "y": 10
+        },
+        {
+          "text": "      ...",
+          "y": 11
+        },
+        {
+          "text": "",
+          "y": 12
+        },
+        {
+          "text": "",
+          "y": 13
+        },
+        {
+          "text": "    dwarves",
+          "y": 14
+        },
+        {
+          "text": "",
+          "y": 15
+        },
+        {
+          "text": "                                                                                                                                    Elevation 36",
+          "y": 16
+        },
+        {
+          "text": "    aardvark men",
+          "y": 17
+        },
+        {
+          "text": "",
+          "y": 18
+        },
+        {
+          "text": "",
+          "y": 19
+        },
+        {
+          "text": "    adder men",
+          "y": 20
+        },
+        {
+          "text": "",
+          "y": 21
+        },
+        {
+          "text": "",
+          "y": 22
+        },
+        {
+          "text": "    albatross men",
+          "y": 23
+        },
+        {
+          "text": "",
+          "y": 24
+        },
+        {
+          "text": "",
+          "y": 25
+        },
+        {
+          "text": "    alligator men",
+          "y": 26
+        },
+        {
+          "text": "",
+          "y": 27
+        },
+        {
+          "text": "",
+          "y": 28
+        },
+        {
+          "text": "    amphibian men",
+          "y": 29
+        },
+        {
+          "text": "",
+          "y": 30
+        },
+        {
+          "text": "",
+          "y": 31
+        },
+        {
+          "text": "    anaconda men",
+          "y": 32
+        },
+        {
+          "text": "",
+          "y": 33
+        },
+        {
+          "text": "",
+          "y": 34
+        },
+        {
+          "text": "    anole men",
+          "y": 35
+        },
+        {
+          "text": "",
+          "y": 36
+        },
+        {
+          "text": "",
+          "y": 37
+        },
+        {
+          "text": "    antmen",
+          "y": 38
+        },
+        {
+          "text": "",
+          "y": 39
+        },
+        {
+          "text": "",
+          "y": 40
+        },
+        {
+          "text": "    armadillo men",
+          "y": 41
+        },
+        {
+          "text": "",
+          "y": 42
+        },
+        {
+          "text": "",
+          "y": 43
+        },
+        {
+          "text": "    axolotl men",
+          "y": 44
+        },
+        {
+          "text": "",
+          "y": 45
+        },
+        {
+          "text": "",
+          "y": 46
+        },
+        {
+          "text": "    aye-aye men",
+          "y": 47
+        },
+        {
+          "text": "",
+          "y": 48
+        },
+        {
+          "text": "",
+          "y": 49
+        },
+        {
+          "text": "    badger men",
+          "y": 50
+        },
+        {
+          "text": "",
+          "y": 51
+        },
+        {
+          "text": "",
+          "y": 52
+        },
+        {
+          "text": "    bark scorpion men",
+          "y": 53
+        },
+        {
+          "text": "",
+          "y": 54
+        },
+        {
+          "text": "",
+          "y": 55
+        },
+        {
+          "text": "    barn owl men",
+          "y": 56
+        },
+        {
+          "text": "",
+          "y": 57
+        },
+        {
+          "text": "",
+          "y": 58
+        },
+        {
+          "text": "    bat men",
+          "y": 59
+        },
+        {
+          "text": "",
+          "y": 60
+        },
+        {
+          "text": "",
+          "y": 61
+        },
+        {
+          "text": "",
+          "y": 62
+        },
+        {
+          "text": "",
+          "y": 63
+        },
+        {
+          "text": "",
+          "y": 64
+        },
+        {
+          "text": "",
+          "y": 65
+        }
+      ],
+      "materials": [],
+      "options": [
+        {
+          "index": -1,
+          "kind": 2
+        }
+      ],
+      "search": [
+        106,
+        95,
+        165
+      ],
+      "unit_id": 6534
+    },
+    "scope": "Actual native job button, size list and race selection on disposable unlinked MakeArmor job with no requirements. Native screenshot inspected; no ordinary clothing production acceptance."
+  },
+  "clothing_wire_reference": {
+    "source": "build/stockpile-storage-native-input-20261106-075849",
+    "bridge_sha256": "7A306E9275B32B0C779B2694B1C90886EA0E8152D8F1DA3B4D51FC089EE8E676",
+    "result": {
+      "choices": 199,
+      "composed": {
+        "choices": 199,
+        "closed": true,
+        "filtered": true,
+        "material_applied": true,
+        "resident_id": 6534,
+        "returned_to_roster": true
+      },
+      "filtered": [
+        {
+          "caption": "aardvark men",
+          "estimated": false,
+          "id": 1
+        }
+      ],
+      "success": true
+    },
+    "effect": {
+      "race": 756,
+      "requirements": 0
+    },
+    "scope": "Owned reader matches complete native clothing race IDs/captions/order; typed current caption, pagination, search and actual Residents owner choice verified headlessly. Result material_applied field denotes the shared setting submission here. No rendered clothing owner or ordinary production acceptance."
   }
 }

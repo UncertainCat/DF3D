@@ -96,6 +96,50 @@ inline std::string nativeDetailInputCaption(const df::job_item& item) {
 // Choice population21d190 receives an independently owned context/order/inputs.
 // IMAGE opens a separate global picker and is not called here. Improvement
 // choices are observed, but their Image choice still needs an owned art editor.
+struct ClothingSizeChoices {std::string currentValue;uint64_t revision=0;std::vector<WorkOrderDetailMaterial> materials;};
+// Shared inline native clothing enumeration: manager2136b3 and job213bfa use
+// the same simulation raws/predicates. Neither opener is invoked at runtime.
+inline std::optional<ClothingSizeChoices> nativeClothingSizes(int32_t specifiedRace,uint64_t revision,const std::string& query) {
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    ClothingSizeChoices result;uint64_t hash=revision;
+    const auto add=[&](uint64_t value){for(unsigned shift=0;shift<64;shift+=8){hash^=(value>>shift)&255;hash*=UINT64_C(1099511628211);}};
+    // Native opener2136b3 inlines this enumeration; its whole UI handler is
+    // not an eligible runtime API. Iterate authoritative alphabetic raws,
+    // and use DF's identity leaf. No native menu vectors are borrowed.
+    auto& creatures=df::global::world->raws.creatures;
+    const int32_t playerRace=df::global::plotinfo->race_id;
+    if(playerRace<0 || size_t(playerRace)>=creatures.all.size() || !creatures.all[size_t(playerRace)] || query.size()>128)return std::nullopt;
+    const int32_t currentRace=specifiedRace==-1?playerRace:specifiedRace;
+    if(currentRace<0 || size_t(currentRace)>=creatures.all.size() || !creatures.all[size_t(currentRace)])return std::nullopt;
+    reinterpret_cast<void(*)(int16_t,std::string*,bool,int16_t)>(base+0xaa3bd0)(int16_t(currentRace),&result.currentValue,true,-1);
+    if(result.currentValue.size()>512)return std::nullopt;
+    std::vector<int32_t> races{playerRace};
+    for(auto* raw:creatures.alphabetic) {
+        if(!raw)return std::nullopt;
+        if(!std::any_of(raw->caste.begin(),raw->caste.end(),[](const auto* caste){return caste && caste->flags.is_set(df::caste_raw_flags::EQUIPS);}))continue;
+        if(!raw->flags.is_set(df::creature_raw_flags::HAS_ANY_INTELLIGENT_LEARNS))continue;
+        if(raw!=creatures.all[size_t(playerRace)] && !raw->flags.is_set(df::creature_raw_flags::OCCURS_AS_ENTITY_RACE) &&
+           !raw->flags.is_set(df::creature_raw_flags::HAS_ANY_LOCAL_POPS_CONTROLLABLE) && !raw->flags.is_set(df::creature_raw_flags::HAS_ANY_OUTSIDER_CONTROLLABLE) &&
+           !raw->flags.is_set(df::creature_raw_flags::HAS_ANY_LOCAL_POPS_PRODUCE_HEROES))continue;
+        const int32_t race=int16_t(reinterpret_cast<int16_t(*)(df::creature_handler*,df::creature_raw*)>(base+0x1fad50)(&creatures,raw));
+        if(race>=0 && race!=playerRace)races.push_back(race);
+    }
+    if(races.size()>16384)return std::nullopt;
+    hash=revision;add(2);add(races.size());
+    for(size_t i=0;i<races.size();++i) {
+        const auto race=races[i];if(size_t(race)>=creatures.all.size() || !creatures.all[size_t(race)])return std::nullopt;
+        WorkOrderDetailMaterial row;row.id=int32_t(i);row.index=race;row.caption=creatures.all[size_t(race)]->name[1];
+        if(row.caption.size()>512)return std::nullopt;
+        add(race);result.materials.push_back(std::move(row));
+    }
+    result.revision=(hash&INT64_MAX)?(hash&INT64_MAX):1;
+    if(!query.empty()) {
+        const auto lower=reinterpret_cast<void(*)(std::string*)>(base+0x52cee0);
+        auto normalized=query;lower(&normalized);
+        result.materials.erase(std::remove_if(result.materials.begin(),result.materials.end(),[&](const auto& row){auto caption=row.caption;lower(&caption);return caption.find(normalized)==std::string::npos;}),result.materials.end());
+    }
+    return result;
+}
 inline std::optional<WorkOrderDetailsObservation> nativeWorkOrderDetails(df::manager_order& source,int32_t selected=-1,const std::string& query={},int32_t dyeTarget=-1,bool dyeFilterApplied=false) {
     if(!workOrderDetailsReady() || !df::global::world || !df::global::plotinfo ||
        !df::global::plotinfo->main.fortress_entity)return std::nullopt;
@@ -197,43 +241,8 @@ inline std::optional<WorkOrderDetailsObservation> nativeWorkOrderDetails(df::man
     if(option.kind!=0 && option.kind!=2 && option.kind!=3 && option.kind!=6)return std::nullopt;
     if(option.kind==3 && !query.empty())return std::nullopt;
     if(option.kind==2) {
-        // Native opener2136b3 inlines this enumeration; its whole UI handler is
-        // not an eligible runtime API. Iterate authoritative alphabetic raws,
-        // and use DF's identity leaf. No native menu vectors are borrowed.
-        auto& creatures=df::global::world->raws.creatures;
-        const int32_t playerRace=df::global::plotinfo->race_id;
-        if(playerRace<0 || size_t(playerRace)>=creatures.all.size() || !creatures.all[size_t(playerRace)] || query.size()>128)return std::nullopt;
-        const int32_t currentRace=source.specdata.hist_figure_id==-1?playerRace:source.specdata.hist_figure_id;
-        if(currentRace<0 || size_t(currentRace)>=creatures.all.size() || !creatures.all[size_t(currentRace)])return std::nullopt;
-        result.currentValue.emplace();
-        reinterpret_cast<void(*)(int16_t,std::string*,bool,int16_t)>(base+0xaa3bd0)(int16_t(currentRace),&*result.currentValue,true,-1);
-        if(result.currentValue->size()>512)return std::nullopt;
-        std::vector<int32_t> races{playerRace};
-        for(auto* raw:creatures.alphabetic) {
-            if(!raw)return std::nullopt;
-            if(!std::any_of(raw->caste.begin(),raw->caste.end(),[](const auto* caste){return caste && caste->flags.is_set(df::caste_raw_flags::EQUIPS);}))continue;
-            if(!raw->flags.is_set(df::creature_raw_flags::HAS_ANY_INTELLIGENT_LEARNS))continue;
-            if(raw!=creatures.all[size_t(playerRace)] && !raw->flags.is_set(df::creature_raw_flags::OCCURS_AS_ENTITY_RACE) &&
-               !raw->flags.is_set(df::creature_raw_flags::HAS_ANY_LOCAL_POPS_CONTROLLABLE) && !raw->flags.is_set(df::creature_raw_flags::HAS_ANY_OUTSIDER_CONTROLLABLE) &&
-               !raw->flags.is_set(df::creature_raw_flags::HAS_ANY_LOCAL_POPS_PRODUCE_HEROES))continue;
-            const int32_t race=int16_t(reinterpret_cast<int16_t(*)(df::creature_handler*,df::creature_raw*)>(base+0x1fad50)(&creatures,raw));
-            if(race>=0 && race!=playerRace)races.push_back(race);
-        }
-        if(races.size()>16384)return std::nullopt;
-        hash=result.revision;add(option.kind);add(races.size());
-        for(size_t i=0;i<races.size();++i) {
-            const auto race=races[i];if(size_t(race)>=creatures.all.size() || !creatures.all[size_t(race)])return std::nullopt;
-            WorkOrderDetailMaterial row;row.id=int32_t(i);row.index=race;row.caption=creatures.all[size_t(race)]->name[1];
-            if(row.caption.size()>512)return std::nullopt;
-            add(race);result.materials.push_back(std::move(row));
-        }
-        result.choicesRevision=(hash&INT64_MAX)?(hash&INT64_MAX):1;
-        if(!query.empty()) {
-            const auto lower=reinterpret_cast<void(*)(std::string*)>(base+0x52cee0);
-            auto normalized=query;lower(&normalized);
-            result.materials.erase(std::remove_if(result.materials.begin(),result.materials.end(),[&](const auto& row){auto caption=row.caption;lower(&caption);return caption.find(normalized)==std::string::npos;}),result.materials.end());
-        }
-        return result;
+        auto sizes=nativeClothingSizes(source.specdata.hist_figure_id,result.revision,query);if(!sizes)return std::nullopt;
+        result.currentValue=std::move(sizes->currentValue);result.choicesRevision=sizes->revision;result.materials=std::move(sizes->materials);return result;
     }
     std::vector<df::job_item> inputs;inputs.reserve(source.items->elements.size());
     for(const auto* item:source.items->elements)inputs.push_back(*item);

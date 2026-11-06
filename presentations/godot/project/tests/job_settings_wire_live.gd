@@ -16,6 +16,7 @@ func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
 	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/residents-job-settings-reference.json"))
 	var expected: Dictionary=reference.provider
+	var choice_caption: String=expected.materials[1].caption
 	world=Df3dWorld.new();root.add_child(world)
 	if not check(world.attach(),"Job settings bridge attach failed"):quit(1);return
 	var deadline:=Time.get_ticks_msec()+5000
@@ -36,6 +37,7 @@ func run() -> void:
 		check(page.job_id==intent.job_id and page.building_id==intent.building_id and page.unit_id==intent.unit_id,"Job settings reply identity differs")
 		check(str(page.revision)==expected.revision and str(page.choices_revision)==expected.choices_revision,"Job settings revisions changed")
 		check(page.caption==expected.caption and page.selected_option==int(expected.selected),"Job settings native title/selection differs")
+		if expected.has("current_value"):check(page.get("current_value")==expected.current_value,"Job settings current size caption differs")
 		check(page.cursor==intent.cursor and page.total==expected.materials.size(),"Job settings page extent differs")
 		rows.append_array(page.choices)
 		if page.next_cursor==0:break
@@ -44,10 +46,10 @@ func run() -> void:
 	for i in mini(rows.size(),expected.materials.size()):
 		for field in ["id","caption","estimated"]:check(rows[i][field]==expected.materials[i][field],"Job settings choice differs: "+field)
 		check(rows[i].get("count_caption")==expected.materials[i].get("count_caption"),"Job settings count caption differs")
-	intent.cursor=0;intent.option=0;intent.query="Dolomite"
+	intent.cursor=0;intent.option=0;intent.query=choice_caption
 	var filtered:=await request("job_settings",intent)
 	var choices: Array=filtered.get("job_settings",{}).get("choices",[])
-	check(choices.size()==1 and choices[0].caption=="Dolomite","Native job material filter failed")
+	check(choices.size()==1 and choices[0].caption==choice_caption,"Native job material filter failed")
 	intent.query=""
 	for field in ["job_id","building_id","unit_id"]:
 		var stale:=intent.duplicate();stale[field]=2147483647
@@ -74,6 +76,7 @@ func ready(state) -> bool:
 	return state.phase==state.Phase.Ready
 
 func composed_read(reference: Dictionary) -> Dictionary:
+	var choice_caption: String=reference.provider.materials[1].caption
 	if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Job settings assets unavailable"):return {}
 	root.size=Vector2i(1200,800)
 	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
@@ -104,11 +107,11 @@ func composed_read(reference: Dictionary) -> Dictionary:
 	var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=true;click.position=view.position+Vector2(120,100);click.global_position=click.position
 	Input.parse_input_event(click);await process_frame
 	click=click.duplicate();click.pressed=false;Input.parse_input_event(click);await process_frame
-	for character in "Dolomite":
+	for character in choice_caption:
 		var key:=InputEventKey.new();key.pressed=true;key.unicode=character.unicode_at(0);Input.parse_input_event(key)
 		await process_frame
 	var filtered:=await ready(state)
-	check(filtered and state.query=="Dolomite" and state.rows.size()==1 and state.rows[0].caption=="Dolomite","Composed native job filter failed")
+	check(filtered and state.query==choice_caption and state.rows.size()==1 and state.rows[0].caption==choice_caption,"Composed native job filter failed")
 	var escape:=InputEventKey.new();escape.pressed=true;escape.keycode=KEY_ESCAPE;Input.parse_input_event(escape);await process_frame
 	check(state.phase==state.Phase.Closed and not view.visible,"Job settings Escape did not retire the page")
 	var returned: bool=owner.panel.visible and host.active==owner and owner.state.first==roster_first and owner.state.ids==roster_order
@@ -125,7 +128,7 @@ func composed_read(reference: Dictionary) -> Dictionary:
 	check(await ready(owner.state),"Material edit row load failed")
 	await pointer(owner.panel,Vector2(540,owner.panel.list_top()+(row_index-owner.state.first)*36+18))
 	check(await ready(state),"Material edit Details load failed")
-	check(state.rows.size()>1 and state.rows[1].caption=="Dolomite","Material edit choice changed")
+	check(state.rows.size()>1 and state.rows[1].caption==choice_caption,"Material edit choice changed")
 	await pointer(view,Vector2(120,view.list_top()+36+18))
 	var deadline:=Time.get_ticks_msec()+5000
 	while Time.get_ticks_msec()<deadline and state.phase==state.Phase.Applying:

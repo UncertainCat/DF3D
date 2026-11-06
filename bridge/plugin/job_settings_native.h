@@ -9,6 +9,7 @@ struct JobSettingsObservation {
     uint64_t revision=0,choicesRevision=0;
     df::coord search;
     std::string caption;
+    std::optional<std::string> currentValue;
     std::vector<WorkOrderDetailOption> options;
     std::vector<WorkOrderDetailMaterial> materials;
 };
@@ -22,6 +23,7 @@ inline bool jobSettingsReady() {
             {0x213a63,0x3c3,UINT64_C(0xbbbfcafbc2f10658)},
             {0x213f74,0xac,UINT64_C(0xbc878cc2d1caf065)},
             {0x2198df,0xcc,UINT64_C(0x0835284909b8e4cc)},
+            {0x21bd53,0x28,UINT64_C(0x33033347c20397f2)},
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -109,7 +111,13 @@ inline std::optional<JobSettingsObservation> nativeJobSettings(const df::job& so
     if(selected==-1)return query.empty()?std::optional<JobSettingsObservation>(result):std::nullopt;
     if(selected<0 || size_t(selected)>=result.options.size())return std::nullopt;
     const auto option=result.options[size_t(selected)];
-    // Artwork/clothing and job effects still need their job-specific adapter.
+    // Clothing shares native inline enumeration, not a manager-order proxy.
+    if(option.kind==2) {
+        auto sizes=nativeClothingSizes(job.specdata.hist_figure_id,result.revision,query);if(!sizes)return std::nullopt;
+        result.selected=selected;result.currentValue=std::move(sizes->currentValue);
+        result.choicesRevision=sizes->revision;result.materials=std::move(sizes->materials);return result;
+    }
+    // Artwork still needs its job-specific adapter.
     if(option.kind!=0 && option.kind!=3 && option.kind!=6)return std::nullopt;
     if(option.kind==3 && !query.empty())return std::nullopt;
     df::job_details_interfacest context;
@@ -177,26 +185,33 @@ inline std::optional<JobSettingsObservation> nativeJobSettings(const df::job& so
     }
     return result;
 }
-// Material effects are inline in native218900, pinned2198df..2199ab. The
+// Material and clothing effects are inline in native218900, with pinned spans. The
 // input handler also reads menu state and cannot be called. Use fresh native
 // eligibility/catalog observations, then reproduce only its job field writes.
 // Caller resolves membership at a safe point; this function verifies identity
 // and both displayed receipts before the first write. No operation can fail or
-// allocate once mutation starts. Other option families remain separate work.
-enum class JobMaterialOutcome {Rejected,Stale,Applied};
-inline JobMaterialOutcome applyJobMaterial(df::job& job,const JobSettingsTarget& target,
+// allocate once mutation starts. Artwork and other option families remain separate work.
+enum class JobSettingsOutcome {Rejected,Stale,Applied};
+inline JobSettingsOutcome applyJobSetting(df::job& job,const JobSettingsTarget& target,
     uint64_t revision,int32_t option,uint64_t choicesRevision,int32_t choice) {
     if(!revision || revision>INT64_MAX || !choicesRevision || choicesRevision>INT64_MAX || option<0 || choice<0)
-        return JobMaterialOutcome::Rejected;
-    if(job.id!=target.jobId)return JobMaterialOutcome::Stale;
+        return JobSettingsOutcome::Rejected;
+    if(job.id!=target.jobId)return JobSettingsOutcome::Stale;
     const auto observed=nativeJobSettings(job,option);
     if(!observed || observed->buildingId!=target.buildingId || observed->revision!=revision || observed->choicesRevision!=choicesRevision)
-        return JobMaterialOutcome::Stale;
-    if(size_t(option)>=observed->options.size() || observed->options[size_t(option)].kind!=0)return JobMaterialOutcome::Rejected;
-    const auto index=observed->options[size_t(option)].index;
-    if(index<0 || size_t(index)>=job.job_items.elements.size() || !job.job_items.elements[size_t(index)])return JobMaterialOutcome::Rejected;
+        return JobSettingsOutcome::Stale;
+    if(size_t(option)>=observed->options.size())return JobSettingsOutcome::Rejected;
+    const auto kind=observed->options[size_t(option)].kind;
+    if(kind!=0 && kind!=2)return JobSettingsOutcome::Rejected;
     const auto found=std::find_if(observed->materials.begin(),observed->materials.end(),[&](const auto& row){return row.id==choice;});
-    if(found==observed->materials.end())return JobMaterialOutcome::Rejected;
+    if(found==observed->materials.end())return JobSettingsOutcome::Rejected;
+    if(kind==2) {
+        // Native21bd73 updates the job's size-race union and closes Details.
+        // Requirement rebuilding at21bd7b belongs only to manager orders.
+        job.specdata.hist_figure_id=found->index;return JobSettingsOutcome::Applied;
+    }
+    const auto index=observed->options[size_t(option)].index;
+    if(index<0 || size_t(index)>=job.job_items.elements.size() || !job.job_items.elements[size_t(index)])return JobSettingsOutcome::Rejected;
     auto& item=*job.job_items.elements[size_t(index)];
     if(!item.job_details_flags.bits.have_set_job_details) {
         item.job_details_flags.bits.have_set_job_details=true;
@@ -205,6 +220,6 @@ inline JobMaterialOutcome applyJobMaterial(df::job& job,const JobSettingsTarget&
     }
     item.mat_type=found->type;item.mat_index=found->index;
     if(index==0){job.mat_type=found->type;job.mat_index=found->index;}
-    return JobMaterialOutcome::Applied;
+    return JobSettingsOutcome::Applied;
 }
 }

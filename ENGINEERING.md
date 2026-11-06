@@ -73,9 +73,8 @@ matches the existing inventory adapters.
 `df3d residents-job-settings-probe <unit-id> [option]`. Native d15ef0 determines
 eligibility. Pinned job-side inline option enumeration is retained because the
 whole opener cannot be called;21d190 supplies choices using owned job/context
-storage. A sole option auto-selects as native does. Material, improvement and
-plant code paths exist; only the controlled material path is accepted. Clothing
-and artwork selection remain unsupported. The diagnostic is read-only; the staged
+storage. A sole option auto-selects as native does. Material, improvement, plant and clothing read paths exist; the controlled
+material and clothing paths are accepted below. Artwork remains unsupported. The diagnostic is read-only; the staged
 Management137 material edit path is described below.
 Protected064001 on2026-11-06 matches all83 native material identities/counts/order,
 job/holder/search identity, and preserves native Details storage on a cold call.
@@ -133,7 +132,7 @@ Installed bridge SHA256 is
 652629A77559980CD476E153EAACBC65C71B2F155D3D320B29AC90841628E3E6.
 Owned DF37760 exits unsaved with source preservation; joined Godot logs have
 only the known thread notice. GPU samples35–36C, brief serial30FPS native and
-headless Godot. Clothing/artwork and other job-family acceptance remain
+headless Godot. Artwork and other job-family acceptance remain
 unfinished; the public Residents route is still unchanged.
 
 Protected072540 on2026-11-06 exercises the complete staged Residents owner
@@ -149,7 +148,8 @@ the disposable unlinked job only. Protected072717 clicks Dolomite and records
 job and requirement material0/169, first-edit saved requirement material0/-1
 and flags2, Details closed and Info retained. It then reopens the real job
 button and verifies Escape independently. DF26016 exits unsaved with source
-preservation; no runtime edit API exists yet. Static218900 branch2198df..2199da
+preservation. This discovery preceded the runtime edit API. Static218900
+branch2198df..2199da
 uses job pointer at context+8 and manager order at+10. It saves requirement
 material/flags2 once, changes its material, and changes the job-level material
 only for input0. The native job branch closes directly; d09ca0 requirement
@@ -158,9 +158,9 @@ handler or borrow its current-option global. Repeated edits, other requirement
 indices and other option families still need effect acceptance. Both runs use
 brief serial30FPS native graphics and headless clients; samples36–38C.
 
-The staged `applyJobMaterial` adapter validates job/holder identity, native
+The staged `applyJobSetting` adapter validates job/holder identity, native
 eligibility, the job revision, full choice revision and original choice ID
-before any write. It only supports the input-material option so far. Native
+before any write. It supports input-material and clothing-size options. Native
 inline effects2198df..2199ab are pinned (length0xcc, FNV0835284909b8e4cc): save
 original requirement material/flags2 once, change requirement material, and
 change job material for input0. No allocation or fallible operation follows
@@ -205,6 +205,33 @@ root19 and both UI state checks pass in job-edit-ui-final-20261106. Native MSVC
 build passes; installed bridge SHA256 is
 87F74956DDD1DACA1639C3AAE313A1F58C2F086C89E4B043D3EC49C53F9B09E3.
 GPU samples35–38C; native graphics were brief/serial30FPS and Godot headless.
+
+Job clothing sizing uses the same native inline eligibility/order as manager
+orders: job opener213bfa..213d54 matches manager2136b3..2137ff over authoritative
+alphabetic creature raws with the same equipment/intelligence/entity predicates.
+`nativeClothingSizes` shares that existing reader and native identity/name/
+normalization leaves; no manager_order or retained native menu is used as a proxy.
+The job result now supplies current_value to the existing shared "For" heading.
+Job effect21bd53..21bd7b is pinned (length0x28,FNV33033347c20397f2): write the
+selected race into job.specdata and close. Manager-only requirement rebuilding
+is excluded. The generic applyJobSetting validates the same identity/revisions
+for both input materials and clothing size; artwork/other effects remain pending.
+
+Protected075350 on2026-11-06 captures the actual native size page and selection
+for a disposable unlinked MakeArmor job with no requirements. Native selects
+race756 (aardvark men), retains zero requirements, closes Details and keeps Info.
+The image was inspected; semantic evidence is in native_job_settings.json.
+Protected075849 matches the complete native race list through the owned reader,
+then verifies typed pagination/current-size caption/search and the assembled
+headless Residents owner selection. Native readback confirms race756 and zero
+requirements. DF12528/37940 exit unsaved with source preservation. Native build
+and root19/extension/both state checks pass (job-clothing-20261106); joined client
+logs contain only the known thread notice. Installed bridge SHA256 is
+7A306E9275B32B0C779B2694B1C90886EA0E8152D8F1DA3B4D51FC089EE8E676.
+No graphical Godot run was used. Native captures were brief serial30FPS; GPU
+samples56–61C, ending57C. Rendered owner/resize, ordinary jobs with requirements,
+remaining option families and complete Residents exposure remain unfinished.
+
 
 
 

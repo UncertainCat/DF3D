@@ -984,7 +984,7 @@ void publish() {
     const size_t end=std::min(size_t(jobSettings->cursor)+64,v.materials.size());
     for(size_t i=jobSettings->cursor;i<end;++i){const auto& c=v.materials[i];choices.push_back(m::CreateJobSettingsChoice(b,c.id,b.CreateString(c.caption),c.countCaption?b.CreateString(*c.countCaption):0,c.estimated));}
     jobSettingsResult=m::CreateJobSettingsState(b,v.jobId,v.buildingId,jobSettings->unitId,v.revision,b.CreateString(v.caption),
-      b.CreateVector(options),int16_t(v.selected),b.CreateVector(choices),v.choicesRevision,uint32_t(v.materials.size()),jobSettings->cursor,end<v.materials.size()?uint32_t(end):0);
+      b.CreateVector(options),int16_t(v.selected),b.CreateVector(choices),v.choicesRevision,uint32_t(v.materials.size()),jobSettings->cursor,end<v.materials.size()?uint32_t(end):0,v.currentValue?b.CreateString(*v.currentValue):0);
   }
   flatbuffers::Offset<m::ResidentsActivityState> residentsActivityResult;
   if(residentsActivity) {
@@ -3829,10 +3829,10 @@ void run(color_ostream& out) {
         for(auto* job:holder->jobs)if(job && job->id==q.job_id()){source=job;break;}
       }
       if(source) {
-        const auto outcome=df3d_production::applyJobMaterial(*source,{q.job_id(),q.building_id()},q.expected_revision(),q.option(),q.expected_choices_revision(),q.choice());
+        const auto outcome=df3d_production::applyJobSetting(*source,{q.job_id(),q.building_id()},q.expected_revision(),q.option(),q.expected_choices_revision(),q.choice());
         switch(outcome) {
-          case df3d_production::JobMaterialOutcome::Applied:jobSettingsEdit->outcome=m::JobSettingsEditOutcome::Applied;status=m::ManagementStatus::Ok;break;
-          case df3d_production::JobMaterialOutcome::Stale:jobSettingsEdit->outcome=m::JobSettingsEditOutcome::Stale;break;
+          case df3d_production::JobSettingsOutcome::Applied:jobSettingsEdit->outcome=m::JobSettingsEditOutcome::Applied;status=m::ManagementStatus::Ok;break;
+          case df3d_production::JobSettingsOutcome::Stale:jobSettingsEdit->outcome=m::JobSettingsEditOutcome::Stale;break;
           default:jobSettingsEdit->outcome=m::JobSettingsEditOutcome::Rejected;break;
         }
       }
@@ -3859,6 +3859,7 @@ void run(color_ostream& out) {
         if(value && value->buildingId==q.building_id() && q.cursor()<=value->materials.size()) {
           const auto convert=[](std::string& text,size_t limit){text=DF2UTF(text);return text.size()<=limit && text.find('\0')==std::string::npos;};
           bool bounded=convert(value->caption,512) && value->options.size()<=65;
+          if(value->currentValue && !convert(*value->currentValue,512))bounded=false;
           for(auto& o:value->options)if(!convert(o.caption,512))bounded=false;
           for(auto& c:value->materials)if(!convert(c.caption,512) || (c.countCaption && !convert(*c.countCaption,128)))bounded=false;
           if(bounded){jobSettings=JobSettingsResult{q.unit_id(),q.cursor(),std::move(*value)};status=m::ManagementStatus::Ok;}

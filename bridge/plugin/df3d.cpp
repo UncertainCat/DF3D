@@ -2205,9 +2205,9 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           df::job copy=source;copy.job_items.elements.clear();for(auto& item:inputs)copy.job_items.elements.push_back(&item);
           const df3d_production::JobSettingsTarget target{source.id,before->buildingId};
           const auto apply=[&](const auto& identity,uint64_t revision,uint64_t choices,int32_t choice) {
-            return df3d_production::applyJobMaterial(copy,identity,revision,values[1],choices,choice);
+            return df3d_production::applyJobSetting(copy,identity,revision,values[1],choices,choice);
           };
-          using Outcome=df3d_production::JobMaterialOutcome;
+          using Outcome=df3d_production::JobSettingsOutcome;
           Json::Value result;
           result["stale_revision_rejected"]=apply(target,before->revision^1,before->choicesRevision,values[2])!=Outcome::Applied;
           result["stale_choices_rejected"]=apply(target,before->revision,before->choicesRevision^1,values[2])!=Outcome::Applied;
@@ -2241,6 +2241,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           const auto observed=df3d_production::nativeJobSettings(*unit->job.current_job,selected);if(!observed)return CR_FAILURE;
           Json::Value result;result["job_id"]=observed->jobId;result["building_id"]=observed->buildingId;
           result["selected"]=observed->selected;result["caption"]=DF2UTF(observed->caption);
+          if(observed->currentValue)result["current_value"]=DF2UTF(*observed->currentValue);
           result["revision"]=std::to_string(observed->revision);result["choices_revision"]=std::to_string(observed->choicesRevision);
           result["search"].append(observed->search.x);result["search"].append(observed->search.y);result["search"].append(observed->search.z);
           result["options"]=Json::Value(Json::arrayValue);result["materials"]=Json::Value(Json::arrayValue);

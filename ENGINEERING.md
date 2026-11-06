@@ -28,6 +28,39 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
 
+## Residents native list discovery
+
+`DF3D_RESIDENTS_REFERENCE=1` selects a paused, owned, unsaved native observation
+through `stockpile_storage_native.ps1`. The helper opens Creatures and records
+the selected Residents widget tree, raw candidate pool, active row identities,
+sort identifiers and diagnostic callback RVAs. Only the selected tab is used;
+inactive tab storage is not a membership or ordering reference. Protected014611
+on2026-11-06 observes340 raw candidates but141 active Residents rows, with default
+Category sorting. It captures both actual-click directions for Name, Cat, Prof,
+Job and Stress. DF34124 exits unsaved with the source manifest unchanged. The
+`residents-root.png` shot is taken after the final Stress sort; the separate
+widget template describes initial layout. Earlier014229 includes inactive lists
+and is not active membership evidence;014426/014502 are failed discovery runs.
+
+Native unit-list options include portrait, name/profession, recenter, sheet,
+current job, activity details, happiness, specialization and work-detail icons.
+The screen has Residents/Pets-Livestock/Other/Dead-Missing tabs. The current
+`read_only_info.gd` supplies only Residents and local name/profession/job sorting;
+this is not acceptance of the complete native screen.
+
+Observed comparator invokes are Category1431370 (key helper1425050),
+Name1435a10 (caption14240d0), Profession14358c0 (caption1425170),
+Activity1435f60 (map-based helper1434030), and Stress1435ed0. Static inspection
+shows the first three operate on copied item-or-unit entries; Stress compares
+soul stress, with the native missing-soul sentinel. Activity resolves cached
+job strings through the captured widget context. Filters are1435b40 (contextual
+text helper1424c30) and3d5df0 (Residents exclusion predicate). These observations
+identify candidates, not runtime-ready APIs: transitive ownership, native
+sorting/tie behavior and owned activity/filter contexts still need verification.
+No runtime provider may read the captured widgets or their cache. Do not replace
+native filtering or ordering with Godot string comparisons when extending this
+screen. Runtime integration and public exposure remain unfinished.
+
 ## Farm removal native entry points
 
 The diagnostic `df3d farm-contents-read <farm>` returns contained items in native

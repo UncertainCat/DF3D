@@ -125,3 +125,8 @@ func _draw() -> void:
 			text(row.first_line,Vector2(56,y+24),int(ink[0])+8*int(ink[2]),240)
 			text(row.second_line,Vector2(56,y+36),int(ink[0])+8*int(ink[2]),240)
 		text(row.activity.caption,Vector2(368,y+24),int(row.activity.fg)+8*int(row.activity.bright),280)
+		if row.has("happiness"):
+			# Native1428db0 returns indicator6..12; graphics parser1100d63
+			# maps these to BUTTON_STRESS_0..6. Captured row bounds are2x2 cells.
+			var happiness: Texture2D=art.texture("BUTTON_STRESS_%d" % int(row.happiness))
+			if happiness!=null:draw_texture_rect(happiness,Rect2(656,y,16,24),false)

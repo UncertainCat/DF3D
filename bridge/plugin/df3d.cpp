@@ -2155,6 +2155,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           auto& activity=result["activity"];activity["caption"]=DF2UTF(row->activity.caption);
           activity["fg"]=row->activity.foreground;activity["bg"]=row->activity.background;
           activity["bright"]=row->activity.bright;
+          result["happiness"]=int(row->happiness);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="residents-activity-probe") {

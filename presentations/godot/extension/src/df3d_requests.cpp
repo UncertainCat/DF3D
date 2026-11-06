@@ -182,6 +182,7 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
             row["id"]=v.id;row["combined"]=String::utf8(v.combined.c_str());row["name"]=String::utf8(v.name.c_str());
             row["profession"]=String::utf8(v.profession.c_str());row["first_line"]=String::utf8(v.firstLine.c_str());
             row["second_line"]=String::utf8(v.secondLine.c_str());
+            if(v.happiness>=0)row["happiness"]=int(v.happiness);
             for(auto c:v.nameColor.color)primary.push_back(int(c));
             for(auto c:v.nameColor.alternate)alternate.push_back(int(c));
             color["color"]=primary;color["alternate"]=alternate;color["effect"]=int(v.nameColor.effect);row["name_color"]=color;

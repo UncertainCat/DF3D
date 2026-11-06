@@ -83,7 +83,15 @@ if os.getenv('DF3D_RESIDENTS_ROWS')=='1' then
      end
      observed[#observed+1]=bytes
     end
-    local sample={id=widget.u.id,width=width,show_gender=widget.show_gender,grazer=grazer,provider=row,screen=observed}
+    local indicator
+    for _,child in ipairs(dfhack.gui.getWidgetChildren(widget.parent))do
+     if child.name=="Happiness indicator" then indicator=child;break end
+    end
+    assert(indicator,"Native happiness indicator missing")
+    local _,address=df.sizeof(indicator)
+    local happiness=df.reinterpret_cast("int32_t",address+0x150).value-6
+    assert(row.happiness==happiness,"Residents happiness differs "..widget.u.id)
+    local sample={happiness=happiness,happiness_rect={indicator.rect.x1,indicator.rect.y1,indicator.rect.x2,indicator.rect.y2},id=widget.u.id,width=width,show_gender=widget.show_gender,grazer=grazer,provider=row,screen=observed}
     if os.getenv('DF3D_RESIDENTS_PORTRAITS')=='1' then
      local portrait
      for _,child in ipairs(dfhack.gui.getWidgetChildren(widget.parent))do

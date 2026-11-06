@@ -1004,6 +1004,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         if(!text || text->size()>4096 || text->str().find('\0')!=std::string::npos)return "invalid residents row text";
         bytes+=text->size();
       }
+      if(row->happiness() < -1 || row->happiness()>6)return "invalid residents happiness";
       const auto* c=row->name_color();
       if(const auto* icon=row->sheet_icon())if(auto error=validateOwnerAppearance(*icon,appearanceBytes))return error;
       if(c->foreground()>7 || c->background()>7 || c->bright()>1 || c->alternate_foreground()>7 ||

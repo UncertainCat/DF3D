@@ -49,7 +49,7 @@ ManagementState decodeState(const m::ManagementState* s) {
   if(const auto* r=s->residents_rows()) {
     next.residentsRows.emplace();
     for(const auto* v:*r->rows()) {
-      ResidentRow row;row.id=v->id();row.combined=v->combined()->str();row.name=v->name()->str();
+      ResidentRow row;row.id=v->id();row.happiness=v->happiness();row.combined=v->combined()->str();row.name=v->name()->str();
       row.profession=v->profession()->str();row.firstLine=v->first_line()->str();row.secondLine=v->second_line()->str();
       const auto* c=v->name_color();
       row.nameColor={{c->foreground(),c->background(),c->bright()},

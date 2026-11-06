@@ -1,5 +1,6 @@
 #pragma once
 #include "residents_activity_native.h"
+#include "residents_happiness_native.h"
 #include "zone_native.h"
 
 namespace df3d_residents {
@@ -7,6 +8,7 @@ struct RowText {
     df3d_area::ZoneOwnerDisplayText name;
     df3d_area::ZoneOwnerNameColor nameColor;
     ActivityText activity;
+    uint8_t happiness=0;
 };
 
 // Safe-point semantic content for a Residents row. Native row builder142a7ab
@@ -19,7 +21,8 @@ inline std::optional<RowText> rowText(df::unit* unit,int32_t columns,bool showGe
     const auto name=df3d_area::nativeZoneOwnerDisplayText(*unit,columns,showGender);
     const auto color=df3d_area::nativeZoneOwnerNameColor(*unit);
     const auto activity=activityText(unit);
-    if(!name || !color || !activity)return std::nullopt;
-    return RowText{*name,*color,*activity};
+    const auto happiness=happinessTier(unit);
+    if(!name || !color || !activity || !happiness)return std::nullopt;
+    return RowText{*name,*color,*activity,*happiness};
 }
 }

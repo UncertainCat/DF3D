@@ -32,6 +32,11 @@ absent. Captions, color effects and Activity text are separate from the complete
 ordered ID query. Bridge/adapter acceptance is recorded in ENGINEERING.md;
 the complete Residents screen remains staged.
 
+Residents row `happiness` is an additive Management132 observation with default-1
+(unobserved). Values0..6 are native displayed tiers, happiest through most
+distressed; older readers ignore the field and older buffers retain absence.
+It does not change existing required fields, actions or defaults.
+
 Residents row `sheet_icon` is an optional additive Management132 observation.
 Older132 buffers omit it and older readers ignore it; no required field, action,
 default or existing meaning changes. Absence means no artwork observation, never

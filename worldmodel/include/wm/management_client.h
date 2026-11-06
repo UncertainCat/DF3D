@@ -418,6 +418,7 @@ struct ResidentsState { std::vector<int32_t> unitIds; };
 struct ResidentsRowsRequest { std::vector<int32_t> unitIds; uint16_t columns=30; bool showGender=false; };
 struct ResidentRow {
   int32_t id=-1;
+  int8_t happiness=-1; // Unobserved, or native happiest0 through most distressed6.
   std::string combined,name,profession,firstLine,secondLine;
   AreaNameColor nameColor;
   std::string activity;

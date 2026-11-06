@@ -31,6 +31,29 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Residents native list discovery
 
+Residents happiness comes from native1428db0 acting on an independently owned
+row container. The reader copies the indicator enum and destroys the tree without
+feeding, arranging, rendering or invoking its retained tooltip callback. Native
+mood overrides and missing-soul behavior remain inside DF. Body pins cover the
+producer, factory and cleanup; Activity and happiness share the owned container
+constructor/deleter. The observation is happiest0 through most distressed6,
+with-1 reserved for absent observations in older buffers. The staged view uses
+installed BUTTON_STRESS_0..6 at the captured2x2 cell bounds: native graphics
+parser1100d63 maps indicator6 to BUTTON_STRESS_0, and widget renderer1418dc0 draws
+the corresponding2x2 cells. Runtime never calls that renderer.
+
+Protected040237 on2026-11-06 compares all13 initial visible native indicator
+values with the owned reader and typed bridge replies, covering tiers0..5.
+It also passes the11 existing query and13 row-content comparisons. This does not
+establish tier6/mood-override scenario or hover acceptance. DF5456 exits unsaved,
+source unchanged; paired logs contain only the known separate-thread notice.
+Installed bridge SHA256 is5698F06CF6852500083031EF6DD1222039AF47E46C8D4B50B0C27FC32AC12694.
+MSVC and `residents-happiness` core19/19/state checks pass. Offline
+`residents-happiness-render` passes with documented Godot diagnostics; rendered
+happiness placement/artwork was inspected against the native screen. Native and
+offline graphics ran serially at30FPS, with observed GPU35–36C. Hover,
+specialization, work-detail controls and complete screen acceptance remain open.
+
 `residents_state.gd` and `residents_view.gd` are staged components, not a public
 route. The state uses the shared semantic action service for native query order
 and viewport row batches, retaining each sort header's direction and raw search

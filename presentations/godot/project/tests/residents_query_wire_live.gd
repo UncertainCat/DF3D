@@ -45,6 +45,7 @@ func run() -> void:
 			# sensitive, unlike scalar numeric comparison.
 			for field: String in ["caption","fg","bg","bright"]:
 				matches=matches and actual.activity[field]==expected_row.activity[field]
+			matches=matches and actual.get("happiness",-1)==expected_row.happiness
 			matches=matches and actual.name_color.effect==expected_row.name_color.effect
 			for field: String in ["color","alternate"]:
 				for component in 3:

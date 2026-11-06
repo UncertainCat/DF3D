@@ -58,8 +58,8 @@ inline bool activitySupported() {
 // owned row tree. We never feed, arrange or render it, or invoke its callbacks.
 // In particular, displaying_tooltip stays false: native widget destruction's
 // global tooltip retirement branch must not run for this temporary tree.
-inline std::optional<ActivityText> activityText(df::unit* unit) {
-    if(!unit || !df::global::world || !activitySupported())return std::nullopt;
+inline std::shared_ptr<df::widget_container> ownedRow() {
+    if(!df::global::world || !activitySupported())return {};
     static_assert(sizeof(df::widget_container)==0x178);
     static_assert(sizeof(std::shared_ptr<df::widget_container>)==16);
     static_assert(sizeof(std::string)==32);
@@ -69,17 +69,23 @@ inline std::optional<ActivityText> activityText(df::unit* unit) {
     using Free=void (*)(void*,size_t);
     using Construct=void* (*)(void*);
     using Destroy=void* (*)(void*,unsigned);
-    using Produce=std::string (*)(void*,std::shared_ptr<df::widget_container>,df::unit*,bool);
     const auto allocate=reinterpret_cast<Allocate>(const_cast<uint8_t*>(base+0x1539690));
     const auto release=reinterpret_cast<Free>(const_cast<uint8_t*>(base+0x1539680));
     const auto construct=reinterpret_cast<Construct>(const_cast<uint8_t*>(base+0xed220));
     const auto destroy=reinterpret_cast<Destroy>(const_cast<uint8_t*>(base+0xbb680));
-    const auto produce=reinterpret_cast<Produce>(const_cast<uint8_t*>(base+0x1425c40));
     void* storage=allocate(sizeof(df::widget_container));
     std::memset(storage,0,sizeof(df::widget_container));
     try {construct(storage);} catch(...) {release(storage,sizeof(df::widget_container));throw;}
     std::shared_ptr<df::widget_container> row(static_cast<df::widget_container*>(storage),
         [destroy](df::widget_container* value){destroy(value,1);});
+    return row;
+}
+inline std::optional<ActivityText> activityText(df::unit* unit) {
+    if(!unit)return std::nullopt;
+    auto row=ownedRow();if(!row)return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    using Produce=std::string (*)(void*,std::shared_ptr<df::widget_container>,df::unit*,bool);
+    const auto produce=reinterpret_cast<Produce>(const_cast<uint8_t*>(base+0x1425c40));
     // The list pointer is only captured by deferred button callbacks. Passing
     // null prevents accidental borrowing of a native menu. The actual by-value
     // shared_ptr ABI gives the callee its own reference to consume.

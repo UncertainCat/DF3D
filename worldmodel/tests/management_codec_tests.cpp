@@ -9,6 +9,20 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("Residents happiness preserves absence and rejects unknown tiers") {
+  for(int tier=-2;tier<=7;++tier) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto empty=b.CreateString("");const auto color=wire::CreateAreaNameColor(b);
+    const auto row=wire::CreateResidentRow(b,42,empty,empty,empty,empty,empty,color,empty,7,0,false,{},int8_t(tier));
+    const auto payload=wire::CreateResidentsRowsState(b,b.CreateVector(std::vector{row}));
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(wire::ManagementAction::ResidentsRowsRead);
+    state.add_status(wire::ManagementStatus::Ok);state.add_residents_rows(payload);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(tier < -1 || tier>6));
+    if(tier>=-1 && tier<=6)CHECK(codec::decodeState(value).residentsRows->rows.front().happiness==tier);
+  }
+}
+
 TEST_CASE("Residents artwork is an optional owned recipe with validated page identities") {
   for(int variant=0;variant<3;++variant) {
     flatbuffers::FlatBufferBuilder b;

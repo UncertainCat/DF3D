@@ -6,10 +6,11 @@ import argparse
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
-ENUMS = ("WorkOrderPhase", "CreatureAnimalOutcome", "CreatureLocationOutcome", "CreatureWorkshopOutcome", "CreatureKnowledgeOutcome", "CreatureExpelOutcome", "CreatureHeaderOutcome", "ConstructionOutcome", "FarmEditOutcome", "FarmOperation", "ManagementAction", "ManagementStatus", "AreaKind", "AreaCandidateEntity", "AreaOperation", "LocationStaffAssignmentKind", "AreaRoomOutcome", "LocationEntryOutcome", "LocationEditOutcome", "LocationQuantityMode", "LocationNameMode", "LocationRecognitionState", "AlertOperation", "AlertView",
+ENUMS = ("ResidentsSort", "WorkOrderPhase", "CreatureAnimalOutcome", "CreatureLocationOutcome", "CreatureWorkshopOutcome", "CreatureKnowledgeOutcome", "CreatureExpelOutcome", "CreatureHeaderOutcome", "ConstructionOutcome", "FarmEditOutcome", "FarmOperation", "ManagementAction", "ManagementStatus", "AreaKind", "AreaCandidateEntity", "AreaOperation", "LocationStaffAssignmentKind", "AreaRoomOutcome", "LocationEntryOutcome", "LocationEditOutcome", "LocationQuantityMode", "LocationNameMode", "LocationRecognitionState", "AlertOperation", "AlertView",
          "SelectionOperation", "SelectionKind", "SelectionSection", "CreatureSectionKind", "ReportView", "ReportTab", "ReportZoom")
 
 DOMAINS = {
+    "residents": ("ResidentsQuery", "ResidentsQuery"),
     "creature_animal": ("CreatureAnimalEdit", "CreatureAnimalEdit"),
     "creature_location": ("CreatureLocationRemove", "CreatureLocationRemove"),
     "creature_workshop": ("CreatureWorkshopRemove", "CreatureWorkshopRemove"),

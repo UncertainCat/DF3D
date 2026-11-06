@@ -1,4 +1,10 @@
 // Generated exhaustive model/wire correspondence checks.
+static_assert(static_cast<int>(wm::ResidentsSort::Category) == static_cast<int>(df3d::mirror::ResidentsSort::Category));
+static_assert(static_cast<int>(wm::ResidentsSort::Name) == static_cast<int>(df3d::mirror::ResidentsSort::Name));
+static_assert(static_cast<int>(wm::ResidentsSort::Profession) == static_cast<int>(df3d::mirror::ResidentsSort::Profession));
+static_assert(static_cast<int>(wm::ResidentsSort::Stress) == static_cast<int>(df3d::mirror::ResidentsSort::Stress));
+static_assert(static_cast<int>(wm::ResidentsSort::Activity) == static_cast<int>(df3d::mirror::ResidentsSort::Activity));
+static_assert(sizeof(df3d::mirror::EnumValuesResidentsSort()) / sizeof(df3d::mirror::ResidentsSort) == 5);
 static_assert(static_cast<int>(wm::WorkOrderPhase::Unknown) == static_cast<int>(df3d::mirror::WorkOrderPhase::Unknown));
 static_assert(static_cast<int>(wm::WorkOrderPhase::Active) == static_cast<int>(df3d::mirror::WorkOrderPhase::Active));
 static_assert(static_cast<int>(wm::WorkOrderPhase::Waiting) == static_cast<int>(df3d::mirror::WorkOrderPhase::Waiting));
@@ -140,7 +146,8 @@ static_assert(static_cast<int>(wm::ManagementAction::CreatureKnowledgeRead) == s
 static_assert(static_cast<int>(wm::ManagementAction::CreatureWorkshopRemove) == static_cast<int>(df3d::mirror::ManagementAction::CreatureWorkshopRemove));
 static_assert(static_cast<int>(wm::ManagementAction::CreatureLocationRemove) == static_cast<int>(df3d::mirror::ManagementAction::CreatureLocationRemove));
 static_assert(static_cast<int>(wm::ManagementAction::CreatureAnimalEdit) == static_cast<int>(df3d::mirror::ManagementAction::CreatureAnimalEdit));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 80);
+static_assert(static_cast<int>(wm::ManagementAction::ResidentsQuery) == static_cast<int>(df3d::mirror::ManagementAction::ResidentsQuery));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 81);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -427,3 +434,4 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::CreatureKnowledgeRead) =
 static_assert(wm::isRuntimeAction(wm::ManagementAction::CreatureWorkshopRemove) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::CreatureWorkshopRemove));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::CreatureLocationRemove) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::CreatureLocationRemove));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::CreatureAnimalEdit) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::CreatureAnimalEdit));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::ResidentsQuery) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ResidentsQuery));

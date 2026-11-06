@@ -22,6 +22,13 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management131 adds the dedicated ResidentsQuery request and complete ordered
+unit-ID result. Rebuild both peers for `Local\\df3d_management_v131`; older
+observations leave this result absent. Query bytes retain native textbox input,
+including partial UTF-8; do not convert them to CP437. The contract is separate
+from CitizenList and its Work Details pagination. Native query transport and
+public Residents UI acceptance are tracked in ENGINEERING.md.
+
 Management130 adds dye-stage navigation and native dye headings, color swatches
 and submenu choices to Work order Details. Rebuild/install both peers on
 `Local\\df3d_management_v130`. Older recordings leave these observations absent;

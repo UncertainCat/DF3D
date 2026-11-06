@@ -9,6 +9,53 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("Residents query preserves native textbox bytes and validates its domain") {
+  wm::ManagementRequest request;request.action=wm::ManagementAction::ResidentsQuery;
+  request.residents.sort=wm::ResidentsSort::Activity;request.residents.descending=true;
+  // Includes an incomplete UTF-8 sequence, possible after native Backspace.
+  request.residents.queryBytes={'T',0xc3};
+  for(int variant=0;variant<5;++variant) {
+    auto r=request;
+    if(variant==1)r.residents.queryBytes={0};
+    if(variant==2)r.residents.queryBytes.resize(wire::kResidentsQueryBytes+1,'x');
+    if(variant==3)r.residents.sort=wm::ResidentsSort(255);
+    if(variant==4)r.residents.queryBytes.clear();
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,11,12,13);
+    const auto* encoded=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    REQUIRE(encoded->residents());CHECK(encoded->residents()->descending());
+    CHECK(std::vector<uint8_t>(encoded->residents()->query_bytes()->begin(),encoded->residents()->query_bytes()->end())==r.residents.queryBytes);
+    const auto error=wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer()));
+    CHECK(bool(error)==(variant>=1 && variant<=3));
+  }
+  flatbuffers::FlatBufferBuilder b;
+  const auto q=wire::CreateResidentsRequest(b,wire::ResidentsSort::Category,false,b.CreateVector(std::vector<uint8_t>{}));
+  wire::ConstructionRequestBuilder r(b);r.add_client_id(1);r.add_seq(1);r.add_residents(q);b.Finish(r.Finish());
+  REQUIRE(wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer())));
+  CHECK(*wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer()))=="unexpected residents query");
+}
+
+TEST_CASE("Residents reply retains complete order and rejects duplicate or truncated identities") {
+  for(int variant=0;variant<7;++variant) {
+    std::vector<int32_t> ids={7,2,9};
+    if(variant==1)ids={7,2,7};
+    if(variant==2)ids={-1};
+    if(variant==3)ids.clear();
+    if(variant==4){ids.resize(wire::kResidentsQueryUnits+1);for(size_t i=0;i<ids.size();++i)ids[i]=int32_t(i);}
+    flatbuffers::FlatBufferBuilder b;
+    const auto rows=wire::CreateResidentsState(b,variant==5?flatbuffers::Offset<flatbuffers::Vector<int32_t>>{}:b.CreateVector(ids));
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_world_epoch(13);state.add_request_seq(12);
+    state.add_action(variant==6?wire::ManagementAction::Catalog:wire::ManagementAction::ResidentsQuery);
+    state.add_status(wire::ManagementStatus::Ok);state.add_residents(rows);b.Finish(state.Finish());
+    const auto error=wire::validateManagementState(*flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer()));
+    const bool valid=variant==0 || variant==3;
+    CHECK(bool(error)==!valid);
+    if(valid) {
+      const auto decoded=codec::decodeState(flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer()));
+      REQUIRE(decoded.residents);CHECK(decoded.residents->unitIds==ids);
+    }
+  }
+}
+
 TEST_CASE("farm edits require exact revisions owned only by crop requests") {
   for(int variant=0;variant<16;++variant) {
     CAPTURE(variant);wm::ManagementRequest r;r.action=wm::ManagementAction::FarmEdit;

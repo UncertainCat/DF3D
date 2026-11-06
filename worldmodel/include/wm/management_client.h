@@ -413,6 +413,8 @@ struct ProductionState {
   int32_t selectedBuilding=-1,createdJob=-1;
   std::string detail;
 };
+struct ResidentsRequest { ResidentsSort sort=ResidentsSort::Category; bool descending=false; std::vector<uint8_t> queryBytes; };
+struct ResidentsState { std::vector<int32_t> unitIds; };
 struct CitizenRequest {
   int32_t unitId=-1,detailIndex=-1;
   uint64_t expectedRevision=0;
@@ -752,6 +754,7 @@ struct ManagementRequest {
   CreatureWorkshopRequest creatureWorkshop;
   CreatureLocationRequest creatureLocation;
   CreatureAnimalRequest creatureAnimal;
+  ResidentsRequest residents;
   uint16_t depth=1; bool retracting=false; int16_t filter=-1;
   uint32_t rollerSpeed=0;
   bool cancelRemoval=false;
@@ -805,6 +808,7 @@ struct ManagementState {
   std::optional<CreatureWorkshopState> creatureWorkshop;
   std::optional<CreatureLocationState> creatureLocation;
   std::optional<CreatureAnimalState> creatureAnimal;
+  std::optional<ResidentsState> residents;
   ConstructionState construction;
   std::optional<WorldHover> worldHover;
 };

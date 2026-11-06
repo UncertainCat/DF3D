@@ -45,6 +45,7 @@ ManagementState decodeState(const m::ManagementState* s) {
     if(const auto* v=h->snapshot())header.snapshot=CreatureHeaderSnapshot{v->unit_id(),v->historical_figure_id(),v->has_figure(),v->revision(),v->nickname()->str(),v->profession()->str(),v->figure_nickname()->str()};
     next.creatureHeader=std::move(header);
   }
+  if(const auto* r=s->residents())next.residents=ResidentsState{{r->unit_ids()->begin(),r->unit_ids()->end()}};
   next.citizen = decodeCitizen(s->citizen());
   next.appointments = decodeAppointments(s->appointments());
   next.production = decodeProduction(s->production());
@@ -162,7 +163,10 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
           flatbuffers::Offset<m::CreatureLocationRequest>{},
       r.action==ManagementAction::CreatureAnimalEdit?
           m::CreateCreatureAnimalRequest(b,r.creatureAnimal.unitId,r.creatureAnimal.animalId,r.creatureAnimal.expectedRevision,r.creatureAnimal.assigned):
-          flatbuffers::Offset<m::CreatureAnimalRequest>{});
+          flatbuffers::Offset<m::CreatureAnimalRequest>{},
+      r.action==ManagementAction::ResidentsQuery?
+          m::CreateResidentsRequest(b,m::ResidentsSort(r.residents.sort),r.residents.descending,b.CreateVector(r.residents.queryBytes)):
+          flatbuffers::Offset<m::ResidentsRequest>{});
   b.Finish(request);
 }
 }  // namespace wm::detail::management

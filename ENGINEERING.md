@@ -31,6 +31,18 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Residents native list discovery
 
+Management131 defines a dedicated `ResidentsQuery` transport contract. Its
+request carries the native sort, direction and up to128 non-NUL textbox bytes;
+the byte vector deliberately permits partial UTF-8 after native Backspace.
+An Ok reply contains one complete ordered vector of unique nonnegative unit
+IDs, including an explicit empty vector for no matches. The65536-ID ceiling
+bounds the reply below the512KiB channel capacity; overflow must reject rather
+than truncate. There is no ID-based pagination or inferred result in older
+recordings. Existing CitizenList/Work Details requests retain their semantics.
+Request sequence and world epoch remain the common transport envelope.
+The contract/model codecs are implemented; bridge dispatch and client/UI
+integration still require acceptance before exposure.
+
 `DF3D_RESIDENTS_REFERENCE=1` selects a paused, owned, unsaved native observation
 through `stockpile_storage_native.ps1`. The helper opens Creatures and records
 the selected Residents widget tree, raw candidate pool, active row identities,

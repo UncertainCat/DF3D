@@ -1,5 +1,6 @@
 #pragma once
 #include <tuple>
+#include <unordered_set>
 #include <optional>
 #include "session_util.h"
 #include "location_catalog_util.h"
@@ -52,8 +53,10 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 130;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v130";
+inline constexpr uint32_t kManagementVersion = 131;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v131";
+inline constexpr uint32_t kResidentsQueryBytes = 128;
+inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -348,7 +351,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::CreatureAnimalEdit &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::ResidentsQuery &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -404,7 +407,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::CreatureAnimalEdit)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::ResidentsQuery)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -447,6 +450,13 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     if(!w || w->unit_id()<0 || w->occupation_id()<0 || !w->expected_revision() || w->expected_revision()>INT64_MAX)
       return "invalid creature location request";
   } else if(r.creature_location())return "unexpected creature location request";
+  if(r.action()==ManagementAction::ResidentsQuery) {
+    const auto* q=r.residents();
+    if(!q || q->sort()>ResidentsSort::Activity || !q->query_bytes() ||
+       q->query_bytes()->size()>kResidentsQueryBytes ||
+       std::find(q->query_bytes()->begin(),q->query_bytes()->end(),uint8_t(0))!=q->query_bytes()->end())
+      return "invalid residents query";
+  } else if(r.residents())return "unexpected residents query";
   if(r.action()==ManagementAction::CreatureAnimalEdit) {
     const auto* w=r.creature_animal();
     if(!w || w->unit_id()<0 || w->animal_id()<0 || !w->expected_revision() || w->expected_revision()>INT64_MAX)
@@ -900,7 +910,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::CreatureAnimalEdit ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::ResidentsQuery ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -969,6 +979,13 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       return "invalid creature location outcome";
   } else if(s.action()==ManagementAction::CreatureLocationRemove && s.status()==ManagementStatus::Ok)
     return "creature location result required";
+  if(const auto* r=s.residents()) {
+    if(s.action()!=ManagementAction::ResidentsQuery || s.status()!=ManagementStatus::Ok ||
+       !r->unit_ids() || r->unit_ids()->size()>kResidentsQueryUnits)return "invalid residents result";
+    std::unordered_set<int32_t> ids;
+    for(auto id:*r->unit_ids())if(id<0 || !ids.insert(id).second)return "invalid residents identity";
+  } else if(s.action()==ManagementAction::ResidentsQuery && s.status()==ManagementStatus::Ok)
+    return "residents result required";
   if(const auto* w=s.creature_animal()) {
     if(s.action()!=ManagementAction::CreatureAnimalEdit || w->unit_id()<0 || w->animal_id()<0 ||
        w->outcome()>CreatureAnimalOutcome::Unknown)return "invalid creature animal result";

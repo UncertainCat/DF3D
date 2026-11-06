@@ -2452,5 +2452,14 @@
     "owned_df_closed": true,
     "bridge_sha256": "BAA6B2DA0E8CE859902F48F6B32C61646C6D34B66C481985237085CA535C197D",
     "diagnostics": "Known separate-renderer startup notice only; joined stdout/stderr has no unclassified diagnostics."
+  },
+  "controller_query_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-114241",
+    "scope": "work_details_state.gd with real semantic_action_service: complete11-detail list and all14 native worker queries match typed bridge/provider results. Read-only controller acceptance, not rendered screen or mutation acceptance.",
+    "native_and_controller_query_count": 14,
+    "detail_count": 11,
+    "source_preserved": true,
+    "owned_df_closed": true,
+    "diagnostics": "Known separate-renderer startup notice only."
   }
 }

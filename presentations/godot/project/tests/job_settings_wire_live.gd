@@ -108,8 +108,21 @@ func work_detail_query() -> void:
 	stale.detail_index=127;stale.expected_revision=revision
 	rejected=await request("work_detail_workers",stale)
 	check(rejected.get("status")==C.ManagementStatus.Rejected and not rejected.has("residents"),"Missing Work Detail retained worker rows")
+	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
+	for frame in 5:world.poll();await process_frame
+	var state=preload("res://scripts/work_details_state.gd").new();state.configure(service);state.open()
+	check(await ready(state),"Work Details owner did not open")
+	var owner_queries: Array=[]
+	for query in reference.queries:
+		if failed:break
+		if state.sort!=int(query.sort) or state.directions[state.sort]!=bool(query.direction):state.select_sort(int(query.sort))
+		state.set_query(str(query.query).to_utf8_buffer())
+		check(await ready(state) and state.ids==PackedInt32Array(query.native),"Work Details owner query differs: "+query.name)
+		owner_queries.append({"name":query.name,"ids":Array(state.ids)})
+	check(state.details.size()==reference.details.size() and state.selected.index==0,"Work Details owner list differs")
+	state.close();state.dispose();service.queue_free();await process_frame
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"revision":str(revision),"queries":captures,"stale_rejected":not rejected.has("residents")}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"revision":str(revision),"queries":captures,"owner_queries":owner_queries,"stale_rejected":not rejected.has("residents")}));file.close()
 	world.queue_free();await process_frame;quit(1 if failed else 0)
 
 func work_detail_defaults() -> void:

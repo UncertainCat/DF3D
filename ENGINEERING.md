@@ -185,6 +185,24 @@ DF2792 closed unsaved with source preservation; joined headless client logs have
 only the known separate-renderer notice. Native30FPS, GPU44C/0percent sampled
 during and after the run. This establishes transport, not the rendered editor.
 
+The staged `work_details_state.gd` owns atomic detail-list paging, selected
+receipt, raw search bytes, per-header direction and native worker IDs. Pending
+mutations exclude conflicting input. Confirmed create/mode/membership changes
+refresh all definitions before requesting workers, since membership can affect
+other details. Rejection/uncertainty clears selected authority without replay;
+close/session replacement retires observers so late replies cannot restore it.
+The service retains ownership of sent operations after the screen closes.
+
+Headless work-details-owner-20261106 covers paging revision changes, selection
+and search replacement, close/session retirement, exact64-bit authority,
+duplicate actions and unknown outcomes; core19 passes. Protected114241 compares
+the controller's11 definitions and14 native query orders through the real action
+service, with exact equality. DF9752 closes unsaved with source preservation;
+headless client has only the known separate-renderer notice, GPU44C/0percent
+sampled. This is read-only controller acceptance. Native worker skill captions,
+row transport, rendered Work Details and controller-driven edits remain pending;
+the public route stays on the existing readout.
+
 ## Residents native list discovery
 
 Residents Activity has distinct job-settings and event-description routes.

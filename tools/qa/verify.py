@@ -145,7 +145,7 @@ def command_for(spec, *, godot, df_path, output):
         # Headless checks use the dummy renderer, where the project's separate
         # render thread races RID creation (intermittent RID errors and
         # segfaults). The GPU lane and the play launcher keep the project setting.
-        return [godot] + ([] if spec["lane"] == "gpu" else ["--headless", "--render-thread", "safe"]) + [
+        return [godot] + (["--max-fps", "30"] if spec["lane"] == "gpu" else ["--headless", "--render-thread", "safe"]) + [
             "--path", str(ROOT / "presentations/godot/project"), "--script", spec["script"]]
     if kind == "powershell":
         return [powershell_executable() or "pwsh", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(ROOT / spec["script"]), "-DfPath", df_path] + spec.get("arguments", [])

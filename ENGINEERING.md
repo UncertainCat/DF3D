@@ -21036,6 +21036,12 @@ python tools/qa/verify.py
 ```
 
 Results and logs go in `build/qa/`; missing prerequisites are reported as incomplete.
+Visual Godot checks launched by the QA GPU lane and `stockpile_storage_native.ps1`
+are capped at30 FPS to limit GPU load. Headless checks retain the dummy renderer.
+After the maintainer-reported GPU overheating/crash, prefer headless development
+checks and brief, serial visual captures; inspect GPU temperature/load before
+and during live work. The cap is a workload limit, not evidence of a crash cause
+or a thermal guarantee. An interrupted capture is incomplete evidence.
 `python tools/qa/verify.py --help` covers GPU and live-game checks; the
 [test manifest](tools/qa/checks.json) lists what each group covers. Known Godot engine warnings
 are reported as `passed_with_known_issues` (rules in [tools/qa/diagnostics.py](tools/qa/diagnostics.py));

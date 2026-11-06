@@ -219,7 +219,7 @@ try {
     if($FarmItemCarriers -and $name -eq 'chest-melt-wire') {
      $env:DF3D_CARRIER_DIRECTORY=$out;$env:DF3D_DF_PATH=$dfPath
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
-     $client=Start-ContainedProcess -Exe $engine -Arguments "--path `"$repo/presentations/godot/project`" --script res://tests/chest_melt_scene_live.gd --log-file `"$out/$name.godot.log`"" -WorkingDir "$repo/presentations/godot/project"
+     $client=Start-ContainedProcess -Exe $engine -Arguments "--max-fps 30 --path `"$repo/presentations/godot/project`" --script res://tests/chest_melt_scene_live.gd --log-file `"$out/$name.godot.log`"" -WorkingDir "$repo/presentations/godot/project"
      $null=$client.Handle
      if(-not $client.WaitForExit(90000)){$client.Kill();$client.WaitForExit();throw 'Melt scene timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/chest-melt-scene-result.json")){throw 'Melt scene client failed'}
@@ -227,7 +227,7 @@ try {
     if($FarmItemCarriers -and $name -in @('farm-item-carrier-scene','farm-item-carrier-unit-scene')) {
      $env:DF3D_CARRIER_DIRECTORY=$out;$env:DF3D_DF_PATH=$dfPath
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
-     $client=Start-ContainedProcess -Exe $engine -Arguments "--path `"$repo/presentations/godot/project`" --script res://tests/item_carrier_scene_live.gd --log-file `"$out/$name.godot.log`"" -WorkingDir "$repo/presentations/godot/project"
+     $client=Start-ContainedProcess -Exe $engine -Arguments "--max-fps 30 --path `"$repo/presentations/godot/project`" --script res://tests/item_carrier_scene_live.gd --log-file `"$out/$name.godot.log`"" -WorkingDir "$repo/presentations/godot/project"
      $null=$client.Handle
      if(-not $client.WaitForExit(90000)){$client.Kill();$client.WaitForExit();throw 'Carrier scene timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/carrier-scene-result.json")){throw 'Carrier scene client failed'}
@@ -235,7 +235,7 @@ try {
     if($FarmItemCarriers -and $name -eq 'chest-owner-wire') {
      $env:DF3D_CARRIER_DIRECTORY=$out;$env:DF3D_DF_PATH=$dfPath
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
-     $client=Start-ContainedProcess -Exe $engine -Arguments "--path `"$repo/presentations/godot/project`" --script res://tests/chest_scene_live.gd --log-file `"$out/$name.godot.log`"" -WorkingDir "$repo/presentations/godot/project"
+     $client=Start-ContainedProcess -Exe $engine -Arguments "--max-fps 30 --path `"$repo/presentations/godot/project`" --script res://tests/chest_scene_live.gd --log-file `"$out/$name.godot.log`"" -WorkingDir "$repo/presentations/godot/project"
      $null=$client.Handle
      if(-not $client.WaitForExit(90000)){$client.Kill();$client.WaitForExit();throw 'Chest scene client timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/chest-scene-result.json")){throw 'Chest scene client failed'}
@@ -245,7 +245,7 @@ try {
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
      if($FarmItemCarrierArt){
       $env:DF3D_DF_PATH=$dfPath
-      $client=Start-ContainedProcess -Exe $engine -Arguments "--path `"$repo/presentations/godot/project`" --script res://tests/chest_header_art_live.gd --log-file `"$out/$name.godot.log`"" -WorkingDir "$repo/presentations/godot/project"
+      $client=Start-ContainedProcess -Exe $engine -Arguments "--max-fps 30 --path `"$repo/presentations/godot/project`" --script res://tests/chest_header_art_live.gd --log-file `"$out/$name.godot.log`"" -WorkingDir "$repo/presentations/godot/project"
      }else{
      $client=Start-Process -FilePath $engine -ArgumentList @('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/chest_header_live.gd') -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/$name.stdout.log" -RedirectStandardError "$out/$name.stderr.log"
      }
@@ -259,7 +259,7 @@ try {
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
      if($FarmItemCarrierArt){
       $env:DF3D_DF_PATH=$dfPath
-      $client=Start-ContainedProcess -Exe $engine -Arguments "--path `"$repo/presentations/godot/project`" --script res://tests/chest_contents_art_live.gd --log-file `"$out/$name.godot.log`"" -WorkingDir "$repo/presentations/godot/project"
+      $client=Start-ContainedProcess -Exe $engine -Arguments "--max-fps 30 --path `"$repo/presentations/godot/project`" --script res://tests/chest_contents_art_live.gd --log-file `"$out/$name.godot.log`"" -WorkingDir "$repo/presentations/godot/project"
      }else{
      $client=Start-Process -FilePath $engine -ArgumentList @('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/chest_contents_live.gd') -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/$name.stdout.log" -RedirectStandardError "$out/$name.stderr.log"
      }
@@ -290,7 +290,7 @@ try {
      $waitMs=25000
      if($env:DF3D_UNIT_EXPEL_EFFECT_SCENE -eq '1' -and $env:DF3D_EXPEL_WIRE_PHASE -eq 'apply') {
       $env:DF3D_DF_PATH=$dfPath
-      $client=Start-ContainedProcess -Exe $engine -Arguments "--path `"$repo/presentations/godot/project`" --script res://tests/creature_expel_scene_live.gd --log-file `"$out/$name.godot.log`"" -WorkingDir "$repo/presentations/godot/project"
+      $client=Start-ContainedProcess -Exe $engine -Arguments "--max-fps 30 --path `"$repo/presentations/godot/project`" --script res://tests/creature_expel_scene_live.gd --log-file `"$out/$name.godot.log`"" -WorkingDir "$repo/presentations/godot/project"
       $waitMs=90000
      } else {
       $client=Start-Process -FilePath $engine -ArgumentList @('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/creature_expel_wire_live.gd') -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/$name.stdout.log" -RedirectStandardError "$out/$name.stderr.log"
@@ -303,7 +303,7 @@ try {
      $env:DF3D_CARRIER_DIRECTORY=$out
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
      $script=if($name -eq 'workshop-order-wire'){'res://tests/workshop_order_wire_live.gd'}else{'res://tests/workshop_wire_live.gd'}
-     $client=Start-Process -FilePath $engine -ArgumentList @('--path',"$repo/presentations/godot/project",'--script',$script) -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/$name.stdout.log" -RedirectStandardError "$out/$name.stderr.log"
+     $client=Start-Process -FilePath $engine -ArgumentList @('--max-fps','30','--path',"$repo/presentations/godot/project",'--script',$script) -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/$name.stdout.log" -RedirectStandardError "$out/$name.stderr.log"
      $null=$client.Handle
      if(-not $client.WaitForExit(45000)){$client.Kill();$client.WaitForExit();throw 'Workshop client timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/$name-result.json")){throw 'Workshop client failed'}
@@ -321,7 +321,7 @@ try {
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
      if($FarmItemCarrierArt){
       $env:DF3D_DF_PATH=$dfPath
-      $client=Start-ContainedProcess -Exe $engine -Arguments "--path `"$repo/presentations/godot/project`" --script res://tests/item_carrier_art_live.gd --log-file `"$out/$name.godot.log`"" -WorkingDir "$repo/presentations/godot/project"
+      $client=Start-ContainedProcess -Exe $engine -Arguments "--max-fps 30 --path `"$repo/presentations/godot/project`" --script res://tests/item_carrier_art_live.gd --log-file `"$out/$name.godot.log`"" -WorkingDir "$repo/presentations/godot/project"
      }else{
      $client=Start-Process -FilePath $engine -ArgumentList @('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/item_carrier_wire_live.gd') -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/$name.stdout.log" -RedirectStandardError "$out/$name.stderr.log"
      }

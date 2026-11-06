@@ -9,6 +9,18 @@ const ACCESS_HELP = [
 	["This option indicates","that the location is","only open to members."]]
 const OWNER_RECENTER_HELP = ["Leave this menu and","recenter on this","creature."]
 const OWNER_FILTER_HELP = ["Filter the unit list by","name or job."]
+# Residents native052559: main-interface instructions234/235/252..257/260.
+# Header/filter widget tooltips need capture. Tier6: native052947.
+const RESIDENTS_HELP={
+	"recenter":["Leave this menu and","recenter on this","creature."],
+	"details":["Leave this menu and","view this creature's","sheet."],
+	"happiness_0":["This creature is","ecstatic right now."],
+	"happiness_1":["This creature is happy","right now."],
+	"happiness_2":["This creature is","pleased right now."],
+	"happiness_3":["This creature is","content right now."],
+	"happiness_4":["This creature is","displeased right now."],
+	"happiness_5":["This creature is","unhappy right now."],
+	"happiness_6":["This creature is","miserable right now."]}
 # Native Work orders instructions212/216/219..223, protected002223 text cells.
 const WORK_ORDER_HELP={
 	# Workshop instruction314, protected004236; row controls have no native help.
@@ -201,6 +213,11 @@ func enter_unit(owner: int, kind: String) -> void:
 func enter_specialization(owner: int, specialized: bool) -> void:
 	state.enter(owner,"specialization_"+str(int(specialized)),Time.get_ticks_msec());_process(0)
 
+func enter_residents(owner: int, kind: String) -> void:
+	if RESIDENTS_HELP.has(kind) or kind in ["specialization_0","specialization_1"]:
+		state.enter(owner,"residents_"+kind,Time.get_ticks_msec());_process(0)
+	else:leave(owner)
+
 func enter_staff_indicator(owner: int, kind: String) -> void:
 	if STAFF_HELP.has(kind):state.enter(owner,"staff_"+kind,Time.get_ticks_msec());_process(0)
 
@@ -247,7 +264,9 @@ func _draw() -> void:
 			var frame_y := 0 if displayed=="owner_filter" and y==0 else (24 if y==17 else 12)
 			draw_texture_rect_region(frame,Rect2(x*8,y*12,8,12),Rect2(0 if x==0 else 8,frame_y,8,12))
 	var lines: Array
-	if displayed.begins_with("item_"): lines=ITEM_HELP[displayed.trim_prefix("item_")]
+	if displayed.begins_with("residents_specialization_"):lines=SPECIALIZATION_HELP[int(displayed.trim_prefix("residents_specialization_"))]
+	elif displayed.begins_with("residents_"):lines=RESIDENTS_HELP[displayed.trim_prefix("residents_")]
+	elif displayed.begins_with("item_"): lines=ITEM_HELP[displayed.trim_prefix("item_")]
 	elif displayed.begins_with("work_order_"): lines=WORK_ORDER_HELP[displayed.trim_prefix("work_order_")]
 	elif displayed.begins_with("contents_"): lines=CONTENTS_HELP[displayed.trim_prefix("contents_")]
 	elif displayed.begins_with("building_"): lines=BUILDING_HELP[displayed.trim_prefix("building_")]
@@ -260,6 +279,11 @@ func _draw() -> void:
 	var offset := 1 if displayed=="owner_filter" else 0
 	for row in lines.size():
 		theme.default_font.draw_string(get_canvas_item(),Vector2(8,(row+1+offset)*12),lines[row],HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.WHITE)
+	if displayed in ["residents_recenter","residents_details","residents_specialization_0","residents_specialization_1"] and palette.size()==16:
+		var shortcut: String="Ctrl+c" if displayed=="residents_recenter" else "Ctrl+v" if displayed=="residents_details" else "Ctrl+z"
+		var baseline: int=(lines.size()+2)*12
+		theme.default_font.draw_string(get_canvas_item(),Vector2(8,baseline),"Hotkey: ",HORIZONTAL_ALIGNMENT_LEFT,-1,12,palette[7])
+		theme.default_font.draw_string(get_canvas_item(),Vector2(72,baseline),shortcut,HORIZONTAL_ALIGNMENT_LEFT,-1,12,palette[10])
 	if displayed in ["owner_recenter","owner_filter"] and palette.size()==16:
 		var baseline := 204 if displayed=="owner_filter" else 60
 		theme.default_font.draw_string(get_canvas_item(),Vector2(8,baseline),"Hotkey: ",HORIZONTAL_ALIGNMENT_LEFT,-1,12,palette[15 if displayed=="owner_filter" else 7])

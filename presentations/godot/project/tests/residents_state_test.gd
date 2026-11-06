@@ -81,6 +81,11 @@ func run() -> void:
 	var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=true
 	click.position=Vector2(348,view.list_top()+18);view._gui_input(click)
 	check(inspected==[42],"Details uses the scrolled row identity")
+	var help=preload("res://scripts/native_hover_view.gd").new();root.add_child(help);help.set_process(false)
+	view.hover_help=help;view.pointer_known=true;view.pointer_position=click.position;view.update_hover()
+	check(help.state.key=="residents_details","Visible details control claims shared native help")
+	view.hide();view.update_hover();check(help.state.key.is_empty(),"Hidden Residents releases its help claim")
+	view.show();help.free();view.hover_help=null
 	click.position.x=316;view._gui_input(click)
 	check(focused==[Vector3i(25,31,4)],"Recenter uses the captured row position")
 	state.close();view._gui_input(click)

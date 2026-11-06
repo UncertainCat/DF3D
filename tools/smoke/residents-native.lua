@@ -5,6 +5,7 @@ local gui=require('gui');local script=require('gui.script');local json=require('
 df.global.enabler.gfps=30
 df.global.enabler.fps_per_gfps=df.global.enabler.fps/30
 local activity_provider
+local residents_hover_finish
 if os.getenv('DF3D_RESIDENTS_ACTIVITY')=='1' then
  local text,code=dfhack.run_command_silent('df3d','residents-activity-probe')
  assert(code==0,'Cold Residents Activity provider failed: '..text)
@@ -157,6 +158,61 @@ local function capture_resident_rows()
  local file=assert(io.open(out..'/residents-row-reference.json','w'));file:write(json.encode({samples=samples}));file:close()
 end
 if os.getenv('DF3D_RESIDENTS_ASSIGNMENTS')~='1' then capture_resident_rows()end
+if os.getenv('DF3D_RESIDENTS_HOVER')=='1' then
+ local g=df.global.gps;local main=df.global.game.main_interface;local probes={}
+ local function probe(name,widget,delay)
+  local x=math.floor((widget.rect.x1+widget.rect.x2)/2)*8+4
+  if name:find('^sort_')then x=widget.rect.x1*8+12 end
+  if name=='filter'then x=widget.rect.x2*8-4 end
+  local y=math.floor((widget.rect.y1+widget.rect.y2)/2)*12+10
+  local function move()
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=math.floor(x/8);g.mouse_y=math.floor((y-4)/12)
+   gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+  end
+  local deadline=dfhack.getTickCount()+(delay or 650)
+  repeat move();script.sleep(1,'frames')until dfhack.getTickCount()>=deadline
+  move()
+  -- Generic widget tooltips are drawn after the viewscreen render. Do not
+  -- overwrite that final overlay with another direct view:render call.
+  script.sleep(2,'frames')
+  local text={};local text_cells={}
+  for row=0,17 do
+   local chars={};for col=g.dimx-24,g.dimx-1 do local tile=dfhack.screen.readTile(col,row);local ch=tile.ch;chars[#chars+1]=ch>=32 and ch<127 and string.char(ch)or' ';if ch>32 and ch<127 then text_cells[#text_cells+1]={x=col,y=row,ch=ch,fg=tile.fg,bg=tile.bg,bold=tile.bold}end end
+   text[#text+1]=table.concat(chars):gsub('%s+$','')
+  end
+  while #text>0 and text[#text]==''do table.remove(text)end
+  probes[#probes+1]={name=name,instruction=main.current_hover,displayed=main.last_displayed_hover_inst,point={x,y},rect={widget.rect.x1,widget.rect.y1,widget.rect.x2,widget.rect.y2},lines=text,text_cells=text_cells}
+ end
+ for _,name in ipairs{'Name','Cat','Prof','Job','Stress'}do if headers[name]then probe('sort_'..name,headers[name],1500)end end
+ local first;local happiness={};local specialized
+ local function find(widget,active)
+  active=active and (widget.flag.whole&1)==1
+  if active and (widget.flag.whole&2)~=0 and df.widget_unit_name:is_instance(widget) and widget.u and widget.rect.y1>=14 and widget.rect.y1<g.dimy-8 then
+   first=first or widget
+   for _,child in ipairs(dfhack.gui.getWidgetChildren(widget.parent))do
+    if child.name=='Happiness indicator' then local _,address=df.sizeof(child);happiness[df.reinterpret_cast('int32_t',address+0x150).value-6]=child end
+    if child.name=='Specialization button' and widget.u.flags4.only_do_assigned_jobs then specialized=child end
+   end
+  end
+  if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do find(child,active)end end
+ end
+ find(active_list,true);assert(first,'No visible hover row')
+ for _,child in ipairs(dfhack.gui.getWidgetChildren(first.parent))do
+  probe(child.name,child)
+  if child.name=='Occupations/Work Details' then for index,entry in ipairs(dfhack.gui.getWidgetChildren(child))do probe('assignment_'..index,entry)end end
+ end
+ for tier=0,6 do if happiness[tier]then probe('happiness_'..tier,happiness[tier])end end
+ if specialized then probe('specialized',specialized)end
+ if filter_box then probe('filter',filter_box,1500)end
+ local file=assert(io.open(out..'/residents-hover-reference.json','w'));file:write(json.encode({id=first.u.id,probes=probes}));file:close()
+ residents_hover_finish=function()
+  first=nil;happiness={};specialized=nil;find(active_list,true)
+  if happiness[6]then probe('happiness_6',happiness[6])end
+  if specialized then probe('specialized',specialized)end
+  local file=assert(io.open(out..'/residents-hover-reference.json','w'));file:write(json.encode({probes=probes}));file:close()
+ end
+end
 local activity_reference
 if activity_provider then
  local function byte(at)return df.reinterpret_cast('uint8_t',at).value end
@@ -250,6 +306,7 @@ for _,name in ipairs{'Name','Cat','Prof','Job','Stress'}do
  end
 end
 if os.getenv('DF3D_RESIDENTS_ASSIGNMENTS')=='1' then capture_resident_rows()end
+if residents_hover_finish then residents_hover_finish()end
 if os.getenv('DF3D_RESIDENTS_SPECIALIZATION')=='1' then
  local targets={}
  local function collect(widget,active)

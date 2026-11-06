@@ -20,6 +20,9 @@ var input_allowed: Callable
 var ticks_override: int=-1
 var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
 var portraits: Dictionary={}
+var hover_help
+var pointer_known:=false
+var pointer_position:=Vector2.ZERO
 
 func configure_residents(source,model) -> void:
 	super.configure(source);state=model;colors=art.installed_palette(source.assets_root());picture.configure(source)
@@ -33,7 +36,8 @@ func configure_residents(source,model) -> void:
 	scrollbar.input_allowed=allowed
 	state.changed.connect(refresh)
 	visibility_changed.connect(func():
-		if not is_visible_in_tree():search.release_focus())
+		if not is_visible_in_tree():search.release_focus();_leave_hover())
+	mouse_exited.connect(_leave_hover)
 	refresh()
 func allowed() -> bool:
 	return is_visible_in_tree() and (not input_allowed.is_valid() or input_allowed.call())
@@ -61,18 +65,63 @@ func refresh() -> void:
 	if search!=null:search.set_bytes(state.query)
 	queue_redraw()
 func _exit_tree() -> void:
+	_leave_hover()
 	if state!=null and state.changed.is_connected(refresh):state.changed.disconnect(refresh)
 func _process(_delta: float) -> void:
+	update_hover()
 	if ticks_override<0 and is_visible_in_tree() and state!=null and state.phase==state.Phase.Ready:
 		for row: Dictionary in state.rows.values():
 			if int(row.name_color.effect)!=0:queue_redraw();break
 func _input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		pointer_known=true;pointer_position=get_global_transform_with_canvas().affine_inverse()*event.position
 	if not allowed() or state==null:return
 	if event is InputEventKey and event.pressed:
 		if event.keycode==KEY_ESCAPE:cancelled.emit();get_viewport().set_input_as_handled()
 		elif search.has_focus():search.feed_key(event);get_viewport().set_input_as_handled()
+		elif event.ctrl_pressed and not event.echo and pointer_known and state.phase==state.Phase.Ready:
+			var target:=hover_target(pointer_position)
+			if target.get("kind")=="recenter" and event.keycode==KEY_C:focus_requested.emit(target.row.position);get_viewport().set_input_as_handled()
+			elif target.get("kind")=="details" and event.keycode==KEY_V:inspect_requested.emit(int(target.row.id));get_viewport().set_input_as_handled()
+			elif str(target.get("kind","")).begins_with("specialization_") and event.keycode==KEY_Z:state.specialize(int(target.row.id));get_viewport().set_input_as_handled()
 	elif event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_RIGHT:
 		cancelled.emit();get_viewport().set_input_as_handled()
+func hover_target(point: Vector2) -> Dictionary:
+	if state==null or state.phase!=state.Phase.Ready:return {}
+	for index in page_rows:
+		var row: Dictionary=state.row_at(state.first+index)
+		if row.is_empty():continue
+		var y:=list_top()+index*36
+		for entry in [["recenter",304,24],["details",336,24],["happiness",656,16],["specialization",696,32]]:
+			if not Rect2(entry[1],y,entry[2],24 if entry[0]=="happiness" else 36).has_point(point):continue
+			var kind: String=entry[0]
+			if kind=="recenter" and not row.has("position"):return {}
+			if kind=="happiness":
+				if not row.has("happiness"):return {}
+				kind+="_"+str(int(row.happiness))
+			if kind=="specialization":
+				if not row.has("specialization"):return {}
+				kind+="_"+str(int(row.specialization.only_assigned))
+			return {"kind":kind,"row":row}
+		var x:=736
+		for entry: Dictionary in row.get("assignments",[]):
+			var slot:=Indicators.art_for(entry)
+			if slot.is_empty() or slot.token.is_empty():continue
+			var texture: Texture2D=art.texture(slot.token)
+			if texture==null and not slot.fallback.is_empty():texture=art.texture(slot.fallback)
+			if texture==null:continue
+			if Rect2(x,y,32,36).has_point(point):return {"staff":slot.help,"row":row}
+			x+=32
+	return {}
+func update_hover() -> void:
+	if not is_instance_valid(hover_help):return
+	var target: Dictionary=hover_target(pointer_position) if pointer_known and allowed() else {}
+	if target.has("kind"):hover_help.enter_residents(get_instance_id(),target.kind)
+	elif target.has("staff"):hover_help.enter_staff_indicator(get_instance_id(),target.staff)
+	else:hover_help.leave(get_instance_id())
+func _leave_hover() -> void:
+	pointer_known=false
+	if is_instance_valid(hover_help):hover_help.leave(get_instance_id())
 func _gui_input(event: InputEvent) -> void:
 	if not allowed() or state==null or not event is InputEventMouseButton or not event.pressed:return
 	if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:

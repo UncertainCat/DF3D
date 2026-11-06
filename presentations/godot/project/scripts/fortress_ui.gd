@@ -128,6 +128,7 @@ func controller(id: String):
 	var panel = load(Registry.PANEL_SCRIPTS[id]).new()
 	if id=="residents":
 		add_child(panel);panel.configure(world,actions,host)
+		panel.panel.hover_help=view._fortress_hud.native_help
 		panel.focus_requested.connect(focus_tile)
 		panel.inspect_requested.connect(func(tile,unit_id):
 			if host.allows_panel_input(panel) and controller("inspector").open_target(tile,1,unit_id,true):focus_tile(tile))

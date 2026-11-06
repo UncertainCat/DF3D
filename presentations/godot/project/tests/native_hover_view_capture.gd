@@ -66,14 +66,24 @@ func run() -> void:
 		var key: String="ITEM_"+sample.kind;modes.append(key)
 		data.panels.append({"key":key,"lines":sample.lines,"text_cells":sample.text_cells,"frame_cells":owner.recenter.frame_cells,"item":sample.kind})
 	DirAccess.make_dir_recursive_absolute(directory)
+	var residents: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/residents/native_hover.json"))
+	for sample in residents.cases:
+		var key: String="RESIDENTS_"+sample.key;modes.append(key)
+		var entry: Dictionary={"key":key,"lines":sample.lines,"text_cells":sample.text_cells,"frame_cells":owner.recenter.frame_cells}
+		if sample.key=="work_detail":entry.staff="work_detail"
+		else:entry.residents=sample.key
+		data.panels.append(entry)
 	for panel in data.panels:
 		var mode:=modes.find(str(panel.key))
-		var expected_lines: Array=View.ITEM_HELP[panel.item] if panel.has("item") else View.CONTENTS_HELP[panel.contents] if panel.has("contents") else View.BUILDING_HELP[panel.building] if panel.has("building") else View.STAFF_HELP[panel.staff] if panel.has("staff") else View.SPECIALIZATION_HELP[int(panel.specialization)] if panel.has("specialization") else View.CONTAINMENT_HELP[int(panel.relation)-1] if panel.has("relation") else (View.OWNER_RECENTER_HELP if mode==4 else View.ACCESS_HELP[mode])
+		var expected_lines: Array=[] if panel.has("residents") else View.ITEM_HELP[panel.item] if panel.has("item") else View.CONTENTS_HELP[panel.contents] if panel.has("contents") else View.BUILDING_HELP[panel.building] if panel.has("building") else View.STAFF_HELP[panel.staff] if panel.has("staff") else View.SPECIALIZATION_HELP[int(panel.specialization)] if panel.has("specialization") else View.CONTAINMENT_HELP[int(panel.relation)-1] if panel.has("relation") else (View.OWNER_RECENTER_HELP if mode==4 else View.ACCESS_HELP[mode])
+		if panel.has("residents"):
+			expected_lines=(View.SPECIALIZATION_HELP[int(str(panel.residents).trim_prefix("specialization_"))] if str(panel.residents).begins_with("specialization_") else View.RESIDENTS_HELP[panel.residents]).duplicate()
+			if panel.residents in ["recenter","details","specialization_0","specialization_1"]:expected_lines.append_array(["","Hotkey: "+("Ctrl+c" if panel.residents=="recenter" else "Ctrl+v" if panel.residents=="details" else "Ctrl+z")])
 		if mode<0 or expected_lines!=panel.lines:push_error("Native help wording/wrapping differs");quit(1);return
 		var letters: Dictionary={}
 		for cell in panel.text_cells:
 			letters[Vector2i(int(cell.x),int(cell.y))]=cell
-		var hover_key: String="item_"+panel.item if panel.has("item") else "contents_"+panel.contents if panel.has("contents") else "building_"+panel.building if panel.has("building") else "staff_"+panel.staff if panel.has("staff") else "specialization_"+str(panel.specialization) if panel.has("specialization") else "containment_"+str(panel.relation) if panel.has("relation") else ("owner_recenter" if mode==4 else str(mode))
+		var hover_key: String="residents_"+panel.residents if panel.has("residents") else "item_"+panel.item if panel.has("item") else "contents_"+panel.contents if panel.has("contents") else "building_"+panel.building if panel.has("building") else "staff_"+panel.staff if panel.has("staff") else "specialization_"+str(panel.specialization) if panel.has("specialization") else "containment_"+str(panel.relation) if panel.has("relation") else ("owner_recenter" if mode==4 else str(mode))
 		view.state.enter(1,hover_key,Time.get_ticks_msec()-500);view._process(0)
 		for i in 3: await process_frame;await RenderingServer.frame_post_draw
 		var image:=root.get_texture().get_image()

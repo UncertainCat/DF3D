@@ -31,6 +31,33 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Residents native list discovery
 
+Residents row hover uses the shared HUD help clock and original frame/font.
+The staged view resolves local pointer coordinates through its canvas transform,
+claims Recenter/details, happiness0..6, specialization and rendered assignment
+indicators, and releases help when hidden, outside a control or input-blocked.
+The native row instructions retain their shortcut footer: Ctrl+c, Ctrl+v and
+Ctrl+z. Corresponding key dispatch is implemented while over the control and
+outside the search editor; native keyboard-effect acceptance remains unfinished.
+Native instruction capture052947 on2026-11-06 supplies exact text, wrapping and
+cell colors in `fixtures/residents/native_hover.json`. It covers both navigation
+buttons, all seven natural happiness tiers, specialization-off and a Miner work
+detail. Specialization-on reuses the previously accepted259 body and shared
+shortcut mapping; its Residents footer and other assignment cases remain
+unaccepted. Header/filter tooltip capture remains unresolved; do not interpret
+their captured -1 main instruction as proof that no widget tooltip exists.
+
+The oracle keeps only visible rows (widget flag2): hidden rows reuse offscreen
+rectangles and initially contaminated the happiness sample set. Earlier052154,
+052423 and052559 runs remain diagnostic discovery, not full hover acceptance.
+Final052947 exits DF1648 unsaved with source unchanged. `residents-hover` passes
+core19/19, extension, Residents state and native hover clock checks.
+`residents-hover-render` passes both component captures with the documented
+thread/finalize/shutdown diagnostics; all11 new help panels match native cell
+pixels through the existing full-frame comparator, and7882 name pixels still
+match. The specialization footer image was inspected. These are component
+display/input checks, not full main-scene pointer or keyboard acceptance.
+Graphics ran briefly and serially at30FPS; observed GPU37–39C, apps closed.
+
 The staged `residents_panel.gd` owns its modal input gate, state/view lifecycle
 and scaled viewport layout. It is available through the controller factory as
 `residents`, but the public Residents route remains unchanged. Recenter closes

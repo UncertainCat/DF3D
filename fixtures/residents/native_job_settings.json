@@ -6118,5 +6118,136 @@
     "scope": "Actual owner pointer addition of first entry in all seven element categories, first transitive relationship with actor/target, deleting actor removes dependent relationship, naming and Done. Native description rows match exactly after correcting draft width116 at1200px. Related/deleted rendering captured; long-description resize and intransitive/index-shift cases remain pending. Controlled zero-input job only.",
     "source_preserved": true,
     "owned_df_closed": true
+  },
+  "production_owner_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-101439",
+    "native_created": {
+      "building_id": 3,
+      "job_id": 382794,
+      "requirements": 1
+    },
+    "before": {
+      "material": [
+        0,
+        -1
+      ],
+      "requirements": [
+        {
+          "details": 0,
+          "flags1": 0,
+          "flags2": 2048,
+          "flags3": 64,
+          "item_type": 4,
+          "mat_index": -1,
+          "mat_type": 0,
+          "quantity": 1,
+          "saved_index": -1,
+          "saved_type": -1
+        }
+      ],
+      "type": 79
+    },
+    "after": {
+      "material": [
+        0,
+        -1
+      ],
+      "requirements": [
+        {
+          "details": 0,
+          "flags1": 0,
+          "flags2": 2048,
+          "flags3": 64,
+          "item_type": 4,
+          "mat_index": -1,
+          "mat_type": 0,
+          "quantity": 1,
+          "saved_index": -1,
+          "saved_type": -1
+        }
+      ],
+      "type": 79
+    },
+    "provider": {
+      "building_id": 3,
+      "caption": "Make rock statue",
+      "choices_revision": "0",
+      "job_id": 2000000000,
+      "materials": [],
+      "options": [
+        {
+          "caption": "Specify stone",
+          "index": 0,
+          "kind": 0
+        },
+        {
+          "caption": "Specify image",
+          "index": -1,
+          "kind": 1
+        }
+      ],
+      "revision": "3520824966526544704",
+      "search": [
+        106,
+        95,
+        165
+      ],
+      "selected": -1
+    },
+    "material_count": 83,
+    "first_materials": [
+      {
+        "caption": "Microcline",
+        "count": 2,
+        "count_caption": "2",
+        "estimated": false,
+        "id": 0,
+        "index": 233,
+        "type": 0
+      },
+      {
+        "caption": "Rock salt",
+        "count": 36,
+        "count_caption": "40?",
+        "estimated": true,
+        "id": 1,
+        "index": 166,
+        "type": 0
+      }
+    ],
+    "source_unchanged": true,
+    "client": {
+      "production": {
+        "back": true,
+        "image": true,
+        "materials": 83,
+        "options": 2,
+        "source_job": 382794.0
+      },
+      "success": true
+    },
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        },
+        {
+          "id": "godot-device-finalize",
+          "count": 1,
+          "reference": "https://github.com/godotengine/godot/issues/119000"
+        },
+        {
+          "id": "godot-shutdown-objects",
+          "count": 1,
+          "reference": "ENGINEERING.md#tests-and-known-problems"
+        }
+      ],
+      "unclassified": []
+    },
+    "scope": "Native workshop-created rock statue job, deep independent copy including real requirement flags; native options and complete material/count/order comparison; rendered Residents pointer root/stone/back/image/back. Navigation preserves requirements. No production material/artwork edits, simulation execution or multiple-input acceptance yet.",
+    "owned_df_closed": true,
+    "save_preserved": true
   }
 }

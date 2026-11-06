@@ -1154,6 +1154,25 @@ also had an unclassified update_end shutdown error and is not accepted. Final
 100649 has only documented engine diagnostics, DF5764 closes unsaved with source
 preservation, and sampled GPU50C at30FPS.
 
+The protected `DF3D_RESIDENTS_JOB_SETTINGS_PRODUCTION=1` oracle uses an actual
+queued job with multiple Details options, deep-cloning its requirements and refs
+with DFHack cloneJobStruct(keepEverything=true). If the paused reference has none,
+the oracle clicks the native Stoneworker Add new task control, searches for statue,
+and creates Make rock statue. This setup is diagnostic only; runtime never drives
+these controls. Production101256 establishes job382794, one native stone input
+(flags2=2048,flags3=64), Specify stone and Specify image, and83 ordered choices.
+Production101439 adds `DF3D_RESIDENTS_JOB_PRODUCTION_WIRE=1` and the existing
+ART_RENDER flag: the real Residents owner opens both options through pointers,
+compares every material caption/count, and returns to Residents. Native navigation
+and the client leave the cloned requirements unchanged; the original remains
+unchanged. The rendered root exposed missing dark option-row backgrounds, now
+drawn by the shared Details view. Root/material captures match the native reference.
+Fixture production_owner_reference retains scope and receipts. Core19/job-state
+checks pass in job-production-owner-20261106; joined client logs have documented
+engine signatures only. DF31804 exits unsaved, source save preserved, GPU49-50C
+sampled at30FPS. Production material/artwork edits, execution and multiple-input
+jobs remain unaccepted; this is navigation acceptance for a native-created job.
+
 
 ## Farm removal native entry points
 

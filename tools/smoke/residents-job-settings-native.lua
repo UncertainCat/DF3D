@@ -7,6 +7,8 @@ local artwork=os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_ART')=='1'
 local plant=os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_PLANT')=='1'
 local clothing=os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_CLOTHING')=='1'
 local improvement=os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_IMPROVEMENT')=='1'
+local production=os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_PRODUCTION')=='1'
+local production_source
 local function find(widget,unit,scroll,index)
  if (widget.flag.whole&1)==0 or button then return end
  if df.widget_job_details_button:is_instance(widget) and widget.jb then
@@ -31,6 +33,29 @@ if not button then
   if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do resident(child)end end
  end
  resident(info.creatures);assert(controlled_unit,'No visible resident for job-settings fixture')
+ if production then
+  local previous=controlled_unit.job.current_job
+  local candidates={}
+  for _,b in ipairs(df.global.world.buildings.other.WORKSHOP_ANY)do
+   for _,candidate in ipairs(b.jobs)do
+    controlled_unit.job.current_job=candidate
+    local text,rc=dfhack.run_command_silent('df3d','residents-job-settings-probe',tostring(controlled_unit.id))
+    if rc==0 then
+     local observed=json.decode(text)
+     candidates[#candidates+1]={id=candidate.id,caption=observed.caption,options=observed.options,requirements=#candidate.job_items.elements}
+     if not production_source and #observed.options>1 and #candidate.job_items.elements>0 then production_source=candidate end
+    end
+   end
+  end
+  controlled_unit.job.current_job=previous
+  local f=assert(io.open(out..'/residents-production-candidates.json','w'));f:write(json.encode(candidates));f:close()
+  if not production_source then
+   local path=debug.getinfo(1,'S').source:sub(2):gsub('residents%-job%-settings%-native.lua$','residents-job-create-native.lua')
+   production_source=assert(loadfile(path))(out,view)
+  end
+  assert(production_source,'Reference has no editable multi-option production job')
+  controlled=dfhack.job.cloneJobStruct(production_source,true);controlled.id=2000000000
+ else
  local building
  for _,b in ipairs(df.global.world.buildings.other.WORKSHOP_ANY)do
   if b:getBuildStage()==b:getMaxBuildStage() then building=b;break end
@@ -56,6 +81,7 @@ if not button then
   controlled.art_spec.type=df.job_art_specifier_type.HistoricalFigure;controlled.art_spec.id=controlled_unit.hist_figure_id;controlled.art_spec.subid=7
   input:delete()
  else controlled.job_items.elements:insert('#',input)end
+ end
  prior_job=controlled_unit.job.current_job;controlled_unit.job.current_job=controlled
  gui.simulateInput(view,'LEAVESCREEN');gui.simulateInput(view,'D_UNITLIST')
  for _=1,3 do script.sleep(1,'frames')end
@@ -98,6 +124,13 @@ gui.simulateInput(view,'_MOUSE_L')
 df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
 for _=1,3 do script.sleep(1,'frames')end
 local details=df.global.game.main_interface.job_details
+if production then
+ assert(controlled and production_source,'Production oracle requires independently cloned native job')
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('residents%-job%-settings%-native.lua$','residents-job-production-native.lua')
+ assert(loadfile(source))(out,view,info,job,button,evidence,owner,production_source)
+ if scroller then scroller.scroll=previous_scroll end
+ return
+end
 if artwork then
  assert(controlled and job==controlled,'Artwork oracle requires disposable job')
  local source=debug.getinfo(1,'S').source:sub(2):gsub('residents%-job%-settings%-native.lua$','residents-job-art-native.lua')

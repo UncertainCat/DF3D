@@ -14,6 +14,8 @@ func pointer(view,point: Vector2,button: int=MOUSE_BUTTON_LEFT) -> void:
 	click=click.duplicate();click.pressed=false;Input.parse_input_event(click);await process_frame
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
+	if OS.get_environment("DF3D_RESIDENTS_JOB_PRODUCTION_WIRE")=="1":
+		await production_read();return
 	if OS.get_environment("DF3D_RESIDENTS_JOB_ART_WIRE")=="1":
 		await artwork_read();return
 	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/residents-job-settings-reference.json"))
@@ -71,6 +73,35 @@ func run() -> void:
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"choices":rows.size(),"filtered":choices,"composed":composed}));file.close()
 	world.queue_free();await process_frame;quit(1 if failed else 0)
+
+func production_read() -> void:
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/residents-job-production-reference.json"))
+	world=Df3dWorld.new();root.add_child(world)
+	if not check(world.attach() and world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Production bridge/assets unavailable"):quit(1);return
+	root.size=Vector2i(1200,800)
+	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
+	for frame in 5:world.poll();await process_frame
+	var interaction:=Interaction.new();root.add_child(interaction)
+	var host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)
+	var owner=preload("res://scripts/residents_panel.gd").new();root.add_child(owner);owner.configure(world,service,host);owner.open_panel()
+	check(await ready(owner.state),"Production roster failed")
+	var index: int=owner.state.ids.find(int(reference.unit_id));owner.state.seek(index,owner.state.capacity);check(await ready(owner.state),"Production resident row failed")
+	await pointer(owner.panel,Vector2(540,owner.panel.list_top()+(index-owner.state.first)*36+18))
+	var state=owner.job_state;var view=owner.job_panel
+	check(await ready(state) and state.selected==-1 and state.snapshot.get("options",[]).size()==2,"Production Details root failed")
+	await capture_draft("production-root")
+	await pointer(view,Vector2(120,66));check(await ready(state) and state.selected==0 and state.rows.size()==83,"Production material option failed")
+	var expected: Array=reference.pages[0].provider.materials
+	for i in mini(expected.size(),state.rows.size()):check(state.rows[i].caption==expected[i].caption and state.rows[i].get("count_caption")==expected[i].get("count_caption"),"Production material choices differ")
+	await capture_draft("production-materials")
+	await pointer(view,Vector2(120,180),MOUSE_BUTTON_RIGHT);check(await ready(state) and state.selected==-1,"Production material Back failed")
+	await pointer(view,Vector2(120,102));check(await ready(state) and state.has_art() and state.art_page()==-1,"Production image option failed")
+	await capture_draft("production-image")
+	await pointer(view,Vector2(120,180),MOUSE_BUTTON_RIGHT)
+	check(state.phase==state.Phase.Closed and owner.panel.visible,"Production image Back did not restore Residents")
+	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"production":{"source_job":reference.source_job_id,"options":2,"materials":expected.size(),"image":true,"back":true}}));file.close()
+	owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)
 
 func ready(state) -> bool:
 	var deadline:=Time.get_ticks_msec()+5000

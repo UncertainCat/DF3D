@@ -150,7 +150,9 @@ func _draw() -> void:
 	text(state.snapshot.get("caption",""),Vector2(16,32),11 if job_context else 15)
 	var selected: int=state.snapshot.get("selected_option",-1)
 	if selected<0:
-		for index in state.snapshot.options.size():text(state.snapshot.options[index].caption,Vector2(16,68+index*36))
+		for index in state.snapshot.options.size():
+			patch("BUTTON_RECTANGLE_DARK",Vector2i(2,4+index*3),int((size.x-32)/8),3)
+			text(state.snapshot.options[index].caption,Vector2(16,68+index*36))
 		return
 	var kind: int=state.snapshot.options[selected].kind
 	# Captured native setting headings; current values come from DF.

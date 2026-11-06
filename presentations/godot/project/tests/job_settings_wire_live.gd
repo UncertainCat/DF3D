@@ -14,6 +14,8 @@ func pointer(view,point: Vector2,button: int=MOUSE_BUTTON_LEFT) -> void:
 	click=click.duplicate();click.pressed=false;Input.parse_input_event(click);await process_frame
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
+	if OS.get_environment("DF3D_WORK_DETAILS_SETTINGS_RENDER")=="1":
+		await work_detail_settings_scene();return
 	if OS.get_environment("DF3D_WORK_DETAILS_SETTINGS_CONTROLLER")=="1":
 		await work_detail_settings_controller();return
 	if OS.get_environment("DF3D_WORK_DETAILS_SETTINGS_WIRE")=="1":
@@ -667,3 +669,42 @@ func work_detail_settings_controller() -> void:
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"controller":true,"phase":reference.settings_wire_phase}));file.close()
 	state.dispose();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)
+
+func work_detail_settings_scene() -> void:
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/work-details-native.json"))
+	var expected: Dictionary=reference.settings_effects
+	world=Df3dWorld.new();root.add_child(world)
+	if not check(world.attach() and world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Settings scene assets unavailable"):quit(1);return
+	root.size=Vector2i(1200,800)
+	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
+	for frame in 5:world.poll();await process_frame
+	var interaction:=Interaction.new();root.add_child(interaction)
+	var host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)
+	var owner=preload("res://scripts/work_details_panel.gd").new();root.add_child(owner);owner.configure(world,service,host);owner.open_panel()
+	var state=owner.state;var view=owner.panel
+	if not check(await ready(state),"Settings scene roster failed"):quit(1);return
+	await pointer(view,view.detail_rect(int(expected.index)).get_center())
+	if not check(await ready(state),"Settings scene detail selection failed"):quit(1);return
+	await pointer(view,Vector2(656,view.header_top()+18))
+	if not check(await ready(state) and state.editing_settings,"Settings gear failed"):quit(1);return
+	for frame in 3:world.poll();await process_frame
+	await RenderingServer.frame_post_draw
+	check(root.get_texture().get_image().save_png(directory+"/work-details-settings-view-"+str(reference.settings_wire_phase)+".png")==OK,"Settings screenshot failed")
+	if reference.settings_wire_phase=="locked":
+		await pointer(view,view.settings_rect(1).get_center())
+		check(state.ticket==0 and state.phase==state.Phase.Ready and not state.settings.editable,"Read-only settings click submitted mutation")
+	else:
+		for step: Dictionary in expected.provider.steps:
+			await pointer(view,view.settings_rect(0 if int(step.id)<0 else 1).get_center())
+			if not check(await ready(state),"Visible setting toggle failed"):break
+			check(state.settings.labors==PackedInt32Array(step.labors),"Visible setting differs from native effect")
+		await pointer(view,view.settings_rect(2).get_center(),MOUSE_BUTTON_WHEEL_DOWN)
+		check(state.settings_first==1,"Settings wheel did not scroll")
+		await pointer(view,Vector2(500,view.settings_top()+18),MOUSE_BUTTON_WHEEL_UP)
+		check(state.settings_first==0,"Settings wheel did not return")
+		await pointer(view,view.done_rect().get_center())
+		check(await ready(state) and not state.editing_settings and view.search.visible,"Visible Done did not return to roster")
+	owner.handle_back();check(not view.visible,"Settings owner Back failed")
+	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"rendered_settings":true,"phase":reference.settings_wire_phase}));file.close()
+	owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)

@@ -16,7 +16,7 @@ func configure(world,service,host) -> void:
 	panel=preload("res://scripts/work_details_view.gd").new();layer.add_child(panel)
 	panel.configure_work_details(world,state);panel.input_allowed=allowed
 	panel.cancelled.connect(close_panel)
-	panel.settings_requested.connect(func():settings_requested.emit())
+	panel.settings_requested.connect(state.open_settings)
 	panel.rename_requested.connect(func():rename_requested.emit())
 	host.register(self);_layout();_sync()
 func allowed() -> bool:return play_enabled and ui_host!=null and ui_host.allows_panel_input(self)

@@ -3,13 +3,24 @@ extends "res://scripts/residents_view.gd"
 # from Residents; this screen has its own layout, columns and input targets.
 signal settings_requested
 signal rename_requested
+signal reset_requested
+signal delete_requested
 # Native mode renderer468800 uses category rectangles (parser119c728/119c496),
 # not the textured worker-row rectangles or the dark generic selected button.
 const DETAIL_SORTS=[C.WorkDetailWorkerSort.Name,C.WorkDetailWorkerSort.Category,C.WorkDetailWorkerSort.Profession,C.WorkDetailWorkerSort.Skills]
 const DETAIL_SORT_X=[38,48,57,69]
 const DETAIL_SORT_WIDTH=[10,9,10,20]
 const DETAIL_SORT_LABELS=["Name","Cat","Prof",""]
+# Native42b4e0 color dispatch (42bc4c/42bc18), categories-2 through-13.
+const SETTINGS_COLORS=[14,15,2,5,6,1,8,10,9,12,3,7]
 var detail_first:=0
+var settings_selected:=0
+var showing_settings:=false
+func settings_top() -> int:return header_top()+36
+func settings_capacity() -> int:return maxi(0,int((size.y-settings_top()-24)/36))
+func settings_rect(index: int) -> Rect2:return Rect2(272,settings_top()+(index-state.settings_first)*36,size.x-312,36)
+func done_rect() -> Rect2:return Rect2(264,header_top(),48,36)
+func settings_action_rect() -> Rect2:return Rect2(size.x-(176 if state.settings.get("no_modify",false) else 104),header_top(),144 if state.settings.get("no_modify",false) else 72,36)
 func configure_work_details(source,model) -> void:
 	configure(source);state=model;colors=art.installed_palette(source.assets_root());picture.configure(source)
 	mouse_filter=Control.MOUSE_FILTER_STOP
@@ -18,7 +29,10 @@ func configure_work_details(source,model) -> void:
 	for side in [SIDE_TOP,SIDE_BOTTOM]:inset.set_texture_margin(side,12)
 	search=preload("res://scripts/area_owner_filter.gd").new();add_child(search)
 	search.theme=theme;search.configure(inset,colors);search.edited.connect(state.set_query)
-	scrollbar.row_changed.connect(func(value):state.seek(value,page_rows));scrollbar.input_allowed=allowed
+	scrollbar.row_changed.connect(func(value):
+		if state.editing_settings:state.seek_settings(value,settings_capacity())
+		else:state.seek(value,page_rows))
+	scrollbar.input_allowed=allowed
 	state.changed.connect(refresh)
 	visibility_changed.connect(func():
 		if not is_visible_in_tree():search.release_focus();_leave_hover())
@@ -51,11 +65,20 @@ func refresh() -> void:
 		var previous: Dictionary=portraits.get(int(row.id),{})
 		retained[int(row.id)]=previous if previous.get("recipe",{})==row.sheet_icon else {"recipe":row.sheet_icon.duplicate(true),"texture":world.candidate_icon(row.sheet_icon)}
 	portraits=retained
-	if scrollbar!=null:scrollbar.set_rows(state.ids.size(),state.first)
+	if showing_settings!=state.editing_settings:
+		showing_settings=state.editing_settings;settings_selected=0;_leave_hover()
+		if search!=null and search.is_inside_tree():search.release_focus()
+		if scrollbar!=null:scrollbar.dragging=false
+	if scrollbar!=null:
+		scrollbar.position=Vector2(size.x-32,settings_top() if showing_settings else list_top())
+		scrollbar.size=Vector2(16,maxi(36,size.y-scrollbar.position.y-(24 if showing_settings else 84)))
+		scrollbar.page=settings_capacity() if showing_settings else page_rows
+		scrollbar.set_rows(state.settings.get("catalog",[]).size() if showing_settings else state.ids.size(),state.settings_first if showing_settings else state.first)
+	if search!=null:search.visible=not showing_settings
 	if search!=null:search.set_bytes(state.query);search.editable=allowed() and state.phase!=state.Phase.Applying
 	queue_redraw()
 func hover_target(point: Vector2) -> Dictionary:
-	if state==null or state.phase!=state.Phase.Ready:return {}
+	if state==null or state.editing_settings or state.phase!=state.Phase.Ready:return {}
 	for index in page_rows:
 		var row: Dictionary=state.row_at(state.first+index)
 		if row.is_empty():continue
@@ -73,6 +96,7 @@ func _gui_input(event: InputEvent) -> void:
 	if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
 		var step: int=-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1
 		if event.position.x<264:detail_first=clampi(detail_first+step,0,maxi(0,state.details.size()-detail_capacity()));queue_redraw()
+		elif state.editing_settings:state.seek_settings(state.settings_first+step,settings_capacity())
 		else:state.seek(state.first+step,page_rows)
 		accept_event();return
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
@@ -80,6 +104,15 @@ func _gui_input(event: InputEvent) -> void:
 	if add_rect().has_point(event.position):state.create_detail();return
 	for index in range(detail_first,mini(state.details.size(),detail_first+detail_capacity())):
 		if detail_rect(index).has_point(event.position):state.select_detail(index);return
+	if state.editing_settings:
+		if done_rect().has_point(event.position):state.close_settings();return
+		if settings_action_rect().has_point(event.position):
+			if state.settings.get("no_modify",false):reset_requested.emit()
+			else:delete_requested.emit()
+			return
+		for index in range(state.settings_first,mini(state.settings.get("catalog",[]).size(),state.settings_first+settings_capacity())):
+			if settings_rect(index).has_point(event.position):settings_selected=index;state.toggle_setting(int(state.settings.catalog[index].id));queue_redraw();return
+		return
 	for index in 3:
 		if mode_rect(index).has_point(event.position):state.set_mode([1,3,2][index]);return
 	if Rect2(272,header_top(),368,36).has_point(event.position):rename_requested.emit();return
@@ -110,6 +143,7 @@ func _draw() -> void:
 			if icon!=null:draw_texture_rect(icon,Rect2(rect.position,Vector2(32,36)),false)
 		text(row.name,rect.position+Vector2(48,24),15,176)
 	if state.selected.is_empty():return
+	if state.editing_settings:_draw_settings();return
 	var filter: Texture2D=art.texture("BUTTON_FILTER")
 	if filter!=null:
 		for y in 3:
@@ -159,3 +193,34 @@ func _draw() -> void:
 			if texture!=null:draw_texture_rect(texture,Rect2(720,y,32,36),false)
 		var checkbox: Texture2D=art.texture("LABOR_WORKER_ASSIGNED" if row.member else "LABOR_WORKER_UNASSIGNED")
 		if checkbox!=null:draw_texture_rect(checkbox,member_rect(index),false)
+
+func _draw_settings() -> void:
+	patch("HORIZONTAL_OPTION_ACTIVE",Vector2i(33,int(header_top()/12)),6,3);text("Done",Vector2(272,header_top()+24),10)
+	if state.settings.is_empty():return
+	var action:=settings_action_rect()
+	patch("HORIZONTAL_OPTION_ACTIVE" if state.settings.no_modify else "HORIZONTAL_OPTION_REMOVE",Vector2i(int(action.position.x/8),int(header_top()/12)),int(action.size.x/8),3)
+	text("Reset to default" if state.settings.no_modify else "Delete",action.position+Vector2(8,24),15)
+	var catalog: Array=state.settings.catalog;var labors: PackedInt32Array=state.settings.labors
+	var category: int=-2
+	for index in catalog.size():
+		var entry: Dictionary=catalog[index];var id:=int(entry.id)
+		if id<0:category=id
+		if index<state.settings_first or index>=state.settings_first+settings_capacity():continue
+		var rect:=settings_rect(index)
+		patch("BUTTON_RECTANGLE_SELECTED" if index==settings_selected else "BUTTON_RECTANGLE",Vector2i(34,int(rect.position.y/12)),int(rect.size.x/8),3)
+		text(entry.caption,rect.position+Vector2(16 if id<0 else 24,24),SETTINGS_COLORS[-category-2],rect.size.x-88)
+		var checked:=labors.has(id)
+		if id<0:
+			checked=true
+			for next in range(index+1,catalog.size()):
+				if int(catalog[next].id)<0:break
+				if not labors.has(int(catalog[next].id)):checked=false;break
+		else:
+			var icon_x:=size.x-104
+			for definition: Dictionary in state.details:
+				if definition.get("labors",PackedInt32Array()).has(id) and int(definition.icon)>=0 and int(definition.icon)<Indicators.WORK_DETAILS.size():
+					var icon: Texture2D=art.texture("WORK_DETAIL_"+Indicators.WORK_DETAILS[int(definition.icon)])
+					if icon!=null:draw_texture_rect(icon,Rect2(icon_x,rect.position.y,32,36),false)
+					icon_x-=32
+		var checkbox: Texture2D=art.texture("LABOR_WORKER_ASSIGNED" if checked else "LABOR_WORKER_UNASSIGNED")
+		if checkbox!=null:draw_texture_rect(checkbox,Rect2(size.x-72,rect.position.y,32,36),false)

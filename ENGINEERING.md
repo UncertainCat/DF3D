@@ -213,9 +213,28 @@ retaining scroll30, returning through Done, and blocking external-controller edi
 All native worker state remains unchanged. DF9644 exits unsaved with source
 preservation; final joined headless logs contain only the known separate-renderer
 notice, no owned processes remain, native30FPS and GPU44C sampled. This accepts
-the controller path only; visible settings controls, reset/delete/rename and full
-rendered workflow/lifecycle acceptance remain pending. `settings_controller_reference`
-records the scope; the full screen stays hidden.
+the controller path only. `settings_controller_reference` records that scope;
+rendered settings-list acceptance is recorded below and the full screen stays hidden.
+
+The staged settings view now displays the native91-entry catalog, category colors,
+checkboxes, detail icons and selected-row artwork. Gear opens settings; category
+and labor clicks use native semantic toggles; wheel/scrollbar navigation and Done
+are local controller operations. The unselected background is BUTTON_RECTANGLE,
+confirmed by an exact captured native center-strip comparison with installed art.
+
+Protected130515 on2026-11-06 verifies actual rendered Gear, four native-matching
+toggles, wheel down/up, Done returning to the refreshed roster, and blocked edits
+under external labor control. The1200x800 settings-list crop has152 differing
+pixels, mean RGB error0.011 and maximum181; this is close visual agreement, not
+pixel identity or resize acceptance. Initial130110 exposed the subsequently fixed
+row-background mismatch. All339 worker states match the paused native reference.
+DF34640 closes unsaved, source preservation passes, and no DF/Godot remains.
+Both graphical clients are capped at30FPS; GPU samples45–50C. Joined final logs
+contain only known separate-renderer, device-finalize and paired shutdown-object
+diagnostics. Headless work-details-settings-view-final-20261106 passes core19,
+extension and controller checks. `settings_view_reference` records this scope.
+Reset/Delete remain unwired staged controls; renaming, settings hover, resize
+and full composed lifecycle acceptance remain pending. The full screen stays hidden.
 
 Worker setup42d8a0..42de34 supplies65 labor-to-skill branches: enabled labors set
 each associated skill weight to1, taking a union rather than accumulating shared

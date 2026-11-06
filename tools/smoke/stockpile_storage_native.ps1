@@ -222,7 +222,7 @@ try {
      $env:DF3D_CARRIER_DIRECTORY=$out;$env:DF3D_DF_PATH=$dfPath
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
      $clientArgs=@('--headless')
-     if($env:DF3D_RESIDENTS_JOB_ART_RENDER -eq '1' -or $env:DF3D_WORK_DETAILS_RENDER -eq '1'){$clientArgs=@('--max-fps','30')}
+     if($env:DF3D_RESIDENTS_JOB_ART_RENDER -eq '1' -or $env:DF3D_WORK_DETAILS_RENDER -eq '1' -or $env:DF3D_WORK_DETAILS_SETTINGS_RENDER -eq '1'){$clientArgs=@('--max-fps','30')}
      $clientArgs+=@('--path',"$repo/presentations/godot/project",'--script','res://tests/job_settings_wire_live.gd')
      $client=Start-Process -FilePath $engine -ArgumentList $clientArgs -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/job-settings-wire.stdout.log" -RedirectStandardError "$out/job-settings-wire.stderr.log"
      $null=$client.Handle

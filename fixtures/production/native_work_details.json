@@ -141,7 +141,7 @@
   },
   "root_lines": [
     {
-      "text": "                  Roderònul           Pop                                  Food  Drink           20th Malachite",
+      "text": "                  Roder\u00f2nul           Pop                                  Food  Drink           20th Malachite",
       "y": 0
     },
     {
@@ -261,7 +261,7 @@
       "y": 29
     },
     {
-      "text": "                                          Kogan Atîsteling, Miner        Master Miner",
+      "text": "                                          Kogan At\u00eesteling, Miner        Master Miner",
       "y": 30
     },
     {
@@ -333,7 +333,7 @@
       "y": 47
     },
     {
-      "text": "                                          Rûxu Kodkasprax",
+      "text": "                                          R\u00fbxu Kodkasprax",
       "y": 48
     },
     {
@@ -2331,10 +2331,10 @@
         "native_and_provider_ids_sha256": "037bcd9a168c74bd800793492fa872cba69a0df64e3cdead7470b8571acff6c5"
       },
       {
-        "name": "search-Tâmol",
+        "name": "search-T\u00e2mol",
         "sort": 3,
         "direction": 1,
-        "query": "Tâmol",
+        "query": "T\u00e2mol",
         "count": 0,
         "native_and_provider_ids_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
       },
@@ -2426,7 +2426,7 @@
         "native_provider_and_wire_ids_sha256": "037bcd9a168c74bd800793492fa872cba69a0df64e3cdead7470b8571acff6c5"
       },
       {
-        "name": "search-Tâmol",
+        "name": "search-T\u00e2mol",
         "count": 0,
         "native_provider_and_wire_ids_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
       },
@@ -3215,5 +3215,56 @@
     "source_preserved": true,
     "owned_df_closed": true,
     "diagnostics": "Final joined logs contain only the known separate-renderer startup notice."
+  },
+  "settings_view_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-130515",
+    "scope": "Rendered staged Work Details settings list at 1200x800; Reset, Delete, rename, resize and full lifecycle acceptance remain pending.",
+    "native_catalog_count": 91,
+    "visible_rows": 15,
+    "native_toggle_steps": [
+      {
+        "id": 11,
+        "labors": [
+          11
+        ]
+      },
+      {
+        "id": -2,
+        "labors": [
+          11,
+          59
+        ]
+      },
+      {
+        "id": -2,
+        "labors": []
+      },
+      {
+        "id": 11,
+        "labors": [
+          11
+        ]
+      }
+    ],
+    "pointer_gear_and_done": true,
+    "wheel_down_and_up": true,
+    "external_controller_blocks_toggle": true,
+    "worker_state_matches_native": true,
+    "list_crop": {
+      "bounds": [
+        304,
+        184,
+        936,
+        724
+      ],
+      "maximum_rgb_error": 181,
+      "mean_rgb_error": 0.011009532739490546,
+      "different_pixels": 152,
+      "pixel_identical": false
+    },
+    "row_background": "BUTTON_RECTANGLE; captured native unselected center strip exactly matches installed atlas token.",
+    "source_preserved": true,
+    "owned_df_closed": true,
+    "diagnostics": "Final joined client logs contain only known separate-renderer, device-finalize and paired shutdown-object signatures."
   }
 }

@@ -18,7 +18,7 @@ local function lines()
  return rows
 end
 local function snapshot(target)
- local value={type=target.job_type,material={target.mat_type,target.mat_index},requirements={}}
+ local value={type=target.job_type,material={target.mat_type,target.mat_index},art={type=target.art_spec.type,id=target.art_spec.id,subid=target.art_spec.subid},requirements={}}
  for _,item in ipairs(target.job_items.elements)do value.requirements[#value.requirements+1]={item_type=item.item_type,mat_type=item.mat_type,mat_index=item.mat_index,quantity=item.quantity,flags1=item.flags1.whole,flags2=item.flags2.whole,flags3=item.flags3.whole,details=item.job_details_flags.whole,saved_type=item.job_details_mat_type,saved_index=item.job_details_mat_index}end
  return value
 end
@@ -59,9 +59,33 @@ end
 evidence.after=snapshot(job);evidence.source_unchanged=json.encode(snapshot(source))==source_before
 assert(evidence.source_unchanged and json.encode(evidence.before)==json.encode(evidence.after),'Production navigation changed job requirements')
 save()
+if os.getenv('DF3D_RESIDENTS_JOB_PRODUCTION_EDIT')=='1' then
+ -- Baseline effects use the native controls on the independent copy only.
+ local backup=dfhack.job.cloneJobStruct(job,true)
+ click(10,8);assert(details.current_option==0,'Production native material entry failed')
+ click(10,17);assert(not details.open and info.open,'Production native material edit did not close Details')
+ evidence.native_material_effect=snapshot(job)
+ click(button.rect.x1+1,button.rect.y1+1);click(10,11)
+ local art=df.global.game.main_interface.image_creator
+ assert(art.open,'Production native image entry failed');click(10,12)
+ assert(art.current_option==1 and #art.hf>0,'Production native figure list failed')
+ evidence.native_figure=art.hf[0].id;click(10,15)
+ assert(not art.open and info.open,'Production native artwork edit did not close')
+ evidence.native_combined_effect=snapshot(job)
+ job.mat_type=backup.mat_type;job.mat_index=backup.mat_index
+ job.art_spec:assign(backup.art_spec)
+ for i,item in ipairs(job.job_items.elements)do item:assign(backup.job_items.elements[i])end
+ -- DFHack exposes cloneJobStruct but not its matching deep deleter to Lua.
+ -- Keep this diagnostic allocation until the owned process exits unsaved.
+ assert(json.encode(snapshot(job))==json.encode(evidence.before),'Production diagnostic restoration failed')
+ click(button.rect.x1+1,button.rect.y1+1);save()
+end
 if os.getenv('DF3D_RESIDENTS_JOB_PRODUCTION_WIRE')=='1' then
  local previous=owner.job.current_job;owner.job.current_job=job
  shot('residents-job-production-wire');owner.job.current_job=previous
- assert(json.encode(snapshot(job))==json.encode(evidence.before),'Production navigation client changed requirements')
+ evidence.wire_effect=snapshot(job)
+ assert(json.encode(evidence.wire_effect)==json.encode(evidence.native_combined_effect or evidence.before),'Production client effect differs from native')
+ assert(json.encode(snapshot(source))==source_before,'Production client changed original job')
+ save()
 end
 gui.simulateInput(view,'LEAVESCREEN');settle()

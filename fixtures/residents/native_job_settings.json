@@ -6249,5 +6249,127 @@
     "scope": "Native workshop-created rock statue job, deep independent copy including real requirement flags; native options and complete material/count/order comparison; rendered Residents pointer root/stone/back/image/back. Navigation preserves requirements. No production material/artwork edits, simulation execution or multiple-input acceptance yet.",
     "owned_df_closed": true,
     "save_preserved": true
+  },
+  "production_edit_reference": {
+    "source_job_id": 382794,
+    "before": {
+      "art": {
+        "id": -1,
+        "subid": -1,
+        "type": -1
+      },
+      "material": [
+        0,
+        -1
+      ],
+      "requirements": [
+        {
+          "details": 0,
+          "flags1": 0,
+          "flags2": 2048,
+          "flags3": 64,
+          "item_type": 4,
+          "mat_index": -1,
+          "mat_type": 0,
+          "quantity": 1,
+          "saved_index": -1,
+          "saved_type": -1
+        }
+      ],
+      "type": 79
+    },
+    "native_material_effect": {
+      "art": {
+        "id": -1,
+        "subid": -1,
+        "type": -1
+      },
+      "material": [
+        0,
+        166
+      ],
+      "requirements": [
+        {
+          "details": 1,
+          "flags1": 0,
+          "flags2": 2048,
+          "flags3": 64,
+          "item_type": 4,
+          "mat_index": 166,
+          "mat_type": 0,
+          "quantity": 1,
+          "saved_index": -1,
+          "saved_type": 0
+        }
+      ],
+      "type": 79
+    },
+    "native_combined_effect": {
+      "art": {
+        "id": 9876,
+        "subid": -1,
+        "type": 0
+      },
+      "material": [
+        0,
+        166
+      ],
+      "requirements": [
+        {
+          "details": 1,
+          "flags1": 0,
+          "flags2": 2048,
+          "flags3": 64,
+          "item_type": 4,
+          "mat_index": 166,
+          "mat_type": 0,
+          "quantity": 1,
+          "saved_index": -1,
+          "saved_type": 0
+        }
+      ],
+      "type": 79
+    },
+    "wire_effect": {
+      "art": {
+        "id": 9876,
+        "subid": -1,
+        "type": 0
+      },
+      "material": [
+        0,
+        166
+      ],
+      "requirements": [
+        {
+          "details": 1,
+          "flags1": 0,
+          "flags2": 2048,
+          "flags3": 64,
+          "item_type": 4,
+          "mat_index": 166,
+          "mat_type": 0,
+          "quantity": 1,
+          "saved_index": -1,
+          "saved_type": 0
+        }
+      ],
+      "type": 79
+    },
+    "native_figure": 9876,
+    "capture": "build/stockpile-storage-native-input-20261106-101805",
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        }
+      ],
+      "unclassified": []
+    },
+    "scope": "Native-created statue job deep copy. Native clicks change material then historical figure; disposable copy is restored before actual headless Residents pointer edits. Final native readback exactly matches captured material/art/requirement fields. Each confirmed edit closes Details and refreshes roster. Original job remains unchanged. Multiple-input jobs, new-image production drafts and simulation execution remain pending.",
+    "owned_df_closed": true,
+    "save_preserved": true
   }
 }

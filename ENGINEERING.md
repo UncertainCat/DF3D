@@ -1173,6 +1173,23 @@ engine signatures only. DF31804 exits unsaved, source save preserved, GPU49-50C
 sampled at30FPS. Production material/artwork edits, execution and multiple-input
 jobs remain unaccepted; this is navigation acceptance for a native-created job.
 
+Protected101805 adds `DF3D_RESIDENTS_JOB_PRODUCTION_EDIT=1` to the production
+wire lane. Native clicks first select rock salt (material0/166), then historical
+figure9876. After restoring only the independent job copy, the actual headless
+Residents owner repeats those edits through the semantic transport. Native
+readback exactly matches the baseline: job/input material0/166, saved original
+restriction0/-1 and details flag1, quantity1 and requirement flags unchanged;
+artwork type0/id9876/sub-ID-1. Both confirmed edits close Details and refresh
+Residents. The original queued job remains unchanged. Fixture
+production_edit_reference records all compared fields. Core19/job-state checks
+pass in job-production-edit-20261106, joined client logs contain only the known
+separate-thread notice, and DF40860 exits unsaved with source preservation.
+GPU49C sampled, native30FPS/headless client. The initial101707 attempt stopped
+at an unavailable Lua deep-deletion binding; diagnostic copies now remain owned
+by the short-lived process. This verifies the material and figure edits for a
+native-created single-input job; multiple-input jobs, production new-image drafts
+and simulation execution remain pending.
+
 
 ## Farm removal native entry points
 

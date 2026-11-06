@@ -99,9 +99,22 @@ func production_read() -> void:
 	await capture_draft("production-image")
 	await pointer(view,Vector2(120,180),MOUSE_BUTTON_RIGHT)
 	check(state.phase==state.Phase.Closed and owner.panel.visible,"Production image Back did not restore Residents")
+	if OS.get_environment("DF3D_RESIDENTS_JOB_PRODUCTION_EDIT")=="1":
+		await pointer(owner.panel,Vector2(540,owner.panel.list_top()+(index-owner.state.first)*36+18));check(await ready(state),"Production edit reopen failed")
+		await pointer(view,Vector2(120,66));check(await ready(state) and state.selected==0,"Production edit material option failed")
+		await pointer(view,Vector2(120,view.list_top()+54));await production_applied(owner)
+		await pointer(owner.panel,Vector2(540,owner.panel.list_top()+(index-owner.state.first)*36+18));check(await ready(state),"Production artwork reopen failed")
+		await pointer(view,Vector2(120,102));check(await ready(state) and state.has_art(),"Production artwork edit entry failed")
+		await pointer(view,Vector2(120,114));check(await ready(state) and state.art_page()==1 and state.rows[0].id==int(reference.native_figure),"Production artwork figure differs")
+		await pointer(view,Vector2(120,view.list_top()+18));await production_applied(owner)
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"production":{"source_job":reference.source_job_id,"options":2,"materials":expected.size(),"image":true,"back":true}}));file.close()
 	owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)
+
+func production_applied(owner) -> void:
+	var deadline:=Time.get_ticks_msec()+5000
+	while owner.job_state.phase==owner.job_state.Phase.Applying and Time.get_ticks_msec()<deadline:world.poll();await create_timer(0.01).timeout
+	check(owner.job_state.phase==owner.job_state.Phase.Closed and await ready(owner.state) and owner.panel.visible,"Production edit did not refresh Residents")
 
 func ready(state) -> bool:
 	var deadline:=Time.get_ticks_msec()+5000

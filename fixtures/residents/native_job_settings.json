@@ -5782,5 +5782,39 @@
     "scope": "Owned job draft root category captions, creature count and first race/caste, first added-element description and stale list receipt rejection match native. Source job and fortress image catalog unchanged until independent native Done. No all-row/category, name, commit adapter or typed draft/UI acceptance.",
     "source_preserved": true,
     "owned_df_closed": true
+  },
+  "artwork_draft_commit_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-092512",
+    "date": "2026-11-06",
+    "adapter": {
+      "after": {
+        "id": 4,
+        "requirements": 0,
+        "specdata": -1,
+        "subid": 124,
+        "type": 3
+      },
+      "applied": true,
+      "invalid_element_rejected": true,
+      "one_registered": true,
+      "rejections_unchanged": true,
+      "source_unchanged": true,
+      "stale_revision_rejected": true,
+      "wrong_holder_rejected": true,
+      "wrong_job_rejected": true
+    },
+    "native_done": {
+      "art_open": false,
+      "details_open": false,
+      "id": 4,
+      "info_open": true,
+      "requirements": 0,
+      "specdata": -1,
+      "subid": 123,
+      "type": 3
+    },
+    "scope": "Owned draft registration and copied-job assignment after independent native Done. Exact registered IDs match each respective job; separate new images have distinct sub-IDs. Rejected stale target/revision and invalid element preserve copy and catalog. Source job unchanged. Controlled no-requirement statue job; no typed/UI Done, names/relationships/other categories or uncertainty fault injection acceptance.",
+    "source_preserved": true,
+    "owned_df_closed": true
   }
 }

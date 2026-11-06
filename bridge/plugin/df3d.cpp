@@ -2230,6 +2230,35 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="residents-job-art-draft-commit-probe") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0)return CR_WRONG_USAGE;
+          const auto* unit=df::unit::find(id);if(!unit || !unit->job.current_job)return CR_FAILURE;
+          const auto& source=*unit->job.current_job;const auto root=df3d_production::nativeJobSettings(source,-1,{},false);if(!root)return CR_FAILURE;
+          int32_t option=-1;for(size_t i=0;i<root->options.size();++i)if(root->options[i].kind==1 || root->options[i].kind==3){option=int32_t(i);break;}if(option<0)return CR_FAILURE;
+          auto draft=df3d_production::WorkOrderArtDraft::create();if(!draft)return CR_FAILURE;
+          auto choices=draft->choices(7,{});if(!choices || choices->empty() || !draft->generateName())return CR_FAILURE;
+          df3d_production::WorkOrderArtDraftValue value;value.name=draft->image().name;
+          value.elements.push_back({7,choices->front().first,choices->front().second,1});
+          std::vector<df::job_item> inputs;for(const auto* item:source.job_items.elements){if(!item)return CR_FAILURE;inputs.push_back(*item);}
+          df::job copy=source;copy.job_items.elements.clear();for(auto& input:inputs)copy.job_items.elements.push_back(&input);
+          const auto state=[](const df::job& job){Json::Value v;v["type"]=int(job.art_spec.type);v["id"]=job.art_spec.id;v["subid"]=job.art_spec.subid;v["specdata"]=job.specdata.hist_figure_id;v["requirements"]=Json::UInt(job.job_items.elements.size());return v;};
+          const auto before=state(copy);auto& resources=df::global::plotinfo->main.fortress_entity->resources;const auto count=resources.art_image_ids.size();
+          using Outcome=df3d_production::JobArtDraftOutcome;
+          const df3d_production::JobSettingsTarget target{source.id,root->buildingId};
+          const auto apply=[&](df3d_production::JobSettingsTarget t,uint64_t revision,const df3d_production::WorkOrderArtDraftValue& v){return df3d_production::commitJobArtDraft(copy,t,revision,option,v);};
+          Json::Value result;result["stale_revision_rejected"]=apply(target,root->revision==1?2:1,value)==Outcome::Stale;
+          result["wrong_job_rejected"]=apply({source.id^1,root->buildingId},root->revision,value)==Outcome::Stale;
+          result["wrong_holder_rejected"]=apply({source.id,root->buildingId^1},root->revision,value)==Outcome::Stale;
+          auto invalid=value;invalid.elements[0].id=INT32_MAX;
+          result["invalid_element_rejected"]=apply(target,root->revision,invalid)==Outcome::Rejected;
+          result["rejections_unchanged"]=state(copy)==before && resources.art_image_ids.size()==count;
+          result["applied"]=apply(target,root->revision,value)==Outcome::Applied;
+          result["after"]=state(copy);result["source_unchanged"]=state(source)==before;
+          result["one_registered"]=resources.art_image_ids.size()==count+1 && resources.art_image_ids.back()==copy.art_spec.id && resources.art_image_subids.back()==copy.art_spec.subid;
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="residents-job-art-draft-probe") {
           if(parameters.size()!=2)return CR_WRONG_USAGE;
           int32_t id=-1;const auto& raw=parameters[1];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);

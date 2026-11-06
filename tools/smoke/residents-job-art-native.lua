@@ -198,6 +198,14 @@ if os.getenv('DF3D_RESIDENTS_JOB_ART_DRAFT')=='1' then
  assert(not art.open and not m.job_details.open and info.open,'Draft Done did not return to Residents')
  assert(job.art_spec.type==3 and job.art_spec.id>=0 and job.art_spec.subid>=0,'Draft Done did not assign image')
  assert(#resources.art_image_ids==count+1 and resources.art_image_ids[count]==job.art_spec.id and resources.art_image_subids[count]==job.art_spec.subid,'Draft registration differs')
+ if os.getenv('DF3D_RESIDENTS_JOB_ART_DRAFT_COMMIT')=='1' then
+  local old=owner.job.current_job;owner.job.current_job=job
+  local ok,text,rc=pcall(dfhack.run_command_silent,'df3d','residents-job-art-draft-commit-probe',tostring(owner.id))
+  owner.job.current_job=old;assert(ok and rc==0,'Owned job draft commit failed: '..tostring(text))
+  local committed=json.decode(text);result.draft.commit_adapter=committed;save()
+  for _,key in ipairs({'applied','stale_revision_rejected','wrong_job_rejected','wrong_holder_rejected','invalid_element_rejected','rejections_unchanged','source_unchanged','one_registered'})do assert(committed[key],'Draft commit failed '..key)end
+  assert(committed.after.type==3 and committed.after.specdata==result.draft.done.specdata and committed.after.requirements==result.draft.done.requirements,'Owned job draft effect differs')
+ end
  reopen_art()
 end
 gui.simulateInput(view,'LEAVESCREEN');settle();result.escape=effect();save()

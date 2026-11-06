@@ -132,4 +132,38 @@ inline JobSettingsOutcome beginJobArt(df::job& job,const JobSettingsTarget& targ
     job.specdata.improvement=df::improvement_type(0);return JobSettingsOutcome::Applied;
 }
 
+enum class JobArtDraftOutcome {Rejected,Stale,Applied,Unknown};
+inline bool jobArtDraftEffectsReady() {
+    static const bool ready=[] {
+        if(!jobArtReady() || !workOrderArtDraftReady())return false;
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x31;++i){hash^=base[0x20b2b1+i];hash*=UINT64_C(1099511628211);}
+        return hash==UINT64_C(0x33f0e4648341c604);
+    }();return ready;
+}
+inline JobArtDraftOutcome commitJobArtDraft(df::job& job,const JobSettingsTarget& target,uint64_t revision,
+    int32_t option,const WorkOrderArtDraftValue& value) {
+    if(!jobArtDraftEffectsReady() || !revision || revision>INT64_MAX || !value.name || value.elements.empty() ||
+        value.elements.size()>256 || value.relationships.size()>256)return JobArtDraftOutcome::Rejected;
+    if(job.id!=target.jobId)return JobArtDraftOutcome::Stale;
+    const auto root=nativeJobSettings(job,-1,{},false);
+    if(!root || root->buildingId!=target.buildingId || root->revision!=revision)return JobArtDraftOutcome::Stale;
+    if(option<0 || size_t(option)>=root->options.size())return JobArtDraftOutcome::Rejected;
+    const auto kind=root->options[size_t(option)].kind;
+    if((kind!=1 && kind!=3) || (kind==3 && int(job.specdata.improvement)!=0))return JobArtDraftOutcome::Rejected;
+    auto draft=WorkOrderArtDraft::create();if(!draft || !draft->setName(*value.name))return JobArtDraftOutcome::Rejected;
+    for(const auto& e:value.elements)if(!draft->addElement(e.kind,e.id,e.secondary,e.quantity))return JobArtDraftOutcome::Rejected;
+    for(const auto& r:value.relationships)if(!draft->addRelationship(r.verb,r.transitive,r.actor,r.target))return JobArtDraftOutcome::Rejected;
+    if(!draft->canInstall())return JobArtDraftOutcome::Rejected;
+    // Registration may partially write world/entity state before failure. Never
+    // report rejection or retry after crossing this boundary.
+    try {
+        auto* image=draft->install();if(!image)return JobArtDraftOutcome::Unknown;
+        // Native20b2b1..20b2e2: job assignment only, no manager requirements.
+        job.art_spec.type=df::job_art_specifier_type(3);job.art_spec.id=image->id;job.art_spec.subid=image->subid;
+    } catch(...) {return JobArtDraftOutcome::Unknown;}
+    return JobArtDraftOutcome::Applied;
+}
+
 }

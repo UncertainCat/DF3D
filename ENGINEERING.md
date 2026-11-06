@@ -1019,8 +1019,7 @@ for jobs. The shared WorkOrderArtDraft owns native image/list scratch. Its extra
 nativeArtDraftPage accepts an owned root page and source revision; manager and
 job wrappers obtain those from their own simulation records. nativeJobArtDraftPage
 never constructs a manager-order proxy. Name generation remains an explicit write
-intent because it consumes native RNG. Typed job draft transport, UI and world
-commit remain to be connected. The reference
+intent because it consumes native RNG. Typed job draft transport and UI remain to be connected. The reference
 is fixtures/residents/native_job_settings.json.artwork_draft_reference.
 
 
@@ -1035,6 +1034,29 @@ DF39896 closes unsaved with source preservation; native30FPS, GPU45-46C sampled,
 no Godot renderer. Core19/root build pass in job-art-draft-reader-20261106; native
 MSVC job-art-draft-reader-build passes. Built/installed bridge SHA256 is
 C23D55EC8AC7F611AB5FF3E3807254381FB8D560D22F9B59084B5E41DD20D696.
+
+
+commitJobArtDraft validates current job/holder identity, source revision, artwork
+option and Image selection for improvement jobs, then reconstructs and validates
+owned name/elements/relationships before world registration. The independent job
+assignment pin is20b2b1 length0x31 hash33f0e4648341c604. Registration reuses the
+native-backed owned draft installer. Once installation begins, allocation or
+registration failures return JobArtDraftOutcome::Unknown; callers must not retry.
+Successful registration writes only job artwork type/id/sub-ID, with no manager
+requirement rebuild. This helper is staged until the typed contract handles its
+separate uncertain outcome.
+
+Protected092512 on2026-11-06 exercises residents-job-art-draft-commit-probe after
+independent native Done. A new owned one-creature image is registered exactly
+once and assigned to a private copy of the job. Stale revision/job/holder and
+invalid element requests preserve both the copy and entity catalog; the source
+job stays unchanged. Both native and adapter retain specdata and zero requirements.
+This is not typed UI acceptance or an uncertainty fault-injection check. Root19
+and native MSVC builds pass (job-art-draft-commit-20261106 and
+job-art-draft-commit-build). Built/installed SHA256 is
+CE6F723BD5A35A613F7298EDCBB0AE8665FA505E6130364290F5C3F478C83D7F.
+DF3524 closes unsaved with source preservation; native30FPS, GPU48C sampled,
+no Godot renderer. The fixture retains artwork_draft_commit_reference.
 
 
 ## Farm removal native entry points

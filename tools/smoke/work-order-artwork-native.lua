@@ -43,22 +43,35 @@ assert(click_label('Encrust',584),'Fixture needs visible Encrust order')
 local details=m.job_details;assert(details.open and details.wq)
 local order=details.wq;local before={spec=order.specdata.hist_figure_id,typ=order.art_spec.type,id=order.art_spec.id,subid=order.art_spec.subid}
 if os.getenv('DF3D_WORK_ORDER_LAYOUT')=='1' then
+ local original_limit=order.max_workshops
  for _,size in ipairs({'wide','default','minimum'})do
+  if size=='minimum' then
+   key('LEAVESCREEN');assert(click_label('Encrust',552));assert(m.info.work_orders.conditions.open)
+  end
   local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('name-resize-'..size);f:close()
   assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
   local limit=dfhack.getTickCount()+30000
   while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end
    assert(dfhack.getTickCount()<limit,'Work order resize timeout');script.sleep(1,'frames')end
   assert(os.remove(out..'/owner-input-ack'));script.sleep(3,'frames');view:render(dfhack.getTickCount())
-  shot('work-order-details-'..size)
-  key('LEAVESCREEN');assert(not details.open)
-  shot('work-order-list-'..size)
+  if size=='minimum' then
+   shot('work-order-conditions-'..size);key('LEAVESCREEN');shot('work-order-list-'..size)
+  else
+   shot('work-order-details-'..size)
+   key('LEAVESCREEN');assert(not details.open)
+   shot('work-order-list-'..size)
+   local controls=math.floor((12+g.dimx-38)/3)
+   assert(click_label('Encrust',(controls+26)*8+16));assert(m.info.work_orders.conditions.open)
+   shot('work-order-conditions-'..size)
+   key('LEAVESCREEN')
+  end
   if size~='minimum' then
    local details_x=(math.floor((12+g.dimx-38)/3)+30)*8+16
    assert(click_label('Encrust',details_x));assert(details.open)
   end
  end
  assert(order.specdata.hist_figure_id==before.spec and order.art_spec.type==before.typ and order.art_spec.id==before.id and order.art_spec.subid==before.subid,'Layout capture changed order')
+ assert(order.max_workshops==original_limit,'Layout capture changed workshop limit')
  records[#records+1]={name='work-order-layout',screens=#observations,order_unchanged=true}
  return
 end

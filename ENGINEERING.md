@@ -6,7 +6,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
-| Minimum-width global Work orders overlaps workshop-limit controls with other row controls. | No correction approved or implemented; retain native geometry. | Native000121 on2026-11-06 at912x552, `work-order-list-minimum.png`; renderer392f00 distributes fixed-size controls across narrow thirds. This establishes visual overlap, not which action wins every overlapping hitbox. |
+| Minimum-width global Work orders overlaps workshop-limit controls with other row controls. | No correction approved; native drawing geometry is retained. Overlapping input precedence remains unresolved before exposure. | Native000121 on2026-11-06 at912x552, `work-order-list-minimum.png`; renderer392f00 distributes fixed-size controls across narrow thirds. In000636, clicking the visible Conditions location changed the workshop limit instead of opening Conditions. The later000739 capture opens Conditions before shrinking and verifies unchanged workshop limits. |
 | Work order tint ingredient captions repeat the source color where the target color would be expected. | No correction implemented; preserve native captions. | Native dye capture `build/stockpile-storage-native-input-20261105-223741`: target cerulean displays “Tint white cloth white using midnight blue dye”. Renderer2160f5/2161c7 reads the source color both times. |
 | Track material ordering depends on stale distances left by unrelated menus. | Request fresh native distances for each intent. | Implemented; construction Track distance evidence below and `fixtures/construction/connected_track.json`. |
 | First Track preview overwrites active search costs during lazy walkability rebuilding. | Preserve the stable route on the first preview. | Implemented; Track initialization evidence below and `fixtures/construction/track_route_initialization_probes.json.gz`. |
@@ -7370,6 +7370,23 @@ diagnostics; root19/19 and headless composition pass in
 `build/qa/global-orders-responsive-gate`. The focused native lane accepts
 `DF3D_WORK_ORDER_LAYOUT=1`. Narrow native control overlap is preserved and recorded
 in the bug register; resized editing, Conditions and tab navigation remain gaps.
+
+Conditions now follows renderer38da4c..38db58 geometry: shared responsive tabs,
+right-anchored action buttons/filter controls, native condition viewport capacity,
+and the24-pixel content shift when tabs fit on one row. Header names retain the
+native22-column truncation beside frequency text. Suggested rows remain anchored
+to the bottom. Protected000739 on2026-11-06 captures Conditions at1600x900,
+1200x800 and912x552; owned DF12624 closes unsaved with source preservation and
+unchanged workshop limits. Earlier000636 captures wide/default Conditions but
+its narrow click hit an overlapping workshop-limit control, so its narrow image
+is not Conditions evidence. The corrected harness opens Conditions before
+shrinking and asserts native panel state for normal-size opens.
+Local production-view captures in `build/qa/conditions-layout` use synthetic rows
+and verify capacities14/11/4 and amount-entry hitboxes at independent native
+coordinates. The wide render was visually inspected; full live resized edits,
+filter pages, dependencies and overlapping narrow text/input remain unverified.
+Paired renderer logs contain only documented diagnostics. Root19/19 and headless
+composition pass in `build/qa/conditions-responsive-gate`.
 
 These screens remain staged. Details, full responsive layout, tooltip coverage
 and tab navigation are unfinished. Quantity drafts currently support four digits; native increment

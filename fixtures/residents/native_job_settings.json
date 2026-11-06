@@ -4632,5 +4632,241 @@
       "success": true
     },
     "scope": "Headless real Residents owner: visible job button opens artwork root, Escape retains it, figure button/hover, seek into later page, typed empty-result search, right-click category/root Back restores roster, owner reset retires pending reads. Typed category transport checks remain. No graphical Godot parity, artwork assignment, artist choice, improvement Image entry mutation, new-image draft or ordinary job acceptance."
+  },
+  "artwork_effects_reference": {
+    "source": "build/stockpile-storage-native-input-20261106-085505",
+    "bridge_sha256": "14521EC22D57AEDF4CD4D80164E23AF9009F5DC5E61E852CFF029133FF36FE7F",
+    "effects": {
+      "figure_effect": {
+        "art_open": false,
+        "details_open": false,
+        "id": 9876,
+        "info_open": true,
+        "requirements": 0,
+        "specdata": -1,
+        "subid": 7,
+        "type": 0
+      },
+      "figure_adapter": {
+        "after": {
+          "id": 9876,
+          "requirements": 0,
+          "specdata": -1,
+          "subid": 7,
+          "type": 0
+        },
+        "applied": true,
+        "before": {
+          "id": 9996,
+          "requirements": 0,
+          "specdata": -1,
+          "subid": 7,
+          "type": 0
+        },
+        "missing_subject_rejected": true,
+        "rejections_unchanged": true,
+        "source_unchanged": true,
+        "stale_list_rejected": true,
+        "stale_revision_rejected": true,
+        "wrong_holder_rejected": true,
+        "wrong_job_rejected": true
+      },
+      "artist_effect": {
+        "art_open": false,
+        "details_open": false,
+        "id": -1,
+        "info_open": true,
+        "requirements": 0,
+        "specdata": -1,
+        "subid": -1,
+        "type": -1
+      },
+      "artist_adapter": {
+        "after": {
+          "id": -1,
+          "requirements": 0,
+          "specdata": -1,
+          "subid": -1,
+          "type": -1
+        },
+        "applied": true,
+        "before": {
+          "id": 2,
+          "requirements": 0,
+          "specdata": -1,
+          "subid": 340,
+          "type": 3
+        },
+        "missing_subject_rejected": true,
+        "rejections_unchanged": true,
+        "source_unchanged": true,
+        "stale_revision_rejected": true,
+        "wrong_holder_rejected": true,
+        "wrong_job_rejected": true
+      },
+      "other_effects": [
+        {
+          "adapter": {
+            "after": {
+              "id": 320,
+              "requirements": 0,
+              "specdata": -1,
+              "subid": 7,
+              "type": 1
+            },
+            "applied": true,
+            "before": {
+              "id": 9876,
+              "requirements": 0,
+              "specdata": -1,
+              "subid": 7,
+              "type": 0
+            },
+            "missing_subject_rejected": true,
+            "rejections_unchanged": true,
+            "source_unchanged": true,
+            "stale_list_rejected": true,
+            "stale_revision_rejected": true,
+            "wrong_holder_rejected": true,
+            "wrong_job_rejected": true
+          },
+          "effect": {
+            "art_open": false,
+            "details_open": false,
+            "id": 320,
+            "info_open": true,
+            "requirements": 0,
+            "specdata": -1,
+            "subid": 7,
+            "type": 1
+          },
+          "kind": 2,
+          "subject": 320
+        },
+        {
+          "adapter": {
+            "after": {
+              "id": 1109,
+              "requirements": 0,
+              "specdata": -1,
+              "subid": 7,
+              "type": 2
+            },
+            "applied": true,
+            "before": {
+              "id": 320,
+              "requirements": 0,
+              "specdata": -1,
+              "subid": 7,
+              "type": 1
+            },
+            "missing_subject_rejected": true,
+            "rejections_unchanged": true,
+            "source_unchanged": true,
+            "stale_list_rejected": true,
+            "stale_revision_rejected": true,
+            "wrong_holder_rejected": true,
+            "wrong_job_rejected": true
+          },
+          "effect": {
+            "art_open": false,
+            "details_open": false,
+            "id": 1109,
+            "info_open": true,
+            "requirements": 0,
+            "specdata": -1,
+            "subid": 7,
+            "type": 2
+          },
+          "kind": 3,
+          "subject": 1109
+        },
+        {
+          "adapter": {
+            "after": {
+              "id": 2,
+              "requirements": 0,
+              "specdata": -1,
+              "subid": 340,
+              "type": 3
+            },
+            "applied": true,
+            "before": {
+              "id": 1109,
+              "requirements": 0,
+              "specdata": -1,
+              "subid": 7,
+              "type": 2
+            },
+            "missing_subject_rejected": true,
+            "rejections_unchanged": true,
+            "source_unchanged": true,
+            "stale_list_rejected": true,
+            "stale_revision_rejected": true,
+            "wrong_holder_rejected": true,
+            "wrong_job_rejected": true
+          },
+          "effect": {
+            "art_open": false,
+            "details_open": false,
+            "id": 2,
+            "info_open": true,
+            "requirements": 0,
+            "specdata": -1,
+            "subid": 340,
+            "type": 3
+          },
+          "kind": 5,
+          "subject": 0
+        }
+      ],
+      "begin_image": {
+        "adapter": {
+          "after": {
+            "id": 9996,
+            "requirements": 0,
+            "specdata": 0,
+            "subid": 7,
+            "type": 0
+          },
+          "applied": true,
+          "before": {
+            "id": 9996,
+            "requirements": 0,
+            "specdata": 3,
+            "subid": 7,
+            "type": 0
+          },
+          "rejections_unchanged": true,
+          "source_unchanged": true,
+          "stale_list_rejected": true,
+          "stale_revision_rejected": true,
+          "wrong_holder_rejected": true,
+          "wrong_job_rejected": true
+        },
+        "back": {
+          "art_open": false,
+          "details_open": false,
+          "id": 9996,
+          "info_open": true,
+          "requirements": 0,
+          "specdata": 0,
+          "subid": 7,
+          "type": 0
+        },
+        "context": 2,
+        "effect": {
+          "art_open": true,
+          "details_open": true,
+          "id": 9996,
+          "info_open": true,
+          "requirements": 0,
+          "specdata": 0,
+          "subid": 7,
+          "type": 0
+        }
+      }
+    },
+    "scope": "Owned-copy adapter matches actual native job figure/site/entity/image/artist field writes, then separate improvement Image entry and retained Back effect. Rejected stale/wrong-target/missing-subject copy requests preserve fields; source job unchanged by copy probe. Controlled unlinked jobs, zero requirements. No typed art edit, UI assignment or ordinary production acceptance."
   }
 }

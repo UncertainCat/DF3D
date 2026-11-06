@@ -21,7 +21,7 @@ local function label(text)
  for _,line in ipairs(lines())do local x=line.text:find(text,1,true);if x then click(x-1,line.y);return end end
  error('Missing artwork label: '..text)
 end
-local function effect()return {type=job.art_spec.type,id=job.art_spec.id,subid=job.art_spec.subid,requirements=#job.job_items.elements,art_open=art.open,details_open=m.job_details.open,info_open=info.open}end
+local function effect()return {type=job.art_spec.type,id=job.art_spec.id,subid=job.art_spec.subid,requirements=#job.job_items.elements,specdata=job.specdata.hist_figure_id,art_open=art.open,details_open=m.job_details.open,info_open=info.open}end
 evidence.building_id=m.job_details.bld.id
 evidence.artwork={};local result=evidence.artwork
 local function save()
@@ -100,20 +100,49 @@ if os.getenv('DF3D_RESIDENTS_JOB_ART_PAGES')=='1' then
   assert(art.open and art.current_option==-1,'Artwork page Back failed')
  end
 end
+local function adapter(kind,id)
+ if os.getenv('DF3D_RESIDENTS_JOB_ART_EFFECTS')~='1' then return nil end
+ local old=owner.job.current_job;owner.job.current_job=job
+ local ok,text,rc=pcall(dfhack.run_command_silent,'df3d','residents-job-art-copy-probe',tostring(owner.id),tostring(kind),tostring(id))
+ owner.job.current_job=old;assert(ok and rc==0,'Owned artwork effect adapter failed: '..tostring(text))
+ local value=json.decode(text)
+ for _,field in ipairs({'applied','stale_revision_rejected','wrong_job_rejected','wrong_holder_rejected','rejections_unchanged','source_unchanged'})do assert(value[field],'Artwork adapter failed '..field)end
+ if kind~=0 then assert(value.stale_list_rejected,'Artwork stale list accepted')end
+ if kind~=-1 then assert(value.missing_subject_rejected,'Missing artwork subject accepted')end
+ return value
+end
+local function compare(value,actual)
+ if not value then return end
+ for key,wanted in pairs(value.after)do assert(actual[key]==wanted,'Native artwork effect differs: '..key)end
+end
 label('Related to historical figure')
 assert(art.current_option==1 and #art.hf>0,'Figure page did not open')
 result.figures={};for _,hf in ipairs(art.hf)do result.figures[#result.figures+1]=hf.id end
 result.figure_lines=lines();shot('residents-job-art-figures')
 local chosen=art.hf[0].id
 -- Native first subject row below the filter, verified in captured layout.
+local figure_adapter=adapter(1,chosen)
 click(10,14)
-result.figure_effect=effect();result.figure_choice=chosen
+result.figure_effect=effect();result.figure_choice=chosen;result.figure_adapter=figure_adapter;compare(figure_adapter,result.figure_effect)
 assert(job.art_spec.type==0 and job.art_spec.id==chosen and job.art_spec.subid==result.before.subid,'Figure selection effect differs')
 assert(not art.open and not m.job_details.open and info.open,'Figure selection did not return to Residents')
 click(button.rect.x1+1,button.rect.y1+1)
 assert(art.open and art.ics.jb==job,'Artwork did not reopen')
+if os.getenv('DF3D_RESIDENTS_JOB_ART_EFFECTS')=='1' then
+ result.other_effects={}
+ for _,kind in ipairs({2,3,5})do
+  label(kind==2 and 'Related to site' or kind==3 and 'Related to civilization or other group' or 'Existing image')
+  local rows=kind==2 and art.st or kind==3 and art.ent or art.art_image;assert(#rows>0,'Missing native artwork effect choice')
+  local subject=kind==5 and 0 or rows[0].id
+  local expected=adapter(kind,subject);click(10,14);local actual=effect();compare(expected,actual)
+  assert(not art.open and not m.job_details.open and info.open,'Artwork selection did not return to Residents')
+  result.other_effects[#result.other_effects+1]={kind=kind,subject=subject,adapter=expected,effect=actual}
+  click(button.rect.x1+1,button.rect.y1+1);assert(art.open,'Artwork effect did not reopen')
+ end
+end
+local artist_adapter=adapter(0,-1)
 label('Allow artist to choose')
-result.artist_effect=effect()
+result.artist_effect=effect();result.artist_adapter=artist_adapter;compare(artist_adapter,result.artist_effect)
 assert(job.art_spec.type==-1 and job.art_spec.id==-1 and job.art_spec.subid==-1 and not art.open,'Artist choice did not clear specification')
 click(button.rect.x1+1,button.rect.y1+1);assert(art.open,'Artwork did not reopen for cancellation')
 gui.simulateInput(view,'LEAVESCREEN');settle();result.escape=effect();save()
@@ -122,3 +151,18 @@ df.global.enabler.mouse_rbut_lift=0;gui.simulateInput(view,'_MOUSE_R')
 df.global.enabler.mouse_rbut=0;df.global.enabler.mouse_rbut_down=0;df.global.enabler.mouse_rbut_lift=1;settle()
 result.right_click=effect();save()
 assert(not art.open and not m.job_details.open and info.open,'Artwork right click did not return to Residents')
+
+if os.getenv('DF3D_RESIDENTS_JOB_ART_EFFECTS')=='1' then
+ -- Change only the unlinked diagnostic job; exercise Image's separate entry edit.
+ job.job_type=df.job_type.EncrustWithGems;job.specdata.improvement=3
+ job.art_spec.type=0;job.art_spec.id=owner.hist_figure_id;job.art_spec.subid=7
+ click(button.rect.x1+1,button.rect.y1+1)
+ assert(m.job_details.open and m.job_details.current_option==3 and not art.open,'Improvement type page did not open')
+ local expected=adapter(-1,-1);click(10,11)
+ result.begin_image={adapter=expected,effect=effect(),context=art.context};compare(expected,result.begin_image.effect)
+ assert(art.open and art.context==2 and job.specdata.improvement==0 and job.art_spec.subid==7,'Image entry did not preserve native artwork')
+ df.global.enabler.mouse_rbut_lift=0;gui.simulateInput(view,'_MOUSE_R')
+ df.global.enabler.mouse_rbut=0;df.global.enabler.mouse_rbut_down=0;df.global.enabler.mouse_rbut_lift=1;settle()
+ result.begin_image.back=effect();save()
+ assert(not art.open and not m.job_details.open and info.open and job.specdata.improvement==0,'Image Back lost its entry effect')
+end

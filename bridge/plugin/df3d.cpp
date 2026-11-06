@@ -2230,6 +2230,35 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="residents-job-art-copy-probe") {
+          if(parameters.size()!=4)return CR_WRONG_USAGE;
+          int32_t values[3]={};
+          for(size_t i=1;i<4;++i){const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || values[i-1]<(i==1?0:-1))return CR_WRONG_USAGE;}
+          const auto* unit=df::unit::find(values[0]);if(!unit || !unit->job.current_job)return CR_FAILURE;
+          const auto& source=*unit->job.current_job;const auto root=df3d_production::nativeJobSettings(source,-1,{},false);if(!root)return CR_FAILURE;
+          int32_t option=-1;for(size_t i=0;i<root->options.size();++i)if(root->options[i].kind==1 || root->options[i].kind==3){option=int32_t(i);break;}if(option<0)return CR_FAILURE;
+          uint64_t listRevision=0;
+          if(values[1]==-1){const auto settings=df3d_production::nativeJobSettings(source,option);if(!settings)return CR_FAILURE;listRevision=settings->choicesRevision;}
+          else if(values[1]>0){const auto page=df3d_production::nativeJobArtPage(source,int16_t(values[1]));if(!page)return CR_FAILURE;listRevision=page->page.listRevision;}
+          std::vector<df::job_item> inputs;for(const auto* item:source.job_items.elements){if(!item)return CR_FAILURE;inputs.push_back(*item);}
+          df::job copy=source;copy.job_items.elements.clear();for(auto& input:inputs)copy.job_items.elements.push_back(&input);
+          const auto state=[](const df::job& job){Json::Value value;value["type"]=int(job.art_spec.type);value["id"]=job.art_spec.id;value["subid"]=job.art_spec.subid;value["specdata"]=job.specdata.hist_figure_id;value["requirements"]=Json::UInt(job.job_items.elements.size());return value;};
+          const auto apply=[&](df3d_production::JobSettingsTarget target,uint64_t revision,uint64_t receipt,int32_t subject) {
+            return values[1]==-1?df3d_production::beginJobArt(copy,target,revision,option,receipt):df3d_production::applyJobArtSubject(copy,target,revision,option,values[1],subject,receipt);
+          };
+          using Outcome=df3d_production::JobSettingsOutcome;
+          const df3d_production::JobSettingsTarget target{source.id,root->buildingId};const auto before=state(copy);
+          Json::Value result;result["before"]=before;
+          result["stale_revision_rejected"]=apply(target,root->revision==1?2:1,listRevision,values[2])!=Outcome::Applied;
+          result["wrong_job_rejected"]=apply({source.id+1,root->buildingId},root->revision,listRevision,values[2])!=Outcome::Applied;
+          result["wrong_holder_rejected"]=apply({source.id,root->buildingId+1},root->revision,listRevision,values[2])!=Outcome::Applied;
+          if(values[1]!=0)result["stale_list_rejected"]=apply(target,root->revision,listRevision==1?2:1,values[2])!=Outcome::Applied;
+          if(values[1]!=-1)result["missing_subject_rejected"]=apply(target,root->revision,listRevision,INT32_MAX)!=Outcome::Applied;
+          result["rejections_unchanged"]=state(copy)==before;
+          result["applied"]=apply(target,root->revision,listRevision,values[2])==Outcome::Applied;
+          result["after"]=state(copy);result["source_unchanged"]=state(source)==before;
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="residents-job-art-page-probe") {
           if(parameters.size()!=5 && parameters.size()!=6)return CR_WRONG_USAGE;
           int32_t values[4]={};

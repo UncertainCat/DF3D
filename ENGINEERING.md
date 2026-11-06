@@ -948,6 +948,36 @@ Joined client logs contain only the known separate-render-thread notice. DF24364
 closes unsaved with source preservation; native30FPS, Godot headless, GPU51C after
 exit. The fixture retains composed-owner evidence separately from typed reads.
 
+`job_art_native.h` now contains staged artwork effect adapters, with independent
+pins for native job branches20a197..20a1cf,20a4c7..20a505,20a7fb..20a834,
+20ab16..20ab7c,20f131..20f169 and219306..219334. `applyJobArtSubject` checks
+fresh native eligibility, exact job/holder and source/list revisions, then writes
+only the native art specification. Related subjects preserve sub-ID; existing
+images replace it; artist choice clears all fields. Improvement artwork requires
+Image already selected. `beginJobArt` separately validates the displayed type
+catalog and writes ART_IMAGE without clearing prior art. Neither helper calls
+native menus or manager-order requirement rebuilding, and no fallible operation
+follows the first write. These helpers are not yet exposed through typed edits.
+
+Protected085505 on2026-11-06 compares
+`df3d residents-job-art-copy-probe <unit> <kind> <subject>` against actual native
+clicks on disposable jobs. Figure9876/site320/entity1109 preserve sub-ID7; existing
+image ordinal0 selects type3/chunk2/sub-ID340; artist choice clears all three.
+The copy adapter rejects stale source/list receipts, wrong job/holder and missing
+subjects without altering its fields or the source job. It then compares the
+separate improvement Image entry: specdata3 becomes0, HistoricalFigure9996/sub-ID7
+remains, and right-click Back retains that entry change. Native uses artwork
+context2 for this path, versus context1 for direct job Image. Zero requirement
+count is retained throughout; jobs with real requirements remain unaccepted.
+
+MSVC job-art-effects-build and root19/extension/job-settings state checks pass
+in job-art-effects-20261106. Built/installed bridge SHA256 is
+14521EC22D57AEDF4CD4D80164E23AF9009F5DC5E61E852CFF029133FF36FE7F.
+DF11044 exits unsaved with source preservation; native30FPS only, GPU49C after
+exit. The fixture stores exact effects separately from navigation/read evidence.
+Typed artwork edits, new-image drafts and rendered full-owner workflows remain
+unfinished, and public Residents is still hidden.
+
 
 ## Farm removal native entry points
 

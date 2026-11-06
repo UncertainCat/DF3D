@@ -112,6 +112,7 @@
 #include "item_owner_native.h"
 #include "residents_order_native.h"
 #include "residents_activity_native.h"
+#include "residents_activity_description_native.h"
 #include "residents_query_native.h"
 #include "residents_row_native.h"
 #include "residents_specialization_native.h"
@@ -2184,6 +2185,33 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           activity["fg"]=row->activity.foreground;activity["bg"]=row->activity.background;
           activity["bright"]=row->activity.bright;
           result["happiness"]=int(row->happiness);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="residents-activity-description-probe") {
+          if(parameters.size()!=2 && parameters.size()!=3)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];
+          const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0)return CR_WRONG_USAGE;
+          int32_t columns=0;
+          if(parameters.size()==3){
+            const auto& width=parameters[2];const auto value=std::from_chars(width.data(),width.data()+width.size(),columns);
+            if(value.ec!=std::errc{} || value.ptr!=width.data()+width.size() || columns<1 || columns>1024)return CR_WRONG_USAGE;
+          }
+          const auto description=df3d_residents::activityDescriptionProbe(df::unit::find(id),columns);
+          if(!description)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["id"]=id;
+          result["activity_id"]=description->activityId;result["event_id"]=description->eventId;result["event_type"]=description->eventType;
+          result["width"]=description->columns;result["max_y"]=description->maxY;
+          result["words"]=Json::Value(Json::arrayValue);result["links"]=Json::Value(Json::arrayValue);
+          for(const auto& word:description->words){
+            Json::Value value(Json::objectValue);value["text"]=DF2UTF(word.text);value["link"]=word.link;value["flags"]=word.flags;
+            value["x"]=word.x;value["y"]=word.y;
+            value["rgb"]=Json::Value(Json::arrayValue);value["rgb"].append(word.red);value["rgb"].append(word.green);value["rgb"].append(word.blue);
+            result["words"].append(value);
+          }
+          for(const auto& link:description->links){
+            Json::Value value(Json::objectValue);value["type"]=link.type;value["id"]=link.id;value["subid"]=link.subid;result["links"].append(value);
+          }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="residents-activity-probe") {

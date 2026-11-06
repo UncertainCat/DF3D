@@ -328,6 +328,20 @@ if os.getenv('DF3D_RESIDENTS_ACTIVITY_DETAILS')=='1' then
  end
  find_button(active_list,nil);assert(button and unit,'No visible Activity description button')
  local id=unit.id;local bounds={button.rect.x1,button.rect.y1,button.rect.x2,button.rect.y2}
+ local provider
+ if os.getenv('DF3D_RESIDENTS_ACTIVITY_DESCRIPTION_PROVIDER')=='1' then
+  local _,address=df.sizeof(info.creatures.activity_details_text)
+  local function pen()
+   local result={};for offset=0,3 do result[#result+1]=df.reinterpret_cast('uint8_t',base+0x264a47c+offset).value end
+   return json.encode(result)
+  end
+  local prior_pen=pen();local prior_words=#info.creatures.activity_details_text.word
+  local prior_storage=df.reinterpret_cast('uint64_t',address).value
+  local text,rc=dfhack.run_command_silent('df3d','residents-activity-description-probe',tostring(id))
+  assert(rc==0,'Owned Activity formatter failed: '..text);provider=json.decode(text)
+  assert(pen()==prior_pen,'Owned formatter changed native pen state')
+  assert(#info.creatures.activity_details_text.word==prior_words and df.reinterpret_cast('uint64_t',address).value==prior_storage,'Owned formatter changed menu storage')
+ end
  local g=df.global.gps;local x=button.rect.x1+1;local y=button.rect.y1+1
  g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+6;g.mouse_x=x;g.mouse_y=y
  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
@@ -342,6 +356,24 @@ if os.getenv('DF3D_RESIDENTS_ACTIVITY_DETAILS')=='1' then
  end
  assert(#words>0,'Native Activity details did not populate its description')
  local evidence={id=id,action_rva=action,button=bounds,words=words,width=box.current_width,max_y=box.max_y,list_open=info.open}
+ if provider then
+  assert(#provider.words==#words,'Owned Activity word count differs')
+  for index,word in ipairs(words)do
+   local actual=provider.words[index]
+   assert(actual.text==word.text and actual.link==word.link and actual.flags==word.flags and json.encode(actual.rgb)==json.encode(word.rgb),'Owned Activity markup differs at word '..index)
+  end
+  assert(#provider.links==#box.link,'Owned Activity link count differs')
+  for index,link in ipairs(box.link)do
+   local actual=provider.links[index+1]
+   assert(actual.type==link.type and actual.id==link.id and actual.subid==link.subid,'Owned Activity link differs')
+  end
+  evidence.provider=provider;evidence.provider_matches=true
+  local text,rc=dfhack.run_command_silent('df3d','residents-activity-description-probe',tostring(id),tostring(box.current_width))
+  assert(rc==0,'Owned Activity layout failed: '..text)
+  local layout=json.decode(text)
+  assert(layout.width==box.current_width and layout.max_y==box.max_y and json.encode(layout.words)==json.encode(words),'Owned Activity layout differs')
+  evidence.layout=layout;evidence.layout_matches=true
+ end
  local file=assert(io.open(out..'/residents-activity-details-reference.json','w'));file:write(json.encode(evidence));file:close()
  assert(loadfile(source))(out..'/residents-activity-details-widgets.json','templates')
  file=assert(io.open(out..'/shot.tmp','w'));file:write('residents-activity-details');file:close()

@@ -8,8 +8,8 @@
     "limitations": [
       "One natural Play Make Believe activity; other event families and job settings are not covered.",
       "The visible Close button was not clicked.",
-      "No DF3D runtime formatter or page acceptance.",
-      "No game artwork retained."
+      "No game artwork retained.",
+      "No DF3D page acceptance; diagnostic formatter acceptance is recorded separately."
     ]
   },
   "reference": {
@@ -170,6 +170,24 @@
         "x": 42,
         "y": 2
       }
+    ]
+  },
+  "formatter_reference": {
+    "native_run": "build/stockpile-storage-native-input-20261106-055544",
+    "id": 7049,
+    "activity_id": 50298,
+    "event_id": 8,
+    "event_type": 24,
+    "width": 110,
+    "max_y": 2,
+    "word_count": 12,
+    "link_count": 0,
+    "matches_native_markup": true,
+    "matches_native_positions": true,
+    "native_pen_and_menu_storage_preserved": true,
+    "limitations": [
+      "The adapter is diagnostic-only; no management command or DF3D page is exposed.",
+      "Only this natural MakeBelieve event has native comparison; other event families, links and widths remain unaccepted."
     ]
   }
 }

@@ -37,7 +37,7 @@ with context1 (`CREATURES_LIST_TASK`). The existing Work order details provider
 handles manager orders only; it is not an accepted substitute for this job path.
 Event-description actions1431cd0/1431d60 delegate to14287c0/1427f70. Both call
 26b800 with an activity_event, unit ID and markup output. This identifies the
-native formatter, but its callees/ownership are not yet accepted for runtime.
+native formatter; broader event-family ownership is not yet accepted for runtime.
 The menu actions themselves clear live markup and build widgets: do not call
 them from the bridge. The formatter output is `markup_text_boxst`, not a vector
 of strings; d51eb0 allocates formatted words with RGB, links and break flags.
@@ -54,6 +54,31 @@ failed an incorrect oracle assumption that Escape would retain the roster.
 No runtime behavior or public route is changed by this discovery. Next expose
 the formatter through owned storage and implement the corresponding page;
 job settings remain a separate shared dependency for Residents and Tasks.
+
+`residents_activity_description_native.h` now provides a diagnostic adapter for
+26b800 and the independent d51c80 word-layout routine. The diagnostic command
+`df3d residents-activity-description-probe <unit-id> [columns]` returns formatted
+words, link identities and optional native word positions. Columns are1..1024;
+omitting them returns the unarranged markup. No widget method is invoked.
+The native event readers select the current event using the producer's precedence.
+DFHack generated assignment copies value/vector storage into an independently
+allocated event. Its nested simulation references remain read-only; assigning
+an empty instance before native destruction prevents cleanup from deleting those
+borrowed records. Output markup owns every allocated word/link, uses a null script
+environment and is freed by native e37d0. The numeric-markup pen bytes are restored,
+as are RNG streams and the historical-material semantic cache. Output is bounded
+to16384 words,4096 links and128KiB text. This is not a public management endpoint.
+
+Protected055544 on2026-11-06, with
+`DF3D_RESIDENTS_ACTIVITY_DESCRIPTION_PROVIDER=1`, compares the adapter against the
+actual unit7049 MakeBelieve page. All text/RGB/link/break values and native word
+positions at110 columns match. A cold call also preserves the native menu's
+markup storage and current pen. DF29172 exits unsaved with source preservation;
+GPU37–38C in sampled readings, with graphics serial and capped at30FPS.
+The earlier055252 independently passes the unarranged-markup comparison.
+Other activity families, linked-text display, alternate widths and the full
+DF3D page remain unaccepted. Native build succeeds; installed bridge SHA256 is
+2221765B0BAE5A2C2DB28A39AB78F39424E287F6B9A64C13BDCED5465DC16FBA.
 
 Residents row hover uses the shared HUD help clock and original frame/font.
 The staged view resolves local pointer coordinates through its canvas transform,

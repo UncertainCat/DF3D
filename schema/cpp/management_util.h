@@ -52,8 +52,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 129;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v129";
+inline constexpr uint32_t kManagementVersion = 130;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v130";
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -558,6 +558,9 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     if(w && w->details()) {
       const auto* d=w->details();
       const bool writing=r.action()==ManagementAction::WorkOrderUpdate;
+      if(d->dye_target() < -1 || d->dye_target()>1023 ||
+         ((d->option()<0 || d->art()) && (d->dye_target()!=-1 || d->dye_filter_applied())) ||
+         (writing && d->dye_filter_applied()))return "invalid dye Details navigation";
       if((r.action()!=ManagementAction::WorkOrderInspect && !writing) || w->id()<0 ||
          (w->workshop_id()<0 && w->workshop_id()!=-2) || d->option() < -1 || d->option()>64 ||
          d->choice() < -1 || d->choice()>16383 || d->expected_choices_revision()>INT64_MAX ||
@@ -1875,9 +1878,18 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
          (d->choices() && (d->choices()->size()>128 || d->choices()->size()>d->total())))return "invalid native Details state";
       if(d->current_value() && (d->selected_option()<0 || d->art()))return "unexpected current Details value";
       for(const auto* option:*d->options())if(!option || option->kind()>6 || option->index() < -1 || !option->caption() || !textOk(option->caption(),512))return "invalid native Details option";
+      const bool dye=d->selected_option()>=0 && (d->options()->Get(d->selected_option())->kind()==4 || d->options()->Get(d->selected_option())->kind()==5);
+      if(d->dye_target() < -1 || d->dye_target()>1023 || !textOk(d->setting_heading(),512) ||
+         (!dye && (d->dye_target()!=-1 || d->setting_heading())))return "unexpected dye Details state";
       std::set<int32_t> choices;
       if(d->choices())for(const auto* choice:*d->choices())if(!choice || choice->id()<0 || choice->id()>16383 || !choices.insert(choice->id()).second ||
-         !choice->caption() || !textOk(choice->caption(),512) || !textOk(choice->count_caption(),32) || (choice->estimated() && !choice->count_caption()))return "invalid native Details choice";
+         !choice->caption() || !textOk(choice->caption(),512) || !textOk(choice->count_caption(),128) || (choice->estimated() && !choice->count_caption()))return "invalid native Details choice";
+      if(d->choices())for(const auto* choice:*d->choices()) {
+        if(choice->dye_color() < -1 || choice->dye_color()>1023 || (choice->opens_menu() && choice->dye_color()<0) ||
+           (!dye && (choice->dye_color()!=-1 || choice->opens_menu() || choice->swatch())) ||
+           (d->dye_target()>=0 && (choice->opens_menu() || choice->swatch())))return "invalid dye Details choice";
+        if(const auto* c=choice->swatch())if(!(c->red()>=0 && c->red()<=1 && c->green()>=0 && c->green()<=1 && c->blue()>=0 && c->blue()<=1))return "invalid dye color";
+      }
       if(const auto* a=d->art()) {
         if(d->selected_option()<0 || d->choices() || d->choices_revision() || d->total() || d->next_cursor() ||
            a->page() < -1 || a->page()==0 || a->page()>18 || !a->caption() || !textOk(a->caption(),1024) ||

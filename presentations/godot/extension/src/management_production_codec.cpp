@@ -286,6 +286,8 @@ void writeWorkOrder(Dictionary& result, const wm::WorkOrderState& s) {
     details["selected_option"]=d.selectedOption;details["choices_revision"]=int64_t(d.choicesRevision);
     details["total"]=int64_t(d.total);details["next_cursor"]=int64_t(d.nextCursor);
     if(d.currentValue)details["current_value"]=String::utf8(d.currentValue->c_str());
+    if(d.settingHeading)details["setting_heading"]=String::utf8(d.settingHeading->c_str());
+    details["dye_target"]=d.dyeTarget;
     if(d.art) {
       const auto& a=*d.art;Dictionary art;art["page"]=a.page;art["caption"]=String::utf8(a.caption.c_str());
       art["list_revision"]=int64_t(a.listRevision);art["total"]=int64_t(a.total);art["next_cursor"]=int64_t(a.nextCursor);
@@ -304,7 +306,7 @@ void writeWorkOrder(Dictionary& result, const wm::WorkOrderState& s) {
     }
     Array options;for(const auto& o:d.options){Dictionary option;option["kind"]=o.kind;option["index"]=o.index;option["caption"]=String::utf8(o.caption.c_str());options.push_back(option);}details["options"]=options;
     if(d.choices) {
-      Array choices;for(const auto& c:*d.choices){Dictionary choice;choice["id"]=c.id;choice["caption"]=String::utf8(c.caption.c_str());if(c.countCaption)choice["count_caption"]=String::utf8(c.countCaption->c_str());choice["estimated"]=c.estimated;choices.push_back(choice);}details["choices"]=choices;
+      Array choices;for(const auto& c:*d.choices){Dictionary choice;choice["id"]=c.id;choice["caption"]=String::utf8(c.caption.c_str());if(c.countCaption)choice["count_caption"]=String::utf8(c.countCaption->c_str());choice["estimated"]=c.estimated;choice["dye_color"]=c.dyeColor;choice["opens_menu"]=c.opensMenu;if(c.swatch){Dictionary color;color["red"]=c.swatch->red;color["green"]=c.swatch->green;color["blue"]=c.swatch->blue;choice["swatch"]=color;}choices.push_back(choice);}details["choices"]=choices;
     }
     work["details"]=details;
   }
@@ -417,9 +419,10 @@ bool validateWorkOrderShape(const Dictionary& data, String& error) {
   if(data.has("details")) {
     if(data["details"].get_type()!=Variant::DICTIONARY){error="Details must be a Dictionary";return false;}
     Dictionary details=data["details"];
-    for(const char* key:{"option","choice","expected_choices_revision","cursor"})
+    for(const char* key:{"option","choice","expected_choices_revision","cursor","dye_target"})
       if(details.has(key) && details[key].get_type()!=Variant::INT){error=String("Wrong Details field type: ")+key;return false;}
     if(details.has("query") && details["query"].get_type()!=Variant::STRING){error="Details query must be a String";return false;}
+    if(details.has("dye_filter_applied") && details["dye_filter_applied"].get_type()!=Variant::BOOL){error="Details dye filter flag must be a bool";return false;}
     if(details.has("art")) {
       if(details["art"].get_type()!=Variant::DICTIONARY){error="Artwork must be a Dictionary";return false;}
       Dictionary art=details["art"];
@@ -508,6 +511,7 @@ bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& err
     const auto number=[&](const char* key,int64_t def,int64_t low,int64_t high){int64_t v=details.get(key,def);if(v<low || v>high)valid=false;return v;};
     d.option=int16_t(number("option",-1,-1,64));d.choice=int32_t(number("choice",-1,-1,16383));
     d.expectedChoicesRevision=uint64_t(number("expected_choices_revision",0,0,INT64_MAX));d.cursor=uint32_t(number("cursor",0,0,16384));
+    d.dyeTarget=int32_t(number("dye_target",-1,-1,1023));d.dyeFilterApplied=details.get("dye_filter_applied",false);
     String query=details.get("query",String());d.query=query.utf8().get_data();if(d.query.size()>128)valid=false;
     if(details.has("art")) {
       Dictionary art=details["art"];d.art.emplace();auto& a=*d.art;

@@ -22,6 +22,11 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management130 adds dye-stage navigation and native dye headings, color swatches
+and submenu choices to Work order Details. Rebuild/install both peers on
+`Local\\df3d_management_v130`. Older recordings leave these observations absent;
+do not infer dye colors, available ingredients or selection effects from captions.
+
 Management129 adds optional native current-setting text to Work order Details.
 Rebuild/install both peers on `Local\\df3d_management_v129`. Earlier recordings
 leave the current setting unobserved; do not infer it from labels or choices.

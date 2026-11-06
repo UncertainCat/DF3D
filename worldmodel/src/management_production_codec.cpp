@@ -178,6 +178,8 @@ WorkOrderState decodeWorkOrder(const m::WorkOrderState* w) {
     details.id=d->id();details.revision=d->revision();details.caption=str(d->caption());details.selectedOption=d->selected_option();
     details.choicesRevision=d->choices_revision();details.total=d->total();details.nextCursor=d->next_cursor();
     if(d->current_value())details.currentValue=str(d->current_value());
+    if(d->setting_heading())details.settingHeading=str(d->setting_heading());
+    details.dyeTarget=d->dye_target();
     if(const auto* a=d->art()) {
       details.art.emplace();auto& art=*details.art;
       art.page=a->page();art.caption=str(a->caption());art.listRevision=a->list_revision();art.total=a->total();art.nextCursor=a->next_cursor();
@@ -195,7 +197,11 @@ WorkOrderState decodeWorkOrder(const m::WorkOrderState* w) {
     }
     if(d->options())for(const auto* option:*d->options())details.options.push_back({option->kind(),option->index(),str(option->caption())});
     if(d->choices()) {
-      details.choices.emplace();for(const auto* choice:*d->choices())details.choices->push_back({choice->id(),str(choice->caption()),choice->count_caption()?std::optional<std::string>(str(choice->count_caption())):std::nullopt,choice->estimated()});
+      details.choices.emplace();for(const auto* choice:*d->choices()) {
+        WorkOrderDetailsChoice row{choice->id(),str(choice->caption()),choice->count_caption()?std::optional<std::string>(str(choice->count_caption())):std::nullopt,choice->estimated(),choice->dye_color(),choice->opens_menu()};
+        if(const auto* color=choice->swatch())row.swatch=WorkOrderDyeColor{color->red(),color->green(),color->blue()};
+        details.choices->push_back(std::move(row));
+      }
     }
   }
   n.nextCursor = w->next_cursor();
@@ -323,7 +329,7 @@ flatbuffers::Offset<m::WorkOrderRequest> encodeWorkOrder(flatbuffers::FlatBuffer
       }
       art=m::CreateWorkOrderArtRequest(b,a.page,a.subject,a.expectedListRevision,b.CreateString(a.query),a.cursor,a.hovered,a.previewColumns,draft);
     }
-    details=m::CreateWorkOrderDetailsRequest(b,d.option,d.choice,d.expectedChoicesRevision,b.CreateString(d.query),d.cursor,art);
+    details=m::CreateWorkOrderDetailsRequest(b,d.option,d.choice,d.expectedChoicesRevision,b.CreateString(d.query),d.cursor,art,d.dyeTarget,d.dyeFilterApplied);
   }
   return m::CreateWorkOrderRequest(b, w.id, w.expectedRevision, b.CreateString(w.recipe),
                                    b.CreateString(w.query), w.cursor, w.remaining, w.frequency,

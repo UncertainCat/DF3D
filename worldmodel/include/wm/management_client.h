@@ -485,7 +485,7 @@ struct WorkOrderArtDraftRequest {
   std::optional<LocationNameEdit> nameEdit;
 };
 struct WorkOrderArtRequest {int16_t page=-1;int32_t subject=-1;uint64_t expectedListRevision=0;std::string query;uint32_t cursor=0;int32_t hovered=-1;uint16_t previewColumns=0;std::optional<WorkOrderArtDraftRequest> draft;};
-struct WorkOrderDetailsRequest {int16_t option=-1;int32_t choice=-1;uint64_t expectedChoicesRevision=0;std::string query;uint32_t cursor=0;std::optional<WorkOrderArtRequest> art;};
+struct WorkOrderDetailsRequest {int16_t option=-1;int32_t choice=-1;uint64_t expectedChoicesRevision=0;std::string query;uint32_t cursor=0;std::optional<WorkOrderArtRequest> art;int32_t dyeTarget=-1;bool dyeFilterApplied=false;};
 struct WorkOrderRequest {
   int32_t id=-1,remaining=-1,workshopId=-2,maxWorkshops=-1,threshold=-1,targetOrder=-1;
   uint64_t expectedRevision=0;
@@ -542,7 +542,8 @@ struct WorkOrderInfo {
 };
 struct ManagerRole { int32_t unitId=-1; std::string name,position,job; std::vector<int32_t> offices; };
 struct WorkOrderDetailsOption {uint8_t kind=0;int32_t index=-1;std::string caption;};
-struct WorkOrderDetailsChoice {int32_t id=-1;std::string caption;std::optional<std::string> countCaption;bool estimated=false;};
+struct WorkOrderDyeColor {float red=0,green=0,blue=0;};
+struct WorkOrderDetailsChoice {int32_t id=-1;std::string caption;std::optional<std::string> countCaption;bool estimated=false;int32_t dyeColor=-1;bool opensMenu=false;std::optional<WorkOrderDyeColor> swatch;};
 struct WorkOrderArtRow {int32_t id=-1;std::string caption;std::optional<std::string> badge;int32_t secondary=-1;};
 struct WorkOrderArtName {
   std::string nativeHeader,englishHeader;
@@ -566,6 +567,8 @@ struct WorkOrderDetailsState {
   uint64_t choicesRevision=0;uint32_t total=0,nextCursor=0;
   std::optional<WorkOrderArtState> art;
   std::optional<std::string> currentValue;
+  std::optional<std::string> settingHeading;
+  int32_t dyeTarget=-1;
 };
 struct WorkOrderListNativeState { bool managerAvailable=false,validationRequired=false; };
 struct WorkOrderState {

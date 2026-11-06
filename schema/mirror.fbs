@@ -1717,9 +1717,12 @@ table WorkOrderDetailsRequest {
   query:string;
   cursor:uint32;
   art:WorkOrderArtRequest;
+  dye_target:int32 = -1;
+  dye_filter_applied:bool;
 }
 table WorkOrderDetailsOption { kind:uint8; index:int32 = -1; caption:string; }
-table WorkOrderDetailsChoice { id:int32; caption:string; count_caption:string; estimated:bool; }
+struct WorkOrderDyeColor { red:float; green:float; blue:float; }
+table WorkOrderDetailsChoice { id:int32; caption:string; count_caption:string; estimated:bool; dye_color:int32 = -1; opens_menu:bool; swatch:WorkOrderDyeColor; }
 table WorkOrderDetailsState {
   id:int32 = -1; revision:uint64; caption:string;
   options:[WorkOrderDetailsOption];
@@ -1729,6 +1732,8 @@ table WorkOrderDetailsState {
   total:uint32; next_cursor:uint32;
   art:WorkOrderArtState;
   current_value:string; // Native selected-setting text, absent when unobserved.
+  setting_heading:string;
+  dye_target:int32 = -1;
 }
 table WorkOrderRequest {
   id:int32 = -1;
@@ -2080,7 +2085,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 129;
+  schema_version:uint32 = 130;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2132,7 +2137,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 129;
+  schema_version:uint32 = 130;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

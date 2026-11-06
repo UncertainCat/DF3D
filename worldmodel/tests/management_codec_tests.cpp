@@ -4121,6 +4121,30 @@ TEST_CASE("native Details decoding distinguishes unobserved and empty choices") 
     REQUIRE(decoded.details->options.size()==1);CHECK(decoded.details->options[0].index==1);
   }
 }
+TEST_CASE("dye Details carry native swatches and explicit filter history") {
+  wm::ManagementRequest request;request.action=wm::ManagementAction::WorkOrderInspect;
+  request.workOrder.id=37;request.workOrder.workshopId=-2;request.workOrder.expectedRevision=9;
+  request.workOrder.details.emplace();auto& intent=*request.workOrder.details;
+  intent.option=0;intent.dyeTarget=18;intent.dyeFilterApplied=true;
+  flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+  const auto* encoded=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+  CHECK_FALSE(wire::validateConstructionRequest(*encoded));
+  CHECK(encoded->work_order()->details()->dye_target()==18);
+  CHECK(encoded->work_order()->details()->dye_filter_applied());
+  b.Clear();
+  const auto caption=b.CreateString("Tint cloth cerulean (opens menu)");
+  const wire::WorkOrderDyeColor color(0.0f,0.5f,1.0f);
+  const auto choice=wire::CreateWorkOrderDetailsChoice(b,1,caption,b.CreateString("At least 21 cloth/dye available"),false,18,true,&color);
+  const auto choices=b.CreateVector(std::vector{choice});
+  const auto options=b.CreateVector(std::vector{wire::CreateWorkOrderDetailsOption(b,4,191,b.CreateString("Specify color"))});
+  const auto details=wire::CreateWorkOrderDetailsState(b,37,9,caption,options,0,choices,10,1,0,0,0,b.CreateString("Choose dye color"));
+  wire::WorkOrderStateBuilder state(b);state.add_details(details);b.Finish(state.Finish());
+  const auto decoded=codec::decodeWorkOrder(flatbuffers::GetRoot<wire::WorkOrderState>(b.GetBufferPointer()));
+  REQUIRE(decoded.details);REQUIRE(decoded.details->choices);REQUIRE(decoded.details->choices->size()==1);
+  const auto& row=decoded.details->choices->front();REQUIRE(row.swatch);
+  CHECK(row.dyeColor==18);CHECK(row.opensMenu);CHECK(row.swatch->green==0.5f);
+  CHECK(decoded.details->settingHeading=="Choose dye color");CHECK(decoded.details->dyeTarget==-1);
+}
 TEST_CASE("artwork retains simulation IDs and guards separate selection authority") {
   wm::ManagementRequest request;request.action=wm::ManagementAction::WorkOrderUpdate;
   auto& w=request.workOrder;w.id=37;w.workshopId=-2;w.expectedRevision=9007199254740993ULL;

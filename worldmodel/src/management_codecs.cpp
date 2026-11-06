@@ -167,7 +167,7 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
       b.CreateString(r.definition), &p, r.width, r.height, r.direction, b.CreateVector(r.items),
       r.cursor, r.buildingId, area, production, workOrder, citizen, report, agreement, trade,
       stocks, appointments, kitchen, alert, selection,
-      (r.action == ManagementAction::CreatureInspect || r.action == ManagementAction::CreatureLocate) ? m::CreateCreatureRequest(b, r.creatureUnitId)
+      (r.action == ManagementAction::CreatureInspect || r.action == ManagementAction::CreatureLocate || r.action == ManagementAction::CreatureSheetLocate) ? m::CreateCreatureRequest(b, r.creatureUnitId)
                                                     : flatbuffers::Offset<m::CreatureRequest>{},
       r.depth,r.retracting,r.filter,b.CreateVector(selections),uint64_t(r.expectedListRevision),r.rollerSpeed,
       r.trackStop?m::CreateTrackStopOptions(b,r.trackStop->friction,r.trackStop->dumpDirection):flatbuffers::Offset<m::TrackStopOptions>{},

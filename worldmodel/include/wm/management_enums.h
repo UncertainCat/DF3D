@@ -171,6 +171,7 @@ enum class ManagementAction : uint8_t {
   ResidentsQuery = 80,
   ResidentsRowsRead = 81,
   ResidentsSpecialize = 82,
+  CreatureSheetLocate = 83,
 };
 enum class ManagementStatus : uint8_t {
   Idle = 0,
@@ -464,6 +465,7 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::ResidentsQuery: return true;
   case ManagementAction::ResidentsRowsRead: return true;
   case ManagementAction::ResidentsSpecialize: return true;
+  case ManagementAction::CreatureSheetLocate: return true;
   default: return false;
   }
 }
@@ -478,6 +480,7 @@ constexpr const char* managementDomain(ManagementAction action) {
   case ManagementAction::CreatureKnowledgeRead: return "creature_knowledge";
   case ManagementAction::CreatureExpelRead: return "creature_expel";
   case ManagementAction::CreatureExpelApply: return "creature_expel";
+  case ManagementAction::CreatureSheetLocate: return "creature_sheet_location";
   case ManagementAction::CreatureLocate: return "creature_follow";
   case ManagementAction::CreatureHeaderRead: return "creature_header";
   case ManagementAction::CreatureHeaderEdit: return "creature_header";

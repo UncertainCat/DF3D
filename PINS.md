@@ -22,6 +22,15 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management134 adds read-only CreatureSheetLocate (action83), using CreatureRequest
+and CreaturePosition on the `creature_sheet_location` domain. Rebuild both peers
+for `Local\df3d_management_v134`; Management133 peers must not be mixed. It resolves
+the native unit-sheet destination at request time without follow-mode filters.
+Successful coordinates are signed16 with x different from the native -30000
+sentinel; unavailable/missing targets reject without a position. Existing
+CreatureLocate retains its follow eligibility and nonnegative-coordinate contract.
+No native sheet or camera is opened by this semantic read.
+
 Residents row `position` is an optional additive Management133 observation of
 raw signed16 unit coordinates captured with the row. Absence means unobserved;
 do not replace it with a current follow position or manufacture coordinates.

@@ -155,7 +155,8 @@ static_assert(static_cast<int>(wm::ManagementAction::CreatureAnimalEdit) == stat
 static_assert(static_cast<int>(wm::ManagementAction::ResidentsQuery) == static_cast<int>(df3d::mirror::ManagementAction::ResidentsQuery));
 static_assert(static_cast<int>(wm::ManagementAction::ResidentsRowsRead) == static_cast<int>(df3d::mirror::ManagementAction::ResidentsRowsRead));
 static_assert(static_cast<int>(wm::ManagementAction::ResidentsSpecialize) == static_cast<int>(df3d::mirror::ManagementAction::ResidentsSpecialize));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 83);
+static_assert(static_cast<int>(wm::ManagementAction::CreatureSheetLocate) == static_cast<int>(df3d::mirror::ManagementAction::CreatureSheetLocate));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 84);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -445,3 +446,4 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::CreatureAnimalEdit) == d
 static_assert(wm::isRuntimeAction(wm::ManagementAction::ResidentsQuery) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ResidentsQuery));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::ResidentsRowsRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ResidentsRowsRead));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::ResidentsSpecialize) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ResidentsSpecialize));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::CreatureSheetLocate) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::CreatureSheetLocate));

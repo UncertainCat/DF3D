@@ -4030,6 +4030,23 @@ TEST_CASE("creature locate transports only confirmed bounded positions") {
   state.add_revision(1);state.add_action(wire::ManagementAction::CreatureLocate);state.add_status(wire::ManagementStatus::Rejected);
   b.Finish(state.Finish());CHECK_FALSE(wire::validateManagementState(*flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer())));
 }
+TEST_CASE("creature sheet locate has a separate identity and native sentinel rule") {
+  wm::ManagementRequest request;request.action=wm::ManagementAction::CreatureSheetLocate;request.creatureUnitId=86;
+  flatbuffers::FlatBufferBuilder encoded;codec::encodeRequest(encoded,request,1,2,3);
+  const auto* wireRequest=flatbuffers::GetRoot<wire::ConstructionRequest>(encoded.GetBufferPointer());
+  CHECK_FALSE(wire::validateConstructionRequest(*wireRequest));
+  REQUIRE(wireRequest->creature());CHECK(wireRequest->creature()->unit_id()==86);
+  CHECK(wireRequest->schema_version()==134);
+  for(int x:{126,-1,-30000,32768}) {
+    flatbuffers::FlatBufferBuilder b;const wire::TilePos tile(x,75,165);
+    const auto position=wire::CreateCreaturePosition(b,86,&tile);
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(wire::ManagementAction::CreatureSheetLocate);
+    state.add_status(wire::ManagementStatus::Ok);state.add_creature_position(position);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(x==-30000 || x==32768));
+    if(x==126){const auto decoded=codec::decodeState(value);REQUIRE(decoded.creaturePosition);CHECK(decoded.creaturePosition->unitId==86);}
+  }
+}
 TEST_CASE("creature header result requires confirmed bounded authority") {
   for(int fault=0;fault<7;++fault) {
     flatbuffers::FlatBufferBuilder b;

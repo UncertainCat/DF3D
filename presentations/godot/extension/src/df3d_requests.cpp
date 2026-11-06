@@ -397,6 +397,9 @@ bool validateCreatureFollow(const Dictionary& data,String& error) {
 bool readCreatureFollow(const Dictionary& data,wm::ManagementRequest& request,String&) {
     request.action=wm::ManagementAction::CreatureLocate;request.creatureUnitId=int64_t(data["unit_id"]);return true;
 }
+bool readCreatureSheetLocation(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction::CreatureSheetLocate;request.creatureUnitId=int64_t(data["unit_id"]);return true;
+}
 bool validateCreatureHeader(const Dictionary& data,String& error) {
     const bool edit=int64_t(data["action"])==int64_t(wm::ManagementAction::CreatureHeaderEdit);
     if(data.size()!=(edit?5:2) || !data.has("unit_id") || data["unit_id"].get_type()!=Variant::INT ||
@@ -463,6 +466,7 @@ const ManagementCodec managementCodecs[] = {
     {"hover", validateHover, readHover},
     {"creature_header",validateCreatureHeader,readCreatureHeader},
     {"creature_follow",validateCreatureFollow,readCreatureFollow},
+    {"creature_sheet_location",validateCreatureFollow,readCreatureSheetLocation},
     {"creature_workshop",validateCreatureWorkshop,readCreatureWorkshop},
     {"creature_location",validateCreatureLocation,readCreatureLocation},
     {"creature_animal",validateCreatureAnimal,readCreatureAnimal},
@@ -481,7 +485,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::ResidentsSpecialize)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::CreatureSheetLocate)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

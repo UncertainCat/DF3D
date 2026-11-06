@@ -53,8 +53,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 133;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v133";
+inline constexpr uint32_t kManagementVersion = 134;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v134";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -352,7 +352,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::ResidentsSpecialize &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::CreatureSheetLocate &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -408,14 +408,14 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::ResidentsSpecialize)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::CreatureSheetLocate)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
       (!r.origin() || r.origin()->x()<0 || r.origin()->y()<0 || r.origin()->z()<0 ||
        r.origin()->x()>32767 || r.origin()->y()>32767 || r.origin()->z()>32767))
     return "invalid terrain description tile";
-  if(r.action()==ManagementAction::CreatureInspect || r.action()==ManagementAction::CreatureLocate) {
+  if(r.action()==ManagementAction::CreatureInspect || r.action()==ManagementAction::CreatureLocate || r.action()==ManagementAction::CreatureSheetLocate) {
     if(!r.creature() || r.creature()->unit_id()<0) return "creature identity required";
   } else if(r.creature()) return "unexpected creature payload";
   if(r.action()==ManagementAction::CreatureHeaderRead || r.action()==ManagementAction::CreatureHeaderEdit) {
@@ -922,7 +922,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::ResidentsSpecialize ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::CreatureSheetLocate ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -1066,10 +1066,12 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   if(s.creature() && s.action()!=ManagementAction::CreatureInspect) return "unexpected creature result";
   if(const auto* p=s.creature_position()) {
     const auto* tile=p->position();
-    if(s.action()!=ManagementAction::CreatureLocate || s.status()!=ManagementStatus::Ok ||
-       p->unit_id()<0 || !tile || tile->x()<0 || tile->y()<0 || tile->z()<0 ||
+    if((s.action()!=ManagementAction::CreatureLocate && s.action()!=ManagementAction::CreatureSheetLocate) || s.status()!=ManagementStatus::Ok ||
+       p->unit_id()<0 || !tile || tile->x()<INT16_MIN || tile->y()<INT16_MIN || tile->z()<INT16_MIN ||
        tile->x()>32767 || tile->y()>32767 || tile->z()>32767)return "invalid creature position";
-  } else if(s.action()==ManagementAction::CreatureLocate && s.status()==ManagementStatus::Ok)
+    if(s.action()==ManagementAction::CreatureLocate && (tile->x()<0 || tile->y()<0 || tile->z()<0))return "invalid follow position";
+    if(s.action()==ManagementAction::CreatureSheetLocate && tile->x()==-30000)return "invalid sheet position";
+  } else if((s.action()==ManagementAction::CreatureLocate || s.action()==ManagementAction::CreatureSheetLocate) && s.status()==ManagementStatus::Ok)
     return "creature position required";
   if(const auto* h=s.creature_header()) {
     if((s.action()!=ManagementAction::CreatureHeaderRead && s.action()!=ManagementAction::CreatureHeaderEdit) ||

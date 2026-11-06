@@ -18,6 +18,7 @@ DOMAINS = {
     "creature_workshop": ("CreatureWorkshopRemove", "CreatureWorkshopRemove"),
     "creature_knowledge": ("CreatureKnowledgeRead", "CreatureKnowledgeRead"),
     "creature_expel": ("CreatureExpelRead", "CreatureExpelApply"),
+    "creature_sheet_location": ("CreatureSheetLocate", "CreatureSheetLocate"),
     "creature_follow": ("CreatureLocate", "CreatureLocate"),
     "creature_header": ("CreatureHeaderRead", "CreatureHeaderEdit"),
     "hover": ("WorldHover", "WorldHover"),

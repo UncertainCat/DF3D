@@ -4348,6 +4348,11 @@ void run(color_ostream& out) {
   }
   if(citizenAction(action)) {
     lua_pushcfunction(L,[](lua_State* state)->int {
+      const bool applied=df3d_production::nativeWorkDetailMembership(int32_t(luaL_checkinteger(state,1)),int32_t(luaL_checkinteger(state,2)),lua_toboolean(state,3));
+      if(!applied)return luaL_error(state,"Native work-detail membership unavailable");
+      return 0;
+    });lua_setfield(L,-2,"work_detail_membership");
+    lua_pushcfunction(L,[](lua_State* state)->int {
       const auto value=df3d_production::nativeWorkDetailDefaults();
       if(!value)return luaL_error(state,"Native work-detail defaults unavailable");
       lua_pushlstring(state,value->name.data(),value->name.size());lua_pushinteger(state,value->icon);return 2;

@@ -68,6 +68,36 @@ before transport readiness; the client now waits and seeds the catalog before
 the one-shot create. Other Work Details actions and rendered editor acceptance
 remain pending; this does not expose the full editor.
 
+Worker/settings discovery103713 identifies native name filtering1435b40 ->
+1424c30 and labor eligibility3d5390 ->3d5f60. The latter already backs workshop
+worker eligibility. Default Skills sorting uses work-detail-derived weights
+(Miners: Mining0 weight1), and selected membership partitions the list. Raw
+entry_list contains340 entries in this fixture and is not the displayed eligible
+roster. The custom settings panel groups labors by category with native colors,
+individual/group toggles, Done and Delete; screenshots and widget geometry remain
+in ignored capture output.
+
+The Work Details membership activation46c900 delegates to simulation-only
+42ef20, taking an explicit work-detail pointer, tagged unit reference and desired
+membership. It updates sorted assignments, exclusive labor groups, mode transitions
+and automatic professions for active units through4390d0. Unlike the inline
+creature Labor handler, this is independently callable with owned arguments and
+does not inspect menus. work_detail_native.h now byte-pins and invokes it; the
+recreated citizens.lua change_membership implementation is removed. Existing
+receipt, eligibility, capacity and external-controller checks precede the call.
+Protected104245 compares an actual visible Miners checkbox removal with typed
+WorkDetailMembership after fixture restoration: all assignment lists/mode flags
+and the selected unit's enabled labors/professions match. Earlier104114/104206
+incorrectly treated raw entry order as the visible first row; the oracle now
+resolves the unit and checkbox from the same visible widget row. The fixture
+membership_reference preserves that acceptance scope; addition, exclusivity and
+mode transitions through this replacement remain pending.
+MSVC/core19/creature-labor-state checks pass; installed bridge hash
+71523317BF1D99BDCCEC2521F19EEFA96401F7B18D2D7CAE5974832B59E675E3 matches the build.
+DF34932 closes unsaved with source preservation; joined client logs contain only
+the known separate-thread notice. Native30FPS/headless client, GPU60C sampled
+after the final run; no further graphical checks in this milestone.
+
 ## Residents native list discovery
 
 Residents Activity has distinct job-settings and event-description routes.

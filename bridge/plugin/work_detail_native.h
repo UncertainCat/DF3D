@@ -2,8 +2,30 @@
 #include "farm_native.h"
 #include "df/plotinfost.h"
 #include "df/work_detail.h"
+#include "df/unit.h"
+#include "location_staff_order_native.h"
 
 namespace df3d_production {
+// Work Details46c900 delegates to this simulation-only closure body. Unlike
+// creature Labor's inline handler, it accepts an explicit work-detail pointer.
+inline bool nativeWorkDetailMembership(int32_t index,int32_t unitId,bool member) {
+    if(!farmFunctions() || !df::global::plotinfo || !df::global::world)return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool supported=[&] {
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x265;++i){hash^=base[0x42ef20+i];hash*=UINT64_C(1099511628211);}
+        return hash==UINT64_C(0x6a11a5c233a29fc5);
+    }();
+    if(!supported)return false;
+    const auto& all=df::global::plotinfo->labor_info.work_details;
+    if(index<0 || size_t(index)>=all.size() || all.size()>128)return false;
+    for(const auto* detail:all)if(!detail || detail->assigned_units.size()>1024)return false;
+    auto* unit=df::unit::find(unitId);if(!unit)return false;
+    auto* selected=all[size_t(index)];
+    const df3d_area::StaffUnitReference reference{unit};
+    reinterpret_cast<void(*)(df::work_detail**,const df3d_area::StaffUnitReference*,bool)>(base+0x42ef20)(&selected,&reference,member);
+    return true;
+}
 struct WorkDetailDefaults {std::string name;int32_t icon=10;};
 // Native42f8a0 combines construction with a Labor widget rebuild. Its name
 // uniqueness and icon-balancing branches are inline, so pin those branches;

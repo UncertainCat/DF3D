@@ -217,7 +217,7 @@ try {
   if(Test-Path "$out/shot") {
    $name=(Get-Content "$out/shot" -Raw).Trim()
    if(-not(Test-Path "$out/ack-$name")) {
-    if(($env:DF3D_RESIDENTS_JOB_SETTINGS_WIRE -eq '1' -and $name -eq 'residents-job-settings') -or ($env:DF3D_RESIDENTS_JOB_ART_WIRE -eq '1' -and $name -eq 'residents-job-art-root') -or ($env:DF3D_RESIDENTS_JOB_PRODUCTION_WIRE -eq '1' -and $name -eq 'residents-job-production-wire') -or ($env:DF3D_WORK_DETAILS_DEFAULTS -eq '1' -and $name -eq 'work-details-defaults-wire')) {
+    if(($env:DF3D_RESIDENTS_JOB_SETTINGS_WIRE -eq '1' -and $name -eq 'residents-job-settings') -or ($env:DF3D_RESIDENTS_JOB_ART_WIRE -eq '1' -and $name -eq 'residents-job-art-root') -or ($env:DF3D_RESIDENTS_JOB_PRODUCTION_WIRE -eq '1' -and $name -eq 'residents-job-production-wire') -or ($env:DF3D_WORK_DETAILS_DEFAULTS -eq '1' -and $name -eq 'work-details-defaults-wire') -or ($env:DF3D_WORK_DETAILS_MEMBERSHIP -eq '1' -and $name -eq 'work-details-membership-wire')) {
      $env:DF3D_CARRIER_DIRECTORY=$out;$env:DF3D_DF_PATH=$dfPath
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
      $clientArgs=@('--headless')

@@ -14,7 +14,7 @@ func pointer(view,point: Vector2,button: int=MOUSE_BUTTON_LEFT) -> void:
 	click=click.duplicate();click.pressed=false;Input.parse_input_event(click);await process_frame
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
-	if OS.get_environment("DF3D_WORK_DETAILS_DEFAULTS")=="1":
+	if OS.get_environment("DF3D_WORK_DETAILS_DEFAULTS")=="1" or OS.get_environment("DF3D_WORK_DETAILS_MEMBERSHIP")=="1":
 		await work_detail_defaults();return
 	if OS.get_environment("DF3D_RESIDENTS_JOB_PRODUCTION_WIRE")=="1":
 		await production_read();return
@@ -85,11 +85,19 @@ func work_detail_defaults() -> void:
 		if world.poll_management().get("transport_alive",false):break
 		await create_timer(0.01).timeout
 	await request("construction",{"action":C.ManagementAction.Catalog})
-	var response:=await request("citizens",{"action":C.ManagementAction.WorkDetailList,"cursor":0,"expected_list_revision":0})
-	var revision: int=response.get("citizen",{}).get("detail_list_revision",0)
-	if not check(revision>0,"Work Details list receipt missing"):quit(1);return
-	response=await request("citizens",{"action":C.ManagementAction.WorkDetailCreate,"expected_revision":revision})
-	check(response.get("status")==C.ManagementStatus.Ok,"Work Details create failed")
+	var response: Dictionary
+	if OS.get_environment("DF3D_WORK_DETAILS_MEMBERSHIP")=="1":
+		var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/work-details-native.json"))
+		response=await request("citizens",{"action":C.ManagementAction.WorkDetailInspect,"detail_index":0})
+		var rows: Array=response.get("citizen",{}).get("details",[])
+		if not check(rows.size()==1,"Membership detail missing"):quit(1);return
+		response=await request("citizens",{"action":C.ManagementAction.WorkDetailMembership,"detail_index":0,"unit_id":int(reference.membership.unit_id),"member":0,"expected_revision":int(rows[0].revision)})
+	else:
+		response=await request("citizens",{"action":C.ManagementAction.WorkDetailList,"cursor":0,"expected_list_revision":0})
+		var revision: int=response.get("citizen",{}).get("detail_list_revision",0)
+		if not check(revision>0,"Work Details list receipt missing"):quit(1);return
+		response=await request("citizens",{"action":C.ManagementAction.WorkDetailCreate,"expected_revision":revision})
+	check(response.get("status")==C.ManagementStatus.Ok,"Work Details edit failed")
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"work_detail":response.get("citizen",{})}));file.close()
 	world.queue_free();await process_frame;quit(1 if failed else 0)

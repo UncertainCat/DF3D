@@ -2,7 +2,7 @@
 local out,view,info=...
 local gui=require('gui');local script=require('gui.script');local json=require('json')
 local button,owner,scroller,row_index
-local controlled,prior_job,controlled_unit
+local controlled,prior_job,controlled_unit,provider
 local function find(widget,unit,scroll,index)
  if (widget.flag.whole&1)==0 or button then return end
  if df.widget_job_details_button:is_instance(widget) and widget.jb then
@@ -46,6 +46,20 @@ if not button then
  controlled_unit.job.current_job=prior_job
 end
 assert(button and owner,'No natural Residents job-settings button; a controlled job fixture is needed')
+if os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_PROVIDER')=='1' then
+ local menu=df.global.game.main_interface.job_details
+ local function menu_state()
+  local _,at=df.sizeof(menu.material)
+  return {open=menu.open,context=menu.context,option=menu.current_option,index=menu.current_option_index,
+   material_size=#menu.material,material_storage=tostring(df.reinterpret_cast('uint64_t',at).value)}
+ end
+ local before=json.encode(menu_state())
+ local original=owner.job.current_job;owner.job.current_job=button.jb
+ local ok,text,rc=pcall(dfhack.run_command_silent,'df3d','residents-job-settings-probe',tostring(owner.id))
+ owner.job.current_job=original
+ assert(ok and rc==0,'Owned job settings read failed: '..tostring(text));provider=json.decode(text)
+ assert(json.encode(menu_state())==before,'Owned job settings changed native menu storage')
+end
 -- Position the native diagnostic viewport, then click the real visible button.
 -- This is fixture setup, not a claim about wheel/scrollbar input acceptance.
 local previous_scroll=scroller and scroller.scroll
@@ -72,6 +86,15 @@ evidence.search={details.search.x,details.search.y,details.search.z}
 for i,kind in ipairs(details.option)do evidence.options[#evidence.options+1]={kind=kind,index=details.option_index[i]}end
 evidence.materials={}
 for i,kind in ipairs(details.material)do evidence.materials[#evidence.materials+1]={type=kind,index=details.matgloss[i],count=details.material_count[i]}end
+if provider then
+ assert(provider.job_id==job.id and provider.building_id==evidence.building_id and json.encode(provider.search)==json.encode(evidence.search),'Owned job settings identity/location differs')
+ assert(#provider.options==#evidence.options and #provider.materials==#evidence.materials,'Owned job settings list sizes differ')
+ for i,option in ipairs(evidence.options)do assert(provider.options[i].kind==option.kind and provider.options[i].index==option.index,'Owned job option differs')end
+ for i,row in ipairs(evidence.materials)do
+  local actual=provider.materials[i];assert(actual.type==row.type and actual.index==row.index and actual.count==row.count,'Owned job material/count/order differs at '..i)
+ end
+ evidence.provider=provider
+end
 view:render(dfhack.getTickCount());evidence.lines={}
 for row=0,g.dimy-1 do
  local chars={};for col=0,g.dimx-1 do local ch=dfhack.screen.readTile(col,row).ch;chars[#chars+1]=ch>=32 and ch<=255 and string.char(ch) or ' 'end

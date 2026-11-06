@@ -61,10 +61,28 @@ also changes global screen state and is prohibited as a runtime API. Choice
 population21d190 accepts an independently owned job_details_interfacest with
 jb (rather than wq), copied requirement storage, and explicit holder/search.
 Its input-material branch21d410..21d434 selects jb.job_items before the shared
-filter/count/sort path. Transitive ownership of the spatial job branch remains
-to be verified before invoking it in a runtime provider; existing manager-order
-acceptance does not cover it. Ordinary job settings remains unfinished in both
-Residents and workshop Tasks.
+filter/count/sort path. The owned filter receives workshop coordinates/holder;
+a29630 writes its own burrow/output vectors. With no unit input, connectivity
+uses10afe0's map passability groups (including normal lazy map reindexing), not
+a retained menu route search. Stockpile membership uses the existing5587b0
+semantic predicate. Read-only world items/raws/building records remain borrowed;
+job and requirement containers are copied, and RNG/material-cache restoration
+matches the existing inventory adapters.
+
+`job_settings_native.h` now provides a staged diagnostic read via
+`df3d residents-job-settings-probe <unit-id> [option]`. Native d15ef0 determines
+eligibility. Pinned job-side inline option enumeration is retained because the
+whole opener cannot be called;21d190 supplies choices using owned job/context
+storage. A sole option auto-selects as native does. Material, improvement and
+plant code paths exist; only the controlled material path is accepted. Clothing
+and artwork selection remain unsupported. No command edits a job.
+Protected064001 on2026-11-06 matches all83 native material identities/counts/order,
+job/holder/search identity, and preserves native Details storage on a cold call.
+DF2896 exits unsaved with source preservation; GPU samples38C at30FPS, no
+Godot graphics. Native build passes; installed bridge SHA256 is
+9F8FDFE6EB21A245B8F66B44ACDFCCD1C839DA29180B69D24E0D0D0352CF2FB5.
+Typed transport, other families, filters, edits and complete shared UI remain
+unfinished in Residents and workshop Tasks; diagnostic acceptance is not exposure.
 
 The menu actions themselves clear live markup and build widgets: do not call
 them from the bridge. The formatter output is `markup_text_boxst`, not a vector

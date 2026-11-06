@@ -102,6 +102,7 @@
 #include "work_order_catalog_native.h"
 #include "work_order_conditions_native.h"
 #include "work_order_details_native.h"
+#include "job_settings_native.h"
 #include "work_order_dye_native.h"
 #include "work_order_art_native.h"
 #include "df/job_item.h"
@@ -2185,6 +2186,24 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           activity["fg"]=row->activity.foreground;activity["bg"]=row->activity.background;
           activity["bright"]=row->activity.bright;
           result["happiness"]=int(row->happiness);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="residents-job-settings-probe") {
+          if(parameters.size()!=2 && parameters.size()!=3)return CR_WRONG_USAGE;
+          int32_t id=-1,selected=-1;
+          for(size_t i=1;i<parameters.size();++i) {
+            auto& value=i==1?id:selected;const auto& raw=parameters[i];
+            const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),value);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || value<0)return CR_WRONG_USAGE;
+          }
+          const auto* unit=df::unit::find(id);if(!unit || !unit->job.current_job)return CR_FAILURE;
+          const auto observed=df3d_production::nativeJobSettings(*unit->job.current_job,selected);if(!observed)return CR_FAILURE;
+          Json::Value result;result["job_id"]=observed->jobId;result["building_id"]=observed->buildingId;
+          result["selected"]=observed->selected;result["caption"]=DF2UTF(observed->caption);
+          result["search"].append(observed->search.x);result["search"].append(observed->search.y);result["search"].append(observed->search.z);
+          result["options"]=Json::Value(Json::arrayValue);result["materials"]=Json::Value(Json::arrayValue);
+          for(const auto& row:observed->options){Json::Value value;value["kind"]=row.kind;value["index"]=row.index;value["caption"]=DF2UTF(row.caption);result["options"].append(value);}
+          for(const auto& row:observed->materials){Json::Value value;value["type"]=row.type;value["index"]=row.index;value["count"]=row.count;value["caption"]=DF2UTF(row.caption);result["materials"].append(value);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="residents-activity-description-probe") {

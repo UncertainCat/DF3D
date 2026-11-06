@@ -170,6 +170,25 @@ text input (UTF-8, without CP437 conversion), followed by native normalization
 as observed in callback1432700. Preserve that distinction from the CP437 display
 captions, including the accented-search defect in the register.
 
+`residents_row_native.h` composes the owned native name/profession formatter,
+name-color facts and Activity reader. It accepts the caller's gender-display
+flag and a3–30-column text width. Native row builder142a7ab passes that flag
+to factory142efd0;142a7cb caps the name widget at30 columns. The renderer uses
+the smaller of that limit and the allocated width. Existing zone callers retain
+their default gender-enabled formatting. Do not invoke14237a0 to obtain text:
+it writes shared output strings and drawing globals.
+
+`DF3D_RESIDENTS_ROWS=1` with the reference flag compares visible name widgets
+against `df3d residents-row-read <unit> <columns> <gender0-or-1>`. Protected030323
+on2026-11-06 matches all13 visible rows cell-for-cell, including accented names
+and a two-line name/profession. All observed rows use30 columns and gender=false.
+The reader also returns Activity text/colors and name-color facts, but this
+comparison establishes name text only; other flags, widths, grazer warnings,
+indicators and complete row rendering still require acceptance. DF16988 exits
+unsaved with source unchanged; observed GPU temperature36C at30FPS. MSVC and
+core19/19 (`residents-row-reader`) pass. Row transport and screen integration
+remain unfinished.
+
 `DF3D_RESIDENTS_QUERY=1` extends the protected reference with actual filter clicks,
 window text events and Backspace events directed only to the owned hidden DF.
 Legacy simulated STRING_A000 does not edit this widget; typing without frame

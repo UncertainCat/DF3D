@@ -833,7 +833,7 @@ std::optional<ZoneOwnerRoomStatus> nativeZoneOwnerRoomStatus(df::building_civzon
     }
     return result;
 }
-std::optional<ZoneOwnerDisplayText> nativeZoneOwnerDisplayText(df::unit& candidate,int32_t columns) {
+std::optional<ZoneOwnerDisplayText> nativeZoneOwnerDisplayText(df::unit& candidate,int32_t columns,bool showGender) {
     const auto& order=staffOrderingFunctions();
     if(!order || !df::global::world || columns<3 || columns>2048)return std::nullopt;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
@@ -843,10 +843,10 @@ std::optional<ZoneOwnerDisplayText> nativeZoneOwnerDisplayText(df::unit& candida
        hash(base+0x1330880,0x3ac)!=UINT64_C(0xbef834f2b924d785) ||
        hash(base+0x52d910,0x5c4)!=UINT64_C(0x3cc66a9b45f7baa9))return std::nullopt;
     ZoneOwnerDisplayText result;
-    order.name(&candidate,&result.combined,true);
+    order.name(&candidate,&result.combined,showGender);
     using Name=void (*)(df::unit*,std::string*);
     reinterpret_cast<Name>(const_cast<uint8_t*>(base+0x1330500))(&candidate,&result.name);
-    reinterpret_cast<StaffOrderingFunctions::Text>(const_cast<uint8_t*>(base+0x1330880))(&candidate,&result.profession,true);
+    reinterpret_cast<StaffOrderingFunctions::Text>(const_cast<uint8_t*>(base+0x1330880))(&candidate,&result.profession,showGender);
     const auto fit=[&](std::string text) {
         if(text.size()>size_t(columns)) {
             using Shorten=void (*)(std::string*,int32_t);

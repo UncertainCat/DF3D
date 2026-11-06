@@ -57,6 +57,41 @@ local function walk(widget)
 end
 walk(info.creatures)
 assert(#lists>0,'Native Residents unit list missing')
+if os.getenv('DF3D_RESIDENTS_ROWS')=='1' then
+ local samples={}
+ local function collect(widget,active)
+  active=active and (widget.flag.whole&1)==1
+  if active and (widget.flag.whole&2)~=0 and df.widget_unit_name:is_instance(widget) and widget.u then
+   local g=df.global.gps;local width=math.min(widget.rect.x2-widget.rect.x1+1,widget.min_w)
+   if widget.rect.y1>=14 and widget.rect.y1<g.dimy-8 and width>=3 then
+    assert(widget.show_profession and not widget.one_line_only,'Unexpected Residents name mode')
+    local text,code=dfhack.run_command_silent('df3d','residents-row-read',tostring(widget.u.id),tostring(width),widget.show_gender and '1' or '0')
+    assert(code==0,text);local row=json.decode(text)
+    local grazer=widget.u.enemy.caste_flags[df.caste_raw_flags.GRAZER]
+    local lines={row.first_line,row.second_line};local observed={}
+    for line=1,2 do
+     local y=widget.rect.y1+line-2
+     if grazer and row.second_line~='' then y=y-1 end
+     local expected=dfhack.utf2df(lines[line]);local bytes={}
+     for x=1,width do
+      local tile=dfhack.screen.readTile(widget.rect.x1+x-1,y)
+      bytes[#bytes+1]=tile.ch
+      -- A grazer warning occupies the otherwise empty second line.
+      if not (grazer and line==2 and expected=='') then
+       assert(tile.ch==(expected:byte(x) or 0),'Residents name mismatch '..widget.u.id..' line '..line..' cell '..x)
+      end
+     end
+     observed[#observed+1]=bytes
+    end
+    samples[#samples+1]={id=widget.u.id,width=width,show_gender=widget.show_gender,grazer=grazer,provider=row,screen=observed}
+   end
+  end
+  if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do collect(child,active)end end
+ end
+ collect(active_list,true)
+ assert(#samples>0,'No visible Residents names compared')
+ local file=assert(io.open(out..'/residents-row-reference.json','w'));file:write(json.encode({samples=samples}));file:close()
+end
 local activity_reference
 if activity_provider then
  local function byte(at)return df.reinterpret_cast('uint8_t',at).value end

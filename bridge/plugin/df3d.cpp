@@ -113,6 +113,7 @@
 #include "residents_order_native.h"
 #include "residents_activity_native.h"
 #include "residents_query_native.h"
+#include "residents_row_native.h"
 #include "modules/Buildings.h"
 #endif
 
@@ -2131,6 +2132,29 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             value["contains"]=Json::Value(Json::arrayValue);for(auto id:row.contains)value["contains"].append(id);
             result["rows"].append(value);
           }
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="residents-row-read") {
+          if(parameters.size()!=4)return CR_WRONG_USAGE;
+          int32_t values[3];
+          for(size_t i=0;i<3;++i) {
+            const auto& raw=parameters[i+1];
+            const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i]);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
+          }
+          if(values[2]<0 || values[2]>1)return CR_WRONG_USAGE;
+          const auto row=df3d_residents::rowText(df::unit::find(values[0]),values[1],values[2]!=0);
+          if(!row)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["id"]=values[0];
+          result["combined"]=DF2UTF(row->name.combined);result["name"]=DF2UTF(row->name.name);
+          result["profession"]=DF2UTF(row->name.profession);
+          result["first_line"]=DF2UTF(row->name.firstLine);result["second_line"]=DF2UTF(row->name.secondLine);
+          auto& color=result["name_color"];color["effect"]=int(row->nameColor.effect);color["source"]=int(row->nameColor.source);
+          for(auto c:row->nameColor.color)color["color"].append(int(c));
+          for(auto c:row->nameColor.alternate)color["alternate"].append(int(c));
+          auto& activity=result["activity"];activity["caption"]=DF2UTF(row->activity.caption);
+          activity["fg"]=row->activity.foreground;activity["bg"]=row->activity.background;
+          activity["bright"]=row->activity.bright;
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="residents-activity-probe") {

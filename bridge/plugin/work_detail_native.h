@@ -6,6 +6,34 @@
 #include "location_staff_order_native.h"
 
 namespace df3d_production {
+// Match citizens.lua receipt()/detail_info(): list headers plus the selected
+// membership vector. This is DF3D request identity, not native menu state.
+inline std::optional<uint64_t> workDetailReceipt(int32_t index) {
+    if(!df::global::plotinfo)return std::nullopt;
+    const auto& all=df::global::plotinfo->labor_info.work_details;
+    if(index<0 || size_t(index)>=all.size() || all.size()>128)return std::nullopt;
+    constexpr uint64_t seed=UINT64_C(0xcbf29ce484222325);
+    const auto byte=[](uint64_t h,uint8_t value){return (h^value)*UINT64_C(0x100000001b3);};
+    const auto integer=[&](uint64_t h,uint64_t value){
+        for(int i=0;i<8;++i){h=byte(h,uint8_t(value));value>>=8;}return h;
+    };
+    const auto revision=[](uint64_t h){h&=UINT64_C(0x7fffffffffffffff);return h?h:1;};
+    uint64_t headers=integer(seed,all.size());
+    for(const auto* detail:all) {
+        if(!detail)return std::nullopt;
+        headers=integer(headers,detail->name.size());
+        for(unsigned char ch:detail->name)headers=byte(headers,ch);
+        headers=integer(headers,detail->flags.whole);
+        headers=integer(headers,int64_t(detail->icon));
+        for(bool allowed:detail->allowed_labors)headers=byte(headers,allowed?1:0);
+        headers=integer(headers,detail->assigned_units.size());
+    }
+    const auto& members=all[size_t(index)]->assigned_units;
+    if(members.size()>1024)return std::nullopt;
+    uint64_t membership=seed;
+    for(int32_t id:members)membership=integer(membership,int64_t(id));
+    return revision(integer(integer(seed,revision(headers)),membership));
+}
 // These closure bodies consume only explicit simulation pointers. The unused
 // leading slots are owned padding, not vtables or borrowed native widgets.
 inline bool nativeWorkDetailEdit(int32_t index,int32_t mode,bool reset) {

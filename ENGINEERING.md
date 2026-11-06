@@ -151,8 +151,11 @@ eligibility reuses the native workshop-worker filter with its cache guard;
 name/profession filtering uses1424c30. Skills comparator1435db0 and membership
 predicate46a350 consume owned closures. Inline skill-weight setup remains pinned
 because it is inseparable from widget construction; the68 labor/skill pairs
-match the recovered fixture. The query is currently exposed through the
-diagnostic `work-detail-query-probe`, not the presentation transport.
+match the recovered fixture. Management141 exposes the complete ordered IDs through
+`WorkDetailWorkersQuery`, with an explicit detail index, inspection revision,
+sort/direction and raw search bytes. The bridge checks the same header/membership
+receipt as `citizens.lua` before invoking DF; stale or absent details return no
+rows. This remains a semantic query, with no native menu access.
 
 The context must construct the map at330 even when no Activity column exists:
 1424c30 checks it after a name/profession miss. Zero-filled storage caused the
@@ -165,11 +168,22 @@ Protected111407 compares all116 displayed Miners candidates and their exact
 order before menu entry, then both directions of Category/Name/Profession/Skills
 and five typed searches. The native list and filter remain unchanged by provider
 calls. `worker_query_reference` retains IDs/digests and counts; mixed-labor
-weights, transport, row presentation and full editor acceptance remain pending.
+weights, row presentation and full editor acceptance remain pending.
 MSVC/core19 pass; installed Management140 hash
 1CECA7DBA3FE384C4D32BA628C6EDC875861967399A3EA07CB643EA745280583 matches the build.
 DF10688 closed unsaved with source preservation; no Godot was launched. Native
 was capped at30FPS, with GPU49C/0percent sampled after closure.
+
+Protected113638 verifies the typed Godot adapter against all14 native/provider
+queries: initial116 candidates, eight sort/direction combinations and five
+searches. The existing Lua inspection revision3214481692932499677 matches the
+C++ receipt exactly. Mismatched revision and absent detail127 reject without
+retained rows. `worker_query_wire_reference` retains bounded comparison hashes.
+Core19, headless management contract and MSVC pass. Installed Management141 hash
+BAA6B2DA0E8CE859902F48F6B32C61646C6D34B66C481985237085CA535C197D matches the build.
+DF2792 closed unsaved with source preservation; joined headless client logs have
+only the known separate-renderer notice. Native30FPS, GPU44C/0percent sampled
+during and after the run. This establishes transport, not the rendered editor.
 
 ## Residents native list discovery
 

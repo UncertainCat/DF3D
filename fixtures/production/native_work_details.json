@@ -2368,5 +2368,89 @@
     "owned_df_closed": true,
     "bridge_sha256": "1CECA7DBA3FE384C4D32BA628C6EDC875861967399A3EA07CB643EA745280583",
     "corrected_provider_defect": "Nonempty filter misses inspect job_sort_str at330, requiring a constructed empty map; zero-filled storage caused the disposable test process to exit. The final context uses the initialized shared ActivityMap ABI."
+  },
+  "worker_query_wire_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-113638",
+    "management_version": 141,
+    "scope": "Typed Godot adapter through the native bridge for Miners index0; matches complete native header/search orders. Does not establish row rendering, mixed-labor weights or full editor acceptance.",
+    "detail_revision": "3214481692932499677",
+    "queries": [
+      {
+        "name": "initial",
+        "count": 116,
+        "native_provider_and_wire_ids_sha256": "d9be19184e50ad6d3c0d6c6b1c4f27b549658028580e4b16cb1a725feeef1a34"
+      },
+      {
+        "name": "Cat-0",
+        "count": 116,
+        "native_provider_and_wire_ids_sha256": "e47035b4a9934a3f6628e9a3a6a7cefb71db0efef9a50f749831fa2eea8ccf1e"
+      },
+      {
+        "name": "Cat-1",
+        "count": 116,
+        "native_provider_and_wire_ids_sha256": "242f2d8d6be4a6d57f39c724bdec8c081c5dd31022c8e698ab3139bb4f2f4e2f"
+      },
+      {
+        "name": "Name-0",
+        "count": 116,
+        "native_provider_and_wire_ids_sha256": "44a74e7ac6d9070ebaf372d9aa67601882c3a098d0521d35608ca2a61753e14b"
+      },
+      {
+        "name": "Name-1",
+        "count": 116,
+        "native_provider_and_wire_ids_sha256": "b0b179f2ebe31724413266a4dc117d2333acd43e75962cb26d8551462030ccd9"
+      },
+      {
+        "name": "Prof-0",
+        "count": 116,
+        "native_provider_and_wire_ids_sha256": "19364d2f9763039931005cab65c67aef5d7cf3b59410553039f77ce201433ca4"
+      },
+      {
+        "name": "Prof-1",
+        "count": 116,
+        "native_provider_and_wire_ids_sha256": "1b896b2bb02a057963a7228501d960bf7611adacee9e854d9cb295697f7801ba"
+      },
+      {
+        "name": "Skills-0",
+        "count": 116,
+        "native_provider_and_wire_ids_sha256": "d9be19184e50ad6d3c0d6c6b1c4f27b549658028580e4b16cb1a725feeef1a34"
+      },
+      {
+        "name": "Skills-1",
+        "count": 116,
+        "native_provider_and_wire_ids_sha256": "86a1357e56415c08b8c8fad93e2bec0471479cd796396f752e246a618558adc7"
+      },
+      {
+        "name": "search-MINER",
+        "count": 4,
+        "native_provider_and_wire_ids_sha256": "037bcd9a168c74bd800793492fa872cba69a0df64e3cdead7470b8571acff6c5"
+      },
+      {
+        "name": "search-T\u00e2mol",
+        "count": 0,
+        "native_provider_and_wire_ids_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "search-tamol",
+        "count": 0,
+        "native_provider_and_wire_ids_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "search-no-matching-worker-zzq",
+        "count": 0,
+        "native_provider_and_wire_ids_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "name": "search-",
+        "count": 116,
+        "native_provider_and_wire_ids_sha256": "86a1357e56415c08b8c8fad93e2bec0471479cd796396f752e246a618558adc7"
+      }
+    ],
+    "mismatched_revision_rejected_without_rows": true,
+    "missing_detail_rejected_without_rows": true,
+    "source_preserved": true,
+    "owned_df_closed": true,
+    "bridge_sha256": "BAA6B2DA0E8CE859902F48F6B32C61646C6D34B66C481985237085CA535C197D",
+    "diagnostics": "Known separate-renderer startup notice only; joined stdout/stderr has no unclassified diagnostics."
   }
 }

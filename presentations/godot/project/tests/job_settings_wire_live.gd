@@ -14,6 +14,8 @@ func pointer(view,point: Vector2,button: int=MOUSE_BUTTON_LEFT) -> void:
 	click=click.duplicate();click.pressed=false;Input.parse_input_event(click);await process_frame
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
+	if OS.get_environment("DF3D_WORK_DETAILS_QUERY_WIRE")=="1":
+		await work_detail_query();return
 	if OS.get_environment("DF3D_WORK_DETAILS_DEFAULTS")=="1" or OS.get_environment("DF3D_WORK_DETAILS_MEMBERSHIP")=="1" or OS.get_environment("DF3D_WORK_DETAILS_EDITS")=="1":
 		await work_detail_defaults();return
 	if OS.get_environment("DF3D_RESIDENTS_JOB_PRODUCTION_WIRE")=="1":
@@ -74,6 +76,40 @@ func run() -> void:
 	var composed:=await composed_read(reference)
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"choices":rows.size(),"filtered":choices,"composed":composed}));file.close()
+	world.queue_free();await process_frame;quit(1 if failed else 0)
+
+func work_detail_query() -> void:
+	world=Df3dWorld.new();root.add_child(world)
+	if not check(world.attach(),"Work Details query attach failed"):quit(1);return
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline:
+		world.poll()
+		if world.poll_management().get("transport_alive",false):break
+		await create_timer(0.01).timeout
+	await request("construction",{"action":C.ManagementAction.Catalog})
+	var inspected:=await request("citizens",{"action":C.ManagementAction.WorkDetailInspect,"detail_index":0})
+	var rows: Array=inspected.get("citizen",{}).get("details",[])
+	if not check(rows.size()==1,"Query detail missing"):quit(1);return
+	var revision: int=rows[0].revision
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/work-details-native.json"))
+	var captures: Array=[]
+	for query in reference.queries:
+		var intent: Dictionary={"action":C.ManagementAction.WorkDetailWorkersQuery,"detail_index":0,"expected_revision":revision,"sort":int(query.sort),"descending":bool(query.direction),"query_bytes":str(query.query).to_utf8_buffer()}
+		var response:=await request("work_detail_workers",intent)
+		var ids: PackedInt32Array=response.get("residents",{}).get("unit_ids",PackedInt32Array())
+		check(response.get("status")==C.ManagementStatus.Ok and ids==PackedInt32Array(query.native),"Work Details native query differs: "+query.name)
+		captures.append({"name":query.name,"ids":Array(ids)})
+		if failed:break
+	var stale: Dictionary={"action":C.ManagementAction.WorkDetailWorkersQuery,"detail_index":0,"expected_revision":revision^1,"sort":3,"descending":false,"query_bytes":PackedByteArray()}
+	# Keep the malformed-revision test inside the supported positive domain.
+	if stale.expected_revision==0:stale.expected_revision=2
+	var rejected:=await request("work_detail_workers",stale)
+	check(rejected.get("status")==C.ManagementStatus.Rejected and not rejected.has("residents"),"Stale Work Detail retained worker rows")
+	stale.detail_index=127;stale.expected_revision=revision
+	rejected=await request("work_detail_workers",stale)
+	check(rejected.get("status")==C.ManagementStatus.Rejected and not rejected.has("residents"),"Missing Work Detail retained worker rows")
+	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"revision":str(revision),"queries":captures,"stale_rejected":not rejected.has("residents")}));file.close()
 	world.queue_free();await process_frame;quit(1 if failed else 0)
 
 func work_detail_defaults() -> void:

@@ -2230,6 +2230,28 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="residents-job-art-draft-probe") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0)return CR_WRONG_USAGE;
+          const auto* unit=df::unit::find(id);if(!unit || !unit->job.current_job)return CR_FAILURE;
+          const auto& job=*unit->job.current_job;
+          const auto read=[&](int16_t page,df3d_production::WorkOrderArtDraftValue value,uint8_t action,
+              const std::optional<df3d_production::WorkOrderArtDraftElementValue>& element=std::nullopt,uint64_t receipt=0) {
+            return df3d_production::nativeJobArtDraftPage(job,page,std::move(value),action,element,std::nullopt,-1,{},0,receipt,118);
+          };
+          auto root=read(6,{},0);auto choices=read(7,{},0);
+          if(!root || !choices || choices->page.rows.empty())return CR_FAILURE;
+          const auto& row=choices->page.rows.front();
+          df3d_production::WorkOrderArtDraftElementValue element{7,row.id,row.secondary,1};
+          auto populated=read(7,{},1,element);if(!populated || !populated->page.draftDescription)return CR_FAILURE;
+          Json::Value result;result["caption"]=DF2UTF(root->page.caption);result["race"]=row.id;result["caste"]=row.secondary;
+          result["total"]=choices->page.total;result["rows"]=Json::Value(Json::arrayValue);result["description"]=Json::Value(Json::arrayValue);
+          for(const auto& item:root->page.rows)result["rows"].append(DF2UTF(item.caption));
+          for(const auto& line:*populated->page.draftDescription)result["description"].append(DF2UTF(line));
+          result["stale_list_rejected"]=!read(7,{},0,std::nullopt,choices->page.listRevision==1?2:1);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="residents-job-art-copy-probe") {
           if(parameters.size()!=4)return CR_WRONG_USAGE;
           int32_t values[3]={};

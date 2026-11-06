@@ -1,6 +1,7 @@
 #pragma once
 #include "job_settings_native.h"
 #include "work_order_art_native.h"
+#include "work_order_art_draft_native.h"
 
 namespace df3d_production {
 inline bool jobArtReady() {
@@ -76,6 +77,20 @@ inline std::optional<JobArtPage> nativeJobArtPage(const df::job& job,int16_t pag
         },[&](const std::string& filter){return nativeArtImages(details->revision,filter);});
     if(!observed)return std::nullopt;
     return JobArtPage{details->jobId,details->buildingId,details->revision,std::move(*observed)};
+}
+
+// Job eligibility and heading come from the source job; draft nodes, lists and
+// name edits use the shared privately owned image context, never a manager proxy.
+inline std::optional<JobArtPage> nativeJobArtDraftPage(const df::job& job,int16_t page,
+    WorkOrderArtDraftValue value,uint8_t action,const std::optional<WorkOrderArtDraftElementValue>& element,
+    const std::optional<WorkOrderArtDraftRelationshipValue>& relationship,int32_t deleteIndex,
+    const std::string& query,uint32_t cursor,uint64_t listRevision,uint16_t columns,
+    const WorkOrderArtNameQuery* nameQuery=nullptr,const WorkOrderArtNameEdit* nameEdit=nullptr) {
+    auto root=nativeJobArtPage(job,-1);if(!root)return std::nullopt;
+    auto draft=nativeArtDraftPage(std::move(root->page),root->revision,page,std::move(value),action,
+        element,relationship,deleteIndex,query,cursor,listRevision,columns,nameQuery,nameEdit);
+    if(!draft)return std::nullopt;
+    root->page=std::move(*draft);return root;
 }
 
 // Safe-point caller resolves source membership. Validate fresh owned native

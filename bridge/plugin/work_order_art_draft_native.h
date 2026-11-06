@@ -354,7 +354,7 @@ public:
 // Local draft edits are reconstructed from semantic values for this safe point.
 // This page builder never installs a world image. Name generation consumes RNG
 // and is dispatched only as a write intent.
-inline std::optional<WorkOrderArtPage> nativeWorkOrderArtDraftPage(df::manager_order& order,int16_t page,
+inline std::optional<WorkOrderArtPage> nativeArtDraftPage(WorkOrderArtPage root,uint64_t sourceRevision,int16_t page,
     WorkOrderArtDraftValue value,uint8_t action,const std::optional<WorkOrderArtDraftElementValue>& element,
     const std::optional<WorkOrderArtDraftRelationshipValue>& relationship,int32_t deleteIndex,
     const std::string& query,uint32_t cursor,uint64_t listRevision,uint16_t columns,
@@ -391,7 +391,7 @@ inline std::optional<WorkOrderArtPage> nativeWorkOrderArtDraftPage(df::manager_o
         }
         page=value.elements.empty()?6:17;
     }
-    auto result=nativeWorkOrderArtPage(order,-1,{},0,0);if(!result)return std::nullopt;
+    std::optional<WorkOrderArtPage> result=std::move(root);
     if(page==-1){result->draft=value;result->draftDescription=std::vector<std::string>{};return result;}
     result->page=page;result->rows.clear();result->draft=value;
     result->draftDescription=draft->preview(columns);if(!result->draftDescription)return std::nullopt;
@@ -411,8 +411,7 @@ inline std::optional<WorkOrderArtPage> nativeWorkOrderArtDraftPage(df::manager_o
         const auto count=value.elements.size()+(page==17?value.relationships.size():0);
         for(size_t i=0;i<count;++i)if(page!=16 || int32_t(i)!=relationship->actor)candidates.emplace_back(int32_t(i),-1);
     }
-    const auto details=nativeWorkOrderDetails(order);if(!details)return std::nullopt;
-    uint64_t hash=details->revision;
+    uint64_t hash=sourceRevision;
     const auto number=[&](uint64_t v){for(unsigned i=0;i<8;++i){hash^=v&255;hash*=UINT64_C(1099511628211);v>>=8;}};
     number(page);for(unsigned char c:query)number(c);
     for(const auto& e:value.elements){number(e.kind);number(e.id);number(e.secondary);number(e.quantity);}
@@ -433,6 +432,16 @@ inline std::optional<WorkOrderArtPage> nativeWorkOrderArtDraftPage(df::manager_o
         result->nextCursor=end<candidates.size()?uint32_t(end):0;
     }
     return result;
+}
+inline std::optional<WorkOrderArtPage> nativeWorkOrderArtDraftPage(df::manager_order& order,int16_t page,
+    WorkOrderArtDraftValue value,uint8_t action,const std::optional<WorkOrderArtDraftElementValue>& element,
+    const std::optional<WorkOrderArtDraftRelationshipValue>& relationship,int32_t deleteIndex,
+    const std::string& query,uint32_t cursor,uint64_t listRevision,uint16_t columns,
+    const WorkOrderArtNameQuery* nameQuery=nullptr,const WorkOrderArtNameEdit* nameEdit=nullptr) {
+    auto root=nativeWorkOrderArtPage(order,-1,{},0,0);if(!root)return std::nullopt;
+    const auto details=nativeWorkOrderDetails(order);if(!details)return std::nullopt;
+    return nativeArtDraftPage(std::move(*root),details->revision,page,std::move(value),action,element,
+        relationship,deleteIndex,query,cursor,listRevision,columns,nameQuery,nameEdit);
 }
 inline WorkOrderDetailEditResult commitWorkOrderArtDraft(df::manager_order& order,uint64_t revision,const WorkOrderArtDraftValue& value) {
     WorkOrderDetailEditResult result;

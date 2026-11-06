@@ -5754,5 +5754,33 @@
     "scope": "Actual native job-backed new-image root, creature addition, and Done. Draft leaves job and fortress image catalog unchanged until Done; Done registers one image and assigns it to the disposable statue job. Zero requirements. No owned job draft adapter or DF3D draft UI acceptance.",
     "source_preserved": true,
     "owned_df_closed": true
+  },
+  "artwork_draft_provider_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-092127",
+    "date": "2026-11-06",
+    "provider": {
+      "caption": "Image information for Make rock statue",
+      "caste": -1,
+      "description": [
+        "It is an image of a aardvark.  "
+      ],
+      "race": 755,
+      "rows": [
+        "Creature",
+        "Historical figure",
+        "Plant",
+        "Tree",
+        "Shape",
+        "Object",
+        "Artifact",
+        "Action or relationship",
+        "Delete element"
+      ],
+      "stale_list_rejected": true,
+      "total": 2394
+    },
+    "scope": "Owned job draft root category captions, creature count and first race/caste, first added-element description and stale list receipt rejection match native. Source job and fortress image catalog unchanged until independent native Done. No all-row/category, name, commit adapter or typed draft/UI acceptance.",
+    "source_preserved": true,
+    "owned_df_closed": true
   }
 }

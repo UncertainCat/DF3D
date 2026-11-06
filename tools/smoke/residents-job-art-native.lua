@@ -163,13 +163,35 @@ reopen_art()
 if os.getenv('DF3D_RESIDENTS_JOB_ART_DRAFT')=='1' then
  local original=effect();local resources=df.global.plotinfo.main.fortress_entity.resources
  local count=#resources.art_image_ids
+ local provider=nil
+ if os.getenv('DF3D_RESIDENTS_JOB_ART_DRAFT_PROVIDER')=='1' then
+  local old=owner.job.current_job;owner.job.current_job=job
+  local ok,text,rc=pcall(dfhack.run_command_silent,'df3d','residents-job-art-draft-probe',tostring(owner.id))
+  owner.job.current_job=old;assert(ok and rc==0,'Owned job draft read failed: '..tostring(text))
+  provider=json.decode(text)
+  assert(provider.caption==result.header and provider.stale_list_rejected,'Owned job draft header/receipt differs')
+ end
  label('Specify a new image');assert(art.current_option==6,'Draft did not open')
- result.draft={root=lines(),before=original,registered_before=count}
+ result.draft={root=lines(),before=original,registered_before=count,provider=provider}
+ if provider then
+  for _,caption in ipairs(provider.rows)do
+   local found=false;for _,line in ipairs(result.draft.root)do if line.text:find(caption,1,true)then found=true;break end end
+   assert(found,'Owned draft category caption differs')
+  end
+ end
  shot('residents-job-art-draft')
  label('Creature');assert(art.current_option==7,'Draft creatures did not open')
  result.draft.creatures=lines();result.draft.race=art.new_image_race[0];result.draft.caste=art.new_image_caste[0]
  click(37,15);assert(art.current_option==6 and #art.new_image.elements==1,'Creature was not added')
  result.draft.populated=lines();shot('residents-job-art-draft-populated')
+ if provider then
+  assert(provider.race==result.draft.race and provider.caste==result.draft.caste and provider.total==#art.new_image_race,'Owned creature draft list differs')
+  for _,text in ipairs(provider.description)do
+   text=text:gsub('%s+$','') -- screen lines trim trailing blank cells too
+   local found=false;for _,line in ipairs(result.draft.populated)do if line.text:find(text,1,true)then found=true;break end end
+   assert(found,'Owned draft description differs')
+  end
+ end
  assert(job.art_spec.type==original.type and job.art_spec.id==original.id and #resources.art_image_ids==count,'Draft changed world before Done')
  label('Done')
  result.draft.done=effect();result.draft.registered_after=#resources.art_image_ids;save()

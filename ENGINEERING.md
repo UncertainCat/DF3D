@@ -1015,10 +1015,26 @@ non-draft oracle after a failed patch and supplies no draft evidence.
 Native20b02b..20b2a5 registers the image through the shared image allocator,
 copy and entity symbol path. The job-specific write is20b2b1..20b2e2; the following
 manager branch performs separate requirement rebuilding and must not be used
-for jobs. The shared WorkOrderArtDraft owns native image/list scratch and is a
-candidate for reuse; its page wrapper still takes a manager order. Job drafts,
-name editing and typed draft transport remain to be connected. The reference
+for jobs. The shared WorkOrderArtDraft owns native image/list scratch. Its extracted
+nativeArtDraftPage accepts an owned root page and source revision; manager and
+job wrappers obtain those from their own simulation records. nativeJobArtDraftPage
+never constructs a manager-order proxy. Name generation remains an explicit write
+intent because it consumes native RNG. Typed job draft transport, UI and world
+commit remain to be connected. The reference
 is fixtures/residents/native_job_settings.json.artwork_draft_reference.
+
+
+Protected092127 on2026-11-06 compares residents-job-art-draft-probe with the
+native job editor: all nine root category captions, creature count2394 and first
+race755/caste-1, added aardvark description and stale-list rejection pass. Draft
+reads preserve the source job and fortress image catalog. Description comparison
+trims trailing blanks on both sides because screen rows already do so;092043
+failed that oracle normalization before correction. Full ordered creature rows,
+other categories, names and typed job draft UI are not accepted by this probe.
+DF39896 closes unsaved with source preservation; native30FPS, GPU45-46C sampled,
+no Godot renderer. Core19/root build pass in job-art-draft-reader-20261106; native
+MSVC job-art-draft-reader-build passes. Built/installed bridge SHA256 is
+C23D55EC8AC7F611AB5FF3E3807254381FB8D560D22F9B59084B5E41DD20D696.
 
 
 ## Farm removal native entry points

@@ -3849,7 +3849,8 @@
   "roster_widget_hover_reference": {
     "native_captures": [
       "build/stockpile-storage-native-input-20261106-133852",
-      "build/stockpile-storage-native-input-20261106-134711"
+      "build/stockpile-storage-native-input-20261106-134711",
+      "build/stockpile-storage-native-input-20261106-135704"
     ],
     "rendered_capture": "build/stockpile-storage-native-input-20261106-135356",
     "tooltips": {
@@ -3878,6 +3879,13 @@
           "name or job."
         ],
         "hotkey": "Ctrl+f"
+      },
+      "category": {
+        "lines": [
+          "Sort units by profession",
+          "category."
+        ],
+        "hotkey": "?"
       }
     },
     "crop": [
@@ -3890,13 +3898,202 @@
       "name": 0,
       "profession": 0,
       "skills": 0,
-      "filter": 0
+      "filter": 0,
+      "category": 0
     },
     "actual_pointer_normal_and_locked": true,
     "pointer_departure_clears": true,
     "source_preserved": true,
     "owned_df_closed": true,
-    "limits": "Category screenshot134711 is incomplete, so its help remains unimplemented. Keyboard activation is not established by displaying the native hotkey. Public screen remains staged. Initial135253 sampled injected mouse input before delivery;135356 explicitly flushes buffered input and waits150ms.",
-    "diagnostics": "Only known separate-renderer, device-finalize and paired shutdown-object signatures in joined final client logs."
+    "limits": "All four sort headers and filter help are captured. Displayed hotkeys do not establish keyboard activation. Public screen remains staged. Initial135253 sampled injected mouse input before delivery;135356 explicitly flushes buffered input and waits150ms.",
+    "diagnostics": "Only known separate-renderer, device-finalize and paired shutdown-object signatures in joined final client logs.",
+    "category_rendered_capture": "build/stockpile-storage-native-input-20261106-140025"
+  },
+  "keyboard_discovery": {
+    "capture": "build/stockpile-storage-native-input-20261106-140139",
+    "original_widget_flags": {
+      "Cat": 3,
+      "filter": 3,
+      "Name": 3,
+      "Prof": 3,
+      "Skills": 3
+    },
+    "native_dispatch": "Generic widget feed1413960 gates keyboard activation on flag4 at1413a07; textbox feed1419080 has the same gate at1419096. Original Work Details header/filter flags are3.",
+    "observations": [
+      {
+        "filter": "",
+        "filter_focused": false,
+        "flags": 0,
+        "label": "initial-away",
+        "sorting": [
+          "Skills"
+        ]
+      },
+      {
+        "filter": "",
+        "filter_focused": false,
+        "flags": 0,
+        "label": "control-n",
+        "sorting": [
+          "Skills"
+        ]
+      },
+      {
+        "filter": "",
+        "filter_focused": false,
+        "flags": 0,
+        "label": "control-n",
+        "sorting": [
+          "Skills"
+        ]
+      },
+      {
+        "filter": "",
+        "filter_focused": false,
+        "flags": 0,
+        "label": "control-i",
+        "sorting": [
+          "Skills"
+        ]
+      },
+      {
+        "filter": "",
+        "filter_focused": false,
+        "flags": 0,
+        "label": "control-i",
+        "sorting": [
+          "Skills"
+        ]
+      },
+      {
+        "filter": "",
+        "filter_focused": false,
+        "flags": 0,
+        "label": "control-f",
+        "sorting": [
+          "Skills"
+        ]
+      },
+      {
+        "filter": "",
+        "filter_focused": false,
+        "flags": 0,
+        "label": "ascii",
+        "sorting": [
+          "Skills"
+        ]
+      },
+      {
+        "filter": "",
+        "filter_focused": false,
+        "flags": 0,
+        "label": "enter",
+        "sorting": [
+          "Skills"
+        ]
+      },
+      {
+        "filter": "",
+        "filter_focused": false,
+        "flags": 0,
+        "label": "control-n",
+        "sorting": [
+          "Skills"
+        ]
+      },
+      {
+        "filter": "",
+        "filter_focused": false,
+        "flags": 0,
+        "label": "control-i",
+        "sorting": [
+          "Skills"
+        ]
+      },
+      {
+        "filter": "",
+        "filter_focused": false,
+        "flags": 0,
+        "label": "control-f",
+        "sorting": [
+          "Skills"
+        ]
+      },
+      {
+        "filter": "",
+        "filter_focused": false,
+        "flags": 0,
+        "label": "diagnostic-key-activation-enabled",
+        "sorting": [
+          "Skills"
+        ]
+      },
+      {
+        "filter": "",
+        "filter_focused": false,
+        "flags": 0,
+        "label": "control-n",
+        "sorting": [
+          "Skills"
+        ]
+      },
+      {
+        "filter": "",
+        "filter_focused": false,
+        "flags": 0,
+        "label": "control-n",
+        "sorting": [
+          "Skills"
+        ]
+      },
+      {
+        "filter": "",
+        "filter_focused": false,
+        "flags": 0,
+        "label": "control-i",
+        "sorting": [
+          "Skills"
+        ]
+      },
+      {
+        "filter": "",
+        "filter_focused": false,
+        "flags": 0,
+        "label": "control-i",
+        "sorting": [
+          "Skills"
+        ]
+      },
+      {
+        "filter": "f",
+        "filter_focused": true,
+        "flags": 0,
+        "label": "control-f",
+        "sorting": [
+          "Skills"
+        ]
+      },
+      {
+        "filter": "fa",
+        "filter_focused": true,
+        "flags": 0,
+        "label": "ascii",
+        "sorting": [
+          "Skills"
+        ]
+      },
+      {
+        "filter": "fa",
+        "filter_focused": false,
+        "flags": 0,
+        "label": "enter",
+        "sorting": [
+          "Skills"
+        ]
+      }
+    ],
+    "limits": "No runtime correction or shortcut dispatch implemented. Actual window-key probes with original flags produced no observed sort/focus change. Diagnostic flag4 enables filter focus; injected Ctrl+f also introduces f into the field, so this is not clean keyboard parity evidence. Sort remained Skills even with flag4. Earlier direct interface-key probes also produced no change. Resolve native sort-widget dispatch/bindings before treating displayed hotkeys as working actions.",
+    "source_preserved": true,
+    "owned_df_closed": true
   }
 }

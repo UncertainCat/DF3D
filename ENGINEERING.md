@@ -33,13 +33,13 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Work Details native discovery
 
-Work Details roster Name, Profession, Skills and filter help use the separate
+Work Details roster Name, Category, Profession, Skills and filter help use the separate
 native widget frame, immediate ownership and bottom hotkey line. They do not
 warm the main-interface instruction timer. Departing a widget retires its
 overlay before settings/worker instructions resume; a late departure from a
-previous owner cannot clear the current owner. Category help and keyboard
-activation remain incomplete; native Profession displays `?`, which is retained
-as observed rather than inventing a binding.
+previous owner cannot clear the current owner. Keyboard activation remains
+unverified; native Category and Profession display `?`, retained as observed
+rather than inventing a binding.
 
 Native133852/134711 and rendered135356 on2026-11-06 establish all four tooltip
 crops at1200x800: each200x216 crop has zero differing RGB pixels. Actual pointer
@@ -52,6 +52,26 @@ Final joined logs contain only documented separate-renderer/device-finalize/
 paired shutdown diagnostics. Headless work-details-widget-help-20261106 passes
 core19, extension, Work Details and shared hover-state checks. Evidence and
 remaining gaps are in `native_work_details.json.roster_widget_hover_reference`.
+
+Category native135704 and rendered140025 add the final header tooltip:
+“Sort units by profession category.” with `?` in the hotkey line. Its200x216
+crop also has zero differing RGB pixels. Actual normal/locked pointer input,
+departure and subsequent settings help pass; core19/extension/Work Details/
+shared-hover checks pass in work-details-category-help-20261106. DF36768 exits
+unsaved with source preservation; native/viewer30FPS, GPU60C sampled, only known
+engine diagnostics in joined logs.
+
+Keyboard discovery140139 records original header/filter widget flags3.
+Generic feed1413960 checks flag4 at1413a07 before key activation; textbox
+feed1419080 checks it at1419096. Direct interface-key and window-key probes
+produced no observed activation with original flags. Diagnostic-only flag4
+restores filter focus and Enter release, but injected Ctrl+f also types an f;
+sort remains Skills. This is incomplete keyboard evidence, not authorization
+for a product correction or proof that shortcuts should be invented. The probe
+restores flags and closes the owned DF25276 unsaved with source preservation;
+GPU59C sampled. Retained `keyboard_discovery` records the gap; do not repeat
+unmodified input probes. Native sort-widget dispatch/binding inspection remains
+necessary before implementing shortcuts.
 
 
 `DF3D_WORK_DETAILS_NATIVE=1` with the protected Residents reference launcher

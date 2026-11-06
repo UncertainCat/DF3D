@@ -124,6 +124,12 @@ public static class Shot {
    if(!PostMessage(h,0x101,(IntPtr)key,(IntPtr)up)) throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
    System.Threading.Thread.Sleep(80);
   }
+  public static void ControlKey(IntPtr h,int key,int scan) {
+   if(!PostMessage(h,0x100,(IntPtr)17,(IntPtr)(1L+(29L<<16)))) throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
+   System.Threading.Thread.Sleep(80);Key(h,key,scan);
+   if(!PostMessage(h,0x101,(IntPtr)17,(IntPtr)(1L+(29L<<16)+0xc0000000L))) throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
+   System.Threading.Thread.Sleep(80);
+  }
   public static void ControlF(IntPtr h) {
    if(!PostMessage(h,0x100,(IntPtr)17,(IntPtr)(1L+(29L<<16)))) throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
    System.Threading.Thread.Sleep(80);
@@ -183,13 +189,15 @@ try {
  $limit=(Get-Date).AddSeconds(600)
  while(-not(Test-Path "$out/result.json") -and (Get-Date) -lt $limit){
   if($owned.HasExited){throw 'Owned DF exited before the native capture completed'}
-  if(($ZoneOwner -or $ZoneAnimals -or $ZoneDefaults -or $LocationSupplies -or $LocationNames -or $FarmResize -or $FarmHeader -or $env:DF3D_WORK_ORDER_ARTWORK_RESIZE -eq '1' -or $env:DF3D_WORK_ORDER_LAYOUT -eq '1' -or $env:DF3D_RESIDENTS_QUERY -eq '1' -or $env:DF3D_WORK_DETAILS_QUERY_PROVIDER -eq '1' -or $env:DF3D_WORK_DETAILS_RENAME -eq '1' -or $env:DF3D_RESIDENTS_JOB_ART_RENDER -eq '1') -and (Test-Path "$out/owner-input-request")) {
+  if(($ZoneOwner -or $ZoneAnimals -or $ZoneDefaults -or $LocationSupplies -or $LocationNames -or $FarmResize -or $FarmHeader -or $env:DF3D_WORK_ORDER_ARTWORK_RESIZE -eq '1' -or $env:DF3D_WORK_ORDER_LAYOUT -eq '1' -or $env:DF3D_RESIDENTS_QUERY -eq '1' -or $env:DF3D_WORK_DETAILS_QUERY_PROVIDER -eq '1' -or $env:DF3D_WORK_DETAILS_RENAME -eq '1' -or $env:DF3D_WORK_DETAILS_SHORTCUTS -eq '1' -or $env:DF3D_RESIDENTS_JOB_ART_RENDER -eq '1') -and (Test-Path "$out/owner-input-request")) {
    $action=(Get-Content "$out/owner-input-request" -Raw).Trim()
    $window=[Shot]::Find($owned.Id)
    switch($action) {
     'down' {[Shot]::Key($window,40,80)}
     'enter' {[Shot]::Key($window,13,28)}
     'escape' {[Shot]::Key($window,27,1)}
+    'control-n' {[Shot]::ControlKey($window,78,49)}
+    'control-i' {[Shot]::ControlKey($window,73,23)}
     'control-f' {[Shot]::ControlF($window)}
     'control-c' {[Shot]::ControlC($window)}
     'right-click' {[Shot]::RightClick($window)}

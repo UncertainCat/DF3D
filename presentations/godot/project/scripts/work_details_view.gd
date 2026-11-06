@@ -152,9 +152,9 @@ func hover_target(point: Vector2) -> Dictionary:
 				if entry.rect.has_point(point):return {"staff":"work_detail"}
 		return {}
 	if search!=null and search.get_rect().has_point(point):return {"widget":"filter"}
-	for index in [0,2,3]:
+	for index in 4:
 		if Rect2(DETAIL_SORT_X[index]*8,list_top()-24,DETAIL_SORT_WIDTH[index]*8,12).has_point(point):
-			return {"widget":["name","","profession","skills"][index]}
+			return {"widget":["name","category","profession","skills"][index]}
 	for index in page_rows:
 		var row: Dictionary=state.row_at(state.first+index)
 		if row.is_empty():continue

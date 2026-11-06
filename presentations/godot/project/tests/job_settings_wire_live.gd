@@ -695,7 +695,7 @@ func work_detail_settings_scene() -> void:
 	if not check(await ready(state),"Settings scene roster failed"):quit(1);return
 	await pointer(view,view.detail_rect(int(expected.index)).get_center())
 	if not check(await ready(state),"Settings scene detail selection failed"):quit(1);return
-	for entry in [["name",Vector2(316,view.list_top()-18)],["profession",Vector2(468,view.list_top()-18)],["skills",Vector2(568,view.list_top()-18)],["filter",view.search.get_rect().get_center()]]:
+	for entry in [["name",Vector2(316,view.list_top()-18)],["category",Vector2(396,view.list_top()-18)],["profession",Vector2(468,view.list_top()-18)],["skills",Vector2(568,view.list_top()-18)],["filter",view.search.get_rect().get_center()]]:
 		var motion:=InputEventMouseMotion.new();motion.position=view.get_global_transform_with_canvas()*entry[1];motion.global_position=motion.position;Input.parse_input_event(motion);Input.flush_buffered_events()
 		await create_timer(0.15).timeout
 		check(help.displayed==("owner_filter" if entry[0]=="filter" else "detail_widget_"+entry[0]),"Roster widget help did not follow actual pointer: "+str(entry[0])+" observed "+help.displayed+" at "+str(view.pointer_position))

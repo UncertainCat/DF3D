@@ -111,6 +111,49 @@ local function shot(name)
  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Work Details capture timeout');script.sleep(1,'frames')end
 end
 shot('work-details-root')
+if os.getenv('DF3D_WORK_DETAILS_SHORTCUTS')=='1' then
+ result.shortcuts={}
+ local function observe(label)
+  local sorting,ids={},{}
+  for _,entry in ipairs(active_list.sorting_by)do sorting[#sorting+1]=entry.ident end
+  local function collect(widget)
+   if (widget.flag.whole&1)==0 then return end
+   if df.widget_unit_portrait:is_instance(widget) and widget.u then ids[#ids+1]=widget.u.id end
+   if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do collect(child)end end
+  end
+  collect(active_list)
+  result.shortcuts[#result.shortcuts+1]={label=label,sorting=sorting,flags=active_list.sort_flags.whole&255,ids=ids,filter_focused=df.global.gview.cur_textbox==filter_box,filter=filter_box.str}
+ end
+ local function move(x,y)
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+  gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+ end
+ local until_tick=dfhack.getTickCount()+1000
+ repeat move(428,262);script.sleep(1,'frames')until dfhack.getTickCount()>=until_tick
+ shot('work-details-category-help')
+ move(1100,650);observe('initial-away')
+ local function key(action)
+  local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write(action);f:close();assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+  local deadline=dfhack.getTickCount()+10000
+  while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Shortcut input timeout');script.sleep(1,'frames')end
+  assert(os.remove(out..'/owner-input-ack'));script.sleep(3,'frames');observe(action)
+ end
+ for _,action in ipairs{'control-n','control-n','control-i','control-i','control-f','ascii','enter'}do key(action)end
+ for _,entry in ipairs{{'control-n',348,262},{'control-i',600,262},{'control-f',608,718}}do
+  move(entry[2],entry[3]);key(entry[1])
+ end
+ -- Diagnostic only: isolate the native CAN_KEY_ACTIVATE gate; restore flags.
+ result.shortcut_original_flags={}
+ for name,widget in pairs(headers)do result.shortcut_original_flags[name]=widget.flag.whole;widget.flag.whole=widget.flag.whole|4 end
+ result.shortcut_original_flags.filter=filter_box.flag.whole;filter_box.flag.whole=filter_box.flag.whole|4
+ observe('diagnostic-key-activation-enabled');move(1100,650)
+ for _,action in ipairs{'control-n','control-n','control-i','control-i','control-f','ascii','enter'}do key(action)end
+ for name,widget in pairs(headers)do widget.flag.whole=result.shortcut_original_flags[name]end
+ filter_box.flag.whole=result.shortcut_original_flags.filter
+ shot('work-details-shortcuts')
+ records[#records+1]={name='work-details-shortcuts'};return
+end
 if row_provider then
  assert(#result.worker_skill_rows>0,'No visible skill rows')
  local multiple=false;for _,row in ipairs(result.worker_skill_rows)do if #row.native>1 then multiple=true end end

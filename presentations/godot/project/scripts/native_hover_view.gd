@@ -12,6 +12,7 @@ const OWNER_FILTER_HELP = ["Filter the unit list by","name or job."]
 # Protected Work Details133852/134711 widget overlays (separate from main help).
 const WORK_DETAIL_WIDGET_HELP={
 	"name":{"lines":["Sort units by name."],"key":"Ctrl+n"},
+	"category":{"lines":["Sort units by profession","category."],"key":"?"},
 	"profession":{"lines":["Sort units by profession","name."],"key":"?"},
 	"skills":{"lines":["Sort units by skills."],"key":"Ctrl+i"}}
 # Residents native052559: main-interface instructions234/235/252..257/260.

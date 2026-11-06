@@ -82,6 +82,35 @@ DF27036 exits unsaved with the source unchanged. MSVC build and core19/19 pass
 This proves the captured fortress's membership/order, not every unit-state
 transition, other Creatures tabs, owned activity/search behavior, transport or UI.
 
+The native Activity producer is1425c40, called by the unit row builder142a300
+at142a88e. Its ABI is a returned string, list-context pointer, by-value shared
+row-container pointer, unit pointer and Activity-details boolean. It creates a
+Job child and text widget, then copies that text and normalizes it with52cee0
+at1427959..142799e. The caller stores the result in job_sort_str. The display
+caption and normalized search/sort key are therefore separate outputs; do not
+display the normalized key or substitute current-job descriptions for idle,
+military, dead or other activity states.
+
+Static inspection identifies an owned temporary container as a possible input,
+not an accepted runtime provider. Constructor ed220 delegates to140ff20;
+container destruction usesbb680/bb5c0. A standalone MSVC layout check against
+the pinned generated headers confirms container size0x178, children0x160 and
+text.str0x150. The producer retains the list pointer in button callbacks;
+those callbacks must never execute in a semantic text query. Its copied
+shared_ptr argument is consumed by the native callee, so a raw pointer cast
+without matching reference ownership is not a valid call. Any implementation
+must own and destroy the complete temporary tree and copy semantic outputs
+before retirement. Never substitute the live Residents widget or its cache.
+
+The current-job branch callsd03170, which delegates tod032b0. Other branches
+use13d0800,13cc1d0 and13d0950 to resolve simulation activity records, plus native
+unit-status readers. Their transitive ownership and temporary-tree cleanup
+remain to be validated before invocation. In particular,13cc1d0 has chained
+unwind segments through13cc3f4; its first segment ends13cc25e and is insufficient
+for a compatibility hash. The producer also includes switch data through1427be4.
+Static evidence is retained under build/notes/pm/name-fn-*.asm and
+build/notes/pm/residents-abi; it does not establish live activity/search parity.
+
 ## Farm removal native entry points
 
 The diagnostic `df3d farm-contents-read <farm>` returns contained items in native

@@ -72,7 +72,12 @@ local prior=position.responsibilities[responsibility];local indexed=fortress.ass
 position.responsibilities[responsibility]=true;indexed:insert('#',assignment)
 local ok,err=xpcall(function()
  key('D_ORDERS');assert(m.info.open)
- for _,spec in ipairs{{query='dye cloth',job=191,kind=4,flow='direct'},{query='dye cloth',job=191,kind=4,flow='tint'},{query='mix dye',job=243,kind=5,flow='mix'}}do
+ local specs={{query='dye cloth',job=191,kind=4,flow='direct',direct=true},{query='dye cloth',job=191,kind=4,flow='tint'},{query='mix dye',job=243,kind=5,flow='mix'}}
+ if os.getenv('DF3D_WORK_ORDER_DYE_VARIANTS')=='1' then
+  specs={{query='dye thread',job=df.job_type.DyeThread,kind=4,flow='thread-direct',direct=true},{query='dye thread',job=df.job_type.DyeThread,kind=4,flow='thread-tint'},
+   {query='dye leather',job=df.job_type.DyeLeather,kind=4,flow='leather-direct',direct=true},{query='dye leather',job=df.job_type.DyeLeather,kind=4,flow='leather-tint'}}
+ end
+ for _,spec in ipairs(specs)do
   mouse(944,142);assert(m.create_work_order.open,'Global order picker did not open')
   mouse(600,94)
   for char in spec.query:gmatch('.')do key(('STRING_A%03d'):format(char:byte()))end
@@ -97,7 +102,7 @@ local ok,err=xpcall(function()
    at=nil;for i,tint in ipairs(d.dye_object_target_color_is_tint)do if tint then at=i;break end end
   end
   local targets=spec.kind==4 and d.dye_object_target_color or d.mix_dye_target_color
-  if spec.flow~='direct' and at and #targets>at then
+  if not spec.direct and at and #targets>at then
    local target=targets[at];plan.target=target;plan.root_row=at;local caption=df.global.world.raws.descriptors.colors[target].name
    if spec.kind==4 then d.scroll_position_dye_object=at else d.scroll_position_mix_dye=at end
    view:render(dfhack.getTickCount())
@@ -106,6 +111,36 @@ local ok,err=xpcall(function()
    assert(clicked,'Dye target caption not visible')
    assert((spec.kind==4 and d.dye_object_tint_color==target)or(spec.kind==5 and d.mix_dye_chosen_target_color==target),'Dye reagent stage did not open')
    shot('work-order-dye-'..spec.flow..'-reagents',order)
+  end
+  if os.getenv('DF3D_WORK_ORDER_DYE_SEARCH')=='1' then
+   local function keys()
+    local result={}
+    if plan.target<0 then
+     for i,color in ipairs(spec.kind==4 and d.dye_object_target_color or d.mix_dye_target_color)do result[#result+1]=tostring(color)..':'..tostring(spec.kind==5 or d.dye_object_target_color_is_tint[i])end
+    else
+     local first=spec.kind==4 and d.dye_object_tint_reagent_color1 or d.mix_dye_reagent_color1
+     local second=spec.kind==4 and d.dye_object_tint_reagent_color2 or d.mix_dye_reagent_color2
+     for i,color in ipairs(first)do result[#result+1]=tostring(color)..':'..tostring(second[i])end
+    end
+    return result
+   end
+   local baseline=keys()
+   local function ids()
+    local used,result={},{}
+    for _,value in ipairs(keys())do
+     local found
+     for index,original in ipairs(baseline)do if original==value and not used[index]then used[index]=true;found=index-1;break end end
+     assert(found,'Filtered choice absent from initial catalog');result[#result+1]=found
+    end
+    return result
+   end
+   plan.search={query='blue'};mouse(200,142)
+   for char in plan.search.query:gmatch('.')do key(('STRING_A%03d'):format(char:byte()))end
+   assert((spec.kind==4 and d.dye_object_filter or d.mix_dye_filter)=='blue','Native dye search did not focus')
+   plan.search.filtered=ids()
+   for _=1,#plan.search.query do key('STRING_A000')end
+   assert((spec.kind==4 and d.dye_object_filter or d.mix_dye_filter)=='','Native dye clear failed')
+   plan.search.cleared=ids();key('SELECT')
   end
   -- Both target and ingredient lists now have their first selectable row visible.
   mouse(200,178);assert(not d.open,'Native dye selection did not close Details')

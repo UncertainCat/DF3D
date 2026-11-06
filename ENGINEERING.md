@@ -7207,6 +7207,23 @@ variants, interactive filter clearing and the remaining artwork/hover/responsive
 work are not established by this direct-cloth/tint-cloth/mix acceptance; the full
 Work orders route remains staged.
 
+Protected235536 on2026-11-05 extends dye acceptance to direct/tint thread and
+direct/tint leather. `DF3D_WORK_ORDER_DYE_VARIANTS=1` selects those four recipes;
+the native provider comparison verifies all target/reagent IDs, order and counts,
+and the actual viewer actions match native order effects. The leather tint row
+captions were visually compared with native. This is not complete scrollbar or
+responsive visual acceptance. DF11180 exits unsaved with source preservation.
+Protected235648 uses `DF3D_WORK_ORDER_DYE_SEARCH=1`: actual typed “blue” and
+Backspace-to-empty match native canonical choice order on the direct cloth target
+list and tint/mix ingredient lists. Filtered/cleared counts are14/232,44/188 and0/13.
+Duplicate ingredient pairs retain occurrence identity. Enter releases search,
+and subsequent selections match native final order fields. DF5232 exits unsaved
+with source preservation. Both paired viewer logs contain only documented engine
+diagnostics; root19/19 and headless composition pass in `build/qa/dye-variants-search`.
+The viewer harness settles viewport resizing before constructing controls and
+scrolls the target into view before clicking it. These runs require no runtime
+changes; they establish the previously unverified dye variants and search flow.
+
 Protected020406 on2026-11-02 exercises draft creation, native descriptions,
 relationships, deletion, discard and actual Done in the shared viewer. DF readback
 confirms the installed plant image, generated name, commissioned entity reference

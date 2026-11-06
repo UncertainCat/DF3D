@@ -1,0 +1,89 @@
+extends RefCounted
+# Native roster ordering and row content; no local eligibility, search or sorting.
+signal changed
+const C=preload("res://scripts/management_contract.gd")
+enum Phase { Closed, Reading, Ready, Rejected, Unavailable }
+var service
+var phase:=Phase.Closed
+var generation:=0
+var ticket:=0
+var sort:=C.ResidentsSort.Category
+var directions: Array[bool]=[false,false,false,false,false]
+var query:=PackedByteArray()
+var ids:=PackedInt32Array()
+var rows: Dictionary={}
+var first:=0
+var capacity:=13
+var columns:=30
+var show_gender:=false
+var roster_ready:=false
+
+func configure(source) -> void:
+	dispose();service=source
+	if service!=null:service.session_changed.connect(_session_changed)
+func dispose() -> void:
+	close()
+	if service!=null and service.session_changed.is_connected(_session_changed):service.session_changed.disconnect(_session_changed)
+	service=null
+func retire() -> void:
+	generation+=1
+	var previous:=ticket;ticket=0
+	if service!=null and previous!=0:service.detach(previous)
+func close() -> void:
+	retire();ids=PackedInt32Array();rows={};first=0;roster_ready=false;phase=Phase.Closed;changed.emit()
+func _session_changed() -> void:
+	close();phase=Phase.Unavailable;changed.emit()
+func open() -> void:
+	close();sort=C.ResidentsSort.Category;directions=[false,false,false,false,false];query=PackedByteArray();refresh()
+func select_sort(value: int) -> void:
+	if value<0 or value>=directions.size() or phase==Phase.Closed:return
+	if sort==value:directions[value]=not directions[value]
+	sort=value;first=0;refresh()
+func set_query(value: PackedByteArray) -> void:
+	if value.size()>128 or value.has(0) or value==query or phase==Phase.Closed:return
+	query=value.duplicate();first=0;refresh()
+func refresh() -> void:
+	retire();rows={};ids=PackedInt32Array();roster_ready=false
+	if service==null:phase=Phase.Unavailable;changed.emit();return
+	phase=Phase.Reading
+	var owner:=generation
+	ticket=service.submit("residents",{"action":C.ManagementAction.ResidentsQuery,"sort":sort,"descending":directions[sort],"query_bytes":query},func(received,result,_sent):
+		if owner!=generation or received!=ticket:return
+		ticket=0
+		if result.get("status",-1)!=C.ManagementStatus.Ok or result.get("action",-1)!=C.ManagementAction.ResidentsQuery or not result.has("residents"):
+			_reject();return
+		ids=result.residents.unit_ids.duplicate();roster_ready=true
+		first=clampi(first,0,maxi(0,ids.size()-capacity));_fill();changed.emit())
+	if ticket==0:phase=Phase.Unavailable
+	changed.emit()
+func seek(offset: int,count: int) -> void:
+	capacity=clampi(count,0,64);first=clampi(offset,0,maxi(0,ids.size()-capacity))
+	_fill();changed.emit()
+func row_at(index: int) -> Dictionary:
+	return rows.get(ids[index],{}) if index>=0 and index<ids.size() else {}
+func _reject() -> void:
+	rows={};ids=PackedInt32Array();roster_ready=false;first=0;phase=Phase.Rejected;changed.emit()
+func _fill() -> void:
+	if phase not in [Phase.Reading,Phase.Ready] or not roster_ready or ticket!=0:return
+	var wanted:=PackedInt32Array()
+	for index in range(first,mini(ids.size(),first+capacity)):
+		if not rows.has(ids[index]):wanted.append(ids[index])
+	if wanted.is_empty():phase=Phase.Ready;return
+	phase=Phase.Reading
+	var owner:=generation
+	ticket=service.submit("residents_rows",{"action":C.ManagementAction.ResidentsRowsRead,"unit_ids":wanted,"columns":columns,"show_gender":show_gender},func(received,result,_sent):
+		if owner!=generation or received!=ticket:return
+		ticket=0
+		var page: Array=result.get("residents_rows",{}).get("rows",[])
+		if result.get("status",-1)!=C.ManagementStatus.Ok or result.get("action",-1)!=C.ManagementAction.ResidentsRowsRead or page.size()!=wanted.size():
+			_reject();return
+		for index in page.size():
+			if int(page[index].get("id",-1))!=wanted[index]:_reject();return
+		# Keep only the active viewport and this receipt, rather than retaining
+		# an unbounded history of native text while scrolling a large fortress.
+		var kept: Dictionary={}
+		for index in range(first,mini(ids.size(),first+capacity)):
+			if rows.has(ids[index]):kept[ids[index]]=rows[ids[index]]
+		for row: Dictionary in page:kept[int(row.id)]=row.duplicate(true)
+		rows=kept;_fill();changed.emit())
+	if ticket==0:phase=Phase.Unavailable;changed.emit()

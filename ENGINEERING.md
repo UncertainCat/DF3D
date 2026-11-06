@@ -31,6 +31,21 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Residents native list discovery
 
+`residents_state.gd` and `residents_view.gd` are staged components, not a public
+route. The state uses the shared semantic action service for native query order
+and viewport row batches, retaining each sort header's direction and raw search
+bytes. Generations retire superseded reads; scrolling drains the current receipt
+before loading the new viewport, and session changes clear roster and content.
+Row receipts must match the requested identities and order. Cached text is
+bounded to the current viewport and at most one preceding receipt. Empty native
+queries need no row request. The view uses captured header/name/activity positions
+and existing native textbox/scrollbar components. Headless `residents_state_test`
+checks late replies, scroll demand, direction retention, empty results and wrong
+row identities (`residents-staged-state`, core19/19 also passes).
+This is not rendered or complete-screen acceptance: portraits, indicators,
+actions, hover, navigation, responsive geometry and refresh behavior remain
+unfinished. The public `read_only_info.gd` route is unchanged.
+
 Management132 defines a separate ResidentsRowsRead contract for1–64 requested
 IDs in explicit order. It carries the name width and gender flag; the reply
 contains native UTF-8 identity lines, name-color effects and Activity text/color.

@@ -82,6 +82,7 @@
 #include "creature_labor_native.h"
 #include "creature_header_native.h"
 #include "residents_query_native.h"
+#include "residents_row_native.h"
 #include "creature_follow_native.h"
 #include "creature_expel_preview_native.h"
 #include "creature_expel_action_native.h"
@@ -439,6 +440,8 @@ struct CreatureAnimalResult {
 };
 std::optional<CreatureAnimalResult> creatureAnimal;
 std::optional<std::vector<int32_t>> residents;
+// Strings are converted to UTF-8 and bounded before publishing this batch.
+std::optional<std::vector<std::pair<int32_t,df3d_residents::RowText>>> residentsRows;
 m::TilePos worldHoverTile;
 void clearResult() {
   creatureHeader.reset();
@@ -449,6 +452,7 @@ void clearResult() {
   creatureLocation.reset();
   creatureAnimal.reset();
   residents.reset();
+  residentsRows.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -936,6 +940,17 @@ void publish() {
   }
   flatbuffers::Offset<m::CreatureAnimalState> creatureAnimalResult;
   const auto residentsResult=residents?m::CreateResidentsState(b,b.CreateVector(*residents)):flatbuffers::Offset<m::ResidentsState>{};
+  flatbuffers::Offset<m::ResidentsRowsState> residentsRowsResult;
+  if(residentsRows) {
+    std::vector<flatbuffers::Offset<m::ResidentRow>> rows;
+    for(const auto& [id,row]:*residentsRows) {
+      const auto& c=row.nameColor;const auto& n=row.name;const auto& a=row.activity;
+      const auto color=m::CreateAreaNameColor(b,c.color[0],c.color[1],c.color[2],c.alternate[0],c.alternate[1],c.alternate[2],c.effect);
+      rows.push_back(m::CreateResidentRow(b,id,b.CreateString(n.combined),b.CreateString(n.name),b.CreateString(n.profession),
+          b.CreateString(n.firstLine),b.CreateString(n.secondLine),color,b.CreateString(a.caption),uint8_t(a.foreground),uint8_t(a.background),a.bright));
+    }
+    residentsRowsResult=m::CreateResidentsRowsState(b,b.CreateVector(rows));
+  }
   if(creatureAnimal) {
     const auto& value=*creatureAnimal;
     creatureAnimalResult=m::CreateCreatureAnimalState(b,value.unitId,value.animalId,value.outcome,value.assigned);
@@ -958,7 +973,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult);
   b.Finish(s);
   if (auto e = m::validateManagementState(
           *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()))) {
@@ -3738,6 +3753,31 @@ void run(color_ostream& out) {
         if(!page.truncated || !page.choices.empty()){areaPage.locationNamePage=std::move(page);status=m::ManagementStatus::Ok;}
       }
     } else if(snapshot) {areaPage.locationName=std::move(snapshot);status=m::ManagementStatus::Ok;}
+    publish();return;
+  }
+  if(r->action()==m::ManagementAction::ResidentsRowsRead) {
+    message.clear();status=m::ManagementStatus::Rejected;
+    const auto& query=*r->residents_rows();
+    try {
+      const auto eligible=df3d_residents::orderedResidents(0,false);
+      if(eligible) {
+        std::vector<std::pair<int32_t,df3d_residents::RowText>> rows;size_t bytes=0;
+        for(auto id:*query.unit_ids()) {
+          if(std::find(eligible->begin(),eligible->end(),id)==eligible->end())break;
+          auto row=df3d_residents::rowText(df::unit::find(id),query.columns(),query.show_gender());
+          if(!row || row->activity.foreground<0 || row->activity.foreground>7 ||
+             row->activity.background<0 || row->activity.background>7)break;
+          bool bounded=true;
+          for(auto* text:{&row->name.combined,&row->name.name,&row->name.profession,&row->name.firstLine,&row->name.secondLine,&row->activity.caption}) {
+            *text=DF2UTF(*text);bytes+=text->size();
+            if(text->size()>4096 || text->find('\0')!=std::string::npos)bounded=false;
+          }
+          if(!bounded || bytes>131072)break;
+          rows.emplace_back(id,std::move(*row));
+        }
+        if(rows.size()==query.unit_ids()->size()) {residentsRows=std::move(rows);status=m::ManagementStatus::Ok;}
+      }
+    } catch(...) {residentsRows.reset();}
     publish();return;
   }
   if(r->action()==m::ManagementAction::ResidentsQuery) {

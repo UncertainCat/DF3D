@@ -175,6 +175,22 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         for(auto id:s.residents->unitIds)ids.push_back(id);
         value["unit_ids"]=ids;result["residents"]=value;
     }
+    if(s.residentsRows) {
+        Dictionary value;Array rows;
+        for(const auto& v:s.residentsRows->rows) {
+            Dictionary row,color,activity;Array primary,alternate;
+            row["id"]=v.id;row["combined"]=String::utf8(v.combined.c_str());row["name"]=String::utf8(v.name.c_str());
+            row["profession"]=String::utf8(v.profession.c_str());row["first_line"]=String::utf8(v.firstLine.c_str());
+            row["second_line"]=String::utf8(v.secondLine.c_str());
+            for(auto c:v.nameColor.color)primary.push_back(int(c));
+            for(auto c:v.nameColor.alternate)alternate.push_back(int(c));
+            color["color"]=primary;color["alternate"]=alternate;color["effect"]=int(v.nameColor.effect);row["name_color"]=color;
+            activity["caption"]=String::utf8(v.activity.c_str());activity["fg"]=int(v.activityForeground);
+            activity["bg"]=int(v.activityBackground);activity["bright"]=v.activityBright;row["activity"]=activity;
+            rows.push_back(row);
+        }
+        value["rows"]=rows;result["residents_rows"]=value;
+    }
     if(s.creatureAnimal) {
         const auto& w=*s.creatureAnimal;Dictionary value;
         value["unit_id"]=w.unitId;value["animal_id"]=w.animalId;value["outcome"]=int(w.outcome);value["assigned"]=w.assigned;
@@ -275,6 +291,25 @@ bool validateResidents(const Dictionary& data,String& error) {
        data["query_bytes"].get_type()!=Variant::PACKED_BYTE_ARRAY) {error="Invalid residents query fields";return false;}
     const int64_t sort=data["sort"];const PackedByteArray bytes=data["query_bytes"];
     if(sort<0 || sort>4 || bytes.size()>128 || bytes.has(0)) {error="Invalid residents query";return false;}
+    return true;
+}
+bool validateResidentsRows(const Dictionary& data,String& error) {
+    if(data.size()!=4 || !data.has("unit_ids") || !data.has("columns") || !data.has("show_gender") ||
+       data["unit_ids"].get_type()!=Variant::PACKED_INT32_ARRAY || data["columns"].get_type()!=Variant::INT ||
+       data["show_gender"].get_type()!=Variant::BOOL) {error="Invalid residents row fields";return false;}
+    const PackedInt32Array ids=data["unit_ids"];const int64_t columns=data["columns"];
+    if(ids.is_empty() || ids.size()>64 || columns<3 || columns>30) {error="Invalid residents row bounds";return false;}
+    for(int64_t i=0;i<ids.size();++i) {
+        if(ids[i]<0) {error="Invalid resident identity";return false;}
+        for(int64_t j=0;j<i;++j)if(ids[i]==ids[j]) {error="Duplicate resident identity";return false;}
+    }
+    return true;
+}
+bool readResidentsRows(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction::ResidentsRowsRead;
+    request.residentsRows.columns=uint16_t(int64_t(data["columns"]));request.residentsRows.showGender=bool(data["show_gender"]);
+    const PackedInt32Array ids=data["unit_ids"];
+    for(int64_t i=0;i<ids.size();++i)request.residentsRows.unitIds.push_back(ids[i]);
     return true;
 }
 bool readResidents(const Dictionary& data,wm::ManagementRequest& request,String&) {
@@ -395,6 +430,7 @@ const ManagementCodec managementCodecs[] = {
     {"creature_location",validateCreatureLocation,readCreatureLocation},
     {"creature_animal",validateCreatureAnimal,readCreatureAnimal},
     {"residents",validateResidents,readResidents},
+    {"residents_rows",validateResidentsRows,readResidentsRows},
     {"creature_knowledge",validateCreatureKnowledge,readCreatureKnowledge},
     {"creature_expel",validateCreatureExpel,readCreatureExpel},
 };
@@ -407,7 +443,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::ResidentsQuery)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::ResidentsRowsRead)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

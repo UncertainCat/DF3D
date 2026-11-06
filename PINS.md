@@ -29,7 +29,8 @@ the complete requested batch in request order; stale or unavailable inputs must
 reject the batch rather than silently omit rows. Text is UTF-8, unlike the raw
 textbox query bytes in ResidentsQuery. Older observations leave row content
 absent. Captions, color effects and Activity text are separate from the complete
-ordered ID query. Bridge dispatch and screen acceptance remain staged.
+ordered ID query. Bridge/adapter acceptance is recorded in ENGINEERING.md;
+the complete Residents screen remains staged.
 
 Management131 adds the dedicated ResidentsQuery request and complete ordered
 unit-ID result. Rebuild both peers for `Local\\df3d_management_v131`; older

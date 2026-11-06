@@ -38,7 +38,23 @@ Each string is bounded at4096 bytes and total text at128KiB, keeping the bounded
 batch below channel capacity. A successful producer must return the whole batch
 in request order; stale targets reject it. This is a content read, not roster
 membership or a replacement for ResidentsQuery. The schema/model path is
-implemented; bridge dispatch and Godot screen integration remain unfinished.
+implemented, including safe-point bridge dispatch and the typed Godot adapter.
+The bridge rechecks native Residents membership, bounds UTF-8 output before
+publication and rejects the whole batch on unavailable input. Result payloads
+are retired before unrelated replies. Godot screen integration remains unfinished.
+
+Protected031806 on2026-11-06 runs `DF3D_RESIDENTS_ROWS=1` and
+`DF3D_RESIDENTS_WIRE=1` with the reference flag. The headless real-wire client
+matches all13 captured rows' identity lines, Activity and color values in reversed
+request order, then verifies whole-batch rejection for an unavailable ID,
+malformed-input rejection and payload retirement. Eleven query-order comparisons
+also pass. DF15864 exits unsaved with source unchanged; paired client logs contain
+only the documented separate-thread notice. MSVC, core19/19 and the headless
+management contract check pass (`residents-row-wire`). Installed plugin SHA256:
+7CAB064838AA2A899B183A382BB624154F37FA89E5F665058F718BE39FD8707F.
+Observed GPU temperatures are36–37C with native30FPS and a headless client.
+Earlier031652 failed nested Godot container comparisons against JSON numeric
+types; scalar comparisons fix that oracle error. It is not passing row evidence.
 
 Management131 defines a dedicated `ResidentsQuery` transport contract. Its
 request carries the native sort, direction and up to128 non-NUL textbox bytes;

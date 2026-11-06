@@ -6,6 +6,9 @@ signal create_requested
 signal conditions_requested(id: int,workshop: int)
 signal details_requested(id: int)
 signal information_requested(caption: String)
+# Maintainer-approved narrow-width correction: visible action buttons win
+# over workshop-limit controls, including Remove drawn over the limit entry.
+const BUTTON_HIT_ORDER=[0,1,2,3,4,5,6,10,7,8,9]
 const InfoTabs=preload("res://scripts/work_order_info_tabs.gd")
 var state
 var input_allowed: Callable
@@ -103,7 +106,7 @@ func _gui_input(event: InputEvent) -> void:
 		if row.is_empty():continue
 		var y:=list_top()+index*36
 		var buttons:=button_positions()
-		for button in buttons.size():
+		for button in BUTTON_HIT_ORDER:
 			var x: int=buttons[button]
 			if not Rect2(x,y,32,36).has_point(event.position):continue
 			if button>=7 and button<=9 and row.workshop_id!=-1:return
@@ -135,7 +138,7 @@ func hover_kind(point: Vector2) -> String:
 		if row.native_state.phase in [1,2,3,4] and Rect2(16,y,32,36).has_point(point):return ["","active","waiting","checking","ready"][row.native_state.phase]
 		if row.native_state.validation_required and Rect2(controls_x(),y,32,36).has_point(point):return "validated" if row.validated else "not_validated"
 		var buttons:=button_positions()
-		for button in buttons.size():
+		for button in BUTTON_HIT_ORDER:
 			if not Rect2(buttons[button],y,32,36).has_point(point):continue
 			if button==3 and row.position==0:continue
 			if button==4 and row.position==state.total-1:continue

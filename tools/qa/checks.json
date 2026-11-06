@@ -3829,6 +3829,17 @@
         "df_assets",
         "real_renderer"
       ]
+    },
+    {
+      "id": "work_orders_button_priority_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/work_orders_button_priority_test.gd",
+      "completion": "^WORK_ORDERS_BUTTON_PRIORITY_PASS$",
+      "timeout": 30,
+      "prerequisites": [
+        "extension_build"
+      ]
     }
   ],
   "exclusions": [

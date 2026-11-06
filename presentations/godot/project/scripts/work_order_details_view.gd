@@ -247,7 +247,9 @@ func draw_draft() -> void:
 			var row: Dictionary=state.rows[offset+i]
 			patch("BUTTON_RECTANGLE_DARK",Vector2i(29,int(list_top()/12)+i*3),width,3)
 			var label: String=row.caption
-			if label.length()>width-2:label=label.left(maxi(0,width-5))+"..."
+			# Native element/relationship branches use the inclusive row span:
+			# e.g.20800a..208083 shortens to width-4, including the ellipsis.
+			if label.length()>=width-3:label=label.left(maxi(0,width-7))+"..."
 			text(label,Vector2(232,list_top()+20+i*36),11)
 			if page==17:
 				# Native2092be uses the shared8:3 four-by-three removal artwork.

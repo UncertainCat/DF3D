@@ -7334,10 +7334,22 @@ supported, inert footer input otherwise, Cancel and empty-draft Back. Native
 readback confirms unchanged order artwork. DF17368 exits unsaved; the source
 save is unchanged. Core19/19 and composition pass in
 `build/qa/artwork-category-controls-final`; paired live logs contain only documented
-Godot diagnostics. Captures show the corrected footer and row layout, but the
-scrollbar artwork is absent despite successful arrow input; retained images
-also show artifact caption truncation differences. These remain visual gaps,
-not full rendered acceptance. This flow does not commit a new artwork image.
+Godot diagnostics. Captures show the corrected footer and row layout. Inspection
+of the full-resolution scrollbar crops confirms artwork was already present in
+012134/012249; the initial missing-artwork report was a preview-reading error.
+No scrollbar runtime change was required. This flow does not commit a new
+artwork image.
+
+Draft row captions use the native inclusive-span truncation from the element
+and relationship branches, including20800a..208083: captions reaching width-3
+cells shorten to width-4 cells including the ellipsis. The previous presentation
+kept two extra characters in narrow artifact rows. Protected012750 verifies
+the category workflow after correction; its first minimum-width artifact
+caption has an identical1057-pixel cyan glyph mask to native, and the16x288
+scrollbar crop matches all4608 pixels. Other row background pixels differ, so
+this is not a full-panel pixel match. Owned DF22128 exits unsaved with the source
+unchanged; paired logs contain only documented diagnostics. Core19/19 and
+composition pass in `build/qa/artwork-caption-width`.
 
 Protected010525 on2026-11-02 exercises Existing image in the shared viewer after
 the assembled Work orders/conditions/Details workflow. Hover text and wrapping

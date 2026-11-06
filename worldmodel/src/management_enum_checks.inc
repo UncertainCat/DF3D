@@ -147,7 +147,8 @@ static_assert(static_cast<int>(wm::ManagementAction::CreatureWorkshopRemove) == 
 static_assert(static_cast<int>(wm::ManagementAction::CreatureLocationRemove) == static_cast<int>(df3d::mirror::ManagementAction::CreatureLocationRemove));
 static_assert(static_cast<int>(wm::ManagementAction::CreatureAnimalEdit) == static_cast<int>(df3d::mirror::ManagementAction::CreatureAnimalEdit));
 static_assert(static_cast<int>(wm::ManagementAction::ResidentsQuery) == static_cast<int>(df3d::mirror::ManagementAction::ResidentsQuery));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 81);
+static_assert(static_cast<int>(wm::ManagementAction::ResidentsRowsRead) == static_cast<int>(df3d::mirror::ManagementAction::ResidentsRowsRead));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 82);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -435,3 +436,4 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::CreatureWorkshopRemove) 
 static_assert(wm::isRuntimeAction(wm::ManagementAction::CreatureLocationRemove) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::CreatureLocationRemove));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::CreatureAnimalEdit) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::CreatureAnimalEdit));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::ResidentsQuery) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ResidentsQuery));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::ResidentsRowsRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ResidentsRowsRead));

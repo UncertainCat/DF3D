@@ -53,10 +53,11 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 131;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v131";
+inline constexpr uint32_t kManagementVersion = 132;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v132";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
+inline constexpr uint32_t kResidentsRowsLimit = 64;
 inline constexpr uint32_t kManagementCapacity = 512 * 1024;
 // 192 KiB maximum path payload leaves room for the rest of the reply envelope.
 inline constexpr uint32_t kConnectedTrackMaxTiles = 16384;
@@ -351,7 +352,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::ResidentsQuery &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::ResidentsRowsRead &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -407,7 +408,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::ResidentsQuery)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::ResidentsRowsRead)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -457,6 +458,13 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        std::find(q->query_bytes()->begin(),q->query_bytes()->end(),uint8_t(0))!=q->query_bytes()->end())
       return "invalid residents query";
   } else if(r.residents())return "unexpected residents query";
+  if(r.action()==ManagementAction::ResidentsRowsRead) {
+    const auto* q=r.residents_rows();
+    if(!q || !q->unit_ids() || q->unit_ids()->size()==0 || q->unit_ids()->size()>kResidentsRowsLimit ||
+       q->columns()<3 || q->columns()>30)return "invalid residents rows request";
+    std::unordered_set<int32_t> ids;
+    for(auto id:*q->unit_ids())if(id<0 || !ids.insert(id).second)return "invalid residents row identity";
+  } else if(r.residents_rows())return "unexpected residents rows request";
   if(r.action()==ManagementAction::CreatureAnimalEdit) {
     const auto* w=r.creature_animal();
     if(!w || w->unit_id()<0 || w->animal_id()<0 || !w->expected_revision() || w->expected_revision()>INT64_MAX)
@@ -910,7 +918,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::ResidentsQuery ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::ResidentsRowsRead ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -986,6 +994,24 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     for(auto id:*r->unit_ids())if(id<0 || !ids.insert(id).second)return "invalid residents identity";
   } else if(s.action()==ManagementAction::ResidentsQuery && s.status()==ManagementStatus::Ok)
     return "residents result required";
+  if(const auto* r=s.residents_rows()) {
+    if(s.action()!=ManagementAction::ResidentsRowsRead || s.status()!=ManagementStatus::Ok ||
+       !r->rows() || r->rows()->size()==0 || r->rows()->size()>kResidentsRowsLimit)return "invalid residents rows result";
+    std::unordered_set<int32_t> ids;size_t bytes=0;
+    for(const auto* row:*r->rows()) {
+      if(!row || row->id()<0 || !ids.insert(row->id()).second || !row->name_color())return "invalid residents row";
+      for(const auto* text:{row->combined(),row->name(),row->profession(),row->first_line(),row->second_line(),row->activity()}) {
+        if(!text || text->size()>4096 || text->str().find('\0')!=std::string::npos)return "invalid residents row text";
+        bytes+=text->size();
+      }
+      const auto* c=row->name_color();
+      if(c->foreground()>7 || c->background()>7 || c->bright()>1 || c->alternate_foreground()>7 ||
+         c->alternate_background()>7 || c->alternate_bright()>1 || c->effect()>3 ||
+         row->activity_foreground()>7 || row->activity_background()>7)return "invalid residents row color";
+    }
+    if(bytes>131072)return "residents row text budget exceeded";
+  } else if(s.action()==ManagementAction::ResidentsRowsRead && s.status()==ManagementStatus::Ok)
+    return "residents rows result required";
   if(const auto* w=s.creature_animal()) {
     if(s.action()!=ManagementAction::CreatureAnimalEdit || w->unit_id()<0 || w->animal_id()<0 ||
        w->outcome()>CreatureAnimalOutcome::Unknown)return "invalid creature animal result";

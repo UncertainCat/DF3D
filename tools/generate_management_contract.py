@@ -11,6 +11,7 @@ ENUMS = ("ResidentsSort", "WorkOrderPhase", "CreatureAnimalOutcome", "CreatureLo
 
 DOMAINS = {
     "residents": ("ResidentsQuery", "ResidentsQuery"),
+    "residents_rows": ("ResidentsRowsRead", "ResidentsRowsRead"),
     "creature_animal": ("CreatureAnimalEdit", "CreatureAnimalEdit"),
     "creature_location": ("CreatureLocationRemove", "CreatureLocationRemove"),
     "creature_workshop": ("CreatureWorkshopRemove", "CreatureWorkshopRemove"),

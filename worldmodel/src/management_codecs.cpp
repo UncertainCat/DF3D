@@ -46,6 +46,19 @@ ManagementState decodeState(const m::ManagementState* s) {
     next.creatureHeader=std::move(header);
   }
   if(const auto* r=s->residents())next.residents=ResidentsState{{r->unit_ids()->begin(),r->unit_ids()->end()}};
+  if(const auto* r=s->residents_rows()) {
+    next.residentsRows.emplace();
+    for(const auto* v:*r->rows()) {
+      ResidentRow row;row.id=v->id();row.combined=v->combined()->str();row.name=v->name()->str();
+      row.profession=v->profession()->str();row.firstLine=v->first_line()->str();row.secondLine=v->second_line()->str();
+      const auto* c=v->name_color();
+      row.nameColor={{c->foreground(),c->background(),c->bright()},
+                     {c->alternate_foreground(),c->alternate_background(),c->alternate_bright()},c->effect()};
+      row.activity=v->activity()->str();row.activityForeground=v->activity_foreground();
+      row.activityBackground=v->activity_background();row.activityBright=v->activity_bright();
+      next.residentsRows->rows.push_back(std::move(row));
+    }
+  }
   next.citizen = decodeCitizen(s->citizen());
   next.appointments = decodeAppointments(s->appointments());
   next.production = decodeProduction(s->production());
@@ -166,7 +179,10 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
           flatbuffers::Offset<m::CreatureAnimalRequest>{},
       r.action==ManagementAction::ResidentsQuery?
           m::CreateResidentsRequest(b,m::ResidentsSort(r.residents.sort),r.residents.descending,b.CreateVector(r.residents.queryBytes)):
-          flatbuffers::Offset<m::ResidentsRequest>{});
+          flatbuffers::Offset<m::ResidentsRequest>{},
+      r.action==ManagementAction::ResidentsRowsRead?
+          m::CreateResidentsRowsRequest(b,b.CreateVector(r.residentsRows.unitIds),r.residentsRows.columns,r.residentsRows.showGender):
+          flatbuffers::Offset<m::ResidentsRowsRequest>{});
   b.Finish(request);
 }
 }  // namespace wm::detail::management

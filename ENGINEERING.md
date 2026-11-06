@@ -31,6 +31,15 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Residents native list discovery
 
+Management132 defines a separate ResidentsRowsRead contract for1–64 requested
+IDs in explicit order. It carries the name width and gender flag; the reply
+contains native UTF-8 identity lines, name-color effects and Activity text/color.
+Each string is bounded at4096 bytes and total text at128KiB, keeping the bounded
+batch below channel capacity. A successful producer must return the whole batch
+in request order; stale targets reject it. This is a content read, not roster
+membership or a replacement for ResidentsQuery. The schema/model path is
+implemented; bridge dispatch and Godot screen integration remain unfinished.
+
 Management131 defines a dedicated `ResidentsQuery` transport contract. Its
 request carries the native sort, direction and up to128 non-NUL textbox bytes;
 the byte vector deliberately permits partial UTF-8 after native Backspace.

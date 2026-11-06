@@ -415,6 +415,15 @@ struct ProductionState {
 };
 struct ResidentsRequest { ResidentsSort sort=ResidentsSort::Category; bool descending=false; std::vector<uint8_t> queryBytes; };
 struct ResidentsState { std::vector<int32_t> unitIds; };
+struct ResidentsRowsRequest { std::vector<int32_t> unitIds; uint16_t columns=30; bool showGender=false; };
+struct ResidentRow {
+  int32_t id=-1;
+  std::string combined,name,profession,firstLine,secondLine;
+  AreaNameColor nameColor;
+  std::string activity;
+  uint8_t activityForeground=0,activityBackground=0; bool activityBright=false;
+};
+struct ResidentsRowsState { std::vector<ResidentRow> rows; };
 struct CitizenRequest {
   int32_t unitId=-1,detailIndex=-1;
   uint64_t expectedRevision=0;
@@ -755,6 +764,7 @@ struct ManagementRequest {
   CreatureLocationRequest creatureLocation;
   CreatureAnimalRequest creatureAnimal;
   ResidentsRequest residents;
+  ResidentsRowsRequest residentsRows;
   uint16_t depth=1; bool retracting=false; int16_t filter=-1;
   uint32_t rollerSpeed=0;
   bool cancelRemoval=false;
@@ -809,6 +819,7 @@ struct ManagementState {
   std::optional<CreatureLocationState> creatureLocation;
   std::optional<CreatureAnimalState> creatureAnimal;
   std::optional<ResidentsState> residents;
+  std::optional<ResidentsRowsState> residentsRows;
   ConstructionState construction;
   std::optional<WorldHover> worldHover;
 };

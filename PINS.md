@@ -22,6 +22,15 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management132 adds ResidentsRowsRead for native row content in explicit batches
+of1–64 unique unit IDs, with a3–30-column name width and gender-display flag.
+Rebuild both peers for `Local\\df3d_management_v132`. A successful reply contains
+the complete requested batch in request order; stale or unavailable inputs must
+reject the batch rather than silently omit rows. Text is UTF-8, unlike the raw
+textbox query bytes in ResidentsQuery. Older observations leave row content
+absent. Captions, color effects and Activity text are separate from the complete
+ordered ID query. Bridge dispatch and screen acceptance remain staged.
+
 Management131 adds the dedicated ResidentsQuery request and complete ordered
 unit-ID result. Rebuild both peers for `Local\\df3d_management_v131`; older
 observations leave this result absent. Query bytes retain native textbox input,

@@ -9,6 +9,58 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("Residents content reads preserve explicit order and bound each batch") {
+  wm::ManagementRequest request;request.action=wm::ManagementAction::ResidentsRowsRead;
+  request.residentsRows={{42,7},30,false};
+  for(int variant=0;variant<6;++variant) {
+    auto r=request;
+    if(variant==1)r.residentsRows.unitIds={42,42};
+    if(variant==2)r.residentsRows.unitIds={-1};
+    if(variant==3)r.residentsRows.unitIds.clear();
+    if(variant==4)r.residentsRows.columns=31;
+    if(variant==5){r.residentsRows.unitIds.resize(65);for(int i=0;i<65;++i)r.residentsRows.unitIds[i]=i;}
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,11,12,13);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    REQUIRE(value->residents_rows());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(variant!=0));
+    if(variant==0) {
+      CHECK(value->residents_rows()->unit_ids()->Get(0)==42);
+      CHECK(value->residents_rows()->unit_ids()->Get(1)==7);
+      CHECK_FALSE(value->residents_rows()->show_gender());
+    }
+  }
+}
+
+TEST_CASE("Residents row content keeps native captions and rejects invalid payloads") {
+  for(int variant=0;variant<7;++variant) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto color=wire::CreateAreaNameColor(b,variant==2?8:2,0,1,3,0,0,1);
+    const auto text=b.CreateString(variant==3?std::string(4097,'x'):variant==4?std::string("a\0b",3):"Native caption");
+    const auto empty=b.CreateString("");
+    std::vector<flatbuffers::Offset<wire::ResidentRow>> rows;
+    const int count=variant==6?33:2;
+    for(int i=0;i<count;++i) {
+      const auto field=variant==6?b.CreateString(std::string(4096,'x')):text;
+      rows.push_back(wire::CreateResidentRow(b,variant==1?42:(i==0?42:i==1?7:100+i),field,field,empty,text,empty,color,field,7,0,true));
+    }
+    const auto payload=wire::CreateResidentsRowsState(b,b.CreateVector(rows));
+    wire::ManagementStateBuilder state(b);state.add_revision(1);
+    state.add_action(variant==5?wire::ManagementAction::Catalog:wire::ManagementAction::ResidentsRowsRead);
+    state.add_status(wire::ManagementStatus::Ok);state.add_residents_rows(payload);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(variant!=0));
+    if(variant==0) {
+      const auto decoded=codec::decodeState(value);REQUIRE(decoded.residentsRows);
+      REQUIRE(decoded.residentsRows->rows.size()==2);
+      CHECK(decoded.residentsRows->rows[0].id==42);CHECK(decoded.residentsRows->rows[1].id==7);
+      CHECK(decoded.residentsRows->rows[0].firstLine=="Native caption");
+      CHECK(decoded.residentsRows->rows[0].secondLine.empty());
+      CHECK(decoded.residentsRows->rows[0].nameColor.effect==1);
+      CHECK(decoded.residentsRows->rows[0].activityBright);
+    }
+  }
+}
+
 TEST_CASE("Residents query preserves native textbox bytes and validates its domain") {
   wm::ManagementRequest request;request.action=wm::ManagementAction::ResidentsQuery;
   request.residents.sort=wm::ResidentsSort::Activity;request.residents.descending=true;

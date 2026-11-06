@@ -7168,6 +7168,25 @@ acknowledgments now allow95 seconds to cover the launcher's90-second budget at
 the30 FPS cap. Core19/19 and headless UI composition pass; dyes and remaining
 artwork/responsive behavior keep the complete Work orders screen staged.
 
+`work_order_dye_native.h` supplies owned dye target and ingredient catalogs.
+Native21d190 supplies target colors;7dc570 calculates mix results. The two inline
+ingredient enumerations from218900 are pinned compositions using native inventory
+collection on copied simulation vectors. Tint preserves repeated mix-result pairs;
+Mix dye retains one entry per pair. Initial ingredient order is the native
+enumeration order; nonempty searches use native221490/222490 filtering. No native
+menu state or UI handler is a runtime input. The diagnostic dye probe is read-only;
+transport, captions/swatches, selection effects and viewer navigation remain to
+be connected before this family is exposed.
+
+The focused protected reference uses `DF3D_WORK_ORDER_DYE_REFERENCE=1`; adding
+`DF3D_WORK_ORDER_DYE_COMPARE=1` compares the owned provider with the native menus.
+It bypasses unrelated farm/management scenarios while retaining lane ownership,
+pause and source-save checks. Protected224611 on2026-11-05 passes all four lists:
+232 dye targets,188 tint ingredient pairs,115 mix targets and13 ingredient pairs
+for the sampled mix target, including ordering and availability. The native
+screens from223741 were inspected. Both owned sessions exit unsaved with the
+source unchanged; no Godot viewer is launched for this reference.
+
 Protected020406 on2026-11-02 exercises draft creation, native descriptions,
 relationships, deletion, discard and actual Done in the shared viewer. DF readback
 confirms the installed plant image, generated name, commissioned entity reference

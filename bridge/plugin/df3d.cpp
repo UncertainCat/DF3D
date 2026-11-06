@@ -102,6 +102,7 @@
 #include "work_order_catalog_native.h"
 #include "work_order_conditions_native.h"
 #include "work_order_details_native.h"
+#include "work_order_dye_native.h"
 #include "work_order_art_native.h"
 #include "df/job_item.h"
 #include "musical_detail_native.h"
@@ -2165,6 +2166,22 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             const auto caption=df3d_production::nativeWorkOrderArtSubjectCaption(kind,observed->ids[i]);if(!caption)return CR_FAILURE;
             result["captions"].append(DF2UTF(*caption));
           }
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="work-order-dye-probe") {
+          if(parameters.size()<2 || parameters.size()>4)return CR_WRONG_USAGE;
+          int32_t id=-1,target=-1;
+          for(size_t i=1;i<std::min(parameters.size(),size_t(3));++i) {
+            auto& value=i==1?id:target;const auto& raw=parameters[i];
+            const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),value);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || value<(i==1?0:-1))return CR_WRONG_USAGE;
+          }
+          df::manager_order* order=nullptr;
+          if(df::global::world)for(auto* candidate:df::global::world->manager_orders.all)if(candidate && candidate->id==id){order=candidate;break;}
+          if(!order)return CR_FAILURE;
+          const auto observed=df3d_production::nativeWorkOrderDyeCatalog(*order,target,parameters.size()==4?parameters[3]:"");if(!observed)return CR_FAILURE;
+          Json::Value result;result["kind"]=observed->kind;result["target"]=observed->target;result["rows"]=Json::Value(Json::arrayValue);
+          for(const auto& row:observed->rows) {Json::Value v;v["color"]=row.color;v["first"]=row.first;v["second"]=row.second;v["available"]=row.available;v["tint"]=row.tint;result["rows"].append(v);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="work-order-details-probe") {

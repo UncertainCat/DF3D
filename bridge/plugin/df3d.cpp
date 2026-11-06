@@ -103,6 +103,7 @@
 #include "work_order_conditions_native.h"
 #include "work_order_details_native.h"
 #include "job_settings_native.h"
+#include "job_art_native.h"
 #include "work_order_dye_native.h"
 #include "work_order_art_native.h"
 #include "df/job_item.h"
@@ -2227,6 +2228,23 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             row["saved_index"]=item.job_details_mat_index;row["saved_flags2"]=item.job_details_item_flags2.whole;
             after["inputs"].append(row);
           }
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="residents-job-art-subjects-probe") {
+          if(parameters.size()!=3 && parameters.size()!=4)return CR_WRONG_USAGE;
+          int32_t id=-1,kind=-1;
+          for(size_t i=1;i<3;++i) {
+            auto& value=i==1?id:kind;const auto& raw=parameters[i];
+            const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),value);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || value<0)return CR_WRONG_USAGE;
+          }
+          const auto* unit=df::unit::find(id);if(!unit || !unit->job.current_job)return CR_FAILURE;
+          const auto observed=df3d_production::nativeJobArtSubjects(*unit->job.current_job,kind,parameters.size()==4?parameters[3]:std::string{});
+          if(!observed)return CR_FAILURE;
+          Json::Value result;result["job_id"]=observed->jobId;result["building_id"]=observed->buildingId;
+          result["caption"]=DF2UTF(observed->caption);result["revision"]=std::to_string(observed->subjects.orderRevision);
+          result["list_revision"]=std::to_string(observed->subjects.listRevision);result["ids"]=Json::Value(Json::arrayValue);
+          for(auto subject:observed->subjects.ids)result["ids"].append(subject);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="residents-job-settings-probe") {

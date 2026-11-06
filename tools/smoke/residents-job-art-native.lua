@@ -1,5 +1,5 @@
 -- Protected native oracle only. Runtime providers must never read this menu.
-local out,view,info,job,button,evidence=...
+local out,view,info,job,button,evidence,owner=...
 local gui=require('gui');local script=require('gui.script');local json=require('json')
 local m=df.global.game.main_interface;local art=m.image_creator;local g=df.global.gps
 local function settle()for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())end
@@ -35,6 +35,27 @@ settle()
 assert(art.open and art.ics.jb==job and not art.ics.wq,'Job did not open job-backed artwork')
 result.context=art.context;result.header=dfhack.df2utf(art.header);result.root=lines();result.before=effect()
 shot('residents-job-art-root')
+if os.getenv('DF3D_RESIDENTS_JOB_ART_PROVIDER')=='1' then
+ result.provider={}
+ for kind,caption in ipairs({'Related to historical figure','Related to site','Related to civilization or other group'})do
+  -- Cold owned read before native populates that subject list.
+  local old=owner.job.current_job;owner.job.current_job=job
+  local ok,text,rc=pcall(dfhack.run_command_silent,'df3d','residents-job-art-subjects-probe',tostring(owner.id),tostring(kind))
+  owner.job.current_job=old
+  assert(ok and rc==0,'Owned job art subject read failed: '..tostring(text))
+  local observed=json.decode(text)
+  assert(art.open and art.current_option==-1 and art.ics.jb==job,'Owned read changed native artwork state')
+  assert(observed.caption==result.header and observed.job_id==job.id,'Owned job art header/identity differs')
+  label(caption)
+  local rows=kind==1 and art.hf or kind==2 and art.st or art.ent
+  assert(#observed.ids==#rows,'Owned subject count differs')
+  for i,row in ipairs(rows)do assert(observed.ids[i+1]==row.id,'Owned subject order differs')end
+  result.provider[#result.provider+1]={kind=kind,count=#rows,revision=observed.revision,list_revision=observed.list_revision,matched=true}
+  df.global.enabler.mouse_rbut_lift=0;gui.simulateInput(view,'_MOUSE_R')
+  df.global.enabler.mouse_rbut=0;df.global.enabler.mouse_rbut_down=0;df.global.enabler.mouse_rbut_lift=1;settle()
+  assert(art.open and art.current_option==-1,'Subject Back did not return to artwork root')
+ end
+end
 label('Related to historical figure')
 assert(art.current_option==1 and #art.hf>0,'Figure page did not open')
 result.figures={};for _,hf in ipairs(art.hf)do result.figures[#result.figures+1]=hf.id end

@@ -4481,5 +4481,34 @@
       "unit_id": 6534
     },
     "scope": "Native discovery only. Controlled unlinked ConstructStatue with zero requirements. Actual job button, artwork root/figure pages, first figure effect, artist choice, Escape and right-click; full ordered figure IDs remain in ignored capture. No runtime job artwork adapter, other subject families, new-image draft or ordinary production acceptance."
+  },
+  "artwork_provider_reference": {
+    "source": "build/stockpile-storage-native-input-20261106-082437",
+    "bridge_sha256": "96A92AEC76DF494E7B4386FBA537E434BAC22A645A0B642CD680095B32417AC2",
+    "subjects": [
+      {
+        "count": 10563,
+        "kind": 1,
+        "list_revision": "8611889539971772738",
+        "matched": true,
+        "revision": "3880053333802495323"
+      },
+      {
+        "count": 680,
+        "kind": 2,
+        "list_revision": "417322518059374072",
+        "matched": true,
+        "revision": "3880053333802495323"
+      },
+      {
+        "count": 1263,
+        "kind": 3,
+        "list_revision": "8986080125762843067",
+        "matched": true,
+        "revision": "3880053333802495323"
+      }
+    ],
+    "caption": "Image information for Make rock statue",
+    "scope": "Cold owned job subject reader matches every ID in native figure/site/entity order and the job header. Native editor open/page/job identity retained after each read. No typed pages, search, previews, editing or ordinary workshop acceptance."
   }
 }

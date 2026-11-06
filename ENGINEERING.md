@@ -847,6 +847,30 @@ not a completed job artwork adapter or public UI acceptance. Figure/site/entity
 lists and image/draft helpers may be shared only through owned job contexts;
 manager proxies and manager-only requirement rebuilding remain forbidden.
 
+`job_art_native.h` adds a staged owned job artwork subject reader. The shared
+`nativeArtSubjects` helper calls20f300/20f6b0/20fa90 with private image-creator
+scratch and native cleanup. Its job wrapper copies the job and requirements,
+sets jb with wq null, and uses native job eligibility/options plus the source-job
+revision. The manager wrapper retains its own eligibility/revision and copied
+order. No job is converted to a manager order. Job heading composition is pinned
+at1ffc7b length0x72, and uses the existing native job caption. A non-auto-select
+internal read mode exposes the option root without attempting an artwork menu.
+
+The read-only diagnostic is `df3d residents-job-art-subjects-probe <unit> <kind>`
+with optional query. Protected082437 on2026-11-06 compares each cold owned list
+before opening the native category: all10563 figure,680 site and1263 entity IDs
+match native order. Header/job identity matches; the native editor's open flag,
+root page and job pointer remain unchanged after each owned read. Selection and
+cancel discovery checks also pass. Search, captions/previews, typed pagination,
+job artwork edits and actual rendered DF3D composition are not accepted yet.
+
+MSVC job-art-reader-build and root19/extension/job-settings state checks pass in
+job-art-reader-20261106. Built/installed bridge SHA256 is
+96A92AEC76DF494E7B4386FBA537E434BAC22A645A0B642CD680095B32417AC2.
+DF3680 exits unsaved with source preservation; native30FPS only, GPU60C sampled.
+The semantic fixture records list counts/revisions and provenance. Residents
+remains staged until artwork and broader owner/job workflows are complete.
+
 
 ## Farm removal native entry points
 

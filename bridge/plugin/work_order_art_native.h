@@ -61,18 +61,12 @@ inline bool workOrderArtSubjectsReady() {
 
 // These leaves build/sort/filter subjects on an owned context. Neither the
 // whole opener1ffae0 nor the mixed navigation/action dispatcher20ed00 is called.
-inline std::optional<WorkOrderArtSubjects> nativeWorkOrderArtSubjects(df::manager_order& source,int32_t kind,const std::string& query={}) {
-    if(kind<1 || kind>3 || query.size()>128 || !workOrderArtSubjectsReady())return std::nullopt;
-    const auto details=nativeWorkOrderDetails(source);if(!details)return std::nullopt;
-    bool supported=false;
-    for(const auto& option:details->options)if(option.kind==1 || option.kind==3)supported=true;
-    if(!supported)return std::nullopt;
-    df::manager_order order=source;
+inline std::optional<WorkOrderArtSubjects> nativeArtSubjects(const df::image_creation_specifierst& inputs,uint64_t revision,int32_t kind,const std::string& query={}) {
+    if(kind<1 || kind>3 || query.size()>128 || !revision || !workOrderArtSubjectsReady() || !df::global::world || !df::global::plotinfo)return std::nullopt;
     df::image_creator_interfacest context;
     context.context=df::image_creator_context_type::JOB_DETAILS_MAIN;
     context.current_option=df::image_creator_option_type(kind);
-    context.ics.wq=&order;context.ics.jb=nullptr;
-    context.ics.image_ent=df::global::plotinfo->main.fortress_entity;
+    context.ics=inputs;
     context.filter=query;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     struct Cleanup {
@@ -80,7 +74,7 @@ inline std::optional<WorkOrderArtSubjects> nativeWorkOrderArtSubjects(df::manage
         const uint8_t* base;
         ~Cleanup(){reinterpret_cast<void(*)(df::image_creator_interfacest*)>(base+0x1fb1c0)(&context);}
     } cleanup{context,base};
-    WorkOrderArtSubjects result;result.kind=kind;result.orderRevision=details->revision;
+    WorkOrderArtSubjects result;result.kind=kind;result.orderRevision=revision;
     df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
     const auto collect=[&](auto& rows,size_t rva) {
         using Rows=std::remove_reference_t<decltype(rows)>;
@@ -91,11 +85,22 @@ inline std::optional<WorkOrderArtSubjects> nativeWorkOrderArtSubjects(df::manage
         return true;
     };
     if(!(kind==1?collect(context.hf,0x20f300):kind==2?collect(context.st,0x20f6b0):collect(context.ent,0x20fa90)))return std::nullopt;
-    uint64_t hash=details->revision;
+    uint64_t hash=revision;
     const auto add=[&](uint64_t value){for(unsigned shift=0;shift<64;shift+=8){hash^=(value>>shift)&255;hash*=UINT64_C(1099511628211);}};
     add(kind);add(result.ids.size());for(auto id:result.ids)add(id);
     result.listRevision=(hash&INT64_MAX)?(hash&INT64_MAX):1;
     return result;
+}
+inline std::optional<WorkOrderArtSubjects> nativeWorkOrderArtSubjects(df::manager_order& source,int32_t kind,const std::string& query={}) {
+    if(kind<1 || kind>3 || query.size()>128 || !workOrderArtSubjectsReady())return std::nullopt;
+    const auto details=nativeWorkOrderDetails(source);if(!details)return std::nullopt;
+    bool supported=false;
+    for(const auto& option:details->options)if(option.kind==1 || option.kind==3)supported=true;
+    if(!supported)return std::nullopt;
+    df::manager_order order=source;
+    df::image_creation_specifierst inputs;inputs.wq=&order;inputs.jb=nullptr;
+    inputs.image_ent=df::global::plotinfo->main.fortress_entity;
+    return nativeArtSubjects(inputs,details->revision,kind,query);
 }
 inline std::string nativeWorkOrderArtNameCaption(const df::language_name& name) {
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));

@@ -55,7 +55,7 @@ inline std::optional<JobSettingsTarget> jobSettingsTarget(const df::job* source)
 // Staged read adapter. Never invokes the global opener213420, widgets, or their
 // callbacks. The job and requirement containers are owned; holder/item/raw
 // records are read-only simulation inputs. No job is linked or reserved here.
-inline std::optional<JobSettingsObservation> nativeJobSettings(const df::job& source,int32_t selected=-1,const std::string& query={}) {
+inline std::optional<JobSettingsObservation> nativeJobSettings(const df::job& source,int32_t selected=-1,const std::string& query={},bool autoSelect=true) {
     if(!jobSettingsReady() || !df::global::world || !df::global::plotinfo || source.job_items.elements.size()>64 || query.size()>128)return std::nullopt;
     std::vector<df::job_item> inputs;inputs.reserve(source.job_items.elements.size());
     for(const auto* item:source.job_items.elements){if(!item)return std::nullopt;inputs.push_back(*item);}
@@ -109,7 +109,7 @@ inline std::optional<JobSettingsObservation> nativeJobSettings(const df::job& so
             default:return std::nullopt;
         }
     }
-    if(selected==-1 && result.options.size()==1)selected=0;
+    if(autoSelect && selected==-1 && result.options.size()==1)selected=0;
     if(selected==-1)return query.empty()?std::optional<JobSettingsObservation>(result):std::nullopt;
     if(selected<0 || size_t(selected)>=result.options.size())return std::nullopt;
     const auto option=result.options[size_t(selected)];

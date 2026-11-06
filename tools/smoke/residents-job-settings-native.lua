@@ -100,7 +100,7 @@ local details=df.global.game.main_interface.job_details
 if artwork then
  assert(controlled and job==controlled,'Artwork oracle requires disposable job')
  local source=debug.getinfo(1,'S').source:sub(2):gsub('residents%-job%-settings%-native.lua$','residents-job-art-native.lua')
- assert(loadfile(source))(out,view,info,job,button,evidence)
+ assert(loadfile(source))(out,view,info,job,button,evidence,owner)
  if scroller then scroller.scroll=previous_scroll end
  return
 end

@@ -84,6 +84,7 @@
 #include "residents_query_native.h"
 #include "residents_row_native.h"
 #include "residents_specialization_native.h"
+#include "residents_activity_description_native.h"
 #include "creature_follow_native.h"
 #include "creature_expel_preview_native.h"
 #include "creature_expel_action_native.h"
@@ -442,10 +443,12 @@ struct CreatureAnimalResult {
 std::optional<CreatureAnimalResult> creatureAnimal;
 std::optional<std::vector<int32_t>> residents;
 // Strings are converted to UTF-8 and bounded before publishing this batch.
-struct ResidentRowResult { int32_t id; df3d_residents::RowText text; std::optional<ResidentAppearanceRecipe> icon; df3d_residents::Specialization specialization; std::vector<df3d_area::LocationStaffAssignment> assignments; df::coord position; };
+struct ResidentRowResult { int32_t id; df3d_residents::RowText text; std::optional<ResidentAppearanceRecipe> icon; df3d_residents::Specialization specialization; std::vector<df3d_area::LocationStaffAssignment> assignments; df::coord position; std::optional<df3d_residents::ActivityTarget> activityTarget; };
 std::optional<std::vector<ResidentRowResult>> residentsRows;
 struct ResidentsSpecializationResult {int32_t id=-1;m::ResidentsSpecializationOutcome outcome=m::ResidentsSpecializationOutcome::Rejected;bool onlyAssigned=false;};
 std::optional<ResidentsSpecializationResult> residentsSpecialization;
+struct ResidentsActivityResult {int32_t unitId;df3d_residents::ActivityDescription description;};
+std::optional<ResidentsActivityResult> residentsActivity;
 m::TilePos worldHoverTile;
 void clearResult() {
   creatureHeader.reset();
@@ -458,6 +461,7 @@ void clearResult() {
   residents.reset();
   residentsRows.reset();
   residentsSpecialization.reset();
+  residentsActivity.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -959,9 +963,18 @@ void publish() {
       const m::TilePos position(value.position.x,value.position.y,value.position.z);
       rows.push_back(m::CreateResidentRow(b,id,b.CreateString(n.combined),b.CreateString(n.name),b.CreateString(n.profession),
           b.CreateString(n.firstLine),b.CreateString(n.secondLine),color,b.CreateString(a.caption),uint8_t(a.foreground),uint8_t(a.background),a.bright,
-          value.icon?value.icon->build(b):flatbuffers::Offset<m::SelectionAppearance>{},int8_t(row.happiness),m::CreateResidentSpecialization(b,value.specialization.onlyAssigned,value.specialization.revision),b.CreateVector(assignments),&position));
+          value.icon?value.icon->build(b):flatbuffers::Offset<m::SelectionAppearance>{},int8_t(row.happiness),m::CreateResidentSpecialization(b,value.specialization.onlyAssigned,value.specialization.revision),b.CreateVector(assignments),&position,value.activityTarget?m::CreateResidentActivityTarget(b,value.activityTarget->activityId,value.activityTarget->eventId):flatbuffers::Offset<m::ResidentActivityTarget>{}));
     }
     residentsRowsResult=m::CreateResidentsRowsState(b,b.CreateVector(rows));
+  }
+  flatbuffers::Offset<m::ResidentsActivityState> residentsActivityResult;
+  if(residentsActivity) {
+    const auto& value=residentsActivity->description;
+    std::vector<flatbuffers::Offset<m::ActivityDescriptionWord>> words;
+    std::vector<flatbuffers::Offset<m::ActivityDescriptionLink>> links;
+    for(const auto& w:value.words)words.push_back(m::CreateActivityDescriptionWord(b,b.CreateString(w.text),w.red,w.green,w.blue,w.link,uint8_t(w.flags),w.x,w.y));
+    for(const auto& l:value.links)links.push_back(m::CreateActivityDescriptionLink(b,l.type,l.id,l.subid));
+    residentsActivityResult=m::CreateResidentsActivityState(b,residentsActivity->unitId,value.activityId,value.eventId,uint16_t(value.columns),value.maxY,b.CreateVector(words),b.CreateVector(links));
   }
   if(creatureAnimal) {
     const auto& value=*creatureAnimal;
@@ -985,7 +998,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult);
   b.Finish(s);
   if (auto e = m::validateManagementState(
           *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()))) {
@@ -3783,6 +3796,24 @@ void run(color_ostream& out) {
     }
     publish();return;
   }
+  if(r->action()==m::ManagementAction::ResidentsActivityRead) {
+    message.clear();status=m::ManagementStatus::Rejected;
+    const auto& query=*r->residents_activity();
+    try {
+      const auto eligible=df3d_residents::orderedResidents(0,false);
+      if(eligible && std::find(eligible->begin(),eligible->end(),query.unit_id())!=eligible->end()) {
+        auto value=df3d_residents::activityDescription(df::unit::find(query.unit_id()),query.columns(),query.activity_id(),query.event_id());
+        if(value) {
+          bool bounded=value->maxY>=0 && value->maxY<=32768;size_t bytes=0;
+          for(auto& word:value->words){word.text=DF2UTF(word.text);bytes+=word.text.size();
+            if(bytes>131072 || word.text.find('\0')!=std::string::npos || word.x < -1 || word.x>131072 || word.y < -1 || word.y>value->maxY)bounded=false;}
+          for(const auto& link:value->links)if(link.type < -1 || link.type>11)bounded=false;
+          if(bounded){residentsActivity=ResidentsActivityResult{query.unit_id(),std::move(*value)};status=m::ManagementStatus::Ok;}
+        }
+      }
+    } catch(...) {residentsActivity.reset();}
+    publish();return;
+  }
   if(r->action()==m::ManagementAction::ResidentsRowsRead) {
     message.clear();status=m::ManagementStatus::Rejected;
     const auto& query=*r->residents_rows();
@@ -3817,7 +3848,7 @@ void run(color_ostream& out) {
           }
           if(!bounded || bytes>131072)break;
           // Native142a4f1 captures unit.pos for Recenter; no holder or follow filter.
-          rows.push_back({id,std::move(*row),std::move(icon),*specialization,std::move(*assignments),unit->pos});
+          rows.push_back({id,std::move(*row),std::move(icon),*specialization,std::move(*assignments),unit->pos,df3d_residents::activityDescriptionTarget(unit)});
         }
         if(rows.size()==query.unit_ids()->size()) {residentsRows=std::move(rows);status=m::ManagementStatus::Ok;}
       }

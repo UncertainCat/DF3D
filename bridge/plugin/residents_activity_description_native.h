@@ -44,21 +44,33 @@ inline bool activityDescriptionSupported() {
     }();return ready;
 }
 
-// Diagnostic only until the complete formatter call graph and native event
-// families have acceptance. No management command or public view calls this.
+// Staged semantic reader; broader event families still need native acceptance
+// before the Residents page is exposed.
 // The actual menu handlers1427f70/14287c0 must never be used: they clear live
 // markup and create/activate native widgets.26b800 accepts separate output.
-inline std::optional<ActivityDescription> activityDescriptionProbe(df::unit* unit,int32_t columns=0) {
-    if(!unit || columns<0 || columns>1024 || !df::global::world || !activityDescriptionSupported() || unit->job.current_job)return std::nullopt;
+inline df::activity_event* activityDescriptionEvent(df::unit* unit) {
+    if(!unit || !df::global::world || !activityDescriptionSupported() || unit->job.current_job)return nullptr;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     using Event=df::activity_event* (*)(df::unit*);
     // Same native readers and precedence as1426ba6..1426be3/14277b5.
     auto* source=reinterpret_cast<Event>(base+0x13d0800)(unit);
     if(!source){
-        if(reinterpret_cast<void*(*)(df::unit*)>(base+0x13cc1d0)(unit))return std::nullopt;
+        if(reinterpret_cast<void*(*)(df::unit*)>(base+0x13cc1d0)(unit))return nullptr;
         source=reinterpret_cast<Event>(base+0x13d0950)(unit);
     }
-    if(!source)return std::nullopt;
+    return source;
+}
+struct ActivityTarget {int32_t activityId=-1,eventId=-1;};
+inline std::optional<ActivityTarget> activityDescriptionTarget(df::unit* unit) {
+    const auto* event=activityDescriptionEvent(unit);
+    if(!event || event->activity_id<0 || event->event_id<0)return std::nullopt;
+    return ActivityTarget{event->activity_id,event->event_id};
+}
+inline std::optional<ActivityDescription> activityDescription(df::unit* unit,int32_t columns=0,int32_t expectedActivity=-1,int32_t expectedEvent=-1) {
+    if(columns<0 || columns>1024)return std::nullopt;
+    auto* source=activityDescriptionEvent(unit);if(!source)return std::nullopt;
+    if((expectedActivity>=0 && source->activity_id!=expectedActivity) || (expectedEvent>=0 && source->event_id!=expectedEvent))return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     const auto* identity=DFHack::virtual_identity::get(source);
     if(!identity || !identity->can_instantiate())return std::nullopt;
     auto* empty=static_cast<df::activity_event*>(identity->instantiate());
@@ -105,7 +117,7 @@ inline std::optional<ActivityDescription> activityDescriptionProbe(df::unit* uni
     result.columns=box.current_width;result.maxY=box.max_y;
     size_t bytes=0;
     for(const auto* word:box.word){
-        if(!word || word->str.size()>131072-bytes)return std::nullopt;
+        if(!word || word->flags.whole>7 || word->str.size()>131072-bytes)return std::nullopt;
         bytes+=word->str.size();
         if(word->link_index < -1 || (word->link_index>=0 && static_cast<size_t>(word->link_index)>=box.link.size()))return std::nullopt;
         result.words.push_back({word->str,word->red,word->green,word->blue,word->link_index,word->flags.whole,word->px,word->py});

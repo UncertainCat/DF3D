@@ -186,8 +186,25 @@
     "matches_native_positions": true,
     "native_pen_and_menu_storage_preserved": true,
     "limitations": [
-      "The adapter is diagnostic-only; no management command or DF3D page is exposed.",
+      "Formatter is now used by the staged typed read; no DF3D page is exposed.",
       "Only this natural MakeBelieve event has native comparison; other event families, links and widths remain unaccepted."
+    ]
+  },
+  "wire_reference": {
+    "native_run": "build/stockpile-storage-native-input-20261106-061047",
+    "management_version": 135,
+    "unit_id": 7049,
+    "activity_id": 50298,
+    "event_id": 8,
+    "columns": 110,
+    "word_count": 12,
+    "native_words_and_positions_match": true,
+    "changed_event_rejected_without_page": true,
+    "missing_unit_rejected_without_page": true,
+    "unrelated_reply_retires_page": true,
+    "limitations": [
+      "No composed DF3D Activity page acceptance.",
+      "Only MakeBelieve has native page comparison; other event families and linked-text behavior remain unaccepted."
     ]
   }
 }

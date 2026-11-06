@@ -122,6 +122,34 @@ func run() -> void:
 		check(not unrelated.has("residents_specialization"),"Unrelated reply retained specialization result")
 	var scene_results: Array=[]
 	var navigation_result: Dictionary={}
+	var activity_result: Dictionary={}
+	if FileAccess.file_exists(directory+"/residents-activity-details-reference.json"):
+		var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/residents-activity-details-reference.json"))
+		var id:=int(reference.id)
+		var rows_reply:=await request("residents_rows",{"action":C.ManagementAction.ResidentsRowsRead,"unit_ids":PackedInt32Array([id]),"columns":30,"show_gender":false})
+		var rows: Array=rows_reply.get("residents_rows",{}).get("rows",[])
+		if not check(rows.size()==1 and rows[0].has("activity_target"),"Residents Activity target missing"):quit(1);return
+		var target: Dictionary=rows[0].activity_target
+		var intent: Dictionary={"action":C.ManagementAction.ResidentsActivityRead,"unit_id":id,"activity_id":target.activity_id,"event_id":target.event_id,"columns":int(reference.width)}
+		var response:=await request("residents_activity",intent)
+		activity_result=response.get("residents_activity",{})
+		var words: Array=activity_result.get("words",[])
+		check(response.get("status")==C.ManagementStatus.Ok and words.size()==reference.words.size(),"Activity page read failed")
+		check(activity_result.get("unit_id")==id and activity_result.get("activity_id")==target.activity_id and activity_result.get("event_id")==target.event_id,"Activity page identity differs")
+		check(activity_result.get("columns")==int(reference.width) and activity_result.get("max_y")==int(reference.max_y),"Activity native layout bounds differ")
+		for i in mini(words.size(),reference.words.size()):
+			var actual: Dictionary=words[i];var expected_word: Dictionary=reference.words[i]
+			check(actual.text==expected_word.text,"Activity native text differs")
+			for field: String in ["x","y","flags","link"]:check(actual[field]==int(expected_word[field]),"Activity native word field differs: "+field)
+			for channel in 3:check(actual.rgb[channel]==int(expected_word.rgb[channel]),"Activity native word color differs")
+		var stale:=intent.duplicate();stale.event_id=int(target.event_id)+1
+		response=await request("residents_activity",stale)
+		check(response.get("status")==C.ManagementStatus.Rejected and not response.has("residents_activity"),"Stale Activity retained page content")
+		stale=intent.duplicate();stale.unit_id=2147483647
+		response=await request("residents_activity",stale)
+		check(response.get("status")==C.ManagementStatus.Rejected and not response.has("residents_activity"),"Missing Activity unit retained page content")
+		response=await request("construction",{"action":C.ManagementAction.Catalog})
+		check(not response.has("residents_activity"),"Unrelated reply retained Activity page")
 	if FileAccess.file_exists(directory+"/residents-navigation-reference.json"):
 		var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/residents-navigation-reference.json"))
 		var response:=await request("creature_sheet_location",{"action":C.ManagementAction.CreatureSheetLocate,"unit_id":int(reference.id)})
@@ -131,7 +159,7 @@ func run() -> void:
 		check(response.get("status")==C.ManagementStatus.Rejected and not response.has("creature_position"),"Missing sheet identity retained position authority")
 	if not specialization_results.is_empty():scene_results=await specialization_scene()
 	var file:=FileAccess.open(directory+"/residents-wire-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"comparisons":results,"row_comparisons":row_comparisons,"specialization_results":specialization_results,"scene_results":scene_results,"assignment_count":assignment_count,"navigation":navigation_result}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"comparisons":results,"row_comparisons":row_comparisons,"specialization_results":specialization_results,"scene_results":scene_results,"assignment_count":assignment_count,"navigation":navigation_result,"activity":activity_result}));file.close()
 	world.queue_free();await process_frame
 	quit(1 if failed else 0)
 

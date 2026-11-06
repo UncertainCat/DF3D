@@ -2197,7 +2197,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             const auto& width=parameters[2];const auto value=std::from_chars(width.data(),width.data()+width.size(),columns);
             if(value.ec!=std::errc{} || value.ptr!=width.data()+width.size() || columns<1 || columns>1024)return CR_WRONG_USAGE;
           }
-          const auto description=df3d_residents::activityDescriptionProbe(df::unit::find(id),columns);
+          const auto description=df3d_residents::activityDescription(df::unit::find(id),columns);
           if(!description)return CR_FAILURE;
           Json::Value result(Json::objectValue);result["id"]=id;
           result["activity_id"]=description->activityId;result["event_id"]=description->eventId;result["event_type"]=description->eventType;

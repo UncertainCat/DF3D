@@ -55,7 +55,7 @@ No runtime behavior or public route is changed by this discovery. Next expose
 the formatter through owned storage and implement the corresponding page;
 job settings remain a separate shared dependency for Residents and Tasks.
 
-`residents_activity_description_native.h` now provides a diagnostic adapter for
+`residents_activity_description_native.h` provides a staged semantic adapter for
 26b800 and the independent d51c80 word-layout routine. The diagnostic command
 `df3d residents-activity-description-probe <unit-id> [columns]` returns formatted
 words, link identities and optional native word positions. Columns are1..1024;
@@ -67,7 +67,30 @@ an empty instance before native destruction prevents cleanup from deleting those
 borrowed records. Output markup owns every allocated word/link, uses a null script
 environment and is freed by native e37d0. The numeric-markup pen bytes are restored,
 as are RNG streams and the historical-material semantic cache. Output is bounded
-to16384 words,4096 links and128KiB text. This is not a public management endpoint.
+to16384 words,4096 links and128KiB text. ResidentsActivityRead uses this adapter;
+the public Residents screen remains unchanged.
+
+Management135 adds action84 on `residents_activity`. Each row can publish an
+optional `activity_target` containing the native activity/event IDs. A read carries
+those IDs, the unit ID and1..1024 columns. At its safe point the bridge verifies
+native Residents membership and the exact current event before formatting; a
+missing or changed target rejects without page content. Successful data retains
+native RGB, break flags, link identities and word positions. Every new result
+retires the previous page. The model and Godot adapters preserve the same typed
+data; no Godot-side activity description or wrapping rules are introduced.
+
+Protected061047 on2026-11-06 verifies the real row-target/read path for7049,
+activity50298/event8, against the clicked native MakeBelieve page: all12 words
+and layout match. Changed-event and missing-unit requests reject with no page;
+an unrelated Catalog reply also retires it. Existing11 query and13 row checks
+pass. DF35632 exits unsaved with source preserved. Paired Godot logs contain
+only the known separate-thread notice. Native build and core19/19 pass;
+`residents-activity-contract-20261106-060152` also passes extension build and
+the headless management contract check. Installed bridge SHA256 is
+4876512C77B926F2ACD905D8D7644BB42FD28DB70FDDF5FD50E369947309488D.
+The native run was brief at30FPS, with GPU35–37C in sampled readings.
+The DF3D page, Close behavior, other event families and linked-text rendering
+remain unfinished; the typed read alone does not authorize exposing the screen.
 
 Protected055544 on2026-11-06, with
 `DF3D_RESIDENTS_ACTIVITY_DESCRIPTION_PROVIDER=1`, compares the adapter against the
@@ -77,7 +100,7 @@ markup storage and current pen. DF29172 exits unsaved with source preservation;
 GPU37–38C in sampled readings, with graphics serial and capped at30FPS.
 The earlier055252 independently passes the unarranged-markup comparison.
 Other activity families, linked-text display, alternate widths and the full
-DF3D page remain unaccepted. Native build succeeds; installed bridge SHA256 is
+DF3D page remain unaccepted. That adapter build's bridge SHA256 was
 2221765B0BAE5A2C2DB28A39AB78F39424E287F6B9A64C13BDCED5465DC16FBA.
 
 Residents row hover uses the shared HUD help clock and original frame/font.

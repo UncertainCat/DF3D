@@ -8,7 +8,9 @@
 namespace df3d_production {
 // Match citizens.lua receipt()/detail_info(): list headers plus the selected
 // membership vector. This is DF3D request identity, not native menu state.
-inline std::optional<uint64_t> workDetailReceipt(int32_t index) {
+// Optional owned labors predict the receipt of a definition-only commit without
+// temporarily changing simulation state while preparing an allocation-safe reply.
+inline std::optional<uint64_t> workDetailReceipt(int32_t index,const std::array<bool,94>* ownedLabors=nullptr) {
     if(!df::global::plotinfo)return std::nullopt;
     const auto& all=df::global::plotinfo->labor_info.work_details;
     if(index<0 || size_t(index)>=all.size() || all.size()>128)return std::nullopt;
@@ -19,13 +21,16 @@ inline std::optional<uint64_t> workDetailReceipt(int32_t index) {
     };
     const auto revision=[](uint64_t h){h&=UINT64_C(0x7fffffffffffffff);return h?h:1;};
     uint64_t headers=integer(seed,all.size());
+    size_t detailIndex=0;
     for(const auto* detail:all) {
         if(!detail)return std::nullopt;
         headers=integer(headers,detail->name.size());
         for(unsigned char ch:detail->name)headers=byte(headers,ch);
         headers=integer(headers,detail->flags.whole);
         headers=integer(headers,int64_t(detail->icon));
-        for(bool allowed:detail->allowed_labors)headers=byte(headers,allowed?1:0);
+        const auto& labors=ownedLabors && detailIndex==size_t(index)?*ownedLabors:detail->allowed_labors;
+        for(bool allowed:labors)headers=byte(headers,allowed?1:0);
+        ++detailIndex;
         headers=integer(headers,detail->assigned_units.size());
     }
     const auto& members=all[size_t(index)]->assigned_units;

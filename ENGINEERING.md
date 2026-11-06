@@ -170,9 +170,33 @@ clicks: [11], [11,59], [], [11]. `settings_provider_reference` records this scop
 MSVC and core19 pass; installed Management142 bridge hash
 A32E34ADB31E966FB0C89E86EAF4E2EFA14073BA1C38D5E69E7111024281D446 matches the build.
 DF37176 closes unsaved with source preservation; native runs30FPS, no Godot,
-GPU45C sampled after closure. Typed settings transport, actual editor integration,
-complete lifecycle acceptance remain pending; the definition-only timing is
+GPU45C sampled after closure. Actual editor integration and complete lifecycle acceptance remain pending;
+typed settings transport is verified below and the definition-only timing is
 verified above. This diagnostic provider does not expose the screen.
+
+Management143 `WorkDetailSettingsRead`/`WorkDetailSettingsToggle` now invoke the
+owned provider at safe points. Reads require the current selected-detail receipt;
+toggles additionally reject external labor control and IDs absent from the native
+picker. The bridge prepares the full UTF-8 catalog, updated owned labor array
+and predicted receipt before the noexcept definition assignment. Receipt prediction
+hashes an optional owned array without temporarily writing simulation state. No
+forced recalculation is queued. Rejected or unrelated requests retire settings
+results; replies contain the authoritative catalog/labors and exact new receipt.
+
+Protected125314 on2026-11-06 runs the real headless Godot adapter through reads
+and four toggles, comparing all91 catalog entries and native definition effects.
+Each new receipt equals WorkDetailInspect; old toggle receipts, stale/missing
+identities and a non-picker labor reject without retained results. A second phase
+sets external labor control, verifies read-only observations and rejected mutation,
+then restores the flag. All339 active worker labor/profession observations remain
+identical to the native paused reference. `settings_wire_reference` records scope.
+Initial125226 failed a JSON/typed dictionary equality check; explicit integer-ID
+and caption comparisons pass in125314. MSVC and core19 pass; installed143 bridge
+hash1DF5AD207B0FB8489D65650CF92A23632BD7550DA474525E1224F54BB9E7B8FB matches the build.
+DF38952 closes unsaved with source preservation, no owned processes remain, and
+joined final client logs have only the known separate-renderer notice. Native30FPS,
+headless viewer, GPU43–44C sampled. Screen-controller/settings-view integration
+and rendered workflow/lifecycle acceptance remain pending; the full editor is hidden.
 
 Worker setup42d8a0..42de34 supplies65 labor-to-skill branches: enabled labors set
 each associated skill weight to1, taking a union rather than accumulating shared

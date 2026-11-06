@@ -3136,5 +3136,47 @@
     "source_preserved": true,
     "owned_df_closed": true,
     "implementation_consequence": "Use native definition-only toggle behavior; do not add forced worker recalculation to settings edits."
+  },
+  "settings_wire_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-125314",
+    "scope": "Real typed settings reads/toggles through Godot adapter and native bridge; no rendered editor claim.",
+    "catalog_count": 91,
+    "steps": [
+      {
+        "id": 11,
+        "labors": [
+          11
+        ]
+      },
+      {
+        "id": -2,
+        "labors": [
+          11,
+          59
+        ]
+      },
+      {
+        "id": -2,
+        "labors": []
+      },
+      {
+        "id": 11,
+        "labors": [
+          11
+        ]
+      }
+    ],
+    "native_definition_effects_match": true,
+    "worker_state_unchanged": true,
+    "active_workers": 339,
+    "predicted_receipts_match_inspection": true,
+    "stale_missing_and_nonpicker_targets_rejected": true,
+    "old_toggle_receipt_rejected": true,
+    "external_controller_edit_rejected": true,
+    "unrelated_result_retirement": true,
+    "source_preserved": true,
+    "owned_df_closed": true,
+    "bridge_sha256": "1DF5AD207B0FB8489D65650CF92A23632BD7550DA474525E1224F54BB9E7B8FB",
+    "diagnostics": "Final joined headless client logs contain only the known separate-renderer startup notice."
   }
 }

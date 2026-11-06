@@ -14,6 +14,8 @@ func pointer(view,point: Vector2,button: int=MOUSE_BUTTON_LEFT) -> void:
 	click=click.duplicate();click.pressed=false;Input.parse_input_event(click);await process_frame
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
+	if OS.get_environment("DF3D_WORK_DETAILS_SETTINGS_WIRE")=="1":
+		await work_detail_settings();return
 	if OS.get_environment("DF3D_WORK_DETAILS_RENDER")=="1":
 		await work_detail_scene();return
 	if OS.get_environment("DF3D_WORK_DETAILS_ROWS_WIRE")=="1":
@@ -577,3 +579,56 @@ func capture_draft(label: String,resize: bool=false,state=null) -> void:
 			for frame in 3:await process_frame
 		await RenderingServer.frame_post_draw
 		check(root.get_texture().get_image().save_png(directory+"/job-draft-"+label+"-"+str(dimensions.x)+".png")==OK,"Draft capture failed")
+
+func work_detail_settings() -> void:
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/work-details-native.json"))
+	var expected: Dictionary=reference.settings_effects
+	world=Df3dWorld.new();root.add_child(world)
+	if not check(world.attach(),"Settings wire attach failed"):quit(1);return
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline:
+		world.poll()
+		if world.poll_management().get("transport_alive",false):break
+		await create_timer(0.01).timeout
+	await request("construction",{"action":C.ManagementAction.Catalog})
+	var inspected:=await request("citizens",{"action":C.ManagementAction.WorkDetailInspect,"detail_index":int(expected.index)})
+	var detail: Dictionary=inspected.get("citizen",{}).get("details",[{}])[0]
+	if not check(int(detail.get("revision",0))>0,"Settings detail missing"):quit(1);return
+	var intent: Dictionary={"action":C.ManagementAction.WorkDetailSettingsRead,"detail_index":int(expected.index),"expected_revision":int(detail.revision)}
+	var result:=await request("work_detail_settings",intent)
+	var value: Dictionary=result.get("work_detail_settings",{})
+	if not check(not value.is_empty(),"Settings read failed"):quit(1);return
+	check(value.catalog.size()==expected.provider.catalog.size(),"Native settings catalog size differs on wire")
+	for index in mini(value.catalog.size(),expected.provider.catalog.size()):
+		var actual: Dictionary=value.catalog[index];var native: Dictionary=expected.provider.catalog[index]
+		check(int(actual.id)==int(native.id) and actual.caption==native.caption,"Native settings catalog differs on wire at "+str(index))
+	if reference.get("settings_wire_phase","")=="locked":
+		check(not value.editable,"External controller did not disable edits")
+		intent.action=C.ManagementAction.WorkDetailSettingsToggle;intent.setting_id=11
+		result=await request("work_detail_settings",intent)
+		check(result.get("status")==C.ManagementStatus.Rejected and not result.has("work_detail_settings"),"External controller toggle accepted")
+	else:
+		for patch in [{"expected_revision":int(detail.revision)^1},{"detail_index":127}]:
+			var invalid:=intent.duplicate();invalid.merge(patch,true)
+			result=await request("work_detail_settings",invalid)
+			check(result.get("status")==C.ManagementStatus.Rejected and not result.has("work_detail_settings"),"Stale/missing settings target retained data")
+		intent.action=C.ManagementAction.WorkDetailSettingsToggle;intent.setting_id=10
+		result=await request("work_detail_settings",intent)
+		check(result.get("status")==C.ManagementStatus.Rejected and not result.has("work_detail_settings"),"Labor outside native picker accepted")
+		for step: Dictionary in expected.provider.steps:
+			intent.setting_id=int(step.id)
+			var previous: int=int(intent.expected_revision)
+			result=await request("work_detail_settings",intent);value=result.get("work_detail_settings",{})
+			if not check(not value.is_empty(),"Settings toggle failed"):break
+			check(value.labors==PackedInt32Array(step.labors),"Native toggle definition differs on wire")
+			check(int(value.revision)!=previous,"Settings mutation retained old receipt")
+			var stale:=await request("work_detail_settings",intent)
+			check(stale.get("status")==C.ManagementStatus.Rejected and not stale.has("work_detail_settings"),"Old toggle receipt replayed")
+			intent.expected_revision=int(value.revision)
+			inspected=await request("citizens",{"action":C.ManagementAction.WorkDetailInspect,"detail_index":int(expected.index)})
+			check(inspected.get("citizen",{}).get("details",[{}])[0].get("revision")==value.revision,"Predicted settings receipt differs from authoritative receipt")
+	result=await request("construction",{"action":C.ManagementAction.Catalog})
+	check(not result.has("work_detail_settings"),"Settings result leaked into another domain")
+	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"phase":reference.settings_wire_phase,"catalog_count":value.catalog.size()}));file.close()
+	world.queue_free();await process_frame;quit(1 if failed else 0)

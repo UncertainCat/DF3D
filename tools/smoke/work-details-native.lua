@@ -359,6 +359,22 @@ if os.getenv('DF3D_WORK_DETAILS_SETTINGS')=='1' then
   gui.simulateInput(view,'LEAVESCREEN')
   for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
   result.settings_effects.after_leave=snapshot()
+  if os.getenv('DF3D_WORK_DETAILS_SETTINGS_WIRE')=='1' then
+   assert(result.settings_effects.provider,'Wire reference requires owned provider')
+   for id=0,93 do d.allowed_labors[id]=false end
+   for _,id in ipairs(result.settings_effects.before.labors)do d.allowed_labors[id]=true end
+   result.settings_wire_phase='normal';shot('work-details-settings-wire-normal')
+   local after=snapshot()
+   assert(json.encode(after.labors)==json.encode(result.settings_effects.after_leave.labors),'Wire final definition differs from native')
+   assert(json.encode(after.units)==json.encode(result.settings_effects.before.units),'Wire settings forced worker recalculation')
+   result.settings_effects.wire_snapshot=after
+   local prior=df.global.game.external_flag.automatic_professions_disabled
+   df.global.game.external_flag.automatic_professions_disabled=true
+   result.settings_wire_phase='locked';shot('work-details-settings-wire-locked')
+   df.global.game.external_flag.automatic_professions_disabled=prior
+   assert(json.encode(snapshot())==json.encode(after),'External controller rejection changed simulation')
+   result.settings_effects.wire_external_rejected=true
+  end
   if os.getenv('DF3D_WORK_DETAILS_SETTINGS_SIMULATION')=='1' then
    assert(df.global.pause_state,'Settings simulation reference must start paused')
    local start=df.global.world.frame_counter

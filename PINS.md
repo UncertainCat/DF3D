@@ -28,7 +28,8 @@ native catalog and current allowed labors; Toggle is a one-shot definition edit,
 not a bulk replacement or forced worker recalculation. Both require the selected
 detail's exact revision. Rebuild both peers; `Local\df3d_management_v143` rejects
 Management142 peers. Older snapshots do not imply an empty catalog or disabled
-labors. Runtime handlers and editor exposure require separate live acceptance.
+labors. Native handler acceptance is recorded in ENGINEERING.md; full editor exposure
+still requires rendered workflow and lifecycle acceptance.
 
 Management142 adds `WorkDetailRowsRead` using bounded worker IDs and an exact
 selected-detail revision. Shared row observations gain ordered native skills

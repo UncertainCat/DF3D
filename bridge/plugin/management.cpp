@@ -106,6 +106,8 @@
 #include "work_detail_native.h"
 #include "work_detail_query_native.h"
 #include "work_detail_row_native.h"
+#include "work_detail_settings_native.h"
+#include "df/gamest.h"
 #include "work_order_catalog_native.h"
 #include "work_order_rows_native.h"
 #include "work_order_conditions_native.h"
@@ -458,6 +460,11 @@ struct JobSettingsResult {int32_t unitId=-1;uint32_t cursor=0;df3d_production::J
 std::optional<JobSettingsResult> jobSettings;
 struct JobSettingsEditResult {int32_t jobId,buildingId,unitId;m::JobSettingsEditOutcome outcome;};
 std::optional<JobSettingsEditResult> jobSettingsEdit;
+struct WorkDetailSettingsResult {
+  int32_t index=-1;uint64_t revision=0;bool editable=false,noModify=false;
+  std::vector<int16_t> labors;std::vector<df3d_production::WorkDetailSetting> catalog;
+};
+std::optional<WorkDetailSettingsResult> workDetailSettings;
 m::TilePos worldHoverTile;
 void clearResult() {
   creatureHeader.reset();
@@ -471,7 +478,7 @@ void clearResult() {
   residentsRows.reset();
   residentsSpecialization.reset();
   residentsActivity.reset();
-  jobSettings.reset();jobSettingsEdit.reset();
+  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -1083,10 +1090,17 @@ void publish() {
     for(const auto& e:*worldHover) entries.push_back(m::CreateWorldHoverEntry(b,b.CreateString(e.text),uint8_t(e.foreground),uint8_t(e.background),e.bright,e.kind,e.id));
     terrainResult=m::CreateWorldHover(b,&worldHoverTile,b.CreateVector(entries));
   }
+  flatbuffers::Offset<m::WorkDetailSettingsState> workDetailSettingsResult;
+  if(workDetailSettings) {
+    const auto& value=*workDetailSettings;std::vector<flatbuffers::Offset<m::WorkDetailSetting>> catalog;
+    for(const auto& entry:value.catalog)catalog.push_back(m::CreateWorkDetailSetting(b,entry.id,b.CreateString(entry.caption)));
+    workDetailSettingsResult=m::CreateWorkDetailSettingsState(b,value.index,value.revision,value.editable,value.noModify,
+        b.CreateVector(value.labors),b.CreateVector(catalog));
+  }
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult);
   b.Finish(s);
   if (auto e = m::validateManagementState(
           *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()))) {
@@ -4042,6 +4056,35 @@ void run(color_ostream& out) {
         if(rows.size()==query.unit_ids()->size()) {residentsRows=std::move(rows);status=m::ManagementStatus::Ok;}
       }
     } catch(...) {residentsRows.reset();}
+    publish();return;
+  }
+  if(r->action()==m::ManagementAction::WorkDetailSettingsRead || r->action()==m::ManagementAction::WorkDetailSettingsToggle) {
+    message.clear();status=m::ManagementStatus::Rejected;
+    const auto& query=*r->work_detail_settings();
+    const bool toggle=r->action()==m::ManagementAction::WorkDetailSettingsToggle;
+    try {
+      const auto receipt=df3d_production::workDetailReceipt(query.detail_index());
+      if(receipt && *receipt==query.expected_revision() && df::global::game) {
+        auto* detail=df::global::plotinfo->labor_info.work_details[size_t(query.detail_index())];
+        const bool editable=!df::global::game->external_flag.bits.automatic_professions_disabled;
+        auto allowed=detail->allowed_labors;
+        auto catalog=df3d_production::nativeWorkDetailSettings();
+        if(catalog && catalog->size()==91 && (!toggle || (editable && df3d_production::nativeWorkDetailToggle(allowed,query.setting_id())))) {
+          WorkDetailSettingsResult value;value.index=query.detail_index();value.editable=editable;value.noModify=detail->flags.bits.no_modify;
+          value.catalog=std::move(*catalog);bool valid=true;
+          for(auto& entry:value.catalog){entry.caption=DF2UTF(entry.caption);if(entry.caption.empty() || entry.caption.size()>512)valid=false;}
+          value.labors.reserve(94);for(size_t id=0;id<allowed.size();++id)if(allowed[id])value.labors.push_back(int16_t(id));
+          const auto after=df3d_production::workDetailReceipt(query.detail_index(),&allowed);
+          if(valid && after) {
+            value.revision=*after;workDetailSettings=std::move(value);
+            // Every allocation/native call precedes this noexcept definition write.
+            // Native settings leaves do not recalculate worker professions/labors.
+            if(toggle)detail->allowed_labors=allowed;
+            status=m::ManagementStatus::Ok;
+          }
+        }
+      }
+    } catch(...) {workDetailSettings.reset();}
     publish();return;
   }
   if(r->action()==m::ManagementAction::WorkDetailWorkersQuery) {

@@ -27,6 +27,8 @@ func run() -> void:
 	if FileAccess.file_exists(directory+"/residents-row-reference.json"):
 		var row_reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/residents-row-reference.json"))
 		var samples: Array=row_reference.samples
+		if samples[0].has("portrait_prefix"):
+			check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Residents portrait assets unavailable")
 		samples.reverse()
 		var ids:=PackedInt32Array()
 		for sample: Dictionary in samples:ids.append(int(sample.id))
@@ -47,6 +49,21 @@ func run() -> void:
 			for field: String in ["color","alternate"]:
 				for component in 3:
 					matches=matches and actual.name_color[field][component]==expected_row.name_color[field][component]
+			if samples[i].has("portrait_prefix"):
+				var prefix: String=directory+"/"+samples[i].portrait_prefix
+				var metadata: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(prefix+".json"))
+				var expected_image:=Image.create_from_data(int(metadata.width),int(metadata.height),false,Image.FORMAT_RGBA8,FileAccess.get_file_as_bytes(prefix+".rgba"))
+				var texture: Texture2D=world.candidate_icon(actual.get("sheet_icon",{}))
+				var bad:=0
+				if texture==null or Vector2i(texture.get_size())!=expected_image.get_size():bad=-1
+				else:
+					var actual_image:=texture.get_image()
+					for y in expected_image.get_height():
+						for x in expected_image.get_width():
+							var a:=actual_image.get_pixel(x,y);var e:=expected_image.get_pixel(x,y)
+							if a.a<0.03 and e.a<0.03:continue
+							if absf(a.r-e.r)+absf(a.g-e.g)+absf(a.b-e.b)+absf(a.a-e.a)>0.02:bad+=1
+				check(bad==0,"Residents portrait differs: "+str(actual.id)+" pixels="+str(bad))
 			check(matches,"Residents row content differs: "+str(expected_row.id))
 			row_comparisons.append({"id":actual.id,"matches":matches,"actual":actual})
 		var rejected:=await request("residents_rows",{"action":C.ManagementAction.ResidentsRowsRead,"unit_ids":PackedInt32Array([ids[0],2147483647]),"columns":30,"show_gender":false})

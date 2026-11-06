@@ -32,6 +32,12 @@ absent. Captions, color effects and Activity text are separate from the complete
 ordered ID query. Bridge/adapter acceptance is recorded in ENGINEERING.md;
 the complete Residents screen remains staged.
 
+Residents row `sheet_icon` is an optional additive Management132 observation.
+Older132 buffers omit it and older readers ignore it; no required field, action,
+default or existing meaning changes. Absence means no artwork observation, never
+a request to substitute a map sprite. Appearance recipes have a separate128KiB
+batch budget in addition to the existing128KiB text budget.
+
 Management131 adds the dedicated ResidentsQuery request and complete ordered
 unit-ID result. Rebuild both peers for `Local\\df3d_management_v131`; older
 observations leave this result absent. Query bytes retain native textbox input,

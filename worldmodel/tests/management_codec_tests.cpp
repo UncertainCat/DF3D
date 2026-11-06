@@ -9,6 +9,32 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("Residents artwork is an optional owned recipe with validated page identities") {
+  for(int variant=0;variant<3;++variant) {
+    flatbuffers::FlatBufferBuilder b;
+    flatbuffers::Offset<wire::SelectionAppearance> icon;
+    if(variant) {
+      const auto pages=b.CreateVectorOfStrings(std::vector<std::string>{"fixture-page"});
+      const auto palettes=b.CreateVectorOfStrings(std::vector<std::string>{});
+      std::vector<wire::AppearanceLayer> layers{wire::AppearanceLayer(variant==2?1:0,2,3,1,1,65535,0,0,-1,2)};
+      icon=wire::CreateSelectionAppearance(b,pages,palettes,b.CreateVectorOfStructs(layers));
+    }
+    const auto empty=b.CreateString("");const auto color=wire::CreateAreaNameColor(b);
+    const auto row=wire::CreateResidentRow(b,42,empty,empty,empty,empty,empty,color,empty,7,0,false,icon);
+    const auto payload=wire::CreateResidentsRowsState(b,b.CreateVector(std::vector{row}));
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(wire::ManagementAction::ResidentsRowsRead);
+    state.add_status(wire::ManagementStatus::Ok);state.add_residents_rows(payload);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(variant==2));
+    if(variant<2) {
+      auto decoded=codec::decodeState(value);REQUIRE(decoded.residentsRows);
+      const auto& image=decoded.residentsRows->rows.front().sheetIcon;
+      CHECK(image.has_value()==(variant==1));
+      if(image){CHECK(image->tilePages[0]=="fixture-page");CHECK(image->layers[0].offsetX==-1);}
+    }
+  }
+}
+
 TEST_CASE("Residents content reads preserve explicit order and bound each batch") {
   wm::ManagementRequest request;request.action=wm::ManagementAction::ResidentsRowsRead;
   request.residentsRows={{42,7},30,false};

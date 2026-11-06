@@ -56,6 +56,13 @@ ManagementState decodeState(const m::ManagementState* s) {
                      {c->alternate_foreground(),c->alternate_background(),c->alternate_bright()},c->effect()};
       row.activity=v->activity()->str();row.activityForeground=v->activity_foreground();
       row.activityBackground=v->activity_background();row.activityBright=v->activity_bright();
+      if(const auto* icon=v->sheet_icon()) {
+        row.sheetIcon.emplace();
+        for(const auto* t:*icon->tile_pages())row.sheetIcon->tilePages.push_back(t->str());
+        for(const auto* t:*icon->palettes())row.sheetIcon->palettes.push_back(t->str());
+        for(const auto* l:*icon->layers())row.sheetIcon->layers.push_back({l->page(),l->tile_x(),l->tile_y(),l->cells_x(),l->cells_y(),
+          l->palette(),l->palette_row(),l->palette_key_row(),l->offset_x(),l->offset_y()});
+      }
       next.residentsRows->rows.push_back(std::move(row));
     }
   }

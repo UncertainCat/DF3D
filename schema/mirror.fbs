@@ -1841,6 +1841,8 @@ table ResidentRow {
   first_line:string (required); second_line:string (required);
   name_color:AreaNameColor (required);
   activity:string (required); activity_foreground:uint8; activity_background:uint8; activity_bright:bool;
+  // Optional additive observation: older row producers did not supply artwork.
+  sheet_icon:SelectionAppearance;
 }
 table ResidentsRowsState { rows:[ResidentRow] (required); }
 

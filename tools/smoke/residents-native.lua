@@ -83,7 +83,21 @@ if os.getenv('DF3D_RESIDENTS_ROWS')=='1' then
      end
      observed[#observed+1]=bytes
     end
-    samples[#samples+1]={id=widget.u.id,width=width,show_gender=widget.show_gender,grazer=grazer,provider=row,screen=observed}
+    local sample={id=widget.u.id,width=width,show_gender=widget.show_gender,grazer=grazer,provider=row,screen=observed}
+    if os.getenv('DF3D_RESIDENTS_PORTRAITS')=='1' then
+     local portrait
+     for _,child in ipairs(dfhack.gui.getWidgetChildren(widget.parent))do
+      if df.widget_unit_portrait:is_instance(child)then portrait=child;break end
+     end
+     assert(portrait,'Residents portrait widget missing')
+     local at=portrait.rect.x1*g.dimy+portrait.rect.y1
+     local texture=g.screentexpos_anchored[at]
+     assert(texture>0,'Residents anchored portrait missing')
+     sample.portrait_prefix='resident-portrait-'..widget.u.id
+     local dump,rc=dfhack.run_command_silent('df3d','appearance','texture',tostring(texture),out..'/'..sample.portrait_prefix)
+     assert(rc==0 and dump:find('DF3D_TEXTURE_DUMP_PASS',1,true),dump)
+    end
+    samples[#samples+1]=sample
    end
   end
   if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do collect(child,active)end end

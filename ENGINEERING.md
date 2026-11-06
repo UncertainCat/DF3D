@@ -42,7 +42,7 @@ queries need no row request. The view uses captured header/name/activity positio
 and existing native textbox/scrollbar components. Headless `residents_state_test`
 checks late replies, scroll demand, direction retention, empty results and wrong
 row identities (`residents-staged-state`, core19/19 also passes).
-This is not rendered or complete-screen acceptance: portraits, indicators,
+This is not complete-screen acceptance: remaining portrait-state coverage, indicators,
 actions, hover, navigation, responsive geometry and refresh behavior remain
 unfinished. The public `read_only_info.gd` route is unchanged.
 
@@ -58,6 +58,32 @@ checks pass. This establishes baseline name ink/placement only, not backgrounds,
 portraits, indicator artwork, interaction or complete screen parity. Both brief
 offline renders were capped at30FPS with observed GPU temperature37C; DF stayed
 closed.
+
+Rows may now include an optional owned `SelectionAppearance` full-body recipe.
+This additive Management132 field preserves absent observations in older buffers;
+its separate128KiB batch budget keeps artwork and text bounded. The producer
+reuses `ResidentAppearanceRecipe::collect(unit,true)` and the existing verified
+selector appearance pipeline. That pipeline evaluates raw appearance conditions
+locally and calls native template expansion; it is not a newly discovered native
+semantic reader. Native widget1423240 calls6d6560 with flag0x400, returning cached
+graphics. Runtime does not call that widget/graphics path or read those caches.
+The staged view uses `candidate_icon` with the returned recipe and retains only
+visible portrait textures; it does not depend on CitizenList or map visibility.
+
+Protected034303 on2026-11-06 adds `DF3D_RESIDENTS_PORTRAITS=1` to the row/wire
+reference. Oracle-only native anchored surfaces are dumped to ignored output.
+All13 visible composed images match dimensions and pixels (RGBA channel-sum
+tolerance0.02, mutually transparent pixels ignored). The actual typed bridge
+receipts supply the recipes. DF7380 exits unsaved; source unchanged; paired logs
+contain only the known separate-thread notice. Installed bridge SHA256:
+3FA49921CA2687ADE170A09490485D740D733156E06DB9BC2E885A6C57E7591C.
+MSVC and `residents-portraits` core19/19/state checks pass. Offline
+`residents-portraits-render` shows the portraits, picture frames and row background
+and retains the7882 name-ink comparisons; it passes with documented Godot shutdown
+diagnostics. No native pixel data is retained in the fixture, only appearance
+recipes and provenance. Native and offline graphics run serially at30FPS;
+observed GPU temperatures36–37C. Other residents/states and full interaction
+remain unaccepted, and the public route is unchanged.
 
 Management132 defines a separate ResidentsRowsRead contract for1–64 requested
 IDs in explicit order. It carries the name width and gender flag; the reply

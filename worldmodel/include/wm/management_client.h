@@ -422,6 +422,7 @@ struct ResidentRow {
   AreaNameColor nameColor;
   std::string activity;
   uint8_t activityForeground=0,activityBackground=0; bool activityBright=false;
+  std::optional<SelectionAppearance> sheetIcon;
 };
 struct ResidentsRowsState { std::vector<ResidentRow> rows; };
 struct CitizenRequest {

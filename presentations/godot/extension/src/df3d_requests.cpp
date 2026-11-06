@@ -187,6 +187,17 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
             color["color"]=primary;color["alternate"]=alternate;color["effect"]=int(v.nameColor.effect);row["name_color"]=color;
             activity["caption"]=String::utf8(v.activity.c_str());activity["fg"]=int(v.activityForeground);
             activity["bg"]=int(v.activityBackground);activity["bright"]=v.activityBright;row["activity"]=activity;
+            if(v.sheetIcon) {
+                Dictionary icon;Array pages,palettes,layers;
+                for(const auto& name:v.sheetIcon->tilePages)pages.push_back(String::utf8(name.c_str()));
+                for(const auto& name:v.sheetIcon->palettes)palettes.push_back(String::utf8(name.c_str()));
+                for(const auto& l:v.sheetIcon->layers) {
+                    Array layer;
+                    for(int n:{int(l.page),int(l.tileX),int(l.tileY),int(l.cellsX),int(l.cellsY),int(l.palette),int(l.paletteRow),int(l.paletteKeyRow),int(l.offsetX),int(l.offsetY)})layer.push_back(n);
+                    layers.push_back(layer);
+                }
+                icon["tile_pages"]=pages;icon["palettes"]=palettes;icon["layers"]=layers;row["sheet_icon"]=icon;
+            }
             rows.push_back(row);
         }
         value["rows"]=rows;result["residents_rows"]=value;

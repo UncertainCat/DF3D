@@ -1,6 +1,6 @@
 extends "res://scripts/location_staff_candidates_frame.gd"
-# Staged Residents surface. Portraits, indicators, actions and hover still need
-# native integration/acceptance before this may replace the public readout.
+# Staged Residents surface. Indicators, actions, hover and remaining portrait
+# states need acceptance before this may replace the public readout.
 signal cancelled
 const C=preload("res://scripts/management_contract.gd")
 const NameColor=preload("res://scripts/native_name_color.gd")
@@ -15,9 +15,11 @@ var colors: Array[Color]=[]
 var wide_tabs:=false
 var input_allowed: Callable
 var ticks_override: int=-1
+var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
+var portraits: Dictionary={}
 
 func configure_residents(source,model) -> void:
-	super.configure(source);state=model;colors=art.installed_palette(source.assets_root())
+	super.configure(source);state=model;colors=art.installed_palette(source.assets_root());picture.configure(source)
 	mouse_filter=Control.MOUSE_FILTER_STOP
 	var inset:=StyleBoxTexture.new();inset.texture=art.texture("BUTTON_FILTER")
 	inset.set_texture_margin(SIDE_LEFT,8);inset.set_texture_margin(SIDE_RIGHT,32)
@@ -44,6 +46,14 @@ func layout(view: Vector2) -> void:
 	refresh()
 func refresh() -> void:
 	if state==null:return
+	var retained: Dictionary={}
+	for index in page_rows:
+		var row: Dictionary=state.row_at(state.first+index)
+		if row.is_empty() or not row.has("sheet_icon"):continue
+		var previous: Dictionary=portraits.get(int(row.id),{})
+		if previous.get("recipe",{})==row.sheet_icon:retained[int(row.id)]=previous
+		else:retained[int(row.id)]={"recipe":row.sheet_icon.duplicate(true),"texture":world.candidate_icon(row.sheet_icon)}
+	portraits=retained
 	if scrollbar!=null:scrollbar.set_rows(state.ids.size(),state.first)
 	if search!=null:search.set_bytes(state.query)
 	queue_redraw()
@@ -106,6 +116,10 @@ func _draw() -> void:
 		var row: Dictionary=state.row_at(state.first+index)
 		if row.is_empty():continue
 		var y:=list_top()+index*36
+		patch("BUTTON_RECTANGLE_DARK",Vector2i(2,int(y/12)),int(size.x/8)-7,3)
+		patch("",Vector2i(2,int(y/12)),5,3,picture.texture(false))
+		var portrait: Texture2D=portraits.get(int(row.id),{}).get("texture")
+		if portrait!=null:draw_texture_rect(portrait,Rect2(18,y+2,32,32),false)
 		var ink:=NameColor.choose(row.name_color,ticks_override if ticks_override>=0 else Time.get_ticks_msec(),0 if ticks_override>=0 else randi_range(0,1))
 		if not ink.is_empty():
 			text(row.first_line,Vector2(56,y+24),int(ink[0])+8*int(ink[2]),240)

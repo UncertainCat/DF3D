@@ -441,7 +441,8 @@ struct CreatureAnimalResult {
 std::optional<CreatureAnimalResult> creatureAnimal;
 std::optional<std::vector<int32_t>> residents;
 // Strings are converted to UTF-8 and bounded before publishing this batch.
-std::optional<std::vector<std::pair<int32_t,df3d_residents::RowText>>> residentsRows;
+struct ResidentRowResult { int32_t id; df3d_residents::RowText text; std::optional<ResidentAppearanceRecipe> icon; };
+std::optional<std::vector<ResidentRowResult>> residentsRows;
 m::TilePos worldHoverTile;
 void clearResult() {
   creatureHeader.reset();
@@ -943,11 +944,13 @@ void publish() {
   flatbuffers::Offset<m::ResidentsRowsState> residentsRowsResult;
   if(residentsRows) {
     std::vector<flatbuffers::Offset<m::ResidentRow>> rows;
-    for(const auto& [id,row]:*residentsRows) {
+    for(const auto& value:*residentsRows) {
+      const auto id=value.id;const auto& row=value.text;
       const auto& c=row.nameColor;const auto& n=row.name;const auto& a=row.activity;
       const auto color=m::CreateAreaNameColor(b,c.color[0],c.color[1],c.color[2],c.alternate[0],c.alternate[1],c.alternate[2],c.effect);
       rows.push_back(m::CreateResidentRow(b,id,b.CreateString(n.combined),b.CreateString(n.name),b.CreateString(n.profession),
-          b.CreateString(n.firstLine),b.CreateString(n.secondLine),color,b.CreateString(a.caption),uint8_t(a.foreground),uint8_t(a.background),a.bright));
+          b.CreateString(n.firstLine),b.CreateString(n.secondLine),color,b.CreateString(a.caption),uint8_t(a.foreground),uint8_t(a.background),a.bright,
+          value.icon?value.icon->build(b):flatbuffers::Offset<m::SelectionAppearance>{}));
     }
     residentsRowsResult=m::CreateResidentsRowsState(b,b.CreateVector(rows));
   }
@@ -3761,7 +3764,7 @@ void run(color_ostream& out) {
     try {
       const auto eligible=df3d_residents::orderedResidents(0,false);
       if(eligible) {
-        std::vector<std::pair<int32_t,df3d_residents::RowText>> rows;size_t bytes=0;
+        std::vector<ResidentRowResult> rows;size_t bytes=0,appearanceBytes=0;
         for(auto id:*query.unit_ids()) {
           if(std::find(eligible->begin(),eligible->end(),id)==eligible->end())break;
           auto row=df3d_residents::rowText(df::unit::find(id),query.columns(),query.show_gender());
@@ -3773,7 +3776,14 @@ void run(color_ostream& out) {
             if(text->size()>4096 || text->find('\0')!=std::string::npos)bounded=false;
           }
           if(!bounded || bytes>131072)break;
-          rows.emplace_back(id,std::move(*row));
+          std::optional<ResidentAppearanceRecipe> icon;
+          ResidentAppearanceRecipe recipe;recipe.collect(df::unit::find(id),true);
+          if(!recipe.layers.empty()) {
+            flatbuffers::FlatBufferBuilder check;check.Finish(recipe.build(check));
+            if(m::validateOwnerAppearance(*flatbuffers::GetRoot<m::SelectionAppearance>(check.GetBufferPointer()),appearanceBytes) || appearanceBytes>131072)break;
+            icon=std::move(recipe);
+          }
+          rows.push_back({id,std::move(*row),std::move(icon)});
         }
         if(rows.size()==query.unit_ids()->size()) {residentsRows=std::move(rows);status=m::ManagementStatus::Ok;}
       }

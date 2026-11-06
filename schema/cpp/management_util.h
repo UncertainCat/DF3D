@@ -997,7 +997,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   if(const auto* r=s.residents_rows()) {
     if(s.action()!=ManagementAction::ResidentsRowsRead || s.status()!=ManagementStatus::Ok ||
        !r->rows() || r->rows()->size()==0 || r->rows()->size()>kResidentsRowsLimit)return "invalid residents rows result";
-    std::unordered_set<int32_t> ids;size_t bytes=0;
+    std::unordered_set<int32_t> ids;size_t bytes=0,appearanceBytes=0;
     for(const auto* row:*r->rows()) {
       if(!row || row->id()<0 || !ids.insert(row->id()).second || !row->name_color())return "invalid residents row";
       for(const auto* text:{row->combined(),row->name(),row->profession(),row->first_line(),row->second_line(),row->activity()}) {
@@ -1005,11 +1005,13 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         bytes+=text->size();
       }
       const auto* c=row->name_color();
+      if(const auto* icon=row->sheet_icon())if(auto error=validateOwnerAppearance(*icon,appearanceBytes))return error;
       if(c->foreground()>7 || c->background()>7 || c->bright()>1 || c->alternate_foreground()>7 ||
          c->alternate_background()>7 || c->alternate_bright()>1 || c->effect()>3 ||
          row->activity_foreground()>7 || row->activity_background()>7)return "invalid residents row color";
     }
     if(bytes>131072)return "residents row text budget exceeded";
+    if(appearanceBytes>131072)return "residents row appearance budget exceeded";
   } else if(s.action()==ManagementAction::ResidentsRowsRead && s.status()==ManagementStatus::Ok)
     return "residents rows result required";
   if(const auto* w=s.creature_animal()) {

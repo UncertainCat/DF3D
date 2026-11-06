@@ -9,6 +9,49 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("Job edits preserve exact authority and reject invalid request bounds") {
+  wm::ManagementRequest base;base.action=wm::ManagementAction::JobSettingsApply;
+  base.jobSettingsEdit={71,3,42,0,UINT64_C(9007199254740993),INT64_MAX,1};
+  for(int variant=0;variant<10;++variant) {
+    auto r=base;auto& q=r.jobSettingsEdit;
+    if(variant==1)q.jobId=-1;
+    if(variant==2)q.buildingId=-1;
+    if(variant==3)q.unitId=-2;
+    if(variant==4)q.option=-1;
+    if(variant==5)q.option=65;
+    if(variant==6)q.expectedRevision=0;
+    if(variant==7)q.expectedChoicesRevision=UINT64_MAX;
+    if(variant==8)q.choice=-1;
+    if(variant==9)q.choice=16384;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(variant!=0));
+    REQUIRE(value->job_settings_edit());CHECK_FALSE(value->job_settings());
+    CHECK(value->job_settings_edit()->expected_revision()==q.expectedRevision);
+    CHECK(value->job_settings_edit()->expected_choices_revision()==q.expectedChoicesRevision);
+  }
+}
+TEST_CASE("Job edit outcomes require matching status and retire independently of reads") {
+  for(int variant=0;variant<8;++variant) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto outcome=variant==1?wire::JobSettingsEditOutcome::Stale:variant==2?wire::JobSettingsEditOutcome::Rejected:variant==6?wire::JobSettingsEditOutcome(255):wire::JobSettingsEditOutcome::Applied;
+    const auto edit=wire::CreateJobSettingsEditState(b,variant==5?-1:71,3,42,outcome);
+    wire::ManagementStateBuilder state(b);state.add_revision(1);
+    state.add_action(variant==3?wire::ManagementAction::Catalog:wire::ManagementAction::JobSettingsApply);
+    state.add_status(variant==1 || variant==2 || variant==4?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);
+    if(variant!=7)state.add_job_settings_edit(edit);
+    b.Finish(state.Finish());const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(variant>=3));
+    if(variant<3) {
+      auto decoded=codec::decodeState(value);REQUIRE(decoded.jobSettingsEdit);CHECK_FALSE(decoded.jobSettings);
+      CHECK(decoded.jobSettingsEdit->jobId==71);CHECK(decoded.jobSettingsEdit->buildingId==3);CHECK(decoded.jobSettingsEdit->unitId==42);
+      CHECK(int(decoded.jobSettingsEdit->outcome)==int(outcome));
+      flatbuffers::FlatBufferBuilder empty;wire::ManagementStateBuilder other(empty);other.add_revision(2);other.add_status(wire::ManagementStatus::Ok);empty.Finish(other.Finish());
+      decoded=codec::decodeState(flatbuffers::GetRoot<wire::ManagementState>(empty.GetBufferPointer()));CHECK_FALSE(decoded.jobSettingsEdit);
+    }
+  }
+}
+
 TEST_CASE("Residents job targets are optional bounded identities exclusive of event targets") {
   for(int variant=0;variant<5;++variant) {
     flatbuffers::FlatBufferBuilder b;const auto empty=b.CreateString("");const auto color=wire::CreateAreaNameColor(b);

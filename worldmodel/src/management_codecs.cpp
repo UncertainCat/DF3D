@@ -77,6 +77,7 @@ ManagementState decodeState(const m::ManagementState* s) {
   }
   if(const auto* v=s->residents_specialization())
     next.residentsSpecialization=ResidentsSpecializationState{v->unit_id(),ResidentsSpecializationOutcome(v->outcome()),v->only_assigned()};
+  if(const auto* v=s->job_settings_edit())next.jobSettingsEdit=JobSettingsEditState{v->job_id(),v->building_id(),v->unit_id(),JobSettingsEditOutcome(v->outcome())};
   if(const auto* v=s->job_settings()) {
     JobSettingsState value;value.jobId=v->job_id();value.buildingId=v->building_id();value.unitId=v->unit_id();value.revision=v->revision();value.caption=v->caption()->str();
     value.selectedOption=v->selected_option();value.choicesRevision=v->choices_revision();value.total=v->total();value.cursor=v->cursor();value.nextCursor=v->next_cursor();
@@ -224,7 +225,10 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
           flatbuffers::Offset<m::ResidentsActivityRequest>{},
       r.action==ManagementAction::JobSettingsRead?
           m::CreateJobSettingsRequest(b,r.jobSettings.jobId,r.jobSettings.buildingId,r.jobSettings.unitId,r.jobSettings.option,b.CreateString(r.jobSettings.query),r.jobSettings.cursor):
-          flatbuffers::Offset<m::JobSettingsRequest>{});
+          flatbuffers::Offset<m::JobSettingsRequest>{},
+      r.action==ManagementAction::JobSettingsApply?
+          m::CreateJobSettingsEditRequest(b,r.jobSettingsEdit.jobId,r.jobSettingsEdit.buildingId,r.jobSettingsEdit.unitId,r.jobSettingsEdit.option,r.jobSettingsEdit.expectedRevision,r.jobSettingsEdit.expectedChoicesRevision,r.jobSettingsEdit.choice):
+          flatbuffers::Offset<m::JobSettingsEditRequest>{});
   b.Finish(request);
 }
 }  // namespace wm::detail::management

@@ -22,6 +22,13 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management137 adds `JobSettingsApply` (action86) to `job_settings`, with a
+separate edit request containing exact job/holder/resident IDs, selected option,
+job and choice revisions and original choice ID. Its result distinguishes
+Applied, Stale and Rejected and contains no retained read catalog. Rebuild both
+peers for `Local\df3d_management_v137`; Management136 peers are incompatible.
+No migration fabricates edit authority from older reads.
+
 ResidentRow gains optional additive `job_target` (job and holder IDs) on
 Management136. Older producers omit it; older readers ignore it. It is mutually
 exclusive with `activity_target`; no migration fabricates a job identity.

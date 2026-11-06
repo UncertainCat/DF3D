@@ -600,6 +600,8 @@ struct WorkOrderDetailsState {
   std::optional<std::string> settingHeading;
   int32_t dyeTarget=-1;
 };
+struct JobSettingsEditRequest {int32_t jobId=-1,buildingId=-1,unitId=-1;int16_t option=-1;uint64_t expectedRevision=0,expectedChoicesRevision=0;int32_t choice=-1;};
+struct JobSettingsEditState {int32_t jobId=-1,buildingId=-1,unitId=-1;JobSettingsEditOutcome outcome=JobSettingsEditOutcome::Rejected;};
 struct JobSettingsRequest {int32_t jobId=-1,buildingId=-1,unitId=-1;int16_t option=-1;std::string query;uint32_t cursor=0;};
 struct JobSettingsChoice {int32_t id=-1;std::string caption;std::optional<std::string> countCaption;bool estimated=false;};
 struct JobSettingsState {
@@ -795,6 +797,7 @@ struct ManagementRequest {
   ResidentsSpecializationRequest residentsSpecialization;
   ResidentsActivityRequest residentsActivity;
   JobSettingsRequest jobSettings;
+  JobSettingsEditRequest jobSettingsEdit;
   uint16_t depth=1; bool retracting=false; int16_t filter=-1;
   uint32_t rollerSpeed=0;
   bool cancelRemoval=false;
@@ -853,6 +856,7 @@ struct ManagementState {
   std::optional<ResidentsSpecializationState> residentsSpecialization;
   std::optional<ResidentsActivityState> residentsActivity;
   std::optional<JobSettingsState> jobSettings;
+  std::optional<JobSettingsEditState> jobSettingsEdit;
   ConstructionState construction;
   std::optional<WorldHover> worldHover;
 };

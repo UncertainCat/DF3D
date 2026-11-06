@@ -1,4 +1,8 @@
 // Generated exhaustive model/wire correspondence checks.
+static_assert(static_cast<int>(wm::JobSettingsEditOutcome::Rejected) == static_cast<int>(df3d::mirror::JobSettingsEditOutcome::Rejected));
+static_assert(static_cast<int>(wm::JobSettingsEditOutcome::Stale) == static_cast<int>(df3d::mirror::JobSettingsEditOutcome::Stale));
+static_assert(static_cast<int>(wm::JobSettingsEditOutcome::Applied) == static_cast<int>(df3d::mirror::JobSettingsEditOutcome::Applied));
+static_assert(sizeof(df3d::mirror::EnumValuesJobSettingsEditOutcome()) / sizeof(df3d::mirror::JobSettingsEditOutcome) == 3);
 static_assert(static_cast<int>(wm::ResidentsSpecializationOutcome::Applied) == static_cast<int>(df3d::mirror::ResidentsSpecializationOutcome::Applied));
 static_assert(static_cast<int>(wm::ResidentsSpecializationOutcome::Rejected) == static_cast<int>(df3d::mirror::ResidentsSpecializationOutcome::Rejected));
 static_assert(static_cast<int>(wm::ResidentsSpecializationOutcome::Stale) == static_cast<int>(df3d::mirror::ResidentsSpecializationOutcome::Stale));
@@ -158,7 +162,8 @@ static_assert(static_cast<int>(wm::ManagementAction::ResidentsSpecialize) == sta
 static_assert(static_cast<int>(wm::ManagementAction::CreatureSheetLocate) == static_cast<int>(df3d::mirror::ManagementAction::CreatureSheetLocate));
 static_assert(static_cast<int>(wm::ManagementAction::ResidentsActivityRead) == static_cast<int>(df3d::mirror::ManagementAction::ResidentsActivityRead));
 static_assert(static_cast<int>(wm::ManagementAction::JobSettingsRead) == static_cast<int>(df3d::mirror::ManagementAction::JobSettingsRead));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 86);
+static_assert(static_cast<int>(wm::ManagementAction::JobSettingsApply) == static_cast<int>(df3d::mirror::ManagementAction::JobSettingsApply));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 87);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -451,3 +456,4 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::ResidentsSpecialize) == 
 static_assert(wm::isRuntimeAction(wm::ManagementAction::CreatureSheetLocate) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::CreatureSheetLocate));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::ResidentsActivityRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ResidentsActivityRead));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::JobSettingsRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::JobSettingsRead));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::JobSettingsApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::JobSettingsApply));

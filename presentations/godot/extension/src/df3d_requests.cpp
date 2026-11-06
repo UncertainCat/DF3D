@@ -180,6 +180,10 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         value["unit_id"]=v.unitId;value["outcome"]=int(v.outcome);value["only_assigned"]=v.onlyAssigned;
         result["residents_specialization"]=value;
     }
+    if(s.jobSettingsEdit) {
+        const auto& v=*s.jobSettingsEdit;Dictionary value;value["job_id"]=v.jobId;value["building_id"]=v.buildingId;value["unit_id"]=v.unitId;
+        value["outcome"]=int(v.outcome);result["job_settings_edit"]=value;
+    }
     if(s.jobSettings) {
         const auto& v=*s.jobSettings;Dictionary value;Array options,choices;
         value["job_id"]=v.jobId;value["building_id"]=v.buildingId;value["unit_id"]=v.unitId;value["revision"]=int64_t(v.revision);value["caption"]=String::utf8(v.caption.c_str());
@@ -330,6 +334,15 @@ bool readCreatureLocation(const Dictionary& data,wm::ManagementRequest& request,
     request.creatureLocation={int32_t(int64_t(data["unit_id"])),int32_t(int64_t(data["occupation_id"])),uint64_t(int64_t(data["expected_revision"]))};return true;
 }
 bool validateJobSettings(const Dictionary& data,String& error) {
+    if(int64_t(data["action"])==int64_t(wm::ManagementAction::JobSettingsApply)) {
+        if(data.size()!=8){error="Invalid job edit fields";return false;}
+        for(const char* key:{"job_id","building_id","unit_id","option","expected_revision","expected_choices_revision","choice"})
+            if(!data.has(key) || data[key].get_type()!=Variant::INT){error="Invalid job edit fields";return false;}
+        const int64_t job=data["job_id"],building=data["building_id"],unit=data["unit_id"],option=data["option"],choice=data["choice"];
+        if(job<0 || job>INT32_MAX || building<0 || building>INT32_MAX || unit < -1 || unit>INT32_MAX || option<0 || option>64 || choice<0 || choice>=16384 ||
+           int64_t(data["expected_revision"])<=0 || int64_t(data["expected_choices_revision"])<=0){error="Invalid job edit bounds";return false;}
+        return true;
+    }
     if(data.size()!=7){error="Invalid job settings fields";return false;}
     for(const char* key:{"job_id","building_id","unit_id","option","cursor"})
         if(!data.has(key) || data[key].get_type()!=Variant::INT){error="Invalid job settings fields";return false;}
@@ -341,6 +354,10 @@ bool validateJobSettings(const Dictionary& data,String& error) {
     return true;
 }
 bool readJobSettings(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    if(int64_t(data["action"])==int64_t(wm::ManagementAction::JobSettingsApply)) {
+        request.action=wm::ManagementAction::JobSettingsApply;
+        request.jobSettingsEdit={int32_t(int64_t(data["job_id"])),int32_t(int64_t(data["building_id"])),int32_t(int64_t(data["unit_id"])),int16_t(int64_t(data["option"])),uint64_t(int64_t(data["expected_revision"])),uint64_t(int64_t(data["expected_choices_revision"])),int32_t(int64_t(data["choice"]))};return true;
+    }
     request.action=wm::ManagementAction::JobSettingsRead;
     request.jobSettings.jobId=int32_t(int64_t(data["job_id"]));request.jobSettings.buildingId=int32_t(int64_t(data["building_id"]));request.jobSettings.unitId=int32_t(int64_t(data["unit_id"]));
     request.jobSettings.option=int16_t(int64_t(data["option"]));request.jobSettings.cursor=uint32_t(int64_t(data["cursor"]));
@@ -537,7 +554,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::JobSettingsRead)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::JobSettingsApply)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

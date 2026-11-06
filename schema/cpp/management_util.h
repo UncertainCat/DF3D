@@ -53,8 +53,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 136;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v136";
+inline constexpr uint32_t kManagementVersion = 137;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v137";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -352,7 +352,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::JobSettingsRead &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::JobSettingsApply &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -408,7 +408,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::JobSettingsRead)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::JobSettingsApply)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -451,6 +451,12 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     if(!w || w->unit_id()<0 || w->occupation_id()<0 || !w->expected_revision() || w->expected_revision()>INT64_MAX)
       return "invalid creature location request";
   } else if(r.creature_location())return "unexpected creature location request";
+  if(r.action()==ManagementAction::JobSettingsApply) {
+    const auto* q=r.job_settings_edit();
+    if(!q || q->job_id()<0 || q->building_id()<0 || q->unit_id() < -1 || q->option()<0 || q->option()>64 ||
+       !q->expected_revision() || q->expected_revision()>INT64_MAX || !q->expected_choices_revision() ||
+       q->expected_choices_revision()>INT64_MAX || q->choice()<0 || q->choice()>=16384)return "invalid job settings edit request";
+  } else if(r.job_settings_edit())return "unexpected job settings edit request";
   if(r.action()==ManagementAction::JobSettingsRead) {
     const auto* q=r.job_settings();
     if(!q || q->job_id()<0 || q->building_id()<0 || q->unit_id() < -1 || q->option() < -1 || q->option()>64 ||
@@ -933,7 +939,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::JobSettingsRead ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::JobSettingsApply ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -1053,6 +1059,12 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     if(appearanceBytes>131072)return "residents row appearance budget exceeded";
   } else if(s.action()==ManagementAction::ResidentsRowsRead && s.status()==ManagementStatus::Ok)
     return "residents rows result required";
+  if(const auto* v=s.job_settings_edit()) {
+    if(s.action()!=ManagementAction::JobSettingsApply || v->job_id()<0 || v->building_id()<0 || v->unit_id() < -1 ||
+       v->outcome()<JobSettingsEditOutcome::Rejected || v->outcome()>JobSettingsEditOutcome::Applied ||
+       (s.status()!=ManagementStatus::Ok && s.status()!=ManagementStatus::Rejected) ||
+       ((s.status()==ManagementStatus::Ok)!=(v->outcome()==JobSettingsEditOutcome::Applied)))return "invalid job settings edit result";
+  } else if(s.action()==ManagementAction::JobSettingsApply && s.status()==ManagementStatus::Ok)return "job settings edit result required";
   if(const auto* v=s.job_settings()) {
     if(s.action()!=ManagementAction::JobSettingsRead || s.status()!=ManagementStatus::Ok ||
        v->job_id()<0 || v->building_id()<0 || v->unit_id() < -1 || !v->revision() || v->revision()>INT64_MAX ||

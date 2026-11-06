@@ -6,11 +6,11 @@ import argparse
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
-ENUMS = ("ResidentsSpecializationOutcome", "ResidentsSort", "WorkOrderPhase", "CreatureAnimalOutcome", "CreatureLocationOutcome", "CreatureWorkshopOutcome", "CreatureKnowledgeOutcome", "CreatureExpelOutcome", "CreatureHeaderOutcome", "ConstructionOutcome", "FarmEditOutcome", "FarmOperation", "ManagementAction", "ManagementStatus", "AreaKind", "AreaCandidateEntity", "AreaOperation", "LocationStaffAssignmentKind", "AreaRoomOutcome", "LocationEntryOutcome", "LocationEditOutcome", "LocationQuantityMode", "LocationNameMode", "LocationRecognitionState", "AlertOperation", "AlertView",
+ENUMS = ("JobSettingsEditOutcome", "ResidentsSpecializationOutcome", "ResidentsSort", "WorkOrderPhase", "CreatureAnimalOutcome", "CreatureLocationOutcome", "CreatureWorkshopOutcome", "CreatureKnowledgeOutcome", "CreatureExpelOutcome", "CreatureHeaderOutcome", "ConstructionOutcome", "FarmEditOutcome", "FarmOperation", "ManagementAction", "ManagementStatus", "AreaKind", "AreaCandidateEntity", "AreaOperation", "LocationStaffAssignmentKind", "AreaRoomOutcome", "LocationEntryOutcome", "LocationEditOutcome", "LocationQuantityMode", "LocationNameMode", "LocationRecognitionState", "AlertOperation", "AlertView",
          "SelectionOperation", "SelectionKind", "SelectionSection", "CreatureSectionKind", "ReportView", "ReportTab", "ReportZoom")
 
 DOMAINS = {
-    "job_settings": ("JobSettingsRead", "JobSettingsRead"),
+    "job_settings": ("JobSettingsRead", "JobSettingsApply"),
     "residents_activity": ("ResidentsActivityRead", "ResidentsActivityRead"),
     "residents_specialization": ("ResidentsSpecialize", "ResidentsSpecialize"),
     "residents": ("ResidentsQuery", "ResidentsQuery"),
@@ -63,7 +63,7 @@ def outputs():
         checks += "".join(f"static_assert(static_cast<int>(wm::{name}::{n}) == static_cast<int>(df3d::mirror::{name}::{n}));\n" for n,v in rows)
         checks += f"static_assert(sizeof(df3d::mirror::EnumValues{name}()) / sizeof(df3d::mirror::{name}) == {len(rows)});\n"
     # Semantic mutation policy is centralized here and emitted with named values.
-    mutations=("ResidentsSpecialize","CreatureAnimalEdit","CreatureLocationRemove","CreatureWorkshopRemove","CreatureExpelApply","CreatureHeaderEdit","Place","Remove","RemoveConstruction","AreaCreate","AreaUpdate","AreaDelete","AreaLink",
+    mutations=("JobSettingsApply","ResidentsSpecialize","CreatureAnimalEdit","CreatureLocationRemove","CreatureWorkshopRemove","CreatureExpelApply","CreatureHeaderEdit","Place","Remove","RemoveConstruction","AreaCreate","AreaUpdate","AreaDelete","AreaLink",
         "ProductionQueue","ProductionJobEdit","FarmEdit","WorkOrderCreate","WorkOrderUpdate",
         "WorkOrderDelete","WorkOrderCondition","WorkDetailMembership","WorkDetailMode","WorkDetailCreate","WorkDetailDelete",
         "WorkDetailEdit","CitizenWorkScope","DismissAlert","TradeUpdate","TradeBring")

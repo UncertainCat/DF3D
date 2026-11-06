@@ -123,8 +123,8 @@ existing follow-up recalculation queue remains; native settings recalculation
 timing still requires acceptance.
 Worker setup42d8a0..42de34 supplies65 labor-to-skill branches: enabled labors set
 each associated skill weight to1, taking a union rather than accumulating shared
-skills. The fixture retains those mappings. Exact worker sorting/partitioning,
-runtime catalog exposure and the rendered full editor remain unfinished. This
+skills. The fixture retains those mappings. Runtime catalog exposure and the
+rendered full editor remain unfinished. This
 discovery used the installed executable and existing protected capture103713;
 it launched no DF or Godot processes.
 
@@ -141,6 +141,35 @@ DF31756 closed unsaved and the source remained unchanged. Retained final client
 stdout/stderr contain only the known separate-thread notice. Native ran at30FPS
 with headless clients; GPU sampled60C during the run and59C after closure. The
 full editor remains hidden and incomplete.
+
+`work_detail_query_native.h` supplies an owned Work Details worker query.
+Native142c4b0 performs filtering, stable sorting and its selected-worker
+partition over caller-owned vectors, functions and map storage. The explicit
+source flag prevents an empty input from repopulating from globals. No native
+widget, menu callback object or cursor is borrowed or constructed. Candidate
+eligibility reuses the native workshop-worker filter with its cache guard;
+name/profession filtering uses1424c30. Skills comparator1435db0 and membership
+predicate46a350 consume owned closures. Inline skill-weight setup remains pinned
+because it is inseparable from widget construction; the68 labor/skill pairs
+match the recovered fixture. The query is currently exposed through the
+diagnostic `work-detail-query-probe`, not the presentation transport.
+
+The context must construct the map at330 even when no Activity column exists:
+1424c30 checks it after a name/profession miss. Zero-filled storage caused the
+initial nonempty-query test process to exit; the corrected context uses the
+shared initialized ActivityMap ABI. The protected launcher now fails promptly
+if its owned DF exits instead of waiting for an absent result. The native oracle
+follows selected tabs when finding controls, avoiding inactive search boxes.
+
+Protected111407 compares all116 displayed Miners candidates and their exact
+order before menu entry, then both directions of Category/Name/Profession/Skills
+and five typed searches. The native list and filter remain unchanged by provider
+calls. `worker_query_reference` retains IDs/digests and counts; mixed-labor
+weights, transport, row presentation and full editor acceptance remain pending.
+MSVC/core19 pass; installed Management140 hash
+1CECA7DBA3FE384C4D32BA628C6EDC875861967399A3EA07CB643EA745280583 matches the build.
+DF10688 closed unsaved with source preservation; no Godot was launched. Native
+was capped at30FPS, with GPU49C/0percent sampled after closure.
 
 ## Residents native list discovery
 

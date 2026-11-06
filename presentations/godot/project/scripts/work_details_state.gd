@@ -196,3 +196,7 @@ func toggle_setting(id: int) -> void:
 		_reload(index))
 func seek_settings(offset: int,count: int) -> void:
 	settings_first=clampi(offset,0,maxi(0,settings.get("catalog",[]).size()-maxi(0,count)));changed.emit()
+
+func reset_settings() -> void:
+	if not editing_settings or phase!=Phase.Ready or ticket!=0 or not settings.get("editable",false) or not settings.get("no_modify",false):return
+	_apply({"action":A.WorkDetailEdit,"detail_index":int(settings.detail_index),"expected_revision":int(settings.revision),"edit":3})

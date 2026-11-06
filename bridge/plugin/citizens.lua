@@ -291,7 +291,7 @@ return function(request)
    if #name>40 then return fail('Work-detail names are limited to 40 characters') end
    d.name=name
   elseif action==66 then
-   if not df.global.unitst_set_automatic_professions then return fail('Native labor recalculation is unavailable') end
+   if p.edit~=3 and not df.global.unitst_set_automatic_professions then return fail('Native labor recalculation is unavailable') end
    local chosen={}
    if p.edit==3 then
     if not d.flags.no_modify then return fail('Reset to default applies to built-in work details') end
@@ -306,7 +306,8 @@ return function(request)
    for i=0,93 do
     if p.edit~=3 and i~=0 and i~=10 and i~=44 and caption(i) then d.allowed_labors[i]=not not chosen[i] end
    end
-   full=true
+   -- Native Reset only changes allowed_labors; it does not recalculate workers.
+   full=p.edit~=3
   end
   -- Keep the existing mutation preflight refusals for optional unit inspection.
   -- Read-only inspection still returns a bounded error row, and rename can repair a detail.

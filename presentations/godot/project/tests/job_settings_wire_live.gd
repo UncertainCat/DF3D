@@ -237,7 +237,10 @@ func work_detail_defaults() -> void:
 			intent.merge({"action":C.ManagementAction.WorkDetailEdit,"edit":3})
 		else:
 			intent.merge({"action":C.ManagementAction.WorkDetailMode,"mode":int(reference.modes[int(reference.step)-1].mode)})
-		response=await request("citizens",intent)
+		if int(reference.step)==4:
+			await work_detail_reset_scene(index)
+			response={"status":C.ManagementStatus.Ok}
+		else:response=await request("citizens",intent)
 	elif OS.get_environment("DF3D_WORK_DETAILS_MEMBERSHIP")=="1":
 		var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/work-details-native.json"))
 		response=await request("citizens",{"action":C.ManagementAction.WorkDetailInspect,"detail_index":0})
@@ -708,3 +711,22 @@ func work_detail_settings_scene() -> void:
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"rendered_settings":true,"phase":reference.settings_wire_phase}));file.close()
 	owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)
+
+func work_detail_reset_scene(index: int) -> void:
+	if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Reset scene assets unavailable"):return
+	root.size=Vector2i(1200,800)
+	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
+	var interaction:=Interaction.new();root.add_child(interaction)
+	var host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)
+	var owner=preload("res://scripts/work_details_panel.gd").new();root.add_child(owner);owner.configure(world,service,host);owner.open_panel()
+	if check(await ready(owner.state),"Reset roster failed"):
+		await pointer(owner.panel,owner.panel.detail_rect(index).get_center())
+		if check(await ready(owner.state),"Reset detail selection failed"):
+			await pointer(owner.panel,Vector2(656,owner.panel.header_top()+18))
+			if check(await ready(owner.state) and owner.state.settings.get("no_modify",false),"Reset gear failed"):
+				if OS.get_environment("DF3D_WORK_DETAILS_RESET_RENDER")=="1":
+					await RenderingServer.frame_post_draw
+					root.get_texture().get_image().save_png(directory+"/work-details-reset-view-before.png")
+				await pointer(owner.panel,owner.panel.settings_action_rect().get_center())
+				check(await ready(owner.state) and owner.state.editing_settings and owner.state.settings.labors==PackedInt32Array([58]),"Reset button did not refresh native defaults")
+	owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();await process_frame

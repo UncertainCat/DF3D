@@ -3266,5 +3266,28 @@
     "source_preserved": true,
     "owned_df_closed": true,
     "diagnostics": "Final joined client logs contain only known separate-renderer, device-finalize and paired shutdown-object signatures."
+  },
+  "reset_view_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-131034",
+    "scope": "Actual staged owner Reset click and native full active-worker effects, default 1200x800 geometry. Delete, rename, resize and broader lifecycle remain pending.",
+    "icon": 18,
+    "native_labors": [
+      58
+    ],
+    "active_workers": 339,
+    "native_worker_state_unchanged": true,
+    "semantic_snapshot_matches_native": true,
+    "settings_remain_open": true,
+    "reset_button_rgb_difference": 0,
+    "reset_button_bounds": [
+      792,
+      148,
+      944,
+      184
+    ],
+    "source_preserved": true,
+    "owned_df_closed": true,
+    "bridge_sha256": "2A483C8CCF4EB97842F396BBF7849E2A0160478B7669550F0ABA81432FDD121C",
+    "diagnostics": "Final joined client logs contain only known separate-renderer, device-finalize and paired shutdown-object signatures."
   }
 }

@@ -119,9 +119,9 @@ Done468d20 calls the selected-detail widget builder42cd50; it is not a standalon
 simulation commit. Delete468b60 combines destruction/recalculation with native
 list rebuilding and cannot be called whole. Reset468940 writes built-in labor
 defaults by icon. Its complete body and switch table are now pinned and called
-with an owned closure, replacing the incomplete Lua default table. Reset's
-existing follow-up recalculation queue remains; native settings recalculation
-timing still requires acceptance.
+with an owned closure, replacing the incomplete Lua default table. Reset changes
+only allowed labors; its old forced worker recalculation has been removed to
+match native effects, as verified by the Reset acceptance below.
 Protected122557 on2026-11-06 extends the settings reference with actual
 Carpentry and Woodworking label clicks, group enable/disable, Done and leaving
 Labor in a paused disposable fortress. Allowed labors change immediately
@@ -233,8 +233,28 @@ Both graphical clients are capped at30FPS; GPU samples45–50C. Joined final log
 contain only known separate-renderer, device-finalize and paired shutdown-object
 diagnostics. Headless work-details-settings-view-final-20261106 passes core19,
 extension and controller checks. `settings_view_reference` records this scope.
-Reset/Delete remain unwired staged controls; renaming, settings hover, resize
-and full composed lifecycle acceptance remain pending. The full screen stays hidden.
+Reset is now connected to WorkDetailEdit(edit3) using the displayed settings
+receipt; success refreshes definitions/settings and retains editor scroll. Custom
+definitions and external labor control cannot submit Reset. Delete remains an
+unwired staged control; renaming, settings hover, resize and full composed
+lifecycle acceptance remain pending. The full screen stays hidden.
+
+Protected131034 on2026-11-06 verifies actual owner Gear/Reset clicks against a
+native Reset on a disposable icon18 definition. Both restore labor58, preserve
+all339 active workers' labors/professions, and leave the settings editor open.
+The Reset button uses native red HORIZONTAL_OPTION_REMOVE and152x36 geometry;
+its complete captured crop matches native exactly. This does not establish the
+whole screen's pixel identity. The first130924 run proved effects but exposed an
+unexpected release_focus call during teardown; the visibility handler now checks
+that the search control is still in the tree. Final joined logs contain only
+known separate-renderer, device-finalize and paired shutdown-object signatures.
+DF39352 exits unsaved with source preservation and no DF/Godot remains. Native
+and the final rendered client use30FPS; GPU samples46–50C. MSVC and headless
+work-details-reset-final-20261106 core19/extension/controller checks pass.
+Installed/build bridge SHA256 is
+2A483C8CCF4EB97842F396BBF7849E2A0160478B7669550F0ABA81432FDD121C.
+`reset_view_reference` retains the accepted scope. The older105635 Reset evidence
+below covers only allowed labors;131034 establishes the full worker-state result.
 
 Worker setup42d8a0..42de34 supplies65 labor-to-skill branches: enabled labors set
 each associated skill weight to1, taking a union rather than accumulating shared

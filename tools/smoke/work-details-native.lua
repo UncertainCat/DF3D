@@ -249,7 +249,11 @@ if os.getenv('DF3D_WORK_DETAILS_EDITS')=='1' then
  -- Reset a disposable definition as Siege Operators, which the former Lua
  -- default table did not cover. Keep the live selected detail object stable.
  d.flags.no_modify=true;d.icon=18
- click_handler(0x468880);click_handler(0x468940)
+ result.edits.before_reset=snapshot()
+ click_handler(0x468880);shot('work-details-reset-before');click_handler(0x468940)
+ result.edits.reset_snapshot=snapshot()
+ assert(json.encode(result.edits.reset_snapshot.units)==json.encode(result.edits.before_reset.units),'Native Reset unexpectedly recalculated workers')
+ shot('work-details-reset-after')
  result.edits.reset_labors={};for id,value in ipairs(d.allowed_labors)do if value then result.edits.reset_labors[#result.edits.reset_labors+1]=id end end
  assert(#result.edits.reset_labors==1 and result.edits.reset_labors[1]==58,'Native Siege Operators defaults differ')
  d.flags.whole=before.flags;d.icon=result.created.icon
@@ -266,6 +270,8 @@ if os.getenv('DF3D_WORK_DETAILS_EDITS')=='1' then
  result.edits.step=4;shot('work-details-edit-4-wire')
  result.edits.semantic_reset_labors={};for id,value in ipairs(d.allowed_labors)do if value then result.edits.semantic_reset_labors[#result.edits.semantic_reset_labors+1]=id end end
  assert(json.encode(result.edits.semantic_reset_labors)==json.encode(result.edits.reset_labors),'Native reset defaults differ')
+ result.edits.semantic_reset_snapshot=snapshot()
+ assert(json.encode(result.edits.semantic_reset_snapshot)==json.encode(result.edits.reset_snapshot),'Native Reset full worker effects differ')
  shot('work-details-edits-result');records[#records+1]={name='work-details-edits'};return
 end
 if defaults then

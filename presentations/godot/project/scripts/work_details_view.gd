@@ -20,7 +20,7 @@ func settings_top() -> int:return header_top()+36
 func settings_capacity() -> int:return maxi(0,int((size.y-settings_top()-24)/36))
 func settings_rect(index: int) -> Rect2:return Rect2(272,settings_top()+(index-state.settings_first)*36,size.x-312,36)
 func done_rect() -> Rect2:return Rect2(264,header_top(),48,36)
-func settings_action_rect() -> Rect2:return Rect2(size.x-(176 if state.settings.get("no_modify",false) else 104),header_top(),144 if state.settings.get("no_modify",false) else 72,36)
+func settings_action_rect() -> Rect2:return Rect2(size.x-(184 if state.settings.get("no_modify",false) else 104),header_top(),152 if state.settings.get("no_modify",false) else 72,36)
 func configure_work_details(source,model) -> void:
 	configure(source);state=model;colors=art.installed_palette(source.assets_root());picture.configure(source)
 	mouse_filter=Control.MOUSE_FILTER_STOP
@@ -35,7 +35,9 @@ func configure_work_details(source,model) -> void:
 	scrollbar.input_allowed=allowed
 	state.changed.connect(refresh)
 	visibility_changed.connect(func():
-		if not is_visible_in_tree():search.release_focus();_leave_hover())
+		if not is_visible_in_tree():
+			if search.is_inside_tree():search.release_focus()
+			_leave_hover())
 	mouse_exited.connect(_leave_hover);refresh()
 func list_top() -> int:return 204 if wide_tabs else 228
 func header_top() -> int:return list_top()-132
@@ -198,7 +200,7 @@ func _draw_settings() -> void:
 	patch("HORIZONTAL_OPTION_ACTIVE",Vector2i(33,int(header_top()/12)),6,3);text("Done",Vector2(272,header_top()+24),10)
 	if state.settings.is_empty():return
 	var action:=settings_action_rect()
-	patch("HORIZONTAL_OPTION_ACTIVE" if state.settings.no_modify else "HORIZONTAL_OPTION_REMOVE",Vector2i(int(action.position.x/8),int(header_top()/12)),int(action.size.x/8),3)
+	patch("HORIZONTAL_OPTION_REMOVE",Vector2i(int(action.position.x/8),int(header_top()/12)),int(action.size.x/8),3)
 	text("Reset to default" if state.settings.no_modify else "Delete",action.position+Vector2(8,24),15)
 	var catalog: Array=state.settings.catalog;var labors: PackedInt32Array=state.settings.labors
 	var category: int=-2

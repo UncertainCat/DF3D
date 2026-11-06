@@ -38,6 +38,26 @@ func run() -> void:
   click(Vector2(1072,150))
   if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.conditions.ticket==0),"Resized condition amount was not confirmed"):quit(1);return
   check(owner.conditions.snapshot.conditions[0].threshold==int(plan.threshold)+1,"Resized condition amount differs")
+ if plan.get("filters",false):
+  click(Vector2(1200,150))
+  if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.conditions.filter_kind==1),"Resized material filter did not open"):quit(1);return
+  for character in "IRON":number_key(KEY_A,character.unicode_at(0))
+  if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.conditions.ticket==0 and owner.conditions.filter_query=="IRON"),"Material search failed"):quit(1);return
+  check(not owner.conditions.filter_rows.is_empty(),"Material search found no rows")
+  await process_frame;await RenderingServer.frame_post_draw
+  root.get_texture().get_image().save_png(directory+"/work-order-navigation-material-wide.png")
+  click(Vector2(400,186))
+  if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.conditions.filter_kind==-1),"Material selection did not return to Conditions"):quit(1);return
+  check(owner.conditions.snapshot.conditions[0].mat_type==int(plan.material_type) and owner.conditions.snapshot.conditions[0].mat_index==int(plan.material_index),"Material selection differs")
+  click(Vector2(1344,114))
+  if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.conditions.filter_kind==3),"Resized dependency picker did not open"):quit(1);return
+  check(not owner.conditions.filter_rows.is_empty() and owner.conditions.filter_rows[0].id==int(plan.dependency),"Dependency candidate order differs")
+  click(Vector2(400,186))
+  if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.conditions.filter_kind==-1),"Dependency selection did not return to Conditions"):quit(1);return
+  var linked:=false
+  for condition in owner.conditions.snapshot.conditions:
+   if condition.kind==1 and condition.target_order==int(plan.dependency):linked=true
+  check(linked,"Dependency absent after confirmation")
  root.get_texture().get_image().save_png(directory+"/work-order-navigation-conditions-wide.png")
  number_key(KEY_ESCAPE)
  if not check(await settle(service,func():return owner.global_orders.phase==owner.global_orders.Phase.Ready and owner.global_orders_view.visible),"Conditions Back did not restore list"):quit(1);return

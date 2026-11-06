@@ -7420,6 +7420,20 @@ only documented diagnostics; core19/19 and headless composition pass in
 filter/dependency selection after resizing and full epoch-change acceptance
 remain separate gaps.
 
+`DF3D_WORK_ORDER_RESIZED_FILTER=1` extends that edit flow with material search
+and dependency selection at1600x900. Protected005001 on2026-11-06 first performs
+the IRON search/selection in native DF and restores the condition, then compares
+the viewer selection against that native material type/index. The viewer also
+selects the first dependency candidate; independent DF readback confirms both
+effects alongside the threshold/quantity/limit edits. The material search render
+was inspected after waiting for its redraw. DF37468 exits unsaved with source
+preservation. Paired logs contain only documented diagnostics; root19/19 and
+composition pass in `build/qa/work-orders-resized-filters`. Earlier fixture
+attempts assumed a GRANITE raw ID absent from this save or used the wrong Lua
+allocation form; neither established UI failure.004859 passed effects but its
+screenshot preceded the redraw. These checks do not cover all filter kinds,
+page boundaries, minimum-size editing or epoch-change behavior.
+
 The global Work orders view uses the shared native hover service for active
 status, quantity, priority, Conditions, Details, removal and workshop limits.
 Protected002223 on2026-11-06 captures exact native24-cell text and instruction

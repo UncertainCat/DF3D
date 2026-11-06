@@ -2067,5 +2067,61 @@
         }
       ]
     }
+  },
+  "mode_reset_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-105635",
+    "scope": "Actual native mode buttons versus semantic WorkDetailMode, comparing detail flags/labors and all active unit enabled labors/professions after each step. Actual Reset versus WorkDetailEdit(edit3) compares allowed labors only; recalculation timing not accepted.",
+    "detail_index": 11,
+    "unit_id": 5573,
+    "modes": [
+      {
+        "mode": 2,
+        "flags": 8,
+        "allowed_labors": [
+          11
+        ],
+        "active_units_compared": 339,
+        "native_and_semantic_sha256": "6267916c1f8ad65338b9ada12ae343b40e00d16e5baf965a7268ec6c9c0dab6a"
+      },
+      {
+        "mode": 1,
+        "flags": 4,
+        "allowed_labors": [
+          11
+        ],
+        "active_units_compared": 339,
+        "native_and_semantic_sha256": "6ad8e823c101e36401d3e6b8425fe396f69b55543d13a397e9c52a9927892ff3"
+      },
+      {
+        "mode": 3,
+        "flags": 12,
+        "allowed_labors": [
+          11
+        ],
+        "active_units_compared": 339,
+        "native_and_semantic_sha256": "be1a4d02e318cd537768bdf5f2be2c3ffce8d496ee94187165e5aa3dd0c3fef2"
+      }
+    ],
+    "reset_icon": 18,
+    "reset_native_labors": [
+      58
+    ],
+    "reset_semantic_labors": [
+      58
+    ],
+    "reset_fixture": "Disposable custom detail marked no_modify with Siege Operators icon18 after mode comparison; retained selected object, unsaved clone only.",
+    "retained_final_client_diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        }
+      ],
+      "unclassified": []
+    },
+    "source_preserved": true,
+    "owned_df_closed": true,
+    "bridge_sha256": "EAD6CBD6A655FBB6FEECE53732AE7787D30E658DEAC1D39583D16F8A421E8313"
   }
 }

@@ -6,6 +6,40 @@
 #include "location_staff_order_native.h"
 
 namespace df3d_production {
+// These closure bodies consume only explicit simulation pointers. The unused
+// leading slots are owned padding, not vtables or borrowed native widgets.
+inline bool nativeWorkDetailEdit(int32_t index,int32_t mode,bool reset) {
+    if(!farmFunctions() || !df::global::plotinfo || !df::global::world)return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool supported=[&] {
+        struct Pin {size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={{0x468760,0x69,UINT64_C(0x5eb42948ad8aef26)},
+            {0x468660,0x4e,UINT64_C(0xbaef94519752815d)},
+            {0x468560,0x4e,UINT64_C(0x7412463ed1cac4d0)},
+            {0x468940,0x16c,UINT64_C(0x0ececdab2a29b2ca)}};
+        for(const auto& pin:pins){uint64_t hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin.length;++i){hash^=base[pin.rva+i];hash*=UINT64_C(1099511628211);}
+            if(hash!=pin.hash)return false;}
+        return true;
+    }();
+    if(!supported)return false;
+    const auto& all=df::global::plotinfo->labor_info.work_details;
+    if(index<0 || size_t(index)>=all.size() || all.size()>128)return false;
+    auto* detail=all[size_t(index)];if(!detail)return false;
+    if(reset) {
+        if(!detail->flags.bits.no_modify)return false;
+        struct Context {std::array<std::byte,0x20> unused{};df::work_detail* detail;};
+        static_assert(offsetof(Context,detail)==0x20);
+        Context context{{},detail};
+        return reinterpret_cast<bool(*)(Context*)>(base+0x468940)(&context);
+    }
+    if(mode<1 || mode>3 || (mode==1 && detail->flags.bits.cannot_be_everybody))return false;
+    struct Context {uintptr_t unused=0;df::work_detail* detail;};
+    static_assert(offsetof(Context,detail)==8);
+    Context context{0,detail};
+    constexpr size_t handlers[]={0,0x468760,0x468560,0x468660};
+    return reinterpret_cast<bool(*)(Context*)>(base+handlers[mode])(&context);
+}
 // Work Details46c900 delegates to this simulation-only closure body. Unlike
 // creature Labor's inline handler, it accepts an explicit work-detail pointer.
 inline bool nativeWorkDetailMembership(int32_t index,int32_t unitId,bool member) {

@@ -108,19 +108,39 @@ enabled. Both can use independently owned storage; neither leaf recalculates
 professions. The constructor42e6e0/42b4e0 creates widgets and is prohibited at
 runtime. Mode handlers468760/468660/468560 consume only an explicit detail
 pointer and recalculate active units; Everybody additionally checks its protected
-flag. These newly identified handlers are not yet wired or live accepted.
+flag. `work_detail_native.h` now pins and invokes those mode handlers with owned
+closure storage. `citizens.lua` retains receipts and eligibility checks but no
+longer reconstructs mode writes or queues their recalculation. Its now-unused
+mode rollback path is removed; edit/delete recalculation retains its existing
+queue and error reporting.
 
 Done468d20 calls the selected-detail widget builder42cd50; it is not a standalone
 simulation commit. Delete468b60 combines destruction/recalculation with native
 list rebuilding and cannot be called whole. Reset468940 writes built-in labor
-defaults by icon; its full pin and effect acceptance remain pending. Do not infer
-settings recalculation timing from the current Lua editor implementation.
+defaults by icon. Its complete body and switch table are now pinned and called
+with an owned closure, replacing the incomplete Lua default table. Reset's
+existing follow-up recalculation queue remains; native settings recalculation
+timing still requires acceptance.
 Worker setup42d8a0..42de34 supplies65 labor-to-skill branches: enabled labors set
 each associated skill weight to1, taking a union rather than accumulating shared
 skills. The fixture retains those mappings. Exact worker sorting/partitioning,
 runtime catalog exposure and the rendered full editor remain unfinished. This
 discovery used the installed executable and existing protected capture103713;
 it launched no DF or Godot processes.
+
+Protected105635 verifies actual native Nobody/Everybody/Only selected clicks
+against WorkDetailMode after restoring the disposable fixture: all339 active
+units' enabled labors, profession and profession2, plus detail flags and labors,
+match after each step. Native Reset and WorkDetailEdit(edit3) both restore
+Siege Operators icon18 to labor58, a case previously rejected by the Lua table.
+That reset comparison covers allowed labors only, not recalculation timing.
+The fixture's `mode_reset_reference` retains bounded digests and scope.
+MSVC/core19/creature-labor-state pass; installed Management140 bridge hash
+EAD6CBD6A655FBB6FEECE53732AE7787D30E658DEAC1D39583D16F8A421E8313 matches the build.
+DF31756 closed unsaved and the source remained unchanged. Retained final client
+stdout/stderr contain only the known separate-thread notice. Native ran at30FPS
+with headless clients; GPU sampled60C during the run and59C after closure. The
+full editor remains hidden and incomplete.
 
 ## Residents native list discovery
 

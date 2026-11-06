@@ -166,33 +166,20 @@ local function detail_info(index,rev)
  end
  return check_row(row)
 end
--- Captured native defaults, keyed by icon. SIEGE_OPERATORS has no captured set.
-local defaults={
- MINERS={'MINE'},WOODCUTTERS={'CUTWOOD'},HUNTERS={'HUNT'},PLANTERS={'PLANT'},
- FISHERMEN={'FISH'},PLANT_GATHERERS={'HERBALIST'},STONECUTTERS={'STONECUTTER'},ENGRAVERS={'ENGRAVER'},
- HAULERS={'HAUL_STONE','HAUL_WOOD','HAUL_BODY','HAUL_FOOD','HAUL_REFUSE','HAUL_ITEM','HAUL_FURNITURE','HAUL_ANIMALS','HANDLE_VEHICLES','HAUL_TRADE','HAUL_WATER'},
- ORDERLIES={'SUTURING','DRESSING_WOUNDS','FEED_WATER_CIVILIANS','RECOVER_WOUNDED'},
-}
 local function queue_recalc()
  recalc={active=true,cursor=0,unit_id=nil,done=0,total=#df.global.world.units.all,error=''}
 end
-local function advance(rollback)
+local function advance()
  local all=df.global.world.units.all
  local lo,hi=0,#all
  while lo<hi do local mid=(lo+hi)//2;if all[mid].id<recalc.cursor then lo=mid+1 else hi=mid end end
- local called={}
  while recalc.active and steps<budget do
   if recalc.unit_id then
    local u=df.unit.find(recalc.unit_id);recalc.unit_id=nil
    if u and eligibility(u) then
-    spend();called[#called+1]=u.id
+    spend()
     if not pcall(U.setAutomaticProfessions,u) then
      recalc.active=false
-     if rollback then
-      rollback();local restored=true
-      for _,id in ipairs(called) do local v=df.unit.find(id);if v then spend();if not pcall(U.setAutomaticProfessions,v) then restored=false end end end
-      return restored and 'Native recalculation failed; mode restored' or 'Native recalculation failed; mode restored but labor refresh failed'
-     end
      recalc.error='Native recalculation failed; labors may be stale';return recalc.error
     end
    end
@@ -262,7 +249,7 @@ return function(request)
   return finish(out)
  elseif action==31 then return finish(inspect_detail(p.detail_index,p.unit_id,rev)) end
  if action~=32 and action~=33 and (action<64 or action>67) then return fail('Unsupported citizen action') end
- -- Reserve both bounded target hashes, two row hashes and rollback calls before any write.
+ -- Reserve both bounded target hashes and two row hashes before any write.
  if budget-steps<#details()+39 then return fail('Native labor recalculation is unavailable') end
  if action==67 then
   local u=df.unit.find(p.unit_id);local valid,reason=eligibility(u)
@@ -295,7 +282,7 @@ return function(request)
   if p.expected_revision~=row.revision then return fail('Work-detail contents changed; refresh before editing') end
   if external() then return fail('An external labor controller owns assignments') end
   local d=details()[p.detail_index]
-  local full=false;local rollback=nil
+  local full=false
   if action==65 then
    if d.flags.no_modify then return fail('Use Reset to default for built-in work details') end
    if (request.retire_capacity or 0)==0 then return fail('Deleted-detail capacity reached; restart DF') end
@@ -304,12 +291,11 @@ return function(request)
    if #name>40 then return fail('Work-detail names are limited to 40 characters') end
    d.name=name
   elseif action==66 then
+   if not df.global.unitst_set_automatic_professions then return fail('Native labor recalculation is unavailable') end
    local chosen={}
    if p.edit==3 then
     if not d.flags.no_modify then return fail('Reset to default applies to built-in work details') end
-    local set=defaults[df.work_detail_icon_type[d.icon]]
-    if not set then return fail('No native default recorded for this work detail') end
-    for _,name in ipairs(set) do chosen[df.unit_labor[name]]=true end
+    request.work_detail_edit(p.detail_index,0,true)
    else
     for _,id in ipairs(p.labors or {}) do
      if id==0 or id==10 or id==44 then return fail('Labor '..id..' is not in the native labor picker') end
@@ -317,9 +303,8 @@ return function(request)
      chosen[id]=true
     end
    end
-   if not df.global.unitst_set_automatic_professions then return fail('Native labor recalculation is unavailable') end
    for i=0,93 do
-    if p.edit==3 or (i~=0 and i~=10 and i~=44 and caption(i)) then d.allowed_labors[i]=not not chosen[i] end
+    if p.edit~=3 and i~=0 and i~=10 and i~=44 and caption(i) then d.allowed_labors[i]=not not chosen[i] end
    end
    full=true
   end
@@ -349,8 +334,7 @@ return function(request)
     if not row.mode_editable then return fail('Native work-detail mode is protected') end
     if p.mode==1 and d.flags.cannot_be_everybody then return fail('This work detail cannot be assigned to everybody') end
     if d.flags.mode==p.mode then return finish(inspect_detail(p.detail_index,p.unit_id,rev)) end
-    local old,old_revision=d.flags.mode,rev;rollback=function()d.flags.mode=old;list_revision=old_revision end
-    d.flags.mode=p.mode;full=true
+    spend();request.work_detail_edit(p.detail_index,p.mode,false)
    else
     details():erase(p.detail_index);out.retired={d};full=true
    end
@@ -358,10 +342,7 @@ return function(request)
   rev=receipt()
   if action~=65 then out=inspect_detail(p.detail_index,p.unit_id,rev) end
   if full then
-   queue_recalc();local failure=advance(rollback)
-   if failure and rollback then
-    local rejected=fail(failure);rejected.retired=out.retired;return rejected
-   end
+   queue_recalc();advance()
   end
  end
  if not out.ok then return finish(out) end

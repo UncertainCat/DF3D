@@ -119,6 +119,63 @@ assert(#all==#result.details+1,'Native Add new work detail did not append one de
 local d=all[#all-1];local labors={};for j,value in ipairs(d.allowed_labors)do if value then labors[#labors+1]=j end end
 result.created={index=#all-1,name=dfhack.df2utf(d.name),icon=d.icon,flags=d.flags.whole,labors=labors,assigned_count=#d.assigned_units}
 shot('work-details-created')
+if os.getenv('DF3D_WORK_DETAILS_EDITS')=='1' then
+ local function click_handler(rva)
+  local target
+  local function find(widget)
+   if (widget.flag.whole&1)==0 then return end
+   if (widget.flag.whole&2)~=0 then
+    for _,value in ipairs(callbacks(widget.custom_activated))do if value==rva then assert(not target,'Ambiguous action');target=widget end end
+   end
+   if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do find(child)end end
+  end
+  find(info.labor);assert(target,'Native action missing: '..rva)
+  local x=(target.rect.x1+target.rect.x2)//2;local y=(target.rect.y1+target.rect.y2)//2
+  g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+6;g.mouse_x=x;g.mouse_y=y
+  df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L')
+  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+  for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
+ end
+ local unit=assert(df.unit.find(result.first_visible.unit_id))
+ d.allowed_labors[11]=true;d.assigned_units:insert('#',unit.id);d.flags.mode=3
+ local function snapshot()
+  local labors={};for id,value in ipairs(d.allowed_labors)do if value then labors[#labors+1]=id end end
+  local units={}
+  for _,active in ipairs(df.global.world.units.active)do
+   local enabled={};for id,value in ipairs(active.status.labors)do if value then enabled[#enabled+1]=id end end
+   units[#units+1]={id=active.id,labors=enabled,profession=active.profession,profession2=active.profession2}
+  end
+  return {flags=d.flags.whole,labors=labors,units=units}
+ end
+ for _,active in ipairs(df.global.world.units.active)do dfhack.units.setAutomaticProfessions(active)end
+ local before=snapshot()
+ result.edits={index=#all-1,unit_id=unit.id,before=before,modes={}}
+ for _,step in ipairs{{2,0x468560},{1,0x468760},{3,0x468660}}do
+  click_handler(step[2]);assert(d.flags.mode==step[1],'Native mode click failed')
+  result.edits.modes[#result.edits.modes+1]={mode=step[1],snapshot=snapshot()}
+ end
+ -- Reset a disposable definition as Siege Operators, which the former Lua
+ -- default table did not cover. Keep the live selected detail object stable.
+ d.flags.no_modify=true;d.icon=18
+ click_handler(0x468880);click_handler(0x468940)
+ result.edits.reset_labors={};for id,value in ipairs(d.allowed_labors)do if value then result.edits.reset_labors[#result.edits.reset_labors+1]=id end end
+ assert(#result.edits.reset_labors==1 and result.edits.reset_labors[1]==58,'Native Siege Operators defaults differ')
+ d.flags.whole=before.flags;d.icon=result.created.icon
+ for id=0,93 do d.allowed_labors[id]=false end;for _,id in ipairs(before.labors)do d.allowed_labors[id]=true end
+ for _,active in ipairs(df.global.world.units.active)do dfhack.units.setAutomaticProfessions(active)end
+ assert(json.encode(snapshot())==json.encode(before),'Edit fixture restoration failed')
+ -- The client and oracle alternate at each step, so full active-unit effects
+ -- are compared before the next command. No mutation is replayed on timeout.
+ for i,step in ipairs(result.edits.modes)do
+  result.edits.step=i;shot('work-details-edit-'..i..'-wire')
+  step.semantic=snapshot();assert(json.encode(step.semantic)==json.encode(step.snapshot),'Native mode effects differ')
+ end
+ d.flags.no_modify=true;d.icon=18
+ result.edits.step=4;shot('work-details-edit-4-wire')
+ result.edits.semantic_reset_labors={};for id,value in ipairs(d.allowed_labors)do if value then result.edits.semantic_reset_labors[#result.edits.semantic_reset_labors+1]=id end end
+ assert(json.encode(result.edits.semantic_reset_labors)==json.encode(result.edits.reset_labors),'Native reset defaults differ')
+ shot('work-details-edits-result');records[#records+1]={name='work-details-edits'};return
+end
 if defaults then
  -- Retain the removed object until process exit: native widgets may hold it.
  all:erase(#all-1)

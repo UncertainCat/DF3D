@@ -141,7 +141,7 @@
   },
   "root_lines": [
     {
-      "text": "                  Roderònul           Pop                                  Food  Drink           20th Malachite",
+      "text": "                  Roder\u00f2nul           Pop                                  Food  Drink           20th Malachite",
       "y": 0
     },
     {
@@ -261,7 +261,7 @@
       "y": 29
     },
     {
-      "text": "                                          Kogan Atîsteling, Miner        Master Miner",
+      "text": "                                          Kogan At\u00eesteling, Miner        Master Miner",
       "y": 30
     },
     {
@@ -333,7 +333,7 @@
       "y": 47
     },
     {
-      "text": "                                          Rûxu Kodkasprax",
+      "text": "                                          R\u00fbxu Kodkasprax",
       "y": 48
     },
     {
@@ -1060,5 +1060,1012 @@
     "owned_df_closed": true,
     "source_preserved": true,
     "plugin_hash": "71523317BF1D99BDCCEC2521F19EEFA96401F7B18D2D7CAE5974832B59E675E3"
+  },
+  "settings_catalog_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-103713",
+    "source": "Installed Steam DF 0.53.16 build 24557528; static executable inspection after protected settings capture",
+    "scope": "Ordered group/labor catalog and callback ownership discovery; not rendered DF3D editor acceptance",
+    "catalog_setup": "42ec5f..42edbe: 22 four-int constants plus final 75,79,80; 91 entries",
+    "caption_formatter": "acb830; jump table acc024; owned std::string output",
+    "settings_constructor": "42e6e0 -> 4652b0 -> 42b4e0; creates widgets and must not be called by runtime",
+    "groups": [
+      {
+        "id": -2,
+        "caption": "Woodworking",
+        "caption_rva": "0x16cf688",
+        "labors": [
+          {
+            "id": 11,
+            "caption": "Carpentry",
+            "caption_rva": "0x16a4fe0"
+          },
+          {
+            "id": 59,
+            "caption": "Crossbow-making",
+            "caption_rva": "0x16cf708"
+          }
+        ]
+      },
+      {
+        "id": -3,
+        "caption": "Stoneworking",
+        "caption_rva": "0x16cf678",
+        "labors": [
+          {
+            "id": 15,
+            "caption": "Masonry",
+            "caption_rva": "0x16a5030"
+          },
+          {
+            "id": 13,
+            "caption": "Stone Carving",
+            "caption_rva": "0x16a5000"
+          },
+          {
+            "id": 12,
+            "caption": "Stonecutting",
+            "caption_rva": "0x16a5010"
+          },
+          {
+            "id": 14,
+            "caption": "Stone Engraving",
+            "caption_rva": "0x16cf838"
+          }
+        ]
+      },
+      {
+        "id": -4,
+        "caption": "Hunting/Related",
+        "caption_rva": "0x16cf668",
+        "labors": [
+          {
+            "id": 16,
+            "caption": "Animal Training",
+            "caption_rva": "0x162fb70"
+          },
+          {
+            "id": 17,
+            "caption": "Animal Care",
+            "caption_rva": "0x16cf828"
+          },
+          {
+            "id": 26,
+            "caption": "Trapping",
+            "caption_rva": "0x16a5098"
+          },
+          {
+            "id": 27,
+            "caption": "Small Animal Dissection",
+            "caption_rva": "0x16cf848"
+          }
+        ]
+      },
+      {
+        "id": -5,
+        "caption": "Healthcare",
+        "caption_rva": "0x16cf6d8",
+        "labors": [
+          {
+            "id": 18,
+            "caption": "Diagnosis",
+            "caption_rva": "0x16cf818"
+          },
+          {
+            "id": 19,
+            "caption": "Surgery",
+            "caption_rva": "0x16a57e0"
+          },
+          {
+            "id": 20,
+            "caption": "Setting Bones",
+            "caption_rva": "0x16cf808"
+          },
+          {
+            "id": 21,
+            "caption": "Suturing",
+            "caption_rva": "0x16a57f8"
+          },
+          {
+            "id": 22,
+            "caption": "Dressing Wounds",
+            "caption_rva": "0x16cf890"
+          },
+          {
+            "id": 23,
+            "caption": "Feed Patients/Prisoners",
+            "caption_rva": "0x16cf878"
+          },
+          {
+            "id": 24,
+            "caption": "Recovering Wounded",
+            "caption_rva": "0x16cf860"
+          }
+        ]
+      },
+      {
+        "id": -6,
+        "caption": "Farming/Related",
+        "caption_rva": "0x16cf6c8",
+        "labors": [
+          {
+            "id": 25,
+            "caption": "Butchery",
+            "caption_rva": "0x16a5088"
+          },
+          {
+            "id": 29,
+            "caption": "Tanning",
+            "caption_rva": "0x16a52e8"
+          },
+          {
+            "id": 39,
+            "caption": "Farming (Fields)",
+            "caption_rva": "0x16cf788"
+          },
+          {
+            "id": 63,
+            "caption": "Dyeing",
+            "caption_rva": "0x16a52f0"
+          },
+          {
+            "id": 70,
+            "caption": "Pressing",
+            "caption_rva": "0x16a52f8"
+          },
+          {
+            "id": 71,
+            "caption": "Beekeeping",
+            "caption_rva": "0x16a5308"
+          },
+          {
+            "id": 31,
+            "caption": "Soap Making",
+            "caption_rva": "0x16a4fd0"
+          },
+          {
+            "id": 64,
+            "caption": "Wood Burning",
+            "caption_rva": "0x16a4e08"
+          },
+          {
+            "id": 61,
+            "caption": "Potash Making",
+            "caption_rva": "0x16a4de8"
+          },
+          {
+            "id": 62,
+            "caption": "Lye Making",
+            "caption_rva": "0x16a4df8"
+          },
+          {
+            "id": 34,
+            "caption": "Milling",
+            "caption_rva": "0x16a51e0"
+          },
+          {
+            "id": 30,
+            "caption": "Brewing",
+            "caption_rva": "0x16a51c8"
+          },
+          {
+            "id": 40,
+            "caption": "Plant Gathering",
+            "caption_rva": "0x16528f8"
+          },
+          {
+            "id": 35,
+            "caption": "Plant Processing",
+            "caption_rva": "0x16cf7a0"
+          },
+          {
+            "id": 36,
+            "caption": "Cheesemaking",
+            "caption_rva": "0x16a5238"
+          },
+          {
+            "id": 37,
+            "caption": "Milking",
+            "caption_rva": "0x16a5248"
+          },
+          {
+            "id": 78,
+            "caption": "Gelding",
+            "caption_rva": "0x16a5250"
+          },
+          {
+            "id": 66,
+            "caption": "Shearing",
+            "caption_rva": "0x16a5258"
+          },
+          {
+            "id": 67,
+            "caption": "Spinning",
+            "caption_rva": "0x16a57a0"
+          },
+          {
+            "id": 38,
+            "caption": "Cooking",
+            "caption_rva": "0x16a5230"
+          }
+        ]
+      },
+      {
+        "id": -7,
+        "caption": "Fishing/Related",
+        "caption_rva": "0x16cf6b8",
+        "labors": [
+          {
+            "id": 41,
+            "caption": "Fishing",
+            "caption_rva": "0x162ba20"
+          },
+          {
+            "id": 42,
+            "caption": "Fish Cleaning",
+            "caption_rva": "0x16a5078"
+          },
+          {
+            "id": 43,
+            "caption": "Fish Dissection",
+            "caption_rva": "0x16a5050"
+          }
+        ]
+      },
+      {
+        "id": -8,
+        "caption": "Metalsmithing",
+        "caption_rva": "0x16a4e38",
+        "labors": [
+          {
+            "id": 45,
+            "caption": "Furnace Operating",
+            "caption_rva": "0x16cf770"
+          },
+          {
+            "id": 46,
+            "caption": "Weaponsmithing",
+            "caption_rva": "0x16a4e18"
+          },
+          {
+            "id": 47,
+            "caption": "Armoring",
+            "caption_rva": "0x16cf7f8"
+          },
+          {
+            "id": 48,
+            "caption": "Blacksmithing",
+            "caption_rva": "0x16cf7e8"
+          },
+          {
+            "id": 49,
+            "caption": "Metalcrafting",
+            "caption_rva": "0x16cf7d8"
+          }
+        ]
+      },
+      {
+        "id": -9,
+        "caption": "Jewelry",
+        "caption_rva": "0x16cf6b0",
+        "labors": [
+          {
+            "id": 50,
+            "caption": "Gem Cutting",
+            "caption_rva": "0x16a4e48"
+          },
+          {
+            "id": 51,
+            "caption": "Gem Setting",
+            "caption_rva": "0x16a4e58"
+          }
+        ]
+      },
+      {
+        "id": -10,
+        "caption": "Crafts",
+        "caption_rva": "0x162c9d8",
+        "labors": [
+          {
+            "id": 28,
+            "caption": "Leatherworking",
+            "caption_rva": "0x16a52d8"
+          },
+          {
+            "id": 52,
+            "caption": "Woodcrafting",
+            "caption_rva": "0x16a4e68"
+          },
+          {
+            "id": 68,
+            "caption": "Pottery",
+            "caption_rva": "0x16a4e98"
+          },
+          {
+            "id": 72,
+            "caption": "Wax Working",
+            "caption_rva": "0x16a4ea0"
+          },
+          {
+            "id": 69,
+            "caption": "Glazing",
+            "caption_rva": "0x16a5318"
+          },
+          {
+            "id": 53,
+            "caption": "Stonecrafting",
+            "caption_rva": "0x16cf7c8"
+          },
+          {
+            "id": 54,
+            "caption": "Bone Carving",
+            "caption_rva": "0x16a51b0"
+          },
+          {
+            "id": 55,
+            "caption": "Glassmaking",
+            "caption_rva": "0x16a4ed0"
+          },
+          {
+            "id": 32,
+            "caption": "Weaving",
+            "caption_rva": "0x16a51c0"
+          },
+          {
+            "id": 33,
+            "caption": "Clothesmaking",
+            "caption_rva": "0x16cf7b8"
+          },
+          {
+            "id": 56,
+            "caption": "Strand Extraction",
+            "caption_rva": "0x16a4fb8"
+          },
+          {
+            "id": 81,
+            "caption": "Papermaking",
+            "caption_rva": "0x16a4e78"
+          },
+          {
+            "id": 82,
+            "caption": "Bookbinding",
+            "caption_rva": "0x16a4e88"
+          }
+        ]
+      },
+      {
+        "id": -11,
+        "caption": "Engineering",
+        "caption_rva": "0x15ffb98",
+        "labors": [
+          {
+            "id": 57,
+            "caption": "Siege Engineering",
+            "caption_rva": "0x16a52a0"
+          },
+          {
+            "id": 58,
+            "caption": "Siege Operating",
+            "caption_rva": "0x16cf718"
+          },
+          {
+            "id": 60,
+            "caption": "Mechanics",
+            "caption_rva": "0x16cf6f8"
+          },
+          {
+            "id": 65,
+            "caption": "Pump Operating",
+            "caption_rva": "0x16cf6e8"
+          }
+        ]
+      },
+      {
+        "id": -12,
+        "caption": "Hauling",
+        "caption_rva": "0x163ceb8",
+        "labors": [
+          {
+            "id": 1,
+            "caption": "Stone Hauling",
+            "caption_rva": "0x16cf8c0"
+          },
+          {
+            "id": 2,
+            "caption": "Wood Hauling",
+            "caption_rva": "0x16cf8b0"
+          },
+          {
+            "id": 6,
+            "caption": "Item Hauling",
+            "caption_rva": "0x16cf8f8"
+          },
+          {
+            "id": 3,
+            "caption": "Burial",
+            "caption_rva": "0x162cb50"
+          },
+          {
+            "id": 4,
+            "caption": "Food Hauling",
+            "caption_rva": "0x16cf8a0"
+          },
+          {
+            "id": 5,
+            "caption": "Refuse Hauling",
+            "caption_rva": "0x16cf908"
+          },
+          {
+            "id": 7,
+            "caption": "Furniture Hauling",
+            "caption_rva": "0x165e2b0"
+          },
+          {
+            "id": 8,
+            "caption": "Animal Hauling",
+            "caption_rva": "0x16cf8e8"
+          },
+          {
+            "id": 74,
+            "caption": "Trade Good Hauling",
+            "caption_rva": "0x16cf758"
+          },
+          {
+            "id": 77,
+            "caption": "Water Hauling",
+            "caption_rva": "0x16cf748"
+          },
+          {
+            "id": 73,
+            "caption": "Push/Haul Vehicles",
+            "caption_rva": "0x16cf8d0"
+          }
+        ]
+      },
+      {
+        "id": -13,
+        "caption": "Other Jobs",
+        "caption_rva": "0x16cf600",
+        "labors": [
+          {
+            "id": 9,
+            "caption": "Cleaning",
+            "caption_rva": "0x1602c08"
+          },
+          {
+            "id": 75,
+            "caption": "Lever Operation",
+            "caption_rva": "0x16cf738"
+          },
+          {
+            "id": 79,
+            "caption": "Road Building",
+            "caption_rva": "0x16cf728"
+          },
+          {
+            "id": 80,
+            "caption": "Wall/Floor Construction",
+            "caption_rva": "0x16cf698"
+          }
+        ]
+      }
+    ],
+    "individual_toggle": {
+      "rva": "468ec0",
+      "length": "1c",
+      "inputs": "closure+8 points to owned context; closure+10 is labor ID; context+1d0 points to 94-byte allowed-labors array",
+      "effects": "Toggle only that labor byte. No automatic-profession recalculation in this leaf."
+    },
+    "group_toggle": {
+      "rva": "469020",
+      "length": "124",
+      "inputs": "closure+8 points to owned context; closure+10 is negative group ID; context+1b8 holds owned ordered catalog vector; context+1d0 points to allowed-labors array",
+      "effects": "Find group and following nonnegative IDs. Enable all if any is disabled, otherwise disable all. No automatic-profession recalculation in this leaf."
+    },
+    "mode_handlers": [
+      {
+        "rva": "468760",
+        "length": "69",
+        "mode": 1,
+        "label": "Everybody does this",
+        "effects": "No change if cannot_be_everybody; otherwise set mode and recalculate active units with4390d0"
+      },
+      {
+        "rva": "468660",
+        "length": "4e",
+        "mode": 3,
+        "label": "Only selected do this",
+        "effects": "Set mode and recalculate active units with4390d0"
+      },
+      {
+        "rva": "468560",
+        "length": "4e",
+        "mode": 2,
+        "label": "Nobody does this",
+        "effects": "Set mode and recalculate active units with4390d0"
+      }
+    ],
+    "mode_inputs": "Each mode closure reads only a work_detail pointer at offset8, then simulation active units; no menu state.",
+    "pending": [
+      "Native Done/reset/delete effects and recalculation timing",
+      "Exact worker sorting/partition application",
+      "Runtime semantic catalog exposure and full rendered editor"
+    ],
+    "done_handler": {
+      "rva": "468d20",
+      "target": "42cd50",
+      "effects": "Rebuild selected-detail worker UI; no direct4390d0 call. Must not call runtime; recalculation timing still needs effect capture."
+    },
+    "delete_handler": {
+      "rva": "468b60",
+      "effects": "Remove and destroy detail; recalculate active units; rebuild native list42f190. Whole handler prohibited runtime."
+    },
+    "reset_handler": {
+      "rva": "468940",
+      "effects": "Clear all94 labor bytes and switch on icon for built-in defaults; no menu reads in inspected entry. Full body/pin and effect acceptance pending."
+    },
+    "worker_skill_setup": {
+      "source": "42d8a0..42de34; switch table42e188; skills array at428",
+      "rule": "Every enabled labor sets each listed skill weight to1; union, not accumulation. Labors83..93 have no switch cases.",
+      "mapping": [
+        {
+          "labor": 0,
+          "skills": [
+            0
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 10,
+          "skills": [
+            1
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 11,
+          "skills": [
+            2
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 12,
+          "skills": [
+            135
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 13,
+          "skills": [
+            136
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 14,
+          "skills": [
+            3
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 15,
+          "skills": [
+            4
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 16,
+          "skills": [
+            5
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 17,
+          "skills": [
+            6
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 18,
+          "skills": [
+            58
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 19,
+          "skills": [
+            59
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 20,
+          "skills": [
+            60
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 21,
+          "skills": [
+            61
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 22,
+          "skills": [
+            57
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 25,
+          "skills": [
+            10
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 26,
+          "skills": [
+            11
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 27,
+          "skills": [
+            8
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 28,
+          "skills": [
+            35
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 29,
+          "skills": [
+            12
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 30,
+          "skills": [
+            14
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 31,
+          "skills": [
+            65
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 32,
+          "skills": [
+            13
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 33,
+          "skills": [
+            15
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 34,
+          "skills": [
+            16
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 35,
+          "skills": [
+            17
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 36,
+          "skills": [
+            18
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 37,
+          "skills": [
+            19
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 38,
+          "skills": [
+            20
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 39,
+          "skills": [
+            21
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 40,
+          "skills": [
+            22
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 41,
+          "skills": [
+            23
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 42,
+          "skills": [
+            9
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 43,
+          "skills": [
+            7
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 44,
+          "skills": [
+            43,
+            51,
+            98,
+            56
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 45,
+          "skills": [
+            24
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 46,
+          "skills": [
+            26
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 47,
+          "skills": [
+            27
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 48,
+          "skills": [
+            28
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 49,
+          "skills": [
+            33
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 50,
+          "skills": [
+            29
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 51,
+          "skills": [
+            30
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 52,
+          "skills": [
+            31
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 53,
+          "skills": [
+            32
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 54,
+          "skills": [
+            36
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 55,
+          "skills": [
+            34
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 56,
+          "skills": [
+            25
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 57,
+          "skills": [
+            46
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 58,
+          "skills": [
+            47
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 59,
+          "skills": [
+            48
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 60,
+          "skills": [
+            54
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 61,
+          "skills": [
+            66
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 62,
+          "skills": [
+            64
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 63,
+          "skills": [
+            67
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 64,
+          "skills": [
+            63
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 65,
+          "skills": [
+            68
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 66,
+          "skills": [
+            107
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 67,
+          "skills": [
+            108
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 68,
+          "skills": [
+            109
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 69,
+          "skills": [
+            110
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 70,
+          "skills": [
+            111
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 71,
+          "skills": [
+            112
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 72,
+          "skills": [
+            113
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 78,
+          "skills": [
+            115
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 81,
+          "skills": [
+            131
+          ],
+          "weight": 1
+        },
+        {
+          "labor": 82,
+          "skills": [
+            132
+          ],
+          "weight": 1
+        }
+      ]
+    }
   }
 }

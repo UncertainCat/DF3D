@@ -98,6 +98,30 @@ DF34932 closes unsaved with source preservation; joined client logs contain only
 the known separate-thread notice. Native30FPS/headless client, GPU60C sampled
 after the final run; no further graphical checks in this milestone.
 
+The settings catalog is recovered from42ec5f..42edbe: 12 group headers and79
+labors in native order, with captions supplied by the owned-string formatter
+acb830. `settings_catalog_reference` preserves the IDs, order, caption sources
+and callback boundaries for the editor. Individual toggle468ec0 consumes an
+explicit labor ID and allowed-labors array. Group toggle469020 consumes that
+array plus the ordered catalog, enabling the group unless all entries are already
+enabled. Both can use independently owned storage; neither leaf recalculates
+professions. The constructor42e6e0/42b4e0 creates widgets and is prohibited at
+runtime. Mode handlers468760/468660/468560 consume only an explicit detail
+pointer and recalculate active units; Everybody additionally checks its protected
+flag. These newly identified handlers are not yet wired or live accepted.
+
+Done468d20 calls the selected-detail widget builder42cd50; it is not a standalone
+simulation commit. Delete468b60 combines destruction/recalculation with native
+list rebuilding and cannot be called whole. Reset468940 writes built-in labor
+defaults by icon; its full pin and effect acceptance remain pending. Do not infer
+settings recalculation timing from the current Lua editor implementation.
+Worker setup42d8a0..42de34 supplies65 labor-to-skill branches: enabled labors set
+each associated skill weight to1, taking a union rather than accumulating shared
+skills. The fixture retains those mappings. Exact worker sorting/partitioning,
+runtime catalog exposure and the rendered full editor remain unfinished. This
+discovery used the installed executable and existing protected capture103713;
+it launched no DF or Godot processes.
+
 ## Residents native list discovery
 
 Residents Activity has distinct job-settings and event-description routes.

@@ -45,6 +45,20 @@ key('D_ORDERS');assert(m.info.open)
 assert(click_label('Encrust',584),'Fixture needs visible Encrust order')
 local details=m.job_details;assert(details.open and details.wq)
 local order=details.wq;local before={spec=order.specdata.hist_figure_id,typ=order.art_spec.type,id=order.art_spec.id,subid=order.art_spec.subid}
+if os.getenv('DF3D_WORK_ORDER_TEXT_INPUT')=='1' then
+ key('LEAVESCREEN')
+ local amount,left=order.amount_total,order.amount_left
+ local menu=m.info.work_orders
+ mouse(112,430)
+ assert(menu.entering_number and menu.entering_wq==order and menu.number_str=='','Order text did not focus empty quantity entry')
+ key('STRING_A049');key('STRING_A050')
+ assert(order.amount_total==12 and order.amount_left==12,'Native text quantity effect differs')
+ shot('work-order-text-quantity')
+ key('SELECT');assert(not menu.entering_number)
+ order.amount_total=amount;order.amount_left=left
+ records[#records+1]={name='work-order-text-input',point={112,430},quantity=12,restored=true}
+ return
+end
 if os.getenv('DF3D_WORK_ORDER_TAB_REFERENCE')=='1' then
  key('LEAVESCREEN');mouse(552,430);assert(m.info.work_orders.conditions.open)
  assert(click_label('Work orders'));shot('work-order-tab-self')
@@ -174,6 +188,8 @@ end
 if os.getenv('DF3D_WORK_ORDER_NAVIGATION')=='1' then
  local quantity,remaining,limit,frequency=order.amount_total,order.amount_left,order.max_workshops,order.frequency
  local edits=os.getenv('DF3D_WORK_ORDER_RESIZED_EDIT')=='1'
+ local text_edit=os.getenv('DF3D_WORK_ORDER_RESIZED_TEXT_EDIT')=='1'
+ assert(not text_edit or edits,'Text edit scope requires resized edits')
  local filters=os.getenv('DF3D_WORK_ORDER_RESIZED_FILTER')=='1'
  assert(not filters or edits,'Resized filters require resized edit scope')
  local material_type,material_index,dependency
@@ -191,10 +207,10 @@ if os.getenv('DF3D_WORK_ORDER_NAVIGATION')=='1' then
   key('LEAVESCREEN');mouse(584,430);assert(details.open)
  end
  local threshold=edits and order.item_conditions[0].compare_val or -1
- local f=assert(io.open(out..'/work-order-navigation-expected.json','w'));f:write(json.encode({id=order.id,edits=edits,filters=filters,material_type=material_type,material_index=material_index,dependency=dependency,remaining=remaining,limit=limit,threshold=threshold}));f:close()
+ local f=assert(io.open(out..'/work-order-navigation-expected.json','w'));f:write(json.encode({id=order.id,edits=edits,text_edit=text_edit,filters=filters,material_type=material_type,material_index=material_index,dependency=dependency,remaining=remaining,limit=limit,threshold=threshold}));f:close()
  shot('work-order-navigation-wire')
  f=assert(io.open(out..'/work-order-navigation-wire-result.json'));local result=json.decode(f:read('*a'));f:close();assert(result.success,'Work orders navigation failed')
- assert(order.amount_total==(edits and remaining+1 or quantity) and order.amount_left==remaining+(edits and 1 or 0) and order.max_workshops==limit+(edits and 1 or 0) and order.frequency==frequency,'Navigation/edit order quantities or frequency differ')
+ assert(order.amount_total==(text_edit and 12 or edits and remaining+1 or quantity) and order.amount_left==(text_edit and 12 or remaining+(edits and 1 or 0)) and order.max_workshops==limit+(edits and 1 or 0) and order.frequency==frequency,'Navigation/edit order quantities or frequency differ')
  if edits then assert(order.item_conditions[0].compare_val==threshold+1,'Resized condition edit differs')end
  if filters then
   assert(order.item_conditions[0].mat_type==material_type and order.item_conditions[0].mat_index==material_index,'Resized material selection differs')

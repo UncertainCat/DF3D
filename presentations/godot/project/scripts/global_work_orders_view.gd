@@ -121,6 +121,10 @@ func _gui_input(event: InputEvent) -> void:
 				9:state.set_limit(row.id,maxi(0,row.max_workshops-1))
 				10:state.remove_order(row.id)
 			queue_redraw();accept_event();return
+		# Native3c5af8/3c5e28 includes the status/name/quantity region to the
+		# left of the validation column, not just the number-entry button.
+		if Rect2(16,y,controls_x()-16,36).has_point(event.position):
+			finish_entry();editing_id=row.id;editing_limit=false;queue_redraw();accept_event();return
 func hover_kind(point: Vector2) -> String:
 	if state==null or state.phase!=state.Phase.Ready:return ""
 	if state.native_state.get("manager_available",false) and Rect2(size.x-48,list_top(),32,36).has_point(point):return "new"

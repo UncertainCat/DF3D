@@ -75,6 +75,15 @@ func run() -> void:
   for candidate in owner.global_orders.rows.values():
    if int(candidate.id)==int(plan.id):row=candidate
   check(row.get("max_workshops",-1)==int(plan.limit)+1,"Resized workshop limit differs")
+  if plan.get("text_edit",false):
+   click(Vector2(112,y))
+   check(owner.global_orders_view.editing_id==int(plan.id) and not owner.global_orders_view.editing_limit and owner.global_orders_view.draft.is_empty(),"Order text did not focus empty quantity entry")
+   number_key(KEY_1,49);number_key(KEY_2,50)
+   if not check(await settle(service,func():return owner.global_orders.phase==owner.global_orders.Phase.Ready and owner.global_orders.ticket==0),"Text quantity edit was not confirmed"):quit(1);return
+   row=owner.global_orders.find_order(int(plan.id))
+   check(row.get("remaining",-1)==12 and row.get("total",-1)==12,"Text quantity effect differs")
+   number_key(KEY_ENTER)
+   check(owner.global_orders_view.editing_id==-1,"Enter retained text quantity focus")
  click(order_point(owner,int(plan.id),6))
  if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready),"Details navigation failed"):quit(1);return
  await resize_view(Vector2i(912,552))

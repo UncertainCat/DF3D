@@ -7467,6 +7467,18 @@ visually inspected. Capture setup waits for the resized renderer to settle;
 earlier unsettled images are not acceptance evidence. Core19/19 and composition
 pass; paired rendered logs contain only documented diagnostics.
 
+Global Work orders quantity entry also activates from the status/name/quantity
+region left of the validation column, matching native3c5af8/3c5e28. Protected
+010704 on2026-11-06 clicks the order text, verifies an empty draft, types12 and
+observes both total and remaining become12, then restores the original values.
+The composed viewer flow010805 (`DF3D_WORK_ORDER_RESIZED_TEXT_EDIT=1` with the
+navigation/edit flags) performs the same text-click edit at wide size and checks
+Enter focus release; independent native readback confirms12 in both fields.
+Owned DF8556/24252 exit unsaved with source preservation. Core19/19 and composition
+pass in `build/qa/work-orders-text-entry`; paired live logs have only documented
+diagnostics. This does not resolve the separate upper-bound or narrow-overlap
+decisions.
+
 The global Work orders view uses the shared native hover service for active
 status, quantity, priority, Conditions, Details, removal and workshop limits.
 Protected002223 on2026-11-06 captures exact native24-cell text and instruction

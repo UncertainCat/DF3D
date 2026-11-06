@@ -93,6 +93,9 @@ func run() -> void:
    if not check(await settle(service,func():return state.preview_ticket==0 and not state.preview_lines.is_empty()),"Subject preview failed"):quit(1);return
    check(state.preview_lines==subject.preview,"Subject preview differs from native")
    await capture("subject-"+str(int(subject.page)),"hover")
+   if OS.get_environment("DF3D_WORK_ORDER_ARTWORK_FOOTER_INPUT")=="1":
+    click(Vector2(200,728))
+    check(state.phase==state.Phase.Ready and state.ticket==0 and state.art_page()==int(subject.page),"Footer click selected an invisible subject")
    motion=InputEventMouseMotion.new();motion.position=Vector2(200,110);motion.global_position=motion.position;root.push_input(motion,true)
    check(state.preview_lines.is_empty(),"Subject preview survived pointer leave")
    var back_event:=InputEventMouseButton.new();back_event.button_index=MOUSE_BUTTON_RIGHT;back_event.pressed=true;root.push_input(back_event,true)

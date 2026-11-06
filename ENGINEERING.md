@@ -7367,6 +7367,18 @@ only documented diagnostics. Core19/19 and composition pass in
 `build/qa/artwork-tail-reflow`. Resize during an outstanding wire read is covered
 by the shared reflow path but is not separately exercised by this live capture.
 
+Artwork subject selection is bounded by the rendered row capacity. The former
+frame-height hitbox included the description footer and could submit selection
+of a cached but invisible subject. `DF3D_WORK_ORDER_ARTWORK_FOOTER_INPUT=1` with
+the subject-hover/reference/wire flags verifies footer clicks at1200x800 for
+historical figures, sites and civilizations: native keeps each picker open and
+leaves artwork unchanged; the viewer remains Ready with no request submitted.
+Protected013821 on2026-11-06 also retains the existing hover/scroll/Back checks
+and independent unchanged-order readback. DF39096 exits unsaved with the source
+preserved; paired logs contain only documented diagnostics. Core19/19 and
+composition pass in `build/qa/artwork-footer-input-fixed`. The initial gate
+failed a local type-inference error and is not acceptance evidence.
+
 Protected010525 on2026-11-02 exercises Existing image in the shared viewer after
 the assembled Work orders/conditions/Details workflow. Hover text and wrapping
 match the native observation, and group/civilization badges match. Selection

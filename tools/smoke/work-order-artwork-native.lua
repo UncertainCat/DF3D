@@ -372,6 +372,11 @@ if os.getenv('DF3D_WORK_ORDER_ARTWORK_SUBJECT_HOVER')=='1' then
   shot('work-order-artwork-subject-'..page..'-before')
   g.precise_mouse_x=200;g.precise_mouse_y=190;g.mouse_x=25;g.mouse_y=15;view:render(dfhack.getTickCount())
   shot('work-order-artwork-subject-'..page..'-hover')
+  if os.getenv('DF3D_WORK_ORDER_ARTWORK_FOOTER_INPUT')=='1' then
+   mouse(200,g.dimy*12-64)
+   assert(art.open and art.current_option==page,'Native footer selected an artwork subject')
+   assert(order.art_spec.type==before.typ and order.art_spec.id==before.id and order.art_spec.subid==before.subid,'Native footer changed artwork')
+  end
   back();assert(art.current_option==-1)
  end
  if os.getenv('DF3D_WORK_ORDER_ARTWORK_WIRE')=='1' then

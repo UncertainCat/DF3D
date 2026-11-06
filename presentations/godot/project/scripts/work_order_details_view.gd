@@ -122,7 +122,10 @@ func _gui_input(event: InputEvent) -> void:
 	if searching and Rect2(16,96 if state.has_art() else 84,size.x-32,36).has_point(event.position):
 		search_focused=not search_focused;queue_redraw();accept_event();return
 	var top:=list_top() if selected>=0 else 48
-	if not Rect2(16,top,size.x-48,size.y-top-24).has_point(event.position):return
+	# Subject descriptions and unused space below the last complete row are
+	# not list entries. Keep the input extent identical to the drawn rows.
+	var height: float=page_rows*36 if selected>=0 and state.has_art() and state.art_page()>=0 else size.y-top-24
+	if not Rect2(16,top,size.x-48,height).has_point(event.position):return
 	var index:=int((event.position.y-top)/36)
 	if selected>=0:
 		if state.has_art() and state.art_page()<0 and event.position.x>=360:return

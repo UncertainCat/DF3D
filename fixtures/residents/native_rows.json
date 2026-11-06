@@ -9,7 +9,9 @@
     "appearance_source": "build\\stockpile-storage-native-input-20261106-034303",
     "appearance_scope": "Thirteen headless composed images compared against native anchored full-body RGBA surfaces, channel sum tolerance0.02, transparent pixels ignored. Original pages/palettes/layers only; no artwork retained.",
     "happiness_source": "build\\stockpile-storage-native-input-20261106-040237",
-    "happiness_scope": "Thirteen displayed native indicator tiers match owned native construction and typed wire replies. Native 2x2 cell bounds retained; no hover acceptance."
+    "happiness_scope": "Thirteen displayed native indicator tiers match owned native construction and typed wire replies. Native 2x2 cell bounds retained; no hover acceptance.",
+    "specialization_rows_source": "build\\stockpile-storage-native-input-20261106-042405",
+    "specialization_rows_scope": "Typed row receipts; revision strings retain exact 64-bit values in JSON."
   },
   "viewport": [
     1200,
@@ -456,7 +458,11 @@
             "DWARF_HAIR"
           ]
         },
-        "happiness": 3
+        "happiness": 3,
+        "specialization": {
+          "only_assigned": false,
+          "revision": "4542688002941729845"
+        }
       },
       "screen": [
         [
@@ -830,7 +836,11 @@
             "DWARF_HAIR"
           ]
         },
-        "happiness": 4
+        "happiness": 4,
+        "specialization": {
+          "only_assigned": false,
+          "revision": "973269943266624733"
+        }
       },
       "screen": [
         [
@@ -1240,7 +1250,11 @@
             "WIELDABLES"
           ]
         },
-        "happiness": 0
+        "happiness": 0,
+        "specialization": {
+          "only_assigned": false,
+          "revision": "7282261935731538254"
+        }
       },
       "screen": [
         [
@@ -1624,7 +1638,11 @@
             "WIELDABLES"
           ]
         },
-        "happiness": 2
+        "happiness": 2,
+        "specialization": {
+          "only_assigned": false,
+          "revision": "3431996245521084396"
+        }
       },
       "screen": [
         [
@@ -1997,7 +2015,11 @@
             "DWARF_HAIR"
           ]
         },
-        "happiness": 2
+        "happiness": 2,
+        "specialization": {
+          "only_assigned": false,
+          "revision": "2585421892178140357"
+        }
       },
       "screen": [
         [
@@ -2382,7 +2404,11 @@
             "DWARF_HAIR"
           ]
         },
-        "happiness": 5
+        "happiness": 5,
+        "specialization": {
+          "only_assigned": false,
+          "revision": "3950147953452767205"
+        }
       },
       "screen": [
         [
@@ -2729,7 +2755,11 @@
             "DWARF_WEARABLES"
           ]
         },
-        "happiness": 3
+        "happiness": 3,
+        "specialization": {
+          "only_assigned": false,
+          "revision": "98450723047867768"
+        }
       },
       "screen": [
         [
@@ -3102,7 +3132,11 @@
             "DWARF_HAIR"
           ]
         },
-        "happiness": 3
+        "happiness": 3,
+        "specialization": {
+          "only_assigned": false,
+          "revision": "6007388534045680970"
+        }
       },
       "screen": [
         [
@@ -3475,7 +3509,11 @@
             "DWARF_HAIR"
           ]
         },
-        "happiness": 2
+        "happiness": 2,
+        "specialization": {
+          "only_assigned": false,
+          "revision": "4123588482789127824"
+        }
       },
       "screen": [
         [
@@ -3822,7 +3860,11 @@
             "DWARF_WEARABLES"
           ]
         },
-        "happiness": 1
+        "happiness": 1,
+        "specialization": {
+          "only_assigned": false,
+          "revision": "4882855335978237562"
+        }
       },
       "screen": [
         [
@@ -4194,7 +4236,11 @@
             "WIELDABLES"
           ]
         },
-        "happiness": 3
+        "happiness": 3,
+        "specialization": {
+          "only_assigned": false,
+          "revision": "4072061640169484212"
+        }
       },
       "screen": [
         [
@@ -4591,7 +4637,11 @@
             "DWARF_HAIR"
           ]
         },
-        "happiness": 2
+        "happiness": 2,
+        "specialization": {
+          "only_assigned": false,
+          "revision": "6467035634959614455"
+        }
       },
       "screen": [
         [
@@ -4950,7 +5000,11 @@
             "DWARF_WEARABLES"
           ]
         },
-        "happiness": 2
+        "happiness": 2,
+        "specialization": {
+          "only_assigned": false,
+          "revision": "7539898349789823887"
+        }
       },
       "screen": [
         [

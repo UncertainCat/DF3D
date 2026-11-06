@@ -2,7 +2,7 @@ extends RefCounted
 # Native roster ordering and row content; no local eligibility, search or sorting.
 signal changed
 const C=preload("res://scripts/management_contract.gd")
-enum Phase { Closed, Reading, Ready, Rejected, Unavailable }
+enum Phase { Closed, Reading, Ready, Rejected, Unavailable, Applying }
 var service
 var phase:=Phase.Closed
 var generation:=0
@@ -36,13 +36,14 @@ func _session_changed() -> void:
 func open() -> void:
 	close();sort=C.ResidentsSort.Category;directions=[false,false,false,false,false];query=PackedByteArray();refresh()
 func select_sort(value: int) -> void:
-	if value<0 or value>=directions.size() or phase==Phase.Closed:return
+	if value<0 or value>=directions.size() or phase in [Phase.Closed,Phase.Applying]:return
 	if sort==value:directions[value]=not directions[value]
 	sort=value;first=0;refresh()
 func set_query(value: PackedByteArray) -> void:
-	if value.size()>128 or value.has(0) or value==query or phase==Phase.Closed:return
+	if value.size()>128 or value.has(0) or value==query or phase in [Phase.Closed,Phase.Applying]:return
 	query=value.duplicate();first=0;refresh()
 func refresh() -> void:
+	if phase==Phase.Applying:return
 	retire();rows={};ids=PackedInt32Array();roster_ready=false
 	if service==null:phase=Phase.Unavailable;changed.emit();return
 	phase=Phase.Reading
@@ -56,6 +57,22 @@ func refresh() -> void:
 		first=clampi(first,0,maxi(0,ids.size()-capacity));_fill();changed.emit())
 	if ticket==0:phase=Phase.Unavailable
 	changed.emit()
+func specialize(id: int) -> void:
+	if phase!=Phase.Ready or ticket!=0 or service==null:return
+	var receipt: Dictionary=rows.get(id,{}).get("specialization",{})
+	if receipt.is_empty() or int(receipt.get("revision",0))<=0:return
+	var desired: bool=not receipt.only_assigned
+	var owner:=generation
+	phase=Phase.Applying
+	ticket=service.submit("residents_specialization",{"action":C.ManagementAction.ResidentsSpecialize,"unit_id":id,"expected_revision":receipt.revision,"only_assigned":desired},func(received,result,_sent):
+		if owner!=generation or received!=ticket:return
+		ticket=0
+		var value: Dictionary=result.get("residents_specialization",{})
+		if result.get("outcome","")=="unknown" or result.get("status",-1)!=C.ManagementStatus.Ok or result.get("action",-1)!=C.ManagementAction.ResidentsSpecialize or value.get("unit_id",-1)!=id or value.get("outcome",-1)!=C.ResidentsSpecializationOutcome.Applied or value.get("only_assigned")!=desired:
+			_reject();return
+		phase=Phase.Ready;refresh())
+	if ticket==0:_reject()
+	else:changed.emit()
 func seek(offset: int,count: int) -> void:
 	capacity=clampi(count,0,64);first=clampi(offset,0,maxi(0,ids.size()-capacity))
 	_fill();changed.emit()

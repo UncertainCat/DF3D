@@ -31,6 +31,28 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Residents native list discovery
 
+The staged Residents specialization button uses the native4x3-cell worker
+artwork at local696,y. It submits the displayed receipt through the shared
+semantic action service, suppresses duplicate pending edits, and refreshes native
+query/rows only after confirmed application. Rejection or uncertainty retires
+row authority without replay. Closing/session retirement detaches the observer;
+late completion cannot reopen the panel. The headless controller test covers
+receipt use, duplicate suppression, refresh and late completion after close.
+
+Protected042626 on2026-11-06 additionally loads the actual staged view/controller
+and shared service in the headless engine. Two Input.parse_input_event mouse
+clicks on the visible button toggle native unit5573 on and off, each followed by
+fresh native rows. This establishes composed input/service/native behavior; it is
+not a simultaneous graphical live-screen capture. The six typed adult/child/baby
+toggles and stale rejections still pass. DF35460 exits unsaved; source unchanged;
+paired logs contain only the known separate-thread notice. Offline
+`residents-specialization-render` passes with documented shutdown diagnostics;
+its default button column was visually inspected, with existing7882 name pixels
+still matching. The fixture retains typed specialization values and revisions
+as decimal strings to avoid JSON floating-point loss. Native and offline
+rendering run serially at30FPS; observed GPU35–37C. Tooltip, equipment-pickup
+cancellation effects, full lifecycle and public route acceptance remain open.
+
 Management133 ResidentsRowsRead includes optional specialization receipts with
 a positive signed-range revision and current only-assigned value. The dedicated
 ResidentsSpecialize request uses the stable unit ID, that revision and desired
@@ -93,7 +115,7 @@ MSVC and `residents-happiness` core19/19/state checks pass. Offline
 `residents-happiness-render` passes with documented Godot diagnostics; rendered
 happiness placement/artwork was inspected against the native screen. Native and
 offline graphics ran serially at30FPS, with observed GPU35–36C. Hover,
-specialization, work-detail controls and complete screen acceptance remain open.
+specialization hover, work-detail controls and complete screen acceptance remain open.
 
 `residents_state.gd` and `residents_view.gd` are staged components, not a public
 route. The state uses the shared semantic action service for native query order

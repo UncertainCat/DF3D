@@ -79,7 +79,68 @@ func run() -> void:
 		check(world.management_request("residents",bad)==0,"Malformed Residents query accepted")
 	var cleared:=await request("construction",{"action":C.ManagementAction.Catalog})
 	check(cleared.get("status")==C.ManagementStatus.Ok and not cleared.has("residents") and not cleared.has("residents_rows"),"Unrelated reply retained Residents result")
+	var specialization_results: Array=[]
+	if FileAccess.file_exists(directory+"/residents-specialization-reference.json"):
+		var references: Array=JSON.parse_string(FileAccess.get_file_as_string(directory+"/residents-specialization-reference.json"))
+		for target: Dictionary in references:
+			var id:=int(target.id)
+			var read_intent: Dictionary={"action":C.ManagementAction.ResidentsRowsRead,"unit_ids":PackedInt32Array([id]),"columns":30,"show_gender":false}
+			var response:=await request("residents_rows",read_intent)
+			var before: Dictionary=response.get("residents_rows",{}).get("rows",[{}])[0].get("specialization",{})
+			if not check(not before.is_empty(),"Specialization receipt missing"):continue
+			for direction in 2:
+				var desired: bool=not before.only_assigned
+				var intent: Dictionary={"action":C.ManagementAction.ResidentsSpecialize,"unit_id":id,"expected_revision":before.revision,"only_assigned":desired}
+				var applied:=await request("residents_specialization",intent)
+				var value: Dictionary=applied.get("residents_specialization",{})
+				check(applied.get("status")==C.ManagementStatus.Ok and value.get("unit_id")==id and value.get("outcome")==C.ResidentsSpecializationOutcome.Applied and value.get("only_assigned")==desired,"Residents specialization application differs")
+				var stale:=await request("residents_specialization",intent)
+				check(stale.get("status")==C.ManagementStatus.Rejected and stale.get("residents_specialization",{}).get("outcome")==C.ResidentsSpecializationOutcome.Stale,"Old specialization receipt was reused")
+				response=await request("residents_rows",read_intent)
+				before=response.get("residents_rows",{}).get("rows",[{}])[0].get("specialization",{})
+				check(before.get("only_assigned")==desired,"Specialization readback differs")
+				specialization_results.append({"id":id,"kind":target.kind,"only_assigned":desired,"outcome":value.get("outcome")})
+		var unrelated:=await request("construction",{"action":C.ManagementAction.Catalog})
+		check(not unrelated.has("residents_specialization"),"Unrelated reply retained specialization result")
+	var scene_results: Array=[]
+	if not specialization_results.is_empty():scene_results=await specialization_scene()
 	var file:=FileAccess.open(directory+"/residents-wire-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"comparisons":results,"row_comparisons":row_comparisons}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"comparisons":results,"row_comparisons":row_comparisons,"specialization_results":specialization_results,"scene_results":scene_results}));file.close()
 	world.queue_free();await process_frame
 	quit(1 if failed else 0)
+
+func resident_ready(state) -> bool:
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline:
+		world.poll()
+		if state.phase==state.Phase.Ready and state.ticket==0:return true
+		if state.phase in [state.Phase.Rejected,state.Phase.Unavailable]:return false
+		await create_timer(0.01).timeout
+	return false
+func specialization_scene() -> Array:
+	var results: Array=[]
+	if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Residents scene assets unavailable"):return results
+	root.size=Vector2i(1200,800)
+	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
+	for frame in 5:world.poll();await process_frame
+	var state=preload("res://scripts/residents_state.gd").new();state.configure(service);state.open()
+	if not check(await resident_ready(state),"Residents service failed to open"):
+		state.dispose();service.queue_free();return results
+	var view=preload("res://scripts/residents_view.gd").new();root.add_child(view);view.configure_residents(world,state);view.layout(Vector2(1200,800))
+	await process_frame
+	var id: int=state.row_at(0).id
+	var original: bool=state.row_at(0).specialization.only_assigned
+	for direction in 2:
+		var before: bool=state.row_at(0).specialization.only_assigned
+		var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=true
+		click.position=view.position+Vector2(708,view.list_top()+18);click.global_position=click.position
+		Input.parse_input_event(click);await process_frame
+		var release:=InputEventMouseButton.new();release.button_index=MOUSE_BUTTON_LEFT;release.pressed=false;release.position=click.position;release.global_position=click.position
+		Input.parse_input_event(release);await process_frame
+		var ready:=await resident_ready(state)
+		var row: Dictionary=state.row_at(0)
+		check(ready and row.get("id",-1)==id and row.get("specialization",{}).get("only_assigned")==(not before),"Residents button/service toggle failed")
+		results.append({"id":id,"ready":ready,"only_assigned":row.get("specialization",{}).get("only_assigned")})
+	check(state.row_at(0).get("specialization",{}).get("only_assigned")==original,"Residents scene did not restore specialization")
+	state.dispose();view.queue_free();service.queue_free();await process_frame
+	return results

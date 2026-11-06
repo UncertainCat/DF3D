@@ -15,7 +15,9 @@ func run() -> void:
 	var reference: Dictionary=numbers(JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/residents/native_rows.json")))
 	var state=preload("res://scripts/residents_state.gd").new()
 	state.ids=PackedInt32Array(reference.unit_ids);state.phase=state.Phase.Ready
-	for sample: Dictionary in reference.samples:state.rows[int(sample.id)]=sample.provider
+	for sample: Dictionary in reference.samples:
+		if sample.provider.has("specialization"):sample.provider.specialization.revision=int(sample.provider.specialization.revision)
+		state.rows[int(sample.id)]=sample.provider
 	var view=preload("res://scripts/residents_view.gd").new();root.add_child(view)
 	view.ticks_override=500;view.configure_residents(world,state);view.layout(Vector2(1200,800))
 	for frame in 3:await process_frame;await RenderingServer.frame_post_draw

@@ -76,6 +76,10 @@ func _gui_input(event: InputEvent) -> void:
 		state.seek(state.first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1),page_rows);accept_event()
 	elif event.button_index==MOUSE_BUTTON_LEFT:
 		search.release_focus()
+		for index in page_rows:
+			var row: Dictionary=state.row_at(state.first+index)
+			if not row.is_empty() and row.has("specialization") and Rect2(696,list_top()+index*36,32,36).has_point(event.position):
+				state.specialize(int(row.id));accept_event();return
 		for index in SORTS.size():
 			if Rect2(SORT_X[index]*8,list_top()-24,SORT_WIDTH[index]*8,12).has_point(event.position):state.select_sort(SORTS[index]);break
 		accept_event()
@@ -125,6 +129,9 @@ func _draw() -> void:
 			text(row.first_line,Vector2(56,y+24),int(ink[0])+8*int(ink[2]),240)
 			text(row.second_line,Vector2(56,y+36),int(ink[0])+8*int(ink[2]),240)
 		text(row.activity.caption,Vector2(368,y+24),int(row.activity.fg)+8*int(row.activity.bright),280)
+		if row.has("specialization"):
+			var specialization: Texture2D=art.texture("WORKER_ONLY_DO_ASSIGNED_JOBS" if row.specialization.only_assigned else "WORKER_DO_ANY_AVAILABLE_JOB")
+			if specialization!=null:draw_texture_rect(specialization,Rect2(696,y,32,36),false)
 		if row.has("happiness"):
 			# Native1428db0 returns indicator6..12; graphics parser1100d63
 			# maps these to BUTTON_STRESS_0..6. Captured row bounds are2x2 cells.

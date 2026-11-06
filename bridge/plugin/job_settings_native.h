@@ -25,6 +25,7 @@ inline bool jobSettingsReady() {
             {0x2198df,0xcc,UINT64_C(0x0835284909b8e4cc)},
             {0x21bd53,0x28,UINT64_C(0x33033347c20397f2)},
             {0x219386,0x37,UINT64_C(0x5648d69c12ce8e22)},
+            {0x21c22c,0x8c,UINT64_C(0xbd2f197e0836904e)}, // plant job-input and material effects
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -186,7 +187,7 @@ inline std::optional<JobSettingsObservation> nativeJobSettings(const df::job& so
     }
     return result;
 }
-// Material and clothing effects are inline in native218900, with pinned spans. The
+// Job setting effects are inline in native218900, with pinned spans. The
 // input handler also reads menu state and cannot be called. Use fresh native
 // eligibility/catalog observations, then reproduce only its job field writes.
 // Caller resolves membership at a safe point; this function verifies identity
@@ -203,7 +204,7 @@ inline JobSettingsOutcome applyJobSetting(df::job& job,const JobSettingsTarget& 
         return JobSettingsOutcome::Stale;
     if(size_t(option)>=observed->options.size())return JobSettingsOutcome::Rejected;
     const auto kind=observed->options[size_t(option)].kind;
-    if(kind!=0 && kind!=2 && kind!=3)return JobSettingsOutcome::Rejected;
+    if(kind!=0 && kind!=2 && kind!=3 && kind!=6)return JobSettingsOutcome::Rejected;
     const auto found=std::find_if(observed->materials.begin(),observed->materials.end(),[&](const auto& row){return row.id==choice;});
     if(found==observed->materials.end())return JobSettingsOutcome::Rejected;
     if(kind==3) {
@@ -219,13 +220,14 @@ inline JobSettingsOutcome applyJobSetting(df::job& job,const JobSettingsTarget& 
         // Requirement rebuilding at21bd7b belongs only to manager orders.
         job.specdata.hist_figure_id=found->index;return JobSettingsOutcome::Applied;
     }
-    const auto index=observed->options[size_t(option)].index;
+    // Plant choice writes input zero, independently of its option job-type index.
+    const auto index=kind==6?0:observed->options[size_t(option)].index;
     if(index<0 || size_t(index)>=job.job_items.elements.size() || !job.job_items.elements[size_t(index)])return JobSettingsOutcome::Rejected;
     auto& item=*job.job_items.elements[size_t(index)];
     if(!item.job_details_flags.bits.have_set_job_details) {
         item.job_details_flags.bits.have_set_job_details=true;
         item.job_details_mat_type=item.mat_type;item.job_details_mat_index=item.mat_index;
-        item.job_details_item_flags2=item.flags2;
+        if(kind==0)item.job_details_item_flags2=item.flags2; // Native plant branch preserves this field.
     }
     item.mat_type=found->type;item.mat_index=found->index;
     if(index==0){job.mat_type=found->type;job.mat_index=found->index;}

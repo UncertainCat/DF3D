@@ -3,6 +3,7 @@ local out,view,info=...
 local gui=require('gui');local script=require('gui.script');local json=require('json')
 local button,owner,scroller,row_index
 local controlled,prior_job,controlled_unit,provider
+local plant=os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_PLANT')=='1'
 local clothing=os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_CLOTHING')=='1'
 local improvement=os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_IMPROVEMENT')=='1'
 local function find(widget,unit,scroll,index)
@@ -38,7 +39,11 @@ if not button then
  controlled.completion_timer=-1;controlled.mat_type=0;controlled.mat_index=-1
  local holder=df.general_ref_building_holderst:new();holder.building_id=building.id;controlled.general_refs:insert('#',holder)
  local input=df.job_item:new();input.item_type=df.item_type.BOULDER;input.mat_type=0;input.mat_index=-1;input.quantity=1
- if clothing then
+ if plant then
+  controlled.job_type=df.job_type.MillPlants;controlled.mat_type=-1
+  input.item_type=df.item_type.PLANT;input.mat_type=-1;input.job_details_item_flags2.whole=123
+  controlled.job_items.elements:insert('#',input)
+ elseif clothing then
   controlled.job_type=df.job_type.MakeArmor;controlled.item_subtype=0;controlled.mat_type=-1;controlled.specdata.hist_figure_id=-1
   input:delete()
  elseif improvement then
@@ -107,7 +112,11 @@ if improvement then
  evidence.improvement_before={kind=job.specdata.improvement,art_type=job.art_spec.type,art_id=job.art_spec.id,art_subid=job.art_spec.subid}
 end
 evidence.materials={} 
-for i,kind in ipairs(details.material)do evidence.materials[#evidence.materials+1]={type=kind,index=details.matgloss[i],count=details.material_count[i]}end
+local types=plant and details.plant_mat or details.material
+local indices=plant and details.plant_matgloss or details.matgloss
+local counts=plant and details.plant_count or details.material_count
+for i,kind in ipairs(types)do evidence.materials[#evidence.materials+1]={type=kind,index=indices[i],count=counts[i]}end
+if plant then assert(#evidence.options==1 and evidence.options[1].kind==6 and #evidence.materials>1,'Native plant option did not open')end
 if provider then
  assert(provider.job_id==job.id and provider.building_id==evidence.building_id and json.encode(provider.search)==json.encode(evidence.search),'Owned job settings identity/location differs')
  assert(#provider.options==#evidence.options and #provider.materials==#(clothing and evidence.clothing_races or improvement and evidence.improvements or evidence.materials),'Owned job settings list sizes differ')
@@ -142,7 +151,8 @@ if os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_WIRE')=='1' and not clothing and not i
  evidence.wire_material_effect={mat_type=job.mat_type,mat_index=job.mat_index,input_type=input.mat_type,input_index=input.mat_index,
   saved_type=input.job_details_mat_type,saved_index=input.job_details_mat_index,saved_flags2=input.job_details_item_flags2.whole,details_flags=input.job_details_flags.whole}
  assert(job.mat_type==evidence.materials[2].type and job.mat_index==evidence.materials[2].index and input.mat_type==job.mat_type and input.mat_index==job.mat_index,'Wire material click did not match native effect')
- assert((input.job_details_flags.whole&1)~=0 and input.job_details_mat_type==0 and input.job_details_mat_index==-1,'Wire material edit lost original requirement')
+ if plant then assert(input.job_details_item_flags2.whole==123,'Wire plant selection changed saved flags2')end
+ assert((input.job_details_flags.whole&1)~=0 and input.job_details_mat_type==(plant and -1 or 0) and input.job_details_mat_index==-1,'Wire material edit lost original requirement')
 end
 if clothing and os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_WIRE')=='1' then
  evidence.wire_clothing_effect={race=job.specdata.hist_figure_id,requirements=#job.job_items.elements}
@@ -210,9 +220,10 @@ if os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_EFFECTS')=='1' then
   assert(json.encode(observation())==json.encode(effect.before),'Copy adapter changed the source job')
   assert(details.open and details.jb==job,'Copy adapter changed native Details')
  end
+ local choice_caption=plant and provider.materials[2].caption or 'Dolomite'
  local choice_y
- for _,line in ipairs(evidence.lines)do if line.text:find('Dolomite',1,true)then choice_y=line.y;break end end
- assert(choice_y and provider and provider.materials[2].caption=='Dolomite','Expected visible Dolomite material')
+ for _,line in ipairs(evidence.lines)do if line.text:find(choice_caption,1,true)then choice_y=line.y;break end end
+ assert(choice_y and provider and provider.materials[2].caption==choice_caption,'Expected visible material choice')
  local function click_at(cx,cy)
   g.precise_mouse_x=cx*8+4;g.precise_mouse_y=cy*12+6;g.mouse_x=cx;g.mouse_y=cy
   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
@@ -225,6 +236,7 @@ if os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_EFFECTS')=='1' then
  assert(effect.after.mat_type==effect.choice.type and effect.after.mat_index==effect.choice.index,'Native job material selection did not update job')
  assert(effect.after.inputs[1].mat_type==effect.choice.type and effect.after.inputs[1].mat_index==effect.choice.index,'Native selection did not update requirement')
  assert(not details.open and info.open,'Native selection did not return to Residents')
+ if plant then assert(effect.after.inputs[1].saved_flags2==123,'Plant selection changed saved flags2')end
  if effect.adapter then
   for _,field in ipairs({'job_id','mat_type','mat_index'})do assert(effect.adapter.after[field]==effect.after[field],'Job effect differs: '..field)end
   assert(#effect.adapter.after.inputs==#effect.after.inputs,'Job effect changed requirement count')

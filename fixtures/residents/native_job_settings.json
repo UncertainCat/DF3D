@@ -3017,5 +3017,847 @@
       "requirements": 0
     },
     "scope": "Owned choice IDs/order match native improvement list. Headless Residents owner selects Bands through typed edit; native readback matches improvement and all artwork reset fields. No search on this native page; Image editor and ordinary production not accepted."
+  },
+  "plant_reference": {
+    "source": "build/stockpile-storage-native-input-20261106-081257",
+    "reference": {
+      "building_id": 3,
+      "button": [
+        70,
+        14,
+        72,
+        16
+      ],
+      "button_context": 1,
+      "context": 1,
+      "controlled_job": true,
+      "current_option": 6,
+      "current_option_index": 106,
+      "escape_details_open": false,
+      "escape_info_open": true,
+      "job_id": 2000000000,
+      "job_type": 106,
+      "lines": [
+        {
+          "text": "                  Roderònul           Pop                                  Food  Drink           20th Malachite",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+          "y": 2
+        },
+        {
+          "text": "",
+          "y": 3
+        },
+        {
+          "text": "",
+          "y": 4
+        },
+        {
+          "text": "    Mill plants",
+          "y": 5
+        },
+        {
+          "text": "",
+          "y": 6
+        },
+        {
+          "text": "",
+          "y": 7
+        },
+        {
+          "text": "    Setting plant",
+          "y": 8
+        },
+        {
+          "text": "",
+          "y": 9
+        },
+        {
+          "text": "",
+          "y": 10
+        },
+        {
+          "text": "      ...",
+          "y": 11
+        },
+        {
+          "text": "",
+          "y": 12
+        },
+        {
+          "text": "",
+          "y": 13
+        },
+        {
+          "text": "    Cave wheat                                                                                                      80?",
+          "y": 14
+        },
+        {
+          "text": "",
+          "y": 15
+        },
+        {
+          "text": "                                                                                                                                    Elevation 36",
+          "y": 16
+        },
+        {
+          "text": "    Dimple cup                                                                                                      40?",
+          "y": 17
+        },
+        {
+          "text": "",
+          "y": 18
+        },
+        {
+          "text": "",
+          "y": 19
+        },
+        {
+          "text": "    Sweet pod                                                                                                       60?",
+          "y": 20
+        },
+        {
+          "text": "",
+          "y": 21
+        },
+        {
+          "text": "",
+          "y": 22
+        },
+        {
+          "text": "    Barley",
+          "y": 23
+        },
+        {
+          "text": "",
+          "y": 24
+        },
+        {
+          "text": "",
+          "y": 25
+        },
+        {
+          "text": "    Blade weed",
+          "y": 26
+        },
+        {
+          "text": "",
+          "y": 27
+        },
+        {
+          "text": "",
+          "y": 28
+        },
+        {
+          "text": "    Blood amaranth",
+          "y": 29
+        },
+        {
+          "text": "",
+          "y": 30
+        },
+        {
+          "text": "",
+          "y": 31
+        },
+        {
+          "text": "    Buckwheat",
+          "y": 32
+        },
+        {
+          "text": "",
+          "y": 33
+        },
+        {
+          "text": "",
+          "y": 34
+        },
+        {
+          "text": "    Finger millet plant",
+          "y": 35
+        },
+        {
+          "text": "",
+          "y": 36
+        },
+        {
+          "text": "",
+          "y": 37
+        },
+        {
+          "text": "    Flax plant",
+          "y": 38
+        },
+        {
+          "text": "",
+          "y": 39
+        },
+        {
+          "text": "",
+          "y": 40
+        },
+        {
+          "text": "    Fonio plant",
+          "y": 41
+        },
+        {
+          "text": "",
+          "y": 42
+        },
+        {
+          "text": "",
+          "y": 43
+        },
+        {
+          "text": "    Foxtail millet plant",
+          "y": 44
+        },
+        {
+          "text": "",
+          "y": 45
+        },
+        {
+          "text": "",
+          "y": 46
+        },
+        {
+          "text": "    Hard wheat",
+          "y": 47
+        },
+        {
+          "text": "",
+          "y": 48
+        },
+        {
+          "text": "",
+          "y": 49
+        },
+        {
+          "text": "    Hemp plant",
+          "y": 50
+        },
+        {
+          "text": "",
+          "y": 51
+        },
+        {
+          "text": "",
+          "y": 52
+        },
+        {
+          "text": "    Hide root",
+          "y": 53
+        },
+        {
+          "text": "",
+          "y": 54
+        },
+        {
+          "text": "",
+          "y": 55
+        },
+        {
+          "text": "    Kaniwa",
+          "y": 56
+        },
+        {
+          "text": "",
+          "y": 57
+        },
+        {
+          "text": "",
+          "y": 58
+        },
+        {
+          "text": "    Longland grass",
+          "y": 59
+        },
+        {
+          "text": "",
+          "y": 60
+        },
+        {
+          "text": "",
+          "y": 61
+        },
+        {
+          "text": "",
+          "y": 62
+        },
+        {
+          "text": "",
+          "y": 63
+        },
+        {
+          "text": "",
+          "y": 64
+        },
+        {
+          "text": "",
+          "y": 65
+        }
+      ],
+      "material_effect": {
+        "after": {
+          "inputs": [
+            {
+              "details_flags": 1,
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 54,
+              "mat_index": 188,
+              "mat_type": 419,
+              "quantity": 1,
+              "saved_flags2": 123,
+              "saved_index": -1,
+              "saved_type": -1
+            }
+          ],
+          "job_id": 2000000000,
+          "mat_index": 188,
+          "mat_type": 419
+        },
+        "before": {
+          "inputs": [
+            {
+              "details_flags": 0,
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 54,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1,
+              "saved_flags2": 123,
+              "saved_index": -1,
+              "saved_type": -1
+            }
+          ],
+          "job_id": 2000000000,
+          "mat_index": -1,
+          "mat_type": -1
+        },
+        "choice": {
+          "index": 188,
+          "type": 419
+        },
+        "details_open": false,
+        "info_open": true
+      },
+      "materials": [
+        {
+          "count": 80,
+          "index": 175,
+          "type": 419
+        },
+        {
+          "count": 42,
+          "index": 188,
+          "type": 419
+        },
+        {
+          "count": 63,
+          "index": 176,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 5,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 189,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 17,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 6,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 23,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 27,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 25,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 24,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 3,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 29,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 190,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 14,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 183,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 12,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 7,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 21,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 16,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 18,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 13,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 11,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 9,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 0,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 191,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 2,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 10,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 4,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 26,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 1,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 193,
+          "type": 419
+        },
+        {
+          "count": 0,
+          "index": 22,
+          "type": 419
+        }
+      ],
+      "options": [
+        {
+          "index": 106,
+          "kind": 6
+        }
+      ],
+      "provider": {
+        "building_id": 3,
+        "caption": "Mill plants",
+        "choices_revision": "3931803951475222164",
+        "job_id": 2000000000,
+        "materials": [
+          {
+            "caption": "Cave wheat",
+            "count": 80,
+            "count_caption": "80?",
+            "estimated": true,
+            "id": 0,
+            "index": 175,
+            "type": 419
+          },
+          {
+            "caption": "Dimple cup",
+            "count": 42,
+            "count_caption": "40?",
+            "estimated": true,
+            "id": 1,
+            "index": 188,
+            "type": 419
+          },
+          {
+            "caption": "Sweet pod",
+            "count": 63,
+            "count_caption": "60?",
+            "estimated": true,
+            "id": 2,
+            "index": 176,
+            "type": 419
+          },
+          {
+            "caption": "Barley",
+            "count": 0,
+            "estimated": false,
+            "id": 3,
+            "index": 5,
+            "type": 419
+          },
+          {
+            "caption": "Blade weed",
+            "count": 0,
+            "estimated": false,
+            "id": 4,
+            "index": 189,
+            "type": 419
+          },
+          {
+            "caption": "Blood amaranth",
+            "count": 0,
+            "estimated": false,
+            "id": 5,
+            "index": 17,
+            "type": 419
+          },
+          {
+            "caption": "Buckwheat",
+            "count": 0,
+            "estimated": false,
+            "id": 6,
+            "index": 6,
+            "type": 419
+          },
+          {
+            "caption": "Finger millet plant",
+            "count": 0,
+            "estimated": false,
+            "id": 7,
+            "index": 23,
+            "type": 419
+          },
+          {
+            "caption": "Flax plant",
+            "count": 0,
+            "estimated": false,
+            "id": 8,
+            "index": 27,
+            "type": 419
+          },
+          {
+            "caption": "Fonio plant",
+            "count": 0,
+            "estimated": false,
+            "id": 9,
+            "index": 25,
+            "type": 419
+          },
+          {
+            "caption": "Foxtail millet plant",
+            "count": 0,
+            "estimated": false,
+            "id": 10,
+            "index": 24,
+            "type": 419
+          },
+          {
+            "caption": "Hard wheat",
+            "count": 0,
+            "estimated": false,
+            "id": 11,
+            "index": 3,
+            "type": 419
+          },
+          {
+            "caption": "Hemp plant",
+            "count": 0,
+            "estimated": false,
+            "id": 12,
+            "index": 29,
+            "type": 419
+          },
+          {
+            "caption": "Hide root",
+            "count": 0,
+            "estimated": false,
+            "id": 13,
+            "index": 190,
+            "type": 419
+          },
+          {
+            "caption": "Kaniwa",
+            "count": 0,
+            "estimated": false,
+            "id": 14,
+            "index": 14,
+            "type": 419
+          },
+          {
+            "caption": "Longland grass",
+            "count": 0,
+            "estimated": false,
+            "id": 15,
+            "index": 183,
+            "type": 419
+          },
+          {
+            "caption": "Maize plant",
+            "count": 0,
+            "estimated": false,
+            "id": 16,
+            "index": 12,
+            "type": 419
+          },
+          {
+            "caption": "Oat",
+            "count": 0,
+            "estimated": false,
+            "id": 17,
+            "index": 7,
+            "type": 419
+          },
+          {
+            "caption": "Pearl millet plant",
+            "count": 0,
+            "estimated": false,
+            "id": 18,
+            "index": 21,
+            "type": 419
+          },
+          {
+            "caption": "Pendant amaranth",
+            "count": 0,
+            "estimated": false,
+            "id": 19,
+            "index": 16,
+            "type": 419
+          },
+          {
+            "caption": "Purple amaranth",
+            "count": 0,
+            "estimated": false,
+            "id": 20,
+            "index": 18,
+            "type": 419
+          },
+          {
+            "caption": "Quinoa",
+            "count": 0,
+            "estimated": false,
+            "id": 21,
+            "index": 13,
+            "type": 419
+          },
+          {
+            "caption": "Rice plant",
+            "count": 0,
+            "estimated": false,
+            "id": 22,
+            "index": 11,
+            "type": 419
+          },
+          {
+            "caption": "Rye",
+            "count": 0,
+            "estimated": false,
+            "id": 23,
+            "index": 9,
+            "type": 419
+          },
+          {
+            "caption": "Single-grain wheat",
+            "count": 0,
+            "estimated": false,
+            "id": 24,
+            "index": 0,
+            "type": 419
+          },
+          {
+            "caption": "Sliver barb",
+            "count": 0,
+            "estimated": false,
+            "id": 25,
+            "index": 191,
+            "type": 419
+          },
+          {
+            "caption": "Soft wheat",
+            "count": 0,
+            "estimated": false,
+            "id": 26,
+            "index": 2,
+            "type": 419
+          },
+          {
+            "caption": "Sorghum",
+            "count": 0,
+            "estimated": false,
+            "id": 27,
+            "index": 10,
+            "type": 419
+          },
+          {
+            "caption": "Spelt",
+            "count": 0,
+            "estimated": false,
+            "id": 28,
+            "index": 4,
+            "type": 419
+          },
+          {
+            "caption": "Teff plant",
+            "count": 0,
+            "estimated": false,
+            "id": 29,
+            "index": 26,
+            "type": 419
+          },
+          {
+            "caption": "Two-grain wheat",
+            "count": 0,
+            "estimated": false,
+            "id": 30,
+            "index": 1,
+            "type": 419
+          },
+          {
+            "caption": "Whip vine",
+            "count": 0,
+            "estimated": false,
+            "id": 31,
+            "index": 193,
+            "type": 419
+          },
+          {
+            "caption": "White millet plant",
+            "count": 0,
+            "estimated": false,
+            "id": 32,
+            "index": 22,
+            "type": 419
+          }
+        ],
+        "options": [
+          {
+            "caption": "Specify plant",
+            "index": 106,
+            "kind": 6
+          }
+        ],
+        "revision": "9078417987278563036",
+        "search": [
+          106,
+          95,
+          165
+        ],
+        "selected": 0
+      },
+      "search": [
+        106,
+        95,
+        165
+      ],
+      "unit_id": 6534
+    },
+    "scope": "Controlled unlinked MillPlants job with one PLANT requirement. Actual native button, 33 ordered choices and counts, Dimple cup click, original-material preservation, saved flags2 unchanged, return and Escape. Not ordinary workshop execution or all plant job families."
+  },
+  "plant_wire_reference": {
+    "source": "build/stockpile-storage-native-input-20261106-081521",
+    "bridge_sha256": "FDCA91EE6883FD96EBC3D4BB77A423AE0E85652E953277B3B68A12F75433699E",
+    "result": {
+      "choices": 33,
+      "composed": {
+        "choices": 33,
+        "closed": true,
+        "filter_supported": true,
+        "filtered": true,
+        "material_applied": true,
+        "resident_id": 6534,
+        "returned_to_roster": true
+      },
+      "filtered": [
+        {
+          "caption": "Dimple cup",
+          "count_caption": "40?",
+          "estimated": true,
+          "id": 1
+        }
+      ],
+      "success": true
+    },
+    "effect": {
+      "details_flags": 1,
+      "input_index": 188,
+      "input_type": 419,
+      "mat_index": 188,
+      "mat_type": 419,
+      "saved_flags2": 123,
+      "saved_index": -1,
+      "saved_type": -1
+    },
+    "scope": "Owned native choice identity/count/order and typed filtering; headless Residents owner pointer selects Dimple cup. Native readback matches job/input material and saved fields. Generic material_applied means plant selection applied here. No graphical Godot, ordinary production, repeat edits or other plant families accepted."
   }
 }

@@ -160,7 +160,7 @@ brief serial30FPS native graphics and headless clients; samples36–38C.
 
 The staged `applyJobSetting` adapter validates job/holder identity, native
 eligibility, the job revision, full choice revision and original choice ID
-before any write. It supports input-material, clothing-size and non-image improvement options. Native
+before any write. It supports input-material, clothing-size, non-image improvement and plant options. Native
 inline effects2198df..2199ab are pinned (length0xcc, FNV0835284909b8e4cc): save
 original requirement material/flags2 once, change requirement material, and
 change job material for input0. No allocation or fallible operation follows
@@ -251,8 +251,8 @@ Native build and root19/extension/both state checks pass in job-improvement-2026
 Installed bridge SHA256 is
 27DCD2913F268E40C6AE1E354117E83F24014F1EF435DED25DC1634471EA62E8.
 Graphics were brief serial30FPS native only; GPU samples59–61C. Public Residents
-remains staged while artwork, plant effects and broader owner/job acceptance
-are incomplete.
+remains staged while artwork and broader owner/job acceptance are incomplete.
+Plant effects are accepted separately below.
 
 
 
@@ -799,6 +799,30 @@ establish search parity. MSVC passes; the installed bridge SHA256 is
 The serial native runs remain capped at30FPS, observed36–38C. This is bounded
 bridge query acceptance, not completion of Residents, other Creatures tabs,
 Work Details, transport lifecycle or the public management screen.
+
+Job plant selection uses native21c22c..21c2b8's job branch, separately pinned:
+it saves the first requirement's original material once, changes that requirement
+and the job material, and leaves saved flags2 unchanged. It never runs the
+manager-only requirement rebuild. Fresh native eligibility/catalog and both
+revisions are checked before mutation. The existing plant view/filter and typed
+JobSettingsApply carry this effect without a new transport contract.
+
+Protected081257 on2026-11-06 clicks native MillPlants Details for an unlinked
+controlled job, records33 ordered plant choices/counts, and selects Dimple cup.
+Job/input become419/188; original material stays-1/-1 and saved flags2 stays123.
+Details closes to Info. Protected081521 matches the owned catalog and exercises
+filtering, stale receipts, owner Back/reset, then the actual Residents owner
+pointer selection through Management137. Native readback matches those fields.
+Fixtures retain both semantic references; native screenshot was inspected.
+Root19/extension/job-settings and Residents state checks pass in job-plant-20261106;
+joined client logs contain only the known separate-render-thread notice. Built and
+installed bridge SHA256 is
+FDCA91EE6883FD96EBC3D4BB77A423AE0E85652E953277B3B68A12F75433699E.
+Owned DF37724/37956 closed unsaved with source preservation; native runs were
+serial30FPS, GPU samples59-60C, and Godot was headless. This does not establish
+ordinary workshop execution, repeated edits, other plant families or full rendered
+Residents acceptance. Artwork editing and public Residents exposure remain pending.
+
 
 ## Farm removal native entry points
 

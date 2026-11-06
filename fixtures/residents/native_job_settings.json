@@ -1,0 +1,727 @@
+{
+  "format_version": 1,
+  "provenance": {
+    "df_version": "v0.53.16 win64 STEAM",
+    "native_run": "build/stockpile-storage-native-input-20261106-063337",
+    "observation": "Actual Residents job-details button click on a controlled unlinked rock-door job; native material page and Escape return. Original resident current_job restored before clicking; DF34900 exited unsaved.",
+    "limitations": [
+      "No naturally editable resident job in the paused reference fortress; discovery run063203 failed that prerequisite.",
+      "Controlled job uses a completed workshop holder and one generic boulder requirement; not evidence for job assignment, production effects, or all workshop families.",
+      "No runtime job-settings provider, edits or DF3D page acceptance.",
+      "No game artwork retained."
+    ]
+  },
+  "reference": {
+    "building_id": 3,
+    "button": [
+      70,
+      14,
+      72,
+      16
+    ],
+    "button_context": 1,
+    "context": 1,
+    "controlled_job": true,
+    "current_option": 0,
+    "current_option_index": 0,
+    "escape_details_open": false,
+    "escape_info_open": true,
+    "job_id": 2000000000,
+    "job_type": 67,
+    "lines": [
+      {
+        "text": "                  Roder\u00f2nul           Pop                                  Food  Drink           20th Malachite",
+        "y": 0
+      },
+      {
+        "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+        "y": 1
+      },
+      {
+        "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+        "y": 2
+      },
+      {
+        "text": "",
+        "y": 3
+      },
+      {
+        "text": "",
+        "y": 4
+      },
+      {
+        "text": "    Make rock door",
+        "y": 5
+      },
+      {
+        "text": "",
+        "y": 6
+      },
+      {
+        "text": "",
+        "y": 7
+      },
+      {
+        "text": "    Setting material",
+        "y": 8
+      },
+      {
+        "text": "",
+        "y": 9
+      },
+      {
+        "text": "",
+        "y": 10
+      },
+      {
+        "text": "      ...",
+        "y": 11
+      },
+      {
+        "text": "",
+        "y": 12
+      },
+      {
+        "text": "",
+        "y": 13
+      },
+      {
+        "text": "    Bituminous coal                                                                                                   1",
+        "y": 14
+      },
+      {
+        "text": "",
+        "y": 15
+      },
+      {
+        "text": "                                                                                                                                    Elevation 36",
+        "y": 16
+      },
+      {
+        "text": "    Dolomite                                                                                                       200?",
+        "y": 17
+      },
+      {
+        "text": "",
+        "y": 18
+      },
+      {
+        "text": "",
+        "y": 19
+      },
+      {
+        "text": "    Kaolinite                                                                                                         1",
+        "y": 20
+      },
+      {
+        "text": "",
+        "y": 21
+      },
+      {
+        "text": "",
+        "y": 22
+      },
+      {
+        "text": "    Microcline                                                                                                        2",
+        "y": 23
+      },
+      {
+        "text": "",
+        "y": 24
+      },
+      {
+        "text": "",
+        "y": 25
+      },
+      {
+        "text": "    Native gold                                                                                                       6",
+        "y": 26
+      },
+      {
+        "text": "",
+        "y": 27
+      },
+      {
+        "text": "",
+        "y": 28
+      },
+      {
+        "text": "    Rock salt                                                                                                       40?",
+        "y": 29
+      },
+      {
+        "text": "",
+        "y": 30
+      },
+      {
+        "text": "",
+        "y": 31
+      },
+      {
+        "text": "    Tetrahedrite                                                                                                      6",
+        "y": 32
+      },
+      {
+        "text": "",
+        "y": 33
+      },
+      {
+        "text": "",
+        "y": 34
+      },
+      {
+        "text": "    Alabaster",
+        "y": 35
+      },
+      {
+        "text": "",
+        "y": 36
+      },
+      {
+        "text": "",
+        "y": 37
+      },
+      {
+        "text": "    Alunite",
+        "y": 38
+      },
+      {
+        "text": "",
+        "y": 39
+      },
+      {
+        "text": "",
+        "y": 40
+      },
+      {
+        "text": "    Andesite",
+        "y": 41
+      },
+      {
+        "text": "",
+        "y": 42
+      },
+      {
+        "text": "",
+        "y": 43
+      },
+      {
+        "text": "    Anhydrite",
+        "y": 44
+      },
+      {
+        "text": "",
+        "y": 45
+      },
+      {
+        "text": "",
+        "y": 46
+      },
+      {
+        "text": "    Basalt",
+        "y": 47
+      },
+      {
+        "text": "",
+        "y": 48
+      },
+      {
+        "text": "",
+        "y": 49
+      },
+      {
+        "text": "    Bauxite",
+        "y": 50
+      },
+      {
+        "text": "",
+        "y": 51
+      },
+      {
+        "text": "",
+        "y": 52
+      },
+      {
+        "text": "    Bismuthinite",
+        "y": 53
+      },
+      {
+        "text": "",
+        "y": 54
+      },
+      {
+        "text": "",
+        "y": 55
+      },
+      {
+        "text": "    Borax",
+        "y": 56
+      },
+      {
+        "text": "",
+        "y": 57
+      },
+      {
+        "text": "",
+        "y": 58
+      },
+      {
+        "text": "    Brimstone",
+        "y": 59
+      },
+      {
+        "text": "",
+        "y": 60
+      },
+      {
+        "text": "",
+        "y": 61
+      },
+      {
+        "text": "",
+        "y": 62
+      },
+      {
+        "text": "",
+        "y": 63
+      },
+      {
+        "text": "",
+        "y": 64
+      },
+      {
+        "text": "",
+        "y": 65
+      }
+    ],
+    "materials": [
+      {
+        "count": 1,
+        "index": 196,
+        "type": 0
+      },
+      {
+        "count": 219,
+        "index": 169,
+        "type": 0
+      },
+      {
+        "count": 1,
+        "index": 230,
+        "type": 0
+      },
+      {
+        "count": 2,
+        "index": 233,
+        "type": 0
+      },
+      {
+        "count": 6,
+        "index": 189,
+        "type": 0
+      },
+      {
+        "count": 36,
+        "index": 166,
+        "type": 0
+      },
+      {
+        "count": 6,
+        "index": 201,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 237,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 241,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 177,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 240,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 176,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 225,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 211,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 227,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 209,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 235,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 195,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 171,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 170,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 222,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 199,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 165,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 200,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 168,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 217,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 178,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 173,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 174,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 193,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 188,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 184,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 172,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 208,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 203,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 186,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 202,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 229,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 219,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 205,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 210,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 197,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 167,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 187,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 221,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 192,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 185,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 215,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 234,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 163,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 226,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 191,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 198,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 190,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 179,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 228,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 213,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 232,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 218,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 207,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 182,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 224,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 206,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 223,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 180,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 242,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 212,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 175,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 220,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 236,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 161,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 239,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 183,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 238,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 231,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 164,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 162,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 243,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 181,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 194,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 214,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 216,
+        "type": 0
+      },
+      {
+        "count": 0,
+        "index": 204,
+        "type": 0
+      }
+    ],
+    "options": [
+      {
+        "index": 0,
+        "kind": 0
+      }
+    ],
+    "search": [
+      106,
+      95,
+      165
+    ],
+    "unit_id": 6534
+  }
+}

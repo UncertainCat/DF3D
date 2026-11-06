@@ -546,6 +546,10 @@ if os.getenv('DF3D_RESIDENTS_NAVIGATION')=='1' then
  assert(info.open,'Native Residents did not reopen after sheet navigation')
  view:render(dfhack.getTickCount())
 end
+if os.getenv('DF3D_RESIDENTS_JOB_SETTINGS')=='1' then
+ local path=debug.getinfo(1,'S').source:sub(2):gsub('residents%-native.lua$','residents-job-settings-native.lua')
+ assert(loadfile(path))(out,view,info)
+end
 file=assert(io.open(out..'/shot.tmp','w'));file:write('residents-root');file:close()
 assert(os.rename(out..'/shot.tmp',out..'/shot'))
 local deadline=dfhack.getTickCount()+30000

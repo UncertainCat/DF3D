@@ -38,6 +38,34 @@ handles manager orders only; it is not an accepted substitute for this job path.
 Event-description actions1431cd0/1431d60 delegate to14287c0/1427f70. Both call
 26b800 with an activity_event, unit ID and markup output. This identifies the
 native formatter; broader event-family ownership is not yet accepted for runtime.
+Job-backed Details discovery uses `DF3D_RESIDENTS_JOB_SETTINGS=1` in the
+protected Residents lane. Native063337 on2026-11-06 clicks the actual
+widget_job_details_button for a controlled, unlinked ConstructDoor job. The
+paused fortress had no naturally editable resident job (063203 records that
+missing prerequisite), so the oracle temporarily substitutes a visible
+resident's current_job while native builds the row, then restores it. This is
+layout discovery, not ordinary job assignment/effect acceptance. The fixture
+`fixtures/residents/native_job_settings.json` records context1, building3,
+search106,95,165, one input option, all83 ordered material/count entries and
+native text. One option opens directly into "Setting material"; Escape closes
+Details and retains Info. DF34900 exits unsaved with source preservation.
+GPU samples stay38C, native30FPS and no graphical Godot client.
+
+The job path must not substitute a manager_order. Native d15ef0 rejects a job
+with a positive completion timer or reserved items, requires a building-holder
+reference, then evaluates its requirements/job family. Opener213420's job
+branch2139f8..213e26 obtains that holder and its search coordinates, enumerates
+job requirements and uses the separate job dispatch tables213f74/213f88.
+The manager-order tables213ea8/213ecc include different families. The opener
+also changes global screen state and is prohibited as a runtime API. Choice
+population21d190 accepts an independently owned job_details_interfacest with
+jb (rather than wq), copied requirement storage, and explicit holder/search.
+Its input-material branch21d410..21d434 selects jb.job_items before the shared
+filter/count/sort path. Transitive ownership of the spatial job branch remains
+to be verified before invoking it in a runtime provider; existing manager-order
+acceptance does not cover it. Ordinary job settings remains unfinished in both
+Residents and workshop Tasks.
+
 The menu actions themselves clear live markup and build widgets: do not call
 them from the bridge. The formatter output is `markup_text_boxst`, not a vector
 of strings; d51eb0 allocates formatted words with RGB, links and break flags.

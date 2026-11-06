@@ -7457,6 +7457,16 @@ target retirement, selected-tab behavior and the Places gate. These checks use
 the existing readouts; they do not complete the remaining information screens
 or authorize promotion of the staged editable Work orders route.
 
+The global empty-list message follows the first list text row instead of a
+fixed baseline. Native005820 on2026-11-06 captures empty lists with/without a
+manager at1600x900,1200x800 and912x552, restoring detached order pointers and
+the manager index before owned DF15704 exits unsaved. Source preservation passes.
+`build/qa/work-orders-empty-layout` renders the corrected view at all three sizes;
+the1200x800 message crop matches native pixels exactly and the wide layout was
+visually inspected. Capture setup waits for the resized renderer to settle;
+earlier unsettled images are not acceptance evidence. Core19/19 and composition
+pass; paired rendered logs contain only documented diagnostics.
+
 The global Work orders view uses the shared native hover service for active
 status, quantity, priority, Conditions, Details, removal and workshop limits.
 Protected002223 on2026-11-06 captures exact native24-cell text and instruction

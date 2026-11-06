@@ -176,7 +176,7 @@ func _draw() -> void:
 	if state==null:return
 	if state.native_state.get("manager_available",false):
 		icon("WORK_ORDERS_CREATE_NEW",Vector2(size.x-48,list_top()))
-		if state.total==0:text("There are no active work orders.",Vector2(16,96))
+		if state.total==0:text("There are no active work orders.",Vector2(16,list_top()+12))
 	if state.native_state.has("manager_available"):
 		if not state.native_state.manager_available:
 			text("A manager is required to coordinate",Vector2(16,size.y-48),12)

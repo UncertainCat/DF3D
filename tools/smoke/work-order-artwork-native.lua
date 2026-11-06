@@ -206,6 +206,20 @@ if os.getenv('DF3D_WORK_ORDER_NAVIGATION')=='1' then
 end
 if os.getenv('DF3D_WORK_ORDER_LAYOUT')=='1' then
  local original_limit=order.max_workshops
+ local function emptyshot(size)
+  if os.getenv('DF3D_WORK_ORDER_EMPTY_LAYOUT')~='1' then return end
+  local all=df.global.world.manager_orders.all;local saved=values(all)
+  local fortress=df.global.plotinfo.main.fortress_entity
+  local managers=fortress.assignments_by_type[df.entity_position_responsibility.MANAGE_PRODUCTION];local original_managers=values(managers)
+  local ok,err=xpcall(function()
+   all:resize(0);managers:resize(0);shot('work-order-empty-no-manager-'..size)
+   for _,assignment in ipairs(fortress.positions.assignments)do if assignment.histfig>=0 then managers:insert('#',assignment);break end end
+   assert(#managers>0,'Empty list needs occupied office fixture');shot('work-order-empty-manager-'..size)
+  end,debug.traceback)
+  all:resize(0);for _,v in ipairs(saved)do all:insert('#',v)end
+  managers:resize(0);for _,v in ipairs(original_managers)do managers:insert('#',v)end
+  view:render(dfhack.getTickCount());assert(ok,err)
+ end
  for _,size in ipairs({'wide','default','minimum'})do
   if size=='minimum' then
    key('LEAVESCREEN');assert(click_label('Encrust',552));assert(m.info.work_orders.conditions.open)
@@ -217,11 +231,12 @@ if os.getenv('DF3D_WORK_ORDER_LAYOUT')=='1' then
    assert(dfhack.getTickCount()<limit,'Work order resize timeout');script.sleep(1,'frames')end
   assert(os.remove(out..'/owner-input-ack'));script.sleep(3,'frames');view:render(dfhack.getTickCount())
   if size=='minimum' then
-   shot('work-order-conditions-'..size);key('LEAVESCREEN');shot('work-order-list-'..size)
+   shot('work-order-conditions-'..size);key('LEAVESCREEN');shot('work-order-list-'..size);emptyshot(size)
   else
    shot('work-order-details-'..size)
    key('LEAVESCREEN');assert(not details.open)
    shot('work-order-list-'..size)
+   emptyshot(size)
    local controls=math.floor((12+g.dimx-38)/3)
    assert(click_label('Encrust',(controls+26)*8+16));assert(m.info.work_orders.conditions.open)
    shot('work-order-conditions-'..size)

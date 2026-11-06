@@ -232,6 +232,15 @@ if os.getenv('DF3D_WORK_ORDER_LAYOUT')=='1' then
   assert(os.remove(out..'/owner-input-ack'));script.sleep(3,'frames');view:render(dfhack.getTickCount())
   if size=='minimum' then
    shot('work-order-conditions-'..size);key('LEAVESCREEN');shot('work-order-list-'..size);emptyshot(size)
+   if os.getenv('DF3D_WORK_ORDER_NARROW_INPUT')=='1' then
+    local menu=m.info.work_orders
+    mouse(456,426)
+    assert(not menu.conditions.open and menu.b_entering_number and menu.b_entering_wq==order,'Native narrow Conditions click did not enter workshop limit')
+    key('STRING_A049');assert(order.max_workshops==1,'Native overlapping input did not edit workshop limit')
+    shot('work-order-narrow-conditions-limit')
+    key('SELECT');order.max_workshops=original_limit
+    records[#records+1]={name='narrow-conditions-hitbox',point={456,426},actual='workshop-limit-entry',effect=1,restored=true}
+   end
   else
    shot('work-order-details-'..size)
    key('LEAVESCREEN');assert(not details.open)

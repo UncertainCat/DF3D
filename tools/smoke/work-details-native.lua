@@ -279,6 +279,21 @@ if defaults then
  shot('work-details-defaults-result')
 end
 if os.getenv('DF3D_WORK_DETAILS_SETTINGS')=='1' then
+ local settings_effects=os.getenv('DF3D_WORK_DETAILS_SETTINGS_EFFECTS')=='1'
+ local function snapshot()
+  local labors={};for id,value in ipairs(d.allowed_labors)do if value then labors[#labors+1]=id end end
+  local units={}
+  for _,unit in ipairs(df.global.world.units.active)do
+   local enabled={};for id,value in ipairs(unit.status.labors)do if value then enabled[#enabled+1]=id end end
+   units[#units+1]={id=unit.id,labors=enabled,profession=unit.profession,profession2=unit.profession2}
+  end
+  return {labors=labors,units=units}
+ end
+ if settings_effects then
+  d.flags.mode=3;d.assigned_units:insert('#',result.first_visible.unit_id)
+  for _,unit in ipairs(df.global.world.units.active)do dfhack.units.setAutomaticProfessions(unit)end
+  result.settings_effects={index=#all-1,unit_id=result.first_visible.unit_id,before=snapshot(),steps={}}
+ end
  g.precise_mouse_x=85*8+4;g.precise_mouse_y=13*12+6;g.mouse_x=85;g.mouse_y=13
  df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L')
  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
@@ -290,5 +305,52 @@ if os.getenv('DF3D_WORK_DETAILS_SETTINGS')=='1' then
   result.settings_rows[#result.settings_rows+1]={y=y,text=dfhack.df2utf(table.concat(chars)):gsub('%s+$','')}
  end
  shot('work-details-settings')
+ if settings_effects then
+  local function click(rva,id)
+   local target
+   local caption=id==11 and 'Carpentry' or id==-2 and 'Woodworking' or 'Done'
+   local function find(widget)
+    if (widget.flag.whole&1)==0 then return end
+    if (widget.flag.whole&2)~=0 and df.widget_text:is_instance(widget) and widget.str==caption then
+     assert(not target,'Ambiguous settings label');target=widget
+    end
+    if df.widget_container:is_instance(widget)then
+     for index,child in ipairs(dfhack.gui.getWidgetChildren(widget))do
+      if not df.widget_tabs:is_instance(widget) or index-1==widget.cur_idx then find(child)end
+     end
+    end
+   end
+   find(info.labor)
+   local x,y
+   if target then x=(target.rect.x1+target.rect.x2)//2;y=(target.rect.y1+target.rect.y2)//2
+   else
+    -- The settings list's derived type is not exposed by this DFHack XML.
+    -- Resolve its actual rendered label rather than casting an unknown widget.
+    for row=0,g.dimy-1 do
+     local chars={};for column=0,g.dimx-1 do local ch=dfhack.screen.readTile(column,row).ch;chars[#chars+1]=ch>=32 and ch<=255 and string.char(ch)or' 'end
+     local first=table.concat(chars):find(caption,1,true)
+     if first then assert(not x,'Ambiguous rendered settings label');x=first-1+#caption//2;y=row end
+    end
+   end
+   assert(x and y,'Missing native settings label '..caption)
+   g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+6;g.mouse_x=x;g.mouse_y=y
+   df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L')
+   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+   local step={rva=rva,id=id,immediate=snapshot()}
+   for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
+   step.after_frames=snapshot();result.settings_effects.steps[#result.settings_effects.steps+1]=step
+  end
+  click(0x468ec0,11);assert(d.allowed_labors[11],'Carpentry toggle failed')
+  click(0x469020,-2);assert(d.allowed_labors[11] and d.allowed_labors[59],'Woodworking group enable failed')
+  click(0x469020,-2);assert(not d.allowed_labors[11] and not d.allowed_labors[59],'Woodworking group disable failed')
+  click(0x468ec0,11)
+  click(0x468d20)
+  gui.simulateInput(view,'LEAVESCREEN')
+  for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
+  result.settings_effects.after_leave=snapshot()
+  for _,unit in ipairs(df.global.world.units.active)do dfhack.units.setAutomaticProfessions(unit)end
+  result.settings_effects.after_explicit_recalculation=snapshot()
+  shot('work-details-settings-effects')
+ end
 end
 records[#records+1]={name='work-details-native',count=#result.details,mode=result.mode}

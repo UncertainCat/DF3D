@@ -122,6 +122,23 @@ defaults by icon. Its complete body and switch table are now pinned and called
 with an owned closure, replacing the incomplete Lua default table. Reset's
 existing follow-up recalculation queue remains; native settings recalculation
 timing still requires acceptance.
+Protected122557 on2026-11-06 extends the settings reference with actual
+Carpentry and Woodworking label clicks, group enable/disable, Done and leaving
+Labor in a paused disposable fortress. Allowed labors change immediately
+([] -> [11] -> [11,59] -> [] -> [11]), while all339 active units retain identical
+enabled labors/profession/profession2 immediately, after three UI frames, after
+Done and after leaving. Explicit native automatic-profession recalculation then
+changes worker state. This distinguishes definition edits from recalculation;
+it does not yet establish when normal simulation applies them. The older
+WorkDetailEdit path's forced recalculation queue is not accepted for the full
+settings editor. `settings_effects_reference` retains the scoped observations.
+The diagnostic resolves unexposed labor-list child labels from native rendered
+text; runtime must not use this mechanism. Earlier122358/122459 failed to find
+children through DFHack's base widget type and made no settings clicks. Final
+DF15828 closes unsaved with source preservation; no Godot ran, native30FPS,
+GPU45–46C sampled. Owned native toggles, settings transport/UI and normal
+simulation timing remain pending.
+
 Worker setup42d8a0..42de34 supplies65 labor-to-skill branches: enabled labors set
 each associated skill weight to1, taking a union rather than accumulating shared
 skills. The fixture retains those mappings. Runtime catalog exposure and the

@@ -3018,5 +3018,61 @@
       "native portrait selection/highlight state",
       "full composed screen exposure"
     ]
+  },
+  "settings_effects_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-122557",
+    "scope": "Actual native labels clicked in a paused disposable fortress; definition mutation and worker recalculation timing, not full editor acceptance.",
+    "selected_detail": 11,
+    "assigned_unit": 5573,
+    "active_workers": 339,
+    "initial_labors": [],
+    "steps": [
+      {
+        "callback_rva": "0x468ec0",
+        "id": 11,
+        "labors": [
+          11
+        ],
+        "worker_state_unchanged_immediately_and_after_three_frames": true
+      },
+      {
+        "callback_rva": "0x469020",
+        "id": -2,
+        "labors": [
+          11,
+          59
+        ],
+        "worker_state_unchanged_immediately_and_after_three_frames": true
+      },
+      {
+        "callback_rva": "0x469020",
+        "id": -2,
+        "labors": [],
+        "worker_state_unchanged_immediately_and_after_three_frames": true
+      },
+      {
+        "callback_rva": "0x468ec0",
+        "id": 11,
+        "labors": [
+          11
+        ],
+        "worker_state_unchanged_immediately_and_after_three_frames": true
+      },
+      {
+        "callback_rva": "0x468d20",
+        "id": null,
+        "labors": [
+          11
+        ],
+        "worker_state_unchanged_immediately_and_after_three_frames": true
+      }
+    ],
+    "worker_state_unchanged_after_leave": true,
+    "baseline_worker_state_sha256": "3ef7fe16272c2fd83909a2bfc90abf729628db3d59c651719d24571775422c51",
+    "explicit_recalculation_worker_state_sha256": "e2b42264e795e383ec18bf3e5e2704de031859a6af1b95cbaca1e088b028a6ba",
+    "explicit_recalculation_changed_workers": 148,
+    "source_preserved": true,
+    "owned_df_closed": true,
+    "pending": "Normal simulation recalculation timing and owned native toggle adapter/wire/UI remain unverified."
   }
 }

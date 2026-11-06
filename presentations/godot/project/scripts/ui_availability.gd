@@ -9,7 +9,7 @@ const AVAILABLE = [
 # The same registry gates routes and constructs known implementations. Staged
 # routes below remain testable without promoting their unfinished launchers.
 const PANEL_ROUTES = {"Build / construction":"construction", "Stockpiles / zones":"areas", "Stockpiles":"areas", "Zones":"areas", "Residents":"readouts", "Work Details":"readouts", "Work orders":"readouts", "Reports":"reports"}
-const PANEL_SCRIPTS = {"construction":"res://scripts/construction.gd", "areas":"res://scripts/areas.gd", "readouts":"res://scripts/read_only_info.gd", "inspector":"res://scripts/context_inspector.gd", "reports":"res://scripts/reports_panel.gd", "alerts":"res://scripts/alert_popup_panel.gd", "farm":"res://scripts/farm_panel.gd", "chest":"res://scripts/chest_panel.gd", "workshop":"res://scripts/workshop_panel.gd"}
+const PANEL_SCRIPTS = {"residents":"res://scripts/residents_panel.gd", "construction":"res://scripts/construction.gd", "areas":"res://scripts/areas.gd", "readouts":"res://scripts/read_only_info.gd", "inspector":"res://scripts/context_inspector.gd", "reports":"res://scripts/reports_panel.gd", "alerts":"res://scripts/alert_popup_panel.gd", "farm":"res://scripts/farm_panel.gd", "chest":"res://scripts/chest_panel.gd", "workshop":"res://scripts/workshop_panel.gd"}
 
 # Native ordered world-hover entries from independently owned bridge inputs.
 const TILE_HOVER_AVAILABLE = true

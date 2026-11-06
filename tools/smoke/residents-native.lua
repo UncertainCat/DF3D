@@ -345,6 +345,35 @@ end
 local file=assert(io.open(out..'/residents-list-reference.json','w'))
 file:write(json.encode({mode=info.creatures.current_mode,lists=lists,snapshots=snapshots}));file:close()
 for _,snapshot in ipairs(snapshots)do assert(snapshot.matches~=false,'Residents order differs: '..snapshot.name)end
+if os.getenv('DF3D_RESIDENTS_NAVIGATION')=='1' then
+ local button,unit
+ local function find(widget,active)
+  active=active and (widget.flag.whole&1)==1
+  if active and not button and df.widget_unit_name:is_instance(widget) and widget.u and widget.rect.y1>=active_list.rect.y1 and widget.rect.y1<=active_list.rect.y2 then
+   for _,child in ipairs(dfhack.gui.getWidgetChildren(widget.parent))do
+    if child.name=='Unit sheet button' then button=child;unit=widget.u;break end
+   end
+  end
+  if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do find(child,active)end end
+ end
+ find(active_list,true);assert(button and unit,'No visible Residents sheet button')
+ local id=unit.id;local x=button.rect.x1+1;local y=button.rect.y1+1;local g=df.global.gps
+ g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+6;g.mouse_x=x;g.mouse_y=y
+ df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+ gui.simulateInput(view,'_MOUSE_L')
+ df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+ for _=1,3 do script.sleep(1,'frames')end
+ local sheet=df.global.game.main_interface.view_sheets
+ assert(sheet.open and sheet.active_sheet==df.view_sheet_type.UNIT and sheet.viewing_unid[0]==id and not info.open,'Native Residents handoff failed')
+ -- The map designation cursor is deliberately cleared by43bda0. The sheet
+ -- retains its resolved destination at viewing_x/y/z (native1a0cad..1a0cbd).
+ local evidence={id=id,position={sheet.viewing_x,sheet.viewing_y,sheet.viewing_z},sheet_open=sheet.open,list_closed=not info.open}
+ file=assert(io.open(out..'/residents-navigation-reference.json','w'));file:write(json.encode(evidence));file:close()
+ gui.simulateInput(view,'LEAVESCREEN');gui.simulateInput(view,'D_UNITLIST')
+ for _=1,3 do script.sleep(1,'frames')end
+ assert(info.open,'Native Residents did not reopen after sheet navigation')
+ view:render(dfhack.getTickCount())
+end
 file=assert(io.open(out..'/shot.tmp','w'));file:write('residents-root');file:close()
 assert(os.rename(out..'/shot.tmp',out..'/shot'))
 local deadline=dfhack.getTickCount()+30000

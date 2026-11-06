@@ -8,7 +8,9 @@ namespace df3d_creature {
 // Visibility137bd50 reads simulation mode/debug_showambush, fortress control,
 // containment and map designation. Its holder resolver writes only its local
 // specific_ref output; semantic reference getters may warm cached indices.
-inline std::optional<df::coord> followPosition(df::unit* unit) {
+// Native unit-sheet button1422830 uses1367430 directly, without follow's
+// inactive/visibility filters. This read never opens a sheet or moves a camera.
+inline std::optional<df::coord> sheetPosition(df::unit* unit) {
     static const bool supported=[] {
         if(!df3d_production::farmFunctions())return false;
         const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
@@ -39,8 +41,15 @@ inline std::optional<df::coord> followPosition(df::unit* unit) {
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     int16_t x=-30000,y=-30000,z=-30000;
     reinterpret_cast<void (*)(df::unit*,int16_t*,int16_t*,int16_t*)>(base+0x1367430)(unit,&x,&y,&z);
-    if(x==-30000 || unit->flags1.bits.inactive ||
-       reinterpret_cast<bool (*)(df::unit*)>(base+0x137bd50)(unit))return invalid;
     return df::coord(x,y,z);
+}
+inline std::optional<df::coord> followPosition(df::unit* unit) {
+    const auto position=sheetPosition(unit);
+    if(!position)return std::nullopt;
+    const df::coord invalid(-30000,-30000,-30000);
+    if(!unit || position->x==-30000 || unit->flags1.bits.inactive)return invalid;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    if(reinterpret_cast<bool (*)(df::unit*)>(base+0x137bd50)(unit))return invalid;
+    return position;
 }
 }

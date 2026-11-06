@@ -3920,11 +3920,12 @@ void run(color_ostream& out) {
     }
     publish();return;
   }
-  if(r->action()==m::ManagementAction::CreatureLocate) {
+  if(r->action()==m::ManagementAction::CreatureLocate || r->action()==m::ManagementAction::CreatureSheetLocate) {
     message.clear();status=m::ManagementStatus::Rejected;
     const auto id=r->creature()->unit_id();
-    const auto position=df3d_creature::followPosition(df::unit::find(id));
-    if(position && position->isValid() && position->x>=0 && position->y>=0 && position->z>=0) {
+    const bool sheet=r->action()==m::ManagementAction::CreatureSheetLocate;
+    const auto position=sheet?df3d_creature::sheetPosition(df::unit::find(id)):df3d_creature::followPosition(df::unit::find(id));
+    if(position && (sheet?position->x!=-30000:(position->isValid() && position->x>=0 && position->y>=0 && position->z>=0))) {
       creaturePosition=std::make_pair(id,*position);status=m::ManagementStatus::Ok;
     }
     publish();return;

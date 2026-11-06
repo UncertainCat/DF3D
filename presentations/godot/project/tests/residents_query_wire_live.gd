@@ -121,9 +121,17 @@ func run() -> void:
 		var unrelated:=await request("construction",{"action":C.ManagementAction.Catalog})
 		check(not unrelated.has("residents_specialization"),"Unrelated reply retained specialization result")
 	var scene_results: Array=[]
+	var navigation_result: Dictionary={}
+	if FileAccess.file_exists(directory+"/residents-navigation-reference.json"):
+		var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/residents-navigation-reference.json"))
+		var response:=await request("creature_sheet_location",{"action":C.ManagementAction.CreatureSheetLocate,"unit_id":int(reference.id)})
+		navigation_result=response.get("creature_position",{})
+		check(response.get("status")==C.ManagementStatus.Ok and navigation_result.get("unit_id")==int(reference.id) and navigation_result.get("position")==Vector3i(int(reference.position[0]),int(reference.position[1]),int(reference.position[2])),"Sheet destination differs from native button click")
+		response=await request("creature_sheet_location",{"action":C.ManagementAction.CreatureSheetLocate,"unit_id":2147483647})
+		check(response.get("status")==C.ManagementStatus.Rejected and not response.has("creature_position"),"Missing sheet identity retained position authority")
 	if not specialization_results.is_empty():scene_results=await specialization_scene()
 	var file:=FileAccess.open(directory+"/residents-wire-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"comparisons":results,"row_comparisons":row_comparisons,"specialization_results":specialization_results,"scene_results":scene_results,"assignment_count":assignment_count}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"comparisons":results,"row_comparisons":row_comparisons,"specialization_results":specialization_results,"scene_results":scene_results,"assignment_count":assignment_count,"navigation":navigation_result}));file.close()
 	world.queue_free();await process_frame
 	quit(1 if failed else 0)
 

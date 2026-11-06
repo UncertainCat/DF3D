@@ -2,6 +2,19 @@ extends SceneTree
 const State=preload("res://scripts/residents_state.gd")
 const View=preload("res://scripts/residents_view.gd")
 const C=preload("res://scripts/management_contract.gd")
+const Owner=preload("res://scripts/residents_panel.gd")
+const Shell=preload("res://scripts/fortress_ui.gd")
+class MissingCreatureWorld extends RefCounted:
+	func inspect_tile(_tile):return [{"kind":1,"id":7}]
+	func inspect_entity(_kind,_id):return {}
+class Interaction extends Node:
+	var construction_active:=false
+	var shell_blocked:=false
+	var shell_enabled:=true
+	var panel:=Control.new()
+	func _ready():add_child(panel)
+	func cancel_selection():pass
+	func set_play_enabled(_value):pass
 class Service extends RefCounted:
 	signal session_changed
 	var next:=0
@@ -73,5 +86,34 @@ func run() -> void:
 	state.close();view._gui_input(click)
 	check(inspected==[42] and focused==[Vector3i(25,31,4)],"Closed rows cannot navigate using retired identity")
 	view.free()
+	var interaction:=Interaction.new();root.add_child(interaction)
+	var host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)
+	var owner:=Owner.new();root.add_child(owner);owner.set_process(false)
+	owner.panel=Control.new();owner.add_child(owner.panel);owner.ui_host=host;owner.state.configure(service);host.register(owner)
+	var navigated: Array=[]
+	owner.inspect_requested.connect(func(tile,id):navigated.append([tile,id]))
+	owner.open_panel();service.reply(owner.state.ticket,{"residents":{"unit_ids":PackedInt32Array([42])}})
+	service.reply(owner.state.ticket,{"residents_rows":{"rows":[{"id":42}]}})
+	check(host.active==owner and interaction.construction_active and owner.panel.visible,"Residents owns the modal input gate")
+	owner.state.inspect(42);var navigation: int=owner.state.ticket;owner.state.inspect(42)
+	check(owner.state.ticket==navigation and service.calls[navigation].domain=="creature_sheet_location","Details has one semantic navigation request")
+	service.reply(navigation,{"creature_position":{"unit_id":42,"position":Vector3i(5,6,7)}})
+	check(navigated==[[Vector3i(5,6,7),42]],"Owner hands off resolved position and exact identity")
+	owner.state.inspect(42);navigation=owner.state.ticket;host.reset_local_views()
+	service.reply(navigation,{"creature_position":{"unit_id":42,"position":Vector3i(8,9,10)}})
+	check(navigated.size()==1 and not owner.panel.visible and host.active==null and not interaction.construction_active,"Retired owner cannot navigate from a late reply")
+	owner.open_panel();service.reply(owner.state.ticket,{"residents":{"unit_ids":PackedInt32Array([42])}})
+	service.reply(owner.state.ticket,{"residents_rows":{"rows":[{"id":42}]}})
+	owner.focus_requested.connect(func(tile):focused.append(tile))
+	owner._focus(Vector3i(11,12,13))
+	check(focused[-1]==Vector3i(11,12,13) and host.active==null and not owner.panel.visible,"Recenter closes the roster and releases world input")
+	owner.free();host.free();interaction.free()
+	var inspector=preload("res://scripts/context_inspector.gd").new()
+	inspector.world=MissingCreatureWorld.new();inspector.panel=Panel.new();inspector.add_child(inspector.panel)
+	check(not inspector.open_target(Vector3i(1,2,3),1,42,true) and inspector.selected.is_empty(),"Missing exact creature cannot select another tile occupant")
+	# This isolated target check deliberately does not run the asset-heavy _ready.
+	# Adopt the editor that _ready normally parents before tearing down the owner.
+	inspector.customize.add_child(inspector.customize.entry)
+	inspector.add_child(inspector.customize);inspector.free();var shell:=Shell.new();shell.free()
 	if failures==0:print("RESIDENTS_STATE_PASS")
 	quit(1 if failures else 0)

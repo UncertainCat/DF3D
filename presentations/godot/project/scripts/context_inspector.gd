@@ -105,14 +105,15 @@ func _ready():
 func open_tile(tile: Vector3i):
 	open_target(tile,0,-1)
 
-func open_target(tile: Vector3i, kind: int, id: int):
-	if not play_enabled or panel == null: return
+func open_target(tile: Vector3i, kind: int, id: int, require_exact:=false) -> bool:
+	if not play_enabled or panel == null: return false
 	var rows: Array = world.inspect_tile(tile)
 	var target: Dictionary = world.inspect_entity(kind,id) if kind > 0 else {}
+	if require_exact and target.is_empty():return false
 	if rows.is_empty() and target.is_empty():
 		close_panel()
-		return
-	if ui_host != null and not ui_host.activate(self): return
+		return false
+	if ui_host != null and not ui_host.activate(self): return false
 	choices = rows
 	if not target.is_empty() and not choices.any(func(row): return row.kind == kind and row.id == id): choices.push_front(target)
 	epoch = int(world.resident_info_state().get("world_epoch",0))
@@ -120,6 +121,7 @@ func open_target(tile: Vector3i, kind: int, id: int):
 	panel.show()
 	interaction.cancel_selection()
 	choose(target if not target.is_empty() else choices[0])
+	return true
 
 func choose(row: Dictionary):
 	labor.close()

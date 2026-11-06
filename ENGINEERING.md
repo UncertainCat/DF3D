@@ -31,11 +31,42 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Residents native list discovery
 
+The staged `residents_panel.gd` owns its modal input gate, state/view lifecycle
+and scaled viewport layout. It is available through the controller factory as
+`residents`, but the public Residents route remains unchanged. Recenter closes
+and releases the roster before emitting the captured tile. Details submits
+CreatureSheetLocate through the shared service, suppresses duplicate navigation,
+and hands off the resolved tile and exact ID. Closing/reset/session replacement
+detaches late replies. The inspector's optional exact-target entry refuses a
+missing creature instead of falling back to another occupant. Full main-scene
+navigation effects, absent-from-mirror targets, responsive rendering and remaining
+row actions/hover are still unaccepted; factory wiring is not launcher promotion.
+
+Management134 CreatureSheetLocate calls the existing pinned native1367430 with
+owned output coordinates and no native sheet/camera state. Follow continues to
+apply its inactive/visibility checks separately. Protected051818 on2026-11-06
+clicks the actual native Residents unit-sheet button: the roster closes, creature
+6534 opens, and its retained destination160,89,165 matches the typed request.
+A missing ID rejects with no position;11 query and13 row comparisons also pass.
+DF19856 exits unsaved; source unchanged; paired logs contain only the known
+separate-thread notice. The earlier051711 failure read the designation cursor,
+which43bda0 clears; the corrected oracle uses sheet.viewing_x/y/z written by
+1a0cad..1a0cbd. That failure was an oracle error, not a runtime correction.
+Both builds are installed with bridge SHA256
+5ED8742D62EAD649F94A05F7AEF241F37029307BD13282E7C9B2CC7B123F0C09.
+The native MSVC build and contract core19/19/extension checks pass. Headless
+`residents-owner-final` passes real host ownership, late-reply retirement,
+Recenter release and exact-target refusal; `residents-owner-composed` passed
+core19/19 and ui_host_test but initially exposed test-only orphan objects,
+fixed by parenting the normally-ready-owned editor before isolated teardown.
+The owner opening check also caught and fixed transient state reset releasing
+the newly acquired gate. No new graphical viewer acceptance is claimed. Native
+runs were serial30FPS; observed GPU35–37C, with both processes closed.
+
 The staged Residents view emits `focus_requested` from local304,y (24x36)
 using the row's captured `position`, and `inspect_requested` from local336,y
 (24x36) using its stable ID. Both require a ready current row. Main-owner
-navigation, native effects and rendered acceptance of these controls remain
-unfinished; they do not expose the staged screen. Headless
+navigation effects remain unfinished; these do not expose the staged screen. Headless
 `residents-navigation` passes core19/19, extension build and component input
 checks for scrolled row identity, captured coordinates and closed-row retirement.
 

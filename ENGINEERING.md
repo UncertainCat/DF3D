@@ -237,7 +237,7 @@ extension and controller checks. `settings_view_reference` records this scope.
 Reset is now connected to WorkDetailEdit(edit3) using the displayed settings
 receipt; success refreshes definitions/settings and retains editor scroll. Custom
 definitions and external labor control cannot submit Reset. Delete is connected
-as described below; renaming is connected with acceptance below. Settings hover,
+as described below; renaming is connected with acceptance below. Header/filter widget help,
 resize and full composed lifecycle acceptance remain pending. The full screen stays hidden.
 
 Protected131034 on2026-11-06 verifies actual owner Gear/Reset clicks against a
@@ -356,6 +356,36 @@ are capped at30FPS; GPU samples during this work ranged52–61C. No crash cause
 is inferred. `rename_view_reference` records this scope. Resize, settings hover,
 all navigation variants and broader lifecycle acceptance remain pending before
 screen exposure.
+
+Work Details settings badges now use the existing native work-detail help
+message and shared hover timer. Drawing and hit testing consume the same badge
+rectangles, including multiple definitions sharing a labor. Group labels, labor
+captions and checkbox cells do not acquire badge help; scrolled-out or pending
+settings cannot retain hover authority. The staged owner accepts an optional
+shared HUD hover view, consistent with other management composition.
+
+Protected133852 on2026-11-06 records16 native probes. Specialization reports
+instruction260 and settings badges report269 with the already-sourced text
+“This creature is assigned to a work detail.” Sort Skills and filter instead
+use generic widget overlays, showing “Sort units by skills.”/Ctrl+i and
+“Filter the unit list by name or job.”/Ctrl+f. A negative main instruction does
+not prove absence of widget help. Native screen-cell reads omit that overlay;
+the filter overlay also remains over later screenshots in this probe, so those
+images are not clean settings-help visual acceptance. The independently sourced
+main-instruction text and existing shared renderer are retained.
+
+Protected134418 composes the actual rendered settings owner with the shared help
+view, hovers a visible badge until the native message appears, then moves away
+and verifies retirement. Both editable and external-controller phases pass,
+alongside the existing native-toggle/worker-state checks. DF21212 closes unsaved
+with source preservation and no remaining DF/Godot. Native/viewer are30FPS,
+GPU60C sampled; joined final logs contain only known separate-renderer,
+device-finalize and paired shutdown-object diagnostics. Headless
+work-details-settings-hover-fixed-20261106 passes core19, extension, controller
+geometry/retirement and shared hover-clock checks. `settings_hover_reference`
+records scope and capture limitations. Generic sort/filter widget tooltips,
+shortcut dispatch and broader hover coverage still require integration before
+full Work Details exposure.
 
 `work_detail_query_native.h` supplies an owned Work Details worker query.
 Native142c4b0 performs filtering, stable sorting and its selected-worker

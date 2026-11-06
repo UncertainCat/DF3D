@@ -83,6 +83,15 @@ func run() -> void:
 	var view:=View.new();root.add_child(view);view.state=state;view.layout(Vector2(1200,800))
 	check(view.position==Vector2(32,52) and view.size==Vector2(944,708) and view.list_top()==228 and view.page_rows==10,"Native default Work Details frame geometry")
 	check(view.member_rect(0)==Rect2(800,228,32,36) and view.mode_rect(1)==Rect2(584,156,184,36),"Native membership and mode geometry")
+	state.phase=State.Phase.Ready;state.editing_settings=true;state.settings=settings_page().work_detail_settings
+	state.details=[{"icon":0,"labors":PackedInt32Array([1])},{"icon":1,"labors":PackedInt32Array([1])}]
+	# Synthetic catalog has12 categories followed by labor1; both badges are
+	# visible on row12 and must share the actual rendering geometry.
+	var icon_y:=view.settings_rect(12).position.y
+	check(view.hover_target(Vector2(856,icon_y+18)).get("staff")=="work_detail" and view.hover_target(Vector2(824,icon_y+18)).get("staff")=="work_detail","Every visible settings badge has native work-detail help")
+	check(view.hover_target(Vector2(888,icon_y+18)).is_empty() and view.hover_target(Vector2(500,icon_y+18)).is_empty(),"Settings checkbox and labor caption do not invent help")
+	state.seek_settings(13,view.settings_capacity());check(view.hover_target(Vector2(856,view.settings_top()+18)).is_empty(),"Scrolled-out settings badge cannot retain hover authority")
+	state.settings_first=0;state.phase=State.Phase.Applying;check(view.hover_target(Vector2(856,icon_y+18)).is_empty(),"Pending mutation retires settings help")
 	view.state=null;view.queue_free();await process_frame
 	state.open();service.reply(state.ticket,page([detail(0)]));complete_workers(service,state,[7])
 	state.open_settings();old=state.ticket

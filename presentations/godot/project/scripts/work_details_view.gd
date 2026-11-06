@@ -135,8 +135,22 @@ func refresh() -> void:
 	if search!=null:search.visible=not showing_settings
 	if search!=null:search.set_bytes(state.query);search.editable=allowed() and state.phase!=state.Phase.Applying
 	queue_redraw()
+func setting_icons(id: int,y: float) -> Array[Dictionary]:
+	var entries: Array[Dictionary]=[]
+	if id<0:return entries
+	var x:=size.x-104
+	for definition: Dictionary in state.details:
+		if definition.get("labors",PackedInt32Array()).has(id) and int(definition.icon)>=0 and int(definition.icon)<Indicators.WORK_DETAILS.size():
+			entries.append({"icon":int(definition.icon),"rect":Rect2(x,y,32,36)});x-=32
+	return entries
 func hover_target(point: Vector2) -> Dictionary:
-	if state==null or state.editing_settings or state.phase!=state.Phase.Ready:return {}
+	if state==null or state.phase!=state.Phase.Ready:return {}
+	if state.editing_settings:
+		var catalog: Array=state.settings.get("catalog",[])
+		for index in range(state.settings_first,mini(catalog.size(),state.settings_first+settings_capacity())):
+			for entry: Dictionary in setting_icons(int(catalog[index].id),settings_rect(index).position.y):
+				if entry.rect.has_point(point):return {"staff":"work_detail"}
+		return {}
 	for index in page_rows:
 		var row: Dictionary=state.row_at(state.first+index)
 		if row.is_empty():continue
@@ -282,11 +296,8 @@ func _draw_settings() -> void:
 				if int(catalog[next].id)<0:break
 				if not labors.has(int(catalog[next].id)):checked=false;break
 		else:
-			var icon_x:=size.x-104
-			for definition: Dictionary in state.details:
-				if definition.get("labors",PackedInt32Array()).has(id) and int(definition.icon)>=0 and int(definition.icon)<Indicators.WORK_DETAILS.size():
-					var icon: Texture2D=art.texture("WORK_DETAIL_"+Indicators.WORK_DETAILS[int(definition.icon)])
-					if icon!=null:draw_texture_rect(icon,Rect2(icon_x,rect.position.y,32,36),false)
-					icon_x-=32
+			for badge: Dictionary in setting_icons(id,rect.position.y):
+				var icon: Texture2D=art.texture("WORK_DETAIL_"+Indicators.WORK_DETAILS[badge.icon])
+				if icon!=null:draw_texture_rect(icon,badge.rect,false)
 		var checkbox: Texture2D=art.texture("LABOR_WORKER_ASSIGNED" if checked else "LABOR_WORKER_UNASSIGNED")
 		if checkbox!=null:draw_texture_rect(checkbox,Rect2(size.x-72,rect.position.y,32,36),false)

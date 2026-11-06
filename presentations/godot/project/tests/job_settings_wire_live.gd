@@ -689,7 +689,8 @@ func work_detail_settings_scene() -> void:
 	for frame in 5:world.poll();await process_frame
 	var interaction:=Interaction.new();root.add_child(interaction)
 	var host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)
-	var owner=preload("res://scripts/work_details_panel.gd").new();root.add_child(owner);owner.configure(world,service,host);owner.open_panel()
+	var help=preload("res://scripts/native_hover_view.gd").new();root.add_child(help);help.configure(world);help.layout(Vector2(1200,800))
+	var owner=preload("res://scripts/work_details_panel.gd").new();root.add_child(owner);owner.configure(world,service,host,help);owner.open_panel()
 	var state=owner.state;var view=owner.panel
 	if not check(await ready(state),"Settings scene roster failed"):quit(1);return
 	await pointer(view,view.detail_rect(int(expected.index)).get_center())
@@ -699,6 +700,19 @@ func work_detail_settings_scene() -> void:
 	for frame in 3:world.poll();await process_frame
 	await RenderingServer.frame_post_draw
 	check(root.get_texture().get_image().save_png(directory+"/work-details-settings-view-"+str(reference.settings_wire_phase)+".png")==OK,"Settings screenshot failed")
+	var hovered:=false
+	for index in mini(view.settings_capacity(),state.settings.catalog.size()):
+		var icons: Array=view.setting_icons(int(state.settings.catalog[index].id),view.settings_rect(index).position.y)
+		if icons.is_empty():continue
+		var motion:=InputEventMouseMotion.new();motion.position=view.get_global_transform_with_canvas()*icons[0].rect.get_center();Input.parse_input_event(motion)
+		await create_timer(0.65).timeout
+		check(help.displayed=="staff_work_detail" and help.visible,"Visible settings badge did not show native help")
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/work-details-settings-hover-view-"+str(reference.settings_wire_phase)+".png")
+		motion=InputEventMouseMotion.new();motion.position=Vector2.ZERO;Input.parse_input_event(motion);await process_frame;await process_frame
+		check(not help.visible,"Settings help survived pointer departure")
+		hovered=true;break
+	check(hovered,"Settings fixture has no visible work-detail badges")
 	if reference.settings_wire_phase=="locked":
 		await pointer(view,view.settings_rect(1).get_center())
 		check(state.ticket==0 and state.phase==state.Phase.Ready and not state.settings.editable,"Read-only settings click submitted mutation")
@@ -716,7 +730,7 @@ func work_detail_settings_scene() -> void:
 	owner.handle_back();check(not view.visible,"Settings owner Back failed")
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"rendered_settings":true,"phase":reference.settings_wire_phase}));file.close()
-	owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)
+	owner.queue_free();help.queue_free();host.queue_free();interaction.queue_free();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)
 
 func work_detail_reset_scene(index: int) -> void:
 	if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Reset scene assets unavailable"):return

@@ -3648,5 +3648,202 @@
     "source_preserved": true,
     "owned_df_closed": true,
     "diagnostics": "Final joined logs contain only known separate-renderer, device-finalize and paired shutdown-object signatures."
+  },
+  "settings_hover_reference": {
+    "native_capture": "build/stockpile-storage-native-input-20261106-133852",
+    "rendered_capture": "build/stockpile-storage-native-input-20261106-134418",
+    "scope": "Settings badge main-interface help and optional shared-HUD composition. Generic widget sort/filter tooltips remain pending.",
+    "main_instruction_probes": [
+      {
+        "name": "add",
+        "point": [
+          176,
+          166
+        ],
+        "instruction": -1,
+        "displayed": -1,
+        "lines": []
+      },
+      {
+        "name": "name",
+        "point": [
+          500,
+          166
+        ],
+        "instruction": -1,
+        "displayed": -1,
+        "lines": []
+      },
+      {
+        "name": "gear",
+        "point": [
+          688,
+          166
+        ],
+        "instruction": -1,
+        "displayed": -1,
+        "lines": []
+      },
+      {
+        "name": "everybody",
+        "point": [
+          532,
+          226
+        ],
+        "instruction": -1,
+        "displayed": -1,
+        "lines": []
+      },
+      {
+        "name": "selected",
+        "point": [
+          708,
+          226
+        ],
+        "instruction": -1,
+        "displayed": -1,
+        "lines": []
+      },
+      {
+        "name": "nobody",
+        "point": [
+          868,
+          226
+        ],
+        "instruction": -1,
+        "displayed": -1,
+        "lines": []
+      },
+      {
+        "name": "skills",
+        "point": [
+          600,
+          262
+        ],
+        "instruction": -1,
+        "displayed": -1,
+        "lines": []
+      },
+      {
+        "name": "specialization",
+        "point": [
+          768,
+          298
+        ],
+        "instruction": 260,
+        "displayed": 260,
+        "lines": [
+          "This worker is not",
+          "specialized and will do",
+          "any free tasks that",
+          "become available.",
+          "Click to toggle.",
+          "",
+          "Hotkey: Ctrl+z"
+        ]
+      },
+      {
+        "name": "membership",
+        "point": [
+          848,
+          298
+        ],
+        "instruction": -1,
+        "displayed": -1,
+        "lines": []
+      },
+      {
+        "name": "filter",
+        "point": [
+          608,
+          718
+        ],
+        "instruction": -1,
+        "displayed": -1,
+        "lines": []
+      },
+      {
+        "name": "done",
+        "point": [
+          320,
+          166
+        ],
+        "instruction": -1,
+        "displayed": -1,
+        "lines": []
+      },
+      {
+        "name": "delete",
+        "point": [
+          904,
+          166
+        ],
+        "instruction": -1,
+        "displayed": -1,
+        "lines": []
+      },
+      {
+        "name": "group",
+        "point": [
+          500,
+          202
+        ],
+        "instruction": -1,
+        "displayed": -1,
+        "lines": []
+      },
+      {
+        "name": "labor",
+        "point": [
+          500,
+          238
+        ],
+        "instruction": -1,
+        "displayed": -1,
+        "lines": []
+      },
+      {
+        "name": "checkbox",
+        "point": [
+          920,
+          238
+        ],
+        "instruction": -1,
+        "displayed": -1,
+        "lines": []
+      },
+      {
+        "name": "detail-icon",
+        "point": [
+          888,
+          418
+        ],
+        "instruction": 269,
+        "displayed": 269,
+        "lines": [
+          "This creature is",
+          "assigned to a work",
+          "detail."
+        ]
+      }
+    ],
+    "widget_tooltips_observed": {
+      "skills": {
+        "text": "Sort units by skills.",
+        "hotkey": "Ctrl+i"
+      },
+      "filter": {
+        "text": "Filter the unit list by name or job.",
+        "hotkey": "Ctrl+f"
+      }
+    },
+    "capture_limit": "Main-instruction screen cells do not capture the separate generic widget overlay. After the filter probe, that overlay remains in later screenshots; those images alone do not establish clean settings main-help appearance.",
+    "rendered_badge_message": "This creature is assigned to a work detail.",
+    "pointer_departure_clears": true,
+    "read_only_settings_help": true,
+    "shared_render_and_hitbox_geometry": true,
+    "source_preserved": true,
+    "owned_df_closed": true,
+    "diagnostics": "Final joined logs contain only known separate-renderer, device-finalize and paired shutdown-object signatures."
   }
 }

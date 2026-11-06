@@ -15,11 +15,11 @@ var pending_name_action: Dictionary={}
 var closing:=false
 var pending_name_first: int=-1
 func _init() -> void:state.changed.connect(_sync)
-func configure(world,service,host) -> void:
+func configure(world,service,host,hover_help=null) -> void:
 	ui_host=host;state.configure(service)
 	var layer:=CanvasLayer.new();layer.layer=10;add_child(layer)
 	panel=preload("res://scripts/work_details_view.gd").new();layer.add_child(panel)
-	panel.configure_work_details(world,state);panel.input_allowed=allowed
+	panel.configure_work_details(world,state);panel.input_allowed=allowed;panel.hover_help=hover_help
 	panel.cancelled.connect(close_panel)
 	panel.settings_requested.connect(state.open_settings)
 	panel.reset_requested.connect(state.reset_settings)

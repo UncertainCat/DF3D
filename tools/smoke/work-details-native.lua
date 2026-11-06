@@ -227,6 +227,37 @@ local function click_handler(rva)
   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
   for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
  end
+if os.getenv('DF3D_WORK_DETAILS_HOVER')=='1' then
+ result.hover={probes={}}
+ local main=df.global.game.main_interface
+ local function probe(name,x,y)
+  local function move()
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+   gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+  end
+  local deadline=dfhack.getTickCount()+850
+  repeat move();script.sleep(1,'frames')until dfhack.getTickCount()>=deadline
+  move();script.sleep(2,'frames')
+  local lines,cells={},{}
+  for row=0,19 do
+   local chars={}
+   for col=g.dimx-24,g.dimx-1 do
+    local tile=dfhack.screen.readTile(col,row);local ch=tile.ch
+    chars[#chars+1]=ch>=32 and ch<127 and string.char(ch)or' '
+    if ch>32 and ch<127 then cells[#cells+1]={x=col,y=row,ch=ch,fg=tile.fg,bg=tile.bg,bold=tile.bold}end
+   end
+   lines[#lines+1]=table.concat(chars):gsub('%s+$','')
+  end
+  while #lines>0 and lines[#lines]==''do table.remove(lines)end
+  result.hover.probes[#result.hover.probes+1]={name=name,point={x,y},instruction=main.current_hover,displayed=main.last_displayed_hover_inst,lines=lines,text_cells=cells}
+  shot('work-details-hover-'..name)
+ end
+ for _,target in ipairs{{'add',176,166},{'name',500,166},{'gear',688,166},{'everybody',532,226},{'selected',708,226},{'nobody',868,226},{'skills',600,262},{'specialization',768,298},{'membership',848,298},{'filter',608,718}}do probe(table.unpack(target))end
+ click_handler(0x468880)
+ for _,target in ipairs{{'done',320,166},{'delete',904,166},{'group',500,202},{'labor',500,238},{'checkbox',920,238},{'detail-icon',888,418}}do probe(table.unpack(target))end
+ records[#records+1]={name='work-details-hover',probes=#result.hover.probes};return
+end
 if os.getenv('DF3D_WORK_DETAILS_RENAME')=='1' then
  local function input(action,clear,text)
   if text then local f=assert(io.open(out..'/residents-search-input.json','w'));f:write(json.encode({clear_count=clear or 0,text=text}));f:close()end

@@ -294,15 +294,20 @@ func composed_draft(reference: Dictionary) -> Dictionary:
 	if not check(await ready(state) and state.art_page()==-1 and state.draft_value.has("name"),"Artwork root did not initialize native draft name"):
 		owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();await process_frame;return {}
 	await pointer(view,Vector2(120,258));check(await ready(state) and state.art_page()==6,"Specify new image did not open draft")
+	await capture_draft("empty")
 	await pointer(view,Vector2(48,114));check(await ready(state) and state.art_page()==7,"Draft Creature control failed")
+	await capture_draft("creatures")
 	await pointer(view,Vector2(300,view.list_top()+18));check(await ready(state) and state.art_page()==6 and state.draft_value.elements.size()==1,"Draft creature selection failed")
+	await capture_draft("populated",true)
 	await pointer(view,Vector2(152,378));check(state.draft_discard,"Dirty draft Back did not ask to discard")
+	await capture_draft("discard")
 	await pointer(view,Vector2(120,150));check(not state.draft_discard and state.draft_value.elements.size()==1,"Keep working lost draft")
 	await pointer(view,Vector2(152,378));await pointer(view,Vector2(120,102));check(await ready(state) and state.art_page()==-1 and state.draft_value.elements.is_empty(),"Discard did not return to artwork root")
 	await pointer(view,Vector2(120,258));check(await ready(state),"Draft reopen failed")
 	await pointer(view,Vector2(48,114));check(await ready(state),"Creature list reopen failed")
 	await pointer(view,Vector2(300,view.list_top()+18));check(await ready(state) and state.draft_value.elements.size()==1,"Creature re-add failed")
 	await pointer(view,Vector2(40,378));check(await ready(state) and view.name_state.active and view.name_state.phase==view.name_state.Phase.Ready,"Native name editor did not open")
+	await capture_draft("name",true)
 	var word: int=view.name_state.rows[0].word
 	await pointer(view.name_view,view.name_view.row_rect(0).get_center());check(await ready(state) and state.draft_value.name.words[0]==word,"Native name word selection failed")
 	await pointer(view.name_view,Vector2(view.name_view.size.x-64,30));check(await ready(state) and state.art_page()==6 and not view.name_state.active,"Name Done did not restore draft")
@@ -313,3 +318,14 @@ func composed_draft(reference: Dictionary) -> Dictionary:
 	var result: Dictionary={"initialized_name":true,"discard":true,"kept":true,"named_word":word,"done":state.phase==state.Phase.Closed}
 	owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();await process_frame
 	return result
+
+func capture_draft(label: String,resize: bool=false) -> void:
+	if OS.get_environment("DF3D_RESIDENTS_JOB_ART_RENDER")!="1":return
+	if not check(DisplayServer.get_name()!="headless","Draft capture needs a renderer"):return
+	var sizes: Array[Vector2i]=[Vector2i(1200,800)]
+	if resize:sizes=[Vector2i(960,600),Vector2i(1600,900),Vector2i(1200,800)]
+	for dimensions in sizes:
+		root.size=dimensions
+		for frame in 3:await process_frame
+		await RenderingServer.frame_post_draw
+		check(root.get_texture().get_image().save_png(directory+"/job-draft-"+label+"-"+str(dimensions.x)+".png")==OK,"Draft capture failed")

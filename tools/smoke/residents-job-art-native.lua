@@ -29,8 +29,20 @@ local function save()
 end
 local function shot(name)
  save();local f=assert(io.open(out..'/shot.tmp','w'));f:write(name);f:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
- local deadline=dfhack.getTickCount()+10000
+ local deadline=dfhack.getTickCount()+(os.getenv('DF3D_RESIDENTS_JOB_ART_RENDER')=='1' and 30000 or 10000)
  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Job art capture timeout');script.sleep(1,'frames')end
+end
+local function resized_shots(stage)
+ if os.getenv('DF3D_RESIDENTS_JOB_ART_RENDER')~='1' then return end
+ result.draft[stage..'_sizes']={}
+ for _,size in ipairs({'small','wide','default'})do
+  os.remove(out..'/owner-input-ack')
+  local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('name-resize-'..size);f:close()
+  assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+  local deadline=dfhack.getTickCount()+10000
+  while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Draft resize timeout');script.sleep(1,'frames')end
+  settle();result.draft[stage..'_sizes'][size]=lines();shot('residents-job-art-draft-'..stage..'-'..size)
+ end
 end
 settle()
 if os.getenv('DF3D_RESIDENTS_JOB_ART_BEGIN')=='1' then
@@ -193,6 +205,10 @@ if os.getenv('DF3D_RESIDENTS_JOB_ART_DRAFT')=='1' then
  result.draft.creatures=lines();result.draft.race=art.new_image_race[0];result.draft.caste=art.new_image_caste[0]
  click(37,15);assert(art.current_option==6 and #art.new_image.elements==1,'Creature was not added')
  result.draft.populated=lines();shot('residents-job-art-draft-populated')
+ resized_shots('populated')
+ if os.getenv('DF3D_RESIDENTS_JOB_ART_RENDER')=='1' then
+  label('Name');settle();resized_shots('name');label('Done');settle()
+ end
  if provider then
   assert(provider.race==result.draft.race and provider.caste==result.draft.caste and provider.total==#art.new_image_race,'Owned creature draft list differs')
   for _,text in ipairs(provider.description)do

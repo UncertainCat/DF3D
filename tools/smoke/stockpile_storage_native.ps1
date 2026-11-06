@@ -182,7 +182,7 @@ try {
  if($r.ExitCode -ne 0 -or ($r.Output -join "`n") -notmatch 'STOCKPILE_STORAGE_STARTED'){throw 'Native capture start failed'}
  $limit=(Get-Date).AddSeconds(600)
  while(-not(Test-Path "$out/result.json") -and (Get-Date) -lt $limit){
-  if(($ZoneOwner -or $ZoneAnimals -or $ZoneDefaults -or $LocationSupplies -or $LocationNames -or $FarmResize -or $FarmHeader -or $env:DF3D_WORK_ORDER_ARTWORK_RESIZE -eq '1' -or $env:DF3D_WORK_ORDER_LAYOUT -eq '1' -or $env:DF3D_RESIDENTS_QUERY -eq '1') -and (Test-Path "$out/owner-input-request")) {
+  if(($ZoneOwner -or $ZoneAnimals -or $ZoneDefaults -or $LocationSupplies -or $LocationNames -or $FarmResize -or $FarmHeader -or $env:DF3D_WORK_ORDER_ARTWORK_RESIZE -eq '1' -or $env:DF3D_WORK_ORDER_LAYOUT -eq '1' -or $env:DF3D_RESIDENTS_QUERY -eq '1' -or $env:DF3D_RESIDENTS_JOB_ART_RENDER -eq '1') -and (Test-Path "$out/owner-input-request")) {
    $action=(Get-Content "$out/owner-input-request" -Raw).Trim()
    $window=[Shot]::Find($owned.Id)
    switch($action) {
@@ -220,7 +220,10 @@ try {
     if(($env:DF3D_RESIDENTS_JOB_SETTINGS_WIRE -eq '1' -and $name -eq 'residents-job-settings') -or ($env:DF3D_RESIDENTS_JOB_ART_WIRE -eq '1' -and $name -eq 'residents-job-art-root')) {
      $env:DF3D_CARRIER_DIRECTORY=$out;$env:DF3D_DF_PATH=$dfPath
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
-     $client=Start-Process -FilePath $engine -ArgumentList @('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/job_settings_wire_live.gd') -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/job-settings-wire.stdout.log" -RedirectStandardError "$out/job-settings-wire.stderr.log"
+     $clientArgs=@('--headless')
+     if($env:DF3D_RESIDENTS_JOB_ART_RENDER -eq '1'){$clientArgs=@('--max-fps','30')}
+     $clientArgs+=@('--path',"$repo/presentations/godot/project",'--script','res://tests/job_settings_wire_live.gd')
+     $client=Start-Process -FilePath $engine -ArgumentList $clientArgs -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/job-settings-wire.stdout.log" -RedirectStandardError "$out/job-settings-wire.stderr.log"
      $null=$client.Handle
      if(-not $client.WaitForExit(25000)){$client.Kill();$client.WaitForExit();throw 'Job settings wire client timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/job-settings-wire-result.json")){throw 'Job settings wire client failed'}

@@ -1123,9 +1123,21 @@ late replies, initialized-name preservation, duplicate Done and unknown no-repla
 Core19/root/extension/job-state checks pass in job-art-draft-owner-20261106.
 Only the known separate-thread notice occurs in joined client logs. DF38516
 closes unsaved with source preservation; native30FPS/headless viewer, GPU53C
-sampled after exit. No rendered/resize acceptance, relationship/other-category
-workflow acceptance or ordinary production job acceptance is claimed. Residents
-remains hidden; the fixture retains artwork_draft_owner_reference.
+sampled after exit. The fixture retains artwork_draft_owner_reference.
+
+Protected100110 adds rendered assembled-owner acceptance with
+`DF3D_RESIDENTS_JOB_ART_RENDER=1` plus the ART_WIRE, ART_DRAFT_WIRE and ART_DRAFT
+flags. The draft and native name editor match independent native captures at
+960x600,1200x800 and1600x900; generated names differ because each invokes native
+RNG independently. Pointer editing, discard, naming and Done retain the native
+registered-image effect. The opt-in renderer is capped30FPS and closes before
+the native resize reference runs. DF16876 exits unsaved with source preservation;
+GPU samples51C, joined client logs contain documented engine signatures only.
+Core19 and job-state checks pass in job-art-render-20261106. The earlier100008
+attempt completed the client but failed native resize due to a missing launcher
+request guard; the corrected lane passes. Fixture artwork_draft_render_reference
+records the scope. Relationship/other-category workflows and ordinary production
+jobs remain pending; Residents remains hidden.
 
 
 ## Farm removal native entry points

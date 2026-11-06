@@ -5894,5 +5894,79 @@
     "diagnostics": "Known separate-render-thread notice only",
     "source_preserved": true,
     "owned_df_closed": true
+  },
+  "artwork_draft_render_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-100110",
+    "sizes": [
+      [
+        960,
+        600
+      ],
+      [
+        1200,
+        800
+      ],
+      [
+        1600,
+        900
+      ]
+    ],
+    "client": {
+      "draft": {
+        "caste": -1,
+        "description": [
+          "It is an image of a aardvark.  "
+        ],
+        "done": {
+          "building_id": 3,
+          "job_id": 2000000000,
+          "outcome": 2,
+          "unit_id": 6534
+        },
+        "name_page": true,
+        "race": 755
+      },
+      "owner": {
+        "discard": true,
+        "done": true,
+        "initialized_name": true,
+        "kept": true,
+        "named_word": 0
+      },
+      "success": true
+    },
+    "native_effect": {
+      "art_open": true,
+      "details_open": true,
+      "id": 4,
+      "info_open": true,
+      "requirements": 0,
+      "specdata": -1,
+      "subid": 124,
+      "type": 3
+    },
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        },
+        {
+          "id": "godot-device-finalize",
+          "count": 1,
+          "reference": "https://github.com/godotengine/godot/issues/119000"
+        },
+        {
+          "id": "godot-shutdown-objects",
+          "count": 1,
+          "reference": "ENGINEERING.md#tests-and-known-problems"
+        }
+      ],
+      "unclassified": []
+    },
+    "scope": "Rendered assembled Residents job draft and name editor, matched against native captures at three sizes. Pointer workflow includes Creature/add, Keep working, Discard, native name selection and Done with registered image readback. Other categories/relationships and ordinary production jobs remain pending. Generated names differ because native RNG is invoked independently.",
+    "source_preserved": true,
+    "owned_df_closed": true
   }
 }

@@ -132,6 +132,16 @@ func set_member(id: int,value: bool) -> void:
 	if not can_edit() or not ids.has(id):return
 	if selected.get("assigned_units",[]).has(id)==value:return
 	_apply({"action":A.WorkDetailMembership,"detail_index":int(selected.index),"expected_revision":int(selected.revision),"unit_id":id,"member":int(value)})
+func specialize(id: int) -> void:
+	if not can_edit() or not rows.has(id):return
+	var receipt: Dictionary=rows[id].get("specialization",{})
+	if receipt.is_empty() or int(receipt.get("revision",0))<=0:return
+	var index:=int(selected.index);var desired: bool=not receipt.only_assigned
+	_retire();phase=Phase.Applying
+	_submit("residents_specialization",{"action":A.ResidentsSpecialize,"unit_id":id,"expected_revision":receipt.revision,"only_assigned":desired},func(result):
+		var value: Dictionary=result.get("residents_specialization",{})
+		if value.get("unit_id",-1)!=id or value.get("outcome",-1)!=C.ResidentsSpecializationOutcome.Applied or value.get("only_assigned")!=desired:_reject(result);return
+		_reload(index))
 func _apply(intent: Dictionary) -> void:
 	_retire();phase=Phase.Applying;last_result={}
 	_submit("citizens",intent,func(result):

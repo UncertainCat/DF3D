@@ -141,7 +141,7 @@
   },
   "root_lines": [
     {
-      "text": "                  Roder\u00f2nul           Pop                                  Food  Drink           20th Malachite",
+      "text": "                  Roderònul           Pop                                  Food  Drink           20th Malachite",
       "y": 0
     },
     {
@@ -261,7 +261,7 @@
       "y": 29
     },
     {
-      "text": "                                          Kogan At\u00eesteling, Miner        Master Miner",
+      "text": "                                          Kogan Atîsteling, Miner        Master Miner",
       "y": 30
     },
     {
@@ -333,7 +333,7 @@
       "y": 47
     },
     {
-      "text": "                                          R\u00fbxu Kodkasprax",
+      "text": "                                          Rûxu Kodkasprax",
       "y": 48
     },
     {
@@ -2331,10 +2331,10 @@
         "native_and_provider_ids_sha256": "037bcd9a168c74bd800793492fa872cba69a0df64e3cdead7470b8571acff6c5"
       },
       {
-        "name": "search-T\u00e2mol",
+        "name": "search-Tâmol",
         "sort": 3,
         "direction": 1,
-        "query": "T\u00e2mol",
+        "query": "Tâmol",
         "count": 0,
         "native_and_provider_ids_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
       },
@@ -2426,7 +2426,7 @@
         "native_provider_and_wire_ids_sha256": "037bcd9a168c74bd800793492fa872cba69a0df64e3cdead7470b8571acff6c5"
       },
       {
-        "name": "search-T\u00e2mol",
+        "name": "search-Tâmol",
         "count": 0,
         "native_provider_and_wire_ids_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
       },
@@ -2972,5 +2972,51 @@
     "owned_df_closed": true,
     "bridge_sha256": "EC584A83B8828FE2C13314A2472497DBD0DA3D23AC387451A8639326056AA761",
     "diagnostics": "Known separate-renderer startup notice only."
+  },
+  "roster_view_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-122105",
+    "scope": "Staged 1200x800 Work Details roster/sidebar with actual pointer actions; not full settings editor acceptance.",
+    "viewport": [
+      1200,
+      800
+    ],
+    "frame": [
+      32,
+      52,
+      944,
+      708
+    ],
+    "visible_rows": 10,
+    "workers": 116,
+    "actions": [
+      "sidebar selection and return",
+      "Name and Skills sorting",
+      "MINER search and clear",
+      "Nobody mode and restore",
+      "membership toggle and restore",
+      "specialization toggle and restore",
+      "Add new selects index11",
+      "Back closes owner"
+    ],
+    "native_mode_art": {
+      "renderer_rva": "468800",
+      "ordinary_token": "BUTTON_CATEGORY_RECTANGLE",
+      "selected_token": "BUTTON_CATEGORY_RECTANGLE_SELECTED",
+      "parser_rvas": [
+        "119c728",
+        "119c496"
+      ]
+    },
+    "native_screenshot_sha256": "47f9d06485e26ca2820e338ab4462faa56754f3d36f3213d8a8a4d89382cedfb",
+    "viewer_screenshot_sha256": "03a9b90a95e96b6ccc1e2146f1e511bab1d24e9133ae37b4f81ba60b6e0a6e74",
+    "source_preserved": true,
+    "owned_df_closed": true,
+    "diagnostics": "Known separate-renderer startup notice, device-finalize and paired two-ObjectDB shutdown diagnostics; no unclassified errors.",
+    "pending": [
+      "settings, rename, delete and reset workflow",
+      "hover and resize acceptance",
+      "native portrait selection/highlight state",
+      "full composed screen exposure"
+    ]
   }
 }

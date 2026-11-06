@@ -14,6 +14,8 @@ func pointer(view,point: Vector2,button: int=MOUSE_BUTTON_LEFT) -> void:
 	click=click.duplicate();click.pressed=false;Input.parse_input_event(click);await process_frame
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
+	if OS.get_environment("DF3D_WORK_DETAILS_RENDER")=="1":
+		await work_detail_scene();return
 	if OS.get_environment("DF3D_WORK_DETAILS_ROWS_WIRE")=="1":
 		await work_detail_rows();return
 	if OS.get_environment("DF3D_WORK_DETAILS_QUERY_WIRE")=="1":
@@ -79,6 +81,53 @@ func run() -> void:
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"choices":rows.size(),"filtered":choices,"composed":composed}));file.close()
 	world.queue_free();await process_frame;quit(1 if failed else 0)
+
+func work_detail_scene() -> void:
+	world=Df3dWorld.new();root.add_child(world)
+	if not check(world.attach() and world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Work Details viewer assets unavailable"):quit(1);return
+	root.size=Vector2i(1200,800)
+	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
+	for frame in 5:world.poll();await process_frame
+	var interaction:=Interaction.new();root.add_child(interaction)
+	var host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)
+	var owner=preload("res://scripts/work_details_panel.gd").new();root.add_child(owner);owner.configure(world,service,host);owner.open_panel()
+	var state=owner.state;var view=owner.panel
+	if not check(await ready(state),"Work Details viewer roster failed"):quit(1);return
+	view.ticks_override=250;view.queue_redraw()
+	for frame in 3:world.poll();await process_frame
+	await RenderingServer.frame_post_draw
+	check(root.get_texture().get_image().save_png(directory+"/work-details-view.png")==OK,"Work Details capture failed")
+	var initial_count: int=state.ids.size()
+	await pointer(view,view.detail_rect(1).get_center());check(await ready(state) and state.selected.index==1,"Work Details sidebar selection failed")
+	await pointer(view,view.detail_rect(0).get_center());check(await ready(state) and state.selected.index==0,"Work Details selection return failed")
+	await pointer(view,Vector2(38*8+16,view.list_top()-18));check(await ready(state) and state.sort==C.WorkDetailWorkerSort.Name,"Work Details sort click failed")
+	await pointer(view,Vector2(69*8+16,view.list_top()-18));check(await ready(state) and state.sort==C.WorkDetailWorkerSort.Skills,"Work Details Skills return failed")
+	await pointer(view,view.search.position+Vector2(24,18))
+	for character in "MINER":
+		var key:=InputEventKey.new();key.pressed=true;key.unicode=character.unicode_at(0);Input.parse_input_event(key);await process_frame
+	check(await ready(state) and state.ids.size()==4,"Work Details search typing failed")
+	for index in 5:
+		var key:=InputEventKey.new();key.pressed=true;key.keycode=KEY_BACKSPACE;Input.parse_input_event(key);await process_frame
+	check(await ready(state) and state.ids.size()==initial_count,"Work Details search clear failed")
+	var original_mode:=int(state.selected.mode)
+	await pointer(view,view.mode_rect(2).get_center());check(await ready(state) and int(state.selected.mode)==2,"Visible Nobody button did not apply")
+	await pointer(view,view.mode_rect([1,3,2].find(original_mode)).get_center());check(await ready(state) and int(state.selected.mode)==original_mode,"Visible assignment mode restore failed")
+	var unit_id:=int(state.ids[0]);var original_member: bool=state.row_at(0).member
+	await pointer(view,view.member_rect(0).get_center());check(await ready(state) and state.selected.assigned_units.has(unit_id)!=original_member,"Visible membership checkbox did not apply")
+	state.seek(state.ids.find(unit_id),view.page_rows);check(await ready(state),"Edited worker could not be located")
+	await pointer(view,view.member_rect(state.ids.find(unit_id)-state.first).get_center());check(await ready(state) and state.selected.assigned_units.has(unit_id)==original_member,"Visible membership restore failed")
+	state.seek(state.ids.find(unit_id),view.page_rows);check(await ready(state),"Specialization worker unavailable")
+	var original_scope: bool=state.rows[unit_id].specialization.only_assigned
+	await pointer(view,Vector2(736,view.list_top()+(state.ids.find(unit_id)-state.first)*36+18));check(await ready(state),"Visible specialization did not finish")
+	state.seek(state.ids.find(unit_id),view.page_rows);check(await ready(state) and state.rows[unit_id].specialization.only_assigned!=original_scope,"Visible specialization did not apply")
+	await pointer(view,Vector2(736,view.list_top()+(state.ids.find(unit_id)-state.first)*36+18));check(await ready(state),"Visible specialization restore did not finish")
+	state.seek(state.ids.find(unit_id),view.page_rows);check(await ready(state) and state.rows[unit_id].specialization.only_assigned==original_scope,"Visible specialization restore failed")
+	var details_before: int=state.details.size()
+	await pointer(view,view.add_rect().get_center());check(await ready(state) and state.details.size()==details_before+1 and state.selected.index==details_before,"Visible Add new work detail failed")
+	owner.handle_back();check(not view.visible,"Work Details Back did not close")
+	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"initial_workers":initial_count,"sidebar_sort_search_back":true,"mode_membership_specialization_restored":true,"created_index":details_before}));file.close()
+	owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)
 
 func work_detail_rows() -> void:
 	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/work-details-native.json"))

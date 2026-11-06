@@ -200,7 +200,7 @@ duplicate actions and unknown outcomes; core19 passes. Protected114241 compares
 the controller's11 definitions and14 native query orders through the real action
 service, with exact equality. DF9752 closes unsaved with source preservation;
 headless client has only the known separate-renderer notice, GPU44C/0percent
-sampled. This is read-only controller acceptance. Rendered Work Details and controller-driven edits remain pending;
+sampled. This is read-only controller acceptance. At that milestone rendered Work Details and controller-driven edits were pending;
 the public route stays on the existing readout.
 
 `work_detail_row_native.h` supplies complete ordered skill captions using native
@@ -248,6 +248,26 @@ hashEC584A83B8828FE2C13314A2472497DBD0DA3D23AC387451A8639326056AA761 matches the
 DF23068 closes unsaved with source preservation and no owned processes left.
 Joined headless client logs contain only the known separate-renderer notice;
 GPU43C sampled during and after native30FPS execution.
+
+The staged `work_details_panel.gd`/`work_details_view.gd` now render the native
+sidebar, assignment modes, sortable worker roster, complete skill captions,
+shared portraits/indicators, membership, search and scrollbar. Specialization
+uses the existing revision-bound native Residents action and reloads authoritative
+definitions/rows after success. Native mode renderer468800 selects category
+rectangle graphics; parser119c728/119c496 identifies the installed ordinary and
+selected tokens. Generic button rectangles are different artwork.
+
+Protected122105 on2026-11-06 checks the actual1200x800 rendered owner against the
+native root and exercises sidebar, Name/Skills sort, MINER search/clear, mode,
+membership and specialization changes with restoration, Add new selecting11,
+and Back. There are116 eligible workers and10 visible rows. `roster_view_reference`
+records the scope and capture hashes. Core19 and Work Details state checks pass
+in work-details-category-art-20261106. DF4580 closes unsaved with source preservation;
+no DF/Godot processes remain. Graphical clients are capped30FPS, GPU44–45C sampled.
+Joined logs contain only the known separate-renderer startup, device-finalize
+and paired two-ObjectDB shutdown diagnostics. Settings/rename/delete/reset,
+hover/resize acceptance and portrait selection/highlight fidelity remain pending;
+the full screen stays hidden. These roster checks do not establish full Work Details.
 
 ## Residents native list discovery
 

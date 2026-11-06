@@ -1,4 +1,6 @@
 extends SceneTree
+const View=preload("res://scripts/work_details_view.gd")
+const Owner=preload("res://scripts/work_details_panel.gd")
 const State=preload("res://scripts/work_details_state.gd")
 const C=preload("res://scripts/management_contract.gd")
 const A=C.ManagementAction
@@ -77,6 +79,10 @@ func run() -> void:
 	check(state.rows.is_empty(),"Late content cannot repopulate replaced query")
 	service.reply(state.ticket,workers([7,42]));service.reply(state.ticket,{"residents_rows":{"rows":[{"id":42,"skills":[],"member":false},{"id":7,"skills":[],"member":true}]}})
 	check(state.phase==State.Phase.Rejected and state.rows.is_empty(),"Reordered content cannot acquire row authority")
+	var view:=View.new();root.add_child(view);view.state=state;view.layout(Vector2(1200,800))
+	check(view.position==Vector2(32,52) and view.size==Vector2(944,708) and view.list_top()==228 and view.page_rows==10,"Native default Work Details frame geometry")
+	check(view.member_rect(0)==Rect2(800,228,32,36) and view.mode_rect(1)==Rect2(584,156,184,36),"Native membership and mode geometry")
+	view.state=null;view.queue_free();await process_frame
 	state.dispose()
 	if failures==0:print("WORK_DETAILS_STATE_PASS")
 	quit(0 if failures==0 else 1)

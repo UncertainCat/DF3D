@@ -6,6 +6,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
+| Minimum-width global Work orders overlaps workshop-limit controls with other row controls. | No correction approved or implemented; retain native geometry. | Native000121 on2026-11-06 at912x552, `work-order-list-minimum.png`; renderer392f00 distributes fixed-size controls across narrow thirds. This establishes visual overlap, not which action wins every overlapping hitbox. |
 | Work order tint ingredient captions repeat the source color where the target color would be expected. | No correction implemented; preserve native captions. | Native dye capture `build/stockpile-storage-native-input-20261105-223741`: target cerulean displays “Tint white cloth white using midnight blue dye”. Renderer2160f5/2161c7 reads the source color both times. |
 | Track material ordering depends on stale distances left by unrelated menus. | Request fresh native distances for each intent. | Implemented; construction Track distance evidence below and `fixtures/construction/connected_track.json`. |
 | First Track preview overwrites active search costs during lazy walkability rebuilding. | Preserve the stable route on the first preview. | Implemented; Track initialization evidence below and `fixtures/construction/track_route_initialization_probes.json.gz`. |
@@ -7350,10 +7351,30 @@ Right-click returns a subject list to the artwork root, then exits from the root
 The preceding000406 run matched historical figures but stopped at an incorrect
 Escape-navigation assumption; it is not a passing complete workflow.
 
+Global Work orders now follows renderer392f79..39315f geometry: the frame uses
+the available map width, tabs occupy one row from155 text columns upward, and
+the two control groups follow thirds of the row. A visible scrollbar reserves
+two columns. Drawing and pointer hitboxes share the same computed positions;
+row capacity uses the native bottom reserve, including nine rows at912x552.
+Global Details also follows the available map width; workshop Details remains
+at its previously verified width pending a separate responsive observation.
+Protected000121 on2026-11-06 captures native list/Details at1600x900,1200x800 and
+912x552 (the last is the actual result of requesting640x480). DF25884 closes
+unsaved with source preservation. Earlier235950 stopped at a fixed-coordinate
+reopen after the wide layout moved Details and is not full capture acceptance.
+Local production-view captures in `build/qa/global-orders-layout` verify frame
+widths1344/944/656, capacities19/15/9 and Details clicks at independently recorded
+native positions. Those use synthetic rows and do not establish live write effects.
+The wide capture was visually inspected. Paired logs contain only documented
+diagnostics; root19/19 and headless composition pass in
+`build/qa/global-orders-responsive-gate`. The focused native lane accepts
+`DF3D_WORK_ORDER_LAYOUT=1`. Narrow native control overlap is preserved and recorded
+in the bug register; resized editing, Conditions and tab navigation remain gaps.
+
 These screens remain staged. Details, full responsive layout, tooltip coverage
 and tab navigation are unfinished. Quantity drafts currently support four digits; native increment
-behavior beyond that range remains unfinished. Fixed frame geometry still needs
-responsive acceptance before exposure.
+behavior beyond that range remains unfinished. Remaining fixed frame geometry
+still needs responsive acceptance before exposure.
 
 Protected194413 on2026-11-01 matches both Extract-from-plants suggestions against
 native pointer elements on every captured condition field, including all five

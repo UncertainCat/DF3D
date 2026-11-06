@@ -35,7 +35,7 @@ func layout(view: Vector2) -> void:
 	var rows_count:=maxi(13,floori(view.y/12)-(5 if global else 10))
 	var origin:=Vector2(16 if global else 72,(36 if global else 48)+fposmod(view.y,12)*0.5)
 	# Native image renderer200070/geometry2142a0 follows the available map width.
-	var width:=floori(view.x/8)*8-224 if state!=null and state.has_art() else 976 if global else 832
+	var width:=floori(view.x/8)*8-224 if global else 832
 	name_view.layout_frame(Vector2.ZERO,Vector2(width,rows_count*12))
 	if position==origin and size==Vector2(width,rows_count*12):return
 	state.hover_art(-1,0)

@@ -104,8 +104,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 141;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v141";
+inline constexpr uint32_t kManagementVersion = 142;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v142";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -403,7 +403,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::WorkDetailWorkersQuery &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::WorkDetailRowsRead &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -459,7 +459,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::WorkDetailWorkersQuery)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::WorkDetailRowsRead)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -567,10 +567,13 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        std::find(q->query_bytes()->begin(),q->query_bytes()->end(),uint8_t(0))!=q->query_bytes()->end())
       return "invalid residents query";
   } else if(r.residents())return "unexpected residents query";
-  if(r.action()==ManagementAction::ResidentsRowsRead) {
+  if(r.action()==ManagementAction::ResidentsRowsRead || r.action()==ManagementAction::WorkDetailRowsRead) {
     const auto* q=r.residents_rows();
     if(!q || !q->unit_ids() || q->unit_ids()->size()==0 || q->unit_ids()->size()>kResidentsRowsLimit ||
        q->columns()<3 || q->columns()>30)return "invalid residents rows request";
+    if(r.action()==ManagementAction::WorkDetailRowsRead) {
+      if(q->detail_index()<0 || q->detail_index()>=128 || !q->expected_revision() || q->expected_revision()>INT64_MAX)return "invalid work detail row authority";
+    } else if(q->detail_index()!=-1 || q->expected_revision())return "unexpected work detail row authority";
     std::unordered_set<int32_t> ids;
     for(auto id:*q->unit_ids())if(id<0 || !ids.insert(id).second)return "invalid residents row identity";
   } else if(r.residents_rows())return "unexpected residents rows request";
@@ -1005,7 +1008,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::WorkDetailWorkersQuery ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::WorkDetailRowsRead ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -1082,11 +1085,22 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   } else if((s.action()==ManagementAction::ResidentsQuery || s.action()==ManagementAction::WorkDetailWorkersQuery) && s.status()==ManagementStatus::Ok)
     return "residents result required";
   if(const auto* r=s.residents_rows()) {
-    if(s.action()!=ManagementAction::ResidentsRowsRead || s.status()!=ManagementStatus::Ok ||
+    if((s.action()!=ManagementAction::ResidentsRowsRead && s.action()!=ManagementAction::WorkDetailRowsRead) || s.status()!=ManagementStatus::Ok ||
        !r->rows() || r->rows()->size()==0 || r->rows()->size()>kResidentsRowsLimit)return "invalid residents rows result";
     std::unordered_set<int32_t> ids;size_t bytes=0,appearanceBytes=0;
     for(const auto* row:*r->rows()) {
       if(!row || row->id()<0 || !ids.insert(row->id()).second || !row->name_color())return "invalid residents row";
+      if(s.action()==ManagementAction::WorkDetailRowsRead) {
+        if(!row->work_detail_skills() || row->work_detail_skills()->size()>149 || row->detail_member()<0 || row->detail_member()>1 ||
+           row->happiness()!=-1 || row->activity_target() || row->job_target() || !row->activity() || row->activity()->size())return "invalid work detail row";
+        std::unordered_set<int16_t> skills;
+        for(const auto* skill:*row->work_detail_skills()) {
+          if(!skill || skill->skill()<0 || skill->skill()>=149 || !skills.insert(skill->skill()).second || skill->rating()<=0 ||
+             !skill->caption() || skill->caption()->size()>4096 || skill->caption()->str().find('\0')!=std::string::npos)return "invalid work detail skill";
+          bytes+=skill->caption()->size();
+        }
+      } else if(row->work_detail_skills() || row->detail_member()!=-1)return "unexpected work detail row";
+
       for(const auto* text:{row->combined(),row->name(),row->profession(),row->first_line(),row->second_line(),row->activity()}) {
         if(!text || text->size()>4096 || text->str().find('\0')!=std::string::npos)return "invalid residents row text";
         bytes+=text->size();
@@ -1123,7 +1137,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     }
     if(bytes>131072)return "residents row text budget exceeded";
     if(appearanceBytes>131072)return "residents row appearance budget exceeded";
-  } else if(s.action()==ManagementAction::ResidentsRowsRead && s.status()==ManagementStatus::Ok)
+  } else if((s.action()==ManagementAction::ResidentsRowsRead || s.action()==ManagementAction::WorkDetailRowsRead) && s.status()==ManagementStatus::Ok)
     return "residents rows result required";
   if(const auto* v=s.job_settings_edit()) {
     if(s.action()!=ManagementAction::JobSettingsApply || v->job_id()<0 || v->building_id()<0 || v->unit_id() < -1 ||

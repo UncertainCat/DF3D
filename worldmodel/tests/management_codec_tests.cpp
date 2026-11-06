@@ -252,6 +252,46 @@ TEST_CASE("Residents artwork is an optional owned recipe with validated page ide
   }
 }
 
+TEST_CASE("Work Details content requests retain selected authority and reject mixed domains") {
+  for(int fault=0;fault<7;++fault) {
+    wm::ManagementRequest r;r.action=wm::ManagementAction::WorkDetailRowsRead;
+    r.residentsRows={{42,7},30,false,3,UINT64_C(9007199254740993)};
+    if(fault==1)r.residentsRows.detailIndex=-1;
+    if(fault==2)r.residentsRows.detailIndex=128;
+    if(fault==3)r.residentsRows.expectedRevision=0;
+    if(fault==4)r.residentsRows.expectedRevision=uint64_t(INT64_MAX)+1;
+    if(fault==5)r.action=wm::ManagementAction::ResidentsRowsRead;
+    if(fault==6)r.residentsRows.unitIds={42,42};
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    if(fault==0){CHECK(value->residents_rows()->detail_index()==3);CHECK(value->residents_rows()->expected_revision()==UINT64_C(9007199254740993));}
+  }
+}
+TEST_CASE("Work Details row skills are complete ordered observations, not single best skill") {
+  for(int fault=0;fault<9;++fault) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto empty=b.CreateString("");const auto text=b.CreateString("Synthetic caption");
+    const auto color=wire::CreateAreaNameColor(b,7,0,1);
+    std::vector<flatbuffers::Offset<wire::WorkDetailSkill>> skills;
+    skills.push_back(wire::CreateWorkDetailSkill(b,0,fault==2?0:25,text));
+    skills.push_back(wire::CreateWorkDetailSkill(b,fault==3?0:fault==4?149:21,15,text));
+    const auto skillVector=b.CreateVector(skills);
+    wire::ResidentRowBuilder row(b);row.add_id(42);row.add_name(text);row.add_combined(text);row.add_profession(empty);
+    row.add_first_line(text);row.add_second_line(empty);row.add_name_color(color);row.add_activity(fault==5?text:empty);
+    row.add_detail_member(fault==6?2:1);if(fault!=1)row.add_work_detail_skills(skillVector);
+    if(fault==8)row.add_happiness(0);
+    const auto rows=wire::CreateResidentsRowsState(b,b.CreateVector(std::vector{row.Finish()}));
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_status(wire::ManagementStatus::Ok);
+    state.add_action(fault==7?wire::ManagementAction::ResidentsRowsRead:wire::ManagementAction::WorkDetailRowsRead);state.add_residents_rows(rows);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(fault==0){const auto result=codec::decodeState(value);const auto& decoded=result.residentsRows->rows[0];
+      CHECK(decoded.detailMember==1);REQUIRE(decoded.workDetailSkills);REQUIRE(decoded.workDetailSkills->size()==2);
+      CHECK(decoded.workDetailSkills->at(0).rating==25);CHECK(decoded.workDetailSkills->at(1).skill==21);CHECK(decoded.happiness==-1);}
+  }
+}
+
 TEST_CASE("Residents content reads preserve explicit order and bound each batch") {
   wm::ManagementRequest request;request.action=wm::ManagementAction::ResidentsRowsRead;
   request.residentsRows={{42,7},30,false};

@@ -22,6 +22,14 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management142 adds `WorkDetailRowsRead` using bounded worker IDs and an exact
+selected-detail revision. Shared row observations gain ordered native skills
+and membership; Work Details rows do not observe activity or happiness. Older
+Residents requests retain their meaning and cannot carry detail authority or
+skill results. Rebuild both peers; `Local\df3d_management_v142` rejects older
+Management141 peers. Missing older fields do not imply an empty skill list or
+nonmembership.
+
 Management141 adds `WorkDetailWorkersQuery`: a selected detail index and exact
 inspection revision, native sort/direction and bounded raw textbox bytes. It
 returns the complete ordered-ID `ResidentsState` payload. Rebuild both peers;

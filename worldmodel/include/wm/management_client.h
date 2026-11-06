@@ -416,7 +416,7 @@ struct ProductionState {
 struct WorkDetailWorkersRequest { int32_t detailIndex=-1; uint64_t expectedRevision=0; WorkDetailWorkerSort sort=WorkDetailWorkerSort::Skills; bool descending=false; std::vector<uint8_t> queryBytes; };
 struct ResidentsRequest { ResidentsSort sort=ResidentsSort::Category; bool descending=false; std::vector<uint8_t> queryBytes; };
 struct ResidentsState { std::vector<int32_t> unitIds; };
-struct ResidentsRowsRequest { std::vector<int32_t> unitIds; uint16_t columns=30; bool showGender=false; };
+struct ResidentsRowsRequest { std::vector<int32_t> unitIds; uint16_t columns=30; bool showGender=false; int32_t detailIndex=-1; uint64_t expectedRevision=0; };
 struct ResidentSpecialization { bool onlyAssigned=false;uint64_t revision=0; };
 struct ResidentsSpecializationRequest { int32_t unitId=-1;uint64_t expectedRevision=0;bool onlyAssigned=false; };
 struct ResidentsSpecializationState { int32_t unitId=-1;ResidentsSpecializationOutcome outcome=ResidentsSpecializationOutcome::Rejected;bool onlyAssigned=false; };
@@ -429,7 +429,10 @@ struct ResidentsActivityState {
   int32_t unitId=-1,activityId=-1,eventId=-1;uint16_t columns=0;int32_t maxY=0;
   std::vector<ActivityDescriptionWord> words;std::vector<ActivityDescriptionLink> links;
 };
+struct WorkDetailSkill { int16_t skill=-1; int32_t rating=0; std::string caption; };
 struct ResidentRow {
+  std::optional<std::vector<WorkDetailSkill>> workDetailSkills;
+  int8_t detailMember=-1;
   std::optional<ResidentActivityTarget> activityTarget;
   std::optional<ResidentJobTarget> jobTarget;
   int32_t id=-1;

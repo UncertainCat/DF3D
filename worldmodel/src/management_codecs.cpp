@@ -49,7 +49,11 @@ ManagementState decodeState(const m::ManagementState* s) {
   if(const auto* r=s->residents_rows()) {
     next.residentsRows.emplace();
     for(const auto* v:*r->rows()) {
-      ResidentRow row;
+      ResidentRow row;row.detailMember=v->detail_member();
+      if(const auto* skills=v->work_detail_skills()) {
+        row.workDetailSkills.emplace();
+        for(const auto* skill:*skills)row.workDetailSkills->push_back({skill->skill(),skill->rating(),skill->caption()->str()});
+      }
       if(const auto* t=v->job_target())row.jobTarget=ResidentJobTarget{t->job_id(),t->building_id()};
       if(const auto* t=v->activity_target())row.activityTarget=ResidentActivityTarget{t->activity_id(),t->event_id()};
       if(const auto* p=v->position())row.position=TilePos{p->x(),p->y(),p->z()};
@@ -215,8 +219,8 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
       r.action==ManagementAction::ResidentsQuery?
           m::CreateResidentsRequest(b,m::ResidentsSort(r.residents.sort),r.residents.descending,b.CreateVector(r.residents.queryBytes)):
           flatbuffers::Offset<m::ResidentsRequest>{},
-      r.action==ManagementAction::ResidentsRowsRead?
-          m::CreateResidentsRowsRequest(b,b.CreateVector(r.residentsRows.unitIds),r.residentsRows.columns,r.residentsRows.showGender):
+      (r.action==ManagementAction::ResidentsRowsRead || r.action==ManagementAction::WorkDetailRowsRead)?
+          m::CreateResidentsRowsRequest(b,b.CreateVector(r.residentsRows.unitIds),r.residentsRows.columns,r.residentsRows.showGender,r.residentsRows.detailIndex,r.residentsRows.expectedRevision):
           flatbuffers::Offset<m::ResidentsRowsRequest>{},
       r.action==ManagementAction::ResidentsSpecialize?
           m::CreateResidentsSpecializationRequest(b,r.residentsSpecialization.unitId,r.residentsSpecialization.expectedRevision,r.residentsSpecialization.onlyAssigned):

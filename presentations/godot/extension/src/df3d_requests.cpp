@@ -207,6 +207,10 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         Dictionary value;Array rows;
         for(const auto& v:s.residentsRows->rows) {
             Dictionary row,color,activity;Array primary,alternate;
+            if(v.workDetailSkills) {
+                Array skills;for(const auto& skill:*v.workDetailSkills){Dictionary value;value["skill"]=skill.skill;value["rating"]=skill.rating;value["caption"]=String::utf8(skill.caption.c_str());skills.push_back(value);}
+                row["skills"]=skills;row["member"]=bool(v.detailMember);
+            }
             row["id"]=v.id;row["combined"]=String::utf8(v.combined.c_str());row["name"]=String::utf8(v.name.c_str());
             row["profession"]=String::utf8(v.profession.c_str());row["first_line"]=String::utf8(v.firstLine.c_str());
             row["second_line"]=String::utf8(v.secondLine.c_str());
@@ -459,9 +463,12 @@ bool validateResidents(const Dictionary& data,String& error) {
     return true;
 }
 bool validateResidentsRows(const Dictionary& data,String& error) {
-    if(data.size()!=4 || !data.has("unit_ids") || !data.has("columns") || !data.has("show_gender") ||
+    const bool detail=int64_t(data["action"])==int64_t(wm::ManagementAction::WorkDetailRowsRead);
+    if(data.size()!=(detail?6:4) || !data.has("unit_ids") || !data.has("columns") || !data.has("show_gender") ||
        data["unit_ids"].get_type()!=Variant::PACKED_INT32_ARRAY || data["columns"].get_type()!=Variant::INT ||
        data["show_gender"].get_type()!=Variant::BOOL) {error="Invalid residents row fields";return false;}
+    if(detail && (!data.has("detail_index") || !data.has("expected_revision") || data["detail_index"].get_type()!=Variant::INT ||
+        data["expected_revision"].get_type()!=Variant::INT || int64_t(data["detail_index"])<0 || int64_t(data["detail_index"])>=128 || int64_t(data["expected_revision"])<=0)) {error="Invalid work detail row authority";return false;}
     const PackedInt32Array ids=data["unit_ids"];const int64_t columns=data["columns"];
     if(ids.is_empty() || ids.size()>64 || columns<3 || columns>30) {error="Invalid residents row bounds";return false;}
     for(int64_t i=0;i<ids.size();++i) {
@@ -471,7 +478,8 @@ bool validateResidentsRows(const Dictionary& data,String& error) {
     return true;
 }
 bool readResidentsRows(const Dictionary& data,wm::ManagementRequest& request,String&) {
-    request.action=wm::ManagementAction::ResidentsRowsRead;
+    request.action=wm::ManagementAction(int64_t(data["action"]));
+    if(request.action==wm::ManagementAction::WorkDetailRowsRead){request.residentsRows.detailIndex=int32_t(int64_t(data["detail_index"]));request.residentsRows.expectedRevision=uint64_t(int64_t(data["expected_revision"]));}
     request.residentsRows.columns=uint16_t(int64_t(data["columns"]));request.residentsRows.showGender=bool(data["show_gender"]);
     const PackedInt32Array ids=data["unit_ids"];
     for(int64_t i=0;i<ids.size();++i)request.residentsRows.unitIds.push_back(ids[i]);
@@ -601,6 +609,7 @@ const ManagementCodec managementCodecs[] = {
     {"residents",validateResidents,readResidents},
     {"work_detail_workers",validateWorkDetailWorkers,readWorkDetailWorkers},
     {"residents_rows",validateResidentsRows,readResidentsRows},
+    {"work_detail_rows",validateResidentsRows,readResidentsRows},
     {"residents_specialization",validateResidentsSpecialization,readResidentsSpecialization},
     {"residents_activity",validateResidentsActivity,readResidentsActivity},
     {"job_settings",validateJobSettings,readJobSettings},
@@ -616,7 +625,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::WorkDetailWorkersQuery)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::WorkDetailRowsRead)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

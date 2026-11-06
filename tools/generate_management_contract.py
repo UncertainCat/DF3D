@@ -15,6 +15,7 @@ DOMAINS = {
     "residents_activity": ("ResidentsActivityRead", "ResidentsActivityRead"),
     "residents_specialization": ("ResidentsSpecialize", "ResidentsSpecialize"),
     "residents": ("ResidentsQuery", "ResidentsQuery"),
+    "work_detail_rows": ("WorkDetailRowsRead", "WorkDetailRowsRead"),
     "residents_rows": ("ResidentsRowsRead", "ResidentsRowsRead"),
     "creature_animal": ("CreatureAnimalEdit", "CreatureAnimalEdit"),
     "creature_location": ("CreatureLocationRemove", "CreatureLocationRemove"),

@@ -170,7 +170,8 @@ static_assert(static_cast<int>(wm::ManagementAction::ResidentsActivityRead) == s
 static_assert(static_cast<int>(wm::ManagementAction::JobSettingsRead) == static_cast<int>(df3d::mirror::ManagementAction::JobSettingsRead));
 static_assert(static_cast<int>(wm::ManagementAction::JobSettingsApply) == static_cast<int>(df3d::mirror::ManagementAction::JobSettingsApply));
 static_assert(static_cast<int>(wm::ManagementAction::WorkDetailWorkersQuery) == static_cast<int>(df3d::mirror::ManagementAction::WorkDetailWorkersQuery));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 88);
+static_assert(static_cast<int>(wm::ManagementAction::WorkDetailRowsRead) == static_cast<int>(df3d::mirror::ManagementAction::WorkDetailRowsRead));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 89);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -465,3 +466,4 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::ResidentsActivityRead) =
 static_assert(wm::isRuntimeAction(wm::ManagementAction::JobSettingsRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::JobSettingsRead));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::JobSettingsApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::JobSettingsApply));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::WorkDetailWorkersQuery) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::WorkDetailWorkersQuery));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::WorkDetailRowsRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::WorkDetailRowsRead));

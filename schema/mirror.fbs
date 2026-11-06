@@ -1177,7 +1177,7 @@ table SessionCommand {
 }
 
 // Bounded fortress management channel; independently versioned from map snapshots.
-enum ManagementAction : uint8 { Catalog, Preview, Place, Inspect, Remove, InspectAtTile, RemoveConstruction, AreaCatalog, AreaInspectAtTile, AreaInspect, AreaCreate, AreaUpdate, AreaDelete, AreaLink, AreaCandidates, ProductionList, ProductionInspect, ProductionQueue, ProductionJobEdit, FarmEdit, WorkOrderList, WorkOrderInspect, WorkOrderCreate, WorkOrderUpdate, WorkOrderDelete, WorkOrderCondition, WorkOrderCandidates, WorkOrderCatalog, CitizenList, CitizenInspect, WorkDetailList, WorkDetailInspect, WorkDetailMembership, WorkDetailMode, ReportList, ReportInspect, AgreementList, AgreementInspect, TradeList, TradeInspect, TradeUpdate, TradeGoods, TradeBring, TradeExchangeOpen, TradeExchangeInspect, TradeExchangeSelect, TradeExchangeSubmit, TradeExchangeClose, StocksOpen, StocksList, StocksInspect, StocksClose, AppointmentsOpen, AppointmentsCandidates, AppointmentsAssign, AppointmentsBack, KitchenOpen, KitchenList, KitchenSetPermission, KitchenClose, Alert, Selection, CreatureInspect, ConstructionMaterials, WorkDetailCreate, WorkDetailDelete, WorkDetailEdit, CitizenWorkScope, PrepareAlertDismissal, DismissAlert, WorldHover, CreatureHeaderRead, CreatureHeaderEdit, CreatureLocate, CreatureExpelRead, CreatureExpelApply, CreatureKnowledgeRead, CreatureWorkshopRemove, CreatureLocationRemove, CreatureAnimalEdit, ResidentsQuery, ResidentsRowsRead, ResidentsSpecialize, CreatureSheetLocate, ResidentsActivityRead, JobSettingsRead, JobSettingsApply, WorkDetailWorkersQuery }
+enum ManagementAction : uint8 { Catalog, Preview, Place, Inspect, Remove, InspectAtTile, RemoveConstruction, AreaCatalog, AreaInspectAtTile, AreaInspect, AreaCreate, AreaUpdate, AreaDelete, AreaLink, AreaCandidates, ProductionList, ProductionInspect, ProductionQueue, ProductionJobEdit, FarmEdit, WorkOrderList, WorkOrderInspect, WorkOrderCreate, WorkOrderUpdate, WorkOrderDelete, WorkOrderCondition, WorkOrderCandidates, WorkOrderCatalog, CitizenList, CitizenInspect, WorkDetailList, WorkDetailInspect, WorkDetailMembership, WorkDetailMode, ReportList, ReportInspect, AgreementList, AgreementInspect, TradeList, TradeInspect, TradeUpdate, TradeGoods, TradeBring, TradeExchangeOpen, TradeExchangeInspect, TradeExchangeSelect, TradeExchangeSubmit, TradeExchangeClose, StocksOpen, StocksList, StocksInspect, StocksClose, AppointmentsOpen, AppointmentsCandidates, AppointmentsAssign, AppointmentsBack, KitchenOpen, KitchenList, KitchenSetPermission, KitchenClose, Alert, Selection, CreatureInspect, ConstructionMaterials, WorkDetailCreate, WorkDetailDelete, WorkDetailEdit, CitizenWorkScope, PrepareAlertDismissal, DismissAlert, WorldHover, CreatureHeaderRead, CreatureHeaderEdit, CreatureLocate, CreatureExpelRead, CreatureExpelApply, CreatureKnowledgeRead, CreatureWorkshopRemove, CreatureLocationRemove, CreatureAnimalEdit, ResidentsQuery, ResidentsRowsRead, ResidentsSpecialize, CreatureSheetLocate, ResidentsActivityRead, JobSettingsRead, JobSettingsApply, WorkDetailWorkersQuery, WorkDetailRowsRead }
 enum AreaKind : uint8 { Stockpile, Zone, Workshop }
 enum AreaOperation : uint8 { None, SettingsPage, SettingsSet, Preset, Rename, Paint, LocationList, LocationSet, LocationCreate, ZoneSettings, Links, AssignUnits, SquadUse, Toggles, CandidateList, WorkshopLink, MultiCreate, MultiUndo, MultiFinish, PaintCounts, LocationChoices, LocationDetails, LocationOpen, LocationAccess, LocationStaffCandidates, LocationStaffEdit, LinkTarget, LocationQuantity, LocationNameRead, LocationNameChoices, LocationNameEdit, LocationRecognitionRead, LocationRecognize, LocationReligiousStaffRead, LocationReligiousStaffRemove, LocationReligiousCandidates, LocationReligiousAssignmentRead, LocationReligiousAssign, LocationSpecializationRead, LocationSpecializationSet, LocationStaffAssignmentsRead }
 enum LocationNameMode : uint8 { Clear, SelectWord, RandomComponent, RandomWhole }
@@ -1840,7 +1840,7 @@ table ResidentsRequest { sort:ResidentsSort; descending:bool; query_bytes:[uint8
 // Complete native order at one safe point; no paginated mixture of roster states.
 table ResidentsState { unit_ids:[int32]; }
 // Bounded content reads for an explicit window of the ordered query result.
-table ResidentsRowsRequest { unit_ids:[int32] (required); columns:uint16; show_gender:bool; }
+table ResidentsRowsRequest { unit_ids:[int32] (required); columns:uint16; show_gender:bool; detail_index:int32 = -1; expected_revision:uint64; }
 enum ResidentsSpecializationOutcome : uint8 { Applied, Rejected, Stale, Unavailable, Unknown }
 table ResidentSpecialization { only_assigned:bool; revision:uint64; }
 table ResidentsSpecializationRequest { unit_id:int32 = -1; expected_revision:uint64; only_assigned:bool; }
@@ -1874,6 +1874,7 @@ table ResidentsActivityState {
   columns:uint16; max_y:int32;
   words:[ActivityDescriptionWord] (required); links:[ActivityDescriptionLink] (required);
 }
+table WorkDetailSkill { skill:int16 = -1; rating:int32; caption:string (required); }
 table ResidentRow {
   id:int32 = -1;
   combined:string (required); name:string (required); profession:string (required);
@@ -1890,6 +1891,9 @@ table ResidentRow {
   activity_target:ResidentActivityTarget;
   // Optional additive identity for the native job-backed Details button.
   job_target:ResidentJobTarget;
+  // Present only for WorkDetailRowsRead; activity/happiness are unobserved there.
+  work_detail_skills:[WorkDetailSkill];
+  detail_member:int8 = -1;
 }
 table ResidentsRowsState { rows:[ResidentRow] (required); }
 
@@ -2150,7 +2154,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 141;
+  schema_version:uint32 = 142;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2209,7 +2213,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 141;
+  schema_version:uint32 = 142;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

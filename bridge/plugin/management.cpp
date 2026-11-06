@@ -103,6 +103,7 @@
 #include "workshop_catalog_native.h"
 #include "workshop_workers_page.h"
 #include "workshop_orders_native.h"
+#include "work_detail_native.h"
 #include "work_order_catalog_native.h"
 #include "work_order_rows_native.h"
 #include "work_order_conditions_native.h"
@@ -4346,6 +4347,11 @@ void run(color_ostream& out) {
     lua_pushcfunction(L,areaOwnerDisplay);lua_setfield(L,-2,"owner_display");
   }
   if(citizenAction(action)) {
+    lua_pushcfunction(L,[](lua_State* state)->int {
+      const auto value=df3d_production::nativeWorkDetailDefaults();
+      if(!value)return luaL_error(state,"Native work-detail defaults unavailable");
+      lua_pushlstring(state,value->name.data(),value->name.size());lua_pushinteger(state,value->icon);return 2;
+    });lua_setfield(L,-2,"work_detail_defaults");
     lua_pushcfunction(L,[](lua_State* state)->int {
       const auto eligible=df3d_creature::laborEligible(df::unit::find(int32_t(luaL_checkinteger(state,1))));
       if(!eligible)return luaL_error(state,"Native labor eligibility unavailable");

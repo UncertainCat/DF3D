@@ -505,5 +505,38 @@
     "runtime_callback_allowed": false
   },
   "source_preserved": true,
-  "owned_df_closed": true
+  "owned_df_closed": true,
+  "creation_defaults_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-103410",
+    "native": {
+      "assigned_count": 0,
+      "flags": 4,
+      "icon": 10,
+      "index": 11,
+      "labors": [],
+      "name": "Custom Detail 2"
+    },
+    "semantic": {
+      "assigned_count": 0,
+      "flags": 4,
+      "icon": 10,
+      "index": 11,
+      "labors": [],
+      "name": "Custom Detail 2"
+    },
+    "setup": "Rename the existing custom detail to Custom Detail 1 and set its icon to17 in the disposable clone. Native Add new then typed WorkDetailCreate from identical simulation inputs.",
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        }
+      ],
+      "unclassified": []
+    },
+    "plugin_hash": "04316F05FB00BE287D181176BE2D4DDB965297705634A0249197CC856CF9B5A6",
+    "source_preserved": true,
+    "owned_df_closed": true
+  }
 }

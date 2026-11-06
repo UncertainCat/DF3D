@@ -323,9 +323,9 @@ return function(request)
   if p.expected_revision~=rev then return fail('Work-detail contents changed; refresh before editing') end
   if external() then return fail('An external labor controller owns assignments') end
   if #details()>=128 then return fail('Work-detail vector exceeds 128 entries') end
-  local count=0;for _,d in ipairs(details()) do if not d.flags.no_modify then count=count+1 end end
-  local d=df.work_detail:new();d.name=dfhack.utf2df('Custom Detail '..count)
-  d.icon=df.work_detail_icon_type.CUSTOM_1+(count%8);d.flags.mode=1
+  local name,icon=request.work_detail_defaults()
+  local d=df.work_detail:new();d.name=name
+  d.icon=icon;d.flags.mode=1
   for i=0,93 do d.allowed_labors[i]=false end
   details():insert('#',d)
   rev=receipt();out=inspect_detail(#details()-1,-1,rev)

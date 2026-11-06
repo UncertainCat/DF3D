@@ -2,6 +2,14 @@
 local out,view,records=...
 local gui=require('gui');local script=require('gui.script');local json=require('json')
 local g=df.global.gps
+local defaults=os.getenv('DF3D_WORK_DETAILS_DEFAULTS')=='1'
+if defaults then
+ local changed=false
+ for _,detail in ipairs(df.global.plotinfo.labor_info.work_details)do
+  if not detail.flags.no_modify then detail.name='Custom Detail 1';detail.icon=17;changed=true;break end
+ end
+ assert(changed,'Defaults fixture requires an existing custom detail')
+end
 gui.simulateInput(view,'D_LABOR')
 for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
 local info=df.global.game.main_interface.info
@@ -51,4 +59,14 @@ assert(#all==#result.details+1,'Native Add new work detail did not append one de
 local d=all[#all-1];local labors={};for j,value in ipairs(d.allowed_labors)do if value then labors[#labors+1]=j end end
 result.created={index=#all-1,name=dfhack.df2utf(d.name),icon=d.icon,flags=d.flags.whole,labors=labors,assigned_count=#d.assigned_units}
 shot('work-details-created')
+if defaults then
+ -- Retain the removed object until process exit: native widgets may hold it.
+ all:erase(#all-1)
+ shot('work-details-defaults-wire')
+ assert(#all==#result.details+1,'Semantic creation did not append one detail')
+ local actual=all[#all-1];local active={};for j,value in ipairs(actual.allowed_labors)do if value then active[#active+1]=j end end
+ result.semantic_created={index=#all-1,name=dfhack.df2utf(actual.name),icon=actual.icon,flags=actual.flags.whole,labors=active,assigned_count=#actual.assigned_units}
+ assert(json.encode(result.semantic_created)==json.encode(result.created),'Semantic work-detail defaults differ from native')
+ shot('work-details-defaults-result')
+end
 records[#records+1]={name='work-details-native',count=#result.details,mode=result.mode}

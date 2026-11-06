@@ -46,14 +46,27 @@ searches names Custom Detail1 through99 for the first unused exact name (fallbac
 Custom Detail), sets mode1 and empty labors, chooses the least-used custom icon
 10..17 with first-index tie breaking, and appends it to the simulation vector.
 It then invokes42f190 to rebuild the Labor widget tree. Consequently the whole
-callback is not an authorized runtime entry point. Existing citizens.lua action64
-instead uses custom-detail count for naming and count modulo8 for the icon;
-those policies differ after renames/deletions or uneven icon use. This is a DF3D
-implementation gap, not a native bug or accepted exception. Runtime replacement
-must preserve the simulation semantics with owned inputs without invoking the
-screen rebuild. Native string suffix helper52c130 is separate; allocation,
-uniqueness selection and icon balancing are inline in42f8a0. Other Work Details
-actions and rendered editor acceptance remain pending.
+callback is not an authorized runtime entry point. The former citizens.lua
+action64 used custom-detail count for naming and count modulo8 for the icon,
+which differed after renames/deletions or uneven icon use. It now requests defaults
+from work_detail_native.h: native suffix helper52c130 formats an owned string,
+while the inseparable uniqueness and icon-balancing branches are reproduced from
+byte-pinned42f93b..42fa96 using simulation records only. Lua retains validated
+allocation/insertion with mode1 and empty labors; neither side reads native menu
+state or invokes the screen rebuild. This corrects a DF3D defect, not a native bug.
+
+Protected103410 uses `DF3D_WORK_DETAILS_DEFAULTS=1`: the disposable existing
+custom detail is named Custom Detail1 and assigned icon17. Native Add new and
+typed WorkDetailCreate from identical inputs both produce Custom Detail2, icon10,
+flags4, empty labors and zero assignments. The old policy would produce the
+duplicate name and icon11. Fixture creation_defaults_reference records exact
+native/semantic equality. MSVC and core19 pass; installed bridge hash
+04316F05FB00BE287D181176BE2D4DDB965297705634A0249197CC856CF9B5A6 matches the build.
+DF38772 exits unsaved with source preservation, native30FPS/headless client,
+GPU48C sampled and only the known separate-thread notice. Initial103308 sent
+before transport readiness; the client now waits and seeds the catalog before
+the one-shot create. Other Work Details actions and rendered editor acceptance
+remain pending; this does not expose the full editor.
 
 ## Residents native list discovery
 

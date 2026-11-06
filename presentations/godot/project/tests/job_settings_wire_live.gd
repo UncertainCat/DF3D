@@ -12,6 +12,9 @@ func run() -> void:
 		await create_timer(0.01).timeout
 	await request("construction",{"action":C.ManagementAction.Catalog})
 	var intent: Dictionary={"action":C.ManagementAction.JobSettingsRead,"job_id":int(reference.job_id),"building_id":int(reference.building_id),"unit_id":int(reference.unit_id),"option":-1,"query":"","cursor":0}
+	var published:=await request("residents_rows",{"action":C.ManagementAction.ResidentsRowsRead,"unit_ids":PackedInt32Array([int(reference.unit_id)]),"columns":30,"show_gender":false})
+	var published_rows: Array=published.get("residents_rows",{}).get("rows",[])
+	check(published_rows.size()==1 and published_rows[0].get("job_target",{}).get("job_id")==int(reference.job_id) and published_rows[0].get("job_target",{}).get("building_id")==int(reference.building_id),"Resident row lost native job button target")
 	var rows: Array=[]
 	for page_index in 256:
 		var result:=await request("job_settings",intent)

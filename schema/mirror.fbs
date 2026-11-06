@@ -1840,6 +1840,7 @@ table ResidentSpecialization { only_assigned:bool; revision:uint64; }
 table ResidentsSpecializationRequest { unit_id:int32 = -1; expected_revision:uint64; only_assigned:bool; }
 table ResidentsSpecializationState { unit_id:int32 = -1; outcome:ResidentsSpecializationOutcome; only_assigned:bool; }
 // A row's observed event identity. Requests refuse a different current event.
+table ResidentJobTarget { job_id:int32 = -1; building_id:int32 = -1; }
 table ResidentActivityTarget { activity_id:int32 = -1; event_id:int32 = -1; }
 // Shared job-backed settings; IDs refer to simulation jobs, never manager orders.
 table JobSettingsRequest { job_id:int32 = -1; building_id:int32 = -1; unit_id:int32 = -1; option:int16 = -1; query:string; cursor:uint32; }
@@ -1873,6 +1874,8 @@ table ResidentRow {
   // Residents Recenter captures raw unit.pos when constructing the row.
   position:TilePos;
   activity_target:ResidentActivityTarget;
+  // Optional additive identity for the native job-backed Details button.
+  job_target:ResidentJobTarget;
 }
 table ResidentsRowsState { rows:[ResidentRow] (required); }
 

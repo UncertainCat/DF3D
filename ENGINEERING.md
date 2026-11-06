@@ -116,8 +116,23 @@ state checks pass in job-settings-composed-20261106. The offline component
 capture job-settings-view-20261106 passes with documented engine diagnostics
 and was inspected against native063337; full scrollbar/owner/responsive parity
 is not yet accepted. Native graphics ran briefly at30FPS, GPU samples36–37C.
-Residents row job-target publication, owner integration, edits, clothing/artwork
-and other job-family acceptance remain unfinished; this component is not exposed.
+Residents rows now publish an optional job/holder target after native d15ef0
+eligibility on owned job/requirement storage. This path does not populate choices
+per row. The target is mutually exclusive with the event-description target.
+The staged owner opens the shared job panel from the captured row identity,
+retains its roster/input ownership, and restores the roster when Details closes.
+Native063337 places the job button at local528, separately from event local624.
+Headless owner checks cover target forwarding, roster restoration and late replies;
+protected072318 on2026-11-06 verifies the published target against the actual
+native button and repeats the shared read/filter/cancel flow. Full composed owner
+pointer/render/resize acceptance remains pending. Core19, extension and both
+state checks pass in residents-job-entry-20261106; native MSVC build passes.
+Installed bridge SHA256 is
+652629A77559980CD476E153EAACBC65C71B2F155D3D320B29AC90841628E3E6.
+Owned DF37760 exits unsaved with source preservation; joined Godot logs have
+only the known thread notice. GPU samples35–36C, brief serial30FPS native and
+headless Godot. Edits, clothing/artwork and other job-family acceptance remain
+unfinished; the public Residents route is still unchanged.
 
 The menu actions themselves clear live markup and build widgets: do not call
 them from the bridge. The formatter output is `markup_text_boxst`, not a vector

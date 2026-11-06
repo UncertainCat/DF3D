@@ -50,6 +50,7 @@ ManagementState decodeState(const m::ManagementState* s) {
     next.residentsRows.emplace();
     for(const auto* v:*r->rows()) {
       ResidentRow row;
+      if(const auto* t=v->job_target())row.jobTarget=ResidentJobTarget{t->job_id(),t->building_id()};
       if(const auto* t=v->activity_target())row.activityTarget=ResidentActivityTarget{t->activity_id(),t->event_id()};
       if(const auto* p=v->position())row.position=TilePos{p->x(),p->y(),p->z()};
       if(const auto* state=v->specialization())row.specialization=ResidentSpecialization{state->only_assigned(),state->revision()};

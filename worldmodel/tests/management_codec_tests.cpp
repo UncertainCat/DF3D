@@ -9,6 +9,25 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("Residents job targets are optional bounded identities exclusive of event targets") {
+  for(int variant=0;variant<5;++variant) {
+    flatbuffers::FlatBufferBuilder b;const auto empty=b.CreateString("");const auto color=wire::CreateAreaNameColor(b);
+    const auto target=variant?wire::CreateResidentJobTarget(b,variant==2?-1:71,variant==3?-1:3):flatbuffers::Offset<wire::ResidentJobTarget>{};
+    const auto event=variant==4?wire::CreateResidentActivityTarget(b,4,5):flatbuffers::Offset<wire::ResidentActivityTarget>{};
+    const auto row=wire::CreateResidentRow(b,42,empty,empty,empty,empty,empty,color,empty,7,0,false,{},-1,{},{},nullptr,event,target);
+    const auto payload=wire::CreateResidentsRowsState(b,b.CreateVector(std::vector{row}));
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(wire::ManagementAction::ResidentsRowsRead);
+    state.add_status(wire::ManagementStatus::Ok);state.add_residents_rows(payload);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(variant>=2));
+    if(variant<2) {
+      const auto decoded=codec::decodeState(value);const auto& result=decoded.residentsRows->rows[0].jobTarget;
+      CHECK(result.has_value()==(variant==1));
+      if(result){CHECK(result->jobId==71);CHECK(result->buildingId==3);}
+    }
+  }
+}
+
 TEST_CASE("Residents positions preserve captured signed coordinates and optional absence") {
   for(int variant=0;variant<4;++variant) {
     flatbuffers::FlatBufferBuilder b;const auto empty=b.CreateString("");const auto color=wire::CreateAreaNameColor(b);

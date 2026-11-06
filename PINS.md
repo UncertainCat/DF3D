@@ -22,6 +22,10 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+ResidentRow gains optional additive `job_target` (job and holder IDs) on
+Management136. Older producers omit it; older readers ignore it. It is mutually
+exclusive with `activity_target`; no migration fabricates a job identity.
+
 Management136 adds read-only JobSettingsRead (action85), domain `job_settings`.
 Rebuild both peers for `Local\df3d_management_v136`; do not mix Management135
 peers. Requests identify the job, holder building and optional current resident,

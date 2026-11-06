@@ -419,6 +419,7 @@ struct ResidentsRowsRequest { std::vector<int32_t> unitIds; uint16_t columns=30;
 struct ResidentSpecialization { bool onlyAssigned=false;uint64_t revision=0; };
 struct ResidentsSpecializationRequest { int32_t unitId=-1;uint64_t expectedRevision=0;bool onlyAssigned=false; };
 struct ResidentsSpecializationState { int32_t unitId=-1;ResidentsSpecializationOutcome outcome=ResidentsSpecializationOutcome::Rejected;bool onlyAssigned=false; };
+struct ResidentJobTarget { int32_t jobId=-1,buildingId=-1; };
 struct ResidentActivityTarget { int32_t activityId=-1,eventId=-1; };
 struct ResidentsActivityRequest { int32_t unitId=-1,activityId=-1,eventId=-1;uint16_t columns=0; };
 struct ActivityDescriptionWord { std::string text;uint8_t red=0,green=0,blue=0;int32_t link=-1;uint8_t flags=0;int32_t x=-1,y=-1; };
@@ -429,6 +430,7 @@ struct ResidentsActivityState {
 };
 struct ResidentRow {
   std::optional<ResidentActivityTarget> activityTarget;
+  std::optional<ResidentJobTarget> jobTarget;
   int32_t id=-1;
   std::optional<TilePos> position;
   std::optional<ResidentSpecialization> specialization;

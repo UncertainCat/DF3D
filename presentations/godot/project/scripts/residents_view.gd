@@ -1,6 +1,7 @@
 extends "res://scripts/location_staff_candidates_frame.gd"
 # Staged Residents surface. Indicators, actions, hover and remaining portrait
 # states need acceptance before this may replace the public readout.
+signal job_requested(unit_id: int)
 signal cancelled
 signal inspect_requested(unit_id: int)
 signal focus_requested(tile: Vector3i)
@@ -161,6 +162,8 @@ func _gui_input(event: InputEvent) -> void:
 				focus_requested.emit(row.position);accept_event();return
 			if not row.is_empty() and state.phase==state.Phase.Ready and Rect2(336,list_top()+index*36,24,36).has_point(event.position):
 				inspect_requested.emit(int(row.id));accept_event();return
+			if not row.is_empty() and state.phase==state.Phase.Ready and row.has("job_target") and Rect2(528,list_top()+index*36,24,36).has_point(event.position):
+				job_requested.emit(int(row.id));accept_event();return
 			if not row.is_empty() and row.has("activity_target") and Rect2(624,list_top()+index*36,24,36).has_point(event.position):
 				state.activity_capacity=activity_rows();state.show_activity(int(row.id),activity_width());accept_event();return
 			if not row.is_empty() and row.has("specialization") and Rect2(696,list_top()+index*36,32,36).has_point(event.position):
@@ -231,6 +234,7 @@ func _draw() -> void:
 		# Native142ed10 constructs the 3x3 unit-sheet button with this row's ID.
 		var details: Texture2D=art.texture("STOCKS_VIEW_ITEM")
 		if details!=null:draw_texture_rect(details,Rect2(336,y,24,36),false)
+		if details!=null and row.has("job_target"):draw_texture_rect(details,Rect2(528,y,24,36),false)
 		if details!=null and row.has("activity_target"):draw_texture_rect(details,Rect2(624,y,24,36),false)
 		if row.has("position"):
 			var recenter: Texture2D=art.texture("STOCKS_RECENTER")

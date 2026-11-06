@@ -1304,5 +1304,10 @@
     "scope": "Headless shared service, job state and Details view: paged read, pointer wheel, typed native search and Escape. Controlled unlinked job; no edits or public Residents entry.",
     "render_reference": "build/qa/job-settings-view-20261106",
     "render_scope": "Offline component capture inspected against native063337; full scrollbar/owner/responsive parity remains unaccepted."
+  },
+  "row_target_reference": {
+    "source": "build/stockpile-storage-native-input-20261106-072318",
+    "bridge_sha256": "652629A77559980CD476E153EAACBC65C71B2F155D3D320B29AC90841628E3E6",
+    "scope": "ResidentsRowsRead publishes job and holder IDs matching the actual native job button on the controlled unlinked job. Headless shared read/filter/cancel repeated. Full composed Residents owner input/render and edits not accepted."
   }
 }

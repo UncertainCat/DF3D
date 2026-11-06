@@ -121,6 +121,16 @@ func run() -> void:
 	owner.open_panel();service.reply(owner.state.ticket,{"residents":{"unit_ids":PackedInt32Array([42])}})
 	service.reply(owner.state.ticket,{"residents_rows":{"rows":[{"id":42}]}})
 	check(host.active==owner and interaction.construction_active and owner.panel.visible,"Residents owns the modal input gate")
+	owner.job_state.configure(service)
+	owner.state.rows[42].job_target={"job_id":71,"building_id":3}
+	owner._job(42)
+	var job_read: int=owner.job_state.ticket
+	check(owner.job_open() and not owner.panel.visible and host.active==owner,"Job details retains the roster input owner")
+	check(service.calls[job_read].request.job_id==71 and service.calls[job_read].request.building_id==3 and service.calls[job_read].request.unit_id==42,"Job entry uses the displayed row target")
+	owner.job_state.close()
+	check(owner.panel.visible and owner.state.rows[42].job_target.job_id==71 and host.active==owner,"Closing job details restores the retained roster")
+	service.reply(job_read,{"job_settings":{}})
+	check(not owner.job_open(),"Retired job read cannot reopen details")
 	owner.state.inspect(42);var navigation: int=owner.state.ticket;owner.state.inspect(42)
 	check(owner.state.ticket==navigation and service.calls[navigation].domain=="creature_sheet_location","Details has one semantic navigation request")
 	service.reply(navigation,{"creature_position":{"unit_id":42,"position":Vector3i(5,6,7)}})

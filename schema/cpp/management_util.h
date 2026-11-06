@@ -1033,6 +1033,9 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
           previous=e->kind();bytes+=e->name()->size()+e->custom_code()->size()+32;
         }
       }
+      if(const auto* target=row->job_target()) {
+        if(target->job_id()<0 || target->building_id()<0 || row->activity_target())return "invalid residents job target";
+      }
       if(const auto* target=row->activity_target())
         if(target->activity_id()<0 || target->event_id()<0)return "invalid residents activity target";
       if(const auto* value=row->specialization())

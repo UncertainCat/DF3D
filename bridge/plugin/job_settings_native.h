@@ -30,6 +30,23 @@ inline bool jobSettingsReady() {
         return true;
     }();return ready;
 }
+struct JobSettingsTarget {int32_t jobId=-1,buildingId=-1;};
+// Native1423130 uses d15ef0 for the row button. Evaluate it on independently
+// owned job/requirement storage; do not populate the material catalog per row.
+inline std::optional<JobSettingsTarget> jobSettingsTarget(const df::job* source) {
+    if(!source || !jobSettingsReady() || source->id<0 || source->job_items.elements.size()>64)return std::nullopt;
+    std::vector<df::job_item> inputs;inputs.reserve(source->job_items.elements.size());
+    for(const auto* item:source->job_items.elements){if(!item)return std::nullopt;inputs.push_back(*item);}
+    df::job job=*source;job.job_items.elements.clear();
+    for(auto& item:inputs)job.job_items.elements.push_back(&item);
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    if(!reinterpret_cast<bool(*)(df::job*)>(base+0xd15ef0)(&job))return std::nullopt;
+    for(auto* ref:job.general_refs)if(ref && ref->getType()==df::general_ref_type::BUILDING_HOLDER) {
+        const auto* holder=ref->getBuilding();
+        return holder && holder->id>=0?std::optional<JobSettingsTarget>({job.id,holder->id}):std::nullopt;
+    }
+    return std::nullopt;
+}
 // Staged read adapter. Never invokes the global opener213420, widgets, or their
 // callbacks. The job and requirement containers are owned; holder/item/raw
 // records are read-only simulation inputs. No job is linked or reserved here.

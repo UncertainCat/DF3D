@@ -3074,5 +3074,45 @@
     "source_preserved": true,
     "owned_df_closed": true,
     "pending": "Normal simulation recalculation timing and owned native toggle adapter/wire/UI remain unverified."
+  },
+  "settings_provider_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-123308",
+    "scope": "Owned native catalog/caption and copy-only toggle provider compared with actual native settings clicks; no wire or full editor exposure.",
+    "catalog_count": 91,
+    "catalog_ids_and_captions_match": true,
+    "steps": [
+      {
+        "id": 11,
+        "labors": [
+          11
+        ]
+      },
+      {
+        "id": -2,
+        "labors": [
+          11,
+          59
+        ]
+      },
+      {
+        "id": -2,
+        "labors": []
+      },
+      {
+        "id": 11,
+        "labors": [
+          11
+        ]
+      }
+    ],
+    "source_unchanged": true,
+    "source_preserved": true,
+    "owned_df_closed": true,
+    "bridge_sha256": "A32E34ADB31E966FB0C89E86EAF4E2EFA14073BA1C38D5E69E7111024281D446",
+    "pending": [
+      "typed settings read/toggle transport",
+      "normal simulation recalculation timing",
+      "rendered settings workflow and lifecycle acceptance"
+    ]
   }
 }

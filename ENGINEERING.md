@@ -139,9 +139,29 @@ DF15828 closes unsaved with source preservation; no Godot ran, native30FPS,
 GPU45–46C sampled. Owned native toggles, settings transport/UI and normal
 simulation timing remain pending.
 
+`work_detail_settings_native.h` now exposes the ordered91-row catalog (12
+categories/79 labors) through pinned immutable native constants and native
+acb830 captions written into owned strings. It pins the complete catalog setup
+through42edc8, all22 constant blocks and the formatter/dispatch table. The
+individual468ec0 and group469020 routines receive owned closure/context storage,
+an owned catalog vector and a caller-owned94-bool array. Unknown IDs reject
+before calling native; no widget construction, native menu state or forced
+worker recalculation is involved. The provider can operate on a copied definition;
+`work-detail-settings-probe` does so and verifies the simulation source is intact.
+
+Protected123308 on2026-11-06 compares all91 IDs/captions with the recovered native
+catalog, and four owned-array transitions with actual Carpentry/Woodworking
+clicks: [11], [11,59], [], [11]. `settings_provider_reference` records this scope.
+MSVC and core19 pass; installed Management142 bridge hash
+A32E34ADB31E966FB0C89E86EAF4E2EFA14073BA1C38D5E69E7111024281D446 matches the build.
+DF37176 closes unsaved with source preservation; native runs30FPS, no Godot,
+GPU45C sampled after closure. Typed settings transport, actual editor integration,
+normal simulation recalculation timing and complete lifecycle acceptance remain
+pending; this diagnostic provider does not expose the screen.
+
 Worker setup42d8a0..42de34 supplies65 labor-to-skill branches: enabled labors set
 each associated skill weight to1, taking a union rather than accumulating shared
-skills. The fixture retains those mappings. Runtime catalog exposure and the
+skills. The fixture retains those mappings. Typed catalog transport and the
 rendered full editor remain unfinished. This
 discovery used the installed executable and existing protected capture103713;
 it launched no DF or Godot processes.

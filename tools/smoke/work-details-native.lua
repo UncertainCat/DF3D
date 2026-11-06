@@ -293,6 +293,12 @@ if os.getenv('DF3D_WORK_DETAILS_SETTINGS')=='1' then
   d.flags.mode=3;d.assigned_units:insert('#',result.first_visible.unit_id)
   for _,unit in ipairs(df.global.world.units.active)do dfhack.units.setAutomaticProfessions(unit)end
   result.settings_effects={index=#all-1,unit_id=result.first_visible.unit_id,before=snapshot(),steps={}}
+  if os.getenv('DF3D_WORK_DETAILS_SETTINGS_PROVIDER')=='1' then
+   local text,code=dfhack.run_command_silent('df3d','work-detail-settings-probe',tostring(#all-1),'11','-2','-2','11')
+   assert(code==0,'Owned settings provider failed: '..text)
+   result.settings_effects.provider=json.decode(text)
+   assert(result.settings_effects.provider.source_unchanged and json.encode(snapshot())==json.encode(result.settings_effects.before),'Settings probe changed source')
+  end
  end
  g.precise_mouse_x=85*8+4;g.precise_mouse_y=13*12+6;g.mouse_x=85;g.mouse_y=13
  df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L')
@@ -345,6 +351,11 @@ if os.getenv('DF3D_WORK_DETAILS_SETTINGS')=='1' then
   click(0x469020,-2);assert(not d.allowed_labors[11] and not d.allowed_labors[59],'Woodworking group disable failed')
   click(0x468ec0,11)
   click(0x468d20)
+  if result.settings_effects.provider then
+   for i,step in ipairs(result.settings_effects.provider.steps)do
+    assert(step.id==result.settings_effects.steps[i].id and json.encode(step.labors)==json.encode(result.settings_effects.steps[i].immediate.labors),'Owned native toggle differs from actual settings click')
+   end
+  end
   gui.simulateInput(view,'LEAVESCREEN')
   for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
   result.settings_effects.after_leave=snapshot()

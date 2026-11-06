@@ -118,6 +118,7 @@
 #include "residents_query_native.h"
 #include "work_detail_query_native.h"
 #include "work_detail_row_native.h"
+#include "work_detail_settings_native.h"
 #include "residents_row_native.h"
 #include "residents_specialization_native.h"
 #include "modules/Buildings.h"
@@ -2412,6 +2413,31 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             row["key"]=DF2UTF(activity->key);row["fg"]=activity->foreground;row["bg"]=activity->background;
             row["bright"]=activity->bright;result["rows"].append(row);
           }
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="work-detail-settings-probe") {
+          if(parameters.size()<2 || parameters.size()>98)return CR_WRONG_USAGE;
+          std::vector<int32_t> values;
+          for(size_t i=1;i<parameters.size();++i){int32_t value;const auto& raw=parameters[i];
+            const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),value);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
+            values.push_back(value);}
+          if(!state.mapLoaded || df3d_session::saving() || !df::global::plotinfo)return CR_FAILURE;
+          const auto& all=df::global::plotinfo->labor_info.work_details;
+          if(values[0]<0 || size_t(values[0])>=all.size() || !all[size_t(values[0])])return CR_FAILURE;
+          const auto catalog=df3d_production::nativeWorkDetailSettings();if(!catalog)return CR_FAILURE;
+          const auto original=all[size_t(values[0])]->allowed_labors;auto allowed=original;
+          Json::Value result(Json::objectValue);result["catalog"]=Json::Value(Json::arrayValue);
+          for(const auto& entry:*catalog){Json::Value row(Json::objectValue);row["id"]=entry.id;
+            row["caption"]=DF2UTF(entry.caption);result["catalog"].append(row);}
+          result["steps"]=Json::Value(Json::arrayValue);
+          for(size_t i=1;i<values.size();++i){
+            if(!df3d_production::nativeWorkDetailToggle(allowed,values[i]))return CR_FAILURE;
+            Json::Value row(Json::objectValue);row["id"]=values[i];row["labors"]=Json::Value(Json::arrayValue);
+            for(size_t id=0;id<allowed.size();++id)if(allowed[id])row["labors"].append(int(id));
+            result["steps"].append(row);}
+          if(all[size_t(values[0])]->allowed_labors!=original)return CR_FAILURE;
+          result["source_unchanged"]=true;
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="work-detail-row-probe") {

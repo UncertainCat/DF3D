@@ -211,6 +211,14 @@ func filter_frame(cell: Vector2i,columns: int) -> void:
 			var sx:=0 if x==0 else x-columns+6 if x>=columns-4 else 1
 			draw_texture_rect_region(filter,Rect2((cell.x+x)*8,(cell.y+y)*12,8,12),Rect2(sx*8,y*12,8,12))
 func draw_draft() -> void:
+	if state.draft_discard:
+		# Native discard page: full editor frame, fixed43-column choices.
+		text("Warning!",Vector2(16,44),12)
+		text("Any image data you've changed will be lost.",Vector2(16,56),14)
+		for entry in [["Leave editor and discard data",7,"BUTTON_CATEGORY_RECTANGLE_OFF"],["Keep working",11,"BUTTON_CATEGORY_RECTANGLE_ON"]]:
+			patch(entry[2],Vector2i(2,entry[1]),43,3)
+			text(entry[0],Vector2(24,entry[1]*12+20))
+		return
 	var page: int=state.art_page()
 	var description: Array=state.snapshot.art.get("draft_description",[])
 	for i in mini(2,description.size()):text(description[i],Vector2(16,44+i*12),14)
@@ -247,16 +255,11 @@ func draw_draft() -> void:
 			if texture!=null:
 				draw_rect(Rect2(entry[1],size.y-48,32,36),Color.BLACK)
 				draw_texture_rect(texture,Rect2(entry[1],size.y-48,32,36),false)
-	if state.draft_discard:
-		patch("HOVER_RECTANGLE",Vector2i(20,18),80,15)
-		text("Any image data you've changed will be lost.",Vector2(176,244))
-		draft_button("Keep working",Vector2i(22,22))
-		draft_button("Leave editor and discard data",Vector2i(22,26),true,true)
 func draft_input(event: InputEventMouseButton) -> void:
 	if state.draft_discard:
 		if event.button_index==MOUSE_BUTTON_LEFT:
-			if Rect2(176,264,112,36).has_point(event.position):state.draft_discard=false;queue_redraw()
-			elif Rect2(176,312,248,36).has_point(event.position):state.discard_draft()
+			if Rect2(16,132,344,36).has_point(event.position):state.draft_discard=false;queue_redraw()
+			elif Rect2(16,84,344,36).has_point(event.position):state.discard_draft()
 		accept_event();return
 	if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
 		if state.art_page()!=6:scrollbar.move_to(state.first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1))

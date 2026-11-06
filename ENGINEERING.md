@@ -7224,11 +7224,28 @@ local rendered comparison `build/qa/artwork-controls-verified` matches the nativ
 020406 search field26208 pixels, quantity field21312 pixels, and each amount
 button1152 pixels exactly. The removal sprite's724 opaque pixels also match;
 78 surrounding row-background pixels still differ. This remaining background
-mismatch, discard confirmation geometry, subject hover and other window sizes
-remain unfinished. The local capture reuses native observed content and installed
+mismatch, subject hover and other window sizes remain unfinished. The local capture reuses native observed content and installed
 assets without launching DF; it is appearance evidence, not new live-effect
 acceptance. Root19/19 and headless composition pass, with only documented engine
 diagnostics in the short30 FPS rendered check.
+
+The artwork discard prompt replaces the editor body with native Warning!/loss
+copy, a43-column red discard button followed by the green Keep working button.
+It is not a floating overlay. Escape and repeated right-click retain confirmation;
+Keep working preserves the draft; Discard clears elements/relationships and
+returns to artwork choices. Selecting Image has already applied its native order
+type change; discard makes no further order change. Protected232303 on2026-11-05
+exercises these actual clicks through the production view/controller and verifies
+unchanged post-entry order fields independently in DF. The warning8256 pixels and
+discard button12384 pixels match native exactly; the complete page was inspected.
+Owned DF39040 exits unsaved with the source unchanged. Root19/19 and headless
+composition pass in `build/qa/artwork-discard`; paired viewer logs contain only
+documented engine diagnostics. The focused lane uses
+`DF3D_WORK_ORDER_ARTWORK_REFERENCE=1` and `DF3D_WORK_ORDER_ARTWORK_WIRE=1` with
+`stockpile_storage_native.ps1`, and caps the viewer at30 FPS. Native-only232140
+establishes the reference;232038 failed the harness's incorrect pre-Image effect
+baseline and is not effect acceptance. Responsive layout and subject hover remain
+separate gaps.
 
 Protected010525 on2026-11-02 exercises Existing image in the shared viewer after
 the assembled Work orders/conditions/Details workflow. Hover text and wrapping

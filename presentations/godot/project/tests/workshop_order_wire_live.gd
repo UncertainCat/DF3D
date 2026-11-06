@@ -420,7 +420,7 @@ func run() -> void:
 	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.art_page()==6),"Stop deleting did not return to draft"):quit(1);return
 	click(Vector2(168,418));await process_frame
 	check(owner.details.draft_discard,"Changed draft did not request discard confirmation")
-	click(Vector2(300,366))
+	click(Vector2(200,142))
 	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.art_page()==-1),"Draft discard did not return to artwork root"):quit(1);return
 	click(Vector2(200,298))
 	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.art_page()==6),"Commit draft did not open"):quit(1);return

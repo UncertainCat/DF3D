@@ -41,7 +41,8 @@ if not button then
  local holder=df.general_ref_building_holderst:new();holder.building_id=building.id;controlled.general_refs:insert('#',holder)
  local input=df.job_item:new();input.item_type=df.item_type.BOULDER;input.mat_type=0;input.mat_index=-1;input.quantity=1
  if artwork then
-  controlled.job_type=df.job_type.ConstructStatue;input:delete()
+  controlled.job_type=os.getenv('DF3D_RESIDENTS_JOB_ART_BEGIN')=='1' and df.job_type.EncrustWithGems or df.job_type.ConstructStatue;input:delete()
+  if os.getenv('DF3D_RESIDENTS_JOB_ART_BEGIN')=='1' then controlled.specdata.improvement=3 end
   controlled.art_spec.type=df.job_art_specifier_type.HistoricalFigure;controlled.art_spec.id=controlled_unit.hist_figure_id;controlled.art_spec.subid=7
  elseif plant then
   controlled.job_type=df.job_type.MillPlants;controlled.mat_type=-1

@@ -74,7 +74,7 @@ func run() -> void:
 
 func ready(state) -> bool:
 	var deadline:=Time.get_ticks_msec()+5000
-	while Time.get_ticks_msec()<deadline and state.phase==state.Phase.Reading:
+	while Time.get_ticks_msec()<deadline and state.phase in [state.Phase.Reading,state.Phase.Applying]:
 		world.poll();await create_timer(0.01).timeout
 	return state.phase==state.Phase.Ready
 
@@ -207,7 +207,12 @@ func composed_artwork(reference: Dictionary) -> Dictionary:
 	var first: int=owner.state.first
 	await pointer(owner.panel,Vector2(540,owner.panel.list_top()+(index-first)*36+18))
 	var state=owner.job_state;var view=owner.job_panel
-	check(await ready(state) and state.has_art() and state.art_page()==-1 and state.rows.size()==6,"Resident job button did not open artwork root")
+	check(await ready(state),"Resident job settings did not load")
+	var began:=false
+	if not state.has_art():
+		check(int(state.snapshot.options[state.selected].kind)==3,"Expected improvement type picker")
+		await pointer(view,Vector2(120,view.list_top()+18));began=await ready(state)
+	check(state.has_art() and state.art_page()==-1 and state.rows.size()==6,"Resident job button did not open artwork root")
 	check(view.visible and not owner.panel.visible and host.active==owner,"Artwork lost owner/input boundary")
 	var escape:=InputEventKey.new();escape.pressed=true;escape.keycode=KEY_ESCAPE;Input.parse_input_event(escape);await process_frame
 	check(state.has_art() and state.phase==state.Phase.Ready,"Escape left native artwork root")
@@ -229,5 +234,15 @@ func composed_artwork(reference: Dictionary) -> Dictionary:
 	await pointer(owner.panel,Vector2(540,owner.panel.list_top()+(index-first)*36+18));host.reset_local_views()
 	for frame in 5:world.poll();await process_frame
 	check(state.phase==state.Phase.Closed and not view.visible and host.active==null,"Owner reset retained pending artwork")
+	owner.open_panel();check(await ready(owner.state),"Artwork edit roster reopen failed")
+	index=owner.state.ids.find(int(reference.unit_id));owner.state.seek(index,owner.state.capacity);check(await ready(owner.state),"Artwork edit row failed")
+	await pointer(owner.panel,Vector2(540,owner.panel.list_top()+(index-owner.state.first)*36+18));check(await ready(state),"Artwork edit entry failed")
+	if not state.has_art():await pointer(view,Vector2(120,view.list_top()+18));check(await ready(state),"Repeated Image entry failed")
+	await pointer(view,Vector2(120,114));check(await ready(state) and state.art_page()==1,"Artwork edit figure page failed")
+	var chosen: int=state.rows[0].id
+	await pointer(view,Vector2(120,view.list_top()+18))
+	deadline=Time.get_ticks_msec()+5000
+	while state.phase==state.Phase.Applying and Time.get_ticks_msec()<deadline:world.poll();await create_timer(0.01).timeout
+	check(state.phase==state.Phase.Closed and await ready(owner.state) and owner.panel.visible,"Confirmed artwork assignment did not refresh roster")
 	owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();await process_frame
-	return {"root":true,"category":true,"hover":true,"paging":true,"search":true,"back":true,"reset":true}
+	return {"root":true,"category":true,"hover":true,"paging":true,"search":true,"back":true,"reset":true,"began_image":began,"assigned_figure":chosen}

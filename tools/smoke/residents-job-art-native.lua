@@ -33,12 +33,19 @@ local function shot(name)
  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Job art capture timeout');script.sleep(1,'frames')end
 end
 settle()
+if os.getenv('DF3D_RESIDENTS_JOB_ART_BEGIN')=='1' then
+ assert(m.job_details.current_option==3 and not art.open,'Expected native improvement picker');click(10,11)
+end
 assert(art.open and art.ics.jb==job and not art.ics.wq,'Job did not open job-backed artwork')
 result.context=art.context;result.header=dfhack.df2utf(art.header);result.root=lines();result.before=effect()
 local wire_original=owner.job.current_job
-if os.getenv('DF3D_RESIDENTS_JOB_ART_WIRE')=='1' then owner.job.current_job=job end
+if os.getenv('DF3D_RESIDENTS_JOB_ART_WIRE')=='1' then
+ owner.job.current_job=job
+ if os.getenv('DF3D_RESIDENTS_JOB_ART_BEGIN')=='1' then job.specdata.improvement=3 end
+end
 shot('residents-job-art-root')
 owner.job.current_job=wire_original
+if os.getenv('DF3D_RESIDENTS_JOB_ART_WIRE')=='1' then result.wire_effect=effect() end
 if os.getenv('DF3D_RESIDENTS_JOB_ART_PROVIDER')=='1' then
  result.provider={}
  for kind,caption in ipairs({'Related to historical figure','Related to site','Related to civilization or other group'})do
@@ -120,14 +127,22 @@ assert(art.current_option==1 and #art.hf>0,'Figure page did not open')
 result.figures={};for _,hf in ipairs(art.hf)do result.figures[#result.figures+1]=hf.id end
 result.figure_lines=lines();shot('residents-job-art-figures')
 local chosen=art.hf[0].id
+if result.wire_effect then
+ assert(result.wire_effect.type==0 and result.wire_effect.id==chosen and result.wire_effect.subid==result.before.subid,'Wire figure assignment differs from native')
+ if os.getenv('DF3D_RESIDENTS_JOB_ART_BEGIN')=='1' then assert(result.wire_effect.specdata==0,'Wire Image entry did not apply')end
+end
 -- Native first subject row below the filter, verified in captured layout.
 local figure_adapter=adapter(1,chosen)
 click(10,14)
 result.figure_effect=effect();result.figure_choice=chosen;result.figure_adapter=figure_adapter;compare(figure_adapter,result.figure_effect)
 assert(job.art_spec.type==0 and job.art_spec.id==chosen and job.art_spec.subid==result.before.subid,'Figure selection effect differs')
 assert(not art.open and not m.job_details.open and info.open,'Figure selection did not return to Residents')
-click(button.rect.x1+1,button.rect.y1+1)
-assert(art.open and art.ics.jb==job,'Artwork did not reopen')
+local function reopen_art()
+ click(button.rect.x1+1,button.rect.y1+1)
+ if not art.open and m.job_details.current_option==3 then click(10,11) end
+ assert(art.open and art.ics.jb==job,'Artwork did not reopen')
+end
+reopen_art()
 if os.getenv('DF3D_RESIDENTS_JOB_ART_EFFECTS')=='1' then
  result.other_effects={}
  for _,kind in ipairs({2,3,5})do
@@ -137,14 +152,14 @@ if os.getenv('DF3D_RESIDENTS_JOB_ART_EFFECTS')=='1' then
   local expected=adapter(kind,subject);click(10,14);local actual=effect();compare(expected,actual)
   assert(not art.open and not m.job_details.open and info.open,'Artwork selection did not return to Residents')
   result.other_effects[#result.other_effects+1]={kind=kind,subject=subject,adapter=expected,effect=actual}
-  click(button.rect.x1+1,button.rect.y1+1);assert(art.open,'Artwork effect did not reopen')
+  reopen_art()
  end
 end
 local artist_adapter=adapter(0,-1)
 label('Allow artist to choose')
 result.artist_effect=effect();result.artist_adapter=artist_adapter;compare(artist_adapter,result.artist_effect)
 assert(job.art_spec.type==-1 and job.art_spec.id==-1 and job.art_spec.subid==-1 and not art.open,'Artist choice did not clear specification')
-click(button.rect.x1+1,button.rect.y1+1);assert(art.open,'Artwork did not reopen for cancellation')
+reopen_art()
 gui.simulateInput(view,'LEAVESCREEN');settle();result.escape=effect();save()
 assert(art.open and info.open,'Artwork Escape changed the native editor')
 df.global.enabler.mouse_rbut_lift=0;gui.simulateInput(view,'_MOUSE_R')

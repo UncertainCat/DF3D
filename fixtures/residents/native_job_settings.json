@@ -4868,5 +4868,60 @@
       }
     },
     "scope": "Owned-copy adapter matches actual native job figure/site/entity/image/artist field writes, then separate improvement Image entry and retained Back effect. Rejected stale/wrong-target/missing-subject copy requests preserve fields; source job unchanged by copy probe. Controlled unlinked jobs, zero requirements. No typed art edit, UI assignment or ordinary production acceptance."
+  },
+  "artwork_edit_owner_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-091233",
+    "date": "2026-11-06",
+    "management_version": 139,
+    "client": {
+      "artwork_pages": [
+        {
+          "page": 1.0,
+          "preview": true,
+          "total": 10563
+        },
+        {
+          "page": 2.0,
+          "preview": true,
+          "total": 680
+        },
+        {
+          "page": 3.0,
+          "preview": true,
+          "total": 1263
+        },
+        {
+          "page": 5.0,
+          "preview": true,
+          "total": 2
+        }
+      ],
+      "composed": {
+        "assigned_figure": 9876,
+        "back": true,
+        "began_image": true,
+        "category": true,
+        "hover": true,
+        "paging": true,
+        "reset": true,
+        "root": true,
+        "search": true
+      },
+      "success": true
+    },
+    "native_effect": {
+      "art_open": true,
+      "details_open": true,
+      "id": 9876,
+      "info_open": true,
+      "requirements": 0,
+      "specdata": 0,
+      "subid": 7,
+      "type": 0
+    },
+    "scope": "Headless assembled Residents owner opens improvement Image, navigates/filters/previews, returns and resets, then assigns first historical figure. Native effect retains sub-ID7 and specdata0. Disposable unlinked zero-requirement job; no rendered or ordinary-production acceptance. Native menu open flags belong to independent oracle, not DF3D.",
+    "diagnostics": "Known separate-render-thread notice only. Earlier091138 had an oracle reopen assumption failure and unclassified Godot update_end shutdown error; not accepted.",
+    "source_preserved": true,
+    "owned_df_closed": true
   }
 }

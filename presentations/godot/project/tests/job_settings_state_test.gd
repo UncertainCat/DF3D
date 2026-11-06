@@ -45,6 +45,7 @@ func run() -> void:
 	check(state.phase==State.Phase.Closed,"Escape can retire a pending read")
 	view.free();state.dispose()
 	artwork_lifecycle()
+	artwork_edits()
 	if failures==0:print("JOB_SETTINGS_STATE_PASS")
 	quit(1 if failures else 0)
 
@@ -75,4 +76,21 @@ func artwork_lifecycle() -> void:
 	check(state.phase==State.Phase.Ready and state.query=="ab" and state.rows.is_empty(),"Latest empty artwork filter accepted")
 	state.art_back();var pending: int=state.ticket;service.session_changed.emit();service.reply(pending,artwork_page())
 	check(state.phase==State.Phase.Closed and state.snapshot.is_empty(),"Session change retires artwork navigation")
+	state.dispose()
+
+func artwork_edits() -> void:
+	var service:=Service.new();var state:=State.new();state.configure(service);state.open(3,42,6534)
+	var types:=page();types.options[0].kind=3;types.choices=[{"id":0,"caption":"Fixture Image"}];service.reply(state.ticket,types)
+	state.choose(0);var edit: int=state.ticket;state.choose(0)
+	check(state.phase==State.Phase.Applying and state.ticket==edit and service.calls[edit].request.art_page==-1,"Image submits one entry edit")
+	var applied: Dictionary={"action":C.ManagementAction.JobSettingsApply,"status":C.ManagementStatus.Ok,"job_settings_edit":{"job_id":42,"building_id":3,"unit_id":6534,"outcome":C.JobSettingsEditOutcome.Applied}}
+	service.calls[edit].callback.call(edit,applied,service.calls[edit].request)
+	var root:=artwork_page();root.revision=22;root.options[0].kind=3;service.reply(state.ticket,root)
+	check(state.phase==State.Phase.Ready and state.has_art() and state.snapshot.revision==22,"Confirmed Image entry reads fresh revision and stays open")
+	state.choose(1);var figures:=artwork_page(1);figures.revision=22;figures.options[0].kind=3;service.reply(state.ticket,figures)
+	state.choose(0);edit=state.ticket
+	check(service.calls[edit].request.art_page==1 and service.calls[edit].request.expected_revision==22 and service.calls[edit].request.expected_choices_revision==93,"Artwork assignment uses displayed receipts")
+	service.calls[edit].callback.call(edit,{"outcome":"unknown"},service.calls[edit].request)
+	var count: int=service.next;state.choose(0);state.read_root()
+	check(state.phase==State.Phase.Unknown and service.next==count,"Uncertain artwork assignment is never replayed")
 	state.dispose()

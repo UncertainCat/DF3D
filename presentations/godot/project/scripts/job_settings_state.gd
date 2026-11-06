@@ -112,27 +112,38 @@ func fit_visible_rows(count: int) -> void:
 	if start!=first or start<art_base or mini(start+visible_rows,total)>art_base+rows.size():seek(start)
 func choose(id: int) -> void:
 	if phase!=Phase.Ready or selected<0:return
-	if has_art():
-		# Subject assignment, artist choice and new-image drafts remain staged.
-		if art_page()==-1 and id in [1,2,3,5]:
-			query="";_read_art(id)
-		return
+	var found:=false
 	for row: Dictionary in rows:
-		if row.id==id:
-			var intent: Dictionary={"action":C.ManagementAction.JobSettingsApply,"job_id":job_id,"building_id":building_id,"unit_id":unit_id,"expected_revision":snapshot.revision,"option":selected,"expected_choices_revision":snapshot.choices_revision,"choice":id}
-			retire();phase=Phase.Applying
-			var owner:=generation
-			ticket=service.submit("job_settings",intent,func(received,result,_sent):
-				if owner!=generation or received!=ticket:return
-				ticket=0
-				if result.get("outcome","")=="unknown":_fail(Phase.Unknown);return
-				var value: Dictionary=result.get("job_settings_edit",{})
-				if result.get("action",-1)==C.ManagementAction.JobSettingsApply and result.get("status",-1)==C.ManagementStatus.Ok and value.get("job_id")==job_id and value.get("building_id")==building_id and value.get("unit_id")==unit_id and value.get("outcome",-1)==C.JobSettingsEditOutcome.Applied:
-					close();applied.emit();return
-				_fail(Phase.Rejected if result.get("status",-1)==C.ManagementStatus.Rejected else Phase.Unknown))
-			if ticket==0:_fail(Phase.Unavailable)
-			else:changed.emit()
-			return
+		if row.id==id:found=true;break
+	if not found:return
+	if has_art():
+		if art_page()==-1:
+			if id in [1,2,3,5]:query="";_read_art(id)
+			elif id==0:_apply_art(0,-1)
+			# New-image drafting is still staged.
+		else:_apply_art(art_page(),id)
+		return
+	if int(snapshot.options[selected].kind)==3 and id==0:
+		_apply_art(-1,-1);return
+	_submit_edit({"action":C.ManagementAction.JobSettingsApply,"job_id":job_id,"building_id":building_id,"unit_id":unit_id,"expected_revision":snapshot.revision,"option":selected,"expected_choices_revision":snapshot.choices_revision,"choice":id})
+func _apply_art(page: int,subject: int) -> void:
+	var list_revision: int=snapshot.choices_revision if page==-1 else 0 if page==0 else snapshot.art.list_revision
+	_submit_edit({"action":C.ManagementAction.JobSettingsApply,"job_id":job_id,"building_id":building_id,"unit_id":unit_id,"expected_revision":snapshot.revision,"option":selected,"expected_choices_revision":list_revision,"choice":subject,"art_page":page,"query":query if page>0 else ""},page==-1)
+func _submit_edit(intent: Dictionary,begin_art: bool=false) -> void:
+	retire();phase=Phase.Applying
+	var owner:=generation
+	ticket=service.submit("job_settings",intent,func(received,result,_sent):
+		if owner!=generation or received!=ticket:return
+		ticket=0
+		if result.get("outcome","")=="unknown":_fail(Phase.Unknown);return
+		var value: Dictionary=result.get("job_settings_edit",{})
+		if result.get("action",-1)==C.ManagementAction.JobSettingsApply and result.get("status",-1)==C.ManagementStatus.Ok and value.get("job_id")==job_id and value.get("building_id")==building_id and value.get("unit_id")==unit_id and value.get("outcome",-1)==C.JobSettingsEditOutcome.Applied:
+			if begin_art:
+				query="";_read_art(-1,0,false,true);return
+			close();applied.emit();return
+		_fail(Phase.Rejected if result.get("status",-1)==C.ManagementStatus.Rejected else Phase.Unknown))
+	if ticket==0:_fail(Phase.Unavailable)
+	else:changed.emit()
 
 func _cancel_preview() -> void:
 	if service!=null and preview_ticket!=0:service.detach(preview_ticket)
@@ -141,9 +152,9 @@ func _art_intent(page: int,cursor: int,list_revision: int=0,hover: int=-1,column
 	return {"action":C.ManagementAction.JobSettingsRead,"job_id":job_id,"building_id":building_id,"unit_id":unit_id,"option":selected,"query":query,"cursor":cursor,"art_page":page,"expected_list_revision":list_revision,"hovered":hover,"preview_columns":columns}
 func _same_target(result: Dictionary,value: Dictionary) -> bool:
 	return result.get("status",-1)==C.ManagementStatus.Ok and result.get("action",-1)==C.ManagementAction.JobSettingsRead and value.get("job_id") == job_id and value.get("building_id") == building_id and value.get("unit_id") == unit_id
-func _read_art(page: int,cursor: int=0,keep_list: bool=false) -> void:
+func _read_art(page: int,cursor: int=0,keep_list: bool=false,after_applied: bool=false) -> void:
 	if service==null or selected<0:_fail(Phase.Unavailable);return
-	var revision: int=snapshot.get("revision",0)
+	var revision: int=0 if after_applied else snapshot.get("revision",0)
 	var list_revision: int=snapshot.get("art",{}).get("list_revision",0) if keep_list else 0
 	retire();rows=[];pending=[];receipt={};first=cursor;art_base=cursor;phase=Phase.Reading
 	var owner:=generation
@@ -152,7 +163,7 @@ func _read_art(page: int,cursor: int=0,keep_list: bool=false) -> void:
 		ticket=0
 		var value: Dictionary=result.get("job_settings",{})
 		var art: Dictionary=value.get("art",{})
-		if not _same_target(result,value) or value.get("revision",0)!=revision or value.get("selected_option",-1)!=selected or art.get("page",-2)!=page or not art.get("rows") is Array:
+		if not _same_target(result,value) or value.get("revision",0)<=0 or (revision>0 and value.get("revision",0)!=revision) or value.get("selected_option",-1)!=selected or art.get("page",-2)!=page or not art.get("rows") is Array:
 			_fail(Phase.Rejected);return
 		var count: int=art.rows.size()
 		var total: int=art.get("total",-1)

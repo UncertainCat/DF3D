@@ -3838,7 +3838,10 @@ void run(color_ostream& out) {
         for(auto* job:holder->jobs)if(job && job->id==q.job_id()){source=job;break;}
       }
       if(source) {
-        const auto outcome=df3d_production::applyJobSetting(*source,{q.job_id(),q.building_id()},q.expected_revision(),q.option(),q.expected_choices_revision(),q.choice());
+        const auto outcome=q.art_page()==-2?
+          df3d_production::applyJobSetting(*source,{q.job_id(),q.building_id()},q.expected_revision(),q.option(),q.expected_choices_revision(),q.choice()):
+          q.art_page()==-1?df3d_production::beginJobArt(*source,{q.job_id(),q.building_id()},q.expected_revision(),q.option(),q.expected_choices_revision()):
+          df3d_production::applyJobArtSubject(*source,{q.job_id(),q.building_id()},q.expected_revision(),q.option(),q.art_page(),q.choice(),q.expected_choices_revision(),q.query()?UTF2DF(q.query()->str()):std::string{});
         switch(outcome) {
           case df3d_production::JobSettingsOutcome::Applied:jobSettingsEdit->outcome=m::JobSettingsEditOutcome::Applied;status=m::ManagementStatus::Ok;break;
           case df3d_production::JobSettingsOutcome::Stale:jobSettingsEdit->outcome=m::JobSettingsEditOutcome::Stale;break;

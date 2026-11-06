@@ -957,7 +957,7 @@ images replace it; artist choice clears all fields. Improvement artwork requires
 Image already selected. `beginJobArt` separately validates the displayed type
 catalog and writes ART_IMAGE without clearing prior art. Neither helper calls
 native menus or manager-order requirement rebuilding, and no fallible operation
-follows the first write. These helpers are not yet exposed through typed edits.
+follows the first write. Management139 exposes these helpers through validated typed edits.
 
 Protected085505 on2026-11-06 compares
 `df3d residents-job-art-copy-probe <unit> <kind> <subject>` against actual native
@@ -975,8 +975,29 @@ in job-art-effects-20261106. Built/installed bridge SHA256 is
 14521EC22D57AEDF4CD4D80164E23AF9009F5DC5E61E852CFF029133FF36FE7F.
 DF11044 exits unsaved with source preservation; native30FPS only, GPU49C after
 exit. The fixture stores exact effects separately from navigation/read evidence.
-Typed artwork edits, new-image drafts and rendered full-owner workflows remain
-unfinished, and public Residents is still hidden.
+Management139 extends JobSettingsApply with art_page and query. Ordinary edits
+retain their eight-field intent; artwork edits require ten fields. Image entry
+uses the displayed improvement receipt, artist choice has no list receipt, and
+subject/image assignment requires the current filtered native list receipt.
+Confirmed Image entry reloads the new source revision without leaving the editor;
+confirmed assignment closes it and refreshes Residents. Unknown outcomes cannot
+be replayed automatically.
+
+Protected091233 on2026-11-06 verifies the headless assembled owner entering Image
+from an improvement picker, navigating/searching/hovering, returning/resetting,
+then assigning historical figure9876. Native fields are type0/id9876/sub-ID7 and
+specdata0. The controlled unlinked job has no requirements. Four-category typed
+reads and previews still pass. The earlier091138 run passed client assertions
+but failed an oracle assumption about reopening improvement jobs and logged an
+unclassified Godot update_end shutdown error; it is not accepted. The corrected
+run contains only the documented separate-render-thread notice. DF18180 closed
+unsaved with source preservation. GPU samples were44-45C, native30FPS, viewer
+headless. Fixture artwork_edit_owner_reference retains the scoped evidence.
+Root19, extension, management-contract and job-settings state checks pass in
+job-art-edit-20261106. MSVC job-art-edit-build passes; built/installed SHA256 is
+C87BDE4A6276FDF6EA61EB04806AA67008D8C5BC2317DE27DB372B30C14FA0A4.
+New-image drafts, rendered full-owner workflows and ordinary-production jobs
+remain unfinished, and public Residents is still hidden.
 
 
 ## Farm removal native entry points

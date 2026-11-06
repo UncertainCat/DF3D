@@ -10,6 +10,7 @@ ENUMS = ("ResidentsSpecializationOutcome", "ResidentsSort", "WorkOrderPhase", "C
          "SelectionOperation", "SelectionKind", "SelectionSection", "CreatureSectionKind", "ReportView", "ReportTab", "ReportZoom")
 
 DOMAINS = {
+    "residents_activity": ("ResidentsActivityRead", "ResidentsActivityRead"),
     "residents_specialization": ("ResidentsSpecialize", "ResidentsSpecialize"),
     "residents": ("ResidentsQuery", "ResidentsQuery"),
     "residents_rows": ("ResidentsRowsRead", "ResidentsRowsRead"),
@@ -42,7 +43,7 @@ RETIRED = {
 UNROUTED = {"CreatureInspect"}
 
 def outputs():
-    source = (ROOT / "schema/mirror.fbs").read_text()
+    source = (ROOT / "schema/mirror.fbs").read_text(encoding='utf-8')
     values = {}
     for name in ENUMS:
         body = re.search(r"enum " + name + r"\s*:\s*uint8\s*\{([^}]+)\}", source).group(1)
@@ -107,7 +108,7 @@ def main():
     for name, content in outputs().items():
         path=ROOT/name
         if args.check:
-            if not path.exists() or path.read_text()!=content: raise SystemExit(f"Stale management contract: {name}; run tools/generate_management_contract.py")
-        else: path.write_text(content, newline="\n")
+            if not path.exists() or path.read_text(encoding='utf-8')!=content: raise SystemExit(f"Stale management contract: {name}; run tools/generate_management_contract.py")
+        else: path.write_text(content, encoding="utf-8", newline="\n")
     print("MANAGEMENT_CONTRACT_GENERATION_PASS")
 if __name__=="__main__": main()

@@ -419,7 +419,16 @@ struct ResidentsRowsRequest { std::vector<int32_t> unitIds; uint16_t columns=30;
 struct ResidentSpecialization { bool onlyAssigned=false;uint64_t revision=0; };
 struct ResidentsSpecializationRequest { int32_t unitId=-1;uint64_t expectedRevision=0;bool onlyAssigned=false; };
 struct ResidentsSpecializationState { int32_t unitId=-1;ResidentsSpecializationOutcome outcome=ResidentsSpecializationOutcome::Rejected;bool onlyAssigned=false; };
+struct ResidentActivityTarget { int32_t activityId=-1,eventId=-1; };
+struct ResidentsActivityRequest { int32_t unitId=-1,activityId=-1,eventId=-1;uint16_t columns=0; };
+struct ActivityDescriptionWord { std::string text;uint8_t red=0,green=0,blue=0;int32_t link=-1;uint8_t flags=0;int32_t x=-1,y=-1; };
+struct ActivityDescriptionLink { int32_t type=-1,id=-1,subid=-1; };
+struct ResidentsActivityState {
+  int32_t unitId=-1,activityId=-1,eventId=-1;uint16_t columns=0;int32_t maxY=0;
+  std::vector<ActivityDescriptionWord> words;std::vector<ActivityDescriptionLink> links;
+};
 struct ResidentRow {
+  std::optional<ResidentActivityTarget> activityTarget;
   int32_t id=-1;
   std::optional<TilePos> position;
   std::optional<ResidentSpecialization> specialization;
@@ -774,6 +783,7 @@ struct ManagementRequest {
   ResidentsRequest residents;
   ResidentsRowsRequest residentsRows;
   ResidentsSpecializationRequest residentsSpecialization;
+  ResidentsActivityRequest residentsActivity;
   uint16_t depth=1; bool retracting=false; int16_t filter=-1;
   uint32_t rollerSpeed=0;
   bool cancelRemoval=false;
@@ -830,6 +840,7 @@ struct ManagementState {
   std::optional<ResidentsState> residents;
   std::optional<ResidentsRowsState> residentsRows;
   std::optional<ResidentsSpecializationState> residentsSpecialization;
+  std::optional<ResidentsActivityState> residentsActivity;
   ConstructionState construction;
   std::optional<WorldHover> worldHover;
 };

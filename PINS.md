@@ -22,6 +22,16 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management135 adds read-only ResidentsActivityRead (action84) on the
+`residents_activity` domain. Rebuild both peers for
+`Local\df3d_management_v135`; Management134 peers must not be mixed.
+Requests carry unit/activity/event IDs and1..1024 text columns. Successful
+results retain native markup words, semantic link IDs and native word positions;
+rejected results carry no page. ResidentRow gains optional `activity_target`
+with the observed activity/event identity. Absence remains unobserved/unavailable.
+The new contract is staged; it does not expose the Residents screen or establish
+native acceptance for every activity family.
+
 Management134 adds read-only CreatureSheetLocate (action83), using CreatureRequest
 and CreaturePosition on the `creature_sheet_location` domain. Rebuild both peers
 for `Local\df3d_management_v134`; Management133 peers must not be mixed. It resolves

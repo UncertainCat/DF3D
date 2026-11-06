@@ -50,6 +50,7 @@ ManagementState decodeState(const m::ManagementState* s) {
     next.residentsRows.emplace();
     for(const auto* v:*r->rows()) {
       ResidentRow row;
+      if(const auto* t=v->activity_target())row.activityTarget=ResidentActivityTarget{t->activity_id(),t->event_id()};
       if(const auto* p=v->position())row.position=TilePos{p->x(),p->y(),p->z()};
       if(const auto* state=v->specialization())row.specialization=ResidentSpecialization{state->only_assigned(),state->revision()};
       if(const auto* entries=v->assignments()) {
@@ -75,6 +76,12 @@ ManagementState decodeState(const m::ManagementState* s) {
   }
   if(const auto* v=s->residents_specialization())
     next.residentsSpecialization=ResidentsSpecializationState{v->unit_id(),ResidentsSpecializationOutcome(v->outcome()),v->only_assigned()};
+  if(const auto* v=s->residents_activity()) {
+    ResidentsActivityState value;value.unitId=v->unit_id();value.activityId=v->activity_id();value.eventId=v->event_id();value.columns=v->columns();value.maxY=v->max_y();
+    for(const auto* w:*v->words())value.words.push_back({w->text()->str(),w->red(),w->green(),w->blue(),w->link(),w->flags(),w->x(),w->y()});
+    for(const auto* l:*v->links())value.links.push_back({l->type(),l->id(),l->subid()});
+    next.residentsActivity=std::move(value);
+  }
   next.citizen = decodeCitizen(s->citizen());
   next.appointments = decodeAppointments(s->appointments());
   next.production = decodeProduction(s->production());
@@ -201,7 +208,10 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
           flatbuffers::Offset<m::ResidentsRowsRequest>{},
       r.action==ManagementAction::ResidentsSpecialize?
           m::CreateResidentsSpecializationRequest(b,r.residentsSpecialization.unitId,r.residentsSpecialization.expectedRevision,r.residentsSpecialization.onlyAssigned):
-          flatbuffers::Offset<m::ResidentsSpecializationRequest>{});
+          flatbuffers::Offset<m::ResidentsSpecializationRequest>{},
+      r.action==ManagementAction::ResidentsActivityRead?
+          m::CreateResidentsActivityRequest(b,r.residentsActivity.unitId,r.residentsActivity.activityId,r.residentsActivity.eventId,r.residentsActivity.columns):
+          flatbuffers::Offset<m::ResidentsActivityRequest>{});
   b.Finish(request);
 }
 }  // namespace wm::detail::management

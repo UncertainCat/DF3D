@@ -4036,7 +4036,7 @@ TEST_CASE("creature sheet locate has a separate identity and native sentinel rul
   const auto* wireRequest=flatbuffers::GetRoot<wire::ConstructionRequest>(encoded.GetBufferPointer());
   CHECK_FALSE(wire::validateConstructionRequest(*wireRequest));
   REQUIRE(wireRequest->creature());CHECK(wireRequest->creature()->unit_id()==86);
-  CHECK(wireRequest->schema_version()==134);
+  CHECK(wireRequest->schema_version()==135);
   for(int x:{126,-1,-30000,32768}) {
     flatbuffers::FlatBufferBuilder b;const wire::TilePos tile(x,75,165);
     const auto position=wire::CreateCreaturePosition(b,86,&tile);
@@ -4430,4 +4430,41 @@ TEST_CASE("artwork drafts preserve compound choices and separate world writes") 
   draft.nameEdit->mode=wm::LocationNameMode::RandomComponent;draft.nameEdit->word=-1;draft.nameEdit->part=-1;
   CHECK(error());request.action=wm::ManagementAction::WorkOrderUpdate;CHECK_FALSE(error());
   draft.nameQuery->cursor=128;CHECK(error());
+}
+
+TEST_CASE("Residents activity requests retain event identity and bounded width") {
+  wm::ManagementRequest request;request.action=wm::ManagementAction::ResidentsActivityRead;
+  request.residentsActivity={7049,50298,8,110};
+  for(int fault=0;fault<6;++fault) {
+    auto r=request;
+    if(fault==1)r.residentsActivity.unitId=-1;
+    if(fault==2)r.residentsActivity.activityId=-1;
+    if(fault==3)r.residentsActivity.eventId=-1;
+    if(fault==4)r.residentsActivity.columns=0;
+    if(fault==5)r.residentsActivity.columns=1025;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    REQUIRE(value->residents_activity());CHECK(value->residents_activity()->event_id()==r.residentsActivity.eventId);
+  }
+  CHECK(std::string(wm::managementDomain(request.action))=="residents_activity");
+}
+TEST_CASE("Residents activity markup rejects malformed or foreign results") {
+  for(int fault=0;fault<9;++fault) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto word=wire::CreateActivityDescriptionWord(b,b.CreateString(fault==1?std::string(131073,'x'):"Play"),18,254,207,fault==2?0:-1,fault==3?8:0,0,fault==4?3:0);
+    const auto words=b.CreateVector(std::vector<flatbuffers::Offset<wire::ActivityDescriptionWord>>{word});
+    const auto links=b.CreateVector(std::vector<flatbuffers::Offset<wire::ActivityDescriptionLink>>{});
+    const auto description=wire::CreateResidentsActivityState(b,7049,50298,8,fault==5?0:110,2,words,links);
+    wire::ManagementStateBuilder state(b);state.add_revision(1);
+    state.add_action(fault==6?wire::ManagementAction::ResidentsRowsRead:wire::ManagementAction::ResidentsActivityRead);
+    state.add_status(fault==7?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);
+    if(fault!=8)state.add_residents_activity(description);
+    b.Finish(state.Finish());const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(fault==0){auto decoded=codec::decodeState(value);REQUIRE(decoded.residentsActivity);CHECK(decoded.residentsActivity->words[0].green==254);CHECK(decoded.residentsActivity->columns==110);CHECK(decoded.residentsActivity->eventId==8);}
+  }
+  flatbuffers::FlatBufferBuilder b;wire::ManagementStateBuilder state(b);state.add_revision(2);state.add_action(wire::ManagementAction::ResidentsActivityRead);state.add_status(wire::ManagementStatus::Rejected);b.Finish(state.Finish());
+  const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+  CHECK_FALSE(wire::validateManagementState(*value));CHECK_FALSE(codec::decodeState(value).residentsActivity);
 }

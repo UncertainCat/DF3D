@@ -195,8 +195,27 @@ and caption comparisons pass in125314. MSVC and core19 pass; installed143 bridge
 hash1DF5AD207B0FB8489D65650CF92A23632BD7550DA474525E1224F54BB9E7B8FB matches the build.
 DF38952 closes unsaved with source preservation, no owned processes remain, and
 joined final client logs have only the known separate-renderer notice. Native30FPS,
-headless viewer, GPU43–44C sampled. Screen-controller/settings-view integration
-and rendered workflow/lifecycle acceptance remain pending; the full editor is hidden.
+headless viewer, GPU43–44C sampled. Settings-view integration and rendered workflow/lifecycle acceptance remain
+pending; controller acceptance is recorded below and the full editor is hidden.
+
+The Work Details controller now owns settings navigation, catalog observations,
+scroll and one-shot toggles. Opening settings retires worker reads; Done retires
+settings reads and refreshes the roster. Successful toggles refresh every detail
+header receipt and reread settings while retaining scroll, so later icon/checkbox
+rendering does not reuse stale definitions. Pending mutation blocks conflicting
+inputs; rejection/unknown outcomes clear settings authority without replay.
+
+Headless work-details-settings-controller-20261106 covers late settings reads,
+exact toggle receipts, pending-input guards, refresh/Done, unknown outcomes and
+late mutation replies after close; core19 passes. Protected125720 exercises the
+real controller/service against native91-row settings and four toggle effects,
+retaining scroll30, returning through Done, and blocking external-controller edits.
+All native worker state remains unchanged. DF9644 exits unsaved with source
+preservation; final joined headless logs contain only the known separate-renderer
+notice, no owned processes remain, native30FPS and GPU44C sampled. This accepts
+the controller path only; visible settings controls, reset/delete/rename and full
+rendered workflow/lifecycle acceptance remain pending. `settings_controller_reference`
+records the scope; the full screen stays hidden.
 
 Worker setup42d8a0..42de34 supplies65 labor-to-skill branches: enabled labors set
 each associated skill weight to1, taking a union rather than accumulating shared

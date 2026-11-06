@@ -83,6 +83,32 @@ func run() -> void:
 	check(view.position==Vector2(32,52) and view.size==Vector2(944,708) and view.list_top()==228 and view.page_rows==10,"Native default Work Details frame geometry")
 	check(view.member_rect(0)==Rect2(800,228,32,36) and view.mode_rect(1)==Rect2(584,156,184,36),"Native membership and mode geometry")
 	view.state=null;view.queue_free();await process_frame
+	state.open();service.reply(state.ticket,page([detail(0)]));complete_workers(service,state,[7])
+	state.open_settings();old=state.ticket
+	check(state.editing_settings and service.calls[old].intent.action==A.WorkDetailSettingsRead and state.rows.is_empty(),"Settings replaces roster observations with a revision-bound read")
+	state.close_settings();service.reply(old,settings_page())
+	check(state.settings.is_empty() and not state.editing_settings,"Done retires a late settings read")
+	service.reply(state.ticket,page([detail(0)]));complete_workers(service,state,[7]);state.open_settings();service.reply(state.ticket,settings_page())
+	state.seek_settings(30,15);state.toggle_setting(-2);old=state.ticket
+	check(service.calls[old].intent.setting_id==-2 and service.calls[old].intent.expected_revision==9007199254740993,"Group toggle uses exact displayed receipt")
+	state.toggle_setting(11);state.close_settings();state.set_mode(2)
+	check(state.ticket==old and state.editing_settings,"Pending toggle blocks conflicting edits and Done")
+	service.reply(old,settings_page(9007199254740997));check(service.calls[state.ticket].intent.action==A.WorkDetailList,"Toggle refreshes definition header authority")
+	service.reply(state.ticket,page([detail(0,9007199254740997)],9007199254740999))
+	check(service.calls[state.ticket].intent.action==A.WorkDetailSettingsRead,"Settings remains open across definition refresh")
+	service.reply(state.ticket,settings_page(9007199254740997));check(state.settings_first==30,"Toggle retains settings scroll")
+	state.close_settings();service.reply(state.ticket,page([detail(0,9007199254740997)]));complete_workers(service,state,[7])
+	check(not state.editing_settings and state.phase==State.Phase.Ready,"Done returns to authoritative roster")
+	state.open_settings();service.reply(state.ticket,settings_page(9007199254740997));state.toggle_setting(11);old=state.ticket
+	service.reply(old,{"outcome":"unknown","status":C.ManagementStatus.Rejected});count=service.next;state.toggle_setting(11)
+	check(state.settings.is_empty() and service.next==count,"Unknown settings mutation drops authority and cannot replay")
+	state.close();service.reply(old,settings_page(9007199254740999));check(state.settings.is_empty() and not state.editing_settings,"Closed settings ignore late mutation receipt")
 	state.dispose()
 	if failures==0:print("WORK_DETAILS_STATE_PASS")
 	quit(0 if failures==0 else 1)
+
+func settings_page(revision: int=9007199254740993) -> Dictionary:
+	var catalog: Array=[]
+	for id in range(-13,-1):catalog.append({"id":id,"caption":"Synthetic category"})
+	for id in range(1,80):catalog.append({"id":id,"caption":"Synthetic labor"})
+	return {"work_detail_settings":{"detail_index":0,"revision":revision,"editable":true,"no_modify":false,"labors":PackedInt32Array(),"catalog":catalog}}

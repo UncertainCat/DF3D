@@ -14,6 +14,8 @@ func pointer(view,point: Vector2,button: int=MOUSE_BUTTON_LEFT) -> void:
 	click=click.duplicate();click.pressed=false;Input.parse_input_event(click);await process_frame
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
+	if OS.get_environment("DF3D_WORK_DETAILS_SETTINGS_CONTROLLER")=="1":
+		await work_detail_settings_controller();return
 	if OS.get_environment("DF3D_WORK_DETAILS_SETTINGS_WIRE")=="1":
 		await work_detail_settings();return
 	if OS.get_environment("DF3D_WORK_DETAILS_RENDER")=="1":
@@ -632,3 +634,36 @@ func work_detail_settings() -> void:
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"phase":reference.settings_wire_phase,"catalog_count":value.catalog.size()}));file.close()
 	world.queue_free();await process_frame;quit(1 if failed else 0)
+
+func work_detail_settings_controller() -> void:
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/work-details-native.json"))
+	var expected: Dictionary=reference.settings_effects
+	world=Df3dWorld.new();root.add_child(world)
+	if not check(world.attach(),"Settings controller attach failed"):quit(1);return
+	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline:
+		world.poll()
+		if world.poll_management().get("transport_alive",false):break
+		await create_timer(0.01).timeout
+	var state=preload("res://scripts/work_details_state.gd").new();state.configure(service);state.open()
+	if not check(await ready(state),"Settings controller initial roster failed"):quit(1);return
+	state.select_detail(int(expected.index))
+	if not check(await ready(state),"Settings controller selection failed"):quit(1);return
+	state.open_settings()
+	if not check(await ready(state) and state.settings.catalog.size()==91,"Settings controller catalog failed"):quit(1);return
+	if reference.settings_wire_phase=="locked":
+		check(not state.settings.editable,"Settings controller lost read-only state")
+		state.toggle_setting(11);check(state.ticket==0 and state.phase==state.Phase.Ready,"Read-only settings submitted a toggle")
+	else:
+		state.seek_settings(30,15)
+		for step: Dictionary in expected.provider.steps:
+			state.toggle_setting(int(step.id))
+			if not check(await ready(state),"Controller native settings toggle failed"):break
+			check(state.editing_settings and state.settings_first==30 and state.settings.labors==PackedInt32Array(step.labors),"Settings refresh lost native result or scroll")
+		state.close_settings()
+		check(await ready(state) and not state.editing_settings and state.roster_ready,"Done did not return to refreshed roster")
+	state.close();check(state.settings.is_empty() and not state.editing_settings,"Close retained settings authority")
+	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"controller":true,"phase":reference.settings_wire_phase}));file.close()
+	state.dispose();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)

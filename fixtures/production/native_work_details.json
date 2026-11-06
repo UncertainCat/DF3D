@@ -3178,5 +3178,42 @@
     "owned_df_closed": true,
     "bridge_sha256": "1DF5AD207B0FB8489D65650CF92A23632BD7550DA474525E1224F54BB9E7B8FB",
     "diagnostics": "Final joined headless client logs contain only the known separate-renderer startup notice."
+  },
+  "settings_controller_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-125720",
+    "scope": "Real headless Work Details controller/service settings flow, not rendered settings controls.",
+    "catalog_count": 91,
+    "native_toggle_steps": [
+      {
+        "id": 11,
+        "labors": [
+          11
+        ]
+      },
+      {
+        "id": -2,
+        "labors": [
+          11,
+          59
+        ]
+      },
+      {
+        "id": -2,
+        "labors": []
+      },
+      {
+        "id": 11,
+        "labors": [
+          11
+        ]
+      }
+    ],
+    "scroll_retained": 30,
+    "done_returns_to_refreshed_roster": true,
+    "external_controller_blocks_toggle": true,
+    "worker_state_matches_native": true,
+    "source_preserved": true,
+    "owned_df_closed": true,
+    "diagnostics": "Final joined logs contain only the known separate-renderer startup notice."
   }
 }

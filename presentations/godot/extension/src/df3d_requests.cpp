@@ -170,6 +170,11 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         value["unit_id"]=w.unitId;value["occupation_id"]=w.occupationId;value["outcome"]=int(w.outcome);
         result["creature_location"]=value;
     }
+    if(s.residents) {
+        Dictionary value;PackedInt32Array ids;
+        for(auto id:s.residents->unitIds)ids.push_back(id);
+        value["unit_ids"]=ids;result["residents"]=value;
+    }
     if(s.creatureAnimal) {
         const auto& w=*s.creatureAnimal;Dictionary value;
         value["unit_id"]=w.unitId;value["animal_id"]=w.animalId;value["outcome"]=int(w.outcome);value["assigned"]=w.assigned;
@@ -263,6 +268,21 @@ bool validateCreatureLocation(const Dictionary& data,String& error) {
 bool readCreatureLocation(const Dictionary& data,wm::ManagementRequest& request,String&) {
     request.action=wm::ManagementAction::CreatureLocationRemove;
     request.creatureLocation={int32_t(int64_t(data["unit_id"])),int32_t(int64_t(data["occupation_id"])),uint64_t(int64_t(data["expected_revision"]))};return true;
+}
+bool validateResidents(const Dictionary& data,String& error) {
+    if(data.size()!=4 || !data.has("sort") || !data.has("descending") || !data.has("query_bytes") ||
+       data["sort"].get_type()!=Variant::INT || data["descending"].get_type()!=Variant::BOOL ||
+       data["query_bytes"].get_type()!=Variant::PACKED_BYTE_ARRAY) {error="Invalid residents query fields";return false;}
+    const int64_t sort=data["sort"];const PackedByteArray bytes=data["query_bytes"];
+    if(sort<0 || sort>4 || bytes.size()>128 || bytes.has(0)) {error="Invalid residents query";return false;}
+    return true;
+}
+bool readResidents(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction::ResidentsQuery;
+    request.residents.sort=wm::ResidentsSort(int64_t(data["sort"]));request.residents.descending=bool(data["descending"]);
+    const PackedByteArray bytes=data["query_bytes"];
+    for(int64_t i=0;i<bytes.size();++i)request.residents.queryBytes.push_back(bytes[i]);
+    return true;
 }
 bool validateCreatureAnimal(const Dictionary& data,String& error) {
     if(data.size()!=5 || !data.has("assigned") || data["assigned"].get_type()!=Variant::BOOL || !data.has("unit_id") || !data.has("animal_id") || !data.has("expected_revision") ||
@@ -374,6 +394,7 @@ const ManagementCodec managementCodecs[] = {
     {"creature_workshop",validateCreatureWorkshop,readCreatureWorkshop},
     {"creature_location",validateCreatureLocation,readCreatureLocation},
     {"creature_animal",validateCreatureAnimal,readCreatureAnimal},
+    {"residents",validateResidents,readResidents},
     {"creature_knowledge",validateCreatureKnowledge,readCreatureKnowledge},
     {"creature_expel",validateCreatureExpel,readCreatureExpel},
 };
@@ -386,7 +407,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::CreatureAnimalEdit)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::ResidentsQuery)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

@@ -40,8 +40,23 @@ bounds the reply below the512KiB channel capacity; overflow must reject rather
 than truncate. There is no ID-based pagination or inferred result in older
 recordings. Existing CitizenList/Work Details requests retain their semantics.
 Request sequence and world epoch remain the common transport envelope.
-The contract/model codecs are implemented; bridge dispatch and client/UI
-integration still require acceptance before exposure.
+The bridge dispatches this read at a safe point through the owned native query
+provider. The Godot adapter accepts typed byte buffers and preserves ordered IDs
+and explicit empty results. Results are cleared before unrelated replies.
+The public Residents screen still requires row content and control integration
+and acceptance before exposure.
+
+`DF3D_RESIDENTS_WIRE=1`, together with the reference/provider/query flags below,
+runs a headless Godot client against the protected native session. Protected
+025644 on2026-11-06 matches all17 native ordered snapshots through the actual
+Management131 transport, rejects malformed client requests, and verifies result
+retirement on Catalog. DF16176 exits unsaved; the source manifest is unchanged.
+Paired client logs contain only the documented separate-thread notice. MSVC,
+core19/19 and management_contract_test pass (`residents-query-adapter-final`).
+The installed plugin SHA256 is
+6212DB5BE61441FFF1EB26186501406BF1B4749B841E668625DDB6546AAAB748.
+Native graphics run at30FPS with observed GPU temperatures36–37C; the client
+is headless. This validates the query transport, not the complete Residents UI.
 
 `DF3D_RESIDENTS_REFERENCE=1` selects a paused, owned, unsaved native observation
 through `stockpile_storage_native.ps1`. The helper opens Creatures and records
@@ -83,7 +98,7 @@ ordering readers for transitive name/profession/category dependencies. The
 `df3d residents-order-probe <sort> <descending> [query]` command returns ordered
 IDs; sort0/1/2/3/4 means Category/Name/Profession/Stress/Activity, direction0/1
 ascending/descending. The query adapter below adds Activity and text filtering.
-The providers are not connected to the public readout or management protocol.
+The providers serve ResidentsQuery; the public readout remains unchanged.
 
 `DF3D_RESIDENTS_PROVIDER=1` with the native reference compares this owned result
 against actual active widget rows after native sorting. Protected015429 on

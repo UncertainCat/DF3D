@@ -217,6 +217,14 @@ try {
   if(Test-Path "$out/shot") {
    $name=(Get-Content "$out/shot" -Raw).Trim()
    if(-not(Test-Path "$out/ack-$name")) {
+    if($env:DF3D_RESIDENTS_WIRE -eq '1' -and $name -eq 'residents-root') {
+     $env:DF3D_CARRIER_DIRECTORY=$out
+     $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
+     $client=Start-Process -FilePath $engine -ArgumentList @('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/residents_query_wire_live.gd') -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/residents-wire.stdout.log" -RedirectStandardError "$out/residents-wire.stderr.log"
+     $null=$client.Handle
+     if(-not $client.WaitForExit(25000)){$client.Kill();$client.WaitForExit();throw 'Residents wire client timed out; no replay'}
+     if($client.ExitCode -ne 0 -or -not (Test-Path "$out/residents-wire-result.json")){throw 'Residents wire client failed'}
+    }
     # Symbol probes allocate native textures; allow their upload/present to
     # settle before PrintWindow. Exact pixel verification below rejects tears.
     if($ZoneSquads){Start-Sleep -Milliseconds 250}

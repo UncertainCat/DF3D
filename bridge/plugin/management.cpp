@@ -81,6 +81,7 @@
 #include "creature_office_native.h"
 #include "creature_labor_native.h"
 #include "creature_header_native.h"
+#include "residents_query_native.h"
 #include "creature_follow_native.h"
 #include "creature_expel_preview_native.h"
 #include "creature_expel_action_native.h"
@@ -437,6 +438,7 @@ struct CreatureAnimalResult {
   bool assigned=false;
 };
 std::optional<CreatureAnimalResult> creatureAnimal;
+std::optional<std::vector<int32_t>> residents;
 m::TilePos worldHoverTile;
 void clearResult() {
   creatureHeader.reset();
@@ -446,6 +448,7 @@ void clearResult() {
   creatureWorkshop.reset();
   creatureLocation.reset();
   creatureAnimal.reset();
+  residents.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -932,6 +935,7 @@ void publish() {
     creatureKnowledgeResult=m::CreateCreatureKnowledgeState(b,value.unitId,value.kind,value.id,value.outcome,b.CreateString(value.text));
   }
   flatbuffers::Offset<m::CreatureAnimalState> creatureAnimalResult;
+  const auto residentsResult=residents?m::CreateResidentsState(b,b.CreateVector(*residents)):flatbuffers::Offset<m::ResidentsState>{};
   if(creatureAnimal) {
     const auto& value=*creatureAnimal;
     creatureAnimalResult=m::CreateCreatureAnimalState(b,value.unitId,value.animalId,value.outcome,value.assigned);
@@ -954,7 +958,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult);
   b.Finish(s);
   if (auto e = m::validateManagementState(
           *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()))) {
@@ -3734,6 +3738,18 @@ void run(color_ostream& out) {
         if(!page.truncated || !page.choices.empty()){areaPage.locationNamePage=std::move(page);status=m::ManagementStatus::Ok;}
       }
     } else if(snapshot) {areaPage.locationName=std::move(snapshot);status=m::ManagementStatus::Ok;}
+    publish();return;
+  }
+  if(r->action()==m::ManagementAction::ResidentsQuery) {
+    message.clear();status=m::ManagementStatus::Rejected;
+    const auto& query=*r->residents();
+    try {
+      auto ids=df3d_residents::queryResidents(int(query.sort()),query.descending(),
+          std::string(query.query_bytes()->begin(),query.query_bytes()->end()));
+      if(ids && ids->size()<=m::kResidentsQueryUnits) {
+        residents=std::move(*ids);status=m::ManagementStatus::Ok;
+      }
+    } catch(...) {residents.reset();}
     publish();return;
   }
   if(r->action()==m::ManagementAction::CreatureAnimalEdit) {

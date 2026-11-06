@@ -14,6 +14,7 @@ var search
 var colors: Array[Color]=[]
 var wide_tabs:=false
 var input_allowed: Callable
+var ticks_override: int=-1
 
 func configure_residents(source,model) -> void:
 	super.configure(source);state=model;colors=art.installed_palette(source.assets_root())
@@ -49,7 +50,7 @@ func refresh() -> void:
 func _exit_tree() -> void:
 	if state!=null and state.changed.is_connected(refresh):state.changed.disconnect(refresh)
 func _process(_delta: float) -> void:
-	if is_visible_in_tree() and state!=null and state.phase==state.Phase.Ready:
+	if ticks_override<0 and is_visible_in_tree() and state!=null and state.phase==state.Phase.Ready:
 		for row: Dictionary in state.rows.values():
 			if int(row.name_color.effect)!=0:queue_redraw();break
 func _input(event: InputEvent) -> void:
@@ -105,7 +106,7 @@ func _draw() -> void:
 		var row: Dictionary=state.row_at(state.first+index)
 		if row.is_empty():continue
 		var y:=list_top()+index*36
-		var ink:=NameColor.choose(row.name_color,Time.get_ticks_msec(),randi_range(0,1))
+		var ink:=NameColor.choose(row.name_color,ticks_override if ticks_override>=0 else Time.get_ticks_msec(),0 if ticks_override>=0 else randi_range(0,1))
 		if not ink.is_empty():
 			text(row.first_line,Vector2(56,y+24),int(ink[0])+8*int(ink[2]),240)
 			text(row.second_line,Vector2(56,y+36),int(ink[0])+8*int(ink[2]),240)

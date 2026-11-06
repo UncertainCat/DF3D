@@ -46,6 +46,19 @@ This is not rendered or complete-screen acceptance: portraits, indicators,
 actions, hover, navigation, responsive geometry and refresh behavior remain
 unfinished. The public `read_only_info.gd` route is unchanged.
 
+`fixtures/residents/native_rows.json` retains the semantic031806 reference and
+native CP437 name cells for repeatable offline layout checks; it contains no game
+artwork. `residents_view_capture` loads installed assets and verifies7882 opaque
+name-glyph pixels at the native baseline positions, including accented and
+two-line names. `residents-view-capture-fixed` passes with the documented Godot
+separate-thread/finalize/shutdown diagnostics. The initial attempt compared a
+live legendary blink phase to the base color; a fixed500ms presentation clock
+makes the pixel check deterministic. `residents-view-final` core19/19 and state
+checks pass. This establishes baseline name ink/placement only, not backgrounds,
+portraits, indicator artwork, interaction or complete screen parity. Both brief
+offline renders were capped at30FPS with observed GPU temperature37C; DF stayed
+closed.
+
 Management132 defines a separate ResidentsRowsRead contract for1–64 requested
 IDs in explicit order. It carries the name width and gender flag; the reply
 contains native UTF-8 identity lines, name-color effects and Activity text/color.

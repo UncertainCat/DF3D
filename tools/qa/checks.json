@@ -108,6 +108,15 @@
       "prerequisites": ["extension_build", "df_assets", "real_renderer"]
     },
     {
+      "id": "residents_view_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/residents_view_capture.gd",
+      "completion": "^RESIDENTS_VIEW_CAPTURE_PASS",
+      "timeout": 30,
+      "prerequisites": ["extension_build", "df_assets", "real_renderer"]
+    },
+    {
       "id": "residents_state_test",
       "lane": "core",
       "kind": "godot",

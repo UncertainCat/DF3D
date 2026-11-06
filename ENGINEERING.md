@@ -7272,7 +7272,18 @@ biography/site/group text. Add `DF3D_WORK_ORDER_ARTWORK_SUBJECT_HOVER=1` to the
 focused artwork reference/wire lane. Bridge build, root19/19 and headless
 composition pass (`build/qa/artwork-subject-hover`); paired live logs contain only
 documented diagnostics. DF37428 closes unsaved with the source unchanged.
-Additional subjects, multiline previews and resized layouts remain unverified.
+Artwork width follows native map space: whole8-pixel viewport columns minus224
+pixels, instead of a fixed976 pixels. Protected234757 on2026-11-05 records native
+root/site pages at actual1200x800,1440x900 and1600x900; the requested small window
+resolved to1440x900 and does not establish minimum-size behavior. The frame widths
+are976/1216/1376 and subject capacities14/17/17. DF5724 closes unsaved with the
+source unchanged. The production view rendered at all three sizes in
+`build/qa/artwork-responsive`; the wide capture was visually compared with native.
+Paired logs contain only documented diagnostics, and root19/19 plus headless
+composition pass in `build/qa/artwork-responsive-gate`. The focused native lane
+accepts `DF3D_WORK_ORDER_ARTWORK_RESIZE=1`. This verifies frame/list geometry,
+not resized live edits or minimum-size draft controls. Additional subjects,
+multiline previews and those remaining responsive interactions are unverified.
 
 Protected010525 on2026-11-02 exercises Existing image in the shared viewer after
 the assembled Work orders/conditions/Details workflow. Hover text and wrapping

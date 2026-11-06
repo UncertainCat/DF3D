@@ -32,7 +32,7 @@ local function shot(name)
  if name:find('%-hover$')then df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;g.precise_mouse_x=200;g.precise_mouse_y=190;g.mouse_x=25;g.mouse_y=15 end
  view:render(dfhack.getTickCount())
  local preview={};for _,line in ipairs(m.image_creator.selected_box.text)do preview[#preview+1]=dfhack.df2utf(line.value)end
- observations[#observations+1]={name=name,lines=lines(),page=m.image_creator.current_option,open=m.image_creator.open,hovered=m.image_creator.last_selected_index,columns=m.image_creator.last_selected_box_width,preview=preview}
+ observations[#observations+1]={name=name,dimensions={g.dimx,g.dimy},lines=lines(),page=m.image_creator.current_option,open=m.image_creator.open,hovered=m.image_creator.last_selected_index,columns=m.image_creator.last_selected_box_width,preview=preview}
  local f=assert(io.open(out..'/work-order-artwork-reference.json','w'));f:write(json.encode(observations));f:close()
  f=assert(io.open(out..'/shot.tmp','w'));f:write(name);f:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
  local deadline=dfhack.getTickCount()+(name=='work-order-artwork-wire' and 65000 or 30000)
@@ -46,6 +46,23 @@ local option;for i,kind in ipairs(details.option)do if kind==3 then option=i;bre
 assert(option);mouse(200,106+option*36);assert(details.current_option==3)
 mouse(200,142);local art=m.image_creator;assert(art.open)
 before={spec=order.specdata.hist_figure_id,typ=order.art_spec.type,id=order.art_spec.id,subid=order.art_spec.subid}
+if os.getenv('DF3D_WORK_ORDER_ARTWORK_RESIZE')=='1' then
+ for _,size in ipairs({'small','wide','default'})do
+  local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('name-resize-'..size);f:close()
+  assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+  local limit=dfhack.getTickCount()+30000
+  while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end
+   assert(dfhack.getTickCount()<limit,'artwork resize timeout');script.sleep(1,'frames')end
+  assert(os.remove(out..'/owner-input-ack'));script.sleep(3,'frames');view:render(dfhack.getTickCount())
+  shot('work-order-artwork-'..size..'-root')
+  assert(click_label('Related to site'));assert(art.current_option==2)
+  shot('work-order-artwork-'..size..'-hover')
+  back();assert(art.current_option==-1)
+ end
+ assert(order.specdata.hist_figure_id==before.spec and order.art_spec.type==before.typ and order.art_spec.id==before.id and order.art_spec.subid==before.subid,'Resize changed order')
+ records[#records+1]={name='work-order-artwork-resize',screens=#observations,order_unchanged=true}
+ return
+end
 if os.getenv('DF3D_WORK_ORDER_ARTWORK_SUBJECT_HOVER')=='1' then
  for page,label in ipairs({'Related to historical figure','Related to site','Related to civilization or other group'})do
   assert(click_label(label));assert(art.current_option==page)

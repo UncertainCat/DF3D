@@ -192,13 +192,7 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         for(const auto& c:v.choices){Dictionary row;row["id"]=c.id;row["caption"]=String::utf8(c.caption.c_str());row["estimated"]=c.estimated;if(c.countCaption)row["count_caption"]=String::utf8(c.countCaption->c_str());choices.push_back(row);}
         if(v.currentValue)value["current_value"]=String::utf8(v.currentValue->c_str());
         if(v.settingHeading)value["setting_heading"]=String::utf8(v.settingHeading->c_str());
-        if(v.art) {
-            const auto& a=*v.art;Dictionary art;Array rows;
-            art["page"]=a.page;art["caption"]=String::utf8(a.caption.c_str());art["list_revision"]=int64_t(a.listRevision);art["total"]=int64_t(a.total);art["next_cursor"]=int64_t(a.nextCursor);art["hovered"]=a.hovered;
-            for(const auto& r:a.rows){Dictionary row;row["id"]=r.id;row["caption"]=String::utf8(r.caption.c_str());if(r.badge)row["badge"]=String::utf8(r.badge->c_str());rows.push_back(row);}art["rows"]=rows;
-            if(a.preview){Array lines;for(const auto& line:*a.preview)lines.push_back(String::utf8(line.c_str()));art["preview"]=lines;}
-            value["art"]=art;
-        }
+        if(v.art)value["art"]=df3d_godot::management::writeArtState(*v.art);
         value["options"]=options;value["choices"]=choices;result["job_settings"]=value;
     }
     if(s.residentsActivity) {

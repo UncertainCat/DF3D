@@ -29,6 +29,8 @@ flatbuffers::Offset<df3d::mirror::AppointmentsRequest> encodeAppointments(
     flatbuffers::FlatBufferBuilder& b, const AppointmentsRequest& value);
 flatbuffers::Offset<df3d::mirror::ProductionRequest> encodeProduction(
     flatbuffers::FlatBufferBuilder& b, const ProductionRequest& value);
+WorkOrderArtState decodeArtState(const df3d::mirror::WorkOrderArtState& value);
+flatbuffers::Offset<df3d::mirror::WorkOrderArtRequest> encodeArtRequest(flatbuffers::FlatBufferBuilder& b,const WorkOrderArtRequest& value);
 flatbuffers::Offset<df3d::mirror::WorkOrderRequest> encodeWorkOrder(
     flatbuffers::FlatBufferBuilder& b, const WorkOrderRequest& value);
 flatbuffers::Offset<df3d::mirror::KitchenRequest> encodeKitchen(flatbuffers::FlatBufferBuilder& b,

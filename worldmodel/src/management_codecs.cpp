@@ -85,12 +85,7 @@ ManagementState decodeState(const m::ManagementState* s) {
     for(const auto* c:*v->choices())value.choices.push_back({c->id(),c->caption()->str(),c->count_caption()?std::optional<std::string>(c->count_caption()->str()):std::nullopt,c->estimated()});
     if(v->current_value())value.currentValue=v->current_value()->str();
     if(v->setting_heading())value.settingHeading=v->setting_heading()->str();
-    if(const auto* a=v->art()) {
-      value.art.emplace();auto& art=*value.art;art.page=a->page();art.caption=a->caption()->str();art.listRevision=a->list_revision();
-      art.total=a->total();art.nextCursor=a->next_cursor();art.hovered=a->hovered();
-      for(const auto* row:*a->rows())art.rows.push_back({row->id(),row->caption()->str(),row->badge()?std::optional<std::string>(row->badge()->str()):std::nullopt,row->secondary()});
-      if(a->preview()){art.preview.emplace();for(const auto* line:*a->preview())art.preview->push_back(line->str());}
-    }
+    if(v->art())value.art=decodeArtState(*v->art());
     next.jobSettings=std::move(value);
   }
   if(const auto* v=s->residents_activity()) {

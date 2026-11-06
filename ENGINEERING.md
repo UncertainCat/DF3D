@@ -1059,6 +1059,18 @@ DF3524 closes unsaved with source preservation; native30FPS, GPU48C sampled,
 no Godot renderer. The fixture retains artwork_draft_commit_reference.
 
 
+Artwork transport codecs are shared across job settings and Work orders:
+worldmodel encodeArtRequest/decodeArtState and Godot readArtRequest/writeArtState
+handle lists, hover, draft values/descriptions and native names. Dictionary reads
+retain the caller's shape-validation prerequisite. validateArtDraftRequest owns
+the common read/write, element, relationship, deletion and name-intent checks;
+callers still validate their source identity/revision and exclusive envelope.
+Management139 continues to reject job draft requests/results until the job wire
+migration; sharing codecs does not expose the unfinished editor. Core19, root,
+extension, management-contract and job-settings state checks pass in
+shared-artwork-codecs-20261106. This refactor has no schema or native effect change.
+
+
 ## Farm removal native entry points
 
 The diagnostic `df3d farm-contents-read <farm>` returns contained items in native

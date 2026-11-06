@@ -31,6 +31,36 @@ inline bool validArtDraftValue(const WorkOrderArtDraftValue* v) {
   }
   return true;
 }
+// Shared artwork draft semantics; callers separately validate their source IDs,
+// revision, exclusive envelope fields and outer artwork bounds.
+inline std::optional<std::string> validateArtDraftRequest(const WorkOrderArtRequest& art,bool writing) {
+  const auto* a=&art;const auto* draft=a->draft();
+  if(!draft)return "artwork draft required";
+  const auto op=draft->action();
+  const bool changesWorld=op==WorkOrderArtDraftAction::GenerateName || op==WorkOrderArtDraftAction::Commit ||
+    (op==WorkOrderArtDraftAction::EditName && draft->name_edit() && draft->name_edit()->mode()>=LocationNameMode::RandomComponent);
+  if((a->page()<6 && a->page()!=-1) || a->subject()!=-1 || a->hovered()!=-1 || a->preview_columns() ||
+     !validArtDraftValue(draft->value()) || op>WorkOrderArtDraftAction::EditName ||
+     writing!=changesWorld || !draft->columns() || draft->columns()>256 ||
+     (op!=WorkOrderArtDraftAction::Inspect && (a->cursor() || (a->query() && a->query()->size()))))return "invalid artwork draft intent";
+  if(op==WorkOrderArtDraftAction::AddElement ? !validArtDraftElement(draft->element()) : draft->element()!=nullptr)return "invalid artwork draft element intent";
+  if(op==WorkOrderArtDraftAction::AddRelationship) {
+    if(!validArtDraftRelationship(draft->relationship(),draft->value()->elements()->size()))return "invalid artwork draft relationship intent";
+  } else if(draft->relationship()) {
+    const auto* r=draft->relationship();
+    if(op!=WorkOrderArtDraftAction::Inspect || (a->page()!=15 && a->page()!=16) || r->verb()<0 || r->verb()>32767 ||
+       r->target()!=-1 || (a->page()==15?r->actor()!=-1:(!r->transitive() || r->actor()<0 || size_t(r->actor())>=draft->value()->elements()->size())))return "invalid artwork relationship selection";
+  }
+  if(op==WorkOrderArtDraftAction::Delete ? (draft->delete_index()<0 || size_t(draft->delete_index())>=draft->value()->elements()->size()+draft->value()->relationships()->size()) : draft->delete_index()!=-1)return "invalid artwork draft delete intent";
+  if(op==WorkOrderArtDraftAction::Commit && (draft->value()->elements()->size()==0 || !draft->value()->name()))return "invalid artwork draft commit";
+  if(a->page()==-1 && (op!=WorkOrderArtDraftAction::Inspect || a->cursor() || a->expected_list_revision() || (a->query() && a->query()->size())))return "invalid artwork root draft";
+  if(a->page()==18) {
+    if(!draft->value()->name() || !draft->name_query() || validateLocationNameQuery(*draft->name_query()) || draft->name_query()->cursor()>262144 ||
+       (op!=WorkOrderArtDraftAction::Inspect && op!=WorkOrderArtDraftAction::EditName) || a->cursor() || a->expected_list_revision() || (a->query() && a->query()->size()))return "invalid artwork name query";
+  } else if(draft->name_query() || op==WorkOrderArtDraftAction::EditName)return "unexpected artwork name query";
+  if(op==WorkOrderArtDraftAction::EditName ? (!draft->name_edit() || validateLocationNameEdit(*draft->name_edit()).has_value() || draft->name_query()->cursor()!=0) : draft->name_edit()!=nullptr)return "invalid artwork name edit";
+  return std::nullopt;
+}
 // Shared by wire validation and the private Lua builder's owned recipe blobs.
 inline const char* validateOwnerAppearance(const SelectionAppearance& image,size_t& payload) {
   const auto* p=&image;
@@ -636,29 +666,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
            a->cursor()>262144 || (a->query() && a->query()->size()>128) || !w->expected_revision() ||
            (a->cursor() && !a->expected_list_revision()))return "invalid exclusive artwork intent";
         if(const auto* draft=a->draft()) {
-          const auto op=draft->action();
-          const bool changesWorld=op==WorkOrderArtDraftAction::GenerateName || op==WorkOrderArtDraftAction::Commit ||
-            (op==WorkOrderArtDraftAction::EditName && draft->name_edit() && draft->name_edit()->mode()>=LocationNameMode::RandomComponent);
-          if((a->page()<6 && a->page()!=-1) || a->subject()!=-1 || a->hovered()!=-1 || a->preview_columns() ||
-             !validArtDraftValue(draft->value()) || op>WorkOrderArtDraftAction::EditName ||
-             writing!=changesWorld || !draft->columns() || draft->columns()>256 ||
-             (op!=WorkOrderArtDraftAction::Inspect && (a->cursor() || (a->query() && a->query()->size()))))return "invalid artwork draft intent";
-          if(op==WorkOrderArtDraftAction::AddElement ? !validArtDraftElement(draft->element()) : draft->element()!=nullptr)return "invalid artwork draft element intent";
-          if(op==WorkOrderArtDraftAction::AddRelationship) {
-            if(!validArtDraftRelationship(draft->relationship(),draft->value()->elements()->size()))return "invalid artwork draft relationship intent";
-          } else if(draft->relationship()) {
-            const auto* r=draft->relationship();
-            if(op!=WorkOrderArtDraftAction::Inspect || (a->page()!=15 && a->page()!=16) || r->verb()<0 || r->verb()>32767 ||
-               r->target()!=-1 || (a->page()==15?r->actor()!=-1:(!r->transitive() || r->actor()<0 || size_t(r->actor())>=draft->value()->elements()->size())))return "invalid artwork relationship selection";
-          }
-          if(op==WorkOrderArtDraftAction::Delete ? (draft->delete_index()<0 || size_t(draft->delete_index())>=draft->value()->elements()->size()+draft->value()->relationships()->size()) : draft->delete_index()!=-1)return "invalid artwork draft delete intent";
-          if(op==WorkOrderArtDraftAction::Commit && (draft->value()->elements()->size()==0 || !draft->value()->name()))return "invalid artwork draft commit";
-          if(a->page()==-1 && (op!=WorkOrderArtDraftAction::Inspect || a->cursor() || a->expected_list_revision() || (a->query() && a->query()->size())))return "invalid artwork root draft";
-          if(a->page()==18) {
-            if(!draft->value()->name() || !draft->name_query() || validateLocationNameQuery(*draft->name_query()) || draft->name_query()->cursor()>262144 ||
-               (op!=WorkOrderArtDraftAction::Inspect && op!=WorkOrderArtDraftAction::EditName) || a->cursor() || a->expected_list_revision() || (a->query() && a->query()->size()))return "invalid artwork name query";
-          } else if(draft->name_query() || op==WorkOrderArtDraftAction::EditName)return "unexpected artwork name query";
-          if(op==WorkOrderArtDraftAction::EditName ? (!draft->name_edit() || validateLocationNameEdit(*draft->name_edit()).has_value() || draft->name_query()->cursor()!=0) : draft->name_edit()!=nullptr)return "invalid artwork name edit";
+          if(auto error=validateArtDraftRequest(*a,writing))return error;
         } else {
           if(a->page()>5 || (!writing && (a->subject()!=-1 || a->page()==0)) ||
              (a->page()<=0 && (a->subject()!=-1 || a->expected_list_revision() || a->cursor() || (a->query() && a->query()->size()))) ||

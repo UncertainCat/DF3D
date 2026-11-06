@@ -166,6 +166,24 @@ ProductionState decodeProduction(const m::ProductionState* p) {
   return out;
 }
 
+WorkOrderArtState decodeArtState(const m::WorkOrderArtState& source) {
+  const auto* a=&source;WorkOrderArtState art;
+  const auto str=[](const flatbuffers::String* s){return s?s->str():std::string{};};
+  art.page=a->page();art.caption=str(a->caption());art.listRevision=a->list_revision();art.total=a->total();art.nextCursor=a->next_cursor();
+  art.hovered=a->hovered();
+  if(a->preview()){art.preview.emplace();for(const auto* line:*a->preview())art.preview->push_back(str(line));}
+  if(a->rows())for(const auto* row:*a->rows())art.rows.push_back({row->id(),str(row->caption()),row->badge()?std::optional<std::string>(str(row->badge())):std::nullopt,row->secondary()});
+  if(a->draft())art.draft=decodeArtDraft(*a->draft());
+  if(a->draft_description()){art.draftDescription.emplace();for(const auto* line:*a->draft_description())art.draftDescription->push_back(str(line));}
+  if(const auto* n=a->name()) {
+    art.name.emplace();auto& v=*art.name;v.nativeHeader=str(n->native_header());v.englishHeader=str(n->english_header());
+    v.component=n->component();v.queryBytes.assign(n->query_bytes()->begin(),n->query_bytes()->end());
+    v.cursor=n->cursor();v.total=n->total();v.nextCursor=n->next_cursor();
+    for(const auto* row:*n->choices())v.choices.push_back({row->word(),row->part(),str(row->english()),str(row->translated())});
+  }
+  return art;
+}
+
 WorkOrderState decodeWorkOrder(const m::WorkOrderState* w) {
   WorkOrderState out;
   if (!w)
@@ -180,21 +198,7 @@ WorkOrderState decodeWorkOrder(const m::WorkOrderState* w) {
     if(d->current_value())details.currentValue=str(d->current_value());
     if(d->setting_heading())details.settingHeading=str(d->setting_heading());
     details.dyeTarget=d->dye_target();
-    if(const auto* a=d->art()) {
-      details.art.emplace();auto& art=*details.art;
-      art.page=a->page();art.caption=str(a->caption());art.listRevision=a->list_revision();art.total=a->total();art.nextCursor=a->next_cursor();
-      art.hovered=a->hovered();
-      if(a->preview()){art.preview.emplace();for(const auto* line:*a->preview())art.preview->push_back(str(line));}
-      if(a->rows())for(const auto* row:*a->rows())art.rows.push_back({row->id(),str(row->caption()),row->badge()?std::optional<std::string>(str(row->badge())):std::nullopt,row->secondary()});
-      if(a->draft())art.draft=decodeArtDraft(*a->draft());
-      if(a->draft_description()){art.draftDescription.emplace();for(const auto* line:*a->draft_description())art.draftDescription->push_back(str(line));}
-      if(const auto* n=a->name()) {
-        art.name.emplace();auto& v=*art.name;v.nativeHeader=str(n->native_header());v.englishHeader=str(n->english_header());
-        v.component=n->component();v.queryBytes.assign(n->query_bytes()->begin(),n->query_bytes()->end());
-        v.cursor=n->cursor();v.total=n->total();v.nextCursor=n->next_cursor();
-        for(const auto* row:*n->choices())v.choices.push_back({row->word(),row->part(),str(row->english()),str(row->translated())});
-      }
-    }
+    if(d->art())details.art=decodeArtState(*d->art());
     if(d->options())for(const auto* option:*d->options())details.options.push_back({option->kind(),option->index(),str(option->caption())});
     if(d->choices()) {
       details.choices.emplace();for(const auto* choice:*d->choices()) {
@@ -310,25 +314,27 @@ flatbuffers::Offset<m::ProductionRequest> encodeProduction(flatbuffers::FlatBuff
                                     p.farmOperation==wm::FarmOperation::Rename || !p.farmName.empty()?b.CreateString(p.farmName):0,p.contents,p.itemId,p.itemValue,p.locateItem,p.independentItem,p.buildingHeader,p.workshopWorkers,p.workerId,p.workerListRevision,p.workerValue,p.workshopOrders,p.generalOrderDelta,p.generalOrderValue);
 }
 
+flatbuffers::Offset<m::WorkOrderArtRequest> encodeArtRequest(flatbuffers::FlatBufferBuilder& b,const WorkOrderArtRequest& a) {
+flatbuffers::Offset<m::WorkOrderArtDraftRequest> draft;
+  if(a.draft){
+    const auto& v=*a.draft;
+    const auto element=v.element?encodeArtElement(b,*v.element):flatbuffers::Offset<m::WorkOrderArtDraftElement>{};
+    const auto relationship=v.relationship?encodeArtRelationship(b,*v.relationship):flatbuffers::Offset<m::WorkOrderArtDraftRelationship>{};
+    flatbuffers::Offset<m::LocationNameQuery> nameQuery;flatbuffers::Offset<m::LocationNameEdit> nameEdit;
+    if(v.nameQuery){const auto& n=*v.nameQuery;nameQuery=m::CreateLocationNameQuery(b,n.component,b.CreateVector(n.queryBytes),n.cursor);}
+    if(v.nameEdit){const auto& n=*v.nameEdit;nameEdit=m::CreateLocationNameEdit(b,m::LocationNameMode(n.mode),n.target,n.displayed,n.word,n.part,b.CreateVector(n.queryBytes));}
+    draft=m::CreateWorkOrderArtDraftRequest(b,encodeArtDraft(b,v.value),m::WorkOrderArtDraftAction(v.action),element,relationship,v.deleteIndex,v.columns,nameQuery,nameEdit);
+  }
+  return m::CreateWorkOrderArtRequest(b,a.page,a.subject,a.expectedListRevision,b.CreateString(a.query),a.cursor,a.hovered,a.previewColumns,draft);
+}
+
 flatbuffers::Offset<m::WorkOrderRequest> encodeWorkOrder(flatbuffers::FlatBufferBuilder& b,
                                                          const WorkOrderRequest& value) {
   const auto& w = value;
   flatbuffers::Offset<m::WorkOrderDetailsRequest> details;
   if(w.details){const auto& d=*w.details;
     flatbuffers::Offset<m::WorkOrderArtRequest> art;
-    if(d.art){
-      const auto& a=*d.art;flatbuffers::Offset<m::WorkOrderArtDraftRequest> draft;
-      if(a.draft){
-        const auto& v=*a.draft;
-        const auto element=v.element?encodeArtElement(b,*v.element):flatbuffers::Offset<m::WorkOrderArtDraftElement>{};
-        const auto relationship=v.relationship?encodeArtRelationship(b,*v.relationship):flatbuffers::Offset<m::WorkOrderArtDraftRelationship>{};
-        flatbuffers::Offset<m::LocationNameQuery> nameQuery;flatbuffers::Offset<m::LocationNameEdit> nameEdit;
-        if(v.nameQuery){const auto& n=*v.nameQuery;nameQuery=m::CreateLocationNameQuery(b,n.component,b.CreateVector(n.queryBytes),n.cursor);}
-        if(v.nameEdit){const auto& n=*v.nameEdit;nameEdit=m::CreateLocationNameEdit(b,m::LocationNameMode(n.mode),n.target,n.displayed,n.word,n.part,b.CreateVector(n.queryBytes));}
-        draft=m::CreateWorkOrderArtDraftRequest(b,encodeArtDraft(b,v.value),m::WorkOrderArtDraftAction(v.action),element,relationship,v.deleteIndex,v.columns,nameQuery,nameEdit);
-      }
-      art=m::CreateWorkOrderArtRequest(b,a.page,a.subject,a.expectedListRevision,b.CreateString(a.query),a.cursor,a.hovered,a.previewColumns,draft);
-    }
+    if(d.art)art=encodeArtRequest(b,*d.art);
     details=m::CreateWorkOrderDetailsRequest(b,d.option,d.choice,d.expectedChoicesRevision,b.CreateString(d.query),d.cursor,art,d.dyeTarget,d.dyeFilterApplied);
   }
   return m::CreateWorkOrderRequest(b, w.id, w.expectedRevision, b.CreateString(w.recipe),

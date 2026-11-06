@@ -10,6 +10,8 @@ namespace df3d_godot::management {
 void writeConstruction(godot::Dictionary& result, const wm::ManagementState& s);
 void writeArea(godot::Dictionary& result, const wm::AreaState& s);
 void writeProduction(godot::Dictionary& result, const wm::ProductionState& s);
+godot::Dictionary writeArtState(const wm::WorkOrderArtState& value);
+bool readArtRequest(const godot::Dictionary& data,wm::WorkOrderArtRequest& value);
 void writeWorkOrder(godot::Dictionary& result, const wm::WorkOrderState& s);
 void writeCitizen(godot::Dictionary& result, const wm::CitizenState& s);
 void writeAgreement(godot::Dictionary& result, const wm::AgreementState& s);

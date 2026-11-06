@@ -273,6 +273,23 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
   result["production"] = prod;
 }
 
+Dictionary writeArtState(const wm::WorkOrderArtState& a) {
+Dictionary art;art["page"]=a.page;art["caption"]=String::utf8(a.caption.c_str());
+  art["list_revision"]=int64_t(a.listRevision);art["total"]=int64_t(a.total);art["next_cursor"]=int64_t(a.nextCursor);
+  art["hovered"]=a.hovered;
+  if(a.preview){Array lines;for(const auto& line:*a.preview)lines.push_back(String::utf8(line.c_str()));art["preview"]=lines;}
+  Array rows;for(const auto& r:a.rows){Dictionary row;row["id"]=r.id;row["secondary"]=r.secondary;row["caption"]=String::utf8(r.caption.c_str());if(r.badge)row["badge"]=String::utf8(r.badge->c_str());rows.push_back(row);}art["rows"]=rows;
+  if(a.draft)art["draft"]=writeDraftValue(*a.draft);
+  if(a.draftDescription){Array lines;for(const auto& line:*a.draftDescription)lines.push_back(String::utf8(line.c_str()));art["draft_description"]=lines;}
+  if(a.name) {
+    const auto& n=*a.name;Dictionary name;name["native_header"]=String::utf8(n.nativeHeader.c_str());name["english_header"]=String::utf8(n.englishHeader.c_str());
+    name["component"]=n.component;PackedByteArray bytes;for(auto byte:n.queryBytes)bytes.push_back(byte);name["query_bytes"]=bytes;
+    name["cursor"]=int64_t(n.cursor);name["total"]=int64_t(n.total);name["next_cursor"]=int64_t(n.nextCursor);
+    Array choices;for(const auto& r:n.choices){Dictionary row;row["word"]=r.word;row["part"]=r.part;row["english"]=String::utf8(r.english.c_str());row["translated"]=String::utf8(r.translated.c_str());choices.push_back(row);}name["choices"]=choices;art["name"]=name;
+  }
+  return art;
+}
+
 void writeWorkOrder(Dictionary& result, const wm::WorkOrderState& s) {
   Dictionary work;
   const auto& ws = s;
@@ -288,22 +305,7 @@ void writeWorkOrder(Dictionary& result, const wm::WorkOrderState& s) {
     if(d.currentValue)details["current_value"]=String::utf8(d.currentValue->c_str());
     if(d.settingHeading)details["setting_heading"]=String::utf8(d.settingHeading->c_str());
     details["dye_target"]=d.dyeTarget;
-    if(d.art) {
-      const auto& a=*d.art;Dictionary art;art["page"]=a.page;art["caption"]=String::utf8(a.caption.c_str());
-      art["list_revision"]=int64_t(a.listRevision);art["total"]=int64_t(a.total);art["next_cursor"]=int64_t(a.nextCursor);
-      art["hovered"]=a.hovered;
-      if(a.preview){Array lines;for(const auto& line:*a.preview)lines.push_back(String::utf8(line.c_str()));art["preview"]=lines;}
-      Array rows;for(const auto& r:a.rows){Dictionary row;row["id"]=r.id;row["secondary"]=r.secondary;row["caption"]=String::utf8(r.caption.c_str());if(r.badge)row["badge"]=String::utf8(r.badge->c_str());rows.push_back(row);}art["rows"]=rows;
-      if(a.draft)art["draft"]=writeDraftValue(*a.draft);
-      if(a.draftDescription){Array lines;for(const auto& line:*a.draftDescription)lines.push_back(String::utf8(line.c_str()));art["draft_description"]=lines;}
-      if(a.name) {
-        const auto& n=*a.name;Dictionary name;name["native_header"]=String::utf8(n.nativeHeader.c_str());name["english_header"]=String::utf8(n.englishHeader.c_str());
-        name["component"]=n.component;PackedByteArray bytes;for(auto byte:n.queryBytes)bytes.push_back(byte);name["query_bytes"]=bytes;
-        name["cursor"]=int64_t(n.cursor);name["total"]=int64_t(n.total);name["next_cursor"]=int64_t(n.nextCursor);
-        Array choices;for(const auto& r:n.choices){Dictionary row;row["word"]=r.word;row["part"]=r.part;row["english"]=String::utf8(r.english.c_str());row["translated"]=String::utf8(r.translated.c_str());choices.push_back(row);}name["choices"]=choices;art["name"]=name;
-      }
-      details["art"]=art;
-    }
+    if(d.art)details["art"]=writeArtState(*d.art);
     Array options;for(const auto& o:d.options){Dictionary option;option["kind"]=o.kind;option["index"]=o.index;option["caption"]=String::utf8(o.caption.c_str());options.push_back(option);}details["options"]=options;
     if(d.choices) {
       Array choices;for(const auto& c:*d.choices){Dictionary choice;choice["id"]=c.id;choice["caption"]=String::utf8(c.caption.c_str());if(c.countCaption)choice["count_caption"]=String::utf8(c.countCaption->c_str());choice["estimated"]=c.estimated;choice["dye_color"]=c.dyeColor;choice["opens_menu"]=c.opensMenu;if(c.swatch){Dictionary color;color["red"]=c.swatch->red;color["green"]=c.swatch->green;color["blue"]=c.swatch->blue;choice["swatch"]=color;}choices.push_back(choice);}details["choices"]=choices;
@@ -471,6 +473,39 @@ bool validateWorkOrderShape(const Dictionary& data, String& error) {
 // threshold -1..INT32_MAX (-1 unset); item_type int16 -1..32767 (-1 any item);
 // target_order -1..INT32_MAX (-1 none); dependency -1..1 (-1 unset, 0 Activated,
 // 1 Completed); candidate_kind 0 orders/1 workshops/2 base types/3 types/4 materials/5 traits.
+bool readArtRequest(const Dictionary& art,wm::WorkOrderArtRequest& a) {
+  bool valid=true;
+  const auto artNumber=[&](const char* key,int64_t def,int64_t low,int64_t high){int64_t v=art.get(key,def);if(v<low || v>high)valid=false;return v;};
+  a.page=int16_t(artNumber("page",-1,-1,18));a.subject=int32_t(artNumber("subject",-1,-1,INT32_MAX));
+  a.expectedListRevision=uint64_t(artNumber("expected_list_revision",0,0,INT64_MAX));a.cursor=uint32_t(artNumber("cursor",0,0,262144));
+  a.hovered=int32_t(artNumber("hovered",-1,-1,INT32_MAX));a.previewColumns=uint16_t(artNumber("preview_columns",0,0,256));
+  String artQuery=art.get("query",String());a.query=artQuery.utf8().get_data();if(a.query.size()>128)valid=false;
+  if(art.has("draft")) {
+    if(art["draft"].get_type()!=Variant::DICTIONARY)valid=false;
+    else {
+      Dictionary draft=art["draft"];a.draft.emplace();auto& v=*a.draft;
+      v.action=wm::WorkOrderArtDraftAction(draftNumber(draft,"action",0,0,6,valid));
+      v.deleteIndex=int32_t(draftNumber(draft,"delete_index",-1,-1,511,valid));v.columns=uint16_t(draftNumber(draft,"columns",0,1,256,valid));
+      if(!draft.has("value") || draft["value"].get_type()!=Variant::DICTIONARY)valid=false;
+      else v.value=readDraftValue(Dictionary(draft["value"]),valid);
+      if(draft.has("element")){if(draft["element"].get_type()!=Variant::DICTIONARY)valid=false;else v.element=readDraftElement(Dictionary(draft["element"]),valid);}
+      if(draft.has("relationship")){if(draft["relationship"].get_type()!=Variant::DICTIONARY)valid=false;else v.relationship=readDraftRelationship(Dictionary(draft["relationship"]),valid);}
+      if(draft.has("name_query")) {
+        if(draft["name_query"].get_type()!=Variant::DICTIONARY)valid=false;
+        else {Dictionary n=draft["name_query"];v.nameQuery.emplace();v.nameQuery->component=uint8_t(draftNumber(n,"component",0,0,6,valid));v.nameQuery->cursor=uint32_t(draftNumber(n,"cursor",0,0,262144,valid));v.nameQuery->queryBytes=draftQueryBytes(n,valid);}
+      }
+      if(draft.has("name_edit")) {
+        if(draft["name_edit"].get_type()!=Variant::DICTIONARY)valid=false;
+        else {Dictionary n=draft["name_edit"];v.nameEdit.emplace();auto& e=*v.nameEdit;
+          e.mode=wm::LocationNameMode(draftNumber(n,"mode",0,0,3,valid));e.target=int8_t(draftNumber(n,"target",-1,-1,6,valid));e.displayed=int8_t(draftNumber(n,"displayed",-1,-1,6,valid));
+          e.word=int32_t(draftNumber(n,"word",-1,-1,INT32_MAX,valid));e.part=int16_t(draftNumber(n,"part",-1,-1,8,valid));e.queryBytes=draftQueryBytes(n,valid);
+        }
+      }
+    }
+  }
+  return valid;
+}
+
 bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& error) {
   bool valid = true;
   auto n = [&](const char* key, int64_t def, int64_t low, int64_t high) {
@@ -513,37 +548,7 @@ bool readWorkOrder(const Dictionary& data, wm::ManagementRequest& r, String& err
     d.expectedChoicesRevision=uint64_t(number("expected_choices_revision",0,0,INT64_MAX));d.cursor=uint32_t(number("cursor",0,0,16384));
     d.dyeTarget=int32_t(number("dye_target",-1,-1,1023));d.dyeFilterApplied=details.get("dye_filter_applied",false);
     String query=details.get("query",String());d.query=query.utf8().get_data();if(d.query.size()>128)valid=false;
-    if(details.has("art")) {
-      Dictionary art=details["art"];d.art.emplace();auto& a=*d.art;
-      const auto artNumber=[&](const char* key,int64_t def,int64_t low,int64_t high){int64_t v=art.get(key,def);if(v<low || v>high)valid=false;return v;};
-      a.page=int16_t(artNumber("page",-1,-1,18));a.subject=int32_t(artNumber("subject",-1,-1,INT32_MAX));
-      a.expectedListRevision=uint64_t(artNumber("expected_list_revision",0,0,INT64_MAX));a.cursor=uint32_t(artNumber("cursor",0,0,262144));
-      a.hovered=int32_t(artNumber("hovered",-1,-1,INT32_MAX));a.previewColumns=uint16_t(artNumber("preview_columns",0,0,256));
-      String artQuery=art.get("query",String());a.query=artQuery.utf8().get_data();if(a.query.size()>128)valid=false;
-      if(art.has("draft")) {
-        if(art["draft"].get_type()!=Variant::DICTIONARY)valid=false;
-        else {
-          Dictionary draft=art["draft"];a.draft.emplace();auto& v=*a.draft;
-          v.action=wm::WorkOrderArtDraftAction(draftNumber(draft,"action",0,0,6,valid));
-          v.deleteIndex=int32_t(draftNumber(draft,"delete_index",-1,-1,511,valid));v.columns=uint16_t(draftNumber(draft,"columns",0,1,256,valid));
-          if(!draft.has("value") || draft["value"].get_type()!=Variant::DICTIONARY)valid=false;
-          else v.value=readDraftValue(Dictionary(draft["value"]),valid);
-          if(draft.has("element")){if(draft["element"].get_type()!=Variant::DICTIONARY)valid=false;else v.element=readDraftElement(Dictionary(draft["element"]),valid);}
-          if(draft.has("relationship")){if(draft["relationship"].get_type()!=Variant::DICTIONARY)valid=false;else v.relationship=readDraftRelationship(Dictionary(draft["relationship"]),valid);}
-          if(draft.has("name_query")) {
-            if(draft["name_query"].get_type()!=Variant::DICTIONARY)valid=false;
-            else {Dictionary n=draft["name_query"];v.nameQuery.emplace();v.nameQuery->component=uint8_t(draftNumber(n,"component",0,0,6,valid));v.nameQuery->cursor=uint32_t(draftNumber(n,"cursor",0,0,262144,valid));v.nameQuery->queryBytes=draftQueryBytes(n,valid);}
-          }
-          if(draft.has("name_edit")) {
-            if(draft["name_edit"].get_type()!=Variant::DICTIONARY)valid=false;
-            else {Dictionary n=draft["name_edit"];v.nameEdit.emplace();auto& e=*v.nameEdit;
-              e.mode=wm::LocationNameMode(draftNumber(n,"mode",0,0,3,valid));e.target=int8_t(draftNumber(n,"target",-1,-1,6,valid));e.displayed=int8_t(draftNumber(n,"displayed",-1,-1,6,valid));
-              e.word=int32_t(draftNumber(n,"word",-1,-1,INT32_MAX,valid));e.part=int16_t(draftNumber(n,"part",-1,-1,8,valid));e.queryBytes=draftQueryBytes(n,valid);
-            }
-          }
-        }
-      }
-    }
+    if(details.has("art")){d.art.emplace();if(!readArtRequest(Dictionary(details["art"]),*d.art))valid=false;}
   }
   w.traits.reset();
   if(data.has("traits")) {

@@ -3,7 +3,7 @@ extends RefCounted
 signal changed
 signal inspect_ready(tile: Vector3i,unit_id: int)
 const C=preload("res://scripts/management_contract.gd")
-enum Phase { Closed, Reading, Ready, Rejected, Unavailable, Applying, Navigating }
+enum Phase { Closed, Reading, Ready, Rejected, Unavailable, Applying, Navigating, ActivityReading, ActivityReady, ActivityRejected }
 var service
 var phase:=Phase.Closed
 var generation:=0
@@ -18,6 +18,11 @@ var capacity:=13
 var columns:=30
 var show_gender:=false
 var roster_ready:=false
+var activity_selection: Dictionary={}
+var activity_page: Dictionary={}
+var activity_columns:=0
+var activity_first:=0
+var activity_capacity:=0
 
 func configure(source) -> void:
 	dispose();service=source
@@ -31,21 +36,25 @@ func retire() -> void:
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
 func close() -> void:
+	activity_selection={};activity_page={};activity_columns=0;activity_first=0
 	retire();ids=PackedInt32Array();rows={};first=0;roster_ready=false;phase=Phase.Closed;changed.emit()
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
 func open() -> void:
 	close();sort=C.ResidentsSort.Category;directions=[false,false,false,false,false];query=PackedByteArray();refresh()
 func select_sort(value: int) -> void:
+	if activity_open():return
 	if value<0 or value>=directions.size() or phase in [Phase.Closed,Phase.Applying]:return
 	if phase==Phase.Navigating:return
 	if sort==value:directions[value]=not directions[value]
 	sort=value;first=0;refresh()
 func set_query(value: PackedByteArray) -> void:
+	if activity_open():return
 	if value.size()>128 or value.has(0) or value==query or phase in [Phase.Closed,Phase.Applying]:return
 	if phase==Phase.Navigating:return
 	query=value.duplicate();first=0;refresh()
 func refresh() -> void:
+	if activity_open():return
 	if phase in [Phase.Applying,Phase.Navigating]:return
 	retire();rows={};ids=PackedInt32Array();roster_ready=false
 	if service==null:phase=Phase.Unavailable;changed.emit();return
@@ -60,6 +69,36 @@ func refresh() -> void:
 		first=clampi(first,0,maxi(0,ids.size()-capacity));_fill();changed.emit())
 	if ticket==0:phase=Phase.Unavailable
 	changed.emit()
+func activity_open() -> bool:return not activity_selection.is_empty()
+func show_activity(id: int,width: int) -> void:
+	if phase!=Phase.Ready or ticket!=0 or service==null or width<1 or width>1024:return
+	var target: Dictionary=rows.get(id,{}).get("activity_target",{})
+	if target.is_empty():return
+	activity_selection={"unit_id":id,"activity_id":int(target.activity_id),"event_id":int(target.event_id)}
+	activity_first=0;_read_activity(width)
+func resize_activity(width: int) -> void:
+	if activity_open() and width!=activity_columns and width>=1 and width<=1024:_read_activity(width)
+func _read_activity(width: int) -> void:
+	retire();activity_columns=width;activity_page={};phase=Phase.ActivityReading
+	var intent:=activity_selection.duplicate();intent.action=C.ManagementAction.ResidentsActivityRead;intent.columns=width
+	var owner:=generation
+	ticket=service.submit("residents_activity",intent,func(received,result,_sent):
+		if owner!=generation or received!=ticket:return
+		ticket=0;activity_page={};phase=Phase.ActivityRejected
+		var page: Dictionary=result.get("residents_activity",{})
+		if result.get("status",-1)==C.ManagementStatus.Ok and result.get("action",-1)==C.ManagementAction.ResidentsActivityRead and page.get("unit_id")==intent.unit_id and page.get("activity_id")==intent.activity_id and page.get("event_id")==intent.event_id and page.get("columns")==width:
+			activity_page=page.duplicate(true);phase=Phase.ActivityReady
+			activity_first=clampi(activity_first,0,maxi(0,int(page.max_y)+1-activity_capacity))
+		changed.emit())
+	if ticket==0:phase=Phase.ActivityRejected
+	changed.emit()
+func scroll_activity(offset: int,count: int) -> void:
+	activity_capacity=maxi(0,count)
+	activity_first=clampi(offset,0,maxi(0,int(activity_page.get("max_y",-1))+1-activity_capacity));changed.emit()
+func close_activity() -> void:
+	if not activity_open():return
+	retire();activity_selection={};activity_page={};activity_first=0;activity_columns=0;phase=Phase.Ready
+	_fill();changed.emit()
 func inspect(id: int) -> void:
 	if phase!=Phase.Ready or ticket!=0 or service==null or not rows.has(id):return
 	var owner:=generation;phase=Phase.Navigating

@@ -69,6 +69,27 @@ func run() -> void:
 	state.specialize(42);edit_ticket=state.ticket;state.close()
 	service.reply(edit_ticket,{"residents_specialization":{"unit_id":42,"outcome":C.ResidentsSpecializationOutcome.Applied,"only_assigned":false}})
 	check(state.phase==State.Phase.Closed and state.ticket==0 and state.rows.is_empty(),"Late edit completion cannot reopen a closed screen")
+	state.open();service.reply(state.ticket,{"residents":{"unit_ids":PackedInt32Array([42])}})
+	service.reply(state.ticket,{"residents_rows":{"rows":[{"id":42,"activity_target":{"activity_id":50,"event_id":8}}]}})
+	state.activity_capacity=44;state.show_activity(42,110)
+	var activity_ticket:=state.ticket
+	check(service.calls[activity_ticket].domain=="residents_activity" and service.calls[activity_ticket].request.event_id==8,"Activity opens the displayed native event")
+	state.resize_activity(80)
+	var page: Dictionary={"unit_id":42,"activity_id":50,"event_id":8,"columns":110,"max_y":60,"words":[],"links":[]}
+	service.reply(activity_ticket,{"residents_activity":page})
+	check(state.phase==State.Phase.ActivityReading and state.activity_page.is_empty(),"Late layout cannot replace resized Activity")
+	page.columns=80;service.reply(state.ticket,{"residents_activity":page})
+	state.scroll_activity(100,44)
+	check(state.phase==State.Phase.ActivityReady and state.activity_first==17,"Activity scroll uses native line extent")
+	state.resize_activity(90);activity_ticket=state.ticket;state.close_activity()
+	page.columns=90;service.reply(activity_ticket,{"residents_activity":page})
+	check(state.phase==State.Phase.Ready and not state.activity_open() and state.row_at(0).id==42,"Close restores roster and retires pending description")
+	state.show_activity(42,110);page.columns=110;page.event_id=9
+	service.reply(state.ticket,{"residents_activity":page})
+	check(state.phase==State.Phase.ActivityRejected and state.activity_page.is_empty(),"Changed event cannot appear under the selected activity")
+	state.close_activity();state.show_activity(42,110);activity_ticket=state.ticket
+	service.session_changed.emit();page.event_id=8;service.reply(activity_ticket,{"residents_activity":page})
+	check(state.phase==State.Phase.Unavailable and not state.activity_open(),"Session replacement retires Activity and late content")
 	state.dispose()
 	var view:=View.new();view.state=state;view.ticks_override=0
 	view.search=LineEdit.new();view.add_child(view.search);root.add_child(view)

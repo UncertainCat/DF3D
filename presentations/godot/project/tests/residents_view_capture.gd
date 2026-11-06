@@ -45,5 +45,26 @@ func run() -> void:
 						if absf(actual.r-expected.r)+absf(actual.g-expected.g)+absf(actual.b-expected.b)>0.035:
 							push_error("Residents name glyph mismatch row="+str(index)+" line="+str(line)+" cell="+str(cell));quit(1);return
 						checked+=1
+	var activity: Dictionary=numbers(JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/residents/native_activity_details.json"))).reference
+	state.activity_selection={"unit_id":int(activity.id)};state.activity_page={"words":activity.words,"links":[],"max_y":activity.max_y};state.phase=state.Phase.ActivityReady
+	view.refresh()
+	for frame in 3:await process_frame;await RenderingServer.frame_post_draw
+	image=root.get_texture().get_image();image.save_png(directory+"/activity.png")
+	var activity_checked:=0
+	for word: Dictionary in activity.words:
+		if int(word.x)<0 or int(word.y)<0:continue
+		for cell in word.text.length():
+			var ch: int=word.text.unicode_at(cell)
+			assert(ch<128) # This recorded page is ASCII; positions remain native cells.
+			for y in 12:
+				for x in 8:
+					var ink:=font.get_pixel((ch%16)*8+x,(ch/16)*12+y)
+					if ink.a<0.99 or minf(ink.r,minf(ink.g,ink.b))<0.99:continue
+					var expected:=Color8(word.rgb[0],word.rgb[1],word.rgb[2])
+					var actual:=image.get_pixel((6+int(word.x)+cell)*8+x,(12+int(word.y))*12+4+y)
+					if absf(actual.r-expected.r)+absf(actual.g-expected.g)+absf(actual.b-expected.b)>0.035:
+						push_error("Activity native glyph position/color differs");quit(1);return
+					activity_checked+=1
 	view.queue_free();world.queue_free();state.dispose();await process_frame
+	print("RESIDENTS_ACTIVITY_CAPTURE_PASS pixels=",activity_checked)
 	print("RESIDENTS_VIEW_CAPTURE_PASS pixels=",checked);quit()

@@ -150,6 +150,7 @@ func run() -> void:
 		check(response.get("status")==C.ManagementStatus.Rejected and not response.has("residents_activity"),"Missing Activity unit retained page content")
 		response=await request("construction",{"action":C.ManagementAction.Catalog})
 		check(not response.has("residents_activity"),"Unrelated reply retained Activity page")
+		activity_result["scene"]=await activity_scene(id,reference)
 	if FileAccess.file_exists(directory+"/residents-navigation-reference.json"):
 		var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/residents-navigation-reference.json"))
 		var response:=await request("creature_sheet_location",{"action":C.ManagementAction.CreatureSheetLocate,"unit_id":int(reference.id)})
@@ -171,6 +172,39 @@ func resident_ready(state) -> bool:
 		if state.phase in [state.Phase.Rejected,state.Phase.Unavailable]:return false
 		await create_timer(0.01).timeout
 	return false
+func activity_scene(id: int,reference: Dictionary) -> Dictionary:
+	if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Activity scene assets unavailable"):return {}
+	root.size=Vector2i(1200,800)
+	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
+	for frame in 5:world.poll();await process_frame
+	var state=preload("res://scripts/residents_state.gd").new();state.configure(service);state.open()
+	if not check(await resident_ready(state),"Activity roster did not open"):
+		state.dispose();service.queue_free();return {}
+	var index: int=state.ids.find(id)
+	if not check(index>=0,"Activity resident absent from roster"):
+		state.dispose();service.queue_free();return {}
+	state.seek(index,13)
+	if not check(await resident_ready(state),"Activity roster page missing"):
+		state.dispose();service.queue_free();return {}
+	var view=preload("res://scripts/residents_view.gd").new();root.add_child(view);view.configure_residents(world,state);view.layout(Vector2(1200,800))
+	await process_frame
+	var retained_first: int=state.first
+	await activity_click(view.position+Vector2(636,view.list_top()+(index-state.first)*36+18))
+	var deadline:=Time.get_ticks_msec()+5000
+	while state.phase==state.Phase.ActivityReading and Time.get_ticks_msec()<deadline:
+		world.poll();await create_timer(0.01).timeout
+	check(state.phase==state.Phase.ActivityReady and state.activity_page.get("unit_id")==id,"Activity button/service did not open native page")
+	check(state.activity_page.get("words",[]).size()==reference.words.size(),"Activity scene lost native words")
+	var ready: bool=state.phase==state.Phase.ActivityReady
+	await activity_click(view.position+view.activity_close_rect().get_center())
+	check(state.phase==state.Phase.Ready and not state.activity_open() and state.first==retained_first,"Activity Close did not restore roster")
+	var restored: bool=state.phase==state.Phase.Ready and not state.activity_open()
+	state.dispose();view.queue_free();service.queue_free();await process_frame
+	return {"opened":ready,"restored_roster":restored,"unit_id":id}
+func activity_click(point: Vector2) -> void:
+	for pressed in [true,false]:
+		var event:=InputEventMouseButton.new();event.button_index=MOUSE_BUTTON_LEFT;event.pressed=pressed;event.position=point;event.global_position=point
+		Input.parse_input_event(event);await process_frame
 func specialization_scene() -> Array:
 	var results: Array=[]
 	if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Residents scene assets unavailable"):return results

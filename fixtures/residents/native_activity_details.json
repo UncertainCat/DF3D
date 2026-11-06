@@ -7,9 +7,7 @@
     "observation": "Actual visible Residents Activity button click, native markup and rendered page; Escape observed separately. Owned paused clone exited unsaved.",
     "limitations": [
       "One natural Play Make Believe activity; other event families and job settings are not covered.",
-      "The visible Close button was not clicked.",
-      "No game artwork retained.",
-      "No DF3D page acceptance; diagnostic formatter acceptance is recorded separately."
+      "No game artwork retained."
     ]
   },
   "reference": {
@@ -205,6 +203,47 @@
     "limitations": [
       "No composed DF3D Activity page acceptance.",
       "Only MakeBelieve has native page comparison; other event families and linked-text behavior remain unaccepted."
+    ]
+  },
+  "close_reference": {
+    "native_run": "build/stockpile-storage-native-input-20261106-061527",
+    "close_keeps_list_open": true,
+    "escape_keeps_list_open": false,
+    "observation": "Actual Close click returns to the same sorted Residents roster; re-entering Activity and pressing Escape closes Info. Owned paused clone exits unsaved with source preservation."
+  },
+  "page_reference": {
+    "native_run": "build/stockpile-storage-native-input-20261106-062721",
+    "render_check": "build/qa/residents-activity-page-final-20261106",
+    "unit_id": 7049,
+    "composed_workflow": [
+      "Actual viewer Activity button opens through semantic_action_service",
+      "Actual viewer Close button restores roster position"
+    ],
+    "rendered_glyph_pixels": 1447,
+    "exact_native_image_regions": {
+      "title": [
+        48,
+        148,
+        184,
+        160
+      ],
+      "body": [
+        48,
+        172,
+        464,
+        184
+      ],
+      "close": [
+        768,
+        688,
+        928,
+        724
+      ]
+    },
+    "limitations": [
+      "One natural Make Believe page at1200x800; other event families, linked text and long scrolling remain unaccepted.",
+      "Composed service/input check ran headless; rendered component checked separately.",
+      "Header/tab navigation and complete Residents owner workflow remain unfinished."
     ]
   }
 }

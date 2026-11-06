@@ -383,6 +383,34 @@ if os.getenv('DF3D_RESIDENTS_ACTIVITY_DETAILS')=='1' then
   local ack=io.open(out..'/ack-residents-activity-details');if ack then ack:close();break end
   assert(dfhack.getTickCount()<deadline,'Activity details capture timeout');script.sleep(1,'frames')
  end
+ local close_button
+ local function find_close(widget)
+  if (widget.flag.whole&1)==0 then return end
+  if df.widget_text:is_instance(widget) and widget.str=='Close' then close_button=widget.parent end
+  if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do find_close(child)end end
+ end
+ find_close(info.creatures);assert(close_button,'Activity Close button missing')
+ x=close_button.rect.x1+1;y=close_button.rect.y1+1
+ g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+6;g.mouse_x=x;g.mouse_y=y
+ df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L')
+ df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+ for _=1,3 do script.sleep(1,'frames')end
+ view:render(dfhack.getTickCount());evidence.close_keeps_list_open=info.open
+ assert(info.open,'Activity Close did not retain Info')
+ file=assert(io.open(out..'/shot.tmp','w'));file:write('residents-activity-closed');file:close()
+ assert(os.rename(out..'/shot.tmp',out..'/shot'))
+ deadline=dfhack.getTickCount()+10000
+ while true do
+  local ack=io.open(out..'/ack-residents-activity-closed');if ack then ack:close();break end
+  assert(dfhack.getTickCount()<deadline,'Activity Close capture timeout');script.sleep(1,'frames')
+ end
+ -- Re-enter before checking Escape, which closes the whole Info screen.
+ button=nil;unit=nil;action=nil;find_button(active_list,nil);assert(button and unit and unit.id==id,'Activity Close lost roster selection/order')
+ x=button.rect.x1+1;y=button.rect.y1+1
+ g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+6;g.mouse_x=x;g.mouse_y=y
+ df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L')
+ df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+ for _=1,3 do script.sleep(1,'frames')end
  gui.simulateInput(view,'LEAVESCREEN')
  for _=1,3 do script.sleep(1,'frames')end
  evidence.escape_keeps_list_open=info.open

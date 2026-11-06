@@ -47,13 +47,14 @@ protected Residents lane. Native054459 on2026-11-06 captures unit7049's Play
 Make Believe description, its exact formatted words and the page layout.
 `fixtures/residents/native_activity_details.json` retains semantic evidence only.
 The page preserves the Creatures tabs and has a separate Close button. Escape
-closes the whole Info screen; the Close button's effect remains unaccepted.
+closes the whole Info screen. Protected061527 separately clicks Close and
+returns to the same sorted roster, then re-enters Activity and verifies Escape.
+DF40132 exits unsaved with source preservation; the fixture records both actions.
 The final lane passes and exits DF39932 unsaved with source preservation.
 Earlier054215/054303 failed button identification;054411 captured the page but
 failed an incorrect oracle assumption that Escape would retain the roster.
-No runtime behavior or public route is changed by this discovery. Next expose
-the formatter through owned storage and implement the corresponding page;
-job settings remain a separate shared dependency for Residents and Tasks.
+Job settings remain a separate shared dependency for Residents and Tasks;
+the public Residents route remains unchanged.
 
 `residents_activity_description_native.h` provides a staged semantic adapter for
 26b800 and the independent d51c80 word-layout routine. The diagnostic command
@@ -89,8 +90,25 @@ only the known separate-thread notice. Native build and core19/19 pass;
 the headless management contract check. Installed bridge SHA256 is
 4876512C77B926F2ACD905D8D7644BB42FD28DB70FDDF5FD50E369947309488D.
 The native run was brief at30FPS, with GPU35–37C in sampled readings.
-The DF3D page, Close behavior, other event families and linked-text rendering
-remain unfinished; the typed read alone does not authorize exposing the screen.
+The staged DF3D page now opens from the row Activity button and draws the
+native word coordinates and RGB, with link-type colors from renderer d54640.
+It retains the native tabs, scrolls local lines, and requests a fresh native
+layout when the width changes. Close restores the roster; Escape retains the
+whole-screen close path. Resize/close/session replacement retire pending reads.
+`residents-activity-page-headless-20261106` passes core19/19 and the Residents
+state check, including superseded layouts, event identity and late replies.
+The subsequent `residents-activity-page-final-20261106` passes core19/19,
+state and rendered component checks (documented Godot thread/finalize/shutdown
+diagnostics only). All1447 Activity glyph pixels match; title, body and Close
+regions also match the native image exactly. The view uses the native green
+confirmation artwork, opaque panel background and corrected tab text baseline.
+Protected062721 exercises actual viewer button input through the shared service:
+Activity opens for7049 and Close restores the roster position. This composed
+check is headless; the rendered check is a separate component capture. Native
+DF25828 exits unsaved with source preservation; paired Godot logs contain only
+the known thread notice. GPU samples stay36–38C with serial30FPS graphics.
+Other event families, long/linked text, responsive layouts and complete owner
+workflow remain unaccepted. The public Residents route stays unchanged.
 
 Protected055544 on2026-11-06, with
 `DF3D_RESIDENTS_ACTIVITY_DESCRIPTION_PROVIDER=1`, compares the adapter against the

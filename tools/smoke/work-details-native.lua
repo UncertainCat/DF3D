@@ -107,7 +107,7 @@ end
 local function shot(name)
  local file=assert(io.open(out..'/work-details-native.json','w'));file:write(json.encode(result));file:close()
  file=assert(io.open(out..'/shot.tmp','w'));file:write(name);file:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
- local deadline=dfhack.getTickCount()+10000
+ local deadline=dfhack.getTickCount()+(name=='work-details-rename-wire' and os.getenv('DF3D_WORK_DETAILS_RENAME_RENDER')=='1' and 30000 or 10000)
  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Work Details capture timeout');script.sleep(1,'frames')end
 end
 shot('work-details-root')

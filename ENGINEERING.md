@@ -6,6 +6,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
+| Work Details long names spill from the sidebar across the worker roster. | No correction approved; preserve unbounded captions and late text drawing order. | Native133241/133534 on2026-11-06 uses39 ASCII bytes plus CP437 byte195. Captions extend over the portrait/worker region. DF3D matches the sidebar crop; native overlapping sprite corruption and whole-screen pixel identity are not claimed. |
 | Work Details skill text exceeds its fixed worker row under a mixed-labor definition. | No correction approved or implemented; full roster rendering remains pending. | Protected114839 on2026-11-06 enables all94 labors in a controlled unsaved clone. Native1429ef0 creates all positive relevant skill captions; ten visible rows contain2–11 captions each. The screenshot shows later worker backgrounds covering earlier captions and the final worker’s extra captions extending over the search box. This evidence is scoped to the controlled definition. |
 | Residents accented search can miss the matching native activity caption. | No correction approved or implemented; retain native input and normalization. | Protected023145 on2026-11-06 types through the owned window: `Tâmol` returns no rows, while `tamol` finds two “Pray to Tâmol” rows. The textbox retains UTF-8, then callback1432700 applies the byte normalizer52cee0; normalized query bytes are116,195,111,109,111,108. The owned query provider matches both outcomes. |
 | Global Work orders quantity increment wraps32767 to-32768. | No correction approved or implemented; decision pending. | Protected003417 on2026-11-06 sets controlled quantities in the paused clone and clicks the native plus button.9999 becomes10000;32767 becomes-32768 in both total and remaining. Quantities are restored and DF40708 exits unsaved with source preservation. |
@@ -236,8 +237,8 @@ extension and controller checks. `settings_view_reference` records this scope.
 Reset is now connected to WorkDetailEdit(edit3) using the displayed settings
 receipt; success refreshes definitions/settings and retains editor scroll. Custom
 definitions and external labor control cannot submit Reset. Delete is connected
-as described below; renaming, settings hover, resize and full composed lifecycle
-acceptance remain pending. The full screen stays hidden.
+as described below; renaming is connected with acceptance below. Settings hover,
+resize and full composed lifecycle acceptance remain pending. The full screen stays hidden.
 
 Protected131034 on2026-11-06 verifies actual owner Gear/Reset clicks against a
 native Reset on a disposable icon18 definition. Both restore labor58, preserve
@@ -329,8 +330,32 @@ first edit and a finish request while pending. Final native name bytes match.
 DF37080 exits unsaved with source preservation; no DF/Godot remains. Native uses
 30FPS, viewer is headless, GPU46C sampled, and joined final client logs contain
 only the known separate-renderer notice. `rename_reference` records scope.
-The visible DF3D name field, actual panel closure/navigation, rendering and
-broader lifecycle acceptance are still pending; this is session acceptance only.
+That capture accepts the session only. The visible field now reuses the native
+byte-editing primitive with a40-byte limit and installed font/palette. The owner
+parents the rename session to the action service so explicit typing survives
+Escape or owner removal. Enter stops editing and drains outstanding writes;
+confirmed completion refreshes all header receipts and restores roster scroll.
+A click made while typing is retained as a semantic target (detail, mode, Gear,
+sort, membership, specialization or search), then dispatched after refresh.
+Closed/replaced generations cannot apply late navigation or rename observations.
+
+Protected133534 exercises actual rendered pointer/key input: mixed text, Enter,
+Gear during typing, Done,40-byte/partial-UTF8 input, and Escape while typing drains.
+Final native bytes match. Typed header and sidebar crops have zero RGB difference;
+the limit header differs at eight cursor pixels, while its sidebar crop matches
+exactly. Captions remain unbounded and draw after roster content, matching native
+overflow; the whole screen and native sprite corruption under overlapping text
+are not accepted as pixel-identical. An intermediate cache interpretation was
+disproved by fresh native captures and removed. Initial132914 failed due to a
+non-UTF8 test-script character before exercising the viewer; the script is fixed.
+Headless work-details-name-view-overflow-20261106 passes core19/extension/state
+checks. Final joined graphical logs contain only known separate-renderer,
+device-finalize and paired shutdown-object diagnostics. DF41056 exits unsaved,
+source preservation passes, and no DF/Godot remains. Both graphical processes
+are capped at30FPS; GPU samples during this work ranged52–61C. No crash cause
+is inferred. `rename_view_reference` records this scope. Resize, settings hover,
+all navigation variants and broader lifecycle acceptance remain pending before
+screen exposure.
 
 `work_detail_query_native.h` supplies an owned Work Details worker query.
 Native142c4b0 performs filtering, stable sorting and its selected-worker

@@ -14,6 +14,8 @@ func pointer(view,point: Vector2,button: int=MOUSE_BUTTON_LEFT) -> void:
 	click=click.duplicate();click.pressed=false;Input.parse_input_event(click);await process_frame
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
+	if OS.get_environment("DF3D_WORK_DETAILS_RENAME_RENDER")=="1":
+		await work_detail_name_scene();return
 	if OS.get_environment("DF3D_WORK_DETAILS_RENAME_WIRE")=="1":
 		await work_detail_name_session();return
 	if OS.get_environment("DF3D_WORK_DETAILS_DELETE_WIRE")=="1":
@@ -782,3 +784,48 @@ func work_detail_name_session() -> void:
 	check(outcome.finished and not outcome.failed,"Buffered rename session did not finish")
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"rename_session":true}));file.close()
 	service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)
+
+func name_key(code: int,unicode: int=0) -> void:
+	var key:=InputEventKey.new();key.keycode=code;key.unicode=unicode;key.pressed=true;Input.parse_input_event(key);await process_frame
+	key=key.duplicate();key.pressed=false;Input.parse_input_event(key);await process_frame
+func name_text(value: String) -> void:
+	for character in value:await name_key(0,character.unicode_at(0))
+func work_detail_name_scene() -> void:
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/work-details-native.json")).rename
+	world=Df3dWorld.new();root.add_child(world)
+	if not check(world.attach() and world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Name scene assets unavailable"):quit(1);return
+	root.size=Vector2i(1200,800)
+	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
+	for frame in 5:world.poll();await process_frame
+	var interaction:=Interaction.new();root.add_child(interaction)
+	var host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)
+	var owner=preload("res://scripts/work_details_panel.gd").new();root.add_child(owner);owner.configure(world,service,host);owner.open_panel()
+	if not check(await ready(owner.state),"Name roster failed"):quit(1);return
+	await pointer(owner.panel,owner.panel.detail_rect(int(reference.index)).get_center())
+	if not check(await ready(owner.state),"Name detail failed"):quit(1);return
+	await pointer(owner.panel,owner.panel.name_rect().get_center());await name_text(" a Z09-_.")
+	check(owner.panel.name_entry.editing and owner.panel.name_entry.value==reference.steps[1].name,"Visible immediate name differs from native")
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/work-details-name-view-typed.png")
+	await name_key(KEY_ENTER)
+	check(await ready(owner.state) and not owner.panel.name_entry.editing and owner.state.selected.name==reference.steps[1].name,"Name Enter did not finish with native text")
+	await pointer(owner.panel,owner.panel.name_rect().get_center());await name_text("a")
+	await pointer(owner.panel,Vector2(656,owner.panel.header_top()+18))
+	check(await ready(owner.state),"Name navigation refresh failed")
+	for frame in 3:world.poll();await process_frame
+	check(await ready(owner.state) and owner.state.editing_settings,"Gear click during naming was lost")
+	await pointer(owner.panel,owner.panel.done_rect().get_center());check(await ready(owner.state),"Name settings Done failed")
+	await pointer(owner.panel,owner.panel.name_rect().get_center())
+	for count in 40:await name_key(KEY_BACKSPACE)
+	await name_text("q".repeat(45));await name_key(KEY_BACKSPACE);await name_text("é")
+	check(owner.panel.name_entry.value==reference.expected_name,"Visible byte limit differs from native")
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/work-details-name-view-limit.png")
+	await name_key(KEY_ESCAPE)
+	check(not owner.panel.visible,"Name Escape did not close panel")
+	var deadline:=Time.get_ticks_msec()+8000
+	while is_instance_valid(owner.name_session) and Time.get_ticks_msec()<deadline:
+		world.poll();await process_frame
+	check(not is_instance_valid(owner.name_session),"Closing name editor did not drain explicit typing")
+	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"rename_view":true}));file.close()
+	owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)

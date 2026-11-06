@@ -3,6 +3,8 @@ extends "res://scripts/residents_view.gd"
 # from Residents; this screen has its own layout, columns and input targets.
 signal settings_requested
 signal rename_requested
+signal name_edited(value: String)
+signal name_finished(action: Dictionary)
 signal reset_requested
 signal delete_requested
 # Native mode renderer468800 uses category rectangles (parser119c728/119c496),
@@ -13,6 +15,8 @@ const DETAIL_SORT_WIDTH=[10,9,10,20]
 const DETAIL_SORT_LABELS=["Name","Cat","Prof",""]
 # Native42b4e0 color dispatch (42bc4c/42bc18), categories-2 through-13.
 const SETTINGS_COLORS=[14,15,2,5,6,1,8,10,9,12,3,7]
+var name_entry
+var name_target: int=-1
 var detail_first:=0
 var settings_selected:=0
 var showing_settings:=false
@@ -29,6 +33,14 @@ func configure_work_details(source,model) -> void:
 	for side in [SIDE_TOP,SIDE_BOTTOM]:inset.set_texture_margin(side,12)
 	search=preload("res://scripts/area_owner_filter.gd").new();add_child(search)
 	search.theme=theme;search.configure(inset,colors);search.edited.connect(state.set_query)
+	name_entry=preload("res://scripts/area_name_entry.gd").new();add_child(name_entry)
+	name_entry.theme=theme;name_entry.byte_limit=40;name_entry.size=Vector2(328,36)
+	name_entry.add_theme_font_size_override("font_size",12);name_entry.add_theme_color_override("font_color",colors[15])
+	name_entry.vertical_alignment=VERTICAL_ALIGNMENT_CENTER;name_entry.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	name_entry.edited.connect(func(value):name_edited.emit(value);queue_redraw())
+	name_entry.submitted.connect(func():name_finished.emit({}))
+	name_entry.hide()
+
 	scrollbar.row_changed.connect(func(value):
 		if state.editing_settings:state.seek_settings(value,settings_capacity())
 		else:state.seek(value,page_rows))
@@ -39,6 +51,48 @@ func configure_work_details(source,model) -> void:
 			if search.is_inside_tree():search.release_focus()
 			_leave_hover())
 	mouse_exited.connect(_leave_hover);refresh()
+func name_rect() -> Rect2:return Rect2(272,header_top(),368,36)
+func begin_name() -> void:
+	name_target=int(state.selected.index);search.release_focus();name_entry.begin(state.selected.name);queue_redraw()
+func finish_name() -> void:
+	if name_entry!=null:name_entry.finish();queue_redraw()
+func clear_name() -> void:
+	finish_name();name_target=-1;queue_redraw()
+func _input(event: InputEvent) -> void:
+	if allowed() and name_entry!=null and name_entry.editing:
+		if event is InputEventKey and event.pressed and event.keycode!=KEY_ESCAPE:
+			name_entry.feed_key(event);get_viewport().set_input_as_handled();return
+		if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
+			var point: Vector2=get_global_transform_with_canvas().affine_inverse()*event.position
+			if not name_rect().has_point(point):name_finished.emit(click_action(point))
+			get_viewport().set_input_as_handled();return
+	super._input(event)
+func click_action(point: Vector2) -> Dictionary:
+	if add_rect().has_point(point):return {"kind":"create"}
+	for index in range(detail_first,mini(state.details.size(),detail_first+detail_capacity())):
+		if detail_rect(index).has_point(point):return {"kind":"detail","index":index}
+	for index in 3:
+		if mode_rect(index).has_point(point):return {"kind":"mode","value":[1,3,2][index]}
+	if Rect2(640,header_top(),32,36).has_point(point):return {"kind":"settings"}
+	if search.get_rect().has_point(point):return {"kind":"search"}
+	for index in 4:
+		if Rect2(DETAIL_SORT_X[index]*8,list_top()-24,DETAIL_SORT_WIDTH[index]*8,12).has_point(point):return {"kind":"sort","value":DETAIL_SORTS[index]}
+	for index in page_rows:
+		var row: Dictionary=state.row_at(state.first+index)
+		if row.is_empty():continue
+		if member_rect(index).has_point(point):return {"kind":"member","id":int(row.id),"value":not row.member}
+		if Rect2(720,list_top()+index*36,32,36).has_point(point):return {"kind":"specialize","id":int(row.id)}
+	return {}
+func dispatch_action(action: Dictionary) -> void:
+	match action.get("kind",""):
+		"create":state.create_detail()
+		"detail":state.select_detail(int(action.index))
+		"mode":state.set_mode(int(action.value))
+		"settings":state.open_settings()
+		"search":search.grab_focus()
+		"sort":state.select_sort(int(action.value))
+		"member":state.set_member(int(action.id),bool(action.value))
+		"specialize":state.specialize(int(action.id))
 func list_top() -> int:return 204 if wide_tabs else 228
 func header_top() -> int:return list_top()-132
 func detail_top() -> int:return header_top()+36
@@ -53,6 +107,7 @@ func layout(view: Vector2) -> void:
 	position=Vector2(32,48+fposmod(view.y,12)*0.5);size=Vector2((floori(view.x/8)-32)*8,frame_rows*12)
 	page_rows=maxi(0,int((size.y-list_top()-120)/36))
 	if search!=null:search.position=Vector2(280,size.y-60);search.size=Vector2(312,36)
+	if name_entry!=null:name_entry.position=Vector2(288,header_top())
 	if scrollbar!=null:
 		scrollbar.dragging=false;scrollbar.position=Vector2(size.x-32,list_top());scrollbar.size=Vector2(16,maxi(36,size.y-list_top()-84));scrollbar.page=page_rows
 	detail_first=clampi(detail_first,0,maxi(0,(state.details.size() if state!=null else 0)-detail_capacity()))
@@ -60,6 +115,7 @@ func layout(view: Vector2) -> void:
 	refresh()
 func refresh() -> void:
 	if state==null:return
+
 	var retained: Dictionary={}
 	for index in page_rows:
 		var row: Dictionary=state.row_at(state.first+index)
@@ -143,16 +199,15 @@ func _draw() -> void:
 		if int(row.icon)>=0 and int(row.icon)<Indicators.WORK_DETAILS.size():
 			var icon: Texture2D=art.texture("WORK_DETAIL_"+Indicators.WORK_DETAILS[int(row.icon)])
 			if icon!=null:draw_texture_rect(icon,Rect2(rect.position,Vector2(32,36)),false)
-		text(row.name,rect.position+Vector2(48,24),15,176)
-	if state.selected.is_empty():return
-	if state.editing_settings:_draw_settings();return
+	if state.selected.is_empty():_draw_detail_names();return
+	if state.editing_settings:_draw_settings();_draw_detail_names();return
 	var filter: Texture2D=art.texture("BUTTON_FILTER")
 	if filter!=null:
 		for y in 3:
 			for cell in 42:draw_texture_rect_region(filter,Rect2(272+cell*8,header_top()+y*12,8,12),Rect2(0 if cell==0 else 8,y*12,8,12))
 	var endcap: Texture2D=art.texture("BUTTON_FILTER_NAME")
 	if endcap!=null:draw_texture_rect(endcap,Rect2(608,header_top(),32,36),false)
-	text(state.selected.name,Vector2(288,header_top()+24),15,320)
+	if name_entry==null or not name_entry.editing:text(name_entry.value if name_target==int(state.selected.index) else state.selected.name,Vector2(288,header_top()+24),15,320)
 	var settings: Texture2D=art.texture("LABOR_EDIT_WORK_DETAIL")
 	if settings!=null:draw_texture_rect(settings,Rect2(640,header_top(),32,36),false)
 	for index in 3:
@@ -195,6 +250,15 @@ func _draw() -> void:
 			if texture!=null:draw_texture_rect(texture,Rect2(720,y,32,36),false)
 		var checkbox: Texture2D=art.texture("LABOR_WORKER_ASSIGNED" if row.member else "LABOR_WORKER_UNASSIGNED")
 		if checkbox!=null:draw_texture_rect(checkbox,member_rect(index),false)
+
+	_draw_detail_names()
+
+func _draw_detail_names() -> void:
+	# Native captions update immediately and may overdraw the roster. Keep
+	# their unbounded width and late drawing order; no clipping exception exists.
+	for index in range(detail_first,mini(state.details.size(),detail_first+detail_capacity())):
+		var row: Dictionary=state.details[index]
+		text(name_entry.value if name_target==int(row.index) else row.name,detail_rect(index).position+Vector2(48,24),15)
 
 func _draw_settings() -> void:
 	patch("HORIZONTAL_OPTION_ACTIVE",Vector2i(33,int(header_top()/12)),6,3);text("Done",Vector2(272,header_top()+24),10)

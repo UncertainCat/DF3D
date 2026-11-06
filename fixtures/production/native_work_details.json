@@ -3633,5 +3633,20 @@
     "source_preserved": true,
     "owned_df_closed": true,
     "diagnostics": "Final joined headless client logs contain only the known separate-renderer notice."
+  },
+  "rename_view_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-133534",
+    "scope": "Rendered Work Details owner name entry at 1200x800: actual typing, Enter, queued Gear navigation, Done, byte limit, and Escape with service-owned drain. Full resize/hover/lifecycle and whole-screen pixel parity remain pending.",
+    "typed_header_rgb_difference": 0,
+    "typed_sidebar_rgb_difference": 0,
+    "limit_header_different_pixels": 8,
+    "limit_header_difference": "Blinking cursor phase",
+    "limit_sidebar_rgb_difference": 0,
+    "native_final_bytes_match": true,
+    "gear_click_during_typing_retained": true,
+    "explicit_typing_survives_escape": true,
+    "source_preserved": true,
+    "owned_df_closed": true,
+    "diagnostics": "Final joined logs contain only known separate-renderer, device-finalize and paired shutdown-object signatures."
   }
 }

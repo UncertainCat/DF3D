@@ -6,6 +6,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
+| Residents accented search can miss the matching native activity caption. | No correction approved or implemented; retain native input and normalization. | Protected023145 on2026-11-06 types through the owned window: `Tâmol` returns no rows, while `tamol` finds two “Pray to Tâmol” rows. The textbox retains UTF-8, then callback1432700 applies the byte normalizer52cee0; normalized query bytes are116,195,111,109,111,108. The owned query provider matches both outcomes. |
 | Global Work orders quantity increment wraps32767 to-32768. | No correction approved or implemented; decision pending. | Protected003417 on2026-11-06 sets controlled quantities in the paused clone and clicks the native plus button.9999 becomes10000;32767 becomes-32768 in both total and remaining. Quantities are restored and DF40708 exits unsaved with source preservation. |
 | Minimum-width global Work orders overlaps workshop-limit controls/text with other row controls. | No correction approved; native drawing geometry is retained. Visible-button priority is pending maintainer decision before exposure. | Native000121 on2026-11-06 at912x552 establishes drawing overlap.010434 independently clicks the actual minimum-width Conditions center456,426: native enters workshop-limit input for that order, and typing1 changes max_workshops to1. The value is restored and the source save is preserved. Input3c5dc5..3c5dde checks the broad workshop-limit region before Conditions. Earlier000636 used the default-width x552 after shrinking, so it alone did not prove a Conditions hitbox defect;000739 opens Conditions before shrinking. |
 | Work order tint ingredient captions repeat the source color where the target color would be expected. | No correction implemented; preserve native captions. | Native dye capture `build/stockpile-storage-native-input-20261105-223741`: target cerulean displays “Tint white cloth white using midnight blue dye”. Renderer2160f5/2161c7 reads the source color both times. |
@@ -67,10 +68,10 @@ It creates its own tagged unit entries from world active units and owns the
 stable-sort storage; comparator calls receive no widget/callback context.
 Executable identity and function hashes gate calls, reusing the pinned staff
 ordering readers for transitive name/profession/category dependencies. The
-`df3d residents-order-probe <sort> <descending>` command returns ordered IDs;
-sort0/1/2/3 means Category/Name/Profession/Stress, direction0/1 ascending/descending.
-It does not support Activity or search yet and is not connected to the public
-readout or management protocol.
+`df3d residents-order-probe <sort> <descending> [query]` command returns ordered
+IDs; sort0/1/2/3/4 means Category/Name/Profession/Stress/Activity, direction0/1
+ascending/descending. The query adapter below adds Activity and text filtering.
+The providers are not connected to the public readout or management protocol.
 
 `DF3D_RESIDENTS_PROVIDER=1` with the native reference compares this owned result
 against actual active widget rows after native sorting. Protected015429 on
@@ -129,8 +130,35 @@ unchanged; the brief native run uses30FPS and stays at36–37C. MSVC passes;
 installed bridge SHA256 is
 FAF85F2A86E1A6ADB3A4069E7F2F3BAF1A2229F28B9D1B97F2D4F8DCA8FB2DE9.
 This validates Activity extraction for the captured fortress, not every unit
-state. Activity sorting/search, transport and public Residents UI remain
-unfinished; the diagnostic does not read the native menu or its cache.
+state. Transport and public Residents UI remain unfinished; the diagnostic
+does not read the native menu or its cache.
+
+`residents_query_native.h` owns the context consumed by comparator1434030 and
+filter1424c30: an MSVC unordered_map at0x330 with 16-byte tagged keys and a query
+string at0x680. Compile-time layout checks fix the storage ABI. Native hash3c9c30
+builds the owned map from extracted Activity keys; no native map or widget is
+borrowed. Filtering calls DF's name-or-Activity predicate, and all five sorts
+use native comparators over the owned entries. Query bytes match native window
+text input (UTF-8, without CP437 conversion), followed by native normalization
+as observed in callback1432700. Preserve that distinction from the CP437 display
+captions, including the accented-search defect in the register.
+
+`DF3D_RESIDENTS_QUERY=1` extends the protected reference with actual filter clicks,
+window text events and Backspace events directed only to the owned hidden DF.
+Legacy simulated STRING_A000 does not edit this widget; typing without frame
+updates can coalesce input. The oracle asserts the textbox received the exact
+query before comparing rows. Returning to an inactive sort column retains its
+previous direction; a subsequent click on the active column reverses it.
+Protected023145 on2026-11-06 matches all141 rows for default Category and both
+directions of all five columns, then six Activity-sorted queries: PLAY8, olon4,
+Tâmol0, tamol2, absent text0, clear141. All17 complete ordered comparisons pass.
+DF1932 exits unsaved and the source manifest is unchanged. Earlier022238,
+022415,022524,022615 and022858 fail oracle input/encoding assumptions and do not
+establish search parity. MSVC passes; the installed bridge SHA256 is
+628303EA629B6BC38D9ED901E3B3E9E3BA4A28B119C6CF3CB1857F67EF0863DE.
+The serial native runs remain capped at30FPS, observed36–38C. This is bounded
+bridge query acceptance, not completion of Residents, other Creatures tabs,
+Work Details, transport lifecycle or the public management screen.
 
 ## Farm removal native entry points
 

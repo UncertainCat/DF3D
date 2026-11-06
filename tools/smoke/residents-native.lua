@@ -17,7 +17,7 @@ local info=df.global.game.main_interface.info
 assert(info.open and info.current_mode==df.info_interface_mode_type.CREATURES)
 local source=debug.getinfo(1,'S').source:sub(2):gsub('smoke/residents%-native.lua$','ui_bake/capture_widgets.lua')
 assert(loadfile(source))(out..'/residents-widgets.json','templates')
-local lists={};local active_list;local headers={}
+local lists={};local active_list;local headers={};local filter_box
 local base=dfhack.internal.getImageBase()
 local function callbacks(value,stride)
  local _,address=df.sizeof(value)
@@ -48,6 +48,7 @@ local function walk(widget)
   lists[#lists+1]=row
  end
  if widget.rect.y1==12 and widget.rect.y2==12 then headers[widget.name]=widget end
+ if widget.name=='Filter box' then filter_box=widget end
  if df.widget_container:is_instance(widget)then
   for index,child in ipairs(dfhack.gui.getWidgetChildren(widget))do
    if not df.widget_tabs:is_instance(widget) or index-1==widget.cur_idx then walk(child)end
@@ -112,7 +113,7 @@ if activity_provider then
  assert(evidence.cold_matches and evidence.repeated_matches and evidence.native_unchanged,'Native Residents Activity differs')
 end
 local snapshots={}
-local function observe(name)
+local function observe(name,query)
  local ids={}
  local function collect(widget,active)
   active=active and (widget.flag.whole&1)==1
@@ -121,12 +122,12 @@ local function observe(name)
  end
  collect(active_list,true)
  local sorting={};for _,entry in ipairs(active_list.sorting_by)do sorting[#sorting+1]=entry.ident end
- local observed={name=name,ids=ids,sorting=sorting,callbacks=callbacks(active_list.sorting_by,96)}
+ local observed={name=name,ids=ids,sorting=sorting,callbacks=callbacks(active_list.sorting_by,96),filter_bytes={active_list.filter_str:byte(1,#active_list.filter_str)},query=query}
  if os.getenv('DF3D_RESIDENTS_PROVIDER')=='1' then
   local kind=name:match('^([^%-]+)')
-  local sorts={initial=0,Cat=0,Name=1,Prof=2,Stress=3}
+  local sorts={initial=0,Cat=0,Name=1,Prof=2,Stress=3,Job=4}
   if sorts[kind] then
-   local text,code=dfhack.run_command_silent('df3d','residents-order-probe',tostring(sorts[kind]),name:find('%-2$') and '1' or '0')
+   local text,code=dfhack.run_command_silent('df3d','residents-order-probe',tostring(sorts[kind]),name:find('%-2$') and '1' or '0',query or '')
    assert(code==0,'Residents provider failed: '..text)
    observed.provider=json.decode(text).ids
    observed.matches=json.encode(observed.provider)==json.encode(ids)
@@ -146,6 +147,45 @@ for _,name in ipairs{'Name','Cat','Prof','Job','Stress'}do
   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
   for _=1,3 do script.sleep(1,'frames')end
   view:render(dfhack.getTickCount());observe(name..'-'..direction)
+ end
+end
+if os.getenv('DF3D_RESIDENTS_QUERY')=='1' then
+ assert(filter_box,'Native Residents filter missing')
+ local function click(widget)
+  local x=math.floor((widget.rect.x1+widget.rect.x2)/2);local y=math.floor((widget.rect.y1+widget.rect.y2)/2)
+  local g=df.global.gps;g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+6
+  g.mouse_x=x;g.mouse_y=y
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L')
+  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+ end
+ -- Returning from Stress restores Job's previous descending direction; a
+ -- second click on the active Job header then switches it to ascending.
+ click(headers.Job)
+ for _=1,3 do script.sleep(1,'frames')end
+ view:render(dfhack.getTickCount())
+ click(headers.Job)
+ for _=1,3 do script.sleep(1,'frames')end
+ view:render(dfhack.getTickCount())
+ local first=df.unit.find(snapshots[1].ids[1]);local first_name=first.name.first_name
+ local queries={'PLAY',dfhack.df2utf(first_name),'Tâmol','tamol','no-matching-resident-zzq',''}
+ for index,query in ipairs(queries)do
+  click(filter_box)
+  -- Native textbox editing consumes window events, not legacy STRING_A000.
+  -- The protected host sends only to this lane's owned hidden DF window.
+  local file=assert(io.open(out..'/residents-search-input.json','w'))
+  file:write(json.encode({clear_count=#filter_box.str,text=query}));file:close()
+  file=assert(io.open(out..'/owner-input-request.tmp','w'));file:write('residents-search');file:close()
+  assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+  local deadline=dfhack.getTickCount()+30000
+  while true do
+   local ack=io.open(out..'/owner-input-ack','r');if ack then ack:close();break end
+   assert(dfhack.getTickCount()<deadline,'Residents native input timeout');script.sleep(1,'frames')
+  end
+  assert(os.remove(out..'/owner-input-ack'))
+  for _=1,3 do script.sleep(1,'frames')end
+  assert(filter_box.str==query,'Native filter did not receive typed query')
+  view:render(dfhack.getTickCount());observe('Job-search'..index,query)
  end
 end
 local file=assert(io.open(out..'/residents-list-reference.json','w'))

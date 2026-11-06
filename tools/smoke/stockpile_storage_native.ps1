@@ -182,7 +182,7 @@ try {
  if($r.ExitCode -ne 0 -or ($r.Output -join "`n") -notmatch 'STOCKPILE_STORAGE_STARTED'){throw 'Native capture start failed'}
  $limit=(Get-Date).AddSeconds(600)
  while(-not(Test-Path "$out/result.json") -and (Get-Date) -lt $limit){
-  if(($ZoneOwner -or $ZoneAnimals -or $ZoneDefaults -or $LocationSupplies -or $LocationNames -or $FarmResize -or $FarmHeader -or $env:DF3D_WORK_ORDER_ARTWORK_RESIZE -eq '1' -or $env:DF3D_WORK_ORDER_LAYOUT -eq '1') -and (Test-Path "$out/owner-input-request")) {
+  if(($ZoneOwner -or $ZoneAnimals -or $ZoneDefaults -or $LocationSupplies -or $LocationNames -or $FarmResize -or $FarmHeader -or $env:DF3D_WORK_ORDER_ARTWORK_RESIZE -eq '1' -or $env:DF3D_WORK_ORDER_LAYOUT -eq '1' -or $env:DF3D_RESIDENTS_QUERY -eq '1') -and (Test-Path "$out/owner-input-request")) {
    $action=(Get-Content "$out/owner-input-request" -Raw).Trim()
    $window=[Shot]::Find($owned.Id)
    switch($action) {
@@ -198,6 +198,12 @@ try {
     'nonascii' {[Shot]::Text($window,([string][char]0x00e9))}
     'ascii' {[Shot]::Text($window,'a')}
     'name-filter-mixed' {[Shot]::Text($window,'a Z09-_.')}
+    'residents-search' {
+     $inputSpec=Get-Content -LiteralPath "$out/residents-search-input.json" -Raw -Encoding UTF8 | ConvertFrom-Json
+     if($inputSpec.clear_count -lt 0 -or $inputSpec.clear_count -gt 128 -or $inputSpec.text.Length -gt 128){throw 'Residents search input exceeds probe bounds'}
+     for($i=0;$i -lt $inputSpec.clear_count;$i++){[Shot]::Key($window,8,14)}
+     [Shot]::Text($window,[string]$inputSpec.text)
+    }
     'name-resize-small' {[Shot]::Resize($window,960,600)}
     'name-resize-medium' {[Shot]::Resize($window,1200,720)}
     'name-resize-minimum' {[Shot]::Resize($window,640,480)}

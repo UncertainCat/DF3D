@@ -112,6 +112,7 @@
 #include "item_owner_native.h"
 #include "residents_order_native.h"
 #include "residents_activity_native.h"
+#include "residents_query_native.h"
 #include "modules/Buildings.h"
 #endif
 
@@ -2146,7 +2147,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="residents-order-probe") {
-          if(parameters.size()!=3)return CR_WRONG_USAGE;
+          if(parameters.size()!=3 && parameters.size()!=4)return CR_WRONG_USAGE;
           int32_t sort=-1,direction=-1;
           for(size_t i=1;i<3;++i) {
             auto& value=i==1?sort:direction;const auto& raw=parameters[i];
@@ -2154,7 +2155,8 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
           }
           if(direction<0 || direction>1)return CR_WRONG_USAGE;
-          const auto ids=df3d_residents::orderedResidents(sort,direction!=0);if(!ids)return CR_FAILURE;
+          const auto ids=df3d_residents::queryResidents(sort,direction!=0,parameters.size()==4?parameters[3]:std::string{});
+          if(!ids)return CR_FAILURE;
           Json::Value result(Json::objectValue);result["ids"]=Json::Value(Json::arrayValue);
           for(auto id:*ids)result["ids"].append(id);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;

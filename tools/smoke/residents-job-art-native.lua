@@ -56,6 +56,46 @@ if os.getenv('DF3D_RESIDENTS_JOB_ART_PROVIDER')=='1' then
   assert(art.open and art.current_option==-1,'Subject Back did not return to artwork root')
  end
 end
+if os.getenv('DF3D_RESIDENTS_JOB_ART_PAGES')=='1' then
+ local function read(page,cursor,columns)
+  local old=owner.job.current_job;owner.job.current_job=job
+  local ok,text,rc=pcall(dfhack.run_command_silent,'df3d','residents-job-art-page-probe',tostring(owner.id),tostring(page),tostring(cursor),tostring(columns))
+  owner.job.current_job=old;assert(ok and rc==0,'Owned artwork page failed: '..tostring(text));return json.decode(text)
+ end
+ result.pages={};local root=read(-1,0,0)
+ assert(root.caption==result.header and #root.rows==6,'Owned artwork root differs')
+ for _,row in ipairs(root.rows)do
+  local found=false;for _,line in ipairs(result.root)do if line.text:find(row.caption,1,true)then found=true;break end end
+  assert(found,'Owned artwork root caption not native')
+ end
+ for _,page in ipairs({1,2,3,5})do
+  local caption=page==1 and 'Related to historical figure' or page==2 and 'Related to site' or page==3 and 'Related to civilization or other group' or 'Existing image'
+  local first=read(page,0,0);label(caption)
+  local rows=page==1 and art.hf or page==2 and art.st or page==3 and art.ent or art.art_image
+  assert(first.total==#rows and #first.rows==math.min(128,#rows),'Owned artwork page count differs')
+  for i,row in ipairs(first.rows)do assert(row.id==(page==5 and i-1 or rows[i-1].id),'Owned artwork page ID differs')end
+  if first.next_cursor>0 then
+   local next=read(page,first.next_cursor,0)
+   assert(next.list_revision==first.list_revision and next.total==first.total,'Artwork page revision drift')
+   for i,row in ipairs(next.rows)do assert(row.id==(page==5 and first.next_cursor+i-1 or rows[first.next_cursor+i-1].id),'Second artwork page ID differs')end
+  end
+  local preview={};local columns=0
+  if #rows>0 then
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=200;g.precise_mouse_y=190;g.mouse_x=25;g.mouse_y=15;view:render(dfhack.getTickCount())
+   columns=art.last_selected_box_width
+   for _,line in ipairs(art.selected_box.text)do preview[#preview+1]=dfhack.df2utf(line.value)end
+   assert(columns>0,'Native hover did not produce preview width')
+   local hovered=read(page,0,columns)
+   assert(json.encode(hovered.preview)==json.encode(preview),'Owned native preview differs')
+   assert(hovered.stale_list_rejected,'Artwork page accepted stale list receipt')
+  end
+  result.pages[#result.pages+1]={page=page,total=first.total,rows=#first.rows,next_cursor=first.next_cursor,columns=columns,preview=preview,matched=true}
+  df.global.enabler.mouse_rbut_lift=0;gui.simulateInput(view,'_MOUSE_R')
+  df.global.enabler.mouse_rbut=0;df.global.enabler.mouse_rbut_down=0;df.global.enabler.mouse_rbut_lift=1;settle()
+  assert(art.open and art.current_option==-1,'Artwork page Back failed')
+ end
+end
 label('Related to historical figure')
 assert(art.current_option==1 and #art.hf>0,'Figure page did not open')
 result.figures={};for _,hf in ipairs(art.hf)do result.figures[#result.figures+1]=hf.id end

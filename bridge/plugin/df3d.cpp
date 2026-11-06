@@ -2230,6 +2230,31 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="residents-job-art-page-probe") {
+          if(parameters.size()!=5 && parameters.size()!=6)return CR_WRONG_USAGE;
+          int32_t values[4]={};
+          for(size_t i=1;i<5;++i) {
+            const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || values[i-1]<(i==2?-1:0))return CR_WRONG_USAGE;
+          }
+          if(values[1]>5 || values[3]>1024)return CR_WRONG_USAGE;
+          const auto* unit=df::unit::find(values[0]);if(!unit || !unit->job.current_job)return CR_FAILURE;
+          const auto& job=*unit->job.current_job;
+          const auto query=parameters.size()==6?parameters[5]:std::string{};
+          auto observed=df3d_production::nativeJobArtPage(job,int16_t(values[1]),query,uint32_t(values[2]));if(!observed)return CR_FAILURE;
+          if(values[3] && !observed->page.rows.empty()) {
+            observed=df3d_production::nativeJobArtPage(job,int16_t(values[1]),query,uint32_t(values[2]),observed->page.listRevision,observed->page.rows.front().id,uint16_t(values[3]));
+            if(!observed)return CR_FAILURE;
+          }
+          Json::Value result;result["job_id"]=observed->jobId;result["building_id"]=observed->buildingId;
+          const auto& page=observed->page;result["caption"]=DF2UTF(page.caption);result["revision"]=std::to_string(observed->revision);
+          result["list_revision"]=std::to_string(page.listRevision);result["total"]=page.total;result["next_cursor"]=page.nextCursor;
+          result["rows"]=Json::Value(Json::arrayValue);result["preview"]=Json::Value(Json::arrayValue);
+          for(const auto& row:page.rows){Json::Value value;value["id"]=row.id;value["caption"]=DF2UTF(row.caption);if(row.badge)value["badge"]=DF2UTF(*row.badge);result["rows"].append(value);}
+          if(page.preview)for(const auto& line:*page.preview)result["preview"].append(DF2UTF(line));
+          result["stale_list_rejected"]=values[1]==-1 || !df3d_production::nativeJobArtPage(job,int16_t(values[1]),query,uint32_t(values[2]),page.listRevision==1?2:1);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="residents-job-art-subjects-probe") {
           if(parameters.size()!=3 && parameters.size()!=4)return CR_WRONG_USAGE;
           int32_t id=-1,kind=-1;

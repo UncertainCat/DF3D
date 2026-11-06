@@ -4510,5 +4510,57 @@
     ],
     "caption": "Image information for Make rock statue",
     "scope": "Cold owned job subject reader matches every ID in native figure/site/entity order and the job header. Native editor open/page/job identity retained after each read. No typed pages, search, previews, editing or ordinary workshop acceptance."
+  },
+  "artwork_pages_reference": {
+    "source": "build/stockpile-storage-native-input-20261106-082912",
+    "bridge_sha256": "DD00E81D4E74F976F044AD5F819B6A9AB8FC9BE6A9736FA7F14B23EDADD3B2CD",
+    "pages": [
+      {
+        "columns": 118,
+        "matched": true,
+        "next_cursor": 128,
+        "page": 1,
+        "preview": [
+          "This nameless being is a mule born in 98.  He is of unknown parentage.  "
+        ],
+        "rows": 128,
+        "total": 10563
+      },
+      {
+        "columns": 118,
+        "matched": true,
+        "next_cursor": 128,
+        "page": 2,
+        "preview": [
+          "These are dwarven hillocks in The Hill of Riddling."
+        ],
+        "rows": 128,
+        "total": 680
+      },
+      {
+        "columns": 118,
+        "matched": true,
+        "next_cursor": 128,
+        "page": 3,
+        "preview": [
+          "This is a local goblin government."
+        ],
+        "rows": 128,
+        "total": 1263
+      },
+      {
+        "columns": 118,
+        "matched": true,
+        "next_cursor": 0,
+        "page": 5,
+        "preview": [
+          "This artwork is a superiorly designed image of two slabs.  The image is the symbol of The Rough Crystal, a local ",
+          "dwarven government.  "
+        ],
+        "rows": 2,
+        "total": 2
+      }
+    ],
+    "scope": "Owned root labels match native. First/second 128-row subject page IDs match native; existing-image page has two rows. First-row preview text matches native at118columns for each category, and stale list receipts reject. No search, arbitrary later pages, typed transport, edits or rendered DF3D UI acceptance."
   }
 }

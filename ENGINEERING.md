@@ -871,6 +871,29 @@ DF3680 exits unsaved with source preservation; native30FPS only, GPU60C sampled.
 The semantic fixture records list counts/revisions and provenance. Residents
 remains staged until artwork and broader owner/job workflows are complete.
 
+The job artwork reader now also returns pointer-free `JobArtPage` values with
+job/holder identity, source revision and the shared artwork page structure.
+`nativeArtPage` formats root labels,128-row subject/image pages and owned hover
+previews; source-specific catalog suppliers retain eligibility/revision checks.
+The extracted `nativeArtImages` still calls20fe10 with private context and no
+historical-figure input, so native uses fortress/civilization image collections.
+The manager wrappers preserve their existing title, quantity and catalog rules.
+No transport/schema or presentation exposure changes accompany this reader.
+
+Protected082912 on2026-11-06 uses the diagnostic
+`df3d residents-job-art-page-probe <unit> <page> <cursor> <columns> [query]`.
+Root labels match the native screen. First and second128-row figure/site/entity
+page IDs and receipts match; the existing-image list contains two rows. Native
+first-row hover previews match all four page kinds at118columns, and wrong list
+revisions reject. The fixture records the exact preview text and scoped evidence.
+Search, arbitrary later pages, typed transport and job artwork edits remain open.
+
+MSVC job-art-pages-build and root19/extension/job-settings state checks pass in
+job-art-pages-20261106. Built/installed bridge SHA256 is
+DD00E81D4E74F976F044AD5F819B6A9AB8FC9BE6A9736FA7F14B23EDADD3B2CD.
+DF35448 exits unsaved with source preservation; native30FPS, GPU59C sampled,
+and no graphical Godot run. Public Residents remains staged.
+
 
 ## Farm removal native entry points
 

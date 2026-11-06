@@ -116,11 +116,8 @@ struct WorkOrderArtImages {
     uint64_t listRevision=0;
     std::vector<df::art_image*> rows;
 };
-inline std::optional<WorkOrderArtImages> nativeWorkOrderArtImages(df::manager_order& source,const std::string& query={}) {
-    if(query.size()>128 || !workOrderArtSubjectsReady())return std::nullopt;
-    const auto details=nativeWorkOrderDetails(source);if(!details)return std::nullopt;
-    bool supported=false;for(const auto& option:details->options)if(option.kind==1 || option.kind==3)supported=true;
-    if(!supported)return std::nullopt;
+inline std::optional<WorkOrderArtImages> nativeArtImages(uint64_t revision,const std::string& query={}) {
+    if(!revision || query.size()>128 || !workOrderArtSubjectsReady() || !df::global::world)return std::nullopt;
     df::image_creator_interfacest context;
     context.context=df::image_creator_context_type::JOB_DETAILS_MAIN;
     context.current_option=df::image_creator_option_type(5);context.filter=query;
@@ -132,11 +129,18 @@ inline std::optional<WorkOrderArtImages> nativeWorkOrderArtImages(df::manager_or
     reinterpret_cast<void(*)(df::image_creator_interfacest*,std::vector<df::art_image*>*)>(base+0x20fe10)(&context,&context.art_image);
     if(context.art_image.size()>262144)return std::nullopt;
     WorkOrderArtImages result;result.rows=std::move(context.art_image);
-    uint64_t hash=details->revision;
+    uint64_t hash=revision;
     const auto add=[&](uint64_t value){for(unsigned shift=0;shift<64;shift+=8){hash^=(value>>shift)&255;hash*=UINT64_C(1099511628211);}};
     add(5);add(result.rows.size());
     for(const auto* image:result.rows){if(!image || image->id<0 || image->subid<0)return std::nullopt;add(image->id);add(image->subid);}
     result.listRevision=(hash&INT64_MAX)?(hash&INT64_MAX):1;return result;
+}
+inline std::optional<WorkOrderArtImages> nativeWorkOrderArtImages(df::manager_order& source,const std::string& query={}) {
+    if(query.size()>128 || !workOrderArtSubjectsReady())return std::nullopt;
+    const auto details=nativeWorkOrderDetails(source);if(!details)return std::nullopt;
+    bool supported=false;for(const auto& option:details->options)if(option.kind==1 || option.kind==3)supported=true;
+    if(!supported)return std::nullopt;
+    return nativeArtImages(details->revision,query);
 }
 inline std::optional<std::string> nativeWorkOrderArtSubjectCaption(int32_t kind,int32_t id) {
     if(!workOrderArtSubjectsReady() || !df::global::world)return std::nullopt;
@@ -265,14 +269,14 @@ struct WorkOrderArtPage {
     std::optional<std::vector<std::string>> draftDescription;
     std::optional<WorkOrderArtNamePage> name;
 };
-inline std::optional<WorkOrderArtPage> nativeWorkOrderArtPage(df::manager_order& order,int16_t page,const std::string& query,uint32_t cursor,uint64_t listRevision,int32_t hovered=-1,uint16_t columns=0) {
+// Catalog suppliers own their source-specific eligibility and revision checks.
+// This shared formatter only produces pointer-free pages and owned previews.
+template<class Subjects,class Images>
+inline std::optional<WorkOrderArtPage> nativeArtPage(std::string caption,int16_t page,const std::string& query,uint32_t cursor,uint64_t listRevision,int32_t hovered,uint16_t columns,Subjects subjectsFor,Images imagesFor) {
     if(!workOrderArtSubjectsReady())return std::nullopt;
     if(hovered>=0 && ((page!=5 && (page<1 || page>3)) || !columns || !listRevision))return std::nullopt;
-    const auto row=nativeWorkOrderRow(order,-1,true);if(!row)return std::nullopt;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
-    WorkOrderArtPage result;result.page=page;
-    result.caption=reinterpret_cast<const char*>(base+0x1615548);result.caption+=row->caption;
-    if(order.amount_total>0)result.caption+=" ("+std::to_string(order.amount_total)+")";
+    WorkOrderArtPage result;result.page=page;result.caption=std::move(caption);
     if(result.caption.size()>78)result.caption.resize(78);
     if(page==-1) {
         if(!query.empty() || cursor || listRevision)return std::nullopt;
@@ -281,7 +285,7 @@ inline std::optional<WorkOrderArtPage> nativeWorkOrderArtPage(df::manager_order&
         result.total=uint32_t(result.rows.size());return result;
     }
     if(page==5) {
-        const auto images=nativeWorkOrderArtImages(order,query);
+        const auto images=imagesFor(query);
         if(!images || cursor>images->rows.size() || (listRevision && listRevision!=images->listRevision))return std::nullopt;
         result.listRevision=images->listRevision;result.total=uint32_t(images->rows.size());
         const auto end=std::min(size_t(cursor)+128,images->rows.size());
@@ -298,7 +302,7 @@ inline std::optional<WorkOrderArtPage> nativeWorkOrderArtPage(df::manager_order&
         }
         result.nextCursor=end<images->rows.size()?uint32_t(end):0;return result;
     }
-    const auto subjects=nativeWorkOrderArtSubjects(order,page,query);
+    const auto subjects=subjectsFor(page,query);
     if(!subjects || cursor>subjects->ids.size() || (listRevision && listRevision!=subjects->listRevision))return std::nullopt;
     result.listRevision=subjects->listRevision;result.total=uint32_t(subjects->ids.size());
     const auto end=std::min(size_t(cursor)+128,subjects->ids.size());
@@ -314,6 +318,16 @@ inline std::optional<WorkOrderArtPage> nativeWorkOrderArtPage(df::manager_order&
         if(!result.preview)return std::nullopt;result.hovered=hovered;
     }
     result.nextCursor=end<subjects->ids.size()?uint32_t(end):0;return result;
+}
+inline std::optional<WorkOrderArtPage> nativeWorkOrderArtPage(df::manager_order& order,int16_t page,const std::string& query,uint32_t cursor,uint64_t listRevision,int32_t hovered=-1,uint16_t columns=0) {
+    if(!workOrderArtSubjectsReady())return std::nullopt;
+    const auto row=nativeWorkOrderRow(order,-1,true);if(!row)return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    std::string caption=reinterpret_cast<const char*>(base+0x1615548);caption+=row->caption;
+    if(order.amount_total>0)caption+=" ("+std::to_string(order.amount_total)+")";
+    return nativeArtPage(std::move(caption),page,query,cursor,listRevision,hovered,columns,
+        [&](int32_t kind,const std::string& filter){return nativeWorkOrderArtSubjects(order,kind,filter);},
+        [&](const std::string& filter){return nativeWorkOrderArtImages(order,filter);});
 }
 inline WorkOrderDetailEditResult beginWorkOrderArt(df::manager_order& order,uint64_t revision,int32_t option) {
     WorkOrderDetailEditResult result;

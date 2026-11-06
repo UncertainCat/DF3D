@@ -67,6 +67,8 @@ if os.getenv('DF3D_WORK_ORDER_HOVER')=='1' then
   local f=assert(io.open(out..'/work-order-hover-reference.json','w'));f:write(json.encode(hover));f:close()
  end
  for _,p in ipairs{{'active',64,430,212},{'amount',392,430,219},{'priority',488,430,220},{'conditions',552,430,221},{'details',584,430,222},{'remove',888,430,223},{'shop_limit',784,430,216}}do probe(table.unpack(p))end
+ mouse(552,430);assert(m.info.work_orders.conditions.open)
+ for _,p in ipairs{{'frequency',880,142,224},{'add_item',912,142,225},{'add_order',944,142,226},{'condition_amount',640,178,227},{'comparison',736,178,228},{'item_type',768,178,229},{'material',800,178,230},{'traits',832,178,231},{'remove_condition',896,178,233}}do probe(table.unpack(p))end
  local f=assert(io.open(out..'/work-order-hover-reference.json','w'));f:write(json.encode(hover));f:close()
  shot('work-order-hover-list')
  records[#records+1]={name='work-order-hover',controls=#hover}

@@ -11,6 +11,16 @@ const OWNER_RECENTER_HELP = ["Leave this menu and","recenter on this","creature.
 const OWNER_FILTER_HELP = ["Filter the unit list by","name or job."]
 # Native Work orders instructions212/216/219..223, protected002223 text cells.
 const WORK_ORDER_HELP={
+	# Conditions instructions224..231/233, protected002646 text cells.
+	"frequency":["Change the frequency","that the conditions are","checked."],
+	"add_item":["Add a condition to the","work order that checks","the amount of some item."],
+	"add_order":["Make the activation of","the work order depend","on the status of","another work order."],
+	"condition_amount":["Change the amount of","the item being checked."],
+	"comparison":["Change the inequality","of the condition."],
+	"item_type":["Change the type of the","item being checked."],
+	"material":["Change the material of","the item being checked."],
+	"traits":["Change the properties","of the item being","checked.  Many of these","are obscure and rely on","specific tasks, but","certain properties like","'empty' can be used in","many conditions."],
+	"remove_condition":["Remove this condition."],
 	"active":["This work order is","active."],
 	"amount":["Change the number of","times the task will be","performed."],
 	"priority":["Change the work order","priority.  Work orders","at the top of the list","will use workshops","first."],

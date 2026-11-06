@@ -7417,8 +7417,19 @@ controls, and hiding or retiring the view releases its hover owner. Local render
 acceptance in `build/qa/work-orders-hover` exercises native Conditions coordinates,
 resized Details coordinates and hide retirement; the Conditions render was
 visually inspected. Paired logs contain only documented Godot diagnostics.
-Other status indicators, New, and Conditions-page help still require coverage;
-minimum-width overlapping control precedence remains unresolved.
+The Conditions view shares this service for frequency, adding item/order
+conditions, item amount/comparison/type/material/properties, and removal.
+Protected002646 captures native instructions224..231/233 at the actual controls;
+DF7000 closes unsaved with source preservation. Local rendered acceptance in
+`build/qa/conditions-hover` checks the properties tooltip at1600x900,1200x800 and
+912x552, amount-entry hitboxes at those sizes, and tooltip retirement when a
+filter opens. The1200x800 render was visually inspected. Root19/19 and headless
+composition pass; paired rendered logs contain only documented diagnostics.
+Other status indicators, New, dependency-check help and suggested-condition
+hover behavior still require coverage. The current native fixture has no
+manager, so its New button is absent (002603's attempted hover correctly
+reported no instruction). Minimum-width overlapping control precedence remains
+unresolved.
 
 These screens remain staged. Details, full responsive layout, tooltip coverage
 and tab navigation are unfinished. Quantity drafts currently support four digits; native increment

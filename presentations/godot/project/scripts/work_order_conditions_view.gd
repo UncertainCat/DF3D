@@ -13,6 +13,9 @@ var suggestion_scroll
 var condition_first:=0
 var suggestion_first:=0
 var wide_tabs:=false
+var hover_help
+var pointer_known:=false
+var pointer_global:=Vector2.ZERO
 # Native38da4c..38db58: right-anchored controls and a two-cell header shift
 # when the shared information tabs fit on one row.
 func header_top() -> int:return 48 if wide_tabs else 72
@@ -23,9 +26,13 @@ func condition_capacity() -> int:return maxi(0,int((size.y-204-condition_top())/
 func row_shift(suggested: bool) -> int:return 16 if (suggestion_scroll.visible if suggested else condition_scroll.visible) else 0
 const COMPARISONS=["at least","at most","greater than","less than","exactly","not"]
 const FREQUENCIES=["One-time order","Restarts if completed, checked daily","Restarts if completed, checked monthly","Restarts if completed, checked seasonally","Restarts if completed, checked yearly"]
-func configure_conditions(source,model) -> void:
+func configure_conditions(source,model,help=null) -> void:
+	hover_help=help
 	super.configure(source);scrollbar.hide();state=model;colors=art.installed_palette(source.assets_root())
 	mouse_filter=Control.MOUSE_FILTER_STOP
+	mouse_exited.connect(leave_hover)
+	visibility_changed.connect(func():
+		if not is_visible_in_tree():leave_hover())
 	scrollbar.row_changed.connect(func(value):state.seek_filter(value))
 	scrollbar.input_allowed=func():return state.phase==state.Phase.Ready and (not input_allowed.is_valid() or input_allowed.call())
 	condition_scroll=preload("res://scripts/area_location_scrollbar.gd").new()
@@ -55,6 +62,7 @@ func sync_filter_scroll() -> void:
 		suggestion_scroll.set_rows(state.snapshot.get("suggested_conditions",[]).size(),suggestion_first);suggestion_first=suggestion_scroll.first
 	else:condition_scroll.hide();suggestion_scroll.hide()
 func _process(_delta: float) -> void:
+	update_hover()
 	var next:=Time.get_ticks_msec()%1000<500
 	if state!=null and state.filter_kind>=0 and blink!=next:blink=next;queue_redraw()
 func feed_filter(event: InputEventKey) -> void:
@@ -104,6 +112,8 @@ func _input(event: InputEvent) -> void:
 	elif event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_RIGHT:
 		cancelled.emit();get_viewport().set_input_as_handled()
 func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion or event is InputEventMouseButton:
+		pointer_known=true;pointer_global=get_global_transform()*event.position;update_hover()
 	if input_allowed.is_valid() and not input_allowed.call():return
 	if state.filter_kind>=0:
 		if event is InputEventMouseButton and event.pressed:
@@ -139,6 +149,32 @@ func _gui_input(event: InputEvent) -> void:
 				elif Rect2(right_x(592)-shift,condition_top()+index*36,32,36).has_point(event.position):state.edit_dependency(row);break
 				if Rect2(right_x(848)-shift,condition_top()+index*36,32,36).has_point(event.position):finish_entry();state.remove_condition(row);break
 		accept_event()
+func hover_kind(point: Vector2) -> String:
+	if state==null or state.phase!=state.Phase.Ready or state.filter_kind>=0 or state.snapshot.is_empty():return ""
+	for index in 3:
+		if Rect2(right_x(832)+index*32,header_top(),32,36).has_point(point):return ["frequency","add_item","add_order"][index]
+	var shift:=row_shift(false)
+	for index in mini(state.snapshot.conditions.size()-condition_first,condition_capacity()):
+		var row: Dictionary=state.snapshot.conditions[condition_first+index]
+		var y:=condition_top()+index*36
+		if Rect2(right_x(848)-shift,y,32,36).has_point(point):return "remove_condition"
+		if row.kind!=0:continue
+		for button in 7:
+			if Rect2(right_x(592)+button*32-shift,y,32,36).has_point(point):
+				return ["condition_amount","condition_amount","condition_amount","comparison","item_type","material","traits"][button]
+	return ""
+func update_hover() -> void:
+	if not is_instance_valid(hover_help):return
+	var kind:=""
+	if pointer_known and is_visible_in_tree() and (not input_allowed.is_valid() or input_allowed.call()):
+		kind=hover_kind(get_global_transform().affine_inverse()*pointer_global)
+	if kind.is_empty():hover_help.leave(get_instance_id())
+	else:hover_help.enter_work_order(get_instance_id(),kind)
+func leave_hover() -> void:
+	pointer_known=false
+	if is_instance_valid(hover_help):hover_help.leave(get_instance_id())
+func _exit_tree() -> void:
+	leave_hover()
 func text(value: String,point: Vector2,color: int=15) -> void:
 	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point,value,HORIZONTAL_ALIGNMENT_LEFT,-1,12,colors[color] if colors.size()>color else Color.WHITE)
 func icon(token: String,point: Vector2) -> void:

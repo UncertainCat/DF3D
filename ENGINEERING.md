@@ -7408,6 +7408,18 @@ Use `DF3D_WORK_ORDER_NAVIGATION=1` with the focused artwork-reference lane.
 This establishes navigation/input ownership, not resized writes or epoch-change
 acceptance for every child panel.
 
+With `DF3D_WORK_ORDER_RESIZED_EDIT=1`, the same composed navigation lane edits
+the first item-condition threshold at1600x900, returns to the global list, and
+increments quantity and workshop limit at native wide-layout coordinates.
+Protected003744 on2026-11-06 confirms each receipt, then independently reads
+all three changed values from DF. Frequency and artwork fields remain unchanged;
+Details/Back, minimum-size navigation, close/reopen and host close still pass.
+DF27068 exits unsaved and the source save is unchanged. Paired Godot logs contain
+only documented diagnostics; core19/19 and headless composition pass in
+`build/qa/work-orders-resized-edits`. This covers those three wide-layout edits;
+filter/dependency selection after resizing and full epoch-change acceptance
+remain separate gaps.
+
 The global Work orders view uses the shared native hover service for active
 status, quantity, priority, Conditions, Details, removal and workshop limits.
 Protected002223 on2026-11-06 captures exact native24-cell text and instruction

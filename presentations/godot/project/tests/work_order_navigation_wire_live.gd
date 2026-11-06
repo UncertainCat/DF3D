@@ -34,10 +34,27 @@ func run() -> void:
  check(not owner.global_orders_view.visible and owner.conditions_view.visible,"Conditions did not replace list")
  await resize_view(Vector2i(1600,900))
  check(owner.conditions_view.size.x==1344 and host.active==owner,"Conditions resize lost layout or ownership")
+ if plan.get("edits",false):
+  click(Vector2(1072,150))
+  if not check(await settle(service,func():return owner.conditions.phase==owner.conditions.Phase.Ready and owner.conditions.ticket==0),"Resized condition amount was not confirmed"):quit(1);return
+  check(owner.conditions.snapshot.conditions[0].threshold==int(plan.threshold)+1,"Resized condition amount differs")
  root.get_texture().get_image().save_png(directory+"/work-order-navigation-conditions-wide.png")
  number_key(KEY_ESCAPE)
  if not check(await settle(service,func():return owner.global_orders.phase==owner.global_orders.Phase.Ready and owner.global_orders_view.visible),"Conditions Back did not restore list"):quit(1);return
  check(not owner.conditions_view.visible and host.active==owner,"Conditions Back retained child or lost input")
+ if plan.get("edits",false):
+  var y: float=order_point(owner,int(plan.id),1).y
+  click(Vector2(560,y))
+  if not check(await settle(service,func():return owner.global_orders.phase==owner.global_orders.Phase.Ready and owner.global_orders.ticket==0),"Resized quantity was not confirmed"):quit(1);return
+  var row: Dictionary={}
+  for candidate in owner.global_orders.rows.values():
+   if int(candidate.id)==int(plan.id):row=candidate
+  check(row.get("remaining",-1)==int(plan.remaining)+1 and row.get("total",-1)==int(plan.remaining)+1,"Resized quantity differs")
+  click(Vector2(1088,y))
+  if not check(await settle(service,func():return owner.global_orders.phase==owner.global_orders.Phase.Ready and owner.global_orders.ticket==0),"Resized workshop limit was not confirmed"):quit(1);return
+  for candidate in owner.global_orders.rows.values():
+   if int(candidate.id)==int(plan.id):row=candidate
+  check(row.get("max_workshops",-1)==int(plan.limit)+1,"Resized workshop limit differs")
  click(order_point(owner,int(plan.id),6))
  if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready),"Details navigation failed"):quit(1);return
  await resize_view(Vector2i(912,552))

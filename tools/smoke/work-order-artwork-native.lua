@@ -130,12 +130,15 @@ if os.getenv('DF3D_WORK_ORDER_HOVER')=='1' then
 end
 if os.getenv('DF3D_WORK_ORDER_NAVIGATION')=='1' then
  local quantity,remaining,limit,frequency=order.amount_total,order.amount_left,order.max_workshops,order.frequency
- local f=assert(io.open(out..'/work-order-navigation-expected.json','w'));f:write(json.encode({id=order.id}));f:close()
+ local edits=os.getenv('DF3D_WORK_ORDER_RESIZED_EDIT')=='1'
+ local threshold=edits and order.item_conditions[0].compare_val or -1
+ local f=assert(io.open(out..'/work-order-navigation-expected.json','w'));f:write(json.encode({id=order.id,edits=edits,remaining=remaining,limit=limit,threshold=threshold}));f:close()
  shot('work-order-navigation-wire')
  f=assert(io.open(out..'/work-order-navigation-wire-result.json'));local result=json.decode(f:read('*a'));f:close();assert(result.success,'Work orders navigation failed')
- assert(order.amount_total==quantity and order.amount_left==remaining and order.max_workshops==limit and order.frequency==frequency,'Navigation changed order quantities/frequency')
+ assert(order.amount_total==(edits and remaining+1 or quantity) and order.amount_left==remaining+(edits and 1 or 0) and order.max_workshops==limit+(edits and 1 or 0) and order.frequency==frequency,'Navigation/edit order quantities or frequency differ')
+ if edits then assert(order.item_conditions[0].compare_val==threshold+1,'Resized condition edit differs')end
  assert(order.specdata.hist_figure_id==before.spec and order.art_spec.type==before.typ and order.art_spec.id==before.id and order.art_spec.subid==before.subid,'Navigation changed order details')
- records[#records+1]={name='work-order-navigation',order_unchanged=true}
+ records[#records+1]={name='work-order-navigation',order_unchanged=not edits,resized_edits_match=edits}
  return
 end
 if os.getenv('DF3D_WORK_ORDER_LAYOUT')=='1' then

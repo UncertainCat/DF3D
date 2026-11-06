@@ -1000,6 +1000,27 @@ New-image drafts, rendered full-owner workflows and ordinary-production jobs
 remain unfinished, and public Residents is still hidden.
 
 
+Job new-image discovery uses DF3D_RESIDENTS_JOB_ART_DRAFT with the existing
+Residents artwork capture. Protected091625 on2026-11-06 opens the actual
+job-backed draft, adds its first native Creature choice and clicks Done. The
+empty draft/root and populated layout are retained as native references. Before
+Done, the job artwork and fortress image catalog remain unchanged. Done adds
+exactly one fortress image, writes job art type3 and the registered ID/sub-ID,
+and closes artwork/Details back to Residents. Source preservation passes and
+DF36400 exits unsaved; native30FPS, GPU46C sampled, no Godot renderer. Earlier
+091540 used the subject-list hitbox for the different creature draft layout;
+the corrected capture uses that list's actual row. 091456 ran only the existing
+non-draft oracle after a failed patch and supplies no draft evidence.
+
+Native20b02b..20b2a5 registers the image through the shared image allocator,
+copy and entity symbol path. The job-specific write is20b2b1..20b2e2; the following
+manager branch performs separate requirement rebuilding and must not be used
+for jobs. The shared WorkOrderArtDraft owns native image/list scratch and is a
+candidate for reuse; its page wrapper still takes a manager order. Job drafts,
+name editing and typed draft transport remain to be connected. The reference
+is fixtures/residents/native_job_settings.json.artwork_draft_reference.
+
+
 ## Farm removal native entry points
 
 The diagnostic `df3d farm-contents-read <farm>` returns contained items in native

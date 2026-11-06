@@ -4923,5 +4923,836 @@
     "diagnostics": "Known separate-render-thread notice only. Earlier091138 had an oracle reopen assumption failure and unclassified Godot update_end shutdown error; not accepted.",
     "source_preserved": true,
     "owned_df_closed": true
+  },
+  "artwork_draft_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-091625",
+    "date": "2026-11-06",
+    "draft": {
+      "before": {
+        "art_open": true,
+        "details_open": true,
+        "id": -1,
+        "info_open": true,
+        "requirements": 0,
+        "specdata": -1,
+        "subid": -1,
+        "type": -1
+      },
+      "caste": -1,
+      "creatures": [
+        {
+          "text": "                  Roderònul           Pop                                  Food  Drink           20th Malachite",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+          "y": 2
+        },
+        {
+          "text": "",
+          "y": 3
+        },
+        {
+          "text": "                                           Image information for Make rock statue",
+          "y": 4
+        },
+        {
+          "text": "",
+          "y": 5
+        },
+        {
+          "text": "",
+          "y": 6
+        },
+        {
+          "text": "",
+          "y": 7
+        },
+        {
+          "text": "",
+          "y": 8
+        },
+        {
+          "text": "",
+          "y": 9
+        },
+        {
+          "text": "",
+          "y": 10
+        },
+        {
+          "text": "",
+          "y": 11
+        },
+        {
+          "text": "     Creature                    ...",
+          "y": 12
+        },
+        {
+          "text": "",
+          "y": 13
+        },
+        {
+          "text": "",
+          "y": 14
+        },
+        {
+          "text": "     Historical figure         Aardvark",
+          "y": 15
+        },
+        {
+          "text": "                                                                                                                                    Elevation 36",
+          "y": 16
+        },
+        {
+          "text": "",
+          "y": 17
+        },
+        {
+          "text": "     Plant   Tree              Aardvark,",
+          "y": 18
+        },
+        {
+          "text": "",
+          "y": 19
+        },
+        {
+          "text": "",
+          "y": 20
+        },
+        {
+          "text": "     Shape   Object            Aardvark,",
+          "y": 21
+        },
+        {
+          "text": "",
+          "y": 22
+        },
+        {
+          "text": "",
+          "y": 23
+        },
+        {
+          "text": "     Artifact                  Aardvark man",
+          "y": 24
+        },
+        {
+          "text": "",
+          "y": 25
+        },
+        {
+          "text": "",
+          "y": 26
+        },
+        {
+          "text": "     Action or relationship    Aardvark woman,",
+          "y": 27
+        },
+        {
+          "text": "",
+          "y": 28
+        },
+        {
+          "text": "",
+          "y": 29
+        },
+        {
+          "text": "     Delete element            Aardvark man,",
+          "y": 30
+        },
+        {
+          "text": "",
+          "y": 31
+        },
+        {
+          "text": "",
+          "y": 32
+        },
+        {
+          "text": "                               Acorn fly",
+          "y": 33
+        },
+        {
+          "text": "     Cancel",
+          "y": 34
+        },
+        {
+          "text": "",
+          "y": 35
+        },
+        {
+          "text": "                               Acorn fly,",
+          "y": 36
+        },
+        {
+          "text": "",
+          "y": 37
+        },
+        {
+          "text": "",
+          "y": 38
+        },
+        {
+          "text": "                               Acorn fly,",
+          "y": 39
+        },
+        {
+          "text": "",
+          "y": 40
+        },
+        {
+          "text": "",
+          "y": 41
+        },
+        {
+          "text": "                               Adder",
+          "y": 42
+        },
+        {
+          "text": "",
+          "y": 43
+        },
+        {
+          "text": "",
+          "y": 44
+        },
+        {
+          "text": "                               Adder,",
+          "y": 45
+        },
+        {
+          "text": "",
+          "y": 46
+        },
+        {
+          "text": "",
+          "y": 47
+        },
+        {
+          "text": "                               Adder,",
+          "y": 48
+        },
+        {
+          "text": "",
+          "y": 49
+        },
+        {
+          "text": "",
+          "y": 50
+        },
+        {
+          "text": "                               Adder man",
+          "y": 51
+        },
+        {
+          "text": "",
+          "y": 52
+        },
+        {
+          "text": "",
+          "y": 53
+        },
+        {
+          "text": "",
+          "y": 54
+        },
+        {
+          "text": "",
+          "y": 55
+        },
+        {
+          "text": "",
+          "y": 56
+        },
+        {
+          "text": "",
+          "y": 57
+        },
+        {
+          "text": "",
+          "y": 58
+        },
+        {
+          "text": "",
+          "y": 59
+        },
+        {
+          "text": "",
+          "y": 60
+        },
+        {
+          "text": "                               Number:   1                                         (0 for unnumbered plural)",
+          "y": 61
+        },
+        {
+          "text": "",
+          "y": 62
+        },
+        {
+          "text": "",
+          "y": 63
+        },
+        {
+          "text": "",
+          "y": 64
+        },
+        {
+          "text": "",
+          "y": 65
+        }
+      ],
+      "done": {
+        "art_open": false,
+        "details_open": false,
+        "id": 4,
+        "info_open": true,
+        "requirements": 0,
+        "specdata": -1,
+        "subid": 123,
+        "type": 3
+      },
+      "populated": [
+        {
+          "text": "                  Roderònul           Pop                                  Food  Drink           20th Malachite",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+          "y": 2
+        },
+        {
+          "text": "",
+          "y": 3
+        },
+        {
+          "text": "                                           Image information for Make rock statue",
+          "y": 4
+        },
+        {
+          "text": "",
+          "y": 5
+        },
+        {
+          "text": "    It is an image of a aardvark.",
+          "y": 6
+        },
+        {
+          "text": "",
+          "y": 7
+        },
+        {
+          "text": "",
+          "y": 8
+        },
+        {
+          "text": "",
+          "y": 9
+        },
+        {
+          "text": "",
+          "y": 10
+        },
+        {
+          "text": "",
+          "y": 11
+        },
+        {
+          "text": "     Creature",
+          "y": 12
+        },
+        {
+          "text": "",
+          "y": 13
+        },
+        {
+          "text": "",
+          "y": 14
+        },
+        {
+          "text": "     Historical figure",
+          "y": 15
+        },
+        {
+          "text": "                                                                                                                                    Elevation 36",
+          "y": 16
+        },
+        {
+          "text": "",
+          "y": 17
+        },
+        {
+          "text": "     Plant   Tree",
+          "y": 18
+        },
+        {
+          "text": "",
+          "y": 19
+        },
+        {
+          "text": "",
+          "y": 20
+        },
+        {
+          "text": "     Shape   Object",
+          "y": 21
+        },
+        {
+          "text": "",
+          "y": 22
+        },
+        {
+          "text": "",
+          "y": 23
+        },
+        {
+          "text": "     Artifact",
+          "y": 24
+        },
+        {
+          "text": "",
+          "y": 25
+        },
+        {
+          "text": "",
+          "y": 26
+        },
+        {
+          "text": "     Action or relationship",
+          "y": 27
+        },
+        {
+          "text": "",
+          "y": 28
+        },
+        {
+          "text": "",
+          "y": 29
+        },
+        {
+          "text": "     Delete element",
+          "y": 30
+        },
+        {
+          "text": "",
+          "y": 31
+        },
+        {
+          "text": "",
+          "y": 32
+        },
+        {
+          "text": "",
+          "y": 33
+        },
+        {
+          "text": "     Name   Done   Back",
+          "y": 34
+        },
+        {
+          "text": "",
+          "y": 35
+        },
+        {
+          "text": "",
+          "y": 36
+        },
+        {
+          "text": "",
+          "y": 37
+        },
+        {
+          "text": "",
+          "y": 38
+        },
+        {
+          "text": "",
+          "y": 39
+        },
+        {
+          "text": "",
+          "y": 40
+        },
+        {
+          "text": "",
+          "y": 41
+        },
+        {
+          "text": "",
+          "y": 42
+        },
+        {
+          "text": "",
+          "y": 43
+        },
+        {
+          "text": "",
+          "y": 44
+        },
+        {
+          "text": "",
+          "y": 45
+        },
+        {
+          "text": "",
+          "y": 46
+        },
+        {
+          "text": "",
+          "y": 47
+        },
+        {
+          "text": "",
+          "y": 48
+        },
+        {
+          "text": "",
+          "y": 49
+        },
+        {
+          "text": "",
+          "y": 50
+        },
+        {
+          "text": "",
+          "y": 51
+        },
+        {
+          "text": "",
+          "y": 52
+        },
+        {
+          "text": "",
+          "y": 53
+        },
+        {
+          "text": "",
+          "y": 54
+        },
+        {
+          "text": "",
+          "y": 55
+        },
+        {
+          "text": "",
+          "y": 56
+        },
+        {
+          "text": "",
+          "y": 57
+        },
+        {
+          "text": "",
+          "y": 58
+        },
+        {
+          "text": "",
+          "y": 59
+        },
+        {
+          "text": "",
+          "y": 60
+        },
+        {
+          "text": "",
+          "y": 61
+        },
+        {
+          "text": "",
+          "y": 62
+        },
+        {
+          "text": "",
+          "y": 63
+        },
+        {
+          "text": "",
+          "y": 64
+        },
+        {
+          "text": "",
+          "y": 65
+        }
+      ],
+      "race": 755,
+      "registered_after": 2,
+      "registered_before": 1,
+      "root": [
+        {
+          "text": "                  Roderònul           Pop                                  Food  Drink           20th Malachite",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+          "y": 1
+        },
+        {
+          "text": "                  City                141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+          "y": 2
+        },
+        {
+          "text": "",
+          "y": 3
+        },
+        {
+          "text": "                                           Image information for Make rock statue",
+          "y": 4
+        },
+        {
+          "text": "",
+          "y": 5
+        },
+        {
+          "text": "",
+          "y": 6
+        },
+        {
+          "text": "",
+          "y": 7
+        },
+        {
+          "text": "",
+          "y": 8
+        },
+        {
+          "text": "",
+          "y": 9
+        },
+        {
+          "text": "",
+          "y": 10
+        },
+        {
+          "text": "",
+          "y": 11
+        },
+        {
+          "text": "     Creature",
+          "y": 12
+        },
+        {
+          "text": "",
+          "y": 13
+        },
+        {
+          "text": "",
+          "y": 14
+        },
+        {
+          "text": "     Historical figure",
+          "y": 15
+        },
+        {
+          "text": "                                                                                                                                    Elevation 36",
+          "y": 16
+        },
+        {
+          "text": "",
+          "y": 17
+        },
+        {
+          "text": "     Plant   Tree",
+          "y": 18
+        },
+        {
+          "text": "",
+          "y": 19
+        },
+        {
+          "text": "",
+          "y": 20
+        },
+        {
+          "text": "     Shape   Object",
+          "y": 21
+        },
+        {
+          "text": "",
+          "y": 22
+        },
+        {
+          "text": "",
+          "y": 23
+        },
+        {
+          "text": "     Artifact",
+          "y": 24
+        },
+        {
+          "text": "",
+          "y": 25
+        },
+        {
+          "text": "",
+          "y": 26
+        },
+        {
+          "text": "     Action or relationship",
+          "y": 27
+        },
+        {
+          "text": "",
+          "y": 28
+        },
+        {
+          "text": "",
+          "y": 29
+        },
+        {
+          "text": "     Delete element",
+          "y": 30
+        },
+        {
+          "text": "",
+          "y": 31
+        },
+        {
+          "text": "",
+          "y": 32
+        },
+        {
+          "text": "",
+          "y": 33
+        },
+        {
+          "text": "     Name   Done   Back",
+          "y": 34
+        },
+        {
+          "text": "",
+          "y": 35
+        },
+        {
+          "text": "",
+          "y": 36
+        },
+        {
+          "text": "",
+          "y": 37
+        },
+        {
+          "text": "",
+          "y": 38
+        },
+        {
+          "text": "",
+          "y": 39
+        },
+        {
+          "text": "",
+          "y": 40
+        },
+        {
+          "text": "",
+          "y": 41
+        },
+        {
+          "text": "",
+          "y": 42
+        },
+        {
+          "text": "",
+          "y": 43
+        },
+        {
+          "text": "",
+          "y": 44
+        },
+        {
+          "text": "",
+          "y": 45
+        },
+        {
+          "text": "",
+          "y": 46
+        },
+        {
+          "text": "",
+          "y": 47
+        },
+        {
+          "text": "",
+          "y": 48
+        },
+        {
+          "text": "",
+          "y": 49
+        },
+        {
+          "text": "",
+          "y": 50
+        },
+        {
+          "text": "",
+          "y": 51
+        },
+        {
+          "text": "",
+          "y": 52
+        },
+        {
+          "text": "",
+          "y": 53
+        },
+        {
+          "text": "",
+          "y": 54
+        },
+        {
+          "text": "",
+          "y": 55
+        },
+        {
+          "text": "",
+          "y": 56
+        },
+        {
+          "text": "",
+          "y": 57
+        },
+        {
+          "text": "",
+          "y": 58
+        },
+        {
+          "text": "",
+          "y": 59
+        },
+        {
+          "text": "",
+          "y": 60
+        },
+        {
+          "text": "",
+          "y": 61
+        },
+        {
+          "text": "",
+          "y": 62
+        },
+        {
+          "text": "",
+          "y": 63
+        },
+        {
+          "text": "",
+          "y": 64
+        },
+        {
+          "text": "",
+          "y": 65
+        }
+      ]
+    },
+    "scope": "Actual native job-backed new-image root, creature addition, and Done. Draft leaves job and fortress image catalog unchanged until Done; Done registers one image and assigns it to the disposable statue job. Zero requirements. No owned job draft adapter or DF3D draft UI acceptance.",
+    "source_preserved": true,
+    "owned_df_closed": true
   }
 }

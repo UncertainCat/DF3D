@@ -160,6 +160,24 @@ label('Allow artist to choose')
 result.artist_effect=effect();result.artist_adapter=artist_adapter;compare(artist_adapter,result.artist_effect)
 assert(job.art_spec.type==-1 and job.art_spec.id==-1 and job.art_spec.subid==-1 and not art.open,'Artist choice did not clear specification')
 reopen_art()
+if os.getenv('DF3D_RESIDENTS_JOB_ART_DRAFT')=='1' then
+ local original=effect();local resources=df.global.plotinfo.main.fortress_entity.resources
+ local count=#resources.art_image_ids
+ label('Specify a new image');assert(art.current_option==6,'Draft did not open')
+ result.draft={root=lines(),before=original,registered_before=count}
+ shot('residents-job-art-draft')
+ label('Creature');assert(art.current_option==7,'Draft creatures did not open')
+ result.draft.creatures=lines();result.draft.race=art.new_image_race[0];result.draft.caste=art.new_image_caste[0]
+ click(37,15);assert(art.current_option==6 and #art.new_image.elements==1,'Creature was not added')
+ result.draft.populated=lines();shot('residents-job-art-draft-populated')
+ assert(job.art_spec.type==original.type and job.art_spec.id==original.id and #resources.art_image_ids==count,'Draft changed world before Done')
+ label('Done')
+ result.draft.done=effect();result.draft.registered_after=#resources.art_image_ids;save()
+ assert(not art.open and not m.job_details.open and info.open,'Draft Done did not return to Residents')
+ assert(job.art_spec.type==3 and job.art_spec.id>=0 and job.art_spec.subid>=0,'Draft Done did not assign image')
+ assert(#resources.art_image_ids==count+1 and resources.art_image_ids[count]==job.art_spec.id and resources.art_image_subids[count]==job.art_spec.subid,'Draft registration differs')
+ reopen_art()
+end
 gui.simulateInput(view,'LEAVESCREEN');settle();result.escape=effect();save()
 assert(art.open and info.open,'Artwork Escape changed the native editor')
 df.global.enabler.mouse_rbut_lift=0;gui.simulateInput(view,'_MOUSE_R')

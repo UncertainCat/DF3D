@@ -27,6 +27,7 @@ func configure_details(source,model) -> void:
 		if state.phase==state.Phase.Closed:search_focused=false;hide()
 		if state.snapshot.get("selected_option",-1)<0:search_focused=false
 		if state.has_art() and state.art_page()<0:search_focused=false
+		if not draft_has_quantity():quantity_focused=false
 		sync_scroll();queue_redraw())
 func open(building: int,order: int) -> void:
 	state.open(building,order);show();queue_redraw()
@@ -49,10 +50,11 @@ func list_top() -> int:
 	return 84 if selected_kind()==3 else 120
 func sync_scroll() -> void:
 	if state==null or scrollbar==null:return
-	page_rows=maxi(1,int((size.y-list_top()-(132 if state.has_art() and state.art_page()>=7 and state.art_page()<=13 else 96 if state.has_art() and (state.art_page()>=6 or state.art_page() in [1,2,3]) else 60 if state.has_art() and state.art_page()==5 else 24))/36))
-	# Native2040c5..2040db includes the last creature row before the footer.
-	# Captured capacities are7/13/16 at552/800/900 pixels high.
-	if state.has_art() and state.art_page()==7:page_rows=maxi(1,int((size.y-list_top()-108)/36))
+	var footer:=96 if state.has_art() and (state.art_page()>=6 or state.art_page() in [1,2,3]) else 60 if state.has_art() and state.art_page()==5 else 24
+	# Native2040c5/204bab and the other element branches reserve three fewer
+	# cells for unique figures/artifacts, which have no quantity controls.
+	if state.has_art() and state.art_page()>=7 and state.art_page()<=13:footer=108 if draft_has_quantity() else 72
+	page_rows=maxi(1,int((size.y-list_top()-footer)/36))
 	state.draft_columns=maxi(1,int((size.x-32)/8))
 	state.visible_rows=page_rows
 	scrollbar.position=Vector2(size.x-32,list_top());scrollbar.size=Vector2(16,page_rows*36);scrollbar.page=page_rows
@@ -207,6 +209,8 @@ func draft_button(label: String,cell: Vector2i,enabled:=true,red:=false,selected
 	return Rect2(cell.x*8,cell.y*12,(label.length()+2)*8,36)
 func draft_enabled(id: int) -> bool:
 	return id not in [14,17] or not state.draft_value.elements.is_empty()
+func draft_has_quantity() -> bool:
+	return state!=null and state.has_art() and state.art_page() in [7,9,10,11,12]
 func filter_frame(cell: Vector2i,columns: int) -> void:
 	var filter: Texture2D=art.texture("BUTTON_FILTER")
 	if filter==null:return
@@ -249,7 +253,7 @@ func draw_draft() -> void:
 				# Native2092be uses the shared8:3 four-by-three removal artwork.
 				var remove: Texture2D=art.texture("LOCATION_OCCUPATION_REMOVE_WORKER")
 				if remove!=null:draw_texture_rect(remove,Rect2(size.x-48,list_top()+i*36,32,36),false)
-	if page>=7 and page<=13:
+	if draft_has_quantity():
 		text("Number:",Vector2(232,size.y-28))
 		filter_frame(Vector2i(37,int(size.y/12)-4),int((size.x-384)/8))
 		text(str(state.draft_quantity)+("_" if quantity_focused and blink else ""),Vector2(312,size.y-28))
@@ -280,7 +284,7 @@ func draft_input(event: InputEventMouseButton) -> void:
 	if (Rect2(128,360,48,36) if page==6 else Rect2(16,360,120,36)).has_point(event.position):back();accept_event();return
 	if page>=7 and page<=14 and Rect2(232,96,size.x-248,36).has_point(event.position):
 		quantity_focused=false;search_focused=not search_focused;queue_redraw();accept_event();return
-	if page>=7 and page<=13 and event.position.y>=size.y-48 and event.position.y<size.y-12:
+	if draft_has_quantity() and event.position.y>=size.y-48 and event.position.y<size.y-12:
 		search_focused=false
 		if event.position.x>=size.x-48:state.draft_quantity=maxi(0,state.draft_quantity-1)
 		elif event.position.x>=size.x-80:state.draft_quantity=mini(1000000000,state.draft_quantity+1)

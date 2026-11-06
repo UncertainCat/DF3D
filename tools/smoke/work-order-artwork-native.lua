@@ -321,9 +321,21 @@ if os.getenv('DF3D_WORK_ORDER_ARTWORK_RESIZE')=='1' then
   if draft_layout then
    assert(click_label('Specify a new image'));assert(art.current_option==6)
    shot('work-order-artwork-'..size..'-draft')
-   assert(click_label('Creature'));assert(art.current_option==7)
-   shot('work-order-artwork-'..size..'-creature')
-   assert(click_label('Cancel'));assert(art.current_option==6)
+   local categories=os.getenv('DF3D_WORK_ORDER_ARTWORK_CATEGORIES')=='1'
+    and {{7,'Creature','creature'},{8,'Historical figure','figure'},{9,'Plant','plant'},
+     {10,'Tree','tree'},{11,'Shape','shape'},{12,'Object','object'},{13,'Artifact','artifact'}}
+    or {{7,'Creature','creature'}}
+   for _,category in ipairs(categories)do
+    -- Plant also appears in the fortress resource bar; use the editor column.
+    local clicked=false
+    for _,row in ipairs(lines())do
+     local x=row.text:find(category[2],1,true)
+     if row.y>=11 and x and x<29 then mouse((x-1)*8+4,row.y*12+6);clicked=true;break end
+    end
+    assert(clicked and art.current_option==category[1],'Wrong draft category: '..category[2])
+    shot('work-order-artwork-'..size..'-'..category[3])
+    assert(click_label('Cancel'));assert(art.current_option==6)
+   end
    back()
    -- An empty draft may leave immediately; discard only if DF asks.
    click_label('Leave editor and discard data')
@@ -331,6 +343,14 @@ if os.getenv('DF3D_WORK_ORDER_ARTWORK_RESIZE')=='1' then
   end
  end
  assert(order.specdata.hist_figure_id==before.spec and order.art_spec.type==before.typ and order.art_spec.id==before.id and order.art_spec.subid==before.subid,'Resize changed order')
+ if os.getenv('DF3D_WORK_ORDER_ARTWORK_CATEGORIES')=='1' and os.getenv('DF3D_WORK_ORDER_ARTWORK_WIRE')=='1' then
+  local f=assert(io.open(out..'/work-order-artwork-expected.json','w'))
+  f:write(json.encode({id=order.id,option=option,categories=true}));f:close()
+  shot('work-order-artwork-wire')
+  f=assert(io.open(out..'/work-order-artwork-wire-result.json'));local result=json.decode(f:read('*a'));f:close()
+  assert(result.success,'Artwork categories viewer failed')
+  assert(order.specdata.hist_figure_id==before.spec and order.art_spec.type==before.typ and order.art_spec.id==before.id and order.art_spec.subid==before.subid,'Category navigation changed order')
+ end
  records[#records+1]={name='work-order-artwork-resize',screens=#observations,order_unchanged=true}
  return
 end

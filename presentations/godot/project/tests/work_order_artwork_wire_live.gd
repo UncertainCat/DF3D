@@ -16,7 +16,7 @@ func run() -> void:
  var bootstrap:=await request("construction",{"action":C.ManagementAction.Catalog})
  if not check(bootstrap.get("status")==C.ManagementStatus.Ok and world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Dye bootstrap/assets failed"):quit(1);return
  var preferences=preload("res://scripts/presentation_settings.gd");preferences.loaded=true;preferences.ui_scale=1.0
- root.size=Vector2i(1200,800)
+ root.size=Vector2i(912,552) if plan.get("categories",false) else Vector2i(1200,800)
  # Settle the separate renderer's viewport resize before creating canvas items.
  for _frame in 3:await process_frame
  await RenderingServer.frame_post_draw
@@ -24,7 +24,7 @@ func run() -> void:
  var state=preload("res://scripts/work_order_details_state.gd").new();state.configure(service)
  var view=preload("res://scripts/work_order_details_view.gd").new();root.add_child(view);view.configure_details(world,state)
  view.cancelled.connect(state.close);state.applied.connect(state.close)
- view.open(-2,int(plan.id));view.layout(Vector2(1200,800))
+ view.open(-2,int(plan.id));view.layout(Vector2(root.size))
  if not check(await settle(service,func():return state.phase==state.Phase.Ready),"Artwork Details failed"):quit(1);return
  await process_frame;click(Vector2(200,106+int(plan.option)*36))
  if not check(await settle(service,func():return state.phase==state.Phase.Ready and state.snapshot.selected_option==int(plan.option)),"Improvement chooser failed"):quit(1);return
@@ -39,6 +39,36 @@ func run() -> void:
   click(Vector2(200,154+artist_row*36))
   if not check(await settle(service,func():return state.phase==state.Phase.Closed),"Artist choice did not close Details after confirmation; phase="+str(state.phase)+" ticket="+str(state.ticket)):quit(1);return
   check(not view.visible,"Artist choice left Details visible")
+ elif plan.get("categories",false):
+  root.size=Vector2i(912,552)
+  await create_timer(0.3).timeout
+  view.layout(Vector2(912,552));await process_frame
+  click(view.position+Vector2(100,260))
+  if not check(await settle(service,func():return state.phase==state.Phase.Ready and state.art_page()==6),"New artwork at minimum failed"):quit(1);return
+  for category in view.DRAFT_CATEGORIES:
+   var page: int=category[0]
+   if page>13:continue
+   click(view.position+Vector2(category[2]*Vector2i(8,12))+Vector2(12,18))
+   if not check(await settle(service,func():return state.phase==state.Phase.Ready and state.art_page()==page),"Artwork category failed: "+str(page)):quit(1);return
+   var numbered: bool=page in [7,9,10,11,12]
+   check(view.page_rows==(7 if numbered else 8),"Category capacity differs from native: "+str(page))
+   if state.snapshot.art.total>view.page_rows:
+    check(view.scrollbar.visible,"Category scrollbar missing")
+    click(view.position+view.scrollbar.position+Vector2(8,view.scrollbar.size.y-6))
+    check(state.first==1,"Category scrollbar did not advance")
+    click(view.position+view.scrollbar.position+Vector2(8,6))
+    check(state.first==0,"Category scrollbar did not return")
+   click(view.position+Vector2(view.size.x-64,view.size.y-30))
+   check(state.draft_quantity==(2 if numbered else 1),"Category quantity input differs from native: "+str(page))
+   click(view.position+Vector2(312,view.size.y-30))
+   check(view.quantity_focused==numbered,"Category quantity focus differs from native: "+str(page))
+   number_key(KEY_ENTER)
+   if page in [8,13]:await capture("category-"+str(page),"minimum")
+   click(view.position+Vector2(32,378))
+   if not check(await settle(service,func():return state.phase==state.Phase.Ready and state.art_page()==6),"Category Cancel failed"):quit(1);return
+   check(not view.quantity_focused,"Quantity focus survived Cancel")
+  click(view.position+Vector2(144,378))
+  if not check(await settle(service,func():return state.phase==state.Phase.Ready and state.art_page()==-1),"Empty draft Back failed"):quit(1);return
  elif plan.has("subjects"):
   for subject in plan.subjects:
    click(Vector2(200,154+(int(subject.page)-1)*36))
@@ -77,7 +107,7 @@ func run() -> void:
   if not check(await settle(service,func():return state.phase==state.Phase.Ready and state.art_page()==-1),"Discard did not return to artwork root"):quit(1);return
   check(state.draft_value.elements.is_empty() and state.draft_value.relationships.is_empty(),"Discard retained draft content")
  var file:=FileAccess.open(directory+"/work-order-artwork-wire-result.json",FileAccess.WRITE)
- file.store_string(JSON.stringify({"success":not failed,"subjects":plan.has("subjects"),"artist":plan.get("artist",false),"discarded":not plan.has("subjects") and not plan.get("artist",false)}));file.close()
+ file.store_string(JSON.stringify({"success":not failed,"subjects":plan.has("subjects"),"artist":plan.get("artist",false),"categories":plan.get("categories",false),"discarded":not plan.has("subjects") and not plan.get("artist",false) and not plan.get("categories",false)}));file.close()
  state.dispose();view.queue_free();service.queue_free();await process_frame
  world.detach_live();world.queue_free();await process_frame
  quit(1 if failed else 0)

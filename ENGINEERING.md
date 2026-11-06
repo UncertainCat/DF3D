@@ -7314,8 +7314,30 @@ view was visually compared with native in `build/qa/artwork-minimum-fixed`;
 synthetic row labels and scrollbar totals are not native content acceptance.
 Core19/19 and composition pass in `build/qa/artwork-minimum-gate`, with only
 documented diagnostics in the paired rendered logs. This establishes geometry,
-not resized live edits. Other draft categories, additional subjects and multiline
-previews still require responsive acceptance.
+not resized live edits. Additional subjects and multiline previews still require
+responsive acceptance.
+
+`DF3D_WORK_ORDER_ARTWORK_CATEGORIES=1` extends the draft layout oracle to all
+seven element categories. Native011929 on2026-11-06 establishes quantity controls
+for Creature/Plant/Tree/Shape/Object only; Historical figure and Artifact select
+unique subjects and have no quantity footer. Their capacities are8/14/17 at
+552/800/900 pixels, versus7/13/16 for numbered categories. The view uses those
+native footer reservations (renderer2040c5/204bab and corresponding branches),
+omits quantity rendering/input for unique subjects, and releases quantity focus
+when leaving numbered pages. Failed011832 clicked the fortress resource-bar
+Plant label; the oracle now restricts category clicks to the editor column.
+
+With `DF3D_WORK_ORDER_ARTWORK_WIRE=1`, protected012249 exercises all seven pages
+through real view input and the semantic service at912x552: category entry,
+native row capacities, scrolling down/up, quantity increment/focus where
+supported, inert footer input otherwise, Cancel and empty-draft Back. Native
+readback confirms unchanged order artwork. DF17368 exits unsaved; the source
+save is unchanged. Core19/19 and composition pass in
+`build/qa/artwork-category-controls-final`; paired live logs contain only documented
+Godot diagnostics. Captures show the corrected footer and row layout, but the
+scrollbar artwork is absent despite successful arrow input; retained images
+also show artifact caption truncation differences. These remain visual gaps,
+not full rendered acceptance. This flow does not commit a new artwork image.
 
 Protected010525 on2026-11-02 exercises Existing image in the shared viewer after
 the assembled Work orders/conditions/Details workflow. Hover text and wrapping

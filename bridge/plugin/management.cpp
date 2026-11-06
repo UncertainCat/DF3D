@@ -86,6 +86,7 @@
 #include "residents_specialization_native.h"
 #include "residents_activity_description_native.h"
 #include "job_settings_native.h"
+#include "job_art_native.h"
 #include "creature_follow_native.h"
 #include "creature_expel_preview_native.h"
 #include "creature_expel_action_native.h"
@@ -450,7 +451,7 @@ struct ResidentsSpecializationResult {int32_t id=-1;m::ResidentsSpecializationOu
 std::optional<ResidentsSpecializationResult> residentsSpecialization;
 struct ResidentsActivityResult {int32_t unitId;df3d_residents::ActivityDescription description;};
 std::optional<ResidentsActivityResult> residentsActivity;
-struct JobSettingsResult {int32_t unitId=-1;uint32_t cursor=0;df3d_production::JobSettingsObservation value;};
+struct JobSettingsResult {int32_t unitId=-1;uint32_t cursor=0;df3d_production::JobSettingsObservation value;std::optional<df3d_production::WorkOrderArtPage> art;};
 std::optional<JobSettingsResult> jobSettings;
 struct JobSettingsEditResult {int32_t jobId,buildingId,unitId;m::JobSettingsEditOutcome outcome;};
 std::optional<JobSettingsEditResult> jobSettingsEdit;
@@ -983,8 +984,16 @@ void publish() {
     for(const auto& o:v.options)options.push_back(m::CreateWorkOrderDetailsOption(b,uint8_t(o.kind),o.index,b.CreateString(o.caption)));
     const size_t end=std::min(size_t(jobSettings->cursor)+64,v.materials.size());
     for(size_t i=jobSettings->cursor;i<end;++i){const auto& c=v.materials[i];choices.push_back(m::CreateJobSettingsChoice(b,c.id,b.CreateString(c.caption),c.countCaption?b.CreateString(*c.countCaption):0,c.estimated));}
+    flatbuffers::Offset<m::WorkOrderArtState> art;
+    if(jobSettings->art) {
+      const auto& a=*jobSettings->art;std::vector<flatbuffers::Offset<m::WorkOrderArtRow>> rows;
+      for(const auto& row:a.rows)rows.push_back(m::CreateWorkOrderArtRow(b,row.id,b.CreateString(row.caption),row.badge?b.CreateString(*row.badge):0));
+      flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<flatbuffers::String>>> preview;
+      if(a.preview){std::vector<flatbuffers::Offset<flatbuffers::String>> lines;for(const auto& line:*a.preview)lines.push_back(b.CreateString(line));preview=b.CreateVector(lines);}
+      art=m::CreateWorkOrderArtState(b,a.page,b.CreateString(a.caption),b.CreateVector(rows),a.listRevision,a.total,a.nextCursor,a.hovered,preview);
+    }
     jobSettingsResult=m::CreateJobSettingsState(b,v.jobId,v.buildingId,jobSettings->unitId,v.revision,b.CreateString(v.caption),
-      b.CreateVector(options),int16_t(v.selected),b.CreateVector(choices),v.choicesRevision,uint32_t(v.materials.size()),jobSettings->cursor,end<v.materials.size()?uint32_t(end):0,v.currentValue?b.CreateString(*v.currentValue):0);
+      b.CreateVector(options),int16_t(v.selected),b.CreateVector(choices),v.choicesRevision,uint32_t(v.materials.size()),jobSettings->cursor,end<v.materials.size()?uint32_t(end):0,v.currentValue?b.CreateString(*v.currentValue):0,0,art);
   }
   flatbuffers::Offset<m::ResidentsActivityState> residentsActivityResult;
   if(residentsActivity) {
@@ -3855,6 +3864,22 @@ void run(color_ostream& out) {
         for(auto* job:holder->jobs)if(job && job->id==q.job_id()){source=job;break;}
       }
       if(source) {
+        if(q.art_page()!=-2) {
+          auto root=df3d_production::nativeJobSettings(*source,-1,{},false);
+          if(root && root->buildingId==q.building_id() && q.option()>=0 && size_t(q.option())<root->options.size() &&
+             (root->options[size_t(q.option())].kind==1 || root->options[size_t(q.option())].kind==3)) {
+            auto page=df3d_production::nativeJobArtPage(*source,q.art_page(),UTF2DF(q.query()->str()),q.cursor(),q.expected_list_revision(),q.hovered(),q.preview_columns());
+            if(page && page->revision==root->revision) {
+              const auto convert=[](std::string& text,size_t limit){text=DF2UTF(text);return text.size()<=limit && text.find('\0')==std::string::npos;};
+              bool bounded=convert(root->caption,512) && convert(page->page.caption,512);
+              for(auto& option:root->options)if(!convert(option.caption,512))bounded=false;
+              for(auto& row:page->page.rows)if(!convert(row.caption,1024) || (row.badge && !convert(*row.badge,128)))bounded=false;
+              if(page->page.preview)for(auto& line:*page->page.preview)if(!convert(line,2048))bounded=false;
+              if(bounded){root->selected=q.option();jobSettings=JobSettingsResult{q.unit_id(),0,std::move(*root),std::move(page->page)};status=m::ManagementStatus::Ok;}
+            }
+          }
+          publish();return;
+        }
         auto value=df3d_production::nativeJobSettings(*source,q.option(),UTF2DF(q.query()->str()));
         if(value && value->buildingId==q.building_id() && q.cursor()<=value->materials.size()) {
           const auto convert=[](std::string& text,size_t limit){text=DF2UTF(text);return text.size()<=limit && text.find('\0')==std::string::npos;};

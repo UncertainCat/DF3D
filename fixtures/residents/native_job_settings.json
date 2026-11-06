@@ -4562,5 +4562,36 @@
       }
     ],
     "scope": "Owned root labels match native. First/second 128-row subject page IDs match native; existing-image page has two rows. First-row preview text matches native at118columns for each category, and stale list receipts reject. No search, arbitrary later pages, typed transport, edits or rendered DF3D UI acceptance."
+  },
+  "artwork_wire_reference": {
+    "source": "build/stockpile-storage-native-input-20261106-084253",
+    "bridge_sha256": "20ACF26E9827D6BA6B747BB68FB236C4A67BC2311F29B186C1115C1B96D80C5D",
+    "management_version": 138,
+    "result": {
+      "artwork_pages": [
+        {
+          "page": 1.0,
+          "preview": true,
+          "total": 10563
+        },
+        {
+          "page": 2.0,
+          "preview": true,
+          "total": 680
+        },
+        {
+          "page": 3.0,
+          "preview": true,
+          "total": 1263
+        },
+        {
+          "page": 5.0,
+          "preview": true,
+          "total": 2
+        }
+      ],
+      "success": true
+    },
+    "scope": "Headless actual Management138 transport: root header/six choices, all subject/image totals, second subject pages retain list receipts,118-column first previews match recorded native reference, stale receipts and wrong job/holder/resident reject with empty results, unrelated response retires artwork. Read only; no owner UI, search, edits or draft acceptance."
   }
 }

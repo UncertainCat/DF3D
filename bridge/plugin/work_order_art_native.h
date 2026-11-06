@@ -272,11 +272,11 @@ struct WorkOrderArtPage {
 // Catalog suppliers own their source-specific eligibility and revision checks.
 // This shared formatter only produces pointer-free pages and owned previews.
 template<class Subjects,class Images>
-inline std::optional<WorkOrderArtPage> nativeArtPage(std::string caption,int16_t page,const std::string& query,uint32_t cursor,uint64_t listRevision,int32_t hovered,uint16_t columns,Subjects subjectsFor,Images imagesFor) {
+inline std::optional<WorkOrderArtPage> nativeArtPage(std::string heading,int16_t page,const std::string& query,uint32_t cursor,uint64_t listRevision,int32_t hovered,uint16_t columns,Subjects subjectsFor,Images imagesFor) {
     if(!workOrderArtSubjectsReady())return std::nullopt;
     if(hovered>=0 && ((page!=5 && (page<1 || page>3)) || !columns || !listRevision))return std::nullopt;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
-    WorkOrderArtPage result;result.page=page;result.caption=std::move(caption);
+    WorkOrderArtPage result;result.page=page;result.caption=std::move(heading);
     if(result.caption.size()>78)result.caption.resize(78);
     if(page==-1) {
         if(!query.empty() || cursor || listRevision)return std::nullopt;

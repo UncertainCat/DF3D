@@ -217,7 +217,7 @@ try {
   if(Test-Path "$out/shot") {
    $name=(Get-Content "$out/shot" -Raw).Trim()
    if(-not(Test-Path "$out/ack-$name")) {
-    if($env:DF3D_RESIDENTS_JOB_SETTINGS_WIRE -eq '1' -and $name -eq 'residents-job-settings') {
+    if(($env:DF3D_RESIDENTS_JOB_SETTINGS_WIRE -eq '1' -and $name -eq 'residents-job-settings') -or ($env:DF3D_RESIDENTS_JOB_ART_WIRE -eq '1' -and $name -eq 'residents-job-art-root')) {
      $env:DF3D_CARRIER_DIRECTORY=$out;$env:DF3D_DF_PATH=$dfPath
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
      $client=Start-Process -FilePath $engine -ArgumentList @('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/job_settings_wire_live.gd') -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/job-settings-wire.stdout.log" -RedirectStandardError "$out/job-settings-wire.stderr.log"

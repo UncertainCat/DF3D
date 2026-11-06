@@ -894,6 +894,31 @@ DD00E81D4E74F976F044AD5F819B6A9AB8FC9BE6A9736FA7F14B23EDADD3B2CD.
 DF35448 exits unsaved with source preservation; native30FPS, GPU59C sampled,
 and no graphical Godot run. Public Residents remains staged.
 
+Management138 carries read-only artwork pages through `JobSettingsRead` in the
+existing `job_settings` domain. The request adds art_page (-2 means ordinary
+settings), expected_list_revision, hovered and preview_columns. Art pages require
+an actual artwork option, exact job/holder/resident membership and fresh native
+eligibility. Root, paged lists and previews have separate bounds; drafts and edits
+are rejected by this read contract. Results place artwork in the shared art payload
+with empty ordinary choices. Old material requests remain seven-field intents;
+art requests require all four additional fields. See PINS.md for peer migration.
+
+Protected084253 on2026-11-06 verifies the real headless Godot extension/model/bridge
+path: root header/six choices,10563/680/1263/2 category totals, second subject page
+receipts,118-column first-row previews against the native fixture, stale-list and
+wrong job/holder/resident rejection, and retirement on unrelated replies. It uses
+a disposable unlinked statue job and retains the native discovery effect checks.
+This does not yet connect artwork to the Residents owner/view, accept search or
+provide artwork edits/new-image drafts. Public Residents remains hidden.
+
+Root19/extension/management-contract/job-settings state checks pass in
+job-art-contract-20261106; MSVC job-art-wire-build passes. Built/installed bridge
+SHA256 is20ACF26E9827D6BA6B747BB68FB236C4A67BC2311F29B186C1115C1B96D80C5D.
+Joined client logs contain only the known separate-render-thread notice. DF2972
+exits unsaved with source preservation; native30FPS, GPU56C sampled, and Godot
+headless. The shared artwork formatter parameter name was also clarified to avoid
+shadowing its row-caption locals; behavior is unchanged.
+
 
 ## Farm removal native entry points
 

@@ -22,6 +22,7 @@ local function label(text)
  error('Missing artwork label: '..text)
 end
 local function effect()return {type=job.art_spec.type,id=job.art_spec.id,subid=job.art_spec.subid,requirements=#job.job_items.elements,art_open=art.open,details_open=m.job_details.open,info_open=info.open}end
+evidence.building_id=m.job_details.bld.id
 evidence.artwork={};local result=evidence.artwork
 local function save()
  local f=assert(io.open(out..'/residents-job-art-reference.json','w'));f:write(json.encode(evidence));f:close()
@@ -34,7 +35,10 @@ end
 settle()
 assert(art.open and art.ics.jb==job and not art.ics.wq,'Job did not open job-backed artwork')
 result.context=art.context;result.header=dfhack.df2utf(art.header);result.root=lines();result.before=effect()
+local wire_original=owner.job.current_job
+if os.getenv('DF3D_RESIDENTS_JOB_ART_WIRE')=='1' then owner.job.current_job=job end
 shot('residents-job-art-root')
+owner.job.current_job=wire_original
 if os.getenv('DF3D_RESIDENTS_JOB_ART_PROVIDER')=='1' then
  result.provider={}
  for kind,caption in ipairs({'Related to historical figure','Related to site','Related to civilization or other group'})do

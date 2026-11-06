@@ -14,6 +14,8 @@ func pointer(view,point: Vector2,button: int=MOUSE_BUTTON_LEFT) -> void:
 	click=click.duplicate();click.pressed=false;Input.parse_input_event(click);await process_frame
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
+	if OS.get_environment("DF3D_RESIDENTS_JOB_ART_WIRE")=="1":
+		await artwork_read();return
 	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/residents-job-settings-reference.json"))
 	var expected: Dictionary=reference.provider
 	var choice_caption: String=expected.materials[1].caption
@@ -142,3 +144,50 @@ func composed_read(reference: Dictionary) -> Dictionary:
 	var closed: bool=state.phase==state.Phase.Closed
 	owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();await process_frame
 	return {"choices":count,"filtered":filtered,"closed":closed,"returned_to_roster":returned,"resident_id":int(reference.unit_id),"material_applied":edited,"filter_supported":searchable}
+
+func artwork_read() -> void:
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/residents-job-art-reference.json"))
+	var fixture_path:=ProjectSettings.globalize_path("res://../../../fixtures/residents/native_job_settings.json")
+	var fixture: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(fixture_path))
+	world=Df3dWorld.new();root.add_child(world)
+	if not check(world.attach(),"Job artwork bridge attach failed"):quit(1);return
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline:
+		world.poll()
+		if world.poll_management().get("transport_alive",false):break
+		await create_timer(0.01).timeout
+	await request("construction",{"action":C.ManagementAction.Catalog})
+	var intent: Dictionary={"action":C.ManagementAction.JobSettingsRead,"job_id":int(reference.job_id),"building_id":int(reference.building_id),"unit_id":int(reference.unit_id),"option":0,"query":"","cursor":0,"art_page":-1,"expected_list_revision":0,"hovered":-1,"preview_columns":0}
+	var response:=await request("job_settings",intent)
+	var value: Dictionary=response.get("job_settings",{})
+	check(response.get("status")==C.ManagementStatus.Ok and value.get("art",{}).get("caption")==reference.artwork.header,"Typed job artwork root/header differs")
+	check(value.get("art",{}).get("rows",[]).size()==6 and value.get("choices",[]).is_empty(),"Artwork payload mixed ordinary choices")
+	var pages: Array=[]
+	for expected: Dictionary in fixture.artwork_pages_reference.pages:
+		intent.art_page=int(expected.page);intent.cursor=0;intent.expected_list_revision=0;intent.hovered=-1;intent.preview_columns=0
+		response=await request("job_settings",intent);value=response.get("job_settings",{})
+		var art: Dictionary=value.get("art",{})
+		check(response.get("status")==C.ManagementStatus.Ok and art.get("total")==int(expected.total) and art.get("rows",[]).size()==int(expected.rows),"Typed artwork first page differs")
+		if art.is_empty():continue
+		var revision: int=art.list_revision
+		if int(art.next_cursor)>0:
+			intent.cursor=int(art.next_cursor);intent.expected_list_revision=revision
+			var second:=await request("job_settings",intent)
+			check(second.get("job_settings",{}).get("art",{}).get("list_revision")==revision,"Artwork second page lost receipt")
+		intent.cursor=0;intent.expected_list_revision=revision;intent.hovered=int(art.rows[0].id);intent.preview_columns=int(expected.columns)
+		var hover:=await request("job_settings",intent)
+		check(hover.get("job_settings",{}).get("art",{}).get("preview",[])==expected.preview,"Typed artwork preview differs from native")
+		intent.expected_list_revision=1
+		var stale:=await request("job_settings",intent)
+		check(stale.get("status")==C.ManagementStatus.Rejected and not stale.has("job_settings"),"Stale artwork reply retained page")
+		pages.append({"page":expected.page,"total":art.total,"preview":true})
+	intent.art_page=-1;intent.cursor=0;intent.expected_list_revision=0;intent.hovered=-1;intent.preview_columns=0
+	for key: String in ["job_id","building_id","unit_id"]:
+		var invalid:=intent.duplicate();invalid[key]=2147483647
+		var rejected:=await request("job_settings",invalid)
+		check(rejected.get("status")==C.ManagementStatus.Rejected and not rejected.has("job_settings"),"Wrong artwork target retained page")
+	var unrelated:=await request("construction",{"action":C.ManagementAction.Catalog})
+	check(not unrelated.has("job_settings"),"Unrelated reply retained artwork")
+	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"artwork_pages":pages}));file.close()
+	world.queue_free();await process_frame;quit(1 if failed else 0)

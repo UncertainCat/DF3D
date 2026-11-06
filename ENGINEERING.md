@@ -6,6 +6,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
+| Work Details skill text exceeds its fixed worker row under a mixed-labor definition. | No correction approved or implemented; full roster rendering remains pending. | Protected114839 on2026-11-06 enables all94 labors in a controlled unsaved clone. Native1429ef0 creates all positive relevant skill captions; ten visible rows contain2–11 captions each. The screenshot shows later worker backgrounds covering earlier captions and the final worker’s extra captions extending over the search box. This evidence is scoped to the controlled definition. |
 | Residents accented search can miss the matching native activity caption. | No correction approved or implemented; retain native input and normalization. | Protected023145 on2026-11-06 types through the owned window: `Tâmol` returns no rows, while `tamol` finds two “Pray to Tâmol” rows. The textbox retains UTF-8, then callback1432700 applies the byte normalizer52cee0; normalized query bytes are116,195,111,109,111,108. The owned query provider matches both outcomes. |
 | Global Work orders quantity increment wraps32767 to-32768. | No correction approved or implemented; decision pending. | Protected003417 on2026-11-06 sets controlled quantities in the paused clone and clicks the native plus button.9999 becomes10000;32767 becomes-32768 in both total and remaining. Quantities are restored and DF40708 exits unsaved with source preservation. |
 | Minimum-width global Work orders overlaps workshop-limit controls/text with other row controls. | Implemented under approval2026-11-06: visible action buttons precede workshop-limit controls for clicks and hover. Native drawing geometry is retained. Headless work-orders-button-priority-20261106 checks Conditions, overlapping Remove and unobscured limit entry at912/1200 widths; core19 passes. | Native000121 on2026-11-06 at912x552 establishes drawing overlap.010434 independently clicks the actual minimum-width Conditions center456,426: native enters workshop-limit input for that order, and typing1 changes max_workshops to1. The value is restored and the source save is preserved. Input3c5dc5..3c5dde checks the broad workshop-limit region before Conditions. Earlier000636 used the default-width x552 after shrinking, so it alone did not prove a Conditions hitbox defect;000739 opens Conditions before shrinking. |
@@ -202,6 +203,27 @@ headless client has only the known separate-renderer notice, GPU44C/0percent
 sampled. This is read-only controller acceptance. Native worker skill captions,
 row transport, rendered Work Details and controller-driven edits remain pending;
 the public route stays on the existing readout.
+
+`work_detail_row_native.h` supplies complete ordered skill captions using native
+1430240 on an owned pointer vector and owned weight array, then native rank7737c0
+and race/caste-aware noun774730 into owned strings. Its small inline eligibility
+loop is copied from pinned widget builder1429ef0, which cannot be called without
+constructing native UI. Only positive weights and positive ratings participate;
+there is no single-best-skill reduction or local rating cap. Sort dependencies
+1432920/1434180/1434d90 are pinned as well. Query and row providers share the
+same recovered labor-to-skill weights. Diagnostic `work-detail-row-probe` exposes
+these facts; presentation row transport remains pending.
+
+Protected114839 sets all94 labors on detail0 before native Labor opens in the
+unsaved clone. All72 full native captions across10 visible workers (2–11 each)
+match the provider's order and text, including tied ratings. The screenshot
+also establishes native overflow of the fixed three-cell worker rows, recorded
+in the bug register without a correction. `worker_skill_text_reference` retains
+ordered skill facts/captions and per-row hashes. MSVC/core19 pass; installed
+Management141 hash06FDC3876B827285E1E9253D90AB79A549D60DE58599B0657AC7A6023F89D8BF
+matches the build. DF25324 closes unsaved with source preservation; no Godot ran,
+GPU44C/1percent sampled during the native30FPS run. This does not establish
+rendered DF3D rows, clipping, tooltip behavior or complete Work Details.
 
 ## Residents native list discovery
 

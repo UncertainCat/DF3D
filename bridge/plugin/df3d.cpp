@@ -117,6 +117,7 @@
 #include "residents_activity_description_native.h"
 #include "residents_query_native.h"
 #include "work_detail_query_native.h"
+#include "work_detail_row_native.h"
 #include "residents_row_native.h"
 #include "residents_specialization_native.h"
 #include "modules/Buildings.h"
@@ -2411,6 +2412,21 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             row["key"]=DF2UTF(activity->key);row["fg"]=activity->foreground;row["bg"]=activity->background;
             row["bright"]=activity->bright;result["rows"].append(row);
           }
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="work-detail-row-probe") {
+          if(parameters.size()!=3)return CR_WRONG_USAGE;
+          int32_t values[2];
+          for(size_t i=1;i<3;++i) {
+            const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
+          }
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto rows=df3d_production::workDetailSkillText(values[0],df::unit::find(values[1]));
+          if(!rows)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["skills"]=Json::Value(Json::arrayValue);
+          for(const auto& skill:*rows){Json::Value row(Json::objectValue);row["id"]=skill.skill;
+            row["rating"]=skill.rating;row["caption"]=DF2UTF(skill.caption);result["skills"].append(row);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="work-detail-query-probe") {

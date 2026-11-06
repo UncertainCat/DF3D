@@ -4,6 +4,11 @@ local gui=require('gui');local script=require('gui.script');local json=require('
 local g=df.global.gps
 local defaults=os.getenv('DF3D_WORK_DETAILS_DEFAULTS')=='1'
 local query_provider=os.getenv('DF3D_WORK_DETAILS_QUERY_PROVIDER')=='1'
+local row_provider=os.getenv('DF3D_WORK_DETAILS_ROW_PROVIDER')=='1'
+if row_provider then
+ -- Controlled mixed-labor input, confined to the unsaved owned clone.
+ for i=0,93 do df.global.plotinfo.labor_info.work_details[0].allowed_labors[i]=true end
+end
 local cold_query
 if query_provider then
  local text,code=dfhack.run_command_silent('df3d','work-detail-query-probe','0','3','0','')
@@ -22,7 +27,7 @@ local info=df.global.game.main_interface.info
 assert(info.open,'Native Labor did not open')
 local path=debug.getinfo(1,'S').source:sub(2):gsub('smoke/work%-details%-native.lua$','ui_bake/capture_widgets.lua')
 assert(loadfile(path))(out..'/work-details-widgets.json','templates')
-local result={mode=info.current_mode,rows={},details={},callbacks={}}
+local result={mode=info.current_mode,rows={},details={},callbacks={},worker_skill_rows={}}
 local base=dfhack.internal.getImageBase()
 local function callbacks(vector,stride)
  stride=stride or 64
@@ -42,6 +47,22 @@ local function walk(widget,depth)
  if widget.name=='Filter box' then filter_box=widget end
  if (widget.flag.whole&2)~=0 and widget.rect.y1==21 and (widget.name=='Name' or widget.name=='Cat' or widget.name=='Prof' or widget.name=='Skills')then headers[widget.name]=widget end
  if df.widget_unit_name:is_instance(widget) and widget.u and (widget.flag.whole&2)~=0 and widget.rect.y1>=23 then
+  if row_provider then
+   local native={}
+   for _,child in ipairs(dfhack.gui.getWidgetChildren(widget.parent))do
+    if df.widget_rows_container:is_instance(child) and child.rect.x1==widget.parent.rect.x1+36 then
+     for _,line in ipairs(dfhack.gui.getWidgetChildren(child))do
+      if df.widget_text:is_instance(line)then native[#native+1]=dfhack.df2utf(line.str)end
+     end
+    end
+   end
+   local text,code=dfhack.run_command_silent('df3d','work-detail-row-probe','0',tostring(widget.u.id))
+   assert(code==0,'Work Details skill provider failed: '..text)
+   local provider=json.decode(text).skills
+   assert(#native==#provider,'Work Details skill count differs for '..widget.u.id)
+   for i,line in ipairs(native)do assert(line==provider[i].caption,'Work Details skill caption/order differs: '..line)end
+   result.worker_skill_rows[#result.worker_skill_rows+1]={unit_id=widget.u.id,native=native,provider=provider}
+  end
   for _,child in ipairs(dfhack.gui.getWidgetChildren(widget.parent))do
    if child.name=='Selected' and (not result.first_visible or child.rect.y1<result.first_visible.y)then
     result.first_visible={unit_id=widget.u.id,x=child.rect.x1+1,y=child.rect.y1+1}
@@ -89,6 +110,12 @@ local function shot(name)
  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Work Details capture timeout');script.sleep(1,'frames')end
 end
 shot('work-details-root')
+if row_provider then
+ assert(#result.worker_skill_rows>0,'No visible skill rows')
+ local multiple=false;for _,row in ipairs(result.worker_skill_rows)do if #row.native>1 then multiple=true end end
+ assert(multiple,'Mixed-labor oracle did not include multiple skills')
+ records[#records+1]={name='work-details-root'};return
+end
 if os.getenv('DF3D_WORK_DETAILS_QUERY')=='1' then
  local function displayed()
   local ids={}

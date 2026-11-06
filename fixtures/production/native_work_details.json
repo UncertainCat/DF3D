@@ -2461,5 +2461,442 @@
     "source_preserved": true,
     "owned_df_closed": true,
     "diagnostics": "Known separate-renderer startup notice only."
+  },
+  "worker_skill_text_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-114839",
+    "scope": "Controlled unsaved clone with all94 labors enabled on detail0 before opening native Labor. Full caption strings from ten visible rows match owned skill provider; not row transport or DF3D rendering acceptance.",
+    "native_widget_builder_rva": "1429ef0",
+    "owned_sort_rva": "1430240",
+    "caption_rvas": [
+      "7737c0",
+      "774730"
+    ],
+    "native_filter": "positive work-detail weight and positive skill rating",
+    "total_captions": 72,
+    "rows": [
+      {
+        "unit_id": 5573,
+        "skills": [
+          {
+            "caption": "Legendary Miner",
+            "id": 0,
+            "rating": 18
+          },
+          {
+            "caption": "Legendary Planter",
+            "id": 21,
+            "rating": 15
+          },
+          {
+            "caption": "Competent Stone Carver",
+            "id": 136,
+            "rating": 3
+          },
+          {
+            "caption": "Adequate Furnace Operator",
+            "id": 24,
+            "rating": 2
+          },
+          {
+            "caption": "Novice Miller",
+            "id": 16,
+            "rating": 1
+          },
+          {
+            "caption": "Novice Cook",
+            "id": 20,
+            "rating": 1
+          },
+          {
+            "caption": "Novice Mechanic",
+            "id": 54,
+            "rating": 1
+          },
+          {
+            "caption": "Novice Wood Burner",
+            "id": 63,
+            "rating": 1
+          },
+          {
+            "caption": "Novice Stonecutter",
+            "id": 135,
+            "rating": 1
+          }
+        ],
+        "native_captions_sha256": "a5ae10838cd6af08bb56c4d6e7c7918435e21e48affc8cbc46c9c54a84e71500"
+      },
+      {
+        "unit_id": 5697,
+        "skills": [
+          {
+            "caption": "Accomplished Miner",
+            "id": 0,
+            "rating": 10
+          },
+          {
+            "caption": "Accomplished Bowyer",
+            "id": 48,
+            "rating": 10
+          },
+          {
+            "caption": "Expert Planter",
+            "id": 21,
+            "rating": 8
+          },
+          {
+            "caption": "Competent Stone Carver",
+            "id": 136,
+            "rating": 3
+          },
+          {
+            "caption": "Adequate Carpenter",
+            "id": 2,
+            "rating": 2
+          },
+          {
+            "caption": "Adequate Wood Burner",
+            "id": 63,
+            "rating": 2
+          },
+          {
+            "caption": "Adequate Stonecutter",
+            "id": 135,
+            "rating": 2
+          },
+          {
+            "caption": "Novice Furnace Operator",
+            "id": 24,
+            "rating": 1
+          },
+          {
+            "caption": "Novice Metal Crafter",
+            "id": 33,
+            "rating": 1
+          }
+        ],
+        "native_captions_sha256": "938e82627e73615e01dea27539359c0997c3c4bb2a7d8e0043c344d56d3d0f32"
+      },
+      {
+        "unit_id": 6135,
+        "skills": [
+          {
+            "caption": "Legendary Miner",
+            "id": 0,
+            "rating": 18
+          },
+          {
+            "caption": "Skilled Planter",
+            "id": 21,
+            "rating": 4
+          },
+          {
+            "caption": "Skilled Stone Crafter",
+            "id": 32,
+            "rating": 4
+          },
+          {
+            "caption": "Adequate Wood Burner",
+            "id": 63,
+            "rating": 2
+          },
+          {
+            "caption": "Novice Cook",
+            "id": 20,
+            "rating": 1
+          },
+          {
+            "caption": "Novice Furnace Operator",
+            "id": 24,
+            "rating": 1
+          },
+          {
+            "caption": "Novice Stonecutter",
+            "id": 135,
+            "rating": 1
+          }
+        ],
+        "native_captions_sha256": "b8de05ce7872f0e20162c25bf49f0c940186d8ce971057359ea33324b5c4e5b5"
+      },
+      {
+        "unit_id": 7204,
+        "skills": [
+          {
+            "caption": "High Master Animal Trainer",
+            "id": 5,
+            "rating": 13
+          },
+          {
+            "caption": "Expert Miner",
+            "id": 0,
+            "rating": 8
+          }
+        ],
+        "native_captions_sha256": "5d52d0838b98451aa6fac98e9d40a3de824c7191894504010ef7d3097aa2c9a3"
+      },
+      {
+        "unit_id": 6392,
+        "skills": [
+          {
+            "caption": "Master Miner",
+            "id": 0,
+            "rating": 12
+          },
+          {
+            "caption": "Adequate Planter",
+            "id": 21,
+            "rating": 2
+          },
+          {
+            "caption": "Novice Woodcutter",
+            "id": 1,
+            "rating": 1
+          },
+          {
+            "caption": "Novice Pump Operator",
+            "id": 68,
+            "rating": 1
+          }
+        ],
+        "native_captions_sha256": "fb21c156555e47b900c697dd96848e177f880ed4956dfa64fd83d5b514f70430"
+      },
+      {
+        "unit_id": 6973,
+        "skills": [
+          {
+            "caption": "Talented Siege Engineer",
+            "id": 46,
+            "rating": 6
+          },
+          {
+            "caption": "Proficient Thresher",
+            "id": 17,
+            "rating": 5
+          },
+          {
+            "caption": "Skilled Miner",
+            "id": 0,
+            "rating": 4
+          }
+        ],
+        "native_captions_sha256": "0056091a3b6419cdaf7a11958b21b9d06f73fb90f71043e85243cd18b0fed0f6"
+      },
+      {
+        "unit_id": 5575,
+        "skills": [
+          {
+            "caption": "Legendary Herbalist",
+            "id": 22,
+            "rating": 18
+          },
+          {
+            "caption": "Legendary Metal Crafter",
+            "id": 33,
+            "rating": 17
+          },
+          {
+            "caption": "Competent Gem Cutter",
+            "id": 29,
+            "rating": 3
+          },
+          {
+            "caption": "Adequate Gem Setter",
+            "id": 30,
+            "rating": 2
+          },
+          {
+            "caption": "Novice Carpenter",
+            "id": 2,
+            "rating": 1
+          },
+          {
+            "caption": "Novice Cook",
+            "id": 20,
+            "rating": 1
+          },
+          {
+            "caption": "Novice Planter",
+            "id": 21,
+            "rating": 1
+          },
+          {
+            "caption": "Novice Furnace Operator",
+            "id": 24,
+            "rating": 1
+          },
+          {
+            "caption": "Novice Wood Burner",
+            "id": 63,
+            "rating": 1
+          },
+          {
+            "caption": "Novice Stonecutter",
+            "id": 135,
+            "rating": 1
+          },
+          {
+            "caption": "Novice Stone Carver",
+            "id": 136,
+            "rating": 1
+          }
+        ],
+        "native_captions_sha256": "6109c65697552b07a99fadbf2b9ca3b3c7f914752d3b5870a42745c9ac94afbd"
+      },
+      {
+        "unit_id": 5574,
+        "skills": [
+          {
+            "caption": "Legendary Carpenter",
+            "id": 2,
+            "rating": 23
+          },
+          {
+            "caption": "Talented Woodcutter",
+            "id": 1,
+            "rating": 6
+          },
+          {
+            "caption": "Proficient Wood Burner",
+            "id": 63,
+            "rating": 5
+          },
+          {
+            "caption": "Skilled Planter",
+            "id": 21,
+            "rating": 4
+          },
+          {
+            "caption": "Adequate Mechanic",
+            "id": 54,
+            "rating": 2
+          },
+          {
+            "caption": "Adequate Stonecutter",
+            "id": 135,
+            "rating": 2
+          },
+          {
+            "caption": "Adequate Stone Carver",
+            "id": 136,
+            "rating": 2
+          },
+          {
+            "caption": "Novice Cook",
+            "id": 20,
+            "rating": 1
+          },
+          {
+            "caption": "Novice Furnace Operator",
+            "id": 24,
+            "rating": 1
+          }
+        ],
+        "native_captions_sha256": "3fe4fcca638b2ac28126b14dc328f0a4460d54c3ab43d72e53b8462d67561e0c"
+      },
+      {
+        "unit_id": 5981,
+        "skills": [
+          {
+            "caption": "Legendary Weaponsmith",
+            "id": 26,
+            "rating": 18
+          },
+          {
+            "caption": "Expert Planter",
+            "id": 21,
+            "rating": 8
+          },
+          {
+            "caption": "Competent Furnace Operator",
+            "id": 24,
+            "rating": 3
+          },
+          {
+            "caption": "Adequate Gem Setter",
+            "id": 30,
+            "rating": 2
+          },
+          {
+            "caption": "Adequate Wood Burner",
+            "id": 63,
+            "rating": 2
+          },
+          {
+            "caption": "Adequate Stonecutter",
+            "id": 135,
+            "rating": 2
+          },
+          {
+            "caption": "Novice Blacksmith",
+            "id": 28,
+            "rating": 1
+          },
+          {
+            "caption": "Novice Glassmaker",
+            "id": 34,
+            "rating": 1
+          },
+          {
+            "caption": "Novice Potash Maker",
+            "id": 66,
+            "rating": 1
+          },
+          {
+            "caption": "Novice Papermaker",
+            "id": 131,
+            "rating": 1
+          },
+          {
+            "caption": "Novice Stone Carver",
+            "id": 136,
+            "rating": 1
+          }
+        ],
+        "native_captions_sha256": "e7db71830d5f52216dbc26af9b7df696c92ce7b7091f58814794e4a8bdda8386"
+      },
+      {
+        "unit_id": 6274,
+        "skills": [
+          {
+            "caption": "Great Brewer",
+            "id": 14,
+            "rating": 11
+          },
+          {
+            "caption": "Adept Stone Carver",
+            "id": 136,
+            "rating": 7
+          },
+          {
+            "caption": "Talented Stonecutter",
+            "id": 135,
+            "rating": 6
+          },
+          {
+            "caption": "Proficient Engraver",
+            "id": 3,
+            "rating": 5
+          },
+          {
+            "caption": "Proficient Mason",
+            "id": 4,
+            "rating": 5
+          },
+          {
+            "caption": "Novice Wood Burner",
+            "id": 63,
+            "rating": 1
+          },
+          {
+            "caption": "Novice Potter",
+            "id": 109,
+            "rating": 1
+          }
+        ],
+        "native_captions_sha256": "2caace3ea474395b60ae1f4ae17607bae960e8f50bd4175fe70239d85381f2c5"
+      }
+    ],
+    "source_preserved": true,
+    "owned_df_closed": true,
+    "bridge_sha256": "06FDC3876B827285E1E9253D90AB79A549D60DE58599B0657AC7A6023F89D8BF"
   }
 }

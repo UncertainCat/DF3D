@@ -56,15 +56,8 @@ inline bool supported() {
 }
 }
 
-// Safe-point provider. Sort0=Category,1=Name,2=Profession,3=Skills. The native
-// query applies filtering, stable ordering, then its selected-worker partition.
-inline std::optional<std::vector<int32_t>> queryWorkDetailWorkers(int32_t index,int sort,bool descending,std::string query) {
-    if(!df::global::world || !df::global::plotinfo || sort<0 || sort>3 || !work_detail_query::supported())return std::nullopt;
-    const auto& details=df::global::plotinfo->labor_info.work_details;
-    if(index<0 || size_t(index)>=details.size() || details.size()>128 || !details[size_t(index)])return std::nullopt;
-    auto* detail=details[size_t(index)];if(detail->assigned_units.size()>1024)return std::nullopt;
-    using namespace work_detail_query;
-    Context context;
+inline std::array<int32_t,149> workDetailSkillWeights(const df::work_detail& detail) {
+    std::array<int32_t,149> weightsOut{};
     // Inline setup belongs to the widget constructor42cd50, not a callable
     // semantic leaf. Preserve its pinned labor-to-skill union in owned storage.
     constexpr std::pair<int16_t,int16_t> weights[]={
@@ -76,7 +69,20 @@ inline std::optional<std::vector<int32_t>> queryWorkDetailWorkers(int32_t index,
         {53,32},{54,36},{55,34},{56,25},{57,46},{58,47},{59,48},{60,54},
         {61,66},{62,64},{63,67},{64,63},{65,68},{66,107},{67,108},{68,109},
         {69,110},{70,111},{71,112},{72,113},{78,115},{81,131},{82,132}};
-    for(const auto& [labor,skill]:weights)if(detail->allowed_labors[labor])context.skills[skill]=1;
+    for(const auto& [labor,skill]:weights)if(detail.allowed_labors[labor])weightsOut[skill]=1;
+    return weightsOut;
+}
+
+// Safe-point provider. Sort0=Category,1=Name,2=Profession,3=Skills. The native
+// query applies filtering, stable ordering, then its selected-worker partition.
+inline std::optional<std::vector<int32_t>> queryWorkDetailWorkers(int32_t index,int sort,bool descending,std::string query) {
+    if(!df::global::world || !df::global::plotinfo || sort<0 || sort>3 || !work_detail_query::supported())return std::nullopt;
+    const auto& details=df::global::plotinfo->labor_info.work_details;
+    if(index<0 || size_t(index)>=details.size() || details.size()>128 || !details[size_t(index)])return std::nullopt;
+    auto* detail=details[size_t(index)];if(detail->assigned_units.size()>1024)return std::nullopt;
+    using namespace work_detail_query;
+    Context context;
+    context.skills=workDetailSkillWeights(*detail);
     for(auto* unit:df::global::world->units.active) {
         const auto allowed=workshopWorkerAllowed(unit);if(!allowed)return std::nullopt;
         if(*allowed)context.entries.push_back({unit});

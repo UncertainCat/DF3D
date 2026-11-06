@@ -31,6 +31,30 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Residents native list discovery
 
+Residents Activity has distinct job-settings and event-description routes.
+The job-details widget1423130 uses native eligibility d15ef0 and opens213420
+with context1 (`CREATURES_LIST_TASK`). The existing Work order details provider
+handles manager orders only; it is not an accepted substitute for this job path.
+Event-description actions1431cd0/1431d60 delegate to14287c0/1427f70. Both call
+26b800 with an activity_event, unit ID and markup output. This identifies the
+native formatter, but its callees/ownership are not yet accepted for runtime.
+The menu actions themselves clear live markup and build widgets: do not call
+them from the bridge. The formatter output is `markup_text_boxst`, not a vector
+of strings; d51eb0 allocates formatted words with RGB, links and break flags.
+
+`DF3D_RESIDENTS_ACTIVITY_DETAILS=1` adds an opt-in actual-button capture to the
+protected Residents lane. Native054459 on2026-11-06 captures unit7049's Play
+Make Believe description, its exact formatted words and the page layout.
+`fixtures/residents/native_activity_details.json` retains semantic evidence only.
+The page preserves the Creatures tabs and has a separate Close button. Escape
+closes the whole Info screen; the Close button's effect remains unaccepted.
+The final lane passes and exits DF39932 unsaved with source preservation.
+Earlier054215/054303 failed button identification;054411 captured the page but
+failed an incorrect oracle assumption that Escape would retain the roster.
+No runtime behavior or public route is changed by this discovery. Next expose
+the formatter through owned storage and implement the corresponding page;
+job settings remain a separate shared dependency for Residents and Tasks.
+
 Residents row hover uses the shared HUD help clock and original frame/font.
 The staged view resolves local pointer coordinates through its canvas transform,
 claims Recenter/details, happiness0..6, specialization and rendered assignment

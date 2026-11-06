@@ -307,6 +307,61 @@ for _,name in ipairs{'Name','Cat','Prof','Job','Stress'}do
 end
 if os.getenv('DF3D_RESIDENTS_ASSIGNMENTS')=='1' then capture_resident_rows()end
 if residents_hover_finish then residents_hover_finish()end
+if os.getenv('DF3D_RESIDENTS_ACTIVITY_DETAILS')=='1' then
+ -- Identify visible social/drill Activity buttons by native action identity.
+ -- This is observation of the real menu, never a runtime eligibility rule.
+ local button,unit,action
+ local function find_button(widget,owner)
+  if (widget.flag.whole&1)==0 then return end
+  if owner and not button and (widget.flag.whole&2)~=0 and widget.min_w==3 and widget.min_h==3 then
+   for _,target in ipairs(callbacks(widget.custom_activated,64))do
+    if target==0x1431cd0 or target==0x1431d60 then button=widget;unit=owner;action=target;break end
+   end
+  end
+  if df.widget_container:is_instance(widget)then
+   local children=dfhack.gui.getWidgetChildren(widget)
+   for _,child in ipairs(children)do
+    if df.widget_unit_name:is_instance(child) and child.u then owner=child.u;break end
+   end
+   for _,child in ipairs(children)do find_button(child,owner)end
+  end
+ end
+ find_button(active_list,nil);assert(button and unit,'No visible Activity description button')
+ local id=unit.id;local bounds={button.rect.x1,button.rect.y1,button.rect.x2,button.rect.y2}
+ local g=df.global.gps;local x=button.rect.x1+1;local y=button.rect.y1+1
+ g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+6;g.mouse_x=x;g.mouse_y=y
+ df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+ gui.simulateInput(view,'_MOUSE_L')
+ df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+ for _=1,3 do script.sleep(1,'frames')end
+ view:render(dfhack.getTickCount())
+ local box=info.creatures.activity_details_text;local words={}
+ for _,word in ipairs(box.word)do
+  words[#words+1]={text=dfhack.df2utf(word.str),rgb={word.red,word.green,word.blue},
+   link=word.link_index,x=word.px,y=word.py,flags=word.flags.whole}
+ end
+ assert(#words>0,'Native Activity details did not populate its description')
+ local evidence={id=id,action_rva=action,button=bounds,words=words,width=box.current_width,max_y=box.max_y,list_open=info.open}
+ local file=assert(io.open(out..'/residents-activity-details-reference.json','w'));file:write(json.encode(evidence));file:close()
+ assert(loadfile(source))(out..'/residents-activity-details-widgets.json','templates')
+ file=assert(io.open(out..'/shot.tmp','w'));file:write('residents-activity-details');file:close()
+ assert(os.rename(out..'/shot.tmp',out..'/shot'))
+ local deadline=dfhack.getTickCount()+10000
+ while true do
+  local ack=io.open(out..'/ack-residents-activity-details');if ack then ack:close();break end
+  assert(dfhack.getTickCount()<deadline,'Activity details capture timeout');script.sleep(1,'frames')
+ end
+ gui.simulateInput(view,'LEAVESCREEN')
+ for _=1,3 do script.sleep(1,'frames')end
+ evidence.escape_keeps_list_open=info.open
+ file=assert(io.open(out..'/residents-activity-details-reference.json','w'));file:write(json.encode(evidence));file:close()
+ if not info.open then
+  gui.simulateInput(view,'D_UNITLIST')
+  for _=1,3 do script.sleep(1,'frames')end
+ end
+ assert(info.open,'Residents did not reopen after Activity description capture')
+ view:render(dfhack.getTickCount())
+end
 if os.getenv('DF3D_RESIDENTS_SPECIALIZATION')=='1' then
  local targets={}
  local function collect(widget,active)

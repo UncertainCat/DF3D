@@ -1,0 +1,175 @@
+{
+  "format_version": 1,
+  "provenance": {
+    "df_version": "v0.53.16 win64 STEAM",
+    "native_run": "build/stockpile-storage-native-input-20261106-054459",
+    "native_action_rva": "0x1431d60",
+    "observation": "Actual visible Residents Activity button click, native markup and rendered page; Escape observed separately. Owned paused clone exited unsaved.",
+    "limitations": [
+      "One natural Play Make Believe activity; other event families and job settings are not covered.",
+      "The visible Close button was not clicked.",
+      "No DF3D runtime formatter or page acceptance.",
+      "No game artwork retained."
+    ]
+  },
+  "reference": {
+    "action_rva": 21175648,
+    "button": [
+      82,
+      17,
+      84,
+      19
+    ],
+    "escape_keeps_list_open": false,
+    "id": 7049,
+    "list_open": true,
+    "max_y": 2,
+    "width": 110,
+    "words": [
+      {
+        "flags": 0,
+        "link": -1,
+        "rgb": [
+          18,
+          254,
+          207
+        ],
+        "text": "Play",
+        "x": 0,
+        "y": 0
+      },
+      {
+        "flags": 0,
+        "link": -1,
+        "rgb": [
+          18,
+          254,
+          207
+        ],
+        "text": "Make",
+        "x": 5,
+        "y": 0
+      },
+      {
+        "flags": 0,
+        "link": -1,
+        "rgb": [
+          18,
+          254,
+          207
+        ],
+        "text": "Believe",
+        "x": 10,
+        "y": 0
+      },
+      {
+        "flags": 2,
+        "link": -1,
+        "rgb": [
+          255,
+          255,
+          255
+        ],
+        "text": "",
+        "x": -1,
+        "y": -1
+      },
+      {
+        "flags": 0,
+        "link": -1,
+        "rgb": [
+          192,
+          192,
+          192
+        ],
+        "text": "There",
+        "x": 0,
+        "y": 2
+      },
+      {
+        "flags": 0,
+        "link": -1,
+        "rgb": [
+          192,
+          192,
+          192
+        ],
+        "text": "is",
+        "x": 6,
+        "y": 2
+      },
+      {
+        "flags": 0,
+        "link": -1,
+        "rgb": [
+          192,
+          192,
+          192
+        ],
+        "text": "no",
+        "x": 9,
+        "y": 2
+      },
+      {
+        "flags": 0,
+        "link": -1,
+        "rgb": [
+          192,
+          192,
+          192
+        ],
+        "text": "specific",
+        "x": 12,
+        "y": 2
+      },
+      {
+        "flags": 0,
+        "link": -1,
+        "rgb": [
+          192,
+          192,
+          192
+        ],
+        "text": "information",
+        "x": 21,
+        "y": 2
+      },
+      {
+        "flags": 0,
+        "link": -1,
+        "rgb": [
+          192,
+          192,
+          192
+        ],
+        "text": "for",
+        "x": 33,
+        "y": 2
+      },
+      {
+        "flags": 0,
+        "link": -1,
+        "rgb": [
+          192,
+          192,
+          192
+        ],
+        "text": "this",
+        "x": 37,
+        "y": 2
+      },
+      {
+        "flags": 0,
+        "link": -1,
+        "rgb": [
+          192,
+          192,
+          192
+        ],
+        "text": "activity.",
+        "x": 42,
+        "y": 2
+      }
+    ]
+  }
+}

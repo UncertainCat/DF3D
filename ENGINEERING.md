@@ -7301,6 +7301,20 @@ the existing Work orders workflow. Owned DF38148 exits unsaved; paired viewer
 logs contain only documented engine diagnostics. Artist-choice effects are not
 covered by that native-click comparison.
 
+Protected235334 on2026-11-05 verifies Allow artist to choose through the actual
+shared Details view/controller. The oracle first selects existing image(2,340),
+then records native artist-choice effects and restores the same starting fields
+and requirements for the viewer. Independent DF readback matches type/id/subid
+cleared to-1, unchanged improvement Image, quantity10/remaining10 and frequency1.
+The viewer closes Details only after its confirmed write. This does not establish
+production of a later artwork job or full requirement-vector equivalence.
+Use `DF3D_WORK_ORDER_ARTWORK_ARTIST=1` with the focused artwork reference/wire lane.
+Earlier235120/235244 clicked the first root button (historical figure), not the
+last artist-choice button; they are failed harness runs, not runtime failures.
+The corrected harness locates the button by semantic ID0. Owned DF11112 closes
+unsaved with source preservation; paired logs have only documented diagnostics.
+Root19/19 and headless composition pass in `build/qa/artwork-artist-choice`.
+
 Protected003558 on2026-11-02 exercises the actual viewer's Image entry, first and
 later figure pages, Back, site search and selection, and return to the global
 order list. DF readback confirms improvement Image and the selected site art

@@ -30,7 +30,16 @@ func run() -> void:
  if not check(await settle(service,func():return state.phase==state.Phase.Ready and state.snapshot.selected_option==int(plan.option)),"Improvement chooser failed"):quit(1);return
  click(Vector2(200,142))
  if not check(await settle(service,func():return state.phase==state.Phase.Ready and state.has_art()),"Artwork root failed"):quit(1);return
- if plan.has("subjects"):
+ if plan.get("artist",false):
+  await capture("artist","before")
+  var artist_row: int=-1
+  for index in state.rows.size():
+   if state.rows[index].id==0:artist_row=index
+  if not check(artist_row>=0,"Artist choice is missing from the native menu"):quit(1);return
+  click(Vector2(200,154+artist_row*36))
+  if not check(await settle(service,func():return state.phase==state.Phase.Closed),"Artist choice did not close Details after confirmation; phase="+str(state.phase)+" ticket="+str(state.ticket)):quit(1);return
+  check(not view.visible,"Artist choice left Details visible")
+ elif plan.has("subjects"):
   for subject in plan.subjects:
    click(Vector2(200,154+(int(subject.page)-1)*36))
    if not check(await settle(service,func():return state.phase==state.Phase.Ready and state.art_page()==int(subject.page)),"Subject list failed"):quit(1);return
@@ -68,7 +77,7 @@ func run() -> void:
   if not check(await settle(service,func():return state.phase==state.Phase.Ready and state.art_page()==-1),"Discard did not return to artwork root"):quit(1);return
   check(state.draft_value.elements.is_empty() and state.draft_value.relationships.is_empty(),"Discard retained draft content")
  var file:=FileAccess.open(directory+"/work-order-artwork-wire-result.json",FileAccess.WRITE)
- file.store_string(JSON.stringify({"success":not failed,"subjects":plan.has("subjects"),"discarded":not plan.has("subjects")}));file.close()
+ file.store_string(JSON.stringify({"success":not failed,"subjects":plan.has("subjects"),"artist":plan.get("artist",false),"discarded":not plan.has("subjects") and not plan.get("artist",false)}));file.close()
  state.dispose();view.queue_free();service.queue_free();await process_frame
  world.detach_live();world.queue_free();await process_frame
  quit(1 if failed else 0)

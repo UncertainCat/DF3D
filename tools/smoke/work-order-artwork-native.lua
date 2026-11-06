@@ -46,6 +46,30 @@ local option;for i,kind in ipairs(details.option)do if kind==3 then option=i;bre
 assert(option);mouse(200,106+option*36);assert(details.current_option==3)
 mouse(200,142);local art=m.image_creator;assert(art.open)
 before={spec=order.specdata.hist_figure_id,typ=order.art_spec.type,id=order.art_spec.id,subid=order.art_spec.subid}
+if os.getenv('DF3D_WORK_ORDER_ARTWORK_ARTIST')=='1' then
+ -- Start with a real selected image so all three cleared fields are observable.
+ assert(click_label('Existing image'));assert(art.current_option==5 and #art.art_image>0)
+ mouse(200,190);assert(not art.open and order.art_spec.type==3)
+ local function effect()return {type=order.art_spec.type,id=order.art_spec.id,subid=order.art_spec.subid,specdata=order.specdata.hist_figure_id,amount=order.amount_total,remaining=order.amount_left,frequency=order.frequency}end
+ local original=effect();local inputs={}
+ for _,item in ipairs(order.items.elements)do local copy=df.job_item:new();copy:assign(item);inputs[#inputs+1]=copy end
+ assert(click_label('Encrust',584));mouse(200,106+option*36);mouse(200,142);assert(art.open)
+ shot('work-order-artwork-artist-before')
+ assert(click_label('Allow artist to choose'));assert(not art.open and not details.open)
+ local expected=effect();assert(expected.type==-1 and expected.id==-1 and expected.subid==-1)
+ shot('work-order-artwork-artist-after')
+ order.art_spec.type=original.type;order.art_spec.id=original.id;order.art_spec.subid=original.subid
+ assert(#order.items.elements==#inputs)
+ for i,item in ipairs(order.items.elements)do item:assign(inputs[i+1]);inputs[i+1]:delete()end
+ local f=assert(io.open(out..'/work-order-artwork-expected.json','w'));f:write(json.encode({id=order.id,option=option,artist=true,before=original,effect=expected}));f:close()
+ if os.getenv('DF3D_WORK_ORDER_ARTWORK_WIRE')=='1' then
+  shot('work-order-artwork-wire')
+  f=assert(io.open(out..'/work-order-artwork-wire-result.json'));local result=json.decode(f:read('*a'));f:close();assert(result.success,'Artist choice viewer failed')
+  local actual=effect();for field,value in pairs(expected)do assert(actual[field]==value,'Artist choice effect differs: '..field)end
+ end
+ records[#records+1]={name='work-order-artwork-artist',effects_match=true}
+ return
+end
 if os.getenv('DF3D_WORK_ORDER_ARTWORK_RESIZE')=='1' then
  for _,size in ipairs({'small','wide','default'})do
   local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('name-resize-'..size);f:close()

@@ -205,6 +205,38 @@ if os.getenv('DF3D_RESIDENTS_JOB_ART_DRAFT')=='1' then
  result.draft.creatures=lines();result.draft.race=art.new_image_race[0];result.draft.caste=art.new_image_caste[0]
  click(37,15);assert(art.current_option==6 and #art.new_image.elements==1,'Creature was not added')
  result.draft.populated=lines();shot('residents-job-art-draft-populated')
+ if os.getenv('DF3D_RESIDENTS_JOB_ART_EXTENDED')=='1' then
+  local extended={columns=art.last_art_box_width}
+  for _,entry in ipairs({{'Historical figure',8},{'Plant',9},{'Tree',10},{'Shape',11},{'Object',12},{'Artifact',13}})do
+   label(entry[1]);assert(art.current_option==entry[2],'Native category failed '..entry[1]);click(37,15)
+   assert(art.current_option==6,'Native category addition failed '..entry[1])
+  end
+  assert(#art.new_image.elements==7,'Native draft element count differs')
+  label('Action or relationship');assert(art.current_option==14,'Native relationship list failed')
+  local transitive=art.new_image_property_transitive[0]
+  extended.verb=art.new_image_property[0];extended.transitive=transitive
+  click(37,15);assert(art.current_option==15,'Native actor list failed');click(37,15)
+  if transitive then assert(art.current_option==16,'Native target list failed');click(37,15)end
+  assert(art.current_option==6 and #art.new_image.properties==1,'Native relationship addition failed')
+  extended.related=lines();result.draft.extended=extended;shot('residents-job-art-draft-related')
+  label('Delete element');assert(art.current_option==17,'Native delete list failed')
+  click(g.dimx-30,12)
+  assert(#art.new_image.elements==6 and #art.new_image.properties==0,'Native actor deletion did not remove relationship')
+  extended.deleted=lines();result.draft.extended=extended;save()
+  shot('residents-job-art-draft-deleted')
+  label('Stop deleting');assert(art.current_option==6,'Native stop deleting failed')
+  local f=assert(io.open(out..'/job-settings-wire-result.json'));local client=json.decode(f:read('*a'));f:close()
+  local actual=client.owner.extended
+  assert(actual.relationship.id==extended.verb and (actual.relationship.secondary==1)==transitive,'Owned relationship differs')
+  for _,stage in ipairs({'related','deleted'})do
+   for _,text in ipairs(actual[stage])do
+    text=text:gsub('%s+$','');local found=false
+    for _,line in ipairs(extended[stage])do if line.text:find(text,1,true)then found=true;break end end
+    assert(found,'Owned '..stage..' description differs: '..text)
+   end
+  end
+  result.draft.extended=extended;save()
+ end
  resized_shots('populated')
  if os.getenv('DF3D_RESIDENTS_JOB_ART_RENDER')=='1' then
   label('Name');settle();resized_shots('name');label('Done');settle()

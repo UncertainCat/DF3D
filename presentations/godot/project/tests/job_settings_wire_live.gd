@@ -306,6 +306,8 @@ func composed_draft(reference: Dictionary) -> Dictionary:
 	await pointer(view,Vector2(120,258));check(await ready(state),"Draft reopen failed")
 	await pointer(view,Vector2(48,114));check(await ready(state),"Creature list reopen failed")
 	await pointer(view,Vector2(300,view.list_top()+18));check(await ready(state) and state.draft_value.elements.size()==1,"Creature re-add failed")
+	var extended: Dictionary={}
+	if OS.get_environment("DF3D_RESIDENTS_JOB_ART_EXTENDED")=="1":extended=await extended_draft(state,view)
 	await pointer(view,Vector2(40,378));check(await ready(state) and view.name_state.active and view.name_state.phase==view.name_state.Phase.Ready,"Native name editor did not open")
 	await capture_draft("name",true)
 	var word: int=view.name_state.rows[0].word
@@ -315,9 +317,33 @@ func composed_draft(reference: Dictionary) -> Dictionary:
 	var deadline:=Time.get_ticks_msec()+5000
 	while state.phase==state.Phase.Applying and Time.get_ticks_msec()<deadline:world.poll();await create_timer(0.01).timeout
 	check(state.phase==state.Phase.Closed and await ready(owner.state) and owner.panel.visible,"Draft Done did not return to refreshed Residents")
-	var result: Dictionary={"initialized_name":true,"discard":true,"kept":true,"named_word":word,"done":state.phase==state.Phase.Closed}
+	var result: Dictionary={"initialized_name":true,"discard":true,"kept":true,"named_word":word,"done":state.phase==state.Phase.Closed,"extended":extended}
 	owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();await process_frame
 	return result
+
+func extended_draft(state,view) -> Dictionary:
+	var chosen: Array=[]
+	for category in [[8,Vector2(80,150)],[9,Vector2(40,186)],[10,Vector2(104,186)],[11,Vector2(40,222)],[12,Vector2(104,222)],[13,Vector2(48,258)]]:
+		await pointer(view,category[1]);check(await ready(state) and state.art_page()==category[0],"Draft category failed")
+		if not check(not state.rows.is_empty(),"Draft category has no fixture choices"):return {}
+		chosen.append(state.rows[0].duplicate(true))
+		await pointer(view,Vector2(300,view.list_top()+18));check(await ready(state) and state.art_page()==6,"Draft category add failed")
+	await pointer(view,Vector2(80,294));check(await ready(state) and state.art_page()==14,"Relationship list failed")
+	var relationship: Dictionary=state.rows[0].duplicate(true)
+	await pointer(view,Vector2(300,view.list_top()+18));check(await ready(state) and state.art_page()==15,"Relationship actor list failed")
+	await pointer(view,Vector2(300,view.list_top()+18));check(await ready(state),"Relationship actor selection failed")
+	if int(relationship.secondary)==1:
+		check(state.art_page()==16 and state.rows[0].id!=0,"Relationship target retained actor")
+		await pointer(view,Vector2(300,view.list_top()+18));check(await ready(state),"Relationship target selection failed")
+	check(state.art_page()==6 and state.draft_value.relationships.size()==1,"Relationship addition failed")
+	var related: Array=state.snapshot.art.draft_description.duplicate()
+	await capture_draft("related")
+	await pointer(view,Vector2(80,330));check(await ready(state) and state.art_page()==17,"Delete element list failed")
+	await pointer(view,Vector2(view.size.x-32,view.list_top()+18));check(await ready(state) and state.draft_value.elements.size()==6 and state.draft_value.relationships.is_empty(),"Deleting actor did not remove dependent relationship")
+	var deleted: Array=state.snapshot.art.draft_description.duplicate()
+	await capture_draft("deleted")
+	await pointer(view,Vector2(64,378));check(await ready(state) and state.art_page()==6,"Stop deleting did not restore draft")
+	return {"chosen":chosen,"relationship":relationship,"related":related,"deleted":deleted,"elements":state.draft_value.elements.duplicate(true)}
 
 func capture_draft(label: String,resize: bool=false) -> void:
 	if OS.get_environment("DF3D_RESIDENTS_JOB_ART_RENDER")!="1":return

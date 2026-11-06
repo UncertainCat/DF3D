@@ -56,7 +56,9 @@ func sync_scroll() -> void:
 	# cells for unique figures/artifacts, which have no quantity controls.
 	if state.has_art() and state.art_page()>=7 and state.art_page()<=13:footer=108 if draft_has_quantity() else 72
 	page_rows=maxi(1,int((size.y-list_top()-footer)/36))
-	state.draft_columns=maxi(1,int((size.x-32)/8))
+	# Native20020e..200242 reserves two more cells for the draft art_box
+	# than the subject hover preview (116 versus118 at1200px).
+	state.draft_columns=maxi(1,int((size.x-48)/8))
 	state.visible_rows=page_rows
 	scrollbar.position=Vector2(size.x-32,list_top());scrollbar.size=Vector2(16,page_rows*36);scrollbar.page=page_rows
 	if state.has_art():

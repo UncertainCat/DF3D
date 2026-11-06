@@ -1136,8 +1136,23 @@ GPU samples51C, joined client logs contain documented engine signatures only.
 Core19 and job-state checks pass in job-art-render-20261106. The earlier100008
 attempt completed the client but failed native resize due to a missing launcher
 request guard; the corrected lane passes. Fixture artwork_draft_render_reference
-records the scope. Relationship/other-category workflows and ordinary production
-jobs remain pending; Residents remains hidden.
+records the scope. Ordinary production jobs remain pending; Residents remains hidden.
+
+Protected100649 extends the same owner with `DF3D_RESIDENTS_JOB_ART_EXTENDED=1`:
+first choices in Creature, Historical figure, Plant, Tree, Shape, Object and
+Artifact; the first transitive relationship (admiring17); actor/target selection;
+deleting the actor removes the dependent relationship; Name and Done register
+the edited image. Native screen descriptions match exactly. This exposed a shared
+draft wrapping defect: renderer20020e..200242 uses116 columns at1200px, two fewer
+than the hover preview. The shared view now requests that width for draft text.
+Related/deleted captures establish rendered output at1200x800; long-description
+resize and intransitive/index-shift cases remain pending. Fixture
+artwork_draft_extended_reference records inputs and native effect receipts.
+Core19/job-state checks pass in job-art-extended-width-20261106. The100420/100511
+attempts failed the description comparison before the width correction;100420
+also had an unclassified update_end shutdown error and is not accepted. Final
+100649 has only documented engine diagnostics, DF5764 closes unsaved with source
+preservation, and sampled GPU50C at30FPS.
 
 
 ## Farm removal native entry points

@@ -91,8 +91,8 @@ caption and normalized search/sort key are therefore separate outputs; do not
 display the normalized key or substitute current-job descriptions for idle,
 military, dead or other activity states.
 
-Static inspection identifies an owned temporary container as a possible input,
-not an accepted runtime provider. Constructor ed220 delegates to140ff20;
+`residents_activity_native.h` constructs an owned temporary container using
+native constructor ed220, which delegates to140ff20;
 container destruction usesbb680/bb5c0. A standalone MSVC layout check against
 the pinned generated headers confirms container size0x178, children0x160 and
 text.str0x150. The producer retains the list pointer in button callbacks;
@@ -101,15 +101,36 @@ shared_ptr argument is consumed by the native callee, so a raw pointer cast
 without matching reference ownership is not a valid call. Any implementation
 must own and destroy the complete temporary tree and copy semantic outputs
 before retirement. Never substitute the live Residents widget or its cache.
+The adapter uses a real by-value shared_ptr, passes a null list context, copies
+the caption, normalized key and color fields, and retires the entire row.
+No feed/render/arrange callback executes. Native construction leaves
+displaying_tooltip false, so destructor1412c70 skips its global tooltip branch.
 
 The current-job branch callsd03170, which delegates tod032b0. Other branches
 use13d0800,13cc1d0 and13d0950 to resolve simulation activity records, plus native
-unit-status readers. Their transitive ownership and temporary-tree cleanup
-remain to be validated before invocation. In particular,13cc1d0 has chained
+unit-status readers. Their inputs are simulation records: the direct vector
+reads resolve world squads, activities and incidents, not menu scratch.
+In particular,13cc1d0 has chained
 unwind segments through13cc3f4; its first segment ends13cc25e and is insufficient
 for a compatibility hash. The producer also includes switch data through1427be4.
 Static evidence is retained under build/notes/pm/name-fn-*.asm and
-build/notes/pm/residents-abi; it does not establish live activity/search parity.
+build/notes/pm/residents-abi. The adapter pins the complete producer (including
+switch data), construction/destruction, activity readers and caption routines.
+
+`df3d residents-activity-probe` returns owned Activity observations for current
+Residents. `DF3D_RESIDENTS_ACTIVITY=1` with the protected native reference first
+queries this provider before opening Residents, then compares native captions,
+normalized cache keys and foreground/background/brightness for all141 rows.
+Protected021534 on2026-11-06 matches both that cold result and a repeated query;
+the native row captions/colors/cache keys remain unchanged after the repeat.
+Observed cases include jobs, no job, prayer, reading, military training/rest,
+play, mercenaries and new arrivals. DF9808 exits unsaved, source manifest
+unchanged; the brief native run uses30FPS and stays at36–37C. MSVC passes;
+installed bridge SHA256 is
+FAF85F2A86E1A6ADB3A4069E7F2F3BAF1A2229F28B9D1B97F2D4F8DCA8FB2DE9.
+This validates Activity extraction for the captured fortress, not every unit
+state. Activity sorting/search, transport and public Residents UI remain
+unfinished; the diagnostic does not read the native menu or its cache.
 
 ## Farm removal native entry points
 

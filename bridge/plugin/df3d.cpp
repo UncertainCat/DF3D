@@ -111,6 +111,7 @@
 #include "creature_items_native.h"
 #include "item_owner_native.h"
 #include "residents_order_native.h"
+#include "residents_activity_native.h"
 #include "modules/Buildings.h"
 #endif
 
@@ -2128,6 +2129,19 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             value["reaction_id"]=row.reaction_id;value["tool_use"]=int(row.has_tool_use);value["dye_color"]=row.dye_color;
             value["contains"]=Json::Value(Json::arrayValue);for(auto id:row.contains)value["contains"].append(id);
             result["rows"].append(value);
+          }
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="residents-activity-probe") {
+          if(parameters.size()!=1)return CR_WRONG_USAGE;
+          const auto ids=df3d_residents::orderedResidents(0,false);if(!ids)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["rows"]=Json::Value(Json::arrayValue);
+          for(auto id:*ids) {
+            auto* unit=df::unit::find(id);const auto activity=df3d_residents::activityText(unit);
+            if(!activity)return CR_FAILURE;
+            Json::Value row(Json::objectValue);row["id"]=id;row["caption"]=DF2UTF(activity->caption);
+            row["key"]=DF2UTF(activity->key);row["fg"]=activity->foreground;row["bg"]=activity->background;
+            row["bright"]=activity->bright;result["rows"].append(row);
           }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }

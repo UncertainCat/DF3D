@@ -4,6 +4,12 @@ local out,view,records=...
 local gui=require('gui');local script=require('gui.script');local json=require('json')
 df.global.enabler.gfps=30
 df.global.enabler.fps_per_gfps=df.global.enabler.fps/30
+local activity_provider
+if os.getenv('DF3D_RESIDENTS_ACTIVITY')=='1' then
+ local text,code=dfhack.run_command_silent('df3d','residents-activity-probe')
+ assert(code==0,'Cold Residents Activity provider failed: '..text)
+ activity_provider=json.decode(text).rows
+end
 gui.simulateInput(view,'D_UNITLIST')
 for _=1,3 do script.sleep(1,'frames')end
 view:render(dfhack.getTickCount())
@@ -50,6 +56,61 @@ local function walk(widget)
 end
 walk(info.creatures)
 assert(#lists>0,'Native Residents unit list missing')
+local activity_reference
+if activity_provider then
+ local function byte(at)return df.reinterpret_cast('uint8_t',at).value end
+ local function word(at)return df.reinterpret_cast('uint64_t',at).value end
+ local function native_string(at)
+  local length,capacity=word(at+16),word(at+24)
+  assert(length<=capacity and length<=4096,'Invalid native Activity string')
+  local start=capacity>15 and word(at) or at
+  local bytes={};for i=0,length-1 do bytes[#bytes+1]=string.char(byte(start+i))end
+  return dfhack.df2utf(table.concat(bytes))
+ end
+ local function observe_activity()
+  -- Diagnostic-only native cache observation. XML's pointer key omits the
+  -- variant tag: native nodes contain a 16-byte key and string at +0x20.
+  local _,address=df.sizeof(active_list);local head=word(address+0x338)
+  local node=word(head);local keys={};local count=0
+  while node~=head do
+   count=count+1;assert(count<=10000,'Native Activity map cycle')
+   if byte(node+24)==0 then keys[df.reinterpret_cast(df.unit,word(node+16)).id]=native_string(node+32)end
+   node=word(node)
+  end
+  local rows={}
+  local function collect(widget,active)
+   active=active and (widget.flag.whole&1)==1
+   if active and df.widget_unit_portrait:is_instance(widget) and widget.u then
+    local job
+    for _,child in ipairs(dfhack.gui.getWidgetChildren(widget.parent))do if child.name=='Job' then job=child;break end end
+    assert(job,'Native Activity row missing')
+    local label=dfhack.gui.getWidgetChildren(job)[1]
+    assert(label and df.widget_text:is_instance(label),'Native Activity text missing')
+    rows[#rows+1]={id=widget.u.id,caption=dfhack.df2utf(label.str),key=assert(keys[widget.u.id]),fg=label.fg,bg=label.bg,bright=label.bright}
+   end
+   if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do collect(child,active)end end
+  end
+  collect(active_list,true);return rows
+ end
+ activity_reference=observe_activity()
+ local function equal_rows(left,right)
+  if #left~=#right then return false end
+  local by_id={};for _,row in ipairs(right)do by_id[row.id]=row end
+  for _,row in ipairs(left)do
+   local other=by_id[row.id];if not other then return false end
+   for _,key in ipairs{'caption','key','fg','bg','bright'}do if row[key]~=other[key]then return false end end
+  end
+  return true
+ end
+ local repeated,code=dfhack.run_command_silent('df3d','residents-activity-probe')
+ assert(code==0,'Repeated Residents Activity provider failed: '..repeated)
+ local repeat_rows=json.decode(repeated).rows
+ local evidence={native=activity_reference,cold=activity_provider,repeated=repeat_rows,
+  cold_matches=equal_rows(activity_reference,activity_provider),repeated_matches=equal_rows(activity_reference,repeat_rows),
+  native_unchanged=equal_rows(activity_reference,observe_activity())}
+ local file=assert(io.open(out..'/residents-activity-reference.json','w'));file:write(json.encode(evidence));file:close()
+ assert(evidence.cold_matches and evidence.repeated_matches and evidence.native_unchanged,'Native Residents Activity differs')
+end
 local snapshots={}
 local function observe(name)
  local ids={}

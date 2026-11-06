@@ -31,6 +31,35 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Residents native list discovery
 
+Residents row assignments reuse `observeNativeUnitAssignments`: semantic
+occupation/building/work-detail records with native membership helpers operating
+on owned ID-vector copies. This is the existing verified reader, not a new call
+to the Residents widget constructor. The optional row vector preserves native
+occupation/workshop/furnace/detail order and distinguishes unobserved from empty.
+It is bounded at256 entries per row and shares the128KiB row-content budget,
+including names/custom codes and32 bytes per entry. Artwork retains its separate
+budget. Godot uses the same `location_staff_indicators.art_for` mapping as location
+staff; Residents placement starts at local736,y with32px steps and native zero
+padding. The shared location slot positions and limits remain unchanged.
+
+Protected044127 on2026-11-06 compares141 native assignment containers with the
+semantic reader and141 actual typed row receipts. Natural coverage is26
+occupation and13 work-detail indicators, at most one per row; this does not
+accept workshop/furnace artwork, multi-indicator clipping or hover in Residents.
+Native work-detail enums put Siege Operators at374 before custom375..382, while
+the semantic type puts Siege Operators last; the first044034 oracle wrongly
+assumed a contiguous type-to-enum mapping. The corrected comparison follows
+jump table1429e9c. No runtime artwork mapping changed for that diagnostic fix.
+DF24256 exits unsaved, source unchanged; paired logs contain only the known
+separate-thread notice. Installed bridge SHA256:
+48D8CC64B0291DE703FDDFE916A011902D938F574A89597937765F824C50BA32.
+MSVC and `residents-assignments` core19/19/extension/controller checks pass.
+`residents-assignment-indicators-render` passes both Residents and location-staff
+captures with documented Godot diagnostics. The Residents image was inspected
+with Miners/Woodcutters indicators; the existing7882 name-pixel checks pass.
+Native and offline graphics run serially at30FPS, observed GPU36–37C. The staged
+screen still needs remaining row actions, hover, navigation and full acceptance.
+
 The staged Residents specialization button uses the native4x3-cell worker
 artwork at local696,y. It submits the displayed receipt through the shared
 semantic action service, suppresses duplicate pending edits, and refreshes native

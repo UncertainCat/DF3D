@@ -79,6 +79,21 @@ func run() -> void:
 		check(world.management_request("residents",bad)==0,"Malformed Residents query accepted")
 	var cleared:=await request("construction",{"action":C.ManagementAction.Catalog})
 	check(cleared.get("status")==C.ManagementStatus.Ok and not cleared.has("residents") and not cleared.has("residents_rows"),"Unrelated reply retained Residents result")
+	var assignment_count:=0
+	if FileAccess.file_exists(directory+"/residents-assignments-reference.json"):
+		var reference: Array=JSON.parse_string(FileAccess.get_file_as_string(directory+"/residents-assignments-reference.json"))
+		for offset in range(0,reference.size(),64):
+			var ids:=PackedInt32Array()
+			for i in range(offset,mini(reference.size(),offset+64)):ids.append(int(reference[i].id))
+			var response:=await request("residents_rows",{"action":C.ManagementAction.ResidentsRowsRead,"unit_ids":ids,"columns":30,"show_gender":false})
+			var rows: Array=response.get("residents_rows",{}).get("rows",[])
+			check(rows.size()==ids.size(),"Assignment row batch missing")
+			for i in mini(rows.size(),ids.size()):
+				var entries: Array=rows[i].get("assignments",[]);var expected_entries: Array=reference[offset+i].provider
+				check(entries.size()==expected_entries.size(),"Assignment membership count differs")
+				for j in mini(entries.size(),expected_entries.size()):
+					for field in ["kind","id","type","subtype","custom","name","custom_code"]:check(entries[j][field]==expected_entries[j][field],"Assignment field differs: "+field)
+				assignment_count+=1
 	var specialization_results: Array=[]
 	if FileAccess.file_exists(directory+"/residents-specialization-reference.json"):
 		var references: Array=JSON.parse_string(FileAccess.get_file_as_string(directory+"/residents-specialization-reference.json"))
@@ -105,7 +120,7 @@ func run() -> void:
 	var scene_results: Array=[]
 	if not specialization_results.is_empty():scene_results=await specialization_scene()
 	var file:=FileAccess.open(directory+"/residents-wire-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"success":not failed,"comparisons":results,"row_comparisons":row_comparisons,"specialization_results":specialization_results,"scene_results":scene_results}));file.close()
+	file.store_string(JSON.stringify({"success":not failed,"comparisons":results,"row_comparisons":row_comparisons,"specialization_results":specialization_results,"scene_results":scene_results,"assignment_count":assignment_count}));file.close()
 	world.queue_free();await process_frame
 	quit(1 if failed else 0)
 

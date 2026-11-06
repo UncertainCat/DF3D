@@ -22,6 +22,12 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Residents row `assignments` is an optional additive Management133 observation
+using existing LocationStaffAssignment semantics. Absent means unobserved; an
+empty vector means observed no assignments. Older133 readers ignore this field.
+The limit is256 entries per row; names, custom codes and32 bytes per entry share
+the128KiB row-content budget. No action, required field or existing meaning changes.
+
 Management133 adds ResidentsSpecialize, a dedicated native Residents action,
 and optional per-row specialization receipts. Rebuild both bridge and viewer for
 `Local\\df3d_management_v133`; Management132 peers are incompatible with this

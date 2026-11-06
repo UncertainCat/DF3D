@@ -2135,6 +2135,15 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="residents-assignments-read") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0)return CR_WRONG_USAGE;
+          const auto entries=df3d_area::observeNativeUnitAssignments(id);if(!entries)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["id"]=id;result["entries"]=Json::Value(Json::arrayValue);
+          for(const auto& e:*entries) {Json::Value value(Json::objectValue);value["kind"]=int(e.kind);value["id"]=e.id;value["type"]=e.type;value["subtype"]=e.subtype;value["custom"]=e.custom;value["name"]=e.name;value["custom_code"]=e.customCode;result["entries"].append(value);}
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="residents-specialization") {
           if(parameters.size()!=2 && parameters.size()!=4)return CR_WRONG_USAGE;
           int32_t id=-1;const auto& raw=parameters[1];

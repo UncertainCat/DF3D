@@ -9,6 +9,24 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("Residents assignment observations preserve absence and validate semantic fields") {
+  for(int variant=0;variant<3;++variant) {
+    flatbuffers::FlatBufferBuilder b;const auto empty=b.CreateString("");const auto color=wire::CreateAreaNameColor(b);
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<wire::LocationStaffAssignment>>> entries;
+    if(variant)entries=b.CreateVector(std::vector{wire::CreateLocationStaffAssignment(b,wire::LocationStaffAssignmentKind::WorkDetail,2,3,variant==2?7:-1,-1,b.CreateString("fixture"),empty)});
+    const auto row=wire::CreateResidentRow(b,42,empty,empty,empty,empty,empty,color,empty,7,0,false,{},-1,{},entries);
+    const auto payload=wire::CreateResidentsRowsState(b,b.CreateVector(std::vector{row}));
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(wire::ManagementAction::ResidentsRowsRead);
+    state.add_status(wire::ManagementStatus::Ok);state.add_residents_rows(payload);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(variant==2));
+    if(variant<2) {
+      const auto decoded=codec::decodeState(value);const auto& result=decoded.residentsRows->rows[0].assignments;
+      CHECK(result.has_value()==(variant==1));if(result){CHECK(result->size()==1);CHECK(result->front().name=="fixture");CHECK(result->front().id==2);}
+    }
+  }
+}
+
 TEST_CASE("Residents specialization binds edits to positive revisions and validates outcomes") {
   wm::ManagementRequest request;request.action=wm::ManagementAction::ResidentsSpecialize;
   request.residentsSpecialization={42,91,true};

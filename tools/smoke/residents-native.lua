@@ -57,7 +57,40 @@ local function walk(widget)
 end
 walk(info.creatures)
 assert(#lists>0,'Native Residents unit list missing')
-if os.getenv('DF3D_RESIDENTS_ROWS')=='1' then
+if os.getenv('DF3D_RESIDENTS_ASSIGNMENTS')=='1' then
+ local samples={}
+ local occupation_codes={[0]=387,[1]=388,[2]=391,[3]=389,[4]=390,[5]=392,[7]=393,[8]=393,[9]=393,[10]=393}
+ local function collect(widget,active)
+  active=active and (widget.flag.whole&1)==1
+  if active and df.widget_unit_name:is_instance(widget) and widget.u then
+   local text,rc=dfhack.run_command_silent('df3d','residents-assignments-read',tostring(widget.u.id));assert(rc==0,text)
+   local provider=json.decode(text);local expected={}
+   for _,entry in ipairs(provider.entries)do
+    if entry.kind==0 and occupation_codes[entry.type] then expected[#expected+1]={kind='indicator',value=occupation_codes[entry.type]}
+    elseif entry.kind==1 or entry.kind==2 then expected[#expected+1]={kind='building'}
+    elseif entry.kind==3 and entry.type>=0 and entry.type<=18 then expected[#expected+1]={kind='indicator',value=entry.type==18 and 374 or 364+entry.type+(entry.type>=10 and 1 or 0)}end
+   end
+   local container
+   for _,child in ipairs(dfhack.gui.getWidgetChildren(widget.parent))do if child.name=='Occupations/Work Details' then container=child;break end end
+   assert(container,'Native assignment container missing')
+   local children=dfhack.gui.getWidgetChildren(container);assert(#children==#expected,'Native assignment count differs '..widget.u.id)
+   local observed={}
+   for i,child in ipairs(children)do
+    local _,address=df.sizeof(child);local vtable=df.reinterpret_cast('uint64_t',address).value-base
+    local kind=vtable==0x162e208 and 'indicator' or vtable==0x17860d0 and 'building' or 'unknown'
+    local value=df.reinterpret_cast('int32_t',address+0x150).value
+    assert(kind==expected[i].kind and (kind=='building' or value==expected[i].value),'Native assignment order/art differs '..widget.u.id..' expected '..json.encode(expected[i])..' observed '..kind..':'..value)
+    observed[#observed+1]={kind=kind,value=value,rect={child.rect.x1,child.rect.y1,child.rect.x2,child.rect.y2}}
+   end
+   samples[#samples+1]={id=widget.u.id,provider=provider.entries,indicators=observed,padding=container.padding,container={container.rect.x1,container.rect.y1,container.rect.x2,container.rect.y2}}
+  end
+  if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do collect(child,active)end end
+ end
+ collect(active_list,true);assert(#samples>0,'No Residents assignment rows observed')
+ local file=assert(io.open(out..'/residents-assignments-reference.json','w'));file:write(json.encode(samples));file:close()
+end
+local function capture_resident_rows()
+ if os.getenv('DF3D_RESIDENTS_ROWS')~='1' then return end
  local samples={}
  local function collect(widget,active)
   active=active and (widget.flag.whole&1)==1
@@ -114,6 +147,7 @@ if os.getenv('DF3D_RESIDENTS_ROWS')=='1' then
  assert(#samples>0,'No visible Residents names compared')
  local file=assert(io.open(out..'/residents-row-reference.json','w'));file:write(json.encode({samples=samples}));file:close()
 end
+if os.getenv('DF3D_RESIDENTS_ASSIGNMENTS')~='1' then capture_resident_rows()end
 local activity_reference
 if activity_provider then
  local function byte(at)return df.reinterpret_cast('uint8_t',at).value end
@@ -206,6 +240,7 @@ for _,name in ipairs{'Name','Cat','Prof','Job','Stress'}do
   view:render(dfhack.getTickCount());observe(name..'-'..direction)
  end
 end
+if os.getenv('DF3D_RESIDENTS_ASSIGNMENTS')=='1' then capture_resident_rows()end
 if os.getenv('DF3D_RESIDENTS_SPECIALIZATION')=='1' then
  local targets={}
  local function collect(widget,active)

@@ -1008,6 +1008,20 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         if(!text || text->size()>4096 || text->str().find('\0')!=std::string::npos)return "invalid residents row text";
         bytes+=text->size();
       }
+      if(const auto* entries=row->assignments()) {
+        if(entries->size()>256)return "too many residents assignments";
+        auto previous=LocationStaffAssignmentKind::Occupation;
+        for(const auto* e:*entries) {
+          if(!e || e->kind()>LocationStaffAssignmentKind::WorkDetail || e->kind()<previous || e->id()<0 || e->type()<-1 || e->subtype()<-1 || e->custom()<-1 ||
+             !e->name() || e->name()->size()>4096 || !e->custom_code() || e->custom_code()->size()>64 ||
+             e->name()->str().find('\0')!=std::string::npos || e->custom_code()->str().find('\0')!=std::string::npos)return "invalid residents assignment";
+          const bool building=e->kind()==LocationStaffAssignmentKind::Workshop || e->kind()==LocationStaffAssignmentKind::Furnace;
+          if(!building && (e->subtype()!=-1 || e->custom()!=-1))return "foreign residents assignment building fields";
+          if(e->kind()!=LocationStaffAssignmentKind::WorkDetail && e->name()->size())return "foreign residents assignment name";
+          if((building && e->custom()>=0)!=(e->custom_code()->size()>0))return "invalid residents assignment custom code";
+          previous=e->kind();bytes+=e->name()->size()+e->custom_code()->size()+32;
+        }
+      }
       if(const auto* value=row->specialization())
         if(!value->revision() || value->revision()>INT64_MAX)return "invalid residents specialization receipt";
       if(row->happiness() < -1 || row->happiness()>6)return "invalid residents happiness";

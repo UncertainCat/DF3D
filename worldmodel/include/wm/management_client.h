@@ -422,6 +422,7 @@ struct ResidentsSpecializationState { int32_t unitId=-1;ResidentsSpecializationO
 struct ResidentRow {
   int32_t id=-1;
   std::optional<ResidentSpecialization> specialization;
+  std::optional<std::vector<LocationStaffAssignment>> assignments;
   int8_t happiness=-1; // Unobserved, or native happiest0 through most distressed6.
   std::string combined,name,profession,firstLine,secondLine;
   AreaNameColor nameColor;

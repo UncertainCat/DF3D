@@ -4,6 +4,7 @@ extends "res://scripts/location_staff_candidates_frame.gd"
 signal cancelled
 const C=preload("res://scripts/management_contract.gd")
 const NameColor=preload("res://scripts/native_name_color.gd")
+const Indicators=preload("res://scripts/location_staff_indicators.gd")
 const InfoTabs=preload("res://scripts/work_order_info_tabs.gd")
 const SORTS=[C.ResidentsSort.Name,C.ResidentsSort.Category,C.ResidentsSort.Profession,C.ResidentsSort.Activity,C.ResidentsSort.Stress]
 const SORT_X=[7,17,26,46,82]
@@ -129,6 +130,16 @@ func _draw() -> void:
 			text(row.first_line,Vector2(56,y+24),int(ink[0])+8*int(ink[2]),240)
 			text(row.second_line,Vector2(56,y+36),int(ink[0])+8*int(ink[2]),240)
 		text(row.activity.caption,Vector2(368,y+24),int(row.activity.fg)+8*int(row.activity.bright),280)
+		var indicator_x:=736
+		for entry: Dictionary in row.get("assignments",[]):
+			var slot:=Indicators.art_for(entry)
+			if slot.is_empty() or slot.token.is_empty():continue
+			var texture: Texture2D=art.texture(slot.token)
+			if texture==null and not slot.fallback.is_empty():texture=art.texture(slot.fallback)
+			if texture==null:continue
+			var rectangle:=Rect2(indicator_x,y,32,36)
+			if slot.building:rectangle=Rect2(indicator_x,y+2,32,32)
+			draw_texture_rect(texture,rectangle,false);indicator_x+=32
 		if row.has("specialization"):
 			var specialization: Texture2D=art.texture("WORKER_ONLY_DO_ASSIGNED_JOBS" if row.specialization.only_assigned else "WORKER_DO_ANY_AVAILABLE_JOB")
 			if specialization!=null:draw_texture_rect(specialization,Rect2(696,y,32,36),false)

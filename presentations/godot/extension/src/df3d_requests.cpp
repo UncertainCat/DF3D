@@ -187,6 +187,11 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
             row["id"]=v.id;row["combined"]=String::utf8(v.combined.c_str());row["name"]=String::utf8(v.name.c_str());
             row["profession"]=String::utf8(v.profession.c_str());row["first_line"]=String::utf8(v.firstLine.c_str());
             row["second_line"]=String::utf8(v.secondLine.c_str());
+            if(v.assignments) {
+                Array entries;
+                for(const auto& e:*v.assignments) {Dictionary entry;entry["kind"]=int(e.kind);entry["id"]=e.id;entry["type"]=e.type;entry["subtype"]=e.subtype;entry["custom"]=e.custom;entry["name"]=String::utf8(e.name.c_str());entry["custom_code"]=String::utf8(e.customCode.c_str());entries.push_back(entry);}
+                row["assignments"]=entries;
+            }
             if(v.specialization) {Dictionary state;state["only_assigned"]=v.specialization->onlyAssigned;state["revision"]=int64_t(v.specialization->revision);row["specialization"]=state;}
             if(v.happiness>=0)row["happiness"]=int(v.happiness);
             for(auto c:v.nameColor.color)primary.push_back(int(c));

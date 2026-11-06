@@ -442,7 +442,7 @@ struct CreatureAnimalResult {
 std::optional<CreatureAnimalResult> creatureAnimal;
 std::optional<std::vector<int32_t>> residents;
 // Strings are converted to UTF-8 and bounded before publishing this batch.
-struct ResidentRowResult { int32_t id; df3d_residents::RowText text; std::optional<ResidentAppearanceRecipe> icon; df3d_residents::Specialization specialization; };
+struct ResidentRowResult { int32_t id; df3d_residents::RowText text; std::optional<ResidentAppearanceRecipe> icon; df3d_residents::Specialization specialization; std::vector<df3d_area::LocationStaffAssignment> assignments; };
 std::optional<std::vector<ResidentRowResult>> residentsRows;
 struct ResidentsSpecializationResult {int32_t id=-1;m::ResidentsSpecializationOutcome outcome=m::ResidentsSpecializationOutcome::Rejected;bool onlyAssigned=false;};
 std::optional<ResidentsSpecializationResult> residentsSpecialization;
@@ -954,9 +954,11 @@ void publish() {
       const auto id=value.id;const auto& row=value.text;
       const auto& c=row.nameColor;const auto& n=row.name;const auto& a=row.activity;
       const auto color=m::CreateAreaNameColor(b,c.color[0],c.color[1],c.color[2],c.alternate[0],c.alternate[1],c.alternate[2],c.effect);
+      std::vector<flatbuffers::Offset<m::LocationStaffAssignment>> assignments;
+      for(const auto& e:value.assignments)assignments.push_back(m::CreateLocationStaffAssignment(b,m::LocationStaffAssignmentKind(e.kind),e.id,e.type,e.subtype,e.custom,b.CreateString(e.name),b.CreateString(e.customCode)));
       rows.push_back(m::CreateResidentRow(b,id,b.CreateString(n.combined),b.CreateString(n.name),b.CreateString(n.profession),
           b.CreateString(n.firstLine),b.CreateString(n.secondLine),color,b.CreateString(a.caption),uint8_t(a.foreground),uint8_t(a.background),a.bright,
-          value.icon?value.icon->build(b):flatbuffers::Offset<m::SelectionAppearance>{},int8_t(row.happiness),m::CreateResidentSpecialization(b,value.specialization.onlyAssigned,value.specialization.revision)));
+          value.icon?value.icon->build(b):flatbuffers::Offset<m::SelectionAppearance>{},int8_t(row.happiness),m::CreateResidentSpecialization(b,value.specialization.onlyAssigned,value.specialization.revision),b.CreateVector(assignments)));
     }
     residentsRowsResult=m::CreateResidentsRowsState(b,b.CreateVector(rows));
   }
@@ -3806,7 +3808,13 @@ void run(color_ostream& out) {
             icon=std::move(recipe);
           }
           const auto specialization=df3d_residents::specialization(df::unit::find(id));if(!specialization)break;
-          rows.push_back({id,std::move(*row),std::move(icon),*specialization});
+          auto assignments=df3d_area::observeNativeUnitAssignments(id);if(!assignments || assignments->size()>256)break;
+          for(const auto& e:*assignments) {
+            bytes+=32+e.name.size()+e.customCode.size();
+            if(e.name.size()>4096 || e.customCode.size()>64 || e.name.find('\0')!=std::string::npos || e.customCode.find('\0')!=std::string::npos)bounded=false;
+          }
+          if(!bounded || bytes>131072)break;
+          rows.push_back({id,std::move(*row),std::move(icon),*specialization,std::move(*assignments)});
         }
         if(rows.size()==query.unit_ids()->size()) {residentsRows=std::move(rows);status=m::ManagementStatus::Ok;}
       }

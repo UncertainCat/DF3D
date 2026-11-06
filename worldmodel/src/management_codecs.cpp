@@ -51,6 +51,10 @@ ManagementState decodeState(const m::ManagementState* s) {
     for(const auto* v:*r->rows()) {
       ResidentRow row;
       if(const auto* state=v->specialization())row.specialization=ResidentSpecialization{state->only_assigned(),state->revision()};
+      if(const auto* entries=v->assignments()) {
+        row.assignments.emplace();
+        for(const auto* e:*entries)row.assignments->push_back({LocationStaffAssignmentKind(e->kind()),e->id(),e->type(),e->subtype(),e->custom(),e->name()->str(),e->custom_code()->str()});
+      }
       row.id=v->id();row.happiness=v->happiness();row.combined=v->combined()->str();row.name=v->name()->str();
       row.profession=v->profession()->str();row.firstLine=v->first_line()->str();row.secondLine=v->second_line()->str();
       const auto* c=v->name_color();

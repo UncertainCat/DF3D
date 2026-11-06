@@ -28,11 +28,14 @@ local function back()
  df.global.enabler.mouse_rbut=0;df.global.enabler.mouse_rbut_down=0;df.global.enabler.mouse_rbut_lift=1
 end
 local function shot(name)
- for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
- observations[#observations+1]={name=name,lines=lines(),page=m.image_creator.current_option,open=m.image_creator.open}
+ for _=1,3 do script.sleep(1,'frames')end
+ if name:find('%-hover$')then df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;g.precise_mouse_x=200;g.precise_mouse_y=190;g.mouse_x=25;g.mouse_y=15 end
+ view:render(dfhack.getTickCount())
+ local preview={};for _,line in ipairs(m.image_creator.selected_box.text)do preview[#preview+1]=dfhack.df2utf(line.value)end
+ observations[#observations+1]={name=name,lines=lines(),page=m.image_creator.current_option,open=m.image_creator.open,hovered=m.image_creator.last_selected_index,columns=m.image_creator.last_selected_box_width,preview=preview}
  local f=assert(io.open(out..'/work-order-artwork-reference.json','w'));f:write(json.encode(observations));f:close()
  f=assert(io.open(out..'/shot.tmp','w'));f:write(name);f:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
- local deadline=dfhack.getTickCount()+30000
+ local deadline=dfhack.getTickCount()+(name=='work-order-artwork-wire' and 65000 or 30000)
  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'artwork capture timeout');script.sleep(1,'frames')end
 end
 key('D_ORDERS');assert(m.info.open)
@@ -43,6 +46,24 @@ local option;for i,kind in ipairs(details.option)do if kind==3 then option=i;bre
 assert(option);mouse(200,106+option*36);assert(details.current_option==3)
 mouse(200,142);local art=m.image_creator;assert(art.open)
 before={spec=order.specdata.hist_figure_id,typ=order.art_spec.type,id=order.art_spec.id,subid=order.art_spec.subid}
+if os.getenv('DF3D_WORK_ORDER_ARTWORK_SUBJECT_HOVER')=='1' then
+ for page,label in ipairs({'Related to historical figure','Related to site','Related to civilization or other group'})do
+  assert(click_label(label));assert(art.current_option==page)
+  shot('work-order-artwork-subject-'..page..'-before')
+  g.precise_mouse_x=200;g.precise_mouse_y=190;g.mouse_x=25;g.mouse_y=15;view:render(dfhack.getTickCount())
+  shot('work-order-artwork-subject-'..page..'-hover')
+  back();assert(art.current_option==-1)
+ end
+ if os.getenv('DF3D_WORK_ORDER_ARTWORK_WIRE')=='1' then
+  local subjects={};for _,row in ipairs(observations)do if row.name:find('%-hover$')then subjects[#subjects+1]={page=row.page,preview=row.preview}end end
+  local f=assert(io.open(out..'/work-order-artwork-expected.json','w'));f:write(json.encode({id=order.id,option=option,subjects=subjects}));f:close()
+  shot('work-order-artwork-wire')
+  f=assert(io.open(out..'/work-order-artwork-wire-result.json'));local result=json.decode(f:read('*a'));f:close();assert(result.success,'Subject hover viewer failed')
+  assert(order.specdata.hist_figure_id==before.spec and order.art_spec.type==before.typ and order.art_spec.id==before.id and order.art_spec.subid==before.subid,'Hover changed order')
+ end
+ records[#records+1]={name='work-order-artwork-subject-hover',screens=#observations}
+ return
+end
 assert(click_label('Specify a new image'));assert(art.current_option==6)
 assert(click_label('Creature'));assert(art.current_option==7)
 mouse(300,190);assert(art.current_option==6 and #art.new_image.elements==1)

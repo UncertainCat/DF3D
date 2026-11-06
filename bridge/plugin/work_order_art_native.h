@@ -39,6 +39,11 @@ inline bool workOrderArtSubjectsReady() {
             {0x202605,0x5f,UINT64_C(0xead228bd984fbe29)}, // image caption composition
             {0x20ab8c,0xbf,UINT64_C(0x74673a4596594e8b)}, // image selection and requirement rebuild
             {0x202717,0x360,UINT64_C(0x3de07dad79e5516d)}, // image provenance labels
+            {0x2126d0,0xd4c,UINT64_C(0xd9b80402ed17a3f0)}, // owned selected-subject text producer, including dispatch tables
+            {0xc2b870,0x1663,UINT64_C(0xf643e3bdf3217db1)}, // historical figure description
+            {0x9b4e70,0x5d,UINT64_C(0x8acee59abdfa33fb)}, // current site government lookup
+            {0x10cbe50,0x33c,UINT64_C(0xaa4e263ab5438d11)}, // site type wording
+            {0x132cc10,0x14a4,UINT64_C(0x32cb3990ee45026b)}, // entity belief description
             {0x212ffb,0x99,UINT64_C(0xb33f7b9791fee483)}, // image preview inputs
             {0x1451b10,0x161c,UINT64_C(0x5afdbfca1604e13b)}, // semantic image description
             {0x8e7310,0x121,UINT64_C(0x672cfcd6c9373787)}, // owned text wrapping
@@ -213,6 +218,26 @@ inline std::optional<std::vector<std::string>> nativeWorkOrderArtPreview(const d
     for(const auto* line:box.text){if(!line || line->size()>2048)return std::nullopt;lines.push_back(*line);}
     return lines;
 }
+//2126d0 is the selected-subject text producer, not the editor render/input
+//handler. It reads supplied subject vectors and writes only owned selected_box
+//storage. Simulation subjects remain read-only; no native menu is consulted.
+inline std::optional<std::vector<std::string>> nativeWorkOrderArtSubjectPreview(int16_t page,int32_t id,uint16_t columns) {
+    if(!workOrderArtSubjectsReady() || page<1 || page>3 || !columns || columns>256)return std::nullopt;
+    df::image_creator_interfacest context;
+    context.current_option=df::image_creator_option_type(page);
+    context.last_selected_index=0;context.last_selected_box_width=columns;
+    if(page==1){auto* subject=df::historical_figure::find(id);if(!subject)return std::nullopt;context.hf.push_back(subject);}
+    else if(page==2){auto* subject=df::world_site::find(id);if(!subject)return std::nullopt;context.st.push_back(subject);}
+    else {auto* subject=df::historical_entity::find(id);if(!subject)return std::nullopt;context.ent.push_back(subject);}
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    struct Cleanup {df::curses_text_boxst& box;const uint8_t* base;~Cleanup(){reinterpret_cast<void(*)(std::vector<std::string*>*)>(base+0xbb9b0)(&box.text);}} cleanup{context.selected_box,base};
+    df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
+    reinterpret_cast<void(*)(df::image_creator_interfacest*)>(base+0x2126d0)(&context);
+    if(context.selected_box.text.size()>128)return std::nullopt;
+    std::vector<std::string> lines;
+    for(const auto* line:context.selected_box.text){if(!line || line->size()>2048)return std::nullopt;lines.push_back(*line);}
+    return lines;
+}
 struct WorkOrderArtDraftElementValue {int16_t kind=0;int32_t id=-1,secondary=-1,quantity=1;};
 struct WorkOrderArtDraftRelationshipValue {int32_t verb=-1;bool transitive=false;int32_t actor=-1,target=-1;};
 struct WorkOrderArtDraftValue {
@@ -237,7 +262,7 @@ struct WorkOrderArtPage {
 };
 inline std::optional<WorkOrderArtPage> nativeWorkOrderArtPage(df::manager_order& order,int16_t page,const std::string& query,uint32_t cursor,uint64_t listRevision,int32_t hovered=-1,uint16_t columns=0) {
     if(!workOrderArtSubjectsReady())return std::nullopt;
-    if(hovered>=0 && (page!=5 || !columns || !listRevision))return std::nullopt;
+    if(hovered>=0 && ((page!=5 && (page<1 || page>3)) || !columns || !listRevision))return std::nullopt;
     const auto row=nativeWorkOrderRow(order,-1,true);if(!row)return std::nullopt;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     WorkOrderArtPage result;result.page=page;
@@ -276,6 +301,12 @@ inline std::optional<WorkOrderArtPage> nativeWorkOrderArtPage(df::manager_order&
         auto caption=nativeWorkOrderArtSubjectCaption(page,subjects->ids[i]);
         if(!caption || caption->size()>1024)return std::nullopt;
         result.rows.push_back({subjects->ids[i],std::move(*caption),std::nullopt});
+    }
+    if(hovered>=0) {
+        bool present=false;for(const auto& row:result.rows)if(row.id==hovered){present=true;break;}
+        if(!present)return std::nullopt;
+        result.preview=nativeWorkOrderArtSubjectPreview(page,hovered,columns);
+        if(!result.preview)return std::nullopt;result.hovered=hovered;
     }
     result.nextCursor=end<subjects->ids.size()?uint32_t(end):0;return result;
 }

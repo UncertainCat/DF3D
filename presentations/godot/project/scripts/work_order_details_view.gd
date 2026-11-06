@@ -48,7 +48,7 @@ func list_top() -> int:
 	return 84 if selected_kind()==3 else 120
 func sync_scroll() -> void:
 	if state==null or scrollbar==null:return
-	page_rows=maxi(1,int((size.y-list_top()-(132 if state.has_art() and state.art_page()>=7 and state.art_page()<=13 else 96 if state.has_art() and state.art_page()>=6 else 60 if state.has_art() and state.art_page()==5 else 24))/36))
+	page_rows=maxi(1,int((size.y-list_top()-(132 if state.has_art() and state.art_page()>=7 and state.art_page()<=13 else 96 if state.has_art() and (state.art_page()>=6 or state.art_page() in [1,2,3]) else 60 if state.has_art() and state.art_page()==5 else 24))/36))
 	state.draft_columns=maxi(1,int((size.x-32)/8))
 	state.visible_rows=page_rows
 	scrollbar.position=Vector2(size.x-32,list_top());scrollbar.size=Vector2(16,page_rows*36);scrollbar.page=page_rows
@@ -98,7 +98,7 @@ func _input(event: InputEvent) -> void:
 func _gui_input(event: InputEvent) -> void:
 	if input_allowed.is_valid() and not input_allowed.call():return
 	if name_state.active:accept_event();return
-	if event is InputEventMouseMotion and state.phase==state.Phase.Ready and state.has_art() and state.art_page()==5:
+	if event is InputEventMouseMotion and state.phase==state.Phase.Ready and state.has_art() and state.art_page() in [1,2,3,5]:
 		var id: int=-1
 		if Rect2(16,list_top(),size.x-48,page_rows*36).has_point(event.position):
 			var index: int=int((event.position.y-list_top())/36)+state.first-state.row_base()

@@ -7224,7 +7224,7 @@ local rendered comparison `build/qa/artwork-controls-verified` matches the nativ
 020406 search field26208 pixels, quantity field21312 pixels, and each amount
 button1152 pixels exactly. The removal sprite's724 opaque pixels also match;
 78 surrounding row-background pixels still differ. This remaining background
-mismatch, subject hover and other window sizes remain unfinished. The local capture reuses native observed content and installed
+mismatch and other window sizes remain unfinished. The local capture reuses native observed content and installed
 assets without launching DF; it is appearance evidence, not new live-effect
 acceptance. Root19/19 and headless composition pass, with only documented engine
 diagnostics in the short30 FPS rendered check.
@@ -7244,8 +7244,31 @@ documented engine diagnostics. The focused lane uses
 `DF3D_WORK_ORDER_ARTWORK_REFERENCE=1` and `DF3D_WORK_ORDER_ARTWORK_WIRE=1` with
 `stockpile_storage_native.ps1`, and caps the viewer at30 FPS. Native-only232140
 establishes the reference;232038 failed the harness's incorrect pre-Image effect
-baseline and is not effect acceptance. Responsive layout and subject hover remain
-separate gaps.
+baseline and is not effect acceptance. Responsive layout remains a separate gap.
+
+Artwork figure/site/entity hover calls native2126d0 with an owned context,
+selected-subject vector and output text box. It is the text producer, not the
+200070 renderer or editor input handler. It reads simulation subjects; its figure
+biography c2b870, site-government/type helpers9b4e70/10cbe50 and entity belief
+formatter132cc10 are pinned. Output wrapping and cleanup use native text helpers;
+knowledge-material scratch is restored. No native menu selection, scratch or
+cursor is a runtime input. Existing management130 preview fields carry the text;
+late replies are checked against page as well as request/subject/revision identity.
+Subject pages reserve the native14-row list and three preview lines at1200x800.
+
+Protected233154 on2026-11-05 compares the first figure/site/entity preview
+verbatim against native selected_box text through real pointer motion, verifies
+clearing on pointer leave and Back, and independently confirms unchanged order
+fields. Native glyph observations place previews on row59. The figure viewer
+capture was inspected; its scrollbar artwork was absent in the focused capture
+and remains to be resolved before complete screen acceptance. Pointer seeding
+must happen after the native capture's settling frames;232444 did not establish
+hover activation, while232630 records selected index0 and width118 with native
+biography/site/group text. Add `DF3D_WORK_ORDER_ARTWORK_SUBJECT_HOVER=1` to the
+focused artwork reference/wire lane. Bridge build, root19/19 and headless
+composition pass (`build/qa/artwork-subject-hover`); paired live logs contain only
+documented diagnostics. DF37428 closes unsaved with the source unchanged.
+Additional subjects, multiline previews and resized layouts remain unverified.
 
 Protected010525 on2026-11-02 exercises Existing image in the shared viewer after
 the assembled Work orders/conditions/Details workflow. Hover text and wrapping

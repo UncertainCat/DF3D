@@ -32,7 +32,7 @@ func _cancel_preview() -> void:
 	if service!=null and preview_ticket!=0:service.detach(preview_ticket)
 	preview_ticket=0;hovered=-1;preview_columns=0;preview_lines=[]
 func hover_art(id: int,columns: int) -> void:
-	if phase!=Phase.Ready or not has_art() or art_page()!=5 or service==null:return
+	if phase!=Phase.Ready or not has_art() or art_page() not in [1,2,3,5] or service==null:return
 	if id==hovered and (id<0 or columns==preview_columns):return
 	_cancel_preview();hovered=id;preview_columns=columns;changed.emit()
 	if id<0:return
@@ -44,15 +44,16 @@ func hover_art(id: int,columns: int) -> void:
 	var revision: int=snapshot.revision
 	var list_revision: int=snapshot.art.list_revision
 	var current_query:=query
-	var intent: Dictionary={"action":C.ManagementAction.WorkOrderInspect,"workshop_id":building_id,"id":order_id,"expected_revision":revision,"details":{"option":snapshot.selected_option,"art":{"page":5,"query":query,"cursor":art_base,"expected_list_revision":list_revision,"hovered":id,"preview_columns":columns}}}
+	var preview_page: int=art_page()
+	var intent: Dictionary={"action":C.ManagementAction.WorkOrderInspect,"workshop_id":building_id,"id":order_id,"expected_revision":revision,"details":{"option":snapshot.selected_option,"art":{"page":preview_page,"query":query,"cursor":art_base,"expected_list_revision":list_revision,"hovered":id,"preview_columns":columns}}}
 	preview_ticket=service.submit("work_orders",intent,func(received,result,_sent):
 		if owner!=generation or received!=preview_ticket:return
 		preview_ticket=0
-		if phase!=Phase.Ready or not has_art() or art_page()!=5 or snapshot.revision!=revision or snapshot.art.list_revision!=list_revision or query!=current_query or hovered!=id:return
+		if phase!=Phase.Ready or not has_art() or art_page()!=preview_page or snapshot.revision!=revision or snapshot.art.list_revision!=list_revision or query!=current_query or hovered!=id:return
 		if result.get("status",-1)!=C.ManagementStatus.Ok or result.get("action",-1)!=C.ManagementAction.WorkOrderInspect:return
 		var details: Dictionary=result.get("work_order",{}).get("details",{})
 		var art: Dictionary=details.get("art",{})
-		if details.get("id",-1)!=order_id or details.get("revision",0)!=revision or art.get("page",-1)!=5 or art.get("list_revision",0)!=list_revision or art.get("hovered",-1)!=id or not art.get("preview") is Array:return
+		if details.get("id",-1)!=order_id or details.get("revision",0)!=revision or art.get("page",-1)!=preview_page or art.get("list_revision",0)!=list_revision or art.get("hovered",-1)!=id or not art.get("preview") is Array:return
 		preview_lines=art.preview.duplicate();changed.emit())
 func has_art() -> bool:return snapshot.has("art")
 func art_page() -> int:return int(snapshot.get("art",{}).get("page",-1))

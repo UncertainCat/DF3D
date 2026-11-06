@@ -211,8 +211,7 @@ assert(#all==#result.details+1,'Native Add new work detail did not append one de
 local d=all[#all-1];local labors={};for j,value in ipairs(d.allowed_labors)do if value then labors[#labors+1]=j end end
 result.created={index=#all-1,name=dfhack.df2utf(d.name),icon=d.icon,flags=d.flags.whole,labors=labors,assigned_count=#d.assigned_units}
 shot('work-details-created')
-if os.getenv('DF3D_WORK_DETAILS_EDITS')=='1' then
- local function click_handler(rva)
+local function click_handler(rva)
   local target
   local function find(widget)
    if (widget.flag.whole&1)==0 then return end
@@ -228,6 +227,51 @@ if os.getenv('DF3D_WORK_DETAILS_EDITS')=='1' then
   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
   for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
  end
+if os.getenv('DF3D_WORK_DETAILS_DELETE')=='1' then
+ local function snapshot()
+  local state={details={},units={}}
+  for index,detail in ipairs(all)do
+   local allowed,members={},{}
+   for id,value in ipairs(detail.allowed_labors)do if value then allowed[#allowed+1]=id end end
+   for _,id in ipairs(detail.assigned_units)do members[#members+1]=id end
+   state.details[#state.details+1]={index=index,name=dfhack.df2utf(detail.name),icon=detail.icon,flags=detail.flags.whole,labors=allowed,members=members}
+  end
+  for _,unit in ipairs(df.global.world.units.active)do
+   local allowed={};for id,value in ipairs(unit.status.labors)do if value then allowed[#allowed+1]=id end end
+   state.units[#state.units+1]={id=unit.id,labors=allowed,profession=unit.profession,profession2=unit.profession2}
+  end
+  return state
+ end
+ -- Assign a real worker and multiple labors so deleting the definition has
+ -- observable effects. All changes are confined to the paused unsaved clone.
+ local unit=assert(df.unit.find(result.first_visible.unit_id))
+ d.flags.mode=3;d.allowed_labors[11]=true;d.allowed_labors[59]=true;d.assigned_units:insert('#',unit.id)
+ for _,active in ipairs(df.global.world.units.active)do dfhack.units.setAutomaticProfessions(active)end
+ local restored=df.work_detail:new();restored:assign(d)
+ result.deletion={index=#all-1,unit_id=unit.id,before=snapshot()}
+ click_handler(0x468880);shot('work-details-delete-before')
+ click_handler(0x468b60)
+ assert(#all==#result.details,'Native Delete did not remove one definition')
+ result.deletion.after=snapshot()
+ result.deletion.changed_units={}
+ for i,after in ipairs(result.deletion.after.units)do
+  if json.encode(after)~=json.encode(result.deletion.before.units[i])then result.deletion.changed_units[#result.deletion.changed_units+1]=after.id end
+ end
+ assert(#result.deletion.changed_units>0,'Delete fixture did not exercise worker effects')
+ assert(loadfile(path))(out..'/work-details-delete-widgets.json','templates')
+ shot('work-details-delete-after')
+ if os.getenv('DF3D_WORK_DETAILS_DELETE_WIRE')=='1' then
+  all:insert('#',restored)
+  for _,active in ipairs(df.global.world.units.active)do dfhack.units.setAutomaticProfessions(active)end
+  assert(json.encode(snapshot())==json.encode(result.deletion.before),'Delete fixture restoration differs')
+  shot('work-details-delete-wire')
+  result.deletion.semantic=snapshot()
+  assert(json.encode(result.deletion.semantic)==json.encode(result.deletion.after),'Semantic Delete effects differ')
+  shot('work-details-delete-result')
+ else restored:delete()end
+ records[#records+1]={name='work-details-delete',changed_units=#result.deletion.changed_units};return
+end
+if os.getenv('DF3D_WORK_DETAILS_EDITS')=='1' then
  local unit=assert(df.unit.find(result.first_visible.unit_id))
  d.allowed_labors[11]=true;d.assigned_units:insert('#',unit.id);d.flags.mode=3
  local function snapshot()

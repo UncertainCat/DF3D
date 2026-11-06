@@ -1,9 +1,11 @@
 #pragma once
+#include <algorithm>
 #include "farm_native.h"
 #include "df/plotinfost.h"
 #include "df/work_detail.h"
 #include "df/unit.h"
 #include "location_staff_order_native.h"
+#include "location_staff_mutation_native.h"
 
 namespace df3d_production {
 // Match citizens.lua receipt()/detail_info(): list headers plus the selected
@@ -72,6 +74,32 @@ inline bool nativeWorkDetailEdit(int32_t index,int32_t mode,bool reset) {
     Context context{0,detail};
     constexpr size_t handlers[]={0,0x468760,0x468560,0x468660};
     return reinterpret_cast<bool(*)(Context*)>(base+handlers[mode])(&context);
+}
+// Semantic portion of Delete468b60..468c43: remove the explicit definition and
+// recalculate every active unit. Native widget rebuild42f190 is deliberately
+// outside this adapter. Retain the detached object because native widgets may
+// still reference it; the bridge owns the bounded slot before the first write.
+inline bool nativeWorkDetailDelete(int32_t index,void*& retired) {
+    const auto& functions=df3d_area::staffMutationFunctions();
+    if(!functions || !df::global::plotinfo || !df::global::world || retired)return false;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool supported=[&] {
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0xe3;++i){hash^=base[0x468b60+i];hash*=UINT64_C(1099511628211);}
+        return hash==UINT64_C(0x6c77ff90a821251c);
+    }();
+    if(!supported)return false;
+    auto& all=df::global::plotinfo->labor_info.work_details;
+    if(index<0 || size_t(index)>=all.size() || all.size()>128)return false;
+    auto* detail=all[size_t(index)];if(!detail || detail->flags.bits.no_modify)return false;
+    // Native removes every matching pointer; malformed aliasing is rejected
+    // before mutation instead of retiring the same allocation more than once.
+    if(std::count(all.begin(),all.end(),detail)!=1)return false;
+    for(const auto* unit:df::global::world->units.active)if(!unit)return false;
+    retired=detail;
+    all.erase(all.begin()+index);
+    for(auto* unit:df::global::world->units.active)functions.labors(unit);
+    return true;
 }
 // Work Details46c900 delegates to this simulation-only closure body. Unlike
 // creature Labor's inline handler, it accepts an explicit work-detail pointer.

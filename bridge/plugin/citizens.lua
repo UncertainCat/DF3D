@@ -321,7 +321,7 @@ return function(request)
   end
   if action==32 and #d.assigned_units>1024 then return fail('Work detail exceeds 1024 assigned units') end
   if action==32 or action==33 or action==65 then
-   if not df.global.unitst_set_automatic_professions then return fail('Native labor recalculation is unavailable') end
+   if action~=65 and not df.global.unitst_set_automatic_professions then return fail('Native labor recalculation is unavailable') end
    if action==32 then
     local u=df.unit.find(p.unit_id);local valid,reason=eligibility(u)
     if not valid then return fail(reason) end
@@ -337,7 +337,8 @@ return function(request)
     if d.flags.mode==p.mode then return finish(inspect_detail(p.detail_index,p.unit_id,rev)) end
     spend();request.work_detail_edit(p.detail_index,p.mode,false)
    else
-    details():erase(p.detail_index);out.retired={d};full=true
+    spend();request.work_detail_delete(p.detail_index)
+    out.selected_detail=0
    end
   end
   rev=receipt()

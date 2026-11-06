@@ -235,9 +235,9 @@ diagnostics. Headless work-details-settings-view-final-20261106 passes core19,
 extension and controller checks. `settings_view_reference` records this scope.
 Reset is now connected to WorkDetailEdit(edit3) using the displayed settings
 receipt; success refreshes definitions/settings and retains editor scroll. Custom
-definitions and external labor control cannot submit Reset. Delete remains an
-unwired staged control; renaming, settings hover, resize and full composed
-lifecycle acceptance remain pending. The full screen stays hidden.
+definitions and external labor control cannot submit Reset. Delete is connected
+as described below; renaming, settings hover, resize and full composed lifecycle
+acceptance remain pending. The full screen stays hidden.
 
 Protected131034 on2026-11-06 verifies actual owner Gear/Reset clicks against a
 native Reset on a disposable icon18 definition. Both restore labor58, preserve
@@ -276,6 +276,35 @@ DF31756 closed unsaved and the source remained unchanged. Retained final client
 stdout/stderr contain only the known separate-thread notice. Native ran at30FPS
 with headless clients; GPU sampled60C during the run and59C after closure. The
 full editor remains hidden and incomplete.
+
+Delete now removes the selected custom definition and invokes pinned native
+labor recalculation4390d0 for every active unit, matching the semantic part of
+468b60..468c43. The whole native callback also destroys the object and rebuilds
+widgets, so it cannot be used directly. The adapter pins the semantic range,
+validates the explicit target and reserves an existing bounded retirement slot
+before vector erasure. Detached objects remain alive for possible native widget
+references. Recalculation failures retain the object even if native effects are
+uncertain. The old eligible-citizen queued recalculation and late Lua retirement
+transfer are no longer used for Delete. Lua still enforces exact receipts,
+external-controller exclusion and built-in protection before calling the adapter.
+
+The owner accepts Delete only from editable custom-detail settings, blocks
+conflicting pending actions, and refreshes the first detail's roster afterward.
+Protected131312 captures native deletion;131656 restores an owned copy of the
+same controlled definition, then clicks Gear/Delete through the real headless
+owner/service. Both remove one of12 definitions and match all11 remaining
+headers/memberships plus all339 active workers' labor/profession fields.148 worker
+observations change. Native after-delete artwork confirms first-detail selection.
+`delete_reference` records the accepted scope; this run adds no rendered viewer
+capture. MSVC and work-details-delete-20261106 core19/extension/controller checks
+pass. Installed/build bridge SHA256 is
+F79FFFE7CF055F13CB9BE754742FAB0F6F4C3098CA70392318368C756C4D14A7.
+DF39500 exits unsaved, source preservation passes and no DF/Godot remains. Native
+is capped at30FPS, viewer is headless, sampled GPU46C; joined client logs contain
+only the known separate-renderer notice. The legacy citizen action envelope still
+lacks a distinct native post-write Unknown outcome; receipt failures retire UI
+authority without replay, but richer outcome reporting and full lifecycle
+acceptance remain unfinished before screen exposure.
 
 `work_detail_query_native.h` supplies an owned Work Details worker query.
 Native142c4b0 performs filtering, stable sorting and its selected-worker

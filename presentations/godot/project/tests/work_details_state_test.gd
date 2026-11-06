@@ -111,6 +111,12 @@ func run() -> void:
 	state.reset_settings();state.close_settings();check(state.ticket==old and state.editing_settings,"Pending Reset blocks repeated Reset and Done")
 	service.reply(old,{"citizen":{"selected_detail":0}});service.reply(state.ticket,page([detail(0,55)]));service.reply(state.ticket,settings_page(55))
 	check(state.editing_settings and state.settings_first==20 and state.phase==State.Phase.Ready,"Reset refreshes settings without leaving the editor or losing scroll")
+	state.settings.no_modify=true;count=service.next;state.delete_detail();check(service.next==count,"Built-in detail cannot Delete")
+	state.settings.no_modify=false;state.delete_detail();old=state.ticket
+	check(service.calls[old].intent.action==A.WorkDetailDelete and service.calls[old].intent.expected_revision==55 and not state.editing_settings,"Delete consumes displayed receipt and leaves settings")
+	state.delete_detail();state.create_detail();check(state.ticket==old,"Pending Delete blocks duplicate and conflicting writes")
+	service.reply(old,{"citizen":{"selected_detail":0}});service.reply(state.ticket,page([detail(0,57)]));complete_workers(service,state,[])
+	check(state.selected.index==0 and state.roster_ready and not state.editing_settings,"Delete returns to first detail roster")
 	state.dispose()
 	if failures==0:print("WORK_DETAILS_STATE_PASS")
 	quit(0 if failures==0 else 1)

@@ -4432,6 +4432,19 @@ void run(color_ostream& out) {
   }
   if(citizenAction(action)) {
     lua_pushcfunction(L,[](lua_State* state)->int {
+      const auto index=int32_t(luaL_checkinteger(state,1));
+      if(workDetailHoldingCount>=workDetailHolding.size())return luaL_error(state,"Work-detail retirement storage unavailable");
+      bool applied=false;
+      try {applied=df3d_production::nativeWorkDetailDelete(index,workDetailHolding[workDetailHoldingCount]);}
+      catch(...) {
+        if(workDetailHolding[workDetailHoldingCount]){++workDetailHoldingCount;mutated=true;}
+        return luaL_error(state,"Native work-detail deletion outcome uncertain");
+      }
+      if(!applied)return luaL_error(state,"Native work-detail deletion unavailable");
+      ++workDetailHoldingCount;mutated=true;
+      return 0;
+    });lua_setfield(L,-2,"work_detail_delete");
+    lua_pushcfunction(L,[](lua_State* state)->int {
       const bool applied=df3d_production::nativeWorkDetailEdit(int32_t(luaL_checkinteger(state,1)),int32_t(luaL_checkinteger(state,2)),lua_toboolean(state,3));
       if(!applied)return luaL_error(state,"Native work-detail edit unavailable");
       return 0;
@@ -4951,17 +4964,7 @@ void run(color_ostream& out) {
   if(citizenAction(action)) {
     citizenRecalcPending=(builderActive & 0x10)!=0;
     citizenRecalcDone=uint32_t(number(L,"recalc_done"));citizenRecalcTotal=uint32_t(number(L,"recalc_total"));
-    // Retain even when recalculation failed after the native vector erase.
-    if(action==m::ManagementAction::WorkDetailDelete) {
-      lua_getfield(L,-1,"retired");
-      if(lua_istable(L,-1))for(size_t i=1;i<=lua_rawlen(L,-1);++i) {
-        lua_rawgeti(L,-1,i);void* native=Lua::GetDFObject<df::work_detail>(L,-1);
-        if(native && workDetailHoldingCount<workDetailHolding.size()){workDetailHolding[workDetailHoldingCount++]=native;mutated=true;}
-        else out.printerr("df3d: retired work-detail element {} was not retained: {}\n",i,native ? "holding array full" : "unrecognized native object");
-        lua_pop(L,1);
-      }
-      lua_pop(L,1);
-    }
+
   }
   if(areaAction(action)) {
     // Keep detached allocations across stop(), helper reload and world changes.

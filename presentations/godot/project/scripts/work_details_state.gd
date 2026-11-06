@@ -200,3 +200,9 @@ func seek_settings(offset: int,count: int) -> void:
 func reset_settings() -> void:
 	if not editing_settings or phase!=Phase.Ready or ticket!=0 or not settings.get("editable",false) or not settings.get("no_modify",false):return
 	_apply({"action":A.WorkDetailEdit,"detail_index":int(settings.detail_index),"expected_revision":int(settings.revision),"edit":3})
+
+func delete_detail() -> void:
+	if not editing_settings or phase!=Phase.Ready or ticket!=0 or not settings.get("editable",false) or settings.get("no_modify",true):return
+	var intent: Dictionary={"action":A.WorkDetailDelete,"detail_index":int(settings.detail_index),"expected_revision":int(settings.revision)}
+	editing_settings=false;settings={};settings_first=0
+	_apply(intent)

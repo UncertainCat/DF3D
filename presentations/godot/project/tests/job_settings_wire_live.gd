@@ -14,6 +14,8 @@ func pointer(view,point: Vector2,button: int=MOUSE_BUTTON_LEFT) -> void:
 	click=click.duplicate();click.pressed=false;Input.parse_input_event(click);await process_frame
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
+	if OS.get_environment("DF3D_WORK_DETAILS_DELETE_WIRE")=="1":
+		await work_detail_delete_scene();return
 	if OS.get_environment("DF3D_WORK_DETAILS_SETTINGS_RENDER")=="1":
 		await work_detail_settings_scene();return
 	if OS.get_environment("DF3D_WORK_DETAILS_SETTINGS_CONTROLLER")=="1":
@@ -730,3 +732,23 @@ func work_detail_reset_scene(index: int) -> void:
 				await pointer(owner.panel,owner.panel.settings_action_rect().get_center())
 				check(await ready(owner.state) and owner.state.editing_settings and owner.state.settings.labors==PackedInt32Array([58]),"Reset button did not refresh native defaults")
 	owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();await process_frame
+
+func work_detail_delete_scene() -> void:
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/work-details-native.json")).deletion
+	world=Df3dWorld.new();root.add_child(world)
+	if not check(world.attach() and world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Delete scene assets unavailable"):quit(1);return
+	root.size=Vector2i(1200,800)
+	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
+	for frame in 5:world.poll();await process_frame
+	var interaction:=Interaction.new();root.add_child(interaction)
+	var host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)
+	var owner=preload("res://scripts/work_details_panel.gd").new();root.add_child(owner);owner.configure(world,service,host);owner.open_panel()
+	if check(await ready(owner.state),"Delete roster failed"):
+		await pointer(owner.panel,owner.panel.detail_rect(int(reference.index)).get_center())
+		if check(await ready(owner.state),"Delete detail selection failed"):
+			await pointer(owner.panel,Vector2(656,owner.panel.header_top()+18))
+			if check(await ready(owner.state) and not owner.state.settings.get("no_modify",true),"Delete gear failed"):
+				await pointer(owner.panel,owner.panel.settings_action_rect().get_center())
+				check(await ready(owner.state) and not owner.state.editing_settings and owner.state.selected.get("index",-1)==0 and owner.state.details.size()==reference.after.details.size(),"Delete did not return to first detail roster")
+	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"delete_owner":true}));file.close()
+	owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)

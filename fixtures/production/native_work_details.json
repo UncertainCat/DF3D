@@ -3289,5 +3289,27 @@
     "owned_df_closed": true,
     "bridge_sha256": "2A483C8CCF4EB97842F396BBF7849E2A0160478B7669550F0ABA81432FDD121C",
     "diagnostics": "Final joined client logs contain only known separate-renderer, device-finalize and paired shutdown-object signatures."
+  },
+  "delete_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-131656",
+    "scope": "Native Delete and actual headless Work Details owner pointer route with full remaining-definition and active-worker effects. No new rendered viewer capture or broader lifecycle acceptance.",
+    "detail_count_before": 12,
+    "detail_count_after": 11,
+    "active_workers": 339,
+    "changed_workers": 148,
+    "native_semantic_snapshots_equal": true,
+    "native_snapshot_sha256": "31e9893ea4f2ca11eefd6ef31b1cbd162aa2dcf5c329498160d8c754f7b6ec80",
+    "returns_to_first_detail_roster": true,
+    "native_semantic_range": {
+      "rva": "468b60",
+      "length": "e3",
+      "fnv1a": "6c77ff90a821251c"
+    },
+    "recalculation_rva": "4390d0",
+    "retirement": "Detached definition retained in preallocated bridge holding slot before erasure; native widget rebuilding excluded.",
+    "source_preserved": true,
+    "owned_df_closed": true,
+    "bridge_sha256": "F79FFFE7CF055F13CB9BE754742FAB0F6F4C3098CA70392318368C756C4D14A7",
+    "diagnostics": "Final joined headless client logs contain only the known separate-renderer notice."
   }
 }

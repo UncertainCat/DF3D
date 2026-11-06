@@ -534,6 +534,40 @@ local ok,err=xpcall(function()
   expected.global_order_ids={}
   for _,order in ipairs(df.global.world.manager_orders.all)do expected.global_order_ids[#expected.global_order_ids+1]=order.id end
   shot('global-work-orders-native')
+  -- Native clothing-size reference on an existing order in the unsaved clone.
+  local size_order,size_position
+  for i,order in ipairs(df.global.world.manager_orders.all)do
+   if order.job_type==100 or order.job_type==101 or order.job_type==102 or order.job_type==116 or order.job_type==117 then size_order=order;size_position=i;break end
+  end
+  assert(size_order,'Fixture needs an existing clothing order')
+  local work_orders=df.global.game.main_interface.info.work_orders
+  local prior_scroll=work_orders.scroll_position_work_orders
+  work_orders.scroll_position_work_orders=math.min(size_position,math.max(0,#df.global.world.manager_orders.all-15));view:render(dfhack.getTickCount())
+  mouse(584,142+(size_position-work_orders.scroll_position_work_orders)*36)
+  local sizing=df.global.game.main_interface.job_details
+  assert(sizing.open and sizing.wq==size_order,'Clothing Details did not open')
+  local size_slot
+  for i,kind in ipairs(sizing.option)do if kind==2 then size_slot=i;break end end
+  assert(size_slot,'Clothing size option missing');mouse(200,106+size_slot*36)
+  assert(sizing.current_option==2,'Clothing size chooser did not open')
+  local size_rows={};for _,race in ipairs(sizing.clothing_size_race_index)do size_rows[#size_rows+1]=race end
+  local size_text,size_code=dfhack.run_command_silent('df3d','work-order-details-probe',tostring(size_order.id),tostring(size_slot))
+  assert(size_code==0,size_text);local size_owned=json.decode(size_text)
+  assert(#size_owned.materials==#size_rows,'Owned clothing size count differs')
+  for i,row in ipairs(size_owned.materials)do assert(row.index==size_rows[i],'Owned clothing size order differs')end
+  expected.clothing_size={id=size_order.id,option=size_slot,rows=size_owned.materials,original=size_order.specdata.hist_figure_id}
+  shot('order-clothing-size-native')
+  mouse(200,154);for byte in ('human'):gmatch('.')do gui.simulateInput(view,('STRING_A%03d'):format(byte:byte()))end
+  view:render(dfhack.getTickCount());assert(#sizing.clothing_size_race_index>0,'Native clothing size search found no humans')
+  expected.clothing_size.race=sizing.clothing_size_race_index[0]
+  local saved_size_inputs={};for _,item in ipairs(size_order.items.elements)do local saved=df.job_item:new();saved:assign(item);saved_size_inputs[#saved_size_inputs+1]=saved end
+  shot('order-clothing-size-search-native');mouse(200,190)
+  assert(size_order.specdata.hist_figure_id==expected.clothing_size.race,'Native clothing size selection failed')
+  size_order.specdata.hist_figure_id=expected.clothing_size.original
+  assert(#saved_size_inputs==#size_order.items.elements)
+  for i,saved in ipairs(saved_size_inputs)do size_order.items.elements[i-1]:assign(saved);saved:delete()end
+  if sizing.open then gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())end
+  work_orders.scroll_position_work_orders=prior_scroll;view:render(dfhack.getTickCount())
   -- Reuse an existing visible Encrust order for the native type chooser.
   local improvement_y
   for _,line in ipairs(lines())do if line.text:find('Encrust',1,true)then improvement_y=line.y*12+6;break end end
@@ -798,6 +832,7 @@ local ok,err=xpcall(function()
   local file=assert(io.open(out..'/workshop-order-expected.json','w'));file:write(json.encode(expected));file:close()
   gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
   capture('workshop-order-wire')
+  assert(size_order.specdata.hist_figure_id==expected.clothing_size.race,'Viewer clothing size selection differs from native')
   assert(improved.specdata.improvement==0,'Viewer Image entry effect missing')
   assert(improved.art_spec.type==3,'Viewer Done did not select a specific image')
   local chunk=assert(df.art_image_chunk.find(improved.art_spec.id),'Viewer image chunk missing')

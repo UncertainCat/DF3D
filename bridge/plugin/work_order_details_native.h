@@ -4,6 +4,8 @@
 #include "df/job_details_interfacest.h"
 #include "df/job_reqst.h"
 #include "df/job_item.h"
+#include "df/creature_raw.h"
+#include "df/caste_raw.h"
 #include <map>
 
 namespace df3d_production {
@@ -12,6 +14,7 @@ struct WorkOrderDetailMaterial {int16_t type=-1;int32_t index=-1,count=0;std::st
 struct WorkOrderDetailsObservation {
     uint64_t revision=0,choicesRevision=0;
     std::string caption;
+    std::optional<std::string> currentValue;
     std::vector<WorkOrderDetailOption> options;
     std::vector<WorkOrderDetailMaterial> materials;
 };
@@ -38,6 +41,14 @@ inline bool workOrderDetailsReady() {
             {0x21517c,0x274,UINT64_C(0x6901b2ef5ade89fb)}, // improvement captions
             {0x21931f,0x11,UINT64_C(0xfe95d347f9ba7430)}, // selected improvement effect
             {0x2193bd,0x94,UINT64_C(0xddbadbcbf283ad20)}, // non-image art reset/rebuild
+            {0x2136b3,0x14c,UINT64_C(0xc35ac70a23517d3a)}, // clothing size eligibility/order
+            {0x1fad50,0x99,UINT64_C(0x8dafb0b6ccf417bc)}, // native raw race identity
+            {0x218077,0x6e,UINT64_C(0xe1f522b5885ed13e)}, // clothing row caption
+            {0x21bd7b,0x3a,UINT64_C(0xd30ec4bc32a338c3)}, // order clothing size effect
+            {0x8b9daf,0x164,UINT64_C(0x57661bca16adf222)}, // owned lowercase substring filtering
+            {0x52cee0,0x19e,UINT64_C(0xc25c2d8a6eb9fcac)},
+            {0x217cce,0x31,UINT64_C(0x29d0e8ec616bdebc)}, // current clothing race caption
+            {0xaa3bd0,0x1c3,UINT64_C(0x0f9cd818efc6bad8)}, // native creature name
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -129,8 +140,47 @@ inline std::optional<WorkOrderDetailsObservation> nativeWorkOrderDetails(df::man
     if(selected==-1)return result;
     if(selected<0 || size_t(selected)>=result.options.size())return std::nullopt;
     const auto option=result.options[size_t(selected)];
-    if(option.kind!=0 && option.kind!=3 && option.kind!=6)return std::nullopt;
+    if(option.kind!=0 && option.kind!=2 && option.kind!=3 && option.kind!=6)return std::nullopt;
     if(option.kind==3 && !query.empty())return std::nullopt;
+    if(option.kind==2) {
+        // Native opener2136b3 inlines this enumeration; its whole UI handler is
+        // not an eligible runtime API. Iterate authoritative alphabetic raws,
+        // and use DF's identity leaf. No native menu vectors are borrowed.
+        auto& creatures=df::global::world->raws.creatures;
+        const int32_t playerRace=df::global::plotinfo->race_id;
+        if(playerRace<0 || size_t(playerRace)>=creatures.all.size() || !creatures.all[size_t(playerRace)] || query.size()>128)return std::nullopt;
+        const int32_t currentRace=source.specdata.hist_figure_id==-1?playerRace:source.specdata.hist_figure_id;
+        if(currentRace<0 || size_t(currentRace)>=creatures.all.size() || !creatures.all[size_t(currentRace)])return std::nullopt;
+        result.currentValue.emplace();
+        reinterpret_cast<void(*)(int16_t,std::string*,bool,int16_t)>(base+0xaa3bd0)(int16_t(currentRace),&*result.currentValue,true,-1);
+        if(result.currentValue->size()>512)return std::nullopt;
+        std::vector<int32_t> races{playerRace};
+        for(auto* raw:creatures.alphabetic) {
+            if(!raw)return std::nullopt;
+            if(!std::any_of(raw->caste.begin(),raw->caste.end(),[](const auto* caste){return caste && caste->flags.is_set(df::caste_raw_flags::EQUIPS);}))continue;
+            if(!raw->flags.is_set(df::creature_raw_flags::HAS_ANY_INTELLIGENT_LEARNS))continue;
+            if(raw!=creatures.all[size_t(playerRace)] && !raw->flags.is_set(df::creature_raw_flags::OCCURS_AS_ENTITY_RACE) &&
+               !raw->flags.is_set(df::creature_raw_flags::HAS_ANY_LOCAL_POPS_CONTROLLABLE) && !raw->flags.is_set(df::creature_raw_flags::HAS_ANY_OUTSIDER_CONTROLLABLE) &&
+               !raw->flags.is_set(df::creature_raw_flags::HAS_ANY_LOCAL_POPS_PRODUCE_HEROES))continue;
+            const int32_t race=int16_t(reinterpret_cast<int16_t(*)(df::creature_handler*,df::creature_raw*)>(base+0x1fad50)(&creatures,raw));
+            if(race>=0 && race!=playerRace)races.push_back(race);
+        }
+        if(races.size()>16384)return std::nullopt;
+        hash=result.revision;add(option.kind);add(races.size());
+        for(size_t i=0;i<races.size();++i) {
+            const auto race=races[i];if(size_t(race)>=creatures.all.size() || !creatures.all[size_t(race)])return std::nullopt;
+            WorkOrderDetailMaterial row;row.id=int32_t(i);row.index=race;row.caption=creatures.all[size_t(race)]->name[1];
+            if(row.caption.size()>512)return std::nullopt;
+            add(race);result.materials.push_back(std::move(row));
+        }
+        result.choicesRevision=(hash&INT64_MAX)?(hash&INT64_MAX):1;
+        if(!query.empty()) {
+            const auto lower=reinterpret_cast<void(*)(std::string*)>(base+0x52cee0);
+            auto normalized=query;lower(&normalized);
+            result.materials.erase(std::remove_if(result.materials.begin(),result.materials.end(),[&](const auto& row){auto caption=row.caption;lower(&caption);return caption.find(normalized)==std::string::npos;}),result.materials.end());
+        }
+        return result;
+    }
     std::vector<df::job_item> inputs;inputs.reserve(source.items->elements.size());
     for(const auto* item:source.items->elements)inputs.push_back(*item);
     df::job_reqst requirements;for(auto& item:inputs)requirements.elements.push_back(&item);
@@ -232,6 +282,14 @@ inline WorkOrderDetailEditResult setWorkOrderDetailMaterial(df::manager_order& o
     if(choice<0 || size_t(choice)>=before->materials.size())return result;
     const auto selected=before->options[size_t(option)];
     const auto material=before->materials[size_t(choice)];
+    if(selected.kind==2) {
+        result.outcome=WorkshopOrdersOutcome::Unknown;
+        order.specdata.hist_figure_id=material.index; // Native union field at order+0x3c.
+        if(order.items)rebuildWorkOrderDetailRequirements(order);
+        result.observation=nativeWorkOrderDetails(order);
+        if(result.observation)result.outcome=WorkshopOrdersOutcome::Applied;
+        return result;
+    }
     if(selected.kind==3) {
         // Image requires a further user selection; do not borrow its native UI.
         if(material.index<=0 || material.index>4)return result;

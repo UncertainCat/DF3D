@@ -7090,7 +7090,7 @@ one-Back-close assertion and is not a passing full workflow.
 
 Global Details now uses its observed larger frame at1200x800, separately from
 the workshop frame. This is an editable staged workflow, not complete Details
-acceptance. Image, clothing size and dye families, responsive geometry, hover
+acceptance. Remaining image and dye behavior, responsive geometry, hover
 and broader navigation parity still need completion before exposure.
 
 `work_order_art_native.h` starts the owned artwork path with subject-list leaves:
@@ -7147,8 +7147,26 @@ drawing replaces thousands of individual patch draws; the inspected full-width
 component capture in `build/qa/artwork-name-render` renders the controls and rows.
 `build/qa/artwork-name-ready` passes core19/19, UI composition and the existing
 location-name pixel/input checks (known engine diagnostics only). The corrected
-full-width rendering has component evidence; the live effect run predates that
-drawing correction. Complete responsive and hover acceptance remains pending.
+full-width rendering is also visible in the protected024243 live capture.
+Complete responsive and hover acceptance remains pending.
+
+Clothing-size Details uses native alphabetic creature raws and the pinned inline
+eligibility composition from2136b3, with1fad50 resolving race IDs. Native aa3bd0
+formats the current race; management129 carries that optional current-setting
+text. Search uses native lowercase and the observed substring semantics. Choice
+IDs retain their unfiltered ordinals and order/list revisions guard selection.
+Selecting a race applies the native specdata write and requirement rebuild,
+closes Details and refreshes the order list. No native menu state is borrowed.
+Protected223004 on2026-11-05 verifies all199 native choices, actual viewer search
+and selection, and independent DF readback of the selected race. The inspected
+viewer capture matches the native frame and list; its current-value foreground
+was corrected to native bright green after inspection. Work orders logs contain
+only known diagnostics and the source save is unchanged. The enclosing lane
+later fails an unrelated carrier capture's30-second acknowledgment timeout;
+this is scoped Work orders evidence, not a passing full lane. Rendered carrier
+acknowledgments now allow95 seconds to cover the launcher's90-second budget at
+the30 FPS cap. Core19/19 and headless UI composition pass; dyes and remaining
+artwork/responsive behavior keep the complete Work orders screen staged.
 
 Protected020406 on2026-11-02 exercises draft creation, native descriptions,
 relationships, deletion, discard and actual Done in the shared viewer. DF readback

@@ -450,6 +450,27 @@ func run() -> void:
 	root.get_texture().get_image().save_png(directory+"/work-order-art-draft-done-live.png")
 	click(Vector2(112,418))
 	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Closed and global.phase==global.Phase.Ready and global.ticket==0),"Done did not install artwork and refresh the order"):quit(1);return
+	var size_position: int=-1
+	for index in expected.global_order_ids.size():
+		if int(expected.global_order_ids[index])==int(expected.clothing_size.id):size_position=index;break
+	if not check(size_position>=0,"Clothing order missing from reference list"):quit(1);return
+	global.seek(size_position,global.capacity)
+	if not check(await settle(service,func():return global.phase==global.Phase.Ready and global.ticket==0 and not global.find_order(int(expected.clothing_size.id)).is_empty()),"Clothing order did not load"):quit(1);return
+	var size_row: Dictionary=global.find_order(int(expected.clothing_size.id))
+	click(Vector2(584,142+(size_row.position-global.first)*36))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready),"Clothing Details did not open"):quit(1);return
+	click(Vector2(200,106+int(expected.clothing_size.option)*36))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.snapshot.get("selected_option",-1)==int(expected.clothing_size.option)),"Clothing sizes did not load"):quit(1);return
+	check(owner.details.snapshot.get("current_value","")=="dwarves","Native current clothing size differs")
+	check(owner.details.rows.size()==expected.clothing_size.rows.size(),"Native clothing size count differs")
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/work-order-clothing-size-live.png")
+	click(Vector2(200,154))
+	for character in "human":number_key(KEY_A,character.unicode_at(0))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Ready and owner.details.ticket==0 and owner.details.query=="human" and not owner.details.rows.is_empty()),"Clothing search did not complete"):quit(1);return
+	number_key(KEY_ENTER)
+	click(Vector2(200,190))
+	if not check(await settle(service,func():return owner.details.phase==owner.details.Phase.Closed and global.phase==global.Phase.Ready and global.ticket==0),"Clothing selection did not update and refresh the order"):quit(1);return
 	number_key(KEY_ESCAPE)
 	if not check(await settle(service,func():return owner.orders.phase==owner.orders.Phase.Ready and owner.orders.rows_available and owner.orders.row_ticket==0),"Workshop list did not refresh after global removal"):quit(1);return
 	check(not owner.orders.snapshot.order_ids.has(created_order.id) and owner.orders.row_total==0 and owner.orders.rows.is_empty(),"Removed order retained in workshop list")

@@ -111,7 +111,7 @@ func _gui_input(event: InputEvent) -> void:
 	if selected>=0 and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
 		scrollbar.move_to(state.first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1));accept_event();return
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
-	var searching: bool=(state.has_art() and state.art_page()>=0) or (not state.has_art() and selected_kind() in [0,6])
+	var searching: bool=(state.has_art() and state.art_page()>=0) or (not state.has_art() and selected_kind() in [0,2,6])
 	if searching and Rect2(16,96 if state.has_art() else 84,size.x-32,36).has_point(event.position):
 		search_focused=not search_focused;queue_redraw();accept_event();return
 	var top:=list_top() if selected>=0 else 48
@@ -137,10 +137,13 @@ func _draw() -> void:
 		for index in state.snapshot.options.size():text(state.snapshot.options[index].caption,Vector2(16,68+index*36))
 		return
 	var kind: int=state.snapshot.options[selected].kind
-	# Captured native setting headings for the two wired semantic families.
+	# Captured native setting headings; current values come from DF.
 	if kind in [0,6]:text("Setting material" if kind==0 else "Setting plant",Vector2(16,68))
 	if kind==3:text("Setting type",Vector2(16,68)) # Native literal1615920.
-	if kind in [0,6]:
+	if kind==2:
+		text("For ",Vector2(16,68)) # Native literal16159b8.
+		text(state.snapshot.get("current_value",""),Vector2(48,68),10)
+	if kind in [0,2,6]:
 		var filter: Texture2D=art.texture("BUTTON_FILTER")
 		var columns:=int((size.x-32)/8)
 		if filter!=null:

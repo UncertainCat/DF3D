@@ -7300,9 +7300,22 @@ source unchanged. The production view rendered at all three sizes in
 `build/qa/artwork-responsive`; the wide capture was visually compared with native.
 Paired logs contain only documented diagnostics, and root19/19 plus headless
 composition pass in `build/qa/artwork-responsive-gate`. The focused native lane
-accepts `DF3D_WORK_ORDER_ARTWORK_RESIZE=1`. This verifies frame/list geometry,
-not resized live edits or minimum-size draft controls. Additional subjects,
-multiline previews and those remaining responsive interactions are unverified.
+accepts `DF3D_WORK_ORDER_ARTWORK_RESIZE=1`. Adding
+`DF3D_WORK_ORDER_ARTWORK_DRAFT_LAYOUT=1` captures the draft root and Creature
+picker, including Cancel and return to the artwork root. Protected011437 on
+2026-11-06 establishes actual1600x900,1200x800 and912x552 dimensions; resizing
+wide first avoids the initial resize remaining at960x720 (011333 is not minimum
+coverage). Owned DF7936 exits unsaved with the source unchanged.
+
+The Creature picker now includes the final available row at minimum height:
+native2040c5..2040db and the captures give7/13/16 rows at552/800/900 pixels.
+Its previous footer reservation showed only6 at552. The corrected minimum
+view was visually compared with native in `build/qa/artwork-minimum-fixed`;
+synthetic row labels and scrollbar totals are not native content acceptance.
+Core19/19 and composition pass in `build/qa/artwork-minimum-gate`, with only
+documented diagnostics in the paired rendered logs. This establishes geometry,
+not resized live edits. Other draft categories, additional subjects and multiline
+previews still require responsive acceptance.
 
 Protected010525 on2026-11-02 exercises Existing image in the shared viewer after
 the assembled Work orders/conditions/Details workflow. Hover text and wrapping

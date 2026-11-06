@@ -50,6 +50,9 @@ func list_top() -> int:
 func sync_scroll() -> void:
 	if state==null or scrollbar==null:return
 	page_rows=maxi(1,int((size.y-list_top()-(132 if state.has_art() and state.art_page()>=7 and state.art_page()<=13 else 96 if state.has_art() and (state.art_page()>=6 or state.art_page() in [1,2,3]) else 60 if state.has_art() and state.art_page()==5 else 24))/36))
+	# Native2040c5..2040db includes the last creature row before the footer.
+	# Captured capacities are7/13/16 at552/800/900 pixels high.
+	if state.has_art() and state.art_page()==7:page_rows=maxi(1,int((size.y-list_top()-108)/36))
 	state.draft_columns=maxi(1,int((size.x-32)/8))
 	state.visible_rows=page_rows
 	scrollbar.position=Vector2(size.x-32,list_top());scrollbar.size=Vector2(16,page_rows*36);scrollbar.page=page_rows

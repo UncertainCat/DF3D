@@ -306,7 +306,8 @@ if os.getenv('DF3D_WORK_ORDER_ARTWORK_ARTIST')=='1' then
  return
 end
 if os.getenv('DF3D_WORK_ORDER_ARTWORK_RESIZE')=='1' then
- for _,size in ipairs({'small','wide','default'})do
+ local draft_layout=os.getenv('DF3D_WORK_ORDER_ARTWORK_DRAFT_LAYOUT')=='1'
+ for _,size in ipairs(draft_layout and {'wide','default','minimum'} or {'small','wide','default'})do
   local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('name-resize-'..size);f:close()
   assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
   local limit=dfhack.getTickCount()+30000
@@ -317,6 +318,17 @@ if os.getenv('DF3D_WORK_ORDER_ARTWORK_RESIZE')=='1' then
   assert(click_label('Related to site'));assert(art.current_option==2)
   shot('work-order-artwork-'..size..'-hover')
   back();assert(art.current_option==-1)
+  if draft_layout then
+   assert(click_label('Specify a new image'));assert(art.current_option==6)
+   shot('work-order-artwork-'..size..'-draft')
+   assert(click_label('Creature'));assert(art.current_option==7)
+   shot('work-order-artwork-'..size..'-creature')
+   assert(click_label('Cancel'));assert(art.current_option==6)
+   back()
+   -- An empty draft may leave immediately; discard only if DF asks.
+   click_label('Leave editor and discard data')
+   assert(art.current_option==-1 and art.open,'Draft layout did not return to artwork root')
+  end
  end
  assert(order.specdata.hist_figure_id==before.spec and order.art_spec.type==before.typ and order.art_spec.id==before.id and order.art_spec.subid==before.subid,'Resize changed order')
  records[#records+1]={name='work-order-artwork-resize',screens=#observations,order_unchanged=true}

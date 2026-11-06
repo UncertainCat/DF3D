@@ -219,6 +219,7 @@ if os.getenv('DF3D_RESIDENTS_JOB_ART_DRAFT')=='1' then
   if transitive then assert(art.current_option==16,'Native target list failed');click(37,15)end
   assert(art.current_option==6 and #art.new_image.properties==1,'Native relationship addition failed')
   extended.related=lines();result.draft.extended=extended;shot('residents-job-art-draft-related')
+  resized_shots('related')
   label('Delete element');assert(art.current_option==17,'Native delete list failed')
   click(g.dimx-30,12)
   assert(#art.new_image.elements==6 and #art.new_image.properties==0,'Native actor deletion did not remove relationship')

@@ -80,6 +80,9 @@ func back() -> void:
 	if state.snapshot.get("selected_option",-1)>=0 and state.snapshot.get("options",[]).size()>=2:state.read_root()
 	else:cancelled.emit()
 func _process(_delta: float) -> void:
+	# Coalesce resize requests, and wait for any pending edit before formatting
+	# its returned draft. This is a read; never repeat a pending mutation.
+	if visible and state!=null:state.refresh_draft_layout()
 	var value:=Time.get_ticks_msec()%1000<500
 	if (search_focused or quantity_focused) and value!=blink:blink=value;queue_redraw()
 func feed_search(event: InputEventKey) -> void:
@@ -241,7 +244,8 @@ func draw_draft() -> void:
 		return
 	var page: int=state.art_page()
 	var description: Array=state.snapshot.art.get("draft_description",[])
-	for i in mini(2,description.size()):text(description[i],Vector2(16,44+i*12),14)
+	# Native20024a..200291 reserves four description rows before categories.
+	for i in mini(4,description.size()):text(description[i],Vector2(16,44+i*12),14)
 	for category in DRAFT_CATEGORIES:draft_button(category[1],category[2],draft_enabled(category[0]),category[0]==17,page==category[0])
 	if page==6:
 		draft_button("Name",Vector2i(2,30),state.draft_value.has("name"))

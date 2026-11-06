@@ -1190,6 +1190,25 @@ by the short-lived process. This verifies the material and figure edits for a
 native-created single-input job; multiple-input jobs, production new-image drafts
 and simulation execution remain pending.
 
+Artwork draft resize reads retain the last completed formatting width separately
+from the desired panel width. The shared view asks the job/order state to refresh
+only a ready draft whose width differs, preserving query, page, first row and
+owned draft. Pending reads/edits finish first; the latest width is then requested
+as an inspection, never a repeated mutation. A settled layout makes no requests.
+Native20024a..200291 reserves four description rows in the basic layout; the view
+now shows those instead of truncating after two. Protected102349 verifies the
+Residents draft with a seven-element relationship at960/1600/1200 pixels, using
+86/166/116 native formatting columns. The third narrow-width line matches native,
+and the extended edit/name/Done workflow still passes. Core19/job-state checks in
+art-draft-resize-final-20261106 cover coalescing, pending Done and settled reads.
+DF23964 exits unsaved with source preservation, known engine diagnostics only,
+GPU50C sampled at30FPS. Earlier102130 exposed the missing third line;102259
+failed because the capture driver clicked while the resize read was pending.
+The final driver waits for Ready. Fixture artwork_draft_resize_reference retains
+the native row evidence. Live evidence covers Residents; manager-owner resize,
+description scrolling beyond four lines and widths above256 transport columns
+remain pending.
+
 
 ## Farm removal native entry points
 

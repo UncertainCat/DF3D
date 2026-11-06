@@ -28,6 +28,7 @@ var draft_quantity:=1
 var draft_dirty:=false
 var draft_discard:=false
 var draft_columns:=118
+var draft_formatted_columns:=0
 func _cancel_preview() -> void:
 	if service!=null and preview_ticket!=0:service.detach(preview_ticket)
 	preview_ticket=0;hovered=-1;preview_columns=0;preview_lines=[]
@@ -167,6 +168,10 @@ func discard_draft() -> void:
 	if ticket!=0:return
 	draft_value.elements=[];draft_value.relationships=[];draft_relation={};draft_dirty=false;draft_discard=false
 	art_back()
+func refresh_draft_layout() -> void:
+	if phase!=Phase.Ready or ticket!=0 or not has_art() or art_page()<6 or art_page()>17 or draft_discard or draft_columns==draft_formatted_columns:return
+	_read_draft(art_page(),first)
+
 func _read_draft(page: int,cursor:=0,edit: Dictionary={}) -> void:
 	var action: int=edit.get("action",0)
 	var writing: bool=action in [4,5] or (action==6 and int(edit.get("name_edit",{}).get("mode",0))>=2)
@@ -233,6 +238,7 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 		if page>=6 or art.has("draft"):
 			if not art.get("draft") is Dictionary or not art.get("draft_description") is Array:_fail(failure);return
 			draft_value=art.draft.duplicate(true)
+			draft_formatted_columns=int(sent.details.art.get("draft",{}).get("columns",0))
 			if draft_action in [1,2,3]:draft_dirty=true
 		if sent.details.art.get("query","")!=query:rows=[];_read_art(page);return
 		rows=art.rows.duplicate(true);art_base=cursor;first=cursor;phase=Phase.Ready;changed.emit();return

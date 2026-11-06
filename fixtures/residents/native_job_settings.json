@@ -6371,5 +6371,85 @@
     "scope": "Native-created statue job deep copy. Native clicks change material then historical figure; disposable copy is restored before actual headless Residents pointer edits. Final native readback exactly matches captured material/art/requirement fields. Each confirmed edit closes Details and refreshes roster. Original job remains unchanged. Multiple-input jobs, new-image production drafts and simulation execution remain pending.",
     "owned_df_closed": true,
     "save_preserved": true
+  },
+  "artwork_draft_resize_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-102349",
+    "widths": [
+      960,
+      1600,
+      1200
+    ],
+    "formatter_columns": [
+      86,
+      166,
+      116
+    ],
+    "native_description_rows": {
+      "default": [
+        {
+          "text": "    It is an image of a aardvark, a mule, a alfalfa, a abaca tree, a baguette cut gem, a abshoth and A Humble Offering",
+          "y": 6
+        },
+        {
+          "text": "    To The Human the common skate parchment scroll.  The aardvark is admiring the mule.",
+          "y": 7
+        },
+        {
+          "text": "",
+          "y": 8
+        }
+      ],
+      "small": [
+        {
+          "text": "    It is an image of a aardvark, a mule, a alfalfa, a abaca tree, a baguette cut gem, a",
+          "y": 6
+        },
+        {
+          "text": "    abshoth and A Humble Offering To The Human the common skate parchment scroll.  The",
+          "y": 7
+        },
+        {
+          "text": "    aardvark is admiring the mule.",
+          "y": 8
+        }
+      ],
+      "wide": [
+        {
+          "text": "    It is an image of a aardvark, a mule, a alfalfa, a abaca tree, a baguette cut gem, a abshoth and A Humble Offering To The Human the common skate parchment scroll.",
+          "y": 6
+        },
+        {
+          "text": "    The aardvark is admiring the mule.",
+          "y": 7
+        },
+        {
+          "text": "",
+          "y": 8
+        }
+      ]
+    },
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        },
+        {
+          "id": "godot-device-finalize",
+          "count": 1,
+          "reference": "https://github.com/godotengine/godot/issues/119000"
+        },
+        {
+          "id": "godot-shutdown-objects",
+          "count": 1,
+          "reference": "ENGINEERING.md#tests-and-known-problems"
+        }
+      ],
+      "unclassified": []
+    },
+    "scope": "Rendered actual Residents draft resizes with seven elements and transitive relationship; native reformat reads preserve draft and restore correct third line at960px. Full extended workflow passes. State checks cover coalescing, pending Done and no repeated settled reads. Shared manager state updated, but this live evidence is Residents only. Description scrolling beyond four rows and widths exceeding transport256 columns remain unaccepted.",
+    "owned_df_closed": true,
+    "save_preserved": true
   }
 }

@@ -112,13 +112,20 @@ func draft_lifecycle() -> void:
 	var root_value:=artwork_page();root_value.art.rows=[{"id":6,"caption":"Fixture draft"}];reply_art_root(service,state,root_value)
 	state.choose(6);var value:=root_value.duplicate(true);value.art.page=6;value.art.list_revision=93;value.art.rows=[];value.art.total=0
 	value.art.draft={"elements":[{"kind":7,"id":755,"secondary":-1,"quantity":1}],"relationships":[],"name":{}};value.art.draft_description=["Fixture description"]
-	service.reply(state.ticket,value);state.draft_dirty=true;state.art_back()
+	service.reply(state.ticket,value)
+	state.draft_columns=86;state.refresh_draft_layout();var resize: int=state.ticket
+	check(service.calls[resize].request.art.draft.columns==86 and service.calls[resize].request.action==C.ManagementAction.JobSettingsRead,"Resize asks native for read-only formatting")
+	state.draft_columns=166;state.refresh_draft_layout();check(state.ticket==resize,"Resize does not interrupt an in-flight request")
+	service.reply(resize,value);state.refresh_draft_layout();check(service.calls[state.ticket].request.art.draft.columns==166,"Latest resize is retained after older reply")
+	service.reply(state.ticket,value);var reads: int=service.next;state.refresh_draft_layout();check(service.next==reads,"Settled layout does not poll native")
+	state.draft_dirty=true;state.art_back()
 	check(state.draft_discard and state.ticket==0 and state.draft_value.elements.size()==1,"Draft Back asks before discarding local elements")
 	state.discard_draft();check(service.calls[state.ticket].request.art.page==-1 and state.draft_value.elements.is_empty() and state.draft_value.has("name"),"Discard preserves initialized name and returns to root")
 	var old: int=state.ticket;service.session_changed.emit();service.reply(old,value)
 	check(state.phase==State.Phase.Closed and state.draft_value.elements.is_empty() and not state.draft_value.has("name"),"Session retirement cannot restore a draft")
 	state.open(3,42,6534);service.reply(state.ticket,initial);reply_art_root(service,state,root_value);state.choose(6);service.reply(state.ticket,value)
 	state.commit_draft();var edit: int=state.ticket;state.commit_draft()
+	state.draft_columns=86;state.refresh_draft_layout();check(state.ticket==edit,"Resize cannot replace pending Done")
 	check(state.phase==State.Phase.Applying and state.ticket==edit and service.calls[edit].request.art.draft.action==5,"Done submits once")
 	service.calls[edit].callback.call(edit,{"outcome":"unknown"},service.calls[edit].request)
 	var count: int=service.next;state.commit_draft();state.draft_navigate(6)

@@ -32,6 +32,7 @@ var draft_quantity:=1
 var draft_dirty:=false
 var draft_discard:=false
 var draft_columns:=118
+var draft_formatted_columns:=0
 
 func configure(source) -> void:
 	dispose();service=source
@@ -240,6 +241,10 @@ func choose_draft(row: Dictionary) -> void:
 		draft_relation.target=row.id;_read_draft(6,0,{"action":2,"relationship":draft_relation})
 	elif page==17:_read_draft(17,0,{"action":3,"delete_index":row.id})
 
+func refresh_draft_layout() -> void:
+	if phase!=Phase.Ready or ticket!=0 or not has_art() or art_page()<6 or art_page()>17 or draft_discard or draft_columns==draft_formatted_columns:return
+	_read_draft(art_page(),first)
+
 func _read_draft(page: int,cursor: int=0,edit: Dictionary={},return_root: bool=false) -> void:
 	if service==null or selected<0 or phase in [Phase.Closed,Phase.Unknown,Phase.Unavailable,Phase.Rejected]:return
 	var action: int=edit.get("action",0)
@@ -270,6 +275,7 @@ func _read_draft(page: int,cursor: int=0,edit: Dictionary={},return_root: bool=f
 		if value.get("job_id")!=job_id or value.get("building_id")!=building_id or value.get("unit_id")!=unit_id or value.get("revision",0)!=revision or value.get("selected_option",-1)!=selected or observed.get("page",-2)!=expected_page or not observed.get("rows") is Array or not observed.get("draft") is Dictionary or not observed.get("draft_description") is Array:_fail(failure);return
 		var count: int=observed.rows.size();var total: int=observed.get("total",-1)
 		if cursor>total or count>total-cursor or (cursor<total and count==0) or observed.get("next_cursor",-1)!=(cursor+count if cursor+count<total else 0) or (expected_page>=0 and observed.get("list_revision",0)<=0) or (cursor>0 and observed.get("list_revision",0)!=sent.art.expected_list_revision):_fail(failure);return
+		draft_formatted_columns=int(sent.art.draft.columns)
 		snapshot=value.duplicate(true);draft_value=observed.draft.duplicate(true);rows=observed.rows.duplicate(true);phase=Phase.Ready
 		if action in [1,2,3]:draft_dirty=true
 		if return_root:query="";_read_draft(-1);return

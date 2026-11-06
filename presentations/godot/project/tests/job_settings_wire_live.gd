@@ -342,7 +342,7 @@ func composed_draft(reference: Dictionary) -> Dictionary:
 	await pointer(view,Vector2(48,114));check(await ready(state) and state.art_page()==7,"Draft Creature control failed")
 	await capture_draft("creatures")
 	await pointer(view,Vector2(300,view.list_top()+18));check(await ready(state) and state.art_page()==6 and state.draft_value.elements.size()==1,"Draft creature selection failed")
-	await capture_draft("populated",true)
+	await capture_draft("populated",true,state)
 	await pointer(view,Vector2(152,378));check(state.draft_discard,"Dirty draft Back did not ask to discard")
 	await capture_draft("discard")
 	await pointer(view,Vector2(120,150));check(not state.draft_discard and state.draft_value.elements.size()==1,"Keep working lost draft")
@@ -381,7 +381,7 @@ func extended_draft(state,view) -> Dictionary:
 		await pointer(view,Vector2(300,view.list_top()+18));check(await ready(state),"Relationship target selection failed")
 	check(state.art_page()==6 and state.draft_value.relationships.size()==1,"Relationship addition failed")
 	var related: Array=state.snapshot.art.draft_description.duplicate()
-	await capture_draft("related")
+	await capture_draft("related",true,state)
 	await pointer(view,Vector2(80,330));check(await ready(state) and state.art_page()==17,"Delete element list failed")
 	await pointer(view,Vector2(view.size.x-32,view.list_top()+18));check(await ready(state) and state.draft_value.elements.size()==6 and state.draft_value.relationships.is_empty(),"Deleting actor did not remove dependent relationship")
 	var deleted: Array=state.snapshot.art.draft_description.duplicate()
@@ -389,7 +389,7 @@ func extended_draft(state,view) -> Dictionary:
 	await pointer(view,Vector2(64,378));check(await ready(state) and state.art_page()==6,"Stop deleting did not restore draft")
 	return {"chosen":chosen,"relationship":relationship,"related":related,"deleted":deleted,"elements":state.draft_value.elements.duplicate(true)}
 
-func capture_draft(label: String,resize: bool=false) -> void:
+func capture_draft(label: String,resize: bool=false,state=null) -> void:
 	if OS.get_environment("DF3D_RESIDENTS_JOB_ART_RENDER")!="1":return
 	if not check(DisplayServer.get_name()!="headless","Draft capture needs a renderer"):return
 	var sizes: Array[Vector2i]=[Vector2i(1200,800)]
@@ -397,5 +397,9 @@ func capture_draft(label: String,resize: bool=false) -> void:
 	for dimensions in sizes:
 		root.size=dimensions
 		for frame in 3:await process_frame
+		if state!=null:
+			check(await ready(state),"Resized draft did not refresh")
+			check(state.draft_formatted_columns==int((dimensions.x-272)/8),"Resized draft retained old formatting width")
+			for frame in 3:await process_frame
 		await RenderingServer.frame_post_draw
 		check(root.get_texture().get_image().save_png(directory+"/job-draft-"+label+"-"+str(dimensions.x)+".png")==OK,"Draft capture failed")

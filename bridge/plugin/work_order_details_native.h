@@ -1,5 +1,6 @@
 #pragma once
 #include "work_order_conditions_native.h"
+#include "work_order_dye_native.h"
 #include "df/plant_raw.h"
 #include "df/job_details_interfacest.h"
 #include "df/job_reqst.h"
@@ -7,14 +8,17 @@
 #include "df/creature_raw.h"
 #include "df/caste_raw.h"
 #include <map>
+#include <tuple>
 
 namespace df3d_production {
 struct WorkOrderDetailOption {int32_t kind=-1,index=-1;std::string caption;};
-struct WorkOrderDetailMaterial {int16_t type=-1;int32_t index=-1,count=0;std::string caption;int32_t id=-1;std::optional<std::string> countCaption;bool estimated=false;};
+struct WorkOrderDetailMaterial {int16_t type=-1;int32_t index=-1,count=0;std::string caption;int32_t id=-1;std::optional<std::string> countCaption;bool estimated=false;int32_t dyeColor=-1,dyeFirst=-1,dyeSecond=-1;bool opensMenu=false;std::optional<std::array<float,3>> swatch;};
 struct WorkOrderDetailsObservation {
     uint64_t revision=0,choicesRevision=0;
     std::string caption;
     std::optional<std::string> currentValue;
+    std::optional<std::string> settingHeading;
+    int32_t dyeTarget=-1;
     std::vector<WorkOrderDetailOption> options;
     std::vector<WorkOrderDetailMaterial> materials;
 };
@@ -92,7 +96,7 @@ inline std::string nativeDetailInputCaption(const df::job_item& item) {
 // Choice population21d190 receives an independently owned context/order/inputs.
 // IMAGE opens a separate global picker and is not called here. Improvement
 // choices are observed, but their Image choice still needs an owned art editor.
-inline std::optional<WorkOrderDetailsObservation> nativeWorkOrderDetails(df::manager_order& source,int32_t selected=-1,const std::string& query={}) {
+inline std::optional<WorkOrderDetailsObservation> nativeWorkOrderDetails(df::manager_order& source,int32_t selected=-1,const std::string& query={},int32_t dyeTarget=-1,bool dyeFilterApplied=false) {
     if(!workOrderDetailsReady() || !df::global::world || !df::global::plotinfo ||
        !df::global::plotinfo->main.fortress_entity)return std::nullopt;
     const auto observation=nativeWorkOrderRow(source,-1,true);
@@ -137,9 +141,59 @@ inline std::optional<WorkOrderDetailsObservation> nativeWorkOrderDetails(df::man
     }
     constexpr size_t optionNames[]={0,0x15fe1e8,0x1615910,0x1615690,0x1615900,0x1615900,0x1615930};
     for(auto& option:result.options)option.caption=option.kind==0?nativeDetailInputCaption(*source.items->elements[size_t(option.index)]):reinterpret_cast<const char*>(base+optionNames[option.kind]);
-    if(selected==-1)return result;
+    if(selected==-1)return dyeTarget==-1 && !dyeFilterApplied?std::optional<WorkOrderDetailsObservation>(result):std::nullopt;
     if(selected<0 || size_t(selected)>=result.options.size())return std::nullopt;
     const auto option=result.options[size_t(selected)];
+    if(option.kind!=4 && option.kind!=5 && (dyeTarget!=-1 || dyeFilterApplied))return std::nullopt;
+    if(option.kind==4 || option.kind==5) {
+        const auto catalog=nativeWorkOrderDyeCatalog(source,dyeTarget);if(!catalog)return std::nullopt;
+        result.dyeTarget=dyeTarget;
+        const auto literal=[&](size_t rva){return std::string(reinterpret_cast<const char*>(base+rva));};
+        result.settingHeading=literal(dyeTarget>=0?0x1615820:option.kind==4?0x1615848:0x1615990);
+        const auto& colors=df::global::world->raws.descriptors.colors;
+        const auto name=[&](int32_t id)->std::optional<std::string>{if(id<0 || size_t(id)>=colors.size() || !colors[size_t(id)] || colors[size_t(id)]->name.size()>128)return std::nullopt;return colors[size_t(id)]->name;};
+        const auto substrate=literal(int(source.job_type)==191?0x16158a4:int(source.job_type)==190?0x161589c:0x16156d0);
+        hash=result.revision;add(option.kind);add(dyeTarget);add(catalog->rows.size());
+        for(const auto& choice:catalog->rows) {
+            const auto color=name(choice.color);if(!color)return std::nullopt;
+            WorkOrderDetailMaterial row;row.id=int32_t(result.materials.size());row.index=row.dyeColor=choice.color;row.count=choice.available;
+            row.dyeFirst=choice.first;row.dyeSecond=choice.second;row.opensMenu=choice.tint;
+            if(dyeTarget<0) {
+                if(option.kind==5)row.caption="Mix "+*color+literal(0x1615978);
+                else row.caption=(choice.tint?literal(0x1615814):"Dye ")+substrate+" "+*color+(choice.tint?literal(0x1615870):"");
+                const auto* raw=colors[size_t(choice.color)];row.swatch=std::array<float,3>{raw->red,raw->green,raw->blue};
+            } else {
+                const auto first=name(choice.first),second=name(choice.second);if(!first || !second)return std::nullopt;
+                // Native2160f5/2161c7 repeats the source color in tint captions.
+                if(option.kind==4)row.caption=literal(0x1615814)+*first+" "+substrate+" "+*first+literal(0x1615840)+*second+literal(0x1615838);
+                else row.caption="Mix "+*color+literal(0x1615960)+*first+" and "+*second;
+            }
+            if(choice.available>0) {
+                row.countCaption=dyeTarget<0?literal(0x1615890):std::string{};
+                reinterpret_cast<void(*)(int32_t,std::string*)>(base+0x52c130)(choice.available,&*row.countCaption);
+                if(dyeTarget<0 && option.kind==4 && choice.tint)row.countCaption->append(" "+literal(int(source.job_type)==191?0x1615880:int(source.job_type)==190?0x1615950:0x1615940));
+                row.countCaption->append(literal(0x1615860));
+            }
+            if(row.caption.size()>512 || (row.countCaption && row.countCaption->size()>128))return std::nullopt;
+            add(choice.color);add(choice.first);add(choice.second);add(choice.tint);add(choice.available);
+            result.materials.push_back(std::move(row));
+        }
+        result.choicesRevision=(hash&INT64_MAX)?(hash&INT64_MAX):1;
+        if(dyeFilterApplied || !query.empty()) {
+            const auto filtered=nativeWorkOrderDyeCatalog(source,dyeTarget,query,true);if(!filtered)return std::nullopt;
+            using Key=std::tuple<int32_t,int32_t,int32_t,bool>;
+            std::map<Key,std::vector<size_t>> ids;std::map<Key,size_t> used;
+            for(size_t i=0;i<catalog->rows.size();++i){const auto& r=catalog->rows[i];ids[{r.color,r.first,r.second,r.tint}].push_back(i);}
+            std::vector<WorkOrderDetailMaterial> rows;
+            for(const auto& r:filtered->rows) {
+                const Key key{r.color,r.first,r.second,r.tint};const auto found=ids.find(key);auto& next=used[key];
+                if(found==ids.end() || next>=found->second.size())return std::nullopt;
+                rows.push_back(std::move(result.materials[found->second[next++]]));
+            }
+            result.materials=std::move(rows);
+        }
+        return result;
+    }
     if(option.kind!=0 && option.kind!=2 && option.kind!=3 && option.kind!=6)return std::nullopt;
     if(option.kind==3 && !query.empty())return std::nullopt;
     if(option.kind==2) {
@@ -274,14 +328,25 @@ inline void rebuildWorkOrderDetailRequirements(df::manager_order& order) {
     df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
     reinterpret_cast<Fill>(base+0xd09ca0)(order.items,int16_t(order.job_type),int16_t(order.item_type),order.item_subtype,order.mat_type,order.mat_index,&order.reaction_name,order.material_category.whole,order.specflag.whole,order.specdata.hist_figure_id,nullptr,int32_t(order.art_spec.type),order.art_spec.id,order.art_spec.subid);
 }
-inline WorkOrderDetailEditResult setWorkOrderDetailMaterial(df::manager_order& order,uint64_t revision,int32_t option,uint64_t choicesRevision,int32_t choice) {
+inline WorkOrderDetailEditResult setWorkOrderDetailMaterial(df::manager_order& order,uint64_t revision,int32_t option,uint64_t choicesRevision,int32_t choice,int32_t dyeTarget=-1) {
     WorkOrderDetailEditResult result;
-    const auto before=nativeWorkOrderDetails(order,option);
+    const auto before=nativeWorkOrderDetails(order,option,{},dyeTarget);
     if(!before)return result;
     if(!revision || revision!=before->revision || !choicesRevision || choicesRevision!=before->choicesRevision){result.outcome=WorkshopOrdersOutcome::Stale;return result;}
     if(choice<0 || size_t(choice)>=before->materials.size())return result;
     const auto selected=before->options[size_t(option)];
     const auto material=before->materials[size_t(choice)];
+    if(selected.kind==4 || selected.kind==5) {
+        if(material.opensMenu || (selected.kind==5 && dyeTarget<0))return result;
+        result.outcome=WorkshopOrdersOutcome::Unknown;
+        if(selected.kind==4)order.specdata.hist_figure_id=material.index;
+        else order.mat_index=material.index;
+        order.art_spec.id=material.dyeFirst;order.art_spec.subid=material.dyeSecond;
+        if(order.items)rebuildWorkOrderDetailRequirements(order);
+        result.observation=nativeWorkOrderDetails(order);
+        if(result.observation)result.outcome=WorkshopOrdersOutcome::Applied;
+        return result;
+    }
     if(selected.kind==2) {
         result.outcome=WorkshopOrdersOutcome::Unknown;
         order.specdata.hist_figure_id=material.index; // Native union field at order+0x3c.

@@ -6,6 +6,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
+| Work order tint ingredient captions repeat the source color where the target color would be expected. | No correction implemented; preserve native captions. | Native dye capture `build/stockpile-storage-native-input-20261105-223741`: target cerulean displays “Tint white cloth white using midnight blue dye”. Renderer2160f5/2161c7 reads the source color both times. |
 | Track material ordering depends on stale distances left by unrelated menus. | Request fresh native distances for each intent. | Implemented; construction Track distance evidence below and `fixtures/construction/connected_track.json`. |
 | First Track preview overwrites active search costs during lazy walkability rebuilding. | Preserve the stable route on the first preview. | Implemented; Track initialization evidence below and `fixtures/construction/track_route_initialization_probes.json.gz`. |
 | Stair redraw hides intermediate-floor validation errors. | Keep errors for the full selected span visible. | Implemented; `fixtures/construction/stairs_placement.json`. Placement rules are unchanged. |
@@ -7165,18 +7166,22 @@ only known diagnostics and the source save is unchanged. The enclosing lane
 later fails an unrelated carrier capture's30-second acknowledgment timeout;
 this is scoped Work orders evidence, not a passing full lane. Rendered carrier
 acknowledgments now allow95 seconds to cover the launcher's90-second budget at
-the30 FPS cap. Core19/19 and headless UI composition pass; dyes and remaining
-artwork/responsive behavior keep the complete Work orders screen staged.
+the30 FPS cap. Core19/19 and headless UI composition pass; remaining
+artwork/responsive behavior keeps the complete Work orders screen staged.
 
 `work_order_dye_native.h` supplies owned dye target and ingredient catalogs.
 Native21d190 supplies target colors;7dc570 calculates mix results. The two inline
 ingredient enumerations from218900 are pinned compositions using native inventory
 collection on copied simulation vectors. Tint preserves repeated mix-result pairs;
 Mix dye retains one entry per pair. Initial ingredient order is the native
-enumeration order; nonempty searches use native221490/222490 filtering. No native
-menu state or UI handler is a runtime input. The diagnostic dye probe is read-only;
-transport, captions/swatches, selection effects and viewer navigation remain to
-be connected before this family is exposed.
+enumeration order; searches use native221490/222490 filtering. Management130
+carries an explicit filter-applied flag so clearing a search retains native filter
+ordering without sorting a freshly opened list. No native menu state or UI handler
+is a runtime input. Details transports native headings, captions, availability,
+raw color swatches and target-to-ingredient navigation. Canonical row IDs preserve
+duplicate tint pairs across filtering. Direct dye/tint writes specdata while Mix
+dye writes mat_index; both preserve art type, set the native ingredient pair and
+rebuild requirements. Submenu rows cannot be submitted as final choices.
 
 The focused protected reference uses `DF3D_WORK_ORDER_DYE_REFERENCE=1`; adding
 `DF3D_WORK_ORDER_DYE_COMPARE=1` compares the owned provider with the native menus.
@@ -7186,6 +7191,21 @@ pause and source-save checks. Protected224611 on2026-11-05 passes all four lists
 for the sampled mix target, including ordering and availability. The native
 screens from223741 were inspected. Both owned sessions exit unsaved with the
 source unchanged; no Godot viewer is launched for this reference.
+
+Add `DF3D_WORK_ORDER_DYE_WIRE=1` for the focused rendered workflow. It creates
+native direct-dye, tint and mix orders, records native selection effects, restores
+the starting inputs, then operates the actual Details view/controller through the
+bridge. Protected230835 on2026-11-05 verifies all three final order field sets
+against native, target/ingredient navigation, headings and rendered panels.
+The earlier230620 run failed a harness lookup after viewer completion;230707
+verified effects but captured headings before rendering settled. Final captures
+wait three frames and were inspected. DF38712 exits unsaved; the source manifest
+is unchanged. Bridge build, root19/19 and headless composition pass in
+`build/qa/work-order-dye-runtime`; paired live logs contain only documented engine
+diagnostics. GPU samples stayed44–49C across these short30 FPS runs. Thread/leather
+variants, interactive filter clearing and the remaining artwork/hover/responsive
+work are not established by this direct-cloth/tint-cloth/mix acceptance; the full
+Work orders route remains staged.
 
 Protected020406 on2026-11-02 exercises draft creation, native descriptions,
 relationships, deletion, discard and actual Done in the shared viewer. DF readback

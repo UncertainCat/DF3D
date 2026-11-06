@@ -815,7 +815,9 @@ void publish() {
       const auto end=std::min(size_t(workOrders.detailsCursor)+128,d.materials.size());
       for(size_t i=workOrders.detailsCursor;i<end;++i) {
         const auto& row=d.materials[i];
-        rows.push_back(m::CreateWorkOrderDetailsChoice(b,row.id,b.CreateString(DF2UTF(row.caption)),row.countCaption?b.CreateString(DF2UTF(*row.countCaption)):0,row.estimated));
+        std::optional<m::WorkOrderDyeColor> swatch;
+        if(row.swatch)swatch.emplace((*row.swatch)[0],(*row.swatch)[1],(*row.swatch)[2]);
+        rows.push_back(m::CreateWorkOrderDetailsChoice(b,row.id,b.CreateString(DF2UTF(row.caption)),row.countCaption?b.CreateString(DF2UTF(*row.countCaption)):0,row.estimated,row.dyeColor,row.opensMenu,swatch?&*swatch:nullptr));
       }
       choices=b.CreateVector(rows);next=end<d.materials.size()?uint32_t(end):0;
     }
@@ -850,7 +852,7 @@ void publish() {
       }
       art=m::CreateWorkOrderArtState(b,a.page,b.CreateString(DF2UTF(a.caption)),b.CreateVector(rows),a.listRevision,a.total,a.nextCursor,a.hovered,preview,draft,description,namePage);
     }
-    workOrderDetails=m::CreateWorkOrderDetailsState(b,workOrders.detailsId,d.revision,b.CreateString(DF2UTF(d.caption)),b.CreateVector(options),workOrders.detailsOption,choices,d.choicesRevision,uint32_t(d.materials.size()),next,art,d.currentValue?b.CreateString(DF2UTF(*d.currentValue)):0);
+    workOrderDetails=m::CreateWorkOrderDetailsState(b,workOrders.detailsId,d.revision,b.CreateString(DF2UTF(d.caption)),b.CreateVector(options),workOrders.detailsOption,choices,d.choicesRevision,uint32_t(d.materials.size()),next,art,d.currentValue?b.CreateString(DF2UTF(*d.currentValue)):0,d.settingHeading?b.CreateString(DF2UTF(*d.settingHeading)):0,d.dyeTarget);
   }
   auto workOrderResult=m::CreateWorkOrderState(b,b.CreateVector(wo),b.CreateVector(wr),b.CreateVector(wc),b.CreateVector(wm),workOrders.nextCursor,b.CreateString(workOrders.detail),b.CreateVector(wo_materials),b.CreateVector(wo_traits),b.CreateVector(wo_types),b.CreateVector(wo_groups),b.CreateVector(wo_tasks),workOrders.total,workOrders.listRevision,workOrders.buildPhase,workOrders.buildDone,workOrders.buildTotal,workOrderNative,workOrderDetails);
   std::vector<flatbuffers::Offset<m::CitizenInfo>> citizenRows;
@@ -2975,13 +2977,13 @@ void run(color_ostream& out) {
         workOrders.details=std::move(observed);workOrders.detailsId=q->id();status=m::ManagementStatus::Ok;
         publish();return;
       }
-      auto observed=df3d_production::nativeWorkOrderDetails(*order,d->option(),d->query()?UTF2DF(d->query()->str()):std::string{});
+      auto observed=df3d_production::nativeWorkOrderDetails(*order,d->option(),d->query()?UTF2DF(d->query()->str()):std::string{},d->dye_target(),d->dye_filter_applied());
       if(!observed || (q->expected_revision() && q->expected_revision()!=observed->revision) ||
          (d->expected_choices_revision() && d->expected_choices_revision()!=observed->choicesRevision) || d->cursor()>observed->materials.size()){publish();return;}
       if(writing) {
         // Once the semantic helper starts, exceptions cannot prove no effects.
         mutated=true;
-        auto result=df3d_production::setWorkOrderDetailMaterial(*order,q->expected_revision(),d->option(),d->expected_choices_revision(),d->choice());
+        auto result=df3d_production::setWorkOrderDetailMaterial(*order,q->expected_revision(),d->option(),d->expected_choices_revision(),d->choice(),d->dye_target());
         using O=df3d_production::WorkshopOrdersOutcome;
         mutated=result.outcome==O::Applied || result.outcome==O::Unknown;
         if(result.outcome!=O::Applied || !result.observation){publish();return;}

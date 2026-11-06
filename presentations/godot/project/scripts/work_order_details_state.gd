@@ -13,6 +13,8 @@ var generation:=0
 var first:=0
 var rows: Array=[]
 var query:=""
+var dye_target: int=-1
+var dye_filter_applied:=false
 var art_base:=0
 var visible_rows:=16
 var preview_ticket:=0
@@ -68,6 +70,7 @@ func close() -> void:
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
 	building_id=-1;order_id=-1;snapshot={};rows=[];first=0;art_base=0;query="";phase=Phase.Closed;changed.emit()
+	dye_target=-1;dye_filter_applied=false
 	draft_value={"elements":[],"relationships":[]};draft_relation={};draft_dirty=false;draft_discard=false;draft_quantity=1
 func open(building: int,order: int) -> void:
 	close()
@@ -75,23 +78,30 @@ func open(building: int,order: int) -> void:
 	building_id=building;order_id=order;read_root()
 func read_root() -> void:
 	if ticket!=0:return
+	dye_target=-1;dye_filter_applied=false
 	first=0;rows=[];query="";phase=Phase.Reading
 	_send({"action":C.ManagementAction.WorkOrderInspect,"workshop_id":building_id,"id":order_id,"details":{}})
 func select_option(index: int) -> void:
 	if phase!=Phase.Ready or ticket!=0 or index<0 or index>=snapshot.get("options",[]).size():return
 	if snapshot.options[index].kind==1:_enter_art(index);return
+	dye_target=-1;dye_filter_applied=false
 	first=0;rows=[];query="";phase=Phase.Reading
 	_send({"action":C.ManagementAction.WorkOrderInspect,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"details":{"option":index}})
 func set_query(value: String) -> void:
 	if phase not in [Phase.Ready,Phase.Reading] or snapshot.get("selected_option",-1)<0 or value==query:return
 	query=value;first=0;art_base=0;rows=[]
+	if not has_art() and snapshot.options[snapshot.selected_option].kind in [4,5]:dye_filter_applied=true
 	if ticket==0:
 		if has_art():_read_art(art_page())
 		else:_read_choices()
 	changed.emit()
 func _read_choices(cursor:=0) -> void:
 	phase=Phase.Reading
-	_send({"action":C.ManagementAction.WorkOrderInspect,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"details":{"option":snapshot.selected_option,"query":query,"cursor":cursor,"expected_choices_revision":snapshot.choices_revision}})
+	_send({"action":C.ManagementAction.WorkOrderInspect,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"details":{"option":snapshot.selected_option,"query":query,"cursor":cursor,"expected_choices_revision":snapshot.choices_revision,"dye_target":dye_target,"dye_filter_applied":dye_filter_applied}})
+func open_dye_target(target: int) -> void:
+	if phase!=Phase.Ready or ticket!=0 or has_art() or snapshot.options[snapshot.selected_option].kind not in [4,5]:return
+	dye_target=target;dye_filter_applied=false;query="";first=0;rows=[];phase=Phase.Reading
+	_send({"action":C.ManagementAction.WorkOrderInspect,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"details":{"option":snapshot.selected_option,"dye_target":target}})
 func seek(value: int) -> void:
 	if phase!=Phase.Ready or ticket!=0 or snapshot.get("selected_option",-1)<0:return
 	_cancel_preview()
@@ -103,10 +113,10 @@ func seek(value: int) -> void:
 	first=clampi(value,0,maxi(0,rows.size()-1));changed.emit()
 func choose(id: int) -> void:
 	if phase!=Phase.Ready or ticket!=0:return
-	var found:=false
+	var chosen: Dictionary={}
 	for row in rows:
-		if row.id==id:found=true;break
-	if not found:return
+		if row.id==id:chosen=row;break
+	if chosen.is_empty():return
 	if has_art():
 		if art_page()==-1:
 			query="";first=0;art_base=0;rows=[]
@@ -117,8 +127,9 @@ func choose(id: int) -> void:
 		else:_write_art(art_page(),id)
 		return
 	if snapshot.options[snapshot.selected_option].kind==3 and id==0:_enter_art(snapshot.selected_option);return
+	if chosen.get("opens_menu",false):open_dye_target(int(chosen.dye_color));return
 	phase=Phase.Applying
-	_send({"action":C.ManagementAction.WorkOrderUpdate,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"details":{"option":snapshot.selected_option,"choice":id,"expected_choices_revision":snapshot.choices_revision}})
+	_send({"action":C.ManagementAction.WorkOrderUpdate,"workshop_id":building_id,"id":order_id,"expected_revision":snapshot.revision,"details":{"option":snapshot.selected_option,"choice":id,"expected_choices_revision":snapshot.choices_revision,"dye_target":dye_target}})
 func _enter_art(option: int) -> void:
 	first=0;art_base=0;rows=[];query="";phase=Phase.Applying
 	draft_value={"elements":[],"relationships":[]};draft_dirty=false;draft_discard=false
@@ -196,6 +207,7 @@ func _receive(result: Dictionary,sent: Dictionary) -> void:
 	var naming: bool=writing and sent.details.get("art",{}).get("draft",{}).get("action",0) in [4,6]
 	var selected: int=-1 if writing and not entering and not naming else sent.details.get("option",-1)
 	if value.get("id",-1)!=order_id or value.get("revision",0)<=0 or value.get("selected_option",-2)!=selected or not value.get("options") is Array:_fail(failure);return
+	if value.get("dye_target",-1)!=(-1 if writing else sent.details.get("dye_target",-1)):_fail(failure);return
 	if value.has("art"):
 		if not sent.details.has("art"):_fail(failure);return
 		var art: Dictionary=value.art

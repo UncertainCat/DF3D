@@ -65,7 +65,7 @@ func back() -> void:
 		if state.art_page()>=0:state.art_back()
 		else:cancelled.emit()
 		return
-	if state.snapshot.get("selected_option",-1)>=0:state.read_root()
+	if state.snapshot.get("selected_option",-1)>=0 and state.snapshot.get("options",[]).size()>=2:state.read_root()
 	else:cancelled.emit()
 func _process(_delta: float) -> void:
 	var value:=Time.get_ticks_msec()%1000<500
@@ -111,7 +111,7 @@ func _gui_input(event: InputEvent) -> void:
 	if selected>=0 and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
 		scrollbar.move_to(state.first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1));accept_event();return
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
-	var searching: bool=(state.has_art() and state.art_page()>=0) or (not state.has_art() and selected_kind() in [0,2,6])
+	var searching: bool=(state.has_art() and state.art_page()>=0) or (not state.has_art() and selected_kind() in [0,2,4,5,6])
 	if searching and Rect2(16,96 if state.has_art() else 84,size.x-32,36).has_point(event.position):
 		search_focused=not search_focused;queue_redraw();accept_event();return
 	var top:=list_top() if selected>=0 else 48
@@ -143,7 +143,8 @@ func _draw() -> void:
 	if kind==2:
 		text("For ",Vector2(16,68)) # Native literal16159b8.
 		text(state.snapshot.get("current_value",""),Vector2(48,68),10)
-	if kind in [0,2,6]:
+	if kind in [4,5]:text(state.snapshot.get("setting_heading",""),Vector2(16,68))
+	if kind in [0,2,4,5,6]:
 		var filter: Texture2D=art.texture("BUTTON_FILTER")
 		var columns:=int((size.x-32)/8)
 		if filter!=null:
@@ -155,8 +156,15 @@ func _draw() -> void:
 	for index in mini(page_rows,state.rows.size()-state.first):
 		var row: Dictionary=state.rows[state.first+index]
 		patch("BUTTON_RECTANGLE_DARK",Vector2i(2,int(list_top()/12)+index*3),int((size.x-32)/8)-(2 if scrollbar.visible else 0),3)
-		text(row.caption,Vector2(16,list_top()+20+index*36))
-		if row.has("count_caption"):text(row.count_caption,Vector2(size.x-(32 if scrollbar.visible else 16)-str(row.count_caption).length()*8,list_top()+20+index*36),13 if row.get("estimated",false) else 14)
+		var label_x:=16
+		if row.has("swatch"):
+			var color: Dictionary=row.swatch
+			draw_rect(Rect2(18,list_top()+2+index*36,32,32),Color(color.red,color.green,color.blue))
+			label_x=72
+		text(row.caption,Vector2(label_x,list_top()+20+index*36))
+		if row.has("count_caption"):
+			if kind in [4,5]:text(row.count_caption,Vector2(label_x+8,list_top()+32+index*36),11)
+			else:text(row.count_caption,Vector2(size.x-(32 if scrollbar.visible else 16)-str(row.count_caption).length()*8,list_top()+20+index*36),13 if row.get("estimated",false) else 14)
 func draw_art() -> void:
 	var caption: String=state.snapshot.art.caption
 	text(caption,Vector2(maxf(16,(size.x-caption.length()*8)*0.5),20))

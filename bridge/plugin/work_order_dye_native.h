@@ -27,6 +27,11 @@ inline bool workOrderDyeReady() {
             {0x21b48f,0x3f3,UINT64_C(0xd06d746fdfbc786b)}, // inline mix ingredient enumeration
             {0x221490,0xffc,UINT64_C(0xf6a57bb554baff89)},
             {0x222490,0xc5b,UINT64_C(0x1767332d6a44234c)},
+            {0x2143b0,0x4548,UINT64_C(0x68dcba5b5aa698ef)}, // caption/swatch composition, never invoked
+            {0x52c130,0xb3,UINT64_C(0xf2e358ad54df1c09)},
+            {0x21aa2a,0x20,UINT64_C(0x030ef09363a6e70b)}, // direct dye effect
+            {0x219f3c,0x15,UINT64_C(0xaf82ebf88a6cc620)}, // tint effect
+            {0x21af91,0x18,UINT64_C(0x1791e2bdca5ac8be)}, // mix effect
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -106,7 +111,7 @@ inline bool populateWorkOrderDyeReagents(df::job_details_interfacest& context,in
     return true;
 }
 
-inline std::optional<WorkOrderDyeCatalog> nativeWorkOrderDyeCatalog(df::manager_order& source,int32_t target=-1,const std::string& query={}) {
+inline std::optional<WorkOrderDyeCatalog> nativeWorkOrderDyeCatalog(df::manager_order& source,int32_t target=-1,const std::string& query={},bool filterApplied=false) {
     const int job=int(source.job_type),kind=job==243?5:4;
     if((job!=190 && job!=191 && job!=243 && job!=244) || !workOrderDyeReady() || !df::global::world ||
        !source.items || source.items->elements.size()>64 || query.size()>128 || target< -1)return std::nullopt;
@@ -128,7 +133,7 @@ inline std::optional<WorkOrderDyeCatalog> nativeWorkOrderDyeCatalog(df::manager_
         for(size_t i=0;i<targets.size();++i)if(targets[i]==target && (kind==5 || (i<context.dye_object_target_color_is_tint.size() && context.dye_object_target_color_is_tint[i])))found=true;
         if(!found || !populateWorkOrderDyeReagents(context,target))return std::nullopt;
     }
-    if(!query.empty()) {
+    if(filterApplied || !query.empty()) {
         if(kind==4)context.dye_object_filter=query;else context.mix_dye_filter=query;
         reinterpret_cast<void(*)(df::job_details_interfacest*)>(base+(kind==4?0x221490:0x222490))(&context);
     }

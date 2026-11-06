@@ -299,6 +299,15 @@ try {
      if(-not $client.WaitForExit($waitMs)){$client.Kill();$client.WaitForExit();throw 'Unit Expel client timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/$name.json")){throw 'Unit Expel client failed'}
     }
+    if($name -eq 'work-order-dye-wire') {
+     $env:DF3D_CARRIER_DIRECTORY=$out
+     $env:DF3D_DF_PATH=$dfPath
+     $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
+     $client=Start-Process -FilePath $engine -ArgumentList @('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/work_order_dye_wire_live.gd') -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/$name.stdout.log" -RedirectStandardError "$out/$name.stderr.log"
+     $null=$client.Handle
+     if(-not $client.WaitForExit(60000)){$client.Kill();$client.WaitForExit();throw 'Dye client timed out; no replay'}
+     if($client.ExitCode -ne 0 -or -not (Test-Path "$out/$name-result.json")){throw 'Dye client failed'}
+    }
     if($FarmItemCarriers -and $name -in @('workshop-wire','workshop-order-wire')) {
      $env:DF3D_CARRIER_DIRECTORY=$out
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'

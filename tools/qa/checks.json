@@ -3797,6 +3797,11 @@
   ],
   "exclusions": [
     {
+      "path": "presentations/godot/project/tests/work_order_dye_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected rendered direct dye/tint/mix workflow through stockpile_storage_native.ps1 with DF3D_WORK_ORDER_DYE_REFERENCE=1, DF3D_WORK_ORDER_DYE_COMPARE=1 and DF3D_WORK_ORDER_DYE_WIRE=1; native effect comparison on an owned unsaved clone, viewer capped at 30 FPS."
+    },
+    {
       "path": "presentations/godot/project/tests/workshop_order_wire_live.gd",
       "status": "manual",
       "reason": "Protected composed workshop order creation/search through stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader -FarmItemCarriers -FarmItemCarrierArt with DF3D_WORKSHOP_NATIVE=1; owned unsaved clone and temporary manager-office fixture."

@@ -19,6 +19,15 @@ local function lines()
  return result
 end
 local observations={}
+local plans={}
+local function effect(order)
+ return {mat_index=order.mat_index,specdata=order.specdata.hist_figure_id,art_type=order.art_spec.type,art_id=order.art_spec.id,art_subid=order.art_spec.subid}
+end
+local function capture(name,timeout)
+ local f=assert(io.open(out..'/shot.tmp','w'));f:write(name);f:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
+ local deadline=dfhack.getTickCount()+(timeout or 30000)
+ while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'dye capture timeout');script.sleep(1,'frames')end
+end
 local function shot(name,order)
  view:render(dfhack.getTickCount())
  local d=m.job_details
@@ -45,9 +54,7 @@ local function shot(name,order)
   end
  end
  local f=assert(io.open(out..'/work-order-dye-reference.json','w'));f:write(json.encode(observations));f:close()
- f=assert(io.open(out..'/shot.tmp','w'));f:write(name);f:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
- local deadline=dfhack.getTickCount()+30000
- while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'dye capture timeout');script.sleep(1,'frames')end
+ capture(name)
 end
 -- Diagnostic manager eligibility, restored before leaving the unsaved clone.
 local fortress=assert(df.global.plotinfo.main.fortress_entity)
@@ -65,7 +72,7 @@ local prior=position.responsibilities[responsibility];local indexed=fortress.ass
 position.responsibilities[responsibility]=true;indexed:insert('#',assignment)
 local ok,err=xpcall(function()
  key('D_ORDERS');assert(m.info.open)
- for _,spec in ipairs{{query='dye cloth',job=191,kind=4},{query='mix dye',job=243,kind=5}}do
+ for _,spec in ipairs{{query='dye cloth',job=191,kind=4,flow='direct'},{query='dye cloth',job=191,kind=4,flow='tint'},{query='mix dye',job=243,kind=5,flow='mix'}}do
   mouse(944,142);assert(m.create_work_order.open,'Global order picker did not open')
   mouse(600,94)
   for char in spec.query:gmatch('.')do key(('STRING_A%03d'):format(char:byte()))end
@@ -79,7 +86,10 @@ local ok,err=xpcall(function()
   local slot;for i,kind in ipairs(d.option)do if kind==spec.kind then slot=i;break end end
   assert(slot,'Dye Details option missing');mouse(200,106+slot*36)
   assert(d.current_option==spec.kind,'Dye color chooser did not open')
-  shot('work-order-dye-'..spec.kind..'-targets',order)
+  local original=effect(order);local inputs={}
+  for _,item in ipairs(order.items.elements)do local copy=df.job_item:new();copy:assign(item);inputs[#inputs+1]=copy end
+  local plan={id=order.id,option=slot,kind=spec.kind,flow=spec.flow,target=-1,root_row=0}
+  shot('work-order-dye-'..spec.flow..'-targets',order)
   -- Select the first tint/mix target from its visible native row. Diagnostic
   -- scrolling exposes the row; the actual click drives native navigation.
   local at=0
@@ -87,17 +97,34 @@ local ok,err=xpcall(function()
    at=nil;for i,tint in ipairs(d.dye_object_target_color_is_tint)do if tint then at=i;break end end
   end
   local targets=spec.kind==4 and d.dye_object_target_color or d.mix_dye_target_color
-  if at and #targets>at then
-   local target=targets[at];local caption=df.global.world.raws.descriptors.colors[target].name
+  if spec.flow~='direct' and at and #targets>at then
+   local target=targets[at];plan.target=target;plan.root_row=at;local caption=df.global.world.raws.descriptors.colors[target].name
    if spec.kind==4 then d.scroll_position_dye_object=at else d.scroll_position_mix_dye=at end
    view:render(dfhack.getTickCount())
    local clicked=false
    for _,line in ipairs(lines())do if line.y>=12 and line.text:find(caption,1,true)then mouse(200,line.y*12+6);clicked=true;break end end
    assert(clicked,'Dye target caption not visible')
    assert((spec.kind==4 and d.dye_object_tint_color==target)or(spec.kind==5 and d.mix_dye_chosen_target_color==target),'Dye reagent stage did not open')
-   shot('work-order-dye-'..spec.kind..'-reagents',order)
+   shot('work-order-dye-'..spec.flow..'-reagents',order)
   end
-  while d.open do key('LEAVESCREEN')end
+  -- Both target and ingredient lists now have their first selectable row visible.
+  mouse(200,178);assert(not d.open,'Native dye selection did not close Details')
+  plan.effect=effect(order);plans[#plans+1]=plan
+  order.mat_index=original.mat_index;order.specdata.hist_figure_id=original.specdata
+  order.art_spec.type=original.art_type;order.art_spec.id=original.art_id;order.art_spec.subid=original.art_subid
+  assert(#inputs==#order.items.elements,'Native dye selection changed requirement count')
+  for i,item in ipairs(order.items.elements)do item:assign(inputs[i+1]);inputs[i+1]:delete()end
+ end
+ if os.getenv('DF3D_WORK_ORDER_DYE_WIRE')=='1' then
+  local f=assert(io.open(out..'/work-order-dye-expected.json','w'));f:write(json.encode(plans));f:close()
+  capture('work-order-dye-wire',65000)
+  f=assert(io.open(out..'/work-order-dye-wire-result.json'));local result=json.decode(f:read('*a'));f:close();assert(result.success,'Dye viewer failed')
+  for _,plan in ipairs(plans)do
+   local order;for _,candidate in ipairs(df.global.world.manager_orders.all)do if candidate.id==plan.id then order=candidate;break end end
+   assert(order,'Dye order vanished');local actual=effect(order)
+   for field,value in pairs(plan.effect)do assert(actual[field]==value,'Dye effect differs: '..plan.flow..' '..field)end
+  end
+  records[#records+1]={name='work-order-dye-wire',flows=#plans,effects_match=true}
  end
 end,debug.traceback)
 position.responsibilities[responsibility]=prior;indexed:resize(0);for _,a in ipairs(old)do indexed:insert('#',a)end

@@ -1,4 +1,17 @@
 extends "res://tests/item_carrier_wire_live.gd"
+class Interaction extends Node:
+	var construction_active:=false
+	var shell_blocked:=false
+	var shell_enabled:=true
+	var panel:=Control.new()
+	func _ready() -> void:add_child(panel)
+	func cancel_selection() -> void:pass
+	func set_play_enabled(_value: bool) -> void:pass
+func pointer(view,point: Vector2,button: int=MOUSE_BUTTON_LEFT) -> void:
+	var click:=InputEventMouseButton.new();click.button_index=button;click.pressed=true
+	click.position=view.get_global_transform_with_canvas()*point;click.global_position=click.position
+	Input.parse_input_event(click);await process_frame
+	click=click.duplicate();click.pressed=false;Input.parse_input_event(click);await process_frame
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
 	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/residents-job-settings-reference.json"))
@@ -58,12 +71,25 @@ func composed_read(reference: Dictionary) -> Dictionary:
 	root.size=Vector2i(1200,800)
 	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
 	for frame in 5:world.poll();await process_frame
-	var state=preload("res://scripts/job_settings_state.gd").new();state.configure(service)
-	var view=preload("res://scripts/work_order_details_view.gd").new();view.job_context=true;root.add_child(view);view.configure_details(world,state)
-	view.cancelled.connect(state.close)
-	state.open(int(reference.building_id),int(reference.job_id),int(reference.unit_id));view.show();view.layout(Vector2(1200,800))
+	var interaction:=Interaction.new();root.add_child(interaction)
+	var host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)
+	var owner=preload("res://scripts/residents_panel.gd").new();root.add_child(owner);owner.configure(world,service,host);owner.open_panel()
+	if not check(await ready(owner.state),"Residents owner did not load roster"):
+		owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();await process_frame;return {}
+	var row_index: int=owner.state.ids.find(int(reference.unit_id))
+	if not check(row_index>=0,"Job resident absent from native roster"):
+		owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();await process_frame;return {}
+	owner.state.seek(row_index,owner.state.capacity)
+	check(await ready(owner.state),"Job resident row did not load")
+	var roster_first: int=owner.state.first
+	var roster_order: PackedInt32Array=owner.state.ids.duplicate()
+	await pointer(owner.panel,Vector2(540,owner.panel.list_top()+(row_index-roster_first)*36+18))
+	var state=owner.job_state
+	var view=owner.job_panel
 	var opened:=await ready(state)
 	check(opened and state.rows.size()==reference.provider.materials.size(),"Composed job settings pagination failed")
+	check(host.active==owner and interaction.construction_active and view.visible and not owner.panel.visible,"Job entry lost modal ownership")
+	check(state.unit_id==int(reference.unit_id) and state.job_id==int(reference.job_id),"Job button opened another resident job")
 	var count: int=state.rows.size()
 	var wheel:=InputEventMouseButton.new();wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN;wheel.pressed=true;wheel.position=view.position+Vector2(120,180);wheel.global_position=wheel.position
 	Input.parse_input_event(wheel);await process_frame
@@ -78,5 +104,13 @@ func composed_read(reference: Dictionary) -> Dictionary:
 	check(filtered and state.query=="Dolomite" and state.rows.size()==1 and state.rows[0].caption=="Dolomite","Composed native job filter failed")
 	var escape:=InputEventKey.new();escape.pressed=true;escape.keycode=KEY_ESCAPE;Input.parse_input_event(escape);await process_frame
 	check(state.phase==state.Phase.Closed and not view.visible,"Job settings Escape did not retire the page")
-	state.dispose();view.queue_free();service.queue_free();await process_frame
-	return {"choices":count,"filtered":filtered,"closed":state.phase==state.Phase.Closed}
+	var returned: bool=owner.panel.visible and host.active==owner and owner.state.first==roster_first and owner.state.ids==roster_order
+	check(returned,"Job Escape failed to restore the same roster")
+	# Reopen through the visible row, then dismiss the entire owner while reading.
+	await pointer(owner.panel,Vector2(540,owner.panel.list_top()+(row_index-roster_first)*36+18))
+	host.reset_local_views()
+	for frame in 5:world.poll();await process_frame
+	check(not owner.job_open() and not owner.panel.visible and not view.visible and host.active==null and not interaction.construction_active,"Owner reset retained job details or world-input lock")
+	var closed: bool=state.phase==state.Phase.Closed
+	owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();await process_frame
+	return {"choices":count,"filtered":filtered,"closed":closed,"returned_to_roster":returned,"resident_id":int(reference.unit_id)}

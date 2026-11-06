@@ -1309,5 +1309,84 @@
     "source": "build/stockpile-storage-native-input-20261106-072318",
     "bridge_sha256": "652629A77559980CD476E153EAACBC65C71B2F155D3D320B29AC90841628E3E6",
     "scope": "ResidentsRowsRead publishes job and holder IDs matching the actual native job button on the controlled unlinked job. Headless shared read/filter/cancel repeated. Full composed Residents owner input/render and edits not accepted."
+  },
+  "owner_reference": {
+    "source": "build/stockpile-storage-native-input-20261106-072540",
+    "result": {
+      "choices": 83,
+      "composed": {
+        "choices": 83,
+        "closed": true,
+        "filtered": true,
+        "resident_id": 6534,
+        "returned_to_roster": true
+      },
+      "filtered": [
+        {
+          "caption": "Dolomite",
+          "count_caption": "200?",
+          "estimated": true,
+          "id": 1
+        }
+      ],
+      "success": true
+    },
+    "scope": "Headless actual Residents owner with native query and row reads, pointer job-button entry, shared Details wheel/search, Escape restoring roster order/scroll, pointer reopen and host reset. No rendered owner acceptance or job edits."
+  },
+  "material_effect_reference": {
+    "source": "build/stockpile-storage-native-input-20261106-072717",
+    "unit_id": 6534,
+    "building_id": 3,
+    "effect": {
+      "after": {
+        "inputs": [
+          {
+            "details_flags": 1,
+            "flags1": 0,
+            "flags2": 0,
+            "flags3": 0,
+            "item_subtype": -1,
+            "item_type": 4,
+            "mat_index": 169,
+            "mat_type": 0,
+            "quantity": 1,
+            "saved_flags2": 0,
+            "saved_index": -1,
+            "saved_type": 0
+          }
+        ],
+        "job_id": 2000000000,
+        "mat_index": 169,
+        "mat_type": 0
+      },
+      "before": {
+        "inputs": [
+          {
+            "details_flags": 0,
+            "flags1": 0,
+            "flags2": 0,
+            "flags3": 0,
+            "item_subtype": -1,
+            "item_type": 4,
+            "mat_index": -1,
+            "mat_type": 0,
+            "quantity": 1,
+            "saved_flags2": 0,
+            "saved_index": -1,
+            "saved_type": -1
+          }
+        ],
+        "job_id": 2000000000,
+        "mat_index": -1,
+        "mat_type": 0
+      },
+      "choice": {
+        "index": 169,
+        "type": 0
+      },
+      "details_open": false,
+      "info_open": true
+    },
+    "scope": "Actual native Dolomite row click on disposable unlinked ConstructDoor job. Job and input material changed; prior input material/flags saved; Details closed and Info retained. Job discarded with unsaved clone. No ordinary live job, repeated selection, other input indices or other setting families accepted."
   }
 }

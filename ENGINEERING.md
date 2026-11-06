@@ -125,7 +125,7 @@ Native063337 places the job button at local528, separately from event local624.
 Headless owner checks cover target forwarding, roster restoration and late replies;
 protected072318 on2026-11-06 verifies the published target against the actual
 native button and repeats the shared read/filter/cancel flow. Full composed owner
-pointer/render/resize acceptance remains pending. Core19, extension and both
+render/resize acceptance remains pending. Core19, extension and both
 state checks pass in residents-job-entry-20261106; native MSVC build passes.
 Installed bridge SHA256 is
 652629A77559980CD476E153EAACBC65C71B2F155D3D320B29AC90841628E3E6.
@@ -133,6 +133,29 @@ Owned DF37760 exits unsaved with source preservation; joined Godot logs have
 only the known thread notice. GPU samples35–36C, brief serial30FPS native and
 headless Godot. Edits, clothing/artwork and other job-family acceptance remain
 unfinished; the public Residents route is still unchanged.
+
+Protected072540 on2026-11-06 exercises the complete staged Residents owner
+headlessly with native roster/row reads: pointer entry into the captured job,
+Details wheel/search, Escape restoring the same roster order/scroll, pointer
+reopen and host reset. Both panel visibility and map-input ownership retire.
+Core19 and both state checks pass in residents-job-owner-20261106. DF37852 exits
+unsaved, source preserved; joined logs have only the known thread notice.
+This is input composition evidence, not rendered owner acceptance.
+
+`DF3D_RESIDENTS_JOB_SETTINGS_EFFECTS=1` captures native material selection on
+the disposable unlinked job only. Protected072717 clicks Dolomite and records
+job and requirement material0/169, first-edit saved requirement material0/-1
+and flags2, Details closed and Info retained. It then reopens the real job
+button and verifies Escape independently. DF26016 exits unsaved with source
+preservation; no runtime edit API exists yet. Static218900 branch2198df..2199da
+uses job pointer at context+8 and manager order at+10. It saves requirement
+material/flags2 once, changes its material, and changes the job-level material
+only for input0. The native job branch closes directly; d09ca0 requirement
+rebuilding belongs to the manager-order branch. Do not call the whole input
+handler or borrow its current-option global. Repeated edits, other requirement
+indices and other option families still need effect acceptance. Both runs use
+brief serial30FPS native graphics and headless clients; samples36–38C.
+
 
 The menu actions themselves clear live markup and build widgets: do not call
 them from the bridge. The formatter output is `markup_text_boxst`, not a vector

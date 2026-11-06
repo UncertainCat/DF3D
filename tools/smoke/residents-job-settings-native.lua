@@ -111,6 +111,39 @@ while true do
  assert(dfhack.getTickCount()<deadline,'Job settings capture timeout');script.sleep(1,'frames')
 end
 owner.job.current_job=wire_original
+if os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_EFFECTS')=='1' then
+ assert(controlled and job==controlled,'Effect oracle requires the disposable unlinked job')
+ local function observation()
+  local result={job_id=job.id,mat_type=job.mat_type,mat_index=job.mat_index,inputs={}}
+  for _,item in ipairs(job.job_items.elements)do
+   result.inputs[#result.inputs+1]={item_type=item.item_type,item_subtype=item.item_subtype,mat_type=item.mat_type,mat_index=item.mat_index,
+    quantity=item.quantity,flags1=item.flags1.whole,flags2=item.flags2.whole,flags3=item.flags3.whole,
+    details_flags=item.job_details_flags.whole,saved_type=item.job_details_mat_type,saved_index=item.job_details_mat_index,saved_flags2=item.job_details_item_flags2.whole}
+  end
+  return result
+ end
+ local effect={before=observation(),choice={type=evidence.materials[2].type,index=evidence.materials[2].index}}
+ local choice_y
+ for _,line in ipairs(evidence.lines)do if line.text:find('Dolomite',1,true)then choice_y=line.y;break end end
+ assert(choice_y and provider and provider.materials[2].caption=='Dolomite','Expected visible Dolomite material')
+ local function click_at(cx,cy)
+  g.precise_mouse_x=cx*8+4;g.precise_mouse_y=cy*12+6;g.mouse_x=cx;g.mouse_y=cy
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+  gui.simulateInput(view,'_MOUSE_L')
+  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+  for _=1,3 do script.sleep(1,'frames')end
+ end
+ click_at(10,choice_y)
+ effect.after=observation();effect.details_open=details.open;effect.info_open=info.open
+ assert(effect.after.mat_type==effect.choice.type and effect.after.mat_index==effect.choice.index,'Native job material selection did not update job')
+ assert(effect.after.inputs[1].mat_type==effect.choice.type and effect.after.inputs[1].mat_index==effect.choice.index,'Native selection did not update requirement')
+ assert(not details.open and info.open,'Native selection did not return to Residents')
+ evidence.material_effect=effect
+ -- The job remains unlinked and is discarded with this unsaved process. Reopen
+ -- the actual captured button to retain the independent Escape observation.
+ click_at(button.rect.x1+1,button.rect.y1+1)
+ assert(details.open and details.jb==job,'Native job button did not reopen after selection')
+end
 gui.simulateInput(view,'LEAVESCREEN')
 for _=1,3 do script.sleep(1,'frames')end
 evidence.escape_details_open=details.open;evidence.escape_info_open=info.open

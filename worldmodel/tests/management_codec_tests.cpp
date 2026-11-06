@@ -9,6 +9,24 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("Residents positions preserve captured signed coordinates and optional absence") {
+  for(int variant=0;variant<4;++variant) {
+    flatbuffers::FlatBufferBuilder b;const auto empty=b.CreateString("");const auto color=wire::CreateAreaNameColor(b);
+    const wire::TilePos position(variant==3?32768:variant==2?-30000:25,31,4);
+    const auto row=wire::CreateResidentRow(b,42,empty,empty,empty,empty,empty,color,empty,7,0,false,{},-1,{},{},variant?&position:nullptr);
+    const auto payload=wire::CreateResidentsRowsState(b,b.CreateVector(std::vector{row}));
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(wire::ManagementAction::ResidentsRowsRead);
+    state.add_status(wire::ManagementStatus::Ok);state.add_residents_rows(payload);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(variant==3));
+    if(variant<3) {
+      const auto decoded=codec::decodeState(value);const auto& result=decoded.residentsRows->rows[0].position;
+      CHECK(result.has_value()==(variant!=0));
+      if(result){CHECK(result->x==position.x());CHECK(result->y==31);CHECK(result->z==4);}
+    }
+  }
+}
+
 TEST_CASE("Residents assignment observations preserve absence and validate semantic fields") {
   for(int variant=0;variant<3;++variant) {
     flatbuffers::FlatBufferBuilder b;const auto empty=b.CreateString("");const auto color=wire::CreateAreaNameColor(b);

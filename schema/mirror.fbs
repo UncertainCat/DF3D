@@ -1850,6 +1850,8 @@ table ResidentRow {
   happiness:int8 = -1; // -1 unobserved;0 happiest through6 most distressed.
   specialization:ResidentSpecialization;
   assignments:[LocationStaffAssignment];
+  // Residents Recenter captures raw unit.pos when constructing the row.
+  position:TilePos;
 }
 table ResidentsRowsState { rows:[ResidentRow] (required); }
 

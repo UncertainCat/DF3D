@@ -57,6 +57,21 @@ func run() -> void:
 	service.reply(edit_ticket,{"residents_specialization":{"unit_id":42,"outcome":C.ResidentsSpecializationOutcome.Applied,"only_assigned":false}})
 	check(state.phase==State.Phase.Closed and state.ticket==0 and state.rows.is_empty(),"Late edit completion cannot reopen a closed screen")
 	state.dispose()
-	var view:=View.new();view.free()
+	var view:=View.new();view.state=state;view.ticks_override=0
+	view.search=LineEdit.new();view.add_child(view.search);root.add_child(view)
+	view.size=Vector2(944,708);view.page_rows=2
+	var inspected: Array[int]=[]
+	var focused: Array[Vector3i]=[]
+	view.inspect_requested.connect(func(id):inspected.append(id))
+	view.focus_requested.connect(func(tile):focused.append(tile))
+	state.ids=PackedInt32Array([7,42]);state.rows={7:{"id":7},42:{"id":42,"position":Vector3i(25,31,4)}};state.first=1;state.phase=State.Phase.Ready
+	var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=true
+	click.position=Vector2(348,view.list_top()+18);view._gui_input(click)
+	check(inspected==[42],"Details uses the scrolled row identity")
+	click.position.x=316;view._gui_input(click)
+	check(focused==[Vector3i(25,31,4)],"Recenter uses the captured row position")
+	state.close();view._gui_input(click)
+	check(inspected==[42] and focused==[Vector3i(25,31,4)],"Closed rows cannot navigate using retired identity")
+	view.free()
 	if failures==0:print("RESIDENTS_STATE_PASS")
 	quit(1 if failures else 0)

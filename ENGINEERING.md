@@ -31,6 +31,37 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Residents native list discovery
 
+The staged Residents view emits `focus_requested` from local304,y (24x36)
+using the row's captured `position`, and `inspect_requested` from local336,y
+(24x36) using its stable ID. Both require a ready current row. Main-owner
+navigation, native effects and rendered acceptance of these controls remain
+unfinished; they do not expose the staged screen. Headless
+`residents-navigation` passes core19/19, extension build and component input
+checks for scrolled row identity, captured coordinates and closed-row retirement.
+
+Native row builder142a4f1 reads raw unit.pos; factory142ea40 and constructor
+ed3a0 retain its signed16 x/y/z at150/152/154. Recenter callback1422ca0 passes
+that snapshot to43bda0 and closes the list through1433bd0. Unit-sheet
+factory142ed10 instead retains the ID at190:1422830 looks it up, calls native
+holder-position resolver1367430 and opens the unit sheet through1a09d0;
+1422bf0 focuses and closes the list when the resolved x is not the invalid
+sentinel. These are static evidence only, not invoked runtime widget callbacks.
+CreatureLocate adds inactive/visibility filters and therefore must not be
+substituted for either navigation behavior. The additive row position preserves
+signed coordinates, including native sentinels; viewer camera behavior at invalid
+positions and unit-sheet ownership still require acceptance. Protected050039
+on2026-11-06 compares all13 visible Recenter coordinate snapshots with raw
+unit.pos and typed row results;11 existing query comparisons also pass. DF34916
+exits unsaved and the source remains unchanged. Paired Godot logs contain only
+the known separate-thread notice. Installed bridge SHA256 is
+DF6854D8080CED73ED0AE91276842B6A17DA22543746EFDAFD78D569FD14BB72;
+the MSVC build passes. Fixture positions retain this provenance.
+`residents-navigation-render` passes with the documented thread/finalize/shutdown
+diagnostics. Inspection against the native capture confirms the two24x36 button
+columns and artwork;7882 name pixels still match. Native and offline graphical
+runs were brief, serial and capped at30FPS; observed GPU35–37C. This verifies
+position publication and component display/input, not navigation effects.
+
 Residents row assignments reuse `observeNativeUnitAssignments`: semantic
 occupation/building/work-detail records with native membership helpers operating
 on owned ID-vector copies. This is the existing verified reader, not a new call

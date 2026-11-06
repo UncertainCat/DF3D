@@ -442,7 +442,7 @@ struct CreatureAnimalResult {
 std::optional<CreatureAnimalResult> creatureAnimal;
 std::optional<std::vector<int32_t>> residents;
 // Strings are converted to UTF-8 and bounded before publishing this batch.
-struct ResidentRowResult { int32_t id; df3d_residents::RowText text; std::optional<ResidentAppearanceRecipe> icon; df3d_residents::Specialization specialization; std::vector<df3d_area::LocationStaffAssignment> assignments; };
+struct ResidentRowResult { int32_t id; df3d_residents::RowText text; std::optional<ResidentAppearanceRecipe> icon; df3d_residents::Specialization specialization; std::vector<df3d_area::LocationStaffAssignment> assignments; df::coord position; };
 std::optional<std::vector<ResidentRowResult>> residentsRows;
 struct ResidentsSpecializationResult {int32_t id=-1;m::ResidentsSpecializationOutcome outcome=m::ResidentsSpecializationOutcome::Rejected;bool onlyAssigned=false;};
 std::optional<ResidentsSpecializationResult> residentsSpecialization;
@@ -956,9 +956,10 @@ void publish() {
       const auto color=m::CreateAreaNameColor(b,c.color[0],c.color[1],c.color[2],c.alternate[0],c.alternate[1],c.alternate[2],c.effect);
       std::vector<flatbuffers::Offset<m::LocationStaffAssignment>> assignments;
       for(const auto& e:value.assignments)assignments.push_back(m::CreateLocationStaffAssignment(b,m::LocationStaffAssignmentKind(e.kind),e.id,e.type,e.subtype,e.custom,b.CreateString(e.name),b.CreateString(e.customCode)));
+      const m::TilePos position(value.position.x,value.position.y,value.position.z);
       rows.push_back(m::CreateResidentRow(b,id,b.CreateString(n.combined),b.CreateString(n.name),b.CreateString(n.profession),
           b.CreateString(n.firstLine),b.CreateString(n.secondLine),color,b.CreateString(a.caption),uint8_t(a.foreground),uint8_t(a.background),a.bright,
-          value.icon?value.icon->build(b):flatbuffers::Offset<m::SelectionAppearance>{},int8_t(row.happiness),m::CreateResidentSpecialization(b,value.specialization.onlyAssigned,value.specialization.revision),b.CreateVector(assignments)));
+          value.icon?value.icon->build(b):flatbuffers::Offset<m::SelectionAppearance>{},int8_t(row.happiness),m::CreateResidentSpecialization(b,value.specialization.onlyAssigned,value.specialization.revision),b.CreateVector(assignments),&position));
     }
     residentsRowsResult=m::CreateResidentsRowsState(b,b.CreateVector(rows));
   }
@@ -3791,7 +3792,8 @@ void run(color_ostream& out) {
         std::vector<ResidentRowResult> rows;size_t bytes=0,appearanceBytes=0;
         for(auto id:*query.unit_ids()) {
           if(std::find(eligible->begin(),eligible->end(),id)==eligible->end())break;
-          auto row=df3d_residents::rowText(df::unit::find(id),query.columns(),query.show_gender());
+          auto* unit=df::unit::find(id);if(!unit)break;
+          auto row=df3d_residents::rowText(unit,query.columns(),query.show_gender());
           if(!row || row->activity.foreground<0 || row->activity.foreground>7 ||
              row->activity.background<0 || row->activity.background>7)break;
           bool bounded=true;
@@ -3814,7 +3816,8 @@ void run(color_ostream& out) {
             if(e.name.size()>4096 || e.customCode.size()>64 || e.name.find('\0')!=std::string::npos || e.customCode.find('\0')!=std::string::npos)bounded=false;
           }
           if(!bounded || bytes>131072)break;
-          rows.push_back({id,std::move(*row),std::move(icon),*specialization,std::move(*assignments)});
+          // Native142a4f1 captures unit.pos for Recenter; no holder or follow filter.
+          rows.push_back({id,std::move(*row),std::move(icon),*specialization,std::move(*assignments),unit->pos});
         }
         if(rows.size()==query.unit_ids()->size()) {residentsRows=std::move(rows);status=m::ManagementStatus::Ok;}
       }

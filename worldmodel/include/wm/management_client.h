@@ -421,6 +421,7 @@ struct ResidentsSpecializationRequest { int32_t unitId=-1;uint64_t expectedRevis
 struct ResidentsSpecializationState { int32_t unitId=-1;ResidentsSpecializationOutcome outcome=ResidentsSpecializationOutcome::Rejected;bool onlyAssigned=false; };
 struct ResidentRow {
   int32_t id=-1;
+  std::optional<TilePos> position;
   std::optional<ResidentSpecialization> specialization;
   std::optional<std::vector<LocationStaffAssignment>> assignments;
   int8_t happiness=-1; // Unobserved, or native happiest0 through most distressed6.

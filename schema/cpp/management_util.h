@@ -1025,6 +1025,8 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       if(const auto* value=row->specialization())
         if(!value->revision() || value->revision()>INT64_MAX)return "invalid residents specialization receipt";
       if(row->happiness() < -1 || row->happiness()>6)return "invalid residents happiness";
+      if(const auto* p=row->position())
+        if(p->x()<INT16_MIN || p->x()>INT16_MAX || p->y()<INT16_MIN || p->y()>INT16_MAX || p->z()<INT16_MIN || p->z()>INT16_MAX)return "invalid residents position";
       const auto* c=row->name_color();
       if(const auto* icon=row->sheet_icon())if(auto error=validateOwnerAppearance(*icon,appearanceBytes))return error;
       if(c->foreground()>7 || c->background()>7 || c->bright()>1 || c->alternate_foreground()>7 ||

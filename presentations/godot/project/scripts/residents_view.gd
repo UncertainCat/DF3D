@@ -2,6 +2,8 @@ extends "res://scripts/location_staff_candidates_frame.gd"
 # Staged Residents surface. Indicators, actions, hover and remaining portrait
 # states need acceptance before this may replace the public readout.
 signal cancelled
+signal inspect_requested(unit_id: int)
+signal focus_requested(tile: Vector3i)
 const C=preload("res://scripts/management_contract.gd")
 const NameColor=preload("res://scripts/native_name_color.gd")
 const Indicators=preload("res://scripts/location_staff_indicators.gd")
@@ -79,6 +81,10 @@ func _gui_input(event: InputEvent) -> void:
 		search.release_focus()
 		for index in page_rows:
 			var row: Dictionary=state.row_at(state.first+index)
+			if not row.is_empty() and state.phase==state.Phase.Ready and row.has("position") and Rect2(304,list_top()+index*36,24,36).has_point(event.position):
+				focus_requested.emit(row.position);accept_event();return
+			if not row.is_empty() and state.phase==state.Phase.Ready and Rect2(336,list_top()+index*36,24,36).has_point(event.position):
+				inspect_requested.emit(int(row.id));accept_event();return
 			if not row.is_empty() and row.has("specialization") and Rect2(696,list_top()+index*36,32,36).has_point(event.position):
 				state.specialize(int(row.id));accept_event();return
 		for index in SORTS.size():
@@ -125,6 +131,12 @@ func _draw() -> void:
 		patch("",Vector2i(2,int(y/12)),5,3,picture.texture(false))
 		var portrait: Texture2D=portraits.get(int(row.id),{}).get("texture")
 		if portrait!=null:draw_texture_rect(portrait,Rect2(18,y+2,32,32),false)
+		# Native142ed10 constructs the 3x3 unit-sheet button with this row's ID.
+		var details: Texture2D=art.texture("STOCKS_VIEW_ITEM")
+		if details!=null:draw_texture_rect(details,Rect2(336,y,24,36),false)
+		if row.has("position"):
+			var recenter: Texture2D=art.texture("STOCKS_RECENTER")
+			if recenter!=null:draw_texture_rect(recenter,Rect2(304,y,24,36),false)
 		var ink:=NameColor.choose(row.name_color,ticks_override if ticks_override>=0 else Time.get_ticks_msec(),0 if ticks_override>=0 else randi_range(0,1))
 		if not ink.is_empty():
 			text(row.first_line,Vector2(56,y+24),int(ink[0])+8*int(ink[2]),240)

@@ -125,6 +125,15 @@ local function capture_resident_rows()
     local happiness=df.reinterpret_cast("int32_t",address+0x150).value-6
     assert(row.happiness==happiness,"Residents happiness differs "..widget.u.id)
     local sample={happiness=happiness,happiness_rect={indicator.rect.x1,indicator.rect.y1,indicator.rect.x2,indicator.rect.y2},id=widget.u.id,width=width,show_gender=widget.show_gender,grazer=grazer,provider=row,screen=observed}
+    for _,child in ipairs(dfhack.gui.getWidgetChildren(widget.parent))do
+     if child.name=='Recenter button' then
+      local _,address=df.sizeof(child)
+      sample.position={}
+      for i=0,2 do sample.position[i+1]=df.reinterpret_cast('int16_t',address+0x150+i*2).value end
+      assert(sample.position[1]==widget.u.pos.x and sample.position[2]==widget.u.pos.y and sample.position[3]==widget.u.pos.z,'Residents captured position differs')
+     end
+    end
+    assert(sample.position,'Residents Recenter button missing')
     if os.getenv('DF3D_RESIDENTS_PORTRAITS')=='1' then
      local portrait
      for _,child in ipairs(dfhack.gui.getWidgetChildren(widget.parent))do

@@ -13,7 +13,9 @@
     "specialization_rows_source": "build\\stockpile-storage-native-input-20261106-042405",
     "specialization_rows_scope": "Typed row receipts; revision strings retain exact 64-bit values in JSON.",
     "assignments_source": "build\\stockpile-storage-native-input-20261106-044127",
-    "assignments_scope": "141 native row containers and wire batches match ordered membership/indicator enums. Natural coverage:26 occupation and13 work-detail indicators, at most one per row; workshop/furnace and multi-indicator overflow not accepted."
+    "assignments_scope": "141 native row containers and wire batches match ordered membership/indicator enums. Natural coverage:26 occupation and13 work-detail indicators, at most one per row; workshop/furnace and multi-indicator overflow not accepted.",
+    "position_source": "build/stockpile-storage-native-input-20261106-050039",
+    "position_scope": "Thirteen actual Recenter widget coordinate snapshots match raw unit.pos and typed row replies. Does not accept navigation effects or main-owner integration."
   },
   "viewport": [
     1200,
@@ -475,6 +477,11 @@
             "subtype": -1,
             "type": 0
           }
+        ],
+        "position": [
+          131,
+          81,
+          165
         ]
       },
       "screen": [
@@ -876,6 +883,11 @@
             "subtype": -1,
             "type": 0
           }
+        ],
+        "position": [
+          155,
+          73,
+          163
         ]
       },
       "screen": [
@@ -1313,6 +1325,11 @@
             "subtype": -1,
             "type": 0
           }
+        ],
+        "position": [
+          133,
+          79,
+          165
         ]
       },
       "screen": [
@@ -1724,6 +1741,11 @@
             "subtype": -1,
             "type": 0
           }
+        ],
+        "position": [
+          132,
+          50,
+          165
         ]
       },
       "screen": [
@@ -2114,7 +2136,12 @@
           "only_assigned": false,
           "revision": "2585421892178140357"
         },
-        "assignments": []
+        "assignments": [],
+        "position": [
+          122,
+          53,
+          165
+        ]
       },
       "screen": [
         [
@@ -2505,7 +2532,12 @@
           "only_assigned": false,
           "revision": "3950147953452767205"
         },
-        "assignments": []
+        "assignments": [],
+        "position": [
+          130,
+          78,
+          165
+        ]
       },
       "screen": [
         [
@@ -2858,7 +2890,12 @@
           "only_assigned": false,
           "revision": "98450723047867768"
         },
-        "assignments": []
+        "assignments": [],
+        "position": [
+          115,
+          94,
+          165
+        ]
       },
       "screen": [
         [
@@ -3237,7 +3274,12 @@
           "only_assigned": false,
           "revision": "6007388534045680970"
         },
-        "assignments": []
+        "assignments": [],
+        "position": [
+          177,
+          169,
+          176
+        ]
       },
       "screen": [
         [
@@ -3616,7 +3658,12 @@
           "only_assigned": false,
           "revision": "4123588482789127824"
         },
-        "assignments": []
+        "assignments": [],
+        "position": [
+          136,
+          99,
+          165
+        ]
       },
       "screen": [
         [
@@ -3969,7 +4016,12 @@
           "only_assigned": false,
           "revision": "4882855335978237562"
         },
-        "assignments": []
+        "assignments": [],
+        "position": [
+          124,
+          48,
+          165
+        ]
       },
       "screen": [
         [
@@ -4357,6 +4409,11 @@
             "subtype": -1,
             "type": 1
           }
+        ],
+        "position": [
+          132,
+          107,
+          165
         ]
       },
       "screen": [
@@ -4771,7 +4828,12 @@
           "only_assigned": false,
           "revision": "6467035634959614455"
         },
-        "assignments": []
+        "assignments": [],
+        "position": [
+          115,
+          87,
+          165
+        ]
       },
       "screen": [
         [
@@ -5136,7 +5198,12 @@
           "only_assigned": false,
           "revision": "7539898349789823887"
         },
-        "assignments": []
+        "assignments": [],
+        "position": [
+          124,
+          59,
+          165
+        ]
       },
       "screen": [
         [

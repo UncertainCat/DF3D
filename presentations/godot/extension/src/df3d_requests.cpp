@@ -194,6 +194,7 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
             }
             if(v.specialization) {Dictionary state;state["only_assigned"]=v.specialization->onlyAssigned;state["revision"]=int64_t(v.specialization->revision);row["specialization"]=state;}
             if(v.happiness>=0)row["happiness"]=int(v.happiness);
+            if(v.position)row["position"]=Vector3i(v.position->x,v.position->y,v.position->z);
             for(auto c:v.nameColor.color)primary.push_back(int(c));
             for(auto c:v.nameColor.alternate)alternate.push_back(int(c));
             color["color"]=primary;color["alternate"]=alternate;color["effect"]=int(v.nameColor.effect);row["name_color"]=color;

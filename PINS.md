@@ -22,6 +22,11 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Residents row `position` is an optional additive Management133 observation of
+raw signed16 unit coordinates captured with the row. Absence means unobserved;
+do not replace it with a current follow position or manufacture coordinates.
+Older133 readers ignore it. Existing requests and required fields are unchanged.
+
 Residents row `assignments` is an optional additive Management133 observation
 using existing LocationStaffAssignment semantics. Absent means unobserved; an
 empty vector means observed no assignments. Older133 readers ignore this field.

@@ -46,6 +46,9 @@ func run() -> void:
 			for field: String in ["caption","fg","bg","bright"]:
 				matches=matches and actual.activity[field]==expected_row.activity[field]
 			matches=matches and actual.get("happiness",-1)==expected_row.happiness
+			if samples[i].has("position"):
+				var p: Array=samples[i].position
+				matches=matches and actual.get("position")==Vector3i(int(p[0]),int(p[1]),int(p[2]))
 			matches=matches and actual.name_color.effect==expected_row.name_color.effect
 			for field: String in ["color","alternate"]:
 				for component in 3:

@@ -17,6 +17,8 @@ func run() -> void:
 	state.ids=PackedInt32Array(reference.unit_ids);state.phase=state.Phase.Ready
 	for sample: Dictionary in reference.samples:
 		if sample.provider.has("specialization"):sample.provider.specialization.revision=int(sample.provider.specialization.revision)
+		if sample.provider.has("position"):
+			var p: Array=sample.provider.position;sample.provider.position=Vector3i(p[0],p[1],p[2])
 		state.rows[int(sample.id)]=sample.provider
 	var view=preload("res://scripts/residents_view.gd").new();root.add_child(view)
 	view.ticks_override=500;view.configure_residents(world,state);view.layout(Vector2(1200,800))

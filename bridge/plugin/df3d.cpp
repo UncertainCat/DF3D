@@ -2188,6 +2188,47 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           result["happiness"]=int(row->happiness);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="residents-job-material-copy-probe") {
+          if(parameters.size()!=4)return CR_WRONG_USAGE;
+          int32_t values[3];
+          for(size_t i=1;i<parameters.size();++i) {
+            const auto& raw=parameters[i];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || values[i-1]<0)return CR_WRONG_USAGE;
+          }
+          const auto* unit=df::unit::find(values[0]);if(!unit || !unit->job.current_job)return CR_FAILURE;
+          const auto& source=*unit->job.current_job;
+          const auto before=df3d_production::nativeJobSettings(source,values[1]);if(!before)return CR_FAILURE;
+          // Diagnostic edits only independent value/requirement storage. World
+          // membership, jobs, reservations and native menus remain untouched.
+          std::vector<df::job_item> inputs;inputs.reserve(source.job_items.elements.size());
+          for(const auto* item:source.job_items.elements)inputs.push_back(*item);
+          df::job copy=source;copy.job_items.elements.clear();for(auto& item:inputs)copy.job_items.elements.push_back(&item);
+          const df3d_production::JobSettingsTarget target{source.id,before->buildingId};
+          const auto apply=[&](const auto& identity,uint64_t revision,uint64_t choices,int32_t choice) {
+            return df3d_production::applyJobMaterial(copy,identity,revision,values[1],choices,choice);
+          };
+          using Outcome=df3d_production::JobMaterialOutcome;
+          Json::Value result;
+          result["stale_revision_rejected"]=apply(target,before->revision^1,before->choicesRevision,values[2])!=Outcome::Applied;
+          result["stale_choices_rejected"]=apply(target,before->revision,before->choicesRevision^1,values[2])!=Outcome::Applied;
+          result["wrong_job_rejected"]=apply(df3d_production::JobSettingsTarget{-1,target.buildingId},before->revision,before->choicesRevision,values[2])!=Outcome::Applied;
+          result["wrong_holder_rejected"]=apply(df3d_production::JobSettingsTarget{target.jobId,-1},before->revision,before->choicesRevision,values[2])!=Outcome::Applied;
+          result["missing_choice_rejected"]=apply(target,before->revision,before->choicesRevision,INT32_MAX)!=Outcome::Applied;
+          const auto unchanged=df3d_production::nativeJobSettings(copy,values[1]);
+          result["rejections_unchanged"]=unchanged && unchanged->revision==before->revision && unchanged->choicesRevision==before->choicesRevision;
+          result["applied"]=apply(target,before->revision,before->choicesRevision,values[2])==Outcome::Applied;
+          auto& after=result["after"];after["job_id"]=copy.id;after["mat_type"]=copy.mat_type;after["mat_index"]=copy.mat_index;
+          after["inputs"]=Json::Value(Json::arrayValue);
+          for(const auto& item:inputs) {
+            Json::Value row;row["item_type"]=int(item.item_type);row["item_subtype"]=item.item_subtype;
+            row["mat_type"]=item.mat_type;row["mat_index"]=item.mat_index;row["quantity"]=item.quantity;
+            row["flags1"]=item.flags1.whole;row["flags2"]=item.flags2.whole;row["flags3"]=item.flags3.whole;
+            row["details_flags"]=item.job_details_flags.whole;row["saved_type"]=item.job_details_mat_type;
+            row["saved_index"]=item.job_details_mat_index;row["saved_flags2"]=item.job_details_item_flags2.whole;
+            after["inputs"].append(row);
+          }
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="residents-job-settings-probe") {
           if(parameters.size()!=2 && parameters.size()!=3)return CR_WRONG_USAGE;
           int32_t id=-1,selected=-1;

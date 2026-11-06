@@ -1388,5 +1388,90 @@
       "info_open": true
     },
     "scope": "Actual native Dolomite row click on disposable unlinked ConstructDoor job. Job and input material changed; prior input material/flags saved; Details closed and Info retained. Job discarded with unsaved clone. No ordinary live job, repeated selection, other input indices or other setting families accepted."
+  },
+  "material_adapter_reference": {
+    "source": "build/stockpile-storage-native-input-20261106-073206",
+    "bridge_sha256": "4737794A16D7A7224DCB1B60A40E9D92083280F7001A95C1A26AFDA3D05E79F8",
+    "effect": {
+      "adapter": {
+        "after": {
+          "inputs": [
+            {
+              "details_flags": 1,
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 4,
+              "mat_index": 169,
+              "mat_type": 0,
+              "quantity": 1,
+              "saved_flags2": 0,
+              "saved_index": -1,
+              "saved_type": 0
+            }
+          ],
+          "job_id": 2000000000,
+          "mat_index": 169,
+          "mat_type": 0
+        },
+        "applied": true,
+        "missing_choice_rejected": true,
+        "rejections_unchanged": true,
+        "stale_choices_rejected": true,
+        "stale_revision_rejected": true,
+        "wrong_holder_rejected": true,
+        "wrong_job_rejected": true
+      },
+      "after": {
+        "inputs": [
+          {
+            "details_flags": 1,
+            "flags1": 0,
+            "flags2": 0,
+            "flags3": 0,
+            "item_subtype": -1,
+            "item_type": 4,
+            "mat_index": 169,
+            "mat_type": 0,
+            "quantity": 1,
+            "saved_flags2": 0,
+            "saved_index": -1,
+            "saved_type": 0
+          }
+        ],
+        "job_id": 2000000000,
+        "mat_index": 169,
+        "mat_type": 0
+      },
+      "before": {
+        "inputs": [
+          {
+            "details_flags": 0,
+            "flags1": 0,
+            "flags2": 0,
+            "flags3": 0,
+            "item_subtype": -1,
+            "item_type": 4,
+            "mat_index": -1,
+            "mat_type": 0,
+            "quantity": 1,
+            "saved_flags2": 0,
+            "saved_index": -1,
+            "saved_type": -1
+          }
+        ],
+        "job_id": 2000000000,
+        "mat_index": -1,
+        "mat_type": 0
+      },
+      "choice": {
+        "index": 169,
+        "type": 0
+      },
+      "details_open": false,
+      "info_open": true
+    },
+    "scope": "Native material selection compared with applyJobMaterial on an independent copy of the controlled unlinked job. Wrong identities, stale job/choice revisions and absent choice reject without changed receipts; source job unchanged. No wire mutation or ordinary job effect acceptance."
   }
 }

@@ -123,6 +123,17 @@ if os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_EFFECTS')=='1' then
   return result
  end
  local effect={before=observation(),choice={type=evidence.materials[2].type,index=evidence.materials[2].index}}
+ if os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_EFFECT_ADAPTER')=='1' then
+  local original=owner.job.current_job;owner.job.current_job=job
+  local ok,text,rc=pcall(dfhack.run_command_silent,'df3d','residents-job-material-copy-probe',tostring(owner.id),'0','1')
+  owner.job.current_job=original
+  assert(ok and rc==0,'Job effect adapter failed: '..tostring(text));effect.adapter=json.decode(text)
+  for _,field in ipairs({'applied','stale_revision_rejected','stale_choices_rejected','wrong_job_rejected','wrong_holder_rejected','missing_choice_rejected','rejections_unchanged'})do
+   assert(effect.adapter[field],'Job effect adapter check failed: '..field)
+  end
+  assert(json.encode(observation())==json.encode(effect.before),'Copy adapter changed the source job')
+  assert(details.open and details.jb==job,'Copy adapter changed native Details')
+ end
  local choice_y
  for _,line in ipairs(evidence.lines)do if line.text:find('Dolomite',1,true)then choice_y=line.y;break end end
  assert(choice_y and provider and provider.materials[2].caption=='Dolomite','Expected visible Dolomite material')
@@ -138,6 +149,11 @@ if os.getenv('DF3D_RESIDENTS_JOB_SETTINGS_EFFECTS')=='1' then
  assert(effect.after.mat_type==effect.choice.type and effect.after.mat_index==effect.choice.index,'Native job material selection did not update job')
  assert(effect.after.inputs[1].mat_type==effect.choice.type and effect.after.inputs[1].mat_index==effect.choice.index,'Native selection did not update requirement')
  assert(not details.open and info.open,'Native selection did not return to Residents')
+ if effect.adapter then
+  for _,field in ipairs({'job_id','mat_type','mat_index'})do assert(effect.adapter.after[field]==effect.after[field],'Job effect differs: '..field)end
+  assert(#effect.adapter.after.inputs==#effect.after.inputs,'Job effect changed requirement count')
+  for i,item in ipairs(effect.after.inputs)do for field,value in pairs(item)do assert(effect.adapter.after.inputs[i][field]==value,'Job input effect differs: '..field)end end
+ end
  evidence.material_effect=effect
  -- The job remains unlinked and is discarded with this unsaved process. Reopen
  -- the actual captured button to retain the independent Escape observation.

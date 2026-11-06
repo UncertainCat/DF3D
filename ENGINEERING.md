@@ -156,6 +156,27 @@ handler or borrow its current-option global. Repeated edits, other requirement
 indices and other option families still need effect acceptance. Both runs use
 brief serial30FPS native graphics and headless clients; samples36–38C.
 
+The staged `applyJobMaterial` adapter validates job/holder identity, native
+eligibility, the job revision, full choice revision and original choice ID
+before any write. It only supports the input-material option so far. Native
+inline effects2198df..2199ab are pinned (length0xcc, FNV0835284909b8e4cc): save
+original requirement material/flags2 once, change requirement material, and
+change job material for input0. No allocation or fallible operation follows
+the first write. Membership resolution remains the eventual safe-point caller's
+responsibility; no wire mutation or material-row submission exists yet.
+`df3d residents-job-material-copy-probe <unit> <option> <choice>` applies the
+adapter exclusively to an independently copied job and requirements. With
+`DF3D_RESIDENTS_JOB_SETTINGS_EFFECT_ADAPTER=1`, protected073206 on2026-11-06
+matches every captured requirement field and job material to actual native
+Dolomite selection, and verifies unchanged receipts after stale job/choice
+revisions, wrong job/holder and absent-choice rejection. The source job remains
+unchanged by the diagnostic. Native and root19 builds pass; installed bridge
+SHA256 is4737794A16D7A7224DCB1B60A40E9D92083280F7001A95C1A26AFDA3D05E79F8.
+DF22872 exits unsaved with source preservation. GPU samples36–37C during brief
+serial30FPS native graphics; no Godot graphics. Repeated changes, nonzero input
+indices, ordinary jobs and other option families remain unaccepted.
+
+
 
 The menu actions themselves clear live markup and build widgets: do not call
 them from the bridge. The formatter output is `markup_text_boxst`, not a vector

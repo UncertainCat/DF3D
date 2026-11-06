@@ -21,6 +21,7 @@ inline bool jobSettingsReady() {
             {0xd15ef0,0x1d0,UINT64_C(0x41e934528fc15d5a)},
             {0x213a63,0x3c3,UINT64_C(0xbbbfcafbc2f10658)},
             {0x213f74,0xac,UINT64_C(0xbc878cc2d1caf065)},
+            {0x2198df,0xcc,UINT64_C(0x0835284909b8e4cc)},
         };
         for(const auto& pin:pins) {
             uint64_t hash=UINT64_C(14695981039346656037);
@@ -175,5 +176,35 @@ inline std::optional<JobSettingsObservation> nativeJobSettings(const df::job& so
         result.materials=std::move(filtered);
     }
     return result;
+}
+// Material effects are inline in native218900, pinned2198df..2199ab. The
+// input handler also reads menu state and cannot be called. Use fresh native
+// eligibility/catalog observations, then reproduce only its job field writes.
+// Caller resolves membership at a safe point; this function verifies identity
+// and both displayed receipts before the first write. No operation can fail or
+// allocate once mutation starts. Other option families remain separate work.
+enum class JobMaterialOutcome {Rejected,Stale,Applied};
+inline JobMaterialOutcome applyJobMaterial(df::job& job,const JobSettingsTarget& target,
+    uint64_t revision,int32_t option,uint64_t choicesRevision,int32_t choice) {
+    if(!revision || revision>INT64_MAX || !choicesRevision || choicesRevision>INT64_MAX || option<0 || choice<0)
+        return JobMaterialOutcome::Rejected;
+    if(job.id!=target.jobId)return JobMaterialOutcome::Stale;
+    const auto observed=nativeJobSettings(job,option);
+    if(!observed || observed->buildingId!=target.buildingId || observed->revision!=revision || observed->choicesRevision!=choicesRevision)
+        return JobMaterialOutcome::Stale;
+    if(size_t(option)>=observed->options.size() || observed->options[size_t(option)].kind!=0)return JobMaterialOutcome::Rejected;
+    const auto index=observed->options[size_t(option)].index;
+    if(index<0 || size_t(index)>=job.job_items.elements.size() || !job.job_items.elements[size_t(index)])return JobMaterialOutcome::Rejected;
+    const auto found=std::find_if(observed->materials.begin(),observed->materials.end(),[&](const auto& row){return row.id==choice;});
+    if(found==observed->materials.end())return JobMaterialOutcome::Rejected;
+    auto& item=*job.job_items.elements[size_t(index)];
+    if(!item.job_details_flags.bits.have_set_job_details) {
+        item.job_details_flags.bits.have_set_job_details=true;
+        item.job_details_mat_type=item.mat_type;item.job_details_mat_index=item.mat_index;
+        item.job_details_item_flags2=item.flags2;
+    }
+    item.mat_type=found->type;item.mat_index=found->index;
+    if(index==0){job.mat_type=found->type;job.mat_index=found->index;}
+    return JobMaterialOutcome::Applied;
 }
 }

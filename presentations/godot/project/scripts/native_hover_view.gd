@@ -11,6 +11,8 @@ const OWNER_RECENTER_HELP = ["Leave this menu and","recenter on this","creature.
 const OWNER_FILTER_HELP = ["Filter the unit list by","name or job."]
 # Native Work orders instructions212/216/219..223, protected002223 text cells.
 const WORK_ORDER_HELP={
+	# Workshop instruction314, protected004236; row controls have no native help.
+	"workshop_new":["Create a new work order","for this workshop.","Work orders are tasks","that can repeat","specified numbers of","times and which can be","given start conditions.","This is useful for","automation."],
 	# Native status/dependency instructions213..218/232, protected003053.
 	"ready":["This work order is","ready to activate."],
 	"new":["Create a new work","order.  Work orders are","like workshop jobs but","they are assigned to","shops automatically and","can be activated with","various conditions."],

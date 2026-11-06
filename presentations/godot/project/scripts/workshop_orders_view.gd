@@ -13,9 +13,16 @@ var quantity_order: int=-1
 var draft:=""
 var cursor_visible:=true
 var visible_rows:=0
-func configure(source,model) -> void:
+var hover_help
+var pointer_known:=false
+var pointer_global:=Vector2.ZERO
+func configure(source,model,help=null) -> void:
+	hover_help=help
 	state=model;art.configure(source);theme=art.theme;colors=art.installed_palette(source.assets_root())
 	texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST;mouse_filter=Control.MOUSE_FILTER_STOP
+	mouse_exited.connect(leave_hover)
+	visibility_changed.connect(func():
+		if not is_visible_in_tree():leave_hover())
 	state.changed.connect(func():
 		if state.phase not in [state.Phase.Ready,state.Phase.Applying]:editing=false
 		queue_redraw())
@@ -38,6 +45,7 @@ func feed_key(event: InputEventKey) -> void:
 		else:state.set_limit(value)
 	queue_redraw()
 func _process(_delta: float) -> void:
+	update_hover()
 	if not is_visible_in_tree():editing=false;return
 	var capacity:=maxi(0,int((size.y-72)/36))
 	if visible_rows!=capacity:
@@ -47,6 +55,8 @@ func _process(_delta: float) -> void:
 		if phase!=cursor_visible:cursor_visible=phase;queue_redraw()
 func button_rect(index: int) -> Rect2:return Rect2(360+index*32,size.y-36,32,36)
 func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion or event is InputEventMouseButton:
+		pointer_known=true;pointer_global=get_global_transform()*event.position;update_hover()
 	if input_allowed.is_valid() and not input_allowed.call():return
 	if state.phase!=state.Phase.Ready:return
 	if not event is InputEventMouseButton or not event.pressed:return
@@ -67,6 +77,16 @@ func _gui_input(event: InputEvent) -> void:
 	if button_rect(0).has_point(event.position):quantity_order=-1;editing=true;draft="";queue_redraw();accept_event();return
 	for index in [1,2]:
 		if button_rect(index).has_point(event.position):finish_entry();state.step(1 if index==1 else -1);accept_event();return
+func update_hover() -> void:
+	if not is_instance_valid(hover_help):return
+	if pointer_known and is_visible_in_tree() and state!=null and state.phase==state.Phase.Ready and state.snapshot.get("manager_available",false) and (not input_allowed.is_valid() or input_allowed.call()) and Rect2(424,0,32,36).has_point(get_global_transform().affine_inverse()*pointer_global):
+		hover_help.enter_work_order(get_instance_id(),"workshop_new")
+	else:hover_help.leave(get_instance_id())
+func leave_hover() -> void:
+	pointer_known=false
+	if is_instance_valid(hover_help):hover_help.leave(get_instance_id())
+func _exit_tree() -> void:
+	leave_hover()
 func caption(value: String,point: Vector2,color: Color) -> void:
 	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point,value,HORIZONTAL_ALIGNMENT_LEFT,-1,12,color)
 func _draw() -> void:

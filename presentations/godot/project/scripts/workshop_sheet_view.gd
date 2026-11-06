@@ -28,9 +28,9 @@ func configure_workers(source,model) -> void:
 func tasks_allowed() -> bool:
 	return allowed() and not removing and state.phase==state.Phase.Ready and state.ticket==0 and (orders==null or orders.state.phase!=orders.state.Phase.Applying) and (workers==null or workers.state.phase!=workers.state.Phase.Applying) and (contents==null or contents.state.phase!=contents.state.Phase.Applying)
 
-func configure_orders(source,model) -> void:
+func configure_orders(source,model,help=null) -> void:
 	orders=preload("res://scripts/workshop_orders_view.gd").new();add_child(orders)
-	orders.configure(source,model);orders.position=Vector2(16,84);orders.size=Vector2(464,360)
+	orders.configure(source,model,help);orders.position=Vector2(16,84);orders.size=Vector2(464,360)
 	orders.input_allowed=tasks_allowed;_layout_body()
 
 func contents_allowed() -> bool:

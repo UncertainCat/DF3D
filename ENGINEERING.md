@@ -7456,8 +7456,18 @@ that absence. The native suggestion is removed and re-added through its controls
 in the unsaved clone. Local `build/qa/conditions-status-hover` checks header Ready,
 dependency candidate Waiting, existing three-size properties/amount controls,
 and retirement on item-filter entry. Core19/19 and composition pass; paired
-rendered logs have only documented diagnostics. Workshop-specific help still
-needs acceptance. Minimum-width overlapping control precedence remains unresolved.
+rendered logs have only documented diagnostics. Workshop Work orders uses its
+distinct New help (instruction314). Protected004236 verifies that text and the
+absence of help over the workshop row's status, validation, quantity, Conditions,
+Details and removal controls, plus the general-order-limit control. Earlier004029
+and004127 incorrectly expected global-list help at workshop status icons; the
+captured sheet and native renderer establish that these are different surfaces.
+The controlled workshop target/manager index are restored; DF30008 exits unsaved
+with source preservation. Local `build/qa/workshop-order-hover` checks actual
+New pointer activation and retirement when manager eligibility disappears; its
+render was inspected. Core19/19 and composition pass, with only documented
+diagnostics in paired rendered logs. Minimum-width overlapping control precedence
+remains unresolved.
 
 These screens remain staged. Details, full responsive layout, tooltip coverage
 and tab navigation are unfinished. Quantity drafts currently support four digits; native increment

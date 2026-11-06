@@ -30,7 +30,7 @@ func configure(world,service,host,help=null) -> void:
 	super.configure(world,service,host,help)
 	panel.configure_tasks(world,tasks,"")
 	panel.configure_workers(world,workers)
-	panel.configure_orders(world,orders)
+	panel.configure_orders(world,orders,help)
 	global_orders_view=preload("res://scripts/global_work_orders_view.gd").new();canvas.add_child(global_orders_view);global_orders_view.configure_orders(world,global_orders,help);global_orders_view.hide()
 	global_orders_view.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self) and not conditions_view.visible and not details_view.visible
 	global_orders_view.cancelled.connect(_close_global_orders)

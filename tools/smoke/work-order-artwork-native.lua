@@ -123,6 +123,41 @@ if os.getenv('DF3D_WORK_ORDER_HOVER')=='1' then
  end
  order.amount_total=amount;order.amount_left=left
  local q=assert(io.open(out..'/work-order-quantity-boundaries.json','w'));q:write(json.encode(quantities));q:close()
+ if os.getenv('DF3D_WORK_ORDER_WORKSHOP_HOVER')=='1' then
+  key('LEAVESCREEN');assert(not m.info.open)
+  local building
+  for _,b in ipairs(df.global.world.buildings.other.WORKSHOP_ANY)do
+   if df.building_workshopst:is_instance(b) and b.type==df.workshop_type.Carpenters and b:getBuildStage()==b:getMaxBuildStage()then building=b;break end
+  end
+  assert(building,'Workshop hover needs completed carpenter')
+  local previous_workshop=order.workshop_id;order.workshop_id=building.id
+  for _,a in ipairs(df.global.plotinfo.main.fortress_entity.positions.assignments)do if a.histfig>=0 then managers:insert('#',a);break end end
+  local ok,err=xpcall(function()
+   dfhack.gui.revealInDwarfmodeMap({x=building.centerx,y=building.centery,z=building.z},true)
+   df.global.window_x=math.max(0,building.centerx-8);df.global.window_y=math.max(0,building.centery-10)
+   view:render(dfhack.getTickCount())
+   local selected=false
+   for y=5,60 do
+    for x=0,49 do
+     df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+     g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+10;g.mouse_x=x;g.mouse_y=y
+     local pos=dfhack.gui.getMousePos(true)
+     if pos and pos.x==building.centerx and pos.y==building.centery and pos.z==building.z then mouse(x*8+4,y*12+10);selected=true;break end
+    end
+    if selected then break end
+   end
+   assert(selected and m.view_sheets.active_id==building.id,'Workshop not selected')
+   assert(click_label('Work orders'))
+   shot('workshop-orders-help')
+   probe('workshop_new',880,154,314)
+   local row_y
+   for _,row in ipairs(lines())do if row.text:find('Encrust',1,true)then row_y=row.y*12+10;break end end
+   assert(row_y,'Workshop order row absent')
+   for _,p in ipairs{{'workshop_active',456,row_y,-1},{'workshop_validated',744,row_y,-1},{'workshop_amount',784,row_y,-1},{'workshop_conditions',816,row_y,-1},{'workshop_details',848,row_y,-1},{'workshop_remove',880,row_y,-1},{'workshop_limit',816,478,-1}}do probe(table.unpack(p))end
+  end,debug.traceback)
+  order.workshop_id=previous_workshop;managers:resize(0);for _,v in ipairs(original_managers)do managers:insert('#',v)end
+  assert(ok,err)
+ end
  local f=assert(io.open(out..'/work-order-hover-reference.json','w'));f:write(json.encode(hover));f:close()
  shot('work-order-hover-list')
  records[#records+1]={name='work-order-hover',controls=#hover}

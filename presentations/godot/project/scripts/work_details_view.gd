@@ -151,6 +151,10 @@ func hover_target(point: Vector2) -> Dictionary:
 			for entry: Dictionary in setting_icons(int(catalog[index].id),settings_rect(index).position.y):
 				if entry.rect.has_point(point):return {"staff":"work_detail"}
 		return {}
+	if search!=null and search.get_rect().has_point(point):return {"widget":"filter"}
+	for index in [0,2,3]:
+		if Rect2(DETAIL_SORT_X[index]*8,list_top()-24,DETAIL_SORT_WIDTH[index]*8,12).has_point(point):
+			return {"widget":["name","","profession","skills"][index]}
 	for index in page_rows:
 		var row: Dictionary=state.row_at(state.first+index)
 		if row.is_empty():continue
@@ -163,6 +167,17 @@ func hover_target(point: Vector2) -> Dictionary:
 			if Rect2(x,y,32,36).has_point(point):return {"staff":slot.help,"row":row}
 			x+=32
 	return {}
+func update_hover() -> void:
+	if not is_instance_valid(hover_help):return
+	var target: Dictionary=hover_target(pointer_position) if pointer_known and allowed() else {}
+	if target.has("widget"):
+		if target.widget=="filter":hover_help.enter_owner_filter(get_instance_id())
+		else:hover_help.enter_work_detail_widget(get_instance_id(),target.widget)
+		return
+	# Widget overlays have independent ownership/timing; retire them before
+	# entering a main-interface instruction, without resetting its warm timer.
+	if hover_help.widget_owner==get_instance_id():hover_help.leave(get_instance_id())
+	super.update_hover()
 func _gui_input(event: InputEvent) -> void:
 	if not allowed() or state==null or not event is InputEventMouseButton or not event.pressed:return
 	if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:

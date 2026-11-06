@@ -83,6 +83,16 @@ func run() -> void:
 	var view:=View.new();root.add_child(view);view.state=state;view.layout(Vector2(1200,800))
 	check(view.position==Vector2(32,52) and view.size==Vector2(944,708) and view.list_top()==228 and view.page_rows==10,"Native default Work Details frame geometry")
 	check(view.member_rect(0)==Rect2(800,228,32,36) and view.mode_rect(1)==Rect2(584,156,184,36),"Native membership and mode geometry")
+	state.phase=State.Phase.Ready
+	for entry in [[0,"name"],[2,"profession"],[3,"skills"]]:
+		check(view.hover_target(Vector2(View.DETAIL_SORT_X[entry[0]]*8+4,view.list_top()-18)).get("widget")==entry[1],"Captured sort header has its native widget help")
+	var help:=preload("res://scripts/native_hover_view.gd").new()
+	help.enter_work_detail_widget(10,"name");check(help.displayed=="detail_widget_name","Widget help activates independently of main hover delay")
+	help.enter_work_detail_widget(11,"skills");help.leave(10)
+	check(help.displayed=="detail_widget_skills","Late departure cannot retire another widget owner")
+	help.enter_owner_filter(11);check(help.displayed=="owner_filter","Filter replaces sort help for the same owner")
+	help.leave(11);check(help.displayed.is_empty(),"Owner departure retires widget overlay")
+	help.free()
 	state.phase=State.Phase.Ready;state.editing_settings=true;state.settings=settings_page().work_detail_settings
 	state.details=[{"icon":0,"labors":PackedInt32Array([1])},{"icon":1,"labors":PackedInt32Array([1])}]
 	# Synthetic catalog has12 categories followed by labor1; both badges are

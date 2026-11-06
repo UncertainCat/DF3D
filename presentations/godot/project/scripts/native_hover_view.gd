@@ -9,6 +9,11 @@ const ACCESS_HELP = [
 	["This option indicates","that the location is","only open to members."]]
 const OWNER_RECENTER_HELP = ["Leave this menu and","recenter on this","creature."]
 const OWNER_FILTER_HELP = ["Filter the unit list by","name or job."]
+# Protected Work Details133852/134711 widget overlays (separate from main help).
+const WORK_DETAIL_WIDGET_HELP={
+	"name":{"lines":["Sort units by name."],"key":"Ctrl+n"},
+	"profession":{"lines":["Sort units by profession","name."],"key":"?"},
+	"skills":{"lines":["Sort units by skills."],"key":"Ctrl+i"}}
 # Residents native052559: main-interface instructions234/235/252..257/260.
 # Header/filter widget tooltips need capture. Tier6: native052947.
 const RESIDENTS_HELP={
@@ -180,6 +185,7 @@ var art=preload("res://scripts/original_ui.gd").new()
 var displayed := ""
 var palette: Array[Color] = []
 var widget_owner := 0
+var widget_kind := "owner_filter"
 var widget_frame: Texture2D
 
 func configure(source) -> void:
@@ -239,7 +245,11 @@ func enter_squad_use(owner: int, use: int) -> void:
 func enter_owner_filter(owner: int) -> void:
 	# Native textbox widget logic activates immediately; it does not warm the
 	# independent main-interface hover-instruction timer used by recenter.
-	widget_owner=owner;_process(0)
+	widget_owner=owner;widget_kind="owner_filter";_process(0)
+
+func enter_work_detail_widget(owner: int, kind: String) -> void:
+	if not WORK_DETAIL_WIDGET_HELP.has(kind):leave(owner);return
+	widget_owner=owner;widget_kind="detail_widget_"+kind;_process(0)
 
 func reset() -> void:
 	widget_owner=0;state.reset();_process(0)
@@ -249,22 +259,24 @@ func layout(view: Vector2) -> void:
 
 func _process(_delta: float) -> void:
 	var next: String=state.advance(Time.get_ticks_msec())
-	if widget_owner!=0: next="owner_filter"
+	if widget_owner!=0: next=widget_kind
 	if next==displayed: return
 	displayed=next;visible=not displayed.is_empty();queue_redraw();showing_changed.emit(visible)
 
 func _draw() -> void:
 	if displayed.is_empty(): return
-	var frame: Texture2D=widget_frame if displayed=="owner_filter" else art.texture("HOVER_RECTANGLE")
+	var is_widget: bool=displayed=="owner_filter" or displayed.begins_with("detail_widget_")
+	var frame: Texture2D=widget_frame if is_widget else art.texture("HOVER_RECTANGLE")
 	if frame==null or theme.default_font==null: return
 	# Native minimap frame clips its top and right borders at the screen edge.
 	# Left/middle cells repeat for17 rows; row17 is the existing bottom border.
 	for y in 18:
 		for x in 25:
-			var frame_y := 0 if displayed=="owner_filter" and y==0 else (24 if y==17 else 12)
+			var frame_y := 0 if is_widget and y==0 else (24 if y==17 else 12)
 			draw_texture_rect_region(frame,Rect2(x*8,y*12,8,12),Rect2(0 if x==0 else 8,frame_y,8,12))
 	var lines: Array
-	if displayed.begins_with("residents_specialization_"):lines=SPECIALIZATION_HELP[int(displayed.trim_prefix("residents_specialization_"))]
+	if displayed.begins_with("detail_widget_"):lines=WORK_DETAIL_WIDGET_HELP[displayed.trim_prefix("detail_widget_")].lines
+	elif displayed.begins_with("residents_specialization_"):lines=SPECIALIZATION_HELP[int(displayed.trim_prefix("residents_specialization_"))]
 	elif displayed.begins_with("residents_"):lines=RESIDENTS_HELP[displayed.trim_prefix("residents_")]
 	elif displayed.begins_with("item_"): lines=ITEM_HELP[displayed.trim_prefix("item_")]
 	elif displayed.begins_with("work_order_"): lines=WORK_ORDER_HELP[displayed.trim_prefix("work_order_")]
@@ -276,7 +288,7 @@ func _draw() -> void:
 	elif displayed.begins_with("squad_"): lines=SQUAD_HELP[int(displayed.trim_prefix("squad_"))]
 	elif displayed.begins_with("containment_"): lines=CONTAINMENT_HELP[int(displayed.trim_prefix("containment_"))-1]
 	else: lines=OWNER_RECENTER_HELP if displayed=="owner_recenter" else (OWNER_FILTER_HELP if displayed=="owner_filter" else ACCESS_HELP[int(displayed)])
-	var offset := 1 if displayed=="owner_filter" else 0
+	var offset := 1 if is_widget else 0
 	for row in lines.size():
 		theme.default_font.draw_string(get_canvas_item(),Vector2(8,(row+1+offset)*12),lines[row],HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.WHITE)
 	if displayed in ["residents_recenter","residents_details","residents_specialization_0","residents_specialization_1"] and palette.size()==16:
@@ -284,7 +296,9 @@ func _draw() -> void:
 		var baseline: int=(lines.size()+2)*12
 		theme.default_font.draw_string(get_canvas_item(),Vector2(8,baseline),"Hotkey: ",HORIZONTAL_ALIGNMENT_LEFT,-1,12,palette[7])
 		theme.default_font.draw_string(get_canvas_item(),Vector2(72,baseline),shortcut,HORIZONTAL_ALIGNMENT_LEFT,-1,12,palette[10])
-	if displayed in ["owner_recenter","owner_filter"] and palette.size()==16:
-		var baseline := 204 if displayed=="owner_filter" else 60
-		theme.default_font.draw_string(get_canvas_item(),Vector2(8,baseline),"Hotkey: ",HORIZONTAL_ALIGNMENT_LEFT,-1,12,palette[15 if displayed=="owner_filter" else 7])
-		theme.default_font.draw_string(get_canvas_item(),Vector2(72,baseline),"Ctrl+f" if displayed=="owner_filter" else "Ctrl+c",HORIZONTAL_ALIGNMENT_LEFT,-1,12,palette[10])
+	if (displayed=="owner_recenter" or is_widget) and palette.size()==16:
+		var baseline := 204 if is_widget else 60
+		var shortcut: String="Ctrl+f" if displayed=="owner_filter" else "Ctrl+c"
+		if displayed.begins_with("detail_widget_"):shortcut=WORK_DETAIL_WIDGET_HELP[displayed.trim_prefix("detail_widget_")].key
+		theme.default_font.draw_string(get_canvas_item(),Vector2(8,baseline),"Hotkey: ",HORIZONTAL_ALIGNMENT_LEFT,-1,12,palette[15 if is_widget else 7])
+		theme.default_font.draw_string(get_canvas_item(),Vector2(72,baseline),shortcut,HORIZONTAL_ALIGNMENT_LEFT,-1,12,palette[10])

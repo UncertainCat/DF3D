@@ -253,7 +253,7 @@ if os.getenv('DF3D_WORK_DETAILS_HOVER')=='1' then
   result.hover.probes[#result.hover.probes+1]={name=name,point={x,y},instruction=main.current_hover,displayed=main.last_displayed_hover_inst,lines=lines,text_cells=cells}
   shot('work-details-hover-'..name)
  end
- for _,target in ipairs{{'add',176,166},{'name',500,166},{'gear',688,166},{'everybody',532,226},{'selected',708,226},{'nobody',868,226},{'skills',600,262},{'specialization',768,298},{'membership',848,298},{'filter',608,718}}do probe(table.unpack(target))end
+ for _,target in ipairs{{'add',176,166},{'name',500,166},{'gear',688,166},{'everybody',532,226},{'selected',708,226},{'nobody',868,226},{'sort-name',348,262},{'sort-category',428,262},{'sort-profession',500,262},{'skills',600,262},{'specialization',768,298},{'membership',848,298},{'filter',608,718}}do probe(table.unpack(target))end
  click_handler(0x468880)
  for _,target in ipairs{{'done',320,166},{'delete',904,166},{'group',500,202},{'labor',500,238},{'checkbox',920,238},{'detail-icon',888,418}}do probe(table.unpack(target))end
  records[#records+1]={name='work-details-hover',probes=#result.hover.probes};return

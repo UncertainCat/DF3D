@@ -33,6 +33,27 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Work Details native discovery
 
+Work Details roster Name, Profession, Skills and filter help use the separate
+native widget frame, immediate ownership and bottom hotkey line. They do not
+warm the main-interface instruction timer. Departing a widget retires its
+overlay before settings/worker instructions resume; a late departure from a
+previous owner cannot clear the current owner. Category help and keyboard
+activation remain incomplete; native Profession displays `?`, which is retained
+as observed rather than inventing a binding.
+
+Native133852/134711 and rendered135356 on2026-11-06 establish all four tooltip
+crops at1200x800: each200x216 crop has zero differing RGB pixels. Actual pointer
+movement, departure and subsequent settings-badge help pass in both ordinary
+and external-controller phases. Initial135253 sampled injected events too early;
+135356 explicitly flushes the input queue and allows150ms before observation.
+The owned DF2844 exits unsaved with source preservation and no remaining owned
+DF/Godot processes. Both graphical clients are capped30FPS; GPU59C sampled.
+Final joined logs contain only documented separate-renderer/device-finalize/
+paired shutdown diagnostics. Headless work-details-widget-help-20261106 passes
+core19, extension, Work Details and shared hover-state checks. Evidence and
+remaining gaps are in `native_work_details.json.roster_widget_hover_reference`.
+
+
 `DF3D_WORK_DETAILS_NATIVE=1` with the protected Residents reference launcher
 opens native Labor through D_LABOR. Capture102804 on2026-11-06 records the root,
 active widget callbacks and an actual Add new work detail click. The list has11

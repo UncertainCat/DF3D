@@ -3845,5 +3845,58 @@
     "source_preserved": true,
     "owned_df_closed": true,
     "diagnostics": "Final joined logs contain only known separate-renderer, device-finalize and paired shutdown-object signatures."
+  },
+  "roster_widget_hover_reference": {
+    "native_captures": [
+      "build/stockpile-storage-native-input-20261106-133852",
+      "build/stockpile-storage-native-input-20261106-134711"
+    ],
+    "rendered_capture": "build/stockpile-storage-native-input-20261106-135356",
+    "tooltips": {
+      "name": {
+        "lines": [
+          "Sort units by name."
+        ],
+        "hotkey": "Ctrl+n"
+      },
+      "profession": {
+        "lines": [
+          "Sort units by profession",
+          "name."
+        ],
+        "hotkey": "?"
+      },
+      "skills": {
+        "lines": [
+          "Sort units by skills."
+        ],
+        "hotkey": "Ctrl+i"
+      },
+      "filter": {
+        "lines": [
+          "Filter the unit list by",
+          "name or job."
+        ],
+        "hotkey": "Ctrl+f"
+      }
+    },
+    "crop": [
+      1000,
+      4,
+      1200,
+      220
+    ],
+    "different_rgb_pixels": {
+      "name": 0,
+      "profession": 0,
+      "skills": 0,
+      "filter": 0
+    },
+    "actual_pointer_normal_and_locked": true,
+    "pointer_departure_clears": true,
+    "source_preserved": true,
+    "owned_df_closed": true,
+    "limits": "Category screenshot134711 is incomplete, so its help remains unimplemented. Keyboard activation is not established by displaying the native hotkey. Public screen remains staged. Initial135253 sampled injected mouse input before delivery;135356 explicitly flushes buffered input and waits150ms.",
+    "diagnostics": "Only known separate-renderer, device-finalize and paired shutdown-object signatures in joined final client logs."
   }
 }

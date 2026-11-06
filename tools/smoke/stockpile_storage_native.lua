@@ -12,7 +12,14 @@ require('gui.script').start(function()
   if os.getenv('DF3D_RESIDENTS_REFERENCE')=='1' then
    local source=debug.getinfo(1,'S').source:sub(2):gsub('stockpile_storage_native.lua$','residents-native.lua')
    assert(loadfile(source))(out,view,records)
-   assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')
+   if os.getenv('DF3D_WORK_DETAILS_NATIVE')=='1' and os.getenv('DF3D_WORK_DETAILS_SETTINGS')=='1' and os.getenv('DF3D_WORK_DETAILS_SETTINGS_EFFECTS')=='1' and os.getenv('DF3D_WORK_DETAILS_SETTINGS_SIMULATION')=='1' then
+    local evidence
+    for _,record in ipairs(records)do if record.name=='work-details-simulation' then assert(not evidence);evidence=record end end
+    assert(evidence and evidence.start_tick==frame and evidence.end_tick==df.global.world.frame_counter,'Missing bounded settings simulation evidence')
+    assert(df.global.pause_state and evidence.end_tick-frame>=10 and evidence.end_tick-frame<=60,'Settings simulation outside its bounded interval')
+   else
+    assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')
+   end
    return
   end
   if os.getenv('DF3D_WORK_ORDER_ARTWORK_REFERENCE')=='1' then

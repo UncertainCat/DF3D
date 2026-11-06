@@ -359,6 +359,24 @@ if os.getenv('DF3D_WORK_DETAILS_SETTINGS')=='1' then
   gui.simulateInput(view,'LEAVESCREEN')
   for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
   result.settings_effects.after_leave=snapshot()
+  if os.getenv('DF3D_WORK_DETAILS_SETTINGS_SIMULATION')=='1' then
+   assert(df.global.pause_state,'Settings simulation reference must start paused')
+   local start=df.global.world.frame_counter
+   result.settings_effects.simulation={start_tick=start,samples={}}
+   df.global.pause_state=false
+   for frame=1,60 do
+    script.sleep(1,'frames')
+    local elapsed=df.global.world.frame_counter-start
+    if elapsed>0 and (#result.settings_effects.simulation.samples==0 or elapsed>=10)then
+     result.settings_effects.simulation.samples[#result.settings_effects.simulation.samples+1]={elapsed_ticks=elapsed,snapshot=snapshot()}
+    end
+    if elapsed>=10 then break end
+   end
+   df.global.pause_state=true
+   assert(df.global.world.frame_counter-start>=10,'Normal simulation did not advance ten ticks')
+   result.settings_effects.simulation.end_tick=df.global.world.frame_counter
+   records[#records+1]={name='work-details-simulation',start_tick=start,end_tick=df.global.world.frame_counter}
+  end
   for _,unit in ipairs(df.global.world.units.active)do dfhack.units.setAutomaticProfessions(unit)end
   result.settings_effects.after_explicit_recalculation=snapshot()
   shot('work-details-settings-effects')

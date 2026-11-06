@@ -139,6 +139,21 @@ DF15828 closes unsaved with source preservation; no Godot ran, native30FPS,
 GPU45–46C sampled. Owned native toggles, settings transport/UI and normal
 simulation timing remain pending.
 
+Protected123642 on2026-11-06 advances the owned clone through ten normal
+simulation ticks after the same settings edits, Done and leaving Labor. At ticks1
+and10, all339 active workers still match their paused labor/profession state;
+explicit recalculation then changes148 workers. This establishes that adding a
+forced recalculation to settings clicks would differ from the observed native
+workflow; the owned definition-only toggle remains the appropriate operation.
+It does not establish every later recalculation trigger, and no native bug or
+exception is claimed. Broader cache scheduling is not a prerequisite for using
+these exact native leaves. `settings_simulation_reference` retains the evidence.
+The opt-in simulation oracle requires all settings flags, records matching start/
+end ticks, restores pause and bounds advancement to10–60 ticks. Ordinary reference
+runs retain their unchanged-tick guard. Initial123506 hit that original guard;
+its source was preserved, but only123642 is accepted for the new bounded lane.
+DF2640 closes unsaved, no Godot or owned processes remain, native30FPS, GPU45C.
+
 `work_detail_settings_native.h` now exposes the ordered91-row catalog (12
 categories/79 labors) through pinned immutable native constants and native
 acb830 captions written into owned strings. It pins the complete catalog setup
@@ -156,8 +171,8 @@ MSVC and core19 pass; installed Management142 bridge hash
 A32E34ADB31E966FB0C89E86EAF4E2EFA14073BA1C38D5E69E7111024281D446 matches the build.
 DF37176 closes unsaved with source preservation; native runs30FPS, no Godot,
 GPU45C sampled after closure. Typed settings transport, actual editor integration,
-normal simulation recalculation timing and complete lifecycle acceptance remain
-pending; this diagnostic provider does not expose the screen.
+complete lifecycle acceptance remain pending; the definition-only timing is
+verified above. This diagnostic provider does not expose the screen.
 
 Worker setup42d8a0..42de34 supplies65 labor-to-skill branches: enabled labors set
 each associated skill weight to1, taking a union rather than accumulating shared

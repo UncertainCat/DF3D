@@ -3114,5 +3114,27 @@
       "normal simulation recalculation timing",
       "rendered settings workflow and lifecycle acceptance"
     ]
+  },
+  "settings_simulation_reference": {
+    "capture": "build/stockpile-storage-native-input-20261106-123642",
+    "scope": "Ten normal simulation ticks after actual native settings edits, Done and leaving Labor in an unsaved owned clone. Does not establish every later recalculation trigger.",
+    "start_tick": 0,
+    "end_tick": 10,
+    "samples": [
+      {
+        "elapsed_ticks": 1,
+        "worker_state_unchanged_from_paused": true
+      },
+      {
+        "elapsed_ticks": 10,
+        "worker_state_unchanged_from_paused": true
+      }
+    ],
+    "active_workers": 339,
+    "explicit_recalculation_changes": 148,
+    "paused_at_end": true,
+    "source_preserved": true,
+    "owned_df_closed": true,
+    "implementation_consequence": "Use native definition-only toggle behavior; do not add forced worker recalculation to settings edits."
   }
 }

@@ -1834,7 +1834,7 @@ enum WorkDetailWorkerSort : uint8 { Category, Name, Profession, Skills }
 enum StandingOrdersOutcome : uint8 { None, Applied, Rejected, Stale, Unknown }
 // Category0 is Workshops. Other Standing orders workflows are not yet exposed.
 table StandingOrdersRequest { category:uint8; setting_id:int32 = -1; expected_value:int8 = -1; value:int8 = -1; }
-table StandingOrderSetting { id:int32 = -1; value:uint8; available:bool; }
+table StandingOrderSetting { id:int32 = -1; value:uint8; visible:bool; editable:bool; }
 table StandingOrdersState { category:uint8; outcome:StandingOrdersOutcome; settings:[StandingOrderSetting] (required); }
 
 table WorkDetailSettingsRequest { detail_index:int32 = -1; expected_revision:uint64; setting_id:int32 = -1; }
@@ -2169,7 +2169,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 145;
+  schema_version:uint32 = 146;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2230,7 +2230,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 145;
+  schema_version:uint32 = 146;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

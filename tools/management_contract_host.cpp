@@ -855,12 +855,16 @@ int main(int argc,char** argv) {
       bool standingUnknown=false;
       if(request && (request->action()==m::ManagementAction::StandingOrdersRead || request->action()==m::ManagementAction::StandingOrdersSet)) {
         const auto* q=request->standing_orders();const bool set=request->action()==m::ManagementAction::StandingOrdersSet;
-        require(q && q->category()==0,"standing orders category");
-        standingUnknown=set && q->setting_id()==0;
+        require(q && q->category()<=2,"standing orders category");
+        standingUnknown=set && q->category()==0 && q->setting_id()==0;
         if(set)require(q->setting_id()==(standingUnknown?0:1) && q->expected_value()==(standingUnknown?2:0) && q->value()==(standingUnknown?0:1),"standing orders expected value and target");
         std::vector<flatbuffers::Offset<m::StandingOrderSetting>> rows;
-        if(!standingUnknown)for(int id=0;id<11;++id)rows.push_back(m::CreateStandingOrderSetting(b,id,id==0?2:(id==1 && set?1:0),id<8));
-        standing=m::CreateStandingOrdersState(b,0,standingUnknown?m::StandingOrdersOutcome::Unknown:set?m::StandingOrdersOutcome::Applied:m::StandingOrdersOutcome::None,b.CreateVector(rows));
+        if(!standingUnknown)for(int id=0;id<(q->category()==0?11:q->category()==1?6:10);++id) {
+          const bool visible=q->category()!=0 || id<8;
+          const bool editable=visible && !(q->category()==2 && id==2 && !set);
+          rows.push_back(m::CreateStandingOrderSetting(b,id,id==0?(q->category()==0?2:1):(id==1 && set?1:0),visible,editable));
+        }
+        standing=m::CreateStandingOrdersState(b,q->category(),standingUnknown?m::StandingOrdersOutcome::Unknown:set?m::StandingOrdersOutcome::Applied:m::StandingOrdersOutcome::None,b.CreateVector(rows));
       }
       m::ManagementStateBuilder state(b);state.add_work_detail_settings(settings);state.add_standing_orders(standing);state.add_residents(workers);state.add_agreement(agreements);state.add_report(reports);state.add_production(production);state.add_construction(construction);state.add_citizen(citizens);state.add_work_order(work);state.add_schema_version(m::kManagementVersion);
       state.add_revision(revision);state.add_world_epoch(epoch);state.add_client_id(request?request->client_id():0);
@@ -900,7 +904,7 @@ int main(int argc,char** argv) {
         A::AreaCreate,A::AreaUpdate,A::AreaUpdate,
         A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaCreate,A::AreaInspect,
         A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,
-        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::PrepareAlertDismissal,A::DismissAlert,A::ProductionInspect,A::ProductionInspect,A::ProductionInspect,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::WorkDetailWorkersQuery,A::WorkDetailSettingsRead,A::WorkDetailSettingsToggle,A::StandingOrdersRead,A::StandingOrdersSet,A::StandingOrdersSet};
+        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::PrepareAlertDismissal,A::DismissAlert,A::ProductionInspect,A::ProductionInspect,A::ProductionInspect,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::WorkDetailWorkersQuery,A::WorkDetailSettingsRead,A::WorkDetailSettingsToggle,A::StandingOrdersRead,A::StandingOrdersSet,A::StandingOrdersSet,A::StandingOrdersRead,A::StandingOrdersSet,A::StandingOrdersRead,A::StandingOrdersSet};
     publish(1,nullptr);signal("ready");size_t received=0;
     const auto stop=std::chrono::steady_clock::now()+std::chrono::seconds(30);
     std::vector<uint8_t> bytes(m::kManagementCommandCapacity);

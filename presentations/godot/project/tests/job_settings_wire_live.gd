@@ -966,7 +966,7 @@ func standing_orders_wire() -> void:
 	if not check(catalog.get("status")==C.ManagementStatus.Ok,"Standing orders session initialization failed"):quit(1);return
 	var reply: Dictionary=await request("standing_orders",{"action":C.ManagementAction.StandingOrdersRead,"category":0})
 	if not check(reply.get("standing_orders",{}).get("settings",[]).size()==11,"Standing orders snapshot missing"):quit(1);return
-	for row: Dictionary in reply.standing_orders.settings:check(row.available==(int(row.id)<8),"Standing orders availability differs")
+	for row: Dictionary in reply.standing_orders.settings:check(row.visible==(int(row.id)<8) and row.editable==row.visible,"Standing orders availability differs")
 	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/standing-orders-native.json"))
 	var count:=0
 	for step: Dictionary in reference.wire_steps:

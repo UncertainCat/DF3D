@@ -22,14 +22,15 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
-Management145 adds StandingOrdersRead/Set and typed setting snapshots/outcomes.
-Category0 is Workshops; later Standing orders workflows remain unimplemented.
-Read intents cannot contain write values. Edits carry setting ID, expected value
-and desired value. Confirmed snapshots contain all eleven ordered settings;
-Rejected/Stale/Unknown results contain no settings. Unknown writes map to the
-shared service's `outcome="unknown"` and must not replay. Rebuild both peers:
-`Local\df3d_management_v145` isolates Management144. Native request handling
-for the new actions is a separate change; this migration tests codecs and peers.
+Management146 adds Hauling(category1) and Refuse(category2) Standing orders
+contracts and replaces `available` with independent `visible`/`editable` fields.
+Workshops(category0) retains eleven settings; Hauling has six and Refuse ten.
+Reads reject write fields; edits carry bounded ID, expected value and desired
+value. Hidden controls cannot be editable. Rejected/Stale/Unknown replies have
+no settings, and unknown mutations must not replay. Rebuild both peers:
+`Local\df3d_management_v146` isolates Management145. Native category dispatch
+is a subsequent change; the migrated bridge explicitly rejects categories1/2
+until connected to the verified adapter. Existing Workshops remains supported.
 
 Management144 adds `CitizenState.outcome_unknown`. It is valid only for a rejected
 citizen mutation with no returned rows, selected targets, page cursor or list

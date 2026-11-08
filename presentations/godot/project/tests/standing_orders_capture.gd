@@ -8,7 +8,7 @@ func run() -> void:
 	if not world.load_assets(OS.get_environment("DF3D_DF_PATH")):quit(1);return
 	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/production/native_standing_orders.json"))
 	var state=preload("res://scripts/standing_orders_state.gd").new();state.phase=state.Phase.Ready
-	for id in 11:state.settings.append({"id":id,"value":int(reference.workshop_cycles[id].initial) if id<8 else 0,"available":id<8})
+	for id in 11:state.settings.append({"id":id,"value":int(reference.workshop_cycles[id].initial) if id<8 else 0,"visible":id<8,"editable":id<8})
 	var view=preload("res://scripts/standing_orders_view.gd").new();root.add_child(view)
 	view.configure_standing_orders(world,state);view.layout(Vector2(1200,800))
 	await process_frame;await process_frame;await RenderingServer.frame_post_draw

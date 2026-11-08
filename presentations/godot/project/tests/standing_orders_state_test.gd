@@ -8,7 +8,7 @@ func check(ok: bool,message: String) -> void:
 	if not ok:failures+=1;push_error(message)
 func snapshot(outcome: int=C.StandingOrdersOutcome.None) -> Dictionary:
 	var rows: Array=[]
-	for id in 11:rows.append({"id":id,"value":2 if id==0 else 0,"available":id<8})
+	for id in 11:rows.append({"id":id,"value":2 if id==0 else 0,"visible":id<8,"editable":id<8})
 	return {"standing_orders":{"category":0,"outcome":outcome,"settings":rows}}
 func _initialize() -> void:call_deferred("run")
 func run() -> void:

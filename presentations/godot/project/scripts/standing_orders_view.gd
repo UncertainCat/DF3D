@@ -22,7 +22,7 @@ func visible_ids() -> Array[int]:
 	var ids: Array[int]=[]
 	if state!=null:
 		for row: Dictionary in state.settings:
-			if row.available and int(row.id)<CAPTIONS.size():ids.append(int(row.id))
+			if row.visible and int(row.id)<CAPTIONS.size():ids.append(int(row.id))
 	return ids
 func setting_rect(index: int) -> Rect2:return Rect2(16,list_top()+index*36,400,36)
 func allowed() -> bool:return is_visible_in_tree() and (not input_allowed.is_valid() or input_allowed.call())

@@ -33,6 +33,25 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Standing orders native discovery
 
+Management146 replaces StandingOrderSetting.available with separate visible and
+editable fields. Category0/1/2 contracts contain11/6/10 ordered settings for
+Workshops/Hauling/Refuse. Only Workshops weaving accepts value2; hidden controls
+cannot be editable. Read/write validation, model codecs and Godot dictionaries
+share the contract. The staged Workshops state/view now consume both fields.
+Hauling/Refuse bridge requests currently return an explicit empty rejection;
+their native adapter is verified but dispatch/view wiring remains pending.
+
+Core19, extension, state and producer-to-Godot contract checks pass in
+standing-orders-contract146-categories-20261108. Round trips cover both new
+categories, visible-disabled Refuse controls, category-specific bounds, edits
+and existing Unknown authority retirement. MSVC passes. Protected123607 on
+2026-11-08 verifies all28 existing Workshops wire steps with Management146;
+owned DF39716 closes unsaved with source preservation. Headless viewer/native
+30FPS, GPU59C sampled; joined logs contain only the known separate-renderer
+notice. Built/installed plugin SHA256 is
+`AFE46858AF29009FFF1AA7F98F35DB9B5DA0EB175D1B88A9109CDE9B87631B4D`.
+This migration does not claim live Hauling/Refuse typed edits or rendered parity.
+
 Protected121945 on2026-11-08 captures all six Hauling and ten Refuse setting
 cycles through native clicks. Each accepted click changes exactly one mapped
 scalar; all settings are restored, owned DF38600 closes unsaved and the source

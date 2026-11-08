@@ -469,6 +469,7 @@ struct WorkDetailSettingsResult {
 };
 std::optional<WorkDetailSettingsResult> workDetailSettings;
 struct StandingOrdersResult {
+  uint8_t category=0;
   m::StandingOrdersOutcome outcome=m::StandingOrdersOutcome::Rejected;
   std::optional<df3d_standing::WorkshopSettings> settings;
 };
@@ -1111,8 +1112,8 @@ void publish() {
   if(standingOrders) {
     std::vector<flatbuffers::Offset<m::StandingOrderSetting>> rows;
     if(standingOrders->settings)for(const auto& row:*standingOrders->settings)
-      rows.push_back(m::CreateStandingOrderSetting(b,row.id,row.value,row.available));
-    standingOrdersResult=m::CreateStandingOrdersState(b,0,standingOrders->outcome,b.CreateVector(rows));
+      rows.push_back(m::CreateStandingOrderSetting(b,row.id,row.value,row.available,row.available));
+    standingOrdersResult=m::CreateStandingOrdersState(b,standingOrders->category,standingOrders->outcome,b.CreateVector(rows));
   }
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
@@ -4087,6 +4088,8 @@ void run(color_ostream& out) {
   if(r->action()==m::ManagementAction::StandingOrdersRead || r->action()==m::ManagementAction::StandingOrdersSet) {
     message.clear();status=m::ManagementStatus::Rejected;standingOrders.emplace();
     const auto& query=*r->standing_orders();
+    standingOrders->category=query.category();
+    if(query.category()!=0){publish();return;}
     const bool set=r->action()==m::ManagementAction::StandingOrdersSet;
     try {
       auto snapshot=df3d_standing::workshopSettings();

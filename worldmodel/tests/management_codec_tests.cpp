@@ -4764,7 +4764,7 @@ TEST_CASE("Standing orders requests preserve expected values and reject invalid 
   for(bool set:{false,true})for(int fault=0;fault<5;++fault){
     wm::ManagementRequest request;request.action=set?wm::ManagementAction::StandingOrdersSet:wm::ManagementAction::StandingOrdersRead;
     if(set)request.standingOrders={0,1,0,1};
-    if(fault==1)request.standingOrders.category=1;
+    if(fault==1)request.standingOrders.category=3;
     if(fault==2)request.standingOrders.settingId=11;
     if(fault==3)request.standingOrders.expectedValue=2;
     if(fault==4)request.standingOrders.value=2;
@@ -4777,9 +4777,9 @@ TEST_CASE("Standing orders requests preserve expected values and reject invalid 
 TEST_CASE("Standing orders replies retire authority on uncertain writes") {
   for(bool unknown:{false,true})for(int fault=0;fault<5;++fault){
     flatbuffers::FlatBufferBuilder b;std::vector<flatbuffers::Offset<wire::StandingOrderSetting>> rows;
-    if(!unknown || fault==1)for(int id=0;id<(fault==2?10:11);++id)rows.push_back(wire::CreateStandingOrderSetting(b,id,fault==3?3:0,id<8));
+    if(!unknown || fault==1)for(int id=0;id<(fault==2?10:11);++id)rows.push_back(wire::CreateStandingOrderSetting(b,id,fault==3?3:0,id<8,id<8));
     auto outcome=unknown?wire::StandingOrdersOutcome::Unknown:wire::StandingOrdersOutcome::Applied;
-    const auto standing=wire::CreateStandingOrdersState(b,fault==4?1:0,outcome,b.CreateVector(rows));
+    const auto standing=wire::CreateStandingOrdersState(b,fault==4?3:0,outcome,b.CreateVector(rows));
     wire::ManagementStateBuilder state(b);state.add_revision(2);state.add_standing_orders(standing);
     state.add_action(unknown && (fault==2 || fault==3)?wire::ManagementAction::StandingOrdersRead:wire::ManagementAction::StandingOrdersSet);
     state.add_status(unknown?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);

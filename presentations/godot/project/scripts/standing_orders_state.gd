@@ -29,7 +29,7 @@ func open() -> void:
 func set_value(id: int,value: int) -> void:
 	if phase!=Phase.Ready or id<0 or id>=settings.size():return
 	var row: Dictionary=settings[id]
-	if not row.available or value<0 or value>(2 if id==0 else 1) or value==int(row.value):return
+	if not row.editable or value<0 or value>(2 if id==0 else 1) or value==int(row.value):return
 	phase=Phase.Applying
 	_submit({"action":C.ManagementAction.StandingOrdersSet,"category":0,"setting_id":id,"expected_value":int(row.value),"value":value})
 func _reject(result: Dictionary) -> void:
@@ -50,7 +50,7 @@ func _submit(intent: Dictionary) -> void:
 		if rows.size()!=11:_reject(result);return
 		for id in rows.size():
 			var row: Dictionary=rows[id]
-			if row.get("id",-1)!=id or typeof(row.get("value"))!=TYPE_INT or row.value<0 or row.value>(2 if id==0 else 1) or typeof(row.get("available"))!=TYPE_BOOL or (id<6 and not row.available):
+			if row.get("id",-1)!=id or typeof(row.get("value"))!=TYPE_INT or row.value<0 or row.value>(2 if id==0 else 1) or typeof(row.get("visible"))!=TYPE_BOOL or typeof(row.get("editable"))!=TYPE_BOOL or row.visible!=row.editable or (id<6 and not row.visible):
 				_reject(result);return
 		settings=rows.duplicate(true);last_result={};phase=Phase.Ready;changed.emit())
 	if ticket==0:settings=[];phase=Phase.Unavailable

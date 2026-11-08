@@ -414,7 +414,7 @@ struct ProductionState {
   std::string detail;
 };
 struct StandingOrdersRequest { uint8_t category=0; int32_t settingId=-1; int8_t expectedValue=-1,value=-1; };
-struct StandingOrderSetting { int32_t id=-1; uint8_t value=0; bool available=false; };
+struct StandingOrderSetting { int32_t id=-1; uint8_t value=0; bool visible=false; bool editable=false; };
 struct StandingOrdersState { uint8_t category=0; StandingOrdersOutcome outcome=StandingOrdersOutcome::None; std::vector<StandingOrderSetting> settings; };
 struct WorkDetailSettingsRequest { int32_t detailIndex=-1; uint64_t expectedRevision=0; int32_t settingId=-1; };
 struct WorkDetailSetting { int32_t id=-1; std::string caption; };

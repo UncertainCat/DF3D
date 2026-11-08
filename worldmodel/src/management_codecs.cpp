@@ -49,7 +49,7 @@ ManagementState decodeState(const m::ManagementState* s) {
   if(const auto* r=s->standing_orders()) {
     next.standingOrders.emplace();auto& out=*next.standingOrders;
     out.category=r->category();out.outcome=StandingOrdersOutcome(r->outcome());
-    for(const auto* row:*r->settings())out.settings.push_back({row->id(),row->value(),row->available()});
+    for(const auto* row:*r->settings())out.settings.push_back({row->id(),row->value(),row->visible(),row->editable()});
   }
   if(const auto* r=s->work_detail_settings()) {
     next.workDetailSettings.emplace();auto& out=*next.workDetailSettings;

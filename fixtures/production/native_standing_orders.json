@@ -879,5 +879,23 @@
     "table_rva": "434558",
     "table_length": "40",
     "table_fnv64": "3084a3ff50f8edc1"
+  },
+  "category_contract_reference": {
+    "version": 146,
+    "categories": {
+      "0": 11,
+      "1": 6,
+      "2": 10
+    },
+    "fields": [
+      "id",
+      "value",
+      "visible",
+      "editable"
+    ],
+    "qa": "build/qa/standing-orders-contract146-categories-20261108",
+    "workshop_compatibility_capture": "build/stockpile-storage-native-input-20261108-123607",
+    "workshop_steps": 28,
+    "scope": "New category round trips verified with contract producer; live category dispatch remains rejected pending wiring."
   }
 }

@@ -104,8 +104,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 145;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v145";
+inline constexpr uint32_t kManagementVersion = 146;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v146";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -555,11 +555,11 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
   } else if(r.residents_specialization())return "unexpected residents specialization request";
   if(r.action()==ManagementAction::StandingOrdersRead || r.action()==ManagementAction::StandingOrdersSet) {
     const auto* q=r.standing_orders();
-    if(!q || q->category()!=0)return "invalid standing orders category";
+    if(!q || q->category()>2)return "invalid standing orders category";
     if(r.action()==ManagementAction::StandingOrdersRead) {
       if(q->setting_id()!=-1 || q->expected_value()!=-1 || q->value()!=-1)return "unexpected standing orders write";
-    } else if(q->setting_id()<0 || q->setting_id()>10 || q->expected_value()<0 || q->value()<0 ||
-              q->expected_value()>(q->setting_id()==0?2:1) || q->value()>(q->setting_id()==0?2:1))return "invalid standing orders edit";
+    } else if(q->setting_id()<0 || q->setting_id()>=(q->category()==0?11:q->category()==1?6:10) || q->expected_value()<0 || q->value()<0 ||
+              q->expected_value()>(q->category()==0 && q->setting_id()==0?2:1) || q->value()>(q->category()==0 && q->setting_id()==0?2:1))return "invalid standing orders edit";
   } else if(r.standing_orders())return "unexpected standing orders request";
   if(r.action()==ManagementAction::WorkDetailSettingsRead || r.action()==ManagementAction::WorkDetailSettingsToggle) {
     const auto* q=r.work_detail_settings();
@@ -1103,11 +1103,11 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   if(const auto* r=s.standing_orders()) {
     using O=StandingOrdersOutcome;
     const bool read=s.action()==ManagementAction::StandingOrdersRead,set=s.action()==ManagementAction::StandingOrdersSet;
-    if((!read && !set) || r->category()!=0 || !r->settings())return "invalid standing orders result";
+    if((!read && !set) || r->category()>2 || !r->settings())return "invalid standing orders result";
     if(s.status()==ManagementStatus::Ok) {
-      if(r->outcome()!=(read?O::None:O::Applied) || r->settings()->size()!=11)return "incomplete standing orders result";
+      if(r->outcome()!=(read?O::None:O::Applied) || r->settings()->size()!=(r->category()==0?11:r->category()==1?6:10))return "incomplete standing orders result";
       int id=0;for(const auto* row:*r->settings()) {
-        if(!row || row->id()!=id || row->value()>(id==0?2:1) || (id<6 && !row->available()))return "invalid standing order setting";
+        if(!row || row->id()!=id || row->value()>(r->category()==0 && id==0?2:1) || (row->editable() && !row->visible()) || (r->category()==0 && (row->visible()!=row->editable() || (id<6 && !row->visible()))) || (r->category()==1 && (!row->visible() || !row->editable())))return "invalid standing order setting";
         ++id;
       }
     } else if(s.status()!=ManagementStatus::Rejected || r->settings()->size()!=0 ||

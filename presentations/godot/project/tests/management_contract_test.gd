@@ -1082,13 +1082,13 @@ func test_work_detail_settings() -> void:
 
 func test_standing_orders() -> void:
 	var query: Dictionary={"action":A.StandingOrdersRead,"category":0}
-	for patch in [{"category":1},{"category":0.5},{"value":1}]:
+	for patch in [{"category":3},{"category":0.5},{"value":1}]:
 		var invalid:=query.duplicate();invalid.merge(patch,true)
 		assert(world.management_request("standing_orders",invalid)==0)
 	var sequence: int=world.management_request("standing_orders",query);assert(sequence>0)
 	var reply:=await receipt(sequence)
 	assert(reply.standing_orders.settings.size()==11 and reply.standing_orders.settings[0].value==2)
-	assert(not reply.standing_orders.settings[10].available and reply.standing_orders.outcome==Contract.StandingOrdersOutcome.None)
+	assert(not reply.standing_orders.settings[10].visible and reply.standing_orders.outcome==Contract.StandingOrdersOutcome.None)
 	var intent: Dictionary={"action":A.StandingOrdersSet,"category":0,"setting_id":1,"expected_value":0,"value":1}
 	for patch in [{"setting_id":11},{"value":2},{"expected_value":-1},{"value":1.5},{"cursor":1}]:
 		var invalid:=intent.duplicate();invalid.merge(patch,true)
@@ -1099,3 +1099,14 @@ func test_standing_orders() -> void:
 	sequence=world.management_request("standing_orders",intent);assert(sequence>0);reply=await receipt(sequence,S.Rejected)
 	assert(reply.outcome=="unknown" and reply.standing_orders.settings.is_empty())
 	assert(Contract.is_mutation(A.StandingOrdersSet) and not Contract.is_mutation(A.StandingOrdersRead))
+
+	for category in [1,2]:
+		query.category=category;sequence=world.management_request("standing_orders",query);assert(sequence>0)
+		reply=await receipt(sequence)
+		assert(reply.standing_orders.category==category and reply.standing_orders.settings.size()==(6 if category==1 else 10))
+		assert(reply.standing_orders.settings[2].visible and reply.standing_orders.settings[2].editable==(category==1))
+		intent={"action":A.StandingOrdersSet,"category":category,"setting_id":1,"expected_value":0,"value":1}
+		for patch in [{"setting_id":6 if category==1 else 10},{"setting_id":0,"value":2}]:
+			var invalid:=intent.duplicate();invalid.merge(patch,true);assert(world.management_request("standing_orders",invalid)==0)
+		sequence=world.management_request("standing_orders",intent);assert(sequence>0);reply=await receipt(sequence)
+		assert(reply.standing_orders.category==category and reply.standing_orders.settings[1].value==1 and reply.standing_orders.settings[2].editable)

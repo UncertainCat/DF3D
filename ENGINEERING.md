@@ -71,6 +71,17 @@ independent exclusion/job readback. Source preservation and unsaved owned exit
 pass; only the known separate-thread notice remains. Native filter/sort control
 gestures, navigation retention, rendered layout and public exposure remain open.
 
+The staged Kitchen view reuses installed Labor chrome, native row/icon assets,
+count captions and permission icons. `kitchen-view-base` renders at1200x800 with
+30FPS; its unselected-row crop(64,232)-(928,664) matches native171829 with zero
+differing RGB pixels. Core19 passes. The graphical check has only documented
+separate-thread/finalize/shutdown diagnostics; sampled GPU temperature was61C.
+The capture waits for rendering to settle: earlier frame-count-only captures
+omitted chrome or were blank and do not establish fidelity. This is a narrow
+initial13-row comparison, not full-screen acceptance. Selection outline,
+capability-filter buttons, filter/sort gestures, hover, responsive geometry and
+Labor ownership integration remain incomplete; the screen is not exposed.
+
 Core19, the extension build and Kitchen end-to-end fake-host checks pass in
 `kitchen-contract151-roundtrip`, including ordered filters/sorts and receipts,
 Cook success, Brew Unknown with no authority, and malformed typed requests.

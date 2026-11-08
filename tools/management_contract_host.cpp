@@ -326,6 +326,9 @@ flatbuffers::Offset<m::CitizenState> citizenFixture(flatbuffers::FlatBufferBuild
     const m::ConstructionRequest& request) {
   using A=m::ManagementAction;
   const auto action=request.action();const auto* q=request.citizen();
+  if(action==A::WorkDetailEdit && q->name() && q->name()->str()=="UnknownMarker") {
+    m::CitizenStateBuilder c(b);c.add_outcome_unknown(true);return c.Finish();
+  }
   if(action>=A::WorkDetailCreate && action<=A::CitizenWorkScope) {
     // Boundary observations are assembled from citizens.lua:55-62 (overflow), 63-75 (check_row).
     // INT64_MAX is a transport boundary, not a claim about a recorded hash.
@@ -852,7 +855,8 @@ int main(int argc,char** argv) {
       state.add_revision(revision);state.add_world_epoch(epoch);state.add_client_id(request?request->client_id():0);
       state.add_request_seq(request?request->seq():0);state.add_action(request?request->action():m::ManagementAction::Catalog);
       state.add_creature_knowledge(knowledge);
-      state.add_status((missing || knowledgeRejected)?m::ManagementStatus::Rejected:m::ManagementStatus::Ok);state.add_message(text);
+      const bool citizenUnknown=request && request->action()==m::ManagementAction::WorkDetailEdit && request->citizen()->name()->str()=="UnknownMarker";
+      state.add_status((missing || knowledgeRejected || citizenUnknown)?m::ManagementStatus::Rejected:m::ManagementStatus::Ok);state.add_message(text);
       state.add_building_id(2147483000);state.add_build_stage(-1);state.add_max_stage(-1);state.add_area(areas);
       auto finished=state.Finish();b.Finish(finished);
       const auto* value=flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer());
@@ -881,7 +885,7 @@ int main(int argc,char** argv) {
         A::AgreementList,A::AgreementList,A::AgreementList,A::AgreementList,A::AgreementList,
         A::AgreementInspect,A::AgreementInspect,A::AgreementInspect,A::AgreementList,
         A::AgreementList,A::AgreementList,A::AgreementInspect,
-        A::WorkDetailCreate,A::WorkDetailDelete,A::WorkDetailEdit,A::WorkDetailEdit,A::WorkDetailEdit,A::CitizenWorkScope,
+        A::WorkDetailCreate,A::WorkDetailDelete,A::WorkDetailEdit,A::WorkDetailEdit,A::WorkDetailEdit,A::CitizenWorkScope,A::WorkDetailEdit,
         A::AreaCreate,A::AreaUpdate,A::AreaUpdate,
         A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaCreate,A::AreaInspect,
         A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,
@@ -909,7 +913,7 @@ int main(int argc,char** argv) {
           const auto* c=r->citizen();require(c && c->expected_revision()==INT64_MAX,"work detail revision boundary");
           if(r->action()==A::WorkDetailEdit) {
             require(c->edit()>=1 && c->edit()<=3,"work detail edit selector");
-            require(c->name()->str()==(c->edit()==1?"MinersX":""),"rename payload");
+            require(c->name()->str()==(c->edit()==1?"MinersX":"") || (c->edit()==1 && c->name()->str()=="UnknownMarker"),"rename payload");
             require(c->labors()->size()==(c->edit()==2?1:0),"labor payload");
             if(c->edit()==2)require(c->labors()->Get(0)==1,"labor identity");
           }

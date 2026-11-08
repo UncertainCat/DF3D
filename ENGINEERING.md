@@ -33,6 +33,28 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Work Details native discovery
 
+Management144 adds `CitizenState.outcome_unknown`, mapped to the action service's
+existing top-level `outcome="unknown"`. Only rejected citizen mutation replies
+may set it; validation rejects uncertain reads, successful/pending outcomes,
+returned rows, selected targets, page cursors or reusable list receipts. The
+false default preserves ordinary read and confirmed/pre-write reply behavior.
+Old Management143 peers cannot attach to the new region. The separate native
+write-boundary implementation is still pending; a field alone does not classify
+post-write faults.
+
+The contract migration passes core19, world-model decoding/validation, extension,
+headless Work Details and the C++ producer-to-Godot uncertain-reply check in
+citizen-outcome-contract-fixed-20261108. Initial compilation failed only because
+the new test omitted its local namespace alias; the corrected run passes.
+MSVC builds and protected111719 on2026-11-08 matches native and typed Work Details
+creation defaults using Management144. Owned DF34156 closes unsaved with source
+preservation; native30FPS/headless client, GPU55C sampled, only the known
+separate-renderer notice in joined logs. Installed and built plugin SHA256 both
+`7F54DD505F9D6B85DD4322581CFA60F2DC3901FE38944C21833044D3E10C4741`.
+This establishes peer compatibility and an ordinary mutation, not fault-injected
+Unknown outcomes. `native_work_details.json.outcome_contract_reference` retains
+that scope.
+
 Work Details preserves explicit uncertain results as `Phase.Unknown`, distinct
 from `Rejected`. Both states retire editable receipts; neither automatically
 replays a mutation. This also applies when a service-owned rename reports an
@@ -44,11 +66,10 @@ the service; it does not fix the legacy bridge's post-write error classification
 
 The remaining bridge gap is at management.cpp's Lua SafeCall/result-contract
 failure paths and the citizen result parser. They publish `Rejected` without a
-citizen-specific outcome even when native effects may have occurred. CitizenState
-currently has no outcome field. A versioned contract must carry this distinction
-through the population codec and Godot management dictionary; Lua/native write
-boundaries must retain uncertainty through receipt construction and malformed
-results. Existing refresh-on-possible-mutation behavior is not proof of success
+citizen-specific outcome even when native effects may have occurred. Management144
+now carries `CitizenState.outcome_unknown` through the population codec and Godot
+management dictionary. Lua/native write-boundary wiring must still retain
+uncertainty through receipt construction and malformed results. Existing refresh-on-possible-mutation behavior is not proof of success
 or a substitute for that outcome.
 
 The Work Details owner now has headless lifecycle coverage for closing during

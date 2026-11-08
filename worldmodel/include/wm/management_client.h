@@ -495,6 +495,7 @@ struct WorkDetailInfo {
   std::string rowError;
 };
 struct CitizenState {
+  bool outcomeUnknown=false;
   std::vector<CitizenInfo> citizens;
   std::vector<WorkDetailInfo> details;
   uint32_t nextCursor=0;

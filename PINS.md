@@ -22,6 +22,16 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management144 adds `CitizenState.outcome_unknown`. It is valid only for a rejected
+citizen mutation with no returned rows, selected targets, page cursor or list
+receipt. Godot exposes it as the service's `outcome="unknown"`; it must not be
+replayed. Read replies and confirmed/pre-write outcomes leave the flag false.
+Rebuild both peers: `Local\df3d_management_v144` rejects Management143 peers.
+This contract migration does not itself classify native write failures; runtime
+write-boundary wiring and protected post-write fault acceptance remain pending.
+Ordinary native creation compatibility passes in protected111719; see ENGINEERING.md.
+
+
 Management143 adds revision-bound `WorkDetailSettingsRead` and
 `WorkDetailSettingsToggle` in `work_detail_settings`. Read returns the complete
 native catalog and current allowed labors; Toggle is a one-shot definition edit,

@@ -415,14 +415,20 @@ func test_work_detail_edits() -> void:
 		{"action":A.WorkDetailEdit,"detail_index":0,"edit":1,"name":"MinersX"},
 		{"action":A.WorkDetailEdit,"detail_index":0,"edit":2,"labors":[1]},
 		{"action":A.WorkDetailEdit,"detail_index":0,"edit":3},
-		{"action":A.CitizenWorkScope,"unit_id":0,"only_assigned":1}]
+		{"action":A.CitizenWorkScope,"unit_id":0,"only_assigned":1},
+		{"action":A.WorkDetailEdit,"detail_index":0,"edit":1,"name":"UnknownMarker"}]
 	for request in requests:
 		request.expected_revision = 9223372036854775807
 		var sequence: int = world.management_request("citizens", request)
 		assert(sequence > 0)
-		var state: Dictionary = await receipt(sequence)
+		var uncertain: bool=request.get("name","")=="UnknownMarker"
+		var state: Dictionary = await receipt(sequence,S.Rejected if uncertain else S.Ok)
 		assert(not state.is_empty())
 		var c: Dictionary = state.citizen
+		assert(c.outcome_unknown==uncertain)
+		if uncertain:
+			assert(state.outcome=="unknown" and c.details.is_empty() and c.citizens.is_empty() and c.detail_list_revision==0)
+			continue
 		assert(c.detail_list_revision == 9223372036854775807)
 		assert(c.recalc_done == 1 and c.recalc_total == 5000)
 		assert(c.recalc_error == ("Native recalculation failed; labors may be stale" if request.action == A.WorkDetailDelete else ""))

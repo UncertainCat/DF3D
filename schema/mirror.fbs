@@ -1952,6 +1952,8 @@ table CitizenState {
   recalc_total:uint32;
   recalc_error:string;
   detail_list_revision:uint64;
+  // Only rejected citizen mutations may carry uncertainty; no authoritative rows.
+  outcome_unknown:bool;
 }
 enum SelectionOperation : uint8 { OpenTile, Inspect, SelectAlternative, InspectItem, ViewContainer, Back }
 enum SelectionKind : uint8 { None, Unit, Item, Building, Engraving, PlannedEngraving, UnitList, ItemList, Vermin }
@@ -2161,7 +2163,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 143;
+  schema_version:uint32 = 144;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2221,7 +2223,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 143;
+  schema_version:uint32 = 144;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

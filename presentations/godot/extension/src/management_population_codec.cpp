@@ -92,6 +92,8 @@ void writeCitizen(Dictionary& result, const wm::CitizenState& s) {
   citizen["next_cursor"] = int64_t(c.nextCursor);
   citizen["external_controller"] = c.externalController;
   citizen["detail"] = String::utf8(c.detail.c_str());
+  citizen["outcome_unknown"]=c.outcomeUnknown;
+  if(c.outcomeUnknown)result["outcome"]="unknown";
   result["citizen"] = citizen;
 }
 

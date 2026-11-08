@@ -72,6 +72,7 @@ CitizenState decodeCitizen(const m::CitizenState* c) {
     return out;
   auto& n = out;
   auto str = [](const flatbuffers::String* v) { return v ? v->str() : std::string(); };
+  n.outcomeUnknown=c->outcome_unknown();
   n.nextCursor = c->next_cursor();
   n.selectedUnit = c->selected_unit();
   n.selectedDetail = c->selected_detail();

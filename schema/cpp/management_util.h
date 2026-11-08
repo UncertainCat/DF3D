@@ -104,8 +104,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 143;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v143";
+inline constexpr uint32_t kManagementVersion = 144;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v144";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -2238,6 +2238,15 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     std::set<std::string> keys;if(w->recipes())for(const auto* r:*w->recipes())if(!r || !r->key() || !r->key()->size() || !textOk(r->key(),128) || !keys.insert(r->key()->str()).second || !textOk(r->name(),512) || (r->requirements() && r->requirements()->size()) || r->availability())return "invalid manager recipe";
   }
   if(const auto* c=s.citizen()) {
+    if(c->outcome_unknown()) {
+      const auto a=s.action();
+      const bool write=a==ManagementAction::WorkDetailMembership || a==ManagementAction::WorkDetailMode ||
+          (a>=ManagementAction::WorkDetailCreate && a<=ManagementAction::CitizenWorkScope);
+      if(!write || s.status()!=ManagementStatus::Rejected ||
+         (c->citizens() && c->citizens()->size()) || (c->details() && c->details()->size()) ||
+         c->detail_list_revision() || c->next_cursor() || c->selected_unit()!=-1 || c->selected_detail()!=-1)
+        return "invalid uncertain citizen outcome";
+    }
     if((c->citizens() && c->citizens()->size()>32) || (c->details() && c->details()->size()>16) || c->selected_unit() < -1 || c->selected_detail() < -1 || c->selected_detail()>127 || (c->detail() && c->detail()->size()>2048)) return "invalid citizen state";
     if(c->recalc_done()>c->recalc_total() || c->detail_list_revision()>INT64_MAX ||
        (c->recalc_error() && c->recalc_error()->size()>256)) return "invalid citizen recalculation state";

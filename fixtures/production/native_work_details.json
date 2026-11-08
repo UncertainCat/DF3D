@@ -4148,5 +4148,17 @@
       "Owner destruction disconnects UI callbacks while the service-owned rename finishes."
     ],
     "scope": "Headless real Work Details owner/state/name-session with injected semantic replies and presentation/host stubs. Establishes ownership and callback behavior, not new native effects, rendered input, transport faults or all lifecycle cases."
+  },
+  "outcome_contract_reference": {
+    "version": 144,
+    "field": "CitizenState.outcome_unknown",
+    "offline": "build/qa/citizen-outcome-contract-fixed-20261108",
+    "live": "build/stockpile-storage-native-input-20261108-111719",
+    "installed_plugin_sha256": "7F54DD505F9D6B85DD4322581CFA60F2DC3901FE38944C21833044D3E10C4741",
+    "validation": "Uncertain outcomes are rejected mutation replies without rows, selected IDs, cursors or list receipts; fake producer transport reaches Godot as outcome=unknown.",
+    "live_scope": "Native and typed creation defaults agree with Management144 peers. No post-write fault classification is implemented or accepted by this migration.",
+    "source_preserved": true,
+    "owned_df_closed": true,
+    "diagnostics": "Known separate-renderer notice only."
   }
 }

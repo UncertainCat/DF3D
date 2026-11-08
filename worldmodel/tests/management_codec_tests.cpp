@@ -1714,9 +1714,10 @@ TEST_CASE("citizen codec preserves every appended state field and defaults") {
     if(populated){detail.add_icon(18);detail.add_row_error(error);}
     auto d=detail.Finish();auto people=b.CreateVector(std::vector{u});auto details=b.CreateVector(std::vector{d});
     auto recalc=b.CreateString(populated?"Native recalculation failed; labors may be stale":"");
-    wire::CitizenStateBuilder state(b);state.add_citizens(people);state.add_details(details);
+    wire::CitizenStateBuilder state(b);state.add_outcome_unknown(populated);state.add_citizens(people);state.add_details(details);
     if(populated){state.add_recalc_done(1);state.add_recalc_total(5000);state.add_recalc_error(recalc);state.add_detail_list_revision(INT64_MAX);}
     b.Finish(state.Finish());auto decoded=codec::decodeCitizen(flatbuffers::GetRoot<wire::CitizenState>(b.GetBufferPointer()));
+    CHECK(decoded.outcomeUnknown==populated);
     REQUIRE(decoded.citizens.size()==1);REQUIRE(decoded.details.size()==1);
     const auto& row=decoded.citizens[0];CHECK(row.revision==(populated?INT64_MAX:0));
     CHECK(row.detailMember==(populated?1:-1));CHECK(row.detailSkill==(populated?1:-1));

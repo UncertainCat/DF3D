@@ -1544,3 +1544,29 @@ TEST_CASE("Creature Skills contract rejects malformed pages and cross-kind rows"
     CHECK(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())).has_value()==(bad>=0));
   }
 }
+
+TEST_CASE("uncertain citizen mutations cannot publish reusable authority") {
+  namespace m=df3d::mirror;
+  auto validate=[](m::ManagementAction action,m::ManagementStatus status,bool unknown,int target=-1,uint64_t revision=0) {
+    flatbuffers::FlatBufferBuilder b;
+    m::CitizenStateBuilder citizen(b);citizen.add_outcome_unknown(unknown);
+    citizen.add_selected_detail(target);citizen.add_detail_list_revision(revision);
+    auto c=citizen.Finish();
+    m::ManagementStateBuilder state(b);state.add_schema_version(m::kManagementVersion);
+    state.add_revision(1);state.add_action(action);state.add_status(status);state.add_citizen(c);
+    b.Finish(state.Finish());
+    return m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())).value_or("");
+  };
+  for(auto action:{m::ManagementAction::WorkDetailMembership,m::ManagementAction::WorkDetailMode,
+      m::ManagementAction::WorkDetailCreate,m::ManagementAction::WorkDetailDelete,
+      m::ManagementAction::WorkDetailEdit,m::ManagementAction::CitizenWorkScope}) {
+    CHECK(validate(action,m::ManagementStatus::Rejected,true).empty());
+    CHECK(validate(action,m::ManagementStatus::Rejected,false).empty());
+    CHECK(validate(action,m::ManagementStatus::Ok,true)=="invalid uncertain citizen outcome");
+    CHECK(validate(action,m::ManagementStatus::Pending,true)=="invalid uncertain citizen outcome");
+    CHECK(validate(action,m::ManagementStatus::Rejected,true,0)=="invalid uncertain citizen outcome");
+    CHECK(validate(action,m::ManagementStatus::Rejected,true,-1,1)=="invalid uncertain citizen outcome");
+  }
+  CHECK(validate(m::ManagementAction::CitizenList,m::ManagementStatus::Rejected,true)=="invalid uncertain citizen outcome");
+  CHECK(validate(m::ManagementAction::WorkDetailInspect,m::ManagementStatus::Rejected,true)=="invalid uncertain citizen outcome");
+}

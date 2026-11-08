@@ -16,6 +16,9 @@ inline uint8_t* supportedBase() {
     static const bool valid=[base] {
         struct Pin {size_t rva,length;uint64_t hash;};
         constexpr Pin pins[]={
+            {0x430d50,0x1d8,UINT64_C(0x10096dbd8f590e8c)},
+            {0x46c850,0x5d,UINT64_C(0x8bb528f17939950b)},
+            {0x52cee0,0x19e,UINT64_C(0xc25c2d8a6eb9fcac)},
             {0x42af10,0x3d3,UINT64_C(0xe342cfb2854b06d3)},
             {0x4308da,0x160,UINT64_C(0x649be87310c97ecc)},
             {0xc8b600,0x3b5,UINT64_C(0x203cf49bf5ce17fb)},
@@ -44,9 +47,24 @@ struct Context {std::array<std::byte,0x180> prefix{};Map known;};
 static_assert(sizeof(Key)==12 && sizeof(Value)==40 && sizeof(Map)==64);
 static_assert(offsetof(Context,known)==0x180);
 struct Row {int16_t type,subtype,material;int32_t materialIndex,count;uint8_t capabilities;std::string name;};
-inline std::optional<std::vector<Row>> read() {
+struct Filter {int8_t type=-1;uint8_t capabilities=0;std::string query;};
+struct FilterContext {
+    std::array<std::byte,0x230> prefix{};
+    std::string query;
+    int8_t type=-1;
+    uint8_t capabilities=0;
+};
+struct FilterCallable {void* unused=nullptr;FilterContext* context;};
+struct Entry {Key key;Value value;};
+static_assert(offsetof(FilterContext,query)==0x230 && offsetof(FilterContext,type)==0x250);
+static_assert(offsetof(Entry,value)==0x10 && sizeof(Entry)==0x38);
+inline std::optional<std::vector<Row>> read(const Filter& filter={}) {
     auto* base=supportedBase();
     if(!base || !df::global::world || !df::global::plotinfo)return std::nullopt;
+    if(filter.type<-1 || filter.type>3 || filter.capabilities>3 || filter.query.size()>4096)return std::nullopt;
+    FilterContext selection;selection.query=filter.query;selection.type=filter.type;selection.capabilities=filter.capabilities;
+    reinterpret_cast<void(*)(std::string*)>(base+0x52cee0)(&selection.query);
+    FilterCallable callable{nullptr,&selection};
     const auto& items=df::global::world->items.other[df::items_other_id::ANY_COOKABLE];
     if(reinterpret_cast<const uint8_t*>(&items)!=base+0x23e5c60 || items.size()>2000000)return std::nullopt;
     Context owned;
@@ -71,6 +89,10 @@ inline std::optional<std::vector<Row>> read() {
     std::vector<Row> result;result.reserve(owned.known.size());
     for(const auto& [key,value]:owned.known) {
         if(value.num<0 || value.canrest<1 || value.canrest>3 || value.name.empty() || value.name.size()>4096)return std::nullopt;
+        // The wrapper moves the copied string into the by-value predicate,
+        // which destroys that copy. The original map entry remains owned here.
+        Entry copy{key,value};
+        if(reinterpret_cast<bool(*)(FilterCallable*,Entry*)>(base+0x46c850)(&callable,&copy))continue;
         result.push_back({int16_t(key.type),key.subtype,key.mat,key.matg,value.num,uint8_t(value.canrest),value.name});
     }
     return result;

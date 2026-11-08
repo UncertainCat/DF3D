@@ -2529,9 +2529,14 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="kitchen-probe") {
-          if(parameters.size()!=1)return CR_WRONG_USAGE;
+          if(parameters.size()!=1 && parameters.size()!=4)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
-          const auto rows=df3d_kitchen::read();if(!rows)return CR_FAILURE;
+          df3d_kitchen::Filter filter;
+          if(parameters.size()==4){
+            if(parameters[1]!="-1" && parameters[1]!="0" && parameters[1]!="1" && parameters[1]!="2" && parameters[1]!="3")return CR_WRONG_USAGE;
+            if(parameters[2]!="0" && parameters[2]!="1" && parameters[2]!="2" && parameters[2]!="3")return CR_WRONG_USAGE;
+            filter.type=static_cast<int8_t>(std::stoi(parameters[1]));filter.capabilities=static_cast<uint8_t>(std::stoi(parameters[2]));filter.query=UTF2DF(parameters[3]);}
+          const auto rows=df3d_kitchen::read(filter);if(!rows)return CR_FAILURE;
           Json::Value result(Json::arrayValue);
           for(const auto& row:*rows){Json::Value value(Json::objectValue);
             value["type"]=row.type;value["subtype"]=row.subtype;value["mat"]=row.material;value["matg"]=row.materialIndex;

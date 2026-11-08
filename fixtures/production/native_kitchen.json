@@ -838,5 +838,80 @@
     "native_item_vector": "ANY_COOKABLE",
     "owned_map": true,
     "limitations": "Single paused fortress; no sorting, display quantity, mutation, lifecycle or UI acceptance."
+  },
+  "filter_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-162429",
+    "cases": [
+      {
+        "capabilities": 0,
+        "names": [
+          "Plump helmet spawn",
+          "Plump helmets"
+        ],
+        "query": "plump",
+        "type": -1
+      },
+      {
+        "capabilities": 0,
+        "names": [
+          "Plump helmets"
+        ],
+        "query": "plump",
+        "type": 0
+      },
+      {
+        "capabilities": 0,
+        "names": [
+          "Plump helmet spawn"
+        ],
+        "query": "PLUMP",
+        "type": 1
+      },
+      {
+        "capabilities": 0,
+        "names": [],
+        "query": "plump",
+        "type": 2
+      },
+      {
+        "capabilities": 0,
+        "names": [],
+        "query": "plump",
+        "type": 3
+      },
+      {
+        "capabilities": 1,
+        "names": [
+          "Plump helmet spawn",
+          "Plump helmets"
+        ],
+        "query": "plump",
+        "type": -1
+      },
+      {
+        "capabilities": 2,
+        "names": [
+          "Plump helmets"
+        ],
+        "query": "plump",
+        "type": -1
+      },
+      {
+        "capabilities": 3,
+        "names": [
+          "Plump helmets"
+        ],
+        "query": "plump",
+        "type": -1
+      },
+      {
+        "capabilities": 0,
+        "names": [],
+        "query": "no matching kitchen entry",
+        "type": -1
+      }
+    ],
+    "source_preserved": true,
+    "scope": "Owned native predicate matches visible native redraw after controlled filter assignments. Does not establish input-widget behavior, accented queries, positive Drink/Other cases or sorting."
   }
 }

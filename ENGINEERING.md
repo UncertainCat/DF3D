@@ -70,9 +70,18 @@ This is single-fortress aggregation acceptance, not UI or edit acceptance.
 MSVC and core19 pass (kitchen-owned-provider-20261108). Installed plugin SHA256
 A2B09CACB39F4486A2E2C654A30A8C77D51E4E4AFE1E36B38FEB385D6BF2F83C. Native431ea0 copies
 map entries, filters/sorts and builds row widgets; it is not a pure read API.
-Filter430d50 and sort wrapper46c820 are traced separately for further ownership
-audit. Runtime Kitchen transport, mutation validation, UI and public exposure
-remain unimplemented.
+Filter430d50 reads only an owned query at230 and type/capability bytes250/251.
+The adapter normalizes the query through52cee0 and invokes wrapper46c850 with a
+copied entry; the wrapper moves its string into the by-value predicate, which
+destroys the copy. No widget/menu instance is constructed or borrowed. Protected
+162429 matches nine controlled native redraws for type/capability filters, ASCII
+uppercase search and no matches; DF35236 exits unsaved with source preservation.
+The comparison is scoped to visible matching names, not input-widget behavior,
+accented queries or positive Drink/Other cases. Sort wrapper46c820 is traced but
+full sorting remains unaudited. Runtime Kitchen transport, mutation validation,
+UI and public exposure remain unimplemented. MSVC and core19 pass in
+kitchen-native-filter-20261108; installed plugin SHA256
+A8877E8416B9667D88E286A11FD3155D67B14F5C47C32DED22F780A279CD2589.
 
 ## Standing orders native discovery
 

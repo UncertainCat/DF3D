@@ -83,5 +83,29 @@ local capture=debug.getinfo(1,'S').source:sub(2):gsub('smoke/kitchen%-native.lua
 assert(loadfile(capture))(out..'/kitchen-widgets.json','templates')
 local file=assert(io.open(out..'/kitchen-native.json','w'));file:write(json.encode(result));file:close()
 shot('kitchen-root')
+if os.getenv('DF3D_KITCHEN_FILTER')=='1' then
+ local cases={{-1,0,'plump'},{0,0,'plump'},{1,0,'PLUMP'},{2,0,'plump'},{3,0,'plump'},{-1,1,'plump'},{-1,2,'plump'},{-1,3,'plump'},{-1,0,'no matching kitchen entry'}}
+ local results={}
+ for _,case in ipairs(cases)do
+  -- Controlled native redraw; input-widget behavior is a separate acceptance.
+  panel.filter_type=case[1];panel.filter_perm=case[2];panel.filter_str=case[3]:lower();panel.sort_flags=panel.sort_flags|1
+  for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
+  local names={}
+  local function collect(widget)
+   if (widget.flag.whole&3)~=3 then return end
+   if df.widget_text:is_instance(widget) and widget.rect.x1==15 and widget.rect.y1>=16 then names[#names+1]=dfhack.df2utf(widget.str)end
+   if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do collect(child)end end
+  end
+  collect(panel);table.sort(names)
+  local text,code=dfhack.run_command_silent('df3d','kitchen-probe',tostring(case[1]),tostring(case[2]),case[3]);assert(code==0,'Owned filter rejected')
+  local rows=json.decode(text);assert(#rows<13,'Filter comparison must fit visible native rows')
+  local actual={};for _,row in ipairs(rows)do actual[#actual+1]=row.name end;table.sort(actual)
+  assert(json.encode(actual)==json.encode(names),'Owned Kitchen filter differs from native redraw: '..json.encode(case)..' '..json.encode(actual)..' '..json.encode(names))
+  results[#results+1]={type=case[1],capabilities=case[2],query=case[3],names=names}
+ end
+ local f=assert(io.open(out..'/kitchen-filter.json','w'));f:write(json.encode(results));f:close()
+ panel.filter_type=-1;panel.filter_perm=0;panel.filter_str='';panel.sort_flags=panel.sort_flags|1
+ for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
+end
 click(30,10)
 return {rows=#result.rows,callbacks=#result.callbacks}

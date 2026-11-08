@@ -54,13 +54,23 @@ local function rows()
  end
  return result
 end
-local hunter_snapshot
+local hunter_snapshot,chores_snapshot
 local function shot(name)
  local file=assert(io.open(out..'/standing-orders-native.json','w'));file:write(json.encode(result));file:close()
  file=assert(io.open(out..'/shot.tmp','w'));file:write(name);file:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
  local deadline=dfhack.getTickCount()+((os.getenv('DF3D_STANDING_ORDERS_RENDER')=='1' or os.getenv('DF3D_HUNTER_AMMUNITION_RENDER')=='1') and 20000 or 10000)
  local checked=0
  while true do
+  if name=='chores-wire' then
+   local file=io.open(out..'/chores-wire-step')
+   if file then local step=tonumber(file:read('*a'));file:close()
+    if step and step>checked then
+     assert(step==checked+1 and step<=6,'Unexpected Chores wire step')
+     assert(json.encode(chores_snapshot())==json.encode(result.chores_effects.steps[step].state),'Chores wire effects differ at '..step)
+     checked=step;local ack=assert(io.open(out..'/chores-wire-ack','w'));ack:write(tostring(step));ack:close()
+    end
+   end
+  end
   if name=='hunter-ammunition-wire' then
    local step_file=io.open(out..'/hunter-wire-step')
    if step_file then
@@ -87,6 +97,7 @@ local function shot(name)
   local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end
   assert(dfhack.getTickCount()<deadline,'Standing orders capture timeout');script.sleep(1,'frames')
  end
+ if name=='chores-wire' then assert(checked==6,'Chores wire steps incomplete');result.chores_wire_checked=checked end
  if name=='hunter-ammunition-wire' then assert(checked==#result.hunter_ammunition.wire_steps,'Ammunition wire steps incomplete');result.hunter_ammunition.wire_checked=checked end
  if name=='standing-orders-wire' then assert(checked==#result.wire_steps,'Wire steps incomplete');result.wire_checked=checked end
 end
@@ -128,6 +139,7 @@ for category,x in ipairs{10,23,34,46,60,71,80}do
     end
     return state
    end
+   chores_snapshot=snapshot
    local before=snapshot()
    result.chores_effects={before=before,child=panel.unit[0].id,labor=panel.labor_list[0],steps={}}
    for _,action in ipairs({{'disable',100,15},{'enable',70,15},{'child-toggle',12,19},{'child-restore',12,19},{'labor-toggle',75,19},{'labor-restore',75,19}})do
@@ -142,6 +154,12 @@ for category,x in ipairs{10,23,34,46,60,71,80}do
    end
    assert(json.encode(snapshot())==json.encode(before),'Chores labor effects not restored')
    result.chores_effects.restored=true
+   if os.getenv('DF3D_CHORES_WIRE')=='1' then
+    shot('chores-wire')
+    for _,row in ipairs(before.units)do local unit=assert(df.unit.find(row.id));for id=0,93 do unit.status.labors[id]=row.labors:sub(id+1,id+1)=='1' end end
+    assert(json.encode(snapshot())==json.encode(before),'Chores wire effects not restored')
+   end
+
    if os.getenv('DF3D_CHORES_EDITS')=='1' then
     local function receipt()
      local text,code=dfhack.run_command_silent('df3d','chores-probe');assert(code==0,'Chores receipt rejected');return json.decode(text)

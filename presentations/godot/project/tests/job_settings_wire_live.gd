@@ -27,6 +27,8 @@ func drag_scrollbar(bar, bottom: bool) -> void:
 
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
+	if OS.get_environment("DF3D_CHORES_WIRE")=="1":
+		await chores_wire();return
 	if OS.get_environment("DF3D_HUNTER_AMMUNITION_WIRE")=="1":
 		await hunter_ammunition_wire();return
 	if OS.get_environment("DF3D_STANDING_ORDERS_RENDER")=="1":
@@ -1213,3 +1215,46 @@ func hunter_input_scene(owner) -> void:
 		if picker:await pointer(panel,Vector2(760,32))
 	root.size=Vector2i(1200,800);await process_frame;await process_frame
 	check(panel.page_rows==10 and state.specs==original,"Local input checks changed ammunition authority")
+
+func chores_wire() -> void:
+	world=Df3dWorld.new();root.add_child(world)
+	if not check(world.attach(),"Chores attach failed"):quit(1);return
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline:
+		world.poll()
+		if world.poll_management().get("transport_alive",false):break
+		await create_timer(0.01).timeout
+	await request("construction",{"action":C.ManagementAction.Catalog})
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/standing-orders-native.json"))
+	var reply:=await request("chores",{"action":C.ManagementAction.ChoresRead})
+	if not check(reply.get("status")==C.ManagementStatus.Ok,"Chores read rejected"):quit(1);return
+	var snapshot: Dictionary=reply.chores.snapshot
+	var initial:=snapshot.duplicate(true)
+	check(snapshot.children==PackedInt32Array(reference.chores.children),"Chores native roster order differs")
+	check(snapshot.exempted==PackedInt32Array(reference.chores.exempted) and snapshot.enabled==reference.chores.enabled,"Chores initial settings differ")
+	for kind in ["children","labors"]:
+		var expected: Array=reference.chores_captions[kind]
+		check(reply.chores[kind].size()==expected.size(),"Chores caption count differs")
+		for index in expected.size():check(reply.chores[kind][index].id==int(expected[index].id) and reply.chores[kind][index].caption==expected[index].caption,"Chores caption differs")
+	var child:=int(reference.chores_effects.child);var labor:=int(reference.chores_effects.labor)
+	var count:=0
+	for op in [[1,-1,false],[1,-1,true],[3,child,true],[3,child,false],[2,labor,false],[2,labor,true]]:
+		reply=await request("chores",{"action":C.ManagementAction.ChoresApply,"operation":op[0],"id":op[1],"value":op[2],"expected":snapshot})
+		if not check(reply.get("status")==C.ManagementStatus.Ok and reply.get("chores",{}).get("outcome")==C.ChoresOutcome.Applied,"Chores write rejected"):quit(1);return
+		snapshot=reply.chores.snapshot
+		var expected: Dictionary=reference.chores_effects.steps[count].state
+		check(snapshot.enabled==expected.enabled and snapshot.exempted==PackedInt32Array(expected.exempted),"Chores returned receipt differs")
+		for row: Dictionary in snapshot.labors:check(row.enabled==expected.labors[row.id],"Chores returned labor differs")
+		if count==0:
+			var stale:=await request("chores",{"action":C.ManagementAction.ChoresApply,"operation":1,"id":-1,"value":true,"expected":initial})
+			check(stale.get("status")==C.ManagementStatus.Rejected and stale.get("chores",{}).get("outcome")==C.ChoresOutcome.Stale and not stale.chores.has("snapshot"),"Stale Chores receipt retained authority")
+		count+=1
+		var file:=FileAccess.open(directory+"/chores-wire-step",FileAccess.WRITE);file.store_string(str(count));file.close()
+		deadline=Time.get_ticks_msec()+3000
+		while Time.get_ticks_msec()<deadline:
+			if FileAccess.file_exists(directory+"/chores-wire-ack") and FileAccess.get_file_as_string(directory+"/chores-wire-ack")==str(count):break
+			await create_timer(0.01).timeout
+		if not check(FileAccess.get_file_as_string(directory+"/chores-wire-ack")==str(count),"Native Chores readback missing; no replay"):quit(1);return
+	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"steps":count}));file.close()
+	world.queue_free();await process_frame;quit(1 if failed else 0)

@@ -109,6 +109,7 @@
 #include "work_detail_settings_native.h"
 #include "standing_orders_native.h"
 #include "hunter_ammunition_captions_native.h"
+#include "chores_native.h"
 #include "df/gamest.h"
 #include "work_order_catalog_native.h"
 #include "work_order_rows_native.h"
@@ -487,6 +488,12 @@ struct HunterResult {
   std::vector<std::pair<df3d_hunter_ammunition::Material,std::string>> materials;
 };
 std::optional<HunterResult> hunter;
+struct ChoresResult {
+  m::ChoresOutcome outcome=m::ChoresOutcome::Rejected;
+  std::optional<df3d_chores::Snapshot> snapshot;
+  df3d_chores::Captions captions;
+};
+std::optional<ChoresResult> chores;
 
 
 m::TilePos worldHoverTile;
@@ -502,7 +509,7 @@ void clearResult() {
   residentsRows.reset();
   residentsSpecialization.reset();
   residentsActivity.reset();
-  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();
+  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -1133,6 +1140,17 @@ void publish() {
     }
     standingOrdersResult=m::CreateStandingOrdersState(b,standingOrders->category,standingOrders->outcome,b.CreateVector(rows));
   }
+  flatbuffers::Offset<m::ChoresState> choresResult;
+  if(chores){
+    flatbuffers::Offset<m::ChoresSnapshot> snapshot;
+    if(chores->snapshot){const auto& v=*chores->snapshot;std::vector<flatbuffers::Offset<m::ChoreLabor>> labors;
+      for(const auto& [id,enabled]:v.labors)labors.push_back(m::CreateChoreLabor(b,id,enabled));
+      snapshot=m::CreateChoresSnapshot(b,v.enabled,b.CreateVector(v.children),b.CreateVector(v.exempted),b.CreateVector(labors));}
+    std::vector<flatbuffers::Offset<m::ChoresCaption>> children,labors;
+    for(const auto& row:chores->captions.children)children.push_back(m::CreateChoresCaption(b,row.id,b.CreateString(row.text)));
+    for(const auto& row:chores->captions.labors)labors.push_back(m::CreateChoresCaption(b,row.id,b.CreateString(row.text)));
+    choresResult=m::CreateChoresState(b,chores->outcome,snapshot,b.CreateVector(children),b.CreateVector(labors));
+  }
   flatbuffers::Offset<m::HunterAmmunitionState> hunterResult;
   if(hunter){
     std::vector<flatbuffers::Offset<m::HunterAmmunitionSpec>> specs;
@@ -1152,7 +1170,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult);
   b.Finish(s);
   if (auto e = m::validateManagementState(
           *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()))) {
@@ -1165,12 +1183,14 @@ void publish() {
     const auto placed=construction.placed,skipped=construction.skipped;
     const auto first=construction.first_building;
     const auto standingCategory=standingOrders?standingOrders->category:0;
+    const bool choresUnknown=chores && (chores->outcome==m::ChoresOutcome::Applied || chores->outcome==m::ChoresOutcome::Unknown);
     const bool hunterUnknown=hunter && (hunter->outcome==m::HunterAmmunitionOutcome::Applied || hunter->outcome==m::HunterAmmunitionOutcome::Unknown);
     const bool standingUnknown=standingOrders && (standingOrders->outcome==m::StandingOrdersOutcome::Applied || standingOrders->outcome==m::StandingOrdersOutcome::Unknown);
     const bool citizenUnknown=citizenWriteStarted || citizens.outcomeUnknown;
     auto jobWrite=jobSettingsEdit;
     if(jobWrite && jobWrite->outcome!=m::JobSettingsEditOutcome::Applied && jobWrite->outcome!=m::JobSettingsEditOutcome::Unknown)jobWrite.reset();
     clearResult();
+    if(choresUnknown){chores.emplace();chores->outcome=m::ChoresOutcome::Unknown;mutated=true;}
     if(hunterUnknown){hunter.emplace();hunter->outcome=m::HunterAmmunitionOutcome::Unknown;mutated=true;}
     if(standingUnknown){standingOrders.emplace();standingOrders->category=standingCategory;standingOrders->outcome=m::StandingOrdersOutcome::Unknown;mutated=true;}
     if(citizenUnknown){citizens.outcomeUnknown=true;mutated=true;}
@@ -4123,8 +4143,41 @@ void run(color_ostream& out) {
     publish();return;
   }
   if(r->action()==m::ManagementAction::ChoresRead || r->action()==m::ManagementAction::ChoresApply) {
-    // Contract migration only; semantic dispatch follows separate live acceptance.
-    status=m::ManagementStatus::Rejected;message.clear();publish();return;
+    namespace h=df3d_chores;
+    status=m::ManagementStatus::Rejected;message.clear();chores.emplace();bool writeStarted=false;
+    try {
+      const auto& q=*r->chores();
+      if(r->action()==m::ManagementAction::ChoresRead){
+        auto snapshot=h::read();if(!snapshot)throw std::runtime_error("chores unavailable");
+        auto captions=h::captions(*snapshot);if(!captions)throw std::runtime_error("chores captions unavailable");
+        for(auto& row:captions->children)row.text=DF2UTF(row.text);
+        for(auto& row:captions->labors)row.text=DF2UTF(row.text);
+        chores->snapshot=std::move(snapshot);chores->captions=std::move(*captions);
+        chores->outcome=m::ChoresOutcome::None;status=m::ManagementStatus::Ok;
+      }else{
+        const auto& v=*q.expected();h::Snapshot expected;
+        expected.enabled=v.enabled();expected.children.assign(v.children()->begin(),v.children()->end());
+        expected.exempted.assign(v.exempted()->begin(),v.exempted()->end());
+        for(const auto* row:*v.labors())expected.labors.emplace_back(row->id(),row->enabled());
+        // Prepare the complete returned receipt before native effects begin.
+        auto prepared=expected;
+        if(q.operation()==m::ChoresOperation::Enabled)prepared.enabled=q.value();
+        else if(q.operation()==m::ChoresOperation::Labor){for(auto& row:prepared.labors)if(row.first==q.id())row.second=q.value();}
+        else {auto it=std::lower_bound(prepared.exempted.begin(),prepared.exempted.end(),q.id());
+          const bool exists=it!=prepared.exempted.end() && *it==q.id();
+          if(q.value() && !exists)prepared.exempted.insert(it,q.id());else if(!q.value() && exists)prepared.exempted.erase(it);}
+        const auto outcome=h::apply(h::Operation(q.operation()),q.id(),q.value(),expected,&writeStarted);
+        if(outcome==h::Outcome::Applied){
+          chores->snapshot=std::move(prepared);chores->outcome=m::ChoresOutcome::Applied;
+          mutated=true;status=m::ManagementStatus::Ok;
+        }else if(outcome==h::Outcome::Stale)chores->outcome=m::ChoresOutcome::Stale;
+      }
+      publish();return;
+    }catch(...){
+      chores.emplace();status=m::ManagementStatus::Rejected;
+      if(writeStarted){chores->outcome=m::ChoresOutcome::Unknown;mutated=true;}
+    }
+    publish();return;
   }
   if(r->action()>=m::ManagementAction::HunterAmmunitionRead && r->action()<=m::ManagementAction::HunterAmmunitionApply) {
     namespace h=df3d_hunter_ammunition;

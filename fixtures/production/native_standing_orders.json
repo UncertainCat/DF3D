@@ -5661,6 +5661,14 @@
         ]
       },
       "limitations": "All labor and ASCII child captions match visible native rows. Accented captions come from the pinned native formatter; screen glyph extraction does not establish their UTF-8 visual parity. Full strings precede viewport truncation."
+    },
+    "wire_reference": {
+      "capture": "build/stockpile-storage-native-input-20261108-153650",
+      "checked_steps": 6,
+      "active_unit_labors": 339,
+      "read_captions_match": true,
+      "stale_rejected": true,
+      "limitations": "Typed semantic read and six edits, with independent native labor-mask observer. No rendered controller workflow or fault injection."
     }
   }
 }

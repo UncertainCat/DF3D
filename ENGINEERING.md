@@ -49,13 +49,27 @@ This is a breaking management-region migration; readers and plugin must update
 together. Older recordings do not acquire invented Chores facts. Core19,
 extension and end-to-end fake-host Godot contract checks pass in
 chores-contract150-roundtrip-20261108, covering read, all3 operations, malformed
-receipts and Unknown with no authority. The native plugin explicitly rejects
-Chores actions pending the next dispatch change. Protected153322 verifies the
+receipts and Unknown with no authority. The migration initially rejected Chores actions; dispatch is verified below.
+Protected153322 verifies the
 existing Standing orders typed workflow on150, then closes owned DF47528 unsaved
 with source preservation. MSVC build passes; installed SHA256
 D187CD2A6AC86EA7CD09D7DF6F0916D3120B8026EF32A12B13765513B7ED8417.
 This is protocol acceptance, not live Chores wire or UI acceptance.
 
+
+Chores typed dispatch now reads owned native snapshots/captions and applies the
+three native-backed mutations. It prepares the returned receipt before writes,
+sets mutation ownership from writeStarted, and retires partial state on failure.
+Caught failures after writes and invalid-success serialization fallbacks publish
+Unknown without a snapshot; no automatic replay is introduced. Read failures
+clear partial captions. These failure branches still need live fault injection.
+Protected153650 exercises actual Godot/model/bridge reads, all6 edit transitions
+and a stale refusal; independent Lua compares each result against native clicks
+including all339 active-unit labor masks. Native caption order/text and returned
+receipts also match. Controls/labors are restored and DF46284 exits unsaved with
+source preservation. Only the known Godot separate-thread notice remains;
+GPU62C sampled. `wire_reference` records this scoped acceptance. The Chores
+controller, rendered view and public integration remain unfinished.
 
 Chores discovery: native roster builder42c6e0..42cd42 fills unit and labor
 vectors at offsets158/170, resets category/scroll fields, and sorts children by

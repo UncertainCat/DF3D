@@ -71,4 +71,36 @@ for index=0,7 do
  result.workshop_cycles[#result.workshop_cycles+1]=cycle
 end
 assert(json.encode(values())==json.encode(original),'Standing orders were not restored')
+if os.getenv('DF3D_STANDING_ORDERS_PROVIDER')=='1' then
+ local function provider(...)
+  local text,code=dfhack.run_command_silent('df3d','standing-workshops-probe',...)
+  assert(code==0,'Standing workshop provider failed: '..text);return json.decode(text)
+ end
+ result.provider={initial=provider(),cycles={}}
+ for _,row in ipairs(result.provider.initial.settings)do
+  assert(row.available==(row.id<8),'Workshop availability differs from captured native controls')
+ end
+ local invalid=provider('11','0','1');assert(invalid.outcome==0,'Invalid control was accepted')
+ assert(json.encode(values())==json.encode(original),'Invalid request changed state')
+ for _,cycle in ipairs(result.workshop_cycles)do
+  local key
+  for _,state in ipairs(cycle.states)do
+   for name,value in pairs(state.values)do if value~=cycle.before[name] then assert(not key or key==name);key=name end end
+  end
+  assert(key,'Native cycle has no changed setting')
+  local stale=provider(tostring(cycle.index),tostring(original[key]+1),tostring(original[key]))
+  assert(stale.outcome==1,'Stale request was not refused')
+  assert(json.encode(values())==json.encode(original),'Stale request changed state')
+  local steps={}
+  for _,expected in ipairs(cycle.states)do
+   local reply=provider(tostring(cycle.index),tostring(df.global[key]),tostring(expected.values[key]))
+   assert(reply.outcome==2,'Semantic workshop edit failed')
+   assert(json.encode(values())==json.encode(expected.values),'Semantic workshop effects differ from native')
+   steps[#steps+1]=reply
+  end
+  result.provider.cycles[#result.provider.cycles+1]={id=cycle.index,steps=steps}
+ end
+ assert(json.encode(values())==json.encode(original),'Semantic workshop edits did not restore state')
+ result.provider.restored=true
+end
 shot('standing-orders-restored');records[#records+1]={name='standing-orders',categories=#result.pages,cycles=#result.workshop_cycles}

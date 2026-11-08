@@ -119,6 +119,7 @@
 #include "work_detail_query_native.h"
 #include "work_detail_row_native.h"
 #include "work_detail_settings_native.h"
+#include "standing_orders_native.h"
 #include "residents_row_native.h"
 #include "residents_specialization_native.h"
 #include "modules/Buildings.h"
@@ -2413,6 +2414,23 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             row["key"]=DF2UTF(activity->key);row["fg"]=activity->foreground;row["bg"]=activity->background;
             row["bright"]=activity->bright;result["rows"].append(row);
           }
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="standing-workshops-probe") {
+          if(parameters.size()!=1 && parameters.size()!=4)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          Json::Value result(Json::objectValue);
+          if(parameters.size()==4){
+            int32_t values[3];
+            for(size_t i=1;i<4;++i){const auto& raw=parameters[i];
+              const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);
+              if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;}
+            result["outcome"]=int(df3d_standing::setWorkshop(values[0],values[1],values[2]));
+          }
+          const auto snapshot=df3d_standing::workshopSettings();if(!snapshot)return CR_FAILURE;
+          result["settings"]=Json::Value(Json::arrayValue);
+          for(const auto& entry:*snapshot){Json::Value row(Json::objectValue);row["id"]=entry.id;
+            row["value"]=int(entry.value);row["available"]=entry.available;result["settings"].append(row);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="work-detail-settings-probe") {

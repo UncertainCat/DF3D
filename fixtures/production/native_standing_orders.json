@@ -405,6 +405,42 @@
     "Only Workshops effects cycled; other categories are layout/initial caption evidence.",
     "Chores includes child participation and labor definitions; Other includes hunter-ammunition navigation, not just scalar options.",
     "Unmapped globals need pinned native-address verification before runtime exposure.",
-    "No Standing orders runtime contract, UI or public route exists yet."
-  ]
+    "No Standing orders transport contract, UI or public route exists yet."
+  ],
+  "workshop_provider_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-114842",
+    "input_range_rva": [
+      "4331ca",
+      "4334fa"
+    ],
+    "input_range_fnv64": "d165a25c665d4e6d",
+    "installed_plugin_sha256": "D1B0D68D1ACF9088DC5961898DB2E108381693A2527C1A16E3A7DAB29C919BDB",
+    "available_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "unavailable_ids": [
+      8,
+      9,
+      10
+    ],
+    "verified": [
+      "All eight captured cycles match independent simulation reads.",
+      "Stale values and invalid IDs leave simulation unchanged.",
+      "Native availability matches automatic-reaction raw predicates.",
+      "All original settings restored before unsaved exit."
+    ],
+    "limits": [
+      "Enabled kiln/smelter/other reaction cases not yet accepted.",
+      "Diagnostic adapter only; no typed transport or UI yet."
+    ],
+    "source_preserved": true,
+    "owned_df_closed": true
+  }
 }

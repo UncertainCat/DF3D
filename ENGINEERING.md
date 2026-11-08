@@ -33,6 +33,27 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Standing orders native discovery
 
+`standing_orders_native.h` exposes Workshops simulation settings using the
+pinned4331ca..4334fa inline semantics, without invoking the menu handler. It
+checks the executable identity, branch bytes and all eleven DFHack global
+addresses. The first six options are unconditional. Kitchen/tannery/kiln/smelter/
+other automation availability comes from AUTOMATIC reaction raw building types
+and subtypes, not existing buildings. Malformed definitions or scalar values
+fail closed. Setting a value checks native availability and the caller's expected
+value before the single nonthrowing scalar write; there are no native gameplay
+notifications in those branches. No allocation follows that write.
+
+Protected114842 on2026-11-08 compares the provider's available controls with the
+native screen and all eight captured control cycles with independent simulation
+reads. Invalid IDs and stale values leave state unchanged; every cycle restores
+the original values. Owned DF46876 closes unsaved with source preservation and
+paused simulation; GPU59C sampled. MSVC build passes; installed and built plugin
+SHA256 both
+`D1B0D68D1ACF9088DC5961898DB2E108381693A2527C1A16E3A7DAB29C919BDB`.
+The diagnostic command uses this adapter; a typed transport and presentation
+remain unimplemented. The three currently unavailable automation controls need
+controlled-reaction acceptance before their enabled states can be claimed.
+
 Protected114349 on2026-11-08 captures all seven Labor/Standing orders categories
 at1200x800 and cycles each of the eight Workshops controls through native clicks,
 restoring every mapped scalar before exit. Weaving cycles2→0→1→2; the other seven
@@ -55,7 +76,7 @@ Owned DF43240 closes unsaved, source manifest unchanged, simulation paused.
 Initial114118 tried reading a shared_ptr as a widget;114157 corrected widget
 traversal and captured Workshops.114314 found unmapped globals;114349 explicitly
 records their unavailability and completes the capture/cycles. No Standing
-orders runtime contract, panel or exposure is implemented yet.
+orders transport contract, panel or public exposure is implemented yet.
 
 ## Work Details native discovery
 

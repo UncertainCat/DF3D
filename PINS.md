@@ -529,3 +529,9 @@ godot-cpp is pinned to a master commit whose bundled extension API matches Godot
 | Compiler | MinGW-w64 g++ 15.1.0 (MSYS2), C++20 |
 | CMake | 3.30.5 |
 | Generator | MinGW Makefiles (`mingw32-make`) |
+
+Standing orders Workshops adapter pins input4331ca..4334fa (FNV64
+`d165a25c665d4e6d`) and verifies the eleven simulation-global addresses.
+Native menu input/render functions are never called at runtime. Protected114842
+compares eight available controls and their full cycles; the remaining three
+automation controls require enabled-reaction acceptance. See ENGINEERING.md.

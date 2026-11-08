@@ -32,6 +32,14 @@ func run() -> void:
 					click.position=view.scrollbar.get_global_transform_with_canvas()*Vector2(8,view.scrollbar.size.y-6 if down else 6);click.global_position=click.position
 					Input.parse_input_event(click);await process_frame
 					click=click.duplicate();click.pressed=false;Input.parse_input_event(click);await process_frame
-					assert((state.choice_first if mode==state.Mode.Types else state.first)==(1 if down else 0))
+					if (state.choice_first if mode==state.Mode.Types else state.first)!=(1 if down else 0):
+						push_error("Scroll mismatch mode=%s down=%s first=%s choice=%s"%[mode,down,state.first,state.choice_first]);quit(1);return
+				for down in [true,false]:
+					var wheel:=InputEventMouseButton.new();wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN if down else MOUSE_BUTTON_WHEEL_UP;wheel.pressed=true
+					wheel.position=view.get_global_transform_with_canvas()*Vector2(100,110);wheel.global_position=wheel.position
+					Input.parse_input_event(wheel);await process_frame
+					wheel=wheel.duplicate();wheel.pressed=false;Input.parse_input_event(wheel);await process_frame
+					if (state.choice_first if mode==state.Mode.Types else state.first)!=(1 if down else 0):
+						push_error("Scroll mismatch mode=%s down=%s first=%s choice=%s"%[mode,down,state.first,state.choice_first]);quit(1);return
 	view.queue_free();world.queue_free();await process_frame
 	print("HUNTER_AMMUNITION_CAPTURE_PASS");quit(0)

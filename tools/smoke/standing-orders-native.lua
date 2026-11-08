@@ -417,8 +417,32 @@ if os.getenv('DF3D_HUNTER_AMMUNITION_NATIVE')=='1' then
      shot('hunter-layout-'..kind..'-minimum-'..probe[1])
     end
     result.hunter_ammunition[kind..'_arrows']=scroll
+    local contextual={}
+    for _,key in ipairs({'CONTEXT_SCROLL_DOWN','CONTEXT_SCROLL_UP'})do
+     g.precise_mouse_x=320;g.precise_mouse_y=334;g.mouse_x=40;g.mouse_y=27
+     gui.simulateInput(view,key);settle()
+     contextual[#contextual+1]={key=key,first=ui.setting_ammo_scroll_position,choice_first=ui.setting_ammo_scroll_position_am}
+     shot('hunter-layout-'..kind..'-'..key)
+    end
+    result.hunter_ammunition[kind..'_context_scroll']=contextual
    end
   end
+ end
+ local function picker_hover(kind)
+  if os.getenv('DF3D_HUNTER_AMMUNITION_PICKER_HOVER')~='1' then return end
+  result.hunter_ammunition.picker_hover=result.hunter_ammunition.picker_hover or {}
+  for _,target in ipairs({{'row',320,298},{'second',320,334},{'cancel',924,250}})do
+   local deadline=dfhack.getTickCount()+850
+   repeat
+    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+    g.precise_mouse_x=target[2];g.precise_mouse_y=target[3];g.mouse_x=target[2]//8;g.mouse_y=(target[3]-4)//12
+    gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(1,'frames')
+   until dfhack.getTickCount()>=deadline
+   local main=df.global.game.main_interface
+   result.hunter_ammunition.picker_hover[#result.hunter_ammunition.picker_hover+1]={kind=kind,target=target[1],instruction=main.current_hover,displayed=main.last_displayed_hover_inst}
+   shot('hunter-hover-'..kind..'-'..target[1])
+  end
+  assert(json.encode(before)==json.encode(snapshot()),'Picker hover changed equipment')
  end
  layout_probe('main')
  click(64,20)
@@ -426,6 +450,7 @@ if os.getenv('DF3D_HUNTER_AMMUNITION_NATIVE')=='1' then
  result.hunter_ammunition.add_picker={rows=rows(),values=snapshot()}
  assert(json.encode(before)==json.encode(snapshot()),'Opening ammunition choices changed simulation settings')
  shot('hunter-ammunition-add-picker')
+ picker_hover('types')
  layout_probe('types')
  if os.getenv('DF3D_HUNTER_AMMUNITION_LAYOUT')=='1' then
   local scroll={}
@@ -443,6 +468,7 @@ if os.getenv('DF3D_HUNTER_AMMUNITION_NATIVE')=='1' then
  assert(ui.setting_ammo_mat,'Material button did not open choices')
  result.hunter_ammunition.material_picker={rows=rows(),values=snapshot(),selected=ui.setting_ammo_mat_sea_index}
  shot('hunter-ammunition-material-picker')
+ picker_hover('materials')
  click(35,30)
  result.hunter_ammunition.material_selected={rows=rows(),values=snapshot(),selecting=ui.setting_ammo_mat}
  shot('hunter-ammunition-material-selected')

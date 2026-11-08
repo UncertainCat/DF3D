@@ -58,6 +58,17 @@ owned DF44016 exits unsaved with source preservation, GPU51C sampled. The native
 `hover_reference` retains all eight observations; DF3D_HUNTER_AMMUNITION_HOVER=1
 selects this probe. This evidence does not cover picker rows or scrollbars.
 
+Protected145011 extends hover coverage to the first two type/material rows and
+each Cancel button: no instruction, tooltip or panel-pixel change. Protected145231
+uses native CONTEXT_SCROLL_DOWN/UP at minimum size and observes1/0 for both lists.
+Posted Windows wheel messages did not establish dispatch and are excluded from
+acceptance. Rendered hunter-wheel-input-release-20261108 verifies matching wheel
+and arrow steps; the initial combined harness omitted wheel release and failed
+the next arrow assertion, corrected by sending complete press/release events.
+Core19 passes in hunter-wheel-hover-20261108. Owned DF14520/28560/46600 exit
+unsaved with source preservation; GPU51C sampled. Drag and shift-wheel remain
+unverified. `picker_hover_reference` and `wheel_reference` retain semantic evidence.
+
 Management149 / Local\df3d_management_v149 requires `ItemInspectionAppearance`
 on every hunter ammunition stack. The native read uses owned `itemAppearance`
 facts; model and Godot preserve material/subtype/color tokens, stack size and

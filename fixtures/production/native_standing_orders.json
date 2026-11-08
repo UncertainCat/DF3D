@@ -4236,6 +4236,76 @@
           ]
         }
       ]
+    },
+    "picker_hover_reference": {
+      "capture": "build/stockpile-storage-native-input-20261108-145011",
+      "probes": [
+        {
+          "displayed": -1,
+          "instruction": -1,
+          "kind": "types",
+          "target": "row"
+        },
+        {
+          "displayed": -1,
+          "instruction": -1,
+          "kind": "types",
+          "target": "second"
+        },
+        {
+          "displayed": -1,
+          "instruction": -1,
+          "kind": "types",
+          "target": "cancel"
+        },
+        {
+          "displayed": -1,
+          "instruction": -1,
+          "kind": "materials",
+          "target": "row"
+        },
+        {
+          "displayed": -1,
+          "instruction": -1,
+          "kind": "materials",
+          "target": "second"
+        },
+        {
+          "displayed": -1,
+          "instruction": -1,
+          "kind": "materials",
+          "target": "cancel"
+        }
+      ],
+      "panel_pixels_changed": 0
+    },
+    "wheel_reference": {
+      "capture": "build/stockpile-storage-native-input-20261108-145231",
+      "main": [
+        {
+          "choice_first": 0,
+          "first": 1,
+          "key": "CONTEXT_SCROLL_DOWN"
+        },
+        {
+          "choice_first": 0,
+          "first": 0,
+          "key": "CONTEXT_SCROLL_UP"
+        }
+      ],
+      "types": [
+        {
+          "choice_first": 1,
+          "first": 0,
+          "key": "CONTEXT_SCROLL_DOWN"
+        },
+        {
+          "choice_first": 0,
+          "first": 0,
+          "key": "CONTEXT_SCROLL_UP"
+        }
+      ],
+      "scope": "Native CONTEXT_SCROLL wheel commands over list rows at minimum size; posted Windows wheel messages did not prove dispatch and are excluded."
     }
   }
 }

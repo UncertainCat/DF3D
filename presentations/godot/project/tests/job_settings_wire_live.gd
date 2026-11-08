@@ -1057,6 +1057,8 @@ func hunter_specs(source: Array) -> Array:
 		row.assigned=PackedInt32Array(entry.assigned);result.append(row)
 	return result
 func hunter_ammunition_wire() -> void:
+	var rendered:=OS.get_environment("DF3D_HUNTER_AMMUNITION_RENDER")=="1"
+	Engine.max_fps=30;root.size=Vector2i(1200,800)
 	world=Df3dWorld.new();root.add_child(world)
 	if not check(world.attach(),"Ammunition attach failed"):quit(1);return
 	var deadline:=Time.get_ticks_msec()+5000
@@ -1084,8 +1086,29 @@ func hunter_ammunition_wire() -> void:
 	var controller=preload("res://scripts/hunter_ammunition_state.gd").new()
 	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
 	for frame in 5:world.poll();await process_frame
-	controller.configure(service);controller.open()
+	var scene_nodes: Array=[];var ammunition_owner
+	if rendered:
+		if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Ammunition assets missing"):quit(1);return
+		var interaction:=Interaction.new();root.add_child(interaction)
+		var host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)
+		var standing=preload("res://scripts/standing_orders_panel.gd").new();root.add_child(standing);standing.configure(world,service,host);standing.open_panel()
+		scene_nodes=[standing,host,interaction]
+		if not check(await ready(standing.state),"Standing orders entry failed"):quit(1);return
+		await pointer(standing.panel,standing.panel.category_rect(6).get_center())
+		if not check(await ready(standing.state),"Standing Other read failed"):quit(1);return
+		await pointer(standing.panel,standing.panel.ammunition_rect().get_center())
+		ammunition_owner=standing.ammunition_owner
+		if not check(is_instance_valid(ammunition_owner) and host.active==ammunition_owner and standing.state.phase==standing.state.Phase.Closed,"Ammunition modal handoff failed"):quit(1);return
+		controller=ammunition_owner.state
+	else:controller.configure(service);controller.open()
 	if not check(await ready(controller),"Ammunition controller read failed"):quit(1);return
+	if rendered:
+		await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/hunter-view-root.png")
+		await pointer(ammunition_owner.panel,Vector2(348,32))
+		check(controller.mode==controller.Mode.Types,"Add button did not open picker")
+		await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/hunter-view-types.png")
+		await pointer(ammunition_owner.panel,Vector2(760,32))
+		check(controller.mode==controller.Mode.Main,"Picker Cancel did not return to main")
 	var count:=0
 	for step: Dictionary in reference.wire_steps:
 		var intent: Dictionary={"action":C.ManagementAction.HunterAmmunitionApply,"operation":int(step.operation),"index":-1,"item_id":-1,"amount":-1,"item_type":-1,"item_subtype":-1,"material_class":-1,"mattype":-1,"matindex":-1,"expected":hunter_specs(step.expected)}
@@ -1102,25 +1125,38 @@ func hunter_ammunition_wire() -> void:
 			check(controller.specs==hunter_specs(step.expected),"Controller authority differs before edit")
 			match int(step.operation):
 				C.HunterAmmunitionOperation.Amount:
-					controller.begin_amount(int(step.index));controller.set_amount_text(str(int(step.amount)));controller.commit_amount()
+					if rendered:
+						await pointer(ammunition_owner.panel,Vector2(404,80))
+						for digit in str(int(step.amount)):
+							var key:=InputEventKey.new();key.pressed=true;key.unicode=digit.unicode_at(0);Input.parse_input_event(key);await process_frame
+						var enter:=InputEventKey.new();enter.pressed=true;enter.keycode=KEY_ENTER;Input.parse_input_event(enter);await process_frame
+					else:controller.begin_amount(int(step.index));controller.set_amount_text(str(int(step.amount)));controller.commit_amount()
 				C.HunterAmmunitionOperation.Material:
-					controller.begin_material(int(step.index))
+					if rendered:await pointer(ammunition_owner.panel,Vector2(356,80))
+					else:controller.begin_material(int(step.index))
 					if not check(await ready(controller),"Controller material lookup failed"):quit(1);return
 					var choice:=-1
 					for i in controller.materials.size():
 						var material: Dictionary=controller.materials[i]
 						if material.material_class==intent.material_class and material.mattype==intent.mattype and material.matindex==intent.matindex:choice=i;break
 					if not check(choice>=0,"Native material choice missing"):quit(1);return
-					controller.choose(choice)
+					if rendered:await pointer(ammunition_owner.panel,Vector2(64,78+choice*36))
+					else:controller.choose(choice)
 				C.HunterAmmunitionOperation.Add:
-					controller.begin_add()
+					if rendered:await pointer(ammunition_owner.panel,Vector2(348,32))
+					else:controller.begin_add()
 					var choice:=-1
 					for i in controller.types.size():
 						if controller.types[i].item_type==intent.item_type and controller.types[i].item_subtype==intent.item_subtype:choice=i;break
 					if not check(choice>=0,"Native ammunition type missing"):quit(1);return
-					controller.choose(choice)
-				C.HunterAmmunitionOperation.Delete:controller.delete_rule(int(step.index))
-				C.HunterAmmunitionOperation.Remove:controller.remove_stack(int(step.index),int(step.item_id))
+					if rendered:await pointer(ammunition_owner.panel,Vector2(64,78+choice*36))
+					else:controller.choose(choice)
+				C.HunterAmmunitionOperation.Delete:
+					if rendered:await pointer(ammunition_owner.panel,Vector2(752,80+(216 if int(step.index)==1 else 0)))
+					else:controller.delete_rule(int(step.index))
+				C.HunterAmmunitionOperation.Remove:
+					if rendered:await pointer(ammunition_owner.panel,Vector2(752,116))
+					else:controller.remove_stack(int(step.index),int(step.item_id))
 			if not check(await ready(controller) and controller.specs==hunter_specs(step.values.specs),"Controller edit/refresh differs from native"):quit(1);return
 		count+=1
 		var file:=FileAccess.open(directory+"/hunter-wire-step",FileAccess.WRITE);file.store_string(str(count));file.close()
@@ -1130,4 +1166,9 @@ func hunter_ammunition_wire() -> void:
 			await create_timer(0.01).timeout
 		if not check(FileAccess.get_file_as_string(directory+"/hunter-wire-ack")==str(count),"Native ammunition readback missing; no replay"):quit(1);return
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"steps":count}));file.close()
-	controller.dispose();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)
+	if rendered:
+		await pointer(ammunition_owner.panel,Vector2(752,32))
+		check(controller.phase==controller.Phase.Closed and scene_nodes[1].active==null,"Confirm retained ammunition ownership")
+	controller.dispose()
+	for node in scene_nodes:node.queue_free()
+	service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)

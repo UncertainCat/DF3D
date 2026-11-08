@@ -7,14 +7,25 @@ var panel
 var state=preload("res://scripts/standing_orders_state.gd").new()
 var layout_size:=Vector2.ZERO
 var opening:=false
+var ammunition_owner
+var world_source
+var action_service
 func _init() -> void:state.changed.connect(_sync)
 func configure(world,service,host) -> void:
 	ui_host=host;state.configure(service)
+	world_source=world;action_service=service
 	var layer:=CanvasLayer.new();layer.layer=10;add_child(layer)
 	panel=preload("res://scripts/standing_orders_view.gd").new();layer.add_child(panel)
 	panel.configure_standing_orders(world,state);panel.input_allowed=allowed
+	panel.hunter_ammunition_requested.connect(open_ammunition)
 	panel.cancelled.connect(close_panel);host.register(self);_layout();_sync()
 func allowed() -> bool:return play_enabled and ui_host!=null and ui_host.allows_panel_input(self)
+func open_ammunition() -> void:
+	if not allowed() or state.phase!=state.Phase.Ready or state.category!=6:return
+	if not is_instance_valid(ammunition_owner):
+		ammunition_owner=preload("res://scripts/hunter_ammunition_panel.gd").new();add_child(ammunition_owner)
+		ammunition_owner.configure(world_source,action_service,ui_host)
+	ammunition_owner.open_panel()
 func open_panel() -> void:
 	if play_enabled and ui_host!=null and ui_host.activate(self):
 		opening=true;state.open();opening=false;_sync()

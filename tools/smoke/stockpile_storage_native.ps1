@@ -232,6 +232,7 @@ try {
      $clientArgs=@('--headless')
      if($env:DF3D_STANDING_ORDERS_RENDER -eq '1' -or $env:DF3D_WORK_DETAILS_RENAME_RENDER -eq '1' -or ($env:DF3D_WORK_DETAILS_RESET_RENDER -eq '1' -and $name -eq 'work-details-edit-4-wire') -or $env:DF3D_RESIDENTS_JOB_ART_RENDER -eq '1' -or $env:DF3D_WORK_DETAILS_RENDER -eq '1' -or $env:DF3D_WORK_DETAILS_SETTINGS_RENDER -eq '1'){$clientArgs=@('--max-fps','30')}
      $clientArgs+=@('--path',"$repo/presentations/godot/project",'--script','res://tests/job_settings_wire_live.gd')
+     if($env:DF3D_HUNTER_AMMUNITION_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/job_settings_wire_live.gd')}
      $client=Start-Process -FilePath $engine -ArgumentList $clientArgs -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/job-settings-wire.stdout.log" -RedirectStandardError "$out/job-settings-wire.stderr.log"
      $null=$client.Handle
      if(-not $client.WaitForExit(25000)){$client.Kill();$client.WaitForExit();throw 'Job settings wire client timed out; no replay'}

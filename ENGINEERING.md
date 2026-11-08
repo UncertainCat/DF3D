@@ -62,8 +62,19 @@ only the known separate-renderer notice. The panel view and public route remain
 unfinished; controller acceptance does not establish rendered parity. The staged
 `hunter_ammunition_view.gd` and modal owner now load under the headless controller
 check (hunter-view-parse-20261108). They use the default captured panel geometry
-and native captions. Responsive geometry and input/hover parity remain pending;
-neither public navigation nor the Standing orders transition is connected yet.
+and native captions. Responsive geometry, hover and remaining input edges are
+pending; public navigation stays hidden. The staged Standing Other button now
+opens a child ammunition owner through the UI host, closing Standing orders.
+Confirm releases ammunition ownership without reopening Standing orders.
+Protected143701 on2026-11-08 verifies that handoff, type-picker Cancel, typed
+quantity Enter, visible material/type selections, Add, empty/populated Delete,
+stack Remove and Confirm. Its nine steps include the injected stale receipt and
+match the native equipment observer. Live main/type-picker crops both have zero
+pixel differences. Equipment restores; owned DF43068 exits unsaved with source
+preservation. GPU50C sampled; only known thread/finalize/shutdown diagnostics.
+Enable DF3D_HUNTER_AMMUNITION_RENDER=1 alongside the existing hunter wire flags
+for this capped30FPS workflow. It does not cover arbitrary sizes, all scroll
+positions, hover messages or quantity-field edge behavior.
 Rendered hunter-native-art-20261108 matches both the full default-size main panel
 and type-picker crop (168,220,808,540) against protected142845 with zero differing
 pixels. `ammunition_icon` selects installed DIAGONAL_DEFAULT/DIAGONAL_WOOD variants

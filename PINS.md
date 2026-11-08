@@ -29,8 +29,8 @@ Reads reject write fields; edits carry bounded ID, expected value and desired
 value. Hidden controls cannot be editable. Rejected/Stale/Unknown replies have
 no settings, and unknown mutations must not replay. Rebuild both peers:
 `Local\df3d_management_v146` isolates Management145. Native category dispatch
-is a subsequent change; the migrated bridge explicitly rejects categories1/2
-until connected to the verified adapter. Existing Workshops remains supported.
+uses the verified Hauling/Refuse adapter and returns updated dependency flags.
+Existing Workshops remains supported; category UI exposure remains staged.
 
 Management144 adds `CitizenState.outcome_unknown`. It is valid only for a rejected
 citizen mutation with no returned rows, selected targets, page cursor or list

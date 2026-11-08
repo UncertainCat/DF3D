@@ -29,7 +29,7 @@ func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
 	if OS.get_environment("DF3D_STANDING_ORDERS_RENDER")=="1":
 		await standing_orders_scene();return
-	if OS.get_environment("DF3D_STANDING_ORDERS_WIRE")=="1":
+	if OS.get_environment("DF3D_STANDING_ORDERS_WIRE")=="1" or OS.get_environment("DF3D_STANDING_ORDERS_CATEGORY_WIRE")=="1":
 		await standing_orders_wire();return
 	if OS.get_environment("DF3D_WORK_DETAILS_FAULT_WIRE")=="1":
 		await work_detail_fault();return
@@ -970,10 +970,17 @@ func standing_orders_wire() -> void:
 	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/standing-orders-native.json"))
 	var count:=0
 	for step: Dictionary in reference.wire_steps:
-		reply=await request("standing_orders",{"action":C.ManagementAction.StandingOrdersSet,"category":0,"setting_id":int(step.id),"expected_value":int(step.expected),"value":int(step.value)})
+		reply=await request("standing_orders",{"action":C.ManagementAction.StandingOrdersSet,"category":int(step.get("category",0)),"setting_id":int(step.id),"expected_value":int(step.expected),"value":int(step.value)})
 		var applied: bool=int(step.outcome)==int(C.StandingOrdersOutcome.Applied)
 		if not check(reply.get("status")== (C.ManagementStatus.Ok if applied else C.ManagementStatus.Rejected) and reply.get("standing_orders",{}).get("outcome")==int(step.outcome),"Standing orders edit outcome differs"):quit(1);return
-		if applied:check(reply.standing_orders.settings[int(step.id)].value==int(step.value),"Standing orders receipt value differs")
+		if applied:
+			check(reply.standing_orders.settings[int(step.id)].value==int(step.value),"Standing orders receipt value differs")
+			check(reply.standing_orders.category==int(step.get("category",0)),"Standing orders category receipt differs")
+			if int(step.get("category",0))==2:
+				for row: Dictionary in reply.standing_orders.settings:
+					var visible: bool=int(row.id)==0 or int(step.values.standing_orders_gather_refuse)!=0
+					var editable: bool=visible and (int(row.id)!=2 or int(step.values.standing_orders_gather_refuse_outside)!=0)
+					check(row.visible==visible and row.editable==editable,"Refuse receipt dependencies differ")
 		else:check(reply.standing_orders.settings.is_empty(),"Rejected standing orders retained authority")
 		count+=1
 		var file:=FileAccess.open(directory+"/standing-wire-step",FileAccess.WRITE);file.store_string(str(count));file.close()

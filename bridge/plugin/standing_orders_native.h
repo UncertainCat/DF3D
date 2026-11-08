@@ -104,6 +104,12 @@ inline std::array<uint8_t*,10> categoryValues(int32_t category) {
         df::global::standing_orders_dump_other};
     return {};
 }
+inline void categoryFlags(int32_t category,CategorySettings& result) noexcept {
+    if(category==2)for(size_t i=1;i<result.count;++i){
+        result.rows[i].visible=result.rows[0].value!=0;
+        result.rows[i].editable=result.rows[i].visible && (i!=2 || result.rows[1].value!=0);
+    }
+}
 inline std::optional<CategorySettings> categorySettings(int32_t category) {
     auto* base=categoryBase();
     if(!base || !df::global::world || !df::global::plotinfo || (category!=1 && category!=2))return std::nullopt;
@@ -116,19 +122,18 @@ inline std::optional<CategorySettings> categorySettings(int32_t category) {
         if(values[i]!=base+addresses[i] || *values[i]>1)return std::nullopt;
         result.rows[i]={int32_t(i),*values[i],true,true};
     }
-    if(category==2)for(size_t i=1;i<result.count;++i){
-        result.rows[i].visible=result.rows[0].value!=0;
-        result.rows[i].editable=result.rows[i].visible && (i!=2 || result.rows[1].value!=0);
-    }
+    categoryFlags(category,result);
     return result;
 }
-inline EditOutcome setCategory(int32_t category,int32_t id,int32_t expected,int32_t desired) {
+inline EditOutcome setCategory(int32_t category,int32_t id,int32_t expected,int32_t desired,CategorySettings* receipt=nullptr) {
     if(id<0 || desired<0 || desired>1)return EditOutcome::Unavailable;
-    const auto snapshot=categorySettings(category);
+    auto snapshot=categorySettings(category);
     if(!snapshot || size_t(id)>=snapshot->count || !snapshot->rows[id].editable)return EditOutcome::Unavailable;
     if(snapshot->rows[id].value!=expected)return EditOutcome::Stale;
     // Complete preflight before the sole nonthrowing scalar effect.
     *categoryValues(category)[id]=uint8_t(desired);
+    snapshot->rows[id].value=uint8_t(desired);categoryFlags(category,*snapshot);
+    if(receipt)*receipt=*snapshot;
     return EditOutcome::Applied;
 }
 

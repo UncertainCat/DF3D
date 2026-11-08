@@ -156,6 +156,40 @@ if os.getenv('DF3D_STANDING_ORDERS_CATEGORIES')=='1' then
   assert(json.encode(values())==json.encode(original),'Category provider did not restore settings')
   result.category_provider.restored=true
  end
+ if os.getenv('DF3D_STANDING_ORDERS_CATEGORY_WIRE')=='1' then
+  result.wire_steps={}
+  local current=json.decode(json.encode(original))
+  local function step(category,id,key,desired,outcome,expected)
+   expected=expected or current[key];outcome=outcome or 1
+   if outcome==1 then current[key]=desired end
+   result.wire_steps[#result.wire_steps+1]={category=category,id=id,expected=expected,value=desired,outcome=outcome,values=json.decode(json.encode(current))}
+  end
+  for _,cycle in ipairs(result.category_cycles)do
+   if cycle.category==2 then
+    if current.standing_orders_gather_refuse~=1 then step(2,0,'standing_orders_gather_refuse',1)end
+    if current.standing_orders_gather_refuse_outside~=1 then step(2,1,'standing_orders_gather_refuse_outside',1)end
+   end
+   assert(json.encode(current)==json.encode(cycle.before),'Wire cycle setup differs')
+   local key
+   for _,state in ipairs(cycle.states)do for name,value in pairs(state.values)do if value~=cycle.before[name]then key=name end end end
+   step(cycle.category,cycle.index,key,current[key],3,1-current[key])
+   for _,state in ipairs(cycle.states)do step(cycle.category,cycle.index,key,state.values[key])end
+  end
+  step(2,1,'standing_orders_gather_refuse_outside',0)
+  step(2,2,'standing_orders_gather_vermin_remains',1-current.standing_orders_gather_vermin_remains,2)
+  step(2,0,'standing_orders_gather_refuse',0)
+  for _,cycle in ipairs(result.category_cycles)do if cycle.category==2 and cycle.index>0 then
+   local key
+   for _,state in ipairs(cycle.states)do for name,value in pairs(state.values)do if value~=cycle.before[name]then key=name end end end
+   step(2,cycle.index,key,1-current[key],2)
+  end end
+  step(2,0,'standing_orders_gather_refuse',1)
+  step(2,1,'standing_orders_gather_refuse_outside',outdoor)
+  step(2,0,'standing_orders_gather_refuse',gather)
+  assert(json.encode(current)==json.encode(original),'Wire plan did not restore')
+  shot('standing-orders-wire')
+  assert(json.encode(values())==json.encode(original),'Category wire edits did not restore settings')
+ end
  result.categories_restored=true
  click(10,12)
 end

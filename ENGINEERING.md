@@ -38,8 +38,11 @@ editable fields. Category0/1/2 contracts contain11/6/10 ordered settings for
 Workshops/Hauling/Refuse. Only Workshops weaving accepts value2; hidden controls
 cannot be editable. Read/write validation, model codecs and Godot dictionaries
 share the contract. The staged Workshops state/view now consume both fields.
-Hauling/Refuse bridge requests currently return an explicit empty rejection;
-their native adapter is verified but dispatch/view wiring remains pending.
+Hauling/Refuse bridge requests now dispatch through the verified native adapter.
+Successful edits return a fixed-size receipt whose dependency flags are updated
+without allocation after the scalar write. Publication validation failure retains
+the category and Unknown while discarding all setting authority. UI wiring remains
+pending.
 
 Core19, extension, state and producer-to-Godot contract checks pass in
 standing-orders-contract146-categories-20261108. Round trips cover both new
@@ -50,7 +53,19 @@ owned DF39716 closes unsaved with source preservation. Headless viewer/native
 30FPS, GPU59C sampled; joined logs contain only the known separate-renderer
 notice. Built/installed plugin SHA256 is
 `AFE46858AF29009FFF1AA7F98F35DB9B5DA0EB175D1B88A9109CDE9B87631B4D`.
-This migration does not claim live Hauling/Refuse typed edits or rendered parity.
+This migration evidence alone does not claim live category edits or rendering.
+The subsequent protected124011 on2026-11-08 verifies64 Hauling/Refuse typed steps:
+38 applied edits (native cycles plus dependency setup/restoration),16 stale
+refusals and10 disabled-control refusals. Independent DF globals match every step;
+Refuse reply visibility/editability matches its resulting settings. All original
+values are restored, owned DF47636 closes unsaved and the source save is preserved.
+Headless viewer/native30FPS, GPU56C sampled; joined logs contain only the known
+separate-renderer notice. MSVC, root/core19 and management contract pass in
+standing-orders-category-wire-20261108. Built/installed plugin SHA256 is
+`16F92E025C2805F2A2B6D3E9340526AE3A2610FD95DC89A9B78569FF88E2340E`.
+CategoryRead dispatch is implemented but this live run covers CategorySet receipts;
+new category views, their read integration and publication-fault injection are not
+accepted by this evidence.
 
 Protected121945 on2026-11-08 captures all six Hauling and ten Refuse setting
 cycles through native clicks. Each accepted click changes exactly one mapped
@@ -77,8 +92,9 @@ are restored; owned DF17444 closes unsaved with source preservation. Native is
 capped at30FPS, no viewer is launched, GPU61C sampled. MSVC and root/core19 pass
 (standing-orders-category-provider-20261108). Built/installed plugin SHA256 is
 `5F97E7127B4719F1D4E001E8779030C6C5B22C88A10AAC21A9991005E4E5AFF1`.
-The diagnostic command uses this adapter. Category transport and DF3D views
-remain unfinished; Management145 still supports Workshops only.
+The diagnostic command and Management146 category dispatch use this adapter.
+DF3D category views remain unfinished; the historical Management145 contract
+supported Workshops only.
 
 `standing_orders_state.gd` is the staged Workshops presentation owner. It reads
 native settings through the shared semantic action service, submits explicit

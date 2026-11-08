@@ -897,5 +897,23 @@
     "workshop_compatibility_capture": "build/stockpile-storage-native-input-20261108-123607",
     "workshop_steps": 28,
     "scope": "New category round trips verified with contract producer; live category dispatch remains rejected pending wiring."
+  },
+  "category_wire_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-124011",
+    "version": 146,
+    "steps": 64,
+    "applied": 38,
+    "stale": 16,
+    "disabled": 10,
+    "independent_native_readback": true,
+    "receipt_dependencies_checked": true,
+    "restored": true,
+    "source_preserved": true,
+    "qa": "build/qa/standing-orders-category-wire-20261108",
+    "limits": [
+      "CategorySet receipts verified; CategoryRead live integration pending",
+      "No new category rendered UI acceptance",
+      "No live publication fault injection"
+    ]
   }
 }

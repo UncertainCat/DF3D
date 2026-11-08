@@ -472,6 +472,7 @@ struct StandingOrdersResult {
   uint8_t category=0;
   m::StandingOrdersOutcome outcome=m::StandingOrdersOutcome::Rejected;
   std::optional<df3d_standing::WorkshopSettings> settings;
+  std::optional<df3d_standing::CategorySettings> categorySettings;
 };
 std::optional<StandingOrdersResult> standingOrders;
 
@@ -1113,6 +1114,10 @@ void publish() {
     std::vector<flatbuffers::Offset<m::StandingOrderSetting>> rows;
     if(standingOrders->settings)for(const auto& row:*standingOrders->settings)
       rows.push_back(m::CreateStandingOrderSetting(b,row.id,row.value,row.available,row.available));
+    if(standingOrders->categorySettings)for(size_t i=0;i<standingOrders->categorySettings->count;++i){
+      const auto& row=standingOrders->categorySettings->rows[i];
+      rows.push_back(m::CreateStandingOrderSetting(b,row.id,row.value,row.visible,row.editable));
+    }
     standingOrdersResult=m::CreateStandingOrdersState(b,standingOrders->category,standingOrders->outcome,b.CreateVector(rows));
   }
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
@@ -1130,12 +1135,13 @@ void publish() {
     publishingFallback = true;
     const auto placed=construction.placed,skipped=construction.skipped;
     const auto first=construction.first_building;
+    const auto standingCategory=standingOrders?standingOrders->category:0;
     const bool standingUnknown=standingOrders && (standingOrders->outcome==m::StandingOrdersOutcome::Applied || standingOrders->outcome==m::StandingOrdersOutcome::Unknown);
     const bool citizenUnknown=citizenWriteStarted || citizens.outcomeUnknown;
     auto jobWrite=jobSettingsEdit;
     if(jobWrite && jobWrite->outcome!=m::JobSettingsEditOutcome::Applied && jobWrite->outcome!=m::JobSettingsEditOutcome::Unknown)jobWrite.reset();
     clearResult();
-    if(standingUnknown){standingOrders.emplace();standingOrders->outcome=m::StandingOrdersOutcome::Unknown;mutated=true;}
+    if(standingUnknown){standingOrders.emplace();standingOrders->category=standingCategory;standingOrders->outcome=m::StandingOrdersOutcome::Unknown;mutated=true;}
     if(citizenUnknown){citizens.outcomeUnknown=true;mutated=true;}
     if(jobWrite){jobWrite->outcome=m::JobSettingsEditOutcome::Unknown;jobSettingsEdit=jobWrite;}
     construction.placed=placed;construction.skipped=skipped;construction.first_building=first;
@@ -4089,7 +4095,23 @@ void run(color_ostream& out) {
     message.clear();status=m::ManagementStatus::Rejected;standingOrders.emplace();
     const auto& query=*r->standing_orders();
     standingOrders->category=query.category();
-    if(query.category()!=0){publish();return;}
+    if(query.category()!=0){
+      try {
+        if(r->action()==m::ManagementAction::StandingOrdersRead) {
+          const auto snapshot=df3d_standing::categorySettings(query.category());
+          if(snapshot){standingOrders->categorySettings=*snapshot;standingOrders->outcome=m::StandingOrdersOutcome::None;status=m::ManagementStatus::Ok;}
+        } else {
+          df3d_standing::CategorySettings receipt;
+          const auto outcome=df3d_standing::setCategory(query.category(),query.setting_id(),query.expected_value(),query.value(),&receipt);
+          if(outcome==df3d_standing::EditOutcome::Stale)standingOrders->outcome=m::StandingOrdersOutcome::Stale;
+          else if(outcome==df3d_standing::EditOutcome::Applied){
+            standingOrders->categorySettings=receipt;standingOrders->outcome=m::StandingOrdersOutcome::Applied;
+            mutated=true;status=m::ManagementStatus::Ok;
+          }
+        }
+      } catch(...) {standingOrders.emplace();standingOrders->category=query.category();}
+      publish();return;
+    }
     const bool set=r->action()==m::ManagementAction::StandingOrdersSet;
     try {
       auto snapshot=df3d_standing::workshopSettings();

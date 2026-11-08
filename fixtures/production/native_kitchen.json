@@ -3097,5 +3097,520 @@
       }
     ],
     "scope": "Actual WM_CHAR input through protected owned native window. Kitchen ignores tested non-ASCII characters while retaining adjacent ASCII; unlike Residents, these cases produce no partial UTF-8. Tests cover e-acute, a-circumflex, CJK and26-byte boundary. No broader IME/paste claim."
+  },
+  "layout_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-174610",
+    "scope": "Owned native resize capture; source save unchanged. Visible food rows: minimum6, small7, wide16, default13. Number sort hitbox spans ten cells (77 through86 inclusive), while its arrow occupies four. Fixed columns can extend outside the minimum-width panel. Simulated cursor/context-scroll keys at pointer200,250 did not change captured visible rows or cursor; this does not establish physical wheel behavior. Full DF3D responsive geometry and scrolling remain unaccepted.",
+    "layouts": [
+      {
+        "label": "minimum",
+        "columns": 114,
+        "rows": 46,
+        "visible_food_count": 6,
+        "first_food": {
+          "name": "Alfalfa seeds",
+          "rect": [
+            15,
+            17,
+            74,
+            17
+          ]
+        },
+        "last_food": {
+          "name": "Rice",
+          "rect": [
+            15,
+            32,
+            74,
+            32
+          ]
+        },
+        "controls": [
+          {
+            "name": "Filter box",
+            "rect": [
+              8,
+              38,
+              46,
+              40
+            ]
+          },
+          {
+            "name": "",
+            "rect": [
+              15,
+              12,
+              17,
+              12
+            ]
+          },
+          {
+            "name": "",
+            "rect": [
+              36,
+              12,
+              38,
+              12
+            ]
+          },
+          {
+            "name": "Type",
+            "rect": [
+              15,
+              15,
+              24,
+              15
+            ]
+          },
+          {
+            "name": "Name",
+            "rect": [
+              25,
+              15,
+              34,
+              15
+            ]
+          },
+          {
+            "name": "Number",
+            "rect": [
+              77,
+              15,
+              86,
+              15
+            ]
+          },
+          {
+            "name": "",
+            "rect": [
+              89,
+              12,
+              92,
+              14
+            ]
+          },
+          {
+            "name": "",
+            "rect": [
+              93,
+              12,
+              96,
+              14
+            ]
+          },
+          {
+            "name": "Cook",
+            "rect": [
+              89,
+              15,
+              92,
+              15
+            ]
+          },
+          {
+            "name": "Brew",
+            "rect": [
+              93,
+              15,
+              96,
+              15
+            ]
+          }
+        ],
+        "cursor": 0
+      },
+      {
+        "label": "small",
+        "columns": 120,
+        "rows": 50,
+        "visible_food_count": 7,
+        "first_food": {
+          "name": "Alfalfa seeds",
+          "rect": [
+            15,
+            17,
+            74,
+            17
+          ]
+        },
+        "last_food": {
+          "name": "Rat weed seeds",
+          "rect": [
+            15,
+            35,
+            74,
+            35
+          ]
+        },
+        "controls": [
+          {
+            "name": "Filter box",
+            "rect": [
+              8,
+              42,
+              46,
+              44
+            ]
+          },
+          {
+            "name": "",
+            "rect": [
+              15,
+              12,
+              17,
+              12
+            ]
+          },
+          {
+            "name": "",
+            "rect": [
+              36,
+              12,
+              38,
+              12
+            ]
+          },
+          {
+            "name": "Type",
+            "rect": [
+              15,
+              15,
+              24,
+              15
+            ]
+          },
+          {
+            "name": "Name",
+            "rect": [
+              25,
+              15,
+              34,
+              15
+            ]
+          },
+          {
+            "name": "Number",
+            "rect": [
+              77,
+              15,
+              86,
+              15
+            ]
+          },
+          {
+            "name": "",
+            "rect": [
+              89,
+              12,
+              92,
+              14
+            ]
+          },
+          {
+            "name": "",
+            "rect": [
+              93,
+              12,
+              96,
+              14
+            ]
+          },
+          {
+            "name": "Cook",
+            "rect": [
+              89,
+              15,
+              92,
+              15
+            ]
+          },
+          {
+            "name": "Brew",
+            "rect": [
+              93,
+              15,
+              96,
+              15
+            ]
+          }
+        ],
+        "cursor": 0
+      },
+      {
+        "label": "wide",
+        "columns": 200,
+        "rows": 75,
+        "visible_food_count": 16,
+        "first_food": {
+          "name": "Alfalfa seeds",
+          "rect": [
+            15,
+            15,
+            74,
+            15
+          ]
+        },
+        "last_food": {
+          "name": "Sweet pods",
+          "rect": [
+            15,
+            60,
+            74,
+            60
+          ]
+        },
+        "controls": [
+          {
+            "name": "Filter box",
+            "rect": [
+              8,
+              67,
+              46,
+              69
+            ]
+          },
+          {
+            "name": "",
+            "rect": [
+              15,
+              10,
+              17,
+              10
+            ]
+          },
+          {
+            "name": "",
+            "rect": [
+              36,
+              10,
+              38,
+              10
+            ]
+          },
+          {
+            "name": "Type",
+            "rect": [
+              15,
+              13,
+              24,
+              13
+            ]
+          },
+          {
+            "name": "Name",
+            "rect": [
+              25,
+              13,
+              34,
+              13
+            ]
+          },
+          {
+            "name": "Number",
+            "rect": [
+              77,
+              13,
+              86,
+              13
+            ]
+          },
+          {
+            "name": "",
+            "rect": [
+              89,
+              10,
+              92,
+              12
+            ]
+          },
+          {
+            "name": "",
+            "rect": [
+              93,
+              10,
+              96,
+              12
+            ]
+          },
+          {
+            "name": "Cook",
+            "rect": [
+              89,
+              13,
+              92,
+              13
+            ]
+          },
+          {
+            "name": "Brew",
+            "rect": [
+              93,
+              13,
+              96,
+              13
+            ]
+          },
+          {
+            "name": "",
+            "rect": [
+              89,
+              14,
+              91,
+              16
+            ]
+          }
+        ],
+        "cursor": 0
+      },
+      {
+        "label": "default",
+        "columns": 150,
+        "rows": 66,
+        "visible_food_count": 13,
+        "first_food": {
+          "name": "Alfalfa seeds",
+          "rect": [
+            15,
+            17,
+            74,
+            17
+          ]
+        },
+        "last_food": {
+          "name": "Plump helmet spawn",
+          "rect": [
+            15,
+            53,
+            74,
+            53
+          ]
+        },
+        "controls": [
+          {
+            "name": "Filter box",
+            "rect": [
+              8,
+              58,
+              46,
+              60
+            ]
+          },
+          {
+            "name": "",
+            "rect": [
+              15,
+              12,
+              17,
+              12
+            ]
+          },
+          {
+            "name": "",
+            "rect": [
+              36,
+              12,
+              38,
+              12
+            ]
+          },
+          {
+            "name": "Type",
+            "rect": [
+              15,
+              15,
+              24,
+              15
+            ]
+          },
+          {
+            "name": "Name",
+            "rect": [
+              25,
+              15,
+              34,
+              15
+            ]
+          },
+          {
+            "name": "Number",
+            "rect": [
+              77,
+              15,
+              86,
+              15
+            ]
+          },
+          {
+            "name": "",
+            "rect": [
+              89,
+              12,
+              92,
+              14
+            ]
+          },
+          {
+            "name": "",
+            "rect": [
+              93,
+              12,
+              96,
+              14
+            ]
+          },
+          {
+            "name": "Cook",
+            "rect": [
+              89,
+              15,
+              92,
+              15
+            ]
+          },
+          {
+            "name": "Brew",
+            "rect": [
+              93,
+              15,
+              96,
+              15
+            ]
+          }
+        ],
+        "cursor": 0
+      }
+    ],
+    "simulated_keys": [
+      {
+        "key": "CURSOR_DOWN",
+        "cursor": 0,
+        "visible_foods_unchanged": true
+      },
+      {
+        "key": "CURSOR_UP",
+        "cursor": 0,
+        "visible_foods_unchanged": true
+      },
+      {
+        "key": "CONTEXT_SCROLL_DOWN",
+        "cursor": 0,
+        "visible_foods_unchanged": true
+      },
+      {
+        "key": "CONTEXT_SCROLL_UP",
+        "cursor": 0,
+        "visible_foods_unchanged": true
+      },
+      {
+        "key": "CONTEXT_SCROLL_PAGEDOWN",
+        "cursor": 0,
+        "visible_foods_unchanged": true
+      },
+      {
+        "key": "CONTEXT_SCROLL_PAGEUP",
+        "cursor": 0,
+        "visible_foods_unchanged": true
+      }
+    ]
   }
 }

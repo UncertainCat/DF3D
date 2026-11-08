@@ -56,7 +56,7 @@ func _gui_input(event: InputEvent) -> void:
 		if Rect2(680+(permission-1)*32,list_top()-24,32,36).has_point(event.position):state.toggle_capability(permission);accept_event();return
 	var positions: Array=[88,168,584,680,712]
 	for column in 5:
-		if Rect2(positions[column],list_top()+12,80 if column<2 else 32,12).has_point(event.position):state.select_sort(column);accept_event();return
+		if Rect2(positions[column],list_top()+12,80 if column<3 else 32,12).has_point(event.position):state.select_sort(column);accept_event();return
 	var index:=int(floor((event.position.y-rows_top())/36))
 	if index<0 or index>=capacity():return
 	if state.first+index<state.rows.size():state.selected=state.first+index;queue_redraw()

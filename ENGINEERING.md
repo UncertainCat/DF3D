@@ -71,6 +71,17 @@ independent exclusion/job readback. Source preservation and unsaved owned exit
 pass; only the known separate-thread notice remains. Native filter/sort control
 gestures, navigation retention, rendered layout and public exposure remain open.
 
+Protected174610 on2026-11-08 records Kitchen geometry at minimum, small, wide
+and default sizes, with6/7/16/13 visible rows respectively. Source preservation
+passes and the owned game exits unsaved. The durable layout_reference retains
+control bounds and row endpoints. Number sorting has a ten-cell hitbox despite
+its four-cell arrow; the staged view now uses that native click width. Native
+fixed columns overflow the minimum-width frame. Full responsive rendering,
+scrollbar geometry and physical wheel behavior remain unaccepted. Simulated
+cursor/context-scroll keys at pointer200,250 left visible rows and cursor
+unchanged. Headless core19 and Kitchen controller checks pass in
+kitchen-layout-reference; no graphical viewer was launched for this correction.
+
 The staged Kitchen view reuses installed Labor chrome, native row/icon assets,
 count captions and permission icons. `kitchen-view-base` renders at1200x800 with
 30FPS; its unselected-row crop(64,232)-(928,664) matches native171829 with zero

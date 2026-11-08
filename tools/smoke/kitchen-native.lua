@@ -344,6 +344,34 @@ if os.getenv('DF3D_KITCHEN_SEARCH')=='1' then
  local f=assert(io.open(out..'/kitchen-search.json','w'));f:write(json.encode(observations));f:close()
  shot('kitchen-search')
 end
+if os.getenv('DF3D_KITCHEN_LAYOUT')=='1' then
+ local observations={}
+ local known={};for _,row in ipairs(result.known)do known[row.name]=true end
+ local function observe(label)
+  local rows={};local controls={}
+  local function collect(widget)
+   if (widget.flag.whole&3)~=3 then return end
+   local rect={widget.rect.x1,widget.rect.y1,widget.rect.x2,widget.rect.y2}
+   if df.widget_text:is_instance(widget) and known[dfhack.df2utf(widget.str)]then rows[#rows+1]={name=dfhack.df2utf(widget.str),rect=rect}end
+   if widget.name=='Filter box' or (#widget.custom_activated>0 and widget.rect.y1<16)then controls[#controls+1]={name=widget.name,rect=rect}end
+   if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do collect(child)end end
+  end
+  collect(panel);observations[#observations+1]={label=label,columns=g.dimx,rows=g.dimy,foods=rows,controls=controls,cursor=panel.cursor_idx}
+ end
+ for _,size in ipairs({'minimum','small','wide','default'})do
+  local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('name-resize-'..size);f:close();assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+  local deadline=dfhack.getTickCount()+5000
+  while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Kitchen resize timed out');script.sleep(1,'frames')end
+  assert(os.remove(out..'/owner-input-ack'));for _=1,5 do script.sleep(1,'frames');view:render(dfhack.getTickCount())end
+  observe(size);shot('kitchen-layout-'..size)
+ end
+ for _,key in ipairs({'CURSOR_DOWN','CURSOR_UP','CONTEXT_SCROLL_DOWN','CONTEXT_SCROLL_UP','CONTEXT_SCROLL_PAGEDOWN','CONTEXT_SCROLL_PAGEUP'})do
+  g.precise_mouse_x=200;g.precise_mouse_y=250;g.mouse_x=25;g.mouse_y=20
+  gui.simulateInput(view,key);for _=1,3 do script.sleep(1,'frames');view:render(dfhack.getTickCount())end
+  observe(key)
+ end
+ local f=assert(io.open(out..'/kitchen-layout.json','w'));f:write(json.encode(observations));f:close()
+end
 if os.getenv('DF3D_KITCHEN_JOB_EFFECTS')=='1' then
  local path=debug.getinfo(1,'S').source:sub(2):gsub('kitchen%-native.lua$','kitchen-job-effects-native.lua')
  assert(loadfile(path))(out,view,panel,click,result.known)

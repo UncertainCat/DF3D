@@ -121,6 +121,7 @@
 #include "work_detail_settings_native.h"
 #include "standing_orders_native.h"
 #include "hunter_ammunition_native.h"
+#include "hunter_ammunition_captions_native.h"
 #include "residents_row_native.h"
 #include "residents_specialization_native.h"
 #include "modules/Buildings.h"
@@ -2414,6 +2415,31 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             Json::Value row(Json::objectValue);row["id"]=id;row["caption"]=DF2UTF(activity->caption);
             row["key"]=DF2UTF(activity->key);row["fg"]=activity->foreground;row["bg"]=activity->background;
             row["bright"]=activity->bright;result["rows"].append(row);
+          }
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="hunter-ammunition-captions-probe") {
+          if(parameters.size()!=1)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto choices=df3d_hunter_ammunition::candidates();
+          const auto specs=df3d_hunter_ammunition::snapshot();if(!choices || !specs)return CR_FAILURE;
+          Json::Value result(Json::objectValue);
+          for(const auto& row:choices->types){
+            const auto text=df3d_hunter_ammunition::caption(row.type,row.subtype,{-1,-1,-1},true,row.foreign);
+            if(!text)return CR_FAILURE;result["types"].append(DF2UTF(*text));
+          }
+          if(!specs->empty())for(const auto& row:choices->materials){
+            const auto text=df3d_hunter_ammunition::caption(int16_t(specs->front().item_type),int16_t(specs->front().item_subtype),row);
+            if(!text)return CR_FAILURE;result["materials"].append(DF2UTF(*text));
+          }
+          for(const auto& row:*specs){
+            const auto text=df3d_hunter_ammunition::caption(int16_t(row.item_type),int16_t(row.item_subtype),{int16_t(row.material_class),int16_t(row.mattype),row.matindex});
+            if(!text)return CR_FAILURE;Json::Value spec(Json::objectValue);spec["caption"]=DF2UTF(*text);int64_t total=0;
+            for(const auto id:row.assigned){auto* item=df::item::find(id);if(!item)continue;
+              const auto name=df3d_hunter_ammunition::stackCaption(item);if(!name)return CR_FAILURE;
+              Json::Value stack(Json::objectValue);stack["id"]=id;stack["caption"]=DF2UTF(*name);
+              stack["quantity"]=item->getStackSize();total+=item->getStackSize();spec["items"].append(stack);}
+            spec["assigned_quantity"]=Json::Int64(total);result["specs"].append(spec);
           }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }

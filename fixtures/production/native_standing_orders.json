@@ -2484,6 +2484,72 @@
       "restored": true,
       "plugin_sha256": "B2B602CD1265ACAD85CA4E448129EE9F32C2F25F863D1C157B4E549C6CFFFF3B",
       "scope": "Native comparison for captured valid items; missing-item branch is statically traced, not live-tested."
+    },
+    "caption_provider": {
+      "capture": "build/stockpile-storage-native-input-20261108-133820",
+      "types": [
+        "Bolts",
+        "Arrows (foreign)",
+        "Blowdarts (foreign)",
+        "Jagged arrows (foreign)",
+        "Double-tipped blowdarts (foreign)",
+        "Cone-headed arrows (foreign)",
+        "Long bolts (foreign)",
+        "Jagged bolts (foreign)",
+        "Cone-headed arrows (foreign)",
+        "Wide-headed arrows (foreign)",
+        "Tapered blowdarts (foreign)"
+      ],
+      "first_materials": [
+        "Bolts",
+        "Metal bolts",
+        "Wood bolts",
+        "Bone bolts",
+        "Iron bolts",
+        "Silver bolts",
+        "Copper bolts",
+        "Bronze bolts",
+        "Steel bolts",
+        "Bismuth bronze bolts"
+      ],
+      "material_count": 992,
+      "material_captions_sha256": "b87f3673fd3f924c3ebdf595828ad4d066e9ef8674b7d6a314115fa731ae96ec",
+      "specs": [
+        {
+          "assigned_quantity": 119,
+          "caption": "Bolts",
+          "items": [
+            {
+              "caption": "(silver bolts [30])",
+              "id": 13119,
+              "quantity": 30
+            },
+            {
+              "caption": "(silver bolts [32])",
+              "id": 27744,
+              "quantity": 32
+            },
+            {
+              "caption": "(iron bolts [27])",
+              "id": 27756,
+              "quantity": 27
+            },
+            {
+              "caption": "(copper bolts [29])",
+              "id": 27792,
+              "quantity": 29
+            },
+            {
+              "caption": "(silver bolt)",
+              "id": 27842,
+              "quantity": 1
+            }
+          ]
+        }
+      ],
+      "verified_visible_types": 10,
+      "verified_visible_materials": 10,
+      "plugin_sha256": "A0748487776F17B8893A1AC3E33FC2A81E5E4E3A01A5CBF40BFEC4EDD04F5349"
     }
   }
 }

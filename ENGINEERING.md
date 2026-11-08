@@ -33,6 +33,24 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Standing orders native discovery
 
+Hunter ammunition captions use pinned native a82c10 formatting and52d650
+capitalization with owned strings and restored historical-material cache. Prefix
+addresses follow native454c0d's material-category switch; literal bytes and the
+foreign suffix come from the installation. Type-choice arguments differ from
+rule/material arguments exactly as in renderer450140. Assigned-stack captions
+use native c65450(false,-1); quantity totals use getStackSize for existing IDs.
+No menu text or cached rendering state supplies runtime captions.
+Protected133820 verifies ten visible type labels, ten visible material labels,
+the rule caption and all five assigned-stack captions against captured native
+rows, plus the119-round total. The provider emits11 type/992 material captions,
+but offscreen labels are not claimed visually verified. Equipment stays
+unchanged; owned DF27888 closes unsaved with source preservation, native30FPS,
+GPU49C. MSVC builds; installed/built plugin SHA256 is
+`A0748487776F17B8893A1AC3E33FC2A81E5E4E3A01A5CBF40BFEC4EDD04F5349`.
+Diagnostic hunter-ammunition-captions-probe and protected flag
+DF3D_HUNTER_AMMUNITION_CAPTIONS=1 establish this provider evidence. Typed transport,
+item artwork, full scrolling/resizing and public panel integration remain pending.
+
 Hunter ammunition amount/material semantic edits now use a full ordered
 pointer-free snapshot (including assigned item IDs) as their expected receipt.
 Changed rows, order or assignments reject the intent. Amount accepts0..5000 and

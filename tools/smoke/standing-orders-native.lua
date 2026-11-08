@@ -473,6 +473,21 @@ if os.getenv('DF3D_HUNTER_AMMUNITION_NATIVE')=='1' then
   assert(json.encode(before)==json.encode(snapshot()),'Semantic structural checks did not restore state')
   result.hunter_ammunition.edit_provider=checks
  end
+ if os.getenv('DF3D_HUNTER_AMMUNITION_CAPTIONS')=='1' then
+  local text,code=dfhack.run_command_silent('df3d','hunter-ammunition-captions-probe')
+  assert(code==0,'Ammunition captions provider failed');local captions=json.decode(text)
+  for i=1,10 do
+   assert(result.hunter_ammunition.add_picker.rows[i+1].text:match('^%s*(.-)%s*$')==captions.types[i],'Type caption differs from native')
+   assert(result.hunter_ammunition.material_picker.rows[i+1].text:match('^%s*(.-)%s*$')==captions.materials[i],'Material caption differs from native')
+  end
+  assert(captions.specs[1].assigned_quantity==119,'Assigned quantity differs from native')
+  assert(result.hunter_ammunition.rows[2].text:find(captions.specs[1].caption,1,true),'Rule caption differs from native')
+  for i,item in ipairs(captions.specs[1].items)do
+   assert(result.hunter_ammunition.rows[i+2].text:find(item.caption,1,true),'Assigned stack caption differs from native')
+  end
+  assert(json.encode(before)==json.encode(snapshot()),'Caption formatting changed equipment')
+  result.hunter_ammunition.caption_provider=captions
+ end
  gui.simulateInput(view,'LEAVESCREEN');settle()
  result.hunter_ammunition.cancelled_amount={open=ui.open,setting_ammo=ui.setting_ammo,entering=ui.setting_ammo_entering_amount,values=snapshot()}
  assert(json.encode(before)==json.encode(snapshot()),'Cancelling amount changed ammunition')

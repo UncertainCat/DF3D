@@ -121,6 +121,7 @@
 #include "work_detail_settings_native.h"
 #include "standing_orders_native.h"
 #include "chores_native.h"
+#include "kitchen_native.h"
 #include "hunter_ammunition_native.h"
 #include "hunter_ammunition_captions_native.h"
 #include "residents_row_native.h"
@@ -2525,6 +2526,16 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           for(const auto& [key,rows]:{std::pair{"children",&captions->children},std::pair{"labors",&captions->labors}}){
             result[key]=Json::Value(Json::arrayValue);
             for(const auto& row:*rows){Json::Value value(Json::objectValue);value["id"]=row.id;value["caption"]=DF2UTF(row.text);result[key].append(value);}}
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="kitchen-probe") {
+          if(parameters.size()!=1)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto rows=df3d_kitchen::read();if(!rows)return CR_FAILURE;
+          Json::Value result(Json::arrayValue);
+          for(const auto& row:*rows){Json::Value value(Json::objectValue);
+            value["type"]=row.type;value["subtype"]=row.subtype;value["mat"]=row.material;value["matg"]=row.materialIndex;
+            value["count"]=row.count;value["capabilities"]=row.capabilities;value["name"]=DF2UTF(row.name);result.append(value);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="chores-probe") {

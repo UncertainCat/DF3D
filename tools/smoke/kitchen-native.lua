@@ -9,6 +9,10 @@ local function click(x,y)
  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
  for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
 end
+local cold
+if os.getenv('DF3D_KITCHEN_PROVIDER')=='1' then
+ local text,code=dfhack.run_command_silent('df3d','kitchen-probe');assert(code==0,'Cold owned Kitchen provider rejected');cold=json.decode(text)
+end
 click(45,10)
 local result={vtable={},callbacks={},rows={}}
 local panel
@@ -36,6 +40,15 @@ while node~=head do
  node=df.reinterpret_cast('uint64_t',node).value
 end
 assert(#result.known==count,'Kitchen map count differs')
+if cold then
+ local function key(row)return table.concat({row.type,row.subtype,row.mat,row.matg},':')end
+ local expected={};for _,row in ipairs(result.known)do expected[key(row)]=row end
+ assert(#cold==#result.known,'Owned Kitchen row count differs')
+ for _,row in ipairs(cold)do local native=assert(expected[key(row)],'Owned Kitchen unexpected material');assert(json.encode(row)==json.encode(native),'Owned Kitchen aggregate differs');expected[key(row)]=nil end
+ assert(next(expected)==nil,'Owned Kitchen missing material')
+ result.provider={rows=#cold,cold=true,matched=true}
+end
+
 result.category=panel.current_category;result.type_filter=panel.filter_type;result.perm_filter=panel.filter_perm
 result.filter=dfhack.df2utf(panel.filter_str);result.cursor=panel.cursor_idx;result.sorts={}
 for _,entry in ipairs(panel.sorting_by)do result.sorts[#result.sorts+1]=entry.ident end

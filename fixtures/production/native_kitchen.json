@@ -2,7 +2,7 @@
   "df_version": "53.16",
   "steam_build": 24557528,
   "capture": "build/stockpile-storage-native-input-20261108-161252",
-  "scope": "Native Kitchen discovery; no runtime adapter or public route accepted. Diagnostic widget/menu reads are not permitted runtime inputs.",
+  "scope": "Native Kitchen discovery and cold owned aggregation acceptance. Sorting, display quantities, edits, transport and public UI remain unaccepted. Diagnostic widget/menu reads are not permitted runtime inputs.",
   "initial": {
     "category": 0,
     "cursor": 0,
@@ -819,5 +819,24 @@
     "Per-item aggregation and mutation callers located; no owned-context comparison yet.",
     "Full list eligibility lives in screen initializer4308da..430a34; do not invoke widget construction as runtime API.",
     "Sorting/filter ownership, stock-count display, item appearance, exact job effects and mutation stale/unknown handling remain unfinished."
-  ]
+  ],
+  "provider_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-162107",
+    "cold_before_kitchen": true,
+    "matched_rows": 22,
+    "compared": [
+      "type",
+      "subtype",
+      "mat",
+      "matg",
+      "name",
+      "count",
+      "capabilities"
+    ],
+    "source_preserved": true,
+    "native_aggregator_rva": "42af10",
+    "native_item_vector": "ANY_COOKABLE",
+    "owned_map": true,
+    "limitations": "Single paused fortress; no sorting, display quantity, mutation, lifecycle or UI acceptance."
+  }
 }

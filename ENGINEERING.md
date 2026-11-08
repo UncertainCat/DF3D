@@ -59,8 +59,16 @@ counts and names (a82c10 plus52d650), accumulating into an unordered_map at cont
 call is accepted. The constructor46a510 and screen initializer42fbd0..430d4e
 create UI objects and must not be used as semantic providers. Initializer
 4308da..430a34 scans the world item vector, applies nativec8b600, plant-material
-processing checks and item flags, then calls the aggregator. That eligibility
-boundary still needs an owned adapter and native comparison. Native431ea0 copies
+processing checks and item flags, then calls the aggregator. The owned adapter
+scans ANY_COOKABLE (RVA23e5c60), retains those eligibility checks and calls the
+native aggregator with its own map. It uses native hash466210 because DFHack's
+generated hash differs. Release MSVC layout assertions and code hashes guard
+the boundary. Protected162107 calls the provider before opening Kitchen, then
+compares all22 material keys, names, counts and capability bits exactly against
+the native map. DF42424 exits unsaved with source preservation; GPU61C sampled.
+This is single-fortress aggregation acceptance, not UI or edit acceptance.
+MSVC and core19 pass (kitchen-owned-provider-20261108). Installed plugin SHA256
+A2B09CACB39F4486A2E2C654A30A8C77D51E4E4AFE1E36B38FEB385D6BF2F83C. Native431ea0 copies
 map entries, filters/sorts and builds row widgets; it is not a pure read API.
 Filter430d50 and sort wrapper46c820 are traced separately for further ownership
 audit. Runtime Kitchen transport, mutation validation, UI and public exposure

@@ -4137,5 +4137,16 @@
     ],
     "owned_df_closed": true,
     "source_preserved": true
+  },
+  "owner_lifecycle_reference": {
+    "verification": "build/qa/work-details-owner-lifecycle-20261108",
+    "coverage": [
+      "Close immediately hides panel and releases input host while a rename is pending.",
+      "Reopen is blocked while buffered explicit typing drains to its original detail.",
+      "Buffered text uses the last confirmed native revision.",
+      "Late rename completion does not reopen the panel.",
+      "Owner destruction disconnects UI callbacks while the service-owned rename finishes."
+    ],
+    "scope": "Headless real Work Details owner/state/name-session with injected semantic replies and presentation/host stubs. Establishes ownership and callback behavior, not new native effects, rendered input, transport faults or all lifecycle cases."
   }
 }

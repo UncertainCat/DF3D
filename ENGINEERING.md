@@ -33,6 +33,18 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Work Details native discovery
 
+The Work Details owner now has headless lifecycle coverage for closing during
+buffered renaming and destruction with a submitted rename outstanding. Closing
+immediately hides the panel and releases its input host; reopening cannot
+retarget a draining rename. Explicit typed text continues from confirmed
+receipts, and late completion cannot reopen the closed owner. Destroying the
+owner disconnects its callbacks while the service-owned session completes.
+`work-details-owner-lifecycle-20261108` passes core19, extension and Work Details
+checks. This exercises the real owner/state/name-session with injected semantic
+replies and presentation/host stubs; it does not establish new rendered input,
+native effects or transport fault handling. The legacy citizen post-write
+Unknown gap and final resize render confirmation remain open.
+
 Work Details resizing retains native worker capacities4/10/14 at912x552,
 1200x800 and1600x900. The worker roster keeps a minimum864-pixel extent relative
 to the panel origin, even when its frame becomes narrower. A separate left

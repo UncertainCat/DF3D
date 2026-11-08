@@ -4,7 +4,7 @@ const Owner=preload("res://scripts/work_details_panel.gd")
 const State=preload("res://scripts/work_details_state.gd")
 const C=preload("res://scripts/management_contract.gd")
 const A=C.ManagementAction
-class Service extends RefCounted:
+class Service extends Node:
 	signal session_changed
 	var next:=0
 	var calls: Dictionary={}
@@ -17,6 +17,18 @@ class Service extends RefCounted:
 		var call: Dictionary=calls[ticket];var result:=payload.duplicate(true)
 		if not result.has("status"):result.status=C.ManagementStatus.Ok
 		result.action=call.intent.action;call.observer.call(ticket,result,call.intent)
+class PanelStub extends Control:
+	var editing:=false
+	func begin_name() -> void:editing=true
+	func finish_name() -> void:editing=false
+	func clear_name() -> void:editing=false
+	func layout(_size: Vector2) -> void:pass
+class HostStub extends RefCounted:
+	var active
+	func activate(owner) -> bool:active=owner;return true
+	func allows_panel_input(owner) -> bool:return active==owner
+	func release(owner) -> void:
+		if active==owner:active=null
 var failures:=0
 func check(ok: bool,message: String) -> void:
 	if not ok:failures+=1;push_error(message)
@@ -33,7 +45,7 @@ func complete_workers(service,state,ids: Array) -> void:
 		service.reply(state.ticket,{"residents_rows":{"rows":page}})
 func _initialize() -> void:call_deferred("run")
 func run() -> void:
-	var service:=Service.new();var state:=State.new();state.configure(service);state.open()
+	var service:=Service.new();root.add_child(service);var state:=State.new();state.configure(service);state.open()
 	service.reply(state.ticket,page([detail(0)],9007199254740995,1))
 	check(state.details.is_empty() and service.calls[state.ticket].intent.expected_list_revision==9007199254740995,"List pages retain exact receipt and publish atomically")
 	service.reply(state.ticket,page([detail(1)],9007199254740995))
@@ -152,8 +164,29 @@ func run() -> void:
 	check(naming.stopped and naming.snapshot.is_empty() and service.next==count,"Uncertain rename discards buffered typing without replay")
 	await process_frame
 	state.dispose()
+	await owner_lifecycle(service)
+	service.queue_free();await process_frame
 	if failures==0:print("WORK_DETAILS_STATE_PASS")
 	quit(0 if failures==0 else 1)
+
+func owner_lifecycle(service) -> void:
+	var owner:=Owner.new();root.add_child(owner)
+	owner.panel=PanelStub.new();owner.add_child(owner.panel);owner.ui_host=HostStub.new();owner.state.configure(service)
+	owner.open_panel();service.reply(owner.state.ticket,page([detail(0,71)]));complete_workers(service,owner.state,[7])
+	owner._begin_name();owner._name_edited("First");var first:int=owner.name_session.ticket;owner._name_edited("Final")
+	owner.close_panel();var count:int=service.next;owner.open_panel()
+	check(owner.state.phase==State.Phase.Closed and not owner.panel.visible and owner.ui_host.active==null and service.next==count,"Close retires UI immediately; reopening cannot retarget a draining rename")
+	var renamed:=detail(0,73);renamed.name="First";service.reply(first,{"citizen":{"details":[renamed]}})
+	check(service.calls[service.next].intent.name=="Final" and service.calls[service.next].intent.expected_revision==73,"Closed owner drains only explicitly typed text using the confirmed receipt")
+	renamed=detail(0,75);renamed.name="Final";service.reply(service.next,{"citizen":{"details":[renamed]}})
+	check(owner.name_session==null and owner.state.phase==State.Phase.Closed and not owner.panel.visible,"Late rename completion cannot reopen the closed owner")
+	owner.open_panel();service.reply(owner.state.ticket,page([detail(0,75)]));complete_workers(service,owner.state,[7])
+	owner._begin_name();owner._name_edited("Detached");first=owner.name_session.ticket
+	var retained=owner.name_session;owner.queue_free();await process_frame
+	check(is_instance_valid(retained) and retained.ending and retained.get_parent()==service,"Destroying the owner leaves its submitted rename with the service")
+	renamed=detail(0,77);renamed.name="Detached";service.reply(first,{"citizen":{"details":[renamed]}})
+	check(retained.stopped,"Service-owned rename completes after observer destruction")
+	await process_frame
 
 func settings_page(revision: int=9007199254740993) -> Dictionary:
 	var catalog: Array=[]

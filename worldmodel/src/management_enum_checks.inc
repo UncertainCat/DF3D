@@ -1,4 +1,16 @@
 // Generated exhaustive model/wire correspondence checks.
+static_assert(static_cast<int>(wm::KitchenMenuOutcome::None) == static_cast<int>(df3d::mirror::KitchenMenuOutcome::None));
+static_assert(static_cast<int>(wm::KitchenMenuOutcome::Applied) == static_cast<int>(df3d::mirror::KitchenMenuOutcome::Applied));
+static_assert(static_cast<int>(wm::KitchenMenuOutcome::Rejected) == static_cast<int>(df3d::mirror::KitchenMenuOutcome::Rejected));
+static_assert(static_cast<int>(wm::KitchenMenuOutcome::Stale) == static_cast<int>(df3d::mirror::KitchenMenuOutcome::Stale));
+static_assert(static_cast<int>(wm::KitchenMenuOutcome::Unknown) == static_cast<int>(df3d::mirror::KitchenMenuOutcome::Unknown));
+static_assert(sizeof(df3d::mirror::EnumValuesKitchenMenuOutcome()) / sizeof(df3d::mirror::KitchenMenuOutcome) == 5);
+static_assert(static_cast<int>(wm::KitchenSortColumn::Type) == static_cast<int>(df3d::mirror::KitchenSortColumn::Type));
+static_assert(static_cast<int>(wm::KitchenSortColumn::Name) == static_cast<int>(df3d::mirror::KitchenSortColumn::Name));
+static_assert(static_cast<int>(wm::KitchenSortColumn::Number) == static_cast<int>(df3d::mirror::KitchenSortColumn::Number));
+static_assert(static_cast<int>(wm::KitchenSortColumn::Cook) == static_cast<int>(df3d::mirror::KitchenSortColumn::Cook));
+static_assert(static_cast<int>(wm::KitchenSortColumn::Brew) == static_cast<int>(df3d::mirror::KitchenSortColumn::Brew));
+static_assert(sizeof(df3d::mirror::EnumValuesKitchenSortColumn()) / sizeof(df3d::mirror::KitchenSortColumn) == 5);
 static_assert(static_cast<int>(wm::ChoresOutcome::None) == static_cast<int>(df3d::mirror::ChoresOutcome::None));
 static_assert(static_cast<int>(wm::ChoresOutcome::Applied) == static_cast<int>(df3d::mirror::ChoresOutcome::Applied));
 static_assert(static_cast<int>(wm::ChoresOutcome::Rejected) == static_cast<int>(df3d::mirror::ChoresOutcome::Rejected));
@@ -210,7 +222,9 @@ static_assert(static_cast<int>(wm::ManagementAction::HunterAmmunitionCandidates)
 static_assert(static_cast<int>(wm::ManagementAction::HunterAmmunitionApply) == static_cast<int>(df3d::mirror::ManagementAction::HunterAmmunitionApply));
 static_assert(static_cast<int>(wm::ManagementAction::ChoresRead) == static_cast<int>(df3d::mirror::ManagementAction::ChoresRead));
 static_assert(static_cast<int>(wm::ManagementAction::ChoresApply) == static_cast<int>(df3d::mirror::ManagementAction::ChoresApply));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 98);
+static_assert(static_cast<int>(wm::ManagementAction::KitchenRead) == static_cast<int>(df3d::mirror::ManagementAction::KitchenRead));
+static_assert(static_cast<int>(wm::ManagementAction::KitchenApply) == static_cast<int>(df3d::mirror::ManagementAction::KitchenApply));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 100);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -515,3 +529,5 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::HunterAmmunitionCandidat
 static_assert(wm::isRuntimeAction(wm::ManagementAction::HunterAmmunitionApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::HunterAmmunitionApply));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::ChoresRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ChoresRead));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::ChoresApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ChoresApply));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::KitchenRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::KitchenRead));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::KitchenApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::KitchenApply));

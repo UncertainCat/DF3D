@@ -2,6 +2,20 @@
 #pragma once
 #include <cstdint>
 namespace wm {
+enum class KitchenMenuOutcome : uint8_t {
+  None = 0,
+  Applied = 1,
+  Rejected = 2,
+  Stale = 3,
+  Unknown = 4,
+};
+enum class KitchenSortColumn : uint8_t {
+  Type = 0,
+  Name = 1,
+  Number = 2,
+  Cook = 3,
+  Brew = 4,
+};
 enum class ChoresOutcome : uint8_t {
   None = 0,
   Applied = 1,
@@ -233,6 +247,8 @@ enum class ManagementAction : uint8_t {
   HunterAmmunitionApply = 95,
   ChoresRead = 96,
   ChoresApply = 97,
+  KitchenRead = 98,
+  KitchenApply = 99,
 };
 enum class ManagementStatus : uint8_t {
   Idle = 0,
@@ -541,11 +557,15 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::HunterAmmunitionApply: return true;
   case ManagementAction::ChoresRead: return true;
   case ManagementAction::ChoresApply: return true;
+  case ManagementAction::KitchenRead: return true;
+  case ManagementAction::KitchenApply: return true;
   default: return false;
   }
 }
 constexpr const char* managementDomain(ManagementAction action) {
   switch (action) {
+  case ManagementAction::KitchenRead: return "kitchen_menu";
+  case ManagementAction::KitchenApply: return "kitchen_menu";
   case ManagementAction::ChoresRead: return "chores";
   case ManagementAction::ChoresApply: return "chores";
   case ManagementAction::HunterAmmunitionRead: return "hunter_ammunition";

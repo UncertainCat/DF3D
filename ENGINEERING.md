@@ -33,6 +33,30 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Kitchen native discovery
 
+Management151 introduces the owned `kitchen_menu` contract (KitchenRead98 and
+KitchenApply99), separate from the retired Kitchen menu API. Read accepts native
+type/capability filters, query text and ordered unique sort priorities. It returns
+native food identities, counts/capabilities, display captions, estimate flags,
+exclusions and material tokens, plus the full ordered exclusion receipt. Apply
+requires that receipt and the selected food identity/count/capabilities; only
+Cook1 or Brew2 is valid. Applied returns no list: the controller must refresh.
+Rejected/Stale/Unknown carry no authority and Unknown never licenses replay.
+The wire and Godot boundaries enforce exact typed fields and bounded vectors.
+Readers and bridge must rebuild together; older recordings gain no invented
+facts. The migration explicitly rejects these actions until native dispatch is
+connected; the Kitchen screen remains unfinished and hidden.
+
+Core19, the extension build and Kitchen end-to-end fake-host checks pass in
+`kitchen-contract151-roundtrip`, including ordered filters/sorts and receipts,
+Cook success, Brew Unknown with no authority, and malformed typed requests.
+MSVC builds the matching plugin. Protected171301 on2026-11-08 verifies28 existing
+Standing orders wire steps with source preservation and unsaved owned exit;
+only the documented Godot separate-thread notice remains. Earlier171200 reached
+the same semantic assertions but logged unclassified dummy-mesh/update_end
+shutdown errors and is not accepted as a whole-lane pass. Neither run establishes
+Kitchen native dispatch or screen acceptance. Installed plugin SHA256:
+D2D62ADB9A97AB61464A89D86D05B063C813D7A2A3C0F13DC247E7C825453451.
+
 The durable `fixtures/production/native_kitchen.json` retains the native data and
 callback provenance needed to compare an owned Kitchen adapter; it is not a plan
 or shipped artwork. Protected160919/161252 opens the actual Kitchen tab, captures

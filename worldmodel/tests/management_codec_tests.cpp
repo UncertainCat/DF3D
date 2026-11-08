@@ -4832,6 +4832,45 @@ TEST_CASE("Hunter ammunition read quantities agree with assigned stack receipts"
   }
 }
 
+TEST_CASE("Kitchen queries and edits preserve independent owned receipts") {
+  for(bool apply:{false,true})for(int fault=0;fault<5;++fault){
+    wm::ManagementRequest request;request.action=apply?wm::ManagementAction::KitchenApply:wm::ManagementAction::KitchenRead;
+    auto& q=request.kitchenMenu;
+    if(apply){q.target=wm::KitchenFoodReceipt{{54,-1,419,0},12,3};q.permission=1;q.expected.emplace();
+      q.expected->push_back({{53,-1,419,0},1});q.expected->push_back({{54,-1,419,0},2});
+      if(fault==1)q.expected.reset();
+      if(fault==2)q.query.emplace();
+      if(fault==3)q.permission=3;
+      if(fault==4)q.target->capabilities=2;
+    }else{q.query.emplace();q.query->query="plump";q.query->sorts={{wm::KitchenSortColumn::Name,true},{wm::KitchenSortColumn::Number,false}};
+      if(fault==1)q.query->sorts.push_back(q.query->sorts.front());
+      if(fault==2)q.expected.emplace();
+      if(fault==3)q.query->typeFilter=4;
+      if(fault==4)q.query->sorts.clear();}
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    if(!fault){REQUIRE(value->kitchen_menu());const auto* v=value->kitchen_menu();
+      if(apply){CHECK(v->expected()->Get(0)->key()->item_type()==53);CHECK(v->expected()->Get(1)->flags()==2);CHECK(v->target()->count()==12);}
+      else{CHECK(v->query()->query()->str()=="plump");CHECK(v->query()->sorts()->Get(0)->reverse());}}
+  }
+}
+TEST_CASE("Kitchen unknown outcomes cannot publish authoritative rows") {
+  for(bool unknown:{false,true})for(int fault=0;fault<3;++fault){
+    flatbuffers::FlatBufferBuilder b;std::vector<flatbuffers::Offset<wire::KitchenMenuRow>> rows;
+    if(!unknown || fault==1){const auto key=wire::CreateKitchenFoodKey(b,54,-1,419,0);const auto receipt=wire::CreateKitchenFoodReceipt(b,key,12,3);
+      rows.push_back(wire::CreateKitchenMenuRow(b,receipt,b.CreateString("fixture food"),b.CreateString("12?"),true,2,b.CreateString("PLANT_MAT:MUSHROOM_HELMET_PLUMP:STRUCTURAL")));}
+    const auto kitchen=wire::CreateKitchenMenuState(b,unknown?wire::KitchenMenuOutcome::Unknown:wire::KitchenMenuOutcome::None,
+      b.CreateVector(rows),b.CreateVector(std::vector<flatbuffers::Offset<wire::KitchenExclusion>>{}));
+    wire::ManagementStateBuilder state(b);state.add_revision(2);state.add_kitchen_menu(kitchen);
+    state.add_action(unknown && fault!=2?wire::ManagementAction::KitchenApply:wire::ManagementAction::KitchenRead);
+    state.add_status(unknown?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    const bool invalid=unknown && fault!=0;CHECK(bool(wire::validateManagementState(*value))==invalid);
+    if(!invalid){const auto decoded=codec::decodeState(value);REQUIRE(decoded.kitchenMenu);CHECK(decoded.kitchenMenu->rows.size()==(unknown?0:1));
+      if(!unknown){CHECK(decoded.kitchenMenu->rows[0].receipt.count==12);CHECK(decoded.kitchenMenu->rows[0].countCaption=="12?");}}
+  }
+}
 TEST_CASE("Chores requests carry full ordered receipts and validate targets") {
   for(int operation=0;operation<=3;++operation)for(int fault=0;fault<5;++fault){
     wm::ManagementRequest request;request.action=operation?wm::ManagementAction::ChoresApply:wm::ManagementAction::ChoresRead;

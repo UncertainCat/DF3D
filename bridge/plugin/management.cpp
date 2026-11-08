@@ -4142,6 +4142,10 @@ void run(color_ostream& out) {
     } catch(...) {residentsRows.reset();}
     publish();return;
   }
+  // Protocol migration is staged separately from the native Kitchen dispatcher.
+  if(r->action()==m::ManagementAction::KitchenRead || r->action()==m::ManagementAction::KitchenApply) {
+    status=m::ManagementStatus::Rejected;publish();return;
+  }
   if(r->action()==m::ManagementAction::ChoresRead || r->action()==m::ManagementAction::ChoresApply) {
     namespace h=df3d_chores;
     status=m::ManagementStatus::Rejected;message.clear();chores.emplace();bool writeStarted=false;

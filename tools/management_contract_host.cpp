@@ -866,6 +866,20 @@ int main(int argc,char** argv) {
         }
         standing=m::CreateStandingOrdersState(b,q->category(),standingUnknown?m::StandingOrdersOutcome::Unknown:set?m::StandingOrdersOutcome::Applied:m::StandingOrdersOutcome::None,b.CreateVector(rows));
       }
+      flatbuffers::Offset<m::KitchenMenuState> kitchen;bool kitchenUnknown=false;
+      if(request && (request->action()==m::ManagementAction::KitchenRead || request->action()==m::ManagementAction::KitchenApply)){
+        const auto* q=request->kitchen_menu();require(q,"kitchen request");const bool read=request->action()==m::ManagementAction::KitchenRead;
+        kitchenUnknown=!read && q->permission()==2;
+        if(read){require(q->query() && q->query()->type_filter()==-1 && q->query()->query()->str()=="plump" && q->query()->sorts()->size()==2 &&
+          q->query()->sorts()->Get(0)->column()==m::KitchenSortColumn::Name && q->query()->sorts()->Get(0)->reverse() && q->query()->sorts()->Get(1)->column()==m::KitchenSortColumn::Number,"kitchen query order");}
+        else{require(q->target() && q->target()->key()->item_type()==54 && q->target()->key()->mat_type()==419 && q->target()->count()==12 && q->target()->capabilities()==3,"kitchen target");
+          require(q->expected() && q->expected()->size()==2 && q->expected()->Get(0)->key()->item_type()==53 && q->expected()->Get(0)->flags()==1 && q->expected()->Get(1)->key()->item_type()==54 && q->expected()->Get(1)->flags()==2,"kitchen ordered exclusions");}
+        std::vector<flatbuffers::Offset<m::KitchenMenuRow>> rows;std::vector<flatbuffers::Offset<m::KitchenExclusion>> exclusions;
+        if(read){const auto food=m::CreateKitchenFoodKey(b,54,-1,419,0);const auto receipt=m::CreateKitchenFoodReceipt(b,food,12,3);
+          rows.push_back(m::CreateKitchenMenuRow(b,receipt,b.CreateString("fixture food"),b.CreateString("12?"),true,2,b.CreateString("PLANT_MAT:MUSHROOM_HELMET_PLUMP:STRUCTURAL")));
+          exclusions.push_back(m::CreateKitchenExclusion(b,m::CreateKitchenFoodKey(b,53,-1,419,0),1));exclusions.push_back(m::CreateKitchenExclusion(b,food,2));}
+        kitchen=m::CreateKitchenMenuState(b,kitchenUnknown?m::KitchenMenuOutcome::Unknown:read?m::KitchenMenuOutcome::None:m::KitchenMenuOutcome::Applied,b.CreateVector(rows),b.CreateVector(exclusions));
+      }
       flatbuffers::Offset<m::ChoresState> chores;bool choresUnknown=false;
       if(request && (request->action()==m::ManagementAction::ChoresRead || request->action()==m::ManagementAction::ChoresApply)){
         const auto* q=request->chores();require(q,"chores request");const bool read=request->action()==m::ManagementAction::ChoresRead;
@@ -914,12 +928,12 @@ int main(int argc,char** argv) {
         hunter=m::CreateHunterAmmunitionState(b,hunterUnknown?m::HunterAmmunitionOutcome::Unknown:read || choices?m::HunterAmmunitionOutcome::None:m::HunterAmmunitionOutcome::Applied,
           choices?39:-1,choices?0:-1,b.CreateVector(specs),b.CreateVector(rules),b.CreateVector(types),b.CreateVector(materials));
       }
-      m::ManagementStateBuilder state(b);state.add_chores(chores);state.add_hunter_ammunition(hunter);state.add_work_detail_settings(settings);state.add_standing_orders(standing);state.add_residents(workers);state.add_agreement(agreements);state.add_report(reports);state.add_production(production);state.add_construction(construction);state.add_citizen(citizens);state.add_work_order(work);state.add_schema_version(m::kManagementVersion);
+      m::ManagementStateBuilder state(b);state.add_kitchen_menu(kitchen);state.add_chores(chores);state.add_hunter_ammunition(hunter);state.add_work_detail_settings(settings);state.add_standing_orders(standing);state.add_residents(workers);state.add_agreement(agreements);state.add_report(reports);state.add_production(production);state.add_construction(construction);state.add_citizen(citizens);state.add_work_order(work);state.add_schema_version(m::kManagementVersion);
       state.add_revision(revision);state.add_world_epoch(epoch);state.add_client_id(request?request->client_id():0);
       state.add_request_seq(request?request->seq():0);state.add_action(request?request->action():m::ManagementAction::Catalog);
       state.add_creature_knowledge(knowledge);
       const bool citizenUnknown=request && request->action()==m::ManagementAction::WorkDetailEdit && request->citizen()->name()->str()=="UnknownMarker";
-      state.add_status((missing || knowledgeRejected || citizenUnknown || standingUnknown || hunterUnknown || choresUnknown)?m::ManagementStatus::Rejected:m::ManagementStatus::Ok);state.add_message(text);
+      state.add_status((missing || knowledgeRejected || citizenUnknown || standingUnknown || hunterUnknown || choresUnknown || kitchenUnknown)?m::ManagementStatus::Rejected:m::ManagementStatus::Ok);state.add_message(text);
       state.add_building_id(2147483000);state.add_build_stage(-1);state.add_max_stage(-1);state.add_area(areas);
       auto finished=state.Finish();b.Finish(finished);
       const auto* value=flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer());
@@ -952,7 +966,7 @@ int main(int argc,char** argv) {
         A::AreaCreate,A::AreaUpdate,A::AreaUpdate,
         A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaCreate,A::AreaInspect,
         A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,
-        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::PrepareAlertDismissal,A::DismissAlert,A::ProductionInspect,A::ProductionInspect,A::ProductionInspect,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::WorkDetailWorkersQuery,A::WorkDetailSettingsRead,A::WorkDetailSettingsToggle,A::StandingOrdersRead,A::StandingOrdersSet,A::StandingOrdersSet,A::StandingOrdersRead,A::StandingOrdersSet,A::StandingOrdersRead,A::StandingOrdersSet,A::StandingOrdersRead,A::StandingOrdersSet,A::StandingOrdersRead,A::StandingOrdersSet,A::StandingOrdersRead,A::StandingOrdersSet,A::HunterAmmunitionRead,A::HunterAmmunitionCandidates,A::HunterAmmunitionApply,A::HunterAmmunitionApply,A::HunterAmmunitionApply,A::HunterAmmunitionApply,A::HunterAmmunitionApply,A::HunterAmmunitionApply,A::ChoresRead,A::ChoresApply,A::ChoresApply,A::ChoresApply,A::ChoresApply};
+        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::PrepareAlertDismissal,A::DismissAlert,A::ProductionInspect,A::ProductionInspect,A::ProductionInspect,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::WorkDetailWorkersQuery,A::WorkDetailSettingsRead,A::WorkDetailSettingsToggle,A::StandingOrdersRead,A::StandingOrdersSet,A::StandingOrdersSet,A::StandingOrdersRead,A::StandingOrdersSet,A::StandingOrdersRead,A::StandingOrdersSet,A::StandingOrdersRead,A::StandingOrdersSet,A::StandingOrdersRead,A::StandingOrdersSet,A::StandingOrdersRead,A::StandingOrdersSet,A::HunterAmmunitionRead,A::HunterAmmunitionCandidates,A::HunterAmmunitionApply,A::HunterAmmunitionApply,A::HunterAmmunitionApply,A::HunterAmmunitionApply,A::HunterAmmunitionApply,A::HunterAmmunitionApply,A::ChoresRead,A::ChoresApply,A::ChoresApply,A::ChoresApply,A::ChoresApply,A::KitchenRead,A::KitchenApply,A::KitchenApply};
     publish(1,nullptr);signal("ready");size_t received=0;
     const auto stop=std::chrono::steady_clock::now()+std::chrono::seconds(30);
     std::vector<uint8_t> bytes(m::kManagementCommandCapacity);
@@ -1109,7 +1123,7 @@ int main(int argc,char** argv) {
         case A::TradeUpdate: {
           auto* v=r->trade();require(v && v->depot_id()==2147483000 && v->expected_revision()==epoch && v->requested()==1 && v->anyone()==-1 && v->item_id()==-1,"trade payload");break;
         }
-        case A::CreatureKnowledgeRead: case A::WorkDetailWorkersQuery: case A::WorkDetailSettingsRead: case A::WorkDetailSettingsToggle: case A::StandingOrdersRead: case A::StandingOrdersSet: case A::HunterAmmunitionRead: case A::HunterAmmunitionCandidates: case A::HunterAmmunitionApply: case A::ChoresRead: case A::ChoresApply: break; // Full identity is checked while constructing the reply.
+        case A::CreatureKnowledgeRead: case A::WorkDetailWorkersQuery: case A::WorkDetailSettingsRead: case A::WorkDetailSettingsToggle: case A::StandingOrdersRead: case A::StandingOrdersSet: case A::HunterAmmunitionRead: case A::HunterAmmunitionCandidates: case A::HunterAmmunitionApply: case A::ChoresRead: case A::ChoresApply: case A::KitchenRead: case A::KitchenApply: break; // Full identity is checked while constructing the reply.
         default: throw std::runtime_error("unexpected action");
         }
         publish(received+1,r);

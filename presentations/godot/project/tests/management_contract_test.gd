@@ -398,6 +398,7 @@ func run() -> void:
 	await test_standing_orders()
 	await test_hunter_ammunition()
 	await test_chores()
+	await test_kitchen_menu()
 	# Host signals only after validating every expected payload.
 	for i in 300:
 		if FileAccess.get_file_as_string(status_path) == "passed": break
@@ -1157,3 +1158,21 @@ func test_chores() -> void:
 	base.value=false;seq=world.management_request("chores",base);assert(seq>0);reply=await receipt(seq,S.Rejected)
 	assert(reply.outcome=="unknown" and not reply.chores.has("snapshot"))
 	assert(Contract.is_mutation(A.ChoresApply) and not Contract.is_mutation(A.ChoresRead))
+
+func test_kitchen_menu() -> void:
+	var query: Dictionary={"action":A.KitchenRead,"type_filter":-1,"capability_filter":0,"query":"plump","sorts":[{"column":1,"reverse":true},{"column":2,"reverse":false}]}
+	for patch in [{"type_filter":4},{"capability_filter":4},{"query":12},{"sorts":[]},{"sorts":[{"column":1,"reverse":true},{"column":1,"reverse":false}]},{"sorts":[{"column":1,"reverse":1}]},{"target":{}}]:
+		var invalid:=query.duplicate(true);invalid.merge(patch,true);assert(world.management_request("kitchen_menu",invalid)==0)
+	var seq: int=world.management_request("kitchen_menu",query);assert(seq>0)
+	var reply:=await receipt(seq);var value: Dictionary=reply.kitchen_menu
+	assert(value.rows.size()==1 and value.exclusions.size()==2)
+	assert(value.rows[0].name=="fixture food" and value.rows[0].count_caption=="12?" and value.rows[0].estimated and value.rows[0].excluded==2)
+	assert(value.rows[0].material_token=="PLANT_MAT:MUSHROOM_HELMET_PLUMP:STRUCTURAL")
+	var intent: Dictionary={"action":A.KitchenApply,"target":value.rows[0].receipt,"permission":1,"expected":value.exclusions}
+	for patch in [{"permission":3},{"permission":1.5},{"expected":0},{"query":"x"},{"target":{"key":{"item_type":32768,"item_subtype":-1,"mat_type":419,"mat_index":0},"count":12,"capabilities":3}},{"target":{"key":value.rows[0].receipt.key,"count":12,"capabilities":2}}]:
+		var invalid:=intent.duplicate(true);invalid.merge(patch,true);assert(world.management_request("kitchen_menu",invalid)==0)
+	seq=world.management_request("kitchen_menu",intent);assert(seq>0);reply=await receipt(seq)
+	assert(reply.kitchen_menu.outcome==Contract.KitchenMenuOutcome.Applied and reply.kitchen_menu.rows.is_empty() and reply.kitchen_menu.exclusions.is_empty())
+	intent.permission=2;seq=world.management_request("kitchen_menu",intent);assert(seq>0);reply=await receipt(seq,S.Rejected)
+	assert(reply.outcome=="unknown" and reply.kitchen_menu.outcome==Contract.KitchenMenuOutcome.Unknown and reply.kitchen_menu.rows.is_empty() and reply.kitchen_menu.exclusions.is_empty())
+	assert(Contract.is_mutation(A.KitchenApply) and not Contract.is_mutation(A.KitchenRead))

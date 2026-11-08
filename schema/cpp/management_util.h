@@ -110,8 +110,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 150;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v150";
+inline constexpr uint32_t kManagementVersion = 151;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v151";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -409,12 +409,23 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::ChoresApply &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::KitchenApply &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
       !(action >= ManagementAction::AppointmentsOpen && action <= ManagementAction::AppointmentsBack) &&
       !(action >= ManagementAction::KitchenOpen && action <= ManagementAction::KitchenClose);
+}
+inline bool validKitchenKey(const KitchenFoodKey* k) {
+  return k && k->item_type()>=0 && k->item_subtype()>=-1 && k->mat_type()>=-1 && k->mat_index()>=-1;
+}
+inline bool validKitchenReceipt(const KitchenFoodReceipt* r) {
+  return r && validKitchenKey(r->key()) && r->count()>=0 && r->capabilities()>=1 && r->capabilities()<=3;
+}
+inline bool validKitchenExclusions(const flatbuffers::Vector<flatbuffers::Offset<KitchenExclusion>>* rows) {
+  if(!rows || rows->size()>65536)return false;
+  for(const auto* row:*rows)if(!row || !validKitchenKey(row->key()) || row->flags()>3)return false;
+  return true;
 }
 inline bool validChoresSnapshot(const ChoresSnapshot* s) {
   if(!s || !s->children() || !s->exempted() || !s->labors() ||
@@ -481,7 +492,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::ChoresApply)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::KitchenApply)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -575,6 +586,19 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     const auto* q=r.residents_specialization();
     if(!q || q->unit_id()<0 || !q->expected_revision() || q->expected_revision()>INT64_MAX)return "invalid residents specialization request";
   } else if(r.residents_specialization())return "unexpected residents specialization request";
+  if(r.action()==ManagementAction::KitchenRead || r.action()==ManagementAction::KitchenApply) {
+    const auto* q=r.kitchen_menu();if(!q)return "missing kitchen request";
+    if(r.action()==ManagementAction::KitchenRead){
+      const auto* v=q->query();
+      if(!v || v->type_filter()<-1 || v->type_filter()>3 || v->capability_filter()>3 || !v->query() || v->query()->size()>4096 ||
+         !v->sorts() || !v->sorts()->size() || v->sorts()->size()>5 || q->target() || q->permission() || q->expected())return "invalid kitchen query";
+      unsigned seen=0;for(const auto* sort:*v->sorts()){
+        if(!sort || sort->column()<KitchenSortColumn::Type || sort->column()>KitchenSortColumn::Brew)return "invalid kitchen sort";
+        const unsigned bit=1u<<unsigned(sort->column());if(seen&bit)return "duplicate kitchen sort";seen|=bit;
+      }
+    }else if(q->query() || !validKitchenReceipt(q->target()) || !validKitchenExclusions(q->expected()) ||
+      (q->permission()!=1 && q->permission()!=2) || !(q->target()->capabilities()&q->permission()))return "invalid kitchen edit";
+  }else if(r.kitchen_menu())return "unexpected kitchen request";
   if(r.action()==ManagementAction::ChoresRead || r.action()==ManagementAction::ChoresApply) {
     const auto* q=r.chores();if(!q)return "missing chores request";
     if(r.action()==ManagementAction::ChoresRead) {
@@ -1078,7 +1102,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::ChoresApply ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::KitchenApply ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -1154,6 +1178,18 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     for(auto id:*r->unit_ids())if(id<0 || !ids.insert(id).second)return "invalid residents identity";
   } else if((s.action()==ManagementAction::ResidentsQuery || s.action()==ManagementAction::WorkDetailWorkersQuery) && s.status()==ManagementStatus::Ok)
     return "residents result required";
+  if(const auto* r=s.kitchen_menu()) {
+    const bool read=s.action()==ManagementAction::KitchenRead,apply=s.action()==ManagementAction::KitchenApply;
+    if((!read && !apply) || !r->rows() || !validKitchenExclusions(r->exclusions()) || r->rows()->size()>65536)return "invalid kitchen result";
+    if(s.status()==ManagementStatus::Ok){
+      if(r->outcome()!=(read?KitchenMenuOutcome::None:KitchenMenuOutcome::Applied))return "invalid kitchen success";
+      if(apply && (r->rows()->size() || r->exclusions()->size()))return "unexpected kitchen edit data";
+      for(const auto* row:*r->rows())if(!row || !validKitchenReceipt(row->receipt()) || !row->name() || row->name()->size()>16384 ||
+        !row->count_caption() || !row->count_caption()->size() || row->count_caption()->size()>64 || row->excluded()>3 ||
+        !row->material_token() || row->material_token()->size()>256)return "invalid kitchen row";
+    }else if(s.status()!=ManagementStatus::Rejected || r->rows()->size() || r->exclusions()->size() ||
+      (r->outcome()!=KitchenMenuOutcome::Rejected && (!apply || (r->outcome()!=KitchenMenuOutcome::Stale && r->outcome()!=KitchenMenuOutcome::Unknown))))return "invalid kitchen refusal";
+  }else if(s.status()==ManagementStatus::Ok && (s.action()==ManagementAction::KitchenRead || s.action()==ManagementAction::KitchenApply))return "missing kitchen result";
   if(const auto* r=s.chores()) {
     const bool read=s.action()==ManagementAction::ChoresRead,apply=s.action()==ManagementAction::ChoresApply;
     if((!read && !apply) || !r->children() || !r->labors())return "invalid chores result";

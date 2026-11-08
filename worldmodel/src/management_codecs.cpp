@@ -46,6 +46,12 @@ ManagementState decodeState(const m::ManagementState* s) {
     next.creatureHeader=std::move(header);
   }
   if(const auto* r=s->residents())next.residents=ResidentsState{{r->unit_ids()->begin(),r->unit_ids()->end()}};
+  if(const auto* r=s->kitchen_menu()) {
+    next.kitchenMenu.emplace();auto& out=*next.kitchenMenu;out.outcome=KitchenMenuOutcome(r->outcome());
+    const auto key=[](const m::KitchenFoodKey* k){return KitchenFoodKey{k->item_type(),k->item_subtype(),k->mat_type(),k->mat_index()};};
+    for(const auto* row:*r->rows()){const auto* v=row->receipt();out.rows.push_back({{key(v->key()),v->count(),v->capabilities()},row->name()->str(),row->count_caption()->str(),row->estimated(),row->excluded(),row->material_token()->str()});}
+    for(const auto* row:*r->exclusions())out.exclusions.push_back({key(row->key()),row->flags()});
+  }
   if(const auto* r=s->chores()) {
     next.chores.emplace();auto& out=*next.chores;out.outcome=ChoresOutcome(r->outcome());
     if(const auto* v=r->snapshot()) {out.snapshot.emplace();auto& snap=*out.snapshot;
@@ -219,6 +225,19 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
   }
   const auto anchor=r.materialAnchor.value_or(TilePos{r.x,r.y,r.z});
   const m::TilePos materialAnchor(anchor.x,anchor.y,anchor.z);
+  flatbuffers::Offset<m::KitchenMenuRequest> kitchenMenu;
+  if(r.action==ManagementAction::KitchenRead || r.action==ManagementAction::KitchenApply){
+    const auto& q=r.kitchenMenu;
+    const auto key=[&](const KitchenFoodKey& k){return m::CreateKitchenFoodKey(b,k.itemType,k.itemSubtype,k.matType,k.matIndex);};
+    flatbuffers::Offset<m::KitchenMenuQuery> query;flatbuffers::Offset<m::KitchenFoodReceipt> target;
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<m::KitchenExclusion>>> expected;
+    if(q.query){const auto& v=*q.query;std::vector<flatbuffers::Offset<m::KitchenSort>> sorts;
+      for(const auto& s:v.sorts)sorts.push_back(m::CreateKitchenSort(b,m::KitchenSortColumn(s.column),s.reverse));
+      query=m::CreateKitchenMenuQuery(b,v.typeFilter,v.capabilityFilter,b.CreateString(v.query),b.CreateVector(sorts));}
+    if(q.target){const auto& v=*q.target;target=m::CreateKitchenFoodReceipt(b,key(v.key),v.count,v.capabilities);}
+    if(q.expected){std::vector<flatbuffers::Offset<m::KitchenExclusion>> rows;for(const auto& v:*q.expected)rows.push_back(m::CreateKitchenExclusion(b,key(v.key),v.flags));expected=b.CreateVector(rows);}
+    kitchenMenu=m::CreateKitchenMenuRequest(b,query,target,q.permission,expected);
+  }
   flatbuffers::Offset<m::ChoresRequest> chores;
   if(r.action==ManagementAction::ChoresRead || r.action==ManagementAction::ChoresApply){
     const auto& q=r.chores;flatbuffers::Offset<m::ChoresSnapshot> expected;
@@ -295,7 +314,7 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
           flatbuffers::Offset<m::WorkDetailSettingsRequest>{},
       (r.action==ManagementAction::StandingOrdersRead || r.action==ManagementAction::StandingOrdersSet)?
           m::CreateStandingOrdersRequest(b,r.standingOrders.category,r.standingOrders.settingId,r.standingOrders.expectedValue,r.standingOrders.value):
-          flatbuffers::Offset<m::StandingOrdersRequest>{},hunter,chores);
+          flatbuffers::Offset<m::StandingOrdersRequest>{},hunter,chores,kitchenMenu);
   b.Finish(request);
 }
 }  // namespace wm::detail::management

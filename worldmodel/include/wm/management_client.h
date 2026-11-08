@@ -413,6 +413,14 @@ struct ProductionState {
   int32_t selectedBuilding=-1,createdJob=-1;
   std::string detail;
 };
+struct KitchenFoodKey {int16_t itemType=-1,itemSubtype=-1,matType=-1;int32_t matIndex=-1;};
+struct KitchenFoodReceipt {KitchenFoodKey key;int32_t count=0;uint8_t capabilities=0;};
+struct KitchenExclusion {KitchenFoodKey key;uint8_t flags=0;};
+struct KitchenSort {KitchenSortColumn column=KitchenSortColumn::Type;bool reverse=false;};
+struct KitchenMenuQuery {int8_t typeFilter=-1;uint8_t capabilityFilter=0;std::string query;std::vector<KitchenSort> sorts{{}};};
+struct KitchenMenuRequest {std::optional<KitchenMenuQuery> query;std::optional<KitchenFoodReceipt> target;uint8_t permission=0;std::optional<std::vector<KitchenExclusion>> expected;};
+struct KitchenMenuRow {KitchenFoodReceipt receipt;std::string name,countCaption;bool estimated=false;uint8_t excluded=0;std::string materialToken;};
+struct KitchenMenuState {KitchenMenuOutcome outcome=KitchenMenuOutcome::None;std::vector<KitchenMenuRow> rows;std::vector<KitchenExclusion> exclusions;};
 struct ChoreLabor {int32_t id=-1;bool enabled=false;};
 struct ChoresSnapshot {bool enabled=false;std::vector<int32_t> children,exempted;std::vector<ChoreLabor> labors;};
 struct ChoresCaption {int32_t id=-1;std::string caption;};
@@ -833,6 +841,7 @@ struct ManagementRequest {
   StandingOrdersRequest standingOrders;
   HunterAmmunitionRequest hunterAmmunition;
   ChoresRequest chores;
+  KitchenMenuRequest kitchenMenu;
   ResidentsRowsRequest residentsRows;
   ResidentsSpecializationRequest residentsSpecialization;
   ResidentsActivityRequest residentsActivity;
@@ -897,6 +906,7 @@ struct ManagementState {
   std::optional<StandingOrdersState> standingOrders;
   std::optional<HunterAmmunitionState> hunterAmmunition;
   std::optional<ChoresState> chores;
+  std::optional<KitchenMenuState> kitchenMenu;
   std::optional<ResidentsSpecializationState> residentsSpecialization;
   std::optional<ResidentsActivityState> residentsActivity;
   std::optional<JobSettingsState> jobSettings;

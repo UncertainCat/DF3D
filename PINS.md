@@ -22,6 +22,16 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management151 adds owned KitchenRead98/KitchenApply99 in `kitchen_menu`.
+Rebuild both peers: `Local\df3d_management_v151` isolates Management150.
+Queries carry filters and ordered sort priorities; reads return native rows and
+the full ordered exclusion receipt. Edits require that receipt plus the target's
+identity/count/capabilities. Successful edits return no stale list; refresh it.
+Rejected/Stale/Unknown replies carry no authoritative rows or exclusions, and
+Unknown is write-only. The former menu-coupled Kitchen actions remain retired.
+No old recording can supply these missing native facts. Runtime dispatch and
+screen exposure are staged separately from this breaking migration.
+
 Management147 extends Standing orders to Forbidding(category3, ten settings),
 Petitions(category4, six) and Other(category6, seven scalar settings). Categories3/4
 accept values0..2; Other announcements accept0..3 and its other controls0..1.

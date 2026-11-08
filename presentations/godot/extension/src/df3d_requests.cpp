@@ -205,6 +205,15 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         for(const auto& l:v.links){Dictionary link;link["type"]=l.type;link["id"]=l.id;link["subid"]=l.subid;links.push_back(link);}
         value["words"]=words;value["links"]=links;result["residents_activity"]=value;
     }
+    if(s.kitchenMenu) {
+        const auto& v=*s.kitchenMenu;Dictionary value;Array rows,exclusions;
+        const auto key=[](const wm::KitchenFoodKey& k){Dictionary d;d["item_type"]=k.itemType;d["item_subtype"]=k.itemSubtype;d["mat_type"]=k.matType;d["mat_index"]=k.matIndex;return d;};
+        for(const auto& row:v.rows){Dictionary d,receipt;receipt["key"]=key(row.receipt.key);receipt["count"]=row.receipt.count;receipt["capabilities"]=int(row.receipt.capabilities);
+            d["receipt"]=receipt;d["name"]=String::utf8(row.name.c_str());d["count_caption"]=String::utf8(row.countCaption.c_str());d["estimated"]=row.estimated;d["excluded"]=int(row.excluded);d["material_token"]=String::utf8(row.materialToken.c_str());rows.push_back(d);}
+        for(const auto& row:v.exclusions){Dictionary d;d["key"]=key(row.key);d["flags"]=int(row.flags);exclusions.push_back(d);}
+        value["outcome"]=int(v.outcome);value["rows"]=rows;value["exclusions"]=exclusions;result["kitchen_menu"]=value;
+        if(v.outcome==wm::KitchenMenuOutcome::Unknown)result["outcome"]="unknown";
+    }
     if(s.chores) {
         const auto& v=*s.chores;Dictionary value;value["outcome"]=int(v.outcome);Array children,labors;
         if(v.snapshot){Dictionary snap;PackedInt32Array ids,exempted;Array settings;
@@ -484,6 +493,38 @@ bool readResidentsSpecialization(const Dictionary& data,wm::ManagementRequest& r
     request.action=wm::ManagementAction::ResidentsSpecialize;
     request.residentsSpecialization={int32_t(int64_t(data["unit_id"])),uint64_t(int64_t(data["expected_revision"])),bool(data["only_assigned"])};return true;
 }
+bool validateKitchenMenu(const Dictionary& data,String& error) {
+    const auto integer=[](const Dictionary& d,const char* k,int64_t lo,int64_t hi){return d.has(k) && d[k].get_type()==Variant::INT && int64_t(d[k])>=lo && int64_t(d[k])<=hi;};
+    const auto key=[&](const Variant& v){if(v.get_type()!=Variant::DICTIONARY)return false;const Dictionary d=v;
+        return d.size()==4 && integer(d,"item_type",0,INT16_MAX) && integer(d,"item_subtype",-1,INT16_MAX) && integer(d,"mat_type",-1,INT16_MAX) && integer(d,"mat_index",-1,INT32_MAX);};
+    const bool apply=int64_t(data["action"])==int64_t(wm::ManagementAction::KitchenApply);
+    error="Invalid kitchen request";
+    if(!apply){
+        if(data.size()!=5 || !integer(data,"type_filter",-1,3) || !integer(data,"capability_filter",0,3) || !data.has("query") || data["query"].get_type()!=Variant::STRING ||
+           String(data["query"]).utf8().length()>4096 || !data.has("sorts") || data["sorts"].get_type()!=Variant::ARRAY)return false;
+        const Array sorts=data["sorts"];if(sorts.size()<1 || sorts.size()>5)return false;
+        unsigned seen=0;for(int64_t i=0;i<sorts.size();++i){if(sorts[i].get_type()!=Variant::DICTIONARY)return false;const Dictionary d=sorts[i];
+            if(d.size()!=2 || !integer(d,"column",0,4) || !d.has("reverse") || d["reverse"].get_type()!=Variant::BOOL)return false;
+            const unsigned bit=1u<<int64_t(d["column"]);if(seen&bit)return false;seen|=bit;}
+    }else{
+        if(data.size()!=4 || !integer(data,"permission",1,2) || !data.has("target") || data["target"].get_type()!=Variant::DICTIONARY || !data.has("expected") || data["expected"].get_type()!=Variant::ARRAY)return false;
+        const Dictionary d=data["target"];if(d.size()!=3 || !d.has("key") || !key(d["key"]) || !integer(d,"count",0,INT32_MAX) || !integer(d,"capabilities",1,3) || !(int64_t(d["capabilities"])&int64_t(data["permission"])))return false;
+        const Array expected=data["expected"];if(expected.size()>65536)return false;
+        for(int64_t i=0;i<expected.size();++i){if(expected[i].get_type()!=Variant::DICTIONARY)return false;const Dictionary row=expected[i];if(row.size()!=2 || !row.has("key") || !key(row["key"]) || !integer(row,"flags",0,3))return false;}
+    }
+    error=String();return true;
+}
+bool readKitchenMenu(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction(int64_t(data["action"]));auto& q=request.kitchenMenu;
+    if(request.action==wm::ManagementAction::KitchenRead){q.query.emplace();auto& v=*q.query;v.typeFilter=int8_t(int64_t(data["type_filter"]));v.capabilityFilter=uint8_t(int64_t(data["capability_filter"]));v.query=String(data["query"]).utf8().get_data();v.sorts.clear();
+        const Array sorts=data["sorts"];for(int64_t i=0;i<sorts.size();++i){const Dictionary d=sorts[i];v.sorts.push_back({wm::KitchenSortColumn(int64_t(d["column"])),bool(d["reverse"])});}
+    }else{
+        const auto key=[](const Dictionary& d){return wm::KitchenFoodKey{int16_t(int64_t(d["item_type"])),int16_t(int64_t(d["item_subtype"])),int16_t(int64_t(d["mat_type"])),int32_t(int64_t(d["mat_index"]))};};
+        const Dictionary d=data["target"];q.target=wm::KitchenFoodReceipt{key(d["key"]),int32_t(int64_t(d["count"])),uint8_t(int64_t(d["capabilities"]))};q.permission=uint8_t(int64_t(data["permission"]));q.expected.emplace();
+        const Array rows=data["expected"];for(int64_t i=0;i<rows.size();++i){const Dictionary row=rows[i];q.expected->push_back({key(row["key"]),uint8_t(int64_t(row["flags"]))});}
+    }
+    return true;
+}
 bool validateChores(const Dictionary& data,String& error) {
     const bool apply=int64_t(data["action"])==int64_t(wm::ManagementAction::ChoresApply);
     if(data.size()!=(apply?5:1)){error="Invalid chores fields";return false;}
@@ -762,6 +803,7 @@ const ManagementCodec managementCodecs[] = {
     {"work_detail_rows",validateResidentsRows,readResidentsRows},
     {"work_detail_settings",validateWorkDetailSettings,readWorkDetailSettings},
     {"hunter_ammunition",validateHunterAmmunition,readHunterAmmunition},
+    {"kitchen_menu",validateKitchenMenu,readKitchenMenu},
     {"chores",validateChores,readChores},
     {"standing_orders",validateStandingOrders,readStandingOrders},
     {"residents_specialization",validateResidentsSpecialization,readResidentsSpecialization},
@@ -779,7 +821,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::ChoresApply)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::KitchenApply)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

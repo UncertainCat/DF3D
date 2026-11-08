@@ -1226,27 +1226,38 @@ func chores_wire() -> void:
 		await create_timer(0.01).timeout
 	await request("construction",{"action":C.ManagementAction.Catalog})
 	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/standing-orders-native.json"))
-	var reply:=await request("chores",{"action":C.ManagementAction.ChoresRead})
-	if not check(reply.get("status")==C.ManagementStatus.Ok,"Chores read rejected"):quit(1);return
-	var snapshot: Dictionary=reply.chores.snapshot
+	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
+	for frame in 5:world.poll();await process_frame
+	var controller=preload("res://scripts/chores_state.gd").new();controller.configure(service);controller.open()
+	if not check(await ready(controller),"Chores controller read failed"):quit(1);return
+	var captions: Dictionary={"children":controller.children,"labors":controller.labors}
+	var snapshot: Dictionary=controller.snapshot
 	var initial:=snapshot.duplicate(true)
 	check(snapshot.children==PackedInt32Array(reference.chores.children),"Chores native roster order differs")
 	check(snapshot.exempted==PackedInt32Array(reference.chores.exempted) and snapshot.enabled==reference.chores.enabled,"Chores initial settings differ")
 	for kind in ["children","labors"]:
 		var expected: Array=reference.chores_captions[kind]
-		check(reply.chores[kind].size()==expected.size(),"Chores caption count differs")
-		for index in expected.size():check(reply.chores[kind][index].id==int(expected[index].id) and reply.chores[kind][index].caption==expected[index].caption,"Chores caption differs")
+		check(captions[kind].size()==expected.size(),"Chores caption count differs")
+		for index in expected.size():check(captions[kind][index].id==int(expected[index].id) and captions[kind][index].caption==expected[index].caption,"Chores caption differs")
 	var child:=int(reference.chores_effects.child);var labor:=int(reference.chores_effects.labor)
 	var count:=0
 	for op in [[1,-1,false],[1,-1,true],[3,child,true],[3,child,false],[2,labor,false],[2,labor,true]]:
-		reply=await request("chores",{"action":C.ManagementAction.ChoresApply,"operation":op[0],"id":op[1],"value":op[2],"expected":snapshot})
-		if not check(reply.get("status")==C.ManagementStatus.Ok and reply.get("chores",{}).get("outcome")==C.ChoresOutcome.Applied,"Chores write rejected"):quit(1);return
-		snapshot=reply.chores.snapshot
+		match int(op[0]):
+			1:controller.set_enabled(op[2])
+			2:controller.set_labor(op[1],op[2])
+			3:controller.set_exempt(op[1],op[2])
+		if not check(await ready(controller),"Chores controller edit/refresh failed"):quit(1);return
+		snapshot=controller.snapshot
 		var expected: Dictionary=reference.chores_effects.steps[count].state
 		check(snapshot.enabled==expected.enabled and snapshot.exempted==PackedInt32Array(expected.exempted),"Chores returned receipt differs")
 		for row: Dictionary in snapshot.labors:check(row.enabled==expected.labors[row.id],"Chores returned labor differs")
 		if count==0:
-			var stale:=await request("chores",{"action":C.ManagementAction.ChoresApply,"operation":1,"id":-1,"value":true,"expected":initial})
+			var replies: Array=[]
+			service.submit("chores",{"action":C.ManagementAction.ChoresApply,"operation":1,"id":-1,"value":true,"expected":initial},func(_ticket,result,_sent):replies.append(result))
+			deadline=Time.get_ticks_msec()+5000
+			while replies.is_empty() and Time.get_ticks_msec()<deadline:world.poll();await create_timer(0.01).timeout
+			if not check(not replies.is_empty(),"Stale Chores reply missing"):quit(1);return
+			var stale: Dictionary=replies[0]
 			check(stale.get("status")==C.ManagementStatus.Rejected and stale.get("chores",{}).get("outcome")==C.ChoresOutcome.Stale and not stale.chores.has("snapshot"),"Stale Chores receipt retained authority")
 		count+=1
 		var file:=FileAccess.open(directory+"/chores-wire-step",FileAccess.WRITE);file.store_string(str(count));file.close()
@@ -1257,4 +1268,4 @@ func chores_wire() -> void:
 		if not check(FileAccess.get_file_as_string(directory+"/chores-wire-ack")==str(count),"Native Chores readback missing; no replay"):quit(1);return
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"steps":count}));file.close()
-	world.queue_free();await process_frame;quit(1 if failed else 0)
+	controller.dispose();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)

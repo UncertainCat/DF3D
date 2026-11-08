@@ -162,6 +162,15 @@
       "prerequisites": ["extension_build"]
     },
     {
+      "id": "chores_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/chores_state_test.gd",
+      "completion": "^CHORES_STATE_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "standing_orders_state_test",
       "lane": "core",
       "kind": "godot",

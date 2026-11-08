@@ -57,6 +57,24 @@ D187CD2A6AC86EA7CD09D7DF6F0916D3120B8026EF32A12B13765513B7ED8417.
 This is protocol acceptance, not live Chores wire or UI acceptance.
 
 
+`chores_state.gd` owns asynchronous read/apply phases, complete receipts,
+independent list offsets, and generation/ticket retirement. Close/reopen/session
+changes detach old observers; late mutation replies cannot replace a newer read.
+Unknown and stale/refused results discard authority without replay. Successful
+edits request fresh native metadata before accepting another edit. Global
+participation accepts an explicit same-value click because native still
+recalculates active-unit labors. Native catalog/child target validation does not
+infer eligibility or ordering in Godot.
+
+Headless chores-controller-20261108 passes lifecycle, malformed-receipt,
+post-edit refresh and no-replay checks plus core19. Protected154027 runs the same
+six native-observed edits through the actual controller/semantic service, matching
+all339 unit labor masks and refreshed native captions/receipts. Owned DF39120
+closes unsaved with source preservation; paired logs have only the documented
+separate-thread notice. GPU59C sampled during the brief native capture. The
+native Chores screenshot was inspected; controller acceptance does not establish
+portraits, colored captions, view layout/input or public integration.
+
 Chores typed dispatch now reads owned native snapshots/captions and applies the
 three native-backed mutations. It prepares the returned receipt before writes,
 sets mutation ownership from writeStarted, and retires partial state on failure.

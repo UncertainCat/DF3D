@@ -5669,6 +5669,12 @@
       "read_captions_match": true,
       "stale_rejected": true,
       "limitations": "Typed semantic read and six edits, with independent native labor-mask observer. No rendered controller workflow or fault injection."
+    },
+    "controller_reference": {
+      "capture": "build/stockpile-storage-native-input-20261108-154027",
+      "checked_steps": 6,
+      "active_unit_labors": 339,
+      "limitations": "Actual controller/service read-edit-refresh and injected stale request; no rendered input or screen acceptance."
     }
   }
 }

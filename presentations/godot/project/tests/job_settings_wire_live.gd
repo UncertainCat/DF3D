@@ -27,6 +27,8 @@ func drag_scrollbar(bar, bottom: bool) -> void:
 
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
+	if OS.get_environment("DF3D_STANDING_ORDERS_RENDER")=="1":
+		await standing_orders_scene();return
 	if OS.get_environment("DF3D_STANDING_ORDERS_WIRE")=="1":
 		await standing_orders_wire();return
 	if OS.get_environment("DF3D_WORK_DETAILS_FAULT_WIRE")=="1":
@@ -983,3 +985,33 @@ func standing_orders_wire() -> void:
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"steps":count}));file.close()
 	world.queue_free();await process_frame;quit(1 if failed else 0)
+
+func standing_orders_scene() -> void:
+	Engine.max_fps=30;root.size=Vector2i(1200,800)
+	world=Df3dWorld.new();root.add_child(world)
+	if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")) and world.attach(),"Standing orders scene setup failed"):quit(1);return
+	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
+	var interaction:=Interaction.new();root.add_child(interaction)
+	var host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)
+	var owner=preload("res://scripts/standing_orders_panel.gd").new();root.add_child(owner);owner.configure(world,service,host);owner.open_panel()
+	if not check(await ready(owner.state),"Standing orders panel read failed"):quit(1);return
+	await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/standing-orders-view.png")
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/standing-orders-native.json"))
+	var count:=0
+	for step: Dictionary in reference.wire_steps:
+		var index: int=owner.panel.visible_ids().find(int(step.id))
+		if not check(index>=0,"Native setting missing from visible buttons"):quit(1);return
+		await pointer(owner.panel,owner.panel.setting_rect(index).get_center())
+		if not check(await ready(owner.state) and int(owner.state.settings[int(step.id)].value)==int(step.value),"Visible setting click differs from native cycle"):quit(1);return
+		count+=1
+		var file:=FileAccess.open(directory+"/standing-wire-step",FileAccess.WRITE);file.store_string(str(count));file.close()
+		var deadline:=Time.get_ticks_msec()+3000
+		while Time.get_ticks_msec()<deadline:
+			if FileAccess.file_exists(directory+"/standing-wire-ack") and FileAccess.get_file_as_string(directory+"/standing-wire-ack")==str(count):break
+			await create_timer(0.01).timeout
+		if not check(FileAccess.get_file_as_string(directory+"/standing-wire-ack")==str(count),"Native controller readback missing; no replay"):quit(1);return
+	await pointer(owner.panel,Vector2(500,350),MOUSE_BUTTON_RIGHT)
+	check(owner.state.phase==owner.state.Phase.Closed and host.active==null,"Back did not retire panel ownership")
+	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"rendered_steps":count}));file.close()
+	owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)

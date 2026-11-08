@@ -47,13 +47,21 @@ The Workshops view uses captured captions and installed category-button art.
 Protected native114349 supplies the initial eight controls. Rendered capture
 standing-orders-capture-fixed-20261108 matches their entire400x288 RGB crop
 at48,172 exactly. The first capture exposed the wrong list-row texture; using
-BUTTON_CATEGORY_RECTANGLE corrects the crop. Three tab levels are present, but
-the tab crop still differs and remains unaccepted. The two short serial captures
+BUTTON_CATEGORY_RECTANGLE corrects the crop. The three tab levels use native selected-label colors: RGB70,44,0 for
+primary/secondary and70,0,44 for tertiary. Protected121753 on2026-11-08 matches
+the entire944x708 panel crop at32,52 with native at1200x800, including tabs. The two short serial captures
 are capped at30FPS; only known renderer-thread/finalize/shutdown diagnostics
 occur. GPU66C before,67C after first,60C after second; owned viewer processes
-close and the unrelated editor remains untouched. Native hover, button clicks,
-resize and live controller integration remain pending, as do other categories
-and captions for the three currently unavailable automation settings.
+close and the unrelated editor remains untouched. Protected121753 drives all17 setting transitions through actual rendered
+buttons and the shared service/controller; independent DF scalar reads match
+every native cycle step. Back closes the panel and releases modal ownership.
+All initial values are restored; owned DF21108 closes unsaved and the source
+save is preserved. Root/core19 and state checks pass in
+standing-orders-live-panel-20261108. Joined live viewer logs contain only the
+known renderer-thread/finalize/shutdown diagnostics, GPU54C during/56C after.
+This uses the actual panel owner with a minimal HUD interaction stub, not the
+public main-scene route. Native hover, resize, other categories and captions for
+the three currently unavailable automation settings remain pending.
 
 Management145 carries StandingOrdersRead/Set through schema validation, the
 engine-independent model and the Godot request/result adapter. Category0 is

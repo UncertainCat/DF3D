@@ -479,6 +479,32 @@
       288
     ],
     "rgb_sha256": "ccd0a40834d3a2ecb2f55b6e5c38265f6a745a131a062452e889dba6b5923fcf",
-    "scope": "Eight initial Workshop buttons pixel-identical; tabs have remaining pixel differences. No live clicks, hover, resizing or other categories accepted."
+    "scope": "Eight initial Workshop buttons pixel-identical; superseded by full-panel rendered reference below."
+  },
+  "workshop_panel_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-121753",
+    "viewport": [
+      1200,
+      800
+    ],
+    "crop": [
+      32,
+      52,
+      944,
+      708
+    ],
+    "rgb_sha256": "ce0010fb5b7dccb40399e06e14a1a6b3e11afdab6c37f0a3d86064d12fcb1b98",
+    "rendered_native_crop_equal": true,
+    "rendered_transitions": 17,
+    "independent_native_readback": true,
+    "back_releases_host": true,
+    "settings_restored": true,
+    "source_save_preserved": true,
+    "qa": "build/qa/standing-orders-live-panel-20261108",
+    "limits": [
+      "Minimal HUD interaction stub, not public main-scene integration",
+      "Hover and resize unaccepted",
+      "Other categories and unavailable automation captions unfinished"
+    ]
   }
 }

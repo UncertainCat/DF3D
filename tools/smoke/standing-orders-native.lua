@@ -133,6 +133,10 @@ if os.getenv('DF3D_STANDING_ORDERS_WIRE')=='1' then
   end
  end
  for id=8,10 do result.wire_steps[#result.wire_steps+1]={id=id,expected=0,value=1,outcome=2,values=original}end
+ if os.getenv('DF3D_STANDING_ORDERS_RENDER')=='1' then
+  local applied={};for _,step in ipairs(result.wire_steps)do if step.outcome==1 then applied[#applied+1]=step end end
+  result.wire_steps=applied
+ end
  shot('standing-orders-wire')
  assert(json.encode(values())==json.encode(original),'Wire settings were not restored')
 end

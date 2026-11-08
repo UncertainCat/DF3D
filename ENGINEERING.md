@@ -65,7 +65,19 @@ The53 observed jobs contain no PrepareMeal or CustomReaction jobs, so unchanged
 job-state comparisons do not establish invalidation/cancellation acceptance.
 The native add path checks cooking ingredients withc8b600 and brewing reaction
 reagents for DRINK_MAT, then calls1325080 for an assigned worker or sets the job
-item_lost flag. Active-job acceptance, transport and UI remain outstanding.
+item_lost flag.
+
+Protected164011 supplies controlled PrepareMeal and BREW_DRINK_FROM_PLANT jobs
+with a real plump helmet ingredient and empty controls, both assigned and
+unassigned. Native clicks and the adapter match all eight immediate outcomes:
+unassigned jobs gain item_lost; assigned workers are released while the job and
+item reservation remain initially intact. Controls are unchanged. Owned jobs
+are removed afterward, permission membership restored, and DF38884 exits
+unsaved with source preservation. This establishes the observed immediate fields
+(job existence/flags/item count, worker release and ingredient reservation),
+not subsequent simulation processing, alternate reagents or broader worker
+state. Core19 passes in kitchen-job-effects-20261108. GPU60C sampled; no viewer
+launched. Transport and UI remain outstanding.
 
 Per-item aggregator42af10..42b2e2 computes native capability bits, keys, stack
 counts and names (a82c10 plus52d650), accumulating into an unordered_map at context

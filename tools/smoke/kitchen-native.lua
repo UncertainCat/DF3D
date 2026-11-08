@@ -202,5 +202,9 @@ if os.getenv('DF3D_KITCHEN_FILTER')=='1' then
  panel.filter_type=-1;panel.filter_perm=0;panel.filter_str='';panel.sort_flags=panel.sort_flags|1
  for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
 end
+if os.getenv('DF3D_KITCHEN_JOB_EFFECTS')=='1' then
+ local path=debug.getinfo(1,'S').source:sub(2):gsub('kitchen%-native.lua$','kitchen-job-effects-native.lua')
+ assert(loadfile(path))(out,view,panel,click,result.known)
+end
 click(30,10)
 return {rows=#result.rows,callbacks=#result.callbacks}

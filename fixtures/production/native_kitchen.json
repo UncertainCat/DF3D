@@ -2,7 +2,7 @@
   "df_version": "53.16",
   "steam_build": 24557528,
   "capture": "build/stockpile-storage-native-input-20261108-161252",
-  "scope": "Native Kitchen owned aggregation/filtering, single-column sorting and permission-toggle acceptance. Active job effects, display quantities, transport and public UI remain unaccepted. Diagnostic widget/menu reads are not permitted runtime inputs.",
+  "scope": "Native Kitchen owned aggregation/filtering, single-column sorting, permission toggles and scoped immediate job-effect acceptance. Display quantities, transport and public UI remain unaccepted. Diagnostic widget/menu reads are not permitted runtime inputs.",
   "initial": {
     "category": 0,
     "cursor": 0,
@@ -1508,5 +1508,293 @@
     "job_states_unchanged": true,
     "source_preserved": true,
     "scope": "Native clicks and adapter permission membership match. No PrepareMeal or CustomReaction jobs present, so job invalidation/cancellation is not accepted. Removing then readding exclusions changes vector order; adapter retains native behavior."
+  },
+  "job_effect_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-164011",
+    "cases": [
+      {
+        "after": {
+          "affected": {
+            "exists": true,
+            "flags": 64,
+            "item_lost": true,
+            "items": 1
+          },
+          "control": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 0
+          },
+          "item_reserved": true,
+          "worker_has_job": false
+        },
+        "assigned": false,
+        "before": {
+          "affected": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 1
+          },
+          "control": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 0
+          }
+        },
+        "flag": 1,
+        "mode": "native"
+      },
+      {
+        "after": {
+          "affected": {
+            "exists": true,
+            "flags": 64,
+            "item_lost": true,
+            "items": 1
+          },
+          "control": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 0
+          },
+          "item_reserved": true,
+          "worker_has_job": false
+        },
+        "assigned": false,
+        "before": {
+          "affected": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 1
+          },
+          "control": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 0
+          }
+        },
+        "flag": 1,
+        "mode": "provider"
+      },
+      {
+        "after": {
+          "affected": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 1
+          },
+          "control": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 0
+          },
+          "item_reserved": true,
+          "worker_has_job": false
+        },
+        "assigned": true,
+        "before": {
+          "affected": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 1
+          },
+          "control": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 0
+          }
+        },
+        "flag": 1,
+        "mode": "native"
+      },
+      {
+        "after": {
+          "affected": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 1
+          },
+          "control": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 0
+          },
+          "item_reserved": true,
+          "worker_has_job": false
+        },
+        "assigned": true,
+        "before": {
+          "affected": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 1
+          },
+          "control": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 0
+          }
+        },
+        "flag": 1,
+        "mode": "provider"
+      },
+      {
+        "after": {
+          "affected": {
+            "exists": true,
+            "flags": 64,
+            "item_lost": true,
+            "items": 1
+          },
+          "control": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 0
+          },
+          "item_reserved": true,
+          "worker_has_job": false
+        },
+        "assigned": false,
+        "before": {
+          "affected": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 1
+          },
+          "control": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 0
+          }
+        },
+        "flag": 2,
+        "mode": "native"
+      },
+      {
+        "after": {
+          "affected": {
+            "exists": true,
+            "flags": 64,
+            "item_lost": true,
+            "items": 1
+          },
+          "control": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 0
+          },
+          "item_reserved": true,
+          "worker_has_job": false
+        },
+        "assigned": false,
+        "before": {
+          "affected": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 1
+          },
+          "control": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 0
+          }
+        },
+        "flag": 2,
+        "mode": "provider"
+      },
+      {
+        "after": {
+          "affected": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 1
+          },
+          "control": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 0
+          },
+          "item_reserved": true,
+          "worker_has_job": false
+        },
+        "assigned": true,
+        "before": {
+          "affected": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 1
+          },
+          "control": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 0
+          }
+        },
+        "flag": 2,
+        "mode": "native"
+      },
+      {
+        "after": {
+          "affected": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 1
+          },
+          "control": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 0
+          },
+          "item_reserved": true,
+          "worker_has_job": false
+        },
+        "assigned": true,
+        "before": {
+          "affected": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 1
+          },
+          "control": {
+            "exists": true,
+            "flags": 0,
+            "item_lost": false,
+            "items": 0
+          }
+        },
+        "flag": 2,
+        "mode": "provider"
+      }
+    ],
+    "source_preserved": true,
+    "controlled_jobs_removed": true,
+    "scope": "Paused controlled PrepareMeal and BREW_DRINK_FROM_PLANT jobs with one real plump helmet ingredient, assigned/unassigned, plus empty controls. Compares immediate job flags/existence/item count, worker release and ingredient reservation. Does not establish later job processing, alternate reagents or broader worker state."
   }
 }

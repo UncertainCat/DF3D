@@ -44,7 +44,12 @@ the independent native observer confirms all nine steps, including an injected
 obsolete receipt refusal. The lane restores equipment and closes owned DF4556
 unsaved with source preservation. GPU47C sampled; the headless viewer logs contain
 only the known separate-renderer notice. The panel view and public route remain
-unfinished; controller acceptance does not establish rendered parity.
+unfinished; controller acceptance does not establish rendered parity. The staged
+`hunter_ammunition_view.gd` and modal owner now load under the headless controller
+check (hunter-view-parse-20261108). They use the default captured panel geometry
+and native captions. Assigned-item artwork, responsive geometry, input/hover
+parity and rendered comparison are still pending; neither public navigation nor
+the Standing orders transition is connected yet.
 
 Hunter ammunition typed dispatch now reads native specs, choice captions and
 assigned-stack quantities, validates candidate type/subtype, and routes all five

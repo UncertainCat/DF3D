@@ -1,0 +1,97 @@
+extends "res://scripts/location_staff_candidates_frame.gd"
+# Staged native ammunition panel. Reference: protected140812, 1200x800.
+# Assigned-item artwork, resize and hover acceptance remain outstanding.
+var state
+var colors: Array[Color]=[]
+var input_allowed: Callable
+func configure_ammunition(source,model) -> void:
+	configure(source);state=model;colors=art.installed_palette(source.assets_root())
+	mouse_filter=Control.MOUSE_FILTER_STOP;state.changed.connect(refresh)
+	scrollbar.input_allowed=allowed;scrollbar.row_changed.connect(scrolled)
+	refresh()
+func layout(view: Vector2) -> void:
+	# Default native geometry; other sizes remain staged pending native capture.
+	position=Vector2(168,220);size=Vector2(808,540);frame_rows=45
+	scrollbar.position=Vector2(776,60);scrollbar.size=Vector2(16,360);scrollbar.page=10
+	refresh()
+func picker() -> bool:return state.mode in [state.Mode.Types,state.Mode.Materials]
+func choices() -> Array:return state.types if state.mode==state.Mode.Types else state.materials
+func rows() -> Array:
+	var result: Array=[]
+	for index in state.rules.size():
+		result.append({"spec":index,"item":-1})
+		for item: Dictionary in state.rules[index].items:result.append({"spec":index,"item":item.id,"caption":item.caption})
+	return result
+func refresh() -> void:
+	if state==null or scrollbar==null:return
+	scrollbar.set_rows(choices().size() if picker() else rows().size(),state.choice_first if picker() else state.first)
+	queue_redraw()
+func scrolled(value: int) -> void:
+	if picker():state.choice_first=value
+	else:state.first=value
+	queue_redraw()
+func allowed() -> bool:return is_visible_in_tree() and (not input_allowed.is_valid() or input_allowed.call())
+func _input(event: InputEvent) -> void:
+	if not allowed():return
+	if (event is InputEventKey and event.pressed and event.keycode==KEY_ESCAPE) or (event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_RIGHT):
+		state.back();get_viewport().set_input_as_handled();return
+	if not event is InputEventKey or not event.pressed or state.mode!=state.Mode.Amount:return
+	if event.keycode in [KEY_ENTER,KEY_KP_ENTER]:state.commit_amount()
+	elif event.keycode==KEY_BACKSPACE:state.set_amount_text(state.amount_text.left(-1))
+	elif event.unicode>=48 and event.unicode<=57:state.set_amount_text(state.amount_text+char(event.unicode))
+	else:return
+	get_viewport().set_input_as_handled()
+func _gui_input(event: InputEvent) -> void:
+	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
+	accept_event()
+	if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
+		scrollbar.move_to(scrollbar.first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1));return
+	if event.button_index!=MOUSE_BUTTON_LEFT:return
+	if Rect2(720,20,72,24).has_point(event.position):state.back();return
+	if picker():
+		if Rect2(16,60,760,360).has_point(event.position):state.choose(state.choice_first+int((event.position.y-60)/36))
+		return
+	if Rect2(272,20,152,24).has_point(event.position):state.begin_add();return
+	var entries:=rows()
+	for visible_index in mini(10,entries.size()-state.first):
+		var entry: Dictionary=entries[state.first+visible_index];var y:=60+visible_index*36
+		if entry.item==-1:
+			if Rect2(336,y+8,40,24).has_point(event.position):state.begin_material(entry.spec);return
+			if Rect2(384,y+8,40,24).has_point(event.position):state.begin_amount(entry.spec);return
+		if Rect2(720,y+8,64,24).has_point(event.position):
+			if entry.item==-1:state.delete_rule(entry.spec)
+			else:state.remove_stack(entry.spec,entry.item)
+			return
+func text(value: String,point: Vector2,color: int=15) -> void:
+	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point,value,HORIZONTAL_ALIGNMENT_LEFT,-1,12,colors[color])
+func button(value: String,rect: Rect2,color: int=10,cancel: bool=false) -> void:
+	var style:=art.make_style("HORIZONTAL_OPTION_REMOVE" if cancel else "BUTTON_RECTANGLE",8)
+	if style!=null:draw_style_box(style,rect)
+	text(value,rect.position+Vector2(8,16),color)
+func _draw() -> void:
+	if world==null or state==null:return
+	draw_rect(Rect2(Vector2(4,4),size-Vector2(8,8)),Color8(28,28,28));patch("HOVER_RECTANGLE",Vector2i.ZERO,101,45)
+	text("Hunters",Vector2(64,34))
+	if picker():button("Cancel",Rect2(728,20,64,24),15,true)
+	else:
+		button("Add ammunition",Rect2(272,20,152,24));button("Confirm",Rect2(720,20,72,24))
+	if picker():
+		var list:=choices()
+		for visible_index in mini(10,list.size()-state.choice_first):
+			var y:=60+visible_index*36
+			patch("BUTTON_RECTANGLE_DARK",Vector2i(2,int(y/12)),95,3)
+			text(list[state.choice_first+visible_index].caption,Vector2(32,y+22))
+		return
+	var entries:=rows()
+	for visible_index in mini(10,entries.size()-state.first):
+		var entry: Dictionary=entries[state.first+visible_index];var y:=60+visible_index*36
+		patch("BUTTON_RECTANGLE_DARK",Vector2i(2,int(y/12)),95,3)
+		if entry.item==-1:
+			text(state.rules[entry.spec].caption,Vector2(32,y+22))
+			var amount: String=state.amount_text if state.mode==state.Mode.Amount and state.selected==entry.spec else str(state.specs[entry.spec].amount)
+			text(str(state.rules[entry.spec].quantity)+"/"+amount,Vector2(256,y+22))
+			button("Mat",Rect2(336,y+8,40,24));button("Amt",Rect2(384,y+8,40,24));button("Delete",Rect2(720,y+8,64,24),12)
+		else:
+			text(entry.caption,Vector2(64,y+22),14);button("Remove",Rect2(720,y+8,64,24),12)
+func _exit_tree() -> void:
+	if state!=null and state.changed.is_connected(refresh):state.changed.disconnect(refresh)

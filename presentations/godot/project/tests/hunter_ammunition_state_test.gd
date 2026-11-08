@@ -1,5 +1,6 @@
 extends SceneTree
 const State=preload("res://scripts/hunter_ammunition_state.gd")
+const Owner=preload("res://scripts/hunter_ammunition_panel.gd")
 const C=preload("res://scripts/management_contract.gd")
 const Service=preload("res://tests/work_details_state_test.gd").Service
 var failures:=0

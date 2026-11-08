@@ -14,6 +14,13 @@ func run() -> void:
 	var state:=State.new();state.configure(service);state.open()
 	service.reply(state.ticket,snapshot());state.begin_amount(0)
 	check(state.amount_text.is_empty(),"Native amount entry starts empty")
+	state.set_amount_text("a-12.3x");check(state.amount_text=="123","Native quantity entry accepts digits only")
+	state.set_amount_text("12345678901234567890");check(state.amount_text=="123456789012345678","Native quantity draft is capped at 18 digits")
+	state.set_amount_text("125");state.begin_add();state.back()
+	check(state.mode==State.Mode.Amount and state.amount_text=="125" and state.selected==0,"Add cancellation must restore the active quantity draft")
+	state.begin_material(0);state.back()
+	check(state.mode==State.Mode.Main and state.specs[0].amount==100,"Material lookup retires amount focus without applying it")
+	state.begin_amount(0)
 	state.set_amount_text("125");state.commit_amount()
 	var pending:=state.ticket
 	var intent: Dictionary=service.calls[pending].intent

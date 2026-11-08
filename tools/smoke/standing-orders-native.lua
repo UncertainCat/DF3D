@@ -441,6 +441,33 @@ if os.getenv('DF3D_HUNTER_AMMUNITION_NATIVE')=='1' then
  equipment.hunter_ammunition[0].amount=before.specs[1].amount
  equipment.update.whole=before.update
  assert(json.encode(before)==json.encode(snapshot()),'Amount edit affected fields beyond amount/update')
+ if os.getenv('DF3D_HUNTER_AMMUNITION_INPUT')=='1' then
+  local probes={}
+  local function observe()
+   return {open=ui.open,entering=ui.setting_ammo_entering_amount,types=ui.setting_ammo_new_type,materials=ui.setting_ammo_mat,text=ui.setting_ammo_amount_str,values=snapshot()}
+  end
+  local function reopen()
+   while ui.open do gui.simulateInput(view,'LEAVESCREEN');settle()end
+   gui.simulateInput(view,'D_LABOR');settle();click(30,10);click(80,12);click(12,37)
+   assert(ui.open and ui.setting_ammo,'Ammunition reentry failed')
+  end
+  for _,case in ipairs({{name='mixed',text='a-12.3x',enter=true},{name='long',text='12345678901234567890',enter=true},{name='blank',text='',enter=true},{name='upper',text='5001',enter=true},{name='same-amount',text='125',x=71,y=24},{name='material',text='125',x=65,y=24},{name='add',text='125',x=64,y=20},{name='blank-click',text='125',x=40,y=55},{name='confirm',text='125',x=115,y=20}})do
+   click(71,24)
+   for i=1,#case.text do gui.simulateInput(view,('STRING_A%03d'):format(case.text:byte(i)))end
+   settle();local draft=observe()
+   if case.enter then gui.simulateInput(view,'SELECT');settle()else click(case.x,case.y)end
+   probes[#probes+1]={name=case.name,draft=draft,after=observe()}
+   shot('hunter-input-'..case.name)
+   if case.name=='add' or case.name=='material' then
+    gui.simulateInput(view,'LEAVESCREEN');settle();probes[#probes].cancelled=observe()
+    shot('hunter-input-'..case.name..'-cancelled')
+   end
+   equipment.hunter_ammunition[0].amount=before.specs[1].amount;equipment.update.whole=before.update
+   assert(json.encode(before)==json.encode(snapshot()),'Quantity probe changed unrelated equipment')
+   reopen()
+  end
+  result.hunter_ammunition.input_reference=probes
+ end
  click(64,20);click(35,24)
  result.hunter_ammunition.added={rows=rows(),values=snapshot()}
  assert(#equipment.hunter_ammunition==#before.specs+1,'Adding ammunition did not append a spec')

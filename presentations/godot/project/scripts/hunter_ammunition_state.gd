@@ -15,6 +15,7 @@ var selected:=-1
 var first:=0
 var choice_first:=0
 var amount_text:=""
+var resume_amount:=false
 var ticket:=0
 var generation:=0
 var last_result: Dictionary={}
@@ -30,7 +31,7 @@ func _retire() -> void:
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
 func _clear() -> void:
-	specs=[];rules=[];types=[];materials=[];selected=-1;amount_text="";mode=Mode.Main
+	specs=[];rules=[];types=[];materials=[];selected=-1;amount_text="";resume_amount=false;mode=Mode.Main
 func close() -> void:
 	_retire();_clear();first=0;choice_first=0;last_result={};phase=Phase.Closed;changed.emit()
 func _session_changed() -> void:
@@ -43,14 +44,16 @@ func _read() -> void:
 func back() -> void:
 	if phase==Phase.Applying:return
 	if mode in [Mode.Types,Mode.Materials] and phase in [Phase.Ready,Phase.Reading]:
-		_retire();materials=[];mode=Mode.Main;selected=-1;choice_first=0;phase=Phase.Ready;changed.emit()
+		_retire();materials=[];mode=Mode.Amount if resume_amount else Mode.Main
+		if not resume_amount:selected=-1
+		resume_amount=false;choice_first=0;phase=Phase.Ready;changed.emit()
 	else:close()
 func begin_add() -> void:
-	if phase!=Phase.Ready or mode!=Mode.Main:return
-	mode=Mode.Types;choice_first=0;changed.emit()
+	if phase!=Phase.Ready or mode not in [Mode.Main,Mode.Amount]:return
+	resume_amount=mode==Mode.Amount;mode=Mode.Types;choice_first=0;changed.emit()
 func begin_material(index: int) -> void:
-	if phase!=Phase.Ready or mode!=Mode.Main or index<0 or index>=specs.size():return
-	selected=index;mode=Mode.Materials;choice_first=0;materials=[];phase=Phase.Reading
+	if phase!=Phase.Ready or mode not in [Mode.Main,Mode.Amount] or index<0 or index>=specs.size():return
+	resume_amount=false;selected=index;mode=Mode.Materials;choice_first=0;materials=[];phase=Phase.Reading
 	_submit({"action":C.ManagementAction.HunterAmmunitionCandidates,"item_type":specs[index].item_type,"item_subtype":specs[index].item_subtype})
 func begin_amount(index: int) -> void:
 	if phase!=Phase.Ready or mode not in [Mode.Main,Mode.Amount] or index<0 or index>=specs.size():return
@@ -58,7 +61,11 @@ func begin_amount(index: int) -> void:
 	else:mode=Mode.Amount;selected=index
 	amount_text="";changed.emit()
 func set_amount_text(value: String) -> void:
-	if phase==Phase.Ready and mode==Mode.Amount:amount_text=value;changed.emit()
+	if phase!=Phase.Ready or mode!=Mode.Amount:return
+	var digits:=""
+	for character in value:
+		if character>="0" and character<="9" and digits.length()<18:digits+=character
+	amount_text=digits;changed.emit()
 func commit_amount() -> void:
 	if phase!=Phase.Ready or mode!=Mode.Amount:return
 	_apply(C.HunterAmmunitionOperation.Amount,{"index":selected,"amount":clampi(amount_text.to_int(),0,5000)})

@@ -33,6 +33,19 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Standing orders native discovery
 
+Native quantity-entry probes144337/144430 on2026-11-08 establish digit-only input,
+an18-digit draft limit, blank Enter=>0 and5001/long Enter=>5000. Clicking Amt again
+clears the draft without applying it; Mat retires amount focus and opens choices;
+Add opens type choices and Cancel restores the active amount draft. Blank-panel
+clicks retain editing; Confirm closes without committing. The controller now
+matches the draft limit and Mat/Add cancellation transitions. Headless lifecycle
+and core19 pass in hunter-amount-input-20261108. These new transitions still need
+rendered live acceptance; choosing a type while an amount draft is suspended,
+deletion/removal during entry, wheel/drag and hover remain unverified. Both native
+lanes restore equipment and close owned DF22176/48300 unsaved with source
+preservation; GPU50C sampled. Semantic evidence is retained in the ammunition
+`input_reference` fixture; enable DF3D_HUNTER_AMMUNITION_INPUT=1 for the probe.
+
 Management149 / Local\df3d_management_v149 requires `ItemInspectionAppearance`
 on every hunter ammunition stack. The native read uses owned `itemAppearance`
 facts; model and Godot preserve material/subtype/color tokens, stack size and

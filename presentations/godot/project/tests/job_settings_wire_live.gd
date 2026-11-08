@@ -29,7 +29,7 @@ func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
 	if OS.get_environment("DF3D_STANDING_ORDERS_RENDER")=="1":
 		await standing_orders_scene();return
-	if OS.get_environment("DF3D_STANDING_ORDERS_WIRE")=="1" or OS.get_environment("DF3D_STANDING_ORDERS_CATEGORY_WIRE")=="1":
+	if OS.get_environment("DF3D_STANDING_ORDERS_WIRE")=="1" or OS.get_environment("DF3D_STANDING_ORDERS_CATEGORY_WIRE")=="1" or OS.get_environment("DF3D_STANDING_ORDERS_EXTENDED_WIRE")=="1":
 		await standing_orders_wire();return
 	if OS.get_environment("DF3D_WORK_DETAILS_FAULT_WIRE")=="1":
 		await work_detail_fault();return
@@ -967,6 +967,11 @@ func standing_orders_wire() -> void:
 	var reply: Dictionary=await request("standing_orders",{"action":C.ManagementAction.StandingOrdersRead,"category":0})
 	if not check(reply.get("standing_orders",{}).get("settings",[]).size()==11,"Standing orders snapshot missing"):quit(1);return
 	for row: Dictionary in reply.standing_orders.settings:check(row.visible==(int(row.id)<8) and row.editable==row.visible,"Standing orders availability differs")
+	if OS.get_environment("DF3D_STANDING_ORDERS_EXTENDED_WIRE")=="1":
+		for category in [3,4,6]:
+			reply=await request("standing_orders",{"action":C.ManagementAction.StandingOrdersRead,"category":category})
+			if not check(reply.get("standing_orders",{}).get("category",-1)==category and reply.standing_orders.settings.size()==(10 if category==3 else 6 if category==4 else 7),"Extended category read failed"):quit(1);return
+
 	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/standing-orders-native.json"))
 	var count:=0
 	for step: Dictionary in reference.wire_steps:

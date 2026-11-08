@@ -139,6 +139,21 @@ if os.getenv('DF3D_STANDING_ORDERS_EXTENDED')=='1' then
   assert(json.encode(values())==json.encode(original),'Extended provider did not restore settings')
   result.extended_provider.restored=true
  end
+ if os.getenv('DF3D_STANDING_ORDERS_EXTENDED_WIRE')=='1' then
+  result.wire_steps={}
+  for _,cycle in ipairs(result.extended_cycles)do
+   local key
+   for _,state in ipairs(cycle.states)do for name,value in pairs(state.values)do if value~=cycle.before[name]then key=name end end end
+   local current=cycle.before[key];local maximum=cycle.category==6 and (cycle.index==0 and 3 or 1)or 2
+   result.wire_steps[#result.wire_steps+1]={category=cycle.category,id=cycle.index,expected=(current+1)%(maximum+1),value=current,outcome=3,values=original}
+   for _,state in ipairs(cycle.states)do
+    result.wire_steps[#result.wire_steps+1]={category=cycle.category,id=cycle.index,expected=current,value=state.values[key],outcome=1,values=state.values}
+    current=state.values[key]
+   end
+  end
+  shot('standing-orders-wire')
+  assert(json.encode(values())==json.encode(original),'Extended wire did not restore settings')
+ end
  result.extended_restored=true
  click(10,12)
 end

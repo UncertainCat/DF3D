@@ -22,6 +22,14 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management147 extends Standing orders to Forbidding(category3, ten settings),
+Petitions(category4, six) and Other(category6, seven scalar settings). Categories3/4
+accept values0..2; Other announcements accept0..3 and its other controls0..1.
+Category5 remains outside the scalar contract because Chores is a separate
+roster/labor workflow. Rebuild both peers: `Local\df3d_management_v147` isolates
+Management146. All returned rows in3/4/6 are visible/editable. Native adapters
+supply effects and receipts; UI exposure remains staged.
+
 Management146 adds Hauling(category1) and Refuse(category2) Standing orders
 contracts and replaces `available` with independent `visible`/`editable` fields.
 Workshops(category0) retains eleven settings; Hauling has six and Refuse ten.

@@ -1436,5 +1436,31 @@
     "source_preserved": true,
     "qa": "build/qa/standing-orders-extended-provider-20261108",
     "scope": "Native adapter/diagnostic only; Management146 does not accept categories3/4/6."
+  },
+  "extended_wire_reference": {
+    "version": 147,
+    "capture": "build/stockpile-storage-native-input-20261108-130402",
+    "read_categories": [
+      3,
+      4,
+      6
+    ],
+    "steps": 87,
+    "transitions": 64,
+    "stale_refusals": 23,
+    "independent_native_readback": true,
+    "restored": true,
+    "source_preserved": true,
+    "qa": "build/qa/standing-orders-contract147-20261108",
+    "prior_unclassified_diagnostic": {
+      "capture": "build/stockpile-storage-native-input-20261108-130256",
+      "message": "Condition !F is true",
+      "callsite": "update_end servers/rendering/storage/utilities.h:100",
+      "accepted": false
+    },
+    "limits": [
+      "New category views and public route unfinished",
+      "Chores and hunter ammunition are separate workflows"
+    ]
   }
 }

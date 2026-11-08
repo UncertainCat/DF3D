@@ -454,12 +454,12 @@ bool readResidentsSpecialization(const Dictionary& data,wm::ManagementRequest& r
 }
 bool validateStandingOrders(const Dictionary& data,String& error) {
     const bool set=int64_t(data["action"])==int64_t(wm::ManagementAction::StandingOrdersSet);
-    if(data.size()!=(set?5:2) || !data.has("category") || data["category"].get_type()!=Variant::INT || (int64_t(data["category"])<0 || int64_t(data["category"])>2)){error="Invalid standing orders category";return false;}
+    if(data.size()!=(set?5:2) || !data.has("category") || data["category"].get_type()!=Variant::INT || (int64_t(data["category"])<0 || int64_t(data["category"])>6 || int64_t(data["category"])==5)){error="Invalid standing orders category";return false;}
     if(set){
         for(const char* key:{"setting_id","expected_value","value"})if(!data.has(key) || data[key].get_type()!=Variant::INT){error="Invalid standing orders value";return false;}
         const int64_t id=data["setting_id"],expected=data["expected_value"],value=data["value"];
         const int64_t category=data["category"];
-        if(id<0 || id>=(category==0?11:category==1?6:10) || expected<0 || value<0 || expected>(category==0 && id==0?2:1) || value>(category==0 && id==0?2:1)){error="Invalid standing orders edit";return false;}
+        if(id<0 || id>=(category==0?11:category==1 || category==4?6:category==6?7:10) || expected<0 || value<0 || expected>(category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1) || value>(category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1)){error="Invalid standing orders edit";return false;}
     }
     return true;
 }

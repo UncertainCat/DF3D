@@ -33,6 +33,23 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Standing orders native discovery
 
+Management147 carries categories3/4/6 through request validation, model codecs,
+Godot dictionaries and native dispatch. Counts/ranges match native discovery:
+Forbidding10 and Petitions6 use0..2; Other7 uses0..3 for announcements and0..1
+otherwise. Chores(category5) remains rejected by this scalar contract. Root/core19,
+extension and producer-to-Godot reads/edits pass in standing-orders-contract147-20261108;
+MSVC builds. Protected130402 on2026-11-08 reads all three categories and verifies
+87 wire steps against independent native values:64 transitions and23 stale
+refusals. All settings restore, owned DF15948 closes unsaved and source preservation
+passes. Headless viewer/native30FPS, GPU49C sampled; joined logs contain only the
+known separate-renderer notice. Installed/built plugin SHA256 is
+`DBF052EB88946C8CE66E01DB5FB5C97609685313A0D9928A7D8061569976AD17`.
+Earlier130256 matched all87 values but emitted an unclassified Godot
+`Condition "!F" is true` at update_end(servers/rendering/storage/utilities.h:100).
+That run is not diagnostic acceptance; the error did not recur in130402 and is
+not added to the known-issue allowlist. Both sessions restored settings and closed
+unsaved. No categories3/4/6 view or public route is accepted by this wire evidence.
+
 Protected124735 on2026-11-08 records23 additional native setting cycles:
 ten Forbidding and six Petitions controls use0/1/2; Other cancellation
 announcements use0/1/2/3 and its remaining six scalar controls use0/1.
@@ -62,8 +79,8 @@ closes unsaved with source preservation. Native30FPS/no viewer, GPU52C after.
 MSVC and root/core19 pass (standing-orders-extended-provider-20261108). Installed
 and built plugin SHA256 is
 `D0A3852ADD9F3497AA0776B1004C7C066C18DAD903EC1814778B38599A2B455A`.
-Management146 still rejects categories3/4/6; their typed contract and views remain
-pending. The diagnostic command is the only exposed consumer of these additions.
+The diagnostic command and Management147 dispatch consume these additions;
+their views remain unfinished. Management146 historically rejected3/4/6.
 
 The staged Standing orders owner/view now supports Workshops, Hauling and Refuse
 navigation. Switching categories retires old reads without releasing modal host

@@ -2536,7 +2536,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           Json::Value result(Json::arrayValue);
           for(size_t i=0;i<rows->size();++i){const auto& row=(*rows)[i];const auto& detail=(*details)[i];Json::Value value(Json::objectValue);
             value["type"]=row.type;value["subtype"]=row.subtype;value["mat"]=row.material;value["matg"]=row.materialIndex;value["name"]=DF2UTF(row.name);
-            value["count_caption"]=DF2UTF(detail.countCaption);value["estimated"]=detail.estimated;value["excluded"]=detail.excluded;result.append(value);}
+            value["count_caption"]=DF2UTF(detail.countCaption);value["estimated"]=detail.estimated;value["excluded"]=detail.excluded;value["material_token"]=detail.materialToken;result.append(value);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="kitchen-edit-probe") {

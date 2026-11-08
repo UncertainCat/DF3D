@@ -9,6 +9,19 @@
   },
   "checks": [
     {
+      "id": "kitchen_art_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/kitchen_art_capture.gd",
+      "completion": "^KITCHEN_ART_CAPTURE_PASS",
+      "timeout": 90,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer"
+      ]
+    },
+    {
       "id": "workshop_tasks_capture",
       "lane": "gpu",
       "kind": "godot",

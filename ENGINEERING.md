@@ -65,10 +65,20 @@ use composed textures; the ignored capture retains RGBA for the remaining
 palette comparison. All anchors use native offsets2,2 within the5x3 cell slot.
 The liquid selector tests native material reaction-product membership for
 RENDER_MAT; otherwise it resolves the material color through descriptor patterns
-and passes the color key toceb790. This discovery does not establish a DF3D
-liquid recipe or broader food artwork. DF28368 exits unsaved with source
-preservation; the native Other-category screenshot was inspected. Core19 passes
-in kitchen-art-discovery-20261108.
+and passes the color key toceb790. DF28368 exits unsaved with source preservation; the native Other-category
+screenshot was inspected. Core19 passes in kitchen-art-discovery-20261108.
+
+Kitchen display metadata now includes the material token, encoded from the
+owned material identity through DFHack MaterialInfo (identity encoding only).
+Protected165036 refreshes the icon capture with these identities, then closes
+DF36164 unsaved with source preservation. The existing farm crop/seed and
+item-sheet icon renderers match all22528 pixels for the22 captured icons in
+kitchen-art-native-pixels-20261108. Comparison preserves alpha and compares RGB
+where alpha is nonzero; transparent RGB is normalized only for durable hashes.
+The32x32 icon image was inspected. The serial30FPS capture reports only the
+documented separate-thread/finalize/shutdown diagnostics; GPU59–60C sampled.
+This accepts those existing artwork paths for the observed materials, not all
+food kinds or a complete Kitchen UI. No new graphics-cache access is introduced.
 DFHack Kitchen.cpp directly manipulates the five exclusion vectors and does not
 call the native list or mutation routines. It is not the native behavioral oracle.
 
@@ -141,8 +151,8 @@ checks pass again; DF30940 exits unsaved with source preservation, GPU60C sample
 This capture does not establish multi-column priority, changed exclusions or
 the native merge path for lists over32 entries. Runtime Kitchen transport,
 UI and public exposure remain unimplemented. MSVC and core19 pass in
-kitchen-native-display-20261108; installed plugin SHA256
-748C79ECBA16CF4A9F07C02AB6DA04F8FFBA66F105D37E16A337E344A92E07E6.
+kitchen-material-art-20261108; installed plugin SHA256
+2C16A89797A4E99DC05479DA000AF8C6E357B1BD4466F3EA9147B279EA369605.
 
 ## Standing orders native discovery
 

@@ -84,6 +84,8 @@ assert(loadfile(capture))(out..'/kitchen-widgets.json','templates')
 local file=assert(io.open(out..'/kitchen-native.json','w'));file:write(json.encode(result));file:close()
 shot('kitchen-root')
 if os.getenv('DF3D_KITCHEN_ART')=='1' then
+ local text,code=dfhack.run_command_silent('df3d','kitchen-display-probe');assert(code==0,'Kitchen artwork material metadata unavailable')
+ local materials={};for _,row in ipairs(json.decode(text))do materials[row.name]={type=row.type,material_token=row.material_token}end
  local sources={};for _,page in ipairs(df.global.texture.page)do for i,t in ipairs(page.texpos)do if not sources[t]then sources[t]={page=page.token,x=i%page.page_dim_x,y=i//page.page_dim_x}end end end
  local observations={};local dumped={}
  for kind=0,3 do
@@ -109,7 +111,7 @@ if os.getenv('DF3D_KITCHEN_ART')=='1' then
      end
     end
    end end
-   rows[#rows+1]={name=row.name,cells=cells}
+   rows[#rows+1]={name=row.name,cells=cells,material=assert(materials[row.name])}
   end
   observations[#observations+1]={type=kind,rows=rows};shot('kitchen-art-'..kind)
  end

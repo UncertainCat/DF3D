@@ -3,6 +3,7 @@
 #include "df/item.h"
 #include "df/items_other_id.h"
 #include "df/material.h"
+#include "modules/Materials.h"
 #include "df/labor_kitchen_interface_food_key.h"
 #include "df/labor_kitchen_interface_food_value.h"
 #include <cstddef>
@@ -139,7 +140,7 @@ struct Exclusion {
     int16_t type,subtype,material;int32_t materialIndex;uint8_t flags;
     bool operator==(const Exclusion& b)const{return std::tie(type,subtype,material,materialIndex,flags)==std::tie(b.type,b.subtype,b.material,b.materialIndex,b.flags);}
 };
-struct Display {std::string countCaption;bool estimated=false;uint8_t excluded=0;};
+struct Display {std::string countCaption;bool estimated=false;uint8_t excluded=0;std::string materialToken;};
 inline std::optional<std::vector<Display>> display(const std::vector<Row>& rows) {
     auto* base=supportedBase();if(!base || !df::global::plotinfo || rows.size()>65536)return std::nullopt;
     const auto& precision=df::global::plotinfo->nobles.bookkeeper_precision;
@@ -150,6 +151,10 @@ inline std::optional<std::vector<Display>> display(const std::vector<Row>& rows)
     for(const auto& row:rows){
         if(row.count<0)return std::nullopt;
         Display value;
+        DFHack::MaterialInfo material(row.material,row.materialIndex);
+        if(!material.isValid())return std::nullopt;
+        value.materialToken=material.getToken();
+        if(value.materialToken.empty() || value.materialToken.size()>256)return std::nullopt;
         reinterpret_cast<int32_t(*)(int32_t,int32_t,int32_t,bool*)>(base+0x74f430)(row.count,precision,0,&value.estimated);
         // Kitchen431545..431571 deliberately formats the original count,
         // unlike material pickers that format the returned rounded estimate.

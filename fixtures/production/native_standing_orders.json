@@ -4844,6 +4844,142 @@
           }
         }
       ]
+    },
+    "drag_reference": {
+      "capture": "build/stockpile-storage-native-input-20261108-150237",
+      "main": [
+        {
+          "action": "press",
+          "choice_dragging": false,
+          "choice_first": 0,
+          "dragging": true,
+          "first": 0
+        },
+        {
+          "action": "bottom",
+          "choice_dragging": false,
+          "choice_first": 0,
+          "dragging": true,
+          "first": 2
+        },
+        {
+          "action": "release",
+          "choice_dragging": false,
+          "choice_first": 0,
+          "dragging": false,
+          "first": 2
+        },
+        {
+          "action": "press-bottom",
+          "choice_dragging": false,
+          "choice_first": 0,
+          "dragging": true,
+          "first": 2
+        },
+        {
+          "action": "top",
+          "choice_dragging": false,
+          "choice_first": 0,
+          "dragging": true,
+          "first": 0
+        },
+        {
+          "action": "release-top",
+          "choice_dragging": false,
+          "choice_first": 0,
+          "dragging": false,
+          "first": 0
+        }
+      ],
+      "types": [
+        {
+          "action": "press",
+          "choice_dragging": true,
+          "choice_first": 0,
+          "dragging": false,
+          "first": 0
+        },
+        {
+          "action": "bottom",
+          "choice_dragging": true,
+          "choice_first": 7,
+          "dragging": false,
+          "first": 0
+        },
+        {
+          "action": "release",
+          "choice_dragging": false,
+          "choice_first": 7,
+          "dragging": false,
+          "first": 0
+        },
+        {
+          "action": "press-bottom",
+          "choice_dragging": false,
+          "choice_first": 4,
+          "dragging": false,
+          "first": 0
+        },
+        {
+          "action": "top",
+          "choice_dragging": false,
+          "choice_first": 4,
+          "dragging": false,
+          "first": 0
+        },
+        {
+          "action": "release-top",
+          "choice_dragging": false,
+          "choice_first": 4,
+          "dragging": false,
+          "first": 0
+        }
+      ],
+      "main_wheel": [
+        {
+          "choice_first": 0,
+          "first": 1,
+          "key": "CONTEXT_SCROLL_DOWN"
+        },
+        {
+          "choice_first": 0,
+          "first": 0,
+          "key": "CONTEXT_SCROLL_UP"
+        },
+        {
+          "choice_first": 0,
+          "first": 2,
+          "key": "CONTEXT_SCROLL_PAGEDOWN"
+        },
+        {
+          "choice_first": 0,
+          "first": 0,
+          "key": "CONTEXT_SCROLL_PAGEUP"
+        }
+      ],
+      "types_wheel": [
+        {
+          "choice_first": 1,
+          "first": 0,
+          "key": "CONTEXT_SCROLL_DOWN"
+        },
+        {
+          "choice_first": 0,
+          "first": 0,
+          "key": "CONTEXT_SCROLL_UP"
+        },
+        {
+          "choice_first": 4,
+          "first": 0,
+          "key": "CONTEXT_SCROLL_PAGEDOWN"
+        },
+        {
+          "choice_first": 0,
+          "first": 0,
+          "key": "CONTEXT_SCROLL_PAGEUP"
+        }
+      ],
+      "limitations": "Main drag reaches both endpoints and releases. Type drag reaches bottom and releases; the second press hits track and pages upward, so type return-drag parity is not established. Scroll commands establish native actions; installed Shift-wheel bindings map to page commands."
     }
   }
 }

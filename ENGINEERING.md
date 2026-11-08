@@ -44,8 +44,8 @@ Remove and populated Delete with the draft active, then verifies no request on
 Enter after deletion. All nine native-observed steps pass. Owned DF20292/46000
 close unsaved with equipment restored and source preservation; GPU51–52C sampled,
 only known thread/finalize/shutdown diagnostics. The fixture's
-`draft_actions_reference` retains the independent native effects. Scrollbar drag,
-shift-wheel and broader Standing orders/Chores acceptance still remain.
+`draft_actions_reference` retains the independent native effects. Broader
+Standing orders/Chores acceptance still remains.
 
 Native quantity-entry probes144337/144430 on2026-11-08 establish digit-only input,
 an18-digit draft limit, blank Enter=>0 and5001/long Enter=>5000. Clicking Amt again
@@ -80,8 +80,19 @@ acceptance. Rendered hunter-wheel-input-release-20261108 verifies matching wheel
 and arrow steps; the initial combined harness omitted wheel release and failed
 the next arrow assertion, corrected by sending complete press/release events.
 Core19 passes in hunter-wheel-hover-20261108. Owned DF14520/28560/46600 exit
-unsaved with source preservation; GPU51C sampled. Drag and shift-wheel remain
-unverified. `picker_hover_reference` and `wheel_reference` retain semantic evidence.
+unsaved with source preservation; GPU51C sampled.
+`picker_hover_reference` and `wheel_reference` retain semantic evidence.
+
+Native150237 records page-down/up positions2/0 for the main list and4/0
+for types at minimum height; installed Shift-wheel bindings select these native
+context-page actions. DF3D now pages on Shift-wheel over the panel. Native
+held-pointer dragging reaches both main endpoints and the type-list bottom,
+then releases. The second type-list press hits the track and pages upward;
+return-drag parity and exact thumb geometry remain unverified. The fixture
+`drag_reference` records this limitation. Owned DF40348 exited unsaved with
+source preservation. Core19 and rendered hunter-drag-shift-20261108 pass; the
+rendered check covers paging and both drag endpoints/releases independently,
+with only known Godot diagnostics. GPU50–51C sampled and no owned viewer remains.
 
 Management149 / Local\df3d_management_v149 requires `ItemInspectionAppearance`
 on every hunter ammunition stack. The native read uses owned `itemAppearance`

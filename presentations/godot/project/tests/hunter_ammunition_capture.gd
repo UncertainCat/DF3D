@@ -41,5 +41,22 @@ func run() -> void:
 					wheel=wheel.duplicate();wheel.pressed=false;Input.parse_input_event(wheel);await process_frame
 					if (state.choice_first if mode==state.Mode.Types else state.first)!=(1 if down else 0):
 						push_error("Scroll mismatch mode=%s down=%s first=%s choice=%s"%[mode,down,state.first,state.choice_first]);quit(1);return
+				for down in [true,false]:
+					var wheel:=InputEventMouseButton.new();wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN if down else MOUSE_BUTTON_WHEEL_UP;wheel.pressed=true;wheel.shift_pressed=true
+					wheel.position=view.get_global_transform_with_canvas()*Vector2(100,110);wheel.global_position=wheel.position
+					Input.parse_input_event(wheel);await process_frame;wheel=wheel.duplicate();wheel.pressed=false;Input.parse_input_event(wheel);await process_frame
+					var expected:=mini(4,view.scrollbar.count-4) if down else 0
+					if view.scrollbar.first!=expected:push_error("Shift-wheel differs from native");quit(1);return
+				for bottom in [true,false]:
+					await drag(view.scrollbar,bottom)
+					if view.scrollbar.first!=(view.scrollbar.count-4 if bottom else 0) or view.scrollbar.dragging:push_error("Drag endpoint/release differs");quit(1);return
 	view.queue_free();world.queue_free();await process_frame
 	print("HUNTER_AMMUNITION_CAPTURE_PASS");quit(0)
+func drag(bar,bottom: bool) -> void:
+	var grip: Vector2i=bar.thumb()
+	var press:=InputEventMouseButton.new();press.button_index=MOUSE_BUTTON_LEFT;press.pressed=true
+	press.position=bar.get_global_transform_with_canvas()*Vector2(8,(grip.x+grip.y*0.5)*12);press.global_position=press.position
+	Input.parse_input_event(press);await process_frame
+	var motion:=InputEventMouseMotion.new();motion.position=bar.get_global_transform_with_canvas()*Vector2(8,bar.size.y-18 if bottom else 18);motion.global_position=motion.position
+	Input.parse_input_event(motion);await process_frame
+	press=press.duplicate();press.pressed=false;press.position=motion.position;press.global_position=press.position;Input.parse_input_event(press);await process_frame

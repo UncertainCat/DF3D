@@ -56,7 +56,7 @@ func _gui_input(event: InputEvent) -> void:
 	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
 	accept_event()
 	if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
-		scrollbar.move_to(scrollbar.first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1));return
+		scrollbar.move_to(scrollbar.first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1)*(page_rows if event.shift_pressed else 1));return
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
 	if Rect2(720,20,72,24).has_point(event.position):state.back();return
 	if picker():

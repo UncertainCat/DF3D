@@ -418,13 +418,24 @@ if os.getenv('DF3D_HUNTER_AMMUNITION_NATIVE')=='1' then
     end
     result.hunter_ammunition[kind..'_arrows']=scroll
     local contextual={}
-    for _,key in ipairs({'CONTEXT_SCROLL_DOWN','CONTEXT_SCROLL_UP'})do
+    for _,key in ipairs({'CONTEXT_SCROLL_DOWN','CONTEXT_SCROLL_UP','CONTEXT_SCROLL_PAGEDOWN','CONTEXT_SCROLL_PAGEUP'})do
      g.precise_mouse_x=320;g.precise_mouse_y=334;g.mouse_x=40;g.mouse_y=27
      gui.simulateInput(view,key);settle()
      contextual[#contextual+1]={key=key,first=ui.setting_ammo_scroll_position,choice_first=ui.setting_ammo_scroll_position_am}
      shot('hunter-layout-'..kind..'-'..key)
     end
     result.hunter_ammunition[kind..'_context_scroll']=contextual
+    local drag={}
+    for _,sample in ipairs({{'press',300,true},{'bottom',402,true},{'release',402,false},{'press-bottom',402,true},{'top',288,true},{'release-top',288,false}})do
+     g.precise_mouse_x=816;g.precise_mouse_y=sample[2];g.mouse_x=102;g.mouse_y=sample[2]//12
+     df.global.enabler.mouse_lbut=sample[3] and 1 or 0;df.global.enabler.mouse_lbut_down=sample[3] and 1 or 0;df.global.enabler.mouse_lbut_lift=sample[3] and 0 or 1
+     local keys={};if sample[3] then keys._MOUSE_L_DOWN=true;if sample[1]:find('press')then keys._MOUSE_L=true end end
+     gui.simulateInput(view,keys);view:render(dfhack.getTickCount())
+     drag[#drag+1]={action=sample[1],first=ui.setting_ammo_scroll_position,choice_first=ui.setting_ammo_scroll_position_am,dragging=ui.setting_ammo_scrolling,choice_dragging=ui.setting_ammo_scrolling_am}
+    end
+    result.hunter_ammunition[kind..'_drag']=drag
+    settle();shot('hunter-layout-'..kind..'-drag-complete')
+    ui.setting_ammo_scroll_position=0;ui.setting_ammo_scroll_position_am=0;settle()
    end
   end
  end

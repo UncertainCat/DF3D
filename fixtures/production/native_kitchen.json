@@ -3612,5 +3612,182 @@
         "visible_foods_unchanged": true
       }
     ]
+  },
+  "input_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-175338",
+    "scroll": [
+      {
+        "label": "initial",
+        "cursor": 0,
+        "first_food": "Alfalfa seeds",
+        "visible_count": 13
+      },
+      {
+        "label": "inside-STANDARDSCROLL_DOWN",
+        "cursor": 1,
+        "first_food": "Alfalfa seeds",
+        "visible_count": 13
+      },
+      {
+        "label": "inside-STANDARDSCROLL_UP",
+        "cursor": 0,
+        "first_food": "Alfalfa seeds",
+        "visible_count": 13
+      },
+      {
+        "label": "inside-STANDARDSCROLL_PAGEDOWN",
+        "cursor": 13,
+        "first_food": "Rock nuts",
+        "visible_count": 13
+      },
+      {
+        "label": "inside-STANDARDSCROLL_PAGEUP",
+        "cursor": 0,
+        "first_food": "Alfalfa seeds",
+        "visible_count": 13
+      },
+      {
+        "label": "inside-CONTEXT_SCROLL_DOWN",
+        "cursor": 0,
+        "first_food": "Alfalfa seeds",
+        "visible_count": 13
+      },
+      {
+        "label": "inside-CONTEXT_SCROLL_UP",
+        "cursor": 0,
+        "first_food": "Alfalfa seeds",
+        "visible_count": 13
+      },
+      {
+        "label": "outside-STANDARDSCROLL_DOWN",
+        "cursor": 1,
+        "first_food": "Alfalfa seeds",
+        "visible_count": 13
+      },
+      {
+        "label": "outside-STANDARDSCROLL_UP",
+        "cursor": 0,
+        "first_food": "Alfalfa seeds",
+        "visible_count": 13
+      },
+      {
+        "label": "outside-STANDARDSCROLL_PAGEDOWN",
+        "cursor": 13,
+        "first_food": "Rock nuts",
+        "visible_count": 13
+      },
+      {
+        "label": "outside-STANDARDSCROLL_PAGEUP",
+        "cursor": 0,
+        "first_food": "Alfalfa seeds",
+        "visible_count": 13
+      },
+      {
+        "label": "outside-CONTEXT_SCROLL_DOWN",
+        "cursor": 0,
+        "first_food": "Alfalfa seeds",
+        "visible_count": 13
+      },
+      {
+        "label": "outside-CONTEXT_SCROLL_UP",
+        "cursor": 0,
+        "first_food": "Alfalfa seeds",
+        "visible_count": 13
+      },
+      {
+        "label": "bar-STANDARDSCROLL_DOWN",
+        "cursor": 1,
+        "first_food": "Alfalfa seeds",
+        "visible_count": 13
+      },
+      {
+        "label": "bar-STANDARDSCROLL_UP",
+        "cursor": 0,
+        "first_food": "Alfalfa seeds",
+        "visible_count": 13
+      },
+      {
+        "label": "bar-STANDARDSCROLL_PAGEDOWN",
+        "cursor": 13,
+        "first_food": "Rock nuts",
+        "visible_count": 13
+      },
+      {
+        "label": "bar-STANDARDSCROLL_PAGEUP",
+        "cursor": 0,
+        "first_food": "Alfalfa seeds",
+        "visible_count": 13
+      },
+      {
+        "label": "bar-CONTEXT_SCROLL_DOWN",
+        "cursor": 0,
+        "first_food": "Alfalfa seeds",
+        "visible_count": 13
+      },
+      {
+        "label": "bar-CONTEXT_SCROLL_UP",
+        "cursor": 0,
+        "first_food": "Alfalfa seeds",
+        "visible_count": 13
+      }
+    ],
+    "hover": [
+      {
+        "displayed": -1,
+        "instruction": -1,
+        "target": "type"
+      },
+      {
+        "displayed": -1,
+        "instruction": -1,
+        "target": "sort-type"
+      },
+      {
+        "displayed": -1,
+        "instruction": -1,
+        "target": "sort-name"
+      },
+      {
+        "displayed": -1,
+        "instruction": -1,
+        "target": "sort-number"
+      },
+      {
+        "displayed": -1,
+        "instruction": -1,
+        "target": "cook-filter"
+      },
+      {
+        "displayed": -1,
+        "instruction": -1,
+        "target": "brew-filter"
+      },
+      {
+        "displayed": -1,
+        "instruction": -1,
+        "target": "food-name"
+      },
+      {
+        "displayed": -1,
+        "instruction": -1,
+        "target": "count"
+      },
+      {
+        "displayed": -1,
+        "instruction": -1,
+        "target": "cook"
+      },
+      {
+        "displayed": -1,
+        "instruction": -1,
+        "target": "brew"
+      },
+      {
+        "displayed": -1,
+        "instruction": -1,
+        "target": "search"
+      }
+    ],
+    "scope": "Owned native standard-scroll commands at inside/outside/bar pointer positions. Selection follows standard scrolling and list reveals selected row. Context scroll commands unchanged. Eleven hover targets sampled850ms each, all instruction/displayed -1. Source save unchanged; game exited unsaved. Physical wheel, longer hover and keyboard while textbox focused not established."
   }
 }

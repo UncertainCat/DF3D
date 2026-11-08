@@ -95,6 +95,20 @@ only for the initial13 foods, so it does not establish all wide-row captions.
 Narrow overflow control clipping, inactive Name ink, scrolling input and full
 screen acceptance remain open.
 
+Protected175338 on2026-11-08 establishes Kitchen standard-scroll selection:
+Down/Up moves the cursor one row; Page Down/Up moves13 rows at the default size.
+Selecting row13 reveals it by moving the first visible row to1. These commands
+work with the pointer over the list, outside the panel, or over its scrollbar.
+Context-scroll commands do not move the captured rows/cursor. The staged owner
+now retains this selection and reveals it locally; the view maps the installed
+standard bindings (arrows, Page Up/Down and corresponding numeric keys) when
+the search field is not focused. The native-derived sequence passes headless
+kitchen-navigation with core19. This is not physical-wheel or focused-textbox
+navigation acceptance. Eleven hover targets (type/sort/filter/food/count/action/
+search) sampled850ms each produce no native instruction or displayed tooltip;
+input_reference retains the observations without inventing replacement help.
+The owned game exits unsaved with source preservation; GPU59C sampled.
+
 The staged Kitchen view reuses installed Labor chrome, native row/icon assets,
 count captions and permission icons. `kitchen-view-base` renders at1200x800 with
 30FPS; its unselected-row crop(64,232)-(928,664) matches native171829 with zero

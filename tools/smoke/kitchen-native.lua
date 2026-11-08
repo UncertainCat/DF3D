@@ -372,6 +372,39 @@ if os.getenv('DF3D_KITCHEN_LAYOUT')=='1' then
  end
  local f=assert(io.open(out..'/kitchen-layout.json','w'));f:write(json.encode(observations));f:close()
 end
+if os.getenv('DF3D_KITCHEN_INPUT')=='1' then
+ local observations={};local known={}
+ for _,row in ipairs(result.known)do known[row.name]=true end
+ local function observe(label)
+  local names={}
+  local function collect(widget)
+   if (widget.flag.whole&3)~=3 then return end
+   if df.widget_text:is_instance(widget) and known[dfhack.df2utf(widget.str)]then names[#names+1]=dfhack.df2utf(widget.str)end
+   if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do collect(child)end end
+  end
+  collect(panel);observations[#observations+1]={label=label,names=names,cursor=panel.cursor_idx}
+ end
+ observe('initial')
+ for _,point in ipairs({{'inside',200,250},{'outside',1100,750},{'bar',944,250}})do
+  g.precise_mouse_x=point[2];g.precise_mouse_y=point[3];g.mouse_x=point[2]//8;g.mouse_y=(point[3]-4)//12
+  for _,key in ipairs({'STANDARDSCROLL_DOWN','STANDARDSCROLL_UP','STANDARDSCROLL_PAGEDOWN','STANDARDSCROLL_PAGEUP','CONTEXT_SCROLL_DOWN','CONTEXT_SCROLL_UP'})do
+   gui.simulateInput(view,key);for _=1,3 do script.sleep(1,'frames');view:render(dfhack.getTickCount())end
+   observe(point[1]..'-'..key)
+  end
+ end
+ local hover={};local main=df.global.game.main_interface
+ for _,target in ipairs({{'type',180,150},{'sort-type',160,186},{'sort-name',240,186},{'sort-number',630,186},{'cook-filter',728,160},{'brew-filter',760,160},{'food-name',200,214},{'count',630,214},{'cook',728,214},{'brew',760,214},{'search',200,720}})do
+  local deadline=dfhack.getTickCount()+850
+  repeat
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=target[2];g.precise_mouse_y=target[3];g.mouse_x=target[2]//8;g.mouse_y=(target[3]-4)//12
+   gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(1,'frames')
+  until dfhack.getTickCount()>=deadline
+  hover[#hover+1]={target=target[1],instruction=main.current_hover,displayed=main.last_displayed_hover_inst}
+  if main.last_displayed_hover_inst~=-1 then shot('kitchen-hover-'..target[1])end
+ end
+ local f=assert(io.open(out..'/kitchen-input.json','w'));f:write(json.encode({scroll=observations,hover=hover}));f:close()
+end
 if os.getenv('DF3D_KITCHEN_JOB_EFFECTS')=='1' then
  local path=debug.getinfo(1,'S').source:sub(2):gsub('kitchen%-native.lua$','kitchen-job-effects-native.lua')
  assert(loadfile(path))(out,view,panel,click,result.known)

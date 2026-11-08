@@ -44,6 +44,12 @@ func set_search(bytes: PackedByteArray) -> void:
 	var value:=query.duplicate(true);value.query=bytes.get_string_from_utf8();set_query(value)
 func seek(value: int,capacity: int) -> void:
 	first=clampi(value,0,maxi(0,rows.size()-maxi(0,capacity)));changed.emit()
+func move_selection(delta: int,capacity: int) -> void:
+	if phase!=Phase.Ready or rows.is_empty() or capacity<=0:return
+	selected=clampi(selected+delta,0,rows.size()-1)
+	if selected<first:first=selected
+	elif selected>=first+capacity:first=selected-capacity+1
+	changed.emit()
 func cycle_type(delta: int) -> void:
 	var value:=query.duplicate(true);value.type_filter=posmod(int(value.type_filter)+1+delta,5)-1;set_query(value)
 func toggle_capability(permission: int) -> void:

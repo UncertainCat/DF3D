@@ -10,6 +10,16 @@ func response() -> Dictionary:
 	return {"kitchen_menu":{"outcome":C.KitchenMenuOutcome.None,"rows":[{"receipt":{"key":key,"count":12,"capabilities":3},"name":"fixture food","count_caption":"12?","estimated":true,"excluded":2,"material_token":"PLANT_MAT:MUSHROOM_HELMET_PLUMP:STRUCTURAL"}],"exclusions":[{"key":key,"flags":2}]}}
 func _initialize() -> void:call_deferred("run")
 func run() -> void:
+	var native: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/production/native_kitchen.json"))
+	var navigation:=State.new();navigation.phase=State.Phase.Ready
+	for name in native.sort_reference.observations[0].names:navigation.rows.append({"name":name})
+	for observation in native.input_reference.scroll:
+		var label: String=observation.label
+		if label.ends_with("STANDARDSCROLL_DOWN"):navigation.move_selection(1,13)
+		elif label.ends_with("STANDARDSCROLL_UP"):navigation.move_selection(-1,13)
+		elif label.ends_with("STANDARDSCROLL_PAGEDOWN"):navigation.move_selection(13,13)
+		elif label.ends_with("STANDARDSCROLL_PAGEUP"):navigation.move_selection(-13,13)
+		check(navigation.selected==int(observation.cursor) and navigation.rows[navigation.first].name==observation.first_food,"Native Kitchen selection/scroll differs: "+label)
 	var service:=Service.new();root.add_child(service);var state:=State.new();state.configure(service)
 	state.open();service.reply(state.ticket,response())
 	check(state.phase==State.Phase.Ready and state.rows.size()==1,"Native read rejected")

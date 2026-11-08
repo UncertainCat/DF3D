@@ -45,6 +45,9 @@ func _input(event: InputEvent) -> void:
 	if not allowed():return
 	if event is InputEventKey and event.pressed and event.keycode!=KEY_ESCAPE and search!=null and search.has_focus():
 		search.feed_key(event);get_viewport().set_input_as_handled();return
+	if event is InputEventKey and event.pressed and not event.alt_pressed and not event.ctrl_pressed and not event.shift_pressed:
+		var steps: Dictionary={KEY_UP:-1,KEY_8:-1,KEY_KP_8:-1,KEY_DOWN:1,KEY_2:1,KEY_KP_2:1,KEY_PAGEUP:-capacity(),KEY_9:-capacity(),KEY_KP_9:-capacity(),KEY_PAGEDOWN:capacity(),KEY_3:capacity(),KEY_KP_3:capacity()}
+		if steps.has(event.keycode):state.move_selection(steps[event.keycode],capacity());get_viewport().set_input_as_handled();return
 	super._input(event)
 func _gui_input(event: InputEvent) -> void:
 	if not allowed() or not event is InputEventMouseButton or not event.pressed:return

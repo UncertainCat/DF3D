@@ -83,6 +83,52 @@ local capture=debug.getinfo(1,'S').source:sub(2):gsub('smoke/kitchen%-native.lua
 assert(loadfile(capture))(out..'/kitchen-widgets.json','templates')
 local file=assert(io.open(out..'/kitchen-native.json','w'));file:write(json.encode(result));file:close()
 shot('kitchen-root')
+if os.getenv('DF3D_KITCHEN_SORT')=='1' then
+ local observations={}
+ local function observe(label)
+  local known={};for _,row in ipairs(result.known)do known[row.name]=true end
+  local names={}
+  local function collect(widget)
+   if df.widget_text:is_instance(widget)then local name=dfhack.df2utf(widget.str);if known[name]then names[#names+1]=name end end
+   if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do collect(child)end end
+  end
+  collect(panel)
+  assert(#names==#result.known,'Sort capture must include every constructed row')
+  local sorts={}
+  local _,vector=df.sizeof(panel.sorting_by);local first=df.reinterpret_cast('uint64_t',vector).value
+  for i,entry in ipairs(panel.sorting_by)do
+   local context=df.reinterpret_cast('uint64_t',first+i*96+56).value
+   local vt=df.reinterpret_cast('uint64_t',context).value
+   sorts[#sorts+1]={name=entry.ident,rva=df.reinterpret_cast('uint64_t',vt+16).value-base}
+  end
+  local directions={};local head=df.reinterpret_cast('uint64_t',address+0x1e0).value
+  local node=df.reinterpret_cast('uint64_t',head).value;local n=0
+  while node~=head do
+   assert(n<5,'Sort direction bounds');n=n+1
+   local length=df.reinterpret_cast('uint64_t',node+0x20).value
+   assert(length<=15,'Sort identifier must fit native inline string')
+   local chars={};for i=0,length-1 do chars[#chars+1]=string.char(df.reinterpret_cast('uint8_t',node+0x10+i).value)end
+   local key=table.concat(chars)
+   directions[key]=df.reinterpret_cast('int8_t',node+0x30).value
+   node=df.reinterpret_cast('uint64_t',node).value
+  end
+  observations[#observations+1]={label=label,names=names,sorts=sorts,directions=directions}
+  if os.getenv('DF3D_KITCHEN_SORT_PROVIDER')=='1' then
+   assert(#sorts==1,'Single-column provider diagnostic')
+   local columns={Type=0,Name=1,Number=2,Cook=3,Brew=4};local name=sorts[1].name
+   local text,code=dfhack.run_command_silent('df3d','kitchen-probe','-1','0','',tostring(columns[name]),tostring(directions[name]));assert(code==0,'Owned sort rejected')
+   local rows=json.decode(text);local actual={};for _,row in ipairs(rows)do actual[#actual+1]=row.name end
+   assert(json.encode(actual)==json.encode(names),'Owned Kitchen sort differs: '..label)
+   observations[#observations].provider_matched=true
+  end
+ end
+ observe('initial')
+ for _,column in ipairs({{'Name',28},{'Number',80},{'Cook',90},{'Brew',94},{'Type',18}})do
+  click(column[2],15);observe(column[1]..' first')
+  click(column[2],15);observe(column[1]..' second')
+ end
+ local f=assert(io.open(out..'/kitchen-sort.json','w'));f:write(json.encode(observations));f:close()
+end
 if os.getenv('DF3D_KITCHEN_FILTER')=='1' then
  local cases={{-1,0,'plump'},{0,0,'plump'},{1,0,'PLUMP'},{2,0,'plump'},{3,0,'plump'},{-1,1,'plump'},{-1,2,'plump'},{-1,3,'plump'},{-1,0,'no matching kitchen entry'}}
  local results={}

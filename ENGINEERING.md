@@ -77,11 +77,21 @@ destroys the copy. No widget/menu instance is constructed or borrowed. Protected
 162429 matches nine controlled native redraws for type/capability filters, ASCII
 uppercase search and no matches; DF35236 exits unsaved with source preservation.
 The comparison is scoped to visible matching names, not input-widget behavior,
-accented queries or positive Drink/Other cases. Sort wrapper46c820 is traced but
-full sorting remains unaudited. Runtime Kitchen transport, mutation validation,
-UI and public exposure remain unimplemented. MSVC and core19 pass in
-kitchen-native-filter-20261108; installed plugin SHA256
-A8877E8416B9667D88E286A11FD3155D67B14F5C47C32DED22F780A279CD2589.
+accented queries or positive Drink/Other cases. Sorting uses native comparators46c820(Type),46c7e0(Name),46ce00(Number),
+46c730(Cook) and46c680(Brew). Cook/Brew read the simulation exclusion vectors
+throughac7c30; equal vector lengths are validated before invoking them. The
+owned Entry vector retains native map iteration order. Native465af0/465970 sort
+forward/reverse iterators using an independently owned std::function; these
+entry points consume and clear that callable. Sort priorities are applied from
+last to first as in431ea0, without calling its widget builder.
+Protected162854 compares all22 row captions after actual header clicks: initial
+order and both directions of all5 columns match exactly. Aggregation and filter
+checks pass again; DF30940 exits unsaved with source preservation, GPU60C sampled.
+This capture does not establish multi-column priority, changed exclusions or
+the native merge path for lists over32 entries. Runtime Kitchen transport,
+mutation validation, UI and public exposure remain unimplemented. MSVC and core19
+pass in kitchen-native-sort-20261108; installed plugin SHA256
+76F3E68A17464A5AED0F1BBD0027D59BB9256DED76DFEC7DD57FCFF6FFCF51AE.
 
 ## Standing orders native discovery
 

@@ -2,7 +2,7 @@
   "df_version": "53.16",
   "steam_build": 24557528,
   "capture": "build/stockpile-storage-native-input-20261108-161252",
-  "scope": "Native Kitchen discovery and cold owned aggregation acceptance. Sorting, display quantities, edits, transport and public UI remain unaccepted. Diagnostic widget/menu reads are not permitted runtime inputs.",
+  "scope": "Native Kitchen discovery, owned aggregation/filtering and single-column sorting acceptance. Display quantities, edits, transport and public UI remain unaccepted. Diagnostic widget/menu reads are not permitted runtime inputs.",
   "initial": {
     "category": 0,
     "cursor": 0,
@@ -913,5 +913,463 @@
     ],
     "source_preserved": true,
     "scope": "Owned native predicate matches visible native redraw after controlled filter assignments. Does not establish input-widget behavior, accented queries, positive Drink/Other cases or sorting."
+  },
+  "sort_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-162854",
+    "source_preserved": true,
+    "observations": [
+      {
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 0
+        },
+        "label": "initial",
+        "names": [
+          "Alfalfa seeds",
+          "Rock nuts",
+          "Blade weed seeds",
+          "Strawberry seeds",
+          "Prickle berry seeds",
+          "Rice",
+          "Rat weed seeds",
+          "Dimple cup spawn",
+          "Longland grass seeds",
+          "Blood amaranth seeds",
+          "Rope reed seeds",
+          "Pig tail seeds",
+          "Plump helmet spawn",
+          "Plump helmets",
+          "Cave wheat",
+          "Sweet pods",
+          "Dwarven rum",
+          "Dwarven wine",
+          "Dwarven beer",
+          "Pig's milk",
+          "Yak's milk",
+          "Dwarven syrup"
+        ],
+        "provider_matched": true,
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          }
+        ]
+      },
+      {
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 0
+        },
+        "label": "Name first",
+        "names": [
+          "Alfalfa seeds",
+          "Blade weed seeds",
+          "Blood amaranth seeds",
+          "Cave wheat",
+          "Dimple cup spawn",
+          "Dwarven beer",
+          "Dwarven rum",
+          "Dwarven syrup",
+          "Dwarven wine",
+          "Longland grass seeds",
+          "Pig tail seeds",
+          "Pig's milk",
+          "Plump helmet spawn",
+          "Plump helmets",
+          "Prickle berry seeds",
+          "Rat weed seeds",
+          "Rice",
+          "Rock nuts",
+          "Rope reed seeds",
+          "Strawberry seeds",
+          "Sweet pods",
+          "Yak's milk"
+        ],
+        "provider_matched": true,
+        "sorts": [
+          {
+            "name": "Name",
+            "rva": 4638688
+          }
+        ]
+      },
+      {
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 1,
+          "Number": 0,
+          "Type": 0
+        },
+        "label": "Name second",
+        "names": [
+          "Yak's milk",
+          "Sweet pods",
+          "Strawberry seeds",
+          "Rope reed seeds",
+          "Rock nuts",
+          "Rice",
+          "Rat weed seeds",
+          "Prickle berry seeds",
+          "Plump helmets",
+          "Plump helmet spawn",
+          "Pig's milk",
+          "Pig tail seeds",
+          "Longland grass seeds",
+          "Dwarven wine",
+          "Dwarven syrup",
+          "Dwarven rum",
+          "Dwarven beer",
+          "Dimple cup spawn",
+          "Cave wheat",
+          "Blood amaranth seeds",
+          "Blade weed seeds",
+          "Alfalfa seeds"
+        ],
+        "provider_matched": true,
+        "sorts": [
+          {
+            "name": "Name",
+            "rva": 4638688
+          }
+        ]
+      },
+      {
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 1,
+          "Number": 0,
+          "Type": 0
+        },
+        "label": "Number first",
+        "names": [
+          "Pig tail seeds",
+          "Sweet pods",
+          "Dwarven rum",
+          "Pig's milk",
+          "Yak's milk",
+          "Strawberry seeds",
+          "Rope reed seeds",
+          "Blade weed seeds",
+          "Dwarven beer",
+          "Alfalfa seeds",
+          "Rat weed seeds",
+          "Prickle berry seeds",
+          "Dwarven syrup",
+          "Blood amaranth seeds",
+          "Longland grass seeds",
+          "Dimple cup spawn",
+          "Rice",
+          "Plump helmet spawn",
+          "Cave wheat",
+          "Rock nuts",
+          "Dwarven wine",
+          "Plump helmets"
+        ],
+        "provider_matched": true,
+        "sorts": [
+          {
+            "name": "Number",
+            "rva": 4640256
+          }
+        ]
+      },
+      {
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 1,
+          "Number": 1,
+          "Type": 0
+        },
+        "label": "Number second",
+        "names": [
+          "Plump helmets",
+          "Dwarven wine",
+          "Rock nuts",
+          "Cave wheat",
+          "Plump helmet spawn",
+          "Rice",
+          "Dimple cup spawn",
+          "Longland grass seeds",
+          "Blood amaranth seeds",
+          "Dwarven syrup",
+          "Prickle berry seeds",
+          "Rat weed seeds",
+          "Alfalfa seeds",
+          "Blade weed seeds",
+          "Dwarven beer",
+          "Rope reed seeds",
+          "Strawberry seeds",
+          "Pig's milk",
+          "Yak's milk",
+          "Dwarven rum",
+          "Pig tail seeds",
+          "Sweet pods"
+        ],
+        "provider_matched": true,
+        "sorts": [
+          {
+            "name": "Number",
+            "rva": 4640256
+          }
+        ]
+      },
+      {
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 1,
+          "Number": 1,
+          "Type": 0
+        },
+        "label": "Cook first",
+        "names": [
+          "Alfalfa seeds",
+          "Rock nuts",
+          "Blade weed seeds",
+          "Strawberry seeds",
+          "Prickle berry seeds",
+          "Rice",
+          "Rat weed seeds",
+          "Dimple cup spawn",
+          "Longland grass seeds",
+          "Blood amaranth seeds",
+          "Rope reed seeds",
+          "Plump helmets",
+          "Pig tail seeds",
+          "Plump helmet spawn",
+          "Dwarven rum",
+          "Pig's milk",
+          "Yak's milk",
+          "Dwarven wine",
+          "Dwarven beer",
+          "Cave wheat",
+          "Dwarven syrup",
+          "Sweet pods"
+        ],
+        "provider_matched": true,
+        "sorts": [
+          {
+            "name": "Cook",
+            "rva": 4638512
+          }
+        ]
+      },
+      {
+        "directions": {
+          "Brew": 0,
+          "Cook": 1,
+          "Name": 1,
+          "Number": 1,
+          "Type": 0
+        },
+        "label": "Cook second",
+        "names": [
+          "Dwarven rum",
+          "Pig's milk",
+          "Yak's milk",
+          "Dwarven wine",
+          "Dwarven beer",
+          "Cave wheat",
+          "Dwarven syrup",
+          "Sweet pods",
+          "Alfalfa seeds",
+          "Rock nuts",
+          "Blade weed seeds",
+          "Strawberry seeds",
+          "Prickle berry seeds",
+          "Rice",
+          "Rat weed seeds",
+          "Dimple cup spawn",
+          "Longland grass seeds",
+          "Blood amaranth seeds",
+          "Rope reed seeds",
+          "Plump helmets",
+          "Pig tail seeds",
+          "Plump helmet spawn"
+        ],
+        "provider_matched": true,
+        "sorts": [
+          {
+            "name": "Cook",
+            "rva": 4638512
+          }
+        ]
+      },
+      {
+        "directions": {
+          "Brew": 0,
+          "Cook": 1,
+          "Name": 1,
+          "Number": 1,
+          "Type": 0
+        },
+        "label": "Brew first",
+        "names": [
+          "Alfalfa seeds",
+          "Rock nuts",
+          "Blade weed seeds",
+          "Strawberry seeds",
+          "Prickle berry seeds",
+          "Rice",
+          "Rat weed seeds",
+          "Dwarven rum",
+          "Pig's milk",
+          "Dimple cup spawn",
+          "Yak's milk",
+          "Longland grass seeds",
+          "Blood amaranth seeds",
+          "Rope reed seeds",
+          "Plump helmets",
+          "Dwarven wine",
+          "Pig tail seeds",
+          "Dwarven beer",
+          "Cave wheat",
+          "Plump helmet spawn",
+          "Dwarven syrup",
+          "Sweet pods"
+        ],
+        "provider_matched": true,
+        "sorts": [
+          {
+            "name": "Brew",
+            "rva": 4638336
+          }
+        ]
+      },
+      {
+        "directions": {
+          "Brew": 1,
+          "Cook": 1,
+          "Name": 1,
+          "Number": 1,
+          "Type": 0
+        },
+        "label": "Brew second",
+        "names": [
+          "Alfalfa seeds",
+          "Rock nuts",
+          "Blade weed seeds",
+          "Strawberry seeds",
+          "Prickle berry seeds",
+          "Rice",
+          "Rat weed seeds",
+          "Dwarven rum",
+          "Pig's milk",
+          "Dimple cup spawn",
+          "Yak's milk",
+          "Longland grass seeds",
+          "Blood amaranth seeds",
+          "Rope reed seeds",
+          "Plump helmets",
+          "Dwarven wine",
+          "Pig tail seeds",
+          "Dwarven beer",
+          "Cave wheat",
+          "Plump helmet spawn",
+          "Dwarven syrup",
+          "Sweet pods"
+        ],
+        "provider_matched": true,
+        "sorts": [
+          {
+            "name": "Brew",
+            "rva": 4638336
+          }
+        ]
+      },
+      {
+        "directions": {
+          "Brew": 1,
+          "Cook": 1,
+          "Name": 1,
+          "Number": 1,
+          "Type": 0
+        },
+        "label": "Type first",
+        "names": [
+          "Alfalfa seeds",
+          "Rock nuts",
+          "Blade weed seeds",
+          "Strawberry seeds",
+          "Prickle berry seeds",
+          "Rice",
+          "Rat weed seeds",
+          "Dimple cup spawn",
+          "Longland grass seeds",
+          "Blood amaranth seeds",
+          "Rope reed seeds",
+          "Pig tail seeds",
+          "Plump helmet spawn",
+          "Plump helmets",
+          "Cave wheat",
+          "Sweet pods",
+          "Dwarven rum",
+          "Dwarven wine",
+          "Dwarven beer",
+          "Pig's milk",
+          "Yak's milk",
+          "Dwarven syrup"
+        ],
+        "provider_matched": true,
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          }
+        ]
+      },
+      {
+        "directions": {
+          "Brew": 1,
+          "Cook": 1,
+          "Name": 1,
+          "Number": 1,
+          "Type": 1
+        },
+        "label": "Type second",
+        "names": [
+          "Pig's milk",
+          "Yak's milk",
+          "Dwarven syrup",
+          "Dwarven rum",
+          "Dwarven wine",
+          "Dwarven beer",
+          "Plump helmets",
+          "Cave wheat",
+          "Sweet pods",
+          "Alfalfa seeds",
+          "Rock nuts",
+          "Blade weed seeds",
+          "Strawberry seeds",
+          "Prickle berry seeds",
+          "Rice",
+          "Rat weed seeds",
+          "Dimple cup spawn",
+          "Longland grass seeds",
+          "Blood amaranth seeds",
+          "Rope reed seeds",
+          "Pig tail seeds",
+          "Plump helmet spawn"
+        ],
+        "provider_matched": true,
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          }
+        ]
+      }
+    ],
+    "scope": "All22 row captions in native construction order match owned sorting after actual header clicks. Includes both directions of all5 columns. Multi-column priority, changed exclusions and lists over32 entries are not accepted by this capture."
   }
 }

@@ -6,6 +6,7 @@
 #include "df/labor_kitchen_interface_food_key.h"
 #include "df/labor_kitchen_interface_food_value.h"
 #include <cstddef>
+#include <functional>
 #include <unordered_map>
 #include <vector>
 
@@ -16,6 +17,14 @@ inline uint8_t* supportedBase() {
     static const bool valid=[base] {
         struct Pin {size_t rva,length;uint64_t hash;};
         constexpr Pin pins[]={
+            {0x46ce00,0xb,UINT64_C(0xba3c8c9dddb60ecc)},
+            {0x46c820,0xb,UINT64_C(0x42dd9776fe0477d1)},
+            {0x46c7e0,0x1c,UINT64_C(0x3c461622eb61e886)},
+            {0x46c730,0x85,UINT64_C(0x5a62d9f04fdd4896)},
+            {0x46c680,0x89,UINT64_C(0x0cbda71fe11edd37)},
+            {0xac7c30,0xd6,UINT64_C(0xebcb8225555d9695)},
+            {0x465970,0x17f,UINT64_C(0x608660a3f97cf2aa)},
+            {0x465af0,0x17f,UINT64_C(0x6f3db96bf1940708)},
             {0x430d50,0x1d8,UINT64_C(0x10096dbd8f590e8c)},
             {0x46c850,0x5d,UINT64_C(0x8bb528f17939950b)},
             {0x52cee0,0x19e,UINT64_C(0xc25c2d8a6eb9fcac)},
@@ -48,6 +57,8 @@ static_assert(sizeof(Key)==12 && sizeof(Value)==40 && sizeof(Map)==64);
 static_assert(offsetof(Context,known)==0x180);
 struct Row {int16_t type,subtype,material;int32_t materialIndex,count;uint8_t capabilities;std::string name;};
 struct Filter {int8_t type=-1;uint8_t capabilities=0;std::string query;};
+enum class Column:uint8_t {Type,Name,Number,Cook,Brew};
+struct Sort {Column column=Column::Type;bool reverse=false;};
 struct FilterContext {
     std::array<std::byte,0x230> prefix{};
     std::string query;
@@ -58,10 +69,16 @@ struct FilterCallable {void* unused=nullptr;FilterContext* context;};
 struct Entry {Key key;Value value;};
 static_assert(offsetof(FilterContext,query)==0x230 && offsetof(FilterContext,type)==0x250);
 static_assert(offsetof(Entry,value)==0x10 && sizeof(Entry)==0x38);
-inline std::optional<std::vector<Row>> read(const Filter& filter={}) {
+inline std::optional<std::vector<Row>> read(const Filter& filter={},const std::vector<Sort>& sorts={{}}) {
     auto* base=supportedBase();
     if(!base || !df::global::world || !df::global::plotinfo)return std::nullopt;
     if(filter.type<-1 || filter.type>3 || filter.capabilities>3 || filter.query.size()>4096)return std::nullopt;
+    if(sorts.empty() || sorts.size()>5)return std::nullopt;
+    uint8_t used=0;
+    for(const auto& sort:sorts){const auto id=static_cast<uint8_t>(sort.column);if(id>4 || (used&(1u<<id)))return std::nullopt;used|=1u<<id;}
+    const auto& exclusions=df::global::plotinfo->kitchen;
+    const auto size=exclusions.item_types.size();
+    if(size>65536 || exclusions.item_subtypes.size()!=size || exclusions.mat_types.size()!=size || exclusions.mat_indices.size()!=size || exclusions.exc_types.size()!=size)return std::nullopt;
     FilterContext selection;selection.query=filter.query;selection.type=filter.type;selection.capabilities=filter.capabilities;
     reinterpret_cast<void(*)(std::string*)>(base+0x52cee0)(&selection.query);
     FilterCallable callable{nullptr,&selection};
@@ -86,15 +103,30 @@ inline std::optional<std::vector<Row>> read(const Filter& filter={}) {
         reinterpret_cast<void(*)(Context*,df::item*)>(base+0x42af10)(&owned,item);
         if(owned.known.size()>65536)return std::nullopt;
     }
-    std::vector<Row> result;result.reserve(owned.known.size());
+    std::vector<Entry> entries;entries.reserve(owned.known.size());
     for(const auto& [key,value]:owned.known) {
         if(value.num<0 || value.canrest<1 || value.canrest>3 || value.name.empty() || value.name.size()>4096)return std::nullopt;
         // The wrapper moves the copied string into the by-value predicate,
         // which destroys that copy. The original map entry remains owned here.
         Entry copy{key,value};
         if(reinterpret_cast<bool(*)(FilterCallable*,Entry*)>(base+0x46c850)(&callable,&copy))continue;
-        result.push_back({int16_t(key.type),key.subtype,key.mat,key.matg,value.num,uint8_t(value.canrest),value.name});
+        entries.push_back({key,value});
     }
+    // Native431ea0 applies priorities from last to first. Both sort entry
+    // points operate only on owned entries and consume the copied callable.
+    using Comparator=std::function<bool(const Entry&,const Entry&)>;
+    static_assert(sizeof(Comparator)==64);
+    constexpr size_t comparators[]={0x46c820,0x46c7e0,0x46ce00,0x46c730,0x46c680};
+    if(entries.size()>1)for(auto it=sorts.rbegin();it!=sorts.rend();++it){
+        const auto compare=reinterpret_cast<bool(*)(void*,const Entry*,const Entry*)>(base+comparators[static_cast<uint8_t>(it->column)]);
+        Comparator callable=[compare](const Entry& a,const Entry& b){return compare(nullptr,&a,&b);};
+        auto* first=entries.data();auto* last=first+entries.size();
+        const auto sort=reinterpret_cast<void(*)(Entry*,Entry*,Comparator*)>(base+(it->reverse?0x465970:0x465af0));
+        sort(it->reverse?last:first,it->reverse?first:last,&callable);
+    }
+    std::vector<Row> result;result.reserve(entries.size());
+    for(const auto& entry:entries){const auto& key=entry.key;const auto& value=entry.value;
+        result.push_back({int16_t(key.type),key.subtype,key.mat,key.matg,value.num,uint8_t(value.canrest),value.name});}
     return result;
 }
 } // namespace df3d_kitchen

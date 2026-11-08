@@ -242,6 +242,21 @@ if os.getenv('DF3D_KITCHEN_EDITS')=='1' then
   end
   local f=assert(io.open(out..'/kitchen-edits.json','w'));f:write(json.encode(edits));f:close()
  end
+ if os.getenv('DF3D_KITCHEN_WIRE')=='1' then
+  local checked=0
+  shot('kitchen-wire',function()
+   local f=io.open(out..'/kitchen-wire-step');if not f then return end
+   local index=tonumber(f:read('*a'));f:close()
+   if index and index>checked then
+    assert(index==checked+1 and index<=#edits.steps,'Unexpected Kitchen wire step')
+    local current=snapshot();local expected=edits.steps[index].state
+    assert(membership(current.exclusions)==membership(expected.exclusions),'Kitchen wire permissions differ')
+    assert(json.encode(current.jobs)==json.encode(expected.jobs),'Kitchen wire jobs differ')
+    checked=index;local ack=assert(io.open(out..'/kitchen-wire-ack','w'));ack:write(tostring(index));ack:close()
+   end
+  end)
+  assert(checked==#edits.steps,'Incomplete Kitchen wire effects')
+ end
  panel.filter_str='';panel.sort_flags=panel.sort_flags|1
  for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
 end

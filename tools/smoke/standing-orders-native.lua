@@ -55,12 +55,13 @@ local function rows()
  return result
 end
 local hunter_snapshot,chores_snapshot
-local function shot(name)
+local function shot(name,check_step)
  local file=assert(io.open(out..'/standing-orders-native.json','w'));file:write(json.encode(result));file:close()
  file=assert(io.open(out..'/shot.tmp','w'));file:write(name);file:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
  local deadline=dfhack.getTickCount()+((os.getenv('DF3D_CHORES_RENDER')=='1' or os.getenv('DF3D_STANDING_ORDERS_RENDER')=='1' or os.getenv('DF3D_HUNTER_AMMUNITION_RENDER')=='1') and 20000 or 10000)
  local checked=0
  while true do
+  if check_step then check_step()end
   if name=='chores-wire' then
    local file=io.open(out..'/chores-wire-step')
    if file then local step=tonumber(file:read('*a'));file:close()

@@ -110,6 +110,7 @@
 #include "standing_orders_native.h"
 #include "hunter_ammunition_captions_native.h"
 #include "chores_native.h"
+#include "kitchen_native.h"
 #include "df/gamest.h"
 #include "work_order_catalog_native.h"
 #include "work_order_rows_native.h"
@@ -494,6 +495,13 @@ struct ChoresResult {
   df3d_chores::Captions captions;
 };
 std::optional<ChoresResult> chores;
+struct KitchenResult {
+  m::KitchenMenuOutcome outcome=m::KitchenMenuOutcome::Rejected;
+  std::vector<df3d_kitchen::Row> rows;
+  std::vector<df3d_kitchen::Display> display;
+  std::vector<df3d_kitchen::Exclusion> exclusions;
+};
+std::optional<KitchenResult> kitchen;
 
 
 m::TilePos worldHoverTile;
@@ -509,7 +517,7 @@ void clearResult() {
   residentsRows.reset();
   residentsSpecialization.reset();
   residentsActivity.reset();
-  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();
+  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -1140,6 +1148,18 @@ void publish() {
     }
     standingOrdersResult=m::CreateStandingOrdersState(b,standingOrders->category,standingOrders->outcome,b.CreateVector(rows));
   }
+  flatbuffers::Offset<m::KitchenMenuState> kitchenResult;
+  if(kitchen){
+    std::vector<flatbuffers::Offset<m::KitchenMenuRow>> rows;
+    std::vector<flatbuffers::Offset<m::KitchenExclusion>> exclusions;
+    for(size_t i=0;i<kitchen->rows.size();++i){const auto& row=kitchen->rows[i];const auto& d=kitchen->display.at(i);
+      const auto key=m::CreateKitchenFoodKey(b,row.type,row.subtype,row.material,row.materialIndex);
+      const auto receipt=m::CreateKitchenFoodReceipt(b,key,row.count,row.capabilities);
+      rows.push_back(m::CreateKitchenMenuRow(b,receipt,b.CreateString(row.name),b.CreateString(d.countCaption),d.estimated,d.excluded,b.CreateString(d.materialToken)));}
+    for(const auto& row:kitchen->exclusions){const auto key=m::CreateKitchenFoodKey(b,row.type,row.subtype,row.material,row.materialIndex);
+      exclusions.push_back(m::CreateKitchenExclusion(b,key,row.flags));}
+    kitchenResult=m::CreateKitchenMenuState(b,kitchen->outcome,b.CreateVector(rows),b.CreateVector(exclusions));
+  }
   flatbuffers::Offset<m::ChoresState> choresResult;
   if(chores){
     flatbuffers::Offset<m::ChoresSnapshot> snapshot;
@@ -1170,7 +1190,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult);
   b.Finish(s);
   if (auto e = m::validateManagementState(
           *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()))) {
@@ -1183,6 +1203,7 @@ void publish() {
     const auto placed=construction.placed,skipped=construction.skipped;
     const auto first=construction.first_building;
     const auto standingCategory=standingOrders?standingOrders->category:0;
+    const bool kitchenUnknown=kitchen && (kitchen->outcome==m::KitchenMenuOutcome::Applied || kitchen->outcome==m::KitchenMenuOutcome::Unknown);
     const bool choresUnknown=chores && (chores->outcome==m::ChoresOutcome::Applied || chores->outcome==m::ChoresOutcome::Unknown);
     const bool hunterUnknown=hunter && (hunter->outcome==m::HunterAmmunitionOutcome::Applied || hunter->outcome==m::HunterAmmunitionOutcome::Unknown);
     const bool standingUnknown=standingOrders && (standingOrders->outcome==m::StandingOrdersOutcome::Applied || standingOrders->outcome==m::StandingOrdersOutcome::Unknown);
@@ -1190,6 +1211,7 @@ void publish() {
     auto jobWrite=jobSettingsEdit;
     if(jobWrite && jobWrite->outcome!=m::JobSettingsEditOutcome::Applied && jobWrite->outcome!=m::JobSettingsEditOutcome::Unknown)jobWrite.reset();
     clearResult();
+    if(kitchenUnknown){kitchen.emplace();kitchen->outcome=m::KitchenMenuOutcome::Unknown;mutated=true;}
     if(choresUnknown){chores.emplace();chores->outcome=m::ChoresOutcome::Unknown;mutated=true;}
     if(hunterUnknown){hunter.emplace();hunter->outcome=m::HunterAmmunitionOutcome::Unknown;mutated=true;}
     if(standingUnknown){standingOrders.emplace();standingOrders->category=standingCategory;standingOrders->outcome=m::StandingOrdersOutcome::Unknown;mutated=true;}
@@ -4142,9 +4164,37 @@ void run(color_ostream& out) {
     } catch(...) {residentsRows.reset();}
     publish();return;
   }
-  // Protocol migration is staged separately from the native Kitchen dispatcher.
   if(r->action()==m::ManagementAction::KitchenRead || r->action()==m::ManagementAction::KitchenApply) {
-    status=m::ManagementStatus::Rejected;publish();return;
+    namespace h=df3d_kitchen;
+    status=m::ManagementStatus::Rejected;message.clear();kitchen.emplace();bool writeStarted=false;
+    try {
+      const auto& q=*r->kitchen_menu();
+      if(r->action()==m::ManagementAction::KitchenRead){
+        const auto& v=*q.query();std::vector<h::Sort> sorts;
+        for(const auto* row:*v.sorts())sorts.push_back({h::Column(row->column()),row->reverse()});
+        auto rows=h::read({v.type_filter(),v.capability_filter(),UTF2DF(v.query()->str())},sorts);
+        if(!rows)throw std::runtime_error("kitchen rows unavailable");
+        auto display=h::display(*rows);auto exclusions=h::exclusions();
+        if(!display || display->size()!=rows->size() || !exclusions)throw std::runtime_error("kitchen metadata unavailable");
+        for(auto& row:*rows)row.name=DF2UTF(row.name);
+        for(auto& row:*display)row.countCaption=DF2UTF(row.countCaption);
+        kitchen->rows=std::move(*rows);kitchen->display=std::move(*display);kitchen->exclusions=std::move(*exclusions);
+        kitchen->outcome=m::KitchenMenuOutcome::None;status=m::ManagementStatus::Ok;
+      }else{
+        const auto& target=*q.target();const auto& key=*target.key();std::vector<h::Exclusion> expected;
+        expected.reserve(q.expected()->size());
+        for(const auto* row:*q.expected()){const auto& k=*row->key();expected.push_back({k.item_type(),k.item_subtype(),k.mat_type(),k.mat_index(),row->flags()});}
+        const h::Row row{key.item_type(),key.item_subtype(),key.mat_type(),key.mat_index(),target.count(),target.capabilities(),{}};
+        const auto outcome=h::apply(row,q.permission(),expected,&writeStarted);
+        if(outcome==h::Outcome::Applied){kitchen->outcome=m::KitchenMenuOutcome::Applied;status=m::ManagementStatus::Ok;mutated=true;}
+        else if(outcome==h::Outcome::Stale)kitchen->outcome=m::KitchenMenuOutcome::Stale;
+      }
+      publish();return;
+    }catch(...){
+      kitchen.emplace();status=m::ManagementStatus::Rejected;
+      if(writeStarted){kitchen->outcome=m::KitchenMenuOutcome::Unknown;mutated=true;}
+    }
+    publish();return;
   }
   if(r->action()==m::ManagementAction::ChoresRead || r->action()==m::ManagementAction::ChoresApply) {
     namespace h=df3d_chores;

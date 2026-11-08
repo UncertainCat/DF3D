@@ -43,8 +43,21 @@ Cook1 or Brew2 is valid. Applied returns no list: the controller must refresh.
 Rejected/Stale/Unknown carry no authority and Unknown never licenses replay.
 The wire and Godot boundaries enforce exact typed fields and bounded vectors.
 Readers and bridge must rebuild together; older recordings gain no invented
-facts. The migration explicitly rejects these actions until native dispatch is
-connected; the Kitchen screen remains unfinished and hidden.
+facts. The native dispatcher now supplies reads and applies validated toggles;
+the Kitchen screen remains unfinished and hidden.
+
+Kitchen dispatch calls the owned native provider for filtering/sorting, display
+metadata and exclusion receipts. Query text is converted to native encoding;
+captions return as UTF-8. Edits revalidate the full receipt and target before
+calling the native toggle. A failure after writes begin returns Unknown with no
+authority, including invalid-response publication fallback. Protected171829
+on2026-11-08 verifies22 typed aggregates and six Cook/Brew edits against native
+clicks, with independent exclusion/job snapshots and a stale-receipt rejection.
+The source save is unchanged and owned DF20896 exits unsaved; only the known
+separate-thread startup notice remains. This does not cover active job effects
+through the wire, publication fault injection or the unfinished controller/view.
+MSVC and core19 pass; installed plugin SHA256:
+16D169C764789E0F70234A9D363516B29D11A9CEBDF1A47CE9C0492D33A089EA.
 
 Core19, the extension build and Kitchen end-to-end fake-host checks pass in
 `kitchen-contract151-roundtrip`, including ordered filters/sorts and receipts,
@@ -173,8 +186,8 @@ Protected162854 compares all22 row captions after actual header clicks: initial
 order and both directions of all5 columns match exactly. Aggregation and filter
 checks pass again; DF30940 exits unsaved with source preservation, GPU60C sampled.
 This capture does not establish multi-column priority, changed exclusions or
-the native merge path for lists over32 entries. Runtime Kitchen transport,
-UI and public exposure remain unimplemented. MSVC and core19 pass in
+the native merge path for lists over32 entries. Kitchen UI and public exposure
+remain unimplemented; typed transport is verified above. MSVC and core19 pass in
 kitchen-material-art-20261108; installed plugin SHA256
 2C16A89797A4E99DC05479DA000AF8C6E357B1BD4466F3EA9147B279EA369605.
 

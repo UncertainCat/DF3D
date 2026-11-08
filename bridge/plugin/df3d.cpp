@@ -2528,6 +2528,27 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             for(const auto& row:*rows){Json::Value value(Json::objectValue);value["id"]=row.id;value["caption"]=DF2UTF(row.text);result[key].append(value);}}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="kitchen-edit-probe") {
+          if(parameters.size()!=3 || (parameters[1]!="1" && parameters[1]!="2"))return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          Json::Value receipt;Json::Reader reader;
+          if(!reader.parse(parameters[2],receipt) || !receipt["exclusions"].isArray() || receipt["exclusions"].size()>65536)return CR_WRONG_USAGE;
+          const auto parseKey=[](const Json::Value& value,df3d_kitchen::Exclusion& key){
+            for(const char* name:{"type","subtype","mat","matg"})if(!value[name].isInt())return false;
+            for(const char* name:{"type","subtype","mat"})if(value[name].asInt()<-32768 || value[name].asInt()>32767)return false;
+            key.type=int16_t(value["type"].asInt());key.subtype=int16_t(value["subtype"].asInt());key.material=int16_t(value["mat"].asInt());key.materialIndex=value["matg"].asInt();return true;};
+          df3d_kitchen::Exclusion key{};const auto& row=receipt["target"];
+          if(!parseKey(row,key) || !row["count"].isInt() || row["count"].asInt()<0 || !row["capabilities"].isInt() || row["capabilities"].asInt()<1 || row["capabilities"].asInt()>3)return CR_WRONG_USAGE;
+          df3d_kitchen::Row target{key.type,key.subtype,key.material,key.materialIndex,row["count"].asInt(),uint8_t(row["capabilities"].asInt()),{}};
+          std::vector<df3d_kitchen::Exclusion> expected;
+          for(const auto& value:receipt["exclusions"]){df3d_kitchen::Exclusion entry{};
+            if(!parseKey(value,entry) || !value["flags"].isInt() || value["flags"].asInt()<0 || value["flags"].asInt()>3)return CR_WRONG_USAGE;
+            entry.flags=uint8_t(value["flags"].asInt());expected.push_back(entry);}
+          bool started=false;Json::Value result(Json::objectValue);
+          try {result["outcome"]=int(df3d_kitchen::apply(target,parameters[1]=="1"?1:2,expected,&started));}
+          catch(...){result["outcome"]=started?3:0;}
+          result["write_started"]=started;out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="kitchen-probe") {
           if(parameters.size()!=1 && parameters.size()!=4 && parameters.size()!=6)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;

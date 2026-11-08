@@ -129,6 +129,55 @@ if os.getenv('DF3D_KITCHEN_SORT')=='1' then
  end
  local f=assert(io.open(out..'/kitchen-sort.json','w'));f:write(json.encode(observations));f:close()
 end
+if os.getenv('DF3D_KITCHEN_EDITS')=='1' then
+ local function snapshot()
+  local k=df.global.plotinfo.kitchen;local exclusions={};local jobs={}
+  for i,t in ipairs(k.item_types)do exclusions[#exclusions+1]={type=t,subtype=k.item_subtypes[i],mat=k.mat_types[i],matg=k.mat_indices[i],flags=k.exc_types[i].whole}end
+  for _,job in require('utils').listpairs(df.global.world.jobs.list)do
+   local items={};for _,ref in ipairs(job.items)do items[#items+1]={id=ref.item.id,role=ref.role,job_item_idx=ref.job_item_idx}end
+   jobs[#jobs+1]={id=job.id,type=job.job_type,flags=job.flags.whole,items=items}
+  end
+  return {exclusions=exclusions,jobs=jobs}
+ end
+ local edits={before=snapshot(),steps={}}
+ panel.filter_type=-1;panel.filter_perm=0;panel.filter_str='plump';panel.sort_flags=panel.sort_flags|1
+ -- The redraw builds replacement rows; a later layout pass places them.
+ for _=1,3 do script.sleep(1,'frames');view:render(dfhack.getTickCount())end
+ for _,step in ipairs({{'Plump helmet spawn',1},{'Plump helmets',2},{'Plump helmets',1},{'Plump helmets',1},{'Plump helmets',2},{'Plump helmet spawn',1}})do
+  local y
+  local function locate(widget)
+   if df.widget_text:is_instance(widget) and dfhack.df2utf(widget.str)==step[1]then y=widget.rect.y1 end
+   if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do locate(child)end end
+  end
+  locate(panel);assert(y,'Native Kitchen edit row missing')
+  click(step[2]==1 and 90 or 94,y)
+  edits.steps[#edits.steps+1]={name=step[1],flag=step[2],state=snapshot()}
+ end
+ local f=assert(io.open(out..'/kitchen-edits.json','w'));f:write(json.encode(edits));f:close()
+ local function membership(values)local rows={};for _,row in ipairs(values)do rows[#rows+1]=json.encode(row)end;table.sort(rows);return json.encode(rows)end
+ assert(membership(edits.before.exclusions)==membership(edits.steps[#edits.steps].state.exclusions),'Kitchen exclusion membership not restored')
+ if os.getenv('DF3D_KITCHEN_EDIT_PROVIDER')=='1' then
+  edits.provider={}
+  for index,step in ipairs(edits.steps)do
+   local target;for _,row in ipairs(result.known)do if row.name==step.name then target=row end end;assert(target,'Owned edit target missing')
+   local receipt=json.encode({target=target,exclusions=snapshot().exclusions})
+   local text,code=dfhack.run_command_silent('df3d','kitchen-edit-probe',tostring(step.flag),receipt);assert(code==0,'Owned edit command rejected')
+   local reply=json.decode(text);assert(reply.outcome==1 and reply.write_started,'Owned edit did not apply')
+   local current=snapshot()
+   assert(membership(current.exclusions)==membership(step.state.exclusions),'Owned edit permissions differ')
+   assert(json.encode(current.jobs)==json.encode(step.state.jobs),'Owned edit job state differs')
+   if index==1 then
+    local stale,stale_code=dfhack.run_command_silent('df3d','kitchen-edit-probe',tostring(step.flag),receipt);assert(stale_code==0,'Stale edit diagnostic failed')
+    stale=json.decode(stale);assert(stale.outcome==2 and not stale.write_started,'Stale Kitchen receipt accepted')
+    assert(json.encode(snapshot())==json.encode(current),'Stale Kitchen edit changed simulation')
+   end
+   edits.provider[#edits.provider+1]={name=step.name,flag=step.flag,matched=true}
+  end
+  local f=assert(io.open(out..'/kitchen-edits.json','w'));f:write(json.encode(edits));f:close()
+ end
+ panel.filter_str='';panel.sort_flags=panel.sort_flags|1
+ for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
+end
 if os.getenv('DF3D_KITCHEN_FILTER')=='1' then
  local cases={{-1,0,'plump'},{0,0,'plump'},{1,0,'PLUMP'},{2,0,'plump'},{3,0,'plump'},{-1,1,'plump'},{-1,2,'plump'},{-1,3,'plump'},{-1,0,'no matching kitchen entry'}}
  local results={}

@@ -7,6 +7,7 @@
 #include "df/labor_kitchen_interface_food_value.h"
 #include <cstddef>
 #include <functional>
+#include <tuple>
 #include <unordered_map>
 #include <vector>
 
@@ -17,6 +18,9 @@ inline uint8_t* supportedBase() {
     static const bool valid=[base] {
         struct Pin {size_t rva,length;uint64_t hash;};
         constexpr Pin pins[]={
+            {0xac8410,0x77,UINT64_C(0x167ebc614e92ed22)},
+            {0xac8280,0x18d,UINT64_C(0x4ce7454087c59262)},
+            {0xac7d10,0x570,UINT64_C(0xa95d2149d15941b7)},
             {0x46ce00,0xb,UINT64_C(0xba3c8c9dddb60ecc)},
             {0x46c820,0xb,UINT64_C(0x42dd9776fe0477d1)},
             {0x46c7e0,0x1c,UINT64_C(0x3c461622eb61e886)},
@@ -128,5 +132,38 @@ inline std::optional<std::vector<Row>> read(const Filter& filter={},const std::v
     for(const auto& entry:entries){const auto& key=entry.key;const auto& value=entry.value;
         result.push_back({int16_t(key.type),key.subtype,key.mat,key.matg,value.num,uint8_t(value.canrest),value.name});}
     return result;
+}
+struct Exclusion {
+    int16_t type,subtype,material;int32_t materialIndex;uint8_t flags;
+    bool operator==(const Exclusion& b)const{return std::tie(type,subtype,material,materialIndex,flags)==std::tie(b.type,b.subtype,b.material,b.materialIndex,b.flags);}
+};
+inline std::optional<std::vector<Exclusion>> exclusions() {
+    auto* base=supportedBase();if(!base || !df::global::plotinfo)return std::nullopt;
+    const auto& k=df::global::plotinfo->kitchen;const auto n=k.item_types.size();
+    if(reinterpret_cast<const uint8_t*>(&k.item_types)!=base+0x23935d8 || n>65536 ||
+       k.item_subtypes.size()!=n || k.mat_types.size()!=n || k.mat_indices.size()!=n || k.exc_types.size()!=n)return std::nullopt;
+    std::vector<Exclusion> result;result.reserve(n);
+    for(size_t i=0;i<n;++i){if(k.exc_types[i].whole<0 || k.exc_types[i].whole>3)return std::nullopt;
+        result.push_back({int16_t(k.item_types[i]),k.item_subtypes[i],k.mat_types[i],k.mat_indices[i],uint8_t(k.exc_types[i].whole)});}
+    return result;
+}
+enum class Outcome {Rejected=0,Applied=1,Stale=2};
+// A click toggles one native permission. Revalidate the complete exclusion
+// receipt and target availability before the first write. Never replay Unknown.
+inline Outcome apply(const Row& target,uint8_t flag,const std::vector<Exclusion>& expected,bool* writeStarted=nullptr) {
+    if(flag!=1 && flag!=2)return Outcome::Rejected;
+    const auto before=exclusions();if(!before)return Outcome::Rejected;
+    if(*before!=expected)return Outcome::Stale;
+    const auto rows=read();if(!rows)return Outcome::Rejected;
+    const Row* current=nullptr;
+    for(const auto& row:*rows)if(std::tie(row.type,row.subtype,row.material,row.materialIndex)==std::tie(target.type,target.subtype,target.material,target.materialIndex)){current=&row;break;}
+    if(!current || current->count!=target.count || current->capabilities!=target.capabilities)return Outcome::Stale;
+    if(!(current->capabilities&flag))return Outcome::Rejected;
+    auto* base=supportedBase();
+    if(writeStarted)*writeStarted=true;
+    // The first parameter is unused by the native toggle/remove/add chain.
+    // Native add performs job/reagent handling; direct vector edits omit it.
+    reinterpret_cast<void(*)(void*,int16_t,int16_t,int16_t,int32_t,uint8_t)>(base+0xac8410)(nullptr,target.type,target.subtype,target.material,target.materialIndex,flag);
+    return Outcome::Applied;
 }
 } // namespace df3d_kitchen

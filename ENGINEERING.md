@@ -53,6 +53,20 @@ ac7d10. The add path also inspects jobs/reagents and can trigger native job hand
 simply changing vectors would omit these effects. Unwind records split several
 functions into fragments, so the first exception-table end is not a full audit.
 
+The owned toggle adapter validates the full ordered exclusion receipt, freshly
+aggregated target identity/count/capabilities, and requested Cook/Brew capability
+before callingac8410. Failure after the write boundary is Unknown and must not
+be replayed. The native toggle/remove/add chain ignores its first parameter; no
+menu context is passed. Protected163543 matches six actual native permission
+changes and rejects a stale receipt without simulation changes. DF36980 exits
+unsaved with source preservation. Re-adding a removed exclusion appends it;
+permission membership is restored, while native vector ordering is retained.
+The53 observed jobs contain no PrepareMeal or CustomReaction jobs, so unchanged
+job-state comparisons do not establish invalidation/cancellation acceptance.
+The native add path checks cooking ingredients withc8b600 and brewing reaction
+reagents for DRINK_MAT, then calls1325080 for an assigned worker or sets the job
+item_lost flag. Active-job acceptance, transport and UI remain outstanding.
+
 Per-item aggregator42af10..42b2e2 computes native capability bits, keys, stack
 counts and names (a82c10 plus52d650), accumulating into an unordered_map at context
 +0x180. Observed map accesses are confined to that map; no full-widget runtime
@@ -89,9 +103,9 @@ order and both directions of all5 columns match exactly. Aggregation and filter
 checks pass again; DF30940 exits unsaved with source preservation, GPU60C sampled.
 This capture does not establish multi-column priority, changed exclusions or
 the native merge path for lists over32 entries. Runtime Kitchen transport,
-mutation validation, UI and public exposure remain unimplemented. MSVC and core19
-pass in kitchen-native-sort-20261108; installed plugin SHA256
-76F3E68A17464A5AED0F1BBD0027D59BB9256DED76DFEC7DD57FCFF6FFCF51AE.
+UI and public exposure remain unimplemented. MSVC and core19 pass in
+kitchen-native-edits-20261108; installed plugin SHA256
+730E21B6CDBC3F2664DF7ED6A48263621C96DFC1A302002DF522E91E57C25C3E.
 
 ## Standing orders native discovery
 

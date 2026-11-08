@@ -2,7 +2,7 @@
   "df_version": "53.16",
   "steam_build": 24557528,
   "capture": "build/stockpile-storage-native-input-20261108-161252",
-  "scope": "Native Kitchen discovery, owned aggregation/filtering and single-column sorting acceptance. Display quantities, edits, transport and public UI remain unaccepted. Diagnostic widget/menu reads are not permitted runtime inputs.",
+  "scope": "Native Kitchen owned aggregation/filtering, single-column sorting and permission-toggle acceptance. Active job effects, display quantities, transport and public UI remain unaccepted. Diagnostic widget/menu reads are not permitted runtime inputs.",
   "initial": {
     "category": 0,
     "cursor": 0,
@@ -1371,5 +1371,142 @@
       }
     ],
     "scope": "All22 row captions in native construction order match owned sorting after actual header clicks. Includes both directions of all5 columns. Multi-column priority, changed exclusions and lists over32 entries are not accepted by this capture."
+  },
+  "edit_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-163543",
+    "steps": [
+      {
+        "name": "Plump helmet spawn",
+        "flag": 1,
+        "added": [],
+        "removed": [
+          {
+            "flags": 1,
+            "mat": 422,
+            "matg": 173,
+            "subtype": -1,
+            "type": 53
+          }
+        ]
+      },
+      {
+        "name": "Plump helmets",
+        "flag": 2,
+        "added": [
+          {
+            "flags": 2,
+            "mat": 419,
+            "matg": 173,
+            "subtype": -1,
+            "type": 54
+          }
+        ],
+        "removed": []
+      },
+      {
+        "name": "Plump helmets",
+        "flag": 1,
+        "added": [],
+        "removed": [
+          {
+            "flags": 1,
+            "mat": 419,
+            "matg": 173,
+            "subtype": -1,
+            "type": 54
+          }
+        ]
+      },
+      {
+        "name": "Plump helmets",
+        "flag": 1,
+        "added": [
+          {
+            "flags": 1,
+            "mat": 419,
+            "matg": 173,
+            "subtype": -1,
+            "type": 54
+          }
+        ],
+        "removed": []
+      },
+      {
+        "name": "Plump helmets",
+        "flag": 2,
+        "added": [],
+        "removed": [
+          {
+            "flags": 2,
+            "mat": 419,
+            "matg": 173,
+            "subtype": -1,
+            "type": 54
+          }
+        ]
+      },
+      {
+        "name": "Plump helmet spawn",
+        "flag": 1,
+        "added": [
+          {
+            "flags": 1,
+            "mat": 422,
+            "matg": 173,
+            "subtype": -1,
+            "type": 53
+          }
+        ],
+        "removed": []
+      }
+    ],
+    "provider": [
+      {
+        "flag": 1,
+        "matched": true,
+        "name": "Plump helmet spawn"
+      },
+      {
+        "flag": 2,
+        "matched": true,
+        "name": "Plump helmets"
+      },
+      {
+        "flag": 1,
+        "matched": true,
+        "name": "Plump helmets"
+      },
+      {
+        "flag": 1,
+        "matched": true,
+        "name": "Plump helmets"
+      },
+      {
+        "flag": 2,
+        "matched": true,
+        "name": "Plump helmets"
+      },
+      {
+        "flag": 1,
+        "matched": true,
+        "name": "Plump helmet spawn"
+      }
+    ],
+    "stale_receipt_rejected_without_write": true,
+    "jobs_observed": 53,
+    "job_types_present": [
+      12,
+      17,
+      20,
+      23,
+      38,
+      40,
+      44,
+      51,
+      66
+    ],
+    "job_states_unchanged": true,
+    "source_preserved": true,
+    "scope": "Native clicks and adapter permission membership match. No PrepareMeal or CustomReaction jobs present, so job invalidation/cancellation is not accepted. Removing then readding exclusions changes vector order; adapter retains native behavior."
   }
 }

@@ -4,7 +4,7 @@ extends RefCounted
 signal changed
 const C=preload("res://scripts/management_contract.gd")
 const A=C.ManagementAction
-enum Phase { Closed, Reading, Ready, Applying, Rejected, Unavailable }
+enum Phase { Closed, Reading, Ready, Applying, Rejected, Unavailable, Unknown }
 var service
 var phase:=Phase.Closed
 var generation:=0
@@ -54,7 +54,9 @@ func refresh() -> void:
 	_reload(int(selected.get("index",0)))
 func _reject(result: Dictionary={}) -> void:
 	settings={}
-	selected={};ids=PackedInt32Array();rows={};roster_ready=false;last_result=result.duplicate(true);phase=Phase.Rejected;changed.emit()
+	selected={};ids=PackedInt32Array();rows={};roster_ready=false;last_result=result.duplicate(true)
+	phase=Phase.Unknown if result.get("outcome","")=="unknown" else Phase.Rejected
+	changed.emit()
 func _submit(domain: String,intent: Dictionary,accept: Callable) -> void:
 	if service==null:phase=Phase.Unavailable;changed.emit();return
 	var owner:=generation

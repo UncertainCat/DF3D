@@ -74,7 +74,7 @@ func run() -> void:
 	check(service.calls[old].intent.expected_revision==12 and service.calls[old].intent.mode==1,"Mode uses refreshed authority")
 	service.reply(old,{"status":C.ManagementStatus.Rejected,"outcome":"unknown"})
 	var count:=service.next;state.create_detail();state.set_mode(1)
-	check(state.phase==State.Phase.Rejected and service.next==count and state.selected.is_empty(),"Unknown mutation has no automatic replay or reusable receipt")
+	check(state.phase==State.Phase.Unknown and service.next==count and state.selected.is_empty(),"Unknown mutation retains uncertainty and has no automatic replay or reusable receipt")
 	state.open();old=state.ticket;state.close();service.reply(old,page([detail(0)]))
 	check(state.phase==State.Phase.Closed and state.details.is_empty(),"Closed owner ignores late list")
 	state.open();service.reply(state.ticket,page([]));state.create_detail();old=state.ticket
@@ -136,7 +136,7 @@ func run() -> void:
 	check(not state.editing_settings and state.phase==State.Phase.Ready,"Done returns to authoritative roster")
 	state.open_settings();service.reply(state.ticket,settings_page(9007199254740997));state.toggle_setting(11);old=state.ticket
 	service.reply(old,{"outcome":"unknown","status":C.ManagementStatus.Rejected});count=service.next;state.toggle_setting(11)
-	check(state.settings.is_empty() and service.next==count,"Unknown settings mutation drops authority and cannot replay")
+	check(state.phase==State.Phase.Unknown and state.settings.is_empty() and service.next==count,"Unknown settings mutation drops authority and cannot replay")
 	state.close();service.reply(old,settings_page(9007199254740999));check(state.settings.is_empty() and not state.editing_settings,"Closed settings ignore late mutation receipt")
 	state.open();service.reply(state.ticket,page([detail(0)]));complete_workers(service,state,[])
 	state.open_settings();service.reply(state.ticket,settings_page());count=service.next;state.reset_settings()
@@ -180,6 +180,11 @@ func owner_lifecycle(service) -> void:
 	check(service.calls[service.next].intent.name=="Final" and service.calls[service.next].intent.expected_revision==73,"Closed owner drains only explicitly typed text using the confirmed receipt")
 	renamed=detail(0,75);renamed.name="Final";service.reply(service.next,{"citizen":{"details":[renamed]}})
 	check(owner.name_session==null and owner.state.phase==State.Phase.Closed and not owner.panel.visible,"Late rename completion cannot reopen the closed owner")
+	owner.open_panel();service.reply(owner.state.ticket,page([detail(0,75)]));complete_workers(service,owner.state,[7])
+	owner._begin_name();owner._name_edited("Uncertain");first=owner.name_session.ticket;owner._name_edited("Do not replay");count=service.next
+	service.reply(first,{"status":C.ManagementStatus.Rejected,"outcome":"unknown"})
+	check(owner.state.phase==State.Phase.Unknown and owner.name_session==null and owner.state.selected.is_empty() and service.next==count,"Rename uncertainty remains distinct from rejection and drops buffered input")
+	await process_frame
 	owner.open_panel();service.reply(owner.state.ticket,page([detail(0,75)]));complete_workers(service,owner.state,[7])
 	owner._begin_name();owner._name_edited("Detached");first=owner.name_session.ticket
 	var retained=owner.name_session;owner.queue_free();await process_frame

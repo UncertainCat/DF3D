@@ -33,6 +33,24 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Work Details native discovery
 
+Work Details preserves explicit uncertain results as `Phase.Unknown`, distinct
+from `Rejected`. Both states retire editable receipts; neither automatically
+replays a mutation. This also applies when a service-owned rename reports an
+unknown result: buffered typing is discarded and the owner retains uncertainty.
+No new user-visible copy is introduced. Core19, extension and Work Details tests
+pass in work-details-unknown-state-20261108, including the real owner/name-session
+path with injected replies. This fixes loss of uncertainty already reported by
+the service; it does not fix the legacy bridge's post-write error classification.
+
+The remaining bridge gap is at management.cpp's Lua SafeCall/result-contract
+failure paths and the citizen result parser. They publish `Rejected` without a
+citizen-specific outcome even when native effects may have occurred. CitizenState
+currently has no outcome field. A versioned contract must carry this distinction
+through the population codec and Godot management dictionary; Lua/native write
+boundaries must retain uncertainty through receipt construction and malformed
+results. Existing refresh-on-possible-mutation behavior is not proof of success
+or a substitute for that outcome.
+
 The Work Details owner now has headless lifecycle coverage for closing during
 buffered renaming and destruction with a submitted rename outstanding. Closing
 immediately hides the panel and releases its input host; reopening cannot

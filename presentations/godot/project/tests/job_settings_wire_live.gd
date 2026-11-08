@@ -731,6 +731,15 @@ func work_detail_settings_scene() -> void:
 		check(await ready(state) and view.detail_first==0 and not view.detail_scrollbar.visible and state.selected.index==selected,"Sidebar resize retained stale offset or changed selection")
 		root.size=Vector2i(1200,800);await create_timer(0.15).timeout
 		check(await ready(state),"Sidebar resize did not settle")
+		var worker: Dictionary=state.row_at(state.first+1)
+		check(not worker.is_empty(),"Portrait fixture needs a second worker")
+		var selected_detail: int=state.selected.index
+		await pointer(view,Vector2(280,view.list_top()+54))
+		check(view.worker_selected==int(worker.id) and state.selected.index==selected_detail and state.ticket==0 and view.visible,"Portrait did not select locally")
+		var leave:=InputEventMouseMotion.new();leave.position=Vector2.ZERO;Input.parse_input_event(leave);Input.flush_buffered_events();await process_frame
+		check(view.worker_selected==int(worker.id),"Worker selection did not survive pointer departure")
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/work-details-worker-selected.png")
 	for entry in [["name",Vector2(316,view.list_top()-18)],["category",Vector2(396,view.list_top()-18)],["profession",Vector2(468,view.list_top()-18)],["skills",Vector2(568,view.list_top()-18)],["filter",view.search.get_rect().get_center()]]:
 		var motion:=InputEventMouseMotion.new();motion.position=view.get_global_transform_with_canvas()*entry[1];motion.global_position=motion.position;Input.parse_input_event(motion);Input.flush_buffered_events()
 		await create_timer(0.15).timeout

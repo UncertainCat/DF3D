@@ -33,6 +33,24 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Work Details native discovery
 
+Work Details portraits select a worker row locally. They are not the Residents
+Recenter/Unit sheet buttons: native113541 on2026-11-08 clicks the first and
+second portrait, then moves the pointer away. The second row retains its gold
+highlight; Info stays open, the creature sheet stays closed, and camera position
+is unchanged. The native option list contains PORTRAIT but not RECENTER/SHEET.
+DF3D now draws selected row and portrait frames and retains the clicked worker ID
+on pointer departure without submitting a semantic mutation.
+
+Rendered113636 exercises actual second-portrait input and checks unchanged detail,
+no command ticket and retained row selection. Both source saves were preserved
+and owned processes closed unsaved; GPU59–60C samples, clients30FPS. Joined final
+viewer logs contain only documented engine diagnostics. These captures establish
+click/departure behavior, not selection retention across sorting, filtering or
+paging, and do not claim full row pixel identity across the two different detail
+fixtures. Initial113324 failed while reading an empty sheet-ID vector before
+input; subsequent probes guard that vector. See
+`native_work_details.json.worker_selection_reference`.
+
 Management144 adds `CitizenState.outcome_unknown`, mapped to the action service's
 existing top-level `outcome="unknown"`. Only rejected citizen mutation replies
 may set it; validation rejects uncertain reads, successful/pending outcomes,

@@ -18,6 +18,7 @@ const SETTINGS_COLORS=[14,15,2,5,6,1,8,10,9,12,3,7]
 var name_entry
 var name_target: int=-1
 var detail_first:=0
+var worker_selected: int=-1
 var settings_selected:=0
 var showing_settings:=false
 var detail_scrollbar
@@ -129,6 +130,9 @@ func refresh() -> void:
 		var previous: Dictionary=portraits.get(int(row.id),{})
 		retained[int(row.id)]=previous if previous.get("recipe",{})==row.sheet_icon else {"recipe":row.sheet_icon.duplicate(true),"texture":world.candidate_icon(row.sheet_icon)}
 	portraits=retained
+	if state.phase==state.Phase.Closed:worker_selected=-1
+	elif state.roster_ready and not state.ids.has(worker_selected):
+		worker_selected=int(state.ids[0]) if not state.ids.is_empty() else -1
 	if showing_settings!=state.editing_settings:
 		showing_settings=state.editing_settings;settings_selected=0;_leave_hover()
 		if search!=null and search.is_inside_tree():search.release_focus()
@@ -221,6 +225,8 @@ func _gui_input(event: InputEvent) -> void:
 	for index in page_rows:
 		var row: Dictionary=state.row_at(state.first+index)
 		if row.is_empty() or state.phase!=state.Phase.Ready:continue
+		if Rect2(264,list_top()+index*36,roster_extent()-304,36).has_point(event.position):
+			worker_selected=int(row.id);queue_redraw()
 		if member_rect(index).has_point(event.position):state.set_member(int(row.id),not row.member);return
 		if Rect2(720,list_top()+index*36,32,36).has_point(event.position):state.specialize(int(row.id));return
 func _draw() -> void:
@@ -270,8 +276,8 @@ func _draw() -> void:
 		var row: Dictionary=state.row_at(state.first+index)
 		if row.is_empty():continue
 		var y:=list_top()+index*36
-		patch("BUTTON_RECTANGLE_DARK",Vector2i(33,int(y/12)),int(roster_extent()/8)-38,3)
-		patch("",Vector2i(33,int(y/12)),5,3,picture.texture(false))
+		patch("BUTTON_RECTANGLE_SELECTED" if int(row.id)==worker_selected else "BUTTON_RECTANGLE_DARK",Vector2i(33,int(y/12)),int(roster_extent()/8)-38,3)
+		patch("",Vector2i(33,int(y/12)),5,3,picture.texture(int(row.id)==worker_selected))
 		var portrait: Texture2D=portraits.get(int(row.id),{}).get("texture")
 		if portrait!=null:draw_texture_rect(portrait,Rect2(266,y+2,32,32),false)
 		var ink:=NameColor.choose(row.name_color,ticks_override if ticks_override>=0 else Time.get_ticks_msec(),0 if ticks_override>=0 else randi_range(0,1))

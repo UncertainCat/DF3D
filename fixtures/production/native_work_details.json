@@ -4176,5 +4176,23 @@
     ],
     "source_preserved": true,
     "owned_df_closed": true
+  },
+  "worker_selection_reference": {
+    "native_capture": "build/stockpile-storage-native-input-20261108-113541",
+    "rendered_capture": "build/stockpile-storage-native-input-20261108-113636",
+    "behavior": "Portrait click selects the worker row; highlight persists after pointer departure. Native first/second portrait clicks leave Info open, creature sheet closed and camera unchanged. DF3D keeps selection local and submits no mutation.",
+    "native_portrait_rect": [
+      37,
+      23,
+      40,
+      25
+    ],
+    "limits": [
+      "Sort/filter/page selection retention needs separate native acceptance.",
+      "No creature navigation is established or added for portrait clicks.",
+      "Rendered custom-detail worker order differs from native Miners fixture; whole-row pixel equality is not claimed."
+    ],
+    "source_preserved": true,
+    "owned_df_closed": true
   }
 }

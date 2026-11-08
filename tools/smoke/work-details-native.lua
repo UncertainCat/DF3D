@@ -111,6 +111,41 @@ local function shot(name)
  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Work Details capture timeout');script.sleep(1,'frames')end
 end
 shot('work-details-root')
+if os.getenv('DF3D_WORK_DETAILS_PORTRAIT')=='1' then
+ local target
+ local function find(widget)
+  if (widget.flag.whole&3)~=3 then return end
+  if df.widget_unit_portrait:is_instance(widget) and widget.rect.y1>=23 and not target then target=widget end
+  if df.widget_container:is_instance(widget)then
+   for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do find(child)end
+  end
+ end
+ find(active_list);assert(target,'No visible Work Details portrait')
+ local sheet=df.global.game.main_interface.view_sheets
+ local function snapshot()
+  return {info_open=info.open,sheet_open=sheet.open,sheet_type=sheet.active_sheet,unit_id=#sheet.viewing_unid>0 and sheet.viewing_unid[0] or -1,position={sheet.viewing_x,sheet.viewing_y,sheet.viewing_z},window={df.global.window_x,df.global.window_y,df.global.window_z}}
+ end
+ result.portrait={rect={target.rect.x1,target.rect.y1,target.rect.x2,target.rect.y2},before=snapshot()}
+ local x,y=target.rect.x1+1,target.rect.y1+1
+ g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+6;g.mouse_x=x;g.mouse_y=y
+ df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+ gui.simulateInput(view,'_MOUSE_L')
+ df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+ for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
+ result.portrait.after=snapshot()
+ shot('work-details-portrait')
+ g.precise_mouse_x=0;g.precise_mouse_y=0;g.mouse_x=0;g.mouse_y=0
+ for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
+ result.portrait.departed=snapshot()
+ shot('work-details-portrait-departed')
+ g.precise_mouse_x=x*8+4;g.precise_mouse_y=(y+3)*12+6;g.mouse_x=x;g.mouse_y=y+3
+ df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L')
+ df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+ g.precise_mouse_x=0;g.precise_mouse_y=0;g.mouse_x=0;g.mouse_y=0
+ for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
+ result.portrait.second=snapshot()
+ shot('work-details-portrait-second');records[#records+1]={name='work-details-portrait'};return
+end
 if os.getenv('DF3D_WORK_DETAILS_SHORTCUTS')=='1' then
  result.shortcuts={}
  local function observe(label)

@@ -1,0 +1,410 @@
+{
+  "df_version": "0.53.16 Steam",
+  "capture": "build/stockpile-storage-native-input-20261108-114349",
+  "viewport": [
+    1200,
+    800
+  ],
+  "categories": [
+    {
+      "id": 0,
+      "name": "Workshops",
+      "visible_rows": [
+        {
+          "text": "  Automatically weave all thread",
+          "y": 15
+        },
+        {
+          "text": "  Use any cloth",
+          "y": 18
+        },
+        {
+          "text": "  Automatically collect webs",
+          "y": 21
+        },
+        {
+          "text": "  Slaughter any marked animal",
+          "y": 24
+        },
+        {
+          "text": "  Automatically butcher carcasses",
+          "y": 27
+        },
+        {
+          "text": "  Automatically clean fish",
+          "y": 30
+        },
+        {
+          "text": "  Automate kitchen",
+          "y": 33
+        },
+        {
+          "text": "  Automate tannery",
+          "y": 36
+        }
+      ],
+      "scope": "Visible screen glyphs; Chores names excluded because glyph extraction is not full native UTF-8 text."
+    },
+    {
+      "id": 1,
+      "name": "Hauling",
+      "visible_rows": [
+        {
+          "text": "  Workers gather animals",
+          "y": 15
+        },
+        {
+          "text": "  Workers gather food",
+          "y": 18
+        },
+        {
+          "text": "  Workers gather furniture",
+          "y": 21
+        },
+        {
+          "text": "  Workers gather bodies",
+          "y": 24
+        },
+        {
+          "text": "  Workers gather minerals",
+          "y": 27
+        },
+        {
+          "text": "  Workers gather wood",
+          "y": 30
+        }
+      ],
+      "scope": "Visible screen glyphs; Chores names excluded because glyph extraction is not full native UTF-8 text."
+    },
+    {
+      "id": 2,
+      "name": "Refuse",
+      "visible_rows": [
+        {
+          "text": "  Workers gather refuse",
+          "y": 15
+        },
+        {
+          "text": "  Workers ignore outdoor refuse",
+          "y": 18
+        },
+        {
+          "text": "  Workers ignore outdoor vermin remains",
+          "y": 21
+        },
+        {
+          "text": "  Workers dump corpses",
+          "y": 24
+        },
+        {
+          "text": "  Workers dump skulls",
+          "y": 27
+        },
+        {
+          "text": "  Workers dump bones",
+          "y": 30
+        },
+        {
+          "text": "  Workers save shells",
+          "y": 33
+        },
+        {
+          "text": "  Workers save skins",
+          "y": 36
+        },
+        {
+          "text": "  Workers dump hair and wool",
+          "y": 39
+        },
+        {
+          "text": "  Workers save other objects",
+          "y": 42
+        }
+      ],
+      "scope": "Visible screen glyphs; Chores names excluded because glyph extraction is not full native UTF-8 text."
+    },
+    {
+      "id": 3,
+      "name": "Forbidding",
+      "visible_rows": [
+        {
+          "text": "  Forbid used ammunition",
+          "y": 15
+        },
+        {
+          "text": "  Claim your dead",
+          "y": 18
+        },
+        {
+          "text": "  Claim your death items",
+          "y": 21
+        },
+        {
+          "text": "  Claim other dead",
+          "y": 24
+        },
+        {
+          "text": "  Forbid other death items",
+          "y": 27
+        },
+        {
+          "text": "  Forbid floor/wall cleaning during sieges",
+          "y": 30
+        },
+        {
+          "text": "  Forbid trap cleaning during sieges",
+          "y": 33
+        },
+        {
+          "text": "  Forbid trap rearming during sieges",
+          "y": 36
+        },
+        {
+          "text": "  Forbid cages from sprung traps during sieges",
+          "y": 39
+        },
+        {
+          "text": "  Forbid toppled building items during sieges",
+          "y": 42
+        },
+        {
+          "text": "  Forbidding of death objects occurs at time of death.",
+          "y": 48
+        }
+      ],
+      "scope": "Visible screen glyphs; Chores names excluded because glyph extraction is not full native UTF-8 text."
+    },
+    {
+      "id": 4,
+      "name": "Petitions",
+      "visible_rows": [
+        {
+          "text": "  Citizenship petitions: prompt",
+          "y": 15
+        },
+        {
+          "text": "  Performer petitions: prompt",
+          "y": 18
+        },
+        {
+          "text": "  Monster slayer petitions: prompt",
+          "y": 21
+        },
+        {
+          "text": "  Mercenary petitions: prompt",
+          "y": 24
+        },
+        {
+          "text": "  Scholar petitions: prompt",
+          "y": 27
+        },
+        {
+          "text": "  Sanctuary petitions: prompt",
+          "y": 30
+        }
+      ],
+      "scope": "Visible screen glyphs; Chores names excluded because glyph extraction is not full native UTF-8 text."
+    },
+    {
+      "id": 5,
+      "name": "Chores",
+      "visible_rows": [],
+      "scope": "Visible screen glyphs; Chores names excluded because glyph extraction is not full native UTF-8 text."
+    },
+    {
+      "id": 6,
+      "name": "Other",
+      "visible_rows": [
+        {
+          "text": "  Announce some job cancellations",
+          "y": 15
+        },
+        {
+          "text": "  Mining cancelled near new damp stone",
+          "y": 18
+        },
+        {
+          "text": "  Mining cancelled near new warm stone",
+          "y": 21
+        },
+        {
+          "text": "  Everybody harvests",
+          "y": 24
+        },
+        {
+          "text": "  Mix similar foods in barrels",
+          "y": 27
+        },
+        {
+          "text": "  Prefer zones for water drinking",
+          "y": 30
+        },
+        {
+          "text": "  Prefer zones for fishing",
+          "y": 33
+        },
+        {
+          "text": "  Set hunter ammunition",
+          "y": 37
+        }
+      ],
+      "scope": "Visible screen glyphs; Chores names excluded because glyph extraction is not full native UTF-8 text."
+    }
+  ],
+  "workshop_cycles": [
+    {
+      "row": 0,
+      "global": "standing_orders_auto_loom",
+      "initial": 2,
+      "states": [
+        {
+          "value": 0,
+          "caption": "No automatic weaving"
+        },
+        {
+          "value": 1,
+          "caption": "Automatically weave dyed thread"
+        },
+        {
+          "value": 2,
+          "caption": "Automatically weave all thread"
+        }
+      ]
+    },
+    {
+      "row": 1,
+      "global": "standing_orders_use_dyed_cloth",
+      "initial": 0,
+      "states": [
+        {
+          "value": 1,
+          "caption": "Use only dyed cloth"
+        },
+        {
+          "value": 0,
+          "caption": "Use any cloth"
+        }
+      ]
+    },
+    {
+      "row": 2,
+      "global": "standing_orders_auto_collect_webs",
+      "initial": 1,
+      "states": [
+        {
+          "value": 0,
+          "caption": "No automatic web collection"
+        },
+        {
+          "value": 1,
+          "caption": "Automatically collect webs"
+        }
+      ]
+    },
+    {
+      "row": 3,
+      "global": "standing_orders_auto_slaughter",
+      "initial": 1,
+      "states": [
+        {
+          "value": 0,
+          "caption": "No automatic slaughter"
+        },
+        {
+          "value": 1,
+          "caption": "Slaughter any marked animal"
+        }
+      ]
+    },
+    {
+      "row": 4,
+      "global": "standing_orders_auto_butcher",
+      "initial": 1,
+      "states": [
+        {
+          "value": 0,
+          "caption": "No automatic butchery"
+        },
+        {
+          "value": 1,
+          "caption": "Automatically butcher carcasses"
+        }
+      ]
+    },
+    {
+      "row": 5,
+      "global": "standing_orders_auto_fishery",
+      "initial": 1,
+      "states": [
+        {
+          "value": 0,
+          "caption": "No automatic fish cleaning"
+        },
+        {
+          "value": 1,
+          "caption": "Automatically clean fish"
+        }
+      ]
+    },
+    {
+      "row": 6,
+      "global": "standing_orders_auto_kitchen",
+      "initial": 1,
+      "states": [
+        {
+          "value": 0,
+          "caption": "Do not automate kitchen"
+        },
+        {
+          "value": 1,
+          "caption": "Automate kitchen"
+        }
+      ]
+    },
+    {
+      "row": 7,
+      "global": "standing_orders_auto_tan",
+      "initial": 1,
+      "states": [
+        {
+          "value": 0,
+          "caption": "Do not automate tannery"
+        },
+        {
+          "value": 1,
+          "caption": "Automate tannery"
+        }
+      ]
+    }
+  ],
+  "unmapped_dfhack_globals": [
+    "standing_orders_forbid_cages_from_sprung_traps",
+    "standing_orders_forbid_floor_and_wall_cleaning",
+    "standing_orders_forbid_rearming_traps",
+    "standing_orders_forbid_toppled_building_items",
+    "standing_orders_forbid_trap_cleaning",
+    "standing_orders_ignore_damp_stone",
+    "standing_orders_ignore_warm_stone",
+    "standing_orders_petition_citizenship",
+    "standing_orders_petition_resident_mercenary",
+    "standing_orders_petition_resident_monster_hunter",
+    "standing_orders_petition_resident_performer",
+    "standing_orders_petition_resident_sanctuary",
+    "standing_orders_petition_resident_scholar"
+  ],
+  "static_reference": {
+    "input_wrapper_rva": "432f50",
+    "input_body_rva": "433000",
+    "render_wrapper_rva": "434bd0",
+    "render_body_rva": "434c60",
+    "ownership": "UI bodies are discovery only. Runtime must expose verified simulation settings and inline effects without menu widgets or input globals."
+  },
+  "source_preserved": true,
+  "owned_df_closed": true,
+  "limits": [
+    "Only Workshops effects cycled; other categories are layout/initial caption evidence.",
+    "Chores includes child participation and labor definitions; Other includes hunter-ammunition navigation, not just scalar options.",
+    "Unmapped globals need pinned native-address verification before runtime exposure.",
+    "No Standing orders runtime contract, UI or public route exists yet."
+  ]
+}

@@ -31,6 +31,32 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
 
+## Standing orders native discovery
+
+Protected114349 on2026-11-08 captures all seven Labor/Standing orders categories
+at1200x800 and cycles each of the eight Workshops controls through native clicks,
+restoring every mapped scalar before exit. Weaving cycles2→0→1→2; the other seven
+controls toggle0/1. `fixtures/production/native_standing_orders.json` records
+native captions for each workshop state and initial visible rows in the other
+categories. Chores is a child-participation roster plus labor choices; Other
+also contains hunter-ammunition navigation. They must not be reduced to a list
+of boolean switches. Chores screen glyph extraction is not authoritative UTF-8
+name evidence and is excluded from the durable caption fixture.
+
+Native input wrapper432f50 delegates to433000; render wrapper434bd0 delegates
+to434c60. The input body contains direct scalar transitions, but also UI and
+other branches. Do not call these whole menu routines at runtime. Audit and pin
+simulation effects and data addresses for an owned semantic adapter. Thirteen
+DFHack-declared standing-order globals have no address in this build, including
+siege restrictions, petitions and damp/warm stone. The fixture records them;
+missing addresses are not default values or permission to infer state.
+
+Owned DF43240 closes unsaved, source manifest unchanged, simulation paused.
+Initial114118 tried reading a shared_ptr as a widget;114157 corrected widget
+traversal and captured Workshops.114314 found unmapped globals;114349 explicitly
+records their unavailability and completes the capture/cycles. No Standing
+orders runtime contract, panel or exposure is implemented yet.
+
 ## Work Details native discovery
 
 The main `fortress_ui` composition now owns a lazy, reusable `work_details`

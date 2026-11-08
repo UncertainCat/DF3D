@@ -33,6 +33,29 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Standing orders native discovery
 
+Chores discovery: native roster builder42c6e0..42cd42 fills unit and labor
+vectors at offsets158/170, resets category/scroll fields, and sorts children by
+native name1330c30 using byte comparison. Its14 labor IDs are
+23,37,1,2,6,3,4,5,7,8,74,77,9,75. Protected150838 on2026-11-08 records the
+native12-child order, all14 enabled choices, global participation enabled and
+empty exemptions in `chores_reference`. Owned DF45684 closed unsaved with source
+preservation; GPU50C sampled. This is read-only discovery, not an implemented
+provider or edit acceptance.
+
+The builder's potential owned context needs no widget calls, but eligibility
+calls138ed20/1376500/13b99b0 and native name generation require a complete audit
+before invocation. In particular13b99b0 updates lookup caches; reuse the
+restoration approach in creature_labor_native.h rather than retaining these
+read-side changes. Do not use the live menu's vectors at runtime. Input
+4340a3/4340f4 sets/clears children_do_chores and calls4390d0 for every active
+unit.4341d6..434284 toggles a child's sorted exemption membership and recalculates
+only that unit;434289..4342e5 toggles a labor byte and recalculates every active
+unit.4390d0 is already pinned by staffMutationFunctions. Global flags, labor
+bytes and exemption-vector RVAs are2399978,2399998 and23999f8. Owned-provider
+comparison, safe edit receipts, all three actual effects and the screen remain
+unfinished.
+
+
 Native145542 on2026-11-08 verifies Add, Remove and Delete during quantity entry.
 Add/Remove retain the125 draft and Enter applies it to the original rule; Delete
 retains entry but Enter clears it without changing equipment when no target

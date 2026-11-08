@@ -94,6 +94,14 @@ local original=values()
 for category,x in ipairs{10,23,34,46,60,71,80}do
  click(x,12);assert(panel.current_category==category-1,'Standing orders category click failed')
  result.pages[#result.pages+1]={category=panel.current_category,rows=rows(),values=values()}
+ if panel.current_category==5 then
+  local labor=df.global.plotinfo.labor_info
+  local chores={enabled=labor.flags.children_do_chores,children={},labors={},exempted={}}
+  for _,unit in ipairs(panel.unit)do chores.children[#chores.children+1]=unit.id end
+  for _,id in ipairs(panel.labor_list)do chores.labors[#chores.labors+1]={id=id,enabled=labor.chores[id]}end
+  for _,id in ipairs(labor.chores_exempted_children)do chores.exempted[#chores.exempted+1]=id end
+  result.chores=chores
+ end
  shot('standing-orders-category-'..(category-1))
 end
 click(10,12)

@@ -4981,5 +4981,85 @@
       ],
       "limitations": "Main drag reaches both endpoints and releases. Type drag reaches bottom and releases; the second press hits track and pages upward, so type return-drag parity is not established. Scroll commands establish native actions; installed Shift-wheel bindings map to page commands."
     }
+  },
+  "chores_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-150838",
+    "state": {
+      "children": [
+        5699,
+        7043,
+        6334,
+        5698,
+        7283,
+        6968,
+        7049,
+        7041,
+        6810,
+        6729,
+        7080,
+        988
+      ],
+      "enabled": true,
+      "exempted": [],
+      "labors": [
+        {
+          "enabled": true,
+          "id": 23
+        },
+        {
+          "enabled": true,
+          "id": 37
+        },
+        {
+          "enabled": true,
+          "id": 1
+        },
+        {
+          "enabled": true,
+          "id": 2
+        },
+        {
+          "enabled": true,
+          "id": 6
+        },
+        {
+          "enabled": true,
+          "id": 3
+        },
+        {
+          "enabled": true,
+          "id": 4
+        },
+        {
+          "enabled": true,
+          "id": 5
+        },
+        {
+          "enabled": true,
+          "id": 7
+        },
+        {
+          "enabled": true,
+          "id": 8
+        },
+        {
+          "enabled": true,
+          "id": 74
+        },
+        {
+          "enabled": true,
+          "id": 77
+        },
+        {
+          "enabled": true,
+          "id": 9
+        },
+        {
+          "enabled": true,
+          "id": 75
+        }
+      ]
+    },
+    "limitations": "Read-only native menu roster/catalog reference. No owned provider or edit acceptance yet. Child name glyph extraction is not authoritative."
   }
 }

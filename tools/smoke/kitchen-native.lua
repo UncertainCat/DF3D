@@ -316,14 +316,17 @@ if os.getenv('DF3D_KITCHEN_SEARCH')=='1' then
  local observations={}
  click(25,20)
  observations[#observations+1]={label='second-row',cursor=panel.cursor_idx}
- for _,query in ipairs({'PLUMP','plump','abcdefghijklmnopqrstuvwxyz0123456789',''})do
-  click((box.rect.x1+box.rect.x2)//2,(box.rect.y1+box.rect.y2)//2)
-  local f=assert(io.open(out..'/residents-search-input.json','w'));f:write(json.encode({clear_count=#box.str,text=query}));f:close()
-  f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('residents-search');f:close();assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+ local function request_input(action)
+  local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write(action);f:close();assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
   local deadline=dfhack.getTickCount()+30000
   while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Kitchen search input timeout');script.sleep(1,'frames')end
   assert(os.remove(out..'/owner-input-ack'))
   for _=1,3 do script.sleep(1,'frames');view:render(dfhack.getTickCount())end
+ end
+ for _,query in ipairs({'PLUMP','plump','abcdefghijklmnopqrstuvwxyz0123456789','é','aéz','Tâmol','中',string.rep('x',25)..'é',''})do
+  click((box.rect.x1+box.rect.x2)//2,(box.rect.y1+box.rect.y2)//2)
+  local f=assert(io.open(out..'/residents-search-input.json','w'));f:write(json.encode({clear_count=#box.str,text=query}));f:close()
+  request_input('residents-search')
   local names={}
   local function collect(widget)
    if (widget.flag.whole&3)~=3 then return end
@@ -331,7 +334,12 @@ if os.getenv('DF3D_KITCHEN_SEARCH')=='1' then
    if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do collect(child)end end
   end
   collect(panel)
-  observations[#observations+1]={label=query,text=box.str,filter=panel.filter_str,names=names,cursor=panel.cursor_idx,focused=df.global.gview.cur_textbox==box}
+  local function bytes(value)local result={};for i=1,#value do result[#result+1]=value:byte(i)end;return result end
+  observations[#observations+1]={label=query,text_bytes=bytes(box.str),filter_bytes=bytes(panel.filter_str),names=names,cursor=panel.cursor_idx,focused=df.global.gview.cur_textbox==box}
+  if query=='é' then
+   request_input('backspace')
+   observations[#observations+1]={label='accent-backspace',text_bytes=bytes(box.str),filter_bytes=bytes(panel.filter_str),cursor=panel.cursor_idx,focused=df.global.gview.cur_textbox==box}
+  end
  end
  local f=assert(io.open(out..'/kitchen-search.json','w'));f:write(json.encode(observations));f:close()
  shot('kitchen-search')

@@ -126,6 +126,19 @@ guards alongside existing Chores/Standing checks. Non-ASCII input, modifier
 sorting, keyboard/hover/resize behavior and broader main-scene acceptance remain
 unfinished; this composition does not enable a public route.
 
+Protected174121/174246 on2026-11-08 resolves the suspected Kitchen input-encoding
+gap: this native textbox ignores the tested non-ASCII WM_CHAR input. E-acute
+produces no bytes, aez with an accented e produces az, and Tâmol produces Tmol;
+CJK input is also ignored. At25 ASCII bytes, an accent adds no partial UTF-8.
+Native lowercase filtering remains separate from the visible uppercase text.
+`search_bytes_reference` preserves exact input/filter bytes and visible results.
+Both owned runs exit unsaved with source preservation. Kitchen's shared textbox
+instance now enables an ASCII-only input option; other users retain their prior
+UTF-8 byte behavior. Core19 and native-observation-derived editor checks pass in
+`kitchen-search-bytes`. No protocol or bridge conversion change was needed for
+these native UI inputs. This supersedes the assumed partial-UTF8 Kitchen blocker;
+broader IME/paste behavior is not established by these keystroke captures.
+
 Core19, the extension build and Kitchen end-to-end fake-host checks pass in
 `kitchen-contract151-roundtrip`, including ordered filters/sorts and receipts,
 Cook success, Brew Unknown with no authority, and malformed typed requests.

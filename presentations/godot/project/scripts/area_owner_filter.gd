@@ -5,6 +5,7 @@ const Art = preload("res://scripts/original_ui.gd")
 var value := PackedByteArray()
 var editable := true
 var byte_limit := 33
+var ascii_only := false
 var ticks_override := -1
 var last_phase := -1
 var ink := Color.WHITE
@@ -30,6 +31,7 @@ func feed_key(event: InputEventKey) -> void:
 	if event.keycode == KEY_BACKSPACE:
 		if not value.is_empty(): value.resize(value.size()-1)
 	elif event.unicode >= 32:
+		if ascii_only and event.unicode>126:return
 		for byte in String.chr(event.unicode).to_utf8_buffer():
 			if value.size() >= byte_limit: break
 			value.append(byte)

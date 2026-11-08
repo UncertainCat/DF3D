@@ -16,10 +16,17 @@ func run() -> void:
 	state.selected=1;state.set_search("PLUMP".to_utf8_buffer())
 	check(state.selected==0 and state.query.query=="PLUMP" and service.calls[state.ticket].intent.query=="PLUMP","Search altered visible case or retained selection")
 	service.reply(state.ticket,response());state.set_search(PackedByteArray());service.reply(state.ticket,response())
-	var entry=preload("res://scripts/area_owner_filter.gd").new();root.add_child(entry);entry.byte_limit=26;entry.focus_mode=Control.FOCUS_ALL;entry.grab_focus()
+	var entry=preload("res://scripts/area_owner_filter.gd").new();root.add_child(entry);entry.byte_limit=26;entry.ascii_only=true;entry.focus_mode=Control.FOCUS_ALL;entry.grab_focus()
 	for code in "abcdefghijklmnopqrstuvwxyz0123456789".to_utf32_buffer().size()/4:
 		var event:=InputEventKey.new();event.pressed=true;event.unicode="abcdefghijklmnopqrstuvwxyz0123456789".unicode_at(code);entry.feed_key(event)
 	check(entry.value.get_string_from_utf8()=="abcdefghijklmnopqrstuvwxyz","Kitchen textbox differs from native26-byte limit")
+	var search_reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/production/native_kitchen.json")).search_bytes_reference
+	for observation in search_reference.observations:
+		if not observation.has("text_bytes") or observation.label=="accent-backspace":continue
+		entry.set_bytes(PackedByteArray())
+		for code in str(observation.label).length():
+			var event:=InputEventKey.new();event.pressed=true;event.unicode=str(observation.label).unicode_at(code);entry.feed_key(event)
+		check(entry.value==PackedByteArray(observation.text_bytes),"Kitchen native byte input differs: "+str(observation.label))
 	entry.queue_free()
 	var controls: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/production/native_kitchen.json")).controls_reference
 	for observation in controls.observations:

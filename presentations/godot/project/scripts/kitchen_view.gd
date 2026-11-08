@@ -11,7 +11,7 @@ func configure_kitchen(source,model) -> void:
 	var inset:=StyleBoxTexture.new();inset.texture=art.texture("BUTTON_FILTER")
 	inset.set_texture_margin(SIDE_LEFT,8);inset.set_texture_margin(SIDE_RIGHT,32)
 	for side in [SIDE_TOP,SIDE_BOTTOM]:inset.set_texture_margin(side,12)
-	search=preload("res://scripts/area_owner_filter.gd").new();add_child(search);search.theme=theme;search.byte_limit=26
+	search=preload("res://scripts/area_owner_filter.gd").new();add_child(search);search.theme=theme;search.byte_limit=26;search.ascii_only=true
 	search.configure(inset,colors);search.edited.connect(state.set_search)
 	scrollbar.input_allowed=allowed
 	scrollbar.row_changed.connect(func(value):state.seek(value,capacity()))

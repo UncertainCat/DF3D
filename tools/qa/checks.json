@@ -135,6 +135,15 @@
       "prerequisites": ["extension_build", "df_assets", "real_renderer"]
     },
     {
+      "id": "standing_orders_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/standing_orders_state_test.gd",
+      "completion": "^STANDING_ORDERS_STATE_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "work_details_state_test",
       "lane": "core",
       "kind": "godot",

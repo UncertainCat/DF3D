@@ -33,6 +33,15 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Standing orders native discovery
 
+`standing_orders_state.gd` is the staged Workshops presentation owner. It reads
+native settings through the shared semantic action service, submits explicit
+values with the displayed expected value, and serializes pending edits. Successful
+complete receipts replace authority atomically. Rejection/Unknown discard all
+settings without automatic replay; closing, disposal and session changes retire
+observers and ignore late replies. This owner has no visible status copy or public
+route. Headless standing-orders-state-20261108 passes lifecycle/authority checks
+and root/core19. Its view and live controller integration remain pending.
+
 Management145 carries StandingOrdersRead/Set through schema validation, the
 engine-independent model and the Godot request/result adapter. Category0 is
 Workshops. Read requests reject write fields; edits require bounded setting ID,

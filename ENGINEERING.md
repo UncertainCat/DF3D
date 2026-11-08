@@ -33,6 +33,20 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Standing orders native discovery
 
+Native145542 on2026-11-08 verifies Add, Remove and Delete during quantity entry.
+Add/Remove retain the125 draft and Enter applies it to the original rule; Delete
+retains entry but Enter clears it without changing equipment when no target
+remains. The controller preserves the draft through the fresh post-edit read and
+uses that refreshed receipt for any later amount mutation. Deleted-target Enter
+retires local entry without sending a request. Headless/core19 pass in
+hunter-structural-draft-20261108; rendered145720 exercises Add, empty Delete,
+Remove and populated Delete with the draft active, then verifies no request on
+Enter after deletion. All nine native-observed steps pass. Owned DF20292/46000
+close unsaved with equipment restored and source preservation; GPU51–52C sampled,
+only known thread/finalize/shutdown diagnostics. The fixture's
+`draft_actions_reference` retains the independent native effects. Scrollbar drag,
+shift-wheel and broader Standing orders/Chores acceptance still remain.
+
 Native quantity-entry probes144337/144430 on2026-11-08 establish digit-only input,
 an18-digit draft limit, blank Enter=>0 and5001/long Enter=>5000. Clicking Amt again
 clears the draft without applying it; Mat retires amount focus and opens choices;

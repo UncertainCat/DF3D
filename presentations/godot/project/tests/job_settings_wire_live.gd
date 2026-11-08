@@ -1144,7 +1144,11 @@ func hunter_ammunition_wire() -> void:
 					if rendered:await pointer(ammunition_owner.panel,Vector2(64,78+choice*36))
 					else:controller.choose(choice)
 				C.HunterAmmunitionOperation.Add:
-					if rendered:await pointer(ammunition_owner.panel,Vector2(348,32))
+					if rendered:
+						await pointer(ammunition_owner.panel,Vector2(404,80))
+						for digit in "125":
+							var key:=InputEventKey.new();key.pressed=true;key.unicode=digit.unicode_at(0);Input.parse_input_event(key);await process_frame
+						await pointer(ammunition_owner.panel,Vector2(348,32))
 					else:controller.begin_add()
 					var choice:=-1
 					for i in controller.types.size():
@@ -1159,6 +1163,8 @@ func hunter_ammunition_wire() -> void:
 					if rendered:await pointer(ammunition_owner.panel,Vector2(752,116))
 					else:controller.remove_stack(int(step.index),int(step.item_id))
 			if not check(await ready(controller) and controller.specs==hunter_specs(step.values.specs),"Controller edit/refresh differs from native"):quit(1);return
+			if rendered and int(step.operation) in [C.HunterAmmunitionOperation.Add,C.HunterAmmunitionOperation.Delete,C.HunterAmmunitionOperation.Remove]:
+				check(controller.mode==controller.Mode.Amount and controller.amount_text=="125","Visible structural action lost active amount draft")
 		count+=1
 		var file:=FileAccess.open(directory+"/hunter-wire-step",FileAccess.WRITE);file.store_string(str(count));file.close()
 		deadline=Time.get_ticks_msec()+3000
@@ -1168,6 +1174,9 @@ func hunter_ammunition_wire() -> void:
 		if not check(FileAccess.get_file_as_string(directory+"/hunter-wire-ack")==str(count),"Native ammunition readback missing; no replay"):quit(1);return
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"steps":count}));file.close()
 	if rendered:
+		var next_ticket: int=service._next_ticket
+		var enter:=InputEventKey.new();enter.pressed=true;enter.keycode=KEY_ENTER;Input.parse_input_event(enter);await process_frame
+		check(controller.mode==controller.Mode.Main and service._next_ticket==next_ticket,"Enter after target deletion sent a mutation")
 		await pointer(ammunition_owner.panel,Vector2(752,32))
 		check(controller.phase==controller.Phase.Closed and scene_nodes[1].active==null,"Confirm retained ammunition ownership")
 	controller.dispose()

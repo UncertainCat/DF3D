@@ -549,6 +549,34 @@ if os.getenv('DF3D_HUNTER_AMMUNITION_NATIVE')=='1' then
  restore_vector(equipment.items_unassigned[df.item_type.AMMO],before.unassigned_ammo)
  equipment.update.whole=before.update
  assert(json.encode(before)==json.encode(snapshot()),'Populated deletion changed unexpected ammunition fields')
+ if os.getenv('DF3D_HUNTER_AMMUNITION_DRAFT_ACTIONS')=='1' then
+  local probes={}
+  local function observe()
+   return {open=ui.open,entering=ui.setting_ammo_entering_amount,types=ui.setting_ammo_new_type,text=ui.setting_ammo_amount_str,values=snapshot()}
+  end
+  for _,action in ipairs({'add','remove','delete'})do
+   while ui.open do gui.simulateInput(view,'LEAVESCREEN');settle()end
+   gui.simulateInput(view,'D_LABOR');settle();click(30,10);click(80,12);click(12,37)
+   click(71,24);for _,byte in ipairs({49,50,53})do gui.simulateInput(view,('STRING_A%03d'):format(byte))end;settle()
+   local entry={action=action,before=observe()}
+   if action=='add' then click(64,20);click(35,24)
+   elseif action=='remove' then click(114,27)
+   else click(114,24)end
+   entry.after=observe();shot('hunter-draft-'..action)
+   gui.simulateInput(view,'SELECT');settle();entry.enter=observe();probes[#probes+1]=entry
+   while #equipment.hunter_ammunition>0 do local value=equipment.hunter_ammunition[0];equipment.hunter_ammunition:erase(0);value:delete()end
+   for _,source in ipairs(before.specs)do
+    local value=df.squad_ammo_spec:new()
+    for _,key in ipairs({'item_type','item_subtype','material_class','mattype','matindex','amount'})do value[key]=source[key]end
+    value.flags.whole=source.flags;restore_vector(value.assigned,source.assigned);equipment.hunter_ammunition:insert('#',value)
+   end
+   restore_vector(equipment.items_assigned[df.item_type.AMMO],before.assigned_ammo)
+   restore_vector(equipment.items_unassigned[df.item_type.AMMO],before.unassigned_ammo)
+   equipment.update.whole=before.update
+   assert(json.encode(before)==json.encode(snapshot()),'Draft action restoration failed')
+  end
+  result.hunter_ammunition.draft_actions=probes
+ end
  if os.getenv('DF3D_HUNTER_AMMUNITION_EDITS')=='1' then
   local function edit(kind,value,expected,index)
    local text,code=dfhack.run_command_silent('df3d','hunter-ammunition-edit-probe',kind,tostring(index or 0),tostring(value),json.encode(expected or before.specs))

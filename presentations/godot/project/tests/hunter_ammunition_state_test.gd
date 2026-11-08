@@ -52,6 +52,21 @@ func run() -> void:
 	check(service.calls[state.ticket].intent.item_id==7,"Removal retains selected assigned identity")
 	service.reply(state.ticket,{"status":C.ManagementStatus.Rejected,"hunter_ammunition":{"outcome":C.HunterAmmunitionOutcome.Stale}})
 	check(state.phase==State.Phase.Rejected and state.specs.is_empty(),"Stale receipt requires reopening")
+	for operation in [C.HunterAmmunitionOperation.Add,C.HunterAmmunitionOperation.Remove,C.HunterAmmunitionOperation.Delete]:
+		state.open();service.reply(state.ticket,snapshot());state.begin_amount(0);state.set_amount_text("125")
+		var result:=snapshot()
+		if operation==C.HunterAmmunitionOperation.Add:
+			state.begin_add();state.choose(0)
+		elif operation==C.HunterAmmunitionOperation.Remove:
+			state.remove_stack(0,7);result.hunter_ammunition.specs[0].assigned=PackedInt32Array([9]);result.hunter_ammunition.rules[0].items=[];result.hunter_ammunition.rules[0].quantity=0
+		else:
+			state.delete_rule(0);result.hunter_ammunition.specs=[];result.hunter_ammunition.rules=[]
+		result.hunter_ammunition.outcome=C.HunterAmmunitionOutcome.Applied;service.reply(state.ticket,result)
+		result.hunter_ammunition.outcome=C.HunterAmmunitionOutcome.None;service.reply(state.ticket,result)
+		check(state.mode==State.Mode.Amount and state.selected==0 and state.amount_text=="125","Structural action must preserve the active native amount draft")
+		state.commit_amount()
+		if operation==C.HunterAmmunitionOperation.Delete:check(state.ticket==0 and state.mode==State.Mode.Main,"Enter after deleting the target must clear entry without sending a mutation")
+		else:check(service.calls[state.ticket].intent.amount==125 and service.calls[state.ticket].intent.expected==state.specs,"Retained draft must use the refreshed receipt")
 	state.dispose();service.queue_free();await process_frame
 	if failures==0:print("HUNTER_AMMUNITION_STATE_PASS")
 	quit(1 if failures else 0)

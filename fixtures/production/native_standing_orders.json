@@ -4306,6 +4306,544 @@
         }
       ],
       "scope": "Native CONTEXT_SCROLL wheel commands over list rows at minimum size; posted Windows wheel messages did not prove dispatch and are excluded."
+    },
+    "draft_actions_reference": {
+      "capture": "build/stockpile-storage-native-input-20261108-145542",
+      "cases": [
+        {
+          "action": "add",
+          "after": {
+            "entering": true,
+            "open": true,
+            "text": "125",
+            "types": false,
+            "values": {
+              "ammo_items": [],
+              "ammo_units": [],
+              "assigned_ammo": [
+                13119,
+                27744,
+                27756,
+                27792,
+                27842,
+                32631
+              ],
+              "specs": [
+                {
+                  "amount": 100,
+                  "assigned": [
+                    13119,
+                    27744,
+                    27756,
+                    27792,
+                    27842
+                  ],
+                  "flags": 3,
+                  "item_subtype": 0,
+                  "item_type": 39,
+                  "material_class": -1,
+                  "matindex": -1,
+                  "mattype": -1
+                },
+                {
+                  "amount": 25,
+                  "assigned": [],
+                  "flags": 3,
+                  "item_subtype": 0,
+                  "item_type": 39,
+                  "material_class": -1,
+                  "matindex": -1,
+                  "mattype": -1
+                }
+              ],
+              "unassigned_ammo": [
+                527,
+                529,
+                535,
+                537,
+                543,
+                27780,
+                27804,
+                27834,
+                27906,
+                27918,
+                32564,
+                34549,
+                36557,
+                36578,
+                36584,
+                36636,
+                47061,
+                47837,
+                47851,
+                47856,
+                47858
+              ],
+              "update": 64
+            }
+          },
+          "before": {
+            "entering": true,
+            "open": true,
+            "text": "125",
+            "types": false,
+            "values": {
+              "ammo_items": [],
+              "ammo_units": [],
+              "assigned_ammo": [
+                13119,
+                27744,
+                27756,
+                27792,
+                27842,
+                32631
+              ],
+              "specs": [
+                {
+                  "amount": 100,
+                  "assigned": [
+                    13119,
+                    27744,
+                    27756,
+                    27792,
+                    27842
+                  ],
+                  "flags": 3,
+                  "item_subtype": 0,
+                  "item_type": 39,
+                  "material_class": -1,
+                  "matindex": -1,
+                  "mattype": -1
+                }
+              ],
+              "unassigned_ammo": [
+                527,
+                529,
+                535,
+                537,
+                543,
+                27780,
+                27804,
+                27834,
+                27906,
+                27918,
+                32564,
+                34549,
+                36557,
+                36578,
+                36584,
+                36636,
+                47061,
+                47837,
+                47851,
+                47856,
+                47858
+              ],
+              "update": 0
+            }
+          },
+          "enter": {
+            "entering": false,
+            "open": true,
+            "text": "125",
+            "types": false,
+            "values": {
+              "ammo_items": [],
+              "ammo_units": [],
+              "assigned_ammo": [
+                13119,
+                27744,
+                27756,
+                27792,
+                27842,
+                32631
+              ],
+              "specs": [
+                {
+                  "amount": 125,
+                  "assigned": [
+                    13119,
+                    27744,
+                    27756,
+                    27792,
+                    27842
+                  ],
+                  "flags": 3,
+                  "item_subtype": 0,
+                  "item_type": 39,
+                  "material_class": -1,
+                  "matindex": -1,
+                  "mattype": -1
+                },
+                {
+                  "amount": 25,
+                  "assigned": [],
+                  "flags": 3,
+                  "item_subtype": 0,
+                  "item_type": 39,
+                  "material_class": -1,
+                  "matindex": -1,
+                  "mattype": -1
+                }
+              ],
+              "unassigned_ammo": [
+                527,
+                529,
+                535,
+                537,
+                543,
+                27780,
+                27804,
+                27834,
+                27906,
+                27918,
+                32564,
+                34549,
+                36557,
+                36578,
+                36584,
+                36636,
+                47061,
+                47837,
+                47851,
+                47856,
+                47858
+              ],
+              "update": 64
+            }
+          }
+        },
+        {
+          "action": "remove",
+          "after": {
+            "entering": true,
+            "open": true,
+            "text": "125",
+            "types": false,
+            "values": {
+              "ammo_items": [],
+              "ammo_units": [],
+              "assigned_ammo": [
+                27744,
+                27756,
+                27792,
+                27842,
+                32631
+              ],
+              "specs": [
+                {
+                  "amount": 100,
+                  "assigned": [
+                    27744,
+                    27756,
+                    27792,
+                    27842
+                  ],
+                  "flags": 3,
+                  "item_subtype": 0,
+                  "item_type": 39,
+                  "material_class": -1,
+                  "matindex": -1,
+                  "mattype": -1
+                }
+              ],
+              "unassigned_ammo": [
+                527,
+                529,
+                535,
+                537,
+                543,
+                13119,
+                27780,
+                27804,
+                27834,
+                27906,
+                27918,
+                32564,
+                34549,
+                36557,
+                36578,
+                36584,
+                36636,
+                47061,
+                47837,
+                47851,
+                47856,
+                47858
+              ],
+              "update": 64
+            }
+          },
+          "before": {
+            "entering": true,
+            "open": true,
+            "text": "125",
+            "types": false,
+            "values": {
+              "ammo_items": [],
+              "ammo_units": [],
+              "assigned_ammo": [
+                13119,
+                27744,
+                27756,
+                27792,
+                27842,
+                32631
+              ],
+              "specs": [
+                {
+                  "amount": 100,
+                  "assigned": [
+                    13119,
+                    27744,
+                    27756,
+                    27792,
+                    27842
+                  ],
+                  "flags": 3,
+                  "item_subtype": 0,
+                  "item_type": 39,
+                  "material_class": -1,
+                  "matindex": -1,
+                  "mattype": -1
+                }
+              ],
+              "unassigned_ammo": [
+                527,
+                529,
+                535,
+                537,
+                543,
+                27780,
+                27804,
+                27834,
+                27906,
+                27918,
+                32564,
+                34549,
+                36557,
+                36578,
+                36584,
+                36636,
+                47061,
+                47837,
+                47851,
+                47856,
+                47858
+              ],
+              "update": 0
+            }
+          },
+          "enter": {
+            "entering": false,
+            "open": true,
+            "text": "125",
+            "types": false,
+            "values": {
+              "ammo_items": [],
+              "ammo_units": [],
+              "assigned_ammo": [
+                27744,
+                27756,
+                27792,
+                27842,
+                32631
+              ],
+              "specs": [
+                {
+                  "amount": 125,
+                  "assigned": [
+                    27744,
+                    27756,
+                    27792,
+                    27842
+                  ],
+                  "flags": 3,
+                  "item_subtype": 0,
+                  "item_type": 39,
+                  "material_class": -1,
+                  "matindex": -1,
+                  "mattype": -1
+                }
+              ],
+              "unassigned_ammo": [
+                527,
+                529,
+                535,
+                537,
+                543,
+                13119,
+                27780,
+                27804,
+                27834,
+                27906,
+                27918,
+                32564,
+                34549,
+                36557,
+                36578,
+                36584,
+                36636,
+                47061,
+                47837,
+                47851,
+                47856,
+                47858
+              ],
+              "update": 64
+            }
+          }
+        },
+        {
+          "action": "delete",
+          "after": {
+            "entering": true,
+            "open": true,
+            "text": "125",
+            "types": false,
+            "values": {
+              "ammo_items": [],
+              "ammo_units": [],
+              "assigned_ammo": [
+                32631
+              ],
+              "specs": [],
+              "unassigned_ammo": [
+                527,
+                529,
+                535,
+                537,
+                543,
+                13119,
+                27744,
+                27756,
+                27780,
+                27792,
+                27804,
+                27834,
+                27842,
+                27906,
+                27918,
+                32564,
+                34549,
+                36557,
+                36578,
+                36584,
+                36636,
+                47061,
+                47837,
+                47851,
+                47856,
+                47858
+              ],
+              "update": 64
+            }
+          },
+          "before": {
+            "entering": true,
+            "open": true,
+            "text": "125",
+            "types": false,
+            "values": {
+              "ammo_items": [],
+              "ammo_units": [],
+              "assigned_ammo": [
+                13119,
+                27744,
+                27756,
+                27792,
+                27842,
+                32631
+              ],
+              "specs": [
+                {
+                  "amount": 100,
+                  "assigned": [
+                    13119,
+                    27744,
+                    27756,
+                    27792,
+                    27842
+                  ],
+                  "flags": 3,
+                  "item_subtype": 0,
+                  "item_type": 39,
+                  "material_class": -1,
+                  "matindex": -1,
+                  "mattype": -1
+                }
+              ],
+              "unassigned_ammo": [
+                527,
+                529,
+                535,
+                537,
+                543,
+                27780,
+                27804,
+                27834,
+                27906,
+                27918,
+                32564,
+                34549,
+                36557,
+                36578,
+                36584,
+                36636,
+                47061,
+                47837,
+                47851,
+                47856,
+                47858
+              ],
+              "update": 0
+            }
+          },
+          "enter": {
+            "entering": false,
+            "open": true,
+            "text": "125",
+            "types": false,
+            "values": {
+              "ammo_items": [],
+              "ammo_units": [],
+              "assigned_ammo": [
+                32631
+              ],
+              "specs": [],
+              "unassigned_ammo": [
+                527,
+                529,
+                535,
+                537,
+                543,
+                13119,
+                27744,
+                27756,
+                27780,
+                27792,
+                27804,
+                27834,
+                27842,
+                27906,
+                27918,
+                32564,
+                34549,
+                36557,
+                36578,
+                36584,
+                36636,
+                47061,
+                47837,
+                47851,
+                47856,
+                47858
+              ],
+              "update": 64
+            }
+          }
+        }
+      ]
     }
   }
 }

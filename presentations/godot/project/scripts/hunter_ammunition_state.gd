@@ -68,6 +68,8 @@ func set_amount_text(value: String) -> void:
 	amount_text=digits;changed.emit()
 func commit_amount() -> void:
 	if phase!=Phase.Ready or mode!=Mode.Amount:return
+	if selected<0 or selected>=specs.size():
+		mode=Mode.Main;selected=-1;amount_text="";changed.emit();return
 	_apply(C.HunterAmmunitionOperation.Amount,{"index":selected,"amount":clampi(amount_text.to_int(),0,5000)})
 func choose(index: int) -> void:
 	if phase!=Phase.Ready or index<0:return
@@ -77,11 +79,12 @@ func choose(index: int) -> void:
 		var row: Dictionary=materials[index]
 		_apply(C.HunterAmmunitionOperation.Material,{"index":selected,"material_class":row.material_class,"mattype":row.mattype,"matindex":row.matindex})
 func delete_rule(index: int) -> void:
-	if phase==Phase.Ready and mode==Mode.Main and index>=0 and index<specs.size():_apply(C.HunterAmmunitionOperation.Delete,{"index":index})
+	if phase==Phase.Ready and mode in [Mode.Main,Mode.Amount] and index>=0 and index<specs.size():_apply(C.HunterAmmunitionOperation.Delete,{"index":index})
 func remove_stack(index: int,id: int) -> void:
-	if phase==Phase.Ready and mode==Mode.Main and index>=0 and index<specs.size() and id in specs[index].assigned:
+	if phase==Phase.Ready and mode in [Mode.Main,Mode.Amount] and index>=0 and index<specs.size() and id in specs[index].assigned:
 		_apply(C.HunterAmmunitionOperation.Remove,{"index":index,"item_id":id})
 func _apply(operation: int,fields: Dictionary) -> void:
+	resume_amount=(mode==Mode.Amount or resume_amount) and operation in [C.HunterAmmunitionOperation.Add,C.HunterAmmunitionOperation.Delete,C.HunterAmmunitionOperation.Remove]
 	var intent: Dictionary={"action":C.ManagementAction.HunterAmmunitionApply,"operation":operation,"index":-1,"item_id":-1,"amount":-1,"item_type":-1,"item_subtype":-1,"material_class":-1,"mattype":-1,"matindex":-1,"expected":specs.duplicate(true)}
 	intent.merge(fields,true);phase=Phase.Applying;_submit(intent)
 func _fail(result: Dictionary,uncertain: bool=false) -> void:
@@ -120,7 +123,10 @@ func _submit(intent: Dictionary) -> void:
 			materials=snapshot.materials.duplicate(true);phase=Phase.Ready;changed.emit();return
 		if not snapshot.get("specs") is Array or not _valid_specs(snapshot.specs):_fail(result,apply);return
 		if apply:
-			specs=snapshot.specs.duplicate(true);rules=[];materials=[];selected=-1;amount_text="";mode=Mode.Main;_read();return
+			specs=snapshot.specs.duplicate(true);rules=[];materials=[]
+			mode=Mode.Amount if resume_amount else Mode.Main
+			if not resume_amount:selected=-1;amount_text=""
+			resume_amount=false;_read();return
 		if not snapshot.get("rules") is Array or snapshot.rules.size()!=snapshot.specs.size() or not snapshot.get("types") is Array:_fail(result);return
 		for index in snapshot.rules.size():
 			if not snapshot.rules[index] is Dictionary:_fail(result);return

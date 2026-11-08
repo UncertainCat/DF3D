@@ -468,5 +468,17 @@
       "Enabled kiln/smelter/other automation not covered",
       "No live publication-fault injection"
     ]
+  },
+  "workshop_render_reference": {
+    "native_capture": "build/stockpile-storage-native-input-20261108-114349",
+    "qa": "build/qa/standing-orders-capture-fixed-20261108",
+    "button_crop": [
+      48,
+      172,
+      400,
+      288
+    ],
+    "rgb_sha256": "ccd0a40834d3a2ecb2f55b6e5c38265f6a745a131a062452e889dba6b5923fcf",
+    "scope": "Eight initial Workshop buttons pixel-identical; tabs have remaining pixel differences. No live clicks, hover, resizing or other categories accepted."
   }
 }

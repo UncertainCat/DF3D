@@ -1,4 +1,5 @@
 extends SceneTree
+const Owner=preload("res://scripts/standing_orders_panel.gd")
 const State=preload("res://scripts/standing_orders_state.gd")
 const C=preload("res://scripts/management_contract.gd")
 const Service=preload("res://tests/work_details_state_test.gd").Service

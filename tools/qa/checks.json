@@ -135,6 +135,15 @@
       "prerequisites": ["extension_build", "df_assets", "real_renderer"]
     },
     {
+      "id": "standing_orders_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/standing_orders_capture.gd",
+      "completion": "^STANDING_ORDERS_CAPTURE_PASS$",
+      "timeout": 60,
+      "prerequisites": ["extension_build", "df_assets", "real_renderer"]
+    },
+    {
       "id": "standing_orders_state_test",
       "lane": "core",
       "kind": "godot",

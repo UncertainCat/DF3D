@@ -40,7 +40,20 @@ complete receipts replace authority atomically. Rejection/Unknown discard all
 settings without automatic replay; closing, disposal and session changes retire
 observers and ignore late replies. This owner has no visible status copy or public
 route. Headless standing-orders-state-20261108 passes lifecycle/authority checks
-and root/core19. Its view and live controller integration remain pending.
+and root/core19. `standing_orders_panel.gd` owns the staged view, modal host,
+back handling and resize layout; it is not registered in public navigation.
+
+The Workshops view uses captured captions and installed category-button art.
+Protected native114349 supplies the initial eight controls. Rendered capture
+standing-orders-capture-fixed-20261108 matches their entire400x288 RGB crop
+at48,172 exactly. The first capture exposed the wrong list-row texture; using
+BUTTON_CATEGORY_RECTANGLE corrects the crop. Three tab levels are present, but
+the tab crop still differs and remains unaccepted. The two short serial captures
+are capped at30FPS; only known renderer-thread/finalize/shutdown diagnostics
+occur. GPU66C before,67C after first,60C after second; owned viewer processes
+close and the unrelated editor remains untouched. Native hover, button clicks,
+resize and live controller integration remain pending, as do other categories
+and captions for the three currently unavailable automation settings.
 
 Management145 carries StandingOrdersRead/Set through schema validation, the
 engine-independent model and the Godot request/result adapter. Category0 is

@@ -1,0 +1,72 @@
+extends "res://scripts/standing_orders_view.gd"
+# Staged Chores surface. Native renderer43700d/43762a supplies name colors and
+# the fixed labor palette; captions and participation remain native receipts.
+signal category_requested(category: int)
+const NameColor=preload("res://scripts/native_name_color.gd")
+const LABOR_COLORS={23:5,37:6,1:3,2:3,6:3,3:3,4:3,5:3,7:3,8:3,74:3,77:3,9:7,75:7}
+var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
+var portraits: Dictionary={}
+var row_facts: Dictionary={}
+var ticks_override: int=-1
+func configure_chores(source,model) -> void:
+	configure_standing_orders(source,model);picture.configure(source)
+func display_rows(rows: Array) -> void:
+	var retained: Dictionary={};row_facts={}
+	for row: Dictionary in rows:
+		var id:=int(row.id)
+		row_facts[id]=row
+		var previous: Dictionary=portraits.get(id,{})
+		retained[id]=previous if previous.get("recipe",{})==row.sheet_icon else {"recipe":row.sheet_icon.duplicate(true),"texture":world.candidate_icon(row.sheet_icon)}
+	portraits=retained;queue_redraw()
+func rows_top() -> int:return list_top()+48
+func capacity() -> int:return maxi(0,floori((size.y-rows_top()-36)/36))
+func column_middle() -> int:return floori(size.x/16)*8
+func participation_rect(enabled: bool) -> Rect2:
+	return Rect2(size.x-496+(0 if enabled else 240),list_top(),240,36)
+func child_rect(index: int) -> Rect2:return Rect2(16,rows_top()+index*36,column_middle()-32,36)
+func labor_rect(index: int) -> Rect2:return Rect2(column_middle()+8,rows_top()+index*36,size.x-column_middle()-24,36)
+func checkmark(rect: Rect2,token: String,inset: int=40) -> void:
+	var texture: Texture2D=art.texture(token)
+	if texture!=null:draw_texture_rect(texture,Rect2(rect.end.x-inset,rect.position.y,32,36),false)
+func _draw() -> void:
+	if world==null:return
+	draw_chrome(5)
+	if state.snapshot.is_empty():return
+	for enabled in [true,false]:
+		var rect:=participation_rect(enabled)
+		patch("BUTTON_CATEGORY_RECTANGLE_SELECTED" if state.snapshot.enabled==enabled else "BUTTON_CATEGORY_RECTANGLE",Vector2i(rect.position/Vector2(8,12)),30,3)
+		text("Children do chores" if enabled else "Children don't do chores",rect.position+Vector2(16,24))
+	for index in mini(capacity(),state.children.size()-state.child_first):
+		var child: Dictionary=state.children[state.child_first+index]
+		var rect:=child_rect(index)
+		patch("BUTTON_RECTANGLE",Vector2i(rect.position/Vector2(8,12)),int(rect.size.x/8),3)
+		patch("",Vector2i(rect.position/Vector2(8,12)),5,3,picture.texture(false))
+		var portrait: Texture2D=portraits.get(int(child.id),{}).get("texture")
+		if portrait!=null:draw_texture_rect(portrait,Rect2(rect.position+Vector2(2,2),Vector2(32,32)),false)
+		var facts: Dictionary=row_facts.get(int(child.id),{})
+		var ink:=NameColor.choose(facts.get("name_color",{}),ticks_override if ticks_override>=0 else Time.get_ticks_msec(),0 if ticks_override>=0 else randi_range(0,1))
+		if not ink.is_empty():text(child.caption,rect.position+Vector2(56,24),int(ink[0])+8*int(ink[2]))
+		checkmark(rect,"LABOR_WORKER_UNASSIGNED" if int(child.id) in state.snapshot.exempted else "LABOR_WORKER_ASSIGNED" if state.snapshot.enabled else "LABOR_WORKER_ASSIGNED_NOBODY")
+	for index in mini(capacity(),state.labors.size()-state.labor_first):
+		var labor: Dictionary=state.labors[state.labor_first+index]
+		var rect:=labor_rect(index)
+		patch("BUTTON_RECTANGLE",Vector2i(rect.position/Vector2(8,12)),int(rect.size.x/8),3)
+		text(labor.caption,rect.position+Vector2(24,24),LABOR_COLORS[int(labor.id)])
+		checkmark(rect,"LABOR_WORKER_ASSIGNED" if state.snapshot.labors[state.labor_first+index].enabled else "LABOR_WORKER_UNASSIGNED",32)
+func _gui_input(event: InputEvent) -> void:
+	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
+	accept_event()
+	if event.button_index!=MOUSE_BUTTON_LEFT:return
+	for category in [0,1,2,3,4,6]:
+		if category_rect(category).has_point(event.position):category_requested.emit(category);return
+	if state.phase!=state.Phase.Ready:return
+	for enabled in [true,false]:
+		if participation_rect(enabled).has_point(event.position):state.set_enabled(enabled);return
+	for index in mini(capacity(),state.children.size()-state.child_first):
+		if child_rect(index).has_point(event.position):
+			var id:=int(state.children[state.child_first+index].id)
+			state.set_exempt(id,id not in state.snapshot.exempted);return
+	for index in mini(capacity(),state.labors.size()-state.labor_first):
+		if labor_rect(index).has_point(event.position):
+			var row: Dictionary=state.snapshot.labors[state.labor_first+index]
+			state.set_labor(int(row.id),not row.enabled);return

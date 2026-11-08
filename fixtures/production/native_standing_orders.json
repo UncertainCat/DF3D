@@ -5675,6 +5675,45 @@
       "checked_steps": 6,
       "active_unit_labors": 339,
       "limitations": "Actual controller/service read-edit-refresh and injected stale request; no rendered input or screen acceptance."
+    },
+    "appearance_reference": {
+      "capture": "build/stockpile-storage-native-input-20261108-154328",
+      "rows": 12,
+      "provider": "ResidentsRowsRead",
+      "limitations": "Native portrait recipes and name-color facts captured through the existing typed API; derived artwork remains in ignored capture output. Rendered comparison is tracked separately."
+    },
+    "view_reference": {
+      "native_capture": "build/stockpile-storage-native-input-20261108-154328/standing-orders-category-5.png",
+      "viewer_capture": "build/chores.png",
+      "qa": "build/qa/chores-view-art-20261108",
+      "viewport": [
+        1200,
+        800
+      ],
+      "panel_crop": [
+        32,
+        52,
+        976,
+        760
+      ],
+      "differing_pixels": 0,
+      "labor_palette": {
+        "23": 5,
+        "37": 6,
+        "1": 3,
+        "2": 3,
+        "6": 3,
+        "3": 3,
+        "4": 3,
+        "5": 3,
+        "7": 3,
+        "8": 3,
+        "74": 3,
+        "77": 3,
+        "9": 7,
+        "75": 7
+      },
+      "limitations": "Default initial-state drawing only. Navigation, asynchronous row fetching, scrolling, resized layout, alternate participation artwork, hover and rendered live effects remain unaccepted."
     }
   }
 }

@@ -1233,6 +1233,17 @@ func chores_wire() -> void:
 	var captions: Dictionary={"children":controller.children,"labors":controller.labors}
 	var snapshot: Dictionary=controller.snapshot
 	var initial:=snapshot.duplicate(true)
+	if OS.get_environment("DF3D_CHORES_ROWS")=="1":
+		var rows_reply: Array=[]
+		service.submit("residents_rows",{"action":C.ManagementAction.ResidentsRowsRead,"unit_ids":snapshot.children,"columns":30,"show_gender":false},func(_ticket,result,_sent):rows_reply.append(result))
+		deadline=Time.get_ticks_msec()+5000
+		while rows_reply.is_empty() and Time.get_ticks_msec()<deadline:world.poll();await create_timer(0.01).timeout
+		if not check(not rows_reply.is_empty() and rows_reply[0].get("status")==C.ManagementStatus.Ok,"Chores portrait facts unavailable"):quit(1);return
+		var rows: Array=rows_reply[0].residents_rows.rows
+		check(rows.size()==snapshot.children.size(),"Chores portrait row count differs")
+		for index in rows.size():check(rows[index].id==snapshot.children[index] and rows[index].has("sheet_icon") and rows[index].has("name_color"),"Chores portrait facts missing")
+		var art_file:=FileAccess.open(directory+"/chores-rows.json",FileAccess.WRITE);art_file.store_string(JSON.stringify(rows));art_file.close()
+
 	check(snapshot.children==PackedInt32Array(reference.chores.children),"Chores native roster order differs")
 	check(snapshot.exempted==PackedInt32Array(reference.chores.exempted) and snapshot.enabled==reference.chores.enabled,"Chores initial settings differ")
 	for kind in ["children","labors"]:

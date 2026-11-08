@@ -65,8 +65,7 @@ func tab(value: String,point: Vector2,token: String,selected: bool) -> float:
 	var ink:=Color8(70,0,44) if token=="SHORT_SUBSUBTAB" else Color8(70,44,0)
 	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point+Vector2(16,18),value,HORIZONTAL_ALIGNMENT_LEFT,-1,12,ink if selected else colors[15])
 	return width*8
-func _draw() -> void:
-	if world==null:return
+func draw_chrome(category: int) -> void:
 	draw_rect(Rect2(Vector2(4,4),size-Vector2(8,8)),Color8(28,28,28));patch("HOVER_RECTANGLE",Vector2i.ZERO,int(size.x/8),frame_rows)
 	var groups:=InfoTabs.rows(wide_tabs)
 	for index in groups.size():
@@ -75,7 +74,10 @@ func _draw() -> void:
 	var x:=8.0
 	for caption in ["Work Details","Standing orders","Kitchen","Stone use"]:x+=tab(caption,Vector2(x,list_top()-60),"SHORT_SUBTAB",caption=="Standing orders")
 	x=8.0
-	for caption in CATEGORIES:x+=tab(caption,Vector2(x,list_top()-36),"SHORT_SUBSUBTAB",caption==CATEGORIES[state.category])
+	for caption in CATEGORIES:x+=tab(caption,Vector2(x,list_top()-36),"SHORT_SUBSUBTAB",caption==CATEGORIES[category])
+func _draw() -> void:
+	if world==null:return
+	draw_chrome(state.category)
 	var ids:=visible_ids()
 	for index in ids.size():
 		var rect:=setting_rect(index);var id:=ids[index]

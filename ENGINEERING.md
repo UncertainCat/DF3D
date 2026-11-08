@@ -75,6 +75,26 @@ separate-thread notice. GPU59C sampled during the brief native capture. The
 native Chores screenshot was inspected; controller acceptance does not establish
 portraits, colored captions, view layout/input or public integration.
 
+The staged `chores_view.gd` shares Standing orders tab chrome and renders the
+native child/labor columns, participation choices, portrait frames and checkboxes.
+Native renderer43762a supplies the fixed labor palette; child name colors and
+portrait recipes reuse ResidentsRowsRead, while full captions come from ChoresRead.
+Protected154328 captures all12 child appearance rows through that existing API and
+repeats the six controller edits with independent native labor-mask observations.
+The owned source is unchanged; logs contain only the known separate-thread notice.
+Derived portrait data remains in ignored capture output, required by chores_capture.
+
+`chores-view-art-20261108` passes core19 and both Chores/Standing controllers.
+The complete944x708 Chores panel at1200x800 has zero differing pixels against
+native154328, including accented captions and all12 portraits. The shared chrome
+refactor also runs the existing Standing orders graphical capture. Serial30FPS
+captures exit with only documented Godot thread/finalize/shutdown diagnostics;
+GPU62C sampled. This is initial-state drawing acceptance only. Navigation,
+asynchronous visible-row loading, scrolling/resizing, alternate participation
+artwork, hover and rendered live pointer workflows remain unfinished. The view
+is not registered as a public route; appearance_reference/view_reference retain
+this evidence and its limits.
+
 Chores typed dispatch now reads owned native snapshots/captions and applies the
 three native-backed mutations. It prepares the returned receipt before writes,
 sets mutation ownership from writeStarted, and retires partial state on failure.

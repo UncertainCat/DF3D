@@ -2432,6 +2432,58 @@
         "fnv1a64": "0xc035d9a4040f1032"
       },
       "plugin_sha256": "7A52096E708574784B287D4D0F8A6476A893AE7CC09A1EC829238A88BAC8EBD7"
+    },
+    "structural_edit_provider": {
+      "capture": "build/stockpile-storage-native-input-20261108-133352",
+      "checks": {
+        "add": {
+          "outcome": 2,
+          "receipt_count": 2
+        },
+        "amount": {
+          "outcome": 2,
+          "receipt_count": 1
+        },
+        "assignment_stale": {
+          "outcome": 1,
+          "receipt_count": 0
+        },
+        "delete_empty": {
+          "outcome": 2,
+          "receipt_count": 1
+        },
+        "delete_populated": {
+          "outcome": 2,
+          "receipt_count": 0
+        },
+        "invalid": {
+          "outcome": 0,
+          "receipt_count": 0
+        },
+        "material": {
+          "outcome": 2,
+          "receipt_count": 1
+        },
+        "noop": {
+          "outcome": 2,
+          "receipt_count": 1
+        },
+        "remove": {
+          "outcome": 2,
+          "receipt_count": 1
+        },
+        "stale": {
+          "outcome": 1,
+          "receipt_count": 0
+        },
+        "structural_stale": {
+          "outcome": 1,
+          "receipt_count": 0
+        }
+      },
+      "restored": true,
+      "plugin_sha256": "B2B602CD1265ACAD85CA4E448129EE9F32C2F25F863D1C157B4E549C6CFFFF3B",
+      "scope": "Native comparison for captured valid items; missing-item branch is statically traced, not live-tested."
     }
   }
 }

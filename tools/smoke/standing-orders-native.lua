@@ -425,8 +425,8 @@ if os.getenv('DF3D_HUNTER_AMMUNITION_NATIVE')=='1' then
  equipment.update.whole=before.update
  assert(json.encode(before)==json.encode(snapshot()),'Populated deletion changed unexpected ammunition fields')
  if os.getenv('DF3D_HUNTER_AMMUNITION_EDITS')=='1' then
-  local function edit(kind,value,expected)
-   local text,code=dfhack.run_command_silent('df3d','hunter-ammunition-edit-probe',kind,'0',tostring(value),json.encode(expected or before.specs))
+  local function edit(kind,value,expected,index)
+   local text,code=dfhack.run_command_silent('df3d','hunter-ammunition-edit-probe',kind,tostring(index or 0),tostring(value),json.encode(expected or before.specs))
    assert(code==0,'Semantic ammunition edit diagnostic failed');return json.decode(text)
   end
   local checks={}
@@ -448,6 +448,29 @@ if os.getenv('DF3D_HUNTER_AMMUNITION_NATIVE')=='1' then
   spec.material_class=before.specs[1].material_class;spec.mattype=before.specs[1].mattype;spec.matindex=before.specs[1].matindex
   equipment.update.whole=before.update
   assert(json.encode(before)==json.encode(snapshot()),'Semantic ammunition checks did not restore state')
+  checks.add=edit('add',0)
+  assert(checks.add.outcome==2 and json.encode(snapshot())==json.encode(result.hunter_ammunition.added.values),'Semantic Add differs from native')
+  checks.structural_stale=edit('delete',0)
+  assert(checks.structural_stale.outcome==1 and json.encode(snapshot())==json.encode(result.hunter_ammunition.added.values),'Stale structural receipt changed state')
+  checks.delete_empty=edit('delete',0,snapshot().specs,1)
+  assert(checks.delete_empty.outcome==2 and json.encode(snapshot())==json.encode(result.hunter_ammunition.deleted_empty.values),'Semantic empty Delete differs from native')
+  equipment.update.whole=before.update
+  checks.remove=edit('remove',before.specs[1].assigned[1])
+  assert(checks.remove.outcome==2 and json.encode(snapshot())==json.encode(result.hunter_ammunition.removed_stack.values),'Semantic Remove differs from native')
+  restore_vector(equipment.hunter_ammunition[0].assigned,before.specs[1].assigned)
+  restore_vector(equipment.items_assigned[df.item_type.AMMO],before.assigned_ammo)
+  restore_vector(equipment.items_unassigned[df.item_type.AMMO],before.unassigned_ammo)
+  equipment.update.whole=before.update
+  checks.delete_populated=edit('delete',0)
+  assert(checks.delete_populated.outcome==2 and json.encode(snapshot())==json.encode(result.hunter_ammunition.deleted_populated.values),'Semantic populated Delete differs from native')
+  local restored=df.squad_ammo_spec:new()
+  for _,key in ipairs({'item_type','item_subtype','material_class','mattype','matindex','amount'})do restored[key]=before.specs[1][key]end
+  restored.flags.whole=before.specs[1].flags;restore_vector(restored.assigned,before.specs[1].assigned)
+  equipment.hunter_ammunition:insert('#',restored)
+  restore_vector(equipment.items_assigned[df.item_type.AMMO],before.assigned_ammo)
+  restore_vector(equipment.items_unassigned[df.item_type.AMMO],before.unassigned_ammo)
+  equipment.update.whole=before.update
+  assert(json.encode(before)==json.encode(snapshot()),'Semantic structural checks did not restore state')
   result.hunter_ammunition.edit_provider=checks
  end
  gui.simulateInput(view,'LEAVESCREEN');settle()

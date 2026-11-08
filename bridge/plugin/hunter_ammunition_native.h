@@ -2,6 +2,9 @@
 #include "standing_orders_native.h"
 #include "df/squad_equipment_interfacest.h"
 #include "df/squad_ammo_spec.h"
+#include "df/item.h"
+#include <algorithm>
+#include <memory>
 #include <cstddef>
 #include <vector>
 
@@ -35,9 +38,12 @@ struct EditResult {EditOutcome outcome=EditOutcome::Unavailable;Snapshot specs;}
 inline bool editPins() {
     auto* base=df3d_standing::supportedBase();if(!base)return false;
     static const bool valid=[base] {
-        for(const auto& pin:std::array<std::array<uint64_t,3>,2>{{
+        for(const auto& pin:std::array<std::array<uint64_t,3>,5>{{
             {0x8bb7cf,0x8a,UINT64_C(0xc035d9a4040f1032)},
-            {0x45bc42,0x77,UINT64_C(0x9d0ec69406c9f3a6)}}}){
+            {0x45bc42,0x77,UINT64_C(0x9d0ec69406c9f3a6)},
+            {0x45c105,0xd7,UINT64_C(0xffeecffe5e23fb7e)},
+            {0x45c844,0x13a,UINT64_C(0x3b5d5c05601f4186)},
+            {0x45caab,0xaa,UINT64_C(0xa193c3f30984ed36)}}}){
             uint64_t hash=UINT64_C(14695981039346656037);
             for(size_t i=0;i<pin[1];++i){hash^=base[pin[0]+i];hash*=UINT64_C(1099511628211);}
             if(hash!=pin[2])return false;
@@ -106,6 +112,71 @@ inline EditResult setMaterial(const Snapshot& expected,size_t index,const Materi
     auto& equipment=df::global::plotinfo->equipment;auto* spec=equipment.hunter_ammunition[index];
     spec->material_class=static_cast<df::entity_material_category>(value.category);
     spec->mattype=value.type;spec->matindex=value.index;equipment.update.whole|=0x40;
+    return result;
+}
+inline EditResult add(const Snapshot& expected,const Type& value) {
+    if(!editPins())return {};
+    const auto current=snapshot();if(!current)return {};
+    if(*current!=expected)return {EditOutcome::Stale,{}};
+    const auto choices=candidates();if(!choices)return {};
+    bool found=false;
+    for(const auto& choice:choices->types)
+        if(choice.type==value.type && choice.subtype==value.subtype){found=true;break;}
+    if(!found)return {};
+    auto created=std::make_unique<df::squad_ammo_spec>();
+    created->item_type=static_cast<df::item_type>(value.type);created->item_subtype=value.subtype;
+    created->material_class=static_cast<df::entity_material_category>(-1);
+    created->mattype=-1;created->matindex=-1;created->amount=25;created->flags.whole=3;
+    created->assigned.clear();
+    EditResult result{EditOutcome::Applied,*current};
+    result.specs.push_back({value.type,value.subtype,-1,-1,-1,25,3,{}});
+    auto& equipment=df::global::plotinfo->equipment;
+    auto prepared=equipment.hunter_ammunition;prepared.push_back(created.get());
+    equipment.hunter_ammunition.swap(prepared);created.release();equipment.update.whole|=0x40;
+    return result;
+}
+inline void eraseAssigned(std::vector<int32_t>& ids,int32_t id) {
+    const auto found=std::lower_bound(ids.begin(),ids.end(),id);
+    if(found!=ids.end() && *found==id)ids.erase(found);
+}
+inline void insertUnassigned(std::vector<int32_t>& ids,int32_t id) {
+    const auto found=std::lower_bound(ids.begin(),ids.end(),id);
+    if(found==ids.end() || *found!=id)ids.insert(found,id);
+}
+// Native deletion skips nonexistent item IDs; Remove uses the selected ID
+// directly. All growing vectors and the response are prepared before swaps.
+inline EditResult remove(const Snapshot& expected,size_t index,std::optional<int32_t> item) {
+    if(!editPins())return {};
+    const auto current=snapshot();if(!current)return {};
+    if(*current!=expected)return {EditOutcome::Stale,{}};
+    if(index>=current->size())return {};
+    const auto& selected=(*current)[index];
+    if(item && std::find(selected.assigned.begin(),selected.assigned.end(),*item)==selected.assigned.end())return {};
+    auto& equipment=df::global::plotinfo->equipment;
+    auto assigned=equipment.items_assigned[df::item_type::AMMO];
+    auto unassigned=equipment.items_unassigned[df::item_type::AMMO];
+    if(!std::is_sorted(assigned.begin(),assigned.end()) || !std::is_sorted(unassigned.begin(),unassigned.end()) ||
+       !std::is_sorted(selected.assigned.begin(),selected.assigned.end()))return {};
+    EditResult result{EditOutcome::Applied,*current};
+    auto specs=equipment.hunter_ammunition;
+    std::vector<int32_t> remaining;
+    if(item){
+        remaining=selected.assigned;eraseAssigned(remaining,*item);
+        eraseAssigned(assigned,*item);insertUnassigned(unassigned,*item);
+        result.specs[index].assigned=remaining;
+    }else{
+        for(auto it=selected.assigned.rbegin();it!=selected.assigned.rend();++it){
+            if(!df::item::find(*it))continue;
+            eraseAssigned(assigned,*it);insertUnassigned(unassigned,*it);
+        }
+        specs.erase(specs.begin()+index);result.specs.erase(result.specs.begin()+index);
+    }
+    auto* target=equipment.hunter_ammunition[index];
+    equipment.items_assigned[df::item_type::AMMO].swap(assigned);
+    equipment.items_unassigned[df::item_type::AMMO].swap(unassigned);
+    if(item)target->assigned.swap(remaining);
+    else{equipment.hunter_ammunition.swap(specs);delete target;}
+    equipment.update.whole|=0x40;
     return result;
 }
 }

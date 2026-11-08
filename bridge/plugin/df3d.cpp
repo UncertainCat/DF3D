@@ -2441,6 +2441,12 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           }
           df3d_hunter_ammunition::EditResult reply;
           if(parameters[1]=="amount")reply=df3d_hunter_ammunition::setAmount(expected,size_t(index),value);
+          else if(parameters[1]=="delete")reply=df3d_hunter_ammunition::remove(expected,size_t(index),std::nullopt);
+          else if(parameters[1]=="remove")reply=df3d_hunter_ammunition::remove(expected,size_t(index),value);
+          else if(parameters[1]=="add"){
+            const auto choices=df3d_hunter_ammunition::candidates();if(!choices)return CR_FAILURE;
+            if(value>=0 && size_t(value)<choices->types.size())reply=df3d_hunter_ammunition::add(expected,choices->types[size_t(value)]);
+          }
           else if(parameters[1]=="material"){
             const auto choices=df3d_hunter_ammunition::candidates();if(!choices)return CR_FAILURE;
             if(value>=0 && size_t(value)<choices->materials.size())

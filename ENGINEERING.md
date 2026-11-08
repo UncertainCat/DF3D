@@ -47,8 +47,20 @@ captures, refuses stale amount/assignment snapshots and amount5001, and verifies
 a no-op leaves equipment unchanged. State restores, owned DF48884 exits unsaved
 with source preservation; native30FPS/GPU49C. MSVC builds; plugin SHA256 is
 `7A52096E708574784B287D4D0F8A6476A893AE7CC09A1EC829238A88BAC8EBD7`.
-Add/Delete/Remove semantic adapters, typed request lifecycle, rendering and public
-composition remain unfinished. The current snapshot is not an epoch/session token;
+Add/Delete/Remove semantic adapters now use the same expected snapshot and
+pinned native branches. Add validates against native candidate types and prepares
+the new spec, vector and receipt before publishing it. Delete/Remove prepare
+assigned/unassigned vectors and the response before swaps; sorted-unique
+insertion matches native b9e70. Delete skips IDs whose items no longer exist;
+Remove uses the selected ID directly. The missing-item distinction is statically
+traced, not yet exercised live. No global native menu is read or driven.
+Protected133352 compares all four structural actions (Add, empty Delete,
+Remove-stack, populated Delete) against native captured full equipment state;
+a stale structural snapshot is refused. Scalar/candidate checks also pass.
+All state restores, owned DF27328 exits unsaved with source preservation,
+native30FPS/GPU49C. MSVC builds; installed/built plugin SHA256 is
+`B2B602CD1265ACAD85CA4E448129EE9F32C2F25F863D1C157B4E549C6CFFFF3B`.
+Typed request lifecycle, rendering and public composition remain unfinished. The current snapshot is not an epoch/session token;
 transport integration must retain the existing epoch and unknown-outcome rules.
 
 Hunter ammunition discovery uses `DF3D_HUNTER_AMMUNITION_NATIVE=1` with the

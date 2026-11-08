@@ -54,12 +54,24 @@ local function rows()
  end
  return result
 end
+local hunter_snapshot
 local function shot(name)
  local file=assert(io.open(out..'/standing-orders-native.json','w'));file:write(json.encode(result));file:close()
  file=assert(io.open(out..'/shot.tmp','w'));file:write(name);file:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
  local deadline=dfhack.getTickCount()+(os.getenv('DF3D_STANDING_ORDERS_RENDER')=='1' and 20000 or 10000)
  local checked=0
  while true do
+  if name=='hunter-ammunition-wire' then
+   local step_file=io.open(out..'/hunter-wire-step')
+   if step_file then
+    local step=tonumber(step_file:read('*a'));step_file:close()
+    if step and step>checked then
+     assert(step==checked+1 and step<=#result.hunter_ammunition.wire_steps,'Unexpected ammunition wire step')
+     assert(json.encode(hunter_snapshot())==json.encode(result.hunter_ammunition.wire_steps[step].values),'Ammunition wire effects differ at step '..step)
+     checked=step;local ack=assert(io.open(out..'/hunter-wire-ack','w'));ack:write(tostring(step));ack:close()
+    end
+   end
+  end
   if name=='standing-orders-wire' then
    local step_file=io.open(out..'/standing-wire-step')
    if step_file then
@@ -75,6 +87,7 @@ local function shot(name)
   local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end
   assert(dfhack.getTickCount()<deadline,'Standing orders capture timeout');script.sleep(1,'frames')
  end
+ if name=='hunter-ammunition-wire' then assert(checked==#result.hunter_ammunition.wire_steps,'Ammunition wire steps incomplete');result.hunter_ammunition.wire_checked=checked end
  if name=='standing-orders-wire' then assert(checked==#result.wire_steps,'Wire steps incomplete');result.wire_checked=checked end
 end
 local original=values()
@@ -334,6 +347,7 @@ if os.getenv('DF3D_HUNTER_AMMUNITION_NATIVE')=='1' then
   end
   return result
  end
+ hunter_snapshot=snapshot
  local owned_candidates
  if os.getenv('DF3D_HUNTER_AMMUNITION_PROVIDER')=='1' then
   local ui=df.global.game.main_interface.squad_equipment
@@ -487,6 +501,30 @@ if os.getenv('DF3D_HUNTER_AMMUNITION_NATIVE')=='1' then
   end
   assert(json.encode(before)==json.encode(snapshot()),'Caption formatting changed equipment')
   result.hunter_ammunition.caption_provider=captions
+ end
+ if os.getenv('DF3D_HUNTER_AMMUNITION_WIRE')=='1' then
+  local h=result.hunter_ammunition;local function clone(v)return json.decode(json.encode(v))end
+  local reset=clone(before);reset.update=before.update|64
+  h.wire_steps={
+   {operation=1,index=0,amount=125,expected=before.specs,values=h.amount_confirmed.values,outcome=1},
+   {operation=1,index=0,amount=100,expected=before.specs,values=h.amount_confirmed.values,outcome=3},
+   {operation=1,index=0,amount=100,expected=h.amount_confirmed.values.specs,values=reset,outcome=1},
+   {operation=2,index=0,material_class=3,expected=before.specs,values=h.material_selected.values,outcome=1},
+   {operation=2,index=0,expected=h.material_selected.values.specs,values=reset,outcome=1},
+   {operation=3,item_type=39,item_subtype=0,expected=before.specs,values=h.added.values,outcome=1},
+   {operation=4,index=1,expected=h.added.values.specs,values=h.deleted_empty.values,outcome=1},
+   {operation=5,index=0,item_id=before.specs[1].assigned[1],expected=before.specs,values=h.removed_stack.values,outcome=1},
+   {operation=4,index=0,expected=h.removed_stack.values.specs,values=h.deleted_populated.values,outcome=1}}
+  shot('hunter-ammunition-wire')
+  assert(#equipment.hunter_ammunition==0,'Wire deletion did not finish')
+  local restored=df.squad_ammo_spec:new()
+  for _,key in ipairs({'item_type','item_subtype','material_class','mattype','matindex','amount'})do restored[key]=before.specs[1][key]end
+  restored.flags.whole=before.specs[1].flags;restore_vector(restored.assigned,before.specs[1].assigned)
+  equipment.hunter_ammunition:insert('#',restored)
+  restore_vector(equipment.items_assigned[df.item_type.AMMO],before.assigned_ammo)
+  restore_vector(equipment.items_unassigned[df.item_type.AMMO],before.unassigned_ammo)
+  equipment.update.whole=before.update
+  assert(json.encode(before)==json.encode(snapshot()),'Ammunition wire state did not restore')
  end
  gui.simulateInput(view,'LEAVESCREEN');settle()
  result.hunter_ammunition.cancelled_amount={open=ui.open,setting_ammo=ui.setting_ammo,entering=ui.setting_ammo_entering_amount,values=snapshot()}

@@ -33,6 +33,26 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Standing orders native discovery
 
+Hunter ammunition typed dispatch now reads native specs, choice captions and
+assigned-stack quantities, validates candidate type/subtype, and routes all five
+Apply operations through the full-receipt native adapter. Read/choice failure
+clears partial data. Applied edits retain their prepared spec receipt; if response
+validation fails, the fallback carries Unknown with no authority. Exceptions
+after a returned Applied result also produce Unknown; publication fault injection
+has not yet been exercised live. No mutation is automatically replayed.
+Protected140036 on2026-11-08 verifies Read, all11 type and992 material captions,
+rule/stack captions and119-round total, then nine typed steps: amount edit,
+stale refusal, amount restoration, Wood/unrestricted material edits, Add, empty
+Delete, Remove and populated Delete. A native Lua observer compares full equipment
+state after every step. All original specs, assignments and update flags restore;
+owned DF6504 closes unsaved with source preservation. Headless viewer/native30FPS,
+GPU47C sampled; only the known separate-renderer notice appears in joined logs.
+MSVC and root/core19 pass (hunter-ammunition-dispatch-20261108). Installed/built
+plugin SHA256 is `0E725C41B4B58B7C8E7502949AFC74B511F4EF7C7B56B8191838F316A01AD847`.
+The protected flag is DF3D_HUNTER_AMMUNITION_WIRE=1, with native/caption discovery
+flags enabled. Actual panel ownership, artwork, input, hover, scrolling and
+session retirement remain required before public exposure.
+
 Management148 / Local\df3d_management_v148 adds HunterAmmunitionRead,
 HunterAmmunitionCandidates and HunterAmmunitionApply. The contract carries full
 ordered spec/assignment receipts, typed Amount/Material/Add/Delete/Remove
@@ -44,9 +64,8 @@ only for Apply and maps to the existing top-level unknown result in Godot.
 All actions retain the outer world epoch; Apply is classified as a mutation.
 Validation rejects misplaced fields, malformed assignment order, incorrect
 stack membership and quantity totals. Generated enums, model codecs and Godot
-dictionaries are migrated together. The runtime currently explicitly rejects
-these three new actions until semantic dispatch is connected; this is not UI
-completion or live ammunition-wire acceptance.
+dictionaries are migrated together. The native dispatch now handles all three actions; this contract evidence alone
+is not public UI or lifecycle acceptance.
 Root/core19, extension and producer-to-Godot round trips pass in
 hunter-contract148-roundtrip-20261108. The focused round trip covers Read,
 Candidates, all five edit operations, malformed inputs and Unknown; synthetic

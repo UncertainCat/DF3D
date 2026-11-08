@@ -2557,8 +2557,18 @@
       "offline": "build/qa/hunter-contract148-roundtrip-20261108",
       "native_compatibility_capture": "build/stockpile-storage-native-input-20261108-135549",
       "standing_orders_wire_steps": 28,
-      "runtime_hunter_dispatch": "Explicitly rejected pending integration",
+      "runtime_hunter_dispatch": "Connected; see typed_wire_reference for subsequent acceptance",
       "plugin_sha256": "9EC23A49F383C87096FC166FA290CFF30E47B64C156C6B78EB4FEDA4324A1644"
+    },
+    "typed_wire_reference": {
+      "capture": "build/stockpile-storage-native-input-20261108-140036",
+      "steps": 9,
+      "native_checked": 9,
+      "types": 11,
+      "materials": 992,
+      "restored": true,
+      "plugin_sha256": "0E725C41B4B58B7C8E7502949AFC74B511F4EF7C7B56B8191838F316A01AD847",
+      "scope": "Typed requests/effects/captions; rendered UI and publication fault injection remain pending."
     }
   }
 }

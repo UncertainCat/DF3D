@@ -27,6 +27,8 @@ func drag_scrollbar(bar, bottom: bool) -> void:
 
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
+	if OS.get_environment("DF3D_HUNTER_AMMUNITION_WIRE")=="1":
+		await hunter_ammunition_wire();return
 	if OS.get_environment("DF3D_STANDING_ORDERS_RENDER")=="1":
 		await standing_orders_scene();return
 	if OS.get_environment("DF3D_STANDING_ORDERS_WIRE")=="1" or OS.get_environment("DF3D_STANDING_ORDERS_CATEGORY_WIRE")=="1" or OS.get_environment("DF3D_STANDING_ORDERS_EXTENDED_WIRE")=="1":
@@ -1046,3 +1048,48 @@ func standing_orders_scene() -> void:
 	check(owner.state.phase==owner.state.Phase.Closed and host.active==null,"Back did not retire panel ownership")
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"rendered_steps":count}));file.close()
 	owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)
+
+func hunter_specs(source: Array) -> Array:
+	var result: Array=[]
+	for entry: Dictionary in source:
+		var row: Dictionary={}
+		for key in ["item_type","item_subtype","material_class","mattype","matindex","amount","flags"]:row[key]=int(entry[key])
+		row.assigned=PackedInt32Array(entry.assigned);result.append(row)
+	return result
+func hunter_ammunition_wire() -> void:
+	world=Df3dWorld.new();root.add_child(world)
+	if not check(world.attach(),"Ammunition attach failed"):quit(1);return
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline:
+		world.poll()
+		if world.poll_management().get("transport_alive",false):break
+		await create_timer(0.01).timeout
+	var reply: Dictionary=await request("construction",{"action":C.ManagementAction.Catalog})
+	if not check(reply.get("status")==C.ManagementStatus.Ok,"Ammunition session initialization failed"):quit(1);return
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/standing-orders-native.json")).hunter_ammunition
+	reply=await request("hunter_ammunition",{"action":C.ManagementAction.HunterAmmunitionRead})
+	if not check(reply.get("status")==C.ManagementStatus.Ok and reply.get("hunter_ammunition",{}).get("specs")==hunter_specs(reference.before.specs),"Ammunition read differs from native"):quit(1);return
+	var native: Dictionary=reference.caption_provider
+	check(reply.hunter_ammunition.types.size()==native.types.size(),"Ammunition type count differs")
+	for i in native.types.size():check(reply.hunter_ammunition.types[i].caption==native.types[i],"Ammunition type caption differs")
+	check(reply.hunter_ammunition.rules[0].quantity==119 and reply.hunter_ammunition.rules[0].caption==native.specs[0].caption,"Ammunition rule summary differs")
+	for i in native.specs[0].items.size():check(reply.hunter_ammunition.rules[0].items[i].caption==native.specs[0].items[i].caption,"Ammunition stack caption differs")
+	reply=await request("hunter_ammunition",{"action":C.ManagementAction.HunterAmmunitionCandidates,"item_type":39,"item_subtype":0})
+	if not check(reply.get("status")==C.ManagementStatus.Ok and reply.hunter_ammunition.materials.size()==native.materials.size(),"Ammunition materials missing"):quit(1);return
+	for i in native.materials.size():check(reply.hunter_ammunition.materials[i].caption==native.materials[i],"Ammunition material caption differs")
+	var count:=0
+	for step: Dictionary in reference.wire_steps:
+		var intent: Dictionary={"action":C.ManagementAction.HunterAmmunitionApply,"operation":int(step.operation),"index":-1,"item_id":-1,"amount":-1,"item_type":-1,"item_subtype":-1,"material_class":-1,"mattype":-1,"matindex":-1,"expected":hunter_specs(step.expected)}
+		for key in ["index","item_id","amount","item_type","item_subtype","material_class","mattype","matindex"]:intent[key]=int(step.get(key,-1))
+		reply=await request("hunter_ammunition",intent)
+		if not check(reply.get("hunter_ammunition",{}).get("outcome")==int(step.outcome),"Ammunition wire outcome differs"):quit(1);return
+		check(reply.hunter_ammunition.specs==(hunter_specs(step.values.specs) if int(step.outcome)==1 else []),"Ammunition receipt differs")
+		count+=1
+		var file:=FileAccess.open(directory+"/hunter-wire-step",FileAccess.WRITE);file.store_string(str(count));file.close()
+		deadline=Time.get_ticks_msec()+3000
+		while Time.get_ticks_msec()<deadline:
+			if FileAccess.file_exists(directory+"/hunter-wire-ack") and FileAccess.get_file_as_string(directory+"/hunter-wire-ack")==str(count):break
+			await create_timer(0.01).timeout
+		if not check(FileAccess.get_file_as_string(directory+"/hunter-wire-ack")==str(count),"Native ammunition readback missing; no replay"):quit(1);return
+	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"steps":count}));file.close()
+	world.queue_free();await process_frame;quit(1 if failed else 0)

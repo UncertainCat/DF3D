@@ -108,6 +108,7 @@
 #include "work_detail_row_native.h"
 #include "work_detail_settings_native.h"
 #include "standing_orders_native.h"
+#include "hunter_ammunition_captions_native.h"
 #include "df/gamest.h"
 #include "work_order_catalog_native.h"
 #include "work_order_rows_native.h"
@@ -475,6 +476,18 @@ struct StandingOrdersResult {
   std::optional<df3d_standing::CategorySettings> categorySettings;
 };
 std::optional<StandingOrdersResult> standingOrders;
+struct HunterResult {
+  struct Stack {int32_t id,quantity;std::string caption;};
+  struct Rule {std::string caption;int64_t quantity=0;std::vector<Stack> items;};
+  m::HunterAmmunitionOutcome outcome=m::HunterAmmunitionOutcome::Rejected;
+  int16_t type=-1,subtype=-1;
+  df3d_hunter_ammunition::Snapshot specs;
+  std::vector<Rule> rules;
+  std::vector<std::pair<df3d_hunter_ammunition::Type,std::string>> types;
+  std::vector<std::pair<df3d_hunter_ammunition::Material,std::string>> materials;
+};
+std::optional<HunterResult> hunter;
+
 
 m::TilePos worldHoverTile;
 void clearResult() {
@@ -489,7 +502,7 @@ void clearResult() {
   residentsRows.reset();
   residentsSpecialization.reset();
   residentsActivity.reset();
-  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();
+  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -1120,10 +1133,24 @@ void publish() {
     }
     standingOrdersResult=m::CreateStandingOrdersState(b,standingOrders->category,standingOrders->outcome,b.CreateVector(rows));
   }
+  flatbuffers::Offset<m::HunterAmmunitionState> hunterResult;
+  if(hunter){
+    std::vector<flatbuffers::Offset<m::HunterAmmunitionSpec>> specs;
+    std::vector<flatbuffers::Offset<m::HunterAmmunitionRule>> rules;
+    std::vector<flatbuffers::Offset<m::HunterAmmunitionType>> types;
+    std::vector<flatbuffers::Offset<m::HunterAmmunitionMaterial>> materials;
+    for(const auto& row:hunter->specs)specs.push_back(m::CreateHunterAmmunitionSpec(b,int16_t(row.item_type),int16_t(row.item_subtype),int16_t(row.material_class),int16_t(row.mattype),row.matindex,row.amount,row.flags,b.CreateVector(row.assigned)));
+    for(const auto& row:hunter->rules){std::vector<flatbuffers::Offset<m::HunterAmmunitionStack>> items;
+      for(const auto& item:row.items)items.push_back(m::CreateHunterAmmunitionStack(b,item.id,b.CreateString(item.caption),item.quantity));
+      rules.push_back(m::CreateHunterAmmunitionRule(b,b.CreateString(row.caption),row.quantity,b.CreateVector(items)));}
+    for(const auto& [row,caption]:hunter->types)types.push_back(m::CreateHunterAmmunitionType(b,row.type,row.subtype,row.foreign,b.CreateString(caption)));
+    for(const auto& [row,caption]:hunter->materials)materials.push_back(m::CreateHunterAmmunitionMaterial(b,row.category,row.type,row.index,b.CreateString(caption)));
+    hunterResult=m::CreateHunterAmmunitionState(b,hunter->outcome,hunter->type,hunter->subtype,b.CreateVector(specs),b.CreateVector(rules),b.CreateVector(types),b.CreateVector(materials));
+  }
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult);
   b.Finish(s);
   if (auto e = m::validateManagementState(
           *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()))) {
@@ -1136,11 +1163,13 @@ void publish() {
     const auto placed=construction.placed,skipped=construction.skipped;
     const auto first=construction.first_building;
     const auto standingCategory=standingOrders?standingOrders->category:0;
+    const bool hunterUnknown=hunter && (hunter->outcome==m::HunterAmmunitionOutcome::Applied || hunter->outcome==m::HunterAmmunitionOutcome::Unknown);
     const bool standingUnknown=standingOrders && (standingOrders->outcome==m::StandingOrdersOutcome::Applied || standingOrders->outcome==m::StandingOrdersOutcome::Unknown);
     const bool citizenUnknown=citizenWriteStarted || citizens.outcomeUnknown;
     auto jobWrite=jobSettingsEdit;
     if(jobWrite && jobWrite->outcome!=m::JobSettingsEditOutcome::Applied && jobWrite->outcome!=m::JobSettingsEditOutcome::Unknown)jobWrite.reset();
     clearResult();
+    if(hunterUnknown){hunter.emplace();hunter->outcome=m::HunterAmmunitionOutcome::Unknown;mutated=true;}
     if(standingUnknown){standingOrders.emplace();standingOrders->category=standingCategory;standingOrders->outcome=m::StandingOrdersOutcome::Unknown;mutated=true;}
     if(citizenUnknown){citizens.outcomeUnknown=true;mutated=true;}
     if(jobWrite){jobWrite->outcome=m::JobSettingsEditOutcome::Unknown;jobSettingsEdit=jobWrite;}
@@ -4091,9 +4120,64 @@ void run(color_ostream& out) {
     } catch(...) {residentsRows.reset();}
     publish();return;
   }
-  // The148 migration establishes vocabulary before semantic dispatch is wired.
   if(r->action()>=m::ManagementAction::HunterAmmunitionRead && r->action()<=m::ManagementAction::HunterAmmunitionApply) {
-    message.clear();status=m::ManagementStatus::Rejected;publish();return;
+    namespace h=df3d_hunter_ammunition;
+    message.clear();status=m::ManagementStatus::Rejected;hunter.emplace();bool applied=false;
+    const auto& q=*r->hunter_ammunition();
+    try {
+      if(r->action()==m::ManagementAction::HunterAmmunitionApply){
+        h::Snapshot expected;
+        for(const auto* v:*q.expected())expected.push_back({v->item_type(),v->item_subtype(),v->material_class(),v->mattype(),v->matindex(),v->amount(),v->flags(),{v->assigned()->begin(),v->assigned()->end()}});
+        h::EditResult result;
+        switch(q.operation()){
+        case m::HunterAmmunitionOperation::Amount:result=h::setAmount(expected,size_t(q.index()),q.amount());break;
+        case m::HunterAmmunitionOperation::Material:result=h::setMaterial(expected,size_t(q.index()),{q.material_class(),q.mattype(),q.matindex()});break;
+        case m::HunterAmmunitionOperation::Add:result=h::add(expected,{q.item_type(),q.item_subtype(),false});break;
+        case m::HunterAmmunitionOperation::Delete:result=h::remove(expected,size_t(q.index()),std::nullopt);break;
+        case m::HunterAmmunitionOperation::Remove:result=h::remove(expected,size_t(q.index()),q.item_id());break;
+        default:break;
+        }
+        if(result.outcome==h::EditOutcome::Applied){
+          applied=true;mutated=true;hunter->outcome=m::HunterAmmunitionOutcome::Applied;
+          hunter->specs=std::move(result.specs);status=m::ManagementStatus::Ok;
+        }else if(result.outcome==h::EditOutcome::Stale)hunter->outcome=m::HunterAmmunitionOutcome::Stale;
+      }else{
+        const auto choices=h::candidates();if(!choices)throw std::runtime_error("ammunition choices unavailable");
+        if(r->action()==m::ManagementAction::HunterAmmunitionCandidates){
+          bool found=false;for(const auto& type:choices->types)if(type.type==q.item_type() && type.subtype==q.item_subtype()){found=true;break;}
+          if(!found)throw std::runtime_error("ammunition type unavailable");
+          hunter->type=q.item_type();hunter->subtype=q.item_subtype();
+          for(const auto& material:choices->materials){
+            const auto caption=h::caption(q.item_type(),q.item_subtype(),material);if(!caption)throw std::runtime_error("ammunition material caption unavailable");
+            hunter->materials.emplace_back(material,DF2UTF(*caption));
+          }
+        }else{
+          auto specs=h::snapshot();if(!specs)throw std::runtime_error("ammunition snapshot unavailable");
+          hunter->specs=std::move(*specs);
+          for(const auto& type:choices->types){
+            const auto caption=h::caption(type.type,type.subtype,{-1,-1,-1},true,type.foreign);if(!caption)throw std::runtime_error("ammunition type caption unavailable");
+            hunter->types.emplace_back(type,DF2UTF(*caption));
+          }
+          for(const auto& spec:hunter->specs){
+            const auto caption=h::caption(int16_t(spec.item_type),int16_t(spec.item_subtype),{int16_t(spec.material_class),int16_t(spec.mattype),spec.matindex});
+            if(!caption)throw std::runtime_error("ammunition rule caption unavailable");
+            HunterResult::Rule row;row.caption=DF2UTF(*caption);
+            for(auto id:spec.assigned){
+              auto* item=df::item::find(id);if(!item)continue;
+              const auto name=h::stackCaption(item);if(!name)throw std::runtime_error("ammunition stack caption unavailable");
+              const int32_t quantity=item->getStackSize();row.quantity+=quantity;row.items.push_back({id,quantity,DF2UTF(*name)});
+            }
+            hunter->rules.push_back(std::move(row));
+          }
+        }
+        hunter->outcome=m::HunterAmmunitionOutcome::None;status=m::ManagementStatus::Ok;
+      }
+      publish();return;
+    }catch(...){
+      hunter.emplace();status=m::ManagementStatus::Rejected;
+      if(applied){hunter->outcome=m::HunterAmmunitionOutcome::Unknown;mutated=true;}
+    }
+    publish();return;
   }
   if(r->action()==m::ManagementAction::StandingOrdersRead || r->action()==m::ManagementAction::StandingOrdersSet) {
     message.clear();status=m::ManagementStatus::Rejected;standingOrders.emplace();

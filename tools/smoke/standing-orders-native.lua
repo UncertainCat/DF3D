@@ -347,5 +347,33 @@ if os.getenv('DF3D_HUNTER_AMMUNITION_NATIVE')=='1' then
  result.hunter_ammunition.cancelled_picker={open=ui.open,setting_ammo=ui.setting_ammo,values=snapshot()}
  assert(json.encode(before)==json.encode(snapshot()),'Cancelling ammunition choices changed simulation settings')
  shot('hunter-ammunition-cancelled-picker')
+ click(65,24)
+ assert(ui.setting_ammo_mat,'Material button did not open choices')
+ result.hunter_ammunition.material_picker={rows=rows(),values=snapshot(),selected=ui.setting_ammo_mat_sea_index}
+ shot('hunter-ammunition-material-picker')
+ click(35,30)
+ result.hunter_ammunition.material_selected={rows=rows(),values=snapshot(),selecting=ui.setting_ammo_mat}
+ shot('hunter-ammunition-material-selected')
+ local spec=equipment.hunter_ammunition[0]
+ spec.material_class=before.specs[1].material_class;spec.mattype=before.specs[1].mattype;spec.matindex=before.specs[1].matindex
+ equipment.update.whole=before.update
+ assert(json.encode(before)==json.encode(snapshot()),'Material edit affected fields beyond material/update')
+ click(71,24)
+ assert(ui.setting_ammo_entering_amount,'Amount button did not open entry')
+ result.hunter_ammunition.amount_entry={rows=rows(),text=ui.setting_ammo_amount_str,values=snapshot()}
+ shot('hunter-ammunition-amount-entry')
+ for _,byte in ipairs({49,50,53})do gui.simulateInput(view,('STRING_A%03d'):format(byte))end
+ settle()
+ result.hunter_ammunition.amount_draft={text=ui.setting_ammo_amount_str,values=snapshot()}
+ gui.simulateInput(view,'SELECT');settle()
+ result.hunter_ammunition.amount_confirmed={text=ui.setting_ammo_amount_str,entering=ui.setting_ammo_entering_amount,values=snapshot(),rows=rows()}
+ shot('hunter-ammunition-amount-confirmed')
+ equipment.hunter_ammunition[0].amount=before.specs[1].amount
+ equipment.update.whole=before.update
+ assert(json.encode(before)==json.encode(snapshot()),'Amount edit affected fields beyond amount/update')
+ gui.simulateInput(view,'LEAVESCREEN');settle()
+ result.hunter_ammunition.cancelled_amount={open=ui.open,setting_ammo=ui.setting_ammo,entering=ui.setting_ammo_entering_amount,values=snapshot()}
+ assert(json.encode(before)==json.encode(snapshot()),'Cancelling amount changed ammunition')
+ shot('hunter-ammunition-amount-cancelled')
 end
 shot('standing-orders-restored');records[#records+1]={name='standing-orders',categories=#result.pages,cycles=#result.workshop_cycles}

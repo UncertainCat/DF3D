@@ -42,11 +42,25 @@ The owned DF39720 closes unsaved with source preservation; native30FPS and
 GPU50C sampled. Native choices contain11 ammunition types (bolts first, then
 ten foreign types) and992 material candidates in this fortress. This is
 opening/cancellation evidence only, not edit or runtime-provider acceptance.
+Protected131854 selects Wood bolts: material_class becomes3 and update gains
+0x40 (ammo); the assigned stacks and other captured fields remain unchanged.
+Typing125 leaves amount100 intact until Enter, which sets amount125 and the
+same update bit. Both edits are restored in the paused clone; owned DF37420
+closes unsaved with source preservation, GPU50C sampled. Native8bb7cf..8bb859
+parses and clamps amount to0..5000, checks the selected spec, and writes amount
+plus the update bit only when changed; no gameplay callback follows. This
+supports an owned semantic setter, not invoking the surrounding global-menu
+input routine. Earlier131705 shows blank amount entry and Escape closing the
+panel without changing settings. The inactive entering_amount flag remains
+true after that close; runtime must still retire its local draft with the panel.
+Material and quantity captures are in hunter_ammunition_reference.edit_reference.
+Add/delete/assigned-stack removal and complete edit validation remain pending.
+
 Storage is `plotinfo.equipment.hunter_ammunition`. Native45e390 populates
 the supplied squad-equipment context; its13bfd0 call inserts vector<bool>
 entries and14add70 resolves material definitions. Neither is a standalone
 ammunition-choice provider. Runtime candidate ownership and native add,
-material, amount, delete and assigned-stack removal effects remain unresolved;
+delete and assigned-stack removal effects remain unresolved;
 do not read the global menu vectors as runtime inputs.
 
 The staged view/controller now supports all six scalar categories0/1/2/3/4/6.

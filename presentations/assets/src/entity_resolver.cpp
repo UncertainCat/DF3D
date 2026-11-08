@@ -1300,7 +1300,8 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
     case ItemKind::Bracelet: return metalOrWood("ITEM_BRACELET", "craft.bracelet");
     case ItemKind::Totem: return single("ITEM_TOTEM", "craft.totem");
     case ItemKind::Ammo:
-      return def(cls == MaterialClass::Wood ? "STRAIGHT_WOOD" : "STRAIGHT_DEFAULT", "ITEM_AMMO", "ammo");
+      return def(q.diagonalAmmo ? (cls == MaterialClass::Wood ? "DIAGONAL_WOOD" : "DIAGONAL_DEFAULT") :
+        (cls == MaterialClass::Wood ? "STRAIGHT_WOOD" : "STRAIGHT_DEFAULT"), "ITEM_AMMO", "ammo");
     case ItemKind::SiegeAmmo: return def("STRAIGHT_DEFAULT", "ITEM_AMMO", "siege-ammo");
     case ItemKind::BallistaArrowhead: return single("ITEM_BALLISTA_ARROWHEAD", "ballista-arrowhead");
     case ItemKind::Anvil: return single("ITEM_ANVIL", "anvil");

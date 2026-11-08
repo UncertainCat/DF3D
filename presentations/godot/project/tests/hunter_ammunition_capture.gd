@@ -10,6 +10,11 @@ func run() -> void:
 	var state=preload("res://scripts/hunter_ammunition_state.gd").new();state.phase=state.Phase.Ready
 	state.specs=reference.before.specs.duplicate(true)
 	for row: Dictionary in reference.caption_provider.specs:state.rules.append({"caption":row.caption,"quantity":int(row.assigned_quantity),"items":row.items.duplicate(true)})
+	for row: Dictionary in state.rules:
+		for item: Dictionary in row.items:
+			for native: Dictionary in reference.appearance_reference.items:
+				if item.id==native.id:
+					item.appearance=native.appearance.duplicate(true);item.appearance.stack=int(item.appearance.stack);item.appearance.flags=int(item.appearance.flags)
 	for caption: String in reference.caption_provider.types:state.types.append({"caption":caption})
 	var view=preload("res://scripts/hunter_ammunition_view.gd").new();root.add_child(view)
 	view.configure_ammunition(world,state);view.layout(Vector2(1200,800))

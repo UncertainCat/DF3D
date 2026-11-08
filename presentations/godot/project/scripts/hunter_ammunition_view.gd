@@ -4,8 +4,11 @@ extends "res://scripts/location_staff_candidates_frame.gd"
 var state
 var colors: Array[Color]=[]
 var input_allowed: Callable
+var item_icons: Dictionary={}
+var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
 func configure_ammunition(source,model) -> void:
 	configure(source);state=model;colors=art.installed_palette(source.assets_root())
+	picture.configure(source)
 	mouse_filter=Control.MOUSE_FILTER_STOP;state.changed.connect(refresh)
 	scrollbar.input_allowed=allowed;scrollbar.row_changed.connect(scrolled)
 	refresh()
@@ -16,6 +19,11 @@ func layout(view: Vector2) -> void:
 	refresh()
 func picker() -> bool:return state.mode in [state.Mode.Types,state.Mode.Materials]
 func choices() -> Array:return state.types if state.mode==state.Mode.Types else state.materials
+func refresh_art() -> void:
+	item_icons.clear()
+	for row: Dictionary in state.rules:
+		for item: Dictionary in row.items:
+			if item.has("appearance"):item_icons[int(item.id)]=world.ammunition_icon(item.appearance,int(item.id))
 func rows() -> Array:
 	var result: Array=[]
 	for index in state.rules.size():
@@ -24,6 +32,7 @@ func rows() -> Array:
 	return result
 func refresh() -> void:
 	if state==null or scrollbar==null:return
+	refresh_art()
 	scrollbar.set_rows(choices().size() if picker() else rows().size(),state.choice_first if picker() else state.first)
 	queue_redraw()
 func scrolled(value: int) -> void:
@@ -91,6 +100,10 @@ func _draw() -> void:
 			text(str(state.rules[entry.spec].quantity)+"/"+amount,Vector2(256,y+24))
 			button("Mat",Rect2(336,y+8,40,24));button("Amt",Rect2(384,y+8,40,24));button("Delete",Rect2(720,y+8,64,24),12)
 		else:
+			var frame: Texture2D=picture.texture(false)
+			if frame!=null:patch("BUTTON_PICTURE_BOX",Vector2i(2,int(y/12)),5,3,frame)
+			var icon: Texture2D=item_icons.get(int(entry.item))
+			if icon!=null:draw_texture_rect(icon,Rect2(18,y+2,32,32),false)
 			text(entry.caption,Vector2(64,y+24),14);button("Remove",Rect2(720,y+8,64,24),12)
 func _exit_tree() -> void:
 	if state!=null and state.changed.is_connected(refresh):state.changed.disconnect(refresh)

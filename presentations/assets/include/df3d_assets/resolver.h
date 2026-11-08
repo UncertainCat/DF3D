@@ -163,6 +163,7 @@ BuildingSprites resolveBuildingTiles(const AssetIndex& index, const BuildingQuer
 std::string buildingLayoutName(wm::BuildingKind kind, uint16_t subtype, std::string_view custom);
 
 struct ItemQuery {
+  bool diagonalAmmo=false; // Native ammunition-list icon; map queries retain straight sprites.
   int8_t slabEngraving=-2;
   int8_t instrumentFamily=-1, instrumentPlaced=-1;
   wm::ItemKind kind = wm::ItemKind::Unknown;

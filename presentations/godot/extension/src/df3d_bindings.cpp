@@ -6,6 +6,7 @@ void Df3dWorld::_bind_methods() {
     using godot::ClassDB;
     ClassDB::bind_method(D_METHOD("construction_item_icon", "item_type", "appearance", "generic_group", "item_id"), &Df3dWorld::construction_item_icon, DEFVAL(false), DEFVAL(-1));
     ClassDB::bind_method(D_METHOD("item_sheet_icon", "item_type", "appearance", "item_id"), &Df3dWorld::item_sheet_icon);
+    ClassDB::bind_method(D_METHOD("ammunition_icon", "appearance", "item_id"), &Df3dWorld::ammunition_icon);
     ClassDB::bind_method(D_METHOD("farm_crop_icon", "raw_id"), &Df3dWorld::farm_crop_icon);
     ClassDB::bind_method(D_METHOD("farm_seed_icon", "raw_id"), &Df3dWorld::farm_seed_icon);
     ClassDB::bind_method(D_METHOD("farm_potash_icon"), &Df3dWorld::farm_potash_icon);

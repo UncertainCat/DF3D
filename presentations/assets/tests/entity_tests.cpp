@@ -623,6 +623,10 @@ TEST_CASE("items: kind, itemdef raw, material and flags pick the sprite") {
         at(idx, "ITEM_AMMO", 0, 0));
   CHECK(resolveItem(idx, iq(wm::ItemKind::Ammo, "INORGANIC:IRON", "ITEM_AMMO_BOLTS")).sprite ==
         at(idx, "ITEM_AMMO", 0, 1));
+  auto ammunitionIcon=iq(wm::ItemKind::Ammo,"INORGANIC:IRON","ITEM_AMMO_BOLTS");ammunitionIcon.diagonalAmmo=true;
+  CHECK(resolveItem(idx,ammunitionIcon).sprite==at(idx,"ITEM_AMMO",1,1));
+  ammunitionIcon.material="PLANT:OAK:WOOD";
+  CHECK(resolveItem(idx,ammunitionIcon).sprite==at(idx,"ITEM_AMMO",1,0));
   CHECK(resolveItem(idx, iq(wm::ItemKind::Shoes, "INORGANIC:IRON", "ITEM_SHOES_BOOTS")).sprite ==
         at(idx, "ITEM_EQUIPMENT", 4, 19));
   CHECK(resolveItem(idx, iq(wm::ItemKind::Shoes, "PLANT:OAK:LEAF", "ITEM_SHOES_BOOTS")).sprite ==

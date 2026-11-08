@@ -62,25 +62,26 @@ only the known separate-renderer notice. The panel view and public route remain
 unfinished; controller acceptance does not establish rendered parity. The staged
 `hunter_ammunition_view.gd` and modal owner now load under the headless controller
 check (hunter-view-parse-20261108). They use the default captured panel geometry
-and native captions. Assigned-item artwork, responsive geometry, input/hover
-parity and rendered comparison are still pending; neither public navigation nor
-the Standing orders transition is connected yet. Rendered hunter-chrome-aligned-20261108
-matches the complete default-size type-picker crop (168,220,808,540) against
-protected140812 with zero differing pixels. Main-panel top controls and first
-rule row also match; the whole main panel still differs by6250 pixels in the
-assigned-item picture region. The capture uses recorded native captions/specs,
+and native captions. Responsive geometry and input/hover parity remain pending;
+neither public navigation nor the Standing orders transition is connected yet.
+Rendered hunter-native-art-20261108 matches both the full default-size main panel
+and type-picker crop (168,220,808,540) against protected142845 with zero differing
+pixels. `ammunition_icon` selects installed DIAGONAL_DEFAULT/DIAGONAL_WOOD variants
+without material tint; native silver, iron and copper bolt pictures share the
+untinted artwork. Map and other item-icon callers retain their existing selection.
+The view consumes appearance facts directly from the ammunition read and uses
+the original picture-frame cells. The capture uses recorded native captions/specs,
 not a live controller, so it does not establish input or gameplay acceptance.
-Core19 passes in hunter-chrome-final-20261108; graphical runs report only the
+Core19 and wood/metal resolver checks pass in hunter-diagonal-art-20261108;
+graphical runs report only the
 documented separate-thread/finalize/shutdown diagnostics. Captures cap30FPS and
 exit promptly; GPU48–49C sampled. Installed art remains outside the repository.
 Independent item-sheet inspection cannot supply ammunition artwork: protected
 141724 on2026-11-08 returns Rejected for all five assigned stacks. The native
 `itemDescriptionDispatch` supports only its audited simple/constructed families,
 and `observeItem` does not include ammunition appearance. Do not loosen those
-description guards to obtain pictures. The ammunition read should instead carry
-the existing owned `itemAppearance` fields with each assigned stack, then use
-`item_sheet_icon` in the presentation. The attempted separate-request integration
-was removed; the staged view has an unconnected artwork input. Both diagnostic
+description guards to obtain pictures. Management149 instead carries the existing
+owned `itemAppearance` fields with each assigned stack. Both diagnostic
 lanes exited owned DF unsaved; no ammunition edits ran after the failed reads.
 
 Hunter ammunition typed dispatch now reads native specs, choice captions and

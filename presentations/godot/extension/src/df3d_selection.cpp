@@ -37,7 +37,10 @@ Ref<Texture2D> Df3dWorld::construction_item_icon(int itemType,const Dictionary& 
 Ref<Texture2D> Df3dWorld::item_sheet_icon(int itemType,const Dictionary& appearance,int64_t itemId) {
     return itemIcon(itemType,appearance,false,itemId,true);
 }
-Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,bool genericGroup,int64_t itemId,bool sheet) {
+Ref<Texture2D> Df3dWorld::ammunition_icon(const Dictionary& appearance,int64_t itemId) {
+    return itemIcon(39,appearance,false,itemId,true,true);
+}
+Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,bool genericGroup,int64_t itemId,bool sheet,bool diagonalAmmo) {
     if(!assets_ || itemType<0 || itemType>=int(wm::ItemKind::BoltThrowerParts) ||
        appearance.size()!=5+int(appearance.has("bedding"))+int(appearance.has("instrument"))+int(appearance.has("slab_engraving"))+int(appearance.has("gem_shape_raw")))return {};
     if(itemId < -1 || itemId>INT32_MAX)return {};
@@ -151,14 +154,17 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
         return {};
     }
     df3d::assets::ItemQuery query;query.kind=wm::ItemKind(itemType+1);query.material=materialToken;
+    query.diagonalAmmo=diagonalAmmo;
     query.subtypeRaw=subtypeRaw;query.stack=uint32_t(stack);query.flags=uint8_t(flags);
     query.instrumentFamily=instrumentFamily;query.instrumentPlaced=instrumentPlaced;
     query.slabEngraving=genericGroup && query.kind==wm::ItemKind::Slab ? 0 : slabEngraving;
     const auto resolved=df3d::assets::resolveItem(assets_->index,query);
     if(!resolved.found)return {};
     const bool rawSlab=query.kind==wm::ItemKind::Slab && (genericGroup || (slabEngraving>=1 && slabEngraving<=5));
-    const int palette=rawSlab ? -1 : colorToken.empty()?resolved.paletteRow:assets_->index.paletteRow(colorToken);
-    if(!colorToken.empty() && palette<0 && !rawSlab)return {};
+    // Native hunter list captures142845 use the untinted diagonal sprite for
+    // silver, iron and copper alike. Other icon callers retain material tint.
+    const int palette=rawSlab || diagonalAmmo ? -1 : colorToken.empty()?resolved.paletteRow:assets_->index.paletteRow(colorToken);
+    if(!colorToken.empty() && palette<0 && !rawSlab && !diagonalAmmo)return {};
     const int slot=slotFor(resolved.sprite.page,palette,false);
     const TextureSlot* texture=slot>=0?spriteResources_.slots.find(slot):nullptr;
     if(!texture || texture->texture.is_null())return {};

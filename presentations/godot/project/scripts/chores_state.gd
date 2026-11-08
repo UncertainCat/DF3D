@@ -1,6 +1,7 @@
 extends RefCounted
 # Local ownership only. Eligibility, ordering, captions and labor effects belong to DF.
 signal changed
+signal rows_changed
 const C=preload("res://scripts/management_contract.gd")
 const LABORS=[23,37,1,2,6,3,4,5,7,8,74,77,9,75]
 enum Phase { Closed, Reading, Ready, Applying, Rejected, Unknown, Unavailable }
@@ -14,6 +15,11 @@ var labor_first:=0
 var ticket:=0
 var generation:=0
 var last_result: Dictionary={}
+var rows: Dictionary={}
+var row_ticket:=0
+var row_generation:=0
+var row_capacity:=0
+var row_failed:=false
 func configure(source) -> void:
 	dispose();service=source
 	if service!=null:service.session_changed.connect(_session_changed)
@@ -22,7 +28,43 @@ func dispose() -> void:
 	if service!=null and service.session_changed.is_connected(_session_changed):service.session_changed.disconnect(_session_changed)
 	service=null
 func _clear() -> void:
+	_retire_rows();rows={};row_failed=false;rows_changed.emit()
 	snapshot={};children=[];labors=[]
+func _retire_rows() -> void:
+	row_generation+=1
+	var previous:=row_ticket;row_ticket=0
+	if service!=null and previous!=0:service.detach(previous)
+func seek_children(first: int,count: int) -> void:
+	var capacity:=clampi(count,0,64)
+	var offset:=clampi(first,0,maxi(0,children.size()-capacity))
+	if capacity!=row_capacity or offset!=child_first:
+		_retire_rows();row_failed=false;row_capacity=capacity;child_first=offset
+		var kept: Dictionary={}
+		for index in range(child_first,mini(children.size(),child_first+row_capacity)):
+			var id:=int(children[index].id)
+			if rows.has(id):kept[id]=rows[id]
+		rows=kept;rows_changed.emit()
+	_fill_rows()
+func _fill_rows() -> void:
+	if phase!=Phase.Ready or service==null or row_ticket!=0 or row_failed:return
+	var wanted:=PackedInt32Array()
+	for index in range(child_first,mini(children.size(),child_first+row_capacity)):
+		var id:=int(children[index].id)
+		if not rows.has(id):wanted.append(id)
+	if wanted.is_empty():return
+	var owner:=row_generation
+	row_ticket=service.submit("residents_rows",{"action":C.ManagementAction.ResidentsRowsRead,"unit_ids":wanted,"columns":30,"show_gender":false},func(received,result,_sent):
+		if owner!=row_generation or received!=row_ticket:return
+		row_ticket=0
+		var page: Array=result.get("residents_rows",{}).get("rows",[])
+		var valid: bool=result.get("status",-1)==C.ManagementStatus.Ok and result.get("action",-1)==C.ManagementAction.ResidentsRowsRead and page.size()==wanted.size()
+		for index in page.size():
+			if not valid:break
+			valid=typeof(page[index])==TYPE_DICTIONARY and page[index].get("id",-1)==wanted[index] and typeof(page[index].get("sheet_icon"))==TYPE_DICTIONARY and typeof(page[index].get("name_color"))==TYPE_DICTIONARY
+		if not valid:row_failed=true;rows_changed.emit();return
+		for row: Dictionary in page:rows[int(row.id)]=row.duplicate(true)
+		rows_changed.emit())
+	if row_ticket==0:row_failed=true;rows_changed.emit()
 func close() -> void:
 	generation+=1
 	var previous:=ticket;ticket=0
@@ -90,6 +132,6 @@ func _submit(intent: Dictionary) -> void:
 		if typeof(value.get("children"))!=TYPE_ARRAY or typeof(value.get("labors"))!=TYPE_ARRAY or not _valid_captions(value.children,value.snapshot.children) or not _valid_captions(value.labors,PackedInt32Array(LABORS)):
 			_reject(result);return
 		snapshot=value.snapshot.duplicate(true);children=value.children.duplicate(true);labors=value.labors.duplicate(true)
-		last_result={};phase=Phase.Ready;changed.emit())
+		last_result={};phase=Phase.Ready;_fill_rows();changed.emit())
 	if ticket==0:_clear();phase=Phase.Unavailable
 	changed.emit()

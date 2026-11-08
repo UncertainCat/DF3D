@@ -5714,6 +5714,20 @@
         "75": 7
       },
       "limitations": "Default initial-state drawing only. Navigation, asynchronous row fetching, scrolling, resized layout, alternate participation artwork, hover and rendered live effects remain unaccepted."
+    },
+    "rendered_reference": {
+      "capture": "build/stockpile-storage-native-input-20261108-155300",
+      "checked_steps": 6,
+      "active_unit_labors": 339,
+      "panel_differing_pixels": 0,
+      "navigation": [
+        "Workshops to Chores",
+        "Chores to Hauling",
+        "Hauling to Chores",
+        "Back releases owner"
+      ],
+      "appearance_provider": "Controller-owned visible ResidentsRowsRead",
+      "limitations": "Default-size staged owner. Scrolling, resize, hover, alternate state artwork and main-scene exposure remain unaccepted."
     }
   }
 }

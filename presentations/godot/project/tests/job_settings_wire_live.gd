@@ -1217,6 +1217,8 @@ func hunter_input_scene(owner) -> void:
 	check(panel.page_rows==10 and state.specs==original,"Local input checks changed ammunition authority")
 
 func chores_wire() -> void:
+	var rendered:=OS.get_environment("DF3D_CHORES_RENDER")=="1"
+	Engine.max_fps=30;root.size=Vector2i(1200,800)
 	world=Df3dWorld.new();root.add_child(world)
 	if not check(world.attach(),"Chores attach failed"):quit(1);return
 	var deadline:=Time.get_ticks_msec()+5000
@@ -1228,18 +1230,29 @@ func chores_wire() -> void:
 	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/standing-orders-native.json"))
 	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
 	for frame in 5:world.poll();await process_frame
-	var controller=preload("res://scripts/chores_state.gd").new();controller.configure(service);controller.open()
+	var controller=preload("res://scripts/chores_state.gd").new()
+	var owner;var host;var interaction
+	if rendered:
+		if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Chores assets unavailable"):quit(1);return
+		interaction=Interaction.new();root.add_child(interaction)
+		host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)
+		owner=preload("res://scripts/standing_orders_panel.gd").new();root.add_child(owner);owner.configure(world,service,host);owner.open_panel()
+		if not check(await ready(owner.state),"Standing entry failed"):quit(1);return
+		await pointer(owner.panel,owner.panel.category_rect(5).get_center())
+		if not check(owner.chores_active and host.active==owner,"Chores navigation failed"):quit(1);return
+		controller=owner.chores_state
+	else:controller.configure(service);controller.open()
 	if not check(await ready(controller),"Chores controller read failed"):quit(1);return
 	var captions: Dictionary={"children":controller.children,"labors":controller.labors}
 	var snapshot: Dictionary=controller.snapshot
 	var initial:=snapshot.duplicate(true)
 	if OS.get_environment("DF3D_CHORES_ROWS")=="1":
-		var rows_reply: Array=[]
-		service.submit("residents_rows",{"action":C.ManagementAction.ResidentsRowsRead,"unit_ids":snapshot.children,"columns":30,"show_gender":false},func(_ticket,result,_sent):rows_reply.append(result))
+		if not rendered:controller.seek_children(0,64)
 		deadline=Time.get_ticks_msec()+5000
-		while rows_reply.is_empty() and Time.get_ticks_msec()<deadline:world.poll();await create_timer(0.01).timeout
-		if not check(not rows_reply.is_empty() and rows_reply[0].get("status")==C.ManagementStatus.Ok,"Chores portrait facts unavailable"):quit(1);return
-		var rows: Array=rows_reply[0].residents_rows.rows
+		while controller.row_ticket!=0 and Time.get_ticks_msec()<deadline:world.poll();await create_timer(0.01).timeout
+		if not check(not controller.row_failed and controller.rows.size()==snapshot.children.size(),"Chores portrait facts unavailable"):quit(1);return
+		var rows: Array=[]
+		for id: int in snapshot.children:rows.append(controller.rows[id])
 		check(rows.size()==snapshot.children.size(),"Chores portrait row count differs")
 		for index in rows.size():check(rows[index].id==snapshot.children[index] and rows[index].has("sheet_icon") and rows[index].has("name_color"),"Chores portrait facts missing")
 		var art_file:=FileAccess.open(directory+"/chores-rows.json",FileAccess.WRITE);art_file.store_string(JSON.stringify(rows));art_file.close()
@@ -1250,13 +1263,22 @@ func chores_wire() -> void:
 		var expected: Array=reference.chores_captions[kind]
 		check(captions[kind].size()==expected.size(),"Chores caption count differs")
 		for index in expected.size():check(captions[kind][index].id==int(expected[index].id) and captions[kind][index].caption==expected[index].caption,"Chores caption differs")
+	if rendered:
+		await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/chores-view-root.png")
 	var child:=int(reference.chores_effects.child);var labor:=int(reference.chores_effects.labor)
 	var count:=0
 	for op in [[1,-1,false],[1,-1,true],[3,child,true],[3,child,false],[2,labor,false],[2,labor,true]]:
-		match int(op[0]):
-			1:controller.set_enabled(op[2])
-			2:controller.set_labor(op[1],op[2])
-			3:controller.set_exempt(op[1],op[2])
+		if rendered:
+			var panel=owner.chores_panel
+			match int(op[0]):
+				1:await pointer(panel,panel.participation_rect(op[2]).get_center())
+				2:await pointer(panel,panel.labor_rect(controller.LABORS.find(int(op[1]))).get_center())
+				3:await pointer(panel,panel.child_rect(controller.snapshot.children.find(int(op[1]))).get_center())
+		else:
+			match int(op[0]):
+				1:controller.set_enabled(op[2])
+				2:controller.set_labor(op[1],op[2])
+				3:controller.set_exempt(op[1],op[2])
 		if not check(await ready(controller),"Chores controller edit/refresh failed"):quit(1);return
 		snapshot=controller.snapshot
 		var expected: Dictionary=reference.chores_effects.steps[count].state
@@ -1277,6 +1299,13 @@ func chores_wire() -> void:
 			if FileAccess.file_exists(directory+"/chores-wire-ack") and FileAccess.get_file_as_string(directory+"/chores-wire-ack")==str(count):break
 			await create_timer(0.01).timeout
 		if not check(FileAccess.get_file_as_string(directory+"/chores-wire-ack")==str(count),"Native Chores readback missing; no replay"):quit(1);return
+	if rendered:
+		await pointer(owner.chores_panel,owner.chores_panel.category_rect(1).get_center())
+		if not check(await ready(owner.state) and not owner.chores_active and owner.state.category==1 and host.active==owner,"Chores return navigation failed"):quit(1);return
+		await pointer(owner.panel,owner.panel.category_rect(5).get_center())
+		if not check(await ready(controller) and owner.chores_active,"Chores reopen failed"):quit(1);return
+		owner.handle_back();check(host.active==null and controller.phase==controller.Phase.Closed,"Chores Back retained input ownership")
+		owner.queue_free();host.queue_free();interaction.queue_free()
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"steps":count}));file.close()
 	controller.dispose();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)

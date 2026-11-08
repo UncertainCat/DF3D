@@ -89,11 +89,30 @@ The complete944x708 Chores panel at1200x800 has zero differing pixels against
 native154328, including accented captions and all12 portraits. The shared chrome
 refactor also runs the existing Standing orders graphical capture. Serial30FPS
 captures exit with only documented Godot thread/finalize/shutdown diagnostics;
-GPU62C sampled. This is initial-state drawing acceptance only. Navigation,
-asynchronous visible-row loading, scrolling/resizing, alternate participation
-artwork, hover and rendered live pointer workflows remain unfinished. The view
+GPU62C sampled. This capture establishes initial-state drawing only. Navigation and live pointer
+acceptance are recorded below; scrolling/resizing, alternate participation artwork
+and hover remain unfinished. The view
 is not registered as a public route; appearance_reference/view_reference retain
 this evidence and its limits.
+
+Standing orders now owns the staged Chores category alongside the scalar pages.
+Entering/returning retires the previous read while retaining the same modal input
+owner; category changes cannot retire a pending mutation. Back/session retirement
+closes both controllers. Chores requests only the visible child appearances via
+ResidentsRowsRead (at most64 per batch), separately from its mutation receipt.
+Viewport changes and close retire the appearance observer; bounded retained rows
+are reused without per-frame reads. Failed appearance replies do not retry until
+the demand changes or the page is freshly opened.
+
+Headless `chores-navigation-20261108` passes core19, both controllers, viewport
+retirement and owner handoff checks. Protected155300 exercises actual rendered
+category clicks, all six Chores edits, native readback of all339 active-unit labor
+masks, stale refusal, return to Hauling, reopening and Back. The initial complete
+panel again has zero differing pixels from the native reference. Owned DF49096
+exits unsaved with source preservation; paired logs have only documented Godot
+diagnostics. GPU60–61C sampled with serial30FPS rendering. This validates the
+staged owner, not main-scene exposure. Scrolling, resized layout, hover and alternate
+participation artwork still need native comparison before public registration.
 
 Chores typed dispatch now reads owned native snapshots/captions and applies the
 three native-backed mutations. It prepares the returned receipt before writes,

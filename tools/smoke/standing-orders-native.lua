@@ -101,6 +101,22 @@ for category,x in ipairs{10,23,34,46,60,71,80}do
   for _,id in ipairs(panel.labor_list)do chores.labors[#chores.labors+1]={id=id,enabled=labor.chores[id]}end
   for _,id in ipairs(labor.chores_exempted_children)do chores.exempted[#chores.exempted+1]=id end
   result.chores=chores
+  if os.getenv('DF3D_CHORES_CAPTIONS')=='1' then
+   local text,code=dfhack.run_command_silent('df3d','chores-captions-probe')
+   assert(code==0,'Chores captions rejected')
+   result.chores_captions=json.decode(text)
+   assert(#result.chores_captions.children==#chores.children and #result.chores_captions.labors==#chores.labors,'Chores caption counts differ')
+   local visible=rows();local full={};for _,row in ipairs(visible)do full[#full+1]=row.text end;full=table.concat(full,'\n')
+   for index,row in ipairs(result.chores_captions.labors)do
+    assert(row.id==chores.labors[index].id and full:find(row.caption,1,true),'Native labor caption differs')
+   end
+   for index,row in ipairs(result.chores_captions.children)do
+    assert(row.id==chores.children[index],'Native child caption order differs')
+    -- Glyph-based accented text is not an authoritative UTF-8 reference.
+    if not row.caption:find('[\128-\255]')then assert(full:find(row.caption,1,true),'Native ASCII child caption differs')end
+   end
+  end
+
   if os.getenv('DF3D_CHORES_EFFECTS')=='1' then
    local function snapshot()
     local state={enabled=labor.flags.children_do_chores,exempted={},labors={},units={}}

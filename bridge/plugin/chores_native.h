@@ -3,6 +3,7 @@
 #include "location_staff_order_native.h"
 #include "labor_eligibility_cache.h"
 #include "location_staff_mutation_native.h"
+#include "work_detail_settings_native.h"
 #include <algorithm>
 #include <cstddef>
 
@@ -76,6 +77,31 @@ inline std::optional<Snapshot> read() {
         result.labors.emplace_back(id,settings.chores[size_t(id)]);}
     return result;
 }
+struct Caption {int32_t id=-1;std::string text;};
+struct Captions {std::vector<Caption> children,labors;};
+// Chores renderer43703b uses name(unit, owned, false), and437736 uses the
+// same labor formatter as Work Details. Return full native strings; viewport
+// truncation is local presentation work, never a reason to alter the receipt.
+inline std::optional<Captions> captions(const Snapshot& snapshot) {
+    if(!supportedBase() || !df3d_production::work_detail_settings::supported())return std::nullopt;
+    const auto& names=df3d_area::staffOrderingFunctions();
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    Captions result;
+    result.children.reserve(snapshot.children.size());result.labors.reserve(snapshot.labors.size());
+    for(int32_t id:snapshot.children) {
+        auto* unit=df::unit::find(id);if(!unit)return std::nullopt;
+        std::string text;names.name(unit,&text,false);
+        if(text.empty() || text.size()>4096)return std::nullopt;
+        result.children.push_back({id,std::move(text)});
+    }
+    for(const auto& row:snapshot.labors) {
+        std::string text;reinterpret_cast<void(*)(std::string*,int32_t)>(base+0xacb830)(&text,row.first);
+        if(text.empty() || text.size()>512)return std::nullopt;
+        result.labors.push_back({row.first,std::move(text)});
+    }
+    return result;
+}
+
 enum class Operation {Enabled=1,Labor=2,Exempt=3};
 enum class Outcome {Rejected=0,Applied=1,Stale=2};
 inline bool same(const Snapshot& a,const Snapshot& b) {

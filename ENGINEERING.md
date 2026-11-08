@@ -65,6 +65,17 @@ only that unit;434289..4342e5 toggles a labor byte and recalculates every active
 unit.4390d0 is already pinned by staffMutationFunctions. Global flags, labor
 bytes and exemption-vector RVAs are2399978,2399998 and23999f8.
 
+Chores captions use the same native calls as renderer43703b/437736:
+name1330c30(unit, owned string, false) and labor formatteracb830. The existing
+staff-order and Work Details gates pin those routines. The provider returns full
+CP437 strings for bridge UTF-8 conversion; truncation remains presentation work
+and captions do not enter mutation identity. Protected152010 compares all14
+labor captions and visible ASCII child captions against native rows; accented
+name text comes directly from the native formatter but glyph capture is not
+UTF-8 visual acceptance. The fixture's captions_reference retains the strings
+and this limitation. Owned DF19076 closes unsaved with source preservation,
+GPU49C sampled; MSVC build passes. Protocol wiring remains unfinished.
+
 The Chores adapter now supports explicit enabled/labor/exemption values guarded
 by the complete current roster, catalog/settings and exemption receipt. It
 validates targets, prepares exemption storage before writes, preserves unrelated

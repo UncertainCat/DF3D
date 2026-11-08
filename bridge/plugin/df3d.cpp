@@ -2516,6 +2516,17 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           result["write_started"]=started;
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="chores-captions-probe") {
+          if(parameters.size()!=1)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto snapshot=df3d_chores::read();if(!snapshot)return CR_FAILURE;
+          const auto captions=df3d_chores::captions(*snapshot);if(!captions)return CR_FAILURE;
+          Json::Value result(Json::objectValue);
+          for(const auto& [key,rows]:{std::pair{"children",&captions->children},std::pair{"labors",&captions->labors}}){
+            result[key]=Json::Value(Json::arrayValue);
+            for(const auto& row:*rows){Json::Value value(Json::objectValue);value["id"]=row.id;value["caption"]=DF2UTF(row.text);result[key].append(value);}}
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="chores-probe") {
           if(parameters.size()!=1)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;

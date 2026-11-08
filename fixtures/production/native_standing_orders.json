@@ -5547,6 +5547,120 @@
       },
       "restored": true,
       "limitations": "All active-unit labor masks compared against native after each edit. Digests use sorted-key compact JSON of the ordered units array; changed_units are relative to the preceding state. Full initial masks remain in capture. Equipment/profession side effects, unknown publication failures, changed rosters and lifecycle are not established."
+    },
+    "captions_reference": {
+      "capture": "build/stockpile-storage-native-input-20261108-152010",
+      "captions": {
+        "children": [
+          {
+            "caption": "Adil Lolorgemsit, Dwarven Child",
+            "id": 5699
+          },
+          {
+            "caption": "Astesh Melbiloshosh, Dwarven Child",
+            "id": 7043
+          },
+          {
+            "caption": "At\u00ees Kolzunt\u00eer, Dwarven Child",
+            "id": 6334
+          },
+          {
+            "caption": "Doren Thosbutal\u00e5th, Dwarven Child",
+            "id": 5698
+          },
+          {
+            "caption": "Imush Ashm\u00f4nustuth, Dwarven Child",
+            "id": 7283
+          },
+          {
+            "caption": "Logem Medenkel, Dwarven Child",
+            "id": 6968
+          },
+          {
+            "caption": "Oddom Bubnusasmel, Dwarven Child",
+            "id": 7049
+          },
+          {
+            "caption": "Onol Zastimn\u00e4r, Dwarven Child",
+            "id": 7041
+          },
+          {
+            "caption": "Shorast Numzas, Dwarven Child",
+            "id": 6810
+          },
+          {
+            "caption": "Thob Gethlogem, Dwarven Child",
+            "id": 6729
+          },
+          {
+            "caption": "Urdim \u00eflullogem, Dwarven Child",
+            "id": 7080
+          },
+          {
+            "caption": "\u00eeton Unibmamot, Dwarven Child",
+            "id": 988
+          }
+        ],
+        "labors": [
+          {
+            "caption": "Feed Patients/Prisoners",
+            "id": 23
+          },
+          {
+            "caption": "Milking",
+            "id": 37
+          },
+          {
+            "caption": "Stone Hauling",
+            "id": 1
+          },
+          {
+            "caption": "Wood Hauling",
+            "id": 2
+          },
+          {
+            "caption": "Item Hauling",
+            "id": 6
+          },
+          {
+            "caption": "Burial",
+            "id": 3
+          },
+          {
+            "caption": "Food Hauling",
+            "id": 4
+          },
+          {
+            "caption": "Refuse Hauling",
+            "id": 5
+          },
+          {
+            "caption": "Furniture Hauling",
+            "id": 7
+          },
+          {
+            "caption": "Animal Hauling",
+            "id": 8
+          },
+          {
+            "caption": "Trade Good Hauling",
+            "id": 74
+          },
+          {
+            "caption": "Water Hauling",
+            "id": 77
+          },
+          {
+            "caption": "Cleaning",
+            "id": 9
+          },
+          {
+            "caption": "Lever Operation",
+            "id": 75
+          }
+        ]
+      },
+      "limitations": "All labor and ASCII child captions match visible native rows. Accented captions come from the pinned native formatter; screen glyph extraction does not establish their UTF-8 visual parity. Full strings precede viewport truncation."
     }
   }
 }

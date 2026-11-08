@@ -33,6 +33,24 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Standing orders native discovery
 
+Protected124735 on2026-11-08 records23 additional native setting cycles:
+ten Forbidding and six Petitions controls use0/1/2; Other cancellation
+announcements use0/1/2/3 and its remaining six scalar controls use0/1.
+Every accepted click changes only its associated captured scalar. All original
+settings are restored, owned DF36384 closes unsaved and the source save is
+preserved. Native30FPS, no Godot viewer, GPU54C after exit. The fixture's
+extended_reference preserves exact captions, values and thirteen alias RVAs.
+The symbols file uses standingorder_* for those13 names while generated DFHack
+globals use standing_orders_*. Read-only diagnostic fallback reads the verified
+RIP-target bytes; it does not repair global mappings or supply runtime defaults.
+Forbidding input433750..43392f and Petitions43392f..433a6b increment scalar bytes
+modulo3. Other scalar input4342e7..43448e uses modulo4 for announcements and
+binary toggles otherwise. None of these scalar branches invokes a gameplay
+callback. Hunter ammunition begins separately at43448e and calls377d40/45e390;
+Chores has its own roster/labor and recalculation work. Those workflows remain
+required and are not covered by the scalar evidence. Runtime adapter/transport/
+view support for categories3/4/6 is still pending.
+
 The staged Standing orders owner/view now supports Workshops, Hauling and Refuse
 navigation. Switching categories retires old reads without releasing modal host
 ownership; pending writes block navigation. Captions come from recorded native

@@ -29,11 +29,19 @@ local _,address=df.sizeof(panel);local vt=df.reinterpret_cast('uint64_t',address
 local base=dfhack.internal.getImageBase()
 for slot=0,7 do result.vtable[#result.vtable+1]=df.reinterpret_cast('uint64_t',vt+slot*8).value-base end
 local globals={'standing_orders_gather_minerals','standing_orders_gather_wood','standing_orders_gather_food','standing_orders_gather_bodies','standing_orders_gather_refuse','standing_orders_gather_animals','standing_orders_gather_furniture','standing_orders_farmer_harvest','standing_orders_ignore_damp_stone','standing_orders_ignore_warm_stone','standing_orders_auto_loom','standing_orders_auto_collect_webs','standing_orders_zoneonly_drink','standing_orders_zoneonly_fish','standing_orders_auto_slaughter','standing_orders_auto_butcher','standing_orders_auto_tan','standing_orders_auto_fishery','standing_orders_auto_kitchen','standing_orders_auto_kiln','standing_orders_auto_smelter','standing_orders_auto_other','standing_orders_use_dyed_cloth','standing_orders_gather_refuse_outside','standing_orders_gather_vermin_remains','standing_orders_dump_corpses','standing_orders_dump_skulls','standing_orders_dump_skins','standing_orders_dump_bones','standing_orders_dump_hair','standing_orders_dump_shells','standing_orders_dump_other','standing_orders_forbid_used_ammo','standing_orders_forbid_own_dead','standing_orders_forbid_other_nohunt','standing_orders_forbid_own_dead_items','standing_orders_forbid_other_dead_items','standing_orders_forbid_floor_and_wall_cleaning','standing_orders_forbid_trap_cleaning','standing_orders_forbid_rearming_traps','standing_orders_forbid_cages_from_sprung_traps','standing_orders_forbid_toppled_building_items','standing_orders_petition_resident_monster_hunter','standing_orders_petition_resident_performer','standing_orders_petition_resident_mercenary','standing_orders_petition_resident_scholar','standing_orders_petition_resident_sanctuary','standing_orders_petition_citizenship','standing_orders_job_cancel_announce','standing_orders_mix_food'}
+-- Discovery-only reads: symbols.xml standingorder aliases, confirmed by input RIP targets.
+local aliases={standing_orders_ignore_damp_stone=0x18d6f67,standing_orders_ignore_warm_stone=0x18d6f0f,standing_orders_petition_citizenship=0x189c29d,standing_orders_petition_resident_performer=0x189c295,standing_orders_petition_resident_monster_hunter=0x189c29c,standing_orders_petition_resident_mercenary=0x189c29e,standing_orders_petition_resident_scholar=0x189c297,standing_orders_petition_resident_sanctuary=0x189c296,standing_orders_forbid_floor_and_wall_cleaning=0x189c1ed,standing_orders_forbid_trap_cleaning=0x189c1eb,standing_orders_forbid_rearming_traps=0x189c1f7,standing_orders_forbid_cages_from_sprung_traps=0x189c1f2,standing_orders_forbid_toppled_building_items=0x189c1ea}
 local function values()
  local state={}
  for _,name in ipairs(globals)do
   local ok,value=pcall(function()return df.global[name]end)
-  if ok then state[name]=value else result.unavailable_globals[name]=tostring(value)end
+  if ok then state[name]=value else
+   result.unavailable_globals[name]=tostring(value)
+   if os.getenv('DF3D_STANDING_ORDERS_EXTENDED')=='1' and aliases[name] then
+    state[name]=df.reinterpret_cast('uint8_t',base+aliases[name]).value
+    result.alias_addresses=result.alias_addresses or {};result.alias_addresses[name]=aliases[name]
+   end
+  end
  end
  return state
 end
@@ -88,6 +96,25 @@ for index=0,7 do
  result.workshop_cycles[#result.workshop_cycles+1]=cycle
 end
 assert(json.encode(values())==json.encode(original),'Standing orders were not restored')
+if os.getenv('DF3D_STANDING_ORDERS_EXTENDED')=='1' then
+ result.extended_cycles={}
+ for _,category in ipairs{{id=3,x=46,count=10},{id=4,x=60,count=6},{id=6,x=80,count=7}}do
+  click(category.x,12);assert(panel.current_category==category.id,'Extended category click failed')
+  for index=0,category.count-1 do
+   local before=values();local cycle={category=category.id,index=index,before=before,states={}}
+   for attempt=1,5 do
+    click(12,15+3*index);cycle.states[#cycle.states+1]={values=values(),rows=rows()}
+    if json.encode(values())==json.encode(before)then break end
+   end
+   assert(#cycle.states>1,'Extended control did not change '..category.id..':'..index)
+   assert(json.encode(values())==json.encode(before),'Extended control did not restore')
+   result.extended_cycles[#result.extended_cycles+1]=cycle
+  end
+ end
+ assert(json.encode(values())==json.encode(original),'Extended settings did not restore')
+ result.extended_restored=true
+ click(10,12)
+end
 if os.getenv('DF3D_STANDING_ORDERS_CATEGORIES')=='1' then
  result.category_cycles={};result.refuse_gates={}
  local function cycle(category,index)

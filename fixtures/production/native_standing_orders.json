@@ -945,5 +945,485 @@
       "Hover/resize acceptance pending",
       "Other categories unfinished"
     ]
+  },
+  "extended_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-124735",
+    "cycles": [
+      {
+        "category": 3,
+        "id": 0,
+        "global": "standing_orders_forbid_used_ammo",
+        "initial": 1,
+        "states": [
+          {
+            "value": 2,
+            "caption": "Forbid used ammunition during sieges"
+          },
+          {
+            "value": 0,
+            "caption": "Claim used ammunition"
+          },
+          {
+            "value": 1,
+            "caption": "Forbid used ammunition"
+          }
+        ]
+      },
+      {
+        "category": 3,
+        "id": 1,
+        "global": "standing_orders_forbid_own_dead",
+        "initial": 0,
+        "states": [
+          {
+            "value": 1,
+            "caption": "Forbid your dead"
+          },
+          {
+            "value": 2,
+            "caption": "Forbid your dead during sieges"
+          },
+          {
+            "value": 0,
+            "caption": "Claim your dead"
+          }
+        ]
+      },
+      {
+        "category": 3,
+        "id": 2,
+        "global": "standing_orders_forbid_own_dead_items",
+        "initial": 0,
+        "states": [
+          {
+            "value": 1,
+            "caption": "Forbid your death items"
+          },
+          {
+            "value": 2,
+            "caption": "Forbid your death items during sieges"
+          },
+          {
+            "value": 0,
+            "caption": "Claim your death items"
+          }
+        ]
+      },
+      {
+        "category": 3,
+        "id": 3,
+        "global": "standing_orders_forbid_other_nohunt",
+        "initial": 0,
+        "states": [
+          {
+            "value": 1,
+            "caption": "Forbid other non-hunted dead"
+          },
+          {
+            "value": 2,
+            "caption": "Forbid other non-hunted dead during sieges"
+          },
+          {
+            "value": 0,
+            "caption": "Claim other dead"
+          }
+        ]
+      },
+      {
+        "category": 3,
+        "id": 4,
+        "global": "standing_orders_forbid_other_dead_items",
+        "initial": 1,
+        "states": [
+          {
+            "value": 2,
+            "caption": "Forbid other death items during sieges"
+          },
+          {
+            "value": 0,
+            "caption": "Claim other death items"
+          },
+          {
+            "value": 1,
+            "caption": "Forbid other death items"
+          }
+        ]
+      },
+      {
+        "category": 3,
+        "id": 5,
+        "global": "standing_orders_forbid_floor_and_wall_cleaning",
+        "initial": 2,
+        "states": [
+          {
+            "value": 0,
+            "caption": "Allow floor/wall cleaning"
+          },
+          {
+            "value": 1,
+            "caption": "Forbid floor/wall cleaning"
+          },
+          {
+            "value": 2,
+            "caption": "Forbid floor/wall cleaning during sieges"
+          }
+        ]
+      },
+      {
+        "category": 3,
+        "id": 6,
+        "global": "standing_orders_forbid_trap_cleaning",
+        "initial": 2,
+        "states": [
+          {
+            "value": 0,
+            "caption": "Allow trap cleaning"
+          },
+          {
+            "value": 1,
+            "caption": "Forbid trap cleaning"
+          },
+          {
+            "value": 2,
+            "caption": "Forbid trap cleaning during sieges"
+          }
+        ]
+      },
+      {
+        "category": 3,
+        "id": 7,
+        "global": "standing_orders_forbid_rearming_traps",
+        "initial": 2,
+        "states": [
+          {
+            "value": 0,
+            "caption": "Allow trap rearming"
+          },
+          {
+            "value": 1,
+            "caption": "Forbid trap rearming"
+          },
+          {
+            "value": 2,
+            "caption": "Forbid trap rearming during sieges"
+          }
+        ]
+      },
+      {
+        "category": 3,
+        "id": 8,
+        "global": "standing_orders_forbid_cages_from_sprung_traps",
+        "initial": 2,
+        "states": [
+          {
+            "value": 0,
+            "caption": "Claim cages from sprung traps"
+          },
+          {
+            "value": 1,
+            "caption": "Forbid cages from sprung traps"
+          },
+          {
+            "value": 2,
+            "caption": "Forbid cages from sprung traps during sieges"
+          }
+        ]
+      },
+      {
+        "category": 3,
+        "id": 9,
+        "global": "standing_orders_forbid_toppled_building_items",
+        "initial": 2,
+        "states": [
+          {
+            "value": 0,
+            "caption": "Claim toppled building items"
+          },
+          {
+            "value": 1,
+            "caption": "Forbid toppled building items"
+          },
+          {
+            "value": 2,
+            "caption": "Forbid toppled building items during sieges"
+          }
+        ]
+      },
+      {
+        "category": 4,
+        "id": 0,
+        "global": "standing_orders_petition_citizenship",
+        "initial": 1,
+        "states": [
+          {
+            "value": 2,
+            "caption": "Citizenship petitions: accept"
+          },
+          {
+            "value": 0,
+            "caption": "Citizenship petitions: reject"
+          },
+          {
+            "value": 1,
+            "caption": "Citizenship petitions: prompt"
+          }
+        ]
+      },
+      {
+        "category": 4,
+        "id": 1,
+        "global": "standing_orders_petition_resident_performer",
+        "initial": 1,
+        "states": [
+          {
+            "value": 2,
+            "caption": "Performer petitions: accept"
+          },
+          {
+            "value": 0,
+            "caption": "Performer petitions: reject"
+          },
+          {
+            "value": 1,
+            "caption": "Performer petitions: prompt"
+          }
+        ]
+      },
+      {
+        "category": 4,
+        "id": 2,
+        "global": "standing_orders_petition_resident_monster_hunter",
+        "initial": 1,
+        "states": [
+          {
+            "value": 2,
+            "caption": "Monster slayer petitions: accept"
+          },
+          {
+            "value": 0,
+            "caption": "Monster slayer petitions: reject"
+          },
+          {
+            "value": 1,
+            "caption": "Monster slayer petitions: prompt"
+          }
+        ]
+      },
+      {
+        "category": 4,
+        "id": 3,
+        "global": "standing_orders_petition_resident_mercenary",
+        "initial": 1,
+        "states": [
+          {
+            "value": 2,
+            "caption": "Mercenary petitions: accept"
+          },
+          {
+            "value": 0,
+            "caption": "Mercenary petitions: reject"
+          },
+          {
+            "value": 1,
+            "caption": "Mercenary petitions: prompt"
+          }
+        ]
+      },
+      {
+        "category": 4,
+        "id": 4,
+        "global": "standing_orders_petition_resident_scholar",
+        "initial": 1,
+        "states": [
+          {
+            "value": 2,
+            "caption": "Scholar petitions: accept"
+          },
+          {
+            "value": 0,
+            "caption": "Scholar petitions: reject"
+          },
+          {
+            "value": 1,
+            "caption": "Scholar petitions: prompt"
+          }
+        ]
+      },
+      {
+        "category": 4,
+        "id": 5,
+        "global": "standing_orders_petition_resident_sanctuary",
+        "initial": 1,
+        "states": [
+          {
+            "value": 2,
+            "caption": "Sanctuary petitions: accept"
+          },
+          {
+            "value": 0,
+            "caption": "Sanctuary petitions: reject"
+          },
+          {
+            "value": 1,
+            "caption": "Sanctuary petitions: prompt"
+          }
+        ]
+      },
+      {
+        "category": 6,
+        "id": 0,
+        "global": "standing_orders_job_cancel_announce",
+        "initial": 1,
+        "states": [
+          {
+            "value": 2,
+            "caption": "Announce most job cancellations"
+          },
+          {
+            "value": 3,
+            "caption": "Announce all job cancellations"
+          },
+          {
+            "value": 0,
+            "caption": "Announce no job cancellations"
+          },
+          {
+            "value": 1,
+            "caption": "Announce some job cancellations"
+          }
+        ]
+      },
+      {
+        "category": 6,
+        "id": 1,
+        "global": "standing_orders_ignore_damp_stone",
+        "initial": 0,
+        "states": [
+          {
+            "value": 1,
+            "caption": "Mining continues through new damp stone"
+          },
+          {
+            "value": 0,
+            "caption": "Mining cancelled near new damp stone"
+          }
+        ]
+      },
+      {
+        "category": 6,
+        "id": 2,
+        "global": "standing_orders_ignore_warm_stone",
+        "initial": 0,
+        "states": [
+          {
+            "value": 1,
+            "caption": "Mining continues through new warm stone"
+          },
+          {
+            "value": 0,
+            "caption": "Mining cancelled near new warm stone"
+          }
+        ]
+      },
+      {
+        "category": 6,
+        "id": 3,
+        "global": "standing_orders_farmer_harvest",
+        "initial": 1,
+        "states": [
+          {
+            "value": 0,
+            "caption": "Only farmers harvest"
+          },
+          {
+            "value": 1,
+            "caption": "Everybody harvests"
+          }
+        ]
+      },
+      {
+        "category": 6,
+        "id": 4,
+        "global": "standing_orders_mix_food",
+        "initial": 1,
+        "states": [
+          {
+            "value": 0,
+            "caption": "Do not mix similar food in barrels"
+          },
+          {
+            "value": 1,
+            "caption": "Mix similar foods in barrels"
+          }
+        ]
+      },
+      {
+        "category": 6,
+        "id": 5,
+        "global": "standing_orders_zoneonly_drink",
+        "initial": 0,
+        "states": [
+          {
+            "value": 1,
+            "caption": "Drink water only from designed zones"
+          },
+          {
+            "value": 0,
+            "caption": "Prefer zones for water drinking"
+          }
+        ]
+      },
+      {
+        "category": 6,
+        "id": 6,
+        "global": "standing_orders_zoneonly_fish",
+        "initial": 0,
+        "states": [
+          {
+            "value": 1,
+            "caption": "Fish only in designated zones"
+          },
+          {
+            "value": 0,
+            "caption": "Prefer zones for fishing"
+          }
+        ]
+      }
+    ],
+    "alias_rvas": {
+      "standing_orders_forbid_cages_from_sprung_traps": "189c1f2",
+      "standing_orders_forbid_floor_and_wall_cleaning": "189c1ed",
+      "standing_orders_forbid_rearming_traps": "189c1f7",
+      "standing_orders_forbid_toppled_building_items": "189c1ea",
+      "standing_orders_forbid_trap_cleaning": "189c1eb",
+      "standing_orders_ignore_damp_stone": "18d6f67",
+      "standing_orders_ignore_warm_stone": "18d6f0f",
+      "standing_orders_petition_citizenship": "189c29d",
+      "standing_orders_petition_resident_mercenary": "189c29e",
+      "standing_orders_petition_resident_monster_hunter": "189c29c",
+      "standing_orders_petition_resident_performer": "189c295",
+      "standing_orders_petition_resident_sanctuary": "189c296",
+      "standing_orders_petition_resident_scholar": "189c297"
+    },
+    "pins": [
+      {
+        "rva": "433750",
+        "length": "31b",
+        "fnv64": "9aba5ed88022c9d3"
+      },
+      {
+        "rva": "4342e7",
+        "length": "1a7",
+        "fnv64": "960e6742933c537d"
+      },
+      {
+        "rva": "434598",
+        "length": "5c",
+        "fnv64": "f0d60142667bc370"
+      }
+    ],
+    "settings_restored": true,
+    "source_preserved": true,
+    "scope": "Native click cycles with independent scalar reads, including13 discovery-only address aliases. No runtime support yet. Chores and hunter ammunition excluded as separate workflows."
   }
 }

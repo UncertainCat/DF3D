@@ -65,13 +65,12 @@ func _gui_input(event: InputEvent) -> void:
 func text(value: String,point: Vector2,color: int=15) -> void:
 	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point,value,HORIZONTAL_ALIGNMENT_LEFT,-1,12,colors[color])
 func button(value: String,rect: Rect2,color: int=10,cancel: bool=false) -> void:
-	var style:=art.make_style("HORIZONTAL_OPTION_REMOVE" if cancel else "BUTTON_RECTANGLE",8)
-	if style!=null:draw_style_box(style,rect)
-	text(value,rect.position+Vector2(8,16),color)
+	patch("HORIZONTAL_OPTION_REMOVE" if cancel else "HORIZONTAL_OPTION_ACTIVE",Vector2i(int(rect.position.x/8),int((rect.position.y-8)/12)),int(rect.size.x/8),3)
+	text(value,rect.position+Vector2(16 if value=="Add ammunition" else 8,16),color)
 func _draw() -> void:
 	if world==null or state==null:return
 	draw_rect(Rect2(Vector2(4,4),size-Vector2(8,8)),Color8(28,28,28));patch("HOVER_RECTANGLE",Vector2i.ZERO,101,45)
-	text("Hunters",Vector2(64,34))
+	if not picker():text("Hunters",Vector2(64,36))
 	if picker():button("Cancel",Rect2(728,20,64,24),15,true)
 	else:
 		button("Add ammunition",Rect2(272,20,152,24));button("Confirm",Rect2(720,20,72,24))
@@ -79,19 +78,19 @@ func _draw() -> void:
 		var list:=choices()
 		for visible_index in mini(10,list.size()-state.choice_first):
 			var y:=60+visible_index*36
-			patch("BUTTON_RECTANGLE_DARK",Vector2i(2,int(y/12)),95,3)
-			text(list[state.choice_first+visible_index].caption,Vector2(32,y+22))
+			patch("BUTTON_RECTANGLE",Vector2i(2,int(y/12)),95,3)
+			text(list[state.choice_first+visible_index].caption,Vector2(32,y+24))
 		return
 	var entries:=rows()
 	for visible_index in mini(10,entries.size()-state.first):
 		var entry: Dictionary=entries[state.first+visible_index];var y:=60+visible_index*36
-		patch("BUTTON_RECTANGLE_DARK",Vector2i(2,int(y/12)),95,3)
+		patch("BUTTON_RECTANGLE",Vector2i(2,int(y/12)),97,3)
 		if entry.item==-1:
-			text(state.rules[entry.spec].caption,Vector2(32,y+22))
-			var amount: String=state.amount_text if state.mode==state.Mode.Amount and state.selected==entry.spec else str(state.specs[entry.spec].amount)
-			text(str(state.rules[entry.spec].quantity)+"/"+amount,Vector2(256,y+22))
+			text(state.rules[entry.spec].caption,Vector2(32,y+24))
+			var amount: String=state.amount_text if state.mode==state.Mode.Amount and state.selected==entry.spec else str(int(state.specs[entry.spec].amount))
+			text(str(state.rules[entry.spec].quantity)+"/"+amount,Vector2(256,y+24))
 			button("Mat",Rect2(336,y+8,40,24));button("Amt",Rect2(384,y+8,40,24));button("Delete",Rect2(720,y+8,64,24),12)
 		else:
-			text(entry.caption,Vector2(64,y+22),14);button("Remove",Rect2(720,y+8,64,24),12)
+			text(entry.caption,Vector2(64,y+24),14);button("Remove",Rect2(720,y+8,64,24),12)
 func _exit_tree() -> void:
 	if state!=null and state.changed.is_connected(refresh):state.changed.disconnect(refresh)

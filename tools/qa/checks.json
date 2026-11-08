@@ -135,6 +135,15 @@
       "prerequisites": ["extension_build", "df_assets", "real_renderer"]
     },
     {
+      "id": "hunter_ammunition_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/hunter_ammunition_capture.gd",
+      "completion": "^HUNTER_AMMUNITION_CAPTURE_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build", "df_assets", "real_renderer"]
+    },
+    {
       "id": "standing_orders_capture",
       "lane": "gpu",
       "kind": "godot",

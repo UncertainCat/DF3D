@@ -49,7 +49,15 @@ unfinished; controller acceptance does not establish rendered parity. The staged
 check (hunter-view-parse-20261108). They use the default captured panel geometry
 and native captions. Assigned-item artwork, responsive geometry, input/hover
 parity and rendered comparison are still pending; neither public navigation nor
-the Standing orders transition is connected yet.
+the Standing orders transition is connected yet. Rendered hunter-chrome-aligned-20261108
+matches the complete default-size type-picker crop (168,220,808,540) against
+protected140812 with zero differing pixels. Main-panel top controls and first
+rule row also match; the whole main panel still differs by6250 pixels in the
+assigned-item picture region. The capture uses recorded native captions/specs,
+not a live controller, so it does not establish input or gameplay acceptance.
+Core19 passes in hunter-chrome-final-20261108; graphical runs report only the
+documented separate-thread/finalize/shutdown diagnostics. Captures cap30FPS and
+exit promptly; GPU48–49C sampled. Installed art remains outside the repository.
 
 Hunter ammunition typed dispatch now reads native specs, choice captions and
 assigned-stack quantities, validates candidate type/subtype, and routes all five

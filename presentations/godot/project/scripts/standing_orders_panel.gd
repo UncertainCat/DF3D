@@ -48,10 +48,10 @@ func open_kitchen() -> void:
 	var current=current_state()
 	if not allowed() or kitchen_active or current.phase==current.Phase.Applying:return
 	return_category=5 if chores_active else state.category
-	opening=true;state.close();chores_state.close();chores_active=false;kitchen_active=true;kitchen_state.open();opening=false;_sync()
+	opening=true;state.close();chores_state.close();chores_active=false;kitchen_active=true;kitchen_state.open(true);opening=false;_sync()
 func return_standing() -> void:
 	if not allowed() or not kitchen_active or kitchen_state.phase==kitchen_state.Phase.Applying:return
-	opening=true;kitchen_state.close();kitchen_active=false;state.open()
+	opening=true;kitchen_state.close(true);kitchen_active=false;state.open()
 	if return_category==5:state.close();chores_active=true;chores_state.open()
 	elif return_category!=0:state.select_category(return_category)
 	opening=false;_sync()

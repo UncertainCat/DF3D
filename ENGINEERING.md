@@ -109,6 +109,18 @@ search) sampled850ms each produce no native instruction or displayed tooltip;
 input_reference retains the observations without inventing replacement help.
 The owned game exits unsaved with source preservation; GPU59C sampled.
 
+Protected175607 establishes Kitchen-to-Standing-orders tab retention: type0,
+Name sort and selected row1 survive the round trip. The staged Labor owner now
+preserves local Kitchen navigation on that handoff while retiring all rows,
+exclusions and pending callbacks. Returning still requires a fresh native read;
+fresh shorter lists clamp retained selection and offset. Full close/session
+retirement resets navigation. Headless kitchen-tab-retention passes with core19.
+This does not accept whole-Labor close/reopen or other tab retention. The same
+capture posts WM_MOUSEWHEEL messages at list/outside/bar positions, with and
+without MK_SHIFT; no movement is observed, but consumption is unproven, so this
+is not physical-wheel acceptance. Native source preservation and unsaved exit
+pass; GPU60C sampled. navigation_reference retains the scoped evidence.
+
 The staged Kitchen view reuses installed Labor chrome, native row/icon assets,
 count captions and permission icons. `kitchen-view-base` renders at1200x800 with
 30FPS; its unselected-row crop(64,232)-(928,664) matches native171829 with zero

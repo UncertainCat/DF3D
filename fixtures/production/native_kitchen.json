@@ -3789,5 +3789,176 @@
       }
     ],
     "scope": "Owned native standard-scroll commands at inside/outside/bar pointer positions. Selection follows standard scrolling and list reveals selected row. Context scroll commands unchanged. Eleven hover targets sampled850ms each, all instruction/displayed -1. Source save unchanged; game exited unsaved. Physical wheel, longer hover and keyboard while textbox focused not established."
+  },
+  "navigation_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-175607",
+    "observations": [
+      {
+        "capabilities": 0,
+        "cursor": 0,
+        "label": "initial",
+        "query": "",
+        "sorts": [
+          "Type"
+        ],
+        "type": -1,
+        "first_food": "Alfalfa seeds"
+      },
+      {
+        "capabilities": 0,
+        "cursor": 0,
+        "label": "inside-down",
+        "query": "",
+        "sorts": [
+          "Type"
+        ],
+        "type": -1,
+        "first_food": "Alfalfa seeds"
+      },
+      {
+        "capabilities": 0,
+        "cursor": 0,
+        "label": "inside-up",
+        "query": "",
+        "sorts": [
+          "Type"
+        ],
+        "type": -1,
+        "first_food": "Alfalfa seeds"
+      },
+      {
+        "capabilities": 0,
+        "cursor": 0,
+        "label": "inside-shift-down",
+        "query": "",
+        "sorts": [
+          "Type"
+        ],
+        "type": -1,
+        "first_food": "Alfalfa seeds"
+      },
+      {
+        "capabilities": 0,
+        "cursor": 0,
+        "label": "inside-shift-up",
+        "query": "",
+        "sorts": [
+          "Type"
+        ],
+        "type": -1,
+        "first_food": "Alfalfa seeds"
+      },
+      {
+        "capabilities": 0,
+        "cursor": 0,
+        "label": "outside-down",
+        "query": "",
+        "sorts": [
+          "Type"
+        ],
+        "type": -1,
+        "first_food": "Alfalfa seeds"
+      },
+      {
+        "capabilities": 0,
+        "cursor": 0,
+        "label": "outside-up",
+        "query": "",
+        "sorts": [
+          "Type"
+        ],
+        "type": -1,
+        "first_food": "Alfalfa seeds"
+      },
+      {
+        "capabilities": 0,
+        "cursor": 0,
+        "label": "outside-shift-down",
+        "query": "",
+        "sorts": [
+          "Type"
+        ],
+        "type": -1,
+        "first_food": "Alfalfa seeds"
+      },
+      {
+        "capabilities": 0,
+        "cursor": 0,
+        "label": "outside-shift-up",
+        "query": "",
+        "sorts": [
+          "Type"
+        ],
+        "type": -1,
+        "first_food": "Alfalfa seeds"
+      },
+      {
+        "capabilities": 0,
+        "cursor": 0,
+        "label": "bar-down",
+        "query": "",
+        "sorts": [
+          "Type"
+        ],
+        "type": -1,
+        "first_food": "Alfalfa seeds"
+      },
+      {
+        "capabilities": 0,
+        "cursor": 0,
+        "label": "bar-up",
+        "query": "",
+        "sorts": [
+          "Type"
+        ],
+        "type": -1,
+        "first_food": "Alfalfa seeds"
+      },
+      {
+        "capabilities": 0,
+        "cursor": 0,
+        "label": "bar-shift-down",
+        "query": "",
+        "sorts": [
+          "Type"
+        ],
+        "type": -1,
+        "first_food": "Alfalfa seeds"
+      },
+      {
+        "capabilities": 0,
+        "cursor": 0,
+        "label": "bar-shift-up",
+        "query": "",
+        "sorts": [
+          "Type"
+        ],
+        "type": -1,
+        "first_food": "Alfalfa seeds"
+      },
+      {
+        "capabilities": 0,
+        "cursor": 1,
+        "label": "before-tab",
+        "query": "",
+        "sorts": [
+          "Name"
+        ],
+        "type": 0,
+        "first_food": "Cave wheat"
+      },
+      {
+        "capabilities": 0,
+        "cursor": 1,
+        "label": "after-tab",
+        "query": "",
+        "sorts": [
+          "Name"
+        ],
+        "type": 0,
+        "first_food": "Cave wheat"
+      }
+    ],
+    "scope": "Native Kitchen to Standing orders and back retains type0, Name sort and selected row1. WM_MOUSEWHEEL messages with and without MK_SHIFT at three pointer positions produced no captured movement, but message consumption is unproven: not accepted as physical-wheel behavior. Source unchanged; owned exit unsaved. No whole-Labor close/reopen retention claim."
   }
 }

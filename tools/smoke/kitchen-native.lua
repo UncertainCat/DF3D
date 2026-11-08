@@ -372,6 +372,34 @@ if os.getenv('DF3D_KITCHEN_LAYOUT')=='1' then
  end
  local f=assert(io.open(out..'/kitchen-layout.json','w'));f:write(json.encode(observations));f:close()
 end
+if os.getenv('DF3D_KITCHEN_NAV')=='1' then
+ local observations={}
+ local function observe(label)
+  local names={};local known={};for _,row in ipairs(result.known)do known[row.name]=true end
+  local function collect(widget)
+   if (widget.flag.whole&3)~=3 then return end
+   if df.widget_text:is_instance(widget) and known[dfhack.df2utf(widget.str)]then names[#names+1]=dfhack.df2utf(widget.str)end
+   if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do collect(child)end end
+  end
+  collect(panel);local sorts={};for _,entry in ipairs(panel.sorting_by)do sorts[#sorts+1]=entry.ident end
+  observations[#observations+1]={label=label,names=names,cursor=panel.cursor_idx,type=panel.filter_type,capabilities=panel.filter_perm,query=dfhack.df2utf(panel.filter_str),sorts=sorts}
+ end
+ observe('initial')
+ for _,point in ipairs({{'inside',200,250},{'outside',1100,750},{'bar',944,250}})do
+  for _,step in ipairs({{'down',-120,false},{'up',120,false},{'shift-down',-120,true},{'shift-up',120,true}})do
+   g.precise_mouse_x=point[2];g.precise_mouse_y=point[3];g.mouse_x=point[2]//8;g.mouse_y=(point[3]-4)//12
+   local f=assert(io.open(out..'/kitchen-wheel.json','w'));f:write(json.encode({x=point[2],y=point[3],delta=step[2],shift=step[3]}));f:close()
+   f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('kitchen-wheel');f:close();assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+   local deadline=dfhack.getTickCount()+5000
+   while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Kitchen wheel timeout');script.sleep(1,'frames')end
+   assert(os.remove(out..'/owner-input-ack'));for _=1,5 do script.sleep(1,'frames');view:render(dfhack.getTickCount())end
+   observe(point[1]..'-'..step[1])
+  end
+ end
+ click(37,12);click(30,15);gui.simulateInput(view,'STANDARDSCROLL_DOWN');for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount());observe('before-tab')
+ click(30,10);click(45,10);observe('after-tab')
+ local f=assert(io.open(out..'/kitchen-navigation.json','w'));f:write(json.encode(observations));f:close()
+end
 if os.getenv('DF3D_KITCHEN_INPUT')=='1' then
  local observations={};local known={}
  for _,row in ipairs(result.known)do known[row.name]=true end

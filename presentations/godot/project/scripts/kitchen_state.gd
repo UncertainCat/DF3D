@@ -29,14 +29,16 @@ func _retire() -> void:
 	generation+=1
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
-func close() -> void:
-	_retire();_clear();first=0;selected=0;last_result={};phase=Phase.Closed;changed.emit()
+func close(retain_navigation: bool=false) -> void:
+	_retire();_clear()
+	if not retain_navigation:first=0;selected=0
+	last_result={};phase=Phase.Closed;changed.emit()
 func _session_changed() -> void:
 	close();query={"type_filter":-1,"capability_filter":0,"query":"","sorts":[{"column":0,"reverse":false}]}
 	sort_directions=[false,false,false,false,false]
 	phase=Phase.Unavailable;changed.emit()
-func open() -> void:
-	close();_read()
+func open(retain_navigation: bool=false) -> void:
+	close(retain_navigation);_read()
 func set_query(value: Dictionary) -> void:
 	if phase not in [Phase.Ready,Phase.Reading] or not _valid_query(value) or value==query:return
 	_retire();query=value.duplicate(true);first=0;selected=0;_read()
@@ -115,7 +117,7 @@ func _submit(intent: Dictionary) -> void:
 		if apply:
 			if not value.rows.is_empty() or not value.exclusions.is_empty():_reject(result);return
 			_read();return
-		rows=value.rows.duplicate(true);exclusions=value.exclusions.duplicate(true);first=mini(first,maxi(0,rows.size()-1))
+		rows=value.rows.duplicate(true);exclusions=value.exclusions.duplicate(true);first=mini(first,maxi(0,rows.size()-1));selected=mini(selected,maxi(0,rows.size()-1))
 		last_result={};phase=Phase.Ready;changed.emit())
 	if ticket==0:_clear();phase=Phase.Unavailable
 	changed.emit()

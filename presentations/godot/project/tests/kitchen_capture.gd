@@ -19,9 +19,12 @@ func run() -> void:
 	var world:=Df3dWorld.new();root.add_child(world)
 	if not world.load_assets(OS.get_environment("DF3D_DF_PATH")):quit(1);return
 	var view=preload("res://scripts/kitchen_view.gd").new();root.add_child(view)
-	view.configure_kitchen(world,state);view.layout(Vector2(1200,800))
-	await create_timer(0.3).timeout
-	await RenderingServer.frame_post_draw
+	view.configure_kitchen(world,state)
+	for dimensions in [Vector2i(912,552),Vector2i(960,600),Vector2i(1600,900),Vector2i(1200,800)]:
+		root.size=dimensions;view.layout(Vector2(dimensions))
+		await create_timer(0.3).timeout
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../../../build/kitchen-%dx%d.png"%[dimensions.x,dimensions.y]))
 	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../../../build/kitchen.png"))
 	view.queue_free();world.queue_free();await process_frame
 	print("KITCHEN_CAPTURE_PASS");quit(0)

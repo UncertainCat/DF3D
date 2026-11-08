@@ -82,6 +82,19 @@ cursor/context-scroll keys at pointer200,250 left visible rows and cursor
 unchanged. Headless core19 and Kitchen controller checks pass in
 kitchen-layout-reference; no graphical viewer was launched for this correction.
 
+The staged Kitchen list retains the native80-cell minimum row width and
+scrollbar X position, and sizes the track from the unrounded remaining height.
+An exactly fitting final row is excluded, matching native6/7/16/13 visible rows.
+The four-size30FPS capture in kitchen-responsive-fit passes with core19 and only
+documented Godot separate-thread/finalize/shutdown notices. At each size the
+compared row region x64..703 matches native174610 exactly (all6/7/13 rows at
+minimum/small/default, first13 at wide). The entire scrollbar crop differs at
+26pixels in each size; track/thumb extent now matches. Sampled GPU temperature
+was58C and the owned viewer exited. The capture fixture has display captions
+only for the initial13 foods, so it does not establish all wide-row captions.
+Narrow overflow control clipping, inactive Name ink, scrolling input and full
+screen acceptance remain open.
+
 The staged Kitchen view reuses installed Labor chrome, native row/icon assets,
 count captions and permission icons. `kitchen-view-base` renders at1200x800 with
 30FPS; its unselected-row crop(64,232)-(928,664) matches native171829 with zero

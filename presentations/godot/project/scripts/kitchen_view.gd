@@ -17,7 +17,7 @@ func configure_kitchen(source,model) -> void:
 	scrollbar.row_changed.connect(func(value):state.seek(value,capacity()))
 	state.changed.connect(refresh);refresh()
 func rows_top() -> int:return list_top()+24
-func capacity() -> int:return maxi(0,int((size.y-rows_top()-84)/36))
+func capacity() -> int:return maxi(0,int((size.y-rows_top()-85)/36))
 func layout(view: Vector2) -> void:
 	super.layout(view)
 	if state!=null:refresh()
@@ -37,7 +37,9 @@ func refresh() -> void:
 		else:texture=world.item_sheet_icon(kind,{"material_token":token,"subtype_raw":"","color_token":"","stack":1,"flags":0},-1)
 		retained[key]=texture
 	icons=retained
-	scrollbar.position=Vector2(size.x-40,rows_top());scrollbar.size=Vector2(16,capacity()*36+12);scrollbar.page=capacity();scrollbar.set_rows(state.rows.size(),state.first)
+	# Native keeps the list at least80 cells wide; its track uses the remaining
+	# height even when that leaves a partial row below the last visible food.
+	scrollbar.position=Vector2(maxf(688,size.x-40),rows_top());scrollbar.size=Vector2(16,size.y-rows_top()-84);scrollbar.page=capacity();scrollbar.set_rows(state.rows.size(),state.first)
 	queue_redraw()
 func _input(event: InputEvent) -> void:
 	if not allowed():return
@@ -93,7 +95,7 @@ func _draw() -> void:
 			text("Type" if index==0 else "Name",Vector2(positions[index]+40,list_top()+24),0 if active else 7)
 	for index in mini(capacity(),state.rows.size()-state.first):
 		var row: Dictionary=state.rows[state.first+index];var y:=rows_top()+index*36
-		patch("BUTTON_RECTANGLE_SELECTED" if state.first+index==state.selected else "BUTTON_RECTANGLE",Vector2i(4,int(y/12)),int(size.x/8)-10,3)
+		patch("BUTTON_RECTANGLE_SELECTED" if state.first+index==state.selected else "BUTTON_RECTANGLE",Vector2i(4,int(y/12)),maxi(80,int(size.x/8)-10),3)
 		patch("",Vector2i(4,int(y/12)),5,3,picture.texture(state.first+index==state.selected))
 		var icon: Texture2D=icons.get(str(row.receipt.key.item_type)+":"+row.material_token)
 		if icon!=null:draw_texture_rect(icon,Rect2(34,y+2,32,32),false)

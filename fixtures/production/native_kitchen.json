@@ -2016,5 +2016,3652 @@
     ],
     "source_preserved": true,
     "scope": "Native visible count captions and estimate colors at three controlled bookkeeper precisions; all22 exclusion bit masks compared against simulation vectors. Artwork and broader count/precision ranges remain unaccepted."
+  },
+  "art_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-164654",
+    "categories": [
+      {
+        "rows": [
+          {
+            "cells": [
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 0
+                },
+                "x": 8,
+                "y": 16,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 0
+                },
+                "x": 9,
+                "y": 16,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 0
+                },
+                "x": 10,
+                "y": 16,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 0
+                },
+                "x": 11,
+                "y": 16,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 0
+                },
+                "x": 12,
+                "y": 16,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 0
+                },
+                "x": 8,
+                "y": 17,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 0
+                },
+                "x": 9,
+                "y": 17,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 0
+                },
+                "x": 10,
+                "y": 17,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 0
+                },
+                "x": 11,
+                "y": 17,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 0
+                },
+                "x": 12,
+                "y": 17,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 0
+                },
+                "x": 8,
+                "y": 18,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 0
+                },
+                "x": 9,
+                "y": 18,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 0
+                },
+                "x": 10,
+                "y": 18,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 0
+                },
+                "x": 11,
+                "y": 18,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 0
+                },
+                "x": 12,
+                "y": 18,
+                "composed": false
+              }
+            ],
+            "name": "Plump helmets"
+          },
+          {
+            "cells": [
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 2
+                },
+                "x": 8,
+                "y": 19,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 2
+                },
+                "x": 9,
+                "y": 19,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 2
+                },
+                "x": 10,
+                "y": 19,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 2
+                },
+                "x": 11,
+                "y": 19,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 2
+                },
+                "x": 12,
+                "y": 19,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 2
+                },
+                "x": 8,
+                "y": 20,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 2
+                },
+                "x": 9,
+                "y": 20,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 2
+                },
+                "x": 10,
+                "y": 20,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 2
+                },
+                "x": 11,
+                "y": 20,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 2
+                },
+                "x": 12,
+                "y": 20,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 2
+                },
+                "x": 8,
+                "y": 21,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 2
+                },
+                "x": 9,
+                "y": 21,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 2
+                },
+                "x": 10,
+                "y": 21,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 2
+                },
+                "x": 11,
+                "y": 21,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 2
+                },
+                "x": 12,
+                "y": 21,
+                "composed": false
+              }
+            ],
+            "name": "Cave wheat"
+          },
+          {
+            "cells": [
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 3
+                },
+                "x": 8,
+                "y": 22,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 3
+                },
+                "x": 9,
+                "y": 22,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 3
+                },
+                "x": 10,
+                "y": 22,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 3
+                },
+                "x": 11,
+                "y": 22,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 3
+                },
+                "x": 12,
+                "y": 22,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 3
+                },
+                "x": 8,
+                "y": 23,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 3
+                },
+                "x": 9,
+                "y": 23,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 3
+                },
+                "x": 10,
+                "y": 23,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 3
+                },
+                "x": 11,
+                "y": 23,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 3
+                },
+                "x": 12,
+                "y": 23,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 3
+                },
+                "x": 8,
+                "y": 24,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 3
+                },
+                "x": 9,
+                "y": 24,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 3
+                },
+                "x": 10,
+                "y": 24,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 3
+                },
+                "x": 11,
+                "y": 24,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 1,
+                  "y": 3
+                },
+                "x": 12,
+                "y": 24,
+                "composed": false
+              }
+            ],
+            "name": "Sweet pods"
+          }
+        ],
+        "type": 0
+      },
+      {
+        "rows": [
+          {
+            "cells": [
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 8,
+                "y": 16,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 9,
+                "y": 16,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 10,
+                "y": 16,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 11,
+                "y": 16,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 12,
+                "y": 16,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 8,
+                "y": 17,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 9,
+                "y": 17,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 10,
+                "y": 17,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 11,
+                "y": 17,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 12,
+                "y": 17,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 8,
+                "y": 18,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 9,
+                "y": 18,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 10,
+                "y": 18,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 11,
+                "y": 18,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 12,
+                "y": 18,
+                "composed": false
+              }
+            ],
+            "name": "Alfalfa seeds"
+          },
+          {
+            "cells": [
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 4
+                },
+                "x": 8,
+                "y": 19,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 4
+                },
+                "x": 9,
+                "y": 19,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 4
+                },
+                "x": 10,
+                "y": 19,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 4
+                },
+                "x": 11,
+                "y": 19,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 4
+                },
+                "x": 12,
+                "y": 19,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 4
+                },
+                "x": 8,
+                "y": 20,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 4
+                },
+                "x": 9,
+                "y": 20,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 4
+                },
+                "x": 10,
+                "y": 20,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 4
+                },
+                "x": 11,
+                "y": 20,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 4
+                },
+                "x": 12,
+                "y": 20,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 4
+                },
+                "x": 8,
+                "y": 21,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 4
+                },
+                "x": 9,
+                "y": 21,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 4
+                },
+                "x": 10,
+                "y": 21,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 4
+                },
+                "x": 11,
+                "y": 21,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 4
+                },
+                "x": 12,
+                "y": 21,
+                "composed": false
+              }
+            ],
+            "name": "Rock nuts"
+          },
+          {
+            "cells": [
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 16
+                },
+                "x": 8,
+                "y": 22,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 16
+                },
+                "x": 9,
+                "y": 22,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 16
+                },
+                "x": 10,
+                "y": 22,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 16
+                },
+                "x": 11,
+                "y": 22,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 16
+                },
+                "x": 12,
+                "y": 22,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 16
+                },
+                "x": 8,
+                "y": 23,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 16
+                },
+                "x": 9,
+                "y": 23,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 16
+                },
+                "x": 10,
+                "y": 23,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 16
+                },
+                "x": 11,
+                "y": 23,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 16
+                },
+                "x": 12,
+                "y": 23,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 16
+                },
+                "x": 8,
+                "y": 24,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 16
+                },
+                "x": 9,
+                "y": 24,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 16
+                },
+                "x": 10,
+                "y": 24,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 16
+                },
+                "x": 11,
+                "y": 24,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 16
+                },
+                "x": 12,
+                "y": 24,
+                "composed": false
+              }
+            ],
+            "name": "Blade weed seeds"
+          },
+          {
+            "cells": [
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 9
+                },
+                "x": 8,
+                "y": 25,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 9
+                },
+                "x": 9,
+                "y": 25,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 9
+                },
+                "x": 10,
+                "y": 25,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 9
+                },
+                "x": 11,
+                "y": 25,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 9
+                },
+                "x": 12,
+                "y": 25,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 9
+                },
+                "x": 8,
+                "y": 26,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 9
+                },
+                "x": 9,
+                "y": 26,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 9
+                },
+                "x": 10,
+                "y": 26,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 9
+                },
+                "x": 11,
+                "y": 26,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 9
+                },
+                "x": 12,
+                "y": 26,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 9
+                },
+                "x": 8,
+                "y": 27,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 9
+                },
+                "x": 9,
+                "y": 27,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 9
+                },
+                "x": 10,
+                "y": 27,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 9
+                },
+                "x": 11,
+                "y": 27,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 9
+                },
+                "x": 12,
+                "y": 27,
+                "composed": false
+              }
+            ],
+            "name": "Strawberry seeds"
+          },
+          {
+            "cells": [
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 8,
+                "y": 28,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 9,
+                "y": 28,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 10,
+                "y": 28,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 11,
+                "y": 28,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 12,
+                "y": 28,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 8,
+                "y": 29,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 9,
+                "y": 29,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 10,
+                "y": 29,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 11,
+                "y": 29,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 12,
+                "y": 29,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 8,
+                "y": 30,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 9,
+                "y": 30,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 10,
+                "y": 30,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 11,
+                "y": 30,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 8
+                },
+                "x": 12,
+                "y": 30,
+                "composed": false
+              }
+            ],
+            "name": "Prickle berry seeds"
+          },
+          {
+            "cells": [
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 11
+                },
+                "x": 8,
+                "y": 31,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 11
+                },
+                "x": 9,
+                "y": 31,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 11
+                },
+                "x": 10,
+                "y": 31,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 11
+                },
+                "x": 11,
+                "y": 31,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 11
+                },
+                "x": 12,
+                "y": 31,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 11
+                },
+                "x": 8,
+                "y": 32,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 11
+                },
+                "x": 9,
+                "y": 32,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 11
+                },
+                "x": 10,
+                "y": 32,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 11
+                },
+                "x": 11,
+                "y": 32,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 11
+                },
+                "x": 12,
+                "y": 32,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 11
+                },
+                "x": 8,
+                "y": 33,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 11
+                },
+                "x": 9,
+                "y": 33,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 11
+                },
+                "x": 10,
+                "y": 33,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 11
+                },
+                "x": 11,
+                "y": 33,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 11
+                },
+                "x": 12,
+                "y": 33,
+                "composed": false
+              }
+            ],
+            "name": "Rice"
+          },
+          {
+            "cells": [
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 12
+                },
+                "x": 8,
+                "y": 34,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 12
+                },
+                "x": 9,
+                "y": 34,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 12
+                },
+                "x": 10,
+                "y": 34,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 12
+                },
+                "x": 11,
+                "y": 34,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 12
+                },
+                "x": 12,
+                "y": 34,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 12
+                },
+                "x": 8,
+                "y": 35,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 12
+                },
+                "x": 9,
+                "y": 35,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 12
+                },
+                "x": 10,
+                "y": 35,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 12
+                },
+                "x": 11,
+                "y": 35,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 12
+                },
+                "x": 12,
+                "y": 35,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 12
+                },
+                "x": 8,
+                "y": 36,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 12
+                },
+                "x": 9,
+                "y": 36,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 12
+                },
+                "x": 10,
+                "y": 36,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 12
+                },
+                "x": 11,
+                "y": 36,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 12
+                },
+                "x": 12,
+                "y": 36,
+                "composed": false
+              }
+            ],
+            "name": "Rat weed seeds"
+          },
+          {
+            "cells": [
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 15
+                },
+                "x": 8,
+                "y": 37,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 15
+                },
+                "x": 9,
+                "y": 37,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 15
+                },
+                "x": 10,
+                "y": 37,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 15
+                },
+                "x": 11,
+                "y": 37,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 15
+                },
+                "x": 12,
+                "y": 37,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 15
+                },
+                "x": 8,
+                "y": 38,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 15
+                },
+                "x": 9,
+                "y": 38,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 15
+                },
+                "x": 10,
+                "y": 38,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 15
+                },
+                "x": 11,
+                "y": 38,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 15
+                },
+                "x": 12,
+                "y": 38,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 15
+                },
+                "x": 8,
+                "y": 39,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 15
+                },
+                "x": 9,
+                "y": 39,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 15
+                },
+                "x": 10,
+                "y": 39,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 15
+                },
+                "x": 11,
+                "y": 39,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 15
+                },
+                "x": 12,
+                "y": 39,
+                "composed": false
+              }
+            ],
+            "name": "Dimple cup spawn"
+          },
+          {
+            "cells": [
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 10
+                },
+                "x": 8,
+                "y": 40,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 10
+                },
+                "x": 9,
+                "y": 40,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 10
+                },
+                "x": 10,
+                "y": 40,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 10
+                },
+                "x": 11,
+                "y": 40,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 10
+                },
+                "x": 12,
+                "y": 40,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 10
+                },
+                "x": 8,
+                "y": 41,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 10
+                },
+                "x": 9,
+                "y": 41,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 10
+                },
+                "x": 10,
+                "y": 41,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 10
+                },
+                "x": 11,
+                "y": 41,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 10
+                },
+                "x": 12,
+                "y": 41,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 10
+                },
+                "x": 8,
+                "y": 42,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 10
+                },
+                "x": 9,
+                "y": 42,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 10
+                },
+                "x": 10,
+                "y": 42,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 10
+                },
+                "x": 11,
+                "y": 42,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 10
+                },
+                "x": 12,
+                "y": 42,
+                "composed": false
+              }
+            ],
+            "name": "Longland grass seeds"
+          },
+          {
+            "cells": [
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 17
+                },
+                "x": 8,
+                "y": 43,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 17
+                },
+                "x": 9,
+                "y": 43,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 17
+                },
+                "x": 10,
+                "y": 43,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 17
+                },
+                "x": 11,
+                "y": 43,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 17
+                },
+                "x": 12,
+                "y": 43,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 17
+                },
+                "x": 8,
+                "y": 44,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 17
+                },
+                "x": 9,
+                "y": 44,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 17
+                },
+                "x": 10,
+                "y": 44,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 17
+                },
+                "x": 11,
+                "y": 44,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 17
+                },
+                "x": 12,
+                "y": 44,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 17
+                },
+                "x": 8,
+                "y": 45,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 17
+                },
+                "x": 9,
+                "y": 45,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 17
+                },
+                "x": 10,
+                "y": 45,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 17
+                },
+                "x": 11,
+                "y": 45,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_CROPS",
+                  "x": 2,
+                  "y": 17
+                },
+                "x": 12,
+                "y": 45,
+                "composed": false
+              }
+            ],
+            "name": "Blood amaranth seeds"
+          },
+          {
+            "cells": [
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 14
+                },
+                "x": 8,
+                "y": 46,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 14
+                },
+                "x": 9,
+                "y": 46,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 14
+                },
+                "x": 10,
+                "y": 46,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 14
+                },
+                "x": 11,
+                "y": 46,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 14
+                },
+                "x": 12,
+                "y": 46,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 14
+                },
+                "x": 8,
+                "y": 47,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 14
+                },
+                "x": 9,
+                "y": 47,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 14
+                },
+                "x": 10,
+                "y": 47,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 14
+                },
+                "x": 11,
+                "y": 47,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 14
+                },
+                "x": 12,
+                "y": 47,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 14
+                },
+                "x": 8,
+                "y": 48,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 14
+                },
+                "x": 9,
+                "y": 48,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 14
+                },
+                "x": 10,
+                "y": 48,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 14
+                },
+                "x": 11,
+                "y": 48,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 14
+                },
+                "x": 12,
+                "y": 48,
+                "composed": false
+              }
+            ],
+            "name": "Rope reed seeds"
+          },
+          {
+            "cells": [
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 1
+                },
+                "x": 8,
+                "y": 49,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 1
+                },
+                "x": 9,
+                "y": 49,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 1
+                },
+                "x": 10,
+                "y": 49,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 1
+                },
+                "x": 11,
+                "y": 49,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 1
+                },
+                "x": 12,
+                "y": 49,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 1
+                },
+                "x": 8,
+                "y": 50,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 1
+                },
+                "x": 9,
+                "y": 50,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 1
+                },
+                "x": 10,
+                "y": 50,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 1
+                },
+                "x": 11,
+                "y": 50,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 1
+                },
+                "x": 12,
+                "y": 50,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 1
+                },
+                "x": 8,
+                "y": 51,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 1
+                },
+                "x": 9,
+                "y": 51,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 1
+                },
+                "x": 10,
+                "y": 51,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 1
+                },
+                "x": 11,
+                "y": 51,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 1
+                },
+                "x": 12,
+                "y": 51,
+                "composed": false
+              }
+            ],
+            "name": "Pig tail seeds"
+          },
+          {
+            "cells": [
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 0
+                },
+                "x": 8,
+                "y": 52,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 0
+                },
+                "x": 9,
+                "y": 52,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 0
+                },
+                "x": 10,
+                "y": 52,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 0
+                },
+                "x": 11,
+                "y": 52,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 0
+                },
+                "x": 12,
+                "y": 52,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 0
+                },
+                "x": 8,
+                "y": 53,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 0
+                },
+                "x": 9,
+                "y": 53,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 0
+                },
+                "x": 10,
+                "y": 53,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 0
+                },
+                "x": 11,
+                "y": 53,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 0
+                },
+                "x": 12,
+                "y": 53,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 0
+                },
+                "x": 8,
+                "y": 54,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 0
+                },
+                "x": 9,
+                "y": 54,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 0
+                },
+                "x": 10,
+                "y": 54,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 0
+                },
+                "x": 11,
+                "y": 54,
+                "composed": false
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "source": {
+                  "page": "PLANT_STANDARD",
+                  "x": 2,
+                  "y": 0
+                },
+                "x": 12,
+                "y": 54,
+                "composed": false
+              }
+            ],
+            "name": "Plump helmet spawn"
+          }
+        ],
+        "type": 1
+      },
+      {
+        "rows": [
+          {
+            "cells": [
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 8,
+                "y": 16,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 9,
+                "y": 16,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 10,
+                "y": 16,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 11,
+                "y": 16,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 12,
+                "y": 16,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 8,
+                "y": 17,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 9,
+                "y": 17,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 10,
+                "y": 17,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 11,
+                "y": 17,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 12,
+                "y": 17,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 8,
+                "y": 18,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 9,
+                "y": 18,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 10,
+                "y": 18,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 11,
+                "y": 18,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 12,
+                "y": 18,
+                "composed": true
+              }
+            ],
+            "name": "Dwarven rum"
+          },
+          {
+            "cells": [
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 8,
+                "y": 19,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 9,
+                "y": 19,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 10,
+                "y": 19,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 11,
+                "y": 19,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 12,
+                "y": 19,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 8,
+                "y": 20,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 9,
+                "y": 20,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 10,
+                "y": 20,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 11,
+                "y": 20,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 12,
+                "y": 20,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 8,
+                "y": 21,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 9,
+                "y": 21,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 10,
+                "y": 21,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 11,
+                "y": 21,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 12,
+                "y": 21,
+                "composed": true
+              }
+            ],
+            "name": "Dwarven wine"
+          },
+          {
+            "cells": [
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 8,
+                "y": 22,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 9,
+                "y": 22,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 10,
+                "y": 22,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 11,
+                "y": 22,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 12,
+                "y": 22,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 8,
+                "y": 23,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 9,
+                "y": 23,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 10,
+                "y": 23,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 11,
+                "y": 23,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 12,
+                "y": 23,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 8,
+                "y": 24,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 9,
+                "y": 24,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 10,
+                "y": 24,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 11,
+                "y": 24,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 12,
+                "y": 24,
+                "composed": true
+              }
+            ],
+            "name": "Dwarven beer"
+          }
+        ],
+        "type": 2
+      },
+      {
+        "rows": [
+          {
+            "cells": [
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 8,
+                "y": 16,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 9,
+                "y": 16,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 10,
+                "y": 16,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 11,
+                "y": 16,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 12,
+                "y": 16,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 8,
+                "y": 17,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 9,
+                "y": 17,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 10,
+                "y": 17,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 11,
+                "y": 17,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 12,
+                "y": 17,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 8,
+                "y": 18,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 9,
+                "y": 18,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 10,
+                "y": 18,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 11,
+                "y": 18,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 12,
+                "y": 18,
+                "composed": true
+              }
+            ],
+            "name": "Pig's milk"
+          },
+          {
+            "cells": [
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 8,
+                "y": 19,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 9,
+                "y": 19,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 10,
+                "y": 19,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 11,
+                "y": 19,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 12,
+                "y": 19,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 8,
+                "y": 20,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 9,
+                "y": 20,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 10,
+                "y": 20,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 11,
+                "y": 20,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 12,
+                "y": 20,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 8,
+                "y": 21,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 9,
+                "y": 21,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 10,
+                "y": 21,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 11,
+                "y": 21,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 12,
+                "y": 21,
+                "composed": true
+              }
+            ],
+            "name": "Yak's milk"
+          },
+          {
+            "cells": [
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 8,
+                "y": 22,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 9,
+                "y": 22,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 10,
+                "y": 22,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 11,
+                "y": 22,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 12,
+                "y": 22,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 8,
+                "y": 23,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 9,
+                "y": 23,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 10,
+                "y": 23,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 11,
+                "y": 23,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 12,
+                "y": 23,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 8,
+                "y": 24,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 9,
+                "y": 24,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 10,
+                "y": 24,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 11,
+                "y": 24,
+                "composed": true
+              },
+              {
+                "offset_x": 2,
+                "offset_y": 2,
+                "x": 12,
+                "y": 24,
+                "composed": true
+              }
+            ],
+            "name": "Dwarven syrup"
+          }
+        ],
+        "type": 3
+      }
+    ],
+    "source_preserved": true,
+    "scope": "All22 visible native row icons across four type filters, original tile-page references and anchored offsets. Captured composed RGBA remains ignored. No DF3D artwork acceptance yet."
   }
 }

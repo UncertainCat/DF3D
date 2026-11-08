@@ -83,6 +83,40 @@ local capture=debug.getinfo(1,'S').source:sub(2):gsub('smoke/kitchen%-native.lua
 assert(loadfile(capture))(out..'/kitchen-widgets.json','templates')
 local file=assert(io.open(out..'/kitchen-native.json','w'));file:write(json.encode(result));file:close()
 shot('kitchen-root')
+if os.getenv('DF3D_KITCHEN_ART')=='1' then
+ local sources={};for _,page in ipairs(df.global.texture.page)do for i,t in ipairs(page.texpos)do if not sources[t]then sources[t]={page=page.token,x=i%page.page_dim_x,y=i//page.page_dim_x}end end end
+ local observations={};local dumped={}
+ for kind=0,3 do
+  panel.filter_type=kind;panel.filter_perm=0;panel.filter_str='';panel.sort_flags=panel.sort_flags|1
+  for _=1,3 do script.sleep(1,'frames');view:render(dfhack.getTickCount())end
+  local names={}
+  local function collect(widget)
+   if (widget.flag.whole&3)~=3 then return end
+   if df.widget_text:is_instance(widget) and widget.rect.x1==15 and widget.rect.y1>=16 then names[#names+1]={name=dfhack.df2utf(widget.str),y=widget.rect.y1}end
+   if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do collect(child)end end
+  end
+  collect(panel)
+  local rows={}
+  for _,row in ipairs(names)do
+   local cells={}
+   for y=row.y-1,row.y+1 do for x=8,12 do
+    local index=x*g.dimy+y;local texpos=g.screentexpos_anchored[index]
+    if texpos>0 then
+     cells[#cells+1]={x=x,y=y,texture=texpos,source=sources[texpos],offset_x=g.screentexpos_anchored_x[index],offset_y=g.screentexpos_anchored_y[index]}
+     if not dumped[texpos]then
+      local text,code=dfhack.run_command_silent('df3d','appearance','texture',tostring(texpos),out..'/kitchen-art-'..texpos)
+      assert(code==0 and text:find('DF3D_TEXTURE_DUMP_PASS',1,true),'Kitchen texture diagnostic failed');dumped[texpos]=true
+     end
+    end
+   end end
+   rows[#rows+1]={name=row.name,cells=cells}
+  end
+  observations[#observations+1]={type=kind,rows=rows};shot('kitchen-art-'..kind)
+ end
+ panel.filter_type=-1;panel.sort_flags=panel.sort_flags|1
+ for _=1,3 do script.sleep(1,'frames');view:render(dfhack.getTickCount())end
+ local f=assert(io.open(out..'/kitchen-art.json','w'));f:write(json.encode(observations));f:close()
+end
 if os.getenv('DF3D_KITCHEN_DISPLAY')=='1' then
  local original=df.global.plotinfo.nobles.bookkeeper_precision;local observations={}
  for _,precision in ipairs({original,100000,100})do

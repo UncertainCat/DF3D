@@ -53,8 +53,22 @@ and estimate colors at precision0/100000/100, plus all22 exclusion masks at each
 setting. Precision is restored; DF2200 exits unsaved with source preservation.
 GPU59C sampled, no viewer launched. This is metadata acceptance, not artwork or
 UI rendering acceptance. Native artwork usesc83890(item handler, frame, type,
-subtype, material, index), followed byadad70 drawing; its ownership audit remains
-pending. Runtime providers must not invoke the full row widget builder431340.
+subtype, material, index), followed byadad70 drawing. The generic selector is
+not accepted as a runtime provider: its liquid branch callsceb790, which creates
+and stores recolored textures in the global graphics cache. Runtime providers
+must not borrow that cache or invoke the full row widget builder431340.
+
+Protected164654 captures all22 native row icons across the four type filters.
+Plants/seeds map to original PLANT_STANDARD/PLANT_CROPS tiles, using the same
+c5df00/c5df30 raw references as the existing farm crop/seed art resolver. Liquids
+use composed textures; the ignored capture retains RGBA for the remaining
+palette comparison. All anchors use native offsets2,2 within the5x3 cell slot.
+The liquid selector tests native material reaction-product membership for
+RENDER_MAT; otherwise it resolves the material color through descriptor patterns
+and passes the color key toceb790. This discovery does not establish a DF3D
+liquid recipe or broader food artwork. DF28368 exits unsaved with source
+preservation; the native Other-category screenshot was inspected. Core19 passes
+in kitchen-art-discovery-20261108.
 DFHack Kitchen.cpp directly manipulates the five exclusion vectors and does not
 call the native list or mutation routines. It is not the native behavioral oracle.
 

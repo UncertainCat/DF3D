@@ -54,13 +54,26 @@ input routine. Earlier131705 shows blank amount entry and Escape closing the
 panel without changing settings. The inactive entering_amount flag remains
 true after that close; runtime must still retire its local draft with the panel.
 Material and quantity captures are in hunter_ammunition_reference.edit_reference.
-Add/delete/assigned-stack removal and complete edit validation remain pending.
+Protected132213 exercises native Add, empty Delete, Remove stack and populated
+Delete. Add appends even a duplicate type, amount25, unrestricted materials,
+flags3 and no assignments. Remove clears one stack from the spec and global
+assigned-ammo vector and inserts it into unassigned ammo. Populated Delete does
+this for all five existing stacks, then frees/removes the spec. Each action sets
+update.ammo (0x40); hunter ammo_items/ammo_units stay unchanged in this clone.
+All captured state is restored; owned DF11324 exits unsaved, source preserved,
+native30FPS/GPU51C sampled. structural_edit_reference records state digests,
+exact equipment deltas and pinned branch ranges in native4593a0. Material
+selection copies its three material fields and sets update.ammo; Add constructs
+and appends a spec; Delete/Remove perform vector bookkeeping inline. There is
+no standalone gameplay callback to invoke in these branches. The menu handler
+is not a runtime API. Owned semantic operations must preflight targets and
+allocation before changing state. Dynamic assignments, missing items, stale
+receipts, runtime provider and complete UI lifecycle remain unverified.
 
 Storage is `plotinfo.equipment.hunter_ammunition`. Native45e390 populates
 the supplied squad-equipment context; its13bfd0 call inserts vector<bool>
 entries and14add70 resolves material definitions. Neither is a standalone
-ammunition-choice provider. Runtime candidate ownership and native add,
-delete and assigned-stack removal effects remain unresolved;
+ammunition-choice provider. Runtime candidate ownership and validated semantic edit adapters remain unresolved;
 do not read the global menu vectors as runtime inputs.
 
 The staged view/controller now supports all six scalar categories0/1/2/3/4/6.

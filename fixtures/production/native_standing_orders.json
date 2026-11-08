@@ -2048,6 +2048,342 @@
         ],
         "update": 0
       }
+    },
+    "structural_edit_reference": {
+      "capture": "build/stockpile-storage-native-input-20261108-132213",
+      "before": {
+        "ammo_items": [],
+        "ammo_units": [],
+        "specs": [
+          {
+            "amount": 100,
+            "assigned": [
+              13119,
+              27744,
+              27756,
+              27792,
+              27842
+            ],
+            "flags": 3,
+            "item_subtype": 0,
+            "item_type": 39,
+            "material_class": -1,
+            "matindex": -1,
+            "mattype": -1
+          }
+        ],
+        "update": 0,
+        "assigned_ammo": {
+          "count": 6,
+          "sha256": "d59dfc65b4f49b625a11b4908acd719eafbe882eacbb17bb6eaeacd6cd8fd2b8"
+        },
+        "unassigned_ammo": {
+          "count": 21,
+          "sha256": "bd03a7ddd4ddd9d87cc22ab007660dc282c3e11eda312fd0e6448ff086c890ad"
+        }
+      },
+      "actions": {
+        "added": {
+          "rows": [
+            {
+              "text": "                       Hunters                     Add ammunition                                         Confir",
+              "y": 20
+            },
+            {
+              "text": "                   Bolts                       119/100    Mat   Amt                                       Delete",
+              "y": 24
+            },
+            {
+              "text": "                       (silver bolts [30])                                                                Remove",
+              "y": 27
+            },
+            {
+              "text": "                       (silver bolts [32])                                                                Remove",
+              "y": 30
+            },
+            {
+              "text": "                       (iron bolts [27])                                                                  Remove",
+              "y": 33
+            },
+            {
+              "text": "                       (copper bolts [29])                                                                Remove",
+              "y": 36
+            },
+            {
+              "text": "                       (silver bolt)                                                                      Remove",
+              "y": 39
+            },
+            {
+              "text": "                   Bolts                       0/25       Mat   Amt                                       Delete",
+              "y": 42
+            }
+          ],
+          "values": {
+            "ammo_items": [],
+            "ammo_units": [],
+            "specs": [
+              {
+                "amount": 100,
+                "assigned": [
+                  13119,
+                  27744,
+                  27756,
+                  27792,
+                  27842
+                ],
+                "flags": 3,
+                "item_subtype": 0,
+                "item_type": 39,
+                "material_class": -1,
+                "matindex": -1,
+                "mattype": -1
+              },
+              {
+                "amount": 25,
+                "assigned": [],
+                "flags": 3,
+                "item_subtype": 0,
+                "item_type": 39,
+                "material_class": -1,
+                "matindex": -1,
+                "mattype": -1
+              }
+            ],
+            "update": 64,
+            "assigned_ammo": {
+              "count": 6,
+              "sha256": "d59dfc65b4f49b625a11b4908acd719eafbe882eacbb17bb6eaeacd6cd8fd2b8"
+            },
+            "unassigned_ammo": {
+              "count": 21,
+              "sha256": "bd03a7ddd4ddd9d87cc22ab007660dc282c3e11eda312fd0e6448ff086c890ad"
+            }
+          },
+          "equipment_delta": {
+            "assigned_ammo": {
+              "removed": [],
+              "added": []
+            },
+            "unassigned_ammo": {
+              "removed": [],
+              "added": []
+            }
+          }
+        },
+        "deleted_empty": {
+          "rows": [
+            {
+              "text": "                       Hunters                     Add ammunition                                         Confir",
+              "y": 20
+            },
+            {
+              "text": "                   Bolts                       119/100    Mat   Amt                                       Delete",
+              "y": 24
+            },
+            {
+              "text": "                       (silver bolts [30])                                                                Remove",
+              "y": 27
+            },
+            {
+              "text": "                       (silver bolts [32])                                                                Remove",
+              "y": 30
+            },
+            {
+              "text": "                       (iron bolts [27])                                                                  Remove",
+              "y": 33
+            },
+            {
+              "text": "                       (copper bolts [29])                                                                Remove",
+              "y": 36
+            },
+            {
+              "text": "                       (silver bolt)                                                                      Remove",
+              "y": 39
+            }
+          ],
+          "values": {
+            "ammo_items": [],
+            "ammo_units": [],
+            "specs": [
+              {
+                "amount": 100,
+                "assigned": [
+                  13119,
+                  27744,
+                  27756,
+                  27792,
+                  27842
+                ],
+                "flags": 3,
+                "item_subtype": 0,
+                "item_type": 39,
+                "material_class": -1,
+                "matindex": -1,
+                "mattype": -1
+              }
+            ],
+            "update": 64,
+            "assigned_ammo": {
+              "count": 6,
+              "sha256": "d59dfc65b4f49b625a11b4908acd719eafbe882eacbb17bb6eaeacd6cd8fd2b8"
+            },
+            "unassigned_ammo": {
+              "count": 21,
+              "sha256": "bd03a7ddd4ddd9d87cc22ab007660dc282c3e11eda312fd0e6448ff086c890ad"
+            }
+          },
+          "equipment_delta": {
+            "assigned_ammo": {
+              "removed": [],
+              "added": []
+            },
+            "unassigned_ammo": {
+              "removed": [],
+              "added": []
+            }
+          }
+        },
+        "removed_stack": {
+          "rows": [
+            {
+              "text": "                       Hunters                     Add ammunition                                         Confir",
+              "y": 20
+            },
+            {
+              "text": "                   Bolts                       89/100     Mat   Amt                                       Delete",
+              "y": 24
+            },
+            {
+              "text": "                       (silver bolts [32])                                                                Remove",
+              "y": 27
+            },
+            {
+              "text": "                       (iron bolts [27])                                                                  Remove",
+              "y": 30
+            },
+            {
+              "text": "                       (copper bolts [29])                                                                Remove",
+              "y": 33
+            },
+            {
+              "text": "                       (silver bolt)                                                                      Remove",
+              "y": 36
+            }
+          ],
+          "values": {
+            "ammo_items": [],
+            "ammo_units": [],
+            "specs": [
+              {
+                "amount": 100,
+                "assigned": [
+                  27744,
+                  27756,
+                  27792,
+                  27842
+                ],
+                "flags": 3,
+                "item_subtype": 0,
+                "item_type": 39,
+                "material_class": -1,
+                "matindex": -1,
+                "mattype": -1
+              }
+            ],
+            "update": 64,
+            "assigned_ammo": {
+              "count": 5,
+              "sha256": "06f6269c3f4603aee469e36ea22226fdda99de4f0e534b6fe3b6f26244e99f78"
+            },
+            "unassigned_ammo": {
+              "count": 22,
+              "sha256": "5c371073d86c31247b961d5da947592bb80897b2866a7e025331a5afbea27c91"
+            }
+          },
+          "equipment_delta": {
+            "assigned_ammo": {
+              "removed": [
+                13119
+              ],
+              "added": []
+            },
+            "unassigned_ammo": {
+              "removed": [],
+              "added": [
+                13119
+              ]
+            }
+          }
+        },
+        "deleted_populated": {
+          "rows": [
+            {
+              "text": "                       Hunters                     Add ammunition                                         Confir",
+              "y": 20
+            }
+          ],
+          "values": {
+            "ammo_items": [],
+            "ammo_units": [],
+            "specs": [],
+            "update": 64,
+            "assigned_ammo": {
+              "count": 1,
+              "sha256": "af9808ddc0bce0430166b6695e5c9b9d4e0e2d97f1164dddc39d2139ae11f706"
+            },
+            "unassigned_ammo": {
+              "count": 26,
+              "sha256": "e1f72e923268fffff7e0536a398eeaf7f8f35eb661448a8e2f4fafcd88abec9b"
+            }
+          },
+          "equipment_delta": {
+            "assigned_ammo": {
+              "removed": [
+                13119,
+                27744,
+                27756,
+                27792,
+                27842
+              ],
+              "added": []
+            },
+            "unassigned_ammo": {
+              "removed": [],
+              "added": [
+                13119,
+                27744,
+                27756,
+                27792,
+                27842
+              ]
+            }
+          }
+        }
+      },
+      "restored": true,
+      "scope": "Native paused-clone edits; owned runtime adapter, dynamic assignment, stale references and full UI lifecycle remain pending.",
+      "native_branches": {
+        "material": {
+          "rva": "0x45bc42",
+          "length": "0x77",
+          "fnv1a64": "0x9d0ec69406c9f3a6"
+        },
+        "add": {
+          "rva": "0x45c105",
+          "length": "0xd7",
+          "fnv1a64": "0xffeecffe5e23fb7e"
+        },
+        "delete": {
+          "rva": "0x45c844",
+          "length": "0x13a",
+          "fnv1a64": "0x3b5d5c05601f4186"
+        },
+        "remove": {
+          "rva": "0x45caab",
+          "length": "0xaa",
+          "fnv1a64": "0xa193c3f30984ed36"
+        }
+      }
     }
   }
 }

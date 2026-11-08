@@ -327,6 +327,8 @@ if os.getenv('DF3D_HUNTER_AMMUNITION_NATIVE')=='1' then
  local function vector(source)local result={};for _,value in ipairs(source)do result[#result+1]=value end;return result end
  local function snapshot()
   local result={update=equipment.update.whole,ammo_items=vector(equipment.ammo_items),ammo_units=vector(equipment.ammo_units),specs={}}
+  result.assigned_ammo=vector(equipment.items_assigned[df.item_type.AMMO])
+  result.unassigned_ammo=vector(equipment.items_unassigned[df.item_type.AMMO])
   for _,spec in ipairs(equipment.hunter_ammunition)do
    result.specs[#result.specs+1]={item_type=spec.item_type,item_subtype=spec.item_subtype,material_class=spec.material_class,mattype=spec.mattype,matindex=spec.matindex,amount=spec.amount,flags=spec.flags.whole,assigned=vector(spec.assigned)}
   end
@@ -371,6 +373,39 @@ if os.getenv('DF3D_HUNTER_AMMUNITION_NATIVE')=='1' then
  equipment.hunter_ammunition[0].amount=before.specs[1].amount
  equipment.update.whole=before.update
  assert(json.encode(before)==json.encode(snapshot()),'Amount edit affected fields beyond amount/update')
+ click(64,20);click(35,24)
+ result.hunter_ammunition.added={rows=rows(),values=snapshot()}
+ assert(#equipment.hunter_ammunition==#before.specs+1,'Adding ammunition did not append a spec')
+ shot('hunter-ammunition-added')
+ click(114,42)
+ result.hunter_ammunition.deleted_empty={rows=rows(),values=snapshot()}
+ equipment.update.whole=before.update
+ assert(json.encode(before)==json.encode(snapshot()),'Deleting added ammunition did not restore specs')
+ shot('hunter-ammunition-deleted-empty')
+ click(114,27)
+ result.hunter_ammunition.removed_stack={rows=rows(),values=snapshot()}
+ shot('hunter-ammunition-removed-stack')
+ local function restore_vector(target,source)
+  target:resize(0);for _,value in ipairs(source)do target:insert('#',value)end
+ end
+ restore_vector(equipment.hunter_ammunition[0].assigned,before.specs[1].assigned)
+ restore_vector(equipment.items_assigned[df.item_type.AMMO],before.assigned_ammo)
+ restore_vector(equipment.items_unassigned[df.item_type.AMMO],before.unassigned_ammo)
+ equipment.update.whole=before.update
+ assert(json.encode(before)==json.encode(snapshot()),'Stack removal changed unexpected ammunition fields')
+ click(114,24)
+ result.hunter_ammunition.deleted_populated={rows=rows(),values=snapshot()}
+ assert(#equipment.hunter_ammunition==0,'Populated ammunition spec was not deleted')
+ shot('hunter-ammunition-deleted-populated')
+ local restored=df.squad_ammo_spec:new()
+ for _,key in ipairs({'item_type','item_subtype','material_class','mattype','matindex','amount'})do restored[key]=before.specs[1][key]end
+ restored.flags.whole=before.specs[1].flags
+ restore_vector(restored.assigned,before.specs[1].assigned)
+ equipment.hunter_ammunition:insert('#',restored)
+ restore_vector(equipment.items_assigned[df.item_type.AMMO],before.assigned_ammo)
+ restore_vector(equipment.items_unassigned[df.item_type.AMMO],before.unassigned_ammo)
+ equipment.update.whole=before.update
+ assert(json.encode(before)==json.encode(snapshot()),'Populated deletion changed unexpected ammunition fields')
  gui.simulateInput(view,'LEAVESCREEN');settle()
  result.hunter_ammunition.cancelled_amount={open=ui.open,setting_ammo=ui.setting_ammo,entering=ui.setting_ammo_entering_amount,values=snapshot()}
  assert(json.encode(before)==json.encode(snapshot()),'Cancelling amount changed ammunition')

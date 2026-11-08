@@ -372,11 +372,47 @@ if os.getenv('DF3D_HUNTER_AMMUNITION_NATIVE')=='1' then
  end
  assert(json.encode(before)==json.encode(snapshot()),'Opening hunter ammunition changed simulation settings')
  shot('hunter-ammunition-root')
+ local function layout_probe(kind)
+  if os.getenv('DF3D_HUNTER_AMMUNITION_LAYOUT')~='1' then return end
+  result.hunter_ammunition.layout=result.hunter_ammunition.layout or {}
+  for _,size in ipairs({'minimum','small','wide','default'})do
+   local file=assert(io.open(out..'/owner-input-request.tmp','w'));file:write('name-resize-'..size);file:close();assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+   local deadline=dfhack.getTickCount()+5000
+   while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Ammunition resize timed out');script.sleep(1,'frames')end
+   assert(os.remove(out..'/owner-input-ack'));script.sleep(5,'frames');settle()
+   local text={}
+   for y=0,g.dimy-1 do
+    local chars={};for x=0,g.dimx-1 do local ch=dfhack.screen.readTile(x,y).ch;chars[#chars+1]=ch>=32 and ch<=255 and string.char(ch)or' 'end
+    local line=dfhack.df2utf(table.concat(chars)):gsub('%s+$','');if line:find('%S')then text[#text+1]={y=y,text=line}end
+   end
+   result.hunter_ammunition.layout[#result.hunter_ammunition.layout+1]={kind=kind,size=size,columns=g.dimx,rows=g.dimy,text=text,first=ui.setting_ammo_scroll_position,choice_first=ui.setting_ammo_scroll_position_am}
+   assert(json.encode(before)==json.encode(snapshot()),'Resizing ammunition changed equipment')
+   shot('hunter-layout-'..kind..'-'..size)
+   if size=='minimum' then
+    local scroll={}
+    for _,probe in ipairs({{'down',34},{'up',23}})do
+     click(102,probe[2]);scroll[#scroll+1]={action=probe[1],first=ui.setting_ammo_scroll_position,choice_first=ui.setting_ammo_scroll_position_am}
+     shot('hunter-layout-'..kind..'-minimum-'..probe[1])
+    end
+    result.hunter_ammunition[kind..'_arrows']=scroll
+   end
+  end
+ end
+ layout_probe('main')
  click(64,20)
  assert(ui.setting_ammo_new_type,'Add ammunition did not open type choices')
  result.hunter_ammunition.add_picker={rows=rows(),values=snapshot()}
  assert(json.encode(before)==json.encode(snapshot()),'Opening ammunition choices changed simulation settings')
  shot('hunter-ammunition-add-picker')
+ layout_probe('types')
+ if os.getenv('DF3D_HUNTER_AMMUNITION_LAYOUT')=='1' then
+  local scroll={}
+  for _,key in ipairs({'STANDARDSCROLL_DOWN','STANDARDSCROLL_UP','STANDARDSCROLL_PAGEDOWN','STANDARDSCROLL_PAGEUP'})do
+   gui.simulateInput(view,key);settle();scroll[#scroll+1]={key=key,first=ui.setting_ammo_scroll_position_am}
+  end
+  result.hunter_ammunition.layout_scroll=scroll
+  shot('hunter-layout-types-scroll')
+ end
  gui.simulateInput(view,'LEAVESCREEN');settle()
  result.hunter_ammunition.cancelled_picker={open=ui.open,setting_ammo=ui.setting_ammo,values=snapshot()}
  assert(json.encode(before)==json.encode(snapshot()),'Cancelling ammunition choices changed simulation settings')

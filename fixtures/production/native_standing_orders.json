@@ -2635,6 +2635,102 @@
           "quantity": 1
         }
       ]
+    },
+    "layout_reference": {
+      "capture": "build/stockpile-storage-native-input-20261108-144125",
+      "sizes": [
+        {
+          "kind": "main",
+          "size": "minimum",
+          "columns": 114,
+          "rows": 46
+        },
+        {
+          "kind": "main",
+          "size": "small",
+          "columns": 120,
+          "rows": 50
+        },
+        {
+          "kind": "main",
+          "size": "wide",
+          "columns": 200,
+          "rows": 75
+        },
+        {
+          "kind": "main",
+          "size": "default",
+          "columns": 150,
+          "rows": 66
+        },
+        {
+          "kind": "types",
+          "size": "minimum",
+          "columns": 114,
+          "rows": 46
+        },
+        {
+          "kind": "types",
+          "size": "small",
+          "columns": 120,
+          "rows": 50
+        },
+        {
+          "kind": "types",
+          "size": "wide",
+          "columns": 200,
+          "rows": 75
+        },
+        {
+          "kind": "types",
+          "size": "default",
+          "columns": 150,
+          "rows": 66
+        }
+      ],
+      "main_arrows": [
+        {
+          "action": "down",
+          "choice_first": 0,
+          "first": 1
+        },
+        {
+          "action": "up",
+          "choice_first": 0,
+          "first": 0
+        }
+      ],
+      "types_arrows": [
+        {
+          "action": "down",
+          "choice_first": 1,
+          "first": 0
+        },
+        {
+          "action": "up",
+          "choice_first": 0,
+          "first": 0
+        }
+      ],
+      "keyboard": [
+        {
+          "first": 0,
+          "key": "STANDARDSCROLL_DOWN"
+        },
+        {
+          "first": 0,
+          "key": "STANDARDSCROLL_UP"
+        },
+        {
+          "first": 0,
+          "key": "STANDARDSCROLL_PAGEDOWN"
+        },
+        {
+          "first": 0,
+          "key": "STANDARDSCROLL_PAGEUP"
+        }
+      ],
+      "scope": "Native panel geometry and minimum-size one-arrow steps; wheel, drag and other input edges remain pending."
     }
   }
 }

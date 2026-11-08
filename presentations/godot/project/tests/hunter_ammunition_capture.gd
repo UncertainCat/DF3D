@@ -21,5 +21,17 @@ func run() -> void:
 	for mode in [state.Mode.Main,state.Mode.Types]:
 		state.mode=mode;state.changed.emit();await process_frame;await process_frame;await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../../../build/hunter-ammunition-"+str(mode)+".png"))
+	for dimensions in [Vector2i(912,552),Vector2i(960,600),Vector2i(1600,900)]:
+		root.size=dimensions;view.layout(Vector2(dimensions))
+		for mode in [state.Mode.Main,state.Mode.Types]:
+			state.mode=mode;state.changed.emit();await process_frame;await process_frame;await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../../../build/hunter-ammunition-"+str(mode)+"-"+str(dimensions.x)+".png"))
+			if dimensions.x==912:
+				for down in [true,false]:
+					var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=true
+					click.position=view.scrollbar.get_global_transform_with_canvas()*Vector2(8,view.scrollbar.size.y-6 if down else 6);click.global_position=click.position
+					Input.parse_input_event(click);await process_frame
+					click=click.duplicate();click.pressed=false;Input.parse_input_event(click);await process_frame
+					assert((state.choice_first if mode==state.Mode.Types else state.first)==(1 if down else 0))
 	view.queue_free();world.queue_free();await process_frame
 	print("HUNTER_AMMUNITION_CAPTURE_PASS");quit(0)

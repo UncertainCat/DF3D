@@ -62,8 +62,17 @@ only the known separate-renderer notice. The panel view and public route remain
 unfinished; controller acceptance does not establish rendered parity. The staged
 `hunter_ammunition_view.gd` and modal owner now load under the headless controller
 check (hunter-view-parse-20261108). They use the default captured panel geometry
-and native captions. Responsive geometry, hover and remaining input edges are
-pending; public navigation stays hidden. The staged Standing Other button now
+and native captions. Hover and remaining input edges are pending; public
+navigation stays hidden. Protected143926/144125 on2026-11-08 establishes native
+geometry at912x552,960x600,1200x800 and1600x900: fixed808px width, right-relative
+position clamped to32px, height following the bottom toolbar, and4/5/10/13 list
+rows. Scrollable rows move Remove/Delete16px left. Hunter-layout-render matches
+both main/type crops at all three additional sizes with zero differing pixels.
+Native minimum-size down/up arrows move both lists1/0; the rendered pointer check
+in hunter-layout-arrows-20261108 verifies those steps, with core19 passing. Native
+standard keyboard scroll commands leave the type list unchanged. Wheel/drag and
+other scroll positions remain unverified. Owned DF12020/1940 exit unsaved with
+source preservation; GPU49–50C sampled. The staged Standing Other button now
 opens a child ammunition owner through the UI host, closing Standing orders.
 Confirm releases ammunition ownership without reopening Standing orders.
 Protected143701 on2026-11-08 verifies that handoff, type-picker Cancel, typed

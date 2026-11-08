@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "kitchen_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/kitchen_state_test.gd",
+      "completion": "^KITCHEN_STATE_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "kitchen_art_capture",
       "lane": "gpu",
       "kind": "godot",

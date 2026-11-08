@@ -59,6 +59,18 @@ through the wire, publication fault injection or the unfinished controller/view.
 MSVC and core19 pass; installed plugin SHA256:
 16D169C764789E0F70234A9D363516B29D11A9CEBDF1A47CE9C0492D33A089EA.
 
+The staged `kitchen_state.gd` controller owns query/sort intent, scrolling and
+request generations. Query replacement retires old reads; close/session change
+retires receipts and late replies. A toggle copies the complete target/exclusion
+receipt, clears edit authority, and refreshes through a fresh native read after
+Applied. Rejected/Stale/Unknown clear rows and never replay. Headless
+`kitchen-controller` verifies lifecycle, malformed rows and ordered query intent.
+Protected172148 on2026-11-08 runs the real controller and semantic service through
+all six native-reference edits and refreshes, with22 aggregate comparisons and
+independent exclusion/job readback. Source preservation and unsaved owned exit
+pass; only the known separate-thread notice remains. Native filter/sort control
+gestures, navigation retention, rendered layout and public exposure remain open.
+
 Core19, the extension build and Kitchen end-to-end fake-host checks pass in
 `kitchen-contract151-roundtrip`, including ordered filters/sorts and receipts,
 Cook success, Brew Unknown with no authority, and malformed typed requests.

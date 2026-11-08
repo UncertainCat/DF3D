@@ -860,8 +860,24 @@
     "settings_restored": true,
     "source_save_preserved": true,
     "limits": [
-      "No DF3D runtime support for these categories yet",
-      "Availability alone cannot represent both hidden and visible-disabled controls"
+      "Category transport and DF3D views remain unfinished",
+      "Management145 supports Workshops only"
     ]
+  },
+  "hauling_refuse_provider_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-122337",
+    "cycles": 16,
+    "stale_refusals": 16,
+    "hidden_refusals": 9,
+    "visible_disabled_refusals": 1,
+    "restored": true,
+    "source_preserved": true,
+    "qa": "build/qa/standing-orders-category-provider-20261108",
+    "code_rva": "4334ff",
+    "code_length": "251",
+    "code_fnv64": "95f6ceb18ac24581",
+    "table_rva": "434558",
+    "table_length": "40",
+    "table_fnv64": "3084a3ff50f8edc1"
   }
 }

@@ -77,4 +77,59 @@ inline EditOutcome setWorkshop(int32_t id,int32_t expected,int32_t desired) {
     *workshopValues()[id]=uint8_t(desired);
     return EditOutcome::Applied;
 }
+// Native4334ff..433750 and switch tables434558..434598. These categories
+// toggle simulation bytes inline; never invoke the surrounding menu handler.
+struct CategorySetting {int32_t id;uint8_t value;bool visible;bool editable;};
+struct CategorySettings {std::array<CategorySetting,10> rows{};size_t count=0;};
+inline uint8_t* categoryBase() {
+    static auto* checked=[]()->uint8_t* {
+        auto* base=supportedBase();if(!base)return nullptr;
+        uint64_t code=UINT64_C(14695981039346656037),table=code;
+        for(size_t i=0;i<0x251;++i){code^=base[0x4334ff+i];code*=UINT64_C(1099511628211);}
+        for(size_t i=0;i<0x40;++i){table^=base[0x434558+i];table*=UINT64_C(1099511628211);}
+        return code==UINT64_C(0x95f6ceb18ac24581) && table==UINT64_C(0x3084a3ff50f8edc1)?base:nullptr;
+    }();
+    return checked;
+}
+inline std::array<uint8_t*,10> categoryValues(int32_t category) {
+    if(category==1)return {df::global::standing_orders_gather_animals,
+        df::global::standing_orders_gather_food,df::global::standing_orders_gather_furniture,
+        df::global::standing_orders_gather_bodies,df::global::standing_orders_gather_minerals,
+        df::global::standing_orders_gather_wood};
+    if(category==2)return {df::global::standing_orders_gather_refuse,
+        df::global::standing_orders_gather_refuse_outside,df::global::standing_orders_gather_vermin_remains,
+        df::global::standing_orders_dump_corpses,df::global::standing_orders_dump_skulls,
+        df::global::standing_orders_dump_bones,df::global::standing_orders_dump_shells,
+        df::global::standing_orders_dump_skins,df::global::standing_orders_dump_hair,
+        df::global::standing_orders_dump_other};
+    return {};
+}
+inline std::optional<CategorySettings> categorySettings(int32_t category) {
+    auto* base=categoryBase();
+    if(!base || !df::global::world || !df::global::plotinfo || (category!=1 && category!=2))return std::nullopt;
+    constexpr std::array<size_t,10> hauling={0x189c11d,0x189c1e5,0x189c1e4,0x189c1f3,0x189c1e7,0x189c1ef};
+    constexpr std::array<size_t,10> refuse={0x189c11e,0x18d6f1e,0x18d6f37,0x18d6f8e,0x18d6f2e,
+        0x18d6f2f,0x18d6f8f,0x18d6f36,0x18d6f65,0x18d6f3e};
+    const auto values=categoryValues(category);const auto& addresses=category==1?hauling:refuse;
+    CategorySettings result;result.count=category==1?6:10;
+    for(size_t i=0;i<result.count;++i){
+        if(values[i]!=base+addresses[i] || *values[i]>1)return std::nullopt;
+        result.rows[i]={int32_t(i),*values[i],true,true};
+    }
+    if(category==2)for(size_t i=1;i<result.count;++i){
+        result.rows[i].visible=result.rows[0].value!=0;
+        result.rows[i].editable=result.rows[i].visible && (i!=2 || result.rows[1].value!=0);
+    }
+    return result;
+}
+inline EditOutcome setCategory(int32_t category,int32_t id,int32_t expected,int32_t desired) {
+    if(id<0 || desired<0 || desired>1)return EditOutcome::Unavailable;
+    const auto snapshot=categorySettings(category);
+    if(!snapshot || size_t(id)>=snapshot->count || !snapshot->rows[id].editable)return EditOutcome::Unavailable;
+    if(snapshot->rows[id].value!=expected)return EditOutcome::Stale;
+    // Complete preflight before the sole nonthrowing scalar effect.
+    *categoryValues(category)[id]=uint8_t(desired);
+    return EditOutcome::Applied;
+}
+
 }

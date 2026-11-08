@@ -44,8 +44,22 @@ on all nine later controls. When outdoor collection is off, vermin remains is
 still drawn but ignores clicks. A future category contract must distinguish
 visibility from editability; the Workshops `available` field alone does not
 encode both states. `native_standing_orders.json.hauling_refuse_reference`
-records the captions, transitions and gates. These categories have no runtime
-adapter, typed request support or accepted DF3D view yet.
+records the captions, transitions and gates. The simulation adapter now exposes
+six Hauling and ten Refuse values with separate visible/editable flags. It pins
+code4334ff length251hex (FNV95f6ceb18ac24581), switch tables434558 length40hex
+(FNV3084a3ff50f8edc1), and each DFHack global address. Set requests check category,
+ID, range, current editability and expected value before a single scalar write.
+No allocations or callbacks follow that write in the setter.
+
+Protected122337 on2026-11-08 compares the adapter against all16 native cycles,
+checks stale rejection for each control and verifies nine hidden Refuse controls
+plus visible-disabled vermin rejection without side effects. Initial settings
+are restored; owned DF17444 closes unsaved with source preservation. Native is
+capped at30FPS, no viewer is launched, GPU61C sampled. MSVC and root/core19 pass
+(standing-orders-category-provider-20261108). Built/installed plugin SHA256 is
+`5F97E7127B4719F1D4E001E8779030C6C5B22C88A10AAC21A9991005E4E5AFF1`.
+The diagnostic command uses this adapter. Category transport and DF3D views
+remain unfinished; Management145 still supports Workshops only.
 
 `standing_orders_state.gd` is the staged Workshops presentation owner. It reads
 native settings through the shared semantic action service, submits explicit

@@ -2416,6 +2416,22 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="standing-category-probe") {
+          if(parameters.size()!=2 && parameters.size()!=5)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          int32_t values[4]{};
+          for(size_t i=1;i<parameters.size();++i){const auto& raw=parameters[i];
+            const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;}
+          Json::Value result(Json::objectValue);
+          if(parameters.size()==5)result["outcome"]=int(df3d_standing::setCategory(values[0],values[1],values[2],values[3]));
+          const auto snapshot=df3d_standing::categorySettings(values[0]);if(!snapshot)return CR_FAILURE;
+          result["settings"]=Json::Value(Json::arrayValue);
+          for(size_t i=0;i<snapshot->count;++i){const auto& entry=snapshot->rows[i];Json::Value row(Json::objectValue);
+            row["id"]=entry.id;row["value"]=int(entry.value);row["visible"]=entry.visible;row["editable"]=entry.editable;
+            result["settings"].append(row);}
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="standing-workshops-probe") {
           if(parameters.size()!=1 && parameters.size()!=4)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;

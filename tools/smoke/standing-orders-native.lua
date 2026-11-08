@@ -120,6 +120,42 @@ if os.getenv('DF3D_STANDING_ORDERS_CATEGORIES')=='1' then
  if df.global.standing_orders_gather_refuse_outside~=outdoor then click(12,18)end
  if df.global.standing_orders_gather_refuse~=gather then click(12,15)end
  assert(json.encode(values())==json.encode(original),'Category discovery did not restore settings')
+ if os.getenv('DF3D_STANDING_ORDERS_CATEGORY_PROVIDER')=='1' then
+  local function provider(category,...)
+   local text,code=dfhack.run_command_silent('df3d','standing-category-probe',tostring(category),...)
+   assert(code==0,'Category provider failed: '..text);return json.decode(text)
+  end
+  result.category_provider={cycles={}}
+  for _,cycle in ipairs(result.category_cycles)do
+   if cycle.category==2 then
+    provider(2,'0',tostring(df.global.standing_orders_gather_refuse),'1')
+    provider(2,'1',tostring(df.global.standing_orders_gather_refuse_outside),'1')
+   end
+   local key
+   for _,state in ipairs(cycle.states)do for name,value in pairs(state.values)do if value~=cycle.before[name]then assert(not key or key==name);key=name end end end
+   assert(json.encode(values())==json.encode(cycle.before),'Provider cycle precondition differs')
+   local stale=provider(cycle.category,tostring(cycle.index),tostring(1-df.global[key]),tostring(df.global[key]))
+   assert(stale.outcome==1 and json.encode(values())==json.encode(cycle.before),'Stale category edit changed state')
+   local steps={}
+   for _,expected in ipairs(cycle.states)do
+    local reply=provider(cycle.category,tostring(cycle.index),tostring(df.global[key]),tostring(expected.values[key]))
+    assert(reply.outcome==2 and json.encode(values())==json.encode(expected.values),'Category provider differs from native')
+    steps[#steps+1]=reply
+   end
+   result.category_provider.cycles[#result.category_provider.cycles+1]={category=cycle.category,id=cycle.index,steps=steps}
+  end
+  provider(2,'1',tostring(df.global.standing_orders_gather_refuse_outside),'0')
+  local before=values();local reply=provider(2,'2',tostring(df.global.standing_orders_gather_vermin_remains),tostring(1-df.global.standing_orders_gather_vermin_remains))
+  assert(reply.outcome==0 and reply.settings[3].visible and not reply.settings[3].editable and json.encode(values())==json.encode(before),'Visible disabled vermin gate differs')
+  provider(2,'0',tostring(df.global.standing_orders_gather_refuse),'0');before=values()
+  for id=1,9 do
+   reply=provider(2,tostring(id),'0','1')
+   assert(reply.outcome==0 and not reply.settings[id+1].visible and not reply.settings[id+1].editable and json.encode(values())==json.encode(before),'Hidden refuse gate differs')
+  end
+  provider(2,'0','0','1');provider(2,'1','0',tostring(outdoor));provider(2,'0','1',tostring(gather))
+  assert(json.encode(values())==json.encode(original),'Category provider did not restore settings')
+  result.category_provider.restored=true
+ end
  result.categories_restored=true
  click(10,12)
 end

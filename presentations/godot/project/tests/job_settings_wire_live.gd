@@ -1074,6 +1074,10 @@ func hunter_ammunition_wire() -> void:
 	for i in native.types.size():check(reply.hunter_ammunition.types[i].caption==native.types[i],"Ammunition type caption differs")
 	check(reply.hunter_ammunition.rules[0].quantity==119 and reply.hunter_ammunition.rules[0].caption==native.specs[0].caption,"Ammunition rule summary differs")
 	for i in native.specs[0].items.size():check(reply.hunter_ammunition.rules[0].items[i].caption==native.specs[0].items[i].caption,"Ammunition stack caption differs")
+	for row: Dictionary in reply.hunter_ammunition.rules:
+		for item: Dictionary in row.items:
+			check(item.appearance.stack==item.quantity and not item.appearance.material_token.is_empty() and item.appearance.subtype_raw=="ITEM_AMMO_BOLTS","Ammunition appearance differs from assigned bolts")
+	var art_file:=FileAccess.open(directory+"/hunter-item-art.json",FileAccess.WRITE);art_file.store_string(JSON.stringify(reply.hunter_ammunition));art_file.close()
 	reply=await request("hunter_ammunition",{"action":C.ManagementAction.HunterAmmunitionCandidates,"item_type":39,"item_subtype":0})
 	if not check(reply.get("status")==C.ManagementStatus.Ok and reply.hunter_ammunition.materials.size()==native.materials.size(),"Ammunition materials missing"):quit(1);return
 	for i in native.materials.size():check(reply.hunter_ammunition.materials[i].caption==native.materials[i],"Ammunition material caption differs")

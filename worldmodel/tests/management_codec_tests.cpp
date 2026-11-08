@@ -4815,10 +4815,11 @@ TEST_CASE("Hunter ammunition edits retain full expected assignments and typed in
   }
 }
 TEST_CASE("Hunter ammunition read quantities agree with assigned stack receipts") {
-  for(int fault=0;fault<3;++fault){
+  for(int fault=0;fault<6;++fault){
     flatbuffers::FlatBufferBuilder b;
     const auto spec=wire::CreateHunterAmmunitionSpec(b,39,0,-1,-1,-1,100,3,b.CreateVector(std::vector<int32_t>{13119}));
-    const auto item=wire::CreateHunterAmmunitionStack(b,fault==2?27744:13119,b.CreateString("fixture stack"),30);
+    const auto appearance=wire::CreateItemInspectionAppearance(b,b.CreateString(fault==3?"":"INORGANIC:SILVER"),b.CreateString("ITEM_AMMO_BOLTS"),b.CreateString(""),fault==4?31:30,fault==5?1:0);
+    const auto item=wire::CreateHunterAmmunitionStack(b,fault==2?27744:13119,b.CreateString("fixture stack"),30,appearance);
     const auto rule=wire::CreateHunterAmmunitionRule(b,b.CreateString("fixture bolts"),fault==1?31:30,b.CreateVector(std::vector{item}));
     const auto hunter=wire::CreateHunterAmmunitionState(b,wire::HunterAmmunitionOutcome::None,-1,-1,
       b.CreateVector(std::vector{spec}),b.CreateVector(std::vector{rule}),
@@ -4827,6 +4828,6 @@ TEST_CASE("Hunter ammunition read quantities agree with assigned stack receipts"
     state.add_status(wire::ManagementStatus::Ok);state.add_hunter_ammunition(hunter);b.Finish(state.Finish());
     const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
     CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
-    if(!fault){const auto decoded=codec::decodeState(value);REQUIRE(decoded.hunterAmmunition);CHECK(decoded.hunterAmmunition->rules.front().quantity==30);}
+    if(!fault){const auto decoded=codec::decodeState(value);REQUIRE(decoded.hunterAmmunition);CHECK(decoded.hunterAmmunition->rules.front().quantity==30);CHECK(decoded.hunterAmmunition->rules.front().items.front().appearance.materialToken=="INORGANIC:SILVER");}
   }
 }

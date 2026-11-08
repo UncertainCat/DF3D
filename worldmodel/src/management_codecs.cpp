@@ -52,7 +52,10 @@ ManagementState decodeState(const m::ManagementState* s) {
     for(const auto* v:*r->specs())out.specs.push_back({v->item_type(),v->item_subtype(),v->material_class(),v->mattype(),v->matindex(),v->amount(),v->flags(),{v->assigned()->begin(),v->assigned()->end()}});
     for(const auto* v:*r->rules()){
       HunterAmmunitionRule row{v->caption()->str(),v->quantity(),{}};
-      for(const auto* item:*v->items())row.items.push_back({item->id(),item->caption()->str(),item->quantity()});
+      for(const auto* item:*v->items()){
+        const auto* a=item->appearance();
+        row.items.push_back({item->id(),item->caption()->str(),item->quantity(),{a->material_token()->str(),a->subtype_raw()->str(),a->color_token()->str(),a->stack(),a->flags()}});
+      }
       out.rules.push_back(std::move(row));
     }
     for(const auto* v:*r->types())out.types.push_back({v->item_type(),v->item_subtype(),v->foreign(),v->caption()->str()});

@@ -2569,6 +2569,72 @@
       "restored": true,
       "plugin_sha256": "0E725C41B4B58B7C8E7502949AFC74B511F4EF7C7B56B8191838F316A01AD847",
       "scope": "Typed requests/effects/captions; rendered UI and publication fault injection remain pending."
+    },
+    "appearance_reference": {
+      "capture": "build/stockpile-storage-native-input-20261108-142845",
+      "scope": "Typed live native appearance reads; rendered artwork comparison pending. Nine edit steps still match native equipment state.",
+      "items": [
+        {
+          "appearance": {
+            "color_token": "SILVER",
+            "flags": 0,
+            "material_token": "INORGANIC:SILVER",
+            "stack": 30,
+            "subtype_raw": "ITEM_AMMO_BOLTS"
+          },
+          "caption": "(silver bolts [30])",
+          "id": 13119,
+          "quantity": 30
+        },
+        {
+          "appearance": {
+            "color_token": "SILVER",
+            "flags": 0,
+            "material_token": "INORGANIC:SILVER",
+            "stack": 32,
+            "subtype_raw": "ITEM_AMMO_BOLTS"
+          },
+          "caption": "(silver bolts [32])",
+          "id": 27744,
+          "quantity": 32
+        },
+        {
+          "appearance": {
+            "color_token": "GRAY",
+            "flags": 0,
+            "material_token": "INORGANIC:IRON",
+            "stack": 27,
+            "subtype_raw": "ITEM_AMMO_BOLTS"
+          },
+          "caption": "(iron bolts [27])",
+          "id": 27756,
+          "quantity": 27
+        },
+        {
+          "appearance": {
+            "color_token": "COPPER",
+            "flags": 0,
+            "material_token": "INORGANIC:COPPER",
+            "stack": 29,
+            "subtype_raw": "ITEM_AMMO_BOLTS"
+          },
+          "caption": "(copper bolts [29])",
+          "id": 27792,
+          "quantity": 29
+        },
+        {
+          "appearance": {
+            "color_token": "SILVER",
+            "flags": 0,
+            "material_token": "INORGANIC:SILVER",
+            "stack": 1,
+            "subtype_raw": "ITEM_AMMO_BOLTS"
+          },
+          "caption": "(silver bolt)",
+          "id": 27842,
+          "quantity": 1
+        }
+      ]
     }
   }
 }

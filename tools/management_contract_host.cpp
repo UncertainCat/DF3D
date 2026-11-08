@@ -888,7 +888,8 @@ int main(int argc,char** argv) {
         std::vector<flatbuffers::Offset<m::HunterAmmunitionMaterial>> materials;
         if(!choices && !hunterUnknown)specs.push_back(m::CreateHunterAmmunitionSpec(b,39,0,-1,-1,-1,100,3,b.CreateVector(std::vector<int32_t>{13119})));
         if(read){
-          auto stack=m::CreateHunterAmmunitionStack(b,13119,b.CreateString("fixture stack"),30);
+          auto appearance=m::CreateItemInspectionAppearance(b,b.CreateString("INORGANIC:SILVER"),b.CreateString("ITEM_AMMO_BOLTS"),b.CreateString(""),30,0);
+          auto stack=m::CreateHunterAmmunitionStack(b,13119,b.CreateString("fixture stack"),30,appearance);
           rules.push_back(m::CreateHunterAmmunitionRule(b,b.CreateString("fixture bolts"),30,b.CreateVector(std::vector{stack})));
           types.push_back(m::CreateHunterAmmunitionType(b,39,0,false,b.CreateString("fixture bolts")));
         }

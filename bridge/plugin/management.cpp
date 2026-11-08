@@ -477,7 +477,7 @@ struct StandingOrdersResult {
 };
 std::optional<StandingOrdersResult> standingOrders;
 struct HunterResult {
-  struct Stack {int32_t id,quantity;std::string caption;};
+  struct Stack {int32_t id,quantity;std::string caption;df3d_production::ItemInspectionAppearance appearance;};
   struct Rule {std::string caption;int64_t quantity=0;std::vector<Stack> items;};
   m::HunterAmmunitionOutcome outcome=m::HunterAmmunitionOutcome::Rejected;
   int16_t type=-1,subtype=-1;
@@ -1141,7 +1141,9 @@ void publish() {
     std::vector<flatbuffers::Offset<m::HunterAmmunitionMaterial>> materials;
     for(const auto& row:hunter->specs)specs.push_back(m::CreateHunterAmmunitionSpec(b,int16_t(row.item_type),int16_t(row.item_subtype),int16_t(row.material_class),int16_t(row.mattype),row.matindex,row.amount,row.flags,b.CreateVector(row.assigned)));
     for(const auto& row:hunter->rules){std::vector<flatbuffers::Offset<m::HunterAmmunitionStack>> items;
-      for(const auto& item:row.items)items.push_back(m::CreateHunterAmmunitionStack(b,item.id,b.CreateString(item.caption),item.quantity));
+      for(const auto& item:row.items){const auto& a=item.appearance;
+        auto appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags);
+        items.push_back(m::CreateHunterAmmunitionStack(b,item.id,b.CreateString(item.caption),item.quantity,appearance));}
       rules.push_back(m::CreateHunterAmmunitionRule(b,b.CreateString(row.caption),row.quantity,b.CreateVector(items)));}
     for(const auto& [row,caption]:hunter->types)types.push_back(m::CreateHunterAmmunitionType(b,row.type,row.subtype,row.foreign,b.CreateString(caption)));
     for(const auto& [row,caption]:hunter->materials)materials.push_back(m::CreateHunterAmmunitionMaterial(b,row.category,row.type,row.index,b.CreateString(caption)));
@@ -4165,7 +4167,9 @@ void run(color_ostream& out) {
             for(auto id:spec.assigned){
               auto* item=df::item::find(id);if(!item)continue;
               const auto name=h::stackCaption(item);if(!name)throw std::runtime_error("ammunition stack caption unavailable");
-              const int32_t quantity=item->getStackSize();row.quantity+=quantity;row.items.push_back({id,quantity,DF2UTF(*name)});
+              auto appearance=df3d_production::itemAppearance(item);if(!appearance)throw std::runtime_error("ammunition appearance unavailable");
+              appearance->materialToken=DF2UTF(appearance->materialToken);appearance->subtypeRaw=DF2UTF(appearance->subtypeRaw);appearance->colorToken=DF2UTF(appearance->colorToken);
+              const int32_t quantity=item->getStackSize();row.quantity+=quantity;row.items.push_back({id,quantity,DF2UTF(*name),std::move(*appearance)});
             }
             hunter->rules.push_back(std::move(row));
           }

@@ -211,7 +211,9 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
             item["mattype"]=row.matType;item["matindex"]=row.matIndex;item["amount"]=row.amount;item["flags"]=int64_t(row.flags);
             for(auto id:row.assigned)assigned.push_back(id);item["assigned"]=assigned;specs.push_back(item);}
         for(const auto& row:v.rules){Dictionary item;Array stacks;item["caption"]=String::utf8(row.caption.c_str());item["quantity"]=row.quantity;
-            for(const auto& entry:row.items){Dictionary stack;stack["id"]=entry.id;stack["caption"]=String::utf8(entry.caption.c_str());stack["quantity"]=entry.quantity;stacks.push_back(stack);}
+            for(const auto& entry:row.items){Dictionary stack,appearance;const auto& a=entry.appearance;
+                appearance["material_token"]=String::utf8(a.materialToken.c_str());appearance["subtype_raw"]=String::utf8(a.subtypeRaw.c_str());appearance["color_token"]=String::utf8(a.colorToken.c_str());appearance["stack"]=a.stack;appearance["flags"]=int(a.flags);
+                stack["id"]=entry.id;stack["caption"]=String::utf8(entry.caption.c_str());stack["quantity"]=entry.quantity;stack["appearance"]=appearance;stacks.push_back(stack);}
             item["items"]=stacks;rules.push_back(item);}
         for(const auto& row:v.types){Dictionary item;item["item_type"]=row.itemType;item["item_subtype"]=row.itemSubtype;item["foreign"]=row.foreign;item["caption"]=String::utf8(row.caption.c_str());types.push_back(item);}
         for(const auto& row:v.materials){Dictionary item;item["material_class"]=row.materialClass;item["mattype"]=row.matType;item["matindex"]=row.matIndex;item["caption"]=String::utf8(row.caption.c_str());materials.push_back(item);}

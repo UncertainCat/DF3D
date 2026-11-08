@@ -1117,6 +1117,7 @@ func test_hunter_ammunition() -> void:
 	var reply:=await receipt(seq);var value: Dictionary=reply.hunter_ammunition
 	assert(value.specs[0].assigned==PackedInt32Array([13119]) and value.rules[0].quantity==30)
 	assert(value.rules[0].items[0].caption=="fixture stack" and value.types[0].item_type==39)
+	assert(value.rules[0].items[0].appearance=={"material_token":"INORGANIC:SILVER","subtype_raw":"ITEM_AMMO_BOLTS","color_token":"","stack":30,"flags":0})
 	seq=world.management_request("hunter_ammunition",{"action":A.HunterAmmunitionCandidates,"item_type":39,"item_subtype":0});assert(seq>0)
 	reply=await receipt(seq);assert(reply.hunter_ammunition.materials[0].material_class==3)
 	var base: Dictionary={"action":A.HunterAmmunitionApply,"operation":1,"index":0,"item_id":-1,"amount":-1,"item_type":-1,"item_subtype":-1,"material_class":-1,"mattype":-1,"matindex":-1,"expected":value.specs}

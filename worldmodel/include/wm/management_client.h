@@ -422,7 +422,7 @@ struct HunterAmmunitionRequest {
   int32_t index=-1,itemId=-1,amount=-1;int16_t itemType=-1,itemSubtype=-1,materialClass=-1,matType=-1;int32_t matIndex=-1;
   std::vector<HunterAmmunitionSpec> expected;
 };
-struct HunterAmmunitionStack {int32_t id=-1;std::string caption;int32_t quantity=0;};
+struct HunterAmmunitionStack {int32_t id=-1;std::string caption;int32_t quantity=0;ItemInspectionAppearance appearance;};
 struct HunterAmmunitionRule {std::string caption;int64_t quantity=0;std::vector<HunterAmmunitionStack> items;};
 struct HunterAmmunitionType {int16_t itemType=-1,itemSubtype=-1;bool foreign=false;std::string caption;};
 struct HunterAmmunitionMaterial {int16_t materialClass=-1,matType=-1;int32_t matIndex=-1;std::string caption;};

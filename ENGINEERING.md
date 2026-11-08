@@ -33,6 +33,21 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Standing orders native discovery
 
+Management149 / Local\df3d_management_v149 requires `ItemInspectionAppearance`
+on every hunter ammunition stack. The native read uses owned `itemAppearance`
+facts; model and Godot preserve material/subtype/color tokens, stack size and
+flags. Validation rejects empty/oversized material tokens, mismatched quantities,
+unknown flags and instrument-only fields. Old148 clients must rebuild/reconnect;
+no appearance is fabricated for old responses. Root/core19, extension and Godot
+contract round trips pass in hunter-appearance149-20261108, as does MSVC.
+Protected142845 on2026-11-08 reads all five assigned bolt appearances and repeats
+the nine controller edit steps with independent native equipment comparison.
+Equipment restores; owned DF17460 exits unsaved with source preservation. GPU48C
+sampled; only the known separate-thread notice appears in joined viewer logs.
+`native_standing_orders.json.appearance_reference` retains semantic facts, not
+artwork. Installed plugin SHA256:
+`6441AA1D96D07ADE39021F713298D20F7BDC4E0064251917130377A52F40565D`.
+
 The staged hunter ammunition controller owns full spec receipts, native choice
 lists and local quantity-entry state. It serializes edits, refreshes display
 metadata after Applied, clears authority on rejection or uncertainty, and retires
@@ -58,6 +73,15 @@ not a live controller, so it does not establish input or gameplay acceptance.
 Core19 passes in hunter-chrome-final-20261108; graphical runs report only the
 documented separate-thread/finalize/shutdown diagnostics. Captures cap30FPS and
 exit promptly; GPU48–49C sampled. Installed art remains outside the repository.
+Independent item-sheet inspection cannot supply ammunition artwork: protected
+141724 on2026-11-08 returns Rejected for all five assigned stacks. The native
+`itemDescriptionDispatch` supports only its audited simple/constructed families,
+and `observeItem` does not include ammunition appearance. Do not loosen those
+description guards to obtain pictures. The ammunition read should instead carry
+the existing owned `itemAppearance` fields with each assigned stack, then use
+`item_sheet_icon` in the presentation. The attempted separate-request integration
+was removed; the staged view has an unconnected artwork input. Both diagnostic
+lanes exited owned DF unsaved; no ammunition edits ran after the failed reads.
 
 Hunter ammunition typed dispatch now reads native specs, choice captions and
 assigned-stack quantities, validates candidate type/subtype, and routes all five

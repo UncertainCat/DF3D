@@ -110,8 +110,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 148;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v148";
+inline constexpr uint32_t kManagementVersion = 149;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v149";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -1157,6 +1157,10 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
           if(!item || item->id()<=prior || !item->caption() || item->quantity()<0 ||
              !std::binary_search(assigned->begin(),assigned->end(),item->id()))return "invalid ammunition assigned stack";
           prior=item->id();quantity+=item->quantity();
+		  const auto* a=item->appearance();
+		  if(!a || !a->material_token() || a->material_token()->size()==0 || a->material_token()->size()>256 ||
+		     !a->subtype_raw() || a->subtype_raw()->size()>128 || !a->color_token() || a->color_token()->size()>128 ||
+		     a->stack()<1 || a->stack()!=item->quantity() || (a->flags()&~96) || !validInspectionInstrument(*a,39))return "invalid ammunition appearance";
         }
         if(quantity!=row->quantity())return "ammunition quantity mismatch";
       }

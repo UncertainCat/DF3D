@@ -1844,7 +1844,7 @@ table HunterAmmunitionRequest {
   material_class:int16 = -1; mattype:int16 = -1; matindex:int32 = -1;
   expected:[HunterAmmunitionSpec];
 }
-table HunterAmmunitionStack { id:int32 = -1; caption:string (required); quantity:int32; }
+table HunterAmmunitionStack { id:int32 = -1; caption:string (required); quantity:int32; appearance:ItemInspectionAppearance (required); }
 table HunterAmmunitionRule { caption:string (required); quantity:int64; items:[HunterAmmunitionStack] (required); }
 table HunterAmmunitionType { item_type:int16 = -1; item_subtype:int16 = -1; foreign:bool; caption:string (required); }
 table HunterAmmunitionMaterial { material_class:int16 = -1; mattype:int16 = -1; matindex:int32 = -1; caption:string (required); }
@@ -2192,7 +2192,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 148;
+  schema_version:uint32 = 149;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2254,7 +2254,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 148;
+  schema_version:uint32 = 149;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

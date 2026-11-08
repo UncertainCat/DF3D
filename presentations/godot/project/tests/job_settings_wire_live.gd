@@ -705,7 +705,12 @@ func work_detail_settings_scene() -> void:
 	var interaction:=Interaction.new();root.add_child(interaction)
 	var host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)
 	var help=preload("res://scripts/native_hover_view.gd").new();root.add_child(help);help.configure(world);help.layout(Vector2(1200,800))
-	var owner=preload("res://scripts/work_details_panel.gd").new();root.add_child(owner);owner.configure(world,service,host,help);owner.open_panel()
+	var composition=preload("res://scripts/fortress_ui.gd").new();root.add_child(composition)
+	composition.world=world;composition.actions=service;composition.host=host
+	composition.view={"_fortress_hud":{"native_help":help}}
+	var owner=composition.controller("work_details")
+	check(composition.controller("work_details")==owner,"Work Details factory duplicated its owner")
+	owner.open_panel()
 	var state=owner.state;var view=owner.panel
 	if not check(await ready(state),"Settings scene roster failed"):quit(1);return
 	await pointer(view,view.detail_rect(int(expected.index)).get_center())
@@ -803,7 +808,7 @@ func work_detail_settings_scene() -> void:
 	owner.handle_back();check(not view.visible,"Settings owner Back failed")
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"rendered_settings":true,"phase":reference.settings_wire_phase}));file.close()
-	owner.queue_free();help.queue_free();host.queue_free();interaction.queue_free();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)
+	composition.queue_free();help.queue_free();host.queue_free();interaction.queue_free();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)
 
 func work_detail_reset_scene(index: int) -> void:
 	if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Reset scene assets unavailable"):return

@@ -13,7 +13,8 @@ func run():
 	assert(composition.controllers.is_empty() and composition.get_child_count()==0, "Rejected destinations do not construct any runtime nodes")
 	for title in ["Build / construction","Stockpiles / zones","Residents","Work Details","Work orders","Reports"]:
 		assert(Registry.allows(title) and Registry.PANEL_SCRIPTS.has(Registry.PANEL_ROUTES[title]), "Accepted route has exactly one registered factory")
-	assert(Registry.PANEL_SCRIPTS.size()==6,"Accepted controllers only")
+	assert(Registry.PANEL_SCRIPTS.has("work_details"),"Staged Work Details has a composition factory")
+	assert(Registry.PANEL_ROUTES["Work Details"]=="readouts","Unfinished Work Details must not replace the public route")
 	composition.free()
 	print("ADAPTER_RETIREMENT_PASS")
 	quit()

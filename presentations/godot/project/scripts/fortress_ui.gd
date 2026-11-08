@@ -126,6 +126,9 @@ func controller(id: String):
 	if not Registry.PANEL_SCRIPTS.has(id): return null
 	if controllers.has(id): return controllers[id]
 	var panel = load(Registry.PANEL_SCRIPTS[id]).new()
+	if id=="work_details":
+		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
+		controllers[id]=panel;return panel
 	if id=="residents":
 		add_child(panel);panel.configure(world,actions,host)
 		panel.panel.hover_help=view._fortress_hud.native_help

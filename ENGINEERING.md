@@ -33,6 +33,20 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Work Details native discovery
 
+The main `fortress_ui` composition now owns a lazy, reusable `work_details`
+controller, configured with the shared action service, input host and native
+hover help. It remains staged: public Work Details/Labor destinations still use
+the existing read-only route. Protected113924 on2026-11-08 runs the rendered
+settings workflow through this factory and asserts repeated lookup returns the
+same owner. Resizing, scroll input, local worker selection, native setting
+effects, external-controller rejection and close pass. The test supplies a
+minimal HUD reference; it does not yet verify a public launcher or full main-scene
+handoff. Offline work-details-composition-20261108 passes core19, extension,
+Work Details state and route-retirement checks. Owned DF36124 closes unsaved
+with source preservation;30FPS clients, GPU57C sampled, documented engine
+diagnostics only. Broader lifecycle, keyboard dispatch and sibling Labor tabs
+remain unfinished before public promotion.
+
 Work Details portraits select a worker row locally. They are not the Residents
 Recenter/Unit sheet buttons: native113541 on2026-11-08 clicks the first and
 second portrait, then moves the pointer away. The second row retains its gold

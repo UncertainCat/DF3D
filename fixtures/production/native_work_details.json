@@ -4194,5 +4194,13 @@
     ],
     "source_preserved": true,
     "owned_df_closed": true
+  },
+  "composition_reference": {
+    "live": "build/stockpile-storage-native-input-20261108-113924",
+    "offline": "build/qa/work-details-composition-20261108",
+    "scope": "Actual fortress_ui controller factory with shared service/host/help and minimal HUD reference; reused owner runs rendered settings workflow. Public route remains readouts.",
+    "limits": "Not full main-scene/public-launcher acceptance.",
+    "source_preserved": true,
+    "owned_df_closed": true
   }
 }

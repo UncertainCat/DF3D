@@ -2494,6 +2494,28 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             result["item_subtype"].append(row.subtype);result["foreign"].append(row.foreign);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="chores-edit-probe") {
+          if(parameters.size()!=5)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          int32_t args[3]{};
+          for(size_t i=1;i<4;++i){const auto& raw=parameters[i];
+            const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),args[i-1]);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;}
+          if(args[2]<0 || args[2]>1)return CR_WRONG_USAGE;
+          Json::Value receipt;Json::Reader reader;
+          if(!reader.parse(parameters[4],receipt) || !receipt["enabled"].isBool() ||
+             !receipt["children"].isArray() || !receipt["exempted"].isArray() || !receipt["labors"].isArray())return CR_WRONG_USAGE;
+          df3d_chores::Snapshot expected;expected.enabled=receipt["enabled"].asBool();
+          for(const auto& id:receipt["children"]){if(!id.isInt())return CR_WRONG_USAGE;expected.children.push_back(id.asInt());}
+          for(const auto& id:receipt["exempted"]){if(!id.isInt())return CR_WRONG_USAGE;expected.exempted.push_back(id.asInt());}
+          for(const auto& row:receipt["labors"]){if(!row["id"].isInt() || !row["enabled"].isBool())return CR_WRONG_USAGE;
+            expected.labors.emplace_back(row["id"].asInt(),row["enabled"].asBool());}
+          bool started=false;Json::Value result(Json::objectValue);
+          try {result["outcome"]=int(df3d_chores::apply(df3d_chores::Operation(args[0]),args[1],args[2]!=0,expected,&started));}
+          catch(...){result["outcome"]=started?3:0;}
+          result["write_started"]=started;
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="chores-probe") {
           if(parameters.size()!=1)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;

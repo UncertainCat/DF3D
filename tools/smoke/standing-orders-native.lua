@@ -101,6 +101,58 @@ for category,x in ipairs{10,23,34,46,60,71,80}do
   for _,id in ipairs(panel.labor_list)do chores.labors[#chores.labors+1]={id=id,enabled=labor.chores[id]}end
   for _,id in ipairs(labor.chores_exempted_children)do chores.exempted[#chores.exempted+1]=id end
   result.chores=chores
+  if os.getenv('DF3D_CHORES_EFFECTS')=='1' then
+   local function snapshot()
+    local state={enabled=labor.flags.children_do_chores,exempted={},labors={},units={}}
+    for _,id in ipairs(labor.chores_exempted_children)do state.exempted[#state.exempted+1]=id end
+    for id=0,93 do state.labors[#state.labors+1]=labor.chores[id] end
+    for _,unit in ipairs(df.global.world.units.active)do
+     local mask={};for id=0,93 do mask[#mask+1]=unit.status.labors[id] and '1' or '0' end
+     state.units[#state.units+1]={id=unit.id,labors=table.concat(mask)}
+    end
+    return state
+   end
+   local before=snapshot()
+   result.chores_effects={before=before,child=panel.unit[0].id,labor=panel.labor_list[0],steps={}}
+   for _,action in ipairs({{'disable',100,15},{'enable',70,15},{'child-toggle',12,19},{'child-restore',12,19},{'labor-toggle',75,19},{'labor-restore',75,19}})do
+    click(action[2],action[3])
+    result.chores_effects.steps[#result.chores_effects.steps+1]={action=action[1],state=snapshot()}
+   end
+   local after=snapshot()
+   assert(after.enabled==before.enabled and json.encode(after.exempted)==json.encode(before.exempted) and json.encode(after.labors)==json.encode(before.labors),'Chores controls not restored')
+   for _,row in ipairs(before.units)do
+    local unit=assert(df.unit.find(row.id))
+    for id=0,93 do unit.status.labors[id]=row.labors:sub(id+1,id+1)=='1' end
+   end
+   assert(json.encode(snapshot())==json.encode(before),'Chores labor effects not restored')
+   result.chores_effects.restored=true
+   if os.getenv('DF3D_CHORES_EDITS')=='1' then
+    local function receipt()
+     local text,code=dfhack.run_command_silent('df3d','chores-probe');assert(code==0,'Chores receipt rejected');return json.decode(text)
+    end
+    local function edit(op,id,desired,expected)
+     local text,code=dfhack.run_command_silent('df3d','chores-edit-probe',tostring(op),tostring(id),desired and '1' or '0',json.encode(expected))
+     assert(code==0,'Chores edit probe failed');return json.decode(text)
+    end
+    result.chores_effects.provider_steps={}
+    local stale=receipt();stale.enabled=not stale.enabled
+    local refusal=edit(1,-1,false,stale)
+    assert(refusal.outcome==2 and not refusal.write_started and json.encode(snapshot())==json.encode(before),'Stale Chores edit changed state')
+    result.chores_effects.stale=refusal
+    local child=result.chores_effects.child;local id=result.chores_effects.labor
+    for index,op in ipairs({{1,-1,false},{1,-1,true},{3,child,true},{3,child,false},{2,id,false},{2,id,true}})do
+     local applied=edit(op[1],op[2],op[3],receipt())
+     assert(applied.outcome==1 and applied.write_started,'Chores mutation rejected at '..index)
+     local actual=snapshot()
+     assert(json.encode(actual)==json.encode(result.chores_effects.steps[index].state),'Chores semantic effect differs at '..index)
+     result.chores_effects.provider_steps[#result.chores_effects.provider_steps+1]=applied
+    end
+    for _,row in ipairs(before.units)do local unit=assert(df.unit.find(row.id));for id=0,93 do unit.status.labors[id]=row.labors:sub(id+1,id+1)=='1' end end
+    assert(json.encode(snapshot())==json.encode(before),'Chores provider effects not restored')
+   end
+
+  end
+
   if os.getenv('DF3D_CHORES_PROVIDER')=='1' then
    local text,code=dfhack.run_command_silent('df3d','chores-probe')
    assert(code==0,'Owned Chores provider rejected')

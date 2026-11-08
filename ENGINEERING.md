@@ -63,8 +63,25 @@ Input4340a3/4340f4 sets/clears children_do_chores and calls4390d0 for every acti
 unit.4341d6..434284 toggles a child's sorted exemption membership and recalculates
 only that unit;434289..4342e5 toggles a labor byte and recalculates every active
 unit.4390d0 is already pinned by staffMutationFunctions. Global flags, labor
-bytes and exemption-vector RVAs are2399978,2399998 and23999f8. Safe edit receipts,
-all three actual effects and the screen remain unfinished.
+bytes and exemption-vector RVAs are2399978,2399998 and23999f8.
+
+The Chores adapter now supports explicit enabled/labor/exemption values guarded
+by the complete current roster, catalog/settings and exemption receipt. It
+validates targets, prepares exemption storage before writes, preserves unrelated
+flag bits, and calls native4390d0 over the same scope as native input. Callers
+receive writeStarted before the first mutation and must publish Unknown on any
+subsequent failure, never replay. Diagnostic chores-edit-probe exercises this
+adapter; typed management dispatch and the screen are still absent.
+
+Protected151701 compares all six disable/enable, exempt/restore and labor-off/on
+edits to fresh native clicks, including every labor mask across339 active units.
+The roster contains12 children; global recalculation also affects active units
+outside that roster. Stale receipt rejection leaves all captured fields unchanged.
+Controls and original labor masks are restored; owned DF16436 exits unsaved with
+source preservation, GPU49C sampled. `effects_reference` retains per-step control
+state, changed-unit masks and all-unit digests. MSVC build passes. This does not
+establish equipment/profession side effects, unknown-publication handling,
+changing rosters or lifecycle; those remain separate acceptance work.
 
 Native145542 on2026-11-08 verifies Add, Remove and Delete during quantity entry.
 Add/Remove retain the125 draft and Enter applies it to the original rule; Delete

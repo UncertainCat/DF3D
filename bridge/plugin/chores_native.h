@@ -2,6 +2,7 @@
 #include "standing_orders_native.h"
 #include "location_staff_order_native.h"
 #include "labor_eligibility_cache.h"
+#include "location_staff_mutation_native.h"
 #include <algorithm>
 #include <cstddef>
 
@@ -13,6 +14,7 @@ inline uint8_t* supportedBase() {
         struct Pin {size_t rva,length;uint64_t hash;};
         constexpr Pin pins[]={
             {0x42c6e0,0x663,UINT64_C(0xb255abee7d7c66c4)},
+            {0x4340a3,0x244,UINT64_C(0xed00155b8d57c027)},
             {0x13b99b0,0x250,UINT64_C(0x2846bbdb177934c5)},
             {0xb530b0,0xac,UINT64_C(0x7c6f66602bdab157)},
             {0xb972c0,0xf8,UINT64_C(0x462a923de0759a7a)},
@@ -74,4 +76,48 @@ inline std::optional<Snapshot> read() {
         result.labors.emplace_back(id,settings.chores[size_t(id)]);}
     return result;
 }
+enum class Operation {Enabled=1,Labor=2,Exempt=3};
+enum class Outcome {Rejected=0,Applied=1,Stale=2};
+inline bool same(const Snapshot& a,const Snapshot& b) {
+    return a.enabled==b.enabled && a.children==b.children &&
+        a.exempted==b.exempted && a.labors==b.labors;
+}
+// Native input mutates these simulation fields inline, then invokes4390d0.
+// Prepare the replacement exemption vector before the first write. A caller
+// must treat failure after writeStarted as Unknown, never replay it.
+inline Outcome apply(Operation operation,int32_t id,bool desired,const Snapshot& expected,bool* writeStarted=nullptr) {
+    const auto& functions=df3d_area::staffMutationFunctions();
+    if(!functions)return Outcome::Rejected;
+    const auto current=read();if(!current)return Outcome::Rejected;
+    if(!same(*current,expected))return Outcome::Stale;
+    auto& settings=df::global::plotinfo->labor_info;
+    df::unit* child=nullptr;
+    std::vector<int32_t> exemptions;
+    switch(operation) {
+    case Operation::Enabled:
+        if(id!=-1)return Outcome::Rejected;
+        break;
+    case Operation::Labor:
+        if(std::none_of(current->labors.begin(),current->labors.end(),[id](const auto& row){return row.first==id;}))return Outcome::Rejected;
+        break;
+    case Operation::Exempt:
+        if(std::find(current->children.begin(),current->children.end(),id)==current->children.end())return Outcome::Rejected;
+        child=df::unit::find(id);if(!child)return Outcome::Rejected;
+        exemptions=current->exempted;
+        {auto it=std::lower_bound(exemptions.begin(),exemptions.end(),id);
+        const bool exists=it!=exemptions.end() && *it==id;
+        if(desired && !exists)exemptions.insert(it,id);
+        else if(!desired && exists)exemptions.erase(it);}
+        break;
+    default:return Outcome::Rejected;
+    }
+    if(writeStarted)*writeStarted=true;
+    if(operation==Operation::Enabled)settings.flags.bits.children_do_chores=desired;
+    else if(operation==Operation::Labor)settings.chores[size_t(id)]=desired;
+    else settings.chores_exempted_children.swap(exemptions);
+    if(child)functions.labors(child);
+    else for(auto* unit:df::global::world->units.active)functions.labors(unit);
+    return Outcome::Applied;
+}
+
 }

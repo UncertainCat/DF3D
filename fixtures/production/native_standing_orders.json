@@ -2384,6 +2384,18 @@
           "fnv1a64": "0xa193c3f30984ed36"
         }
       }
+    },
+    "owned_candidate_provider": {
+      "capture": "build/stockpile-storage-native-input-20261108-132608",
+      "all_candidates_match": true,
+      "menu_unchanged": true,
+      "simulation_unchanged": true,
+      "type_count": 11,
+      "material_count": 992,
+      "native_rva": "0x45e390",
+      "length": "0x7cc",
+      "fnv1a64": "0x4adf6f022c9ef072",
+      "plugin_sha256": "6E69BE9779134216DC733115E4B47502D89EE190E469114E2C4FA07D0C603EFB"
     }
   }
 }

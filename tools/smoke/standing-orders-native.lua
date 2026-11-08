@@ -334,10 +334,28 @@ if os.getenv('DF3D_HUNTER_AMMUNITION_NATIVE')=='1' then
   end
   return result
  end
+ local owned_candidates
+ if os.getenv('DF3D_HUNTER_AMMUNITION_PROVIDER')=='1' then
+  local ui=df.global.game.main_interface.squad_equipment
+  local function menu_snapshot()
+   return {open=ui.open,setting=ui.setting_ammo,target=ui.setting_ammo_squad_id,amount=ui.setting_ammo_amount_str,
+    material_class=vector(ui.am_cand_civ_mat),mattype=vector(ui.am_cand_spec_mat),matindex=vector(ui.am_cand_spec_matg),
+    item_type=vector(ui.am_cand_type),item_subtype=vector(ui.am_cand_subtype),foreign=vector(ui.am_cand_foreign)}
+  end
+  local menu_before=json.encode(menu_snapshot());local simulation_before=json.encode(snapshot())
+  local text,code=dfhack.run_command_silent('df3d','hunter-ammunition-candidates-probe')
+  assert(code==0,'Owned ammunition candidates failed');owned_candidates=json.decode(text)
+  assert(menu_before==json.encode(menu_snapshot()),'Owned candidates changed native menu state')
+  assert(simulation_before==json.encode(snapshot()),'Owned candidates changed simulation settings')
+ end
  local before=snapshot();click(80,12);click(12,37)
  local ui=df.global.game.main_interface.squad_equipment
  assert(ui.open and ui.setting_ammo and ui.setting_ammo_squad_id==-1,'Hunter ammunition did not open')
  result.hunter_ammunition={before=before,opened=snapshot(),rows=rows(),candidates={material_class=vector(ui.am_cand_civ_mat),mattype=vector(ui.am_cand_spec_mat),matindex=vector(ui.am_cand_spec_matg),item_type=vector(ui.am_cand_type),item_subtype=vector(ui.am_cand_subtype),foreign=vector(ui.am_cand_foreign)}}
+ if owned_candidates then
+  assert(json.encode(owned_candidates)==json.encode(result.hunter_ammunition.candidates),'Owned candidate values/order differ from native')
+  result.hunter_ammunition.provider={all_candidates_match=true,menu_unchanged=true,simulation_unchanged=true}
+ end
  assert(json.encode(before)==json.encode(snapshot()),'Opening hunter ammunition changed simulation settings')
  shot('hunter-ammunition-root')
  click(64,20)

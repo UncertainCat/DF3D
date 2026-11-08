@@ -70,11 +70,24 @@ is not a runtime API. Owned semantic operations must preflight targets and
 allocation before changing state. Dynamic assignments, missing items, stale
 receipts, runtime provider and complete UI lifecycle remain unverified.
 
-Storage is `plotinfo.equipment.hunter_ammunition`. Native45e390 populates
-the supplied squad-equipment context; its13bfd0 call inserts vector<bool>
-entries and14add70 resolves material definitions. Neither is a standalone
-ammunition-choice provider. Runtime candidate ownership and validated semantic edit adapters remain unresolved;
-do not read the global menu vectors as runtime inputs.
+Storage is `plotinfo.equipment.hunter_ammunition`. The candidate provider in
+hunter_ammunition_native.h calls pinned native45e390 with an independently
+constructed squad-equipment context. Its global reads supply simulation raws
+and civilization resources; output goes to owned vectors. Native13bfd0 is a
+vector<bool> insertion helper and14add70 resolves material definitions. No
+native open-menu context, cursor or candidate cache is borrowed. Offset checks
+and an executable/function hash guard the ABI; returned choices are pointer-free.
+Protected132608 compares every element and ordering of11 ammunition and992
+material candidates against a subsequently opened native picker. Captured
+native menu fields/vectors and equipment state remain unchanged by the cold
+provider call. Owned DF48036 closes unsaved with source preservation; native30FPS,
+GPU50C sampled. MSVC builds; installed/built plugin SHA256 is
+`6E69BE9779134216DC733115E4B47502D89EE190E469114E2C4FA07D0C603EFB`.
+Diagnostic `df3d hunter-ammunition-candidates-probe` uses map-loaded/not-saving
+gates. The protected comparison is enabled with DF3D_HUNTER_AMMUNITION_PROVIDER=1.
+This accepts candidate generation in the captured fortress, not semantic edits,
+caption rendering, typed transport or public UI. Those remain required.
+
 
 The staged view/controller now supports all six scalar categories0/1/2/3/4/6.
 Forbidding/Petitions use the captured three-state captions, and Other uses the

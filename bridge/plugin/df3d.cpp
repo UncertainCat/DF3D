@@ -120,6 +120,7 @@
 #include "work_detail_row_native.h"
 #include "work_detail_settings_native.h"
 #include "standing_orders_native.h"
+#include "hunter_ammunition_native.h"
 #include "residents_row_native.h"
 #include "residents_specialization_native.h"
 #include "modules/Buildings.h"
@@ -2414,6 +2415,17 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             row["key"]=DF2UTF(activity->key);row["fg"]=activity->foreground;row["bg"]=activity->background;
             row["bright"]=activity->bright;result["rows"].append(row);
           }
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="hunter-ammunition-candidates-probe") {
+          if(parameters.size()!=1)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto candidates=df3d_hunter_ammunition::candidates();if(!candidates)return CR_FAILURE;
+          Json::Value result(Json::objectValue);
+          for(const auto& row:candidates->materials){result["material_class"].append(row.category);
+            result["mattype"].append(row.type);result["matindex"].append(row.index);}
+          for(const auto& row:candidates->types){result["item_type"].append(row.type);
+            result["item_subtype"].append(row.subtype);result["foreign"].append(row.foreign);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="standing-category-probe") {

@@ -33,6 +33,19 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Standing orders native discovery
 
+The staged hunter ammunition controller owns full spec receipts, native choice
+lists and local quantity-entry state. It serializes edits, refreshes display
+metadata after Applied, clears authority on rejection or uncertainty, and retires
+late responses on picker cancellation, close or session replacement. It never
+replays a mutation. Headless hunter-controller-20261108 passes the lifecycle check
+and root/core19. Protected140812 on2026-11-08 exercises the controller through
+the real semantic service for quantity, material, Add, Delete and stack Remove;
+the independent native observer confirms all nine steps, including an injected
+obsolete receipt refusal. The lane restores equipment and closes owned DF4556
+unsaved with source preservation. GPU47C sampled; the headless viewer logs contain
+only the known separate-renderer notice. The panel view and public route remain
+unfinished; controller acceptance does not establish rendered parity.
+
 Hunter ammunition typed dispatch now reads native specs, choice captions and
 assigned-stack quantities, validates candidate type/subtype, and routes all five
 Apply operations through the full-receipt native adapter. Read/choice failure

@@ -1077,13 +1077,47 @@ func hunter_ammunition_wire() -> void:
 	reply=await request("hunter_ammunition",{"action":C.ManagementAction.HunterAmmunitionCandidates,"item_type":39,"item_subtype":0})
 	if not check(reply.get("status")==C.ManagementStatus.Ok and reply.hunter_ammunition.materials.size()==native.materials.size(),"Ammunition materials missing"):quit(1);return
 	for i in native.materials.size():check(reply.hunter_ammunition.materials[i].caption==native.materials[i],"Ammunition material caption differs")
+	var controller=preload("res://scripts/hunter_ammunition_state.gd").new()
+	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
+	for frame in 5:world.poll();await process_frame
+	controller.configure(service);controller.open()
+	if not check(await ready(controller),"Ammunition controller read failed"):quit(1);return
 	var count:=0
 	for step: Dictionary in reference.wire_steps:
 		var intent: Dictionary={"action":C.ManagementAction.HunterAmmunitionApply,"operation":int(step.operation),"index":-1,"item_id":-1,"amount":-1,"item_type":-1,"item_subtype":-1,"material_class":-1,"mattype":-1,"matindex":-1,"expected":hunter_specs(step.expected)}
 		for key in ["index","item_id","amount","item_type","item_subtype","material_class","mattype","matindex"]:intent[key]=int(step.get(key,-1))
-		reply=await request("hunter_ammunition",intent)
-		if not check(reply.get("hunter_ammunition",{}).get("outcome")==int(step.outcome),"Ammunition wire outcome differs"):quit(1);return
-		check(reply.hunter_ammunition.specs==(hunter_specs(step.values.specs) if int(step.outcome)==1 else []),"Ammunition receipt differs")
+		if int(step.outcome)==C.HunterAmmunitionOutcome.Stale:
+			# Inject the obsolete receipt through the same service without replacing
+			# the controller's current authority or resubmitting its completed edit.
+			var responses: Array=[]
+			service.submit("hunter_ammunition",intent,func(_ticket,result,_sent):responses.append(result))
+			deadline=Time.get_ticks_msec()+5000
+			while responses.is_empty() and Time.get_ticks_msec()<deadline:world.poll();await create_timer(0.01).timeout
+			if not check(not responses.is_empty() and responses[0].get("hunter_ammunition",{}).get("outcome")==C.HunterAmmunitionOutcome.Stale,"Obsolete ammunition receipt was not refused"):quit(1);return
+		else:
+			check(controller.specs==hunter_specs(step.expected),"Controller authority differs before edit")
+			match int(step.operation):
+				C.HunterAmmunitionOperation.Amount:
+					controller.begin_amount(int(step.index));controller.set_amount_text(str(int(step.amount)));controller.commit_amount()
+				C.HunterAmmunitionOperation.Material:
+					controller.begin_material(int(step.index))
+					if not check(await ready(controller),"Controller material lookup failed"):quit(1);return
+					var choice:=-1
+					for i in controller.materials.size():
+						var material: Dictionary=controller.materials[i]
+						if material.material_class==intent.material_class and material.mattype==intent.mattype and material.matindex==intent.matindex:choice=i;break
+					if not check(choice>=0,"Native material choice missing"):quit(1);return
+					controller.choose(choice)
+				C.HunterAmmunitionOperation.Add:
+					controller.begin_add()
+					var choice:=-1
+					for i in controller.types.size():
+						if controller.types[i].item_type==intent.item_type and controller.types[i].item_subtype==intent.item_subtype:choice=i;break
+					if not check(choice>=0,"Native ammunition type missing"):quit(1);return
+					controller.choose(choice)
+				C.HunterAmmunitionOperation.Delete:controller.delete_rule(int(step.index))
+				C.HunterAmmunitionOperation.Remove:controller.remove_stack(int(step.index),int(step.item_id))
+			if not check(await ready(controller) and controller.specs==hunter_specs(step.values.specs),"Controller edit/refresh differs from native"):quit(1);return
 		count+=1
 		var file:=FileAccess.open(directory+"/hunter-wire-step",FileAccess.WRITE);file.store_string(str(count));file.close()
 		deadline=Time.get_ticks_msec()+3000
@@ -1092,4 +1126,4 @@ func hunter_ammunition_wire() -> void:
 			await create_timer(0.01).timeout
 		if not check(FileAccess.get_file_as_string(directory+"/hunter-wire-ack")==str(count),"Native ammunition readback missing; no replay"):quit(1);return
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"steps":count}));file.close()
-	world.queue_free();await process_frame;quit(1 if failed else 0)
+	controller.dispose();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)

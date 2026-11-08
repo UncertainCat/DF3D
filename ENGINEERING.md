@@ -50,8 +50,25 @@ Management145 peers. Owned DF38092 closes unsaved with source preservation;
 headless viewer/native30FPS, GPU59–61C samples, joined viewer logs contain only
 the known separate-renderer notice. Built/installed plugin SHA256 is
 `8131A2BA4FF1005CF6BBA5A3DF5D7A091AE17415BF4274E211B6CF88B04213C9`.
-This is contract/compatibility evidence; new native Standing orders request
-handling and UI are still pending.
+This is contract/compatibility evidence. Native Standing orders request handling
+now reads the owned native adapter and applies expected-value-guarded edits.
+Successful replies contain the complete fixed-size snapshot; stale/unavailable
+edits contain no settings. Publication validation failure after an applied write
+preserves Unknown and discards snapshot authority.
+
+Protected121002 on2026-11-08 verifies all28 typed steps against independent DF
+simulation reads:17 transitions across eight available controls, eight stale
+refusals and three unavailable controls. All original settings are restored.
+Owned DF10456 closes unsaved with source preservation. The viewer is headless;
+native is capped at30FPS, GPU53C sampled. Joined viewer logs contain only the
+known separate-renderer notice. Initial120908 failed before request submission
+because the new harness omitted Catalog session initialization; the corrected
+harness establishes the session before testing Standing orders. Root/core19,
+extension and management contract pass in standing-orders-wire-20261108. Built
+and installed plugin SHA256 is
+`447A1DF06A26402891DF5D337E228111C4706BC09E1F6DDDBF8B909A532BB07F`.
+This does not establish rendered UI parity, enabled-state acceptance for the
+three unavailable controls, or live publication-fault handling.
 
 `standing_orders_native.h` exposes Workshops simulation settings using the
 pinned4331ca..4334fa inline semantics, without invoking the menu handler. It
@@ -70,8 +87,8 @@ the original values. Owned DF46876 closes unsaved with source preservation and
 paused simulation; GPU59C sampled. MSVC build passes; installed and built plugin
 SHA256 both
 `D1B0D68D1ACF9088DC5961898DB2E108381693A2527C1A16E3A7DAB29C919BDB`.
-The diagnostic command uses this adapter; typed transport is defined above,
-but native request handling and presentation remain unimplemented. The three currently unavailable automation controls need
+The diagnostic command and typed request handler use this adapter; presentation
+remains unimplemented. The three currently unavailable automation controls need
 controlled-reaction acceptance before their enabled states can be claimed.
 
 Protected114349 on2026-11-08 captures all seven Labor/Standing orders categories

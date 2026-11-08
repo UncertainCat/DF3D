@@ -50,7 +50,24 @@ local function shot(name)
  local file=assert(io.open(out..'/standing-orders-native.json','w'));file:write(json.encode(result));file:close()
  file=assert(io.open(out..'/shot.tmp','w'));file:write(name);file:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
  local deadline=dfhack.getTickCount()+10000
- while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Standing orders capture timeout');script.sleep(1,'frames')end
+ local checked=0
+ while true do
+  if name=='standing-orders-wire' then
+   local step_file=io.open(out..'/standing-wire-step')
+   if step_file then
+    local step=tonumber(step_file:read('*a'));step_file:close()
+    if step and step>checked then
+     assert(step==checked+1 and step<=#result.wire_steps,'Unexpected wire step')
+     assert(json.encode(values())==json.encode(result.wire_steps[step].values),'Standing orders wire effects differ at step '..step)
+     checked=step
+     local ack=assert(io.open(out..'/standing-wire-ack','w'));ack:write(tostring(step));ack:close()
+    end
+   end
+  end
+  local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end
+  assert(dfhack.getTickCount()<deadline,'Standing orders capture timeout');script.sleep(1,'frames')
+ end
+ if name=='standing-orders-wire' then assert(checked==#result.wire_steps,'Wire steps incomplete');result.wire_checked=checked end
 end
 local original=values()
 for category,x in ipairs{10,23,34,46,60,71,80}do
@@ -102,5 +119,21 @@ if os.getenv('DF3D_STANDING_ORDERS_PROVIDER')=='1' then
  end
  assert(json.encode(values())==json.encode(original),'Semantic workshop edits did not restore state')
  result.provider.restored=true
+end
+if os.getenv('DF3D_STANDING_ORDERS_WIRE')=='1' then
+ result.wire_steps={}
+ for _,cycle in ipairs(result.workshop_cycles)do
+  local key
+  for _,state in ipairs(cycle.states)do for name,value in pairs(state.values)do if value~=cycle.before[name] then key=name end end end
+  local current=original[key]
+  result.wire_steps[#result.wire_steps+1]={id=cycle.index,expected=(current+1)%(cycle.index==0 and 3 or 2),value=current,outcome=3,values=original}
+  for _,state in ipairs(cycle.states)do
+   result.wire_steps[#result.wire_steps+1]={id=cycle.index,expected=current,value=state.values[key],outcome=1,values=state.values}
+   current=state.values[key]
+  end
+ end
+ for id=8,10 do result.wire_steps[#result.wire_steps+1]={id=id,expected=0,value=1,outcome=2,values=original}end
+ shot('standing-orders-wire')
+ assert(json.encode(values())==json.encode(original),'Wire settings were not restored')
 end
 shot('standing-orders-restored');records[#records+1]={name='standing-orders',categories=#result.pages,cycles=#result.workshop_cycles}

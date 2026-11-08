@@ -451,5 +451,22 @@
     "scope": "Typed read/set intents and snapshots including Unknown without authority round-trip through C++ producer and Godot. Live check verifies existing Work Details creation compatibility, not new Standing orders requests.",
     "source_preserved": true,
     "owned_df_closed": true
+  },
+  "workshop_wire_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-121002",
+    "schema_version": 145,
+    "steps": 28,
+    "applied_transitions": 17,
+    "stale_refusals": 8,
+    "unavailable_refusals": 3,
+    "independent_native_readback": true,
+    "original_values_restored": true,
+    "source_save_preserved": true,
+    "qa": "build/qa/standing-orders-wire-20261108",
+    "limitations": [
+      "No rendered Standing orders UI acceptance",
+      "Enabled kiln/smelter/other automation not covered",
+      "No live publication-fault injection"
+    ]
   }
 }

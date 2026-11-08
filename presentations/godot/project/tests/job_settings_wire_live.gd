@@ -27,6 +27,8 @@ func drag_scrollbar(bar, bottom: bool) -> void:
 
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
+	if OS.get_environment("DF3D_STANDING_ORDERS_WIRE")=="1":
+		await standing_orders_wire();return
 	if OS.get_environment("DF3D_WORK_DETAILS_FAULT_WIRE")=="1":
 		await work_detail_fault();return
 	if OS.get_environment("DF3D_WORK_DETAILS_RENAME_RENDER")=="1":
@@ -948,4 +950,36 @@ func work_detail_fault() -> void:
 	check(citizen.get("selected_detail",-1)==-1 and citizen.get("selected_unit",-1)==-1 and citizen.get("detail_list_revision",0)==0 and citizen.get("next_cursor",0)==0,"Uncertain reply retained authority")
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"uncertain":reply}));file.close()
+	world.queue_free();await process_frame;quit(1 if failed else 0)
+
+func standing_orders_wire() -> void:
+	world=Df3dWorld.new();root.add_child(world)
+	if not check(world.attach(),"Standing orders attach failed"):quit(1);return
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline:
+		world.poll()
+		if world.poll_management().get("transport_alive",false):break
+		await create_timer(0.01).timeout
+	var catalog: Dictionary=await request("construction",{"action":C.ManagementAction.Catalog})
+	if not check(catalog.get("status")==C.ManagementStatus.Ok,"Standing orders session initialization failed"):quit(1);return
+	var reply: Dictionary=await request("standing_orders",{"action":C.ManagementAction.StandingOrdersRead,"category":0})
+	if not check(reply.get("standing_orders",{}).get("settings",[]).size()==11,"Standing orders snapshot missing"):quit(1);return
+	for row: Dictionary in reply.standing_orders.settings:check(row.available==(int(row.id)<8),"Standing orders availability differs")
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/standing-orders-native.json"))
+	var count:=0
+	for step: Dictionary in reference.wire_steps:
+		reply=await request("standing_orders",{"action":C.ManagementAction.StandingOrdersSet,"category":0,"setting_id":int(step.id),"expected_value":int(step.expected),"value":int(step.value)})
+		var applied: bool=int(step.outcome)==int(C.StandingOrdersOutcome.Applied)
+		if not check(reply.get("status")== (C.ManagementStatus.Ok if applied else C.ManagementStatus.Rejected) and reply.get("standing_orders",{}).get("outcome")==int(step.outcome),"Standing orders edit outcome differs"):quit(1);return
+		if applied:check(reply.standing_orders.settings[int(step.id)].value==int(step.value),"Standing orders receipt value differs")
+		else:check(reply.standing_orders.settings.is_empty(),"Rejected standing orders retained authority")
+		count+=1
+		var file:=FileAccess.open(directory+"/standing-wire-step",FileAccess.WRITE);file.store_string(str(count));file.close()
+		deadline=Time.get_ticks_msec()+3000
+		while Time.get_ticks_msec()<deadline:
+			if FileAccess.file_exists(directory+"/standing-wire-ack") and FileAccess.get_file_as_string(directory+"/standing-wire-ack")==str(count):break
+			await create_timer(0.01).timeout
+		if not check(FileAccess.get_file_as_string(directory+"/standing-wire-ack")==str(count),"Native standing orders readback missing; no replay"):quit(1);return
+	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"steps":count}));file.close()
 	world.queue_free();await process_frame;quit(1 if failed else 0)

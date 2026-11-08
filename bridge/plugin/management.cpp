@@ -107,6 +107,7 @@
 #include "work_detail_query_native.h"
 #include "work_detail_row_native.h"
 #include "work_detail_settings_native.h"
+#include "standing_orders_native.h"
 #include "df/gamest.h"
 #include "work_order_catalog_native.h"
 #include "work_order_rows_native.h"
@@ -467,6 +468,12 @@ struct WorkDetailSettingsResult {
   std::vector<int16_t> labors;std::vector<df3d_production::WorkDetailSetting> catalog;
 };
 std::optional<WorkDetailSettingsResult> workDetailSettings;
+struct StandingOrdersResult {
+  m::StandingOrdersOutcome outcome=m::StandingOrdersOutcome::Rejected;
+  std::optional<df3d_standing::WorkshopSettings> settings;
+};
+std::optional<StandingOrdersResult> standingOrders;
+
 m::TilePos worldHoverTile;
 void clearResult() {
   creatureHeader.reset();
@@ -480,7 +487,7 @@ void clearResult() {
   residentsRows.reset();
   residentsSpecialization.reset();
   residentsActivity.reset();
-  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();
+  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -1100,10 +1107,17 @@ void publish() {
     workDetailSettingsResult=m::CreateWorkDetailSettingsState(b,value.index,value.revision,value.editable,value.noModify,
         b.CreateVector(value.labors),b.CreateVector(catalog));
   }
+  flatbuffers::Offset<m::StandingOrdersState> standingOrdersResult;
+  if(standingOrders) {
+    std::vector<flatbuffers::Offset<m::StandingOrderSetting>> rows;
+    if(standingOrders->settings)for(const auto& row:*standingOrders->settings)
+      rows.push_back(m::CreateStandingOrderSetting(b,row.id,row.value,row.available));
+    standingOrdersResult=m::CreateStandingOrdersState(b,0,standingOrders->outcome,b.CreateVector(rows));
+  }
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult);
   b.Finish(s);
   if (auto e = m::validateManagementState(
           *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()))) {
@@ -1115,10 +1129,12 @@ void publish() {
     publishingFallback = true;
     const auto placed=construction.placed,skipped=construction.skipped;
     const auto first=construction.first_building;
+    const bool standingUnknown=standingOrders && (standingOrders->outcome==m::StandingOrdersOutcome::Applied || standingOrders->outcome==m::StandingOrdersOutcome::Unknown);
     const bool citizenUnknown=citizenWriteStarted || citizens.outcomeUnknown;
     auto jobWrite=jobSettingsEdit;
     if(jobWrite && jobWrite->outcome!=m::JobSettingsEditOutcome::Applied && jobWrite->outcome!=m::JobSettingsEditOutcome::Unknown)jobWrite.reset();
     clearResult();
+    if(standingUnknown){standingOrders.emplace();standingOrders->outcome=m::StandingOrdersOutcome::Unknown;mutated=true;}
     if(citizenUnknown){citizens.outcomeUnknown=true;mutated=true;}
     if(jobWrite){jobWrite->outcome=m::JobSettingsEditOutcome::Unknown;jobSettingsEdit=jobWrite;}
     construction.placed=placed;construction.skipped=skipped;construction.first_building=first;
@@ -4066,6 +4082,29 @@ void run(color_ostream& out) {
         if(rows.size()==query.unit_ids()->size()) {residentsRows=std::move(rows);status=m::ManagementStatus::Ok;}
       }
     } catch(...) {residentsRows.reset();}
+    publish();return;
+  }
+  if(r->action()==m::ManagementAction::StandingOrdersRead || r->action()==m::ManagementAction::StandingOrdersSet) {
+    message.clear();status=m::ManagementStatus::Rejected;standingOrders.emplace();
+    const auto& query=*r->standing_orders();
+    const bool set=r->action()==m::ManagementAction::StandingOrdersSet;
+    try {
+      auto snapshot=df3d_standing::workshopSettings();
+      if(snapshot) {
+        if(!set){standingOrders->settings=*snapshot;standingOrders->outcome=m::StandingOrdersOutcome::None;status=m::ManagementStatus::Ok;}
+        else {
+          const auto outcome=df3d_standing::setWorkshop(query.setting_id(),query.expected_value(),query.value());
+          if(outcome==df3d_standing::EditOutcome::Stale)standingOrders->outcome=m::StandingOrdersOutcome::Stale;
+          else if(outcome==df3d_standing::EditOutcome::Applied) {
+            // Safe-point scalar assignment: no allocation or native work follows
+            // the write while completing this owned, fixed-size receipt.
+            (*snapshot)[size_t(query.setting_id())].value=uint8_t(query.value());
+            standingOrders->settings=*snapshot;standingOrders->outcome=m::StandingOrdersOutcome::Applied;
+            mutated=true;status=m::ManagementStatus::Ok;
+          }
+        }
+      }
+    } catch(...) {standingOrders.emplace();}
     publish();return;
   }
   if(r->action()==m::ManagementAction::WorkDetailSettingsRead || r->action()==m::ManagementAction::WorkDetailSettingsToggle) {

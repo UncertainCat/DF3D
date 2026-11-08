@@ -120,6 +120,7 @@
 #include "work_detail_row_native.h"
 #include "work_detail_settings_native.h"
 #include "standing_orders_native.h"
+#include "chores_native.h"
 #include "hunter_ammunition_native.h"
 #include "hunter_ammunition_captions_native.h"
 #include "residents_row_native.h"
@@ -2491,6 +2492,18 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             result["mattype"].append(row.type);result["matindex"].append(row.index);}
           for(const auto& row:candidates->types){result["item_type"].append(row.type);
             result["item_subtype"].append(row.subtype);result["foreign"].append(row.foreign);}
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="chores-probe") {
+          if(parameters.size()!=1)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto snapshot=df3d_chores::read();if(!snapshot)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["enabled"]=snapshot->enabled;
+          for(const char* key:{"children","exempted","labors"})result[key]=Json::Value(Json::arrayValue);
+          for(int32_t id:snapshot->children)result["children"].append(id);
+          for(int32_t id:snapshot->exempted)result["exempted"].append(id);
+          for(const auto& [id,enabled]:snapshot->labors){Json::Value row(Json::objectValue);
+            row["id"]=id;row["enabled"]=enabled;result["labors"].append(row);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="standing-category-probe") {

@@ -1,5 +1,6 @@
 #pragma once
 #include <functional>
+#include "labor_eligibility_cache.h"
 #include "creature_office_native.h"
 #include "df/histfig_entity_link_positionst.h"
 #include "df/workshop_profile.h"
@@ -248,44 +249,9 @@ inline std::optional<bool> laborEligible(df::unit* unit,const std::function<void
         if(reinterpret_cast<bool (*)(int16_t,int16_t)>(base+0x1376500)(unit->race,unit->caste) ||
            !reinterpret_cast<bool (*)(df::unit*)>(base+0x138ed20)(unit))return false;
     }
-    struct CacheRestore {
-        std::vector<std::pair<int32_t*,int32_t>> values;
-        void keep(int32_t& value){values.emplace_back(&value,value);}
-        ~CacheRestore(){for(auto it=values.rbegin();it!=values.rend();++it)*it->first=it->second;}
-    } restore;
-    static_assert(offsetof(df::unit,enemy)+offsetof(df::unit::T_enemy,histfig_vector_idx)==0x1274);
-    restore.keep(unit->enemy.histfig_vector_idx);
-    const auto* hf=df::historical_figure::find(unit->hist_figure_id);
+    LaborEligibilityCacheRestore restore;
     const int32_t group=df::global::plotinfo->group_id;
-    const auto keepFigure=[&](const df::historical_figure* figure)->bool {
-        if(!figure)return true;
-        if(figure->entity_links.size()>4096)return false;
-        for(auto* link:figure->entity_links) {
-            if(!link)return false;
-            if(link->getType()!=df::histfig_entity_link_type::POSITION || (group!=-1 && link->entity_id!=group))continue;
-            auto* position=static_cast<df::histfig_entity_link_positionst*>(link);
-            restore.keep(link->entity_vector_idx);restore.keep(position->assignment_vector_idx);
-            const auto* entity=df::historical_entity::find(link->entity_id);
-            if(!entity)continue;
-            if(entity->positions.assignments.size()>65536)return false;
-            for(auto* assignment:entity->positions.assignments) {
-                if(!assignment)return false;
-                if(assignment->id==position->assignment_id){restore.keep(assignment->position_vector_idx);break;}
-            }
-        }
-        return true;
-    };
-    if(!keepFigure(hf))return std::nullopt;
-    if(hf) {
-        if(hf->histfig_links.size()>4096)return std::nullopt;
-        for(auto* link:hf->histfig_links) {
-            if(!link)return std::nullopt;
-            if(link->getType()==df::histfig_hf_link_type::SPOUSE) {
-                if(!keepFigure(df::historical_figure::find(link->target_hf)))return std::nullopt;
-                break; // Native13b9b55 considers the first spouse link only.
-            }
-        }
-    }
+    if(!restore.capture(unit,group))return std::nullopt;
     const bool eligible=!reinterpret_cast<bool (*)(df::unit*,int32_t)>(base+0x13b99b0)(unit,group);
     // The Work animals collector repeats this predicate. Keep its lookup-cache
     // refresh inside the same restoration lifetime as the eligibility read.

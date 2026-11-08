@@ -42,19 +42,29 @@ empty exemptions in `chores_reference`. Owned DF45684 closed unsaved with source
 preservation; GPU50C sampled. This is read-only discovery, not an implemented
 provider or edit acceptance.
 
-The builder's potential owned context needs no widget calls, but eligibility
-calls138ed20/1376500/13b99b0 and native name generation require a complete audit
-before invocation. In particular13b99b0 updates lookup caches; reuse the
-restoration approach in creature_labor_native.h rather than retaining these
-read-side changes. Do not use the live menu's vectors at runtime. Input
-4340a3/4340f4 sets/clears children_do_chores and calls4390d0 for every active
+`chores_native.h` now calls the pinned builder with independently owned vectors
+and zeroed unused prefix storage. No widget, vtable, native menu source or
+callback is supplied. The full builder42c6e0..42cd42 and eligibility/cache writers
+are pinned; existing staffOrderingFunctions pins name/caste/unit readers.
+LaborEligibilityCacheRestore is shared with creature Labor and preserves all
+active-unit/office/spouse lookup indices before the native call, restoring them
+in reverse order. Simulation storage addresses and sorted exemption membership
+are validated. The diagnostic `chores-probe` is read-only; no public contract or
+screen is exposed yet.
+
+Protected151259 matches the owned provider against native12-child order, all14
+labor settings, global participation and exemptions. Owned DF42672 closes unsaved
+with source preservation; GPU49C sampled. MSVC build passes; installed plugin
+SHA256 is4B533964303D7E4AA78165B7D0382D8425FD26E11F6D5A83E076CCFC3EE2A827.
+This does not establish edited states, changing roster membership, lifecycle or
+cache restoration under deliberately stale indices.
+
+Input4340a3/4340f4 sets/clears children_do_chores and calls4390d0 for every active
 unit.4341d6..434284 toggles a child's sorted exemption membership and recalculates
 only that unit;434289..4342e5 toggles a labor byte and recalculates every active
 unit.4390d0 is already pinned by staffMutationFunctions. Global flags, labor
-bytes and exemption-vector RVAs are2399978,2399998 and23999f8. Owned-provider
-comparison, safe edit receipts, all three actual effects and the screen remain
-unfinished.
-
+bytes and exemption-vector RVAs are2399978,2399998 and23999f8. Safe edit receipts,
+all three actual effects and the screen remain unfinished.
 
 Native145542 on2026-11-08 verifies Add, Remove and Delete during quantity entry.
 Add/Remove retain the125 draft and Enter applies it to the original rule; Delete

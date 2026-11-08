@@ -2396,6 +2396,42 @@
       "length": "0x7cc",
       "fnv1a64": "0x4adf6f022c9ef072",
       "plugin_sha256": "6E69BE9779134216DC733115E4B47502D89EE190E469114E2C4FA07D0C603EFB"
+    },
+    "scalar_edit_provider": {
+      "capture": "build/stockpile-storage-native-input-20261108-133016",
+      "checks": {
+        "amount": {
+          "outcome": 2,
+          "receipt_count": 1
+        },
+        "assignment_stale": {
+          "outcome": 1,
+          "receipt_count": 0
+        },
+        "invalid": {
+          "outcome": 0,
+          "receipt_count": 0
+        },
+        "material": {
+          "outcome": 2,
+          "receipt_count": 1
+        },
+        "noop": {
+          "outcome": 2,
+          "receipt_count": 1
+        },
+        "stale": {
+          "outcome": 1,
+          "receipt_count": 0
+        }
+      },
+      "restored": true,
+      "quantity_pin": {
+        "rva": "0x8bb7cf",
+        "length": "0x8a",
+        "fnv1a64": "0xc035d9a4040f1032"
+      },
+      "plugin_sha256": "7A52096E708574784B287D4D0F8A6476A893AE7CC09A1EC829238A88BAC8EBD7"
     }
   }
 }

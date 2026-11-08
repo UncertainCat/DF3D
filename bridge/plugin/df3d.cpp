@@ -2417,6 +2417,39 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="hunter-ammunition-edit-probe") {
+          if(parameters.size()!=5)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          int32_t index=-1,value=-1;
+          for(size_t i=2;i<=3;++i){const auto& raw=parameters[i];auto& target=i==2?index:value;
+            const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),target);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;}
+          if(index<0)return CR_WRONG_USAGE;
+          Json::Value input;Json::CharReaderBuilder builder;std::string errors;
+          const auto reader=std::unique_ptr<Json::CharReader>(builder.newCharReader());
+          const auto& raw=parameters[4];
+          if(!reader->parse(raw.data(),raw.data()+raw.size(),&input,&errors) || !input.isArray())return CR_WRONG_USAGE;
+          df3d_hunter_ammunition::Snapshot expected;
+          for(const auto& row:input){
+            for(const auto* key:{"item_type","item_subtype","material_class","mattype","matindex","amount","flags"})
+              if(!row[key].isInt())return CR_WRONG_USAGE;
+            if(!row["assigned"].isArray())return CR_WRONG_USAGE;
+            df3d_hunter_ammunition::Spec spec{row["item_type"].asInt(),row["item_subtype"].asInt(),
+              row["material_class"].asInt(),row["mattype"].asInt(),row["matindex"].asInt(),row["amount"].asInt(),uint32_t(row["flags"].asInt()),{}};
+            for(const auto& id:row["assigned"]){if(!id.isInt())return CR_WRONG_USAGE;spec.assigned.push_back(id.asInt());}
+            expected.push_back(std::move(spec));
+          }
+          df3d_hunter_ammunition::EditResult reply;
+          if(parameters[1]=="amount")reply=df3d_hunter_ammunition::setAmount(expected,size_t(index),value);
+          else if(parameters[1]=="material"){
+            const auto choices=df3d_hunter_ammunition::candidates();if(!choices)return CR_FAILURE;
+            if(value>=0 && size_t(value)<choices->materials.size())
+              reply=df3d_hunter_ammunition::setMaterial(expected,size_t(index),choices->materials[size_t(value)]);
+          }else return CR_WRONG_USAGE;
+          Json::Value result(Json::objectValue);result["outcome"]=int(reply.outcome);
+          result["receipt_count"]=Json::UInt64(reply.specs.size());
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="hunter-ammunition-candidates-probe") {
           if(parameters.size()!=1)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;

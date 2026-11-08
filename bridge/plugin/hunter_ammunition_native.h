@@ -1,6 +1,7 @@
 #pragma once
 #include "standing_orders_native.h"
 #include "df/squad_equipment_interfacest.h"
+#include "df/squad_ammo_spec.h"
 #include <cstddef>
 #include <vector>
 
@@ -8,6 +9,56 @@ namespace df3d_hunter_ammunition {
 struct Material {int16_t category,type;int32_t index;};
 struct Type {int16_t type,subtype;bool foreign;};
 struct Candidates {std::vector<Material> materials;std::vector<Type> types;};
+struct Spec {
+    int32_t item_type,item_subtype,material_class,mattype,matindex,amount;
+    uint32_t flags;
+    std::vector<int32_t> assigned;
+    bool operator==(const Spec& other) const {
+        return item_type==other.item_type && item_subtype==other.item_subtype &&
+            material_class==other.material_class && mattype==other.mattype && matindex==other.matindex &&
+            amount==other.amount && flags==other.flags && assigned==other.assigned;
+    }
+};
+using Snapshot=std::vector<Spec>;
+inline std::optional<Snapshot> snapshot() {
+    if(!df3d_standing::supportedBase() || !df::global::world || !df::global::plotinfo)return std::nullopt;
+    Snapshot result;
+    for(const auto* spec:df::global::plotinfo->equipment.hunter_ammunition){
+        if(!spec)return std::nullopt;
+        result.push_back({int32_t(spec->item_type),spec->item_subtype,int32_t(spec->material_class),
+            spec->mattype,spec->matindex,spec->amount,spec->flags.whole,spec->assigned});
+    }
+    return result;
+}
+enum class EditOutcome {Unavailable,Stale,Applied};
+struct EditResult {EditOutcome outcome=EditOutcome::Unavailable;Snapshot specs;};
+inline bool editPins() {
+    auto* base=df3d_standing::supportedBase();if(!base)return false;
+    static const bool valid=[base] {
+        for(const auto& pin:std::array<std::array<uint64_t,3>,2>{{
+            {0x8bb7cf,0x8a,UINT64_C(0xc035d9a4040f1032)},
+            {0x45bc42,0x77,UINT64_C(0x9d0ec69406c9f3a6)}}}){
+            uint64_t hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin[1];++i){hash^=base[pin[0]+i];hash*=UINT64_C(1099511628211);}
+            if(hash!=pin[2])return false;
+        }
+        return true;
+    }();
+    return valid;
+}
+// Full ordered receipt includes assignments: index shifts or changed inventory
+// invalidate the intent before mutation. Prepare the reply before any writes.
+inline EditResult setAmount(const Snapshot& expected,size_t index,int32_t value) {
+    if(!editPins() || value<0 || value>5000)return {};
+    const auto current=snapshot();if(!current)return {};
+    if(*current!=expected)return {EditOutcome::Stale,{}};
+    if(index>=current->size())return {};
+    EditResult result{EditOutcome::Applied,*current};result.specs[index].amount=value;
+    auto& equipment=df::global::plotinfo->equipment;
+    auto* spec=equipment.hunter_ammunition[index];
+    if(spec->amount!=value){spec->amount=value;equipment.update.whole|=0x40;}
+    return result;
+}
 
 // Native45e390 writes only the supplied context; global reads are simulation
 // raws and civilization resources. Never pass or inspect the global menu.
@@ -38,6 +89,23 @@ inline std::optional<Candidates> candidates() {
         result.materials.push_back({int16_t(owned.am_cand_civ_mat[i]),owned.am_cand_spec_mat[i],owned.am_cand_spec_matg[i]});
     for(size_t i=0;i<owned.am_cand_type.size();++i)
         result.types.push_back({owned.am_cand_type[i],owned.am_cand_subtype[i],owned.am_cand_foreign[i]});
+    return result;
+}
+inline EditResult setMaterial(const Snapshot& expected,size_t index,const Material& value) {
+    if(!editPins())return {};
+    const auto current=snapshot();if(!current)return {};
+    if(*current!=expected)return {EditOutcome::Stale,{}};
+    if(index>=current->size())return {};
+    const auto choices=candidates();if(!choices)return {};
+    bool found=false;
+    for(const auto& choice:choices->materials)
+        if(choice.category==value.category && choice.type==value.type && choice.index==value.index){found=true;break;}
+    if(!found)return {};
+    EditResult result{EditOutcome::Applied,*current};auto& row=result.specs[index];
+    row.material_class=value.category;row.mattype=value.type;row.matindex=value.index;
+    auto& equipment=df::global::plotinfo->equipment;auto* spec=equipment.hunter_ammunition[index];
+    spec->material_class=static_cast<df::entity_material_category>(value.category);
+    spec->mattype=value.type;spec->matindex=value.index;equipment.update.whole|=0x40;
     return result;
 }
 }

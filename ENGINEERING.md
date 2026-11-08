@@ -33,6 +33,24 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Standing orders native discovery
 
+Hunter ammunition amount/material semantic edits now use a full ordered
+pointer-free snapshot (including assigned item IDs) as their expected receipt.
+Changed rows, order or assignments reject the intent. Amount accepts0..5000 and
+preserves native no-op behavior; material tuples must appear in freshly generated
+native choices. Both paths allocate/copy their response before writes, then set
+native fields and the ammo update bit without further allocations or callbacks.
+Native amount/material branch hashes guard these effects. Diagnostic
+`df3d hunter-ammunition-edit-probe` uses map-loaded/not-saving gates; the live
+comparison enables DF3D_HUNTER_AMMUNITION_EDITS=1. This is not a public command path.
+Protected133016 compares amount100->125 and unrestricted->Wood with native
+captures, refuses stale amount/assignment snapshots and amount5001, and verifies
+a no-op leaves equipment unchanged. State restores, owned DF48884 exits unsaved
+with source preservation; native30FPS/GPU49C. MSVC builds; plugin SHA256 is
+`7A52096E708574784B287D4D0F8A6476A893AE7CC09A1EC829238A88BAC8EBD7`.
+Add/Delete/Remove semantic adapters, typed request lifecycle, rendering and public
+composition remain unfinished. The current snapshot is not an epoch/session token;
+transport integration must retain the existing epoch and unknown-outcome rules.
+
 Hunter ammunition discovery uses `DF3D_HUNTER_AMMUNITION_NATIVE=1` with the
 Standing orders protected lane. Capture131512 on2026-11-08 opens the Hunters
 panel and Add ammunition picker, then cancels back to the Hunters panel without

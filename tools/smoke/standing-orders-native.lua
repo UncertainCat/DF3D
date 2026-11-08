@@ -424,6 +424,32 @@ if os.getenv('DF3D_HUNTER_AMMUNITION_NATIVE')=='1' then
  restore_vector(equipment.items_unassigned[df.item_type.AMMO],before.unassigned_ammo)
  equipment.update.whole=before.update
  assert(json.encode(before)==json.encode(snapshot()),'Populated deletion changed unexpected ammunition fields')
+ if os.getenv('DF3D_HUNTER_AMMUNITION_EDITS')=='1' then
+  local function edit(kind,value,expected)
+   local text,code=dfhack.run_command_silent('df3d','hunter-ammunition-edit-probe',kind,'0',tostring(value),json.encode(expected or before.specs))
+   assert(code==0,'Semantic ammunition edit diagnostic failed');return json.decode(text)
+  end
+  local checks={}
+  checks.noop=edit('amount',before.specs[1].amount)
+  assert(checks.noop.outcome==2 and json.encode(before)==json.encode(snapshot()),'No-op amount changed equipment')
+  checks.invalid=edit('amount',5001)
+  assert(checks.invalid.outcome==0 and json.encode(before)==json.encode(snapshot()),'Invalid amount changed equipment')
+  local stale=json.decode(json.encode(before.specs));table.remove(stale[1].assigned,1)
+  checks.assignment_stale=edit('amount',125,stale)
+  assert(checks.assignment_stale.outcome==1 and json.encode(before)==json.encode(snapshot()),'Stale assignment receipt was accepted')
+  checks.amount=edit('amount',125)
+  assert(checks.amount.outcome==2 and json.encode(snapshot())==json.encode(result.hunter_ammunition.amount_confirmed.values),'Semantic quantity differs from native')
+  checks.stale=edit('amount',100)
+  assert(checks.stale.outcome==1 and json.encode(snapshot())==json.encode(result.hunter_ammunition.amount_confirmed.values),'Stale amount receipt changed state')
+  equipment.hunter_ammunition[0].amount=before.specs[1].amount;equipment.update.whole=before.update
+  checks.material=edit('material',2)
+  assert(checks.material.outcome==2 and json.encode(snapshot())==json.encode(result.hunter_ammunition.material_selected.values),'Semantic material differs from native')
+  local spec=equipment.hunter_ammunition[0]
+  spec.material_class=before.specs[1].material_class;spec.mattype=before.specs[1].mattype;spec.matindex=before.specs[1].matindex
+  equipment.update.whole=before.update
+  assert(json.encode(before)==json.encode(snapshot()),'Semantic ammunition checks did not restore state')
+  result.hunter_ammunition.edit_provider=checks
+ end
  gui.simulateInput(view,'LEAVESCREEN');settle()
  result.hunter_ammunition.cancelled_amount={open=ui.open,setting_ammo=ui.setting_ammo,entering=ui.setting_ammo_entering_amount,values=snapshot()}
  assert(json.encode(before)==json.encode(snapshot()),'Cancelling amount changed ammunition')

@@ -5728,6 +5728,119 @@
       ],
       "appearance_provider": "Controller-owned visible ResidentsRowsRead",
       "limitations": "Default-size staged owner. Scrolling, resize, hover, alternate state artwork and main-scene exposure remain unaccepted."
+    },
+    "layout_reference": {
+      "capture": "build/stockpile-storage-native-input-20261108-155525",
+      "scroll_capture": "build/stockpile-storage-native-input-20261108-155623",
+      "viewports": [
+        [
+          912,
+          552
+        ],
+        [
+          960,
+          600
+        ],
+        [
+          1600,
+          900
+        ],
+        [
+          1200,
+          800
+        ]
+      ],
+      "page_rows": [
+        7,
+        9,
+        18,
+        14
+      ],
+      "scroll": [
+        {
+          "action": "down",
+          "child_first": 1,
+          "column": "children",
+          "labor_first": 0
+        },
+        {
+          "action": "up",
+          "child_first": 0,
+          "column": "children",
+          "labor_first": 0
+        },
+        {
+          "action": "CONTEXT_SCROLL_DOWN",
+          "child_first": 1,
+          "column": "children",
+          "labor_first": 0
+        },
+        {
+          "action": "CONTEXT_SCROLL_UP",
+          "child_first": 0,
+          "column": "children",
+          "labor_first": 0
+        },
+        {
+          "action": "CONTEXT_SCROLL_PAGEDOWN",
+          "child_first": 5,
+          "column": "children",
+          "labor_first": 0
+        },
+        {
+          "action": "CONTEXT_SCROLL_PAGEUP",
+          "child_first": 0,
+          "column": "children",
+          "labor_first": 0
+        },
+        {
+          "action": "down",
+          "child_first": 0,
+          "column": "labors",
+          "labor_first": 1
+        },
+        {
+          "action": "up",
+          "child_first": 0,
+          "column": "labors",
+          "labor_first": 0
+        },
+        {
+          "action": "CONTEXT_SCROLL_DOWN",
+          "child_first": 0,
+          "column": "labors",
+          "labor_first": 1
+        },
+        {
+          "action": "CONTEXT_SCROLL_UP",
+          "child_first": 0,
+          "column": "labors",
+          "labor_first": 0
+        },
+        {
+          "action": "CONTEXT_SCROLL_PAGEDOWN",
+          "child_first": 0,
+          "column": "labors",
+          "labor_first": 7
+        },
+        {
+          "action": "CONTEXT_SCROLL_PAGEUP",
+          "child_first": 0,
+          "column": "labors",
+          "labor_first": 0
+        }
+      ],
+      "render_qa": "build/qa/chores-scroll-render-20261108",
+      "panel_differing_pixels": 0,
+      "alternate_states": [
+        "disable",
+        "enable",
+        "child-toggle",
+        "child-restore",
+        "labor-toggle",
+        "labor-restore"
+      ],
+      "limitations": "Initial scroll positions and alternate states pixel-compared; rendered arrows/wheel/page input checked. Live scroll-triggered row fetching, dragging, hover and long-caption ellipsis remain unaccepted. Native narrow child captions overlap controls; no correction authorized."
     }
   }
 }

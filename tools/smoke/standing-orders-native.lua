@@ -48,7 +48,7 @@ end
 local function rows()
  local result={}
  for y=14,g.dimy-4 do
-  local chars={};for x=6,117 do local ch=dfhack.screen.readTile(x,y).ch;chars[#chars+1]=ch>=32 and ch<=255 and string.char(ch)or' 'end
+  local chars={};for x=6,math.min(117,g.dimx-1) do local ch=dfhack.screen.readTile(x,y).ch;chars[#chars+1]=ch>=32 and ch<=255 and string.char(ch)or' 'end
   local text=dfhack.df2utf(table.concat(chars)):gsub('%s+$','')
   if text:find('%S')then result[#result+1]={y=y,text=text}end
  end
@@ -145,6 +145,7 @@ for category,x in ipairs{10,23,34,46,60,71,80}do
    for _,action in ipairs({{'disable',100,15},{'enable',70,15},{'child-toggle',12,19},{'child-restore',12,19},{'labor-toggle',75,19},{'labor-restore',75,19}})do
     click(action[2],action[3])
     result.chores_effects.steps[#result.chores_effects.steps+1]={action=action[1],state=snapshot()}
+    if os.getenv('DF3D_CHORES_STATES')=='1' then shot('chores-state-'..action[1])end
    end
    local after=snapshot()
    assert(after.enabled==before.enabled and json.encode(after.exempted)==json.encode(before.exempted) and json.encode(after.labors)==json.encode(before.labors),'Chores controls not restored')
@@ -185,6 +186,33 @@ for category,x in ipairs{10,23,34,46,60,71,80}do
     assert(json.encode(snapshot())==json.encode(before),'Chores provider effects not restored')
    end
 
+  end
+
+  if os.getenv('DF3D_CHORES_LAYOUT')=='1' then
+   result.chores_layout={}
+   for _,size in ipairs({'minimum','small','wide','default'})do
+    local file=assert(io.open(out..'/owner-input-request.tmp','w'));file:write('name-resize-'..size);file:close();assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+    local deadline=dfhack.getTickCount()+5000
+    while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Chores resize timed out');script.sleep(1,'frames')end
+    assert(os.remove(out..'/owner-input-ack'));script.sleep(5,'frames');settle()
+    result.chores_layout[#result.chores_layout+1]={size=size,columns=g.dimx,rows=g.dimy,text=rows()}
+    shot('chores-layout-'..size)
+    if size=='minimum' then
+     result.chores_scroll={}
+     for _,column in ipairs({{'children',41},{'labors',82}})do
+      for _,action in ipairs({{'down',38},{'up',18}})do
+       click(column[2],action[2])
+       result.chores_scroll[#result.chores_scroll+1]={column=column[1],action=action[1],child_first=panel.scroll_position_units,labor_first=panel.scroll_position_labor_list}
+      end
+      for _,key in ipairs({'CONTEXT_SCROLL_DOWN','CONTEXT_SCROLL_UP','CONTEXT_SCROLL_PAGEDOWN','CONTEXT_SCROLL_PAGEUP'})do
+       g.precise_mouse_x=(column[1]=='children' and 100 or 400);g.precise_mouse_y=250;g.mouse_x=g.precise_mouse_x//8;g.mouse_y=20
+       gui.simulateInput(view,key);settle()
+       result.chores_scroll[#result.chores_scroll+1]={column=column[1],action=key,child_first=panel.scroll_position_units,labor_first=panel.scroll_position_labor_list}
+      end
+     end
+     shot('chores-layout-scroll-restored')
+    end
+   end
   end
 
   if os.getenv('DF3D_CHORES_PROVIDER')=='1' then

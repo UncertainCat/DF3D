@@ -111,8 +111,25 @@ masks, stale refusal, return to Hauling, reopening and Back. The initial complet
 panel again has zero differing pixels from the native reference. Owned DF49096
 exits unsaved with source preservation; paired logs have only documented Godot
 diagnostics. GPU60–61C sampled with serial30FPS rendering. This validates the
-staged owner, not main-scene exposure. Scrolling, resized layout, hover and alternate
-participation artwork still need native comparison before public registration.
+staged owner, not main-scene exposure. Layout and alternate-state comparisons are recorded below; remaining input and
+main-scene work still prevent public registration.
+
+Chores layout/native scroll reference155525/155623 establishes capacities7/9/18/14
+at912x552/960x600/1600x900/1200x800, independently narrowed columns when each list
+scrolls, and one-row arrows/wheel plus page-sized Shift-wheel. The staged view
+now supplies both scrollbars and preserves native narrow child captions spilling
+across nearby controls. Native checkbox tile replacement erases caption glyphs
+under transparent pixels; the view restores the original background cells before
+painting each checkbox. No overflow correction is authorized.
+
+`chores-scroll-render-20261108` passes core19, controller checks and actual rendered
+arrow/wheel/Shift-wheel input in both lists. Complete panel crops at minimum,
+small and wide sizes, plus all six global/child/labor alternate-state captures,
+have zero differing pixels against native155525. Native sessions40892 (initial
+capture-script bounds failure),22352 and39092 exited unsaved; successful captures
+preserve the source. Graphical checks remain serial30FPS, GPU59–61C sampled, with
+only documented Godot diagnostics. Live viewport-driven row fetching, dragging,
+hover, long-caption ellipsis and main-scene acceptance remain pending.
 
 Chores typed dispatch now reads owned native snapshots/captions and applies the
 three native-backed mutations. It prepares the returned receipt before writes,

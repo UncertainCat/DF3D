@@ -48,8 +48,22 @@ modulo3. Other scalar input4342e7..43448e uses modulo4 for announcements and
 binary toggles otherwise. None of these scalar branches invokes a gameplay
 callback. Hunter ammunition begins separately at43448e and calls377d40/45e390;
 Chores has its own roster/labor and recalculation work. Those workflows remain
-required and are not covered by the scalar evidence. Runtime adapter/transport/
-view support for categories3/4/6 is still pending.
+required and are not covered by the scalar evidence. The native adapter now supports categories3/4/6. It pins those scalar branches
+and their switch tables, checks all mapped addresses, and resolves the thirteen
+verified aliases against the checked executable base. Supported counts are10/6/7;
+Forbidding/Petitions values are0..2, Other announcements0..3 and the other settings
+0..1. All those controls are visible/editable. Preflight validates the current
+value and expected value before a nonthrowing scalar write and fixed receipt.
+
+Protected125159 on2026-11-08 compares all23 adapter cycles (64 transitions) with
+native-click effects. Each control rejects a stale expected value and desired4
+without changing captured settings. All originals are restored; owned DF47496
+closes unsaved with source preservation. Native30FPS/no viewer, GPU52C after.
+MSVC and root/core19 pass (standing-orders-extended-provider-20261108). Installed
+and built plugin SHA256 is
+`D0A3852ADD9F3497AA0776B1004C7C066C18DAD903EC1814778B38599A2B455A`.
+Management146 still rejects categories3/4/6; their typed contract and views remain
+pending. The diagnostic command is the only exposed consumer of these additions.
 
 The staged Standing orders owner/view now supports Workshops, Hauling and Refuse
 navigation. Switching categories retires old reads without releasing modal host

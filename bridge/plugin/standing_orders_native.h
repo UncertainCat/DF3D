@@ -91,6 +91,31 @@ inline uint8_t* categoryBase() {
     }();
     return checked;
 }
+// Additional scalar branches for Forbidding, Petitions and Other. The
+// thirteen standingorder_* symbol aliases are independently verified by native
+// click/readback captures; generated DFHack pointers for those names are absent.
+inline uint8_t* extendedBase() {
+    static auto* checked=[]()->uint8_t* {
+        auto* base=categoryBase();if(!base)return nullptr;
+        uint64_t hash0=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x31b;++i){hash0^=base[0x433750+i];hash0*=UINT64_C(1099511628211);}
+        if(hash0!=UINT64_C(0x9aba5ed88022c9d3))return nullptr;
+        uint64_t hash1=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x1a7;++i){hash1^=base[0x4342e7+i];hash1*=UINT64_C(1099511628211);}
+        if(hash1!=UINT64_C(0x960e6742933c537d))return nullptr;
+        uint64_t hash2=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x5c;++i){hash2^=base[0x434598+i];hash2*=UINT64_C(1099511628211);}
+        if(hash2!=UINT64_C(0xf0d60142667bc370))return nullptr;
+        return base;
+    }();
+    return checked;
+}
+inline size_t categoryCount(int32_t category) noexcept {
+    switch(category){case 1:case 4:return 6;case 2:case 3:return 10;case 6:return 7;default:return 0;}
+}
+inline uint8_t categoryMax(int32_t category,int32_t id) noexcept {
+    return category==3 || category==4?2:category==6 && id==0?3:1;
+}
 inline std::array<uint8_t*,10> categoryValues(int32_t category) {
     if(category==1)return {df::global::standing_orders_gather_animals,
         df::global::standing_orders_gather_food,df::global::standing_orders_gather_furniture,
@@ -102,6 +127,10 @@ inline std::array<uint8_t*,10> categoryValues(int32_t category) {
         df::global::standing_orders_dump_bones,df::global::standing_orders_dump_shells,
         df::global::standing_orders_dump_skins,df::global::standing_orders_dump_hair,
         df::global::standing_orders_dump_other};
+    auto* base=extendedBase();if(!base)return {};
+    if(category==3)return {df::global::standing_orders_forbid_used_ammo,df::global::standing_orders_forbid_own_dead,df::global::standing_orders_forbid_own_dead_items,df::global::standing_orders_forbid_other_nohunt,df::global::standing_orders_forbid_other_dead_items,base+0x189c1ed,base+0x189c1eb,base+0x189c1f7,base+0x189c1f2,base+0x189c1ea};
+    if(category==4)return {base+0x189c29d,base+0x189c295,base+0x189c29c,base+0x189c29e,base+0x189c297,base+0x189c296};
+    if(category==6)return {df::global::standing_orders_job_cancel_announce,base+0x18d6f67,base+0x18d6f0f,df::global::standing_orders_farmer_harvest,df::global::standing_orders_mix_food,df::global::standing_orders_zoneonly_drink,df::global::standing_orders_zoneonly_fish};
     return {};
 }
 inline void categoryFlags(int32_t category,CategorySettings& result) noexcept {
@@ -111,22 +140,25 @@ inline void categoryFlags(int32_t category,CategorySettings& result) noexcept {
     }
 }
 inline std::optional<CategorySettings> categorySettings(int32_t category) {
-    auto* base=categoryBase();
-    if(!base || !df::global::world || !df::global::plotinfo || (category!=1 && category!=2))return std::nullopt;
+    auto* base=category>=3?extendedBase():categoryBase();
+    if(!base || !df::global::world || !df::global::plotinfo || !categoryCount(category))return std::nullopt;
     constexpr std::array<size_t,10> hauling={0x189c11d,0x189c1e5,0x189c1e4,0x189c1f3,0x189c1e7,0x189c1ef};
     constexpr std::array<size_t,10> refuse={0x189c11e,0x18d6f1e,0x18d6f37,0x18d6f8e,0x18d6f2e,
         0x18d6f2f,0x18d6f8f,0x18d6f36,0x18d6f65,0x18d6f3e};
-    const auto values=categoryValues(category);const auto& addresses=category==1?hauling:refuse;
-    CategorySettings result;result.count=category==1?6:10;
+    constexpr std::array<size_t,10> forbidding={0x189c1f1,0x18d6f1f,0x18d6f66,0x18d6f1d,0x189c11f,0x189c1ed,0x189c1eb,0x189c1f7,0x189c1f2,0x189c1ea};
+    constexpr std::array<size_t,10> petitions={0x189c29d,0x189c295,0x189c29c,0x189c29e,0x189c297,0x189c296};
+    constexpr std::array<size_t,10> other={0x189c117,0x18d6f67,0x18d6f0f,0x189c1e6,0x189c116,0x18d6f64,0x18d6f1c};
+    const auto values=categoryValues(category);const auto& addresses=category==1?hauling:category==2?refuse:category==3?forbidding:category==4?petitions:other;
+    CategorySettings result;result.count=categoryCount(category);
     for(size_t i=0;i<result.count;++i){
-        if(values[i]!=base+addresses[i] || *values[i]>1)return std::nullopt;
+        if(values[i]!=base+addresses[i] || *values[i]>categoryMax(category,int32_t(i)))return std::nullopt;
         result.rows[i]={int32_t(i),*values[i],true,true};
     }
     categoryFlags(category,result);
     return result;
 }
 inline EditOutcome setCategory(int32_t category,int32_t id,int32_t expected,int32_t desired,CategorySettings* receipt=nullptr) {
-    if(id<0 || desired<0 || desired>1)return EditOutcome::Unavailable;
+    if(id<0 || desired<0 || desired>categoryMax(category,id))return EditOutcome::Unavailable;
     auto snapshot=categorySettings(category);
     if(!snapshot || size_t(id)>=snapshot->count || !snapshot->rows[id].editable)return EditOutcome::Unavailable;
     if(snapshot->rows[id].value!=expected)return EditOutcome::Stale;

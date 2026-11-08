@@ -112,6 +112,33 @@ if os.getenv('DF3D_STANDING_ORDERS_EXTENDED')=='1' then
   end
  end
  assert(json.encode(values())==json.encode(original),'Extended settings did not restore')
+ if os.getenv('DF3D_STANDING_ORDERS_EXTENDED_PROVIDER')=='1' then
+  result.extended_provider={cycles={}}
+  local function provider(category,...)
+   local text,code=dfhack.run_command_silent('df3d','standing-category-probe',tostring(category),...)
+   assert(code==0,'Extended provider failed: '..text);return json.decode(text)
+  end
+  for _,cycle in ipairs(result.extended_cycles)do
+   local key
+   for _,state in ipairs(cycle.states)do for name,value in pairs(state.values)do if value~=cycle.before[name]then assert(not key or key==name);key=name end end end
+   local initial=provider(cycle.category)
+   assert(#initial.settings==(cycle.category==3 and 10 or cycle.category==4 and 6 or 7),'Extended setting count differs')
+   for _,row in ipairs(initial.settings)do assert(row.visible and row.editable,'Extended setting unavailable')end
+   local stale=provider(cycle.category,tostring(cycle.index),tostring(cycle.before[key]+10),'0')
+   assert(stale.outcome==1 and json.encode(values())==json.encode(cycle.before),'Extended stale write changed settings')
+   local invalid=provider(cycle.category,tostring(cycle.index),tostring(cycle.before[key]),'4')
+   assert(invalid.outcome==0 and json.encode(values())==json.encode(cycle.before),'Extended invalid value changed settings')
+   local steps={}
+   for _,expected in ipairs(cycle.states)do
+    local reply=provider(cycle.category,tostring(cycle.index),tostring(values()[key]),tostring(expected.values[key]))
+    assert(reply.outcome==2 and json.encode(values())==json.encode(expected.values),'Extended provider effects differ')
+    steps[#steps+1]=reply
+   end
+   result.extended_provider.cycles[#result.extended_provider.cycles+1]={category=cycle.category,id=cycle.index,steps=steps}
+  end
+  assert(json.encode(values())==json.encode(original),'Extended provider did not restore settings')
+  result.extended_provider.restored=true
+ end
  result.extended_restored=true
  click(10,12)
 end

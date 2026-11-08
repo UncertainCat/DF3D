@@ -1425,5 +1425,16 @@
     "settings_restored": true,
     "source_preserved": true,
     "scope": "Native click cycles with independent scalar reads, including13 discovery-only address aliases. No runtime support yet. Chores and hunter ammunition excluded as separate workflows."
+  },
+  "extended_provider_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-125159",
+    "cycles": 23,
+    "transitions": 64,
+    "stale_refusals": 23,
+    "invalid_value_refusals": 23,
+    "restored": true,
+    "source_preserved": true,
+    "qa": "build/qa/standing-orders-extended-provider-20261108",
+    "scope": "Native adapter/diagnostic only; Management146 does not accept categories3/4/6."
   }
 }

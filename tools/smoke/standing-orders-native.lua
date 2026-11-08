@@ -107,6 +107,10 @@ if os.getenv('DF3D_LABOR_NAVIGATION')=='1' then
  click(10,10);shot('labor-navigation-detail-return')
  click(30,10);result.labor_navigation={standing_category=panel.current_category};shot('labor-navigation-standing-return')
 end
+if os.getenv('DF3D_KITCHEN_NATIVE')=='1' then
+ local path=debug.getinfo(1,'S').source:sub(2):gsub('standing%-orders%-native.lua$','kitchen-native.lua')
+ result.kitchen=assert(loadfile(path))(out,view,shot)
+end
 local original=values()
 for category,x in ipairs{10,23,34,46,60,71,80}do
  click(x,12);assert(panel.current_category==category-1,'Standing orders category click failed')

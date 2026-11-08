@@ -1,0 +1,823 @@
+{
+  "df_version": "53.16",
+  "steam_build": 24557528,
+  "capture": "build/stockpile-storage-native-input-20261108-161252",
+  "scope": "Native Kitchen discovery; no runtime adapter or public route accepted. Diagnostic widget/menu reads are not permitted runtime inputs.",
+  "initial": {
+    "category": 0,
+    "cursor": 0,
+    "filter": "",
+    "perm_filter": 0,
+    "type_filter": -1,
+    "sorts": [
+      "Type"
+    ]
+  },
+  "known": [
+    {
+      "capabilities": 1,
+      "count": 21,
+      "mat": 422,
+      "matg": 8,
+      "name": "Alfalfa seeds",
+      "subtype": -1,
+      "type": 53
+    },
+    {
+      "capabilities": 1,
+      "count": 85,
+      "mat": 423,
+      "matg": 177,
+      "name": "Rock nuts",
+      "subtype": -1,
+      "type": 53
+    },
+    {
+      "capabilities": 1,
+      "count": 20,
+      "mat": 421,
+      "matg": 189,
+      "name": "Blade weed seeds",
+      "subtype": -1,
+      "type": 53
+    },
+    {
+      "capabilities": 1,
+      "count": 16,
+      "mat": 422,
+      "matg": 182,
+      "name": "Strawberry seeds",
+      "subtype": -1,
+      "type": 53
+    },
+    {
+      "capabilities": 1,
+      "count": 27,
+      "mat": 421,
+      "matg": 181,
+      "name": "Prickle berry seeds",
+      "subtype": -1,
+      "type": 53
+    },
+    {
+      "capabilities": 1,
+      "count": 63,
+      "mat": 423,
+      "matg": 11,
+      "name": "Rice",
+      "subtype": -1,
+      "type": 53
+    },
+    {
+      "capabilities": 1,
+      "count": 25,
+      "mat": 421,
+      "matg": 185,
+      "name": "Rat weed seeds",
+      "subtype": -1,
+      "type": 53
+    },
+    {
+      "capabilities": 1,
+      "count": 9,
+      "mat": 420,
+      "matg": 176,
+      "name": "Dwarven rum",
+      "subtype": -1,
+      "type": 69
+    },
+    {
+      "capabilities": 1,
+      "count": 10,
+      "mat": 46,
+      "matg": 177,
+      "name": "Pig's milk",
+      "subtype": -1,
+      "type": 73
+    },
+    {
+      "capabilities": 1,
+      "count": 58,
+      "mat": 421,
+      "matg": 188,
+      "name": "Dimple cup spawn",
+      "subtype": -1,
+      "type": 53
+    },
+    {
+      "capabilities": 1,
+      "count": 10,
+      "mat": 47,
+      "matg": 185,
+      "name": "Yak's milk",
+      "subtype": -1,
+      "type": 73
+    },
+    {
+      "capabilities": 1,
+      "count": 55,
+      "mat": 422,
+      "matg": 183,
+      "name": "Longland grass seeds",
+      "subtype": -1,
+      "type": 53
+    },
+    {
+      "capabilities": 1,
+      "count": 48,
+      "mat": 424,
+      "matg": 17,
+      "name": "Blood amaranth seeds",
+      "subtype": -1,
+      "type": 53
+    },
+    {
+      "capabilities": 1,
+      "count": 17,
+      "mat": 422,
+      "matg": 187,
+      "name": "Rope reed seeds",
+      "subtype": -1,
+      "type": 53
+    },
+    {
+      "capabilities": 3,
+      "count": 751,
+      "mat": 419,
+      "matg": 173,
+      "name": "Plump helmets",
+      "subtype": -1,
+      "type": 54
+    },
+    {
+      "capabilities": 1,
+      "count": 334,
+      "mat": 421,
+      "matg": 173,
+      "name": "Dwarven wine",
+      "subtype": -1,
+      "type": 69
+    },
+    {
+      "capabilities": 1,
+      "count": 4,
+      "mat": 421,
+      "matg": 174,
+      "name": "Pig tail seeds",
+      "subtype": -1,
+      "type": 53
+    },
+    {
+      "capabilities": 1,
+      "count": 20,
+      "mat": 420,
+      "matg": 175,
+      "name": "Dwarven beer",
+      "subtype": -1,
+      "type": 69
+    },
+    {
+      "capabilities": 2,
+      "count": 80,
+      "mat": 419,
+      "matg": 175,
+      "name": "Cave wheat",
+      "subtype": -1,
+      "type": 54
+    },
+    {
+      "capabilities": 1,
+      "count": 68,
+      "mat": 422,
+      "matg": 173,
+      "name": "Plump helmet spawn",
+      "subtype": -1,
+      "type": 53
+    },
+    {
+      "capabilities": 1,
+      "count": 30,
+      "mat": 422,
+      "matg": 176,
+      "name": "Dwarven syrup",
+      "subtype": -1,
+      "type": 73
+    },
+    {
+      "capabilities": 2,
+      "count": 4,
+      "mat": 419,
+      "matg": 176,
+      "name": "Sweet pods",
+      "subtype": -1,
+      "type": 54
+    }
+  ],
+  "visible_rows": [
+    {
+      "color": [
+        7,
+        0,
+        true
+      ],
+      "rect": [
+        18,
+        12,
+        35,
+        12
+      ],
+      "text": " All"
+    },
+    {
+      "color": [
+        7,
+        0,
+        true
+      ],
+      "rect": [
+        15,
+        17,
+        74,
+        17
+      ],
+      "text": "Alfalfa seeds"
+    },
+    {
+      "color": [
+        5,
+        0,
+        true
+      ],
+      "rect": [
+        77,
+        17,
+        86,
+        17
+      ],
+      "text": "21?"
+    },
+    {
+      "color": [
+        7,
+        0,
+        true
+      ],
+      "rect": [
+        15,
+        20,
+        74,
+        20
+      ],
+      "text": "Rock nuts"
+    },
+    {
+      "color": [
+        5,
+        0,
+        true
+      ],
+      "rect": [
+        77,
+        20,
+        86,
+        20
+      ],
+      "text": "85?"
+    },
+    {
+      "color": [
+        7,
+        0,
+        true
+      ],
+      "rect": [
+        15,
+        23,
+        74,
+        23
+      ],
+      "text": "Blade weed seeds"
+    },
+    {
+      "color": [
+        5,
+        0,
+        true
+      ],
+      "rect": [
+        77,
+        23,
+        86,
+        23
+      ],
+      "text": "20?"
+    },
+    {
+      "color": [
+        7,
+        0,
+        true
+      ],
+      "rect": [
+        15,
+        26,
+        74,
+        26
+      ],
+      "text": "Strawberry seeds"
+    },
+    {
+      "color": [
+        5,
+        0,
+        true
+      ],
+      "rect": [
+        77,
+        26,
+        86,
+        26
+      ],
+      "text": "16?"
+    },
+    {
+      "color": [
+        7,
+        0,
+        true
+      ],
+      "rect": [
+        15,
+        29,
+        74,
+        29
+      ],
+      "text": "Prickle berry seeds"
+    },
+    {
+      "color": [
+        5,
+        0,
+        true
+      ],
+      "rect": [
+        77,
+        29,
+        86,
+        29
+      ],
+      "text": "27?"
+    },
+    {
+      "color": [
+        7,
+        0,
+        true
+      ],
+      "rect": [
+        15,
+        32,
+        74,
+        32
+      ],
+      "text": "Rice"
+    },
+    {
+      "color": [
+        5,
+        0,
+        true
+      ],
+      "rect": [
+        77,
+        32,
+        86,
+        32
+      ],
+      "text": "63?"
+    },
+    {
+      "color": [
+        7,
+        0,
+        true
+      ],
+      "rect": [
+        15,
+        35,
+        74,
+        35
+      ],
+      "text": "Rat weed seeds"
+    },
+    {
+      "color": [
+        5,
+        0,
+        true
+      ],
+      "rect": [
+        77,
+        35,
+        86,
+        35
+      ],
+      "text": "25?"
+    },
+    {
+      "color": [
+        7,
+        0,
+        true
+      ],
+      "rect": [
+        15,
+        38,
+        74,
+        38
+      ],
+      "text": "Dimple cup spawn"
+    },
+    {
+      "color": [
+        5,
+        0,
+        true
+      ],
+      "rect": [
+        77,
+        38,
+        86,
+        38
+      ],
+      "text": "58?"
+    },
+    {
+      "color": [
+        7,
+        0,
+        true
+      ],
+      "rect": [
+        15,
+        41,
+        74,
+        41
+      ],
+      "text": "Longland grass seeds"
+    },
+    {
+      "color": [
+        5,
+        0,
+        true
+      ],
+      "rect": [
+        77,
+        41,
+        86,
+        41
+      ],
+      "text": "55?"
+    },
+    {
+      "color": [
+        7,
+        0,
+        true
+      ],
+      "rect": [
+        15,
+        44,
+        74,
+        44
+      ],
+      "text": "Blood amaranth seeds"
+    },
+    {
+      "color": [
+        5,
+        0,
+        true
+      ],
+      "rect": [
+        77,
+        44,
+        86,
+        44
+      ],
+      "text": "48?"
+    },
+    {
+      "color": [
+        7,
+        0,
+        true
+      ],
+      "rect": [
+        15,
+        47,
+        74,
+        47
+      ],
+      "text": "Rope reed seeds"
+    },
+    {
+      "color": [
+        5,
+        0,
+        true
+      ],
+      "rect": [
+        77,
+        47,
+        86,
+        47
+      ],
+      "text": "17?"
+    },
+    {
+      "color": [
+        7,
+        0,
+        true
+      ],
+      "rect": [
+        15,
+        50,
+        74,
+        50
+      ],
+      "text": "Pig tail seeds"
+    },
+    {
+      "color": [
+        6,
+        0,
+        true
+      ],
+      "rect": [
+        77,
+        50,
+        86,
+        50
+      ],
+      "text": "4"
+    },
+    {
+      "color": [
+        7,
+        0,
+        true
+      ],
+      "rect": [
+        15,
+        53,
+        74,
+        53
+      ],
+      "text": "Plump helmet spawn"
+    },
+    {
+      "color": [
+        5,
+        0,
+        true
+      ],
+      "rect": [
+        77,
+        53,
+        86,
+        53
+      ],
+      "text": "68?"
+    }
+  ],
+  "callbacks": [
+    {
+      "kind": "custom_activated",
+      "name": "",
+      "rect": [
+        15,
+        12,
+        17,
+        12
+      ],
+      "rva": 4620768
+    },
+    {
+      "kind": "custom_render",
+      "name": "",
+      "rect": [
+        15,
+        12,
+        17,
+        12
+      ],
+      "rva": 4000112
+    },
+    {
+      "kind": "custom_render",
+      "name": "Text",
+      "rect": [
+        18,
+        12,
+        35,
+        12
+      ],
+      "rva": 4620704
+    },
+    {
+      "kind": "custom_activated",
+      "name": "",
+      "rect": [
+        36,
+        12,
+        38,
+        12
+      ],
+      "rva": 4620480
+    },
+    {
+      "kind": "custom_render",
+      "name": "",
+      "rect": [
+        36,
+        12,
+        38,
+        12
+      ],
+      "rva": 3999680
+    },
+    {
+      "kind": "custom_activated",
+      "name": "Type",
+      "rect": [
+        15,
+        15,
+        24,
+        15
+      ],
+      "rva": 4638256
+    },
+    {
+      "kind": "custom_activated",
+      "name": "Name",
+      "rect": [
+        25,
+        15,
+        34,
+        15
+      ],
+      "rva": 4638256
+    },
+    {
+      "kind": "custom_activated",
+      "name": "Number",
+      "rect": [
+        77,
+        15,
+        86,
+        15
+      ],
+      "rva": 4638256
+    },
+    {
+      "kind": "custom_activated",
+      "name": "",
+      "rect": [
+        89,
+        12,
+        92,
+        14
+      ],
+      "rva": 4620368
+    },
+    {
+      "kind": "custom_activated",
+      "name": "",
+      "rect": [
+        93,
+        12,
+        96,
+        14
+      ],
+      "rva": 4620256
+    },
+    {
+      "kind": "custom_activated",
+      "name": "Cook",
+      "rect": [
+        89,
+        15,
+        92,
+        15
+      ],
+      "rva": 4638256
+    },
+    {
+      "kind": "custom_activated",
+      "name": "Brew",
+      "rect": [
+        93,
+        15,
+        96,
+        15
+      ],
+      "rva": 4638256
+    },
+    {
+      "kind": "custom_render",
+      "name": "",
+      "rect": [
+        8,
+        16,
+        89,
+        18
+      ],
+      "rva": 4620192
+    },
+    {
+      "kind": "custom_render",
+      "name": "",
+      "rect": [
+        8,
+        16,
+        12,
+        18
+      ],
+      "rva": 4619936
+    },
+    {
+      "kind": "custom_activated",
+      "name": "",
+      "rect": [
+        89,
+        16,
+        91,
+        18
+      ],
+      "rva": 4619776
+    },
+    {
+      "kind": "custom_render",
+      "name": "",
+      "rect": [
+        89,
+        16,
+        91,
+        18
+      ],
+      "rva": 990336
+    },
+    {
+      "kind": "custom_activated",
+      "name": "",
+      "rect": [
+        93,
+        16,
+        95,
+        18
+      ],
+      "rva": 4619568
+    },
+    {
+      "kind": "sorting_by",
+      "name": "Kitchen",
+      "rect": [
+        6,
+        12,
+        117,
+        60
+      ],
+      "rva": 4638752
+    },
+    {
+      "kind": "filter_func",
+      "name": "Kitchen",
+      "rect": [
+        6,
+        12,
+        117,
+        60
+      ],
+      "rva": 4638800
+    }
+  ],
+  "entry_points": {
+    "aggregate_item": "42af10..42b2e2",
+    "toggle_exclusion": "ac8410..ac8486",
+    "remove_exclusion": "ac8280",
+    "add_exclusion": "ac7d10",
+    "filter_predicate": "430d50",
+    "sort_wrapper": "46c820",
+    "screen_initializer": "42fbd0..430d4e",
+    "row_widget_builder": "431ea0",
+    "owned_map_offset": "180"
+  },
+  "limitations": [
+    "Per-item aggregation and mutation callers located; no owned-context comparison yet.",
+    "Full list eligibility lives in screen initializer4308da..430a34; do not invoke widget construction as runtime API.",
+    "Sorting/filter ownership, stock-count display, item appearance, exact job effects and mutation stale/unknown handling remain unfinished."
+  ]
+}

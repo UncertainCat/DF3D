@@ -31,6 +31,41 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
 
+## Kitchen native discovery
+
+The durable `fixtures/production/native_kitchen.json` retains the native data and
+callback provenance needed to compare an owned Kitchen adapter; it is not a plan
+or shipped artwork. Protected160919/161252 opens the actual Kitchen tab, captures
+its widget geometry and22 food/material aggregates, then returns to Standing
+orders. Owned DF30972/45680 exit unsaved with source preservation. Core19 passes
+in kitchen-native-discovery-20261108. GPU60C sampled; no viewer is launched.
+
+This native build presents a combined list, type filter(All/Plants/Seeds/Drinks/
+Other), permission filters and Type/Name/Number/Cook/Brew sorting. The fixture
+contains raw aggregate counts/capability bits and visible count captions, which
+can include uncertainty marks; raw counts are not substitute display text.
+DFHack Kitchen.cpp directly manipulates the five exclusion vectors and does not
+call the native list or mutation routines. It is not the native behavioral oracle.
+
+Cook callback467e00 and Brew467d30 call native toggleac8410 with flags1/2.
+The toggle first removes an exclusion viaac8280; if none was removed, it adds via
+ac7d10. The add path also inspects jobs/reagents and can trigger native job handling;
+simply changing vectors would omit these effects. Unwind records split several
+functions into fragments, so the first exception-table end is not a full audit.
+
+Per-item aggregator42af10..42b2e2 computes native capability bits, keys, stack
+counts and names (a82c10 plus52d650), accumulating into an unordered_map at context
++0x180. Observed map accesses are confined to that map; no full-widget runtime
+call is accepted. The constructor46a510 and screen initializer42fbd0..430d4e
+create UI objects and must not be used as semantic providers. Initializer
+4308da..430a34 scans the world item vector, applies nativec8b600, plant-material
+processing checks and item flags, then calls the aggregator. That eligibility
+boundary still needs an owned adapter and native comparison. Native431ea0 copies
+map entries, filters/sorts and builds row widgets; it is not a pure read API.
+Filter430d50 and sort wrapper46c820 are traced separately for further ownership
+audit. Runtime Kitchen transport, mutation validation, UI and public exposure
+remain unimplemented.
+
 ## Standing orders native discovery
 
 Management150 / Local\df3d_management_v150 adds ChoresRead96 and ChoresApply97.

@@ -1,10 +1,11 @@
 extends RefCounted
-# Staged Workshops owner. Values and availability come exclusively from DF.
+# Staged category owner. Values, visibility and editability come from DF.
 signal changed
 const C=preload("res://scripts/management_contract.gd")
 enum Phase { Closed, Reading, Ready, Applying, Rejected, Unknown, Unavailable }
 var service
 var phase:=Phase.Closed
+var category:=0
 var settings: Array=[]
 var ticket:=0
 var generation:=0
@@ -24,14 +25,21 @@ func close() -> void:
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
 func open() -> void:
-	close();phase=Phase.Reading
-	_submit({"action":C.ManagementAction.StandingOrdersRead,"category":0})
+	close();category=0;phase=Phase.Reading
+	_submit({"action":C.ManagementAction.StandingOrdersRead,"category":category})
+func select_category(value: int) -> void:
+	if value<0 or value>2 or value==category or phase in [Phase.Closed,Phase.Applying,Phase.Unavailable]:return
+	generation+=1
+	var previous:=ticket;ticket=0
+	if service!=null and previous!=0:service.detach(previous)
+	settings=[];last_result={};category=value;phase=Phase.Reading
+	_submit({"action":C.ManagementAction.StandingOrdersRead,"category":category})
 func set_value(id: int,value: int) -> void:
 	if phase!=Phase.Ready or id<0 or id>=settings.size():return
 	var row: Dictionary=settings[id]
-	if not row.editable or value<0 or value>(2 if id==0 else 1) or value==int(row.value):return
+	if not row.editable or value<0 or value>(2 if category==0 and id==0 else 1) or value==int(row.value):return
 	phase=Phase.Applying
-	_submit({"action":C.ManagementAction.StandingOrdersSet,"category":0,"setting_id":id,"expected_value":int(row.value),"value":value})
+	_submit({"action":C.ManagementAction.StandingOrdersSet,"category":category,"setting_id":id,"expected_value":int(row.value),"value":value})
 func _reject(result: Dictionary) -> void:
 	settings=[];last_result=result.duplicate(true)
 	phase=Phase.Unknown if result.get("outcome","")=="unknown" or result.get("standing_orders",{}).get("outcome",-1)==C.StandingOrdersOutcome.Unknown else Phase.Rejected
@@ -44,13 +52,13 @@ func _submit(intent: Dictionary) -> void:
 		ticket=0
 		var snapshot: Dictionary=result.get("standing_orders",{})
 		var expected:=C.StandingOrdersOutcome.Applied if intent.action==C.ManagementAction.StandingOrdersSet else C.StandingOrdersOutcome.None
-		if result.get("outcome","")=="unknown" or result.get("status",-1)!=C.ManagementStatus.Ok or result.get("action",-1)!=intent.action or snapshot.get("category",-1)!=0 or snapshot.get("outcome",-1)!=expected:
+		if result.get("outcome","")=="unknown" or result.get("status",-1)!=C.ManagementStatus.Ok or result.get("action",-1)!=intent.action or snapshot.get("category",-1)!=category or snapshot.get("outcome",-1)!=expected:
 			_reject(result);return
 		var rows: Array=snapshot.get("settings",[])
-		if rows.size()!=11:_reject(result);return
+		if rows.size()!=[11,6,10][category]:_reject(result);return
 		for id in rows.size():
 			var row: Dictionary=rows[id]
-			if row.get("id",-1)!=id or typeof(row.get("value"))!=TYPE_INT or row.value<0 or row.value>(2 if id==0 else 1) or typeof(row.get("visible"))!=TYPE_BOOL or typeof(row.get("editable"))!=TYPE_BOOL or row.visible!=row.editable or (id<6 and not row.visible):
+			if row.get("id",-1)!=id or typeof(row.get("value"))!=TYPE_INT or row.value<0 or row.value>(2 if category==0 and id==0 else 1) or typeof(row.get("visible"))!=TYPE_BOOL or typeof(row.get("editable"))!=TYPE_BOOL or (row.editable and not row.visible) or (category==0 and (row.visible!=row.editable or (id<6 and not row.visible))) or (category==1 and (not row.visible or not row.editable)):
 				_reject(result);return
 		settings=rows.duplicate(true);last_result={};phase=Phase.Ready;changed.emit())
 	if ticket==0:settings=[];phase=Phase.Unavailable

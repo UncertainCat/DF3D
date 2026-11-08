@@ -915,5 +915,35 @@
       "No new category rendered UI acceptance",
       "No live publication fault injection"
     ]
+  },
+  "category_panel_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-124447",
+    "viewport": [
+      1200,
+      800
+    ],
+    "crop": [
+      32,
+      52,
+      944,
+      708
+    ],
+    "native_rgb_sha256": {
+      "category-1": "7fc2a4351f4e524f9f1a0dfa5422f8d20cc85be77b3150626523c4116042ef18",
+      "category-2": "5f278dc36fc60910c3f7d6520b6d30ee4a1fd12d476e6082ef1d4e4190548930",
+      "refuse-disabled": "e7f0f4ffde3023ad412f4829232d8f78ec952bd76f87321cee2515a42c61dafa"
+    },
+    "all_crops_equal": true,
+    "rendered_transitions": 36,
+    "category_reads_and_navigation": true,
+    "disabled_hidden_clicks_no_submit": true,
+    "restored": true,
+    "source_preserved": true,
+    "qa": "build/qa/standing-orders-category-view-final-20261108",
+    "limits": [
+      "Minimal HUD stub, not public main scene",
+      "Hover/resize acceptance pending",
+      "Other categories unfinished"
+    ]
   }
 }

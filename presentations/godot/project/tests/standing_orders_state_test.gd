@@ -37,6 +37,21 @@ func run() -> void:
 	state.open();service.reply(state.ticket,snapshot());state.set_value(1,1)
 	service.reply(state.ticket,{"status":C.ManagementStatus.Rejected,"standing_orders":{"outcome":C.StandingOrdersOutcome.Stale,"settings":[]}})
 	check(state.phase==State.Phase.Rejected and state.settings.is_empty(),"Stale edit requires fresh read")
+	state.open();pending=state.ticket;state.select_category(1)
+	service.reply(pending,snapshot())
+	check(state.category==1 and state.settings.is_empty(),"Late category read replaced navigation")
+	var hauling:=snapshot();hauling.standing_orders.category=1;hauling.standing_orders.settings.resize(6);hauling.standing_orders.settings[0].value=1
+	service.reply(state.ticket,hauling)
+	check(state.phase==State.Phase.Ready and state.settings.size()==6,"Hauling read rejected")
+	state.set_value(0,2);check(state.ticket==0,"Hauling accepted weaving value")
+	state.select_category(2)
+	var refuse:=snapshot();refuse.standing_orders.category=2;refuse.standing_orders.settings.resize(10);refuse.standing_orders.settings[0].value=1
+	for row: Dictionary in refuse.standing_orders.settings:row.visible=true;row.editable=true
+	refuse.standing_orders.settings[2].editable=false
+	service.reply(state.ticket,refuse);state.set_value(2,1)
+	check(state.phase==State.Phase.Ready and state.ticket==0,"Visible disabled control submitted an edit")
+	state.set_value(1,1);pending=state.ticket;state.select_category(0)
+	check(state.category==2 and state.ticket==pending,"Navigation replaced pending mutation")
 	state.dispose();service.queue_free();await process_frame
 	if failures==0:print("STANDING_ORDERS_STATE_PASS")
 	quit(1 if failures else 0)

@@ -187,6 +187,10 @@ if os.getenv('DF3D_STANDING_ORDERS_CATEGORIES')=='1' then
   step(2,1,'standing_orders_gather_refuse_outside',outdoor)
   step(2,0,'standing_orders_gather_refuse',gather)
   assert(json.encode(current)==json.encode(original),'Wire plan did not restore')
+  if os.getenv('DF3D_STANDING_ORDERS_RENDER')=='1' then
+   local applied={};for _,entry in ipairs(result.wire_steps)do if entry.outcome==1 and entry.expected~=entry.value then applied[#applied+1]=entry end end
+   result.wire_steps=applied
+  end
   shot('standing-orders-wire')
   assert(json.encode(values())==json.encode(original),'Category wire edits did not restore settings')
  end

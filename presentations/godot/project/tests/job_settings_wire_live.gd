@@ -1004,13 +1004,32 @@ func standing_orders_scene() -> void:
 	if not check(await ready(owner.state),"Standing orders panel read failed"):quit(1);return
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/standing-orders-view.png")
+	if OS.get_environment("DF3D_STANDING_ORDERS_CATEGORY_WIRE")=="1":
+		for category in [1,2]:
+			await pointer(owner.panel,owner.panel.category_rect(category).get_center())
+			if not check(await ready(owner.state) and owner.state.category==category and host.active==owner,"Category navigation/read failed"):quit(1);return
+			await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/standing-orders-view-category-"+str(category)+".png")
+
 	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/standing-orders-native.json"))
 	var count:=0
 	for step: Dictionary in reference.wire_steps:
+		var category:=int(step.get("category",0))
+		if owner.state.category!=category:
+			await pointer(owner.panel,owner.panel.category_rect(category).get_center())
+			if not check(await ready(owner.state) and owner.state.category==category,"Category transition failed"):quit(1);return
 		var index: int=owner.panel.visible_ids().find(int(step.id))
 		if not check(index>=0,"Native setting missing from visible buttons"):quit(1);return
 		await pointer(owner.panel,owner.panel.setting_rect(index).get_center())
 		if not check(await ready(owner.state) and int(owner.state.settings[int(step.id)].value)==int(step.value),"Visible setting click differs from native cycle"):quit(1);return
+		if category==2 and int(step.id) in [0,1] and int(step.value)==0:
+			var before_ticket: int=service._next_ticket
+			await pointer(owner.panel,owner.panel.setting_rect(2).get_center())
+			check(service._next_ticket==before_ticket,"Disabled or hidden setting click submitted work")
+			if int(step.id)==0:
+				check(owner.panel.visible_ids()==[0],"Disabled collection did not hide dependent rows")
+				await RenderingServer.frame_post_draw
+				root.get_texture().get_image().save_png(directory+"/standing-orders-view-refuse-disabled.png")
 		count+=1
 		var file:=FileAccess.open(directory+"/standing-wire-step",FileAccess.WRITE);file.store_string(str(count));file.close()
 		var deadline:=Time.get_ticks_msec()+3000

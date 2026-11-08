@@ -33,6 +33,28 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Standing orders native discovery
 
+The staged Standing orders owner/view now supports Workshops, Hauling and Refuse
+navigation. Switching categories retires old reads without releasing modal host
+ownership; pending writes block navigation. Captions come from recorded native
+cycles. The view uses returned visibility/editability directly, hides absent rows
+and draws visible-disabled captions in native black. It does not infer Refuse
+rules in presentation code. Other categories remain unfinished and the panel is
+not publicly exposed.
+
+Protected124447 on2026-11-08 drives36 rendered category transitions with native
+scalar readback, verifies category reads/navigation, ignored disabled/hidden
+clicks and Back ownership release. Entire944x708 panel crops at32,52 match native
+at1200x800 for Hauling, Refuse and collection-disabled Refuse. The earlier124338
+run completed36 edits before its click plan incorrectly attempted no-op cleanup
+sets; those wire-only steps are omitted from rendered cycling, while direct-wire
+coverage remains64 steps. Both owned sessions close unsaved with source
+preservation; final DF46584 restores all settings. Runs are serial30FPS, GPU55C
+after each, with only known thread/finalize/paired shutdown diagnostics. Root/core19
+and state checks pass in standing-orders-category-view-final-20261108, including
+late category reads and navigation during pending writes. This still uses the
+minimal HUD interaction stub; public main-scene integration, hover and resize
+acceptance remain pending.
+
 Management146 replaces StandingOrderSetting.available with separate visible and
 editable fields. Category0/1/2 contracts contain11/6/10 ordered settings for
 Workshops/Hauling/Refuse. Only Workshops weaving accepts value2; hidden controls

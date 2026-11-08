@@ -1109,6 +1109,7 @@ func hunter_ammunition_wire() -> void:
 		await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/hunter-view-types.png")
 		await pointer(ammunition_owner.panel,Vector2(760,32))
 		check(controller.mode==controller.Mode.Main,"Picker Cancel did not return to main")
+		await hunter_input_scene(ammunition_owner)
 	var count:=0
 	for step: Dictionary in reference.wire_steps:
 		var intent: Dictionary={"action":C.ManagementAction.HunterAmmunitionApply,"operation":int(step.operation),"index":-1,"item_id":-1,"amount":-1,"item_type":-1,"item_subtype":-1,"material_class":-1,"mattype":-1,"matindex":-1,"expected":hunter_specs(step.expected)}
@@ -1172,3 +1173,34 @@ func hunter_ammunition_wire() -> void:
 	controller.dispose()
 	for node in scene_nodes:node.queue_free()
 	service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)
+
+func hunter_input_scene(owner) -> void:
+	var state=owner.state;var panel=owner.panel
+	var original: Array=state.specs.duplicate(true)
+	await pointer(panel,Vector2(404,80))
+	for character in "a-12.3x":
+		var key:=InputEventKey.new();key.pressed=true;key.unicode=character.unicode_at(0);Input.parse_input_event(key);await process_frame
+	check(state.amount_text=="123","Rendered quantity entry accepted non-digits")
+	await pointer(panel,Vector2(348,32));await pointer(panel,Vector2(760,32))
+	check(state.mode==state.Mode.Amount and state.amount_text=="123","Rendered Add cancellation lost quantity draft")
+	await pointer(panel,Vector2(356,80))
+	check(await ready(state) and state.mode==state.Mode.Materials,"Rendered Mat did not leave quantity entry")
+	await pointer(panel,Vector2(760,32));check(state.mode==state.Mode.Main,"Material cancellation resumed quantity entry")
+	await pointer(panel,Vector2(404,80))
+	for character in "12345678901234567890":
+		var key:=InputEventKey.new();key.pressed=true;key.unicode=character.unicode_at(0);Input.parse_input_event(key);await process_frame
+	check(state.amount_text=="123456789012345678","Rendered quantity draft exceeded native length")
+	await pointer(panel,Vector2(300,400));check(state.mode==state.Mode.Amount,"Blank panel click retired quantity entry")
+	await pointer(panel,Vector2(404,80));check(state.mode==state.Mode.Main and state.amount_text.is_empty(),"Amt toggle retained draft")
+	root.size=Vector2i(912,552);await process_frame;await process_frame
+	check(panel.page_rows==4 and panel.scrollbar.visible,"Live minimum-size layout failed")
+	await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/hunter-view-minimum.png")
+	for picker in [false,true]:
+		if picker:await pointer(panel,Vector2(348,32))
+		await pointer(panel.scrollbar,Vector2(8,panel.scrollbar.size.y-6))
+		check((state.choice_first if picker else state.first)==1,"Live scrollbar down differs from native")
+		await pointer(panel.scrollbar,Vector2(8,6))
+		check((state.choice_first if picker else state.first)==0,"Live scrollbar up differs from native")
+		if picker:await pointer(panel,Vector2(760,32))
+	root.size=Vector2i(1200,800);await process_frame;await process_frame
+	check(panel.page_rows==10 and state.specs==original,"Local input checks changed ammunition authority")

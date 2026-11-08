@@ -39,12 +39,24 @@ clears the draft without applying it; Mat retires amount focus and opens choices
 Add opens type choices and Cancel restores the active amount draft. Blank-panel
 clicks retain editing; Confirm closes without committing. The controller now
 matches the draft limit and Mat/Add cancellation transitions. Headless lifecycle
-and core19 pass in hunter-amount-input-20261108. These new transitions still need
-rendered live acceptance; choosing a type while an amount draft is suspended,
-deletion/removal during entry, wheel/drag and hover remain unverified. Both native
+and core19 pass in hunter-amount-input-20261108. Protected144655 verifies the new
+transitions through rendered key/pointer input, live resize to912x552 (zero native
+crop differences), both scrollbar arrows and all nine native-observed edit steps.
+Owned DF30892 exits unsaved with restored equipment and source preservation;
+GPU51C sampled, known thread/finalize/shutdown diagnostics only. Choosing a type
+while an amount draft is suspended, deletion/removal during entry, wheel/drag and
+picker hover remain unverified. Both native
 lanes restore equipment and close owned DF22176/48300 unsaved with source
 preservation; GPU50C sampled. Semantic evidence is retained in the ammunition
 `input_reference` fixture; enable DF3D_HUNTER_AMMUNITION_INPUT=1 for the probe.
+
+Protected144817 hovers Add, Confirm, Mat, Amt, Delete, Remove, an assigned-item
+picture and its caption for850ms each. Native instruction/displayed IDs stay-1,
+no help text appears and each main-panel crop remains pixel-identical. Do not
+invent hover messages or highlights for these targets. Equipment is unchanged;
+owned DF44016 exits unsaved with source preservation, GPU51C sampled. The native
+`hover_reference` retains all eight observations; DF3D_HUNTER_AMMUNITION_HOVER=1
+selects this probe. This evidence does not cover picker rows or scrollbars.
 
 Management149 / Local\df3d_management_v149 requires `ItemInspectionAppearance`
 on every hunter ammunition stack. The native read uses owned `itemAppearance`

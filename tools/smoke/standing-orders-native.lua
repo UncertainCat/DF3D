@@ -372,6 +372,28 @@ if os.getenv('DF3D_HUNTER_AMMUNITION_NATIVE')=='1' then
  end
  assert(json.encode(before)==json.encode(snapshot()),'Opening hunter ammunition changed simulation settings')
  shot('hunter-ammunition-root')
+ if os.getenv('DF3D_HUNTER_AMMUNITION_HOVER')=='1' then
+  local probes={};local main=df.global.game.main_interface
+  for _,target in ipairs({{'add',512,250},{'confirm',924,250},{'material',524,298},{'amount',572,298},{'delete',920,298},{'remove',920,334},{'picture',202,334},{'caption',320,334}})do
+   local function move()
+    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+    g.precise_mouse_x=target[2];g.precise_mouse_y=target[3];g.mouse_x=target[2]//8;g.mouse_y=(target[3]-4)//12
+    gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+   end
+   local deadline=dfhack.getTickCount()+850
+   repeat move();script.sleep(1,'frames')until dfhack.getTickCount()>=deadline
+   move();script.sleep(2,'frames')
+   local lines={}
+   for y=0,19 do
+    local chars={};for x=g.dimx-24,g.dimx-1 do local ch=dfhack.screen.readTile(x,y).ch;chars[#chars+1]=ch>=32 and ch<127 and string.char(ch)or' 'end
+    lines[#lines+1]=table.concat(chars):gsub('%s+$','')
+   end
+   probes[#probes+1]={name=target[1],point={target[2],target[3]},instruction=main.current_hover,displayed=main.last_displayed_hover_inst,lines=lines}
+   shot('hunter-hover-'..target[1])
+  end
+  result.hunter_ammunition.hover_reference=probes
+  assert(json.encode(before)==json.encode(snapshot()),'Hover changed ammunition settings')
+ end
  local function layout_probe(kind)
   if os.getenv('DF3D_HUNTER_AMMUNITION_LAYOUT')~='1' then return end
   result.hunter_ammunition.layout=result.hunter_ammunition.layout or {}

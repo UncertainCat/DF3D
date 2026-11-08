@@ -46,6 +46,11 @@ ManagementState decodeState(const m::ManagementState* s) {
     next.creatureHeader=std::move(header);
   }
   if(const auto* r=s->residents())next.residents=ResidentsState{{r->unit_ids()->begin(),r->unit_ids()->end()}};
+  if(const auto* r=s->standing_orders()) {
+    next.standingOrders.emplace();auto& out=*next.standingOrders;
+    out.category=r->category();out.outcome=StandingOrdersOutcome(r->outcome());
+    for(const auto* row:*r->settings())out.settings.push_back({row->id(),row->value(),row->available()});
+  }
   if(const auto* r=s->work_detail_settings()) {
     next.workDetailSettings.emplace();auto& out=*next.workDetailSettings;
     out.detailIndex=r->detail_index();out.revision=r->revision();out.editable=r->editable();out.noModify=r->no_modify();
@@ -245,7 +250,10 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
           flatbuffers::Offset<m::WorkDetailWorkersRequest>{},
       (r.action==ManagementAction::WorkDetailSettingsRead || r.action==ManagementAction::WorkDetailSettingsToggle)?
           m::CreateWorkDetailSettingsRequest(b,r.workDetailSettings.detailIndex,r.workDetailSettings.expectedRevision,r.workDetailSettings.settingId):
-          flatbuffers::Offset<m::WorkDetailSettingsRequest>{});
+          flatbuffers::Offset<m::WorkDetailSettingsRequest>{},
+      (r.action==ManagementAction::StandingOrdersRead || r.action==ManagementAction::StandingOrdersSet)?
+          m::CreateStandingOrdersRequest(b,r.standingOrders.category,r.standingOrders.settingId,r.standingOrders.expectedValue,r.standingOrders.value):
+          flatbuffers::Offset<m::StandingOrdersRequest>{});
   b.Finish(request);
 }
 }  // namespace wm::detail::management

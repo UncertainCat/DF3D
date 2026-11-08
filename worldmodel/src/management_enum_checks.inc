@@ -1,4 +1,10 @@
 // Generated exhaustive model/wire correspondence checks.
+static_assert(static_cast<int>(wm::StandingOrdersOutcome::None) == static_cast<int>(df3d::mirror::StandingOrdersOutcome::None));
+static_assert(static_cast<int>(wm::StandingOrdersOutcome::Applied) == static_cast<int>(df3d::mirror::StandingOrdersOutcome::Applied));
+static_assert(static_cast<int>(wm::StandingOrdersOutcome::Rejected) == static_cast<int>(df3d::mirror::StandingOrdersOutcome::Rejected));
+static_assert(static_cast<int>(wm::StandingOrdersOutcome::Stale) == static_cast<int>(df3d::mirror::StandingOrdersOutcome::Stale));
+static_assert(static_cast<int>(wm::StandingOrdersOutcome::Unknown) == static_cast<int>(df3d::mirror::StandingOrdersOutcome::Unknown));
+static_assert(sizeof(df3d::mirror::EnumValuesStandingOrdersOutcome()) / sizeof(df3d::mirror::StandingOrdersOutcome) == 5);
 static_assert(static_cast<int>(wm::WorkDetailWorkerSort::Category) == static_cast<int>(df3d::mirror::WorkDetailWorkerSort::Category));
 static_assert(static_cast<int>(wm::WorkDetailWorkerSort::Name) == static_cast<int>(df3d::mirror::WorkDetailWorkerSort::Name));
 static_assert(static_cast<int>(wm::WorkDetailWorkerSort::Profession) == static_cast<int>(df3d::mirror::WorkDetailWorkerSort::Profession));
@@ -173,7 +179,9 @@ static_assert(static_cast<int>(wm::ManagementAction::WorkDetailWorkersQuery) == 
 static_assert(static_cast<int>(wm::ManagementAction::WorkDetailRowsRead) == static_cast<int>(df3d::mirror::ManagementAction::WorkDetailRowsRead));
 static_assert(static_cast<int>(wm::ManagementAction::WorkDetailSettingsRead) == static_cast<int>(df3d::mirror::ManagementAction::WorkDetailSettingsRead));
 static_assert(static_cast<int>(wm::ManagementAction::WorkDetailSettingsToggle) == static_cast<int>(df3d::mirror::ManagementAction::WorkDetailSettingsToggle));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 91);
+static_assert(static_cast<int>(wm::ManagementAction::StandingOrdersRead) == static_cast<int>(df3d::mirror::ManagementAction::StandingOrdersRead));
+static_assert(static_cast<int>(wm::ManagementAction::StandingOrdersSet) == static_cast<int>(df3d::mirror::ManagementAction::StandingOrdersSet));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 93);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -471,3 +479,5 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::WorkDetailWorkersQuery) 
 static_assert(wm::isRuntimeAction(wm::ManagementAction::WorkDetailRowsRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::WorkDetailRowsRead));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::WorkDetailSettingsRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::WorkDetailSettingsRead));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::WorkDetailSettingsToggle) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::WorkDetailSettingsToggle));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::StandingOrdersRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::StandingOrdersRead));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::StandingOrdersSet) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::StandingOrdersSet));

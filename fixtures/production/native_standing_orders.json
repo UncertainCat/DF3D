@@ -405,7 +405,7 @@
     "Only Workshops effects cycled; other categories are layout/initial caption evidence.",
     "Chores includes child participation and labor definitions; Other includes hunter-ammunition navigation, not just scalar options.",
     "Unmapped globals need pinned native-address verification before runtime exposure.",
-    "No Standing orders transport contract, UI or public route exists yet."
+    "No native Standing orders request handler, UI or public route exists yet."
   ],
   "workshop_provider_reference": {
     "capture": "build/stockpile-storage-native-input-20261108-114842",
@@ -438,8 +438,17 @@
     ],
     "limits": [
       "Enabled kiln/smelter/other reaction cases not yet accepted.",
-      "Diagnostic adapter only; no typed transport or UI yet."
+      "Diagnostic adapter; typed transport exists but native request handling and UI are pending."
     ],
+    "source_preserved": true,
+    "owned_df_closed": true
+  },
+  "contract_reference": {
+    "version": 145,
+    "offline": "build/qa/standing-orders-contract-fixed-20261108",
+    "compatibility_live": "build/stockpile-storage-native-input-20261108-120402",
+    "installed_plugin_sha256": "8131A2BA4FF1005CF6BBA5A3DF5D7A091AE17415BF4274E211B6CF88B04213C9",
+    "scope": "Typed read/set intents and snapshots including Unknown without authority round-trip through C++ producer and Godot. Live check verifies existing Work Details creation compatibility, not new Standing orders requests.",
     "source_preserved": true,
     "owned_df_closed": true
   }

@@ -2,6 +2,13 @@
 #pragma once
 #include <cstdint>
 namespace wm {
+enum class StandingOrdersOutcome : uint8_t {
+  None = 0,
+  Applied = 1,
+  Rejected = 2,
+  Stale = 3,
+  Unknown = 4,
+};
 enum class WorkDetailWorkerSort : uint8_t {
   Category = 0,
   Name = 1,
@@ -191,6 +198,8 @@ enum class ManagementAction : uint8_t {
   WorkDetailRowsRead = 88,
   WorkDetailSettingsRead = 89,
   WorkDetailSettingsToggle = 90,
+  StandingOrdersRead = 91,
+  StandingOrdersSet = 92,
 };
 enum class ManagementStatus : uint8_t {
   Idle = 0,
@@ -492,11 +501,15 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::WorkDetailRowsRead: return true;
   case ManagementAction::WorkDetailSettingsRead: return true;
   case ManagementAction::WorkDetailSettingsToggle: return true;
+  case ManagementAction::StandingOrdersRead: return true;
+  case ManagementAction::StandingOrdersSet: return true;
   default: return false;
   }
 }
 constexpr const char* managementDomain(ManagementAction action) {
   switch (action) {
+  case ManagementAction::StandingOrdersRead: return "standing_orders";
+  case ManagementAction::StandingOrdersSet: return "standing_orders";
   case ManagementAction::WorkDetailSettingsRead: return "work_detail_settings";
   case ManagementAction::WorkDetailSettingsToggle: return "work_detail_settings";
   case ManagementAction::WorkDetailWorkersQuery: return "work_detail_workers";

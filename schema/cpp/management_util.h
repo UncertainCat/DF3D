@@ -104,8 +104,8 @@ inline bool validContentsAppearance(const BuildingContentsItem& row) {
     a->subtype_raw()&&a->subtype_raw()->size()<=128&&a->color_token()&&a->color_token()->size()<=128&&a->stack()>0&&!(a->flags()&~96)&&
     row.material_token()&&row.subtype_raw()&&a->material_token()->str()==row.material_token()->str()&&a->subtype_raw()->str()==row.subtype_raw()->str();
 }
-inline constexpr uint32_t kManagementVersion = 144;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v144";
+inline constexpr uint32_t kManagementVersion = 145;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v145";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -403,7 +403,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::WorkDetailSettingsToggle &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::StandingOrdersSet &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -459,7 +459,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::WorkDetailSettingsToggle)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::StandingOrdersSet)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -553,6 +553,14 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     const auto* q=r.residents_specialization();
     if(!q || q->unit_id()<0 || !q->expected_revision() || q->expected_revision()>INT64_MAX)return "invalid residents specialization request";
   } else if(r.residents_specialization())return "unexpected residents specialization request";
+  if(r.action()==ManagementAction::StandingOrdersRead || r.action()==ManagementAction::StandingOrdersSet) {
+    const auto* q=r.standing_orders();
+    if(!q || q->category()!=0)return "invalid standing orders category";
+    if(r.action()==ManagementAction::StandingOrdersRead) {
+      if(q->setting_id()!=-1 || q->expected_value()!=-1 || q->value()!=-1)return "unexpected standing orders write";
+    } else if(q->setting_id()<0 || q->setting_id()>10 || q->expected_value()<0 || q->value()<0 ||
+              q->expected_value()>(q->setting_id()==0?2:1) || q->value()>(q->setting_id()==0?2:1))return "invalid standing orders edit";
+  } else if(r.standing_orders())return "unexpected standing orders request";
   if(r.action()==ManagementAction::WorkDetailSettingsRead || r.action()==ManagementAction::WorkDetailSettingsToggle) {
     const auto* q=r.work_detail_settings();
     if(!q || q->detail_index()<0 || q->detail_index()>=128 || !q->expected_revision() || q->expected_revision()>INT64_MAX)
@@ -1016,7 +1024,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::WorkDetailSettingsToggle ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::StandingOrdersSet ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -1092,6 +1100,20 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     for(auto id:*r->unit_ids())if(id<0 || !ids.insert(id).second)return "invalid residents identity";
   } else if((s.action()==ManagementAction::ResidentsQuery || s.action()==ManagementAction::WorkDetailWorkersQuery) && s.status()==ManagementStatus::Ok)
     return "residents result required";
+  if(const auto* r=s.standing_orders()) {
+    using O=StandingOrdersOutcome;
+    const bool read=s.action()==ManagementAction::StandingOrdersRead,set=s.action()==ManagementAction::StandingOrdersSet;
+    if((!read && !set) || r->category()!=0 || !r->settings())return "invalid standing orders result";
+    if(s.status()==ManagementStatus::Ok) {
+      if(r->outcome()!=(read?O::None:O::Applied) || r->settings()->size()!=11)return "incomplete standing orders result";
+      int id=0;for(const auto* row:*r->settings()) {
+        if(!row || row->id()!=id || row->value()>(id==0?2:1) || (id<6 && !row->available()))return "invalid standing order setting";
+        ++id;
+      }
+    } else if(s.status()!=ManagementStatus::Rejected || r->settings()->size()!=0 ||
+              (r->outcome()!=O::Rejected && (!set || (r->outcome()!=O::Stale && r->outcome()!=O::Unknown))))return "invalid standing orders refusal";
+  } else if((s.action()==ManagementAction::StandingOrdersRead || s.action()==ManagementAction::StandingOrdersSet) && s.status()==ManagementStatus::Ok)
+    return "missing standing orders result";
   if(const auto* r=s.work_detail_settings()) {
     if((s.action()!=ManagementAction::WorkDetailSettingsRead && s.action()!=ManagementAction::WorkDetailSettingsToggle) ||
        s.status()!=ManagementStatus::Ok || r->detail_index()<0 || r->detail_index()>=128 || !r->revision() || r->revision()>INT64_MAX ||

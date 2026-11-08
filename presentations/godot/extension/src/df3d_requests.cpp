@@ -203,6 +203,13 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         for(const auto& l:v.links){Dictionary link;link["type"]=l.type;link["id"]=l.id;link["subid"]=l.subid;links.push_back(link);}
         value["words"]=words;value["links"]=links;result["residents_activity"]=value;
     }
+    if(s.standingOrders) {
+        const auto& v=*s.standingOrders;Dictionary value;Array rows;
+        value["category"]=v.category;value["outcome"]=int(v.outcome);
+        for(const auto& row:v.settings){Dictionary item;item["id"]=row.id;item["value"]=row.value;item["available"]=row.available;rows.push_back(item);}
+        value["settings"]=rows;result["standing_orders"]=value;
+        if(v.outcome==wm::StandingOrdersOutcome::Unknown)result["outcome"]="unknown";
+    }
     if(s.workDetailSettings) {
         const auto& v=*s.workDetailSettings;Dictionary value;Array catalog;PackedInt32Array labors;
         value["detail_index"]=v.detailIndex;value["revision"]=int64_t(v.revision);value["editable"]=v.editable;value["no_modify"]=v.noModify;
@@ -445,6 +452,21 @@ bool readResidentsSpecialization(const Dictionary& data,wm::ManagementRequest& r
     request.action=wm::ManagementAction::ResidentsSpecialize;
     request.residentsSpecialization={int32_t(int64_t(data["unit_id"])),uint64_t(int64_t(data["expected_revision"])),bool(data["only_assigned"])};return true;
 }
+bool validateStandingOrders(const Dictionary& data,String& error) {
+    const bool set=int64_t(data["action"])==int64_t(wm::ManagementAction::StandingOrdersSet);
+    if(data.size()!=(set?5:2) || !data.has("category") || data["category"].get_type()!=Variant::INT || int64_t(data["category"])!=0){error="Invalid standing orders category";return false;}
+    if(set){
+        for(const char* key:{"setting_id","expected_value","value"})if(!data.has(key) || data[key].get_type()!=Variant::INT){error="Invalid standing orders value";return false;}
+        const int64_t id=data["setting_id"],expected=data["expected_value"],value=data["value"];
+        if(id<0 || id>10 || expected<0 || value<0 || expected>(id==0?2:1) || value>(id==0?2:1)){error="Invalid standing orders edit";return false;}
+    }
+    return true;
+}
+bool readStandingOrders(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction(int64_t(data["action"]));request.standingOrders.category=uint8_t(int64_t(data["category"]));
+    if(request.action==wm::ManagementAction::StandingOrdersSet)request.standingOrders={0,int32_t(int64_t(data["setting_id"])),int8_t(int64_t(data["expected_value"])),int8_t(int64_t(data["value"]))};
+    return true;
+}
 bool validateWorkDetailSettings(const Dictionary& data,String& error) {
     const bool toggle=int64_t(data["action"])==int64_t(wm::ManagementAction::WorkDetailSettingsToggle);
     if(data.size()!=(toggle?4:3) || !data.has("detail_index") || !data.has("expected_revision") ||
@@ -634,6 +656,7 @@ const ManagementCodec managementCodecs[] = {
     {"residents_rows",validateResidentsRows,readResidentsRows},
     {"work_detail_rows",validateResidentsRows,readResidentsRows},
     {"work_detail_settings",validateWorkDetailSettings,readWorkDetailSettings},
+    {"standing_orders",validateStandingOrders,readStandingOrders},
     {"residents_specialization",validateResidentsSpecialization,readResidentsSpecialization},
     {"residents_activity",validateResidentsActivity,readResidentsActivity},
     {"job_settings",validateJobSettings,readJobSettings},
@@ -649,7 +672,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::WorkDetailSettingsToggle)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::StandingOrdersSet)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

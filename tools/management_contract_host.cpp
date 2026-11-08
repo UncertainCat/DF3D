@@ -851,12 +851,23 @@ int main(int argc,char** argv) {
         require(q->query_bytes()->size()==2 && q->query_bytes()->Get(0)=='T' && q->query_bytes()->Get(1)==0xc3,"work-detail query bytes");
         workers=m::CreateResidentsState(b,b.CreateVector(std::vector<int32_t>{7,2,9}));
       }
-      m::ManagementStateBuilder state(b);state.add_work_detail_settings(settings);state.add_residents(workers);state.add_agreement(agreements);state.add_report(reports);state.add_production(production);state.add_construction(construction);state.add_citizen(citizens);state.add_work_order(work);state.add_schema_version(m::kManagementVersion);
+      flatbuffers::Offset<m::StandingOrdersState> standing;
+      bool standingUnknown=false;
+      if(request && (request->action()==m::ManagementAction::StandingOrdersRead || request->action()==m::ManagementAction::StandingOrdersSet)) {
+        const auto* q=request->standing_orders();const bool set=request->action()==m::ManagementAction::StandingOrdersSet;
+        require(q && q->category()==0,"standing orders category");
+        standingUnknown=set && q->setting_id()==0;
+        if(set)require(q->setting_id()==(standingUnknown?0:1) && q->expected_value()==(standingUnknown?2:0) && q->value()==(standingUnknown?0:1),"standing orders expected value and target");
+        std::vector<flatbuffers::Offset<m::StandingOrderSetting>> rows;
+        if(!standingUnknown)for(int id=0;id<11;++id)rows.push_back(m::CreateStandingOrderSetting(b,id,id==0?2:(id==1 && set?1:0),id<8));
+        standing=m::CreateStandingOrdersState(b,0,standingUnknown?m::StandingOrdersOutcome::Unknown:set?m::StandingOrdersOutcome::Applied:m::StandingOrdersOutcome::None,b.CreateVector(rows));
+      }
+      m::ManagementStateBuilder state(b);state.add_work_detail_settings(settings);state.add_standing_orders(standing);state.add_residents(workers);state.add_agreement(agreements);state.add_report(reports);state.add_production(production);state.add_construction(construction);state.add_citizen(citizens);state.add_work_order(work);state.add_schema_version(m::kManagementVersion);
       state.add_revision(revision);state.add_world_epoch(epoch);state.add_client_id(request?request->client_id():0);
       state.add_request_seq(request?request->seq():0);state.add_action(request?request->action():m::ManagementAction::Catalog);
       state.add_creature_knowledge(knowledge);
       const bool citizenUnknown=request && request->action()==m::ManagementAction::WorkDetailEdit && request->citizen()->name()->str()=="UnknownMarker";
-      state.add_status((missing || knowledgeRejected || citizenUnknown)?m::ManagementStatus::Rejected:m::ManagementStatus::Ok);state.add_message(text);
+      state.add_status((missing || knowledgeRejected || citizenUnknown || standingUnknown)?m::ManagementStatus::Rejected:m::ManagementStatus::Ok);state.add_message(text);
       state.add_building_id(2147483000);state.add_build_stage(-1);state.add_max_stage(-1);state.add_area(areas);
       auto finished=state.Finish();b.Finish(finished);
       const auto* value=flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer());
@@ -889,7 +900,7 @@ int main(int argc,char** argv) {
         A::AreaCreate,A::AreaUpdate,A::AreaUpdate,
         A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaCreate,A::AreaInspect,
         A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,
-        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::PrepareAlertDismissal,A::DismissAlert,A::ProductionInspect,A::ProductionInspect,A::ProductionInspect,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::WorkDetailWorkersQuery,A::WorkDetailSettingsRead,A::WorkDetailSettingsToggle};
+        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::PrepareAlertDismissal,A::DismissAlert,A::ProductionInspect,A::ProductionInspect,A::ProductionInspect,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::WorkDetailWorkersQuery,A::WorkDetailSettingsRead,A::WorkDetailSettingsToggle,A::StandingOrdersRead,A::StandingOrdersSet,A::StandingOrdersSet};
     publish(1,nullptr);signal("ready");size_t received=0;
     const auto stop=std::chrono::steady_clock::now()+std::chrono::seconds(30);
     std::vector<uint8_t> bytes(m::kManagementCommandCapacity);
@@ -1046,7 +1057,7 @@ int main(int argc,char** argv) {
         case A::TradeUpdate: {
           auto* v=r->trade();require(v && v->depot_id()==2147483000 && v->expected_revision()==epoch && v->requested()==1 && v->anyone()==-1 && v->item_id()==-1,"trade payload");break;
         }
-        case A::CreatureKnowledgeRead: case A::WorkDetailWorkersQuery: case A::WorkDetailSettingsRead: case A::WorkDetailSettingsToggle: break; // Full identity is checked while constructing the reply.
+        case A::CreatureKnowledgeRead: case A::WorkDetailWorkersQuery: case A::WorkDetailSettingsRead: case A::WorkDetailSettingsToggle: case A::StandingOrdersRead: case A::StandingOrdersSet: break; // Full identity is checked while constructing the reply.
         default: throw std::runtime_error("unexpected action");
         }
         publish(received+1,r);

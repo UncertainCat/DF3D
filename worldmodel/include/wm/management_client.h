@@ -413,6 +413,9 @@ struct ProductionState {
   int32_t selectedBuilding=-1,createdJob=-1;
   std::string detail;
 };
+struct StandingOrdersRequest { uint8_t category=0; int32_t settingId=-1; int8_t expectedValue=-1,value=-1; };
+struct StandingOrderSetting { int32_t id=-1; uint8_t value=0; bool available=false; };
+struct StandingOrdersState { uint8_t category=0; StandingOrdersOutcome outcome=StandingOrdersOutcome::None; std::vector<StandingOrderSetting> settings; };
 struct WorkDetailSettingsRequest { int32_t detailIndex=-1; uint64_t expectedRevision=0; int32_t settingId=-1; };
 struct WorkDetailSetting { int32_t id=-1; std::string caption; };
 struct WorkDetailSettingsState { int32_t detailIndex=-1; uint64_t revision=0; bool editable=false,noModify=false; std::vector<int16_t> labors; std::vector<WorkDetailSetting> catalog; };
@@ -804,6 +807,7 @@ struct ManagementRequest {
   ResidentsRequest residents;
   WorkDetailWorkersRequest workDetailWorkers;
   WorkDetailSettingsRequest workDetailSettings;
+  StandingOrdersRequest standingOrders;
   ResidentsRowsRequest residentsRows;
   ResidentsSpecializationRequest residentsSpecialization;
   ResidentsActivityRequest residentsActivity;
@@ -865,6 +869,7 @@ struct ManagementState {
   std::optional<ResidentsState> residents;
   std::optional<ResidentsRowsState> residentsRows;
   std::optional<WorkDetailSettingsState> workDetailSettings;
+  std::optional<StandingOrdersState> standingOrders;
   std::optional<ResidentsSpecializationState> residentsSpecialization;
   std::optional<ResidentsActivityState> residentsActivity;
   std::optional<JobSettingsState> jobSettings;

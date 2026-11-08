@@ -33,6 +33,26 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Standing orders native discovery
 
+Management145 carries StandingOrdersRead/Set through schema validation, the
+engine-independent model and the Godot request/result adapter. Category0 is
+Workshops. Read requests reject write fields; edits require bounded setting ID,
+expected value and desired value. Successful snapshots require eleven unique,
+ordered settings with native value ranges. Failed/uncertain replies contain no
+settings; uncertain writes retain the service's top-level Unknown outcome.
+Generated domain/mutation routing includes both actions.
+
+Core19, extension and the C++ producer-to-Godot contract pass in
+standing-orders-contract-fixed-20261108. Initial round-trip failure was a test
+helper expecting Ok for the intentional rejected/Unknown response; correcting
+that expectation passes without changing runtime result mapping. MSVC builds;
+protected120402 on2026-11-08 verifies ordinary Work Details creation with the
+Management145 peers. Owned DF38092 closes unsaved with source preservation;
+headless viewer/native30FPS, GPU59–61C samples, joined viewer logs contain only
+the known separate-renderer notice. Built/installed plugin SHA256 is
+`8131A2BA4FF1005CF6BBA5A3DF5D7A091AE17415BF4274E211B6CF88B04213C9`.
+This is contract/compatibility evidence; new native Standing orders request
+handling and UI are still pending.
+
 `standing_orders_native.h` exposes Workshops simulation settings using the
 pinned4331ca..4334fa inline semantics, without invoking the menu handler. It
 checks the executable identity, branch bytes and all eleven DFHack global
@@ -50,8 +70,8 @@ the original values. Owned DF46876 closes unsaved with source preservation and
 paused simulation; GPU59C sampled. MSVC build passes; installed and built plugin
 SHA256 both
 `D1B0D68D1ACF9088DC5961898DB2E108381693A2527C1A16E3A7DAB29C919BDB`.
-The diagnostic command uses this adapter; a typed transport and presentation
-remain unimplemented. The three currently unavailable automation controls need
+The diagnostic command uses this adapter; typed transport is defined above,
+but native request handling and presentation remain unimplemented. The three currently unavailable automation controls need
 controlled-reaction acceptance before their enabled states can be claimed.
 
 Protected114349 on2026-11-08 captures all seven Labor/Standing orders categories
@@ -76,7 +96,7 @@ Owned DF43240 closes unsaved, source manifest unchanged, simulation paused.
 Initial114118 tried reading a shared_ptr as a widget;114157 corrected widget
 traversal and captured Workshops.114314 found unmapped globals;114349 explicitly
 records their unavailability and completes the capture/cycles. No Standing
-orders transport contract, panel or public exposure is implemented yet.
+orders panel or public exposure is implemented yet.
 
 ## Work Details native discovery
 

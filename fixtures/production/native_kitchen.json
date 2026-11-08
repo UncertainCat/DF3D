@@ -2,7 +2,7 @@
   "df_version": "53.16",
   "steam_build": 24557528,
   "capture": "build/stockpile-storage-native-input-20261108-161252",
-  "scope": "Native Kitchen aggregation/filtering, single-column sorting, permission toggles, scoped job effects and row display metadata/artwork acceptance. Transport, full UI and broader food artwork remain unaccepted. Diagnostic widget/menu reads are not permitted runtime inputs.",
+  "scope": "Native Kitchen providers and typed controller edits, scoped job effects and row artwork acceptance. Full UI and broader food artwork remain unaccepted. Diagnostic widget/menu reads are not permitted runtime inputs.",
   "initial": {
     "category": 0,
     "cursor": 0,
@@ -2508,5 +2508,247 @@
         "godot-shutdown-objects"
       ]
     }
+  },
+  "controls_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-172922",
+    "source_preserved": true,
+    "observations": [
+      {
+        "capabilities": 0,
+        "cursor": 0,
+        "label": "initial",
+        "labels": [
+          " All"
+        ],
+        "names": [
+          "Alfalfa seeds",
+          "Rock nuts",
+          "Blade weed seeds",
+          "Strawberry seeds",
+          "Prickle berry seeds",
+          "Rice",
+          "Rat weed seeds",
+          "Dimple cup spawn",
+          "Longland grass seeds",
+          "Blood amaranth seeds",
+          "Rope reed seeds",
+          "Pig tail seeds",
+          "Plump helmet spawn"
+        ],
+        "query": "",
+        "type": -1
+      },
+      {
+        "capabilities": 0,
+        "cursor": 0,
+        "label": "right-1",
+        "labels": [
+          " Veg/Fruit/Leaves"
+        ],
+        "names": [],
+        "query": "",
+        "type": 0
+      },
+      {
+        "capabilities": 0,
+        "cursor": 0,
+        "label": "right-2",
+        "labels": [
+          " Seeds"
+        ],
+        "names": [
+          "Alfalfa seeds",
+          "Rock nuts",
+          "Blade weed seeds",
+          "Strawberry seeds",
+          "Prickle berry seeds",
+          "Rice",
+          "Rat weed seeds",
+          "Dimple cup spawn",
+          "Longland grass seeds",
+          "Blood amaranth seeds",
+          "Rope reed seeds",
+          "Pig tail seeds",
+          "Plump helmet spawn"
+        ],
+        "query": "",
+        "type": 1
+      },
+      {
+        "capabilities": 0,
+        "cursor": 0,
+        "label": "right-3",
+        "labels": [
+          " Drinks"
+        ],
+        "names": [],
+        "query": "",
+        "type": 2
+      },
+      {
+        "capabilities": 0,
+        "cursor": 0,
+        "label": "right-4",
+        "labels": [
+          " Meat/Fish/Other"
+        ],
+        "names": [
+          "Pig's milk",
+          "Yak's milk",
+          "Dwarven syrup"
+        ],
+        "query": "",
+        "type": 3
+      },
+      {
+        "capabilities": 0,
+        "cursor": 0,
+        "label": "right-5",
+        "labels": [
+          " All"
+        ],
+        "names": [
+          "Alfalfa seeds",
+          "Rock nuts",
+          "Blade weed seeds",
+          "Strawberry seeds",
+          "Prickle berry seeds",
+          "Rice",
+          "Rat weed seeds",
+          "Dimple cup spawn",
+          "Longland grass seeds",
+          "Blood amaranth seeds",
+          "Rope reed seeds",
+          "Pig tail seeds",
+          "Plump helmet spawn"
+        ],
+        "query": "",
+        "type": -1
+      },
+      {
+        "capabilities": 0,
+        "cursor": 0,
+        "label": "right-6",
+        "labels": [
+          " Veg/Fruit/Leaves"
+        ],
+        "names": [
+          "Plump helmets",
+          "Cave wheat",
+          "Sweet pods"
+        ],
+        "query": "",
+        "type": 0
+      },
+      {
+        "capabilities": 0,
+        "cursor": 0,
+        "label": "left",
+        "labels": [
+          " All"
+        ],
+        "names": [
+          "Alfalfa seeds",
+          "Rock nuts",
+          "Blade weed seeds",
+          "Strawberry seeds",
+          "Prickle berry seeds",
+          "Rice",
+          "Rat weed seeds",
+          "Dimple cup spawn",
+          "Longland grass seeds",
+          "Blood amaranth seeds",
+          "Rope reed seeds",
+          "Pig tail seeds",
+          "Plump helmet spawn"
+        ],
+        "query": "",
+        "type": -1
+      },
+      {
+        "capabilities": 1,
+        "cursor": 0,
+        "label": "cook-on",
+        "labels": [
+          " All"
+        ],
+        "names": [
+          "Alfalfa seeds",
+          "Rock nuts",
+          "Blade weed seeds",
+          "Strawberry seeds",
+          "Prickle berry seeds",
+          "Rice",
+          "Rat weed seeds",
+          "Dimple cup spawn",
+          "Longland grass seeds",
+          "Blood amaranth seeds",
+          "Rope reed seeds",
+          "Pig tail seeds",
+          "Plump helmet spawn"
+        ],
+        "query": "",
+        "type": -1
+      },
+      {
+        "capabilities": 3,
+        "cursor": 0,
+        "label": "brew-on",
+        "labels": [
+          " All"
+        ],
+        "names": [
+          "Plump helmets"
+        ],
+        "query": "",
+        "type": -1
+      },
+      {
+        "capabilities": 2,
+        "cursor": 0,
+        "label": "cook-off",
+        "labels": [
+          " All"
+        ],
+        "names": [
+          "Plump helmets",
+          "Cave wheat",
+          "Sweet pods"
+        ],
+        "query": "",
+        "type": -1
+      },
+      {
+        "capabilities": 0,
+        "cursor": 0,
+        "label": "brew-off",
+        "labels": [
+          " All"
+        ],
+        "names": [
+          "Alfalfa seeds",
+          "Rock nuts",
+          "Blade weed seeds",
+          "Strawberry seeds",
+          "Prickle berry seeds",
+          "Rice",
+          "Rat weed seeds",
+          "Dimple cup spawn",
+          "Longland grass seeds",
+          "Blood amaranth seeds",
+          "Rope reed seeds",
+          "Pig tail seeds",
+          "Plump helmet spawn"
+        ],
+        "query": "",
+        "type": -1
+      }
+    ],
+    "art": {
+      "inactive": "CONTRACT_LIST",
+      "active": "EXPAND_LIST",
+      "comparison": "Both32x36 native Cook filter crops match installed INTERFACE_BITS_SHARED exactly (RGB including alpha composited on native28 background)."
+    },
+    "scope": "Actual type-arrow clicks and capability-filter clicks, native captions and visible names only; search, modified sorting, navigation retention and broader layouts are not accepted."
   }
 }

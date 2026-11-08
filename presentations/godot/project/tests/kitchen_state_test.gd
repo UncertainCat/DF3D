@@ -13,6 +13,18 @@ func run() -> void:
 	var service:=Service.new();root.add_child(service);var state:=State.new();state.configure(service)
 	state.open();service.reply(state.ticket,response())
 	check(state.phase==State.Phase.Ready and state.rows.size()==1,"Native read rejected")
+	var controls: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/production/native_kitchen.json")).controls_reference
+	for observation in controls.observations:
+		var label: String=observation.label
+		if label=="initial":continue
+		if label.begins_with("right-"):state.cycle_type(1)
+		elif label=="left":state.cycle_type(-1)
+		else:state.toggle_capability(1 if label.begins_with("cook") else 2)
+		check(state.query.type_filter==int(observation.type) and state.query.capability_filter==int(observation.capabilities),"Filter gesture differs from native: "+label)
+		service.reply(state.ticket,response())
+	state.select_sort(1);check(not state.query.sorts[0].reverse,"First Name sort flipped direction");service.reply(state.ticket,response())
+	state.select_sort(1);check(state.query.sorts[0].reverse,"Second Name sort did not flip");service.reply(state.ticket,response())
+	state.select_sort(2);check(not state.query.sorts[0].reverse and state.sort_directions[1],"New sort lost stored direction");service.reply(state.ticket,response())
 	var q:=state.query.duplicate(true);q.query="plump";q.sorts=[{"column":1,"reverse":true},{"column":2,"reverse":false}]
 	state.set_query(q);var old:=state.ticket;q.query="helmets";state.set_query(q);var newer:=state.ticket
 	service.reply(old,response());check(state.ticket==newer and state.phase==State.Phase.Reading and service.detached.has(old),"Old query reply published")

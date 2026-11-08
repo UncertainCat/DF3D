@@ -4,6 +4,7 @@ extends "res://scripts/standing_orders_view.gd"
 var icons: Dictionary={}
 var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
 var selected:=0
+const TYPE_LABELS=[" All"," Veg/Fruit/Leaves"," Seeds"," Drinks"," Meat/Fish/Other"]
 func configure_kitchen(source,model) -> void:
 	configure_standing_orders(source,model);picture.configure(source)
 	scrollbar.input_allowed=allowed
@@ -27,11 +28,18 @@ func refresh() -> void:
 		else:texture=world.item_sheet_icon(kind,{"material_token":token,"subtype_raw":"","color_token":"","stack":1,"flags":0},-1)
 		retained[key]=texture
 	icons=retained
-	scrollbar.position=Vector2(size.x-40,rows_top());scrollbar.size=Vector2(16,capacity()*36);scrollbar.page=capacity();scrollbar.set_rows(state.rows.size(),state.first)
+	scrollbar.position=Vector2(size.x-40,rows_top());scrollbar.size=Vector2(16,capacity()*36+12);scrollbar.page=capacity();scrollbar.set_rows(state.rows.size(),state.first)
 	queue_redraw()
 func _gui_input(event: InputEvent) -> void:
 	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
+	if Rect2(88,list_top()-24,24,12).has_point(event.position):state.cycle_type(-1);accept_event();return
+	if Rect2(256,list_top()-24,24,12).has_point(event.position):state.cycle_type(1);accept_event();return
+	for permission in [1,2]:
+		if Rect2(680+(permission-1)*32,list_top()-24,32,36).has_point(event.position):state.toggle_capability(permission);accept_event();return
+	var positions: Array=[88,168,584,680,712]
+	for column in 5:
+		if Rect2(positions[column],list_top()+12,80 if column<2 else 32,12).has_point(event.position):state.select_sort(column);accept_event();return
 	var index:=int(floor((event.position.y-rows_top())/36))
 	if index<0 or index>=capacity():return
 	if Rect2(680,rows_top()+index*36,32,36).has_point(event.position):state.toggle(state.first+index,1);accept_event()
@@ -50,12 +58,15 @@ func _draw() -> void:
 		var part: int=cell if cell<3 else cell-21 if cell>=21 else 0 if cell==3 else 2 if cell==20 else 1
 		var texture:=strip(token,part)
 		if texture!=null:draw_texture_rect(texture,Rect2(88+cell*8,list_top()-24,8,12),false)
-	text(" All",Vector2(112,list_top()-12))
+	text(TYPE_LABELS[int(state.query.type_filter)+1],Vector2(112,list_top()-12))
+	for permission in [1,2]:
+		var texture: Texture2D=art.texture("EXPAND_LIST" if int(state.query.capability_filter)&permission else "CONTRACT_LIST")
+		if texture!=null:draw_texture_rect(texture,Rect2(680+(permission-1)*32,list_top()-24,32,36),false)
 	var positions: Array=[88,168,584,680,712]
 	for index in 5:
 		var active: bool=int(state.query.sorts[0].column)==index
 		for cell in 4:
-			var texture:=strip("SORT_DESCENDING_"+("ACTIVE" if active else "INACTIVE"),cell)
+			var texture:=strip("SORT_"+("ASCENDING_" if state.sort_directions[index] else "DESCENDING_")+("ACTIVE" if active else "INACTIVE"),cell)
 			if texture!=null:draw_texture_rect(texture,Rect2(positions[index]+cell*8,list_top()+12,8,12),false)
 		if index<2:
 			for cell in 6:

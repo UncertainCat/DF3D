@@ -79,8 +79,23 @@ separate-thread/finalize/shutdown diagnostics; sampled GPU temperature was61C.
 The capture waits for rendering to settle: earlier frame-count-only captures
 omitted chrome or were blank and do not establish fidelity. This is a narrow
 initial13-row comparison, not full-screen acceptance. Selection outline,
-capability-filter buttons, filter/sort gestures, hover, responsive geometry and
-Labor ownership integration remain incomplete; the screen is not exposed.
+search/modifier-sort gestures, hover, responsive geometry and Labor ownership
+integration remain incomplete; the screen is not exposed.
+
+Protected172816/172922 on2026-11-08 records actual Kitchen type-arrow cycling
+through All, Veg/Fruit/Leaves, Seeds, Drinks and Meat/Fish/Other, plus Cook/Brew
+capability toggles0/1/3/2/0. Source saves remain unchanged and owned DF exits
+unsaved. `native_kitchen.json.controls_reference` retains these input observations
+and visible names. The staged view/controller now sends those native filter
+intents and single-column sorts; inactive columns retain their direction and
+clicking the active column reverses it, as captured in162854. Installed
+CONTRACT_LIST/EXPAND_LIST artwork matches the respective native32x36 filter
+captures exactly. `kitchen-controls` renders the initial two-icon filter crop
+with zero differing RGB pixels, but the full panel still differs by14267pixels;
+full-screen parity is not claimed. Core19 and the native-input-derived controller
+checks pass in `kitchen-controls-final`. Graphical checks retain only the known
+Godot diagnostics at30FPS with sampled GPU temperature61C. Search, modified
+sorts, full pointer workflow and native navigation retention remain unaccepted.
 
 Core19, the extension build and Kitchen end-to-end fake-host checks pass in
 `kitchen-contract151-roundtrip`, including ordered filters/sorts and receipts,

@@ -13,6 +13,7 @@ var first:=0
 var ticket:=0
 var generation:=0
 var last_result: Dictionary={}
+var sort_directions: Array[bool]=[false,false,false,false,false]
 
 func configure(source) -> void:
 	dispose();service=source
@@ -31,6 +32,7 @@ func close() -> void:
 	_retire();_clear();first=0;last_result={};phase=Phase.Closed;changed.emit()
 func _session_changed() -> void:
 	close();query={"type_filter":-1,"capability_filter":0,"query":"","sorts":[{"column":0,"reverse":false}]}
+	sort_directions=[false,false,false,false,false]
 	phase=Phase.Unavailable;changed.emit()
 func open() -> void:
 	close();_read()
@@ -39,6 +41,15 @@ func set_query(value: Dictionary) -> void:
 	_retire();query=value.duplicate(true);first=0;_read()
 func seek(value: int,capacity: int) -> void:
 	first=clampi(value,0,maxi(0,rows.size()-maxi(0,capacity)));changed.emit()
+func cycle_type(delta: int) -> void:
+	var value:=query.duplicate(true);value.type_filter=posmod(int(value.type_filter)+1+delta,5)-1;set_query(value)
+func toggle_capability(permission: int) -> void:
+	if permission not in [1,2]:return
+	var value:=query.duplicate(true);value.capability_filter=int(value.capability_filter)^permission;set_query(value)
+func select_sort(column: int) -> void:
+	if phase not in [Phase.Ready,Phase.Reading] or column<0 or column>4:return
+	if int(query.sorts[0].column)==column:sort_directions[column]=not sort_directions[column]
+	var value:=query.duplicate(true);value.sorts=[{"column":column,"reverse":sort_directions[column]}];set_query(value)
 func _read() -> void:
 	_clear();phase=Phase.Reading
 	var intent:=query.duplicate(true);intent.action=C.ManagementAction.KitchenRead;_submit(intent)

@@ -284,6 +284,28 @@ if os.getenv('DF3D_KITCHEN_FILTER')=='1' then
  panel.filter_type=-1;panel.filter_perm=0;panel.filter_str='';panel.sort_flags=panel.sort_flags|1
  for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
 end
+if os.getenv('DF3D_KITCHEN_CONTROLS')=='1' then
+ local observations={}
+ local function observe(label)
+  local names={};local labels={}
+  local function collect(widget)
+   if (widget.flag.whole&3)~=3 then return end
+   if df.widget_text:is_instance(widget) then
+    if widget.rect.x1==15 and widget.rect.y1>=16 then names[#names+1]=dfhack.df2utf(widget.str)end
+    if widget.rect.y1==12 then labels[#labels+1]=dfhack.df2utf(widget.str)end
+   end
+   if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do collect(child)end end
+  end
+  collect(panel)
+  observations[#observations+1]={label=label,type=panel.filter_type,capabilities=panel.filter_perm,query=dfhack.df2utf(panel.filter_str),names=names,labels=labels,cursor=panel.cursor_idx}
+ end
+ observe('initial')
+ for i=1,6 do click(37,12);observe('right-'..i)end
+ click(16,12);observe('left')
+ for _,step in ipairs({{'cook-on',90},{'brew-on',94},{'cook-off',90},{'brew-off',94}})do click(step[2],13);observe(step[1]);shot('kitchen-controls-'..step[1])end
+ local f=assert(io.open(out..'/kitchen-controls.json','w'));f:write(json.encode(observations));f:close()
+ shot('kitchen-controls')
+end
 if os.getenv('DF3D_KITCHEN_JOB_EFFECTS')=='1' then
  local path=debug.getinfo(1,'S').source:sub(2):gsub('kitchen%-native.lua$','kitchen-job-effects-native.lua')
  assert(loadfile(path))(out,view,panel,click,result.known)

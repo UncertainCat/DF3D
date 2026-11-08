@@ -128,6 +128,11 @@ func controller(id: String):
 	var panel = load(Registry.PANEL_SCRIPTS[id]).new()
 	if id=="work_details":
 		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
+		panel.standing_orders_requested.connect(func():controller("standing_orders").open_from_labor())
+		controllers[id]=panel;return panel
+	if id=="standing_orders":
+		add_child(panel);panel.configure(world,actions,host)
+		panel.work_details_requested.connect(func():controller("work_details").open_from_labor())
 		controllers[id]=panel;return panel
 	if id=="residents":
 		add_child(panel);panel.configure(world,actions,host)

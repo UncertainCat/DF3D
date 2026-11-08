@@ -46,9 +46,9 @@ func close() -> void:
 	last_result={};phase=Phase.Closed;changed.emit()
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
-func open() -> void:
+func open(preferred: int=0) -> void:
 	close();sort=C.WorkDetailWorkerSort.Skills;directions=[false,false,false,false];query=PackedByteArray()
-	_reload(0)
+	_reload(preferred)
 func refresh() -> void:
 	if phase in [Phase.Closed,Phase.Applying]:return
 	_reload(int(selected.get("index",0)))

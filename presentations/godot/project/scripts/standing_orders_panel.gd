@@ -1,4 +1,5 @@
 extends Node
+signal work_details_requested
 # Staged owner, pending all categories and native interaction acceptance.
 var ui_host
 var modal_input:=true
@@ -13,19 +14,23 @@ var action_service
 var chores_state=preload("res://scripts/chores_state.gd").new()
 var chores_panel
 var chores_active:=false
+var return_category:=0
 func _init() -> void:
 	state.changed.connect(_sync);chores_state.changed.connect(_sync);chores_state.rows_changed.connect(_rows)
 func configure(world,service,host) -> void:
 	ui_host=host;state.configure(service);chores_state.configure(service)
+	service.session_changed.connect(_reset_labor_navigation)
 	world_source=world;action_service=service
 	var layer:=CanvasLayer.new();layer.layer=10;add_child(layer)
 	panel=preload("res://scripts/standing_orders_view.gd").new();layer.add_child(panel)
 	panel.configure_standing_orders(world,state);panel.input_allowed=allowed
 	panel.hunter_ammunition_requested.connect(open_ammunition)
 	panel.chores_requested.connect(open_chores)
+	panel.work_details_requested.connect(request_work_details)
 	chores_panel=preload("res://scripts/chores_view.gd").new();layer.add_child(chores_panel)
 	chores_panel.configure_chores(world,chores_state);chores_panel.input_allowed=allowed
 	chores_panel.category_requested.connect(open_category);chores_panel.cancelled.connect(close_panel)
+	chores_panel.work_details_requested.connect(request_work_details)
 	panel.cancelled.connect(close_panel);host.register(self);_layout();_sync()
 func open_chores() -> void:
 	if not allowed() or chores_active or state.phase==state.Phase.Applying:return
@@ -38,6 +43,17 @@ func open_category(category: int) -> void:
 func _rows() -> void:
 	if chores_panel!=null:chores_panel.display_rows(chores_state.rows.values())
 func allowed() -> bool:return play_enabled and ui_host!=null and ui_host.allows_panel_input(self)
+func _reset_labor_navigation() -> void:return_category=0
+func request_work_details() -> void:
+	var current=chores_state if chores_active else state
+	if not allowed() or current.phase==current.Phase.Applying:return
+	return_category=5 if chores_active else state.category
+	work_details_requested.emit()
+func open_from_labor() -> void:
+	open_panel()
+	if not allowed():return
+	if return_category==5:open_chores()
+	elif return_category!=0:state.select_category(return_category)
 func open_ammunition() -> void:
 	if not allowed() or state.phase!=state.Phase.Ready or state.category!=6:return
 	if not is_instance_valid(ammunition_owner):

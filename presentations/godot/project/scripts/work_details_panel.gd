@@ -2,6 +2,7 @@ extends Node
 # Staged owner; settings/name editing and full native acceptance precede exposure.
 signal settings_requested
 signal rename_requested
+signal standing_orders_requested
 var ui_host
 var modal_input:=true
 var play_enabled:=true
@@ -14,9 +15,11 @@ var name_generation: int=-1
 var pending_name_action: Dictionary={}
 var closing:=false
 var pending_name_first: int=-1
+var return_detail:=0
 func _init() -> void:state.changed.connect(_sync)
 func configure(world,service,host,hover_help=null) -> void:
 	ui_host=host;state.configure(service)
+	service.session_changed.connect(_reset_labor_navigation)
 	var layer:=CanvasLayer.new();layer.layer=10;add_child(layer)
 	panel=preload("res://scripts/work_details_view.gd").new();layer.add_child(panel)
 	panel.configure_work_details(world,state);panel.input_allowed=allowed;panel.hover_help=hover_help
@@ -27,12 +30,18 @@ func configure(world,service,host,hover_help=null) -> void:
 	panel.rename_requested.connect(_begin_name)
 	panel.name_edited.connect(_name_edited)
 	panel.name_finished.connect(_finish_name)
+	panel.standing_orders_requested.connect(request_standing_orders)
 	host.register(self);_layout();_sync()
 func allowed() -> bool:return play_enabled and ui_host!=null and ui_host.allows_panel_input(self)
-func open_panel() -> void:
+func _reset_labor_navigation() -> void:return_detail=0
+func request_standing_orders() -> void:
+	if not allowed() or state.phase!=state.Phase.Ready:return
+	return_detail=int(state.selected.get("index",0));standing_orders_requested.emit()
+func open_from_labor() -> void:open_panel(return_detail)
+func open_panel(preferred: int=0) -> void:
 	if is_instance_valid(name_session) and not name_session.stopped:return
 	if play_enabled and ui_host!=null and ui_host.activate(self):
-		opening=true;state.open();opening=false;_sync()
+		opening=true;state.open(preferred);opening=false;_sync()
 func close_panel() -> void:
 	closing=true;pending_name_action={};pending_name_first=-1;_finish_name({});state.close()
 	if panel!=null:panel.clear_name()

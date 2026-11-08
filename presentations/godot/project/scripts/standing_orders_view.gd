@@ -4,6 +4,7 @@ extends "res://scripts/location_staff_candidates_frame.gd"
 signal cancelled
 signal hunter_ammunition_requested
 signal chores_requested
+signal work_details_requested
 const InfoTabs=preload("res://scripts/work_order_info_tabs.gd")
 const CAPTIONS=[["No automatic weaving", "Automatically weave dyed thread", "Automatically weave all thread"], ["Use any cloth", "Use only dyed cloth"], ["No automatic web collection", "Automatically collect webs"], ["No automatic slaughter", "Slaughter any marked animal"], ["No automatic butchery", "Automatically butcher carcasses"], ["No automatic fish cleaning", "Automatically clean fish"], ["Do not automate kitchen", "Automate kitchen"], ["Do not automate tannery", "Automate tannery"]]
 const CATEGORY_CAPTIONS={1:[["Workers ignore animals", "Workers gather animals"], ["Workers ignore food", "Workers gather food"], ["Workers ignore furniture", "Workers gather furniture"], ["Workers ignore bodies", "Workers gather bodies"], ["Workers ignore minerals", "Workers gather minerals"], ["Workers ignore wood", "Workers gather wood"]],2:[["Workers ignore refuse", "Workers gather refuse"], ["Workers ignore outdoor refuse", "Workers gather outdoor refuse"], ["Workers ignore outdoor vermin remains", "Workers gather outdoor vermin remains"], ["Workers save corpses", "Workers dump corpses"], ["Workers save skulls", "Workers dump skulls"], ["Workers save bones", "Workers dump bones"], ["Workers save shells", "Workers dump shells"], ["Workers save skins", "Workers dump skins"], ["Workers save hair and wool", "Workers dump hair and wool"], ["Workers save other objects", "Workers dump other objects"]],3:[["Claim used ammunition", "Forbid used ammunition", "Forbid used ammunition during sieges"], ["Claim your dead", "Forbid your dead", "Forbid your dead during sieges"], ["Claim your death items", "Forbid your death items", "Forbid your death items during sieges"], ["Claim other dead", "Forbid other non-hunted dead", "Forbid other non-hunted dead during sieges"], ["Claim other death items", "Forbid other death items", "Forbid other death items during sieges"], ["Allow floor/wall cleaning", "Forbid floor/wall cleaning", "Forbid floor/wall cleaning during sieges"], ["Allow trap cleaning", "Forbid trap cleaning", "Forbid trap cleaning during sieges"], ["Allow trap rearming", "Forbid trap rearming", "Forbid trap rearming during sieges"], ["Claim cages from sprung traps", "Forbid cages from sprung traps", "Forbid cages from sprung traps during sieges"], ["Claim toppled building items", "Forbid toppled building items", "Forbid toppled building items during sieges"]],4:[["Citizenship petitions: reject", "Citizenship petitions: prompt", "Citizenship petitions: accept"], ["Performer petitions: reject", "Performer petitions: prompt", "Performer petitions: accept"], ["Monster slayer petitions: reject", "Monster slayer petitions: prompt", "Monster slayer petitions: accept"], ["Mercenary petitions: reject", "Mercenary petitions: prompt", "Mercenary petitions: accept"], ["Scholar petitions: reject", "Scholar petitions: prompt", "Scholar petitions: accept"], ["Sanctuary petitions: reject", "Sanctuary petitions: prompt", "Sanctuary petitions: accept"]],6:[["Announce no job cancellations", "Announce some job cancellations", "Announce most job cancellations", "Announce all job cancellations"], ["Mining cancelled near new damp stone", "Mining continues through new damp stone"], ["Mining cancelled near new warm stone", "Mining continues through new warm stone"], ["Only farmers harvest", "Everybody harvests"], ["Do not mix similar food in barrels", "Mix similar foods in barrels"], ["Prefer zones for water drinking", "Drink water only from designed zones"], ["Prefer zones for fishing", "Fish only in designated zones"]]}
@@ -26,6 +27,7 @@ func category_rect(index: int) -> Rect2:
 	var x:=8
 	for previous in index:x+=(CATEGORIES[previous].length()+4)*8
 	return Rect2(x,list_top()-36,(CATEGORIES[index].length()+4)*8,24)
+func work_details_rect() -> Rect2:return Rect2(8,list_top()-60,128,24)
 func visible_ids() -> Array[int]:
 	var ids: Array[int]=[]
 	if state!=null:
@@ -43,6 +45,7 @@ func _gui_input(event: InputEvent) -> void:
 	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
 	accept_event()
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
+	if work_details_rect().has_point(event.position):work_details_requested.emit();return
 	if category_rect(5).has_point(event.position):chores_requested.emit();return
 	for category in [0,1,2,3,4,6]:
 		if category_rect(category).has_point(event.position):state.select_category(category);return

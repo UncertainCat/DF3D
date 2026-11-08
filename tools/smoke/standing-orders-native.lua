@@ -101,6 +101,12 @@ local function shot(name)
  if name=='hunter-ammunition-wire' then assert(checked==#result.hunter_ammunition.wire_steps,'Ammunition wire steps incomplete');result.hunter_ammunition.wire_checked=checked end
  if name=='standing-orders-wire' then assert(checked==#result.wire_steps,'Wire steps incomplete');result.wire_checked=checked end
 end
+if os.getenv('DF3D_LABOR_NAVIGATION')=='1' then
+ click(10,10);click(12,19);shot('labor-navigation-detail')
+ click(30,10);click(71,12);assert(panel.current_category==5);shot('labor-navigation-chores')
+ click(10,10);shot('labor-navigation-detail-return')
+ click(30,10);result.labor_navigation={standing_category=panel.current_category};shot('labor-navigation-standing-return')
+end
 local original=values()
 for category,x in ipairs{10,23,34,46,60,71,80}do
  click(x,12);assert(panel.current_category==category-1,'Standing orders category click failed')

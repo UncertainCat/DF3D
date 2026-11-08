@@ -5987,5 +5987,13 @@
       "restored_rows": 12,
       "limitations": "Drag endpoints/release, independent lists, bounded live viewport reads and resize restoration verified. Intermediate drag geometry, long-caption ellipsis and main-scene integration remain outside this acceptance."
     }
+  },
+  "labor_navigation_reference": {
+    "native_capture": "build/stockpile-storage-native-input-20261108-160448",
+    "live_capture": "build/stockpile-storage-native-input-20261108-160705",
+    "retained_standing_category": 5,
+    "retained_work_detail": 1,
+    "native_detail_return_differing_pixels": 0,
+    "scope": "Actual composition registry, native tab pointer targets, fresh semantic reads on return, reused owners and Back release. No public launcher promotion. Sort/filter/scroll/settings retention across Labor tabs not established."
   }
 }

@@ -1231,12 +1231,16 @@ func chores_wire() -> void:
 	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
 	for frame in 5:world.poll();await process_frame
 	var controller=preload("res://scripts/chores_state.gd").new()
-	var owner;var host;var interaction
+	var owner;var host;var interaction;var composition;var help
 	if rendered:
 		if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Chores assets unavailable"):quit(1);return
 		interaction=Interaction.new();root.add_child(interaction)
 		host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)
-		owner=preload("res://scripts/standing_orders_panel.gd").new();root.add_child(owner);owner.configure(world,service,host);owner.open_panel()
+		help=preload("res://scripts/native_hover_view.gd").new();root.add_child(help);help.configure(world);help.layout(Vector2(1200,800))
+		composition=preload("res://scripts/fortress_ui.gd").new();root.add_child(composition)
+		composition.world=world;composition.actions=service;composition.host=host;composition.view={"_fortress_hud":{"native_help":help}}
+		owner=composition.controller("standing_orders");owner.open_panel()
+		check(composition.controller("standing_orders")==owner,"Standing orders factory duplicated owner")
 		if not check(await ready(owner.state),"Standing entry failed"):quit(1);return
 		await pointer(owner.panel,owner.panel.category_rect(5).get_center())
 		if not check(owner.chores_active and host.active==owner,"Chores navigation failed"):quit(1);return
@@ -1305,8 +1309,19 @@ func chores_wire() -> void:
 		if not check(await ready(owner.state) and not owner.chores_active and owner.state.category==1 and host.active==owner,"Chores return navigation failed"):quit(1);return
 		await pointer(owner.panel,owner.panel.category_rect(5).get_center())
 		if not check(await ready(controller) and owner.chores_active,"Chores reopen failed"):quit(1);return
+		await pointer(owner.chores_panel,owner.chores_panel.work_details_rect().get_center())
+		var details=composition.controller("work_details")
+		if not check(await ready(details.state) and host.active==details,"Labor tab to Work Details failed"):quit(1);return
+		await pointer(details.panel,details.panel.detail_rect(1).get_center())
+		if not check(await ready(details.state) and int(details.state.selected.index)==1,"Labor detail selection failed"):quit(1);return
+		await pointer(details.panel,details.panel.standing_orders_rect().get_center())
+		if not check(await ready(controller) and owner.chores_active and host.active==owner,"Labor tab did not preserve Chores category"):quit(1);return
+		await pointer(owner.chores_panel,owner.chores_panel.work_details_rect().get_center())
+		if not check(await ready(details.state) and int(details.state.selected.index)==1 and host.active==details,"Labor tab did not preserve selected work detail"):quit(1);return
+		await pointer(details.panel,details.panel.standing_orders_rect().get_center())
+		if not check(await ready(controller) and host.active==owner,"Labor return failed"):quit(1);return
 		owner.handle_back();check(host.active==null and controller.phase==controller.Phase.Closed,"Chores Back retained input ownership")
-		owner.queue_free();host.queue_free();interaction.queue_free()
+		composition.queue_free();help.queue_free();host.queue_free();interaction.queue_free()
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"steps":count}));file.close()
 	controller.dispose();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)

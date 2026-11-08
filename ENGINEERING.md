@@ -148,6 +148,27 @@ passes and owned DF42312 exits unsaved. Intermediate drag geometry, unusually lo
 caption truncation, broader Standing orders integration and main-scene acceptance
 remain outstanding; this does not expose the staged surface publicly.
 
+The staged Labor tabs are connected through `fortress_ui.gd`: Work Details can
+open Standing orders, and both scalar/Chores pages can return to Work Details.
+The registry lazily constructs and reuses each owner. Local selected-detail index
+and Standing category survive this handoff, while the departing controller retires
+requests and return performs fresh native reads. Session changes reset these local
+bookmarks. Pending mutations cannot trigger the handoff; name editing uses its
+existing finish/refresh path before dispatching a tab click. Public routes remain
+unchanged; this is composition support for unfinished screens.
+
+Native160448 selects Woodcutters(index1), visits Chores, returns to an identical
+Work Details panel, then returns to category5. Protected160705 drives the same
+navigation through the actual composition factory and rendered tab targets,
+verifying both retained selections, owner reuse and input ownership. It also repeats
+all six native-observed Chores edits, stale refusal, live scrolling/drag/resize and
+Back cleanup. Source preservation passes; owned DF37304/47972 exit unsaved.
+Core19, Work Details/Standing/Chores controllers and main-scene composition checks
+pass in labor-composition-20261108. Live logs have only documented Godot diagnostics;
+GPU59–60C sampled. Sort/filter/scroll/settings retention across Labor tabs and
+full main-scene gameplay acceptance remain separate gaps, alongside unfinished
+Kitchen/Stone use and the broader management backlog.
+
 Chores typed dispatch now reads owned native snapshots/captions and applies the
 three native-backed mutations. It prepares the returned receipt before writes,
 sets mutation ownership from writeStarted, and retires partial state on failure.

@@ -33,6 +33,26 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Standing orders native discovery
 
+The staged view/controller now supports all six scalar categories0/1/2/3/4/6.
+Forbidding/Petitions use the captured three-state captions, and Other uses the
+captured four-state announcement captions plus six binary controls. Native
+Forbidding footnote uses palette7. The hunter-ammunition button uses
+HORIZONTAL_OPTION_ACTIVE with palette10 text; only its artwork and outgoing
+signal exist, not the ammunition workflow. Chores is still separate and unimplemented.
+Neither omission is accepted for public exposure.
+
+Protected130705 on2026-11-08 verifies all64 rendered transitions in categories3/4/6,
+category navigation/reads and Back release against independent native values.
+Owned DF43572 restores settings and closes unsaved; source preservation passes.
+Initial visual comparison found a white footnote and wrong hunter-button artwork.
+The final render-only standing-orders-extended-capture-active-20261108 matches all
+three full944x708 native panel crops at32,52 at1200x800. Native scalar effects
+were already verified before these appearance-only corrections. Root/core19 and
+extended state-range checks pass in standing-orders-extended-view-20261108. All
+rendered runs are brief serial30FPS, GPU49–51C sampled; logs contain only known
+thread/finalize/paired shutdown diagnostics. This is staged-owner acceptance with
+a minimal HUD stub, not public main-scene/hover/resize acceptance.
+
 Management147 carries categories3/4/6 through request validation, model codecs,
 Godot dictionaries and native dispatch. Counts/ranges match native discovery:
 Forbidding10 and Petitions6 use0..2; Other7 uses0..3 for announcements and0..1

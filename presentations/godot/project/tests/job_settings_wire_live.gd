@@ -1009,8 +1009,8 @@ func standing_orders_scene() -> void:
 	if not check(await ready(owner.state),"Standing orders panel read failed"):quit(1);return
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/standing-orders-view.png")
-	if OS.get_environment("DF3D_STANDING_ORDERS_CATEGORY_WIRE")=="1":
-		for category in [1,2]:
+	if OS.get_environment("DF3D_STANDING_ORDERS_CATEGORY_WIRE")=="1" or OS.get_environment("DF3D_STANDING_ORDERS_EXTENDED_WIRE")=="1":
+		for category in ([3,4,6] if OS.get_environment("DF3D_STANDING_ORDERS_EXTENDED_WIRE")=="1" else [1,2]):
 			await pointer(owner.panel,owner.panel.category_rect(category).get_center())
 			if not check(await ready(owner.state) and owner.state.category==category and host.active==owner,"Category navigation/read failed"):quit(1);return
 			await RenderingServer.frame_post_draw

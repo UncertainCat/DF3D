@@ -1462,5 +1462,34 @@
       "New category views and public route unfinished",
       "Chores and hunter ammunition are separate workflows"
     ]
+  },
+  "extended_panel_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-130705",
+    "viewport": [
+      1200,
+      800
+    ],
+    "crop": [
+      32,
+      52,
+      944,
+      708
+    ],
+    "native_rgb_sha256": {
+      "3": "392b2196aab81eaea13fe540f6ebf4fabca88075dc41123e4101808aae4d996c",
+      "4": "5359ae183561f82064c020562216ecb53e3d8a001167fa1f7d8d7a998183b096",
+      "6": "821dfdf25d6ecd93809361b83118a4611ea4bfb57c34844da1519c1759884fb8"
+    },
+    "final_crops_equal": true,
+    "rendered_transitions": 64,
+    "restored": true,
+    "source_preserved": true,
+    "state_qa": "build/qa/standing-orders-extended-view-20261108",
+    "render_qa": "build/qa/standing-orders-extended-capture-active-20261108",
+    "limits": [
+      "Hunter ammunition button artwork/signal only; workflow unfinished",
+      "Chores unfinished",
+      "Minimal HUD stub; public main-scene hover resize pending"
+    ]
   }
 }

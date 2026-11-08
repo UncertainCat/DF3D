@@ -52,6 +52,18 @@ func run() -> void:
 	check(state.phase==State.Phase.Ready and state.ticket==0,"Visible disabled control submitted an edit")
 	state.set_value(1,1);pending=state.ticket;state.select_category(0)
 	check(state.category==2 and state.ticket==pending,"Navigation replaced pending mutation")
+	state.close();state.open();service.reply(state.ticket,snapshot())
+	for category in [3,4,6]:
+		state.select_category(category)
+		var extended: Dictionary={"standing_orders":{"category":category,"outcome":C.StandingOrdersOutcome.None,"settings":[]}}
+		for id in State.COUNTS[category]:extended.standing_orders.settings.append({"id":id,"value":state.max_value(id),"visible":true,"editable":true})
+		service.reply(state.ticket,extended)
+		check(state.phase==State.Phase.Ready,"Extended maximum value was rejected")
+		state.set_value(0,0)
+		check(service.calls[state.ticket].intent.expected_value==state.max_value(0),"Extended edit lost native expected value")
+		extended.standing_orders.outcome=C.StandingOrdersOutcome.Applied;extended.standing_orders.settings[0].value=0
+		service.reply(state.ticket,extended)
+		state.select_category(5);check(state.category==category,"Scalar navigation accepted Chores")
 	state.dispose();service.queue_free();await process_frame
 	if failures==0:print("STANDING_ORDERS_STATE_PASS")
 	quit(1 if failures else 0)

@@ -57,7 +57,7 @@ end
 local function shot(name)
  local file=assert(io.open(out..'/standing-orders-native.json','w'));file:write(json.encode(result));file:close()
  file=assert(io.open(out..'/shot.tmp','w'));file:write(name);file:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
- local deadline=dfhack.getTickCount()+10000
+ local deadline=dfhack.getTickCount()+(os.getenv('DF3D_STANDING_ORDERS_RENDER')=='1' and 20000 or 10000)
  local checked=0
  while true do
   if name=='standing-orders-wire' then
@@ -150,6 +150,10 @@ if os.getenv('DF3D_STANDING_ORDERS_EXTENDED')=='1' then
     result.wire_steps[#result.wire_steps+1]={category=cycle.category,id=cycle.index,expected=current,value=state.values[key],outcome=1,values=state.values}
     current=state.values[key]
    end
+  end
+  if os.getenv('DF3D_STANDING_ORDERS_RENDER')=='1' then
+   local applied={};for _,entry in ipairs(result.wire_steps)do if entry.outcome==1 then applied[#applied+1]=entry end end
+   result.wire_steps=applied
   end
   shot('standing-orders-wire')
   assert(json.encode(values())==json.encode(original),'Extended wire did not restore settings')

@@ -13,5 +13,11 @@ func run() -> void:
 	view.configure_standing_orders(world,state);view.layout(Vector2(1200,800))
 	await process_frame;await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../../../build/standing-orders-workshops.png"))
+	for category in [3,4,6]:
+		state.category=category;state.settings=[]
+		for cycle: Dictionary in reference.extended_reference.cycles:
+			if int(cycle.category)==category:state.settings.append({"id":int(cycle.id),"value":int(cycle.initial),"visible":true,"editable":true})
+		state.changed.emit();await process_frame;await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../../../build/standing-orders-category-"+str(category)+".png"))
 	view.queue_free();world.queue_free();await process_frame
 	print("STANDING_ORDERS_CAPTURE_PASS");quit(0)

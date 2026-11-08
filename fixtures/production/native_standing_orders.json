@@ -1491,5 +1491,249 @@
       "Chores unfinished",
       "Minimal HUD stub; public main-scene hover resize pending"
     ]
+  },
+  "hunter_ammunition_reference": {
+    "add_picker": {
+      "rows": [
+        {
+          "text": "                                                                                                           Cance",
+          "y": 20
+        },
+        {
+          "text": "                   Bolts",
+          "y": 24
+        },
+        {
+          "text": "                   Arrows (foreign)",
+          "y": 27
+        },
+        {
+          "text": "                   Blowdarts (foreign)",
+          "y": 30
+        },
+        {
+          "text": "                   Jagged arrows (foreign)",
+          "y": 33
+        },
+        {
+          "text": "                   Double-tipped blowdarts (foreign)",
+          "y": 36
+        },
+        {
+          "text": "                   Cone-headed arrows (foreign)",
+          "y": 39
+        },
+        {
+          "text": "                   Long bolts (foreign)",
+          "y": 42
+        },
+        {
+          "text": "                   Jagged bolts (foreign)",
+          "y": 45
+        },
+        {
+          "text": "                   Cone-headed arrows (foreign)",
+          "y": 48
+        },
+        {
+          "text": "                   Wide-headed arrows (foreign)",
+          "y": 51
+        }
+      ],
+      "values": {
+        "ammo_items": [],
+        "ammo_units": [],
+        "specs": [
+          {
+            "amount": 100,
+            "assigned": [
+              13119,
+              27744,
+              27756,
+              27792,
+              27842
+            ],
+            "flags": 3,
+            "item_subtype": 0,
+            "item_type": 39,
+            "material_class": -1,
+            "matindex": -1,
+            "mattype": -1
+          }
+        ],
+        "update": 0
+      }
+    },
+    "before": {
+      "ammo_items": [],
+      "ammo_units": [],
+      "specs": [
+        {
+          "amount": 100,
+          "assigned": [
+            13119,
+            27744,
+            27756,
+            27792,
+            27842
+          ],
+          "flags": 3,
+          "item_subtype": 0,
+          "item_type": 39,
+          "material_class": -1,
+          "matindex": -1,
+          "mattype": -1
+        }
+      ],
+      "update": 0
+    },
+    "opened": {
+      "ammo_items": [],
+      "ammo_units": [],
+      "specs": [
+        {
+          "amount": 100,
+          "assigned": [
+            13119,
+            27744,
+            27756,
+            27792,
+            27842
+          ],
+          "flags": 3,
+          "item_subtype": 0,
+          "item_type": 39,
+          "material_class": -1,
+          "matindex": -1,
+          "mattype": -1
+        }
+      ],
+      "update": 0
+    },
+    "rows": [
+      {
+        "text": "                       Hunters                     Add ammunition                                         Confir",
+        "y": 20
+      },
+      {
+        "text": "                   Bolts                       119/100    Mat   Amt                                       Delete",
+        "y": 24
+      },
+      {
+        "text": "                       (silver bolts [30])                                                                Remove",
+        "y": 27
+      },
+      {
+        "text": "                       (silver bolts [32])                                                                Remove",
+        "y": 30
+      },
+      {
+        "text": "                       (iron bolts [27])                                                                  Remove",
+        "y": 33
+      },
+      {
+        "text": "                       (copper bolts [29])                                                                Remove",
+        "y": 36
+      },
+      {
+        "text": "                       (silver bolt)                                                                      Remove",
+        "y": 39
+      }
+    ],
+    "candidate_counts": {
+      "foreign": 11,
+      "item_subtype": 11,
+      "item_type": 11,
+      "material_class": 992,
+      "matindex": 992,
+      "mattype": 992
+    },
+    "ammunition_candidates": [
+      {
+        "item_type": 39,
+        "item_subtype": 0,
+        "foreign": false
+      },
+      {
+        "item_type": 39,
+        "item_subtype": 1,
+        "foreign": true
+      },
+      {
+        "item_type": 39,
+        "item_subtype": 2,
+        "foreign": true
+      },
+      {
+        "item_type": 39,
+        "item_subtype": 3,
+        "foreign": true
+      },
+      {
+        "item_type": 39,
+        "item_subtype": 4,
+        "foreign": true
+      },
+      {
+        "item_type": 39,
+        "item_subtype": 5,
+        "foreign": true
+      },
+      {
+        "item_type": 39,
+        "item_subtype": 6,
+        "foreign": true
+      },
+      {
+        "item_type": 39,
+        "item_subtype": 7,
+        "foreign": true
+      },
+      {
+        "item_type": 39,
+        "item_subtype": 8,
+        "foreign": true
+      },
+      {
+        "item_type": 39,
+        "item_subtype": 9,
+        "foreign": true
+      },
+      {
+        "item_type": 39,
+        "item_subtype": 10,
+        "foreign": true
+      }
+    ],
+    "material_candidates_sha256": "c72283435d3010b7e60d1145a65935b9391faca3569c63dafd26964632eec90c",
+    "capture": "build/stockpile-storage-native-input-20261108-131512",
+    "scope": "Native opening and cancellation only; edits and owned runtime provider remain unverified.",
+    "cancelled_picker": {
+      "open": true,
+      "setting_ammo": true,
+      "values": {
+        "ammo_items": [],
+        "ammo_units": [],
+        "specs": [
+          {
+            "amount": 100,
+            "assigned": [
+              13119,
+              27744,
+              27756,
+              27792,
+              27842
+            ],
+            "flags": 3,
+            "item_subtype": 0,
+            "item_type": 39,
+            "material_class": -1,
+            "matindex": -1,
+            "mattype": -1
+          }
+        ],
+        "update": 0
+      }
+    }
   }
 }

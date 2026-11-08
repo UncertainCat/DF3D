@@ -33,6 +33,22 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Standing orders native discovery
 
+Hunter ammunition discovery uses `DF3D_HUNTER_AMMUNITION_NATIVE=1` with the
+Standing orders protected lane. Capture131512 on2026-11-08 opens the Hunters
+panel and Add ammunition picker, then cancels back to the Hunters panel without
+changing the equipment
+update flags, ammunition specs, assigned items or ammo item/unit vectors.
+The owned DF39720 closes unsaved with source preservation; native30FPS and
+GPU50C sampled. Native choices contain11 ammunition types (bolts first, then
+ten foreign types) and992 material candidates in this fortress. This is
+opening/cancellation evidence only, not edit or runtime-provider acceptance.
+Storage is `plotinfo.equipment.hunter_ammunition`. Native45e390 populates
+the supplied squad-equipment context; its13bfd0 call inserts vector<bool>
+entries and14add70 resolves material definitions. Neither is a standalone
+ammunition-choice provider. Runtime candidate ownership and native add,
+material, amount, delete and assigned-stack removal effects remain unresolved;
+do not read the global menu vectors as runtime inputs.
+
 The staged view/controller now supports all six scalar categories0/1/2/3/4/6.
 Forbidding/Petitions use the captured three-state captions, and Other uses the
 captured four-state announcement captions plus six binary controls. Native

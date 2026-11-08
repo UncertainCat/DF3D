@@ -322,4 +322,30 @@ if os.getenv('DF3D_STANDING_ORDERS_WIRE')=='1' then
  shot('standing-orders-wire')
  assert(json.encode(values())==json.encode(original),'Wire settings were not restored')
 end
+if os.getenv('DF3D_HUNTER_AMMUNITION_NATIVE')=='1' then
+ local equipment=df.global.plotinfo.equipment
+ local function vector(source)local result={};for _,value in ipairs(source)do result[#result+1]=value end;return result end
+ local function snapshot()
+  local result={update=equipment.update.whole,ammo_items=vector(equipment.ammo_items),ammo_units=vector(equipment.ammo_units),specs={}}
+  for _,spec in ipairs(equipment.hunter_ammunition)do
+   result.specs[#result.specs+1]={item_type=spec.item_type,item_subtype=spec.item_subtype,material_class=spec.material_class,mattype=spec.mattype,matindex=spec.matindex,amount=spec.amount,flags=spec.flags.whole,assigned=vector(spec.assigned)}
+  end
+  return result
+ end
+ local before=snapshot();click(80,12);click(12,37)
+ local ui=df.global.game.main_interface.squad_equipment
+ assert(ui.open and ui.setting_ammo and ui.setting_ammo_squad_id==-1,'Hunter ammunition did not open')
+ result.hunter_ammunition={before=before,opened=snapshot(),rows=rows(),candidates={material_class=vector(ui.am_cand_civ_mat),mattype=vector(ui.am_cand_spec_mat),matindex=vector(ui.am_cand_spec_matg),item_type=vector(ui.am_cand_type),item_subtype=vector(ui.am_cand_subtype),foreign=vector(ui.am_cand_foreign)}}
+ assert(json.encode(before)==json.encode(snapshot()),'Opening hunter ammunition changed simulation settings')
+ shot('hunter-ammunition-root')
+ click(64,20)
+ assert(ui.setting_ammo_new_type,'Add ammunition did not open type choices')
+ result.hunter_ammunition.add_picker={rows=rows(),values=snapshot()}
+ assert(json.encode(before)==json.encode(snapshot()),'Opening ammunition choices changed simulation settings')
+ shot('hunter-ammunition-add-picker')
+ gui.simulateInput(view,'LEAVESCREEN');settle()
+ result.hunter_ammunition.cancelled_picker={open=ui.open,setting_ammo=ui.setting_ammo,values=snapshot()}
+ assert(json.encode(before)==json.encode(snapshot()),'Cancelling ammunition choices changed simulation settings')
+ shot('hunter-ammunition-cancelled-picker')
+end
 shot('standing-orders-restored');records[#records+1]={name='standing-orders',categories=#result.pages,cycles=#result.workshop_cycles}

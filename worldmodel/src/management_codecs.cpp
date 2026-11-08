@@ -46,6 +46,18 @@ ManagementState decodeState(const m::ManagementState* s) {
     next.creatureHeader=std::move(header);
   }
   if(const auto* r=s->residents())next.residents=ResidentsState{{r->unit_ids()->begin(),r->unit_ids()->end()}};
+  if(const auto* r=s->hunter_ammunition()) {
+    next.hunterAmmunition.emplace();auto& out=*next.hunterAmmunition;
+    out.outcome=HunterAmmunitionOutcome(r->outcome());out.itemType=r->item_type();out.itemSubtype=r->item_subtype();
+    for(const auto* v:*r->specs())out.specs.push_back({v->item_type(),v->item_subtype(),v->material_class(),v->mattype(),v->matindex(),v->amount(),v->flags(),{v->assigned()->begin(),v->assigned()->end()}});
+    for(const auto* v:*r->rules()){
+      HunterAmmunitionRule row{v->caption()->str(),v->quantity(),{}};
+      for(const auto* item:*v->items())row.items.push_back({item->id(),item->caption()->str(),item->quantity()});
+      out.rules.push_back(std::move(row));
+    }
+    for(const auto* v:*r->types())out.types.push_back({v->item_type(),v->item_subtype(),v->foreign(),v->caption()->str()});
+    for(const auto* v:*r->materials())out.materials.push_back({v->material_class(),v->mattype(),v->matindex(),v->caption()->str()});
+  }
   if(const auto* r=s->standing_orders()) {
     next.standingOrders.emplace();auto& out=*next.standingOrders;
     out.category=r->category();out.outcome=StandingOrdersOutcome(r->outcome());
@@ -196,6 +208,17 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
   }
   const auto anchor=r.materialAnchor.value_or(TilePos{r.x,r.y,r.z});
   const m::TilePos materialAnchor(anchor.x,anchor.y,anchor.z);
+  flatbuffers::Offset<m::HunterAmmunitionRequest> hunter;
+  if(r.action>=ManagementAction::HunterAmmunitionRead && r.action<=ManagementAction::HunterAmmunitionApply){
+    const auto& q=r.hunterAmmunition;
+    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<m::HunterAmmunitionSpec>>> expected;
+    if(r.action==ManagementAction::HunterAmmunitionApply){
+      std::vector<flatbuffers::Offset<m::HunterAmmunitionSpec>> specs;
+      for(const auto& v:q.expected)specs.push_back(m::CreateHunterAmmunitionSpec(b,v.itemType,v.itemSubtype,v.materialClass,v.matType,v.matIndex,v.amount,v.flags,b.CreateVector(v.assigned)));
+      expected=b.CreateVector(specs);
+    }
+    hunter=m::CreateHunterAmmunitionRequest(b,m::HunterAmmunitionOperation(q.operation),q.index,q.itemId,q.amount,q.itemType,q.itemSubtype,q.materialClass,q.matType,q.matIndex,expected);
+  }
   auto request = m::CreateConstructionRequest(
       b, m::kManagementVersion, clientId, sequence, worldEpoch, m::ManagementAction(r.action),
       b.CreateString(r.definition), &p, r.width, r.height, r.direction, b.CreateVector(r.items),
@@ -253,7 +276,7 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
           flatbuffers::Offset<m::WorkDetailSettingsRequest>{},
       (r.action==ManagementAction::StandingOrdersRead || r.action==ManagementAction::StandingOrdersSet)?
           m::CreateStandingOrdersRequest(b,r.standingOrders.category,r.standingOrders.settingId,r.standingOrders.expectedValue,r.standingOrders.value):
-          flatbuffers::Offset<m::StandingOrdersRequest>{});
+          flatbuffers::Offset<m::StandingOrdersRequest>{},hunter);
   b.Finish(request);
 }
 }  // namespace wm::detail::management

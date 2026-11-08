@@ -1,4 +1,17 @@
 // Generated exhaustive model/wire correspondence checks.
+static_assert(static_cast<int>(wm::HunterAmmunitionOutcome::None) == static_cast<int>(df3d::mirror::HunterAmmunitionOutcome::None));
+static_assert(static_cast<int>(wm::HunterAmmunitionOutcome::Applied) == static_cast<int>(df3d::mirror::HunterAmmunitionOutcome::Applied));
+static_assert(static_cast<int>(wm::HunterAmmunitionOutcome::Rejected) == static_cast<int>(df3d::mirror::HunterAmmunitionOutcome::Rejected));
+static_assert(static_cast<int>(wm::HunterAmmunitionOutcome::Stale) == static_cast<int>(df3d::mirror::HunterAmmunitionOutcome::Stale));
+static_assert(static_cast<int>(wm::HunterAmmunitionOutcome::Unknown) == static_cast<int>(df3d::mirror::HunterAmmunitionOutcome::Unknown));
+static_assert(sizeof(df3d::mirror::EnumValuesHunterAmmunitionOutcome()) / sizeof(df3d::mirror::HunterAmmunitionOutcome) == 5);
+static_assert(static_cast<int>(wm::HunterAmmunitionOperation::None) == static_cast<int>(df3d::mirror::HunterAmmunitionOperation::None));
+static_assert(static_cast<int>(wm::HunterAmmunitionOperation::Amount) == static_cast<int>(df3d::mirror::HunterAmmunitionOperation::Amount));
+static_assert(static_cast<int>(wm::HunterAmmunitionOperation::Material) == static_cast<int>(df3d::mirror::HunterAmmunitionOperation::Material));
+static_assert(static_cast<int>(wm::HunterAmmunitionOperation::Add) == static_cast<int>(df3d::mirror::HunterAmmunitionOperation::Add));
+static_assert(static_cast<int>(wm::HunterAmmunitionOperation::Delete) == static_cast<int>(df3d::mirror::HunterAmmunitionOperation::Delete));
+static_assert(static_cast<int>(wm::HunterAmmunitionOperation::Remove) == static_cast<int>(df3d::mirror::HunterAmmunitionOperation::Remove));
+static_assert(sizeof(df3d::mirror::EnumValuesHunterAmmunitionOperation()) / sizeof(df3d::mirror::HunterAmmunitionOperation) == 6);
 static_assert(static_cast<int>(wm::StandingOrdersOutcome::None) == static_cast<int>(df3d::mirror::StandingOrdersOutcome::None));
 static_assert(static_cast<int>(wm::StandingOrdersOutcome::Applied) == static_cast<int>(df3d::mirror::StandingOrdersOutcome::Applied));
 static_assert(static_cast<int>(wm::StandingOrdersOutcome::Rejected) == static_cast<int>(df3d::mirror::StandingOrdersOutcome::Rejected));
@@ -181,7 +194,10 @@ static_assert(static_cast<int>(wm::ManagementAction::WorkDetailSettingsRead) == 
 static_assert(static_cast<int>(wm::ManagementAction::WorkDetailSettingsToggle) == static_cast<int>(df3d::mirror::ManagementAction::WorkDetailSettingsToggle));
 static_assert(static_cast<int>(wm::ManagementAction::StandingOrdersRead) == static_cast<int>(df3d::mirror::ManagementAction::StandingOrdersRead));
 static_assert(static_cast<int>(wm::ManagementAction::StandingOrdersSet) == static_cast<int>(df3d::mirror::ManagementAction::StandingOrdersSet));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 93);
+static_assert(static_cast<int>(wm::ManagementAction::HunterAmmunitionRead) == static_cast<int>(df3d::mirror::ManagementAction::HunterAmmunitionRead));
+static_assert(static_cast<int>(wm::ManagementAction::HunterAmmunitionCandidates) == static_cast<int>(df3d::mirror::ManagementAction::HunterAmmunitionCandidates));
+static_assert(static_cast<int>(wm::ManagementAction::HunterAmmunitionApply) == static_cast<int>(df3d::mirror::ManagementAction::HunterAmmunitionApply));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 96);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -481,3 +497,6 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::WorkDetailSettingsRead) 
 static_assert(wm::isRuntimeAction(wm::ManagementAction::WorkDetailSettingsToggle) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::WorkDetailSettingsToggle));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::StandingOrdersRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::StandingOrdersRead));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::StandingOrdersSet) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::StandingOrdersSet));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::HunterAmmunitionRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::HunterAmmunitionRead));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::HunterAmmunitionCandidates) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::HunterAmmunitionCandidates));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::HunterAmmunitionApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::HunterAmmunitionApply));

@@ -2,6 +2,21 @@
 #pragma once
 #include <cstdint>
 namespace wm {
+enum class HunterAmmunitionOutcome : uint8_t {
+  None = 0,
+  Applied = 1,
+  Rejected = 2,
+  Stale = 3,
+  Unknown = 4,
+};
+enum class HunterAmmunitionOperation : uint8_t {
+  None = 0,
+  Amount = 1,
+  Material = 2,
+  Add = 3,
+  Delete = 4,
+  Remove = 5,
+};
 enum class StandingOrdersOutcome : uint8_t {
   None = 0,
   Applied = 1,
@@ -200,6 +215,9 @@ enum class ManagementAction : uint8_t {
   WorkDetailSettingsToggle = 90,
   StandingOrdersRead = 91,
   StandingOrdersSet = 92,
+  HunterAmmunitionRead = 93,
+  HunterAmmunitionCandidates = 94,
+  HunterAmmunitionApply = 95,
 };
 enum class ManagementStatus : uint8_t {
   Idle = 0,
@@ -503,11 +521,17 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::WorkDetailSettingsToggle: return true;
   case ManagementAction::StandingOrdersRead: return true;
   case ManagementAction::StandingOrdersSet: return true;
+  case ManagementAction::HunterAmmunitionRead: return true;
+  case ManagementAction::HunterAmmunitionCandidates: return true;
+  case ManagementAction::HunterAmmunitionApply: return true;
   default: return false;
   }
 }
 constexpr const char* managementDomain(ManagementAction action) {
   switch (action) {
+  case ManagementAction::HunterAmmunitionRead: return "hunter_ammunition";
+  case ManagementAction::HunterAmmunitionCandidates: return "hunter_ammunition";
+  case ManagementAction::HunterAmmunitionApply: return "hunter_ammunition";
   case ManagementAction::StandingOrdersRead: return "standing_orders";
   case ManagementAction::StandingOrdersSet: return "standing_orders";
   case ManagementAction::WorkDetailSettingsRead: return "work_detail_settings";

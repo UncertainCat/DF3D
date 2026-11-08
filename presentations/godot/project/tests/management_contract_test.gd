@@ -396,6 +396,7 @@ func run() -> void:
 	await test_work_detail_workers()
 	await test_work_detail_settings()
 	await test_standing_orders()
+	await test_hunter_ammunition()
 	# Host signals only after validating every expected payload.
 	for i in 300:
 		if FileAccess.get_file_as_string(status_path) == "passed": break
@@ -1110,3 +1111,25 @@ func test_standing_orders() -> void:
 			var invalid:=intent.duplicate();invalid.merge(patch,true);assert(world.management_request("standing_orders",invalid)==0)
 		sequence=world.management_request("standing_orders",intent);assert(sequence>0);reply=await receipt(sequence)
 		assert(reply.standing_orders.category==category and reply.standing_orders.settings[1].value==1 and reply.standing_orders.settings[2].editable)
+
+func test_hunter_ammunition() -> void:
+	var seq: int=world.management_request("hunter_ammunition",{"action":A.HunterAmmunitionRead});assert(seq>0)
+	var reply:=await receipt(seq);var value: Dictionary=reply.hunter_ammunition
+	assert(value.specs[0].assigned==PackedInt32Array([13119]) and value.rules[0].quantity==30)
+	assert(value.rules[0].items[0].caption=="fixture stack" and value.types[0].item_type==39)
+	seq=world.management_request("hunter_ammunition",{"action":A.HunterAmmunitionCandidates,"item_type":39,"item_subtype":0});assert(seq>0)
+	reply=await receipt(seq);assert(reply.hunter_ammunition.materials[0].material_class==3)
+	var base: Dictionary={"action":A.HunterAmmunitionApply,"operation":1,"index":0,"item_id":-1,"amount":-1,"item_type":-1,"item_subtype":-1,"material_class":-1,"mattype":-1,"matindex":-1,"expected":value.specs}
+	for operation in range(1,6):
+		var intent:=base.duplicate(true);intent.operation=operation
+		if operation==1:intent.amount=125
+		if operation==2:intent.material_class=3
+		if operation==3:intent.merge({"index":-1,"item_type":39,"item_subtype":0},true)
+		if operation==5:intent.item_id=13119
+		for patch in [{"index":1.5},{"amount":5001},{"item_subtype":32768},{"expected":0}]:
+			var invalid:=intent.duplicate(true);invalid.merge(patch,true);assert(world.management_request("hunter_ammunition",invalid)==0)
+		seq=world.management_request("hunter_ammunition",intent);assert(seq>0);reply=await receipt(seq)
+		assert(reply.hunter_ammunition.outcome==Contract.HunterAmmunitionOutcome.Applied and reply.hunter_ammunition.specs.size()==1)
+	base.amount=126;seq=world.management_request("hunter_ammunition",base);assert(seq>0);reply=await receipt(seq,S.Rejected)
+	assert(reply.outcome=="unknown" and reply.hunter_ammunition.specs.is_empty())
+	assert(Contract.is_mutation(A.HunterAmmunitionApply) and not Contract.is_mutation(A.HunterAmmunitionRead))

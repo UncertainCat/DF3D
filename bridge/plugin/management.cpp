@@ -4091,6 +4091,10 @@ void run(color_ostream& out) {
     } catch(...) {residentsRows.reset();}
     publish();return;
   }
+  // The148 migration establishes vocabulary before semantic dispatch is wired.
+  if(r->action()>=m::ManagementAction::HunterAmmunitionRead && r->action()<=m::ManagementAction::HunterAmmunitionApply) {
+    message.clear();status=m::ManagementStatus::Rejected;publish();return;
+  }
   if(r->action()==m::ManagementAction::StandingOrdersRead || r->action()==m::ManagementAction::StandingOrdersSet) {
     message.clear();status=m::ManagementStatus::Rejected;standingOrders.emplace();
     const auto& query=*r->standing_orders();

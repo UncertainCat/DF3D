@@ -33,6 +33,30 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Standing orders native discovery
 
+Management148 / Local\df3d_management_v148 adds HunterAmmunitionRead,
+HunterAmmunitionCandidates and HunterAmmunitionApply. The contract carries full
+ordered spec/assignment receipts, typed Amount/Material/Add/Delete/Remove
+intents, native captions, assigned stacks and quantities, and type/material
+choices. Candidate requests identify an ammunition type/subtype. Successful
+edits return only the resulting spec receipt; the owner must refresh display
+metadata. Rejected/Stale/Unknown responses carry no authority. Unknown is legal
+only for Apply and maps to the existing top-level unknown result in Godot.
+All actions retain the outer world epoch; Apply is classified as a mutation.
+Validation rejects misplaced fields, malformed assignment order, incorrect
+stack membership and quantity totals. Generated enums, model codecs and Godot
+dictionaries are migrated together. The runtime currently explicitly rejects
+these three new actions until semantic dispatch is connected; this is not UI
+completion or live ammunition-wire acceptance.
+Root/core19, extension and producer-to-Godot round trips pass in
+hunter-contract148-roundtrip-20261108. The focused round trip covers Read,
+Candidates, all five edit operations, malformed inputs and Unknown; synthetic
+captions are transport fixtures only. MSVC builds. Protected135549 on2026-11-08
+verifies28 existing Standing orders wire steps with Management148, restores
+settings and closes owned DF34012 unsaved with source preservation. Headless
+viewer/native30FPS, GPU47C sampled; joined logs contain only the known
+separate-renderer notice. Installed/built plugin SHA256 is
+`9EC23A49F383C87096FC166FA290CFF30E47B64C156C6B78EB4FEDA4324A1644`.
+
 Hunter ammunition captions use pinned native a82c10 formatting and52d650
 capitalization with owned strings and restored historical-material cache. Prefix
 addresses follow native454c0d's material-category switch; literal bytes and the

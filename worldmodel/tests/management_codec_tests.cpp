@@ -4789,3 +4789,44 @@ TEST_CASE("Standing orders replies retire authority on uncertain writes") {
     if(!invalid){auto decoded=codec::decodeState(value);REQUIRE(decoded.standingOrders);CHECK(decoded.standingOrders->settings.size()==(unknown?0:11));}
   }
 }
+
+TEST_CASE("Hunter ammunition edits retain full expected assignments and typed intent") {
+  for(int operation=1;operation<=5;++operation)for(int fault=0;fault<3;++fault){
+    wm::ManagementRequest request;request.action=wm::ManagementAction::HunterAmmunitionApply;
+    auto& q=request.hunterAmmunition;q.operation=wm::HunterAmmunitionOperation(operation);
+    q.expected.push_back({39,0,-1,-1,-1,100,3,{13119,27744}});q.index=0;
+    if(operation==1)q.amount=125;
+    if(operation==2)q.materialClass=3;
+    if(operation==3){q.index=-1;q.itemType=39;q.itemSubtype=0;}
+    if(operation==5)q.itemId=13119;
+    if(fault==1)q.expected.front().assigned={27744,13119};
+    if(fault==2)q.amount=5001;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    if(!fault){REQUIRE(value->hunter_ammunition());CHECK(value->hunter_ammunition()->expected()->Get(0)->assigned()->Get(1)==27744);}
+  }
+  for(auto action:{wm::ManagementAction::HunterAmmunitionRead,wm::ManagementAction::HunterAmmunitionCandidates}){
+    wm::ManagementRequest request;request.action=action;
+    if(action==wm::ManagementAction::HunterAmmunitionCandidates){request.hunterAmmunition.itemType=39;request.hunterAmmunition.itemSubtype=0;}
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK_FALSE(wire::validateConstructionRequest(*value));CHECK_FALSE(value->hunter_ammunition()->expected());
+  }
+}
+TEST_CASE("Hunter ammunition read quantities agree with assigned stack receipts") {
+  for(int fault=0;fault<3;++fault){
+    flatbuffers::FlatBufferBuilder b;
+    const auto spec=wire::CreateHunterAmmunitionSpec(b,39,0,-1,-1,-1,100,3,b.CreateVector(std::vector<int32_t>{13119}));
+    const auto item=wire::CreateHunterAmmunitionStack(b,fault==2?27744:13119,b.CreateString("fixture stack"),30);
+    const auto rule=wire::CreateHunterAmmunitionRule(b,b.CreateString("fixture bolts"),fault==1?31:30,b.CreateVector(std::vector{item}));
+    const auto hunter=wire::CreateHunterAmmunitionState(b,wire::HunterAmmunitionOutcome::None,-1,-1,
+      b.CreateVector(std::vector{spec}),b.CreateVector(std::vector{rule}),
+      b.CreateVector(std::vector<flatbuffers::Offset<wire::HunterAmmunitionType>>{}),b.CreateVector(std::vector<flatbuffers::Offset<wire::HunterAmmunitionMaterial>>{}));
+    wire::ManagementStateBuilder state(b);state.add_revision(2);state.add_action(wire::ManagementAction::HunterAmmunitionRead);
+    state.add_status(wire::ManagementStatus::Ok);state.add_hunter_ammunition(hunter);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){const auto decoded=codec::decodeState(value);REQUIRE(decoded.hunterAmmunition);CHECK(decoded.hunterAmmunition->rules.front().quantity==30);}
+  }
+}

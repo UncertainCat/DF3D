@@ -203,6 +203,21 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         for(const auto& l:v.links){Dictionary link;link["type"]=l.type;link["id"]=l.id;link["subid"]=l.subid;links.push_back(link);}
         value["words"]=words;value["links"]=links;result["residents_activity"]=value;
     }
+    if(s.hunterAmmunition) {
+        const auto& v=*s.hunterAmmunition;Dictionary value;Array specs,rules,types,materials;
+        value["outcome"]=int(v.outcome);value["item_type"]=v.itemType;value["item_subtype"]=v.itemSubtype;
+        for(const auto& row:v.specs){Dictionary item;PackedInt32Array assigned;
+            item["item_type"]=row.itemType;item["item_subtype"]=row.itemSubtype;item["material_class"]=row.materialClass;
+            item["mattype"]=row.matType;item["matindex"]=row.matIndex;item["amount"]=row.amount;item["flags"]=int64_t(row.flags);
+            for(auto id:row.assigned)assigned.push_back(id);item["assigned"]=assigned;specs.push_back(item);}
+        for(const auto& row:v.rules){Dictionary item;Array stacks;item["caption"]=String::utf8(row.caption.c_str());item["quantity"]=row.quantity;
+            for(const auto& entry:row.items){Dictionary stack;stack["id"]=entry.id;stack["caption"]=String::utf8(entry.caption.c_str());stack["quantity"]=entry.quantity;stacks.push_back(stack);}
+            item["items"]=stacks;rules.push_back(item);}
+        for(const auto& row:v.types){Dictionary item;item["item_type"]=row.itemType;item["item_subtype"]=row.itemSubtype;item["foreign"]=row.foreign;item["caption"]=String::utf8(row.caption.c_str());types.push_back(item);}
+        for(const auto& row:v.materials){Dictionary item;item["material_class"]=row.materialClass;item["mattype"]=row.matType;item["matindex"]=row.matIndex;item["caption"]=String::utf8(row.caption.c_str());materials.push_back(item);}
+        value["specs"]=specs;value["rules"]=rules;value["types"]=types;value["materials"]=materials;result["hunter_ammunition"]=value;
+        if(v.outcome==wm::HunterAmmunitionOutcome::Unknown)result["outcome"]="unknown";
+    }
     if(s.standingOrders) {
         const auto& v=*s.standingOrders;Dictionary value;Array rows;
         value["category"]=v.category;value["outcome"]=int(v.outcome);
@@ -452,6 +467,46 @@ bool readResidentsSpecialization(const Dictionary& data,wm::ManagementRequest& r
     request.action=wm::ManagementAction::ResidentsSpecialize;
     request.residentsSpecialization={int32_t(int64_t(data["unit_id"])),uint64_t(int64_t(data["expected_revision"])),bool(data["only_assigned"])};return true;
 }
+bool validateHunterAmmunition(const Dictionary& data,String& error) {
+    const auto action=wm::ManagementAction(int64_t(data["action"]));
+    const bool apply=action==wm::ManagementAction::HunterAmmunitionApply,choices=action==wm::ManagementAction::HunterAmmunitionCandidates;
+    const auto integer=[](const Dictionary& row,const char* key,int64_t low,int64_t high){return row.has(key) && row[key].get_type()==Variant::INT && int64_t(row[key])>=low && int64_t(row[key])<=high;};
+    if(data.size()!=(apply?11:choices?3:1)){error="Invalid ammunition request fields";return false;}
+    if(choices && (!integer(data,"item_type",39,39) || !integer(data,"item_subtype",0,INT16_MAX))){error="Invalid ammunition candidate type";return false;}
+    if(!apply)return true;
+    if(!integer(data,"operation",1,5) || !integer(data,"index",-1,INT32_MAX) || !integer(data,"item_id",-1,INT32_MAX) ||
+       !integer(data,"amount",-1,5000) || !integer(data,"item_type",-1,39) || !integer(data,"item_subtype",-1,INT16_MAX) ||
+       !integer(data,"material_class",-1,INT16_MAX) || !integer(data,"mattype",-1,INT16_MAX) || !integer(data,"matindex",-1,INT32_MAX) ||
+       !data.has("expected") || data["expected"].get_type()!=Variant::ARRAY){error="Invalid ammunition edit";return false;}
+    const Array specs=data["expected"];
+    for(int64_t i=0;i<specs.size();++i){
+        if(specs[i].get_type()!=Variant::DICTIONARY){error="Invalid ammunition snapshot";return false;}
+        const Dictionary row=specs[i];
+        if(row.size()!=8 || !integer(row,"item_type",39,39) || !integer(row,"item_subtype",0,INT16_MAX) ||
+           !integer(row,"material_class",-1,INT16_MAX) || !integer(row,"mattype",-1,INT16_MAX) || !integer(row,"matindex",-1,INT32_MAX) ||
+           !integer(row,"amount",0,INT32_MAX) || !integer(row,"flags",0,3) || !row.has("assigned") || row["assigned"].get_type()!=Variant::PACKED_INT32_ARRAY){error="Invalid ammunition snapshot fields";return false;}
+        const PackedInt32Array assigned=row["assigned"];int32_t prior=-1;
+        for(int64_t j=0;j<assigned.size();++j){if(assigned[j]<=prior){error="Invalid ammunition assignments";return false;}prior=assigned[j];}
+    }
+    const int64_t op=data["operation"],index=data["index"],item=data["item_id"],amount=data["amount"],type=data["item_type"],subtype=data["item_subtype"],category=data["material_class"],mat=data["mattype"],matindex=data["matindex"];
+    if((op==3?index!=-1:(index<0 || index>=specs.size())) || (op==1?amount<0:amount!=-1) || (op==5?item<0:item!=-1) ||
+       (op==3?(type!=39 || subtype<0):(type!=-1 || subtype!=-1)) || (op!=2 && (category!=-1 || mat!=-1 || matindex!=-1))){error="Invalid ammunition operation fields";return false;}
+    return true;
+}
+bool readHunterAmmunition(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction(int64_t(data["action"]));auto& q=request.hunterAmmunition;
+    if(request.action==wm::ManagementAction::HunterAmmunitionRead)return true;
+    q.itemType=int16_t(int64_t(data["item_type"]));q.itemSubtype=int16_t(int64_t(data["item_subtype"]));
+    if(request.action==wm::ManagementAction::HunterAmmunitionCandidates)return true;
+    q.operation=wm::HunterAmmunitionOperation(int64_t(data["operation"]));q.index=int32_t(int64_t(data["index"]));q.itemId=int32_t(int64_t(data["item_id"]));q.amount=int32_t(int64_t(data["amount"]));
+    q.materialClass=int16_t(int64_t(data["material_class"]));q.matType=int16_t(int64_t(data["mattype"]));q.matIndex=int32_t(int64_t(data["matindex"]));
+    const Array specs=data["expected"];
+    for(int64_t i=0;i<specs.size();++i){const Dictionary row=specs[i];wm::HunterAmmunitionSpec v;
+        v.itemType=int16_t(int64_t(row["item_type"]));v.itemSubtype=int16_t(int64_t(row["item_subtype"]));v.materialClass=int16_t(int64_t(row["material_class"]));
+        v.matType=int16_t(int64_t(row["mattype"]));v.matIndex=int32_t(int64_t(row["matindex"]));v.amount=int32_t(int64_t(row["amount"]));v.flags=uint32_t(int64_t(row["flags"]));
+        const PackedInt32Array assigned=row["assigned"];for(int64_t j=0;j<assigned.size();++j)v.assigned.push_back(assigned[j]);q.expected.push_back(std::move(v));}
+    return true;
+}
 bool validateStandingOrders(const Dictionary& data,String& error) {
     const bool set=int64_t(data["action"])==int64_t(wm::ManagementAction::StandingOrdersSet);
     if(data.size()!=(set?5:2) || !data.has("category") || data["category"].get_type()!=Variant::INT || (int64_t(data["category"])<0 || int64_t(data["category"])>6 || int64_t(data["category"])==5)){error="Invalid standing orders category";return false;}
@@ -657,6 +712,7 @@ const ManagementCodec managementCodecs[] = {
     {"residents_rows",validateResidentsRows,readResidentsRows},
     {"work_detail_rows",validateResidentsRows,readResidentsRows},
     {"work_detail_settings",validateWorkDetailSettings,readWorkDetailSettings},
+    {"hunter_ammunition",validateHunterAmmunition,readHunterAmmunition},
     {"standing_orders",validateStandingOrders,readStandingOrders},
     {"residents_specialization",validateResidentsSpecialization,readResidentsSpecialization},
     {"residents_activity",validateResidentsActivity,readResidentsActivity},
@@ -673,7 +729,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::StandingOrdersSet)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::HunterAmmunitionApply)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

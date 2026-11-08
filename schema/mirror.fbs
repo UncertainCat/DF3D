@@ -1177,7 +1177,7 @@ table SessionCommand {
 }
 
 // Bounded fortress management channel; independently versioned from map snapshots.
-enum ManagementAction : uint8 { Catalog, Preview, Place, Inspect, Remove, InspectAtTile, RemoveConstruction, AreaCatalog, AreaInspectAtTile, AreaInspect, AreaCreate, AreaUpdate, AreaDelete, AreaLink, AreaCandidates, ProductionList, ProductionInspect, ProductionQueue, ProductionJobEdit, FarmEdit, WorkOrderList, WorkOrderInspect, WorkOrderCreate, WorkOrderUpdate, WorkOrderDelete, WorkOrderCondition, WorkOrderCandidates, WorkOrderCatalog, CitizenList, CitizenInspect, WorkDetailList, WorkDetailInspect, WorkDetailMembership, WorkDetailMode, ReportList, ReportInspect, AgreementList, AgreementInspect, TradeList, TradeInspect, TradeUpdate, TradeGoods, TradeBring, TradeExchangeOpen, TradeExchangeInspect, TradeExchangeSelect, TradeExchangeSubmit, TradeExchangeClose, StocksOpen, StocksList, StocksInspect, StocksClose, AppointmentsOpen, AppointmentsCandidates, AppointmentsAssign, AppointmentsBack, KitchenOpen, KitchenList, KitchenSetPermission, KitchenClose, Alert, Selection, CreatureInspect, ConstructionMaterials, WorkDetailCreate, WorkDetailDelete, WorkDetailEdit, CitizenWorkScope, PrepareAlertDismissal, DismissAlert, WorldHover, CreatureHeaderRead, CreatureHeaderEdit, CreatureLocate, CreatureExpelRead, CreatureExpelApply, CreatureKnowledgeRead, CreatureWorkshopRemove, CreatureLocationRemove, CreatureAnimalEdit, ResidentsQuery, ResidentsRowsRead, ResidentsSpecialize, CreatureSheetLocate, ResidentsActivityRead, JobSettingsRead, JobSettingsApply, WorkDetailWorkersQuery, WorkDetailRowsRead, WorkDetailSettingsRead, WorkDetailSettingsToggle, StandingOrdersRead, StandingOrdersSet }
+enum ManagementAction : uint8 { Catalog, Preview, Place, Inspect, Remove, InspectAtTile, RemoveConstruction, AreaCatalog, AreaInspectAtTile, AreaInspect, AreaCreate, AreaUpdate, AreaDelete, AreaLink, AreaCandidates, ProductionList, ProductionInspect, ProductionQueue, ProductionJobEdit, FarmEdit, WorkOrderList, WorkOrderInspect, WorkOrderCreate, WorkOrderUpdate, WorkOrderDelete, WorkOrderCondition, WorkOrderCandidates, WorkOrderCatalog, CitizenList, CitizenInspect, WorkDetailList, WorkDetailInspect, WorkDetailMembership, WorkDetailMode, ReportList, ReportInspect, AgreementList, AgreementInspect, TradeList, TradeInspect, TradeUpdate, TradeGoods, TradeBring, TradeExchangeOpen, TradeExchangeInspect, TradeExchangeSelect, TradeExchangeSubmit, TradeExchangeClose, StocksOpen, StocksList, StocksInspect, StocksClose, AppointmentsOpen, AppointmentsCandidates, AppointmentsAssign, AppointmentsBack, KitchenOpen, KitchenList, KitchenSetPermission, KitchenClose, Alert, Selection, CreatureInspect, ConstructionMaterials, WorkDetailCreate, WorkDetailDelete, WorkDetailEdit, CitizenWorkScope, PrepareAlertDismissal, DismissAlert, WorldHover, CreatureHeaderRead, CreatureHeaderEdit, CreatureLocate, CreatureExpelRead, CreatureExpelApply, CreatureKnowledgeRead, CreatureWorkshopRemove, CreatureLocationRemove, CreatureAnimalEdit, ResidentsQuery, ResidentsRowsRead, ResidentsSpecialize, CreatureSheetLocate, ResidentsActivityRead, JobSettingsRead, JobSettingsApply, WorkDetailWorkersQuery, WorkDetailRowsRead, WorkDetailSettingsRead, WorkDetailSettingsToggle, StandingOrdersRead, StandingOrdersSet, HunterAmmunitionRead, HunterAmmunitionCandidates, HunterAmmunitionApply }
 enum AreaKind : uint8 { Stockpile, Zone, Workshop }
 enum AreaOperation : uint8 { None, SettingsPage, SettingsSet, Preset, Rename, Paint, LocationList, LocationSet, LocationCreate, ZoneSettings, Links, AssignUnits, SquadUse, Toggles, CandidateList, WorkshopLink, MultiCreate, MultiUndo, MultiFinish, PaintCounts, LocationChoices, LocationDetails, LocationOpen, LocationAccess, LocationStaffCandidates, LocationStaffEdit, LinkTarget, LocationQuantity, LocationNameRead, LocationNameChoices, LocationNameEdit, LocationRecognitionRead, LocationRecognize, LocationReligiousStaffRead, LocationReligiousStaffRemove, LocationReligiousCandidates, LocationReligiousAssignmentRead, LocationReligiousAssign, LocationSpecializationRead, LocationSpecializationSet, LocationStaffAssignmentsRead }
 enum LocationNameMode : uint8 { Clear, SelectWord, RandomComponent, RandomWhole }
@@ -1831,6 +1831,29 @@ table WorkOrderState {
 enum WorkDetailWorkerSort : uint8 { Category, Name, Profession, Skills }
 // Positional work-detail identity is guarded by the existing detail-inspection receipt.
 // A toggle is a one-shot native definition edit, never a forced worker recalc.
+enum HunterAmmunitionOutcome : uint8 { None, Applied, Rejected, Stale, Unknown }
+enum HunterAmmunitionOperation : uint8 { None, Amount, Material, Add, Delete, Remove }
+table HunterAmmunitionSpec {
+  item_type:int16 = -1; item_subtype:int16 = -1;
+  material_class:int16 = -1; mattype:int16 = -1; matindex:int32 = -1;
+  amount:int32; flags:uint32; assigned:[int32] (required);
+}
+table HunterAmmunitionRequest {
+  operation:HunterAmmunitionOperation; index:int32 = -1; item_id:int32 = -1; amount:int32 = -1;
+  item_type:int16 = -1; item_subtype:int16 = -1;
+  material_class:int16 = -1; mattype:int16 = -1; matindex:int32 = -1;
+  expected:[HunterAmmunitionSpec];
+}
+table HunterAmmunitionStack { id:int32 = -1; caption:string (required); quantity:int32; }
+table HunterAmmunitionRule { caption:string (required); quantity:int64; items:[HunterAmmunitionStack] (required); }
+table HunterAmmunitionType { item_type:int16 = -1; item_subtype:int16 = -1; foreign:bool; caption:string (required); }
+table HunterAmmunitionMaterial { material_class:int16 = -1; mattype:int16 = -1; matindex:int32 = -1; caption:string (required); }
+table HunterAmmunitionState {
+  outcome:HunterAmmunitionOutcome; item_type:int16 = -1; item_subtype:int16 = -1;
+  specs:[HunterAmmunitionSpec] (required); rules:[HunterAmmunitionRule] (required);
+  types:[HunterAmmunitionType] (required); materials:[HunterAmmunitionMaterial] (required);
+}
+
 enum StandingOrdersOutcome : uint8 { None, Applied, Rejected, Stale, Unknown }
 // Category0 is Workshops. Other Standing orders workflows are not yet exposed.
 table StandingOrdersRequest { category:uint8; setting_id:int32 = -1; expected_value:int8 = -1; value:int8 = -1; }
@@ -2169,7 +2192,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 147;
+  schema_version:uint32 = 148;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2224,13 +2247,14 @@ table ConstructionRequest {
   work_detail_workers:WorkDetailWorkersRequest;
   work_detail_settings:WorkDetailSettingsRequest;
   standing_orders:StandingOrdersRequest;
+  hunter_ammunition:HunterAmmunitionRequest;
 }
 // Native ordered world-hover descriptions. Missing means unavailable, never guessed.
 table WorldHoverEntry { text:string (required); foreground:uint8; background:uint8; bright:bool; kind:uint8; object_id:int32 = -1; }
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 147;
+  schema_version:uint32 = 148;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;
@@ -2279,6 +2303,7 @@ table ManagementState {
   job_settings_edit:JobSettingsEditState;
   work_detail_settings:WorkDetailSettingsState;
   standing_orders:StandingOrdersState;
+  hunter_ammunition:HunterAmmunitionState;
 }
 
 table WorkOrderInput { index:uint16; description:string; mat_type:int16 = -1; mat_index:int32 = -1; editable:bool; }

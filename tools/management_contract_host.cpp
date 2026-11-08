@@ -866,12 +866,42 @@ int main(int argc,char** argv) {
         }
         standing=m::CreateStandingOrdersState(b,q->category(),standingUnknown?m::StandingOrdersOutcome::Unknown:set?m::StandingOrdersOutcome::Applied:m::StandingOrdersOutcome::None,b.CreateVector(rows));
       }
-      m::ManagementStateBuilder state(b);state.add_work_detail_settings(settings);state.add_standing_orders(standing);state.add_residents(workers);state.add_agreement(agreements);state.add_report(reports);state.add_production(production);state.add_construction(construction);state.add_citizen(citizens);state.add_work_order(work);state.add_schema_version(m::kManagementVersion);
+      flatbuffers::Offset<m::HunterAmmunitionState> hunter;bool hunterUnknown=false;
+      if(request && request->action()>=m::ManagementAction::HunterAmmunitionRead && request->action()<=m::ManagementAction::HunterAmmunitionApply){
+        const auto* q=request->hunter_ammunition();require(q,"hunter request");
+        const bool read=request->action()==m::ManagementAction::HunterAmmunitionRead,choices=request->action()==m::ManagementAction::HunterAmmunitionCandidates;
+        hunterUnknown=!read && !choices && q->amount()==126;
+        if(choices)require(q->item_type()==39 && q->item_subtype()==0,"hunter choice target");
+        if(!read && !choices){
+          require(q->expected() && q->expected()->size()==1,"hunter receipt count");const auto* v=q->expected()->Get(0);
+          require(v->item_type()==39 && v->item_subtype()==0 && v->material_class()==-1 && v->mattype()==-1 && v->matindex()==-1 && v->amount()==100 && v->flags()==3 && v->assigned()->size()==1 && v->assigned()->Get(0)==13119,"hunter receipt contents");
+          using O=m::HunterAmmunitionOperation;
+          require(q->index()==(q->operation()==O::Add?-1:0),"hunter rule index");
+          if(q->operation()==O::Amount)require(q->amount()==(hunterUnknown?126:125),"hunter amount");
+          if(q->operation()==O::Material)require(q->material_class()==3 && q->mattype()==-1 && q->matindex()==-1,"hunter material");
+          if(q->operation()==O::Add)require(q->item_type()==39 && q->item_subtype()==0,"hunter add");
+          if(q->operation()==O::Remove)require(q->item_id()==13119,"hunter remove");
+        }
+        std::vector<flatbuffers::Offset<m::HunterAmmunitionSpec>> specs;
+        std::vector<flatbuffers::Offset<m::HunterAmmunitionRule>> rules;
+        std::vector<flatbuffers::Offset<m::HunterAmmunitionType>> types;
+        std::vector<flatbuffers::Offset<m::HunterAmmunitionMaterial>> materials;
+        if(!choices && !hunterUnknown)specs.push_back(m::CreateHunterAmmunitionSpec(b,39,0,-1,-1,-1,100,3,b.CreateVector(std::vector<int32_t>{13119})));
+        if(read){
+          auto stack=m::CreateHunterAmmunitionStack(b,13119,b.CreateString("fixture stack"),30);
+          rules.push_back(m::CreateHunterAmmunitionRule(b,b.CreateString("fixture bolts"),30,b.CreateVector(std::vector{stack})));
+          types.push_back(m::CreateHunterAmmunitionType(b,39,0,false,b.CreateString("fixture bolts")));
+        }
+        if(choices)materials.push_back(m::CreateHunterAmmunitionMaterial(b,3,-1,-1,b.CreateString("fixture wood bolts")));
+        hunter=m::CreateHunterAmmunitionState(b,hunterUnknown?m::HunterAmmunitionOutcome::Unknown:read || choices?m::HunterAmmunitionOutcome::None:m::HunterAmmunitionOutcome::Applied,
+          choices?39:-1,choices?0:-1,b.CreateVector(specs),b.CreateVector(rules),b.CreateVector(types),b.CreateVector(materials));
+      }
+      m::ManagementStateBuilder state(b);state.add_hunter_ammunition(hunter);state.add_work_detail_settings(settings);state.add_standing_orders(standing);state.add_residents(workers);state.add_agreement(agreements);state.add_report(reports);state.add_production(production);state.add_construction(construction);state.add_citizen(citizens);state.add_work_order(work);state.add_schema_version(m::kManagementVersion);
       state.add_revision(revision);state.add_world_epoch(epoch);state.add_client_id(request?request->client_id():0);
       state.add_request_seq(request?request->seq():0);state.add_action(request?request->action():m::ManagementAction::Catalog);
       state.add_creature_knowledge(knowledge);
       const bool citizenUnknown=request && request->action()==m::ManagementAction::WorkDetailEdit && request->citizen()->name()->str()=="UnknownMarker";
-      state.add_status((missing || knowledgeRejected || citizenUnknown || standingUnknown)?m::ManagementStatus::Rejected:m::ManagementStatus::Ok);state.add_message(text);
+      state.add_status((missing || knowledgeRejected || citizenUnknown || standingUnknown || hunterUnknown)?m::ManagementStatus::Rejected:m::ManagementStatus::Ok);state.add_message(text);
       state.add_building_id(2147483000);state.add_build_stage(-1);state.add_max_stage(-1);state.add_area(areas);
       auto finished=state.Finish();b.Finish(finished);
       const auto* value=flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer());
@@ -904,7 +934,7 @@ int main(int argc,char** argv) {
         A::AreaCreate,A::AreaUpdate,A::AreaUpdate,
         A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaCreate,A::AreaInspect,
         A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,
-        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::PrepareAlertDismissal,A::DismissAlert,A::ProductionInspect,A::ProductionInspect,A::ProductionInspect,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::WorkDetailWorkersQuery,A::WorkDetailSettingsRead,A::WorkDetailSettingsToggle,A::StandingOrdersRead,A::StandingOrdersSet,A::StandingOrdersSet,A::StandingOrdersRead,A::StandingOrdersSet,A::StandingOrdersRead,A::StandingOrdersSet,A::StandingOrdersRead,A::StandingOrdersSet,A::StandingOrdersRead,A::StandingOrdersSet,A::StandingOrdersRead,A::StandingOrdersSet};
+        A::AreaUpdate,A::AreaCandidates,A::AreaLink,A::AreaCandidates,A::AreaCandidates,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaUpdate,A::AreaInspect,A::AreaInspect,A::PrepareAlertDismissal,A::DismissAlert,A::ProductionInspect,A::ProductionInspect,A::ProductionInspect,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::CreatureKnowledgeRead,A::WorkDetailWorkersQuery,A::WorkDetailSettingsRead,A::WorkDetailSettingsToggle,A::StandingOrdersRead,A::StandingOrdersSet,A::StandingOrdersSet,A::StandingOrdersRead,A::StandingOrdersSet,A::StandingOrdersRead,A::StandingOrdersSet,A::StandingOrdersRead,A::StandingOrdersSet,A::StandingOrdersRead,A::StandingOrdersSet,A::StandingOrdersRead,A::StandingOrdersSet,A::HunterAmmunitionRead,A::HunterAmmunitionCandidates,A::HunterAmmunitionApply,A::HunterAmmunitionApply,A::HunterAmmunitionApply,A::HunterAmmunitionApply,A::HunterAmmunitionApply,A::HunterAmmunitionApply};
     publish(1,nullptr);signal("ready");size_t received=0;
     const auto stop=std::chrono::steady_clock::now()+std::chrono::seconds(30);
     std::vector<uint8_t> bytes(m::kManagementCommandCapacity);
@@ -1061,7 +1091,7 @@ int main(int argc,char** argv) {
         case A::TradeUpdate: {
           auto* v=r->trade();require(v && v->depot_id()==2147483000 && v->expected_revision()==epoch && v->requested()==1 && v->anyone()==-1 && v->item_id()==-1,"trade payload");break;
         }
-        case A::CreatureKnowledgeRead: case A::WorkDetailWorkersQuery: case A::WorkDetailSettingsRead: case A::WorkDetailSettingsToggle: case A::StandingOrdersRead: case A::StandingOrdersSet: break; // Full identity is checked while constructing the reply.
+        case A::CreatureKnowledgeRead: case A::WorkDetailWorkersQuery: case A::WorkDetailSettingsRead: case A::WorkDetailSettingsToggle: case A::StandingOrdersRead: case A::StandingOrdersSet: case A::HunterAmmunitionRead: case A::HunterAmmunitionCandidates: case A::HunterAmmunitionApply: break; // Full identity is checked while constructing the reply.
         default: throw std::runtime_error("unexpected action");
         }
         publish(received+1,r);

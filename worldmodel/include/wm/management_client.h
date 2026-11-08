@@ -413,6 +413,24 @@ struct ProductionState {
   int32_t selectedBuilding=-1,createdJob=-1;
   std::string detail;
 };
+struct HunterAmmunitionSpec {
+  int16_t itemType=-1,itemSubtype=-1,materialClass=-1,matType=-1;
+  int32_t matIndex=-1,amount=0;uint32_t flags=0;std::vector<int32_t> assigned;
+};
+struct HunterAmmunitionRequest {
+  HunterAmmunitionOperation operation=HunterAmmunitionOperation::None;
+  int32_t index=-1,itemId=-1,amount=-1;int16_t itemType=-1,itemSubtype=-1,materialClass=-1,matType=-1;int32_t matIndex=-1;
+  std::vector<HunterAmmunitionSpec> expected;
+};
+struct HunterAmmunitionStack {int32_t id=-1;std::string caption;int32_t quantity=0;};
+struct HunterAmmunitionRule {std::string caption;int64_t quantity=0;std::vector<HunterAmmunitionStack> items;};
+struct HunterAmmunitionType {int16_t itemType=-1,itemSubtype=-1;bool foreign=false;std::string caption;};
+struct HunterAmmunitionMaterial {int16_t materialClass=-1,matType=-1;int32_t matIndex=-1;std::string caption;};
+struct HunterAmmunitionState {
+  HunterAmmunitionOutcome outcome=HunterAmmunitionOutcome::None;int16_t itemType=-1,itemSubtype=-1;
+  std::vector<HunterAmmunitionSpec> specs;std::vector<HunterAmmunitionRule> rules;
+  std::vector<HunterAmmunitionType> types;std::vector<HunterAmmunitionMaterial> materials;
+};
 struct StandingOrdersRequest { uint8_t category=0; int32_t settingId=-1; int8_t expectedValue=-1,value=-1; };
 struct StandingOrderSetting { int32_t id=-1; uint8_t value=0; bool visible=false; bool editable=false; };
 struct StandingOrdersState { uint8_t category=0; StandingOrdersOutcome outcome=StandingOrdersOutcome::None; std::vector<StandingOrderSetting> settings; };
@@ -808,6 +826,7 @@ struct ManagementRequest {
   WorkDetailWorkersRequest workDetailWorkers;
   WorkDetailSettingsRequest workDetailSettings;
   StandingOrdersRequest standingOrders;
+  HunterAmmunitionRequest hunterAmmunition;
   ResidentsRowsRequest residentsRows;
   ResidentsSpecializationRequest residentsSpecialization;
   ResidentsActivityRequest residentsActivity;
@@ -870,6 +889,7 @@ struct ManagementState {
   std::optional<ResidentsRowsState> residentsRows;
   std::optional<WorkDetailSettingsState> workDetailSettings;
   std::optional<StandingOrdersState> standingOrders;
+  std::optional<HunterAmmunitionState> hunterAmmunition;
   std::optional<ResidentsSpecializationState> residentsSpecialization;
   std::optional<ResidentsActivityState> residentsActivity;
   std::optional<JobSettingsState> jobSettings;

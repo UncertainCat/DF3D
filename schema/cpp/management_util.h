@@ -110,8 +110,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 147;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v147";
+inline constexpr uint32_t kManagementVersion = 148;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v148";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -409,12 +409,18 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::StandingOrdersSet &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::HunterAmmunitionApply &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
       !(action >= ManagementAction::AppointmentsOpen && action <= ManagementAction::AppointmentsBack) &&
       !(action >= ManagementAction::KitchenOpen && action <= ManagementAction::KitchenClose);
+}
+inline bool validHunterSpec(const HunterAmmunitionSpec* v) {
+  if(!v || v->item_type()!=39 || v->item_subtype()<0 || v->material_class()<-1 || v->mattype()<-1 ||
+     v->matindex()<-1 || v->amount()<0 || v->flags()>3 || !v->assigned())return false;
+  int32_t prior=-1;for(auto id:*v->assigned()){if(id<=prior)return false;prior=id;}
+  return true;
 }
 inline std::optional<std::string> validateConstructionRequest(const ConstructionRequest& r) {
   if (r.schema_version() != kManagementVersion) return "management version mismatch";
@@ -465,7 +471,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::StandingOrdersSet)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::HunterAmmunitionApply)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -559,6 +565,27 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     const auto* q=r.residents_specialization();
     if(!q || q->unit_id()<0 || !q->expected_revision() || q->expected_revision()>INT64_MAX)return "invalid residents specialization request";
   } else if(r.residents_specialization())return "unexpected residents specialization request";
+  if(r.action()>=ManagementAction::HunterAmmunitionRead && r.action()<=ManagementAction::HunterAmmunitionApply) {
+    const auto* q=r.hunter_ammunition();if(!q)return "missing hunter ammunition request";
+    using O=HunterAmmunitionOperation;
+    const bool apply=r.action()==ManagementAction::HunterAmmunitionApply;
+    const bool choices=r.action()==ManagementAction::HunterAmmunitionCandidates;
+    if(q->operation()<O::None || q->operation()>O::Remove)return "invalid ammunition operation";
+    if(!apply){
+      if(q->operation()!=O::None || q->index()!=-1 || q->item_id()!=-1 || q->amount()!=-1 || q->material_class()!=-1 ||
+         q->mattype()!=-1 || q->matindex()!=-1 || q->expected())return "unexpected ammunition edit fields";
+      if(choices?(q->item_type()!=39 || q->item_subtype()<0):(q->item_type()!=-1 || q->item_subtype()!=-1))return "invalid ammunition candidate target";
+    }else{
+      if(q->operation()==O::None || !q->expected())return "missing ammunition edit receipt";
+      for(const auto* spec:*q->expected())if(!validHunterSpec(spec))return "invalid ammunition receipt";
+      if(q->operation()==O::Add ? q->index()!=-1 : (q->index()<0 || size_t(q->index())>=q->expected()->size()))return "invalid ammunition rule target";
+      if(q->operation()==O::Amount ? (q->amount()<0 || q->amount()>5000) : q->amount()!=-1)return "invalid ammunition amount";
+      if(q->operation()==O::Remove ? q->item_id()<0 : q->item_id()!=-1)return "invalid ammunition item target";
+      if(q->operation()==O::Add ? (q->item_type()!=39 || q->item_subtype()<0) : (q->item_type()!=-1 || q->item_subtype()!=-1))return "invalid ammunition type";
+      if(q->operation()==O::Material ? (q->material_class()<-1 || q->mattype()<-1 || q->matindex()<-1) :
+         (q->material_class()!=-1 || q->mattype()!=-1 || q->matindex()!=-1))return "invalid ammunition material";
+    }
+  }else if(r.hunter_ammunition())return "unexpected ammunition request";
   if(r.action()==ManagementAction::StandingOrdersRead || r.action()==ManagementAction::StandingOrdersSet) {
     const auto* q=r.standing_orders();
     if(!q || !standingCategoryCount(q->category()))return "invalid standing orders category";
@@ -1030,7 +1057,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::StandingOrdersSet ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::HunterAmmunitionApply ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -1106,6 +1133,36 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     for(auto id:*r->unit_ids())if(id<0 || !ids.insert(id).second)return "invalid residents identity";
   } else if((s.action()==ManagementAction::ResidentsQuery || s.action()==ManagementAction::WorkDetailWorkersQuery) && s.status()==ManagementStatus::Ok)
     return "residents result required";
+  if(const auto* r=s.hunter_ammunition()) {
+    using O=HunterAmmunitionOutcome;
+    const bool read=s.action()==ManagementAction::HunterAmmunitionRead,choices=s.action()==ManagementAction::HunterAmmunitionCandidates,
+      apply=s.action()==ManagementAction::HunterAmmunitionApply;
+    if((!read && !choices && !apply) || !r->specs() || !r->rules() || !r->types() || !r->materials())return "invalid ammunition response";
+    if(s.status()!=ManagementStatus::Ok){
+      if(s.status()!=ManagementStatus::Rejected || (r->outcome()!=O::Rejected && (!apply || (r->outcome()!=O::Stale && r->outcome()!=O::Unknown))) ||
+         r->specs()->size() || r->rules()->size() || r->types()->size() || r->materials()->size())return "invalid ammunition refusal";
+    }else{
+      if(r->outcome()!=(apply?O::Applied:O::None))return "invalid ammunition outcome";
+      if(choices ? (r->item_type()!=39 || r->item_subtype()<0 || r->specs()->size() || r->rules()->size() || r->types()->size()) :
+         (r->item_type()!=-1 || r->item_subtype()!=-1 || r->materials()->size()))return "invalid ammunition response scope";
+      if(read ? r->rules()->size()!=r->specs()->size() : r->rules()->size()!=0)return "invalid ammunition rule details";
+      if(apply && r->types()->size())return "unexpected ammunition edit choices";
+      for(const auto* v:*r->specs())if(!validHunterSpec(v))return "invalid ammunition spec";
+      for(const auto* v:*r->types())if(!v || v->item_type()!=39 || v->item_subtype()<0 || !v->caption())return "invalid ammunition type choice";
+      for(const auto* v:*r->materials())if(!v || v->material_class()<-1 || v->mattype()<-1 || v->matindex()<-1 || !v->caption())return "invalid ammunition material choice";
+      size_t index=0;for(const auto* row:*r->rules()){
+        if(!row || !row->caption() || !row->items() || row->quantity()<0)return "invalid ammunition rule";
+        int64_t quantity=0;int32_t prior=-1;const auto* assigned=r->specs()->Get(index++)->assigned();
+        for(const auto* item:*row->items()){
+          if(!item || item->id()<=prior || !item->caption() || item->quantity()<0 ||
+             !std::binary_search(assigned->begin(),assigned->end(),item->id()))return "invalid ammunition assigned stack";
+          prior=item->id();quantity+=item->quantity();
+        }
+        if(quantity!=row->quantity())return "ammunition quantity mismatch";
+      }
+    }
+  }else if(s.status()==ManagementStatus::Ok && s.action()>=ManagementAction::HunterAmmunitionRead && s.action()<=ManagementAction::HunterAmmunitionApply)
+    return "missing ammunition result";
   if(const auto* r=s.standing_orders()) {
     using O=StandingOrdersOutcome;
     const bool read=s.action()==ManagementAction::StandingOrdersRead,set=s.action()==ManagementAction::StandingOrdersSet;

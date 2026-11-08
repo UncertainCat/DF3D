@@ -5841,6 +5841,151 @@
         "labor-restore"
       ],
       "limitations": "Initial scroll positions and alternate states pixel-compared; rendered arrows/wheel/page input checked. Live scroll-triggered row fetching, dragging, hover and long-caption ellipsis remain unaccepted. Native narrow child captions overlap controls; no correction authorized."
+    },
+    "scroll_hover_reference": {
+      "native_capture": "build/stockpile-storage-native-input-20261108-160133",
+      "live_capture": "build/stockpile-storage-native-input-20261108-160239",
+      "initial_live_scroll_capture": "build/stockpile-storage-native-input-20261108-160031",
+      "drag": [
+        {
+          "action": "press",
+          "child_dragging": true,
+          "child_first": 0,
+          "column": "children",
+          "labor_dragging": false,
+          "labor_first": 0
+        },
+        {
+          "action": "bottom",
+          "child_dragging": true,
+          "child_first": 5,
+          "column": "children",
+          "labor_dragging": false,
+          "labor_first": 0
+        },
+        {
+          "action": "release",
+          "child_dragging": false,
+          "child_first": 5,
+          "column": "children",
+          "labor_dragging": false,
+          "labor_first": 0
+        },
+        {
+          "action": "press-bottom",
+          "child_dragging": true,
+          "child_first": 5,
+          "column": "children",
+          "labor_dragging": false,
+          "labor_first": 0
+        },
+        {
+          "action": "top",
+          "child_dragging": true,
+          "child_first": 0,
+          "column": "children",
+          "labor_dragging": false,
+          "labor_first": 0
+        },
+        {
+          "action": "release-top",
+          "child_dragging": false,
+          "child_first": 0,
+          "column": "children",
+          "labor_dragging": false,
+          "labor_first": 0
+        },
+        {
+          "action": "press",
+          "child_dragging": false,
+          "child_first": 0,
+          "column": "labors",
+          "labor_dragging": true,
+          "labor_first": 0
+        },
+        {
+          "action": "bottom",
+          "child_dragging": false,
+          "child_first": 0,
+          "column": "labors",
+          "labor_dragging": true,
+          "labor_first": 7
+        },
+        {
+          "action": "release",
+          "child_dragging": false,
+          "child_first": 0,
+          "column": "labors",
+          "labor_dragging": false,
+          "labor_first": 7
+        },
+        {
+          "action": "press-bottom",
+          "child_dragging": false,
+          "child_first": 0,
+          "column": "labors",
+          "labor_dragging": true,
+          "labor_first": 7
+        },
+        {
+          "action": "top",
+          "child_dragging": false,
+          "child_first": 0,
+          "column": "labors",
+          "labor_dragging": true,
+          "labor_first": 0
+        },
+        {
+          "action": "release-top",
+          "child_dragging": false,
+          "child_first": 0,
+          "column": "labors",
+          "labor_dragging": false,
+          "labor_first": 0
+        }
+      ],
+      "hover": [
+        {
+          "displayed": -1,
+          "instruction": -1,
+          "target": "enabled"
+        },
+        {
+          "displayed": -1,
+          "instruction": -1,
+          "target": "disabled"
+        },
+        {
+          "displayed": -1,
+          "instruction": -1,
+          "target": "portrait"
+        },
+        {
+          "displayed": -1,
+          "instruction": -1,
+          "target": "child-caption"
+        },
+        {
+          "displayed": -1,
+          "instruction": -1,
+          "target": "child-checkbox"
+        },
+        {
+          "displayed": -1,
+          "instruction": -1,
+          "target": "labor-caption"
+        },
+        {
+          "displayed": -1,
+          "instruction": -1,
+          "target": "labor-checkbox"
+        }
+      ],
+      "hover_panel_differing_pixels": 0,
+      "live_minimum_panel_differing_pixels": 0,
+      "visible_rows": 7,
+      "restored_rows": 12,
+      "limitations": "Drag endpoints/release, independent lists, bounded live viewport reads and resize restoration verified. Intermediate drag geometry, long-caption ellipsis and main-scene integration remain outside this acceptance."
     }
   }
 }

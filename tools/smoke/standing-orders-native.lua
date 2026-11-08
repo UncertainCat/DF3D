@@ -210,8 +210,33 @@ for category,x in ipairs{10,23,34,46,60,71,80}do
        result.chores_scroll[#result.chores_scroll+1]={column=column[1],action=key,child_first=panel.scroll_position_units,labor_first=panel.scroll_position_labor_list}
       end
      end
+     result.chores_drag={}
+     for _,column in ipairs({{'children',336},{'labors',664}})do
+      for _,sample in ipairs({{'press',264,true},{'bottom',450,true},{'release',450,false},{'press-bottom',420,true},{'top',240,true},{'release-top',240,false}})do
+       g.precise_mouse_x=column[2];g.precise_mouse_y=sample[2];g.mouse_x=column[2]//8;g.mouse_y=sample[2]//12
+       df.global.enabler.mouse_lbut=sample[3] and 1 or 0;df.global.enabler.mouse_lbut_down=sample[3] and 1 or 0;df.global.enabler.mouse_lbut_lift=sample[3] and 0 or 1
+       local keys={};if sample[3] then keys._MOUSE_L_DOWN=true;if sample[1]:find('press')then keys._MOUSE_L=true end end
+       gui.simulateInput(view,keys);view:render(dfhack.getTickCount())
+       result.chores_drag[#result.chores_drag+1]={column=column[1],action=sample[1],child_first=panel.scroll_position_units,labor_first=panel.scroll_position_labor_list,child_dragging=panel.scrolling_units,labor_dragging=panel.scrolling_labor_list}
+      end
+     end
+     panel.scroll_position_units=0;panel.scroll_position_labor_list=0;settle()
      shot('chores-layout-scroll-restored')
     end
+   end
+  end
+
+  if os.getenv('DF3D_CHORES_HOVER')=='1' then
+   result.chores_hover={};local main=df.global.game.main_interface
+   for _,target in ipairs({{'enabled',600,190},{'disabled',800,190},{'portrait',66,238},{'child-caption',150,238},{'child-checkbox',464,238},{'labor-caption',600,238},{'labor-checkbox',944,238}})do
+    local deadline=dfhack.getTickCount()+850
+    repeat
+     df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+     g.precise_mouse_x=target[2];g.precise_mouse_y=target[3];g.mouse_x=target[2]//8;g.mouse_y=(target[3]-4)//12
+     gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(1,'frames')
+    until dfhack.getTickCount()>=deadline
+    result.chores_hover[#result.chores_hover+1]={target=target[1],instruction=main.current_hover,displayed=main.last_displayed_hover_inst}
+    shot('chores-hover-'..target[1])
    end
   end
 

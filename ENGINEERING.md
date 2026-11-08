@@ -131,6 +131,23 @@ preserve the source. Graphical checks remain serial30FPS, GPU59–61C sampled, w
 only documented Godot diagnostics. Live viewport-driven row fetching, dragging,
 hover, long-caption ellipsis and main-scene acceptance remain pending.
 
+Protected160031/160239 now exercise minimum-size Chores through the actual owner:
+arrows and both drag endpoints fetch the correct seven visible child appearances,
+leave the other list unchanged, release drag capture and restore all12 rows when
+the window grows. The initial/minimum live panel matches native with zero differing
+pixels. Each run also repeats all six native-observed edits, stale refusal and
+category/Back transitions. Source saves remain unchanged; owned DF16716/9320 exit
+unsaved. Core19 and controller checks pass in chores-live-scroll-20261108, with
+only documented Godot diagnostics in the live runs and GPU59–60C sampled.
+
+Native160133 confirms child drag0/5/0 and labor drag0/7/0 with independent capture
+and release. Seven850ms hover probes (participation buttons, portrait, child/labor
+captions and checkboxes) keep instruction/display IDs-1 and leave the complete
+panel unchanged. No tooltip is added for these native controls. Source preservation
+passes and owned DF42312 exits unsaved. Intermediate drag geometry, unusually long
+caption truncation, broader Standing orders integration and main-scene acceptance
+remain outstanding; this does not expose the staged surface publicly.
+
 Chores typed dispatch now reads owned native snapshots/captions and applies the
 three native-backed mutations. It prepares the returned receipt before writes,
 sets mutation ownership from writeStarted, and retires partial state on failure.

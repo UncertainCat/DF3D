@@ -1300,6 +1300,7 @@ func chores_wire() -> void:
 			await create_timer(0.01).timeout
 		if not check(FileAccess.get_file_as_string(directory+"/chores-wire-ack")==str(count),"Native Chores readback missing; no replay"):quit(1);return
 	if rendered:
+		await chores_scroll_live(owner)
 		await pointer(owner.chores_panel,owner.chores_panel.category_rect(1).get_center())
 		if not check(await ready(owner.state) and not owner.chores_active and owner.state.category==1 and host.active==owner,"Chores return navigation failed"):quit(1);return
 		await pointer(owner.panel,owner.panel.category_rect(5).get_center())
@@ -1309,3 +1310,32 @@ func chores_wire() -> void:
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"steps":count}));file.close()
 	controller.dispose();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)
+
+func chores_scroll_live(owner) -> void:
+	var state=owner.chores_state;var panel=owner.chores_panel
+	root.size=Vector2i(912,552);await process_frame;await process_frame
+	if not check(panel.capacity()==7,"Chores minimum capacity differs"):return
+	for bar in [panel.scrollbar,panel.labor_scrollbar]:
+		for down in [true,false]:
+			await pointer(bar,Vector2(8,bar.size.y-6 if down else 6))
+			check(bar.first==(1 if down else 0),"Live Chores scroll differs")
+			var deadline:=Time.get_ticks_msec()+5000
+			while state.row_ticket!=0 and Time.get_ticks_msec()<deadline:world.poll();await create_timer(0.01).timeout
+			check(not state.row_failed and state.rows.size()==7,"Chores visible row fetch failed")
+			for index in range(state.child_first,state.child_first+7):
+				check(state.rows.has(int(state.children[index].id)),"Chores viewport has wrong child")
+			check((state.labor_first if bar==panel.scrollbar else state.child_first)==0,"Scrolling one Chores list moved the other")
+	for bar in [panel.scrollbar,panel.labor_scrollbar]:
+		for bottom in [true,false]:
+			await drag_scrollbar(bar,bottom)
+			check(bar.first==(bar.count-bar.page if bottom else 0),"Chores drag endpoint differs from native")
+			var deadline:=Time.get_ticks_msec()+5000
+			while state.row_ticket!=0 and Time.get_ticks_msec()<deadline:world.poll();await create_timer(0.01).timeout
+			check(not state.row_failed and state.rows.size()==7,"Chores dragged viewport row fetch failed")
+			for index in range(state.child_first,state.child_first+7):check(state.rows.has(int(state.children[index].id)),"Chores drag kept stale child rows")
+			check((state.labor_first if bar==panel.scrollbar else state.child_first)==0,"Chores drag moved other list")
+	await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/chores-view-minimum.png")
+	root.size=Vector2i(1200,800);await process_frame;await process_frame
+	var deadline:=Time.get_ticks_msec()+5000
+	while state.row_ticket!=0 and Time.get_ticks_msec()<deadline:world.poll();await create_timer(0.01).timeout
+	check(state.rows.size()==state.children.size() and not panel.scrollbar.visible and not panel.labor_scrollbar.visible,"Chores resize did not restore full roster")

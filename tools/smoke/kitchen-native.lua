@@ -306,6 +306,36 @@ if os.getenv('DF3D_KITCHEN_CONTROLS')=='1' then
  local f=assert(io.open(out..'/kitchen-controls.json','w'));f:write(json.encode(observations));f:close()
  shot('kitchen-controls')
 end
+if os.getenv('DF3D_KITCHEN_SEARCH')=='1' then
+ local box
+ local function locate(widget)
+  if widget.name=='Filter box'then box=widget end
+  if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do locate(child)end end
+ end
+ locate(panel);assert(box,'Kitchen filter box missing')
+ local observations={}
+ click(25,20)
+ observations[#observations+1]={label='second-row',cursor=panel.cursor_idx}
+ for _,query in ipairs({'PLUMP','plump','abcdefghijklmnopqrstuvwxyz0123456789',''})do
+  click((box.rect.x1+box.rect.x2)//2,(box.rect.y1+box.rect.y2)//2)
+  local f=assert(io.open(out..'/residents-search-input.json','w'));f:write(json.encode({clear_count=#box.str,text=query}));f:close()
+  f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('residents-search');f:close();assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+  local deadline=dfhack.getTickCount()+30000
+  while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Kitchen search input timeout');script.sleep(1,'frames')end
+  assert(os.remove(out..'/owner-input-ack'))
+  for _=1,3 do script.sleep(1,'frames');view:render(dfhack.getTickCount())end
+  local names={}
+  local function collect(widget)
+   if (widget.flag.whole&3)~=3 then return end
+   if df.widget_text:is_instance(widget) and widget.rect.x1==15 and widget.rect.y1>=16 then names[#names+1]=dfhack.df2utf(widget.str)end
+   if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do collect(child)end end
+  end
+  collect(panel)
+  observations[#observations+1]={label=query,text=box.str,filter=panel.filter_str,names=names,cursor=panel.cursor_idx,focused=df.global.gview.cur_textbox==box}
+ end
+ local f=assert(io.open(out..'/kitchen-search.json','w'));f:write(json.encode(observations));f:close()
+ shot('kitchen-search')
+end
 if os.getenv('DF3D_KITCHEN_JOB_EFFECTS')=='1' then
  local path=debug.getinfo(1,'S').source:sub(2):gsub('kitchen%-native.lua$','kitchen-job-effects-native.lua')
  assert(loadfile(path))(out,view,panel,click,result.known)

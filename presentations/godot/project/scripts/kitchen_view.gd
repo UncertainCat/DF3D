@@ -3,10 +3,15 @@ extends "res://scripts/standing_orders_view.gd"
 # require acceptance before the Labor owner exposes this surface.
 var icons: Dictionary={}
 var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
-var selected:=0
+var search
 const TYPE_LABELS=[" All"," Veg/Fruit/Leaves"," Seeds"," Drinks"," Meat/Fish/Other"]
 func configure_kitchen(source,model) -> void:
 	configure_standing_orders(source,model);picture.configure(source)
+	var inset:=StyleBoxTexture.new();inset.texture=art.texture("BUTTON_FILTER")
+	inset.set_texture_margin(SIDE_LEFT,8);inset.set_texture_margin(SIDE_RIGHT,32)
+	for side in [SIDE_TOP,SIDE_BOTTOM]:inset.set_texture_margin(side,12)
+	search=preload("res://scripts/area_owner_filter.gd").new();add_child(search);search.theme=theme;search.byte_limit=26
+	search.configure(inset,colors);search.edited.connect(state.set_search)
 	scrollbar.input_allowed=allowed
 	scrollbar.row_changed.connect(func(value):state.seek(value,capacity()))
 	state.changed.connect(refresh);refresh()
@@ -16,6 +21,9 @@ func layout(view: Vector2) -> void:
 	super.layout(view)
 	if state!=null:refresh()
 func refresh() -> void:
+	if search!=null:
+		search.position=Vector2(32,size.y-60);search.size=Vector2(312,36);search.editable=state.phase in [state.Phase.Ready,state.Phase.Reading]
+		search.set_bytes(str(state.query.query).to_utf8_buffer())
 	var retained: Dictionary={}
 	for index in range(state.first,mini(state.rows.size(),state.first+capacity())):
 		var row: Dictionary=state.rows[index];var token: String=row.material_token;var kind: int=row.receipt.key.item_type
@@ -30,9 +38,15 @@ func refresh() -> void:
 	icons=retained
 	scrollbar.position=Vector2(size.x-40,rows_top());scrollbar.size=Vector2(16,capacity()*36+12);scrollbar.page=capacity();scrollbar.set_rows(state.rows.size(),state.first)
 	queue_redraw()
+func _input(event: InputEvent) -> void:
+	if not allowed():return
+	if event is InputEventKey and event.pressed and event.keycode!=KEY_ESCAPE and search!=null and search.has_focus():
+		search.feed_key(event);get_viewport().set_input_as_handled();return
+	super._input(event)
 func _gui_input(event: InputEvent) -> void:
 	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
+	if search!=null:search.release_focus()
 	if Rect2(88,list_top()-24,24,12).has_point(event.position):state.cycle_type(-1);accept_event();return
 	if Rect2(256,list_top()-24,24,12).has_point(event.position):state.cycle_type(1);accept_event();return
 	for permission in [1,2]:
@@ -42,6 +56,7 @@ func _gui_input(event: InputEvent) -> void:
 		if Rect2(positions[column],list_top()+12,80 if column<2 else 32,12).has_point(event.position):state.select_sort(column);accept_event();return
 	var index:=int(floor((event.position.y-rows_top())/36))
 	if index<0 or index>=capacity():return
+	if state.first+index<state.rows.size():state.selected=state.first+index;queue_redraw()
 	if Rect2(680,rows_top()+index*36,32,36).has_point(event.position):state.toggle(state.first+index,1);accept_event()
 	elif Rect2(712,rows_top()+index*36,32,36).has_point(event.position):state.toggle(state.first+index,2);accept_event()
 func _draw() -> void:
@@ -75,8 +90,8 @@ func _draw() -> void:
 			text("Type" if index==0 else "Name",Vector2(positions[index]+40,list_top()+24),0 if active else 7)
 	for index in mini(capacity(),state.rows.size()-state.first):
 		var row: Dictionary=state.rows[state.first+index];var y:=rows_top()+index*36
-		patch("BUTTON_RECTANGLE",Vector2i(4,int(y/12)),int(size.x/8)-10,3)
-		patch("",Vector2i(4,int(y/12)),5,3,picture.texture(false))
+		patch("BUTTON_RECTANGLE_SELECTED" if state.first+index==state.selected else "BUTTON_RECTANGLE",Vector2i(4,int(y/12)),int(size.x/8)-10,3)
+		patch("",Vector2i(4,int(y/12)),5,3,picture.texture(state.first+index==state.selected))
 		var icon: Texture2D=icons.get(str(row.receipt.key.item_type)+":"+row.material_token)
 		if icon!=null:draw_texture_rect(icon,Rect2(34,y+2,32,32),false)
 		text(row.name,Vector2(88,y+24));text(row.count_caption,Vector2(584,y+24),13 if row.estimated else 14)
@@ -84,7 +99,3 @@ func _draw() -> void:
 			var suffix: String="CANNOT" if not (int(row.receipt.capabilities)&permission) else "RESTRICTED" if int(row.excluded)&permission else "ALLOWED"
 			var texture: Texture2D=art.texture("LABOR_KITCHEN_"+("COOK_" if permission==1 else "BREW_")+suffix)
 			if texture!=null:draw_texture_rect(texture,Rect2(680+(permission-1)*32,y,32,36),false)
-	var filter: Texture2D=art.texture("BUTTON_FILTER")
-	if filter!=null:
-		var style:=StyleBoxTexture.new();style.texture=filter;style.set_texture_margin(SIDE_LEFT,8);style.set_texture_margin(SIDE_RIGHT,32)
-		style.set_texture_margin(SIDE_TOP,12);style.set_texture_margin(SIDE_BOTTOM,12);draw_style_box(style,Rect2(32,size.y-60,312,36))

@@ -2750,5 +2750,68 @@
       "comparison": "Both32x36 native Cook filter crops match installed INTERFACE_BITS_SHARED exactly (RGB including alpha composited on native28 background)."
     },
     "scope": "Actual type-arrow clicks and capability-filter clicks, native captions and visible names only; search, modified sorting, navigation retention and broader layouts are not accepted."
+  },
+  "search_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-173402",
+    "source_preserved": true,
+    "observations": [
+      {
+        "cursor": 1,
+        "label": "second-row"
+      },
+      {
+        "cursor": 0,
+        "filter": "plump",
+        "focused": true,
+        "label": "PLUMP",
+        "names": [
+          "Plump helmet spawn",
+          "Plump helmets"
+        ],
+        "text": "PLUMP"
+      },
+      {
+        "cursor": 0,
+        "filter": "plump",
+        "focused": true,
+        "label": "plump",
+        "names": [
+          "Plump helmet spawn",
+          "Plump helmets"
+        ],
+        "text": "plump"
+      },
+      {
+        "cursor": 0,
+        "filter": "abcdefghijklmnopqrstuvwxyz",
+        "focused": true,
+        "label": "abcdefghijklmnopqrstuvwxyz0123456789",
+        "names": [],
+        "text": "abcdefghijklmnopqrstuvwxyz"
+      },
+      {
+        "cursor": 0,
+        "filter": "",
+        "focused": true,
+        "label": "",
+        "names": [
+          "Alfalfa seeds",
+          "Rock nuts",
+          "Blade weed seeds",
+          "Strawberry seeds",
+          "Prickle berry seeds",
+          "Rice",
+          "Rat weed seeds",
+          "Dimple cup spawn",
+          "Longland grass seeds",
+          "Blood amaranth seeds",
+          "Rope reed seeds",
+          "Pig tail seeds",
+          "Plump helmet spawn"
+        ],
+        "text": ""
+      }
+    ],
+    "scope": "Actual ASCII textbox input and second-row click; uppercase visible text preserved, native filter lowercased, input limited to26bytes and cursor reset on search. Non-ASCII, keyboard navigation, Enter/Escape and focus transitions remain unaccepted."
   }
 }

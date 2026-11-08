@@ -13,6 +13,14 @@ func run() -> void:
 	var service:=Service.new();root.add_child(service);var state:=State.new();state.configure(service)
 	state.open();service.reply(state.ticket,response())
 	check(state.phase==State.Phase.Ready and state.rows.size()==1,"Native read rejected")
+	state.selected=1;state.set_search("PLUMP".to_utf8_buffer())
+	check(state.selected==0 and state.query.query=="PLUMP" and service.calls[state.ticket].intent.query=="PLUMP","Search altered visible case or retained selection")
+	service.reply(state.ticket,response());state.set_search(PackedByteArray());service.reply(state.ticket,response())
+	var entry=preload("res://scripts/area_owner_filter.gd").new();root.add_child(entry);entry.byte_limit=26;entry.focus_mode=Control.FOCUS_ALL;entry.grab_focus()
+	for code in "abcdefghijklmnopqrstuvwxyz0123456789".to_utf32_buffer().size()/4:
+		var event:=InputEventKey.new();event.pressed=true;event.unicode="abcdefghijklmnopqrstuvwxyz0123456789".unicode_at(code);entry.feed_key(event)
+	check(entry.value.get_string_from_utf8()=="abcdefghijklmnopqrstuvwxyz","Kitchen textbox differs from native26-byte limit")
+	entry.queue_free()
 	var controls: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/production/native_kitchen.json")).controls_reference
 	for observation in controls.observations:
 		var label: String=observation.label

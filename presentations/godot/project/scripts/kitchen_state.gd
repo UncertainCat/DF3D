@@ -10,6 +10,7 @@ var rows: Array=[]
 var exclusions: Array=[]
 var query: Dictionary={"type_filter":-1,"capability_filter":0,"query":"","sorts":[{"column":0,"reverse":false}]}
 var first:=0
+var selected:=0
 var ticket:=0
 var generation:=0
 var last_result: Dictionary={}
@@ -29,7 +30,7 @@ func _retire() -> void:
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
 func close() -> void:
-	_retire();_clear();first=0;last_result={};phase=Phase.Closed;changed.emit()
+	_retire();_clear();first=0;selected=0;last_result={};phase=Phase.Closed;changed.emit()
 func _session_changed() -> void:
 	close();query={"type_filter":-1,"capability_filter":0,"query":"","sorts":[{"column":0,"reverse":false}]}
 	sort_directions=[false,false,false,false,false]
@@ -38,7 +39,9 @@ func open() -> void:
 	close();_read()
 func set_query(value: Dictionary) -> void:
 	if phase not in [Phase.Ready,Phase.Reading] or not _valid_query(value) or value==query:return
-	_retire();query=value.duplicate(true);first=0;_read()
+	_retire();query=value.duplicate(true);first=0;selected=0;_read()
+func set_search(bytes: PackedByteArray) -> void:
+	var value:=query.duplicate(true);value.query=bytes.get_string_from_utf8();set_query(value)
 func seek(value: int,capacity: int) -> void:
 	first=clampi(value,0,maxi(0,rows.size()-maxi(0,capacity)));changed.emit()
 func cycle_type(delta: int) -> void:

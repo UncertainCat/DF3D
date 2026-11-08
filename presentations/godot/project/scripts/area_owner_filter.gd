@@ -4,6 +4,7 @@ signal edited(value: PackedByteArray)
 const Art = preload("res://scripts/original_ui.gd")
 var value := PackedByteArray()
 var editable := true
+var byte_limit := 33
 var ticks_override := -1
 var last_phase := -1
 var ink := Color.WHITE
@@ -30,7 +31,7 @@ func feed_key(event: InputEventKey) -> void:
 		if not value.is_empty(): value.resize(value.size()-1)
 	elif event.unicode >= 32:
 		for byte in String.chr(event.unicode).to_utf8_buffer():
-			if value.size() >= 33: break
+			if value.size() >= byte_limit: break
 			value.append(byte)
 	if before != value: edited.emit(value.duplicate()); queue_redraw()
 

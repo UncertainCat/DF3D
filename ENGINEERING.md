@@ -97,6 +97,20 @@ checks pass in `kitchen-controls-final`. Graphical checks retain only the known
 Godot diagnostics at30FPS with sampled GPU temperature61C. Search, modified
 sorts, full pointer workflow and native navigation retention remain unaccepted.
 
+Protected173402 on2026-11-08 captures actual ASCII Kitchen textbox input:
+uppercase PLUMP remains visible while native filtering uses plump, the field
+accepts26bytes, and search resets the selected row to zero. A preceding second-row
+click selects row1. Source preservation and unsaved owned exit pass. Earlier
+173235 timed out because the harness had not enabled the Kitchen input-request
+hook; it is not accepted. The staged textbox reuses the shared byte editor with
+a per-instance26-byte limit (existing users retain33). Controller/input checks
+pass in `kitchen-search-final`. Selected-row artwork now matches native172922
+exactly; the whole initial panel has149 differing RGB pixels around the inactive
+Name sort label and scrollbar. `kitchen-selection-search` passes core19 and the
+graphical check with only documented Godot diagnostics. Non-ASCII editing and
+normalization, keyboard navigation, full live pointer workflows and Labor owner
+integration remain unaccepted. No public route is enabled.
+
 Core19, the extension build and Kitchen end-to-end fake-host checks pass in
 `kitchen-contract151-roundtrip`, including ordered filters/sorts and receipts,
 Cook success, Brew Unknown with no authority, and malformed typed requests.

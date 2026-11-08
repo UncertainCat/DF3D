@@ -83,6 +83,37 @@ local capture=debug.getinfo(1,'S').source:sub(2):gsub('smoke/kitchen%-native.lua
 assert(loadfile(capture))(out..'/kitchen-widgets.json','templates')
 local file=assert(io.open(out..'/kitchen-native.json','w'));file:write(json.encode(result));file:close()
 shot('kitchen-root')
+if os.getenv('DF3D_KITCHEN_DISPLAY')=='1' then
+ local original=df.global.plotinfo.nobles.bookkeeper_precision;local observations={}
+ for _,precision in ipairs({original,100000,100})do
+  df.global.plotinfo.nobles.bookkeeper_precision=precision;panel.sort_flags=panel.sort_flags|1
+  for _=1,3 do script.sleep(1,'frames');view:render(dfhack.getTickCount())end
+  local names,counts={},{}
+  local function collect(widget)
+   if (widget.flag.whole&3)~=3 then return end
+   if df.widget_text:is_instance(widget) and widget.rect.y1>=16 then
+    if widget.rect.x1==15 then names[widget.rect.y1]=dfhack.df2utf(widget.str)end
+    if widget.rect.x1==77 then counts[widget.rect.y1]={text=dfhack.df2utf(widget.str),estimated=widget.fg==5}end
+   end
+   if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do collect(child)end end
+  end
+  collect(panel)
+  local text,code=dfhack.run_command_silent('df3d','kitchen-display-probe');assert(code==0,'Owned display provider rejected')
+  local rows=json.decode(text);local by_name={};local k=df.global.plotinfo.kitchen
+  for _,row in ipairs(rows)do
+   by_name[row.name]=row;local flags=0
+   for i,t in ipairs(k.item_types)do if t==row.type and k.item_subtypes[i]==row.subtype and k.mat_types[i]==row.mat and k.mat_indices[i]==row.matg then flags=flags|k.exc_types[i].whole end end
+   assert(flags==row.excluded,'Native exclusion bits differ')
+  end
+  local checked={}
+  for y,name in pairs(names)do local row=assert(by_name[name]);local count=assert(counts[y]);assert(row.count_caption==count.text and row.estimated==count.estimated,'Native count display differs');checked[#checked+1]={name=name,caption=count.text,estimated=count.estimated}end
+  assert(#checked==13,'Unexpected visible Kitchen row count');table.sort(checked,function(a,b)return a.name<b.name end)
+  observations[#observations+1]={precision=precision,visible=checked,permissions_checked=#rows}
+ end
+ df.global.plotinfo.nobles.bookkeeper_precision=original;panel.sort_flags=panel.sort_flags|1
+ for _=1,3 do script.sleep(1,'frames');view:render(dfhack.getTickCount())end
+ local f=assert(io.open(out..'/kitchen-display.json','w'));f:write(json.encode(observations));f:close()
+end
 if os.getenv('DF3D_KITCHEN_SORT')=='1' then
  local observations={}
  local function observe(label)

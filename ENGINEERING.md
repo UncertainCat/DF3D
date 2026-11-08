@@ -44,6 +44,17 @@ This native build presents a combined list, type filter(All/Plants/Seeds/Drinks/
 Other), permission filters and Type/Name/Number/Cook/Brew sorting. The fixture
 contains raw aggregate counts/capability bits and visible count captions, which
 can include uncertainty marks; raw counts are not substitute display text.
+The display provider follows431545..431571: call74f430 with current bookkeeper
+precision to obtain the uncertainty flag, then format the original count with
+52c2b0 and append the native question mark if needed. Kitchen ignores the
+rounded return value, unlike material pickers. Current exclusion bits come from
+nativeac7c30 with the food key. Protected164309 compares all13 visible captions
+and estimate colors at precision0/100000/100, plus all22 exclusion masks at each
+setting. Precision is restored; DF2200 exits unsaved with source preservation.
+GPU59C sampled, no viewer launched. This is metadata acceptance, not artwork or
+UI rendering acceptance. Native artwork usesc83890(item handler, frame, type,
+subtype, material, index), followed byadad70 drawing; its ownership audit remains
+pending. Runtime providers must not invoke the full row widget builder431340.
 DFHack Kitchen.cpp directly manipulates the five exclusion vectors and does not
 call the native list or mutation routines. It is not the native behavioral oracle.
 
@@ -116,8 +127,8 @@ checks pass again; DF30940 exits unsaved with source preservation, GPU60C sample
 This capture does not establish multi-column priority, changed exclusions or
 the native merge path for lists over32 entries. Runtime Kitchen transport,
 UI and public exposure remain unimplemented. MSVC and core19 pass in
-kitchen-native-edits-20261108; installed plugin SHA256
-730E21B6CDBC3F2664DF7ED6A48263621C96DFC1A302002DF522E91E57C25C3E.
+kitchen-native-display-20261108; installed plugin SHA256
+748C79ECBA16CF4A9F07C02AB6DA04F8FFBA66F105D37E16A337E344A92E07E6.
 
 ## Standing orders native discovery
 

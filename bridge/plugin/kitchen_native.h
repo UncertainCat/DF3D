@@ -18,6 +18,8 @@ inline uint8_t* supportedBase() {
     static const bool valid=[base] {
         struct Pin {size_t rva,length;uint64_t hash;};
         constexpr Pin pins[]={
+            {0x74f430,0x1d3,UINT64_C(0x79707f49e13c9401)},
+            {0x52c2b0,0xd8,UINT64_C(0x38b6489e35387929)},
             {0xac8410,0x77,UINT64_C(0x167ebc614e92ed22)},
             {0xac8280,0x18d,UINT64_C(0x4ce7454087c59262)},
             {0xac7d10,0x570,UINT64_C(0xa95d2149d15941b7)},
@@ -137,6 +139,28 @@ struct Exclusion {
     int16_t type,subtype,material;int32_t materialIndex;uint8_t flags;
     bool operator==(const Exclusion& b)const{return std::tie(type,subtype,material,materialIndex,flags)==std::tie(b.type,b.subtype,b.material,b.materialIndex,b.flags);}
 };
+struct Display {std::string countCaption;bool estimated=false;uint8_t excluded=0;};
+inline std::optional<std::vector<Display>> display(const std::vector<Row>& rows) {
+    auto* base=supportedBase();if(!base || !df::global::plotinfo || rows.size()>65536)return std::nullopt;
+    const auto& precision=df::global::plotinfo->nobles.bookkeeper_precision;
+    if(reinterpret_cast<const uint8_t*>(&precision)!=base+0x23912ac || base[0x1614d50]!='?')return std::nullopt;
+    const auto& k=df::global::plotinfo->kitchen;const auto n=k.item_types.size();
+    if(n>65536 || k.item_subtypes.size()!=n || k.mat_types.size()!=n || k.mat_indices.size()!=n || k.exc_types.size()!=n)return std::nullopt;
+    std::vector<Display> result;result.reserve(rows.size());
+    for(const auto& row:rows){
+        if(row.count<0)return std::nullopt;
+        Display value;
+        reinterpret_cast<int32_t(*)(int32_t,int32_t,int32_t,bool*)>(base+0x74f430)(row.count,precision,0,&value.estimated);
+        // Kitchen431545..431571 deliberately formats the original count,
+        // unlike material pickers that format the returned rounded estimate.
+        reinterpret_cast<void(*)(int32_t,std::string*)>(base+0x52c2b0)(row.count,&value.countCaption);
+        if(value.estimated)value.countCaption.append(reinterpret_cast<const char*>(base+0x1614d50),1);
+        value.excluded=reinterpret_cast<uint8_t(*)(void*,int16_t,int16_t,int16_t,int32_t)>(base+0xac7c30)(nullptr,row.type,row.subtype,row.material,row.materialIndex);
+        if(value.excluded>3 || value.countCaption.empty() || value.countCaption.size()>64)return std::nullopt;
+        result.push_back(std::move(value));
+    }
+    return result;
+}
 inline std::optional<std::vector<Exclusion>> exclusions() {
     auto* base=supportedBase();if(!base || !df::global::plotinfo)return std::nullopt;
     const auto& k=df::global::plotinfo->kitchen;const auto n=k.item_types.size();

@@ -2528,6 +2528,17 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             for(const auto& row:*rows){Json::Value value(Json::objectValue);value["id"]=row.id;value["caption"]=DF2UTF(row.text);result[key].append(value);}}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="kitchen-display-probe") {
+          if(parameters.size()!=1)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto rows=df3d_kitchen::read();if(!rows)return CR_FAILURE;
+          const auto details=df3d_kitchen::display(*rows);if(!details)return CR_FAILURE;
+          Json::Value result(Json::arrayValue);
+          for(size_t i=0;i<rows->size();++i){const auto& row=(*rows)[i];const auto& detail=(*details)[i];Json::Value value(Json::objectValue);
+            value["type"]=row.type;value["subtype"]=row.subtype;value["mat"]=row.material;value["matg"]=row.materialIndex;value["name"]=DF2UTF(row.name);
+            value["count_caption"]=DF2UTF(detail.countCaption);value["estimated"]=detail.estimated;value["excluded"]=detail.excluded;result.append(value);}
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="kitchen-edit-probe") {
           if(parameters.size()!=3 || (parameters[1]!="1" && parameters[1]!="2"))return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;

@@ -2,7 +2,7 @@
   "df_version": "53.16",
   "steam_build": 24557528,
   "capture": "build/stockpile-storage-native-input-20261108-161252",
-  "scope": "Native Kitchen owned aggregation/filtering, single-column sorting, permission toggles and scoped immediate job-effect acceptance. Display quantities, transport and public UI remain unaccepted. Diagnostic widget/menu reads are not permitted runtime inputs.",
+  "scope": "Native Kitchen aggregation/filtering, single-column sorting, permission toggles, scoped job effects and count/permission display metadata acceptance. Artwork, transport and public UI remain unaccepted. Diagnostic widget/menu reads are not permitted runtime inputs.",
   "initial": {
     "category": 0,
     "cursor": 0,
@@ -1796,5 +1796,225 @@
     "source_preserved": true,
     "controlled_jobs_removed": true,
     "scope": "Paused controlled PrepareMeal and BREW_DRINK_FROM_PLANT jobs with one real plump helmet ingredient, assigned/unassigned, plus empty controls. Compares immediate job flags/existence/item count, worker release and ingredient reservation. Does not establish later job processing, alternate reagents or broader worker state."
+  },
+  "display_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-164309",
+    "cases": [
+      {
+        "permissions_checked": 22,
+        "precision": 0,
+        "visible": [
+          {
+            "caption": "21?",
+            "estimated": true,
+            "name": "Alfalfa seeds"
+          },
+          {
+            "caption": "20?",
+            "estimated": true,
+            "name": "Blade weed seeds"
+          },
+          {
+            "caption": "48?",
+            "estimated": true,
+            "name": "Blood amaranth seeds"
+          },
+          {
+            "caption": "58?",
+            "estimated": true,
+            "name": "Dimple cup spawn"
+          },
+          {
+            "caption": "55?",
+            "estimated": true,
+            "name": "Longland grass seeds"
+          },
+          {
+            "caption": "4",
+            "estimated": false,
+            "name": "Pig tail seeds"
+          },
+          {
+            "caption": "68?",
+            "estimated": true,
+            "name": "Plump helmet spawn"
+          },
+          {
+            "caption": "27?",
+            "estimated": true,
+            "name": "Prickle berry seeds"
+          },
+          {
+            "caption": "25?",
+            "estimated": true,
+            "name": "Rat weed seeds"
+          },
+          {
+            "caption": "63?",
+            "estimated": true,
+            "name": "Rice"
+          },
+          {
+            "caption": "85?",
+            "estimated": true,
+            "name": "Rock nuts"
+          },
+          {
+            "caption": "17?",
+            "estimated": true,
+            "name": "Rope reed seeds"
+          },
+          {
+            "caption": "16?",
+            "estimated": true,
+            "name": "Strawberry seeds"
+          }
+        ]
+      },
+      {
+        "permissions_checked": 22,
+        "precision": 100000,
+        "visible": [
+          {
+            "caption": "21",
+            "estimated": false,
+            "name": "Alfalfa seeds"
+          },
+          {
+            "caption": "20",
+            "estimated": false,
+            "name": "Blade weed seeds"
+          },
+          {
+            "caption": "48",
+            "estimated": false,
+            "name": "Blood amaranth seeds"
+          },
+          {
+            "caption": "58",
+            "estimated": false,
+            "name": "Dimple cup spawn"
+          },
+          {
+            "caption": "55",
+            "estimated": false,
+            "name": "Longland grass seeds"
+          },
+          {
+            "caption": "4",
+            "estimated": false,
+            "name": "Pig tail seeds"
+          },
+          {
+            "caption": "68",
+            "estimated": false,
+            "name": "Plump helmet spawn"
+          },
+          {
+            "caption": "27",
+            "estimated": false,
+            "name": "Prickle berry seeds"
+          },
+          {
+            "caption": "25",
+            "estimated": false,
+            "name": "Rat weed seeds"
+          },
+          {
+            "caption": "63",
+            "estimated": false,
+            "name": "Rice"
+          },
+          {
+            "caption": "85",
+            "estimated": false,
+            "name": "Rock nuts"
+          },
+          {
+            "caption": "17",
+            "estimated": false,
+            "name": "Rope reed seeds"
+          },
+          {
+            "caption": "16",
+            "estimated": false,
+            "name": "Strawberry seeds"
+          }
+        ]
+      },
+      {
+        "permissions_checked": 22,
+        "precision": 100,
+        "visible": [
+          {
+            "caption": "21",
+            "estimated": false,
+            "name": "Alfalfa seeds"
+          },
+          {
+            "caption": "20",
+            "estimated": false,
+            "name": "Blade weed seeds"
+          },
+          {
+            "caption": "48",
+            "estimated": false,
+            "name": "Blood amaranth seeds"
+          },
+          {
+            "caption": "58",
+            "estimated": false,
+            "name": "Dimple cup spawn"
+          },
+          {
+            "caption": "55",
+            "estimated": false,
+            "name": "Longland grass seeds"
+          },
+          {
+            "caption": "4",
+            "estimated": false,
+            "name": "Pig tail seeds"
+          },
+          {
+            "caption": "68",
+            "estimated": false,
+            "name": "Plump helmet spawn"
+          },
+          {
+            "caption": "27",
+            "estimated": false,
+            "name": "Prickle berry seeds"
+          },
+          {
+            "caption": "25",
+            "estimated": false,
+            "name": "Rat weed seeds"
+          },
+          {
+            "caption": "63",
+            "estimated": false,
+            "name": "Rice"
+          },
+          {
+            "caption": "85",
+            "estimated": false,
+            "name": "Rock nuts"
+          },
+          {
+            "caption": "17",
+            "estimated": false,
+            "name": "Rope reed seeds"
+          },
+          {
+            "caption": "16",
+            "estimated": false,
+            "name": "Strawberry seeds"
+          }
+        ]
+      }
+    ],
+    "source_preserved": true,
+    "scope": "Native visible count captions and estimate colors at three controlled bookkeeper precisions; all22 exclusion bit masks compared against simulation vectors. Artwork and broader count/precision ranges remain unaccepted."
   }
 }

@@ -4127,16 +4127,16 @@
       "Use native bottom row margin for settings and detail lists."
     ],
     "review": "Reviewed saved narrow/wide roster and settings images on2026-11-08. Wide settings screenshot exposed an extra Dressing Wounds row; corrected capacity from19 to18. Native stops at Suturing.",
-    "verification": "core19, extension and Work Details checks pass in build/qa/work-details-resize-reviewed-20261108. Earlier protected140833 passed resize/read-only/settings effects with known engine diagnostics, but did not assert the corrected wide settings capacity.",
+    "verification": "Protected113044 passes actual owner resizing, pointer track/drag/release, bottom-offset clamp, native setting effects and external-controller rejection. Wide image reviewed against native140503:18 rows through Suturing.",
     "limits": [
-      "Final18-row correction has native screenshot and headless evidence; new rendered confirmation pending.",
-      "Scrollbar drag/track and bottom-of-list resize input acceptance pending.",
-      "Native resize captures retain some deferred worker portrait/text artifacts; no whole-screen pixel equality claimed.",
-      "Minimum-width roster/header overlap is preserved, not a new parity exception.",
-      "Full owner lifecycle and screen exposure remain unfinished."
+      "Native captures retain deferred worker artwork/text artifacts; no whole-screen pixel equality claimed.",
+      "Endpoint input acceptance does not independently prove every intermediate scrollbar position against native.",
+      "Minimum-width overlap is preserved. Broader lifecycle, keyboard dispatch and public exposure remain unfinished."
     ],
     "owned_df_closed": true,
-    "source_preserved": true
+    "source_preserved": true,
+    "rendered_capture": "build/stockpile-storage-native-input-20261108-113044",
+    "diagnostics": "Known separate-renderer, device-finalize and paired object-shutdown notices only."
   },
   "owner_lifecycle_reference": {
     "verification": "build/qa/work-details-owner-lifecycle-20261108",

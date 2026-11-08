@@ -12,6 +12,19 @@ func pointer(view,point: Vector2,button: int=MOUSE_BUTTON_LEFT) -> void:
 	click.position=view.get_global_transform_with_canvas()*point;click.global_position=click.position
 	Input.parse_input_event(click);await process_frame
 	click=click.duplicate();click.pressed=false;Input.parse_input_event(click);await process_frame
+func drag_scrollbar(bar, bottom: bool) -> void:
+	var grip: Vector2i=bar.thumb()
+	var start: Vector2=bar.get_global_transform_with_canvas()*Vector2(8,(grip.x+grip.y*0.5)*12)
+	var press:=InputEventMouseButton.new();press.button_index=MOUSE_BUTTON_LEFT;press.pressed=true;press.position=start;press.global_position=start
+	Input.parse_input_event(press);Input.flush_buffered_events();await process_frame
+	check(bar.dragging,"Scrollbar thumb did not capture pointer")
+	var finish: Vector2=bar.get_global_transform_with_canvas()*Vector2(8,bar.size.y-18 if bottom else 18)
+	var motion:=InputEventMouseMotion.new();motion.position=finish;motion.global_position=finish
+	Input.parse_input_event(motion);Input.flush_buffered_events();await process_frame
+	var release:=InputEventMouseButton.new();release.button_index=MOUSE_BUTTON_LEFT;release.pressed=false;release.position=finish;release.global_position=finish
+	Input.parse_input_event(release);Input.flush_buffered_events();await process_frame
+	check(not bar.dragging,"Scrollbar retained pointer after release")
+
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
 	if OS.get_environment("DF3D_WORK_DETAILS_FAULT_WIRE")=="1":
@@ -705,6 +718,19 @@ func work_detail_settings_scene() -> void:
 			await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(directory+"/work-details-roster-resize-"+str(extent.x)+".png")
 		check(not view.detail_scrollbar.visible,"Expanded sidebar retained an unnecessary scrollbar")
+		root.size=Vector2i(912,552);await create_timer(0.15).timeout
+		check(await ready(state) and view.detail_scrollbar.visible,"Minimum-height sidebar did not scroll")
+		var selected: int=state.selected.index
+		await pointer(view.detail_scrollbar,Vector2(8,view.detail_scrollbar.size.y-18))
+		check(view.detail_first>0 and state.selected.index==selected,"Sidebar track changed selection or did not scroll")
+		await drag_scrollbar(view.detail_scrollbar,false)
+		check(view.detail_first==0,"Sidebar drag did not reach first row")
+		await drag_scrollbar(view.detail_scrollbar,true)
+		check(view.detail_first==state.details.size()-view.detail_capacity(),"Sidebar drag did not reach last row")
+		root.size=Vector2i(1600,900);await create_timer(0.15).timeout
+		check(await ready(state) and view.detail_first==0 and not view.detail_scrollbar.visible and state.selected.index==selected,"Sidebar resize retained stale offset or changed selection")
+		root.size=Vector2i(1200,800);await create_timer(0.15).timeout
+		check(await ready(state),"Sidebar resize did not settle")
 	for entry in [["name",Vector2(316,view.list_top()-18)],["category",Vector2(396,view.list_top()-18)],["profession",Vector2(468,view.list_top()-18)],["skills",Vector2(568,view.list_top()-18)],["filter",view.search.get_rect().get_center()]]:
 		var motion:=InputEventMouseMotion.new();motion.position=view.get_global_transform_with_canvas()*entry[1];motion.global_position=motion.position;Input.parse_input_event(motion);Input.flush_buffered_events()
 		await create_timer(0.15).timeout
@@ -738,6 +764,19 @@ func work_detail_settings_scene() -> void:
 			check(view.settings_capacity()==({912:8,1600:18,1200:15}[extent.x]),"Resized settings differs from native row capacity")
 			await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(directory+"/work-details-settings-resize-"+str(extent.x)+".png")
+	if reference.settings_wire_phase=="normal":
+		root.size=Vector2i(912,552);await create_timer(0.15).timeout
+		await pointer(view.scrollbar,Vector2(8,view.scrollbar.size.y-18))
+		check(state.settings_first>0,"Settings track did not scroll")
+		await drag_scrollbar(view.scrollbar,true)
+		check(state.settings_first==state.settings.catalog.size()-view.settings_capacity(),"Settings drag did not reach last row")
+		root.size=Vector2i(1600,900);await create_timer(0.15).timeout
+		check(state.settings_first==state.settings.catalog.size()-view.settings_capacity() and view.scrollbar.first==state.settings_first,"Growing Settings did not clamp the bottom offset")
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/work-details-settings-bottom-wide.png")
+		await drag_scrollbar(view.scrollbar,false)
+		check(state.settings_first==0,"Settings drag did not return to first row")
+		root.size=Vector2i(1200,800);await create_timer(0.15).timeout
 	if reference.settings_wire_phase=="locked":
 		await pointer(view,view.settings_rect(1).get_center())
 		check(state.ticket==0 and state.phase==state.Phase.Ready and not state.settings.editable,"Read-only settings click submitted mutation")

@@ -15,10 +15,16 @@ var chores_state=preload("res://scripts/chores_state.gd").new()
 var chores_panel
 var chores_active:=false
 var return_category:=0
+var kitchen_state=preload("res://scripts/kitchen_state.gd").new()
+var kitchen_panel
+var kitchen_active:=false
+var return_kitchen:=false
+func current_state():return kitchen_state if kitchen_active else chores_state if chores_active else state
 func _init() -> void:
 	state.changed.connect(_sync);chores_state.changed.connect(_sync);chores_state.rows_changed.connect(_rows)
+	kitchen_state.changed.connect(_sync)
 func configure(world,service,host) -> void:
-	ui_host=host;state.configure(service);chores_state.configure(service)
+	ui_host=host;state.configure(service);chores_state.configure(service);kitchen_state.configure(service)
 	service.session_changed.connect(_reset_labor_navigation)
 	world_source=world;action_service=service
 	var layer:=CanvasLayer.new();layer.layer=10;add_child(layer)
@@ -27,13 +33,30 @@ func configure(world,service,host) -> void:
 	panel.hunter_ammunition_requested.connect(open_ammunition)
 	panel.chores_requested.connect(open_chores)
 	panel.work_details_requested.connect(request_work_details)
+	panel.kitchen_requested.connect(open_kitchen)
 	chores_panel=preload("res://scripts/chores_view.gd").new();layer.add_child(chores_panel)
 	chores_panel.configure_chores(world,chores_state);chores_panel.input_allowed=allowed
 	chores_panel.category_requested.connect(open_category);chores_panel.cancelled.connect(close_panel)
 	chores_panel.work_details_requested.connect(request_work_details)
+	chores_panel.kitchen_requested.connect(open_kitchen)
+	kitchen_panel=preload("res://scripts/kitchen_view.gd").new();layer.add_child(kitchen_panel)
+	kitchen_panel.configure_kitchen(world,kitchen_state);kitchen_panel.input_allowed=allowed
+	kitchen_panel.work_details_requested.connect(request_work_details);kitchen_panel.standing_requested.connect(return_standing)
+	kitchen_panel.cancelled.connect(close_panel)
 	panel.cancelled.connect(close_panel);host.register(self);_layout();_sync()
+func open_kitchen() -> void:
+	var current=current_state()
+	if not allowed() or kitchen_active or current.phase==current.Phase.Applying:return
+	return_category=5 if chores_active else state.category
+	opening=true;state.close();chores_state.close();chores_active=false;kitchen_active=true;kitchen_state.open();opening=false;_sync()
+func return_standing() -> void:
+	if not allowed() or not kitchen_active or kitchen_state.phase==kitchen_state.Phase.Applying:return
+	opening=true;kitchen_state.close();kitchen_active=false;state.open()
+	if return_category==5:state.close();chores_active=true;chores_state.open()
+	elif return_category!=0:state.select_category(return_category)
+	opening=false;_sync()
 func open_chores() -> void:
-	if not allowed() or chores_active or state.phase==state.Phase.Applying:return
+	if not allowed() or kitchen_active or chores_active or state.phase==state.Phase.Applying:return
 	opening=true;state.close();chores_active=true;chores_state.open();opening=false;_sync()
 func open_category(category: int) -> void:
 	if not allowed() or not chores_active or chores_state.phase==chores_state.Phase.Applying or not state.COUNTS.has(category):return
@@ -43,16 +66,19 @@ func open_category(category: int) -> void:
 func _rows() -> void:
 	if chores_panel!=null:chores_panel.display_rows(chores_state.rows.values())
 func allowed() -> bool:return play_enabled and ui_host!=null and ui_host.allows_panel_input(self)
-func _reset_labor_navigation() -> void:return_category=0
+func _reset_labor_navigation() -> void:return_category=0;return_kitchen=false
 func request_work_details() -> void:
-	var current=chores_state if chores_active else state
+	var current=current_state()
 	if not allowed() or current.phase==current.Phase.Applying:return
-	return_category=5 if chores_active else state.category
+	return_kitchen=kitchen_active
+	if not kitchen_active:return_category=5 if chores_active else state.category
 	work_details_requested.emit()
 func open_from_labor() -> void:
+	var saved_category:=return_category
 	open_panel()
 	if not allowed():return
-	if return_category==5:open_chores()
+	if return_kitchen:open_kitchen();return_category=saved_category
+	elif return_category==5:open_chores()
 	elif return_category!=0:state.select_category(return_category)
 func open_ammunition() -> void:
 	if not allowed() or state.phase!=state.Phase.Ready or state.category!=6:return
@@ -62,17 +88,18 @@ func open_ammunition() -> void:
 	ammunition_owner.open_panel()
 func open_panel() -> void:
 	if play_enabled and ui_host!=null and ui_host.activate(self):
-		opening=true;chores_state.close();chores_active=false;state.open();opening=false;_sync()
+		opening=true;chores_state.close();kitchen_state.close();kitchen_active=false;chores_active=false;state.open();opening=false;_sync()
 func close_panel() -> void:
-	opening=true;state.close();chores_state.close();opening=false;_sync()
+	opening=true;state.close();chores_state.close();kitchen_state.close();opening=false;_sync()
 func handle_back() -> void:close_panel()
 func set_play_enabled(value: bool) -> void:
 	play_enabled=value
 	if not value:close_panel()
 func _sync() -> void:
-	var current=chores_state if chores_active else state
+	var current=current_state()
 	var opened: bool=current.phase not in [current.Phase.Closed,current.Phase.Unavailable]
-	if panel!=null:panel.visible=opened and not chores_active
+	if panel!=null:panel.visible=opened and not chores_active and not kitchen_active
+	if kitchen_panel!=null:kitchen_panel.visible=opened and kitchen_active
 	if chores_panel!=null:
 		chores_panel.visible=opened and chores_active
 		if opened and chores_active and chores_state.phase==chores_state.Phase.Ready:chores_state.seek_children(chores_state.child_first,chores_panel.capacity())
@@ -82,9 +109,10 @@ func _layout() -> void:
 	var size:=get_viewport().get_visible_rect().size
 	panel.scale=preload("res://scripts/presentation_settings.gd").effective_scale_vector(size)
 	layout_size=size;panel.layout(size/panel.scale)
+	if kitchen_panel!=null:kitchen_panel.scale=panel.scale;kitchen_panel.layout(size/panel.scale)
 	if chores_panel!=null:
 		chores_panel.scale=panel.scale;chores_panel.layout(size/panel.scale)
 		if chores_active and chores_state.phase==chores_state.Phase.Ready:chores_state.seek_children(chores_state.child_first,chores_panel.capacity())
 func _process(_delta: float) -> void:
-	if panel!=null and (panel.visible or (chores_panel!=null and chores_panel.visible)) and (layout_size!=get_viewport().get_visible_rect().size or panel.scale!=preload("res://scripts/presentation_settings.gd").effective_scale_vector(layout_size)):_layout()
-func _exit_tree() -> void:state.dispose();chores_state.dispose()
+	if panel!=null and (panel.visible or (chores_panel!=null and chores_panel.visible) or (kitchen_panel!=null and kitchen_panel.visible)) and (layout_size!=get_viewport().get_visible_rect().size or panel.scale!=preload("res://scripts/presentation_settings.gd").effective_scale_vector(layout_size)):_layout()
+func _exit_tree() -> void:state.dispose();chores_state.dispose();kitchen_state.dispose()

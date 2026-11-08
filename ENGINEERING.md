@@ -111,6 +111,21 @@ graphical check with only documented Godot diagnostics. Non-ASCII editing and
 normalization, keyboard navigation, full live pointer workflows and Labor owner
 integration remain unaccepted. No public route is enabled.
 
+Kitchen is now composed inside the staged Standing orders Labor owner, with
+shared input ownership, Kitchen/Standing/Chores handoffs, pending-mutation guards,
+close/session retirement and fresh reads on return. Protected173853 on2026-11-08
+opens Kitchen through the actual tab, types plump in its textbox, clicks all six
+Cook/Brew edits, returns to Standing orders and closes the owner. Independent
+native exclusion/job observations match each step; source preservation and
+unsaved owned exit pass. The real22-row receipt renders with zero differing RGB
+pixels across the visible food rows, and149differences across the whole panel,
+against the same run's native capture. Only documented Godot startup/finalize/
+shutdown diagnostics remain. The brief rendered run was capped at30FPS, with
+GPU temperature59–60C. `kitchen-owner` covers headless handoffs and pending-edit
+guards alongside existing Chores/Standing checks. Non-ASCII input, modifier
+sorting, keyboard/hover/resize behavior and broader main-scene acceptance remain
+unfinished; this composition does not enable a public route.
+
 Core19, the extension build and Kitchen end-to-end fake-host checks pass in
 `kitchen-contract151-roundtrip`, including ordered filters/sorts and receipts,
 Cook success, Brew Unknown with no authority, and malformed typed requests.

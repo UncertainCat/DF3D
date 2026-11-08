@@ -4,6 +4,7 @@ extends "res://scripts/standing_orders_view.gd"
 var icons: Dictionary={}
 var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
 var search
+signal standing_requested
 const TYPE_LABELS=[" All"," Veg/Fruit/Leaves"," Seeds"," Drinks"," Meat/Fish/Other"]
 func configure_kitchen(source,model) -> void:
 	configure_standing_orders(source,model);picture.configure(source)
@@ -47,6 +48,8 @@ func _gui_input(event: InputEvent) -> void:
 	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
 	if search!=null:search.release_focus()
+	if work_details_rect().has_point(event.position):work_details_requested.emit();accept_event();return
+	if Rect2(136,list_top()-60,152,24).has_point(event.position):standing_requested.emit();accept_event();return
 	if Rect2(88,list_top()-24,24,12).has_point(event.position):state.cycle_type(-1);accept_event();return
 	if Rect2(256,list_top()-24,24,12).has_point(event.position):state.cycle_type(1);accept_event();return
 	for permission in [1,2]:

@@ -86,6 +86,7 @@ func _gui_input(event: InputEvent) -> void:
 		bar.move_to(bar.first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1)*(capacity() if event.shift_pressed else 1));return
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
 	if work_details_rect().has_point(event.position):work_details_requested.emit();return
+	if kitchen_rect().has_point(event.position):kitchen_requested.emit();return
 	for category in [0,1,2,3,4,6]:
 		if category_rect(category).has_point(event.position):category_requested.emit(category);return
 	if state.phase!=state.Phase.Ready:return

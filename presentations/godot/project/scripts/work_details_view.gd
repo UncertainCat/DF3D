@@ -20,8 +20,10 @@ var name_target: int=-1
 var detail_first:=0
 var settings_selected:=0
 var showing_settings:=false
+var detail_scrollbar
+func roster_extent() -> float:return maxf(size.x,864)
 func settings_top() -> int:return header_top()+36
-func settings_capacity() -> int:return maxi(0,int((size.y-settings_top()-24)/36))
+func settings_capacity() -> int:return maxi(0,int((size.y-settings_top()-36)/36))
 func settings_rect(index: int) -> Rect2:return Rect2(272,settings_top()+(index-state.settings_first)*36,size.x-312,36)
 func done_rect() -> Rect2:return Rect2(264,header_top(),48,36)
 func settings_action_rect() -> Rect2:return Rect2(size.x-(184 if state.settings.get("no_modify",false) else 104),header_top(),152 if state.settings.get("no_modify",false) else 72,36)
@@ -45,6 +47,9 @@ func configure_work_details(source,model) -> void:
 		if state.editing_settings:state.seek_settings(value,settings_capacity())
 		else:state.seek(value,page_rows))
 	scrollbar.input_allowed=allowed
+	detail_scrollbar=preload("res://scripts/area_location_scrollbar.gd").new();add_child(detail_scrollbar);detail_scrollbar.configure(source)
+	detail_scrollbar.input_allowed=allowed
+	detail_scrollbar.row_changed.connect(func(value):detail_first=value;queue_redraw())
 	state.changed.connect(refresh)
 	visibility_changed.connect(func():
 		if not is_visible_in_tree():
@@ -96,7 +101,7 @@ func dispatch_action(action: Dictionary) -> void:
 func list_top() -> int:return 204 if wide_tabs else 228
 func header_top() -> int:return list_top()-132
 func detail_top() -> int:return header_top()+36
-func detail_capacity() -> int:return maxi(0,int((size.y-detail_top()-24)/36))
+func detail_capacity() -> int:return maxi(0,int((size.y-detail_top()-36)/36))
 func detail_rect(index: int) -> Rect2:return Rect2(24,detail_top()+(index-detail_first)*36,224,36)
 func add_rect() -> Rect2:return Rect2(24,header_top(),240,36)
 func mode_rect(index: int) -> Rect2:
@@ -105,12 +110,13 @@ func member_rect(index: int) -> Rect2:return Rect2(800,list_top()+index*36,32,36
 func layout(view: Vector2) -> void:
 	wide_tabs=floori(view.x/8)>=155;frame_rows=maxi(13,floori(view.y/12)-7)
 	position=Vector2(32,48+fposmod(view.y,12)*0.5);size=Vector2((floori(view.x/8)-32)*8,frame_rows*12)
-	page_rows=maxi(0,int((size.y-list_top()-120)/36))
+	page_rows=maxi(0,int((size.y-list_top()-96)/36))
 	if search!=null:search.position=Vector2(280,size.y-60);search.size=Vector2(312,36)
 	if name_entry!=null:name_entry.position=Vector2(288,header_top())
 	if scrollbar!=null:
-		scrollbar.dragging=false;scrollbar.position=Vector2(size.x-32,list_top());scrollbar.size=Vector2(16,maxi(36,size.y-list_top()-84));scrollbar.page=page_rows
+		scrollbar.dragging=false
 	detail_first=clampi(detail_first,0,maxi(0,(state.details.size() if state!=null else 0)-detail_capacity()))
+	if detail_scrollbar!=null:detail_scrollbar.dragging=false
 	if state!=null and state.capacity!=page_rows:state.seek(state.first,page_rows)
 	refresh()
 func refresh() -> void:
@@ -128,10 +134,16 @@ func refresh() -> void:
 		if search!=null and search.is_inside_tree():search.release_focus()
 		if scrollbar!=null:scrollbar.dragging=false
 	if scrollbar!=null:
-		scrollbar.position=Vector2(size.x-32,settings_top() if showing_settings else list_top())
+		scrollbar.position=Vector2(size.x-32 if showing_settings else roster_extent()-32,settings_top() if showing_settings else list_top())
 		scrollbar.size=Vector2(16,maxi(36,size.y-scrollbar.position.y-(24 if showing_settings else 84)))
 		scrollbar.page=settings_capacity() if showing_settings else page_rows
+		if showing_settings:
+			var first:=clampi(state.settings_first,0,maxi(0,state.settings.get("catalog",[]).size()-settings_capacity()))
+			if first!=state.settings_first:state.seek_settings(first,settings_capacity());return
 		scrollbar.set_rows(state.settings.get("catalog",[]).size() if showing_settings else state.ids.size(),state.settings_first if showing_settings else state.first)
+	if detail_scrollbar!=null:
+		detail_scrollbar.position=Vector2(256,detail_top());detail_scrollbar.size=Vector2(16,maxi(36,size.y-detail_top()-24));detail_scrollbar.page=detail_capacity()
+		detail_scrollbar.set_rows(state.details.size(),detail_first)
 	if search!=null:search.visible=not showing_settings
 	if search!=null:search.set_bytes(state.query);search.editable=allowed() and state.phase!=state.Phase.Applying
 	queue_redraw()
@@ -182,7 +194,7 @@ func _gui_input(event: InputEvent) -> void:
 	if not allowed() or state==null or not event is InputEventMouseButton or not event.pressed:return
 	if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
 		var step: int=-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1
-		if event.position.x<264:detail_first=clampi(detail_first+step,0,maxi(0,state.details.size()-detail_capacity()));queue_redraw()
+		if event.position.x<264:detail_first=clampi(detail_first+step,0,maxi(0,state.details.size()-detail_capacity()));refresh()
 		elif state.editing_settings:state.seek_settings(state.settings_first+step,settings_capacity())
 		else:state.seek(state.first+step,page_rows)
 		accept_event();return
@@ -258,7 +270,7 @@ func _draw() -> void:
 		var row: Dictionary=state.row_at(state.first+index)
 		if row.is_empty():continue
 		var y:=list_top()+index*36
-		patch("BUTTON_RECTANGLE_DARK",Vector2i(33,int(y/12)),int(size.x/8)-38,3)
+		patch("BUTTON_RECTANGLE_DARK",Vector2i(33,int(y/12)),int(roster_extent()/8)-38,3)
 		patch("",Vector2i(33,int(y/12)),5,3,picture.texture(false))
 		var portrait: Texture2D=portraits.get(int(row.id),{}).get("texture")
 		if portrait!=null:draw_texture_rect(portrait,Rect2(266,y+2,32,32),false)

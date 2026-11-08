@@ -33,6 +33,30 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Work Details native discovery
 
+Work Details resizing retains native worker capacities4/10/14 at912x552,
+1200x800 and1600x900. The worker roster keeps a minimum864-pixel extent relative
+to the panel origin, even when its frame becomes narrower. A separate left
+scrollbar exposes the overflowing detail list; wheel movement updates the same
+offset. Growing Settings clamps its retained offset to the new page capacity.
+Settings and detail lists reserve the native bottom margin; Settings fits8/15/18
+rows at the three sizes.
+
+Protected native140503 and rendered140833 on2026-11-06 establish these layouts
+and staged owner resizing without changing settings authority. Render review
+on2026-11-08 caught an extra wide Settings row in140833: DF3D showed Dressing
+Wounds after native's final Suturing row. The final capacity correction is
+covered by core19/extension/Work Details checks in
+work-details-resize-reviewed-20261108; a new rendered confirmation remains
+pending. Do not treat the earlier live pass as acceptance of that final fix.
+Native140414 failed to open Settings at minimum width and is not settings
+layout evidence. The corrected oracle opens Settings at default width before
+resizing. Native captures include deferred worker artwork/text artifacts, so
+whole-screen equality is not claimed. Scrollbar track/drag and bottom-offset
+resize input acceptance, broader lifecycle and public exposure remain open.
+See `native_work_details.json.resize_reference` for scope. The earlier owned
+DF41432 closed unsaved with source preservation; graphical clients were30FPS,
+GPU62C sampled, and joined final logs contain only documented engine diagnostics.
+
 Work Details roster Name, Category, Profession, Skills and filter help use the separate
 native widget frame, immediate ownership and bottom hotkey line. They do not
 warm the main-interface instruction timer. Departing a widget retires its

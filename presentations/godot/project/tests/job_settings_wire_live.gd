@@ -695,6 +695,14 @@ func work_detail_settings_scene() -> void:
 	if not check(await ready(state),"Settings scene roster failed"):quit(1);return
 	await pointer(view,view.detail_rect(int(expected.index)).get_center())
 	if not check(await ready(state),"Settings scene detail selection failed"):quit(1);return
+	if reference.settings_wire_phase=="normal":
+		for extent in [Vector2i(912,552),Vector2i(1600,900),Vector2i(1200,800)]:
+			root.size=extent;await create_timer(0.15).timeout
+			if not check(await ready(state),"Resized worker rows did not settle"):quit(1);return
+			check(view.page_rows==({912:4,1600:14,1200:10}[extent.x]),"Resized roster differs from native row capacity")
+			await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/work-details-roster-resize-"+str(extent.x)+".png")
+		check(not view.detail_scrollbar.visible,"Expanded sidebar retained an unnecessary scrollbar")
 	for entry in [["name",Vector2(316,view.list_top()-18)],["category",Vector2(396,view.list_top()-18)],["profession",Vector2(468,view.list_top()-18)],["skills",Vector2(568,view.list_top()-18)],["filter",view.search.get_rect().get_center()]]:
 		var motion:=InputEventMouseMotion.new();motion.position=view.get_global_transform_with_canvas()*entry[1];motion.global_position=motion.position;Input.parse_input_event(motion);Input.flush_buffered_events()
 		await create_timer(0.15).timeout
@@ -721,6 +729,13 @@ func work_detail_settings_scene() -> void:
 		check(not help.visible,"Settings help survived pointer departure")
 		hovered=true;break
 	check(hovered,"Settings fixture has no visible work-detail badges")
+	if reference.settings_wire_phase=="normal":
+		for extent in [Vector2i(912,552),Vector2i(1600,900),Vector2i(1200,800)]:
+			root.size=extent;await create_timer(0.15).timeout
+			check(state.editing_settings and state.phase==state.Phase.Ready,"Resize changed settings authority")
+			check(view.settings_capacity()==({912:8,1600:18,1200:15}[extent.x]),"Resized settings differs from native row capacity")
+			await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/work-details-settings-resize-"+str(extent.x)+".png")
 	if reference.settings_wire_phase=="locked":
 		await pointer(view,view.settings_rect(1).get_center())
 		check(state.ticket==0 and state.phase==state.Phase.Ready and not state.settings.editable,"Read-only settings click submitted mutation")

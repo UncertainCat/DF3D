@@ -4095,5 +4095,47 @@
     "limits": "No runtime correction or shortcut dispatch implemented. Actual window-key probes with original flags produced no observed sort/focus change. Diagnostic flag4 enables filter focus; injected Ctrl+f also introduces f into the field, so this is not clean keyboard parity evidence. Sort remained Skills even with flag4. Earlier direct interface-key probes also produced no change. Resolve native sort-widget dispatch/bindings before treating displayed hotkeys as working actions.",
     "source_preserved": true,
     "owned_df_closed": true
+  },
+  "resize_reference": {
+    "native_capture": "build/stockpile-storage-native-input-20261106-140503",
+    "rendered_capture_before_final_row_limit_fix": "build/stockpile-storage-native-input-20261106-140833",
+    "layouts": [
+      {
+        "width": 912,
+        "height": 552,
+        "worker_rows": 4,
+        "settings_rows": 8
+      },
+      {
+        "width": 1200,
+        "height": 800,
+        "worker_rows": 10,
+        "settings_rows": 15
+      },
+      {
+        "width": 1600,
+        "height": 900,
+        "worker_rows": 14,
+        "settings_rows": 18
+      }
+    ],
+    "changes": [
+      "Retain minimum864-pixel roster extent relative to panel origin.",
+      "Fit native worker capacities across narrow/wide/default layouts.",
+      "Add independent left detail-list scrollbar and synchronize wheel offset.",
+      "Clamp settings offset when viewport capacity grows.",
+      "Use native bottom row margin for settings and detail lists."
+    ],
+    "review": "Reviewed saved narrow/wide roster and settings images on2026-11-08. Wide settings screenshot exposed an extra Dressing Wounds row; corrected capacity from19 to18. Native stops at Suturing.",
+    "verification": "core19, extension and Work Details checks pass in build/qa/work-details-resize-reviewed-20261108. Earlier protected140833 passed resize/read-only/settings effects with known engine diagnostics, but did not assert the corrected wide settings capacity.",
+    "limits": [
+      "Final18-row correction has native screenshot and headless evidence; new rendered confirmation pending.",
+      "Scrollbar drag/track and bottom-of-list resize input acceptance pending.",
+      "Native resize captures retain some deferred worker portrait/text artifacts; no whole-screen pixel equality claimed.",
+      "Minimum-width roster/header overlap is preserved, not a new parity exception.",
+      "Full owner lifecycle and screen exposure remain unfinished."
+    ],
+    "owned_df_closed": true,
+    "source_preserved": true
   }
 }

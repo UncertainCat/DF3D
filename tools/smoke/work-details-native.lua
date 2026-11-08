@@ -270,6 +270,26 @@ local function click_handler(rva)
   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
   for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
  end
+if os.getenv('DF3D_WORK_DETAILS_LAYOUT')=='1' then
+ result.layouts={}
+ local function resize(action)
+  local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write(action);f:close();assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+  local deadline=dfhack.getTickCount()+10000
+  while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Layout input timeout');script.sleep(1,'frames')end
+  assert(os.remove(out..'/owner-input-ack'));script.sleep(5,'frames');view:render(dfhack.getTickCount())
+ end
+ for _,page in ipairs{'roster','settings'}do
+  if page=='settings'then click_handler(0x468880)end
+  for _,size in ipairs{'minimum','wide','default'}do
+   resize('name-resize-'..size)
+   local name='work-details-layout-'..size..'-'..page
+   assert(loadfile(path))(out..'/'..name..'-widgets.json','templates')
+   result.layouts[#result.layouts+1]={size=size,page=page,columns=g.dimx,rows=g.dimy}
+   shot(name)
+  end
+ end
+ records[#records+1]={name='work-details-layout'};return
+end
 if os.getenv('DF3D_WORK_DETAILS_HOVER')=='1' then
  result.hover={probes={}}
  local main=df.global.game.main_interface

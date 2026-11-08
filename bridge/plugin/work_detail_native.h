@@ -43,7 +43,7 @@ inline std::optional<uint64_t> workDetailReceipt(int32_t index,const std::array<
 }
 // These closure bodies consume only explicit simulation pointers. The unused
 // leading slots are owned padding, not vtables or borrowed native widgets.
-inline bool nativeWorkDetailEdit(int32_t index,int32_t mode,bool reset) {
+inline bool nativeWorkDetailEdit(int32_t index,int32_t mode,bool reset,bool* writeStarted=nullptr) {
     if(!farmFunctions() || !df::global::plotinfo || !df::global::world)return false;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     static const bool supported=[&] {
@@ -66,6 +66,7 @@ inline bool nativeWorkDetailEdit(int32_t index,int32_t mode,bool reset) {
         struct Context {std::array<std::byte,0x20> unused{};df::work_detail* detail;};
         static_assert(offsetof(Context,detail)==0x20);
         Context context{{},detail};
+        if(writeStarted)*writeStarted=true;
         return reinterpret_cast<bool(*)(Context*)>(base+0x468940)(&context);
     }
     if(mode<1 || mode>3 || (mode==1 && detail->flags.bits.cannot_be_everybody))return false;
@@ -73,13 +74,14 @@ inline bool nativeWorkDetailEdit(int32_t index,int32_t mode,bool reset) {
     static_assert(offsetof(Context,detail)==8);
     Context context{0,detail};
     constexpr size_t handlers[]={0,0x468760,0x468560,0x468660};
+    if(writeStarted)*writeStarted=true;
     return reinterpret_cast<bool(*)(Context*)>(base+handlers[mode])(&context);
 }
 // Semantic portion of Delete468b60..468c43: remove the explicit definition and
 // recalculate every active unit. Native widget rebuild42f190 is deliberately
 // outside this adapter. Retain the detached object because native widgets may
 // still reference it; the bridge owns the bounded slot before the first write.
-inline bool nativeWorkDetailDelete(int32_t index,void*& retired) {
+inline bool nativeWorkDetailDelete(int32_t index,void*& retired,bool* writeStarted=nullptr) {
     const auto& functions=df3d_area::staffMutationFunctions();
     if(!functions || !df::global::plotinfo || !df::global::world || retired)return false;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
@@ -96,6 +98,7 @@ inline bool nativeWorkDetailDelete(int32_t index,void*& retired) {
     // before mutation instead of retiring the same allocation more than once.
     if(std::count(all.begin(),all.end(),detail)!=1)return false;
     for(const auto* unit:df::global::world->units.active)if(!unit)return false;
+    if(writeStarted)*writeStarted=true;
     retired=detail;
     all.erase(all.begin()+index);
     for(auto* unit:df::global::world->units.active)functions.labors(unit);
@@ -103,7 +106,7 @@ inline bool nativeWorkDetailDelete(int32_t index,void*& retired) {
 }
 // Work Details46c900 delegates to this simulation-only closure body. Unlike
 // creature Labor's inline handler, it accepts an explicit work-detail pointer.
-inline bool nativeWorkDetailMembership(int32_t index,int32_t unitId,bool member) {
+inline bool nativeWorkDetailMembership(int32_t index,int32_t unitId,bool member,bool* writeStarted=nullptr) {
     if(!farmFunctions() || !df::global::plotinfo || !df::global::world)return false;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
     static const bool supported=[&] {
@@ -118,6 +121,7 @@ inline bool nativeWorkDetailMembership(int32_t index,int32_t unitId,bool member)
     auto* unit=df::unit::find(unitId);if(!unit)return false;
     auto* selected=all[size_t(index)];
     const df3d_area::StaffUnitReference reference{unit};
+    if(writeStarted)*writeStarted=true;
     reinterpret_cast<void(*)(df::work_detail**,const df3d_area::StaffUnitReference*,bool)>(base+0x42ef20)(&selected,&reference,member);
     return true;
 }

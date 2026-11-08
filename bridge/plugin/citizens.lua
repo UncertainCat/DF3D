@@ -259,6 +259,7 @@ return function(request)
   if external() then return fail('An external labor controller owns assignments') end
   if not df.global.unitst_set_automatic_professions then return fail('Native labor recalculation is unavailable') end
   local old=u.flags4.only_do_assigned_jobs
+  request.mark_write()
   u.flags4.only_do_assigned_jobs=p.only_assigned==1
   spend()
   if not pcall(U.setAutomaticProfessions,u) then
@@ -274,6 +275,7 @@ return function(request)
   local d=df.work_detail:new();d.name=name
   d.icon=icon;d.flags.mode=1
   for i=0,93 do d.allowed_labors[i]=false end
+  request.mark_write()
   details():insert('#',d)
   rev=receipt();out=inspect_detail(#details()-1,-1,rev)
  else
@@ -289,6 +291,7 @@ return function(request)
   elseif action==66 and p.edit==1 then
    local name=dfhack.utf2df(p.name or '')
    if #name>40 then return fail('Work-detail names are limited to 40 characters') end
+   request.mark_write()
    d.name=name
   elseif action==66 then
    if p.edit~=3 and not df.global.unitst_set_automatic_professions then return fail('Native labor recalculation is unavailable') end
@@ -304,7 +307,7 @@ return function(request)
     end
    end
    for i=0,93 do
-    if p.edit~=3 and i~=0 and i~=10 and i~=44 and caption(i) then d.allowed_labors[i]=not not chosen[i] end
+    if p.edit~=3 and i~=0 and i~=10 and i~=44 and caption(i) then request.mark_write();d.allowed_labors[i]=not not chosen[i] end
    end
    -- Native Reset only changes allowed_labors; it does not recalculate workers.
    full=p.edit~=3

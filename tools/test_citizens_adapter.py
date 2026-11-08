@@ -8,6 +8,8 @@ def adapter_source():
     # Inject a semantic predicate; the adapter must not reconstruct it.
     return "local impl=(function()\n" + source + "\nend)()\n" + r'''
 return function(request)
+ write_started=false
+ request.mark_write=function()write_started=true end
  request.labor_eligible=function(id)
   local u=df.unit.find(id)
   return u and u.citizen and u.active and not u.dead and u.alive and u.sane and u.adult
@@ -17,7 +19,7 @@ end
 '''
 
 
-def main():
+def fixture():
     lua = LuaRuntime(unpack_returned_tuples=True)
     lua.execute((Path(__file__).resolve().parent / "qa/lua_test_prelude.lua").read_text(encoding="utf-8"))
     lua.execute(r'''
@@ -56,6 +58,11 @@ def main():
      return {action=action,citizen=c}
     end
     ''')
+    return lua
+
+
+def main():
+    lua = fixture()
     helper=lua.execute(adapter_source())
     def call(action, **fields):
         return helper(lua.globals().request(action,lua.table_from(fields)))
@@ -565,5 +572,41 @@ def extended_work_details(lua):
     assert not scheduling_failures, ('mode scheduling (competing, inline, updates)', scheduling_failures)
 
 
+def write_boundary():
+    """Exercise real Lua preflight and a post-write receipt fault without DF/GPU."""
+    lua = fixture()
+    lua.execute("dfhack.utf2df=function(s)return s end")
+    helper = lua.execute(adapter_source())
+    def call(action, **fields):
+        return helper(lua.globals().request(action, lua.table_from(fields)))
+    revision = call(31, detail_index=0)['details'][1]['revision']
+    assert not lua.globals().write_started
+    reply = call(66, detail_index=0, expected_revision=revision, edit=1, name='x'*41)
+    assert not reply['ok'] and not lua.globals().write_started
+    reply = call(66, detail_index=0, expected_revision=revision+1, edit=1, name='Stale')
+    assert not reply['ok'] and not lua.globals().write_started
+    lua.execute("dfhack.df2utf=function(s)if s=='AfterWrite' then error('receipt fault')end;return s end")
+    from lupa import LuaError
+    try:
+        call(66, detail_index=0, expected_revision=revision, edit=1, name='AfterWrite')
+    except LuaError as error:
+        assert 'receipt fault' in str(error)
+    else:
+        raise AssertionError('Expected post-write receipt failure')
+    assert lua.globals().write_started and lua.globals().wd[0]['name']=='AfterWrite'
+    lua.execute("dfhack.df2utf=function(s)return s end")
+    assert call(31, detail_index=0)['details'][1]['name']=='AfterWrite'
+    assert not lua.globals().write_started
+    person = call(29, unit_id=0)['citizens'][1]
+    lua.execute('fail_next=true')
+    reply = call(67, unit_id=0, expected_revision=person['revision'], only_assigned=1)
+    assert not reply['ok'] and lua.globals().write_started
+    print('CITIZENS_WRITE_BOUNDARY_PASS')
+
+
 if __name__ == '__main__':
-    main()
+    import sys
+    if '--write-boundary' in sys.argv:
+        write_boundary()
+    else:
+        main()

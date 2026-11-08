@@ -38,9 +38,10 @@ existing top-level `outcome="unknown"`. Only rejected citizen mutation replies
 may set it; validation rejects uncertain reads, successful/pending outcomes,
 returned rows, selected targets, page cursors or reusable list receipts. The
 false default preserves ordinary read and confirmed/pre-write reply behavior.
-Old Management143 peers cannot attach to the new region. The separate native
-write-boundary implementation is still pending; a field alone does not classify
-post-write faults.
+Old Management143 peers cannot attach to the new region. Lua writes and native
+mutation adapters now mark the first possible simulation write. SafeCall, helper-contract, parsed-response and publication-validation
+failures after that boundary discard citizen rows/receipts and publish Unknown.
+Preflight refusals retain ordinary Rejected outcomes.
 
 The contract migration passes core19, world-model decoding/validation, extension,
 headless Work Details and the C++ producer-to-Godot uncertain-reply check in
@@ -62,15 +63,27 @@ unknown result: buffered typing is discarded and the owner retains uncertainty.
 No new user-visible copy is introduced. Core19, extension and Work Details tests
 pass in work-details-unknown-state-20261108, including the real owner/name-session
 path with injected replies. This fixes loss of uncertainty already reported by
-the service; it does not fix the legacy bridge's post-write error classification.
+the service; it is complemented by the bridge write-boundary classification above.
 
-The remaining bridge gap is at management.cpp's Lua SafeCall/result-contract
-failure paths and the citizen result parser. They publish `Rejected` without a
-citizen-specific outcome even when native effects may have occurred. Management144
-now carries `CitizenState.outcome_unknown` through the population codec and Godot
-management dictionary. Lua/native write-boundary wiring must still retain
-uncertainty through receipt construction and malformed results. Existing refresh-on-possible-mutation behavior is not proof of success
-or a substitute for that outcome.
+Protected112740 on2026-11-08 injects a single Lua receipt-conversion failure
+after a rename. Independent native inspection confirms the new name and one
+fault; the typed reply carries Unknown with no rows, selected IDs, cursor or
+list receipt. A preceding stale request remains an ordinary rejection. Owned
+DF39248 closes unsaved with source preservation; headless viewer, native30FPS,
+GPU59–60C samples, joined viewer logs contain only the known separate-renderer
+notice. Plugin SHA256 is
+`858A0D89A2501FA6EE104B501F816C5F29786F08E6776B8DC0E1D42B58AF7B51`.
+Initial112629 failed before submission because the test omitted the transport
+readiness wait; it is not mutation evidence. The corrected fixture waits and
+fails promptly if its target is unavailable. This verifies rename/SafeCall;
+other native-write and publication-fallback faults remain untested live.
+
+Offline citizen-write-boundary-final-20261108 passes core19, extension, Work Details
+state and focused Lua checks for stale/oversized rename refusals, post-write
+receipt failure, fresh reads and work-scope recalculation failure. The older
+`test_citizens_adapter` currently fails at its missing native membership callback;
+it predates those adapters and is not covered by the selected core CTest check.
+Do not interpret this focused pass as the full Python adapter suite passing.
 
 The Work Details owner now has headless lifecycle coverage for closing during
 buffered renaming and destruction with a submitted rename outstanding. Closing
@@ -81,8 +94,7 @@ owner disconnects its callbacks while the service-owned session completes.
 `work-details-owner-lifecycle-20261108` passes core19, extension and Work Details
 checks. This exercises the real owner/state/name-session with injected semantic
 replies and presentation/host stubs; it does not establish new rendered input,
-native effects or transport fault handling. The legacy citizen post-write
-Unknown gap and final resize render confirmation remain open.
+native effects or transport fault handling. Final resize render confirmation remains open.
 
 Work Details resizing retains native worker capacities4/10/14 at912x552,
 1200x800 and1600x900. The worker roster keeps a minimum864-pixel extent relative

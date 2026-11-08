@@ -1419,6 +1419,15 @@
       ]
     },
     {
+      "id": "test_citizens_write_boundary",
+      "kind": "python",
+      "lane": "core",
+      "command": ["tools/test_citizens_adapter.py", "--write-boundary"],
+      "completion": "^CITIZENS_WRITE_BOUNDARY_PASS$",
+      "timeout": 45,
+      "prerequisites": ["python_lupa"]
+    },
+    {
       "id": "test_citizens_adapter",
       "kind": "python",
       "lane": "core",

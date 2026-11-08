@@ -27,8 +27,9 @@ citizen mutation with no returned rows, selected targets, page cursor or list
 receipt. Godot exposes it as the service's `outcome="unknown"`; it must not be
 replayed. Read replies and confirmed/pre-write outcomes leave the flag false.
 Rebuild both peers: `Local\df3d_management_v144` rejects Management143 peers.
-This contract migration does not itself classify native write failures; runtime
-write-boundary wiring and protected post-write fault acceptance remain pending.
+Runtime write-boundary wiring classifies native write failures; protected112740
+verifies a post-rename
+receipt fault, with other mutation/fallback fault paths still untested live.
 Ordinary native creation compatibility passes in protected111719; see ENGINEERING.md.
 
 

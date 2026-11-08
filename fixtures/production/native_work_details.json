@@ -4160,5 +4160,21 @@
     "source_preserved": true,
     "owned_df_closed": true,
     "diagnostics": "Known separate-renderer notice only."
+  },
+  "outcome_write_boundary_reference": {
+    "live": "build/stockpile-storage-native-input-20261108-112740",
+    "offline": "build/qa/citizen-write-boundary-20261108",
+    "installed_plugin_sha256": "858A0D89A2501FA6EE104B501F816C5F29786F08E6776B8DC0E1D42B58AF7B51",
+    "coverage": [
+      "Stale rename rejected before write without Unknown.",
+      "Post-rename receipt conversion faults once; native name changed.",
+      "Typed reply is Rejected/outcome unknown without citizen authority."
+    ],
+    "limits": [
+      "Native callback and publication fallback faults not injected live.",
+      "Legacy test_citizens_adapter fails at obsolete missing native callback."
+    ],
+    "source_preserved": true,
+    "owned_df_closed": true
   }
 }

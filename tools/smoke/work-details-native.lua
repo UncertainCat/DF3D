@@ -254,6 +254,23 @@ assert(#all==#result.details+1,'Native Add new work detail did not append one de
 local d=all[#all-1];local labors={};for j,value in ipairs(d.allowed_labors)do if value then labors[#labors+1]=j end end
 result.created={index=#all-1,name=dfhack.df2utf(d.name),icon=d.icon,flags=d.flags.whole,labors=labors,assigned_count=#d.assigned_units}
 shot('work-details-created')
+if os.getenv('DF3D_WORK_DETAILS_FAULT_WIRE')=='1' then
+ local original=dfhack.df2utf
+ local marker='DF3D receipt fault'
+ local faults=0
+ dfhack.df2utf=function(value)
+  if value==marker then faults=faults+1;error('Injected post-write receipt fault') end
+  return original(value)
+ end
+ local ok,err=pcall(shot,'work-details-fault-wire')
+ dfhack.df2utf=original
+ assert(ok,err)
+ assert(d.name==marker,'Uncertain rename did not reach native state')
+ assert(faults==1,'Unexpected receipt fault count or mutation replay')
+ result.write_fault={name=d.name,faults=faults,index=#all-1}
+ shot('work-details-fault-result')
+ records[#records+1]={name='work-details-fault'};return
+end
 local function click_handler(rva)
   local target
   local function find(widget)

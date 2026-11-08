@@ -249,6 +249,8 @@ TradeState trade;
 struct ActionTiming { uint64_t count=0,last=0,max=0; };
 std::array<ActionTiming,size_t(m::ManagementAction::MAX)+1> actionTimings{};
 bool mutated = false;
+// Safe-point request-local evidence; reset before every command.
+bool citizenWriteStarted = false;
 bool terrainConstructed = false, terrainHint = false;
 int32_t hintX = 0, hintY = 0, hintZ = 0;
 std::deque<std::array<int32_t,3>> areaHints;
@@ -484,6 +486,7 @@ void clearResult() {
   production = {};
   workOrders = {};
   citizens = {};
+  citizenWriteStarted=false;
   reports = {};
   creature = {};
   agreements = {};
@@ -1112,9 +1115,11 @@ void publish() {
     publishingFallback = true;
     const auto placed=construction.placed,skipped=construction.skipped;
     const auto first=construction.first_building;
+    const bool citizenUnknown=citizenWriteStarted || citizens.outcomeUnknown;
     auto jobWrite=jobSettingsEdit;
     if(jobWrite && jobWrite->outcome!=m::JobSettingsEditOutcome::Applied && jobWrite->outcome!=m::JobSettingsEditOutcome::Unknown)jobWrite.reset();
     clearResult();
+    if(citizenUnknown){citizens.outcomeUnknown=true;mutated=true;}
     if(jobWrite){jobWrite->outcome=m::JobSettingsEditOutcome::Unknown;jobSettingsEdit=jobWrite;}
     construction.placed=placed;construction.skipped=skipped;construction.first_building=first;
     status = m::ManagementStatus::Rejected;
@@ -2896,6 +2901,11 @@ BridgeWorkOrderInfo copyNativeWorkOrder(const df3d_production::NativeWorkOrderRo
   return row;
 }
 void run(color_ostream& out) {
+  citizenWriteStarted=false;
+  const auto retireUncertainCitizenReply=[] {
+    if(!citizenWriteStarted)return;
+    citizens={};citizens.outcomeUnknown=true;mutated=true;
+  };
   areaPaintRetired=nullptr;areaPaintCommitted=false;
   const auto* r = flatbuffers::GetRoot<m::ConstructionRequest>(request.data());
 
@@ -4431,11 +4441,13 @@ void run(color_ostream& out) {
     lua_pushcfunction(L,areaOwnerDisplay);lua_setfield(L,-2,"owner_display");
   }
   if(citizenAction(action)) {
+    lua_pushcfunction(L,[](lua_State*)->int {citizenWriteStarted=true;return 0;});
+    lua_setfield(L,-2,"mark_write");
     lua_pushcfunction(L,[](lua_State* state)->int {
       const auto index=int32_t(luaL_checkinteger(state,1));
       if(workDetailHoldingCount>=workDetailHolding.size())return luaL_error(state,"Work-detail retirement storage unavailable");
       bool applied=false;
-      try {applied=df3d_production::nativeWorkDetailDelete(index,workDetailHolding[workDetailHoldingCount]);}
+      try {applied=df3d_production::nativeWorkDetailDelete(index,workDetailHolding[workDetailHoldingCount],&citizenWriteStarted);}
       catch(...) {
         if(workDetailHolding[workDetailHoldingCount]){++workDetailHoldingCount;mutated=true;}
         return luaL_error(state,"Native work-detail deletion outcome uncertain");
@@ -4445,12 +4457,16 @@ void run(color_ostream& out) {
       return 0;
     });lua_setfield(L,-2,"work_detail_delete");
     lua_pushcfunction(L,[](lua_State* state)->int {
-      const bool applied=df3d_production::nativeWorkDetailEdit(int32_t(luaL_checkinteger(state,1)),int32_t(luaL_checkinteger(state,2)),lua_toboolean(state,3));
+      bool applied=false;
+      try {applied=df3d_production::nativeWorkDetailEdit(int32_t(luaL_checkinteger(state,1)),int32_t(luaL_checkinteger(state,2)),lua_toboolean(state,3),&citizenWriteStarted);}
+      catch(...) {return luaL_error(state,"Native work-detail edit outcome uncertain");}
       if(!applied)return luaL_error(state,"Native work-detail edit unavailable");
       return 0;
     });lua_setfield(L,-2,"work_detail_edit");
     lua_pushcfunction(L,[](lua_State* state)->int {
-      const bool applied=df3d_production::nativeWorkDetailMembership(int32_t(luaL_checkinteger(state,1)),int32_t(luaL_checkinteger(state,2)),lua_toboolean(state,3));
+      bool applied=false;
+      try {applied=df3d_production::nativeWorkDetailMembership(int32_t(luaL_checkinteger(state,1)),int32_t(luaL_checkinteger(state,2)),lua_toboolean(state,3),&citizenWriteStarted);}
+      catch(...) {return luaL_error(state,"Native work-detail membership outcome uncertain");}
       if(!applied)return luaL_error(state,"Native work-detail membership unavailable");
       return 0;
     });lua_setfield(L,-2,"work_detail_membership");
@@ -4907,6 +4923,7 @@ void run(color_ostream& out) {
   if (!Lua::SafeCall(out, L, 1, 1) || !lua_istable(L, -1)) {
     status = m::ManagementStatus::Rejected;
     message = "Native management helper failed; no success reported";
+    retireUncertainCitizenReply();
     // A helper can fail after native effects; conservatively refresh the world.
     if(action==m::ManagementAction::Place || synchronousWrite)mutated=true;
     if(action==m::ManagementAction::Place)construction.outcome=m::ConstructionOutcome::Unknown;
@@ -4920,6 +4937,7 @@ void run(color_ostream& out) {
       std::min(remainingSteps,uint32_t(1536))); !error.empty()) {
     status=m::ManagementStatus::Rejected;
     message="Management helper contract failure: "+error;
+    retireUncertainCitizenReply();
     if(action==m::ManagementAction::Place || synchronousWrite)mutated=true;
     if(action==m::ManagementAction::Place)construction.outcome=m::ConstructionOutcome::Unknown;
     if(!synchronousWrite)remainingSteps=0;
@@ -5439,6 +5457,7 @@ void run(color_ostream& out) {
     if(invalid){ok=false;productionPending=false;message="Invalid native construction response: field or page exceeds contract";catalog.clear();construction.filters.clear();construction.materials.clear();construction.pressure_creatures.clear();construction.has_track=false;construction.track_path.clear();}
   }
   lua_settop(L, top);
+  if(!ok)retireUncertainCitizenReply();
   status = !ok ? m::ManagementStatus::Rejected
                : (productionPending
                       ? m::ManagementStatus::Pending

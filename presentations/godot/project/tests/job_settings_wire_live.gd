@@ -14,6 +14,8 @@ func pointer(view,point: Vector2,button: int=MOUSE_BUTTON_LEFT) -> void:
 	click=click.duplicate();click.pressed=false;Input.parse_input_event(click);await process_frame
 func run() -> void:
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
+	if OS.get_environment("DF3D_WORK_DETAILS_FAULT_WIRE")=="1":
+		await work_detail_fault();return
 	if OS.get_environment("DF3D_WORK_DETAILS_RENAME_RENDER")=="1":
 		await work_detail_name_scene();return
 	if OS.get_environment("DF3D_WORK_DETAILS_RENAME_WIRE")=="1":
@@ -866,3 +868,31 @@ func work_detail_name_scene() -> void:
 	check(not is_instance_valid(owner.name_session),"Closing name editor did not drain explicit typing")
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"rename_view":true}));file.close()
 	owner.queue_free();host.queue_free();interaction.queue_free();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)
+
+func work_detail_fault() -> void:
+	world=Df3dWorld.new();root.add_child(world)
+	if not check(world.attach(),"Work Details fault attach failed"):quit(1);return
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline:
+		world.poll()
+		if world.poll_management().get("transport_alive",false):break
+		await create_timer(0.01).timeout
+	if not check(world.poll_management().get("transport_alive",false),"Work Details fault transport unavailable"):quit(1);return
+	await request("construction",{"action":C.ManagementAction.Catalog})
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/work-details-native.json"))
+	var index:=int(reference.created.index)
+	var reply: Dictionary=await request("citizens",{"action":C.ManagementAction.WorkDetailInspect,"detail_index":index})
+	if not check(reply.get("citizen",{}).get("details",[]).size()==1,"Fault target missing"):quit(1);return
+	var revision: int=reply.citizen.details[0].revision
+	var intent: Dictionary={"action":C.ManagementAction.WorkDetailEdit,"detail_index":index,"edit":1,"name":"DF3D receipt fault","expected_revision":revision+1}
+	reply=await request("citizens",intent)
+	check(reply.get("status")==C.ManagementStatus.Rejected and not reply.get("citizen",{}).get("outcome_unknown",false),"Pre-write refusal became uncertain")
+	intent.expected_revision=revision
+	reply=await request("citizens",intent)
+	check(reply.get("status")==C.ManagementStatus.Rejected and reply.get("outcome")=="unknown","Post-write fault lost uncertainty")
+	var citizen: Dictionary=reply.get("citizen",{})
+	check(citizen.get("outcome_unknown",false) and citizen.get("details",[]).is_empty() and citizen.get("citizens",[]).is_empty(),"Uncertain reply retained rows")
+	check(citizen.get("selected_detail",-1)==-1 and citizen.get("selected_unit",-1)==-1 and citizen.get("detail_list_revision",0)==0 and citizen.get("next_cursor",0)==0,"Uncertain reply retained authority")
+	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"uncertain":reply}));file.close()
+	world.queue_free();await process_frame;quit(1 if failed else 0)

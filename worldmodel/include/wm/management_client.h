@@ -413,6 +413,11 @@ struct ProductionState {
   int32_t selectedBuilding=-1,createdJob=-1;
   std::string detail;
 };
+struct ChoreLabor {int32_t id=-1;bool enabled=false;};
+struct ChoresSnapshot {bool enabled=false;std::vector<int32_t> children,exempted;std::vector<ChoreLabor> labors;};
+struct ChoresCaption {int32_t id=-1;std::string caption;};
+struct ChoresRequest {ChoresOperation operation=ChoresOperation::None;int32_t id=-1;bool value=false;std::optional<ChoresSnapshot> expected;};
+struct ChoresState {ChoresOutcome outcome=ChoresOutcome::None;std::optional<ChoresSnapshot> snapshot;std::vector<ChoresCaption> children,labors;};
 struct HunterAmmunitionSpec {
   int16_t itemType=-1,itemSubtype=-1,materialClass=-1,matType=-1;
   int32_t matIndex=-1,amount=0;uint32_t flags=0;std::vector<int32_t> assigned;
@@ -827,6 +832,7 @@ struct ManagementRequest {
   WorkDetailSettingsRequest workDetailSettings;
   StandingOrdersRequest standingOrders;
   HunterAmmunitionRequest hunterAmmunition;
+  ChoresRequest chores;
   ResidentsRowsRequest residentsRows;
   ResidentsSpecializationRequest residentsSpecialization;
   ResidentsActivityRequest residentsActivity;
@@ -890,6 +896,7 @@ struct ManagementState {
   std::optional<WorkDetailSettingsState> workDetailSettings;
   std::optional<StandingOrdersState> standingOrders;
   std::optional<HunterAmmunitionState> hunterAmmunition;
+  std::optional<ChoresState> chores;
   std::optional<ResidentsSpecializationState> residentsSpecialization;
   std::optional<ResidentsActivityState> residentsActivity;
   std::optional<JobSettingsState> jobSettings;

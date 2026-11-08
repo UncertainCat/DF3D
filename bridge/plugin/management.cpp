@@ -4122,6 +4122,10 @@ void run(color_ostream& out) {
     } catch(...) {residentsRows.reset();}
     publish();return;
   }
+  if(r->action()==m::ManagementAction::ChoresRead || r->action()==m::ManagementAction::ChoresApply) {
+    // Contract migration only; semantic dispatch follows separate live acceptance.
+    status=m::ManagementStatus::Rejected;message.clear();publish();return;
+  }
   if(r->action()>=m::ManagementAction::HunterAmmunitionRead && r->action()<=m::ManagementAction::HunterAmmunitionApply) {
     namespace h=df3d_hunter_ammunition;
     message.clear();status=m::ManagementStatus::Rejected;hunter.emplace();bool applied=false;

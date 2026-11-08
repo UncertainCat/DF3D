@@ -2,6 +2,19 @@
 #pragma once
 #include <cstdint>
 namespace wm {
+enum class ChoresOutcome : uint8_t {
+  None = 0,
+  Applied = 1,
+  Rejected = 2,
+  Stale = 3,
+  Unknown = 4,
+};
+enum class ChoresOperation : uint8_t {
+  None = 0,
+  Enabled = 1,
+  Labor = 2,
+  Exempt = 3,
+};
 enum class HunterAmmunitionOutcome : uint8_t {
   None = 0,
   Applied = 1,
@@ -218,6 +231,8 @@ enum class ManagementAction : uint8_t {
   HunterAmmunitionRead = 93,
   HunterAmmunitionCandidates = 94,
   HunterAmmunitionApply = 95,
+  ChoresRead = 96,
+  ChoresApply = 97,
 };
 enum class ManagementStatus : uint8_t {
   Idle = 0,
@@ -524,11 +539,15 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::HunterAmmunitionRead: return true;
   case ManagementAction::HunterAmmunitionCandidates: return true;
   case ManagementAction::HunterAmmunitionApply: return true;
+  case ManagementAction::ChoresRead: return true;
+  case ManagementAction::ChoresApply: return true;
   default: return false;
   }
 }
 constexpr const char* managementDomain(ManagementAction action) {
   switch (action) {
+  case ManagementAction::ChoresRead: return "chores";
+  case ManagementAction::ChoresApply: return "chores";
   case ManagementAction::HunterAmmunitionRead: return "hunter_ammunition";
   case ManagementAction::HunterAmmunitionCandidates: return "hunter_ammunition";
   case ManagementAction::HunterAmmunitionApply: return "hunter_ammunition";

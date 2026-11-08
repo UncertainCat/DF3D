@@ -397,6 +397,7 @@ func run() -> void:
 	await test_work_detail_settings()
 	await test_standing_orders()
 	await test_hunter_ammunition()
+	await test_chores()
 	# Host signals only after validating every expected payload.
 	for i in 300:
 		if FileAccess.get_file_as_string(status_path) == "passed": break
@@ -1134,3 +1135,25 @@ func test_hunter_ammunition() -> void:
 	base.amount=126;seq=world.management_request("hunter_ammunition",base);assert(seq>0);reply=await receipt(seq,S.Rejected)
 	assert(reply.outcome=="unknown" and reply.hunter_ammunition.specs.is_empty())
 	assert(Contract.is_mutation(A.HunterAmmunitionApply) and not Contract.is_mutation(A.HunterAmmunitionRead))
+
+func test_chores() -> void:
+	var seq: int=world.management_request("chores",{"action":A.ChoresRead});assert(seq>0)
+	var reply:=await receipt(seq);var value: Dictionary=reply.chores
+	assert(value.snapshot.children==PackedInt32Array([42,7]) and value.snapshot.exempted==PackedInt32Array([7]))
+	assert(value.children[0].caption=="fixture child" and value.labors[0].caption=="fixture labor")
+	var base: Dictionary={"action":A.ChoresApply,"operation":1,"id":-1,"value":true,"expected":value.snapshot}
+	for operation in range(1,4):
+		var intent:=base.duplicate(true);intent.operation=operation
+		if operation==2:intent.id=23;intent.value=false
+		if operation==3:intent.id=42
+		for patch in [{"id":1.5},{"value":1},{"expected":0},{"operation":4},{"cursor":1}]:
+			var invalid:=intent.duplicate(true);invalid.merge(patch,true);assert(world.management_request("chores",invalid)==0)
+		for patch in [{"children":PackedInt32Array([42,42])},{"exempted":PackedInt32Array([7,7])},{"labors":[]},{"enabled":1}]:
+			var invalid:=intent.duplicate(true);invalid.expected.merge(patch,true);assert(world.management_request("chores",invalid)==0)
+		seq=world.management_request("chores",intent);assert(seq>0);reply=await receipt(seq)
+		assert(reply.chores.outcome==Contract.ChoresOutcome.Applied and reply.chores.children.is_empty())
+		if operation==2:assert(not reply.chores.snapshot.labors[0].enabled)
+		if operation==3:assert(reply.chores.snapshot.exempted==PackedInt32Array([7,42]))
+	base.value=false;seq=world.management_request("chores",base);assert(seq>0);reply=await receipt(seq,S.Rejected)
+	assert(reply.outcome=="unknown" and not reply.chores.has("snapshot"))
+	assert(Contract.is_mutation(A.ChoresApply) and not Contract.is_mutation(A.ChoresRead))

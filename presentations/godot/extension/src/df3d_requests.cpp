@@ -1,5 +1,7 @@
 #include "df3d_world.h"
 #include "management_codecs.h"
+#include <unordered_set>
+#include <algorithm>
 #include <godot_cpp/variant/packed_byte_array.hpp>
 namespace df3d_godot {
 using namespace godot;
@@ -202,6 +204,19 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
             word["text"]=String::utf8(w.text.c_str());word["rgb"]=rgb;word["link"]=w.link;word["flags"]=int(w.flags);word["x"]=w.x;word["y"]=w.y;words.push_back(word);}
         for(const auto& l:v.links){Dictionary link;link["type"]=l.type;link["id"]=l.id;link["subid"]=l.subid;links.push_back(link);}
         value["words"]=words;value["links"]=links;result["residents_activity"]=value;
+    }
+    if(s.chores) {
+        const auto& v=*s.chores;Dictionary value;value["outcome"]=int(v.outcome);Array children,labors;
+        if(v.snapshot){Dictionary snap;PackedInt32Array ids,exempted;Array settings;
+            snap["enabled"]=v.snapshot->enabled;
+            for(int32_t id:v.snapshot->children)ids.push_back(id);
+            for(int32_t id:v.snapshot->exempted)exempted.push_back(id);
+            for(const auto& row:v.snapshot->labors){Dictionary entry;entry["id"]=row.id;entry["enabled"]=row.enabled;settings.push_back(entry);}
+            snap["children"]=ids;snap["exempted"]=exempted;snap["labors"]=settings;value["snapshot"]=snap;}
+        for(const auto& row:v.children){Dictionary entry;entry["id"]=row.id;entry["caption"]=String::utf8(row.caption.c_str());children.push_back(entry);}
+        for(const auto& row:v.labors){Dictionary entry;entry["id"]=row.id;entry["caption"]=String::utf8(row.caption.c_str());labors.push_back(entry);}
+        value["children"]=children;value["labors"]=labors;result["chores"]=value;
+        if(v.outcome==wm::ChoresOutcome::Unknown)result["outcome"]="unknown";
     }
     if(s.hunterAmmunition) {
         const auto& v=*s.hunterAmmunition;Dictionary value;Array specs,rules,types,materials;
@@ -469,6 +484,38 @@ bool readResidentsSpecialization(const Dictionary& data,wm::ManagementRequest& r
     request.action=wm::ManagementAction::ResidentsSpecialize;
     request.residentsSpecialization={int32_t(int64_t(data["unit_id"])),uint64_t(int64_t(data["expected_revision"])),bool(data["only_assigned"])};return true;
 }
+bool validateChores(const Dictionary& data,String& error) {
+    const bool apply=int64_t(data["action"])==int64_t(wm::ManagementAction::ChoresApply);
+    if(data.size()!=(apply?5:1)){error="Invalid chores fields";return false;}
+    if(!apply)return true;
+    if(!data.has("operation") || data["operation"].get_type()!=Variant::INT || int64_t(data["operation"])<1 || int64_t(data["operation"])>3 ||
+       !data.has("id") || data["id"].get_type()!=Variant::INT || int64_t(data["id"])<-1 || int64_t(data["id"])>INT32_MAX ||
+       !data.has("value") || data["value"].get_type()!=Variant::BOOL || !data.has("expected") || data["expected"].get_type()!=Variant::DICTIONARY){error="Invalid chores edit";return false;}
+    const Dictionary snap=data["expected"];
+    if(snap.size()!=4 || !snap.has("enabled") || snap["enabled"].get_type()!=Variant::BOOL ||
+       !snap.has("children") || snap["children"].get_type()!=Variant::PACKED_INT32_ARRAY || !snap.has("exempted") || snap["exempted"].get_type()!=Variant::PACKED_INT32_ARRAY ||
+       !snap.has("labors") || snap["labors"].get_type()!=Variant::ARRAY){error="Invalid chores receipt";return false;}
+    const PackedInt32Array children=snap["children"],exempted=snap["exempted"];const Array labors=snap["labors"];
+    if(children.size()>65536 || exempted.size()>65536 || labors.size()!=14){error="Invalid chores receipt size";return false;}
+    std::unordered_set<int32_t> ids;for(int64_t i=0;i<children.size();++i)if(children[i]<0 || !ids.insert(children[i]).second){error="Invalid chores child";return false;}
+    int32_t prior=-1;for(int64_t i=0;i<exempted.size();++i){if(exempted[i]<=prior){error="Invalid chores exemption";return false;}prior=exempted[i];}
+    constexpr int32_t catalog[]={23,37,1,2,6,3,4,5,7,8,74,77,9,75};
+    for(int64_t i=0;i<14;++i){if(labors[i].get_type()!=Variant::DICTIONARY){error="Invalid chore labor";return false;}
+        const Dictionary row=labors[i];if(row.size()!=2 || !row.has("id") || row["id"].get_type()!=Variant::INT || int64_t(row["id"])!=catalog[i] || !row.has("enabled") || row["enabled"].get_type()!=Variant::BOOL){error="Invalid chore labor";return false;}}
+    const int64_t op=data["operation"],id=data["id"];
+    if((op==1 && id!=-1) || (op==2 && std::find(std::begin(catalog),std::end(catalog),id)==std::end(catalog)) || (op==3 && !ids.count(int32_t(id)))){error="Invalid chores target";return false;}
+    return true;
+}
+bool readChores(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction(int64_t(data["action"]));if(request.action==wm::ManagementAction::ChoresRead)return true;
+    auto& q=request.chores;q.operation=wm::ChoresOperation(int64_t(data["operation"]));q.id=int32_t(int64_t(data["id"]));q.value=bool(data["value"]);
+    const Dictionary snap=data["expected"];q.expected.emplace();q.expected->enabled=bool(snap["enabled"]);
+    const PackedInt32Array children=snap["children"],exempted=snap["exempted"];const Array labors=snap["labors"];
+    for(int64_t i=0;i<children.size();++i)q.expected->children.push_back(children[i]);
+    for(int64_t i=0;i<exempted.size();++i)q.expected->exempted.push_back(exempted[i]);
+    for(int64_t i=0;i<labors.size();++i){const Dictionary row=labors[i];q.expected->labors.push_back({int32_t(int64_t(row["id"])),bool(row["enabled"])});}
+    return true;
+}
 bool validateHunterAmmunition(const Dictionary& data,String& error) {
     const auto action=wm::ManagementAction(int64_t(data["action"]));
     const bool apply=action==wm::ManagementAction::HunterAmmunitionApply,choices=action==wm::ManagementAction::HunterAmmunitionCandidates;
@@ -715,6 +762,7 @@ const ManagementCodec managementCodecs[] = {
     {"work_detail_rows",validateResidentsRows,readResidentsRows},
     {"work_detail_settings",validateWorkDetailSettings,readWorkDetailSettings},
     {"hunter_ammunition",validateHunterAmmunition,readHunterAmmunition},
+    {"chores",validateChores,readChores},
     {"standing_orders",validateStandingOrders,readStandingOrders},
     {"residents_specialization",validateResidentsSpecialization,readResidentsSpecialization},
     {"residents_activity",validateResidentsActivity,readResidentsActivity},
@@ -731,7 +779,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::HunterAmmunitionApply)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::ChoresApply)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

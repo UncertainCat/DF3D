@@ -46,6 +46,14 @@ ManagementState decodeState(const m::ManagementState* s) {
     next.creatureHeader=std::move(header);
   }
   if(const auto* r=s->residents())next.residents=ResidentsState{{r->unit_ids()->begin(),r->unit_ids()->end()}};
+  if(const auto* r=s->chores()) {
+    next.chores.emplace();auto& out=*next.chores;out.outcome=ChoresOutcome(r->outcome());
+    if(const auto* v=r->snapshot()) {out.snapshot.emplace();auto& snap=*out.snapshot;
+      snap.enabled=v->enabled();snap.children.assign(v->children()->begin(),v->children()->end());snap.exempted.assign(v->exempted()->begin(),v->exempted()->end());
+      for(const auto* row:*v->labors())snap.labors.push_back({row->id(),row->enabled()});}
+    for(const auto* row:*r->children())out.children.push_back({row->id(),row->caption()->str()});
+    for(const auto* row:*r->labors())out.labors.push_back({row->id(),row->caption()->str()});
+  }
   if(const auto* r=s->hunter_ammunition()) {
     next.hunterAmmunition.emplace();auto& out=*next.hunterAmmunition;
     out.outcome=HunterAmmunitionOutcome(r->outcome());out.itemType=r->item_type();out.itemSubtype=r->item_subtype();
@@ -211,6 +219,14 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
   }
   const auto anchor=r.materialAnchor.value_or(TilePos{r.x,r.y,r.z});
   const m::TilePos materialAnchor(anchor.x,anchor.y,anchor.z);
+  flatbuffers::Offset<m::ChoresRequest> chores;
+  if(r.action==ManagementAction::ChoresRead || r.action==ManagementAction::ChoresApply){
+    const auto& q=r.chores;flatbuffers::Offset<m::ChoresSnapshot> expected;
+    if(q.expected){const auto& v=*q.expected;std::vector<flatbuffers::Offset<m::ChoreLabor>> labors;
+      for(const auto& row:v.labors)labors.push_back(m::CreateChoreLabor(b,row.id,row.enabled));
+      expected=m::CreateChoresSnapshot(b,v.enabled,b.CreateVector(v.children),b.CreateVector(v.exempted),b.CreateVector(labors));}
+    chores=m::CreateChoresRequest(b,m::ChoresOperation(q.operation),q.id,q.value,expected);
+  }
   flatbuffers::Offset<m::HunterAmmunitionRequest> hunter;
   if(r.action>=ManagementAction::HunterAmmunitionRead && r.action<=ManagementAction::HunterAmmunitionApply){
     const auto& q=r.hunterAmmunition;
@@ -279,7 +295,7 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
           flatbuffers::Offset<m::WorkDetailSettingsRequest>{},
       (r.action==ManagementAction::StandingOrdersRead || r.action==ManagementAction::StandingOrdersSet)?
           m::CreateStandingOrdersRequest(b,r.standingOrders.category,r.standingOrders.settingId,r.standingOrders.expectedValue,r.standingOrders.value):
-          flatbuffers::Offset<m::StandingOrdersRequest>{},hunter);
+          flatbuffers::Offset<m::StandingOrdersRequest>{},hunter,chores);
   b.Finish(request);
 }
 }  // namespace wm::detail::management

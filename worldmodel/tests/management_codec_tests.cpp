@@ -4831,3 +4831,37 @@ TEST_CASE("Hunter ammunition read quantities agree with assigned stack receipts"
     if(!fault){const auto decoded=codec::decodeState(value);REQUIRE(decoded.hunterAmmunition);CHECK(decoded.hunterAmmunition->rules.front().quantity==30);CHECK(decoded.hunterAmmunition->rules.front().items.front().appearance.materialToken=="INORGANIC:SILVER");}
   }
 }
+
+TEST_CASE("Chores requests carry full ordered receipts and validate targets") {
+  for(int operation=0;operation<=3;++operation)for(int fault=0;fault<5;++fault){
+    wm::ManagementRequest request;request.action=operation?wm::ManagementAction::ChoresApply:wm::ManagementAction::ChoresRead;
+    auto& q=request.chores;q.operation=wm::ChoresOperation(operation);
+    if(operation || fault==1){q.expected.emplace();q.expected->enabled=true;q.expected->children={42,7};q.expected->exempted={7};
+      for(int id:{23,37,1,2,6,3,4,5,7,8,74,77,9,75})q.expected->labors.push_back({id,true});}
+    q.id=operation==2?23:operation==3?42:-1;q.value=operation!=0;
+    if(fault==1 && operation)q.expected.reset();
+    if(fault==2)q.id=999;
+    if(fault==3){if(operation)q.expected->children={42,42};else q.value=true;}
+    if(fault==4){if(operation)q.expected->labors.front().id=0;else q.operation=wm::ChoresOperation::Enabled;}
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    if(!fault){REQUIRE(value->chores());CHECK(bool(value->chores()->expected())==(operation!=0));}
+  }
+}
+TEST_CASE("Chores unknown outcomes carry no authoritative state") {
+  for(bool unknown:{false,true})for(int fault=0;fault<3;++fault){
+    flatbuffers::FlatBufferBuilder b;flatbuffers::Offset<wire::ChoresSnapshot> snap;
+    if(!unknown || fault==1){std::vector<flatbuffers::Offset<wire::ChoreLabor>> rows;
+      for(int id:{23,37,1,2,6,3,4,5,7,8,74,77,9,75})rows.push_back(wire::CreateChoreLabor(b,id,true));
+      snap=wire::CreateChoresSnapshot(b,true,b.CreateVector(std::vector<int32_t>{42}),b.CreateVector(std::vector<int32_t>{}),b.CreateVector(rows));}
+    const auto empty=b.CreateVector(std::vector<flatbuffers::Offset<wire::ChoresCaption>>{});
+    const auto chores=wire::CreateChoresState(b,unknown?wire::ChoresOutcome::Unknown:wire::ChoresOutcome::Applied,snap,empty,empty);
+    wire::ManagementStateBuilder state(b);state.add_revision(2);state.add_chores(chores);
+    state.add_action(fault==2?wire::ManagementAction::ChoresRead:wire::ManagementAction::ChoresApply);
+    state.add_status(unknown?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    const bool invalid=fault==2 || (unknown && fault==1);CHECK(bool(wire::validateManagementState(*value))==invalid);
+    if(!invalid){const auto decoded=codec::decodeState(value);REQUIRE(decoded.chores);CHECK(bool(decoded.chores->snapshot)==!unknown);}
+  }
+}

@@ -33,6 +33,30 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Standing orders native discovery
 
+Management150 / Local\df3d_management_v150 adds ChoresRead96 and ChoresApply97.
+The pointer-free snapshot contains participation, ordered child IDs, sorted
+exemptions and the native14-entry labor catalog with values. Apply requires the
+complete expected snapshot; Read forbids it. Operations are Enabled1/Labor2/
+Exempt3. Successful reads include native child/labor captions separately from
+mutation identity; successful edits return the resulting snapshot without
+captions. Rejected/Stale/Unknown replies contain neither snapshot nor captions.
+Unknown is permitted only for writes and is mapped to the existing no-replay
+outcome in Godot. Bounds, identity uniqueness, native catalog order, targets and
+caption identity are validated at the wire boundary; dictionaries require exact
+types/fields. The model remains independent of Godot/DF pointers.
+
+This is a breaking management-region migration; readers and plugin must update
+together. Older recordings do not acquire invented Chores facts. Core19,
+extension and end-to-end fake-host Godot contract checks pass in
+chores-contract150-roundtrip-20261108, covering read, all3 operations, malformed
+receipts and Unknown with no authority. The native plugin explicitly rejects
+Chores actions pending the next dispatch change. Protected153322 verifies the
+existing Standing orders typed workflow on150, then closes owned DF47528 unsaved
+with source preservation. MSVC build passes; installed SHA256
+D187CD2A6AC86EA7CD09D7DF6F0916D3120B8026EF32A12B13765513B7ED8417.
+This is protocol acceptance, not live Chores wire or UI acceptance.
+
+
 Chores discovery: native roster builder42c6e0..42cd42 fills unit and labor
 vectors at offsets158/170, resets category/scroll fields, and sorts children by
 native name1330c30 using byte comparison. Its14 labor IDs are

@@ -110,8 +110,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 149;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v149";
+inline constexpr uint32_t kManagementVersion = 150;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v150";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -409,12 +409,22 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::HunterAmmunitionApply &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::ChoresApply &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
       !(action >= ManagementAction::AppointmentsOpen && action <= ManagementAction::AppointmentsBack) &&
       !(action >= ManagementAction::KitchenOpen && action <= ManagementAction::KitchenClose);
+}
+inline bool validChoresSnapshot(const ChoresSnapshot* s) {
+  if(!s || !s->children() || !s->exempted() || !s->labors() ||
+     s->children()->size()>65536 || s->exempted()->size()>65536 || s->labors()->size()!=14)return false;
+  std::unordered_set<int32_t> ids;
+  for(int32_t id:*s->children())if(id<0 || !ids.insert(id).second)return false;
+  int32_t prior=-1;for(int32_t id:*s->exempted()){if(id<=prior)return false;prior=id;}
+  constexpr int32_t catalog[]={23,37,1,2,6,3,4,5,7,8,74,77,9,75};
+  size_t index=0;for(const auto* row:*s->labors())if(!row || row->id()!=catalog[index++])return false;
+  return true;
 }
 inline bool validHunterSpec(const HunterAmmunitionSpec* v) {
   if(!v || v->item_type()!=39 || v->item_subtype()<0 || v->material_class()<-1 || v->mattype()<-1 ||
@@ -471,7 +481,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::HunterAmmunitionApply)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::ChoresApply)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -565,6 +575,17 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     const auto* q=r.residents_specialization();
     if(!q || q->unit_id()<0 || !q->expected_revision() || q->expected_revision()>INT64_MAX)return "invalid residents specialization request";
   } else if(r.residents_specialization())return "unexpected residents specialization request";
+  if(r.action()==ManagementAction::ChoresRead || r.action()==ManagementAction::ChoresApply) {
+    const auto* q=r.chores();if(!q)return "missing chores request";
+    if(r.action()==ManagementAction::ChoresRead) {
+      if(q->operation()!=ChoresOperation::None || q->id()!=-1 || q->value() || q->expected())return "unexpected chores edit";
+    }else{
+      if(!validChoresSnapshot(q->expected()) || q->operation()<ChoresOperation::Enabled || q->operation()>ChoresOperation::Exempt)return "invalid chores edit";
+      if(q->operation()==ChoresOperation::Enabled){if(q->id()!=-1)return "unexpected chores target";}
+      else if(q->operation()==ChoresOperation::Labor){bool found=false;for(const auto* row:*q->expected()->labors())found|=row->id()==q->id();if(!found)return "invalid chore labor";}
+      else if(std::find(q->expected()->children()->begin(),q->expected()->children()->end(),q->id())==q->expected()->children()->end())return "invalid chore child";
+    }
+  }else if(r.chores())return "unexpected chores request";
   if(r.action()>=ManagementAction::HunterAmmunitionRead && r.action()<=ManagementAction::HunterAmmunitionApply) {
     const auto* q=r.hunter_ammunition();if(!q)return "missing hunter ammunition request";
     using O=HunterAmmunitionOperation;
@@ -1057,7 +1078,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::HunterAmmunitionApply ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::ChoresApply ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -1133,6 +1154,19 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     for(auto id:*r->unit_ids())if(id<0 || !ids.insert(id).second)return "invalid residents identity";
   } else if((s.action()==ManagementAction::ResidentsQuery || s.action()==ManagementAction::WorkDetailWorkersQuery) && s.status()==ManagementStatus::Ok)
     return "residents result required";
+  if(const auto* r=s.chores()) {
+    const bool read=s.action()==ManagementAction::ChoresRead,apply=s.action()==ManagementAction::ChoresApply;
+    if((!read && !apply) || !r->children() || !r->labors())return "invalid chores result";
+    if(s.status()==ManagementStatus::Ok){
+      if(r->outcome()!=(read?ChoresOutcome::None:ChoresOutcome::Applied) || !validChoresSnapshot(r->snapshot()))return "invalid chores success";
+      if(read){
+        if(r->children()->size()!=r->snapshot()->children()->size() || r->labors()->size()!=14)return "incomplete chores captions";
+        size_t i=0;for(const auto* row:*r->children())if(!row || row->id()!=r->snapshot()->children()->Get(i++) || !row->caption() || !row->caption()->size() || row->caption()->size()>16384)return "invalid chores child caption";
+        i=0;for(const auto* row:*r->labors())if(!row || row->id()!=r->snapshot()->labors()->Get(i++)->id() || !row->caption() || !row->caption()->size() || row->caption()->size()>2048)return "invalid chores labor caption";
+      }else if(r->children()->size() || r->labors()->size())return "unexpected chores edit captions";
+    }else if(s.status()!=ManagementStatus::Rejected || r->snapshot() || r->children()->size() || r->labors()->size() ||
+      (r->outcome()!=ChoresOutcome::Rejected && (!apply || (r->outcome()!=ChoresOutcome::Stale && r->outcome()!=ChoresOutcome::Unknown))))return "invalid chores refusal";
+  }else if(s.status()==ManagementStatus::Ok && (s.action()==ManagementAction::ChoresRead || s.action()==ManagementAction::ChoresApply))return "missing chores result";
   if(const auto* r=s.hunter_ammunition()) {
     using O=HunterAmmunitionOutcome;
     const bool read=s.action()==ManagementAction::HunterAmmunitionRead,choices=s.action()==ManagementAction::HunterAmmunitionCandidates,

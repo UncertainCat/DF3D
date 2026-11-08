@@ -1,4 +1,15 @@
 // Generated exhaustive model/wire correspondence checks.
+static_assert(static_cast<int>(wm::ChoresOutcome::None) == static_cast<int>(df3d::mirror::ChoresOutcome::None));
+static_assert(static_cast<int>(wm::ChoresOutcome::Applied) == static_cast<int>(df3d::mirror::ChoresOutcome::Applied));
+static_assert(static_cast<int>(wm::ChoresOutcome::Rejected) == static_cast<int>(df3d::mirror::ChoresOutcome::Rejected));
+static_assert(static_cast<int>(wm::ChoresOutcome::Stale) == static_cast<int>(df3d::mirror::ChoresOutcome::Stale));
+static_assert(static_cast<int>(wm::ChoresOutcome::Unknown) == static_cast<int>(df3d::mirror::ChoresOutcome::Unknown));
+static_assert(sizeof(df3d::mirror::EnumValuesChoresOutcome()) / sizeof(df3d::mirror::ChoresOutcome) == 5);
+static_assert(static_cast<int>(wm::ChoresOperation::None) == static_cast<int>(df3d::mirror::ChoresOperation::None));
+static_assert(static_cast<int>(wm::ChoresOperation::Enabled) == static_cast<int>(df3d::mirror::ChoresOperation::Enabled));
+static_assert(static_cast<int>(wm::ChoresOperation::Labor) == static_cast<int>(df3d::mirror::ChoresOperation::Labor));
+static_assert(static_cast<int>(wm::ChoresOperation::Exempt) == static_cast<int>(df3d::mirror::ChoresOperation::Exempt));
+static_assert(sizeof(df3d::mirror::EnumValuesChoresOperation()) / sizeof(df3d::mirror::ChoresOperation) == 4);
 static_assert(static_cast<int>(wm::HunterAmmunitionOutcome::None) == static_cast<int>(df3d::mirror::HunterAmmunitionOutcome::None));
 static_assert(static_cast<int>(wm::HunterAmmunitionOutcome::Applied) == static_cast<int>(df3d::mirror::HunterAmmunitionOutcome::Applied));
 static_assert(static_cast<int>(wm::HunterAmmunitionOutcome::Rejected) == static_cast<int>(df3d::mirror::HunterAmmunitionOutcome::Rejected));
@@ -197,7 +208,9 @@ static_assert(static_cast<int>(wm::ManagementAction::StandingOrdersSet) == stati
 static_assert(static_cast<int>(wm::ManagementAction::HunterAmmunitionRead) == static_cast<int>(df3d::mirror::ManagementAction::HunterAmmunitionRead));
 static_assert(static_cast<int>(wm::ManagementAction::HunterAmmunitionCandidates) == static_cast<int>(df3d::mirror::ManagementAction::HunterAmmunitionCandidates));
 static_assert(static_cast<int>(wm::ManagementAction::HunterAmmunitionApply) == static_cast<int>(df3d::mirror::ManagementAction::HunterAmmunitionApply));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 96);
+static_assert(static_cast<int>(wm::ManagementAction::ChoresRead) == static_cast<int>(df3d::mirror::ManagementAction::ChoresRead));
+static_assert(static_cast<int>(wm::ManagementAction::ChoresApply) == static_cast<int>(df3d::mirror::ManagementAction::ChoresApply));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 98);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -500,3 +513,5 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::StandingOrdersSet) == df
 static_assert(wm::isRuntimeAction(wm::ManagementAction::HunterAmmunitionRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::HunterAmmunitionRead));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::HunterAmmunitionCandidates) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::HunterAmmunitionCandidates));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::HunterAmmunitionApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::HunterAmmunitionApply));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::ChoresRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ChoresRead));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::ChoresApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ChoresApply));

@@ -88,6 +88,41 @@ for index=0,7 do
  result.workshop_cycles[#result.workshop_cycles+1]=cycle
 end
 assert(json.encode(values())==json.encode(original),'Standing orders were not restored')
+if os.getenv('DF3D_STANDING_ORDERS_CATEGORIES')=='1' then
+ result.category_cycles={};result.refuse_gates={}
+ local function cycle(category,index)
+  local before=values();local entry={category=category,index=index,before=before,states={}}
+  for attempt=1,4 do
+   click(12,15+3*index);entry.states[#entry.states+1]={values=values(),rows=rows()}
+   if json.encode(values())==json.encode(before)then break end
+  end
+  assert(#entry.states>1,'Category setting did not change '..category..':'..index)
+  assert(json.encode(values())==json.encode(before),'Category setting did not restore')
+  result.category_cycles[#result.category_cycles+1]=entry
+ end
+ click(23,12)
+ for index=0,5 do cycle(1,index)end
+ click(34,12)
+ -- Native Refuse gates later controls on gather_refuse and vermin on outdoor.
+ local gather=df.global.standing_orders_gather_refuse
+ local outdoor=df.global.standing_orders_gather_refuse_outside
+ if gather~=0 then click(12,15)end
+ local before=values()
+ for index=1,9 do click(12,15+3*index);assert(json.encode(values())==json.encode(before),'Disabled refuse control changed state')end
+ result.refuse_gates.gather_off={values=values(),rows=rows()};shot('standing-orders-refuse-disabled')
+ click(12,15)
+ if df.global.standing_orders_gather_refuse_outside~=0 then click(12,18)end
+ before=values();click(12,21)
+ assert(json.encode(values())==json.encode(before),'Disabled vermin control changed state')
+ result.refuse_gates.outdoor_off={values=values(),rows=rows()}
+ click(12,18)
+ for index=0,9 do cycle(2,index)end
+ if df.global.standing_orders_gather_refuse_outside~=outdoor then click(12,18)end
+ if df.global.standing_orders_gather_refuse~=gather then click(12,15)end
+ assert(json.encode(values())==json.encode(original),'Category discovery did not restore settings')
+ result.categories_restored=true
+ click(10,12)
+end
 if os.getenv('DF3D_STANDING_ORDERS_PROVIDER')=='1' then
  local function provider(...)
   local text,code=dfhack.run_command_silent('df3d','standing-workshops-probe',...)

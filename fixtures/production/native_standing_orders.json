@@ -506,5 +506,362 @@
       "Hover and resize unaccepted",
       "Other categories and unavailable automation captions unfinished"
     ]
+  },
+  "hauling_refuse_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-121945",
+    "cycles": [
+      {
+        "category": 1,
+        "id": 0,
+        "global": "standing_orders_gather_animals",
+        "initial": 1,
+        "states": [
+          {
+            "value": 0,
+            "caption": "Workers ignore animals"
+          },
+          {
+            "value": 1,
+            "caption": "Workers gather animals"
+          }
+        ]
+      },
+      {
+        "category": 1,
+        "id": 1,
+        "global": "standing_orders_gather_food",
+        "initial": 1,
+        "states": [
+          {
+            "value": 0,
+            "caption": "Workers ignore food"
+          },
+          {
+            "value": 1,
+            "caption": "Workers gather food"
+          }
+        ]
+      },
+      {
+        "category": 1,
+        "id": 2,
+        "global": "standing_orders_gather_furniture",
+        "initial": 1,
+        "states": [
+          {
+            "value": 0,
+            "caption": "Workers ignore furniture"
+          },
+          {
+            "value": 1,
+            "caption": "Workers gather furniture"
+          }
+        ]
+      },
+      {
+        "category": 1,
+        "id": 3,
+        "global": "standing_orders_gather_bodies",
+        "initial": 1,
+        "states": [
+          {
+            "value": 0,
+            "caption": "Workers ignore bodies"
+          },
+          {
+            "value": 1,
+            "caption": "Workers gather bodies"
+          }
+        ]
+      },
+      {
+        "category": 1,
+        "id": 4,
+        "global": "standing_orders_gather_minerals",
+        "initial": 1,
+        "states": [
+          {
+            "value": 0,
+            "caption": "Workers ignore minerals"
+          },
+          {
+            "value": 1,
+            "caption": "Workers gather minerals"
+          }
+        ]
+      },
+      {
+        "category": 1,
+        "id": 5,
+        "global": "standing_orders_gather_wood",
+        "initial": 1,
+        "states": [
+          {
+            "value": 0,
+            "caption": "Workers ignore wood"
+          },
+          {
+            "value": 1,
+            "caption": "Workers gather wood"
+          }
+        ]
+      },
+      {
+        "category": 2,
+        "id": 0,
+        "global": "standing_orders_gather_refuse",
+        "initial": 1,
+        "states": [
+          {
+            "value": 0,
+            "caption": "Workers ignore refuse"
+          },
+          {
+            "value": 1,
+            "caption": "Workers gather refuse"
+          }
+        ]
+      },
+      {
+        "category": 2,
+        "id": 1,
+        "global": "standing_orders_gather_refuse_outside",
+        "initial": 1,
+        "states": [
+          {
+            "value": 0,
+            "caption": "Workers ignore outdoor refuse"
+          },
+          {
+            "value": 1,
+            "caption": "Workers gather outdoor refuse"
+          }
+        ]
+      },
+      {
+        "category": 2,
+        "id": 2,
+        "global": "standing_orders_gather_vermin_remains",
+        "initial": 0,
+        "states": [
+          {
+            "value": 1,
+            "caption": "Workers gather outdoor vermin remains"
+          },
+          {
+            "value": 0,
+            "caption": "Workers ignore outdoor vermin remains"
+          }
+        ]
+      },
+      {
+        "category": 2,
+        "id": 3,
+        "global": "standing_orders_dump_corpses",
+        "initial": 1,
+        "states": [
+          {
+            "value": 0,
+            "caption": "Workers save corpses"
+          },
+          {
+            "value": 1,
+            "caption": "Workers dump corpses"
+          }
+        ]
+      },
+      {
+        "category": 2,
+        "id": 4,
+        "global": "standing_orders_dump_skulls",
+        "initial": 1,
+        "states": [
+          {
+            "value": 0,
+            "caption": "Workers save skulls"
+          },
+          {
+            "value": 1,
+            "caption": "Workers dump skulls"
+          }
+        ]
+      },
+      {
+        "category": 2,
+        "id": 5,
+        "global": "standing_orders_dump_bones",
+        "initial": 1,
+        "states": [
+          {
+            "value": 0,
+            "caption": "Workers save bones"
+          },
+          {
+            "value": 1,
+            "caption": "Workers dump bones"
+          }
+        ]
+      },
+      {
+        "category": 2,
+        "id": 6,
+        "global": "standing_orders_dump_shells",
+        "initial": 0,
+        "states": [
+          {
+            "value": 1,
+            "caption": "Workers dump shells"
+          },
+          {
+            "value": 0,
+            "caption": "Workers save shells"
+          }
+        ]
+      },
+      {
+        "category": 2,
+        "id": 7,
+        "global": "standing_orders_dump_skins",
+        "initial": 0,
+        "states": [
+          {
+            "value": 1,
+            "caption": "Workers dump skins"
+          },
+          {
+            "value": 0,
+            "caption": "Workers save skins"
+          }
+        ]
+      },
+      {
+        "category": 2,
+        "id": 8,
+        "global": "standing_orders_dump_hair",
+        "initial": 1,
+        "states": [
+          {
+            "value": 0,
+            "caption": "Workers save hair and wool"
+          },
+          {
+            "value": 1,
+            "caption": "Workers dump hair and wool"
+          }
+        ]
+      },
+      {
+        "category": 2,
+        "id": 9,
+        "global": "standing_orders_dump_other",
+        "initial": 0,
+        "states": [
+          {
+            "value": 1,
+            "caption": "Workers dump other objects"
+          },
+          {
+            "value": 0,
+            "caption": "Workers save other objects"
+          }
+        ]
+      }
+    ],
+    "refuse_dependencies": {
+      "collection_off": {
+        "visible_ids": [
+          0
+        ],
+        "rejected_click_ids": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "visible_rows": [
+          {
+            "text": "  Workers ignore refuse",
+            "y": 15
+          }
+        ]
+      },
+      "outdoor_off": {
+        "visible_ids": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "rejected_click_ids": [
+          2
+        ],
+        "visible_rows": [
+          {
+            "text": "  Workers gather refuse",
+            "y": 15
+          },
+          {
+            "text": "  Workers ignore outdoor refuse",
+            "y": 18
+          },
+          {
+            "text": "  Workers ignore outdoor vermin remains",
+            "y": 21
+          },
+          {
+            "text": "  Workers dump corpses",
+            "y": 24
+          },
+          {
+            "text": "  Workers dump skulls",
+            "y": 27
+          },
+          {
+            "text": "  Workers dump bones",
+            "y": 30
+          },
+          {
+            "text": "  Workers save shells",
+            "y": 33
+          },
+          {
+            "text": "  Workers save skins",
+            "y": 36
+          },
+          {
+            "text": "  Workers dump hair and wool",
+            "y": 39
+          },
+          {
+            "text": "  Workers save other objects",
+            "y": 42
+          }
+        ]
+      }
+    },
+    "input_reference": {
+      "hauling_rva": "4334ff..4335e7",
+      "hauling_switch_table_rva": "434558",
+      "refuse_rva": "4335e7..433750",
+      "refuse_switch_table_rva": "434570",
+      "effects": "Single scalar toggle per accepted click; input bookkeeping remains UI-only. Refuse dependencies checked before the scalar write."
+    },
+    "settings_restored": true,
+    "source_save_preserved": true,
+    "limits": [
+      "No DF3D runtime support for these categories yet",
+      "Availability alone cannot represent both hidden and visible-disabled controls"
+    ]
   }
 }

@@ -33,6 +33,20 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Standing orders native discovery
 
+Protected121945 on2026-11-08 captures all six Hauling and ten Refuse setting
+cycles through native clicks. Each accepted click changes exactly one mapped
+scalar; all settings are restored, owned DF38600 closes unsaved and the source
+save is preserved. GPU58C during/after, native30FPS and no viewer launched.
+Hauling input4334ff..4335e7 and Refuse4335e7..433750 use scalar toggles below
+hit testing, with no gameplay callback. Their switch tables are434558/434570.
+When gather_refuse is off, native draws only the first row and ignores clicks
+on all nine later controls. When outdoor collection is off, vermin remains is
+still drawn but ignores clicks. A future category contract must distinguish
+visibility from editability; the Workshops `available` field alone does not
+encode both states. `native_standing_orders.json.hauling_refuse_reference`
+records the captions, transitions and gates. These categories have no runtime
+adapter, typed request support or accepted DF3D view yet.
+
 `standing_orders_state.gd` is the staged Workshops presentation owner. It reads
 native settings through the shared semantic action service, submits explicit
 values with the displayed expected value, and serializes pending edits. Successful

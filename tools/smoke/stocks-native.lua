@@ -15,6 +15,10 @@ local function probe(command,...)
  assert(open==menu.open and selected==menu.current_type and query==menu.item_filter,'Inventory probe changed menu state')
  return json.decode(text)
 end
+if os.getenv('DF3D_STOCKS_WIRE')=='1' then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-native.lua$','stocks-wire-native.lua')
+ assert(loadfile(source))(out,probe)
+end
 local cold,cold_groups,cold_totals,cold_display,cold_ordered
 local selection_cases={{39,''},{39,'iron'},{39,'silver'},{0,''},{4,''},{24,''},{54,''},{60,''},{91,''}}
 local cold_selections

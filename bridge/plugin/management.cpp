@@ -112,6 +112,7 @@
 #include "chores_native.h"
 #include "kitchen_native.h"
 #include "stone_use_native.h"
+#include "stocks_native.h"
 #include "df/gamest.h"
 #include "work_order_catalog_native.h"
 #include "work_order_rows_native.h"
@@ -509,6 +510,44 @@ struct StoneUseResult {
   std::vector<uint8_t> restrictions;
 };
 std::optional<StoneUseResult> stoneUse;
+struct StocksResult {
+  m::StocksMenuOutcome outcome=m::StocksMenuOutcome::Rejected;
+  int16_t category=-1;
+  std::vector<df3d_stocks::CategoryDisplay> categories;
+  std::vector<int16_t> matches;
+  df3d_stocks::Selection selection;
+  std::vector<df3d_production::ItemFacts> items;
+};
+std::optional<StocksResult> stocks;
+
+// Category -1 requests only the catalog. Selection and expansion belong to
+// the viewer; no native menu state is read or changed by this snapshot.
+StocksResult readStocks(int16_t category,const std::string& query,
+    const std::vector<int32_t>& ids,std::optional<df3d_stocks::Selection> receipt=std::nullopt) {
+  StocksResult result;
+  auto display=df3d_stocks::categoryDisplay();
+  auto order=df3d_stocks::categories("");
+  auto matches=query.empty()?order:df3d_stocks::categories(query);
+  if(!display || !order || !matches)throw std::runtime_error("stocks catalog unavailable");
+  for(auto type:*order){auto row=display->at(type);
+    row.caption=DF2UTF(row.caption);row.stored=DF2UTF(row.stored);row.unavailable=DF2UTF(row.unavailable);
+    result.categories.push_back(std::move(row));}
+  result.matches=std::move(*matches);result.category=category;
+  if(category>=0){
+    if(!receipt)receipt=df3d_stocks::selection(category,query);
+    if(!receipt)throw std::runtime_error("stocks selection unavailable");
+    result.selection=std::move(*receipt);
+    for(auto& row:result.selection.groups)row.caption=DF2UTF(row.caption);
+  }
+  for(auto id:ids){
+    if(std::find(result.selection.ids.begin(),result.selection.ids.end(),id)==result.selection.ids.end())
+      throw std::runtime_error("stocks item no longer eligible");
+    auto row=df3d_production::itemFacts(df::item::find(id));
+    if(!row || row->itemType!=category)throw std::runtime_error("stocks item unavailable");
+    row->caption=DF2UTF(row->caption);result.items.push_back(std::move(*row));
+  }
+  return result;
+}
 
 
 m::TilePos worldHoverTile;
@@ -524,7 +563,7 @@ void clearResult() {
   residentsRows.reset();
   residentsSpecialization.reset();
   residentsActivity.reset();
-  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();stoneUse.reset();
+  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();stoneUse.reset();stocks.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -1155,6 +1194,22 @@ void publish() {
     }
     standingOrdersResult=m::CreateStandingOrdersState(b,standingOrders->category,standingOrders->outcome,b.CreateVector(rows));
   }
+  flatbuffers::Offset<m::StocksMenuState> stocksResult;
+  if(stocks){
+    std::vector<flatbuffers::Offset<m::StocksCategoryRow>> categories;
+    std::vector<flatbuffers::Offset<m::StocksGroupRow>> groups;
+    std::vector<flatbuffers::Offset<m::StocksItemRow>> items;
+    for(const auto& row:stocks->categories)categories.push_back(m::CreateStocksCategoryRow(b,row.type,
+      b.CreateString(row.caption),b.CreateString(row.stored),b.CreateString(row.unavailable),
+      std::find(stocks->matches.begin(),stocks->matches.end(),row.type)!=stocks->matches.end()));
+    for(const auto& row:stocks->selection.groups){const auto& g=row.group;
+      auto key=m::CreateStocksGroupKey(b,g.type,g.subtype,g.subcat1,g.subcat2);
+      groups.push_back(m::CreateStocksGroupRow(b,key,g.amount,b.CreateString(row.caption),row.matches,g.expanded,
+        uint8_t(row.flags),row.revision,b.CreateVector(row.ids)));}
+    for(const auto& row:stocks->items)items.push_back(m::CreateStocksItemRow(b,row.id,int16_t(row.itemType),
+      b.CreateString(row.caption),row.flags,row.canDump,row.canMelt,b.CreateString(row.materialToken),b.CreateString(row.subtypeRaw)));
+    stocksResult=m::CreateStocksMenuState(b,stocks->outcome,stocks->category,b.CreateVector(categories),b.CreateVector(groups),b.CreateVector(items));
+  }
   flatbuffers::Offset<m::StoneUseState> stoneUseResult;
   if(stoneUse){
     std::vector<flatbuffers::Offset<m::StoneUseRow>> rows;
@@ -1203,10 +1258,12 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult);
   b.Finish(s);
-  if (auto e = m::validateManagementState(
-          *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()))) {
+  auto validationError=m::validateManagementState(
+      *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()));
+  if(stocks && b.GetSize()>m::kManagementCapacity)validationError="stocks response exceeds channel capacity";
+  if (auto e = validationError) {
     if (publishingFallback) {
       // The minimal fallback failed validation too: nothing sane to publish.
       Core::getInstance().getConsole().printerr("df3d: management fallback response invalid: {}\n", *e);
@@ -1216,6 +1273,7 @@ void publish() {
     const auto placed=construction.placed,skipped=construction.skipped;
     const auto first=construction.first_building;
     const auto standingCategory=standingOrders?standingOrders->category:0;
+    const bool stocksUnknown=stocks && (stocks->outcome==m::StocksMenuOutcome::Applied || stocks->outcome==m::StocksMenuOutcome::Unknown);
     const bool stoneUseUnknown=stoneUse && (stoneUse->outcome==m::StoneUseOutcome::Applied || stoneUse->outcome==m::StoneUseOutcome::Unknown);
     const bool kitchenUnknown=kitchen && (kitchen->outcome==m::KitchenMenuOutcome::Applied || kitchen->outcome==m::KitchenMenuOutcome::Unknown);
     const bool choresUnknown=chores && (chores->outcome==m::ChoresOutcome::Applied || chores->outcome==m::ChoresOutcome::Unknown);
@@ -1225,6 +1283,7 @@ void publish() {
     auto jobWrite=jobSettingsEdit;
     if(jobWrite && jobWrite->outcome!=m::JobSettingsEditOutcome::Applied && jobWrite->outcome!=m::JobSettingsEditOutcome::Unknown)jobWrite.reset();
     clearResult();
+    if(stocksUnknown){stocks.emplace();stocks->outcome=m::StocksMenuOutcome::Unknown;mutated=true;}
     if(stoneUseUnknown){stoneUse.emplace();stoneUse->outcome=m::StoneUseOutcome::Unknown;mutated=true;}
     if(kitchenUnknown){kitchen.emplace();kitchen->outcome=m::KitchenMenuOutcome::Unknown;mutated=true;}
     if(choresUnknown){chores.emplace();chores->outcome=m::ChoresOutcome::Unknown;mutated=true;}
@@ -4177,6 +4236,40 @@ void run(color_ostream& out) {
         if(rows.size()==query.unit_ids()->size()) {residentsRows=std::move(rows);status=m::ManagementStatus::Ok;}
       }
     } catch(...) {residentsRows.reset();}
+    publish();return;
+  }
+  if(r->action()==m::ManagementAction::StocksMenuRead || r->action()==m::ManagementAction::StocksGroupApply) {
+    namespace h=df3d_stocks;
+    status=m::ManagementStatus::Rejected;message.clear();stocks.emplace();bool writeStarted=false;
+    try {
+      const auto& q=*r->stocks_menu();
+      if(r->action()==m::ManagementAction::StocksMenuRead){
+        std::vector<int32_t> ids;if(q.item_ids())ids.assign(q.item_ids()->begin(),q.item_ids()->end());
+        stocks=readStocks(q.category(),UTF2DF(q.query()->str()),ids);
+        stocks->outcome=m::StocksMenuOutcome::None;status=m::ManagementStatus::Ok;
+      }else{
+        const auto& key=*q.target();
+        const h::Group target{key.type(),key.subtype(),key.subcat1(),key.subcat2(),0,false};
+        df3d_production::BuildingItemAction operation;
+        switch(q.operation()){
+          case m::StocksFlagAction::Forbid:operation=df3d_production::BuildingItemAction::Forbid;break;
+          case m::StocksFlagAction::Dump:operation=df3d_production::BuildingItemAction::Dump;break;
+          case m::StocksFlagAction::Melt:operation=df3d_production::BuildingItemAction::Melt;break;
+          case m::StocksFlagAction::Hidden:operation=df3d_production::BuildingItemAction::Hidden;break;
+          default:throw std::runtime_error("invalid stocks operation");
+        }
+        auto edit=h::editGroup(target,q.expected_revision(),operation,q.value()!=0);
+        writeStarted=edit.outcome==h::EditOutcome::Applied || edit.outcome==h::EditOutcome::Unknown;
+        if(writeStarted)mutated=true;
+        if(edit.outcome==h::EditOutcome::Applied){
+          if(!edit.receipt)throw std::runtime_error("stocks edit receipt unavailable");
+          stocks=readStocks(q.category(),"",{},std::move(edit.receipt));
+          stocks->outcome=m::StocksMenuOutcome::Applied;status=m::ManagementStatus::Ok;
+        }else if(edit.outcome==h::EditOutcome::Stale)stocks->outcome=m::StocksMenuOutcome::Stale;
+        else if(edit.outcome==h::EditOutcome::Unknown)stocks->outcome=m::StocksMenuOutcome::Unknown;
+      }
+    }catch(...){stocks.emplace();status=m::ManagementStatus::Rejected;
+      if(writeStarted){stocks->outcome=m::StocksMenuOutcome::Unknown;mutated=true;}}
     publish();return;
   }
   if(r->action()==m::ManagementAction::StoneUseRead || r->action()==m::ManagementAction::StoneUseApply) {

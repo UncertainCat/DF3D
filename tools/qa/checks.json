@@ -4190,6 +4190,11 @@
       "reason": "Protected stockpile_storage_native.ps1 with DF3D_STANDING_ORDERS_NATIVE, DF3D_STANDING_AUTOMATION and DF3D_STANDING_AUTOMATION_WIRE; main-scene pointer edits under controlled paused reaction availability, with independent native scalar readback and restoration."
     },
     {
+      "path": "presentations/godot/project/tests/stocks_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected stockpile_storage_native.ps1 with DF3D_STOCKS_NATIVE and DF3D_STOCKS_WIRE; cold typed categories, groups, member revisions and item rows, group visibility edits with independent whole-inventory flags and stale replay rejection."
+    },
+    {
       "path": "presentations/godot/project/tests/stone_use_wire_live.gd",
       "status": "manual",
       "reason": "Protected stockpile_storage_native.ps1 with DF3D_STANDING_ORDERS_NATIVE, DF3D_STONE_USE_NATIVE, DF3D_STONE_USE_PROVIDER, DF3D_STONE_USE_EDITS and DF3D_STONE_USE_WIRE; compares typed metadata and four edits with independently observed native restrictions."

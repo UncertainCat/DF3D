@@ -2843,5 +2843,17 @@
     "diagnostics": "passed_with_known_issues: separate-renderer startup notice only",
     "plugin_sha256": "ad20a97186f78b2c1ca31c34acc9acf562e05eefc640c2b2e4a71734d6a1e88e",
     "scope": "New owned Stocks schema/model/Godot codecs, strict identity/membership validation, 64-bit revisions, required arrays, explicit group intents and unknown-state clearing. Legacy Stocks UI actions remain retired. Provider handlers and actual Stocks wire behavior remain pending."
+  },
+  "wire_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-230558",
+    "version": 155,
+    "core": "build/qa/stocks-wire",
+    "msvc": "build/notes/pm/stocks-wire-msvc.log",
+    "plugin_sha256": "3bdd8d25463c488646c602e0f7914ca18ffaf8c4de358b43b669fb028774ecc8",
+    "scope": "Cold real Godot typed read before native menu open: all93 category captions/order and iron matches;6 Ammunition groups with exact native-provider keys, captions, amounts, flags, expansion, member order and revisions;9 requested item identities with nonempty captions. Hidden on/off edits independently checked against every IN_PLAY item flag, original restored; stale replay rejected after each edit.",
+    "source_save": "unchanged; owned DF20352 exited unsaved",
+    "gpu": "54C sampled; headless viewer",
+    "diagnostics": "passed_with_known_issues: godot-separate-thread-notice only",
+    "limitations": "No rendered screen, individual artwork acceptance, full typed action coverage or lifecycle fault coverage.512KiB oversized payloads reject; large inventory paging remains unresolved before exposure."
   }
 }

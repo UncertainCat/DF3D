@@ -51,10 +51,23 @@ Core19 (`stocks-contract155`), real headless Godot/fake-producer roundtrips
 (`stocks-contract155-godot`) and MSVC pass. Protected225727 exercises existing
 Stone use typed reads (83 rows) and four edits on155: source unchanged, DF47996
 exits unsaved, GPU60C sampled; only the known separate-renderer startup notice.
-This establishes contract/compatibility coverage, not a working Stocks route:
-native Stocks bridge handlers, visible-row artwork and the screen remain
-unfinished. The shared512KiB response budget still applies; large-inventory
-payload handling must be resolved before public exposure.
+The bridge now serves owned Stocks reads and group edits through155. A read
+with category -1 returns only the ordered catalog; the viewer owns selection.
+Selected reads return complete group membership and up to64 requested item
+facts. Edits require a fresh group revision and return a fresh receipt; failures
+after mutation preserve Unknown, including serialization fallback. Oversized
+Stocks replies are rejected explicitly instead of silently failing publication.
+The shared512KiB budget still requires a large-inventory strategy before public
+exposure; visible-row artwork and the screen remain unfinished.
+
+Protected230558 exercises the cold typed route before opening native Stocks:
+93 category captions/order and iron matches, six Ammunition groups with exact
+member order/revisions, nine individual rows, two visibility edits and stale
+replay rejection. Independent Lua checks every IN_PLAY item's flags after each
+edit and verifies restoration. Source unchanged, DF20352 exits unsaved;
+GPU54C sampled. Core19 (`stocks-wire`) and MSVC pass; the headless viewer has
+only the known separate-renderer notice. This is transport/effects acceptance,
+not rendered Stocks acceptance or all-action/lifecycle coverage.
 
 Stocks has an accepted inventory-membership component but no DF3D screen yet.
 Protected215344 on2026-11-08 opens and closes native D_STOCKS while paused,

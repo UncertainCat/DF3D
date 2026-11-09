@@ -37,13 +37,28 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
+Management161 appends optional complete door open/forbidden/wear facts to item
+appearance. Rebuild bridge and viewer together;160 peers use a separate channel.
+All three fields remain-1 for unknown legacy appearance; partial observations
+are rejected. The provider calls the pinned BUILDING_HOLDER lookup, reads a
+linked door's positive close_timer and forbidden flag, and calls native getWear.
+Loose doors use known closed/unforbidden state. Field revisions, wire/model
+copying and strict Godot projection retain the facts. Protected025238 matches
+all visible door icons exactly; only26 existing scrollbar pixels differ in the
+rest of the item region. First-page loose/installed undamaged closed doors are
+covered; open/forbidden/worn states remain without live visual acceptance.
+Core19, extension, Stocks state and MSVC pass. Typed reads, restored group edits
+and stale rejection pass; source preserved, DF15996 exits unsaved at30FPS with
+35–37C GPU samples and known Godot diagnostics only. `door_state161_reference`
+records hashes and scope; floodgate rows remain exact.
+
 The shared item renderer has staged support for owned door open/forbidden/wear
 facts and item-ID decoration. Nativecf4b3d..cf4d18 selects wear-specific bases
 and suppresses ID decoration while open;cf50c2 draws the forbidden overlay only
 while closed. Supported vanilla CLOSED:ALL shares artwork across quality levels.
-The bridge does not yet publish door facts, so Stocks still uses its prior
-abstract door icon. Core19, extension and installed-asset icon checks pass
-headlessly (`stocks-door-renderer`); this is not live door-parity acceptance.
+Stocks now receives these facts through Management161. Core19, extension and installed-asset icon checks pass
+headlessly (`stocks-door-renderer`); live acceptance is limited to the closed
+door page above.
 `door_renderer_reference` records native selectors and the supported raw hash.
 Bucket follow-up must use reverse reference order and native isLiquid virtual86
 (c7d7a0..c7d8af), not the BIN first-entry/color-override policy.
@@ -68,8 +83,8 @@ closed and loose floodgates (including workshop-held items); item flags alone
 cannot determine the artwork. Door selection also uses item-ID variants and
 linked door flags/close_timer. Bucket7579 contains water item30113, absent from
 its current shared appearance. Floodgate state is now implemented above; door
-state and bucket contents remain unresolved semantic-data gaps, with no
-permission to infer state in Godot. The bounded native
+states have the implementation and scoped acceptance above; bucket contents
+remain an unresolved semantic-data gap with no permission to infer state in Godot. The bounded native
 capture now records simulation facts alongside images; `household_semantic_reference`
 records evidence and limits. Native-only022112 preserves the source and closes
 owned DF37720 unsaved at30FPS, with39C/2percent GPU sampled.
@@ -78,8 +93,9 @@ Stocks household artwork discovery021252 connects doors, floodgates, restraints,
 flasks, goblets, buckets, statues and anvils to the existing shared resolver.
 It also fixes item rows/action buttons retaining a16px scrollbar gap when the
 item list fits. Flask11 and Anvil45 item regions match native; statue icons match
-but six pixels outside icons differ. Door6,Chain10,Goblet12 and Bucket18
-artwork remain incomplete (1002/2727/99/18 pixels respectively). Floodgate7
+but six pixels outside icons differ. Chain10,Goblet12 and Bucket18
+artwork remain incomplete (2727/99/18 pixels respectively). Door6 previously
+differed by1002 icon pixels; state161 resolves the captured closed-door page. Floodgate7
 previously differed by4459 pixels and is resolved by the state160 change above. These are
 staged findings, not accepted families. `household_art_reference` separates art,
 other pixels and existing scrollbar differences and records hashes. Cold typed reads,

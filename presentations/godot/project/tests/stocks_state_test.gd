@@ -44,6 +44,12 @@ func run() -> void:
 		check(item_state._valid_appearance(gate,7),"Known floodgate state rejected")
 		check(not item_state._valid_appearance(gate,6),"Floodgate state accepted for another type")
 	gate.floodgate_open=1;check(not item_state._valid_appearance(gate,7),"Nonboolean floodgate state accepted")
+	var door={"material_token":"INORGANIC:DOLOMITE","subtype_raw":"","color_token":"","stack":1,"flags":0}
+	check(item_state._valid_appearance(door,6),"Legacy door appearance rejected")
+	door.door={"open":false,"forbidden":true,"wear":3}
+	check(item_state._valid_appearance(door,6),"Door simulation facts rejected")
+	check(not item_state._valid_appearance(door,7),"Door facts accepted for another item type")
+	door.door.erase("open");check(not item_state._valid_appearance(door,6),"Incomplete door facts accepted")
 	var filter=preload("res://scripts/stocks_filter.gd").new();root.add_child(filter);filter.size=Vector2(300,36);filter.configure(StyleBoxEmpty.new(),[])
 	await process_frame
 	await click_filter();check(filter.has_focus(),"First filter click starts typing")

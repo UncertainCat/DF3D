@@ -5900,5 +5900,73 @@
       "No all-quality support for modified graphic definitions is claimed."
     ],
     "bucket_followup": "c7d7a0..c7d8af scans general_refs in reverse without a container-flag gate, selects the first CONTAINS_ITEM whose child native isLiquid virtual86 succeeds, and uses that child material solid-state color. Do not reuse BIN first-entry/color-override policy."
+  },
+  "door_state161_reference": {
+    "capture": "build/stockpile-storage-native-input-20261109-025238",
+    "management_version": 161,
+    "scope": "First visible door page, including loose and installed undamaged closed doors. Open, forbidden and worn states have headless renderer/contract checks but are not live visually accepted.",
+    "provider": "Pinned native BUILDING_HOLDER lookupcb16b0; typeDOOR uses close_timer>0 and door_flags.forbidden; native getWear. Loose/non-door holders provide closed/unforbidden state.",
+    "icon_region": [
+      360,
+      112,
+      394,
+      724
+    ],
+    "icon_rgb_different_pixels": 0,
+    "other_region": [
+      394,
+      112,
+      960,
+      724
+    ],
+    "other_rgb_different_pixels": 26,
+    "remaining_difference": "Previously recorded scrollbar pixels.",
+    "native_sha256": "1efa46bd3b4bfd4f752cf300076fe83ef81a3bed4bb07f30358495b161fde381",
+    "viewer_sha256": "37d7873bdc6a0bd217be83783d427d68be0264eb27d4fc251a3e7d03d3a1044f",
+    "wire_result": {
+      "categories": 93,
+      "controller": true,
+      "edits": 2,
+      "groups": 6,
+      "individual": false,
+      "items": 9,
+      "owner": false,
+      "rendered": true,
+      "success": true
+    },
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        },
+        {
+          "id": "godot-device-finalize",
+          "count": 1,
+          "reference": "https://github.com/godotengine/godot/issues/119000"
+        },
+        {
+          "id": "godot-shutdown-objects",
+          "count": 1,
+          "reference": "ENGINEERING.md#tests-and-known-problems"
+        }
+      ],
+      "unclassified": []
+    },
+    "verification": [
+      "stocks-door161: Core19, extension and Stocks state passed",
+      "MSVC stocks-door161-msvc passed",
+      "Floodgate item region remains zero RGB differences"
+    ],
+    "source_preserved": true,
+    "owned_df_closed": 15996,
+    "graphics_fps_cap": 30,
+    "sampled_gpu_temperature_c": [
+      35,
+      36,
+      37
+    ],
+    "installed_bridge_sha256": "2a220b9ae5f3aa3d1a1203bbcd919588bc6120b7b4fd50a260f7c2208fc047c1"
   }
 }

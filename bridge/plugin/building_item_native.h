@@ -5,6 +5,7 @@
 #include "item_owner_native.h"
 #include "df/building_stockpilest.h"
 #include "df/building_floodgatest.h"
+#include "df/building_doorst.h"
 #include "df/buildingitemst.h"
 #include "df/item.h"
 #include "df/job.h"
@@ -256,6 +257,18 @@ inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
     const auto color=item->getColorWhetherDyedOrNot();
     if(color>=0){auto* descriptor=df::descriptor_color::find(color);if(!descriptor)return std::nullopt;appearance.colorToken=descriptor->id;}
     else if(color!=-1)return std::nullopt;
+    if(item->getType()==df::item_type::DOOR) {
+        // Native c80c7c..c80cbc: BUILDING_HOLDER, forbidden and positive
+        // close_timer (not the closed bit). Wear comes from virtual59.
+        const auto find=itemBuildingLookup();if(!find)return std::nullopt;
+        static_assert(offsetof(df::building_doorst,door_flags)==0x148);
+        static_assert(offsetof(df::building_doorst,close_timer)==0x14a);
+        auto* door=virtual_cast<df::building_doorst>(find(item,0x24));
+        const auto wear=item->getWear();if(wear<0 || wear>3)return std::nullopt;
+        appearance.doorOpen=door && door->close_timer>0 ? 1 : 0;
+        appearance.doorForbidden=door && door->door_flags.bits.forbidden ? 1 : 0;
+        appearance.doorWear=int8_t(wear);
+    }
     if(item->getType()==df::item_type::FLOODGATE) {
         // Native c81fc7..c81ffa: only a linked floodgate's open flag changes
         // the item variant. Loose/workshop-held items use the closed variant.

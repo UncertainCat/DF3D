@@ -5033,3 +5033,19 @@ TEST_CASE("floodgate appearance preserves unknown and linked open state") {
     if(!invalid)CHECK(codec::decodeProduction(value->production()).independentItem->snapshot->carrier->appearance->floodgateOpen==open);
   }
 }
+
+TEST_CASE("door appearance requires complete typed facts and preserves absence") {
+  for(int type:{6,7})for(int open:{-1,0,1,2})for(int forbidden:{-1,0,1,2})for(int wear:{-1,0,1,2,3,4}) {
+    flatbuffers::FlatBufferBuilder b;
+    auto appearance=wire::CreateItemInspectionAppearance(b,b.CreateString("INORGANIC:DOLOMITE"),b.CreateString(""),b.CreateString(""),1,0,-1,-1,0,-1,int8_t(open),int8_t(forbidden),int8_t(wear));
+    auto carrier=wire::CreateItemCarrier(b,1,7,type,b.CreateString("container"),appearance);
+    auto item=wire::CreateIndependentItemSnapshot(b,45,1,39,b.CreateString("item"),b.CreateString(""),b.CreateString(""),false,false,false,false,true,false,false,false,b.CreateString(""),b.CreateString(""),0,0,-1,carrier);
+    auto independent=wire::CreateIndependentItemState(b,item);wire::ProductionStateBuilder p(b);p.add_independent_item(independent);auto payload=p.Finish();
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_production(payload);state.add_action(wire::ManagementAction::ProductionInspect);state.add_status(wire::ManagementStatus::Ok);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    const bool unknown=open==-1 && forbidden==-1 && wear==-1;
+    const bool valid=unknown || (type==6 && open>=0 && open<=1 && forbidden>=0 && forbidden<=1 && wear>=0 && wear<=3);
+    CHECK(bool(wire::validateManagementState(*value))==!valid);
+    if(valid){const auto facts=*codec::decodeProduction(value->production()).independentItem->snapshot->carrier->appearance;CHECK(facts.doorOpen==open);CHECK(facts.doorForbidden==forbidden);CHECK(facts.doorWear==wear);}
+  }
+}

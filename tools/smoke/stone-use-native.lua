@@ -148,6 +148,40 @@ if os.getenv('DF3D_STONE_USE_INPUT')=='1' then
   if main.last_displayed_hover_inst~=-1 then shot('stone-use-hover-'..target[1])end
  end
 end
+if os.getenv('DF3D_STONE_USE_NAV')=='1' then
+ result.navigation={}
+ local function observe(label)
+  result.navigation[#result.navigation+1]={label=label,columns=g.dimx,rows=g.dimy,category=panel.current_category,first={panel.scroll_position[0],panel.scroll_position[1]}}
+ end
+ local function request(action)
+  local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write(action);f:close();assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+  local deadline=dfhack.getTickCount()+5000
+  while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Stone use native input timeout');script.sleep(1,'frames')end
+  assert(os.remove(out..'/owner-input-ack'));for _=1,5 do script.sleep(1,'frames');view:render(dfhack.getTickCount())end
+ end
+ for _,point in ipairs({{'row',200,250},{'outside',1100,750},{'bar',944,250}})do
+  for _,step in ipairs({{'down',-120,false},{'up',120,false},{'shift-down',-120,true},{'shift-up',120,true}})do
+   local f=assert(io.open(out..'/kitchen-wheel.json','w'));f:write(json.encode({x=point[2],y=point[3],delta=step[2],shift=step[3]}));f:close()
+   request('kitchen-wheel');observe(point[1]..'-'..step[1])
+  end
+ end
+ local function pointer(y)
+  g.precise_mouse_x=944;g.precise_mouse_y=y;g.mouse_x=118;g.mouse_y=(y-4)//12
+ end
+ for _,y in ipairs({196,232,340,460,660,736})do
+  panel.scroll_position[0]=0;view:render(dfhack.getTickCount())
+  pointer(220);df.global.enabler.mouse_lbut_lift=0
+  gui.simulateInput(view,{'_MOUSE_L','_MOUSE_L_DOWN'})
+  pointer(y);gui.simulateInput(view,{'_MOUSE_L_DOWN'})
+  df.global.enabler.mouse_lbut_lift=1;gui.simulateInput(view,{})
+  for _=1,3 do script.sleep(1,'frames');view:render(dfhack.getTickCount())end
+  observe('drag-'..y)
+ end
+ panel.scroll_position[0]=0;panel.scroll_position[1]=0
+ for _,size in ipairs({'minimum','small','wide','default'})do
+  request('name-resize-'..size);observe(size);shot('stone-use-layout-'..size)
+ end
+end
 local f=assert(io.open(out..'/stone-use-native.json','w'));f:write(json.encode(result));f:close()
 if os.getenv('DF3D_STONE_USE_WIRE')=='1' then
  assert(result.edits and cold,'Stone use wire needs native edit/provider evidence')

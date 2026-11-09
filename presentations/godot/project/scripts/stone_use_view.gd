@@ -6,7 +6,7 @@ var icons: Dictionary={}
 var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
 func configure_stone_use(source,model) -> void:
 	configure_standing_orders(source,model);picture.configure(source)
-	scrollbar.input_allowed=allowed
+	scrollbar.input_allowed=allowed;scrollbar.wheel_enabled=false
 	scrollbar.row_changed.connect(func(value):state.seek(value,capacity()))
 	state.changed.connect(refresh);refresh()
 func rows_top() -> int:return list_top()+24
@@ -53,6 +53,8 @@ func _draw() -> void:
 	for kind in 2:x+=tab(["Economic stone","Other stone"][kind],Vector2(x,list_top()-36),"SHORT_SUBSUBTAB",state.category==kind)
 	text("Stone type",Vector2(16,list_top()+12));text("Magma-safe",Vector2(216,list_top()+12))
 	text("Economic uses",Vector2(312,list_top()+12))
+	# Native text cells replace earlier header ink at narrow widths.
+	draw_rect(Rect2(size.x-328,list_top(),34*8,12),Color8(28,28,28))
 	text("Select to use in non-economic jobs.",Vector2(size.x-328,list_top()+12))
 	var values: Array=state.category_rows()
 	for index in mini(capacity(),values.size()-state.first[state.category]):

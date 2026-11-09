@@ -119,6 +119,23 @@ or displayed tooltip. These observations do not establish physical mouse-wheel,
 drag, responsive layout or DF3D scrolling acceptance. Source unchanged,
 DF27944 exits unsaved; GPU60C sampled. `input_reference` retains the exact cases.
 
+Protected195239 verifies physical wheel messages (ordinary/Shift, row/outside/bar)
+leave Stone use scrolling unchanged. DF3D disables the inherited scrollbar wheel
+handler accordingly. Native drag destinations196/232/340/460/660/736 yield
+first rows0/0/3/7/12/15. Rendered stone-use-navigation replays these positions,
+arrow/page clicks and independent category retention through Godot input events.
+It passes with only documented engine startup/shutdown diagnostics; core19 passes
+stone-use-responsive. The source save is unchanged and DF39780 exits unsaved.
+
+Native resize captures in195239 are960x720,960x600,1600x900 and1200x800; the
+minimum-size request actually produced960x720, not the requested640x480. Complete
+panel crops at all four observed sizes match DF3D with zero RGB differences.
+At narrow widths the final header overwrites earlier header text cells; DF3D
+now clears that cell background before drawing it. These captures verify initial
+pages, including18 visible economic stones at the widest size, not resizing
+an already-scrolled list or remaining off-page artwork. Runs stay serial at30FPS,
+sampled GPU59-60C. `navigation_reference` retains observations and comparison scope.
+
 Protected185832 on2026-11-08 records
 30 economic and53 other stones in native order, material identities/restrictions,
 and the default economic screen. `native_stone_use.json` is the durable reference

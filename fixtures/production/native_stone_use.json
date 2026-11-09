@@ -1860,5 +1860,256 @@
     "steps": 4,
     "final_panel_rgb_differing_pixels": 0,
     "scope": "Actual main-scene factory/host and pointer routes from Standing orders to Stone use; four edits independently acknowledged in native flags, stale rejection/fresh reads; Kitchen and Work Details round trips retain Stone use category and discard old authority. Source preserved, DF37388 unsaved exit,30FPS/GPU60C sampled; only known separate-thread/device-finalize/shutdown-object diagnostics. No responsive layout, physical wheel/drag, live deferred-rename handoff, off-page artwork or complete session/reconnect acceptance."
+  },
+  "navigation_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-195239",
+    "observations": [
+      {
+        "category": 0,
+        "columns": 150,
+        "first": [
+          0,
+          0
+        ],
+        "label": "row-down",
+        "rows": 66
+      },
+      {
+        "category": 0,
+        "columns": 150,
+        "first": [
+          0,
+          0
+        ],
+        "label": "row-up",
+        "rows": 66
+      },
+      {
+        "category": 0,
+        "columns": 150,
+        "first": [
+          0,
+          0
+        ],
+        "label": "row-shift-down",
+        "rows": 66
+      },
+      {
+        "category": 0,
+        "columns": 150,
+        "first": [
+          0,
+          0
+        ],
+        "label": "row-shift-up",
+        "rows": 66
+      },
+      {
+        "category": 0,
+        "columns": 150,
+        "first": [
+          0,
+          0
+        ],
+        "label": "outside-down",
+        "rows": 66
+      },
+      {
+        "category": 0,
+        "columns": 150,
+        "first": [
+          0,
+          0
+        ],
+        "label": "outside-up",
+        "rows": 66
+      },
+      {
+        "category": 0,
+        "columns": 150,
+        "first": [
+          0,
+          0
+        ],
+        "label": "outside-shift-down",
+        "rows": 66
+      },
+      {
+        "category": 0,
+        "columns": 150,
+        "first": [
+          0,
+          0
+        ],
+        "label": "outside-shift-up",
+        "rows": 66
+      },
+      {
+        "category": 0,
+        "columns": 150,
+        "first": [
+          0,
+          0
+        ],
+        "label": "bar-down",
+        "rows": 66
+      },
+      {
+        "category": 0,
+        "columns": 150,
+        "first": [
+          0,
+          0
+        ],
+        "label": "bar-up",
+        "rows": 66
+      },
+      {
+        "category": 0,
+        "columns": 150,
+        "first": [
+          0,
+          0
+        ],
+        "label": "bar-shift-down",
+        "rows": 66
+      },
+      {
+        "category": 0,
+        "columns": 150,
+        "first": [
+          0,
+          0
+        ],
+        "label": "bar-shift-up",
+        "rows": 66
+      },
+      {
+        "category": 0,
+        "columns": 150,
+        "first": [
+          0,
+          0
+        ],
+        "label": "drag-196",
+        "rows": 66
+      },
+      {
+        "category": 0,
+        "columns": 150,
+        "first": [
+          0,
+          0
+        ],
+        "label": "drag-232",
+        "rows": 66
+      },
+      {
+        "category": 0,
+        "columns": 150,
+        "first": [
+          3,
+          0
+        ],
+        "label": "drag-340",
+        "rows": 66
+      },
+      {
+        "category": 0,
+        "columns": 150,
+        "first": [
+          7,
+          0
+        ],
+        "label": "drag-460",
+        "rows": 66
+      },
+      {
+        "category": 0,
+        "columns": 150,
+        "first": [
+          12,
+          0
+        ],
+        "label": "drag-660",
+        "rows": 66
+      },
+      {
+        "category": 0,
+        "columns": 150,
+        "first": [
+          15,
+          0
+        ],
+        "label": "drag-736",
+        "rows": 66
+      },
+      {
+        "category": 0,
+        "columns": 120,
+        "first": [
+          0,
+          0
+        ],
+        "label": "minimum",
+        "rows": 60
+      },
+      {
+        "category": 0,
+        "columns": 120,
+        "first": [
+          0,
+          0
+        ],
+        "label": "small",
+        "rows": 50
+      },
+      {
+        "category": 0,
+        "columns": 200,
+        "first": [
+          0,
+          0
+        ],
+        "label": "wide",
+        "rows": 75
+      },
+      {
+        "category": 0,
+        "columns": 150,
+        "first": [
+          0,
+          0
+        ],
+        "label": "default",
+        "rows": 66
+      }
+    ],
+    "qa": "build/qa/stone-use-navigation",
+    "viewports": [
+      [
+        960,
+        720
+      ],
+      [
+        960,
+        600
+      ],
+      [
+        1600,
+        900
+      ],
+      [
+        1200,
+        800
+      ]
+    ],
+    "panel_rgb_differing_pixels": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "scope": "Ordinary/Shift physical wheel messages at row/outside/bar leave native scroll unchanged. Six native drag destinations reproduced with rendered Godot input, plus arrow/page/category retention and wheel suppression. Initial page panel pixels match all four actual sizes; minimum request640x480 actually produced960x720. No scrolled-resize or all off-page art acceptance. Source preserved, DF39780 unsaved exit. Serial30FPS/GPU59-60C sampled, only known separate-thread/device-finalize/shutdown-object diagnostics."
   }
 }

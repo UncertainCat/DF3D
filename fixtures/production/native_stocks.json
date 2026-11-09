@@ -7215,5 +7215,45 @@
     "exit": "unsaved",
     "fps_cap": 30,
     "gpu_max_sample_c": 47
+  },
+  "paged_transport_reference": {
+    "run": "build/stockpile-storage-native-input-20261109-053623",
+    "management_version": 167,
+    "mode": "Headless viewer; protected paused disposable clone; native Stocks menu never opened",
+    "fixture": "Temporarily lengthen one boulder material solid name/adjective to12000 ASCII characters; read64 members from its existing native group; restore both strings with with_finalize. No artificial items added.",
+    "result": {
+      "caption_bytes": 768000,
+      "group_count": 15,
+      "item_count": 64,
+      "success": true
+    },
+    "regular_workflow": {
+      "categories": 93,
+      "controller": true,
+      "edits": 2,
+      "groups": 6,
+      "individual": false,
+      "items": 9,
+      "owner": false,
+      "rendered": false,
+      "success": true
+    },
+    "transport": "Immutable complete serialized reply,256KiB byte pages inside512KiB mailbox;64MiB globally retained capture budget; per-client identity and original logical request preserved. Continuations read only captured bytes.",
+    "offline": "stocks-pages167-contract core19/extension/Stocks state pass; real client covers complete read/edit receipts, repeated page polls, expired read/edit capture, world replacement, malformed envelopes and continuation fields; Store/Assembly cover identity, gaps, truncation, eviction and retirement.",
+    "limits": "Live oversized acceptance covers one read with768000 caption bytes and15 groups. Oversized mutation receipts and capture loss use fake-producer real-client tests, not live mutation-failure injection. This is transport acceptance, not full Stocks UI or large-inventory performance acceptance.",
+    "source_preserved": true,
+    "material_restored": true,
+    "owned_df_pid": 30276,
+    "exit": "unsaved",
+    "fps_cap": 30,
+    "gpu_max_sample_c": 46,
+    "diagnostics": "Known separate-renderer startup notice only",
+    "hashes": {
+      "stocks-wire-reference.json": "d448d01ea498626df86594fb06a013f747ad5f72717a51200b45b467251f6f34",
+      "stocks-pages-wire-result.json": "ef774fa5a064573790acc0f9702e4cf79904178ebea166f226c3822302dd6f12",
+      "stocks-pages-restored": "8a798890fe93817163b10b5f7bd2ca4d25d84c52739a645a889c173eee7d9d3d",
+      "job-settings-wire-result.json": "52cb54e2e604b15da51f1354a8722bc72411338560262ab9a790af3e62bc3a33",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    }
   }
 }

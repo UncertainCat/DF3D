@@ -358,7 +358,7 @@ Selected reads return complete group membership and up to64 requested item
 facts. Edits require a fresh group revision and return a fresh receipt; failures
 after mutation preserve Unknown, including serialization fallback. Oversized
 Stocks replies are rejected explicitly instead of silently failing publication.
-The shared512KiB budget still requires paged transport before public exposure;
+Management167 supplies byte-paged transport for oversized Stocks replies;
 visible-row artwork and the screen remain unfinished. Management166 encoded-size
 measurements (synthetic structural cases, not native inventory captures) show
 that membership and group metadata each exceed the channel independently:
@@ -366,9 +366,33 @@ one group with131072 members and a32-byte caption uses530568 bytes;10000 groups
 with one member and32-byte captions use1006200 bytes. Even32 groups with legal
 16384-byte captions use532664 bytes. These include93 short category rows and no
 individual item rows. Raising only the membership limit or paging only visible
-item facts cannot solve the problem. Required paging must bound encoded bytes,
-preserve complete native order, reject mixed snapshot generations, and retain
-fresh native revision validation for edits. No paging is implemented yet.
+item facts cannot solve the problem.
+
+Rebuild bridge/viewer together for167;166 peers use a separate channel. Normal
+replies retain their existing path. Oversized validated Stocks replies are
+captured as immutable owned bytes and delivered in256KiB pages. The512KiB mailbox
+is unchanged. Retained captures have a64MiB global memory budget, one per client;
+oldest captures are evicted under pressure. World replacement clears captures.
+This bound protects retained memory independently of inventory membership limits;
+replies above it still reject (or preserve Unknown after mutation).
+
+The client assembles one original logical request while internal read-only
+continuations use fresh transport sequence numbers. It exposes no partial
+inventory and validates the complete original reply before decoding. Identity,
+offset and size mismatches reject; losing an edit receipt yields Unknown, never
+replay. Native edits still validate fresh group revisions. Continuations consult
+only captured bytes, never native menus or the gameplay command handler.
+
+Core19, extension and Stocks state checks pass (`stocks-pages167-contract`);
+MSVC passes (`stocks-pages167-msvc`). Real-client/fake-producer tests cover large
+read/edit receipts, duplicate polling, expired captures and world replacement.
+Protected053623 reads64 native boulder rows after temporarily extending one
+material's solid name/adjective:768000 caption bytes and15 complete groups arrive
+with exact native membership/revisions. The normal two edit/restoration steps
+also pass. Material strings are restored, source save preserved, DF30276 exits
+unsaved at30FPS,46C sampled (not peak). Viewer is headless; only the known startup
+notice remains. Live oversized mutation failure and large-inventory performance
+are not established by this read check. `paged_transport_reference` retains hashes.
 
 Protected230558 exercises the cold typed route before opening native Stocks:
 93 category captions/order and iron matches, six Ammunition groups with exact

@@ -2,6 +2,15 @@
 local out,probe=...
 local json=require('json');local script=require('gui.script')
 local function write(name,value)local f=assert(io.open(out..'/'..name,'w'));f:write(value);f:close()end
+local changed_material,old_name,old_adj
+return dfhack.with_finalize(function()
+ if changed_material then
+  changed_material.state_name[df.matter_state.Solid]=old_name
+  changed_material.state_adj[df.matter_state.Solid]=old_adj
+  assert(changed_material.state_name[df.matter_state.Solid]==old_name and changed_material.state_adj[df.matter_state.Solid]==old_adj)
+  write('stocks-pages-restored','yes')
+ end
+end,function()
 local reference={selection=probe('stocks-selection-probe','39',''),
  display=probe('stocks-display-probe').rows,order=probe('stocks-categories-probe','').types,
  matches=probe('stocks-categories-probe','iron').types}
@@ -63,6 +72,17 @@ if os.getenv('DF3D_STOCKS_CHILD_FLAGS')=='1' then
  assert(reference.child_flags,'Missing meltable bin child fixture')
  for _,item in ipairs(df.global.world.items.other.ANY_MELT_DESIGNATED)do before_melt[item.id]=true end
 end
+if os.getenv('DF3D_STOCKS_PAGES')=='1' then
+ local selected=probe('stocks-selection-probe','4','');local chosen
+ for _,group in ipairs(selected.groups)do if #group.ids>=64 then chosen=group;break end end
+ assert(chosen,'Need64 boulders of one material for paged Stocks fixture')
+ local info=assert(dfhack.matinfo.decode(df.item.find(chosen.ids[1])))
+ changed_material=info.material;old_name=changed_material.state_name[df.matter_state.Solid];old_adj=changed_material.state_adj[df.matter_state.Solid]
+ local long=string.rep('p',12000)
+ changed_material.state_name[df.matter_state.Solid]=long;changed_material.state_adj[df.matter_state.Solid]=long
+ local ids={};for index=1,64 do ids[index]=chosen.ids[index]end
+ reference.paged={ids=ids,selection=probe('stocks-selection-probe','4',''),minimum_caption_bytes=12000}
+end
 -- Establish edit invariants after all native read-side lazy initialization.
 for _,item in ipairs(df.global.world.items.other.IN_PLAY)do before[item.id]=item.flags.whole end
 write('stocks-wire-reference.json',json.encode(reference))
@@ -109,3 +129,5 @@ end
 assert(checked==2,'Stocks wire effects incomplete')
 if reference.child_flags then assert(checked_child==8,'Child effects incomplete');write('stocks-child-flags-native-result.json',json.encode({success=true,steps=checked_child,restored=true,target=reference.child_flags}))end
 assert(not df.global.game.main_interface.stocks.open,'Typed Stocks opened native menu')
+
+end)

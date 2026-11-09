@@ -1,5 +1,6 @@
 #pragma once
 #include <tuple>
+#include "stocks_reply_pages.h"
 #include <unordered_set>
 #include <optional>
 #include "session_util.h"
@@ -125,8 +126,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 166;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v166";
+inline constexpr uint32_t kManagementVersion = 167;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v167";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -609,6 +610,11 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
   } else if(r.residents_specialization())return "unexpected residents specialization request";
   if(r.action()==ManagementAction::StocksMenuRead || r.action()==ManagementAction::StocksGroupApply || r.action()==ManagementAction::StocksItemApply) {
     const auto* q=r.stocks_menu();if(!q || q->category()<-1 || q->category()>=93 || !q->query() || q->query()->size()>4096 || q->operation()>StocksFlagAction::Hidden)return "invalid stocks request";
+    if(q->page_request()) {
+      if(r.action()!=ManagementAction::StocksMenuRead || q->page_request()>=r.seq() || q->category()!=-1 || q->query()->size() ||
+         (q->item_ids() && q->item_ids()->size()) || !q->page_offset() || q->page_offset()>=df3d::stocks_pages::retainedBytes ||
+         q->page_offset()%df3d::stocks_pages::pageBytes)return "invalid stocks continuation";
+    }else if(q->page_offset())return "unexpected stocks page offset";
     if((r.action()==ManagementAction::StocksItemApply && q->item_id()<0) || (r.action()!=ManagementAction::StocksItemApply && q->item_id()!=-1))return "invalid stocks item target";
     std::unordered_set<int32_t> ids;
     if(q->item_ids()){if(q->item_ids()->size()>64)return "too many stocks rows";for(auto id:*q->item_ids())if(id<0 || !ids.insert(id).second)return "invalid stocks row identity";}
@@ -1153,6 +1159,13 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
+  if(const auto* p=s.stocks_page()) {
+    if((s.action()!=ManagementAction::StocksMenuRead && s.action()!=ManagementAction::StocksGroupApply && s.action()!=ManagementAction::StocksItemApply) ||
+       s.status()!=ManagementStatus::Pending || !s.world_epoch() || !s.client_id() || !p->request_seq() || p->request_seq()>s.request_seq() ||
+       !p->total() || p->total()>df3d::stocks_pages::retainedBytes || p->offset()>=p->total() || p->offset()%df3d::stocks_pages::pageBytes ||
+       !p->bytes() || p->bytes()->size()!=std::min(df3d::stocks_pages::pageBytes,p->total()-p->offset()) || s.stocks_menu())return "invalid stocks reply page";
+    return std::nullopt;
+  }
   if (const auto* t=s.world_hover()) {
     if(s.action()!=ManagementAction::WorldHover || !t->tile() ||
        t->tile()->x()<0 || t->tile()->y()<0 || t->tile()->z()<0 ||

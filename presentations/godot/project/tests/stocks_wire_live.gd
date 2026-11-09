@@ -63,6 +63,21 @@ func run() -> void:
 	for row in value.items:
 		var native: Dictionary=reference.appearance[str(row.id)]
 		check(row.has("appearance") and row.appearance.stack==int(native.stack) and row.appearance.flags==int(native.flags),"Stocks appearance facts differ from native item")
+	if reference.has("paged"):
+		var requested: Array=reference.paged.ids.map(func(id):return int(id))
+		var large:=await read_stocks(4,"",requested)
+		check(large.get("items",[]).size()==64,"Paged Stocks lost item rows")
+		check(large.get("groups",[]).size()==reference.paged.selection.groups.size(),"Paged Stocks lost groups")
+		var caption_bytes:=0
+		for row in large.get("items",[]):
+			check(requested.has(row.id) and row.caption.to_utf8_buffer().size()>=12000,"Paged item caption was truncated")
+			caption_bytes+=row.caption.to_utf8_buffer().size()
+		check(caption_bytes>512*1024,"Fixture did not exceed mailbox capacity")
+		for index in large.get("groups",[]).size():
+			var row: Dictionary=large.groups[index];var native: Dictionary=reference.paged.selection.groups[index]
+			check(row.caption==native.caption and row.item_ids==native.ids.map(func(id):return int(id)) and str(row.revision)==native.revision,"Paged group snapshot differs from native")
+		var evidence:=FileAccess.open(directory+"/stocks-pages-wire-result.json",FileAccess.WRITE)
+		evidence.store_string(JSON.stringify({"success":not failed,"item_count":large.get("items",[]).size(),"caption_bytes":caption_bytes,"group_count":large.get("groups",[]).size()}));evidence.close()
 	if OS.get_environment("DF3D_STOCKS_CONTENTS_WIRE")=="1":
 		var observed: Array=[]
 		for expected in reference.contents:

@@ -430,7 +430,7 @@ struct ProductionState {
   std::string detail;
 };
 struct StocksGroupKey {int16_t type=-1,subtype=-1,subcat1=-1,subcat2=-1;};
-struct StocksMenuRequest {int16_t category=-1;std::string query;std::vector<int32_t> itemIds;std::optional<StocksGroupKey> target;uint64_t expectedRevision=0;StocksFlagAction operation=StocksFlagAction::Forbid;int8_t value=-1;int32_t itemId=-1;};
+struct StocksMenuRequest {int16_t category=-1;std::string query;std::vector<int32_t> itemIds;std::optional<StocksGroupKey> target;uint64_t expectedRevision=0;StocksFlagAction operation=StocksFlagAction::Forbid;int8_t value=-1;int32_t itemId=-1;uint64_t pageRequest=0;uint32_t pageOffset=0;};
 struct StocksCategoryRow {int16_t type=-1;std::string caption,stored,unavailable;bool matches=false;};
 struct StocksGroupRow {StocksGroupKey key;int32_t amount=0;std::string caption;bool matches=false,expanded=false;uint8_t flags=0;uint64_t revision=0;std::vector<int32_t> itemIds;};
 struct StocksItemRow {int32_t id=-1;int16_t type=-1;std::string caption;uint32_t flags=0;bool canDump=false,canMelt=false;std::string materialToken,subtypeRaw;std::optional<ItemInspectionAppearance> appearance;};

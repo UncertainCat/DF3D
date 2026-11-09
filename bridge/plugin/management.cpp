@@ -522,6 +522,7 @@ struct StocksResult {
   std::vector<StocksItemResult> items;
 };
 std::optional<StocksResult> stocks;
+df3d::stocks_pages::Store stocksReplies;
 
 // Category -1 requests only the catalog. Selection and expansion belong to
 // the viewer; no native menu state is read or changed by this snapshot.
@@ -676,6 +677,17 @@ void processJobDraft(df::job& source,int32_t unitId,int32_t buildingId,int16_t o
   } catch(...) {jobSettings.reset();if(writing)jobSettingsEdit->outcome=uncertain?m::JobSettingsEditOutcome::Unknown:m::JobSettingsEditOutcome::Rejected;}
 }
 
+bool publishStocksPage(df3d::stocks_pages::Identity identity,uint32_t offset) {
+  const auto page=stocksReplies.read(identity,offset);if(!page)return false;
+  flatbuffers::FlatBufferBuilder b;
+  const auto part=m::CreateStocksReplyPage(b,identity.request,page->total,page->offset,b.CreateVector(page->bytes));
+  m::ManagementStateBuilder state(b);state.add_revision(++revision);state.add_world_epoch(epoch);
+  state.add_client_id(client);state.add_request_seq(seq);state.add_action(action);state.add_status(m::ManagementStatus::Pending);state.add_stocks_page(part);
+  b.Finish(state.Finish());
+  sh::publishSnapshot(region,b.GetBufferPointer(),b.GetSize(),revision);
+  if(reply)sh::publishSnapshot(reply->region(),b.GetBufferPointer(),b.GetSize(),revision);
+  reply.reset();status=m::ManagementStatus::Ok;return true;
+}
 void publish() {
   flatbuffers::FlatBufferBuilder b;
   std::vector<flatbuffers::Offset<m::BuildingDefinition>> ds;
@@ -1289,7 +1301,11 @@ void publish() {
   b.Finish(s);
   auto validationError=m::validateManagementState(
       *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()));
-  if(stocks && b.GetSize()>m::kManagementCapacity)validationError="stocks response exceeds channel capacity";
+  if(stocks && !validationError && b.GetSize()>m::kManagementCapacity) {
+    if(b.GetSize()<=df3d::stocks_pages::retainedBytes &&
+       stocksReplies.capture({epoch,client,seq},{b.GetBufferPointer(),b.GetBufferPointer()+b.GetSize()}) && publishStocksPage({epoch,client,seq},0))return;
+    validationError="stocks response exceeds retained reply budget";
+  }
   if (auto e = validationError) {
     if (publishingFallback) {
       // The minimal fallback failed validation too: nothing sane to publish.
@@ -4286,6 +4302,11 @@ void run(color_ostream& out) {
     status=m::ManagementStatus::Rejected;message.clear();stocks.emplace();bool writeStarted=false;
     try {
       const auto& q=*r->stocks_menu();
+      if(q.page_request()) {
+        if(!publishStocksPage({epoch,client,q.page_request()},q.page_offset())){message="Stocks reply expired";publish();}
+        return;
+      }
+      stocksReplies.retire(client);
       if(r->action()==m::ManagementAction::StocksMenuRead){
         std::vector<int32_t> ids;if(q.item_ids())ids.assign(q.item_ids()->begin(),q.item_ids()->end());
         stocks=readStocks(q.category(),UTF2DF(q.query()->str()),ids);
@@ -6127,6 +6148,7 @@ void stop() {
     mapping = nullptr;
   }
   reply.reset();
+  stocksReplies.clear();
   epoch = revision = client = seq = 0;
   request.clear();
   clearResult();
@@ -6198,7 +6220,7 @@ void update(color_ostream& out, uint64_t worldEpoch, bool saving) {
     areaHints.clear();terrainHint=false;mutated=false;
     if(reply && status==m::ManagementStatus::Pending){status=m::ManagementStatus::Rejected;message="World changed before operation completed";publish();}
     reply.reset();
-    epoch = worldEpoch;
+    epoch = worldEpoch;stocksReplies.world(epoch);
     client = seq = 0;
     request.clear();
     clearResult();

@@ -14,6 +14,11 @@ struct ManagementClient::Impl {
   std::vector<uint8_t> publicScratch;
 #endif
   std::vector<uint8_t> scratch;
+  df3d::stocks_pages::Assembly assembly;
+  std::vector<uint8_t> assembled;
+  uint64_t transportSeq=0;
+  ManagementAction logicalAction=ManagementAction::Catalog;
+  bool paging=false;
 };
 ManagementClient::ManagementClient() : impl_(new Impl) {}
 ManagementClient::~ManagementClient() = default;
@@ -56,7 +61,7 @@ bool ManagementClient::poll() {
     state_ = {};
     state_.status = ManagementStatus::Rejected;
     error_ = state_.message = "DF process or management bridge ended";
-    pending_ = 0;
+    pending_ = 0;i.assembly.reset();i.assembled.clear();i.paging=false;
     return false;
   }
   // Public metadata announces world changes; private replies survive other clients.
@@ -73,7 +78,7 @@ bool ManagementClient::poll() {
   auto n = i.channel->readReply(i.scratch.data(), i.scratch.size());
   if (broadcast && (!n || state_.worldEpoch != broadcast->world_epoch())) {
     if (state_.worldEpoch != broadcast->world_epoch()) {
-      pending_ = 0;
+      pending_ = 0;i.assembly.reset();i.assembled.clear();i.paging=false;
       catalogReady_ = false;
       state_ = {};
       state_.worldEpoch = broadcast->world_epoch();
@@ -100,6 +105,42 @@ bool ManagementClient::poll() {
     return false;
   if (broadcast && s->world_epoch() != broadcast->world_epoch())
     return false;
+  const auto failTransfer=[&](const char* why) {
+    const auto epoch=state_.worldEpoch;state_={};state_.worldEpoch=epoch;state_.revision=s->revision();
+    state_.requestSeq=pending_;state_.action=i.logicalAction;state_.status=ManagementStatus::Rejected;
+    if(i.logicalAction==ManagementAction::StocksGroupApply || i.logicalAction==ManagementAction::StocksItemApply) {
+      state_.stocksMenu.emplace();state_.stocksMenu->outcome=StocksMenuOutcome::Unknown;
+    }
+    error_=why;pending_=0;i.assembly.reset();i.assembled.clear();i.paging=false;return true;
+  };
+  if(const auto* page=s->stocks_page()) {
+    if(!pending_ || s->request_seq()!=i.transportSeq)return false;
+    if(page->request_seq()!=pending_ || s->world_epoch()!=state_.worldEpoch ||
+       s->action()!=m::ManagementAction(i.paging?ManagementAction::StocksMenuRead:i.logicalAction))return failTransfer("Mismatched Stocks reply page");
+    df3d::stocks_pages::Page part{{s->world_epoch(),s->client_id(),page->request_seq()},page->total(),page->offset(),
+      {page->bytes()->begin(),page->bytes()->end()}};
+    if(!i.assembly.append(part))return failTransfer("Invalid Stocks reply sequence");
+    i.paging=true;
+    if(!i.assembly.complete()) {
+      ManagementRequest continuation;continuation.action=ManagementAction::StocksMenuRead;
+      continuation.stocksMenu.pageRequest=pending_;continuation.stocksMenu.pageOffset=i.assembly.nextOffset();
+      flatbuffers::FlatBufferBuilder command;
+      detail::management::encodeRequest(command,continuation,clientId_,seq_+1,state_.worldEpoch);
+      if(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(command.GetBufferPointer())) ||
+         !i.channel->push(command.GetBufferPointer(),command.GetSize()))return failTransfer("Stocks continuation unavailable");
+      i.transportSeq=++seq_;return false;
+    }
+    i.assembled=std::move(*i.assembly.take());
+    flatbuffers::Verifier complete(i.assembled.data(),i.assembled.size());
+    if(!complete.VerifyBuffer<m::ManagementState>(nullptr))return failTransfer("Malformed complete Stocks reply");
+    s=flatbuffers::GetRoot<m::ManagementState>(i.assembled.data());
+    if(s->stocks_page() || m::validateManagementState(*s) || s->client_id()!=clientId_ || s->world_epoch()!=state_.worldEpoch ||
+       s->request_seq()!=pending_ || s->action()!=m::ManagementAction(i.logicalAction) || !s->stocks_menu())return failTransfer("Mismatched complete Stocks reply");
+    i.paging=false;
+  }else if(i.paging) {
+    if(s->request_seq()!=i.transportSeq)return false;
+    return failTransfer("Stocks capture unavailable");
+  }
   if (s->revision() == state_.revision)
     return false;
   if (state_.worldEpoch && state_.worldEpoch != s->world_epoch()) {
@@ -153,6 +194,8 @@ uint64_t ManagementClient::send(const ManagementRequest& r) {
     return 0;
   }
   pending_ = ++seq_;
+  impl_->transportSeq=pending_;impl_->logicalAction=r.action;impl_->paging=false;impl_->assembled.clear();
+  impl_->assembly.begin({state_.worldEpoch,clientId_,pending_});
   state_.requestSeq = pending_;
   state_.status = ManagementStatus::Pending;
   error_.clear();

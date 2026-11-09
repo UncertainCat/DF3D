@@ -1,6 +1,7 @@
 #include "doctest.h"
 #include "wm/management_client.h"
 #include "management_util.h"
+#include "management_codecs.h"
 #include "client_mailbox.h"
 #include <memory>
 #include <iostream>
@@ -1570,3 +1571,69 @@ TEST_CASE("uncertain citizen mutations cannot publish reusable authority") {
   CHECK(validate(m::ManagementAction::CitizenList,m::ManagementStatus::Rejected,true)=="invalid uncertain citizen outcome");
   CHECK(validate(m::ManagementAction::WorkDetailInspect,m::ManagementStatus::Rejected,true)=="invalid uncertain citizen outcome");
 }
+
+#ifdef _WIN32
+TEST_CASE("Stocks large replies assemble under one logical request without replay") {
+  for(int mode=0;mode<5;++mode) {
+    ManagementPublisher p;p.publish(1);auto c=openClient(p);const auto owner=claim(p,*c);
+    wm::ManagementRequest request;request.action=mode>=2?wm::ManagementAction::StocksGroupApply:wm::ManagementAction::StocksMenuRead;
+    request.stocksMenu.category=39;
+    if(mode>=2){request.stocksMenu.target=wm::StocksGroupKey{39,0,0,0};request.stocksMenu.expectedRevision=1;request.stocksMenu.value=1;}
+    const auto logical=c->send(request);REQUIRE(logical);p.pop();
+    flatbuffers::FlatBufferBuilder full;
+    std::vector<flatbuffers::Offset<mm::StocksCategoryRow>> cats;
+    for(int type=0;type<93;++type)cats.push_back(mm::CreateStocksCategoryRow(full,int16_t(type),full.CreateString("category"),full.CreateString("None"),full.CreateString(""),true));
+    std::vector<int32_t> ids(131072);for(size_t j=0;j<ids.size();++j)ids[j]=int32_t(j);
+    auto group=mm::CreateStocksGroupRow(full,mm::CreateStocksGroupKey(full,39,0,0,0),int32_t(ids.size()),full.CreateString("group"),true,true,0,1,full.CreateVector(ids));
+    auto data=mm::CreateStocksMenuState(full,mode>=2?mm::StocksMenuOutcome::Applied:mm::StocksMenuOutcome::None,39,full.CreateVector(cats),full.CreateVector(std::vector<flatbuffers::Offset<mm::StocksGroupRow>>{group}),full.CreateVector(std::vector<flatbuffers::Offset<mm::StocksItemRow>>{}));
+    mm::ManagementStateBuilder state(full);state.add_revision(3);state.add_client_id(owner.id);state.add_request_seq(logical);state.add_world_epoch(7);state.add_action(mm::ManagementAction(request.action));state.add_status(mm::ManagementStatus::Ok);state.add_stocks_menu(data);full.Finish(state.Finish());
+    REQUIRE(full.GetSize()>mm::kManagementCapacity);REQUIRE_FALSE(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(full.GetBufferPointer())));
+    uint64_t transport=logical,revision=4;uint32_t offset=0;
+    while(offset<full.GetSize()) {
+      if(offset && (mode==1 || mode==2)) {
+        p.publish(revision++,owner.id,transport,7,mm::ManagementAction::StocksMenuRead,mm::ManagementStatus::Rejected);
+        REQUIRE(c->poll());CHECK(c->state().requestSeq==logical);CHECK(c->state().action==request.action);CHECK(c->state().status==wm::ManagementStatus::Rejected);
+        if(mode==2){REQUIRE(c->state().stocksMenu);CHECK(c->state().stocksMenu->outcome==wm::StocksMenuOutcome::Unknown);}else CHECK_FALSE(c->state().stocksMenu);
+        CHECK(shm::popCommand(p.region,p.bytes.data(),p.bytes.size())==0);break;
+      }
+      if(offset && mode==3){p.publish(revision++,0,0,8);REQUIRE(c->poll());CHECK(c->state().worldEpoch==8);CHECK_FALSE(c->state().stocksMenu);break;}
+      flatbuffers::FlatBufferBuilder page;
+      const auto count=std::min(df3d::stocks_pages::pageBytes,uint32_t(full.GetSize()-offset));
+      const auto part=mm::CreateStocksReplyPage(page,logical,uint32_t(full.GetSize()),offset,page.CreateVector(full.GetBufferPointer()+offset,count));
+      mm::ManagementStateBuilder envelope(page);envelope.add_revision(revision++);envelope.add_client_id(owner.id);envelope.add_request_seq(transport);envelope.add_world_epoch(7);envelope.add_action(offset?mm::ManagementAction::StocksMenuRead:mm::ManagementAction(request.action));envelope.add_status(mm::ManagementStatus::Pending);envelope.add_stocks_page(part);page.Finish(envelope.Finish());
+      REQUIRE_FALSE(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(page.GetBufferPointer())));REQUIRE(p.write(page.GetBufferPointer(),page.GetSize()));
+      offset+=count;
+      if(offset<full.GetSize()) {
+        CHECK_FALSE(c->poll());CHECK(c->state().requestSeq==logical);CHECK(c->state().status==wm::ManagementStatus::Pending);CHECK_FALSE(c->state().stocksMenu);
+        const auto* next=p.pop();CHECK(next->action()==mm::ManagementAction::StocksMenuRead);CHECK(next->stocks_menu()->page_request()==logical);CHECK(next->stocks_menu()->page_offset()==offset);transport=next->seq();
+        CHECK_FALSE(c->poll());CHECK(shm::popCommand(p.region,p.bytes.data(),p.bytes.size())==0);
+      } else {
+        REQUIRE(c->poll());CHECK(c->state().requestSeq==logical);CHECK(c->state().action==request.action);CHECK(c->state().status==wm::ManagementStatus::Ok);
+        REQUIRE(c->state().stocksMenu);REQUIRE(c->state().stocksMenu->groups.size()==1);CHECK(c->state().stocksMenu->groups[0].itemIds==ids);
+        CHECK(c->send({})>transport);CHECK(p.pop()->action()==mm::ManagementAction::Catalog);
+      }
+    }
+  }
+}
+
+TEST_CASE("Stocks page envelopes and continuation requests reject mixed or malformed fields") {
+  for(int fault=0;fault<9;++fault) {
+    flatbuffers::FlatBufferBuilder b;std::vector<uint8_t> bytes(17,42);
+    if(fault==1)bytes.clear();
+    auto page=mm::CreateStocksReplyPage(b,fault==2?0:2,fault==3?df3d::stocks_pages::retainedBytes+1:17,fault==4?1:0,b.CreateVector(bytes));
+    mm::ManagementStateBuilder state(b);state.add_revision(1);state.add_world_epoch(fault==5?0:7);state.add_client_id(fault==6?0:3);state.add_request_seq(2);
+    state.add_action(fault==7?mm::ManagementAction::Catalog:mm::ManagementAction::StocksMenuRead);
+    state.add_status(fault==8?mm::ManagementStatus::Ok:mm::ManagementStatus::Pending);state.add_stocks_page(page);b.Finish(state.Finish());
+    CHECK(bool(mm::validateManagementState(*flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer())))==(fault!=0));
+  }
+  for(int fault=0;fault<7;++fault) {
+    wm::ManagementRequest request;request.action=wm::ManagementAction::StocksMenuRead;
+    auto& q=request.stocksMenu;q.pageRequest=2;q.pageOffset=df3d::stocks_pages::pageBytes;
+    if(fault==1)q.pageRequest=3;if(fault==2)q.pageOffset=1;if(fault==3)q.category=39;
+    if(fault==4)q.query="filter";if(fault==5)q.itemIds={1};if(fault==6)q.pageRequest=0;
+    flatbuffers::FlatBufferBuilder b;wm::detail::management::encodeRequest(b,request,3,3,7);
+    CHECK(bool(mm::validateConstructionRequest(*flatbuffers::GetRoot<mm::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
+  }
+}
+
+#endif

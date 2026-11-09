@@ -188,7 +188,7 @@ inline std::optional<std::vector<Group>> groups() {
     for(size_t i=0;i<count;++i)result.push_back({owned.type[i],owned.subtype[i],owned.subcat1[i],owned.subcat2[i],owned.amount[i],owned.expanded[i]});
     return result;
 }
-struct SelectedGroup {Group group;bool matches;uint32_t flags;std::vector<int32_t> ids;};
+struct SelectedGroup {Group group;bool matches;uint32_t flags;std::vector<int32_t> ids;uint64_t revision=0;};
 struct Selection {std::vector<int32_t> ids;std::vector<SelectedGroup> groups;};
 inline std::optional<Selection> selection(int16_t type,std::string query) {
     if(type<0 || type>=93 || !df3d_production::buildingItemFunctions())return std::nullopt;
@@ -245,8 +245,49 @@ inline std::optional<Selection> selection(int16_t type,std::string query) {
         }}
     df3d_creature::KnowledgeMaterialCacheRestore restore(df::global::world->raws.creatures.hist_fig_to_creature_map);
     reinterpret_cast<void(*)(df::stocks_interfacest*)>(base+0x37d350)(&owned);
-    for(size_t i=0;i<result.groups.size();++i){result.groups[i].matches=owned.current_type_a_on[i];result.groups[i].flags=owned.current_type_a_flag[i].whole;}
+    const auto& actions=df3d_production::buildingItemFunctions();
+    for(size_t i=0;i<result.groups.size();++i){auto& row=result.groups[i];row.matches=owned.current_type_a_on[i];row.flags=owned.current_type_a_flag[i].whole;
+        uint64_t hash=UINT64_C(14695981039346656037);
+        const auto add=[&](uint64_t value){for(unsigned byte=0;byte<8;++byte){hash^=uint8_t(value>>(byte*8));hash*=UINT64_C(1099511628211);}};
+        add(type);add(row.group.subtype);add(row.group.subcat1);add(row.group.subcat2);add(row.group.amount);
+        for(auto id:row.ids){auto* item=df::item::find(id);if(!item)return std::nullopt;
+            add(id);add(item->flags.whole);add(item->getStackSize());add(actions.canDump(item));add(actions.canMelt(item));
+            add(item->stockpile_countdown);add(item->stockpile_delay);}
+        row.revision=(hash&INT64_MAX);if(!row.revision)row.revision=1;
+    }
     return result;
+}
+enum class EditOutcome {Rejected,Applied,Stale,Unknown};
+// changed counts successful explicit native helper calls, not affected items:
+// native forbid can propagate to related members before their loop iteration.
+struct GroupEdit {EditOutcome outcome=EditOutcome::Rejected;uint32_t changed=0;std::optional<Selection> receipt;};
+// Call at a safe point with session/epoch authority. Expected revision covers
+// identity, complete membership, flags and native eligibility. Never replay an
+// Unknown result: native helpers may have already applied part of the intent.
+inline GroupEdit editGroup(const Group& key,uint64_t expected,df3d_production::BuildingItemAction action,bool desired) {
+    using namespace df3d_production;
+    GroupEdit result;bool entered=false;
+    if(!expected || int(action)<0 || int(action)>3)return result;
+    try {
+        auto before=selection(key.type,"");if(!before)return result;
+        const auto found=std::find_if(before->groups.begin(),before->groups.end(),[&](const SelectedGroup& row){
+            return row.group.subtype==key.subtype && row.group.subcat1==key.subcat1 && row.group.subcat2==key.subcat2;});
+        if(found==before->groups.end() || found->revision!=expected){result.outcome=EditOutcome::Stale;result.receipt=std::move(before);return result;}
+        const auto& native=buildingItemFunctions();std::vector<df::item*> targets;
+        for(auto id:found->ids){auto* item=df::item::find(id);if(!item)return result;
+            if(action==BuildingItemAction::Dump && !native.canDump(item))continue;
+            if(action==BuildingItemAction::Melt && !native.canMelt(item))continue;
+            targets.push_back(item);}
+        if(targets.empty()){result.receipt=std::move(before);return result;}
+        for(auto* item:targets)if(buildingItemValue(item,action)!=desired){
+            entered=true;result.outcome=EditOutcome::Unknown;
+            if(!setBuildingItemFlag(item,action,desired))return result;
+            ++result.changed;
+        }
+        result.receipt=selection(key.type,"");if(!result.receipt){if(entered)result.outcome=EditOutcome::Unknown;return result;}
+        for(auto* item:targets)if(buildingItemValue(item,action)!=desired){result.outcome=EditOutcome::Unknown;return result;}
+        result.outcome=EditOutcome::Applied;return result;
+    }catch(...){result.outcome=entered?EditOutcome::Unknown:EditOutcome::Rejected;return result;}
 }
 // Category insertion is inline in the unsafe menu initializer. Preserve its
 // seed permutation and lower-bound insertion (equal captions reverse seed

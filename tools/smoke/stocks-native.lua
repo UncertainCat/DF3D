@@ -185,6 +185,10 @@ if cold_selections then
  end
  select_type(original_type);stocks.scroll_position_type=0;view:render(dfhack.getTickCount())
 end
+if os.getenv('DF3D_STOCKS_ACTIONS')=='1' then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-native.lua$','stocks-actions-native.lua')
+ assert(loadfile(source))(view,result,probe)
+end
 for y=0,df.global.gps.dimy-1 do
  local row={};for x=0,df.global.gps.dimx-1 do row[#row+1]=dfhack.screen.readTile(x,y).ch end
  result.screen_rows[#result.screen_rows+1]=row

@@ -1898,5 +1898,88 @@
     "msvc": "build/notes/pm/stocks-members-msvc.log",
     "qa": "build/qa/stocks-native-members",
     "diagnostics": "Native log clean; no viewer launched."
+  },
+  "group_action_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-223822",
+    "cases": [
+      {
+        "action": "forbid",
+        "disabled": {
+          "changed": 9,
+          "outcome": 1,
+          "receipt": true
+        },
+        "enabled": {
+          "changed": 1,
+          "outcome": 1,
+          "receipt": true
+        },
+        "missing_rejected": true,
+        "replay_rejected": true,
+        "stale_rejected": true,
+        "native_on_sha256": "f087b0abb03238377222cc42b5fb5def3ed7bb39e18ca973cd2fd2e438fe1857",
+        "native_off_sha256": "b8791d1fb39a28252c1bc727c9792f3fc1a31d6f7300fb10d2e7c7cab7cb9a84"
+      },
+      {
+        "action": "dump",
+        "disabled": {
+          "changed": 9,
+          "outcome": 1,
+          "receipt": true
+        },
+        "enabled": {
+          "changed": 9,
+          "outcome": 1,
+          "receipt": true
+        },
+        "missing_rejected": true,
+        "replay_rejected": true,
+        "stale_rejected": true,
+        "native_on_sha256": "032a685928fd7fc70b0d560537722125fb8c028d7ed02a7b004a388990c3be9a",
+        "native_off_sha256": "010060090b3c7807b27db69df39e1de6ad3388f7b99216ea26b688e0cf9d76ba"
+      },
+      {
+        "action": "melt",
+        "disabled": {
+          "changed": 9,
+          "outcome": 1,
+          "receipt": true
+        },
+        "enabled": {
+          "changed": 9,
+          "outcome": 1,
+          "receipt": true
+        },
+        "missing_rejected": true,
+        "replay_rejected": true,
+        "stale_rejected": true,
+        "native_on_sha256": "413d05b47236874f9a1c621babb2e78123b8483eeff661fb923cb29563eacf99",
+        "native_off_sha256": "010060090b3c7807b27db69df39e1de6ad3388f7b99216ea26b688e0cf9d76ba"
+      },
+      {
+        "action": "hidden",
+        "disabled": {
+          "changed": 9,
+          "outcome": 1,
+          "receipt": true
+        },
+        "enabled": {
+          "changed": 9,
+          "outcome": 1,
+          "receipt": true
+        },
+        "missing_rejected": true,
+        "replay_rejected": true,
+        "stale_rejected": true,
+        "native_on_sha256": "5db486453f1cab276ca5d38f7eed1f2936282afd287a945dd1aea2d1e4b74dd5",
+        "native_off_sha256": "010060090b3c7807b27db69df39e1de6ad3388f7b99216ea26b688e0cf9d76ba"
+      }
+    ],
+    "scope": "First Ammunition group: native and provider forbid/dump/melt/hidden enable and disable effects match for category item flags, stockpile countdown/delay and global melt registration. Stale, missing-group and stale replay rejected without those changes. Original state restored. No job-cancellation, mixed eligibility, transport or viewer acceptance.",
+    "source_save": "unchanged; owned DF40468 exited unsaved",
+    "plugin_sha256": "e4f0dd38c1732fc83e94365a64098627b4b0b427e6315f5a49b623bdf72044dd",
+    "msvc": "build/notes/pm/stocks-actions-msvc.log",
+    "qa": "build/qa/stocks-native-actions",
+    "diagnostics": "Native log clean; no viewer launched."
   }
 }

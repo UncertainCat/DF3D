@@ -174,7 +174,23 @@ forbid/dump/melt/visibility helpers and inline flag changes. Group input324f02..
 with per-item native dump/melt eligibility checks. Reuse those semantic helpers
 with current owned membership and stale-target validation; do not call the
 global input handler or reconstruct side effects in presentation code.
-Action execution, transport and the screen remain unfinished.
+`editGroup` accepts the stable group key, expected revision, action and desired
+value. Group revisions cover complete ordered membership, item flags, stack
+counts, native eligibility and stockpile timers. It rebuilds current authority
+before editing, rejects stale/missing groups, uses the existing native item
+helpers, and obtains a fresh receipt. Failures after entry remain Unknown and
+must never be replayed automatically. Session/epoch validation remains the
+transport caller's responsibility. The diagnostic `changed` count represents
+explicit helper calls, not affected item count: native forbid can propagate to
+other members before their loop iteration.
+Protected223822 compares first-group Ammunition forbid/dump/melt/hidden on/off
+against actual native clicks. Category flags, stockpile timers and global melt
+registration match; stale, missing-group and stale replay requests change none
+of those observations. Original state restored; source unchanged, DF40468 exits
+unsaved, native log clean, GPU60C sampled. MSVC/core19 (`stocks-native-actions`)
+pass; `group_action_reference` retains case digests. This does not establish
+job-cancellation or mixed-eligibility coverage. Transport and the screen remain
+unfinished; individual item commands can reuse the existing item edit route.
 
 ## Stone use native semantics and presentation
 

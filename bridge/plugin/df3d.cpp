@@ -2691,8 +2691,12 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             row["rating"]=skill.rating;row["caption"]=DF2UTF(skill.caption);result["skills"].append(row);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
-        if(parameters[0]=="stocks-group-edit-probe") {
-          if(parameters.size()!=9)return CR_WRONG_USAGE;
+        if(parameters[0]=="stocks-group-edit-probe" || parameters[0]=="stocks-item-edit-probe") {
+          const bool individual=parameters[0]=="stocks-item-edit-probe";
+          if(parameters.size()!=(individual?10:9))return CR_WRONG_USAGE;
+          int32_t itemId=-1;
+          if(individual){const auto& raw=parameters[9];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),itemId);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || itemId<0)return CR_WRONG_USAGE;}
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
           int32_t values[4];for(size_t i=0;i<4;++i){const auto& raw=parameters[i+1];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i]);
             if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || values[i]<INT16_MIN || values[i]>INT16_MAX)return CR_WRONG_USAGE;}
@@ -2705,7 +2709,9 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(parameters[6]!="0" && parameters[6]!="1")return CR_WRONG_USAGE;
           uint64_t expected=0;const auto& raw=parameters[7];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),expected);
           if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || !expected || expected>INT64_MAX || parameters[8]!="owned-test")return CR_WRONG_USAGE;
-          const auto result=df3d_stocks::editGroup({int16_t(values[0]),int16_t(values[1]),int16_t(values[2]),int16_t(values[3]),0,false},expected,action,parameters[6]=="1");
+          const df3d_stocks::Group key{int16_t(values[0]),int16_t(values[1]),int16_t(values[2]),int16_t(values[3]),0,false};
+          const auto result=individual?df3d_stocks::editItem(key,expected,itemId,action,parameters[6]=="1"):
+            df3d_stocks::editGroup(key,expected,action,parameters[6]=="1");
           Json::Value output(Json::objectValue);output["outcome"]=int(result.outcome);output["changed"]=result.changed;output["receipt"]=bool(result.receipt);
           out.print("{}",Json::FastWriter().write(output));return CR_OK;
         }

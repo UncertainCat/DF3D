@@ -271,17 +271,19 @@ struct GroupEdit {EditOutcome outcome=EditOutcome::Rejected;uint32_t changed=0;s
 // Call at a safe point with session/epoch authority. Expected revision covers
 // identity, complete membership, flags and native eligibility. Never replay an
 // Unknown result: native helpers may have already applied part of the intent.
-inline GroupEdit editGroup(const Group& key,uint64_t expected,df3d_production::BuildingItemAction action,bool desired) {
+inline GroupEdit editSelection(const Group& key,uint64_t expected,df3d_production::BuildingItemAction action,bool desired,std::optional<int32_t> target) {
     using namespace df3d_production;
     GroupEdit result;bool entered=false;
-    if(!expected || int(action)<0 || int(action)>3)return result;
+    if(!expected || int(action)<0 || int(action)>3 || (target && *target<0))return result;
     try {
         auto before=selection(key.type,"");if(!before)return result;
         const auto found=std::find_if(before->groups.begin(),before->groups.end(),[&](const SelectedGroup& row){
             return row.group.subtype==key.subtype && row.group.subcat1==key.subcat1 && row.group.subcat2==key.subcat2;});
         if(found==before->groups.end() || found->revision!=expected){result.outcome=EditOutcome::Stale;result.receipt=std::move(before);return result;}
+        if(target && std::find(found->ids.begin(),found->ids.end(),*target)==found->ids.end()){result.outcome=EditOutcome::Stale;result.receipt=std::move(before);return result;}
         const auto& native=buildingItemFunctions();std::vector<df::item*> targets;
-        for(auto id:found->ids){auto* item=df::item::find(id);if(!item)return result;
+        for(auto id:found->ids){if(target && id!=*target)continue;
+            auto* item=df::item::find(id);if(!item)return result;
             if(action==BuildingItemAction::Dump && !native.canDump(item))continue;
             if(action==BuildingItemAction::Melt && !native.canMelt(item))continue;
             targets.push_back(item);}
@@ -295,6 +297,15 @@ inline GroupEdit editGroup(const Group& key,uint64_t expected,df3d_production::B
         for(auto* item:targets)if(buildingItemValue(item,action)!=desired){result.outcome=EditOutcome::Unknown;return result;}
         result.outcome=EditOutcome::Applied;return result;
     }catch(...){result.outcome=entered?EditOutcome::Unknown:EditOutcome::Rejected;return result;}
+}
+inline GroupEdit editGroup(const Group& key,uint64_t expected,df3d_production::BuildingItemAction action,bool desired) {
+    return editSelection(key,expected,action,desired,std::nullopt);
+}
+// Stocks input325fca..326139 uses the same item helpers as group actions.
+// Guard against the owned displayed group revision and membership; editing an
+// item does not require constructing its description, holder or item sheet.
+inline GroupEdit editItem(const Group& key,uint64_t expected,int32_t itemId,df3d_production::BuildingItemAction action,bool desired) {
+    return editSelection(key,expected,action,desired,itemId);
 }
 // Category insertion is inline in the unsafe menu initializer. Preserve its
 // seed permutation and lower-bound insertion (equal captions reverse seed

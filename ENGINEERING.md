@@ -109,6 +109,17 @@ Item View/Recenter/flag signals still have no owner.
 Search input, scroll/resize parity, filter help, complete item appearance and actions,
 main-scene ownership and large-inventory handling remain exposure prerequisites.
 
+Stocks individual flag edits use the same owned selection/revision guard and
+native item helpers as group edits. The target must still belong to the supplied
+group; no full item-sheet description or location lookup is required. Native
+input325fca..326139 is the reference. Protected234900 compares all four native
+first-item actions on/off against editItem: every IN_PLAY flag/timer and the
+complete melt-registration list match, and stale/missing/foreign/replayed intents
+have no effects. Original state is restored, source save unchanged, DF29096
+exits unsaved; native-only GPU48C sampled. Core19 and MSVC pass
+(`stocks-item-actions`). Typed request and viewer wiring remain pending; this
+is provider acceptance, not public individual-action acceptance.
+
 Management156 reuses native itemAppearance facts for the staged ammunition
 icons and the accepted diagonal ammunition artwork path. Core19, Stocks state
 and real Godot contract checks pass in `stocks-appearance156`; MSVC passes.

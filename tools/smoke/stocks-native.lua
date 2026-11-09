@@ -204,7 +204,7 @@ if cold_selections then
  end
  select_type(original_type);stocks.scroll_position_type=0;view:render(dfhack.getTickCount())
 end
-if os.getenv('DF3D_STOCKS_ACTIONS')=='1' then
+if os.getenv('DF3D_STOCKS_ACTIONS')=='1' or os.getenv('DF3D_STOCKS_ITEM_ACTIONS')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-native.lua$','stocks-actions-native.lua')
  assert(loadfile(source))(view,result,probe)
 end

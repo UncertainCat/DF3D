@@ -3462,5 +3462,82 @@
     "gpu": "30FPS;47-48C sampled",
     "diagnostics": "passed_with_known_issues: godot-separate-thread-notice, godot-device-finalize, godot-shutdown-objects; unclassified empty",
     "limitations": "No other item-family artwork, all ammunition variants, individual actions, full resize/input or large-inventory acceptance. Public Stocks remains hidden."
+  },
+  "individual_action_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-234900",
+    "sha256": "bb3f82c09e136a85c2ae55001158f40f93cc999c1b12ff7283b8aaa30d8c0a93",
+    "qa": "build/qa/stocks-item-actions",
+    "bridge_build": "build/notes/pm/stocks-item-actions-msvc.log",
+    "native_input": "325fca..326139",
+    "scope": "Actual native first Ammunition item clicks versus owned editItem on/off for Forbid, Dump, Melt and Hidden. Compare every IN_PLAY item flags/countdown/delay and full ANY_MELT_DESIGNATED membership/order. Restore original state. Stale revision, missing group, foreign-group item and replay rejected without effects.",
+    "actions": [
+      {
+        "action": "forbid",
+        "inventory_rows": 13079,
+        "enabled": {
+          "changed": 1,
+          "outcome": 1,
+          "receipt": true
+        },
+        "disabled": {
+          "changed": 1,
+          "outcome": 1,
+          "receipt": true
+        },
+        "native_on_sha256": "3fde5e49d7a0796d4c04bb53d0da06020185ffb2ce1dd08e17da532d2fd795f7",
+        "native_off_sha256": "0dda8ef185e510a240b934abb7f00af1016e18912114754a25ed394942e00f97"
+      },
+      {
+        "action": "dump",
+        "inventory_rows": 13079,
+        "enabled": {
+          "changed": 1,
+          "outcome": 1,
+          "receipt": true
+        },
+        "disabled": {
+          "changed": 1,
+          "outcome": 1,
+          "receipt": true
+        },
+        "native_on_sha256": "46eb708fb8d4515b2bee5fdf9d5a754888b1ffad56e912ca55e16ce3030ea827",
+        "native_off_sha256": "0dda8ef185e510a240b934abb7f00af1016e18912114754a25ed394942e00f97"
+      },
+      {
+        "action": "melt",
+        "inventory_rows": 13079,
+        "enabled": {
+          "changed": 1,
+          "outcome": 1,
+          "receipt": true
+        },
+        "disabled": {
+          "changed": 1,
+          "outcome": 1,
+          "receipt": true
+        },
+        "native_on_sha256": "b1a6e71173e77cd98208e870e08299aa7237766a2da35a9d6b6a246cfa000bec",
+        "native_off_sha256": "0dda8ef185e510a240b934abb7f00af1016e18912114754a25ed394942e00f97"
+      },
+      {
+        "action": "hidden",
+        "inventory_rows": 13079,
+        "enabled": {
+          "changed": 1,
+          "outcome": 1,
+          "receipt": true
+        },
+        "disabled": {
+          "changed": 1,
+          "outcome": 1,
+          "receipt": true
+        },
+        "native_on_sha256": "a1b3a71fcec0059771daa0de128be6163b962553db1398dcc6c573fce7c6bb26",
+        "native_off_sha256": "0dda8ef185e510a240b934abb7f00af1016e18912114754a25ed394942e00f97"
+      }
+    ],
+    "source_save": "unchanged; owned DF29096 exited unsaved",
+    "gpu": "48C sampled; native only, no viewer",
+    "limitations": "Provider acceptance only. Typed individual request and Stocks viewer wiring still pending; no all-item-family, job-cancellation or mixed-eligibility coverage."
   }
 }

@@ -197,7 +197,7 @@ try {
  $limit=(Get-Date).AddSeconds(600)
  while(-not(Test-Path "$out/result.json") -and (Get-Date) -lt $limit){
   if($owned.HasExited){throw 'Owned DF exited before the native capture completed'}
-  if(($env:DF3D_WORK_DETAILS_MODSORT -eq '1' -or $env:DF3D_WORK_DETAILS_RETENTION -eq '1' -or $env:DF3D_CHORES_LONG_NAME -eq '1' -or $env:DF3D_STONE_USE_NAV -eq '1' -or $env:DF3D_KITCHEN_MODSORT -eq '1' -or $env:DF3D_KITCHEN_NAV -eq '1' -or $env:DF3D_KITCHEN_LAYOUT -eq '1' -or $env:DF3D_KITCHEN_SEARCH -eq '1' -or $env:DF3D_CHORES_LAYOUT -eq '1' -or $env:DF3D_HUNTER_AMMUNITION_LAYOUT -eq '1' -or $ZoneOwner -or $ZoneAnimals -or $ZoneDefaults -or $LocationSupplies -or $LocationNames -or $FarmResize -or $FarmHeader -or $env:DF3D_WORK_ORDER_ARTWORK_RESIZE -eq '1' -or $env:DF3D_WORK_ORDER_LAYOUT -eq '1' -or $env:DF3D_RESIDENTS_QUERY -eq '1' -or $env:DF3D_WORK_DETAILS_QUERY_PROVIDER -eq '1' -or $env:DF3D_WORK_DETAILS_RENAME -eq '1' -or $env:DF3D_WORK_DETAILS_SHORTCUTS -eq '1' -or $env:DF3D_WORK_DETAILS_LAYOUT -eq '1' -or $env:DF3D_RESIDENTS_JOB_ART_RENDER -eq '1') -and (Test-Path "$out/owner-input-request")) {
+  if(($env:DF3D_STOCKS_WHEEL -eq '1' -or $env:DF3D_WORK_DETAILS_MODSORT -eq '1' -or $env:DF3D_WORK_DETAILS_RETENTION -eq '1' -or $env:DF3D_CHORES_LONG_NAME -eq '1' -or $env:DF3D_STONE_USE_NAV -eq '1' -or $env:DF3D_KITCHEN_MODSORT -eq '1' -or $env:DF3D_KITCHEN_NAV -eq '1' -or $env:DF3D_KITCHEN_LAYOUT -eq '1' -or $env:DF3D_KITCHEN_SEARCH -eq '1' -or $env:DF3D_CHORES_LAYOUT -eq '1' -or $env:DF3D_HUNTER_AMMUNITION_LAYOUT -eq '1' -or $ZoneOwner -or $ZoneAnimals -or $ZoneDefaults -or $LocationSupplies -or $LocationNames -or $FarmResize -or $FarmHeader -or $env:DF3D_WORK_ORDER_ARTWORK_RESIZE -eq '1' -or $env:DF3D_WORK_ORDER_LAYOUT -eq '1' -or $env:DF3D_RESIDENTS_QUERY -eq '1' -or $env:DF3D_WORK_DETAILS_QUERY_PROVIDER -eq '1' -or $env:DF3D_WORK_DETAILS_RENAME -eq '1' -or $env:DF3D_WORK_DETAILS_SHORTCUTS -eq '1' -or $env:DF3D_WORK_DETAILS_LAYOUT -eq '1' -or $env:DF3D_RESIDENTS_JOB_ART_RENDER -eq '1') -and (Test-Path "$out/owner-input-request")) {
    $action=(Get-Content "$out/owner-input-request" -Raw).Trim()
    $window=[Shot]::Find($owned.Id)
    switch($action) {
@@ -206,6 +206,11 @@ try {
     'kitchen-shift-up' {[Shot]::Modifier($window,160,42,$false)}
     'kitchen-control-down' {[Shot]::Modifier($window,17,29,$true)}
     'kitchen-control-up' {[Shot]::Modifier($window,17,29,$false)}
+    'stocks-wheel' {
+     $wheel=Get-Content -LiteralPath "$out/kitchen-wheel.json" -Raw | ConvertFrom-Json
+     if($env:DF3D_STOCKS_WHEEL -ne '1' -or "$($wheel.x),$($wheel.y)" -notin @('100,130','328,250','600,130','960,250','500,94','20,20') -or $wheel.delta -notin @(-120,120)){throw 'Stocks wheel outside probe bounds'}
+     [Shot]::KitchenWheel($window,$wheel.x,$wheel.y,$wheel.delta,$wheel.shift)
+    }
     'kitchen-wheel' {
      $wheel=Get-Content -LiteralPath "$out/kitchen-wheel.json" -Raw | ConvertFrom-Json
      if($wheel.x -notin @(200,944,1100) -or $wheel.y -notin @(250,750) -or $wheel.delta -notin @(-120,120)){throw 'Kitchen wheel outside probe bounds'}

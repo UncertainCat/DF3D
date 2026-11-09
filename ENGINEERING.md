@@ -94,6 +94,13 @@ physical mouse-wheel behavior remain unverified. Ignored standard-scroll and
 cursor bindings are not evidence for wheel behavior. See `filter_input_reference`
 in the Stocks fixture.
 
+Native013353 establishes context-scroll stepping: one category or one item
+text cell; the page binding advances18 categories or51 item cells at the captured
+size. The installed interface binds these to wheel and Shift-wheel. Direct
+context input outside the lists has no effect. Posted Windows wheel messages
+did not move either list, so physical-wheel delivery remains unaccepted; see
+`scroll_input_reference`. Viewer wheel routing is still pending.
+
 Pending reads/edits clear authority; close/session changes retire observers;
 Unknown cannot replay. Successful edits refresh the retained search before
 accepting another action. Headless `stocks-state` covers these transitions,

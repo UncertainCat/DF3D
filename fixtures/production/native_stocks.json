@@ -4067,5 +4067,327 @@
     "source_save": "unchanged; owned DF7012 exited unsaved",
     "gpu": "Native capped30FPS, sampled47C/2%; original preferences restored.",
     "limitations": "No physical mouse-wheel evidence. Ignored standard-scroll/page/cursor bindings do not establish wheel behavior. Non-ASCII casing and nonempty rendered filter are not accepted."
+  },
+  "scroll_input_reference": {
+    "capture": "build/stockpile-storage-native-input-20261109-013353",
+    "observations": [
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "category-STANDARDSCROLL_DOWN",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "category-STANDARDSCROLL_PAGEDOWN",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "category-CURSOR_DOWN",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 1,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "category-CONTEXT_SCROLL_DOWN",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 18,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "category-CONTEXT_SCROLL_PAGEDOWN",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "items-STANDARDSCROLL_DOWN",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "items-STANDARDSCROLL_PAGEDOWN",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "items-CURSOR_DOWN",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 1,
+        "name": "items-CONTEXT_SCROLL_DOWN",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 51,
+        "name": "items-CONTEXT_SCROLL_PAGEDOWN",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "outside-STANDARDSCROLL_DOWN",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "outside-STANDARDSCROLL_PAGEDOWN",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "outside-CURSOR_DOWN",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "outside-CONTEXT_SCROLL_DOWN",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "outside-CONTEXT_SCROLL_PAGEDOWN",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "physical-category-down",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "physical-category-up",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "physical-category-shift-down",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "physical-category-shift-up",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "physical-category-bar-down",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "physical-category-bar-up",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "physical-category-bar-shift-down",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "physical-category-bar-shift-up",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "physical-items-down",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "physical-items-up",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "physical-items-shift-down",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "physical-items-shift-up",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "physical-item-bar-down",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "physical-item-bar-up",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "physical-item-bar-shift-down",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "physical-item-bar-shift-up",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "physical-filter-down",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "physical-filter-up",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "physical-filter-shift-down",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "physical-filter-shift-up",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "physical-outside-down",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "physical-outside-up",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "physical-outside-shift-down",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "physical-outside-shift-up",
+        "query": ""
+      }
+    ],
+    "binding_source": "Installed prefs/interface.txt: CONTEXT_SCROLL_DOWN=MOUSEWHEEL:0:DOWN; CONTEXT_SCROLL_PAGEDOWN=MOUSEWHEEL:1:DOWN.",
+    "conclusions": "Native context-scroll moves categories by1 or page18 and item text cells by1 or page51 at this size; outside pointer has no effect. Standard/cursor keys have no effect.",
+    "limitations": "Posted WM_MOUSEWHEEL requests caused no movement even with explicit native pointer setup; OS message delivery is not accepted. Direct context binding results are native feed evidence, not physical-wheel acceptance. Scrollbar boundaries, resize and upward movement need further evidence.",
+    "source_save": "unchanged; owned DF42892 exited unsaved",
+    "gpu": "30FPS; sampled45C/0%; original preferences restored."
   }
 }

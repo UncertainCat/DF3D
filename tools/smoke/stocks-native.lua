@@ -314,7 +314,7 @@ if os.getenv('DF3D_STOCKS_DESTINATIONS')=='1' then
 end
 if os.getenv('DF3D_STOCKS_INPUT')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-native.lua$','stocks-input-native.lua')
- result.input=assert(loadfile(source))(view,stocks)
+ result.input=assert(loadfile(source))(view,stocks,out)
 end
 for y=0,df.global.gps.dimy-1 do
  local row={};for x=0,df.global.gps.dimx-1 do row[#row+1]=dfhack.screen.readTile(x,y).ch end

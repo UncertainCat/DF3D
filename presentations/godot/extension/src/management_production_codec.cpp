@@ -7,7 +7,6 @@
 
 namespace df3d_godot::management {
 using namespace godot;
-namespace {
 Dictionary contentsDictionary(const wm::ItemContainerContentsFacts& contents) {
   Dictionary result;result["container"]=contents.container;Array entries;
   for(const auto& e:contents.entries){Dictionary row;row["item_type"]=e.itemType;
@@ -15,6 +14,7 @@ Dictionary contentsDictionary(const wm::ItemContainerContentsFacts& contents) {
     row["metal"]=e.metal;row["coal"]=e.coal;row["contains_powder"]=e.containsPowder;row["rolls_sheets"]=e.rollsSheets;row["protects_folded_sheets"]=e.protectsFoldedSheets;row["contains_writing"]=e.containsWriting;entries.push_back(row);}
   result["entries"]=entries;return result;
 }
+namespace {
 constexpr int actionValue(wm::ManagementAction a) {
   return static_cast<int>(a);
 }

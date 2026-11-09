@@ -140,6 +140,19 @@ func run() -> void:
 				check(view.page.all(func(row):return row.has("group") or state.items.has(row.id)),"Resize left visible item facts missing")
 				await RenderingServer.frame_post_draw
 				root.get_texture().get_image().save_png(directory+"/stocks-view-resize-%dx%d.png"%[dimensions.x,dimensions.y])
+		if OS.get_environment("DF3D_STOCKS_ART_RENDER")=="1":
+			for kind in [0,2,4,5,30,32]:
+				state.select_category(kind)
+				if not await ready_state(state):quit(1);return
+				var visible_ids: Array=[]
+				for row in view.page:
+					if row.has("id"):visible_ids.append(row.id)
+				check(not visible_ids.is_empty() and visible_ids.all(func(id):return state.items.has(id) and view.icons.has(id) and view.icons[id].texture!=null),"Stocks category artwork unavailable: "+str(kind))
+				if kind==32:check(visible_ids.all(func(id):return state.items[id].appearance.has("contents")),"Stocks bin contents were dropped before rendering")
+				await RenderingServer.frame_post_draw
+				root.get_texture().get_image().save_png(directory+"/stocks-view-art-"+str(kind)+".png")
+			state.select_category(39)
+			if not await ready_state(state):quit(1);return
 		var expanded_count: int=view.total_rows
 		await click(Vector2(500,130))
 		if not await ready_state(state):quit(1);return

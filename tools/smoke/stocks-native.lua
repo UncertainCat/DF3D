@@ -316,6 +316,10 @@ if os.getenv('DF3D_STOCKS_INPUT')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-native.lua$','stocks-input-native.lua')
  result.input=assert(loadfile(source))(view,stocks,out)
 end
+if os.getenv('DF3D_STOCKS_ART_RENDER')=='1' then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-native.lua$','stocks-art-native.lua')
+ result.art=assert(loadfile(source))(out,view,stocks)
+end
 if os.getenv('DF3D_STOCKS_RESIZE')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-native.lua$','stocks-resize-native.lua')
  result.resize=assert(loadfile(source))(out,view,stocks)

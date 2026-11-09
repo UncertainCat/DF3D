@@ -37,6 +37,20 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
+Stocks reuses the shared item icon resolver for bars, blocks, boulders, wood,
+boxes and bins; native Stocks3a2a92 calls shared selectorc7cbc0. Protected015631
+has zero RGB differences across the first visible item regions for the first
+five families. Bins remain unaccepted:2136 pixels differ in contents coloring.
+This run exposed and fixed a missing Stocks-to-Godot contents projection using
+the shared contents serializer. The remaining provider issue is native material
+state-color fallback atc7e08d..c7e109; getColorWhetherDyedOrNot alone does not
+supply it for every family. No new protocol fields or native cache access.
+Core19, extension build and Stocks headless checks pass (`stocks-bin-dictionary`).
+Cold typed category reads, visible facts/icons and restored group edits pass;
+source unchanged, owned DF40256 exits unsaved,30FPS,42C sampled and known Godot
+diagnostics only. `shared_item_art_reference` scopes the captured pages and
+remaining bin defect. Broader families and item inspection remain unfinished.
+
 Management158 carries the staged `stocks_menu` domain with StocksMenuRead,
 StocksGroupApply and StocksItemApply on `Local\df3d_management_v158`. Rebuild
 bridge and viewer together; version157 peers use a different channel and are

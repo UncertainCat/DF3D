@@ -7779,5 +7779,203 @@
       "stocks-furniture-native-58.png": "eafc33e43b296eac60f13d693b6685e375bc359482e7f6136ba710ce45bffdbb",
       "stocks-furniture-view-58.png": "788096863513a976b9568295ca447d5f5dac6d8a111d2d56d704cf007f8ec324"
     }
+  },
+  "equipment_description_reference": {
+    "run": "build/stockpile-storage-native-input-20261109-073840",
+    "dispatch": [
+      {
+        "name": "item_backpackst",
+        "table": "0x16c54c0",
+        "kind": 61,
+        "get_type": "0x724a0",
+        "subtype": "0x66e60",
+        "differences": {},
+        "type_hash": "0xc53af550a9c41f3b",
+        "build_mat": "0x67050"
+      },
+      {
+        "name": "item_bagst",
+        "table": "0x15f7d10",
+        "kind": 31,
+        "get_type": "0xfd300",
+        "subtype": "0x66e60",
+        "differences": {},
+        "type_hash": "0x16014dac0538de61",
+        "build_mat": "0x67050"
+      },
+      {
+        "name": "item_crutchst",
+        "table": "0x16fd960",
+        "kind": 83,
+        "get_type": "0xb519d0",
+        "subtype": "0x66e60",
+        "differences": {},
+        "type_hash": "0xb78bf662bc1ee915",
+        "build_mat": "0x67050"
+      },
+      {
+        "name": "item_quiverst",
+        "table": "0x16c8ca0",
+        "kind": 62,
+        "get_type": "0x72420",
+        "subtype": "0x66e60",
+        "differences": {},
+        "type_hash": "0xb88d14262c766b3e",
+        "build_mat": "0x67050"
+      },
+      {
+        "name": "item_shieldst",
+        "table": "0x16c4c00",
+        "kind": 27,
+        "get_type": "0x7c7c0",
+        "subtype": "0xfd0c0",
+        "differences": {},
+        "type_hash": "0x48bc5a55fa75ae6d",
+        "build_mat": "0x67050"
+      },
+      {
+        "name": "item_splintst",
+        "table": "0x16f56c8",
+        "kind": 82,
+        "get_type": "0xb514f0",
+        "subtype": "0x66e60",
+        "differences": {},
+        "type_hash": "0xc43bd78d39700312",
+        "build_mat": "0x67050"
+      },
+      {
+        "name": "item_weaponst",
+        "table": "0x15f74b0",
+        "kind": 24,
+        "get_type": "0x7b320",
+        "subtype": "0xfd0c0",
+        "differences": {},
+        "type_hash": "0x6ec97dd57264bce4",
+        "build_mat": "0x67050"
+      }
+    ],
+    "native_scope": "All used constructed virtuals match BOX except getType. Weapon/shield subtype leaf matches clothing and runtime validates their authoritative raw pointers. c75000 has no additional type-specific branch for these seven families; c79156 type-switch routes all seven to the existing BOX path c79181.",
+    "observations": [
+      {
+        "kind": 24,
+        "id": 11793,
+        "description": "This is a well-crafted silver whip.  This object menaces with spikes of apricot wood.  ",
+        "uses": []
+      },
+      {
+        "kind": 27,
+        "id": 11794,
+        "description": "This is a superior quality iron shield.  It is encrusted with briolette cut rubicelles.  ",
+        "uses": []
+      },
+      {
+        "kind": 31,
+        "id": 7495,
+        "description": "This is a well-crafted rice Bag (giant cave spider silk).  It is made from giant cave spider silk cloth.  The thread is midnight blue with dimple dye.  ",
+        "uses": []
+      },
+      {
+        "kind": 61,
+        "id": 28463,
+        "description": "This is a turkey leather backpack.  It is encrusted with finely-crafted baguette cut onyxes.  ",
+        "uses": []
+      },
+      {
+        "kind": 62,
+        "id": 32630,
+        "description": "This is a giant snail leather quiver.  ",
+        "uses": []
+      },
+      {
+        "kind": 82,
+        "id": 7570,
+        "description": "This is a well-crafted almond wood splint.  ",
+        "uses": []
+      },
+      {
+        "kind": 83,
+        "id": 5910,
+        "description": "This is a carambola wood crutch.  It is decorated with well-crafted bitter orange wood and encircled with bands of finely-crafted horse bone.  This object menaces with spikes of claystone.  ",
+        "uses": []
+      }
+    ],
+    "visual_comparison": [
+      {
+        "kind": 24,
+        "pixels": 0,
+        "bbox": null
+      },
+      {
+        "kind": 27,
+        "pixels": 0,
+        "bbox": null
+      },
+      {
+        "kind": 31,
+        "pixels": 791,
+        "bbox": [
+          10,
+          14,
+          42,
+          228
+        ]
+      },
+      {
+        "kind": 61,
+        "pixels": 0,
+        "bbox": null
+      },
+      {
+        "kind": 62,
+        "pixels": 0,
+        "bbox": null
+      },
+      {
+        "kind": 82,
+        "pixels": 0,
+        "bbox": null
+      },
+      {
+        "kind": 83,
+        "pixels": 0,
+        "bbox": null
+      }
+    ],
+    "verified": "Actual Stocks View/close and exact descriptions/Uses across native, owned provider and wire for weapons, shields, bags, backpacks, quivers, splints and crutches. Six complete panels match native pixels.",
+    "limits": "BAG31 has791 artwork differences: plain bag instead of contained rice illustration, and carrier barrel lacks native seed illustration. All other panel pixels, including contents rows, match. Other equipment subtypes/materials and per-family flag edits not newly live accepted. No public Stocks exposure.",
+    "offline": "item-equipment-sheets core19, extension and item-sheet-state pass; item-equipment-sheets-msvc passes.",
+    "source_preserved": true,
+    "owned_df_pid": 5624,
+    "exit": "unsaved",
+    "fps_cap": 30,
+    "gpu_max_sample_c": 60,
+    "diagnostics": "Known separate-thread, device-finalize and shutdown-object signatures only.",
+    "hashes": {
+      "stocks-native.json": "901e4512dd8292047ea9debd5632e265c04dfa8c9d8bae9e607ec01a1fb674e5",
+      "job-settings-wire-result.json": "cac1a52e9aa8934e706bfb557de0c0f375ab9323f855653fecc0ed54aa512040",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "equipment-comparison.json": "c79596a2626509cf2fa9058eef961b95e918f44d218228982b5cf353e6aa6480",
+      "stocks-furniture-wire-24.json": "8db3c8b714558d3bb04a5d3bced2140e1cc05f2d0de55a342c2bb02c88e1288c",
+      "stocks-furniture-native-24.png": "590304a20babf207337961ed9a0b695780a44f6c43cf918969c19f66a7ea5275",
+      "stocks-furniture-view-24.png": "caa79f93e63ae14fcce07d97b40d06b4d65da23c1b9e29645a5df48eaee3ad01",
+      "stocks-furniture-wire-27.json": "1c1d57a248d1f2a4d6f31df72035ec99024de232bd2267e23addd9e026b5806c",
+      "stocks-furniture-native-27.png": "d3ab672e45b54b7f1606038fb3efe643171dd0ae35b88d53a978cdedffa9b955",
+      "stocks-furniture-view-27.png": "7e59127e87c6f3daf463356d14452d80016fa995de115b4d8c2bca81062d3d6e",
+      "stocks-furniture-wire-31.json": "0bffca56356a596ca140c37c93044e314df1e35d1e4e389730a7dd5ac06cdf02",
+      "stocks-furniture-native-31.png": "41cc12d19bf3804bb6be05bacbd77f774290415c9f986bcd1c3eb37aa321b915",
+      "stocks-furniture-view-31.png": "bc643fa371bf29a0f57c0c6b7203539cd1cb50f3864048bce22f5bd78b316d92",
+      "stocks-furniture-wire-61.json": "0d15882e380fe892b96c7ad1691e55cd27f9b7c8e9b7234bdfb22a678f0b23d3",
+      "stocks-furniture-native-61.png": "b58daecf3f6a90e35b7256c619ccb4c09edfcdf7db478903060307def5870e8f",
+      "stocks-furniture-view-61.png": "1d508dffe5466266fd5efcf47670e80f54fcfcfeb7aaa89e7289f439f6ee3640",
+      "stocks-furniture-wire-62.json": "61e0fc140fed03aeaab2a6d0cbea91d11d9069a0eb586305fc3bb5489f25a327",
+      "stocks-furniture-native-62.png": "f0398ee6fd918d123632392db318dd21be18665b4609f70b64d5cf4065bc7f73",
+      "stocks-furniture-view-62.png": "dbbc76eb8327c4ed6b4c10f1f50bec023c407dfcbe24ca266e2a52727cb24251",
+      "stocks-furniture-wire-82.json": "5da9646da700d5c84e7fd39204dc3c739d85d9d715ddc2d67ea9ae3589d37095",
+      "stocks-furniture-native-82.png": "7a27dfbd121e96e1388c4fc6cd7bf09cb43b66646ded5b2221498f97e30a2f56",
+      "stocks-furniture-view-82.png": "58fdea69cfd375d66bf45190f972a0e172543033fa3ca7cb7ced5ed263f78c6e",
+      "stocks-furniture-wire-83.json": "8d26b87cc96e3f503bf4b7b77b359784f5eabc9f67495a700722a8b429eb0095",
+      "stocks-furniture-native-83.png": "6dd7e10e41269d2ccbde6e5b71fc175ad63f14b6a9efedf1e3a16306616bf0f4",
+      "stocks-furniture-view-83.png": "e87197bf5795c63b1176766f9e1752865d406be66109ffffcedbc442e6ece04c"
+    }
   }
 }

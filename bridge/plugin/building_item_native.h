@@ -21,6 +21,10 @@
 #include "df/descriptor_pattern.h"
 #include "df/item_boxst.h"
 #include "df/item_ammost.h"
+#include "df/item_weaponst.h"
+#include "df/item_shieldst.h"
+#include "df/itemdef_weaponst.h"
+#include "df/itemdef_shieldst.h"
 #include "df/itemdef_ammost.h"
 #include "df/item_helmst.h"
 #include "df/itemdef_helmst.h"
@@ -475,7 +479,12 @@ inline bool simpleItemDescriptionDispatch(df::item* item) {
 // These furniture/container types follow the BOX description path in c75000:
 // no extra type-specific branch, no subtype raw, and identical pinned virtuals.
 inline bool furnitureItemDescriptionTable(const uint8_t* base,const void* table) {
-    return table==base+0x161c930 || // CLOTH has no subtype; c77fba reads descriptor colors.
+    return table==base+0x16c54c0 ||
+           table==base+0x15f7d10 ||
+           table==base+0x16fd960 ||
+           table==base+0x16c8ca0 ||
+           table==base+0x16f56c8 ||
+           table==base+0x161c930 || // CLOTH has no subtype; c77fba reads descriptor colors.
            table==base+0x16c8230 ||
            table==base+0x16c2d20 ||
            table==base+0x1625280 ||
@@ -505,6 +514,7 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
     if(table!=base+0x1623198 && table!=base+0x16c6cf0 && table!=base+0x161dd98 &&
        table!=base+0x161f840 && table!=base+0x1621b88 && table!=base+0x1624818 &&
        table!=base+0x161edd8 && table!=base+0x16c9ba0 &&
+       table!=base+0x16c4c00 && table!=base+0x15f74b0 &&
        !furnitureItemDescriptionTable(base,table))return false;
     static const bool pinned=[base]() {
         struct Pin {size_t slot,target,length;uint64_t hash;};
@@ -535,8 +545,8 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
         // Clothing and ammunition share every listed constructed-item virtual except getType.
         // c75000 has no clothing-specific branch; subtype is a semantic raw.
         for(size_t table:{size_t(0x1623198),size_t(0x16c6cf0),size_t(0x161dd98),
-                         size_t(0x161f840),size_t(0x1621b88),size_t(0x1624818),size_t(0x161edd8),size_t(0x16c9ba0),
-                         size_t(0x16c8230),size_t(0x16c2d20),size_t(0x1625280),size_t(0x1625a00),size_t(0x16f9cb0),size_t(0x1620b48),size_t(0x16212c8),size_t(0x16225f0),size_t(0x16c25a0),size_t(0x16fe8b8),size_t(0x16c3fe0),size_t(0x161e518),size_t(0x16f37c0),size_t(0x16fffe8),size_t(0x1701de8),size_t(0x16f19c0),size_t(0x16f7cf8),size_t(0x16ff868),size_t(0x16fd1e0),size_t(0x1702568),size_t(0x1700768),size_t(0x161c930)})for(auto pin:pins) {
+                         size_t(0x161f840),size_t(0x1621b88),size_t(0x1624818),size_t(0x161edd8),size_t(0x16c9ba0),size_t(0x16c4c00),size_t(0x15f74b0),
+                         size_t(0x16c8230),size_t(0x16c2d20),size_t(0x1625280),size_t(0x1625a00),size_t(0x16f9cb0),size_t(0x1620b48),size_t(0x16212c8),size_t(0x16225f0),size_t(0x16c25a0),size_t(0x16fe8b8),size_t(0x16c3fe0),size_t(0x161e518),size_t(0x16f37c0),size_t(0x16fffe8),size_t(0x1701de8),size_t(0x16f19c0),size_t(0x16f7cf8),size_t(0x16ff868),size_t(0x16fd1e0),size_t(0x1702568),size_t(0x1700768),size_t(0x161c930),size_t(0x16c54c0),size_t(0x15f7d10),size_t(0x16fd960),size_t(0x16c8ca0),size_t(0x16f56c8)})for(auto pin:pins) {
             if(table==0x16c6cf0 && pin.slot==0)pin={0,0x673c0,6,UINT64_C(0x6470dd592ae1062b)};
             if(pin.slot==0) {
                 if(table==0x161dd98)pin={0,0x28a840,6,UINT64_C(0x3c0e712b7d27ecd8)};
@@ -545,6 +555,13 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
                 if(table==0x1624818)pin={0,0x722d0,6,UINT64_C(0xd1ead67b27153938)};
                 if(table==0x16c9ba0)pin={0,0x548fa0,6,UINT64_C(0x7b7766ffefb27e79)};
                 if(table==0x161edd8)pin={0,0x28a950,6,UINT64_C(0x2f5f1000ffd7ac5b)};
+                if(table==0x16c54c0)pin={0,0x724a0,6,UINT64_C(0xc53af550a9c41f3b)};
+                if(table==0x15f7d10)pin={0,0xfd300,6,UINT64_C(0x16014dac0538de61)};
+                if(table==0x16fd960)pin={0,0xb519d0,6,UINT64_C(0xb78bf662bc1ee915)};
+                if(table==0x16c8ca0)pin={0,0x72420,6,UINT64_C(0xb88d14262c766b3e)};
+                if(table==0x16c4c00)pin={0,0x7c7c0,6,UINT64_C(0x48bc5a55fa75ae6d)};
+                if(table==0x16f56c8)pin={0,0xb514f0,6,UINT64_C(0xc43bd78d39700312)};
+                if(table==0x15f74b0)pin={0,0x7b320,6,UINT64_C(0x6ec97dd57264bce4)};
                 if(table==0x161c930)pin={0,0x289c00,6,UINT64_C(0xeb4820d021b33b4a)};
                 if(table==0x16c8230)pin={0,0x54a180,6,UINT64_C(0xfa4cc2a8d4cd790b)};
                 if(table==0x16c2d20)pin={0,0x7a480,6,UINT64_C(0xfca403570a9adc4f)};
@@ -571,9 +588,9 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
             if(*reinterpret_cast<const void* const*>(base+table+pin.slot)!=base+pin.target || hash(pin.target,pin.length)!=pin.hash)return false;
         }
         for(size_t table:{size_t(0x16c6cf0),size_t(0x161dd98),size_t(0x161f840),
-                         size_t(0x1621b88),size_t(0x1624818),size_t(0x161edd8),size_t(0x16c9ba0)})
+                         size_t(0x1621b88),size_t(0x1624818),size_t(0x161edd8),size_t(0x16c9ba0),size_t(0x16c4c00),size_t(0x15f74b0)})
             if(*reinterpret_cast<const void* const*>(base+table+8)!=base+0xfd0c0)return false;
-        for(size_t table:{size_t(0x16c8230),size_t(0x16c2d20),size_t(0x1625280),size_t(0x1625a00),size_t(0x16f9cb0),size_t(0x1620b48),size_t(0x16212c8),size_t(0x16225f0),size_t(0x16c25a0),size_t(0x16fe8b8),size_t(0x16c3fe0),size_t(0x161e518),size_t(0x16f37c0),size_t(0x16fffe8),size_t(0x1701de8),size_t(0x16f19c0),size_t(0x16f7cf8),size_t(0x16ff868),size_t(0x16fd1e0),size_t(0x1702568),size_t(0x1700768),size_t(0x161c930)})
+        for(size_t table:{size_t(0x16c8230),size_t(0x16c2d20),size_t(0x1625280),size_t(0x1625a00),size_t(0x16f9cb0),size_t(0x1620b48),size_t(0x16212c8),size_t(0x16225f0),size_t(0x16c25a0),size_t(0x16fe8b8),size_t(0x16c3fe0),size_t(0x161e518),size_t(0x16f37c0),size_t(0x16fffe8),size_t(0x1701de8),size_t(0x16f19c0),size_t(0x16f7cf8),size_t(0x16ff868),size_t(0x16fd1e0),size_t(0x1702568),size_t(0x1700768),size_t(0x161c930),size_t(0x16c54c0),size_t(0x15f7d10),size_t(0x16fd960),size_t(0x16c8ca0),size_t(0x16f56c8)})
             if(*reinterpret_cast<const void* const*>(base+table+8)!=base+0x66e60)return false;
         if(hash(0xfd0c0,12)!=UINT64_C(0xf68164ec06d8d50a))return false;
         if(hash(0x67520,0x6)!=UINT64_C(0x18580e5a3b056825))return false;
@@ -616,15 +633,17 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
         // native description. Both are semantic raw data, never UI scratch.
         if(!instrument->subtype || DFHack::Items::getSubtypeDef(df::item_type::INSTRUMENT,item->getSubtype())!=instrument->subtype)return false;
     }
-    const df::itemdef* clothingSubtype=nullptr;
-    if(table==base+0x161dd98)clothingSubtype=static_cast<df::item_helmst*>(item)->subtype;
-    if(table==base+0x161f840)clothingSubtype=static_cast<df::item_armorst*>(item)->subtype;
-    if(table==base+0x1621b88)clothingSubtype=static_cast<df::item_shoesst*>(item)->subtype;
-    if(table==base+0x1624818)clothingSubtype=static_cast<df::item_pantsst*>(item)->subtype;
-    if(table==base+0x16c9ba0)clothingSubtype=static_cast<df::item_ammost*>(item)->subtype;
-    if(table==base+0x161edd8)clothingSubtype=static_cast<df::item_glovesst*>(item)->subtype;
+    const df::itemdef* definition=nullptr;
+    if(table==base+0x161dd98)definition=static_cast<df::item_helmst*>(item)->subtype;
+    if(table==base+0x161f840)definition=static_cast<df::item_armorst*>(item)->subtype;
+    if(table==base+0x1621b88)definition=static_cast<df::item_shoesst*>(item)->subtype;
+    if(table==base+0x1624818)definition=static_cast<df::item_pantsst*>(item)->subtype;
+    if(table==base+0x16c9ba0)definition=static_cast<df::item_ammost*>(item)->subtype;
+    if(table==base+0x161edd8)definition=static_cast<df::item_glovesst*>(item)->subtype;
+    if(table==base+0x16c4c00)definition=static_cast<df::item_shieldst*>(item)->subtype;
+    if(table==base+0x15f74b0)definition=static_cast<df::item_weaponst*>(item)->subtype;
     if(table!=base+0x1623198 && table!=base+0x16c6cf0 && !furnitureItemDescriptionTable(base,table) &&
-       (!clothingSubtype || DFHack::Items::getSubtypeDef(item->getType(),item->getSubtype())!=clothingSubtype))return false;
+       (!definition || DFHack::Items::getSubtypeDef(item->getType(),item->getSubtype())!=definition))return false;
     const auto* box=static_cast<df::item_constructed*>(item);
     if(int(box->quality)<0 || int(box->quality)>int(df::item_quality::Artifact))return false;
     for(const auto* improvement:box->improvements) {
@@ -791,6 +810,9 @@ inline std::optional<ItemObservation> observeItem(df::item* item) {
     auto facts=itemFacts(item);if(!facts)return std::nullopt;
     ItemObservation value;value.item=std::move(*facts);value.weight=*weight;value.description=uses->description;value.uses=uses->rows;
     switch(item->getType()) {
+    case df::item_type::WEAPON:case df::item_type::SHIELD:case df::item_type::BAG:
+    case df::item_type::BACKPACK:case df::item_type::QUIVER:
+    case df::item_type::SPLINT:case df::item_type::CRUTCH:
     case df::item_type::THREAD:case df::item_type::CLOTH:
     case df::item_type::BAR:case df::item_type::BLOCKS:
     case df::item_type::BOULDER:case df::item_type::WOOD:

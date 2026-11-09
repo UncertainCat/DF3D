@@ -105,6 +105,22 @@ extension and item-state checks pass (`item-holder-icons`). Source preserved;
 DF41128 exits unsaved at30FPS,50C sampled; documented Godot diagnostics only.
 `holder_icon_reference` retains mappings, hashes and bounded acceptance.
 
+Item inspection admits weapons, shields, bags, backpacks, quivers, splints and
+crutches through the existing constructed-item native description path. Their
+used virtuals match BOX except type; weapon/shield subtype raw identity is
+validated like clothing. The native type-switch atc79156 routes these families
+to the same BOX path. No additional description rules are reconstructed.
+Protected073840 verifies actual Stocks View/close and exact native/owned/wire
+descriptions and Uses for all seven. Six complete panels match native pixels;
+BAG retains791 header/carrier artwork differences: its contents-specific rice
+illustration and its carrier barrel's seed illustration are absent. Contents
+rows and all remaining panel pixels match. Core19, extension/item-state
+(`item-equipment-sheets`) and MSVC pass. Source preserved, DF5624 exits unsaved
+at30FPS,60C sampled (not peak); documented Godot diagnostics only.
+`equipment_description_reference` retains dispatch pins, observations and hashes.
+Other equipment variants and per-family edits are not newly live accepted.
+Public Stocks remains gated; container-aware bag/barrel appearance is unfinished.
+
 Item inspection also admits THREAD and CLOTH through the native description
 builder. THREAD adds its guarded dye-color virtual and semantic dye/name
 helpers; its material-pair collection uses owned scratch. CLOTH shares BOX's

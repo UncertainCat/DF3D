@@ -5098,3 +5098,17 @@ TEST_CASE("contained item intent keeps parent identity and exact revision") {
     if(!fault){CHECK(value->production()->item_id()==45);CHECK(value->production()->contents_item_id()==71);CHECK(value->production()->expected_revision()==9007199254740993ULL);}
   }
 }
+
+TEST_CASE("cage appearance preserves unknown empty and selected occupant") {
+ for(int mode=0;mode<10;++mode) {
+  flatbuffers::FlatBufferBuilder b;int family=mode==0?-1:0,entity=mode==0?-1:mode==1?0:1,id=mode<2?-1:6960,type=16;std::string color=mode==0?"":"COPPER";
+  if(mode==3)entity=2;if(mode==4)family=3;if(mode==5)entity=3;if(mode==6)id=-1;if(mode==7)type=32;if(mode==8)color=std::string(129,'x');if(mode==9)family=-1;
+  auto appearance=wire::CreateItemInspectionAppearance(b,b.CreateString("INORGANIC:COPPER"),b.CreateString(""),b.CreateString(""),1,0,-1,-1,0,-1,-1,-1,-1,-1,0,int8_t(family),int8_t(entity),id,b.CreateString(color));
+  auto carrier=wire::CreateItemCarrier(b,1,7,type,b.CreateString("container"),appearance);
+  auto item=wire::CreateIndependentItemSnapshot(b,45,1,39,b.CreateString("item"),b.CreateString(""),b.CreateString(""),false,false,false,false,true,false,false,false,b.CreateString(""),b.CreateString(""),0,0,-1,carrier);
+  auto independent=wire::CreateIndependentItemState(b,item);wire::ProductionStateBuilder p(b);p.add_independent_item(independent);auto payload=p.Finish();
+  wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_production(payload);state.add_action(wire::ManagementAction::ProductionInspect);state.add_status(wire::ManagementStatus::Ok);b.Finish(state.Finish());
+  const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());CHECK(bool(wire::validateManagementState(*value))==(mode>=4));
+  if(mode<4){const auto facts=*codec::decodeProduction(value->production()).independentItem->snapshot->carrier->appearance;CHECK(facts.cageMaterialFamily==family);CHECK(facts.cageOccupantEntity==entity);CHECK(facts.cageOccupantId==id);CHECK(facts.cageSolidColor==color);}
+ }
+}

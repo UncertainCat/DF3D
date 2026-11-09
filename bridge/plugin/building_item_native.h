@@ -1,5 +1,6 @@
 #pragma once
 #include "farm_native.h"
+#include "zone_native.h"
 #include "building_item_transaction.h"
 #include "item_transaction.h"
 #include "item_owner_native.h"
@@ -274,6 +275,11 @@ inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
             }
             break;
         }
+    }
+    if(item->getType()==df::item_type::CAGE) {
+        const auto cage=df3d_area::nativeZoneAnimalContainer(*item);if(!cage)return std::nullopt;
+        appearance.cageMaterialFamily=int8_t(cage->materialFamily);appearance.cageOccupantEntity=int8_t(cage->occupantEntity);
+        appearance.cageOccupantId=cage->occupantId;appearance.cageSolidColor=cage->solidColor;
     }
     if(item->getType()==df::item_type::DOOR) {
         // Native c80c7c..c80cbc: BUILDING_HOLDER, forbidden and positive

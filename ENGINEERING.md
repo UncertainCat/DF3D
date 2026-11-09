@@ -37,13 +37,30 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
+Management165 adds optional cage appearance facts to item inspection: native
+material family, solid color and selected occupant identity. Rebuild bridge and
+viewer together;164 peers use a separate channel. Legacy absence remains unknown,
+not an empty cage. The existing guarded nativeZoneAnimalContainer provider owns
+its semantic inputs; no native menu or graphics cache is consumed. Appearance
+changes participate in item revisions and native/wire/Godot validation.
+
+Occupied cages compose the resident occupant art with installed cage artwork.
+Atlas readback may retain mipmaps; discard those levels before passing the base
+image to the CPU compositor. Protected050409 verifies copper cage28448/drake6960
+with zero full-panel RGB differences, plus six actual Stocks View/close workflows.
+Core19, extension and item-state checks pass (`item-cage165-base-image`); MSVC
+passes (`item-cage165-msvc`). Source preserved, DF37288 exits unsaved at30FPS,
+48C sampled (not peak); documented Godot diagnostics only. Empty, wood/glass,
+live-animal item occupants and inactive references remain unaccepted in live UI.
+Chain artwork remains unresolved. `cage_appearance_reference` retains evidence.
+
 Item-holder artwork maps fixed native building types to their installed icons,
 following the item-sheet switch155958/table19e4a8. The former farm/box-only map
 left other furniture holders blank. Chair/bed/table/coffin/door/floodgate/rack/
 stand now join those mappings; subtype-dependent buildings remain unsupported.
 Protected044310 verifies actual View/close and zero full-panel RGB differences
 for coffin21, armor stand33, weapon rack34 and amulet37. Chain has1120 differing
-pixels and occupied cage225; these remain unresolved. Other added holder types
+pixels and remains unresolved. Occupied cage225 is superseded above. Other added holder types
 follow the native switch but were not newly rendered in this run. Core19,
 extension and item-state checks pass (`item-holder-icons`). Source preserved;
 DF41128 exits unsaved at30FPS,50C sampled; documented Godot diagnostics only.

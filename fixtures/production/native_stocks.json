@@ -7128,5 +7128,44 @@
     "owned_df_pid": 41128,
     "fps_cap": 30,
     "gpu_max_sample_c": 50
+  },
+  "cage_appearance_reference": {
+    "run": "build/stockpile-storage-native-input-20261109-050409",
+    "management_version": 165,
+    "provider": "nativeZoneAnimalContainer; pinned cage selector c7d4a7 length27a FNV11a514c064712a3e, table c8340c length24 FNV296c616a37b1ff7b; native material helpers145bee0/14add70; owned forward general references",
+    "facts": {
+      "material_family": 0,
+      "occupant_entity": 1,
+      "occupant_id": 6960,
+      "solid_color": "COPPER"
+    },
+    "item_id": 28448,
+    "full_panel_rgb_differences": {
+      "10": 1120,
+      "16": 0,
+      "21": 0,
+      "33": 0,
+      "34": 0,
+      "37": 0
+    },
+    "crop": [
+      416,
+      52,
+      904,
+      760
+    ],
+    "verification": "Actual six-family Stocks View/close and exact descriptions; core19, extension and item-state checks pass in item-cage165-base-image; MSVC item-cage165-msvc passed. Known Godot thread/finalize/shutdown-object diagnostics only.",
+    "limits": "One copper cage with resident drake; empty, wood/glass, live-animal item and inactive reference cases are not live accepted. Chain artwork remains unresolved. Public Stocks remains gated.",
+    "readback": "AtlasTexture can retain mipmaps; strip mip levels before CPU container composition. Headless32x32 reproduction reads5460 bytes before clear_mipmaps and4096 after.",
+    "hashes": {
+      "stocks-furniture-native-16.png": "892f1dd20696c23415efa567614bcdc282e0a3abf70f717d1ff94d5adf3212f0",
+      "stocks-furniture-view-16.png": "ab259a5a9c60e67ebc6b37c2a2228abf1f8e6c731336bde7540098a83077b78c",
+      "stocks-furniture-wire-16.json": "7571d3fca555ddb6ad1999be13ed2de992da26a0744cefd035f3e0ca0422332a"
+    },
+    "source_preserved": true,
+    "owned_df_pid": 37288,
+    "exit": "unsaved",
+    "fps_cap": 30,
+    "gpu_max_sample_c": 48
   }
 }

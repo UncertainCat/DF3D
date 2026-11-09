@@ -42,7 +42,7 @@ Ref<Texture2D> Df3dWorld::ammunition_icon(const Dictionary& appearance,int64_t i
 }
 Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,bool genericGroup,int64_t itemId,bool sheet,bool diagonalAmmo) {
     if(!assets_ || itemType<0 || itemType>=int(wm::ItemKind::BoltThrowerParts) ||
-       appearance.size()!=5+int(appearance.has("bedding"))+int(appearance.has("instrument"))+int(appearance.has("slab_engraving"))+int(appearance.has("gem_shape_raw"))+int(appearance.has("contents"))+int(appearance.has("artifact_mood"))+int(appearance.has("floodgate_open"))+int(appearance.has("door"))+int(appearance.has("bucket_liquid")))return {};
+       appearance.size()!=5+int(appearance.has("bedding"))+int(appearance.has("instrument"))+int(appearance.has("slab_engraving"))+int(appearance.has("gem_shape_raw"))+int(appearance.has("contents"))+int(appearance.has("artifact_mood"))+int(appearance.has("floodgate_open"))+int(appearance.has("door"))+int(appearance.has("bucket_liquid"))+int(appearance.has("cage")))return {};
     if(itemId < -1 || itemId>INT32_MAX)return {};
     if(appearance.has("artifact_mood") && (itemType!=24 || appearance["artifact_mood"].get_type()!=Variant::BOOL))return {};
     if(appearance.has("floodgate_open") && (itemType!=7 || appearance["floodgate_open"].get_type()!=Variant::BOOL))return {};
@@ -144,6 +144,18 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
     const int64_t stack=appearance["stack"],flags=appearance["flags"];
     if(material.is_empty() || material.utf8().length()>256 || subtype.utf8().length()>128 ||
        color.utf8().length()>128 || stack<1 || stack>INT32_MAX || flags<0 || (flags & ~int64_t(96)))return {};
+    if(appearance.has("cage")) {
+        if(itemType!=16 || appearance["cage"].get_type()!=Variant::DICTIONARY)return {};
+        const Dictionary cage=appearance["cage"];if(cage.size()!=4)return {};
+        for(const char* key:{"material_family","occupant_entity","occupant_id"})if(!cage.has(key) || cage[key].get_type()!=Variant::INT)return {};
+        if(!cage.has("solid_color") || cage["solid_color"].get_type()!=Variant::STRING)return {};
+        const int64_t family=cage["material_family"],entity=cage["occupant_entity"],id=cage["occupant_id"];
+        const auto color=String(cage["solid_color"]).utf8();
+        if(family<0 || family>2 || entity<0 || entity>2 || color.length()>128 || (entity==0 ? id!=-1 : id<0 || id>INT32_MAX))return {};
+        Ref<Texture2D> occupant;if(entity){occupant=selection_icon(int(entity),id,true);if(occupant.is_null())return {};}
+        const char* families[]={"METAL","WOOD","GLASS"};
+        return composite_container_texture(std::string("ITEM_CAGE_")+families[family]+(entity?"_OCCUPIED":""),std::string_view(color.get_data(),color.length()),occupant);
+    }
     // Candidate snapshots own these facts independently of terrain residency.
     // No native texture, UI state or item pointer is consulted here.
     const std::string materialToken=material.utf8().get_data(),subtypeRaw=subtype.utf8().get_data(),colorToken=color.utf8().get_data();
@@ -353,7 +365,10 @@ Ref<Texture2D> Df3dWorld::composite_container_texture(std::string_view token,std
     df3d::assets::RgbaImage occupant;
     if(body.is_valid()) {
         const auto image=body->get_image();if(image.is_null())return {};
-        image->convert(Image::FORMAT_RGBA8);const auto bytes=image->get_data();
+        image->convert(Image::FORMAT_RGBA8);
+        // Atlas readback can retain mip levels. The CPU compositor accepts
+        // exactly the base image, not the appended smaller texture levels.
+        image->clear_mipmaps();const auto bytes=image->get_data();
         occupant.width=image->get_width();occupant.height=image->get_height();
         occupant.pixels.assign(bytes.ptr(),bytes.ptr()+bytes.size());
     }

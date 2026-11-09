@@ -192,7 +192,15 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 	if editing and owner==generation:applied.emit()
 
 static func _valid_appearance(look: Variant,item_type: int) -> bool:
-	if typeof(look)!=TYPE_DICTIONARY or look.size()!=5+int(item_type==13)+int(look.has("contents"))+int(look.has("floodgate_open"))+int(look.has("door"))+int(look.has("bucket_liquid")):return false
+	if typeof(look)!=TYPE_DICTIONARY or look.size()!=5+int(item_type==13)+int(look.has("contents"))+int(look.has("floodgate_open"))+int(look.has("door"))+int(look.has("bucket_liquid"))+int(look.has("cage")):return false
+	if look.has("cage"):
+		var cage=look.cage
+		if item_type!=16 or typeof(cage)!=TYPE_DICTIONARY or cage.size()!=4:return false
+		for key in ["material_family","occupant_entity","occupant_id"]:
+			if typeof(cage.get(key))!=TYPE_INT:return false
+		if typeof(cage.get("solid_color"))!=TYPE_STRING or cage.solid_color.to_utf8_buffer().size()>128:return false
+		if cage.material_family<0 or cage.material_family>2 or cage.occupant_entity<0 or cage.occupant_entity>2:return false
+		if cage.occupant_id < -1 or cage.occupant_id>2147483647 or (cage.occupant_id!=-1 if cage.occupant_entity==0 else cage.occupant_id<0):return false
 	if look.has("bucket_liquid"):
 		var liquid=look.bucket_liquid
 		if item_type!=18 or typeof(liquid)!=TYPE_DICTIONARY or liquid.size()!=2:return false

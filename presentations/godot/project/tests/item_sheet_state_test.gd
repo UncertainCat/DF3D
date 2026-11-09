@@ -27,6 +27,14 @@ func completed(wrong_flag:=false) -> void:
 		"edit":{"item_id":1000,"farm_operation":C.FarmOperation.ItemHidden,"value":1}})
 
 func run() -> void:
+	for mode in 6:
+		setup();model.open(1000);service.poll();var cage_item:=item();cage_item.item_type=16;cage_item.material_token="INORGANIC:COPPER"
+		cage_item.appearance={"material_token":"INORGANIC:COPPER","subtype_raw":"","color_token":"","stack":1,"flags":0}
+		if mode>0:cage_item.appearance.cage={"material_family":0,"solid_color":"COPPER","occupant_entity":0 if mode==1 else 1,"occupant_id":-1 if mode==1 else 6960}
+		if mode==3:cage_item.appearance.cage.occupant_id=-1
+		if mode==4:cage_item.appearance.cage.material_family=3
+		if mode==5:cage_item.appearance.cage.solid_color=42
+		item_reply({"snapshot":cage_item});check((model.phase==ItemModel.Phase.Ready)==(mode<3),"Cage facts validation differs")
 	for fault in 3:
 		setup();model.open(1000);service.poll();var parent_flags:=item()
 		parent_flags.contents=[{"kind":1,"id":71,"item_type":0,"caption":"bar","flags":0,"can_dump":true,"can_melt":true,"appearance":{"material_token":"INORGANIC:IRON","subtype_raw":"","color_token":"","stack":1,"flags":0}}]

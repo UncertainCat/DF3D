@@ -578,3 +578,15 @@ TEST_CASE("contained item edits retain parent authority and verify the child rec
         CHECK(applies==(fault==1||fault==2?0:1));CHECK(reads==(fault==1||fault==2||fault==3?0:1));
     }
 }
+
+TEST_CASE("cage occupant facts participate in item authority") {
+ using namespace df3d_production;
+ ItemObservation item;item.item.id=28448;item.item.itemType=16;item.item.materialToken="INORGANIC:COPPER";
+ item.appearance.emplace();auto& a=*item.appearance;a.materialToken="INORGANIC:COPPER";
+ item.revision=itemObservationRevision(item);REQUIRE(validItemObservation(item));const auto unknown=item.revision;
+ a.cageMaterialFamily=0;a.cageOccupantEntity=0;a.cageSolidColor="COPPER";
+ item.revision=itemObservationRevision(item);REQUIRE(validItemObservation(item));CHECK(item.revision!=unknown);const auto empty=item.revision;
+ a.cageOccupantEntity=1;a.cageOccupantId=6960;item.revision=itemObservationRevision(item);REQUIRE(validItemObservation(item));CHECK(item.revision!=empty);
+ const auto occupied=item.revision;a.cageOccupantId=6961;item.revision=itemObservationRevision(item);CHECK(item.revision!=occupied);
+ a.cageOccupantId=-1;item.revision=itemObservationRevision(item);CHECK_FALSE(validItemObservation(item));
+}

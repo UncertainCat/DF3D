@@ -5,7 +5,7 @@ local g=df.global.gps
 local defaults=os.getenv('DF3D_WORK_DETAILS_DEFAULTS')=='1'
 local query_provider=os.getenv('DF3D_WORK_DETAILS_QUERY_PROVIDER')=='1'
 local row_provider=os.getenv('DF3D_WORK_DETAILS_ROW_PROVIDER')=='1'
-if row_provider then
+if row_provider and os.getenv('DF3D_WORK_DETAILS_EXISTING_LABORS')~='1' then
  -- Controlled mixed-labor input, confined to the unsaved owned clone.
  for i=0,93 do df.global.plotinfo.labor_info.work_details[0].allowed_labors[i]=true end
 end
@@ -220,7 +220,7 @@ end
 if row_provider then
  assert(#result.worker_skill_rows>0,'No visible skill rows')
  local multiple=false;for _,row in ipairs(result.worker_skill_rows)do if #row.native>1 then multiple=true end end
- assert(multiple,'Mixed-labor oracle did not include multiple skills')
+ if os.getenv('DF3D_WORK_DETAILS_EXISTING_LABORS')~='1' then assert(multiple,'Mixed-labor oracle did not include multiple skills')end
  records[#records+1]={name='work-details-root'};return
 end
 if os.getenv('DF3D_WORK_DETAILS_QUERY')=='1' then

@@ -799,9 +799,18 @@ owned DF exits unsaved; live diagnostics contain only the known Godot
 thread/finalize/shutdown notices. GPU59–61C sampled at30FPS. See
 `native_work_details.json.labor_search_sort_retention_reference` for scope.
 Scroll/settings retention and all direction combinations remain unverified.
-The comparison also exposes missing skill captions in the DF3D Name-sorted
-roster; that display gap remains open. Public exposure and the broader
-management backlog remain gated.
+The earlier205635 screenshot omitted skill captions, but this does not establish
+an ongoing runtime defect. Protected210203 compares ten existing Miners rows
+without the controlled all-labor override: native widgets, provider and typed
+controller agree on captions/membership. Main-scene210021 records populated
+skill rows and renders the Name-sorted/search `a` roster after all three returns.
+Its1815 white skill-glyph pixels match native205414 within584,288..744,450;
+selection/background pixels are excluded. Captures now retain row data and wait
+two additional frames before taking the image. No runtime change or root-cause
+claim is made for the earlier image. Both owned runs preserve source saves;
+210203 has only the known thread notice and210021 adds known finalize/shutdown
+notices. `existing_labor_skills_reference` retains this scoped evidence. Public
+exposure and the broader management backlog remain gated.
 
 Chores typed dispatch now reads owned native snapshots/captions and applies the
 three native-backed mutations. It prepares the returned receipt before writes,

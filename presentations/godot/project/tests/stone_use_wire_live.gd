@@ -129,6 +129,9 @@ func run() -> void:
 			await pointer(target,target.work_details_rect().get_center())
 			if not await details_ready(details):quit(1);return
 			check(main_scene._ui.host.active==details and details.state.sort==C.WorkDetailWorkerSort.Name and details.state.query=="a".to_ascii_buffer() and details.panel.search.value==details.state.query,"Labor return lost Work Details search/sort")
+		await process_frame;await process_frame
+		var roster:=FileAccess.open(directory+"/work-details-labor-rows.json",FileAccess.WRITE)
+		roster.store_string(JSON.stringify(details.state.rows));roster.close()
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(directory+"/work-details-labor-return.png")
 		await pointer(details.panel,details.panel.stone_use_rect().get_center())

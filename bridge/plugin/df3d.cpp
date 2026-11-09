@@ -122,6 +122,7 @@
 #include "standing_orders_native.h"
 #include "chores_native.h"
 #include "stone_use_native.h"
+#include "item_uses_native.h"
 #include "stocks_native.h"
 #include "kitchen_native.h"
 #include "hunter_ammunition_native.h"
@@ -2042,6 +2043,19 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0)return CR_WRONG_USAGE;
           const auto value=df3d_production::itemAmmunitionAssignment(df::item::find(id));if(!value)return CR_FAILURE;
           Json::Value result(Json::objectValue);result["kind"]=value->kind;result["squad_id"]=value->squadId;result["caption"]=DF2UTF(value->caption);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="item-uses-probe") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];
+          const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{}||parsed.ptr!=raw.data()+raw.size()||id<0)return CR_WRONG_USAGE;
+          if(!state.mapLoaded||df3d_session::saving())return CR_FAILURE;
+          auto value=df3d_production::itemUses(df::item::find(id));if(!value)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["description"]=DF2UTF(value->description);
+          result["uses"]=Json::Value(Json::arrayValue);
+          for(const auto& use:value->rows){Json::Value row(Json::objectValue);
+            row["caption"]=DF2UTF(use.caption);row["reaction"]=use.reaction;result["uses"].append(row);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="item-inspect-probe"||parameters[0]=="item-flag-probe") {

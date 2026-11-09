@@ -27,6 +27,17 @@ for _,family in ipairs(read('stocks-wire-reference.json').furniture)do
  local observed=probe('item-inspect-probe',tostring(family.id)).snapshot
  assert(observed.description==description,'Native provider description mismatch '..family.kind)
  results[#results+1]={kind=family.kind,id=family.id,description=description,snapshot=observed}
+ if os.getenv('DF3D_STOCKS_ITEM_USES')=='1' then
+  local uses=probe('item-uses-probe',tostring(family.id))
+  assert(uses.description==description,'Owned Uses builder description differs')
+  assert(#uses.uses==#sheet.item_use and #uses.uses==#sheet.item_use_reaction_index,'Owned Uses row count differs')
+  for index,row in ipairs(uses.uses)do
+   assert(row.caption==dfhack.df2utf(sheet.item_use[index-1].value),'Owned Uses caption differs')
+   assert(row.reaction==sheet.item_use_reaction_index[index-1],'Owned Uses reaction differs')
+  end
+  results[#results].uses=uses.uses
+  local f=assert(io.open(out..'/stocks-item-uses-'..family.kind..'.json','w'));f:write(json.encode(uses));f:close()
+ end
  -- Allow the native renderer to finish drawing the new sheet before capture.
  script.sleep(3,'frames');view:render(dfhack.getTickCount())
  local name='stocks-furniture-native-'..family.kind

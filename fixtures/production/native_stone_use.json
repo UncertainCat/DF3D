@@ -1611,5 +1611,248 @@
       0
     ],
     "scope": "Full default panel and first15 stone icons in each category. display_rows retains native provider captions/material/safety from this capture. Only known separate-thread/device-finalize/shutdown-object diagnostics. No off-page art, responsive geometry, scrolling/hover, live pointer effects or main-scene acceptance."
+  },
+  "rendered_input_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-194518",
+    "steps": 4,
+    "final_panel_rgb_differing_pixels": 0,
+    "scope": "Actual category and permission pointer events, shared controller/service and independent full-array native effect acknowledgements. Stale requests rejected; fresh authority after edits. Source preserved, owned DF1012 unsaved exit. 30FPS, sampled GPU58C, only known separate-thread/device-finalize/shutdown-object diagnostics. No main-scene or scroll acceptance."
+  },
+  "input_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-194629",
+    "observations": {
+      "hover": [
+        {
+          "displayed": -1,
+          "instruction": -1,
+          "target": "stone"
+        },
+        {
+          "displayed": -1,
+          "instruction": -1,
+          "target": "name"
+        },
+        {
+          "displayed": -1,
+          "instruction": -1,
+          "target": "magma"
+        },
+        {
+          "displayed": -1,
+          "instruction": -1,
+          "target": "uses"
+        },
+        {
+          "displayed": -1,
+          "instruction": -1,
+          "target": "permission"
+        },
+        {
+          "displayed": -1,
+          "instruction": -1,
+          "target": "category"
+        },
+        {
+          "displayed": -1,
+          "instruction": -1,
+          "target": "bar"
+        }
+      ],
+      "scroll": [
+        {
+          "category": 0,
+          "first": [
+            0,
+            0
+          ],
+          "label": "row-STANDARDSCROLL_DOWN"
+        },
+        {
+          "category": 0,
+          "first": [
+            0,
+            0
+          ],
+          "label": "row-STANDARDSCROLL_UP"
+        },
+        {
+          "category": 0,
+          "first": [
+            0,
+            0
+          ],
+          "label": "row-STANDARDSCROLL_PAGEDOWN"
+        },
+        {
+          "category": 0,
+          "first": [
+            0,
+            0
+          ],
+          "label": "row-STANDARDSCROLL_PAGEUP"
+        },
+        {
+          "category": 0,
+          "first": [
+            0,
+            0
+          ],
+          "label": "row-CONTEXT_SCROLL_DOWN"
+        },
+        {
+          "category": 0,
+          "first": [
+            0,
+            0
+          ],
+          "label": "row-CONTEXT_SCROLL_UP"
+        },
+        {
+          "category": 0,
+          "first": [
+            0,
+            0
+          ],
+          "label": "outside-STANDARDSCROLL_DOWN"
+        },
+        {
+          "category": 0,
+          "first": [
+            0,
+            0
+          ],
+          "label": "outside-STANDARDSCROLL_UP"
+        },
+        {
+          "category": 0,
+          "first": [
+            0,
+            0
+          ],
+          "label": "outside-STANDARDSCROLL_PAGEDOWN"
+        },
+        {
+          "category": 0,
+          "first": [
+            0,
+            0
+          ],
+          "label": "outside-STANDARDSCROLL_PAGEUP"
+        },
+        {
+          "category": 0,
+          "first": [
+            0,
+            0
+          ],
+          "label": "outside-CONTEXT_SCROLL_DOWN"
+        },
+        {
+          "category": 0,
+          "first": [
+            0,
+            0
+          ],
+          "label": "outside-CONTEXT_SCROLL_UP"
+        },
+        {
+          "category": 0,
+          "first": [
+            0,
+            0
+          ],
+          "label": "bar-STANDARDSCROLL_DOWN"
+        },
+        {
+          "category": 0,
+          "first": [
+            0,
+            0
+          ],
+          "label": "bar-STANDARDSCROLL_UP"
+        },
+        {
+          "category": 0,
+          "first": [
+            0,
+            0
+          ],
+          "label": "bar-STANDARDSCROLL_PAGEDOWN"
+        },
+        {
+          "category": 0,
+          "first": [
+            0,
+            0
+          ],
+          "label": "bar-STANDARDSCROLL_PAGEUP"
+        },
+        {
+          "category": 0,
+          "first": [
+            0,
+            0
+          ],
+          "label": "bar-CONTEXT_SCROLL_DOWN"
+        },
+        {
+          "category": 0,
+          "first": [
+            0,
+            0
+          ],
+          "label": "bar-CONTEXT_SCROLL_UP"
+        },
+        {
+          "category": 0,
+          "first": [
+            1,
+            0
+          ],
+          "label": "arrow-down"
+        },
+        {
+          "category": 0,
+          "first": [
+            0,
+            0
+          ],
+          "label": "arrow-up"
+        },
+        {
+          "category": 0,
+          "first": [
+            15,
+            0
+          ],
+          "label": "page-down"
+        },
+        {
+          "category": 1,
+          "first": [
+            15,
+            0
+          ],
+          "label": "other-category"
+        },
+        {
+          "category": 1,
+          "first": [
+            15,
+            1
+          ],
+          "label": "other-arrow-down"
+        },
+        {
+          "category": 0,
+          "first": [
+            15,
+            1
+          ],
+          "label": "economic-retained"
+        }
+      ]
+    },
+    "scope": "Native default-height arrows/page track/category retention and explicit scroll-key commands at row/outside/bar. Seven hover targets held850ms show no tooltip instruction. Physical mouse wheel, drag and responsive geometry remain unverified. Source preserved, DF27944 unsaved exit, sampled GPU60C."
   }
 }

@@ -115,6 +115,39 @@ if os.getenv('DF3D_STONE_USE_EDITS')=='1' then
  end
  click(14,12)
 end
+if os.getenv('DF3D_STONE_USE_INPUT')=='1' then
+ result.input={scroll={},hover={}}
+ local function observe(label)
+  result.input.scroll[#result.input.scroll+1]={label=label,category=panel.current_category,first={panel.scroll_position[0],panel.scroll_position[1]}}
+ end
+ for _,point in ipairs({{'row',200,214},{'outside',1000,400},{'bar',952,300}})do
+  g.precise_mouse_x=point[2];g.precise_mouse_y=point[3];g.mouse_x=point[2]//8;g.mouse_y=(point[3]-4)//12
+  for _,key in ipairs({'STANDARDSCROLL_DOWN','STANDARDSCROLL_UP','STANDARDSCROLL_PAGEDOWN','STANDARDSCROLL_PAGEUP','CONTEXT_SCROLL_DOWN','CONTEXT_SCROLL_UP'})do
+   gui.simulateInput(view,key)
+   for _=1,3 do script.sleep(1,'frames');view:render(dfhack.getTickCount())end
+   observe(point[1]..'-'..key)
+  end
+ end
+ click(118,60);observe('arrow-down')
+ click(118,16);observe('arrow-up')
+ click(118,50);observe('page-down')
+ click(30,12);observe('other-category')
+ click(118,60);observe('other-arrow-down')
+ click(14,12);observe('economic-retained')
+ -- Return to the first page for isolated hover observations.
+ panel.scroll_position[0]=0;panel.scroll_position[1]=0
+ local main=df.global.game.main_interface
+ for _,target in ipairs({{'stone',64,214},{'name',160,214},{'magma',288,214},{'uses',400,358},{'permission',920,214},{'category',112,148},{'bar',952,300}})do
+  local deadline=dfhack.getTickCount()+850
+  repeat
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=target[2];g.precise_mouse_y=target[3];g.mouse_x=target[2]//8;g.mouse_y=(target[3]-4)//12
+   gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(1,'frames')
+  until dfhack.getTickCount()>=deadline
+  result.input.hover[#result.input.hover+1]={target=target[1],instruction=main.current_hover,displayed=main.last_displayed_hover_inst}
+  if main.last_displayed_hover_inst~=-1 then shot('stone-use-hover-'..target[1])end
+ end
+end
 local f=assert(io.open(out..'/stone-use-native.json','w'));f:write(json.encode(result));f:close()
 if os.getenv('DF3D_STONE_USE_WIRE')=='1' then
  assert(result.edits and cold,'Stone use wire needs native edit/provider evidence')

@@ -251,6 +251,7 @@ try {
      $clientArgs+=@('--path',"$repo/presentations/godot/project",'--script','res://tests/job_settings_wire_live.gd')
      if($env:DF3D_CHORES_RENDER -eq '1' -or $env:DF3D_HUNTER_AMMUNITION_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/job_settings_wire_live.gd')}
      if($name -eq 'stone-use-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/stone_use_wire_live.gd')}
+     if($name -eq 'stone-use-wire' -and $env:DF3D_STONE_USE_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/stone_use_wire_live.gd')}
      if($name -eq 'kitchen-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/kitchen_wire_live.gd')}
      if($name -eq 'kitchen-wire' -and $env:DF3D_KITCHEN_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/kitchen_wire_live.gd')}
      $client=Start-Process -FilePath $engine -ArgumentList $clientArgs -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/job-settings-wire.stdout.log" -RedirectStandardError "$out/job-settings-wire.stderr.log"

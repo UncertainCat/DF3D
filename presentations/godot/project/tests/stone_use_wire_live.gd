@@ -1,6 +1,11 @@
 extends "res://tests/item_carrier_wire_live.gd"
 const State=preload("res://scripts/stone_use_state.gd")
 var actions
+func pointer(view,point: Vector2) -> void:
+	var event:=InputEventMouseButton.new();event.button_index=MOUSE_BUTTON_LEFT;event.pressed=true
+	event.position=view.get_global_transform_with_canvas()*point;event.global_position=event.position
+	Input.parse_input_event(event);await process_frame
+	event=event.duplicate();event.pressed=false;Input.parse_input_event(event);await process_frame
 func request(domain: String,data: Dictionary) -> Dictionary:
 	if actions==null:return await super.request(domain,data)
 	var ticket: int=actions.submit(domain,data,Callable())
@@ -18,6 +23,8 @@ func ready_state(state) -> bool:
 	return check(state.phase==State.Phase.Ready,"Stone use controller failed to obtain fresh authority")
 func run() -> void:
 	Engine.max_fps=30
+	root.size=Vector2i(1200,800)
+	var rendered: bool=OS.get_environment("DF3D_STONE_USE_RENDER")=="1"
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
 	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/stone-use-native.json"))
 	world=Df3dWorld.new();root.add_child(world)
@@ -32,6 +39,11 @@ func run() -> void:
 	for frame in 5:world.poll();await process_frame
 	var state:=State.new();state.configure(actions);state.open()
 	if not await ready_state(state):quit(1);return
+	var view
+	if rendered:
+		if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Stone use installed assets unavailable"):quit(1);return
+		view=preload("res://scripts/stone_use_view.gd").new();root.add_child(view)
+		view.configure_stone_use(world,state);view.layout(Vector2(1200,800));await process_frame
 	var value: Dictionary={"rows":state.rows,"restrictions":state.restrictions}
 	check(value.rows.size()==reference.provider.size(),"Stone use row count differs")
 	for i in mini(value.rows.size(),reference.provider.size()):
@@ -45,8 +57,13 @@ func run() -> void:
 	for step in reference.edits.steps:
 		if failed:break
 		var intent: Dictionary={"action":C.ManagementAction.StoneUseApply,"category":int(step.category),"index":int(step.index),"expected":state.restrictions.duplicate()}
-		state.select_category(int(step.category));state.toggle(int(step.index))
-		check(state.phase==State.Phase.Applying and state.rows.is_empty() and state.restrictions.is_empty(),"Stone use pending edit retained authority")
+		if rendered:
+			await pointer(view,view.category_rect(int(step.category)).get_center())
+			check(state.category==int(step.category),"Stone use category pointer failed")
+			await pointer(view,view.restriction_rect(0).get_center())
+		else:
+			state.select_category(int(step.category));state.toggle(int(step.index))
+			check(state.phase==State.Phase.Applying and state.rows.is_empty() and state.restrictions.is_empty(),"Stone use pending edit retained authority")
 		if not await ready_state(state):break
 		check(state.category==int(step.category),"Stone use edit lost local category")
 		var stale:=await request("stone_use",intent)
@@ -61,7 +78,11 @@ func run() -> void:
 			await create_timer(0.01).timeout
 		check(FileAccess.get_file_as_string(directory+"/stone-use-wire-ack").strip_edges()==str(completed),"Stone use independent effect not acknowledged")
 	check(completed==4,"Stone use edits incomplete")
+	if rendered:
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/stone-use-view.png")
 	var output:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
-	output.store_string(JSON.stringify({"success":not failed,"steps":completed,"rows":value.rows.size(),"controller":true}));output.close()
+	output.store_string(JSON.stringify({"success":not failed,"steps":completed,"rows":value.rows.size(),"controller":true,"rendered":rendered}));output.close()
+	if view!=null:view.queue_free();await process_frame
 	state.dispose()
 	quit(1 if failed else 0)

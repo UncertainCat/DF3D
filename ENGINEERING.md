@@ -84,6 +84,25 @@ and capped at30FPS, with sampled GPU58-60C. This does not establish remaining
 off-page art, responsive geometry, scrolling/hover behavior, live pointer effects
 or Labor/main-scene ownership. The public tab remains hidden.
 
+Protected194518 on2026-11-08 verifies actual rendered category/permission clicks
+through the shared controller/service: four edits, stale rejection and fresh
+reads, with independent native full-array checks. The final Other stone panel
+also matches the same-run native crop with zero RGB differences. Source unchanged,
+DF1012 exits unsaved;30FPS, GPU58C sampled, only documented separate-thread,
+device-finalize and shutdown-object diagnostics.194417 completed viewer assertions
+but exceeded the native capture's10-second deadline during shutdown, so it is
+not accepted; rendered Stone use captures now allow30 seconds. Core19 passes
+stone-use-rendered-input. Main-scene ownership remains unverified.
+
+Protected194629 records native input: arrows step one row, track clicks step
+15 rows at default height, and category changes retain independent positions.
+Standard up/down/page and context up/down commands at row, outside and bar
+positions leave both scroll positions unchanged. Seven850ms hover observations
+(stone/name/magma/uses/permission/category/bar) produce no native hover instruction
+or displayed tooltip. These observations do not establish physical mouse-wheel,
+drag, responsive layout or DF3D scrolling acceptance. Source unchanged,
+DF27944 exits unsaved; GPU60C sampled. `input_reference` retains the exact cases.
+
 Protected185832 on2026-11-08 records
 30 economic and53 other stones in native order, material identities/restrictions,
 and the default economic screen. `native_stone_use.json` is the durable reference

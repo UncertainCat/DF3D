@@ -358,8 +358,17 @@ Selected reads return complete group membership and up to64 requested item
 facts. Edits require a fresh group revision and return a fresh receipt; failures
 after mutation preserve Unknown, including serialization fallback. Oversized
 Stocks replies are rejected explicitly instead of silently failing publication.
-The shared512KiB budget still requires a large-inventory strategy before public
-exposure; visible-row artwork and the screen remain unfinished.
+The shared512KiB budget still requires paged transport before public exposure;
+visible-row artwork and the screen remain unfinished. Management166 encoded-size
+measurements (synthetic structural cases, not native inventory captures) show
+that membership and group metadata each exceed the channel independently:
+one group with131072 members and a32-byte caption uses530568 bytes;10000 groups
+with one member and32-byte captions use1006200 bytes. Even32 groups with legal
+16384-byte captions use532664 bytes. These include93 short category rows and no
+individual item rows. Raising only the membership limit or paging only visible
+item facts cannot solve the problem. Required paging must bound encoded bytes,
+preserve complete native order, reject mixed snapshot generations, and retain
+fresh native revision validation for edits. No paging is implemented yet.
 
 Protected230558 exercises the cold typed route before opening native Stocks:
 93 category captions/order and iron matches, six Ammunition groups with exact

@@ -245,7 +245,8 @@ static_assert(static_cast<int>(wm::ManagementAction::StoneUseRead) == static_cas
 static_assert(static_cast<int>(wm::ManagementAction::StoneUseApply) == static_cast<int>(df3d::mirror::ManagementAction::StoneUseApply));
 static_assert(static_cast<int>(wm::ManagementAction::StocksMenuRead) == static_cast<int>(df3d::mirror::ManagementAction::StocksMenuRead));
 static_assert(static_cast<int>(wm::ManagementAction::StocksGroupApply) == static_cast<int>(df3d::mirror::ManagementAction::StocksGroupApply));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 104);
+static_assert(static_cast<int>(wm::ManagementAction::StocksItemApply) == static_cast<int>(df3d::mirror::ManagementAction::StocksItemApply));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 105);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -556,3 +557,4 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::StoneUseRead) == df3d::m
 static_assert(wm::isRuntimeAction(wm::ManagementAction::StoneUseApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::StoneUseApply));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::StocksMenuRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::StocksMenuRead));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::StocksGroupApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::StocksGroupApply));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::StocksItemApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::StocksItemApply));

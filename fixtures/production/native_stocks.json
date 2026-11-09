@@ -3539,5 +3539,18 @@
     "source_save": "unchanged; owned DF29096 exited unsaved",
     "gpu": "48C sampled; native only, no viewer",
     "limitations": "Provider acceptance only. Typed individual request and Stocks viewer wiring still pending; no all-item-family, job-cancellation or mixed-eligibility coverage."
+  },
+  "individual_wire157_reference": {
+    "contract": 157,
+    "channel": "Local\\df3d_management_v157",
+    "qa": "build/qa/stocks-item157-stable",
+    "bridge_build": "build/notes/pm/stocks-item157-msvc.log",
+    "plugin_sha256": "21560184f3acb43957c8799828427f29fdb4218868aee84f90ba8bd2c659616d",
+    "capture": "build/stockpile-storage-native-input-20261108-235942",
+    "scope": "Typed StocksItemApply carries group key/revision plus item ID and explicit desired flag. Actual rendered first-item visibility button toggles on/off; independent Lua verifies every IN_PLAY flag and exact restoration. Stale intent rejected. Controller checks unavailable/ineligible targets, exact identity, authority retirement, refresh, unknown no-replay and late reply after close. Fake producer/Godot checks item identity, malformed inputs, Applied and Unknown receipts.",
+    "source_save": "unchanged; owned DF39012 exited unsaved",
+    "gpu": "30FPS;47-48C sampled",
+    "diagnostics": "passed_with_known_issues: godot-separate-thread-notice, godot-device-finalize, godot-shutdown-objects; unclassified empty",
+    "limitations": "Rendered live verification covers visibility. Four flag native semantics have separate individual_action_reference evidence. Recenter/View, other item artwork, search/scroll/resize and large-inventory handling remain pending; no public Stocks route."
   }
 }

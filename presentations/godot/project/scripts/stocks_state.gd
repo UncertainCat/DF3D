@@ -71,6 +71,16 @@ func apply_group(identity: String,operation: int,value: bool) -> void:
 			"subtype":row.subtype,"subcat1":row.subcat1,"subcat2":row.subcat2,
 			"expected_revision":row.revision,"operation":operation,"value":int(value)}
 		_clear();phase=Phase.Applying;_submit(intent);return
+func apply_item(id: int,operation: int,value: bool) -> void:
+	if phase!=Phase.Ready or operation<0 or operation>3 or not items.has(id):return
+	var item: Dictionary=items[id]
+	if (operation==1 and not item.can_dump) or (operation==2 and not item.can_melt):return
+	for row in groups:
+		if not row.matches or not row.item_ids.has(id):continue
+		var intent: Dictionary={"action":C.ManagementAction.StocksItemApply,"category":category,
+			"subtype":row.subtype,"subcat1":row.subcat1,"subcat2":row.subcat2,"item_id":id,
+			"expected_revision":row.revision,"operation":operation,"value":int(value)}
+		_clear();phase=Phase.Applying;_submit(intent);return
 func _read(ids: Array=[]) -> void:
 	_clear();phase=Phase.Reading
 	_submit({"action":C.ManagementAction.StocksMenuRead,"category":category,"query":_active_query,"item_ids":ids.duplicate()})
@@ -126,7 +136,7 @@ func _submit(intent: Dictionary) -> void:
 		if owner!=generation or received!=ticket:return
 		ticket=0
 		var value: Variant=result.get("stocks_menu",{})
-		var apply: bool=intent.action==C.ManagementAction.StocksGroupApply
+		var apply: bool=intent.action in [C.ManagementAction.StocksGroupApply,C.ManagementAction.StocksItemApply]
 		if typeof(value)!=TYPE_DICTIONARY or result.get("outcome","")=="unknown" or result.get("status")!=C.ManagementStatus.Ok or result.get("action")!=intent.action or value.get("outcome")!=(C.StocksMenuOutcome.Applied if apply else C.StocksMenuOutcome.None) or not _valid(value,intent):
 			_reject(result);return
 		# The mutation receipt is unfiltered. Refresh with the retained search

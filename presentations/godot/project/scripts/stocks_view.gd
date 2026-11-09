@@ -4,7 +4,6 @@ extends "res://scripts/location_staff_candidates_frame.gd"
 signal cancelled
 signal item_requested(id: int)
 signal recenter_requested(id: int)
-signal item_flag_requested(id: int,operation: int,value: bool)
 const FLAGS=[0x80000,0x200000,0x800000,0x1000000]
 const BUTTONS=["STOCKS_FORBID","STOCKS_DUMP","STOCKS_MELT","STOCKS_HIDE"]
 var state
@@ -209,7 +208,7 @@ func _gui_input(event: InputEvent) -> void:
 		if not control_rect(index,operation).has_point(point):continue
 		if operation==-2:recenter_requested.emit(row.id)
 		elif operation==-1:item_requested.emit(row.id)
-		elif (operation!=1 or row.can_dump) and (operation!=2 or row.can_melt):item_flag_requested.emit(row.id,operation,not bool(row.flags&FLAGS[operation]))
+		elif (operation!=1 or row.can_dump) and (operation!=2 or row.can_melt):state.apply_item(row.id,operation,not bool(row.flags&FLAGS[operation]))
 		return
 func _exit_tree() -> void:
 	_leave_hover()

@@ -1215,3 +1215,13 @@ func test_stocks_menu() -> void:
 	edit.value=0;seq=world.management_request("stocks_menu",edit);assert(seq>0);reply=await receipt(seq,S.Rejected)
 	assert(reply.outcome=="unknown" and reply.stocks_menu.category==-1 and reply.stocks_menu.groups.is_empty() and reply.stocks_menu.categories.is_empty())
 	assert(Contract.is_mutation(A.StocksGroupApply) and not Contract.is_mutation(A.StocksMenuRead))
+
+	edit.action=A.StocksItemApply;edit.item_id=17;edit.value=1
+	for patch in [{"item_id":-1},{"item_id":17.0},{"item_id":2147483648}]:
+		var invalid:=edit.duplicate(true);invalid.merge(patch,true);assert(world.management_request("stocks_menu",invalid)==0)
+	var missing:=edit.duplicate();missing.erase("item_id");assert(world.management_request("stocks_menu",missing)==0)
+	seq=world.management_request("stocks_menu",edit);assert(seq>0);reply=await receipt(seq)
+	assert(reply.stocks_menu.outcome==Contract.StocksMenuOutcome.Applied)
+	edit.value=0;seq=world.management_request("stocks_menu",edit);assert(seq>0);reply=await receipt(seq,S.Rejected)
+	assert(reply.outcome=="unknown" and reply.stocks_menu.groups.is_empty())
+	assert(Contract.is_mutation(A.StocksItemApply))

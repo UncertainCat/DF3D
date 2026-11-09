@@ -70,6 +70,21 @@ func run() -> void:
 	ready(state,service);state.request_items([7]);reply=response();reply.stocks_menu.items=[item(7)]
 	reply.stocks_menu.items[0].appearance={"material_token":"","subtype_raw":"","color_token":"","flags":0,"stack":0}
 	service.reply(state.ticket,reply);check(state.phase==State.Phase.Rejected,"Invalid item appearance accepted")
+	ready(state,service);state.items={7:item(7)}
+	calls=service.next;state.apply_item(99,3,true);state.apply_item(7,2,true)
+	check(service.next==calls,"Missing or ineligible individual target submitted")
+	state.apply_item(7,3,true);pending=state.ticket
+	check(service.calls[pending].intent=={"action":C.ManagementAction.StocksItemApply,"category":39,"subtype":-1,"subcat1":0,"subcat2":0,"item_id":7,"expected_revision":9007199254740993,"operation":3,"value":1},"Individual intent lost target/group authority")
+	check(state.phase==State.Phase.Applying and state.items.is_empty(),"Individual edit retained authority")
+	reply=response();reply.stocks_menu.outcome=C.StocksMenuOutcome.Applied;service.reply(pending,reply)
+	check(state.phase==State.Phase.Reading,"Individual receipt did not refresh Stocks")
+	service.reply(state.ticket,response());state.items={7:item(7)};state.apply_item(7,3,false)
+	service.reply(state.ticket,{"status":C.ManagementStatus.Rejected,"stocks_menu":{"outcome":C.StocksMenuOutcome.Unknown}})
+	calls=service.next;state.apply_item(7,3,false)
+	check(state.phase==State.Phase.Unknown and service.next==calls,"Unknown individual edit replayed")
+	ready(state,service);state.items={7:item(7)};state.apply_item(7,3,true);pending=state.ticket
+	state.close();service.reply(pending,reply)
+	check(state.phase==State.Phase.Closed and service.detached.has(pending),"Late individual receipt revived closed Stocks")
 	ready(state,service);state.items={7:item(7)};state.groups[0].flags=240
 	var view:=View.new();view.state=state
 	view.item_canvas=Control.new();view.add_child(view.item_canvas);view.item_canvas.position=Vector2(328,60);view.item_canvas.size=Vector2(584,612)

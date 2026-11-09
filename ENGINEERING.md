@@ -37,9 +37,12 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
-Management156 carries the staged `stocks_menu` domain with StocksMenuRead and
-StocksGroupApply on `Local\df3d_management_v156`. Rebuild bridge and viewer
-together; version155 peers use a different channel and are not compatible.
+Management157 carries the staged `stocks_menu` domain with StocksMenuRead,
+StocksGroupApply and StocksItemApply on `Local\df3d_management_v157`. Rebuild
+bridge and viewer together; version156 peers use a different channel and are
+not compatible. Item edits add a required nonnegative item ID to the group key,
+expected group revision, operation and explicit value. Reads and group edits
+reject item targets. No migration invents an item-edit target.
 Stocks item rows now optionally carry the shared semantic item appearance facts:
 material, subtype, color, stack, artifact/web flags and instrument facts. The
 provider reuses itemAppearance; validators require material/subtype agreement
@@ -105,7 +108,7 @@ the entire category crop48,76..320,724, all three visible group headers and
 first item text/controls crop400,148..944,184 have zero RGB differences. Filter
 and scrollbar crops retain18/26/26 differing pixels; no whole-panel identity
 claim. That capture predates ammunition icons (44 missing pixels per icon).
-Item View/Recenter/flag signals still have no owner.
+Item View/Recenter signals still have no owner.
 Search input, scroll/resize parity, filter help, complete item appearance and actions,
 main-scene ownership and large-inventory handling remain exposure prerequisites.
 
@@ -117,8 +120,21 @@ first-item actions on/off against editItem: every IN_PLAY flag/timer and the
 complete melt-registration list match, and stale/missing/foreign/replayed intents
 have no effects. Original state is restored, source save unchanged, DF29096
 exits unsaved; native-only GPU48C sampled. Core19 and MSVC pass
-(`stocks-item-actions`). Typed request and viewer wiring remain pending; this
-is provider acceptance, not public individual-action acceptance.
+(`stocks-item-actions`). This is provider acceptance; the typed/rendered scope
+is recorded separately below.
+
+Management157 connects individual Forbid/Dump/Melt/Hidden buttons through
+StocksItemApply, retaining native eligibility and the selected group's revision.
+Pending edits clear authority, confirmed edits refresh the retained search, and
+Unknown outcomes cannot replay. Core19, Stocks controller lifecycle checks and
+real Godot/fake-producer item request/Applied/Unknown roundtrips pass in
+`stocks-item157-stable`; MSVC passes. Protected235942 exercises the actual
+individual visibility button on/off, independently verifies every IN_PLAY flag
+and restoration, and rejects stale replay. The save is unchanged; DF39012 exits
+unsaved; 30FPS GPU47-48C sampled. Only documented thread/finalize/shutdown-object
+diagnostics remain. This rendered evidence covers visibility; the other three
+native effects are covered by the separate provider comparison above. Recenter
+and View remain unwired, and the public Stocks route remains hidden.
 
 Management156 reuses native itemAppearance facts for the staged ammunition
 icons and the accepted diagonal ammunition artwork path. Core19, Stocks state

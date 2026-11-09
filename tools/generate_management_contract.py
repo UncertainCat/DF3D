@@ -10,7 +10,7 @@ ENUMS = ("StocksMenuOutcome", "StocksFlagAction", "StoneUseOutcome", "KitchenMen
          "SelectionOperation", "SelectionKind", "SelectionSection", "CreatureSectionKind", "ReportView", "ReportTab", "ReportZoom")
 
 DOMAINS = {
-    "stocks_menu": ("StocksMenuRead", "StocksGroupApply"),
+    "stocks_menu": ("StocksMenuRead", "StocksItemApply"),
     "stone_use": ("StoneUseRead", "StoneUseApply"),
     "kitchen_menu": ("KitchenRead", "KitchenApply"),
     "chores": ("ChoresRead", "ChoresApply"),
@@ -72,7 +72,7 @@ def outputs():
         checks += "".join(f"static_assert(static_cast<int>(wm::{name}::{n}) == static_cast<int>(df3d::mirror::{name}::{n}));\n" for n,v in rows)
         checks += f"static_assert(sizeof(df3d::mirror::EnumValues{name}()) / sizeof(df3d::mirror::{name}) == {len(rows)});\n"
     # Semantic mutation policy is centralized here and emitted with named values.
-    mutations=("StocksGroupApply","StoneUseApply","KitchenApply","ChoresApply","HunterAmmunitionApply","StandingOrdersSet","WorkDetailSettingsToggle","JobSettingsApply","ResidentsSpecialize","CreatureAnimalEdit","CreatureLocationRemove","CreatureWorkshopRemove","CreatureExpelApply","CreatureHeaderEdit","Place","Remove","RemoveConstruction","AreaCreate","AreaUpdate","AreaDelete","AreaLink",
+    mutations=("StocksItemApply","StocksGroupApply","StoneUseApply","KitchenApply","ChoresApply","HunterAmmunitionApply","StandingOrdersSet","WorkDetailSettingsToggle","JobSettingsApply","ResidentsSpecialize","CreatureAnimalEdit","CreatureLocationRemove","CreatureWorkshopRemove","CreatureExpelApply","CreatureHeaderEdit","Place","Remove","RemoveConstruction","AreaCreate","AreaUpdate","AreaDelete","AreaLink",
         "ProductionQueue","ProductionJobEdit","FarmEdit","WorkOrderCreate","WorkOrderUpdate",
         "WorkOrderDelete","WorkOrderCondition","WorkDetailMembership","WorkDetailMode","WorkDetailCreate","WorkDetailDelete",
         "WorkDetailEdit","CitizenWorkScope","DismissAlert","TradeUpdate","TradeBring")

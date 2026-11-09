@@ -97,9 +97,11 @@ func run() -> void:
 		var group: Dictionary=state.groups[0]
 		var desired: bool=not reference.original_hidden if step==1 else reference.original_hidden
 		var intent: Dictionary={"action":C.ManagementAction.StocksGroupApply,"category":39,"subtype":group.subtype,"subcat1":group.subcat1,"subcat2":group.subcat2,"expected_revision":group.revision,"operation":C.StocksFlagAction.Hidden,"value":int(desired)}
-		if view!=null:await click(Vector2(916,130))
+		if reference.get("individual",false):intent.action=C.ManagementAction.StocksItemApply;intent.item_id=int(ids[0])
+		if view!=null:await click(Vector2(916,166 if reference.get("individual",false) else 130))
 		else:
-			state.apply_group(state.key(group),C.StocksFlagAction.Hidden,desired)
+			if reference.get("individual",false):state.apply_item(int(ids[0]),C.StocksFlagAction.Hidden,desired)
+			else:state.apply_group(state.key(group),C.StocksFlagAction.Hidden,desired)
 			check(state.phase==State.Phase.Applying and state.groups.is_empty(),"Stocks edit retained authority")
 		if not await ready_state(state):break
 		var stale:=await request("stocks_menu",intent)
@@ -111,7 +113,7 @@ func run() -> void:
 			await create_timer(0.01).timeout
 		check(FileAccess.get_file_as_string(directory+"/stocks-wire-ack").strip_edges()==str(step),"Stocks effects not independently verified")
 	var f:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
-	f.store_string(JSON.stringify({"success":not failed,"categories":93,"groups":reference.selection.groups.size(),"items":ids.size(),"edits":2,"controller":true,"rendered":view!=null}));f.close()
+	f.store_string(JSON.stringify({"success":not failed,"categories":93,"groups":reference.selection.groups.size(),"items":ids.size(),"edits":2,"controller":true,"rendered":view!=null,"individual":reference.get("individual",false)}));f.close()
 	if view!=null:view.queue_free()
 	if hover!=null:hover.queue_free()
 	state.dispose();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)

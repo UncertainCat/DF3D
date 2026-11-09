@@ -110,8 +110,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 156;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v156";
+inline constexpr uint32_t kManagementVersion = 157;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v157";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -409,7 +409,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::StocksGroupApply &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::StocksItemApply &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -498,7 +498,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::StocksGroupApply)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::StocksItemApply)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -592,8 +592,9 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     const auto* q=r.residents_specialization();
     if(!q || q->unit_id()<0 || !q->expected_revision() || q->expected_revision()>INT64_MAX)return "invalid residents specialization request";
   } else if(r.residents_specialization())return "unexpected residents specialization request";
-  if(r.action()==ManagementAction::StocksMenuRead || r.action()==ManagementAction::StocksGroupApply) {
+  if(r.action()==ManagementAction::StocksMenuRead || r.action()==ManagementAction::StocksGroupApply || r.action()==ManagementAction::StocksItemApply) {
     const auto* q=r.stocks_menu();if(!q || q->category()<-1 || q->category()>=93 || !q->query() || q->query()->size()>4096 || q->operation()>StocksFlagAction::Hidden)return "invalid stocks request";
+    if((r.action()==ManagementAction::StocksItemApply && q->item_id()<0) || (r.action()!=ManagementAction::StocksItemApply && q->item_id()!=-1))return "invalid stocks item target";
     std::unordered_set<int32_t> ids;
     if(q->item_ids()){if(q->item_ids()->size()>64)return "too many stocks rows";for(auto id:*q->item_ids())if(id<0 || !ids.insert(id).second)return "invalid stocks row identity";}
     if(r.action()==ManagementAction::StocksMenuRead){
@@ -1132,7 +1133,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::StocksGroupApply ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::StocksItemApply ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -1209,7 +1210,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   } else if((s.action()==ManagementAction::ResidentsQuery || s.action()==ManagementAction::WorkDetailWorkersQuery) && s.status()==ManagementStatus::Ok)
     return "residents result required";
   if(const auto* r=s.stocks_menu()) {
-    const bool read=s.action()==ManagementAction::StocksMenuRead,apply=s.action()==ManagementAction::StocksGroupApply;
+    const bool read=s.action()==ManagementAction::StocksMenuRead,apply=s.action()==ManagementAction::StocksGroupApply || s.action()==ManagementAction::StocksItemApply;
     if((!read && !apply) || !r->categories() || !r->groups() || !r->items() || r->category()<-1 || r->category()>=93)return "invalid stocks result";
     if(s.status()==ManagementStatus::Ok){
       if(r->outcome()!=(read?StocksMenuOutcome::None:StocksMenuOutcome::Applied) || r->categories()->size()!=93 || r->groups()->size()>65536 || r->items()->size()>64)return "invalid stocks success";
@@ -1233,7 +1234,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       if(r->category()==-1 && (r->groups()->size() || r->items()->size()))return "unexpected unselected stocks rows";
     }else if(s.status()!=ManagementStatus::Rejected || r->category()!=-1 || r->categories()->size() || r->groups()->size() || r->items()->size() ||
       (r->outcome()!=StocksMenuOutcome::Rejected && (!apply || (r->outcome()!=StocksMenuOutcome::Stale && r->outcome()!=StocksMenuOutcome::Unknown))))return "invalid stocks refusal";
-  }else if(s.status()==ManagementStatus::Ok && (s.action()==ManagementAction::StocksMenuRead || s.action()==ManagementAction::StocksGroupApply))return "missing stocks result";
+  }else if(s.status()==ManagementStatus::Ok && (s.action()==ManagementAction::StocksMenuRead || s.action()==ManagementAction::StocksGroupApply || s.action()==ManagementAction::StocksItemApply))return "missing stocks result";
   if(const auto* r=s.stone_use()) {
     const bool read=s.action()==ManagementAction::StoneUseRead,apply=s.action()==ManagementAction::StoneUseApply;
     if((!read && !apply) || !r->rows() || r->rows()->size()>65536 || !validStoneRestrictions(r->restrictions()))return "invalid stone use result";

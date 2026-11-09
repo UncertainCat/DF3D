@@ -4949,9 +4949,10 @@ TEST_CASE("Chores unknown outcomes carry no authoritative state") {
   }
 }
 TEST_CASE("Stocks requests distinguish reads from guarded group intents") {
-  for(bool apply:{false,true})for(int fault=0;fault<6;++fault){
-    wm::ManagementRequest request;request.action=apply?wm::ManagementAction::StocksGroupApply:wm::ManagementAction::StocksMenuRead;
-    auto& q=request.stocksMenu;q.category=39;
+  for(int mode=0;mode<3;++mode)for(int fault=0;fault<7;++fault){
+    const bool apply=mode!=0;
+    wm::ManagementRequest request;request.action=mode==2?wm::ManagementAction::StocksItemApply:apply?wm::ManagementAction::StocksGroupApply:wm::ManagementAction::StocksMenuRead;
+    auto& q=request.stocksMenu;q.category=39;if(mode==2)q.itemId=17;if(fault==6)q.itemId=mode==2?-1:17;
     if(apply){q.target=wm::StocksGroupKey{39,0,0,0};q.expectedRevision=77;q.operation=wm::StocksFlagAction::Hidden;q.value=1;}
     else {q.query="iron";q.itemIds={42,17};}
     if(fault==1)q.category=93;

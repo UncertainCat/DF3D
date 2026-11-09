@@ -241,10 +241,10 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
   const auto anchor=r.materialAnchor.value_or(TilePos{r.x,r.y,r.z});
   const m::TilePos materialAnchor(anchor.x,anchor.y,anchor.z);
   flatbuffers::Offset<m::StocksMenuRequest> stocksMenu;
-  if(r.action==ManagementAction::StocksMenuRead || r.action==ManagementAction::StocksGroupApply){
+  if(r.action==ManagementAction::StocksMenuRead || r.action==ManagementAction::StocksGroupApply || r.action==ManagementAction::StocksItemApply){
     const auto& q=r.stocksMenu;flatbuffers::Offset<m::StocksGroupKey> target;
     if(q.target){const auto& k=*q.target;target=m::CreateStocksGroupKey(b,k.type,k.subtype,k.subcat1,k.subcat2);}
-    stocksMenu=m::CreateStocksMenuRequest(b,q.category,b.CreateString(q.query),b.CreateVector(q.itemIds),target,q.expectedRevision,m::StocksFlagAction(q.operation),q.value);
+    stocksMenu=m::CreateStocksMenuRequest(b,q.category,b.CreateString(q.query),b.CreateVector(q.itemIds),target,q.expectedRevision,m::StocksFlagAction(q.operation),q.value,q.itemId);
   }
   flatbuffers::Offset<m::StoneUseRequest> stoneUse;
   if(r.action==ManagementAction::StoneUseRead || r.action==ManagementAction::StoneUseApply){

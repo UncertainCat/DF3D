@@ -4249,7 +4249,7 @@ void run(color_ostream& out) {
     } catch(...) {residentsRows.reset();}
     publish();return;
   }
-  if(r->action()==m::ManagementAction::StocksMenuRead || r->action()==m::ManagementAction::StocksGroupApply) {
+  if(r->action()==m::ManagementAction::StocksMenuRead || r->action()==m::ManagementAction::StocksGroupApply || r->action()==m::ManagementAction::StocksItemApply) {
     namespace h=df3d_stocks;
     status=m::ManagementStatus::Rejected;message.clear();stocks.emplace();bool writeStarted=false;
     try {
@@ -4269,7 +4269,8 @@ void run(color_ostream& out) {
           case m::StocksFlagAction::Hidden:operation=df3d_production::BuildingItemAction::Hidden;break;
           default:throw std::runtime_error("invalid stocks operation");
         }
-        auto edit=h::editGroup(target,q.expected_revision(),operation,q.value()!=0);
+        auto edit=r->action()==m::ManagementAction::StocksItemApply?
+          h::editItem(target,q.expected_revision(),q.item_id(),operation,q.value()!=0):h::editGroup(target,q.expected_revision(),operation,q.value()!=0);
         writeStarted=edit.outcome==h::EditOutcome::Applied || edit.outcome==h::EditOutcome::Unknown;
         if(writeStarted)mutated=true;
         if(edit.outcome==h::EditOutcome::Applied){

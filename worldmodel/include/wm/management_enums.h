@@ -273,6 +273,7 @@ enum class ManagementAction : uint8_t {
   StoneUseApply = 101,
   StocksMenuRead = 102,
   StocksGroupApply = 103,
+  StocksItemApply = 104,
 };
 enum class ManagementStatus : uint8_t {
   Idle = 0,
@@ -587,6 +588,7 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::StoneUseApply: return true;
   case ManagementAction::StocksMenuRead: return true;
   case ManagementAction::StocksGroupApply: return true;
+  case ManagementAction::StocksItemApply: return true;
   default: return false;
   }
 }
@@ -594,6 +596,7 @@ constexpr const char* managementDomain(ManagementAction action) {
   switch (action) {
   case ManagementAction::StocksMenuRead: return "stocks_menu";
   case ManagementAction::StocksGroupApply: return "stocks_menu";
+  case ManagementAction::StocksItemApply: return "stocks_menu";
   case ManagementAction::StoneUseRead: return "stone_use";
   case ManagementAction::StoneUseApply: return "stone_use";
   case ManagementAction::KitchenRead: return "kitchen_menu";

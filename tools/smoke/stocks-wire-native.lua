@@ -10,6 +10,8 @@ local members={};for _,id in ipairs(reference.selection.groups[1].ids)do members
 local original=df.item.find(reference.selection.groups[1].ids[1]).flags.hidden
 for id in pairs(members)do assert(df.item.find(id).flags.hidden==original,'Fixture needs uniform visibility')end
 reference.original_hidden=original
+reference.individual=os.getenv("DF3D_STOCKS_ITEM_WIRE")=="1"
+if reference.individual then members={[reference.selection.groups[1].ids[1]]=true} end
 reference.appearance={}
 for _,id in ipairs(reference.selection.groups[1].ids)do
  local item=df.item.find(id)

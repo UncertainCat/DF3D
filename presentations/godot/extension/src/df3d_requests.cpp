@@ -515,18 +515,19 @@ bool readResidentsSpecialization(const Dictionary& data,wm::ManagementRequest& r
 }
 bool validateStocksMenu(const Dictionary& data,String& error) {
     error="Invalid stocks request";
+    const bool individual=int64_t(data["action"])==int64_t(wm::ManagementAction::StocksItemApply);
     const auto integer=[](const Dictionary& d,const char* key,int64_t lo,int64_t hi){return d.has(key) && d[key].get_type()==Variant::INT && int64_t(d[key])>=lo && int64_t(d[key])<=hi;};
     if(int64_t(data["action"])==int64_t(wm::ManagementAction::StocksMenuRead)){
         if(data.size()!=4 || !integer(data,"category",-1,92) || !data.has("query") || data["query"].get_type()!=Variant::STRING || String(data["query"]).utf8().length()>4096 || !data.has("item_ids") || data["item_ids"].get_type()!=Variant::ARRAY)return false;
         const Array ids=data["item_ids"];if(ids.size()>64)return false;std::unordered_set<int64_t> seen;
         for(int64_t i=0;i<ids.size();++i)if(ids[i].get_type()!=Variant::INT || int64_t(ids[i])<0 || int64_t(ids[i])>INT32_MAX || !seen.insert(int64_t(ids[i])).second)return false;
-    }else if(data.size()!=8 || !integer(data,"category",0,92) || !integer(data,"subtype",-1,INT16_MAX) || !integer(data,"subcat1",-1,INT16_MAX) || !integer(data,"subcat2",-1,INT16_MAX) || !integer(data,"expected_revision",1,INT64_MAX) || !integer(data,"operation",0,3) || !integer(data,"value",0,1))return false;
+    }else if(data.size()!=(individual?9:8) || (individual && !integer(data,"item_id",0,INT32_MAX)) || (!individual && data.has("item_id")) || !integer(data,"category",0,92) || !integer(data,"subtype",-1,INT16_MAX) || !integer(data,"subcat1",-1,INT16_MAX) || !integer(data,"subcat2",-1,INT16_MAX) || !integer(data,"expected_revision",1,INT64_MAX) || !integer(data,"operation",0,3) || !integer(data,"value",0,1))return false;
     error=String();return true;
 }
 bool readStocksMenu(const Dictionary& data,wm::ManagementRequest& request,String&) {
     request.action=wm::ManagementAction(int64_t(data["action"]));auto& q=request.stocksMenu;q.category=int16_t(int64_t(data["category"]));
     if(request.action==wm::ManagementAction::StocksMenuRead){q.query=String(data["query"]).utf8().get_data();const Array ids=data["item_ids"];for(int64_t i=0;i<ids.size();++i)q.itemIds.push_back(int32_t(int64_t(ids[i])));}
-    else {q.target=wm::StocksGroupKey{q.category,int16_t(int64_t(data["subtype"])),int16_t(int64_t(data["subcat1"])),int16_t(int64_t(data["subcat2"]))};q.expectedRevision=uint64_t(int64_t(data["expected_revision"]));q.operation=wm::StocksFlagAction(int64_t(data["operation"]));q.value=int8_t(int64_t(data["value"]));}
+    else {q.target=wm::StocksGroupKey{q.category,int16_t(int64_t(data["subtype"])),int16_t(int64_t(data["subcat1"])),int16_t(int64_t(data["subcat2"]))};q.expectedRevision=uint64_t(int64_t(data["expected_revision"]));q.operation=wm::StocksFlagAction(int64_t(data["operation"]));q.value=int8_t(int64_t(data["value"]));if(request.action==wm::ManagementAction::StocksItemApply)q.itemId=int32_t(int64_t(data["item_id"]));}
     return true;
 }
 bool validateStoneUse(const Dictionary& data,String& error) {
@@ -889,7 +890,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::StocksGroupApply)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::StocksItemApply)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

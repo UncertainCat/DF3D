@@ -37,9 +37,9 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
-Management157 carries the staged `stocks_menu` domain with StocksMenuRead,
-StocksGroupApply and StocksItemApply on `Local\df3d_management_v157`. Rebuild
-bridge and viewer together; version156 peers use a different channel and are
+Management158 carries the staged `stocks_menu` domain with StocksMenuRead,
+StocksGroupApply and StocksItemApply on `Local\df3d_management_v158`. Rebuild
+bridge and viewer together; version157 peers use a different channel and are
 not compatible. Item edits add a required nonnegative item ID to the group key,
 expected group revision, operation and explicit value. Reads and group edits
 reject item targets. No migration invents an item-edit target.
@@ -155,8 +155,8 @@ opens the ammunition sheet through actual Stocks View, checks Recenter/close
 handoffs, retains group edit/restoration/stale checks, and compares native sheet
 raw_description with the owned provider and viewer text. Weight matches too.
 Icon426,66..458,98, header464,64..784,112 and description430,118..886,226 have zero
-RGB differences. Native "Assigned to hunters" is still missing, and the carrier
-icon differs by298 pixels; full-sheet parity is not accepted. Source unchanged,
+RGB differences. That capture predates the assignment row restored below. The carrier icon
+still differs by298 pixels; full-sheet parity is not accepted. Source unchanged,
 DF32724 exits unsaved, 30FPS GPU49-50C sampled; only documented
 thread/finalize/shutdown-object diagnostics remain. Other ammunition variants
 and full main-scene camera/follow behavior still require acceptance.
@@ -169,8 +169,22 @@ caption fragments come from native strings. No sheet scratch is read. Protected
 001936 compares actual native text against owned results for hunter, unassigned,
 no hunter allocation, squad alias and hunter precedence, then restores all
 fixture allocations/alias. Source unchanged, DF21048 exits unsaved, native-only
-GPU48C sampled. Core19 (`item-ammo-assignment`) and MSVC pass. This is provider
-acceptance only: transport and the visible assignment row remain pending.
+GPU48C sampled. Core19 (`item-ammo-assignment`) and MSVC pass. This establishes the provider independently of its transport.
+
+Management158 adds optional ItemAmmunitionAssignment to independent item
+snapshots: kind0/1/2 (unassigned/hunters/squad), squad identity and native caption.
+Bridge and viewer must be rebuilt together. Missing legacy facts remain absent;
+they are not migrated to kind0. Assignment facts participate in item revision
+hashing. Native results pass pointer-free validation and the item-sheet controller
+before rendering below location links, with native hunter/squad colors.
+Core19, item-sheet and Stocks controller checks pass in `item-assignment158`;
+MSVC passes. Protected003032 verifies the cold typed View and existing edit/
+restoration/stale/navigation workflows. The hunter row crop472,310..888,336 has
+zero RGB differences from native, as do the header and description crops.
+Source unchanged, DF15472 exits unsaved; 30FPS GPU47-48C sampled. Only documented
+thread/finalize/shutdown-object diagnostics remain. Squad selection/caption has
+separate native provider evidence; its rendered row is not covered by this run.
+The bin carrier icon and broader item/main-scene coverage remain incomplete.
 
 Management156 reuses native itemAppearance facts for the staged ammunition
 icons and the accepted diagonal ammunition artwork path. Core19, Stocks state

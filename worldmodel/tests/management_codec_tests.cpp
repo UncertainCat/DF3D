@@ -4983,3 +4983,17 @@ TEST_CASE("Stocks groups own unique membership and item rows belong to the selec
     if(!fault){const auto decoded=codec::decodeState(value);REQUIRE(decoded.stocksMenu);CHECK(decoded.stocksMenu->groups[0].itemIds==std::vector<int32_t>{42,17});CHECK(decoded.stocksMenu->items[0].id==17);REQUIRE(decoded.stocksMenu->items[0].appearance);CHECK(decoded.stocksMenu->items[0].appearance->stack==27);CHECK(decoded.stocksMenu->items[0].appearance->flags==32);CHECK(decoded.stocksMenu->items[0].appearance->colorToken=="color");CHECK(decoded.stocksMenu->groups[0].revision==77);}
   }
 }
+
+TEST_CASE("item ammunition assignment distinguishes absent facts and observed allocation") {
+  for(int mode=0;mode<4;++mode)for(int fault=0;fault<5;++fault) {
+    flatbuffers::FlatBufferBuilder b;
+    auto assignment=wire::CreateItemAmmunitionAssignment(b,fault==2?3:mode==3?0:mode,fault==3?7:mode==2?120:-1,b.CreateString(fault==4?std::string(1025,'x'):mode==0||mode==3?"":"native assignment"));
+    auto item=wire::CreateIndependentItemSnapshot(b,45,1,fault==1?53:39,b.CreateString("item"),b.CreateString(""),b.CreateString(""),false,false,false,false,true,false,false,false,b.CreateString(""),b.CreateString(""),0,0,-1,0,0,0,mode==3?0:assignment);
+    auto independent=wire::CreateIndependentItemState(b,item);wire::ProductionStateBuilder p(b);p.add_independent_item(independent);auto payload=p.Finish();
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_production(payload);state.add_action(wire::ManagementAction::ProductionInspect);state.add_status(wire::ManagementStatus::Ok);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    const bool invalid=mode!=3 && fault!=0 && !(fault==3 && mode==2);
+    CHECK(bool(wire::validateManagementState(*value))==invalid);
+    if(!invalid){auto decoded=codec::decodeProduction(value->production());const auto& observed=decoded.independentItem->snapshot->ammunitionAssignment;CHECK(observed.has_value()==(mode!=3));if(observed){CHECK(observed->kind==mode);CHECK(observed->squadId==(mode==2?(fault==3?7:120):-1));}}
+  }
+}

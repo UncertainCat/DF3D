@@ -110,8 +110,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 157;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v157";
+inline constexpr uint32_t kManagementVersion = 158;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v158";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -2205,6 +2205,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         if(item->stockpile() && item->stockpile()->type()!=29)return "invalid item stockpile type";
         if((item->item_type()==30||item->item_type()==13) && !item->appearance())return "missing item appearance";
         if(const auto* a=item->appearance())if(!validInspectionInstrument(*a,item->item_type())||!text(a->material_token(),256)||a->material_token()->size()==0||!text(a->subtype_raw(),128)||!text(a->color_token(),128)||a->stack()<1||(a->flags()&~96)||a->material_token()->str()!=item->material_token()->str()||a->subtype_raw()->str()!=item->subtype_raw()->str())return "invalid item appearance";
+        if(const auto* a=item->ammunition_assignment())if(item->item_type()!=39 || a->kind()<0 || a->kind()>2 || (a->kind()==2?a->squad_id()<0:a->squad_id()!=-1) || !text(a->caption(),1024) || (a->kind()==0)!=(a->caption()->size()==0))return "invalid item ammunition assignment";
         if(const auto* owner=item->owner())if(owner->id()<0||!text(owner->name(),512))return "invalid item owner";
         if(const auto* c=item->carrier()) {
           if(item->holder() || c->id()<0 || !text(c->name(),512) || (c->kind()!=1&&c->kind()!=2) ||

@@ -5,7 +5,9 @@ namespace df3d_production {
 struct ItemLocationLink { int32_t id=-1,type=-1;std::string name; };
 struct ItemCarrier { int32_t kind=0,id=-1,itemType=-1;std::string name;std::optional<ItemInspectionAppearance> appearance; };
 struct ItemOwner { int32_t id=-1;std::string name; };
+struct ItemAmmunitionAssignment {int8_t kind=0;int32_t squadId=-1;std::string caption;};
 struct ItemObservation {
+    std::optional<ItemAmmunitionAssignment> ammunitionAssignment;
     std::optional<ItemOwner> owner;
     ItemFacts item;
     std::string weight,description;
@@ -23,6 +25,7 @@ inline uint64_t itemObservationRevision(const ItemObservation& value) {
     const auto number=[&](uint64_t n){for(int i=0;i<8;++i){byte(uint8_t(n));n>>=8;}};
     const auto text=[&](const std::string& s){number(s.size());for(unsigned char c:s)byte(c);};
     const auto& item=value.item;
+    byte(value.ammunitionAssignment.has_value());if(value.ammunitionAssignment){const auto& a=*value.ammunitionAssignment;byte(a.kind);number(a.squadId);text(a.caption);}
     number(item.id);number(item.itemType);number(item.flags);byte(item.countdown);byte(item.delay);
     byte(value.owner.has_value());if(value.owner){number(value.owner->id);text(value.owner->name);}
     text(item.caption);text(item.materialToken);text(item.subtypeRaw);text(value.weight);text(value.description);
@@ -38,6 +41,7 @@ inline uint64_t itemObservationRevision(const ItemObservation& value) {
 }
 inline bool validItemObservation(const ItemObservation& value) {
     const auto& item=value.item;
+    if(value.ammunitionAssignment){const auto& a=*value.ammunitionAssignment;if(item.itemType!=39 || a.kind<0 || a.kind>2 || (a.kind==2?a.squadId<0:a.squadId!=-1) || a.caption.size()>1024 || (a.kind==0)!=a.caption.empty())return false;}
     if(value.owner && (value.owner->id<0 || value.owner->name.size()>512))return false;
     if(value.carrier){const auto& c=*value.carrier;if(value.buildingHolder || c.id<0 || c.name.size()>512 || (c.kind!=1&&c.kind!=2) || (c.kind==1?(c.itemType<0||c.itemType>92):c.itemType!=-1))return false;}
     if(value.carrier){const auto& c=*value.carrier;if((c.kind==1)!=c.appearance.has_value())return false;if(c.appearance){const auto& a=*c.appearance;if(!validInspectionInstrument(a,c.itemType)||a.materialToken.empty()||a.materialToken.size()>256||a.subtypeRaw.size()>128||a.colorToken.size()>128||a.stack<1||(a.flags&~96))return false;}}

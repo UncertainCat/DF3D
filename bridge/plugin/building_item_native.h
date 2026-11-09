@@ -40,7 +40,6 @@
 namespace df3d_production {
 // Item-sheet153daa..154052 derives allocation from simulation equipment, not
 // the native sheet. Preserve its assigned-list gate and hunter precedence.
-struct ItemAmmunitionAssignment {int8_t kind=0;int32_t squadId=-1;std::string caption;};
 inline std::optional<ItemAmmunitionAssignment> itemAmmunitionAssignment(df::item* item) {
     if(!item || !farmFunctions() || !df::global::plotinfo || !df::global::gamemode)return std::nullopt;
     ItemAmmunitionAssignment result;
@@ -548,6 +547,7 @@ inline std::optional<ItemObservation> observeItem(df::item* item) {
     }
     const auto owner=itemOwnerDescription(item);if(!owner)return std::nullopt;
     if(owner->id>=0)value.owner=*owner;
+    if(item->getType()==df::item_type::AMMO){value.ammunitionAssignment=itemAmmunitionAssignment(item);if(!value.ammunitionAssignment)return std::nullopt;}
     value.revision=itemObservationRevision(value);
     if(!validItemObservation(value))return std::nullopt;
     return value;

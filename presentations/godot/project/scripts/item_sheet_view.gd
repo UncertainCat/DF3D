@@ -175,3 +175,8 @@ func _draw() -> void:
 		text_at(snapshot.stockpile.name,Vector2(56,204+offset))
 		patch(art.texture("HORIZONTAL_OPTION_ACTIVE"),stockpile_rect())
 		text_at("View stockpile",Vector2(344,204+offset),colors[10])
+
+	if snapshot.has("ammunition_assignment") and snapshot.ammunition_assignment.kind!=0:
+		var rows:=int(snapshot.has("stockpile"))+int(snapshot.has("carrier") or snapshot.get("holder_id",-1)>=0)
+		var assignment: Dictionary=snapshot.ammunition_assignment
+		text_at(assignment.caption,Vector2(56,204+36*rows),colors[2 if assignment.kind==1 else 11])

@@ -199,6 +199,7 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
     }
     if(state.snapshot) {
       const auto& s=*state.snapshot;Dictionary value;
+      if(s.ammunitionAssignment){const auto& a=*s.ammunitionAssignment;Dictionary row;row["kind"]=a.kind;row["squad_id"]=a.squadId;row["caption"]=String::utf8(a.caption.c_str());value["ammunition_assignment"]=row;}
       value["stockpile_categories"]=s.stockpileCategories;value["id"]=s.id;value["revision"]=int64_t(s.revision);value["item_type"]=s.itemType;
       value["name"]=String::utf8(s.name.c_str());value["material_token"]=String::utf8(s.materialToken.c_str());value["subtype_raw"]=String::utf8(s.subtypeRaw.c_str());
       value["weight"]=String::utf8(s.weight.c_str());value["description"]=String::utf8(s.description.c_str());

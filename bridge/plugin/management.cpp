@@ -934,8 +934,10 @@ void publish() {
       if(v.appearance){const auto& a=*v.appearance;appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced);}
       flatbuffers::Offset<m::ItemOwner> owner;
       if(v.owner)owner=m::CreateItemOwner(b,v.owner->id,b.CreateString(v.owner->name));
+      flatbuffers::Offset<m::ItemAmmunitionAssignment> assignment;
+      if(v.ammunitionAssignment){const auto& a=*v.ammunitionAssignment;assignment=m::CreateItemAmmunitionAssignment(b,a.kind,a.squadId,b.CreateString(a.caption));}
       snapshot=m::CreateIndependentItemSnapshot(b,v.id,v.revision,v.itemType,b.CreateString(v.name),b.CreateString(v.materialToken),b.CreateString(v.subtypeRaw),
-        v.forbid,v.dump,v.melt,v.hidden,v.canDump,v.canMelt,v.inJob,v.inBuilding,b.CreateString(v.weight),b.CreateString(v.description),holder,stockpile,v.stockpileCategories,carrier,appearance,owner);
+        v.forbid,v.dump,v.melt,v.hidden,v.canDump,v.canMelt,v.inJob,v.inBuilding,b.CreateString(v.weight),b.CreateString(v.description),holder,stockpile,v.stockpileCategories,carrier,appearance,owner,assignment);
     }
     if(state.edit)edit=m::CreateBuildingItemReceipt(b,state.edit->itemId,state.edit->operation,state.edit->value);
     independentItem=m::CreateIndependentItemState(b,snapshot,edit,state.outcome);
@@ -3037,6 +3039,7 @@ std::optional<BuildingItemSnapshot> observeFarmItem(int32_t buildingId,int32_t i
 }
 std::optional<IndependentItemSnapshot> independentItemSnapshot(const df3d_production::ItemObservation& observed) {
   const auto& item=observed.item;IndependentItemSnapshot value;
+  if(observed.ammunitionAssignment){const auto& a=*observed.ammunitionAssignment;value.ammunitionAssignment=ItemAmmunitionAssignment{a.kind,a.squadId,DF2UTF(a.caption)};if(value.ammunitionAssignment->caption.size()>1024)return std::nullopt;}
   value.id=item.id;value.revision=observed.revision;value.itemType=item.itemType;value.stockpileCategories=observed.stockpileCategories;
   if(observed.owner){value.owner=ItemOwner{observed.owner->id,DF2UTF(observed.owner->name)};if(value.owner->name.size()>512)return std::nullopt;}
   value.name=DF2UTF(item.caption);value.materialToken=DF2UTF(item.materialToken);value.subtypeRaw=DF2UTF(item.subtypeRaw);

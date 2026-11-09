@@ -1608,6 +1608,7 @@ table BuildingItemSnapshot {
 table ItemInspectionAppearance { material_token:string; subtype_raw:string; color_token:string; stack:int32; flags:uint8; instrument_family:int8 = -1; instrument_placed:int8 = -1; }
 table ItemCarrier { kind:int8; id:int32 = -1; item_type:int32 = -1; name:string; appearance:ItemInspectionAppearance; }
 table ItemOwner { id:int32 = -1; name:string; }
+table ItemAmmunitionAssignment { kind:int8; squad_id:int32 = -1; caption:string (required); }
 table IndependentItemSnapshot {
   id:int32 = -1; revision:uint64; item_type:int32 = -1;
   name:string; material_token:string; subtype_raw:string;
@@ -1619,6 +1620,7 @@ table IndependentItemSnapshot {
   carrier:ItemCarrier; // Mutually exclusive with building holder.
   appearance:ItemInspectionAppearance; // Required for BOX/INSTRUMENT; other families may provide verified facts.
   owner:ItemOwner; // Absent means no resolved UNIT_ITEMOWNER; independent of carrier.
+  ammunition_assignment:ItemAmmunitionAssignment; // Optional observed status; absent is unknown, not unassigned.
 }
 table IndependentItemState {
   snapshot:IndependentItemSnapshot; edit:BuildingItemReceipt;
@@ -2231,7 +2233,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 157;
+  schema_version:uint32 = 158;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2297,7 +2299,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 157;
+  schema_version:uint32 = 158;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

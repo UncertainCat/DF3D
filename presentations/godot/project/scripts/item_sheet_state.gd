@@ -99,6 +99,12 @@ func _valid(value: Dictionary) -> bool:
 	if value.has("stockpile"):
 		if value.stockpile_categories<0 or value.stockpile_categories>0x1ffff:return false
 	elif value.stockpile_categories!=-1:return false
+	if value.has("ammunition_assignment"):
+		var a: Variant=value.ammunition_assignment
+		if value.item_type!=39 or typeof(a)!=TYPE_DICTIONARY or a.size()!=3:return false
+		if typeof(a.get("kind"))!=TYPE_INT or a.kind<0 or a.kind>2 or typeof(a.get("squad_id"))!=TYPE_INT:return false
+		if (a.kind==2 and (a.squad_id<0 or a.squad_id>2147483647)) or (a.kind!=2 and a.squad_id!=-1):return false
+		if typeof(a.get("caption"))!=TYPE_STRING or a.caption.to_utf8_buffer().size()>1024 or (a.kind==0)!=a.caption.is_empty():return false
 	if value.has("owner"):
 		var owner=value.owner
 		if typeof(owner)!=TYPE_DICTIONARY or owner.size()!=2:return false

@@ -3712,5 +3712,25 @@
     "source_save": "unchanged; owned DF21048 exited unsaved",
     "gpu": "48C sampled; native only",
     "limitations": "Provider acceptance only; pointer-free snapshot transport and viewer row still pending. Translated-name branch reuses existing pinned formatter but this capture exercises squad alias."
+  },
+  "assignment_wire158_reference": {
+    "contract": 158,
+    "channel": "Local\\df3d_management_v158",
+    "qa": "build/qa/item-assignment158",
+    "bridge_build": "build/notes/pm/item-assignment158-msvc.log",
+    "plugin_sha256": "991ff952b1cc5fef3385b41ba6581b0b704715a797a00f91b2617a828f5812d7",
+    "capture": "build/stockpile-storage-native-input-20261109-003032",
+    "scope": "Optional observed assignment kind/squad ID/native caption transported to item sheet and included in revision. Old absent facts remain absent. Cold typed View receives hunter assignment, renders native row; existing group edits/restoration/stale rejection and Recenter/View/close handoff checks pass.",
+    "rgb_differences": {
+      "assignment_472_310_888_336": 0,
+      "header_426_64_888_112": 0,
+      "description_430_118_886_226": 0
+    },
+    "native_png_sha256": "81f361e291974ba18871d293ed6d4aced9b99260d5646c965f744a88641c7efb",
+    "viewer_png_sha256": "1466129d6154c12aa84c2aad5886fe10fb31b71c4019ba27c3b0f706fbacd578",
+    "source_save": "unchanged; owned DF15472 exited unsaved",
+    "gpu": "30FPS;47-48C sampled",
+    "diagnostics": "passed_with_known_issues: godot-separate-thread-notice, godot-device-finalize, godot-shutdown-objects; unclassified empty",
+    "limitations": "No rendered squad row, all ammunition variants, carrier-art or main-scene camera acceptance. Public Stocks remains hidden."
   }
 }

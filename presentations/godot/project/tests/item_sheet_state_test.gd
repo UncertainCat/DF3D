@@ -28,6 +28,15 @@ func completed(wrong_flag:=false) -> void:
 
 func run() -> void:
 	for fault in 5:
+		setup();model.open(1000);service.poll();var value:=item();value.item_type=39
+		value.ammunition_assignment={"kind":1,"squad_id":-1,"caption":"native assignment"}
+		if fault==1:value.item_type=53
+		if fault==2:value.ammunition_assignment.kind=3
+		if fault==3:value.ammunition_assignment.squad_id=120
+		if fault==4:value.ammunition_assignment.caption=""
+		item_reply({"snapshot":value})
+		check(model.phase==(ItemModel.Phase.Ready if fault==0 else ItemModel.Phase.Rejected),"Ammunition assignment validation differs")
+	for fault in 5:
 		setup();model.open(1000);service.poll();var owned:=item()
 		owned.owner={"id":988,"name":"native owner"}
 		match fault:

@@ -68,9 +68,17 @@ snapshot, matches the valid033137 native bin panel exactly (488x708 RGB).
 JSON numeric types are restored before that offline render. Core19 and
 item-state checks pass in `item-contents-view-final`; the outer container guard
 also passes MSVC. Native DF48000 exited unsaved with source preservation,
-30FPS and38C sampled. Child signals remain unconnected to commands; hover,
-scroll/resize behavior, creature rows and alternate item-use lists still need
-implementation/acceptance. Public Stocks remains gated.
+30FPS and38C sampled. Child View now opens the selected member through the independent item owner,
+retiring the parent request/generation. Container View links reopen the parent
+item in that same owner; the former farm-only BOX handler is removed.
+BLOCKS description dispatch shares pinned seed virtuals except getType; BAR and
+BLOCKS observations include appearance. Protected040647 verifies bin11204 to
+block7565, exact native description/full panel, container View back to11204 and
+close without returning to Stocks. Core19, extension, item-state and MSVC pass
+(`item-child-navigation-final`, `item-child-navigation-msvc`). Source preserved;
+DF6916 exits unsaved at30FPS,39C sampled, known diagnostics only. This is one
+bin/block workflow. Per-row flag commands, hover, scroll/resize, creature rows
+and alternate item-use lists remain unfinished. Public Stocks remains gated.
 
 The item-detail provider now admits doors, floodgates, beds, chairs, flasks,
 goblets, barrels, buckets, tables, bins, cabinets and anvils through the pinned

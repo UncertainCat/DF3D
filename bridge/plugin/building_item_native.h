@@ -371,7 +371,7 @@ inline bool simpleItemDescriptionDispatch(df::item* item) {
     if(!item||!farmFunctions())return false;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     const auto* table=*reinterpret_cast<const void* const*>(item);
-    if(table!=base+0x16d06e0 && table!=base+0x16f6da0)return false;
+    if(table!=base+0x16d06e0 && table!=base+0x16f6da0 && table!=base+0x15fa918)return false;
     static const bool pinned=[base]() {
         struct Pin {size_t slot,target,length;uint64_t hash;};
         constexpr Pin pins[]={
@@ -396,7 +396,10 @@ inline bool simpleItemDescriptionDispatch(df::item* item) {
         // BAR shares the seed exclusions: no image reference, construction,
         // maker, critter or face-up branch. Only type and material getters differ.
         // Native c7527b adjusts BAR grammar; all text still comes from c75000.
-        for(const size_t table:{size_t(0x16d06e0),size_t(0x16f6da0)})for(auto pin:pins) {
+        // BLOCKS shares the seed leaf targets except getType. c750f0 routes
+        // its material wording through the owned semantic material formatter.
+        for(const size_t table:{size_t(0x16d06e0),size_t(0x16f6da0),size_t(0x15fa918)})for(auto pin:pins) {
+            if(table==0x15fa918 && pin.slot==0)pin={0,0x67540,6,UINT64_C(0x2505ef84b8531c22)};
             if(table==0x16f6da0) {
                 if(pin.slot==0)pin={0,0x66e90,3,UINT64_C(0x58389c18233078ff)};
                 else if(pin.slot==0x10 || pin.slot==0x38)
@@ -733,6 +736,7 @@ inline std::optional<ItemObservation> observeItem(df::item* item) {
     auto facts=itemFacts(item);if(!facts)return std::nullopt;
     ItemObservation value;value.item=std::move(*facts);value.weight=*weight;value.description=*description;
     switch(item->getType()) {
+    case df::item_type::BAR:case df::item_type::BLOCKS:
     case df::item_type::BOX:case df::item_type::INSTRUMENT:
     case df::item_type::DOOR:
     case df::item_type::FLOODGATE:

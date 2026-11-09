@@ -27,6 +27,15 @@ func completed(wrong_flag:=false) -> void:
 		"edit":{"item_id":1000,"farm_operation":C.FarmOperation.ItemHidden,"value":1}})
 
 func run() -> void:
+	setup();model.open(1000);service.poll();var parent:=item()
+	parent.contents=[{"kind":1,"id":71,"item_type":0,"caption":"native bar","flags":0,"can_dump":true,"can_melt":true,"appearance":{"material_token":"INORGANIC:IRON","subtype_raw":"","color_token":"","stack":1,"flags":0}}]
+	item_reply({"snapshot":parent});check(model.phase==ItemModel.Phase.Ready,"Parent contents unavailable")
+	model.open_child(999);check(model.item_id==1000,"Non-member child opened")
+	var previous_generation: int=model.generation
+	model.open_child(71);service.poll()
+	check(model.item_id==71 and model.phase==ItemModel.Phase.Reading and model.snapshot.is_empty() and model.generation>previous_generation,"Child navigation retained parent authority")
+	var child:=item();child.id=71;item_reply({"snapshot":child})
+	check(model.phase==ItemModel.Phase.Ready and model.snapshot.id==71,"Child read did not settle")
 	for mode in 3:
 		setup();model.open(1000);service.poll();var contents_value:=item()
 		if mode>0:contents_value.contents=[]

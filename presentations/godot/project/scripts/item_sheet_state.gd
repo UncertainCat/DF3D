@@ -41,6 +41,12 @@ func open(item: int) -> void:
 	if service==null:_fail(Phase.Unavailable);return
 	item_id=item;_read()
 
+func open_child(id: int) -> void:
+	# Navigation is a read of the selected stable ID. Retire the parent request
+	# before opening; a late parent refresh must never replace the child sheet.
+	if phase!=Phase.Ready or not snapshot.get("contents",[]).any(func(row):return row.kind==1 and row.id==id):return
+	open(id)
+
 func refresh() -> void:
 	if item_id<0 or ticket!=0 or phase in [Phase.Closed,Phase.Unavailable]:return
 	_read()

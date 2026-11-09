@@ -29,7 +29,11 @@ func configure(world,service,host,help=null) -> void:
 		if state.phase==state.Phase.Ready and state.snapshot.get("stockpile",{}).get("id",-1)==id:stockpile_requested.emit(id))
 	panel.carrier_requested.connect(func(kind,id):
 		var carrier: Dictionary=state.snapshot.get("carrier",{})
-		if state.phase==state.Phase.Ready and carrier.get("kind",0)==kind and carrier.get("id",-1)==id:carrier_requested.emit(kind,id))
+		if state.phase==state.Phase.Ready and carrier.get("kind",0)==kind and carrier.get("id",-1)==id:
+			if kind==1:open_target(id)
+			else:carrier_requested.emit(kind,id))
+	panel.contents_view.child_requested.connect(func(kind,id):
+		if kind==1 and play_enabled and ui_host.allows_panel_input(self):state.open_child(id))
 	state.changed.connect(_state_changed)
 	ui_host.register(self);_process(0)
 

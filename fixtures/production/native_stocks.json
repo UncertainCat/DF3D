@@ -6521,7 +6521,7 @@
       "Protected035243 contents transport and restored group edits passed"
     ],
     "next": [
-      "Connect child navigation and flags with fresh target/containment checks",
+      "Connect child flag actions with fresh target/containment checks",
       "Add native hover help and verify scrolling/resizing",
       "Live creature rows and alternate item-use contents branch"
     ],
@@ -6651,6 +6651,59 @@
       "source_preserved": true,
       "graphics_fps_cap": 30,
       "sampled_gpu_temperature_c": 38
+    },
+    "child_navigation_reference": {
+      "capture": "build/stockpile-storage-native-input-20261109-040647",
+      "parent_id": 11204,
+      "child_id": 7565,
+      "item_type": 2,
+      "native_child": {
+        "description": "These are sphalerite blocks.  ",
+        "id": 7565,
+        "returned_to_container": true
+      },
+      "flow": "Actual View clicks: Stocks to bin, bin contents to block, carrier View back to bin, close without returning to Stocks. Old parent request is retired on child open. Only native-reference members in a Ready snapshot can initiate child navigation.",
+      "native_description": "c75000 native material branch c750f0; BLOCKS vtable15fa918 shares pinned seed leaf targets except getType67540 (hash2505ef84b8531c22). BAR/BLOCKS appearance is now included.",
+      "native_region": [
+        416,
+        52,
+        904,
+        760
+      ],
+      "rgb_different_pixels": 0,
+      "native_sha256": "8816709993df5eabc2fb498ddf633a7d4fe865fe5a6b0130d3482f096d4b5c88",
+      "viewer_sha256": "f926d37ef4912509d6e920e416561b8ff26e2451107349ca2762ed4657adb833",
+      "diagnostics": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          },
+          {
+            "id": "godot-device-finalize",
+            "count": 1,
+            "reference": "https://github.com/godotengine/godot/issues/119000"
+          },
+          {
+            "id": "godot-shutdown-objects",
+            "count": 1,
+            "reference": "ENGINEERING.md#tests-and-known-problems"
+          }
+        ],
+        "unclassified": []
+      },
+      "source_preserved": true,
+      "owned_df_closed": 6916,
+      "graphics_fps_cap": 30,
+      "sampled_gpu_temperature_c": 39,
+      "installed_bridge_sha256": "6bad14938339dfcbb37f298f1300f75d76f7a8d2a134b6234b25d8af63e9cfba",
+      "verification": [
+        "core19, extension and item_sheet_state_test item-child-navigation-final passed",
+        "MSVC item-child-navigation-msvc passed",
+        "Protected040458 forward navigation and child full panel matched; protected040647 adds return link and close"
+      ],
+      "scope": "One bin and contained sphalerite block. Not acceptance of every item family, unit navigation, child flag actions, hover or scrolling."
     }
   }
 }

@@ -34,6 +34,20 @@ for _,family in ipairs(read('stocks-wire-reference.json').furniture)do
  local deadline=dfhack.getTickCount()+10000
  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end
   assert(dfhack.getTickCount()<deadline,'Furniture capture timeout');script.sleep(1,'frames')end
+ if os.getenv('DF3D_STOCKS_CHILD_VIEW')=='1' then
+  local child=read('stocks-child-wire.json');click(772,298)
+  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==child.id,'Native child View target differs')
+  assert(child.description==dfhack.df2utf(sheet.raw_description),'Native child description differs')
+  results[#results].child={id=child.id,description=dfhack.df2utf(sheet.raw_description)}
+  script.sleep(8,'frames');view:render(dfhack.getTickCount())
+  local f=assert(io.open(out..'/shot.tmp','w'));f:write('stocks-child-native');f:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
+  local deadline=dfhack.getTickCount()+10000
+  while true do local ack=io.open(out..'/ack-stocks-child-native');if ack then ack:close();break end
+   assert(dfhack.getTickCount()<deadline,'Child capture timeout');script.sleep(1,'frames')end
+  click(816,286)
+  assert(sheet.open and sheet.active_id==family.id,'Native container View return differs')
+  results[#results].child.returned_to_container=true
+ end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
  assert(not sheet.open and not stocks.open,'Native furniture close differs')
  gui.simulateInput(view,'D_STOCKS');view:render(dfhack.getTickCount())

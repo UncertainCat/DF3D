@@ -261,6 +261,26 @@ func run() -> void:
 			var saved:=FileAccess.open(directory+"/stocks-furniture-wire-"+str(int(family.kind))+".json",FileAccess.WRITE);saved.store_string(JSON.stringify(snapshot));saved.close()
 			await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(directory+"/stocks-furniture-view-"+str(int(family.kind))+".png")
+			if OS.get_environment("DF3D_STOCKS_CHILD_VIEW")=="1":
+				var child_id: int=snapshot.contents[0].id
+				var contents=owner.item_owner.panel.contents_view
+				await click(owner.item_owner.panel.position+contents.position+contents.control_rect(0,1).get_center())
+				deadline=Time.get_ticks_msec()+5000
+				while Time.get_ticks_msec()<deadline:
+					world.poll();await process_frame
+					if owner.item_owner.state.item_id==child_id and owner.item_owner.state.phase==owner.item_owner.state.Phase.Ready:break
+				check(owner.item_owner.state.item_id==child_id and owner.item_owner.state.phase==owner.item_owner.state.Phase.Ready,"Contained item View failed")
+				var child: Dictionary=owner.item_owner.state.snapshot
+				check(child.get("carrier",{}).get("id",-1)==int(family.id),"Child lost its container link")
+				saved=FileAccess.open(directory+"/stocks-child-wire.json",FileAccess.WRITE);saved.store_string(JSON.stringify(child));saved.close()
+				await RenderingServer.frame_post_draw
+				root.get_texture().get_image().save_png(directory+"/stocks-child-view.png")
+				await click(owner.item_owner.panel.position+owner.item_owner.panel.holder_rect().get_center())
+				deadline=Time.get_ticks_msec()+5000
+				while Time.get_ticks_msec()<deadline:
+					world.poll();await process_frame
+					if owner.item_owner.state.item_id==int(family.id) and owner.item_owner.state.phase==owner.item_owner.state.Phase.Ready:break
+				check(owner.item_owner.state.item_id==int(family.id) and owner.item_owner.state.phase==owner.item_owner.state.Phase.Ready,"Container View return failed")
 			owner.item_owner.close_panel();check(owner.state.phase==State.Phase.Closed,"Furniture close reopened Stocks")
 		owner.queue_free();host.queue_free();await process_frame
 	var f:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)

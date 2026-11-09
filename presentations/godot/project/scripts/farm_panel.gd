@@ -24,9 +24,6 @@ func configure(world,service,host,help=null) -> void:
 	item_owner.holder_requested.connect(func(id):
 		var holder: Dictionary=item_owner.state.snapshot.get("holder",{})
 		if holder.get("id",-1)==id:holder_requested.emit(int(holder.get("type",-1)),id))
-	item_owner.carrier_requested.connect(func(kind,id):
-		var carrier: Dictionary=item_owner.state.snapshot.get("carrier",{})
-		if kind==1 and carrier.get("id",-1)==id and carrier.get("item_type",-1)==30:item_owner.open_target(id))
 	panel.contents.view_requested.connect(func(id):
 		if panel.contents_allowed() and contents.phase==contents.Phase.Ready:item_owner.open_target(id))
 	state.changed.connect(_state_changed)

@@ -114,6 +114,24 @@ func run() -> void:
 			await wheel(Vector2(500,94),true,true)
 			if not await ready_state(state):quit(1);return
 			check(state.first_category==0 and state.first_item==0,"Rendered wheel did not return to initial page")
+		if OS.get_environment("DF3D_STOCKS_FILTER_RENDER")=="1":
+			await click(Vector2(500,94))
+			for byte in [105,114,111,110]:
+				var key:=InputEventKey.new();key.pressed=true;key.unicode=byte;key.keycode=byte-32;Input.parse_input_event(key);await process_frame
+			if not await ready_state(state):quit(1);return
+			var enter:=InputEventKey.new();enter.pressed=true;enter.keycode=KEY_ENTER;Input.parse_input_event(enter);await process_frame
+			check(state.query=="IRON" and not view.search.has_focus() and state.category==39,"Rendered filter text/focus differs")
+			await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/stocks-view-filter.png")
+			for point in [Vector2(500,94),Vector2(946,94)]:
+				var motion:=InputEventMouseMotion.new();motion.position=point;motion.global_position=point;Input.parse_input_event(motion)
+				await create_timer(0.65).timeout;check(hover.displayed.is_empty(),"Stocks filter invented a native tooltip")
+			await click(Vector2(500,94))
+			for _byte in 4:
+				var key:=InputEventKey.new();key.pressed=true;key.keycode=KEY_BACKSPACE;Input.parse_input_event(key);await process_frame
+			if not await ready_state(state):quit(1);return
+			Input.parse_input_event(enter);await process_frame
+			check(state.query.is_empty() and not view.search.has_focus(),"Filter clearing did not restore initial query")
 		var expanded_count: int=view.total_rows
 		await click(Vector2(500,130))
 		if not await ready_state(state):quit(1);return

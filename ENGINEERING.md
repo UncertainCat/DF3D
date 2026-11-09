@@ -116,6 +116,16 @@ exits unsaved; native/viewer30FPS, sampled42-43C. Only known Godot diagnostics
 occur. `scroll_render_reference` records hashes and scope; resize and main-scene
 acceptance remain open.
 
+Protected014516 verifies filled Stocks search through real viewer clicks/keys,
+queued native queries, Enter and clearing. Native014327 shows no hover instruction
+at either the text area or magnifying-glass icon; the viewer preserves that
+absence. Filtering out enough categories hides the scrollbar and widens category
+rows/count placement by16 pixels. The corrected category48,76..336,724,
+item360,112..944,724 and filter360,76..960,112 crops all have zero RGB differences
+for IRON at1200x800. Source unchanged, owned DF28392 exits unsaved,30FPS and43C
+sampled; only known Godot diagnostics. `filled_filter_reference` records scope.
+Unicode, long-query clipping and resize acceptance remain open.
+
 Pending reads/edits clear authority; close/session changes retire observers;
 Unknown cannot replay. Successful edits refresh the retained search before
 accepting another action. Headless `stocks-state` covers these transitions,
@@ -141,7 +151,7 @@ first item text/controls crop400,148..944,184 have zero RGB differences. Filter
 and scrollbar crops retain18/26/26 differing pixels; no whole-panel identity
 claim. That capture predates ammunition icons (44 missing pixels per icon).
 Item View/Recenter now have a staged owner; acceptance gaps are below.
-Search input, scroll/resize parity, filter help, complete item appearance and actions,
+Remaining search edge cases, scroll/resize parity, complete item appearance and actions,
 main-scene ownership and large-inventory handling remain exposure prerequisites.
 
 Stocks individual flag edits use the same owned selection/revision guard and

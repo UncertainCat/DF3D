@@ -12,13 +12,14 @@ local targets={{'group-forbid',844,130,207},{'group-dump',868,130,208},
  {'group-melt',892,130,209},{'group-visibility',916,130,210},
  {'recenter',796,166,205},{'view',820,166,206},{'forbid',844,166,207},
  {'dump',868,166,208},{'melt',892,166,209},{'visibility',916,166,210}}
+if os.getenv('DF3D_STOCKS_FILTER_RENDER')=='1' then targets={{'filter-text',500,94},{'filter-icon',946,94}}end
 for _,target in ipairs(targets)do
  local deadline=dfhack.getTickCount()+700
  repeat move(target[2],target[3]);script.sleep(1,'frames')until dfhack.getTickCount()>=deadline
  move(target[2],target[3])
- assert(main.hover_instructions_on and main.current_hover==target[4],'Unexpected Stocks hover '..target[1])
- local row={kind=target[1],x=target[2],y=target[3],instruction=main.current_hover,lines={}}
- for y=0,17 do local line={}
+ if target[4] then assert(main.hover_instructions_on and main.current_hover==target[4],'Unexpected Stocks hover '..target[1])end
+ local row={kind=target[1],x=target[2],y=target[3],instruction=main.current_hover,displayed=main.last_displayed_hover_inst,active=main.hover_instructions_on,lines={}}
+ for y=0,(main.hover_instructions_on and main.current_hover~=-1 and 17 or -1) do local line={}
   for x=gps.dimx-24,gps.dimx-1 do local ch=dfhack.screen.readTile(x,y).ch
    line[#line+1]=ch>=32 and string.char(ch%256) or ' '
   end

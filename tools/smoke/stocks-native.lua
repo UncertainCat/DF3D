@@ -316,6 +316,15 @@ if os.getenv('DF3D_STOCKS_INPUT')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-native.lua$','stocks-input-native.lua')
  result.input=assert(loadfile(source))(view,stocks,out)
 end
+if os.getenv('DF3D_STOCKS_FILTER_RENDER')=='1' then
+ local g=df.global.gps;df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+ g.precise_mouse_x=500;g.precise_mouse_y=94;g.mouse_x=62;g.mouse_y=7
+ gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+ for _,byte in ipairs{105,114,111,110}do gui.simulateInput(view,('STRING_A%03d'):format(byte));view:render(dfhack.getTickCount())end
+ gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount())
+ result.filter_render={query=stocks.item_filter,focused=stocks.entering_item_filter,category=stocks.current_type}
+ assert(stocks.item_filter=='IRON' and not stocks.entering_item_filter,'Native filled filter differs')
+end
 if os.getenv('DF3D_STOCKS_SCROLL_RENDER')=='1' then
  stocks.scroll_position_type=0;stocks.scroll_position_item=0
  local g=df.global.gps

@@ -4976,5 +4976,43 @@
     "source_save": "Both source-preservation checks pass; owned DF38576/42620 exited unsaved.",
     "gpu": "Native/viewer capped30FPS; sampled42-43C; native preferences restored.",
     "limitations": "First combined run failed only the subsequent native reference offset assertion after viewer success. Native-only repeat with explicit mouse focus/tracking passed. Separate captures have identical category/item crops, not whole-panel parity. No resize or main-scene camera acceptance; public Stocks remains staged."
+  },
+  "filled_filter_reference": {
+    "capture": "build/stockpile-storage-native-input-20261109-014516",
+    "hover_capture": "build/stockpile-storage-native-input-20261109-014327",
+    "hover": [
+      {
+        "active": false,
+        "displayed": -1,
+        "instruction": -1,
+        "kind": "filter-text",
+        "lines": [],
+        "x": 500,
+        "y": 94
+      },
+      {
+        "active": false,
+        "displayed": -1,
+        "instruction": -1,
+        "kind": "filter-icon",
+        "lines": [],
+        "x": 946,
+        "y": 94
+      }
+    ],
+    "query": "IRON",
+    "workflow": "Real viewer click, four lowercase key events, asynchronous native query replies, Enter, screenshot, hover text/icon, refocus/backspace/Enter restoration; existing collapse/expand and group Hidden restoration/stale checks pass.",
+    "layout": "Without a category scrollbar, native category rows and count columns extend16 pixels right. Viewer now matches.",
+    "rgb_differing_pixels": {
+      "categories_48_76_336_724": 0,
+      "items_360_112_944_724": 0,
+      "filter_360_76_960_112": 0
+    },
+    "native_sha256": "495147a07b66bf0d2db203af7b88384f59fd102f6523f9a2fa564fe53565190b",
+    "viewer_sha256": "1f2ae91e9ff39a5262e9f676333444e080b8e5b18e3755ec01a0d3fe04465692",
+    "source_save": "unchanged; owned DF28392 exited unsaved",
+    "gpu": "Native/viewer30FPS; sampled43C/0%; original preferences restored",
+    "diagnostics": "passed_with_known_issues: thread notice, device finalize, shutdown objects; no unclassified errors",
+    "limitations": "ASCII IRON case at1200x800 only. No Unicode, long-query clipping or resize acceptance. No tooltip at either recorded search target; do not invent help text."
   }
 }

@@ -58,6 +58,7 @@ func refresh() -> void:
 	search.set_bytes(state.query.to_utf8_buffer())
 	var categories: Array=state.visible_categories()
 	scrollbar.page=maxi(0,int(category_canvas.size.y/36));scrollbar.set_rows(categories.size(),state.first_category)
+	category_canvas.size.x=272 if scrollbar.visible else 288
 	page=[];total_rows=0
 	for group in state.groups:
 		if group.matches:total_rows+=1+(group.item_ids.size() if state.expanded(group) else 0)
@@ -106,10 +107,10 @@ func _draw_categories() -> void:
 	var rows: Array=state.visible_categories()
 	for index in range(scrollbar.first,mini(rows.size(),scrollbar.first+scrollbar.page)):
 		var row: Dictionary=rows[index];var y: int=(index-scrollbar.first)*36
-		_patch(category_canvas,"BUTTON_CATEGORY_RECTANGLE_SELECTED" if row.type==state.category else "BUTTON_CATEGORY_RECTANGLE",Vector2(0,y),34)
+		_patch(category_canvas,"BUTTON_CATEGORY_RECTANGLE_SELECTED" if row.type==state.category else "BUTTON_CATEGORY_RECTANGLE",Vector2(0,y),int(category_canvas.size.x/8))
 		_text(category_canvas,row.caption,Vector2(16,y+24))
-		_text(category_canvas,row.stored,Vector2(208,y+24),7 if row.stored=="None" else 15)
-		_text(category_canvas,row.unavailable,Vector2(208,y+36),12)
+		_text(category_canvas,row.stored,Vector2(category_canvas.size.x-64,y+24),7 if row.stored=="None" else 15)
+		_text(category_canvas,row.unavailable,Vector2(category_canvas.size.x-64,y+36),12)
 func control_rect(index: int,operation: int) -> Rect2:
 	return Rect2(item_canvas.size.x-112+operation*24,index*36-(item_scrollbar.first%3)*12,24,36)
 func _draw_items() -> void:

@@ -5064,3 +5064,25 @@ TEST_CASE("bucket liquid appearance preserves unknown empty and uncolored liquid
     if(valid){const auto facts=*codec::decodeProduction(value->production()).independentItem->snapshot->carrier->appearance;CHECK(facts.bucketLiquid==present);CHECK(facts.bucketLiquidColor==color);}
   }
 }
+
+TEST_CASE("item contents preserve unknown empty and mixed ordered observations") {
+  for(int mode=0;mode<3;++mode)for(int fault=0;fault<(mode==2?5:1);++fault) {
+    flatbuffers::FlatBufferBuilder b;
+    auto look=wire::CreateItemInspectionAppearance(b,b.CreateString("INORGANIC:IRON"),b.CreateString(""),b.CreateString(""),1,0);
+    auto child=wire::CreateItemSheetContent(b,1,fault==1?-1:71,b.CreateString("bar"),0,0x1000000,true,true,fault==2?0:look);
+    auto unit=wire::CreateItemSheetContent(b,fault==3?3:2,72,b.CreateString("creature"),-1,0,false,false,fault==4?look:0);
+    std::vector<flatbuffers::Offset<wire::ItemSheetContent>> entries;
+    if(mode==2)entries={child,unit,child};
+    auto rows=b.CreateVector(entries);
+    auto item=wire::CreateIndependentItemSnapshot(b,45,1,53,b.CreateString("seed"),b.CreateString(""),b.CreateString(""),false,false,false,false,true,false,false,false,b.CreateString(""),b.CreateString(""),0,0,-1,0,0,0,0,mode==0?0:rows);
+    auto independent=wire::CreateIndependentItemState(b,item);wire::ProductionStateBuilder p(b);p.add_independent_item(independent);auto payload=p.Finish();
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_production(payload);state.add_action(wire::ManagementAction::ProductionInspect);state.add_status(wire::ManagementStatus::Ok);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(fault)continue;
+    const auto decoded=codec::decodeProduction(value->production());const auto& contents=decoded.independentItem->snapshot->contents;
+    CHECK(contents.has_value()==(mode!=0));
+    if(mode==1)CHECK(contents->empty());
+    if(mode==2){REQUIRE(contents->size()==3);CHECK((*contents)[0].id==71);CHECK((*contents)[1].kind==2);CHECK((*contents)[1].id==72);CHECK((*contents)[2].id==71);CHECK((*contents)[0].flags==0x1000000);REQUIRE((*contents)[0].appearance);CHECK((*contents)[0].appearance->materialToken=="INORGANIC:IRON");CHECK_FALSE((*contents)[1].appearance);}
+  }
+}

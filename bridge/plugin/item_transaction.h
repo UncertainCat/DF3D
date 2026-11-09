@@ -6,7 +6,14 @@ struct ItemLocationLink { int32_t id=-1,type=-1;std::string name; };
 struct ItemCarrier { int32_t kind=0,id=-1,itemType=-1;std::string name;std::optional<ItemInspectionAppearance> appearance; };
 struct ItemOwner { int32_t id=-1;std::string name; };
 struct ItemAmmunitionAssignment {int8_t kind=0;int32_t squadId=-1;std::string caption;};
+struct ItemSheetContent {
+    int32_t kind=0,id=-1; // 1 item, 2 unit
+    std::string caption;
+    std::optional<ItemFacts> item;
+    std::optional<ItemInspectionAppearance> appearance;
+};
 struct ItemObservation {
+    std::optional<std::vector<ItemSheetContent>> contents;
     std::optional<ItemAmmunitionAssignment> ammunitionAssignment;
     std::optional<ItemOwner> owner;
     ItemFacts item;
@@ -37,10 +44,23 @@ inline uint64_t itemObservationRevision(const ItemObservation& value) {
     number(value.stockpileCategories);
     byte(value.carrier.has_value());if(value.carrier){const auto& c=*value.carrier;number(c.kind);number(c.id);number(c.itemType);text(c.name);byte(c.appearance.has_value());if(c.appearance){const auto& a=*c.appearance;text(a.materialToken);text(a.subtypeRaw);text(a.colorToken);number(a.stack);byte(a.flags);byte(a.instrumentFamily);byte(a.instrumentPlaced);byte(a.floodgateOpen);byte(a.doorOpen);byte(a.doorForbidden);byte(a.doorWear);byte(a.bucketLiquid);text(a.bucketLiquidColor);byte(a.contents.has_value());if(a.contents){byte(a.contents->container);number(a.contents->entries.size());for(const auto& e:a.contents->entries){number(e.itemType);text(e.materialToken);text(e.colorToken);byte(e.effectiveArmorLevel);byte(e.metal);byte(e.coal);byte(e.containsPowder);byte(e.rollsSheets);byte(e.protectsFoldedSheets);byte(e.containsWriting);}}}}
     byte(value.appearance.has_value());if(value.appearance){const auto& a=*value.appearance;text(a.materialToken);text(a.subtypeRaw);text(a.colorToken);number(a.stack);byte(a.flags);byte(a.instrumentFamily);byte(a.instrumentPlaced);byte(a.floodgateOpen);byte(a.doorOpen);byte(a.doorForbidden);byte(a.doorWear);byte(a.bucketLiquid);text(a.bucketLiquidColor);byte(a.contents.has_value());if(a.contents){byte(a.contents->container);number(a.contents->entries.size());for(const auto& e:a.contents->entries){number(e.itemType);text(e.materialToken);text(e.colorToken);byte(e.effectiveArmorLevel);byte(e.metal);byte(e.coal);byte(e.containsPowder);byte(e.rollsSheets);byte(e.protectsFoldedSheets);byte(e.containsWriting);}}}
+    byte(value.contents.has_value());
+    if(value.contents){number(value.contents->size());for(const auto& row:*value.contents){
+        number(row.kind);number(row.id);text(row.caption);
+        if(row.item){ItemObservation child;child.item=*row.item;child.appearance=row.appearance;number(itemObservationRevision(child));}
+    }}
     return (hash&INT64_MAX)?(hash&INT64_MAX):1;
 }
 inline bool validItemObservation(const ItemObservation& value) {
     const auto& item=value.item;
+    if(value.contents){
+        if(value.contents->size()>4096)return false;
+        for(const auto& row:*value.contents){
+            if(row.id<0 || row.caption.size()>128*1024 || (row.kind!=1&&row.kind!=2) || (row.kind==1)!=row.item.has_value() || (row.kind==1)!=row.appearance.has_value())return false;
+            if(row.item){ItemObservation child;child.item=*row.item;child.appearance=row.appearance;child.revision=itemObservationRevision(child);
+                if(row.id!=child.item.id || row.caption!=child.item.caption || !validItemObservation(child))return false;}
+        }
+    }
     if(value.ammunitionAssignment){const auto& a=*value.ammunitionAssignment;if(item.itemType!=39 || a.kind<0 || a.kind>2 || (a.kind==2?a.squadId<0:a.squadId!=-1) || a.caption.size()>1024 || (a.kind==0)!=a.caption.empty())return false;}
     if(value.owner && (value.owner->id<0 || value.owner->name.size()>512))return false;
     if(value.carrier){const auto& c=*value.carrier;if(value.buildingHolder || c.id<0 || c.name.size()>512 || (c.kind!=1&&c.kind!=2) || (c.kind==1?(c.itemType<0||c.itemType>92):c.itemType!=-1))return false;}

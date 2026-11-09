@@ -943,8 +943,15 @@ void publish() {
       if(v.owner)owner=m::CreateItemOwner(b,v.owner->id,b.CreateString(v.owner->name));
       flatbuffers::Offset<m::ItemAmmunitionAssignment> assignment;
       if(v.ammunitionAssignment){const auto& a=*v.ammunitionAssignment;assignment=m::CreateItemAmmunitionAssignment(b,a.kind,a.squadId,b.CreateString(a.caption));}
+      flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<m::ItemSheetContent>>> contents;
+      if(v.contents){std::vector<flatbuffers::Offset<m::ItemSheetContent>> rows;
+        for(const auto& row:*v.contents){flatbuffers::Offset<m::ItemInspectionAppearance> look;
+          if(row.appearance){const auto& a=*row.appearance;look=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents),a.floodgateOpen,a.doorOpen,a.doorForbidden,a.doorWear,a.bucketLiquid,b.CreateString(a.bucketLiquidColor));}
+          rows.push_back(m::CreateItemSheetContent(b,int8_t(row.kind),row.id,b.CreateString(row.caption),row.itemType,row.flags,row.canDump,row.canMelt,look));
+        }contents=b.CreateVector(rows);
+      }
       snapshot=m::CreateIndependentItemSnapshot(b,v.id,v.revision,v.itemType,b.CreateString(v.name),b.CreateString(v.materialToken),b.CreateString(v.subtypeRaw),
-        v.forbid,v.dump,v.melt,v.hidden,v.canDump,v.canMelt,v.inJob,v.inBuilding,b.CreateString(v.weight),b.CreateString(v.description),holder,stockpile,v.stockpileCategories,carrier,appearance,owner,assignment);
+        v.forbid,v.dump,v.melt,v.hidden,v.canDump,v.canMelt,v.inJob,v.inBuilding,b.CreateString(v.weight),b.CreateString(v.description),holder,stockpile,v.stockpileCategories,carrier,appearance,owner,assignment,contents);
     }
     if(state.edit)edit=m::CreateBuildingItemReceipt(b,state.edit->itemId,state.edit->operation,state.edit->value);
     independentItem=m::CreateIndependentItemState(b,snapshot,edit,state.outcome);
@@ -3054,6 +3061,13 @@ ItemInspectionAppearance copyInspectionAppearance(const df3d_production::ItemIns
 std::optional<IndependentItemSnapshot> independentItemSnapshot(const df3d_production::ItemObservation& observed) {
   const auto& item=observed.item;IndependentItemSnapshot value;
   if(observed.ammunitionAssignment){const auto& a=*observed.ammunitionAssignment;value.ammunitionAssignment=ItemAmmunitionAssignment{a.kind,a.squadId,DF2UTF(a.caption)};if(value.ammunitionAssignment->caption.size()>1024)return std::nullopt;}
+  if(observed.contents){value.contents.emplace();for(const auto& row:*observed.contents){
+    ItemSheetContent copy;copy.kind=row.kind;copy.id=row.id;copy.caption=DF2UTF(row.caption);
+    if(copy.caption.size()>128*1024)return std::nullopt;
+    if(row.item){copy.itemType=row.item->itemType;copy.flags=row.item->flags;copy.canDump=row.item->canDump;copy.canMelt=row.item->canMelt;}
+    if(row.appearance)copy.appearance=copyInspectionAppearance(*row.appearance);
+    value.contents->push_back(std::move(copy));
+  }}
   value.id=item.id;value.revision=observed.revision;value.itemType=item.itemType;value.stockpileCategories=observed.stockpileCategories;
   if(observed.owner){value.owner=ItemOwner{observed.owner->id,DF2UTF(observed.owner->name)};if(value.owner->name.size()>512)return std::nullopt;}
   value.name=DF2UTF(item.caption);value.materialToken=DF2UTF(item.materialToken);value.subtypeRaw=DF2UTF(item.subtypeRaw);

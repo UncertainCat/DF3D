@@ -93,6 +93,18 @@ func _valid(value: Dictionary) -> bool:
 		var limit: int={"name":131072,"weight":128,"description":32768,"material_token":256,"subtype_raw":128}[key]
 		if typeof(value.get(key))!=TYPE_STRING or value[key].to_utf8_buffer().size()>limit:return false
 	if value.item_type in [13,30] and not value.has("appearance"):return false
+	if value.has("contents"):
+		if typeof(value.contents)!=TYPE_ARRAY or value.contents.size()>4096:return false
+		for row in value.contents:
+			if typeof(row)!=TYPE_DICTIONARY:return false
+			for key in ["kind","id","item_type","flags"]:
+				if typeof(row.get(key))!=TYPE_INT:return false
+			if row.id<0 or row.kind not in [1,2] or typeof(row.get("caption"))!=TYPE_STRING or row.caption.to_utf8_buffer().size()>128*1024:return false
+			for key in ["can_dump","can_melt"]:
+				if typeof(row.get(key))!=TYPE_BOOL:return false
+			if row.kind==2:
+				if row.item_type!=-1 or row.flags!=0 or row.can_dump or row.can_melt or row.has("appearance"):return false
+			elif row.item_type<0 or row.item_type>92 or row.flags<0 or row.flags>0xffffffff or not _valid_appearance(row.get("appearance"),row.item_type):return false
 	if value.has("appearance"):
 		if not _valid_appearance(value.appearance,value.item_type):return false
 		if value.appearance.material_token!=value.material_token or value.appearance.subtype_raw!=value.subtype_raw:return false

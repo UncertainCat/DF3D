@@ -37,16 +37,30 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
-Item-sheet contents have a separate owned provider, `itemSheetContents`, with
-an `item-sheet-contents-probe` diagnostic. Native1578bf..157a98 scans general
-references forward, interleaves contained creatures and items, and skips
-unresolved references without a container-flag gate. Item captions use existing
-c65450(false,-1); creature captions use1330c30(true), unlike carrier captions.
-The provider preserves full order and native item flag eligibility, with no
-menu/scroll/graphics-cache inputs. Core19 and MSVC pass in
-`item-sheet-contents-provider`. This is staged: transport, contents rows/actions
-and live provider verification remain pending. `item_sheet_contents_reference`
-records native ranges, formatter pins and remaining acceptance work.
+Management163 adds optional ordered item-sheet contents to independent item
+snapshots. Rebuild bridge/viewer together;162 peers use a separate channel.
+Absent remains unknown; present empty means observed empty. Rows distinguish
+items from creatures and preserve IDs, native captions, item flags/eligibility
+and item appearance. Membership, order and child facts participate in the
+parent revision. Native, wire and Godot validators reject malformed rows; the
+4096-row allocation bound and existing channel byte limit reject oversized
+snapshots without truncation. Unit rows cannot carry item appearance/actions.
+The provider scans general references forward (native1578bf..157a98), skips
+unresolved references and uses no container-flag gate or UI storage. Item text
+uses c65450(false,-1); creature text uses1330c30(true), unlike carrier captions.
+
+Core19, extension, item-state and MSVC pass (`item-contents163-final`,
+`item-contents163-msvc`), including absent/empty/mixed decoding, row validation,
+copy isolation and stale authority after child/order changes. Protected035243
+compares a bin's ten rows and empty door/barrel/bucket lists through the real
+headless viewer transport. Native weight formatting first initializes child
+mass-cache flags; the reference and edit baseline are taken after that native
+effect. Earlier035057/035153 mismatches were pre-initialization test baselines,
+not ignored flag differences. Group changes restore and stale replay rejects;
+source preserved, DF38040 exits unsaved at30FPS,38C sampled, known diagnostics
+only. `item_sheet_contents_reference` records the bounded cases and hashes.
+Visible contents rows/actions, live creature rows and broader acceptance are
+still pending; public Stocks remains gated.
 
 The item-detail provider now admits doors, floodgates, beds, chairs, flasks,
 goblets, barrels, buckets, tables, bins, cabinets and anvils through the pinned

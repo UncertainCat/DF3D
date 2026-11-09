@@ -62,6 +62,23 @@ func run() -> void:
 	for row in value.items:
 		var native: Dictionary=reference.appearance[str(row.id)]
 		check(row.has("appearance") and row.appearance.stack==int(native.stack) and row.appearance.flags==int(native.flags),"Stocks appearance facts differ from native item")
+	if OS.get_environment("DF3D_STOCKS_CONTENTS_WIRE")=="1":
+		var observed: Array=[]
+		for expected in reference.contents:
+			var response:=await request("production",{"action":C.ManagementAction.ProductionInspect,"independent_item":true,"item_id":int(expected.item_id)})
+			var snapshot: Dictionary=response.get("production",{}).get("independent_item",{}).get("snapshot",{})
+			if not check(response.get("status")==C.ManagementStatus.Ok and snapshot.has("contents"),"Known native contents missing"):break
+			var model=preload("res://scripts/item_sheet_state.gd").new();model.item_id=int(expected.item_id)
+			check(model._valid(snapshot),"Controller rejected contents snapshot")
+			if not check(snapshot.contents.size()==expected.rows.size(),"Contents count changed across transport"):break
+			for index in expected.rows.size():
+				var row: Dictionary=snapshot.contents[index];var native: Dictionary=expected.rows[index]
+				for key in ["kind","id","caption"]:check(row[key]==native[key],"Contents identity/caption differs: "+key)
+				if row.kind==1:
+					for key in ["item_type","flags","can_dump","can_melt"]:check(row[key]==native[key],"Contents facts differ: "+key)
+					for key in ["material_token","subtype_raw","stack"]:check(row.appearance[key]==native[key],"Contents appearance differs: "+key)
+			observed.append(snapshot)
+		var saved:=FileAccess.open(directory+"/stocks-contents-wire-result.json",FileAccess.WRITE);saved.store_string(JSON.stringify({"success":not failed,"snapshots":observed}));saved.close()
 	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
 	for frame in 5:world.poll();await process_frame
 	var state:=State.new();state.configure(service);state.open()

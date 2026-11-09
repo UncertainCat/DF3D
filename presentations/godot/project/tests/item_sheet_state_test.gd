@@ -27,6 +27,24 @@ func completed(wrong_flag:=false) -> void:
 		"edit":{"item_id":1000,"farm_operation":C.FarmOperation.ItemHidden,"value":1}})
 
 func run() -> void:
+	for mode in 3:
+		setup();model.open(1000);service.poll();var contents_value:=item()
+		if mode>0:contents_value.contents=[]
+		if mode==2:contents_value.contents=[{"kind":2,"id":7,"item_type":-1,"caption":"native creature","flags":0,"can_dump":false,"can_melt":false}]
+		item_reply({"snapshot":contents_value});check(model.phase==ItemModel.Phase.Ready,"Contents observation rejected")
+		check(model.snapshot.has("contents")==bool(mode),"Unknown contents became empty")
+		if mode==2:
+			var isolated: Dictionary=model.view_snapshot();isolated.contents[0].caption="changed"
+			check(model.snapshot.contents[0].caption=="native creature","Contents row aliases presentation")
+	for fault in 4:
+		setup();model.open(1000);service.poll();var contents_value:=item()
+		contents_value.contents=[{"kind":2,"id":7,"item_type":-1,"caption":"native creature","flags":0,"can_dump":false,"can_melt":false}]
+		match fault:
+			0:contents_value.contents[0].id=-1
+			1:contents_value.contents[0].kind=1
+			2:contents_value.contents[0].can_dump=true
+			3:contents_value.contents[0].item_type=0
+		item_reply({"snapshot":contents_value});check(model.phase==ItemModel.Phase.Rejected,"Malformed contents accepted")
 	var entry={"item_type":39,"material_token":"INORGANIC:COPPER","color_token":"COPPER","effective_armor_level":0,"metal":true,"coal":false,"contains_powder":false,"rolls_sheets":false,"protects_folded_sheets":false,"contains_writing":false}
 	var look={"material_token":"PLANT:OAK:WOOD","subtype_raw":"","color_token":"BROWN","stack":1,"flags":0,"contents":{"container":true,"entries":[entry]}}
 	check(ItemModel._valid_appearance(look,32),"complete bin facts accepted")

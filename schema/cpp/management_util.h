@@ -121,8 +121,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 162;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v162";
+inline constexpr uint32_t kManagementVersion = 163;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v163";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -2217,6 +2217,17 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         if((item->item_type()==30||item->item_type()==13) && !item->appearance())return "missing item appearance";
         if(const auto* a=item->appearance())if(!validInspectionInstrument(*a,item->item_type())||!text(a->material_token(),256)||a->material_token()->size()==0||!text(a->subtype_raw(),128)||!text(a->color_token(),128)||a->stack()<1||(a->flags()&~96)||a->material_token()->str()!=item->material_token()->str()||a->subtype_raw()->str()!=item->subtype_raw()->str())return "invalid item appearance";
         if(const auto* a=item->ammunition_assignment())if(item->item_type()!=39 || a->kind()<0 || a->kind()>2 || (a->kind()==2?a->squad_id()<0:a->squad_id()!=-1) || !text(a->caption(),1024) || (a->kind()==0)!=(a->caption()->size()==0))return "invalid item ammunition assignment";
+        if(const auto* rows=item->contents()) {
+          if(rows->size()>4096)return "too many item contents";
+          for(const auto* row:*rows) {
+            if(!row || row->id()<0 || !text(row->caption(),128*1024) || (row->kind()!=1&&row->kind()!=2))return "invalid item contents row";
+            if(row->kind()==2){if(row->item_type()!=-1 || row->flags()!=0 || row->can_dump() || row->can_melt() || row->appearance())return "invalid creature contents row";}
+            else {
+              const auto* a=row->appearance();
+              if(row->item_type()<0 || row->item_type()>92 || !a || !validInspectionInstrument(*a,row->item_type()) || !text(a->material_token(),256) || a->material_token()->size()==0 || !text(a->subtype_raw(),128) || !text(a->color_token(),128) || a->stack()<1 || (a->flags()&~96))return "invalid contained item appearance";
+            }
+          }
+        }
         if(const auto* owner=item->owner())if(owner->id()<0||!text(owner->name(),512))return "invalid item owner";
         if(const auto* c=item->carrier()) {
           if(item->holder() || c->id()<0 || !text(c->name(),512) || (c->kind()!=1&&c->kind()!=2) ||

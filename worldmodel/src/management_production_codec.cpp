@@ -89,6 +89,11 @@ ProductionState decodeProduction(const m::ProductionState* p) {
     if(const auto* item=source->snapshot()) {
       auto& value=state.snapshot.emplace();
       if(const auto* a=item->ammunition_assignment())value.ammunitionAssignment=ItemAmmunitionAssignment{a->kind(),a->squad_id(),a->caption()->str()};
+      if(const auto* rows=item->contents()){value.contents.emplace();for(const auto* row:*rows){
+        ItemSheetContent copy;copy.kind=row->kind();copy.id=row->id();copy.caption=str(row->caption());copy.itemType=row->item_type();copy.flags=row->flags();copy.canDump=row->can_dump();copy.canMelt=row->can_melt();
+        if(row->appearance())copy.appearance=decodeInspectionAppearance(row->appearance());
+        value.contents->push_back(std::move(copy));
+      }}
       value.id=item->id();value.revision=item->revision();value.itemType=item->item_type();value.stockpileCategories=item->stockpile_categories();
       value.name=str(item->name());value.materialToken=str(item->material_token());value.subtypeRaw=str(item->subtype_raw());
       if(const auto* owner=item->owner())value.owner=ItemOwner{owner->id(),str(owner->name())};

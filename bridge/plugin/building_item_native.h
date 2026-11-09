@@ -669,12 +669,6 @@ inline std::optional<ItemFacts> itemFacts(df::item* item) {
 // Renderer1578bf..157a98 scans general_refs forward, accepts CONTAINS_UNIT/ITEM,
 // and skips unresolved references. It does not require the container flag.
 // This provider owns every row; no view_sheets list or scroll state is read.
-struct ItemSheetContent {
-    int32_t kind=0,id=-1; // 1 item, 2 unit
-    std::string caption;
-    std::optional<ItemFacts> item;
-    std::optional<ItemInspectionAppearance> appearance;
-};
 inline std::optional<std::vector<ItemSheetContent>> itemSheetContents(df::item* container) {
     using UnitName=void (*)(df::unit*,std::string*,bool);
     static const auto unitName=[]()->UnitName {
@@ -702,6 +696,7 @@ inline std::optional<std::vector<ItemSheetContent>> itemSheetContents(df::item* 
             unitName(unit,&row.caption,true);
         }else continue;
         if(row.id<0 || row.caption.size()>128*1024)return std::nullopt;
+        if(rows.size()>=4096)return std::nullopt; // Bound the full transport list; never truncate.
         rows.push_back(std::move(row));
     }
     return rows;
@@ -764,6 +759,7 @@ inline std::optional<ItemObservation> observeItem(df::item* item) {
     const auto owner=itemOwnerDescription(item);if(!owner)return std::nullopt;
     if(owner->id>=0)value.owner=*owner;
     if(item->getType()==df::item_type::AMMO){value.ammunitionAssignment=itemAmmunitionAssignment(item);if(!value.ammunitionAssignment)return std::nullopt;}
+    value.contents=itemSheetContents(item);if(!value.contents)return std::nullopt;
     value.revision=itemObservationRevision(value);
     if(!validItemObservation(value))return std::nullopt;
     return value;

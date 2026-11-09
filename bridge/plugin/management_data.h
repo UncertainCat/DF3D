@@ -122,7 +122,9 @@ struct ItemPosition { int32_t id=-1,x=0,y=0,z=0; };
 struct ItemCarrier { int32_t kind=0,id=-1,itemType=-1;std::string name;std::optional<ItemInspectionAppearance> appearance; };
 struct ItemOwner { int32_t id=-1;std::string name; };
 struct ItemAmmunitionAssignment {int8_t kind=0;int32_t squadId=-1;std::string caption;};
+struct ItemSheetContent { int32_t kind=0,id=-1,itemType=-1;std::string caption;uint32_t flags=0;bool canDump=false,canMelt=false;std::optional<ItemInspectionAppearance> appearance; };
 struct IndependentItemSnapshot {
+    std::optional<std::vector<ItemSheetContent>> contents;
     std::optional<ItemAmmunitionAssignment> ammunitionAssignment;
     std::optional<ItemOwner> owner;
   int32_t id=-1,itemType=-1,stockpileCategories=-1;uint64_t revision=0;

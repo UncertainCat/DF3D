@@ -534,3 +534,23 @@ TEST_CASE("item owner changes invalidate edits independently of carrier") {
     item.owner->id=-1;item.revision=itemObservationRevision(item);CHECK_FALSE(validItemObservation(item));
     item.owner=ItemOwner{988,std::string(513,'x')};item.revision=itemObservationRevision(item);CHECK_FALSE(validItemObservation(item));
 }
+
+TEST_CASE("item contents changes invalidate parent authority") {
+    using namespace df3d_production;
+    ItemObservation parent;parent.item.id=1;parent.item.itemType=0;
+    const auto unknown=itemObservationRevision(parent);parent.contents.emplace();
+    CHECK(itemObservationRevision(parent)!=unknown);
+    ItemSheetContent item;item.kind=1;item.id=2;item.caption="bar";item.item.emplace();
+    item.item->id=2;item.item->itemType=0;item.item->caption="bar";item.item->materialToken="INORGANIC:IRON";
+    item.appearance.emplace();item.appearance->materialToken="INORGANIC:IRON";
+    ItemSheetContent unit;unit.kind=2;unit.id=3;unit.caption="creature";
+    *parent.contents={item,unit};parent.revision=itemObservationRevision(parent);REQUIRE(validItemObservation(parent));
+    const auto original=parent.revision;
+    std::swap((*parent.contents)[0],(*parent.contents)[1]);CHECK(itemObservationRevision(parent)!=original);
+    std::swap((*parent.contents)[0],(*parent.contents)[1]);
+    (*parent.contents)[0].item->hidden=true;(*parent.contents)[0].item->flags|=0x1000000;
+    parent.revision=itemObservationRevision(parent);CHECK(parent.revision!=original);
+    auto rejected=finishItemEdit(parent,original,BuildingItemAction::Hidden,true,[]{FAIL("stale contents entered mutation");return true;},[&]{return std::optional<ItemObservation>(parent);});
+    CHECK(rejected.outcome==FarmEditOutcome::Stale);CHECK_FALSE(rejected.mutated);
+    (*parent.contents)[1].appearance.emplace();parent.revision=itemObservationRevision(parent);CHECK_FALSE(validItemObservation(parent));
+}

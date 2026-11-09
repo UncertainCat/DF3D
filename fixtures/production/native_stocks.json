@@ -6485,7 +6485,7 @@
     }
   },
   "item_sheet_contents_reference": {
-    "status": "Owned native provider implemented and build-verified. Diagnostic probe available; transport, UI and live provider acceptance pending.",
+    "status": "Management163 optional contents list wired through native/model/Godot; headless real-container transport accepted. Visible rows/actions and live creatures remain pending.",
     "list_source": {
       "range": "1578bf..157a98",
       "sha256": "adfdc663f7df5cdeabd748c317d48d7d455afcc4988ee6346d53689d669c4e98",
@@ -6513,13 +6513,102 @@
     "provider": "itemSheetContents in building_item_native.h; item-sheet-contents-probe emits ordered owned rows, item captions/flags/eligibility and native creature captions.",
     "ownership": "No native viewscreen, menu, scrollbar or graphics-cache input; native semantic general-reference accessors and owned strings/vectors.",
     "verification": [
-      "core19 item-sheet-contents-provider passed",
-      "Release df3d item-sheet-contents-provider-msvc passed"
+      "item-contents163 initial core19, extension and item state passed",
+      "item-contents163-contract C++ core19 passed; Godot test parse error corrected",
+      "item-contents163-final core19, extension and item state passed",
+      "MSVC item-contents163-msvc passed",
+      "Protected035243 contents transport and restored group edits passed"
     ],
     "next": [
-      "Append optional known contents list to IndependentItemSnapshot with complete version/revision/validation propagation",
-      "Render native list and scroll, then wire child navigation and flags with fresh target/containment checks",
-      "Verify real bin and mixed cage contents; lifecycle and rendered acceptance remain required"
-    ]
+      "Draw native contents list and scrollbar",
+      "Wire child navigation and flags with fresh target and containment checks",
+      "Live mixed creature contents and lifecycle/rendered acceptance"
+    ],
+    "management_version": 163,
+    "transport_reference": {
+      "capture": "build/stockpile-storage-native-input-20261109-035243",
+      "success": true,
+      "cases": [
+        {
+          "id": 47315,
+          "item_type": 6,
+          "ordered_rows": []
+        },
+        {
+          "id": 9652,
+          "item_type": 17,
+          "ordered_rows": []
+        },
+        {
+          "id": 5877,
+          "item_type": 18,
+          "ordered_rows": []
+        },
+        {
+          "id": 11204,
+          "item_type": 32,
+          "ordered_rows": [
+            {
+              "kind": 1,
+              "id": 7565
+            },
+            {
+              "kind": 1,
+              "id": 1929
+            },
+            {
+              "kind": 1,
+              "id": 1962
+            },
+            {
+              "kind": 1,
+              "id": 21748
+            },
+            {
+              "kind": 1,
+              "id": 1207
+            },
+            {
+              "kind": 1,
+              "id": 39329
+            },
+            {
+              "kind": 1,
+              "id": 39505
+            },
+            {
+              "kind": 1,
+              "id": 39485
+            },
+            {
+              "kind": 1,
+              "id": 39648
+            },
+            {
+              "kind": 1,
+              "id": 39483
+            }
+          ]
+        }
+      ],
+      "result_sha256": "50ff7a2a21c4cd93b1110c8ae54ec99738a78a30e679a0f539d10719667d2dc2",
+      "diagnostics": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          }
+        ],
+        "unclassified": []
+      },
+      "source_preserved": true,
+      "owned_df_closed": 38040,
+      "graphics_fps_cap": 30,
+      "viewer_headless": true,
+      "sampled_gpu_temperature_c": 38,
+      "installed_bridge_sha256": "57fdea5fec2c79aaac1ee2ad42e410c8776fb1fadf2d9fbea1fae93524c283d0",
+      "scope": "One door/barrel/bucket known empty; one bin ten item rows. Group edits restored and stale replay rejected. No live creature rows or visible-list acceptance."
+    }
   }
 }

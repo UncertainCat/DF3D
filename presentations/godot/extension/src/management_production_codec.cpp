@@ -206,6 +206,11 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
     }
     if(state.snapshot) {
       const auto& s=*state.snapshot;Dictionary value;
+      if(s.contents){Array rows;for(const auto& row:*s.contents){Dictionary entry;
+        entry["kind"]=row.kind;entry["id"]=row.id;entry["caption"]=String::utf8(row.caption.c_str());entry["item_type"]=row.itemType;entry["flags"]=int64_t(row.flags);entry["can_dump"]=row.canDump;entry["can_melt"]=row.canMelt;
+        if(row.appearance){const auto& a=*row.appearance;Dictionary look;look["material_token"]=String::utf8(a.materialToken.c_str());look["subtype_raw"]=String::utf8(a.subtypeRaw.c_str());look["color_token"]=String::utf8(a.colorToken.c_str());look["stack"]=a.stack;look["flags"]=a.flags;if(a.bucketLiquid>=0){Dictionary liquid;liquid["present"]=bool(a.bucketLiquid);liquid["color_token"]=String::utf8(a.bucketLiquidColor.c_str());look["bucket_liquid"]=liquid;}if(a.floodgateOpen>=0)look["floodgate_open"]=bool(a.floodgateOpen);if(a.doorOpen>=0){Dictionary door;door["open"]=bool(a.doorOpen);door["forbidden"]=bool(a.doorForbidden);door["wear"]=a.doorWear;look["door"]=door;}if(a.contents)look["contents"]=contentsDictionary(*a.contents);if(a.instrumentFamily>=0){Dictionary instrument;instrument["family"]=a.instrumentFamily;instrument["placed"]=a.instrumentPlaced;look["instrument"]=instrument;}entry["appearance"]=look;}
+        rows.push_back(entry);
+      }value["contents"]=rows;}
       if(s.ammunitionAssignment){const auto& a=*s.ammunitionAssignment;Dictionary row;row["kind"]=a.kind;row["squad_id"]=a.squadId;row["caption"]=String::utf8(a.caption.c_str());value["ammunition_assignment"]=row;}
       value["stockpile_categories"]=s.stockpileCategories;value["id"]=s.id;value["revision"]=int64_t(s.revision);value["item_type"]=s.itemType;
       value["name"]=String::utf8(s.name.c_str());value["material_token"]=String::utf8(s.materialToken.c_str());value["subtype_raw"]=String::utf8(s.subtypeRaw.c_str());

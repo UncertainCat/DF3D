@@ -33,6 +33,7 @@ if os.getenv('DF3D_STOCKS_FURNITURE_SHEETS')=='1' then
  local families=os.getenv("DF3D_STOCKS_CONTENTS_RENDER")=="1" and {32} or {6,7,8,9,11,12,17,18,20,32,35,45}
  if os.getenv('DF3D_STOCKS_MORE_FURNITURE')=='1' then families={10,15,16,19,21,33,34,37,38};reference.missing_furniture={}end
  if os.getenv('DF3D_STOCKS_MATERIAL_SHEETS')=='1' then families={0,1,2,3,4,5};reference.missing_furniture={}end
+ if os.getenv('DF3D_STOCKS_TEXTILE_SHEETS')=='1' then families={57,58};reference.missing_furniture={}end
  for _,kind in ipairs(families)do
   local selection=probe('stocks-selection-probe',tostring(kind),'')
   if #selection.groups==0 and reference.missing_furniture then reference.missing_furniture[#reference.missing_furniture+1]=kind

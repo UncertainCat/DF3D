@@ -7681,5 +7681,103 @@
       "stocks-furniture-native-5.png": "c212e73f0ab461fbc4305d713f8e8e1e009493691a70490d5cb45ddf23a46a26",
       "stocks-furniture-view-5.png": "5d94891d1b010c295a96123d3a7f3037abc9a9996079bc5005568c26059e4187"
     }
+  },
+  "textile_description_reference": {
+    "run": "build/stockpile-storage-native-input-20261109-073332",
+    "native_dispatch": "THREAD table16c9420 differs from SEEDS at getType101cf0 and colorcae9a0 only. CLOTH table161c930 matches BOX constructed virtuals except getType289c00; subtype absent.",
+    "native_branches": "THREAD c7515e grammar reads material flags; c7827b..c7875e uses semantic dye profile, material/color raws and dyer identity. Pair collection13c900 writes owned local vectors; a94030 formats semantic language names. CLOTH c77fba appends descriptor color through existing constructed-color virtual.",
+    "pins": {
+      "thread_color": [
+        "0xcae9a0",
+        "0xc4",
+        "0x6d5fdc9d14308894"
+      ],
+      "material_flag": [
+        "0x145bee0",
+        "0x5e",
+        "0x6abc4e374e372eef"
+      ],
+      "dye_color": [
+        "0x145c2b0",
+        "0x122",
+        "0x0e578b2e7d721c3a"
+      ],
+      "historical_material": [
+        "0x701e70",
+        "0x20e",
+        "0xead0193006374e44"
+      ],
+      "pair_collection": [
+        "0x13c900",
+        "0x8c",
+        "0xf2ab35fac31e7af2"
+      ],
+      "identity_lookup": [
+        "0xc0f630",
+        "0x2c",
+        "0x2f03e40b0a07e0bf"
+      ],
+      "name": [
+        "0xa94030",
+        "0x6a1",
+        "0xd81db68b3c9b33d2"
+      ]
+    },
+    "observations": [
+      {
+        "kind": 57,
+        "id": 7422,
+        "description": "This is a giant cave spider silk thread.  The thread is midnight blue with dimple dye.  ",
+        "uses": [
+          {
+            "caption": "Make ennol strings",
+            "reaction": 355
+          },
+          {
+            "caption": "Make rít strings",
+            "reaction": 361
+          }
+        ]
+      },
+      {
+        "kind": 58,
+        "id": 28263,
+        "description": "This is giant cave spider silk cloth.  The thread is midnight blue with dimple dye.  ",
+        "uses": []
+      }
+    ],
+    "visual_comparison": [
+      {
+        "kind": 57,
+        "pixels": 0,
+        "bbox": null
+      },
+      {
+        "kind": 58,
+        "pixels": 0,
+        "bbox": null
+      }
+    ],
+    "verified": "Actual Stocks View/close, exact native/owned/wire descriptions and Uses; both complete488x708 panels have zero RGB differences. Dyed giant cave spider silk thread and cloth include midnight-blue dimple-dye wording.",
+    "limits": "Other textile materials, multidye profiles, explicit dyer-name narrative and long descriptions not newly live accepted. No schema change or public Stocks exposure.",
+    "offline": "item-textile-sheets core19, extension and item-sheet-state pass; item-textile-sheets-msvc passes.",
+    "source_preserved": true,
+    "owned_df_pid": 14748,
+    "exit": "unsaved",
+    "fps_cap": 30,
+    "gpu_max_sample_c": 60,
+    "diagnostics": "Known separate-thread, device-finalize and shutdown-object signatures only.",
+    "hashes": {
+      "stocks-native.json": "668cfe398a8c5b28fddeb2a2641fbe21f57739d45884d7da19da16896fe8b7e4",
+      "job-settings-wire-result.json": "cac1a52e9aa8934e706bfb557de0c0f375ab9323f855653fecc0ed54aa512040",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "textile-comparison.json": "7974d520509cd244d7a4aae4086f5385da817f0d802f63859ed342b30734ad9e",
+      "stocks-furniture-wire-57.json": "7f07da87fbe25bbb68e692d7930d3df5a315ed0e7814c6f4365fbba7678ed681",
+      "stocks-furniture-native-57.png": "ad32b57ce9852e3a2ed8ea04f57a9f71ee3b2b62638e941b9ee8c8ce51ff7056",
+      "stocks-furniture-view-57.png": "d21f271e16c966610398acfbc7b0092b931d013ed627d0bc5d6343dbd91fdaa9",
+      "stocks-furniture-wire-58.json": "28c36613a03248652ced1075058c0d49dbc955962e14498bd32a5d0c533e0313",
+      "stocks-furniture-native-58.png": "eafc33e43b296eac60f13d693b6685e375bc359482e7f6136ba710ce45bffdbb",
+      "stocks-furniture-view-58.png": "788096863513a976b9568295ca447d5f5dac6d8a111d2d56d704cf007f8ec324"
+    }
   }
 }

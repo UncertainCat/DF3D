@@ -105,6 +105,20 @@ extension and item-state checks pass (`item-holder-icons`). Source preserved;
 DF41128 exits unsaved at30FPS,50C sampled; documented Godot diagnostics only.
 `holder_icon_reference` retains mappings, hashes and bounded acceptance.
 
+Item inspection also admits THREAD and CLOTH through the native description
+builder. THREAD adds its guarded dye-color virtual and semantic dye/name
+helpers; its material-pair collection uses owned scratch. CLOTH shares BOX's
+constructed virtuals except type, has no subtype, and retains native descriptor
+color wording. No rules or descriptions are reconstructed in the presentation.
+Protected073332 verifies real Stocks View/close and exact native descriptions/
+Uses for dyed giant cave spider silk thread and cloth. Both complete488x708
+panels match native pixels, including dye art, container links and thread Uses.
+Core19, extension/item-state (`item-textile-sheets`) and MSVC pass. Source
+preserved, DF14748 exits unsaved at30FPS,60C sampled (not peak); documented
+Godot diagnostics only. `textile_description_reference` retains pins and hashes.
+Other materials, multidye profiles and explicit dyer-name narrative are not
+newly live accepted. Public Stocks remains gated; no schema change.
+
 The simple native description dispatcher also admits BOULDER, WOOD, ROUGH and
 SMALLGEM through pinned c75000 semantics and type leaves. Their other used
 virtuals match SEEDS; material wording and grammar remain native. No schema

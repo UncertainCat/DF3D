@@ -383,7 +383,7 @@ inline bool simpleItemDescriptionDispatch(df::item* item) {
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     const auto* table=*reinterpret_cast<const void* const*>(item);
     if(table!=base+0x16d06e0 && table!=base+0x16f6da0 && table!=base+0x15fa918 &&
-       table!=base+0x16cad20 && table!=base+0x16b7520 && table!=base+0x16f0ac0 && table!=base+0x16c6570)return false;
+       table!=base+0x16cad20 && table!=base+0x16b7520 && table!=base+0x16f0ac0 && table!=base+0x16c6570 && table!=base+0x16c9420)return false;
     static const bool pinned=[base]() {
         struct Pin {size_t slot,target,length;uint64_t hash;};
         constexpr Pin pins[]={
@@ -414,12 +414,16 @@ inline bool simpleItemDescriptionDispatch(df::item* item) {
         // WOOD c750af and BOULDER c75244 adjust grammar from owned flags
         // and material getters only. All other used virtuals match SEEDS.
         for(const size_t table:{size_t(0x16d06e0),size_t(0x16f6da0),size_t(0x15fa918),
-            size_t(0x16cad20),size_t(0x16b7520),size_t(0x16f0ac0),size_t(0x16c6570)})for(auto pin:pins) {
+            size_t(0x16cad20),size_t(0x16b7520),size_t(0x16f0ac0),size_t(0x16c6570),size_t(0x16c9420)})for(auto pin:pins) {
             if(pin.slot==0) {
                 if(table==0x16cad20)pin={0,0x67a40,6,UINT64_C(0x0ba8a52fbdb51a10)};
                 if(table==0x16b7520)pin={0,0x67a50,6,UINT64_C(0xfef8c40540640013)};
                 if(table==0x16f0ac0)pin={0,0x67520,6,UINT64_C(0x18580e5a3b056825)};
                 if(table==0x16c6570)pin={0,0x67500,6,UINT64_C(0x31b5d0af35a4361f)};
+            }
+            if(table==0x16c9420) {
+                if(pin.slot==0)pin={0,0x101cf0,6,UINT64_C(0xf7f601fa9f00ef47)};
+                if(pin.slot==0x6b0)pin={0x6b0,0xcae9a0,0xc4,UINT64_C(0x6d5fdc9d14308894)};
             }
             if(table==0x15fa918 && pin.slot==0)pin={0,0x67540,6,UINT64_C(0x2505ef84b8531c22)};
             if(table==0x16f6da0) {
@@ -435,7 +439,16 @@ inline bool simpleItemDescriptionDispatch(df::item* item) {
         // Semantic material/name dependencies. Historical material resolution
         // may populate creature_handler::hist_fig_to_creature_map; no UI cache.
         struct Helper {size_t rva,length;uint64_t hash;};
+        // THREAD c7515e uses material flags for grammar; c7827b..c7875e
+        // formats its semantic dye profile and dyer identity. Pair collection
+        // uses owned local vectors; color/name helpers read raws/history only.
         constexpr Helper helpers[]={
+            {0x145bee0,0x5e,UINT64_C(0x6abc4e374e372eef)},
+            {0x145c2b0,0x122,UINT64_C(0x0e578b2e7d721c3a)},
+            {0x701e70,0x20e,UINT64_C(0xead0193006374e44)},
+            {0x13c900,0x8c,UINT64_C(0xf2ab35fac31e7af2)},
+            {0xc0f630,0x2c,UINT64_C(0x2f03e40b0a07e0bf)},
+            {0xa94030,0x6a1,UINT64_C(0xd81db68b3c9b33d2)},
             {0x14d1920,0x459,UINT64_C(0xf48e28715360ed9a)},
             {0x14add70,0x12f,UINT64_C(0x01f897b15772d540)},
             {0x701e70,0x20e,UINT64_C(0xead0193006374e44)},
@@ -462,7 +475,8 @@ inline bool simpleItemDescriptionDispatch(df::item* item) {
 // These furniture/container types follow the BOX description path in c75000:
 // no extra type-specific branch, no subtype raw, and identical pinned virtuals.
 inline bool furnitureItemDescriptionTable(const uint8_t* base,const void* table) {
-    return table==base+0x16c8230 ||
+    return table==base+0x161c930 || // CLOTH has no subtype; c77fba reads descriptor colors.
+           table==base+0x16c8230 ||
            table==base+0x16c2d20 ||
            table==base+0x1625280 ||
            table==base+0x1625a00 ||
@@ -522,7 +536,7 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
         // c75000 has no clothing-specific branch; subtype is a semantic raw.
         for(size_t table:{size_t(0x1623198),size_t(0x16c6cf0),size_t(0x161dd98),
                          size_t(0x161f840),size_t(0x1621b88),size_t(0x1624818),size_t(0x161edd8),size_t(0x16c9ba0),
-                         size_t(0x16c8230),size_t(0x16c2d20),size_t(0x1625280),size_t(0x1625a00),size_t(0x16f9cb0),size_t(0x1620b48),size_t(0x16212c8),size_t(0x16225f0),size_t(0x16c25a0),size_t(0x16fe8b8),size_t(0x16c3fe0),size_t(0x161e518),size_t(0x16f37c0),size_t(0x16fffe8),size_t(0x1701de8),size_t(0x16f19c0),size_t(0x16f7cf8),size_t(0x16ff868),size_t(0x16fd1e0),size_t(0x1702568),size_t(0x1700768)})for(auto pin:pins) {
+                         size_t(0x16c8230),size_t(0x16c2d20),size_t(0x1625280),size_t(0x1625a00),size_t(0x16f9cb0),size_t(0x1620b48),size_t(0x16212c8),size_t(0x16225f0),size_t(0x16c25a0),size_t(0x16fe8b8),size_t(0x16c3fe0),size_t(0x161e518),size_t(0x16f37c0),size_t(0x16fffe8),size_t(0x1701de8),size_t(0x16f19c0),size_t(0x16f7cf8),size_t(0x16ff868),size_t(0x16fd1e0),size_t(0x1702568),size_t(0x1700768),size_t(0x161c930)})for(auto pin:pins) {
             if(table==0x16c6cf0 && pin.slot==0)pin={0,0x673c0,6,UINT64_C(0x6470dd592ae1062b)};
             if(pin.slot==0) {
                 if(table==0x161dd98)pin={0,0x28a840,6,UINT64_C(0x3c0e712b7d27ecd8)};
@@ -531,6 +545,7 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
                 if(table==0x1624818)pin={0,0x722d0,6,UINT64_C(0xd1ead67b27153938)};
                 if(table==0x16c9ba0)pin={0,0x548fa0,6,UINT64_C(0x7b7766ffefb27e79)};
                 if(table==0x161edd8)pin={0,0x28a950,6,UINT64_C(0x2f5f1000ffd7ac5b)};
+                if(table==0x161c930)pin={0,0x289c00,6,UINT64_C(0xeb4820d021b33b4a)};
                 if(table==0x16c8230)pin={0,0x54a180,6,UINT64_C(0xfa4cc2a8d4cd790b)};
                 if(table==0x16c2d20)pin={0,0x7a480,6,UINT64_C(0xfca403570a9adc4f)};
                 if(table==0x1625280)pin={0,0x67860,6,UINT64_C(0xa3dbcb2d9d6ef034)};
@@ -558,7 +573,7 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
         for(size_t table:{size_t(0x16c6cf0),size_t(0x161dd98),size_t(0x161f840),
                          size_t(0x1621b88),size_t(0x1624818),size_t(0x161edd8),size_t(0x16c9ba0)})
             if(*reinterpret_cast<const void* const*>(base+table+8)!=base+0xfd0c0)return false;
-        for(size_t table:{size_t(0x16c8230),size_t(0x16c2d20),size_t(0x1625280),size_t(0x1625a00),size_t(0x16f9cb0),size_t(0x1620b48),size_t(0x16212c8),size_t(0x16225f0),size_t(0x16c25a0),size_t(0x16fe8b8),size_t(0x16c3fe0),size_t(0x161e518),size_t(0x16f37c0),size_t(0x16fffe8),size_t(0x1701de8),size_t(0x16f19c0),size_t(0x16f7cf8),size_t(0x16ff868),size_t(0x16fd1e0),size_t(0x1702568),size_t(0x1700768)})
+        for(size_t table:{size_t(0x16c8230),size_t(0x16c2d20),size_t(0x1625280),size_t(0x1625a00),size_t(0x16f9cb0),size_t(0x1620b48),size_t(0x16212c8),size_t(0x16225f0),size_t(0x16c25a0),size_t(0x16fe8b8),size_t(0x16c3fe0),size_t(0x161e518),size_t(0x16f37c0),size_t(0x16fffe8),size_t(0x1701de8),size_t(0x16f19c0),size_t(0x16f7cf8),size_t(0x16ff868),size_t(0x16fd1e0),size_t(0x1702568),size_t(0x1700768),size_t(0x161c930)})
             if(*reinterpret_cast<const void* const*>(base+table+8)!=base+0x66e60)return false;
         if(hash(0xfd0c0,12)!=UINT64_C(0xf68164ec06d8d50a))return false;
         if(hash(0x67520,0x6)!=UINT64_C(0x18580e5a3b056825))return false;
@@ -776,6 +791,7 @@ inline std::optional<ItemObservation> observeItem(df::item* item) {
     auto facts=itemFacts(item);if(!facts)return std::nullopt;
     ItemObservation value;value.item=std::move(*facts);value.weight=*weight;value.description=uses->description;value.uses=uses->rows;
     switch(item->getType()) {
+    case df::item_type::THREAD:case df::item_type::CLOTH:
     case df::item_type::BAR:case df::item_type::BLOCKS:
     case df::item_type::BOULDER:case df::item_type::WOOD:
     case df::item_type::ROUGH:case df::item_type::SMALLGEM:

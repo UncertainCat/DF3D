@@ -7110,6 +7110,13 @@
       "source_save": "unchanged; owned DF42604 exited unsaved",
       "diagnostics": "Known thread/finalize/shutdown-object diagnostics only.",
       "initial_capture": "214825 ran the general render test due to flag precedence; no modified-sort acceptance."
+    },
+    "main_reference": {
+      "capture": "build/stockpile-storage-native-input-20261108-215202",
+      "scope": "Eleven actual main-scene modifier pointer transitions match captured full native orders. Existing four Stone edits, Filter gating and Labor navigation regressions pass.",
+      "source_preserved": true,
+      "owned_df_closed": 7672,
+      "diagnostics": "Known thread/finalize/shutdown-object diagnostics only."
     }
   }
 }

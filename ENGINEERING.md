@@ -34,6 +34,27 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
 
+## Stocks native discovery
+
+Stocks has no DF3D runtime surface or accepted semantic provider yet.
+Protected215344 on2026-11-08 opens and closes native D_STOCKS while paused,
+records93 ordered categories and initial Ammunition selection(type39), and
+captures six groups covering29 individual item IDs. Availability vectors have113
+entries; displayed counts can be approximate. The native screen includes group
+and individual action controls, search, expansion and independent scroll regions.
+
+`fixtures/production/native_stocks.json` retains bounded observations and candidate
+code hashes. Captured menu storage at RVA18a2710 is discovery evidence only,
+never a runtime input. Input block3246dc passes that context to37a3f0, which reads
+selected type and context vectors, resizes group arrays, and calls37d350. This is
+a candidate for an independently owned grouping adapter; its full dependencies
+and ownership are not accepted. Another input branch calls37dbc0; its semantic
+role remains unresolved. Next audit the master inventory/category provider,
+37a3f0/37d350 and count approximation before defining a typed read contract.
+Do not recreate grouping or availability in Godot. The capture was visually
+inspected, source save preserved, DF45556 exited unsaved and GPU58C sampled.
+No editing or provider parity is claimed.
+
 ## Stone use native semantics and presentation
 
 Stone use is implemented inside the staged Labor owner. Public Labor exposure
@@ -1671,8 +1692,11 @@ input pipeline, using Shift/Control mouse events and fresh native queries. All
 orders match. At five priorities (Name,Cat,Prof,Name,Name), the complete header
 crop304,256..776,268 has zero differing RGB pixels against native. Captures were
 inspected; whole-panel identity is not claimed because hover/selection backgrounds
-and portrait rendering differ. Main-scene integration of modified sorting remains
-open. This view-level run does not establish physical Shift delivery to native DF.
+and portrait rendering differ. Main-scene215202 subsequently verifies eleven
+modifier-click transitions through the actual factory/host/service, all matching
+captured full native orders. Existing Stone edits, Filter gating and Labor
+navigation pass; source unchanged, DF7672 exits unsaved, only known engine
+diagnostics, GPU60C. Neither run establishes physical Shift delivery to native DF.
 Owned DF42604 exits unsaved with source preservation, GPU59C sampled; joined logs
 contain only known thread/finalize/shutdown-object diagnostics. Core19 passes in
 `work-details-multisort-render`. Initial214825 selected the older general render

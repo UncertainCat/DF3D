@@ -2,8 +2,10 @@ extends "res://tests/item_carrier_wire_live.gd"
 const State=preload("res://scripts/stone_use_state.gd")
 var actions
 var main_scene
-func pointer(view,point: Vector2) -> void:
+var modified_sort_steps:=0
+func pointer(view,point: Vector2,shift: bool=false,control: bool=false) -> void:
 	var event:=InputEventMouseButton.new();event.button_index=MOUSE_BUTTON_LEFT;event.pressed=true
+	event.shift_pressed=shift;event.ctrl_pressed=control
 	event.position=view.get_global_transform_with_canvas()*point;event.global_position=event.position
 	Input.parse_input_event(event);await process_frame
 	event=event.duplicate();event.pressed=false;Input.parse_input_event(event);await process_frame
@@ -121,6 +123,18 @@ func run() -> void:
 		await keyboard(KEY_LEFT);await keyboard(KEY_A,false,97)
 		check(details.state.query.is_empty() and details.panel.search.has_focus(),"Disabled right panel accepted typing or lost native textbox focus")
 		await keyboard(KEY_RIGHT);await keyboard(KEY_ENTER);check(not details.panel.search.has_focus(),"Enabled Enter did not release filter")
+		if OS.get_environment("DF3D_WORK_DETAILS_MAIN_MODSORT")=="1":
+			var native: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/production/native_work_details.json")).modified_sort_reference
+			for observation: Dictionary in native.observations:
+				if not observation.label.begins_with("controlled-"):continue
+				var parts: PackedStringArray=observation.label.split("-")
+				var column: int=["Cat","Name","Prof","Skills"].find(parts[2])
+				var header: int=details.panel.DETAIL_SORTS.find(column)
+				await pointer(details.panel,Vector2(details.panel.DETAIL_SORT_X[header]*8+4,details.panel.list_top()-18),int(parts[1])==1,int(parts[1])==2)
+				if not await details_ready(details):quit(1);return
+				check(main_scene._ui.host.active==details and details.state.ids==PackedInt32Array(observation.ids),"Main modified sort differs: "+observation.label)
+				modified_sort_steps+=1
+			check(modified_sort_steps==11,"Main modified sort sequence incomplete")
 		await pointer(details.panel,Vector2(details.panel.DETAIL_SORT_X[0]*8+16,details.panel.list_top()-18))
 		if not await details_ready(details):quit(1);return
 		await keyboard(KEY_F,true)
@@ -182,7 +196,7 @@ func run() -> void:
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(directory+"/stone-use-view.png")
 	var output:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
-	output.store_string(JSON.stringify({"success":not failed,"steps":completed,"rows":value.rows.size(),"controller":true,"rendered":rendered,"main":main_scene!=null}));output.close()
+	output.store_string(JSON.stringify({"success":not failed,"steps":completed,"rows":value.rows.size(),"controller":true,"rendered":rendered,"main":main_scene!=null,"modified_sort_steps":modified_sort_steps}));output.close()
 	if owner!=null:owner.close_panel()
 	else:
 		if view!=null:view.queue_free();await process_frame

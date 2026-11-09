@@ -9,6 +9,12 @@ require('gui.script').start(function()
   local view=dfhack.gui.getDFViewscreen(true)
   assert(df.global.pause_state);local frame=df.global.world.frame_counter
   assert(dfhack.run_command('disable','overlay')==0)
+  if os.getenv('DF3D_STOCKS_NATIVE')=='1' then
+   local source=debug.getinfo(1,'S').source:sub(2):gsub('stockpile_storage_native.lua$','stocks-native.lua')
+   assert(loadfile(source))(out,view,records)
+   assert(df.global.pause_state and df.global.world.frame_counter==frame,'simulation advanced')
+   return
+  end
   if os.getenv('DF3D_STANDING_ORDERS_NATIVE')=='1' then
    local source=debug.getinfo(1,'S').source:sub(2):gsub('stockpile_storage_native.lua$','standing-orders-native.lua')
    assert(loadfile(source))(out,view,records)

@@ -257,6 +257,7 @@ try {
      if($env:DF3D_CHORES_RENDER -eq '1' -or $env:DF3D_HUNTER_AMMUNITION_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/job_settings_wire_live.gd')}
      if($name -eq 'stocks-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/stocks_wire_live.gd')}
      if($name -eq 'stocks-wire' -and $env:DF3D_STOCKS_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/stocks_wire_live.gd')}
+     if($name -eq 'stocks-wire' -and $env:DF3D_STOCKS_SCENE -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/stocks_scene_live.gd')}
      if($name -eq 'stone-use-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/stone_use_wire_live.gd')}
      if($name -eq 'stone-use-wire' -and $env:DF3D_STONE_USE_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/stone_use_wire_live.gd')}
      if($name -eq 'kitchen-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/kitchen_wire_live.gd')}
@@ -267,6 +268,7 @@ try {
      $client=Start-Process -FilePath $engine -ArgumentList $clientArgs -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/job-settings-wire.stdout.log" -RedirectStandardError "$out/job-settings-wire.stderr.log"
      $null=$client.Handle
      $wireTimeout=if($name -eq 'kitchen-wire' -and $env:DF3D_KITCHEN_MAIN -eq '1'){115000}else{25000}
+     if($name -eq 'stocks-wire' -and $env:DF3D_STOCKS_SCENE -eq '1'){$wireTimeout=115000}
      if($name -eq 'stone-use-wire' -and $env:DF3D_STONE_USE_MAIN -eq '1'){$wireTimeout=115000}
      if($name -eq 'standing-automation-wire'){$wireTimeout=115000}
      if($name -eq 'labor-lifecycle-wire'){$wireTimeout=295000}

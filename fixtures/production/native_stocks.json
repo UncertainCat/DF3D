@@ -7255,5 +7255,41 @@
       "job-settings-wire-result.json": "52cb54e2e604b15da51f1354a8722bc72411338560262ab9a790af3e62bc3a33",
       "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
     }
+  },
+  "main_scene_navigation_reference": {
+    "run": "build/stockpile-storage-native-input-20261109-054217",
+    "native_reference": "000234 Recenter/View close Stocks and focus without follow; Back does not reopen Stocks",
+    "scope": "Actual main scene, staged Stocks controller, real pointer Recenter/View, target tile and top-Z, no implicit follow, item camera button follow on/off, right-click closure without Stocks return",
+    "result": {
+      "roundtrip": true,
+      "success": true,
+      "surface": "actual main scene"
+    },
+    "read_initialization": [
+      {
+        "after": 536887304,
+        "before": 16392,
+        "id": 27756
+      }
+    ],
+    "effects": {
+      "changes": [],
+      "unchanged": true
+    },
+    "limits": "One ammunition target in a paused fortress; moving targets, projection changes and follow lifecycle are not newly accepted here. Public Stocks remains gated.",
+    "earlier_run": "054102 viewer assertions passed but whole-inventory flag guard failed before weight-cache initialization baseline.054217 records native initialization and checks every item flag afterward.",
+    "verification": "stocks-main-scene core19, extension and item_follow_test pass; scene script check-only passed; documented Godot diagnostics only",
+    "source_preserved": true,
+    "owned_df_pid": 43744,
+    "exit": "unsaved",
+    "fps_cap": 30,
+    "gpu_max_sample_c": 48,
+    "hashes": {
+      "stocks-main-scene.png": "b21b5a44403a5e9770ff912747a1069753ae34602e6bf8b92cdac33b0313bc95",
+      "job-settings-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+      "stocks-scene-read-initialization.json": "95d444a348ece7693529bacfe24a85f1b2c4f99b22b93de4aada27aba91522fd",
+      "stocks-scene-effects.json": "d8c8f0f66018385a854e066901980771292780129f9157d387a80b3b06d8834f",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    }
   }
 }

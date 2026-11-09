@@ -523,6 +523,17 @@ Core19 and headless owner/navigation checks pass in `stocks-destinations-owner`,
 including late navigation after close and no public launcher. The initial
 protected000455 View rejection identified missing AMMO description dispatch;
 that gap is now resolved by the audited constructed-item adapter below.
+Protected054217 additionally exercises actual main-scene Recenter/View pointers,
+correct camera X/Z and top-Z, no automatic follow, item-camera follow on/off, and
+Back closing the sheet without reopening Stocks. This covers ammunition27756 in
+a paused fortress; moving targets and projection changes are not newly accepted.
+Native inspection initializes its weight-cache bit29 before the effects baseline;
+all in-play item flags remain unchanged during the tested navigation. Earlier
+054102 passed viewer assertions but failed the pre-initialization flag baseline.
+Core19/extension/item-follow checks pass (`stocks-main-scene`). Source preserved,
+DF43744 exits unsaved at30FPS,48C sampled (not peak); documented Godot diagnostics
+only. `main_scene_navigation_reference` retains the bounded evidence. Run through
+the protected launcher with DF3D_STOCKS_NATIVE/WIRE/SCENE enabled.
 
 Ammunition description dispatch pins vtable16c9ba0 and getType548fa0. Its other
 used constructed-item virtuals match the accepted BOX dispatch; subtype uses
@@ -538,7 +549,8 @@ RGB differences. That capture predates the assignment row and carrier-icon fixes
 below; its carrier icon differed by298 pixels. Source unchanged,
 DF32724 exits unsaved, 30FPS GPU49-50C sampled; only documented
 thread/finalize/shutdown-object diagnostics remain. Other ammunition variants
-and full main-scene camera/follow behavior still require acceptance.
+and moving-target/main-scene follow lifecycle still require acceptance; the
+stationary main-scene navigation check above supersedes the initial wiring gap.
 
 The native ammunition-assignment adapter follows item-sheet153daa..154052:
 DF's assigned-ammunition list gates visibility, hunter allocations take priority,

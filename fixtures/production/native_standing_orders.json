@@ -6029,6 +6029,305 @@
       "visible_rows": 7,
       "restored_rows": 12,
       "limitations": "Drag endpoints/release, independent lists, bounded live viewport reads and resize restoration verified. Intermediate drag geometry, long-caption ellipsis and main-scene integration remain outside this acceptance."
+    },
+    "long_name_reference": {
+      "captions": {
+        "children": [
+          {
+            "caption": "Astesh Melbiloshosh, Dwarven Child",
+            "id": 7043
+          },
+          {
+            "caption": "At\u00c3\u00aes Kolzunt\u00c3\u00aer, Dwarven Child",
+            "id": 6334
+          },
+          {
+            "caption": "Doren Thosbutal\u00c3\u00a5th, Dwarven Child",
+            "id": 5698
+          },
+          {
+            "caption": "Imush Ashm\u00c3\u00b4nustuth, Dwarven Child",
+            "id": 7283
+          },
+          {
+            "caption": "Logem Medenkel, Dwarven Child",
+            "id": 6968
+          },
+          {
+            "caption": "Oddom Bubnusasmel, Dwarven Child",
+            "id": 7049
+          },
+          {
+            "caption": "Onol Zastimn\u00c3\u00a4r, Dwarven Child",
+            "id": 7041
+          },
+          {
+            "caption": "Shorast Numzas, Dwarven Child",
+            "id": 6810
+          },
+          {
+            "caption": "Thob Gethlogem, Dwarven Child",
+            "id": 6729
+          },
+          {
+            "caption": "Urdim \u00c3\u00aflullogem, Dwarven Child",
+            "id": 7080
+          },
+          {
+            "caption": "`ABCDEFGHIJABCDEFGHIJABCDEFGHIJABCDEFGHIJ' Lolorgemsit, Dwarven Child",
+            "id": 5699
+          },
+          {
+            "caption": "\u00c3\u00aeton Unibmamot, Dwarven Child",
+            "id": 988
+          }
+        ],
+        "labors": [
+          {
+            "caption": "Feed Patients/Prisoners",
+            "id": 23
+          },
+          {
+            "caption": "Milking",
+            "id": 37
+          },
+          {
+            "caption": "Stone Hauling",
+            "id": 1
+          },
+          {
+            "caption": "Wood Hauling",
+            "id": 2
+          },
+          {
+            "caption": "Item Hauling",
+            "id": 6
+          },
+          {
+            "caption": "Burial",
+            "id": 3
+          },
+          {
+            "caption": "Food Hauling",
+            "id": 4
+          },
+          {
+            "caption": "Refuse Hauling",
+            "id": 5
+          },
+          {
+            "caption": "Furniture Hauling",
+            "id": 7
+          },
+          {
+            "caption": "Animal Hauling",
+            "id": 8
+          },
+          {
+            "caption": "Trade Good Hauling",
+            "id": 74
+          },
+          {
+            "caption": "Water Hauling",
+            "id": 77
+          },
+          {
+            "caption": "Cleaning",
+            "id": 9
+          },
+          {
+            "caption": "Lever Operation",
+            "id": 75
+          }
+        ]
+      },
+      "nickname": "ABCDEFGHIJABCDEFGHIJABCDEFGHIJABCDEFGHIJ",
+      "sizes": [
+        {
+          "columns": 150,
+          "rows": 66,
+          "size": "default",
+          "text": [
+            {
+              "text": "                                                          Children do chores            Children don't do chores",
+              "y": 15
+            },
+            {
+              "text": "         `ABCDEFGHIJABCDEFGHIJABCDEFGHIJABCDEFGHIJ' Lolorgem   Feed Patients/Prisoners",
+              "y": 19
+            },
+            {
+              "text": "         Astesh Melbiloshosh, Dwarven Child                    Milking",
+              "y": 22
+            },
+            {
+              "text": "         At\u00c3\u00aes Kolzunt\u00c3\u00aer, Dwarven Child                         Stone Hauling",
+              "y": 25
+            },
+            {
+              "text": "         Doren Thosbutal\u00c3\u00a5th, Dwarven Child                     Wood Hauling",
+              "y": 28
+            },
+            {
+              "text": "         Imush Ashm\u00c3\u00b4nustuth, Dwarven Child                     Item Hauling",
+              "y": 31
+            },
+            {
+              "text": "         Logem Medenkel, Dwarven Child                         Burial",
+              "y": 34
+            },
+            {
+              "text": "         Oddom Bubnusasmel, Dwarven Child                      Food Hauling",
+              "y": 37
+            },
+            {
+              "text": "         Onol Zastimn\u00c3\u00a4r, Dwarven Child                         Refuse Hauling",
+              "y": 40
+            },
+            {
+              "text": "         Shorast Numzas, Dwarven Child                         Furniture Hauling",
+              "y": 43
+            },
+            {
+              "text": "         Thob Gethlogem, Dwarven Child                         Animal Hauling",
+              "y": 46
+            },
+            {
+              "text": "         Urdim \u00c3\u00aflullogem, Dwarven Child                        Trade Good Hauling",
+              "y": 49
+            },
+            {
+              "text": "         \u00c3\u00aeton Unibmamot, Dwarven Child                         Water Hauling",
+              "y": 52
+            },
+            {
+              "text": "                                                               Cleaning",
+              "y": 55
+            },
+            {
+              "text": "                                                               Lever Operation",
+              "y": 58
+            }
+          ]
+        },
+        {
+          "columns": 114,
+          "rows": 46,
+          "size": "minimum",
+          "text": [
+            {
+              "text": "                      Children do chores            Children don't do chores",
+              "y": 15
+            },
+            {
+              "text": "                                                                                            Elevation 36",
+              "y": 16
+            },
+            {
+              "text": "         `ABCDEFGHIJABCDEFGHIJABCDEFG  JAB   Feed Patients/Prisoners",
+              "y": 19
+            },
+            {
+              "text": "         Astesh Melbiloshosh, Dwarven  hil   Milking",
+              "y": 22
+            },
+            {
+              "text": "         At\u00c3\u00aes Kolzunt\u00c3\u00aer, Dwarven Chil        Stone Hauling",
+              "y": 25
+            },
+            {
+              "text": "         Doren Thosbutal\u00c3\u00a5th, Dwarven   ild   Wood Hauling",
+              "y": 28
+            },
+            {
+              "text": "         Imush Ashm\u00c3\u00b4nustuth, Dwarven   ild   Item Hauling",
+              "y": 31
+            },
+            {
+              "text": "         Logem Medenkel, Dwarven Chil        Burial",
+              "y": 34
+            },
+            {
+              "text": "         Oddom Bubnusasmel, Dwarven C  ld    Food Hauling",
+              "y": 37
+            }
+          ]
+        },
+        {
+          "columns": 200,
+          "rows": 75,
+          "size": "wide",
+          "text": [
+            {
+              "text": "         `ABCDEFGHIJABCDEFGHIJABCDEFGHIJABCDEFGHIJ' Lolorgemsit, Dwarven Child          Feed Patients/Prisoners",
+              "y": 17
+            },
+            {
+              "text": "         Astesh Melbiloshosh, Dwarven Child                                             Milking",
+              "y": 20
+            },
+            {
+              "text": "         At\u00c3\u00aes Kolzunt\u00c3\u00aer, Dwarven Child                                                  Stone Hauling",
+              "y": 23
+            },
+            {
+              "text": "         Doren Thosbutal\u00c3\u00a5th, Dwarven Child                                              Wood Hauling",
+              "y": 26
+            },
+            {
+              "text": "         Imush Ashm\u00c3\u00b4nustuth, Dwarven Child                                              Item Hauling",
+              "y": 29
+            },
+            {
+              "text": "         Logem Medenkel, Dwarven Child                                                  Burial",
+              "y": 32
+            },
+            {
+              "text": "         Oddom Bubnusasmel, Dwarven Child                                               Food Hauling",
+              "y": 35
+            },
+            {
+              "text": "         Onol Zastimn\u00c3\u00a4r, Dwarven Child                                                  Refuse Hauling",
+              "y": 38
+            },
+            {
+              "text": "         Shorast Numzas, Dwarven Child                                                  Furniture Hauling",
+              "y": 41
+            },
+            {
+              "text": "         Thob Gethlogem, Dwarven Child                                                  Animal Hauling",
+              "y": 44
+            },
+            {
+              "text": "         Urdim \u00c3\u00aflullogem, Dwarven Child                                                 Trade Good Hauling",
+              "y": 47
+            },
+            {
+              "text": "         \u00c3\u00aeton Unibmamot, Dwarven Child                                                  Water Hauling",
+              "y": 50
+            },
+            {
+              "text": "                                                                                        Cleaning",
+              "y": 53
+            },
+            {
+              "text": "                                                                                        Lever Operation",
+              "y": 56
+            }
+          ]
+        }
+      ],
+      "unit_id": 5699,
+      "capture": "build/stockpile-storage-native-input-20261108-204633",
+      "verification": {
+        "qa": "build/qa/chores-long-name-focused",
+        "rgb_differing_pixels": {
+          "default": 0,
+          "minimum": 0,
+          "wide": 0
+        },
+        "scope": "Native long-name overdraw matches existing view; no ellipsis or runtime change. Nickname restored; source save unchanged."
+      }
     }
   },
   "labor_navigation_reference": {

@@ -740,7 +740,18 @@ have zero differing pixels against native155525. Native sessions40892 (initial
 capture-script bounds failure),22352 and39092 exited unsaved; successful captures
 preserve the source. Graphical checks remain serial30FPS, GPU59–61C sampled, with
 only documented Godot diagnostics. Live viewport-driven row fetching, dragging,
-hover, long-caption ellipsis and main-scene acceptance remain pending.
+hover and main-scene acceptance are scoped by the later evidence below.
+
+Protected204633 on2026-11-08 assigns a40-character nickname in the owned paused
+clone, captures default/minimum/wide layouts, then restores the nickname and exits
+unsaved with source preservation. Native draws the caption unbounded; subsequent
+checkbox and labor-column drawing overwrites it, without an ellipsis. The existing
+DF3D view matches all three panel crops with zero differing RGB pixels.
+`chores_long_name_capture` replays the renamed caption by unit identity, preserving
+the open panel order rather than the freshly sorted provider order. QA
+`chores-long-name-focused` passes with only known Godot thread/finalize/shutdown
+diagnostics; serial30FPS GPU59C sampled. `long_name_reference` retains the native
+observations. This closes long-caption rendering without a runtime change.
 
 Protected160031/160239 now exercise minimum-size Chores through the actual owner:
 arrows and both drag endpoints fetch the correct seven visible child appearances,

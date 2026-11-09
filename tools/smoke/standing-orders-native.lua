@@ -215,6 +215,11 @@ for category,x in ipairs{10,23,34,46,60,71,80}do
 
   end
 
+  if os.getenv('DF3D_CHORES_LONG_NAME')=='1' then
+   local path=debug.getinfo(1,'S').source:sub(2):gsub('standing%-orders%-native.lua$','chores-long-name-native.lua')
+   assert(loadfile(path))(out,view,panel,shot)
+  end
+
   if os.getenv('DF3D_CHORES_LAYOUT')=='1' then
    result.chores_layout={}
    for _,size in ipairs({'minimum','small','wide','default'})do

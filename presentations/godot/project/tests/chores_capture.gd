@@ -24,6 +24,22 @@ func run() -> void:
 	var view=preload("res://scripts/chores_view.gd").new();root.add_child(view)
 	view.configure_chores(world,state);view.layout(Vector2(1200,800));view.ticks_override=0
 	view.display_rows(integers(JSON.parse_string(FileAccess.get_file_as_string(directory+"/chores-rows.json"))))
+	var long_name_path:=OS.get_environment("DF3D_CHORES_LONG_NAME_CAPTURE")
+	if not long_name_path.is_empty():
+		var observed: Dictionary=integers(JSON.parse_string(FileAccess.get_file_as_string(long_name_path+"/chores-long-name-native.json")))
+		# Match by identity: the provider re-sorts after renaming, while the open
+		# native panel retains its original order.
+		for child: Dictionary in state.children:
+			if child.id==observed.unit_id:
+				for renamed: Dictionary in observed.captions.children:
+					if renamed.id==child.id:child.caption=renamed.caption
+		for entry: Dictionary in observed.sizes:
+			var dimensions:=Vector2i(1200,800) if entry.size=="default" else Vector2i(int(entry.columns)*8,int(entry.rows)*12)
+			root.size=dimensions;view.layout(Vector2(dimensions));state.changed.emit()
+			await process_frame;await process_frame;await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../../../build/chores-long-name-"+str(entry.size)+".png"))
+		view.queue_free();world.queue_free();await process_frame
+		print("CHORES_CAPTURE_PASS");quit(0);return
 	await process_frame;await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../../../build/chores.png"))
 	for dimensions in [Vector2i(912,552),Vector2i(960,600),Vector2i(1600,900)]:

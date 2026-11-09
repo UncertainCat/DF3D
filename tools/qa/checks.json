@@ -203,6 +203,22 @@
       "prerequisites": ["extension_build", "df_assets", "real_renderer"]
     },
     {
+      "id": "chores_long_name_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/chores_capture.gd",
+      "completion": "^CHORES_CAPTURE_PASS$",
+      "timeout": 30,
+      "prerequisites": [
+        "extension_build",
+        "df_assets",
+        "real_renderer"
+      ],
+      "environment": {
+        "DF3D_CHORES_LONG_NAME_CAPTURE": "{root}/build/stockpile-storage-native-input-20261108-204633"
+      }
+    },
+    {
       "id": "chores_capture",
       "lane": "gpu",
       "kind": "godot",

@@ -42,10 +42,20 @@ Ref<Texture2D> Df3dWorld::ammunition_icon(const Dictionary& appearance,int64_t i
 }
 Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,bool genericGroup,int64_t itemId,bool sheet,bool diagonalAmmo) {
     if(!assets_ || itemType<0 || itemType>=int(wm::ItemKind::BoltThrowerParts) ||
-       appearance.size()!=5+int(appearance.has("bedding"))+int(appearance.has("instrument"))+int(appearance.has("slab_engraving"))+int(appearance.has("gem_shape_raw"))+int(appearance.has("contents"))+int(appearance.has("artifact_mood"))+int(appearance.has("floodgate_open"))+int(appearance.has("door")))return {};
+       appearance.size()!=5+int(appearance.has("bedding"))+int(appearance.has("instrument"))+int(appearance.has("slab_engraving"))+int(appearance.has("gem_shape_raw"))+int(appearance.has("contents"))+int(appearance.has("artifact_mood"))+int(appearance.has("floodgate_open"))+int(appearance.has("door"))+int(appearance.has("bucket_liquid")))return {};
     if(itemId < -1 || itemId>INT32_MAX)return {};
     if(appearance.has("artifact_mood") && (itemType!=24 || appearance["artifact_mood"].get_type()!=Variant::BOOL))return {};
     if(appearance.has("floodgate_open") && (itemType!=7 || appearance["floodgate_open"].get_type()!=Variant::BOOL))return {};
+    int8_t bucketLiquid=-1;std::string bucketLiquidColor;
+    if(appearance.has("bucket_liquid")) {
+        if(itemType!=18 || appearance["bucket_liquid"].get_type()!=Variant::DICTIONARY)return {};
+        const Dictionary liquid=appearance["bucket_liquid"];
+        if(liquid.size()!=2 || !liquid.has("present") || liquid["present"].get_type()!=Variant::BOOL ||
+           !liquid.has("color_token") || liquid["color_token"].get_type()!=Variant::STRING)return {};
+        bucketLiquid=bool(liquid["present"])?1:0;const String color=liquid["color_token"];
+        if(color.utf8().length()>128 || (!bucketLiquid && !color.is_empty()))return {};
+        bucketLiquidColor=color.utf8().get_data();
+    }
     std::optional<df3d::assets::DoorItemFacts> door;
     if(appearance.has("door")) {
         if(itemType!=6 || itemId<0 || appearance["door"].get_type()!=Variant::DICTIONARY)return {};
@@ -194,7 +204,7 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
         return {};
     }
     df3d::assets::ItemQuery query;query.kind=wm::ItemKind(itemType+1);query.material=materialToken;
-    query.diagonalAmmo=diagonalAmmo;query.door=door;
+    query.diagonalAmmo=diagonalAmmo;query.door=door;query.bucketLiquid=bucketLiquid;query.bucketLiquidColor=bucketLiquidColor;
     if(appearance.has("floodgate_open"))query.floodgateOpen=bool(appearance["floodgate_open"])?1:0;
     if(itemId>=0)query.id=uint32_t(itemId);
     if(contents)query.contents=&*contents;
@@ -229,7 +239,9 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
                 float(rect.pw)/resource->width,float(rect.ph)/resource->height)});
         }
         const bool doorLock=query.door && !query.door->open && query.door->forbidden && assets_->index.tile("ITEM_DOOR_FORBIDDEN");
-        const int composite=compositeBuildingTile(layers,false,true,false,query.kind==wm::ItemKind::Bin,doorLock);
+        // BUCKET cf84c9..cf8633 replaces nonzero-alpha liquid pixels, like BIN.
+        const bool replaceContents=query.kind==wm::ItemKind::Bin || (query.kind==wm::ItemKind::Bucket && query.bucketLiquid>=0);
+        const int composite=compositeBuildingTile(layers,false,true,false,replaceContents,doorLock);
         const auto* resource=composite>=0?spriteResources_.slots.find(composite):nullptr;
         if(resource)return resource->texture;
         return {};

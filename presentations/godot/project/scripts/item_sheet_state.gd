@@ -160,7 +160,12 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 	if editing and owner==generation:applied.emit()
 
 static func _valid_appearance(look: Variant,item_type: int) -> bool:
-	if typeof(look)!=TYPE_DICTIONARY or look.size()!=5+int(item_type==13)+int(look.has("contents"))+int(look.has("floodgate_open"))+int(look.has("door")):return false
+	if typeof(look)!=TYPE_DICTIONARY or look.size()!=5+int(item_type==13)+int(look.has("contents"))+int(look.has("floodgate_open"))+int(look.has("door"))+int(look.has("bucket_liquid")):return false
+	if look.has("bucket_liquid"):
+		var liquid=look.bucket_liquid
+		if item_type!=18 or typeof(liquid)!=TYPE_DICTIONARY or liquid.size()!=2:return false
+		if typeof(liquid.get("present"))!=TYPE_BOOL or typeof(liquid.get("color_token"))!=TYPE_STRING:return false
+		if liquid.color_token.to_utf8_buffer().size()>128 or (not liquid.present and not liquid.color_token.is_empty()):return false
 	if look.has("door"):
 		var door=look.door
 		if item_type!=6 or typeof(door)!=TYPE_DICTIONARY or door.size()!=3:return false

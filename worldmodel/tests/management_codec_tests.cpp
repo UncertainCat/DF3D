@@ -5049,3 +5049,18 @@ TEST_CASE("door appearance requires complete typed facts and preserves absence")
     if(valid){const auto facts=*codec::decodeProduction(value->production()).independentItem->snapshot->carrier->appearance;CHECK(facts.doorOpen==open);CHECK(facts.doorForbidden==forbidden);CHECK(facts.doorWear==wear);}
   }
 }
+
+TEST_CASE("bucket liquid appearance preserves unknown empty and uncolored liquid") {
+  for(int type:{18,32})for(int present:{-2,-1,0,1,2})for(const std::string color:std::vector<std::string>{"", "BLUE", std::string(129,'x')}) {
+    flatbuffers::FlatBufferBuilder b;
+    auto appearance=wire::CreateItemInspectionAppearance(b,b.CreateString("PLANT:OAK:WOOD"),b.CreateString(""),b.CreateString(""),1,0,-1,-1,0,-1,-1,-1,-1,int8_t(present),b.CreateString(color));
+    auto carrier=wire::CreateItemCarrier(b,1,7,type,b.CreateString("container"),appearance);
+    auto item=wire::CreateIndependentItemSnapshot(b,45,1,39,b.CreateString("item"),b.CreateString(""),b.CreateString(""),false,false,false,false,true,false,false,false,b.CreateString(""),b.CreateString(""),0,0,-1,carrier);
+    auto independent=wire::CreateIndependentItemState(b,item);wire::ProductionStateBuilder p(b);p.add_independent_item(independent);auto payload=p.Finish();
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_production(payload);state.add_action(wire::ManagementAction::ProductionInspect);state.add_status(wire::ManagementStatus::Ok);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    const bool valid=present>=-1 && present<=1 && (type==18 || present==-1) && color.size()<=128 && (present==1 || color.empty());
+    CHECK(bool(wire::validateManagementState(*value))==!valid);
+    if(valid){const auto facts=*codec::decodeProduction(value->production()).independentItem->snapshot->carrier->appearance;CHECK(facts.bucketLiquid==present);CHECK(facts.bucketLiquidColor==color);}
+  }
+}

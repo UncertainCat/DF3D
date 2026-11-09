@@ -6140,7 +6140,7 @@
     "verification": "stocks-door-lock-blend: Core19, extension and installed icon checks passed.",
     "earlier_evidence": {
       "025708": "Fixture wrongly expected all modified doors on the first page. Wear reordered rows; viewer rejected incomplete coverage. Owned DF exited unsaved; field-restoration callback completion not claimed.",
-      "030008": "Revised fixture scrolls to each case; semantic facts and restoration pass. Closed forbidden target icons differed by28–30 pixels, identifying final-overlay blend mismatch."
+      "030008": "Revised fixture scrolls to each case; semantic facts and restoration pass. Closed forbidden target icons differed by28\u00e2\u20ac\u201c30 pixels, identifying final-overlay blend mismatch."
     },
     "source_preserved": true,
     "owned_df_closed": 36344,
@@ -6150,5 +6150,67 @@
       "Other materials, modified graphic definitions and every ID variant are not separately captured.",
       "Stocks overall remains staged; other artwork and workflow gaps remain."
     ]
+  },
+  "bucket_liquid162_reference": {
+    "capture": "build/stockpile-storage-native-input-20261109-031918",
+    "management_version": 162,
+    "scope": "Visible bucket rows, including empty buckets and water-containing bucket7579. Other liquids/materials and remaining household artwork are not accepted by this capture.",
+    "provider": "Reverse simulation general references; native isLiquid virtual86, material resolver14add70 and first solid-state pattern color, matching c7d7a0..c7d8af. No native menu/cache input.",
+    "field": "bucket_liquid: -1 unknown, 0 empty, 1 liquid; optional selected color. Unknown remains absent in Godot. Known state is restricted to item type18.",
+    "compositor": "Nonzero-alpha liquid pixels replace the bucket base, matching cf84c9..cf8633.",
+    "icon_region": [
+      360,
+      112,
+      394,
+      724
+    ],
+    "rgb_different_icon_pixels": 0,
+    "other_item_region_different_pixels": 26,
+    "native_sha256": "63831e83501c8151db656c7aa364ed27391e81653ea8a2526ef8c8f8f5d782f8",
+    "viewer_sha256": "a4f88f31d20fc8f7a4538947ceb4e2319a2d48dd170ff01c18bbfda0b2af2353",
+    "wire_result": {
+      "categories": 93,
+      "controller": true,
+      "edits": 2,
+      "groups": 6,
+      "individual": false,
+      "items": 9,
+      "owner": false,
+      "rendered": true,
+      "success": true
+    },
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        },
+        {
+          "id": "godot-device-finalize",
+          "count": 1,
+          "reference": "https://github.com/godotengine/godot/issues/119000"
+        },
+        {
+          "id": "godot-shutdown-objects",
+          "count": 1,
+          "reference": "ENGINEERING.md#tests-and-known-problems"
+        }
+      ],
+      "unclassified": []
+    },
+    "verification": [
+      "stocks-bucket162: core19, extension, Stocks state and installed icon tests passed",
+      "stocks-bucket162-final: core19, extension and installed icon tests passed",
+      "MSVC stocks-bucket162-msvc passed"
+    ],
+    "source_preserved": true,
+    "owned_df_closed": 45608,
+    "graphics_fps_cap": 30,
+    "sampled_gpu_temperature_c": [
+      35,
+      37
+    ],
+    "installed_bridge_sha256": "aaf031ce310386a09925684dc9171c58e14c888392b17de11094e154e038decd"
   }
 }

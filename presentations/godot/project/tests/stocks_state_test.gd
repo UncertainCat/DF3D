@@ -50,6 +50,13 @@ func run() -> void:
 	check(item_state._valid_appearance(door,6),"Door simulation facts rejected")
 	check(not item_state._valid_appearance(door,7),"Door facts accepted for another item type")
 	door.door.erase("open");check(not item_state._valid_appearance(door,6),"Incomplete door facts accepted")
+	var bucket={"material_token":"PLANT:OAK:WOOD","subtype_raw":"","color_token":"","stack":1,"flags":0}
+	check(item_state._valid_appearance(bucket,18),"Unknown bucket contents rejected")
+	bucket.bucket_liquid={"present":false,"color_token":""}
+	check(item_state._valid_appearance(bucket,18),"Known empty bucket rejected")
+	bucket.bucket_liquid.color_token="BLUE";check(not item_state._valid_appearance(bucket,18),"Empty bucket accepted liquid color")
+	bucket.bucket_liquid.present=true;check(item_state._valid_appearance(bucket,18),"Bucket liquid facts rejected")
+	check(not item_state._valid_appearance(bucket,32),"Bucket facts accepted for bin")
 	var filter=preload("res://scripts/stocks_filter.gd").new();root.add_child(filter);filter.size=Vector2(300,36);filter.configure(StyleBoxEmpty.new(),[])
 	await process_frame
 	await click_filter();check(filter.has_focus(),"First filter click starts typing")

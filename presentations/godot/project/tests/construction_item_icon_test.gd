@@ -134,6 +134,13 @@ func run() -> void:
 	door.door.wear=4;check(world.item_sheet_icon(6,door,47315)==null,"Invalid door wear accepted")
 	door.door.wear=0;check(world.item_sheet_icon(6,door,-1)==null,"Door pattern accepted without identity")
 	check(world.item_sheet_icon(7,door,47315)==null,"Door facts accepted for another type")
+	var bucket={"material_token":"PLANT:OAK:WOOD","subtype_raw":"","color_token":"","stack":1,"flags":0,"bucket_liquid":{"present":false,"color_token":""}}
+	var empty_bucket=icon_hash(world.item_sheet_icon(18,bucket,1))
+	bucket.bucket_liquid.present=true
+	check(not empty_bucket.is_empty() and icon_hash(world.item_sheet_icon(18,bucket,1))!=empty_bucket,"Known liquid did not change bucket artwork")
+	bucket.bucket_liquid.present=false;bucket.bucket_liquid.color_token="BLUE"
+	check(world.item_sheet_icon(18,bucket,1)==null,"Empty bucket accepted liquid color")
+	bucket.bucket_liquid.color_token="";check(world.item_sheet_icon(32,bucket,1)==null,"Bucket fact accepted for bin")
 	check(world.construction_item_icon(-1,{})==null,"unknown item kind")
 	world.free();await process_frame
 	print("CONSTRUCTION_ITEM_ICON ","PASS" if failures==0 else "FAIL")

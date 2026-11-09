@@ -95,6 +95,9 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
   return nullptr;
 }
 inline bool validInspectionInstrument(const ItemInspectionAppearance& a,int32_t type) {
+    const auto* liquidColor=a.bucket_liquid_color();
+    if(a.bucket_liquid() < -1 || a.bucket_liquid()>1 || (type!=18 && a.bucket_liquid()!=-1) ||
+       (liquidColor && (liquidColor->size()>128 || (a.bucket_liquid()!=1 && liquidColor->size()))))return false;
     const bool doorUnknown=a.door_open()==-1 && a.door_forbidden()==-1 && a.door_wear()==-1;
     if(!doorUnknown && (type!=6 || a.door_open()<0 || a.door_open()>1 || a.door_forbidden()<0 || a.door_forbidden()>1 || a.door_wear()<0 || a.door_wear()>3))return false;
   if(a.floodgate_open() < -1 || a.floodgate_open()>1 || (type!=7 && a.floodgate_open()!=-1))return false;
@@ -118,8 +121,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 161;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v161";
+inline constexpr uint32_t kManagementVersion = 162;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v162";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;

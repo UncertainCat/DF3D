@@ -165,6 +165,8 @@ std::string buildingLayoutName(wm::BuildingKind kind, uint16_t subtype, std::str
 struct DoorItemFacts { bool open=false, forbidden=false;uint8_t wear=0; };
 
 struct ItemQuery {
+  int8_t bucketLiquid=-1; // Unknown versus known absence/presence of the native-selected liquid.
+  std::string_view bucketLiquidColor;
   std::optional<DoorItemFacts> door; // Absent until the caller owns linked-door and wear facts.
   int8_t floodgateOpen=-1; // Unknown for legacy/map callers; owned linked-building state otherwise.
   bool diagonalAmmo=false; // Native ammunition-list icon; map queries retain straight sprites.

@@ -37,6 +37,23 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
+Management162 adds optional bucket liquid presence and selected material color.
+Rebuild bridge/viewer together;161 peers use a separate channel. Unknown legacy
+contents remain absent; known empty and known liquid with no color are distinct.
+Native c7d7a0..c7d8af scans general references in reverse and calls child isLiquid;
+the provider mirrors that traversal using simulation references, then the pinned
+native material resolver and first solid-state pattern color. It does not gate
+on the container flag or use BIN's constructed-item color override. Validators,
+revisions, wire/model copies and Godot dictionaries preserve these facts.
+Protected031918 matches visible bucket icons exactly, including empty buckets
+and water-containing bucket7579;26 existing scrollbar pixels differ outside
+the icons. Nonzero-alpha liquid pixels replace the base as in native
+cf84c9..cf8633. Core19, extension, Stocks state, installed icon checks and MSVC
+pass. Typed reads, restored group edits and stale rejection pass; source
+preserved, owned DF45608 exits unsaved at30FPS,35/37C GPU samples, known Godot
+diagnostics only. `bucket_liquid162_reference` records hashes and bounded scope;
+other liquids/materials and remaining household artwork remain unaccepted.
+
 Controlled Stocks door capture030340 verifies eight installed doors: open and
 closed at wear0–3, with the linked forbidden flag set. Each icon region matches
 native exactly; only26 previously recorded scrollbar pixels differ elsewhere.
@@ -72,8 +89,8 @@ Stocks now receives these facts through Management161. Core19, extension and ins
 headlessly (`stocks-door-renderer`); live acceptance is scoped to the captures
 above.
 `door_renderer_reference` records native selectors and the supported raw hash.
-Bucket follow-up must use reverse reference order and native isLiquid virtual86
-(c7d7a0..c7d8af), not the BIN first-entry/color-override policy.
+Bucket liquid selection uses reverse reference order and native isLiquid
+virtual86 (c7d7a0..c7d8af), separately from BIN contents/color selection.
 
 Management160 adds optional floodgate open state to shared item appearance.
 Rebuild bridge and viewer together; version159 peers use a separate channel.

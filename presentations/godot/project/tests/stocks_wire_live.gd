@@ -164,6 +164,7 @@ func run() -> void:
 						root.get_texture().get_image().save_png(directory+"/stocks-view-door-state-"+str(id)+".png")
 					state.first_item=0;view.refresh()
 					if not await ready_state(state):quit(1);return
+				if kind==18:check(visible_ids.all(func(id):return state.items[id].appearance.has("bucket_liquid")),"Stocks bucket liquid facts were dropped")
 				if kind==32:check(visible_ids.all(func(id):return state.items[id].appearance.has("contents")),"Stocks bin contents were dropped before rendering")
 				await RenderingServer.frame_post_draw
 				root.get_texture().get_image().save_png(directory+"/stocks-view-art-"+str(kind)+".png")

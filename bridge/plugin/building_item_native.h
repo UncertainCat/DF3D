@@ -257,6 +257,24 @@ inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
     const auto color=item->getColorWhetherDyedOrNot();
     if(color>=0){auto* descriptor=df::descriptor_color::find(color);if(!descriptor)return std::nullopt;appearance.colorToken=descriptor->id;}
     else if(color!=-1)return std::nullopt;
+    if(item->getType()==df::item_type::BUCKET) {
+        // Native c7d7a0..c7d8af: last qualifying liquid reference, without
+        // a container-flag gate. Unlike BIN, always use solid material color.
+        appearance.bucketLiquid=0;
+        for(auto it=item->general_refs.rbegin();it!=item->general_refs.rend();++it) {
+            auto* ref=*it;if(!ref)return std::nullopt;
+            if(ref->getType()!=df::general_ref_type::CONTAINS_ITEM)continue;
+            auto* child=ref->getItem();if(!child || !child->isLiquid())continue;
+            appearance.bucketLiquid=1;
+            const auto color=itemContentsMaterialColor(child);if(!color)return std::nullopt;
+            if(*color>=0 && *color<255) {
+                auto* descriptor=df::descriptor_color::find(*color);if(!descriptor)return std::nullopt;
+                appearance.bucketLiquidColor=descriptor->id;
+                if(appearance.bucketLiquidColor.size()>128)return std::nullopt;
+            }
+            break;
+        }
+    }
     if(item->getType()==df::item_type::DOOR) {
         // Native c80c7c..c80cbc: BUILDING_HOLDER, forbidden and positive
         // close_timer (not the closed bit). Wear comes from virtual59.

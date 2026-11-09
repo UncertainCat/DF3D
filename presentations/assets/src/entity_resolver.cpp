@@ -1297,7 +1297,10 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
     }
     case ItemKind::Bucket:
       metalOrWood("ITEM_BUCKET", "bucket");
-      if (occupied && liquid) contentsOverlay(cls==MaterialClass::Metal ? "LIQUID_FOR_BUCKET_METAL" : "LIQUID_FOR_BUCKET_WOOD");
+      if(q.bucketLiquid>=0) {
+        if(q.bucketLiquid==1)if(const auto* overlay=idx.tile(cls==MaterialClass::Metal ? "LIQUID_FOR_BUCKET_METAL" : "LIQUID_FOR_BUCKET_WOOD"))
+          r.overlays.push_back({*overlay,idx.paletteRow(q.bucketLiquidColor)});
+      } else if (occupied && liquid) contentsOverlay(cls==MaterialClass::Metal ? "LIQUID_FOR_BUCKET_METAL" : "LIQUID_FOR_BUCKET_WOOD");
       return r;
     case ItemKind::AnimalTrap: return metalOrWood("ITEM_ANIMAL_TRAP", "animal-trap");
     case ItemKind::Corpse:

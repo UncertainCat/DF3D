@@ -3732,5 +3732,177 @@
     "gpu": "30FPS;47-48C sampled",
     "diagnostics": "passed_with_known_issues: godot-separate-thread-notice, godot-device-finalize, godot-shutdown-objects; unclassified empty",
     "limitations": "No rendered squad row, all ammunition variants, carrier-art or main-scene camera acceptance. Public Stocks remains hidden."
+  },
+  "bin_contents_provider_reference": {
+    "capture": "build/stockpile-storage-native-input-20261109-005404",
+    "bridge_build": "build/notes/pm/bin-contents-provider-msvc.log",
+    "qa": "build/qa/bin-contents-provider",
+    "plugin_sha256": "001dcceefb1c67732fe65982651806eda29f6d641f87212f39939c7164b665c2",
+    "bin_id": 7239,
+    "facts": {
+      "container": true,
+      "entries": [
+        {
+          "coal": false,
+          "color_token": "COPPER",
+          "contains_powder": false,
+          "contains_writing": false,
+          "effective_armor_level": 0,
+          "item_type": 39,
+          "material_token": "INORGANIC:COPPER",
+          "metal": true,
+          "protects_folded_sheets": false,
+          "rolls_sheets": false
+        },
+        {
+          "coal": false,
+          "color_token": "GRAY",
+          "contains_powder": false,
+          "contains_writing": false,
+          "effective_armor_level": 0,
+          "item_type": 39,
+          "material_token": "INORGANIC:IRON",
+          "metal": true,
+          "protects_folded_sheets": false,
+          "rolls_sheets": false
+        },
+        {
+          "coal": false,
+          "color_token": "COPPER",
+          "contains_powder": false,
+          "contains_writing": false,
+          "effective_armor_level": 0,
+          "item_type": 39,
+          "material_token": "INORGANIC:COPPER",
+          "metal": true,
+          "protects_folded_sheets": false,
+          "rolls_sheets": false
+        },
+        {
+          "coal": false,
+          "color_token": "SILVER",
+          "contains_powder": false,
+          "contains_writing": false,
+          "effective_armor_level": 0,
+          "item_type": 39,
+          "material_token": "INORGANIC:SILVER",
+          "metal": true,
+          "protects_folded_sheets": false,
+          "rolls_sheets": false
+        },
+        {
+          "coal": false,
+          "color_token": "SILVER",
+          "contains_powder": false,
+          "contains_writing": false,
+          "effective_armor_level": 0,
+          "item_type": 39,
+          "material_token": "INORGANIC:SILVER",
+          "metal": true,
+          "protects_folded_sheets": false,
+          "rolls_sheets": false
+        },
+        {
+          "coal": false,
+          "color_token": "GRAY",
+          "contains_powder": false,
+          "contains_writing": false,
+          "effective_armor_level": 0,
+          "item_type": 39,
+          "material_token": "INORGANIC:IRON",
+          "metal": true,
+          "protects_folded_sheets": false,
+          "rolls_sheets": false
+        },
+        {
+          "coal": false,
+          "color_token": "GRAY",
+          "contains_powder": false,
+          "contains_writing": false,
+          "effective_armor_level": 0,
+          "item_type": 39,
+          "material_token": "INORGANIC:IRON",
+          "metal": true,
+          "protects_folded_sheets": false,
+          "rolls_sheets": false
+        },
+        {
+          "coal": false,
+          "color_token": "COPPER",
+          "contains_powder": false,
+          "contains_writing": false,
+          "effective_armor_level": 0,
+          "item_type": 39,
+          "material_token": "INORGANIC:COPPER",
+          "metal": true,
+          "protects_folded_sheets": false,
+          "rolls_sheets": false
+        },
+        {
+          "coal": false,
+          "color_token": "GRAY",
+          "contains_powder": false,
+          "contains_writing": false,
+          "effective_armor_level": 0,
+          "item_type": 39,
+          "material_token": "INORGANIC:IRON",
+          "metal": true,
+          "protects_folded_sheets": false,
+          "rolls_sheets": false
+        },
+        {
+          "coal": false,
+          "color_token": "GRAY",
+          "contains_powder": false,
+          "contains_writing": false,
+          "effective_armor_level": 0,
+          "item_type": 39,
+          "material_token": "INORGANIC:IRON",
+          "metal": true,
+          "protects_folded_sheets": false,
+          "rolls_sheets": false
+        },
+        {
+          "coal": false,
+          "color_token": "GRAY",
+          "contains_powder": false,
+          "contains_writing": false,
+          "effective_armor_level": 0,
+          "item_type": 39,
+          "material_token": "INORGANIC:IRON",
+          "metal": true,
+          "protects_folded_sheets": false,
+          "rolls_sheets": false
+        },
+        {
+          "coal": false,
+          "color_token": "GRAY",
+          "contains_powder": false,
+          "contains_writing": false,
+          "effective_armor_level": 0,
+          "item_type": 39,
+          "material_token": "INORGANIC:IRON",
+          "metal": true,
+          "protects_folded_sheets": false,
+          "rolls_sheets": false
+        },
+        {
+          "coal": false,
+          "color_token": "GRAY",
+          "contains_powder": false,
+          "contains_writing": false,
+          "effective_armor_level": 0,
+          "item_type": 39,
+          "material_token": "INORGANIC:IRON",
+          "metal": true,
+          "protects_folded_sheets": false,
+          "rolls_sheets": false
+        }
+      ]
+    },
+    "scope": "Native simulation general-reference order, count, type, material, color and metal flag compared with diagnostic provider for all thirteen ammunition entries. Menu scratch guard unchanged. First entry copper despite selected child iron.",
+    "source_save": "unchanged; owned DF20600 exited unsaved",
+    "gpu": "native only; sampled46C,5percent utilization",
+    "limitations": "Provider only, not wired into appearance snapshots. No live mixed-category, armor, powder-bag or writing-tool coverage; no DF3D rendered carrier acceptance."
   }
 }

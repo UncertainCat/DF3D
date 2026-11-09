@@ -243,6 +243,31 @@ if os.getenv('DF3D_STOCKS_DESTINATIONS')=='1' then
   assert(observed.description==dfhack.df2utf(sheet.raw_description),'Ammunition native description differs')
   result.destinations.item_snapshot=observed
   result.destinations.native_description=dfhack.df2utf(sheet.raw_description)
+  if os.getenv('DF3D_STOCKS_BIN_CONTENTS')=='1' then
+   local carrier=assert(observed.carrier,'Expected ammunition carrier')
+   local bin=assert(df.item.find(carrier.id));assert(bin:getType()==df.item_type.BIN)
+   local contents=probe('item-container-contents-probe',tostring(bin.id))
+   assert(contents.container==bin.flags.container,'Container flag differs')
+   local expected=0
+   if bin.flags.container then for _,ref in ipairs(bin.general_refs)do
+    local kind=ref:getType()
+    if kind==df.general_ref_type.CONTAINS_ITEM or kind==df.general_ref_type.CONTAINS_UNIT then
+     local child=kind==df.general_ref_type.CONTAINS_ITEM and ref:getItem() or nil
+     expected=expected+1
+     local row=assert(contents.entries[expected],'Missing direct contents entry')
+     assert(row.item_type==(child and child:getType() or -1),'Contents order/type differs')
+     if child then
+      local material=dfhack.matinfo.decode(child)
+      assert(row.material_token==(material and material:getToken() or ''),'Contents material differs')
+      local color=child:getColorWhetherDyedOrNot()
+      assert(row.color_token==((color>=0 and color<255)and df.descriptor_color.find(color).id or ''),'Contents color differs')
+      assert(row.metal==(material and material.material.flags.IS_METAL or false),'Contents metal differs')
+     end
+    end
+   end end
+   assert(expected==#contents.entries and expected>0,'Contents count differs')
+   result.destinations.bin_contents=contents
+  end
   if os.getenv('DF3D_STOCKS_AMMO_ASSIGNMENT')=='1' then
    local function read_assignment()
     local text,code=dfhack.run_command_silent('df3d','item-ammunition-assignment-probe',tostring(id));assert(code==0,text)

@@ -36,8 +36,66 @@
 #include "df/squad_ammo_spec.h"
 #include "df/historical_entity.h"
 #include "df/game_mode.h"
+#include "df/general_ref.h"
+#include "df/material.h"
+#include "df/material_flags.h"
+#include "df/tool_uses.h"
 
 namespace df3d_production {
+// Direct simulation references and native virtual getters, never the item
+// renderer's packed graphics keys or cache. Preserve reference order and
+// unknown/unit entries because they participate in mixed-content rendering.
+inline std::optional<ItemContainerContentsFacts> itemContainerContents(df::item* item) {
+    if(!item || !farmFunctions() || item->getType()!=df::item_type::BIN)return std::nullopt;
+    ItemContainerContentsFacts result;result.container=item->flags.bits.container;
+    if(!result.container)return result;
+    for(auto* ref:item->general_refs) {
+        if(!ref)return std::nullopt;
+        const auto type=ref->getType();
+        if(type!=df::general_ref_type::CONTAINS_ITEM && type!=df::general_ref_type::CONTAINS_UNIT)continue;
+        ItemContainerContentFacts entry;
+        if(type==df::general_ref_type::CONTAINS_ITEM)if(auto* child=ref->getItem()) {
+            const auto kind=child->getType();entry.itemType=int16_t(kind);
+            DFHack::MaterialInfo material(child->getMaterial(),child->getMaterialIndex());
+            if(material.isValid()) {
+                entry.materialToken=material.getToken();
+                entry.metal=material.material->flags.is_set(df::material_flags::IS_METAL);
+            }
+            entry.coal=child->getMaterial()==7;
+            // The native color getter follows dye/covering improvements before
+            // base material (AMMO virtual214, caeb90..caeccc). Empty means no
+            // palette color, not permission to invent a material fallback.
+            const auto color=child->getColorWhetherDyedOrNot();
+            if(color>=0 && color<255) {
+                auto* descriptor=df::descriptor_color::find(color);
+                if(!descriptor)return std::nullopt;
+                entry.colorToken=descriptor->id;
+            }
+            switch(kind) {
+            case df::item_type::ARMOR:case df::item_type::SHOES:case df::item_type::HELM:
+            case df::item_type::GLOVES:case df::item_type::PANTS:
+                entry.effectiveArmorLevel=child->getEffectiveArmorLevel();break;
+            case df::item_type::BAG:
+                if(child->flags.bits.container)for(auto* nested:child->general_refs) {
+                    if(!nested)return std::nullopt;
+                    if(nested->getType()==df::general_ref_type::CONTAINS_ITEM)
+                        if(auto* value=nested->getItem();value && value->getType()==df::item_type::POWDER_MISC) {
+                            entry.containsPowder=true;break;
+                        }
+                }
+                break;
+            case df::item_type::TOOL:
+                entry.rollsSheets=child->hasToolUse(df::tool_uses::ROLL_UP_SHEET);
+                entry.protectsFoldedSheets=child->hasToolUse(df::tool_uses::PROTECT_FOLDED_SHEETS);
+                entry.containsWriting=child->hasToolUse(df::tool_uses::CONTAIN_WRITING);break;
+            default:break;
+            }
+            if(entry.materialToken.size()>256 || entry.colorToken.size()>128)return std::nullopt;
+        }
+        result.entries.push_back(std::move(entry));
+    }
+    return result;
+}
 // Item-sheet153daa..154052 derives allocation from simulation equipment, not
 // the native sheet. Preserve its assigned-list gate and hunter precedence.
 inline std::optional<ItemAmmunitionAssignment> itemAmmunitionAssignment(df::item* item) {

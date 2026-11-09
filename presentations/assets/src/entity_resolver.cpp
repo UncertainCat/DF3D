@@ -1166,7 +1166,7 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
         variant=itemVariantSeed(q.id)%variants->second.size();
     }
     if (const auto* sprite = idx.tile(name,variant))
-      r.overlays.push_back({*sprite,recolor ? idx.paletteRow(contentsColor.empty() ? idx.materialColorName(contentsMaterial,liquid) : contentsColor) : -1});
+      r.overlays.push_back({*sprite,recolor ? idx.paletteRow(!firstContent && contentsColor.empty() ? idx.materialColorName(contentsMaterial,liquid) : contentsColor) : -1});
   };
   auto binTop = [&]() -> const char* {
     switch (q.containedKind) {

@@ -4,6 +4,17 @@
 #include <unordered_set>
 
 namespace df3d_production {
+struct ItemContainerContentFacts {
+    int16_t itemType=-1;
+    std::string materialToken,colorToken;
+    int8_t effectiveArmorLevel=0;
+    bool metal=false,coal=false,containsPowder=false;
+    bool rollsSheets=false,protectsFoldedSheets=false,containsWriting=false;
+};
+struct ItemContainerContentsFacts {
+    bool container=false;
+    std::vector<ItemContainerContentFacts> entries;
+};
 struct ItemInspectionAppearance { std::string materialToken,subtypeRaw,colorToken;int32_t stack=1;uint8_t flags=0;int8_t instrumentFamily=-1,instrumentPlaced=-1; };
 inline bool validInspectionInstrument(const ItemInspectionAppearance& a,int32_t type) {
     return type==13 ? a.instrumentFamily>=0&&a.instrumentFamily<=3&&a.instrumentPlaced>=0&&a.instrumentPlaced<=1 : a.instrumentFamily==-1&&a.instrumentPlaced==-1;

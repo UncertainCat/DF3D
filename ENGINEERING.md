@@ -207,9 +207,19 @@ entry suppresses the specific overlay; matching entries retain the first color.
 The 21 categories were cross-checked against native graphics-name bindings and
 selector table c834cc. Core19 (`bin-complete-contents`) passes, including armor
 versus clothing, shields, powder bags, writing tools, mixed entry order and the
-container flag. This path is not yet populated by bridge/transport; the legacy
-map first-child path remains. Sheet contents transport and live acceptance are
-still missing, so the carrier icon mismatch is not resolved end to end.
+container flag. `itemContainerContents` reads simulation references in order and
+uses native virtual getters for color, effective armor level and tool uses.
+The diagnostic `item-container-contents-probe` is accepted against all13 entries
+in bin7239 by protected005404 on2026-11-09: type, material, color, metal and order
+match, with menu scratch preserved. Its first entry is copper ammunition, even
+though the selected child is iron. Empty observed color remains untinted.
+MSVC and core19 (`bin-contents-provider`) pass; source unchanged, owned DF20600
+exits unsaved, native log clean, GPU46C/5percent sampled. Fixture
+`bin_contents_provider_reference` records this scope. Mixed categories, armor,
+powder bags and writing tools have no live provider acceptance yet. The reader
+is not connected to appearance transport; the legacy map first-child path
+remains. Sheet transport and rendered acceptance are still missing, so the
+carrier icon mismatch is not resolved end to end.
 
 Management156 reuses native itemAppearance facts for the staged ammunition
 icons and the accepted diagonal ammunition artwork path. Core19, Stocks state

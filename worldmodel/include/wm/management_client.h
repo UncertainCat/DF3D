@@ -280,6 +280,7 @@ struct AreaState {
 };
 struct ProductionRequest {
   int32_t itemId=-1;int8_t itemValue=-1;
+  int32_t contentsItemId=-1;
   bool contents=false,locateItem=false,independentItem=false,buildingHeader=false,workshopWorkers=false;
   int32_t workerId=-1;uint64_t workerListRevision=0;int8_t workerValue=-1;
   bool workshopOrders=false;int8_t generalOrderDelta=0;int16_t generalOrderValue=-1;

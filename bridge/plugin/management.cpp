@@ -3735,16 +3735,17 @@ void run(color_ostream& out) {
         using A=df3d_production::BuildingItemAction;
         const auto operation=q->farm_operation()==m::FarmOperation::ItemForbid?A::Forbid:q->farm_operation()==m::FarmOperation::ItemDump?A::Dump:
           q->farm_operation()==m::FarmOperation::ItemMelt?A::Melt:A::Hidden;
+        const int32_t target=q->contents_item_id()>=0?q->contents_item_id():q->item_id();
         const auto result=df3d_production::finishItemEdit(*before,q->expected_revision(),operation,q->item_value()!=0,[&]{
-          entered=true;const bool applied=df3d_production::setBuildingItemFlag(df::item::find(q->item_id()),operation,q->item_value()!=0);
+          entered=true;const bool applied=df3d_production::setBuildingItemFlag(df::item::find(target),operation,q->item_value()!=0);
           if(!applied)entered=false;return applied;
-        },observe);
+        },observe,q->contents_item_id());
         using O=df3d_production::FarmEditOutcome;
         if(result.outcome==O::Completed) {
           response.outcome=m::FarmEditOutcome::Unknown;
           response.snapshot=independentItemSnapshot(*result.receipt);
           if(response.snapshot) {
-            response.edit=BuildingItemReceipt{q->item_id(),q->farm_operation(),q->item_value()};
+            response.edit=BuildingItemReceipt{target,q->farm_operation(),q->item_value()};
             response.outcome=m::FarmEditOutcome::Completed;status=m::ManagementStatus::Ok;
           }
         } else if(result.outcome==O::Stale)response.outcome=m::FarmEditOutcome::Stale;

@@ -6485,7 +6485,7 @@
     }
   },
   "item_sheet_contents_reference": {
-    "status": "Management163 transport and ten-row bin rendering accepted within recorded scope. Child actions, hover, scrolling and creature acceptance pending.",
+    "status": "Management164 contents transport, ten-row bin rendering, child navigation and four child flags accepted within recorded scope. Hover, scrolling and creature acceptance pending.",
     "list_source": {
       "range": "1578bf..157a98",
       "sha256": "adfdc663f7df5cdeabd748c317d48d7d455afcc4988ee6346d53689d669c4e98",
@@ -6704,6 +6704,28 @@
         "Protected040458 forward navigation and child full panel matched; protected040647 adds return link and close"
       ],
       "scope": "One bin and contained sphalerite block. Not acceptance of every item family, unit navigation, child flag actions, hover or scrolling."
+    },
+    "child_flags_reference": {
+      "run": "build/stockpile-storage-native-input-20261109-042414",
+      "parent_id": 11204,
+      "child_id": 21748,
+      "operations": [
+        "Forbid",
+        "Dump",
+        "Melt",
+        "Hide"
+      ],
+      "steps": 8,
+      "input": "Actual rendered contents control clicks",
+      "oracle": "All in-play item flags and complete ANY_MELT_DESIGNATED membership checked after every receipt; all restored",
+      "stale_parent": "Rejected without mutation",
+      "source_preserved": true,
+      "owned_df_pid": 11504,
+      "exit": "unsaved",
+      "fps_cap": 30,
+      "gpu_max_sample_c": 46,
+      "diagnostics": "Documented separate-thread, finalize and shutdown-object signatures only",
+      "limitations": "One bin/platinum-bar fixture; no creature, scrolling, hover or other container-family acceptance"
     }
   }
 }

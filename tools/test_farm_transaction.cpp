@@ -554,3 +554,27 @@ TEST_CASE("item contents changes invalidate parent authority") {
     CHECK(rejected.outcome==FarmEditOutcome::Stale);CHECK_FALSE(rejected.mutated);
     (*parent.contents)[1].appearance.emplace();parent.revision=itemObservationRevision(parent);CHECK_FALSE(validItemObservation(parent));
 }
+
+TEST_CASE("contained item edits retain parent authority and verify the child receipt") {
+    using namespace df3d_production;
+    for(int fault=0;fault<8;++fault) {
+        ItemObservation before;before.item.id=1;before.item.itemType=0;before.contents.emplace();
+        ItemSheetContent child;child.kind=1;child.id=2;child.caption="bar";child.item.emplace();
+        child.item->id=2;child.item->itemType=0;child.item->caption="bar";child.item->materialToken="INORGANIC:IRON";
+        child.appearance.emplace();child.appearance->materialToken="INORGANIC:IRON";
+        before.contents->push_back(child);before.revision=itemObservationRevision(before);REQUIRE(validItemObservation(before));
+        int applies=0,reads=0;
+        auto result=finishItemEdit(before,before.revision+(fault==1),BuildingItemAction::Hidden,true,[&]{++applies;return fault!=3;},[&]()->std::optional<ItemObservation>{
+            ++reads;if(fault==4)return std::nullopt;auto after=before;
+            if(fault==5)after.contents->clear();
+            else if(fault!=6){after.contents->front().item->hidden=true;after.contents->front().item->flags|=0x1000000;}
+            if(fault==7)after.item.id=9;
+            after.revision=itemObservationRevision(after);return after;
+        },fault==2?99:2);
+        if(fault==0){REQUIRE(result.receipt);CHECK(result.outcome==FarmEditOutcome::Completed);CHECK_FALSE(result.receipt->item.hidden);CHECK(result.receipt->contents->front().item->hidden);}
+        else if(fault==1)CHECK(result.outcome==FarmEditOutcome::Stale);
+        else if(fault==2||fault==3)CHECK(result.outcome==FarmEditOutcome::Rejected);
+        else {CHECK(result.outcome==FarmEditOutcome::Unknown);CHECK_FALSE(result.receipt);}
+        CHECK(applies==(fault==1||fault==2?0:1));CHECK(reads==(fault==1||fault==2||fault==3?0:1));
+    }
+}

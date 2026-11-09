@@ -34,6 +34,9 @@ func configure(world,service,host,help=null) -> void:
 			else:carrier_requested.emit(kind,id))
 	panel.contents_view.child_requested.connect(func(kind,id):
 		if kind==1 and play_enabled and ui_host.allows_panel_input(self):state.open_child(id))
+	panel.contents_view.child_flag_requested.connect(func(id,operation,value):
+		if play_enabled and ui_host.allows_panel_input(self) and operation>=0 and operation<4:
+			state.set_flag([C.FarmOperation.ItemForbid,C.FarmOperation.ItemDump,C.FarmOperation.ItemMelt,C.FarmOperation.ItemHidden][operation],value,id))
 	state.changed.connect(_state_changed)
 	ui_host.register(self);_process(0)
 

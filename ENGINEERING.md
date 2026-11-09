@@ -37,6 +37,23 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
+Management164 adds a contained-item target to independent item edits. Rebuild
+bridge/viewer together;163 peers use a separate channel. The request retains
+the parent ID and revision and adds contents_item_id (default -1 for root edits).
+Fresh parent membership and native child eligibility authorize the action;
+receipts contain the refreshed parent and identify the changed child. Missing
+or inconsistent post-action observations yield an unknown outcome, never replay.
+
+Core19, extension and item-state checks pass in `item-child-flags164-contract`;
+MSVC passes in `item-child-flags164-msvc`. Protected042414 exercises actual
+Forbid/Dump/Melt/Hide buttons for platinum bar21748 in bin11204, toggling and
+restoring each flag. The independent oracle checks every in-play item's flags
+and the complete melt-designation membership; stale parent requests reject.
+All eight steps restore the baseline. Source preserved; DF11504 exits unsaved
+at30FPS. GPU samples reached46C, not a peak measurement. Only documented Godot
+diagnostics remain. This proves one eligible contained-item workflow, not
+creature controls or every container family.
+
 Management163 adds optional ordered item-sheet contents to independent item
 snapshots. Rebuild bridge/viewer together;162 peers use a separate channel.
 Absent remains unknown; present empty means observed empty. Rows distinguish
@@ -77,8 +94,8 @@ block7565, exact native description/full panel, container View back to11204 and
 close without returning to Stocks. Core19, extension, item-state and MSVC pass
 (`item-child-navigation-final`, `item-child-navigation-msvc`). Source preserved;
 DF6916 exits unsaved at30FPS,39C sampled, known diagnostics only. This is one
-bin/block workflow. Per-row flag commands, hover, scroll/resize, creature rows
-and alternate item-use lists remain unfinished. Public Stocks remains gated.
+bin/block workflow. Per-row flags are verified separately above; hover,
+scroll/resize, creature rows and alternate item-use lists remain unfinished. Public Stocks remains gated.
 
 The item-detail provider now admits doors, floodgates, beds, chairs, flasks,
 goblets, barrels, buckets, tables, bins, cabinets and anvils through the pinned
@@ -89,7 +106,7 @@ and native lazy semantic effects remain intact. Item observations now include
 their appearance facts. Core19, extension, item-sheet state and MSVC pass in
 `item-furniture-dispatch`. Protected033137 verifies View/close and exact native
 description strings for one item in each family. Flask, goblet, bucket and
-anvil complete panel crops match exactly. Bin contained-item rows are missing;
+anvil complete panel crops match exactly. Bin rows are verified separately above;
 installed furniture holder icons and bed/table header artwork still differ.
 Door/chair native PNGs were captured before drawing settled and are excluded
 from visual acceptance. Source preserved; DF48860 closed unsaved at30FPS,

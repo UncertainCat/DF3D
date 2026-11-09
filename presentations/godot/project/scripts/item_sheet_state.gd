@@ -59,10 +59,16 @@ func poll(delta: float) -> void:
 func view_snapshot() -> Dictionary:
 	return snapshot.duplicate(true)
 
-func set_flag(operation: int, desired: bool) -> void:
+func set_flag(operation: int, desired: bool, contents_id: int=-1) -> void:
 	if phase!=Phase.Ready or (ticket!=0 and not background_refresh) or not FIELDS.has(operation) or snapshot.is_empty():return
-	if operation==C.FarmOperation.ItemDump and not snapshot.can_dump:return
-	if operation==C.FarmOperation.ItemMelt and not snapshot.can_melt:return
+	var selected: Dictionary=snapshot
+	if contents_id!=-1:
+		if contents_id<0 or contents_id==item_id:return
+		var matches: Array=snapshot.get("contents",[]).filter(func(row):return row.kind==1 and row.id==contents_id)
+		if matches.is_empty():return
+		selected=matches[0]
+	if operation==C.FarmOperation.ItemDump and not selected.can_dump:return
+	if operation==C.FarmOperation.ItemMelt and not selected.can_melt:return
 	# A read has no effects to replay. Explicit edits retire its observer and use
 	# the last complete revision; DF still validates that revision before writing.
 	if background_refresh:
@@ -71,7 +77,7 @@ func set_flag(operation: int, desired: bool) -> void:
 		service.detach(previous)
 	phase=Phase.Applying
 	_send({"action":C.ManagementAction.FarmEdit,"independent_item":true,"item_id":item_id,
-		"farm_operation":operation,"item_value":int(desired),"expected_revision":snapshot.revision})
+		"farm_operation":operation,"item_value":int(desired),"expected_revision":snapshot.revision,"contents_item_id":contents_id})
 
 func _read(background:=false) -> void:
 	background_refresh=background
@@ -168,7 +174,15 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 	var value: Dictionary=state.get("snapshot",{})
 	if not _valid(value):_fail(Phase.Unknown if editing else Phase.Rejected);return
 	if editing:
-		if outcome!=C.FarmEditOutcome.Completed or state.get("edit",{})!={"item_id":item_id,"farm_operation":sent.farm_operation,"value":sent.item_value} or value[FIELDS[sent.farm_operation]]!=bool(sent.item_value):
+		var target_id: int=sent.get("contents_item_id",-1)
+		var actual: bool=value[FIELDS[sent.farm_operation]]
+		if target_id>=0:
+			var matches: Array=value.get("contents",[]).filter(func(row):return row.kind==1 and row.id==target_id)
+			if matches.is_empty():_fail(Phase.Unknown);return
+			var masks={C.FarmOperation.ItemForbid:0x80000,C.FarmOperation.ItemDump:0x200000,C.FarmOperation.ItemMelt:0x800000,C.FarmOperation.ItemHidden:0x1000000}
+			actual=bool(matches[0].flags&masks[sent.farm_operation])
+		else:target_id=item_id
+		if outcome!=C.FarmEditOutcome.Completed or state.get("edit",{})!={"item_id":target_id,"farm_operation":sent.farm_operation,"value":sent.item_value} or actual!=bool(sent.item_value):
 			_fail(Phase.Unknown);return
 	elif outcome!=C.FarmEditOutcome.None or state.has("edit"):_fail(Phase.Rejected);return
 	# A confirmed independent receipt already contains a coherent fresh observation.

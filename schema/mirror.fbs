@@ -1542,6 +1542,7 @@ table ProductionRequest {
   workshop_orders:bool;
   general_order_delta:int8;
   general_order_value:int16 = -1;
+  contents_item_id:int32 = -1; // Child target; item_id and expected_revision identify its containing item.
 }
 table ProductionRequirement { description:string; quantity:int32; item_type:int16 = -1; }
 // Absent on legacy observations and providers without native availability evidence.
@@ -2237,7 +2238,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 163;
+  schema_version:uint32 = 164;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2303,7 +2304,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 163;
+  schema_version:uint32 = 164;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

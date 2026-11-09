@@ -627,6 +627,8 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
   value.locateItem=data.get("locate_item",false);
   if(data.has("independent_item") && data["independent_item"].get_type()!=Variant::BOOL){error="Wrong management field type: independent_item";return false;}
   value.independentItem=data.get("independent_item",false);
+  if(data.has("contents_item_id") && data["contents_item_id"].get_type()!=Variant::INT){error="Wrong management field type: contents_item_id";return false;}
+  value.contentsItemId=int32_t(n("contents_item_id",-1,-1,INT32_MAX));
   if(data.has("workshop_workers") && data["workshop_workers"].get_type()!=Variant::BOOL){error="Wrong management field type: workshop_workers";return false;}
   if(data.has("building_header") && data["building_header"].get_type()!=Variant::BOOL){error="Wrong management field type: building_header";return false;}
   value.buildingHeader=data.get("building_header",false);

@@ -27,6 +27,17 @@ func completed(wrong_flag:=false) -> void:
 		"edit":{"item_id":1000,"farm_operation":C.FarmOperation.ItemHidden,"value":1}})
 
 func run() -> void:
+	for fault in 3:
+		setup();model.open(1000);service.poll();var parent_flags:=item()
+		parent_flags.contents=[{"kind":1,"id":71,"item_type":0,"caption":"bar","flags":0,"can_dump":true,"can_melt":true,"appearance":{"material_token":"INORGANIC:IRON","subtype_raw":"","color_token":"","stack":1,"flags":0}}]
+		item_reply({"snapshot":parent_flags});var calls: int=world.calls.size()
+		model.set_flag(C.FarmOperation.ItemHidden,true,99);service.poll();check(world.calls.size()==calls,"Nonmember child edit sent")
+		model.set_flag(C.FarmOperation.ItemHidden,true,71);service.poll()
+		check(world.calls[-1].request.item_id==1000 and world.calls[-1].request.contents_item_id==71 and world.calls[-1].request.expected_revision==parent_flags.revision,"Child edit lost parent authority")
+		parent_flags.revision+=1
+		if fault!=1:parent_flags.contents[0].flags=0x1000000
+		item_reply({"snapshot":parent_flags,"outcome":C.FarmEditOutcome.Completed,"edit":{"item_id":1000 if fault==2 else 71,"farm_operation":C.FarmOperation.ItemHidden,"value":1}})
+		check(model.phase==(ItemModel.Phase.Ready if fault==0 else ItemModel.Phase.Unknown),"Child receipt was not verified against selected row")
 	setup();model.open(1000);service.poll();var parent:=item()
 	parent.contents=[{"kind":1,"id":71,"item_type":0,"caption":"native bar","flags":0,"can_dump":true,"can_melt":true,"appearance":{"material_token":"INORGANIC:IRON","subtype_raw":"","color_token":"","stack":1,"flags":0}}]
 	item_reply({"snapshot":parent});check(model.phase==ItemModel.Phase.Ready,"Parent contents unavailable")

@@ -78,18 +78,25 @@ inline bool validItemObservation(const ItemObservation& value) {
 }
 template<class Apply,class Observe>
 FarmEditResult<ItemObservation> finishItemEdit(const ItemObservation& before,uint64_t expected,
-    BuildingItemAction action,bool desired,Apply apply,Observe observe) {
+    BuildingItemAction action,bool desired,Apply apply,Observe observe,int32_t contentsItemId=-1) {
     FarmEditResult<ItemObservation> result;
+    const auto target=[&](const ItemObservation& value)->const ItemFacts* {
+        if(contentsItemId==-1)return &value.item;
+        if(contentsItemId<0 || contentsItemId==value.item.id || !value.contents)return nullptr;
+        for(const auto& row:*value.contents)if(row.kind==1 && row.id==contentsItemId && row.item)return &*row.item;
+        return nullptr;
+    };
     try {
         if(!expected||!validItemObservation(before))return result;
         if(before.revision!=expected){result.outcome=FarmEditOutcome::Stale;return result;}
+        const auto* selected=target(before);if(!selected)return result;
         switch(action) {
-        case BuildingItemAction::Dump:if(!before.item.canDump)return result;break;
-        case BuildingItemAction::Melt:if(!before.item.canMelt)return result;break;
+        case BuildingItemAction::Dump:if(!selected->canDump)return result;break;
+        case BuildingItemAction::Melt:if(!selected->canMelt)return result;break;
         case BuildingItemAction::Forbid:case BuildingItemAction::Hidden:break;
         default:return result;
         }
-        if(buildingItemValue(before.item,action)==desired) {
+        if(buildingItemValue(*selected,action)==desired) {
             result.receipt=before;result.outcome=FarmEditOutcome::Completed;return result;
         }
     }catch(...){return result;}
@@ -98,7 +105,7 @@ FarmEditResult<ItemObservation> finishItemEdit(const ItemObservation& before,uin
         if(!apply()){result.mutated=false;result.outcome=FarmEditOutcome::Rejected;return result;}
         auto after=observe();
         if(!after||!validItemObservation(*after)||after->item.id!=before.item.id||
-           buildingItemValue(after->item,action)!=desired)return result;
+           !target(*after)||buildingItemValue(*target(*after),action)!=desired)return result;
         result.receipt=std::move(after);result.outcome=FarmEditOutcome::Completed;
     }catch(...){result.receipt.reset();}
     return result;

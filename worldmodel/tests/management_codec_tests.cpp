@@ -5086,3 +5086,15 @@ TEST_CASE("item contents preserve unknown empty and mixed ordered observations")
     if(mode==2){REQUIRE(contents->size()==3);CHECK((*contents)[0].id==71);CHECK((*contents)[1].kind==2);CHECK((*contents)[1].id==72);CHECK((*contents)[2].id==71);CHECK((*contents)[0].flags==0x1000000);REQUIRE((*contents)[0].appearance);CHECK((*contents)[0].appearance->materialToken=="INORGANIC:IRON");CHECK_FALSE((*contents)[1].appearance);}
   }
 }
+
+TEST_CASE("contained item intent keeps parent identity and exact revision") {
+  for(int fault=0;fault<5;++fault){wm::ManagementRequest request;request.action=wm::ManagementAction::FarmEdit;
+    auto& p=request.production;p.independentItem=true;p.itemId=45;p.contentsItemId=71;p.farmOperation=wm::FarmOperation::ItemHidden;p.itemValue=1;p.expectedRevision=9007199254740993ULL;
+    if(fault==1)p.contentsItemId=-2;if(fault==2)p.contentsItemId=45;
+    if(fault==3){request.action=wm::ManagementAction::ProductionInspect;p.farmOperation=wm::FarmOperation::Crop;p.itemValue=-1;p.expectedRevision=0;}
+    if(fault==4){p.independentItem=false;p.buildingId=227;}
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    if(!fault){CHECK(value->production()->item_id()==45);CHECK(value->production()->contents_item_id()==71);CHECK(value->production()->expected_revision()==9007199254740993ULL);}
+  }
+}

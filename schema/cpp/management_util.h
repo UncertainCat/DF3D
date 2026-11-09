@@ -121,8 +121,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 163;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v163";
+inline constexpr uint32_t kManagementVersion = 164;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v164";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -782,6 +782,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        (p->recipe() && p->recipe()->size()) || (p->query() && p->query()->size()) ||
        (r.action()!=ManagementAction::ProductionInspect && r.action()!=ManagementAction::FarmEdit) ||
        (r.action()==ManagementAction::FarmEdit && (p->farm_operation()<FarmOperation::Rename || p->farm_operation()>FarmOperation::CancelRemoval))))return "invalid building header intent";
+    if(p->contents_item_id()<-1 || (p->contents_item_id()>=0 && (!p->independent_item() || r.action()!=ManagementAction::FarmEdit || p->contents_item_id()==p->item_id())))return "invalid item contents intent";
     if(p->independent_item() && (p->building_id()!=-1 || p->item_id()<0 || p->locate_item() ||
        (r.action()!=ManagementAction::ProductionInspect && r.action()!=ManagementAction::FarmEdit) ||
        (r.action()==ManagementAction::FarmEdit && (p->farm_operation()<FarmOperation::ItemForbid || p->farm_operation()>FarmOperation::ItemHidden))))return "invalid independent item intent";
@@ -2241,10 +2242,17 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       } else {
         if(outcome==FarmEditOutcome::None)return "missing independent item outcome";
         if(outcome==FarmEditOutcome::Completed) {
-          if(s.status()!=ManagementStatus::Ok || !item || !edit || edit->item_id()!=item->id() || edit->value()<0 || edit->value()>1 ||
+          if(s.status()!=ManagementStatus::Ok || !item || !edit || edit->item_id()<0 || edit->value()<0 || edit->value()>1 ||
              edit->operation()<FarmOperation::ItemForbid || edit->operation()>FarmOperation::ItemHidden)return "invalid independent item receipt";
-          const bool actual=edit->operation()==FarmOperation::ItemForbid?item->forbid():edit->operation()==FarmOperation::ItemDump?item->dump():
+          bool actual=edit->operation()==FarmOperation::ItemForbid?item->forbid():edit->operation()==FarmOperation::ItemDump?item->dump():
             edit->operation()==FarmOperation::ItemMelt?item->melt():item->hidden();
+          if(edit->item_id()!=item->id()) {
+            const ItemSheetContent* selected=nullptr;
+            if(item->contents())for(const auto* row:*item->contents())if(row->kind()==1 && row->id()==edit->item_id()){selected=row;break;}
+            if(!selected)return "missing confirmed contents target";
+            const uint32_t mask=edit->operation()==FarmOperation::ItemForbid?0x80000:edit->operation()==FarmOperation::ItemDump?0x200000:edit->operation()==FarmOperation::ItemMelt?0x800000:0x1000000;
+            actual=(selected->flags()&mask)!=0;
+          }
           if(actual!=(edit->value()!=0))return "unconfirmed independent item value";
         } else if(s.status()==ManagementStatus::Ok || item || edit)return "unconfirmed independent item authority";
       }

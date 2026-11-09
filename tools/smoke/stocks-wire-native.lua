@@ -28,7 +28,7 @@ if os.getenv('DF3D_STOCKS_FURNITURE_SHEETS')=='1' then
   reference.furniture[#reference.furniture+1]={kind=kind,id=selection.groups[1].ids[1]}
  end
 end
-if os.getenv('DF3D_STOCKS_CONTENTS_WIRE')=='1' then
+if os.getenv('DF3D_STOCKS_CONTENTS_WIRE')=='1' or os.getenv('DF3D_STOCKS_CHILD_FLAGS')=='1' then
  reference.contents={}
  for _,kind in ipairs{6,17,18,32}do
   local selection=probe('stocks-selection-probe',tostring(kind),'')
@@ -47,11 +47,23 @@ if os.getenv('DF3D_STOCKS_CONTENTS_WIRE')=='1' then
   reference.contents[#reference.contents+1]=contents
  end
 end
+local before_melt={};local checked_child=0
+if os.getenv('DF3D_STOCKS_CHILD_FLAGS')=='1' then
+ for _,contents in ipairs(reference.contents)do
+  if df.item.find(contents.item_id):getType()==df.item_type.BIN then
+   for _,row in ipairs(contents.rows)do
+    if row.kind==1 and row.can_melt and row.flags&0x800000==0 then reference.child_flags={parent_id=contents.item_id,id=row.id,flags=row.flags};break end
+   end
+  end
+ end
+ assert(reference.child_flags,'Missing meltable bin child fixture')
+ for _,item in ipairs(df.global.world.items.other.ANY_MELT_DESIGNATED)do before_melt[item.id]=true end
+end
 -- Establish edit invariants after all native read-side lazy initialization.
 for _,item in ipairs(df.global.world.items.other.IN_PLAY)do before[item.id]=item.flags.whole end
 write('stocks-wire-reference.json',json.encode(reference))
 write('shot.tmp','stocks-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))
-local checked=0;local deadline=dfhack.getTickCount()+25000
+local checked=0;local deadline=dfhack.getTickCount()+(reference.child_flags and 60000 or 25000)
 while true do
  local step=io.open(out..'/stocks-wire-step')
  if step then local index=tonumber(step:read('*a'));step:close()
@@ -67,8 +79,29 @@ while true do
    checked=index;write('stocks-wire-ack',tostring(index))
   end
  end
+ if reference.child_flags then
+  local step=io.open(out..'/stocks-child-flags-step')
+  if step then local index=tonumber(step:read('*a'));step:close()
+   if index and index>checked_child then
+    assert(checked==2 and index==checked_child+1 and index<=8,'Unexpected child flag step')
+    local operation=(index-1)//2+1;local mask=({0x80000,0x200000,0x800000,0x1000000})[operation]
+    local original=before[reference.child_flags.id]&mask~=0;local desired=index%2==1 and not original or index%2==0 and original
+    for id,flags in pairs(before)do
+     local expected=flags
+     if id==reference.child_flags.id then expected=desired and (flags|mask) or (flags&(~mask))end
+     assert(df.item.find(id).flags.whole==expected,'Child edit affected wrong flags '..id)
+    end
+    local expected={};for id in pairs(before_melt)do expected[id]=true end
+    if operation==3 then expected[reference.child_flags.id]=desired or nil end
+    for _,item in ipairs(df.global.world.items.other.ANY_MELT_DESIGNATED)do assert(expected[item.id],'Unexpected melt registration');expected[item.id]=nil end
+    assert(next(expected)==nil,'Missing melt registration')
+    checked_child=index;write('stocks-child-flags-ack',tostring(index))
+   end
+  end
+ end
  local ack=io.open(out..'/ack-stocks-wire');if ack then ack:close();break end
  assert(dfhack.getTickCount()<deadline,'Stocks wire timeout');script.sleep(1,'frames')
 end
 assert(checked==2,'Stocks wire effects incomplete')
+if reference.child_flags then assert(checked_child==8,'Child effects incomplete');write('stocks-child-flags-native-result.json',json.encode({success=true,steps=checked_child,restored=true,target=reference.child_flags}))end
 assert(not df.global.game.main_interface.stocks.open,'Typed Stocks opened native menu')

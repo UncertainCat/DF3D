@@ -261,6 +261,39 @@ func run() -> void:
 			var saved:=FileAccess.open(directory+"/stocks-furniture-wire-"+str(int(family.kind))+".json",FileAccess.WRITE);saved.store_string(JSON.stringify(snapshot));saved.close()
 			await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(directory+"/stocks-furniture-view-"+str(int(family.kind))+".png")
+			if OS.get_environment("DF3D_STOCKS_CHILD_FLAGS")=="1":
+				var target: int=int(reference.child_flags.id)
+				check(int(family.id)==int(reference.child_flags.parent_id),"Wrong child parent fixture")
+				var masks: Array=[0x80000,0x200000,0x800000,0x1000000]
+				var step:=0
+				for operation in 4:
+					for restore in [false,true]:
+						var prior: Dictionary=owner.item_owner.state.snapshot.duplicate(true)
+						var row_index: int=prior.contents.find(prior.contents.filter(func(row):return row.kind==1 and row.id==target)[0])
+						var desired: bool=bool(int(reference.child_flags.flags)&masks[operation]) if restore else not bool(int(reference.child_flags.flags)&masks[operation])
+						var contents=owner.item_owner.panel.contents_view
+						await click(owner.item_owner.panel.position+contents.position+contents.control_rect(row_index,operation+2).get_center())
+						deadline=Time.get_ticks_msec()+5000
+						while Time.get_ticks_msec()<deadline:
+							world.poll();await process_frame
+							if owner.item_owner.state.phase==owner.item_owner.state.Phase.Ready:
+								var fresh: Array=owner.item_owner.state.snapshot.get("contents",[]).filter(func(row):return row.kind==1 and row.id==target)
+								if not fresh.is_empty() and bool(fresh[0].flags&masks[operation])==desired:break
+						var fresh: Array=owner.item_owner.state.snapshot.get("contents",[]).filter(func(row):return row.kind==1 and row.id==target)
+						if not check(owner.item_owner.state.phase==owner.item_owner.state.Phase.Ready and not fresh.is_empty() and bool(fresh[0].flags&masks[operation])==desired,"Child flag receipt failed"):break
+						step+=1
+						var step_file:=FileAccess.open(directory+"/stocks-child-flags-step",FileAccess.WRITE);step_file.store_string(str(step));step_file.close()
+						deadline=Time.get_ticks_msec()+3000
+						while Time.get_ticks_msec()<deadline:
+							if FileAccess.file_exists(directory+"/stocks-child-flags-ack") and FileAccess.get_file_as_string(directory+"/stocks-child-flags-ack").strip_edges()==str(step):break
+							await create_timer(0.01).timeout
+						check(FileAccess.get_file_as_string(directory+"/stocks-child-flags-ack").strip_edges()==str(step),"Child flags not independently verified")
+						if step==1:
+							owner.item_owner.state.refresh_remaining=10
+							var stale:=await request("production",{"action":C.ManagementAction.FarmEdit,"independent_item":true,"item_id":int(family.id),"contents_item_id":target,"expected_revision":prior.revision,"farm_operation":C.FarmOperation.ItemForbid,"item_value":int(not desired)})
+							check(stale.get("status")==C.ManagementStatus.Rejected and stale.get("production",{}).get("independent_item",{}).get("outcome")==C.FarmEditOutcome.Stale,"Stale parent revision edited child")
+					if failed:break
+				check(step==8,"Child flag sequence incomplete")
 			if OS.get_environment("DF3D_STOCKS_CHILD_VIEW")=="1":
 				var child_id: int=snapshot.contents[0].id
 				var contents=owner.item_owner.panel.contents_view

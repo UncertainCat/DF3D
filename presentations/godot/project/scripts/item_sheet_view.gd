@@ -34,7 +34,6 @@ func configure(world,help=null) -> void:
 	description_scroll.page=8;description_scroll.wheel_enabled=false;description_scroll.input_allowed=allowed
 	description_scroll.row_changed.connect(func(_first):queue_redraw())
 	contents_view=preload("res://scripts/item_contents_view.gd").new();add_child(contents_view);contents_view.configure(world)
-	# Child flag actions remain staged until containment-aware receipts are connected.
 	contents_view.input_allowed=allowed
 	resized.connect(_layout_contents)
 

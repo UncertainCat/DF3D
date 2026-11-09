@@ -18,7 +18,7 @@ var return_category:=0
 var kitchen_state=preload("res://scripts/kitchen_state.gd").new()
 var kitchen_panel
 var kitchen_active:=false
-var return_kitchen:=false
+var labor_handoff:=false
 func current_state():return kitchen_state if kitchen_active else chores_state if chores_active else state
 func _init() -> void:
 	state.changed.connect(_sync);chores_state.changed.connect(_sync);chores_state.rows_changed.connect(_rows)
@@ -66,18 +66,17 @@ func open_category(category: int) -> void:
 func _rows() -> void:
 	if chores_panel!=null:chores_panel.display_rows(chores_state.rows.values())
 func allowed() -> bool:return play_enabled and ui_host!=null and ui_host.allows_panel_input(self)
-func _reset_labor_navigation() -> void:return_category=0;return_kitchen=false
+func _reset_labor_navigation() -> void:return_category=0
 func request_work_details() -> void:
 	var current=current_state()
 	if not allowed() or current.phase==current.Phase.Applying:return
-	return_kitchen=kitchen_active
 	if not kitchen_active:return_category=5 if chores_active else state.category
-	work_details_requested.emit()
-func open_from_labor() -> void:
+	labor_handoff=true;work_details_requested.emit();labor_handoff=false
+func open_from_labor(kitchen: bool=false) -> void:
 	var saved_category:=return_category
-	open_panel()
+	open_panel(true)
 	if not allowed():return
-	if return_kitchen:open_kitchen();return_category=saved_category
+	if kitchen:open_kitchen();return_category=saved_category
 	elif return_category==5:open_chores()
 	elif return_category!=0:state.select_category(return_category)
 func open_ammunition() -> void:
@@ -86,11 +85,11 @@ func open_ammunition() -> void:
 		ammunition_owner=preload("res://scripts/hunter_ammunition_panel.gd").new();add_child(ammunition_owner)
 		ammunition_owner.configure(world_source,action_service,ui_host)
 	ammunition_owner.open_panel()
-func open_panel() -> void:
+func open_panel(retain_kitchen_navigation: bool=false) -> void:
 	if play_enabled and ui_host!=null and ui_host.activate(self):
-		opening=true;chores_state.close();kitchen_state.close();kitchen_active=false;chores_active=false;state.open();opening=false;_sync()
+		opening=true;chores_state.close();kitchen_state.close(retain_kitchen_navigation);kitchen_active=false;chores_active=false;state.open();opening=false;_sync()
 func close_panel() -> void:
-	opening=true;state.close();chores_state.close();kitchen_state.close();opening=false;_sync()
+	opening=true;state.close();chores_state.close();kitchen_state.close(labor_handoff);opening=false;_sync()
 func handle_back() -> void:close_panel()
 func set_play_enabled(value: bool) -> void:
 	play_enabled=value

@@ -151,6 +151,26 @@ func run() -> void:
 		value={"rows":state.rows,"exclusions":state.exclusions}
 	check(completed==6,"Kitchen effects incomplete")
 	if rendered:
+		if main_scene!=null:
+			await pointer(owner.kitchen_panel,Vector2(160,owner.kitchen_panel.rows_top()+54))
+			var saved_query: Dictionary=state.query.duplicate(true)
+			check(state.selected==1,"Kitchen handoff selection setup failed")
+			await pointer(owner.kitchen_panel,owner.kitchen_panel.work_details_rect().get_center())
+			var details=main_scene._ui.controller("work_details")
+			deadline=Time.get_ticks_msec()+5000
+			while details.state.phase==details.state.Phase.Reading and Time.get_ticks_msec()<deadline:await create_timer(0.01).timeout
+			check(host.active==details and state.rows.is_empty() and state.exclusions.is_empty(),"Kitchen Work Details handoff retained authority or lost host")
+			await pointer(details.panel,details.panel.kitchen_rect().get_center())
+			if not await ready_state(state):quit(1);return
+			check(host.active==owner and owner.kitchen_active and state.selected==1 and state.query==saved_query,"Kitchen Work Details return lost navigation")
+			await pointer(owner.kitchen_panel,owner.kitchen_panel.work_details_rect().get_center())
+			deadline=Time.get_ticks_msec()+5000
+			while details.state.phase==details.state.Phase.Reading and Time.get_ticks_msec()<deadline:await create_timer(0.01).timeout
+			await pointer(details.panel,details.panel.standing_orders_rect().get_center())
+			check(host.active==owner and not owner.kitchen_active,"Standing orders tab returned to Kitchen")
+			await pointer(owner.panel,owner.panel.kitchen_rect().get_center())
+			if not await ready_state(state):quit(1);return
+			check(state.selected==1 and state.query==saved_query,"Kitchen navigation lost through Standing orders")
 		await pointer(owner.kitchen_panel,Vector2(200,owner.kitchen_panel.list_top()-48))
 		check(not owner.kitchen_active and host.active==owner,"Kitchen return tab failed")
 		owner.close_panel();check(host.active==null,"Labor close retained input")

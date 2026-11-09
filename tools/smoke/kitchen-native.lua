@@ -460,6 +460,7 @@ if os.getenv('DF3D_KITCHEN_NAV')=='1' then
  end
  click(37,12);click(30,15);gui.simulateInput(view,'STANDARDSCROLL_DOWN');for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount());observe('before-tab')
  click(30,10);click(45,10);observe('after-tab')
+ click(13,10);click(45,10);observe('after-work-details')
  local f=assert(io.open(out..'/kitchen-navigation.json','w'));f:write(json.encode(observations));f:close()
 end
 if os.getenv('DF3D_KITCHEN_SCROLL')=='1' then

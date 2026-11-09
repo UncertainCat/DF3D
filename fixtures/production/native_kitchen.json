@@ -7451,6 +7451,12 @@
     },
     "scope": "Installed classic scrollbar.png selected for Kitchen; inactive header ink160,160,160. Entire default initial panel matches. Four-size scrollbar crops match; narrow overflow headers and wide extra-row captions not accepted by this comparison.30FPS known Godot notices only, GPU52C."
   },
+  "work_details_handoff_reference": {
+    "native_capture": "build/stockpile-storage-native-input-20261108-185151",
+    "before_and_after": {"type": 0, "capabilities": 0, "query": "", "sorts": ["Name"], "cursor": 1, "names": ["Cave wheat", "Plump helmets", "Sweet pods"]},
+    "live_capture": "build/stockpile-storage-native-input-20261108-185545",
+    "scope": "Native Kitchen -> Work Details -> Kitchen retains query and cursor1. DF3D main-scene pointer checks exercise the direct Kitchen tab and the separate Standing orders tab, then Kitchen; selected1 and query retained, old rows/exclusions cleared and fresh read required. Six Cook/Brew effects and stale receipt rejection also pass. Core19 and all three Labor controllers pass kitchen-labor-routing. Source preserved, owned DF38432 exits unsaved,30FPS, GPU50-51C, known Godot notices only. Earlier185338 used Standing orders as a Kitchen return and is not final tab-routing acceptance."
+  },
   "header_clip_reference": {
     "capture": "build/stockpile-storage-native-input-20261108-174610",
     "right_edge_from_frame_pixels": 32,

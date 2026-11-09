@@ -269,6 +269,18 @@ crops exactly and leaves background beyond the narrow clip. Core19 and Kitchen
 state checks pass; only known Godot diagnostics remain, GPU50C sampled. The
 durable header_clip_reference records this display-only scope.
 
+Work Details exposes separate Kitchen and Standing orders tab actions. Kitchen
+navigation survives these Labor handoffs, but old rows/exclusions are retired
+and returning requests fresh authority. Ordinary close still resets navigation;
+session change resets query and navigation. Native185151 on2026-11-08 confirms
+Kitchen -> Work Details -> Kitchen retains filtered Name order and cursor1.
+Protected185545 exercises both tab routes through actual main-scene pointer
+input, retains Kitchen selection/query, and verifies six Cook/Brew effects and
+stale rejection. Source preservation and unsaved exit pass; GPU50-51C at30FPS,
+known Godot diagnostics only. Core19 and the three Labor controllers pass
+kitchen-labor-routing. work_details_handoff_reference records this scope; earlier
+185338 preceded the separate-tab fix and is not final routing acceptance.
+
 The staged Kitchen view reuses installed Labor chrome, native row/icon assets,
 count captions and permission icons. `kitchen-view-base` renders at1200x800 with
 30FPS; its unselected-row crop(64,232)-(928,664) matches native171829 with zero

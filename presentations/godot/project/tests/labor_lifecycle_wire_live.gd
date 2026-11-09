@@ -12,11 +12,18 @@ func handshake(step: int) -> bool:
 		await create_timer(0.01).timeout
 	return check(false,"Native lifecycle acknowledgement missing")
 func settled(main) -> bool:
-	var deadline:=Time.get_ticks_msec()+15000
+	var deadline:=Time.get_ticks_msec()+90000
 	var stable_since:=0;var epoch: int=-1;var generation: int=-1
 	var actions=main._ui.actions
+	var last_readiness: Array=[]
+	var next_trace:=0
 	while Time.get_ticks_msec()<deadline:
-		var ready: bool=main._loader.entered and main._ui.host.play_enabled and not actions._transport_lost and not actions._needs_claim and actions._active==0 and actions._queue.is_empty() and actions._epoch>0 and actions._generation==world.session_generation()
+		var readiness: Array=[world.is_attached(),world.live_synchronized(),world.terrain_loaded(),world.pending_block_count(),world.composite_pending_count(),world.building_pending_count(),world.item_composite_pending_count(),main._focused,main._loader.entered]
+		if readiness!=last_readiness and Time.get_ticks_msec()>=next_trace:
+			last_readiness=readiness;next_trace=Time.get_ticks_msec()+1000;print("LABOR_RECOVERY_READINESS ",readiness)
+		# The main scene keeps submitting background reads. Recovery requires a
+		# stable claimed identity and input readiness, not an idle shared queue.
+		var ready: bool=main._loader.entered and main._ui.host.play_enabled and not actions._transport_lost and not actions._needs_claim and actions._epoch>0 and actions._generation==world.session_generation()
 		if not ready or epoch!=actions._epoch or generation!=actions._generation:stable_since=0
 		epoch=actions._epoch;generation=actions._generation
 		if ready:
@@ -84,4 +91,5 @@ func run() -> void:
 		if failed:quit(1);return
 	var output:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	output.store_string(JSON.stringify({"success":not failed,"main":true,"transport_cycles":records}));output.close()
+	main.queue_free();await process_frame;await process_frame
 	quit(1 if failed else 0)

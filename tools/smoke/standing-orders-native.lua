@@ -62,7 +62,8 @@ local function shot(name,check_step)
  if name=='kitchen-wire' and os.getenv('DF3D_KITCHEN_MAIN')=='1' then deadline=dfhack.getTickCount()+120000 end
  if name=='stone-use-wire' and os.getenv('DF3D_STONE_USE_RENDER')=='1' then deadline=dfhack.getTickCount()+30000 end
  if name=='stone-use-wire' and os.getenv('DF3D_STONE_USE_MAIN')=='1' then deadline=dfhack.getTickCount()+120000 end
- if name=='standing-automation-wire' or name=='labor-lifecycle-wire' then deadline=dfhack.getTickCount()+120000 end
+ if name=='standing-automation-wire' then deadline=dfhack.getTickCount()+120000 end
+ if name=='labor-lifecycle-wire' then deadline=dfhack.getTickCount()+300000 end
  if name=='hunter-ammunition-wire' and os.getenv('DF3D_HUNTER_AMMUNITION_MAIN')=='1' then deadline=dfhack.getTickCount()+120000 end
  local checked=0
  while true do

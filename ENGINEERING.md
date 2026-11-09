@@ -121,21 +121,30 @@ save is unchanged and owned DF43948 exits unsaved. Core19 passes
 stone-use-resized-main. The preceding normal main-scene final panel matches
 native exactly; the resized-edit run does not add a new whole-screen claim.
 
-Combined Labor transport recovery remains unaccepted. The manual
-`labor_lifecycle_wire_live.gd` runs through the actual main scene using
-DF3D_STANDING_ORDERS_NATIVE=1 and DF3D_LABOR_LIFECYCLE=1 in the protected launcher.
-Its native handshake disables/enables the plugin while the owned fortress stays
-paused. It checks Kitchen, Stone use and Hunter receipt/draft retirement followed
-by fresh reads; successful earlier panels do not imply later cycles passed.
-Captures202829/202940/203119 on2026-11-08 fail during the first Kitchen cycle:
-202940 reaches enable acknowledgement2 but the fresh Kitchen state becomes
-Unavailable;203119 waits for an idle, claimed, stable replacement connection and
-times out. Kitchen closes and clears its rows on loss. These failures do not yet
-identify the transport or UI cause; subsequent runs write the unsettled service,
-session and management identities for diagnosis. All three owned games exit
-unsaved with source preservation, GPU55–56C. No disconnect/reconnect acceptance
-is claimed. The independent core19 and harness checks pass
-`labor-lifecycle-discovery`; the live failure remains a release gap.
+Combined Labor transport recovery is verified by
+`labor_lifecycle_wire_live.gd` through the actual main scene. Run the protected
+launcher with DF3D_STANDING_ORDERS_NATIVE=1 and DF3D_LABOR_LIFECYCLE=1. The native
+handshake disables/enables the plugin while the owned fortress stays paused.
+Kitchen, Stone use and Hunter each close, clear request/data authority, and
+remain closed after recovery; an explicit reopen obtains fresh rows/specs.
+Hunter's local amount draft is also cleared. Recovery waits for a stable claimed
+connection and the main scene's completed terrain preparation. It does not
+require an idle action queue: normal world-hover reads continue while playing.
+The readiness deadline matches first entry's90 seconds; the overall three-cycle
+client is bounded at295 seconds. These are test limits, not runtime changes.
+
+Protected204158 on2026-11-08 passes all three cycles with the30FPS rendered
+viewer. Owned DF30908 exits unsaved, source preservation passes, GPU52–53C,
+and log classification contains only the documented thread notice, device
+finalize and shutdown objects. Core19/harness pass `labor-lifecycle-recovery`.
+Earlier202829/202940/203119 failures were premature test readiness checks;
+203504 establishes healthy recovered channels and unfinished terrain;203704
+shows completed terrain with normal action70 hover traffic defeating the old
+idle-queue condition. These do not establish a product recovery defect.
+Headless203935 passes behavioral assertions but has an unclassified dummy-mesh
+shutdown leak, so whole-lane acceptance uses rendered204158 instead. Optional
+DF3D_LABOR_LIFECYCLE_HEADLESS=1 is diagnostic only. Save/load, a replacement DF
+process, and pending mutation outcomes are outside this three-read-panel check.
 
 Graphical checks are serial and capped at30FPS; sampled GPU temperatures during
 these scoped captures were58-61C. Accepted rendered runs have only the documented

@@ -6519,5 +6519,27 @@
       "panel_rgb_differing_pixels": 0,
       "scope": "Actual main-scene factory/host/controller and pointer edits of kiln/smelter/other-shop automation under controlled paused reaction availability. Native checks every captured scalar after each edit; stale requests reject and Back releases modal ownership. Raw vectors and settings restored; source preserved, DF27632 unsaved exit. Serial30FPS/GPU59-60C sampled, only known separate-thread/device-finalize/shutdown-object diagnostics. No responsive conditional-layout or broad valid-raw acceptance."
     }
+  },
+  "labor_lifecycle_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-204158",
+    "main_scene": true,
+    "rendered": true,
+    "transport": "native df3d disable/enable while paused",
+    "panels": [
+      "Kitchen",
+      "Stone use",
+      "Hunter ammunition"
+    ],
+    "cycles": 3,
+    "checks": [
+      "panel closes on loss",
+      "request and row authority cleared",
+      "Hunter amount draft cleared",
+      "no automatic reopen",
+      "explicit reopen reads fresh authority"
+    ],
+    "source_save_preserved": true,
+    "diagnostics": "passed_with_known_issues",
+    "limitations": "Does not cover save/load, replacement DF process, or pending mutation outcomes."
   }
 }

@@ -255,12 +255,14 @@ try {
      if($name -eq 'kitchen-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/kitchen_wire_live.gd')}
      if($name -eq 'kitchen-wire' -and $env:DF3D_KITCHEN_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/kitchen_wire_live.gd')}
      if($name -eq 'labor-lifecycle-wire'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/labor_lifecycle_wire_live.gd')}
+     if($name -eq 'labor-lifecycle-wire' -and $env:DF3D_LABOR_LIFECYCLE_HEADLESS -eq '1'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/labor_lifecycle_wire_live.gd')}
      if($name -eq 'standing-automation-wire'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/standing_automation_wire_live.gd')}
      $client=Start-Process -FilePath $engine -ArgumentList $clientArgs -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/job-settings-wire.stdout.log" -RedirectStandardError "$out/job-settings-wire.stderr.log"
      $null=$client.Handle
      $wireTimeout=if($name -eq 'kitchen-wire' -and $env:DF3D_KITCHEN_MAIN -eq '1'){115000}else{25000}
      if($name -eq 'stone-use-wire' -and $env:DF3D_STONE_USE_MAIN -eq '1'){$wireTimeout=115000}
-     if($name -in @('standing-automation-wire','labor-lifecycle-wire')){$wireTimeout=115000}
+     if($name -eq 'standing-automation-wire'){$wireTimeout=115000}
+     if($name -eq 'labor-lifecycle-wire'){$wireTimeout=295000}
      if($name -eq 'hunter-ammunition-wire' -and $env:DF3D_HUNTER_AMMUNITION_MAIN -eq '1'){$wireTimeout=115000}
      if(-not $client.WaitForExit($wireTimeout)){$client.Kill();$client.WaitForExit();throw 'Job settings wire client timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/job-settings-wire-result.json")){throw 'Job settings wire client failed'}

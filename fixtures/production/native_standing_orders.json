@@ -6469,6 +6469,12 @@
       "drawing_column_stride_cells": 41,
       "input_column_stride_cells": 51,
       "scope": "Default all-enabled panel only; no live DF3D click or responsive conditional-layout acceptance. Core19/controller pass, only known Godot thread/finalize/shutdown diagnostics."
+    },
+    "main_scene_reference": {
+      "capture": "build/stockpile-storage-native-input-20261108-200812",
+      "steps": 6,
+      "panel_rgb_differing_pixels": 0,
+      "scope": "Actual main-scene factory/host/controller and pointer edits of kiln/smelter/other-shop automation under controlled paused reaction availability. Native checks every captured scalar after each edit; stale requests reject and Back releases modal ownership. Raw vectors and settings restored; source preserved, DF27632 unsaved exit. Serial30FPS/GPU59-60C sampled, only known separate-thread/device-finalize/shutdown-object diagnostics. No responsive conditional-layout or broad valid-raw acceptance."
     }
   }
 }

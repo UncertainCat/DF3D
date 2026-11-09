@@ -606,8 +606,14 @@ on failure as well as its changed raw vectors.
 setup, captions and effect observations. `standing-automation-view` passes
 core19/controller checks and rendered capture; the full default panel matches
 native with zero RGB differences. Rendering stays serial at30FPS with sampled
-GPU59-60C and only documented startup/shutdown Godot diagnostics. Typed actions
-through actual DF3D clicks, responsive conditional layouts and ordinary valid
+GPU59-60C and only documented startup/shutdown Godot diagnostics. Protected200812 now runs all six conditional edits through actual main-scene
+factory/host/controller and pointer targets, with independent native checks of
+every captured Standing order scalar after each edit. Stale requests reject,
+Back releases input, and the final full panel again matches native with zero RGB
+differences. Raw vectors/settings are restored, source unchanged and DF27632
+exits unsaved. Core19 passes standing-automation-main; rendered logs contain only
+the documented separate-thread/device-finalize/shutdown-object diagnostics.
+Serial30FPS, sampled GPU59-60C. Responsive conditional layouts and ordinary valid
 raw configurations beyond these controlled building-type branches remain outside
 this acceptance. Public Labor exposure remains gated.
 

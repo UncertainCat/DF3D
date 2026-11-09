@@ -42,6 +42,22 @@ local ok,err=xpcall(function()
   end
   result.cycles[#result.cycles+1]=cycle
  end
+ if os.getenv('DF3D_STANDING_AUTOMATION_WIRE')=='1' then
+  local f=assert(io.open(out..'/standing-automation-native.json','w'));f:write(json.encode(result));f:close()
+  local checked=0
+  shot('standing-automation-wire',function()
+   local step=io.open(out..'/automation-wire-step');if not step then return end
+   local index=tonumber(step:read('*a'));step:close()
+   if index and index>checked then
+    assert(index==checked+1 and index<=6,'Unexpected automation wire step')
+    local expected=result.cycles[(index-1)//2+1].states[(index-1)%2+1].values
+    assert(json.encode(values())==json.encode(expected),'Automation wire changed unexpected scalar')
+    checked=index;local ack=assert(io.open(out..'/automation-wire-ack','w'));ack:write(tostring(index));ack:close()
+   end
+  end)
+  assert(checked==6 and json.encode(values())==json.encode(original),'Automation wire did not restore all settings')
+  result.wire_steps=checked
+ end
 end,debug.traceback)
 for name,length in pairs(lengths)do while #building[name]>length do building[name]:erase(#building[name]-1)end end
 for name,value in pairs(original)do df.global[name]=value end

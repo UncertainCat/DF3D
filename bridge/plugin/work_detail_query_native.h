@@ -75,8 +75,16 @@ inline std::array<int32_t,149> workDetailSkillWeights(const df::work_detail& det
 
 // Safe-point provider. Sort0=Category,1=Name,2=Profession,3=Skills. The native
 // query applies filtering, stable ordering, then its selected-worker partition.
-inline std::optional<std::vector<int32_t>> queryWorkDetailWorkers(int32_t index,int sort,bool descending,std::string query) {
-    if(!df::global::world || !df::global::plotinfo || sort<0 || sort>3 || !work_detail_query::supported())return std::nullopt;
+struct WorkDetailSort {int32_t column;bool descending;};
+inline std::optional<std::vector<int32_t>> queryWorkDetailWorkers(int32_t index,const std::vector<WorkDetailSort>& sorts,std::string query) {
+    if(!df::global::world || !df::global::plotinfo || sorts.empty() || sorts.size()>65536 || !work_detail_query::supported())return std::nullopt;
+    std::array<int8_t,4> directions{{-1,-1,-1,-1}};
+    for(const auto& sort:sorts) {
+        if(sort.column<0 || sort.column>3)return std::nullopt;
+        auto& direction=directions[size_t(sort.column)];
+        if(direction!=-1 && direction!=int8_t(sort.descending))return std::nullopt;
+        direction=int8_t(sort.descending);
+    }
     const auto& details=df::global::plotinfo->labor_info.work_details;
     if(index<0 || size_t(index)>=details.size() || details.size()>128 || !details[size_t(index)])return std::nullopt;
     auto* detail=details[size_t(index)];if(detail->assigned_units.size()>1024)return std::nullopt;
@@ -96,11 +104,14 @@ inline std::optional<std::vector<int32_t>> queryWorkDetailWorkers(int32_t index,
     });
     constexpr size_t comparators[]={0x1431370,0x1435a10,0x14358c0,0x1435db0};
     constexpr const char* names[]={"Cat","Name","Prof","Skills"};
-    const auto compare=reinterpret_cast<bool(*)(Closure*,const Entry*,const Entry*)>(base+comparators[sort]);
-    context.sorting.push_back({[&](const Entry& a,const Entry& b) {
-        return compare(&closure,&a,&b);
-    },names[sort]});
-    context.ascending.emplace(names[sort],descending);
+    context.sorting.reserve(sorts.size());
+    for(const auto& sort:sorts) {
+        const auto compare=reinterpret_cast<bool(*)(Closure*,const Entry*,const Entry*)>(base+comparators[sort.column]);
+        context.sorting.push_back({[&,compare](const Entry& a,const Entry& b) {
+            return compare(&closure,&a,&b);
+        },names[sort.column]});
+        context.ascending.emplace(names[sort.column],sort.descending);
+    }
     struct Selection {uintptr_t unused=0;df::work_detail* value;};Selection selected{0,detail};
     context.partitions.emplace_back([&](const Entry& entry) {
         return reinterpret_cast<bool(*)(Selection*,const Entry*)>(base+0x46a350)(&selected,&entry);
@@ -110,5 +121,8 @@ inline std::optional<std::vector<int32_t>> queryWorkDetailWorkers(int32_t index,
     std::vector<int32_t> result;result.reserve(ordered.size());
     for(const auto& entry:ordered){if(entry.kind!=0 || !entry.unit)return std::nullopt;result.push_back(entry.unit->id);}
     return result;
+}
+inline std::optional<std::vector<int32_t>> queryWorkDetailWorkers(int32_t index,int sort,bool descending,std::string query) {
+    return queryWorkDetailWorkers(index,std::vector<WorkDetailSort>{{sort,descending}},std::move(query));
 }
 }

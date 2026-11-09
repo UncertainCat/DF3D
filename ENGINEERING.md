@@ -77,8 +77,8 @@ prohibited runtime inputs. Renderer c83890 mutates graphics caches and is not
 used; the view resolves installed boulder and interface artwork independently.
 
 Typed dispatch193250 verifies83 rows and four edit/stale/fresh-read sequences,
-with independent full-array native readback. The current installed plugin SHA256
-is023FABBDDE8C76CFA6C25197FACEFDB775A8FD21AB7644F1FF8D1C7D0667E81D.
+with independent full-array native readback. The plugin used for that capture has SHA256
+023FABBDDE8C76CFA6C25197FACEFDB775A8FD21AB7644F1FF8D1C7D0667E81D.
 MSVC/core19 and typed fake-host contracts pass. Protocol migration192830 also
 checks the existing Kitchen workflow. Live publication-fault injection is not
 accepted by these successful edit runs.
@@ -1620,6 +1620,28 @@ departure and subsequent settings help pass; core19/extension/Work Details/
 shared-hover checks pass in work-details-category-help-20261106. DF36768 exits
 unsaved with source preservation; native/viewer30FPS, GPU60C sampled, only known
 engine diagnostics in joined logs.
+
+Work Details modified sorting requires an ordered list of keys, including
+repetitions. Protected212828 on2026-11-08 compares all fourteen native orders
+(116 units each) against the new owned `WorkDetailSort` provider overload.
+Native modifier bit1 appends a key; repeating a present key toggles the shared
+column direction and appends another occurrence. Bit2 removes every occurrence;
+when none remain, native regenerates Category. The provider validates consistent
+directions per column, owns comparator closures/map/vectors, and still calls
+native142c4b0 for sorting/filtering/partitioning. Its single-sort wrapper preserves
+the existing runtime contract. No native widget storage is a runtime input.
+
+The protected posted Control probe sets bit2 and removes Name. Posted Shift
+leaves the modifier byte0 and performs an ordinary click; it is not evidence
+against native bit1 semantics or acceptance of physical Shift delivery. The
+owned provider matches both observed outcomes. `modified_sort_reference` retains
+all orders and limitations. MSVC build, core19 (`work-details-owned-multisort`)
+and source preservation pass; owned
+DF11020 exits unsaved. Installed plugin SHA256 is
+A7823CB81AFE24B25A4EAE40C66C19EB24DB2D41EC30EB69D581FD342BACFFFC.
+Management153 still carries one sort, and the Godot view/controller still exposes
+one sort. The versioned wire extension, multi-key priority artwork/navigation
+and physical Shift validation remain required before this UI feature is complete.
 
 Keyboard behavior is focus-dependent. Protected211654 on2026-11-08 observes
 FILTER ignored initially, STANDARDSCROLL_RIGHT enabling flag4, then FILTER

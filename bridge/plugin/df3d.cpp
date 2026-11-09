@@ -2690,6 +2690,21 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             row["rating"]=skill.rating;row["caption"]=DF2UTF(skill.caption);result["skills"].append(row);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="work-detail-multisort-probe") {
+          if(parameters.size()<5 || parameters.size()>131075 || (parameters.size()-3)%2)return CR_WRONG_USAGE;
+          auto integer=[](const std::string& raw,int32_t& value){const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),value);
+            return parsed.ec==std::errc{} && parsed.ptr==raw.data()+raw.size();};
+          int32_t index;if(!integer(parameters[1],index))return CR_WRONG_USAGE;
+          std::vector<df3d_production::WorkDetailSort> sorts;
+          for(size_t i=3;i<parameters.size();i+=2){int32_t column,direction;
+            if(!integer(parameters[i],column) || !integer(parameters[i+1],direction) || direction<0 || direction>1)return CR_WRONG_USAGE;
+            sorts.push_back({column,direction!=0});}
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto ids=df3d_production::queryWorkDetailWorkers(index,sorts,parameters[2]);if(!ids)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["ids"]=Json::Value(Json::arrayValue);
+          for(auto id:*ids)result["ids"].append(id);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="work-detail-query-probe") {
           if(parameters.size()!=4 && parameters.size()!=5)return CR_WRONG_USAGE;
           int32_t values[3];

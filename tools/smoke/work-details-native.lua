@@ -116,6 +116,11 @@ local function shot(name)
  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Work Details capture timeout');script.sleep(1,'frames')end
 end
 shot('work-details-root')
+if os.getenv('DF3D_WORK_DETAILS_MODSORT')=='1' then
+ local helper=debug.getinfo(1,'S').source:sub(2):gsub('work%-details%-native.lua$','work-details-sort-native.lua')
+ result.modified_sort=assert(loadfile(helper))(out,view,active_list,headers,shot)
+ shot('work-details-modified-sort');records[#records+1]={name='work-details-modified-sort'};return
+end
 if os.getenv('DF3D_WORK_DETAILS_INPUT_FOCUS')=='1' then
  result.input_focus={}
  local function step(label,key,x,y)

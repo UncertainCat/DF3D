@@ -157,4 +157,47 @@ inline std::optional<std::vector<Group>> groups() {
     for(size_t i=0;i<count;++i)result.push_back({owned.type[i],owned.subtype[i],owned.subcat1[i],owned.subcat2[i],owned.amount[i],owned.expanded[i]});
     return result;
 }
+// Category insertion is inline in the unsafe menu initializer. Preserve its
+// seed permutation and lower-bound insertion (equal captions reverse seed
+// order). Search37c070 delegates group naming, normalization and substring
+// matching to native routines; omit its native-window scroll clamp entirely.
+inline std::optional<std::vector<int16_t>> categories(std::string query) {
+    auto display=categoryDisplay();if(!display)return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool supported=[base] {
+        struct Pin {size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={
+            {0x378360,0x15e2,UINT64_C(0x6dc10b2964dfb42d)},
+            {0x37c070,0x315,UINT64_C(0x8c19eeb7c24eb770)},
+            {0x52cee0,0x19e,UINT64_C(0xc25c2d8a6eb9fcac)},
+            {0xe1990,0xc7,UINT64_C(0x1c45e5635f4ffde2)}};
+        for(const auto& pin:pins){uint64_t hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin.length;++i){hash^=base[pin.rva+i];hash*=UINT64_C(1099511628211);}
+            if(hash!=pin.hash)return false;}
+        return true;
+    }();
+    if(!supported)return std::nullopt;
+    const auto normalize=reinterpret_cast<void(*)(std::string*)>(base+0x52cee0);
+    for(auto& row:*display)normalize(&row.caption);
+    constexpr int16_t seed[]={48,49,50,88,54,72,71,70,69,56,73,75,53,24,39,25,60,28,29,26,27,61,62,45,33,34,35,6,7,8,9,20,21,22,87,55,58,57,90,5,4,3,0,1,44,74,2,52,51,77,78,79,80,81,15,19,10,16,30,31,32,17,18,67,68,11,12,14,86,13,36,37,38,40,41,42,43,63,64,92,65,66,59,23,46,47,76,82,83,84,85,89,91};
+    std::vector<int16_t> ordered;ordered.reserve(93);
+    for(auto type:seed){auto at=ordered.begin();
+        while(at!=ordered.end() && (*display)[*at].caption.compare((*display)[type].caption)<0)++at;
+        ordered.insert(at,type);}
+    if(query.empty())return ordered;
+    const auto grouped=groups();if(!grouped)return std::nullopt;
+    normalize(&query);std::array<bool,93> matches{};
+    df3d_creature::KnowledgeMaterialCacheRestore restore(df::global::world->raws.creatures.hist_fig_to_creature_map);
+    using Describe=void(*)(std::string*,int16_t,int16_t,int16_t,int32_t,int32_t,int32_t,bool,void*,int32_t,int32_t,bool,int32_t,int32_t);
+    using Find=size_t(*)(const char*,size_t,size_t,const char*,size_t);
+    for(const auto& group:*grouped) {
+        if(group.type<0 || group.type>=93)return std::nullopt;
+        std::string caption;
+        reinterpret_cast<Describe>(base+0xa82c10)(&caption,group.type,group.subtype,group.subcat1,group.subcat2,group.amount,0,false,nullptr,-1,-1,true,0,0);
+        normalize(&caption);
+        if(reinterpret_cast<Find>(base+0xe1990)(caption.data(),caption.size(),0,query.data(),query.size())!=size_t(-1))matches[group.type]=true;
+    }
+    ordered.erase(std::remove_if(ordered.begin(),ordered.end(),[&](int16_t type){return !matches[type];}),ordered.end());
+    return ordered;
+}
 }

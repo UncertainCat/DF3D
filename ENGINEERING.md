@@ -120,8 +120,21 @@ and both count strings against rendered native cells, cold and warm, with item
 scratch/menu guards. Source unchanged, DF15500 exits unsaved, native log clean,
 GPU60C sampled; MSVC and core19 (`stocks-native-display`) pass. Evidence is in
 `native_stocks.json.category_display_reference`.
-Category order, individual item order, filtering, actions, transport and the
-screen remain unfinished.
+`categories(query)` preserves the initializer's pinned seed permutation and
+inline lower-bound insertion, including reversed seed order for equal names.
+It uses native normalization and group-description substring matching: material
+names can select categories even when the category caption does not match.
+The global-window scroll clamp in37c070 is omitted; no native menu or geometry
+state supplies runtime input. Protected222310 matches all93 ordered categories
+and seven searches cold/warm against native input updates (iron, mixed-case
+WOOD, bar, prepared, no-match text, whitespace and silk). Native stores filter
+text uppercase; two earlier discovery runs failed an incorrect case-sensitive
+harness assertion, not the provider comparison. Item scratch/menu guards pass,
+source unchanged, DF2516 exits unsaved, native log clean, GPU59C sampled.
+MSVC/core19 (`stocks-native-categories`) pass; bounded evidence is in
+`native_stocks.json.category_query_reference`.
+Individual item order/filtering, actions, transport and the screen remain
+unfinished.
 
 ## Stone use native semantics and presentation
 

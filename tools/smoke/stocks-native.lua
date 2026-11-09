@@ -6,16 +6,21 @@ local function scratch()
  for _,item in ipairs(df.global.world.items.other.IN_PLAY)do values[#values+1]={item.id,item.base_uniform_score}end
  return json.encode(values)
 end
-local function probe(command)
+local function probe(command,...)
  local before=scratch();local menu=df.global.game.main_interface.stocks
  local open=menu.open;local selected=menu.current_type;local query=menu.item_filter
- local text,code=dfhack.run_command_silent('df3d',command)
+ local text,code=dfhack.run_command_silent('df3d',command,...)
  assert(code==0,'Stocks inventory failed: '..text)
  assert(before==scratch(),'Inventory probe changed item temporary_32')
  assert(open==menu.open and selected==menu.current_type and query==menu.item_filter,'Inventory probe changed menu state')
  return json.decode(text)
 end
 local cold,cold_groups,cold_totals,cold_display
+local category_queries={'','iron','WOOD','bar','prepared','zzzznotstock',' ','silk'};local cold_categories
+if os.getenv('DF3D_STOCKS_CATEGORIES')=='1' then
+ cold_categories={}
+ for _,query in ipairs(category_queries)do cold_categories[#cold_categories+1]=probe('stocks-categories-probe',query).types end
+end
 if os.getenv('DF3D_STOCKS_DISPLAY')=='1' then cold_display=probe('stocks-display-probe').rows end
 if os.getenv('DF3D_STOCKS_PROVIDER')=='1' then cold=probe('stocks-inventory-probe').ids end
 if os.getenv('DF3D_STOCKS_GROUPS')=='1' then cold_groups=probe('stocks-groups-probe').groups end
@@ -92,6 +97,26 @@ if cold_display then
  end
  stocks.scroll_position_type=original;view:render(dfhack.getTickCount())
  result.display_provider={cold=cold_display,warm=warm,native=captured,scratch_preserved=true}
+end
+if cold_categories then
+ result.category_provider={cases={},scratch_preserved=true}
+ local entering=stocks.entering_item_filter
+ local gps=df.global.gps
+ gps.precise_mouse_x=500;gps.precise_mouse_y=94;gps.mouse_x=62;gps.mouse_y=7
+ gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+ local function key(value)gui.simulateInput(view,value);view:render(dfhack.getTickCount())end
+ for index,query in ipairs(category_queries)do
+  while #stocks.item_filter>0 do key('STRING_A000')end
+  for byte=1,#query do key(('STRING_A%03d'):format(query:byte(byte)))end
+  assert(stocks.item_filter==query:upper(),'Native search input mismatch: '..query..' vs '..stocks.item_filter)
+  local native=values(stocks.filtered_type_list)
+  local warm=probe('stocks-categories-probe',query).types
+  assert(json.encode(cold_categories[index])==json.encode(native),'Cold categories differ for '..query)
+  assert(json.encode(warm)==json.encode(native),'Warm categories differ for '..query)
+  result.category_provider.cases[#result.category_provider.cases+1]={query=query,types=native}
+ end
+ while #stocks.item_filter>0 do gui.simulateInput(view,'STRING_A000')end
+ stocks.entering_item_filter=entering;view:render(dfhack.getTickCount())
 end
 for y=0,df.global.gps.dimy-1 do
  local row={};for x=0,df.global.gps.dimx-1 do row[#row+1]=dfhack.screen.readTile(x,y).ch end

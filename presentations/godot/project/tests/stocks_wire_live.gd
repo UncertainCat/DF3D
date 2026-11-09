@@ -22,6 +22,10 @@ func click(point: Vector2) -> void:
 	var event:=InputEventMouseButton.new();event.button_index=MOUSE_BUTTON_LEFT;event.pressed=true;event.position=point;event.global_position=point
 	Input.parse_input_event(event);await process_frame
 	event=event.duplicate();event.pressed=false;Input.parse_input_event(event);await process_frame
+func wheel(point: Vector2,up:=false,page:=false) -> void:
+	var event:=InputEventMouseButton.new();event.pressed=true;event.position=point;event.global_position=point
+	event.button_index=MOUSE_BUTTON_WHEEL_UP if up else MOUSE_BUTTON_WHEEL_DOWN;event.shift_pressed=page
+	Input.parse_input_event(event);await process_frame
 func read_stocks(category: int,query: String="",ids: Array=[]) -> Dictionary:
 	var reply:=await request("stocks_menu",{"action":C.ManagementAction.StocksMenuRead,"category":category,"query":query,"item_ids":ids})
 	check(reply.get("status")==C.ManagementStatus.Ok,"Stocks read failed")
@@ -94,6 +98,22 @@ func run() -> void:
 			Input.parse_input_event(motion);await process_frame;await process_frame
 			check(view.pointer_position==Vector2(468,78),"Stocks header motion was not delivered")
 			check(hover.displayed.is_empty(),"Stocks header retained unrelated hover")
+		if OS.get_environment("DF3D_STOCKS_SCROLL_RENDER")=="1":
+			await wheel(Vector2(100,130))
+			await wheel(Vector2(500,94),false,true)
+			if not await ready_state(state):quit(1);return
+			check(state.first_category==1 and state.first_item==51,"Rendered wheel offsets differ from native")
+			var scrolled_ids: Array=[]
+			for row in view.page:
+				if row.has("id"):scrolled_ids.append(row.id)
+			check(not scrolled_ids.is_empty() and scrolled_ids.all(func(id):return state.items.has(id)),"Scrolling left visible rows without fresh facts")
+			check(scrolled_ids.all(func(id):return view.icons.has(id) and view.icons[id].texture!=null),"Scrolling lost ammunition artwork")
+			await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/stocks-view-scroll.png")
+			await wheel(Vector2(100,130),true)
+			await wheel(Vector2(500,94),true,true)
+			if not await ready_state(state):quit(1);return
+			check(state.first_category==0 and state.first_item==0,"Rendered wheel did not return to initial page")
 		var expanded_count: int=view.total_rows
 		await click(Vector2(500,130))
 		if not await ready_state(state):quit(1);return

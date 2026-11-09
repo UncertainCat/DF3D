@@ -316,6 +316,17 @@ if os.getenv('DF3D_STOCKS_INPUT')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-native.lua$','stocks-input-native.lua')
  result.input=assert(loadfile(source))(view,stocks,out)
 end
+if os.getenv('DF3D_STOCKS_SCROLL_RENDER')=='1' then
+ stocks.scroll_position_type=0;stocks.scroll_position_item=0
+ local g=df.global.gps
+ df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+ g.precise_mouse_x=100;g.precise_mouse_y=130;g.mouse_x=12;g.mouse_y=10
+ gui.simulateInput(view,'CONTEXT_SCROLL_DOWN');view:render(dfhack.getTickCount())
+ g.precise_mouse_x=500;g.precise_mouse_y=94;g.mouse_x=62;g.mouse_y=7
+ gui.simulateInput(view,'CONTEXT_SCROLL_PAGEDOWN');view:render(dfhack.getTickCount())
+ result.scrolled={category=stocks.scroll_position_type,item=stocks.scroll_position_item}
+ assert(result.scrolled.category==1 and result.scrolled.item==51,'Native scroll reference differs: '..json.encode(result.scrolled))
+end
 for y=0,df.global.gps.dimy-1 do
  local row={};for x=0,df.global.gps.dimx-1 do row[#row+1]=dfhack.screen.readTile(x,y).ch end
  result.screen_rows[#result.screen_rows+1]=row

@@ -4954,5 +4954,27 @@
     "source_save": "unchanged; owned DF46912 exited unsaved",
     "gpu": "30FPS; sampled44C/0%; original preferences restored",
     "limitations": "No rendered viewer wheel acceptance or resize acceptance. WM_MOUSEWHEEL injection remains unaccepted. Upward native probe seeds item offset60 beyond its54 maximum; resulting59 is not evidence of a valid interactive starting state."
+  },
+  "scroll_render_reference": {
+    "viewer_capture": "build/stockpile-storage-native-input-20261109-013939",
+    "native_capture": "build/stockpile-storage-native-input-20261109-014041",
+    "offsets": {
+      "category": 1,
+      "item_cells": 51
+    },
+    "workflow": "Actual Godot wheel over category, Shift-wheel over filter, fresh visible item fetch/artwork, screenshot, wheel/page-up restoration; existing group Hidden edits/restoration/stale rejection also pass.",
+    "rgb_differing_pixels": {
+      "categories_48_76_320_724": 0,
+      "items_360_112_944_724": 0,
+      "category_bar": 26,
+      "item_bar": 26,
+      "filter": 18
+    },
+    "native_sha256": "682e982b74d14cc66ae485ddc4191ddd6e5f4b5423e087a7aca2a57be780c874",
+    "viewer_sha256": "c4a82d8edbd08186a3e0e80503c17fa57e3349b3b0b820312b5dd886690087df",
+    "diagnostics": "Viewer passed_with_known_issues: thread notice, device finalize, shutdown objects; no unclassified errors.",
+    "source_save": "Both source-preservation checks pass; owned DF38576/42620 exited unsaved.",
+    "gpu": "Native/viewer capped30FPS; sampled42-43C; native preferences restored.",
+    "limitations": "First combined run failed only the subsequent native reference offset assertion after viewer success. Native-only repeat with explicit mouse focus/tracking passed. Separate captures have identical category/item crops, not whole-panel parity. No resize or main-scene camera acceptance; public Stocks remains staged."
   }
 }

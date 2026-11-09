@@ -105,7 +105,16 @@ has no scrolling. Input uses unshifted native cells despite centered rendering.
 The viewer routes wheel and Shift-wheel to these columns, using category rows
 and item text cells respectively. `stocks-wheel-routing` passes Core19 and
 headless viewport input checks for routing, paging, clamping and pending reads.
-See `scroll_regions_reference`; rendered wheel and resize acceptance remain open.
+See `scroll_regions_reference`. Rendered013939 verifies actual viewer wheel and
+Shift-wheel input, newly visible item facts/artwork, return scrolling and group
+Hidden edit/restoration/stale checks. Its subsequent native capture failed an
+offset assertion; native-only014041 with explicit mouse focus/tracking supplies
+the matching reference. Scrolled category48,76..320,724 and item360,112..944,724
+crops have zero RGB differences. Existing filter18 and scrollbar26 pixels each
+remain different; no whole-panel claim. Both saves are unchanged and owned DF
+exits unsaved; native/viewer30FPS, sampled42-43C. Only known Godot diagnostics
+occur. `scroll_render_reference` records hashes and scope; resize and main-scene
+acceptance remain open.
 
 Pending reads/edits clear authority; close/session changes retire observers;
 Unknown cannot replay. Successful edits refresh the retained search before

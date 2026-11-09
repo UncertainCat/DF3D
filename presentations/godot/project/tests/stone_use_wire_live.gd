@@ -122,6 +122,10 @@ func run() -> void:
 		var typed:=InputEventKey.new();typed.pressed=true;typed.keycode=KEY_A;typed.unicode=97;Input.parse_input_event(typed);await process_frame
 		if not await details_ready(details):quit(1);return
 		check(details.state.sort==C.WorkDetailWorkerSort.Name and details.state.query=="a".to_ascii_buffer(),"Work Details pointer sort/search setup failed")
+		await pointer(details.panel.scrollbar,Vector2(8,details.panel.scrollbar.size.y-6))
+		if not await details_ready(details):quit(1);return
+		var roster_first: int=details.state.first
+		check(roster_first>0,"Work Details roster did not scroll")
 		for destination in ["standing_orders_rect","kitchen_rect","stone_use_rect"]:
 			await pointer(details.panel,details.panel.call(destination).get_center())
 			check(details.state.rows.is_empty() and details.state.selected.is_empty(),"Labor switch retained Work Details authority")
@@ -129,6 +133,24 @@ func run() -> void:
 			await pointer(target,target.work_details_rect().get_center())
 			if not await details_ready(details):quit(1);return
 			check(main_scene._ui.host.active==details and details.state.sort==C.WorkDetailWorkerSort.Name and details.state.query=="a".to_ascii_buffer() and details.panel.search.value==details.state.query,"Labor return lost Work Details search/sort")
+			check(details.state.first==roster_first,"Labor return lost roster scroll")
+		await pointer(details.panel,Vector2(656,details.panel.header_top()+18))
+		if not await details_ready(details):quit(1);return
+		check(details.state.editing_settings,"Work Details gear did not open settings")
+		await pointer(details.panel.scrollbar,Vector2(8,details.panel.scrollbar.size.y-18))
+		var settings_first: int=details.state.settings_first
+		check(settings_first>0,"Work Details settings did not scroll")
+		for destination in ["standing_orders_rect","kitchen_rect","stone_use_rect"]:
+			await pointer(details.panel,details.panel.call(destination).get_center())
+			check(details.state.settings.is_empty(),"Labor switch retained settings authority")
+			var target=owner.stone_panel if owner.stone_active else owner.kitchen_panel if owner.kitchen_active else owner.panel
+			await pointer(target,target.work_details_rect().get_center())
+			if not await details_ready(details):quit(1);return
+			check(details.state.editing_settings and details.state.settings_first==settings_first and not details.state.settings.is_empty(),"Labor return lost settings page/scroll or fresh authority")
+		await process_frame;await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/work-details-settings-return.png")
+		await pointer(details.panel,details.panel.done_rect().get_center())
+		if not await details_ready(details):quit(1);return
 		await process_frame;await process_frame
 		var roster:=FileAccess.open(directory+"/work-details-labor-rows.json",FileAccess.WRITE)
 		roster.store_string(JSON.stringify(details.state.rows));roster.close()

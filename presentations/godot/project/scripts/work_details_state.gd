@@ -47,12 +47,13 @@ func close() -> void:
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
 func navigation() -> Dictionary:
-	return {"sort":sort,"directions":directions.duplicate(),"query":query.duplicate()}
+	return {"sort":sort,"directions":directions.duplicate(),"query":query.duplicate(),"first":first,"settings":editing_settings,"settings_first":settings_first}
 func open(preferred: int=0,retained: Dictionary={}) -> void:
 	close();sort=C.WorkDetailWorkerSort.Skills;directions=[false,false,false,false];query=PackedByteArray()
 	if not retained.is_empty():
 		sort=int(retained.sort);directions.assign(retained.directions);query=retained.query.duplicate()
-	_reload(preferred)
+		editing_settings=bool(retained.get("settings",false));settings_first=maxi(0,int(retained.get("settings_first",0)))
+	_reload(preferred,maxi(0,int(retained.get("first",0))))
 func refresh() -> void:
 	if phase in [Phase.Closed,Phase.Applying]:return
 	_reload(int(selected.get("index",0)))
@@ -72,11 +73,11 @@ func _submit(domain: String,intent: Dictionary,accept: Callable) -> void:
 		accept.call(result))
 	if ticket==0:phase=Phase.Unavailable
 	changed.emit()
-func _reload(preferred: int) -> void:
+func _reload(preferred: int,preferred_first: int=0) -> void:
 	settings={}
 	_retire();details=[];_collecting=[];list_revision=0;selected={};ids=PackedInt32Array();rows={};roster_ready=false;phase=Phase.Reading
-	_read_list(0,preferred)
-func _read_list(cursor: int,preferred: int) -> void:
+	_read_list(0,preferred,preferred_first)
+func _read_list(cursor: int,preferred: int,preferred_first: int=0) -> void:
 	_submit("citizens",{"action":A.WorkDetailList,"cursor":cursor,"expected_list_revision":list_revision},func(result):
 		var page: Dictionary=result.get("citizen",{})
 		var revision:=int(page.get("detail_list_revision",0))
@@ -87,17 +88,17 @@ func _read_list(cursor: int,preferred: int) -> void:
 			_collecting.append(row.duplicate(true))
 		var next:=int(page.get("next_cursor",0))
 		if _collecting.size()>128 or (next!=0 and (next<=cursor or next!=_collecting.size())):_reject();return
-		if next!=0:_read_list(next,preferred);return
+		if next!=0:_read_list(next,preferred,preferred_first);return
 		details=_collecting;_collecting=[]
 		if details.is_empty():editing_settings=false;phase=Phase.Ready;changed.emit();return
-		_select(clampi(preferred,0,details.size()-1)))
+		_select(clampi(preferred,0,details.size()-1),preferred_first))
 func select_detail(index: int) -> void:
 	if phase==Phase.Applying or phase==Phase.Closed or index<0 or index>=details.size():return
 	if int(selected.get("index",-1))==index:return
 	editing_settings=false;settings={};settings_first=0
 	_select(index)
-func _select(index: int) -> void:
-	_retire();selected=details[index].duplicate(true);first=0;ids=PackedInt32Array();phase=Phase.Reading
+func _select(index: int,preferred_first: int=0) -> void:
+	_retire();selected=details[index].duplicate(true);first=preferred_first;ids=PackedInt32Array();phase=Phase.Reading
 	if editing_settings:_read_settings()
 	else:_read_workers()
 func select_sort(value: int) -> void:

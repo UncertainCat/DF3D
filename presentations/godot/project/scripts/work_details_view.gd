@@ -153,7 +153,7 @@ func refresh() -> void:
 		scrollbar.position=Vector2(size.x-32 if showing_settings else roster_extent()-32,settings_top() if showing_settings else list_top())
 		scrollbar.size=Vector2(16,maxi(36,size.y-scrollbar.position.y-(24 if showing_settings else 84)))
 		scrollbar.page=settings_capacity() if showing_settings else page_rows
-		if showing_settings:
+		if showing_settings and not state.settings.is_empty():
 			var first:=clampi(state.settings_first,0,maxi(0,state.settings.get("catalog",[]).size()-settings_capacity()))
 			if first!=state.settings_first:state.seek_settings(first,settings_capacity());return
 		scrollbar.set_rows(state.settings.get("catalog",[]).size() if showing_settings else state.ids.size(),state.settings_first if showing_settings else state.first)

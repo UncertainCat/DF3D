@@ -215,6 +215,26 @@ func labor_navigation(service) -> void:
 		check(intent.sort==C.WorkDetailWorkerSort.Name and intent.query_bytes=="a".to_ascii_buffer() and intent.expected_revision==83,"Labor return retains native search/sort with fresh authority")
 		complete_workers(service,owner.state,[8])
 		check(owner.state.ids==PackedInt32Array([8]) and not owner.state.rows.has(7),"Labor return uses freshly queried roster")
+	owner.state.seek(2,1);owner.request_standing_orders();owner.close_panel();owner.open_from_labor()
+	service.reply(owner.state.ticket,page([detail(0,85)]));complete_workers(service,owner.state,[7,8,9,10])
+	# The previous one-row roster clamps the saved offset to zero; explicitly
+	# choose a nonzero page now that fresh rows establish a longer roster.
+	owner.state.seek(2,1);service.reply(owner.state.ticket,{"residents_rows":{"rows":[{"id":9,"skills":[],"member":false}]}})
+	owner.request_standing_orders();owner.close_panel();owner.open_from_labor()
+	service.reply(owner.state.ticket,page([detail(0,87)]));complete_workers(service,owner.state,[7,8,9,10])
+	check(owner.state.first==2 and owner.state.row_at(2).id==9,"Labor return restores roster offset after fresh query")
+	owner.state.open_settings();service.reply(owner.state.ticket,settings_page(87));owner.state.seek_settings(30,15)
+	owner.request_kitchen();owner.close_panel()
+	check(owner.state.settings.is_empty(),"Hidden settings retain no authority")
+	owner.open_from_labor();service.reply(owner.state.ticket,page([detail(0,89)]))
+	check(service.calls[owner.state.ticket].intent.action==A.WorkDetailSettingsRead and service.calls[owner.state.ticket].intent.expected_revision==89,"Returning to settings requests fresh selected definition")
+	var loading_view:=View.new();root.add_child(loading_view);loading_view.state=owner.state
+	loading_view.scrollbar=preload("res://scripts/area_location_scrollbar.gd").new();loading_view.add_child(loading_view.scrollbar)
+	loading_view.refresh()
+	check(owner.state.settings_first==30,"Settings view must not clamp retained scroll against a pending empty receipt")
+	loading_view.state=null;loading_view.queue_free();await process_frame
+	service.reply(owner.state.ticket,settings_page(89))
+	check(owner.state.editing_settings and owner.state.settings_first==30 and owner.state.rows.is_empty(),"Labor return keeps settings page and scroll without restoring roster authority")
 	owner.close_panel();owner.open_panel()
 	check(owner.state.query.is_empty() and owner.state.sort==C.WorkDetailWorkerSort.Skills,"Ordinary reopening uses initial navigation")
 	service.session_changed.emit();owner.open_from_labor()

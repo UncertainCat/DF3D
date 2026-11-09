@@ -798,7 +798,20 @@ ordinary reopening starts at defaults. Both native sources are preserved and
 owned DF exits unsaved; live diagnostics contain only the known Godot
 thread/finalize/shutdown notices. GPU59–61C sampled at30FPS. See
 `native_work_details.json.labor_search_sort_retention_reference` for scope.
-Scroll/settings retention and all direction combinations remain unverified.
+Work Details also retains roster offset, the active settings page and its offset
+across Labor tabs. Native210353 on2026-11-08 verifies identical scrolled row text
+after visits to Standing orders, Kitchen and Stone use. Main-scene210733 verifies
+actual pointer scrolling and all six round trips with fresh data on return.
+The view must not clamp settings offset while the catalog receipt is empty during
+a reload; it clamps only against freshly accepted settings. Controller/view
+regressions and core19 pass in `work-details-page-retention-view`. The first live
+run210551 exposed this empty-receipt reset and failed; it is not acceptance.
+Source saves are preserved, owned processes exit unsaved and only known Godot
+thread/finalize/shutdown notices remain in210733 (GPU59–62C,30FPS). The settings
+return image retains its scroll/art but omits dynamic captions at capture time;
+this behavioral acceptance does not establish full rendered pixel parity.
+`labor_page_retention_reference` retains native row text and this limitation.
+All sort-direction combinations and settings capture readiness remain unverified.
 The earlier205635 screenshot omitted skill captions, but this does not establish
 an ongoing runtime defect. Protected210203 compares ten existing Miners rows
 without the controlled all-labor override: native widgets, provider and typed

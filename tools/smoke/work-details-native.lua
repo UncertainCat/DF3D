@@ -118,6 +118,22 @@ if os.getenv('DF3D_WORK_DETAILS_RETENTION')=='1' then
   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
   gui.simulateInput(view,'_MOUSE_L');df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1;settle()
  end
+ if os.getenv('DF3D_WORK_DETAILS_PAGE_RETENTION')=='1' then
+  result.page_retention={}
+  local function page(label)
+   local lines={}
+   for y=12,g.dimy-4 do
+    local chars={};for x=37,117 do local ch=dfhack.screen.readTile(x,y).ch;chars[#chars+1]=ch>=32 and ch<=255 and string.char(ch)or' 'end
+    local line=dfhack.df2utf(table.concat(chars)):gsub('%s+$','');if line:find('%S')then lines[#lines+1]={y=y,text=line}end
+   end
+   result.page_retention[#result.page_retention+1]={label=label,lines=lines};shot('work-details-page-'..label)
+  end
+  page('roster-initial');click(119,50);page('roster-scrolled')
+  for _,tab in ipairs{{'standing',30},{'kitchen',45},{'stone',56}}do click(tab[2],10);click(12,10);page('roster-'..tab[1])end
+  click(85,13);page('settings-initial');click(119,58);page('settings-scrolled')
+  for _,tab in ipairs{{'standing',30},{'kitchen',45},{'stone',56}}do click(tab[2],10);click(12,10);page('settings-'..tab[1])end
+  records[#records+1]={name='work-details-page-retention'};return
+ end
  result.labor_retention={}
  local function observe(label)
   walk(info.labor,0)

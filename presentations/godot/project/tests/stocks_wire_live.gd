@@ -141,7 +141,7 @@ func run() -> void:
 				await RenderingServer.frame_post_draw
 				root.get_texture().get_image().save_png(directory+"/stocks-view-resize-%dx%d.png"%[dimensions.x,dimensions.y])
 		if OS.get_environment("DF3D_STOCKS_ART_RENDER")=="1":
-			for kind in [0,2,4,5,30,32]:
+			for kind in ([24,25,26,27,28,29,60] if OS.get_environment("DF3D_STOCKS_EQUIPMENT_ART")=="1" else [0,2,4,5,30,32]):
 				state.select_category(kind)
 				if not await ready_state(state):quit(1);return
 				var visible_ids: Array=[]

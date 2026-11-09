@@ -80,7 +80,7 @@ func refresh() -> void:
 		var row: Dictionary=state.items.get(entry.id,{})
 		# Native Stocks3a2a92 calls the shared item selector c7cbc0.
 		# Reuse owned sheet facts for these families; ammunition stays diagonal.
-		if row.get("type") not in [0,2,4,5,30,32,39] or not row.has("appearance"):continue
+		if row.get("type") not in [0,2,4,5,24,25,26,27,28,29,30,32,39,60] or not row.has("appearance"):continue
 		var cached: Dictionary=icons.get(row.id,{})
 		if cached.get("appearance")!=row.appearance:
 			cached={"appearance":row.appearance.duplicate(true),"texture":world.ammunition_icon(row.appearance,row.id) if row.type==39 else world.item_sheet_icon(row.type,row.appearance,row.id)}

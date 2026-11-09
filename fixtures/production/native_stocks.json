@@ -5194,5 +5194,100 @@
     "bin_material_color": "Nativec7e08d..c7e109 resolves the material and reads the first color of its solid-state descriptor pattern. Provider now calls pinned native14add70 when the item color virtual returns-1; constructed-item dye/covering color remains preferred.",
     "bridge_sha256": "4b1d56d9d820b79013a4518712b1bcb9c0e59e872780ea293facb7f0f1a19de8",
     "verification": "MSVC bin-color-fallback-msvc; core19 and Stocks headless checks stocks-bin-color-fallback pass."
+  },
+  "equipment_art_reference": {
+    "capture": "build/stockpile-storage-native-input-20261109-020426",
+    "cases": [
+      {
+        "item_type": 24,
+        "item_region": [
+          360,
+          112,
+          944,
+          724
+        ],
+        "rgb_differing_pixels": 124,
+        "native_sha256": "2772fcaf5a2979b2154a845fdad7c00fe90a1a83cf0d7064a08da7647de400c3",
+        "viewer_sha256": "8fe8654490f67280b8d4be7f3994ee93c7974b2eb8a9fb6eb06dab08b062feb6"
+      },
+      {
+        "item_type": 25,
+        "item_region": [
+          360,
+          112,
+          944,
+          724
+        ],
+        "rgb_differing_pixels": 0,
+        "native_sha256": "79100005493e9c00d2e8bd87650586dea79440994f0f5c4fbf94e8f579667d4f",
+        "viewer_sha256": "35e08734ffab3668ef9a9cc793cdcf25f54a093b113ce01cab6e206b737f2a11"
+      },
+      {
+        "item_type": 26,
+        "item_region": [
+          360,
+          112,
+          944,
+          724
+        ],
+        "rgb_differing_pixels": 0,
+        "native_sha256": "cd95896c0b800916373377ffab6380326c39208b79a8939814b85185f96d43b3",
+        "viewer_sha256": "7b031bd0144597161d7fbb4ae012ef6c56db1d42cc256b85517b0bfc389c8206"
+      },
+      {
+        "item_type": 27,
+        "item_region": [
+          360,
+          112,
+          944,
+          724
+        ],
+        "rgb_differing_pixels": 0,
+        "native_sha256": "5a91880365d0d9d09de685f8518197b88b5ed789775e67b91ff4afe6ca6acf6e",
+        "viewer_sha256": "181329b27d447f301ce63aaec30ae848a079d77d0e77ed5fdbccf3b91cdf85d5"
+      },
+      {
+        "item_type": 28,
+        "item_region": [
+          360,
+          112,
+          944,
+          724
+        ],
+        "rgb_differing_pixels": 0,
+        "native_sha256": "f232a4ba896f6ef7b8917e2a0b41d7720a3b5e8ece1bd97e6061876d0ee4e0ec",
+        "viewer_sha256": "b3713321c36d45940a8ff895ccb383c539f469074b22a793382533f2e0ca1b2e"
+      },
+      {
+        "item_type": 29,
+        "item_region": [
+          360,
+          112,
+          944,
+          724
+        ],
+        "rgb_differing_pixels": 0,
+        "native_sha256": "ad43639f666e99cde80c0a196ccfb96626ed5b27d1a6c10599e5d83744a56234",
+        "viewer_sha256": "25a92326f9a39553556851d0269520121ddf93e193d42bd565137df7701c0210"
+      },
+      {
+        "item_type": 60,
+        "item_region": [
+          360,
+          112,
+          944,
+          724
+        ],
+        "rgb_differing_pixels": 0,
+        "native_sha256": "b994e57e54bb9801f65afdb05034c48bd5bba41ebe440031d0b4792c98af3145",
+        "viewer_sha256": "7e0aac500e478a711b1537a5ad8558ea44fd9b8a80508fded8e1288e05240274"
+      }
+    ],
+    "workflow": "Cold typed category selection and fresh visible facts/icons, then restored Ammunition group edits/restoration/stale rejection.",
+    "weapon_gap": "Nativec7ce83..c7ce94 tests item.flags.artifact_mood(bit27), passing selector bit16 to cffa00. Current ItemInspectionAppearance flags32 means artifact(bit18); this falsely selects artifact artwork for the captured steel axe. Need independent mood semantic fact; do not substitute unrelated artifact flags or silently clear them.",
+    "source_save": "unchanged; owned DF17756 exited unsaved",
+    "gpu": "30FPS; sampled41C; original preferences restored",
+    "diagnostics": "passed_with_known_issues: thread notice, device finalize, shutdown objects; no unclassified errors",
+    "limitations": "Only first visible pages. Six clothing/shield types match; weapon artifact case remains incomplete. Other variants, item sheets and remaining families are not accepted."
   }
 }

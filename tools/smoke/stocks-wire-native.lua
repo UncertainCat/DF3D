@@ -21,7 +21,8 @@ for _,id in ipairs(reference.selection.groups[1].ids)do
 end
 if os.getenv('DF3D_STOCKS_FURNITURE_SHEETS')=='1' then
  reference.furniture={}
- for _,kind in ipairs{6,7,8,9,11,12,17,18,20,32,35,45}do
+ local families=os.getenv("DF3D_STOCKS_CONTENTS_RENDER")=="1" and {32} or {6,7,8,9,11,12,17,18,20,32,35,45}
+ for _,kind in ipairs(families)do
   local selection=probe('stocks-selection-probe',tostring(kind),'')
   assert(#selection.groups>0,'Missing furniture fixture '..kind)
   reference.furniture[#reference.furniture+1]={kind=kind,id=selection.groups[1].ids[1]}
@@ -35,7 +36,7 @@ if os.getenv('DF3D_STOCKS_CONTENTS_WIRE')=='1' then
   -- Production inspection formats weight first; retain native lazy mass-cache effects.
   probe('item-inspect-probe',tostring(id))
   local contents=probe('item-sheet-contents-probe',tostring(id));local expected={}
-  for _,ref in ipairs(df.item.find(id).general_refs)do
+  for _,ref in ipairs(df.item.find(id).flags.container and df.item.find(id).general_refs or {})do
    local type=ref:getType();local target
    if type==df.general_ref_type.CONTAINS_ITEM then target=ref:getItem()
    elseif type==df.general_ref_type.CONTAINS_UNIT then target=ref:getUnit()end

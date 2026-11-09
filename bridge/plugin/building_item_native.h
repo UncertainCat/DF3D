@@ -667,7 +667,7 @@ inline std::optional<ItemFacts> itemFacts(df::item* item) {
 }
 // Item-sheet contents are an ordered, mixed list, unlike BIN artwork facts.
 // Renderer1578bf..157a98 scans general_refs forward, accepts CONTAINS_UNIT/ITEM,
-// and skips unresolved references. It does not require the container flag.
+// and skips unresolved references. Outer157872..157885 requires container.
 // This provider owns every row; no view_sheets list or scroll state is read.
 inline std::optional<std::vector<ItemSheetContent>> itemSheetContents(df::item* container) {
     using UnitName=void (*)(df::unit*,std::string*,bool);
@@ -681,6 +681,7 @@ inline std::optional<std::vector<ItemSheetContent>> itemSheetContents(df::item* 
     }();
     if(!container || !unitName)return std::nullopt;
     std::vector<ItemSheetContent> rows;
+    if(!container->flags.bits.container)return rows;
     for(auto* ref:container->general_refs) {
         if(!ref)return std::nullopt;
         ItemSheetContent row;

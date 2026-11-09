@@ -21,6 +21,7 @@ var pending:=false
 var following:=false
 var input_allowed: Callable
 var description_scroll
+var contents_view
 
 func configure(world,help=null) -> void:
 	hover_help=help;mouse_exited.connect(_leave_hover)
@@ -32,6 +33,10 @@ func configure(world,help=null) -> void:
 	description_scroll.configure(world);description_scroll.position=Vector2(448,72);description_scroll.size=Vector2(16,96)
 	description_scroll.page=8;description_scroll.wheel_enabled=false;description_scroll.input_allowed=allowed
 	description_scroll.row_changed.connect(func(_first):queue_redraw())
+	contents_view=preload("res://scripts/item_contents_view.gd").new();add_child(contents_view);contents_view.configure(world)
+	# Child actions remain staged until containment-aware receipts are connected.
+	contents_view.input_allowed=allowed
+	resized.connect(_layout_contents)
 
 func present(value: Dictionary) -> void:
 	var reset_description: bool=snapshot.get("id",-1)!=value.get("id",-1) or snapshot.get("description","")!=value.get("description","")
@@ -50,7 +55,17 @@ func present(value: Dictionary) -> void:
 	elif snapshot.get("item_type",-1)==0 and snapshot.get("material_token","")=="POTASH":icon=source.farm_potash_icon()
 	elif snapshot.get("item_type",-1)==39 and snapshot.has("appearance"):icon=source.ammunition_icon(snapshot.appearance,int(snapshot.id))
 	elif snapshot.has("appearance") and source.has_method("item_sheet_icon"):icon=source.item_sheet_icon(snapshot.item_type,snapshot.appearance,int(snapshot.id))
+	_layout_contents()
 	visible=not snapshot.is_empty();queue_redraw()
+
+func _layout_contents() -> void:
+	if contents_view==null:return
+	var links:=int(snapshot.has("stockpile"))+int(snapshot.has("carrier") or snapshot.get("holder_id",-1)>=0)
+	if snapshot.get("ammunition_assignment",{}).get("kind",0)!=0:links+=1
+	var top:=192+36*links
+	contents_view.position=Vector2(8,top)
+	contents_view.present(int(snapshot.get("id",-1)),snapshot.get("contents",[]),Vector2(size.x-16,maxf(0,size.y-top-12)))
+	contents_view.visible=snapshot.has("contents") and not snapshot.contents.is_empty()
 
 func set_following(value: bool) -> void:
 	following=value;queue_redraw()

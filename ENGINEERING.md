@@ -46,7 +46,8 @@ parent revision. Native, wire and Godot validators reject malformed rows; the
 4096-row allocation bound and existing channel byte limit reject oversized
 snapshots without truncation. Unit rows cannot carry item appearance/actions.
 The provider scans general references forward (native1578bf..157a98), skips
-unresolved references and uses no container-flag gate or UI storage. Item text
+unresolved references. Outer157872..157885 requires the container flag; a clear
+flag produces a known empty display list. No UI storage is used. Item text
 uses c65450(false,-1); creature text uses1330c30(true), unlike carrier captions.
 
 Core19, extension, item-state and MSVC pass (`item-contents163-final`,
@@ -59,8 +60,17 @@ effect. Earlier035057/035153 mismatches were pre-initialization test baselines,
 not ignored flag differences. Group changes restore and stale replay rejects;
 source preserved, DF38040 exits unsaved at30FPS,38C sampled, known diagnostics
 only. `item_sheet_contents_reference` records the bounded cases and hashes.
-Visible contents rows/actions, live creature rows and broader acceptance are
-still pending; public Stocks remains gated.
+The item sheet draws the owned contents rows using installed backgrounds,
+icons and eligibility-based controls. Protected035821 verifies live View/close
+with ten bin rows. Its native PNG is an incomplete draw and is excluded;
+the corrected viewer background width, rendered offline from the same live
+snapshot, matches the valid033137 native bin panel exactly (488x708 RGB).
+JSON numeric types are restored before that offline render. Core19 and
+item-state checks pass in `item-contents-view-final`; the outer container guard
+also passes MSVC. Native DF48000 exited unsaved with source preservation,
+30FPS and38C sampled. Child signals remain unconnected to commands; hover,
+scroll/resize behavior, creature rows and alternate item-use lists still need
+implementation/acceptance. Public Stocks remains gated.
 
 The item-detail provider now admits doors, floodgates, beds, chairs, flasks,
 goblets, barrels, buckets, tables, bins, cabinets and anvils through the pinned

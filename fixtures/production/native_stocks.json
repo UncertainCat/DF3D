@@ -6485,7 +6485,7 @@
     }
   },
   "item_sheet_contents_reference": {
-    "status": "Management163 optional contents list wired through native/model/Godot; headless real-container transport accepted. Visible rows/actions and live creatures remain pending.",
+    "status": "Management163 transport and ten-row bin rendering accepted within recorded scope. Child actions, hover, scrolling and creature acceptance pending.",
     "list_source": {
       "range": "1578bf..157a98",
       "sha256": "adfdc663f7df5cdeabd748c317d48d7d455afcc4988ee6346d53689d669c4e98",
@@ -6493,8 +6493,9 @@
         "Scan item general_refs forward",
         "CONTAINS_UNIT9 calls getUnit; CONTAINS_ITEM10 calls getItem",
         "Skip unresolved references and other reference types",
-        "Preserve mixed item/unit order; no sorting, deduplication, recursion or container-flag gate"
-      ]
+        "Preserve mixed item/unit order; no sorting, deduplication or recursion"
+      ],
+      "outer_guard": "157872..157885 tests item flags bit0x40 (container); false produces known empty display list. The earlier inner-loop audit omitted this outer gate."
     },
     "item_caption": {
       "rva": "0xc65450",
@@ -6520,9 +6521,9 @@
       "Protected035243 contents transport and restored group edits passed"
     ],
     "next": [
-      "Draw native contents list and scrollbar",
-      "Wire child navigation and flags with fresh target and containment checks",
-      "Live mixed creature contents and lifecycle/rendered acceptance"
+      "Connect child navigation and flags with fresh target/containment checks",
+      "Add native hover help and verify scrolling/resizing",
+      "Live creature rows and alternate item-use contents branch"
     ],
     "management_version": 163,
     "transport_reference": {
@@ -6609,6 +6610,47 @@
       "sampled_gpu_temperature_c": 38,
       "installed_bridge_sha256": "57fdea5fec2c79aaac1ee2ad42e410c8776fb1fadf2d9fbea1fae93524c283d0",
       "scope": "One door/barrel/bucket known empty; one bin ten item rows. Group edits restored and stale replay rejected. No live creature rows or visible-list acceptance."
+    },
+    "render_reference": {
+      "native": "build/stockpile-storage-native-input-20261109-033137/stocks-furniture-native-32.png",
+      "native_sha256": "a987e955f768c1cc59097719a7831f8e41172b564f92743a3ab57ae02c357148",
+      "live_viewer": "build/stockpile-storage-native-input-20261109-035821/stocks-furniture-view-32.png",
+      "corrected_viewer": "build/notes/pm/item-contents-final.png",
+      "corrected_viewer_sha256": "60a8b8770ff3c865d8bc518dc22ea2ae60bdd9d96df52400ae7367d29cfebdcd",
+      "source_snapshot": "build/stockpile-storage-native-input-20261109-035821/stocks-furniture-wire-32.json",
+      "snapshot_sha256": "4cabbda233ca414e6177bc1f6abd9a4d37ca50a6d7cd38d147377bd132b25ad6",
+      "native_region": [
+        416,
+        52,
+        904,
+        760
+      ],
+      "rgb_different_pixels": 0,
+      "scope": "Bin11204 ten visible item rows, no scrollbar. Installed art, native names and controls. Corrected background width captured offline from live snapshot with integer types restored after JSON decoding. Native035821 PNG excluded as incomplete draw; prior033137 reference reused. Child signals not connected to commands.",
+      "diagnostics": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          },
+          {
+            "id": "godot-device-finalize",
+            "count": 1,
+            "reference": "https://github.com/godotengine/godot/issues/119000"
+          },
+          {
+            "id": "godot-shutdown-objects",
+            "count": 1,
+            "reference": "ENGINEERING.md#tests-and-known-problems"
+          }
+        ],
+        "unclassified": []
+      },
+      "owned_df_closed": 48000,
+      "source_preserved": true,
+      "graphics_fps_cap": 30,
+      "sampled_gpu_temperature_c": 38
     }
   }
 }

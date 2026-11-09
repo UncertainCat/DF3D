@@ -2847,7 +2847,7 @@
   "wire_reference": {
     "capture": "build/stockpile-storage-native-input-20261108-230558",
     "version": 155,
-    "core": "build/qa/stocks-wire",
+    "core": "build/qa/stocks-wire-final",
     "msvc": "build/notes/pm/stocks-wire-msvc.log",
     "plugin_sha256": "3bdd8d25463c488646c602e0f7914ca18ffaf8c4de358b43b669fb028774ecc8",
     "scope": "Cold real Godot typed read before native menu open: all93 category captions/order and iron matches;6 Ammunition groups with exact native-provider keys, captions, amounts, flags, expansion, member order and revisions;9 requested item identities with nonempty captions. Hidden on/off edits independently checked against every IN_PLAY item flag, original restored; stale replay rejected after each edit.",

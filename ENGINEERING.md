@@ -65,7 +65,7 @@ Protected230558 exercises the cold typed route before opening native Stocks:
 member order/revisions, nine individual rows, two visibility edits and stale
 replay rejection. Independent Lua checks every IN_PLAY item's flags after each
 edit and verifies restoration. Source unchanged, DF20352 exits unsaved;
-GPU54C sampled. Core19 (`stocks-wire`) and MSVC pass; the headless viewer has
+GPU54C sampled. Core19 (`stocks-wire-final`) and MSVC pass; the headless viewer has
 only the known separate-renderer notice. This is transport/effects acceptance,
 not rendered Stocks acceptance or all-action/lifecycle coverage.
 

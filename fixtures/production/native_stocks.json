@@ -7377,5 +7377,130 @@
       "stocks-furniture-native-5.png": "99ce3658547b3925ea72e06cdd07691443d1b012a45364aa79ca3d11d2239e3b",
       "stocks-furniture-view-5.png": "063dd6f4a819aba1f8f9777bcfa6e1752ee6069e3a45f977e22455f4ed3e4fd5"
     }
+  },
+  "item_uses_provider_reference": {
+    "run": "build/stockpile-storage-native-input-20261109-055727",
+    "builder": {
+      "rva": "0x1a8df0",
+      "length": "0xec6",
+      "fnv1a64": "0x1b1ddf4c0ba672c0"
+    },
+    "ownership": "Independent context: timestamp0x110, description0x1e10, description-scroll0x1e48, vector<string*>0x1e60, vector<int32>0x1e78. Native bb9b0 frees owned strings; vector storage is destroyed by its owner. No native view_sheets supplied or read by the provider.",
+    "globals": "Game mode0x189c298, plotinfo.main.fortress_entity0x239a1e8, world.raws.inorganics0x24ec8c8 and reactions0x24f7268; CRT cookie and clock import are non-gameplay dependencies.",
+    "dependencies": "Pinned reagent matchesRoot ed7a40 constructs an independent job_item_filter and calls a27c60, already used by native construction/workshop inventory. Inorganic uses d97510 shares the stone-use provider. Existing guarded c75000 description dispatch; pinned isBuildMat leaves.",
+    "observations": [
+      {
+        "kind": 0,
+        "id": 33457,
+        "description": "These are iron bars.  ",
+        "uses": [
+          {
+            "caption": "Making armor",
+            "reaction": -1
+          },
+          {
+            "caption": "Making weapons",
+            "reaction": -1
+          },
+          {
+            "caption": "Making projectiles",
+            "reaction": -1
+          },
+          {
+            "caption": "Making anvils",
+            "reaction": -1
+          },
+          {
+            "caption": "Making furniture",
+            "reaction": -1
+          },
+          {
+            "caption": "Make steel bars",
+            "reaction": 84
+          },
+          {
+            "caption": "Make pig iron bars",
+            "reaction": 83
+          },
+          {
+            "caption": "Building",
+            "reaction": -1
+          }
+        ]
+      },
+      {
+        "kind": 2,
+        "id": 5878,
+        "description": "These are siltstone blocks.  ",
+        "uses": []
+      },
+      {
+        "kind": 3,
+        "id": 31314,
+        "description": "These are rough onyxes.  ",
+        "uses": []
+      },
+      {
+        "kind": 4,
+        "id": 44711,
+        "description": "This is rock salt.  ",
+        "uses": [
+          {
+            "caption": "Making furniture",
+            "reaction": -1
+          },
+          {
+            "caption": "Building",
+            "reaction": -1
+          }
+        ]
+      },
+      {
+        "kind": 5,
+        "id": 48169,
+        "description": "These are coffee wood logs.  ",
+        "uses": [
+          {
+            "caption": "Making projectiles",
+            "reaction": -1
+          },
+          {
+            "caption": "Making furniture",
+            "reaction": -1
+          },
+          {
+            "caption": "Building",
+            "reaction": -1
+          },
+          {
+            "caption": "Make magel pipes",
+            "reaction": 352
+          },
+          {
+            "caption": "Make rít body",
+            "reaction": 360
+          },
+          {
+            "caption": "Make vúsh drone pipe",
+            "reaction": 366
+          },
+          {
+            "caption": "Make igang",
+            "reaction": 374
+          }
+        ]
+      }
+    ],
+    "verified": "Protected lane terminal0; native description, Uses count, every ordered caption and reaction index match for five material families. Core19 and MSVC pass.",
+    "limits": "Diagnostic adapter only; observation/transport/viewer integration pending. Cut gems absent; other item families and reaction variants not newly live accepted.",
+    "source_preservation": "Owned source unchanged was read successfully immediately after terminal0. Auxiliary files later read as zero-filled; retain the valid aggregate stocks-native.json as the row evidence.",
+    "owned_df_pid": 46136,
+    "exit": "unsaved",
+    "fps_cap": 30,
+    "gpu_max_sample_c": 50,
+    "diagnostics": "Known separate-thread, device-finalize and shutdown-objects signatures only, observed immediately after completion.",
+    "hashes": {
+      "stocks-native.json": "e95334e63ed25c04730359393b6f6a9fc55049a7c7c6a57dec9cc99975eb89c3"
+    }
   }
 }

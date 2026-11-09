@@ -102,8 +102,19 @@ This is description acceptance, not complete item-sheet parity. BLOCKS matches
 all panel pixels; ROUGH has199 header-art differences. BAR and WOOD omit native
 Uses rows, and BAR's Smelter holder icon remains unsupported. The BOULDER native
 capture contains terrain without the panel, so cannot establish visual parity.
-Uses must come from an independently owned native semantic provider; the native
-view_sheets item_use vectors are reference-only, prohibited runtime inputs.
+The owned `item_uses_native.h` adapter calls native1a8df0 with independent
+string/vector storage. Game mode, fortress resources and raws are semantic
+inputs; native view_sheets item_use vectors remain reference-only. Native
+reagent matching builds its own filter and reuses the construction/workshop
+predicate; inorganic uses share the stone-use formatter. Protected055727
+matches every ordered Uses caption/reaction ID and description for bars,
+blocks, rough gems, boulders and logs. Core19 and MSVC pass; the lane reported
+source preservation and DF46136 exited unsaved at30FPS,50C maximum sampled
+(not peak), documented Godot diagnostics only. The aggregate native result
+retains rows; auxiliary files later read as zero-filled. The fixture's
+`item_uses_provider_reference` records this evidence limitation explicitly.
+This adapter is diagnostic-only: observation/transport/rendering integration
+is pending, so the missing Uses section remains unfinished.
 Public Stocks remains gated pending its remaining functional coverage.
 
 The guarded native description path additionally admits chains, windows, cages,

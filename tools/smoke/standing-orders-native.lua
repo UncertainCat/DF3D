@@ -858,4 +858,8 @@ if os.getenv('DF3D_HUNTER_AMMUNITION_NATIVE')=='1' then
  assert(json.encode(before)==json.encode(snapshot()),'Cancelling amount changed ammunition')
  shot('hunter-ammunition-amount-cancelled')
 end
+if os.getenv('DF3D_STANDING_AUTOMATION')=='1' then
+ local path=debug.getinfo(1,'S').source:sub(2):gsub('standing%-orders%-native.lua$','standing-automation-native.lua')
+ assert(loadfile(path))(out,view,click,shot,values,rows)
+end
 shot('standing-orders-restored');records[#records+1]={name='standing-orders',categories=#result.pages,cycles=#result.workshop_cycles}

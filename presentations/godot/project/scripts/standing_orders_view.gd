@@ -8,7 +8,7 @@ signal hunter_ammunition_requested
 signal chores_requested
 signal work_details_requested
 const InfoTabs=preload("res://scripts/work_order_info_tabs.gd")
-const CAPTIONS=[["No automatic weaving", "Automatically weave dyed thread", "Automatically weave all thread"], ["Use any cloth", "Use only dyed cloth"], ["No automatic web collection", "Automatically collect webs"], ["No automatic slaughter", "Slaughter any marked animal"], ["No automatic butchery", "Automatically butcher carcasses"], ["No automatic fish cleaning", "Automatically clean fish"], ["Do not automate kitchen", "Automate kitchen"], ["Do not automate tannery", "Automate tannery"]]
+const CAPTIONS=[["No automatic weaving", "Automatically weave dyed thread", "Automatically weave all thread"], ["Use any cloth", "Use only dyed cloth"], ["No automatic web collection", "Automatically collect webs"], ["No automatic slaughter", "Slaughter any marked animal"], ["No automatic butchery", "Automatically butcher carcasses"], ["No automatic fish cleaning", "Automatically clean fish"], ["Do not automate kitchen", "Automate kitchen"], ["Do not automate tannery", "Automate tannery"], ["Do not automate kiln", "Automate kiln"], ["Do not automate smelter", "Automate smelter"], ["Do not automate other shops", "Automate other shops"]]
 const CATEGORY_CAPTIONS={1:[["Workers ignore animals", "Workers gather animals"], ["Workers ignore food", "Workers gather food"], ["Workers ignore furniture", "Workers gather furniture"], ["Workers ignore bodies", "Workers gather bodies"], ["Workers ignore minerals", "Workers gather minerals"], ["Workers ignore wood", "Workers gather wood"]],2:[["Workers ignore refuse", "Workers gather refuse"], ["Workers ignore outdoor refuse", "Workers gather outdoor refuse"], ["Workers ignore outdoor vermin remains", "Workers gather outdoor vermin remains"], ["Workers save corpses", "Workers dump corpses"], ["Workers save skulls", "Workers dump skulls"], ["Workers save bones", "Workers dump bones"], ["Workers save shells", "Workers dump shells"], ["Workers save skins", "Workers dump skins"], ["Workers save hair and wool", "Workers dump hair and wool"], ["Workers save other objects", "Workers dump other objects"]],3:[["Claim used ammunition", "Forbid used ammunition", "Forbid used ammunition during sieges"], ["Claim your dead", "Forbid your dead", "Forbid your dead during sieges"], ["Claim your death items", "Forbid your death items", "Forbid your death items during sieges"], ["Claim other dead", "Forbid other non-hunted dead", "Forbid other non-hunted dead during sieges"], ["Claim other death items", "Forbid other death items", "Forbid other death items during sieges"], ["Allow floor/wall cleaning", "Forbid floor/wall cleaning", "Forbid floor/wall cleaning during sieges"], ["Allow trap cleaning", "Forbid trap cleaning", "Forbid trap cleaning during sieges"], ["Allow trap rearming", "Forbid trap rearming", "Forbid trap rearming during sieges"], ["Claim cages from sprung traps", "Forbid cages from sprung traps", "Forbid cages from sprung traps during sieges"], ["Claim toppled building items", "Forbid toppled building items", "Forbid toppled building items during sieges"]],4:[["Citizenship petitions: reject", "Citizenship petitions: prompt", "Citizenship petitions: accept"], ["Performer petitions: reject", "Performer petitions: prompt", "Performer petitions: accept"], ["Monster slayer petitions: reject", "Monster slayer petitions: prompt", "Monster slayer petitions: accept"], ["Mercenary petitions: reject", "Mercenary petitions: prompt", "Mercenary petitions: accept"], ["Scholar petitions: reject", "Scholar petitions: prompt", "Scholar petitions: accept"], ["Sanctuary petitions: reject", "Sanctuary petitions: prompt", "Sanctuary petitions: accept"]],6:[["Announce no job cancellations", "Announce some job cancellations", "Announce most job cancellations", "Announce all job cancellations"], ["Mining cancelled near new damp stone", "Mining continues through new damp stone"], ["Mining cancelled near new warm stone", "Mining continues through new warm stone"], ["Only farmers harvest", "Everybody harvests"], ["Do not mix similar food in barrels", "Mix similar foods in barrels"], ["Prefer zones for water drinking", "Drink water only from designed zones"], ["Prefer zones for fishing", "Fish only in designated zones"]]}
 const CATEGORIES=["Workshops","Hauling","Refuse","Forbidding","Petitions","Chores","Other"]
 var state
@@ -39,7 +39,12 @@ func visible_ids() -> Array[int]:
 			if row.visible and int(row.id)<captions().size():ids.append(int(row.id))
 	return ids
 func ammunition_rect() -> Rect2:return Rect2(16,list_top()+264,400,36)
-func setting_rect(index: int) -> Rect2:return Rect2(16,list_top()+index*36,400,36)
+# Native Workshops input433337 strides51 cells; drawing4353ec strides41.
+# Preserve the observed mismatch until an explicit correction is approved.
+func setting_rect(index: int) -> Rect2:
+	return Rect2(16+(index/8)*408,list_top()+(index%8)*36,400,36) if state.category==0 else Rect2(16,list_top()+index*36,400,36)
+func setting_draw_rect(index: int) -> Rect2:
+	return Rect2(16+(index/8)*328,list_top()+(index%8)*36,400,36) if state.category==0 else setting_rect(index)
 func allowed() -> bool:return is_visible_in_tree() and (not input_allowed.is_valid() or input_allowed.call())
 func _input(event: InputEvent) -> void:
 	if not allowed():return
@@ -59,7 +64,7 @@ func _gui_input(event: InputEvent) -> void:
 	if state.category==6 and ammunition_rect().has_point(event.position):hunter_ammunition_requested.emit();return
 	var ids:=visible_ids()
 	for index in ids.size():
-		if setting_rect(index).has_point(event.position):
+		if setting_rect(ids[index] if state.category==0 else index).has_point(event.position):
 			var id:=ids[index]
 			state.set_value(id,(int(state.settings[id].value)+1)%captions()[id].size());return
 func text(value: String,point: Vector2,color: int=15) -> void:
@@ -91,7 +96,7 @@ func _draw() -> void:
 	draw_chrome(state.category)
 	var ids:=visible_ids()
 	for index in ids.size():
-		var rect:=setting_rect(index);var id:=ids[index]
+		var id:=ids[index];var rect:=setting_draw_rect(id if state.category==0 else index)
 		patch("BUTTON_CATEGORY_RECTANGLE",Vector2i(rect.position/Vector2(8,12)),50,3)
 		text(captions()[id][int(state.settings[id].value)],rect.position+Vector2(16,24),15 if state.settings[id].editable else 0)
 	if state.category==3:text("Forbidding of death objects occurs at time of death.",Vector2(32,list_top()+420),7)

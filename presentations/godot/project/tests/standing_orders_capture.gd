@@ -13,6 +13,10 @@ func run() -> void:
 	view.configure_standing_orders(world,state);view.layout(Vector2(1200,800))
 	await process_frame;await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../../../build/standing-orders-workshops.png"))
+	for row in reference.automation_reference.enabled.settings:
+		state.settings[int(row.id)]={"id":int(row.id),"value":int(row.value),"visible":bool(row.available),"editable":bool(row.available)}
+	state.changed.emit();await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../../../build/standing-orders-automation.png"))
 	for category in [3,4,6]:
 		state.category=category;state.settings=[]
 		for cycle: Dictionary in reference.extended_reference.cycles:

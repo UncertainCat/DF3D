@@ -5995,5 +5995,480 @@
     "retained_work_detail": 1,
     "native_detail_return_differing_pixels": 0,
     "scope": "Actual composition registry, native tab pointer targets, fresh semantic reads on return, reused owners and Back release. No public launcher promotion. Sort/filter/scroll/settings retention across Labor tabs not established."
+  },
+  "automation_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-200445",
+    "controlled_reaction": "TAN_A_HIDE",
+    "before": {
+      "settings": [
+        {
+          "available": true,
+          "id": 0,
+          "value": 2
+        },
+        {
+          "available": true,
+          "id": 1,
+          "value": 0
+        },
+        {
+          "available": true,
+          "id": 2,
+          "value": 1
+        },
+        {
+          "available": true,
+          "id": 3,
+          "value": 1
+        },
+        {
+          "available": true,
+          "id": 4,
+          "value": 1
+        },
+        {
+          "available": true,
+          "id": 5,
+          "value": 1
+        },
+        {
+          "available": true,
+          "id": 6,
+          "value": 1
+        },
+        {
+          "available": true,
+          "id": 7,
+          "value": 1
+        },
+        {
+          "available": false,
+          "id": 8,
+          "value": 1
+        },
+        {
+          "available": false,
+          "id": 9,
+          "value": 1
+        },
+        {
+          "available": false,
+          "id": 10,
+          "value": 1
+        }
+      ]
+    },
+    "enabled": {
+      "settings": [
+        {
+          "available": true,
+          "id": 0,
+          "value": 2
+        },
+        {
+          "available": true,
+          "id": 1,
+          "value": 0
+        },
+        {
+          "available": true,
+          "id": 2,
+          "value": 1
+        },
+        {
+          "available": true,
+          "id": 3,
+          "value": 1
+        },
+        {
+          "available": true,
+          "id": 4,
+          "value": 1
+        },
+        {
+          "available": true,
+          "id": 5,
+          "value": 1
+        },
+        {
+          "available": true,
+          "id": 6,
+          "value": 1
+        },
+        {
+          "available": true,
+          "id": 7,
+          "value": 1
+        },
+        {
+          "available": true,
+          "id": 8,
+          "value": 1
+        },
+        {
+          "available": true,
+          "id": 9,
+          "value": 1
+        },
+        {
+          "available": true,
+          "id": 10,
+          "value": 1
+        }
+      ]
+    },
+    "rows": [
+      {
+        "text": "  Automatically weave all thread           Automate kiln",
+        "y": 15
+      },
+      {
+        "text": "  Use any cloth                            Automate smelter",
+        "y": 18
+      },
+      {
+        "text": "  Automatically collect webs               Automate other shops",
+        "y": 21
+      },
+      {
+        "text": "  Slaughter any marked animal",
+        "y": 24
+      },
+      {
+        "text": "  Automatically butcher carcasses",
+        "y": 27
+      },
+      {
+        "text": "  Automatically clean fish",
+        "y": 30
+      },
+      {
+        "text": "  Automate kitchen",
+        "y": 33
+      },
+      {
+        "text": "  Automate tannery",
+        "y": 36
+      }
+    ],
+    "cycles": [
+      {
+        "id": 8,
+        "key": "standing_orders_auto_kiln",
+        "states": [
+          {
+            "value": 0,
+            "rows": [
+              {
+                "text": "  Automatically weave all thread           Do not automate kiln",
+                "y": 15
+              },
+              {
+                "text": "  Use any cloth                            Automate smelter",
+                "y": 18
+              },
+              {
+                "text": "  Automatically collect webs               Automate other shops",
+                "y": 21
+              },
+              {
+                "text": "  Slaughter any marked animal",
+                "y": 24
+              },
+              {
+                "text": "  Automatically butcher carcasses",
+                "y": 27
+              },
+              {
+                "text": "  Automatically clean fish",
+                "y": 30
+              },
+              {
+                "text": "  Automate kitchen",
+                "y": 33
+              },
+              {
+                "text": "  Automate tannery",
+                "y": 36
+              }
+            ]
+          },
+          {
+            "value": 1,
+            "rows": [
+              {
+                "text": "  Automatically weave all thread           Automate kiln",
+                "y": 15
+              },
+              {
+                "text": "  Use any cloth                            Automate smelter",
+                "y": 18
+              },
+              {
+                "text": "  Automatically collect webs               Automate other shops",
+                "y": 21
+              },
+              {
+                "text": "  Slaughter any marked animal",
+                "y": 24
+              },
+              {
+                "text": "  Automatically butcher carcasses",
+                "y": 27
+              },
+              {
+                "text": "  Automatically clean fish",
+                "y": 30
+              },
+              {
+                "text": "  Automate kitchen",
+                "y": 33
+              },
+              {
+                "text": "  Automate tannery",
+                "y": 36
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "key": "standing_orders_auto_smelter",
+        "states": [
+          {
+            "value": 0,
+            "rows": [
+              {
+                "text": "  Automatically weave all thread           Automate kiln",
+                "y": 15
+              },
+              {
+                "text": "  Use any cloth                            Do not automate smelter",
+                "y": 18
+              },
+              {
+                "text": "  Automatically collect webs               Automate other shops",
+                "y": 21
+              },
+              {
+                "text": "  Slaughter any marked animal",
+                "y": 24
+              },
+              {
+                "text": "  Automatically butcher carcasses",
+                "y": 27
+              },
+              {
+                "text": "  Automatically clean fish",
+                "y": 30
+              },
+              {
+                "text": "  Automate kitchen",
+                "y": 33
+              },
+              {
+                "text": "  Automate tannery",
+                "y": 36
+              }
+            ]
+          },
+          {
+            "value": 1,
+            "rows": [
+              {
+                "text": "  Automatically weave all thread           Automate kiln",
+                "y": 15
+              },
+              {
+                "text": "  Use any cloth                            Automate smelter",
+                "y": 18
+              },
+              {
+                "text": "  Automatically collect webs               Automate other shops",
+                "y": 21
+              },
+              {
+                "text": "  Slaughter any marked animal",
+                "y": 24
+              },
+              {
+                "text": "  Automatically butcher carcasses",
+                "y": 27
+              },
+              {
+                "text": "  Automatically clean fish",
+                "y": 30
+              },
+              {
+                "text": "  Automate kitchen",
+                "y": 33
+              },
+              {
+                "text": "  Automate tannery",
+                "y": 36
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "key": "standing_orders_auto_other",
+        "states": [
+          {
+            "value": 0,
+            "rows": [
+              {
+                "text": "  Automatically weave all thread           Automate kiln",
+                "y": 15
+              },
+              {
+                "text": "  Use any cloth                            Automate smelter",
+                "y": 18
+              },
+              {
+                "text": "  Automatically collect webs               Do not automate other shops",
+                "y": 21
+              },
+              {
+                "text": "  Slaughter any marked animal",
+                "y": 24
+              },
+              {
+                "text": "  Automatically butcher carcasses",
+                "y": 27
+              },
+              {
+                "text": "  Automatically clean fish",
+                "y": 30
+              },
+              {
+                "text": "  Automate kitchen",
+                "y": 33
+              },
+              {
+                "text": "  Automate tannery",
+                "y": 36
+              }
+            ]
+          },
+          {
+            "value": 1,
+            "rows": [
+              {
+                "text": "  Automatically weave all thread           Automate kiln",
+                "y": 15
+              },
+              {
+                "text": "  Use any cloth                            Automate smelter",
+                "y": 18
+              },
+              {
+                "text": "  Automatically collect webs               Automate other shops",
+                "y": 21
+              },
+              {
+                "text": "  Slaughter any marked animal",
+                "y": 24
+              },
+              {
+                "text": "  Automatically butcher carcasses",
+                "y": 27
+              },
+              {
+                "text": "  Automatically clean fish",
+                "y": 30
+              },
+              {
+                "text": "  Automate kitchen",
+                "y": 33
+              },
+              {
+                "text": "  Automate tannery",
+                "y": 36
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "restored": {
+      "settings": [
+        {
+          "available": true,
+          "id": 0,
+          "value": 2
+        },
+        {
+          "available": true,
+          "id": 1,
+          "value": 0
+        },
+        {
+          "available": true,
+          "id": 2,
+          "value": 1
+        },
+        {
+          "available": true,
+          "id": 3,
+          "value": 1
+        },
+        {
+          "available": true,
+          "id": 4,
+          "value": 1
+        },
+        {
+          "available": true,
+          "id": 5,
+          "value": 1
+        },
+        {
+          "available": true,
+          "id": 6,
+          "value": 1
+        },
+        {
+          "available": true,
+          "id": 7,
+          "value": 1
+        },
+        {
+          "available": false,
+          "id": 8,
+          "value": 1
+        },
+        {
+          "available": false,
+          "id": 9,
+          "value": 1
+        },
+        {
+          "available": false,
+          "id": 10,
+          "value": 1
+        }
+      ]
+    },
+    "scope": "Paused disposable clone appends AUTOMATIC building targets kiln/smelter/custom workshop to an existing reaction. Three native two-state cycles match owned adapter effects with stale rejection; original raw vectors/scalars restored, source unchanged, DF13796 unsaved exit. Default second-column draw stride41cells versus input51cells; no correction authorized. No typed/live view action acceptance for these newly enabled controls.",
+    "view_reference": {
+      "qa": "build/qa/standing-automation-view",
+      "viewport": [
+        1200,
+        800
+      ],
+      "crop": [
+        32,
+        52,
+        976,
+        760
+      ],
+      "rgb_different_pixels": 0,
+      "drawing_column_stride_cells": 41,
+      "input_column_stride_cells": 51,
+      "scope": "Default all-enabled panel only; no live DF3D click or responsive conditional-layout acceptance. Core19/controller pass, only known Godot thread/finalize/shutdown diagnostics."
+    }
   }
 }

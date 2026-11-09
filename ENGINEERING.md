@@ -6,6 +6,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
+| Standing orders Workshops second-column controls draw41 cells from the first column but accept clicks51 cells from it. | No correction approved; DF3D preserves distinct native drawing/input rectangles. | Controlled automatic-reaction capture200445 on2026-11-08: kiln/smelter/other-shop art begins atx376, while input begins atx456 at1200x800. Native4353ec uses41-cell stride;433337 uses51. Earlier200350 clickingx444 changes first-column weaving instead and fails the cycle check; source save preserved. |
 | Work Details long names spill from the sidebar across the worker roster. | No correction approved; preserve unbounded captions and late text drawing order. | Native133241/133534 on2026-11-06 uses39 ASCII bytes plus CP437 byte195. Captions extend over the portrait/worker region. DF3D matches the sidebar crop; native overlapping sprite corruption and whole-screen pixel identity are not claimed. |
 | Work Details skill text exceeds its fixed worker row under a mixed-labor definition. | No correction approved or implemented; full roster rendering remains pending. | Protected114839 on2026-11-06 enables all94 labors in a controlled unsaved clone. Native1429ef0 creates all positive relevant skill captions; ten visible rows contain2–11 captions each. The screenshot shows later worker backgrounds covering earlier captions and the final worker’s extra captions extending over the search box. This evidence is scoped to the controlled definition. |
 | Residents accented search can miss the matching native activity caption. | No correction approved or implemented; retain native input and normalization. | Protected023145 on2026-11-06 types through the owned window: `Tâmol` returns no rows, while `tamol` finds two “Pray to Tâmol” rows. The textbox retains UTF-8, then callback1432700 applies the byte normalizer52cee0; normalized query bytes are116,195,111,109,111,108. The owned query provider matches both outcomes. |
@@ -582,6 +583,34 @@ kitchen-material-art-20261108; installed plugin SHA256
 2C16A89797A4E99DC05479DA000AF8C6E357B1BD4466F3EA9147B279EA369605.
 
 ## Standing orders native discovery
+
+The three conditional kiln/smelter/other-shop controls now have native captions
+and second-column drawing/input geometry in `standing_orders_view.gd`. They are
+shown only when the existing native-backed snapshot marks them available; no
+availability rules were added to Godot. Workshops positions use native setting
+IDs rather than compacting unavailable rows. Drawing strides41 cells and input
+strides51 cells after each eight controls; the confirmed mismatch is retained
+and recorded in the native bug register.
+
+Protected200445 on2026-11-08 temporarily appends kiln/smelter/custom-workshop
+building targets to an existing AUTOMATIC reaction in a paused disposable clone.
+All eleven settings become available. Each of the three new controls toggles
+through both native states; the existing owned adapter matches every scalar
+snapshot and rejects stale requests. Raw vectors and all settings are restored;
+source unchanged, DF13796 exits unsaved.200251/200350 clicked incorrect positions
+and failed their cycle checks; neither is accepted evidence. Source preservation
+passes for both failed runs. The diagnostic now restores every captured scalar
+on failure as well as its changed raw vectors.
+
+`native_standing_orders.json.automation_reference` retains the exact controlled
+setup, captions and effect observations. `standing-automation-view` passes
+core19/controller checks and rendered capture; the full default panel matches
+native with zero RGB differences. Rendering stays serial at30FPS with sampled
+GPU59-60C and only documented startup/shutdown Godot diagnostics. Typed actions
+through actual DF3D clicks, responsive conditional layouts and ordinary valid
+raw configurations beyond these controlled building-type branches remain outside
+this acceptance. Public Labor exposure remains gated.
+
 
 Management150 / Local\df3d_management_v150 adds ChoresRead96 and ChoresApply97.
 The pointer-free snapshot contains participation, ordered child IDs, sorted

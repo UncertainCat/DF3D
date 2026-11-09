@@ -2001,6 +2001,24 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(carrier->appearance){const auto& a=*carrier->appearance;Json::Value look(Json::objectValue);look["material_token"]=DF2UTF(a.materialToken);look["subtype_raw"]=DF2UTF(a.subtypeRaw);look["color_token"]=DF2UTF(a.colorToken);look["stack"]=a.stack;look["flags"]=a.flags;if(a.instrumentFamily>=0){Json::Value instrument(Json::objectValue);instrument["family"]=a.instrumentFamily;instrument["placed"]=a.instrumentPlaced;look["instrument"]=instrument;}result["appearance"]=look;}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="item-sheet-contents-probe") {
+          if(parameters.size()!=2 || !state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          int32_t id=-1;const auto& raw=parameters[1];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0)return CR_WRONG_USAGE;
+          const auto contents=df3d_production::itemSheetContents(df::item::find(id));if(!contents)return CR_FAILURE;
+          Json::Value result(Json::objectValue),rows(Json::arrayValue);result["item_id"]=id;
+          for(const auto& value:*contents) {
+            Json::Value row(Json::objectValue);row["kind"]=value.kind;row["id"]=value.id;row["caption"]=DF2UTF(value.caption);
+            if(value.item) {
+              const auto& item=*value.item;row["item_type"]=item.itemType;row["flags"]=item.flags;
+              row["can_dump"]=item.canDump;row["can_melt"]=item.canMelt;
+              row["material_token"]=DF2UTF(item.materialToken);row["subtype_raw"]=DF2UTF(item.subtypeRaw);
+              row["stack"]=value.appearance->stack;
+            }
+            rows.append(row);
+          }
+          result["rows"]=rows;out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="item-container-contents-probe") {
           if(parameters.size()!=2 || !state.mapLoaded || df3d_session::saving())return CR_FAILURE;
           int32_t id=-1;const auto& raw=parameters[1];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);

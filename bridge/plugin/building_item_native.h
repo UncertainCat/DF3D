@@ -665,6 +665,47 @@ inline std::optional<ItemFacts> itemFacts(df::item* item) {
     }
     return row;
 }
+// Item-sheet contents are an ordered, mixed list, unlike BIN artwork facts.
+// Renderer1578bf..157a98 scans general_refs forward, accepts CONTAINS_UNIT/ITEM,
+// and skips unresolved references. It does not require the container flag.
+// This provider owns every row; no view_sheets list or scroll state is read.
+struct ItemSheetContent {
+    int32_t kind=0,id=-1; // 1 item, 2 unit
+    std::string caption;
+    std::optional<ItemFacts> item;
+    std::optional<ItemInspectionAppearance> appearance;
+};
+inline std::optional<std::vector<ItemSheetContent>> itemSheetContents(df::item* container) {
+    using UnitName=void (*)(df::unit*,std::string*,bool);
+    static const auto unitName=[]()->UnitName {
+        if(!farmFunctions())return nullptr;
+        auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x688;++i){hash^=base[0x1330c30+i];hash*=UINT64_C(1099511628211);}
+        if(hash!=UINT64_C(0x0e165ee31decf426))return nullptr;
+        return reinterpret_cast<UnitName>(base+0x1330c30);
+    }();
+    if(!container || !unitName)return std::nullopt;
+    std::vector<ItemSheetContent> rows;
+    for(auto* ref:container->general_refs) {
+        if(!ref)return std::nullopt;
+        ItemSheetContent row;
+        if(ref->getType()==df::general_ref_type::CONTAINS_ITEM) {
+            auto* child=ref->getItem();if(!child)continue;
+            auto facts=itemFacts(child);if(!facts)return std::nullopt;
+            row.kind=1;row.id=child->id;row.caption=facts->caption;row.item=std::move(*facts);
+            row.appearance=itemAppearance(child);if(!row.appearance)return std::nullopt;
+        }else if(ref->getType()==df::general_ref_type::CONTAINS_UNIT) {
+            auto* unit=ref->getUnit();if(!unit)continue;
+            row.kind=2;row.id=unit->id;
+            // Native15832b..15833e passes true, unlike carrier captions.
+            unitName(unit,&row.caption,true);
+        }else continue;
+        if(row.id<0 || row.caption.size()>128*1024)return std::nullopt;
+        rows.push_back(std::move(row));
+    }
+    return rows;
+}
 // Item renderer153c72..153da5 scans STOCKPILE forward and calls5587b0.
 // Generic a82b00 scans in reverse and has additional occupancy filtering.
 inline std::optional<ItemLocationLink> itemStockpile(df::coord position) {

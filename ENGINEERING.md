@@ -37,6 +37,17 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
+Item-sheet contents have a separate owned provider, `itemSheetContents`, with
+an `item-sheet-contents-probe` diagnostic. Native1578bf..157a98 scans general
+references forward, interleaves contained creatures and items, and skips
+unresolved references without a container-flag gate. Item captions use existing
+c65450(false,-1); creature captions use1330c30(true), unlike carrier captions.
+The provider preserves full order and native item flag eligibility, with no
+menu/scroll/graphics-cache inputs. Core19 and MSVC pass in
+`item-sheet-contents-provider`. This is staged: transport, contents rows/actions
+and live provider verification remain pending. `item_sheet_contents_reference`
+records native ranges, formatter pins and remaining acceptance work.
+
 The item-detail provider now admits doors, floodgates, beds, chairs, flasks,
 goblets, barrels, buckets, tables, bins, cabinets and anvils through the pinned
 native c75000 description routine. Their description virtuals match BOX except

@@ -6483,5 +6483,43 @@
       ],
       "installed_bridge_sha256": "596e9a5d60880322a6f0987827e619b6f8310fc500a2742ac63530c945c55448"
     }
+  },
+  "item_sheet_contents_reference": {
+    "status": "Owned native provider implemented and build-verified. Diagnostic probe available; transport, UI and live provider acceptance pending.",
+    "list_source": {
+      "range": "1578bf..157a98",
+      "sha256": "adfdc663f7df5cdeabd748c317d48d7d455afcc4988ee6346d53689d669c4e98",
+      "rules": [
+        "Scan item general_refs forward",
+        "CONTAINS_UNIT9 calls getUnit; CONTAINS_ITEM10 calls getItem",
+        "Skip unresolved references and other reference types",
+        "Preserve mixed item/unit order; no sorting, deduplication, recursion or container-flag gate"
+      ]
+    },
+    "item_caption": {
+      "rva": "0xc65450",
+      "options": "false,-1",
+      "call_site": "1581a8..1581c1",
+      "shared_helper": "buildingItemCaption"
+    },
+    "unit_caption": {
+      "rva": "0x1330c30",
+      "length": "0x688",
+      "fnv1a64": "0e165ee31decf426",
+      "options": "true",
+      "call_site": "15832b..15833e",
+      "note": "Carrier captions use false; do not reuse their formatting options."
+    },
+    "provider": "itemSheetContents in building_item_native.h; item-sheet-contents-probe emits ordered owned rows, item captions/flags/eligibility and native creature captions.",
+    "ownership": "No native viewscreen, menu, scrollbar or graphics-cache input; native semantic general-reference accessors and owned strings/vectors.",
+    "verification": [
+      "core19 item-sheet-contents-provider passed",
+      "Release df3d item-sheet-contents-provider-msvc passed"
+    ],
+    "next": [
+      "Append optional known contents list to IndependentItemSnapshot with complete version/revision/validation propagation",
+      "Render native list and scroll, then wire child navigation and flags with fresh target/containment checks",
+      "Verify real bin and mixed cage contents; lifecycle and rendered acceptance remain required"
+    ]
   }
 }

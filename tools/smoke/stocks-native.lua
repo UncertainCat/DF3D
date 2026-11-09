@@ -15,6 +15,7 @@ local function probe(command,...)
  assert(open==menu.open and selected==menu.current_type and query==menu.item_filter,'Inventory probe changed menu state')
  return json.decode(text)
 end
+local function run()
 if os.getenv('DF3D_STOCKS_WIRE')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-native.lua$','stocks-wire-native.lua')
  assert(loadfile(source))(out,probe)
@@ -355,3 +356,10 @@ while true do local ack=io.open(out..'/ack-stocks-root');if ack then ack:close()
  assert(dfhack.getTickCount()<deadline,'Stocks capture timeout');script.sleep(1,'frames')end
 records[#records+1]={name='stocks-root',types=#result.types,groups=#result.groups}
 gui.simulateInput(view,'LEAVESCREEN');assert(not stocks.open,'Stocks did not close')
+
+end
+if os.getenv('DF3D_STOCKS_DOOR_STATES')=='1' then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-native.lua$','stocks-door-states-native.lua')
+ return assert(loadfile(source))(out,probe,run)
+end
+return run()

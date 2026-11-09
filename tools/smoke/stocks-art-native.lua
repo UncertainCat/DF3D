@@ -25,6 +25,12 @@ local function appearance_facts(item)
 end
 local kinds=os.getenv('DF3D_STOCKS_EQUIPMENT_ART')=='1' and {24,25,26,27,28,29,60} or {0,2,4,5,30,32}
 if os.getenv('DF3D_STOCKS_HOUSEHOLD_ART')=='1' then kinds={6,7,10,11,12,18,22,45}end
+if os.getenv('DF3D_STOCKS_DOOR_STATES')=='1' then kinds={6}end
+local function capture(name)
+ local f=assert(io.open(out..'/shot.tmp','w'));f:write(name);f:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
+ local deadline=dfhack.getTickCount()+10000
+ while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Stocks art capture timeout');script.sleep(1,'frames')end
+end
 for _,kind in ipairs(kinds)do
  local found=false
  for index,value in ipairs(stocks.filtered_type_list)do if value==kind then stocks.scroll_position_type=index;found=true;break end end
@@ -41,9 +47,14 @@ for _,kind in ipairs(kinds)do
   if #facts<128 then facts[#facts+1]=appearance_facts(item)end
  end
  rows[#rows+1]={category=kind,ids=ids,appearance_facts=facts}
- local name='stocks-art-'..kind
- local f=assert(io.open(out..'/shot.tmp','w'));f:write(name);f:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
- local deadline=dfhack.getTickCount()+10000
- while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Stocks art capture timeout');script.sleep(1,'frames')end
+ capture('stocks-art-'..kind)
+ if os.getenv('DF3D_STOCKS_DOOR_STATES')=='1' then
+  local f=assert(io.open(out..'/stocks-door-states.json'));local reference=json.decode(f:read('*a'));f:close()
+  for _,case in ipairs(reference.cases)do
+   stocks.scroll_position_item=case.row_index*3;view:render(dfhack.getTickCount())
+   capture('stocks-door-state-'..case.id)
+  end
+  stocks.scroll_position_item=0
+ end
 end
 return rows

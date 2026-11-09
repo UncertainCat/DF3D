@@ -228,7 +228,8 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
             layers.push_back({layer,Color(float(rect.px)/resource->width,float(rect.py)/resource->height,
                 float(rect.pw)/resource->width,float(rect.ph)/resource->height)});
         }
-        const int composite=compositeBuildingTile(layers,false,true,false,query.kind==wm::ItemKind::Bin);
+        const bool doorLock=query.door && !query.door->open && query.door->forbidden && assets_->index.tile("ITEM_DOOR_FORBIDDEN");
+        const int composite=compositeBuildingTile(layers,false,true,false,query.kind==wm::ItemKind::Bin,doorLock);
         const auto* resource=composite>=0?spriteResources_.slots.find(composite):nullptr;
         if(resource)return resource->texture;
         return {};

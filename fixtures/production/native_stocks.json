@@ -5968,5 +5968,187 @@
       37
     ],
     "installed_bridge_sha256": "2a220b9ae5f3aa3d1a1203bbcd919588bc6120b7b4fd50a260f7c2208fc047c1"
+  },
+  "door_controlled_states_reference": {
+    "capture": "build/stockpile-storage-native-input-20261109-030340",
+    "scope": "Eight installed rock-salt doors: open/closed at each wear0..3, all forbidden. Their original fields are restored; no save. Ordinary closed/unforbidden coverage remains in door_state161_reference.",
+    "cases": [
+      {
+        "building_id": 1409,
+        "forbidden": true,
+        "id": 44900,
+        "open": false,
+        "original_flags": 16,
+        "original_timer": 0,
+        "original_wear": 0,
+        "row_index": 3,
+        "wear": 0,
+        "icon_rgb_different_pixels": 0,
+        "other_rgb_different_pixels": 26,
+        "native_sha256": "d311d0be76cfe8908d30efc0ce44db48543d6a1479113c0c33fd46e31c987068",
+        "viewer_sha256": "ae1ca0128cf418575030c7eecb041c54a33ce230b29a3396f0a9e5e0730df449"
+      },
+      {
+        "building_id": 1485,
+        "forbidden": true,
+        "id": 46925,
+        "open": true,
+        "original_flags": 16,
+        "original_timer": 0,
+        "original_wear": 0,
+        "row_index": 4,
+        "wear": 0,
+        "icon_rgb_different_pixels": 0,
+        "other_rgb_different_pixels": 26,
+        "native_sha256": "68c89962d75eb7b6cde2eb493b3a26786fa80b7281ff2fa37a9a3ee20dd135cd",
+        "viewer_sha256": "686696c366f35c96608558e7649f4c1e82ef1ec236963646957d71fe84cdfad3"
+      },
+      {
+        "building_id": 1479,
+        "forbidden": true,
+        "id": 47768,
+        "open": false,
+        "original_flags": 16,
+        "original_timer": 0,
+        "original_wear": 0,
+        "row_index": 9,
+        "wear": 1,
+        "icon_rgb_different_pixels": 0,
+        "other_rgb_different_pixels": 26,
+        "native_sha256": "c9bde751cca714f0822e4bc75e7ab221e237d50a65b0987fe08ed0d1663cbf77",
+        "viewer_sha256": "ae5751ddcac9c6b837e72d9f8182e8f9b921d442da9ba06b17b5d3697cc90783"
+      },
+      {
+        "building_id": 1408,
+        "forbidden": true,
+        "id": 44936,
+        "open": true,
+        "original_flags": 16,
+        "original_timer": 0,
+        "original_wear": 0,
+        "row_index": 10,
+        "wear": 1,
+        "icon_rgb_different_pixels": 0,
+        "other_rgb_different_pixels": 26,
+        "native_sha256": "d2534df89c66c034444f4ef4ce916ed743fddfd721f831f3cf93129f4cf5b796",
+        "viewer_sha256": "6123ba3c799e7af60cb2702b605985fa32137139f8ea6b055bacc9b65bd6415a"
+      },
+      {
+        "building_id": 1477,
+        "forbidden": true,
+        "id": 47669,
+        "open": false,
+        "original_flags": 16,
+        "original_timer": 0,
+        "original_wear": 0,
+        "row_index": 23,
+        "wear": 2,
+        "icon_rgb_different_pixels": 0,
+        "other_rgb_different_pixels": 26,
+        "native_sha256": "35b94e68f898e5c4bcd2efada09ae55147bbd2d37779543ca0a8a403427db250",
+        "viewer_sha256": "a43c1f1fdfa523fe236a05e322715924433c741c03ad6ec3d08c2eaadb042c97"
+      },
+      {
+        "building_id": 1384,
+        "forbidden": true,
+        "id": 44024,
+        "open": true,
+        "original_flags": 16,
+        "original_timer": 0,
+        "original_wear": 0,
+        "row_index": 24,
+        "wear": 2,
+        "icon_rgb_different_pixels": 0,
+        "other_rgb_different_pixels": 26,
+        "native_sha256": "df1434fa748e7c62029cbd606afea28b0dd4b61d6ef4fa19bb72a2e7f0ccb0e0",
+        "viewer_sha256": "5cb5e3766dbe0550aeffccbb33bdffdce4ef341f5474b6891ec77fe91ccf8b78"
+      },
+      {
+        "building_id": 1481,
+        "forbidden": true,
+        "id": 47625,
+        "open": false,
+        "original_flags": 16,
+        "original_timer": 0,
+        "original_wear": 0,
+        "row_index": 39,
+        "wear": 3,
+        "icon_rgb_different_pixels": 0,
+        "other_rgb_different_pixels": 26,
+        "native_sha256": "3ed26d46f592b21cc62dd94692e2b9f1eec58aeec2b7aa861d32f6d04981f484",
+        "viewer_sha256": "1337ad950245780ca426aad3e8e4a5663540f7695f2809da27295b449df03cbd"
+      },
+      {
+        "building_id": 1407,
+        "forbidden": true,
+        "id": 44937,
+        "open": true,
+        "original_flags": 16,
+        "original_timer": 0,
+        "original_wear": 0,
+        "row_index": 40,
+        "wear": 3,
+        "icon_rgb_different_pixels": 0,
+        "other_rgb_different_pixels": 26,
+        "native_sha256": "f61bc5cb867eac65b765585b6929e1c5d16bb2489d846ea1b6a154c067eea624",
+        "viewer_sha256": "d4921a077ff9746aeb3a06cfc44dfe9c3c24b5acf974b70e47da1e0fa130c9ba"
+      }
+    ],
+    "icon_region": [
+      360,
+      112,
+      394,
+      724
+    ],
+    "remaining_difference": "26 previously recorded scrollbar pixels per other item region.",
+    "runtime_correction": "Only the final forbidden overlay uses blendLayoutOver, matching native cf50c2..cf5202 alpha prepass and SDL truncation; base and ID decoration retain ordinary item blending. Cache identity separates this mode.",
+    "restoration": {
+      "count": 8,
+      "restored": true
+    },
+    "wire_result": {
+      "categories": 93,
+      "controller": true,
+      "edits": 2,
+      "groups": 6,
+      "individual": false,
+      "items": 9,
+      "owner": false,
+      "rendered": true,
+      "success": true
+    },
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        },
+        {
+          "id": "godot-device-finalize",
+          "count": 1,
+          "reference": "https://github.com/godotengine/godot/issues/119000"
+        },
+        {
+          "id": "godot-shutdown-objects",
+          "count": 1,
+          "reference": "ENGINEERING.md#tests-and-known-problems"
+        }
+      ],
+      "unclassified": []
+    },
+    "verification": "stocks-door-lock-blend: Core19, extension and installed icon checks passed.",
+    "earlier_evidence": {
+      "025708": "Fixture wrongly expected all modified doors on the first page. Wear reordered rows; viewer rejected incomplete coverage. Owned DF exited unsaved; field-restoration callback completion not claimed.",
+      "030008": "Revised fixture scrolls to each case; semantic facts and restoration pass. Closed forbidden target icons differed by28–30 pixels, identifying final-overlay blend mismatch."
+    },
+    "source_preserved": true,
+    "owned_df_closed": 36344,
+    "graphics_fps_cap": 30,
+    "final_sampled_gpu_temperature_c": 38,
+    "limitations": [
+      "Other materials, modified graphic definitions and every ID variant are not separately captured.",
+      "Stocks overall remains staged; other artwork and workflow gaps remain."
+    ]
   }
 }

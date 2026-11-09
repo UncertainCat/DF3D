@@ -37,6 +37,18 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
+Controlled Stocks door capture030340 verifies eight installed doors: open and
+closed at wear0–3, with the linked forbidden flag set. Each icon region matches
+native exactly; only26 previously recorded scrollbar pixels differ elsewhere.
+The final forbidden overlay now uses the existing layout blend (native
+cf50c2..cf5202 alpha prepass/SDL truncation), while base and ID decoration retain
+ordinary item blending. The composite cache distinguishes this mode. All eight
+original wear/door flag/timer fields are restored, typed facts and group edits
+pass, source preserved, owned DF36344 exits unsaved at30FPS;38C sampled and known
+Godot diagnostics only. Core19, extension and installed icon checks pass in
+`stocks-door-lock-blend`. `door_controlled_states_reference` records cases,
+hashes and bounded acceptance. No separate material/modded-graphics acceptance.
+
 Management161 appends optional complete door open/forbidden/wear facts to item
 appearance. Rebuild bridge and viewer together;160 peers use a separate channel.
 All three fields remain-1 for unknown legacy appearance; partial observations
@@ -46,19 +58,19 @@ Loose doors use known closed/unforbidden state. Field revisions, wire/model
 copying and strict Godot projection retain the facts. Protected025238 matches
 all visible door icons exactly; only26 existing scrollbar pixels differ in the
 rest of the item region. First-page loose/installed undamaged closed doors are
-covered; open/forbidden/worn states remain without live visual acceptance.
+covered; the controlled capture above adds open/forbidden/worn states.
 Core19, extension, Stocks state and MSVC pass. Typed reads, restored group edits
 and stale rejection pass; source preserved, DF15996 exits unsaved at30FPS with
 35–37C GPU samples and known Godot diagnostics only. `door_state161_reference`
 records hashes and scope; floodgate rows remain exact.
 
-The shared item renderer has staged support for owned door open/forbidden/wear
+The shared item renderer supports owned door open/forbidden/wear
 facts and item-ID decoration. Nativecf4b3d..cf4d18 selects wear-specific bases
 and suppresses ID decoration while open;cf50c2 draws the forbidden overlay only
 while closed. Supported vanilla CLOSED:ALL shares artwork across quality levels.
 Stocks now receives these facts through Management161. Core19, extension and installed-asset icon checks pass
-headlessly (`stocks-door-renderer`); live acceptance is limited to the closed
-door page above.
+headlessly (`stocks-door-renderer`); live acceptance is scoped to the captures
+above.
 `door_renderer_reference` records native selectors and the supported raw hash.
 Bucket follow-up must use reverse reference order and native isLiquid virtual86
 (c7d7a0..c7d8af), not the BIN first-entry/color-override policy.

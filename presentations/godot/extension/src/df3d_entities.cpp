@@ -773,9 +773,9 @@ int Df3dWorld::buildingSlotFor(wm::BuildingKind kind,wm::BuildingStage stage,int
     spriteResources_.images[id]=image;spriteResources_.buildings[key]=id;return id;
 }
 
-int Df3dWorld::compositeBuildingTile(const std::vector<std::pair<int, Color>>& layers,bool floorHalfAlpha,bool nativeItemBlend,bool nativeLayoutBlend,bool nativeBinBlend) {
+int Df3dWorld::compositeBuildingTile(const std::vector<std::pair<int, Color>>& layers,bool floorHalfAlpha,bool nativeItemBlend,bool nativeLayoutBlend,bool nativeBinBlend,bool nativeDoorLockBlend) {
     if(layers.empty()) return -1;
-    std::string key=nativeBinBlend ? "bin-composite:" : nativeLayoutBlend ? "layout-composite:" : nativeItemBlend ? "item-composite:" : floorHalfAlpha ? "half-composite:" : "composite:";
+    std::string key=nativeDoorLockBlend ? "door-lock-composite:" : nativeBinBlend ? "bin-composite:" : nativeLayoutBlend ? "layout-composite:" : nativeItemBlend ? "item-composite:" : floorHalfAlpha ? "half-composite:" : "composite:";
     struct Source {int slot,x,y,w,h; godot::Ref<godot::ImageTexture> texture;};
     std::vector<Source> sources;
     int w=0,h=0;
@@ -794,6 +794,7 @@ int Df3dWorld::compositeBuildingTile(const std::vector<std::pair<int, Color>>& l
     image->fill(Color(0,0,0,0));
     bool firstLayer=true;
     for(const auto& src:sources) {
+        const bool doorLockLayer=nativeDoorLockBlend && &src==&sources.back();
         auto& source=spriteResources_.images[src.slot];if(source.is_null())source=src.texture->get_image();
         ERR_FAIL_COND_V_MSG(source.is_null(), -1, "composite layer slot without image");
         auto layer=source->get_region(godot::Rect2i(src.x,src.y,src.w,src.h));
@@ -808,7 +809,9 @@ int Df3dWorld::compositeBuildingTile(const std::vector<std::pair<int, Color>>& l
                 const assets::Rgba pixel{src[i],src[i+1],src[i+2],src[i+3]};
                 if(nativeBinBlend) {
                     assets::replaceBinContentsPixel(d,pixel);
-                } else if(nativeLayoutBlend) {
+                } else if(nativeLayoutBlend || doorLockLayer) {
+                    // Door cf50c2..cf5202 uses the same alpha prepass and
+                    // SDL truncation as layouts, for the lock overlay only.
                     assets::blendLayoutOver(d,pixel);
                 }
                 else assets::blendOver(d,pixel);

@@ -2001,6 +2001,14 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(carrier->appearance){const auto& a=*carrier->appearance;Json::Value look(Json::objectValue);look["material_token"]=DF2UTF(a.materialToken);look["subtype_raw"]=DF2UTF(a.subtypeRaw);look["color_token"]=DF2UTF(a.colorToken);look["stack"]=a.stack;look["flags"]=a.flags;if(a.instrumentFamily>=0){Json::Value instrument(Json::objectValue);instrument["family"]=a.instrumentFamily;instrument["placed"]=a.instrumentPlaced;look["instrument"]=instrument;}result["appearance"]=look;}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="item-ammunition-assignment-probe") {
+          if(parameters.size()!=2 || !state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          int32_t id=-1;const auto& raw=parameters[1];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0)return CR_WRONG_USAGE;
+          const auto value=df3d_production::itemAmmunitionAssignment(df::item::find(id));if(!value)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["kind"]=value->kind;result["squad_id"]=value->squadId;result["caption"]=DF2UTF(value->caption);
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="item-inspect-probe"||parameters[0]=="item-flag-probe") {
           using namespace df3d_production;
           const bool edit=parameters[0]=="item-flag-probe";

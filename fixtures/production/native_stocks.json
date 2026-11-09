@@ -3669,5 +3669,48 @@
     "gpu": "30FPS;49-50C sampled",
     "diagnostics": "passed_with_known_issues: godot-separate-thread-notice, godot-device-finalize, godot-shutdown-objects; unclassified empty",
     "limitations": "Native Assigned to hunters status missing; carrier icon differs. No full-sheet, all-ammunition-variants or main-scene camera/follow acceptance. Public Stocks remains hidden."
+  },
+  "ammunition_assignment_reference": {
+    "capture": "build/stockpile-storage-native-input-20261109-001936",
+    "sha256": "664052da17b7d3d7b7d454fb3f38744864abc8c3be9ac498d81f0fe9abaddf0a",
+    "qa": "build/qa/item-ammo-assignment",
+    "bridge_build": "build/notes/pm/item-ammo-assignment-msvc.log",
+    "native_selector": "153daa..154052",
+    "native_caption": "15748f..15765b",
+    "native_strings": {
+      "hunters": "15fe220",
+      "squad_prefix": "15fe210"
+    },
+    "observations": {
+      "hunters": {
+        "caption": "Assigned to hunters",
+        "kind": 1,
+        "squad_id": -1
+      },
+      "no_hunters": {
+        "caption": "",
+        "kind": 0,
+        "squad_id": -1
+      },
+      "precedence": {
+        "caption": "Assigned to hunters",
+        "kind": 1,
+        "squad_id": -1
+      },
+      "squad": {
+        "caption": "Assigned to Assignment probe",
+        "kind": 2,
+        "squad_id": 120
+      },
+      "unassigned": {
+        "caption": "",
+        "kind": 0,
+        "squad_id": -1
+      }
+    },
+    "scope": "Owned semantic adapter uses simulation assigned ammunition gate, hunter specs, fortress squad order and native binary membership/name formatter. Controlled unsaved-clone changes compare provider captions with actual rendered native sheet text for hunter, absent gate, absent hunter, squad alias and hunter precedence. Original lists/alias restored.",
+    "source_save": "unchanged; owned DF21048 exited unsaved",
+    "gpu": "48C sampled; native only",
+    "limitations": "Provider acceptance only; pointer-free snapshot transport and viewer row still pending. Translated-name branch reuses existing pinned formatter but this capture exercises squad alias."
   }
 }

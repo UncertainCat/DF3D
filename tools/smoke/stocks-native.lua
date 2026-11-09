@@ -243,6 +243,41 @@ if os.getenv('DF3D_STOCKS_DESTINATIONS')=='1' then
   assert(observed.description==dfhack.df2utf(sheet.raw_description),'Ammunition native description differs')
   result.destinations.item_snapshot=observed
   result.destinations.native_description=dfhack.df2utf(sheet.raw_description)
+  if os.getenv('DF3D_STOCKS_AMMO_ASSIGNMENT')=='1' then
+   local function read_assignment()
+    local text,code=dfhack.run_command_silent('df3d','item-ammunition-assignment-probe',tostring(id));assert(code==0,text)
+    local value=json.decode(text);view:render(dfhack.getTickCount())
+    local lines={};for y=0,df.global.gps.dimy-1 do local chars={}
+     for x=0,df.global.gps.dimx-1 do chars[#chars+1]=string.char(dfhack.screen.readTile(x,y).ch%256)end
+     lines[#lines+1]=table.concat(chars)
+    end
+    local screen=table.concat(lines,'\n')
+    if value.kind==0 then assert(not screen:find('Assigned to',1,true),'Native assignment unexpectedly present')
+    else assert(screen:find(value.caption,1,true),'Native assignment caption differs')end
+    return value
+   end
+   local cases={};local equipment=df.global.plotinfo.equipment;local assigned=equipment.items_assigned[df.item_type.AMMO]
+   local function copy(vec)local values={};for _,v in ipairs(vec)do values[#values+1]=v end;return values end
+   local function restore(vec,values)vec:resize(0);for _,v in ipairs(values)do vec:insert('#',v)end end
+   local original=copy(assigned);local hunters={};for _,spec in ipairs(equipment.hunter_ammunition)do hunters[#hunters+1]={spec=spec,ids=copy(spec.assigned)}end
+   local squad=df.squad.find(df.global.plotinfo.main.fortress_entity.squads[0] or -1)
+   local added,alias
+   local ok,err=xpcall(function()
+    cases.hunters=read_assignment();assert(cases.hunters.kind==1,'Expected hunter fixture')
+    assigned:resize(0);cases.unassigned=read_assignment();assert(cases.unassigned.kind==0,'Assigned-list gate ignored');restore(assigned,original)
+    for _,row in ipairs(hunters)do local kept={};for _,value in ipairs(row.ids)do if value~=id then kept[#kept+1]=value end end;restore(row.spec.assigned,kept)end
+    cases.no_hunters=read_assignment()
+    if squad then
+     alias=squad.alias;squad.alias='Assignment probe';added=df.squad_ammo_spec:new();added.assigned:insert('#',id);squad.ammo.ammunition:insert('#',added)
+     cases.squad=read_assignment();assert(cases.squad.kind==2 and cases.squad.squad_id==squad.id,'Squad assignment differs')
+     for _,row in ipairs(hunters)do restore(row.spec.assigned,row.ids)end
+     cases.precedence=read_assignment();assert(cases.precedence.kind==1,'Hunter precedence differs')
+    end
+   end,debug.traceback)
+   restore(assigned,original);for _,row in ipairs(hunters)do restore(row.spec.assigned,row.ids)end
+   if added then squad.ammo.ammunition:erase(#squad.ammo.ammunition-1);added:delete();squad.alias=alias end
+   view:render(dfhack.getTickCount());assert(ok,err);result.destinations.assignment_cases=cases
+  end
   local f=assert(io.open(out..'/shot.tmp','w'));f:write('stocks-ammo-sheet');f:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
   local deadline=dfhack.getTickCount()+10000
   while true do local ack=io.open(out..'/ack-stocks-ammo-sheet');if ack then ack:close();break end

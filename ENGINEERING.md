@@ -161,6 +161,17 @@ DF32724 exits unsaved, 30FPS GPU49-50C sampled; only documented
 thread/finalize/shutdown-object diagnostics remain. Other ammunition variants
 and full main-scene camera/follow behavior still require acceptance.
 
+The native ammunition-assignment adapter follows item-sheet153daa..154052:
+DF's assigned-ammunition list gates visibility, hunter allocations take priority,
+and otherwise the first matching fortress squad supplies its alias or native
+translated name. Binary membershipb9f70 and name formattinga946e0 are pinned;
+caption fragments come from native strings. No sheet scratch is read. Protected
+001936 compares actual native text against owned results for hunter, unassigned,
+no hunter allocation, squad alias and hunter precedence, then restores all
+fixture allocations/alias. Source unchanged, DF21048 exits unsaved, native-only
+GPU48C sampled. Core19 (`item-ammo-assignment`) and MSVC pass. This is provider
+acceptance only: transport and the visible assignment row remain pending.
+
 Management156 reuses native itemAppearance facts for the staged ammunition
 icons and the accepted diagonal ammunition artwork path. Core19, Stocks state
 and real Godot contract checks pass in `stocks-appearance156`; MSVC passes.

@@ -32,8 +32,47 @@
 #include "df/job_skill.h"
 #include "df/instrument_flags.h"
 #include "df/itemimprovement.h"
+#include "df/squad.h"
+#include "df/squad_ammo_spec.h"
+#include "df/historical_entity.h"
+#include "df/game_mode.h"
 
 namespace df3d_production {
+// Item-sheet153daa..154052 derives allocation from simulation equipment, not
+// the native sheet. Preserve its assigned-list gate and hunter precedence.
+struct ItemAmmunitionAssignment {int8_t kind=0;int32_t squadId=-1;std::string caption;};
+inline std::optional<ItemAmmunitionAssignment> itemAmmunitionAssignment(df::item* item) {
+    if(!item || !farmFunctions() || !df::global::plotinfo || !df::global::gamemode)return std::nullopt;
+    ItemAmmunitionAssignment result;
+    if(*df::global::gamemode!=df::game_mode::DWARF || item->getType()!=df::item_type::AMMO)return result;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool supported=[base]{
+        struct Pin {size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={{0xb9f70,0x25,UINT64_C(0xe6e732b038db044e)},
+            {0x75500,0x6f,UINT64_C(0x223b74ce0823a28d)},
+            {0xa946e0,0x7c2,UINT64_C(0xdbc3db5f052419ee)}};
+        for(const auto& p:pins){uint64_t h=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<p.length;++i){h^=base[p.rva+i];h*=UINT64_C(1099511628211);}if(h!=p.hash)return false;}
+        return std::string(reinterpret_cast<char*>(base+0x15fe220))=="Assigned to hunters" &&
+            std::string(reinterpret_cast<char*>(base+0x15fe210))=="Assigned to ";
+    }();
+    if(!supported)return std::nullopt;
+    const auto contains=[base](int32_t id,const std::vector<int32_t>& ids){
+        return reinterpret_cast<int32_t(*)(int32_t,const std::vector<int32_t>*)>(base+0xb9f70)(id,&ids)!=-1;};
+    const auto& equipment=df::global::plotinfo->equipment;
+    if(!contains(item->id,equipment.items_assigned[int(df::item_type::AMMO)]))return result;
+    for(const auto* spec:equipment.hunter_ammunition){if(!spec)return std::nullopt;
+        if(contains(item->id,spec->assigned)){result.kind=1;result.caption=reinterpret_cast<char*>(base+0x15fe220);return result;}}
+    const auto* entity=df::global::plotinfo->main.fortress_entity;if(!entity)return std::nullopt;
+    for(auto id:entity->squads){auto* squad=df::squad::find(id);if(!squad)continue;
+        for(const auto* spec:squad->ammo.ammunition){if(!spec)return std::nullopt;
+            if(!contains(item->id,spec->assigned))continue;
+            result.kind=2;result.squadId=id;result.caption=reinterpret_cast<char*>(base+0x15fe210);
+            std::string name=squad->alias;
+            if(name.empty()){auto owned=squad->name;reinterpret_cast<void(*)(df::language_name*,std::string*,bool,bool)>(base+0xa946e0)(&owned,&name,true,false);}
+            result.caption+=name;return result;}}
+    return result;
+}
 // Native follow loops35e7b6/8b6b76 use these independently owned outputs.
 // Reference getters may initialize semantic cached indices, never UI state.
 inline std::optional<df::coord> itemPosition(df::item* item) {

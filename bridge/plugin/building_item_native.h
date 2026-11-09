@@ -381,7 +381,8 @@ inline bool simpleItemDescriptionDispatch(df::item* item) {
     if(!item||!farmFunctions())return false;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     const auto* table=*reinterpret_cast<const void* const*>(item);
-    if(table!=base+0x16d06e0 && table!=base+0x16f6da0 && table!=base+0x15fa918)return false;
+    if(table!=base+0x16d06e0 && table!=base+0x16f6da0 && table!=base+0x15fa918 &&
+       table!=base+0x16cad20 && table!=base+0x16b7520 && table!=base+0x16f0ac0 && table!=base+0x16c6570)return false;
     static const bool pinned=[base]() {
         struct Pin {size_t slot,target,length;uint64_t hash;};
         constexpr Pin pins[]={
@@ -408,7 +409,17 @@ inline bool simpleItemDescriptionDispatch(df::item* item) {
         // Native c7527b adjusts BAR grammar; all text still comes from c75000.
         // BLOCKS shares the seed leaf targets except getType. c750f0 routes
         // its material wording through the owned semantic material formatter.
-        for(const size_t table:{size_t(0x16d06e0),size_t(0x16f6da0),size_t(0x15fa918)})for(auto pin:pins) {
+        // Rough/cut gems share BLOCKS' wording branch c750d2..c75150.
+        // WOOD c750af and BOULDER c75244 adjust grammar from owned flags
+        // and material getters only. All other used virtuals match SEEDS.
+        for(const size_t table:{size_t(0x16d06e0),size_t(0x16f6da0),size_t(0x15fa918),
+            size_t(0x16cad20),size_t(0x16b7520),size_t(0x16f0ac0),size_t(0x16c6570)})for(auto pin:pins) {
+            if(pin.slot==0) {
+                if(table==0x16cad20)pin={0,0x67a40,6,UINT64_C(0x0ba8a52fbdb51a10)};
+                if(table==0x16b7520)pin={0,0x67a50,6,UINT64_C(0xfef8c40540640013)};
+                if(table==0x16f0ac0)pin={0,0x67520,6,UINT64_C(0x18580e5a3b056825)};
+                if(table==0x16c6570)pin={0,0x67500,6,UINT64_C(0x31b5d0af35a4361f)};
+            }
             if(table==0x15fa918 && pin.slot==0)pin={0,0x67540,6,UINT64_C(0x2505ef84b8531c22)};
             if(table==0x16f6da0) {
                 if(pin.slot==0)pin={0,0x66e90,3,UINT64_C(0x58389c18233078ff)};
@@ -765,6 +776,8 @@ inline std::optional<ItemObservation> observeItem(df::item* item) {
     ItemObservation value;value.item=std::move(*facts);value.weight=*weight;value.description=*description;
     switch(item->getType()) {
     case df::item_type::BAR:case df::item_type::BLOCKS:
+    case df::item_type::BOULDER:case df::item_type::WOOD:
+    case df::item_type::ROUGH:case df::item_type::SMALLGEM:
     case df::item_type::BOX:case df::item_type::INSTRUMENT:
     case df::item_type::DOOR:
     case df::item_type::FLOODGATE:

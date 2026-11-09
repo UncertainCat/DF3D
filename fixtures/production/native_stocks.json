@@ -6140,7 +6140,7 @@
     "verification": "stocks-door-lock-blend: Core19, extension and installed icon checks passed.",
     "earlier_evidence": {
       "025708": "Fixture wrongly expected all modified doors on the first page. Wear reordered rows; viewer rejected incomplete coverage. Owned DF exited unsaved; field-restoration callback completion not claimed.",
-      "030008": "Revised fixture scrolls to each case; semantic facts and restoration pass. Closed forbidden target icons differed by28\u00e2\u20ac\u201c30 pixels, identifying final-overlay blend mismatch."
+      "030008": "Revised fixture scrolls to each case; semantic facts and restoration pass. Closed forbidden target icons differed by28â€“30 pixels, identifying final-overlay blend mismatch."
     },
     "source_preserved": true,
     "owned_df_closed": 36344,
@@ -6348,7 +6348,7 @@
         {
           "kind": 8,
           "id": 21002,
-          "description": "This is a masterful coffee wood bed created by Zon Mist\u00c3\u00aamrovod.  ",
+          "description": "This is a masterful coffee wood bed created by Zon MistÃªmrovod.  ",
           "native_sha256": "cc2ce4833fbd3d0c11113d87cb1955442ad683a13aafbab4a2945ccbf74da700",
           "viewer_sha256": "3c6a96b70bdc067d92419174348f10ac1f3489d7951d8a0b6097d90edfc0561a"
         },
@@ -7290,6 +7290,92 @@
       "stocks-scene-read-initialization.json": "95d444a348ece7693529bacfe24a85f1b2c4f99b22b93de4aada27aba91522fd",
       "stocks-scene-effects.json": "d8c8f0f66018385a854e066901980771292780129f9157d387a80b3b06d8834f",
       "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    }
+  },
+  "material_description_reference": {
+    "run": "build/stockpile-storage-native-input-20261109-054704",
+    "implementation": "Guarded c75000 description dispatch adds BOULDER, WOOD, ROUGH and SMALLGEM. All used virtuals match SEEDS except individually pinned getType leaves. WOOD c750af and BOULDER c75244 use item flags/material getters; gem wording shares the existing BLOCKS branch. No native menu inputs or schema change.",
+    "observations": [
+      {
+        "id": 33457,
+        "item_type": 0,
+        "description": "These are iron bars.  ",
+        "full_panel_differing_pixels": 3658,
+        "difference_bbox": [
+          10,
+          185,
+          158,
+          348
+        ]
+      },
+      {
+        "id": 5878,
+        "item_type": 2,
+        "description": "These are siltstone blocks.  ",
+        "full_panel_differing_pixels": 0,
+        "difference_bbox": null
+      },
+      {
+        "id": 31314,
+        "item_type": 3,
+        "description": "These are rough onyxes.  ",
+        "full_panel_differing_pixels": 199,
+        "difference_bbox": [
+          19,
+          20,
+          33,
+          40
+        ]
+      },
+      {
+        "id": 44711,
+        "item_type": 4,
+        "description": "This is rock salt.  "
+      },
+      {
+        "id": 48169,
+        "item_type": 5,
+        "description": "These are coffee wood logs.  ",
+        "full_panel_differing_pixels": 2593,
+        "difference_bbox": [
+          16,
+          229,
+          174,
+          336
+        ]
+      }
+    ],
+    "absent_types": [
+      1
+    ],
+    "verified": "Actual Stocks View/close and exact native descriptions for five present families; core19, extension and item_sheet_state_test pass; MSVC bridge build passes.",
+    "visual_limits": "BLOCKS panel identical. ROUGH differs by199 header-art pixels. BAR lacks subtype-dependent Smelter holder art and Uses section; WOOD lacks Uses section. BOULDER native PNG captured terrain without the panel and is excluded from visual acceptance. SMALLGEM absent; no live acceptance. Public Stocks remains gated.",
+    "source_preserved": true,
+    "owned_df_pid": 9292,
+    "exit": "unsaved",
+    "fps_cap": 30,
+    "gpu_max_sample_c": 51,
+    "diagnostics": "Known separate-thread notice, device-finalize and shutdown-object signatures only; not a clean engine pass.",
+    "hashes": {
+      "stocks-wire-reference.json": "13ef73e6083d9e5fbc7173493149f2af65ac04a657fc143322afc58ef47598cd",
+      "stocks-native.json": "4bdef3c6f9b0b2115f11891dc0289b0d5c13c0a53a2317b887f15c60cf147847",
+      "job-settings-wire-result.json": "cac1a52e9aa8934e706bfb557de0c0f375ab9323f855653fecc0ed54aa512040",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "stocks-furniture-wire-0.json": "6515b34f86367580523543563fc3365eee5fffb0f54d753b42830d656523b33c",
+      "stocks-furniture-native-0.png": "13342b9e2b5a19ac4bee09c5bb46239d68186596e73afcf1f23e1ae94f449009",
+      "stocks-furniture-view-0.png": "ebf2a48d64d4d325388a8215ececb91d8080d4a99b30a5f6421beeaeee30842f",
+      "stocks-furniture-wire-2.json": "ba56c213a8681c89969ce0adee18d77f136d19004d7a3d90761c9e8c35d9973e",
+      "stocks-furniture-native-2.png": "f14d5c5c849ae2dcedbd3558ea97d9cc05c7da679bd56a33a2e037aa0414e955",
+      "stocks-furniture-view-2.png": "f597541f350d6d170341d88a8095766a0869f3ec5a106b8439e512e8505b9cfe",
+      "stocks-furniture-wire-3.json": "5bf27d6ddc8b87b480be4327090f3052cf0ee504cb11b48c0f5819aeedbfd356",
+      "stocks-furniture-native-3.png": "c9c8c8dd31eaa3795a3865965e429c449f7cecd1f2d561dda5ff05d240c28114",
+      "stocks-furniture-view-3.png": "89ce5027dc16d0474a6d7df2c082d66b165e93f9ed6aab13c495aa31cce9be63",
+      "stocks-furniture-wire-4.json": "2c8addd5b461c0ec88034e7ce281599d7431c1e8b40bd79872f8789d85c6c75b",
+      "stocks-furniture-native-4.png": "d10fe096e77f5d97a2821feda7c0951735e95ad15c36fe246096d340743b1817",
+      "stocks-furniture-view-4.png": "429dfcf29ef756347537462799b86b80a51f02f2575d456e9847d3611ea5a5cc",
+      "stocks-furniture-wire-5.json": "cf315cb0214ca4aee00c26c6f75a31879c25c28b5584fc8e72f112fa451b08f2",
+      "stocks-furniture-native-5.png": "99ce3658547b3925ea72e06cdd07691443d1b012a45364aa79ca3d11d2239e3b",
+      "stocks-furniture-view-5.png": "063dd6f4a819aba1f8f9777bcfa6e1752ee6069e3a45f977e22455f4ed3e4fd5"
     }
   }
 }

@@ -88,6 +88,24 @@ extension and item-state checks pass (`item-holder-icons`). Source preserved;
 DF41128 exits unsaved at30FPS,50C sampled; documented Godot diagnostics only.
 `holder_icon_reference` retains mappings, hashes and bounded acceptance.
 
+The simple native description dispatcher also admits BOULDER, WOOD, ROUGH and
+SMALLGEM through pinned c75000 semantics and type leaves. Their other used
+virtuals match SEEDS; material wording and grammar remain native. No schema
+change or native menu inputs. Protected054704 verifies actual Stocks View/close
+and exact descriptions for bars, blocks, rough gems, boulders and wood; cut gems
+are absent. Core19, extension/item-state (`item-material-sheets`) and MSVC pass.
+Source preserved, DF9292 exits unsaved at30FPS;51C maximum sampled, not peak.
+Only documented Godot diagnostics remain. `material_description_reference` in
+native_stocks.json retains observations, image hashes and explicit limitations.
+
+This is description acceptance, not complete item-sheet parity. BLOCKS matches
+all panel pixels; ROUGH has199 header-art differences. BAR and WOOD omit native
+Uses rows, and BAR's Smelter holder icon remains unsupported. The BOULDER native
+capture contains terrain without the panel, so cannot establish visual parity.
+Uses must come from an independently owned native semantic provider; the native
+view_sheets item_use vectors are reference-only, prohibited runtime inputs.
+Public Stocks remains gated pending its remaining functional coverage.
+
 The guarded native description path additionally admits chains, windows, cages,
 animal traps, coffins, armor stands, weapon racks, amulets and scepters. Their
 constructed-item virtuals match BOX except pinned getType leaves; subtype is

@@ -111,6 +111,7 @@
 #include "hunter_ammunition_captions_native.h"
 #include "chores_native.h"
 #include "kitchen_native.h"
+#include "stone_use_native.h"
 #include "df/gamest.h"
 #include "work_order_catalog_native.h"
 #include "work_order_rows_native.h"
@@ -502,6 +503,12 @@ struct KitchenResult {
   std::vector<df3d_kitchen::Exclusion> exclusions;
 };
 std::optional<KitchenResult> kitchen;
+struct StoneUseResult {
+  m::StoneUseOutcome outcome=m::StoneUseOutcome::Rejected;
+  std::vector<df3d_stone_use::Row> rows;
+  std::vector<uint8_t> restrictions;
+};
+std::optional<StoneUseResult> stoneUse;
 
 
 m::TilePos worldHoverTile;
@@ -517,7 +524,7 @@ void clearResult() {
   residentsRows.reset();
   residentsSpecialization.reset();
   residentsActivity.reset();
-  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();
+  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();stoneUse.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -1148,6 +1155,12 @@ void publish() {
     }
     standingOrdersResult=m::CreateStandingOrdersState(b,standingOrders->category,standingOrders->outcome,b.CreateVector(rows));
   }
+  flatbuffers::Offset<m::StoneUseState> stoneUseResult;
+  if(stoneUse){
+    std::vector<flatbuffers::Offset<m::StoneUseRow>> rows;
+    for(const auto& row:stoneUse->rows)rows.push_back(m::CreateStoneUseRow(b,row.category,row.index,row.restricted,b.CreateString(row.name),b.CreateString(row.uses),row.magmaSafe,b.CreateString(row.materialToken)));
+    stoneUseResult=m::CreateStoneUseState(b,stoneUse->outcome,b.CreateVector(rows),b.CreateVector(stoneUse->restrictions));
+  }
   flatbuffers::Offset<m::KitchenMenuState> kitchenResult;
   if(kitchen){
     std::vector<flatbuffers::Offset<m::KitchenMenuRow>> rows;
@@ -1190,7 +1203,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult);
   b.Finish(s);
   if (auto e = m::validateManagementState(
           *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()))) {
@@ -1203,6 +1216,7 @@ void publish() {
     const auto placed=construction.placed,skipped=construction.skipped;
     const auto first=construction.first_building;
     const auto standingCategory=standingOrders?standingOrders->category:0;
+    const bool stoneUseUnknown=stoneUse && (stoneUse->outcome==m::StoneUseOutcome::Applied || stoneUse->outcome==m::StoneUseOutcome::Unknown);
     const bool kitchenUnknown=kitchen && (kitchen->outcome==m::KitchenMenuOutcome::Applied || kitchen->outcome==m::KitchenMenuOutcome::Unknown);
     const bool choresUnknown=chores && (chores->outcome==m::ChoresOutcome::Applied || chores->outcome==m::ChoresOutcome::Unknown);
     const bool hunterUnknown=hunter && (hunter->outcome==m::HunterAmmunitionOutcome::Applied || hunter->outcome==m::HunterAmmunitionOutcome::Unknown);
@@ -1211,6 +1225,7 @@ void publish() {
     auto jobWrite=jobSettingsEdit;
     if(jobWrite && jobWrite->outcome!=m::JobSettingsEditOutcome::Applied && jobWrite->outcome!=m::JobSettingsEditOutcome::Unknown)jobWrite.reset();
     clearResult();
+    if(stoneUseUnknown){stoneUse.emplace();stoneUse->outcome=m::StoneUseOutcome::Unknown;mutated=true;}
     if(kitchenUnknown){kitchen.emplace();kitchen->outcome=m::KitchenMenuOutcome::Unknown;mutated=true;}
     if(choresUnknown){chores.emplace();chores->outcome=m::ChoresOutcome::Unknown;mutated=true;}
     if(hunterUnknown){hunter.emplace();hunter->outcome=m::HunterAmmunitionOutcome::Unknown;mutated=true;}
@@ -4165,8 +4180,25 @@ void run(color_ostream& out) {
     publish();return;
   }
   if(r->action()==m::ManagementAction::StoneUseRead || r->action()==m::ManagementAction::StoneUseApply) {
-    // Contract migration precedes native dispatch; never fall through to legacy actions.
-    status=m::ManagementStatus::Rejected;message.clear();publish();return;
+    namespace h=df3d_stone_use;
+    status=m::ManagementStatus::Rejected;message.clear();stoneUse.emplace();bool writeStarted=false;
+    try {
+      const auto& q=*r->stone_use();
+      if(r->action()==m::ManagementAction::StoneUseRead){
+        auto rows=h::read();if(!rows || !df::global::plotinfo)throw std::runtime_error("stone use unavailable");
+        for(auto& row:*rows){row.name=DF2UTF(row.name);row.uses=DF2UTF(row.uses);}
+        const auto& flags=df::global::plotinfo->economic_stone;
+        stoneUse->restrictions.assign(flags.begin(),flags.end());stoneUse->rows=std::move(*rows);
+        stoneUse->outcome=m::StoneUseOutcome::None;status=m::ManagementStatus::Ok;
+      }else{
+        std::vector<char> expected(q.expected()->begin(),q.expected()->end());
+        const auto outcome=h::apply(q.category(),q.index(),expected,&writeStarted);
+        if(outcome==h::Outcome::Applied){stoneUse->outcome=m::StoneUseOutcome::Applied;status=m::ManagementStatus::Ok;mutated=true;}
+        else if(outcome==h::Outcome::Stale)stoneUse->outcome=m::StoneUseOutcome::Stale;
+      }
+    }catch(...){stoneUse.emplace();status=m::ManagementStatus::Rejected;
+      if(writeStarted){stoneUse->outcome=m::StoneUseOutcome::Unknown;mutated=true;}}
+    publish();return;
   }
   if(r->action()==m::ManagementAction::KitchenRead || r->action()==m::ManagementAction::KitchenApply) {
     namespace h=df3d_kitchen;

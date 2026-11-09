@@ -831,5 +831,11 @@
       3
     ],
     "scope": "All83 native rendered magma indicators match owned predicate results; all83 material identity tokens match native raw IDs. Diagnostic scroll is clamped to count-15 and row coordinates follow retained page. All four native/owned toggles and stale checks also pass. Earlier191317/191358 sampled the top row beyond the last full page and are not acceptance. Source preserved, DF39260 unsaved exit, GPU49C. No DF3D row-art/layout acceptance yet."
+  },
+  "wire_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-193250",
+    "rows": 83,
+    "edits": 4,
+    "scope": "Typed Godot bridge read matches native provider metadata/full flags. Four edits each followed by stale replay rejection and fresh read; independent Lua compares every restriction byte after each step. Source unchanged, owned DF36056 unsaved exit, GPU48C, only known separate-thread notice. No controller/view or live publication-fault acceptance."
   }
 }

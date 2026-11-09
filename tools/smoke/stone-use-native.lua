@@ -116,6 +116,22 @@ if os.getenv('DF3D_STONE_USE_EDITS')=='1' then
  click(14,12)
 end
 local f=assert(io.open(out..'/stone-use-native.json','w'));f:write(json.encode(result));f:close()
+if os.getenv('DF3D_STONE_USE_WIRE')=='1' then
+ assert(result.edits and cold,'Stone use wire needs native edit/provider evidence')
+ local checked=0;local expected={}
+ for i,value in ipairs(result.edits.before)do expected[i]=value end
+ shot('stone-use-wire',function()
+  local f=io.open(out..'/stone-use-wire-step');if not f then return end
+  local index=tonumber(f:read('*a'));f:close()
+  if index and index>checked then
+   assert(index==checked+1 and index<=#result.edits.steps,'Unexpected Stone use wire step')
+   local step=result.edits.steps[index];expected[step.index+1]=step.restricted
+   for i,value in ipairs(df.global.plotinfo.economic_stone)do assert(value==expected[i+1],'Stone use wire changed unexpected restriction')end
+   checked=index;local ack=assert(io.open(out..'/stone-use-wire-ack','w'));ack:write(tostring(index));ack:close()
+  end
+ end)
+ assert(checked==#result.edits.steps,'Incomplete Stone use wire effects')
+end
 shot('stone-use-root')
 click(30,10)
 return result

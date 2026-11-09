@@ -50,8 +50,18 @@ fresh reads and stale rejection through153. Source unchanged, DF48708 exits
 unsaved, headless viewer, GPU47C; only the known separate-thread notice remains.
 Installed plugin SHA256:
 2A37556F700268D0CDF710C7FDF91D0B05D63C84DBCF47764CE4087AE81FED54.
-This migration explicitly rejects new Stone use commands until native dispatch
-and publication are wired; it is not Stone use live or UI acceptance.
+Stone use dispatch now calls the owned native reader and edit adapter. Read
+copies native captions to UTF-8 and returns complete restriction authority;
+Apply returns empty authority and requires a refresh. Pre-write failure rejects;
+post-write failure and invalid-response publication fallback yield Unknown without
+rows or flags. Protected193250 verifies83 typed rows, four edits/fresh reads and
+stale replay rejection, with independent full restriction-array readback after
+each edit. Source unchanged, DF36056 exits unsaved, headless viewer, GPU48C;
+only the known separate-thread notice remains.193153 had JSON numeric-type
+comparison errors and performed no wire edits, so it is not acceptance. MSVC and
+core19 pass stone-use-dispatch-msvc.log and stone-use-dispatch. Installed SHA256:
+023FABBDDE8C76CFA6C25197FACEFDB775A8FD21AB7644F1FF8D1C7D0667E81D.
+Live publication fault injection and controller/view lifecycle remain unverified.
 
 The Stone use tab remains unimplemented. Protected185832 on2026-11-08 records
 30 economic and53 other stones in native order, material identities/restrictions,

@@ -1,5 +1,6 @@
 extends "res://scripts/residents_view.gd"
 signal standing_orders_requested
+signal stone_use_requested
 signal kitchen_requested
 # Staged native Work Details surface. Shared roster art/name/hover helpers come
 # from Residents; this screen has its own layout, columns and input targets.
@@ -77,6 +78,7 @@ func _input(event: InputEvent) -> void:
 	super._input(event)
 func click_action(point: Vector2) -> Dictionary:
 	if standing_orders_rect().has_point(point):return {"kind":"standing_orders"}
+	if stone_use_rect().has_point(point):return {"kind":"stone_use"}
 	if kitchen_rect().has_point(point):return {"kind":"kitchen"}
 	if add_rect().has_point(point):return {"kind":"create"}
 	for index in range(detail_first,mini(state.details.size(),detail_first+detail_capacity())):
@@ -96,6 +98,7 @@ func click_action(point: Vector2) -> Dictionary:
 func dispatch_action(action: Dictionary) -> void:
 	match action.get("kind",""):
 		"standing_orders":standing_orders_requested.emit()
+		"stone_use":stone_use_requested.emit()
 		"kitchen":kitchen_requested.emit()
 		"create":state.create_detail()
 		"detail":state.select_detail(int(action.index))
@@ -108,6 +111,7 @@ func dispatch_action(action: Dictionary) -> void:
 func list_top() -> int:return 204 if wide_tabs else 228
 func header_top() -> int:return list_top()-132
 func standing_orders_rect() -> Rect2:return Rect2(136,header_top()-36,152,24)
+func stone_use_rect() -> Rect2:return Rect2(376,header_top()-36,104,24)
 func kitchen_rect() -> Rect2:return Rect2(288,header_top()-36,88,24)
 func detail_top() -> int:return header_top()+36
 func detail_capacity() -> int:return maxi(0,int((size.y-detail_top()-36)/36))
@@ -213,6 +217,7 @@ func _gui_input(event: InputEvent) -> void:
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
 	search.release_focus();accept_event()
 	if standing_orders_rect().has_point(event.position):standing_orders_requested.emit();return
+	if stone_use_rect().has_point(event.position):stone_use_requested.emit();return
 	if kitchen_rect().has_point(event.position):kitchen_requested.emit();return
 	if add_rect().has_point(event.position):state.create_detail();return
 	for index in range(detail_first,mini(state.details.size(),detail_first+detail_capacity())):

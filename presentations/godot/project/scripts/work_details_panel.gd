@@ -3,6 +3,7 @@ extends Node
 signal settings_requested
 signal rename_requested
 signal standing_orders_requested
+signal stone_use_requested
 signal kitchen_requested
 var ui_host
 var modal_input:=true
@@ -33,12 +34,16 @@ func configure(world,service,host,hover_help=null) -> void:
 	panel.name_finished.connect(_finish_name)
 	panel.standing_orders_requested.connect(request_standing_orders)
 	panel.kitchen_requested.connect(request_kitchen)
+	panel.stone_use_requested.connect(request_stone_use)
 	host.register(self);_layout();_sync()
 func allowed() -> bool:return play_enabled and ui_host!=null and ui_host.allows_panel_input(self)
 func _reset_labor_navigation() -> void:return_detail=0
 func request_standing_orders() -> void:
 	if not allowed() or state.phase!=state.Phase.Ready:return
 	return_detail=int(state.selected.get("index",0));standing_orders_requested.emit()
+func request_stone_use() -> void:
+	if not allowed() or state.phase!=state.Phase.Ready:return
+	return_detail=int(state.selected.get("index",0));stone_use_requested.emit()
 func request_kitchen() -> void:
 	if not allowed() or state.phase!=state.Phase.Ready:return
 	return_detail=int(state.selected.get("index",0));kitchen_requested.emit()

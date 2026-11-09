@@ -2,6 +2,7 @@ extends "res://scripts/location_staff_candidates_frame.gd"
 # Staged scalar pages; native captures are recorded in native_standing_orders.json. Other Labor workflows remain
 # unfinished and this surface must not become a public replacement yet.
 signal cancelled
+signal stone_use_requested
 signal kitchen_requested
 signal hunter_ammunition_requested
 signal chores_requested
@@ -29,6 +30,7 @@ func category_rect(index: int) -> Rect2:
 	for previous in index:x+=(CATEGORIES[previous].length()+4)*8
 	return Rect2(x,list_top()-36,(CATEGORIES[index].length()+4)*8,24)
 func work_details_rect() -> Rect2:return Rect2(8,list_top()-60,128,24)
+func stone_use_rect() -> Rect2:return Rect2(376,list_top()-60,104,24)
 func kitchen_rect() -> Rect2:return Rect2(288,list_top()-60,88,24)
 func visible_ids() -> Array[int]:
 	var ids: Array[int]=[]
@@ -48,6 +50,7 @@ func _gui_input(event: InputEvent) -> void:
 	accept_event()
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
 	if work_details_rect().has_point(event.position):work_details_requested.emit();return
+	if stone_use_rect().has_point(event.position):stone_use_requested.emit();return
 	if kitchen_rect().has_point(event.position):kitchen_requested.emit();return
 	if category_rect(5).has_point(event.position):chores_requested.emit();return
 	for category in [0,1,2,3,4,6]:

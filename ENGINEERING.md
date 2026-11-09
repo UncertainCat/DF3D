@@ -94,6 +94,22 @@ but exceeded the native capture's10-second deadline during shutdown, so it is
 not accepted; rendered Stone use captures now allow30 seconds. Core19 passes
 stone-use-rendered-input. Main-scene ownership remains unverified.
 
+Labor ownership now includes Stone use alongside Kitchen and Standing orders.
+All four Labor tabs route through local owners, retire old read authority, block
+handoffs during an edit and obtain fresh data on return. Stone use keeps its
+category/scroll intent across tab changes; normal close and session reset clear it.
+Work Details includes Stone use in its deferred rename-click routing. Headless
+stone-use-labor-owner passes core19 and Stone use/Kitchen/Chores/Standing orders/
+Work Details controller checks. Protected195024 on2026-11-08 uses the actual
+main-scene factory, host and pointer routes: Standing orders to Stone use, four
+restriction edits with independent native readback, Kitchen and Work Details
+round trips, retained category and fresh authority. The final panel matches
+native with zero RGB differences. Source unchanged, DF37388 exits unsaved;
+30FPS, GPU60C sampled, only the three documented Godot startup/shutdown diagnostics.
+This does not establish resize, physical wheel/drag, deferred-rename live handoff,
+off-page artwork or the complete session/reconnect lifecycle. Public exposure
+remains gated with the broader Labor acceptance work.
+
 Protected194629 records native input: arrows step one row, track clicks step
 15 rows at default height, and category changes retain independent positions.
 Standard up/down/page and context up/down commands at row, outside and bar

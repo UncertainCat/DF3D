@@ -60,6 +60,7 @@ func _gui_input(event: InputEvent) -> void:
 	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
 	if search!=null:search.release_focus()
+	if stone_use_rect().has_point(event.position):stone_use_requested.emit();accept_event();return
 	if work_details_rect().has_point(event.position):work_details_requested.emit();accept_event();return
 	if Rect2(136,list_top()-60,152,24).has_point(event.position):standing_requested.emit();accept_event();return
 	if Rect2(88,list_top()-24,24,12).has_point(event.position):state.cycle_type(-1);accept_event();return

@@ -61,6 +61,7 @@ local function shot(name,check_step)
  local deadline=dfhack.getTickCount()+((os.getenv('DF3D_KITCHEN_RENDER')=='1' or os.getenv('DF3D_CHORES_RENDER')=='1' or os.getenv('DF3D_STANDING_ORDERS_RENDER')=='1' or os.getenv('DF3D_HUNTER_AMMUNITION_RENDER')=='1') and 20000 or 10000)
  if name=='kitchen-wire' and os.getenv('DF3D_KITCHEN_MAIN')=='1' then deadline=dfhack.getTickCount()+120000 end
  if name=='stone-use-wire' and os.getenv('DF3D_STONE_USE_RENDER')=='1' then deadline=dfhack.getTickCount()+30000 end
+ if name=='stone-use-wire' and os.getenv('DF3D_STONE_USE_MAIN')=='1' then deadline=dfhack.getTickCount()+120000 end
  local checked=0
  while true do
   if check_step then check_step()end

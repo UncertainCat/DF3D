@@ -130,6 +130,7 @@ func controller(id: String):
 		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
 		panel.standing_orders_requested.connect(func():controller("standing_orders").open_from_labor())
 		panel.kitchen_requested.connect(func():controller("standing_orders").open_from_labor(true))
+		panel.stone_use_requested.connect(func():controller("standing_orders").open_from_labor(false,true))
 		controllers[id]=panel;return panel
 	if id=="standing_orders":
 		add_child(panel);panel.configure(world,actions,host)

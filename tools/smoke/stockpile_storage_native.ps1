@@ -257,6 +257,7 @@ try {
      $client=Start-Process -FilePath $engine -ArgumentList $clientArgs -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/job-settings-wire.stdout.log" -RedirectStandardError "$out/job-settings-wire.stderr.log"
      $null=$client.Handle
      $wireTimeout=if($name -eq 'kitchen-wire' -and $env:DF3D_KITCHEN_MAIN -eq '1'){115000}else{25000}
+     if($name -eq 'stone-use-wire' -and $env:DF3D_STONE_USE_MAIN -eq '1'){$wireTimeout=115000}
      if(-not $client.WaitForExit($wireTimeout)){$client.Kill();$client.WaitForExit();throw 'Job settings wire client timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/job-settings-wire-result.json")){throw 'Job settings wire client failed'}
     }

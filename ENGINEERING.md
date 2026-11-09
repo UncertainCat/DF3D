@@ -191,6 +191,16 @@ unsaved, native log clean, GPU60C sampled. MSVC/core19 (`stocks-native-actions`)
 pass; `group_action_reference` retains case digests. This does not establish
 job-cancellation or mixed-eligibility coverage. Transport and the screen remain
 unfinished; individual item commands can reuse the existing item edit route.
+Selected groups carry native captions from the renderer3a25eb..3a2646 naming
+arguments and capitalization. Protected224228 compares all157 matching group
+captions across the nine selection cases against rendered native cells; the
+longest is45 characters, so all compared captions fit the57-character capture.
+Owned material-cache restoration covers formatting. Source unchanged, DF21820
+exits unsaved, native log clean, GPU60C sampled; MSVC/core19
+(`stocks-native-group-caption`) pass. `group_caption_reference` retains captions
+and provenance. Individual renderer3a2b6f uses c65450(false,-1), matching the
+existing building-item caption provider; this callsite audit alone does not
+establish individual Stocks rendering fidelity.
 
 ## Stone use native semantics and presentation
 

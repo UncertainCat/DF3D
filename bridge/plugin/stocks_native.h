@@ -188,7 +188,7 @@ inline std::optional<std::vector<Group>> groups() {
     for(size_t i=0;i<count;++i)result.push_back({owned.type[i],owned.subtype[i],owned.subcat1[i],owned.subcat2[i],owned.amount[i],owned.expanded[i]});
     return result;
 }
-struct SelectedGroup {Group group;bool matches;uint32_t flags;std::vector<int32_t> ids;uint64_t revision=0;};
+struct SelectedGroup {Group group;bool matches;uint32_t flags;std::vector<int32_t> ids;uint64_t revision=0;std::string caption;};
 struct Selection {std::vector<int32_t> ids;std::vector<SelectedGroup> groups;};
 inline std::optional<Selection> selection(int16_t type,std::string query) {
     if(type<0 || type>=93 || !df3d_production::buildingItemFunctions())return std::nullopt;
@@ -202,6 +202,7 @@ inline std::optional<Selection> selection(int16_t type,std::string query) {
             {0x37d350,0x3f7,UINT64_C(0x18775745ecd1c0e1)},
             {0x37dbc0,0x664,UINT64_C(0xa49043145cd7af75)},
             {0xa82c10,0x56ec,UINT64_C(0x66347214dfd39a0b)},
+            {0x52d650,0x2b4,UINT64_C(0x9e8023d09def7af9)},
             {0x52cee0,0x19e,UINT64_C(0xc25c2d8a6eb9fcac)},
             {0xe1990,0xc7,UINT64_C(0x1c45e5635f4ffde2)}};
         for(const auto& pin:pins){uint64_t hash=UINT64_C(14695981039346656037);
@@ -219,6 +220,7 @@ inline std::optional<Selection> selection(int16_t type,std::string query) {
     static_assert(offsetof(df::stocks_interfacest,current_type_a_subtype)==0x170);
     static_assert(offsetof(df::stocks_interfacest,current_type_a_on)==0x1f0);
     static_assert(offsetof(df::stocks_interfacest,current_type_a_flag)==0x210);
+    df3d_creature::KnowledgeMaterialCacheRestore restore(df::global::world->raws.creatures.hist_fig_to_creature_map);
     Selection result;
     for(const auto& group:*master)if(group.type==type) {
         owned.current_type_a_subtype.push_back(group.subtype);
@@ -227,6 +229,12 @@ inline std::optional<Selection> selection(int16_t type,std::string query) {
         owned.current_type_a_amount.push_back(group.amount);
         owned.current_type_a_expanded.push_back(group.expanded);
         result.groups.push_back({group,false,0});
+        // Renderer3a25eb..3a2646 passes the full group amount to the native
+        // descriptor, then capitalizes. Counts/brackets are native copy.
+        using Describe=void(*)(std::string*,int16_t,int16_t,int16_t,int32_t,int32_t,int32_t,bool,void*,int32_t,int32_t,bool,int32_t,int32_t);
+        auto& caption=result.groups.back().caption;
+        reinterpret_cast<Describe>(base+0xa82c10)(&caption,type,group.subtype,group.subcat1,group.subcat2,group.amount,0,false,nullptr,-1,-1,true,0,0);
+        reinterpret_cast<void(*)(std::string*)>(base+0x52d650)(&caption);
         owned.master_a_list.type.push_back(group.type);
         owned.master_a_list.subtype.push_back(group.subtype);
         owned.master_a_list.subcat1.push_back(group.subcat1);
@@ -243,7 +251,6 @@ inline std::optional<Selection> selection(int16_t type,std::string query) {
             if(index<0 || size_t(index)>=result.groups.size())return std::nullopt;
             result.groups[index].ids.push_back(id);
         }}
-    df3d_creature::KnowledgeMaterialCacheRestore restore(df::global::world->raws.creatures.hist_fig_to_creature_map);
     reinterpret_cast<void(*)(df::stocks_interfacest*)>(base+0x37d350)(&owned);
     const auto& actions=df3d_production::buildingItemFunctions();
     for(size_t i=0;i<result.groups.size();++i){auto& row=result.groups[i];row.matches=owned.current_type_a_on[i];row.flags=owned.current_type_a_flag[i].whole;

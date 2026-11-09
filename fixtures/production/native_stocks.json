@@ -1981,5 +1981,854 @@
     "msvc": "build/notes/pm/stocks-actions-msvc.log",
     "qa": "build/qa/stocks-native-actions",
     "diagnostics": "Native log clean; no viewer launched."
+  },
+  "group_caption_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-224228",
+    "cases": [
+      {
+        "type": 39,
+        "query": "",
+        "captions": [
+          {
+            "caption": "Iron bolts [35]",
+            "index": 0,
+            "verified_characters": 15
+          },
+          {
+            "caption": "Silver bolts [63]",
+            "index": 1,
+            "verified_characters": 17
+          },
+          {
+            "caption": "Copper bolts [55]",
+            "index": 2,
+            "verified_characters": 17
+          },
+          {
+            "caption": "Iron arrows [102]",
+            "index": 3,
+            "verified_characters": 17
+          },
+          {
+            "caption": "Copper arrows [23]",
+            "index": 4,
+            "verified_characters": 18
+          },
+          {
+            "caption": "Bronze arrows [4]",
+            "index": 5,
+            "verified_characters": 17
+          }
+        ]
+      },
+      {
+        "type": 39,
+        "query": "iron",
+        "captions": [
+          {
+            "caption": "Iron bolts [35]",
+            "index": 0,
+            "verified_characters": 15
+          },
+          {
+            "caption": "Iron arrows [102]",
+            "index": 3,
+            "verified_characters": 17
+          }
+        ]
+      },
+      {
+        "type": 39,
+        "query": "silver",
+        "captions": [
+          {
+            "caption": "Silver bolts [63]",
+            "index": 1,
+            "verified_characters": 17
+          }
+        ]
+      },
+      {
+        "type": 0,
+        "query": "",
+        "captions": [
+          {
+            "caption": "Iron bars [544]",
+            "index": 0,
+            "verified_characters": 15
+          },
+          {
+            "caption": "Silver bars [28]",
+            "index": 1,
+            "verified_characters": 16
+          },
+          {
+            "caption": "Copper bars [200]",
+            "index": 2,
+            "verified_characters": 17
+          },
+          {
+            "caption": "Steel bars [353]",
+            "index": 3,
+            "verified_characters": 16
+          },
+          {
+            "caption": "Platinum bars [82]",
+            "index": 4,
+            "verified_characters": 18
+          },
+          {
+            "caption": "Tin bars",
+            "index": 5,
+            "verified_characters": 8
+          },
+          {
+            "caption": "Coke [84]",
+            "index": 6,
+            "verified_characters": 9
+          },
+          {
+            "caption": "Charcoal [18]",
+            "index": 7,
+            "verified_characters": 13
+          }
+        ]
+      },
+      {
+        "type": 4,
+        "query": "",
+        "captions": [
+          {
+            "caption": "Rock salt [37]",
+            "index": 0,
+            "verified_characters": 14
+          },
+          {
+            "caption": "Dolomite [299]",
+            "index": 1,
+            "verified_characters": 14
+          },
+          {
+            "caption": "Chert [10]",
+            "index": 2,
+            "verified_characters": 10
+          },
+          {
+            "caption": "Gold nuggets [6]",
+            "index": 3,
+            "verified_characters": 16
+          },
+          {
+            "caption": "Bituminous coal [14]",
+            "index": 4,
+            "verified_characters": 20
+          },
+          {
+            "caption": "Lignite",
+            "index": 5,
+            "verified_characters": 7
+          },
+          {
+            "caption": "Tetrahedrite [8]",
+            "index": 6,
+            "verified_characters": 16
+          },
+          {
+            "caption": "Talc [19]",
+            "index": 7,
+            "verified_characters": 9
+          },
+          {
+            "caption": "Jet [47]",
+            "index": 8,
+            "verified_characters": 8
+          },
+          {
+            "caption": "Petrified wood",
+            "index": 9,
+            "verified_characters": 14
+          },
+          {
+            "caption": "Magnetite [12]",
+            "index": 10,
+            "verified_characters": 14
+          },
+          {
+            "caption": "Kaolinite [9]",
+            "index": 11,
+            "verified_characters": 13
+          },
+          {
+            "caption": "Microcline [26]",
+            "index": 12,
+            "verified_characters": 15
+          },
+          {
+            "caption": "Clay",
+            "index": 13,
+            "verified_characters": 4
+          },
+          {
+            "caption": "Clay loam [3]",
+            "index": 14,
+            "verified_characters": 13
+          }
+        ]
+      },
+      {
+        "type": 24,
+        "query": "",
+        "captions": [
+          {
+            "caption": "Silver whip",
+            "index": 0,
+            "verified_characters": 11
+          },
+          {
+            "caption": "Copper battle axes [3]",
+            "index": 1,
+            "verified_characters": 22
+          },
+          {
+            "caption": "Bronze battle axe",
+            "index": 2,
+            "verified_characters": 17
+          },
+          {
+            "caption": "Steel battle axes [6]",
+            "index": 3,
+            "verified_characters": 21
+          },
+          {
+            "caption": "Iron war hammer",
+            "index": 4,
+            "verified_characters": 15
+          },
+          {
+            "caption": "Steel war hammers [3]",
+            "index": 5,
+            "verified_characters": 21
+          },
+          {
+            "caption": "Iron short sword",
+            "index": 6,
+            "verified_characters": 16
+          },
+          {
+            "caption": "Steel short swords [3]",
+            "index": 7,
+            "verified_characters": 22
+          },
+          {
+            "caption": "Copper spear",
+            "index": 8,
+            "verified_characters": 12
+          },
+          {
+            "caption": "Bronze spears [3]",
+            "index": 9,
+            "verified_characters": 17
+          },
+          {
+            "caption": "Steel spear",
+            "index": 10,
+            "verified_characters": 11
+          },
+          {
+            "caption": "Steel mace",
+            "index": 11,
+            "verified_characters": 10
+          },
+          {
+            "caption": "Bronze crossbow",
+            "index": 12,
+            "verified_characters": 15
+          },
+          {
+            "caption": "Steel crossbows [7]",
+            "index": 13,
+            "verified_characters": 19
+          },
+          {
+            "caption": "Iron pick",
+            "index": 14,
+            "verified_characters": 9
+          },
+          {
+            "caption": "Copper pick",
+            "index": 15,
+            "verified_characters": 11
+          },
+          {
+            "caption": "Bronze pick",
+            "index": 16,
+            "verified_characters": 11
+          },
+          {
+            "caption": "Steel picks [9]",
+            "index": 17,
+            "verified_characters": 15
+          },
+          {
+            "caption": "Copper bow",
+            "index": 18,
+            "verified_characters": 10
+          },
+          {
+            "caption": "Bronze bow",
+            "index": 19,
+            "verified_characters": 10
+          },
+          {
+            "caption": "Iron pike",
+            "index": 20,
+            "verified_characters": 9
+          },
+          {
+            "caption": "Copper pike",
+            "index": 21,
+            "verified_characters": 11
+          },
+          {
+            "caption": "Iron morningstar",
+            "index": 22,
+            "verified_characters": 16
+          },
+          {
+            "caption": "Pomelo wood training axe",
+            "index": 23,
+            "verified_characters": 24
+          },
+          {
+            "caption": "Bitter orange wood training axe",
+            "index": 24,
+            "verified_characters": 31
+          },
+          {
+            "caption": "Kumquat wood training axe",
+            "index": 25,
+            "verified_characters": 25
+          },
+          {
+            "caption": "Date palm wood training axes [2]",
+            "index": 26,
+            "verified_characters": 32
+          },
+          {
+            "caption": "Pear wood training axe",
+            "index": 27,
+            "verified_characters": 22
+          },
+          {
+            "caption": "Pecan wood training axe",
+            "index": 28,
+            "verified_characters": 23
+          },
+          {
+            "caption": "Mahogany training axes [2]",
+            "index": 29,
+            "verified_characters": 26
+          },
+          {
+            "caption": "Willow training axe",
+            "index": 30,
+            "verified_characters": 19
+          },
+          {
+            "caption": "Durian wood training sword",
+            "index": 31,
+            "verified_characters": 26
+          },
+          {
+            "caption": "Bitter orange wood training sword",
+            "index": 32,
+            "verified_characters": 33
+          },
+          {
+            "caption": "Kumquat wood training swords [2]",
+            "index": 33,
+            "verified_characters": 32
+          },
+          {
+            "caption": "Apple wood training sword",
+            "index": 34,
+            "verified_characters": 25
+          },
+          {
+            "caption": "Pecan wood training sword",
+            "index": 35,
+            "verified_characters": 25
+          },
+          {
+            "caption": "Mahogany training swords [3]",
+            "index": 36,
+            "verified_characters": 28
+          },
+          {
+            "caption": "Tower-cap training sword",
+            "index": 37,
+            "verified_characters": 24
+          },
+          {
+            "caption": "Goblin-cap training sword",
+            "index": 38,
+            "verified_characters": 25
+          },
+          {
+            "caption": "Paradise nut wood training spear",
+            "index": 39,
+            "verified_characters": 32
+          },
+          {
+            "caption": "Kumquat wood training spear",
+            "index": 40,
+            "verified_characters": 27
+          },
+          {
+            "caption": "Custard-apple wood training spear",
+            "index": 41,
+            "verified_characters": 33
+          },
+          {
+            "caption": "Pomegranate wood training spear",
+            "index": 42,
+            "verified_characters": 31
+          },
+          {
+            "caption": "Sand pear wood training spear",
+            "index": 43,
+            "verified_characters": 29
+          },
+          {
+            "caption": "Oaken training spear",
+            "index": 44,
+            "verified_characters": 20
+          },
+          {
+            "caption": "Mahogany training spears [3]",
+            "index": 45,
+            "verified_characters": 28
+          },
+          {
+            "caption": "Willow training spear",
+            "index": 46,
+            "verified_characters": 21
+          }
+        ]
+      },
+      {
+        "type": 54,
+        "query": "",
+        "captions": [
+          {
+            "caption": "Red spinach [61]",
+            "index": 0,
+            "verified_characters": 16
+          },
+          {
+            "caption": "Elephant-head amaranths [31]",
+            "index": 1,
+            "verified_characters": 28
+          },
+          {
+            "caption": "Jute plants [17]",
+            "index": 2,
+            "verified_characters": 16
+          },
+          {
+            "caption": "Kenaf plants [35]",
+            "index": 3,
+            "verified_characters": 17
+          },
+          {
+            "caption": "Plump helmets [751]",
+            "index": 4,
+            "verified_characters": 19
+          },
+          {
+            "caption": "Cave wheat [80]",
+            "index": 5,
+            "verified_characters": 15
+          },
+          {
+            "caption": "Sweet pods [63]",
+            "index": 6,
+            "verified_characters": 15
+          },
+          {
+            "caption": "Dimple cups [42]",
+            "index": 7,
+            "verified_characters": 16
+          }
+        ]
+      },
+      {
+        "type": 60,
+        "query": "",
+        "captions": [
+          {
+            "caption": "Pairs of giant cave spider silk trousers [21]",
+            "index": 0,
+            "verified_characters": 45
+          },
+          {
+            "caption": "Pairs of cave blob leather trousers [2]",
+            "index": 1,
+            "verified_characters": 39
+          },
+          {
+            "caption": "Pairs of sheep wool trousers [18]",
+            "index": 2,
+            "verified_characters": 33
+          },
+          {
+            "caption": "Pairs of llama wool trousers [14]",
+            "index": 3,
+            "verified_characters": 33
+          },
+          {
+            "caption": "Pairs of alpaca wool trousers [14]",
+            "index": 4,
+            "verified_characters": 34
+          },
+          {
+            "caption": "Longfin mako shark leather trousers",
+            "index": 5,
+            "verified_characters": 35
+          },
+          {
+            "caption": "Voracious cave crawler leather trousers",
+            "index": 6,
+            "verified_characters": 39
+          },
+          {
+            "caption": "Cave fish leather trousers",
+            "index": 7,
+            "verified_characters": 26
+          },
+          {
+            "caption": "Giant peregrine falcon leather trousers",
+            "index": 8,
+            "verified_characters": 39
+          },
+          {
+            "caption": "Pairs of giant kea leather trousers [2]",
+            "index": 9,
+            "verified_characters": 39
+          },
+          {
+            "caption": "Pairs of giant sparrow leather trousers [2]",
+            "index": 10,
+            "verified_characters": 43
+          },
+          {
+            "caption": "Guineafowl leather trousers",
+            "index": 11,
+            "verified_characters": 27
+          },
+          {
+            "caption": "Blue peafowl leather trousers",
+            "index": 12,
+            "verified_characters": 29
+          },
+          {
+            "caption": "Giant buzzard leather trousers",
+            "index": 13,
+            "verified_characters": 30
+          },
+          {
+            "caption": "Elk bird leather trousers",
+            "index": 14,
+            "verified_characters": 25
+          },
+          {
+            "caption": "Giant olm leather trousers",
+            "index": 15,
+            "verified_characters": 26
+          },
+          {
+            "caption": "Pairs of cave spider silk trousers [14]",
+            "index": 16,
+            "verified_characters": 39
+          },
+          {
+            "caption": "Giant cave swallow leather trousers",
+            "index": 17,
+            "verified_characters": 35
+          },
+          {
+            "caption": "Giant green tree frog leather trousers",
+            "index": 18,
+            "verified_characters": 38
+          },
+          {
+            "caption": "Cat leather trousers",
+            "index": 19,
+            "verified_characters": 20
+          },
+          {
+            "caption": "Mule leather trousers",
+            "index": 20,
+            "verified_characters": 21
+          },
+          {
+            "caption": "Pairs of pig leather trousers [2]",
+            "index": 21,
+            "verified_characters": 33
+          },
+          {
+            "caption": "Pairs of yak leather trousers [2]",
+            "index": 22,
+            "verified_characters": 33
+          },
+          {
+            "caption": "Hoary marmot leather trousers",
+            "index": 23,
+            "verified_characters": 29
+          },
+          {
+            "caption": "Warthog leather trousers",
+            "index": 24,
+            "verified_characters": 24
+          },
+          {
+            "caption": "Pairs of lion leather trousers [2]",
+            "index": 25,
+            "verified_characters": 34
+          },
+          {
+            "caption": "Pairs of leopard leather trousers [2]",
+            "index": 26,
+            "verified_characters": 37
+          },
+          {
+            "caption": "Jaguar leather trousers",
+            "index": 27,
+            "verified_characters": 23
+          },
+          {
+            "caption": "Giant jaguar leather trousers",
+            "index": 28,
+            "verified_characters": 29
+          },
+          {
+            "caption": "Tiger leather trousers",
+            "index": 29,
+            "verified_characters": 22
+          },
+          {
+            "caption": "One-humped camel leather trousers",
+            "index": 30,
+            "verified_characters": 33
+          },
+          {
+            "caption": "Rutherer leather trousers",
+            "index": 31,
+            "verified_characters": 25
+          },
+          {
+            "caption": "Giant bat leather trousers",
+            "index": 32,
+            "verified_characters": 26
+          },
+          {
+            "caption": "Giant mole leather trousers",
+            "index": 33,
+            "verified_characters": 27
+          },
+          {
+            "caption": "Pairs of wild boar leather trousers [2]",
+            "index": 34,
+            "verified_characters": 39
+          },
+          {
+            "caption": "Giant wild boar leather trousers",
+            "index": 35,
+            "verified_characters": 32
+          },
+          {
+            "caption": "Giant coyote leather trousers",
+            "index": 36,
+            "verified_characters": 29
+          },
+          {
+            "caption": "Echidna man leather trousers",
+            "index": 37,
+            "verified_characters": 28
+          },
+          {
+            "caption": "Pairs of gray langur leather trousers [2]",
+            "index": 38,
+            "verified_characters": 41
+          },
+          {
+            "caption": "Skunk leather trousers",
+            "index": 39,
+            "verified_characters": 22
+          },
+          {
+            "caption": "Pairs of giant weasel leather trousers [3]",
+            "index": 40,
+            "verified_characters": 42
+          },
+          {
+            "caption": "Dingo leather trousers",
+            "index": 41,
+            "verified_characters": 22
+          },
+          {
+            "caption": "Giant dingo leather trousers",
+            "index": 42,
+            "verified_characters": 28
+          },
+          {
+            "caption": "Hyena leather trousers",
+            "index": 43,
+            "verified_characters": 22
+          },
+          {
+            "caption": "Pairs of jackal leather trousers [2]",
+            "index": 44,
+            "verified_characters": 36
+          },
+          {
+            "caption": "Sloth leather trousers",
+            "index": 45,
+            "verified_characters": 22
+          },
+          {
+            "caption": "Pairs of rope reed trousers [4]",
+            "index": 46,
+            "verified_characters": 31
+          },
+          {
+            "caption": "Pairs of pig tail trousers [45]",
+            "index": 47,
+            "verified_characters": 31
+          },
+          {
+            "caption": "Pairs of cotton trousers [2]",
+            "index": 48,
+            "verified_characters": 28
+          },
+          {
+            "caption": "Pairs of kenaf trousers [2]",
+            "index": 49,
+            "verified_characters": 27
+          },
+          {
+            "caption": "Linen trousers",
+            "index": 50,
+            "verified_characters": 14
+          },
+          {
+            "caption": "Steel greaves [15]",
+            "index": 51,
+            "verified_characters": 18
+          },
+          {
+            "caption": "Iron chain leggings [3]",
+            "index": 52,
+            "verified_characters": 23
+          },
+          {
+            "caption": "Copper chain leggings [2]",
+            "index": 53,
+            "verified_characters": 25
+          },
+          {
+            "caption": "Bronze chain leggings [2]",
+            "index": 54,
+            "verified_characters": 25
+          },
+          {
+            "caption": "Shortfin mako shark leather leggings",
+            "index": 55,
+            "verified_characters": 36
+          },
+          {
+            "caption": "Elephant leather leggings",
+            "index": 56,
+            "verified_characters": 25
+          },
+          {
+            "caption": "Hornbill leather loincloth",
+            "index": 57,
+            "verified_characters": 26
+          },
+          {
+            "caption": "Llama wool skirts [3]",
+            "index": 58,
+            "verified_characters": 21
+          },
+          {
+            "caption": "Angelshark leather skirt",
+            "index": 59,
+            "verified_characters": 24
+          },
+          {
+            "caption": "Giant kea leather skirt",
+            "index": 60,
+            "verified_characters": 23
+          },
+          {
+            "caption": "Hemp skirt",
+            "index": 61,
+            "verified_characters": 10
+          },
+          {
+            "caption": "Kenaf skirt",
+            "index": 62,
+            "verified_characters": 11
+          },
+          {
+            "caption": "Short llama wool skirt",
+            "index": 63,
+            "verified_characters": 22
+          },
+          {
+            "caption": "Short tiger shark leather skirt",
+            "index": 64,
+            "verified_characters": 31
+          },
+          {
+            "caption": "Short osprey leather skirt",
+            "index": 65,
+            "verified_characters": 26
+          },
+          {
+            "caption": "Short jute skirts [2]",
+            "index": 66,
+            "verified_characters": 21
+          },
+          {
+            "caption": "Long great white shark leather skirt",
+            "index": 67,
+            "verified_characters": 36
+          },
+          {
+            "caption": "Long rope reed skirt",
+            "index": 68,
+            "verified_characters": 20
+          },
+          {
+            "caption": "Bell-shaped cave spider silk skirt",
+            "index": 69,
+            "verified_characters": 34
+          }
+        ]
+      },
+      {
+        "type": 91,
+        "query": "",
+        "captions": []
+      }
+    ],
+    "scope": "Native group captions, amounts/brackets and capitalization compared against rendered cells for all matching groups in the nine selection cases. Controlled native expansion/scroll state restored. Individual caption callsite3a2b6f uses the same c65450(false,-1) formatter as building contents; no new individual rendering acceptance.",
+    "source_save": "unchanged; owned DF21820 exited unsaved",
+    "plugin_sha256": "226a8936ebcdaa34f6f68f59f30280949b5eda6d422d1396af85fdddf3318a9b",
+    "msvc": "build/notes/pm/stocks-group-caption-msvc.log",
+    "qa": "build/qa/stocks-native-group-caption",
+    "diagnostics": "Native log clean; no viewer launched."
   }
 }

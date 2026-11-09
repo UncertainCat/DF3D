@@ -161,6 +161,21 @@ if cold_selections then
    for i,row in ipairs(native.groups)do for field,value in pairs(row)do assert(actual.groups[i][field]==value,('Selection %d group %d/%s differs'):format(case[1],i,field))end end
   end
   local observed={type=case[1],query=case[2],native=native}
+  if os.getenv('DF3D_STOCKS_GROUP_CAPTIONS')=='1' then
+   observed.group_captions={};local expanded={};local original_scroll=stocks.scroll_position_item
+   for i,value in ipairs(stocks.current_type_a_expanded)do expanded[i]=value;stocks.current_type_a_expanded[i]=false end
+   local visible=0
+   for i,row in ipairs(warm.groups)do if row.on then
+    stocks.scroll_position_item=visible*3;view:render(dfhack.getTickCount())
+    local length=math.min(#row.caption,57);local text=''
+    for x=47,47+length-1 do local ch=dfhack.screen.readTile(x,10).ch;text=text..string.char(ch%256)end
+    assert(text==row.caption:sub(1,length),('Group caption %d/%d differs: [%s] vs [%s]'):format(case[1],i,text,row.caption))
+    observed.group_captions[#observed.group_captions+1]={index=i-1,caption=row.caption,verified_characters=length}
+    visible=visible+1
+   end end
+   for i,value in pairs(expanded)do stocks.current_type_a_expanded[i]=value end
+   stocks.scroll_position_item=original_scroll;view:render(dfhack.getTickCount())
+  end
   if os.getenv('DF3D_STOCKS_MEMBERS')=='1' and case[2]=='' and #native.groups>0 then
    local members=warm.groups[1].ids;local member_set={};for _,id in ipairs(members)do member_set[id]=true end
    local height=stocks.i_height;local expanded=stocks.current_type_a_expanded[0]

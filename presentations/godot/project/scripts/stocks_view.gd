@@ -81,9 +81,12 @@ func refresh() -> void:
 		# Native Stocks3a2a92 calls the shared item selector c7cbc0.
 		# Reuse owned sheet facts for these families; ammunition stays diagonal.
 		if row.get("type") not in [0,2,4,5,24,25,26,27,28,29,30,32,39,60] or not row.has("appearance"):continue
+		var appearance: Dictionary=row.appearance.duplicate(true)
+		# Full native flags are already owned Stocks facts; artifact is distinct.
+		if row.type==24:appearance["artifact_mood"]=bool(row.flags&0x8000000)
 		var cached: Dictionary=icons.get(row.id,{})
-		if cached.get("appearance")!=row.appearance:
-			cached={"appearance":row.appearance.duplicate(true),"texture":world.ammunition_icon(row.appearance,row.id) if row.type==39 else world.item_sheet_icon(row.type,row.appearance,row.id)}
+		if cached.get("appearance")!=appearance:
+			cached={"appearance":appearance,"texture":world.ammunition_icon(appearance,row.id) if row.type==39 else world.item_sheet_icon(row.type,appearance,row.id)}
 		retained[row.id]=cached
 	icons=retained
 	category_canvas.queue_redraw();item_canvas.queue_redraw();queue_redraw()

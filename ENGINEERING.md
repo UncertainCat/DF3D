@@ -37,14 +37,17 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
-Stocks also reuses the shared equipment resolver. Protected020426 has zero RGB
-differences across first visible item regions for ARMOR25,SHOES26,SHIELD27,
-HELM28,GLOVES29 and PANTS60. WEAPON24 retains124 differing pixels on the artifact
-axe: nativec7ce83..c7ce94 tests artifact_mood(bit27), but our appearance contract
-only exposes artifact(bit18). An independent semantic fact is required; the
-artifact flag must not be repurposed. The weapon family remains unfinished.
+Stocks also reuses the shared equipment resolver. Protected020905 has zero RGB
+differences across first visible item regions for WEAPON24,ARMOR25,SHOES26,
+SHIELD27,HELM28,GLOVES29 and PANTS60. Native weaponc7ce83..c7ce94 tests
+artifact_mood(bit27), distinct from artifact(bit18). Stocks already carries the
+full native flags; the viewer supplies a separate boolean rendering fact and
+includes it in icon cache identity. The shared renderer preserves original
+appearance facts; callers without mood facts retain prior behavior. No protocol
+change or invented legacy value. `stocks-weapon-mood` passes Core19, extension,
+Stocks state and installed-asset icon checks distinguishing the two flags.
 Typed category navigation, fresh visible facts and restored group edits pass;
-source unchanged, owned DF17756 exits unsaved,30FPS,41C sampled and only known
+source unchanged, owned DF44180 exits unsaved,30FPS,40C sampled and only known
 Godot diagnostics. `equipment_art_reference` scopes the evidence; no acceptance
 of all variants or equipment item-sheet routes.
 

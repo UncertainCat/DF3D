@@ -5196,7 +5196,7 @@
     "verification": "MSVC bin-color-fallback-msvc; core19 and Stocks headless checks stocks-bin-color-fallback pass."
   },
   "equipment_art_reference": {
-    "capture": "build/stockpile-storage-native-input-20261109-020426",
+    "capture": "build/stockpile-storage-native-input-20261109-020905",
     "cases": [
       {
         "item_type": 24,
@@ -5206,9 +5206,9 @@
           944,
           724
         ],
-        "rgb_differing_pixels": 124,
-        "native_sha256": "2772fcaf5a2979b2154a845fdad7c00fe90a1a83cf0d7064a08da7647de400c3",
-        "viewer_sha256": "8fe8654490f67280b8d4be7f3994ee93c7974b2eb8a9fb6eb06dab08b062feb6"
+        "rgb_differing_pixels": 0,
+        "native_sha256": "aacca228a5b2106f69ff18ec6b0936dc0d9810f342bd9a857452b1a1a78d7f8b",
+        "viewer_sha256": "7e61730b06edf834bd394b8543aff9139430e754ceea4919a83543aab8210ba0"
       },
       {
         "item_type": 25,
@@ -5219,7 +5219,7 @@
           724
         ],
         "rgb_differing_pixels": 0,
-        "native_sha256": "79100005493e9c00d2e8bd87650586dea79440994f0f5c4fbf94e8f579667d4f",
+        "native_sha256": "64c103c2af7aa4029be252b60fcdfee086a7823c5dc78395e87dd29c707a27f0",
         "viewer_sha256": "35e08734ffab3668ef9a9cc793cdcf25f54a093b113ce01cab6e206b737f2a11"
       },
       {
@@ -5231,7 +5231,7 @@
           724
         ],
         "rgb_differing_pixels": 0,
-        "native_sha256": "cd95896c0b800916373377ffab6380326c39208b79a8939814b85185f96d43b3",
+        "native_sha256": "d00b624d320905c0bb69ea17b5eee97e11969cf192355aa622470b700d446e7b",
         "viewer_sha256": "7b031bd0144597161d7fbb4ae012ef6c56db1d42cc256b85517b0bfc389c8206"
       },
       {
@@ -5243,7 +5243,7 @@
           724
         ],
         "rgb_differing_pixels": 0,
-        "native_sha256": "5a91880365d0d9d09de685f8518197b88b5ed789775e67b91ff4afe6ca6acf6e",
+        "native_sha256": "14e84876c16ef0cfa253cd8a0a898db59b7e4b777c90aac97faeb761b228e13c",
         "viewer_sha256": "181329b27d447f301ce63aaec30ae848a079d77d0e77ed5fdbccf3b91cdf85d5"
       },
       {
@@ -5255,7 +5255,7 @@
           724
         ],
         "rgb_differing_pixels": 0,
-        "native_sha256": "f232a4ba896f6ef7b8917e2a0b41d7720a3b5e8ece1bd97e6061876d0ee4e0ec",
+        "native_sha256": "5f5ea7de1b839490fe6ba6ecc3ad690aae02650b5874876073436dff2812cc03",
         "viewer_sha256": "b3713321c36d45940a8ff895ccb383c539f469074b22a793382533f2e0ca1b2e"
       },
       {
@@ -5267,7 +5267,7 @@
           724
         ],
         "rgb_differing_pixels": 0,
-        "native_sha256": "ad43639f666e99cde80c0a196ccfb96626ed5b27d1a6c10599e5d83744a56234",
+        "native_sha256": "03cbd2aa1805e8757fa45f5406bced69509ee2d32fb041e154711804893ec3a5",
         "viewer_sha256": "25a92326f9a39553556851d0269520121ddf93e193d42bd565137df7701c0210"
       },
       {
@@ -5279,15 +5279,16 @@
           724
         ],
         "rgb_differing_pixels": 0,
-        "native_sha256": "b994e57e54bb9801f65afdb05034c48bd5bba41ebe440031d0b4792c98af3145",
+        "native_sha256": "d2a0aafd0dc341a3e038fb156027956a3cd33d17b44d08d3c42b8e54ec2bc61b",
         "viewer_sha256": "7e0aac500e478a711b1537a5ad8558ea44fd9b8a80508fded8e1288e05240274"
       }
     ],
     "workflow": "Cold typed category selection and fresh visible facts/icons, then restored Ammunition group edits/restoration/stale rejection.",
-    "weapon_gap": "Nativec7ce83..c7ce94 tests item.flags.artifact_mood(bit27), passing selector bit16 to cffa00. Current ItemInspectionAppearance flags32 means artifact(bit18); this falsely selects artifact artwork for the captured steel axe. Need independent mood semantic fact; do not substitute unrelated artifact flags or silently clear them.",
-    "source_save": "unchanged; owned DF17756 exited unsaved",
-    "gpu": "30FPS; sampled41C; original preferences restored",
+    "source_save": "unchanged; owned DF44180 exited unsaved",
+    "gpu": "30FPS; sampled40C/1%; original preferences restored",
     "diagnostics": "passed_with_known_issues: thread notice, device finalize, shutdown objects; no unclassified errors",
-    "limitations": "Only first visible pages. Six clothing/shield types match; weapon artifact case remains incomplete. Other variants, item sheets and remaining families are not accepted."
+    "limitations": "Only first visible pages. All seven captured item regions match; other variants, item sheets and remaining families are not accepted. Callers lacking explicit mood facts retain their prior behavior.",
+    "weapon_mood": "Nativec7ce83..c7ce94 tests artifact_mood(bit27). StocksItemRow.flags already contains full native flags; viewer supplies a separate boolean artifact_mood rendering fact and includes it in cache identity. Original appearance artifact flag stays intact. No protocol change or inferred legacy mood value.",
+    "verification": "stocks-weapon-mood: core19, Stocks state, installed-asset icon tests and extension build pass. Icon checks distinguish artifact-without-mood from mood-created weapon and reject malformed mood facts."
   }
 }

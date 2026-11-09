@@ -103,6 +103,14 @@ func run() -> void:
 			source.stack=10
 			check(icon_hash(world.construction_item_icon(1,source,false,int(row.id)))==row.rgba_sha256,"gem arrangement independent of stack")
 			check(world.construction_item_icon(8,source)==null,"gem shape is cut-gem-only")
+	var axe: Dictionary={"material_token":"INORGANIC:STEEL","subtype_raw":"ITEM_WEAPON_AXE_BATTLE","color_token":"","stack":1,"flags":0}
+	var ordinary:=icon_hash(world.item_sheet_icon(24,axe,1))
+	axe.flags=32;axe.artifact_mood=false
+	check(not ordinary.is_empty() and icon_hash(world.item_sheet_icon(24,axe,1))==ordinary,"Artifact without mood must retain ordinary weapon art")
+	axe.artifact_mood=true
+	check(icon_hash(world.item_sheet_icon(24,axe,1))!=ordinary,"Mood weapon must use special artwork")
+	axe.artifact_mood=1;check(world.item_sheet_icon(24,axe,1)==null,"Mood rendering fact must be boolean")
+	axe.artifact_mood=false;check(world.item_sheet_icon(25,axe,1)==null,"Mood rendering fact is weapon-only")
 	check(world.construction_item_icon(-1,{})==null,"unknown item kind")
 	world.free();await process_frame
 	print("CONSTRUCTION_ITEM_ICON ","PASS" if failures==0 else "FAIL")

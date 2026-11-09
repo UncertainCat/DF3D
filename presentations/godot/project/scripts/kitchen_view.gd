@@ -87,7 +87,7 @@ func _draw() -> void:
 		if texture!=null:draw_texture_rect(texture,Rect2(680+(permission-1)*32,list_top()-24,32,36),false)
 	var positions: Array=[88,168,584,680,712]
 	for index in 5:
-		var active: bool=int(state.query.sorts[0].column)==index
+		var active: bool=state.sort_active(index)
 		for cell in 4:
 			var texture:=strip("SORT_"+("ASCENDING_" if state.sort_directions[index] else "DESCENDING_")+("ACTIVE" if active else "INACTIVE"),cell)
 			if texture!=null:draw_texture_rect(texture,Rect2(positions[index]+cell*8,list_top()+12,8,12),false)

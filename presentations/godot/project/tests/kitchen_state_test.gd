@@ -21,6 +21,20 @@ func run() -> void:
 		elif label.ends_with("STANDARDSCROLL_PAGEUP"):navigation.move_selection(-13,13)
 		check(navigation.selected==int(observation.cursor) and navigation.rows[navigation.first].name==observation.first_food,"Native Kitchen selection/scroll differs: "+label)
 	var service:=Service.new();root.add_child(service);var state:=State.new();state.configure(service)
+	var sorting:=State.new();sorting.configure(service);sorting.open();service.reply(sorting.ticket,response())
+	var columns: Dictionary={"Type":0,"Name":1,"Number":2,"Cook":3,"Brew":4}
+	for observation in native.modifier_sort_reference.provider_acceptance.observations:
+		var label: String=observation.label
+		if label!="initial" and not (label.begins_with("control-") and not label.contains("released")):
+			var name: String=label.get_slice(" ",0) if label.contains(" ") else label.get_slice("-",label.get_slice_count("-")-1)
+			sorting.select_sort(columns[name],label.begins_with("controlled-bit1-"));service.reply(sorting.ticket,response())
+		var expected: Array=[]
+		for priority in observation.sorts:expected.append({"column":columns[priority.name],"reverse":bool(observation.directions[priority.name])})
+		check(sorting.query.sorts==expected,"Native repeated-priority intent differs: "+label)
+		for name in columns:
+			check(sorting.sort_directions[columns[name]]==bool(observation.directions[name]),"Native remembered sort direction differs: "+label)
+			check(sorting.sort_active(columns[name])==expected.any(func(sort):return sort.column==columns[name]),"Active sort column differs: "+label)
+	sorting.dispose()
 	var retained:=State.new();retained.configure(service);retained.open();service.reply(retained.ticket,response())
 	retained.selected=1;retained.first=1;retained.close(true)
 	check(retained.rows.is_empty() and retained.exclusions.is_empty(),"Tab retention kept native authority")

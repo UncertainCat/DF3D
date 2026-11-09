@@ -41,7 +41,9 @@ func open(retain_navigation: bool=false) -> void:
 	close(retain_navigation);_read()
 func set_query(value: Dictionary) -> void:
 	if phase not in [Phase.Ready,Phase.Reading] or not _valid_query(value) or value==query:return
-	_retire();query=value.duplicate(true);first=0;selected=0;_read()
+	_retire();query=value.duplicate(true)
+	for sort in query.sorts:sort_directions[int(sort.column)]=sort.reverse
+	first=0;selected=0;_read()
 func set_search(bytes: PackedByteArray) -> void:
 	var value:=query.duplicate(true);value.query=bytes.get_string_from_utf8();set_query(value)
 func seek(value: int,capacity: int) -> void:
@@ -57,10 +59,18 @@ func cycle_type(delta: int) -> void:
 func toggle_capability(permission: int) -> void:
 	if permission not in [1,2]:return
 	var value:=query.duplicate(true);value.capability_filter=int(value.capability_filter)^permission;set_query(value)
-func select_sort(column: int) -> void:
+func sort_active(column: int) -> bool:
+	for sort in query.sorts:
+		if int(sort.column)==column:return true
+	return false
+func select_sort(column: int,retain_priorities: bool=false) -> void:
 	if phase not in [Phase.Ready,Phase.Reading] or column<0 or column>4:return
-	if int(query.sorts[0].column)==column:sort_directions[column]=not sort_directions[column]
-	var value:=query.duplicate(true);value.sorts=[{"column":column,"reverse":sort_directions[column]}];set_query(value)
+	if retain_priorities and query.sorts.size()>=65536:return
+	if sort_active(column):sort_directions[column]=not sort_directions[column]
+	var value:=query.duplicate(true)
+	if not retain_priorities:value.sorts=[]
+	for sort in value.sorts:sort.reverse=sort_directions[int(sort.column)]
+	value.sorts.append({"column":column,"reverse":sort_directions[column]});set_query(value)
 func _read() -> void:
 	_clear();phase=Phase.Reading
 	var intent:=query.duplicate(true);intent.action=C.ManagementAction.KitchenRead;_submit(intent)

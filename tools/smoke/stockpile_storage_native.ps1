@@ -202,8 +202,8 @@ try {
    $window=[Shot]::Find($owned.Id)
    switch($action) {
     'down' {[Shot]::Key($window,40,80)}
-    'kitchen-shift-down' {[Shot]::Modifier($window,16,42,$true)}
-    'kitchen-shift-up' {[Shot]::Modifier($window,16,42,$false)}
+    'kitchen-shift-down' {[Shot]::Modifier($window,160,42,$true)}
+    'kitchen-shift-up' {[Shot]::Modifier($window,160,42,$false)}
     'kitchen-control-down' {[Shot]::Modifier($window,17,29,$true)}
     'kitchen-control-up' {[Shot]::Modifier($window,17,29,$false)}
     'kitchen-wheel' {

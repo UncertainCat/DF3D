@@ -161,6 +161,18 @@ The diagnostic CLI accepts up to64 priorities; runtime requests retain the
 separate65536-entry allocation bound. Native modified-click binding, UI priority
 art and native sorting above32 rows remain unaccepted; the screen stays hidden.
 
+The Kitchen controller can now retain and append priorities without removing
+duplicates. Clicking any active column flips its remembered direction and updates
+all occurrences; ordinary sorting still replaces the list. Direct query updates
+also synchronize remembered directions. kitchen-multi-controller passes core19
+and all26 native priority/direction sequences from181529. The staged view marks
+every participating column active; rendered acceptance and the modifier gesture
+remain pending, so no modifier binding is exposed yet. Protected181841 tries
+VK_LSHIFT as well as the earlier generic Shift delivery: the native modifier byte
+still remains0 during those clicks, so this is inconclusive input delivery, not
+evidence that native Shift has no effect. All provider comparisons pass, the
+source remains unchanged, and owned DF44692 exits unsaved; GPU54C sampled.
+
 The staged Kitchen view reuses installed Labor chrome, native row/icon assets,
 count captions and permission icons. `kitchen-view-base` renders at1200x800 with
 30FPS; its unselected-row crop(64,232)-(928,664) matches native171829 with zero

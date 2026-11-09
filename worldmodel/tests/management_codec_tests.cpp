@@ -4966,7 +4966,7 @@ TEST_CASE("Stocks requests distinguish reads from guarded group intents") {
   }
 }
 TEST_CASE("Stocks groups own unique membership and item rows belong to the selection") {
-  for(int fault=0;fault<6;++fault){
+  for(int fault=0;fault<10;++fault){
     flatbuffers::FlatBufferBuilder b;
     std::vector<flatbuffers::Offset<wire::StocksCategoryRow>> categories;
     for(int i=0;i<93;++i)categories.push_back(wire::CreateStocksCategoryRow(b,int16_t(fault==1?0:i),b.CreateString("category"),b.CreateString("None"),b.CreateString(""),true));
@@ -4974,10 +4974,11 @@ TEST_CASE("Stocks groups own unique membership and item rows belong to the selec
     auto group=wire::CreateStocksGroupRow(b,key,3,b.CreateString("group [3]"),true,true,240,fault==2?0:77,b.CreateVector(std::vector<int32_t>{42,17}));
     std::vector<flatbuffers::Offset<wire::StocksGroupRow>> groups{group};
     if(fault==3)groups.push_back(wire::CreateStocksGroupRow(b,wire::CreateStocksGroupKey(b,39,1,0,0),1,b.CreateString("other"),true,true,240,78,b.CreateVector(std::vector<int32_t>{42})));
-    const auto item=wire::CreateStocksItemRow(b,fault==4?99:17,39,b.CreateString("item"),0,true,true,b.CreateString("INORGANIC:IRON"),b.CreateString(""));
+    const auto appearance=wire::CreateItemInspectionAppearance(b,b.CreateString(fault==8?"INORGANIC:COPPER":"INORGANIC:IRON"),b.CreateString(""),b.CreateString("color"),fault==6?0:27,fault==7?1:32,fault==9?0:-1);
+    const auto item=wire::CreateStocksItemRow(b,fault==4?99:17,39,b.CreateString("item"),0,true,true,b.CreateString("INORGANIC:IRON"),b.CreateString(""),appearance);
     const auto data=wire::CreateStocksMenuState(b,wire::StocksMenuOutcome::None,fault==5?-1:39,b.CreateVector(categories),b.CreateVector(groups),b.CreateVector(std::vector<flatbuffers::Offset<wire::StocksItemRow>>{item}));
     wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_world_epoch(3);state.add_action(wire::ManagementAction::StocksMenuRead);state.add_status(wire::ManagementStatus::Ok);state.add_stocks_menu(data);b.Finish(state.Finish());
     const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
-    if(!fault){const auto decoded=codec::decodeState(value);REQUIRE(decoded.stocksMenu);CHECK(decoded.stocksMenu->groups[0].itemIds==std::vector<int32_t>{42,17});CHECK(decoded.stocksMenu->items[0].id==17);CHECK(decoded.stocksMenu->groups[0].revision==77);}
+    if(!fault){const auto decoded=codec::decodeState(value);REQUIRE(decoded.stocksMenu);CHECK(decoded.stocksMenu->groups[0].itemIds==std::vector<int32_t>{42,17});CHECK(decoded.stocksMenu->items[0].id==17);REQUIRE(decoded.stocksMenu->items[0].appearance);CHECK(decoded.stocksMenu->items[0].appearance->stack==27);CHECK(decoded.stocksMenu->items[0].appearance->flags==32);CHECK(decoded.stocksMenu->items[0].appearance->colorToken=="color");CHECK(decoded.stocksMenu->groups[0].revision==77);}
   }
 }

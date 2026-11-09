@@ -50,7 +50,11 @@ ManagementState decodeState(const m::ManagementState* s) {
     next.stocksMenu.emplace();auto& out=*next.stocksMenu;out.outcome=StocksMenuOutcome(r->outcome());out.category=r->category();
     for(const auto* row:*r->categories())out.categories.push_back({row->type(),row->caption()->str(),row->stored()->str(),row->unavailable()->str(),row->matches()});
     for(const auto* row:*r->groups()){const auto* k=row->key();StocksGroupRow group;group.key={k->type(),k->subtype(),k->subcat1(),k->subcat2()};group.amount=row->amount();group.caption=row->caption()->str();group.matches=row->matches();group.expanded=row->expanded();group.flags=row->flags();group.revision=row->revision();group.itemIds.assign(row->item_ids()->begin(),row->item_ids()->end());out.groups.push_back(std::move(group));}
-    for(const auto* row:*r->items())out.items.push_back({row->id(),row->type(),row->caption()->str(),row->flags(),row->can_dump(),row->can_melt(),row->material_token()->str(),row->subtype_raw()->str()});
+    for(const auto* row:*r->items()){
+      StocksItemRow item{row->id(),row->type(),row->caption()->str(),row->flags(),row->can_dump(),row->can_melt(),row->material_token()->str(),row->subtype_raw()->str()};
+      if(const auto* a=row->appearance())item.appearance=ItemInspectionAppearance{a->material_token()->str(),a->subtype_raw()->str(),a->color_token()->str(),a->stack(),a->flags(),a->instrument_family(),a->instrument_placed()};
+      out.items.push_back(std::move(item));
+    }
   }
   if(const auto* r=s->stone_use()) {
     next.stoneUse.emplace();auto& out=*next.stoneUse;out.outcome=StoneUseOutcome(r->outcome());

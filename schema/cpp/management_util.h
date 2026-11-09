@@ -110,8 +110,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 155;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v155";
+inline constexpr uint32_t kManagementVersion = 156;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v156";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -1226,6 +1226,10 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       std::unordered_set<int32_t> rows;
       for(const auto* row:*r->items())if(!row || row->type()!=r->category() || !members.count(row->id()) || !rows.insert(row->id()).second ||
         !row->caption() || !row->caption()->size() || row->caption()->size()>16384 || !row->material_token() || row->material_token()->size()>256 || !row->subtype_raw() || row->subtype_raw()->size()>256)return "invalid stocks item";
+      for(const auto* row:*r->items())if(const auto* a=row->appearance())
+        if(!validInspectionInstrument(*a,row->type()) || !a->material_token() || !a->material_token()->size() || a->material_token()->size()>256 ||
+          !a->subtype_raw() || a->subtype_raw()->size()>128 || !a->color_token() || a->color_token()->size()>128 || a->stack()<1 || (a->flags()&~96) ||
+          a->material_token()->str()!=row->material_token()->str() || a->subtype_raw()->str()!=row->subtype_raw()->str())return "invalid stocks appearance";
       if(r->category()==-1 && (r->groups()->size() || r->items()->size()))return "unexpected unselected stocks rows";
     }else if(s.status()!=ManagementStatus::Rejected || r->category()!=-1 || r->categories()->size() || r->groups()->size() || r->items()->size() ||
       (r->outcome()!=StocksMenuOutcome::Rejected && (!apply || (r->outcome()!=StocksMenuOutcome::Stale && r->outcome()!=StocksMenuOutcome::Unknown))))return "invalid stocks refusal";

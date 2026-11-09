@@ -103,6 +103,14 @@ func _valid(value: Dictionary,intent: Dictionary) -> bool:
 		ids[row.id]=true
 		if not _text(row.get("caption"),16384,false) or not _text(row.get("material_token"),256) or not _text(row.get("subtype_raw"),256) or not _integer(row.get("flags"),0,4294967295):return false
 		if typeof(row.get("can_dump"))!=TYPE_BOOL or typeof(row.get("can_melt"))!=TYPE_BOOL:return false
+		if row.has("appearance"):
+			var a: Variant=row.appearance
+			if typeof(a)!=TYPE_DICTIONARY or a.size()!=(6 if row.type==13 else 5):return false
+			if not _text(a.get("material_token"),256,false) or a.material_token!=row.material_token or not _text(a.get("subtype_raw"),128) or a.subtype_raw!=row.subtype_raw or not _text(a.get("color_token"),128):return false
+			if not _integer(a.get("stack"),1,2147483647) or not _integer(a.get("flags"),0,96) or (a.flags&~96):return false
+			if row.type==13:
+				if typeof(a.get("instrument"))!=TYPE_DICTIONARY or a.instrument.size()!=2 or not _integer(a.instrument.get("family"),0,3) or not _integer(a.instrument.get("placed"),0,1):return false
+			elif a.has("instrument"):return false
 	if category==-1 and (not value.groups.is_empty() or not value.items.is_empty()):return false
 	var requested: Array=intent.get("item_ids",[])
 	return ids.size()==requested.size() and requested.all(func(id):return ids.has(id))

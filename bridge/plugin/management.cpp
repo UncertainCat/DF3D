@@ -510,13 +510,16 @@ struct StoneUseResult {
   std::vector<uint8_t> restrictions;
 };
 std::optional<StoneUseResult> stoneUse;
+struct StocksItemResult : df3d_production::ItemFacts {
+  std::optional<df3d_production::ItemInspectionAppearance> appearance;
+};
 struct StocksResult {
   m::StocksMenuOutcome outcome=m::StocksMenuOutcome::Rejected;
   int16_t category=-1;
   std::vector<df3d_stocks::CategoryDisplay> categories;
   std::vector<int16_t> matches;
   df3d_stocks::Selection selection;
-  std::vector<df3d_production::ItemFacts> items;
+  std::vector<StocksItemResult> items;
 };
 std::optional<StocksResult> stocks;
 
@@ -544,7 +547,10 @@ StocksResult readStocks(int16_t category,const std::string& query,
       throw std::runtime_error("stocks item no longer eligible");
     auto row=df3d_production::itemFacts(df::item::find(id));
     if(!row || row->itemType!=category)throw std::runtime_error("stocks item unavailable");
-    row->caption=DF2UTF(row->caption);result.items.push_back(std::move(*row));
+    row->caption=DF2UTF(row->caption);
+    StocksItemResult item;static_cast<df3d_production::ItemFacts&>(item)=std::move(*row);
+    item.appearance=df3d_production::itemAppearance(df::item::find(id));
+    result.items.push_back(std::move(item));
   }
   return result;
 }
@@ -1206,8 +1212,13 @@ void publish() {
       auto key=m::CreateStocksGroupKey(b,g.type,g.subtype,g.subcat1,g.subcat2);
       groups.push_back(m::CreateStocksGroupRow(b,key,g.amount,b.CreateString(row.caption),row.matches,g.expanded,
         uint8_t(row.flags),row.revision,b.CreateVector(row.ids)));}
-    for(const auto& row:stocks->items)items.push_back(m::CreateStocksItemRow(b,row.id,int16_t(row.itemType),
-      b.CreateString(row.caption),row.flags,row.canDump,row.canMelt,b.CreateString(row.materialToken),b.CreateString(row.subtypeRaw)));
+    for(const auto& row:stocks->items){
+      flatbuffers::Offset<m::ItemInspectionAppearance> appearance;
+      if(row.appearance){const auto& a=*row.appearance;
+        appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced);}
+      items.push_back(m::CreateStocksItemRow(b,row.id,int16_t(row.itemType),b.CreateString(row.caption),row.flags,row.canDump,row.canMelt,
+        b.CreateString(row.materialToken),b.CreateString(row.subtypeRaw),appearance));
+    }
     stocksResult=m::CreateStocksMenuState(b,stocks->outcome,stocks->category,b.CreateVector(categories),b.CreateVector(groups),b.CreateVector(items));
   }
   flatbuffers::Offset<m::StoneUseState> stoneUseResult;

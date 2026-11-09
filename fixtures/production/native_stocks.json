@@ -3409,5 +3409,58 @@
       "diagnostics": "passed_with_known_issues: godot-separate-thread-notice, godot-device-finalize, godot-shutdown-objects; unclassified empty",
       "limitations": "No native overlay PNG pixel comparison, filter tooltip or broader input/resize/lifecycle acceptance."
     }
+  },
+  "appearance156_reference": {
+    "contract": 156,
+    "channel": "Local\\df3d_management_v156",
+    "qa": "build/qa/stocks-appearance156",
+    "bridge_build": "build/notes/pm/stocks-appearance156-msvc.log",
+    "plugin_sha256": "52f5af7ab5007813052743766595353945d31855dd1caf7cfe8c28cf50fa3127",
+    "capture": "build/stockpile-storage-native-input-20261108-234452",
+    "native_capture": "build/stockpile-storage-native-input-20261108-215344/stocks-root.png",
+    "native_png_sha256": "e8603fb8cb9ff401c3815b51f5867d46699e0dc6698d8b6cefca044d80df55c3",
+    "viewer_png_sha256": "4373d8aec09fc39b4cb286f2169f994a928d2a24f248eb661772eede0721fbf5",
+    "scope": "Optional native itemAppearance facts transported and validated; independent Lua confirms nine stack/flag pairs before native Stocks opens. Diagonal ammunition recipe uses installed artwork. Fourteen visible iron/silver/copper item rows match native RGB pixels exactly. Two group visibility edits, restoration and stale rejection pass.",
+    "item_row_y": [
+      148,
+      184,
+      220,
+      256,
+      292,
+      328,
+      364,
+      400,
+      436,
+      508,
+      544,
+      580,
+      652,
+      688
+    ],
+    "item_row_rgb_differences": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "retained_differences": {
+      "filter": 18,
+      "left_scrollbar": 26,
+      "right_scrollbar": 26
+    },
+    "source_save": "unchanged; owned DF35124 exited unsaved",
+    "gpu": "30FPS;47-48C sampled",
+    "diagnostics": "passed_with_known_issues: godot-separate-thread-notice, godot-device-finalize, godot-shutdown-objects; unclassified empty",
+    "limitations": "No other item-family artwork, all ammunition variants, individual actions, full resize/input or large-inventory acceptance. Public Stocks remains hidden."
   }
 }

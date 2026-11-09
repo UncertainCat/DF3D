@@ -209,7 +209,11 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         const auto& v=*s.stocksMenu;Dictionary value;Array categories,groups,items;
         for(const auto& row:v.categories){Dictionary d;d["type"]=row.type;d["caption"]=String::utf8(row.caption.c_str());d["stored"]=String::utf8(row.stored.c_str());d["unavailable"]=String::utf8(row.unavailable.c_str());d["matches"]=row.matches;categories.push_back(d);}
         for(const auto& row:v.groups){Dictionary d;d["type"]=row.key.type;d["subtype"]=row.key.subtype;d["subcat1"]=row.key.subcat1;d["subcat2"]=row.key.subcat2;d["amount"]=row.amount;d["caption"]=String::utf8(row.caption.c_str());d["matches"]=row.matches;d["expanded"]=row.expanded;d["flags"]=int(row.flags);d["revision"]=int64_t(row.revision);Array ids;for(auto id:row.itemIds)ids.push_back(id);d["item_ids"]=ids;groups.push_back(d);}
-        for(const auto& row:v.items){Dictionary d;d["id"]=row.id;d["type"]=row.type;d["caption"]=String::utf8(row.caption.c_str());d["flags"]=int64_t(row.flags);d["can_dump"]=row.canDump;d["can_melt"]=row.canMelt;d["material_token"]=String::utf8(row.materialToken.c_str());d["subtype_raw"]=String::utf8(row.subtypeRaw.c_str());items.push_back(d);}
+        for(const auto& row:v.items){Dictionary d;d["id"]=row.id;d["type"]=row.type;d["caption"]=String::utf8(row.caption.c_str());d["flags"]=int64_t(row.flags);d["can_dump"]=row.canDump;d["can_melt"]=row.canMelt;d["material_token"]=String::utf8(row.materialToken.c_str());d["subtype_raw"]=String::utf8(row.subtypeRaw.c_str());if(row.appearance){const auto& a=*row.appearance;Dictionary appearance;
+          appearance["material_token"]=String::utf8(a.materialToken.c_str());appearance["subtype_raw"]=String::utf8(a.subtypeRaw.c_str());appearance["color_token"]=String::utf8(a.colorToken.c_str());appearance["stack"]=a.stack;appearance["flags"]=int(a.flags);
+          if(a.instrumentFamily>=0){Dictionary instrument;instrument["family"]=int(a.instrumentFamily);instrument["placed"]=int(a.instrumentPlaced);appearance["instrument"]=instrument;}
+          d["appearance"]=appearance;
+        }items.push_back(d);}
         value["outcome"]=int(v.outcome);value["category"]=v.category;value["categories"]=categories;value["groups"]=groups;value["items"]=items;result["stocks_menu"]=value;
         if(v.outcome==wm::StocksMenuOutcome::Unknown)result["outcome"]="unknown";
     }

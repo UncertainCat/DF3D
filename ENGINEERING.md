@@ -37,9 +37,13 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
-Management155 adds the staged `stocks_menu` domain with StocksMenuRead and
-StocksGroupApply on `Local\df3d_management_v155`. Rebuild bridge and viewer
-together; version154 peers use a different channel and are not compatible.
+Management156 carries the staged `stocks_menu` domain with StocksMenuRead and
+StocksGroupApply on `Local\df3d_management_v156`. Rebuild bridge and viewer
+together; version155 peers use a different channel and are not compatible.
+Stocks item rows now optionally carry the shared semantic item appearance facts:
+material, subtype, color, stack, artifact/web flags and instrument facts. The
+provider reuses itemAppearance; validators require material/subtype agreement
+with the row. Missing appearance stays absent, including in older recordings.
 Legacy StocksOpen/List/Inspect/Close remain retired. Required category/group/item
 vectors carry native captions, matching flags, stable group keys, membership and
 64-bit revisions. Reads request at most64 individual display rows; group edits
@@ -52,7 +56,7 @@ Core19 (`stocks-contract155`), real headless Godot/fake-producer roundtrips
 (`stocks-contract155-godot`) and MSVC pass. Protected225727 exercises existing
 Stone use typed reads (83 rows) and four edits on155: source unchanged, DF47996
 exits unsaved, GPU60C sampled; only the known separate-renderer startup notice.
-The bridge now serves owned Stocks reads and group edits through155. A read
+The bridge serves owned Stocks reads and group edits through this domain. A read
 with category -1 returns only the ordered catalog; the viewer owns selection.
 Selected reads return complete group membership and up to64 requested item
 facts. Edits require a fresh group revision and return a fresh receipt; failures
@@ -100,10 +104,20 @@ only known thread/finalize/shutdown-object signatures. Against native215344,
 the entire category crop48,76..320,724, all three visible group headers and
 first item text/controls crop400,148..944,184 have zero RGB differences. Filter
 and scrollbar crops retain18/26/26 differing pixels; no whole-panel identity
-claim. Individual icons are deliberately unfinished (44 missing pixels per
-visible Ammunition icon), and item View/Recenter/flag signals have no owner yet.
+claim. That capture predates ammunition icons (44 missing pixels per icon).
+Item View/Recenter/flag signals still have no owner.
 Search input, scroll/resize parity, filter help, complete item appearance and actions,
 main-scene ownership and large-inventory handling remain exposure prerequisites.
+
+Management156 reuses native itemAppearance facts for the staged ammunition
+icons and the accepted diagonal ammunition artwork path. Core19, Stocks state
+and real Godot contract checks pass in `stocks-appearance156`; MSVC passes.
+Protected234452 verifies nine independent native stack/flag pairs, two group
+visibility edits/restoration and stale rejection. All fourteen visible iron,
+silver and copper item rows match native215344 RGB pixels exactly, including
+icons. The source save is unchanged; DF35124 exits unsaved; 30FPS GPU47-48C
+sampled. Only the documented thread/finalize/shutdown-object diagnostics remain.
+Other item families and ammunition variants are not covered by this evidence.
 
 Stocks action help uses the shared native-hover owner and clock. Protected232831
 captures instruction IDs and rendered text cells for all four group controls
@@ -118,7 +132,8 @@ thread/finalize/shutdown-object diagnostics. Viewer overlays were visually
 inspected; native text cells, rather than the transient native screenshots,
 establish wording. No native overlay pixel-identity claim is made.
 
-Stocks has an accepted inventory-membership component but no DF3D screen yet.
+Stocks has accepted inventory and staged presentation components; its public
+route remains hidden pending the prerequisites above.
 Protected215344 on2026-11-08 opens and closes native D_STOCKS while paused,
 records93 ordered categories and initial Ammunition selection(type39), and
 captures six groups covering29 individual item IDs. Availability vectors have113

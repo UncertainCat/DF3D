@@ -878,7 +878,7 @@ int main(int argc,char** argv) {
         if(!stocksUnknown){
           for(int i=0;i<93;++i)categories.push_back(m::CreateStocksCategoryRow(b,int16_t(i),b.CreateString("fixture category"),b.CreateString("~20"),b.CreateString(""),i==39));
           groups.push_back(m::CreateStocksGroupRow(b,m::CreateStocksGroupKey(b,39,0,0,0),3,b.CreateString("fixture group [3]"),true,true,read?240:241,read?uint64_t(INT64_MAX):uint64_t(INT64_MAX)-1,b.CreateVector(std::vector<int32_t>{42,17})));
-          if(read)items.push_back(m::CreateStocksItemRow(b,17,39,b.CreateString("fixture item"),0,true,true,b.CreateString("INORGANIC:IRON"),b.CreateString("BOLT")));
+          if(read)items.push_back(m::CreateStocksItemRow(b,17,39,b.CreateString("fixture item"),0,true,true,b.CreateString("INORGANIC:IRON"),b.CreateString("BOLT"),m::CreateItemInspectionAppearance(b,b.CreateString("INORGANIC:IRON"),b.CreateString("BOLT"),b.CreateString("fixture color"),27,32)));
         }
         stocksMenu=m::CreateStocksMenuState(b,stocksUnknown?m::StocksMenuOutcome::Unknown:read?m::StocksMenuOutcome::None:m::StocksMenuOutcome::Applied,stocksUnknown?-1:39,b.CreateVector(categories),b.CreateVector(groups),b.CreateVector(items));
       }

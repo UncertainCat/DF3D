@@ -417,7 +417,7 @@ struct StocksGroupKey {int16_t type=-1,subtype=-1,subcat1=-1,subcat2=-1;};
 struct StocksMenuRequest {int16_t category=-1;std::string query;std::vector<int32_t> itemIds;std::optional<StocksGroupKey> target;uint64_t expectedRevision=0;StocksFlagAction operation=StocksFlagAction::Forbid;int8_t value=-1;};
 struct StocksCategoryRow {int16_t type=-1;std::string caption,stored,unavailable;bool matches=false;};
 struct StocksGroupRow {StocksGroupKey key;int32_t amount=0;std::string caption;bool matches=false,expanded=false;uint8_t flags=0;uint64_t revision=0;std::vector<int32_t> itemIds;};
-struct StocksItemRow {int32_t id=-1;int16_t type=-1;std::string caption;uint32_t flags=0;bool canDump=false,canMelt=false;std::string materialToken,subtypeRaw;};
+struct StocksItemRow {int32_t id=-1;int16_t type=-1;std::string caption;uint32_t flags=0;bool canDump=false,canMelt=false;std::string materialToken,subtypeRaw;std::optional<ItemInspectionAppearance> appearance;};
 struct StocksMenuState {StocksMenuOutcome outcome=StocksMenuOutcome::None;int16_t category=-1;std::vector<StocksCategoryRow> categories;std::vector<StocksGroupRow> groups;std::vector<StocksItemRow> items;};
 struct StoneUseRequest {int32_t category=-1,index=-1;std::optional<std::vector<uint8_t>> expected;};
 struct StoneUseRow {int32_t category=-1,index=-1;bool restricted=false;std::string name,uses;bool magmaSafe=false;std::string materialToken;};

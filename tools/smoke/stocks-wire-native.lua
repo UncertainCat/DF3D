@@ -10,6 +10,11 @@ local members={};for _,id in ipairs(reference.selection.groups[1].ids)do members
 local original=df.item.find(reference.selection.groups[1].ids[1]).flags.hidden
 for id in pairs(members)do assert(df.item.find(id).flags.hidden==original,'Fixture needs uniform visibility')end
 reference.original_hidden=original
+reference.appearance={}
+for _,id in ipairs(reference.selection.groups[1].ids)do
+ local item=df.item.find(id)
+ reference.appearance[tostring(id)]={stack=item:getStackSize(),flags=(item.flags.artifact and 32 or 0)|(item.flags.spider_web and 64 or 0)}
+end
 write('stocks-wire-reference.json',json.encode(reference))
 write('shot.tmp','stocks-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))
 local checked=0;local deadline=dfhack.getTickCount()+25000

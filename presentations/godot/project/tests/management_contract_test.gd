@@ -1206,6 +1206,7 @@ func test_stocks_menu() -> void:
 	assert(value.categories[39].matches and value.categories[39].stored=="~20")
 	assert(value.groups[0].item_ids==[42,17] and value.groups[0].revision==9223372036854775807 and value.groups[0].caption=="fixture group [3]")
 	assert(value.items[0].id==17 and value.items[0].can_dump and value.items[0].material_token=="INORGANIC:IRON")
+	assert(value.items[0].appearance=={"material_token":"INORGANIC:IRON","subtype_raw":"BOLT","color_token":"fixture color","stack":27,"flags":32})
 	var edit: Dictionary={"action":A.StocksGroupApply,"category":39,"subtype":0,"subcat1":0,"subcat2":0,"expected_revision":value.groups[0].revision,"operation":Contract.StocksFlagAction.Forbid,"value":1}
 	for patch in [{"category":-1},{"subtype":32768},{"expected_revision":0},{"operation":4},{"value":true},{"extra":0}]:
 		var invalid:=edit.duplicate(true);invalid.merge(patch,true);assert(world.management_request("stocks_menu",invalid)==0)

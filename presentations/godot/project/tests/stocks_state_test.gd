@@ -42,6 +42,7 @@ func run() -> void:
 	check(state.phase==State.Phase.Ready and state.category==26 and state.query=="","Fast typing lost native category history")
 	ready(state,service);state.request_items([7,8]);var reply:=response();reply.stocks_menu.items=[item(7),item(8)];service.reply(state.ticket,reply)
 	check(state.items.size()==2,"Visible row facts missing")
+	state.request_items([7,8,7]);check(state.phase==State.Phase.Ready,"Duplicate requested item accepted")
 	var calls: int=service.next;state.request_items([7]);state.request_items([99]);check(service.next==calls,"Cached or foreign item request submitted")
 	identity=state.key(state.groups[0]);state.apply_group(identity,C.StocksFlagAction.Hidden,true)
 	var pending: int=state.ticket
@@ -66,6 +67,9 @@ func run() -> void:
 		if fault=="foreign item":reply.stocks_menu.items=[item(99)]
 		if fault=="zero revision":reply.stocks_menu.groups[0].revision=0
 		service.reply(state.ticket,reply);check(state.phase==State.Phase.Rejected and state.groups.is_empty(),"Malformed receipt accepted: "+fault)
+	ready(state,service);state.request_items([7]);reply=response();reply.stocks_menu.items=[item(7)]
+	reply.stocks_menu.items[0].appearance={"material_token":"","subtype_raw":"","color_token":"","flags":0,"stack":0}
+	service.reply(state.ticket,reply);check(state.phase==State.Phase.Rejected,"Invalid item appearance accepted")
 	ready(state,service);state.items={7:item(7)};state.groups[0].flags=240
 	var view:=View.new();view.state=state
 	view.item_canvas=Control.new();view.add_child(view.item_canvas);view.item_canvas.position=Vector2(328,60);view.item_canvas.size=Vector2(584,612)

@@ -18,6 +18,7 @@ var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
 var page: Array=[]
 var total_rows:=0
 var requested:=false
+var icons: Dictionary={}
 var hover_help
 var pointer_known:=false
 var pointer_position:=Vector2.ZERO
@@ -72,6 +73,18 @@ func refresh() -> void:
 		for index in range(maxi(0,first-offset),mini(ids.size(),first+limit-offset)):
 			if page.size()<limit:page.append({"id":ids[index]})
 		offset+=ids.size()
+	var retained: Dictionary={}
+	for entry in page:
+		if not entry.has("id"):continue
+		var row: Dictionary=state.items.get(entry.id,{})
+		# Native Stocks3a2a92 uses the same diagonal ammunition artwork as
+		# the accepted Hunter view. Other families await their own acceptance.
+		if row.get("type")!=39 or not row.has("appearance"):continue
+		var cached: Dictionary=icons.get(row.id,{})
+		if cached.get("appearance")!=row.appearance:
+			cached={"appearance":row.appearance.duplicate(true),"texture":world.ammunition_icon(row.appearance,row.id)}
+		retained[row.id]=cached
+	icons=retained
 	category_canvas.queue_redraw();item_canvas.queue_redraw();queue_redraw()
 	if ready() and not requested:
 		var ids: Array=[];var missing:=false
@@ -117,6 +130,8 @@ func _draw_items() -> void:
 			_patch(item_canvas,"",Vector2(0,y),5,picture.texture(false))
 			var row: Dictionary=state.items.get(entry.id,{})
 			if row.is_empty():continue
+			var icon: Texture2D=icons.get(row.id,{}).get("texture")
+			if icon!=null and y>=0 and y+36<=item_canvas.size.y:item_canvas.draw_texture_rect(icon,Rect2(2,y+2,32,32),false)
 			_text(item_canvas,row.caption,Vector2(56,y+24))
 			for control in 6:
 				var operation:=control-2

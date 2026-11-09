@@ -46,6 +46,9 @@ func run() -> void:
 		check(str(row.revision)==native.revision and row.item_ids==native.ids and row.matches==native.on,"Stocks group membership/revision differs")
 	check(value.items.size()==ids.size(),"Stocks visible items missing")
 	for i in ids.size():check(value.items[i].id==int(ids[i]) and not value.items[i].caption.is_empty(),"Stocks item row differs")
+	for row in value.items:
+		var native: Dictionary=reference.appearance[str(row.id)]
+		check(row.has("appearance") and row.appearance.stack==int(native.stack) and row.appearance.flags==int(native.flags),"Stocks appearance facts differ from native item")
 	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
 	for frame in 5:world.poll();await process_frame
 	var state:=State.new();state.configure(service);state.open()
@@ -65,6 +68,7 @@ func run() -> void:
 		for row in view.page:
 			if row.has("id"):visible.append(row.id)
 		check(visible.all(func(id):return state.items.has(id)),"Stocks visible facts did not settle")
+		check(visible.all(func(id):return view.icons.has(id) and view.icons[id].texture!=null),"Stocks Ammunition artwork missing")
 		if OS.get_environment("DF3D_STOCKS_HOVER_RENDER")=="1":
 			var fixture: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/production/native_stocks.json"))
 			for target in fixture.hover_reference.observations:

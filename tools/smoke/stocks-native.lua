@@ -15,7 +15,8 @@ local function probe(command)
  assert(open==menu.open and selected==menu.current_type and query==menu.item_filter,'Inventory probe changed menu state')
  return json.decode(text)
 end
-local cold,cold_groups,cold_totals
+local cold,cold_groups,cold_totals,cold_display
+if os.getenv('DF3D_STOCKS_DISPLAY')=='1' then cold_display=probe('stocks-display-probe').rows end
 if os.getenv('DF3D_STOCKS_PROVIDER')=='1' then cold=probe('stocks-inventory-probe').ids end
 if os.getenv('DF3D_STOCKS_GROUPS')=='1' then cold_groups=probe('stocks-groups-probe').groups end
 if os.getenv('DF3D_STOCKS_TOTALS')=='1' then cold_totals=probe('stocks-totals-probe')end
@@ -66,6 +67,31 @@ for index,subtype in ipairs(stocks.current_type_a_subtype)do
  result.groups[#result.groups+1]={subtype=subtype,subcat1=stocks.current_type_a_subcat1[index],
   subcat2=stocks.current_type_a_subcat2[index],amount=stocks.current_type_a_amount[index],
   expanded=stocks.current_type_a_expanded[index],on=stocks.current_type_a_on[index],flags=stocks.current_type_a_flag[index].whole}
+end
+if cold_display then
+ local warm=probe('stocks-display-probe').rows
+ assert(json.encode(cold_display)==json.encode(warm),'Cold/warm category display differs')
+ local original=stocks.scroll_position_type;local captured={}
+ local function text_at(x,y,length)
+  local text=''
+  for column=x,x+length-1 do
+   local ch=dfhack.screen.readTile(column,y).ch
+   text=text..(ch>=32 and ch<127 and string.char(ch) or ' ')
+  end
+  return text:gsub('%s+$','')
+ end
+ for index,kind in ipairs(stocks.filtered_type_list)do
+  stocks.scroll_position_type=index
+  view:render(dfhack.getTickCount())
+  local row=cold_display[kind+1];assert(row.type==kind)
+  local native={type=kind,caption=text_at(8,7,24),stored=text_at(32,7,8),unavailable=text_at(32,8,8)}
+  for _,field in ipairs{'caption','stored','unavailable'}do
+   assert(native[field]==row[field],('Display differs for %d/%s: [%s] vs [%s]'):format(kind,field,native[field],row[field]))
+  end
+  captured[#captured+1]=native
+ end
+ stocks.scroll_position_type=original;view:render(dfhack.getTickCount())
+ result.display_provider={cold=cold_display,warm=warm,native=captured,scratch_preserved=true}
 end
 for y=0,df.global.gps.dimy-1 do
  local row={};for x=0,df.global.gps.dimx-1 do row[#row+1]=dfhack.screen.readTile(x,y).ch end

@@ -904,5 +904,576 @@
     "qa": "build/qa/stocks-native-totals",
     "msvc": "build/notes/pm/stocks-totals-msvc.log",
     "diagnostics": "Native log clean; no viewer launched."
+  },
+  "category_display_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-221817",
+    "rows": [
+      {
+        "caption": "Ammunition",
+        "stored": "~200",
+        "type": 39,
+        "unavailable": "~40"
+      },
+      {
+        "caption": "Amulets",
+        "stored": "~30",
+        "type": 37,
+        "unavailable": "2"
+      },
+      {
+        "caption": "Animal traps",
+        "stored": "None",
+        "type": 19,
+        "unavailable": ""
+      },
+      {
+        "caption": "Anvils",
+        "stored": "2",
+        "type": 45,
+        "unavailable": "3"
+      },
+      {
+        "caption": "Armor",
+        "stored": "~400",
+        "type": 25,
+        "unavailable": "~20"
+      },
+      {
+        "caption": "Armor stands",
+        "stored": "None",
+        "type": 33,
+        "unavailable": "1"
+      },
+      {
+        "caption": "Backpacks",
+        "stored": "2",
+        "type": 61,
+        "unavailable": ""
+      },
+      {
+        "caption": "Bags",
+        "stored": "~100",
+        "type": 31,
+        "unavailable": ""
+      },
+      {
+        "caption": "Ballista arrow heads",
+        "stored": "None",
+        "type": 66,
+        "unavailable": ""
+      },
+      {
+        "caption": "Ballista parts",
+        "stored": "None",
+        "type": 64,
+        "unavailable": ""
+      },
+      {
+        "caption": "Barrels",
+        "stored": "~200",
+        "type": 17,
+        "unavailable": ""
+      },
+      {
+        "caption": "Bars",
+        "stored": "~1000",
+        "type": 0,
+        "unavailable": "6"
+      },
+      {
+        "caption": "Beds",
+        "stored": "None",
+        "type": 8,
+        "unavailable": "~200"
+      },
+      {
+        "caption": "Bins",
+        "stored": "~200",
+        "type": 32,
+        "unavailable": ""
+      },
+      {
+        "caption": "Blocks",
+        "stored": "~800",
+        "type": 2,
+        "unavailable": "~400"
+      },
+      {
+        "caption": "Body parts",
+        "stored": "~40",
+        "type": 46,
+        "unavailable": "~80"
+      },
+      {
+        "caption": "Bolt thrower parts",
+        "stored": "None",
+        "type": 92,
+        "unavailable": ""
+      },
+      {
+        "caption": "Boulders",
+        "stored": "~300",
+        "type": 4,
+        "unavailable": "~200"
+      },
+      {
+        "caption": "Boxes",
+        "stored": "~30",
+        "type": 30,
+        "unavailable": "~20"
+      },
+      {
+        "caption": "Bracelets",
+        "stored": "~30",
+        "type": 43,
+        "unavailable": ""
+      },
+      {
+        "caption": "Branches",
+        "stored": "None",
+        "type": 91,
+        "unavailable": ""
+      },
+      {
+        "caption": "Buckets",
+        "stored": "9",
+        "type": 18,
+        "unavailable": "4"
+      },
+      {
+        "caption": "Cabinets",
+        "stored": "None",
+        "type": 35,
+        "unavailable": "~200"
+      },
+      {
+        "caption": "Cages",
+        "stored": "~10",
+        "type": 16,
+        "unavailable": "2"
+      },
+      {
+        "caption": "Catapult parts",
+        "stored": "None",
+        "type": 63,
+        "unavailable": ""
+      },
+      {
+        "caption": "Chains",
+        "stored": "~10",
+        "type": 10,
+        "unavailable": "3"
+      },
+      {
+        "caption": "Cheese",
+        "stored": "None",
+        "type": 71,
+        "unavailable": ""
+      },
+      {
+        "caption": "Cloth",
+        "stored": "~100",
+        "type": 58,
+        "unavailable": ""
+      },
+      {
+        "caption": "Codices",
+        "stored": "2",
+        "type": 89,
+        "unavailable": "1"
+      },
+      {
+        "caption": "Coffins",
+        "stored": "None",
+        "type": 21,
+        "unavailable": "2"
+      },
+      {
+        "caption": "Coins",
+        "stored": "None",
+        "type": 74,
+        "unavailable": ""
+      },
+      {
+        "caption": "Corpses",
+        "stored": "~20",
+        "type": 23,
+        "unavailable": "~80"
+      },
+      {
+        "caption": "Crowns",
+        "stored": "5",
+        "type": 40,
+        "unavailable": "2"
+      },
+      {
+        "caption": "Crutches",
+        "stored": "9",
+        "type": 83,
+        "unavailable": ""
+      },
+      {
+        "caption": "Cut gems",
+        "stored": "None",
+        "type": 1,
+        "unavailable": ""
+      },
+      {
+        "caption": "Doors",
+        "stored": "~20",
+        "type": 6,
+        "unavailable": "~200"
+      },
+      {
+        "caption": "Drinks",
+        "stored": "~400",
+        "type": 69,
+        "unavailable": ""
+      },
+      {
+        "caption": "Earrings",
+        "stored": "~30",
+        "type": 42,
+        "unavailable": "1"
+      },
+      {
+        "caption": "Egg",
+        "stored": "None",
+        "type": 88,
+        "unavailable": ""
+      },
+      {
+        "caption": "Figurines",
+        "stored": "None",
+        "type": 36,
+        "unavailable": ""
+      },
+      {
+        "caption": "Fish",
+        "stored": "None",
+        "type": 49,
+        "unavailable": ""
+      },
+      {
+        "caption": "Flasks",
+        "stored": "~30",
+        "type": 11,
+        "unavailable": ""
+      },
+      {
+        "caption": "Floodgates",
+        "stored": "2",
+        "type": 7,
+        "unavailable": "10"
+      },
+      {
+        "caption": "Footwear",
+        "stored": "~800",
+        "type": 26,
+        "unavailable": "~40"
+      },
+      {
+        "caption": "Glob",
+        "stored": "None",
+        "type": 75,
+        "unavailable": ""
+      },
+      {
+        "caption": "Goblets",
+        "stored": "~200",
+        "type": 12,
+        "unavailable": ""
+      },
+      {
+        "caption": "Grates",
+        "stored": "None",
+        "type": 79,
+        "unavailable": "~40"
+      },
+      {
+        "caption": "Handwear",
+        "stored": "~40",
+        "type": 29,
+        "unavailable": "7"
+      },
+      {
+        "caption": "Hatch covers",
+        "stored": "None",
+        "type": 78,
+        "unavailable": ""
+      },
+      {
+        "caption": "Headwear",
+        "stored": "~90",
+        "type": 28,
+        "unavailable": "5"
+      },
+      {
+        "caption": "Large gems",
+        "stored": "2",
+        "type": 44,
+        "unavailable": ""
+      },
+      {
+        "caption": "Leaves and fruit",
+        "stored": "None",
+        "type": 56,
+        "unavailable": ""
+      },
+      {
+        "caption": "Legwear",
+        "stored": "~200",
+        "type": 60,
+        "unavailable": "~20"
+      },
+      {
+        "caption": "Limb/body casts",
+        "stored": "None",
+        "type": 85,
+        "unavailable": ""
+      },
+      {
+        "caption": "Liquid",
+        "stored": "~70",
+        "type": 73,
+        "unavailable": ""
+      },
+      {
+        "caption": "Logs",
+        "stored": "~100",
+        "type": 5,
+        "unavailable": "~20"
+      },
+      {
+        "caption": "Meat",
+        "stored": "None",
+        "type": 48,
+        "unavailable": ""
+      },
+      {
+        "caption": "Mechanisms",
+        "stored": "2",
+        "type": 67,
+        "unavailable": "~40"
+      },
+      {
+        "caption": "Millstones",
+        "stored": "7",
+        "type": 81,
+        "unavailable": "3"
+      },
+      {
+        "caption": "Musical instruments",
+        "stored": "~20",
+        "type": 13,
+        "unavailable": "4"
+      },
+      {
+        "caption": "Pipe section",
+        "stored": "3",
+        "type": 77,
+        "unavailable": ""
+      },
+      {
+        "caption": "Plants",
+        "stored": "~1000",
+        "type": 54,
+        "unavailable": "~60"
+      },
+      {
+        "caption": "Powder",
+        "stored": "~100",
+        "type": 70,
+        "unavailable": ""
+      },
+      {
+        "caption": "Prepared meals",
+        "stored": "~900",
+        "type": 72,
+        "unavailable": ""
+      },
+      {
+        "caption": "Querns",
+        "stored": "None",
+        "type": 80,
+        "unavailable": ""
+      },
+      {
+        "caption": "Quivers",
+        "stored": "~20",
+        "type": 62,
+        "unavailable": "1"
+      },
+      {
+        "caption": "Raw fish",
+        "stored": "~200",
+        "type": 50,
+        "unavailable": ""
+      },
+      {
+        "caption": "Remains",
+        "stored": "~10",
+        "type": 47,
+        "unavailable": "1"
+      },
+      {
+        "caption": "Rings",
+        "stored": "~30",
+        "type": 41,
+        "unavailable": "2"
+      },
+      {
+        "caption": "Rough gems",
+        "stored": "~90",
+        "type": 3,
+        "unavailable": ""
+      },
+      {
+        "caption": "Scepters",
+        "stored": "None",
+        "type": 38,
+        "unavailable": ""
+      },
+      {
+        "caption": "Seeds",
+        "stored": "~1000",
+        "type": 53,
+        "unavailable": "~40"
+      },
+      {
+        "caption": "Sheet",
+        "stored": "None",
+        "type": 90,
+        "unavailable": ""
+      },
+      {
+        "caption": "Shields/bucklers",
+        "stored": "~20",
+        "type": 27,
+        "unavailable": "2"
+      },
+      {
+        "caption": "Siege ammo",
+        "stored": "None",
+        "type": 65,
+        "unavailable": ""
+      },
+      {
+        "caption": "Slabs",
+        "stored": "2",
+        "type": 87,
+        "unavailable": "~10"
+      },
+      {
+        "caption": "Small live animals",
+        "stored": "None",
+        "type": 51,
+        "unavailable": ""
+      },
+      {
+        "caption": "Small rock",
+        "stored": "None",
+        "type": 76,
+        "unavailable": ""
+      },
+      {
+        "caption": "Small tame animals",
+        "stored": "1",
+        "type": 52,
+        "unavailable": ""
+      },
+      {
+        "caption": "Splints",
+        "stored": "~10",
+        "type": 82,
+        "unavailable": ""
+      },
+      {
+        "caption": "Statues",
+        "stored": "3",
+        "type": 22,
+        "unavailable": "9"
+      },
+      {
+        "caption": "Tables",
+        "stored": "~30",
+        "type": 20,
+        "unavailable": "~20"
+      },
+      {
+        "caption": "Tanned hides",
+        "stored": "~100",
+        "type": 55,
+        "unavailable": ""
+      },
+      {
+        "caption": "Thread",
+        "stored": "~20",
+        "type": 57,
+        "unavailable": ""
+      },
+      {
+        "caption": "Thrones",
+        "stored": "~30",
+        "type": 9,
+        "unavailable": "~20"
+      },
+      {
+        "caption": "Tools",
+        "stored": "~80",
+        "type": 86,
+        "unavailable": "~30"
+      },
+      {
+        "caption": "Totems",
+        "stored": "None",
+        "type": 59,
+        "unavailable": ""
+      },
+      {
+        "caption": "Toys",
+        "stored": "6",
+        "type": 14,
+        "unavailable": ""
+      },
+      {
+        "caption": "Traction benches",
+        "stored": "None",
+        "type": 84,
+        "unavailable": "1"
+      },
+      {
+        "caption": "Trap components",
+        "stored": "None",
+        "type": 68,
+        "unavailable": ""
+      },
+      {
+        "caption": "Weapon racks",
+        "stored": "None",
+        "type": 34,
+        "unavailable": "1"
+      },
+      {
+        "caption": "Weapons",
+        "stored": "~80",
+        "type": 24,
+        "unavailable": "4"
+      },
+      {
+        "caption": "Windows",
+        "stored": "None",
+        "type": 15,
+        "unavailable": ""
+      }
+    ],
+    "cold_warm_equal": true,
+    "item_scratch_preserved": true,
+    "scope": "All 93 category names and rendered stored/unavailable count strings, including native bookkeeping approximation and zero captions. Type-indexed provider only; category order/search and individual ordering are not accepted.",
+    "source_save": "unchanged; owned DF15500 exited unsaved",
+    "plugin_sha256": "ad47c202bdd01c8f3f8efb9f1c555ce6f1ee1ecdfc97f06050038d55493d5671",
+    "msvc": "build/notes/pm/stocks-display-msvc.log",
+    "qa": "build/qa/stocks-native-display",
+    "diagnostics": "Native log clean; no viewer launched."
   }
 }

@@ -1,6 +1,8 @@
 #pragma once
 #include "building_item_native.h"
+#include "knowledge_detail_native.h"
 #include "df/world.h"
+#include "df/plotinfost.h"
 #include "df/specific_ref.h"
 #include <array>
 #include <cstddef>
@@ -71,6 +73,47 @@ inline std::optional<Totals> totals() {
         auto& value=(available && !(item->flags.whole&0x20)?result.stored:result.unavailable)[type];
         // DF's native ADD is a 32-bit operation.
         value=int32_t(uint32_t(value)+uint32_t(item->getStackSize()));
+    }
+    return result;
+}
+struct CategoryDisplay {int16_t type;std::string caption,stored,unavailable;};
+// Native renderer3a1a5a..3a1d48 supplies the formatting arguments. Return
+// type-indexed facts here; category filtering/order is a separate operation.
+inline std::optional<std::vector<CategoryDisplay>> categoryDisplay() {
+    const auto counts=totals();if(!counts || !df::global::plotinfo)return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool supported=[base] {
+        struct Pin {size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={
+            {0x3a1a5a,0x2ee,UINT64_C(0x3ec1254499b763ef)},
+            {0xa82c10,0x56ec,UINT64_C(0x66347214dfd39a0b)},
+            {0x52d650,0x2b4,UINT64_C(0x9e8023d09def7af9)},
+            {0x74f430,0x1d3,UINT64_C(0x79707f49e13c9401)},
+            {0x52c2b0,0xd8,UINT64_C(0x38b6489e35387929)}};
+        for(const auto& pin:pins){uint64_t hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin.length;++i){hash^=base[pin.rva+i];hash*=UINT64_C(1099511628211);}
+            if(hash!=pin.hash)return false;}
+        return true;
+    }();
+    const auto& precision=df::global::plotinfo->nobles.bookkeeper_precision;
+    if(!supported || reinterpret_cast<const uint8_t*>(&precision)!=base+0x23912ac)return std::nullopt;
+    df3d_creature::KnowledgeMaterialCacheRestore restore(df::global::world->raws.creatures.hist_fig_to_creature_map);
+    using Describe=void(*)(std::string*,int16_t,int16_t,int16_t,int32_t,int32_t,int32_t,bool,void*,int32_t,int32_t,bool,int32_t,int32_t);
+    const auto countCaption=[&](int32_t value,bool available) {
+        if(!value)return std::string(available?"None":""); // Native3a1c13 literal; absent second row for zero.
+        bool estimated=false;
+        const auto rounded=reinterpret_cast<int32_t(*)(int32_t,int32_t,int32_t,bool*)>(base+0x74f430)(value,precision,0,&estimated);
+        std::string text;reinterpret_cast<void(*)(int32_t,std::string*)>(base+0x52c2b0)(rounded,&text);
+        if(estimated)text.insert(text.begin(),'~'); // Native3a1b6f/3a1cf3.
+        return text;
+    };
+    std::vector<CategoryDisplay> result;result.reserve(93);
+    for(int16_t type=0;type<93;++type) {
+        CategoryDisplay row;row.type=type;
+        reinterpret_cast<Describe>(base+0xa82c10)(&row.caption,type,-1,-1,-1,-1,0,false,nullptr,-1,-1,true,0,0);
+        reinterpret_cast<void(*)(std::string*)>(base+0x52d650)(&row.caption);
+        row.stored=countCaption(counts->stored[type],true);row.unavailable=countCaption(counts->unavailable[type],false);
+        result.push_back(std::move(row));
     }
     return result;
 }

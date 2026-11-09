@@ -111,8 +111,17 @@ arrays cold and warm (9758 stored,1728 unavailable); item scratch guards pass.
 MSVC/core19 (`stocks-native-totals`) pass, native log clean, source unchanged,
 DF46004 exits unsaved, GPU60C sampled. Installed plugin SHA256 is
 753F4A182D8BB9AB6521796D514258B491C985A69CBD5CF586F9757ADC8EF30D.
-Displayed count approximation, category captions/order, individual item order,
-filtering, actions, transport and the screen remain unfinished.
+`categoryDisplay()` calls native category naming/capitalization and bookkeeping
+approximation/number formatting with the renderer's pinned arguments. Counts
+use the returned rounded value, native `~` estimate prefix and `None` zero-stock
+caption; zero unavailable stock has no second line. Results are type-indexed,
+not a claim of category order. Protected221817 compares all93 category captions
+and both count strings against rendered native cells, cold and warm, with item
+scratch/menu guards. Source unchanged, DF15500 exits unsaved, native log clean,
+GPU60C sampled; MSVC and core19 (`stocks-native-display`) pass. Evidence is in
+`native_stocks.json.category_display_reference`.
+Category order, individual item order, filtering, actions, transport and the
+screen remain unfinished.
 
 ## Stone use native semantics and presentation
 

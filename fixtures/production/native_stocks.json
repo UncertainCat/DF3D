@@ -5886,5 +5886,19 @@
     "sampled_gpu_temperature_c": 37,
     "sampled_gpu_utilization_percent": 1,
     "installed_bridge_sha256": "fdbddf7728f80cdc2f859774b4679d308328710a6b8982ef41a4124756870c33"
+  },
+  "door_renderer_reference": {
+    "status": "Staged renderer only; no bridge facts or live door-parity acceptance.",
+    "native_selector": "c80936..c80d30; quality and artifact mood, ID variant, wear, holder door_flags.forbidden and close_timer>0; solid material color.",
+    "native_compositor": "cf4b3d..cf4d18 selects open/closed wear-specific bases and suppresses ID decoration while open; cf50c2 requires forbidden and closed for the lock overlay.",
+    "supported_raws": "Installed vanilla ITEM_DOOR_*_CLOSED:ALL shares a base across qualities; damaged bases follow wear1/2/3. Wear1 uses ordinary ID decoration, wear2/3 use ITEM_DOOR_VARIANT_DAMAGED ordered by variant then wear.",
+    "raw_sha256": "94602208025adb09f7cafd2ae6038fb000806ccf80c95ca33e839408afacc686",
+    "verification": "stocks-door-renderer: Core19, extension build and installed-asset icon checks passed headlessly.",
+    "limitations": [
+      "Existing Stocks bridge supplies no door facts yet and retains abstract artwork.",
+      "Live open/forbidden/worn states remain unverified.",
+      "No all-quality support for modified graphic definitions is claimed."
+    ],
+    "bucket_followup": "c7d7a0..c7d8af scans general_refs in reverse without a container-flag gate, selects the first CONTAINS_ITEM whose child native isLiquid virtual86 succeeds, and uses that child material solid-state color. Do not reuse BIN first-entry/color-override policy."
   }
 }

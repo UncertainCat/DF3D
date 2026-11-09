@@ -1219,3 +1219,30 @@ TEST_CASE("Upright weapons select declared count art and native retracted palett
  q.stage=wm::BuildingStage::Complete;q.weaponCount=-1;
  CHECK(std::string(resolveBuildingTiles(idx,q).rule)=="upright-weapon.unknown");
 }
+
+TEST_CASE("owned door artwork suppresses closed overlays while open and follows wear") {
+  AssetIndex idx;idx.inorganics["GRANITE"].flags=kMatStone;
+  idx.tileGraphics["ITEM_DOOR_STONE"]={{0,0,0,1,1}};
+  idx.tileGraphics["ITEM_DOOR_STONE_CLOSED"]={{0,1,0,1,1}};
+  idx.tileGraphics["ITEM_DOOR_STONE_OPEN"]={{0,2,0,1,1}};
+  for(int wear=0;wear<3;++wear) {
+    idx.tileGraphics["ITEM_DOOR_STONE_CLOSED_DAMAGED"].push_back({0,3+wear,0,1,1});
+    idx.tileGraphics["ITEM_DOOR_STONE_OPEN_DAMAGED"].push_back({0,6+wear,0,1,1});
+  }
+  for(int v=0;v<4;++v)idx.tileGraphics["ITEM_DOOR_VARIANT"].push_back({0,10+v,0,1,1});
+  for(int v=0;v<8;++v)idx.tileGraphics["ITEM_DOOR_VARIANT_DAMAGED"].push_back({0,20+v,0,1,1});
+  idx.tileGraphics["ITEM_DOOR_FORBIDDEN"]={{0,30,0,1,1}};
+  ItemQuery q;q.kind=wm::ItemKind::Door;q.material="INORGANIC:GRANITE";q.id=47315;
+  auto r=resolveItem(idx,q);CHECK(r.sprite.x==0);CHECK(r.overlays.empty());
+  q.door=DoorItemFacts{false,true,0};r=resolveItem(idx,q);
+  CHECK(r.sprite.x==1);REQUIRE(r.overlays.size()==2);CHECK(r.overlays.back().sprite.x==30);
+  for(int wear=0;wear<4;++wear) {
+    q.door=DoorItemFacts{true,true,uint8_t(wear)};r=resolveItem(idx,q);
+    CHECK(r.sprite.x==(wear?5+wear:2));CHECK(r.overlays.empty());
+    q.door->open=false;r=resolveItem(idx,q);
+    CHECK(r.sprite.x==(wear?2+wear:1));REQUIRE(r.overlays.size()==2);
+    CHECK(r.overlays.front().sprite.x>=(wear<2?10:20));
+    CHECK(r.overlays.front().sprite.x<=(wear<2?13:27));
+  }
+  q.door->wear=4;CHECK_FALSE(resolveItem(idx,q).found);
+}

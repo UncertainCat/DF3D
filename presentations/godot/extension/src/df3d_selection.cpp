@@ -42,10 +42,20 @@ Ref<Texture2D> Df3dWorld::ammunition_icon(const Dictionary& appearance,int64_t i
 }
 Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,bool genericGroup,int64_t itemId,bool sheet,bool diagonalAmmo) {
     if(!assets_ || itemType<0 || itemType>=int(wm::ItemKind::BoltThrowerParts) ||
-       appearance.size()!=5+int(appearance.has("bedding"))+int(appearance.has("instrument"))+int(appearance.has("slab_engraving"))+int(appearance.has("gem_shape_raw"))+int(appearance.has("contents"))+int(appearance.has("artifact_mood"))+int(appearance.has("floodgate_open")))return {};
+       appearance.size()!=5+int(appearance.has("bedding"))+int(appearance.has("instrument"))+int(appearance.has("slab_engraving"))+int(appearance.has("gem_shape_raw"))+int(appearance.has("contents"))+int(appearance.has("artifact_mood"))+int(appearance.has("floodgate_open"))+int(appearance.has("door")))return {};
     if(itemId < -1 || itemId>INT32_MAX)return {};
     if(appearance.has("artifact_mood") && (itemType!=24 || appearance["artifact_mood"].get_type()!=Variant::BOOL))return {};
     if(appearance.has("floodgate_open") && (itemType!=7 || appearance["floodgate_open"].get_type()!=Variant::BOOL))return {};
+    std::optional<df3d::assets::DoorItemFacts> door;
+    if(appearance.has("door")) {
+        if(itemType!=6 || itemId<0 || appearance["door"].get_type()!=Variant::DICTIONARY)return {};
+        const Dictionary value=appearance["door"];
+        if(value.size()!=3 || !value.has("open") || value["open"].get_type()!=Variant::BOOL ||
+           !value.has("forbidden") || value["forbidden"].get_type()!=Variant::BOOL ||
+           !value.has("wear") || value["wear"].get_type()!=Variant::INT)return {};
+        const int64_t wear=value["wear"];if(wear<0 || wear>3)return {};
+        door=df3d::assets::DoorItemFacts{bool(value["open"]),bool(value["forbidden"]),uint8_t(wear)};
+    }
     std::optional<wm::ContainerContentsFacts> contents;
     if(appearance.has("contents")) {
         if(itemType!=32 || appearance["contents"].get_type()!=Variant::DICTIONARY)return {};
@@ -184,7 +194,7 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
         return {};
     }
     df3d::assets::ItemQuery query;query.kind=wm::ItemKind(itemType+1);query.material=materialToken;
-    query.diagonalAmmo=diagonalAmmo;
+    query.diagonalAmmo=diagonalAmmo;query.door=door;
     if(appearance.has("floodgate_open"))query.floodgateOpen=bool(appearance["floodgate_open"])?1:0;
     if(itemId>=0)query.id=uint32_t(itemId);
     if(contents)query.contents=&*contents;

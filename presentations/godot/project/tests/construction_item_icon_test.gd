@@ -118,6 +118,22 @@ func run() -> void:
 	check(closed!=null and opened!=null and closed.get_image().get_data()!=opened.get_image().get_data(),"Linked floodgate state selects distinct installed sprites")
 	gate.floodgate_open=1;check(world.item_sheet_icon(7,gate,1)==null,"Floodgate state must be boolean")
 	gate.floodgate_open=false;check(world.item_sheet_icon(6,gate,1)==null,"Floodgate state rejects other item types")
+	var door={"material_token":"INORGANIC:DOLOMITE","subtype_raw":"","color_token":"","stack":1,"flags":0,"door":{"open":false,"forbidden":false,"wear":0}}
+	var door_closed=icon_hash(world.item_sheet_icon(6,door,47315))
+	check(not door_closed.is_empty(),"Owned closed door icon missing")
+	door.door.open=true
+	var door_open=icon_hash(world.item_sheet_icon(6,door,47315))
+	check(not door_open.is_empty() and door_open!=door_closed,"Door state did not select open artwork")
+	door.door.forbidden=true
+	check(icon_hash(world.item_sheet_icon(6,door,47315))==door_open,"Open door retained forbidden overlay")
+	door.door.open=false
+	check(icon_hash(world.item_sheet_icon(6,door,47315))!=door_closed,"Closed forbidden door lost overlay")
+	for wear in [1,2,3]:
+		door.door.wear=wear
+		check(world.item_sheet_icon(6,door,47315)!=null,"Damaged door icon missing")
+	door.door.wear=4;check(world.item_sheet_icon(6,door,47315)==null,"Invalid door wear accepted")
+	door.door.wear=0;check(world.item_sheet_icon(6,door,-1)==null,"Door pattern accepted without identity")
+	check(world.item_sheet_icon(7,door,47315)==null,"Door facts accepted for another type")
 	check(world.construction_item_icon(-1,{})==null,"unknown item kind")
 	world.free();await process_frame
 	print("CONSTRUCTION_ITEM_ICON ","PASS" if failures==0 else "FAIL")

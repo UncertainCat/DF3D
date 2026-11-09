@@ -162,7 +162,10 @@ BuildingSprites resolveBuildingTiles(const AssetIndex& index, const BuildingQuer
 // Layout name a building kind/subtype/custom code resolves to (WORKSHOP_MASON, TRADE_DEPOT, ...); "" when not layout-drawn.
 std::string buildingLayoutName(wm::BuildingKind kind, uint16_t subtype, std::string_view custom);
 
+struct DoorItemFacts { bool open=false, forbidden=false;uint8_t wear=0; };
+
 struct ItemQuery {
+  std::optional<DoorItemFacts> door; // Absent until the caller owns linked-door and wear facts.
   int8_t floodgateOpen=-1; // Unknown for legacy/map callers; owned linked-building state otherwise.
   bool diagonalAmmo=false; // Native ammunition-list icon; map queries retain straight sprites.
   int8_t slabEngraving=-2;

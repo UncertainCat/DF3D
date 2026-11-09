@@ -37,6 +37,17 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
+The shared item renderer has staged support for owned door open/forbidden/wear
+facts and item-ID decoration. Nativecf4b3d..cf4d18 selects wear-specific bases
+and suppresses ID decoration while open;cf50c2 draws the forbidden overlay only
+while closed. Supported vanilla CLOSED:ALL shares artwork across quality levels.
+The bridge does not yet publish door facts, so Stocks still uses its prior
+abstract door icon. Core19, extension and installed-asset icon checks pass
+headlessly (`stocks-door-renderer`); this is not live door-parity acceptance.
+`door_renderer_reference` records native selectors and the supported raw hash.
+Bucket follow-up must use reverse reference order and native isLiquid virtual86
+(c7d7a0..c7d8af), not the BIN first-entry/color-override policy.
+
 Management160 adds optional floodgate open state to shared item appearance.
 Rebuild bridge and viewer together; version159 peers use a separate channel.
 Native BUILDING_HOLDER lookupcb16b0 supplies the linked simulation building;

@@ -1217,7 +1217,29 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
     case ItemKind::Wood: return single("ITEM_WOOD", "wood");
     case ItemKind::Rock: return single("ITEM_ROCK", "rock");
     case ItemKind::Branch: return single("ITEM_BRANCH", "branch");
-    case ItemKind::Door: return member("ITEM_DOOR", "", "item.door");
+    case ItemKind::Door: {
+      if(!q.door)return member("ITEM_DOOR", "", "item.door");
+      const auto& door=*q.door;
+      if(door.wear>3){r.rule="item.door.invalid-wear";return r;}
+      // Native cf4b3d..cf4d18: open suppresses ID decoration; damaged
+      // members follow wear. Supported vanilla CLOSED:ALL applies to every
+      // quality. The damaged variant vector is ordered variant then wear2/3.
+      std::string name;
+      const std::string suffix=std::string(door.open?"_OPEN":"_CLOSED")+(door.wear?"_DAMAGED":"");
+      classMember(idx,"ITEM_DOOR",cls,suffix,&name);
+      done(idx.tile(name,door.wear?door.wear-1:0),"item.door.state");
+      if(!r.found)return r;
+      if(!door.open) {
+        const auto variant=gemVariant(q.id);
+        const auto* decoration=door.wear<2?idx.tile("ITEM_DOOR_VARIANT",variant):
+            idx.tile("ITEM_DOOR_VARIANT_DAMAGED",variant*2+door.wear-2);
+        if(decoration)r.overlays.push_back({*decoration,r.paletteRow});
+        // Native cf50c2 requires forbidden AND closed.
+        if(door.forbidden)if(const auto* lock=idx.tile("ITEM_DOOR_FORBIDDEN"))
+          r.overlays.push_back({*lock,-1});
+      }
+      return r;
+    }
     case ItemKind::Floodgate: return member("ITEM_FLOODGATE", q.floodgateOpen<0?"":q.floodgateOpen?"_OPEN":"_CLOSED", "item.floodgate");
     case ItemKind::HatchCover: return member("ITEM_HATCH_COVER", "", "item.hatch");
     case ItemKind::Grate: return member("ITEM_GRATE", "", "item.grate");

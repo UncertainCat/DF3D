@@ -124,7 +124,18 @@ rows/count placement by16 pixels. The corrected category48,76..336,724,
 item360,112..944,724 and filter360,76..960,112 crops all have zero RGB differences
 for IRON at1200x800. Source unchanged, owned DF28392 exits unsaved,30FPS and43C
 sampled; only known Godot diagnostics. `filled_filter_reference` records scope.
-Unicode, long-query clipping and resize acceptance remain open.
+Unicode and long-query clipping remain open. Native014736 and viewer015048
+establish responsive Stocks columns and whole-row heights at961x721,960x600,
+1600x900 and1200x800. Category width follows one third of the panel's cell width;
+item origin/count placement follow that column. Odd-height centering rounds down.
+Item regions match with zero RGB differences at all four sizes; category regions
+match at wide/default and retain28 differing pixels at narrow widths where a
+count overwrites a long caption. That text-cell background defect remains open.
+Viewer resize fetches fresh visible rows and restores the default layout before
+existing edit/restoration/stale checks. Source unchanged, owned DF16264 exits
+unsaved,30FPS and42-43C sampled; known Godot diagnostics only. See
+`resize_reference` for hashes and limitations: chrome, scroll retention and the
+absolute supported minimum are not accepted by these captures.
 
 Pending reads/edits clear authority; close/session changes retire observers;
 Unknown cannot replay. Successful edits refresh the retained search before

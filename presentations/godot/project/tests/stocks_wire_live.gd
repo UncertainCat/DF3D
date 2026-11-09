@@ -132,6 +132,14 @@ func run() -> void:
 			if not await ready_state(state):quit(1);return
 			Input.parse_input_event(enter);await process_frame
 			check(state.query.is_empty() and not view.search.has_focus(),"Filter clearing did not restore initial query")
+		if OS.get_environment("DF3D_STOCKS_RESIZE_RENDER")=="1":
+			for dimensions in [Vector2i(961,721),Vector2i(960,600),Vector2i(1600,900),Vector2i(1200,800)]:
+				root.size=dimensions;await process_frame
+				view.layout(Vector2(dimensions));hover.layout(Vector2(dimensions))
+				if not await ready_state(state):quit(1);return
+				check(view.page.all(func(row):return row.has("group") or state.items.has(row.id)),"Resize left visible item facts missing")
+				await RenderingServer.frame_post_draw
+				root.get_texture().get_image().save_png(directory+"/stocks-view-resize-%dx%d.png"%[dimensions.x,dimensions.y])
 		var expanded_count: int=view.total_rows
 		await click(Vector2(500,130))
 		if not await ready_state(state):quit(1);return

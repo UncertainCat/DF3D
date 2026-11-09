@@ -5014,5 +5014,99 @@
     "gpu": "Native/viewer30FPS; sampled43C/0%; original preferences restored",
     "diagnostics": "passed_with_known_issues: thread notice, device finalize, shutdown objects; no unclassified errors",
     "limitations": "ASCII IRON case at1200x800 only. No Unicode, long-query clipping or resize acceptance. No tooltip at either recorded search target; do not invent help text."
+  },
+  "resize_reference": {
+    "native_capture": "build/stockpile-storage-native-input-20261109-014736",
+    "viewer_capture": "build/stockpile-storage-native-input-20261109-015048",
+    "native_observations": [
+      {
+        "category_page": 16,
+        "category_scroll": 0,
+        "columns": 120,
+        "item_page": 45,
+        "item_scroll": 0,
+        "name": "minimum",
+        "rows": 60
+      },
+      {
+        "category_page": 13,
+        "category_scroll": 0,
+        "columns": 120,
+        "item_page": 36,
+        "item_scroll": 0,
+        "name": "small",
+        "rows": 50
+      },
+      {
+        "category_page": 21,
+        "category_scroll": 0,
+        "columns": 200,
+        "item_page": 45,
+        "item_scroll": 0,
+        "name": "wide",
+        "rows": 75
+      },
+      {
+        "category_page": 0,
+        "category_scroll": 0,
+        "columns": 150,
+        "item_page": 0,
+        "item_scroll": 0,
+        "name": "default",
+        "rows": 66
+      }
+    ],
+    "cases": [
+      {
+        "name": "minimum",
+        "pixels": [
+          961,
+          721
+        ],
+        "category_rgb_differences": 28,
+        "item_rgb_differences": 0,
+        "native_sha256": "0c4ed5ebccdc6e2a0cebc0e0820ae1eaf4353633613a408cc0acfd5f1f474867",
+        "viewer_sha256": "4bd8ffb1cace99bd8964fb728a68172fc0ba6cf968a9874094a9cfef2bd34aa5"
+      },
+      {
+        "name": "small",
+        "pixels": [
+          960,
+          600
+        ],
+        "category_rgb_differences": 28,
+        "item_rgb_differences": 0,
+        "native_sha256": "76ac03bc07ff980a3814004c3376b618a25d45c1370a5b772973810e2ffb2028",
+        "viewer_sha256": "82a03089c631beece60a970ef643351ceeac42866bf17d32a638eb2c9ab527c1"
+      },
+      {
+        "name": "wide",
+        "pixels": [
+          1600,
+          900
+        ],
+        "category_rgb_differences": 0,
+        "item_rgb_differences": 0,
+        "native_sha256": "bc60bf58b54a112ee89378105d28b731738a6deda73478643c3d6d26d282197c",
+        "viewer_sha256": "d7d7fdde3fa913a0d9345e1c2516189f2b40f37e4fbd7d26d4e44ad6ef5f622c"
+      },
+      {
+        "name": "default",
+        "pixels": [
+          1200,
+          800
+        ],
+        "category_rgb_differences": 0,
+        "item_rgb_differences": 0,
+        "native_sha256": "463d8a09f134d74977afd01cd79bd13f0ed37d5b87f3322e72eed1fe7b5779bc",
+        "viewer_sha256": "4373d8aec09fc39b4cb286f2169f994a928d2a24f248eb661772eede0721fbf5"
+      }
+    ],
+    "layout": "Category width=floor(panel width/24)*8-40, item origin=category width+56 relative to panel. Whole category rows=floor((native screen rows-10)/3); item height is one row shorter. Centering offset rounds down for odd pixel heights.",
+    "workflow": "Actual viewer window resized across all four sizes, visible facts settled, restored1200x800 then collapse/expand and group Hidden restoration/stale checks pass.",
+    "source_save": "unchanged; owned native DF42236 and viewer host DF16264 exited unsaved",
+    "gpu": "30FPS; sampled42-43C; original preferences restored",
+    "diagnostics": "passed_with_known_issues: thread notice, device finalize, shutdown objects; no unclassified errors",
+    "limitations": "Minimum request640x480 resolved to961x721, not a claim about absolute supported minimum. Narrow category captions retain28 differing pixels where count overwrites a long name; native cell-background behavior not yet matched. Filter/scrollbar chrome not included in crop acceptance. Scroll retention across resizing and smallest supported dimensions remain open. Native default page probe returned0/0 after resize; not accepted as scrolling semantics."
   }
 }

@@ -42,15 +42,16 @@ func configure_stocks(source,model,help=null) -> void:
 	state.changed.connect(refresh)
 func allowed() -> bool:return is_visible_in_tree() and (not input_allowed.is_valid() or input_allowed.call())
 func ready() -> bool:return allowed() and state!=null and state.phase==state.Phase.Ready
+func category_width() -> int:return int(size.x/24)*8-40
 func layout(view: Vector2) -> void:
 	frame_rows=maxi(13,floori(view.y/12)-7)
-	position=Vector2(32,48+fposmod(view.y,12)*0.5);size=Vector2((floori(view.x/8)-32)*8,frame_rows*12)
+	position=Vector2(32,48+floorf(fposmod(view.y,12)*0.5));size=Vector2((floori(view.x/8)-32)*8,frame_rows*12)
 	if state==null:return
-	category_canvas.position=Vector2(16,24);category_canvas.size=Vector2(272,size.y-60)
-	item_canvas.position=Vector2(328,60);item_canvas.size=Vector2(maxf(0,size.x-360),size.y-96)
-	scrollbar.position=Vector2(288,24);scrollbar.size=Vector2(16,category_canvas.size.y)
+	category_canvas.position=Vector2(16,24);category_canvas.size=Vector2(category_width(),int((frame_rows-3)/3)*36)
+	item_canvas.position=Vector2(category_width()+56,60);item_canvas.size=Vector2(maxf(0,size.x-category_width()-88),category_canvas.size.y-36)
+	scrollbar.position=Vector2(category_width()+16,24);scrollbar.size=Vector2(16,category_canvas.size.y)
 	item_scrollbar.position=Vector2(size.x-32,60);item_scrollbar.size=Vector2(16,item_canvas.size.y)
-	search.position=Vector2(328,24);search.size=Vector2(maxf(0,size.x-344),36)
+	search.position=Vector2(category_width()+56,24);search.size=Vector2(maxf(0,size.x-category_width()-72),36)
 	refresh()
 func refresh() -> void:
 	if state==null or item_canvas==null:return
@@ -58,7 +59,7 @@ func refresh() -> void:
 	search.set_bytes(state.query.to_utf8_buffer())
 	var categories: Array=state.visible_categories()
 	scrollbar.page=maxi(0,int(category_canvas.size.y/36));scrollbar.set_rows(categories.size(),state.first_category)
-	category_canvas.size.x=272 if scrollbar.visible else 288
+	category_canvas.size.x=category_width()+(0 if scrollbar.visible else 16)
 	page=[];total_rows=0
 	for group in state.groups:
 		if group.matches:total_rows+=1+(group.item_ids.size() if state.expanded(group) else 0)
@@ -148,8 +149,8 @@ func wheel_bar(point: Vector2):
 	# unshifted 8x12 input cells. The rendered panel can have a half-cell offset.
 	var top: float=-fposmod(position.y,12)
 	if point.y<top or point.y>=top+size.y:return null
-	if point.x>=0 and point.x<312:return scrollbar
-	if point.x>=320 and point.x<size.x:return item_scrollbar
+	if point.x>=0 and point.x<category_width()+40:return scrollbar
+	if point.x>=category_width()+48 and point.x<size.x:return item_scrollbar
 	return null
 func _input(event: InputEvent) -> void:
 	if not allowed():return

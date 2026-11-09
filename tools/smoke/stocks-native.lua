@@ -316,6 +316,10 @@ if os.getenv('DF3D_STOCKS_INPUT')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-native.lua$','stocks-input-native.lua')
  result.input=assert(loadfile(source))(view,stocks,out)
 end
+if os.getenv('DF3D_STOCKS_RESIZE')=='1' then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-native.lua$','stocks-resize-native.lua')
+ result.resize=assert(loadfile(source))(out,view,stocks)
+end
 if os.getenv('DF3D_STOCKS_FILTER_RENDER')=='1' then
  local g=df.global.gps;df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
  g.precise_mouse_x=500;g.precise_mouse_y=94;g.mouse_x=62;g.mouse_y=7

@@ -120,6 +120,18 @@ at30FPS,60C sampled (not peak); documented Godot diagnostics only.
 `equipment_description_reference` retains dispatch pins, observations and hashes.
 Other equipment variants and per-family edits are not newly live accepted.
 Public Stocks remains gated; container-aware bag/barrel appearance is unfinished.
+The offline container-selector audit (`container_selector_reference`) identifies
+bag categories as SEEDS53, PLANT54 and POWDER_MISC70. The shared resolver uses
+these three categories for IN_USE artwork and preserves EMPTY artwork for
+other contents, including PLANT_GROWTH56. Native selects the last contained-item
+reference, ignores the bag container flag, and uses solid material colors rather
+than the dyed item color. The item-sheet appearance provider still needs those
+facts; this renderer correction alone does not resolve the captured791 pixels.
+Barrels also select the last contained-item reference, but require the container
+flag and use isLiquid plus liquid-state color for liquid contents. Their native
+selector c7c500 additionally touches graphics vectors and shared random state;
+it must not be exposed as a runtime semantic API. Preserve these ownership
+constraints when adding pointer-free simulation facts to item appearance.
 
 Item inspection also admits THREAD and CLOTH through the native description
 builder. THREAD adds its guarded dye-color virtual and semantic dye/name

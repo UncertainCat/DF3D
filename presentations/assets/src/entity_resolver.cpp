@@ -1349,15 +1349,21 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
     case ItemKind::Helm: return def("", "ITEM_HELM_HELM", "helm");
     case ItemKind::Gloves: return def("", "ITEM_GLOVES_GLOVES", "gloves");
     case ItemKind::Pants: return def("", "ITEM_PANTS_PANTS", "pants");
-    case ItemKind::Bag:
-      single(occupied ? "ITEM_BAG_IN_USE" : "ITEM_BAG_EMPTY","bag");
+    case ItemKind::Bag: {
+      // Native c7e3ae..c7e405 recognizes POWDER_MISC(70), SEEDS(53)
+      // and PLANT(54), not PLANT_GROWTH(56). cf938f selects IN_USE
+      // only for those categories, even when other contents are present.
+      const bool shown=occupied && (q.containedKind==ItemKind::Seeds ||
+          q.containedKind==ItemKind::PowderMisc || q.containedKind==ItemKind::Plant);
+      single(shown ? "ITEM_BAG_IN_USE" : "ITEM_BAG_EMPTY","bag");
       if (!r.found) single("ITEM_BAG","bag");
-      if (occupied) {
+      if (shown) {
         if (q.containedKind==ItemKind::Seeds) contentsOverlay("SEEDS_FOR_BAG");
         else if (q.containedKind==ItemKind::PowderMisc) contentsOverlay("POWDER_FOR_BAG");
-        else if (q.containedKind==ItemKind::PlantGrowth) contentsOverlay("LEAVES_FOR_BAG");
+        else if (q.containedKind==ItemKind::Plant) contentsOverlay("LEAVES_FOR_BAG");
       }
       return r;
+    }
     case ItemKind::Bin:
       // Native cf8dc4..cf8dff uses the empty base underneath a specific
       // contents overlay. IN_USE is the occupied fallback without an overlay.

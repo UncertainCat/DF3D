@@ -7977,5 +7977,61 @@
       "stocks-furniture-native-83.png": "6dd7e10e41269d2ccbde6e5b71fc175ad63f14b6a9efedf1e3a16306616bf0f4",
       "stocks-furniture-view-83.png": "e87197bf5795c63b1176766f9e1752865d406be66109ffffcedbc442e6ece04c"
     }
+  },
+  "container_selector_reference": {
+    "source": "Offline disassembly of supported DF53.16; existing protected073840 BAG panel establishes the unresolved appearance gap.",
+    "executable_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
+    "code_ranges": {
+      "bag_selector": {
+        "rva": "0xc7e2cf",
+        "length": 519,
+        "sha256": "04bdd8c085b3cb0cfa67e4f8b5bf8923b8dcf3ce2a607b491d30deb927b65ee9"
+      },
+      "bag_compositor_selection": {
+        "rva": "0xcf9389",
+        "length": 141,
+        "sha256": "2f8a355a01046180ab806a806c3840ef1abb334677ea19e918ca91f036920f84"
+      },
+      "barrel_selector": {
+        "rva": "0xc7c500",
+        "length": 1633,
+        "sha256": "b07c00e8f018be3570c0410a19df8944634aa00e3717bdb5371185a4948de687"
+      }
+    },
+    "bag": {
+      "reference_selection": "Reverse general_refs; first CONTAINS_ITEM; stop even if getItem returns null; container flag is not tested.",
+      "recognized_native_item_types": {
+        "53": "SEEDS_FOR_BAG",
+        "54": "LEAVES_FOR_BAG",
+        "70": "POWDER_FOR_BAG"
+      },
+      "unrecognized_contents": "Empty base artwork, no overlay. PLANT_GROWTH is type56 and is not recognized.",
+      "base_color": "getMaterial/getMaterialIndex, native14add70, solid state descriptor pattern first color.",
+      "contents_color": "getActualMaterial/getActualMaterialIndex, solid state pattern first color; POWDER_MISC uses explicit field+0xc8 when not -1. No dyed item color virtual.",
+      "base_selection": "Native cf938f..cf9396 selects IN_USE for recognized categories independently of whether an installed overlay resolves.",
+      "bindings": {
+        "ITEM_BAG_EMPTY": "0x26850bc",
+        "ITEM_BAG_IN_USE": "0x26850c0",
+        "POWDER_FOR_BAG": "0x26850c4",
+        "LEAVES_FOR_BAG": "0x26850c8",
+        "SEEDS_FOR_BAG": "0x26850cc"
+      }
+    },
+    "barrel": {
+      "reference_selection": "Requires container flag; reverse general_refs, first CONTAINS_ITEM; null stops selection.",
+      "base_material": "getActualMaterial()==0 selects inorganic barrel family; solid actual-material first descriptor color.",
+      "liquid": "Native virtual isLiquid at+0x2b0; actual-material liquid state first descriptor color.",
+      "categories": {
+        "31": "bag",
+        "49,50": "fish",
+        "48": "meat",
+        "72": "prepared food",
+        "71": "cheese",
+        "75": "glob",
+        "54,56": "plant category refined using plant raw flags"
+      },
+      "runtime_constraint": "c7c500 is not a safe semantic provider: later branches read native graphics vectors and can write the shared random seed. Do not call it or publish its packed graphics key."
+    },
+    "implementation_status": "Shared bag resolver corrects category/base selection. Item-sheet bag/barrel semantic data and native-color supply remain unfinished; no new live/pixel acceptance."
   }
 }

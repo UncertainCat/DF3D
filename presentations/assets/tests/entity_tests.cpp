@@ -1220,6 +1220,29 @@ TEST_CASE("Upright weapons select declared count art and native retracted palett
  CHECK(std::string(resolveBuildingTiles(idx,q).rule)=="upright-weapon.unknown");
 }
 
+TEST_CASE("bag contents artwork follows native powder seeds and plant categories") {
+  AssetIndex idx;
+  idx.tileGraphics["ITEM_BAG_EMPTY"]={{0,0,0,1,1}};
+  idx.tileGraphics["ITEM_BAG_IN_USE"]={{0,1,0,1,1}};
+  idx.tileGraphics["POWDER_FOR_BAG"]={{0,2,0,1,1}};
+  idx.tileGraphics["SEEDS_FOR_BAG"]={{0,3,0,1,1}};
+  idx.tileGraphics["LEAVES_FOR_BAG"]={{0,4,0,1,1}};
+  ItemQuery q;q.kind=wm::ItemKind::Bag;
+  // DF53.16 c7e3ae..c7e405 and cf938f..cf940a; these cases include
+  // plant growths, which the previous approximation treated as leaves.
+  for(auto kind:{wm::ItemKind::PowderMisc,wm::ItemKind::Seeds,wm::ItemKind::Plant,
+      wm::ItemKind::PlantGrowth,wm::ItemKind::Blocks,wm::ItemKind::Unknown}) {
+    q.containedKind=kind;
+    const int top=kind==wm::ItemKind::PowderMisc?2:kind==wm::ItemKind::Seeds?3:kind==wm::ItemKind::Plant?4:0;
+    for(uint32_t count:{0u,1u,UINT32_MAX}) {
+      q.containedCount=count;const auto r=resolveItem(idx,q);REQUIRE(r.found);
+      const bool shown=count==1 && top!=0;
+      CHECK(r.sprite.x==(shown?1:0));CHECK(r.overlays.size()==(shown?1:0));
+      if(shown)CHECK(r.overlays.front().sprite.x==top);
+    }
+  }
+}
+
 TEST_CASE("owned door artwork suppresses closed overlays while open and follows wear") {
   AssetIndex idx;idx.inorganics["GRANITE"].flags=kMatStone;
   idx.tileGraphics["ITEM_DOOR_STONE"]={{0,0,0,1,1}};

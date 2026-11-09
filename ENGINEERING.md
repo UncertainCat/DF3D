@@ -69,6 +69,22 @@ GPU54C sampled. Core19 (`stocks-wire-final`) and MSVC pass; the headless viewer 
 only the known separate-renderer notice. This is transport/effects acceptance,
 not rendered Stocks acceptance or all-action/lifecycle coverage.
 
+`stocks_state.gd` owns staged selection, search and expansion. Native231025
+establishes that category changes reset expansion, search within a category
+preserves it, losing the selected match chooses the first filtered category,
+and an empty result chooses the first overall category. Search inputs are
+processed in order across asynchronous replies: coalescing keystrokes would
+lose native category history (ZZ selects26, ZZZ selects39, backspace to ZZ
+selects26, then clearing retains26). No native menu storage is a runtime input.
+Pending reads/edits clear authority; close/session changes retire observers;
+Unknown cannot replay. Successful edits refresh the retained search before
+accepting another action. Headless `stocks-state` covers these transitions,
+visible item identity, late replies and malformed receipts. Protected231337
+verifies the real controller's initial selection and two independently checked
+visibility edits with stale rejection; source unchanged, DF47880 exits unsaved,
+GPU51C sampled, known separate-renderer notice only. The controller is staged;
+no Stocks view or public route is exposed yet.
+
 Stocks has an accepted inventory-membership component but no DF3D screen yet.
 Protected215344 on2026-11-08 opens and closes native D_STOCKS while paused,
 records93 ordered categories and initial Ammunition selection(type39), and

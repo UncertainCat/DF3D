@@ -2855,5 +2855,381 @@
     "gpu": "54C sampled; headless viewer",
     "diagnostics": "passed_with_known_issues: godot-separate-thread-notice only",
     "limitations": "No rendered screen, individual artwork acceptance, full typed action coverage or lifecycle fault coverage.512KiB oversized payloads reject; large inventory paging remains unresolved before exposure."
+  },
+  "navigation_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-231025",
+    "source_save": "unchanged; owned DF44884 exited unsaved",
+    "scope": "Native input-driven category roundtrip and every search/backspace transition. Category change resets expansion; same-category search retains it. Missing selected category chooses first match; empty matches choose first overall.",
+    "observations": [
+      {
+        "label": "initial",
+        "category": 39,
+        "query": "",
+        "matches": 93,
+        "first_match": 39,
+        "first_expanded": true
+      },
+      {
+        "label": "collapsed-first",
+        "category": 39,
+        "query": "",
+        "matches": 93,
+        "first_match": 39,
+        "first_expanded": false
+      },
+      {
+        "label": "second-category",
+        "category": 37,
+        "query": "",
+        "matches": 93,
+        "first_match": 39,
+        "first_expanded": true
+      },
+      {
+        "label": "first-category-return",
+        "category": 39,
+        "query": "",
+        "matches": 93,
+        "first_match": 39,
+        "first_expanded": true
+      },
+      {
+        "label": "collapsed-before-search",
+        "category": 39,
+        "query": "",
+        "matches": 93,
+        "first_match": 39,
+        "first_expanded": false
+      },
+      {
+        "label": "silver-keystroke",
+        "category": 39,
+        "query": "S",
+        "matches": 62,
+        "first_match": 39,
+        "first_expanded": false
+      },
+      {
+        "label": "silver-keystroke",
+        "category": 39,
+        "query": "SI",
+        "matches": 16,
+        "first_match": 39,
+        "first_expanded": false
+      },
+      {
+        "label": "silver-keystroke",
+        "category": 39,
+        "query": "SIL",
+        "matches": 12,
+        "first_match": 39,
+        "first_expanded": false
+      },
+      {
+        "label": "silver-keystroke",
+        "category": 39,
+        "query": "SILV",
+        "matches": 4,
+        "first_match": 39,
+        "first_expanded": false
+      },
+      {
+        "label": "silver-keystroke",
+        "category": 39,
+        "query": "SILVE",
+        "matches": 4,
+        "first_match": 39,
+        "first_expanded": false
+      },
+      {
+        "label": "silver-keystroke",
+        "category": 39,
+        "query": "SILVER",
+        "matches": 4,
+        "first_match": 39,
+        "first_expanded": false
+      },
+      {
+        "label": "search-silver",
+        "category": 39,
+        "query": "SILVER",
+        "matches": 4,
+        "first_match": 39,
+        "first_expanded": false
+      },
+      {
+        "label": "backspace",
+        "category": 39,
+        "query": "SILVE",
+        "matches": 4,
+        "first_match": 39,
+        "first_expanded": false
+      },
+      {
+        "label": "backspace",
+        "category": 39,
+        "query": "SILV",
+        "matches": 4,
+        "first_match": 39,
+        "first_expanded": false
+      },
+      {
+        "label": "backspace",
+        "category": 39,
+        "query": "SIL",
+        "matches": 12,
+        "first_match": 39,
+        "first_expanded": false
+      },
+      {
+        "label": "backspace",
+        "category": 39,
+        "query": "SI",
+        "matches": 16,
+        "first_match": 39,
+        "first_expanded": false
+      },
+      {
+        "label": "backspace",
+        "category": 39,
+        "query": "S",
+        "matches": 62,
+        "first_match": 39,
+        "first_expanded": false
+      },
+      {
+        "label": "backspace",
+        "category": 39,
+        "query": "",
+        "matches": 93,
+        "first_match": 39,
+        "first_expanded": false
+      },
+      {
+        "label": "clear-search",
+        "category": 39,
+        "query": "",
+        "matches": 93,
+        "first_match": 39,
+        "first_expanded": false
+      },
+      {
+        "label": "no-match-keystroke",
+        "category": 39,
+        "query": "Z",
+        "matches": 16,
+        "first_match": 39,
+        "first_expanded": false
+      },
+      {
+        "label": "no-match-keystroke",
+        "category": 26,
+        "query": "ZZ",
+        "matches": 5,
+        "first_match": 26,
+        "first_expanded": true
+      },
+      {
+        "label": "no-match-keystroke",
+        "category": 39,
+        "query": "ZZZ",
+        "matches": 0,
+        "first_match": -1,
+        "first_expanded": true
+      },
+      {
+        "label": "no-match-keystroke",
+        "category": 39,
+        "query": "ZZZZ",
+        "matches": 0,
+        "first_match": -1,
+        "first_expanded": true
+      },
+      {
+        "label": "no-match-keystroke",
+        "category": 39,
+        "query": "ZZZZN",
+        "matches": 0,
+        "first_match": -1,
+        "first_expanded": true
+      },
+      {
+        "label": "no-match-keystroke",
+        "category": 39,
+        "query": "ZZZZNO",
+        "matches": 0,
+        "first_match": -1,
+        "first_expanded": true
+      },
+      {
+        "label": "no-match-keystroke",
+        "category": 39,
+        "query": "ZZZZNOT",
+        "matches": 0,
+        "first_match": -1,
+        "first_expanded": true
+      },
+      {
+        "label": "no-match-keystroke",
+        "category": 39,
+        "query": "ZZZZNOTS",
+        "matches": 0,
+        "first_match": -1,
+        "first_expanded": true
+      },
+      {
+        "label": "no-match-keystroke",
+        "category": 39,
+        "query": "ZZZZNOTST",
+        "matches": 0,
+        "first_match": -1,
+        "first_expanded": true
+      },
+      {
+        "label": "no-match-keystroke",
+        "category": 39,
+        "query": "ZZZZNOTSTO",
+        "matches": 0,
+        "first_match": -1,
+        "first_expanded": true
+      },
+      {
+        "label": "no-match-keystroke",
+        "category": 39,
+        "query": "ZZZZNOTSTOC",
+        "matches": 0,
+        "first_match": -1,
+        "first_expanded": true
+      },
+      {
+        "label": "no-match-keystroke",
+        "category": 39,
+        "query": "ZZZZNOTSTOCK",
+        "matches": 0,
+        "first_match": -1,
+        "first_expanded": true
+      },
+      {
+        "label": "search-no-match",
+        "category": 39,
+        "query": "ZZZZNOTSTOCK",
+        "matches": 0,
+        "first_match": -1,
+        "first_expanded": true
+      },
+      {
+        "label": "backspace",
+        "category": 39,
+        "query": "ZZZZNOTSTOC",
+        "matches": 0,
+        "first_match": -1,
+        "first_expanded": true
+      },
+      {
+        "label": "backspace",
+        "category": 39,
+        "query": "ZZZZNOTSTO",
+        "matches": 0,
+        "first_match": -1,
+        "first_expanded": true
+      },
+      {
+        "label": "backspace",
+        "category": 39,
+        "query": "ZZZZNOTST",
+        "matches": 0,
+        "first_match": -1,
+        "first_expanded": true
+      },
+      {
+        "label": "backspace",
+        "category": 39,
+        "query": "ZZZZNOTS",
+        "matches": 0,
+        "first_match": -1,
+        "first_expanded": true
+      },
+      {
+        "label": "backspace",
+        "category": 39,
+        "query": "ZZZZNOT",
+        "matches": 0,
+        "first_match": -1,
+        "first_expanded": true
+      },
+      {
+        "label": "backspace",
+        "category": 39,
+        "query": "ZZZZNO",
+        "matches": 0,
+        "first_match": -1,
+        "first_expanded": true
+      },
+      {
+        "label": "backspace",
+        "category": 39,
+        "query": "ZZZZN",
+        "matches": 0,
+        "first_match": -1,
+        "first_expanded": true
+      },
+      {
+        "label": "backspace",
+        "category": 39,
+        "query": "ZZZZ",
+        "matches": 0,
+        "first_match": -1,
+        "first_expanded": true
+      },
+      {
+        "label": "backspace",
+        "category": 39,
+        "query": "ZZZ",
+        "matches": 0,
+        "first_match": -1,
+        "first_expanded": true
+      },
+      {
+        "label": "backspace",
+        "category": 26,
+        "query": "ZZ",
+        "matches": 5,
+        "first_match": 26,
+        "first_expanded": true
+      },
+      {
+        "label": "backspace",
+        "category": 26,
+        "query": "Z",
+        "matches": 16,
+        "first_match": 39,
+        "first_expanded": true
+      },
+      {
+        "label": "backspace",
+        "category": 26,
+        "query": "",
+        "matches": 93,
+        "first_match": 39,
+        "first_expanded": true
+      },
+      {
+        "label": "clear-no-match",
+        "category": 26,
+        "query": "",
+        "matches": 93,
+        "first_match": 39,
+        "first_expanded": true
+      }
+    ]
+  },
+  "controller_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-231337",
+    "qa": "build/qa/stocks-state",
+    "scope": "Staged controller uses real semantic service: catalog then initial Ammunition selection, clears pending authority, applies two visibility intents, refreshes retained search; independent native whole-inventory flags restored and stale replays rejected. Synthetic headless controller tests use native navigation expectations and cover late reads/edits, session reset, malformed membership and exact64-bit revisions.",
+    "source_save": "unchanged; owned DF47880 exited unsaved",
+    "gpu": "51C sampled; headless viewer",
+    "diagnostics": "passed_with_known_issues: godot-separate-thread-notice only",
+    "limitations": "No rendered Stocks screen, large-inventory paging or complete item/group action and lifecycle fault acceptance."
   }
 }

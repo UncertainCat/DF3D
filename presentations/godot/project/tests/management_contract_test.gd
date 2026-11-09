@@ -1062,8 +1062,8 @@ func test_location_staff_assignments() -> void:
 			assert(observed.entries[3].name=="Synthetic detail" and observed.entries[1].subtype==23 and observed.entries[1].custom==7 and observed.entries[1].custom_code=="SYNTHETIC_WORKSHOP")
 
 func test_work_detail_workers() -> void:
-	var request: Dictionary={"action":A.WorkDetailWorkersQuery,"detail_index":7,"expected_revision":9007199254740993,"sort":Contract.WorkDetailWorkerSort.Skills,"descending":true,"query_bytes":PackedByteArray([84,195])}
-	for patch in [{"detail_index":-1},{"detail_index":128},{"expected_revision":0},{"expected_revision":1.5},{"sort":4},{"descending":1},{"query_bytes":PackedByteArray([0])},{"query_bytes":[84,195]},{"cursor":1}]:
+	var request: Dictionary={"action":A.WorkDetailWorkersQuery,"detail_index":7,"expected_revision":9007199254740993,"sorts":[{"column":3,"descending":true},{"column":1,"descending":false},{"column":3,"descending":true}],"query_bytes":PackedByteArray([84,195])}
+	for patch in [{"detail_index":-1},{"detail_index":128},{"expected_revision":0},{"expected_revision":1.5},{"sorts":[]},{"sorts":[{"column":4,"descending":false}]},{"sorts":[{"column":1,"descending":1}]},{"sorts":[{"column":1,"descending":false},{"column":1,"descending":true}]},{"sorts":[1]},{"sort":3},{"query_bytes":PackedByteArray([0])},{"query_bytes":[84,195]},{"cursor":1}]:
 		var invalid:=request.duplicate();invalid.merge(patch,true)
 		assert(world.management_request("work_detail_workers",invalid)==0)
 	var sequence: int=world.management_request("work_detail_workers",request)

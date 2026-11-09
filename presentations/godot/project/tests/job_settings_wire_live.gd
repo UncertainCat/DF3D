@@ -214,13 +214,13 @@ func work_detail_query() -> void:
 	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/work-details-native.json"))
 	var captures: Array=[]
 	for query in reference.queries:
-		var intent: Dictionary={"action":C.ManagementAction.WorkDetailWorkersQuery,"detail_index":0,"expected_revision":revision,"sort":int(query.sort),"descending":bool(query.direction),"query_bytes":str(query.query).to_utf8_buffer()}
+		var intent: Dictionary={"action":C.ManagementAction.WorkDetailWorkersQuery,"detail_index":0,"expected_revision":revision,"sorts":[{"column":int(query.sort),"descending":bool(query.direction)}],"query_bytes":str(query.query).to_utf8_buffer()}
 		var response:=await request("work_detail_workers",intent)
 		var ids: PackedInt32Array=response.get("residents",{}).get("unit_ids",PackedInt32Array())
 		check(response.get("status")==C.ManagementStatus.Ok and ids==PackedInt32Array(query.native),"Work Details native query differs: "+query.name)
 		captures.append({"name":query.name,"ids":Array(ids)})
 		if failed:break
-	var stale: Dictionary={"action":C.ManagementAction.WorkDetailWorkersQuery,"detail_index":0,"expected_revision":revision^1,"sort":3,"descending":false,"query_bytes":PackedByteArray()}
+	var stale: Dictionary={"action":C.ManagementAction.WorkDetailWorkersQuery,"detail_index":0,"expected_revision":revision^1,"sorts":[{"column":3,"descending":false}],"query_bytes":PackedByteArray()}
 	# Keep the malformed-revision test inside the supported positive domain.
 	if stale.expected_revision==0:stale.expected_revision=2
 	var rejected:=await request("work_detail_workers",stale)

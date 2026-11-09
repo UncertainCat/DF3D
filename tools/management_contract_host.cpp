@@ -847,7 +847,9 @@ int main(int argc,char** argv) {
       if(request && request->action()==m::ManagementAction::WorkDetailWorkersQuery) {
         const auto* q=request->work_detail_workers();
         require(q && q->detail_index()==7 && q->expected_revision()==9007199254740993ull &&
-            q->sort()==m::WorkDetailWorkerSort::Skills && q->descending(),"work-detail query identity");
+            q->sorts()->size()==3 && q->sorts()->Get(0)->column()==m::WorkDetailWorkerSort::Skills && q->sorts()->Get(0)->descending() &&
+            q->sorts()->Get(1)->column()==m::WorkDetailWorkerSort::Name && !q->sorts()->Get(1)->descending() &&
+            q->sorts()->Get(2)->column()==m::WorkDetailWorkerSort::Skills && q->sorts()->Get(2)->descending(),"work-detail query identity and ordered duplicates");
         require(q->query_bytes()->size()==2 && q->query_bytes()->Get(0)=='T' && q->query_bytes()->Get(1)==0xc3,"work-detail query bytes");
         workers=m::CreateResidentsState(b,b.CreateVector(std::vector<int32_t>{7,2,9}));
       }

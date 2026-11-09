@@ -110,8 +110,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 153;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v153";
+inline constexpr uint32_t kManagementVersion = 154;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v154";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -663,9 +663,16 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
   if(r.action()==ManagementAction::WorkDetailWorkersQuery) {
     const auto* q=r.work_detail_workers();
     if(!q || q->detail_index()<0 || q->detail_index()>=128 || !q->expected_revision() || q->expected_revision()>INT64_MAX ||
-       q->sort()>WorkDetailWorkerSort::Skills || !q->query_bytes() || q->query_bytes()->size()>kResidentsQueryBytes ||
+       !q->sorts() || !q->sorts()->size() || q->sorts()->size()>65536 || !q->query_bytes() || q->query_bytes()->size()>kResidentsQueryBytes ||
        std::find(q->query_bytes()->begin(),q->query_bytes()->end(),uint8_t(0))!=q->query_bytes()->end())
       return "invalid work-detail worker query";
+    std::array<int8_t,4> directions{{-1,-1,-1,-1}};
+    for(const auto* sort:*q->sorts()) {
+      if(!sort || sort->column()>WorkDetailWorkerSort::Skills)return "invalid work-detail sort";
+      auto& direction=directions[size_t(sort->column())];
+      if(direction!=-1 && direction!=int8_t(sort->descending()))return "conflicting work-detail sort direction";
+      direction=int8_t(sort->descending());
+    }
   } else if(r.work_detail_workers())return "unexpected work-detail worker query";
   if(r.action()==ManagementAction::ResidentsQuery) {
     const auto* q=r.residents();

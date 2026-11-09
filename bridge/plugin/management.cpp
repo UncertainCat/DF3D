@@ -4406,7 +4406,9 @@ void run(color_ostream& out) {
     try {
       const auto revision=df3d_production::workDetailReceipt(query.detail_index());
       if(revision && *revision==query.expected_revision()) {
-        auto ids=df3d_production::queryWorkDetailWorkers(query.detail_index(),int(query.sort()),query.descending(),
+        std::vector<df3d_production::WorkDetailSort> sorts;
+        for(const auto* sort:*query.sorts())sorts.push_back({int(sort->column()),sort->descending()});
+        auto ids=df3d_production::queryWorkDetailWorkers(query.detail_index(),sorts,
             std::string(query.query_bytes()->begin(),query.query_bytes()->end()));
         if(ids && ids->size()<=m::kResidentsQueryUnits) {
           residents=std::move(*ids);status=m::ManagementStatus::Ok;

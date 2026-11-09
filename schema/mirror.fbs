@@ -1893,9 +1893,11 @@ table WorkDetailSettingsState {
   detail_index:int32 = -1; revision:uint64; editable:bool; no_modify:bool;
   labors:[int16] (required); catalog:[WorkDetailSetting] (required);
 }
+// Ordered native keys, including duplicates; a column shares one direction.
+table WorkDetailSort { column:WorkDetailWorkerSort; descending:bool; }
 table WorkDetailWorkersRequest {
   detail_index:int32 = -1; expected_revision:uint64;
-  sort:WorkDetailWorkerSort = Skills; descending:bool; query_bytes:[uint8];
+  sorts:[WorkDetailSort] (required); query_bytes:[uint8];
 }
 enum ResidentsSort : uint8 { Category, Name, Profession, Stress, Activity }
 // Query bytes mirror the native textbox, including partial UTF-8 after Backspace.
@@ -2219,7 +2221,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 153;
+  schema_version:uint32 = 154;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2284,7 +2286,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 153;
+  schema_version:uint32 = 154;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

@@ -371,25 +371,29 @@ TEST_CASE("Residents query preserves native textbox bytes and validates its doma
 
 TEST_CASE("Work-detail worker queries bind native bytes to a selected detail receipt") {
   wm::ManagementRequest request;request.action=wm::ManagementAction::WorkDetailWorkersQuery;
-  request.workDetailWorkers={7,9007199254740993ull,wm::WorkDetailWorkerSort::Skills,true,{'T',0xc3}};
-  for(int variant=0;variant<8;++variant) {
+  request.workDetailWorkers={7,9007199254740993ull,{{wm::WorkDetailWorkerSort::Skills,true},{wm::WorkDetailWorkerSort::Name,false},{wm::WorkDetailWorkerSort::Skills,true}},{'T',0xc3}};
+  for(int variant=0;variant<11;++variant) {
     auto r=request;
     if(variant==1)r.workDetailWorkers.detailIndex=-1;
     if(variant==2)r.workDetailWorkers.detailIndex=128;
     if(variant==3)r.workDetailWorkers.expectedRevision=0;
     if(variant==4)r.workDetailWorkers.expectedRevision=uint64_t(INT64_MAX)+1;
-    if(variant==5)r.workDetailWorkers.sort=wm::WorkDetailWorkerSort(4);
+    if(variant==5)r.workDetailWorkers.sorts[0].column=wm::WorkDetailWorkerSort(4);
     if(variant==6)r.workDetailWorkers.queryBytes={0};
     if(variant==7)r.workDetailWorkers.queryBytes.resize(wire::kResidentsQueryBytes+1,'x');
+    if(variant==8)r.workDetailWorkers.sorts.clear();
+    if(variant==9)r.workDetailWorkers.sorts[2].descending=false;
+    if(variant==10)r.workDetailWorkers.sorts.resize(65537);
     flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,11,12,13);
     const auto* encoded=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
     REQUIRE(encoded->work_detail_workers());const auto* q=encoded->work_detail_workers();
     CHECK(q->detail_index()==r.workDetailWorkers.detailIndex);CHECK(q->expected_revision()==r.workDetailWorkers.expectedRevision);
-    CHECK(q->descending());CHECK(std::vector<uint8_t>(q->query_bytes()->begin(),q->query_bytes()->end())==r.workDetailWorkers.queryBytes);
+    CHECK(q->sorts()->size()==r.workDetailWorkers.sorts.size());
+    for(size_t i=0;i<r.workDetailWorkers.sorts.size();++i){CHECK(q->sorts()->Get(i)->column()==wire::WorkDetailWorkerSort(r.workDetailWorkers.sorts[i].column));CHECK(q->sorts()->Get(i)->descending()==r.workDetailWorkers.sorts[i].descending);}CHECK(std::vector<uint8_t>(q->query_bytes()->begin(),q->query_bytes()->end())==r.workDetailWorkers.queryBytes);
     CHECK(bool(wire::validateConstructionRequest(*encoded))==(variant!=0));
   }
   flatbuffers::FlatBufferBuilder b;
-  const auto q=wire::CreateWorkDetailWorkersRequest(b,0,1,wire::WorkDetailWorkerSort::Skills,false,b.CreateVector(std::vector<uint8_t>{}));
+  const auto q=wire::CreateWorkDetailWorkersRequest(b,0,1,b.CreateVector(std::vector<flatbuffers::Offset<wire::WorkDetailSort>>{wire::CreateWorkDetailSort(b,wire::WorkDetailWorkerSort::Skills,false)}),b.CreateVector(std::vector<uint8_t>{}));
   wire::ConstructionRequestBuilder r(b);r.add_client_id(1);r.add_seq(1);r.add_work_detail_workers(q);b.Finish(r.Finish());
   REQUIRE(wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer())));
   CHECK(*wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer()))=="unexpected work-detail worker query");

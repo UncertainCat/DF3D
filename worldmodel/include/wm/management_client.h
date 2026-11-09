@@ -453,7 +453,8 @@ struct StandingOrdersState { uint8_t category=0; StandingOrdersOutcome outcome=S
 struct WorkDetailSettingsRequest { int32_t detailIndex=-1; uint64_t expectedRevision=0; int32_t settingId=-1; };
 struct WorkDetailSetting { int32_t id=-1; std::string caption; };
 struct WorkDetailSettingsState { int32_t detailIndex=-1; uint64_t revision=0; bool editable=false,noModify=false; std::vector<int16_t> labors; std::vector<WorkDetailSetting> catalog; };
-struct WorkDetailWorkersRequest { int32_t detailIndex=-1; uint64_t expectedRevision=0; WorkDetailWorkerSort sort=WorkDetailWorkerSort::Skills; bool descending=false; std::vector<uint8_t> queryBytes; };
+struct WorkDetailSort { WorkDetailWorkerSort column=WorkDetailWorkerSort::Skills; bool descending=false; };
+struct WorkDetailWorkersRequest { int32_t detailIndex=-1; uint64_t expectedRevision=0; std::vector<WorkDetailSort> sorts{{}}; std::vector<uint8_t> queryBytes; };
 struct ResidentsRequest { ResidentsSort sort=ResidentsSort::Category; bool descending=false; std::vector<uint8_t> queryBytes; };
 struct ResidentsState { std::vector<int32_t> unitIds; };
 struct ResidentsRowsRequest { std::vector<int32_t> unitIds; uint16_t columns=30; bool showGender=false; int32_t detailIndex=-1; uint64_t expectedRevision=0; };

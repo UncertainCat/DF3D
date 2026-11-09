@@ -112,7 +112,7 @@ func seek(offset: int,count: int) -> void:
 	capacity=clampi(count,0,64);first=clampi(offset,0,maxi(0,ids.size()-capacity));_fill();changed.emit()
 func _read_workers() -> void:
 	_retire();ids=PackedInt32Array();rows={};roster_ready=false;phase=Phase.Reading
-	_submit("work_detail_workers",{"action":A.WorkDetailWorkersQuery,"detail_index":int(selected.index),"expected_revision":int(selected.revision),"sort":sort,"descending":directions[sort],"query_bytes":query},func(result):
+	_submit("work_detail_workers",{"action":A.WorkDetailWorkersQuery,"detail_index":int(selected.index),"expected_revision":int(selected.revision),"sorts":[{"column":sort,"descending":directions[sort]}],"query_bytes":query},func(result):
 		if not result.has("residents"):_reject();return
 		ids=result.residents.unit_ids.duplicate();roster_ready=true;first=clampi(first,0,maxi(0,ids.size()-capacity));_fill();changed.emit())
 func row_at(index: int) -> Dictionary:

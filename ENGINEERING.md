@@ -1639,9 +1639,23 @@ all orders and limitations. MSVC build, core19 (`work-details-owned-multisort`)
 and source preservation pass; owned
 DF11020 exits unsaved. Installed plugin SHA256 is
 A7823CB81AFE24B25A4EAE40C66C19EB24DB2D41EC30EB69D581FD342BACFFFC.
-Management153 still carries one sort, and the Godot view/controller still exposes
-one sort. The versioned wire extension, multi-key priority artwork/navigation
-and physical Shift validation remain required before this UI feature is complete.
+Management154 replaces the worker query's scalar sort/direction with a required
+ordered `WorkDetailSort` vector on `Local\df3d_management_v154`. Bridge and viewer
+must rebuild together; version153 requests are not compatible. The vector must
+contain1–65536 keys with consistent directions for repeated columns. Both wire
+and Godot request validation enforce this, while preserving duplicates and order.
+No migration invents priority keys for old recordings. The Godot view/controller
+still emits one key; multi-key priority artwork/navigation and physical Shift
+validation remain required before this UI feature is complete.
+
+The154 migration passes core19, Work Details controller and fake-host ordered-key
+round-trip checks (`work-details-multisort-contract`), plus MSVC. Protected214241
+on2026-11-08 compares fourteen single-key native/provider/wire/controller queries
+and rejects a stale receipt with the migrated vector contract. Installed plugin
+SHA256 is82AF69CBEE3845FA55D71ED39767E9B47F0C58C70F338A3AF4F0A07DAFFD50B6.
+The source save remains unchanged and owned DF22000 exits unsaved. Joined logs
+contain only the known separate-thread notice; GPU60C sampled. This verifies
+existing-query migration, not live multi-key wire or modified-pointer acceptance.
 
 Keyboard behavior is focus-dependent. Protected211654 on2026-11-08 observes
 FILTER ignored initially, STANDARDSCROLL_RIGHT enabling flag4, then FILTER

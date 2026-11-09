@@ -7081,6 +7081,16 @@
       "rva": "0x3c6300",
       "length": 383,
       "sha256": "57ffc91861d0c97fe240945ae7886be4919f683890a50b0370906e300e1ef02c"
+    },
+    "contract_migration_reference": {
+      "version": 154,
+      "capture": "build/stockpile-storage-native-input-20261108-214241",
+      "plugin_sha256": "82AF69CBEE3845FA55D71ED39767E9B47F0C58C70F338A3AF4F0A07DAFFD50B6",
+      "scope": "Fourteen single-key native/provider/wire/controller queries match after ordered-key migration; stale receipt rejected. Multi-key UI and direct multi-key live wire comparison remain pending.",
+      "core": "build/qa/work-details-multisort-contract",
+      "msvc": "build/notes/pm/work-details-contract154-msvc.log",
+      "diagnostics": "Known separate-thread notice only; no unclassified errors.",
+      "source_save": "unchanged; owned DF22000 exited unsaved"
     }
   }
 }

@@ -257,6 +257,12 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
       expected=m::CreateChoresSnapshot(b,v.enabled,b.CreateVector(v.children),b.CreateVector(v.exempted),b.CreateVector(labors));}
     chores=m::CreateChoresRequest(b,m::ChoresOperation(q.operation),q.id,q.value,expected);
   }
+  flatbuffers::Offset<m::WorkDetailWorkersRequest> detailWorkers;
+  if(r.action==ManagementAction::WorkDetailWorkersQuery) {
+    const auto& q=r.workDetailWorkers;std::vector<flatbuffers::Offset<m::WorkDetailSort>> sorts;
+    for(const auto& sort:q.sorts)sorts.push_back(m::CreateWorkDetailSort(b,m::WorkDetailWorkerSort(sort.column),sort.descending));
+    detailWorkers=m::CreateWorkDetailWorkersRequest(b,q.detailIndex,q.expectedRevision,b.CreateVector(sorts),b.CreateVector(q.queryBytes));
+  }
   flatbuffers::Offset<m::HunterAmmunitionRequest> hunter;
   if(r.action>=ManagementAction::HunterAmmunitionRead && r.action<=ManagementAction::HunterAmmunitionApply){
     const auto& q=r.hunterAmmunition;
@@ -317,9 +323,7 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
       r.action==ManagementAction::JobSettingsApply?
           m::CreateJobSettingsEditRequest(b,r.jobSettingsEdit.jobId,r.jobSettingsEdit.buildingId,r.jobSettingsEdit.unitId,r.jobSettingsEdit.option,r.jobSettingsEdit.expectedRevision,r.jobSettingsEdit.expectedChoicesRevision,r.jobSettingsEdit.choice,r.jobSettingsEdit.artPage,b.CreateString(r.jobSettingsEdit.query),r.jobSettingsEdit.art?encodeArtRequest(b,*r.jobSettingsEdit.art):0):
           flatbuffers::Offset<m::JobSettingsEditRequest>{},
-      r.action==ManagementAction::WorkDetailWorkersQuery?
-          m::CreateWorkDetailWorkersRequest(b,r.workDetailWorkers.detailIndex,r.workDetailWorkers.expectedRevision,m::WorkDetailWorkerSort(r.workDetailWorkers.sort),r.workDetailWorkers.descending,b.CreateVector(r.workDetailWorkers.queryBytes)):
-          flatbuffers::Offset<m::WorkDetailWorkersRequest>{},
+      detailWorkers,
       (r.action==ManagementAction::WorkDetailSettingsRead || r.action==ManagementAction::WorkDetailSettingsToggle)?
           m::CreateWorkDetailSettingsRequest(b,r.workDetailSettings.detailIndex,r.workDetailSettings.expectedRevision,r.workDetailSettings.settingId):
           flatbuffers::Offset<m::WorkDetailSettingsRequest>{},

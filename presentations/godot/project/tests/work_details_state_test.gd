@@ -61,7 +61,7 @@ func run() -> void:
 	state.select_sort(C.WorkDetailWorkerSort.Name);service.reply(old,workers([999]))
 	complete_workers(service,state,[7,42])
 	state.select_sort(C.WorkDetailWorkerSort.Name);state.select_sort(C.WorkDetailWorkerSort.Skills);state.select_sort(C.WorkDetailWorkerSort.Name)
-	check(service.calls[state.ticket].intent.descending,"Each header retains its direction")
+	check(service.calls[state.ticket].intent.sorts[0].descending,"Each header retains its direction")
 	complete_workers(service,state,[7,42])
 	state.set_member(42,true);old=state.ticket
 	check(state.phase==State.Phase.Applying and service.calls[old].intent.unit_id==42 and service.calls[old].intent.expected_revision==9007199254740993,"Membership uses selected detail authority")
@@ -213,7 +213,7 @@ func labor_navigation(service) -> void:
 		check(owner.state.rows.is_empty() and owner.state.selected.is_empty(),"Labor handoff discards authoritative observations")
 		owner.open_from_labor();service.reply(owner.state.ticket,page([detail(0,83)]))
 		var intent: Dictionary=service.calls[owner.state.ticket].intent
-		check(intent.sort==C.WorkDetailWorkerSort.Name and intent.query_bytes=="a".to_ascii_buffer() and intent.expected_revision==83,"Labor return retains native search/sort with fresh authority")
+		check(intent.sorts[0].column==C.WorkDetailWorkerSort.Name and intent.query_bytes=="a".to_ascii_buffer() and intent.expected_revision==83,"Labor return retains native search/sort with fresh authority")
 		complete_workers(service,owner.state,[8])
 		check(owner.state.ids==PackedInt32Array([8]) and not owner.state.rows.has(7),"Labor return uses freshly queried roster")
 	owner.state.seek(2,1);owner.request_standing_orders();owner.close_panel();owner.open_from_labor()

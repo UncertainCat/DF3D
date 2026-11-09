@@ -658,18 +658,28 @@ bool readWorkDetailSettings(const Dictionary& data,wm::ManagementRequest& reques
     request.workDetailSettings={int32_t(int64_t(data["detail_index"])),uint64_t(int64_t(data["expected_revision"])),data.has("setting_id")?int32_t(int64_t(data["setting_id"])):-1};return true;
 }
 bool validateWorkDetailWorkers(const Dictionary& data,String& error) {
-    if(data.size()!=6 || !data.has("detail_index") || !data.has("expected_revision") || !data.has("sort") || !data.has("descending") || !data.has("query_bytes") ||
-       data["detail_index"].get_type()!=Variant::INT || data["expected_revision"].get_type()!=Variant::INT || data["sort"].get_type()!=Variant::INT ||
-       data["descending"].get_type()!=Variant::BOOL || data["query_bytes"].get_type()!=Variant::PACKED_BYTE_ARRAY) {error="Invalid work-detail worker fields";return false;}
-    const int64_t index=data["detail_index"],revision=data["expected_revision"],sort=data["sort"];const PackedByteArray bytes=data["query_bytes"];
-    if(index<0 || index>=128 || revision<=0 || sort<0 || sort>3 || bytes.size()>128 || bytes.has(0)) {error="Invalid work-detail worker query";return false;}
+    if(data.size()!=5 || !data.has("detail_index") || !data.has("expected_revision") || !data.has("sorts") || !data.has("query_bytes") ||
+       data["detail_index"].get_type()!=Variant::INT || data["expected_revision"].get_type()!=Variant::INT ||
+       data["sorts"].get_type()!=Variant::ARRAY || data["query_bytes"].get_type()!=Variant::PACKED_BYTE_ARRAY) {error="Invalid work-detail worker fields";return false;}
+    const int64_t index=data["detail_index"],revision=data["expected_revision"];const PackedByteArray bytes=data["query_bytes"];const Array sorts=data["sorts"];
+    if(index<0 || index>=128 || revision<=0 || sorts.is_empty() || sorts.size()>65536 || bytes.size()>128 || bytes.has(0)) {error="Invalid work-detail worker query";return false;}
+    std::array<int8_t,4> directions{{-1,-1,-1,-1}};
+    for(int64_t i=0;i<sorts.size();++i) {
+        if(sorts[i].get_type()!=Variant::DICTIONARY){error="Invalid work-detail sort";return false;}
+        const Dictionary sort=sorts[i];
+        if(sort.size()!=2 || !sort.has("column") || !sort.has("descending") || sort["column"].get_type()!=Variant::INT || sort["descending"].get_type()!=Variant::BOOL){error="Invalid work-detail sort fields";return false;}
+        const int64_t column=sort["column"];const bool reverse=sort["descending"];
+        if(column<0 || column>3 || (directions[size_t(column)]!=-1 && directions[size_t(column)]!=int8_t(reverse))){error="Invalid work-detail sort direction";return false;}
+        directions[size_t(column)]=int8_t(reverse);
+    }
     return true;
 }
 bool readWorkDetailWorkers(const Dictionary& data,wm::ManagementRequest& request,String&) {
     request.action=wm::ManagementAction::WorkDetailWorkersQuery;
     auto& query=request.workDetailWorkers;
     query.detailIndex=int32_t(int64_t(data["detail_index"]));query.expectedRevision=uint64_t(int64_t(data["expected_revision"]));
-    query.sort=wm::WorkDetailWorkerSort(int64_t(data["sort"]));query.descending=bool(data["descending"]);
+    query.sorts.clear();const Array sorts=data["sorts"];
+    for(int64_t i=0;i<sorts.size();++i){const Dictionary sort=sorts[i];query.sorts.push_back({wm::WorkDetailWorkerSort(int64_t(sort["column"])),bool(sort["descending"])});}
     const PackedByteArray bytes=data["query_bytes"];for(int64_t i=0;i<bytes.size();++i)query.queryBytes.push_back(bytes[i]);
     return true;
 }

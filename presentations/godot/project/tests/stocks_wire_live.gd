@@ -26,6 +26,7 @@ func wheel(point: Vector2,up:=false,page:=false) -> void:
 	var event:=InputEventMouseButton.new();event.pressed=true;event.position=point;event.global_position=point
 	event.button_index=MOUSE_BUTTON_WHEEL_UP if up else MOUSE_BUTTON_WHEEL_DOWN;event.shift_pressed=page
 	Input.parse_input_event(event);await process_frame
+	event=event.duplicate();event.pressed=false;Input.parse_input_event(event);await process_frame
 func read_stocks(category: int,query: String="",ids: Array=[]) -> Dictionary:
 	var reply:=await request("stocks_menu",{"action":C.ManagementAction.StocksMenuRead,"category":category,"query":query,"item_ids":ids})
 	check(reply.get("status")==C.ManagementStatus.Ok,"Stocks read failed")
@@ -261,6 +262,25 @@ func run() -> void:
 			var saved:=FileAccess.open(directory+"/stocks-furniture-wire-"+str(int(family.kind))+".json",FileAccess.WRITE);saved.store_string(JSON.stringify(snapshot));saved.close()
 			await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(directory+"/stocks-furniture-view-"+str(int(family.kind))+".png")
+			if OS.get_environment("DF3D_STOCKS_CONTENTS_SCROLL")=="1":
+				owner.item_owner.state.refresh_remaining=30
+				root.size=Vector2i(960,600)
+				for frame in 6:await process_frame
+				var contents=owner.item_owner.panel.contents_view
+				check(contents.page==7 and contents.scrollbar.visible,"Small contents capacity differs")
+				for action in ["small","down","page","up","outside","arrow","wide","default"]:
+					if action=="down":await wheel(Vector2(450,310))
+					elif action=="page":await wheel(Vector2(450,310),false,true)
+					elif action=="up":await wheel(Vector2(450,310),true)
+					elif action=="outside":await wheel(Vector2(20,20))
+					elif action=="arrow":await click(Vector2(648,522))
+					elif action=="wide":root.size=Vector2i(1600,900)
+					elif action=="default":root.size=Vector2i(1200,800)
+					for frame in 6:await process_frame
+					var expected: int={"small":0,"down":1,"page":9,"up":8,"outside":8,"arrow":9,"wide":9,"default":9}[action]
+					check(contents.scrollbar.first==expected,"Contents scroll differs: "+action+" "+str(contents.scrollbar.first))
+					await RenderingServer.frame_post_draw
+					root.get_texture().get_image().save_png(directory+"/contents-scroll-view-"+action+".png")
 			if OS.get_environment("DF3D_STOCKS_CHILD_FLAGS")=="1":
 				var target: int=int(reference.child_flags.id)
 				check(int(family.id)==int(reference.child_flags.parent_id),"Wrong child parent fixture")

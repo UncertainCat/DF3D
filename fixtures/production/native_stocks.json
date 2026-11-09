@@ -6485,7 +6485,7 @@
     }
   },
   "item_sheet_contents_reference": {
-    "status": "Management164 contents transport, ten-row bin rendering, child navigation and four child flags accepted within recorded scope. Native child tooltip absence observed with header positive control. Scrolling and creature acceptance pending.",
+    "status": "Management164 transport, bin rendering, child navigation/flags and recorded scroll/resize workflows accepted within scope. Native child tooltip absence preserved. Creature rows, alternate item-use lists and remaining scroll cases pending.",
     "list_source": {
       "range": "1578bf..157a98",
       "sha256": "adfdc663f7df5cdeabd748c317d48d7d455afcc4988ee6346d53689d669c4e98",
@@ -6850,6 +6850,86 @@
       "exit": "unsaved",
       "fps_cap": 30,
       "gpu_max_sample_c": 46
+    },
+    "scroll_reference": {
+      "run": "build/stockpile-storage-native-input-20261109-043547",
+      "cases": [
+        {
+          "columns": 120,
+          "first": 0,
+          "name": "small",
+          "rows": 50
+        },
+        {
+          "columns": 120,
+          "first": 1,
+          "name": "down",
+          "rows": 50
+        },
+        {
+          "columns": 120,
+          "first": 9,
+          "name": "page",
+          "rows": 50
+        },
+        {
+          "columns": 120,
+          "first": 8,
+          "name": "up",
+          "rows": 50
+        },
+        {
+          "columns": 120,
+          "first": 8,
+          "name": "outside",
+          "rows": 50
+        },
+        {
+          "columns": 120,
+          "first": 9,
+          "name": "arrow",
+          "rows": 50
+        },
+        {
+          "columns": 200,
+          "first": 9,
+          "name": "wide",
+          "rows": 75
+        },
+        {
+          "columns": 150,
+          "first": 9,
+          "name": "default",
+          "rows": 66
+        }
+      ],
+      "render": "All eight full item-panel RGB crops match native exactly: small/down/page/up/outside/arrow/wide/default.",
+      "input": "Viewer real wheel with press/release, Shift-wheel page, arrow click; native CONTEXT_SCROLL input and arrow click.",
+      "retention": "Native retains offset9 when enlarged enough to hide the bar, including return to default size.",
+      "hashes": {
+        "contents-scroll-arrow.png": "b3b24ad7562f388b54154e5955abb1e0d93e2990b67fd6dbbedd7ae865de42b2",
+        "contents-scroll-default.png": "c80bb4e67dc8b134f4d802a9745da3ba84e3826747f0a918919f7ceae61e1437",
+        "contents-scroll-down.png": "40c01793879c64b4ca4c059fcdb2c9da6e25624f0c8134da151644c1b54899b6",
+        "contents-scroll-outside.png": "3d1785b08182b296609b8158fccb52e142b5131cfc568f2e4f00383a91fd90fa",
+        "contents-scroll-page.png": "7cbade74bad7876c4ed2090a7280f170a45c97488b60f8bfec6803054455ff0f",
+        "contents-scroll-small.png": "65832351ea13d1837c30596af003e48d9f78aa97a9db040a5f629151d7ac54dc",
+        "contents-scroll-up.png": "3d1785b08182b296609b8158fccb52e142b5131cfc568f2e4f00383a91fd90fa",
+        "contents-scroll-view-arrow.png": "8eed4664f37d64ac6a2b57066562758ad41e6868fa72d8d1ecb1a85500faf2ac",
+        "contents-scroll-view-default.png": "a4b530401d782293421288edcd6fe6715af81f67ca0f8b5fcf4559b771b58005",
+        "contents-scroll-view-down.png": "4fc779d8c670eec7d8fb3b2ab6ea6085db863b6c5d28945cabe1e0796ef30f8e",
+        "contents-scroll-view-outside.png": "18d99d943e57b4dff890fd96eaf5606512862a3137b1798ee7d7d4833890f8cb",
+        "contents-scroll-view-page.png": "8eed4664f37d64ac6a2b57066562758ad41e6868fa72d8d1ecb1a85500faf2ac",
+        "contents-scroll-view-small.png": "fc7179a216cf67b76a2421365fc32238b77bd52dc683764d5ffa4ce6e185b748",
+        "contents-scroll-view-up.png": "18d99d943e57b4dff890fd96eaf5606512862a3137b1798ee7d7d4833890f8cb",
+        "contents-scroll-view-wide.png": "217ae65ff555ee2751e68392978cd24010a2be0ca253d8851c979874d8d53a28",
+        "contents-scroll-wide.png": "bcad6af12242d5523cd7397030d2e2b4fe587ba9cdb3a33368d45040e1e0fdaa"
+      },
+      "source_preserved": true,
+      "owned_df_pid": 5924,
+      "fps_cap": 30,
+      "gpu_max_sample_c": 50,
+      "diagnostics": "Documented separate-thread, finalize and shutdown-object signatures only",
+      "limitations": "One ten-item bin at960x600,1600x900,1200x800. Dragging, scrollbar-wheel, minimum height, changing membership and creature rows not accepted."
     }
   }
 }

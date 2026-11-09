@@ -21,11 +21,14 @@ func configure(source) -> void:
 	scrollbar.row_changed.connect(func(_first):_refresh_icons();queue_redraw())
 func allowed() -> bool:return page>0 and (not input_allowed.is_valid() or input_allowed.call())
 func present(id: int,value: Array,extent: Vector2) -> void:
+	var previous_page:=page;var previous_first: int=scrollbar.first
 	var reset:=id!=owner_id;owner_id=id;rows=value.duplicate(true);size=extent
 	page=maxi(0,floori(size.y/36));size.y=page*36
 	scrollbar.position=Vector2(size.x-16,0);scrollbar.size=Vector2(16,size.y);scrollbar.page=page*3
 	if reset:scrollbar.dragging=false
 	scrollbar.set_rows(rows.size()*3,0 if reset else scrollbar.first)
+	# Native retains the current row when a larger viewport hides the bar.
+	if not reset and (page>=previous_page or page>=rows.size()):scrollbar.first=mini(previous_first,maxi(0,rows.size()*3-1))
 	scrollbar.visible=page>0 and rows.size()>page
 	if not allowed():scrollbar.dragging=false
 	_refresh_icons();queue_redraw()
@@ -44,7 +47,7 @@ func eligible(row: Dictionary,control: int) -> bool:
 func _gui_input(event: InputEvent) -> void:
 	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
 	if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
-		scrollbar.move_to(scrollbar.first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1));accept_event();return
+		scrollbar.move_to(scrollbar.first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1)*(scrollbar.page if event.shift_pressed else 1));accept_event();return
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
 	var index:=first_row()+floori((event.position.y+offset())/36)
 	if index<0 or index>=rows.size():return

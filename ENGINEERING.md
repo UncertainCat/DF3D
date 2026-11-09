@@ -62,6 +62,21 @@ Header Forbid and absent-task samples are transient and excluded. Active-task
 and creature-row help remain unverified. Source preserved, DF46208 exits unsaved
 at30FPS,46C sampled. `child_hover_reference` retains the observations.
 
+Container wheel input steps one12px cell; Shift-wheel pages by the visible cell
+span. The list preserves its offset when resizing hides the scrollbar, matching
+native rather than jumping to the first item. Protected043547 exercises seven
+visible rows at960x600, wheel down/page/up, outside input, down-arrow click,
+then1600x900 and1200x800. Native and viewer offsets are0/1/9/8/8/9/9/9; every
+full item-panel crop matches exactly. The native reference reads
+scroll_position_item_contents (building scroll_position_item is unrelated).
+Earlier043137/043238 arrow checks failed because the test helper omitted wheel
+release events; a headless reproducer isolated that input-capture artifact.
+Source preserved; DF5924 exits unsaved,30FPS,50C maximum sampled temperature
+(not a peak measurement), documented Godot diagnostics only. Core19/extension/
+item-state checks pass in `item-contents-scroll-final`. The fixture's
+scroll_reference retains hashes and limits; drag, scrollbar wheel, minimum
+height and changing-membership behavior remain unaccepted.
+
 Management163 adds optional ordered item-sheet contents to independent item
 snapshots. Rebuild bridge/viewer together;162 peers use a separate channel.
 Absent remains unknown; present empty means observed empty. Rows distinguish
@@ -102,8 +117,8 @@ block7565, exact native description/full panel, container View back to11204 and
 close without returning to Stocks. Core19, extension, item-state and MSVC pass
 (`item-child-navigation-final`, `item-child-navigation-msvc`). Source preserved;
 DF6916 exits unsaved at30FPS,39C sampled, known diagnostics only. This is one
-bin/block workflow. Per-row flags are verified separately above; hover,
-scroll/resize, creature rows and alternate item-use lists remain unfinished. Public Stocks remains gated.
+bin/block workflow. Per-row flags and bounded scroll/resize are verified above;
+remaining scroll cases, creature rows and alternate item-use lists are unfinished. Public Stocks remains gated.
 
 The item-detail provider now admits doors, floodgates, beds, chairs, flasks,
 goblets, barrels, buckets, tables, bins, cabinets and anvils through the pinned

@@ -34,6 +34,10 @@ for _,family in ipairs(read('stocks-wire-reference.json').furniture)do
  local deadline=dfhack.getTickCount()+10000
  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end
   assert(dfhack.getTickCount()<deadline,'Furniture capture timeout');script.sleep(1,'frames')end
+ if os.getenv('DF3D_STOCKS_CONTENTS_SCROLL')=='1' then
+  local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-furniture%-sheets%-native.lua$','item-contents-scroll-native.lua')
+  results[#results].contents_scroll=assert(loadfile(source))(out,view)
+ end
  if os.getenv('DF3D_STOCKS_CHILD_HOVER')=='1' then
   local main=df.global.game.main_interface;local observations={}
   for _,target in ipairs{{'header-forbid',804,76},{'header-dump',828,76},{'task-absent',748,406},{'view',772,406},{'forbid',796,406},{'dump',820,406},{'melt',844,406},{'visibility',868,406},{'melt-absent',844,298}}do

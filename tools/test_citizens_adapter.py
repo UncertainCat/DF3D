@@ -1,11 +1,13 @@
 """Asset-free citizen adapter regression with zero-index native vector semantics."""
 from pathlib import Path
-from lupa import LuaRuntime
+from lupa import LuaRuntime, LuaError
 
 
 def adapter_source():
     source = Path('bridge/plugin/citizens.lua').read_text(encoding='utf-8')
-    # Inject a semantic predicate; the adapter must not reconstruct it.
+    # Inject native-boundary doubles, not replacement product rules. These
+    # deterministic effects test Lua delegation/receipts; protected native fixtures
+    # establish the real callbacks' semantics and default selection.
     return "local impl=(function()\n" + source + "\nend)()\n" + r'''
 return function(request)
  write_started=false
@@ -14,6 +16,31 @@ return function(request)
   local u=df.unit.find(id)
   return u and u.citizen and u.active and not u.dead and u.alive and u.sane and u.adult
  end
+ request.work_detail_membership=function(index,id,member)
+  request.mark_write();local d=wd[index];local at=0
+  while at<#d.assigned_units and d.assigned_units[at]<id do at=at+1 end
+  if member then
+   for _,other in ipairs(wd)do
+    if other~=d then
+     local selected_special,other_special=false,false;for _,labor in ipairs{0,10,44}do selected_special=selected_special or d.allowed_labors[labor];other_special=other_special or other.allowed_labors[labor]end
+     local specialized=selected_special and other_special
+     if specialized then for i=#other.assigned_units-1,0,-1 do if other.assigned_units[i]==id then other.assigned_units:erase(i)end end end
+    end
+   end
+   d.assigned_units:insert(at,id);if #d.assigned_units==1 and d.flags.mode==1 then d.flags.mode=3 end
+  else d.assigned_units:erase(at);if #d.assigned_units==0 and not d.flags.cannot_be_everybody then d.flags.mode=1 end end
+  for _,u in ipairs(citizens)do dfhack.units.setAutomaticProfessions(u)end
+ end
+ request.work_detail_edit=function(index,mode,reset)
+  request.mark_write();local d=wd[index]
+  if reset then d.allowed_labors={};for _,id in ipairs(default_labors[d.icon] or {})do d.allowed_labors[id]=true end
+  else d.flags.mode=mode;for _,u in ipairs(citizens)do dfhack.units.setAutomaticProfessions(u)end end
+ end
+ request.work_detail_delete=function(index)
+  request.mark_write();retired[#retired+1]=wd[index];wd:erase(index)
+  for _,u in ipairs(citizens)do dfhack.units.setAutomaticProfessions(u)end
+ end
+ request.work_detail_defaults=function()return fixture_default_name,fixture_default_icon end
  return impl(request)
 end
 '''
@@ -38,7 +65,7 @@ def fixture():
     df={global={world={units={all=citizens,active=citizens},buildings={other={ACTIVITY_ZONE=vec{}}}},plotinfo={group_id=1,labor_info={work_details=wd}},game={external_flag={automatic_professions_disabled=false}},pause_state=true,unitst_set_automatic_professions=true},unit={},unit_labor={[0]='MINE',[1]='HAUL_STONE',_last_item=93},civzone_type={Office=1}}
     df.unit_labor.attrs=setmetatable({[0]={caption='Mining'},[1]={caption='Stone Hauling'}},{__index=function()return {}end})
     df.unit.find=function(id)for _,u in ipairs(citizens)do if u.id==id then return u end end end
-    calls={}
+    calls={};retired={};default_labors={[0]={0}}
     dfhack={df2utf=function(s)return s end,job={getName=function()return 'Work' end},maps={isValidTilePos=function(p)assert(type(p)=='table');return true end,getTileFlags=function()return {hidden=false}end},units={}}
     local U=dfhack.units
     U.isCitizen=function(u,allow)return u.citizen and (allow or u.sane)end
@@ -113,10 +140,8 @@ def main():
     assert edit(33,mode=2)['ok']  # mode edits also work while unpaused
     lua.execute('df.global.pause_state=true; calls={}')
     assert edit(33,mode=1)['ok']
-    assert list(lua.globals().calls.values())==[0,4]
-    assert not lua.globals().citizens[2]["status"]["labors"][0]  # native mock would enable child labors if called
-    assert not lua.globals().citizens[3]["status"]["labors"][0]
-    assert not lua.globals().citizens[4]["status"]["labors"][0]
+    assert list(lua.globals().calls.values())==[0,4,8,12,16]
+    # Native mode callbacks visit every active unit; eligibility is a mutation preflight.
     for mode in (2,3,1):
         reply=edit(33,mode=mode)
         assert reply['ok'] and reply['details'][1]['mode']==mode
@@ -130,12 +155,14 @@ def main():
     lua.execute('df.global.game.external_flag.automatic_professions_disabled=false; df.global.unitst_set_automatic_professions=nil')
     refused(edit(unit_id=0,member=1), 'Native labor recalculation is unavailable')
     assert list(observed()['assigned_units'].values())==[4]
-    lua.execute('df.global.unitst_set_automatic_professions=true; fail_next=true')
-    refused(edit(unit_id=0,member=1), 'Native recalculation failed; membership restored')
-    assert list(observed()['assigned_units'].values())==[4]
-    lua.execute('fail_next=true')
-    refused(edit(unit_id=4,member=0), 'Native recalculation failed; membership restored')
-    assert list(observed()['assigned_units'].values())==[4]
+    lua.execute('df.global.unitst_set_automatic_professions=true')
+    for member in (1,0):
+        lua.execute('fail_next=true')
+        try: edit(unit_id=0,member=member)
+        except LuaError as error: assert 'native failure' in str(error)
+        else: raise AssertionError('Expected native callback failure')
+        assert lua.globals().write_started
+        assert list(observed()['assigned_units'].values())==([0,4] if member else [4])
     before=observed()['revision']
     lua.execute('local d=wd[0];wd._data[1]=wd[1];wd._data[2]=d')
     refused(call(32,detail_index=0,expected_revision=before,unit_id=0,member=1), 'Work-detail contents changed; refresh before editing')
@@ -144,9 +171,10 @@ def main():
     assert observed(1)['reason']==''
     assert edit(index=1,unit_id=0,member=1)['ok']
     lua.execute("wd:erase(3); fail_next=true")
-    original_mode=observed(1)['mode']
-    refused(edit(33,index=1,mode=2), 'Native recalculation failed; mode restored')
-    assert observed(1)['mode']==original_mode
+    try: edit(33,index=1,mode=2)
+    except LuaError as error: assert 'native failure' in str(error)
+    else: raise AssertionError('Expected native callback failure')
+    assert lua.globals().write_started and observed(1)['mode']==2
     lua.execute("for i=1,255 do citizens:insert('#',unit(16+i))end")
     assert edit(33,index=1,mode=2)['ok']  # no 256-adult limit
     assert observed(1)['mode']==2
@@ -225,7 +253,7 @@ def extended_work_details(lua):
       if fail_next then fail_next=false;error('native failure')end
     end
     function reset_fixture(n,d)
-      calls={};labor_writes=0;fail_next=false;citizens:resize(0);wd:resize(0)
+      calls={};retired={};labor_writes=0;fail_next=false;citizens:resize(0);wd:resize(0)
       for i=0,n-1 do citizens:insert('#',unit(i))end
       for i=0,d-1 do wd:insert('#',detail('Custom',{}))end
       df.global.pause_state=false
@@ -274,49 +302,46 @@ def extended_work_details(lua):
     ok(edit(65))
     refused(call(31, detail_index=0), 'Work detail no longer exists')
     refused(call(66, detail_index=0, expected_revision=stale, edit=1, name='Stale'), 'Work detail no longer exists')
-    # Applied deletes/labor edits retain Ok and publish the recalc error separately.
-    for action, selector in ((65, 0), (66, 2), (66, 3)):
+    # Native callback errors propagate after the write marker. C++ owns Unknown;
+    # Lua must not invent rollback or authoritative success after partial effects.
+    for action, fields in ((65, {}), (33, {'mode':1}), (32, {'unit_id':0,'member':1})):
         helper = reset()
-        if selector == 2:
-            lua.execute('wd[0].allowed_labors[1]=true')
-        if selector == 3:
-            lua.execute('wd[0].flags.no_modify=true;wd[0].icon=0;df.unit_labor.MINE=0;wd[0].allowed_labors={[1]=true}')
         lua.execute('fail_next=true')
-        r = ok(edit(action, edit=selector))
-        assert r['message'] == 'Native work-detail change applied'
-        assert r['recalc_error'] == 'Native recalculation failed; labors may be stale' and r['active_kinds'] == 0
-        if action == 65:
-            assert len(r['retired']) == 1 and lua.eval('#wd') == 0
-        else:
-            assert values(observed()['labors']) == [0]
-            assert not lua.globals().wd[0]['allowed_labors'][1]
-    # Native recalculation may change membership before the post-write inspection.
-    helper = reset()
-    lua.execute("saved_recalc=dfhack.units.setAutomaticProfessions;dfhack.units.setAutomaticProfessions=function(u)saved_recalc(u);wd[0].assigned_units=vec{0,0}end")
-    refused(edit(32, unit_id=0, member=1), 'Native work-detail membership is not sorted and unique')
+        try: edit(action, **fields)
+        except LuaError as error: assert 'native failure' in str(error)
+        else: raise AssertionError('Expected native callback failure')
+        assert lua.globals().write_started
+        assert lua.eval('#wd') == (0 if action==65 else 1)
+    # Partial native progress is not rolled back or retried by the Lua adapter.
+    helper=reset(100)
+    lua.execute("saved_recalc=dfhack.units.setAutomaticProfessions;dfhack.units.setAutomaticProfessions=function(u)saved_recalc(u);if #calls==31 then error('native failure')end end")
+    try: edit(33,mode=1)
+    except LuaError as error: assert 'native failure' in str(error)
+    else: raise AssertionError('Expected partial native callback failure')
+    assert lua.globals().write_started and len(lua.globals().calls)==31
+    assert observed()['mode']==1
     lua.execute('dfhack.units.setAutomaticProfessions=saved_recalc')
-    # A last-step mode failure still restores every touched unit without reserve.
-    for refresh_fails in (False, True):
-        helper = reset(100)
-        lua.globals().refresh_fails = refresh_fails
-        lua.execute("""
-        saved_recalc=dfhack.units.setAutomaticProfessions
-        dfhack.units.setAutomaticProfessions=function(u)
-          saved_recalc(u)
-          if #calls==31 or (refresh_fails and #calls>31)then error('native failure')end
-        end
-        """)
-        r = edit(33, mode=1, step_budget=64)
-        refused(r, 'Native recalculation failed; mode restored' + (' but labor refresh failed' if refresh_fails else ''))
-        assert r['steps'] == 64 and r['active_kinds'] == 0 and len(lua.globals().calls) == 62
-        assert observed()['mode'] == 3
-        lua.execute('dfhack.units.setAutomaticProfessions=saved_recalc')
-    # Add uses the native custom count, wraps the icon, and does no recalculation.
+    # Post-write inspection still refuses malformed native membership.
+    helper=reset()
+    lua.execute("saved_recalc=dfhack.units.setAutomaticProfessions;dfhack.units.setAutomaticProfessions=function(u)saved_recalc(u);wd[0].assigned_units=vec{0,0}end")
+    refused(edit(32,unit_id=0,member=1),'Native work-detail membership is not sorted and unique')
+    assert lua.globals().write_started
+    lua.execute('dfhack.units.setAutomaticProfessions=saved_recalc')
+    # Lua-owned labor edits still report failures in their deferred recalculation.
+    helper = reset();lua.execute('fail_next=true')
+    r=ok(edit(66,edit=2))
+    assert r['recalc_error']=='Native recalculation failed; labors may be stale'
+    # Native reset does not recalculate workers.
+    helper=reset();lua.execute('wd[0].flags.no_modify=true;wd[0].icon=0')
+    r=ok(edit(66,edit=3));assert not len(lua.globals().calls) and r['active_kinds']==0
+    # Add consumes provider-supplied names/icons verbatim without recalculation.
     for count in (0, 1, 8, 127):
         helper = reset(d=count)
+        lua.globals().fixture_default_name=f'Fixture default {count}'
+        lua.globals().fixture_default_icon=10+count%8
         before = ok(call(30))['detail_list_revision']
         r = ok(call(64, expected_revision=before));d = r['details'][1]
-        assert d['name'] == f'Custom Detail {count}' and d['icon'] == 10 + count % 8
+        assert d['name'] == f'Fixture default {count}' and d['icon'] == 10 + count % 8
         assert d['mode'] == 1 and not len(d['labors']) and not len(d['assigned_units'])
         assert r['selected_detail'] == count and not len(lua.globals().calls)
         assert r['detail_list_revision'] != before and r['active_kinds'] == 0
@@ -324,15 +349,16 @@ def extended_work_details(lua):
     refused(call(64, expected_revision=r['detail_list_revision']), 'Work-detail vector exceeds 128 entries')
     helper = reset(d=3)
     lua.execute('wd[0].flags.no_modify=true;wd[1].flags.no_modify=true')
+    lua.globals().fixture_default_name='Fixture native default';lua.globals().fixture_default_icon=17
     r = ok(call(64, expected_revision=ok(call(30))['detail_list_revision']))
     assert r['selected_detail'] == 3
-    assert r['details'][1]['name'] == 'Custom Detail 1' and r['details'][1]['icon'] == 11
+    assert r['details'][1]['name'] == 'Fixture native default' and r['details'][1]['icon'] == 17
     assert not len(lua.globals().calls)
     helper = reset(5000)
     refused(edit(65, retire_capacity=0), 'Deleted-detail capacity reached; restart DF')
     assert lua.eval("#wd") == 1
     r = ok(edit(65))
-    assert len(r['retired']) == 1 and lua.eval("#wd") == 0 and r['active_kinds'] == 16
+    assert len(lua.globals().retired) == 1 and lua.eval("#wd") == 0 and r['active_kinds'] == 0
     helper = reset()
     lua.execute('wd[0].flags.no_modify=true;wd[0].icon=0')
     refused(edit(65), 'Use Reset to default for built-in work details')
@@ -342,7 +368,8 @@ def extended_work_details(lua):
     assert r['name'] == 'MinersX' and r['mode'] == 3 and r['icon'] == 0
     assert values(r['assigned_units']) == [0] and values(r['labors']) == [0]
     lua.execute('wd[0].icon=18')
-    refused(edit(edit=3), 'No native default recorded for this work detail')
+    lua.execute('default_labors[18]={58}')
+    assert values(ok(edit(edit=3))['details'][1]['labors']) == [58]
     lua.execute('wd[0].flags.no_modify=false')
     refused(edit(edit=3), 'Reset to default applies to built-in work details')
     for builtin in (False, True):
@@ -403,7 +430,7 @@ def extended_work_details(lua):
     assert r['detail_member'] == -1 and r['detail_skill'] == -1 and r['detail_skill_name'] == ''
     assert values(observed()['labor_names']) == ['Mining']
     icon = lua.globals().wd[0]['icon']
-    retired = ok(edit(65))['retired'][1]
+    ok(edit(65));retired = lua.globals().retired[1]
     assert retired['icon'] == icon
     helper = reset()
     for kind in ('resident', 'visitor', 'merchant', 'diplomat'):
@@ -505,10 +532,11 @@ def extended_work_details(lua):
             lua.globals().df['unit_labor']['attrs'][labor_ids[name]] = lua.table_from({'caption':name.title().replace('_',' ')})
     for icon, names in enumerate(defaults):
         helper = reset(5000)
+        lua.globals().default_labors[icon]=lua.table_from([labor_ids[name] for name in names])
         lua.globals().wd[0]['icon'] = icon
         lua.execute('wd[0].flags.no_modify=true;wd[0].assigned_units=vec{0}')
         r = ok(edit(edit=3))
-        assert r['active_kinds'] == 16 and r['details'][1]['icon'] == icon
+        assert r['active_kinds'] == 0 and r['details'][1]['icon'] == icon
         assert values(r['details'][1]['labors']) == sorted(labor_ids[name] for name in names)
     # Read-only array limits accept the boundary and return an error row above it.
     helper = reset()
@@ -548,7 +576,7 @@ def extended_work_details(lua):
     competitor = lua.eval('function(r) assert(r.step>0);return {steps=r.step}end')
     for competing in (False, True):
         helper = reset(5000, 8)
-        r = ok(edit(33, mode=1))
+        r = ok(edit(66, edit=2))
         assert len(lua.globals().calls) == r['recalc_done'] == 1016
         assert r['recalc_total'] == 5000
         inline = len(lua.globals().calls) * 2
@@ -569,7 +597,7 @@ def extended_work_details(lua):
         print('CITIZENS_SCHEDULING', 'competing' if competing else 'alone', inline, updates)
         if inline != 2032 or (updates != 9 if competing else updates != 5):
             scheduling_failures.append((competing, inline, updates))
-    assert not scheduling_failures, ('mode scheduling (competing, inline, updates)', scheduling_failures)
+    assert not scheduling_failures, ('labor-edit scheduling (competing, inline, updates)', scheduling_failures)
 
 
 def write_boundary():

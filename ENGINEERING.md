@@ -1754,6 +1754,18 @@ definitions and external labor control cannot submit Reset. Delete is connected
 as described below; renaming is connected with acceptance below. Header/filter widget help,
 resize and full composed lifecycle acceptance remain pending. The full screen stays hidden.
 
+`tools/test_citizens_adapter.py` injects deterministic native callback doubles
+for membership, mode, Reset, Delete and defaults. These establish Lua delegation,
+receipt validation and write-boundary behavior, not native semantic parity.
+Callback failures propagate after the write marker, including partial progress;
+Lua does not roll back or retry them. C++ owns Unknown publication. Reset does
+not recalculate workers, and deletion retirement belongs to the callback host.
+Only Lua-owned labor edits retain the deferred recalculation scheduling checks.
+Focused `citizens-native-callback-mocks` passes both adapter checks and core19;
+it repairs the stale mock failure from the broader `hunter-picker-grip-discovery`
+run without changing runtime behavior. Protected captures remain the effects
+authority.
+
 Protected131034 on2026-11-06 verifies actual owner Gear/Reset clicks against a
 native Reset on a disposable icon18 definition. Both restore labor58, preserve
 all339 active workers' labors/professions, and leave the settings editor open.

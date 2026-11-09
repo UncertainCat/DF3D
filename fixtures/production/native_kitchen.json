@@ -5707,5 +5707,169 @@
       "scope": "Actual DF3D Shift pointer events through Labor owner, seven priorities. Native headers crop120,184..776,196 and visible rows64,196..928,664 have zero differing RGB pixels. Search, Standing tab return, six Cook/Brew edits and stale rejection pass; six typed repeated-priority queries match. Source preserved, owned unsaved exit, only known Godot thread/finalize/shutdown diagnostics. Not complete panel or >32-row sort acceptance.",
       "gpu_temperature_c": 54
     }
+  },
+  "keyboard_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-182703",
+    "actions": [
+      {
+        "attempt": 1,
+        "cursor": 0,
+        "key": "SELECT",
+        "target": "Alfalfa seeds",
+        "exclusion_changes": [],
+        "before_count": 111,
+        "after_count": 111,
+        "before_sha256": "a43b9f23a066742d5e5d14b95df03f5e2bd0a7c30faae5ca55dc391ac3b4696e",
+        "after_sha256": "a43b9f23a066742d5e5d14b95df03f5e2bd0a7c30faae5ca55dc391ac3b4696e"
+      },
+      {
+        "attempt": 2,
+        "cursor": 0,
+        "key": "SELECT",
+        "target": "Alfalfa seeds",
+        "exclusion_changes": [],
+        "before_count": 111,
+        "after_count": 111,
+        "before_sha256": "a43b9f23a066742d5e5d14b95df03f5e2bd0a7c30faae5ca55dc391ac3b4696e",
+        "after_sha256": "a43b9f23a066742d5e5d14b95df03f5e2bd0a7c30faae5ca55dc391ac3b4696e"
+      },
+      {
+        "attempt": 1,
+        "cursor": 0,
+        "key": "SEC_SELECT",
+        "target": "Alfalfa seeds",
+        "exclusion_changes": [],
+        "before_count": 111,
+        "after_count": 111,
+        "before_sha256": "a43b9f23a066742d5e5d14b95df03f5e2bd0a7c30faae5ca55dc391ac3b4696e",
+        "after_sha256": "a43b9f23a066742d5e5d14b95df03f5e2bd0a7c30faae5ca55dc391ac3b4696e"
+      },
+      {
+        "attempt": 2,
+        "cursor": 0,
+        "key": "SEC_SELECT",
+        "target": "Alfalfa seeds",
+        "exclusion_changes": [],
+        "before_count": 111,
+        "after_count": 111,
+        "before_sha256": "a43b9f23a066742d5e5d14b95df03f5e2bd0a7c30faae5ca55dc391ac3b4696e",
+        "after_sha256": "a43b9f23a066742d5e5d14b95df03f5e2bd0a7c30faae5ca55dc391ac3b4696e"
+      },
+      {
+        "attempt": 1,
+        "cursor": 0,
+        "key": "KITCHEN_COOK",
+        "target": "Alfalfa seeds",
+        "exclusion_changes": [
+          {
+            "key": [
+              53,
+              -1,
+              422,
+              8
+            ],
+            "before": 1,
+            "after": 0
+          }
+        ],
+        "before_count": 111,
+        "after_count": 110,
+        "before_sha256": "a43b9f23a066742d5e5d14b95df03f5e2bd0a7c30faae5ca55dc391ac3b4696e",
+        "after_sha256": "b4c3612edb06dd3a7687a86d60a0b22e42887dd1a6df9dc269db496ce0f62bd1"
+      },
+      {
+        "attempt": 2,
+        "cursor": 0,
+        "key": "KITCHEN_COOK",
+        "target": "Alfalfa seeds",
+        "exclusion_changes": [
+          {
+            "key": [
+              53,
+              -1,
+              422,
+              8
+            ],
+            "before": 0,
+            "after": 1
+          }
+        ],
+        "before_count": 110,
+        "after_count": 111,
+        "before_sha256": "b4c3612edb06dd3a7687a86d60a0b22e42887dd1a6df9dc269db496ce0f62bd1",
+        "after_sha256": "3e9d036fcc9f0aca34c66d565963129b747894acef7b9adede943e6abdba915c"
+      },
+      {
+        "attempt": 1,
+        "cursor": 0,
+        "key": "KITCHEN_BREW",
+        "target": "Plump helmets",
+        "exclusion_changes": [
+          {
+            "key": [
+              54,
+              -1,
+              419,
+              173
+            ],
+            "before": 1,
+            "after": 2
+          }
+        ],
+        "before_count": 111,
+        "after_count": 112,
+        "before_sha256": "3e9d036fcc9f0aca34c66d565963129b747894acef7b9adede943e6abdba915c",
+        "after_sha256": "1957e6f232a61dca1824e79f8dca31a2d07a988df105b2b07eaa16354fb6f6bb"
+      },
+      {
+        "attempt": 2,
+        "cursor": 0,
+        "key": "KITCHEN_BREW",
+        "target": "Plump helmets",
+        "exclusion_changes": [
+          {
+            "key": [
+              54,
+              -1,
+              419,
+              173
+            ],
+            "before": 2,
+            "after": 1
+          }
+        ],
+        "before_count": 112,
+        "after_count": 111,
+        "before_sha256": "1957e6f232a61dca1824e79f8dca31a2d07a988df105b2b07eaa16354fb6f6bb",
+        "after_sha256": "3e9d036fcc9f0aca34c66d565963129b747894acef7b9adede943e6abdba915c"
+      }
+    ],
+    "focus_capture": "build/stockpile-storage-native-input-20261108-182346",
+    "focus": [
+      {
+        "cursor": 0,
+        "focused": true,
+        "label": "focus-key-down"
+      },
+      {
+        "cursor": 0,
+        "focused": false,
+        "label": "focus-key-enter"
+      },
+      {
+        "cursor": 1,
+        "focused": false,
+        "label": "focus-key-down"
+      }
+    ],
+    "bindings": {
+      "KITCHEN_COOK": "c, REPEAT_NOT",
+      "KITCHEN_BREW": "b, REPEAT_NOT",
+      "CONTEXT_SCROLL_UP": "MOUSEWHEEL:0:UP",
+      "CONTEXT_SCROLL_DOWN": "MOUSEWHEEL:0:DOWN",
+      "CONTEXT_SCROLL_PAGEUP": "MOUSEWHEEL:1:UP",
+      "CONTEXT_SCROLL_PAGEDOWN": "MOUSEWHEEL:1:DOWN"
+    },
+    "scope": "Supported installation data/init/interface.txt bindings plus native command effects. Cook changes Alfalfa seed exclusion; Brew changes Plump helmets exclusion. SELECT/SEC_SELECT do not toggle. Native focused Down retains cursor, Enter releases focus, next Down advances. Six actual DF3D key-driven edits pass independent native effects/stale checks, only known Godot diagnostics, source unchanged and owned exit unsaved. Wheel mapping plus captured context-scroll no-effect supports disabling extra shared scrollbar wheel behavior; direct WM wheel consumption remains unproven."
   }
 }

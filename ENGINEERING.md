@@ -186,6 +186,25 @@ GPU54C. Core19/controller checks pass kitchen-shift-sorting. This accepts the
 mapped gesture and sampled rendering, not physical Windows-message delivery,
 the entire panel, or the above32-row native sort path.
 
+Kitchen keyboard evidence is retained in keyboard_reference. Protected182346
+posts Down/Enter/Down while search is focused: cursor0 stays0, Enter releases
+focus, then cursor advances to1. Headless view-input checks match that sequence.
+Protected182703 verifies KITCHEN_COOK changes the selected Alfalfa seeds and
+KITCHEN_BREW changes Plump helmets; each second press restores the permission.
+SELECT/SEC_SELECT leave exclusions unchanged. Installed interface.txt maps these
+actions to lowercase c/b with REPEAT_NOT. The view sends those actions for the
+selected row, suppresses key repeats, and leaves text entry in charge while
+focused. The rendered actual-key workflow passes all six edits, native effects,
+fresh reads and stale rejection. Only documented thread/finalize/shutdown notices
+remain; source preservation and owned unsaved exit pass, GPU53C at30FPS. Core19
+and controller/view checks pass kitchen-keyboard-actions.
+
+Installed wheel bindings map ordinary/Shift wheel to CONTEXT_SCROLL commands.
+Captured Kitchen context-scroll commands do not move its list, including over
+the scrollbar; the Kitchen view therefore disables the shared scrollbar's extra
+wheel behavior. Standard keyboard selection and scrollbar pointer controls remain
+separate. Posted WM_MOUSEWHEEL delivery itself is still not accepted evidence.
+
 The staged Kitchen view reuses installed Labor chrome, native row/icon assets,
 count captions and permission icons. `kitchen-view-base` renders at1200x800 with
 30FPS; its unselected-row crop(64,232)-(928,664) matches native171829 with zero

@@ -365,6 +365,10 @@ if os.getenv('DF3D_KITCHEN_SEARCH')=='1' then
    observations[#observations+1]={label='accent-backspace',text_bytes=bytes(box.str),filter_bytes=bytes(panel.filter_str),cursor=panel.cursor_idx,focused=df.global.gview.cur_textbox==box}
   end
  end
+ for _,action in ipairs({'down','enter','down'})do
+  request_input(action)
+  observations[#observations+1]={label='focus-key-'..action,cursor=panel.cursor_idx,focused=df.global.gview.cur_textbox==box}
+ end
  local f=assert(io.open(out..'/kitchen-search.json','w'));f:write(json.encode(observations));f:close()
  shot('kitchen-search')
 end
@@ -444,6 +448,21 @@ if os.getenv('DF3D_KITCHEN_INPUT')=='1' then
    observe(point[1]..'-'..key)
   end
  end
+ local actions={}
+ local function exclusions()
+  local k=df.global.plotinfo.kitchen;local entries={}
+  for i,t in ipairs(k.item_types)do entries[#entries+1]={t,k.item_subtypes[i],k.mat_types[i],k.mat_indices[i],k.exc_types[i].whole}end
+  return entries
+ end
+ for _,key in ipairs({'SELECT','SEC_SELECT','KITCHEN_COOK','KITCHEN_BREW'})do
+  if key=='KITCHEN_BREW' then click(37,12)end
+  observe('before-'..key)
+  for attempt=1,2 do
+   local before=exclusions();gui.simulateInput(view,key)
+   for _=1,3 do script.sleep(1,'frames');view:render(dfhack.getTickCount())end
+   actions[#actions+1]={key=key,attempt=attempt,before=before,after=exclusions(),cursor=panel.cursor_idx,target=observations[#observations].names[1]}
+  end
+ end
  local hover={};local main=df.global.game.main_interface
  for _,target in ipairs({{'type',180,150},{'sort-type',160,186},{'sort-name',240,186},{'sort-number',630,186},{'cook-filter',728,160},{'brew-filter',760,160},{'food-name',200,214},{'count',630,214},{'cook',728,214},{'brew',760,214},{'search',200,720}})do
   local deadline=dfhack.getTickCount()+850
@@ -455,7 +474,7 @@ if os.getenv('DF3D_KITCHEN_INPUT')=='1' then
   hover[#hover+1]={target=target[1],instruction=main.current_hover,displayed=main.last_displayed_hover_inst}
   if main.last_displayed_hover_inst~=-1 then shot('kitchen-hover-'..target[1])end
  end
- local f=assert(io.open(out..'/kitchen-input.json','w'));f:write(json.encode({scroll=observations,hover=hover}));f:close()
+ local f=assert(io.open(out..'/kitchen-input.json','w'));f:write(json.encode({scroll=observations,hover=hover,actions=actions}));f:close()
 end
 if os.getenv('DF3D_KITCHEN_JOB_EFFECTS')=='1' then
  local path=debug.getinfo(1,'S').source:sub(2):gsub('kitchen%-native.lua$','kitchen-job-effects-native.lua')

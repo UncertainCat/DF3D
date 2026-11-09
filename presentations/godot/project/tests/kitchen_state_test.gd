@@ -59,7 +59,15 @@ func run() -> void:
 		for code in str(observation.label).length():
 			var event:=InputEventKey.new();event.pressed=true;event.unicode=str(observation.label).unicode_at(code);entry.feed_key(event)
 		check(entry.value==PackedByteArray(observation.text_bytes),"Kitchen native byte input differs: "+str(observation.label))
-	entry.queue_free()
+	entry.set_bytes(PackedByteArray())
+	var input_view=preload("res://scripts/kitchen_view.gd").new();root.add_child(input_view)
+	input_view.state=navigation;input_view.search=entry;input_view.size=Vector2(944,708)
+	var starting_selection: int=navigation.selected
+	var key:=InputEventKey.new();key.pressed=true;key.keycode=KEY_DOWN;input_view._input(key)
+	check(entry.has_focus() and navigation.selected==starting_selection,"Focused Kitchen Down changed selection")
+	key.keycode=KEY_ENTER;input_view._input(key);check(not entry.has_focus(),"Kitchen Enter retained search focus")
+	key.keycode=KEY_DOWN;input_view._input(key);check(navigation.selected==starting_selection+1,"Kitchen Down after Enter failed to navigate")
+	input_view.queue_free();entry.queue_free()
 	var controls: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/production/native_kitchen.json")).controls_reference
 	for observation in controls.observations:
 		var label: String=observation.label

@@ -101,7 +101,12 @@ func run() -> void:
 			if value.rows[i].name==step.name:target=value.rows[i].receipt;index=i
 		if not check(not target.is_empty(),"Kitchen target missing"):break
 		var intent: Dictionary={"action":C.ManagementAction.KitchenApply,"target":target,"permission":int(step.flag),"expected":value.exclusions}
-		if rendered:await pointer(owner.kitchen_panel,Vector2(696+(int(step.flag)-1)*32,owner.kitchen_panel.rows_top()+index*36+18))
+		if rendered:
+			if OS.get_environment("DF3D_KITCHEN_KEYS")=="1":
+				await pointer(owner.kitchen_panel,Vector2(160,owner.kitchen_panel.rows_top()+index*36+18))
+				var key:=InputEventKey.new();key.pressed=true;key.keycode=KEY_C if int(step.flag)==1 else KEY_B
+				Input.parse_input_event(key);await process_frame
+			else:await pointer(owner.kitchen_panel,Vector2(696+(int(step.flag)-1)*32,owner.kitchen_panel.rows_top()+index*36+18))
 		else:
 			state.toggle(index,int(step.flag));check(state.phase==State.Phase.Applying and state.rows.is_empty(),"Kitchen edit retained authority")
 		if not await ready_state(state):break

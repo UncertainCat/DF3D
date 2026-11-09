@@ -14,6 +14,7 @@ func configure_kitchen(source,model) -> void:
 	search=preload("res://scripts/area_owner_filter.gd").new();add_child(search);search.theme=theme;search.byte_limit=26;search.ascii_only=true
 	search.configure(inset,colors);search.edited.connect(state.set_search)
 	scrollbar.input_allowed=allowed
+	scrollbar.wheel_enabled=false
 	scrollbar.row_changed.connect(func(value):state.seek(value,capacity()))
 	state.changed.connect(refresh);refresh()
 func rows_top() -> int:return list_top()+24
@@ -46,6 +47,9 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode!=KEY_ESCAPE and search!=null and search.has_focus():
 		search.feed_key(event);get_viewport().set_input_as_handled();return
 	if event is InputEventKey and event.pressed and not event.alt_pressed and not event.ctrl_pressed and not event.shift_pressed:
+		if event.keycode in [KEY_C,KEY_B]:
+			if not event.echo:state.toggle(state.selected,1 if event.keycode==KEY_C else 2)
+			get_viewport().set_input_as_handled();return
 		var steps: Dictionary={KEY_UP:-1,KEY_8:-1,KEY_KP_8:-1,KEY_DOWN:1,KEY_2:1,KEY_KP_2:1,KEY_PAGEUP:-capacity(),KEY_9:-capacity(),KEY_KP_9:-capacity(),KEY_PAGEDOWN:capacity(),KEY_3:capacity(),KEY_KP_3:capacity()}
 		if steps.has(event.keycode):state.move_selection(steps[event.keycode],capacity());get_viewport().set_input_as_handled();return
 	super._input(event)

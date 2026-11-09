@@ -34,6 +34,30 @@ for _,family in ipairs(read('stocks-wire-reference.json').furniture)do
  local deadline=dfhack.getTickCount()+10000
  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end
   assert(dfhack.getTickCount()<deadline,'Furniture capture timeout');script.sleep(1,'frames')end
+ if os.getenv('DF3D_STOCKS_CHILD_HOVER')=='1' then
+  local main=df.global.game.main_interface;local observations={}
+  for _,target in ipairs{{'header-forbid',804,76},{'header-dump',828,76},{'task-absent',748,406},{'view',772,406},{'forbid',796,406},{'dump',820,406},{'melt',844,406},{'visibility',868,406},{'melt-absent',844,298}}do
+   local deadline=dfhack.getTickCount()+700
+   repeat
+    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+    g.precise_mouse_x=target[2];g.precise_mouse_y=target[3];g.mouse_x=target[2]//8;g.mouse_y=(target[3]-4)//12
+    gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(1,'frames')
+   until dfhack.getTickCount()>=deadline
+   local row={kind=target[1],x=target[2],y=target[3],instruction=main.current_hover,active=main.hover_instructions_on,lines={}}
+   if row.active then
+    for y=0,17 do local line={}
+     for x=g.dimx-24,g.dimx-1 do local ch=dfhack.screen.readTile(x,y).ch;line[#line+1]=ch>=32 and string.char(ch%256)or' 'end
+     row.lines[#row.lines+1]=dfhack.df2utf(table.concat(line)):gsub('%s+$','')
+    end
+    while #row.lines>0 and row.lines[#row.lines]==''do table.remove(row.lines)end
+   end
+   if row.kind=='header-dump' then assert(row.active and row.instruction==208,'Header tooltip control failed')end
+   if row.kind=='view' or row.kind=='forbid' or row.kind=='dump' or row.kind=='melt' or row.kind=='visibility' or row.kind=='melt-absent' then assert(not row.active and row.instruction==-1,'Unexpected native child tooltip')end
+   observations[#observations+1]=row
+  end
+  results[#results].child_hover=observations
+  local f=assert(io.open(out..'/stocks-child-hover-native.json','w'));f:write(json.encode(observations));f:close()
+ end
  if os.getenv('DF3D_STOCKS_CHILD_VIEW')=='1' then
   local child=read('stocks-child-wire.json');click(772,298)
   assert(sheet.open and sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==child.id,'Native child View target differs')

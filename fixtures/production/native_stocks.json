@@ -6485,7 +6485,7 @@
     }
   },
   "item_sheet_contents_reference": {
-    "status": "Management164 contents transport, ten-row bin rendering, child navigation and four child flags accepted within recorded scope. Hover, scrolling and creature acceptance pending.",
+    "status": "Management164 contents transport, ten-row bin rendering, child navigation and four child flags accepted within recorded scope. Native child tooltip absence observed with header positive control. Scrolling and creature acceptance pending.",
     "list_source": {
       "range": "1578bf..157a98",
       "sha256": "adfdc663f7df5cdeabd748c317d48d7d455afcc4988ee6346d53689d669c4e98",
@@ -6726,6 +6726,130 @@
       "gpu_max_sample_c": 46,
       "diagnostics": "Documented separate-thread, finalize and shutdown-object signatures only",
       "limitations": "One bin/platinum-bar fixture; no creature, scrolling, hover or other container-family acceptance"
+    },
+    "child_hover_reference": {
+      "run": "build/stockpile-storage-native-input-20261109-042746",
+      "observations": [
+        {
+          "active": true,
+          "instruction": -1,
+          "kind": "header-forbid",
+          "lines": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "      Elevation 36"
+          ],
+          "x": 804,
+          "y": 76
+        },
+        {
+          "active": true,
+          "instruction": 208,
+          "kind": "header-dump",
+          "lines": [
+            "Toggle the dump status",
+            "of the item.  Items are",
+            "dumped in dumping zones."
+          ],
+          "x": 828,
+          "y": 76
+        },
+        {
+          "active": true,
+          "instruction": -1,
+          "kind": "task-absent",
+          "lines": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "      Elevation 36"
+          ],
+          "x": 748,
+          "y": 406
+        },
+        {
+          "active": false,
+          "instruction": -1,
+          "kind": "view",
+          "lines": [],
+          "x": 772,
+          "y": 406
+        },
+        {
+          "active": false,
+          "instruction": -1,
+          "kind": "forbid",
+          "lines": [],
+          "x": 796,
+          "y": 406
+        },
+        {
+          "active": false,
+          "instruction": -1,
+          "kind": "dump",
+          "lines": [],
+          "x": 820,
+          "y": 406
+        },
+        {
+          "active": false,
+          "instruction": -1,
+          "kind": "melt",
+          "lines": [],
+          "x": 844,
+          "y": 406
+        },
+        {
+          "active": false,
+          "instruction": -1,
+          "kind": "visibility",
+          "lines": [],
+          "x": 868,
+          "y": 406
+        },
+        {
+          "active": false,
+          "instruction": -1,
+          "kind": "melt-absent",
+          "lines": [],
+          "x": 844,
+          "y": 298
+        }
+      ],
+      "conclusion": "Native container-row View/Forbid/Dump/Melt/Hide and absent Melt positions have no active tooltip in this bin fixture; preserve absence. Header Dump instruction208 and exact text are a positive control.",
+      "limitations": "Header Forbid and absent-task samples show transient active=true with instruction=-1 and map text; excluded from tooltip acceptance. No active-task or creature-row evidence.",
+      "source_preserved": true,
+      "owned_df_pid": 46208,
+      "exit": "unsaved",
+      "fps_cap": 30,
+      "gpu_max_sample_c": 46
     }
   }
 }

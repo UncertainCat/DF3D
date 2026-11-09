@@ -54,6 +54,14 @@ at30FPS. GPU samples reached46C, not a peak measurement. Only documented Godot
 diagnostics remain. This proves one eligible contained-item workflow, not
 creature controls or every container family.
 
+Protected042746 probes the bin's child View/Forbid/Dump/Melt/Hide positions:
+none activates native hover instructions. Header Dump is a positive control,
+showing instruction208 and the existing verbatim text. DF3D preserves absent
+child help for these controls; building-contents tooltip text is not borrowed.
+Header Forbid and absent-task samples are transient and excluded. Active-task
+and creature-row help remain unverified. Source preserved, DF46208 exits unsaved
+at30FPS,46C sampled. `child_hover_reference` retains the observations.
+
 Management163 adds optional ordered item-sheet contents to independent item
 snapshots. Rebuild bridge/viewer together;162 peers use a separate channel.
 Absent remains unknown; present empty means observed empty. Rows distinguish

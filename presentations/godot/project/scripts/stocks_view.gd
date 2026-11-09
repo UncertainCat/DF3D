@@ -64,6 +64,7 @@ func refresh() -> void:
 	for group in state.groups:
 		if group.matches:total_rows+=1+(group.item_ids.size() if state.expanded(group) else 0)
 	item_scrollbar.page=maxi(0,int(item_canvas.size.y/12));item_scrollbar.set_rows(total_rows*3,state.first_item)
+	item_canvas.size.x=maxf(0,size.x-category_width()-88)+(0 if item_scrollbar.visible else 16)
 	var first:=int(item_scrollbar.first/3);var limit:=ceili(item_canvas.size.y/36.0)+1;var offset:=0
 	for group in state.groups:
 		if not group.matches:continue
@@ -80,7 +81,7 @@ func refresh() -> void:
 		var row: Dictionary=state.items.get(entry.id,{})
 		# Native Stocks3a2a92 calls the shared item selector c7cbc0.
 		# Reuse owned sheet facts for these families; ammunition stays diagonal.
-		if row.get("type") not in [0,2,4,5,24,25,26,27,28,29,30,32,39,60] or not row.has("appearance"):continue
+		if row.get("type") not in [0,2,4,5,6,7,10,11,12,18,22,24,25,26,27,28,29,30,32,39,45,60] or not row.has("appearance"):continue
 		var appearance: Dictionary=row.appearance.duplicate(true)
 		# Full native flags are already owned Stocks facts; artifact is distinct.
 		if row.type==24:appearance["artifact_mood"]=bool(row.flags&0x8000000)

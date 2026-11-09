@@ -5290,5 +5290,128 @@
     "limitations": "Only first visible pages. All seven captured item regions match; other variants, item sheets and remaining families are not accepted. Callers lacking explicit mood facts retain their prior behavior.",
     "weapon_mood": "Nativec7ce83..c7ce94 tests artifact_mood(bit27). StocksItemRow.flags already contains full native flags; viewer supplies a separate boolean artifact_mood rendering fact and includes it in cache identity. Original appearance artifact flag stays intact. No protocol change or inferred legacy mood value.",
     "verification": "stocks-weapon-mood: core19, Stocks state, installed-asset icon tests and extension build pass. Icon checks distinguish artifact-without-mood from mood-created weapon and reject malformed mood facts."
+  },
+  "household_art_reference": {
+    "capture": "build/stockpile-storage-native-input-20261109-021252",
+    "cases": [
+      {
+        "item_type": 6,
+        "region": [
+          360,
+          112,
+          960,
+          724
+        ],
+        "art_rgb_differences": 1002,
+        "outside_icon_rgb_differences": 0,
+        "scrollbar_rgb_differences": 26,
+        "native_sha256": "1efa46bd3b4bfd4f752cf300076fe83ef81a3bed4bb07f30358495b161fde381",
+        "viewer_sha256": "019304582014bcfd2fed46a814121753f0e3bb3b48f58a280323f2ecde80d953"
+      },
+      {
+        "item_type": 7,
+        "region": [
+          360,
+          112,
+          960,
+          724
+        ],
+        "art_rgb_differences": 4459,
+        "outside_icon_rgb_differences": 0,
+        "scrollbar_rgb_differences": 0,
+        "native_sha256": "02b9349fc141a489ea2204d3dc8d45d6e1a16a69c3582dfaf1d0afcdcf3fbf93",
+        "viewer_sha256": "4e376c23739fc9e31b631098ba189fc08d7bc43a9ae811083c55926c820d54f1"
+      },
+      {
+        "item_type": 10,
+        "region": [
+          360,
+          112,
+          960,
+          724
+        ],
+        "art_rgb_differences": 2727,
+        "outside_icon_rgb_differences": 0,
+        "scrollbar_rgb_differences": 26,
+        "native_sha256": "7a8aedc73d8a2d2a5fabbc32882e728d7ad55a19cd21e4882dfc9f3a67b4fd16",
+        "viewer_sha256": "851ba886fde17360124555bda193d5201f2e90621229c67508fb8e767c989bb0"
+      },
+      {
+        "item_type": 11,
+        "region": [
+          360,
+          112,
+          960,
+          724
+        ],
+        "art_rgb_differences": 0,
+        "outside_icon_rgb_differences": 0,
+        "scrollbar_rgb_differences": 26,
+        "native_sha256": "16f87c786a48d4aef8ac84eb6fd0cc280e9bb940feb3d1e898584377ae32d746",
+        "viewer_sha256": "1140e64aa5ac13998d46f075258102ad7084910d03b81016bb7b28663e576dc2"
+      },
+      {
+        "item_type": 12,
+        "region": [
+          360,
+          112,
+          960,
+          724
+        ],
+        "art_rgb_differences": 99,
+        "outside_icon_rgb_differences": 0,
+        "scrollbar_rgb_differences": 26,
+        "native_sha256": "3d7f66a23a2e59fb09926821a276515e1da0701acc4f8dc7ff33302948b74c01",
+        "viewer_sha256": "21964a1ee5dd5e54b852ce3aa9ebf7210009f02154f4eb936fa7eaf2710ed814"
+      },
+      {
+        "item_type": 18,
+        "region": [
+          360,
+          112,
+          960,
+          724
+        ],
+        "art_rgb_differences": 18,
+        "outside_icon_rgb_differences": 0,
+        "scrollbar_rgb_differences": 26,
+        "native_sha256": "63831e83501c8151db656c7aa364ed27391e81653ea8a2526ef8c8f8f5d782f8",
+        "viewer_sha256": "c168efb728ca1d9438a063570c2cb25361b0cba50d892d431956ed374706897e"
+      },
+      {
+        "item_type": 22,
+        "region": [
+          360,
+          112,
+          960,
+          724
+        ],
+        "art_rgb_differences": 0,
+        "outside_icon_rgb_differences": 6,
+        "scrollbar_rgb_differences": 0,
+        "native_sha256": "d1c8f8394703c8febad9297c28ca4a635fd6dd6d0cf429b254f7befe05e68309",
+        "viewer_sha256": "477317706ae802db18de685b03b10cdde994ece85b1236e4fdc2cd88b339726d"
+      },
+      {
+        "item_type": 45,
+        "region": [
+          360,
+          112,
+          960,
+          724
+        ],
+        "art_rgb_differences": 0,
+        "outside_icon_rgb_differences": 0,
+        "scrollbar_rgb_differences": 0,
+        "native_sha256": "2bbec1232f059a47745f7a8a80da680a3d4f25982b9ee5c6072ee73e1af2bc4d",
+        "viewer_sha256": "6d09c1c7ea806e2c54e43f883a31394d167c1685cb93c29690197864d8164c34"
+      }
+    ],
+    "layout": "When item scrollbar is absent, item rows and action buttons extend16px right, matching native.",
+    "workflow": "Cold typed category selection and fresh visible facts/icons across eight types, return to Ammunition and verify restored group edits/stale rejection.",
+    "source_save": "unchanged; owned DF48520 exited unsaved",
+    "gpu": "30FPS; sampled41C/0%; original preferences restored",
+    "diagnostics": "passed_with_known_issues: thread notice, device finalize, shutdown objects; no unclassified errors",
+    "limitations": "Only first visible pages. Flask11 and Anvil45 item rows accepted; statue icons match but six pixels outside icons differ. Door6/Floodgate7/Chain10/Goblet12/Bucket18 artwork remains incomplete. Existing scrollbar26pixel difference excluded from artwork counts. Other variants and item-sheet routes unaccepted."
   }
 }

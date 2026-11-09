@@ -37,6 +37,17 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
+Stocks household artwork discovery021252 connects doors, floodgates, restraints,
+flasks, goblets, buckets, statues and anvils to the existing shared resolver.
+It also fixes item rows/action buttons retaining a16px scrollbar gap when the
+item list fits. Flask11 and Anvil45 item regions match native; statue icons match
+but six pixels outside icons differ. Door6,Floodgate7,Chain10,Goblet12 and Bucket18
+artwork remain incomplete (1002/4459/2727/99/18 pixels respectively). These are
+staged findings, not accepted families. `household_art_reference` separates art,
+other pixels and existing scrollbar differences and records hashes. Cold typed reads,
+visible facts and restored group edits pass; source unchanged, owned DF48520
+exits unsaved,30FPS,41C sampled and known Godot diagnostics only.
+
 Stocks also reuses the shared equipment resolver. Protected020905 has zero RGB
 differences across first visible item regions for WEAPON24,ARMOR25,SHOES26,
 SHIELD27,HELM28,GLOVES29 and PANTS60. Native weaponc7ce83..c7ce94 tests

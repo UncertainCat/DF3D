@@ -2691,6 +2691,16 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             row["rating"]=skill.rating;row["caption"]=DF2UTF(skill.caption);result["skills"].append(row);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="stocks-groups-probe") {
+          if(parameters.size()!=1)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto groups=df3d_stocks::groups();if(!groups)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["groups"]=Json::Value(Json::arrayValue);
+          for(const auto& group:*groups){Json::Value row(Json::objectValue);
+            row["type"]=group.type;row["subtype"]=group.subtype;row["subcat1"]=group.subcat1;row["subcat2"]=group.subcat2;
+            row["amount"]=group.amount;row["expanded"]=group.expanded;result["groups"].append(row);}
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="stocks-inventory-probe") {
           if(parameters.size()!=1)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;

@@ -1,6 +1,7 @@
 #pragma once
 #include "building_item_native.h"
 #include "df/world.h"
+#include <cstddef>
 
 namespace df3d_stocks {
 // Native Stocks initializer377fe0 enumerates IN_PLAY and excludes c93160.
@@ -37,5 +38,45 @@ inline std::optional<std::vector<int32_t>> inventory() {
     std::vector<int32_t> ids;ids.reserve(items.size());
     for(auto* item:items){if(!item)return std::nullopt;if(!predicate(item))ids.push_back(item->id);}
     return ids;
+}
+struct Group {int16_t type,subtype,subcat1,subcat2;int32_t amount;bool expanded;};
+// Native ac9c30 owns no globals: abstract-list insertion/matching uses the
+// supplied vectors and authoritative item properties/history. Keep all storage
+// here, including MSVC's packed expanded bits; no stocks_interfacest is borrowed.
+inline std::optional<std::vector<Group>> groups() {
+    const auto ids=inventory();if(!ids)return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool supported=[base] {
+        struct Pin {size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={
+            {0xac9c30,0x50a,UINT64_C(0x7fbce42d6c033414)},
+            {0xac9890,0x173,UINT64_C(0xc19090f1c488ecc4)},
+            {0xac9710,0x17a,UINT64_C(0xcdf19b8b33e636a4)},
+            {0xaca720,0x7a,UINT64_C(0x12b032d63e998c99)},
+            {0x13bfd0,0xe8,UINT64_C(0xd4a98ca43e7cadb7)},
+            {0x13c270,0x229,UINT64_C(0x09e5c9aa6e43d09c)},
+            {0x13d4f0,0xed,UINT64_C(0xe857e2f78065b8b9)},
+            {0x70e20,0x117,UINT64_C(0x09aba69f846f6c10)},
+            {0x71040,0x112,UINT64_C(0x5f2ee621244a5576)}};
+        for(const auto& pin:pins){uint64_t hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin.length;++i){hash^=base[pin.rva+i];hash*=UINT64_C(1099511628211);}
+            if(hash!=pin.hash)return false;}
+        return true;
+    }();
+    if(!supported)return std::nullopt;
+    struct Context {
+        std::vector<int16_t> type,subtype,subcat1,subcat2;
+        std::vector<int32_t> amount;
+        std::vector<bool> expanded;
+    } owned;
+    static_assert(offsetof(Context,amount)==0x60 && offsetof(Context,expanded)==0x78 && sizeof(Context)==0x98);
+    const auto add=reinterpret_cast<void (*)(Context*,df::item*)>(base+0xac9c30);
+    for(auto id:*ids){auto* item=df::item::find(id);if(!item)return std::nullopt;add(&owned,item);}
+    const auto count=owned.type.size();
+    if(owned.subtype.size()!=count || owned.subcat1.size()!=count || owned.subcat2.size()!=count ||
+       owned.amount.size()!=count || owned.expanded.size()!=count)return std::nullopt;
+    std::vector<Group> result;result.reserve(count);
+    for(size_t i=0;i<count;++i)result.push_back({owned.type[i],owned.subtype[i],owned.subcat1[i],owned.subcat2[i],owned.amount[i],owned.expanded[i]});
+    return result;
 }
 }

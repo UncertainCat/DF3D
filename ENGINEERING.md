@@ -84,8 +84,26 @@ sorting is deliberately not claimed by this membership comparison. MSVC and
 core19 (`stocks-native-inventory`) pass; native log clean, source save unchanged,
 DF27332 exits unsaved, GPU61C sampled. Installed plugin SHA256 is
 0E6E973F224619C9B4EDF2A0169FC33BD7310760EE4113C36CD95C4FD9A5802B.
-Grouping, category counts/captions, filter/action semantics, typed transport and
-the screen remain unfinished; the diagnostic does not expose a public Stocks UI.
+The diagnostic does not expose a public Stocks UI.
+
+Native master grouping is exposed separately through `groups()`: ac9c30 receives
+an independently owned0x98-byte vector context matching `abstractitemlistst`.
+Its complete chained body ends at aca13a; ac9890 matches existing groups,
+ac9710 orders insertion keys, and aca720 selects item types requiring historical
+material normalization. These read item virtual properties and authoritative
+historical figures; all output vectors and expanded bits remain owned. Native
+vector-insertion helpers use the compatible MSVC runtime and the context releases
+its allocations normally. Neither sorting individual items nor writing their
+temporary_32 is needed for this operation.
+
+Protected220814 matches all931 ordered groups across67 item types, totaling11486
+stack units, cold and warm. Each type/subtype/material pair, count and default
+expanded bit matches native; item scratch guards pass. MSVC/core19
+(`stocks-native-groups`) pass, native log clean, source unchanged, DF27928 exits
+unsaved and GPU58C sampled. Installed plugin SHA256 is
+DE0D94EA0A7CDC48905D2FD6CA17737151EB2D0AB53D637D9DCBFF48854DC30D.
+Availability totals, category counts/captions, individual item order, filtering,
+actions, transport and the screen remain unfinished.
 
 ## Stone use native semantics and presentation
 

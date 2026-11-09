@@ -6,17 +6,18 @@ local function scratch()
  for _,item in ipairs(df.global.world.items.other.IN_PLAY)do values[#values+1]={item.id,item.base_uniform_score}end
  return json.encode(values)
 end
-local function inventory()
+local function probe(command)
  local before=scratch();local menu=df.global.game.main_interface.stocks
  local open=menu.open;local selected=menu.current_type;local query=menu.item_filter
- local text,code=dfhack.run_command_silent('df3d','stocks-inventory-probe')
+ local text,code=dfhack.run_command_silent('df3d',command)
  assert(code==0,'Stocks inventory failed: '..text)
  assert(before==scratch(),'Inventory probe changed item temporary_32')
  assert(open==menu.open and selected==menu.current_type and query==menu.item_filter,'Inventory probe changed menu state')
- return json.decode(text).ids
+ return json.decode(text)
 end
-local cold
-if os.getenv('DF3D_STOCKS_PROVIDER')=='1' then cold=inventory()end
+local cold,cold_groups
+if os.getenv('DF3D_STOCKS_PROVIDER')=='1' then cold=probe('stocks-inventory-probe').ids end
+if os.getenv('DF3D_STOCKS_GROUPS')=='1' then cold_groups=probe('stocks-groups-probe').groups end
 gui.simulateInput(view,'D_STOCKS')
 for _=1,3 do script.sleep(1,'frames')end
 view:render(dfhack.getTickCount())
@@ -32,13 +33,25 @@ local result={stocks_rva=address-dfhack.internal.getImageBase(),current_type=sto
  item_filter=stocks.item_filter,individual_ids={},groups={},screen_rows={}}
 for _,item in ipairs(stocks.current_type_i_list)do result.individual_ids[#result.individual_ids+1]=item.id end
 if cold then
- local warm=inventory();local native={}
+ local warm=probe('stocks-inventory-probe').ids;local native={}
  for _,item in ipairs(stocks.master_i_list.l_item)do native[#native+1]=item.id end
  table.sort(cold);table.sort(warm);table.sort(native)
  assert(json.encode(cold)==json.encode(native),'Cold inventory membership differs from native')
  assert(json.encode(warm)==json.encode(native),'Warm inventory membership differs from native')
  local _,address=df.sizeof(df.global.world.items.other.IN_PLAY)
  result.inventory={cold=cold,warm=warm,native=native,scratch_preserved=true,in_play_rva=address-dfhack.internal.getImageBase()}
+end
+if cold_groups then
+ local warm=probe('stocks-groups-probe').groups;local native={};local master=stocks.master_a_list
+ for index,kind in ipairs(master.type)do
+  native[#native+1]={type=kind,subtype=master.subtype[index],subcat1=master.subcat1[index],subcat2=master.subcat2[index],amount=master.amount[index],expanded=master.expanded[index]}
+ end
+ local function equal(actual,label)
+  assert(#actual==#native,label..' group count differs')
+  for i,row in ipairs(native)do for key,value in pairs(row)do assert(actual[i][key]==value,label..' group differs at '..i..'/'..key)end end
+ end
+ equal(cold_groups,'Cold');equal(warm,'Warm')
+ result.group_provider={cold=cold_groups,warm=warm,native=native,scratch_preserved=true}
 end
 for index,subtype in ipairs(stocks.current_type_a_subtype)do
  result.groups[#result.groups+1]={subtype=subtype,subcat1=stocks.current_type_a_subcat1[index],

@@ -619,5 +619,43 @@
         "sha256": "3165e33a0e92957b49e5a1f6dd493528663a172a18cd5b1ea0d96881001438e9"
       }
     ]
+  },
+  "groups_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-220814",
+    "count": 931,
+    "types": 67,
+    "total_stack_amount": 11486,
+    "ordered_groups_sha256": "753f32dbbd577d02ed45071f80c0322746e4ba01afc24b5f85cedf3724c45dfb",
+    "cold_matches_native": true,
+    "warm_matches_native": true,
+    "item_temporary_32_preserved": true,
+    "scope": "All ordered master groups: type/subtype/normalized material/stack amount/default expansion. Does not establish individual item order, availability, category counts, search, actions or UI.",
+    "source_save": "unchanged; owned DF27928 exited unsaved",
+    "plugin_sha256": "DE0D94EA0A7CDC48905D2FD6CA17737151EB2D0AB53D637D9DCBFF48854DC30D",
+    "qa": "build/qa/stocks-native-groups",
+    "msvc": "build/notes/pm/stocks-groups-msvc.log",
+    "diagnostics": "Native log clean; no viewer launched.",
+    "entry_points": [
+      {
+        "rva": "0xac9c30",
+        "end": "0xaca13a",
+        "sha256": "f49d407b7848144942b05ba0cfee61639ecc4c930853c8f1a6d45654d7255aa9"
+      },
+      {
+        "rva": "0xac9890",
+        "end": "0xac9a03",
+        "sha256": "6d61149dd05c38d16214a975b182b04e410d01093eb6ff691eccecea9f930fe1"
+      },
+      {
+        "rva": "0xac9710",
+        "end": "0xac988a",
+        "sha256": "865e105797dbf91aa54485720f6924802cc81a855fa2c999233102d2326171c4"
+      },
+      {
+        "rva": "0xaca720",
+        "end": "0xaca79a",
+        "sha256": "d0ceb933df7707ed68f9818bc89288ff08a5f36723c60c99581f578f39bc1fd4"
+      }
+    ]
   }
 }

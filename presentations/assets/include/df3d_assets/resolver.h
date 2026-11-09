@@ -175,6 +175,7 @@ struct ItemQuery {
   uint16_t corpseFlags = 0;
   uint32_t id = 0;
   uint32_t containedCount = UINT32_MAX;
+  const wm::ContainerContentsFacts* contents = nullptr;
   wm::ItemKind containedKind = wm::ItemKind::Unknown;
   std::string_view containedMaterial;
   std::string_view containedSubtypeRaw;

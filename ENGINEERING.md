@@ -199,8 +199,17 @@ Sheet icons now compose resolved overlays through the existing tile compositor.
 Core19 (`bin-variants-overlays`) passes; its initial extension build failed on a
 return-type mismatch, corrected before `bin-overlays-extension` passed extension
 build and item-sheet state checks. These are headless checks, not rendered
-acceptance. Sheet contents facts and mixed-content classification remain open,
-so the observed carrier icon mismatch is not yet resolved end to end.
+acceptance. `ContainerContentsFacts` represents ordered direct entries, the
+container flag, effective armor level, metal/coal materials, powder containment
+and writing-related tool uses. The asset resolver's complete-facts path follows
+native c7dc54..c7dedd and c7e194 category agreement: any mixed or unclassified
+entry suppresses the specific overlay; matching entries retain the first color.
+The 21 categories were cross-checked against native graphics-name bindings and
+selector table c834cc. Core19 (`bin-complete-contents`) passes, including armor
+versus clothing, shields, powder bags, writing tools, mixed entry order and the
+container flag. This path is not yet populated by bridge/transport; the legacy
+map first-child path remains. Sheet contents transport and live acceptance are
+still missing, so the carrier icon mismatch is not resolved end to end.
 
 Management156 reuses native itemAppearance facts for the staged ammunition
 icons and the accepted diagonal ammunition artwork path. Core19, Stocks state

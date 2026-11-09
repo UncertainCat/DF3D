@@ -116,6 +116,51 @@ TEST_CASE("bin contents variants use the native item ID hash and raw order") {
   }
 }
 
+TEST_CASE("complete bin contents preserve native category agreement") {
+  AssetIndex idx;
+  idx.tileGraphics["ITEM_BIN_WOOD_EMPTY"]={{0,0,0,1,1}};
+  idx.tileGraphics["ITEM_BIN_WOOD_IN_USE"]={{0,1,0,1,1}};
+  const char* categories[]={"AMMO","CLOTHING","ARMOR_LEATHER","ARMOR_METAL",
+    "BARS","COAL","POWDERS","COINS","GEMS","MECHANISMS","BAGS","BOOKS",
+    "ROPES","LEATHER","WEAPONS","TRAP_COMPS","CRAFTS","BLOCKS","SHEETS","CLOTH","CHAINS"};
+  for(int i=0;i<21;++i)idx.tileGraphics[std::string("ITEM_BIN_TOP_")+categories[i]]={{0,i,1,1,1}};
+  wm::ContainerContentsFacts contents;contents.container=true;
+  ItemQuery q;q.kind=wm::ItemKind::Bin;q.contents=&contents;
+  const auto check=[&](wm::ContainerContentFacts item,int category) {
+    contents.entries={item};const auto r=resolveItem(idx,q);
+    REQUIRE(r.overlays.size()==1);CHECK(r.overlays[0].sprite.x==category);
+    CHECK(r.sprite.x==0);
+  };
+  wm::ContainerContentFacts item;item.kind=wm::ItemKind::Armor;
+  check(item,1);item.effectiveArmorLevel=1;check(item,2);
+  item.metal=true;check(item,3);item.effectiveArmorLevel=0;check(item,1);
+  item.kind=wm::ItemKind::Shield;check(item,3);item.metal=false;check(item,2);
+  item={};item.kind=wm::ItemKind::Bag;check(item,10);item.containsPowder=true;check(item,6);
+  item={};item.kind=wm::ItemKind::Tool;check(item,16);
+  item.rollsSheets=true;check(item,11);item.rollsSheets=false;
+  item.protectsFoldedSheets=true;check(item,11);item.protectsFoldedSheets=false;
+  item.containsWriting=true;check(item,11);
+  item={};item.kind=wm::ItemKind::Bar;check(item,4);item.coal=true;check(item,5);
+  item={};item.kind=wm::ItemKind::Chain;check(item,12);item.metal=true;check(item,20);
+  item={};item.kind=wm::ItemKind::Gem;check(item,16);
+  // Native does not classify rough gems, totems or BOOK items as a bin top.
+  for(const auto kind:{wm::ItemKind::Rough,wm::ItemKind::Totem,wm::ItemKind::Book}) {
+    item={};item.kind=kind;contents.entries={item};const auto r=resolveItem(idx,q);
+    CHECK(r.overlays.empty());CHECK(r.sprite.x==1);
+  }
+  wm::ContainerContentFacts ammo;ammo.kind=wm::ItemKind::Ammo;
+  wm::ContainerContentFacts weapon;weapon.kind=wm::ItemKind::Weapon;
+  contents.entries={ammo,ammo};CHECK(resolveItem(idx,q).overlays.size()==1);
+  for(const auto entries:std::vector<std::vector<wm::ContainerContentFacts>>{
+      {ammo,weapon},{weapon,ammo},{ammo,{}},{{},ammo}}) {
+    contents.entries=entries;const auto r=resolveItem(idx,q);
+    CHECK(r.overlays.empty());CHECK(r.sprite.x==1);
+  }
+  contents.entries.clear();CHECK(resolveItem(idx,q).sprite.x==0);
+  contents.entries={ammo};contents.container=false;
+  CHECK(resolveItem(idx,q).overlays.empty());CHECK(resolveItem(idx,q).sprite.x==0);
+}
+
 TEST_CASE("installed statues combine quality pedestal and creature or event figure") {
   AssetIndex idx;
   ingestRawText(idx,R"([OBJECT:GRAPHICS]

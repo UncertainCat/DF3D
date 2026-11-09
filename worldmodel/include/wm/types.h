@@ -503,6 +503,22 @@ enum class ItemKind : uint8_t {
   BoltThrowerParts,
 };
 
+// Ordered direct containment facts, independent of native UI/graphics caches.
+// A contained unit or unresolved reference has Unknown item kind. Preserve it:
+// it still occupies the container and cannot be skipped when summarizing it.
+struct ContainerContentFacts {
+  ItemKind kind = ItemKind::Unknown;
+  std::string materialToken, colorToken;
+  int8_t effectiveArmorLevel = 0;
+  bool metal = false, coal = false;
+  bool containsPowder = false;
+  bool rollsSheets = false, protectsFoldedSheets = false, containsWriting = false;
+};
+struct ContainerContentsFacts {
+  bool container = false;
+  std::vector<ContainerContentFacts> entries;
+};
+
 // MapItem::flags bits (DF item.flags of the same name).
 inline constexpr uint8_t kItemForbidden = 1u << 0;
 inline constexpr uint8_t kItemDump = 1u << 1;

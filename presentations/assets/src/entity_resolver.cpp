@@ -1060,6 +1060,40 @@ std::string corpsePieceTileName(uint16_t f, std::string_view material, uint32_t 
   return "BODYPART_LARGE_1";  // creature size is not in the index
 }
 
+// Native BIN branch c7dc54..c7dedd classifies all direct contents, including
+// effective armor level and the tool's semantic uses. These names stay in the
+// presentation layer; the bridge supplies facts, never packed graphics codes.
+static std::string_view binContentsCategory(const wm::ContainerContentFacts& c) {
+  switch(c.kind) {
+    case ItemKind::Ammo: return "AMMO";
+    case ItemKind::Armor: case ItemKind::Shoes: case ItemKind::Helm:
+    case ItemKind::Gloves: case ItemKind::Pants:
+      if(c.effectiveArmorLevel<1)return "CLOTHING";
+      [[fallthrough]];
+    case ItemKind::Shield: return c.metal?"ARMOR_METAL":"ARMOR_LEATHER";
+    case ItemKind::Bar: return c.coal?"COAL":"BARS";
+    case ItemKind::Blocks: return "BLOCKS";
+    case ItemKind::PowderMisc: return "POWDERS";
+    case ItemKind::Bag: return c.containsPowder?"POWDERS":"BAGS";
+    case ItemKind::Coin: return "COINS";
+    case ItemKind::SmallGem: return "GEMS";
+    case ItemKind::TrapParts: return "MECHANISMS";
+    case ItemKind::Chain: return c.metal?"CHAINS":"ROPES";
+    case ItemKind::SkinTanned: return "LEATHER";
+    case ItemKind::Weapon: return "WEAPONS";
+    case ItemKind::TrapComp: return "TRAP_COMPS";
+    case ItemKind::Sheet: return "SHEETS";
+    case ItemKind::Cloth: return "CLOTH";
+    case ItemKind::Tool:
+      if(c.rollsSheets || c.protectsFoldedSheets || c.containsWriting)return "BOOKS";
+      [[fallthrough]];
+    case ItemKind::Figurine: case ItemKind::Amulet: case ItemKind::Scepter:
+    case ItemKind::Crown: case ItemKind::Ring: case ItemKind::Earring:
+    case ItemKind::Bracelet: case ItemKind::Gem: return "CRAFTS";
+    default:return {};
+  }
+}
+
 ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
   ItemSprite r;
   const MaterialClass cls = materialClassOf(idx, q.material);
@@ -1115,7 +1149,12 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
     return r;
   };
 
-  const bool occupied = q.containedCount != UINT32_MAX && q.containedCount > 0;
+  const bool binFacts=q.kind==ItemKind::Bin && q.contents;
+  const bool occupied = binFacts ? q.contents->container && !q.contents->entries.empty() :
+      q.containedCount != UINT32_MAX && q.containedCount > 0;
+  const auto* firstContent=binFacts && occupied?&q.contents->entries.front():nullptr;
+  const std::string_view contentsColor=firstContent?firstContent->colorToken:q.containedColor;
+  const std::string_view contentsMaterial=firstContent?firstContent->materialToken:q.containedMaterial;
   const bool liquid = q.containedKind == ItemKind::Drink || q.containedKind == ItemKind::LiquidMisc;
   auto contentsOverlay = [&](const std::string& name, bool recolor = true) {
     size_t variant=0;
@@ -1127,7 +1166,7 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
         variant=itemVariantSeed(q.id)%variants->second.size();
     }
     if (const auto* sprite = idx.tile(name,variant))
-      r.overlays.push_back({*sprite,recolor ? idx.paletteRow(q.containedColor.empty() ? idx.materialColorName(q.containedMaterial,liquid) : q.containedColor) : -1});
+      r.overlays.push_back({*sprite,recolor ? idx.paletteRow(contentsColor.empty() ? idx.materialColorName(contentsMaterial,liquid) : contentsColor) : -1});
   };
   auto binTop = [&]() -> const char* {
     switch (q.containedKind) {
@@ -1299,7 +1338,12 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
       // contents overlay. IN_USE is the occupied fallback without an overlay.
       // Resolve the overlay first: missing installed artwork also takes that
       // fallback, even when the semantic contents category is known.
-      if (occupied && *binTop()) contentsOverlay(std::string("ITEM_BIN_TOP_")+binTop());
+      if(binFacts && occupied) {
+        auto category=binContentsCategory(*firstContent);
+        for(const auto& entry:q.contents->entries)
+          if(binContentsCategory(entry)!=category){category={};break;}
+        if(!category.empty())contentsOverlay("ITEM_BIN_TOP_"+std::string(category));
+      } else if (occupied && *binTop()) contentsOverlay(std::string("ITEM_BIN_TOP_")+binTop());
       single((std::string("ITEM_BIN_")+(cls==MaterialClass::Metal ? "METAL" : "WOOD")+
           (occupied && r.overlays.empty() ? "_IN_USE" : "_EMPTY")).c_str(),"bin");
       return r;

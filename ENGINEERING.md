@@ -37,6 +37,23 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
+Management168 adds optional ordered item Uses rows (native caption/reaction ID).
+Rebuild bridge/viewer together;167 peers use a separate channel. Legacy absence
+remains unknown; present empty means the native builder returned no rows.
+Item revisions include presence, order, captions and reaction identities. The
+owned native builder supplies both description and Uses in one call. The viewer
+shows the native noninteractive Uses section instead of contents when nonempty;
+rows stop at the native cell limit. Core19, extension and item-state checks pass
+(`item-uses168-checked`), as does MSVC (`item-uses168-msvc`). Protected072720
+verifies actual Stocks View/close and exact ordered Uses captions/reaction IDs
+across native, owned adapter and viewer wire snapshots for five material types.
+Every Uses region matches native pixels; BLOCKS, BOULDER and WOOD full panels
+are identical. BAR retains776 Smelter-holder-icon pixels and ROUGH199 header-art
+pixels. Cut gems are absent; long-list/resize and Uses-versus-contents precedence
+are not newly live accepted. Source preserved, DF24252 exits unsaved at30FPS,
+60C sampled (not peak), documented Godot diagnostics only. The fixture's
+`item_uses_wire_render_reference` retains observations, hashes and limits.
+
 Management166 adds optional restraint classification and solid material color
 to item appearance. Rebuild bridge/viewer together;165 peers use a separate
 channel. Legacy absence remains unknown. Item inspection reuses the guarded
@@ -99,9 +116,9 @@ Only documented Godot diagnostics remain. `material_description_reference` in
 native_stocks.json retains observations, image hashes and explicit limitations.
 
 This is description acceptance, not complete item-sheet parity. BLOCKS matches
-all panel pixels; ROUGH has199 header-art differences. BAR and WOOD omit native
-Uses rows, and BAR's Smelter holder icon remains unsupported. The BOULDER native
-capture contains terrain without the panel, so cannot establish visual parity.
+all panel pixels; ROUGH has199 header-art differences. The Uses omission on BAR/WOOD is resolved by Management168 above; BAR's Smelter
+holder icon remains unsupported. The earlier BOULDER native capture contained
+terrain without the panel and was excluded;072720 establishes its full panel.
 The owned `item_uses_native.h` adapter calls native1a8df0 with independent
 string/vector storage. Game mode, fortress resources and raws are semantic
 inputs; native view_sheets item_use vectors remain reference-only. Native
@@ -113,8 +130,9 @@ source preservation and DF46136 exited unsaved at30FPS,50C maximum sampled
 (not peak), documented Godot diagnostics only. The aggregate native result
 retains rows; auxiliary files later read as zero-filled. The fixture's
 `item_uses_provider_reference` records this evidence limitation explicitly.
-This adapter is diagnostic-only: observation/transport/rendering integration
-is pending, so the missing Uses section remains unfinished.
+Management168 integrates this adapter into ordinary item observations and
+rendering as described above; the earlier probe-only evidence remains scoped
+to its own run.
 Public Stocks remains gated pending its remaining functional coverage.
 
 The guarded native description path additionally admits chains, windows, cages,

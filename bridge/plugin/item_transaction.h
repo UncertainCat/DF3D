@@ -12,7 +12,9 @@ struct ItemSheetContent {
     std::optional<ItemFacts> item;
     std::optional<ItemInspectionAppearance> appearance;
 };
+struct ItemUseRow {std::string caption;int32_t reaction=-1;};
 struct ItemObservation {
+    std::optional<std::vector<ItemUseRow>> uses;
     std::optional<std::vector<ItemSheetContent>> contents;
     std::optional<ItemAmmunitionAssignment> ammunitionAssignment;
     std::optional<ItemOwner> owner;
@@ -44,6 +46,7 @@ inline uint64_t itemObservationRevision(const ItemObservation& value) {
     number(value.stockpileCategories);
     byte(value.carrier.has_value());if(value.carrier){const auto& c=*value.carrier;number(c.kind);number(c.id);number(c.itemType);text(c.name);byte(c.appearance.has_value());if(c.appearance){const auto& a=*c.appearance;text(a.materialToken);text(a.subtypeRaw);text(a.colorToken);number(a.stack);byte(a.flags);byte(a.instrumentFamily);byte(a.instrumentPlaced);byte(a.floodgateOpen);byte(a.doorOpen);byte(a.doorForbidden);byte(a.doorWear);byte(a.bucketLiquid);text(a.bucketLiquidColor);byte(a.cageMaterialFamily);byte(a.cageOccupantEntity);number(a.cageOccupantId);text(a.cageSolidColor);byte(a.restraintRope);text(a.restraintSolidColor);byte(a.contents.has_value());if(a.contents){byte(a.contents->container);number(a.contents->entries.size());for(const auto& e:a.contents->entries){number(e.itemType);text(e.materialToken);text(e.colorToken);byte(e.effectiveArmorLevel);byte(e.metal);byte(e.coal);byte(e.containsPowder);byte(e.rollsSheets);byte(e.protectsFoldedSheets);byte(e.containsWriting);}}}}
     byte(value.appearance.has_value());if(value.appearance){const auto& a=*value.appearance;text(a.materialToken);text(a.subtypeRaw);text(a.colorToken);number(a.stack);byte(a.flags);byte(a.instrumentFamily);byte(a.instrumentPlaced);byte(a.floodgateOpen);byte(a.doorOpen);byte(a.doorForbidden);byte(a.doorWear);byte(a.bucketLiquid);text(a.bucketLiquidColor);byte(a.cageMaterialFamily);byte(a.cageOccupantEntity);number(a.cageOccupantId);text(a.cageSolidColor);byte(a.restraintRope);text(a.restraintSolidColor);byte(a.contents.has_value());if(a.contents){byte(a.contents->container);number(a.contents->entries.size());for(const auto& e:a.contents->entries){number(e.itemType);text(e.materialToken);text(e.colorToken);byte(e.effectiveArmorLevel);byte(e.metal);byte(e.coal);byte(e.containsPowder);byte(e.rollsSheets);byte(e.protectsFoldedSheets);byte(e.containsWriting);}}}
+    byte(value.uses.has_value());if(value.uses){number(value.uses->size());for(const auto& row:*value.uses){text(row.caption);number(row.reaction);}}
     byte(value.contents.has_value());
     if(value.contents){number(value.contents->size());for(const auto& row:*value.contents){
         number(row.kind);number(row.id);text(row.caption);
@@ -53,6 +56,7 @@ inline uint64_t itemObservationRevision(const ItemObservation& value) {
 }
 inline bool validItemObservation(const ItemObservation& value) {
     const auto& item=value.item;
+    if(value.uses){if(value.uses->size()>4096)return false;for(const auto& row:*value.uses)if(row.caption.size()>16384 || row.reaction< -1)return false;}
     if(value.contents){
         if(value.contents->size()>4096)return false;
         for(const auto& row:*value.contents){

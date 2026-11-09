@@ -27,6 +27,13 @@ func completed(wrong_flag:=false) -> void:
 		"edit":{"item_id":1000,"farm_operation":C.FarmOperation.ItemHidden,"value":1}})
 
 func run() -> void:
+	setup();model.item_id=1000
+	var uses_item:=item();uses_item.uses=[]
+	check(model._valid(uses_item),"Known empty Uses rejected")
+	uses_item.uses=[{"caption":"Native reaction","reaction":84}]
+	check(model._valid(uses_item),"Native Uses row rejected")
+	uses_item.uses[0].reaction=-2
+	check(not model._valid(uses_item),"Invalid Uses reaction accepted")
 	for mode in 6:
 		setup();model.open(1000);service.poll();var restraint_item:=item();restraint_item.item_type=10;restraint_item.material_token="INORGANIC:SILVER"
 		restraint_item.appearance={"material_token":"INORGANIC:SILVER","subtype_raw":"","color_token":"","stack":1,"flags":0}

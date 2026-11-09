@@ -105,6 +105,10 @@ func _valid(value: Dictionary) -> bool:
 		var limit: int={"name":131072,"weight":128,"description":32768,"material_token":256,"subtype_raw":128}[key]
 		if typeof(value.get(key))!=TYPE_STRING or value[key].to_utf8_buffer().size()>limit:return false
 	if value.item_type in [13,30] and not value.has("appearance"):return false
+	if value.has("uses"):
+		if typeof(value.uses)!=TYPE_ARRAY or value.uses.size()>4096:return false
+		for row in value.uses:
+			if typeof(row)!=TYPE_DICTIONARY or row.size()!=2 or typeof(row.get("caption"))!=TYPE_STRING or row.caption.to_utf8_buffer().size()>16384 or typeof(row.get("reaction"))!=TYPE_INT or row.reaction< -1 or row.reaction>2147483647:return false
 	if value.has("contents"):
 		if typeof(value.contents)!=TYPE_ARRAY or value.contents.size()>4096:return false
 		for row in value.contents:

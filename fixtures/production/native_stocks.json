@@ -7502,5 +7502,184 @@
     "hashes": {
       "stocks-native.json": "e95334e63ed25c04730359393b6f6a9fc55049a7c7c6a57dec9cc99975eb89c3"
     }
+  },
+  "item_uses_wire_render_reference": {
+    "run": "build/stockpile-storage-native-input-20261109-072720",
+    "management_version": 168,
+    "observations": [
+      {
+        "kind": 0,
+        "id": 33457,
+        "description": "These are iron bars.  ",
+        "uses": [
+          {
+            "caption": "Making armor",
+            "reaction": -1
+          },
+          {
+            "caption": "Making weapons",
+            "reaction": -1
+          },
+          {
+            "caption": "Making projectiles",
+            "reaction": -1
+          },
+          {
+            "caption": "Making anvils",
+            "reaction": -1
+          },
+          {
+            "caption": "Making furniture",
+            "reaction": -1
+          },
+          {
+            "caption": "Make steel bars",
+            "reaction": 84
+          },
+          {
+            "caption": "Make pig iron bars",
+            "reaction": 83
+          },
+          {
+            "caption": "Building",
+            "reaction": -1
+          }
+        ]
+      },
+      {
+        "kind": 2,
+        "id": 5878,
+        "description": "These are siltstone blocks.  ",
+        "uses": []
+      },
+      {
+        "kind": 3,
+        "id": 31314,
+        "description": "These are rough onyxes.  ",
+        "uses": []
+      },
+      {
+        "kind": 4,
+        "id": 44711,
+        "description": "This is rock salt.  ",
+        "uses": [
+          {
+            "caption": "Making furniture",
+            "reaction": -1
+          },
+          {
+            "caption": "Building",
+            "reaction": -1
+          }
+        ]
+      },
+      {
+        "kind": 5,
+        "id": 48169,
+        "description": "These are coffee wood logs.  ",
+        "uses": [
+          {
+            "caption": "Making projectiles",
+            "reaction": -1
+          },
+          {
+            "caption": "Making furniture",
+            "reaction": -1
+          },
+          {
+            "caption": "Building",
+            "reaction": -1
+          },
+          {
+            "caption": "Make magel pipes",
+            "reaction": 352
+          },
+          {
+            "caption": "Make rít body",
+            "reaction": 360
+          },
+          {
+            "caption": "Make vúsh drone pipe",
+            "reaction": 366
+          },
+          {
+            "caption": "Make igang",
+            "reaction": 374
+          }
+        ]
+      }
+    ],
+    "visual_comparison": [
+      {
+        "kind": 0,
+        "panel_pixels": 776,
+        "bbox": [
+          10,
+          185,
+          41,
+          213
+        ],
+        "uses_pixels": 0
+      },
+      {
+        "kind": 2,
+        "panel_pixels": 0,
+        "bbox": null,
+        "uses_pixels": 0
+      },
+      {
+        "kind": 3,
+        "panel_pixels": 199,
+        "bbox": [
+          19,
+          20,
+          33,
+          40
+        ],
+        "uses_pixels": 0
+      },
+      {
+        "kind": 4,
+        "panel_pixels": 0,
+        "bbox": null,
+        "uses_pixels": 0
+      },
+      {
+        "kind": 5,
+        "panel_pixels": 0,
+        "bbox": null,
+        "uses_pixels": 0
+      }
+    ],
+    "verified": "Real Stocks View/close, exact native/owned/wire Uses captions and reaction IDs; Uses-region RGB identical for every present family. Full panels for BLOCKS, BOULDER and WOOD identical.",
+    "limits": "BAR retains776 Smelter-holder-icon pixels; ROUGH retains199 header-art pixels. Cut gems absent. Long lists/resize and contents precedence are implemented from native15765b..15786d but not newly live accepted. Public Stocks remains gated.",
+    "offline": "item-uses168-checked core19, extension and item-sheet-state pass; MSVC item-uses168-msvc passes. Initial item-uses168 root failed missing namespace in new test; corrected before checked pass.",
+    "source_preserved": true,
+    "owned_df_pid": 24252,
+    "exit": "unsaved",
+    "fps_cap": 30,
+    "gpu_max_sample_c": 60,
+    "diagnostics": "Known separate-thread, device-finalize and shutdown-object signatures only.",
+    "hashes": {
+      "stocks-native.json": "23256c699707044c9deada6df2662b0aac91d4fba5d754912ee3332d3ccb0ca0",
+      "job-settings-wire-result.json": "cac1a52e9aa8934e706bfb557de0c0f375ab9323f855653fecc0ed54aa512040",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "uses-visual-comparison.json": "cb60f7b4b2448da67abaff0285f8ad47f979b6b173b40f59f2a6c402d9eb45ca",
+      "stocks-furniture-wire-0.json": "459ebafa7fe9382b05856a3fcd6c82dc40584b3cb98aa8c630438e7e666f6ca3",
+      "stocks-furniture-native-0.png": "056c55ae2049f1f73e0877ce23b230b01cfc921628b90a5832200d9d8ac4eaee",
+      "stocks-furniture-view-0.png": "3540d7e3e89c94d61f3a17fcd91a6b7c190808db7925729c771bdf9cfb0661d8",
+      "stocks-furniture-wire-2.json": "f4d7dffcf494ef782b80f08f325c59aae0a7f52d5df45d78f31a2e0f0d5e351e",
+      "stocks-furniture-native-2.png": "ba7b799975e34a4aa03fde2c34d5578c022a7c717b37047f3c4e74fd5ef15dc4",
+      "stocks-furniture-view-2.png": "f597541f350d6d170341d88a8095766a0869f3ec5a106b8439e512e8505b9cfe",
+      "stocks-furniture-wire-3.json": "9f627063213e9e01a64c73db32870914c157a7268e5bfbb679032e992573af76",
+      "stocks-furniture-native-3.png": "603aea24ff56da50a2295dce8b6c80e59d6a69f064022832ed544d83f7ed0999",
+      "stocks-furniture-view-3.png": "89ce5027dc16d0474a6d7df2c082d66b165e93f9ed6aab13c495aa31cce9be63",
+      "stocks-furniture-wire-4.json": "ec4525795fe160162ce9b2c1f310dddde3ad16f32fd907c0851e3e3efdffcadf",
+      "stocks-furniture-native-4.png": "58367337b7498faea29bba54b387d8e5719cad3ced015c5453dbe39b5c271c97",
+      "stocks-furniture-view-4.png": "4838fc503d018a660d77d7e14ba37b7853c27240278f57ad00012ca4314f3277",
+      "stocks-furniture-wire-5.json": "38de3f58a091a151415f0536f485b11a5f08ff937406f2ffbe39361748161c21",
+      "stocks-furniture-native-5.png": "c212e73f0ab461fbc4305d713f8e8e1e009493691a70490d5cb45ddf23a46a26",
+      "stocks-furniture-view-5.png": "5d94891d1b010c295a96123d3a7f3037abc9a9996079bc5005568c26059e4187"
+    }
   }
 }

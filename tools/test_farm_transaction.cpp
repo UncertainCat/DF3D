@@ -601,3 +601,13 @@ TEST_CASE("restraint material facts participate in item authority") {
  const auto rope=item.revision;a.restraintSolidColor="WHITE";item.revision=itemObservationRevision(item);CHECK(item.revision!=rope);
  a.restraintRope=-1;item.revision=itemObservationRevision(item);CHECK_FALSE(validItemObservation(item));
 }
+
+TEST_CASE("item Uses changes invalidate the full item revision") {
+ using namespace df3d_production;
+ ItemObservation item;item.item.id=12;item.item.itemType=0;item.revision=itemObservationRevision(item);
+ REQUIRE(validItemObservation(item));const auto unknown=item.revision;
+ item.uses.emplace();item.revision=itemObservationRevision(item);CHECK(item.revision!=unknown);REQUIRE(validItemObservation(item));
+ const auto empty=item.revision;item.uses->push_back({"Making furniture",-1});item.revision=itemObservationRevision(item);CHECK(item.revision!=empty);
+ const auto caption=item.revision;item.uses->front().reaction=84;item.revision=itemObservationRevision(item);CHECK(item.revision!=caption);
+ item.uses->front().reaction=-2;item.revision=itemObservationRevision(item);CHECK_FALSE(validItemObservation(item));
+}

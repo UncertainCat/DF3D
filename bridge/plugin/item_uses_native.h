@@ -1,12 +1,12 @@
 #pragma once
-#include "building_item_native.h"
+#include "item_transaction.h"
 #include "workshop_catalog_native.h"
 #include "stone_use_native.h"
 #include "df/reaction.h"
 #include <cstddef>
 
 namespace df3d_production {
-struct ItemUseRow {std::string caption;int32_t reaction=-1;};
+inline bool itemDescriptionDispatch(df::item* item);
 struct ItemUses {std::string description;std::vector<ItemUseRow> rows;};
 // Native1a8df0 writes only timestamp, description, description-scroll offset
 // and these output vectors in its supplied context. Do not pass view_sheets.

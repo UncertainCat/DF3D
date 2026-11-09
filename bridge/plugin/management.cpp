@@ -962,8 +962,10 @@ void publish() {
           rows.push_back(m::CreateItemSheetContent(b,int8_t(row.kind),row.id,b.CreateString(row.caption),row.itemType,row.flags,row.canDump,row.canMelt,look));
         }contents=b.CreateVector(rows);
       }
+      flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<m::ItemUseRow>>> uses;
+      if(v.uses){std::vector<flatbuffers::Offset<m::ItemUseRow>> rows;for(const auto& row:*v.uses)rows.push_back(m::CreateItemUseRow(b,b.CreateString(row.caption),row.reaction));uses=b.CreateVector(rows);}
       snapshot=m::CreateIndependentItemSnapshot(b,v.id,v.revision,v.itemType,b.CreateString(v.name),b.CreateString(v.materialToken),b.CreateString(v.subtypeRaw),
-        v.forbid,v.dump,v.melt,v.hidden,v.canDump,v.canMelt,v.inJob,v.inBuilding,b.CreateString(v.weight),b.CreateString(v.description),holder,stockpile,v.stockpileCategories,carrier,appearance,owner,assignment,contents);
+        v.forbid,v.dump,v.melt,v.hidden,v.canDump,v.canMelt,v.inJob,v.inBuilding,b.CreateString(v.weight),b.CreateString(v.description),holder,stockpile,v.stockpileCategories,carrier,appearance,owner,assignment,contents,uses);
     }
     if(state.edit)edit=m::CreateBuildingItemReceipt(b,state.edit->itemId,state.edit->operation,state.edit->value);
     independentItem=m::CreateIndependentItemState(b,snapshot,edit,state.outcome);
@@ -3077,6 +3079,7 @@ ItemInspectionAppearance copyInspectionAppearance(const df3d_production::ItemIns
 std::optional<IndependentItemSnapshot> independentItemSnapshot(const df3d_production::ItemObservation& observed) {
   const auto& item=observed.item;IndependentItemSnapshot value;
   if(observed.ammunitionAssignment){const auto& a=*observed.ammunitionAssignment;value.ammunitionAssignment=ItemAmmunitionAssignment{a.kind,a.squadId,DF2UTF(a.caption)};if(value.ammunitionAssignment->caption.size()>1024)return std::nullopt;}
+  if(observed.uses){value.uses.emplace();for(const auto& row:*observed.uses)value.uses->push_back({DF2UTF(row.caption),row.reaction});}
   if(observed.contents){value.contents.emplace();for(const auto& row:*observed.contents){
     ItemSheetContent copy;copy.kind=row.kind;copy.id=row.id;copy.caption=DF2UTF(row.caption);
     if(copy.caption.size()>128*1024)return std::nullopt;

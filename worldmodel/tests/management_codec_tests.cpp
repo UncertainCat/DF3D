@@ -5126,3 +5126,23 @@ TEST_CASE("restraint appearance preserves native material classification") {
   if(mode<3){const auto facts=*codec::decodeProduction(value->production()).independentItem->snapshot->carrier->appearance;CHECK(facts.restraintRope==rope);CHECK(facts.restraintSolidColor==color);}
  }
 }
+
+TEST_CASE("item Uses preserves absent empty ordered rows and rejects malformed facts") {
+ for(int mode=0;mode<6;++mode){
+  flatbuffers::FlatBufferBuilder b;
+  std::vector<flatbuffers::Offset<wire::ItemUseRow>> rows;
+  if(mode>=2){rows.push_back(wire::CreateItemUseRow(b,b.CreateString(mode==4?std::string(16385,'x'):"Making furniture"),-1));
+    rows.push_back(wire::CreateItemUseRow(b,b.CreateString("Native reaction"),mode==3?-2:84));}
+  if(mode==5)rows.resize(4097,rows.front());
+  auto uses=mode==0?flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<wire::ItemUseRow>>>{}:b.CreateVector(rows);
+  auto name=b.CreateString("item"),empty=b.CreateString("");
+  wire::IndependentItemSnapshotBuilder item(b);item.add_id(45);item.add_revision(1);item.add_item_type(0);
+  item.add_name(name);item.add_material_token(empty);item.add_subtype_raw(empty);item.add_weight(empty);item.add_description(empty);item.add_uses(uses);
+  auto independent=wire::CreateIndependentItemState(b,item.Finish());wire::ProductionStateBuilder p(b);p.add_independent_item(independent);auto payload=p.Finish();
+  wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_production(payload);state.add_action(wire::ManagementAction::ProductionInspect);state.add_status(wire::ManagementStatus::Ok);b.Finish(state.Finish());
+  const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());CHECK(bool(wire::validateManagementState(*value))==(mode>=3));
+  if(mode<3){const auto decoded=*codec::decodeProduction(value->production()).independentItem->snapshot;
+    CHECK(decoded.uses.has_value()==(mode!=0));if(mode==1)CHECK(decoded.uses->empty());
+    if(mode==2){REQUIRE(decoded.uses->size()==2);CHECK(decoded.uses->at(0).reaction==-1);CHECK(decoded.uses->at(1).caption=="Native reaction");CHECK(decoded.uses->at(1).reaction==84);}}
+ }
+}

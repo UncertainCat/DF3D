@@ -4,6 +4,7 @@
 #include "building_item_transaction.h"
 #include "item_transaction.h"
 #include "item_owner_native.h"
+#include "item_uses_native.h"
 #include "df/building_stockpilest.h"
 #include "df/building_floodgatest.h"
 #include "df/building_doorst.h"
@@ -768,12 +769,12 @@ inline std::optional<ItemLocationLink> itemStockpile(df::coord position) {
 inline std::optional<ItemObservation> observeItem(df::item* item) {
     if(!itemDescriptionDispatch(item))return std::nullopt;
     const auto position=itemFollowPosition(item);if(!position)return std::nullopt;
-    const auto description=itemDescription(item),weight=itemWeightCaption(item);
+    const auto uses=itemUses(item);const auto weight=itemWeightCaption(item);
     const auto holder=itemBuildingHolder(item),stockpile=itemStockpile(*position);
-    if(!description||!weight||!holder||!stockpile)return std::nullopt;
+    if(!uses||!weight||!holder||!stockpile)return std::nullopt;
     // Observe facts after native lazy formatting, without borrowing a UI owner.
     auto facts=itemFacts(item);if(!facts)return std::nullopt;
-    ItemObservation value;value.item=std::move(*facts);value.weight=*weight;value.description=*description;
+    ItemObservation value;value.item=std::move(*facts);value.weight=*weight;value.description=uses->description;value.uses=uses->rows;
     switch(item->getType()) {
     case df::item_type::BAR:case df::item_type::BLOCKS:
     case df::item_type::BOULDER:case df::item_type::WOOD:

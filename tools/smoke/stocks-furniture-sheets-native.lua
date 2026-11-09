@@ -30,10 +30,12 @@ for _,family in ipairs(read('stocks-wire-reference.json').furniture)do
  if os.getenv('DF3D_STOCKS_ITEM_USES')=='1' then
   local uses=probe('item-uses-probe',tostring(family.id))
   assert(uses.description==description,'Owned Uses builder description differs')
+  assert(wire.uses and #wire.uses==#uses.uses,'Wire Uses row count differs')
   assert(#uses.uses==#sheet.item_use and #uses.uses==#sheet.item_use_reaction_index,'Owned Uses row count differs')
   for index,row in ipairs(uses.uses)do
    assert(row.caption==dfhack.df2utf(sheet.item_use[index-1].value),'Owned Uses caption differs')
    assert(row.reaction==sheet.item_use_reaction_index[index-1],'Owned Uses reaction differs')
+   assert(wire.uses[index].caption==row.caption and wire.uses[index].reaction==row.reaction,'Wire Uses row differs')
   end
   results[#results].uses=uses.uses
   local f=assert(io.open(out..'/stocks-item-uses-'..family.kind..'.json','w'));f:write(json.encode(uses));f:close()

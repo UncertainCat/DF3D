@@ -64,7 +64,7 @@ func _layout_contents() -> void:
 	var top:=192+36*links
 	contents_view.position=Vector2(8,top)
 	contents_view.present(int(snapshot.get("id",-1)),snapshot.get("contents",[]),Vector2(size.x-16,maxf(0,size.y-top-12)))
-	contents_view.visible=snapshot.has("contents") and not snapshot.contents.is_empty()
+	contents_view.visible=snapshot.has("contents") and not snapshot.contents.is_empty() and snapshot.get("uses",[]).is_empty()
 
 func set_following(value: bool) -> void:
 	following=value;queue_redraw()
@@ -194,3 +194,16 @@ func _draw() -> void:
 		var rows:=int(snapshot.has("stockpile"))+int(snapshot.has("carrier") or snapshot.get("holder_id",-1)>=0)
 		var assignment: Dictionary=snapshot.ammunition_assignment
 		text_at(assignment.caption,Vector2(56,204+36*rows),colors[2 if assignment.kind==1 else 11])
+
+	# Native15765b..15786d: a nonempty Uses list replaces contents. Rows use
+	# ordinary gray; the heading is bright. Native stops at the last fitting
+	# cell and supplies no scrollbar or reaction action here.
+	var uses: Array=snapshot.get("uses",[])
+	if not uses.is_empty():
+		var links:=int(snapshot.has("stockpile"))+int(snapshot.has("carrier") or snapshot.get("holder_id",-1)>=0)
+		if snapshot.get("ammunition_assignment",{}).get("kind",0)!=0:links+=1
+		var top:=192+36*links
+		var capacity:=maxi(0,floori((size.y-top-12)/36))*3
+		text_at("Uses",Vector2(16,top+12))
+		for index in mini(uses.size(),maxi(0,capacity-2)):
+			text_at(uses[index].caption,Vector2(16,top+36+12*index),colors[7])

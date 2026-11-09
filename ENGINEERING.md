@@ -53,9 +53,24 @@ order using native material predicates. Description helperd97510..d97ca0 supplie
 allocated fragments, which the builder joins into allocated strings. Cleanup
 bb9b0..bba24 destroys/frees pointed strings and empties the vector, retaining its
 capacity. `owned_provider_discovery` pins these code ranges and ownership facts.
-Nested helper side effects, allocator compatibility and an independently owned
-invocation still require validation; this discovery is not runtime acceptance.
-Mutation effects and other-category rendering also remain unverified.
+The read adapter in stone_use_native.h supplies independently owned vectors to
+432450 and uses native cleanup for allocated descriptions. For inorganic inputs,
+14add70 is a read-only material lookup;14d1920 follows its inorganic formatting
+branch, and52d650 changes only the owned caption. Economic-use fragments come
+from d97510's raw-material/reaction reads and owned output vectors. No menu,
+widget, input or graphics cache is supplied. Restriction pointers are validated
+against authoritative economic_stone storage before reading and never retained.
+The diagnostic stone-use-probe exposes pointer-free rows; no wire/UI route exists.
+
+Protected190635 on2026-11-08 invokes this provider before opening Stone use and
+matches all83 ordered category/index/restriction values plus30 full descriptions.
+Initially visible economic names also match captured screen text. Source save
+is unchanged; owned DF9628 exits unsaved, GPU49C. The first190552 comparison
+mistakenly compared numeric flags with JSON booleans and is not acceptance.
+MSVC and core19 pass stone-use-provider-msvc.log and stone-use-owned-provider.
+Installed plugin SHA256:
+8F8472991F4966C24AAF20E6D466AB94F9D0C12EF152B597E2574ED7FD3FE97B.
+Mutation effects and other-category rendering remain unverified.
 Do not borrow native widget vectors or restriction-pointer scratch. Core19 passes
 stone-use-discovery; no runtime adapter or public route is accepted by this check.
 

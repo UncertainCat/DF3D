@@ -9,6 +9,11 @@ local function click(x,y)
  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
  for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
 end
+local cold
+if os.getenv('DF3D_STONE_USE_PROVIDER')=='1' then
+ local text,code=dfhack.run_command_silent('df3d','stone-use-probe')
+ assert(code==0,'Cold owned Stone use provider failed');cold=json.decode(text)
+end
 click(57,10)
 local panel
 local function find(widget)
@@ -18,15 +23,27 @@ end
 find(df.global.game.main_interface.info.labor)
 assert(panel and (panel.flag.whole&3)==3,'Stone use did not open')
 local result={category=panel.current_category,vtable={},categories={},rows={}}
+result.provider=cold
 local _,address=df.sizeof(panel);local vt=df.reinterpret_cast('uint64_t',address).value
 for slot=0,7 do result.vtable[#result.vtable+1]=df.reinterpret_cast('uint64_t',vt+slot*8).value-base end
 for category=0,1 do
  local entries={}
- for _,index in ipairs(panel.stone_mg_index[category])do
+ for position,index in ipairs(panel.stone_mg_index[category])do
   local raw=df.global.world.raws.inorganics.all[index]
-  entries[#entries+1]={index=index,id=raw.id,name=dfhack.df2utf(raw.material.state_name.Solid),restricted=df.global.plotinfo.economic_stone[index]}
+  local entry={index=index,id=raw.id,name=dfhack.df2utf(raw.material.state_name.Solid),restricted=df.global.plotinfo.economic_stone[index]}
+  if category==0 then entry.uses=dfhack.df2utf(panel.stone_item_use_str[position].value)end
+  entries[#entries+1]=entry
  end
  result.categories[#result.categories+1]={category=category,entries=entries}
+end
+if cold then
+ local cursor=1
+ for _,category in ipairs(result.categories)do for _,entry in ipairs(category.entries)do
+  local row=cold[cursor];assert(row and row.category==category.category and row.index==entry.index and row.restricted==(entry.restricted~=0),'Stone use owned order/restriction mismatch at '..cursor)
+  assert(row.uses==(entry.uses or ''),'Stone use economic description mismatch')
+  cursor=cursor+1
+ end end
+ assert(cursor==#cold+1,'Stone use owned row count mismatch')
 end
 for y=11,g.dimy-4 do
  local chars={}

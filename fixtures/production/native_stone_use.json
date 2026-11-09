@@ -7,181 +7,211 @@
           "id": "ALABASTER",
           "index": 237,
           "name": "alabaster",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Make plaster powder"
         },
         {
           "id": "BISMUTHINITE",
           "index": 211,
           "name": "bismuthinite",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Ore of bismuth"
         },
         {
           "id": "COAL_BITUMINOUS",
           "index": 196,
           "name": "bituminous coal",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Make coke from bituminous coal"
         },
         {
           "id": "CALCITE",
           "index": 235,
           "name": "calcite",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Make steel bars, Make pig iron bars, Make quicklime"
         },
         {
           "id": "CASSITERITE",
           "index": 195,
           "name": "cassiterite",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Ore of tin, Glaze clay/stone craft, Glaze large clay/stone pot, Glaze clay/stone statue, Glaze clay/stone jug"
         },
         {
           "id": "CHALK",
           "index": 171,
           "name": "chalk",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Make steel bars, Make pig iron bars, Make quicklime"
         },
         {
           "id": "NATIVE_COPPER",
           "index": 191,
           "name": "native copper",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Ore of copper"
         },
         {
           "id": "DOLOMITE",
           "index": 169,
           "name": "dolomite",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Make steel bars, Make pig iron bars"
         },
         {
           "id": "GALENA",
           "index": 193,
           "name": "galena",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Ore of silver (50%), Ore of lead"
         },
         {
           "id": "GARNIERITE",
           "index": 188,
           "name": "garnierite",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Ore of nickel"
         },
         {
           "id": "NATIVE_GOLD",
           "index": 189,
           "name": "native gold",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Ore of gold"
         },
         {
           "id": "GYPSUM",
           "index": 203,
           "name": "gypsum",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Make plaster powder"
         },
         {
           "id": "HEMATITE",
           "index": 186,
           "name": "hematite",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Ore of iron"
         },
         {
           "id": "HORN_SILVER",
           "index": 202,
           "name": "horn silver",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Ore of silver"
         },
         {
           "id": "KAOLINITE",
           "index": 230,
           "name": "kaolinite",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Make clay hive, Make clay crafts, Make large clay pot, Make clay statue, Make clay bricks, Make clay jug, Make emim, Make jath drum, Make sekur body, Make iddim, Make gagu body, Make gagu frame, Make o\u00c3\u00b1ust sound-chest, Make v\u00c3\u00bash melody pipe, Make magel console, Make migrur, Make odroz drum, Make gomath drone pipe, Make odshith bow, Make ilon bow, Make ilon sound-chest, Make giqua, Make begi sound-chest, Make ufsmat neck, Make zulen bow, Make zulen sound-chest, Make zulen yoke, Make sh\u00c3\u00b9rrat, Make nakbab blowpipe, Make abshoth wind chest, Make ekast bells"
         },
         {
           "id": "LIGNITE",
           "index": 197,
           "name": "lignite",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Make coke from lignite"
         },
         {
           "id": "LIMESTONE",
           "index": 167,
           "name": "limestone",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Make steel bars, Make pig iron bars, Make quicklime"
         },
         {
           "id": "LIMONITE",
           "index": 187,
           "name": "limonite",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Ore of iron"
         },
         {
           "id": "MAGNETITE",
           "index": 221,
           "name": "magnetite",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Ore of iron"
         },
         {
           "id": "MALACHITE",
           "index": 192,
           "name": "malachite",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Ore of copper"
         },
         {
           "id": "MARBLE",
           "index": 185,
           "name": "marble",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Make steel bars, Make pig iron bars, Make quicklime"
         },
         {
           "id": "NATIVE_ALUMINUM",
           "index": 226,
           "name": "native aluminum",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Ore of aluminum"
         },
         {
           "id": "OBSIDIAN",
           "index": 179,
           "name": "obsidian",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Sharp blades"
         },
         {
           "id": "NATIVE_PLATINUM",
           "index": 198,
           "name": "native platinum",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Ore of platinum"
         },
         {
           "id": "RAW_ADAMANTINE",
           "index": 242,
           "name": "raw adamantine",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Extract adamantine strands"
         },
         {
           "id": "SATINSPAR",
           "index": 239,
           "name": "satinspar",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Make plaster powder"
         },
         {
           "id": "SELENITE",
           "index": 238,
           "name": "selenite",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Make plaster powder"
         },
         {
           "id": "NATIVE_SILVER",
           "index": 190,
           "name": "native silver",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Ore of silver"
         },
         {
           "id": "SPHALERITE",
           "index": 194,
           "name": "sphalerite",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Ore of zinc"
         },
         {
           "id": "TETRAHEDRITE",
           "index": 201,
           "name": "tetrahedrite",
-          "restricted": 1
+          "restricted": 1,
+          "uses": "Ore of silver (20%), Ore of copper"
         }
       ]
     },
@@ -636,6 +666,13 @@
       "0xd97510": "b1cc9764ea761a4a1cd6d8c3eb7cb48969dab6f5aae83e2d1310ba4afb520347",
       "0xbb9b0": "2b4d4cfbdac742874daa08f156cf32633474e67a2077f35ae8151581ec8d56b5"
     },
-    "remaining": "Audit nested helper side effects and allocation compatibility, then invoke builder with independently owned context and compare both ordered lists/descriptions against native. No runtime call or provider acceptance yet."
+    "remaining": "Owned invocation validated for83 rows and30 descriptions. Mutation effects, broad material-name rendering and public controller/view remain unimplemented."
+  },
+  "provider_acceptance": {
+    "capture": "build/stockpile-storage-native-input-20261108-190635",
+    "rows": 83,
+    "ordered_rows_sha256": "541ce7d2ae469298c854be47ea308d76ff3449b100dfd2eb01547961ac913606",
+    "installed_plugin_sha256": "8F8472991F4966C24AAF20E6D466AB94F9D0C12EF152B597E2574ED7FD3FE97B",
+    "scope": "Owned provider called before opening Stone use. All83 ordered category/index/restriction values and all30 full economic-use descriptions match native. Name formatting is from native renderer helpers; only initially visible economic names checked against screen text. No other-category rendered acceptance or edits. Source unchanged; DF9628 exited unsaved; GPU49C."
   }
 }

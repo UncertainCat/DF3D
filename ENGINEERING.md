@@ -70,7 +70,18 @@ mistakenly compared numeric flags with JSON booleans and is not acceptance.
 MSVC and core19 pass stone-use-provider-msvc.log and stone-use-owned-provider.
 Installed plugin SHA256:
 8F8472991F4966C24AAF20E6D466AB94F9D0C12EF152B597E2574ED7FD3FE97B.
-Mutation effects and other-category rendering remain unverified.
+The edit adapter requires the complete expected restriction vector and fresh
+native category membership. It performs native434b8a..434bb4's inline byte flip
+only after all fallible reads/allocations, with an explicit write-start boundary.
+It never calls the input dispatcher. Protected190825 records native toggles for
+Alabaster and Andesite;191008 compares four adapter toggles with those effects,
+checks every other flag remains unchanged, and rejects a stale replay after
+each toggle. Both sequences restore the full original array. Source unchanged,
+DF38896 exits unsaved, GPU49C. MSVC/core19 pass stone-use-edit-msvc.log and
+stone-use-native-edits. Installed plugin SHA256:
+CF01813E5FCCB4FF6A4EF146B7C04BB4651BAD2A72E5A4D0268FABB38FA20B25.
+`edit_reference` retains these results; downstream job scheduling, typed command
+publication/lifecycle and other-category DF3D rendering remain unverified.
 Do not borrow native widget vectors or restriction-pointer scratch. Core19 passes
 stone-use-discovery; no runtime adapter or public route is accepted by this check.
 

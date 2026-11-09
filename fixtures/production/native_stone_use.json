@@ -674,5 +674,60 @@
     "ordered_rows_sha256": "541ce7d2ae469298c854be47ea308d76ff3449b100dfd2eb01547961ac913606",
     "installed_plugin_sha256": "8F8472991F4966C24AAF20E6D466AB94F9D0C12EF152B597E2574ED7FD3FE97B",
     "scope": "Owned provider called before opening Stone use. All83 ordered category/index/restriction values and all30 full economic-use descriptions match native. Name formatting is from native renderer helpers; only initially visible economic names checked against screen text. No other-category rendered acceptance or edits. Source unchanged; DF9628 exited unsaved; GPU49C."
+  },
+  "edit_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-191008",
+    "initial_flags_count": 313,
+    "initial_flags_sha256": "308ea1ab952d94b1bec3ace8d2633ac0fbb1e806dc43855387ee1219d5436719",
+    "native_steps": [
+      {
+        "category": 0,
+        "index": 237,
+        "restricted": 0
+      },
+      {
+        "category": 0,
+        "index": 237,
+        "restricted": 1
+      },
+      {
+        "category": 1,
+        "index": 241,
+        "restricted": 1
+      },
+      {
+        "category": 1,
+        "index": 241,
+        "restricted": 0
+      }
+    ],
+    "owned_steps": [
+      {
+        "category": 0,
+        "index": 237,
+        "restricted": 0,
+        "stale_rejected": true
+      },
+      {
+        "category": 0,
+        "index": 237,
+        "restricted": 1,
+        "stale_rejected": true
+      },
+      {
+        "category": 1,
+        "index": 241,
+        "restricted": 1,
+        "stale_rejected": true
+      },
+      {
+        "category": 1,
+        "index": 241,
+        "restricted": 0,
+        "stale_rejected": true
+      }
+    ],
+    "installed_plugin_sha256": "CF01813E5FCCB4FF6A4EF146B7C04BB4651BAD2A72E5A4D0268FABB38FA20B25",
+    "scope": "Both native and semantic four-toggle sequences change only the target restriction byte; full original flag vector restored. Each stale replay rejected before write. Adapter revalidates complete expected flags and fresh native eligible category membership. This verifies simulation flags, not downstream job scheduling or typed UI lifecycle. Source preserved, DF38896 exits unsaved, GPU49C."
   }
 }

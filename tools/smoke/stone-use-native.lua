@@ -51,6 +51,43 @@ for y=11,g.dimy-4 do
  local text=dfhack.df2utf(table.concat(chars)):gsub('%s+$','')
  if text:find('%S')then result.rows[#result.rows+1]={y=y,text=text}end
 end
+if os.getenv('DF3D_STONE_USE_EDITS')=='1' then
+ local function snapshot()
+  local flags={};for _,value in ipairs(df.global.plotinfo.economic_stone)do flags[#flags+1]=value end;return flags
+ end
+ local original=snapshot();result.edits={before=original,steps={}}
+ for category=0,1 do
+  click(category==0 and 14 or 30,12)
+  assert(panel.current_category==category,'Stone use category failed')
+  shot('stone-use-category-'..category)
+  local index=panel.stone_mg_index[category][0]
+  for attempt=1,2 do
+   click(115,17)
+   local flags=snapshot()
+   assert(flags[index+1]==(attempt==1 and 1-original[index+1] or original[index+1]),'Native Stone use toggle failed')
+   for i,value in ipairs(flags)do if i~=index+1 then assert(value==original[i],'Stone use changed unrelated restriction')end end
+   result.edits.steps[#result.edits.steps+1]={category=category,index=index,restricted=flags[index+1]}
+  end
+ end
+ assert(json.encode(snapshot())==json.encode(original),'Stone use restoration failed')
+ if os.getenv('DF3D_STONE_USE_APPLY')=='1' then
+  result.edits.owned={}
+  for _,step in ipairs(result.edits.steps)do
+   local before=snapshot()
+   local text,code=dfhack.run_command_silent('df3d','stone-use-edit-probe',tostring(step.category),tostring(step.index),tostring(before[step.index+1]))
+   assert(code==0,'Stone use adapter failed');local reply=json.decode(text)
+   assert(reply.outcome==1 and reply.write_started,'Stone use adapter did not apply')
+   local after=snapshot()
+   for i,value in ipairs(after)do assert(value==(i==step.index+1 and step.restricted or before[i]),'Stone use adapter effect mismatch')end
+   text,code=dfhack.run_command_silent('df3d','stone-use-edit-probe',tostring(step.category),tostring(step.index),tostring(before[step.index+1]))
+   assert(code==0,'Stone use stale probe failed');local stale=json.decode(text)
+   assert(stale.outcome==2 and not stale.write_started and json.encode(snapshot())==json.encode(after),'Stone use stale receipt changed state')
+   result.edits.owned[#result.edits.owned+1]={category=step.category,index=step.index,restricted=after[step.index+1],stale_rejected=true}
+  end
+  assert(json.encode(snapshot())==json.encode(original),'Stone use adapter restoration failed')
+ end
+ click(14,12)
+end
 local f=assert(io.open(out..'/stone-use-native.json','w'));f:write(json.encode(result));f:close()
 shot('stone-use-root')
 click(30,10)

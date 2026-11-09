@@ -10,6 +10,7 @@ inline uint8_t* supportedBase() {
     static const bool valid=[base] {
         struct Pin {size_t rva,length;uint64_t hash;};
         constexpr Pin pins[]={
+            {0x434b8a,0x2a,UINT64_C(0x5f0bf376df3ff178)},
             {0x432450,0xaff,UINT64_C(0x051b891c44236820)},
             {0xd97510,0x790,UINT64_C(0xe3752bf787a64fef)},
             {0xbb9b0,0x74,UINT64_C(0x7532991bab65be09)},
@@ -69,5 +70,22 @@ inline std::optional<std::vector<Row>> read() {
         }
     }
     return result;
+}
+enum class Outcome {Rejected,Applied,Stale};
+inline Outcome apply(int32_t category,int32_t index,const std::vector<char>& expected,bool* writeStarted=nullptr) {
+    if(writeStarted)*writeStarted=false;
+    if(category<0 || category>1 || index<0 || expected.size()>65536 ||
+       std::any_of(expected.begin(),expected.end(),[](char value){return value!=0 && value!=1;}))return Outcome::Rejected;
+    const auto rows=read();
+    if(!rows || !df::global::plotinfo)return Outcome::Rejected;
+    auto& flags=df::global::plotinfo->economic_stone;
+    if(flags!=expected)return Outcome::Stale;
+    if(size_t(index)>=flags.size() || std::none_of(rows->begin(),rows->end(),[=](const Row& row){return row.category==category && row.index==index;}))return Outcome::Rejected;
+    // Native434b8a..434bb4 has no semantic callee: its complete simulation
+    // effect is this byte flip. Do not invoke its mouse/widget dispatcher.
+    // All fallible reads/allocations finish before the first authoritative write.
+    if(writeStarted)*writeStarted=true;
+    flags[index]=static_cast<char>(1-flags[index]);
+    return Outcome::Applied;
 }
 }

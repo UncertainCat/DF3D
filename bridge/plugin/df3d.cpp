@@ -2580,6 +2580,21 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             value["count"]=row.count;value["capabilities"]=row.capabilities;value["name"]=DF2UTF(row.name);result.append(value);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="stone-use-edit-probe") {
+          if(parameters.size()!=4)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving() || !df::global::plotinfo)return CR_FAILURE;
+          int32_t values[3]{};
+          for(size_t i=1;i<4;++i){const auto& raw=parameters[i];
+            const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i-1]);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;}
+          auto expected=df::global::plotinfo->economic_stone;
+          if(values[1]<0 || size_t(values[1])>=expected.size() || values[2]<0 || values[2]>1)return CR_WRONG_USAGE;
+          expected[values[1]]=static_cast<char>(values[2]);
+          bool started=false;Json::Value result(Json::objectValue);
+          try {result["outcome"]=int(df3d_stone_use::apply(values[0],values[1],expected,&started));}
+          catch(...){result["outcome"]=started?3:0;}
+          result["write_started"]=started;out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="stone-use-probe") {
           if(parameters.size()!=1)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;

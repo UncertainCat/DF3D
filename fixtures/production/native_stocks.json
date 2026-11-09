@@ -531,5 +531,66 @@
       "sha256": "53a52ecbd590dff6ea150669af4fa3f3d4f9f7ecd06b68c75395ecc1184a950b",
       "status": "Called by native Stocks action handler; semantic role not established."
     }
-  ]
+  ],
+  "static_audit": {
+    "scope": "Offline supported-executable audit; no callable provider or live ownership acceptance.",
+    "ranges": [
+      {
+        "rva": "0x377fe0",
+        "end": "0x379b7b",
+        "sha256": "f49d002be2e8ab16fa44ac3eaedd620c6b71e7552b3c6cc07dc0fcd623af88cf",
+        "finding": "Menu-open initializer; prohibited runtime entry. Resets global UI, builds categories/counts/master lists, writes item temporary_32."
+      },
+      {
+        "rva": "0x379b80",
+        "end": "0x379de8",
+        "sha256": "6c15f48564e0b0959c0896063aa352a22446a990b1e64877bc7c1decd6f3ebb3",
+        "finding": "Item comparator; type/subtype/material normalization then c66c30 tie comparison. Transitive audit pending."
+      },
+      {
+        "rva": "0x37a3f0",
+        "end": "0x37a663",
+        "sha256": "570c34a0d19302787bb14bbe72b44371953616966b4d2d70c18b0ff4aec82a15",
+        "finding": "Selects current-type abstract groups and individual pointers into context-owned vectors. Calls37d350 and tail-calls37b090."
+      },
+      {
+        "rva": "0x37b090",
+        "end": "0x37b6de",
+        "sha256": "f960803e4ac440e17f5ab7bfb45eb6a4f8b0cd7c2673938491403a76b2745fc8",
+        "finding": "Calculates visible item height from context groups/expansion/filter; full chained unwind ranges included. Transitive audit pending."
+      },
+      {
+        "rva": "0x37d350",
+        "end": "0x37d747",
+        "sha256": "a4b97d5eac31ca942c27c1adadd37c5c51fe08e7707ff14d13d14dbcf15ed498",
+        "finding": "Filters groups with owned copied search string and native captions; refreshes action flags via37dbc0."
+      },
+      {
+        "rva": "0x37dbc0",
+        "end": "0x37e224",
+        "sha256": "6ce016fd567bc37f8695ee44c300e355eca5e3757bff493883ca1df714c0fdab",
+        "finding": "Aggregates group action flags from individual item flags. Full chained unwind ranges included, beyond first fragment ending37dc13."
+      },
+      {
+        "rva": "0xac9c30",
+        "end": "0xac9d7a",
+        "sha256": "83710c06b43aa0b09f6d07d622a8e92584964d5386ea93f2729c4d173a051638",
+        "finding": "Accumulates stack counts into abstract item list using native matching/material normalization. Calls ac9890/ac9710/aca720; dependency audit pending."
+      },
+      {
+        "rva": "0x3ccfa0",
+        "end": "0x3cd1d0",
+        "sha256": "16fa8756f65473e7a1f76c885a23dc2ff58fcbaeff77a29f6b606334efb8d6ef",
+        "finding": "Candidate native sort path including insertion/heap fallback. Calls379b80/3d30c0/3d3e50; final boundary and transitive audit pending."
+      }
+    ],
+    "initializer_rejection": {
+      "global_ui_reset": "377fe0..3781a6 reads/writes native menu state and calls menu close helpers.",
+      "item_scratch": "378294/3782da and379aab write item+0x5c (DFHack base_uniform_score, native temporary_32). Must neither read borrowed menu values nor use authoritative items as scratch.",
+      "inventory_source": "RIP targets at37821e/378225 resolve to world.items.in_play vector at23e5468/23e5470; mapping still needs a field-address check.",
+      "eligible_predicate": "c93160 called for each master item; first unwind range is incomplete, entire dependency audit required.",
+      "availability": "Initializer inline0xe88f10 exclusion and inventory holder/native fortress-control138ed20 checks; forbidden bit0x20 chooses unavailable count separately. Independent owned availability data required."
+    },
+    "next": "Audit full c93160/c93060, ac9890/ac9710/aca720, c66c30 and sort helpers; identify category filtering37c070/count approximation. Build independently owned context without377fe0 or temporary_32 writes, then compare cold output to native."
+  }
 }

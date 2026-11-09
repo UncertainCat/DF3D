@@ -46,11 +46,24 @@ and individual action controls, search, expansion and independent scroll regions
 `fixtures/production/native_stocks.json` retains bounded observations and candidate
 code hashes. Captured menu storage at RVA18a2710 is discovery evidence only,
 never a runtime input. Input block3246dc passes that context to37a3f0, which reads
-selected type and context vectors, resizes group arrays, and calls37d350. This is
-a candidate for an independently owned grouping adapter; its full dependencies
-and ownership are not accepted. Another input branch calls37dbc0; its semantic
-role remains unresolved. Next audit the master inventory/category provider,
-37a3f0/37d350 and count approximation before defining a typed read contract.
+selected type and context vectors, resizes group arrays, calls37d350(filtering)
+and tail-calls37b090(visible row height). Filtering also calls37dbc0 to aggregate
+group action flags. These are candidates for an independently owned adapter;
+their full dependencies and ownership are not accepted. Chained unwind ranges
+must be included:37dbc0 continues through37e224, not merely its first fragment
+ending37dc13;37b090 continues through37b6de. The fixture records expanded hashes.
+
+Native menu-open377fe0 is prohibited as a runtime provider. Its prefix closes
+other menus and mutates global UI state. Inventory setup also writes item+5c,
+DFHack `base_uniform_score` (native `temporary_32`), for availability. An owned
+adapter must keep that availability independently; it cannot borrow values left
+by a menu or use authoritative items as scratch. The initializer calls native
+c93160 for inclusion, c8be10 for inventory holder resolution and138ed20 for
+fortress control, then native3ccfa0/379b80 for sorting and ac9c30 for abstract
+group accumulation. These smaller routines remain subject to full transitive
+audits; a context argument alone is not proof of ownership. The next frontier
+is c93160/c93060, ac9890/ac9710/aca720, c66c30, category filtering37c070 and count
+approximation, followed by a cold owned-context comparison before a wire contract.
 Do not recreate grouping or availability in Godot. The capture was visually
 inspected, source save preserved, DF45556 exited unsaved and GPU58C sampled.
 No editing or provider parity is claimed.

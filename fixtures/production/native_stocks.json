@@ -7099,7 +7099,8 @@
       "9": "FLOODGATE",
       "10": "BOX",
       "11": "WEAPON_RACK",
-      "12": "ARMOR_STAND"
+      "12": "ARMOR_STAND",
+      "18": "WELL"
     },
     "full_panel_rgb_differences": {
       "10": 1120,
@@ -7127,7 +7128,17 @@
     "source_preserved": true,
     "owned_df_pid": 41128,
     "fps_cap": 30,
-    "gpu_max_sample_c": 50
+    "gpu_max_sample_c": 50,
+    "well_reference": {
+      "native_branch": "type18 table19e4a8 ->156087 fixed art; installed BUILDING_ICON_WELL BUILDING_ICONS1:9",
+      "source": "build/stockpile-storage-native-input-20261109-050409/stocks-furniture-wire-10.json",
+      "render": "build/notes/pm/item-well-holder.png",
+      "render_sha256": "932e4f20fa55b400269c259bf077d3c9a52c7e1217b029b9d9143b798abaa101",
+      "holder_rgb_differences": 0,
+      "full_panel_rgb_differences": 303,
+      "limits": "Offline render through actual item owner from protected live snapshot; remaining differences confined to rope header. No new live navigation claim.",
+      "verification": "item-well-holder core19/extension/item-state pass; 30FPS offline render with known Godot diagnostics only,50C sampled after render"
+    }
   },
   "cage_appearance_reference": {
     "run": "build/stockpile-storage-native-input-20261109-050409",

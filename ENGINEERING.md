@@ -57,7 +57,13 @@ Chain artwork remains unresolved. `cage_appearance_reference` retains evidence.
 Item-holder artwork maps fixed native building types to their installed icons,
 following the item-sheet switch155958/table19e4a8. The former farm/box-only map
 left other furniture holders blank. Chair/bed/table/coffin/door/floodgate/rack/
-stand now join those mappings; subtype-dependent buildings remain unsupported.
+stand and well now join those mappings; subtype-dependent buildings remain unsupported.
+Well type18 follows native branch156087 and installed BUILDING_ICON_WELL. An
+offline render through the item owner from protected050409's rope snapshot has
+zero holder-row differences; the remaining303 full-panel pixels are confined to
+the rope header. `item-well-holder` core19/extension/item-state checks pass.
+The brief30FPS render has only documented Godot diagnostics,50C sampled afterward;
+this is visual acceptance from an existing snapshot, not a new navigation check.
 Protected044310 verifies actual View/close and zero full-panel RGB differences
 for coffin21, armor stand33, weapon rack34 and amulet37. Chain has1120 differing
 pixels and remains unresolved. Occupied cage225 is superseded above. Other added holder types

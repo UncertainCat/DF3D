@@ -592,5 +592,32 @@
       "availability": "Initializer inline0xe88f10 exclusion and inventory holder/native fortress-control138ed20 checks; forbidden bit0x20 chooses unavailable count separately. Independent owned availability data required."
     },
     "next": "Audit full c93160/c93060, ac9890/ac9710/aca720, c66c30 and sort helpers; identify category filtering37c070/count approximation. Build independently owned context without377fe0 or temporary_32 writes, then compare cold output to native."
+  },
+  "inventory_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-220326",
+    "count": 9405,
+    "membership_sha256": "4e184fa58503f3ffa2b7e8a1bf1975b42061480b7d77029d50dabdc60d60add6",
+    "cold_matches_native": true,
+    "warm_matches_native": true,
+    "in_play_rva": "0x23e5468",
+    "item_temporary_32_preserved": true,
+    "scope": "All9405 native master inventory IDs match as sets; no menu order, groups, counts, categories or actions claimed. Probe guards item scratch plus menu open/selection/query before and after each call.",
+    "source_save": "unchanged; owned DF27332 exited unsaved",
+    "plugin_sha256": "0E6E973F224619C9B4EDF2A0169FC33BD7310760EE4113C36CD95C4FD9A5802B",
+    "qa": "build/qa/stocks-native-inventory",
+    "msvc": "build/notes/pm/stocks-inventory-msvc.log",
+    "diagnostics": "Native log clean; no viewer was launched.",
+    "entry_points": [
+      {
+        "rva": "0xc93060",
+        "end": "0xc93152",
+        "sha256": "3ff7af6a3b9f90ec09ba92b5c40bb5c9a4d28542568733b89d7ba5d672d17c58"
+      },
+      {
+        "rva": "0xc93160",
+        "end": "0xc93373",
+        "sha256": "3165e33a0e92957b49e5a1f6dd493528663a172a18cd5b1ea0d96881001438e9"
+      }
+    ]
   }
 }

@@ -122,6 +122,7 @@
 #include "standing_orders_native.h"
 #include "chores_native.h"
 #include "stone_use_native.h"
+#include "stocks_native.h"
 #include "kitchen_native.h"
 #include "hunter_ammunition_native.h"
 #include "hunter_ammunition_captions_native.h"
@@ -2688,6 +2689,14 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           Json::Value result(Json::objectValue);result["skills"]=Json::Value(Json::arrayValue);
           for(const auto& skill:*rows){Json::Value row(Json::objectValue);row["id"]=skill.skill;
             row["rating"]=skill.rating;row["caption"]=DF2UTF(skill.caption);result["skills"].append(row);}
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="stocks-inventory-probe") {
+          if(parameters.size()!=1)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto ids=df3d_stocks::inventory();if(!ids)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["ids"]=Json::Value(Json::arrayValue);
+          for(auto id:*ids)result["ids"].append(id);
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="work-detail-multisort-probe") {

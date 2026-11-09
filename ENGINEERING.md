@@ -36,7 +36,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
-Stocks has no DF3D runtime surface or accepted semantic provider yet.
+Stocks has an accepted inventory-membership component but no DF3D screen yet.
 Protected215344 on2026-11-08 opens and closes native D_STOCKS while paused,
 records93 ordered categories and initial Ammunition selection(type39), and
 captures six groups covering29 individual item IDs. Availability vectors have113
@@ -67,6 +67,25 @@ approximation, followed by a cold owned-context comparison before a wire contrac
 Do not recreate grouping or availability in Godot. The capture was visually
 inspected, source save preserved, DF45556 exited unsaved and GPU58C sampled.
 No editing or provider parity is claimed.
+
+`stocks_native.h` now exposes the first read-only component: master inventory
+membership through native c93160, called over world.items.other.IN_PLAY. Full
+predicate ranges c93160..c93373 and c93060..c93152 are pinned along with their
+previously audited holder/position/unit-visibility dependencies. This handles
+nested containment, unit/projectile holders, hidden item flags and hidden map
+tiles without native menu state or temporary_32 writes. Existing reference
+getters may maintain their semantic lookup caches, as in the follow providers.
+
+Protected220326 compares all9405 master IDs before and after opening native
+Stocks; both memberships match. Independent guards confirm every IN_PLAY item's
+temporary_32 is unchanged by each probe, as are menu open/selection/query fields.
+The IN_PLAY vector address is independently confirmed at RVA23e5468. Native
+sorting is deliberately not claimed by this membership comparison. MSVC and
+core19 (`stocks-native-inventory`) pass; native log clean, source save unchanged,
+DF27332 exits unsaved, GPU61C sampled. Installed plugin SHA256 is
+0E6E973F224619C9B4EDF2A0169FC33BD7310760EE4113C36CD95C4FD9A5802B.
+Grouping, category counts/captions, filter/action semantics, typed transport and
+the screen remain unfinished; the diagnostic does not expose a public Stocks UI.
 
 ## Stone use native semantics and presentation
 

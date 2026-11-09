@@ -1,6 +1,22 @@
 -- Protected discovery only. Native UI storage is evidence, never runtime input.
 local out,view,records=...
 local gui=require('gui');local script=require('gui.script');local json=require('json')
+local function scratch()
+ local values={}
+ for _,item in ipairs(df.global.world.items.other.IN_PLAY)do values[#values+1]={item.id,item.base_uniform_score}end
+ return json.encode(values)
+end
+local function inventory()
+ local before=scratch();local menu=df.global.game.main_interface.stocks
+ local open=menu.open;local selected=menu.current_type;local query=menu.item_filter
+ local text,code=dfhack.run_command_silent('df3d','stocks-inventory-probe')
+ assert(code==0,'Stocks inventory failed: '..text)
+ assert(before==scratch(),'Inventory probe changed item temporary_32')
+ assert(open==menu.open and selected==menu.current_type and query==menu.item_filter,'Inventory probe changed menu state')
+ return json.decode(text).ids
+end
+local cold
+if os.getenv('DF3D_STOCKS_PROVIDER')=='1' then cold=inventory()end
 gui.simulateInput(view,'D_STOCKS')
 for _=1,3 do script.sleep(1,'frames')end
 view:render(dfhack.getTickCount())
@@ -15,6 +31,15 @@ local result={stocks_rva=address-dfhack.internal.getImageBase(),current_type=sto
  scroll_type=stocks.scroll_position_type,scroll_item=stocks.scroll_position_item,
  item_filter=stocks.item_filter,individual_ids={},groups={},screen_rows={}}
 for _,item in ipairs(stocks.current_type_i_list)do result.individual_ids[#result.individual_ids+1]=item.id end
+if cold then
+ local warm=inventory();local native={}
+ for _,item in ipairs(stocks.master_i_list.l_item)do native[#native+1]=item.id end
+ table.sort(cold);table.sort(warm);table.sort(native)
+ assert(json.encode(cold)==json.encode(native),'Cold inventory membership differs from native')
+ assert(json.encode(warm)==json.encode(native),'Warm inventory membership differs from native')
+ local _,address=df.sizeof(df.global.world.items.other.IN_PLAY)
+ result.inventory={cold=cold,warm=warm,native=native,scratch_preserved=true,in_play_rva=address-dfhack.internal.getImageBase()}
+end
 for index,subtype in ipairs(stocks.current_type_a_subtype)do
  result.groups[#result.groups+1]={subtype=subtype,subcat1=stocks.current_type_a_subcat1[index],
   subcat2=stocks.current_type_a_subcat2[index],amount=stocks.current_type_a_amount[index],

@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "stone_use_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/stone_use_capture.gd",
+      "completion": "^STONE_USE_CAPTURE_PASS$",
+      "timeout": 60,
+      "prerequisites": ["extension_build", "df_assets", "real_renderer"]
+    },
+    {
       "id": "stone_use_state_test",
       "lane": "core",
       "kind": "godot",

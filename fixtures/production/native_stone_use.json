@@ -843,5 +843,773 @@
     "rows": 83,
     "edits": 4,
     "scope": "Controller and shared semantic service read native metadata/full flags, clear edit authority while pending, preserve category, and refresh after four edits. Independent Lua checks every restriction byte; stale requests rejected. Source unchanged, owned DF39588 unsaved exit, headless viewer, sampled GPU56C. Only known separate-thread notice; no rendered input/main-scene lifecycle acceptance."
+  },
+  "display_rows": [
+    {
+      "category": 0,
+      "index": 237,
+      "magma_safe": false,
+      "material_token": "INORGANIC:ALABASTER",
+      "name": "Alabaster",
+      "restricted": true,
+      "uses": "Make plaster powder"
+    },
+    {
+      "category": 0,
+      "index": 211,
+      "magma_safe": false,
+      "material_token": "INORGANIC:BISMUTHINITE",
+      "name": "Bismuthinite",
+      "restricted": true,
+      "uses": "Ore of bismuth"
+    },
+    {
+      "category": 0,
+      "index": 196,
+      "magma_safe": false,
+      "material_token": "INORGANIC:COAL_BITUMINOUS",
+      "name": "Bituminous coal",
+      "restricted": true,
+      "uses": "Make coke from bituminous coal"
+    },
+    {
+      "category": 0,
+      "index": 235,
+      "magma_safe": true,
+      "material_token": "INORGANIC:CALCITE",
+      "name": "Calcite",
+      "restricted": true,
+      "uses": "Make steel bars, Make pig iron bars, Make quicklime"
+    },
+    {
+      "category": 0,
+      "index": 195,
+      "magma_safe": true,
+      "material_token": "INORGANIC:CASSITERITE",
+      "name": "Cassiterite",
+      "restricted": true,
+      "uses": "Ore of tin, Glaze clay/stone craft, Glaze large clay/stone pot, Glaze clay/stone statue, Glaze clay/stone jug"
+    },
+    {
+      "category": 0,
+      "index": 171,
+      "magma_safe": false,
+      "material_token": "INORGANIC:CHALK",
+      "name": "Chalk",
+      "restricted": true,
+      "uses": "Make steel bars, Make pig iron bars, Make quicklime"
+    },
+    {
+      "category": 0,
+      "index": 191,
+      "magma_safe": false,
+      "material_token": "INORGANIC:NATIVE_COPPER",
+      "name": "Copper nuggets",
+      "restricted": true,
+      "uses": "Ore of copper"
+    },
+    {
+      "category": 0,
+      "index": 169,
+      "magma_safe": true,
+      "material_token": "INORGANIC:DOLOMITE",
+      "name": "Dolomite",
+      "restricted": true,
+      "uses": "Make steel bars, Make pig iron bars"
+    },
+    {
+      "category": 0,
+      "index": 193,
+      "magma_safe": true,
+      "material_token": "INORGANIC:GALENA",
+      "name": "Galena",
+      "restricted": true,
+      "uses": "Ore of silver (50%), Ore of lead"
+    },
+    {
+      "category": 0,
+      "index": 188,
+      "magma_safe": false,
+      "material_token": "INORGANIC:GARNIERITE",
+      "name": "Garnierite",
+      "restricted": true,
+      "uses": "Ore of nickel"
+    },
+    {
+      "category": 0,
+      "index": 189,
+      "magma_safe": false,
+      "material_token": "INORGANIC:NATIVE_GOLD",
+      "name": "Gold nuggets",
+      "restricted": true,
+      "uses": "Ore of gold"
+    },
+    {
+      "category": 0,
+      "index": 203,
+      "magma_safe": false,
+      "material_token": "INORGANIC:GYPSUM",
+      "name": "Gypsum",
+      "restricted": true,
+      "uses": "Make plaster powder"
+    },
+    {
+      "category": 0,
+      "index": 186,
+      "magma_safe": true,
+      "material_token": "INORGANIC:HEMATITE",
+      "name": "Hematite",
+      "restricted": true,
+      "uses": "Ore of iron"
+    },
+    {
+      "category": 0,
+      "index": 202,
+      "magma_safe": false,
+      "material_token": "INORGANIC:HORN_SILVER",
+      "name": "Horn silver",
+      "restricted": true,
+      "uses": "Ore of silver"
+    },
+    {
+      "category": 0,
+      "index": 230,
+      "magma_safe": true,
+      "material_token": "INORGANIC:KAOLINITE",
+      "name": "Kaolinite",
+      "restricted": true,
+      "uses": "Make clay hive, Make clay crafts, Make large clay pot, Make clay statue, Make clay bricks, Make clay jug, Make emim, Make jath drum, Make sekur body, Make iddim, Make gagu body, Make gagu frame, Make o\u00f1ust sound-chest, Make v\u00fash melody pipe, Make magel console, Make migrur, Make odroz drum, Make gomath drone pipe, Make odshith bow, Make ilon bow, Make ilon sound-chest, Make giqua, Make begi sound-chest, Make ufsmat neck, Make zulen bow, Make zulen sound-chest, Make zulen yoke, Make sh\u00f9rrat, Make nakbab blowpipe, Make abshoth wind chest, Make ekast bells"
+    },
+    {
+      "category": 0,
+      "index": 197,
+      "magma_safe": false,
+      "material_token": "INORGANIC:LIGNITE",
+      "name": "Lignite",
+      "restricted": true,
+      "uses": "Make coke from lignite"
+    },
+    {
+      "category": 0,
+      "index": 167,
+      "magma_safe": false,
+      "material_token": "INORGANIC:LIMESTONE",
+      "name": "Limestone",
+      "restricted": true,
+      "uses": "Make steel bars, Make pig iron bars, Make quicklime"
+    },
+    {
+      "category": 0,
+      "index": 187,
+      "magma_safe": false,
+      "material_token": "INORGANIC:LIMONITE",
+      "name": "Limonite",
+      "restricted": true,
+      "uses": "Ore of iron"
+    },
+    {
+      "category": 0,
+      "index": 221,
+      "magma_safe": true,
+      "material_token": "INORGANIC:MAGNETITE",
+      "name": "Magnetite",
+      "restricted": true,
+      "uses": "Ore of iron"
+    },
+    {
+      "category": 0,
+      "index": 192,
+      "magma_safe": false,
+      "material_token": "INORGANIC:MALACHITE",
+      "name": "Malachite",
+      "restricted": true,
+      "uses": "Ore of copper"
+    },
+    {
+      "category": 0,
+      "index": 185,
+      "magma_safe": false,
+      "material_token": "INORGANIC:MARBLE",
+      "name": "Marble",
+      "restricted": true,
+      "uses": "Make steel bars, Make pig iron bars, Make quicklime"
+    },
+    {
+      "category": 0,
+      "index": 226,
+      "magma_safe": false,
+      "material_token": "INORGANIC:NATIVE_ALUMINUM",
+      "name": "Native aluminum",
+      "restricted": true,
+      "uses": "Ore of aluminum"
+    },
+    {
+      "category": 0,
+      "index": 179,
+      "magma_safe": true,
+      "material_token": "INORGANIC:OBSIDIAN",
+      "name": "Obsidian",
+      "restricted": true,
+      "uses": "Sharp blades"
+    },
+    {
+      "category": 0,
+      "index": 198,
+      "magma_safe": true,
+      "material_token": "INORGANIC:NATIVE_PLATINUM",
+      "name": "Platinum nuggets",
+      "restricted": true,
+      "uses": "Ore of platinum"
+    },
+    {
+      "category": 0,
+      "index": 242,
+      "magma_safe": true,
+      "material_token": "INORGANIC:RAW_ADAMANTINE",
+      "name": "Raw adamantine",
+      "restricted": true,
+      "uses": "Extract adamantine strands"
+    },
+    {
+      "category": 0,
+      "index": 239,
+      "magma_safe": false,
+      "material_token": "INORGANIC:SATINSPAR",
+      "name": "Satinspar",
+      "restricted": true,
+      "uses": "Make plaster powder"
+    },
+    {
+      "category": 0,
+      "index": 238,
+      "magma_safe": false,
+      "material_token": "INORGANIC:SELENITE",
+      "name": "Selenite",
+      "restricted": true,
+      "uses": "Make plaster powder"
+    },
+    {
+      "category": 0,
+      "index": 190,
+      "magma_safe": false,
+      "material_token": "INORGANIC:NATIVE_SILVER",
+      "name": "Silver nuggets",
+      "restricted": true,
+      "uses": "Ore of silver"
+    },
+    {
+      "category": 0,
+      "index": 194,
+      "magma_safe": true,
+      "material_token": "INORGANIC:SPHALERITE",
+      "name": "Sphalerite",
+      "restricted": true,
+      "uses": "Ore of zinc"
+    },
+    {
+      "category": 0,
+      "index": 201,
+      "magma_safe": false,
+      "material_token": "INORGANIC:TETRAHEDRITE",
+      "name": "Tetrahedrite",
+      "restricted": true,
+      "uses": "Ore of silver (20%), Ore of copper"
+    },
+    {
+      "category": 1,
+      "index": 241,
+      "magma_safe": true,
+      "material_token": "INORGANIC:ALUNITE",
+      "name": "Alunite",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 177,
+      "magma_safe": false,
+      "material_token": "INORGANIC:ANDESITE",
+      "name": "Andesite",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 240,
+      "magma_safe": true,
+      "material_token": "INORGANIC:ANHYDRITE",
+      "name": "Anhydrite",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 176,
+      "magma_safe": true,
+      "material_token": "INORGANIC:BASALT",
+      "name": "Basalt",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 225,
+      "magma_safe": true,
+      "material_token": "INORGANIC:BAUXITE",
+      "name": "Bauxite",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 227,
+      "magma_safe": false,
+      "material_token": "INORGANIC:BORAX",
+      "name": "Borax",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 209,
+      "magma_safe": false,
+      "material_token": "INORGANIC:BRIMSTONE",
+      "name": "Brimstone",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 170,
+      "magma_safe": true,
+      "material_token": "INORGANIC:CHERT",
+      "name": "Chert",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 222,
+      "magma_safe": true,
+      "material_token": "INORGANIC:CHROMITE",
+      "name": "Chromite",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 199,
+      "magma_safe": false,
+      "material_token": "INORGANIC:CINNABAR",
+      "name": "Cinnabar",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 165,
+      "magma_safe": false,
+      "material_token": "INORGANIC:CLAYSTONE",
+      "name": "Claystone",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 200,
+      "magma_safe": false,
+      "material_token": "INORGANIC:COBALTITE",
+      "name": "Cobaltite",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 168,
+      "magma_safe": false,
+      "material_token": "INORGANIC:CONGLOMERATE",
+      "name": "Conglomerate",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 217,
+      "magma_safe": false,
+      "material_token": "INORGANIC:CRYOLITE",
+      "name": "Cryolite",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 178,
+      "magma_safe": false,
+      "material_token": "INORGANIC:DACITE",
+      "name": "Dacite",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 173,
+      "magma_safe": false,
+      "material_token": "INORGANIC:DIORITE",
+      "name": "Diorite",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 174,
+      "magma_safe": true,
+      "material_token": "INORGANIC:GABBRO",
+      "name": "Gabbro",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 184,
+      "magma_safe": false,
+      "material_token": "INORGANIC:GNEISS",
+      "name": "Gneiss",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 172,
+      "magma_safe": false,
+      "material_token": "INORGANIC:GRANITE",
+      "name": "Granite",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 208,
+      "magma_safe": false,
+      "material_token": "INORGANIC:GRAPHITE",
+      "name": "Graphite",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 229,
+      "magma_safe": false,
+      "material_token": "INORGANIC:HORNBLENDE",
+      "name": "Hornblende",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 219,
+      "magma_safe": true,
+      "material_token": "INORGANIC:ILMENITE",
+      "name": "Ilmenite",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 205,
+      "magma_safe": false,
+      "material_token": "INORGANIC:JET",
+      "name": "Jet",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 210,
+      "magma_safe": false,
+      "material_token": "INORGANIC:KIMBERLITE",
+      "name": "Kimberlite",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 215,
+      "magma_safe": false,
+      "material_token": "INORGANIC:MARCASITE",
+      "name": "Marcasite",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 234,
+      "magma_safe": true,
+      "material_token": "INORGANIC:MICA",
+      "name": "Mica",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 233,
+      "magma_safe": false,
+      "material_token": "INORGANIC:MICROCLINE",
+      "name": "Microcline",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 163,
+      "magma_safe": false,
+      "material_token": "INORGANIC:MUDSTONE",
+      "name": "Mudstone",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 228,
+      "magma_safe": true,
+      "material_token": "INORGANIC:OLIVINE",
+      "name": "Olivine",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 213,
+      "magma_safe": false,
+      "material_token": "INORGANIC:ORPIMENT",
+      "name": "Orpiment",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 232,
+      "magma_safe": true,
+      "material_token": "INORGANIC:ORTHOCLASE",
+      "name": "Orthoclase",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 218,
+      "magma_safe": true,
+      "material_token": "INORGANIC:PERICLASE",
+      "name": "Periclase",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 207,
+      "magma_safe": true,
+      "material_token": "INORGANIC:PETRIFIED_WOOD",
+      "name": "Petrified wood",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 182,
+      "magma_safe": false,
+      "material_token": "INORGANIC:PHYLLITE",
+      "name": "Phyllite",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 224,
+      "magma_safe": true,
+      "material_token": "INORGANIC:PITCHBLENDE",
+      "name": "Pitchblende",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 206,
+      "magma_safe": false,
+      "material_token": "INORGANIC:PUDDINGSTONE",
+      "name": "Puddingstone",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 223,
+      "magma_safe": false,
+      "material_token": "INORGANIC:PYROLUSITE",
+      "name": "Pyrolusite",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 180,
+      "magma_safe": true,
+      "material_token": "INORGANIC:QUARTZITE",
+      "name": "Quartzite",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 212,
+      "magma_safe": false,
+      "material_token": "INORGANIC:REALGAR",
+      "name": "Realgar",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 175,
+      "magma_safe": false,
+      "material_token": "INORGANIC:RHYOLITE",
+      "name": "Rhyolite",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 166,
+      "magma_safe": false,
+      "material_token": "INORGANIC:ROCK_SALT",
+      "name": "Rock salt",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 220,
+      "magma_safe": true,
+      "material_token": "INORGANIC:RUTILE",
+      "name": "Rutile",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 236,
+      "magma_safe": false,
+      "material_token": "INORGANIC:SALTPETER",
+      "name": "Saltpeter",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 161,
+      "magma_safe": true,
+      "material_token": "INORGANIC:SANDSTONE",
+      "name": "Sandstone",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 183,
+      "magma_safe": false,
+      "material_token": "INORGANIC:SCHIST",
+      "name": "Schist",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 231,
+      "magma_safe": false,
+      "material_token": "INORGANIC:SERPENTINE",
+      "name": "Serpentine",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 164,
+      "magma_safe": false,
+      "material_token": "INORGANIC:SHALE",
+      "name": "Shale",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 162,
+      "magma_safe": false,
+      "material_token": "INORGANIC:SILTSTONE",
+      "name": "Siltstone",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 243,
+      "magma_safe": true,
+      "material_token": "INORGANIC:SLADE",
+      "name": "Slade",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 181,
+      "magma_safe": false,
+      "material_token": "INORGANIC:SLATE",
+      "name": "Slate",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 214,
+      "magma_safe": false,
+      "material_token": "INORGANIC:STIBNITE",
+      "name": "Stibnite",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 216,
+      "magma_safe": false,
+      "material_token": "INORGANIC:SYLVITE",
+      "name": "Sylvite",
+      "restricted": false,
+      "uses": ""
+    },
+    {
+      "category": 1,
+      "index": 204,
+      "magma_safe": true,
+      "material_token": "INORGANIC:TALC",
+      "name": "Talc",
+      "restricted": false,
+      "uses": ""
+    }
+  ],
+  "view_reference": {
+    "native_capture": "build/stockpile-storage-native-input-20261108-193842",
+    "qa": "build/qa/stone-use-view-native-art",
+    "viewport": [
+      1200,
+      800
+    ],
+    "crop": [
+      32,
+      52,
+      976,
+      760
+    ],
+    "rgb_different_pixels_by_category": [
+      0,
+      0
+    ],
+    "scope": "Full default panel and first15 stone icons in each category. display_rows retains native provider captions/material/safety from this capture. Only known separate-thread/device-finalize/shutdown-object diagnostics. No off-page art, responsive geometry, scrolling/hover, live pointer effects or main-scene acceptance."
   }
 }

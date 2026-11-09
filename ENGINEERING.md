@@ -73,7 +73,18 @@ with independent full-array effect checks. Source unchanged, DF39588 exits
 unsaved; headless viewer, GPU56C sampled, only the known separate-thread notice.
 This establishes controller edits, not rendered input or full main-scene lifecycle.
 
-The Stone use tab remains unimplemented. Protected185832 on2026-11-08 records
+The staged `stone_use_view.gd` renders both categories from native rows with
+installed boulder artwork, native safety/permission icons and local navigation.
+The default1200x800 full panel crop (32,52)-(976,760) matches both193842 native
+category captures with zero RGB pixel differences, including all15 visible
+stone icons in each category. `stone_use_capture` passes in
+stone-use-view-native-art with only the documented separate-thread, device-finalize
+and shutdown-object diagnostics; core19 passes stone-use-view. Runs are serial
+and capped at30FPS, with sampled GPU58-60C. This does not establish remaining
+off-page art, responsive geometry, scrolling/hover behavior, live pointer effects
+or Labor/main-scene ownership. The public tab remains hidden.
+
+Protected185832 on2026-11-08 records
 30 economic and53 other stones in native order, material identities/restrictions,
 and the default economic screen. `native_stone_use.json` is the durable reference
 for implementing the provider and presentation without reconstructing eligibility
@@ -135,7 +146,8 @@ DF39260 exits unsaved, GPU49C. MSVC/core19 pass stone-use-display-msvc.log and
 stone-use-display-metadata. Installed plugin SHA256:
 693FA1BE15F6A121D35AEABFD220657FDDD1A5A5A856B0B33F710F422C86A96B.
 `display_reference` records native artwork origins and observed classifications;
-DF3D row art and the public screen remain unfinished.
+Default visible row art is verified above; off-page art and the public screen
+remain unfinished.
 Do not borrow native widget vectors or restriction-pointer scratch. Core19 passes
 stone-use-discovery; no runtime adapter or public route is accepted by this check.
 

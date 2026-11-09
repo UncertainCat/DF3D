@@ -112,6 +112,12 @@ end
 if os.getenv('DF3D_KITCHEN_NATIVE')=='1' then
  local path=debug.getinfo(1,'S').source:sub(2):gsub('standing%-orders%-native.lua$','kitchen-native.lua')
  result.kitchen=assert(loadfile(path))(out,view,shot)
+ -- Large Kitchen fixture setup reopens Labor to refresh native aggregation.
+ -- Reacquire its parent widget instead of retaining the retired owner.
+ if os.getenv('DF3D_KITCHEN_LARGE')=='1' then
+  panel=nil;find(df.global.game.main_interface.info.labor)
+  assert(panel and (panel.flag.whole&3)==3,'Standing orders owner missing after Kitchen fixture')
+ end
 end
 local original=values()
 for category,x in ipairs{10,23,34,46,60,71,80}do

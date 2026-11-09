@@ -5876,5 +5876,1489 @@
     "capture": "build/stockpile-storage-native-input-20261108-183038",
     "scope": "Actual main.tscn fortress entry and fortress_ui controller factory, shared real input owner and semantic queue. Staged Standing orders entry then viewport Kitchen tab, Shift sorting, search, six Cook/Brew edits, stale rejection, Standing return and close pass. No public launcher promotion. Initial visible row crop64,196..928,664 matches native exactly; full panel still has known inactive Name ink/scrollbar differences. Only documented Godot thread/finalize/shutdown diagnostics, source unchanged and owned exit unsaved. Broader resize/scrollbar/main ownership lifecycle and native >32-row sort remain open.",
     "gpu_temperature_c": 53
+  },
+  "large_list_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-183502",
+    "created_materials": [
+      {
+        "count": 1,
+        "material_index": 0,
+        "material_type": 423,
+        "plant": "SINGLE-GRAIN_WHEAT"
+      },
+      {
+        "count": 2,
+        "material_index": 1,
+        "material_type": 423,
+        "plant": "TWO-GRAIN_WHEAT"
+      },
+      {
+        "count": 3,
+        "material_index": 2,
+        "material_type": 423,
+        "plant": "SOFT_WHEAT"
+      },
+      {
+        "count": 4,
+        "material_index": 3,
+        "material_type": 423,
+        "plant": "HARD_WHEAT"
+      },
+      {
+        "count": 5,
+        "material_index": 4,
+        "material_type": 423,
+        "plant": "SPELT"
+      },
+      {
+        "count": 6,
+        "material_index": 5,
+        "material_type": 423,
+        "plant": "BARLEY"
+      },
+      {
+        "count": 7,
+        "material_index": 6,
+        "material_type": 424,
+        "plant": "BUCKWHEAT"
+      },
+      {
+        "count": 1,
+        "material_index": 7,
+        "material_type": 422,
+        "plant": "OATS"
+      },
+      {
+        "count": 2,
+        "material_index": 8,
+        "material_type": 422,
+        "plant": "ALFALFA"
+      },
+      {
+        "count": 3,
+        "material_index": 9,
+        "material_type": 423,
+        "plant": "RYE"
+      },
+      {
+        "count": 4,
+        "material_index": 10,
+        "material_type": 424,
+        "plant": "SORGHUM"
+      },
+      {
+        "count": 5,
+        "material_index": 11,
+        "material_type": 423,
+        "plant": "RICE"
+      },
+      {
+        "count": 6,
+        "material_index": 12,
+        "material_type": 423,
+        "plant": "MAIZE"
+      },
+      {
+        "count": 7,
+        "material_index": 13,
+        "material_type": 424,
+        "plant": "QUINOA"
+      },
+      {
+        "count": 1,
+        "material_index": 14,
+        "material_type": 424,
+        "plant": "KANIWA"
+      },
+      {
+        "count": 2,
+        "material_index": 15,
+        "material_type": 422,
+        "plant": "BITTER_VETCH"
+      },
+      {
+        "count": 3,
+        "material_index": 16,
+        "material_type": 424,
+        "plant": "PENDANT_AMARANTH"
+      },
+      {
+        "count": 4,
+        "material_index": 17,
+        "material_type": 424,
+        "plant": "BLOOD_AMARANTH"
+      },
+      {
+        "count": 5,
+        "material_index": 18,
+        "material_type": 423,
+        "plant": "PURPLE_AMARANTH"
+      },
+      {
+        "count": 6,
+        "material_index": 19,
+        "material_type": 421,
+        "plant": "RED_SPINACH"
+      },
+      {
+        "count": 7,
+        "material_index": 20,
+        "material_type": 421,
+        "plant": "ELEPHANT-HEAD_AMARANTH"
+      },
+      {
+        "count": 1,
+        "material_index": 21,
+        "material_type": 423,
+        "plant": "PEARL_MILLET"
+      },
+      {
+        "count": 2,
+        "material_index": 22,
+        "material_type": 423,
+        "plant": "WHITE_MILLET"
+      },
+      {
+        "count": 3,
+        "material_index": 23,
+        "material_type": 423,
+        "plant": "FINGER_MILLET"
+      },
+      {
+        "count": 4,
+        "material_index": 24,
+        "material_type": 423,
+        "plant": "FOXTAIL_MILLET"
+      },
+      {
+        "count": 5,
+        "material_index": 25,
+        "material_type": 423,
+        "plant": "FONIO"
+      },
+      {
+        "count": 6,
+        "material_index": 26,
+        "material_type": 423,
+        "plant": "TEFF"
+      },
+      {
+        "count": 7,
+        "material_index": 27,
+        "material_type": 425,
+        "plant": "FLAX"
+      },
+      {
+        "count": 1,
+        "material_index": 29,
+        "material_type": 424,
+        "plant": "HEMP"
+      },
+      {
+        "count": 2,
+        "material_index": 30,
+        "material_type": 424,
+        "plant": "COTTON"
+      },
+      {
+        "count": 3,
+        "material_index": 32,
+        "material_type": 424,
+        "plant": "KENAF"
+      },
+      {
+        "count": 4,
+        "material_index": 36,
+        "material_type": 422,
+        "plant": "BAMBARA_GROUNDNUT"
+      },
+      {
+        "count": 5,
+        "material_index": 37,
+        "material_type": 422,
+        "plant": "STRING_BEAN"
+      },
+      {
+        "count": 6,
+        "material_index": 38,
+        "material_type": 422,
+        "plant": "BROAD_BEAN"
+      },
+      {
+        "count": 7,
+        "material_index": 43,
+        "material_type": 423,
+        "plant": "WILD_CARROT"
+      },
+      {
+        "count": 1,
+        "material_index": 46,
+        "material_type": 422,
+        "plant": "CHICKPEA"
+      },
+      {
+        "count": 2,
+        "material_index": 48,
+        "material_type": 422,
+        "plant": "COWPEA"
+      },
+      {
+        "count": 3,
+        "material_index": 50,
+        "material_type": 423,
+        "plant": "EGGPLANT"
+      },
+      {
+        "count": 4,
+        "material_index": 52,
+        "material_type": 423,
+        "plant": "GARLIC"
+      },
+      {
+        "count": 5,
+        "material_index": 55,
+        "material_type": 422,
+        "plant": "LENTIL"
+      },
+      {
+        "count": 6,
+        "material_index": 57,
+        "material_type": 422,
+        "plant": "MUNG_BEAN"
+      },
+      {
+        "count": 7,
+        "material_index": 60,
+        "material_type": 423,
+        "plant": "PARSNIP"
+      },
+      {
+        "count": 1,
+        "material_index": 61,
+        "material_type": 422,
+        "plant": "PEA"
+      },
+      {
+        "count": 2,
+        "material_index": 62,
+        "material_type": 422,
+        "plant": "PEANUT"
+      },
+      {
+        "count": 3,
+        "material_index": 66,
+        "material_type": 422,
+        "plant": "RED_BEAN"
+      },
+      {
+        "count": 4,
+        "material_index": 68,
+        "material_type": 422,
+        "plant": "SOYBEAN"
+      },
+      {
+        "count": 5,
+        "material_index": 73,
+        "material_type": 424,
+        "plant": "TOMATO"
+      },
+      {
+        "count": 6,
+        "material_index": 74,
+        "material_type": 424,
+        "plant": "TOMATILLO"
+      }
+    ],
+    "known": [
+      {
+        "capabilities": 1,
+        "count": 23,
+        "mat": 422,
+        "matg": 8,
+        "name": "Alfalfa seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 85,
+        "mat": 423,
+        "matg": 177,
+        "name": "Rock nuts",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 6,
+        "mat": 422,
+        "matg": 38,
+        "name": "Broad beans",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 20,
+        "mat": 421,
+        "matg": 189,
+        "name": "Blade weed seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 16,
+        "mat": 422,
+        "matg": 182,
+        "name": "Strawberry seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 2,
+        "mat": 422,
+        "matg": 62,
+        "name": "Peanuts",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 27,
+        "mat": 421,
+        "matg": 181,
+        "name": "Prickle berry seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 68,
+        "mat": 423,
+        "matg": 11,
+        "name": "Rice",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 25,
+        "mat": 421,
+        "matg": 185,
+        "name": "Rat weed seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 9,
+        "mat": 420,
+        "matg": 176,
+        "name": "Dwarven rum",
+        "subtype": -1,
+        "type": 69
+      },
+      {
+        "capabilities": 1,
+        "count": 10,
+        "mat": 46,
+        "matg": 177,
+        "name": "Pig's milk",
+        "subtype": -1,
+        "type": 73
+      },
+      {
+        "capabilities": 1,
+        "count": 58,
+        "mat": 421,
+        "matg": 188,
+        "name": "Dimple cup spawn",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 10,
+        "mat": 47,
+        "matg": 185,
+        "name": "Yak's milk",
+        "subtype": -1,
+        "type": 73
+      },
+      {
+        "capabilities": 1,
+        "count": 5,
+        "mat": 422,
+        "matg": 55,
+        "name": "Lentils",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 55,
+        "mat": 422,
+        "matg": 183,
+        "name": "Longland grass seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 52,
+        "mat": 424,
+        "matg": 17,
+        "name": "Blood amaranth seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 5,
+        "mat": 423,
+        "matg": 18,
+        "name": "Purple amaranth seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 17,
+        "mat": 422,
+        "matg": 187,
+        "name": "Rope reed seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 3,
+        "count": 751,
+        "mat": 419,
+        "matg": 173,
+        "name": "Plump helmets",
+        "subtype": -1,
+        "type": 54
+      },
+      {
+        "capabilities": 1,
+        "count": 334,
+        "mat": 421,
+        "matg": 173,
+        "name": "Dwarven wine",
+        "subtype": -1,
+        "type": 69
+      },
+      {
+        "capabilities": 1,
+        "count": 5,
+        "mat": 422,
+        "matg": 37,
+        "name": "String beans",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 4,
+        "mat": 421,
+        "matg": 174,
+        "name": "Pig tail seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 20,
+        "mat": 420,
+        "matg": 175,
+        "name": "Dwarven beer",
+        "subtype": -1,
+        "type": 69
+      },
+      {
+        "capabilities": 1,
+        "count": 5,
+        "mat": 423,
+        "matg": 4,
+        "name": "Spelt seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 2,
+        "count": 80,
+        "mat": 419,
+        "matg": 175,
+        "name": "Cave wheat",
+        "subtype": -1,
+        "type": 54
+      },
+      {
+        "capabilities": 1,
+        "count": 68,
+        "mat": 422,
+        "matg": 173,
+        "name": "Plump helmet spawn",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 7,
+        "mat": 425,
+        "matg": 27,
+        "name": "Flax seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 1,
+        "mat": 423,
+        "matg": 21,
+        "name": "Pearl millet",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 30,
+        "mat": 422,
+        "matg": 176,
+        "name": "Dwarven syrup",
+        "subtype": -1,
+        "type": 73
+      },
+      {
+        "capabilities": 2,
+        "count": 4,
+        "mat": 419,
+        "matg": 176,
+        "name": "Sweet pods",
+        "subtype": -1,
+        "type": 54
+      },
+      {
+        "capabilities": 1,
+        "count": 1,
+        "mat": 423,
+        "matg": 0,
+        "name": "Single-grain wheat seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 6,
+        "mat": 421,
+        "matg": 19,
+        "name": "Red spinach seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 2,
+        "mat": 423,
+        "matg": 1,
+        "name": "Two-grain wheat seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 3,
+        "mat": 423,
+        "matg": 2,
+        "name": "Soft wheat seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 4,
+        "mat": 423,
+        "matg": 3,
+        "name": "Hard wheat seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 6,
+        "mat": 423,
+        "matg": 5,
+        "name": "Barley seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 7,
+        "mat": 424,
+        "matg": 6,
+        "name": "Buckwheat seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 1,
+        "mat": 422,
+        "matg": 7,
+        "name": "Oat seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 2,
+        "mat": 424,
+        "matg": 30,
+        "name": "Cotton seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 3,
+        "mat": 423,
+        "matg": 9,
+        "name": "Rye seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 4,
+        "mat": 424,
+        "matg": 10,
+        "name": "Sorghum seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 6,
+        "mat": 423,
+        "matg": 12,
+        "name": "Maize",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 6,
+        "mat": 423,
+        "matg": 26,
+        "name": "Teff",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 7,
+        "mat": 424,
+        "matg": 13,
+        "name": "Quinoa seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 1,
+        "mat": 424,
+        "matg": 14,
+        "name": "Kaniwa seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 7,
+        "mat": 421,
+        "matg": 20,
+        "name": "Elephant-head amaranth seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 2,
+        "mat": 422,
+        "matg": 15,
+        "name": "Bitter vetch seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 3,
+        "mat": 423,
+        "matg": 23,
+        "name": "Finger millet",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 3,
+        "mat": 424,
+        "matg": 16,
+        "name": "Pendant amaranth seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 2,
+        "mat": 423,
+        "matg": 22,
+        "name": "White millet",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 4,
+        "mat": 423,
+        "matg": 24,
+        "name": "Foxtail millet",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 2,
+        "mat": 422,
+        "matg": 48,
+        "name": "Cowpeas",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 5,
+        "mat": 423,
+        "matg": 25,
+        "name": "Fonio",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 1,
+        "mat": 424,
+        "matg": 29,
+        "name": "Hemp seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 3,
+        "mat": 424,
+        "matg": 32,
+        "name": "Kenaf seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 4,
+        "mat": 422,
+        "matg": 36,
+        "name": "Bambara groundnuts",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 3,
+        "mat": 422,
+        "matg": 66,
+        "name": "Red beans",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 7,
+        "mat": 423,
+        "matg": 43,
+        "name": "Carrot seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 1,
+        "mat": 422,
+        "matg": 46,
+        "name": "Chickpeas",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 3,
+        "mat": 423,
+        "matg": 50,
+        "name": "Eggplant seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 4,
+        "mat": 423,
+        "matg": 52,
+        "name": "Garlic seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 6,
+        "mat": 422,
+        "matg": 57,
+        "name": "Mung beans",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 7,
+        "mat": 423,
+        "matg": 60,
+        "name": "Parsnip seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 1,
+        "mat": 422,
+        "matg": 61,
+        "name": "Peas",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 4,
+        "mat": 422,
+        "matg": 68,
+        "name": "Soybeans",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 5,
+        "mat": 424,
+        "matg": 73,
+        "name": "Tomato seeds",
+        "subtype": -1,
+        "type": 53
+      },
+      {
+        "capabilities": 1,
+        "count": 6,
+        "mat": 424,
+        "matg": 74,
+        "name": "Tomatillo seeds",
+        "subtype": -1,
+        "type": 53
+      }
+    ],
+    "provider": {
+      "cold": true,
+      "matched": true,
+      "rows": 67
+    },
+    "sorts": [
+      {
+        "label": "initial",
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          }
+        ],
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 0
+        },
+        "rows": 67,
+        "ordered_names_sha256": "3051e495cd04f0d744703ee5f2db331f2ac9314dd399705a18ec9e99abc815f9",
+        "provider_matched": true
+      },
+      {
+        "label": "shift-Name",
+        "sorts": [
+          {
+            "name": "Name",
+            "rva": 4638688
+          }
+        ],
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 0
+        },
+        "rows": 67,
+        "ordered_names_sha256": "e610f92bbd55bedea915fa0c72afd93c214300cb29b1affb4f44deeb53bbd700",
+        "provider_matched": true
+      },
+      {
+        "label": "shift-Number",
+        "sorts": [
+          {
+            "name": "Number",
+            "rva": 4640256
+          }
+        ],
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 0
+        },
+        "rows": 67,
+        "ordered_names_sha256": "91183cc0b60979517d1cb80b9f479062a4baf1df68eba08571dbb4ef1322c204",
+        "provider_matched": true
+      },
+      {
+        "label": "shift-Name",
+        "sorts": [
+          {
+            "name": "Name",
+            "rva": 4638688
+          }
+        ],
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 0
+        },
+        "rows": 67,
+        "ordered_names_sha256": "e610f92bbd55bedea915fa0c72afd93c214300cb29b1affb4f44deeb53bbd700",
+        "provider_matched": true
+      },
+      {
+        "label": "shift-released-Type",
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          }
+        ],
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 0
+        },
+        "rows": 67,
+        "ordered_names_sha256": "3051e495cd04f0d744703ee5f2db331f2ac9314dd399705a18ec9e99abc815f9",
+        "provider_matched": true
+      },
+      {
+        "label": "control-Name",
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          }
+        ],
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 0
+        },
+        "rows": 67,
+        "ordered_names_sha256": "3051e495cd04f0d744703ee5f2db331f2ac9314dd399705a18ec9e99abc815f9",
+        "provider_matched": true
+      },
+      {
+        "label": "control-Number",
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          }
+        ],
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 0
+        },
+        "rows": 67,
+        "ordered_names_sha256": "3051e495cd04f0d744703ee5f2db331f2ac9314dd399705a18ec9e99abc815f9",
+        "provider_matched": true
+      },
+      {
+        "label": "control-Name",
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          }
+        ],
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 0
+        },
+        "rows": 67,
+        "ordered_names_sha256": "3051e495cd04f0d744703ee5f2db331f2ac9314dd399705a18ec9e99abc815f9",
+        "provider_matched": true
+      },
+      {
+        "label": "control-released-Type",
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          }
+        ],
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 1
+        },
+        "rows": 67,
+        "ordered_names_sha256": "811afab73268202da98910e3171538c9b8f2985a6f09b5382f8f335568fe9388",
+        "provider_matched": true
+      },
+      {
+        "label": "controlled-bit1-Name",
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          },
+          {
+            "name": "Name",
+            "rva": 4638688
+          }
+        ],
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 1
+        },
+        "rows": 67,
+        "ordered_names_sha256": "6d9ea22566909578b0452484d0df15c9aa5d6a6263b7426a4ef7d452c45fa912",
+        "provider_matched": true
+      },
+      {
+        "label": "controlled-bit1-Number",
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          },
+          {
+            "name": "Name",
+            "rva": 4638688
+          },
+          {
+            "name": "Number",
+            "rva": 4640256
+          }
+        ],
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 1
+        },
+        "rows": 67,
+        "ordered_names_sha256": "6d9ea22566909578b0452484d0df15c9aa5d6a6263b7426a4ef7d452c45fa912",
+        "provider_matched": true
+      },
+      {
+        "label": "controlled-bit1-Name",
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          },
+          {
+            "name": "Name",
+            "rva": 4638688
+          },
+          {
+            "name": "Number",
+            "rva": 4640256
+          },
+          {
+            "name": "Name",
+            "rva": 4638688
+          }
+        ],
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 1,
+          "Number": 0,
+          "Type": 1
+        },
+        "rows": 67,
+        "ordered_names_sha256": "ddac6767e38a43a5ce42357a8d07b32f5268e256a427e037a06ce21bbb34dedd",
+        "provider_matched": true
+      },
+      {
+        "label": "controlled-bit1-Cook",
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          },
+          {
+            "name": "Name",
+            "rva": 4638688
+          },
+          {
+            "name": "Number",
+            "rva": 4640256
+          },
+          {
+            "name": "Name",
+            "rva": 4638688
+          },
+          {
+            "name": "Cook",
+            "rva": 4638512
+          }
+        ],
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 1,
+          "Number": 0,
+          "Type": 1
+        },
+        "rows": 67,
+        "ordered_names_sha256": "ddac6767e38a43a5ce42357a8d07b32f5268e256a427e037a06ce21bbb34dedd",
+        "provider_matched": true
+      },
+      {
+        "label": "controlled-bit1-Brew",
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          },
+          {
+            "name": "Name",
+            "rva": 4638688
+          },
+          {
+            "name": "Number",
+            "rva": 4640256
+          },
+          {
+            "name": "Name",
+            "rva": 4638688
+          },
+          {
+            "name": "Cook",
+            "rva": 4638512
+          },
+          {
+            "name": "Brew",
+            "rva": 4638336
+          }
+        ],
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 1,
+          "Number": 0,
+          "Type": 1
+        },
+        "rows": 67,
+        "ordered_names_sha256": "ddac6767e38a43a5ce42357a8d07b32f5268e256a427e037a06ce21bbb34dedd",
+        "provider_matched": true
+      },
+      {
+        "label": "controlled-bit1-Name",
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          },
+          {
+            "name": "Name",
+            "rva": 4638688
+          },
+          {
+            "name": "Number",
+            "rva": 4640256
+          },
+          {
+            "name": "Name",
+            "rva": 4638688
+          },
+          {
+            "name": "Cook",
+            "rva": 4638512
+          },
+          {
+            "name": "Brew",
+            "rva": 4638336
+          },
+          {
+            "name": "Name",
+            "rva": 4638688
+          }
+        ],
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 1
+        },
+        "rows": 67,
+        "ordered_names_sha256": "6d9ea22566909578b0452484d0df15c9aa5d6a6263b7426a4ef7d452c45fa912",
+        "provider_matched": true
+      },
+      {
+        "label": "controlled-released-Type",
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          }
+        ],
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 0
+        },
+        "rows": 67,
+        "ordered_names_sha256": "3051e495cd04f0d744703ee5f2db331f2ac9314dd399705a18ec9e99abc815f9",
+        "provider_matched": true
+      },
+      {
+        "label": "Name first",
+        "sorts": [
+          {
+            "name": "Name",
+            "rva": 4638688
+          }
+        ],
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 0
+        },
+        "rows": 67,
+        "ordered_names_sha256": "e610f92bbd55bedea915fa0c72afd93c214300cb29b1affb4f44deeb53bbd700",
+        "provider_matched": true
+      },
+      {
+        "label": "Name second",
+        "sorts": [
+          {
+            "name": "Name",
+            "rva": 4638688
+          }
+        ],
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 1,
+          "Number": 0,
+          "Type": 0
+        },
+        "rows": 67,
+        "ordered_names_sha256": "37acc01c8a78bb281953892cf7516636e90d8eff1070d455b6404a117885093b",
+        "provider_matched": true
+      },
+      {
+        "label": "Number first",
+        "sorts": [
+          {
+            "name": "Number",
+            "rva": 4640256
+          }
+        ],
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 1,
+          "Number": 0,
+          "Type": 0
+        },
+        "rows": 67,
+        "ordered_names_sha256": "91183cc0b60979517d1cb80b9f479062a4baf1df68eba08571dbb4ef1322c204",
+        "provider_matched": true
+      },
+      {
+        "label": "Number second",
+        "sorts": [
+          {
+            "name": "Number",
+            "rva": 4640256
+          }
+        ],
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 1,
+          "Number": 1,
+          "Type": 0
+        },
+        "rows": 67,
+        "ordered_names_sha256": "a4f7bee2e3b16aa784956ce242bce3852b1351b548e22e363011346e890c32f0",
+        "provider_matched": true
+      },
+      {
+        "label": "Cook first",
+        "sorts": [
+          {
+            "name": "Cook",
+            "rva": 4638512
+          }
+        ],
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 1,
+          "Number": 1,
+          "Type": 0
+        },
+        "rows": 67,
+        "ordered_names_sha256": "62a98a3be84c12d266c37935bb5670c98023780cd16dcdbfa7ab330e2d12f64b",
+        "provider_matched": true
+      },
+      {
+        "label": "Cook second",
+        "sorts": [
+          {
+            "name": "Cook",
+            "rva": 4638512
+          }
+        ],
+        "directions": {
+          "Brew": 0,
+          "Cook": 1,
+          "Name": 1,
+          "Number": 1,
+          "Type": 0
+        },
+        "rows": 67,
+        "ordered_names_sha256": "d9405ca757de210b557ea64d6903ca7d485c4507dae6edff59600ea2b35fa204",
+        "provider_matched": true
+      },
+      {
+        "label": "Brew first",
+        "sorts": [
+          {
+            "name": "Brew",
+            "rva": 4638336
+          }
+        ],
+        "directions": {
+          "Brew": 0,
+          "Cook": 1,
+          "Name": 1,
+          "Number": 1,
+          "Type": 0
+        },
+        "rows": 67,
+        "ordered_names_sha256": "15ec1595f675d2c50a60c33116fc4aa8ee677c6b996418039558c1b6e13fbd78",
+        "provider_matched": true
+      },
+      {
+        "label": "Brew second",
+        "sorts": [
+          {
+            "name": "Brew",
+            "rva": 4638336
+          }
+        ],
+        "directions": {
+          "Brew": 1,
+          "Cook": 1,
+          "Name": 1,
+          "Number": 1,
+          "Type": 0
+        },
+        "rows": 67,
+        "ordered_names_sha256": "15ec1595f675d2c50a60c33116fc4aa8ee677c6b996418039558c1b6e13fbd78",
+        "provider_matched": true
+      },
+      {
+        "label": "Type first",
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          }
+        ],
+        "directions": {
+          "Brew": 1,
+          "Cook": 1,
+          "Name": 1,
+          "Number": 1,
+          "Type": 0
+        },
+        "rows": 67,
+        "ordered_names_sha256": "3051e495cd04f0d744703ee5f2db331f2ac9314dd399705a18ec9e99abc815f9",
+        "provider_matched": true
+      },
+      {
+        "label": "Type second",
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          }
+        ],
+        "directions": {
+          "Brew": 1,
+          "Cook": 1,
+          "Name": 1,
+          "Number": 1,
+          "Type": 1
+        },
+        "rows": 67,
+        "ordered_names_sha256": "811afab73268202da98910e3171538c9b8f2985a6f09b5382f8f335568fe9388",
+        "provider_matched": true
+      }
+    ],
+    "scope": "48 disposable seed items across distinct cookable plant materials, varied stack counts1..7; fresh native Labor owner yields67 aggregates. Cold owned provider matches all identities/counts/capabilities/names. All26 native sorting cases match, including repeated priorities up to7 and native >32 merge path. Six actual controller/wire repeated queries and6edits/stale rejection pass. Only known Godot thread notice, source preserved, owned unsaved exit. No broader artwork claim. Earlier183316 used stale native aggregate;183407 matched Kitchen but failed later stale parent-widget harness check; neither is whole-lane acceptance."
   }
 }

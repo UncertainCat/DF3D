@@ -158,8 +158,8 @@ preservation; GPU56C sampled. Core19 passes kitchen-repeat-provider and MSVC
 passes kitchen-repeat-provider-msvc.log. Installed protocol152 plugin SHA256:
 99DC2FDC7D2F4B355575266DF74F23207DA0123348E4BDA4A51E496DC573517C.
 The diagnostic CLI accepts up to64 priorities; runtime requests retain the
-separate65536-entry allocation bound. Native sorting above32 rows and full-screen
-acceptance remain open; the screen stays hidden.
+separate65536-entry allocation bound. Full-screen acceptance remains open;
+the screen stays hidden.
 
 The Kitchen controller can now retain and append priorities without removing
 duplicates. Clicking any active column flips its remembered direction and updates
@@ -219,6 +219,21 @@ all main-scene lifecycle/resize/scrollbar behavior, or native sorting above32 ro
 Set DF3D_KITCHEN_MAIN=1 with the existing rendered protected Kitchen wire lane
 to use the main scene; its bounded startup allowance is separate from the short
 standalone panel check. It never changes the application's public route registry.
+
+Protected183502 covers native sorting above32 entries. The paused owned clone
+creates48 distinct cookable seed materials with varied stack counts1..7, then
+reopens native Labor to initialize fresh aggregation. All67 aggregates match the
+cold owned provider, and all26 native sort cases match complete row order,
+including repeated priorities up to7. Six repeated-priority queries also match
+through the real controller/bridge; six Cook/Brew edits, refreshed receipts and
+stale rejection pass. large_list_reference retains material identities, native
+aggregates and ordered-name hashes. Only the known Godot thread notice remains;
+source preservation and owned unsaved exit pass, GPU52C. Core19 passes
+kitchen-large-list. This accepts the exercised native merge path, not artwork
+for every newly created food. Earlier183316 used the pre-fixture cached native
+aggregate;183407 matched Kitchen but failed a later stale Standing orders widget
+reference. The harness now reacquires that parent after reopening Labor; neither
+earlier run is counted as whole-lane acceptance.
 
 The staged Kitchen view reuses installed Labor chrome, native row/icon assets,
 count captions and permission icons. `kitchen-view-base` renders at1200x800 with

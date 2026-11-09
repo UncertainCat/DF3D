@@ -12,12 +12,37 @@ local function click(x,y,modifier)
  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
  for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
 end
+local fixture_supplies
+if os.getenv('DF3D_KITCHEN_LARGE')=='1' then
+ assert(df.global.pause_state,'Kitchen large fixture requires paused owned clone')
+ local worker
+ for _,unit in ipairs(df.global.world.units.active)do if dfhack.units.isCitizen(unit) and not unit.job.current_job then worker=unit;break end end
+ assert(worker,'Kitchen fixture needs idle citizen')
+ fixture_supplies={}
+ for _,plant in ipairs(df.global.world.raws.plants.all)do
+  local material=dfhack.matinfo.find('PLANT_MAT:'..plant.id..':SEED')
+  if material and material.material.flags.EDIBLE_COOKED then
+   local items=dfhack.items.createItem(worker,df.item_type.SEEDS,-1,material.type,material.index)
+   assert(#items==1,'Kitchen seed fixture creation failed')
+   local item=items[1];assert(dfhack.items.moveToGround(item,worker.pos));item.flags.forbid=false
+   item.stack_size=1+(#fixture_supplies%7)
+   fixture_supplies[#fixture_supplies+1]={id=item.id,plant=plant.id,material_type=material.type,material_index=material.index,count=item.stack_size}
+   if #fixture_supplies==48 then break end
+  end
+ end
+ assert(#fixture_supplies>=33,'Not enough distinct cookable seed materials')
+ -- Labor constructs Kitchen's aggregate before the Kitchen tab is selected.
+ -- Reopen the native owner after fixture creation; never patch its cached rows.
+ gui.simulateInput(view,'LEAVESCREEN');for _=1,3 do script.sleep(1,'frames')end
+ gui.simulateInput(view,'D_LABOR');for _=1,3 do script.sleep(1,'frames')end
+ click(30,10)
+end
 local cold
 if os.getenv('DF3D_KITCHEN_PROVIDER')=='1' then
  local text,code=dfhack.run_command_silent('df3d','kitchen-probe');assert(code==0,'Cold owned Kitchen provider rejected');cold=json.decode(text)
 end
 click(45,10)
-local result={vtable={},callbacks={},rows={}}
+local result={vtable={},callbacks={},rows={},fixture_supplies=fixture_supplies}
 local panel
 local function find(widget)
  if df.labor_kitchen_interfacest:is_instance(widget) then panel=widget;return end
@@ -43,6 +68,7 @@ while node~=head do
  node=df.reinterpret_cast('uint64_t',node).value
 end
 assert(#result.known==count,'Kitchen map count differs')
+if fixture_supplies then assert(#result.known>32,'Large Kitchen fixture did not reach native merge path')end
 if cold then
  local function key(row)return table.concat({row.type,row.subtype,row.mat,row.matg},':')end
  local expected={};for _,row in ipairs(result.known)do expected[key(row)]=row end

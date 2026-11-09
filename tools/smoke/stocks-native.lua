@@ -317,6 +317,10 @@ if os.getenv('DF3D_STOCKS_INPUT')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-native.lua$','stocks-input-native.lua')
  result.input=assert(loadfile(source))(view,stocks,out)
 end
+if os.getenv('DF3D_STOCKS_FURNITURE_SHEETS')=='1' then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-native.lua$','stocks-furniture-sheets-native.lua')
+ result.furniture=assert(loadfile(source))(out,view,stocks,probe)
+end
 if os.getenv('DF3D_STOCKS_ART_RENDER')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-native.lua$','stocks-art-native.lua')
  result.art=assert(loadfile(source))(out,view,stocks)

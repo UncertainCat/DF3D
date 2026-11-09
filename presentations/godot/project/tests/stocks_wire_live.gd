@@ -222,6 +222,30 @@ func run() -> void:
 				owner.item_owner.close_panel();check(owner.state.phase==State.Phase.Closed,"Item close returned to Stocks")
 			else:check(owner.item_owner.state.item_id==-1,"Recenter opened item sheet")
 		owner.queue_free();host.queue_free();await process_frame
+	if OS.get_environment("DF3D_STOCKS_FURNITURE_SHEETS")=="1" and not failed:
+		if view!=null:view.queue_free();view=null;await process_frame
+		state.dispose()
+		var host:=Host.new();root.add_child(host)
+		var owner=preload("res://scripts/stocks_panel.gd").new();root.add_child(owner);owner.configure(world,service,host,hover)
+		for family in reference.furniture:
+			owner.open_panel();if not await ready_state(owner.state):break
+			owner.state.select_category(int(family.kind));if not await ready_state(owner.state):break
+			if not owner.state.expanded(owner.state.groups[0]):
+				await click(Vector2(500,130))
+				if not await ready_state(owner.state):break
+			await click(owner.panel.position+owner.panel.item_canvas.position+owner.panel.control_rect(1,-1).get_center())
+			deadline=Time.get_ticks_msec()+5000
+			while Time.get_ticks_msec()<deadline:
+				world.poll();await process_frame
+				if owner.item_owner.state.phase==owner.item_owner.state.Phase.Ready:break
+			if not check(owner.state.phase==State.Phase.Closed and owner.item_owner.state.phase==owner.item_owner.state.Phase.Ready and owner.item_owner.state.item_id==int(family.id),"Furniture View destination failed: "+str(family.kind)+" stocks="+str(owner.state.phase)+" item="+str(owner.item_owner.state.phase)+" id="+str(owner.item_owner.state.item_id)+" expected="+str(family.id)):break
+			var snapshot: Dictionary=owner.item_owner.state.snapshot
+			check(snapshot.has("appearance"),"Furniture appearance missing")
+			var saved:=FileAccess.open(directory+"/stocks-furniture-wire-"+str(int(family.kind))+".json",FileAccess.WRITE);saved.store_string(JSON.stringify(snapshot));saved.close()
+			await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/stocks-furniture-view-"+str(int(family.kind))+".png")
+			owner.item_owner.close_panel();check(owner.state.phase==State.Phase.Closed,"Furniture close reopened Stocks")
+		owner.queue_free();host.queue_free();await process_frame
 	var f:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	f.store_string(JSON.stringify({"success":not failed,"categories":93,"groups":reference.selection.groups.size(),"items":ids.size(),"edits":2,"controller":true,"rendered":OS.get_environment("DF3D_STOCKS_RENDER")=="1","owner":OS.get_environment("DF3D_STOCKS_OWNER_WIRE")=="1","individual":reference.get("individual",false)}));f.close()
 	if view!=null:view.queue_free()

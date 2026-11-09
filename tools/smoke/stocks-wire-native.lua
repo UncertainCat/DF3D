@@ -19,6 +19,14 @@ for _,id in ipairs(reference.selection.groups[1].ids)do
  local item=df.item.find(id)
  reference.appearance[tostring(id)]={stack=item:getStackSize(),flags=(item.flags.artifact and 32 or 0)|(item.flags.spider_web and 64 or 0)}
 end
+if os.getenv('DF3D_STOCKS_FURNITURE_SHEETS')=='1' then
+ reference.furniture={}
+ for _,kind in ipairs{6,7,8,9,11,12,17,18,20,32,35,45}do
+  local selection=probe('stocks-selection-probe',tostring(kind),'')
+  assert(#selection.groups>0,'Missing furniture fixture '..kind)
+  reference.furniture[#reference.furniture+1]={kind=kind,id=selection.groups[1].ids[1]}
+ end
+end
 write('stocks-wire-reference.json',json.encode(reference))
 write('shot.tmp','stocks-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))
 local checked=0;local deadline=dfhack.getTickCount()+25000

@@ -6214,7 +6214,7 @@
     "installed_bridge_sha256": "aaf031ce310386a09925684dc9171c58e14c888392b17de11094e154e038decd"
   },
   "furniture_description_dispatch_reference": {
-    "status": "Implemented and build-verified; native/live item-sheet comparison pending. Public Stocks remains gated.",
+    "status": "Live View/close and exact native description accepted for one item per twelve families; visual acceptance bounded below. Public Stocks remains gated.",
     "native_description_rva": "0xc75000",
     "native_description_length": "0x46aa",
     "native_description_fnv1a64": "d5969f2286ee8a96",
@@ -6323,9 +6323,165 @@
       "item-furniture-dispatch-msvc: Release df3d build passed"
     ],
     "limitations": [
-      "No live acceptance of these newly enabled item details yet",
-      "Other item classes still require dispatch/ownership audit",
-      "No public Stocks exposure or whole-management completion claimed"
-    ]
+      "One item per family; not all materials, improvements or item-detail actions",
+      "Container child rows and holder/header artwork still incomplete",
+      "Other item families still require native dispatch audit",
+      "Public Stocks remains gated"
+    ],
+    "live_reference": {
+      "capture": "build/stockpile-storage-native-input-20261109-033137",
+      "cases": [
+        {
+          "kind": 6,
+          "id": 47315,
+          "description": "This is an exceptional rock salt door.  ",
+          "native_sha256": "65e44a0b2ff5c982e216409b717f11ba62fc521f0db4d05df9611394be1c7a08",
+          "viewer_sha256": "4c20253c0e8d9d5fa3fcad6b0cd3c4be49f52ba88eee5d0b7d1d9c6b4b9c9baf"
+        },
+        {
+          "kind": 7,
+          "id": 2553,
+          "description": "This is a superior quality dolomite floodgate.  ",
+          "native_sha256": "eb5adf37efdf22e41e7ff6889aa52e05820f8daea2df9d7ce765589e9f776033",
+          "viewer_sha256": "d3dbb10cbcde86baaed1550677f48c3c6ccbb53708b81504d9e7c3c84b5825a1"
+        },
+        {
+          "kind": 8,
+          "id": 21002,
+          "description": "This is a masterful coffee wood bed created by Zon Mist\u00c3\u00aamrovod.  ",
+          "native_sha256": "cc2ce4833fbd3d0c11113d87cb1955442ad683a13aafbab4a2945ccbf74da700",
+          "viewer_sha256": "3c6a96b70bdc067d92419174348f10ac1f3489d7951d8a0b6097d90edfc0561a"
+        },
+        {
+          "kind": 9,
+          "id": 21539,
+          "description": "This is a superior quality steel throne.  ",
+          "native_sha256": "d0de5bca15b53ed5be0973cc8c93a42811a8838c03b4a14a672c6d753ac2bd5a",
+          "viewer_sha256": "d6a94601ffd2b4adec39d75a1b3f5f83d496ffddf3239a41c2ad7746b155daac"
+        },
+        {
+          "kind": 11,
+          "id": 32986,
+          "description": "This is a masterful steel flask created by Rakust Kuletdatan.  ",
+          "native_sha256": "3fcbd5a49bc298e3aa8d22b0001e7cc1b369e049e153cd8a79e1d0e065a611d4",
+          "viewer_sha256": "c62a6ad1cbebaf73d631b4f21d95dc456b5b0f3869ff788e966b8f6ef5e92d9b"
+        },
+        {
+          "kind": 12,
+          "id": 1358,
+          "description": "This is a dolomite mug.  ",
+          "native_sha256": "3b99531262755338f6cdc77fb97f952cbf30e6a13dd2e8422693760fa39c4776",
+          "viewer_sha256": "dacf0677a452e8e45e0a53682ab64b1bdb3d59557d4ddd083c3539cf9db1f98f"
+        },
+        {
+          "kind": 17,
+          "id": 9652,
+          "description": "This is an exceptional iron barrel.  ",
+          "native_sha256": "2f32471edb440544f872b7290db701b54d98dc57927b9ca85ae22097c407e46e",
+          "viewer_sha256": "c11f1b9096b4041a5a66dcde48f7421891e7a8570ee691054077c0854c1b72d4"
+        },
+        {
+          "kind": 18,
+          "id": 5877,
+          "description": "This is a bitter orange wood bucket.  ",
+          "native_sha256": "20f6025c2d7cb0a8cf1f6b86f07b3d241e45767e711015d8ab11e4b0a6c1e521",
+          "viewer_sha256": "9a501b347891f1bbbf3c7b4345d02d9dd363129e1106aa363ac8c44489fb33d8"
+        },
+        {
+          "kind": 20,
+          "id": 21155,
+          "description": "This is a finely-crafted steel table.  ",
+          "native_sha256": "579172bb03e895eb0c04c7c8f30a35ffb2ffbb3f2bed72790795bcdca3095fba",
+          "viewer_sha256": "e9384556949230f7de51dccc114fce7c6f9382984f4de860169ec4d2a22c225f"
+        },
+        {
+          "kind": 32,
+          "id": 11204,
+          "description": "This is a superior quality Bar/Block Bin (steel) <#19>.  ",
+          "native_sha256": "a987e955f768c1cc59097719a7831f8e41172b564f92743a3ab57ae02c357148",
+          "viewer_sha256": "440c5e151eb21b2e10139b5d02ffb357e486dbf43fd0629fadd27c72a076397c"
+        },
+        {
+          "kind": 35,
+          "id": 11136,
+          "description": "This is a superior quality steel cabinet.  ",
+          "native_sha256": "8152b6cd492da666085c27263ff7e23be32e64e048f8f9c6bcecfdf4420c5eaa",
+          "viewer_sha256": "afc2c9310aafc2f7e8e3a16f94e93839ae2732cc19aadd195e856e0499fa1862"
+        },
+        {
+          "kind": 45,
+          "id": 28425,
+          "description": "This is a iron anvil.  ",
+          "native_sha256": "5c9681fcbf8b1e29a815cc31b2c6e75b3144a4add131e780c48c6951ecc822b3",
+          "viewer_sha256": "022a668f5b2b70a1dad8609e4ccd58bd8168b5a487001f898e2fc062336c6616"
+        }
+      ],
+      "full_panel_rgb_exact_types": [
+        11,
+        12,
+        18,
+        45
+      ],
+      "description_crop_rgb_exact_types": [
+        7,
+        8,
+        11,
+        12,
+        17,
+        18,
+        20,
+        32,
+        35,
+        45
+      ],
+      "invalid_native_render_captures": [
+        6,
+        9
+      ],
+      "remaining_gaps": [
+        "Bin contained-item rows absent in DF3D",
+        "Holder artwork differs for installed furniture",
+        "Bed/table header artwork differs",
+        "Door/chair PNGs captured before native drawing settled; not visual acceptance"
+      ],
+      "wire_result": {
+        "categories": 93,
+        "controller": true,
+        "edits": 2,
+        "groups": 6,
+        "individual": false,
+        "items": 9,
+        "owner": false,
+        "rendered": true,
+        "success": true
+      },
+      "diagnostics": {
+        "known_engine": [
+          {
+            "id": "godot-separate-thread-notice",
+            "count": 1,
+            "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+          },
+          {
+            "id": "godot-device-finalize",
+            "count": 1,
+            "reference": "https://github.com/godotengine/godot/issues/119000"
+          },
+          {
+            "id": "godot-shutdown-objects",
+            "count": 1,
+            "reference": "ENGINEERING.md#tests-and-known-problems"
+          }
+        ],
+        "unclassified": []
+      },
+      "source_preserved": true,
+      "owned_df_closed": 48860,
+      "graphics_fps_cap": 30,
+      "sampled_gpu_temperature_c": [
+        39
+      ],
+      "installed_bridge_sha256": "596e9a5d60880322a6f0987827e619b6f8310fc500a2742ac63530c945c55448"
+    }
   }
 }

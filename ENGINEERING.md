@@ -44,9 +44,16 @@ for individually pinned getType leaves; each has the same no-subtype leaf and
 no additional type-specific description branch. Existing improvement guards
 and native lazy semantic effects remain intact. Item observations now include
 their appearance facts. Core19, extension, item-sheet state and MSVC pass in
-`item-furniture-dispatch`; live detail-panel comparison is pending, and public
-Stocks remains gated. `furniture_description_dispatch_reference` records the
-supported tables and bounded verification.
+`item-furniture-dispatch`. Protected033137 verifies View/close and exact native
+description strings for one item in each family. Flask, goblet, bucket and
+anvil complete panel crops match exactly. Bin contained-item rows are missing;
+installed furniture holder icons and bed/table header artwork still differ.
+Door/chair native PNGs were captured before drawing settled and are excluded
+from visual acceptance. Source preserved; DF48860 closed unsaved at30FPS,
+39C sampled, known Godot diagnostics only. Earlier032836/033015 test failures
+clicked Recenter where scrollbar absence shifted View; the test now locates
+the rendered control. Public Stocks remains gated.
+`furniture_description_dispatch_reference` records cases and bounded evidence.
 
 Management162 adds optional bucket liquid presence and selected material color.
 Rebuild bridge/viewer together;161 peers use a separate channel. Unknown legacy

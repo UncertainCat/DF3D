@@ -46,8 +46,16 @@ not the list builder. Input434600 delegates to4346b0. The row-click branch
 434b8a..434bb4 flips a pointed restriction byte (1-current) without calling a
 recalculation routine. Renderer438000 obtains names through14add70/14d1920 and
 52d650; it also invokes the cache-mutating graphics selectorc83890, which is not
-authorized for runtime use. List initialization, economic-use caption ownership,
-mutation effects and other-category rendering still require investigation.
+authorized for runtime use. Native432450..432f4f is the list builder: its context
+holds two index vectors at158, two restriction-pointer vectors at188, and an
+economic-description pointer vector at1b8. It inserts entries in formatted-name
+order using native material predicates. Description helperd97510..d97ca0 supplies
+allocated fragments, which the builder joins into allocated strings. Cleanup
+bb9b0..bba24 destroys/frees pointed strings and empties the vector, retaining its
+capacity. `owned_provider_discovery` pins these code ranges and ownership facts.
+Nested helper side effects, allocator compatibility and an independently owned
+invocation still require validation; this discovery is not runtime acceptance.
+Mutation effects and other-category rendering also remain unverified.
 Do not borrow native widget vectors or restriction-pointer scratch. Core19 passes
 stone-use-discovery; no runtime adapter or public route is accepted by this check.
 

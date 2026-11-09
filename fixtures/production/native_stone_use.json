@@ -614,6 +614,28 @@
       "14d1920",
       "52d650"
     ],
-    "ownership_gap": "List initialization and economic-use caption allocation remain unaudited. Runtime must not borrow native widget vectors, restriction-pointer scratch or rendering caches."
+    "ownership_gap": "Native builder432450 and description helperd97510 located; nested effects/allocation compatibility and owned invocation remain unaccepted. Runtime must not borrow widget vectors or rendering caches."
+  },
+  "owned_provider_discovery": {
+    "builder_rva": "432450",
+    "builder_end_exclusive": "432f4f",
+    "context": {
+      "prefix_bytes": 336,
+      "category_offset": "150",
+      "category_indices_offset": "158",
+      "category_restriction_pointers_offset": "188",
+      "economic_description_pointers_offset": "1b8"
+    },
+    "description_builder_rva": "d97510",
+    "description_builder_end_exclusive": "d97ca0",
+    "description_cleanup_rva": "bb9b0",
+    "description_cleanup_end_exclusive": "bba24",
+    "behavior": "Builder clears owned vectors, selects materials with native predicates, inserts indices and restriction pointers in formatted-name order, and builds economic descriptions through d97510. Description fragments are joined by native code. bb9b0 destroys and frees pointed strings and empties the vector; vector capacity still belongs to its owner.",
+    "code_sha256": {
+      "0x432450": "482a6dce0b332787c1b5be826f2105102631fa2243e34824046a3dd0c7446a69",
+      "0xd97510": "b1cc9764ea761a4a1cd6d8c3eb7cb48969dab6f5aae83e2d1310ba4afb520347",
+      "0xbb9b0": "2b4d4cfbdac742874daa08f156cf32633474e67a2077f35ae8151581ec8d56b5"
+    },
+    "remaining": "Audit nested helper side effects and allocation compatibility, then invoke builder with independently owned context and compare both ordered lists/descriptions against native. No runtime call or provider acceptance yet."
   }
 }

@@ -144,9 +144,22 @@ separate channel and cannot accept new repeated-priority requests. C++ codecs,
 Godot request validation and local query validation preserve repetition/order
 and reject inconsistent directions. kitchen-contract152 passes core19, Kitchen
 controller and fake-host Godot round trip (eight priorities); MSVC builds in
-kitchen-contract152-msvc.log. This is the separate protocol migration only:
-the native provider still rejects repeats and the installed plugin remains151.
-Native execution, live comparison and installation must follow before exposure.
+kitchen-contract152-msvc.log. The protocol migration is committed separately
+from native execution.
+
+The owned provider now accepts repeated priorities with shared column direction
+and preserves native last-to-first sorting without deduplication. Protected181432
+and181529 compare all26 complete native row orders, including seven priorities.
+181529 additionally sends six repeated-priority queries through the actual Godot
+controller/bridge and matches all22 names; six Cook/Brew edits, fresh reads and
+stale receipt rejection also pass. The only Godot diagnostic is the documented
+separate-thread startup notice. Both owned games exit unsaved with source
+preservation; GPU56C sampled. Core19 passes kitchen-repeat-provider and MSVC
+passes kitchen-repeat-provider-msvc.log. Installed protocol152 plugin SHA256:
+99DC2FDC7D2F4B355575266DF74F23207DA0123348E4BDA4A51E496DC573517C.
+The diagnostic CLI accepts up to64 priorities; runtime requests retain the
+separate65536-entry allocation bound. Native modified-click binding, UI priority
+art and native sorting above32 rows remain unaccepted; the screen stays hidden.
 
 The staged Kitchen view reuses installed Labor chrome, native row/icon assets,
 count captions and permission icons. `kitchen-view-base` renders at1200x800 with

@@ -184,9 +184,9 @@ if os.getenv('DF3D_KITCHEN_SORT')=='1' then
   end
   observations[#observations+1]={label=label,names=names,sorts=sorts,directions=directions}
   if os.getenv('DF3D_KITCHEN_SORT_PROVIDER')=='1' then
-   assert(#sorts==1,'Single-column provider diagnostic')
-   local columns={Type=0,Name=1,Number=2,Cook=3,Brew=4};local name=sorts[1].name
-   local text,code=dfhack.run_command_silent('df3d','kitchen-probe','-1','0','',tostring(columns[name]),tostring(directions[name]));assert(code==0,'Owned sort rejected')
+   local columns={Type=0,Name=1,Number=2,Cook=3,Brew=4};local args={'df3d','kitchen-probe','-1','0',''}
+   for _,sort in ipairs(sorts)do args[#args+1]=tostring(columns[sort.name]);args[#args+1]=tostring(directions[sort.name])end
+   local text,code=dfhack.run_command_silent(table.unpack(args));assert(code==0,'Owned sort rejected')
    local rows=json.decode(text);local actual={};for _,row in ipairs(rows)do actual[#actual+1]=row.name end
    assert(json.encode(actual)==json.encode(names),'Owned Kitchen sort differs: '..label)
    observations[#observations].provider_matched=true
@@ -208,7 +208,7 @@ if os.getenv('DF3D_KITCHEN_SORT')=='1' then
    modifier(mode..'-up')
    click(18,15);observe(mode..'-released-Type')
   end
-  for _,column in ipairs({{'Name',28},{'Number',80},{'Name',28}})do
+  for _,column in ipairs({{'Name',28},{'Number',80},{'Name',28},{'Cook',90},{'Brew',94},{'Name',28}})do
    click(column[2],15,1);observe('controlled-bit1-'..column[1])
   end
   click(18,15);observe('controlled-released-Type')

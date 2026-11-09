@@ -53,6 +53,22 @@ func run() -> void:
 			if key.item_type==int(native.type) and key.item_subtype==int(native.subtype) and key.mat_type==int(native.mat) and key.mat_index==int(native.matg):
 				matched=true;check(row.name==native.name and row.receipt.count==int(native.count) and row.receipt.capabilities==int(native.capabilities),"Kitchen native aggregate differs")
 		check(matched,"Kitchen row identity missing")
+	var sort_checks:=0
+	if FileAccess.file_exists(directory+"/kitchen-sort.json"):
+		var sort_reference: Array=JSON.parse_string(FileAccess.get_file_as_string(directory+"/kitchen-sort.json"))
+		var columns: Dictionary={"Type":0,"Name":1,"Number":2,"Cook":3,"Brew":4}
+		for observation in sort_reference:
+			if not str(observation.label).begins_with("controlled-bit1-"):continue
+			var query: Dictionary={"type_filter":-1,"capability_filter":0,"query":"","sorts":[]}
+			for priority in observation.sorts:query.sorts.append({"column":columns[priority.name],"reverse":bool(observation.directions[priority.name])})
+			state.set_query(query)
+			if not await ready_state(state):quit(1);return
+			var names: Array=[]
+			for row in state.rows:names.append(row.name)
+			check(names==observation.names,"Kitchen repeated-priority wire order differs: "+str(observation.label));sort_checks+=1
+		state.set_query({"type_filter":-1,"capability_filter":0,"query":"","sorts":[{"column":0,"reverse":false}]})
+		if not await ready_state(state):quit(1);return
+		value={"rows":state.rows,"exclusions":state.exclusions}
 	if rendered:
 		await create_timer(0.3).timeout;await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(directory+"/kitchen-view-root.png")
@@ -93,6 +109,6 @@ func run() -> void:
 		check(not owner.kitchen_active and host.active==owner,"Kitchen return tab failed")
 		owner.close_panel();check(host.active==null,"Labor close retained input")
 	var output:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
-	output.store_string(JSON.stringify({"success":not failed,"steps":completed}));output.close()
+	output.store_string(JSON.stringify({"success":not failed,"steps":completed,"sort_checks":sort_checks}));output.close()
 	state.dispose()
 	quit(1 if failed else 0)

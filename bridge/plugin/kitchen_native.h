@@ -80,9 +80,11 @@ inline std::optional<std::vector<Row>> read(const Filter& filter={},const std::v
     auto* base=supportedBase();
     if(!base || !df::global::world || !df::global::plotinfo)return std::nullopt;
     if(filter.type<-1 || filter.type>3 || filter.capabilities>3 || filter.query.size()>4096)return std::nullopt;
-    if(sorts.empty() || sorts.size()>5)return std::nullopt;
-    uint8_t used=0;
-    for(const auto& sort:sorts){const auto id=static_cast<uint8_t>(sort.column);if(id>4 || (used&(1u<<id)))return std::nullopt;used|=1u<<id;}
+    if(sorts.empty() || sorts.size()>65536)return std::nullopt;
+    uint8_t used=0,reversed=0;
+    for(const auto& sort:sorts){const auto id=static_cast<uint8_t>(sort.column);if(id>4)return std::nullopt;
+        const auto bit=1u<<id;if((used&bit) && bool(reversed&bit)!=sort.reverse)return std::nullopt;
+        used|=bit;if(sort.reverse)reversed|=bit;}
     const auto& exclusions=df::global::plotinfo->kitchen;
     const auto size=exclusions.item_types.size();
     if(size>65536 || exclusions.item_subtypes.size()!=size || exclusions.mat_types.size()!=size || exclusions.mat_indices.size()!=size || exclusions.exc_types.size()!=size)return std::nullopt;

@@ -2561,7 +2561,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           result["write_started"]=started;out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="kitchen-probe") {
-          if(parameters.size()!=1 && parameters.size()!=4 && parameters.size()!=6)return CR_WRONG_USAGE;
+          if(parameters.size()!=1 && (parameters.size()<4 || parameters.size()>132 || parameters.size()%2!=0))return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
           df3d_kitchen::Filter filter;
           if(parameters.size()>=4){
@@ -2569,9 +2569,9 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             if(parameters[2]!="0" && parameters[2]!="1" && parameters[2]!="2" && parameters[2]!="3")return CR_WRONG_USAGE;
             filter.type=static_cast<int8_t>(std::stoi(parameters[1]));filter.capabilities=static_cast<uint8_t>(std::stoi(parameters[2]));filter.query=UTF2DF(parameters[3]);}
           std::vector<df3d_kitchen::Sort> sorts(1);
-          if(parameters.size()==6){
-            if(parameters[4].size()!=1 || parameters[4][0]<'0' || parameters[4][0]>'4' || (parameters[5]!="0" && parameters[5]!="1"))return CR_WRONG_USAGE;
-            sorts[0]={static_cast<df3d_kitchen::Column>(parameters[4][0]-'0'),parameters[5]=="1"};}
+          if(parameters.size()>4){sorts.clear();for(size_t i=4;i<parameters.size();i+=2){
+            if(parameters[i].size()!=1 || parameters[i][0]<'0' || parameters[i][0]>'4' || (parameters[i+1]!="0" && parameters[i+1]!="1"))return CR_WRONG_USAGE;
+            sorts.push_back({static_cast<df3d_kitchen::Column>(parameters[i][0]-'0'),parameters[i+1]=="1"});}}
           const auto rows=df3d_kitchen::read(filter,sorts);if(!rows)return CR_FAILURE;
           Json::Value result(Json::arrayValue);
           for(const auto& row:*rows){Json::Value value(Json::objectValue);

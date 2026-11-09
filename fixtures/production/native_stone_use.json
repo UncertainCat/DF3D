@@ -1,0 +1,619 @@
+{
+  "categories": [
+    {
+      "category": 0,
+      "entries": [
+        {
+          "id": "ALABASTER",
+          "index": 237,
+          "name": "alabaster",
+          "restricted": 1
+        },
+        {
+          "id": "BISMUTHINITE",
+          "index": 211,
+          "name": "bismuthinite",
+          "restricted": 1
+        },
+        {
+          "id": "COAL_BITUMINOUS",
+          "index": 196,
+          "name": "bituminous coal",
+          "restricted": 1
+        },
+        {
+          "id": "CALCITE",
+          "index": 235,
+          "name": "calcite",
+          "restricted": 1
+        },
+        {
+          "id": "CASSITERITE",
+          "index": 195,
+          "name": "cassiterite",
+          "restricted": 1
+        },
+        {
+          "id": "CHALK",
+          "index": 171,
+          "name": "chalk",
+          "restricted": 1
+        },
+        {
+          "id": "NATIVE_COPPER",
+          "index": 191,
+          "name": "native copper",
+          "restricted": 1
+        },
+        {
+          "id": "DOLOMITE",
+          "index": 169,
+          "name": "dolomite",
+          "restricted": 1
+        },
+        {
+          "id": "GALENA",
+          "index": 193,
+          "name": "galena",
+          "restricted": 1
+        },
+        {
+          "id": "GARNIERITE",
+          "index": 188,
+          "name": "garnierite",
+          "restricted": 1
+        },
+        {
+          "id": "NATIVE_GOLD",
+          "index": 189,
+          "name": "native gold",
+          "restricted": 1
+        },
+        {
+          "id": "GYPSUM",
+          "index": 203,
+          "name": "gypsum",
+          "restricted": 1
+        },
+        {
+          "id": "HEMATITE",
+          "index": 186,
+          "name": "hematite",
+          "restricted": 1
+        },
+        {
+          "id": "HORN_SILVER",
+          "index": 202,
+          "name": "horn silver",
+          "restricted": 1
+        },
+        {
+          "id": "KAOLINITE",
+          "index": 230,
+          "name": "kaolinite",
+          "restricted": 1
+        },
+        {
+          "id": "LIGNITE",
+          "index": 197,
+          "name": "lignite",
+          "restricted": 1
+        },
+        {
+          "id": "LIMESTONE",
+          "index": 167,
+          "name": "limestone",
+          "restricted": 1
+        },
+        {
+          "id": "LIMONITE",
+          "index": 187,
+          "name": "limonite",
+          "restricted": 1
+        },
+        {
+          "id": "MAGNETITE",
+          "index": 221,
+          "name": "magnetite",
+          "restricted": 1
+        },
+        {
+          "id": "MALACHITE",
+          "index": 192,
+          "name": "malachite",
+          "restricted": 1
+        },
+        {
+          "id": "MARBLE",
+          "index": 185,
+          "name": "marble",
+          "restricted": 1
+        },
+        {
+          "id": "NATIVE_ALUMINUM",
+          "index": 226,
+          "name": "native aluminum",
+          "restricted": 1
+        },
+        {
+          "id": "OBSIDIAN",
+          "index": 179,
+          "name": "obsidian",
+          "restricted": 1
+        },
+        {
+          "id": "NATIVE_PLATINUM",
+          "index": 198,
+          "name": "native platinum",
+          "restricted": 1
+        },
+        {
+          "id": "RAW_ADAMANTINE",
+          "index": 242,
+          "name": "raw adamantine",
+          "restricted": 1
+        },
+        {
+          "id": "SATINSPAR",
+          "index": 239,
+          "name": "satinspar",
+          "restricted": 1
+        },
+        {
+          "id": "SELENITE",
+          "index": 238,
+          "name": "selenite",
+          "restricted": 1
+        },
+        {
+          "id": "NATIVE_SILVER",
+          "index": 190,
+          "name": "native silver",
+          "restricted": 1
+        },
+        {
+          "id": "SPHALERITE",
+          "index": 194,
+          "name": "sphalerite",
+          "restricted": 1
+        },
+        {
+          "id": "TETRAHEDRITE",
+          "index": 201,
+          "name": "tetrahedrite",
+          "restricted": 1
+        }
+      ]
+    },
+    {
+      "category": 1,
+      "entries": [
+        {
+          "id": "ALUNITE",
+          "index": 241,
+          "name": "alunite",
+          "restricted": 0
+        },
+        {
+          "id": "ANDESITE",
+          "index": 177,
+          "name": "andesite",
+          "restricted": 0
+        },
+        {
+          "id": "ANHYDRITE",
+          "index": 240,
+          "name": "anhydrite",
+          "restricted": 0
+        },
+        {
+          "id": "BASALT",
+          "index": 176,
+          "name": "basalt",
+          "restricted": 0
+        },
+        {
+          "id": "BAUXITE",
+          "index": 225,
+          "name": "bauxite",
+          "restricted": 0
+        },
+        {
+          "id": "BORAX",
+          "index": 227,
+          "name": "borax",
+          "restricted": 0
+        },
+        {
+          "id": "BRIMSTONE",
+          "index": 209,
+          "name": "brimstone",
+          "restricted": 0
+        },
+        {
+          "id": "CHERT",
+          "index": 170,
+          "name": "chert",
+          "restricted": 0
+        },
+        {
+          "id": "CHROMITE",
+          "index": 222,
+          "name": "chromite",
+          "restricted": 0
+        },
+        {
+          "id": "CINNABAR",
+          "index": 199,
+          "name": "cinnabar",
+          "restricted": 0
+        },
+        {
+          "id": "CLAYSTONE",
+          "index": 165,
+          "name": "claystone",
+          "restricted": 0
+        },
+        {
+          "id": "COBALTITE",
+          "index": 200,
+          "name": "cobaltite",
+          "restricted": 0
+        },
+        {
+          "id": "CONGLOMERATE",
+          "index": 168,
+          "name": "conglomerate",
+          "restricted": 0
+        },
+        {
+          "id": "CRYOLITE",
+          "index": 217,
+          "name": "cryolite",
+          "restricted": 0
+        },
+        {
+          "id": "DACITE",
+          "index": 178,
+          "name": "dacite",
+          "restricted": 0
+        },
+        {
+          "id": "DIORITE",
+          "index": 173,
+          "name": "diorite",
+          "restricted": 0
+        },
+        {
+          "id": "GABBRO",
+          "index": 174,
+          "name": "gabbro",
+          "restricted": 0
+        },
+        {
+          "id": "GNEISS",
+          "index": 184,
+          "name": "gneiss",
+          "restricted": 0
+        },
+        {
+          "id": "GRANITE",
+          "index": 172,
+          "name": "granite",
+          "restricted": 0
+        },
+        {
+          "id": "GRAPHITE",
+          "index": 208,
+          "name": "graphite",
+          "restricted": 0
+        },
+        {
+          "id": "HORNBLENDE",
+          "index": 229,
+          "name": "hornblende",
+          "restricted": 0
+        },
+        {
+          "id": "ILMENITE",
+          "index": 219,
+          "name": "ilmenite",
+          "restricted": 0
+        },
+        {
+          "id": "JET",
+          "index": 205,
+          "name": "jet",
+          "restricted": 0
+        },
+        {
+          "id": "KIMBERLITE",
+          "index": 210,
+          "name": "kimberlite",
+          "restricted": 0
+        },
+        {
+          "id": "MARCASITE",
+          "index": 215,
+          "name": "marcasite",
+          "restricted": 0
+        },
+        {
+          "id": "MICA",
+          "index": 234,
+          "name": "mica",
+          "restricted": 0
+        },
+        {
+          "id": "MICROCLINE",
+          "index": 233,
+          "name": "microcline",
+          "restricted": 0
+        },
+        {
+          "id": "MUDSTONE",
+          "index": 163,
+          "name": "mudstone",
+          "restricted": 0
+        },
+        {
+          "id": "OLIVINE",
+          "index": 228,
+          "name": "olivine",
+          "restricted": 0
+        },
+        {
+          "id": "ORPIMENT",
+          "index": 213,
+          "name": "orpiment",
+          "restricted": 0
+        },
+        {
+          "id": "ORTHOCLASE",
+          "index": 232,
+          "name": "orthoclase",
+          "restricted": 0
+        },
+        {
+          "id": "PERICLASE",
+          "index": 218,
+          "name": "periclase",
+          "restricted": 0
+        },
+        {
+          "id": "PETRIFIED_WOOD",
+          "index": 207,
+          "name": "petrified wood",
+          "restricted": 0
+        },
+        {
+          "id": "PHYLLITE",
+          "index": 182,
+          "name": "phyllite",
+          "restricted": 0
+        },
+        {
+          "id": "PITCHBLENDE",
+          "index": 224,
+          "name": "pitchblende",
+          "restricted": 0
+        },
+        {
+          "id": "PUDDINGSTONE",
+          "index": 206,
+          "name": "puddingstone",
+          "restricted": 0
+        },
+        {
+          "id": "PYROLUSITE",
+          "index": 223,
+          "name": "pyrolusite",
+          "restricted": 0
+        },
+        {
+          "id": "QUARTZITE",
+          "index": 180,
+          "name": "quartzite",
+          "restricted": 0
+        },
+        {
+          "id": "REALGAR",
+          "index": 212,
+          "name": "realgar",
+          "restricted": 0
+        },
+        {
+          "id": "RHYOLITE",
+          "index": 175,
+          "name": "rhyolite",
+          "restricted": 0
+        },
+        {
+          "id": "ROCK_SALT",
+          "index": 166,
+          "name": "rock salt",
+          "restricted": 0
+        },
+        {
+          "id": "RUTILE",
+          "index": 220,
+          "name": "rutile",
+          "restricted": 0
+        },
+        {
+          "id": "SALTPETER",
+          "index": 236,
+          "name": "saltpeter",
+          "restricted": 0
+        },
+        {
+          "id": "SANDSTONE",
+          "index": 161,
+          "name": "sandstone",
+          "restricted": 0
+        },
+        {
+          "id": "SCHIST",
+          "index": 183,
+          "name": "schist",
+          "restricted": 0
+        },
+        {
+          "id": "SERPENTINE",
+          "index": 231,
+          "name": "serpentine",
+          "restricted": 0
+        },
+        {
+          "id": "SHALE",
+          "index": 164,
+          "name": "shale",
+          "restricted": 0
+        },
+        {
+          "id": "SILTSTONE",
+          "index": 162,
+          "name": "siltstone",
+          "restricted": 0
+        },
+        {
+          "id": "SLADE",
+          "index": 243,
+          "name": "slade",
+          "restricted": 0
+        },
+        {
+          "id": "SLATE",
+          "index": 181,
+          "name": "slate",
+          "restricted": 0
+        },
+        {
+          "id": "STIBNITE",
+          "index": 214,
+          "name": "stibnite",
+          "restricted": 0
+        },
+        {
+          "id": "SYLVITE",
+          "index": 216,
+          "name": "sylvite",
+          "restricted": 0
+        },
+        {
+          "id": "TALC",
+          "index": 204,
+          "name": "talc",
+          "restricted": 0
+        }
+      ]
+    }
+  ],
+  "category": 0,
+  "rows": [
+    {
+      "text": "  Economic stone    Other stone",
+      "y": 11
+    },
+    {
+      "text": "  Economic stone    Other stone",
+      "y": 12
+    },
+    {
+      "text": " Stone type               Magma-safe  Economic uses                         Select to use in non-economic jobs.",
+      "y": 14
+    },
+    {
+      "text": "        Alabaster                     Make plaster powder",
+      "y": 17
+    },
+    {
+      "text": "        Bismuthinite                  Ore of bismuth",
+      "y": 20
+    },
+    {
+      "text": "        Bituminous coal               Make coke from bituminous coal",
+      "y": 23
+    },
+    {
+      "text": "        Calcite                       Make steel bars, Make pig iron bars, Make quicklime",
+      "y": 26
+    },
+    {
+      "text": "        Cassiterite                   Ore of tin, Glaze clay/stone craft, Glaze large clay/stone pot, Gl...",
+      "y": 29
+    },
+    {
+      "text": "        Chalk                         Make steel bars, Make pig iron bars, Make quicklime",
+      "y": 32
+    },
+    {
+      "text": "        Copper nuggets                Ore of copper",
+      "y": 35
+    },
+    {
+      "text": "        Dolomite                      Make steel bars, Make pig iron bars",
+      "y": 38
+    },
+    {
+      "text": "        Galena                        Ore of silver (50%), Ore of lead",
+      "y": 41
+    },
+    {
+      "text": "        Garnierite                    Ore of nickel",
+      "y": 44
+    },
+    {
+      "text": "        Gold nuggets                  Ore of gold",
+      "y": 47
+    },
+    {
+      "text": "        Gypsum                        Make plaster powder",
+      "y": 50
+    },
+    {
+      "text": "        Hematite                      Ore of iron",
+      "y": 53
+    },
+    {
+      "text": "        Horn silver                   Ore of silver",
+      "y": 56
+    },
+    {
+      "text": "        Kaolinite                     Make clay hive, Make clay crafts, Make large clay pot, Make clay s...",
+      "y": 59
+    }
+  ],
+  "vtable": [
+    767408,
+    4408832,
+    4375792,
+    4423680,
+    970960,
+    467536,
+    467536,
+    4637584
+  ],
+  "provenance": {
+    "df_version": "53.16",
+    "steam_build": 24557528,
+    "capture": "build\\stockpile-storage-native-input-20261108-185832",
+    "scope": "Protected read-only discovery: ordered native economic/other indices, raw identity names and current restriction flags, default economic screen text/art. Raw material names are not accepted display captions. No semantic provider, mutation or other-category rendering acceptance. Source unchanged; owned DF29600 exited unsaved."
+  },
+  "entry_points": {
+    "constructor_rva": "46c2a0",
+    "input_rva": "434600",
+    "input_body_rva": "4346b0",
+    "render_rva": "438000",
+    "scroll_update_rva": "42c4f0",
+    "restriction_toggle_range": "434b8a..434bb4",
+    "restriction_toggle": "Loads category restriction pointer and stores 1-current byte; no recalculation call in this branch.",
+    "name_render_range": "438974..4389f3",
+    "name_helpers": [
+      "14add70",
+      "14d1920",
+      "52d650"
+    ],
+    "ownership_gap": "List initialization and economic-use caption allocation remain unaudited. Runtime must not borrow native widget vectors, restriction-pointer scratch or rendering caches."
+  }
+}

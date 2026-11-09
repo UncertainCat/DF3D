@@ -31,6 +31,26 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
 
+## Stone use native discovery
+
+The Stone use tab remains unimplemented. Protected185832 on2026-11-08 records
+30 economic and53 other stones in native order, material identities/restrictions,
+and the default economic screen. `native_stone_use.json` is the durable reference
+for implementing the provider and presentation without reconstructing eligibility
+or captions. Raw material names in this fixture are identities, not accepted UI
+captions. Source preservation and owned unsaved exit pass; GPU51C sampled.
+The initial185754 probe failed on a DFHack handler access and is not acceptance.
+
+Constructor46c2a0 initializes widget vectors;42c4f0 is the scrollbar update,
+not the list builder. Input434600 delegates to4346b0. The row-click branch
+434b8a..434bb4 flips a pointed restriction byte (1-current) without calling a
+recalculation routine. Renderer438000 obtains names through14add70/14d1920 and
+52d650; it also invokes the cache-mutating graphics selectorc83890, which is not
+authorized for runtime use. List initialization, economic-use caption ownership,
+mutation effects and other-category rendering still require investigation.
+Do not borrow native widget vectors or restriction-pointer scratch. Core19 passes
+stone-use-discovery; no runtime adapter or public route is accepted by this check.
+
 ## Kitchen native discovery
 
 Management151 introduces the owned `kitchen_menu` contract (KitchenRead98 and

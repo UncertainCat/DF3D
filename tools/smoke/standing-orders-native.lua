@@ -119,6 +119,10 @@ if os.getenv('DF3D_KITCHEN_NATIVE')=='1' then
   assert(panel and (panel.flag.whole&3)==3,'Standing orders owner missing after Kitchen fixture')
  end
 end
+if os.getenv('DF3D_STONE_USE_NATIVE')=='1' then
+ local path=debug.getinfo(1,'S').source:sub(2):gsub('standing%-orders%-native.lua$','stone-use-native.lua')
+ result.stone_use=assert(loadfile(path))(out,view,shot)
+end
 local original=values()
 for category,x in ipairs{10,23,34,46,60,71,80}do
  click(x,12);assert(panel.current_category==category-1,'Standing orders category click failed')

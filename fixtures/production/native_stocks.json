@@ -5828,5 +5828,63 @@
       "No protocol or runtime appearance change in this discovery.",
       "Goblet and restraint differences remain unaudited."
     ]
+  },
+  "floodgate_state160_reference": {
+    "capture": "build/stockpile-storage-native-input-20261109-023408",
+    "management_version": 160,
+    "scope": "All12 floodgates in the captured Stocks list: open/closed installed gates and loose workshop-held items. Not acceptance of other household families or all materials/improvements.",
+    "provider": "Pinned native cb16b0 BUILDING_HOLDER lookup; floodgate building closed flag, matching c81fc7..c81ffa. No viewscreen/cache input.",
+    "field": "Optional floodgate_open; -1 unknown in wire/model, absent in Godot; present bool only for item type7. Legacy absence is not inferred.",
+    "item_region": [
+      360,
+      112,
+      960,
+      724
+    ],
+    "rgb_different_pixels": 0,
+    "native_sha256": "02b9349fc141a489ea2204d3dc8d45d6e1a16a69c3582dfaf1d0afcdcf3fbf93",
+    "viewer_sha256": "6ebb59591a5c4ca4bf043c81ca7453e33f8a956110a6625bc59dfcbe5ed2019a",
+    "wire_result": {
+      "categories": 93,
+      "controller": true,
+      "edits": 2,
+      "groups": 6,
+      "individual": false,
+      "items": 9,
+      "owner": false,
+      "rendered": true,
+      "success": true
+    },
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        },
+        {
+          "id": "godot-device-finalize",
+          "count": 1,
+          "reference": "https://github.com/godotengine/godot/issues/119000"
+        },
+        {
+          "id": "godot-shutdown-objects",
+          "count": 1,
+          "reference": "ENGINEERING.md#tests-and-known-problems"
+        }
+      ],
+      "unclassified": []
+    },
+    "verification": [
+      "stocks-floodgate160: Core19, extension, Stocks state and installed icon tests passed",
+      "stocks-floodgate160-final: Core19 and Stocks state passed",
+      "MSVC stocks-floodgate160-msvc-final passed"
+    ],
+    "source_preserved": true,
+    "owned_df_closed": 13852,
+    "graphics_fps_cap": 30,
+    "sampled_gpu_temperature_c": 37,
+    "sampled_gpu_utilization_percent": 1,
+    "installed_bridge_sha256": "fdbddf7728f80cdc2f859774b4679d308328710a6b8982ef41a4124756870c33"
   }
 }

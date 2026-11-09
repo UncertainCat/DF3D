@@ -1218,7 +1218,7 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
     case ItemKind::Rock: return single("ITEM_ROCK", "rock");
     case ItemKind::Branch: return single("ITEM_BRANCH", "branch");
     case ItemKind::Door: return member("ITEM_DOOR", "", "item.door");
-    case ItemKind::Floodgate: return member("ITEM_FLOODGATE", "", "item.floodgate");
+    case ItemKind::Floodgate: return member("ITEM_FLOODGATE", q.floodgateOpen<0?"":q.floodgateOpen?"_OPEN":"_CLOSED", "item.floodgate");
     case ItemKind::HatchCover: return member("ITEM_HATCH_COVER", "", "item.hatch");
     case ItemKind::Grate: return member("ITEM_GRATE", "", "item.grate");
     case ItemKind::Bed: return member("ITEM_BED", "", "item.bed");

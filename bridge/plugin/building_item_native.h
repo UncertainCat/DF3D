@@ -4,6 +4,7 @@
 #include "item_transaction.h"
 #include "item_owner_native.h"
 #include "df/building_stockpilest.h"
+#include "df/building_floodgatest.h"
 #include "df/buildingitemst.h"
 #include "df/item.h"
 #include "df/job.h"
@@ -221,8 +222,9 @@ inline std::optional<std::string> buildingItemCaption(df::item* item) {
 using ItemBuildingHolder=ItemLocationLink;
 // Native item sheet153bec resolves BUILDING_HOLDER through the semantic general
 // reference lookup. Renderer1567ed calls holder->getName into owned text storage.
-inline std::optional<ItemBuildingHolder> itemBuildingHolder(df::item* item) {
-    using Find=df::building* (*)(df::item*,int32_t);
+using FindItemBuilding=df::building* (*)(df::item*,int32_t);
+inline FindItemBuilding itemBuildingLookup() {
+    using Find=FindItemBuilding;
     static const auto find=[]()->Find {
         if(!farmFunctions())return nullptr;
         auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
@@ -231,6 +233,10 @@ inline std::optional<ItemBuildingHolder> itemBuildingHolder(df::item* item) {
         if(hash!=UINT64_C(0xaf4453f988ab95f7))return nullptr;
         return reinterpret_cast<Find>(base+0xcb16b0);
     }();
+    return find;
+}
+inline std::optional<ItemBuildingHolder> itemBuildingHolder(df::item* item) {
+    const auto find=itemBuildingLookup();
     if(!find||!item)return std::nullopt;
     ItemBuildingHolder result;
     if(auto* building=find(item,0x24)) {
@@ -250,6 +256,14 @@ inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
     const auto color=item->getColorWhetherDyedOrNot();
     if(color>=0){auto* descriptor=df::descriptor_color::find(color);if(!descriptor)return std::nullopt;appearance.colorToken=descriptor->id;}
     else if(color!=-1)return std::nullopt;
+    if(item->getType()==df::item_type::FLOODGATE) {
+        // Native c81fc7..c81ffa: only a linked floodgate's open flag changes
+        // the item variant. Loose/workshop-held items use the closed variant.
+        const auto find=itemBuildingLookup();if(!find)return std::nullopt;
+        auto* holder=find(item,0x24);
+        auto* gate=virtual_cast<df::building_floodgatest>(holder);
+        appearance.floodgateOpen=gate && !gate->gate_flags.bits.closed ? 1 : 0;
+    }
     if(item->getType()==df::item_type::INSTRUMENT) {
         auto* definition=virtual_cast<df::itemdef_instrumentst>(DFHack::Items::getSubtypeDef(item->getType(),item->getSubtype()));
         if(!definition)return std::nullopt;

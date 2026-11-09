@@ -37,14 +37,28 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
-Stocks household semantic capture022112 identifies missing runtime inputs:
+Management160 adds optional floodgate open state to shared item appearance.
+Rebuild bridge and viewer together; version159 peers use a separate channel.
+Native BUILDING_HOLDER lookupcb16b0 supplies the linked simulation building;
+only a floodgate with its closed flag clear selects open artwork. Loose items
+and other holder types select closed artwork. Unknown older appearance remains
+unknown. The field is validated as floodgate-only, participates in revisions,
+and reaches the renderer through owned semantic data. Protected023408 matches all12 captured floodgate rows with zero RGB differences,
+including open/closed installed gates and workshop-held loose items. Core19,
+Stocks state, installed icon checks and MSVC pass. Source preserved; owned
+DF13852 exits unsaved at30FPS,37C/1percent sampled, known Godot shutdown/startup
+diagnostics only. `floodgate_state160_reference` records hashes and scope;
+other materials/improvements and household gaps remain unaccepted.
+
+Stocks household semantic capture022112 identified these runtime inputs:
 Floodgate selectorc81fc7 checks BUILDING_HOLDER, requires a floodgate building,
 and passes its open state to compositorcf5e90. The captured list mixes open,
 closed and loose floodgates (including workshop-held items); item flags alone
 cannot determine the artwork. Door selection also uses item-ID variants and
 linked door flags/close_timer. Bucket7579 contains water item30113, absent from
-its current shared appearance. These are unresolved semantic-data gaps, not
-accepted artwork or permission to infer state in Godot. The bounded native
+its current shared appearance. Floodgate state is now implemented above; door
+state and bucket contents remain unresolved semantic-data gaps, with no
+permission to infer state in Godot. The bounded native
 capture now records simulation facts alongside images; `household_semantic_reference`
 records evidence and limits. Native-only022112 preserves the source and closes
 owned DF37720 unsaved at30FPS, with39C/2percent GPU sampled.
@@ -53,8 +67,9 @@ Stocks household artwork discovery021252 connects doors, floodgates, restraints,
 flasks, goblets, buckets, statues and anvils to the existing shared resolver.
 It also fixes item rows/action buttons retaining a16px scrollbar gap when the
 item list fits. Flask11 and Anvil45 item regions match native; statue icons match
-but six pixels outside icons differ. Door6,Floodgate7,Chain10,Goblet12 and Bucket18
-artwork remain incomplete (1002/4459/2727/99/18 pixels respectively). These are
+but six pixels outside icons differ. Door6,Chain10,Goblet12 and Bucket18
+artwork remain incomplete (1002/2727/99/18 pixels respectively). Floodgate7
+previously differed by4459 pixels and is resolved by the state160 change above. These are
 staged findings, not accepted families. `household_art_reference` separates art,
 other pixels and existing scrollbar differences and records hashes. Cold typed reads,
 visible facts and restored group edits pass; source unchanged, owned DF48520

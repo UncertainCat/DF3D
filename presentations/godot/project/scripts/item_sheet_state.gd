@@ -160,7 +160,8 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 	if editing and owner==generation:applied.emit()
 
 static func _valid_appearance(look: Variant,item_type: int) -> bool:
-	if typeof(look)!=TYPE_DICTIONARY or look.size()!=5+int(item_type==13)+int(look.has("contents")):return false
+	if typeof(look)!=TYPE_DICTIONARY or look.size()!=5+int(item_type==13)+int(look.has("contents"))+int(look.has("floodgate_open")):return false
+	if look.has("floodgate_open") and (item_type!=7 or typeof(look.floodgate_open)!=TYPE_BOOL):return false
 	if look.has("contents") and (item_type!=32 or not _valid_contents(look.contents)):return false
 	if item_type==13:
 		var instrument=look.get("instrument")

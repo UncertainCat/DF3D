@@ -5018,3 +5018,18 @@ TEST_CASE("carrier contents preserve absence and ordered complete facts") {
         if(mode==2){CHECK(facts->entries[0].colorToken=="COPPER");CHECK(facts->entries[0].metal);CHECK(facts->entries[1].itemType==-1);}}}
   }
 }
+
+TEST_CASE("floodgate appearance preserves unknown and linked open state") {
+  for(int type:{7,6})for(int open:{-2,-1,0,1,2}) {
+    flatbuffers::FlatBufferBuilder b;
+    auto appearance=wire::CreateItemInspectionAppearance(b,b.CreateString("INORGANIC:DOLOMITE"),b.CreateString(""),b.CreateString(""),1,0,-1,-1,0,int8_t(open));
+    auto carrier=wire::CreateItemCarrier(b,1,7,type,b.CreateString("container"),appearance);
+    auto item=wire::CreateIndependentItemSnapshot(b,45,1,39,b.CreateString("item"),b.CreateString(""),b.CreateString(""),false,false,false,false,true,false,false,false,b.CreateString(""),b.CreateString(""),0,0,-1,carrier);
+    auto independent=wire::CreateIndependentItemState(b,item);wire::ProductionStateBuilder p(b);p.add_independent_item(independent);auto payload=p.Finish();
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_production(payload);state.add_action(wire::ManagementAction::ProductionInspect);state.add_status(wire::ManagementStatus::Ok);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    const bool invalid=open < -1 || open>1 || (type!=7 && open!=-1);
+    CHECK(bool(wire::validateManagementState(*value))==invalid);
+    if(!invalid)CHECK(codec::decodeProduction(value->production()).independentItem->snapshot->carrier->appearance->floodgateOpen==open);
+  }
+}

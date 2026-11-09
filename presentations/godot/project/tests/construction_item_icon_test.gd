@@ -111,6 +111,13 @@ func run() -> void:
 	check(icon_hash(world.item_sheet_icon(24,axe,1))!=ordinary,"Mood weapon must use special artwork")
 	axe.artifact_mood=1;check(world.item_sheet_icon(24,axe,1)==null,"Mood rendering fact must be boolean")
 	axe.artifact_mood=false;check(world.item_sheet_icon(25,axe,1)==null,"Mood rendering fact is weapon-only")
+	var gate={"material_token":"INORGANIC:DOLOMITE","subtype_raw":"","color_token":"","stack":1,"flags":0,"floodgate_open":false}
+	var closed=world.item_sheet_icon(7,gate,1)
+	gate.floodgate_open=true
+	var opened=world.item_sheet_icon(7,gate,1)
+	check(closed!=null and opened!=null and closed.get_image().get_data()!=opened.get_image().get_data(),"Linked floodgate state selects distinct installed sprites")
+	gate.floodgate_open=1;check(world.item_sheet_icon(7,gate,1)==null,"Floodgate state must be boolean")
+	gate.floodgate_open=false;check(world.item_sheet_icon(6,gate,1)==null,"Floodgate state rejects other item types")
 	check(world.construction_item_icon(-1,{})==null,"unknown item kind")
 	world.free();await process_frame
 	print("CONSTRUCTION_ITEM_ICON ","PASS" if failures==0 else "FAIL")

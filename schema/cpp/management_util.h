@@ -95,6 +95,7 @@ inline const char* validateOwnerAppearance(const SelectionAppearance& image,size
   return nullptr;
 }
 inline bool validInspectionInstrument(const ItemInspectionAppearance& a,int32_t type) {
+  if(a.floodgate_open() < -1 || a.floodgate_open()>1 || (type!=7 && a.floodgate_open()!=-1))return false;
   if(const auto* c=a.contents()) {
     if(type!=32 || !c->entries() || c->entries()->size()>4096 || (!c->container() && c->entries()->size()))return false;
     for(const auto* e:*c->entries())if(!e || e->item_type() < -1 || e->item_type()>92 ||
@@ -115,8 +116,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 159;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v159";
+inline constexpr uint32_t kManagementVersion = 160;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v160";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;

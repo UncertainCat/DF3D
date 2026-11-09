@@ -36,6 +36,14 @@ func wheel_at(point: Vector2,up:=false,page:=false) -> void:
 	event.button_index=MOUSE_BUTTON_WHEEL_UP if up else MOUSE_BUTTON_WHEEL_DOWN;event.shift_pressed=page
 	Input.parse_input_event(event);await process_frame
 func run() -> void:
+	var gate={"material_token":"INORGANIC:DOLOMITE","subtype_raw":"","color_token":"","stack":1,"flags":0}
+	var item_state=preload("res://scripts/item_sheet_state.gd")
+	check(item_state._valid_appearance(gate,7),"Legacy floodgate state remains unknown")
+	for opened in [false,true]:
+		gate.floodgate_open=opened
+		check(item_state._valid_appearance(gate,7),"Known floodgate state rejected")
+		check(not item_state._valid_appearance(gate,6),"Floodgate state accepted for another type")
+	gate.floodgate_open=1;check(not item_state._valid_appearance(gate,7),"Nonboolean floodgate state accepted")
 	var filter=preload("res://scripts/stocks_filter.gd").new();root.add_child(filter);filter.size=Vector2(300,36);filter.configure(StyleBoxEmpty.new(),[])
 	await process_frame
 	await click_filter();check(filter.has_focus(),"First filter click starts typing")

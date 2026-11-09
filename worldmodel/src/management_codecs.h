@@ -5,6 +5,7 @@
 namespace wm::detail::management {
 inline ItemInspectionAppearance decodeInspectionAppearance(const df3d::mirror::ItemInspectionAppearance* a) {
   ItemInspectionAppearance result{a->material_token()->str(),a->subtype_raw()->str(),a->color_token()->str(),a->stack(),a->flags(),a->instrument_family(),a->instrument_placed()};
+  result.floodgateOpen=a->floodgate_open();
   if(const auto* contents=a->contents()){auto& c=result.contents.emplace();c.container=contents->container();
     for(const auto* e:*contents->entries())c.entries.push_back({e->item_type(),e->material_token()->str(),e->color_token()->str(),e->effective_armor_level(),e->metal(),e->coal(),e->contains_powder(),e->rolls_sheets(),e->protects_folded_sheets(),e->contains_writing()});}
   return result;

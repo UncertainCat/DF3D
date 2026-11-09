@@ -42,9 +42,10 @@ Ref<Texture2D> Df3dWorld::ammunition_icon(const Dictionary& appearance,int64_t i
 }
 Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,bool genericGroup,int64_t itemId,bool sheet,bool diagonalAmmo) {
     if(!assets_ || itemType<0 || itemType>=int(wm::ItemKind::BoltThrowerParts) ||
-       appearance.size()!=5+int(appearance.has("bedding"))+int(appearance.has("instrument"))+int(appearance.has("slab_engraving"))+int(appearance.has("gem_shape_raw"))+int(appearance.has("contents"))+int(appearance.has("artifact_mood")))return {};
+       appearance.size()!=5+int(appearance.has("bedding"))+int(appearance.has("instrument"))+int(appearance.has("slab_engraving"))+int(appearance.has("gem_shape_raw"))+int(appearance.has("contents"))+int(appearance.has("artifact_mood"))+int(appearance.has("floodgate_open")))return {};
     if(itemId < -1 || itemId>INT32_MAX)return {};
     if(appearance.has("artifact_mood") && (itemType!=24 || appearance["artifact_mood"].get_type()!=Variant::BOOL))return {};
+    if(appearance.has("floodgate_open") && (itemType!=7 || appearance["floodgate_open"].get_type()!=Variant::BOOL))return {};
     std::optional<wm::ContainerContentsFacts> contents;
     if(appearance.has("contents")) {
         if(itemType!=32 || appearance["contents"].get_type()!=Variant::DICTIONARY)return {};
@@ -184,6 +185,7 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
     }
     df3d::assets::ItemQuery query;query.kind=wm::ItemKind(itemType+1);query.material=materialToken;
     query.diagonalAmmo=diagonalAmmo;
+    if(appearance.has("floodgate_open"))query.floodgateOpen=bool(appearance["floodgate_open"])?1:0;
     if(itemId>=0)query.id=uint32_t(itemId);
     if(contents)query.contents=&*contents;
     query.subtypeRaw=subtypeRaw;query.stack=uint32_t(stack);query.flags=uint8_t(flags);

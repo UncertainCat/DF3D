@@ -212,6 +212,7 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         for(const auto& row:v.items){Dictionary d;d["id"]=row.id;d["type"]=row.type;d["caption"]=String::utf8(row.caption.c_str());d["flags"]=int64_t(row.flags);d["can_dump"]=row.canDump;d["can_melt"]=row.canMelt;d["material_token"]=String::utf8(row.materialToken.c_str());d["subtype_raw"]=String::utf8(row.subtypeRaw.c_str());if(row.appearance){const auto& a=*row.appearance;Dictionary appearance;
           appearance["material_token"]=String::utf8(a.materialToken.c_str());appearance["subtype_raw"]=String::utf8(a.subtypeRaw.c_str());appearance["color_token"]=String::utf8(a.colorToken.c_str());appearance["stack"]=a.stack;appearance["flags"]=int(a.flags);
           if(a.instrumentFamily>=0){Dictionary instrument;instrument["family"]=int(a.instrumentFamily);instrument["placed"]=int(a.instrumentPlaced);appearance["instrument"]=instrument;}
+          if(a.floodgateOpen>=0)appearance["floodgate_open"]=bool(a.floodgateOpen);
           if(a.contents)appearance["contents"]=management::contentsDictionary(*a.contents);
           d["appearance"]=appearance;
         }items.push_back(d);}

@@ -119,6 +119,9 @@ shot('work-details-root')
 if os.getenv('DF3D_WORK_DETAILS_MODSORT')=='1' then
  local helper=debug.getinfo(1,'S').source:sub(2):gsub('work%-details%-native.lua$','work-details-sort-native.lua')
  result.modified_sort=assert(loadfile(helper))(out,view,active_list,headers,shot)
+ if os.getenv('DF3D_WORK_DETAILS_QUERY_WIRE')=='1' then
+  shot('work-details-query');records[#records+1]={name='work-details-query'};return
+ end
  shot('work-details-modified-sort');records[#records+1]={name='work-details-modified-sort'};return
 end
 if os.getenv('DF3D_WORK_DETAILS_INPUT_FOCUS')=='1' then

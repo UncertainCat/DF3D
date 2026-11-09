@@ -213,8 +213,17 @@ func work_detail_query() -> void:
 	var revision: int=rows[0].revision
 	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/work-details-native.json"))
 	var captures: Array=[]
+	if reference.has("modified_sort"):
+		reference.queries=[]
+		var names: Array=["Cat","Name","Prof","Skills"]
+		for observation: Dictionary in reference.modified_sort:
+			if observation.label.begins_with("window-"):continue
+			var sorts: Array=[]
+			for name: String in observation.sorts:sorts.append({"column":names.find(name),"descending":bool(observation.directions[name])})
+			reference.queries.append({"name":observation.label,"sorts":sorts,"native":observation.ids,"query":""})
 	for query in reference.queries:
-		var intent: Dictionary={"action":C.ManagementAction.WorkDetailWorkersQuery,"detail_index":0,"expected_revision":revision,"sorts":[{"column":int(query.sort),"descending":bool(query.direction)}],"query_bytes":str(query.query).to_utf8_buffer()}
+		var sorts: Array=query.sorts if query.has("sorts") else [{"column":int(query.sort),"descending":bool(query.direction)}]
+		var intent: Dictionary={"action":C.ManagementAction.WorkDetailWorkersQuery,"detail_index":0,"expected_revision":revision,"sorts":sorts,"query_bytes":str(query.query).to_utf8_buffer()}
 		var response:=await request("work_detail_workers",intent)
 		var ids: PackedInt32Array=response.get("residents",{}).get("unit_ids",PackedInt32Array())
 		check(response.get("status")==C.ManagementStatus.Ok and ids==PackedInt32Array(query.native),"Work Details native query differs: "+query.name)
@@ -235,7 +244,11 @@ func work_detail_query() -> void:
 	var owner_queries: Array=[]
 	for query in reference.queries:
 		if failed:break
-		if state.sort!=int(query.sort) or state.directions[state.sort]!=bool(query.direction):state.select_sort(int(query.sort))
+		if query.has("sorts"):
+			if query.name.begins_with("controlled-"):
+				var parts: PackedStringArray=query.name.split("-")
+				state.select_sort(["Cat","Name","Prof","Skills"].find(parts[2]),int(parts[1])==1,int(parts[1])==2)
+		elif state.sort!=int(query.sort) or state.directions[state.sort]!=bool(query.direction):state.select_sort(int(query.sort))
 		state.set_query(str(query.query).to_utf8_buffer())
 		check(await ready(state) and state.ids==PackedInt32Array(query.native),"Work Details owner query differs: "+query.name)
 		owner_queries.append({"name":query.name,"ids":Array(state.ids)})

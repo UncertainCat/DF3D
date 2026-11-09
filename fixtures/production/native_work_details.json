@@ -7091,6 +7091,16 @@
       "msvc": "build/notes/pm/work-details-contract154-msvc.log",
       "diagnostics": "Known separate-thread notice only; no unclassified errors.",
       "source_save": "unchanged; owned DF22000 exited unsaved"
+    },
+    "controls_reference": {
+      "capture": "build/stockpile-storage-native-input-20261108-214605",
+      "queries": 12,
+      "owner_queries": 12,
+      "scope": "Full native ID orders match direct vector requests and controller modified-sort transitions. Headless view dispatch follows captured gestures; rendered header and end-to-end modifier-click acceptance pending.",
+      "qa": "build/qa/work-details-multisort-controls",
+      "modifier_precedence": "Native3c6372 tests bit2 before3c6469 tests bit1: Ctrl removal wins. Global238d0b8 SDL Shift/Control mapping reuses Kitchen input evidence.",
+      "source_save": "unchanged; owned DF6820 exited unsaved",
+      "diagnostics": "Known separate-thread notice only; no unclassified errors."
     }
   }
 }

@@ -20,7 +20,9 @@ var settings: Dictionary={}
 var settings_first:=0
 var columns:=30
 var show_gender:=false
-var sort:=C.WorkDetailWorkerSort.Skills
+var priorities: Array[int]=[C.WorkDetailWorkerSort.Skills]
+var sort: int:
+	get:return priorities[0]
 var directions: Array[bool]=[false,false,false,false]
 var query:=PackedByteArray()
 var first:=0
@@ -47,11 +49,11 @@ func close() -> void:
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
 func navigation() -> Dictionary:
-	return {"sort":sort,"directions":directions.duplicate(),"query":query.duplicate(),"first":first,"settings":editing_settings,"settings_first":settings_first}
+	return {"priorities":priorities.duplicate(),"directions":directions.duplicate(),"query":query.duplicate(),"first":first,"settings":editing_settings,"settings_first":settings_first}
 func open(preferred: int=0,retained: Dictionary={}) -> void:
-	close();sort=C.WorkDetailWorkerSort.Skills;directions=[false,false,false,false];query=PackedByteArray()
+	close();priorities=[C.WorkDetailWorkerSort.Skills];directions=[false,false,false,false];query=PackedByteArray()
 	if not retained.is_empty():
-		sort=int(retained.sort);directions.assign(retained.directions);query=retained.query.duplicate()
+		priorities.assign(retained.priorities);directions.assign(retained.directions);query=retained.query.duplicate()
 		editing_settings=bool(retained.get("settings",false));settings_first=maxi(0,int(retained.get("settings_first",0)))
 	_reload(preferred,maxi(0,int(retained.get("first",0))))
 func refresh() -> void:
@@ -101,10 +103,18 @@ func _select(index: int,preferred_first: int=0) -> void:
 	_retire();selected=details[index].duplicate(true);first=preferred_first;ids=PackedInt32Array();phase=Phase.Reading
 	if editing_settings:_read_settings()
 	else:_read_workers()
-func select_sort(value: int) -> void:
+func sort_active(value: int) -> bool:return priorities.has(value)
+func select_sort(value: int,retain_priorities: bool=false,remove_priority: bool=false) -> void:
 	if editing_settings or selected.is_empty() or phase in [Phase.Closed,Phase.Applying] or value<0 or value>=4:return
-	if sort==value:directions[value]=not directions[value]
-	sort=value;first=0;_read_workers()
+	if remove_priority:
+		while priorities.has(value):priorities.erase(value)
+		if priorities.is_empty():priorities.append(C.WorkDetailWorkerSort.Category)
+	else:
+		if retain_priorities and priorities.size()>=65536:return
+		if sort_active(value):directions[value]=not directions[value]
+		if not retain_priorities:priorities.clear()
+		priorities.append(value)
+	first=0;_read_workers()
 func set_query(value: PackedByteArray) -> void:
 	if editing_settings or selected.is_empty() or phase in [Phase.Closed,Phase.Applying] or value==query or value.size()>128 or value.has(0):return
 	query=value.duplicate();first=0;_read_workers()
@@ -112,7 +122,9 @@ func seek(offset: int,count: int) -> void:
 	capacity=clampi(count,0,64);first=clampi(offset,0,maxi(0,ids.size()-capacity));_fill();changed.emit()
 func _read_workers() -> void:
 	_retire();ids=PackedInt32Array();rows={};roster_ready=false;phase=Phase.Reading
-	_submit("work_detail_workers",{"action":A.WorkDetailWorkersQuery,"detail_index":int(selected.index),"expected_revision":int(selected.revision),"sorts":[{"column":sort,"descending":directions[sort]}],"query_bytes":query},func(result):
+	var sorts: Array=[]
+	for column in priorities:sorts.append({"column":column,"descending":directions[column]})
+	_submit("work_detail_workers",{"action":A.WorkDetailWorkersQuery,"detail_index":int(selected.index),"expected_revision":int(selected.revision),"sorts":sorts,"query_bytes":query},func(result):
 		if not result.has("residents"):_reject();return
 		ids=result.residents.unit_ids.duplicate();roster_ready=true;first=clampi(first,0,maxi(0,ids.size()-capacity));_fill();changed.emit())
 func row_at(index: int) -> Dictionary:

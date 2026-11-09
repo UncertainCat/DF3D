@@ -164,6 +164,7 @@ func run() -> void:
 	check(naming.stopped and naming.snapshot.is_empty() and service.next==count,"Uncertain rename discards buffered typing without replay")
 	await process_frame
 	state.dispose()
+	await modified_sort(service)
 	await keyboard_focus(service)
 	await labor_navigation(service)
 	await owner_lifecycle(service)
@@ -241,6 +242,37 @@ func labor_navigation(service) -> void:
 	service.session_changed.emit();owner.open_from_labor()
 	check(owner.return_navigation.is_empty() and owner.state.query.is_empty(),"Session change retires retained Labor navigation")
 	owner.queue_free();await process_frame
+
+func modified_sort(service) -> void:
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/production/native_work_details.json")).modified_sort_reference
+	var names: Array=["Cat","Name","Prof","Skills"]
+	var state:=State.new();state.configure(service);state.open()
+	service.reply(state.ticket,page([detail(0)]));complete_workers(service,state,[])
+	var view:=View.new();root.add_child(view);view.state=state;view.layout(Vector2(1200,800))
+	view.search=preload("res://scripts/area_owner_filter.gd").new();view.add_child(view.search)
+	for observation: Dictionary in reference.observations:
+		if not observation.label.begins_with("controlled-"):continue
+		var parts: PackedStringArray=observation.label.split("-")
+		var column: int=names.find(parts[2]);var modifier:=int(parts[1])
+		var header: int=View.DETAIL_SORTS.find(column)
+		var click:=InputEventMouseButton.new();click.pressed=true;click.button_index=MOUSE_BUTTON_LEFT
+		click.position=Vector2(View.DETAIL_SORT_X[header]*8+4,view.list_top()-18)
+		click.shift_pressed=modifier==1;click.ctrl_pressed=modifier==2
+		view._gui_input(click)
+		var expected: Array=[]
+		for name: String in observation.sorts:expected.append({"column":names.find(name),"descending":bool(observation.directions[name])})
+		check(service.calls[state.ticket].intent.sorts==expected,"Native modified sorting: "+observation.label)
+		for index in 4:
+			check(state.sort_active(index)==observation.sorts.has(names[index]) and state.directions[index]==bool(observation.directions[names[index]]),"Native active header and shared direction: "+observation.label)
+		complete_workers(service,state,[])
+	state.select_sort(1,true);complete_workers(service,state,[])
+	state.select_sort(1,true);complete_workers(service,state,[])
+	var retained:=state.navigation();state.open(0,retained)
+	service.reply(state.ticket,page([detail(0)]));complete_workers(service,state,[])
+	check(state.priorities==retained.priorities and state.directions==retained.directions,"Labor return retains repeated priorities and shared directions")
+	view.dispatch_action({"kind":"sort","value":1,"retain_priorities":true,"remove_priority":true})
+	check(not state.sort_active(1),"Ctrl removal takes precedence over Shift for deferred sort clicks")
+	state.dispose();view.state=null;view.queue_free();await process_frame
 
 func keyboard_focus(service) -> void:
 	var state:=State.new();state.configure(service);state.phase=State.Phase.Ready

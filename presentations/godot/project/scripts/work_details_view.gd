@@ -75,7 +75,11 @@ func _input(event: InputEvent) -> void:
 			name_entry.feed_key(event);get_viewport().set_input_as_handled();return
 		if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
 			var point: Vector2=get_global_transform_with_canvas().affine_inverse()*event.position
-			if not name_rect().has_point(point):name_finished.emit(click_action(point))
+			if not name_rect().has_point(point):
+				var action:=click_action(point)
+				if action.get("kind","")=="sort":
+					action.retain_priorities=event.shift_pressed;action.remove_priority=event.ctrl_pressed
+				name_finished.emit(action)
 			get_viewport().set_input_as_handled();return
 	if allowed() and state!=null:
 		if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
@@ -119,7 +123,7 @@ func dispatch_action(action: Dictionary) -> void:
 		"mode":state.set_mode(int(action.value))
 		"settings":state.open_settings()
 		"search":search.grab_focus()
-		"sort":state.select_sort(int(action.value))
+		"sort":state.select_sort(int(action.value),bool(action.get("retain_priorities",false)),bool(action.get("remove_priority",false)))
 		"member":state.set_member(int(action.id),bool(action.value))
 		"specialize":state.specialize(int(action.id))
 func list_top() -> int:return 204 if wide_tabs else 228
@@ -250,7 +254,7 @@ func _gui_input(event: InputEvent) -> void:
 	if Rect2(272,header_top(),368,36).has_point(event.position):rename_requested.emit();return
 	if Rect2(640,header_top(),32,36).has_point(event.position):settings_requested.emit();return
 	for index in 4:
-		if Rect2(DETAIL_SORT_X[index]*8,list_top()-24,DETAIL_SORT_WIDTH[index]*8,12).has_point(event.position):state.select_sort(DETAIL_SORTS[index]);return
+		if Rect2(DETAIL_SORT_X[index]*8,list_top()-24,DETAIL_SORT_WIDTH[index]*8,12).has_point(event.position):state.select_sort(DETAIL_SORTS[index],event.shift_pressed,event.ctrl_pressed);return
 	for index in page_rows:
 		var row: Dictionary=state.row_at(state.first+index)
 		if row.is_empty() or state.phase!=state.Phase.Ready:continue
@@ -291,7 +295,7 @@ func _draw() -> void:
 		patch("BUTTON_CATEGORY_RECTANGLE_SELECTED" if selected_mode else "BUTTON_CATEGORY_RECTANGLE",Vector2i(int(rect.position.x/8),int(rect.position.y/12)),int(rect.size.x/8),3)
 		text(["Everybody does this","Only selected do this","Nobody does this"][index],rect.position+Vector2(8,24),8 if index==0 and state.selected.cannot_be_everybody else 15)
 	for index in 4:
-		var suffix: String="ACTIVE" if state.sort==DETAIL_SORTS[index] else "INACTIVE"
+		var suffix: String="ACTIVE" if state.sort_active(DETAIL_SORTS[index]) else "INACTIVE"
 		var direction: String="ASCENDING" if state.directions[DETAIL_SORTS[index]] else "DESCENDING"
 		for cell in 4:
 			var arrow:=strip("SORT_"+direction+"_"+suffix,cell)

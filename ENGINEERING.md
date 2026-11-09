@@ -1644,9 +1644,13 @@ ordered `WorkDetailSort` vector on `Local\df3d_management_v154`. Bridge and view
 must rebuild together; version153 requests are not compatible. The vector must
 contain1–65536 keys with consistent directions for repeated columns. Both wire
 and Godot request validation enforce this, while preserving duplicates and order.
-No migration invents priority keys for old recordings. The Godot view/controller
-still emits one key; multi-key priority artwork/navigation and physical Shift
-validation remain required before this UI feature is complete.
+No migration invents priority keys for old recordings. The Godot controller
+retains ordered priorities across Labor navigation, and the view forwards Shift
+to append/toggle and Ctrl to remove all matching keys. Ctrl takes precedence
+over Shift, as native3c6372 branches on bit2 before3c6469 tests bit1. Finishing a
+rename preserves these modifiers for the deferred click. Each participating
+header uses active artwork and its shared direction. The SDL modifier mapping
+is the same global238d0b8 mapping pinned by Kitchen's input reference.
 
 The154 migration passes core19, Work Details controller and fake-host ordered-key
 round-trip checks (`work-details-multisort-contract`), plus MSVC. Protected214241
@@ -1656,6 +1660,14 @@ SHA256 is82AF69CBEE3845FA55D71ED39767E9B47F0C58C70F338A3AF4F0A07DAFFD50B6.
 The source save remains unchanged and owned DF22000 exits unsaved. Joined logs
 contain only the known separate-thread notice; GPU60C sampled. This verifies
 existing-query migration, not live multi-key wire or modified-pointer acceptance.
+
+Protected214605 adds twelve complete native multi-key orders through both direct
+wire queries and the real controller; repeated keys, direction flips, removal
+and final-key Category fallback match. Core19 and controller/pointer-dispatch
+checks pass in `work-details-multisort-controls`. Owned DF6820 exits unsaved with
+the source unchanged; joined logs contain only the known separate-thread notice,
+GPU57–60C sampled. Rendered active-header parity and end-to-end modifier-click
+acceptance remain open; these semantic checks do not establish visual completion.
 
 Keyboard behavior is focus-dependent. Protected211654 on2026-11-08 observes
 FILTER ignored initially, STANDARDSCROLL_RIGHT enabling flag4, then FILTER

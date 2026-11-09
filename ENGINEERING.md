@@ -158,20 +158,33 @@ preservation; GPU56C sampled. Core19 passes kitchen-repeat-provider and MSVC
 passes kitchen-repeat-provider-msvc.log. Installed protocol152 plugin SHA256:
 99DC2FDC7D2F4B355575266DF74F23207DA0123348E4BDA4A51E496DC573517C.
 The diagnostic CLI accepts up to64 priorities; runtime requests retain the
-separate65536-entry allocation bound. Native modified-click binding, UI priority
-art and native sorting above32 rows remain unaccepted; the screen stays hidden.
+separate65536-entry allocation bound. Native sorting above32 rows and full-screen
+acceptance remain open; the screen stays hidden.
 
 The Kitchen controller can now retain and append priorities without removing
 duplicates. Clicking any active column flips its remembered direction and updates
 all occurrences; ordinary sorting still replaces the list. Direct query updates
 also synchronize remembered directions. kitchen-multi-controller passes core19
 and all26 native priority/direction sequences from181529. The staged view marks
-every participating column active; rendered acceptance and the modifier gesture
-remain pending, so no modifier binding is exposed yet. Protected181841 tries
+every participating column active. Protected181841 tries
 VK_LSHIFT as well as the earlier generic Shift delivery: the native modifier byte
 still remains0 during those clicks, so this is inconclusive input delivery, not
 evidence that native Shift has no effect. All provider comparisons pass, the
 source remains unchanged, and owned DF44692 exits unsaved; GPU54C sampled.
+
+Native SDL handler8eba80 resolves the gesture: KEYDOWN300/KEYUP301 dispatch
+LSHIFT400000e1 and RSHIFT400000e5 to set/clear bit0 at238d0b8, which Kitchen46c630
+passes to its cumulative-sort callback. Pinned SDL2 headers identify the keys;
+modifier_sort_reference.input_mapping retains native code-range hashes. The view
+now passes Shift-click to cumulative sorting. Protected182055 exercises actual
+DF3D pointer events through the Labor owner: seven priorities match native with
+zero differing RGB pixels in headers(120,184)-(776,196) and visible rows
+(64,196)-(928,664). Search, tab return, six Cook/Brew edits and stale rejection
+pass, as do six repeated-priority wire queries. Source preservation and unsaved
+exit pass; the30FPS run has only documented thread/finalize/shutdown notices,
+GPU54C. Core19/controller checks pass kitchen-shift-sorting. This accepts the
+mapped gesture and sampled rendering, not physical Windows-message delivery,
+the entire panel, or the above32-row native sort path.
 
 The staged Kitchen view reuses installed Labor chrome, native row/icon assets,
 count captions and permission icons. `kitchen-view-base` renders at1200x800 with
@@ -180,9 +193,8 @@ differing RGB pixels. Core19 passes. The graphical check has only documented
 separate-thread/finalize/shutdown diagnostics; sampled GPU temperature was61C.
 The capture waits for rendering to settle: earlier frame-count-only captures
 omitted chrome or were blank and do not establish fidelity. This is a narrow
-initial13-row comparison, not full-screen acceptance. Selection outline,
-search/modifier-sort gestures, hover, responsive geometry and Labor ownership
-integration remain incomplete; the screen is not exposed.
+initial13-row comparison, not full-screen acceptance. Full responsive/input and
+main-scene integration remain incomplete; the screen is not exposed.
 
 Protected172816/172922 on2026-11-08 records actual Kitchen type-arrow cycling
 through All, Veg/Fruit/Leaves, Seeds, Drinks and Meat/Fish/Other, plus Cook/Brew

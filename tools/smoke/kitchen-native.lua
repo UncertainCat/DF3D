@@ -210,6 +210,7 @@ if os.getenv('DF3D_KITCHEN_SORT')=='1' then
   end
   for _,column in ipairs({{'Name',28},{'Number',80},{'Name',28},{'Cook',90},{'Brew',94},{'Name',28}})do
    click(column[2],15,1);observe('controlled-bit1-'..column[1])
+   if #observations[#observations].sorts==7 then shot('kitchen-seven-priorities')end
   end
   click(18,15);observe('controlled-released-Type')
  end

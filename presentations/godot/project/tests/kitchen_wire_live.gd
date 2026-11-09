@@ -8,8 +8,9 @@ class Interaction extends Node:
 	func _ready() -> void:add_child(panel)
 	func cancel_selection() -> void:pass
 	func set_play_enabled(_value: bool) -> void:pass
-func pointer(view,point: Vector2) -> void:
+func pointer(view,point: Vector2,shift: bool=false) -> void:
 	var event:=InputEventMouseButton.new();event.button_index=MOUSE_BUTTON_LEFT;event.pressed=true
+	event.shift_pressed=shift
 	event.position=view.get_global_transform_with_canvas()*point;event.global_position=event.position
 	Input.parse_input_event(event);await process_frame
 	event=event.duplicate();event.pressed=false;Input.parse_input_event(event);await process_frame
@@ -72,6 +73,18 @@ func run() -> void:
 	if rendered:
 		await create_timer(0.3).timeout;await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(directory+"/kitchen-view-root.png")
+		# Native seven-priority capture starts with reverse Type, then cumulative
+		# Name, Number, Name, Cook, Brew, Name clicks.
+		await pointer(owner.kitchen_panel,Vector2(100,owner.kitchen_panel.list_top()+18))
+		if not await ready_state(state):quit(1);return
+		for x in [180,600,180,696,728,180]:
+			await pointer(owner.kitchen_panel,Vector2(x,owner.kitchen_panel.list_top()+18),true)
+			if not await ready_state(state):quit(1);return
+		check(state.query.sorts.size()==7,"Shift clicks failed to retain seven priorities")
+		await create_timer(0.3).timeout;await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/kitchen-view-seven-priorities.png")
+		await pointer(owner.kitchen_panel,Vector2(100,owner.kitchen_panel.list_top()+18))
+		if not await ready_state(state):quit(1);return
 		await pointer(owner.kitchen_panel.search,Vector2(40,18))
 		for code in "plump".length():
 			var event:=InputEventKey.new();event.pressed=true;event.unicode="plump".unicode_at(code);Input.parse_input_event(event);await process_frame

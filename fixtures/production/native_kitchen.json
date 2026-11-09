@@ -5680,6 +5680,32 @@
       "wire_repeated_queries": 6,
       "wire_edits": 6,
       "scope": "All26 owned provider orders match native; six controlled repeated-priority queries also match via actual Godot controller and protocol152, up to seven priorities. Six native-reference edits and stale receipt rejection pass. Only documented Godot separate-thread notice, no unclassified diagnostics. Physical modifier gesture and lists over32 remain unaccepted. Source preserved and owned game exited unsaved."
+    },
+    "input_mapping": {
+      "source": "Supported DF executable native SDL input handler and pinned SDL2 headers",
+      "ranges": [
+        {
+          "start": "0x8eba80",
+          "end": "0x8ebb70",
+          "sha256": "a48adb0f3b1cdb5add6fb12a6c77640f094360dbdcf7e098b262a73c660f5924"
+        },
+        {
+          "start": "0x8ebfe4",
+          "end": "0x8ec01c",
+          "sha256": "09c81a7397d8838aebfe01966690d09ab52e518ee2f14d16246c55fcabee489e"
+        },
+        {
+          "start": "0x46c630",
+          "end": "0x46c64e",
+          "sha256": "10be08c4b184fdb08c0c62cddf8b6a6f3e8199a9666ea7a56011af883b0d6860"
+        }
+      ],
+      "mapping": "SDL_KEYDOWN300 / KEYUP301; SDLK_LSHIFT400000e1 and RSHIFT400000e5 set/clear bit0 at238d0b8 via8ebb57/8ebb0e; Kitchen46c630 passes bit0 to463dd0. Posted WM_SHIFT delivery remains inconclusive, not a different native gesture."
+    },
+    "rendered_acceptance": {
+      "capture": "build/stockpile-storage-native-input-20261108-182055",
+      "scope": "Actual DF3D Shift pointer events through Labor owner, seven priorities. Native headers crop120,184..776,196 and visible rows64,196..928,664 have zero differing RGB pixels. Search, Standing tab return, six Cook/Brew edits and stale rejection pass; six typed repeated-priority queries match. Source preserved, owned unsaved exit, only known Godot thread/finalize/shutdown diagnostics. Not complete panel or >32-row sort acceptance.",
+      "gpu_temperature_c": 54
     }
   }
 }

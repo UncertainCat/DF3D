@@ -434,13 +434,30 @@ inline bool simpleItemDescriptionDispatch(df::item* item) {
 }
 // Native constructed-item dispatch. Lazy art owns semantic world records, not
 // native UI state; observations are built after those native effects.
+// These furniture/container types follow the BOX description path in c75000:
+// no extra type-specific branch, no subtype raw, and identical pinned virtuals.
+inline bool furnitureItemDescriptionTable(const uint8_t* base,const void* table) {
+    return table==base+0x16c8230 ||
+           table==base+0x16c2d20 ||
+           table==base+0x1625280 ||
+           table==base+0x1625a00 ||
+           table==base+0x16f9cb0 ||
+           table==base+0x1620b48 ||
+           table==base+0x16212c8 ||
+           table==base+0x16225f0 ||
+           table==base+0x16c25a0 ||
+           table==base+0x16fe8b8 ||
+           table==base+0x16c3fe0 ||
+           table==base+0x161e518;
+}
 inline bool constructedItemDescriptionDispatch(df::item* item) {
     if(!item||!farmFunctions())return false;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     const auto* table=*reinterpret_cast<const void* const*>(item);
     if(table!=base+0x1623198 && table!=base+0x16c6cf0 && table!=base+0x161dd98 &&
        table!=base+0x161f840 && table!=base+0x1621b88 && table!=base+0x1624818 &&
-       table!=base+0x161edd8 && table!=base+0x16c9ba0)return false;
+       table!=base+0x161edd8 && table!=base+0x16c9ba0 &&
+       !furnitureItemDescriptionTable(base,table))return false;
     static const bool pinned=[base]() {
         struct Pin {size_t slot,target,length;uint64_t hash;};
         constexpr Pin pins[]={
@@ -470,7 +487,8 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
         // Clothing and ammunition share every listed constructed-item virtual except getType.
         // c75000 has no clothing-specific branch; subtype is a semantic raw.
         for(size_t table:{size_t(0x1623198),size_t(0x16c6cf0),size_t(0x161dd98),
-                         size_t(0x161f840),size_t(0x1621b88),size_t(0x1624818),size_t(0x161edd8),size_t(0x16c9ba0)})for(auto pin:pins) {
+                         size_t(0x161f840),size_t(0x1621b88),size_t(0x1624818),size_t(0x161edd8),size_t(0x16c9ba0),
+                         size_t(0x16c8230),size_t(0x16c2d20),size_t(0x1625280),size_t(0x1625a00),size_t(0x16f9cb0),size_t(0x1620b48),size_t(0x16212c8),size_t(0x16225f0),size_t(0x16c25a0),size_t(0x16fe8b8),size_t(0x16c3fe0),size_t(0x161e518)})for(auto pin:pins) {
             if(table==0x16c6cf0 && pin.slot==0)pin={0,0x673c0,6,UINT64_C(0x6470dd592ae1062b)};
             if(pin.slot==0) {
                 if(table==0x161dd98)pin={0,0x28a840,6,UINT64_C(0x3c0e712b7d27ecd8)};
@@ -479,12 +497,26 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
                 if(table==0x1624818)pin={0,0x722d0,6,UINT64_C(0xd1ead67b27153938)};
                 if(table==0x16c9ba0)pin={0,0x548fa0,6,UINT64_C(0x7b7766ffefb27e79)};
                 if(table==0x161edd8)pin={0,0x28a950,6,UINT64_C(0x2f5f1000ffd7ac5b)};
+                if(table==0x16c8230)pin={0,0x54a180,6,UINT64_C(0xfa4cc2a8d4cd790b)};
+                if(table==0x16c2d20)pin={0,0x7a480,6,UINT64_C(0xfca403570a9adc4f)};
+                if(table==0x1625280)pin={0,0x67860,6,UINT64_C(0xa3dbcb2d9d6ef034)};
+                if(table==0x1625a00)pin={0,0x28ac20,6,UINT64_C(0xd43f97295cde5cfc)};
+                if(table==0x16f9cb0)pin={0,0x7a840,6,UINT64_C(0xeff4222c8d49c252)};
+                if(table==0x1620b48)pin={0,0x28ad70,6,UINT64_C(0xae3473a9e4f2b485)};
+                if(table==0x16212c8)pin={0,0x676d0,6,UINT64_C(0x972bea03201dd637)};
+                if(table==0x16225f0)pin={0,0x67b90,6,UINT64_C(0xf24ae2dac3164c16)};
+                if(table==0x16c25a0)pin={0,0x67270,6,UINT64_C(0x7dce27ae257f083d)};
+                if(table==0x16fe8b8)pin={0,0x67530,6,UINT64_C(0xe59b01b045c53219)};
+                if(table==0x16c3fe0)pin={0,0x67490,6,UINT64_C(0x711ebe83a82eba28)};
+                if(table==0x161e518)pin={0,0x67200,6,UINT64_C(0xd69657d792aae6c0)};
             }
             if(*reinterpret_cast<const void* const*>(base+table+pin.slot)!=base+pin.target || hash(pin.target,pin.length)!=pin.hash)return false;
         }
         for(size_t table:{size_t(0x16c6cf0),size_t(0x161dd98),size_t(0x161f840),
                          size_t(0x1621b88),size_t(0x1624818),size_t(0x161edd8),size_t(0x16c9ba0)})
             if(*reinterpret_cast<const void* const*>(base+table+8)!=base+0xfd0c0)return false;
+        for(size_t table:{size_t(0x16c8230),size_t(0x16c2d20),size_t(0x1625280),size_t(0x1625a00),size_t(0x16f9cb0),size_t(0x1620b48),size_t(0x16212c8),size_t(0x16225f0),size_t(0x16c25a0),size_t(0x16fe8b8),size_t(0x16c3fe0),size_t(0x161e518)})
+            if(*reinterpret_cast<const void* const*>(base+table+8)!=base+0x66e60)return false;
         if(hash(0xfd0c0,12)!=UINT64_C(0xf68164ec06d8d50a))return false;
         if(hash(0x67520,0x6)!=UINT64_C(0x18580e5a3b056825))return false;
         if(hash(0x67540,0x6)!=UINT64_C(0x2505ef84b8531c22))return false;
@@ -533,7 +565,7 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
     if(table==base+0x1624818)clothingSubtype=static_cast<df::item_pantsst*>(item)->subtype;
     if(table==base+0x16c9ba0)clothingSubtype=static_cast<df::item_ammost*>(item)->subtype;
     if(table==base+0x161edd8)clothingSubtype=static_cast<df::item_glovesst*>(item)->subtype;
-    if(table!=base+0x1623198 && table!=base+0x16c6cf0 &&
+    if(table!=base+0x1623198 && table!=base+0x16c6cf0 && !furnitureItemDescriptionTable(base,table) &&
        (!clothingSubtype || DFHack::Items::getSubtypeDef(item->getType(),item->getSubtype())!=clothingSubtype))return false;
     const auto* box=static_cast<df::item_constructed*>(item);
     if(int(box->quality)<0 || int(box->quality)>int(df::item_quality::Artifact))return false;
@@ -665,6 +697,18 @@ inline std::optional<ItemObservation> observeItem(df::item* item) {
     ItemObservation value;value.item=std::move(*facts);value.weight=*weight;value.description=*description;
     switch(item->getType()) {
     case df::item_type::BOX:case df::item_type::INSTRUMENT:
+    case df::item_type::DOOR:
+    case df::item_type::FLOODGATE:
+    case df::item_type::BED:
+    case df::item_type::CHAIR:
+    case df::item_type::FLASK:
+    case df::item_type::GOBLET:
+    case df::item_type::BARREL:
+    case df::item_type::BUCKET:
+    case df::item_type::TABLE:
+    case df::item_type::BIN:
+    case df::item_type::CABINET:
+    case df::item_type::ANVIL:
     case df::item_type::HELM:case df::item_type::ARMOR:case df::item_type::SHOES:
     case df::item_type::PANTS:case df::item_type::GLOVES:case df::item_type::AMMO:
         value.appearance=itemAppearance(item);if(!value.appearance)return std::nullopt;break;

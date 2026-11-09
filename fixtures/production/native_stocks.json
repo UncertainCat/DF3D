@@ -6212,5 +6212,120 @@
       37
     ],
     "installed_bridge_sha256": "aaf031ce310386a09925684dc9171c58e14c888392b17de11094e154e038decd"
+  },
+  "furniture_description_dispatch_reference": {
+    "status": "Implemented and build-verified; native/live item-sheet comparison pending. Public Stocks remains gated.",
+    "native_description_rva": "0xc75000",
+    "native_description_length": "0x46aa",
+    "native_description_fnv1a64": "d5969f2286ee8a96",
+    "families": [
+      {
+        "name": "item_anvilst",
+        "table": "0x16c8230",
+        "kind": 45,
+        "get_type": "0x54a180",
+        "subtype": "0x66e60",
+        "differences": {}
+      },
+      {
+        "name": "item_barrelst",
+        "table": "0x16c2d20",
+        "kind": 17,
+        "get_type": "0x7a480",
+        "subtype": "0x66e60",
+        "differences": {}
+      },
+      {
+        "name": "item_bedst",
+        "table": "0x1625280",
+        "kind": 8,
+        "get_type": "0x67860",
+        "subtype": "0x66e60",
+        "differences": {}
+      },
+      {
+        "name": "item_binst",
+        "table": "0x1625a00",
+        "kind": 32,
+        "get_type": "0x28ac20",
+        "subtype": "0x66e60",
+        "differences": {}
+      },
+      {
+        "name": "item_bucketst",
+        "table": "0x16f9cb0",
+        "kind": 18,
+        "get_type": "0x7a840",
+        "subtype": "0x66e60",
+        "differences": {}
+      },
+      {
+        "name": "item_cabinetst",
+        "table": "0x1620b48",
+        "kind": 35,
+        "get_type": "0x28ad70",
+        "subtype": "0x66e60",
+        "differences": {}
+      },
+      {
+        "name": "item_chairst",
+        "table": "0x16212c8",
+        "kind": 9,
+        "get_type": "0x676d0",
+        "subtype": "0x66e60",
+        "differences": {}
+      },
+      {
+        "name": "item_doorst",
+        "table": "0x16225f0",
+        "kind": 6,
+        "get_type": "0x67b90",
+        "subtype": "0x66e60",
+        "differences": {}
+      },
+      {
+        "name": "item_flaskst",
+        "table": "0x16c25a0",
+        "kind": 11,
+        "get_type": "0x67270",
+        "subtype": "0x66e60",
+        "differences": {}
+      },
+      {
+        "name": "item_floodgatest",
+        "table": "0x16fe8b8",
+        "kind": 7,
+        "get_type": "0x67530",
+        "subtype": "0x66e60",
+        "differences": {}
+      },
+      {
+        "name": "item_gobletst",
+        "table": "0x16c3fe0",
+        "kind": 12,
+        "get_type": "0x67490",
+        "subtype": "0x66e60",
+        "differences": {}
+      },
+      {
+        "name": "item_tablest",
+        "table": "0x161e518",
+        "kind": 20,
+        "get_type": "0x67200",
+        "subtype": "0x66e60",
+        "differences": {}
+      }
+    ],
+    "ownership": "Owned description string; native semantic item/material/improvement records. No viewscreen or menu scratch. Native lazy art effects retained before observation.",
+    "dispatch": "Each selected family shares all BOX description virtual targets except its pinned six-byte getType; getSubtype is the pinned -1 leaf. No additional type-specific description branch for these families. Shared improvement dispatch guards retained.",
+    "verification": [
+      "item-furniture-dispatch: core19, extension, item_sheet_state_test passed",
+      "item-furniture-dispatch-msvc: Release df3d build passed"
+    ],
+    "limitations": [
+      "No live acceptance of these newly enabled item details yet",
+      "Other item classes still require dispatch/ownership audit",
+      "No public Stocks exposure or whole-management completion claimed"
+    ]
   }
 }

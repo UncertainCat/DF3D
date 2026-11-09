@@ -37,6 +37,17 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
+The item-detail provider now admits doors, floodgates, beds, chairs, flasks,
+goblets, barrels, buckets, tables, bins, cabinets and anvils through the pinned
+native c75000 description routine. Their description virtuals match BOX except
+for individually pinned getType leaves; each has the same no-subtype leaf and
+no additional type-specific description branch. Existing improvement guards
+and native lazy semantic effects remain intact. Item observations now include
+their appearance facts. Core19, extension, item-sheet state and MSVC pass in
+`item-furniture-dispatch`; live detail-panel comparison is pending, and public
+Stocks remains gated. `furniture_description_dispatch_reference` records the
+supported tables and bounded verification.
+
 Management162 adds optional bucket liquid presence and selected material color.
 Rebuild bridge/viewer together;161 peers use a separate channel. Unknown legacy
 contents remain absent; known empty and known liquid with no color are distinct.

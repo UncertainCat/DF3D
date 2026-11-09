@@ -136,6 +136,20 @@ pages, including18 visible economic stones at the widest size, not resizing
 an already-scrolled list or remaining off-page artwork. Runs stay serial at30FPS,
 sampled GPU59-60C. `navigation_reference` retains observations and comparison scope.
 
+Protected195547 extends display coverage to all83 stones through six complete
+native page captures (economic0/15; other0/15/30/38). Every full panel crop matches
+DF3D with zero RGB differences. It also establishes native scrolled resizing:
+the retained Other stone position stays38, while the1600x900 renderer starts at35
+to fill18 rows. Returning to1200x800 displays38 again. DF3D now uses this separate
+displayed first row for drawing, artwork, scrollbar and click targets. Four
+scrolled panel crops at912x552,960x600,1600x900 and1200x800 all match exactly.
+The actual minimum request in this run reached912x552;195239's different observed
+size remains explicitly scoped to that run. `pages_reference` retains comparisons.
+Core19 and rendered stone-use-pages pass, with only documented Godot diagnostics.
+Source preserved, DF41748 exits unsaved; serial30FPS, sampled GPU60C. Live edits
+immediately after a scrolled resize and remaining session/reconnect behavior
+are not established by these display captures.
+
 Protected185832 on2026-11-08 records
 30 economic and53 other stones in native order, material identities/restrictions,
 and the default economic screen. `native_stone_use.json` is the durable reference

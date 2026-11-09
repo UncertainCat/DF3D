@@ -46,6 +46,18 @@ func run() -> void:
 		for shift in [false,true]:
 			for kind in [MOUSE_BUTTON_WHEEL_DOWN,MOUSE_BUTTON_WHEEL_UP]:
 				await button(point,true,kind,shift);check(state.first[0]==0,"Native ignored wheel changed scroll")
+	for category in 2:
+		state.select_category(category)
+		for first in ([0,15] if category==0 else [0,15,30,38]):
+			state.seek(first,view.capacity())
+			await process_frame;await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../../../build/stone-use-page-%d-%d.png"%[category,first]))
+	for dimensions in [Vector2i(912,552),Vector2i(960,600),Vector2i(1600,900),Vector2i(1200,800)]:
+		root.size=dimensions;view.layout(Vector2(dimensions))
+		check(state.first[1]==38,"Resize changed retained Stone use position")
+		check(view.visible_first()==(35 if dimensions.x==1600 else 38),"Resize failed to fill native visible page")
+		await create_timer(0.3).timeout;await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../../../build/stone-use-scrolled-%dx%d.png"%[dimensions.x,dimensions.y]))
 	view.queue_free();world.queue_free();await process_frame
 	if not failed:print("STONE_USE_CAPTURE_PASS")
 	quit(1 if failed else 0)

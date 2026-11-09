@@ -178,6 +178,16 @@ if os.getenv('DF3D_STONE_USE_NAV')=='1' then
   observe('drag-'..y)
  end
  panel.scroll_position[0]=0;panel.scroll_position[1]=0
+ if os.getenv('DF3D_STONE_USE_PAGES')=='1' then
+  for category=0,1 do
+   click(category==0 and 14 or 30,12)
+   for _,first in ipairs(category==0 and {0,15} or {0,15,30,38})do
+    -- Diagnostic positioning; captured rows still use native rendering.
+    panel.scroll_position[category]=first;view:render(dfhack.getTickCount())
+    observe('page-'..category..'-'..first);shot('stone-use-page-'..category..'-'..first)
+   end
+  end
+ end
  for _,size in ipairs({'minimum','small','wide','default'})do
   request('name-resize-'..size);observe(size);shot('stone-use-layout-'..size)
  end

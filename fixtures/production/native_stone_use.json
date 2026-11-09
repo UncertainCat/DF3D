@@ -2111,5 +2111,224 @@
       0
     ],
     "scope": "Ordinary/Shift physical wheel messages at row/outside/bar leave native scroll unchanged. Six native drag destinations reproduced with rendered Godot input, plus arrow/page/category retention and wheel suppression. Initial page panel pixels match all four actual sizes; minimum request640x480 actually produced960x720. No scrolled-resize or all off-page art acceptance. Source preserved, DF39780 unsaved exit. Serial30FPS/GPU59-60C sampled, only known separate-thread/device-finalize/shutdown-object diagnostics."
+  },
+  "pages_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-195547",
+    "qa": "build/qa/stone-use-pages",
+    "observations": [
+      {
+        "category": 0,
+        "columns": 150,
+        "first": [
+          0,
+          0
+        ],
+        "label": "page-0-0",
+        "rows": 66
+      },
+      {
+        "category": 0,
+        "columns": 150,
+        "first": [
+          15,
+          0
+        ],
+        "label": "page-0-15",
+        "rows": 66
+      },
+      {
+        "category": 1,
+        "columns": 150,
+        "first": [
+          15,
+          0
+        ],
+        "label": "page-1-0",
+        "rows": 66
+      },
+      {
+        "category": 1,
+        "columns": 150,
+        "first": [
+          15,
+          15
+        ],
+        "label": "page-1-15",
+        "rows": 66
+      },
+      {
+        "category": 1,
+        "columns": 150,
+        "first": [
+          15,
+          30
+        ],
+        "label": "page-1-30",
+        "rows": 66
+      },
+      {
+        "category": 1,
+        "columns": 150,
+        "first": [
+          15,
+          38
+        ],
+        "label": "page-1-38",
+        "rows": 66
+      },
+      {
+        "category": 1,
+        "columns": 114,
+        "first": [
+          15,
+          38
+        ],
+        "label": "minimum",
+        "rows": 46
+      },
+      {
+        "category": 1,
+        "columns": 120,
+        "first": [
+          15,
+          38
+        ],
+        "label": "small",
+        "rows": 50
+      },
+      {
+        "category": 1,
+        "columns": 200,
+        "first": [
+          15,
+          38
+        ],
+        "label": "wide",
+        "rows": 75
+      },
+      {
+        "category": 1,
+        "columns": 150,
+        "first": [
+          15,
+          38
+        ],
+        "label": "default",
+        "rows": 66
+      }
+    ],
+    "comparisons": [
+      {
+        "native": "stone-use-page-0-0.png",
+        "viewer": "stone-use-page-0-0.png",
+        "crop": [
+          32,
+          52,
+          976,
+          760
+        ],
+        "different_rgb_pixels": 0
+      },
+      {
+        "native": "stone-use-page-0-15.png",
+        "viewer": "stone-use-page-0-15.png",
+        "crop": [
+          32,
+          52,
+          976,
+          760
+        ],
+        "different_rgb_pixels": 0
+      },
+      {
+        "native": "stone-use-page-1-0.png",
+        "viewer": "stone-use-page-1-0.png",
+        "crop": [
+          32,
+          52,
+          976,
+          760
+        ],
+        "different_rgb_pixels": 0
+      },
+      {
+        "native": "stone-use-page-1-15.png",
+        "viewer": "stone-use-page-1-15.png",
+        "crop": [
+          32,
+          52,
+          976,
+          760
+        ],
+        "different_rgb_pixels": 0
+      },
+      {
+        "native": "stone-use-page-1-30.png",
+        "viewer": "stone-use-page-1-30.png",
+        "crop": [
+          32,
+          52,
+          976,
+          760
+        ],
+        "different_rgb_pixels": 0
+      },
+      {
+        "native": "stone-use-page-1-38.png",
+        "viewer": "stone-use-page-1-38.png",
+        "crop": [
+          32,
+          52,
+          976,
+          760
+        ],
+        "different_rgb_pixels": 0
+      },
+      {
+        "native": "stone-use-layout-minimum.png",
+        "viewer": "stone-use-scrolled-912x552.png",
+        "crop": [
+          32,
+          48,
+          688,
+          516
+        ],
+        "different_rgb_pixels": 0
+      },
+      {
+        "native": "stone-use-layout-small.png",
+        "viewer": "stone-use-scrolled-960x600.png",
+        "crop": [
+          32,
+          48,
+          736,
+          564
+        ],
+        "different_rgb_pixels": 0
+      },
+      {
+        "native": "stone-use-layout-wide.png",
+        "viewer": "stone-use-scrolled-1600x900.png",
+        "crop": [
+          32,
+          48,
+          1376,
+          864
+        ],
+        "different_rgb_pixels": 0
+      },
+      {
+        "native": "stone-use-layout-default.png",
+        "viewer": "stone-use-scrolled-1200x800.png",
+        "crop": [
+          32,
+          52,
+          976,
+          760
+        ],
+        "different_rgb_pixels": 0
+      }
+    ],
+    "scope": "All83 stones covered by six full default panel crops. Retained category position38 displays35 at1600x900 and38 again at1200x800; four scrolled resize crops match including actual912x552 minimum. Source preserved, DF41748 unsaved exit. Serial30FPS/GPU60C sampled; only known separate-thread/device-finalize/shutdown-object diagnostics. No live edit immediately after scrolled resize or complete session/reconnect acceptance."
   }
 }

@@ -1,6 +1,6 @@
 extends "res://scripts/standing_orders_view.gd"
-# Native default layout: native_stone_use.json. Staged until rendered input,
-# responsive layout, hover and Labor ownership have independent acceptance.
+# Native layout/input evidence: native_stone_use.json. Public exposure stays
+# gated on the broader Labor lifecycle acceptance.
 signal standing_requested
 var icons: Dictionary={}
 var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
@@ -10,6 +10,9 @@ func configure_stone_use(source,model) -> void:
 	scrollbar.row_changed.connect(func(value):state.seek(value,capacity()))
 	state.changed.connect(refresh);refresh()
 func rows_top() -> int:return list_top()+24
+# Native clamps the displayed page on resize without changing its retained
+# category position. Input targets must use the displayed rows too.
+func visible_first() -> int:return mini(state.first[state.category],maxi(0,state.category_rows().size()-capacity()))
 func capacity() -> int:return maxi(0,int((size.y-rows_top()-24)/36))
 func layout(view: Vector2) -> void:
 	super.layout(view)
@@ -18,13 +21,13 @@ func category_rect(index: int) -> Rect2:return Rect2(8+index*144,list_top()-36,1
 func restriction_rect(index: int) -> Rect2:return Rect2(size.x-72,rows_top()+index*36,32,36)
 func refresh() -> void:
 	var values: Array=state.category_rows();var retained: Dictionary={}
-	for index in range(state.first[state.category],mini(values.size(),state.first[state.category]+capacity())):
+	for index in range(visible_first(),mini(values.size(),visible_first()+capacity())):
 		var token: String=values[index].material_token
 		retained[token]=icons.get(token)
 		if retained[token]==null:retained[token]=world.item_sheet_icon(4,{"material_token":token,"subtype_raw":"","color_token":"","stack":1,"flags":0},-1)
 	icons=retained
 	scrollbar.position=Vector2(size.x-32,rows_top());scrollbar.size=Vector2(16,capacity()*36)
-	scrollbar.page=capacity();scrollbar.set_rows(values.size(),state.first[state.category])
+	scrollbar.page=capacity();scrollbar.set_rows(values.size(),visible_first())
 	queue_redraw()
 func _gui_input(event: InputEvent) -> void:
 	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
@@ -36,8 +39,8 @@ func _gui_input(event: InputEvent) -> void:
 	for kind in 2:
 		if category_rect(kind).has_point(event.position):state.select_category(kind);return
 	var values: Array=state.category_rows()
-	for index in mini(capacity(),values.size()-state.first[state.category]):
-		if restriction_rect(index).has_point(event.position):state.toggle(int(values[state.first[state.category]+index].index));return
+	for index in mini(capacity(),values.size()-visible_first()):
+		if restriction_rect(index).has_point(event.position):state.toggle(int(values[visible_first()+index].index));return
 func shortened(value: String,cells: int) -> String:
 	return value if value.length()<=cells else value.left(maxi(0,cells-3))+"..."
 func _draw() -> void:
@@ -57,8 +60,8 @@ func _draw() -> void:
 	draw_rect(Rect2(size.x-328,list_top(),34*8,12),Color8(28,28,28))
 	text("Select to use in non-economic jobs.",Vector2(size.x-328,list_top()+12))
 	var values: Array=state.category_rows()
-	for index in mini(capacity(),values.size()-state.first[state.category]):
-		var row: Dictionary=values[state.first[state.category]+index];var y:=rows_top()+index*36
+	for index in mini(capacity(),values.size()-visible_first()):
+		var row: Dictionary=values[visible_first()+index];var y:=rows_top()+index*36
 		patch("BUTTON_RECTANGLE",Vector2i(2,int(y/12)),int(size.x/8)-6,3)
 		patch("",Vector2i(2,int(y/12)),5,3,picture.texture(false))
 		var icon: Texture2D=icons.get(row.material_token)

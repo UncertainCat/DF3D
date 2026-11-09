@@ -1,6 +1,8 @@
 #pragma once
 #include "standing_orders_native.h"
 #include "df/plotinfost.h"
+#include "df/inorganic_raw.h"
+#include <algorithm>
 #include <cstddef>
 
 namespace df3d_stone_use {
@@ -10,6 +12,7 @@ inline uint8_t* supportedBase() {
     static const bool valid=[base] {
         struct Pin {size_t rva,length;uint64_t hash;};
         constexpr Pin pins[]={
+            {0x149ef80,0x128,UINT64_C(0x955b881c6987504a)},
             {0x434b8a,0x2a,UINT64_C(0x5f0bf376df3ff178)},
             {0x432450,0xaff,UINT64_C(0x051b891c44236820)},
             {0xd97510,0x790,UINT64_C(0xe3752bf787a64fef)},
@@ -41,7 +44,7 @@ struct Context {
 };
 static_assert(offsetof(Context,indices)==0x158 && offsetof(Context,restrictions)==0x188);
 static_assert(offsetof(Context,descriptions)==0x1b8);
-struct Row {int32_t category,index;bool restricted;std::string name,uses;};
+struct Row {int32_t category,index;bool restricted;std::string name,uses;bool magmaSafe=false;std::string materialToken;};
 inline std::optional<std::vector<Row>> read() {
     auto* base=supportedBase();
     if(!base || !df::global::world || !df::global::plotinfo)return std::nullopt;
@@ -66,7 +69,12 @@ inline std::optional<std::vector<Row>> read() {
             if(name.empty() || name.size()>16384)return std::nullopt;
             std::string uses;
             if(category==0){if(!owned.descriptions[i] || owned.descriptions[i]->size()>65536)return std::nullopt;uses=*owned.descriptions[i];}
-            result.push_back({category,index,flags[index]!=0,std::move(name),std::move(uses)});
+            const auto& inorganics=df::global::world->raws.inorganics.all;
+            if(size_t(index)>=inorganics.size() || !inorganics[index] || inorganics[index]->id.empty())return std::nullopt;
+            // Native438adc asks the read-only material temperature predicate
+            // at12000; the presentation receives the result, never raw rules.
+            const bool safe=reinterpret_cast<bool(*)(void*,int16_t,int32_t,uint16_t)>(base+0x149ef80)(df::global::world,0,index,12000);
+            result.push_back({category,index,flags[index]!=0,std::move(name),std::move(uses),safe,"INORGANIC:"+inorganics[index]->id});
         }
     }
     return result;

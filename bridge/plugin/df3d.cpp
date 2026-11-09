@@ -2602,7 +2602,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           Json::Value result(Json::arrayValue);
           for(const auto& row:*rows){Json::Value value(Json::objectValue);
             value["category"]=row.category;value["index"]=row.index;value["restricted"]=row.restricted;
-            value["name"]=DF2UTF(row.name);value["uses"]=DF2UTF(row.uses);result.append(value);}
+            value["name"]=DF2UTF(row.name);value["uses"]=DF2UTF(row.uses);value["magma_safe"]=row.magmaSafe;value["material_token"]=row.materialToken;result.append(value);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="chores-probe") {

@@ -51,6 +51,33 @@ for y=11,g.dimy-4 do
  local text=dfhack.df2utf(table.concat(chars)):gsub('%s+$','')
  if text:find('%S')then result.rows[#result.rows+1]={y=y,text=text}end
 end
+if os.getenv('DF3D_STONE_USE_DISPLAY')=='1' then
+ assert(cold,'Stone use display comparison requires provider')
+ local page
+ for _,candidate in ipairs(df.global.texture.page)do if candidate.token=='INTERFACE_BITS_LABOR' then page=candidate;break end end
+ assert(page,'Native Stone use artwork page missing')
+ result.display={}
+ local cursor=1
+ for category=0,1 do
+  click(category==0 and 14 or 30,12)
+  for position,index in ipairs(panel.stone_mg_index[category])do
+   -- Diagnostic-only positioning of the native list, never runtime input.
+   local first=math.min(position,math.max(0,#panel.stone_mg_index[category]-15))
+   panel.scroll_position[category]=first
+   view:render(dfhack.getTickCount())
+   local tile=dfhack.screen.readTile(34,16+(position-first)*3).tile
+   local safe=tile==page.texpos[8]
+   assert(safe or tile==page.texpos[3*page.page_dim_x+8],'Unexpected native magma indicator')
+   local row=cold[cursor]
+   assert(row.index==index and row.magma_safe==safe,'Owned magma safety differs at index '..index..' position '..position..' actual-scroll '..panel.scroll_position[category]..' provider '..tostring(row.magma_safe)..' native '..tostring(safe))
+   assert(row.material_token=='INORGANIC:'..df.global.world.raws.inorganics.all[index].id,'Stone use material identity differs')
+   result.display[#result.display+1]={index=index,magma_safe=safe,material_token=row.material_token}
+   cursor=cursor+1
+  end
+  panel.scroll_position[category]=0
+ end
+ click(14,12)
+end
 if os.getenv('DF3D_STONE_USE_EDITS')=='1' then
  local function snapshot()
   local flags={};for _,value in ipairs(df.global.plotinfo.economic_stone)do flags[#flags+1]=value end;return flags

@@ -82,6 +82,19 @@ stone-use-native-edits. Installed plugin SHA256:
 CF01813E5FCCB4FF6A4EF146B7C04BB4651BAD2A72E5A4D0268FABB38FA20B25.
 `edit_reference` retains these results; downstream job scheduling, typed command
 publication/lifecycle and other-category DF3D rendering remain unverified.
+Stone use read rows also carry material identity and native magma safety.
+Renderer438adc calls149ef80(world,0,index,12000); the read-only helper uses
+material lookup14add70, and its existing construction pin is reused. No
+temperature rules are implemented in Godot. Protected191438 compares all83
+native rendered safety icons (30 safe/53 unsafe) against provider results and
+validates material tokens, then repeats the four edit/stale checks. The diagnostic
+uses actual visible-row coordinates at the last full page;191317/191358 used
+incorrect off-page coordinates and are not acceptance. Source preserved,
+DF39260 exits unsaved, GPU49C. MSVC/core19 pass stone-use-display-msvc.log and
+stone-use-display-metadata. Installed plugin SHA256:
+693FA1BE15F6A121D35AEABFD220657FDDD1A5A5A856B0B33F710F422C86A96B.
+`display_reference` records native artwork origins and observed classifications;
+DF3D row art, typed contract and public screen remain unfinished.
 Do not borrow native widget vectors or restriction-pointer scratch. Core19 passes
 stone-use-discovery; no runtime adapter or public route is accepted by this check.
 

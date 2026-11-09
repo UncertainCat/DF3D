@@ -82,8 +82,27 @@ accepting another action. Headless `stocks-state` covers these transitions,
 visible item identity, late replies and malformed receipts. Protected231337
 verifies the real controller's initial selection and two independently checked
 visibility edits with stale rejection; source unchanged, DF47880 exits unsaved,
-GPU51C sampled, known separate-renderer notice only. The controller is staged;
-no Stocks view or public route is exposed yet.
+GPU51C sampled, known separate-renderer notice only. The controller and view
+remain staged; no public Stocks route is exposed yet.
+
+`stocks_view.gd` draws the native category list, group headers, item captions,
+action controls and two scroll regions with installed artwork. The category
+and group frames use BUTTON_CATEGORY_RECTANGLE; item rows use BUTTON_RECTANGLE,
+not the later building-selection DARK artwork. Counts start at the native
+fixed column; unavailable counts use bright red (renderer3a1c90). Empty search
+uses the captured "..." hint. Visible item reads replace their full requested
+set so fetching missing rows cannot alternate between disjoint subsets.
+Protected232523 verifies rendered pointer collapse/expand and two group Hidden
+edits with independent native flags/restoration and stale rejection. The source
+save is unchanged, DF31048 exits unsaved, 30FPS GPU51C sampled; diagnostics are
+only known thread/finalize/shutdown-object signatures. Against native215344,
+the entire category crop48,76..320,724, all three visible group headers and
+first item text/controls crop400,148..944,184 have zero RGB differences. Filter
+and scrollbar crops retain18/26/26 differing pixels; no whole-panel identity
+claim. Individual icons are deliberately unfinished (44 missing pixels per
+visible Ammunition icon), and item View/Recenter/flag signals have no owner yet.
+Search input, scroll/resize parity, hover, complete item appearance and actions,
+main-scene ownership and large-inventory handling remain exposure prerequisites.
 
 Stocks has an accepted inventory-membership component but no DF3D screen yet.
 Protected215344 on2026-11-08 opens and closes native D_STOCKS while paused,

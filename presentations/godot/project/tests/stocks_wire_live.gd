@@ -2,9 +2,17 @@ extends "res://tests/item_carrier_wire_live.gd"
 const State=preload("res://scripts/stocks_state.gd")
 func ready_state(state) -> bool:
 	var deadline:=Time.get_ticks_msec()+5000
-	while state.phase in [State.Phase.Reading,State.Phase.Applying] and Time.get_ticks_msec()<deadline:
-		world.poll();await create_timer(0.01).timeout
+	var settled:=0
+	while Time.get_ticks_msec()<deadline and settled<2:
+		world.poll();await process_frame
+		if state.phase==State.Phase.Ready:settled+=1
+		elif state.phase in [State.Phase.Reading,State.Phase.Applying]:settled=0
+		else:break
 	return check(state.phase==State.Phase.Ready,"Stocks controller did not obtain fresh authority")
+func click(point: Vector2) -> void:
+	var event:=InputEventMouseButton.new();event.button_index=MOUSE_BUTTON_LEFT;event.pressed=true;event.position=point;event.global_position=point
+	Input.parse_input_event(event);await process_frame
+	event=event.duplicate();event.pressed=false;Input.parse_input_event(event);await process_frame
 func read_stocks(category: int,query: String="",ids: Array=[]) -> Dictionary:
 	var reply:=await request("stocks_menu",{"action":C.ManagementAction.StocksMenuRead,"category":category,"query":query,"item_ids":ids})
 	check(reply.get("status")==C.ManagementStatus.Ok,"Stocks read failed")
@@ -43,13 +51,35 @@ func run() -> void:
 	var state:=State.new();state.configure(service);state.open()
 	if not await ready_state(state):quit(1);return
 	check(state.category==39,"Stocks controller initial category differs")
+	var view
+	if OS.get_environment("DF3D_STOCKS_RENDER")=="1":
+		root.size=Vector2i(1200,800)
+		if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Stocks assets unavailable"):quit(1);return
+		view=preload("res://scripts/stocks_view.gd").new();root.add_child(view);view.configure_stocks(world,state);view.layout(Vector2(1200,800))
+		await process_frame
+		if not await ready_state(state):quit(1);return
+		await create_timer(0.3).timeout;await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/stocks-view-root.png")
+		var visible: Array=[]
+		for row in view.page:
+			if row.has("id"):visible.append(row.id)
+		check(visible.all(func(id):return state.items.has(id)),"Stocks visible facts did not settle")
+		var expanded_count: int=view.total_rows
+		await click(Vector2(500,130))
+		if not await ready_state(state):quit(1);return
+		check(not state.expanded(state.groups[0]) and view.total_rows==expanded_count-ids.size(),"Stocks header click did not collapse members")
+		await click(Vector2(500,130))
+		if not await ready_state(state):quit(1);return
+		check(state.expanded(state.groups[0]) and view.total_rows==expanded_count,"Stocks header click did not restore members")
 	for step in [1,2]:
 		if failed:break
 		var group: Dictionary=state.groups[0]
 		var desired: bool=not reference.original_hidden if step==1 else reference.original_hidden
 		var intent: Dictionary={"action":C.ManagementAction.StocksGroupApply,"category":39,"subtype":group.subtype,"subcat1":group.subcat1,"subcat2":group.subcat2,"expected_revision":group.revision,"operation":C.StocksFlagAction.Hidden,"value":int(desired)}
-		state.apply_group(state.key(group),C.StocksFlagAction.Hidden,desired)
-		check(state.phase==State.Phase.Applying and state.groups.is_empty(),"Stocks edit retained authority")
+		if view!=null:await click(Vector2(916,130))
+		else:
+			state.apply_group(state.key(group),C.StocksFlagAction.Hidden,desired)
+			check(state.phase==State.Phase.Applying and state.groups.is_empty(),"Stocks edit retained authority")
 		if not await ready_state(state):break
 		var stale:=await request("stocks_menu",intent)
 		check(stale.get("status")==C.ManagementStatus.Rejected and stale.get("stocks_menu",{}).get("outcome")==C.StocksMenuOutcome.Stale,"Stocks stale replay accepted")
@@ -60,5 +90,6 @@ func run() -> void:
 			await create_timer(0.01).timeout
 		check(FileAccess.get_file_as_string(directory+"/stocks-wire-ack").strip_edges()==str(step),"Stocks effects not independently verified")
 	var f:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
-	f.store_string(JSON.stringify({"success":not failed,"categories":93,"groups":reference.selection.groups.size(),"items":ids.size(),"edits":2,"controller":true}));f.close()
+	f.store_string(JSON.stringify({"success":not failed,"categories":93,"groups":reference.selection.groups.size(),"items":ids.size(),"edits":2,"controller":true,"rendered":view!=null}));f.close()
+	if view!=null:view.queue_free()
 	state.dispose();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)

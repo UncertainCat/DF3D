@@ -3231,5 +3231,51 @@
     "gpu": "51C sampled; headless viewer",
     "diagnostics": "passed_with_known_issues: godot-separate-thread-notice only",
     "limitations": "No rendered Stocks screen, large-inventory paging or complete item/group action and lifecycle fault acceptance."
+  },
+  "view_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-232523",
+    "native_capture": "build/stockpile-storage-native-input-20261108-215344",
+    "scope": "Staged rendered Stocks at1200x800, native category frames/count columns and colors, group headers, item captions/action buttons. Pointer group collapse/expand and Hidden on/off through real controller; independent all-IN_PLAY flags, restoration and stale rejection.",
+    "source_save": "unchanged; owned DF31048 exited unsaved",
+    "gpu": "30FPS;51C sampled",
+    "diagnostics": "passed_with_known_issues: godot-separate-thread-notice, godot-device-finalize, godot-shutdown-objects; no unclassified diagnostics",
+    "pixels": {
+      "category_crop": [
+        48,
+        76,
+        320,
+        724
+      ],
+      "category_differing_rgb_pixels": 0,
+      "group_header_y": [
+        112,
+        472,
+        616
+      ],
+      "group_header_differing_rgb_pixels": [
+        0,
+        0,
+        0
+      ],
+      "item_text_controls_crop": [
+        400,
+        148,
+        944,
+        184
+      ],
+      "item_text_controls_differing_rgb_pixels": 0,
+      "filter_differing_rgb_pixels": 18,
+      "category_scroll_differing_rgb_pixels": 26,
+      "item_scroll_differing_rgb_pixels": 26,
+      "missing_icon_pixels_per_visible_ammo": 44
+    },
+    "artwork": {
+      "category": "BUTTON_CATEGORY_RECTANGLE and SELECTED; native source cells INTERFACE_BITS12,16 /12,13",
+      "group": "BUTTON_CATEGORY_RECTANGLE",
+      "item": "BUTTON_RECTANGLE, original BUTTON_PICTURE_BOX, existing STOCKS action buttons",
+      "unavailable_count": "bright red: native3a1c90 constant0x1010004"
+    },
+    "limitations": "No item icons or individual action owner, native hover, search input acceptance, scroll/resize acceptance, main-scene integration or large-inventory paging. Public route stays hidden.",
+    "qa": "build/qa/stocks-view-final"
   }
 }

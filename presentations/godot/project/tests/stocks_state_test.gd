@@ -1,4 +1,5 @@
 extends SceneTree
+const View=preload("res://scripts/stocks_view.gd")
 const State=preload("res://scripts/stocks_state.gd")
 const C=preload("res://scripts/management_contract.gd")
 const Service=preload("res://tests/work_details_state_test.gd").Service

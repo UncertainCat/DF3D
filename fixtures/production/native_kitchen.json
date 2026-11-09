@@ -3960,5 +3960,562 @@
       }
     ],
     "scope": "Native Kitchen to Standing orders and back retains type0, Name sort and selected row1. WM_MOUSEWHEEL messages with and without MK_SHIFT at three pointer positions produced no captured movement, but message consumption is unproven: not accepted as physical-wheel behavior. Source unchanged; owned exit unsaved. No whole-Labor close/reopen retention claim."
+  },
+  "modifier_sort_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-180045",
+    "observations": [
+      {
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 0
+        },
+        "label": "initial",
+        "names": [
+          "Alfalfa seeds",
+          "Rock nuts",
+          "Blade weed seeds",
+          "Strawberry seeds",
+          "Prickle berry seeds",
+          "Rice",
+          "Rat weed seeds",
+          "Dimple cup spawn",
+          "Longland grass seeds",
+          "Blood amaranth seeds",
+          "Rope reed seeds",
+          "Pig tail seeds",
+          "Plump helmet spawn",
+          "Plump helmets",
+          "Cave wheat",
+          "Sweet pods",
+          "Dwarven rum",
+          "Dwarven wine",
+          "Dwarven beer",
+          "Pig's milk",
+          "Yak's milk",
+          "Dwarven syrup"
+        ],
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          }
+        ]
+      },
+      {
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 0
+        },
+        "label": "shift-Name",
+        "modifier_byte": 0,
+        "names": [
+          "Alfalfa seeds",
+          "Blade weed seeds",
+          "Blood amaranth seeds",
+          "Cave wheat",
+          "Dimple cup spawn",
+          "Dwarven beer",
+          "Dwarven rum",
+          "Dwarven syrup",
+          "Dwarven wine",
+          "Longland grass seeds",
+          "Pig tail seeds",
+          "Pig's milk",
+          "Plump helmet spawn",
+          "Plump helmets",
+          "Prickle berry seeds",
+          "Rat weed seeds",
+          "Rice",
+          "Rock nuts",
+          "Rope reed seeds",
+          "Strawberry seeds",
+          "Sweet pods",
+          "Yak's milk"
+        ],
+        "sorts": [
+          {
+            "name": "Name",
+            "rva": 4638688
+          }
+        ]
+      },
+      {
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 0
+        },
+        "label": "shift-Number",
+        "modifier_byte": 0,
+        "names": [
+          "Pig tail seeds",
+          "Sweet pods",
+          "Dwarven rum",
+          "Pig's milk",
+          "Yak's milk",
+          "Strawberry seeds",
+          "Rope reed seeds",
+          "Blade weed seeds",
+          "Dwarven beer",
+          "Alfalfa seeds",
+          "Rat weed seeds",
+          "Prickle berry seeds",
+          "Dwarven syrup",
+          "Blood amaranth seeds",
+          "Longland grass seeds",
+          "Dimple cup spawn",
+          "Rice",
+          "Plump helmet spawn",
+          "Cave wheat",
+          "Rock nuts",
+          "Dwarven wine",
+          "Plump helmets"
+        ],
+        "sorts": [
+          {
+            "name": "Number",
+            "rva": 4640256
+          }
+        ]
+      },
+      {
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 0
+        },
+        "label": "shift-Name",
+        "modifier_byte": 0,
+        "names": [
+          "Alfalfa seeds",
+          "Blade weed seeds",
+          "Blood amaranth seeds",
+          "Cave wheat",
+          "Dimple cup spawn",
+          "Dwarven beer",
+          "Dwarven rum",
+          "Dwarven syrup",
+          "Dwarven wine",
+          "Longland grass seeds",
+          "Pig tail seeds",
+          "Pig's milk",
+          "Plump helmet spawn",
+          "Plump helmets",
+          "Prickle berry seeds",
+          "Rat weed seeds",
+          "Rice",
+          "Rock nuts",
+          "Rope reed seeds",
+          "Strawberry seeds",
+          "Sweet pods",
+          "Yak's milk"
+        ],
+        "sorts": [
+          {
+            "name": "Name",
+            "rva": 4638688
+          }
+        ]
+      },
+      {
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 0
+        },
+        "label": "shift-released-Type",
+        "names": [
+          "Alfalfa seeds",
+          "Rock nuts",
+          "Blade weed seeds",
+          "Strawberry seeds",
+          "Prickle berry seeds",
+          "Rice",
+          "Rat weed seeds",
+          "Dimple cup spawn",
+          "Longland grass seeds",
+          "Blood amaranth seeds",
+          "Rope reed seeds",
+          "Pig tail seeds",
+          "Plump helmet spawn",
+          "Plump helmets",
+          "Cave wheat",
+          "Sweet pods",
+          "Dwarven rum",
+          "Dwarven wine",
+          "Dwarven beer",
+          "Pig's milk",
+          "Yak's milk",
+          "Dwarven syrup"
+        ],
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          }
+        ]
+      },
+      {
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 0
+        },
+        "label": "control-Name",
+        "modifier_byte": 2,
+        "names": [
+          "Alfalfa seeds",
+          "Rock nuts",
+          "Blade weed seeds",
+          "Strawberry seeds",
+          "Prickle berry seeds",
+          "Rice",
+          "Rat weed seeds",
+          "Dimple cup spawn",
+          "Longland grass seeds",
+          "Blood amaranth seeds",
+          "Rope reed seeds",
+          "Pig tail seeds",
+          "Plump helmet spawn",
+          "Plump helmets",
+          "Cave wheat",
+          "Sweet pods",
+          "Dwarven rum",
+          "Dwarven wine",
+          "Dwarven beer",
+          "Pig's milk",
+          "Yak's milk",
+          "Dwarven syrup"
+        ],
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          }
+        ]
+      },
+      {
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 0
+        },
+        "label": "control-Number",
+        "modifier_byte": 2,
+        "names": [
+          "Alfalfa seeds",
+          "Rock nuts",
+          "Blade weed seeds",
+          "Strawberry seeds",
+          "Prickle berry seeds",
+          "Rice",
+          "Rat weed seeds",
+          "Dimple cup spawn",
+          "Longland grass seeds",
+          "Blood amaranth seeds",
+          "Rope reed seeds",
+          "Pig tail seeds",
+          "Plump helmet spawn",
+          "Plump helmets",
+          "Cave wheat",
+          "Sweet pods",
+          "Dwarven rum",
+          "Dwarven wine",
+          "Dwarven beer",
+          "Pig's milk",
+          "Yak's milk",
+          "Dwarven syrup"
+        ],
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          }
+        ]
+      },
+      {
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 0
+        },
+        "label": "control-Name",
+        "modifier_byte": 2,
+        "names": [
+          "Alfalfa seeds",
+          "Rock nuts",
+          "Blade weed seeds",
+          "Strawberry seeds",
+          "Prickle berry seeds",
+          "Rice",
+          "Rat weed seeds",
+          "Dimple cup spawn",
+          "Longland grass seeds",
+          "Blood amaranth seeds",
+          "Rope reed seeds",
+          "Pig tail seeds",
+          "Plump helmet spawn",
+          "Plump helmets",
+          "Cave wheat",
+          "Sweet pods",
+          "Dwarven rum",
+          "Dwarven wine",
+          "Dwarven beer",
+          "Pig's milk",
+          "Yak's milk",
+          "Dwarven syrup"
+        ],
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          }
+        ]
+      },
+      {
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 1
+        },
+        "label": "control-released-Type",
+        "names": [
+          "Pig's milk",
+          "Yak's milk",
+          "Dwarven syrup",
+          "Dwarven rum",
+          "Dwarven wine",
+          "Dwarven beer",
+          "Plump helmets",
+          "Cave wheat",
+          "Sweet pods",
+          "Alfalfa seeds",
+          "Rock nuts",
+          "Blade weed seeds",
+          "Strawberry seeds",
+          "Prickle berry seeds",
+          "Rice",
+          "Rat weed seeds",
+          "Dimple cup spawn",
+          "Longland grass seeds",
+          "Blood amaranth seeds",
+          "Rope reed seeds",
+          "Pig tail seeds",
+          "Plump helmet spawn"
+        ],
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          }
+        ]
+      },
+      {
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 1
+        },
+        "label": "controlled-bit1-Name",
+        "names": [
+          "Dwarven syrup",
+          "Pig's milk",
+          "Yak's milk",
+          "Dwarven beer",
+          "Dwarven rum",
+          "Dwarven wine",
+          "Cave wheat",
+          "Plump helmets",
+          "Sweet pods",
+          "Alfalfa seeds",
+          "Blade weed seeds",
+          "Blood amaranth seeds",
+          "Dimple cup spawn",
+          "Longland grass seeds",
+          "Pig tail seeds",
+          "Plump helmet spawn",
+          "Prickle berry seeds",
+          "Rat weed seeds",
+          "Rice",
+          "Rock nuts",
+          "Rope reed seeds",
+          "Strawberry seeds"
+        ],
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          },
+          {
+            "name": "Name",
+            "rva": 4638688
+          }
+        ]
+      },
+      {
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 0,
+          "Number": 0,
+          "Type": 1
+        },
+        "label": "controlled-bit1-Number",
+        "names": [
+          "Dwarven syrup",
+          "Pig's milk",
+          "Yak's milk",
+          "Dwarven beer",
+          "Dwarven rum",
+          "Dwarven wine",
+          "Cave wheat",
+          "Plump helmets",
+          "Sweet pods",
+          "Alfalfa seeds",
+          "Blade weed seeds",
+          "Blood amaranth seeds",
+          "Dimple cup spawn",
+          "Longland grass seeds",
+          "Pig tail seeds",
+          "Plump helmet spawn",
+          "Prickle berry seeds",
+          "Rat weed seeds",
+          "Rice",
+          "Rock nuts",
+          "Rope reed seeds",
+          "Strawberry seeds"
+        ],
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          },
+          {
+            "name": "Name",
+            "rva": 4638688
+          },
+          {
+            "name": "Number",
+            "rva": 4640256
+          }
+        ]
+      },
+      {
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 1,
+          "Number": 0,
+          "Type": 1
+        },
+        "label": "controlled-bit1-Name",
+        "names": [
+          "Yak's milk",
+          "Pig's milk",
+          "Dwarven syrup",
+          "Dwarven wine",
+          "Dwarven rum",
+          "Dwarven beer",
+          "Sweet pods",
+          "Plump helmets",
+          "Cave wheat",
+          "Strawberry seeds",
+          "Rope reed seeds",
+          "Rock nuts",
+          "Rice",
+          "Rat weed seeds",
+          "Prickle berry seeds",
+          "Plump helmet spawn",
+          "Pig tail seeds",
+          "Longland grass seeds",
+          "Dimple cup spawn",
+          "Blood amaranth seeds",
+          "Blade weed seeds",
+          "Alfalfa seeds"
+        ],
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          },
+          {
+            "name": "Name",
+            "rva": 4638688
+          },
+          {
+            "name": "Number",
+            "rva": 4640256
+          },
+          {
+            "name": "Name",
+            "rva": 4638688
+          }
+        ]
+      },
+      {
+        "directions": {
+          "Brew": 0,
+          "Cook": 0,
+          "Name": 1,
+          "Number": 0,
+          "Type": 0
+        },
+        "label": "controlled-released-Type",
+        "names": [
+          "Alfalfa seeds",
+          "Rock nuts",
+          "Blade weed seeds",
+          "Strawberry seeds",
+          "Prickle berry seeds",
+          "Rice",
+          "Rat weed seeds",
+          "Dimple cup spawn",
+          "Longland grass seeds",
+          "Blood amaranth seeds",
+          "Rope reed seeds",
+          "Pig tail seeds",
+          "Plump helmet spawn",
+          "Plump helmets",
+          "Cave wheat",
+          "Sweet pods",
+          "Dwarven rum",
+          "Dwarven wine",
+          "Dwarven beer",
+          "Pig's milk",
+          "Yak's milk",
+          "Dwarven syrup"
+        ],
+        "sorts": [
+          {
+            "name": "Type",
+            "rva": 4638752
+          }
+        ]
+      }
+    ],
+    "callback": "46c630 reads bit0 at global RVA238d0b8 then invokes463dd0. Controlled probe temporarily sets bit0 only during native click dispatch and restores it before yielding.",
+    "scope": "Controlled diagnostic only, no runtime global input access. Bit0 retains and appends priorities including duplicate Name. Existing active column direction flips. Posted Shift did not set the modifier; Control set bit1 and ordinary click did not activate. Physical Shift gesture remains unaccepted. Existing unique-column max5 request contract cannot represent native repeated priorities; do not silently deduplicate without native equivalence evidence. Source unchanged and owned game exited unsaved."
   }
 }

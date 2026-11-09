@@ -2,10 +2,13 @@
 local out,view,shot=...
 local gui=require('gui');local script=require('gui.script');local json=require('json')
 local g=df.global.gps;local base=dfhack.internal.getImageBase()
-local function click(x,y)
+local function click(x,y,modifier)
  g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+6;g.mouse_x=x;g.mouse_y=y
  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+ local flags=df.reinterpret_cast('uint8_t',base+0x238d0b8);local previous=flags.value
+ if modifier~=nil then flags.value=modifier end
  gui.simulateInput(view,'_MOUSE_L')
+ if modifier~=nil then flags.value=previous end
  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
  for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
 end
@@ -190,6 +193,26 @@ if os.getenv('DF3D_KITCHEN_SORT')=='1' then
   end
  end
  observe('initial')
+ if os.getenv('DF3D_KITCHEN_MODSORT')=='1' then
+  local function modifier(action)
+   local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('kitchen-'..action);f:close();assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+   local deadline=dfhack.getTickCount()+5000
+   while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Kitchen modifier timeout');script.sleep(1,'frames')end
+   assert(os.remove(out..'/owner-input-ack'));for _=1,3 do script.sleep(1,'frames')end
+  end
+  for _,mode in ipairs({'shift','control'})do
+   modifier(mode..'-down')
+   for _,column in ipairs({{'Name',28},{'Number',80},{'Name',28}})do
+    click(column[2],15);observe(mode..'-'..column[1]);observations[#observations].modifier_byte=df.reinterpret_cast('uint8_t',base+0x238d0b8).value
+   end
+   modifier(mode..'-up')
+   click(18,15);observe(mode..'-released-Type')
+  end
+  for _,column in ipairs({{'Name',28},{'Number',80},{'Name',28}})do
+   click(column[2],15,1);observe('controlled-bit1-'..column[1])
+  end
+  click(18,15);observe('controlled-released-Type')
+ end
  for _,column in ipairs({{'Name',28},{'Number',80},{'Cook',90},{'Brew',94},{'Type',18}})do
   click(column[2],15);observe(column[1]..' first')
   click(column[2],15);observe(column[1]..' second')

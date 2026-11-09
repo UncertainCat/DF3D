@@ -121,6 +121,21 @@ without MK_SHIFT; no movement is observed, but consumption is unproven, so this
 is not physical-wheel acceptance. Native source preservation and unsaved exit
 pass; GPU60C sampled. navigation_reference retains the scoped evidence.
 
+Kitchen modified sorting remains a contract gap. Native callback46c630 passes
+bit0 of global RVA238d0b8 to463dd0. Without it, the priority list is replaced;
+with it, native appends a priority, including repeated columns. Protected180045
+temporarily sets this diagnostic bit during click dispatch and restores it
+before yielding: Type/Name/Number/Name is retained and the second Name click
+flips its shared direction. modifier_sort_reference retains complete row order
+and direction observations. No runtime global input access is authorized. Posted
+Shift did not set the bit, and Control set bit1 but suppressed ordinary clicks;
+physical modified-click acceptance remains open. Management151 currently rejects
+duplicate priorities and more than5 entries, so this requires contract/provider
+work before UI exposure; silently deduplicating is not established equivalent.
+Owned DF32224 exits unsaved with source preservation; GPU59C sampled and core19
+passes kitchen-modifier-discovery. Earlier175930 contains only the inconclusive
+posted-modifier cases, with source preservation and unsaved exit as well.
+
 The staged Kitchen view reuses installed Labor chrome, native row/icon assets,
 count captions and permission icons. `kitchen-view-base` renders at1200x800 with
 30FPS; its unselected-row crop(64,232)-(928,664) matches native171829 with zero

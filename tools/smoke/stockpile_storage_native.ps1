@@ -128,6 +128,10 @@ public static class Shot {
    if(!PostMessage(h,0x101,(IntPtr)key,(IntPtr)up)) throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
    System.Threading.Thread.Sleep(80);
   }
+  public static void Modifier(IntPtr h,int key,int scan,bool down) {
+   if(!PostMessage(h,down?0x100U:0x101U,(IntPtr)key,(IntPtr)(1L+((long)scan<<16)+(down?0L:0xc0000000L)))) throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
+   System.Threading.Thread.Sleep(80);
+  }
   public static void ControlKey(IntPtr h,int key,int scan) {
    if(!PostMessage(h,0x100,(IntPtr)17,(IntPtr)(1L+(29L<<16)))) throw new System.ComponentModel.Win32Exception(Marshal.GetLastWin32Error());
    System.Threading.Thread.Sleep(80);Key(h,key,scan);
@@ -193,11 +197,15 @@ try {
  $limit=(Get-Date).AddSeconds(600)
  while(-not(Test-Path "$out/result.json") -and (Get-Date) -lt $limit){
   if($owned.HasExited){throw 'Owned DF exited before the native capture completed'}
-  if(($env:DF3D_KITCHEN_NAV -eq '1' -or $env:DF3D_KITCHEN_LAYOUT -eq '1' -or $env:DF3D_KITCHEN_SEARCH -eq '1' -or $env:DF3D_CHORES_LAYOUT -eq '1' -or $env:DF3D_HUNTER_AMMUNITION_LAYOUT -eq '1' -or $ZoneOwner -or $ZoneAnimals -or $ZoneDefaults -or $LocationSupplies -or $LocationNames -or $FarmResize -or $FarmHeader -or $env:DF3D_WORK_ORDER_ARTWORK_RESIZE -eq '1' -or $env:DF3D_WORK_ORDER_LAYOUT -eq '1' -or $env:DF3D_RESIDENTS_QUERY -eq '1' -or $env:DF3D_WORK_DETAILS_QUERY_PROVIDER -eq '1' -or $env:DF3D_WORK_DETAILS_RENAME -eq '1' -or $env:DF3D_WORK_DETAILS_SHORTCUTS -eq '1' -or $env:DF3D_WORK_DETAILS_LAYOUT -eq '1' -or $env:DF3D_RESIDENTS_JOB_ART_RENDER -eq '1') -and (Test-Path "$out/owner-input-request")) {
+  if(($env:DF3D_KITCHEN_MODSORT -eq '1' -or $env:DF3D_KITCHEN_NAV -eq '1' -or $env:DF3D_KITCHEN_LAYOUT -eq '1' -or $env:DF3D_KITCHEN_SEARCH -eq '1' -or $env:DF3D_CHORES_LAYOUT -eq '1' -or $env:DF3D_HUNTER_AMMUNITION_LAYOUT -eq '1' -or $ZoneOwner -or $ZoneAnimals -or $ZoneDefaults -or $LocationSupplies -or $LocationNames -or $FarmResize -or $FarmHeader -or $env:DF3D_WORK_ORDER_ARTWORK_RESIZE -eq '1' -or $env:DF3D_WORK_ORDER_LAYOUT -eq '1' -or $env:DF3D_RESIDENTS_QUERY -eq '1' -or $env:DF3D_WORK_DETAILS_QUERY_PROVIDER -eq '1' -or $env:DF3D_WORK_DETAILS_RENAME -eq '1' -or $env:DF3D_WORK_DETAILS_SHORTCUTS -eq '1' -or $env:DF3D_WORK_DETAILS_LAYOUT -eq '1' -or $env:DF3D_RESIDENTS_JOB_ART_RENDER -eq '1') -and (Test-Path "$out/owner-input-request")) {
    $action=(Get-Content "$out/owner-input-request" -Raw).Trim()
    $window=[Shot]::Find($owned.Id)
    switch($action) {
     'down' {[Shot]::Key($window,40,80)}
+    'kitchen-shift-down' {[Shot]::Modifier($window,16,42,$true)}
+    'kitchen-shift-up' {[Shot]::Modifier($window,16,42,$false)}
+    'kitchen-control-down' {[Shot]::Modifier($window,17,29,$true)}
+    'kitchen-control-up' {[Shot]::Modifier($window,17,29,$false)}
     'kitchen-wheel' {
      $wheel=Get-Content -LiteralPath "$out/kitchen-wheel.json" -Raw | ConvertFrom-Json
      if($wheel.x -notin @(200,944,1100) -or $wheel.y -notin @(250,750) -or $wheel.delta -notin @(-120,120)){throw 'Kitchen wheel outside probe bounds'}

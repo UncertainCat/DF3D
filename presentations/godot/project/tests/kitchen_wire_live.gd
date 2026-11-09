@@ -1,5 +1,17 @@
 extends "res://tests/item_carrier_wire_live.gd"
 const State=preload("res://scripts/kitchen_state.gd")
+var main_scene
+var main_actions
+func request(domain: String,data: Dictionary) -> Dictionary:
+	if main_actions==null:return await super.request(domain,data)
+	var ticket: int=main_actions.submit(domain,data,Callable())
+	if not check(ticket>0,"Main scene Kitchen request not queued"):return {}
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline:
+		var result: Dictionary=main_actions.result(ticket)
+		if not result.is_empty():return result
+		await create_timer(0.01).timeout
+	check(false,"Main scene Kitchen request outcome unknown");return {}
 class Interaction extends Node:
 	var construction_active:=false
 	var shell_blocked:=false
@@ -24,22 +36,38 @@ func run() -> void:
 	Engine.max_fps=30;root.size=Vector2i(1200,800)
 	var rendered: bool=OS.get_environment("DF3D_KITCHEN_RENDER")=="1"
 	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
-	world=Df3dWorld.new();root.add_child(world)
-	if not check(world.attach(),"Kitchen attach failed"):quit(1);return
+	if OS.get_environment("DF3D_KITCHEN_MAIN")=="1":
+		var preferences=preload("res://scripts/presentation_settings.gd")
+		preferences.loaded=true;preferences.ui_scale=1.0;preferences.camera_mode="df"
+		OS.set_environment("DF3D_FIXTURE","")
+		main_scene=load("res://scenes/main.tscn").instantiate();root.add_child(main_scene);world=main_scene.world
+		var startup:=Time.get_ticks_msec()+90000
+		while not main_scene._loader.entered and Time.get_ticks_msec()<startup:await create_timer(0.05).timeout
+		if not check(main_scene._loader.entered,"Kitchen main scene failed to enter fortress"):quit(1);return
+		main_actions=main_scene._ui.actions
+	else:
+		world=Df3dWorld.new();root.add_child(world)
+		if not check(world.attach(),"Kitchen attach failed"):quit(1);return
 	var deadline:=Time.get_ticks_msec()+5000
 	while Time.get_ticks_msec()<deadline:
 		world.poll()
 		if world.poll_management().get("transport_alive",false):break
 		await create_timer(0.01).timeout
 	await request("construction",{"action":C.ManagementAction.Catalog})
-	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
+	var service=main_actions
+	if service==null:
+		service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
 	for frame in 5:world.poll();await process_frame
 	var state:=State.new();var owner;var host
 	if rendered:
-		if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Kitchen assets unavailable"):quit(1);return
-		var interaction:=Interaction.new();root.add_child(interaction)
-		host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)
-		owner=preload("res://scripts/standing_orders_panel.gd").new();root.add_child(owner);owner.configure(world,service,host);owner.open_panel()
+		if main_scene!=null:
+			host=main_scene._ui.host;owner=main_scene._ui.controller("standing_orders")
+		else:
+			if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Kitchen assets unavailable"):quit(1);return
+			var interaction:=Interaction.new();root.add_child(interaction)
+			host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)
+			owner=preload("res://scripts/standing_orders_panel.gd").new();root.add_child(owner);owner.configure(world,service,host)
+		owner.open_panel()
 		await pointer(owner.panel,owner.panel.kitchen_rect().get_center());state=owner.kitchen_state
 		check(owner.kitchen_active and host.active==owner,"Kitchen tab handoff failed")
 	else:state.configure(service);state.open()
@@ -127,6 +155,7 @@ func run() -> void:
 		check(not owner.kitchen_active and host.active==owner,"Kitchen return tab failed")
 		owner.close_panel();check(host.active==null,"Labor close retained input")
 	var output:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
-	output.store_string(JSON.stringify({"success":not failed,"steps":completed,"sort_checks":sort_checks}));output.close()
+	output.store_string(JSON.stringify({"success":not failed,"steps":completed,"sort_checks":sort_checks,"main_scene":main_scene!=null}));output.close()
 	state.dispose()
+	if main_scene!=null:main_scene.queue_free();await process_frame
 	quit(1 if failed else 0)

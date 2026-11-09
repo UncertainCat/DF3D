@@ -5871,5 +5871,10 @@
       "CONTEXT_SCROLL_PAGEDOWN": "MOUSEWHEEL:1:DOWN"
     },
     "scope": "Supported installation data/init/interface.txt bindings plus native command effects. Cook changes Alfalfa seed exclusion; Brew changes Plump helmets exclusion. SELECT/SEC_SELECT do not toggle. Native focused Down retains cursor, Enter releases focus, next Down advances. Six actual DF3D key-driven edits pass independent native effects/stale checks, only known Godot diagnostics, source unchanged and owned exit unsaved. Wheel mapping plus captured context-scroll no-effect supports disabling extra shared scrollbar wheel behavior; direct WM wheel consumption remains unproven."
+  },
+  "main_scene_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-183038",
+    "scope": "Actual main.tscn fortress entry and fortress_ui controller factory, shared real input owner and semantic queue. Staged Standing orders entry then viewport Kitchen tab, Shift sorting, search, six Cook/Brew edits, stale rejection, Standing return and close pass. No public launcher promotion. Initial visible row crop64,196..928,664 matches native exactly; full panel still has known inactive Name ink/scrollbar differences. Only documented Godot thread/finalize/shutdown diagnostics, source unchanged and owned exit unsaved. Broader resize/scrollbar/main ownership lifecycle and native >32-row sort remain open.",
+    "gpu_temperature_c": 53
   }
 }

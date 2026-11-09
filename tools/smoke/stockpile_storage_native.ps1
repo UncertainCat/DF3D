@@ -254,7 +254,8 @@ try {
      if($name -eq 'kitchen-wire' -and $env:DF3D_KITCHEN_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/kitchen_wire_live.gd')}
      $client=Start-Process -FilePath $engine -ArgumentList $clientArgs -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/job-settings-wire.stdout.log" -RedirectStandardError "$out/job-settings-wire.stderr.log"
      $null=$client.Handle
-     if(-not $client.WaitForExit(25000)){$client.Kill();$client.WaitForExit();throw 'Job settings wire client timed out; no replay'}
+     $wireTimeout=if($name -eq 'kitchen-wire' -and $env:DF3D_KITCHEN_MAIN -eq '1'){115000}else{25000}
+     if(-not $client.WaitForExit($wireTimeout)){$client.Kill();$client.WaitForExit();throw 'Job settings wire client timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/job-settings-wire-result.json")){throw 'Job settings wire client failed'}
     }
     if($env:DF3D_RESIDENTS_WIRE -eq '1' -and $name -eq 'residents-root') {

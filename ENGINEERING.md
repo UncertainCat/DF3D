@@ -205,6 +205,21 @@ the scrollbar; the Kitchen view therefore disables the shared scrollbar's extra
 wheel behavior. Standard keyboard selection and scrollbar pointer controls remain
 separate. Posted WM_MOUSEWHEEL delivery itself is still not accepted evidence.
 
+Protected183038 exercises Kitchen through main.tscn after actual fortress entry.
+The staging driver obtains Standing orders from fortress_ui's production factory
+and uses the real input owner and shared semantic queue, including its fixture
+Catalog and stale-request checks. Viewport Kitchen entry, Shift sorting, search,
+six native-reference Cook/Brew edits, Standing return and close pass. The initial
+visible-row crop(64,196)-(928,664) matches native exactly; inactive Name ink and
+scrollbar artwork differences remain. Source preservation and unsaved owned exit
+pass. The30FPS run has only documented thread/finalize/shutdown notices; GPU53C.
+Core19/controller checks pass kitchen-main-scene. main_scene_reference retains
+the scope. This accepts that factory workflow, not public launcher promotion,
+all main-scene lifecycle/resize/scrollbar behavior, or native sorting above32 rows.
+Set DF3D_KITCHEN_MAIN=1 with the existing rendered protected Kitchen wire lane
+to use the main scene; its bounded startup allowance is separate from the short
+standalone panel check. It never changes the application's public route registry.
+
 The staged Kitchen view reuses installed Labor chrome, native row/icon assets,
 count captions and permission icons. `kitchen-view-base` renders at1200x800 with
 30FPS; its unselected-row crop(64,232)-(928,664) matches native171829 with zero

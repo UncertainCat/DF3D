@@ -808,10 +808,17 @@ regressions and core19 pass in `work-details-page-retention-view`. The first liv
 run210551 exposed this empty-receipt reset and failed; it is not acceptance.
 Source saves are preserved, owned processes exit unsaved and only known Godot
 thread/finalize/shutdown notices remain in210733 (GPU59–62C,30FPS). The settings
-return image retains its scroll/art but omits dynamic captions at capture time;
-this behavioral acceptance does not establish full rendered pixel parity.
-`labor_page_retention_reference` retains native row text and this limitation.
-All sort-direction combinations and settings capture readiness remain unverified.
+return image210733 omitted dynamic captions. Follow-up211004 records the full
+settings receipt (offset15 begins Surgery), four successive rendered frames and
+a later200ms capture without forced redraw. All five panels are identical and
+contain the captions; text/icons in304,184..920,724 match native210353 exactly.
+The complete fifteen-row area differs by120 background pixels: eight pixels at
+the bottom of each checkbox are28,28,28 in native and41,36,43 in DF3D. That small
+drawing discrepancy remains open; full-panel identity is not claimed. The earlier
+caption omission's cause is unestablished, with no runtime correction asserted.
+211004 preserves the source and closes owned DF44684, with known thread/finalize/
+shutdown diagnostics only and60–61C GPU sampling. `labor_page_retention_reference`
+retains both observations. All sort-direction combinations remain unverified.
 The earlier205635 screenshot omitted skill captions, but this does not establish
 an ongoing runtime defect. Protected210203 compares ten existing Miners rows
 without the controlled all-labor override: native widgets, provider and typed

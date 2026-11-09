@@ -147,8 +147,14 @@ func run() -> void:
 			await pointer(target,target.work_details_rect().get_center())
 			if not await details_ready(details):quit(1);return
 			check(details.state.editing_settings and details.state.settings_first==settings_first and not details.state.settings.is_empty(),"Labor return lost settings page/scroll or fresh authority")
-		await process_frame;await RenderingServer.frame_post_draw
+		var settings_snapshot:=FileAccess.open(directory+"/work-details-settings-return.json",FileAccess.WRITE)
+		settings_snapshot.store_string(JSON.stringify({"settings":details.state.settings,"first":details.state.settings_first}));settings_snapshot.close()
+		for frame in 4:
+			await process_frame;await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/work-details-settings-frame-"+str(frame)+".png")
+		await create_timer(0.2).timeout;await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(directory+"/work-details-settings-return.png")
+
 		await pointer(details.panel,details.panel.done_rect().get_center())
 		if not await details_ready(details):quit(1);return
 		await process_frame;await process_frame

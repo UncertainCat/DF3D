@@ -4912,6 +4912,13 @@
     "scope": "Native scrolled roster and settings page retain visible rows across Standing orders/Kitchen/Stone use. Main-scene actual pointer workflow verifies both offsets and settings page after three round trips, authority cleared while hidden and reread on return.",
     "qa": "build/qa/work-details-page-retention-view",
     "diagnostics": "Only known Godot thread/finalize/shutdown notices; source saves unchanged, owned DF10212 exited.",
-    "render_limit": "Settings return screenshot has retained scrollbar/art but absent dynamic captions at capture time. No complete pixel-parity claim; capture readiness still needs resolution."
+    "render_limit": "Captions verified in211004 successive frames; small checkbox background discrepancy remains, and full-panel pixel identity is not claimed.",
+    "caption_capture_reference": {
+      "capture": "build/stockpile-storage-native-input-20261108-211004",
+      "scope": "Full settings receipt retained; offset15 begins Surgery/Setting Bones/Suturing. Four consecutive frames and a later200ms capture contain identical panel pixels without forced redraw.",
+      "native_comparison": "All text/icon pixels in304,184..920,724 equal native210353. Full rows304,184..944,724 have120 differing pixels:8 bottom-background pixels per checkbox (native28,28,28; viewer41,36,43). Fullpanel differs571pixels including animated control artwork.",
+      "diagnostics": "Only known thread/finalize/shutdownobjects; source unchanged, owned DF44684 exited. GPU60-61C,30FPS.",
+      "limitations": "Cause of omitted captions in earlier210733 capture remains unestablished; do not claim a runtime fix. Checkbox background difference remains open."
+    }
   }
 }

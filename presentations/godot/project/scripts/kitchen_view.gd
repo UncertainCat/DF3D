@@ -74,6 +74,12 @@ func _gui_input(event: InputEvent) -> void:
 	if state.first+index<state.rows.size():state.selected=state.first+index;queue_redraw()
 	if Rect2(680,rows_top()+index*36,32,36).has_point(event.position):state.toggle(state.first+index,1);accept_event()
 	elif Rect2(712,rows_top()+index*36,32,36).has_point(event.position):state.toggle(state.first+index,2);accept_event()
+func header_texture(texture: Texture2D,rect: Rect2) -> void:
+	# Native174610 clips header widgets four cells beyond the frame, while
+	# food-row buttons retain their separate overflow drawing.
+	var width:=minf(rect.size.x,maxf(0,size.x+32-rect.position.x))
+	if texture!=null and width>0:
+		draw_texture_rect_region(texture,Rect2(rect.position,Vector2(width,rect.size.y)),Rect2(Vector2.ZERO,Vector2(texture.get_width()*width/rect.size.x,texture.get_height())))
 func _draw() -> void:
 	if world==null or state==null:return
 	draw_rect(Rect2(Vector2(4,4),size-Vector2(8,8)),Color8(28,28,28));patch("HOVER_RECTANGLE",Vector2i.ZERO,int(size.x/8),frame_rows)
@@ -91,13 +97,13 @@ func _draw() -> void:
 	text(TYPE_LABELS[int(state.query.type_filter)+1],Vector2(112,list_top()-12))
 	for permission in [1,2]:
 		var texture: Texture2D=art.texture("EXPAND_LIST" if int(state.query.capability_filter)&permission else "CONTRACT_LIST")
-		if texture!=null:draw_texture_rect(texture,Rect2(680+(permission-1)*32,list_top()-24,32,36),false)
+		header_texture(texture,Rect2(680+(permission-1)*32,list_top()-24,32,36))
 	var positions: Array=[88,168,584,680,712]
 	for index in 5:
 		var active: bool=state.sort_active(index)
 		for cell in 4:
 			var texture:=strip("SORT_"+("ASCENDING_" if state.sort_directions[index] else "DESCENDING_")+("ACTIVE" if active else "INACTIVE"),cell)
-			if texture!=null:draw_texture_rect(texture,Rect2(positions[index]+cell*8,list_top()+12,8,12),false)
+			header_texture(texture,Rect2(positions[index]+cell*8,list_top()+12,8,12))
 		if index<2:
 			for cell in 6:
 				var texture:=strip("SORT_TEXT_"+("ACTIVE" if active else "INACTIVE"),0 if cell==0 else 2 if cell==5 else 1)

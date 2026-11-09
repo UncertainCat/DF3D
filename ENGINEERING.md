@@ -261,6 +261,14 @@ GPU50C sampled and the owned viewer exits. scrolled_resize_reference retains
 the native observations; the earlier kitchen-scrolled-resize run lacked its
 environment flag and supplies no scrolled-render evidence.
 
+Kitchen header widgets clip four cells beyond the frame's right edge, matching
+native174610 at minimum/small widths (screen x720/x768). Food-row artwork keeps
+its independent overflow and recorded input bounds are unchanged. The four-size
+30FPS kitchen-header-clip capture matches visible Cook/Brew header-control RGB
+crops exactly and leaves background beyond the narrow clip. Core19 and Kitchen
+state checks pass; only known Godot diagnostics remain, GPU50C sampled. The
+durable header_clip_reference records this display-only scope.
+
 The staged Kitchen view reuses installed Labor chrome, native row/icon assets,
 count captions and permission icons. `kitchen-view-base` renders at1200x800 with
 30FPS; its unselected-row crop(64,232)-(928,664) matches native171829 with zero

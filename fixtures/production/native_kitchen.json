@@ -7451,6 +7451,13 @@
     },
     "scope": "Installed classic scrollbar.png selected for Kitchen; inactive header ink160,160,160. Entire default initial panel matches. Four-size scrollbar crops match; narrow overflow headers and wide extra-row captions not accepted by this comparison.30FPS known Godot notices only, GPU52C."
   },
+  "header_clip_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-174610",
+    "right_edge_from_frame_pixels": 32,
+    "screen_right_edges": {"minimum": 720, "small": 768},
+    "verification": "build/qa/kitchen-header-clip",
+    "scope": "Cook/Brew capability and sorting artwork clips at the frame right plus32 pixels; food-row artwork retains independent overflow. Visible header-control crops match native at all four sizes with zero RGB differences; pixels beyond the narrow header boundary remain background. Recorded widget/input bounds are unchanged. Core19 and Kitchen state checks pass;30FPS, GPU50C, only known Godot diagnostics."
+  },
   "scrolled_resize_reference": {
     "capture": "build/stockpile-storage-native-input-20261108-184242",
     "observations": [

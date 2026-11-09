@@ -126,6 +126,16 @@ func controller(id: String):
 	if not Registry.PANEL_SCRIPTS.has(id): return null
 	if controllers.has(id): return controllers[id]
 	var panel = load(Registry.PANEL_SCRIPTS[id]).new()
+	if id=="stocks":
+		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
+		panel.focus_requested.connect(focus_tile);ensure_follow()
+		panel.item_owner.configure_follow(item_follow)
+		panel.item_owner.holder_requested.connect(func(target):
+			var holder: Dictionary=panel.item_owner.state.snapshot.get("holder",{})
+			if holder.get("id",-1)==target:open_building_holder(int(holder.get("type",-1)),target))
+		panel.item_owner.carrier_requested.connect(open_item_carrier)
+		panel.item_owner.stockpile_requested.connect(func(target):controller("areas").open_stockpile(target))
+		controllers[id]=panel;return panel
 	if id=="work_details":
 		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
 		panel.standing_orders_requested.connect(func():controller("standing_orders").open_from_labor())

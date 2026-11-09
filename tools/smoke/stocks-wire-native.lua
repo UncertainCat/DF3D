@@ -9,6 +9,8 @@ local before={};for _,item in ipairs(df.global.world.items.other.IN_PLAY)do befo
 local members={};for _,id in ipairs(reference.selection.groups[1].ids)do members[id]=true end
 local original=df.item.find(reference.selection.groups[1].ids[1]).flags.hidden
 for id in pairs(members)do assert(df.item.find(id).flags.hidden==original,'Fixture needs uniform visibility')end
+local px,py,pz=dfhack.items.getPosition(df.item.find(reference.selection.groups[1].ids[1]))
+reference.position={px,py,pz}
 reference.original_hidden=original
 reference.individual=os.getenv("DF3D_STOCKS_ITEM_WIRE")=="1"
 if reference.individual then members={[reference.selection.groups[1].ids[1]]=true} end

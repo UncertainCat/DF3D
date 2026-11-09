@@ -108,7 +108,7 @@ the entire category crop48,76..320,724, all three visible group headers and
 first item text/controls crop400,148..944,184 have zero RGB differences. Filter
 and scrollbar crops retain18/26/26 differing pixels; no whole-panel identity
 claim. That capture predates ammunition icons (44 missing pixels per icon).
-Item View/Recenter signals still have no owner.
+Item View/Recenter now have a staged owner; acceptance gaps are below.
 Search input, scroll/resize parity, filter help, complete item appearance and actions,
 main-scene ownership and large-inventory handling remain exposure prerequisites.
 
@@ -133,8 +133,20 @@ individual visibility button on/off, independently verifies every IN_PLAY flag
 and restoration, and rejects stale replay. The save is unchanged; DF39012 exits
 unsaved; 30FPS GPU47-48C sampled. Only documented thread/finalize/shutdown-object
 diagnostics remain. This rendered evidence covers visibility; the other three
-native effects are covered by the separate provider comparison above. Recenter
-and View remain unwired, and the public Stocks route remains hidden.
+native effects are covered by the separate provider comparison above. The public Stocks route remains hidden.
+
+Stocks has a staged panel owner registered by ID only, without a public launcher.
+Native000234 on2026-11-09 verifies that both Recenter and View close Stocks and
+move the camera without starting follow. View opens the item sheet, and Back
+does not return to Stocks. Both buttons obtain a fresh semantic item position;
+the owner retires Stocks before emitting focus and optionally opening item_panel.
+Core19 and headless owner/navigation checks pass in `stocks-destinations`,
+including late navigation after close. Protected000455 verifies actual Recenter
+and View clicks closing Stocks and yielding the native position, but FAILS the
+View sheet assertion: itemDescriptionDispatch does not yet support AMMO. This
+run is not View acceptance. Source unchanged, DF13800 exits unsaved, 30FPS GPU48C
+sampled. Native ammunition description dispatch and sheet appearance must be
+completed; main-scene camera/follow interactions also need acceptance.
 
 Management156 reuses native itemAppearance facts for the staged ammunition
 icons and the accepted diagonal ammunition artwork path. Core19, Stocks state

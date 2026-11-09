@@ -216,6 +216,31 @@ if os.getenv('DF3D_STOCKS_NAVIGATION')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-native.lua$','stocks-navigation-native.lua')
  assert(loadfile(source))(out,view,result)
 end
+if os.getenv('DF3D_STOCKS_DESTINATIONS')=='1' then
+ local sheet=df.global.game.main_interface.view_sheets
+ local id=probe('stocks-selection-probe','39','').groups[1].ids[1]
+ local item=df.item.find(id);local x,y,z=dfhack.items.getPosition(item)
+ local function observed()
+  return {stocks=stocks.open,sheet=sheet.open,sheet_type=sheet.active_sheet,sheet_id=sheet.active_id,
+   window={df.global.window_x,df.global.window_y,df.global.window_z},
+   follow_item=df.global.plotinfo.follow_item,follow_unit=df.global.plotinfo.follow_unit}
+ end
+ local function click(px)
+  local gps=df.global.gps;gps.precise_mouse_x=px;gps.precise_mouse_y=166;gps.mouse_x=px//8;gps.mouse_y=13
+  gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+ end
+ result.destinations={item_id=id,position={x,y,z},before=observed()}
+ click(796);result.destinations.recenter=observed()
+ assert(not stocks.open and not sheet.open,'Recenter did not leave Stocks')
+ gui.simulateInput(view,'D_STOCKS');view:render(dfhack.getTickCount())
+ df.global.window_x=result.destinations.before.window[1];df.global.window_y=result.destinations.before.window[2];df.global.window_z=result.destinations.before.window[3]
+ view:render(dfhack.getTickCount());result.destinations.before_view=observed()
+ click(820);result.destinations.view=observed()
+ assert(not stocks.open and sheet.open and sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==id,'View did not open expected item sheet')
+ gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+ result.destinations.back=observed()
+ gui.simulateInput(view,'D_STOCKS');view:render(dfhack.getTickCount())
+end
 for y=0,df.global.gps.dimy-1 do
  local row={};for x=0,df.global.gps.dimx-1 do row[#row+1]=dfhack.screen.readTile(x,y).ch end
  result.screen_rows[#result.screen_rows+1]=row

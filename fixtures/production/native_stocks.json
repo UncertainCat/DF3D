@@ -3552,5 +3552,95 @@
     "gpu": "30FPS;47-48C sampled",
     "diagnostics": "passed_with_known_issues: godot-separate-thread-notice, godot-device-finalize, godot-shutdown-objects; unclassified empty",
     "limitations": "Rendered live verification covers visibility. Four flag native semantics have separate individual_action_reference evidence. Recenter/View, other item artwork, search/scroll/resize and large-inventory handling remain pending; no public Stocks route."
+  },
+  "destination_reference": {
+    "capture": "build/stockpile-storage-native-input-20261109-000234",
+    "sha256": "2c2f4c413b47b1373345c58b8dc31481069f5cf3fb08875cf501cf20e772965a",
+    "observations": {
+      "back": {
+        "follow_item": -1,
+        "follow_unit": -1,
+        "sheet": false,
+        "sheet_id": 27756,
+        "sheet_type": 1,
+        "stocks": false,
+        "window": [
+          99,
+          53,
+          165
+        ]
+      },
+      "before": {
+        "follow_item": -1,
+        "follow_unit": -1,
+        "sheet": false,
+        "sheet_id": -1,
+        "sheet_type": -1,
+        "stocks": true,
+        "window": [
+          98,
+          60,
+          165
+        ]
+      },
+      "before_view": {
+        "follow_item": -1,
+        "follow_unit": -1,
+        "sheet": false,
+        "sheet_id": -1,
+        "sheet_type": -1,
+        "stocks": true,
+        "window": [
+          98,
+          60,
+          165
+        ]
+      },
+      "item_id": 27756,
+      "position": [
+        111,
+        61,
+        165
+      ],
+      "recenter": {
+        "follow_item": -1,
+        "follow_unit": -1,
+        "sheet": false,
+        "sheet_id": -1,
+        "sheet_type": -1,
+        "stocks": false,
+        "window": [
+          99,
+          53,
+          165
+        ]
+      },
+      "view": {
+        "follow_item": -1,
+        "follow_unit": -1,
+        "sheet": true,
+        "sheet_id": 27756,
+        "sheet_type": 1,
+        "stocks": false,
+        "window": [
+          99,
+          53,
+          165
+        ]
+      }
+    },
+    "scope": "Native first Ammunition item Recenter and View both leave Stocks and recenter without starting follow. View opens item sheet; Back closes sheet without returning to Stocks. Before View camera reset to original coordinates distinguishes independent recentering.",
+    "source_save": "unchanged; owned DF17732 exited unsaved",
+    "gpu": "48C sampled; native only",
+    "viewer": {
+      "qa": "build/qa/stocks-destinations",
+      "capture": "build/stockpile-storage-native-input-20261109-000455",
+      "status": "incomplete",
+      "scope": "Staged owner and state handoff implemented. Live actual Recenter and View buttons close Stocks and emit independent native item position. Recenter leaves item sheet closed. View then fails to populate ammunition sheet because itemDescriptionDispatch excludes AMMO.",
+      "failure": "Stocks View item sheet unavailable",
+      "source_save": "unchanged; owned DF13800 exited unsaved",
+      "gpu": "30FPS;48C sampled",
+      "limitations": "Do not count failed live run as View acceptance. Full main-scene camera composition, existing follow interactions and all item families remain unverified."
+    }
   }
 }

@@ -2,8 +2,9 @@ extends RefCounted
 # DF supplies categories, filtering, group membership, captions and edit receipts.
 # Only navigation/expansion is local. No receipt survives a pending command.
 signal changed
+signal destination_ready(tile: Vector3i,id: int,inspect: bool)
 const C=preload("res://scripts/management_contract.gd")
-enum Phase {Closed,Reading,Ready,Applying,Rejected,Unknown,Unavailable}
+enum Phase {Closed,Reading,Ready,Applying,Rejected,Unknown,Unavailable,Navigating}
 var service
 var phase:=Phase.Closed
 var category: int=-1
@@ -81,6 +82,21 @@ func apply_item(id: int,operation: int,value: bool) -> void:
 			"subtype":row.subtype,"subcat1":row.subcat1,"subcat2":row.subcat2,"item_id":id,
 			"expected_revision":row.revision,"operation":operation,"value":int(value)}
 		_clear();phase=Phase.Applying;_submit(intent);return
+func navigate(id: int,inspect: bool) -> void:
+	if phase!=Phase.Ready or service==null or not items.has(id):return
+	var owner:=generation
+	_clear();phase=Phase.Navigating
+	ticket=service.submit("production",{"action":C.ManagementAction.ProductionInspect,"locate_item":true,"item_id":id},func(received,result,_sent):
+		if owner!=generation or received!=ticket:return
+		ticket=0
+		var value: Dictionary=result.get("production",{}).get("item_position",{})
+		if result.get("outcome","")=="unknown" or result.get("status",-1)!=C.ManagementStatus.Ok or result.get("action",-1)!=C.ManagementAction.ProductionInspect or value.get("id",-1)!=id or typeof(value.get("position"))!=TYPE_VECTOR3I:
+			_reject(result);return
+		var tile: Vector3i=value.position
+		if tile.x<0 or tile.y<0 or tile.z<0 or tile.x>32767 or tile.y>32767 or tile.z>32767:_reject(result);return
+		destination_ready.emit(tile,id,inspect))
+	if ticket==0:phase=Phase.Unavailable
+	changed.emit()
 func _read(ids: Array=[]) -> void:
 	_clear();phase=Phase.Reading
 	_submit({"action":C.ManagementAction.StocksMenuRead,"category":category,"query":_active_query,"item_ids":ids.duplicate()})

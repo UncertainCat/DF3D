@@ -1,5 +1,11 @@
 extends SceneTree
 const View=preload("res://scripts/stocks_view.gd")
+const FortressUI=preload("res://scripts/fortress_ui.gd")
+const Registry=preload("res://scripts/ui_availability.gd")
+const Owner=preload("res://scripts/stocks_panel.gd")
+class ItemOwnerStub extends Node:
+	var selected: int=-1
+	func open_target(id: int) -> void:selected=id
 const State=preload("res://scripts/stocks_state.gd")
 const C=preload("res://scripts/management_contract.gd")
 const Service=preload("res://tests/work_details_state_test.gd").Service
@@ -21,6 +27,7 @@ func ready(state,service) -> void:
 	state.open();service.reply(state.ticket,response(-1));service.reply(state.ticket,response())
 func _initialize() -> void:call_deferred("run")
 func run() -> void:
+	check(Registry.PANEL_SCRIPTS.has("stocks") and not Registry.allows_launcher("Stocks"),"Incomplete Stocks launcher exposed")
 	var service:=Service.new();root.add_child(service)
 	var state:=State.new();state.configure(service);ready(state,service)
 	check(state.phase==State.Phase.Ready and state.category==39,"Initial native category not selected")
@@ -103,6 +110,22 @@ func run() -> void:
 	view._process(0);check(hover.state.key=="item_forbid","Stocks help did not use shared native flag text")
 	state.phase=State.Phase.Applying;view._process(0);check(hover.state.key.is_empty(),"Pending mutation retained hover authority")
 	state.phase=State.Phase.Ready;view._process(0);view.hide();view._process(0);check(hover.state.key.is_empty(),"Hidden Stocks retained hover")
+	var owner:=Owner.new();owner.ui_host=preload("res://tests/work_details_state_test.gd").HostStub.new()
+	owner.panel=Control.new();owner.add_child(owner.panel);owner.item_owner=ItemOwnerStub.new();owner.add_child(owner.item_owner)
+	owner.state.configure(service);var destinations: Array=[]
+	owner.focus_requested.connect(func(tile):destinations.append(tile))
+	for inspect in [false,true]:
+		ready(owner.state,service);owner.ui_host.activate(owner);owner.state.items={7:item(7)}
+		owner.state.navigate(7,inspect);pending=owner.state.ticket
+		check(owner.state.phase==State.Phase.Navigating and owner.state.items.is_empty(),"Navigation retained editable rows")
+		service.reply(pending,{"production":{"item_position":{"id":7,"position":Vector3i(111,61,165)}}})
+		check(owner.state.phase==State.Phase.Closed and not owner.panel.visible and destinations[-1]==Vector3i(111,61,165),"Destination did not close Stocks and focus item")
+		check(owner.item_owner.selected==(7 if inspect else -1),"Recenter opened sheet or View lost identity")
+	ready(owner.state,service);owner.ui_host.activate(owner);owner.state.items={7:item(7)}
+	owner.state.navigate(7,false);pending=owner.state.ticket;owner.close_panel();calls=destinations.size()
+	service.reply(pending,{"production":{"item_position":{"id":7,"position":Vector3i(111,61,165)}}})
+	check(destinations.size()==calls,"Late navigation moved camera after close")
+	owner.free()
 	view.free();hover.free();state.dispose();service.queue_free();await process_frame
 	if failures==0:print("STOCKS_STATE_PASS")
 	quit(1 if failures else 0)

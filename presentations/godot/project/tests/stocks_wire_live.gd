@@ -1,4 +1,13 @@
 extends "res://tests/item_carrier_wire_live.gd"
+class Host extends Node:
+	var active
+	func register(owner) -> void:owner.ui_host=self
+	func activate(owner) -> bool:
+		if is_instance_valid(active) and active!=owner:active.close_panel()
+		active=owner;return true
+	func release(owner) -> void:
+		if active==owner:active=null
+	func allows_panel_input(owner) -> bool:return active==owner
 const State=preload("res://scripts/stocks_state.gd")
 func ready_state(state) -> bool:
 	var deadline:=Time.get_ticks_msec()+5000
@@ -112,6 +121,27 @@ func run() -> void:
 			if FileAccess.file_exists(directory+"/stocks-wire-ack") and FileAccess.get_file_as_string(directory+"/stocks-wire-ack").strip_edges()==str(step):break
 			await create_timer(0.01).timeout
 		check(FileAccess.get_file_as_string(directory+"/stocks-wire-ack").strip_edges()==str(step),"Stocks effects not independently verified")
+	if OS.get_environment("DF3D_STOCKS_OWNER_WIRE")=="1" and not failed:
+		if view!=null:view.queue_free();view=null;await process_frame
+		state.dispose()
+		var host:=Host.new();root.add_child(host)
+		var owner=preload("res://scripts/stocks_panel.gd").new();root.add_child(owner);owner.configure(world,service,host,hover)
+		var focused: Array=[];owner.focus_requested.connect(func(tile):focused.append(tile))
+		var expected:=Vector3i(int(reference.position[0]),int(reference.position[1]),int(reference.position[2]))
+		for inspect in [false,true]:
+			owner.open_panel();if not await ready_state(owner.state):break
+			await click(Vector2(820 if inspect else 796,166))
+			deadline=Time.get_ticks_msec()+5000
+			while Time.get_ticks_msec()<deadline and owner.state.phase!=State.Phase.Closed:world.poll();await process_frame
+			check(owner.state.phase==State.Phase.Closed and not owner.panel.visible and not focused.is_empty() and focused[-1]==expected,"Stocks destination did not focus native position and close")
+			if inspect:
+				while Time.get_ticks_msec()<deadline and owner.item_owner.state.phase==owner.item_owner.state.Phase.Reading:world.poll();await process_frame
+				check(owner.item_owner.state.phase==owner.item_owner.state.Phase.Ready and owner.item_owner.state.item_id==int(ids[0]),"Stocks View item sheet unavailable")
+				await RenderingServer.frame_post_draw
+				root.get_texture().get_image().save_png(directory+"/stocks-view-item-sheet.png")
+				owner.item_owner.close_panel();check(owner.state.phase==State.Phase.Closed,"Item close returned to Stocks")
+			else:check(owner.item_owner.state.item_id==-1,"Recenter opened item sheet")
+		owner.queue_free();host.queue_free();await process_frame
 	var f:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	f.store_string(JSON.stringify({"success":not failed,"categories":93,"groups":reference.selection.groups.size(),"items":ids.size(),"edits":2,"controller":true,"rendered":view!=null,"individual":reference.get("individual",false)}));f.close()
 	if view!=null:view.queue_free()

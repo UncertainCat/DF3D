@@ -137,13 +137,14 @@ func run() -> void:
 			if inspect:
 				while Time.get_ticks_msec()<deadline and owner.item_owner.state.phase==owner.item_owner.state.Phase.Reading:world.poll();await process_frame
 				check(owner.item_owner.state.phase==owner.item_owner.state.Phase.Ready and owner.item_owner.state.item_id==int(ids[0]),"Stocks View item sheet unavailable")
+				var snapshot_file:=FileAccess.open(directory+"/stocks-view-item-snapshot.json",FileAccess.WRITE);snapshot_file.store_string(JSON.stringify(owner.item_owner.state.snapshot));snapshot_file.close()
 				await RenderingServer.frame_post_draw
 				root.get_texture().get_image().save_png(directory+"/stocks-view-item-sheet.png")
 				owner.item_owner.close_panel();check(owner.state.phase==State.Phase.Closed,"Item close returned to Stocks")
 			else:check(owner.item_owner.state.item_id==-1,"Recenter opened item sheet")
 		owner.queue_free();host.queue_free();await process_frame
 	var f:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
-	f.store_string(JSON.stringify({"success":not failed,"categories":93,"groups":reference.selection.groups.size(),"items":ids.size(),"edits":2,"controller":true,"rendered":view!=null,"individual":reference.get("individual",false)}));f.close()
+	f.store_string(JSON.stringify({"success":not failed,"categories":93,"groups":reference.selection.groups.size(),"items":ids.size(),"edits":2,"controller":true,"rendered":OS.get_environment("DF3D_STOCKS_RENDER")=="1","owner":OS.get_environment("DF3D_STOCKS_OWNER_WIRE")=="1","individual":reference.get("individual",false)}));f.close()
 	if view!=null:view.queue_free()
 	if hover!=null:hover.queue_free()
 	state.dispose();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)

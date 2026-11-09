@@ -237,6 +237,17 @@ if os.getenv('DF3D_STOCKS_DESTINATIONS')=='1' then
  view:render(dfhack.getTickCount());result.destinations.before_view=observed()
  click(820);result.destinations.view=observed()
  assert(not stocks.open and sheet.open and sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==id,'View did not open expected item sheet')
+ if os.getenv('DF3D_STOCKS_AMMO_SHEET')=='1' then
+  local text,code=dfhack.run_command_silent('df3d','item-inspect-probe',tostring(id));assert(code==0,text)
+  local observed=json.decode(text).snapshot
+  assert(observed.description==dfhack.df2utf(sheet.raw_description),'Ammunition native description differs')
+  result.destinations.item_snapshot=observed
+  result.destinations.native_description=dfhack.df2utf(sheet.raw_description)
+  local f=assert(io.open(out..'/shot.tmp','w'));f:write('stocks-ammo-sheet');f:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
+  local deadline=dfhack.getTickCount()+10000
+  while true do local ack=io.open(out..'/ack-stocks-ammo-sheet');if ack then ack:close();break end
+   assert(dfhack.getTickCount()<deadline,'Ammunition sheet capture timeout');script.sleep(1,'frames')end
+ end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
  result.destinations.back=observed()
  gui.simulateInput(view,'D_STOCKS');view:render(dfhack.getTickCount())

@@ -3640,7 +3640,34 @@
       "failure": "Stocks View item sheet unavailable",
       "source_save": "unchanged; owned DF13800 exited unsaved",
       "gpu": "30FPS;48C sampled",
-      "limitations": "Do not count failed live run as View acceptance. Full main-scene camera composition, existing follow interactions and all item families remain unverified."
+      "limitations": "Do not count failed live run as View acceptance. Full main-scene camera composition, existing follow interactions and all item families remain unverified.",
+      "resolved_by": "ammunition_sheet_reference resolves AMMO dispatch rejection; remaining display gaps explicitly retained."
     }
+  },
+  "ammunition_sheet_reference": {
+    "capture": "build/stockpile-storage-native-input-20261109-001248",
+    "qa": "build/qa/stocks-ammo-sheet-view",
+    "bridge_build": "build/notes/pm/stocks-ammo-sheet-msvc.log",
+    "dispatch": {
+      "table": "0x16c9ba0",
+      "get_type": "0x548fa0",
+      "get_type_length": 6,
+      "get_type_fnv1a64": "0x7b7766ffefb27e79",
+      "subtype": "0xfd0c0",
+      "scope": "All other constructed-item description slots match existing pinned BOX dispatch; subtype matches clothing dispatch. Runtime also validates subtype raw identity and existing improvements."
+    },
+    "scope": "Cold typed Stocks View now obtains ammunition snapshot and opens existing item sheet. Independent native sheet raw_description equals owned provider and viewer text; weight matches. Recenter and View close Stocks, emit native position; closing sheet does not reopen Stocks. Group visibility edits/restoration and stale rejection remain passing.",
+    "rgb_differences": {
+      "ammo_icon_426_66_458_98": 0,
+      "header_464_64_784_112": 0,
+      "description_430_118_886_226": 0,
+      "carrier_icon_426_270_458_302": 298
+    },
+    "native_png_sha256": "984c27a89a1fdee6c68badd7e71ad7b32a1fbf7049e2e4b75e5c6ff5f27f871e",
+    "viewer_png_sha256": "9339bcf42df4d7673c6638af59800b7cfdfbf798624705a31b5a4d8dc8b41615",
+    "source_save": "unchanged; owned DF32724 exited unsaved",
+    "gpu": "30FPS;49-50C sampled",
+    "diagnostics": "passed_with_known_issues: godot-separate-thread-notice, godot-device-finalize, godot-shutdown-objects; unclassified empty",
+    "limitations": "Native Assigned to hunters status missing; carrier icon differs. No full-sheet, all-ammunition-variants or main-scene camera/follow acceptance. Public Stocks remains hidden."
   }
 }

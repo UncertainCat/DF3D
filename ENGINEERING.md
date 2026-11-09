@@ -140,13 +140,26 @@ Native000234 on2026-11-09 verifies that both Recenter and View close Stocks and
 move the camera without starting follow. View opens the item sheet, and Back
 does not return to Stocks. Both buttons obtain a fresh semantic item position;
 the owner retires Stocks before emitting focus and optionally opening item_panel.
-Core19 and headless owner/navigation checks pass in `stocks-destinations`,
-including late navigation after close. Protected000455 verifies actual Recenter
-and View clicks closing Stocks and yielding the native position, but FAILS the
-View sheet assertion: itemDescriptionDispatch does not yet support AMMO. This
-run is not View acceptance. Source unchanged, DF13800 exits unsaved, 30FPS GPU48C
-sampled. Native ammunition description dispatch and sheet appearance must be
-completed; main-scene camera/follow interactions also need acceptance.
+Core19 and headless owner/navigation checks pass in `stocks-destinations-owner`,
+including late navigation after close and no public launcher. The initial
+protected000455 View rejection identified missing AMMO description dispatch;
+that gap is now resolved by the audited constructed-item adapter below.
+
+Ammunition description dispatch pins vtable16c9ba0 and getType548fa0. Its other
+used constructed-item virtuals match the accepted BOX dispatch; subtype uses
+the existing clothing getterfd0c0, with raw identity validation. Owned native
+itemDescription supplies prose, and itemAppearance supplies semantic icon facts.
+The item sheet uses the native diagonal ammunition artwork. MSVC and Core19 pass;
+`stocks-ammo-sheet-view` also covers the staged owner. Protected001248 on2026-11-09
+opens the ammunition sheet through actual Stocks View, checks Recenter/close
+handoffs, retains group edit/restoration/stale checks, and compares native sheet
+raw_description with the owned provider and viewer text. Weight matches too.
+Icon426,66..458,98, header464,64..784,112 and description430,118..886,226 have zero
+RGB differences. Native "Assigned to hunters" is still missing, and the carrier
+icon differs by298 pixels; full-sheet parity is not accepted. Source unchanged,
+DF32724 exits unsaved, 30FPS GPU49-50C sampled; only documented
+thread/finalize/shutdown-object diagnostics remain. Other ammunition variants
+and full main-scene camera/follow behavior still require acceptance.
 
 Management156 reuses native itemAppearance facts for the staged ammunition
 icons and the accepted diagonal ammunition artwork path. Core19, Stocks state

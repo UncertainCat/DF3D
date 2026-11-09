@@ -399,6 +399,7 @@ func run() -> void:
 	await test_hunter_ammunition()
 	await test_chores()
 	await test_kitchen_menu()
+	await test_stone_use()
 	# Host signals only after validating every expected payload.
 	for i in 300:
 		if FileAccess.get_file_as_string(status_path) == "passed": break
@@ -1178,3 +1179,18 @@ func test_kitchen_menu() -> void:
 	intent.permission=2;seq=world.management_request("kitchen_menu",intent);assert(seq>0);reply=await receipt(seq,S.Rejected)
 	assert(reply.outcome=="unknown" and reply.kitchen_menu.outcome==Contract.KitchenMenuOutcome.Unknown and reply.kitchen_menu.rows.is_empty() and reply.kitchen_menu.exclusions.is_empty())
 	assert(Contract.is_mutation(A.KitchenApply) and not Contract.is_mutation(A.KitchenRead))
+
+func test_stone_use() -> void:
+	assert(world.management_request("stone_use",{"action":A.StoneUseRead,"index":0})==0)
+	var seq: int=world.management_request("stone_use",{"action":A.StoneUseRead});assert(seq>0)
+	var reply:=await receipt(seq);var value: Dictionary=reply.stone_use
+	assert(value.restrictions==[0,1,0] and value.rows.size()==1)
+	assert(value.rows[0]=={"category":0,"index":1,"restricted":true,"name":"fixture stone","uses":"fixture use","magma_safe":true,"material_token":"INORGANIC:FIXTURE"})
+	var intent: Dictionary={"action":A.StoneUseApply,"category":0,"index":1,"expected":value.restrictions}
+	for patch in [{"category":2},{"index":1.5},{"index":3},{"expected":[0,true,0]},{"expected":[0,2,0]},{"extra":0}]:
+		var invalid:=intent.duplicate(true);invalid.merge(patch,true);assert(world.management_request("stone_use",invalid)==0)
+	seq=world.management_request("stone_use",intent);assert(seq>0);reply=await receipt(seq)
+	assert(reply.stone_use.outcome==Contract.StoneUseOutcome.Applied and reply.stone_use.rows.is_empty() and reply.stone_use.restrictions.is_empty())
+	intent.category=1;seq=world.management_request("stone_use",intent);assert(seq>0);reply=await receipt(seq,S.Rejected)
+	assert(reply.outcome=="unknown" and reply.stone_use.outcome==Contract.StoneUseOutcome.Unknown and reply.stone_use.rows.is_empty() and reply.stone_use.restrictions.is_empty())
+	assert(Contract.is_mutation(A.StoneUseApply) and not Contract.is_mutation(A.StoneUseRead))

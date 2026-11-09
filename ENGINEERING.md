@@ -33,6 +33,26 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stone use native discovery
 
+Management153 adds StoneUseRead100/StoneUseApply101 on
+Local\df3d_management_v153. Bridge and viewers must rebuild together;152 peers
+remain on their separate region. Read has no target; Apply carries category,
+material index and the complete binary restriction vector. Read rows carry native
+name/use captions, material identity, restriction and magma safety. Applied,
+Rejected, Stale and Unknown return no row/receipt authority; success requires a
+fresh read, and Unknown never permits replay. Validators reject out-of-range
+targets, malformed flags, duplicate identities and contradictory row receipts.
+No facts are inferred for older recordings.
+
+The schema/model/Godot contract and fake-host round trip pass
+stone-use-contract153 with core19. MSVC passes stone-use-contract153-msvc.log;
+protected192830 on2026-11-08 verifies the existing Kitchen controller's six edits,
+fresh reads and stale rejection through153. Source unchanged, DF48708 exits
+unsaved, headless viewer, GPU47C; only the known separate-thread notice remains.
+Installed plugin SHA256:
+2A37556F700268D0CDF710C7FDF91D0B05D63C84DBCF47764CE4087AE81FED54.
+This migration explicitly rejects new Stone use commands until native dispatch
+and publication are wired; it is not Stone use live or UI acceptance.
+
 The Stone use tab remains unimplemented. Protected185832 on2026-11-08 records
 30 economic and53 other stones in native order, material identities/restrictions,
 and the default economic screen. `native_stone_use.json` is the durable reference

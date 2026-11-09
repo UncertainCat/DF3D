@@ -4832,6 +4832,35 @@ TEST_CASE("Hunter ammunition read quantities agree with assigned stack receipts"
   }
 }
 
+TEST_CASE("Stone use validates complete receipts and read-only requests") {
+  for(bool apply:{false,true})for(int fault=0;fault<4;++fault){
+    wm::ManagementRequest request;request.action=apply?wm::ManagementAction::StoneUseApply:wm::ManagementAction::StoneUseRead;
+    auto& q=request.stoneUse;
+    if(apply){q.category=0;q.index=1;q.expected=std::vector<uint8_t>{0,1,0};
+      if(fault==1)q.expected.reset();if(fault==2)(*q.expected)[0]=2;if(fault==3)q.index=3;
+    }else{if(fault==1)q.category=0;if(fault==2)q.index=0;if(fault==3)q.expected.emplace();}
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    if(!fault){REQUIRE(value->stone_use());if(apply)CHECK(value->stone_use()->expected()->Get(1)==1);}
+  }
+}
+TEST_CASE("Stone use rejects contradictory rows and uncertain authority") {
+  for(bool unknown:{false,true})for(int fault=0;fault<4;++fault){
+    flatbuffers::FlatBufferBuilder b;std::vector<flatbuffers::Offset<wire::StoneUseRow>> rows;std::vector<uint8_t> flags;
+    if(!unknown || fault==1){flags={0,1,0};rows.push_back(wire::CreateStoneUseRow(b,0,1,fault!=2,b.CreateString("fixture stone"),b.CreateString("fixture use"),true,b.CreateString("INORGANIC:FIXTURE")));
+      if(fault==1 && !unknown)rows.push_back(rows.front());if(fault==3)flags[0]=2;}
+    const auto stone=wire::CreateStoneUseState(b,unknown?wire::StoneUseOutcome::Unknown:wire::StoneUseOutcome::None,b.CreateVector(rows),b.CreateVector(flags));
+    wire::ManagementStateBuilder state(b);state.add_revision(2);state.add_stone_use(stone);
+    state.add_action(unknown && fault!=2?wire::ManagementAction::StoneUseApply:wire::ManagementAction::StoneUseRead);
+    state.add_status(unknown?wire::ManagementStatus::Rejected:wire::ManagementStatus::Ok);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    const bool invalid=unknown?(fault==1 || fault==2):(fault!=0);
+    CHECK(bool(wire::validateManagementState(*value))==invalid);
+    if(!invalid){const auto decoded=codec::decodeState(value);REQUIRE(decoded.stoneUse);
+      CHECK(decoded.stoneUse->rows.size()==(unknown?0:1));if(!unknown){CHECK(decoded.stoneUse->rows[0].magmaSafe);CHECK(decoded.stoneUse->restrictions==flags);}}
+  }
+}
 TEST_CASE("Kitchen queries and edits preserve independent owned receipts") {
   for(bool apply:{false,true})for(int fault=0;fault<5;++fault){
     wm::ManagementRequest request;request.action=apply?wm::ManagementAction::KitchenApply:wm::ManagementAction::KitchenRead;

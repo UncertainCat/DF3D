@@ -46,6 +46,11 @@ ManagementState decodeState(const m::ManagementState* s) {
     next.creatureHeader=std::move(header);
   }
   if(const auto* r=s->residents())next.residents=ResidentsState{{r->unit_ids()->begin(),r->unit_ids()->end()}};
+  if(const auto* r=s->stone_use()) {
+    next.stoneUse.emplace();auto& out=*next.stoneUse;out.outcome=StoneUseOutcome(r->outcome());
+    for(const auto* row:*r->rows())out.rows.push_back({row->category(),row->index(),row->restricted(),row->name()->str(),row->uses()->str(),row->magma_safe(),row->material_token()->str()});
+    out.restrictions.assign(r->restrictions()->begin(),r->restrictions()->end());
+  }
   if(const auto* r=s->kitchen_menu()) {
     next.kitchenMenu.emplace();auto& out=*next.kitchenMenu;out.outcome=KitchenMenuOutcome(r->outcome());
     const auto key=[](const m::KitchenFoodKey* k){return KitchenFoodKey{k->item_type(),k->item_subtype(),k->mat_type(),k->mat_index()};};
@@ -225,6 +230,12 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
   }
   const auto anchor=r.materialAnchor.value_or(TilePos{r.x,r.y,r.z});
   const m::TilePos materialAnchor(anchor.x,anchor.y,anchor.z);
+  flatbuffers::Offset<m::StoneUseRequest> stoneUse;
+  if(r.action==ManagementAction::StoneUseRead || r.action==ManagementAction::StoneUseApply){
+    const auto& q=r.stoneUse;flatbuffers::Offset<flatbuffers::Vector<uint8_t>> expected;
+    if(q.expected)expected=b.CreateVector(*q.expected);
+    stoneUse=m::CreateStoneUseRequest(b,q.category,q.index,expected);
+  }
   flatbuffers::Offset<m::KitchenMenuRequest> kitchenMenu;
   if(r.action==ManagementAction::KitchenRead || r.action==ManagementAction::KitchenApply){
     const auto& q=r.kitchenMenu;
@@ -314,7 +325,7 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
           flatbuffers::Offset<m::WorkDetailSettingsRequest>{},
       (r.action==ManagementAction::StandingOrdersRead || r.action==ManagementAction::StandingOrdersSet)?
           m::CreateStandingOrdersRequest(b,r.standingOrders.category,r.standingOrders.settingId,r.standingOrders.expectedValue,r.standingOrders.value):
-          flatbuffers::Offset<m::StandingOrdersRequest>{},hunter,chores,kitchenMenu);
+          flatbuffers::Offset<m::StandingOrdersRequest>{},hunter,chores,kitchenMenu,stoneUse);
   b.Finish(request);
 }
 }  // namespace wm::detail::management

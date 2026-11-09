@@ -1,4 +1,10 @@
 // Generated exhaustive model/wire correspondence checks.
+static_assert(static_cast<int>(wm::StoneUseOutcome::None) == static_cast<int>(df3d::mirror::StoneUseOutcome::None));
+static_assert(static_cast<int>(wm::StoneUseOutcome::Applied) == static_cast<int>(df3d::mirror::StoneUseOutcome::Applied));
+static_assert(static_cast<int>(wm::StoneUseOutcome::Rejected) == static_cast<int>(df3d::mirror::StoneUseOutcome::Rejected));
+static_assert(static_cast<int>(wm::StoneUseOutcome::Stale) == static_cast<int>(df3d::mirror::StoneUseOutcome::Stale));
+static_assert(static_cast<int>(wm::StoneUseOutcome::Unknown) == static_cast<int>(df3d::mirror::StoneUseOutcome::Unknown));
+static_assert(sizeof(df3d::mirror::EnumValuesStoneUseOutcome()) / sizeof(df3d::mirror::StoneUseOutcome) == 5);
 static_assert(static_cast<int>(wm::KitchenMenuOutcome::None) == static_cast<int>(df3d::mirror::KitchenMenuOutcome::None));
 static_assert(static_cast<int>(wm::KitchenMenuOutcome::Applied) == static_cast<int>(df3d::mirror::KitchenMenuOutcome::Applied));
 static_assert(static_cast<int>(wm::KitchenMenuOutcome::Rejected) == static_cast<int>(df3d::mirror::KitchenMenuOutcome::Rejected));
@@ -224,7 +230,9 @@ static_assert(static_cast<int>(wm::ManagementAction::ChoresRead) == static_cast<
 static_assert(static_cast<int>(wm::ManagementAction::ChoresApply) == static_cast<int>(df3d::mirror::ManagementAction::ChoresApply));
 static_assert(static_cast<int>(wm::ManagementAction::KitchenRead) == static_cast<int>(df3d::mirror::ManagementAction::KitchenRead));
 static_assert(static_cast<int>(wm::ManagementAction::KitchenApply) == static_cast<int>(df3d::mirror::ManagementAction::KitchenApply));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 100);
+static_assert(static_cast<int>(wm::ManagementAction::StoneUseRead) == static_cast<int>(df3d::mirror::ManagementAction::StoneUseRead));
+static_assert(static_cast<int>(wm::ManagementAction::StoneUseApply) == static_cast<int>(df3d::mirror::ManagementAction::StoneUseApply));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 102);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -531,3 +539,5 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::ChoresRead) == df3d::mir
 static_assert(wm::isRuntimeAction(wm::ManagementAction::ChoresApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ChoresApply));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::KitchenRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::KitchenRead));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::KitchenApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::KitchenApply));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::StoneUseRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::StoneUseRead));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::StoneUseApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::StoneUseApply));

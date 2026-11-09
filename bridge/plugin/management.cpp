@@ -4164,6 +4164,10 @@ void run(color_ostream& out) {
     } catch(...) {residentsRows.reset();}
     publish();return;
   }
+  if(r->action()==m::ManagementAction::StoneUseRead || r->action()==m::ManagementAction::StoneUseApply) {
+    // Contract migration precedes native dispatch; never fall through to legacy actions.
+    status=m::ManagementStatus::Rejected;message.clear();publish();return;
+  }
   if(r->action()==m::ManagementAction::KitchenRead || r->action()==m::ManagementAction::KitchenApply) {
     namespace h=df3d_kitchen;
     status=m::ManagementStatus::Rejected;message.clear();kitchen.emplace();bool writeStarted=false;

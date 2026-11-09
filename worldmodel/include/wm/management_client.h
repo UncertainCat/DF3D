@@ -413,6 +413,9 @@ struct ProductionState {
   int32_t selectedBuilding=-1,createdJob=-1;
   std::string detail;
 };
+struct StoneUseRequest {int32_t category=-1,index=-1;std::optional<std::vector<uint8_t>> expected;};
+struct StoneUseRow {int32_t category=-1,index=-1;bool restricted=false;std::string name,uses;bool magmaSafe=false;std::string materialToken;};
+struct StoneUseState {StoneUseOutcome outcome=StoneUseOutcome::None;std::vector<StoneUseRow> rows;std::vector<uint8_t> restrictions;};
 struct KitchenFoodKey {int16_t itemType=-1,itemSubtype=-1,matType=-1;int32_t matIndex=-1;};
 struct KitchenFoodReceipt {KitchenFoodKey key;int32_t count=0;uint8_t capabilities=0;};
 struct KitchenExclusion {KitchenFoodKey key;uint8_t flags=0;};
@@ -842,6 +845,7 @@ struct ManagementRequest {
   HunterAmmunitionRequest hunterAmmunition;
   ChoresRequest chores;
   KitchenMenuRequest kitchenMenu;
+  StoneUseRequest stoneUse;
   ResidentsRowsRequest residentsRows;
   ResidentsSpecializationRequest residentsSpecialization;
   ResidentsActivityRequest residentsActivity;
@@ -907,6 +911,7 @@ struct ManagementState {
   std::optional<HunterAmmunitionState> hunterAmmunition;
   std::optional<ChoresState> chores;
   std::optional<KitchenMenuState> kitchenMenu;
+  std::optional<StoneUseState> stoneUse;
   std::optional<ResidentsSpecializationState> residentsSpecialization;
   std::optional<ResidentsActivityState> residentsActivity;
   std::optional<JobSettingsState> jobSettings;

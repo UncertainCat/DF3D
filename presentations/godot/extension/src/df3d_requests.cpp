@@ -205,6 +205,14 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         for(const auto& l:v.links){Dictionary link;link["type"]=l.type;link["id"]=l.id;link["subid"]=l.subid;links.push_back(link);}
         value["words"]=words;value["links"]=links;result["residents_activity"]=value;
     }
+    if(s.stoneUse) {
+        const auto& v=*s.stoneUse;Dictionary value;Array rows,flags;
+        for(const auto& row:v.rows){Dictionary d;d["category"]=row.category;d["index"]=row.index;d["restricted"]=row.restricted;
+            d["name"]=String::utf8(row.name.c_str());d["uses"]=String::utf8(row.uses.c_str());d["magma_safe"]=row.magmaSafe;d["material_token"]=String::utf8(row.materialToken.c_str());rows.push_back(d);}
+        for(auto flag:v.restrictions)flags.push_back(int(flag));
+        value["outcome"]=int(v.outcome);value["rows"]=rows;value["restrictions"]=flags;result["stone_use"]=value;
+        if(v.outcome==wm::StoneUseOutcome::Unknown)result["outcome"]="unknown";
+    }
     if(s.kitchenMenu) {
         const auto& v=*s.kitchenMenu;Dictionary value;Array rows,exclusions;
         const auto key=[](const wm::KitchenFoodKey& k){Dictionary d;d["item_type"]=k.itemType;d["item_subtype"]=k.itemSubtype;d["mat_type"]=k.matType;d["mat_index"]=k.matIndex;return d;};
@@ -492,6 +500,26 @@ bool validateResidentsSpecialization(const Dictionary& data,String& error) {
 bool readResidentsSpecialization(const Dictionary& data,wm::ManagementRequest& request,String&) {
     request.action=wm::ManagementAction::ResidentsSpecialize;
     request.residentsSpecialization={int32_t(int64_t(data["unit_id"])),uint64_t(int64_t(data["expected_revision"])),bool(data["only_assigned"])};return true;
+}
+bool validateStoneUse(const Dictionary& data,String& error) {
+    error="Invalid stone use request";
+    if(int64_t(data["action"])==int64_t(wm::ManagementAction::StoneUseRead)){
+        if(data.size()!=1)return false;
+    }else{
+        const auto integer=[](const Dictionary& d,const char* key,int64_t lo,int64_t hi){return d.has(key) && d[key].get_type()==Variant::INT && int64_t(d[key])>=lo && int64_t(d[key])<=hi;};
+        if(data.size()!=4 || !integer(data,"category",0,1) || !integer(data,"index",0,65535) || !data.has("expected") || data["expected"].get_type()!=Variant::ARRAY)return false;
+        const Array flags=data["expected"];if(flags.size()>65536 || int64_t(data["index"])>=flags.size())return false;
+        for(int64_t i=0;i<flags.size();++i)if(flags[i].get_type()!=Variant::INT || int64_t(flags[i])<0 || int64_t(flags[i])>1)return false;
+    }
+    error=String();return true;
+}
+bool readStoneUse(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction(int64_t(data["action"]));
+    if(request.action==wm::ManagementAction::StoneUseApply){auto& q=request.stoneUse;
+        q.category=int32_t(int64_t(data["category"]));q.index=int32_t(int64_t(data["index"]));q.expected.emplace();
+        const Array flags=data["expected"];for(int64_t i=0;i<flags.size();++i)q.expected->push_back(uint8_t(int64_t(flags[i])));
+    }
+    return true;
 }
 bool validateKitchenMenu(const Dictionary& data,String& error) {
     const auto integer=[](const Dictionary& d,const char* k,int64_t lo,int64_t hi){return d.has(k) && d[k].get_type()==Variant::INT && int64_t(d[k])>=lo && int64_t(d[k])<=hi;};
@@ -803,6 +831,7 @@ const ManagementCodec managementCodecs[] = {
     {"work_detail_rows",validateResidentsRows,readResidentsRows},
     {"work_detail_settings",validateWorkDetailSettings,readWorkDetailSettings},
     {"hunter_ammunition",validateHunterAmmunition,readHunterAmmunition},
+    {"stone_use",validateStoneUse,readStoneUse},
     {"kitchen_menu",validateKitchenMenu,readKitchenMenu},
     {"chores",validateChores,readChores},
     {"standing_orders",validateStandingOrders,readStandingOrders},
@@ -821,7 +850,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::KitchenApply)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::StoneUseApply)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

@@ -110,8 +110,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 152;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v152";
+inline constexpr uint32_t kManagementVersion = 153;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v153";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -409,12 +409,17 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::KitchenApply &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::StoneUseApply &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
       !(action >= ManagementAction::AppointmentsOpen && action <= ManagementAction::AppointmentsBack) &&
       !(action >= ManagementAction::KitchenOpen && action <= ManagementAction::KitchenClose);
+}
+inline bool validStoneRestrictions(const flatbuffers::Vector<uint8_t>* flags) {
+  if(!flags || flags->size()>65536)return false;
+  for(auto value:*flags)if(value>1)return false;
+  return true;
 }
 inline bool validKitchenKey(const KitchenFoodKey* k) {
   return k && k->item_type()>=0 && k->item_subtype()>=-1 && k->mat_type()>=-1 && k->mat_index()>=-1;
@@ -492,7 +497,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::KitchenApply)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::StoneUseApply)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -586,6 +591,13 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     const auto* q=r.residents_specialization();
     if(!q || q->unit_id()<0 || !q->expected_revision() || q->expected_revision()>INT64_MAX)return "invalid residents specialization request";
   } else if(r.residents_specialization())return "unexpected residents specialization request";
+  if(r.action()==ManagementAction::StoneUseRead || r.action()==ManagementAction::StoneUseApply) {
+    const auto* q=r.stone_use();if(!q)return "missing stone use request";
+    if(r.action()==ManagementAction::StoneUseRead){
+      if(q->category()!=-1 || q->index()!=-1 || q->expected())return "invalid stone use read";
+    }else if(q->category()<0 || q->category()>1 || q->index()<0 || !validStoneRestrictions(q->expected()) ||
+      uint32_t(q->index())>=q->expected()->size())return "invalid stone use edit";
+  }else if(r.stone_use())return "unexpected stone use request";
   if(r.action()==ManagementAction::KitchenRead || r.action()==ManagementAction::KitchenApply) {
     const auto* q=r.kitchen_menu();if(!q)return "missing kitchen request";
     if(r.action()==ManagementAction::KitchenRead){
@@ -1103,7 +1115,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::KitchenApply ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::StoneUseApply ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -1179,6 +1191,22 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     for(auto id:*r->unit_ids())if(id<0 || !ids.insert(id).second)return "invalid residents identity";
   } else if((s.action()==ManagementAction::ResidentsQuery || s.action()==ManagementAction::WorkDetailWorkersQuery) && s.status()==ManagementStatus::Ok)
     return "residents result required";
+  if(const auto* r=s.stone_use()) {
+    const bool read=s.action()==ManagementAction::StoneUseRead,apply=s.action()==ManagementAction::StoneUseApply;
+    if((!read && !apply) || !r->rows() || r->rows()->size()>65536 || !validStoneRestrictions(r->restrictions()))return "invalid stone use result";
+    if(s.status()==ManagementStatus::Ok){
+      if(r->outcome()!=(read?StoneUseOutcome::None:StoneUseOutcome::Applied))return "invalid stone use success";
+      if(apply && (r->rows()->size() || r->restrictions()->size()))return "unexpected stone use edit data";
+      std::unordered_set<int32_t> seen;
+      for(const auto* row:*r->rows()){
+        if(!row || row->category()<0 || row->category()>1 || row->index()<0 || uint32_t(row->index())>=r->restrictions()->size() ||
+          !seen.insert(row->index()).second || row->restricted()!=(r->restrictions()->Get(row->index())!=0) ||
+          !row->name() || !row->name()->size() || row->name()->size()>16384 || !row->uses() || row->uses()->size()>65536 ||
+          (row->category()==1 && row->uses()->size()) || !row->material_token() || !row->material_token()->size() || row->material_token()->size()>256)return "invalid stone use row";
+      }
+    }else if(s.status()!=ManagementStatus::Rejected || r->rows()->size() || r->restrictions()->size() ||
+      (r->outcome()!=StoneUseOutcome::Rejected && (!apply || (r->outcome()!=StoneUseOutcome::Stale && r->outcome()!=StoneUseOutcome::Unknown))))return "invalid stone use refusal";
+  }else if(s.status()==ManagementStatus::Ok && (s.action()==ManagementAction::StoneUseRead || s.action()==ManagementAction::StoneUseApply))return "missing stone use result";
   if(const auto* r=s.kitchen_menu()) {
     const bool read=s.action()==ManagementAction::KitchenRead,apply=s.action()==ManagementAction::KitchenApply;
     if((!read && !apply) || !r->rows() || !validKitchenExclusions(r->exclusions()) || r->rows()->size()>65536)return "invalid kitchen result";

@@ -1,6 +1,7 @@
 #pragma once
 #include "building_item_native.h"
 #include "knowledge_detail_native.h"
+#include "unit_room_native.h"
 #include "df/world.h"
 #include "df/plotinfost.h"
 #include "df/specific_ref.h"
@@ -74,6 +75,35 @@ inline std::optional<Totals> totals() {
         // DF's native ADD is a 32-bit operation.
         value=int32_t(uint32_t(value)+uint32_t(item->getStackSize()));
     }
+    return result;
+}
+// Native introsort swaps only the supplied pointer array. Its comparator reads
+// type/subtype/material and native item value with null unit/trade contexts.
+// The accepted valuation graph may lazily initialize semantic furnishing art;
+// no item temporary_32 or native Stocks storage participates in sorting.
+inline std::optional<std::vector<int32_t>> orderedInventory() {
+    const auto ids=inventory();if(!ids || !df3d_room::valuationReady())return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool supported=[base] {
+        struct Pin {size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={
+            {0x379b80,0x268,UINT64_C(0x50f0c651b3f19742)},
+            {0x3ccfa0,0x22b,UINT64_C(0x90b54633c75db908)},
+            {0x3d30c0,0x1e9,UINT64_C(0x4e56d0b547514068)},
+            {0x3d3e50,0xfb,UINT64_C(0xf37cd84fb13f0ba2)},
+            {0x3d3f50,0x236,UINT64_C(0x1d6fece73315218a)},
+            {0xaca720,0x7a,UINT64_C(0x12b032d63e998c99)}};
+        for(const auto& pin:pins){uint64_t hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin.length;++i){hash^=base[pin.rva+i];hash*=UINT64_C(1099511628211);}
+            if(hash!=pin.hash)return false;}
+        return true;
+    }();
+    if(!supported)return std::nullopt;
+    std::vector<df::item*> owned;owned.reserve(ids->size());
+    for(auto id:*ids){auto* item=df::item::find(id);if(!item)return std::nullopt;owned.push_back(item);}
+    if(owned.size()>1)reinterpret_cast<void(*)(df::item**,df::item**,ptrdiff_t,uint8_t)>(base+0x3ccfa0)(owned.data(),owned.data()+owned.size(),ptrdiff_t(owned.size()),0);
+    std::vector<int32_t> result;result.reserve(owned.size());
+    for(const auto* item:owned)result.push_back(item->id);
     return result;
 }
 struct CategoryDisplay {int16_t type;std::string caption,stored,unavailable;};

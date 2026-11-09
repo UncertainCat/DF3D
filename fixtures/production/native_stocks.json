@@ -1734,5 +1734,19 @@
     "msvc": "build/notes/pm/stocks-categories-msvc.log",
     "qa": "build/qa/stocks-native-categories",
     "diagnostics": "Native log clean; no viewer launched."
+  },
+  "ordered_inventory_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-222623",
+    "item_count": 9405,
+    "ordered_ids_sha256": "ce2adda531da88d068ec60d02e1441305cb08a891a44d8454bc9cf1acc0f23ed",
+    "cold_matches_native": true,
+    "warm_matches_native": true,
+    "item_scratch_preserved": true,
+    "scope": "Exact full native master item order, including equal-valued item ordering. Valuation reuses the audited unit_room_native graph with null unit/trade contexts; semantic lazy artwork initialization remains allowed, not a global read-only claim. Selected-category filtering/actions and UI remain unaccepted.",
+    "source_save": "unchanged; owned DF40432 exited unsaved",
+    "plugin_sha256": "2980c4e25e506ba6deaa749613049e505bac0def50162c1d9d3a7a143843e387",
+    "msvc": "build/notes/pm/stocks-order-msvc.log",
+    "qa": "build/qa/stocks-native-order",
+    "diagnostics": "Native log clean; no viewer launched."
   }
 }

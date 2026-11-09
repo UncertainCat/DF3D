@@ -133,8 +133,19 @@ harness assertion, not the provider comparison. Item scratch/menu guards pass,
 source unchanged, DF2516 exits unsaved, native log clean, GPU59C sampled.
 MSVC/core19 (`stocks-native-categories`) pass; bounded evidence is in
 `native_stocks.json.category_query_reference`.
-Individual item order/filtering, actions, transport and the screen remain
-unfinished.
+`orderedInventory()` passes its owned eligible-item pointer array to native
+3ccfa0 introsort, preserving native tie ordering. Comparator379b80 reads item
+type/subtype, normalized historical material and valuec66c30 with null
+unit/trade contexts. The valuation graph reuses `unit_room_native.h`'s existing
+audit and pins; semantic lazy furnishing-art initialization is allowed, so this
+is not a claim of global read-only behavior. Partition3d30c0, heap3d3e50 and
+pivot3d3f50 only mutate supplied pointer storage; pins cover their complete
+chained code ranges. Protected222623 matches the exact sequence of all9405
+native master item IDs cold/warm, with item scratch/menu guards preserved.
+Source unchanged, DF40432 exits unsaved, native log clean, GPU60C sampled.
+MSVC/core19 (`stocks-native-order`) pass; `ordered_inventory_reference` retains
+the sequence digest and scope. Selected-category filtering, actions, transport
+and the screen remain unfinished.
 
 ## Stone use native semantics and presentation
 

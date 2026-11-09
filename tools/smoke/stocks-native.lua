@@ -15,7 +15,8 @@ local function probe(command,...)
  assert(open==menu.open and selected==menu.current_type and query==menu.item_filter,'Inventory probe changed menu state')
  return json.decode(text)
 end
-local cold,cold_groups,cold_totals,cold_display
+local cold,cold_groups,cold_totals,cold_display,cold_ordered
+if os.getenv('DF3D_STOCKS_ORDERED')=='1' then cold_ordered=probe('stocks-ordered-inventory-probe').ids end
 local category_queries={'','iron','WOOD','bar','prepared','zzzznotstock',' ','silk'};local cold_categories
 if os.getenv('DF3D_STOCKS_CATEGORIES')=='1' then
  cold_categories={}
@@ -55,6 +56,13 @@ if cold then
  assert(json.encode(warm)==json.encode(native),'Warm inventory membership differs from native')
  local _,address=df.sizeof(df.global.world.items.other.IN_PLAY)
  result.inventory={cold=cold,warm=warm,native=native,scratch_preserved=true,in_play_rva=address-dfhack.internal.getImageBase()}
+end
+if cold_ordered then
+ local warm=probe('stocks-ordered-inventory-probe').ids;local native={}
+ for _,item in ipairs(stocks.master_i_list.l_item)do native[#native+1]=item.id end
+ assert(json.encode(cold_ordered)==json.encode(native),'Cold ordered inventory differs')
+ assert(json.encode(warm)==json.encode(native),'Warm ordered inventory differs')
+ result.ordered_inventory={cold=cold_ordered,warm=warm,native=native,scratch_preserved=true}
 end
 if cold_groups then
  local warm=probe('stocks-groups-probe').groups;local native={};local master=stocks.master_a_list

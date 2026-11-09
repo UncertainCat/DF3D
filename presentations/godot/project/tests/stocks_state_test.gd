@@ -31,6 +31,10 @@ func click_filter() -> void:
 	for pressed in [true,false]:
 		var event:=InputEventMouseButton.new();event.button_index=MOUSE_BUTTON_LEFT;event.pressed=pressed;event.position=Vector2(50,16);event.global_position=event.position
 		Input.parse_input_event(event);await process_frame
+func wheel_at(point: Vector2,up:=false,page:=false) -> void:
+	var event:=InputEventMouseButton.new();event.pressed=true;event.position=point;event.global_position=point
+	event.button_index=MOUSE_BUTTON_WHEEL_UP if up else MOUSE_BUTTON_WHEEL_DOWN;event.shift_pressed=page
+	Input.parse_input_event(event);await process_frame
 func run() -> void:
 	var filter=preload("res://scripts/stocks_filter.gd").new();root.add_child(filter);filter.size=Vector2(300,36);filter.configure(StyleBoxEmpty.new(),[])
 	await process_frame
@@ -121,6 +125,22 @@ func run() -> void:
 	check(view.help_at(Vector2(764,78)).is_empty() and view.help_at(Vector2(500,78)).is_empty() and view.help_at(Vector2(764,40)).is_empty(),"Blank group/header space has hover")
 	state.items={};check(view.help_at(Vector2(812,114)).is_empty(),"Missing item facts have hover")
 	var hover=preload("res://scripts/native_hover_view.gd").new();root.add_child(hover);root.add_child(view)
+	view.position=Vector2(32,52);view.size=Vector2(944,708)
+	view.scrollbar=preload("res://scripts/area_location_scrollbar.gd").new();view.add_child(view.scrollbar)
+	view.scrollbar.size=Vector2(16,648);view.scrollbar.page=18;view.scrollbar.set_rows(93)
+	view.item_scrollbar.size=Vector2(16,612);view.item_scrollbar.page=51;view.item_scrollbar.set_rows(105)
+	await wheel_at(Vector2(100,130));check(view.scrollbar.first==1 and view.item_scrollbar.first==0,"Wheel selects category column")
+	await wheel_at(Vector2(100,130),false,true);check(view.scrollbar.first==19,"Shift-wheel pages category rows")
+	await wheel_at(Vector2(500,94));check(view.item_scrollbar.first==1,"Wheel over filter scrolls item text cells")
+	await wheel_at(Vector2(960,250),false,true);check(view.item_scrollbar.first==52,"Shift-wheel over bar pages item cells")
+	await wheel_at(Vector2(600,130),false,true);check(view.item_scrollbar.first==54,"Item wheel clamps to last page")
+	await wheel_at(Vector2(600,130),true,true);check(view.item_scrollbar.first==3,"Page-up preserves text-cell units")
+	for _step in 4:await wheel_at(Vector2(600,130),true)
+	check(view.item_scrollbar.first==0,"Item wheel clamps at top")
+	for point in [Vector2(31,250),Vector2(344,250),Vector2(351,250),Vector2(976,250),Vector2(100,47),Vector2(600,760)]:
+		await wheel_at(point);check(view.scrollbar.first==19 and view.item_scrollbar.first==0,"Outside or gap wheel changed lists")
+	state.phase=State.Phase.Reading;await wheel_at(Vector2(600,130));check(view.item_scrollbar.first==0,"Pending read accepted scroll")
+	state.phase=State.Phase.Ready
 	view.hover_help=hover;view.pointer_known=true;view.pointer_position=Vector2(812,78);state.groups[0].flags=240
 	view._process(0);check(hover.state.key=="item_forbid","Stocks help did not use shared native flag text")
 	state.phase=State.Phase.Applying;view._process(0);check(hover.state.key.is_empty(),"Pending mutation retained hover authority")

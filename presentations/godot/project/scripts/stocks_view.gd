@@ -142,8 +142,22 @@ func _draw() -> void:
 	if world==null:return
 	draw_rect(Rect2(Vector2(4,4),size-Vector2(8,8)),Color8(28,28,28))
 	patch("HOVER_RECTANGLE",Vector2i.ZERO,int(size.x/8),frame_rows)
+func wheel_bar(point: Vector2):
+	# Native013646 uses whole column regions, including filter/chrome, in
+	# unshifted 8x12 input cells. The rendered panel can have a half-cell offset.
+	var top: float=-fposmod(position.y,12)
+	if point.y<top or point.y>=top+size.y:return null
+	if point.x>=0 and point.x<312:return scrollbar
+	if point.x>=320 and point.x<size.x:return item_scrollbar
+	return null
 func _input(event: InputEvent) -> void:
 	if not allowed():return
+	if event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
+		var bar=wheel_bar(get_global_transform_with_canvas().affine_inverse()*event.position)
+		if bar!=null:
+			if ready():bar.move_to(bar.first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1)*(bar.page if event.shift_pressed else 1))
+			get_viewport().set_input_as_handled()
+		return
 	if event is InputEventMouseMotion:
 		pointer_known=true;pointer_position=get_global_transform_with_canvas().affine_inverse()*event.position
 		_process(0)

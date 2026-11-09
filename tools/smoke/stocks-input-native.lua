@@ -34,6 +34,22 @@ for _,region in ipairs{{'category',100,130},{'items',600,130},{'outside',20,20}}
   position(region[2],region[3]);key(binding);observe(region[1]..'-'..binding)
  end
 end
+for _,region in ipairs{{'category-bar',328,250},{'item-bar',960,250},{'filter',500,94},{'category-bottom',100,728},{'item-bottom',600,728},{'gap',344,250}}do
+ for _,binding in ipairs{'CONTEXT_SCROLL_DOWN','CONTEXT_SCROLL_PAGEDOWN','CONTEXT_SCROLL_UP','CONTEXT_SCROLL_PAGEUP'}do
+  stocks.scroll_position_type=20;stocks.scroll_position_item=60
+  position(region[2],region[3]);key(binding);observe(region[1]..'-'..binding)
+ end
+end
+for _,x in ipairs{31,32,39,40,47,48,319,320,335,336,343,344,351,352,359,360,967,968,975,976,983,984}do
+ stocks.scroll_position_type=0;stocks.scroll_position_item=0
+ position(x,250);key('CONTEXT_SCROLL_DOWN');observe('boundary-x-'..x)
+end
+for _,x in ipairs{100,600}do
+ for _,y in ipairs{47,48,51,52,59,60,63,64,71,72,75,76,83,84,95,96,107,108,719,720,723,724,731,732,735,736,743,744,751,752,759,760}do
+  stocks.scroll_position_type=0;stocks.scroll_position_item=0
+  position(x,y);key('CONTEXT_SCROLL_DOWN');observe('boundary-'..x..'-y-'..y)
+ end
+end
 if os.getenv('DF3D_STOCKS_WHEEL')=='1' then
  local json=require('json');local script=require('gui.script')
  for _,region in ipairs{{'category',100,130},{'category-bar',328,250},{'items',600,130},{'item-bar',960,250},{'filter',500,94},{'outside',20,20}}do

@@ -99,7 +99,13 @@ text cell; the page binding advances18 categories or51 item cells at the capture
 size. The installed interface binds these to wheel and Shift-wheel. Direct
 context input outside the lists has no effect. Posted Windows wheel messages
 did not move either list, so physical-wheel delivery remains unaccepted; see
-`scroll_input_reference`. Viewer wheel routing is still pending.
+`scroll_input_reference`. Native013646 maps the scroll regions to whole columns,
+including the filter, chrome and scrollbars; the intervening eight-pixel gap
+has no scrolling. Input uses unshifted native cells despite centered rendering.
+The viewer routes wheel and Shift-wheel to these columns, using category rows
+and item text cells respectively. `stocks-wheel-routing` passes Core19 and
+headless viewport input checks for routing, paging, clamping and pending reads.
+See `scroll_regions_reference`; rendered wheel and resize acceptance remain open.
 
 Pending reads/edits clear authority; close/session changes retire observers;
 Unknown cannot replay. Successful edits refresh the retained search before

@@ -323,7 +323,18 @@ struct FarmSnapshot {
   std::vector<int32_t> seasonalCrops;
   std::vector<NativeFarmCrop> choices;
 };
-struct ItemInspectionAppearance { std::string materialToken,subtypeRaw,colorToken;int32_t stack=1;uint8_t flags=0;int8_t instrumentFamily=-1,instrumentPlaced=-1; };
+struct ItemContainerContentFacts {
+    int16_t itemType=-1;
+    std::string materialToken,colorToken;
+    int8_t effectiveArmorLevel=0;
+    bool metal=false,coal=false,containsPowder=false;
+    bool rollsSheets=false,protectsFoldedSheets=false,containsWriting=false;
+};
+struct ItemContainerContentsFacts {
+    bool container=false;
+    std::vector<ItemContainerContentFacts> entries;
+};
+struct ItemInspectionAppearance { std::string materialToken,subtypeRaw,colorToken;int32_t stack=1;uint8_t flags=0;int8_t instrumentFamily=-1,instrumentPlaced=-1;std::optional<ItemContainerContentsFacts> contents={}; };
 struct BuildingContentsItem {
   int32_t id=-1,role=-1;std::string name;
   bool forbid=false,dump=false,melt=false,hidden=false,canDump=false,canMelt=false,inJob=false,inBuilding=false;

@@ -155,8 +155,8 @@ opens the ammunition sheet through actual Stocks View, checks Recenter/close
 handoffs, retains group edit/restoration/stale checks, and compares native sheet
 raw_description with the owned provider and viewer text. Weight matches too.
 Icon426,66..458,98, header464,64..784,112 and description430,118..886,226 have zero
-RGB differences. That capture predates the assignment row restored below. The carrier icon
-still differs by298 pixels; full-sheet parity is not accepted. Source unchanged,
+RGB differences. That capture predates the assignment row and carrier-icon fixes
+below; its carrier icon differed by298 pixels. Source unchanged,
 DF32724 exits unsaved, 30FPS GPU49-50C sampled; only documented
 thread/finalize/shutdown-object diagnostics remain. Other ammunition variants
 and full main-scene camera/follow behavior still require acceptance.
@@ -184,7 +184,8 @@ zero RGB differences from native, as do the header and description crops.
 Source unchanged, DF15472 exits unsaved; 30FPS GPU47-48C sampled. Only documented
 thread/finalize/shutdown-object diagnostics remain. Squad selection/caption has
 separate native provider evidence; its rendered row is not covered by this run.
-The bin carrier icon and broader item/main-scene coverage remain incomplete.
+The bin carrier icon is accepted for the ammunition case below; broader item
+and main-scene coverage remain incomplete.
 The asset resolver uses the empty bin base beneath a resolved contents overlay;
 the generic IN_USE base is reserved for occupied bins without an available
 overlay. Native compositor cf8dc4..cf8dff and graphics-name bindings123a9b1..
@@ -195,11 +196,10 @@ Bin overlay variants use the upper32 bits of the independently seeded native
 cache retains the full bin ID; sheet icon queries also carry the item ID.
 Installed clothing/coin vectors contain two variants; synthetic two/three-entry
 asset checks cover raw order and avoid prematurely reducing to gem arrangements.
-Sheet icons now compose resolved overlays through the existing tile compositor.
-Core19 (`bin-variants-overlays`) passes; its initial extension build failed on a
-return-type mismatch, corrected before `bin-overlays-extension` passed extension
-build and item-sheet state checks. These are headless checks, not rendered
-acceptance. `ContainerContentsFacts` represents ordered direct entries, the
+Sheet icons compose bin overlays with the native cf8f95..cf9103 rule: copy the
+base, then replace any pixel covered by nonzero contents alpha, preserving that
+alpha. Ordinary alpha-over leaves five incorrect edge pixels in this fixture.
+`ContainerContentsFacts` represents ordered direct entries, the
 container flag, effective armor level, metal/coal materials, powder containment
 and writing-related tool uses. The asset resolver's complete-facts path follows
 native c7dc54..c7dedd and c7e194 category agreement: any mixed or unclassified
@@ -216,10 +216,27 @@ though the selected child is iron. Empty observed color remains untinted.
 MSVC and core19 (`bin-contents-provider`) pass; source unchanged, owned DF20600
 exits unsaved, native log clean, GPU46C/5percent sampled. Fixture
 `bin_contents_provider_reference` records this scope. Mixed categories, armor,
-powder bags and writing tools have no live provider acceptance yet. The reader
-is not connected to appearance transport; the legacy map first-child path
-remains. Sheet transport and rendered acceptance are still missing, so the
-carrier icon mismatch is not resolved end to end.
+powder bags and writing tools have no live provider acceptance yet. The legacy
+map first-child path remains separate from complete sheet facts.
+
+Management159 appends optional contents to ItemInspectionAppearance and uses
+`Local\df3d_management_v159`; rebuild bridge and viewer together. Missing facts
+remain unknown, not an observed empty bin. Ordered entries and all appearance
+facts participate in item revision hashing. Readers reject malformed facts and
+more than4096 entries; the overall management payload limit still applies, with
+oversize results rejected rather than truncated. The native reader populates
+BIN appearances; carrier, item and Stocks codecs preserve them.
+Core19, item-sheet/Stocks state and management-contract checks pass in
+`bin-contents159-version`; the final compositor passes core19 and item-sheet
+checks in `bin159-native-composite`. MSVC passes. Protected012143 on2026-11-09
+verifies cold typed View with all13 entries, Recenter/View/close, flag edits,
+restoration and stale rejection. Carrier426,270..458,302, header, description
+and assignment crops have zero RGB differences from native. Both rendered
+images were inspected. Only documented thread/finalize/shutdown-object
+diagnostics remain. Source unchanged, owned DF46036 exits unsaved; native and
+viewer capped30FPS, GPU47-48C sampled, original native preferences restored
+byte-for-byte. `bin_contents_wire159_reference` records scope and hashes. This
+accepts the ammunition carrier case, not all container families or full Stocks.
 
 Management156 reuses native itemAppearance facts for the staged ammunition
 icons and the accepted diagonal ammunition artwork path. Core19, Stocks state

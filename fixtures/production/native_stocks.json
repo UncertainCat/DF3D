@@ -3904,5 +3904,30 @@
     "source_save": "unchanged; owned DF20600 exited unsaved",
     "gpu": "native only; sampled46C,5percent utilization",
     "limitations": "Provider only, not wired into appearance snapshots. No live mixed-category, armor, powder-bag or writing-tool coverage; no DF3D rendered carrier acceptance."
+  },
+  "bin_contents_wire159_reference": {
+    "contract": 159,
+    "channel": "Local\\df3d_management_v159",
+    "capture": "build/stockpile-storage-native-input-20261109-012143",
+    "qa": [
+      "build/qa/bin-contents159-version",
+      "build/qa/bin159-native-composite"
+    ],
+    "bridge_build": "build/notes/pm/bin-contents159-msvc-version.log",
+    "plugin_sha256": "5004f698ea74d7c3ceabaa39bc449479d39f1e53a5ccd0d2a1954dd4666f3b03",
+    "scope": "Cold typed View receives all thirteen ordered bin contents entries and renders native copper contents despite selected iron child. Recenter/View/close, two Hidden edits with restoration, and stale rejection pass.",
+    "rgb_differences": {
+      "carrier": 0,
+      "header": 0,
+      "description": 0,
+      "assignment": 0
+    },
+    "native_png_sha256": "81f361e291974ba18871d293ed6d4aced9b99260d5646c965f744a88641c7efb",
+    "viewer_png_sha256": "7644c2b33ffecbb8dac3a7d3ab8f6908c72e6556c93dd0fd8b3cfd95444b2219",
+    "native_composition": "cf8f95..cf9103 copies any nonzero-alpha overlay pixel over the base. Earlier011649 general alpha blending left five differing pixels; corrected compositor matches the whole32x32 carrier icon.",
+    "source_save": "unchanged; owned DF46036 exited unsaved",
+    "gpu": "native and viewer30FPS; sampled47-48C; original native preferences restored byte-for-byte",
+    "diagnostics": "passed_with_known_issues: godot-separate-thread-notice, godot-device-finalize, godot-shutdown-objects; no unclassified errors",
+    "limitations": "Only the ammunition carrier is rendered/live accepted. Mixed-category, armor, powder-bag and writing-tool contents remain offline-only. No broader item-family or main-scene camera acceptance; public Stocks remains hidden."
   }
 }

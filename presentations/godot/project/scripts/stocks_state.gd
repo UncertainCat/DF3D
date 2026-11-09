@@ -131,7 +131,7 @@ func _valid(value: Dictionary,intent: Dictionary) -> bool:
 		if typeof(row.get("can_dump"))!=TYPE_BOOL or typeof(row.get("can_melt"))!=TYPE_BOOL:return false
 		if row.has("appearance"):
 			var a: Variant=row.appearance
-			if typeof(a)!=TYPE_DICTIONARY or a.size()!=(6 if row.type==13 else 5):return false
+			if not preload("res://scripts/item_sheet_state.gd")._valid_appearance(a,row.type):return false
 			if not _text(a.get("material_token"),256,false) or a.material_token!=row.material_token or not _text(a.get("subtype_raw"),128) or a.subtype_raw!=row.subtype_raw or not _text(a.get("color_token"),128):return false
 			if not _integer(a.get("stack"),1,2147483647) or not _integer(a.get("flags"),0,96) or (a.flags&~96):return false
 			if row.type==13:

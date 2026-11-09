@@ -641,7 +641,7 @@ private:
     std::map<wm::ItemId, std::vector<int>> itemInstanceIndices_;
     std::vector<std::tuple<int64_t,int,int,int>> depthUnitContents_;
     int buildingSlotFor(wm::BuildingKind kind, wm::BuildingStage stage, int page, int paletteRow, uint16_t subtype, bool plannedHalfAlpha=false);
-    int compositeBuildingTile(const std::vector<std::pair<int, godot::Color>>& layers,bool floorHalfAlpha=false,bool nativeItemBlend=false,bool nativeLayoutBlend=false);
+    int compositeBuildingTile(const std::vector<std::pair<int, godot::Color>>& layers,bool floorHalfAlpha=false,bool nativeItemBlend=false,bool nativeLayoutBlend=false,bool nativeBinBlend=false);
     godot::PackedVector3Array unitCutoutPositions_;
     std::vector<float> unitDepthBottoms_;
     godot::PackedFloat32Array unitThicknesses_;

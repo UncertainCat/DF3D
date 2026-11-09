@@ -4997,3 +4997,24 @@ TEST_CASE("item ammunition assignment distinguishes absent facts and observed al
     if(!invalid){auto decoded=codec::decodeProduction(value->production());const auto& observed=decoded.independentItem->snapshot->ammunitionAssignment;CHECK(observed.has_value()==(mode!=3));if(observed){CHECK(observed->kind==mode);CHECK(observed->squadId==(mode==2?(fault==3?7:120):-1));}}
   }
 }
+
+TEST_CASE("carrier contents preserve absence and ordered complete facts") {
+  for(int mode=0;mode<3;++mode)for(int fault=0;fault<5;++fault) {
+    flatbuffers::FlatBufferBuilder b;
+    std::vector<flatbuffers::Offset<wire::ItemContainerContentFacts>> entries;
+    if(mode==2){entries.push_back(wire::CreateItemContainerContentFacts(b,fault==2?93:39,b.CreateString("INORGANIC:COPPER"),b.CreateString(fault==3?std::string(129,'x'):"COPPER"),0,true));
+      entries.push_back(wire::CreateItemContainerContentFacts(b,-1,b.CreateString(""),b.CreateString("")));}
+    auto contents=wire::CreateItemContainerContentsFacts(b,mode==2 && fault!=4,b.CreateVector(entries));
+    auto appearance=wire::CreateItemInspectionAppearance(b,b.CreateString("PLANT:OAK:WOOD"),b.CreateString(""),b.CreateString("BROWN"),1,0,-1,-1,mode?contents:0);
+    auto carrier=wire::CreateItemCarrier(b,1,7,fault==1?17:32,b.CreateString("container"),appearance);
+    auto item=wire::CreateIndependentItemSnapshot(b,45,1,39,b.CreateString("item"),b.CreateString(""),b.CreateString(""),false,false,false,false,true,false,false,false,b.CreateString(""),b.CreateString(""),0,0,-1,carrier);
+    auto independent=wire::CreateIndependentItemState(b,item);wire::ProductionStateBuilder p(b);p.add_independent_item(independent);auto payload=p.Finish();
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_production(payload);state.add_action(wire::ManagementAction::ProductionInspect);state.add_status(wire::ManagementStatus::Ok);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    const bool invalid=(mode && fault==1) || (mode==2 && fault>=2);
+    CHECK(bool(wire::validateManagementState(*value))==invalid);
+    if(!invalid){auto decoded=codec::decodeProduction(value->production());const auto& facts=decoded.independentItem->snapshot->carrier->appearance->contents;
+      CHECK(facts.has_value()==bool(mode));if(facts){CHECK(facts->container==(mode==2));CHECK(facts->entries.size()==(mode==2?2:0));
+        if(mode==2){CHECK(facts->entries[0].colorToken=="COPPER");CHECK(facts->entries[0].metal);CHECK(facts->entries[1].itemType==-1);}}}
+  }
+}

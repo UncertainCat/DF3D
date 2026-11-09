@@ -42,8 +42,36 @@ Ref<Texture2D> Df3dWorld::ammunition_icon(const Dictionary& appearance,int64_t i
 }
 Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,bool genericGroup,int64_t itemId,bool sheet,bool diagonalAmmo) {
     if(!assets_ || itemType<0 || itemType>=int(wm::ItemKind::BoltThrowerParts) ||
-       appearance.size()!=5+int(appearance.has("bedding"))+int(appearance.has("instrument"))+int(appearance.has("slab_engraving"))+int(appearance.has("gem_shape_raw")))return {};
+       appearance.size()!=5+int(appearance.has("bedding"))+int(appearance.has("instrument"))+int(appearance.has("slab_engraving"))+int(appearance.has("gem_shape_raw"))+int(appearance.has("contents")))return {};
     if(itemId < -1 || itemId>INT32_MAX)return {};
+    std::optional<wm::ContainerContentsFacts> contents;
+    if(appearance.has("contents")) {
+        if(itemType!=32 || appearance["contents"].get_type()!=Variant::DICTIONARY)return {};
+        const Dictionary value=appearance["contents"];
+        if(value.size()!=2 || !value.has("container") || value["container"].get_type()!=Variant::BOOL ||
+           !value.has("entries") || value["entries"].get_type()!=Variant::ARRAY)return {};
+        const Array entries=value["entries"];auto& facts=contents.emplace();facts.container=bool(value["container"]);
+        if(entries.size()>4096 || (!facts.container && !entries.is_empty()))return {};
+        for(int64_t i=0;i<entries.size();++i) {
+            if(entries[i].get_type()!=Variant::DICTIONARY)return {};
+            const Dictionary row=entries[i];if(row.size()!=10)return {};
+            for(const auto* key:{"item_type","effective_armor_level"})
+                if(!row.has(key) || row[key].get_type()!=Variant::INT)return {};
+            const int64_t type=row["item_type"],armor=row["effective_armor_level"];
+            if(type < -1 || type>92 || armor < -128 || armor>127)return {};
+            for(const auto* key:{"metal","coal","contains_powder","rolls_sheets","protects_folded_sheets","contains_writing"})
+                if(!row.has(key) || row[key].get_type()!=Variant::BOOL)return {};
+            for(const auto* key:{"material_token","color_token"})
+                if(!row.has(key) || row[key].get_type()!=Variant::STRING)return {};
+            const String material=row["material_token"],color=row["color_token"];
+            if(material.utf8().length()>256 || color.utf8().length()>128)return {};
+            wm::ContainerContentFacts entry;entry.kind=wm::ItemKind(type+1);entry.effectiveArmorLevel=int8_t(armor);
+            entry.materialToken=material.utf8().get_data();entry.colorToken=color.utf8().get_data();
+            entry.metal=bool(row["metal"]);entry.coal=bool(row["coal"]);entry.containsPowder=bool(row["contains_powder"]);
+            entry.rollsSheets=bool(row["rolls_sheets"]);entry.protectsFoldedSheets=bool(row["protects_folded_sheets"]);entry.containsWriting=bool(row["contains_writing"]);
+            facts.entries.push_back(std::move(entry));
+        }
+    }
     std::string gemShape;
     if(appearance.has("gem_shape_raw")) {
         if(itemType!=1 || appearance["gem_shape_raw"].get_type()!=Variant::STRING)return {};
@@ -156,6 +184,7 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
     df3d::assets::ItemQuery query;query.kind=wm::ItemKind(itemType+1);query.material=materialToken;
     query.diagonalAmmo=diagonalAmmo;
     if(itemId>=0)query.id=uint32_t(itemId);
+    if(contents)query.contents=&*contents;
     query.subtypeRaw=subtypeRaw;query.stack=uint32_t(stack);query.flags=uint8_t(flags);
     query.instrumentFamily=instrumentFamily;query.instrumentPlaced=instrumentPlaced;
     query.slabEngraving=genericGroup && query.kind==wm::ItemKind::Slab ? 0 : slabEngraving;
@@ -182,7 +211,7 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
             layers.push_back({layer,Color(float(rect.px)/resource->width,float(rect.py)/resource->height,
                 float(rect.pw)/resource->width,float(rect.ph)/resource->height)});
         }
-        const int composite=compositeBuildingTile(layers,false,true);
+        const int composite=compositeBuildingTile(layers,false,true,false,query.kind==wm::ItemKind::Bin);
         const auto* resource=composite>=0?spriteResources_.slots.find(composite):nullptr;
         if(resource)return resource->texture;
         return {};

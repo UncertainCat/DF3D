@@ -773,9 +773,9 @@ int Df3dWorld::buildingSlotFor(wm::BuildingKind kind,wm::BuildingStage stage,int
     spriteResources_.images[id]=image;spriteResources_.buildings[key]=id;return id;
 }
 
-int Df3dWorld::compositeBuildingTile(const std::vector<std::pair<int, Color>>& layers,bool floorHalfAlpha,bool nativeItemBlend,bool nativeLayoutBlend) {
+int Df3dWorld::compositeBuildingTile(const std::vector<std::pair<int, Color>>& layers,bool floorHalfAlpha,bool nativeItemBlend,bool nativeLayoutBlend,bool nativeBinBlend) {
     if(layers.empty()) return -1;
-    std::string key=nativeLayoutBlend ? "layout-composite:" : nativeItemBlend ? "item-composite:" : floorHalfAlpha ? "half-composite:" : "composite:";
+    std::string key=nativeBinBlend ? "bin-composite:" : nativeLayoutBlend ? "layout-composite:" : nativeItemBlend ? "item-composite:" : floorHalfAlpha ? "half-composite:" : "composite:";
     struct Source {int slot,x,y,w,h; godot::Ref<godot::ImageTexture> texture;};
     std::vector<Source> sources;
     int w=0,h=0;
@@ -798,15 +798,17 @@ int Df3dWorld::compositeBuildingTile(const std::vector<std::pair<int, Color>>& l
         ERR_FAIL_COND_V_MSG(source.is_null(), -1, "composite layer slot without image");
         auto layer=source->get_region(godot::Rect2i(src.x,src.y,src.w,src.h));
         if(layer->get_width()!=w || layer->get_height()!=h)layer->resize(w,h,godot::Image::INTERPOLATE_NEAREST);
-        if(nativeLayoutBlend && firstLayer) {
+        if((nativeLayoutBlend || nativeBinBlend) && firstLayer) {
             image->blit_rect(layer,godot::Rect2i(0,0,w,h),godot::Vector2i(0,0));
-        } else if(nativeItemBlend || nativeLayoutBlend) {
+        } else if(nativeItemBlend || nativeLayoutBlend || nativeBinBlend) {
             layer->convert(godot::Image::FORMAT_RGBA8);layer->clear_mipmaps();
             auto dst=image->get_data();const auto src=layer->get_data();
             for(int64_t i=0;i<dst.size();i+=4) {
                 assets::Rgba d{dst[i],dst[i+1],dst[i+2],dst[i+3]};
                 const assets::Rgba pixel{src[i],src[i+1],src[i+2],src[i+3]};
-                if(nativeLayoutBlend) {
+                if(nativeBinBlend) {
+                    assets::replaceBinContentsPixel(d,pixel);
+                } else if(nativeLayoutBlend) {
                     assets::blendLayoutOver(d,pixel);
                 }
                 else assets::blendOver(d,pixel);

@@ -52,7 +52,7 @@ ManagementState decodeState(const m::ManagementState* s) {
     for(const auto* row:*r->groups()){const auto* k=row->key();StocksGroupRow group;group.key={k->type(),k->subtype(),k->subcat1(),k->subcat2()};group.amount=row->amount();group.caption=row->caption()->str();group.matches=row->matches();group.expanded=row->expanded();group.flags=row->flags();group.revision=row->revision();group.itemIds.assign(row->item_ids()->begin(),row->item_ids()->end());out.groups.push_back(std::move(group));}
     for(const auto* row:*r->items()){
       StocksItemRow item{row->id(),row->type(),row->caption()->str(),row->flags(),row->can_dump(),row->can_melt(),row->material_token()->str(),row->subtype_raw()->str()};
-      if(const auto* a=row->appearance())item.appearance=ItemInspectionAppearance{a->material_token()->str(),a->subtype_raw()->str(),a->color_token()->str(),a->stack(),a->flags(),a->instrument_family(),a->instrument_placed()};
+      if(const auto* a=row->appearance())item.appearance=decodeInspectionAppearance(a);
       out.items.push_back(std::move(item));
     }
   }

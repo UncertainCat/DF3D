@@ -899,9 +899,16 @@ void publish() {
     for(const auto& c:f.choices)rows.push_back(m::CreateNativeFarmCrop(b,c.id,b.CreateString(c.name),c.seedsAvailable,c.currentSeasonWarning,b.CreateString(c.rawId)));
     farmSnapshot=m::CreateFarmSnapshot(b,f.buildingId,f.revision,f.selectedSeason,f.currentSeason,b.CreateVector(f.seasonalCrops),b.CreateVector(rows),f.currentFertilization,f.maxFertilization,f.pendingFertilization,f.seasonalFertilization,b.CreateString(f.customName),b.CreateString(f.headerName),f.removing,f.removalSuspended,f.removalHasWorker);
   }
+  const auto encodeContainerContents=[&](const auto& facts) {
+    flatbuffers::Offset<m::ItemContainerContentsFacts> result;
+    if(facts){std::vector<flatbuffers::Offset<m::ItemContainerContentFacts>> entries;
+      for(const auto& e:facts->entries)entries.push_back(m::CreateItemContainerContentFacts(b,e.itemType,b.CreateString(e.materialToken),b.CreateString(e.colorToken),e.effectiveArmorLevel,e.metal,e.coal,e.containsPowder,e.rollsSheets,e.protectsFoldedSheets,e.containsWriting));
+      result=m::CreateItemContainerContentsFacts(b,facts->container,b.CreateVector(entries));}
+    return result;
+  };
   const auto encodeInspectionAppearance=[&](const std::optional<ItemInspectionAppearance>& look) {
     flatbuffers::Offset<m::ItemInspectionAppearance> result;
-    if(look){const auto& a=*look;result=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced);}return result;
+    if(look){const auto& a=*look;result=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents));}return result;
   };
   flatbuffers::Offset<m::BuildingContentsPage> contentsPage;
   if(production.contents) {
@@ -928,10 +935,10 @@ void publish() {
       const auto holder=link(v.holder),stockpile=link(v.stockpile);
       flatbuffers::Offset<m::ItemCarrier> carrier;
       if(v.carrier){const auto& c=*v.carrier;flatbuffers::Offset<m::ItemInspectionAppearance> appearance;
-        if(c.appearance){const auto& a=*c.appearance;appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced);}
+        if(c.appearance){const auto& a=*c.appearance;appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents));}
         carrier=m::CreateItemCarrier(b,int8_t(c.kind),c.id,c.itemType,b.CreateString(c.name),appearance);}
       flatbuffers::Offset<m::ItemInspectionAppearance> appearance;
-      if(v.appearance){const auto& a=*v.appearance;appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced);}
+      if(v.appearance){const auto& a=*v.appearance;appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents));}
       flatbuffers::Offset<m::ItemOwner> owner;
       if(v.owner)owner=m::CreateItemOwner(b,v.owner->id,b.CreateString(v.owner->name));
       flatbuffers::Offset<m::ItemAmmunitionAssignment> assignment;
@@ -1217,7 +1224,7 @@ void publish() {
     for(const auto& row:stocks->items){
       flatbuffers::Offset<m::ItemInspectionAppearance> appearance;
       if(row.appearance){const auto& a=*row.appearance;
-        appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced);}
+        appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents));}
       items.push_back(m::CreateStocksItemRow(b,row.id,int16_t(row.itemType),b.CreateString(row.caption),row.flags,row.canDump,row.canMelt,
         b.CreateString(row.materialToken),b.CreateString(row.subtypeRaw),appearance));
     }
@@ -3037,6 +3044,12 @@ std::optional<BuildingItemSnapshot> observeFarmItem(int32_t buildingId,int32_t i
   }
   return std::nullopt;
 }
+ItemInspectionAppearance copyInspectionAppearance(const df3d_production::ItemInspectionAppearance& a) {
+  ItemInspectionAppearance result{DF2UTF(a.materialToken),DF2UTF(a.subtypeRaw),DF2UTF(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced};
+  if(a.contents){auto& c=result.contents.emplace();c.container=a.contents->container;
+    for(const auto& e:a.contents->entries)c.entries.push_back({e.itemType,DF2UTF(e.materialToken),DF2UTF(e.colorToken),e.effectiveArmorLevel,e.metal,e.coal,e.containsPowder,e.rollsSheets,e.protectsFoldedSheets,e.containsWriting});}
+  return result;
+}
 std::optional<IndependentItemSnapshot> independentItemSnapshot(const df3d_production::ItemObservation& observed) {
   const auto& item=observed.item;IndependentItemSnapshot value;
   if(observed.ammunitionAssignment){const auto& a=*observed.ammunitionAssignment;value.ammunitionAssignment=ItemAmmunitionAssignment{a.kind,a.squadId,DF2UTF(a.caption)};if(value.ammunitionAssignment->caption.size()>1024)return std::nullopt;}
@@ -3046,11 +3059,11 @@ std::optional<IndependentItemSnapshot> independentItemSnapshot(const df3d_produc
   value.weight=DF2UTF(observed.weight);value.description=DF2UTF(observed.description);
   value.forbid=item.forbid;value.dump=item.dump;value.melt=item.melt;value.hidden=item.hidden;value.canDump=item.canDump;value.canMelt=item.canMelt;
   df::item_flags flags;flags.whole=item.flags;value.inJob=flags.bits.in_job;value.inBuilding=flags.bits.in_building;
-  if(observed.appearance){const auto& a=*observed.appearance;value.appearance=ItemInspectionAppearance{DF2UTF(a.materialToken),DF2UTF(a.subtypeRaw),DF2UTF(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced};
+  if(observed.appearance){const auto& a=*observed.appearance;value.appearance=copyInspectionAppearance(a);
     const auto& encoded=*value.appearance;if(encoded.materialToken.size()>256||encoded.subtypeRaw.size()>128||encoded.colorToken.size()>128)return std::nullopt;}
   if(observed.buildingHolder)value.holder=ItemBuildingHolder{observed.buildingHolder->id,observed.buildingHolder->type,DF2UTF(observed.buildingHolder->name)};
   if(observed.carrier){const auto& c=*observed.carrier;value.carrier=ItemCarrier{c.kind,c.id,c.itemType,DF2UTF(c.name)};
-    if(c.appearance){const auto& a=*c.appearance;value.carrier->appearance=ItemInspectionAppearance{DF2UTF(a.materialToken),DF2UTF(a.subtypeRaw),DF2UTF(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced};
+    if(c.appearance){const auto& a=*c.appearance;value.carrier->appearance=copyInspectionAppearance(a);
       const auto& encoded=*value.carrier->appearance;if(encoded.materialToken.size()>256||encoded.subtypeRaw.size()>128||encoded.colorToken.size()>128)return std::nullopt;}}
   if(observed.stockpile)value.stockpile=ItemBuildingHolder{observed.stockpile->id,observed.stockpile->type,DF2UTF(observed.stockpile->name)};
   if(value.name.size()>128*1024 || value.materialToken.size()>256 || value.subtypeRaw.size()>128 || value.weight.size()>128 || value.description.size()>32*1024 ||

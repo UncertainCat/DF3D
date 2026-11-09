@@ -236,6 +236,7 @@ inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
         }
         appearance.instrumentPlaced=definition->flags.is_set(df::instrument_flags::PLACED_AS_BUILDING)?1:0;
     }
+    if(item->getType()==df::item_type::BIN){appearance.contents=itemContainerContents(item);if(!appearance.contents || appearance.contents->entries.size()>4096)return std::nullopt;}
     appearance.stack=item->getStackSize();appearance.flags=(item->flags.bits.artifact?32:0)|(item->flags.bits.spider_web?64:0);
     if(appearance.materialToken.empty()||appearance.materialToken.size()>256||appearance.subtypeRaw.size()>128||appearance.colorToken.size()>128||appearance.stack<1)return std::nullopt;
     return appearance;

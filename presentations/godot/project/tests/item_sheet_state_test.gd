@@ -27,6 +27,18 @@ func completed(wrong_flag:=false) -> void:
 		"edit":{"item_id":1000,"farm_operation":C.FarmOperation.ItemHidden,"value":1}})
 
 func run() -> void:
+	var entry={"item_type":39,"material_token":"INORGANIC:COPPER","color_token":"COPPER","effective_armor_level":0,"metal":true,"coal":false,"contains_powder":false,"rolls_sheets":false,"protects_folded_sheets":false,"contains_writing":false}
+	var look={"material_token":"PLANT:OAK:WOOD","subtype_raw":"","color_token":"BROWN","stack":1,"flags":0,"contents":{"container":true,"entries":[entry]}}
+	check(ItemModel._valid_appearance(look,32),"complete bin facts accepted")
+	for fault in 5:
+		var bad: Dictionary=look.duplicate(true)
+		if fault==0:bad.contents.container=false
+		if fault==1:bad.contents.entries[0].item_type=93
+		if fault==2:bad.contents.entries[0].metal=1
+		if fault==3:bad.contents.entries[0].color_token="x".repeat(129)
+		if fault==4:bad.contents.entries[0].unexpected=true
+		check(not ItemModel._valid_appearance(bad,32),"invalid bin facts rejected")
+	check(not ItemModel._valid_appearance(look,17),"contents cannot be attached to another family")
 	for fault in 5:
 		setup();model.open(1000);service.poll();var value:=item();value.item_type=39
 		value.ammunition_assignment={"kind":1,"squad_id":-1,"caption":"native assignment"}

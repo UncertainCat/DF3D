@@ -296,6 +296,14 @@ TEST_CASE("compositor: blendOver is the bridge's integer alpha-over") {
   CHECK(f.r == (255 * 128) / 191);
 }
 
+TEST_CASE("bin contents replace covered body pixels without alpha blending") {
+  Rgba d=rgba(120,100,80,255);
+  replaceBinContentsPixel(d,rgba(1,2,3,0));CHECK(d.r==120);CHECK(d.a==255);
+  replaceBinContentsPixel(d,rgba(30,40,50,1));CHECK(d.r==30);CHECK(d.g==40);CHECK(d.b==50);CHECK(d.a==1);
+  replaceBinContentsPixel(d,rgba(60,70,80,128));CHECK(d.r==60);CHECK(d.a==128);
+  replaceBinContentsPixel(d,rgba(90,100,110,255));CHECK(d.r==90);CHECK(d.a==255);
+}
+
 TEST_CASE("compositor: fitFactor") {
   CHECK(fitFactor(32, 32, 32, 32) == 1);
   CHECK(fitFactor(16, 16, 32, 32) == 1);

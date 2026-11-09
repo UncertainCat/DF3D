@@ -138,6 +138,8 @@ func run() -> void:
 				while Time.get_ticks_msec()<deadline and owner.item_owner.state.phase==owner.item_owner.state.Phase.Reading:world.poll();await process_frame
 				check(owner.item_owner.state.phase==owner.item_owner.state.Phase.Ready and owner.item_owner.state.item_id==int(ids[0]),"Stocks View item sheet unavailable")
 				check(owner.item_owner.state.snapshot.get("ammunition_assignment",{})=={"kind":1,"squad_id":-1,"caption":"Assigned to hunters"},"Native hunter assignment missing from sheet")
+				var bin_contents: Dictionary=owner.item_owner.state.snapshot.carrier.appearance.get("contents",{})
+				check(bin_contents.get("container",false) and bin_contents.get("entries",[]).size()==13 and bin_contents.entries[0].color_token=="COPPER","Complete native bin contents missing from sheet")
 				var snapshot_file:=FileAccess.open(directory+"/stocks-view-item-snapshot.json",FileAccess.WRITE);snapshot_file.store_string(JSON.stringify(owner.item_owner.state.snapshot));snapshot_file.close()
 				await RenderingServer.frame_post_draw
 				root.get_texture().get_image().save_png(directory+"/stocks-view-item-sheet.png")

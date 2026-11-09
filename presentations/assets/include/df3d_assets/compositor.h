@@ -95,6 +95,10 @@ inline uint32_t packRgb(Rgba c) {
 // Alpha-over in 8-bit integer arithmetic (the bridge's formula).
 void blendOver(Rgba& dst, Rgba src);
 
+// Native bin compositor cf8f95..cf9103 copies any nonzero-alpha contents
+// pixel, preserving its alpha rather than blending it with the bin body.
+inline void replaceBinContentsPixel(Rgba& dst,Rgba src) { if(src.a)dst=src; }
+
 // Native cage overlay: partial cage alpha mixes RGB with /255 truncation,
 // retaining occupied-subject alpha. Empty destination or opaque cage copies source.
 void blendContainerOver(Rgba& dst, Rgba src);

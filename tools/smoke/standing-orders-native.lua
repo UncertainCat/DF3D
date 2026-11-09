@@ -62,7 +62,7 @@ local function shot(name,check_step)
  if name=='kitchen-wire' and os.getenv('DF3D_KITCHEN_MAIN')=='1' then deadline=dfhack.getTickCount()+120000 end
  if name=='stone-use-wire' and os.getenv('DF3D_STONE_USE_RENDER')=='1' then deadline=dfhack.getTickCount()+30000 end
  if name=='stone-use-wire' and os.getenv('DF3D_STONE_USE_MAIN')=='1' then deadline=dfhack.getTickCount()+120000 end
- if name=='standing-automation-wire' then deadline=dfhack.getTickCount()+120000 end
+ if name=='standing-automation-wire' or name=='labor-lifecycle-wire' then deadline=dfhack.getTickCount()+120000 end
  if name=='hunter-ammunition-wire' and os.getenv('DF3D_HUNTER_AMMUNITION_MAIN')=='1' then deadline=dfhack.getTickCount()+120000 end
  local checked=0
  while true do
@@ -864,5 +864,21 @@ end
 if os.getenv('DF3D_STANDING_AUTOMATION')=='1' then
  local path=debug.getinfo(1,'S').source:sub(2):gsub('standing%-orders%-native.lua$','standing-automation-native.lua')
  assert(loadfile(path))(out,view,click,shot,values,rows)
+end
+if os.getenv('DF3D_LABOR_LIFECYCLE')=='1' then
+ local stage=0;local disabled=false
+ local ok,err=xpcall(function()
+  shot('labor-lifecycle-wire',function()
+   local file=io.open(out..'/labor-lifecycle-request');if not file then return end
+   local wanted=tonumber(file:read('*a'));file:close();if wanted==stage then return end
+   assert(wanted==stage+1 and wanted<=6,'Unexpected lifecycle handshake')
+   disabled=wanted%2==1
+   assert(dfhack.run_command(disabled and 'disable' or 'enable','df3d')==0,'Lifecycle transport toggle failed')
+   stage=wanted;file=assert(io.open(out..'/labor-lifecycle-ack','w'));file:write(tostring(stage));file:close()
+  end)
+  assert(stage==6,'Incomplete Labor lifecycle check')
+ end,debug.traceback)
+ if disabled then dfhack.run_command('enable','df3d')end
+ assert(ok,err)
 end
 shot('standing-orders-restored');records[#records+1]={name='standing-orders',categories=#result.pages,cycles=#result.workshop_cycles}

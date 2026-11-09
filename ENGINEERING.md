@@ -121,6 +121,22 @@ save is unchanged and owned DF43948 exits unsaved. Core19 passes
 stone-use-resized-main. The preceding normal main-scene final panel matches
 native exactly; the resized-edit run does not add a new whole-screen claim.
 
+Combined Labor transport recovery remains unaccepted. The manual
+`labor_lifecycle_wire_live.gd` runs through the actual main scene using
+DF3D_STANDING_ORDERS_NATIVE=1 and DF3D_LABOR_LIFECYCLE=1 in the protected launcher.
+Its native handshake disables/enables the plugin while the owned fortress stays
+paused. It checks Kitchen, Stone use and Hunter receipt/draft retirement followed
+by fresh reads; successful earlier panels do not imply later cycles passed.
+Captures202829/202940/203119 on2026-11-08 fail during the first Kitchen cycle:
+202940 reaches enable acknowledgement2 but the fresh Kitchen state becomes
+Unavailable;203119 waits for an idle, claimed, stable replacement connection and
+times out. Kitchen closes and clears its rows on loss. These failures do not yet
+identify the transport or UI cause; subsequent runs write the unsettled service,
+session and management identities for diagnosis. All three owned games exit
+unsaved with source preservation, GPU55–56C. No disconnect/reconnect acceptance
+is claimed. The independent core19 and harness checks pass
+`labor-lifecycle-discovery`; the live failure remains a release gap.
+
 Graphical checks are serial and capped at30FPS; sampled GPU temperatures during
 these scoped captures were58-61C. Accepted rendered runs have only the documented
 separate-thread, device-finalize and shutdown-object diagnostics. Earlier194417

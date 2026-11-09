@@ -4164,6 +4164,11 @@
       "reason": "Protected stockpile_storage_native.ps1 FarmItemCarriers lane with DF3D_UNIT_CAMERA and DF3D_UNIT_FOLLOW_WIRE; requires owned paused native fixture."
     },
     {
+      "path": "presentations/godot/project/tests/labor_lifecycle_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected stockpile_storage_native.ps1 with DF3D_STANDING_ORDERS_NATIVE and DF3D_LABOR_LIFECYCLE; main-scene Kitchen, Stone use and Hunter retirement and fresh reads across real plugin transport disable/enable cycles."
+    },
+    {
       "path": "presentations/godot/project/tests/standing_automation_wire_live.gd",
       "status": "manual",
       "reason": "Protected stockpile_storage_native.ps1 with DF3D_STANDING_ORDERS_NATIVE, DF3D_STANDING_AUTOMATION and DF3D_STANDING_AUTOMATION_WIRE; main-scene pointer edits under controlled paused reaction availability, with independent native scalar readback and restoration."

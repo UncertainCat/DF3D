@@ -2691,6 +2691,19 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             row["rating"]=skill.rating;row["caption"]=DF2UTF(skill.caption);result["skills"].append(row);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="stocks-selection-probe") {
+          if(parameters.size()<2 || parameters.size()>3)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          int32_t type=-1;try {type=std::stoi(parameters[1]);}catch(...){return CR_WRONG_USAGE;}
+          if(type<0 || type>=93)return CR_WRONG_USAGE;
+          const auto selected=df3d_stocks::selection(int16_t(type),parameters.size()==3?UTF2DF(parameters[2]):"");if(!selected)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["ids"]=Json::Value(Json::arrayValue);result["groups"]=Json::Value(Json::arrayValue);
+          for(auto id:selected->ids)result["ids"].append(id);
+          for(const auto& entry:selected->groups){const auto& group=entry.group;Json::Value row(Json::objectValue);
+            row["subtype"]=group.subtype;row["subcat1"]=group.subcat1;row["subcat2"]=group.subcat2;row["amount"]=group.amount;
+            row["expanded"]=group.expanded;row["on"]=entry.matches;row["flags"]=entry.flags;result["groups"].append(row);}
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="stocks-categories-probe") {
           if(parameters.size()>2)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;

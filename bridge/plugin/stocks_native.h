@@ -5,6 +5,7 @@
 #include "df/world.h"
 #include "df/plotinfost.h"
 #include "df/specific_ref.h"
+#include "df/stocks_interfacest.h"
 #include <array>
 #include <cstddef>
 
@@ -185,6 +186,55 @@ inline std::optional<std::vector<Group>> groups() {
        owned.amount.size()!=count || owned.expanded.size()!=count)return std::nullopt;
     std::vector<Group> result;result.reserve(count);
     for(size_t i=0;i<count;++i)result.push_back({owned.type[i],owned.subtype[i],owned.subcat1[i],owned.subcat2[i],owned.amount[i],owned.expanded[i]});
+    return result;
+}
+struct SelectedGroup {Group group;bool matches;uint32_t flags;};
+struct Selection {std::vector<int32_t> ids;std::vector<SelectedGroup> groups;};
+inline std::optional<Selection> selection(int16_t type,std::string query) {
+    if(type<0 || type>=93 || !df3d_production::buildingItemFunctions())return std::nullopt;
+    const auto master=groups();const auto ordered=orderedInventory();
+    if(!master || !ordered)return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool supported=[base] {
+        struct Pin {size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={
+            {0x37a3f0,0x244,UINT64_C(0xef3f1132a15cc649)},
+            {0x37d350,0x3f7,UINT64_C(0x18775745ecd1c0e1)},
+            {0x37dbc0,0x664,UINT64_C(0xa49043145cd7af75)},
+            {0xa82c10,0x56ec,UINT64_C(0x66347214dfd39a0b)},
+            {0x52cee0,0x19e,UINT64_C(0xc25c2d8a6eb9fcac)},
+            {0xe1990,0xc7,UINT64_C(0x1c45e5635f4ffde2)}};
+        for(const auto& pin:pins){uint64_t hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin.length;++i){hash^=base[pin.rva+i];hash*=UINT64_C(1099511628211);}
+            if(hash!=pin.hash)return false;}
+        return true;
+    }();
+    if(!supported)return std::nullopt;
+    // Own every vector/string. Copy the initializer's type projection, then
+    // call only filtering/flag aggregation, never its window-height tail.
+    df::stocks_interfacest owned;owned.current_type=df::item_type(type);owned.item_filter=std::move(query);
+    static_assert(offsetof(df::stocks_interfacest,current_type)==0x38);
+    static_assert(offsetof(df::stocks_interfacest,item_filter)==0x48);
+    static_assert(offsetof(df::stocks_interfacest,current_type_i_list)==0x158);
+    static_assert(offsetof(df::stocks_interfacest,current_type_a_subtype)==0x170);
+    static_assert(offsetof(df::stocks_interfacest,current_type_a_on)==0x1f0);
+    static_assert(offsetof(df::stocks_interfacest,current_type_a_flag)==0x210);
+    Selection result;
+    for(const auto& group:*master)if(group.type==type) {
+        owned.current_type_a_subtype.push_back(group.subtype);
+        owned.current_type_a_subcat1.push_back(group.subcat1);
+        owned.current_type_a_subcat2.push_back(group.subcat2);
+        owned.current_type_a_amount.push_back(group.amount);
+        owned.current_type_a_expanded.push_back(group.expanded);
+        result.groups.push_back({group,false,0});
+    }
+    owned.current_type_a_on.resize(result.groups.size());
+    owned.current_type_a_flag.resize(result.groups.size());
+    for(auto id:*ordered){auto* item=df::item::find(id);if(!item)return std::nullopt;
+        if(int16_t(item->getType())==type){owned.current_type_i_list.push_back(item);result.ids.push_back(id);}}
+    df3d_creature::KnowledgeMaterialCacheRestore restore(df::global::world->raws.creatures.hist_fig_to_creature_map);
+    reinterpret_cast<void(*)(df::stocks_interfacest*)>(base+0x37d350)(&owned);
+    for(size_t i=0;i<result.groups.size();++i){result.groups[i].matches=owned.current_type_a_on[i];result.groups[i].flags=owned.current_type_a_flag[i].whole;}
     return result;
 }
 // Category insertion is inline in the unsafe menu initializer. Preserve its

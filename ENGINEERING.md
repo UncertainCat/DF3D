@@ -144,8 +144,21 @@ chained code ranges. Protected222623 matches the exact sequence of all9405
 native master item IDs cold/warm, with item scratch/menu guards preserved.
 Source unchanged, DF40432 exits unsaved, native log clean, GPU60C sampled.
 MSVC/core19 (`stocks-native-order`) pass; `ordered_inventory_reference` retains
-the sequence digest and scope. Selected-category filtering, actions, transport
-and the screen remain unfinished.
+the sequence digest and scope.
+`selection(type,query)` projects fresh owned groups and ordered items into an
+owned `stocks_interfacest`, matching the pinned37a3f0 type projection. It calls
+37d350 search and37dbc0 aggregate flags directly, avoiding37a3f0's native-window
+height tail. Native action eligibility reuses the audited cab7c0 predicate.
+The returned item sequence remains the whole category; matching groups govern
+display visibility, as in DF. Protected223102 compares nine cases across seven
+types, including empty91 and Ammunition iron/silver searches. Cold/warm item
+IDs, group keys/counts/default expansion, search membership and action flags
+match native. The earlier222940/223020 harness attempts redundantly clicked an
+already-focused filter and toggled typing off; no runtime fix was needed.
+Item scratch/menu guards pass, source unchanged, DF38704 exits unsaved,
+native log clean, GPU59C sampled; MSVC/core19 (`stocks-native-selection`) pass.
+`selection_reference` retains bounded case digests. Group expansion interaction,
+action execution, transport and the screen remain unfinished.
 
 ## Stone use native semantics and presentation
 

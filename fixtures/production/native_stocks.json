@@ -1748,5 +1748,90 @@
     "msvc": "build/notes/pm/stocks-order-msvc.log",
     "qa": "build/qa/stocks-native-order",
     "diagnostics": "Native log clean; no viewer launched."
+  },
+  "selection_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-223102",
+    "cases": [
+      {
+        "type": 39,
+        "query": "",
+        "items": 29,
+        "groups": 6,
+        "matching_groups": 6,
+        "native_sha256": "981338c3026a8a23de98bdb5087c383e369039a74aa64310941ff289cfe348b9"
+      },
+      {
+        "type": 39,
+        "query": "iron",
+        "items": 29,
+        "groups": 6,
+        "matching_groups": 2,
+        "native_sha256": "9bde36a13191aa8f91f0d5c43158b3eb719accbc539750e70ee0a920f169160e"
+      },
+      {
+        "type": 39,
+        "query": "silver",
+        "items": 29,
+        "groups": 6,
+        "matching_groups": 1,
+        "native_sha256": "e50b89403a7a1ea161b8fd38973da10188cfeae7386f8394d068a0e64a063a60"
+      },
+      {
+        "type": 0,
+        "query": "",
+        "items": 1310,
+        "groups": 8,
+        "matching_groups": 8,
+        "native_sha256": "a3b0a659cc9fd3aa41a6b8dd11724d726dfe91daff67de3800ae795ebcb4146b"
+      },
+      {
+        "type": 4,
+        "query": "",
+        "items": 493,
+        "groups": 15,
+        "matching_groups": 15,
+        "native_sha256": "0cd81f68df6d2f09e7690c547df97ea383e2ac475b11ae0b67a4f0fcdb827dd3"
+      },
+      {
+        "type": 24,
+        "query": "",
+        "items": 81,
+        "groups": 47,
+        "matching_groups": 47,
+        "native_sha256": "6a46a0eb123d3519d5257db822939fcbe209e2e875951bd2058d28fecd35803e"
+      },
+      {
+        "type": 54,
+        "query": "",
+        "items": 658,
+        "groups": 8,
+        "matching_groups": 8,
+        "native_sha256": "f3cbfff0dced7dd39214c7561dca6795ddeef5e3d40f6a006cbc3fdce63f7774"
+      },
+      {
+        "type": 60,
+        "query": "",
+        "items": 228,
+        "groups": 70,
+        "matching_groups": 70,
+        "native_sha256": "d6d5561aba9ef5ec13299c26527345967ba092995a639a0cb2b0c8064e860104"
+      },
+      {
+        "type": 91,
+        "query": "",
+        "items": 0,
+        "groups": 0,
+        "matching_groups": 0,
+        "native_sha256": "6ec496f2e32d6e5310eed8f94a7a190d803b152494d23dc821965047734d4873"
+      }
+    ],
+    "cold_warm_match_native": true,
+    "item_scratch_preserved": true,
+    "scope": "Ordered category item IDs, full group keys/counts/default expansion, search membership and aggregate action flags. Native filtering and aggregation run on an owned stocks_interfacest. Group toggles, item actions, geometry, transport and UI not accepted.",
+    "source_save": "unchanged; owned DF38704 exited unsaved",
+    "plugin_sha256": "0eb4e2df755c152322df506401b758f9524d64a92d4d39e81f59a48eeaea5e0a",
+    "msvc": "build/notes/pm/stocks-selection-msvc.log",
+    "qa": "build/qa/stocks-native-selection",
+    "diagnostics": "Native log clean; no viewer launched."
   }
 }

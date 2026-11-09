@@ -16,6 +16,12 @@ local function probe(command,...)
  return json.decode(text)
 end
 local cold,cold_groups,cold_totals,cold_display,cold_ordered
+local selection_cases={{39,''},{39,'iron'},{39,'silver'},{0,''},{4,''},{24,''},{54,''},{60,''},{91,''}}
+local cold_selections
+if os.getenv('DF3D_STOCKS_SELECTION')=='1' then
+ cold_selections={}
+ for _,case in ipairs(selection_cases)do cold_selections[#cold_selections+1]=probe('stocks-selection-probe',tostring(case[1]),case[2])end
+end
 if os.getenv('DF3D_STOCKS_ORDERED')=='1' then cold_ordered=probe('stocks-ordered-inventory-probe').ids end
 local category_queries={'','iron','WOOD','bar','prepared','zzzznotstock',' ','silk'};local cold_categories
 if os.getenv('DF3D_STOCKS_CATEGORIES')=='1' then
@@ -125,6 +131,38 @@ if cold_categories then
  end
  while #stocks.item_filter>0 do gui.simulateInput(view,'STRING_A000')end
  stocks.entering_item_filter=entering;view:render(dfhack.getTickCount())
+end
+if cold_selections then
+ local gps=df.global.gps;local original_type=stocks.current_type
+ local function key(value)gui.simulateInput(view,value);view:render(dfhack.getTickCount())end
+ local function click(x,y)gps.precise_mouse_x=x;gps.precise_mouse_y=y;gps.mouse_x=x//8;gps.mouse_y=(y-4)//12;key('_MOUSE_L')end
+ local function focus()if not stocks.entering_item_filter then click(500,94)end;assert(stocks.entering_item_filter,'Filter did not focus')end
+ local function clear()focus();for _=1,#stocks.item_filter do key('STRING_A000')end;assert(stocks.item_filter=='')end
+ local function select_type(kind)
+  clear();local found=false
+  for index,value in ipairs(stocks.filtered_type_list)do if value==kind then stocks.scroll_position_type=index;found=true;break end end
+  assert(found,'Missing selection category');view:render(dfhack.getTickCount());click(100,94)
+  assert(stocks.current_type==kind,'Category click failed')
+ end
+ result.selection_provider={cases={},scratch_preserved=true}
+ for index,case in ipairs(selection_cases)do
+  select_type(case[1]);focus()
+  for byte=1,#case[2]do key(('STRING_A%03d'):format(case[2]:byte(byte)))end
+  assert(stocks.current_type==case[1] and stocks.item_filter==case[2]:upper(),('Selection search changed target: case %d expected %d/%s actual %d/%s'):format(index,case[1],case[2],stocks.current_type,stocks.item_filter))
+  local native={ids={},groups={}}
+  for _,item in ipairs(stocks.current_type_i_list)do native.ids[#native.ids+1]=item.id end
+  for i,subtype in ipairs(stocks.current_type_a_subtype)do
+   native.groups[#native.groups+1]={subtype=subtype,subcat1=stocks.current_type_a_subcat1[i],subcat2=stocks.current_type_a_subcat2[i],amount=stocks.current_type_a_amount[i],expanded=stocks.current_type_a_expanded[i],on=stocks.current_type_a_on[i],flags=stocks.current_type_a_flag[i].whole}
+  end
+  local warm=probe('stocks-selection-probe',tostring(case[1]),case[2])
+  for _,actual in ipairs{cold_selections[index],warm}do
+   assert(json.encode(actual.ids)==json.encode(native.ids),'Selection IDs differ')
+   assert(#actual.groups==#native.groups,'Selection group count differs')
+   for i,row in ipairs(native.groups)do for field,value in pairs(row)do assert(actual.groups[i][field]==value,('Selection %d group %d/%s differs'):format(case[1],i,field))end end
+  end
+  result.selection_provider.cases[#result.selection_provider.cases+1]={type=case[1],query=case[2],native=native}
+ end
+ select_type(original_type);stocks.scroll_position_type=0;view:render(dfhack.getTickCount())
 end
 for y=0,df.global.gps.dimy-1 do
  local row={};for x=0,df.global.gps.dimx-1 do row[#row+1]=dfhack.screen.readTile(x,y).ch end

@@ -75,11 +75,18 @@ TEST_CASE("container contents choose occupied art and independent material overl
   CHECK(resolveItem(idx,q).sprite.x==0);
   q.containedCount=5; q.containedKind=wm::ItemKind::Bar;
   r=resolveItem(idx,q);
-  CHECK(r.sprite.x==1); REQUIRE(r.overlays.size()==1);
+  CHECK(r.sprite.x==0); REQUIRE(r.overlays.size()==1);
   CHECK(r.overlays[0].sprite.x==5);
   q.containedKind=wm::ItemKind::Blocks;
   r=resolveItem(idx,q); REQUIRE(r.overlays.size()==1);
   CHECK(r.overlays[0].sprite.x==4);
+  CHECK(r.sprite.x==0);
+  // Native uses the occupied base only when there is no specific overlay,
+  // including unavailable installed art for an otherwise known category.
+  q.containedKind=wm::ItemKind::Unknown;
+  r=resolveItem(idx,q); CHECK(r.sprite.x==1); CHECK(r.overlays.empty());
+  q.containedKind=wm::ItemKind::Ammo;
+  r=resolveItem(idx,q); CHECK(r.sprite.x==1); CHECK(r.overlays.empty());
   q.kind=wm::ItemKind::Barrel; q.containedKind=wm::ItemKind::Drink;
   r=resolveItem(idx,q); CHECK(r.sprite.x==2); REQUIRE(r.overlays.size()==1);
   CHECK(r.overlays[0].sprite.x==6);

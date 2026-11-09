@@ -1287,9 +1287,13 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
       }
       return r;
     case ItemKind::Bin:
-      single((std::string("ITEM_BIN_")+(cls==MaterialClass::Metal ? "METAL" : "WOOD")+
-          (occupied ? "_IN_USE" : "_EMPTY")).c_str(),"bin");
+      // Native cf8dc4..cf8dff uses the empty base underneath a specific
+      // contents overlay. IN_USE is the occupied fallback without an overlay.
+      // Resolve the overlay first: missing installed artwork also takes that
+      // fallback, even when the semantic contents category is known.
       if (occupied && *binTop()) contentsOverlay(std::string("ITEM_BIN_TOP_")+binTop());
+      single((std::string("ITEM_BIN_")+(cls==MaterialClass::Metal ? "METAL" : "WOOD")+
+          (occupied && r.overlays.empty() ? "_IN_USE" : "_EMPTY")).c_str(),"bin");
       return r;
     case ItemKind::Figurine: return metalOrWood("ITEM_FIGURINE", "craft.figurine");
     case ItemKind::Amulet: return metalOrWood("ITEM_AMULET", "craft.amulet");

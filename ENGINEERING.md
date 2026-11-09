@@ -185,6 +185,13 @@ Source unchanged, DF15472 exits unsaved; 30FPS GPU47-48C sampled. Only documente
 thread/finalize/shutdown-object diagnostics remain. Squad selection/caption has
 separate native provider evidence; its rendered row is not covered by this run.
 The bin carrier icon and broader item/main-scene coverage remain incomplete.
+The asset resolver uses the empty bin base beneath a resolved contents overlay;
+the generic IN_USE base is reserved for occupied bins without an available
+overlay. Native compositor cf8dc4..cf8dff and graphics-name bindings123a9b1..
+123abce establish this selection for wood and metal. Headless core19
+(`bin-native-base`) covers overlay, unknown category and missing-overlay cases.
+This does not establish rendered sheet parity: sheet contents facts, overlay
+composition, mixed-content classification and ID-based variants remain open.
 
 Management156 reuses native itemAppearance facts for the staged ammunition
 icons and the accepted diagonal ammunition artwork path. Core19, Stocks state

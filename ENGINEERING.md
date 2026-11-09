@@ -6,6 +6,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
+| Work Details sort tooltips advertise keyboard bindings, but sort-widget feed handles only mouse input. | No correction approved or implemented; preserve inactive sort shortcuts. | Native211422/211654 identifies all four headers at feed3c6300..3c647e, with no event-set processing or base feed call. Earlier140139 forced-key-flag probes likewise leave Skills ordering unchanged. Filter has a separate working right-panel-focus gate and is not included in this defect. |
 | Hunter ammunition picker scrollbar clicks use the parent ammunition list's offset instead of the picker's offset. | Correction approval pending; the staged DF3D scrollbar uses its own displayed offset. Public exposure remains gated. | Native201120 on2026-11-08 reproduces150237: type offset7 draws the grip at y372–407, but a click at816,402 sets offset4 without starting a drag. Native45baf4(materials) and45bfd8(types) read context+4c (parent offset); dragging uses+120 (picker offset). Source save preserved and owned DF5504 closed. |
 | Standing orders Workshops second-column controls draw41 cells from the first column but accept clicks51 cells from it. | No correction approved; DF3D preserves distinct native drawing/input rectangles. | Controlled automatic-reaction capture200445 on2026-11-08: kiln/smelter/other-shop art begins atx376, while input begins atx456 at1200x800. Native4353ec uses41-cell stride;433337 uses51. Earlier200350 clickingx444 changes first-column weaving instead and fails the cycle check; source save preserved. |
 | Work Details long names spill from the sidebar across the worker roster. | No correction approved; preserve unbounded captions and late text drawing order. | Native133241/133534 on2026-11-06 uses39 ASCII bytes plus CP437 byte195. Captions extend over the portrait/worker region. DF3D matches the sidebar crop; native overlapping sprite corruption and whole-screen pixel identity are not claimed. |
@@ -1620,17 +1621,28 @@ shared-hover checks pass in work-details-category-help-20261106. DF36768 exits
 unsaved with source preservation; native/viewer30FPS, GPU60C sampled, only known
 engine diagnostics in joined logs.
 
-Keyboard discovery140139 records original header/filter widget flags3.
-Generic feed1413960 checks flag4 at1413a07 before key activation; textbox
-feed1419080 checks it at1419096. Direct interface-key and window-key probes
-produced no observed activation with original flags. Diagnostic-only flag4
-restores filter focus and Enter release, but injected Ctrl+f also types an f;
-sort remains Skills. This is incomplete keyboard evidence, not authorization
-for a product correction or proof that shortcuts should be invented. The probe
-restores flags and closes the owned DF25276 unsaved with source preservation;
-GPU59C sampled. Retained `keyboard_discovery` records the gap; do not repeat
-unmodified input probes. Native sort-widget dispatch/binding inspection remains
-necessary before implementing shortcuts.
+Keyboard behavior is focus-dependent. Protected211654 on2026-11-08 observes
+FILTER ignored initially, STANDARDSCROLL_RIGHT enabling flag4, then FILTER
+focusing the textbox. Selecting a detail in the sidebar rebuilds the widgets
+and disables right-panel keyboard focus; clicking inside the right panel enables
+it again. The observer reacquires widgets after every action. Earlier211609
+retained obsolete widget references after selection and is not post-selection
+evidence. Source saves remain unchanged and owned processes exit unsaved.
+
+Native right-panel callbacks468e30 forward to42e2e0: standard Right/Left events
+(18/17) and inside/outside left clicks recursively set/clear CAN_KEY_ACTIVATE via
+1412e60. Textbox1419080 tests that bit before keyboard activation. Earlier140139
+started with flags3 and therefore did not establish that Filter was universally
+broken; its injected Ctrl+f also produced a literal f and remains imperfect
+physical-input evidence. DF3D still needs this right-panel focus/Filter behavior.
+
+All four sort headers instead use virtual feed3c6300..3c647e, which gates on mouse
+input and hitbox, never reads the event set and never calls generic widget feed.
+This explains why sorting stayed unchanged even under diagnostic flag4. Preserve
+that native keyboard behavior unless a correction is separately approved.
+`keyboard_discovery.dispatch_reference` records callbacks, code hashes and native
+observations. No runtime widget input or native menu storage is introduced.
+
 
 
 `DF3D_WORK_DETAILS_NATIVE=1` with the protected Residents reference launcher

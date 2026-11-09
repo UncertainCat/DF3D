@@ -44,6 +44,11 @@ local active_list,filter_box;local headers={}
 local function walk(widget,depth)
  assert(depth<24,'Work Details widget depth exceeded')
  if (widget.flag.whole&1)==0 then return end
+ if os.getenv('DF3D_WORK_DETAILS_INPUT_DISPATCH')=='1' and (#widget.custom_feed>0 or widget.name=='Filter box' or (widget.rect.y1==21 and (widget.name=='Name' or widget.name=='Cat' or widget.name=='Prof' or widget.name=='Skills')))then
+  result.input_dispatch=result.input_dispatch or {}
+  local _,address=df.sizeof(widget);local vt=df.reinterpret_cast('uint64_t',address).value
+  result.input_dispatch[#result.input_dispatch+1]={name=widget.name,flags=widget.flag.whole,feed_rva=df.reinterpret_cast('uint64_t',vt+8).value-base,custom_feed=callbacks(widget.custom_feed),custom_activated=callbacks(widget.custom_activated)}
+ end
  if widget.name=='Filter box' then filter_box=widget end
  if (widget.flag.whole&2)~=0 and widget.rect.y1==21 and (widget.name=='Name' or widget.name=='Cat' or widget.name=='Prof' or widget.name=='Skills')then headers[widget.name]=widget end
  if df.widget_unit_name:is_instance(widget) and widget.u and (widget.flag.whole&2)~=0 and widget.rect.y1>=23 then
@@ -111,6 +116,26 @@ local function shot(name)
  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Work Details capture timeout');script.sleep(1,'frames')end
 end
 shot('work-details-root')
+if os.getenv('DF3D_WORK_DETAILS_INPUT_FOCUS')=='1' then
+ result.input_focus={}
+ local function step(label,key,x,y)
+  if x then
+   g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+6;g.mouse_x=x;g.mouse_y=y
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+  end
+  gui.simulateInput(view,key)
+  if x then df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1 end
+  for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
+  walk(info.labor,0) -- Selecting a detail rebuilds the roster widgets.
+  local sorting={};for _,entry in ipairs(active_list.sorting_by)do sorting[#sorting+1]=entry.ident end
+  result.input_focus[#result.input_focus+1]={label=label,filter_flags=filter_box.flag.whole,focused=df.global.gview.cur_textbox==filter_box,sorting=sorting}
+ end
+ step('initial-filter','FILTER');step('right','STANDARDSCROLL_RIGHT');step('right-filter','FILTER')
+ step('sidebar-click','_MOUSE_L',12,16);step('sidebar-filter','FILTER')
+ step('panel-click','_MOUSE_L',110,56);step('panel-filter','FILTER')
+ step('name-key','UNITLIST_SORT_NAME');step('skills-key','UNITLIST_SORT_SKILLS')
+ shot('work-details-input-focus');records[#records+1]={name='work-details-input-focus'};return
+end
 if os.getenv('DF3D_WORK_DETAILS_RETENTION')=='1' then
  local function settle()for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())end
  local function click(x,y)

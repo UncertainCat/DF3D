@@ -4092,9 +4092,176 @@
         ]
       }
     ],
-    "limits": "No runtime correction or shortcut dispatch implemented. Actual window-key probes with original flags produced no observed sort/focus change. Diagnostic flag4 enables filter focus; injected Ctrl+f also introduces f into the field, so this is not clean keyboard parity evidence. Sort remained Skills even with flag4. Earlier direct interface-key probes also produced no change. Resolve native sort-widget dispatch/bindings before treating displayed hotkeys as working actions.",
+    "limits": "Superseded in part by dispatch_reference: sort virtual handler is mouse-only; FILTER works after native right-panel focus activation. Physical window-key injection remains imperfect; no new runtime shortcut yet.",
     "source_preserved": true,
-    "owned_df_closed": true
+    "owned_df_closed": true,
+    "dispatch_reference": {
+      "capture": "build/stockpile-storage-native-input-20261108-211654",
+      "widgets": [
+        {
+          "custom_activated": [],
+          "custom_feed": [
+            4621408
+          ],
+          "feed_rva": 21064512,
+          "flags": 7,
+          "name": "Details"
+        },
+        {
+          "custom_activated": [],
+          "custom_feed": [
+            4623920,
+            4623920
+          ],
+          "feed_rva": 21059024,
+          "flags": 3,
+          "name": "Right panel"
+        },
+        {
+          "custom_activated": [
+            4022496
+          ],
+          "custom_feed": [],
+          "feed_rva": 3957504,
+          "flags": 3,
+          "name": "Name"
+        },
+        {
+          "custom_activated": [
+            4022496
+          ],
+          "custom_feed": [],
+          "feed_rva": 3957504,
+          "flags": 3,
+          "name": "Cat"
+        },
+        {
+          "custom_activated": [
+            4022496
+          ],
+          "custom_feed": [],
+          "feed_rva": 3957504,
+          "flags": 3,
+          "name": "Prof"
+        },
+        {
+          "custom_activated": [
+            4022496
+          ],
+          "custom_feed": [],
+          "feed_rva": 3957504,
+          "flags": 3,
+          "name": "Skills"
+        },
+        {
+          "custom_activated": [],
+          "custom_feed": [],
+          "feed_rva": 21074048,
+          "flags": 3,
+          "name": "Filter box"
+        }
+      ],
+      "observations": [
+        {
+          "filter_flags": 3,
+          "focused": false,
+          "label": "initial-filter",
+          "sorting": [
+            "Skills"
+          ]
+        },
+        {
+          "filter_flags": 7,
+          "focused": false,
+          "label": "right",
+          "sorting": [
+            "Skills"
+          ]
+        },
+        {
+          "filter_flags": 7,
+          "focused": true,
+          "label": "right-filter",
+          "sorting": [
+            "Skills"
+          ]
+        },
+        {
+          "filter_flags": 3,
+          "focused": false,
+          "label": "sidebar-click",
+          "sorting": [
+            "Skills"
+          ]
+        },
+        {
+          "filter_flags": 3,
+          "focused": false,
+          "label": "sidebar-filter",
+          "sorting": [
+            "Skills"
+          ]
+        },
+        {
+          "filter_flags": 7,
+          "focused": false,
+          "label": "panel-click",
+          "sorting": [
+            "Skills"
+          ]
+        },
+        {
+          "filter_flags": 7,
+          "focused": true,
+          "label": "panel-filter",
+          "sorting": [
+            "Skills"
+          ]
+        },
+        {
+          "filter_flags": 7,
+          "focused": true,
+          "label": "name-key",
+          "sorting": [
+            "Skills"
+          ]
+        },
+        {
+          "filter_flags": 7,
+          "focused": true,
+          "label": "skills-key",
+          "sorting": [
+            "Skills"
+          ]
+        }
+      ],
+      "pins": [
+        {
+          "rva": "0x3c6300",
+          "length": 383,
+          "sha256": "57ffc91861d0c97fe240945ae7886be4919f683890a50b0370906e300e1ef02c"
+        },
+        {
+          "rva": "0x468e30",
+          "length": 8,
+          "sha256": "bf52d3a5fece5c85569ae6ae4c26157257a59a26a6f485dc5c4435f561990b6a"
+        },
+        {
+          "rva": "0x42e2e0",
+          "length": 621,
+          "sha256": "db9d32d2786b1043bae54f655babcd7f027bcccfa029b77f59c016998df65f4e"
+        },
+        {
+          "rva": "0x1412e60",
+          "length": 208,
+          "sha256": "280a274b1cddda9e3644f30b99ab5cd14fdf29361701bbeee8206e432eec0dd8"
+        }
+      ],
+      "sort_handler": "3c6300..3c647e never reads the event set and never calls generic widget feed; mouse gate and hitbox only. This explains unchanged sorting with original or forced flag4.",
+      "panel_focus": "Right panel custom feed468e30 ->42e2e0 handles STANDARDSCROLL_RIGHT18 / LEFT17 and inside/outside left click; propagates CAN_KEY_ACTIVATE recursively via1412e60. Filter native1419080 is gated by this state.",
+      "limitations": "Direct native interface actions prove focus behavior; physical Ctrl+f delivery and complete navigation lifecycle remain separate.211609 reused stale widget references after sidebar selection; only pre-rebuild observations valid.211654 reacquires widgets every step.",
+      "runtime": "No new shortcut implemented; do not invent sort actions from displayed tooltip bindings."
+    }
   },
   "resize_reference": {
     "native_capture": "build/stockpile-storage-native-input-20261106-140503",

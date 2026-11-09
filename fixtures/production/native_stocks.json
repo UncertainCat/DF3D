@@ -5413,5 +5413,420 @@
     "gpu": "30FPS; sampled41C/0%; original preferences restored",
     "diagnostics": "passed_with_known_issues: thread notice, device finalize, shutdown objects; no unclassified errors",
     "limitations": "Only first visible pages. Flask11 and Anvil45 item rows accepted; statue icons match but six pixels outside icons differ. Door6/Floodgate7/Chain10/Goblet12/Bucket18 artwork remains incomplete. Existing scrollbar26pixel difference excluded from artwork counts. Other variants and item-sheet routes unaccepted."
+  },
+  "household_semantic_reference": {
+    "capture": "build/stockpile-storage-native-input-20261109-022112",
+    "scope": "Native discovery of missing semantic artwork inputs; no viewer parity acceptance.",
+    "source_preserved": true,
+    "owned_df_closed": 37720,
+    "graphics_fps_cap": 30,
+    "sampled_gpu_temperature_c": 39,
+    "native_json_sha256": "2e591bebdcad936aa5253d3a041631ff3a6d12446e878d5f26fbd7918a3b5562",
+    "script_sha256": "dc93d1fa5bc812a66269d36adde027e6de042dc09608663491cd4f42aae9e50d",
+    "floodgate_selector": {
+      "entry_rva": "c81c1d",
+      "holder_lookup_rva": "c81fc7",
+      "compositor_rva": "cf5e90",
+      "rule": "Native looks up BUILDING_HOLDER (36), requires FLOODGATE (9), and sets packed bit26 only when the building closed flag is clear. No holder or a different building type retains the default variant. Generic item flags are insufficient.",
+      "facts": [
+        {
+          "building": {
+            "gate_flags": 0,
+            "id": 1124,
+            "type": 9
+          },
+          "contents": [],
+          "flags": 32,
+          "id": 2553,
+          "material": 0,
+          "material_index": 169,
+          "quality": 3,
+          "wear": 0
+        },
+        {
+          "building": {
+            "gate_flags": 0,
+            "id": 40,
+            "type": 9
+          },
+          "contents": [],
+          "flags": 32,
+          "id": 1580,
+          "material": 0,
+          "material_index": 169,
+          "quality": 3,
+          "wear": 0
+        },
+        {
+          "building": {
+            "gate_flags": 0,
+            "id": 74,
+            "type": 9
+          },
+          "contents": [],
+          "flags": 32,
+          "id": 1704,
+          "material": 0,
+          "material_index": 169,
+          "quality": 2,
+          "wear": 0
+        },
+        {
+          "building": {
+            "id": 3,
+            "type": 13
+          },
+          "contents": [],
+          "flags": 0,
+          "id": 4745,
+          "material": 0,
+          "material_index": 169,
+          "quality": 2,
+          "wear": 0
+        },
+        {
+          "building": {
+            "gate_flags": 1,
+            "id": 154,
+            "type": 9
+          },
+          "contents": [],
+          "flags": 32,
+          "id": 2517,
+          "material": 0,
+          "material_index": 169,
+          "quality": 2,
+          "wear": 0
+        },
+        {
+          "building": {
+            "gate_flags": 1,
+            "id": 275,
+            "type": 9
+          },
+          "contents": [],
+          "flags": 32,
+          "id": 4613,
+          "material": 0,
+          "material_index": 169,
+          "quality": 1,
+          "wear": 0
+        },
+        {
+          "building": {
+            "id": 3,
+            "type": 13
+          },
+          "contents": [],
+          "flags": 0,
+          "id": 4722,
+          "material": 0,
+          "material_index": 169,
+          "quality": 1,
+          "wear": 0
+        },
+        {
+          "building": {
+            "gate_flags": 0,
+            "id": 39,
+            "type": 9
+          },
+          "contents": [],
+          "flags": 32,
+          "id": 1592,
+          "material": 0,
+          "material_index": 169,
+          "quality": 0,
+          "wear": 0
+        },
+        {
+          "building": {
+            "gate_flags": 0,
+            "id": 156,
+            "type": 9
+          },
+          "contents": [],
+          "flags": 32,
+          "id": 3449,
+          "material": 0,
+          "material_index": 169,
+          "quality": 0,
+          "wear": 0
+        },
+        {
+          "building": {
+            "gate_flags": 1,
+            "id": 276,
+            "type": 9
+          },
+          "contents": [],
+          "flags": 32,
+          "id": 4696,
+          "material": 0,
+          "material_index": 169,
+          "quality": 0,
+          "wear": 0
+        },
+        {
+          "building": {
+            "gate_flags": 0,
+            "id": 60,
+            "type": 9
+          },
+          "contents": [],
+          "flags": 32,
+          "id": 1587,
+          "material": 0,
+          "material_index": 207,
+          "quality": 0,
+          "wear": 0
+        },
+        {
+          "building": {
+            "gate_flags": 0,
+            "id": 59,
+            "type": 9
+          },
+          "contents": [],
+          "flags": 32,
+          "id": 1604,
+          "material": 0,
+          "material_index": 207,
+          "quality": 0,
+          "wear": 0
+        }
+      ]
+    },
+    "door_selector": {
+      "entry_rva": "c80936",
+      "variant_rva": "c80a83",
+      "holder_rva": "c80c7c",
+      "rule": "ID-derived variant plus DOOR holder flags and close_timer participate; generic door art omits these facts. Quality, wear and improvements also enter the native key; their visible effects are not fully audited.",
+      "first_page_facts": [
+        {
+          "contents": [],
+          "flags": 1,
+          "id": 47315,
+          "material": 0,
+          "material_index": 166,
+          "quality": 4,
+          "wear": 0
+        },
+        {
+          "contents": [],
+          "flags": 1,
+          "id": 46921,
+          "material": 0,
+          "material_index": 166,
+          "quality": 4,
+          "wear": 0
+        },
+        {
+          "building": {
+            "close_timer": 0,
+            "door_flags": 16,
+            "id": 1409,
+            "type": 8
+          },
+          "contents": [],
+          "flags": 32,
+          "id": 44900,
+          "material": 0,
+          "material_index": 166,
+          "quality": 3,
+          "wear": 0
+        },
+        {
+          "building": {
+            "close_timer": 0,
+            "door_flags": 16,
+            "id": 1485,
+            "type": 8
+          },
+          "contents": [],
+          "flags": 32,
+          "id": 46925,
+          "material": 0,
+          "material_index": 166,
+          "quality": 3,
+          "wear": 0
+        },
+        {
+          "building": {
+            "close_timer": 0,
+            "door_flags": 16,
+            "id": 1479,
+            "type": 8
+          },
+          "contents": [],
+          "flags": 32,
+          "id": 47768,
+          "material": 0,
+          "material_index": 166,
+          "quality": 3,
+          "wear": 0
+        },
+        {
+          "building": {
+            "close_timer": 0,
+            "door_flags": 16,
+            "id": 1408,
+            "type": 8
+          },
+          "contents": [],
+          "flags": 32,
+          "id": 44936,
+          "material": 0,
+          "material_index": 166,
+          "quality": 3,
+          "wear": 0
+        },
+        {
+          "contents": [],
+          "flags": 1,
+          "id": 47008,
+          "material": 0,
+          "material_index": 166,
+          "quality": 3,
+          "wear": 0
+        },
+        {
+          "building": {
+            "close_timer": 0,
+            "door_flags": 16,
+            "id": 1477,
+            "type": 8
+          },
+          "contents": [],
+          "flags": 32,
+          "id": 47669,
+          "material": 0,
+          "material_index": 166,
+          "quality": 3,
+          "wear": 0
+        },
+        {
+          "building": {
+            "close_timer": 0,
+            "door_flags": 16,
+            "id": 1384,
+            "type": 8
+          },
+          "contents": [],
+          "flags": 32,
+          "id": 44024,
+          "material": 0,
+          "material_index": 166,
+          "quality": 3,
+          "wear": 0
+        },
+        {
+          "building": {
+            "close_timer": 0,
+            "door_flags": 16,
+            "id": 1481,
+            "type": 8
+          },
+          "contents": [],
+          "flags": 32,
+          "id": 47625,
+          "material": 0,
+          "material_index": 166,
+          "quality": 2,
+          "wear": 0
+        },
+        {
+          "contents": [],
+          "flags": 1,
+          "id": 47056,
+          "material": 0,
+          "material_index": 166,
+          "quality": 2,
+          "wear": 0
+        },
+        {
+          "contents": [],
+          "flags": 1,
+          "id": 46932,
+          "material": 0,
+          "material_index": 166,
+          "quality": 2,
+          "wear": 0
+        },
+        {
+          "building": {
+            "close_timer": 0,
+            "door_flags": 16,
+            "id": 1407,
+            "type": 8
+          },
+          "contents": [],
+          "flags": 32,
+          "id": 44937,
+          "material": 0,
+          "material_index": 166,
+          "quality": 2,
+          "wear": 0
+        },
+        {
+          "contents": [],
+          "flags": 1,
+          "id": 47896,
+          "material": 0,
+          "material_index": 166,
+          "quality": 2,
+          "wear": 0
+        },
+        {
+          "contents": [],
+          "flags": 1,
+          "id": 47259,
+          "material": 0,
+          "material_index": 166,
+          "quality": 1,
+          "wear": 0
+        },
+        {
+          "building": {
+            "close_timer": 0,
+            "door_flags": 16,
+            "id": 1400,
+            "type": 8
+          },
+          "contents": [],
+          "flags": 32,
+          "id": 44201,
+          "material": 0,
+          "material_index": 166,
+          "quality": 1,
+          "wear": 0
+        }
+      ]
+    },
+    "bucket_contents": {
+      "building": {
+        "id": 1284,
+        "type": 18
+      },
+      "contents": [
+        {
+          "id": 30113,
+          "material": 6,
+          "material_index": 0,
+          "type": 73
+        }
+      ],
+      "flags": 16450,
+      "id": 7579,
+      "material": 420,
+      "material_index": 203,
+      "quality": 1,
+      "wear": 0
+    },
+    "limitations": [
+      "Only first128 item facts per category captured; complete ids retained in ignored evidence.",
+      "No protocol or runtime appearance change in this discovery.",
+      "Goblet and restraint differences remain unaudited."
+    ]
   }
 }

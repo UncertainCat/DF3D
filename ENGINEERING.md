@@ -37,6 +37,18 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
+Stocks household semantic capture022112 identifies missing runtime inputs:
+Floodgate selectorc81fc7 checks BUILDING_HOLDER, requires a floodgate building,
+and passes its open state to compositorcf5e90. The captured list mixes open,
+closed and loose floodgates (including workshop-held items); item flags alone
+cannot determine the artwork. Door selection also uses item-ID variants and
+linked door flags/close_timer. Bucket7579 contains water item30113, absent from
+its current shared appearance. These are unresolved semantic-data gaps, not
+accepted artwork or permission to infer state in Godot. The bounded native
+capture now records simulation facts alongside images; `household_semantic_reference`
+records evidence and limits. Native-only022112 preserves the source and closes
+owned DF37720 unsaved at30FPS, with39C/2percent GPU sampled.
+
 Stocks household artwork discovery021252 connects doors, floodgates, restraints,
 flasks, goblets, buckets, statues and anvils to the existing shared resolver.
 It also fixes item rows/action buttons retaining a16px scrollbar gap when the

@@ -2,6 +2,27 @@
 local out,view,stocks=...
 local gui=require('gui');local script=require('gui.script');local json=require('json')
 local rows={};local g=df.global.gps
+-- Pair captured artwork with independently readable simulation facts. Keep
+-- this diagnostic bounded; the ids vector still records the complete list.
+local function appearance_facts(item)
+ local row={id=item.id,quality=item:getQuality(),wear=item:getWear(),flags=item.flags.whole,
+  material=item:getMaterial(),material_index=item:getMaterialIndex(),contents={}}
+ for _,ref in ipairs(item.general_refs)do
+  local kind=ref:getType()
+  if kind==df.general_ref_type.BUILDING_HOLDER then
+   local building=ref:getBuilding()
+   if building then
+    row.building={id=building.id,type=building:getType()}
+    if df.building_floodgatest:is_instance(building)then row.building.gate_flags=building.gate_flags.whole end
+    if df.building_doorst:is_instance(building)then row.building.door_flags=building.door_flags.whole;row.building.close_timer=building.close_timer end
+   end
+  elseif kind==df.general_ref_type.CONTAINS_ITEM then
+   local child=ref:getItem()
+   if child then row.contents[#row.contents+1]={id=child.id,type=child:getType(),material=child:getMaterial(),material_index=child:getMaterialIndex()}end
+  end
+ end
+ return row
+end
 local kinds=os.getenv('DF3D_STOCKS_EQUIPMENT_ART')=='1' and {24,25,26,27,28,29,60} or {0,2,4,5,30,32}
 if os.getenv('DF3D_STOCKS_HOUSEHOLD_ART')=='1' then kinds={6,7,10,11,12,18,22,45}end
 for _,kind in ipairs(kinds)do
@@ -15,8 +36,11 @@ for _,kind in ipairs(kinds)do
  stocks.scroll_position_type=0;stocks.scroll_position_item=0
  g.precise_mouse_x=0;g.precise_mouse_y=0;g.mouse_x=0;g.mouse_y=0
  gui.simulateInput(view,{});view:render(dfhack.getTickCount())
- local ids={};for _,item in ipairs(stocks.current_type_i_list)do ids[#ids+1]=item.id end
- rows[#rows+1]={category=kind,ids=ids}
+ local ids,facts={},{};for _,item in ipairs(stocks.current_type_i_list)do
+  ids[#ids+1]=item.id
+  if #facts<128 then facts[#facts+1]=appearance_facts(item)end
+ end
+ rows[#rows+1]={category=kind,ids=ids,appearance_facts=facts}
  local name='stocks-art-'..kind
  local f=assert(io.open(out..'/shot.tmp','w'));f:write(name);f:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
  local deadline=dfhack.getTickCount()+10000

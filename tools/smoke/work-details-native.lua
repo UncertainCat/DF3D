@@ -111,6 +111,34 @@ local function shot(name)
  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Work Details capture timeout');script.sleep(1,'frames')end
 end
 shot('work-details-root')
+if os.getenv('DF3D_WORK_DETAILS_RETENTION')=='1' then
+ local function settle()for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())end
+ local function click(x,y)
+  g.precise_mouse_x=x*8+4;g.precise_mouse_y=y*12+6;g.mouse_x=x;g.mouse_y=y
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+  gui.simulateInput(view,'_MOUSE_L');df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1;settle()
+ end
+ result.labor_retention={}
+ local function observe(label)
+  walk(info.labor,0)
+  local sorting,ids={},{}
+  for _,entry in ipairs(active_list.sorting_by)do sorting[#sorting+1]=entry.ident end
+  for _,entry in ipairs(active_list.entry_list)do ids[#ids+1]=entry.t==0 and entry.u and entry.u.id or -1 end
+  result.labor_retention[#result.labor_retention+1]={label=label,sorting=sorting,flags=active_list.sort_flags.whole&255,ids=ids,filter=filter_box.str}
+  shot('work-details-retention-'..label)
+ end
+ click(headers.Name.rect.x1+1,headers.Name.rect.y1);observe('sorted')
+ click((filter_box.rect.x1+filter_box.rect.x2)//2,(filter_box.rect.y1+filter_box.rect.y2)//2)
+ local file=assert(io.open(out..'/residents-search-input.json','w'));file:write(json.encode({clear_count=#filter_box.str,text='a'}));file:close()
+ file=assert(io.open(out..'/owner-input-request.tmp','w'));file:write('residents-search');file:close();assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+ local deadline=dfhack.getTickCount()+30000
+ while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Retention search timeout');script.sleep(1,'frames')end
+ assert(os.remove(out..'/owner-input-ack'));settle();assert(filter_box.str=='a');observe('filtered')
+ for _,tab in ipairs{{'standing',30},{'kitchen',45},{'stone',56}}do
+  click(tab[2],10);shot('work-details-retention-away-'..tab[1]);click(12,10);observe(tab[1]..'-return')
+ end
+ records[#records+1]={name='work-details-retention'};return
+end
 if os.getenv('DF3D_WORK_DETAILS_PORTRAIT')=='1' then
  local target
  local function find(widget)

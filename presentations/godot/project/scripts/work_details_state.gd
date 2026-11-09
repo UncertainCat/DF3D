@@ -46,8 +46,12 @@ func close() -> void:
 	last_result={};phase=Phase.Closed;changed.emit()
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
-func open(preferred: int=0) -> void:
+func navigation() -> Dictionary:
+	return {"sort":sort,"directions":directions.duplicate(),"query":query.duplicate()}
+func open(preferred: int=0,retained: Dictionary={}) -> void:
 	close();sort=C.WorkDetailWorkerSort.Skills;directions=[false,false,false,false];query=PackedByteArray()
+	if not retained.is_empty():
+		sort=int(retained.sort);directions.assign(retained.directions);query=retained.query.duplicate()
 	_reload(preferred)
 func refresh() -> void:
 	if phase in [Phase.Closed,Phase.Applying]:return

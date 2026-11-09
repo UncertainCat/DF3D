@@ -4202,5 +4202,56 @@
     "limits": "Not full main-scene/public-launcher acceptance.",
     "source_preserved": true,
     "owned_df_closed": true
+  },
+  "labor_search_sort_retention_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-205414",
+    "observations": [
+      {
+        "filter": "",
+        "flags": 0,
+        "label": "sorted",
+        "sorting": [
+          "Name"
+        ]
+      },
+      {
+        "filter": "a",
+        "flags": 0,
+        "label": "filtered",
+        "sorting": [
+          "Name"
+        ]
+      },
+      {
+        "filter": "a",
+        "flags": 0,
+        "label": "standing-return",
+        "sorting": [
+          "Name"
+        ]
+      },
+      {
+        "filter": "a",
+        "flags": 0,
+        "label": "kitchen-return",
+        "sorting": [
+          "Name"
+        ]
+      },
+      {
+        "filter": "a",
+        "flags": 0,
+        "label": "stone-return",
+        "sorting": [
+          "Name"
+        ]
+      }
+    ],
+    "native_behavior": "Name sort and search a retained across actual Standing orders, Kitchen and Stone use tabs; outgoing screenshots captured. Raw entry_list is not filtered visible order.",
+    "implementation": "Retain local sort, direction flags and query only; reopen reads definitions and roster afresh. Session changes clear retained navigation.",
+    "live_capture": "build/stockpile-storage-native-input-20261108-205635",
+    "live_scope": "Actual main scene pointer sort and typed search, three Labor tab round trips, fresh authority and visible query assertions. Source unchanged; known Godot diagnostics only.",
+    "qa": "build/qa/work-details-labor-navigation",
+    "remaining": "Scroll/settings retention and all direction combinations not established by this observation."
   }
 }

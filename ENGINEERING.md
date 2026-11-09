@@ -787,9 +787,21 @@ all six native-observed Chores edits, stale refusal, live scrolling/drag/resize 
 Back cleanup. Source preservation passes; owned DF37304/47972 exit unsaved.
 Core19, Work Details/Standing/Chores controllers and main-scene composition checks
 pass in labor-composition-20261108. Live logs have only documented Godot diagnostics;
-GPU59–60C sampled. Sort/filter/scroll/settings retention across Labor tabs and
-full main-scene gameplay acceptance remain separate gaps, alongside unfinished
-Kitchen/Stone use and the broader management backlog.
+GPU59–60C sampled. Work Details retains local sort/direction flags and query across Labor tabs;
+selected definitions, roster rows and mutation authority are always freshly read.
+Native205414 on2026-11-08 records Name sorting and search `a` across actual
+Standing orders, Kitchen and Stone use visits (outgoing screenshots included).
+Rendered205635 verifies pointer sorting, typed search and all three return paths
+through the actual main scene. Core19 and owner lifecycle checks pass in
+`work-details-labor-navigation`; session reset clears retained navigation and
+ordinary reopening starts at defaults. Both native sources are preserved and
+owned DF exits unsaved; live diagnostics contain only the known Godot
+thread/finalize/shutdown notices. GPU59–61C sampled at30FPS. See
+`native_work_details.json.labor_search_sort_retention_reference` for scope.
+Scroll/settings retention and all direction combinations remain unverified.
+The comparison also exposes missing skill captions in the DF3D Name-sorted
+roster; that display gap remains open. Public exposure and the broader
+management backlog remain gated.
 
 Chores typed dispatch now reads owned native snapshots/captions and applies the
 three native-backed mutations. It prepares the returned receipt before writes,

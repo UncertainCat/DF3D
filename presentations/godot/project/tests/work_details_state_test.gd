@@ -164,6 +164,7 @@ func run() -> void:
 	check(naming.stopped and naming.snapshot.is_empty() and service.next==count,"Uncertain rename discards buffered typing without replay")
 	await process_frame
 	state.dispose()
+	await labor_navigation(service)
 	await owner_lifecycle(service)
 	service.queue_free();await process_frame
 	if failures==0:print("WORK_DETAILS_STATE_PASS")
@@ -198,3 +199,24 @@ func settings_page(revision: int=9007199254740993) -> Dictionary:
 	for id in range(-13,-1):catalog.append({"id":id,"caption":"Synthetic category"})
 	for id in range(1,80):catalog.append({"id":id,"caption":"Synthetic labor"})
 	return {"work_detail_settings":{"detail_index":0,"revision":revision,"editable":true,"no_modify":false,"labors":PackedInt32Array(),"catalog":catalog}}
+
+func labor_navigation(service) -> void:
+	var owner:=Owner.new();root.add_child(owner)
+	owner.panel=PanelStub.new();owner.add_child(owner.panel);owner.ui_host=HostStub.new();owner.state.configure(service)
+	service.session_changed.connect(owner._reset_labor_navigation)
+	for destination in ["request_standing_orders","request_kitchen","request_stone_use"]:
+		owner.open_panel();service.reply(owner.state.ticket,page([detail(0,81)]));complete_workers(service,owner.state,[7])
+		owner.state.select_sort(C.WorkDetailWorkerSort.Name);complete_workers(service,owner.state,[7])
+		owner.state.set_query("a".to_ascii_buffer());complete_workers(service,owner.state,[7])
+		owner.call(destination);owner.close_panel()
+		check(owner.state.rows.is_empty() and owner.state.selected.is_empty(),"Labor handoff discards authoritative observations")
+		owner.open_from_labor();service.reply(owner.state.ticket,page([detail(0,83)]))
+		var intent: Dictionary=service.calls[owner.state.ticket].intent
+		check(intent.sort==C.WorkDetailWorkerSort.Name and intent.query_bytes=="a".to_ascii_buffer() and intent.expected_revision==83,"Labor return retains native search/sort with fresh authority")
+		complete_workers(service,owner.state,[8])
+		check(owner.state.ids==PackedInt32Array([8]) and not owner.state.rows.has(7),"Labor return uses freshly queried roster")
+	owner.close_panel();owner.open_panel()
+	check(owner.state.query.is_empty() and owner.state.sort==C.WorkDetailWorkerSort.Skills,"Ordinary reopening uses initial navigation")
+	service.session_changed.emit();owner.open_from_labor()
+	check(owner.return_navigation.is_empty() and owner.state.query.is_empty(),"Session change retires retained Labor navigation")
+	owner.queue_free();await process_frame

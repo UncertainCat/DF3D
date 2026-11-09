@@ -116,6 +116,21 @@ func run() -> void:
 		deadline=Time.get_ticks_msec()+5000
 		while details.state.phase!=details.state.Phase.Ready and Time.get_ticks_msec()<deadline:await create_timer(0.01).timeout
 		check(main_scene._ui.host.active==details and state.rows.is_empty(),"Main Work Details handoff failed")
+		await pointer(details.panel,Vector2(details.panel.DETAIL_SORT_X[0]*8+16,details.panel.list_top()-18))
+		if not await details_ready(details):quit(1);return
+		await pointer(details.panel.search,details.panel.search.size*0.5)
+		var typed:=InputEventKey.new();typed.pressed=true;typed.keycode=KEY_A;typed.unicode=97;Input.parse_input_event(typed);await process_frame
+		if not await details_ready(details):quit(1);return
+		check(details.state.sort==C.WorkDetailWorkerSort.Name and details.state.query=="a".to_ascii_buffer(),"Work Details pointer sort/search setup failed")
+		for destination in ["standing_orders_rect","kitchen_rect","stone_use_rect"]:
+			await pointer(details.panel,details.panel.call(destination).get_center())
+			check(details.state.rows.is_empty() and details.state.selected.is_empty(),"Labor switch retained Work Details authority")
+			var target=owner.stone_panel if owner.stone_active else owner.kitchen_panel if owner.kitchen_active else owner.panel
+			await pointer(target,target.work_details_rect().get_center())
+			if not await details_ready(details):quit(1);return
+			check(main_scene._ui.host.active==details and details.state.sort==C.WorkDetailWorkerSort.Name and details.state.query=="a".to_ascii_buffer() and details.panel.search.value==details.state.query,"Labor return lost Work Details search/sort")
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/work-details-labor-return.png")
 		await pointer(details.panel,details.panel.stone_use_rect().get_center())
 		if not await ready_state(state):quit(1);return
 		check(main_scene._ui.host.active==owner and owner.stone_active and state.category==1,"Direct Work Details Stone use return failed")
@@ -135,3 +150,8 @@ func run() -> void:
 		if view!=null:view.queue_free();await process_frame
 		state.dispose()
 	quit(1 if failed else 0)
+
+func details_ready(owner) -> bool:
+	var deadline:=Time.get_ticks_msec()+5000
+	while owner.state.phase in [owner.state.Phase.Reading,owner.state.Phase.Applying] and Time.get_ticks_msec()<deadline:await create_timer(0.01).timeout
+	return check(owner.state.phase==owner.state.Phase.Ready,"Work Details failed to refresh after Labor navigation")

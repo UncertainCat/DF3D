@@ -18,6 +18,7 @@ var pending_name_action: Dictionary={}
 var closing:=false
 var pending_name_first: int=-1
 var return_detail:=0
+var return_navigation: Dictionary={}
 func _init() -> void:state.changed.connect(_sync)
 func configure(world,service,host,hover_help=null) -> void:
 	ui_host=host;state.configure(service)
@@ -37,21 +38,21 @@ func configure(world,service,host,hover_help=null) -> void:
 	panel.stone_use_requested.connect(request_stone_use)
 	host.register(self);_layout();_sync()
 func allowed() -> bool:return play_enabled and ui_host!=null and ui_host.allows_panel_input(self)
-func _reset_labor_navigation() -> void:return_detail=0
+func _reset_labor_navigation() -> void:return_detail=0;return_navigation={}
 func request_standing_orders() -> void:
 	if not allowed() or state.phase!=state.Phase.Ready:return
-	return_detail=int(state.selected.get("index",0));standing_orders_requested.emit()
+	return_detail=int(state.selected.get("index",0));return_navigation=state.navigation();standing_orders_requested.emit()
 func request_stone_use() -> void:
 	if not allowed() or state.phase!=state.Phase.Ready:return
-	return_detail=int(state.selected.get("index",0));stone_use_requested.emit()
+	return_detail=int(state.selected.get("index",0));return_navigation=state.navigation();stone_use_requested.emit()
 func request_kitchen() -> void:
 	if not allowed() or state.phase!=state.Phase.Ready:return
-	return_detail=int(state.selected.get("index",0));kitchen_requested.emit()
-func open_from_labor() -> void:open_panel(return_detail)
-func open_panel(preferred: int=0) -> void:
+	return_detail=int(state.selected.get("index",0));return_navigation=state.navigation();kitchen_requested.emit()
+func open_from_labor() -> void:open_panel(return_detail,return_navigation)
+func open_panel(preferred: int=0,retained: Dictionary={}) -> void:
 	if is_instance_valid(name_session) and not name_session.stopped:return
 	if play_enabled and ui_host!=null and ui_host.activate(self):
-		opening=true;state.open(preferred);opening=false;_sync()
+		opening=true;state.open(preferred,retained);opening=false;_sync()
 func close_panel() -> void:
 	closing=true;pending_name_action={};pending_name_first=-1;_finish_name({});state.close()
 	if panel!=null:panel.clear_name()

@@ -1833,5 +1833,70 @@
     "msvc": "build/notes/pm/stocks-selection-msvc.log",
     "qa": "build/qa/stocks-native-selection",
     "diagnostics": "Native log clean; no viewer launched."
+  },
+  "membership_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-223419",
+    "cases": [
+      {
+        "type": 39,
+        "height_delta": 27,
+        "restored": true,
+        "ids_count": 9,
+        "ids_sha256": "73d52d52f14885d9ba1cfe4c0fde3ad02b35f7f2bfe0664a0e624200e624908f",
+        "native_visibility_changed_count": 9,
+        "native_visibility_changed_sha256": "73d52d52f14885d9ba1cfe4c0fde3ad02b35f7f2bfe0664a0e624200e624908f"
+      },
+      {
+        "type": 0,
+        "height_delta": 1632,
+        "restored": true,
+        "ids_count": 544,
+        "ids_sha256": "a2e0b36621e519fcc78d6bbc345cedad7fb1572c7f98ea5bfb5c3dcb0a3948f8",
+        "native_visibility_changed_count": 544,
+        "native_visibility_changed_sha256": "a2e0b36621e519fcc78d6bbc345cedad7fb1572c7f98ea5bfb5c3dcb0a3948f8"
+      },
+      {
+        "type": 4,
+        "height_delta": 111,
+        "restored": true,
+        "ids_count": 37,
+        "ids_sha256": "e87ba515619bc248fe5bef3407a06d37721038bc96cb8fb84d413e1003a2242e",
+        "native_visibility_changed_count": 37,
+        "native_visibility_changed_sha256": "e87ba515619bc248fe5bef3407a06d37721038bc96cb8fb84d413e1003a2242e"
+      },
+      {
+        "type": 24,
+        "height_delta": 3,
+        "restored": true,
+        "ids_count": 1,
+        "ids_sha256": "1a8500bdf57dad4a04c7ecf4413f3bc2eeaef0fe566a9c823eef9a1ed8d6a09c",
+        "native_visibility_changed_count": 1,
+        "native_visibility_changed_sha256": "1a8500bdf57dad4a04c7ecf4413f3bc2eeaef0fe566a9c823eef9a1ed8d6a09c"
+      },
+      {
+        "type": 54,
+        "height_delta": 48,
+        "restored": true,
+        "ids_count": 16,
+        "ids_sha256": "2c7ff5cb227e71815f369114421a09927ea34b5fca025edb28b40845036e8909",
+        "native_visibility_changed_count": 16,
+        "native_visibility_changed_sha256": "2c7ff5cb227e71815f369114421a09927ea34b5fca025edb28b40845036e8909"
+      },
+      {
+        "type": 60,
+        "height_delta": 63,
+        "restored": true,
+        "ids_count": 21,
+        "ids_sha256": "59b4f03e70922651b37e1f3c392cb27efb26cfc041660da6f6c92c590f15a204",
+        "native_visibility_changed_count": 21,
+        "native_visibility_changed_sha256": "59b4f03e70922651b37e1f3c392cb27efb26cfc041660da6f6c92c590f15a204"
+      }
+    ],
+    "scope": "Native ac9890 owned-group membership. First group in six populated categories checked through actual collapse/expand row-height changes and native visibility button item effects, then exact original flags restored. All nine selection cases still match. No DF3D action command, other group-button effects, or rendered viewer acceptance.",
+    "source_save": "unchanged; owned DF3520 exited unsaved",
+    "plugin_sha256": "9c272a042de04e38592a5c508ccf7dae8c3f3ba5c11e7a606dd2a0e49976c1a0",
+    "msvc": "build/notes/pm/stocks-members-msvc.log",
+    "qa": "build/qa/stocks-native-members",
+    "diagnostics": "Native log clean; no viewer launched."
   }
 }

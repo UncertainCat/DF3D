@@ -160,7 +160,28 @@ if cold_selections then
    assert(#actual.groups==#native.groups,'Selection group count differs')
    for i,row in ipairs(native.groups)do for field,value in pairs(row)do assert(actual.groups[i][field]==value,('Selection %d group %d/%s differs'):format(case[1],i,field))end end
   end
-  result.selection_provider.cases[#result.selection_provider.cases+1]={type=case[1],query=case[2],native=native}
+  local observed={type=case[1],query=case[2],native=native}
+  if os.getenv('DF3D_STOCKS_MEMBERS')=='1' and case[2]=='' and #native.groups>0 then
+   local members=warm.groups[1].ids;local member_set={};for _,id in ipairs(members)do member_set[id]=true end
+   local height=stocks.i_height;local expanded=stocks.current_type_a_expanded[0]
+   assert(expanded,'Expected default expanded group')
+   click(500,130);assert(not stocks.current_type_a_expanded[0],'Group did not collapse')
+   assert(height-stocks.i_height==#members*3,'Collapsed height differs from membership')
+   click(500,130);assert(stocks.current_type_a_expanded[0] and stocks.i_height==height,'Group expansion did not restore')
+   local before={};for _,id in ipairs(native.ids)do before[id]=df.item.find(id).flags.whole end
+   local want=(native.groups[1].flags&8)==0
+   click(916,130)
+   local changed={}
+   for _,id in ipairs(native.ids)do
+    local item=df.item.find(id);local expected=before[id]
+    if member_set[id]then if want then expected=expected|0x1000000 else expected=expected&(~0x1000000)end end
+    assert(item.flags.whole==expected,'Native group visibility affected wrong member '..id)
+    if item.flags.whole~=before[id]then changed[#changed+1]=id end
+   end
+   for id,flags in pairs(before)do df.item.find(id).flags.whole=flags end
+   observed.membership={ids=members,native_visibility_changed=changed,height_delta=#members*3,restored=true}
+  end
+  result.selection_provider.cases[#result.selection_provider.cases+1]=observed
  end
  select_type(original_type);stocks.scroll_position_type=0;view:render(dfhack.getTickCount())
 end

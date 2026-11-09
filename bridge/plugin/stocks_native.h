@@ -188,7 +188,7 @@ inline std::optional<std::vector<Group>> groups() {
     for(size_t i=0;i<count;++i)result.push_back({owned.type[i],owned.subtype[i],owned.subcat1[i],owned.subcat2[i],owned.amount[i],owned.expanded[i]});
     return result;
 }
-struct SelectedGroup {Group group;bool matches;uint32_t flags;};
+struct SelectedGroup {Group group;bool matches;uint32_t flags;std::vector<int32_t> ids;};
 struct Selection {std::vector<int32_t> ids;std::vector<SelectedGroup> groups;};
 inline std::optional<Selection> selection(int16_t type,std::string query) {
     if(type<0 || type>=93 || !df3d_production::buildingItemFunctions())return std::nullopt;
@@ -227,11 +227,22 @@ inline std::optional<Selection> selection(int16_t type,std::string query) {
         owned.current_type_a_amount.push_back(group.amount);
         owned.current_type_a_expanded.push_back(group.expanded);
         result.groups.push_back({group,false,0});
+        owned.master_a_list.type.push_back(group.type);
+        owned.master_a_list.subtype.push_back(group.subtype);
+        owned.master_a_list.subcat1.push_back(group.subcat1);
+        owned.master_a_list.subcat2.push_back(group.subcat2);
     }
     owned.current_type_a_on.resize(result.groups.size());
     owned.current_type_a_flag.resize(result.groups.size());
     for(auto id:*ordered){auto* item=df::item::find(id);if(!item)return std::nullopt;
-        if(int16_t(item->getType())==type){owned.current_type_i_list.push_back(item);result.ids.push_back(id);}}
+        if(int16_t(item->getType())==type){
+            owned.current_type_i_list.push_back(item);result.ids.push_back(id);
+            // ac9890 is the already pinned native abstract-group matcher.
+            // Keep the native individual order within each owned group.
+            const auto index=reinterpret_cast<int32_t(*)(df::abstractitemlistst*,df::item*)>(base+0xac9890)(&owned.master_a_list,item);
+            if(index<0 || size_t(index)>=result.groups.size())return std::nullopt;
+            result.groups[index].ids.push_back(id);
+        }}
     df3d_creature::KnowledgeMaterialCacheRestore restore(df::global::world->raws.creatures.hist_fig_to_creature_map);
     reinterpret_cast<void(*)(df::stocks_interfacest*)>(base+0x37d350)(&owned);
     for(size_t i=0;i<result.groups.size();++i){result.groups[i].matches=owned.current_type_a_on[i];result.groups[i].flags=owned.current_type_a_flag[i].whole;}

@@ -157,8 +157,24 @@ match native. The earlier222940/223020 harness attempts redundantly clicked an
 already-focused filter and toggled typing off; no runtime fix was needed.
 Item scratch/menu guards pass, source unchanged, DF38704 exits unsaved,
 native log clean, GPU59C sampled; MSVC/core19 (`stocks-native-selection`) pass.
-`selection_reference` retains bounded case digests. Group expansion interaction,
-action execution, transport and the screen remain unfinished.
+`selection_reference` retains bounded case digests. Selection groups also carry
+ordered member IDs from native ac9890 matching against an owned abstract list.
+Protected223419 checks the first group in six populated categories through
+actual native collapse/expand height changes and visibility-button effects:
+9,544,37,1,16,21 members respectively. Only those members change visibility;
+original flags are restored exactly. All nine selection comparisons still pass.
+Source unchanged, DF3520 exits unsaved, native log clean, GPU61C sampled;
+MSVC/core19 (`stocks-native-members`) pass. `membership_reference` records this
+scope; it does not establish viewer expansion or DF3D action execution.
+
+Native input325a9e..325af7 flips the selected group's local expansion bit and
+recomputes height. Per-item input325fca..326139 uses the existing building-item
+forbid/dump/melt/visibility helpers and inline flag changes. Group input324f02..
+3259bc applies a common desired value from the group's aggregate all/can-do bits,
+with per-item native dump/melt eligibility checks. Reuse those semantic helpers
+with current owned membership and stale-target validation; do not call the
+global input handler or reconstruct side effects in presentation code.
+Action execution, transport and the screen remain unfinished.
 
 ## Stone use native semantics and presentation
 

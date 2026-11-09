@@ -2701,7 +2701,8 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           for(auto id:selected->ids)result["ids"].append(id);
           for(const auto& entry:selected->groups){const auto& group=entry.group;Json::Value row(Json::objectValue);
             row["subtype"]=group.subtype;row["subcat1"]=group.subcat1;row["subcat2"]=group.subcat2;row["amount"]=group.amount;
-            row["expanded"]=group.expanded;row["on"]=entry.matches;row["flags"]=entry.flags;result["groups"].append(row);}
+            row["expanded"]=group.expanded;row["on"]=entry.matches;row["flags"]=entry.flags;row["ids"]=Json::Value(Json::arrayValue);
+            for(auto id:entry.ids)row["ids"].append(id);result["groups"].append(row);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
         if(parameters[0]=="stocks-categories-probe") {

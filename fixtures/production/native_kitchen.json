@@ -7450,5 +7450,67 @@
       "wide": 0
     },
     "scope": "Installed classic scrollbar.png selected for Kitchen; inactive header ink160,160,160. Entire default initial panel matches. Four-size scrollbar crops match; narrow overflow headers and wide extra-row captions not accepted by this comparison.30FPS known Godot notices only, GPU52C."
+  },
+  "scrolled_resize_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-184242",
+    "observations": [
+      {
+        "label": "scrolled-default",
+        "columns": 150,
+        "rows": 66,
+        "first_food": "Blood amaranth seeds",
+        "visible_count": 13,
+        "cursor": 0
+      },
+      {
+        "label": "minimum",
+        "columns": 114,
+        "rows": 46,
+        "first_food": "Blood amaranth seeds",
+        "visible_count": 6,
+        "cursor": 0
+      },
+      {
+        "label": "small",
+        "columns": 120,
+        "rows": 50,
+        "first_food": "Blood amaranth seeds",
+        "visible_count": 7,
+        "cursor": 0
+      },
+      {
+        "label": "wide",
+        "columns": 200,
+        "rows": 75,
+        "first_food": "Blood amaranth seeds",
+        "visible_count": 13,
+        "cursor": 0
+      },
+      {
+        "label": "wide-arrow-up",
+        "columns": 200,
+        "rows": 75,
+        "first_food": "Longland grass seeds",
+        "visible_count": 14,
+        "cursor": 0
+      },
+      {
+        "label": "wide-arrow-down",
+        "columns": 200,
+        "rows": 75,
+        "first_food": "Longland grass seeds",
+        "visible_count": 14,
+        "cursor": 0
+      },
+      {
+        "label": "default",
+        "columns": 150,
+        "rows": 66,
+        "first_food": "Longland grass seeds",
+        "visible_count": 13,
+        "cursor": 0
+      }
+    ],
+    "scope": "Native retains first9 across minimum/small/wide resize, wide displays13 despite capacity16. Wide up moves to8/display14; down stays8. Cursor0 unchanged. Kitchen scrollbar uses visible rows as page, preserving offset. Source preserved, owned exit unsaved. kitchen-resize-page-final passes core19 and headless resize/arrow comparisons; all four scrolled scrollbar RGB crops match native184142 exactly (before wide arrow probes). No full scrolled-row caption claim.30FPS, GPU50C, known Godot notices only. Earlier kitchen-scrolled-resize lacked its environment flag and is not scrolled-render evidence."
   }
 }

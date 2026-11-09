@@ -20,6 +20,7 @@ func run() -> void:
 	if not world.load_assets(OS.get_environment("DF3D_DF_PATH")):quit(1);return
 	var view=preload("res://scripts/kitchen_view.gd").new();root.add_child(view)
 	view.configure_kitchen(world,state)
+	if OS.get_environment("DF3D_KITCHEN_RESIZE_SCROLL")=="1":state.first=9
 	for dimensions in [Vector2i(912,552),Vector2i(960,600),Vector2i(1600,900),Vector2i(1200,800)]:
 		root.size=dimensions;view.layout(Vector2(dimensions))
 		await create_timer(0.3).timeout

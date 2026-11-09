@@ -9,6 +9,16 @@
   },
   "checks": [
     {
+      "id": "kitchen_scrolled_capture",
+      "lane": "gpu",
+      "kind": "godot",
+      "script": "res://tests/kitchen_capture.gd",
+      "environment": {"DF3D_KITCHEN_RESIZE_SCROLL": "1"},
+      "completion": "^KITCHEN_CAPTURE_PASS$",
+      "timeout": 60,
+      "prerequisites": ["extension_build", "df_assets", "real_renderer"]
+    },
+    {
       "id": "kitchen_capture",
       "lane": "gpu",
       "kind": "godot",

@@ -249,6 +249,18 @@ Kitchen test, with core19 passing kitchen-scrollbar-input. Source preservation
 and owned unsaved exit pass, GPU51C. scrollbar_reference and chrome_reference
 retain the scoped evidence; alternate-size drag behavior remains unverified.
 
+Kitchen preserves the retained offset when resizing, using the actual visible
+row count as the scrollbar page rather than the window capacity. Protected184242
+on2026-11-08 retains first9 across minimum/small/wide sizes; wide shows13 rows,
+then its up arrow moves to8/showing14 and down stays8. Cursor0 is unchanged.
+The headless resize/arrow sequence and core19 pass kitchen-resize-page-final.
+Its explicit kitchen_scrolled_capture check runs at30FPS and matches all four
+scrollbar RGB crops against native184142 before arrow probes. This does not
+establish scrolled food-caption parity. Only known Godot diagnostics remain;
+GPU50C sampled and the owned viewer exits. scrolled_resize_reference retains
+the native observations; the earlier kitchen-scrolled-resize run lacked its
+environment flag and supplies no scrolled-render evidence.
+
 The staged Kitchen view reuses installed Labor chrome, native row/icon assets,
 count captions and permission icons. `kitchen-view-base` renders at1200x800 with
 30FPS; its unselected-row crop(64,232)-(928,664) matches native171829 with zero

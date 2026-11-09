@@ -16,7 +16,7 @@ func configure_kitchen(source,model) -> void:
 	scrollbar.input_allowed=allowed
 	scrollbar.wheel_enabled=false
 	scrollbar.use_classic_art=true
-	scrollbar.row_changed.connect(func(value):state.seek(value,capacity()))
+	scrollbar.row_changed.connect(func(value):state.seek(value,scrollbar.page))
 	state.changed.connect(refresh);refresh()
 func rows_top() -> int:return list_top()+24
 func capacity() -> int:return maxi(0,int((size.y-rows_top()-85)/36))
@@ -39,10 +39,12 @@ func refresh() -> void:
 		else:texture=world.item_sheet_icon(kind,{"material_token":token,"subtype_raw":"","color_token":"","stack":1,"flags":0},-1)
 		retained[key]=texture
 	icons=retained
+	refresh_scrollbar()
+	queue_redraw()
+func refresh_scrollbar() -> void:
 	# Native keeps the list at least80 cells wide; its track uses the remaining
 	# height even when that leaves a partial row below the last visible food.
-	scrollbar.position=Vector2(maxf(688,size.x-40),rows_top());scrollbar.size=Vector2(16,size.y-rows_top()-84);scrollbar.page=capacity();scrollbar.set_rows(state.rows.size(),state.first)
-	queue_redraw()
+	scrollbar.position=Vector2(maxf(688,size.x-40),rows_top());scrollbar.size=Vector2(16,size.y-rows_top()-84);scrollbar.page=mini(capacity(),maxi(0,state.rows.size()-state.first));scrollbar.set_rows(state.rows.size(),state.first)
 func _input(event: InputEvent) -> void:
 	if not allowed():return
 	if event is InputEventKey and event.pressed and event.keycode!=KEY_ESCAPE and search!=null and search.has_focus():

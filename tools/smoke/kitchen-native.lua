@@ -412,12 +412,20 @@ if os.getenv('DF3D_KITCHEN_LAYOUT')=='1' then
   end
   collect(panel);observations[#observations+1]={label=label,columns=g.dimx,rows=g.dimy,foods=rows,controls=controls,cursor=panel.cursor_idx}
  end
+ if os.getenv('DF3D_KITCHEN_RESIZE_SCROLL')=='1' then
+  for _=1,9 do click(118,55)end
+  observe('scrolled-default')
+ end
  for _,size in ipairs({'minimum','small','wide','default'})do
   local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('name-resize-'..size);f:close();assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
   local deadline=dfhack.getTickCount()+5000
   while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Kitchen resize timed out');script.sleep(1,'frames')end
   assert(os.remove(out..'/owner-input-ack'));for _=1,5 do script.sleep(1,'frames');view:render(dfhack.getTickCount())end
   observe(size);shot('kitchen-layout-'..size)
+  if size=='wide' and os.getenv('DF3D_KITCHEN_RESIZE_SCROLL')=='1' then
+   click(167,14);observe('wide-arrow-up')
+   click(167,64);observe('wide-arrow-down')
+  end
  end
  for _,key in ipairs({'CURSOR_DOWN','CURSOR_UP','CONTEXT_SCROLL_DOWN','CONTEXT_SCROLL_UP','CONTEXT_SCROLL_PAGEDOWN','CONTEXT_SCROLL_PAGEUP'})do
   g.precise_mouse_x=200;g.precise_mouse_y=250;g.mouse_x=25;g.mouse_y=20

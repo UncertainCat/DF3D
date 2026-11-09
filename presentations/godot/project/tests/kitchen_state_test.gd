@@ -35,6 +35,25 @@ func run() -> void:
 			press.position=Vector2(8,points[label]);bar._gui_input(press)
 		check(native.sort_reference.observations[0].names[bar.first]==observation.first_food,"Native Kitchen scrollbar differs: "+label)
 	bar.queue_free()
+	var resize_state:=State.new();resize_state.phase=State.Phase.Ready
+	resize_state.rows=navigation.rows.duplicate(true);resize_state.first=9
+	var resize_view=preload("res://scripts/kitchen_view.gd").new();root.add_child(resize_view)
+	resize_view.state=resize_state
+	resize_view.scrollbar=preload("res://scripts/area_location_scrollbar.gd").new();resize_view.add_child(resize_view.scrollbar)
+	resize_view.scrollbar.row_changed.connect(func(value):resize_state.seek(value,resize_view.scrollbar.page))
+	resize_state.changed.connect(resize_view.refresh_scrollbar)
+	for observation in native.scrolled_resize_reference.observations:
+		resize_view.wide_tabs=int(observation.columns)>=155
+		resize_view.size=Vector2((int(observation.columns)-32)*8,(int(observation.rows)-7)*12)
+		resize_view.refresh_scrollbar()
+		var label: String=observation.label
+		if label.begins_with("wide-arrow-"):
+			var press:=InputEventMouseButton.new();press.button_index=MOUSE_BUTTON_LEFT;press.pressed=true
+			press.position=Vector2(8,2 if label.ends_with("up") else resize_view.scrollbar.size.y-2)
+			resize_view.scrollbar._gui_input(press)
+		check(resize_state.rows[resize_state.first].name==observation.first_food and resize_state.selected==int(observation.cursor),"Native scrolled resize position differs: "+label)
+		check(resize_view.scrollbar.first==resize_state.first and resize_view.scrollbar.page==int(observation.visible_count),"Native scrolled resize page differs: "+label)
+	resize_view.queue_free()
 	var sorting:=State.new();sorting.configure(service);sorting.open();service.reply(sorting.ticket,response())
 	var columns: Dictionary={"Type":0,"Name":1,"Number":2,"Cook":3,"Brew":4}
 	for observation in native.modifier_sort_reference.provider_acceptance.observations:

@@ -1634,7 +1634,21 @@ Native right-panel callbacks468e30 forward to42e2e0: standard Right/Left events
 1412e60. Textbox1419080 tests that bit before keyboard activation. Earlier140139
 started with flags3 and therefore did not establish that Filter was universally
 broken; its injected Ctrl+f also produced a literal f and remains imperfect
-physical-input evidence. DF3D still needs this right-panel focus/Filter behavior.
+physical-input evidence. DF3D implements the local gate through unmodified Left/Right and native
+right-panel click bounds; Ctrl+f focuses only the visible roster filter when the
+gate is enabled. Left leaves textbox focus intact but blocks its input, matching
+protected211948; Labor tabs and close retire both focus and the gate. Rename
+input keeps priority. Installed FILTER is Ctrl+f, nonrepeating; Shift/Alt/Meta
+variants are excluded. Numeric4/6 aliases while editing need separate native
+input evidence and are not claimed here.
+
+Main-scene212209 verifies initial ignored Ctrl+f, Right/Filter focus, Left-blocked
+typing, Right/Enter release, click-enabled Filter and resets across all three
+Labor tabs. Core19 and controller/view checks pass in
+`work-details-keyboard-focus-final`; modifier/repeat exclusions are headless
+checks. Sources are preserved and owned DF43992 exits unsaved with only known
+Godot thread/finalize/shutdown diagnostics (GPU62–63C,30FPS).
+`keyboard_discovery.filter_implementation_reference` retains the scoped evidence.
 
 All four sort headers instead use virtual feed3c6300..3c647e, which gates on mouse
 input and hitbox, never reads the event set and never calls generic widget feed.

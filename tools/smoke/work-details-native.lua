@@ -131,9 +131,11 @@ if os.getenv('DF3D_WORK_DETAILS_INPUT_FOCUS')=='1' then
   result.input_focus[#result.input_focus+1]={label=label,filter_flags=filter_box.flag.whole,focused=df.global.gview.cur_textbox==filter_box,sorting=sorting}
  end
  step('initial-filter','FILTER');step('right','STANDARDSCROLL_RIGHT');step('right-filter','FILTER')
+ step('left-focused','STANDARDSCROLL_LEFT');step('left-filter','FILTER');step('right-again','STANDARDSCROLL_RIGHT')
  step('sidebar-click','_MOUSE_L',12,16);step('sidebar-filter','FILTER')
  step('panel-click','_MOUSE_L',110,56);step('panel-filter','FILTER')
  step('name-key','UNITLIST_SORT_NAME');step('skills-key','UNITLIST_SORT_SKILLS')
+ step('standing-click','_MOUSE_L',30,10);step('work-details-return','_MOUSE_L',12,10);step('return-filter','FILTER')
  shot('work-details-input-focus');records[#records+1]={name='work-details-input-focus'};return
 end
 if os.getenv('DF3D_WORK_DETAILS_RETENTION')=='1' then

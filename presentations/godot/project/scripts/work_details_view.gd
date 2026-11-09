@@ -24,6 +24,7 @@ var detail_first:=0
 var worker_selected: int=-1
 var settings_selected:=0
 var showing_settings:=false
+var right_keyboard_focus:=false
 var detail_scrollbar
 func roster_extent() -> float:return maxf(size.x,864)
 func settings_top() -> int:return header_top()+36
@@ -67,6 +68,7 @@ func finish_name() -> void:
 	if name_entry!=null:name_entry.finish();queue_redraw()
 func clear_name() -> void:
 	finish_name();name_target=-1;queue_redraw()
+func right_panel_rect() -> Rect2:return Rect2(264,header_top(),size.x-296,size.y-header_top()-24)
 func _input(event: InputEvent) -> void:
 	if allowed() and name_entry!=null and name_entry.editing:
 		if event is InputEventKey and event.pressed and event.keycode!=KEY_ESCAPE:
@@ -75,6 +77,18 @@ func _input(event: InputEvent) -> void:
 			var point: Vector2=get_global_transform_with_canvas().affine_inverse()*event.position
 			if not name_rect().has_point(point):name_finished.emit(click_action(point))
 			get_viewport().set_input_as_handled();return
+	if allowed() and state!=null:
+		if event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
+			var point: Vector2=get_global_transform_with_canvas().affine_inverse()*event.position
+			right_keyboard_focus=right_panel_rect().has_point(point)
+		elif event is InputEventKey and event.pressed:
+			# Native42e2e0 propagates this gate independently of textbox focus.
+			if not event.ctrl_pressed and not event.alt_pressed and not event.meta_pressed and not event.shift_pressed and event.keycode in [KEY_LEFT,KEY_RIGHT]:
+				right_keyboard_focus=event.keycode==KEY_RIGHT;get_viewport().set_input_as_handled();return
+			if event.ctrl_pressed and not event.alt_pressed and not event.meta_pressed and not event.shift_pressed and not event.echo and event.keycode==KEY_F and right_keyboard_focus and not state.editing_settings and state.phase==state.Phase.Ready and search!=null:
+				search.grab_focus();get_viewport().set_input_as_handled();return
+			if search!=null and search.has_focus() and not right_keyboard_focus and event.keycode!=KEY_ESCAPE:
+				get_viewport().set_input_as_handled();return
 	super._input(event)
 func click_action(point: Vector2) -> Dictionary:
 	if standing_orders_rect().has_point(point):return {"kind":"standing_orders"}
@@ -142,7 +156,7 @@ func refresh() -> void:
 		var previous: Dictionary=portraits.get(int(row.id),{})
 		retained[int(row.id)]=previous if previous.get("recipe",{})==row.sheet_icon else {"recipe":row.sheet_icon.duplicate(true),"texture":world.candidate_icon(row.sheet_icon)}
 	portraits=retained
-	if state.phase==state.Phase.Closed:worker_selected=-1
+	if state.phase==state.Phase.Closed:worker_selected=-1;right_keyboard_focus=false
 	elif state.roster_ready and not state.ids.has(worker_selected):
 		worker_selected=int(state.ids[0]) if not state.ids.is_empty() else -1
 	if showing_settings!=state.editing_settings:

@@ -164,6 +164,7 @@ func run() -> void:
 	check(naming.stopped and naming.snapshot.is_empty() and service.next==count,"Uncertain rename discards buffered typing without replay")
 	await process_frame
 	state.dispose()
+	await keyboard_focus(service)
 	await labor_navigation(service)
 	await owner_lifecycle(service)
 	service.queue_free();await process_frame
@@ -240,3 +241,30 @@ func labor_navigation(service) -> void:
 	service.session_changed.emit();owner.open_from_labor()
 	check(owner.return_navigation.is_empty() and owner.state.query.is_empty(),"Session change retires retained Labor navigation")
 	owner.queue_free();await process_frame
+
+func keyboard_focus(service) -> void:
+	var state:=State.new();state.configure(service);state.phase=State.Phase.Ready
+	var view:=View.new();root.add_child(view);view.state=state;view.layout(Vector2(1200,800))
+	view.search=preload("res://scripts/area_owner_filter.gd").new();view.add_child(view.search);view.search.focus_mode=Control.FOCUS_ALL
+	key_input(view,KEY_F,true);check(not view.search.has_focus(),"Filter shortcut initially has no right-panel authority")
+	key_input(view,KEY_RIGHT)
+	var modified:=InputEventKey.new();modified.pressed=true;modified.keycode=KEY_F;modified.ctrl_pressed=true;modified.shift_pressed=true;view._input(modified)
+	check(not view.search.has_focus(),"Shift Ctrl F is not the installed Filter binding")
+	modified.shift_pressed=false;modified.echo=true;view._input(modified)
+	check(not view.search.has_focus(),"Filter does not repeat")
+	key_input(view,KEY_RIGHT);key_input(view,KEY_F,true)
+	check(view.right_keyboard_focus and view.search.has_focus(),"Right Arrow enables native Filter focus")
+	key_input(view,KEY_LEFT);var before:=state.query.duplicate();key_input(view,KEY_A,false,97)
+	check(not view.right_keyboard_focus and view.search.has_focus() and state.query==before,"Left disables input without discarding native textbox focus")
+	view.search.release_focus()
+	var click:=InputEventMouseButton.new();click.pressed=true;click.button_index=MOUSE_BUTTON_LEFT
+	click.position=view.get_global_transform_with_canvas()*(view.right_panel_rect().position+Vector2(40,40));view._input(click)
+	key_input(view,KEY_F,true);check(view.search.has_focus(),"Inside-panel click enables Filter")
+	view.search.release_focus();click.position=view.get_global_transform_with_canvas()*Vector2(80,150);view._input(click)
+	key_input(view,KEY_F,true);check(not view.search.has_focus(),"Outside-panel click disables Filter")
+	key_input(view,KEY_RIGHT);state.editing_settings=true;key_input(view,KEY_F,true)
+	check(not view.search.has_focus(),"Settings cannot focus hidden roster search")
+	state.close();view.refresh();check(not view.right_keyboard_focus,"Closing Work Details retires keyboard gate")
+	view.state=null;view.queue_free();state.dispose();await process_frame
+func key_input(view,code: int,control: bool=false,unicode_value: int=0) -> void:
+	var event:=InputEventKey.new();event.pressed=true;event.keycode=code;event.ctrl_pressed=control;event.unicode=unicode_value;view._input(event)

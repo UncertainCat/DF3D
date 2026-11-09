@@ -116,9 +116,15 @@ func run() -> void:
 		deadline=Time.get_ticks_msec()+5000
 		while details.state.phase!=details.state.Phase.Ready and Time.get_ticks_msec()<deadline:await create_timer(0.01).timeout
 		check(main_scene._ui.host.active==details and state.rows.is_empty(),"Main Work Details handoff failed")
+		await keyboard(KEY_F,true);check(not details.panel.search.has_focus(),"Filter bypassed initial right-panel gate")
+		await keyboard(KEY_RIGHT);await keyboard(KEY_F,true);check(details.panel.search.has_focus(),"Right then Filter did not focus search")
+		await keyboard(KEY_LEFT);await keyboard(KEY_A,false,97)
+		check(details.state.query.is_empty() and details.panel.search.has_focus(),"Disabled right panel accepted typing or lost native textbox focus")
+		await keyboard(KEY_RIGHT);await keyboard(KEY_ENTER);check(not details.panel.search.has_focus(),"Enabled Enter did not release filter")
 		await pointer(details.panel,Vector2(details.panel.DETAIL_SORT_X[0]*8+16,details.panel.list_top()-18))
 		if not await details_ready(details):quit(1);return
-		await pointer(details.panel.search,details.panel.search.size*0.5)
+		await keyboard(KEY_F,true)
+		check(details.panel.search.has_focus(),"Right-panel sort click did not enable Filter")
 		var typed:=InputEventKey.new();typed.pressed=true;typed.keycode=KEY_A;typed.unicode=97;Input.parse_input_event(typed);await process_frame
 		if not await details_ready(details):quit(1);return
 		check(details.state.sort==C.WorkDetailWorkerSort.Name and details.state.query=="a".to_ascii_buffer(),"Work Details pointer sort/search setup failed")
@@ -134,6 +140,7 @@ func run() -> void:
 			if not await details_ready(details):quit(1);return
 			check(main_scene._ui.host.active==details and details.state.sort==C.WorkDetailWorkerSort.Name and details.state.query=="a".to_ascii_buffer() and details.panel.search.value==details.state.query,"Labor return lost Work Details search/sort")
 			check(details.state.first==roster_first,"Labor return lost roster scroll")
+			await keyboard(KEY_F,true);check(not details.panel.search.has_focus(),"Labor return retained old keyboard focus gate")
 		await pointer(details.panel,Vector2(656,details.panel.header_top()+18))
 		if not await details_ready(details):quit(1);return
 		check(details.state.editing_settings,"Work Details gear did not open settings")
@@ -186,3 +193,8 @@ func details_ready(owner) -> bool:
 	var deadline:=Time.get_ticks_msec()+5000
 	while owner.state.phase in [owner.state.Phase.Reading,owner.state.Phase.Applying] and Time.get_ticks_msec()<deadline:await create_timer(0.01).timeout
 	return check(owner.state.phase==owner.state.Phase.Ready,"Work Details failed to refresh after Labor navigation")
+
+func keyboard(code: int,control: bool=false,unicode_value: int=0) -> void:
+	var event:=InputEventKey.new();event.pressed=true;event.keycode=code;event.ctrl_pressed=control;event.unicode=unicode_value
+	Input.parse_input_event(event);await process_frame
+	event=event.duplicate();event.pressed=false;Input.parse_input_event(event);await process_frame

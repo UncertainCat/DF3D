@@ -4261,6 +4261,137 @@
       "panel_focus": "Right panel custom feed468e30 ->42e2e0 handles STANDARDSCROLL_RIGHT18 / LEFT17 and inside/outside left click; propagates CAN_KEY_ACTIVATE recursively via1412e60. Filter native1419080 is gated by this state.",
       "limitations": "Direct native interface actions prove focus behavior; physical Ctrl+f delivery and complete navigation lifecycle remain separate.211609 reused stale widget references after sidebar selection; only pre-rebuild observations valid.211654 reacquires widgets every step.",
       "runtime": "No new shortcut implemented; do not invent sort actions from displayed tooltip bindings."
+    },
+    "filter_implementation_reference": {
+      "capture": "build/stockpile-storage-native-input-20261108-211948",
+      "observations": [
+        {
+          "filter_flags": 3,
+          "focused": false,
+          "label": "initial-filter",
+          "sorting": [
+            "Skills"
+          ]
+        },
+        {
+          "filter_flags": 7,
+          "focused": false,
+          "label": "right",
+          "sorting": [
+            "Skills"
+          ]
+        },
+        {
+          "filter_flags": 7,
+          "focused": true,
+          "label": "right-filter",
+          "sorting": [
+            "Skills"
+          ]
+        },
+        {
+          "filter_flags": 3,
+          "focused": true,
+          "label": "left-focused",
+          "sorting": [
+            "Skills"
+          ]
+        },
+        {
+          "filter_flags": 3,
+          "focused": true,
+          "label": "left-filter",
+          "sorting": [
+            "Skills"
+          ]
+        },
+        {
+          "filter_flags": 7,
+          "focused": true,
+          "label": "right-again",
+          "sorting": [
+            "Skills"
+          ]
+        },
+        {
+          "filter_flags": 3,
+          "focused": false,
+          "label": "sidebar-click",
+          "sorting": [
+            "Skills"
+          ]
+        },
+        {
+          "filter_flags": 3,
+          "focused": false,
+          "label": "sidebar-filter",
+          "sorting": [
+            "Skills"
+          ]
+        },
+        {
+          "filter_flags": 7,
+          "focused": false,
+          "label": "panel-click",
+          "sorting": [
+            "Skills"
+          ]
+        },
+        {
+          "filter_flags": 7,
+          "focused": true,
+          "label": "panel-filter",
+          "sorting": [
+            "Skills"
+          ]
+        },
+        {
+          "filter_flags": 7,
+          "focused": true,
+          "label": "name-key",
+          "sorting": [
+            "Skills"
+          ]
+        },
+        {
+          "filter_flags": 7,
+          "focused": true,
+          "label": "skills-key",
+          "sorting": [
+            "Skills"
+          ]
+        },
+        {
+          "filter_flags": 3,
+          "focused": false,
+          "label": "standing-click",
+          "sorting": [
+            "Skills"
+          ]
+        },
+        {
+          "filter_flags": 3,
+          "focused": false,
+          "label": "work-details-return",
+          "sorting": [
+            "Skills"
+          ]
+        },
+        {
+          "filter_flags": 3,
+          "focused": false,
+          "label": "return-filter",
+          "sorting": [
+            "Skills"
+          ]
+        }
+      ],
+      "runtime": "Local right-panel keyboard gate from unmodified Left/Right and left-click bounds. Ctrl F focuses visible roster filter only when enabled; Left preserves textbox focus but blocks input, tabs/close retire gate. Sort shortcuts remain inert.",
+      "bindings": "Installed data/init/interface.txt FILTER REPEAT_NOT SYM2:f; standard left/right include arrows and4/6 aliases. This change implements arrows; numeric aliases while typing require separate native input evidence.",
+      "live_capture": "build/stockpile-storage-native-input-20261108-212209",
+      "live_scope": "Actual main keyboard events initial CtrlF ignored; Right/CtrlF focuses, Left blocks a without losing focus, Right/Enter releases; right-panel sort click enables CtrlF and query typing; three Labor returns reset gate. Existing page/scroll retention and Stone edits pass.",
+      "qa": "build/qa/work-details-keyboard-focus-final",
+      "diagnostics": "Known thread/finalize/shutdownobjects only; source unchanged, owned DF43992 exited. GPU62-63C."
     }
   },
   "resize_reference": {

@@ -36,6 +36,26 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
+Management155 adds the staged `stocks_menu` domain with StocksMenuRead and
+StocksGroupApply on `Local\df3d_management_v155`. Rebuild bridge and viewer
+together; version154 peers use a different channel and are not compatible.
+Legacy StocksOpen/List/Inspect/Close remain retired. Required category/group/item
+vectors carry native captions, matching flags, stable group keys, membership and
+64-bit revisions. Reads request at most64 individual display rows; group edits
+require category/key agreement, an expected revision and an explicit value.
+Validators reject duplicate membership, foreign item rows and mixed read/edit
+fields. Unknown outcomes carry no authoritative Stocks data. No migration
+fabricates groups or revisions for legacy recordings.
+
+Core19 (`stocks-contract155`), real headless Godot/fake-producer roundtrips
+(`stocks-contract155-godot`) and MSVC pass. Protected225727 exercises existing
+Stone use typed reads (83 rows) and four edits on155: source unchanged, DF47996
+exits unsaved, GPU60C sampled; only the known separate-renderer startup notice.
+This establishes contract/compatibility coverage, not a working Stocks route:
+native Stocks bridge handlers, visible-row artwork and the screen remain
+unfinished. The shared512KiB response budget still applies; large-inventory
+payload handling must be resolved before public exposure.
+
 Stocks has an accepted inventory-membership component but no DF3D screen yet.
 Protected215344 on2026-11-08 opens and closes native D_STOCKS while paused,
 records93 ordered categories and initial Ammunition selection(type39), and

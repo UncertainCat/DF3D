@@ -2,6 +2,19 @@
 #pragma once
 #include <cstdint>
 namespace wm {
+enum class StocksMenuOutcome : uint8_t {
+  None = 0,
+  Applied = 1,
+  Rejected = 2,
+  Stale = 3,
+  Unknown = 4,
+};
+enum class StocksFlagAction : uint8_t {
+  Forbid = 0,
+  Dump = 1,
+  Melt = 2,
+  Hidden = 3,
+};
 enum class StoneUseOutcome : uint8_t {
   None = 0,
   Applied = 1,
@@ -258,6 +271,8 @@ enum class ManagementAction : uint8_t {
   KitchenApply = 99,
   StoneUseRead = 100,
   StoneUseApply = 101,
+  StocksMenuRead = 102,
+  StocksGroupApply = 103,
 };
 enum class ManagementStatus : uint8_t {
   Idle = 0,
@@ -570,11 +585,15 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::KitchenApply: return true;
   case ManagementAction::StoneUseRead: return true;
   case ManagementAction::StoneUseApply: return true;
+  case ManagementAction::StocksMenuRead: return true;
+  case ManagementAction::StocksGroupApply: return true;
   default: return false;
   }
 }
 constexpr const char* managementDomain(ManagementAction action) {
   switch (action) {
+  case ManagementAction::StocksMenuRead: return "stocks_menu";
+  case ManagementAction::StocksGroupApply: return "stocks_menu";
   case ManagementAction::StoneUseRead: return "stone_use";
   case ManagementAction::StoneUseApply: return "stone_use";
   case ManagementAction::KitchenRead: return "kitchen_menu";

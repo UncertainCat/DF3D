@@ -4948,3 +4948,36 @@ TEST_CASE("Chores unknown outcomes carry no authoritative state") {
     if(!invalid){const auto decoded=codec::decodeState(value);REQUIRE(decoded.chores);CHECK(bool(decoded.chores->snapshot)==!unknown);}
   }
 }
+TEST_CASE("Stocks requests distinguish reads from guarded group intents") {
+  for(bool apply:{false,true})for(int fault=0;fault<6;++fault){
+    wm::ManagementRequest request;request.action=apply?wm::ManagementAction::StocksGroupApply:wm::ManagementAction::StocksMenuRead;
+    auto& q=request.stocksMenu;q.category=39;
+    if(apply){q.target=wm::StocksGroupKey{39,0,0,0};q.expectedRevision=77;q.operation=wm::StocksFlagAction::Hidden;q.value=1;}
+    else {q.query="iron";q.itemIds={42,17};}
+    if(fault==1)q.category=93;
+    if(fault==2){if(apply)q.expectedRevision=0;else q.itemIds={42,42};}
+    if(fault==3){if(apply)q.target->type=0;else q.expectedRevision=77;}
+    if(fault==4){if(apply)q.itemIds={42};else q.itemIds.resize(65,42);}
+    if(fault==5){if(apply)q.value=2;else q.target=wm::StocksGroupKey{39,0,0,0};}
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    if(!fault){REQUIRE(value->stocks_menu());CHECK(value->stocks_menu()->category()==39);CHECK(value->stocks_menu()->expected_revision()==(apply?77:0));}
+  }
+}
+TEST_CASE("Stocks groups own unique membership and item rows belong to the selection") {
+  for(int fault=0;fault<6;++fault){
+    flatbuffers::FlatBufferBuilder b;
+    std::vector<flatbuffers::Offset<wire::StocksCategoryRow>> categories;
+    for(int i=0;i<93;++i)categories.push_back(wire::CreateStocksCategoryRow(b,int16_t(fault==1?0:i),b.CreateString("category"),b.CreateString("None"),b.CreateString(""),true));
+    auto key=wire::CreateStocksGroupKey(b,39,0,0,0);
+    auto group=wire::CreateStocksGroupRow(b,key,3,b.CreateString("group [3]"),true,true,240,fault==2?0:77,b.CreateVector(std::vector<int32_t>{42,17}));
+    std::vector<flatbuffers::Offset<wire::StocksGroupRow>> groups{group};
+    if(fault==3)groups.push_back(wire::CreateStocksGroupRow(b,wire::CreateStocksGroupKey(b,39,1,0,0),1,b.CreateString("other"),true,true,240,78,b.CreateVector(std::vector<int32_t>{42})));
+    const auto item=wire::CreateStocksItemRow(b,fault==4?99:17,39,b.CreateString("item"),0,true,true,b.CreateString("INORGANIC:IRON"),b.CreateString(""));
+    const auto data=wire::CreateStocksMenuState(b,wire::StocksMenuOutcome::None,fault==5?-1:39,b.CreateVector(categories),b.CreateVector(groups),b.CreateVector(std::vector<flatbuffers::Offset<wire::StocksItemRow>>{item}));
+    wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_world_epoch(3);state.add_action(wire::ManagementAction::StocksMenuRead);state.add_status(wire::ManagementStatus::Ok);state.add_stocks_menu(data);b.Finish(state.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());CHECK(bool(wire::validateManagementState(*value))==(fault!=0));
+    if(!fault){const auto decoded=codec::decodeState(value);REQUIRE(decoded.stocksMenu);CHECK(decoded.stocksMenu->groups[0].itemIds==std::vector<int32_t>{42,17});CHECK(decoded.stocksMenu->items[0].id==17);CHECK(decoded.stocksMenu->groups[0].revision==77);}
+  }
+}

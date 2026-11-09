@@ -1,4 +1,15 @@
 // Generated exhaustive model/wire correspondence checks.
+static_assert(static_cast<int>(wm::StocksMenuOutcome::None) == static_cast<int>(df3d::mirror::StocksMenuOutcome::None));
+static_assert(static_cast<int>(wm::StocksMenuOutcome::Applied) == static_cast<int>(df3d::mirror::StocksMenuOutcome::Applied));
+static_assert(static_cast<int>(wm::StocksMenuOutcome::Rejected) == static_cast<int>(df3d::mirror::StocksMenuOutcome::Rejected));
+static_assert(static_cast<int>(wm::StocksMenuOutcome::Stale) == static_cast<int>(df3d::mirror::StocksMenuOutcome::Stale));
+static_assert(static_cast<int>(wm::StocksMenuOutcome::Unknown) == static_cast<int>(df3d::mirror::StocksMenuOutcome::Unknown));
+static_assert(sizeof(df3d::mirror::EnumValuesStocksMenuOutcome()) / sizeof(df3d::mirror::StocksMenuOutcome) == 5);
+static_assert(static_cast<int>(wm::StocksFlagAction::Forbid) == static_cast<int>(df3d::mirror::StocksFlagAction::Forbid));
+static_assert(static_cast<int>(wm::StocksFlagAction::Dump) == static_cast<int>(df3d::mirror::StocksFlagAction::Dump));
+static_assert(static_cast<int>(wm::StocksFlagAction::Melt) == static_cast<int>(df3d::mirror::StocksFlagAction::Melt));
+static_assert(static_cast<int>(wm::StocksFlagAction::Hidden) == static_cast<int>(df3d::mirror::StocksFlagAction::Hidden));
+static_assert(sizeof(df3d::mirror::EnumValuesStocksFlagAction()) / sizeof(df3d::mirror::StocksFlagAction) == 4);
 static_assert(static_cast<int>(wm::StoneUseOutcome::None) == static_cast<int>(df3d::mirror::StoneUseOutcome::None));
 static_assert(static_cast<int>(wm::StoneUseOutcome::Applied) == static_cast<int>(df3d::mirror::StoneUseOutcome::Applied));
 static_assert(static_cast<int>(wm::StoneUseOutcome::Rejected) == static_cast<int>(df3d::mirror::StoneUseOutcome::Rejected));
@@ -232,7 +243,9 @@ static_assert(static_cast<int>(wm::ManagementAction::KitchenRead) == static_cast
 static_assert(static_cast<int>(wm::ManagementAction::KitchenApply) == static_cast<int>(df3d::mirror::ManagementAction::KitchenApply));
 static_assert(static_cast<int>(wm::ManagementAction::StoneUseRead) == static_cast<int>(df3d::mirror::ManagementAction::StoneUseRead));
 static_assert(static_cast<int>(wm::ManagementAction::StoneUseApply) == static_cast<int>(df3d::mirror::ManagementAction::StoneUseApply));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 102);
+static_assert(static_cast<int>(wm::ManagementAction::StocksMenuRead) == static_cast<int>(df3d::mirror::ManagementAction::StocksMenuRead));
+static_assert(static_cast<int>(wm::ManagementAction::StocksGroupApply) == static_cast<int>(df3d::mirror::ManagementAction::StocksGroupApply));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 104);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -541,3 +554,5 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::KitchenRead) == df3d::mi
 static_assert(wm::isRuntimeAction(wm::ManagementAction::KitchenApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::KitchenApply));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::StoneUseRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::StoneUseRead));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::StoneUseApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::StoneUseApply));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::StocksMenuRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::StocksMenuRead));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::StocksGroupApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::StocksGroupApply));

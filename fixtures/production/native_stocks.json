@@ -2830,5 +2830,18 @@
     "msvc": "build/notes/pm/stocks-group-caption-msvc.log",
     "qa": "build/qa/stocks-native-group-caption",
     "diagnostics": "Native log clean; no viewer launched."
+  },
+  "contract155_reference": {
+    "version": 155,
+    "channel": "Local\\df3d_management_v155",
+    "core": "build/qa/stocks-contract155",
+    "godot_roundtrip": "build/qa/stocks-contract155-godot",
+    "msvc": "build/notes/pm/stocks-contract155-msvc.log",
+    "compatibility_capture": "build/stockpile-storage-native-input-20261108-225727",
+    "compatibility_scope": "Existing Stone use typed/controller read83 rows and4edits; not Stocks runtime integration.",
+    "source_save": "unchanged; owned DF47996 exited unsaved",
+    "diagnostics": "passed_with_known_issues: separate-renderer startup notice only",
+    "plugin_sha256": "ad20a97186f78b2c1ca31c34acc9acf562e05eefc640c2b2e4a71734d6a1e88e",
+    "scope": "New owned Stocks schema/model/Godot codecs, strict identity/membership validation, 64-bit revisions, required arrays, explicit group intents and unknown-state clearing. Legacy Stocks UI actions remain retired. Provider handlers and actual Stocks wire behavior remain pending."
   }
 }

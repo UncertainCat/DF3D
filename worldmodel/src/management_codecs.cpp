@@ -46,6 +46,12 @@ ManagementState decodeState(const m::ManagementState* s) {
     next.creatureHeader=std::move(header);
   }
   if(const auto* r=s->residents())next.residents=ResidentsState{{r->unit_ids()->begin(),r->unit_ids()->end()}};
+  if(const auto* r=s->stocks_menu()) {
+    next.stocksMenu.emplace();auto& out=*next.stocksMenu;out.outcome=StocksMenuOutcome(r->outcome());out.category=r->category();
+    for(const auto* row:*r->categories())out.categories.push_back({row->type(),row->caption()->str(),row->stored()->str(),row->unavailable()->str(),row->matches()});
+    for(const auto* row:*r->groups()){const auto* k=row->key();StocksGroupRow group;group.key={k->type(),k->subtype(),k->subcat1(),k->subcat2()};group.amount=row->amount();group.caption=row->caption()->str();group.matches=row->matches();group.expanded=row->expanded();group.flags=row->flags();group.revision=row->revision();group.itemIds.assign(row->item_ids()->begin(),row->item_ids()->end());out.groups.push_back(std::move(group));}
+    for(const auto* row:*r->items())out.items.push_back({row->id(),row->type(),row->caption()->str(),row->flags(),row->can_dump(),row->can_melt(),row->material_token()->str(),row->subtype_raw()->str()});
+  }
   if(const auto* r=s->stone_use()) {
     next.stoneUse.emplace();auto& out=*next.stoneUse;out.outcome=StoneUseOutcome(r->outcome());
     for(const auto* row:*r->rows())out.rows.push_back({row->category(),row->index(),row->restricted(),row->name()->str(),row->uses()->str(),row->magma_safe(),row->material_token()->str()});
@@ -230,6 +236,12 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
   }
   const auto anchor=r.materialAnchor.value_or(TilePos{r.x,r.y,r.z});
   const m::TilePos materialAnchor(anchor.x,anchor.y,anchor.z);
+  flatbuffers::Offset<m::StocksMenuRequest> stocksMenu;
+  if(r.action==ManagementAction::StocksMenuRead || r.action==ManagementAction::StocksGroupApply){
+    const auto& q=r.stocksMenu;flatbuffers::Offset<m::StocksGroupKey> target;
+    if(q.target){const auto& k=*q.target;target=m::CreateStocksGroupKey(b,k.type,k.subtype,k.subcat1,k.subcat2);}
+    stocksMenu=m::CreateStocksMenuRequest(b,q.category,b.CreateString(q.query),b.CreateVector(q.itemIds),target,q.expectedRevision,m::StocksFlagAction(q.operation),q.value);
+  }
   flatbuffers::Offset<m::StoneUseRequest> stoneUse;
   if(r.action==ManagementAction::StoneUseRead || r.action==ManagementAction::StoneUseApply){
     const auto& q=r.stoneUse;flatbuffers::Offset<flatbuffers::Vector<uint8_t>> expected;
@@ -329,7 +341,7 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
           flatbuffers::Offset<m::WorkDetailSettingsRequest>{},
       (r.action==ManagementAction::StandingOrdersRead || r.action==ManagementAction::StandingOrdersSet)?
           m::CreateStandingOrdersRequest(b,r.standingOrders.category,r.standingOrders.settingId,r.standingOrders.expectedValue,r.standingOrders.value):
-          flatbuffers::Offset<m::StandingOrdersRequest>{},hunter,chores,kitchenMenu,stoneUse);
+          flatbuffers::Offset<m::StandingOrdersRequest>{},hunter,chores,kitchenMenu,stoneUse,stocksMenu);
   b.Finish(request);
 }
 }  // namespace wm::detail::management

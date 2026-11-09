@@ -400,6 +400,7 @@ func run() -> void:
 	await test_chores()
 	await test_kitchen_menu()
 	await test_stone_use()
+	await test_stocks_menu()
 	# Host signals only after validating every expected payload.
 	for i in 300:
 		if FileAccess.get_file_as_string(status_path) == "passed": break
@@ -1194,3 +1195,22 @@ func test_stone_use() -> void:
 	intent.category=1;seq=world.management_request("stone_use",intent);assert(seq>0);reply=await receipt(seq,S.Rejected)
 	assert(reply.outcome=="unknown" and reply.stone_use.outcome==Contract.StoneUseOutcome.Unknown and reply.stone_use.rows.is_empty() and reply.stone_use.restrictions.is_empty())
 	assert(Contract.is_mutation(A.StoneUseApply) and not Contract.is_mutation(A.StoneUseRead))
+
+func test_stocks_menu() -> void:
+	var read: Dictionary={"action":A.StocksMenuRead,"category":39,"query":"iron","item_ids":[17]}
+	for patch in [{"category":93},{"category":true},{"query":5},{"item_ids":[17,17]},{"item_ids":[-1]},{"extra":0}]:
+		var invalid:=read.duplicate(true);invalid.merge(patch,true);assert(world.management_request("stocks_menu",invalid)==0)
+	var seq: int=world.management_request("stocks_menu",read);assert(seq>0)
+	var reply:=await receipt(seq);var value: Dictionary=reply.stocks_menu
+	assert(value.category==39 and value.categories.size()==93 and value.groups.size()==1 and value.items.size()==1)
+	assert(value.categories[39].matches and value.categories[39].stored=="~20")
+	assert(value.groups[0].item_ids==[42,17] and value.groups[0].revision==9223372036854775807 and value.groups[0].caption=="fixture group [3]")
+	assert(value.items[0].id==17 and value.items[0].can_dump and value.items[0].material_token=="INORGANIC:IRON")
+	var edit: Dictionary={"action":A.StocksGroupApply,"category":39,"subtype":0,"subcat1":0,"subcat2":0,"expected_revision":value.groups[0].revision,"operation":Contract.StocksFlagAction.Forbid,"value":1}
+	for patch in [{"category":-1},{"subtype":32768},{"expected_revision":0},{"operation":4},{"value":true},{"extra":0}]:
+		var invalid:=edit.duplicate(true);invalid.merge(patch,true);assert(world.management_request("stocks_menu",invalid)==0)
+	seq=world.management_request("stocks_menu",edit);assert(seq>0);reply=await receipt(seq)
+	assert(reply.stocks_menu.outcome==Contract.StocksMenuOutcome.Applied and reply.stocks_menu.groups[0].revision==9223372036854775806)
+	edit.value=0;seq=world.management_request("stocks_menu",edit);assert(seq>0);reply=await receipt(seq,S.Rejected)
+	assert(reply.outcome=="unknown" and reply.stocks_menu.category==-1 and reply.stocks_menu.groups.is_empty() and reply.stocks_menu.categories.is_empty())
+	assert(Contract.is_mutation(A.StocksGroupApply) and not Contract.is_mutation(A.StocksMenuRead))

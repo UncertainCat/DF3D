@@ -79,6 +79,13 @@ func run() -> void:
 		if rendered:
 			await pointer(view,view.category_rect(int(step.category)).get_center())
 			check(state.category==int(step.category),"Stone use category pointer failed")
+			if step.get("resized",false):
+				root.size=Vector2i(1200,800);await process_frame;await process_frame
+				if owner==null:view.layout(Vector2(1200,800))
+				state.seek(38,view.capacity())
+				root.size=Vector2i(1600,900);await process_frame;await process_frame
+				if owner==null:view.layout(Vector2(1600,900))
+				check(state.first[1]==38 and view.visible_first()==35 and int(state.category_rows()[35].index)==int(step.index),"Resized visible target differs from native")
 			await pointer(view,view.restriction_rect(0).get_center())
 		else:
 			state.select_category(int(step.category));state.toggle(int(step.index))
@@ -96,8 +103,9 @@ func run() -> void:
 			if FileAccess.file_exists(directory+"/stone-use-wire-ack") and FileAccess.get_file_as_string(directory+"/stone-use-wire-ack").strip_edges()==str(completed):break
 			await create_timer(0.01).timeout
 		check(FileAccess.get_file_as_string(directory+"/stone-use-wire-ack").strip_edges()==str(completed),"Stone use independent effect not acknowledged")
-	check(completed==4,"Stone use edits incomplete")
+	check(completed==reference.edits.steps.size(),"Stone use edits incomplete")
 	if owner!=null:
+		root.size=Vector2i(1200,800);await process_frame;await process_frame;state.seek(0,view.capacity())
 		await pointer(view,view.kitchen_rect().get_center())
 		check(owner.kitchen_active and not owner.stone_active and state.rows.is_empty(),"Main Kitchen handoff retained Stone use authority")
 		await pointer(owner.kitchen_panel,owner.kitchen_panel.stone_use_rect().get_center())
@@ -111,6 +119,12 @@ func run() -> void:
 		await pointer(details.panel,details.panel.stone_use_rect().get_center())
 		if not await ready_state(state):quit(1);return
 		check(main_scene._ui.host.active==owner and owner.stone_active and state.category==1,"Direct Work Details Stone use return failed")
+		owner.handle_back();await process_frame
+		check(not view.visible and state.rows.is_empty() and state.restrictions.is_empty() and main_scene._ui.host.active!=owner,"Closing Stone use retained authority or input ownership")
+		owner.open_from_labor(false,true)
+		if not await ready_state(state):quit(1);return
+		check(state.category==0 and state.first==[0,0],"Reopen after close retained old navigation")
+		await pointer(view,view.category_rect(1).get_center())
 	if rendered:
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(directory+"/stone-use-view.png")

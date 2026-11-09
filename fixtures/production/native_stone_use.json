@@ -2330,5 +2330,10 @@
       }
     ],
     "scope": "All83 stones covered by six full default panel crops. Retained category position38 displays35 at1600x900 and38 again at1200x800; four scrolled resize crops match including actual912x552 minimum. Source preserved, DF41748 unsaved exit. Serial30FPS/GPU60C sampled; only known separate-thread/device-finalize/shutdown-object diagnostics. No live edit immediately after scrolled resize or complete session/reconnect acceptance."
+  },
+  "resized_edit_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-195858",
+    "steps": 6,
+    "scope": "Main-scene rendered edits include two toggles of position35 after retaining position38 and enlarging to1600x900. Native ordinary pointer effect on that same material is the reference; every restriction byte independently checked after all six edits. Stale requests rejected, fresh reads, Kitchen/Work Details returns and Back/reopen authority/navigation retirement pass. Source preserved, DF43948 unsaved exit,30FPS/GPU60-61C sampled. Only known separate-thread/device-finalize/shutdown-object diagnostics. No complete live disconnect/load/session or post-write fault acceptance."
   }
 }

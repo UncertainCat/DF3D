@@ -31,191 +31,106 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
 
-## Stone use native discovery
+## Stone use native semantics and presentation
+
+Stone use is implemented inside the staged Labor owner. Public Labor exposure
+remains gated; do not infer release readiness from this component's acceptance.
+`fixtures/production/native_stone_use.json` retains native provenance, exact
+observations and the scoped comparisons below. Captured artwork stays ignored.
 
 Management153 adds StoneUseRead100/StoneUseApply101 on
-Local\df3d_management_v153. Bridge and viewers must rebuild together;152 peers
-remain on their separate region. Read has no target; Apply carries category,
-material index and the complete binary restriction vector. Read rows carry native
-name/use captions, material identity, restriction and magma safety. Applied,
-Rejected, Stale and Unknown return no row/receipt authority; success requires a
-fresh read, and Unknown never permits replay. Validators reject out-of-range
-targets, malformed flags, duplicate identities and contradictory row receipts.
-No facts are inferred for older recordings.
+`Local\df3d_management_v153`; bridge and viewers must rebuild together. Read
+has no target and returns native category/index order, name/use captions,
+material identity, restriction and magma safety, plus the complete restriction
+vector. Apply carries category, material index and that full expected vector.
+Applied/Rejected/Stale/Unknown carry no editable row or receipt authority;
+success requires a fresh read and Unknown never permits replay. Validators
+reject malformed flags, duplicate identities, invalid targets and contradictory
+rows. Older recordings acquire no invented facts.
 
-The schema/model/Godot contract and fake-host round trip pass
-stone-use-contract153 with core19. MSVC passes stone-use-contract153-msvc.log;
-protected192830 on2026-11-08 verifies the existing Kitchen controller's six edits,
-fresh reads and stale rejection through153. Source unchanged, DF48708 exits
-unsaved, headless viewer, GPU47C; only the known separate-thread notice remains.
-Installed plugin SHA256:
-2A37556F700268D0CDF710C7FDF91D0B05D63C84DBCF47764CE4087AE81FED54.
-Stone use dispatch now calls the owned native reader and edit adapter. Read
-copies native captions to UTF-8 and returns complete restriction authority;
-Apply returns empty authority and requires a refresh. Pre-write failure rejects;
-post-write failure and invalid-response publication fallback yield Unknown without
-rows or flags. Protected193250 verifies83 typed rows, four edits/fresh reads and
-stale replay rejection, with independent full restriction-array readback after
-each edit. Source unchanged, DF36056 exits unsaved, headless viewer, GPU48C;
-only the known separate-thread notice remains.193153 had JSON numeric-type
-comparison errors and performed no wire edits, so it is not acceptance. MSVC and
-core19 pass stone-use-dispatch-msvc.log and stone-use-dispatch. Installed SHA256:
-023FABBDDE8C76CFA6C25197FACEFDB775A8FD21AB7644F1FF8D1C7D0667E81D.
-Live publication fault injection and rendered view lifecycle remain unverified.
+`bridge/plugin/stone_use_native.h` supplies independently owned context vectors
+to native432450..432f4f: index vectors at158, restriction-pointer vectors at188,
+and economic-description pointers at1b8. Native d97510 builds economic-use
+fragments from raw materials/reactions. Cleanup bb9b0 destroys/frees the owned
+strings; vector capacity remains under C++ ownership. Returned restriction
+pointers must point into authoritative plotinfo.economic_stone and are never
+retained. Cold provider190635 matches83 ordered rows and30 full descriptions
+before any Stone use menu is opened. Fixture code hashes pin these routines.
 
-`stone_use_state.gd` owns category/scroll navigation and retires request tickets
-on close or session change. Edits clear authority immediately and refresh on
-success; rejected/unknown replies provide no editable rows and are never replayed.
-Headless stone-use-controller passes controller retirement/validation checks and
-core19. Protected193842 on2026-11-08 exercises the controller through the shared
-semantic service:83 native rows, four edits, fresh reads and stale rejection,
-with independent full-array effect checks. Source unchanged, DF39588 exits
-unsaved; headless viewer, GPU56C sampled, only the known separate-thread notice.
-This establishes controller edits, not rendered input or full main-scene lifecycle.
+Inorganic caption lookup14add70 is read-only;14d1920 follows its inorganic
+formatting branch and52d650 capitalizes only the owned string. Names/uses cross
+the bridge as UTF-8. Magma safety calls the native149ef80 predicate with12000,
+using its existing construction pin. Native191438 compares all83 safety icons
+(30 safe/53 unsafe) and material tokens. Godot does not reconstruct eligibility,
+sorting, economic descriptions or temperature rules.
 
-The staged `stone_use_view.gd` renders both categories from native rows with
-installed boulder artwork, native safety/permission icons and local navigation.
-The default1200x800 full panel crop (32,52)-(976,760) matches both193842 native
-category captures with zero RGB pixel differences, including all15 visible
-stone icons in each category. `stone_use_capture` passes in
-stone-use-view-native-art with only the documented separate-thread, device-finalize
-and shutdown-object diagnostics; core19 passes stone-use-view. Runs are serial
-and capped at30FPS, with sampled GPU58-60C. This does not establish remaining
-off-page art, responsive geometry, scrolling/hover behavior, live pointer effects
-or Labor/main-scene ownership. The public tab remains hidden.
+Native434b8a..434bb4 has no semantic callee: its complete audited effect is
+flipping one restriction byte. The adapter requires fresh native category
+membership and exact full-vector equality before that write. All fallible
+preparation precedes writeStarted; post-write exceptions and invalid-response
+publication fallback yield Unknown without authority. The input dispatcher is
+never called. Native widget/input/search scratch and graphics caches remain
+prohibited runtime inputs. Renderer c83890 mutates graphics caches and is not
+used; the view resolves installed boulder and interface artwork independently.
 
-Protected194518 on2026-11-08 verifies actual rendered category/permission clicks
-through the shared controller/service: four edits, stale rejection and fresh
-reads, with independent native full-array checks. The final Other stone panel
-also matches the same-run native crop with zero RGB differences. Source unchanged,
-DF1012 exits unsaved;30FPS, GPU58C sampled, only documented separate-thread,
-device-finalize and shutdown-object diagnostics.194417 completed viewer assertions
-but exceeded the native capture's10-second deadline during shutdown, so it is
-not accepted; rendered Stone use captures now allow30 seconds. Core19 passes
-stone-use-rendered-input. Main-scene ownership remains unverified.
+Typed dispatch193250 verifies83 rows and four edit/stale/fresh-read sequences,
+with independent full-array native readback. The current installed plugin SHA256
+is023FABBDDE8C76CFA6C25197FACEFDB775A8FD21AB7644F1FF8D1C7D0667E81D.
+MSVC/core19 and typed fake-host contracts pass. Protocol migration192830 also
+checks the existing Kitchen workflow. Live publication-fault injection is not
+accepted by these successful edit runs.
 
-Labor ownership now includes Stone use alongside Kitchen and Standing orders.
-All four Labor tabs route through local owners, retire old read authority, block
-handoffs during an edit and obtain fresh data on return. Stone use keeps its
-category/scroll intent across tab changes; normal close and session reset clear it.
-Work Details includes Stone use in its deferred rename-click routing. Headless
-stone-use-labor-owner passes core19 and Stone use/Kitchen/Chores/Standing orders/
-Work Details controller checks. Protected195024 on2026-11-08 uses the actual
-main-scene factory, host and pointer routes: Standing orders to Stone use, four
-restriction edits with independent native readback, Kitchen and Work Details
-round trips, retained category and fresh authority. The final panel matches
-native with zero RGB differences. Source unchanged, DF37388 exits unsaved;
-30FPS, GPU60C sampled, only the three documented Godot startup/shutdown diagnostics.
-This does not establish resize, physical wheel/drag, deferred-rename live handoff,
-off-page artwork or the complete session/reconnect lifecycle. Public exposure
-remains gated with the broader Labor acceptance work.
+`stone_use_state.gd` owns category/scroll intent and generation-scoped request
+tickets. Closing or changing session retires observers and clears authority;
+unknown/refused replies cannot be replayed. `standing_orders_panel.gd` owns
+Stone use alongside Kitchen/Chores/scalar Standing orders. Tab changes retire
+reads, block during edits and request fresh authority on return. Local category
+positions survive Labor handoffs; normal close and session reset clear them.
+Work Details includes Stone use in deferred rename-click routing. Headless
+stone-use-labor-owner passes core19 and all five affected controller checks.
 
-Protected194629 records native input: arrows step one row, track clicks step
-15 rows at default height, and category changes retain independent positions.
-Standard up/down/page and context up/down commands at row, outside and bar
-positions leave both scroll positions unchanged. Seven850ms hover observations
-(stone/name/magma/uses/permission/category/bar) produce no native hover instruction
-or displayed tooltip. These observations do not establish physical mouse-wheel,
-drag, responsive layout or DF3D scrolling acceptance. Source unchanged,
-DF27944 exits unsaved; GPU60C sampled. `input_reference` retains the exact cases.
+The native input reference establishes one-row arrows, page-track clicks,
+independent category positions and six drag destinations. Standard/context
+scroll-key commands and ordinary/Shift physical wheel messages at row/outside/
+bar do not scroll this native panel; DF3D disables inherited wheel handling.
+Seven850ms hover observations (stone/name/magma/uses/permission/category/bar)
+produce no tooltip instruction. Rendered stone-use-navigation replays the
+captured pointer/drag/wheel behavior. Native input uses diagnostic-only widget
+observations; the product receives no native widget state.
 
-Protected195239 verifies physical wheel messages (ordinary/Shift, row/outside/bar)
-leave Stone use scrolling unchanged. DF3D disables the inherited scrollbar wheel
-handler accordingly. Native drag destinations196/232/340/460/660/736 yield
-first rows0/0/3/7/12/15. Rendered stone-use-navigation replays these positions,
-arrow/page clicks and independent category retention through Godot input events.
-It passes with only documented engine startup/shutdown diagnostics; core19 passes
-stone-use-responsive. The source save is unchanged and DF39780 exits unsaved.
+Native195547 and rendered stone-use-pages cover all83 stone rows through six
+page captures. Every full panel crop has zero RGB differences, including icons,
+caption truncation, safety/permission art and scrollbar. Initial-page comparisons
+also cover960x720,960x600,1600x900 and1200x800. Four scrolled comparisons cover
+912x552,960x600,1600x900 and1200x800. The earlier minimum request in195239 actually
+produced960x720; only195547 establishes912x552. Narrow headers replace earlier
+text cells. On enlargement, retained Other stone position38 remains38 while
+visible_first becomes35 to fill18 rows; shrinking displays38 again. Drawing,
+artwork, scrollbar and click targets use this separately clamped visible row.
 
-Native resize captures in195239 are960x720,960x600,1600x900 and1200x800; the
-minimum-size request actually produced960x720, not the requested640x480. Complete
-panel crops at all four observed sizes match DF3D with zero RGB differences.
-At narrow widths the final header overwrites earlier header text cells; DF3D
-now clears that cell background before drawing it. These captures verify initial
-pages, including18 visible economic stones at the widest size, not resizing
-an already-scrolled list or remaining off-page artwork. Runs stay serial at30FPS,
-sampled GPU59-60C. `navigation_reference` retains observations and comparison scope.
+Protected195024 uses the real main-scene factory/host and pointer routes through
+Standing orders, Stone use, Kitchen and Work Details. Four edits match independent
+native effects; tab returns retain category and refresh data.195858 extends this
+to six edits, including two toggles of the stone displayed at position35 after
+resizing retained position38. All restriction bytes are independently checked,
+stale requests rejected and original values restored. Back releases input and
+clears authority; reopen starts at category0/position0 with fresh data. The source
+save is unchanged and owned DF43948 exits unsaved. Core19 passes
+stone-use-resized-main. The preceding normal main-scene final panel matches
+native exactly; the resized-edit run does not add a new whole-screen claim.
 
-Protected195547 extends display coverage to all83 stones through six complete
-native page captures (economic0/15; other0/15/30/38). Every full panel crop matches
-DF3D with zero RGB differences. It also establishes native scrolled resizing:
-the retained Other stone position stays38, while the1600x900 renderer starts at35
-to fill18 rows. Returning to1200x800 displays38 again. DF3D now uses this separate
-displayed first row for drawing, artwork, scrollbar and click targets. Four
-scrolled panel crops at912x552,960x600,1600x900 and1200x800 all match exactly.
-The actual minimum request in this run reached912x552;195239's different observed
-size remains explicitly scoped to that run. `pages_reference` retains comparisons.
-Core19 and rendered stone-use-pages pass, with only documented Godot diagnostics.
-Source preserved, DF41748 exits unsaved; serial30FPS, sampled GPU60C. Live edits
-immediately after a scrolled resize and remaining session/reconnect behavior
-are not established by these display captures.
+Graphical checks are serial and capped at30FPS; sampled GPU temperatures during
+these scoped captures were58-61C. Accepted rendered runs have only the documented
+separate-thread, device-finalize and shutdown-object diagnostics. Earlier194417
+completed viewer assertions but exceeded the native capture timeout during
+shutdown and is not acceptance; scoped rendered/main deadlines now cover cleanup.
 
-Protected185832 on2026-11-08 records
-30 economic and53 other stones in native order, material identities/restrictions,
-and the default economic screen. `native_stone_use.json` is the durable reference
-for implementing the provider and presentation without reconstructing eligibility
-or captions. Raw material names in this fixture are identities, not accepted UI
-captions. Source preservation and owned unsaved exit pass; GPU51C sampled.
-The initial185754 probe failed on a DFHack handler access and is not acceptance.
-
-Constructor46c2a0 initializes widget vectors;42c4f0 is the scrollbar update,
-not the list builder. Input434600 delegates to4346b0. The row-click branch
-434b8a..434bb4 flips a pointed restriction byte (1-current) without calling a
-recalculation routine. Renderer438000 obtains names through14add70/14d1920 and
-52d650; it also invokes the cache-mutating graphics selectorc83890, which is not
-authorized for runtime use. Native432450..432f4f is the list builder: its context
-holds two index vectors at158, two restriction-pointer vectors at188, and an
-economic-description pointer vector at1b8. It inserts entries in formatted-name
-order using native material predicates. Description helperd97510..d97ca0 supplies
-allocated fragments, which the builder joins into allocated strings. Cleanup
-bb9b0..bba24 destroys/frees pointed strings and empties the vector, retaining its
-capacity. `owned_provider_discovery` pins these code ranges and ownership facts.
-The read adapter in stone_use_native.h supplies independently owned vectors to
-432450 and uses native cleanup for allocated descriptions. For inorganic inputs,
-14add70 is a read-only material lookup;14d1920 follows its inorganic formatting
-branch, and52d650 changes only the owned caption. Economic-use fragments come
-from d97510's raw-material/reaction reads and owned output vectors. No menu,
-widget, input or graphics cache is supplied. Restriction pointers are validated
-against authoritative economic_stone storage before reading and never retained.
-The diagnostic stone-use-probe exposes pointer-free rows; typed dispatch uses the
-same owned provider. No public UI route exists.
-
-Protected190635 on2026-11-08 invokes this provider before opening Stone use and
-matches all83 ordered category/index/restriction values plus30 full descriptions.
-Initially visible economic names also match captured screen text. Source save
-is unchanged; owned DF9628 exits unsaved, GPU49C. The first190552 comparison
-mistakenly compared numeric flags with JSON booleans and is not acceptance.
-MSVC and core19 pass stone-use-provider-msvc.log and stone-use-owned-provider.
-Installed plugin SHA256:
-8F8472991F4966C24AAF20E6D466AB94F9D0C12EF152B597E2574ED7FD3FE97B.
-The edit adapter requires the complete expected restriction vector and fresh
-native category membership. It performs native434b8a..434bb4's inline byte flip
-only after all fallible reads/allocations, with an explicit write-start boundary.
-It never calls the input dispatcher. Protected190825 records native toggles for
-Alabaster and Andesite;191008 compares four adapter toggles with those effects,
-checks every other flag remains unchanged, and rejects a stale replay after
-each toggle. Both sequences restore the full original array. Source unchanged,
-DF38896 exits unsaved, GPU49C. MSVC/core19 pass stone-use-edit-msvc.log and
-stone-use-native-edits. Installed plugin SHA256:
-CF01813E5FCCB4FF6A4EF146B7C04BB4651BAD2A72E5A4D0268FABB38FA20B25.
-`edit_reference` retains these results; downstream job scheduling and
-other-category DF3D rendering remain unverified.
-Stone use read rows also carry material identity and native magma safety.
-Renderer438adc calls149ef80(world,0,index,12000); the read-only helper uses
-material lookup14add70, and its existing construction pin is reused. No
-temperature rules are implemented in Godot. Protected191438 compares all83
-native rendered safety icons (30 safe/53 unsafe) against provider results and
-validates material tokens, then repeats the four edit/stale checks. The diagnostic
-uses actual visible-row coordinates at the last full page;191317/191358 used
-incorrect off-page coordinates and are not acceptance. Source preserved,
-DF39260 exits unsaved, GPU49C. MSVC/core19 pass stone-use-display-msvc.log and
-stone-use-display-metadata. Installed plugin SHA256:
-693FA1BE15F6A121D35AEABFD220657FDDD1A5A5A856B0B33F710F422C86A96B.
-`display_reference` records native artwork origins and observed classifications;
-Default visible row art is verified above; off-page art and the public screen
-remain unfinished.
-Do not borrow native widget vectors or restriction-pointer scratch. Core19 passes
-stone-use-discovery; no runtime adapter or public route is accepted by this check.
+Remaining integration gaps include full disconnect/reconnect and load/session
+transitions through the actual main scene, live deferred-rename handoff, and
+post-write publication faults. Controller tests cover late replies and session
+retirement but do not establish those complete live workflows. Downstream job
+scheduling is also outside these restriction-byte edit comparisons. Broader
+Labor readiness and the full management/release backlog remain open.
 
 ## Kitchen native discovery
 

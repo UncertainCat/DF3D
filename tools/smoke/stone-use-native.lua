@@ -96,6 +96,18 @@ if os.getenv('DF3D_STONE_USE_EDITS')=='1' then
    result.edits.steps[#result.edits.steps+1]={category=category,index=index,restricted=flags[index+1]}
   end
  end
+ if os.getenv('DF3D_STONE_USE_RESIZED_EDIT')=='1' then
+  -- Native target at position35 is the first displayed row after the verified
+  -- Other stone38 ->1600x900 resize. Compare its ordinary native toggle effect.
+  panel.scroll_position[1]=35;view:render(dfhack.getTickCount())
+  local index=panel.stone_mg_index[1][35]
+  for attempt=1,2 do
+   click(115,17);local flags=snapshot()
+   for i,value in ipairs(flags)do assert(value==(i==index+1 and (attempt==1 and 1-original[i] or original[i]) or original[i]),'Resized Stone use target effect mismatch')end
+   result.edits.steps[#result.edits.steps+1]={category=1,index=index,restricted=flags[index+1],resized=true}
+  end
+  panel.scroll_position[1]=0
+ end
  assert(json.encode(snapshot())==json.encode(original),'Stone use restoration failed')
  if os.getenv('DF3D_STONE_USE_APPLY')=='1' then
   result.edits.owned={}

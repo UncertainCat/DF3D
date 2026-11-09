@@ -37,6 +37,18 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
+Item-holder artwork maps fixed native building types to their installed icons,
+following the item-sheet switch155958/table19e4a8. The former farm/box-only map
+left other furniture holders blank. Chair/bed/table/coffin/door/floodgate/rack/
+stand now join those mappings; subtype-dependent buildings remain unsupported.
+Protected044310 verifies actual View/close and zero full-panel RGB differences
+for coffin21, armor stand33, weapon rack34 and amulet37. Chain has1120 differing
+pixels and occupied cage225; these remain unresolved. Other added holder types
+follow the native switch but were not newly rendered in this run. Core19,
+extension and item-state checks pass (`item-holder-icons`). Source preserved;
+DF41128 exits unsaved at30FPS,50C sampled; documented Godot diagnostics only.
+`holder_icon_reference` retains mappings, hashes and bounded acceptance.
+
 The guarded native description path additionally admits chains, windows, cages,
 animal traps, coffins, armor stands, weapon racks, amulets and scepters. Their
 constructed-item virtuals match BOX except pinned getType leaves; subtype is

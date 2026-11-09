@@ -58,8 +58,9 @@ func _state_changed() -> void:
 	if value.has("holder"):
 		value.holder_id=value.holder.id
 		value.holder_name=("On " if value.holder.type==2 else "In ")+value.holder.name
-		if value.holder.type==4:value.holder_art="BUILDING_ICON_FARM_PLOT"
-		elif value.holder.type==10:value.holder_art="BUILDING_ICON_BOX"
+		# Native item-sheet building-type switch155958, fixed furniture branches.
+		var holder_icons: Dictionary={0:"CHAIR",1:"BED",2:"TABLE",3:"COFFIN",4:"FARM_PLOT",8:"DOOR",9:"FLOODGATE",10:"BOX",11:"WEAPON_RACK",12:"ARMOR_STAND"}
+		if holder_icons.has(value.holder.type):value.holder_art="BUILDING_ICON_"+holder_icons[value.holder.type]
 	panel.pending=state.phase!=state.Phase.Ready
 	panel.present(value)
 	_follow_changed()

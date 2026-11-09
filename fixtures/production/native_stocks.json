@@ -7085,5 +7085,48 @@
     "exit": "unsaved",
     "fps_cap": 30,
     "gpu_max_sample_c": 49
+  },
+  "holder_icon_reference": {
+    "run": "build/stockpile-storage-native-input-20261109-044310",
+    "native_switch": "155958 table19e4a8; branches3->155fd3,11->15601b,12->15602d; fixed original building-icon tokens",
+    "mapped_types": {
+      "0": "CHAIR",
+      "1": "BED",
+      "2": "TABLE",
+      "3": "COFFIN",
+      "4": "FARM_PLOT",
+      "8": "DOOR",
+      "9": "FLOODGATE",
+      "10": "BOX",
+      "11": "WEAPON_RACK",
+      "12": "ARMOR_STAND"
+    },
+    "full_panel_rgb_differences": {
+      "10": 1120,
+      "16": 225,
+      "21": 0,
+      "33": 0,
+      "34": 0,
+      "37": 0
+    },
+    "limits": "Exact full-panel acceptance for coffin, armor stand, weapon rack and amulet. Chain and occupied cage art unresolved. Other mapped holder types follow native switch but not newly rendered in this run.",
+    "hashes": {
+      "stocks-furniture-native-10.png": "a83545c5e1a1df704d93354f82aec6acf59fa22f503226ba9523a0c213e7a0e8",
+      "stocks-furniture-native-16.png": "892f1dd20696c23415efa567614bcdc282e0a3abf70f717d1ff94d5adf3212f0",
+      "stocks-furniture-native-21.png": "7823126ceac79ee63b33b79711b59c06826331d0714bd362f73ffe9591f22db1",
+      "stocks-furniture-native-33.png": "bd1363b206a030c9aa7a8d0548bd2d9468623bb74defaaa3264652078624d050",
+      "stocks-furniture-native-34.png": "29b69c9be9f244a4ceab633196eabb6e055e4a9fa84ce869c38094ad35dacaed",
+      "stocks-furniture-native-37.png": "75a6e957d18cd442c43002df8fba00d98026ff065b925e98e7d244c0285fb9fb",
+      "stocks-furniture-view-10.png": "e4e45c81dcdcbb73af7ef3ee64fa275aa3e92f030cb360b8c9c8b976f0c1e394",
+      "stocks-furniture-view-16.png": "b73f0f7a7217fa23a9f5359366a21bc43e86f5c4e3dc4e8089d8bea1d5ee4512",
+      "stocks-furniture-view-21.png": "79975aaee1c0e1c7550fabce68361d583178aa6f2a28962298ef10d9a79444f5",
+      "stocks-furniture-view-33.png": "167936e82c3958807cd5a61c7bcb68264f5909d358e0a4e4e9f516ed3522e57b",
+      "stocks-furniture-view-34.png": "03bb8f676f737bececb0a3794de9994378e8afe4174f4bddd5cc665c43fa6c6e",
+      "stocks-furniture-view-37.png": "4153c02249547eea630c67b8ccd634e470c5165581cad9e35749a466a89d8bb2"
+    },
+    "source_preserved": true,
+    "owned_df_pid": 41128,
+    "fps_cap": 30,
+    "gpu_max_sample_c": 50
   }
 }

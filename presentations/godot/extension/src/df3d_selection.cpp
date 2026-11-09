@@ -155,6 +155,7 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
     }
     df3d::assets::ItemQuery query;query.kind=wm::ItemKind(itemType+1);query.material=materialToken;
     query.diagonalAmmo=diagonalAmmo;
+    if(itemId>=0)query.id=uint32_t(itemId);
     query.subtypeRaw=subtypeRaw;query.stack=uint32_t(stack);query.flags=uint8_t(flags);
     query.instrumentFamily=instrumentFamily;query.instrumentPlaced=instrumentPlaced;
     query.slabEngraving=genericGroup && query.kind==wm::ItemKind::Slab ? 0 : slabEngraving;
@@ -169,6 +170,23 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
     const TextureSlot* texture=slot>=0?spriteResources_.slots.find(slot):nullptr;
     if(!texture || texture->texture.is_null())return {};
     const auto pixels=assets_->index.pixels(resolved.sprite);
+    if(!resolved.overlays.empty()) {
+        std::vector<std::pair<int,Color>> layers;
+        layers.push_back({slot,Color(float(pixels.px)/texture->width,float(pixels.py)/texture->height,
+            float(pixels.pw)/texture->width,float(pixels.ph)/texture->height)});
+        for(const auto& overlay:resolved.overlays) {
+            const int layer=slotFor(overlay.sprite.page,overlay.paletteRow,false);
+            const auto* resource=layer>=0?spriteResources_.slots.find(layer):nullptr;
+            if(!resource || resource->texture.is_null())return {};
+            const auto rect=assets_->index.pixels(overlay.sprite);
+            layers.push_back({layer,Color(float(rect.px)/resource->width,float(rect.py)/resource->height,
+                float(rect.pw)/resource->width,float(rect.ph)/resource->height)});
+        }
+        const int composite=compositeBuildingTile(layers,false,true);
+        const auto* resource=composite>=0?spriteResources_.slots.find(composite):nullptr;
+        if(resource)return resource->texture;
+        return {};
+    }
     Ref<AtlasTexture> icon;icon.instantiate();icon->set_atlas(texture->texture);
     icon->set_region(Rect2(pixels.px,pixels.py,pixels.pw,pixels.ph));return icon;
 }

@@ -92,6 +92,30 @@ TEST_CASE("container contents choose occupied art and independent material overl
   CHECK(r.overlays[0].sprite.x==6);
 }
 
+TEST_CASE("bin contents variants use the native item ID hash and raw order") {
+  AssetIndex idx;
+  idx.tileGraphics["ITEM_BIN_WOOD_EMPTY"]={{0,0,4,1,1}};
+  idx.tileGraphics["ITEM_BIN_TOP_COINS"]={{0,6,7,1,1},{0,7,7,1,1}};
+  ItemQuery q;q.kind=wm::ItemKind::Bin;q.material="PLANT:OAK:WOOD";
+  q.containedKind=wm::ItemKind::Coin;q.containedCount=1;
+  // Upper words from native 2471c0 seeded independently with each ID.
+  const uint32_t ids[]={0,1,2,7239,2147483647};
+  const uint32_t seeds[]={3793791033u,2433363436u,2539140574u,3058635085u,1643787942u};
+  for(size_t i=0;i<5;++i) {
+    q.id=ids[i];const auto r=resolveItem(idx,q);
+    REQUIRE(r.overlays.size()==1);
+    CHECK(r.overlays[0].sprite.x==6+seeds[i]%2);
+  }
+  // Reducing the seed to the gem's four arrangements before taking the
+  // contents-vector modulus loses information for non-power-of-two vectors.
+  idx.tileGraphics["ITEM_BIN_TOP_COINS"].push_back({0,8,7,1,1});
+  for(size_t i=0;i<5;++i) {
+    q.id=ids[i];const auto r=resolveItem(idx,q);
+    REQUIRE(r.overlays.size()==1);
+    CHECK(r.overlays[0].sprite.x==6+seeds[i]%3);
+  }
+}
+
 TEST_CASE("installed statues combine quality pedestal and creature or event figure") {
   AssetIndex idx;
   ingestRawText(idx,R"([OBJECT:GRAPHICS]

@@ -190,8 +190,17 @@ the generic IN_USE base is reserved for occupied bins without an available
 overlay. Native compositor cf8dc4..cf8dff and graphics-name bindings123a9b1..
 123abce establish this selection for wood and metal. Headless core19
 (`bin-native-base`) covers overlay, unknown category and missing-overlay cases.
-This does not establish rendered sheet parity: sheet contents facts, overlay
-composition, mixed-content classification and ID-based variants remain open.
+Bin overlay variants use the upper32 bits of the independently seeded native
+2471c0 hash modulo the installed vector size (c7e14e..c7e2a4). The map artwork
+cache retains the full bin ID; sheet icon queries also carry the item ID.
+Installed clothing/coin vectors contain two variants; synthetic two/three-entry
+asset checks cover raw order and avoid prematurely reducing to gem arrangements.
+Sheet icons now compose resolved overlays through the existing tile compositor.
+Core19 (`bin-variants-overlays`) passes; its initial extension build failed on a
+return-type mismatch, corrected before `bin-overlays-extension` passed extension
+build and item-sheet state checks. These are headless checks, not rendered
+acceptance. Sheet contents facts and mixed-content classification remain open,
+so the observed carrier icon mismatch is not yet resolved end to end.
 
 Management156 reuses native itemAppearance facts for the staged ammunition
 icons and the accepted diagonal ammunition artwork path. Core19, Stocks state

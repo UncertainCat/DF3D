@@ -4,11 +4,14 @@
 namespace df3d::assets {
 // Presentation-only deterministic arrangement, verified against DF53.16's
 // item renderer. The seed is an owned item ID, never native RNG scratch.
-inline unsigned gemVariant(uint32_t id) {
+inline uint32_t itemVariantSeed(uint32_t id) {
   uint64_t value=uint64_t(id)+0x9e3779b97f4a7c15ULL;
   value=(value^(value>>30))*0xbf58476d1ce4e5b9ULL;
   value=(value^(value>>27))*0x94d049bb133111ebULL;
-  return unsigned(((value^(value>>31))>>32)&3);
+  return uint32_t((value^(value>>31))>>32);
+}
+inline unsigned gemVariant(uint32_t id) {
+  return itemVariantSeed(id)&3;
 }
 
 inline CompositeResult compositeGem(const CompositeContext& ctx, std::string_view shape,

@@ -22,7 +22,9 @@ const Df3dWorld::ItemLook& Df3dWorld::itemLookFor(const wm::MapItem& it) {
     // corpse flags select body-part tiles.
     const bool web = it.kind == wm::ItemKind::Thread && (it.flags & wm::kItemWeb);
     const bool skull = it.kind == wm::ItemKind::CorpsePiece && (it.corpseFlags & wm::kCorpseSkull);
-    const unsigned variant = web ? it.id % 4 : skull ? it.id % 2 : 0;
+    // Bin overlay selection depends on its full ID; a web/skull-style reduced
+    // ID would seed the native hash differently and alias distinct artwork.
+    const unsigned variant = it.kind == wm::ItemKind::Bin ? it.id : web ? it.id % 4 : skull ? it.id % 2 : 0;
     char key[192];
     std::snprintf(key, sizeof key, "%d|%s|%u|%d|%d|%u|%u", static_cast<int>(it.kind),
                   it.subtypeRaw.c_str(), static_cast<unsigned>(it.material),

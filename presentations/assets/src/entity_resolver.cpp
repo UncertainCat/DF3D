@@ -1118,7 +1118,15 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
   const bool occupied = q.containedCount != UINT32_MAX && q.containedCount > 0;
   const bool liquid = q.containedKind == ItemKind::Drink || q.containedKind == ItemKind::LiquidMisc;
   auto contentsOverlay = [&](const std::string& name, bool recolor = true) {
-    if (const auto* sprite = idx.tile(name))
+    size_t variant=0;
+    if(q.kind==ItemKind::Bin) {
+      // Native c7e14e..c7e2a4 seeds 2471c0 with the item ID and reduces
+      // the upper word by the installed contents-vector size.
+      const auto variants=idx.tileGraphics.find(name);
+      if(variants!=idx.tileGraphics.end() && !variants->second.empty())
+        variant=itemVariantSeed(q.id)%variants->second.size();
+    }
+    if (const auto* sprite = idx.tile(name,variant))
       r.overlays.push_back({*sprite,recolor ? idx.paletteRow(q.containedColor.empty() ? idx.materialColorName(q.containedMaterial,liquid) : q.containedColor) : -1});
   };
   auto binTop = [&]() -> const char* {

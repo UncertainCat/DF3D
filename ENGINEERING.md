@@ -35,7 +35,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 Management151 introduces the owned `kitchen_menu` contract (KitchenRead98 and
 KitchenApply99), separate from the retired Kitchen menu API. Read accepts native
-type/capability filters, query text and ordered unique sort priorities. It returns
+type/capability filters, query text and ordered sort priorities. It returns
 native food identities, counts/capabilities, display captions, estimate flags,
 exclusions and material tokens, plus the full ordered exclusion receipt. Apply
 requires that receipt and the selected food identity/count/capabilities; only
@@ -129,12 +129,24 @@ before yielding: Type/Name/Number/Name is retained and the second Name click
 flips its shared direction. modifier_sort_reference retains complete row order
 and direction observations. No runtime global input access is authorized. Posted
 Shift did not set the bit, and Control set bit1 but suppressed ordinary clicks;
-physical modified-click acceptance remains open. Management151 currently rejects
-duplicate priorities and more than5 entries, so this requires contract/provider
-work before UI exposure; silently deduplicating is not established equivalent.
+physical modified-click acceptance remains open. Management151 rejected
+duplicate priorities and more than5 entries; silently deduplicating is not
+established equivalent.
 Owned DF32224 exits unsaved with source preservation; GPU59C sampled and core19
 passes kitchen-modifier-discovery. Earlier175930 contains only the inconclusive
 posted-modifier cases, with source preservation and unsaved exit as well.
+
+Management152 moves to Local\df3d_management_v152 and permits ordered repeated
+Kitchen priorities, with shared direction for every occurrence of a column.
+The65536-entry ceiling bounds request allocation; it is not a five-column UI
+restriction. Older requests need no inferred data, but151 peers stay on their
+separate channel and cannot accept new repeated-priority requests. C++ codecs,
+Godot request validation and local query validation preserve repetition/order
+and reject inconsistent directions. kitchen-contract152 passes core19, Kitchen
+controller and fake-host Godot round trip (eight priorities); MSVC builds in
+kitchen-contract152-msvc.log. This is the separate protocol migration only:
+the native provider still rejects repeats and the installed plugin remains151.
+Native execution, live comparison and installation must follow before exposure.
 
 The staged Kitchen view reuses installed Labor chrome, native row/icon assets,
 count captions and permission icons. `kitchen-view-base` renders at1200x800 with

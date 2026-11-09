@@ -502,10 +502,10 @@ bool validateKitchenMenu(const Dictionary& data,String& error) {
     if(!apply){
         if(data.size()!=5 || !integer(data,"type_filter",-1,3) || !integer(data,"capability_filter",0,3) || !data.has("query") || data["query"].get_type()!=Variant::STRING ||
            String(data["query"]).utf8().length()>4096 || !data.has("sorts") || data["sorts"].get_type()!=Variant::ARRAY)return false;
-        const Array sorts=data["sorts"];if(sorts.size()<1 || sorts.size()>5)return false;
-        unsigned seen=0;for(int64_t i=0;i<sorts.size();++i){if(sorts[i].get_type()!=Variant::DICTIONARY)return false;const Dictionary d=sorts[i];
+        const Array sorts=data["sorts"];if(sorts.size()<1 || sorts.size()>65536)return false;
+        unsigned seen=0,reversed=0;for(int64_t i=0;i<sorts.size();++i){if(sorts[i].get_type()!=Variant::DICTIONARY)return false;const Dictionary d=sorts[i];
             if(d.size()!=2 || !integer(d,"column",0,4) || !d.has("reverse") || d["reverse"].get_type()!=Variant::BOOL)return false;
-            const unsigned bit=1u<<int64_t(d["column"]);if(seen&bit)return false;seen|=bit;}
+            const unsigned bit=1u<<int64_t(d["column"]);if((seen&bit) && bool(reversed&bit)!=bool(d["reverse"]))return false;seen|=bit;if(bool(d["reverse"]))reversed|=bit;}
     }else{
         if(data.size()!=4 || !integer(data,"permission",1,2) || !data.has("target") || data["target"].get_type()!=Variant::DICTIONARY || !data.has("expected") || data["expected"].get_type()!=Variant::ARRAY)return false;
         const Dictionary d=data["target"];if(d.size()!=3 || !d.has("key") || !key(d["key"]) || !integer(d,"count",0,INT32_MAX) || !integer(d,"capabilities",1,3) || !(int64_t(d["capabilities"])&int64_t(data["permission"])))return false;

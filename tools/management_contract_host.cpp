@@ -870,7 +870,7 @@ int main(int argc,char** argv) {
       if(request && (request->action()==m::ManagementAction::KitchenRead || request->action()==m::ManagementAction::KitchenApply)){
         const auto* q=request->kitchen_menu();require(q,"kitchen request");const bool read=request->action()==m::ManagementAction::KitchenRead;
         kitchenUnknown=!read && q->permission()==2;
-        if(read){require(q->query() && q->query()->type_filter()==-1 && q->query()->query()->str()=="plump" && q->query()->sorts()->size()==2 &&
+        if(read){require(q->query() && q->query()->type_filter()==-1 && q->query()->query()->str()=="plump" && q->query()->sorts()->size()==8 &&
           q->query()->sorts()->Get(0)->column()==m::KitchenSortColumn::Name && q->query()->sorts()->Get(0)->reverse() && q->query()->sorts()->Get(1)->column()==m::KitchenSortColumn::Number,"kitchen query order");}
         else{require(q->target() && q->target()->key()->item_type()==54 && q->target()->key()->mat_type()==419 && q->target()->count()==12 && q->target()->capabilities()==3,"kitchen target");
           require(q->expected() && q->expected()->size()==2 && q->expected()->Get(0)->key()->item_type()==53 && q->expected()->Get(0)->flags()==1 && q->expected()->Get(1)->key()->item_type()==54 && q->expected()->Get(1)->flags()==2,"kitchen ordered exclusions");}

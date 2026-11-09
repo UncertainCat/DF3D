@@ -110,8 +110,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 151;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v151";
+inline constexpr uint32_t kManagementVersion = 152;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v152";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -591,10 +591,11 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     if(r.action()==ManagementAction::KitchenRead){
       const auto* v=q->query();
       if(!v || v->type_filter()<-1 || v->type_filter()>3 || v->capability_filter()>3 || !v->query() || v->query()->size()>4096 ||
-         !v->sorts() || !v->sorts()->size() || v->sorts()->size()>5 || q->target() || q->permission() || q->expected())return "invalid kitchen query";
-      unsigned seen=0;for(const auto* sort:*v->sorts()){
+         !v->sorts() || !v->sorts()->size() || v->sorts()->size()>65536 || q->target() || q->permission() || q->expected())return "invalid kitchen query";
+      unsigned seen=0,reversed=0;for(const auto* sort:*v->sorts()){
         if(!sort || sort->column()<KitchenSortColumn::Type || sort->column()>KitchenSortColumn::Brew)return "invalid kitchen sort";
-        const unsigned bit=1u<<unsigned(sort->column());if(seen&bit)return "duplicate kitchen sort";seen|=bit;
+        const unsigned bit=1u<<unsigned(sort->column());if((seen&bit) && bool(reversed&bit)!=sort->reverse())return "inconsistent kitchen sort direction";
+        seen|=bit;if(sort->reverse())reversed|=bit;
       }
     }else if(q->query() || !validKitchenReceipt(q->target()) || !validKitchenExclusions(q->expected()) ||
       (q->permission()!=1 && q->permission()!=2) || !(q->target()->capabilities()&q->permission()))return "invalid kitchen edit";

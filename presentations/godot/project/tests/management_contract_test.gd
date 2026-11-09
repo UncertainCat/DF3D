@@ -1161,6 +1161,8 @@ func test_chores() -> void:
 
 func test_kitchen_menu() -> void:
 	var query: Dictionary={"action":A.KitchenRead,"type_filter":-1,"capability_filter":0,"query":"plump","sorts":[{"column":1,"reverse":true},{"column":2,"reverse":false}]}
+	query.sorts.append_array(query.sorts.duplicate(true))
+	query.sorts.append_array(query.sorts.duplicate(true))
 	for patch in [{"type_filter":4},{"capability_filter":4},{"query":12},{"sorts":[]},{"sorts":[{"column":1,"reverse":true},{"column":1,"reverse":false}]},{"sorts":[{"column":1,"reverse":1}]},{"target":{}}]:
 		var invalid:=query.duplicate(true);invalid.merge(patch,true);assert(world.management_request("kitchen_menu",invalid)==0)
 	var seq: int=world.management_request("kitchen_menu",query);assert(seq>0)

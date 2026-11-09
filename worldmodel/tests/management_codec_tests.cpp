@@ -4843,7 +4843,7 @@ TEST_CASE("Kitchen queries and edits preserve independent owned receipts") {
       if(fault==3)q.permission=3;
       if(fault==4)q.target->capabilities=2;
     }else{q.query.emplace();q.query->query="plump";q.query->sorts={{wm::KitchenSortColumn::Name,true},{wm::KitchenSortColumn::Number,false}};
-      if(fault==1)q.query->sorts.push_back(q.query->sorts.front());
+      if(fault==1)q.query->sorts.push_back({wm::KitchenSortColumn::Name,false});
       if(fault==2)q.expected.emplace();
       if(fault==3)q.query->typeFilter=4;
       if(fault==4)q.query->sorts.clear();}
@@ -4854,6 +4854,17 @@ TEST_CASE("Kitchen queries and edits preserve independent owned receipts") {
       if(apply){CHECK(v->expected()->Get(0)->key()->item_type()==53);CHECK(v->expected()->Get(1)->flags()==2);CHECK(v->target()->count()==12);}
       else{CHECK(v->query()->query()->str()=="plump");CHECK(v->query()->sorts()->Get(0)->reverse());}}
   }
+}
+TEST_CASE("Kitchen priorities preserve repeats and bound request allocation") {
+  wm::ManagementRequest request;request.action=wm::ManagementAction::KitchenRead;request.kitchenMenu.query.emplace();
+  auto& sorts=request.kitchenMenu.query->sorts;sorts.clear();
+  for(int i=0;i<8;++i)sorts.push_back({i%2?wm::KitchenSortColumn::Number:wm::KitchenSortColumn::Name,i%2==0});
+  flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,request,1,2,3);
+  const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+  REQUIRE_FALSE(wire::validateConstructionRequest(*value));REQUIRE(value->kitchen_menu()->query()->sorts()->size()==8);
+  for(unsigned i=0;i<8;++i){const auto* sort=value->kitchen_menu()->query()->sorts()->Get(i);CHECK(unsigned(sort->column())==unsigned(sorts[i].column));CHECK(sort->reverse()==sorts[i].reverse);}
+  sorts.resize(65537,{wm::KitchenSortColumn::Name,true});b.Clear();codec::encodeRequest(b,request,1,2,3);
+  CHECK(wire::validateConstructionRequest(*flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer())));
 }
 TEST_CASE("Kitchen unknown outcomes cannot publish authoritative rows") {
   for(bool unknown:{false,true})for(int fault=0;fault<3;++fault){

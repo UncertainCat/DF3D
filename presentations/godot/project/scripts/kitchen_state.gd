@@ -74,11 +74,12 @@ func _integer(d: Dictionary,key: String,low: int,high: int) -> bool:
 	return typeof(d.get(key))==TYPE_INT and d[key]>=low and d[key]<=high
 func _valid_query(v: Dictionary) -> bool:
 	if v.size()!=4 or not _integer(v,"type_filter",-1,3) or not _integer(v,"capability_filter",0,3) or typeof(v.get("query"))!=TYPE_STRING or v.query.to_utf8_buffer().size()>4096 or typeof(v.get("sorts"))!=TYPE_ARRAY:return false
-	if v.sorts.is_empty() or v.sorts.size()>5:return false
+	if v.sorts.is_empty() or v.sorts.size()>65536:return false
 	var seen: Dictionary={}
 	for sort in v.sorts:
-		if typeof(sort)!=TYPE_DICTIONARY or sort.size()!=2 or not _integer(sort,"column",0,4) or typeof(sort.get("reverse"))!=TYPE_BOOL or seen.has(sort.column):return false
-		seen[sort.column]=true
+		if typeof(sort)!=TYPE_DICTIONARY or sort.size()!=2 or not _integer(sort,"column",0,4) or typeof(sort.get("reverse"))!=TYPE_BOOL:return false
+		if seen.has(sort.column) and seen[sort.column]!=sort.reverse:return false
+		seen[sort.column]=sort.reverse
 	return true
 func _key(v: Variant) -> bool:
 	return typeof(v)==TYPE_DICTIONARY and v.size()==4 and _integer(v,"item_type",0,32767) and _integer(v,"item_subtype",-1,32767) and _integer(v,"mat_type",-1,32767) and _integer(v,"mat_index",-1,2147483647)

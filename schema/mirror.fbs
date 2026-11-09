@@ -1838,6 +1838,8 @@ table KitchenFoodKey { item_type:int16 = -1; item_subtype:int16 = -1; mat_type:i
 table KitchenFoodReceipt { key:KitchenFoodKey (required); count:int32; capabilities:uint8; }
 table KitchenExclusion { key:KitchenFoodKey (required); flags:uint8; }
 table KitchenSort { column:KitchenSortColumn; reverse:bool; }
+// Ordered priorities may repeat. Repeated columns share direction; maximum65536
+// entries is a request allocation bound, not a native five-column UI limit.
 table KitchenMenuQuery { type_filter:int8 = -1; capability_filter:uint8; query:string (required); sorts:[KitchenSort] (required); }
 table KitchenMenuRequest { query:KitchenMenuQuery; target:KitchenFoodReceipt; permission:uint8; expected:[KitchenExclusion]; }
 table KitchenMenuRow { receipt:KitchenFoodReceipt (required); name:string (required); count_caption:string (required); estimated:bool; excluded:uint8; material_token:string (required); }
@@ -2212,7 +2214,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 151;
+  schema_version:uint32 = 152;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2276,7 +2278,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 151;
+  schema_version:uint32 = 152;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

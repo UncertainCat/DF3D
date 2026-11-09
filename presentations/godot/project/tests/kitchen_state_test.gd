@@ -21,6 +21,20 @@ func run() -> void:
 		elif label.ends_with("STANDARDSCROLL_PAGEUP"):navigation.move_selection(-13,13)
 		check(navigation.selected==int(observation.cursor) and navigation.rows[navigation.first].name==observation.first_food,"Native Kitchen selection/scroll differs: "+label)
 	var service:=Service.new();root.add_child(service);var state:=State.new();state.configure(service)
+	var bar=preload("res://scripts/area_location_scrollbar.gd").new();root.add_child(bar)
+	bar.size=Vector2(16,480);bar.page=13;bar.wheel_enabled=false;bar.set_rows(22,0)
+	for observation in native.scrollbar_reference.observations:
+		var label: String=observation.label
+		var press:=InputEventMouseButton.new();press.button_index=MOUSE_BUTTON_LEFT;press.pressed=true
+		if label.begins_with("drag-"):
+			bar.move_to(0);press.position=Vector2(8,24);bar._gui_input(press)
+			var motion:=InputEventMouseMotion.new();motion.position=Vector2(8,int(label.trim_prefix("drag-"))-196);bar._input(motion)
+			press.pressed=false;bar._input(press)
+		elif label!="initial":
+			var points: Dictionary={"arrow-down":470,"arrow-up":2,"track-below":350,"track-above":50}
+			press.position=Vector2(8,points[label]);bar._gui_input(press)
+		check(native.sort_reference.observations[0].names[bar.first]==observation.first_food,"Native Kitchen scrollbar differs: "+label)
+	bar.queue_free()
 	var sorting:=State.new();sorting.configure(service);sorting.open();service.reply(sorting.ticket,response())
 	var columns: Dictionary={"Type":0,"Name":1,"Number":2,"Cook":3,"Brew":4}
 	for observation in native.modifier_sort_reference.provider_acceptance.observations:

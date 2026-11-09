@@ -7360,5 +7360,95 @@
       }
     ],
     "scope": "48 disposable seed items across distinct cookable plant materials, varied stack counts1..7; fresh native Labor owner yields67 aggregates. Cold owned provider matches all identities/counts/capabilities/names. All26 native sorting cases match, including repeated priorities up to7 and native >32 merge path. Six actual controller/wire repeated queries and6edits/stale rejection pass. Only known Godot thread notice, source preserved, owned unsaved exit. No broader artwork claim. Earlier183316 used stale native aggregate;183407 matched Kitchen but failed later stale parent-widget harness check; neither is whole-lane acceptance."
+  },
+  "scrollbar_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-183912",
+    "observations": [
+      {
+        "label": "initial",
+        "cursor": 0,
+        "first_food": "Alfalfa seeds",
+        "visible_count": 13
+      },
+      {
+        "label": "arrow-down",
+        "cursor": 0,
+        "first_food": "Rock nuts",
+        "visible_count": 13
+      },
+      {
+        "label": "arrow-up",
+        "cursor": 0,
+        "first_food": "Alfalfa seeds",
+        "visible_count": 13
+      },
+      {
+        "label": "track-below",
+        "cursor": 0,
+        "first_food": "Blood amaranth seeds",
+        "visible_count": 13
+      },
+      {
+        "label": "track-above",
+        "cursor": 0,
+        "first_food": "Alfalfa seeds",
+        "visible_count": 13
+      },
+      {
+        "label": "drag-196",
+        "cursor": 0,
+        "first_food": "Alfalfa seeds",
+        "visible_count": 13
+      },
+      {
+        "label": "drag-232",
+        "cursor": 0,
+        "first_food": "Alfalfa seeds",
+        "visible_count": 13
+      },
+      {
+        "label": "drag-340",
+        "cursor": 0,
+        "first_food": "Blade weed seeds",
+        "visible_count": 13
+      },
+      {
+        "label": "drag-460",
+        "cursor": 0,
+        "first_food": "Prickle berry seeds",
+        "visible_count": 13
+      },
+      {
+        "label": "drag-660",
+        "cursor": 0,
+        "first_food": "Blood amaranth seeds",
+        "visible_count": 13
+      },
+      {
+        "label": "drag-700",
+        "cursor": 0,
+        "first_food": "Blood amaranth seeds",
+        "visible_count": 13
+      }
+    ],
+    "scope": "Native default1200x800,22foods/page13. Arrows and track clicks plus drag endpoints/intermediate positions, resetting with native up-arrow clicks. Cursor remains0 while first visible row changes. Source preserved; owned unsaved exit. No alternate-size drag acceptance."
+  },
+  "chrome_reference": {
+    "native_capture": "build/stockpile-storage-native-input-20261108-174610",
+    "viewer_check": "build/qa/kitchen-chrome-match",
+    "default_panel_crop": [
+      32,
+      52,
+      976,
+      760
+    ],
+    "default_panel_differing_rgb_pixels": 0,
+    "scrollbar_differing_rgb_pixels": {
+      "minimum": 0,
+      "small": 0,
+      "default": 0,
+      "wide": 0
+    },
+    "scope": "Installed classic scrollbar.png selected for Kitchen; inactive header ink160,160,160. Entire default initial panel matches. Four-size scrollbar crops match; narrow overflow headers and wide extra-row captions not accepted by this comparison.30FPS known Godot notices only, GPU52C."
   }
 }

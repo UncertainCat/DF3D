@@ -454,6 +454,34 @@ if os.getenv('DF3D_KITCHEN_NAV')=='1' then
  click(30,10);click(45,10);observe('after-tab')
  local f=assert(io.open(out..'/kitchen-navigation.json','w'));f:write(json.encode(observations));f:close()
 end
+if os.getenv('DF3D_KITCHEN_SCROLL')=='1' then
+ local observations={};local known={};for _,row in ipairs(result.known)do known[row.name]=true end
+ local function observe(label)
+  local names={}
+  local function collect(widget)
+   if (widget.flag.whole&3)~=3 then return end
+   if df.widget_text:is_instance(widget) and known[dfhack.df2utf(widget.str)]then names[#names+1]=dfhack.df2utf(widget.str)end
+   if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do collect(child)end end
+  end
+  collect(panel);observations[#observations+1]={label=label,cursor=panel.cursor_idx,names=names}
+ end
+ observe('initial')
+ for _,step in ipairs({{'arrow-down',55},{'arrow-up',16},{'track-below',45},{'track-above',20}})do click(118,step[2]);observe(step[1])end
+ local function pointer(y)
+  g.precise_mouse_x=944;g.precise_mouse_y=y;g.mouse_x=118;g.mouse_y=(y-4)//12
+ end
+ for _,y in ipairs({196,232,340,460,660,700})do
+  for _=1,22 do click(118,16)end
+  pointer(220);df.global.enabler.mouse_lbut_lift=0
+  gui.simulateInput(view,{'_MOUSE_L','_MOUSE_L_DOWN'})
+  pointer(y);gui.simulateInput(view,{'_MOUSE_L_DOWN'})
+  df.global.enabler.mouse_lbut_lift=1;gui.simulateInput(view,{})
+  for _=1,3 do script.sleep(1,'frames');view:render(dfhack.getTickCount())end
+  observe('drag-'..y)
+ end
+ local f=assert(io.open(out..'/kitchen-scroll.json','w'));f:write(json.encode(observations));f:close()
+ shot('kitchen-scroll')
+end
 if os.getenv('DF3D_KITCHEN_INPUT')=='1' then
  local observations={};local known={}
  for _,row in ipairs(result.known)do known[row.name]=true end

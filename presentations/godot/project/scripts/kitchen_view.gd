@@ -15,6 +15,7 @@ func configure_kitchen(source,model) -> void:
 	search.configure(inset,colors);search.edited.connect(state.set_search)
 	scrollbar.input_allowed=allowed
 	scrollbar.wheel_enabled=false
+	scrollbar.use_classic_art=true
 	scrollbar.row_changed.connect(func(value):state.seek(value,capacity()))
 	state.changed.connect(refresh);refresh()
 func rows_top() -> int:return list_top()+24
@@ -99,7 +100,7 @@ func _draw() -> void:
 			for cell in 6:
 				var texture:=strip("SORT_TEXT_"+("ACTIVE" if active else "INACTIVE"),0 if cell==0 else 2 if cell==5 else 1)
 				if texture!=null:draw_texture_rect(texture,Rect2(positions[index]+32+cell*8,list_top()+12,8,12),false)
-			text("Type" if index==0 else "Name",Vector2(positions[index]+40,list_top()+24),0 if active else 7)
+			if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),Vector2(positions[index]+40,list_top()+24),"Type" if index==0 else "Name",HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color.BLACK if active else Color8(160,160,160))
 	for index in mini(capacity(),state.rows.size()-state.first):
 		var row: Dictionary=state.rows[state.first+index];var y:=rows_top()+index*36
 		patch("BUTTON_RECTANGLE_SELECTED" if state.first+index==state.selected else "BUTTON_RECTANGLE",Vector2i(4,int(y/12)),maxi(80,int(size.x/8)-10),3)

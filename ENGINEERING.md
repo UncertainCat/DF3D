@@ -210,8 +210,7 @@ The staging driver obtains Standing orders from fortress_ui's production factory
 and uses the real input owner and shared semantic queue, including its fixture
 Catalog and stale-request checks. Viewport Kitchen entry, Shift sorting, search,
 six native-reference Cook/Brew edits, Standing return and close pass. The initial
-visible-row crop(64,196)-(928,664) matches native exactly; inactive Name ink and
-scrollbar artwork differences remain. Source preservation and unsaved owned exit
+visible-row crop(64,196)-(928,664) matches native exactly. Source preservation and unsaved owned exit
 pass. The30FPS run has only documented thread/finalize/shutdown notices; GPU53C.
 Core19/controller checks pass kitchen-main-scene. main_scene_reference retains
 the scope. This accepts that factory workflow, not public launcher promotion,
@@ -234,6 +233,21 @@ for every newly created food. Earlier183316 used the pre-fixture cached native
 aggregate;183407 matched Kitchen but failed a later stale Standing orders widget
 reference. The harness now reacquires that parent after reopening Labor; neither
 earlier run is counted as whole-lane acceptance.
+
+Kitchen uses installed classic scrollbar.png and native inactive-header ink
+(160,160,160). kitchen-chrome-match at30FPS matches every RGB pixel in the default
+initial panel crop(32,52)-(976,760), resolving the previous149-pixel difference.
+Scrollbar crops also match at minimum/small/wide/default sizes. Only documented
+Godot notices remain, GPU52C; core19 passes. This does not accept narrow header
+overflow or wide-row captions omitted from the small capture fixture.
+
+Protected183912 records default-size scrollbar arrows, track clicks, and drags
+to y196/232/340/460/660/700 from a grip at220. First visible row indices are
+0/0/2/4/9/9 for those drags; selected cursor stays0. Existing shared pointer
+behavior matches every captured arrow/track/drag observation in the headless
+Kitchen test, with core19 passing kitchen-scrollbar-input. Source preservation
+and owned unsaved exit pass, GPU51C. scrollbar_reference and chrome_reference
+retain the scoped evidence; alternate-size drag behavior remains unverified.
 
 The staged Kitchen view reuses installed Labor chrome, native row/icon assets,
 count captions and permission icons. `kitchen-view-base` renders at1200x800 with

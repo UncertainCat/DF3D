@@ -5110,7 +5110,7 @@
     "limitations": "Minimum request640x480 resolved to961x721, not a claim about absolute supported minimum. Narrow category captions retain28 differing pixels where count overwrites a long name; native cell-background behavior not yet matched. Filter/scrollbar chrome not included in crop acceptance. Scroll retention across resizing and smallest supported dimensions remain open. Native default page probe returned0/0 after resize; not accepted as scrolling semantics."
   },
   "shared_item_art_reference": {
-    "capture": "build/stockpile-storage-native-input-20261109-015631",
+    "capture": "build/stockpile-storage-native-input-20261109-020114",
     "native_selector": "Stocks renderer3a2a92 calls shared item selectorc7cbc0. Owned appearance facts feed the existing sheet icon resolver; no native graphics cache read.",
     "cases": [
       {
@@ -5122,7 +5122,7 @@
           724
         ],
         "rgb_differing_pixels": 0,
-        "native_sha256": "ded41f27cd5aebfd5b8b2125f798b9859ee1a64c81de4c27c33141afab1281b0",
+        "native_sha256": "ca6aa9e792bfb9deb8769a6ff360d0dec65b49bbe6db39d1df0d669f1a287388",
         "viewer_sha256": "4d1a283c5c9f59942efa58fa4cb74113e3dfd36bf42fc95e3c489d4903ba1c84"
       },
       {
@@ -5134,7 +5134,7 @@
           724
         ],
         "rgb_differing_pixels": 0,
-        "native_sha256": "09f6955cbc635fe03e5cc495c87d73abae01e80f5beab38150227c7356d7d5ac",
+        "native_sha256": "734d0af02ec2443f0a13806cf26dc9ac3d96d628783fc6e35cef8d6667dfe944",
         "viewer_sha256": "cdbbb00c9149e0c047ed809d12b14ff560a1b389f52aa6051086bb40b78bac89"
       },
       {
@@ -5146,7 +5146,7 @@
           724
         ],
         "rgb_differing_pixels": 0,
-        "native_sha256": "6d415ef5bacc882fa8631dd268191bed0d38decd6546722e9303be8ec92e8466",
+        "native_sha256": "f9a1c63763a740b70a0e73cc3180acc1bf043cf38cebb9af1e61bff2c06ce938",
         "viewer_sha256": "94a6e7f827808142119c517f99dee80ddb3a1101d7840a26b7ec1193e2451d83"
       },
       {
@@ -5158,7 +5158,7 @@
           724
         ],
         "rgb_differing_pixels": 0,
-        "native_sha256": "8c2b2ec55e597580248dacc149df6fb232cd205dfb7e9896f58b84ef8b141510",
+        "native_sha256": "942b9c6940abeb93c4366514e2a8833a44f1a74795b343409cd2e2c007b603a9",
         "viewer_sha256": "caa19fbe61c85756a60ced16ca5395ade9889e4c43ba302f5a09cec33c1d2182"
       },
       {
@@ -5170,7 +5170,7 @@
           724
         ],
         "rgb_differing_pixels": 0,
-        "native_sha256": "bfcb6b0a97b4165e6c03b95eb1610596dd511b561c7f7ac73be8d6727c5ea6d8",
+        "native_sha256": "530656852ba8cfe0eaee3ce353f60d796fcfda34994b09feab756487b1df3d59",
         "viewer_sha256": "e89012c8a7433ddf65ba44d12e9b4252e22054bb2901b906e4266133fcb6557a"
       },
       {
@@ -5181,15 +5181,18 @@
           944,
           724
         ],
-        "rgb_differing_pixels": 2136,
+        "rgb_differing_pixels": 0,
         "native_sha256": "be7db3371cfe7ec5f8808d7677e44b1647c2609e96233e5a67355606bbcf3008",
-        "viewer_sha256": "60ffad4e3ea32340478777d40b4bdbf250739e9eb1ebabab544638c9a4f0437a"
+        "viewer_sha256": "24109835a1b21c974ca29aec8ac943710102012dc9de607cdcb8311b139d4756"
       }
     ],
     "workflow": "Cold typed Stocks, select each category, fetch visible facts, require nonempty icons, capture, return to Ammunition and verify group edits/restoration/stale rejection. BIN rows must retain contents in Godot dictionary.",
-    "source_save": "unchanged; owned DF40256 exited unsaved",
-    "gpu": "30FPS; sampled42C/0-1%; original preferences restored",
+    "source_save": "unchanged; owned DF21324 exited unsaved",
+    "gpu": "30FPS; sampled40C/0%; original preferences restored",
     "diagnostics": "passed_with_known_issues: thread notice, device finalize, shutdown objects; no unclassified errors",
-    "limitations": "Only first visible pages of these six families. BIN remains unaccepted: contents colors differ. Nativec7e08d..c7e109 resolves material state color after earlier overrides, while current provider uses getColorWhetherDyedOrNot alone. Other item families and complete inspection routes remain incomplete."
+    "limitations": "Only first visible pages of these six families. Other item families and complete inspection routes remain incomplete; no blanket acceptance of all bin content types.",
+    "bin_material_color": "Nativec7e08d..c7e109 resolves the material and reads the first color of its solid-state descriptor pattern. Provider now calls pinned native14add70 when the item color virtual returns-1; constructed-item dye/covering color remains preferred.",
+    "bridge_sha256": "4b1d56d9d820b79013a4518712b1bcb9c0e59e872780ea293facb7f0f1a19de8",
+    "verification": "MSVC bin-color-fallback-msvc; core19 and Stocks headless checks stocks-bin-color-fallback pass."
   }
 }

@@ -14,6 +14,7 @@
 #include "df/itemdef.h"
 #include "df/unit.h"
 #include "df/descriptor_color.h"
+#include "df/descriptor_pattern.h"
 #include "df/item_boxst.h"
 #include "df/item_ammost.h"
 #include "df/itemdef_ammost.h"
@@ -42,6 +43,27 @@
 #include "df/tool_uses.h"
 
 namespace df3d_production {
+// Native BIN c7e08d..c7e109: material resolver, solid-state pattern, first
+// descriptor color. Some item classes leave their color virtual at -1.
+inline std::optional<int32_t> itemContentsMaterialColor(df::item* item) {
+    using Resolve=df::material* (*)(df::world*,int16_t,int32_t);
+    static const auto resolve=[]()->Resolve {
+        if(!farmFunctions())return nullptr;
+        auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x12f;++i){hash^=base[0x14add70+i];hash*=UINT64_C(1099511628211);}
+        if(hash!=UINT64_C(0x01f897b15772d540))return nullptr;
+        return reinterpret_cast<Resolve>(base+0x14add70);
+    }();
+    if(!resolve || !item)return std::nullopt;
+    static_assert(offsetof(df::material,state_color)==0x9c);
+    static_assert(offsetof(df::descriptor_pattern,colors)==0x20);
+    auto* material=resolve(df::global::world,item->getMaterial(),item->getMaterialIndex());
+    if(!material)return -1;
+    auto* pattern=df::descriptor_pattern::find(material->state_color[0]);
+    if(!pattern || pattern->colors.empty())return -1;
+    return int32_t(pattern->colors.front());
+}
 // Direct simulation references and native virtual getters, never the item
 // renderer's packed graphics keys or cache. Preserve reference order and
 // unknown/unit entries because they participate in mixed-content rendering.
@@ -63,9 +85,14 @@ inline std::optional<ItemContainerContentsFacts> itemContainerContents(df::item*
             }
             entry.coal=child->getMaterial()==7;
             // The native color getter follows dye/covering improvements before
-            // base material (AMMO virtual214, caeb90..caeccc). Empty means no
-            // palette color, not permission to invent a material fallback.
-            const auto color=child->getColorWhetherDyedOrNot();
+            // base material for constructed items (AMMO virtual214,
+            // caeb90..caeccc). Other families need the native BIN fallback.
+            auto color=child->getColorWhetherDyedOrNot();
+            if(color==-1) {
+                const auto fallback=itemContentsMaterialColor(child);
+                if(!fallback)return std::nullopt;
+                color=*fallback;
+            }
             if(color>=0 && color<255) {
                 auto* descriptor=df::descriptor_color::find(color);
                 if(!descriptor)return std::nullopt;

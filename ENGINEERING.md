@@ -38,18 +38,19 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 ## Stocks native discovery
 
 Stocks reuses the shared item icon resolver for bars, blocks, boulders, wood,
-boxes and bins; native Stocks3a2a92 calls shared selectorc7cbc0. Protected015631
-has zero RGB differences across the first visible item regions for the first
-five families. Bins remain unaccepted:2136 pixels differ in contents coloring.
-This run exposed and fixed a missing Stocks-to-Godot contents projection using
-the shared contents serializer. The remaining provider issue is native material
-state-color fallback atc7e08d..c7e109; getColorWhetherDyedOrNot alone does not
-supply it for every family. No new protocol fields or native cache access.
-Core19, extension build and Stocks headless checks pass (`stocks-bin-dictionary`).
-Cold typed category reads, visible facts/icons and restored group edits pass;
-source unchanged, owned DF40256 exits unsaved,30FPS,42C sampled and known Godot
-diagnostics only. `shared_item_art_reference` scopes the captured pages and
-remaining bin defect. Broader families and item inspection remain unfinished.
+boxes and bins; native Stocks3a2a92 calls shared selectorc7cbc0. Protected020114
+has zero RGB differences across the first visible item regions for all six
+families. The Stocks-to-Godot conversion preserves complete contents using the
+shared serializer. Bin contents whose color virtual returns-1 use native material
+resolver14add70, then the first color of the solid-state descriptor pattern,
+matchingc7e08d..c7e109. Constructed-item dye/covering colors remain preferred.
+This corrects the previously captured bin color mismatch without new protocol
+fields or native cache access. Core19 and Stocks headless checks pass
+(`stocks-bin-color-fallback`); MSVC passes. Cold typed category reads, visible
+facts/icons and restored group edits pass; source unchanged, owned DF21324 exits
+unsaved,30FPS,40C sampled and known Godot diagnostics only.
+`shared_item_art_reference` scopes the captured pages; other item families and
+complete item inspection remain unfinished.
 
 Management158 carries the staged `stocks_menu` domain with StocksMenuRead,
 StocksGroupApply and StocksItemApply on `Local\df3d_management_v158`. Rebuild

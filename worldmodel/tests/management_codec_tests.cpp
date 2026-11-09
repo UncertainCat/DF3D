@@ -5112,3 +5112,17 @@ TEST_CASE("cage appearance preserves unknown empty and selected occupant") {
   if(mode<4){const auto facts=*codec::decodeProduction(value->production()).independentItem->snapshot->carrier->appearance;CHECK(facts.cageMaterialFamily==family);CHECK(facts.cageOccupantEntity==entity);CHECK(facts.cageOccupantId==id);CHECK(facts.cageSolidColor==color);}
  }
 }
+
+TEST_CASE("restraint appearance preserves native material classification") {
+ for(int mode=0;mode<7;++mode) {
+  flatbuffers::FlatBufferBuilder b;int rope=mode==0?-1:mode==1?0:1,type=10;std::string color=mode==0?"":"SILVER";
+  if(mode==3)rope=2;if(mode==4)type=16;if(mode==5)color=std::string(129,'x');if(mode==6)rope=-1;
+  auto appearance=wire::CreateItemInspectionAppearance(b,b.CreateString("INORGANIC:SILVER"),b.CreateString(""),b.CreateString(""),1,0,-1,-1,0,-1,-1,-1,-1,-1,0,-1,-1,-1,0,int8_t(rope),b.CreateString(color));
+  auto carrier=wire::CreateItemCarrier(b,1,7,type,b.CreateString("container"),appearance);
+  auto item=wire::CreateIndependentItemSnapshot(b,45,1,39,b.CreateString("item"),b.CreateString(""),b.CreateString(""),false,false,false,false,true,false,false,false,b.CreateString(""),b.CreateString(""),0,0,-1,carrier);
+  auto independent=wire::CreateIndependentItemState(b,item);wire::ProductionStateBuilder p(b);p.add_independent_item(independent);auto payload=p.Finish();
+  wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_production(payload);state.add_action(wire::ManagementAction::ProductionInspect);state.add_status(wire::ManagementStatus::Ok);b.Finish(state.Finish());
+  const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());CHECK(bool(wire::validateManagementState(*value))==(mode>=3));
+  if(mode<3){const auto facts=*codec::decodeProduction(value->production()).independentItem->snapshot->carrier->appearance;CHECK(facts.restraintRope==rope);CHECK(facts.restraintSolidColor==color);}
+ }
+}

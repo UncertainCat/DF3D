@@ -192,7 +192,11 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 	if editing and owner==generation:applied.emit()
 
 static func _valid_appearance(look: Variant,item_type: int) -> bool:
-	if typeof(look)!=TYPE_DICTIONARY or look.size()!=5+int(item_type==13)+int(look.has("contents"))+int(look.has("floodgate_open"))+int(look.has("door"))+int(look.has("bucket_liquid"))+int(look.has("cage")):return false
+	if typeof(look)!=TYPE_DICTIONARY or look.size()!=5+int(item_type==13)+int(look.has("contents"))+int(look.has("floodgate_open"))+int(look.has("door"))+int(look.has("bucket_liquid"))+int(look.has("cage"))+int(look.has("restraint")):return false
+	if look.has("restraint"):
+		var restraint=look.restraint
+		if item_type!=10 or typeof(restraint)!=TYPE_DICTIONARY or restraint.size()!=2:return false
+		if typeof(restraint.get("rope"))!=TYPE_BOOL or typeof(restraint.get("solid_color"))!=TYPE_STRING or restraint.solid_color.to_utf8_buffer().size()>128:return false
 	if look.has("cage"):
 		var cage=look.cage
 		if item_type!=16 or typeof(cage)!=TYPE_DICTIONARY or cage.size()!=4:return false

@@ -100,6 +100,7 @@ inline bool validInspectionInstrument(const ItemInspectionAppearance& a,int32_t 
        (liquidColor && (liquidColor->size()>128 || (a.bucket_liquid()!=1 && liquidColor->size()))))return false;
     const bool doorUnknown=a.door_open()==-1 && a.door_forbidden()==-1 && a.door_wear()==-1;
     if(!doorUnknown && (type!=6 || a.door_open()<0 || a.door_open()>1 || a.door_forbidden()<0 || a.door_forbidden()>1 || a.door_wear()<0 || a.door_wear()>3))return false;
+  if(a.restraint_rope() < -1 || a.restraint_rope()>1 || (a.restraint_rope()!=-1 && type!=10) || (a.restraint_solid_color() && (a.restraint_solid_color()->size()>128 || (a.restraint_rope()==-1 && a.restraint_solid_color()->size()))))return false;
   if(a.cage_material_family() < -1 || a.cage_material_family()>2 || a.cage_occupant_entity() < -1 || a.cage_occupant_entity()>2 || a.cage_occupant_id() < -1 || (a.cage_solid_color() && a.cage_solid_color()->size()>128))return false;
   if(a.cage_material_family()==-1) {if(a.cage_occupant_entity()!=-1 || a.cage_occupant_id()!=-1 || (a.cage_solid_color() && a.cage_solid_color()->size()))return false;}
   else if(type!=16 || a.cage_occupant_entity()<0 || (a.cage_occupant_entity()==0 ? a.cage_occupant_id()!=-1 : a.cage_occupant_id()<0))return false;
@@ -124,8 +125,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 165;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v165";
+inline constexpr uint32_t kManagementVersion = 166;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v166";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;

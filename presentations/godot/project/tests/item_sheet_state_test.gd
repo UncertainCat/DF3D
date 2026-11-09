@@ -28,6 +28,14 @@ func completed(wrong_flag:=false) -> void:
 
 func run() -> void:
 	for mode in 6:
+		setup();model.open(1000);service.poll();var restraint_item:=item();restraint_item.item_type=10;restraint_item.material_token="INORGANIC:SILVER"
+		restraint_item.appearance={"material_token":"INORGANIC:SILVER","subtype_raw":"","color_token":"","stack":1,"flags":0}
+		if mode>0:restraint_item.appearance.restraint={"rope":mode!=1,"solid_color":"SILVER"}
+		if mode==3:restraint_item.appearance.restraint.rope=1
+		if mode==4:restraint_item.item_type=16
+		if mode==5:restraint_item.appearance.restraint.solid_color=42
+		item_reply({"snapshot":restraint_item});check((model.phase==ItemModel.Phase.Ready)==(mode<3),"Restraint facts validation differs")
+	for mode in 6:
 		setup();model.open(1000);service.poll();var cage_item:=item();cage_item.item_type=16;cage_item.material_token="INORGANIC:COPPER"
 		cage_item.appearance={"material_token":"INORGANIC:COPPER","subtype_raw":"","color_token":"","stack":1,"flags":0}
 		if mode>0:cage_item.appearance.cage={"material_family":0,"solid_color":"COPPER","occupant_entity":0 if mode==1 else 1,"occupant_id":-1 if mode==1 else 6960}

@@ -7178,5 +7178,42 @@
     "exit": "unsaved",
     "fps_cap": 30,
     "gpu_max_sample_c": 48
+  },
+  "restraint_appearance_reference": {
+    "run": "build/stockpile-storage-native-input-20261109-051726",
+    "management_version": 166,
+    "provider": "nativeZoneAnimalRestraint; pinned c80d35 lengthf9 FNV5f3bf541f6208ac1; native145bee0 flags24/29/30/62 classify rope, native14add70 solid material color; no menu or graphics-cache inputs",
+    "item_id": 7511,
+    "facts": {
+      "rope": true,
+      "solid_color": "WHITE"
+    },
+    "dye_color": "MIDNIGHT_BLUE",
+    "full_panel_rgb_differences": {
+      "10": 0,
+      "16": 0,
+      "21": 0,
+      "33": 0,
+      "34": 0,
+      "37": 0
+    },
+    "crop": [
+      416,
+      52,
+      904,
+      760
+    ],
+    "verification": "Six actual Stocks View/close workflows and native descriptions; item-restraint166 core19/extension/item-state checks pass; item-restraint166-msvc passed. Known Godot thread/finalize/shutdown-object diagnostics only.",
+    "limits": "One installed silk rope in a well; metal chains and other material families are not newly live accepted. Public Stocks remains gated.",
+    "hashes": {
+      "stocks-furniture-native-10.png": "a83545c5e1a1df704d93354f82aec6acf59fa22f503226ba9523a0c213e7a0e8",
+      "stocks-furniture-view-10.png": "bc2688df9891e1c0367b628d7a0e81d4ca2f8149f18fcb10cc85780869aa8f7d",
+      "stocks-furniture-wire-10.json": "f9c9b216170b271bf6af722c1807396fa881a0869854ab315a303addc3ff7846"
+    },
+    "source_preserved": true,
+    "owned_df_pid": 10560,
+    "exit": "unsaved",
+    "fps_cap": 30,
+    "gpu_max_sample_c": 47
   }
 }

@@ -1608,7 +1608,7 @@ table BuildingItemSnapshot {
 // kind: 1 container item, 2 unit. Unit item_type must remain -1.
 table ItemContainerContentFacts { item_type:int16 = -1; material_token:string; color_token:string; effective_armor_level:int8; metal:bool; coal:bool; contains_powder:bool; rolls_sheets:bool; protects_folded_sheets:bool; contains_writing:bool; }
 table ItemContainerContentsFacts { container:bool; entries:[ItemContainerContentFacts]; }
-table ItemInspectionAppearance { material_token:string; subtype_raw:string; color_token:string; stack:int32; flags:uint8; instrument_family:int8 = -1; instrument_placed:int8 = -1; contents:ItemContainerContentsFacts; floodgate_open:int8 = -1; door_open:int8 = -1; door_forbidden:int8 = -1; door_wear:int8 = -1; bucket_liquid:int8 = -1; bucket_liquid_color:string; cage_material_family:int8 = -1; cage_occupant_entity:int8 = -1; cage_occupant_id:int32 = -1; cage_solid_color:string; }
+table ItemInspectionAppearance { material_token:string; subtype_raw:string; color_token:string; stack:int32; flags:uint8; instrument_family:int8 = -1; instrument_placed:int8 = -1; contents:ItemContainerContentsFacts; floodgate_open:int8 = -1; door_open:int8 = -1; door_forbidden:int8 = -1; door_wear:int8 = -1; bucket_liquid:int8 = -1; bucket_liquid_color:string; cage_material_family:int8 = -1; cage_occupant_entity:int8 = -1; cage_occupant_id:int32 = -1; cage_solid_color:string; restraint_rope:int8 = -1; restraint_solid_color:string; }
 table ItemCarrier { kind:int8; id:int32 = -1; item_type:int32 = -1; name:string; appearance:ItemInspectionAppearance; }
 table ItemOwner { id:int32 = -1; name:string; }
 table ItemAmmunitionAssignment { kind:int8; squad_id:int32 = -1; caption:string (required); }
@@ -2238,7 +2238,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 165;
+  schema_version:uint32 = 166;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2304,7 +2304,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 165;
+  schema_version:uint32 = 166;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

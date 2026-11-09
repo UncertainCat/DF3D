@@ -37,6 +37,22 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
+Management166 adds optional restraint classification and solid material color
+to item appearance. Rebuild bridge/viewer together;165 peers use a separate
+channel. Legacy absence remains unknown. Item inspection reuses the guarded
+nativeZoneAnimalRestraint provider, keeping native material color separate from
+dye color. Revisions, codecs and native/wire/Godot validators preserve the facts.
+The item renderer reuses the existing restraint compositor and installed art.
+
+Protected051726 verifies silk rope7511 in well487: native solid WHITE, despite
+MIDNIGHT_BLUE dye. All six tested item panels (rope, cage, coffin, armor stand,
+weapon rack and amulet) have zero full-panel RGB differences; actual Stocks
+View/close and descriptions pass. Core19, extension and item-state checks pass
+(`item-restraint166`); MSVC passes (`item-restraint166-msvc`). Source preserved,
+DF10560 exits unsaved at30FPS,47C maximum sampled (not peak); documented Godot
+diagnostics only. Metal chains and other restraint materials are not newly live
+accepted. `restraint_appearance_reference` retains hashes and bounded evidence.
+
 Management165 adds optional cage appearance facts to item inspection: native
 material family, solid color and selected occupant identity. Rebuild bridge and
 viewer together;164 peers use a separate channel. Legacy absence remains unknown,
@@ -52,7 +68,7 @@ Core19, extension and item-state checks pass (`item-cage165-base-image`); MSVC
 passes (`item-cage165-msvc`). Source preserved, DF37288 exits unsaved at30FPS,
 48C sampled (not peak); documented Godot diagnostics only. Empty, wood/glass,
 live-animal item occupants and inactive references remain unaccepted in live UI.
-Chain artwork remains unresolved. `cage_appearance_reference` retains evidence.
+The rope artwork gap is resolved by166 above. `cage_appearance_reference` retains evidence.
 
 Item-holder artwork maps fixed native building types to their installed icons,
 following the item-sheet switch155958/table19e4a8. The former farm/box-only map
@@ -66,7 +82,7 @@ The brief30FPS render has only documented Godot diagnostics,50C sampled afterwar
 this is visual acceptance from an existing snapshot, not a new navigation check.
 Protected044310 verifies actual View/close and zero full-panel RGB differences
 for coffin21, armor stand33, weapon rack34 and amulet37. Chain has1120 differing
-pixels and remains unresolved. Occupied cage225 is superseded above. Other added holder types
+pixels in that earlier run; rope and occupied cage results are superseded above. Other added holder types
 follow the native switch but were not newly rendered in this run. Core19,
 extension and item-state checks pass (`item-holder-icons`). Source preserved;
 DF41128 exits unsaved at30FPS,50C sampled; documented Godot diagnostics only.

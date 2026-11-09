@@ -42,7 +42,7 @@ Ref<Texture2D> Df3dWorld::ammunition_icon(const Dictionary& appearance,int64_t i
 }
 Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,bool genericGroup,int64_t itemId,bool sheet,bool diagonalAmmo) {
     if(!assets_ || itemType<0 || itemType>=int(wm::ItemKind::BoltThrowerParts) ||
-       appearance.size()!=5+int(appearance.has("bedding"))+int(appearance.has("instrument"))+int(appearance.has("slab_engraving"))+int(appearance.has("gem_shape_raw"))+int(appearance.has("contents"))+int(appearance.has("artifact_mood"))+int(appearance.has("floodgate_open"))+int(appearance.has("door"))+int(appearance.has("bucket_liquid"))+int(appearance.has("cage")))return {};
+       appearance.size()!=5+int(appearance.has("bedding"))+int(appearance.has("instrument"))+int(appearance.has("slab_engraving"))+int(appearance.has("gem_shape_raw"))+int(appearance.has("contents"))+int(appearance.has("artifact_mood"))+int(appearance.has("floodgate_open"))+int(appearance.has("door"))+int(appearance.has("bucket_liquid"))+int(appearance.has("cage"))+int(appearance.has("restraint")))return {};
     if(itemId < -1 || itemId>INT32_MAX)return {};
     if(appearance.has("artifact_mood") && (itemType!=24 || appearance["artifact_mood"].get_type()!=Variant::BOOL))return {};
     if(appearance.has("floodgate_open") && (itemType!=7 || appearance["floodgate_open"].get_type()!=Variant::BOOL))return {};
@@ -144,6 +144,11 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
     const int64_t stack=appearance["stack"],flags=appearance["flags"];
     if(material.is_empty() || material.utf8().length()>256 || subtype.utf8().length()>128 ||
        color.utf8().length()>128 || stack<1 || stack>INT32_MAX || flags<0 || (flags & ~int64_t(96)))return {};
+    if(appearance.has("restraint")) {
+        if(itemType!=10 || appearance["restraint"].get_type()!=Variant::DICTIONARY)return {};
+        const Dictionary restraint=appearance["restraint"];if(restraint.size()!=2)return {};
+        return animal_restraint_icon(restraint);
+    }
     if(appearance.has("cage")) {
         if(itemType!=16 || appearance["cage"].get_type()!=Variant::DICTIONARY)return {};
         const Dictionary cage=appearance["cage"];if(cage.size()!=4)return {};

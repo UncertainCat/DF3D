@@ -276,6 +276,10 @@ inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
             break;
         }
     }
+    if(item->getType()==df::item_type::CHAIN) {
+        const auto restraint=df3d_area::nativeZoneAnimalRestraint(*item);if(!restraint)return std::nullopt;
+        appearance.restraintRope=restraint->rope?1:0;appearance.restraintSolidColor=restraint->solidColor;
+    }
     if(item->getType()==df::item_type::CAGE) {
         const auto cage=df3d_area::nativeZoneAnimalContainer(*item);if(!cage)return std::nullopt;
         appearance.cageMaterialFamily=int8_t(cage->materialFamily);appearance.cageOccupantEntity=int8_t(cage->occupantEntity);

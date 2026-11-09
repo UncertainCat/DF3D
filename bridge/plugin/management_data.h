@@ -96,7 +96,7 @@ struct ItemContainerContentsFacts {
     bool container=false;
     std::vector<ItemContainerContentFacts> entries;
 };
-struct ItemInspectionAppearance { std::string materialToken,subtypeRaw,colorToken;int32_t stack=1;uint8_t flags=0;int8_t instrumentFamily=-1,instrumentPlaced=-1;std::optional<ItemContainerContentsFacts> contents={};int8_t floodgateOpen=-1,doorOpen=-1,doorForbidden=-1,doorWear=-1,bucketLiquid=-1;std::string bucketLiquidColor; int8_t cageMaterialFamily=-1,cageOccupantEntity=-1;int32_t cageOccupantId=-1;std::string cageSolidColor; };
+struct ItemInspectionAppearance { std::string materialToken,subtypeRaw,colorToken;int32_t stack=1;uint8_t flags=0;int8_t instrumentFamily=-1,instrumentPlaced=-1;std::optional<ItemContainerContentsFacts> contents={};int8_t floodgateOpen=-1,doorOpen=-1,doorForbidden=-1,doorWear=-1,bucketLiquid=-1;std::string bucketLiquidColor; int8_t cageMaterialFamily=-1,cageOccupantEntity=-1;int32_t cageOccupantId=-1;std::string cageSolidColor;int8_t restraintRope=-1;std::string restraintSolidColor; };
 struct BuildingContentsItem {
   int32_t id=-1,role=-1;std::string name;
   bool forbid=false,dump=false,melt=false,hidden=false,canDump=false,canMelt=false,inJob=false,inBuilding=false;

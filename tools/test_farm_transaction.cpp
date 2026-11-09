@@ -590,3 +590,14 @@ TEST_CASE("cage occupant facts participate in item authority") {
  const auto occupied=item.revision;a.cageOccupantId=6961;item.revision=itemObservationRevision(item);CHECK(item.revision!=occupied);
  a.cageOccupantId=-1;item.revision=itemObservationRevision(item);CHECK_FALSE(validItemObservation(item));
 }
+
+TEST_CASE("restraint material facts participate in item authority") {
+ using namespace df3d_production;
+ ItemObservation item;item.item.id=7511;item.item.itemType=10;item.item.materialToken="INORGANIC:SILVER";
+ item.appearance.emplace();auto& a=*item.appearance;a.materialToken=item.item.materialToken;
+ item.revision=itemObservationRevision(item);REQUIRE(validItemObservation(item));const auto unknown=item.revision;
+ a.restraintRope=0;a.restraintSolidColor="SILVER";item.revision=itemObservationRevision(item);REQUIRE(validItemObservation(item));CHECK(item.revision!=unknown);
+ const auto metal=item.revision;a.restraintRope=1;item.revision=itemObservationRevision(item);CHECK(item.revision!=metal);
+ const auto rope=item.revision;a.restraintSolidColor="WHITE";item.revision=itemObservationRevision(item);CHECK(item.revision!=rope);
+ a.restraintRope=-1;item.revision=itemObservationRevision(item);CHECK_FALSE(validItemObservation(item));
+}

@@ -15,12 +15,13 @@ struct ItemContainerContentsFacts {
     bool container=false;
     std::vector<ItemContainerContentFacts> entries;
 };
-struct ItemInspectionAppearance { std::string materialToken,subtypeRaw,colorToken;int32_t stack=1;uint8_t flags=0;int8_t instrumentFamily=-1,instrumentPlaced=-1;std::optional<ItemContainerContentsFacts> contents={};int8_t floodgateOpen=-1,doorOpen=-1,doorForbidden=-1,doorWear=-1,bucketLiquid=-1;std::string bucketLiquidColor; int8_t cageMaterialFamily=-1,cageOccupantEntity=-1;int32_t cageOccupantId=-1;std::string cageSolidColor; };
+struct ItemInspectionAppearance { std::string materialToken,subtypeRaw,colorToken;int32_t stack=1;uint8_t flags=0;int8_t instrumentFamily=-1,instrumentPlaced=-1;std::optional<ItemContainerContentsFacts> contents={};int8_t floodgateOpen=-1,doorOpen=-1,doorForbidden=-1,doorWear=-1,bucketLiquid=-1;std::string bucketLiquidColor; int8_t cageMaterialFamily=-1,cageOccupantEntity=-1;int32_t cageOccupantId=-1;std::string cageSolidColor;int8_t restraintRope=-1;std::string restraintSolidColor; };
 inline bool validInspectionInstrument(const ItemInspectionAppearance& a,int32_t type) {
     if(a.bucketLiquid < -1 || a.bucketLiquid>1 || (type!=18 && a.bucketLiquid!=-1) ||
        a.bucketLiquidColor.size()>128 || (a.bucketLiquid!=1 && !a.bucketLiquidColor.empty()))return false;
     const bool doorUnknown=a.doorOpen==-1 && a.doorForbidden==-1 && a.doorWear==-1;
     if(!doorUnknown && (type!=6 || a.doorOpen<0 || a.doorOpen>1 || a.doorForbidden<0 || a.doorForbidden>1 || a.doorWear<0 || a.doorWear>3))return false;
+    if(a.restraintRope < -1 || a.restraintRope>1 || (a.restraintRope!=-1 && type!=10) || a.restraintSolidColor.size()>128 || (a.restraintRope==-1 && !a.restraintSolidColor.empty()))return false;
     if(a.cageMaterialFamily < -1 || a.cageMaterialFamily>2 || a.cageOccupantEntity < -1 || a.cageOccupantEntity>2 || a.cageOccupantId < -1 || a.cageSolidColor.size()>128)return false;
     if(a.cageMaterialFamily==-1) {if(a.cageOccupantEntity!=-1 || a.cageOccupantId!=-1 || !a.cageSolidColor.empty())return false;}
     else if(type!=16 || a.cageOccupantEntity<0 || (a.cageOccupantEntity==0 ? a.cageOccupantId!=-1 : a.cageOccupantId<0))return false;
@@ -73,7 +74,7 @@ inline uint64_t buildingContentsRevision(const BuildingContentsSnapshot& value) 
         byte(row.forbid);byte(row.dump);byte(row.melt);byte(row.hidden);byte(row.canDump);byte(row.canMelt);
         byte(row.appearance.has_value());if(row.appearance){const auto& a=*row.appearance;
             for(const auto* text:{&a.materialToken,&a.subtypeRaw,&a.colorToken}){number(text->size());for(unsigned char c:*text)byte(c);}
-            number(a.stack);byte(a.flags);byte(a.instrumentFamily);byte(a.instrumentPlaced);byte(a.floodgateOpen);byte(a.doorOpen);byte(a.doorForbidden);byte(a.doorWear);byte(a.bucketLiquid);hashText(a.bucketLiquidColor);byte(a.cageMaterialFamily);byte(a.cageOccupantEntity);number(a.cageOccupantId);hashText(a.cageSolidColor);byte(a.contents.has_value());if(a.contents){byte(a.contents->container);number(a.contents->entries.size());for(const auto& e:a.contents->entries){number(e.itemType);hashText(e.materialToken);hashText(e.colorToken);byte(e.effectiveArmorLevel);byte(e.metal);byte(e.coal);byte(e.containsPowder);byte(e.rollsSheets);byte(e.protectsFoldedSheets);byte(e.containsWriting);}}}
+            number(a.stack);byte(a.flags);byte(a.instrumentFamily);byte(a.instrumentPlaced);byte(a.floodgateOpen);byte(a.doorOpen);byte(a.doorForbidden);byte(a.doorWear);byte(a.bucketLiquid);hashText(a.bucketLiquidColor);byte(a.cageMaterialFamily);byte(a.cageOccupantEntity);number(a.cageOccupantId);hashText(a.cageSolidColor);byte(a.restraintRope);hashText(a.restraintSolidColor);byte(a.contents.has_value());if(a.contents){byte(a.contents->container);number(a.contents->entries.size());for(const auto& e:a.contents->entries){number(e.itemType);hashText(e.materialToken);hashText(e.colorToken);byte(e.effectiveArmorLevel);byte(e.metal);byte(e.coal);byte(e.containsPowder);byte(e.rollsSheets);byte(e.protectsFoldedSheets);byte(e.containsWriting);}}}
         number(row.jobs.size());for(const auto& job:row.jobs){number(job.id);number(job.type);number(job.flags);}
     }
     return (hash&INT64_MAX)?(hash&INT64_MAX):1;

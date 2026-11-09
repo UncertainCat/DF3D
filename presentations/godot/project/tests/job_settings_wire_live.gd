@@ -7,8 +7,9 @@ class Interaction extends Node:
 	func _ready() -> void:add_child(panel)
 	func cancel_selection() -> void:pass
 	func set_play_enabled(_value: bool) -> void:pass
-func pointer(view,point: Vector2,button: int=MOUSE_BUTTON_LEFT) -> void:
+func pointer(view,point: Vector2,button: int=MOUSE_BUTTON_LEFT,shift: bool=false,control: bool=false) -> void:
 	var click:=InputEventMouseButton.new();click.button_index=button;click.pressed=true
+	click.shift_pressed=shift;click.ctrl_pressed=control
 	click.position=view.get_global_transform_with_canvas()*point;click.global_position=click.position
 	Input.parse_input_event(click);await process_frame
 	click=click.duplicate();click.pressed=false;Input.parse_input_event(click);await process_frame
@@ -49,7 +50,7 @@ func run() -> void:
 		await work_detail_settings_controller();return
 	if OS.get_environment("DF3D_WORK_DETAILS_SETTINGS_WIRE")=="1":
 		await work_detail_settings();return
-	if OS.get_environment("DF3D_WORK_DETAILS_RENDER")=="1":
+	if OS.get_environment("DF3D_WORK_DETAILS_RENDER")=="1" and OS.get_environment("DF3D_WORK_DETAILS_QUERY_WIRE")!="1":
 		await work_detail_scene();return
 	if OS.get_environment("DF3D_WORK_DETAILS_ROWS_WIRE")=="1":
 		await work_detail_rows();return
@@ -241,18 +242,32 @@ func work_detail_query() -> void:
 	for frame in 5:world.poll();await process_frame
 	var state=preload("res://scripts/work_details_state.gd").new();state.configure(service);state.open()
 	check(await ready(state),"Work Details owner did not open")
+	var view
+	if reference.has("modified_sort") and OS.get_environment("DF3D_WORK_DETAILS_RENDER")=="1":
+		Engine.max_fps=30;root.size=Vector2i(1200,800)
+		check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Work Details sort assets unavailable")
+		view=preload("res://scripts/work_details_view.gd").new();root.add_child(view)
+		view.configure_work_details(world,state);view.layout(Vector2(1200,800));await process_frame
 	var owner_queries: Array=[]
 	for query in reference.queries:
 		if failed:break
 		if query.has("sorts"):
 			if query.name.begins_with("controlled-"):
 				var parts: PackedStringArray=query.name.split("-")
-				state.select_sort(["Cat","Name","Prof","Skills"].find(parts[2]),int(parts[1])==1,int(parts[1])==2)
+				var column: int=["Cat","Name","Prof","Skills"].find(parts[2])
+				if view!=null:
+					var header: int=view.DETAIL_SORTS.find(column)
+					await pointer(view,Vector2(view.DETAIL_SORT_X[header]*8+4,view.list_top()-18),MOUSE_BUTTON_LEFT,int(parts[1])==1,int(parts[1])==2)
+				else:state.select_sort(column,int(parts[1])==1,int(parts[1])==2)
 		elif state.sort!=int(query.sort) or state.directions[state.sort]!=bool(query.direction):state.select_sort(int(query.sort))
 		state.set_query(str(query.query).to_utf8_buffer())
 		check(await ready(state) and state.ids==PackedInt32Array(query.native),"Work Details owner query differs: "+query.name)
 		owner_queries.append({"name":query.name,"ids":Array(state.ids)})
+		if view!=null and state.priorities.size()==5:
+			await process_frame;await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/work-details-five-priorities-viewer.png")
 	check(state.details.size()==reference.details.size() and state.selected.index==0,"Work Details owner list differs")
+	if view!=null:view.queue_free();await process_frame
 	state.close();state.dispose();service.queue_free();await process_frame
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"revision":str(revision),"queries":captures,"owner_queries":owner_queries,"stale_rejected":not rejected.has("residents")}));file.close()

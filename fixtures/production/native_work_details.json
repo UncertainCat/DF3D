@@ -7101,6 +7101,15 @@
       "modifier_precedence": "Native3c6372 tests bit2 before3c6469 tests bit1: Ctrl removal wins. Global238d0b8 SDL Shift/Control mapping reuses Kitchen input evidence.",
       "source_save": "unchanged; owned DF6820 exited unsaved",
       "diagnostics": "Known separate-thread notice only; no unclassified errors."
+    },
+    "render_reference": {
+      "capture": "build/stockpile-storage-native-input-20261108-214922",
+      "scope": "Twelve actual view pointer states match full native orders; Shift append, Ctrl removal, repeated keys and shared directions. Five-priority header crop304,256..776,268 RGB differences0. Images visually inspected.",
+      "limitations": "View-level only; main-scene modifier integration pending. Whole-panel identity not claimed: hover/selection backgrounds and portraits differ. Posted native Shift delivery remains unaccepted.",
+      "qa": "build/qa/work-details-multisort-render",
+      "source_save": "unchanged; owned DF42604 exited unsaved",
+      "diagnostics": "Known thread/finalize/shutdown-object diagnostics only.",
+      "initial_capture": "214825 ran the general render test due to flag precedence; no modified-sort acceptance."
     }
   }
 }

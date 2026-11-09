@@ -1666,8 +1666,17 @@ wire queries and the real controller; repeated keys, direction flips, removal
 and final-key Category fallback match. Core19 and controller/pointer-dispatch
 checks pass in `work-details-multisort-controls`. Owned DF6820 exits unsaved with
 the source unchanged; joined logs contain only the known separate-thread notice,
-GPU57–60C sampled. Rendered active-header parity and end-to-end modifier-click
-acceptance remain open; these semantic checks do not establish visual completion.
+GPU57–60C sampled. Rendered214922 drives twelve states through the actual view's
+input pipeline, using Shift/Control mouse events and fresh native queries. All
+orders match. At five priorities (Name,Cat,Prof,Name,Name), the complete header
+crop304,256..776,268 has zero differing RGB pixels against native. Captures were
+inspected; whole-panel identity is not claimed because hover/selection backgrounds
+and portrait rendering differ. Main-scene integration of modified sorting remains
+open. This view-level run does not establish physical Shift delivery to native DF.
+Owned DF42604 exits unsaved with source preservation, GPU59C sampled; joined logs
+contain only known thread/finalize/shutdown-object diagnostics. Core19 passes in
+`work-details-multisort-render`. Initial214825 selected the older general render
+test due to flag precedence; it supplies no modified-sort acceptance.
 
 Keyboard behavior is focus-dependent. Protected211654 on2026-11-08 observes
 FILTER ignored initially, STANDARDSCROLL_RIGHT enabling flag4, then FILTER

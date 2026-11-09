@@ -29,6 +29,7 @@ local function observe(label)
   local actual=require('json').decode(text).ids;assert(require('json').encode(actual)==require('json').encode(ids),'Owned multisort order differs: '..label)
  end
  observations[#observations+1]={label=label,sorts=sorts,directions=directions,ids=ids,modifier=df.reinterpret_cast('uint8_t',base+0x238d0b8).value}
+ if #sorts==5 then shot('work-details-five-priorities')end
 end
 local function click(name,modifier)
  local widget=assert(headers[name]);local x,y=widget.rect.x1+1,widget.rect.y1

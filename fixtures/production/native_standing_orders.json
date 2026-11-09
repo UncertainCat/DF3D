@@ -5006,6 +5006,23 @@
         "source_save_preserved": true,
         "correction_status": "approval pending"
       }
+    },
+    "main_scene_reference": {
+      "capture": "build/stockpile-storage-native-input-20261108-202430",
+      "steps": 9,
+      "success": true,
+      "main": true,
+      "panel_crop": [
+        168,
+        220,
+        808,
+        540
+      ],
+      "main_rgb_different_pixels": 0,
+      "types_rgb_different_pixels": 0,
+      "source_save_preserved": true,
+      "diagnostics": "passed_with_known_issues",
+      "limitations": "Does not establish disconnect/load/reconnect or approve the native picker scrollbar correction."
     }
   },
   "chores_reference": {

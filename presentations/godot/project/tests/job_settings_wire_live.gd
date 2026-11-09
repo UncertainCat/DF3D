@@ -1059,6 +1059,8 @@ func hunter_specs(source: Array) -> Array:
 		row.assigned=PackedInt32Array(entry.assigned);result.append(row)
 	return result
 func hunter_ammunition_wire() -> void:
+	var main_scene;var ammunition_host
+	var use_main:=OS.get_environment("DF3D_HUNTER_AMMUNITION_MAIN")=="1"
 	var rendered:=OS.get_environment("DF3D_HUNTER_AMMUNITION_RENDER")=="1"
 	Engine.max_fps=30;root.size=Vector2i(1200,800)
 	world=Df3dWorld.new();root.add_child(world)
@@ -1090,17 +1092,31 @@ func hunter_ammunition_wire() -> void:
 	for frame in 5:world.poll();await process_frame
 	var scene_nodes: Array=[];var ammunition_owner
 	if rendered:
-		if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Ammunition assets missing"):quit(1);return
-		var interaction:=Interaction.new();root.add_child(interaction)
-		var host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)
-		var standing=preload("res://scripts/standing_orders_panel.gd").new();root.add_child(standing);standing.configure(world,service,host);standing.open_panel()
-		scene_nodes=[standing,host,interaction]
+		var host;var standing
+		if use_main:
+			service.queue_free();world.queue_free();await process_frame
+			var preferences=preload("res://scripts/presentation_settings.gd")
+			preferences.loaded=true;preferences.ui_scale=1.0;preferences.camera_mode="df"
+			OS.set_environment("DF3D_FIXTURE","")
+			main_scene=load("res://scenes/main.tscn").instantiate();root.add_child(main_scene)
+			world=main_scene.world;service=main_scene._ui.actions;host=main_scene._ui.host
+			deadline=Time.get_ticks_msec()+90000
+			while not main_scene._loader.entered and Time.get_ticks_msec()<deadline:await create_timer(0.05).timeout
+			if not check(main_scene._loader.entered,"Hunter main scene did not enter fortress"):quit(1);return
+			standing=main_scene._ui.controller("standing_orders");standing.open_panel()
+		else:
+			if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Ammunition assets missing"):quit(1);return
+			var interaction:=Interaction.new();root.add_child(interaction)
+			host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)
+			standing=preload("res://scripts/standing_orders_panel.gd").new();root.add_child(standing);standing.configure(world,service,host);standing.open_panel()
+			scene_nodes=[standing,host,interaction]
 		if not check(await ready(standing.state),"Standing orders entry failed"):quit(1);return
 		await pointer(standing.panel,standing.panel.category_rect(6).get_center())
 		if not check(await ready(standing.state),"Standing Other read failed"):quit(1);return
 		await pointer(standing.panel,standing.panel.ammunition_rect().get_center())
 		ammunition_owner=standing.ammunition_owner
 		if not check(is_instance_valid(ammunition_owner) and host.active==ammunition_owner and standing.state.phase==standing.state.Phase.Closed,"Ammunition modal handoff failed"):quit(1);return
+		ammunition_host=host
 		controller=ammunition_owner.state
 	else:controller.configure(service);controller.open()
 	if not check(await ready(controller),"Ammunition controller read failed"):quit(1);return
@@ -1174,16 +1190,18 @@ func hunter_ammunition_wire() -> void:
 			if FileAccess.file_exists(directory+"/hunter-wire-ack") and FileAccess.get_file_as_string(directory+"/hunter-wire-ack")==str(count):break
 			await create_timer(0.01).timeout
 		if not check(FileAccess.get_file_as_string(directory+"/hunter-wire-ack")==str(count),"Native ammunition readback missing; no replay"):quit(1);return
-	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"steps":count}));file.close()
+	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"steps":count,"main":use_main}));file.close()
 	if rendered:
 		var next_ticket: int=service._next_ticket
 		var enter:=InputEventKey.new();enter.pressed=true;enter.keycode=KEY_ENTER;Input.parse_input_event(enter);await process_frame
 		check(controller.mode==controller.Mode.Main and service._next_ticket==next_ticket,"Enter after target deletion sent a mutation")
 		await pointer(ammunition_owner.panel,Vector2(752,32))
-		check(controller.phase==controller.Phase.Closed and scene_nodes[1].active==null,"Confirm retained ammunition ownership")
+		check(controller.phase==controller.Phase.Closed and ammunition_host.active==null,"Confirm retained ammunition ownership")
 	controller.dispose()
 	for node in scene_nodes:node.queue_free()
-	service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)
+	if main_scene!=null:main_scene.queue_free()
+	else:service.queue_free();world.queue_free()
+	await process_frame;quit(1 if failed else 0)
 
 func hunter_input_scene(owner) -> void:
 	var state=owner.state;var panel=owner.panel

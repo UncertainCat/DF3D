@@ -945,8 +945,17 @@ match the native equipment observer. Live main/type-picker crops both have zero
 pixel differences. Equipment restores; owned DF43068 exits unsaved with source
 preservation. GPU50C sampled; only known thread/finalize/shutdown diagnostics.
 Enable DF3D_HUNTER_AMMUNITION_RENDER=1 alongside the existing hunter wire flags
-for this capped30FPS workflow. It does not cover arbitrary sizes, all scroll
-positions, hover messages or quantity-field edge behavior.
+for this capped30FPS workflow. Add DF3D_HUNTER_AMMUNITION_MAIN=1 to use the real
+fortress scene, factory, shared action service and host instead of isolated
+owners. Protected202430 on2026-11-08 passes that main-scene path, all nine
+native-observed steps, picker/quantity input checks, minimum-size navigation and
+Confirm ownership release. Both complete default main/type-picker panel crops
+match native with zero differing RGB pixels. Source preservation passes and
+owned DF35208 exits unsaved. GPU samples57C; diagnostics are limited to the known
+thread notice, device finalize and shutdown objects. Headless core19 and Hunter
+controller checks pass in `hunter-main-integration`. This does not establish
+disconnect/load/reconnect acceptance or resolve the pending picker scrollbar
+exception in the native bug register.
 Rendered hunter-native-art-20261108 matches both the full default-size main panel
 and type-picker crop (168,220,808,540) against protected142845 with zero differing
 pixels. `ammunition_icon` selects installed DIAGONAL_DEFAULT/DIAGONAL_WOOD variants

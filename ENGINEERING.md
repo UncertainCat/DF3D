@@ -102,8 +102,17 @@ expanded bit matches native; item scratch guards pass. MSVC/core19
 (`stocks-native-groups`) pass, native log clean, source unchanged, DF27928 exits
 unsaved and GPU58C sampled. Installed plugin SHA256 is
 DE0D94EA0A7CDC48905D2FD6CA17737151EB2D0AB53D637D9DCBFF48854DC30D.
-Availability totals, category counts/captions, individual item order, filtering,
-actions, transport and the screen remain unfinished.
+`totals()` implements the initializer's pinned inline count orchestration
+378251..37830f using native holder/control predicates and item stack sizes. There
+is no standalone native total routine in that block. It preserves flag-mask and
+forbidden-item handling and32-bit addition, but keeps all counters locally and
+omits temporary_32 writes. Protected221144 matches all113 entries in both raw
+arrays cold and warm (9758 stored,1728 unavailable); item scratch guards pass.
+MSVC/core19 (`stocks-native-totals`) pass, native log clean, source unchanged,
+DF46004 exits unsaved, GPU60C sampled. Installed plugin SHA256 is
+753F4A182D8BB9AB6521796D514258B491C985A69CBD5CF586F9757ADC8EF30D.
+Displayed count approximation, category captions/order, individual item order,
+filtering, actions, transport and the screen remain unfinished.
 
 ## Stone use native semantics and presentation
 

@@ -15,9 +15,10 @@ local function probe(command)
  assert(open==menu.open and selected==menu.current_type and query==menu.item_filter,'Inventory probe changed menu state')
  return json.decode(text)
 end
-local cold,cold_groups
+local cold,cold_groups,cold_totals
 if os.getenv('DF3D_STOCKS_PROVIDER')=='1' then cold=probe('stocks-inventory-probe').ids end
 if os.getenv('DF3D_STOCKS_GROUPS')=='1' then cold_groups=probe('stocks-groups-probe').groups end
+if os.getenv('DF3D_STOCKS_TOTALS')=='1' then cold_totals=probe('stocks-totals-probe')end
 gui.simulateInput(view,'D_STOCKS')
 for _=1,3 do script.sleep(1,'frames')end
 view:render(dfhack.getTickCount())
@@ -31,6 +32,14 @@ local result={stocks_rva=address-dfhack.internal.getImageBase(),current_type=sto
  stored=values(stocks.storeamount),unavailable=values(stocks.badamount),
  scroll_type=stocks.scroll_position_type,scroll_item=stocks.scroll_position_item,
  item_filter=stocks.item_filter,individual_ids={},groups={},screen_rows={}}
+if cold_totals then
+ local warm=probe('stocks-totals-probe')
+ for _,field in ipairs{'stored','unavailable'}do
+  assert(json.encode(cold_totals[field])==json.encode(result[field]),'Cold '..field..' totals differ')
+  assert(json.encode(warm[field])==json.encode(result[field]),'Warm '..field..' totals differ')
+ end
+ result.totals_provider={cold=cold_totals,warm=warm,scratch_preserved=true}
+end
 for _,item in ipairs(stocks.current_type_i_list)do result.individual_ids[#result.individual_ids+1]=item.id end
 if cold then
  local warm=probe('stocks-inventory-probe').ids;local native={}

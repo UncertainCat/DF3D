@@ -1,13 +1,15 @@
 #pragma once
 #include "building_item_native.h"
 #include "df/world.h"
+#include "df/specific_ref.h"
+#include <array>
 #include <cstddef>
 
 namespace df3d_stocks {
 // Native Stocks initializer377fe0 enumerates IN_PLAY and excludes c93160.
 // Use only its semantic predicate: never call that menu initializer or touch
 // item.temporary_32/base_uniform_score. Returned IDs retain simulation order;
-// native Stocks sorting/grouping is a separate, not-yet-exposed operation.
+// native Stocks sorting/grouping is a separate operation.
 inline std::optional<std::vector<int32_t>> inventory() {
     static const auto predicate=[]()->bool (*)(df::item*) {
         if(!df3d_production::farmFunctions())return nullptr;
@@ -38,6 +40,39 @@ inline std::optional<std::vector<int32_t>> inventory() {
     std::vector<int32_t> ids;ids.reserve(items.size());
     for(auto* item:items){if(!item)return std::nullopt;if(!predicate(item))ids.push_back(item->id);}
     return ids;
+}
+struct Totals {std::array<int32_t,113> stored{},unavailable{};};
+inline std::optional<Totals> totals() {
+    const auto ids=inventory();if(!ids)return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    // This native initializer block has inline flag/count orchestration, no
+    // standalone total provider. Pin it and call its semantic dependencies;
+    // omit its temporary_32 writes and all unrelated menu initialization.
+    static const bool supported=[base] {
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0xbe;++i){hash^=base[0x378251+i];hash*=UINT64_C(1099511628211);}
+        return hash==UINT64_C(0xe285ee0a05b6aafe);
+    }();
+    if(!supported)return std::nullopt;
+    Totals result;
+    for(auto id:*ids) {
+        auto* item=df::item::find(id);if(!item)return std::nullopt;
+        bool available=(item->flags.whole&0xe88f10)==0;
+        if(available && (item->flags.whole&8)) {
+            df::specific_ref holder;holder.type=df::specific_ref_type(-1);
+            reinterpret_cast<void (*)(df::item*,df::specific_ref*,bool)>(base+0xc8be10)(item,&holder,true);
+            if(int32_t(holder.type)==1) {
+                if(!holder.data.unit)return std::nullopt;
+                available=reinterpret_cast<bool (*)(df::unit*)>(base+0x138ed20)(holder.data.unit);
+            }
+        }
+        const auto type=int32_t(item->getType());
+        if(type<0 || type>=int32_t(result.stored.size()))return std::nullopt;
+        auto& value=(available && !(item->flags.whole&0x20)?result.stored:result.unavailable)[type];
+        // DF's native ADD is a 32-bit operation.
+        value=int32_t(uint32_t(value)+uint32_t(item->getStackSize()));
+    }
+    return result;
 }
 struct Group {int16_t type,subtype,subcat1,subcat2;int32_t amount;bool expanded;};
 // Native ac9c30 owns no globals: abstract-list insertion/matching uses the

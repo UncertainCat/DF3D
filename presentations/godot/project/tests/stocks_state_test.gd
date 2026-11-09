@@ -26,7 +26,22 @@ func item(id: int) -> Dictionary:
 func ready(state,service) -> void:
 	state.open();service.reply(state.ticket,response(-1));service.reply(state.ticket,response())
 func _initialize() -> void:call_deferred("run")
+func click_filter() -> void:
+	var move:=InputEventMouseMotion.new();move.position=Vector2(50,16);Input.parse_input_event(move)
+	for pressed in [true,false]:
+		var event:=InputEventMouseButton.new();event.button_index=MOUSE_BUTTON_LEFT;event.pressed=pressed;event.position=Vector2(50,16);event.global_position=event.position
+		Input.parse_input_event(event);await process_frame
 func run() -> void:
+	var filter=preload("res://scripts/stocks_filter.gd").new();root.add_child(filter);filter.size=Vector2(300,36);filter.configure(StyleBoxEmpty.new(),[])
+	await process_frame
+	await click_filter();check(filter.has_focus(),"First filter click starts typing")
+	await click_filter();check(not filter.has_focus(),"Second filter click ends typing")
+	var letter:=InputEventKey.new();letter.pressed=true;letter.unicode=97;letter.keycode=KEY_A
+	filter.feed_key(letter);check(filter.value.is_empty(),"Unfocused filter ignores text")
+	await click_filter();filter.feed_key(letter);check(filter.value.get_string_from_utf8()=="A","Stocks filter keeps native uppercase ASCII")
+	var enter:=InputEventKey.new();enter.pressed=true;enter.keycode=KEY_ENTER;filter.feed_key(enter)
+	check(not filter.has_focus() and filter.value.get_string_from_utf8()=="A","Enter ends typing without clearing query")
+	filter.free()
 	check(Registry.PANEL_SCRIPTS.has("stocks") and not Registry.allows_launcher("Stocks"),"Incomplete Stocks launcher exposed")
 	var service:=Service.new();root.add_child(service)
 	var state:=State.new();state.configure(service);ready(state,service)

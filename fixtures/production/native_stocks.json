@@ -3929,5 +3929,143 @@
     "gpu": "native and viewer30FPS; sampled47-48C; original native preferences restored byte-for-byte",
     "diagnostics": "passed_with_known_issues: godot-separate-thread-notice, godot-device-finalize, godot-shutdown-objects; no unclassified errors",
     "limitations": "Only the ammunition carrier is rendered/live accepted. Mixed-category, armor, powder-bag and writing-tool contents remain offline-only. No broader item-family or main-scene camera acceptance; public Stocks remains hidden."
+  },
+  "filter_input_reference": {
+    "capture": "build/stockpile-storage-native-input-20261109-012659",
+    "observations": [
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "initial",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": true,
+        "item_scroll": 0,
+        "name": "filter-click",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "filter-second-click",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "unfocused-a",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": true,
+        "item_scroll": 0,
+        "name": "focused-a",
+        "query": "A"
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "enter",
+        "query": "A"
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "blank-click",
+        "query": "A"
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "category-STANDARDSCROLL_DOWN",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "category-STANDARDSCROLL_PAGEDOWN",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "category-CURSOR_DOWN",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "items-STANDARDSCROLL_DOWN",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "items-STANDARDSCROLL_PAGEDOWN",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "items-CURSOR_DOWN",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "outside-STANDARDSCROLL_DOWN",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "outside-STANDARDSCROLL_PAGEDOWN",
+        "query": ""
+      },
+      {
+        "category": 39,
+        "category_scroll": 0,
+        "focused": false,
+        "item_scroll": 0,
+        "name": "outside-CURSOR_DOWN",
+        "query": ""
+      }
+    ],
+    "behavior": "Click toggles typing focus; unfocused typing has no effect; ASCII a is stored as A; Enter ends typing and retains the query.",
+    "verification": "stocks-filter-input: core19 and headless Stocks state test pass, including viewport mouse clicks and focused/unfocused key delivery.",
+    "source_save": "unchanged; owned DF7012 exited unsaved",
+    "gpu": "Native capped30FPS, sampled47C/2%; original preferences restored.",
+    "limitations": "No physical mouse-wheel evidence. Ignored standard-scroll/page/cursor bindings do not establish wheel behavior. Non-ASCII casing and nonempty rendered filter are not accepted."
   }
 }

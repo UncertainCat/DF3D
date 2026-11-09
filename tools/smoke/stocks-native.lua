@@ -312,6 +312,10 @@ if os.getenv('DF3D_STOCKS_DESTINATIONS')=='1' then
  result.destinations.back=observed()
  gui.simulateInput(view,'D_STOCKS');view:render(dfhack.getTickCount())
 end
+if os.getenv('DF3D_STOCKS_INPUT')=='1' then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-native.lua$','stocks-input-native.lua')
+ result.input=assert(loadfile(source))(view,stocks)
+end
 for y=0,df.global.gps.dimy-1 do
  local row={};for x=0,df.global.gps.dimx-1 do row[#row+1]=dfhack.screen.readTile(x,y).ch end
  result.screen_rows[#result.screen_rows+1]=row

@@ -84,6 +84,16 @@ and an empty result chooses the first overall category. Search inputs are
 processed in order across asynchronous replies: coalescing keystrokes would
 lose native category history (ZZ selects26, ZZZ selects39, backspace to ZZ
 selects26, then clearing retains26). No native menu storage is a runtime input.
+Native012659 confirms Stocks filter clicks toggle typing focus, unfocused
+typing has no effect, ASCII lowercase input is stored uppercase, and Enter
+ends typing while retaining the query. The viewer matches these behaviors;
+`stocks-filter-input` passes Core19 and headless viewport click/key checks.
+The protected native run preserved the source save and exited unsaved with
+30FPS and sampled47C/2% GPU. Non-ASCII casing, nonempty rendered filter and
+physical mouse-wheel behavior remain unverified. Ignored standard-scroll and
+cursor bindings are not evidence for wheel behavior. See `filter_input_reference`
+in the Stocks fixture.
+
 Pending reads/edits clear authority; close/session changes retire observers;
 Unknown cannot replay. Successful edits refresh the retained search before
 accepting another action. Headless `stocks-state` covers these transitions,

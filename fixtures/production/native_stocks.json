@@ -6931,5 +6931,159 @@
       "diagnostics": "Documented separate-thread, finalize and shutdown-object signatures only",
       "limitations": "One ten-item bin at960x600,1600x900,1200x800. Dragging, scrollbar-wheel, minimum height, changing membership and creature rows not accepted."
     }
+  },
+  "additional_furniture_description_reference": {
+    "run": "build/stockpile-storage-native-input-20261109-043934",
+    "dispatch": [
+      {
+        "name": "item_amuletst",
+        "table": "0x16f37c0",
+        "kind": 37,
+        "get_type": "0x548f80",
+        "subtype": "0x66e60",
+        "differences": {},
+        "get_type_fnv1a64": "0x94d6a954ea53d8f3"
+      },
+      {
+        "name": "item_animaltrapst",
+        "table": "0x16fffe8",
+        "kind": 19,
+        "get_type": "0x76750",
+        "subtype": "0x66e60",
+        "differences": {},
+        "get_type_fnv1a64": "0xe34641020ffc0e55"
+      },
+      {
+        "name": "item_armorstandst",
+        "table": "0x1701de8",
+        "kind": 33,
+        "get_type": "0x549810",
+        "subtype": "0x66e60",
+        "differences": {},
+        "get_type_fnv1a64": "0xc791b5fedf90a8ff"
+      },
+      {
+        "name": "item_cagest",
+        "table": "0x16f19c0",
+        "kind": 16,
+        "get_type": "0x7a270",
+        "subtype": "0x66e60",
+        "differences": {},
+        "get_type_fnv1a64": "0x951648187e7b6cc"
+      },
+      {
+        "name": "item_chainst",
+        "table": "0x16f7cf8",
+        "kind": 10,
+        "get_type": "0x671f0",
+        "subtype": "0x66e60",
+        "differences": {},
+        "get_type_fnv1a64": "0x8a7e08d8a2d0223a"
+      },
+      {
+        "name": "item_coffinst",
+        "table": "0x16ff868",
+        "kind": 21,
+        "get_type": "0x7ae10",
+        "subtype": "0x66e60",
+        "differences": {},
+        "get_type_fnv1a64": "0xc9e6f6ad155aa643"
+      },
+      {
+        "name": "item_scepterst",
+        "table": "0x16fd1e0",
+        "kind": 38,
+        "get_type": "0x548f90",
+        "subtype": "0x66e60",
+        "differences": {},
+        "get_type_fnv1a64": "0x8827482a6d039876"
+      },
+      {
+        "name": "item_weaponrackst",
+        "table": "0x1702568",
+        "kind": 34,
+        "get_type": "0x54b450",
+        "subtype": "0x66e60",
+        "differences": {},
+        "get_type_fnv1a64": "0xbae254d462406882"
+      },
+      {
+        "name": "item_windowst",
+        "table": "0x1700768",
+        "kind": 15,
+        "get_type": "0x79ce0",
+        "subtype": "0x66e60",
+        "differences": {},
+        "get_type_fnv1a64": "0x4b131b0430423831"
+      }
+    ],
+    "native_path": "c75000; nine types share BOX description virtuals except pinned getType, no subtype and no additional item-type branch. c794bb type10 tests a referenced entity raw, not the described item.",
+    "verified": [
+      {
+        "id": 7511,
+        "kind": 10
+      },
+      {
+        "id": 28448,
+        "kind": 16
+      },
+      {
+        "id": 5260,
+        "kind": 21
+      },
+      {
+        "id": 20954,
+        "kind": 33
+      },
+      {
+        "id": 20981,
+        "kind": 34
+      },
+      {
+        "id": 38540,
+        "kind": 37
+      }
+    ],
+    "missing_families": [
+      15,
+      19,
+      38
+    ],
+    "workflow": "Actual Stocks View and close for six families; every native description equals owned semantic output.",
+    "full_panel_rgb_differences": {
+      "10": null,
+      "16": 225,
+      "21": 516,
+      "33": 447,
+      "34": 922,
+      "37": 0
+    },
+    "limits": [
+      "Chain native PNG is an incomplete draw and excluded.",
+      "Cage225 differences are confined to header artwork; occupied variant remains unresolved.",
+      "Coffin/armor stand/weapon rack differences are confined to installed holder icons.",
+      "Caged drake6960 caption, row and artwork match native exactly; no item controls drawn for creature row.",
+      "Window15/animaltrap19/scepter38 absent; dispatch added but no live acceptance.",
+      "No claim for all materials, improvements or container membership changes."
+    ],
+    "hashes": {
+      "stocks-furniture-native-10.png": "9bdc5a80c026757f8e3c5ccc3ab77081c4ed5776e1287491eb950660411f2928",
+      "stocks-furniture-native-16.png": "2b8737b8ab94ca64a0d8342ea1391b1e97f212b42976ad2206c4200d3203b799",
+      "stocks-furniture-native-21.png": "7823126ceac79ee63b33b79711b59c06826331d0714bd362f73ffe9591f22db1",
+      "stocks-furniture-native-33.png": "fbea06d55b1f031f829c51b548e77d02876ce4d499d6bec967722ed47e6fdc0d",
+      "stocks-furniture-native-34.png": "a86defc546419075006941b5d47b4b9534c844aa53ab3a1a177afc724795cb11",
+      "stocks-furniture-native-37.png": "bde9533dda233b8e312ff018441e238f2c8036da8975c8590459084e06d5c8c6",
+      "stocks-furniture-view-10.png": "e4e45c81dcdcbb73af7ef3ee64fa275aa3e92f030cb360b8c9c8b976f0c1e394",
+      "stocks-furniture-view-16.png": "b73f0f7a7217fa23a9f5359366a21bc43e86f5c4e3dc4e8089d8bea1d5ee4512",
+      "stocks-furniture-view-21.png": "353dc52ee280a14bd860a3ef6aa399146c71476932aad6b400a910498316eb27",
+      "stocks-furniture-view-33.png": "c51d99d36598610e86800f5e7170aee910a0c0db5963ab44c1933679106eae80",
+      "stocks-furniture-view-34.png": "6b7e427402354e1152de82b1c23d1e59a6219c453f530f0699a5f273442f4092",
+      "stocks-furniture-view-37.png": "4153c02249547eea630c67b8ccd634e470c5165581cad9e35749a466a89d8bb2"
+    },
+    "source_preserved": true,
+    "owned_df_pid": 37468,
+    "exit": "unsaved",
+    "fps_cap": 30,
+    "gpu_max_sample_c": 49
   }
 }

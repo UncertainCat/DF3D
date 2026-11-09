@@ -37,6 +37,24 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
+The guarded native description path additionally admits chains, windows, cages,
+animal traps, coffins, armor stands, weapon racks, amulets and scepters. Their
+constructed-item virtuals match BOX except pinned getType leaves; subtype is
+absent and c75000 has no extra item-type branch for these families. The type10
+comparison at c794bb concerns a referenced entity raw, not the described item.
+Owned observations include their existing appearance facts; no schema change.
+
+Core19/extension/item-state (`item-more-furniture`) and MSVC
+(`item-more-furniture-msvc`) pass. Protected043934 verifies actual Stocks View/
+close and exact native descriptions for chain7511, cage28448, coffin5260,
+armor stand20954, weapon rack20981 and amulet38540. Amulet full-panel RGB is
+identical. Cage body and contained drake6960 row/artwork match;225 header-icon
+pixels differ (occupied cage appearance unresolved). Coffin/stand/rack holder
+icons differ516/447/922 pixels. Chain PNG is incomplete and excluded. Windows,
+animal traps and scepters are absent and not live accepted. Source preserved,
+DF37468 exits unsaved at30FPS,49C sampled; documented Godot diagnostics only.
+`additional_furniture_description_reference` retains pins, hashes and limits.
+
 Management164 adds a contained-item target to independent item edits. Rebuild
 bridge/viewer together;163 peers use a separate channel. The request retains
 the parent ID and revision and adds contents_item_id (default -1 for root edits).

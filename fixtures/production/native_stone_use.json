@@ -837,5 +837,11 @@
     "rows": 83,
     "edits": 4,
     "scope": "Typed Godot bridge read matches native provider metadata/full flags. Four edits each followed by stale replay rejection and fresh read; independent Lua compares every restriction byte after each step. Source unchanged, owned DF36056 unsaved exit, GPU48C, only known separate-thread notice. No controller/view or live publication-fault acceptance."
+  },
+  "controller_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-193842",
+    "rows": 83,
+    "edits": 4,
+    "scope": "Controller and shared semantic service read native metadata/full flags, clear edit authority while pending, preserve category, and refresh after four edits. Independent Lua checks every restriction byte; stale requests rejected. Source unchanged, owned DF39588 unsaved exit, headless viewer, sampled GPU56C. Only known separate-thread notice; no rendered input/main-scene lifecycle acceptance."
   }
 }

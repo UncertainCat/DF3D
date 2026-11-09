@@ -61,7 +61,17 @@ only the known separate-thread notice remains.193153 had JSON numeric-type
 comparison errors and performed no wire edits, so it is not acceptance. MSVC and
 core19 pass stone-use-dispatch-msvc.log and stone-use-dispatch. Installed SHA256:
 023FABBDDE8C76CFA6C25197FACEFDB775A8FD21AB7644F1FF8D1C7D0667E81D.
-Live publication fault injection and controller/view lifecycle remain unverified.
+Live publication fault injection and rendered view lifecycle remain unverified.
+
+`stone_use_state.gd` owns category/scroll navigation and retires request tickets
+on close or session change. Edits clear authority immediately and refresh on
+success; rejected/unknown replies provide no editable rows and are never replayed.
+Headless stone-use-controller passes controller retirement/validation checks and
+core19. Protected193842 on2026-11-08 exercises the controller through the shared
+semantic service:83 native rows, four edits, fresh reads and stale rejection,
+with independent full-array effect checks. Source unchanged, DF39588 exits
+unsaved; headless viewer, GPU56C sampled, only the known separate-thread notice.
+This establishes controller edits, not rendered input or full main-scene lifecycle.
 
 The Stone use tab remains unimplemented. Protected185832 on2026-11-08 records
 30 economic and53 other stones in native order, material identities/restrictions,
@@ -90,7 +100,8 @@ branch, and52d650 changes only the owned caption. Economic-use fragments come
 from d97510's raw-material/reaction reads and owned output vectors. No menu,
 widget, input or graphics cache is supplied. Restriction pointers are validated
 against authoritative economic_stone storage before reading and never retained.
-The diagnostic stone-use-probe exposes pointer-free rows; no wire/UI route exists.
+The diagnostic stone-use-probe exposes pointer-free rows; typed dispatch uses the
+same owned provider. No public UI route exists.
 
 Protected190635 on2026-11-08 invokes this provider before opening Stone use and
 matches all83 ordered category/index/restriction values plus30 full descriptions.
@@ -110,8 +121,8 @@ each toggle. Both sequences restore the full original array. Source unchanged,
 DF38896 exits unsaved, GPU49C. MSVC/core19 pass stone-use-edit-msvc.log and
 stone-use-native-edits. Installed plugin SHA256:
 CF01813E5FCCB4FF6A4EF146B7C04BB4651BAD2A72E5A4D0268FABB38FA20B25.
-`edit_reference` retains these results; downstream job scheduling, typed command
-publication/lifecycle and other-category DF3D rendering remain unverified.
+`edit_reference` retains these results; downstream job scheduling and
+other-category DF3D rendering remain unverified.
 Stone use read rows also carry material identity and native magma safety.
 Renderer438adc calls149ef80(world,0,index,12000); the read-only helper uses
 material lookup14add70, and its existing construction pin is reused. No
@@ -124,7 +135,7 @@ DF39260 exits unsaved, GPU49C. MSVC/core19 pass stone-use-display-msvc.log and
 stone-use-display-metadata. Installed plugin SHA256:
 693FA1BE15F6A121D35AEABFD220657FDDD1A5A5A856B0B33F710F422C86A96B.
 `display_reference` records native artwork origins and observed classifications;
-DF3D row art, typed contract and public screen remain unfinished.
+DF3D row art and the public screen remain unfinished.
 Do not borrow native widget vectors or restriction-pointer scratch. Core19 passes
 stone-use-discovery; no runtime adapter or public route is accepted by this check.
 

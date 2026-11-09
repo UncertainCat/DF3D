@@ -610,6 +610,7 @@ if os.getenv('DF3D_HUNTER_AMMUNITION_NATIVE')=='1' then
      local keys={};if sample[3] then keys._MOUSE_L_DOWN=true;if sample[1]:find('press')then keys._MOUSE_L=true end end
      gui.simulateInput(view,keys);view:render(dfhack.getTickCount())
      drag[#drag+1]={action=sample[1],first=ui.setting_ammo_scroll_position,choice_first=ui.setting_ammo_scroll_position_am,dragging=ui.setting_ammo_scrolling,choice_dragging=ui.setting_ammo_scrolling_am}
+     if os.getenv('DF3D_HUNTER_AMMUNITION_DRAG_DETAIL')=='1' and sample[1]=='release' then shot('hunter-layout-'..kind..'-drag-bottom')end
     end
     result.hunter_ammunition[kind..'_drag']=drag
     settle();shot('hunter-layout-'..kind..'-drag-complete')

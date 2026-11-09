@@ -6,6 +6,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
+| Hunter ammunition picker scrollbar clicks use the parent ammunition list's offset instead of the picker's offset. | Correction approval pending; the staged DF3D scrollbar uses its own displayed offset. Public exposure remains gated. | Native201120 on2026-11-08 reproduces150237: type offset7 draws the grip at y372–407, but a click at816,402 sets offset4 without starting a drag. Native45baf4(materials) and45bfd8(types) read context+4c (parent offset); dragging uses+120 (picker offset). Source save preserved and owned DF5504 closed. |
 | Standing orders Workshops second-column controls draw41 cells from the first column but accept clicks51 cells from it. | No correction approved; DF3D preserves distinct native drawing/input rectangles. | Controlled automatic-reaction capture200445 on2026-11-08: kiln/smelter/other-shop art begins atx376, while input begins atx456 at1200x800. Native4353ec uses41-cell stride;433337 uses51. Earlier200350 clickingx444 changes first-column weaving instead and fails the cycle check; source save preserved. |
 | Work Details long names spill from the sidebar across the worker roster. | No correction approved; preserve unbounded captions and late text drawing order. | Native133241/133534 on2026-11-06 uses39 ASCII bytes plus CP437 byte195. Captions extend over the portrait/worker region. DF3D matches the sidebar crop; native overlapping sprite corruption and whole-screen pixel identity are not claimed. |
 | Work Details skill text exceeds its fixed worker row under a mixed-labor definition. | No correction approved or implemented; full roster rendering remains pending. | Protected114839 on2026-11-06 enables all94 labors in a controlled unsaved clone. Native1429ef0 creates all positive relevant skill captions; ten visible rows contain2–11 captions each. The screenshot shows later worker backgrounds covering earlier captions and the final worker’s extra captions extending over the search box. This evidence is scoped to the controlled definition. |
@@ -883,9 +884,14 @@ Native150237 records page-down/up positions2/0 for the main list and4/0
 for types at minimum height; installed Shift-wheel bindings select these native
 context-page actions. DF3D now pages on Shift-wheel over the panel. Native
 held-pointer dragging reaches both main endpoints and the type-list bottom,
-then releases. The second type-list press hits the track and pages upward;
-return-drag parity and exact thumb geometry remain unverified. The fixture
-`drag_reference` records this limitation. Owned DF40348 exited unsaved with
+then releases. Native201120 captures the bottom grip before the second press:
+the grip is drawn at y372–407, yet clicking816,402 sets type offset7 to4
+without starting a drag. Input45baf4(materials) and45bfd8(types) initialize
+scrollbar hit testing from the parent offset at context+4c; held dragging uses
+the picker offset at+120. This is a native input defect, not proof of a DF3D
+thumb geometry error. Correction approval is pending in the native bug register;
+type return-drag native parity remains unaccepted. `drag_reference` retains
+both capture provenance and this limitation. Owned DF40348 exited unsaved with
 source preservation. Core19 and rendered hunter-drag-shift-20261108 pass; the
 rendered check covers paging and both drag endpoints/releases independently,
 with only known Godot diagnostics. GPU50–51C sampled and no owned viewer remains.

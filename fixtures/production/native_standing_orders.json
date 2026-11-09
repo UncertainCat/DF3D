@@ -4979,7 +4979,33 @@
           "key": "CONTEXT_SCROLL_PAGEUP"
         }
       ],
-      "limitations": "Main drag reaches both endpoints and releases. Type drag reaches bottom and releases; the second press hits track and pages upward, so type return-drag parity is not established. Scroll commands establish native actions; installed Shift-wheel bindings map to page commands."
+      "limitations": "Main drag reaches both endpoints and releases. Type drag reaches bottom and releases. Native picker click hit testing uses the parent offset, so pressing the displayed bottom grip jumps to offset4 without dragging. Correction approval pending; type return-drag parity is not established. Installed Shift-wheel bindings map to context page commands.",
+      "bottom_grip_reference": {
+        "capture": "build/stockpile-storage-native-input-20261108-201120",
+        "image": "hunter-layout-types-drag-bottom.png",
+        "window": [
+          912,
+          552
+        ],
+        "pointer": [
+          816,
+          402
+        ],
+        "drawn_grip_y_inclusive": [
+          372,
+          407
+        ],
+        "before_choice_first": 7,
+        "after_choice_first": 4,
+        "after_choice_dragging": false,
+        "native_input_reads": {
+          "materials": "45baf4: context+4c",
+          "types": "45bfd8: context+4c"
+        },
+        "picker_offset": "context+120",
+        "source_save_preserved": true,
+        "correction_status": "approval pending"
+      }
     }
   },
   "chores_reference": {

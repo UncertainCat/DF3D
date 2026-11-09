@@ -3277,5 +3277,137 @@
     },
     "limitations": "No item icons or individual action owner, native hover, search input acceptance, scroll/resize acceptance, main-scene integration or large-inventory paging. Public route stays hidden.",
     "qa": "build/qa/stocks-view-final"
+  },
+  "hover_reference": {
+    "capture": "build/stockpile-storage-native-input-20261108-232831",
+    "source_save": "unchanged; owned DF48864 exited unsaved",
+    "observations": [
+      {
+        "instruction": 207,
+        "kind": "group-forbid",
+        "lines": [
+          "Toggle the forbidden",
+          "status of the item.",
+          "Citizens will not use",
+          "forbidden items or",
+          "buildings."
+        ],
+        "x": 844,
+        "y": 130
+      },
+      {
+        "instruction": 208,
+        "kind": "group-dump",
+        "lines": [
+          "Toggle the dump status",
+          "of the item.  Items are",
+          "dumped in dumping zones."
+        ],
+        "x": 868,
+        "y": 130
+      },
+      {
+        "instruction": 209,
+        "kind": "group-melt",
+        "lines": [
+          "Toggle the melt status",
+          "of the item.  Items are",
+          "melted at any smelter."
+        ],
+        "x": 892,
+        "y": 130
+      },
+      {
+        "instruction": 210,
+        "kind": "group-visibility",
+        "lines": [
+          "Toggle the visibility",
+          "of the item.  Hidden",
+          "items cannot be seen",
+          "but citizens will still",
+          "use them."
+        ],
+        "x": 916,
+        "y": 130
+      },
+      {
+        "instruction": 205,
+        "kind": "recenter",
+        "lines": [
+          "Leave menu and recenter",
+          "the view on the time."
+        ],
+        "x": 796,
+        "y": 166
+      },
+      {
+        "instruction": 206,
+        "kind": "view",
+        "lines": [
+          "Leave menu and open the",
+          "item's sheet."
+        ],
+        "x": 820,
+        "y": 166
+      },
+      {
+        "instruction": 207,
+        "kind": "forbid",
+        "lines": [
+          "Toggle the forbidden",
+          "status of the item.",
+          "Citizens will not use",
+          "forbidden items or",
+          "buildings."
+        ],
+        "x": 844,
+        "y": 166
+      },
+      {
+        "instruction": 208,
+        "kind": "dump",
+        "lines": [
+          "Toggle the dump status",
+          "of the item.  Items are",
+          "dumped in dumping zones."
+        ],
+        "x": 868,
+        "y": 166
+      },
+      {
+        "instruction": 209,
+        "kind": "melt",
+        "lines": [
+          "Toggle the melt status",
+          "of the item.  Items are",
+          "melted at any smelter."
+        ],
+        "x": 892,
+        "y": 166
+      },
+      {
+        "instruction": 210,
+        "kind": "visibility",
+        "lines": [
+          "Toggle the visibility",
+          "of the item.  Hidden",
+          "items cannot be seen",
+          "but citizens will still",
+          "use them."
+        ],
+        "x": 916,
+        "y": 166
+      }
+    ],
+    "scope": "Actual native pointer targets, instruction IDs and rendered text cells for four group and six individual controls. Screenshot handshake does not retain the overlay, so PNGs are not overlay pixel evidence. Native instruction205 typo time is preserved.",
+    "viewer": {
+      "capture": "build/stockpile-storage-native-input-20261108-233243",
+      "qa": "build/qa/stocks-hover-final",
+      "scope": "Ten rendered pointer targets activate expected native instructions/verbatim text; header departure clears overlay after motion delivery. Existing collapse/expand and two group visibility edits pass with independent simulation flags/restoration and stale replay rejection. Headless checks cover absent group/item eligibility and pending/hidden authority clearing.",
+      "source_save": "unchanged; owned DF43324 exited unsaved",
+      "gpu": "30FPS;51C sampled",
+      "diagnostics": "passed_with_known_issues: godot-separate-thread-notice, godot-device-finalize, godot-shutdown-objects; unclassified empty",
+      "limitations": "No native overlay PNG pixel comparison, filter tooltip or broader input/resize/lifecycle acceptance."
+    }
   }
 }

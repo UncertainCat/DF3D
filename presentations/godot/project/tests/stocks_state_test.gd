@@ -66,6 +66,24 @@ func run() -> void:
 		if fault=="foreign item":reply.stocks_menu.items=[item(99)]
 		if fault=="zero revision":reply.stocks_menu.groups[0].revision=0
 		service.reply(state.ticket,reply);check(state.phase==State.Phase.Rejected and state.groups.is_empty(),"Malformed receipt accepted: "+fault)
-	state.dispose();service.queue_free();await process_frame
+	ready(state,service);state.items={7:item(7)};state.groups[0].flags=240
+	var view:=View.new();view.state=state
+	view.item_canvas=Control.new();view.add_child(view.item_canvas);view.item_canvas.position=Vector2(328,60);view.item_canvas.size=Vector2(584,612)
+	view.item_scrollbar=preload("res://scripts/area_location_scrollbar.gd").new();view.add_child(view.item_scrollbar)
+	view.page=[{"group":state.groups[0]},{"id":7}]
+	for operation in 4:
+		check(view.help_at(Vector2(812+24*operation,78))==["forbid","dump","melt","visibility"][operation],"Group hover hitbox differs")
+	for control in 6:
+		var expected: String=["recenter","view","forbid","dump","","visibility"][control]
+		check(view.help_at(Vector2(764+24*control,114))==expected,"Individual hover eligibility differs")
+	state.groups[0].flags=0;check(view.help_at(Vector2(812,78)).is_empty(),"Unavailable group control has hover")
+	check(view.help_at(Vector2(764,78)).is_empty() and view.help_at(Vector2(500,78)).is_empty() and view.help_at(Vector2(764,40)).is_empty(),"Blank group/header space has hover")
+	state.items={};check(view.help_at(Vector2(812,114)).is_empty(),"Missing item facts have hover")
+	var hover=preload("res://scripts/native_hover_view.gd").new();root.add_child(hover);root.add_child(view)
+	view.hover_help=hover;view.pointer_known=true;view.pointer_position=Vector2(812,78);state.groups[0].flags=240
+	view._process(0);check(hover.state.key=="item_forbid","Stocks help did not use shared native flag text")
+	state.phase=State.Phase.Applying;view._process(0);check(hover.state.key.is_empty(),"Pending mutation retained hover authority")
+	state.phase=State.Phase.Ready;view._process(0);view.hide();view._process(0);check(hover.state.key.is_empty(),"Hidden Stocks retained hover")
+	view.free();hover.free();state.dispose();service.queue_free();await process_frame
 	if failures==0:print("STOCKS_STATE_PASS")
 	quit(1 if failures else 0)

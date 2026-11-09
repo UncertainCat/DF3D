@@ -6,6 +6,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
+| Stocks Recenter tooltip says "recenter the view on the time" instead of "item". | No correction approved or implemented; preserve the native wording. | Protected232831 pointer instruction205 and rendered text cells confirm the typo. `native_stocks.json.hover_reference`; the viewer uses those verbatim lines. Native overlay PNG capture is not accepted because the screenshot handshake loses the hover overlay. |
 | Work Details sort tooltips advertise keyboard bindings, but sort-widget feed handles only mouse input. | No correction approved or implemented; preserve inactive sort shortcuts. | Native211422/211654 identifies all four headers at feed3c6300..3c647e, with no event-set processing or base feed call. Earlier140139 forced-key-flag probes likewise leave Skills ordering unchanged. Filter has a separate working right-panel-focus gate and is not included in this defect. |
 | Hunter ammunition picker scrollbar clicks use the parent ammunition list's offset instead of the picker's offset. | Correction approval pending; the staged DF3D scrollbar uses its own displayed offset. Public exposure remains gated. | Native201120 on2026-11-08 reproduces150237: type offset7 draws the grip at y372–407, but a click at816,402 sets offset4 without starting a drag. Native45baf4(materials) and45bfd8(types) read context+4c (parent offset); dragging uses+120 (picker offset). Source save preserved and owned DF5504 closed. |
 | Standing orders Workshops second-column controls draw41 cells from the first column but accept clicks51 cells from it. | No correction approved; DF3D preserves distinct native drawing/input rectangles. | Controlled automatic-reaction capture200445 on2026-11-08: kiln/smelter/other-shop art begins atx376, while input begins atx456 at1200x800. Native4353ec uses41-cell stride;433337 uses51. Earlier200350 clickingx444 changes first-column weaving instead and fails the cycle check; source save preserved. |
@@ -101,8 +102,21 @@ first item text/controls crop400,148..944,184 have zero RGB differences. Filter
 and scrollbar crops retain18/26/26 differing pixels; no whole-panel identity
 claim. Individual icons are deliberately unfinished (44 missing pixels per
 visible Ammunition icon), and item View/Recenter/flag signals have no owner yet.
-Search input, scroll/resize parity, hover, complete item appearance and actions,
+Search input, scroll/resize parity, filter help, complete item appearance and actions,
 main-scene ownership and large-inventory handling remain exposure prerequisites.
+
+Stocks action help uses the shared native-hover owner and clock. Protected232831
+captures instruction IDs and rendered text cells for all four group controls
+and six item controls;207..210 reuse the item-sheet help, while205/206 retain
+Stocks-specific Recenter/View wording. Hidden/unavailable controls and blank
+headers have no help; pending authority or a hidden panel clears the owner.
+Core19, Stocks controller/hitbox checks and native-hover timing checks pass in
+`stocks-hover-final`. Rendered233243 exercises all ten targets with verbatim
+line comparisons, pointer departure and the existing group pointer edits:
+source unchanged, DF43324 exits unsaved, 30FPS GPU51C sampled, only documented
+thread/finalize/shutdown-object diagnostics. Viewer overlays were visually
+inspected; native text cells, rather than the transient native screenshots,
+establish wording. No native overlay pixel-identity claim is made.
 
 Stocks has an accepted inventory-membership component but no DF3D screen yet.
 Protected215344 on2026-11-08 opens and closes native D_STOCKS while paused,

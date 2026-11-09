@@ -101,6 +101,11 @@ const ITEM_HELP={
     "melted at any smelter."
   ]
 }
+# Stocks232831: native instructions205/206; flag instructions207..210
+# share ITEM_HELP. Preserve native "time" typo in205 pending authorization.
+const STOCKS_HELP={
+	"recenter":["Leave menu and recenter","the view on the time."],
+	"view":["Leave menu and open the","item's sheet."]}
 # Native contents235536 text cells, instructions286/317/323..328.
 const CONTENTS_HELP={
   "permanent": [
@@ -211,6 +216,11 @@ func enter_work_order(owner: int, kind: String) -> void:
 func enter_contents(owner: int, kind: String) -> void:
 	if CONTENTS_HELP.has(kind):state.enter(owner,"contents_"+kind,Time.get_ticks_msec());_process(0)
 
+func enter_stocks(owner: int, kind: String) -> void:
+	if STOCKS_HELP.has(kind):state.enter(owner,"stocks_"+kind,Time.get_ticks_msec());_process(0)
+	elif kind in ["forbid","dump","melt","visibility"]:enter_item(owner,kind)
+	else:leave(owner)
+
 func enter_building(owner: int, kind: String) -> void:
 	if BUILDING_HELP.has(kind):state.enter(owner,"building_"+kind,Time.get_ticks_msec());_process(0)
 
@@ -282,6 +292,7 @@ func _draw() -> void:
 	elif displayed.begins_with("item_"): lines=ITEM_HELP[displayed.trim_prefix("item_")]
 	elif displayed.begins_with("work_order_"): lines=WORK_ORDER_HELP[displayed.trim_prefix("work_order_")]
 	elif displayed.begins_with("contents_"): lines=CONTENTS_HELP[displayed.trim_prefix("contents_")]
+	elif displayed.begins_with("stocks_"): lines=STOCKS_HELP[displayed.trim_prefix("stocks_")]
 	elif displayed.begins_with("building_"): lines=BUILDING_HELP[displayed.trim_prefix("building_")]
 	elif displayed.begins_with("unit_"): lines=UNIT_HELP[displayed.trim_prefix("unit_")]
 	elif displayed.begins_with("specialization_"): lines=SPECIALIZATION_HELP[int(displayed.trim_prefix("specialization_"))]

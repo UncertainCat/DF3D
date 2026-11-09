@@ -208,6 +208,10 @@ if os.getenv('DF3D_STOCKS_ACTIONS')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-native.lua$','stocks-actions-native.lua')
  assert(loadfile(source))(view,result,probe)
 end
+if os.getenv('DF3D_STOCKS_HOVER')=='1' then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-native.lua$','stocks-hover-native.lua')
+ assert(loadfile(source))(out,view,result)
+end
 if os.getenv('DF3D_STOCKS_NAVIGATION')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-native.lua$','stocks-navigation-native.lua')
  assert(loadfile(source))(out,view,result)

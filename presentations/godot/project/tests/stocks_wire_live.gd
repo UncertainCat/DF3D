@@ -51,11 +51,12 @@ func run() -> void:
 	var state:=State.new();state.configure(service);state.open()
 	if not await ready_state(state):quit(1);return
 	check(state.category==39,"Stocks controller initial category differs")
-	var view
+	var view;var hover
 	if OS.get_environment("DF3D_STOCKS_RENDER")=="1":
 		root.size=Vector2i(1200,800)
 		if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Stocks assets unavailable"):quit(1);return
-		view=preload("res://scripts/stocks_view.gd").new();root.add_child(view);view.configure_stocks(world,state);view.layout(Vector2(1200,800))
+		hover=preload("res://scripts/native_hover_view.gd").new();hover.configure(world);hover.layout(Vector2(1200,800))
+		view=preload("res://scripts/stocks_view.gd").new();root.add_child(view);view.configure_stocks(world,state,hover);view.layout(Vector2(1200,800));root.add_child(hover)
 		await process_frame
 		if not await ready_state(state):quit(1);return
 		await create_timer(0.3).timeout;await RenderingServer.frame_post_draw
@@ -64,6 +65,22 @@ func run() -> void:
 		for row in view.page:
 			if row.has("id"):visible.append(row.id)
 		check(visible.all(func(id):return state.items.has(id)),"Stocks visible facts did not settle")
+		if OS.get_environment("DF3D_STOCKS_HOVER_RENDER")=="1":
+			var fixture: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/production/native_stocks.json"))
+			for target in fixture.hover_reference.observations:
+				var motion:=InputEventMouseMotion.new();motion.position=Vector2(target.x,target.y);motion.global_position=motion.position
+				Input.parse_input_event(motion);await create_timer(0.65).timeout
+				var kind: String=str(target.kind).trim_prefix("group-")
+				var expected: String=("stocks_" if kind in ["recenter","view"] else "item_")+kind
+				check(hover.displayed==expected,"Stocks hover did not activate: "+str(target.kind))
+				var lines: Array=hover.STOCKS_HELP[kind] if kind in ["recenter","view"] else hover.ITEM_HELP[kind]
+				check(lines==target.lines,"Stocks hover text differs from native cells")
+				await RenderingServer.frame_post_draw
+				root.get_texture().get_image().save_png(directory+"/stocks-view-help-"+str(target.kind)+".png")
+			var motion:=InputEventMouseMotion.new();motion.position=Vector2(500,130);motion.global_position=motion.position
+			Input.parse_input_event(motion);await process_frame;await process_frame
+			check(view.pointer_position==Vector2(468,78),"Stocks header motion was not delivered")
+			check(hover.displayed.is_empty(),"Stocks header retained unrelated hover")
 		var expanded_count: int=view.total_rows
 		await click(Vector2(500,130))
 		if not await ready_state(state):quit(1);return
@@ -92,4 +109,5 @@ func run() -> void:
 	var f:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	f.store_string(JSON.stringify({"success":not failed,"categories":93,"groups":reference.selection.groups.size(),"items":ids.size(),"edits":2,"controller":true,"rendered":view!=null}));f.close()
 	if view!=null:view.queue_free()
+	if hover!=null:hover.queue_free()
 	state.dispose();service.queue_free();world.queue_free();await process_frame;quit(1 if failed else 0)

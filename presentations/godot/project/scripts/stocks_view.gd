@@ -1,6 +1,6 @@
 extends "res://scripts/location_staff_candidates_frame.gd"
 # Staged native Stocks surface. Individual artwork/actions and complete resize,
-# input and hover acceptance remain prerequisites for public exposure.
+# input acceptance remain prerequisites for public exposure.
 signal cancelled
 signal item_requested(id: int)
 signal recenter_requested(id: int)
@@ -18,7 +18,12 @@ var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
 var page: Array=[]
 var total_rows:=0
 var requested:=false
-func configure_stocks(source,model) -> void:
+var hover_help
+var pointer_known:=false
+var pointer_position:=Vector2.ZERO
+func configure_stocks(source,model,help=null) -> void:
+	hover_help=help;mouse_exited.connect(_leave_hover)
+	visibility_changed.connect(func():if not is_visible_in_tree():_leave_hover())
 	configure(source);state=model;picture.configure(source)
 	colors=art.installed_palette(source.assets_root());mouse_filter=Control.MOUSE_FILTER_STOP
 	category_canvas=Control.new();add_child(category_canvas);category_canvas.mouse_filter=Control.MOUSE_FILTER_IGNORE;category_canvas.clip_contents=true
@@ -125,11 +130,41 @@ func _draw() -> void:
 	patch("HOVER_RECTANGLE",Vector2i.ZERO,int(size.x/8),frame_rows)
 func _input(event: InputEvent) -> void:
 	if not allowed():return
+	if event is InputEventMouseMotion:
+		pointer_known=true;pointer_position=get_global_transform_with_canvas().affine_inverse()*event.position
+		_process(0)
 	if event is InputEventKey and event.pressed:
 		if event.keycode==KEY_ESCAPE:cancelled.emit();get_viewport().set_input_as_handled()
 		elif search.has_focus():search.feed_key(event);get_viewport().set_input_as_handled()
 	elif event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_RIGHT:
 		cancelled.emit();get_viewport().set_input_as_handled()
+func help_at(point: Vector2) -> String:
+	if state==null or item_canvas==null:return ""
+	point-=item_canvas.position
+	if not Rect2(Vector2.ZERO,item_canvas.size).has_point(point):return ""
+	var index:=int((point.y+(item_scrollbar.first%3)*12)/36)
+	if index<0 or index>=page.size():return ""
+	var entry: Dictionary=page[index]
+	for operation in range(-2,4):
+		if not control_rect(index,operation).has_point(point):continue
+		if entry.has("group"):
+			if operation<0:return ""
+			var mask:=1<<operation
+			if not (entry.group.flags&(mask|(mask<<4))):return ""
+		else:
+			var row: Dictionary=state.items.get(entry.id,{})
+			if row.is_empty() or (operation==1 and not row.can_dump) or (operation==2 and not row.can_melt):return ""
+		return ["recenter","view","forbid","dump","melt","visibility"][operation+2]
+	return ""
+func _leave_hover() -> void:
+	pointer_known=false
+	if is_instance_valid(hover_help):hover_help.leave(get_instance_id())
+func _process(_delta: float) -> void:
+	if not is_instance_valid(hover_help):return
+	if pointer_known and ready():
+		var kind:=help_at(pointer_position)
+		if not kind.is_empty():hover_help.enter_stocks(get_instance_id(),kind);return
+	hover_help.leave(get_instance_id())
 func _gui_input(event: InputEvent) -> void:
 	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
 	accept_event()
@@ -162,4 +197,5 @@ func _gui_input(event: InputEvent) -> void:
 		elif (operation!=1 or row.can_dump) and (operation!=2 or row.can_melt):item_flag_requested.emit(row.id,operation,not bool(row.flags&FLAGS[operation]))
 		return
 func _exit_tree() -> void:
+	_leave_hover()
 	if state!=null and state.changed.is_connected(refresh):state.changed.disconnect(refresh)

@@ -226,6 +226,39 @@ branches manipulate native camera/menu state and are discovery evidence only;
 future viewer navigation must own its camera and panels. Runtime routing,
 hover controls, row layout and pixel rendering remain unfinished.
 
+## Management 175 Places read contract
+
+Management175 adds `PlacesRead`, a bounded single-tab page request, and owned
+`PlacesRow`/`PlacesState` data. Rebuild bridge and viewer together; the shared
+region changes to `Local\df3d_management_v175` and174 peers cannot attach.
+Existing wire fields retain their meanings. Older recordings have no Places
+payload; no rows, artwork or status values are synthesized during migration.
+
+Tabs0..5 retain native list order. Pages contain at most64 rows and384KiB of
+estimated owned payload, with captions capped at16384 bytes and recipes at128KiB.
+Continuation offsets require a positive membership revision. Revisions include
+the selected tab and ordered IDs, not changing captions or artwork; a mismatched
+revision or out-of-range offset yields Stale with no rows. Empty final pages are
+valid; nonfinal pages must advance. Row IDs are unique, position is optional,
+and siege action is0..4 only on tab5 (otherwise -1). The separate hospital status
+overlay remains distinct from its underlying caption. Validators reject invalid
+tabs, duplicates, missing text, malformed recipes and excess payload.
+
+The bridge prepares captions/artwork only for the selected tab using the owned
+native provider. Godot receives model-owned dictionaries through the `places`
+domain. This read-only contract does not expose siege mutation requests. Existing
+epoch, save admission and request receipt handling applies. Places remains hidden
+pending its controller, rendering, navigation, hover and mutation integration.
+
+Protected `stockpile-storage-native-input-20261110-152108` uses a headless Godot
+client and a paused disposable DF53.16 session. It matches all transported fields,
+positions and artwork for249 rows (158/6/34/46/2/3 by tab), exercises pagination,
+and rejects stale membership revisions on all six tabs. The source save is
+preserved and owned DF closes unsaved. Core19 checks and both builds pass.
+The client emits the existing experimental rendering-thread warning, with no
+script errors. This is transport acceptance, not screen/pixel acceptance or
+changed-epoch/disconnect/late-reply controller acceptance.
+
 ## Management 174 Tasks contract
 
 Management174 uses `Local\df3d_management_v174`;173 peers cannot attach. There is

@@ -46,6 +46,20 @@ ManagementState decodeState(const m::ManagementState* s) {
     next.creatureHeader=std::move(header);
   }
   if(const auto* r=s->residents())next.residents=ResidentsState{{r->unit_ids()->begin(),r->unit_ids()->end()}};
+  if(const auto* r=s->places()) {
+    auto& out=next.places.emplace();out.outcome=PlacesOutcome(r->outcome());out.tab=r->tab();
+    out.listRevision=r->list_revision();out.total=r->total();out.offset=r->offset();
+    for(const auto* row:*r->rows()) {
+      PlacesRow v;v.buildingId=row->building_id();
+      if(const auto* p=row->position())v.position=TilePos{p->x(),p->y(),p->z()};
+      v.name=row->name()->str();v.subtitle=row->subtitle()->str();v.jobCaption=row->job_caption()->str();
+      v.statusCaption=row->status_caption()->str();v.secondaryStatus=row->secondary_status()->str();
+      v.statusOverlay=row->status_overlay()->str();v.operatorCaption=row->operator_caption()->str();
+      v.additionalJobs=row->additional_jobs();v.siegeAction=row->siege_action();
+      if(row->appearance())v.appearance=decodeItemRecipe(row->appearance());
+      out.rows.push_back(std::move(v));
+    }
+  }
   if(const auto* r=s->tasks()) {
     auto& out=next.tasks.emplace();out.outcome=TasksOutcome(r->outcome());out.listRevision=r->list_revision();
     out.total=r->total();out.offset=r->offset();out.jobId=r->job_id();
@@ -257,6 +271,9 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
   }
   const auto anchor=r.materialAnchor.value_or(TilePos{r.x,r.y,r.z});
   const m::TilePos materialAnchor(anchor.x,anchor.y,anchor.z);
+  flatbuffers::Offset<m::PlacesRequest> places;
+  if(r.action==ManagementAction::PlacesRead){const auto& q=r.places;
+    places=m::CreatePlacesRequest(b,q.tab,q.offset,q.limit,q.expectedListRevision);}
   flatbuffers::Offset<m::TasksRequest> tasks;
   if(r.action==ManagementAction::TasksRead || r.action==ManagementAction::TasksApply){
     const auto& q=r.tasks;
@@ -368,7 +385,7 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
           flatbuffers::Offset<m::WorkDetailSettingsRequest>{},
       (r.action==ManagementAction::StandingOrdersRead || r.action==ManagementAction::StandingOrdersSet)?
           m::CreateStandingOrdersRequest(b,r.standingOrders.category,r.standingOrders.settingId,r.standingOrders.expectedValue,r.standingOrders.value):
-          flatbuffers::Offset<m::StandingOrdersRequest>{},hunter,chores,kitchenMenu,stoneUse,stocksMenu,tasks);
+          flatbuffers::Offset<m::StandingOrdersRequest>{},hunter,chores,kitchenMenu,stoneUse,stocksMenu,tasks,places);
   b.Finish(request);
 }
 }  // namespace wm::detail::management

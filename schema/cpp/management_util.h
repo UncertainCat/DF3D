@@ -141,8 +141,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 174;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v174";
+inline constexpr uint32_t kManagementVersion = 175;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v175";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -440,7 +440,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::TasksApply &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::PlacesRead &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -529,7 +529,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::TasksApply)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::PlacesRead)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -623,6 +623,11 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     const auto* q=r.residents_specialization();
     if(!q || q->unit_id()<0 || !q->expected_revision() || q->expected_revision()>INT64_MAX)return "invalid residents specialization request";
   } else if(r.residents_specialization())return "unexpected residents specialization request";
+  if(r.action()==ManagementAction::PlacesRead){
+    const auto* q=r.places();if(!q || q->tab()>5 || !q->limit() || q->limit()>64 ||
+      q->offset()>1048576 || q->expected_list_revision()>INT64_MAX ||
+      (q->offset() && !q->expected_list_revision()))return "invalid places page request";
+  }else if(r.places())return "unexpected places request";
   if(r.action()==ManagementAction::TasksRead || r.action()==ManagementAction::TasksApply) {
     const auto* q=r.tasks();if(!q || q->operation()>TasksOperation::Cancel)return "invalid tasks request";
     if(r.action()==ManagementAction::TasksRead){
@@ -1182,7 +1187,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::TasksApply ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::PlacesRead ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -1265,6 +1270,31 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     for(auto id:*r->unit_ids())if(id<0 || !ids.insert(id).second)return "invalid residents identity";
   } else if((s.action()==ManagementAction::ResidentsQuery || s.action()==ManagementAction::WorkDetailWorkersQuery) && s.status()==ManagementStatus::Ok)
     return "residents result required";
+  if(const auto* r=s.places()) {
+    if(s.action()!=ManagementAction::PlacesRead || r->tab()>5 || !r->rows() ||
+      r->rows()->size()>64 || r->outcome()>PlacesOutcome::Stale)return "invalid places result";
+    if(s.status()==ManagementStatus::Ok){
+      if(r->outcome()!=PlacesOutcome::None || !r->list_revision() || r->list_revision()>INT64_MAX ||
+        r->total()>1048576 || r->offset()>r->total() || r->rows()->size()>r->total()-r->offset() ||
+        (r->offset()<r->total() && !r->rows()->size()))return "invalid places page";
+    }else if(s.status()!=ManagementStatus::Rejected || r->outcome()==PlacesOutcome::None ||
+      r->list_revision() || r->total() || r->offset() || r->rows()->size())return "invalid places refusal";
+    size_t bytes=0;std::unordered_set<int32_t> ids;
+    for(const auto* row:*r->rows()){
+      if(!row || row->building_id()<0 || !ids.insert(row->building_id()).second ||
+        row->additional_jobs()<0 || row->additional_jobs()>1048576 ||
+        (r->tab()==5 ? row->siege_action()<0 || row->siege_action()>4 : row->siege_action()!=-1))return "invalid places row";
+      bytes+=128;
+      for(const auto* text:{row->name(),row->subtitle(),row->job_caption(),row->status_caption(),row->secondary_status(),row->status_overlay(),row->operator_caption()}){
+        if(!text || text->size()>16384)return "invalid places caption";bytes+=text->size();}
+      if(const auto* p=row->position())if(p->x()<0 || p->y()<0 || p->z()<0 || p->x()>32767 || p->y()>32767 || p->z()>32767)return "invalid places position";
+      if(const auto* a=row->appearance()){
+        size_t recipe=0;if(auto error=validateOwnerAppearance(*a,recipe))return error;
+        if(!a->layers()->size() || recipe>131072)return "invalid places artwork";bytes+=recipe;
+      }
+      if(bytes>384*1024)return "places page payload exceeded";
+    }
+  }else if(s.status()==ManagementStatus::Ok && s.action()==ManagementAction::PlacesRead)return "missing places result";
   if(const auto* r=s.tasks()) {
     const bool read=s.action()==ManagementAction::TasksRead,apply=s.action()==ManagementAction::TasksApply;
     if((!read && !apply) || !r->rows() || r->rows()->size()>64 || r->outcome()>TasksOutcome::Unknown)return "invalid tasks result";

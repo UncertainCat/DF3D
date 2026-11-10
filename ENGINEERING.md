@@ -335,6 +335,20 @@ render-thread finalize/ObjectDB shutdown diagnostics. Source save preserved;
 owned DF35908 closed unsaved, graphical clients capped at30FPS, GPU60C/42% sampled.
 Core19 and Places controller checks pass in `build/qa/places-scene-final`.
 
+
+Places contextual wheel input follows native399c36..399cd5 and the shared
+140f2b0 helper: one row per notch, one visible page with Shift, only for a
+scrollable list while the pointer is in the panel body. The region includes
+the blank strip above ordinary rows and the scrollbar; standard Down/PageDown
+keys remain inactive. Protected154518 records11 native input cases from offset10
+at1200x800; protected154640 checks nine corresponding actual main-scene wheel
+cases plus the inactive keys. Both preserve the source save and close owned DF
+unsaved. Scene verification is `passed_with_known_issues` for the same deferred
+Godot shutdown diagnostics; sampled GPU60–61C, capped30FPS. Core19/controller
+checks pass in `build/qa/places-scroll-final`. Other sizes, Siege aggregate hover
+regions and scrollbar track/drag input remain unaccepted. The fixture retains
+`scroll_input_reference`; hover and typed siege actions remain pending.
+
 ## Management 174 Tasks contract
 
 Management174 uses `Local\df3d_management_v174`;173 peers cannot attach. There is

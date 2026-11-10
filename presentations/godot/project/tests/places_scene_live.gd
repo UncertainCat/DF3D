@@ -10,6 +10,15 @@ func settle(model) -> bool:
 	return check(model.phase==model.Phase.Ready,"Places did not become ready")
 func exercise(expected: Dictionary) -> void:
 	owner=scene._ui.controller("places")
+	owner.open_panel();if not await settle(owner.state):return
+	for sample in [[Vector2(468,248),MOUSE_BUTTON_WHEEL_DOWN,false,11],[Vector2(468,248),MOUSE_BUTTON_WHEEL_UP,false,9],[Vector2(468,248),MOUSE_BUTTON_WHEEL_DOWN,true,25],[Vector2(468,248),MOUSE_BUTTON_WHEEL_UP,true,0],[Vector2(-12,-32),MOUSE_BUTTON_WHEEL_DOWN,false,10],[Vector2(468,88),MOUSE_BUTTON_WHEEL_DOWN,false,10],[Vector2(468,108),MOUSE_BUTTON_WHEEL_DOWN,false,11],[Vector2(920,248),MOUSE_BUTTON_WHEEL_DOWN,false,11],[Vector2(920,248),MOUSE_BUTTON_WHEEL_DOWN,true,25]]:
+		owner.state.seek(10,owner.panel.capacity());await process_frame
+		var wheel:=InputEventMouseButton.new();wheel.position=owner.panel.get_global_transform_with_canvas()*sample[0];wheel.button_index=sample[1];wheel.shift_pressed=sample[2];wheel.pressed=true
+		root.push_input(wheel,true);wheel=wheel.duplicate();wheel.pressed=false;root.push_input(wheel,true);await process_frame
+		check(owner.state.first==sample[3],"Places contextual scrolling differs")
+	owner.state.seek(10,owner.panel.capacity());key(KEY_DOWN);key(KEY_PAGEDOWN);await process_frame
+	check(owner.state.first==10,"Places accepted inactive standard scrolling keys")
+	owner.close_panel()
 	for tab in 6:
 		owner.open_panel()
 		if tab>0:owner.state.select_tab(tab)

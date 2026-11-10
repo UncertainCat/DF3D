@@ -9464,5 +9464,139 @@
       "Camera XY position and map click blocking",
       "Hover, wheel, other sizes and typed siege mutations"
     ]
+  },
+  "scroll_input_reference": {
+    "native_source": "build/stockpile-storage-native-input-20261110-154518",
+    "scene_source": "build/stockpile-storage-native-input-20261110-154640",
+    "native_samples": [
+      {
+        "after": 11,
+        "before": 10,
+        "key": "CONTEXT_SCROLL_DOWN",
+        "name": "wheel-down",
+        "point": [
+          500,
+          300
+        ]
+      },
+      {
+        "after": 9,
+        "before": 10,
+        "key": "CONTEXT_SCROLL_UP",
+        "name": "wheel-up",
+        "point": [
+          500,
+          300
+        ]
+      },
+      {
+        "after": 25,
+        "before": 10,
+        "key": "CONTEXT_SCROLL_PAGEDOWN",
+        "name": "page-down",
+        "point": [
+          500,
+          300
+        ]
+      },
+      {
+        "after": 0,
+        "before": 10,
+        "key": "CONTEXT_SCROLL_PAGEUP",
+        "name": "page-up",
+        "point": [
+          500,
+          300
+        ]
+      },
+      {
+        "after": 10,
+        "before": 10,
+        "key": "STANDARDSCROLL_DOWN",
+        "name": "standard-down",
+        "point": [
+          500,
+          300
+        ]
+      },
+      {
+        "after": 10,
+        "before": 10,
+        "key": "STANDARDSCROLL_PAGEDOWN",
+        "name": "standard-page",
+        "point": [
+          500,
+          300
+        ]
+      },
+      {
+        "after": 10,
+        "before": 10,
+        "key": "CONTEXT_SCROLL_DOWN",
+        "name": "outside",
+        "point": [
+          20,
+          20
+        ]
+      },
+      {
+        "after": 10,
+        "before": 10,
+        "key": "CONTEXT_SCROLL_DOWN",
+        "name": "header",
+        "point": [
+          500,
+          140
+        ]
+      },
+      {
+        "after": 11,
+        "before": 10,
+        "key": "CONTEXT_SCROLL_DOWN",
+        "name": "above-list",
+        "point": [
+          500,
+          160
+        ]
+      },
+      {
+        "after": 11,
+        "before": 10,
+        "key": "CONTEXT_SCROLL_DOWN",
+        "name": "bar-wheel",
+        "point": [
+          952,
+          300
+        ]
+      },
+      {
+        "after": 25,
+        "before": 10,
+        "key": "CONTEXT_SCROLL_PAGEDOWN",
+        "name": "bar-page",
+        "point": [
+          952,
+          300
+        ]
+      }
+    ],
+    "scene_wheel_samples": 9,
+    "scene_inactive_standard_keys": [
+      "Down",
+      "PageDown"
+    ],
+    "native_entry": "399c36..399cd5 calls shared contextual scroll140f2b0",
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "result": "passed_with_known_issues",
+    "known_diagnostics": [
+      "render-thread finalize",
+      "ObjectDB shutdown leak warning"
+    ],
+    "omissions": [
+      "Other viewport sizes",
+      "Siege aggregate pointer region and short lists",
+      "Scrollbar track/drag input"
+    ]
   }
 }

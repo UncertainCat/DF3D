@@ -218,6 +218,21 @@ if siege_fixture then
  end end
  reset();save()
 end
+result.scroll_input={}
+info.buildings.mode=0
+for _,sample in ipairs{{'wheel-down','CONTEXT_SCROLL_DOWN',500,300},{'wheel-up','CONTEXT_SCROLL_UP',500,300},
+ {'page-down','CONTEXT_SCROLL_PAGEDOWN',500,300},{'page-up','CONTEXT_SCROLL_PAGEUP',500,300},
+ {'standard-down','STANDARDSCROLL_DOWN',500,300},{'standard-page','STANDARDSCROLL_PAGEDOWN',500,300},
+ {'outside','CONTEXT_SCROLL_DOWN',20,20},{'header','CONTEXT_SCROLL_DOWN',500,140},
+ {'above-list','CONTEXT_SCROLL_DOWN',500,160},{'bar-wheel','CONTEXT_SCROLL_DOWN',952,300},
+ {'bar-page','CONTEXT_SCROLL_PAGEDOWN',952,300}}do
+ info.buildings.scrolling_position[0]=10;view:render(dfhack.getTickCount())
+ df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+ g.precise_mouse_x=sample[3];g.precise_mouse_y=sample[4];g.mouse_x=sample[3]//8;g.mouse_y=(sample[4]-4)//12
+ gui.simulateInput(view,sample[2]);view:render(dfhack.getTickCount())
+ result.scroll_input[#result.scroll_input+1]={name=sample[1],key=sample[2],point={sample[3],sample[4]},before=10,after=info.buildings.scrolling_position[0]}
+end
+info.buildings.scrolling_position[0]=0;save()
 gui.simulateInput(view,'LEAVESCREEN');settle();assert(not info.open,'Places did not close')
 if secondary_fixture then
  local profile=df.building.find(secondary_fixture.building_id):getWorkshopProfile();profile.permitted_workers:resize(0)

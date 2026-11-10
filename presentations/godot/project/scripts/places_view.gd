@@ -45,6 +45,16 @@ func refresh() -> void:
 	scrollbar.page=capacity();scrollbar.set_rows(state.rows.size(),visible_first());queue_redraw()
 func _exit_tree() -> void:
 	if state!=null and state.changed.is_connected(refresh):state.changed.disconnect(refresh)
+func _input(event: InputEvent) -> void:
+	# Native399c36 gates the shared contextual-scroll helper140f2b0 by
+	# panel cells, starting above the ordinary list (also on the Siege tab).
+	if allowed() and state!=null and state.phase==state.Phase.Ready and state.rows.size()>capacity() and event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN] and not event.ctrl_pressed and not event.alt_pressed and not event.meta_pressed:
+		var point: Vector2=get_global_transform_with_canvas().affine_inverse()*event.position
+		var top:=84 if wide_tabs else 108
+		if Rect2(0,top,size.x+8,size.y-top).has_point(point):
+			var step: int=(capacity() if event.shift_pressed else 1)*(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1)
+			state.seek(visible_first()+step,capacity());get_viewport().set_input_as_handled();return
+	super._input(event)
 func _gui_input(event: InputEvent) -> void:
 	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
 	accept_event()

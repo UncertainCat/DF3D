@@ -8489,5 +8489,342 @@
       "Prepared fish49 absent from save. Fish artwork is not implemented; this is semantic bridge acceptance only. Public Stocks remains gated.",
       "Prior070612 failed missing appearance;070856 timed out on authority;071148 failed a test action-name parse error;071257 reproduced invalid observation headlessly. None count as acceptance. Those sessions preserved the source and exited unsaved."
     ]
+  },
+  "remaining_furniture_description_reference": {
+    "run": "build/stockpile-storage-native-input-20261110-072202",
+    "headless_run": "build/stockpile-storage-native-input-20261110-072052",
+    "dispatch": [
+      {
+        "name": "item_ballistapartsst",
+        "table": "0x16fc288",
+        "kind": 64,
+        "get_type": "0x5c2320",
+        "subtype": "0x66e60",
+        "differences": {},
+        "type_hash": "12ab673a5f182adc",
+        "build_mat": "0x67050"
+      },
+      {
+        "name": "item_bolt_thrower_partsst",
+        "table": "0x16f1240",
+        "kind": 92,
+        "get_type": "0x8f5450",
+        "subtype": "0x66e60",
+        "differences": {},
+        "type_hash": "1054268c294ac798",
+        "build_mat": "0x67050"
+      },
+      {
+        "name": "item_braceletst",
+        "table": "0x16fa488",
+        "kind": 43,
+        "get_type": "0x531290",
+        "subtype": "0x66e60",
+        "differences": {},
+        "type_hash": "13aa8cfdcf6c549d",
+        "build_mat": "0x67050"
+      },
+      {
+        "name": "item_catapultpartsst",
+        "table": "0x1701668",
+        "kind": 63,
+        "get_type": "0x1044f0",
+        "subtype": "0x66e60",
+        "differences": {},
+        "type_hash": "abddb2fbaf262ac1",
+        "build_mat": "0x67050"
+      },
+      {
+        "name": "item_crownst",
+        "table": "0x16f7520",
+        "kind": 40,
+        "get_type": "0x549270",
+        "subtype": "0x66e60",
+        "differences": {},
+        "type_hash": "39b7b07d475b6314",
+        "build_mat": "0x67050"
+      },
+      {
+        "name": "item_earringst",
+        "table": "0x16fac08",
+        "kind": 42,
+        "get_type": "0x549620",
+        "subtype": "0x66e60",
+        "differences": {},
+        "type_hash": "205a6e284cbd6e9a",
+        "build_mat": "0x67050"
+      },
+      {
+        "name": "item_gemst",
+        "table": "0x1624098",
+        "kind": 44,
+        "get_type": "0x28ae30",
+        "subtype": "0x66e60",
+        "differences": {},
+        "type_hash": "06fca3d3521e9308",
+        "build_mat": "0x67050"
+      },
+      {
+        "name": "item_gratest",
+        "table": "0x16fb388",
+        "kind": 79,
+        "get_type": "0xb4e0e0",
+        "subtype": "0x66e60",
+        "differences": {},
+        "type_hash": "1f5ad064dc6878f1",
+        "build_mat": "0x67050"
+      },
+      {
+        "name": "item_hatch_coverst",
+        "table": "0x16261f0",
+        "kind": 78,
+        "get_type": "0x289eb0",
+        "subtype": "0x66e60",
+        "differences": {},
+        "type_hash": "2c08b18f59b62cee",
+        "build_mat": "0x67050"
+      },
+      {
+        "name": "item_millstonest",
+        "table": "0x16f9530",
+        "kind": 81,
+        "get_type": "0xb51470",
+        "subtype": "0x66e60",
+        "differences": {},
+        "type_hash": "d0e9b8b7b6bdb70f",
+        "build_mat": "0x67050"
+      },
+      {
+        "name": "item_orthopedic_castst",
+        "table": "0x1702d40",
+        "kind": 85,
+        "get_type": "0x7cf90",
+        "subtype": "0x66e60",
+        "differences": {},
+        "type_hash": "9e2eac0dc180e703",
+        "build_mat": "0x67050"
+      },
+      {
+        "name": "item_pipe_sectionst",
+        "table": "0x16f4f48",
+        "kind": 77,
+        "get_type": "0x488980",
+        "subtype": "0x66e60",
+        "differences": {},
+        "type_hash": "38b892b9d70746eb",
+        "build_mat": "0x67050"
+      },
+      {
+        "name": "item_quernst",
+        "table": "0x16b4dc0",
+        "kind": 80,
+        "get_type": "0x28ccf0",
+        "subtype": "0x66e60",
+        "differences": {},
+        "type_hash": "dd9919e2340df78c",
+        "build_mat": "0x67050"
+      },
+      {
+        "name": "item_ringst",
+        "table": "0x16f8478",
+        "kind": 41,
+        "get_type": "0x5494f0",
+        "subtype": "0x66e60",
+        "differences": {},
+        "type_hash": "2d07cf52ca0a4917",
+        "build_mat": "0x67050"
+      },
+      {
+        "name": "item_traction_benchst",
+        "table": "0x16c5cb0",
+        "kind": 84,
+        "get_type": "0x8f2ab0",
+        "subtype": "0x66e60",
+        "differences": {},
+        "type_hash": "aade0d383ed12780",
+        "build_mat": "0x67050"
+      },
+      {
+        "name": "item_trappartsst",
+        "table": "0x16f28c0",
+        "kind": 67,
+        "get_type": "0x7d7d0",
+        "subtype": "0x66e60",
+        "differences": {},
+        "type_hash": "ec9dc3bae72842e5",
+        "build_mat": "0x67050"
+      }
+    ],
+    "items": [
+      {
+        "kind": 40,
+        "id": 7418,
+        "description": "This is a lapis lazuli crown.  It is encircled with bands of point cut goshenites.  It is coated with water.  ",
+        "uses": [],
+        "different_pixels": 400,
+        "difference_bounds": [
+          14,
+          19,
+          39,
+          42
+        ],
+        "native_capture": "build/stockpile-storage-native-input-20261110-072202/stocks-furniture-native-40.png",
+        "native_sha256": "2e79a94604065f02c433b621fab487922b2cc99d9a94df2a33c219eb375d517b",
+        "viewer_sha256": "86a8bb452b776e1faa9961bf8d18b3137f0db59eb36e898b38ba2d1b6da76acd"
+      },
+      {
+        "kind": 41,
+        "id": 10247,
+        "description": "This is a steel ring.  It is encrusted with superior quality rectangular clear tourmaline cabochons and encircled with bands of superior quality rose cut tiger irons.  This object menaces with spikes of smoky quartz.  ",
+        "uses": [],
+        "different_pixels": 15,
+        "difference_bounds": [
+          23,
+          30,
+          28,
+          34
+        ],
+        "native_capture": "build/stockpile-storage-native-input-20261110-072202/stocks-furniture-native-41.png",
+        "native_sha256": "8acf6ffea1e885cb2a59b6357a7a8e9291390ae032a7910d7fb647dd0cdf9f4e",
+        "viewer_sha256": "6e0cbd73183081b4abac68414d060aea97955d91f376be858ad7486fa69605c1"
+      },
+      {
+        "kind": 42,
+        "id": 39295,
+        "description": "This is a masterful steel earring created by Uzol Zulbanromlam.  ",
+        "uses": [],
+        "different_pixels": 0,
+        "difference_bounds": null,
+        "native_capture": "build/stockpile-storage-native-input-20261110-072202/stocks-furniture-native-42.png",
+        "native_sha256": "f676c25bdbe4198e35d3b81d3fdcc386814f5c4d7f889e64665b391eedb6f508",
+        "viewer_sha256": "021f1ea0e7fffae5713d9eeefb67840566489ebe97967fb52060e9e8ff129852"
+      },
+      {
+        "kind": 43,
+        "id": 39068,
+        "description": "This is an exceptional steel bracelet.  ",
+        "uses": [],
+        "different_pixels": 0,
+        "difference_bounds": null,
+        "native_capture": "build/stockpile-storage-native-input-20261110-072052/stocks-furniture-native-43.png",
+        "native_sha256": "f7244bc69e50706f2ab8c1371a45358b5ef10bbb92839963479922f84fcca5d4",
+        "viewer_sha256": "4fd72f2abc74a5fac46534a116c66634e1b5f3a76788a6aa7d59faa3fcaa1934"
+      },
+      {
+        "kind": 44,
+        "id": 7503,
+        "description": "This is a well-crafted large round brown jasper cabochon.  It is coated with water.  ",
+        "uses": [],
+        "different_pixels": 235,
+        "difference_bounds": [
+          16,
+          21,
+          36,
+          39
+        ],
+        "native_capture": "build/stockpile-storage-native-input-20261110-072202/stocks-furniture-native-44.png",
+        "native_sha256": "fb4eb645bb14a2c0f784954a80a47953646e669447b61d8a40851fc8285b7cf0",
+        "viewer_sha256": "e22e4b5004da0d4e14673f9909cb4649a67f26cbbccebb1fa86f7f32db38ab01"
+      },
+      {
+        "kind": 67,
+        "id": 8856,
+        "description": "These are exceptional dolomite mechanisms.  ",
+        "uses": [],
+        "different_pixels": 768,
+        "difference_bounds": [
+          10,
+          183,
+          42,
+          214
+        ],
+        "native_capture": "build/stockpile-storage-native-input-20261110-072202/stocks-furniture-native-67.png",
+        "native_sha256": "e54fd5c63d5c7e9c887086abb07a5758b8e2fb1122e060efc33ea20ff56c2699",
+        "viewer_sha256": "c57a1ea76025ba3c5d68e5863f8721f216ea64fcb6a4247e32afc3715fc10603"
+      },
+      {
+        "kind": 77,
+        "id": 4561,
+        "description": "This is a iron pipe section.  ",
+        "uses": [],
+        "different_pixels": 848,
+        "difference_bounds": [
+          10,
+          183,
+          41,
+          214
+        ],
+        "native_capture": "build/stockpile-storage-native-input-20261110-072202/stocks-furniture-native-77.png",
+        "native_sha256": "1982e597ed05ce114cbc0a1230a08ba5a2674662c7299e0fba49f7118e512483",
+        "viewer_sha256": "eaed2a4be492fc292b8cd8ddaa133ea4e9a99f177a67381b363e801334bc0b2a"
+      },
+      {
+        "kind": 79,
+        "id": 2779,
+        "description": "This is an exceptional dolomite grate.  ",
+        "uses": [],
+        "different_pixels": 1759,
+        "difference_bounds": [
+          10,
+          14,
+          42,
+          214
+        ],
+        "native_capture": "build/stockpile-storage-native-input-20261110-072202/stocks-furniture-native-79.png",
+        "native_sha256": "c9ce60d38390f146e421bd5a0271018d610253153e3751adea78df04da6cbb4e",
+        "viewer_sha256": "707b27aa920dcf1259048472857e32d4cef1e223956a0800e81a6abc4cd20e85"
+      },
+      {
+        "kind": 81,
+        "id": 7245,
+        "description": "This is an exceptional dolomite millstone.  ",
+        "uses": [],
+        "different_pixels": 1469,
+        "difference_bounds": [
+          10,
+          15,
+          42,
+          214
+        ],
+        "native_capture": "build/stockpile-storage-native-input-20261110-072202/stocks-furniture-native-81.png",
+        "native_sha256": "439272faa98301d985f6f849e82999d15ba6f65bcce7c18ad5dc9c07469aa21e",
+        "viewer_sha256": "66ed4d6da6333e046c3d7f9c80bd8f72a3eed1b7d97b4eddbe573d9b5fe3de70"
+      },
+      {
+        "kind": 84,
+        "id": 25114,
+        "description": "This is an exceptional bitter orange wood traction bench.  The rope is pig tail.  ",
+        "uses": [],
+        "different_pixels": 887,
+        "difference_bounds": [
+          11,
+          182,
+          41,
+          214
+        ],
+        "native_capture": "build/stockpile-storage-native-input-20261110-072202/stocks-furniture-native-84.png",
+        "native_sha256": "b19eae73a5b83291a1df4ea472a023a4f1fb256b4b4954f6cce9521b0d2d3131",
+        "viewer_sha256": "01e314e6e675801e68e7cb51c1ef3ce6b3ae932d4e6865142553de79a9d82e42"
+      }
+    ],
+    "missing_types": [
+      63,
+      64,
+      78,
+      80,
+      85,
+      92
+    ],
+    "ownership": "All used description virtuals match constructed BOX except getType; no subtype definition. Siege parts63/64/92 and mechanisms67 select existing grammar atc750ff..c75150. Native owned description/Uses retained.",
+    "verification": [
+      "Core19, extension, item-state and MSVC pass in item-remaining-furniture.",
+      "Ten available families pass headless observation validation, native and viewer View/close, and exact native/owned/wire descriptions and ordered Uses.",
+      "Earring42 full panel matches exactly; bracelet43 matches earlier072052 native capture whose entire semantic snapshot equals072202. The072202 bracelet PNG caught incomplete redraw and is excluded.",
+      "Source preserved, owned DF34468/38476 closed unsaved. Native and graphical viewer30FPS; max sampled GPU61C in rendered run (not peak). Only documented thread/finalize/shutdown diagnostics."
+    ],
+    "limits": [
+      "Header art differs for crown40,ring41,gem44,grate79,millstone81. Building-holder icons differ for mechanisms67,pipe77,grate79,millstone81,traction bench84. Differences are recorded above; visual completion is not claimed.",
+      "Six absent families lack live acceptance. This extends item descriptions; Public Stocks remains gated."
+    ]
   }
 }

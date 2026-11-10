@@ -330,6 +330,22 @@ creature captions and artwork: native158450 skips item controls for unit rows,
 so those rows correctly have no View/flag buttons. Management168 separately
 adds native ordered Uses. Public Stocks remains gated.
 
+Additional constructed-item dispatch covers crowns40, rings41, earrings42,
+bracelets43, large gems44, catapult parts63, ballista parts64, mechanisms67,
+pipe sections77, hatch covers78, grates79, querns80, millstones81, traction
+benches84, orthopedic casts85 and bolt thrower parts92. Their used virtuals
+match BOX except type; parts/mechanisms use the existing native grammar branch.
+Protected072052(headless) and072202(rendered) on2026-11-10 verify ten available
+families: descriptions, Uses, snapshot validation and actual View/close pass.
+This includes named masterwork and gem-improvement text and traction-bench rope
+wording. Earring/bracelet full panels match; other header or building-holder
+artwork gaps are itemized in `native_stocks.json.remaining_furniture_description_reference`.
+Bracelet visual evidence reuses072052's complete capture after verifying the
+entire native snapshot equals072202; the latter PNG caught incomplete redraw.
+Types63/64/78/80/85/92 are absent and lack live acceptance. Core19, extension,
+item-state and MSVC pass; both owned sessions preserve the source and exit
+unsaved at30FPS. Public Stocks remains gated.
+
 Fish49 and raw fish50 use the owned native item-description provider. Their
 nominal material getters contain race/caste, so item facts and appearance both
 resolve DF's actual material through bounded creature/caste raw getters

@@ -340,10 +340,37 @@ its written improvements still require the same dependency audit. Existing
 `written_detail_native.h` guards are diagnostic evidence, not blanket production
 acceptance of these item sheets.
 
-COIN74's c78c85..c78d6b branch resolves its coin-batch record and calls5beeb0
-(lengtha9f). This includes minted material/history wording and lazy imagery
-helpers1453130,eb68b0,144dcd0,931860,1453230 and1451b10. STATUE22 and FIGURINE36
-instead expose image-reference fields through8f2eb0; c75758 can reachcc84d0,
+COIN74 uses the guarded constructed-item description provider. Its
+c78c85..c78d6b branch resolves a coin batch and calls5beeb0 (lengtha9f) for mint,
+issuer, year and both image descriptions. Shared native image generation and
+name helpers retain their semantic effects. Batch-1 preserves native absence;
+other indices require an in-range nonnull batch, and issuer IDs other than-1
+require a resolved entity/raw. Full prose checks index bounds, but its short
+caption companionca0d00 does not; both run behind the source guard. Native
+5be970,5beeb0,ca0d00,52c2b0 andb957b0 have complete body pins.
+
+The settings reads at5bf7c1/5bf86d are d_init.feature.flags bit15,
+SHOW_ALL_HISTORY_IN_DWARF_MODE, not menu scratch. When applicable, b957b0
+preserves native discovery effects on history records and the known-art ledger;
+DF3D does not replace them with a read-only reconstruction. MSVC layout checking
+binds d_init.feature to offset1b8 and the flag enum to15.
+
+Protected081117 on2026-11-10 verifies temporary copper coin48520 with the fortress
+issuer: both images initialize from absent IDs before native Stocks opens,
+full native/owned/wire description and Uses match, View/close succeeds and the
+initial full panel has zero differing pixels. The coin fixture is opt-in via
+DF3D_STOCKS_COIN_FIXTURE, creates through DFHack's native item API, removes the
+temporary item afterward and keeps the generated batch/art references valid
+until unsaved exit. Initial080825 had no coins and is not coin acceptance.
+Core19, extension, item-state and MSVC pass. DF11964 exits unsaved with source
+preservation and only documented engine diagnostics, capped at30FPS; maximum
+sampled GPU across both runs is52C, not a measured peak.
+`native_stocks.json.coin_item_description_reference` records evidence and gaps:
+other issuers/materials, missing-reference and history-setting variants, and
+scrolled description pixels. Public Stocks remains gated.
+
+STATUE22 and FIGURINE36 expose image-reference fields through8f2eb0;
+c75758 can reachcc84d0,
 which also calls virtual238/210/218/220 and native artwork creation. Its complete
 body spanscc84d0..cc8816: the first Windows unwind entry ends atcc8519 and is
 only a fragment, so pinning that fragment is insufficient. cc83e0 updates

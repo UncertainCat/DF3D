@@ -10,6 +10,8 @@
 #include "df/building_doorst.h"
 #include "df/buildingitemst.h"
 #include "df/item.h"
+#include "df/item_coinst.h"
+#include "df/coin_batch.h"
 #include "df/world.h"
 #include "df/world_data.h"
 #include "df/world_object_data.h"
@@ -662,7 +664,7 @@ inline bool furnitureItemDescriptionTable(const uint8_t* base,const void* table)
            table==base+0x16f8478 ||
            table==base+0x16c5cb0 ||
            table==base+0x16f28c0 ||
-           table==base+0x16f3f40 || table==base+0x16ca460 || table==base+0x1700ee8;
+           table==base+0x16f3f40 || table==base+0x16ca460 || table==base+0x1700ee8 || table==base+0x16b8268;
 }
 inline bool constructedItemDescriptionDispatch(df::item* item) {
     if(!item||!farmFunctions())return false;
@@ -704,7 +706,7 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
         // c75000 has no clothing-specific branch; subtype is a semantic raw.
         for(size_t table:{size_t(0x1623198),size_t(0x16c6cf0),size_t(0x161dd98),
                          size_t(0x161f840),size_t(0x1621b88),size_t(0x1624818),size_t(0x161edd8),size_t(0x16c9ba0),size_t(0x16c4c00),size_t(0x15f74b0),
-                         size_t(0x16c8230),size_t(0x16c2d20),size_t(0x1625280),size_t(0x1625a00),size_t(0x16f9cb0),size_t(0x1620b48),size_t(0x16212c8),size_t(0x16225f0),size_t(0x16c25a0),size_t(0x16fe8b8),size_t(0x16c3fe0),size_t(0x161e518),size_t(0x16f37c0),size_t(0x16fffe8),size_t(0x1701de8),size_t(0x16f19c0),size_t(0x16f7cf8),size_t(0x16ff868),size_t(0x16fd1e0),size_t(0x1702568),size_t(0x1700768),size_t(0x161c930),size_t(0x16c54c0),size_t(0x15f7d10),size_t(0x16fd960),size_t(0x16c8ca0),size_t(0x16f56c8),size_t(0x16f6620),size_t(0x16fc288),size_t(0x16f1240),size_t(0x16fa488),size_t(0x1701668),size_t(0x16f7520),size_t(0x16fac08),size_t(0x1624098),size_t(0x16fb388),size_t(0x16261f0),size_t(0x16f9530),size_t(0x1702d40),size_t(0x16f4f48),size_t(0x16b4dc0),size_t(0x16f8478),size_t(0x16c5cb0),size_t(0x16f28c0),size_t(0x16f3f40),size_t(0x16ca460),size_t(0x1700ee8),size_t(0x16f5ea0),size_t(0x16fca08),size_t(0x16f02e8)})for(auto pin:pins) {
+                         size_t(0x16c8230),size_t(0x16c2d20),size_t(0x1625280),size_t(0x1625a00),size_t(0x16f9cb0),size_t(0x1620b48),size_t(0x16212c8),size_t(0x16225f0),size_t(0x16c25a0),size_t(0x16fe8b8),size_t(0x16c3fe0),size_t(0x161e518),size_t(0x16f37c0),size_t(0x16fffe8),size_t(0x1701de8),size_t(0x16f19c0),size_t(0x16f7cf8),size_t(0x16ff868),size_t(0x16fd1e0),size_t(0x1702568),size_t(0x1700768),size_t(0x161c930),size_t(0x16c54c0),size_t(0x15f7d10),size_t(0x16fd960),size_t(0x16c8ca0),size_t(0x16f56c8),size_t(0x16f6620),size_t(0x16fc288),size_t(0x16f1240),size_t(0x16fa488),size_t(0x1701668),size_t(0x16f7520),size_t(0x16fac08),size_t(0x1624098),size_t(0x16fb388),size_t(0x16261f0),size_t(0x16f9530),size_t(0x1702d40),size_t(0x16f4f48),size_t(0x16b4dc0),size_t(0x16f8478),size_t(0x16c5cb0),size_t(0x16f28c0),size_t(0x16f3f40),size_t(0x16ca460),size_t(0x1700ee8),size_t(0x16b8268),size_t(0x16f5ea0),size_t(0x16fca08),size_t(0x16f02e8)})for(auto pin:pins) {
             if(table==0x16c6cf0 && pin.slot==0)pin={0,0x673c0,6,UINT64_C(0x6470dd592ae1062b)};
             if(pin.slot==0) {
                 if(table==0x161dd98)pin={0,0x28a840,6,UINT64_C(0x3c0e712b7d27ecd8)};
@@ -715,6 +717,7 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
                 if(table==0x16f5ea0)pin={0,0x28d340,6,UINT64_C(0x05fb860fe1c710df)};
                 if(table==0x16fca08)pin={0,0x7b7a0,6,UINT64_C(0x57c0fc2ead8fec2e)};
                 if(table==0x16f02e8)pin={0,0x8f45f0,6,UINT64_C(0xdff05a9069db5ad0)};
+                if(table==0x16b8268)pin={0,0x103c90,6,UINT64_C(0x5ec3be394ef2fcfa)};
                 if(table==0x16ca460)pin={0,0x7a7b0,6,UINT64_C(0xbd391582980cf246)};
                 if(table==0x1700ee8)pin={0,0x548f00,6,UINT64_C(0xa1848a7f67a18cf0)};
                 if(table==0x16f3f40)pin={0,0xb4e5d0,6,UINT64_C(0xde98bfa5a462facd)};
@@ -777,7 +780,7 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
         for(size_t table:{size_t(0x16c6cf0),size_t(0x161dd98),size_t(0x161f840),
                          size_t(0x1621b88),size_t(0x1624818),size_t(0x161edd8),size_t(0x16c9ba0),size_t(0x16c4c00),size_t(0x15f74b0),size_t(0x16f5ea0),size_t(0x16fca08),size_t(0x16f02e8)})
             if(*reinterpret_cast<const void* const*>(base+table+8)!=base+0xfd0c0)return false;
-        for(size_t table:{size_t(0x16c8230),size_t(0x16c2d20),size_t(0x1625280),size_t(0x1625a00),size_t(0x16f9cb0),size_t(0x1620b48),size_t(0x16212c8),size_t(0x16225f0),size_t(0x16c25a0),size_t(0x16fe8b8),size_t(0x16c3fe0),size_t(0x161e518),size_t(0x16f37c0),size_t(0x16fffe8),size_t(0x1701de8),size_t(0x16f19c0),size_t(0x16f7cf8),size_t(0x16ff868),size_t(0x16fd1e0),size_t(0x1702568),size_t(0x1700768),size_t(0x161c930),size_t(0x16c54c0),size_t(0x15f7d10),size_t(0x16fd960),size_t(0x16c8ca0),size_t(0x16f56c8),size_t(0x16fc288),size_t(0x16f1240),size_t(0x16fa488),size_t(0x1701668),size_t(0x16f7520),size_t(0x16fac08),size_t(0x1624098),size_t(0x16fb388),size_t(0x16261f0),size_t(0x16f9530),size_t(0x1702d40),size_t(0x16f4f48),size_t(0x16b4dc0),size_t(0x16f8478),size_t(0x16c5cb0),size_t(0x16f28c0),size_t(0x16f3f40),size_t(0x16ca460),size_t(0x1700ee8)})
+        for(size_t table:{size_t(0x16c8230),size_t(0x16c2d20),size_t(0x1625280),size_t(0x1625a00),size_t(0x16f9cb0),size_t(0x1620b48),size_t(0x16212c8),size_t(0x16225f0),size_t(0x16c25a0),size_t(0x16fe8b8),size_t(0x16c3fe0),size_t(0x161e518),size_t(0x16f37c0),size_t(0x16fffe8),size_t(0x1701de8),size_t(0x16f19c0),size_t(0x16f7cf8),size_t(0x16ff868),size_t(0x16fd1e0),size_t(0x1702568),size_t(0x1700768),size_t(0x161c930),size_t(0x16c54c0),size_t(0x15f7d10),size_t(0x16fd960),size_t(0x16c8ca0),size_t(0x16f56c8),size_t(0x16fc288),size_t(0x16f1240),size_t(0x16fa488),size_t(0x1701668),size_t(0x16f7520),size_t(0x16fac08),size_t(0x1624098),size_t(0x16fb388),size_t(0x16261f0),size_t(0x16f9530),size_t(0x1702d40),size_t(0x16f4f48),size_t(0x16b4dc0),size_t(0x16f8478),size_t(0x16c5cb0),size_t(0x16f28c0),size_t(0x16f3f40),size_t(0x16ca460),size_t(0x1700ee8),size_t(0x16b8268)})
             if(*reinterpret_cast<const void* const*>(base+table+8)!=base+0x66e60)return false;
         // Statue/figurine artwork uses the same world-image generator as
         // constructed improvements. These additional virtuals expose semantic
@@ -804,6 +807,12 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
         if(hash(0x1453230,0x40)!=UINT64_C(0xa030e4c00737e0b4))return false;
         if(hash(0x931860,0x2f9)!=UINT64_C(0x3f40974d82863764))return false;
         if(hash(0xa92860,0x17cb)!=UINT64_C(0x627504395969e689))return false;
+        // Coin mint/year/issuer and both native image descriptions.
+        if(hash(0x5beeb0,0xa9f)!=UINT64_C(0x8529b92563b16ee0))return false;
+        if(hash(0xca0d00,0x55)!=UINT64_C(0x6891982ef52f2367))return false;
+        if(hash(0x5be970,0x536)!=UINT64_C(0xd785ec19f3aa4618))return false;
+        if(hash(0x52c2b0,0xd8)!=UINT64_C(0x38b6489e35387929))return false;
+        if(hash(0xb957b0,0x20f)!=UINT64_C(0xadf68483d402792e))return false;
         // FOOD c7586f..c75a20 walks its ingredient vector and calls the
         // semantic item formatter with owned output. No UI or graphics inputs.
         if(*reinterpret_cast<const void* const*>(base+0x16f6620+8)!=base+0xc60510)return false;
@@ -856,6 +865,22 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
         return true;
     }();
     if(!pinned)return false;
+    if(table==base+0x16b8268) {
+        static_assert(offsetof(df::item_coinst,coin_batch)==0xe8);
+        const auto index=static_cast<df::item_coinst*>(item)->coin_batch;
+        // Full prose bounds-checks this index, but its short-caption companion
+        // does not. Both paths require a resolved issuer/raw unless absent (-1).
+        if(index!=-1) {
+            if(!df::global::world)return false;
+            const auto& batches=df::global::world->coin_batches.all;
+            if(index<0 || size_t(index)>=batches.size() || !batches[size_t(index)])return false;
+            const auto issuer_id=batches[size_t(index)]->entity;
+            if(issuer_id!=-1) {
+                const auto* issuer=df::historical_entity::find(issuer_id);
+                if(!issuer || !issuer->entity_raw)return false;
+            }
+        }
+    }
     if(table==base+0x16f6620) {
         const auto* food=static_cast<df::item_foodst*>(item);
         static_assert(offsetof(df::item_foodst,ingredients)==0xe0);
@@ -1104,6 +1129,7 @@ inline std::optional<ItemObservation> observeItem(df::item* item) {
     case df::item_type::COFFIN:
     case df::item_type::ARMORSTAND:
     case df::item_type::WEAPONRACK:
+    case df::item_type::COIN:
     case df::item_type::STATUE:case df::item_type::FIGURINE:
     case df::item_type::AMULET:
     case df::item_type::SCEPTER:

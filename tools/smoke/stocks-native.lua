@@ -362,6 +362,39 @@ records[#records+1]={name='stocks-root',types=#result.types,groups=#result.group
 gui.simulateInput(view,'LEAVESCREEN');assert(not stocks.open,'Stocks did not close')
 
 end
+-- A coinless save must not turn the coin-family lane into a vacuous pass.
+-- Only this disposable, paused native fixture creates items; product reads do not.
+if os.getenv('DF3D_STOCKS_COIN_FIXTURE')=='1' then
+ local worker
+ for _,unit in ipairs(df.global.world.units.active)do
+  if dfhack.units.isCitizen(unit)then worker=unit;break end
+ end
+ assert(worker,'Coin fixture needs a citizen')
+ local material=assert(dfhack.matinfo.find('INORGANIC:COPPER'))
+ local batches=df.global.world.coin_batches.all
+ local batch=df.coin_batch:new();local index=#batches;local created={};local inserted=false
+ batch.year=df.global.cur_year;batch.mat_type=material.type;batch.mat_index=material.index
+ batch.entity=df.global.plotinfo.civ_id;batch.ruler=-1
+ batch.image_front.id=-1;batch.image_front.subid=-1
+ batch.image_back.id=-1;batch.image_back.subid=-1
+ return dfhack.with_finalize(function()
+  for _,item in ipairs(created)do dfhack.items.remove(item)end
+  -- Generated art retains the batch index; keep its record until unsaved exit.
+  if not inserted then df.delete(batch)end
+ end,function()
+  assert(index<32768,'Coin batch index exceeds item storage')
+  batches:insert('#',batch);inserted=true
+  created=dfhack.items.createItem(worker,df.item_type.COIN,-1,material.type,material.index)
+  assert(#created>0,'Native coin creation failed')
+  for _,item in ipairs(created)do item.coin_batch=index end
+  run()
+  assert(batch.image_front.id>=0 and batch.image_back.id>=0,'Coin descriptions did not initialize both images')
+  local f=assert(io.open(out..'/stocks-coin-fixture.json','w'))
+  f:write(json.encode({item_id=created[1].id,batch_index=index,entity=batch.entity,
+   front={id=batch.image_front.id,subid=batch.image_front.subid},
+   back={id=batch.image_back.id,subid=batch.image_back.subid},cold_images_initialized=true}));f:close()
+ end)
+end
 if os.getenv('DF3D_STOCKS_DOOR_STATES')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-native.lua$','stocks-door-states-native.lua')
  return assert(loadfile(source))(out,probe,run)

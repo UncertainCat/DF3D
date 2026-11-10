@@ -9003,5 +9003,78 @@
       "Figurine36 absent; no live item-panel acceptance. Cold full item-panel and recursive containing-item/building creation-zone effects remain unverified.",
       "Public Stocks remains gated."
     ]
+  },
+  "coin_item_description_reference": {
+    "source": "build/stockpile-storage-native-input-20261110-081117",
+    "status": "passed_with_known_issues",
+    "bridge_sha256": "a22b62cf3b30282913646acc358582d205fb009efe83c788906fe4c8386cca00",
+    "cases": [
+      {
+        "description": "This is a Dalzatdod\u00f3k 106 copper coin.    This is the copper currency of Dalzatdod\u00f3k from the year 106.  On the front of the coin is a masterfully designed image of Umil Markedrivers the human and dwarves.  Umil Markedrivers is surrounded by the dwarves.  The artwork relates to the ascension of the human Umil Markedrivers to the position of king of The Matched Clasps in the early winter of 105.  On the coin's back is a superiorly designed image of Doren Paddledrope the dwarf and dwarves.  Doren Paddledrope is surrounded by the dwarves.  The artwork relates to the ascension of the dwarf Doren Paddledrope to the position of queen of The Matched Clasps in 3.    ",
+        "id": 48520,
+        "kind": 74,
+        "snapshot": {
+          "appearance": {
+            "color_token": "COPPER",
+            "flags": 0,
+            "material_token": "INORGANIC:COPPER",
+            "stack": 1,
+            "subtype_raw": ""
+          },
+          "can_dump": true,
+          "can_melt": true,
+          "caption": "Dalzatdod\u00f3k 106 copper coin",
+          "description": "This is a Dalzatdod\u00f3k 106 copper coin.    This is the copper currency of Dalzatdod\u00f3k from the year 106.  On the front of the coin is a masterfully designed image of Umil Markedrivers the human and dwarves.  Umil Markedrivers is surrounded by the dwarves.  The artwork relates to the ascension of the human Umil Markedrivers to the position of king of The Matched Clasps in the early winter of 105.  On the coin's back is a superiorly designed image of Doren Paddledrope the dwarf and dwarves.  Doren Paddledrope is surrounded by the dwarves.  The artwork relates to the ascension of the dwarf Doren Paddledrope to the position of queen of The Matched Clasps in 3.    ",
+          "dump": false,
+          "flags": 536870913,
+          "forbid": false,
+          "hidden": false,
+          "id": 48520,
+          "item_type": 74,
+          "material_token": "INORGANIC:COPPER",
+          "melt": false,
+          "revision": "5521345742771966342",
+          "stockpile_categories": -1,
+          "weight": "<1\u0393"
+        },
+        "uses": []
+      }
+    ],
+    "controlled_fixture": {
+      "back": {
+        "id": 4,
+        "subid": 124
+      },
+      "batch_index": 0,
+      "cold_images_initialized": true,
+      "entity": 245,
+      "front": {
+        "id": 4,
+        "subid": 123
+      },
+      "item_id": 48520
+    },
+    "panel": {
+      "rectangle": [
+        416,
+        52,
+        488,
+        708
+      ],
+      "different_pixels": 0,
+      "native_sha256": "9e267de6e57f927e4335b14e2815be98b5f086de9eb70469ef024339ca4113e9",
+      "viewer_sha256": "5e126bdb0deef400bfc54433d79cefbe742451bb6ce17693ae2ad46cd7e6eadf"
+    },
+    "verification": [
+      "Coin48520: native/viewer View and close; exact native/owned/wire full description and Uses; full initial panel pixel equality.",
+      "Cold batch starts without either image; both are initialized by the native provider before native Stocks is opened.",
+      "Core19, extension, item-state and MSVC pass in item-coin-dispatch.",
+      "Source unchanged; DF11964 closed unsaved, DF/viewer30FPS, known thread/finalize/shutdown diagnostics only. Maximum GPU sample across the two live runs52C, not a measured peak."
+    ],
+    "limits": [
+      "Initial080825 contained no coins and is not coin acceptance;081117 supplies a controlled copper coin with the fortress issuer.",
+      "Other materials, issuers, missing batch/issuer cases, explicit history-discovery setting variants and scrolled description pixels remain unverified in the coin-panel lane.",
+      "Public Stocks remains gated."
+    ]
   }
 }

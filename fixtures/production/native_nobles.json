@@ -2354,5 +2354,282 @@
       "Clipped holder suffixes are not visible in the native grid; only the displayed prefix and ellipsis are compared.",
       "No Nobles viewer, typed transport or appointment mutation is exposed."
     ]
+  },
+  "room_assessment_reference": {
+    "source": "build/stockpile-storage-native-input-20261110-172931",
+    "df_version": "53.16",
+    "rows": [
+      {
+        "actual_furniture": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "actual_rooms": [
+          295,
+          343,
+          0,
+          0
+        ],
+        "furniture_state": 2,
+        "required_furniture": [
+          10,
+          5,
+          5,
+          5
+        ],
+        "required_rooms": [
+          10000,
+          10000,
+          10000,
+          10000
+        ],
+        "room_states": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "unit_id": 5981
+      },
+      {
+        "actual_furniture": [
+          2,
+          3,
+          1,
+          1
+        ],
+        "actual_rooms": [
+          818,
+          1414,
+          1080,
+          0
+        ],
+        "furniture_state": 0,
+        "required_furniture": [
+          2,
+          1,
+          1,
+          1
+        ],
+        "required_rooms": [
+          500,
+          500,
+          500,
+          0
+        ],
+        "room_states": [
+          3,
+          3,
+          3,
+          0
+        ],
+        "unit_id": 5813
+      },
+      {
+        "actual_furniture": [
+          2,
+          3,
+          1,
+          1
+        ],
+        "actual_rooms": [
+          818,
+          1414,
+          1080,
+          0
+        ],
+        "furniture_state": 0,
+        "required_furniture": [
+          2,
+          1,
+          1,
+          1
+        ],
+        "required_rooms": [
+          500,
+          500,
+          500,
+          0
+        ],
+        "room_states": [
+          3,
+          3,
+          3,
+          0
+        ],
+        "unit_id": 5813
+      },
+      {
+        "actual_furniture": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "actual_rooms": [
+          0,
+          273,
+          0,
+          0
+        ],
+        "furniture_state": 0,
+        "required_furniture": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "required_rooms": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "room_states": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "unit_id": 6812
+      },
+      {
+        "actual_furniture": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "actual_rooms": [
+          0,
+          444,
+          0,
+          0
+        ],
+        "furniture_state": 0,
+        "required_furniture": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "required_rooms": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "room_states": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "unit_id": 6815
+      },
+      {
+        "actual_furniture": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "actual_rooms": [
+          344,
+          294,
+          0,
+          0
+        ],
+        "furniture_state": 0,
+        "required_furniture": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "required_rooms": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "room_states": [
+          3,
+          0,
+          0,
+          0
+        ],
+        "unit_id": 1017
+      },
+      {
+        "actual_furniture": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "actual_rooms": [
+          0,
+          274,
+          0,
+          0
+        ],
+        "furniture_state": 0,
+        "required_furniture": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "required_rooms": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "room_states": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "unit_id": 5984
+      }
+    ],
+    "room_order": [
+      "office",
+      "bedroom",
+      "dining",
+      "tomb"
+    ],
+    "furniture_order": [
+      "chests",
+      "cabinets",
+      "weapon racks",
+      "armor stands"
+    ],
+    "native_icon_tiles_match": true,
+    "room_state_codes": {
+      "0": "not required",
+      "1": "missing",
+      "2": "insufficient",
+      "3": "satisfied"
+    },
+    "furniture_state_codes": {
+      "0": "no deficit",
+      "1": "insufficient",
+      "2": "missing"
+    },
+    "cold_warm_equal": true,
+    "menu_rng_lookup_caches_preserved": true,
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "Room totals use the previously verified native valuation adapter; this run independently checks displayed status states, not exact native temporary totals.",
+      "The fixture has no intermediate furniture deficit without a missing furniture category.",
+      "No Nobles viewer or appointment mutation is exposed."
+    ]
   }
 }

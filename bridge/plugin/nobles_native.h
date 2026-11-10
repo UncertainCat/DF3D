@@ -1,5 +1,7 @@
 #pragma once
 #include "unit_description_native.h"
+#include "creature_office_native.h"
+#include "df/unitpropertyplacementst.h"
 #include "df/administrators_interfacest.h"
 #include "df/noblelistst.h"
 #include "df/appointment_candidatest.h"
@@ -17,7 +19,9 @@ namespace df3d_nobles {
 struct Row {
     int32_t unitId=-1,nemesisId=-1,entityId=-1,positionId=-1,assignmentId=-1,value=0;
     std::string positionName,title,squadCaption,holderCaption;
-    bool canAppoint=false;
+    bool canAppoint=false,hasRoomAssessment=false;
+    // Office, bedroom, dining room, tomb; chests, cabinets, weapon racks, armor stands.
+    std::array<int32_t,4> requiredRooms{},actualRooms{},requiredFurniture{},actualFurniture{};
 };
 // Native feed425539..425699 and renderer42712b..42726c inline the same
 // appointment gate. No standalone helper exists at these call sites. Evaluate
@@ -71,6 +75,12 @@ inline bool ready() {
     static const bool pinned=[base] {
         struct Pin {size_t rva,length;uint64_t hash;};
         constexpr Pin pins[]={
+        {0x134a5e0,0x246,UINT64_C(0xd73a74b32f6acbe4)},
+        {0xba0a0,0xa8,UINT64_C(0xcf6b2a7b534d3331)},
+        {0x134c0c0,0x1fc,UINT64_C(0xbc0da304f524beb3)},
+        {0x134c2c0,0x1fc,UINT64_C(0x641258127bed8ca1)},
+        {0x134c4c0,0x1fc,UINT64_C(0xfd10c46d5a772b97)},
+        {0x134c6c0,0x1fc,UINT64_C(0xeb8d0474cfd619b5)},
         {0x52d650,0x2b4,UINT64_C(0x9e8023d09def7af9)},
         {0xede350,0x31b,UINT64_C(0x1fddbdca853294d0)},
         {0xa94030,0x6a1,UINT64_C(0xd81db68b3c9b33d2)},
@@ -152,6 +162,43 @@ inline bool captions(const df::noblelistst& source,Row& row,uint8_t* base) {
     }
     return true;
 }
+// Nobles passes these three parallel arrays to the native aggregators. Keep
+// the builder's membership/order and copy only assignment fields read by bbe40;
+// that helper is allowed to refresh indices in these private records.
+struct RequirementsContext {
+    std::vector<df::entity_position_assignment> storage;
+    std::vector<df::entity_position_assignment*> assignments;
+    std::vector<int32_t> holders,entities;
+    bool capture(const df::administrators_interfacest& source) {
+        const auto count=source.spec_prof.size();
+        if(count>65536 || source.spec_hfid.size()!=count || source.spec_enid.size()!=count)return false;
+        holders=source.spec_hfid;entities=source.spec_enid;storage.reserve(count);assignments.reserve(count);
+        for(const auto* assignment:source.spec_prof) {
+            if(!assignment){assignments.push_back(nullptr);continue;}
+            storage.emplace_back();storage.back().position_id=assignment->position_id;
+            storage.back().position_vector_idx=-1;assignments.push_back(&storage.back());
+        }
+        return true;
+    }
+    bool assess(const df::noblelistst& source,Row& row,uint8_t* base) {
+        if(!source.un)return true;
+        if(!source.upplist)return false;
+        const auto actual=df3d_creature::actualRooms(source.un);if(!actual)return false;
+        row.actualRooms=*actual;row.hasRoomAssessment=true;
+        using Rooms=void(*)(df::unit*,int32_t*,const std::vector<df::entity_position_assignment*>*,const std::vector<int32_t>*,const std::vector<int32_t>*);
+        // Supplied arrays select the native branch that only reads unit HF ID.
+        reinterpret_cast<Rooms>(base+0x134a5e0)(source.un,row.requiredRooms.data(),&assignments,&holders,&entities);
+        using Furniture=int32_t(*)(df::unit*,const std::vector<df::entity_position_assignment*>*,const std::vector<int32_t>*,const std::vector<int32_t>*);
+        constexpr size_t functions[]={0x134c0c0,0x134c2c0,0x134c4c0,0x134c6c0};
+        for(size_t i=0;i<4;++i)row.requiredFurniture[i]=reinterpret_cast<Furniture>(base+functions[i])(source.un,&assignments,&holders,&entities);
+        static_assert(offsetof(df::unitpropertyplacementst,boxcount)==0x4c);
+        static_assert(offsetof(df::unitpropertyplacementst,cabcount)==0x50);
+        static_assert(offsetof(df::unitpropertyplacementst,rackcount)==0x54);
+        static_assert(offsetof(df::unitpropertyplacementst,standcount)==0x58);
+        row.actualFurniture={source.upplist->boxcount,source.upplist->cabcount,source.upplist->rackcount,source.upplist->standcount};
+        return true;
+    }
+};
 inline std::optional<std::vector<Row>> overview() {
     if(!ready())return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
@@ -160,6 +207,7 @@ inline std::optional<std::vector<Row>> overview() {
     Context owned(base);
     reinterpret_cast<void(*)(df::administrators_interfacest*)>(base+0x421f30)(&owned.value);
     if(owned.value.noblelist.size()>65536)return std::nullopt;
+    RequirementsContext requirements;if(!requirements.capture(owned.value))return std::nullopt;
     std::vector<Row> result;result.reserve(owned.value.noblelist.size());
     for(const auto* source:owned.value.noblelist) {
         if(!source || !source->ep)return std::nullopt;
@@ -167,7 +215,7 @@ inline std::optional<std::vector<Row>> overview() {
         Row row;row.canAppoint=*available;row.unitId=source->un?source->un->id:-1;row.nemesisId=source->nem?source->nem->id:-1;
         row.entityId=source->enid;row.positionId=source->ep->id;row.assignmentId=source->epp?source->epp->id:-1;
         row.value=source->value;row.positionName=source->ep->name[0];
-        if(!captions(*source,row,base))return std::nullopt;
+        if(!captions(*source,row,base) || !requirements.assess(*source,row,base))return std::nullopt;
         result.push_back(std::move(row));
     }
     return result;

@@ -77,6 +77,49 @@ for index,row in ipairs(rows)do
 end
 local warm=probe()
 write('nobles-caption-observed.json',json.encode({cold=cold,warm=warm,lines=lines()}))
+local room_reference={}
+local function native_icon(rva,x,y)
+ local base=dfhack.internal.getImageBase()
+ for dx=0,3 do for dy=0,2 do
+  local tile=df.reinterpret_cast('int32_t',base+rva+(dx*3+dy)*4).value
+  local offset=(x+dx)*g.dimy+y+dy
+  assert(tile>0 and (g.screentexpos_lower[offset]==tile or g.screentexpos_top_lower[offset]==tile),'Nobles status artwork differs at '..(x+dx)..','..(y+dy)..' expected '..tile..' actual '..g.screentexpos_lower[offset]..' top '..g.screentexpos_top_lower[offset])
+ end end
+end
+local room_matrices={0x264fe68,0x264fda8,0x264ff28,0x264ffe8}
+for index,owned in ipairs(warm)do
+ local native=menu.noblelist[index-1]
+ assert(owned.has_room_assessment==(native.un~=nil),'Nobles assessment presence differs')
+ if native.un then
+  local requirements={0,0,0,0};local furniture={0,0,0,0}
+  local room_fields={'required_office','required_bedroom','required_dining','required_tomb'}
+  local furniture_fields={'required_boxes','required_cabinets','required_racks','required_stands'}
+  -- Independent semantic cross-check against the actual native builder arrays.
+  for i,assignment in ipairs(menu.spec_prof)do if assignment and menu.spec_hfid[i]==native.un.hist_figure_id then
+   local entity=df.historical_entity.find(menu.spec_enid[i])
+   if entity then for _,position in ipairs(entity.positions.own)do if position.id==assignment.position_id then
+    for k,field in ipairs(room_fields)do requirements[k]=math.max(requirements[k],position[field])end
+    if entity.id==df.global.plotinfo.group_id or entity.id==df.global.plotinfo.civ_id then
+     for k,field in ipairs(furniture_fields)do furniture[k]=math.max(furniture[k],position[field])end
+    end
+   end end end
+  end end
+  assert(json.encode(requirements)==json.encode(owned.required_rooms),'Native room requirements differ')
+  assert(json.encode(furniture)==json.encode(owned.required_furniture),'Native furniture requirements differ')
+  local actual={native.upplist.boxcount,native.upplist.cabcount,native.upplist.rackcount,native.upplist.standcount}
+  assert(json.encode(actual)==json.encode(owned.actual_furniture),'Native furnishing counts differ')
+  local states={};local furniture_state=0
+  for k=1,4 do
+   local required,value=owned.required_rooms[k],owned.actual_rooms[k]
+   local state=required<=0 and 0 or value>=required and 3 or value<=0 and 1 or 2
+   states[k]=state;native_icon(room_matrices[k]+state*0x30,72+(k-1)*4,13+(index-1)*3)
+   if actual[k]<furniture[k] then furniture_state=math.max(furniture_state,actual[k]<=0 and 2 or 1)end
+  end
+  native_icon(0x26502b8+(furniture_state==2 and 1 or furniture_state==1 and 2 or 0)*0x30,88,13+(index-1)*3)
+  room_reference[#room_reference+1]={unit_id=owned.unit_id,room_states=states,furniture_state=furniture_state,required_rooms=requirements,actual_rooms=owned.actual_rooms,required_furniture=furniture,actual_furniture=actual}
+ end
+ for _,field in ipairs{'has_room_assessment','required_rooms','actual_rooms','required_furniture','actual_furniture'}do rows[index][field]=owned[field]end
+end
 local caption_reference={}
 local function cells(x,y,count)
  local chars={};for i=0,count-1 do local ch=dfhack.screen.readTile(x+i,y).ch;chars[#chars+1]=ch>=32 and ch<=255 and string.char(ch)or' 'end
@@ -95,7 +138,7 @@ for index,row in ipairs(rows)do
  row.title=owned.title;row.squad_caption=owned.squad_caption;row.holder_caption=owned.holder_caption
 end
 assert(json.encode(cold)==json.encode(rows) and json.encode(warm)==json.encode(rows),'Owned Nobles overview differs from native order/identities')
-local result={caption_reference=caption_reference,owned={cold=cold,warm=warm,menu_preserved=true,rng_preserved=true},dimensions={g.dimx,g.dimy},rows=rows,lines=lines(),scroll=menu.scroll_position_noblelist,choosing_candidate=menu.choosing_candidate,assigning_symbol=menu.assigning_symbol}
+local result={room_reference=room_reference,caption_reference=caption_reference,owned={cold=cold,warm=warm,menu_preserved=true,rng_preserved=true},dimensions={g.dimx,g.dimy},rows=rows,lines=lines(),scroll=menu.scroll_position_noblelist,choosing_candidate=menu.choosing_candidate,assigning_symbol=menu.assigning_symbol}
 write('nobles-native.json',json.encode(result));capture('nobles-overview')
 local _,menu_address=df.sizeof(menu);result.menu_rva=menu_address-dfhack.internal.getImageBase()
 result.field_rvas={}

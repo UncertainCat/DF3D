@@ -2552,7 +2552,10 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             row["position_id"]=entry.positionId;row["assignment_id"]=entry.assignmentId;row["value"]=entry.value;
             row["position_name"]=DF2UTF(entry.positionName);row["can_appoint"]=entry.canAppoint;
             row["title"]=DF2UTF(entry.title);row["squad_caption"]=DF2UTF(entry.squadCaption);
-            row["holder_caption"]=DF2UTF(entry.holderCaption);result.append(row);}
+            row["holder_caption"]=DF2UTF(entry.holderCaption);row["has_room_assessment"]=entry.hasRoomAssessment;
+            for(size_t i=0;i<4;++i){row["required_rooms"].append(entry.requiredRooms[i]);row["actual_rooms"].append(entry.actualRooms[i]);
+              row["required_furniture"].append(entry.requiredFurniture[i]);row["actual_furniture"].append(entry.actualFurniture[i]);}
+            result.append(row);}
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
         }
         if(parameters[0]=="places-lists-probe") {

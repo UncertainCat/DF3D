@@ -142,6 +142,33 @@ holders, land titles and long squad truncation cases remain unaccepted. MSVC and
 core checks pass. This remains a staged native provider, not a complete Nobles
 screen.
 
+Nobles occupied rows also expose required/actual room values in office,
+bedroom, dining room and tomb order, plus required/actual chest, cabinet,
+weapon-rack and armor-stand counts. RequirementsContext preserves the native
+overview builder's parallel assignment/holder/entity membership and order,
+copying assignment position IDs into private records for bbe40's index updates.
+Native134a5e0 aggregates room requirements;134c0c0/134c2c0/134c4c0/134c6c0
+supply furnishing requirements. All receive those owned arrays, selecting the
+branch that only reads the unit's historical-figure ID. Function hashes pin the
+calls. Actual room values reuse the creature sheet's native134a830 valuation
+adapter with private preferences; actual furniture counts come from the owned
+builder's unit-location summary. Valuation may still initialize semantic item
+artwork lazily, as documented for the shared adapter; full simulation-memory
+immutability is not claimed. Vacant/NEW rows have no room assessment.
+
+Protected172931 on2026-11-10 verifies all seven occupied overview rows against
+native requirement arrays and furnishing counts. Every tile of each native4x3
+room indicator and combined furniture indicator matches the state derived from
+the owned results. The fixture covers all four room states, but not the
+intermediate furniture deficit without a missing category. Exact temporary
+native room totals are not independently captured here; the comparison proves
+the displayed states. Menu/RNG/lookup-cache guards and preceding caption,
+appointment-gate and candidate checks pass. Source preservation passes and owned
+DF34392 closes unsaved,30FPS, GPU59C/23% sampled.
+`native_nobles.json.room_assessment_reference` records the scope. Typed Nobles
+transport, portrait/status artwork mapping, demands/mandates, viewer and mutations
+remain unfinished.
+
 ## Places native discovery
 
 Places presentation and read transport are staged; public exposure remains hidden. Protected140037 on DF53.16 captures

@@ -66,7 +66,7 @@ for worker names. The adapter exposes full original strings separately from
 normalized sort keys. Protected112745 verifies all41 job captions against
 native screen cells across scroll offsets0/17/24; cold/warm output agrees.
 Native captions of24 or more CP437 bytes display the first20 plus three periods.
-Worker clipping and colors are not yet accepted. Lower-page112504 was inspected:
+Worker text/color acceptance is scoped below. Lower-page112504 was inspected:
 stockpile hauling has job navigation/destination artwork, construction jobs68196
 and372039 have Recenter/Suspend/Remove, and unassigned hauling381348 has no worker
 controls. `native_tasks.json.display_reference` retains text and scope.
@@ -144,6 +144,18 @@ click targets with provider coordinates. Cold/warm and menu-preservation checks
 pass. Source preserved; DF32236 exits unsaved, capped30FPS, GPU48C/2% sampled.
 `destinations_reference` records these cases. Caged-worker resolution, worker
 View navigation, destination artwork and viewer integration remain unverified.
+
+Tasks3981a8 calls1333bc0(unit,0,true,false), the same context used by the
+existing owner/Residents color provider. Tasks reuses nativeZoneOwnerNameColor
+for owned base/alternate colors and animation effects; it never calls the gps
+writer or consumes native RNG for a row read. Protected115311 matches all38
+worker names and every text-cell color across three pages. Names of31 or more
+CP437 bytes retain27 bytes plus three periods. Color checks accept the base or
+advertised alternate for animated names; this does not establish phase timing
+or independent coverage of fire/ghost/undead/water overrides. Source preserved;
+DF40076 exits unsaved, capped30FPS, GPU52C/0% sampled. Core and MSVC pass.
+`worker_text_reference` records the bounded evidence. Selector artwork and
+public Tasks integration remain unfinished.
 
 ## Stocks native discovery
 

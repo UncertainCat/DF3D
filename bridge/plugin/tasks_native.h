@@ -8,6 +8,7 @@
 #include "df/general_ref.h"
 #include "df/building_trapst.h"
 #include "building_item_native.h"
+#include "zone_native.h"
 #include <unordered_set>
 
 namespace df3d_tasks {
@@ -20,6 +21,7 @@ struct Row {
     bool repeating=false,suspended=false;
     std::string buildingCaption;
     df::coord buildingPosition=df::coord(-30000,-30000,-30000),workerPosition=df::coord(-30000,-30000,-30000);
+    std::optional<df3d_area::ZoneOwnerNameColor> workerColor;
 };
 // Native396ee0/397c90 inline these checks; there is no standalone eligibility
 // call for the four edit buttons. Mirror that bounded branch over simulation
@@ -116,6 +118,10 @@ inline std::optional<std::vector<Row>> rows() {
         if(entry->un)df3d_area::staffOrderingFunctions().name(entry->un,&row.workerName,false);
         if(entry->un) {
             auto* unit=entry->un;
+            // Tasks3981a8 uses1333bc0(unit,0,true,false), exactly the owner
+            // name-color context. Reuse its owned facts, never the gps writer.
+            row.workerColor=df3d_area::nativeZoneOwnerNameColor(*unit);
+            if(!row.workerColor)return std::nullopt;
             // Native397336..3973bd. Caged workers navigate via their item's
             // effective position; all outputs belong to this row.
             if(!unit->flags1.bits.caged)row.workerPosition=unit->pos;

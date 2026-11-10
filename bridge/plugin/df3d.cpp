@@ -2516,6 +2516,10 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             row["building_position"]=Json::Value(Json::arrayValue);row["worker_position"]=Json::Value(Json::arrayValue);
             for(auto v:{entry.buildingPosition.x,entry.buildingPosition.y,entry.buildingPosition.z})row["building_position"].append(v);
             for(auto v:{entry.workerPosition.x,entry.workerPosition.y,entry.workerPosition.z})row["worker_position"].append(v);
+            if(entry.workerColor){const auto& c=*entry.workerColor;auto& color=row["worker_color"];
+              color["effect"]=int(c.effect);color["source"]=int(c.source);
+              for(auto value:c.color)color["color"].append(int(value));
+              for(auto value:c.alternate)color["alternate"].append(int(value));}
             result["rows"].append(row);
           }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;

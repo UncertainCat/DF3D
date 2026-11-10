@@ -1630,5 +1630,786 @@
     "fps_cap": 30,
     "sampled_gpu_celsius": 48,
     "sampled_gpu_utilization_percent": 2
+  },
+  "worker_text_reference": {
+    "capture": "stockpile-storage-native-input-20261110-115311",
+    "workers": [
+      {
+        "job_id": 382772,
+        "unit_id": 2346,
+        "worker_name": "Rûxu Kodkasprax, Porcupine Man Bard",
+        "worker_color": {
+          "alternate": [
+            5,
+            0,
+            0
+          ],
+          "color": [
+            5,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382783,
+        "unit_id": 6274,
+        "worker_name": "Zuntîr Vutokrodim, Brewer",
+        "worker_color": {
+          "alternate": [
+            6,
+            0,
+            0
+          ],
+          "color": [
+            6,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382742,
+        "unit_id": 7272,
+        "worker_name": "Bëmbul Mozibsolon, Potash Maker",
+        "worker_color": {
+          "alternate": [
+            6,
+            0,
+            0
+          ],
+          "color": [
+            6,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382749,
+        "unit_id": 7279,
+        "worker_name": "Ast Zonrithlut, Weaver",
+        "worker_color": {
+          "alternate": [
+            1,
+            0,
+            1
+          ],
+          "color": [
+            1,
+            0,
+            1
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382750,
+        "unit_id": 6277,
+        "worker_name": "Ustuth óssibrek, Planter",
+        "worker_color": {
+          "alternate": [
+            6,
+            0,
+            1
+          ],
+          "color": [
+            6,
+            0,
+            0
+          ],
+          "effect": 1,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382751,
+        "unit_id": 6974,
+        "worker_name": "Dakost Rirasatîs, Peasant",
+        "worker_color": {
+          "alternate": [
+            3,
+            0,
+            0
+          ],
+          "color": [
+            3,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382758,
+        "unit_id": 7276,
+        "worker_name": "Goden Idenlaltur, Milker",
+        "worker_color": {
+          "alternate": [
+            6,
+            0,
+            0
+          ],
+          "color": [
+            6,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382759,
+        "unit_id": 5574,
+        "worker_name": "Zon Mistêmrovod, Carpenter",
+        "worker_color": {
+          "alternate": [
+            6,
+            0,
+            0
+          ],
+          "color": [
+            6,
+            0,
+            1
+          ],
+          "effect": 1,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382760,
+        "unit_id": 7280,
+        "worker_name": "Obok Ostarkeskal, Peasant",
+        "worker_color": {
+          "alternate": [
+            3,
+            0,
+            0
+          ],
+          "color": [
+            3,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382762,
+        "unit_id": 6831,
+        "worker_name": "Rigòth Ralnóton, Stonecrafter",
+        "worker_color": {
+          "alternate": [
+            1,
+            0,
+            1
+          ],
+          "color": [
+            1,
+            0,
+            1
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382765,
+        "unit_id": 7283,
+        "worker_name": "Imush Ashmônustuth, Dwarven Child",
+        "worker_color": {
+          "alternate": [
+            4,
+            0,
+            0
+          ],
+          "color": [
+            4,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382768,
+        "unit_id": 6972,
+        "worker_name": "Sazir Sosadid, Mason",
+        "worker_color": {
+          "alternate": [
+            7,
+            0,
+            1
+          ],
+          "color": [
+            7,
+            0,
+            1
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382769,
+        "unit_id": 7282,
+        "worker_name": "Oddom Angenkûbuk, Diagnostician",
+        "worker_color": {
+          "alternate": [
+            5,
+            0,
+            0
+          ],
+          "color": [
+            5,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382773,
+        "unit_id": 6136,
+        "worker_name": "Uzol Zulbanromlam, Performer",
+        "worker_color": {
+          "alternate": [
+            5,
+            0,
+            0
+          ],
+          "color": [
+            5,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382777,
+        "unit_id": 988,
+        "worker_name": "îton Unibmamot, Dwarven Child",
+        "worker_color": {
+          "alternate": [
+            4,
+            0,
+            0
+          ],
+          "color": [
+            4,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382780,
+        "unit_id": 7284,
+        "worker_name": "Kivish Åmmosus, Herbalist",
+        "worker_color": {
+          "alternate": [
+            6,
+            0,
+            0
+          ],
+          "color": [
+            6,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382786,
+        "unit_id": 7267,
+        "worker_name": "Uvash Kolnikuz, Fish Dissector",
+        "worker_color": {
+          "alternate": [
+            1,
+            0,
+            0
+          ],
+          "color": [
+            1,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382789,
+        "unit_id": 7275,
+        "worker_name": "Goden Borushadil, Engraver",
+        "worker_color": {
+          "alternate": [
+            7,
+            0,
+            1
+          ],
+          "color": [
+            7,
+            0,
+            1
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382792,
+        "unit_id": 7207,
+        "worker_name": "Avuz Rimtarnóton, Miller",
+        "worker_color": {
+          "alternate": [
+            6,
+            0,
+            0
+          ],
+          "color": [
+            6,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382679,
+        "unit_id": 6685,
+        "worker_name": "Erush Kàlrethral, Milker",
+        "worker_color": {
+          "alternate": [
+            6,
+            0,
+            0
+          ],
+          "color": [
+            6,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382713,
+        "unit_id": 6534,
+        "worker_name": "Thob âtastfikod, Gem Cutter",
+        "worker_color": {
+          "alternate": [
+            2,
+            0,
+            1
+          ],
+          "color": [
+            2,
+            0,
+            1
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382720,
+        "unit_id": 4237,
+        "worker_name": "Uram Felori, lord consort",
+        "worker_color": {
+          "alternate": [
+            5,
+            0,
+            0
+          ],
+          "color": [
+            5,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382739,
+        "unit_id": 6824,
+        "worker_name": "Stodir ònulgúr, Farmer",
+        "worker_color": {
+          "alternate": [
+            6,
+            0,
+            0
+          ],
+          "color": [
+            6,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382748,
+        "unit_id": 5575,
+        "worker_name": "Feb Anambomrek, Axe Lord",
+        "worker_color": {
+          "alternate": [
+            1,
+            0,
+            0
+          ],
+          "color": [
+            1,
+            0,
+            1
+          ],
+          "effect": 1,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382757,
+        "unit_id": 6683,
+        "worker_name": "Rakust ádolbomrek, Weaponsmith",
+        "worker_color": {
+          "alternate": [
+            0,
+            0,
+            1
+          ],
+          "color": [
+            0,
+            0,
+            1
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382778,
+        "unit_id": 6681,
+        "worker_name": "Cog Zondurad, Dyer",
+        "worker_color": {
+          "alternate": [
+            6,
+            0,
+            0
+          ],
+          "color": [
+            6,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382785,
+        "unit_id": 7041,
+        "worker_name": "Onol Zastimnär, Dwarven Child",
+        "worker_color": {
+          "alternate": [
+            4,
+            0,
+            0
+          ],
+          "color": [
+            4,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382763,
+        "unit_id": 5697,
+        "worker_name": "Uzol Bardumtekkud, Miner",
+        "worker_color": {
+          "alternate": [
+            7,
+            0,
+            0
+          ],
+          "color": [
+            7,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382774,
+        "unit_id": 6134,
+        "worker_name": "Rigòth Shinatír, sacred call",
+        "worker_color": {
+          "alternate": [
+            6,
+            0,
+            0
+          ],
+          "color": [
+            6,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382788,
+        "unit_id": 5985,
+        "worker_name": "Dôbar Gébarunib, Farmer",
+        "worker_color": {
+          "alternate": [
+            6,
+            0,
+            0
+          ],
+          "color": [
+            6,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382740,
+        "unit_id": 2747,
+        "worker_name": "Thola Imeem, baron consort",
+        "worker_color": {
+          "alternate": [
+            7,
+            0,
+            0
+          ],
+          "color": [
+            0,
+            0,
+            1
+          ],
+          "effect": 1,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382775,
+        "unit_id": 6807,
+        "worker_name": "Kogan Riththocit, Carpenter",
+        "worker_color": {
+          "alternate": [
+            6,
+            0,
+            1
+          ],
+          "color": [
+            6,
+            0,
+            1
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382779,
+        "unit_id": 7268,
+        "worker_name": "Såkzul Rigòthost, Woodworker",
+        "worker_color": {
+          "alternate": [
+            6,
+            0,
+            1
+          ],
+          "color": [
+            6,
+            0,
+            1
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382781,
+        "unit_id": 7266,
+        "worker_name": "Eral ònulozkak, Potash Maker",
+        "worker_color": {
+          "alternate": [
+            6,
+            0,
+            0
+          ],
+          "color": [
+            6,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382791,
+        "unit_id": 2345,
+        "worker_name": "Leto Jamaslonel, Human Bard",
+        "worker_color": {
+          "alternate": [
+            5,
+            0,
+            0
+          ],
+          "color": [
+            5,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382793,
+        "unit_id": 7281,
+        "worker_name": "Kosoth Róthmörul, Engineer",
+        "worker_color": {
+          "alternate": [
+            4,
+            0,
+            1
+          ],
+          "color": [
+            4,
+            0,
+            1
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382776,
+        "unit_id": 7344,
+        "worker_name": "îton Oddomgigin, Cook",
+        "worker_color": {
+          "alternate": [
+            6,
+            0,
+            0
+          ],
+          "color": [
+            6,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      },
+      {
+        "job_id": 382782,
+        "unit_id": 7345,
+        "worker_name": "Kulet Tôsedoddom, Peasant",
+        "worker_color": {
+          "alternate": [
+            3,
+            0,
+            0
+          ],
+          "color": [
+            3,
+            0,
+            0
+          ],
+          "effect": 0,
+          "source": 0
+        }
+      }
+    ],
+    "verified_ids": [
+      382772,
+      382783,
+      382742,
+      382749,
+      382750,
+      382751,
+      382758,
+      382759,
+      382760,
+      382762,
+      382765,
+      382768,
+      382769,
+      382773,
+      382777,
+      382780,
+      382786,
+      382789,
+      382792,
+      382679,
+      382713,
+      382720,
+      382739,
+      382748,
+      382757,
+      382778,
+      382785,
+      382763,
+      382774,
+      382788,
+      382740,
+      382775,
+      382779,
+      382781,
+      382791,
+      382793,
+      382776,
+      382782
+    ],
+    "checks": [
+      "All 38 worker names match native rendered cells, including 30-byte truncation.",
+      "Every worker text cell matches the owned base color or an advertised animation alternative.",
+      "Cold/warm output agrees and native menu storage remains unchanged."
+    ],
+    "limits": [
+      "Animation timing and fire/ghost/undead/water override branches not independently exercised here.",
+      "Selector artwork and public viewer integration remain unfinished."
+    ],
+    "source_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "fps_cap": 30,
+    "sampled_gpu_celsius": 52,
+    "sampled_gpu_utilization_percent": 0
   }
 }

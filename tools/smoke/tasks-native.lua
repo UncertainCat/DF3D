@@ -57,6 +57,7 @@ local g=df.global.gps
 local verified={}
 local verified_controls={}
 local verified_buildings={}
+local verified_workers={}
 local function verify_captions()
  local first=info.jobs.scroll_position_cri_job
  for index=first,math.min(#warm-1,first+16)do
@@ -67,6 +68,19 @@ local function verify_captions()
   end
   verified[warm[index+1].job_id]=true
   local row=warm[index+1]
+  if row.unit_id>=0 then
+   local bytes=dfhack.utf2df(row.worker_name)
+   if #bytes>=31 then bytes=bytes:sub(1,27)..'...'end
+   local color=assert(row.worker_color)
+   for i=1,#bytes do
+    local pen=dfhack.screen.readTile(56+i,11+(index-first)*3)
+    assert(pen.ch==bytes:byte(i),'Tasks worker name differs '..row.job_id)
+    local function matches(c)return pen.fg==c[1] and pen.bg==c[2] and (pen.bold and 1 or 0)==c[3]end
+    assert(matches(color.color) or (color.effect~=0 and matches(color.alternate)),
+     'Tasks worker color differs '..row.job_id)
+   end
+   verified_workers[row.job_id]=true
+  end
   if row.building_id>=0 then
    local bytes=dfhack.utf2df(row.building_caption)
    -- Native399512 clips against the scrollbar-adjusted right boundary.
@@ -127,6 +141,8 @@ for _,row in ipairs(warm)do if verified[row.job_id]then result.verified_caption_
 assert(#result.verified_caption_ids==#warm,'Not all Tasks captions were observed')
 result.verified_control_ids={}
 result.verified_building_ids={}
+result.verified_worker_ids={}
+for _,row in ipairs(warm)do if verified_workers[row.job_id]then result.verified_worker_ids[#result.verified_worker_ids+1]=row.job_id end end
 for _,row in ipairs(warm)do if verified_buildings[row.job_id]then result.verified_building_ids[#result.verified_building_ids+1]=row.job_id end end
 for _,row in ipairs(warm)do if verified_controls[row.job_id]then result.verified_control_ids[#result.verified_control_ids+1]=row.job_id end end
 assert(#result.verified_control_ids==#warm,'Not all Tasks controls were observed')

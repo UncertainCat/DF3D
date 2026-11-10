@@ -24,6 +24,12 @@ func exercise(expected: Dictionary) -> void:
 		if tab>0:owner.state.select_tab(tab)
 		if not await settle(owner.state):return
 		check(owner.state.rows.size()==expected.rows[tab].size(),"Main Places membership differs")
+		for slot in 2:
+			var motion:=InputEventMouseMotion.new();motion.position=owner.panel.get_global_transform_with_canvas()*Vector2(492+24*slot,owner.panel.list_top()+18)
+			var deadline:=Time.get_ticks_msec()+650
+			while Time.get_ticks_msec()<deadline:
+				root.push_input(motion.duplicate(),true);await process_frame
+			check(scene._fortress_hud.native_help.displayed==["places_recenter","places_view"][slot],"Places hover missing on tab %d"%tab)
 		var row: Dictionary=owner.state.rows[0].duplicate(true)
 		await pointer(owner.panel.get_global_transform_with_canvas()*Vector2(516,owner.panel.list_top()+18))
 		await drain()
@@ -35,6 +41,7 @@ func exercise(expected: Dictionary) -> void:
 			if target.selected.get("id",-1)==row.building_id:break
 			await create_timer(0.01).timeout
 		check(scene._ui.host.active==target and target.selected.get("id",-1)==row.building_id,"Places View opened wrong inspector: tab %d"%tab)
+		check(not scene._fortress_hud.native_help.displayed.begins_with("places_"),"Places hover survived navigation")
 		target.close_panel();await process_frame
 	owner.open_panel();if not await settle(owner.state):return
 	var row: Dictionary=owner.state.rows[0].duplicate(true)

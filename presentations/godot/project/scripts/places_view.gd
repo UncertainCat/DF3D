@@ -8,6 +8,9 @@ const SIEGE_ACTIONS=[3,4,2,1,0]
 const SIEGE_TOKENS=["FIRE_AT_WILL","PRACTICE_FIRE","PREPARE_TO_FIRE","KEEP_LOADED","NOT_IN_USE"]
 var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
 var portraits: Dictionary={}
+var hover_help
+var pointer_known:=false
+var pointer_position:=Vector2.ZERO
 func tab(value: String,point: Vector2,token: String,selected: bool) -> float:
 	if token!="SHORT_SUBTAB" or not selected:return super.tab(value,point,token,selected)
 	var width:=value.length()+4;var texture: Texture2D=art.texture(token+"_SELECTED")
@@ -22,7 +25,11 @@ func configure_places(source,model) -> void:
 	configure_standing_orders(source,model);picture.configure(source)
 	scrollbar.input_allowed=allowed;scrollbar.wheel_enabled=false
 	scrollbar.row_changed.connect(func(value):state.seek(value,capacity()))
-	state.changed.connect(refresh);refresh()
+	state.changed.connect(refresh)
+	mouse_exited.connect(_leave_hover)
+	visibility_changed.connect(func():
+		if not is_visible_in_tree():_leave_hover())
+	refresh()
 func list_top() -> int:return (96 if wide_tabs else 120)+(48 if state!=null and state.tab==5 and not state.rows.is_empty() else 0)
 func capacity() -> int:return maxi(0,int((size.y-list_top()-24)/36))
 func visible_first() -> int:return mini(state.first,maxi(0,state.rows.size()-capacity()))
@@ -44,8 +51,11 @@ func refresh() -> void:
 	scrollbar.position=Vector2(size.x-32,list_top());scrollbar.size=Vector2(16,capacity()*36)
 	scrollbar.page=capacity();scrollbar.set_rows(state.rows.size(),visible_first());queue_redraw()
 func _exit_tree() -> void:
+	_leave_hover()
 	if state!=null and state.changed.is_connected(refresh):state.changed.disconnect(refresh)
 func _input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		pointer_known=true;pointer_position=get_global_transform_with_canvas().affine_inverse()*event.position
 	# Native399c36 gates the shared contextual-scroll helper140f2b0 by
 	# panel cells, starting above the ordinary list (also on the Siege tab).
 	if allowed() and state!=null and state.phase==state.Phase.Ready and state.rows.size()>capacity() and event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN] and not event.ctrl_pressed and not event.alt_pressed and not event.meta_pressed:
@@ -55,6 +65,23 @@ func _input(event: InputEvent) -> void:
 			var step: int=(capacity() if event.shift_pressed else 1)*(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1)
 			state.seek(visible_first()+step,capacity());get_viewport().set_input_as_handled();return
 	super._input(event)
+func _process(_delta: float) -> void:update_hover()
+func hover_target(point: Vector2) -> String:
+	if state==null or state.phase!=state.Phase.Ready:return ""
+	for index in mini(capacity(),state.rows.size()-visible_first()):
+		var row: Dictionary=state.rows[visible_first()+index];var y:=list_top()+index*36
+		if not row.has("position"):continue
+		if Rect2(480,y,24,36).has_point(point):return "recenter"
+		if Rect2(504,y,24,36).has_point(point):return "view"
+	return ""
+func update_hover() -> void:
+	if not is_instance_valid(hover_help):return
+	var target:=hover_target(pointer_position) if pointer_known and allowed() else ""
+	if target.is_empty():hover_help.leave(get_instance_id())
+	else:hover_help.enter_places(get_instance_id(),target)
+func _leave_hover() -> void:
+	pointer_known=false
+	if is_instance_valid(hover_help):hover_help.leave(get_instance_id())
 func _gui_input(event: InputEvent) -> void:
 	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
 	accept_event()

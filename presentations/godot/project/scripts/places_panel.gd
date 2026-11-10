@@ -11,11 +11,11 @@ var layout_size:=Vector2.ZERO
 var opening:=false
 var destination: Dictionary={}
 func _init() -> void:state.changed.connect(_sync)
-func configure(world,service,host) -> void:
+func configure(world,service,host,hover=null) -> void:
 	ui_host=host;state.configure(service)
 	var layer:=CanvasLayer.new();layer.layer=10;add_child(layer)
 	panel=preload("res://scripts/places_view.gd").new();layer.add_child(panel)
-	panel.configure_places(world,state);panel.input_allowed=allowed
+	panel.configure_places(world,state);panel.input_allowed=allowed;panel.hover_help=hover
 	panel.cancelled.connect(close_panel);panel.navigation_requested.connect(_navigate)
 	host.register(self);_layout();_sync()
 func allowed() -> bool:return play_enabled and ui_host!=null and ui_host.allows_panel_input(self)

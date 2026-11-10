@@ -218,6 +218,39 @@ if siege_fixture then
  end end
  reset();save()
 end
+result.hover={}
+for mode=0,5 do
+ info.buildings.mode=mode;info.buildings.scrolling_position[mode]=0;settle()
+ if #info.buildings.list[mode]>0 then
+  local targets={{'recenter',524,mode==5 and 238 or 190},{'view',548,mode==5 and 238 or 190}}
+  if mode==5 then for slot=0,4 do
+   targets[#targets+1]={'siege-row-'..slot,308+slot*24,238}
+   targets[#targets+1]={'siege-all-'..slot,308+slot*24,190}
+  end end
+  for _,target in ipairs(targets)do
+   local deadline=dfhack.getTickCount()+650
+   repeat
+    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+    g.precise_mouse_x=target[2];g.precise_mouse_y=target[3];g.mouse_x=target[2]//8;g.mouse_y=(target[3]-4)//12
+    df.global.game.main_interface.current_hover=0
+    gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(1,'frames')
+   until dfhack.getTickCount()>=deadline
+   -- The sleep permits a real frame to replace the synthetic pointer. Render
+   -- the sampled pointer once more without yielding before reading the result.
+   g.precise_mouse_x=target[2];g.precise_mouse_y=target[3];g.mouse_x=target[2]//8;g.mouse_y=(target[3]-4)//12
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+   local sample={tab=mode,kind=target[1],instruction=df.global.game.main_interface.current_hover,lines={}}
+   for yy=0,17 do
+    local chars={};for xx=g.dimx-24,g.dimx-1 do local ch=dfhack.screen.readTile(xx,yy).ch;chars[#chars+1]=ch>=32 and string.char(ch%256) or ' 'end
+    sample.lines[#sample.lines+1]=dfhack.df2utf(table.concat(chars)):gsub('%s+$','')
+   end
+   while #sample.lines>0 and sample.lines[#sample.lines]==''do table.remove(sample.lines)end
+   result.hover[#result.hover+1]=sample
+  end
+ end
+end
+save()
 result.scroll_input={}
 info.buildings.mode=0
 for _,sample in ipairs{{'wheel-down','CONTEXT_SCROLL_DOWN',500,300},{'wheel-up','CONTEXT_SCROLL_UP',500,300},

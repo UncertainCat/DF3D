@@ -9598,5 +9598,382 @@
       "Siege aggregate pointer region and short lists",
       "Scrollbar track/drag input"
     ]
+  },
+  "hover_reference": {
+    "native_source": "build/stockpile-storage-native-input-20261110-155010",
+    "scene_source": "build/stockpile-storage-native-input-20261110-155149",
+    "native_samples": [
+      {
+        "instruction": 238,
+        "kind": "recenter",
+        "lines": [
+          "Leave this menu and",
+          "recenter on this place."
+        ],
+        "tab": 0
+      },
+      {
+        "instruction": 239,
+        "kind": "view",
+        "lines": [
+          "Leave this menu and",
+          "view this place's sheet",
+          "or menu."
+        ],
+        "tab": 0
+      },
+      {
+        "instruction": 238,
+        "kind": "recenter",
+        "lines": [
+          "Leave this menu and",
+          "recenter on this place."
+        ],
+        "tab": 1
+      },
+      {
+        "instruction": 239,
+        "kind": "view",
+        "lines": [
+          "Leave this menu and",
+          "view this place's sheet",
+          "or menu."
+        ],
+        "tab": 1
+      },
+      {
+        "instruction": 238,
+        "kind": "recenter",
+        "lines": [
+          "Leave this menu and",
+          "recenter on this place."
+        ],
+        "tab": 2
+      },
+      {
+        "instruction": 239,
+        "kind": "view",
+        "lines": [
+          "Leave this menu and",
+          "view this place's sheet",
+          "or menu."
+        ],
+        "tab": 2
+      },
+      {
+        "instruction": 238,
+        "kind": "recenter",
+        "lines": [
+          "Leave this menu and",
+          "recenter on this place."
+        ],
+        "tab": 3
+      },
+      {
+        "instruction": 239,
+        "kind": "view",
+        "lines": [
+          "Leave this menu and",
+          "view this place's sheet",
+          "or menu."
+        ],
+        "tab": 3
+      },
+      {
+        "instruction": 238,
+        "kind": "recenter",
+        "lines": [
+          "Leave this menu and",
+          "recenter on this place."
+        ],
+        "tab": 4
+      },
+      {
+        "instruction": 239,
+        "kind": "view",
+        "lines": [
+          "Leave this menu and",
+          "view this place's sheet",
+          "or menu."
+        ],
+        "tab": 4
+      },
+      {
+        "instruction": 238,
+        "kind": "recenter",
+        "lines": [
+          "Leave this menu and",
+          "recenter on this place."
+        ],
+        "tab": 5
+      },
+      {
+        "instruction": 239,
+        "kind": "view",
+        "lines": [
+          "Leave this menu and",
+          "view this place's sheet",
+          "or menu."
+        ],
+        "tab": 5
+      },
+      {
+        "instruction": -1,
+        "kind": "siege-row-0",
+        "lines": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "      Elevation 36"
+        ],
+        "tab": 5
+      },
+      {
+        "instruction": -1,
+        "kind": "siege-all-0",
+        "lines": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "      Elevation 36"
+        ],
+        "tab": 5
+      },
+      {
+        "instruction": -1,
+        "kind": "siege-row-1",
+        "lines": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "      Elevation 36"
+        ],
+        "tab": 5
+      },
+      {
+        "instruction": -1,
+        "kind": "siege-all-1",
+        "lines": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "      Elevation 36"
+        ],
+        "tab": 5
+      },
+      {
+        "instruction": -1,
+        "kind": "siege-row-2",
+        "lines": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "      Elevation 36"
+        ],
+        "tab": 5
+      },
+      {
+        "instruction": -1,
+        "kind": "siege-all-2",
+        "lines": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "      Elevation 36"
+        ],
+        "tab": 5
+      },
+      {
+        "instruction": -1,
+        "kind": "siege-row-3",
+        "lines": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "      Elevation 36"
+        ],
+        "tab": 5
+      },
+      {
+        "instruction": -1,
+        "kind": "siege-all-3",
+        "lines": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "      Elevation 36"
+        ],
+        "tab": 5
+      },
+      {
+        "instruction": -1,
+        "kind": "siege-row-4",
+        "lines": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "      Elevation 36"
+        ],
+        "tab": 5
+      },
+      {
+        "instruction": -1,
+        "kind": "siege-all-4",
+        "lines": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "      Elevation 36"
+        ],
+        "tab": 5
+      }
+    ],
+    "scene_view_and_recenter_tabs": 6,
+    "scene_navigation_retires_hover": true,
+    "renderer_instruction_writes": [
+      "39ec87:238",
+      "39ed32:239"
+    ],
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "result": "passed_with_known_issues",
+    "known_diagnostics": [
+      "render-thread finalize",
+      "ObjectDB shutdown leak warning"
+    ],
+    "omissions": [
+      "Pixel comparison of the hover overlay",
+      "Other sizes and target disappearance while hovered"
+    ]
   }
 }

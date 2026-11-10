@@ -127,7 +127,7 @@ func controller(id: String):
 	if controllers.has(id): return controllers[id]
 	var panel = load(Registry.PANEL_SCRIPTS[id]).new()
 	if id=="places":
-		add_child(panel);panel.configure(world,actions,host)
+		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
 		panel.focus_requested.connect(focus_tile)
 		panel.inspect_requested.connect(func(tab,building_id,tile):
 			if not host.play_enabled:return

@@ -18,6 +18,8 @@ const WORK_DETAIL_WIDGET_HELP={
 # Residents native052559: main-interface instructions234/235/252..257/260.
 # Header/filter widget tooltips need capture. Tier6: native052947.
 # Tasks native113154 instructions240/245/246/234/235/244.
+# Places native155010: instructions238/239, all six tabs.
+const PLACES_HELP={"recenter":["Leave this menu and","recenter on this place."],"view":["Leave this menu and","view this place's sheet","or menu."]}
 const TASKS_HELP={"view-task":["Set the details of this","task, such as the","material used."],"job-recenter": ["Leave this menu and", "recenter on the task's", "building."], "suspend": ["Suspend this task.", "This removes the", "worker.  The task can", "be unsuspended."], "remove": ["Cancel this task."], "worker-recenter": ["Leave this menu and", "recenter on this", "creature."], "worker-view": ["Leave this menu and", "view this creature's", "sheet."], "remove-worker": ["Remove the current", "worker from the task."]}
 const RESIDENTS_HELP={
 	"recenter":["Leave this menu and","recenter on this","creature."],
@@ -232,6 +234,10 @@ func enter_unit(owner: int, kind: String) -> void:
 func enter_specialization(owner: int, specialized: bool) -> void:
 	state.enter(owner,"specialization_"+str(int(specialized)),Time.get_ticks_msec());_process(0)
 
+func enter_places(owner: int,kind: String) -> void:
+	if PLACES_HELP.has(kind):state.enter(owner,"places_"+kind,Time.get_ticks_msec());_process(0)
+	else:leave(owner)
+
 func enter_tasks(owner: int,kind: String) -> void:
 	if TASKS_HELP.has(kind):state.enter(owner,"tasks_"+kind,Time.get_ticks_msec());_process(0)
 	else:leave(owner)
@@ -293,6 +299,7 @@ func _draw() -> void:
 			draw_texture_rect_region(frame,Rect2(x*8,y*12,8,12),Rect2(0 if x==0 else 8,frame_y,8,12))
 	var lines: Array
 	if displayed.begins_with("detail_widget_"):lines=WORK_DETAIL_WIDGET_HELP[displayed.trim_prefix("detail_widget_")].lines
+	elif displayed.begins_with("places_"):lines=PLACES_HELP[displayed.trim_prefix("places_")]
 	elif displayed.begins_with("tasks_"):lines=TASKS_HELP[displayed.trim_prefix("tasks_")]
 	elif displayed.begins_with("residents_specialization_"):lines=SPECIALIZATION_HELP[int(displayed.trim_prefix("residents_specialization_"))]
 	elif displayed.begins_with("residents_"):lines=RESIDENTS_HELP[displayed.trim_prefix("residents_")]

@@ -349,6 +349,25 @@ checks pass in `build/qa/places-scroll-final`. Other sizes, Siege aggregate hove
 regions and scrollbar track/drag input remain unaccepted. The fixture retains
 `scroll_input_reference`; hover and typed siege actions remain pending.
 
+
+Places Recenter/View hover uses the shared native-help owner and timing, with
+verbatim native238/239 text. Protected155010 captures both messages on all six
+tabs and confirms no main tooltip over any of the five individual/aggregate
+siege action buttons. Renderer39ec87/39ed32 sets the two instruction IDs.
+The first capture154901 read after yielding, allowing real frames to overwrite
+the synthetic pointer; it is not acceptance. The capture now renders the sampled
+pointer without yielding before reading instruction and text cells.
+Protected155149 checks both hover identities through actual main-scene pointer
+motion on every tab and verifies navigation retires Places help. It passes with
+only the documented Godot render-thread finalize/ObjectDB shutdown diagnostics.
+Native text and viewer activation are accepted; a pixel comparison of the hover
+overlay, other sizes and hovered-target disappearance are not covered. Both
+accepted runs preserve the source save and close owned DF unsaved. Graphical
+clients remain capped30FPS; scene-run GPU58–63C sampled. Core19/controller checks
+pass in `build/qa/places-hover-final`. `native_places.json.hover_reference`
+retains the observations and scope. Typed siege actions and responsive layout
+remain pending; the public Places route stays hidden.
+
 ## Management 174 Tasks contract
 
 Management174 uses `Local\df3d_management_v174`;173 peers cannot attach. There is

@@ -330,6 +330,16 @@ creature captions and artwork: native158450 skips item controls for unit rows,
 so those rows correctly have no View/flag buttons. Management168 separately
 adds native ordered Uses. Public Stocks remains gated.
 
+Toys14, siege ammunition65 and trap components68 use the guarded constructed
+item-description path, with native subtype getters and pointer identity checked
+against semantic raw definitions. Protected073136 on2026-11-10 verifies the iron
+puzzlebox38294: native/viewer View/close, native/owned/wire description and Uses,
+and a zero-difference full panel including carrier artwork. Types65/68 are
+absent and retain live-acceptance gaps; other toy subtypes are unverified.
+`native_stocks.json.subtype_item_description_reference` records that scope.
+Core19, extension, item-state and MSVC pass; source remains unchanged and DF4960
+exits unsaved at30FPS with documented engine diagnostics only.
+
 Leather55, totems59, ballista arrowheads66, rocks76 and branches91 use the
 owned native item-description provider. Leather's dye/color branch shares the
 THREAD semantic dependencies; its pinned color leaf resolves the item's dye

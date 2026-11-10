@@ -8877,5 +8877,65 @@
     "limits": [
       "Totem59,ballista arrowhead66,rock76,branch91 absent; no live acceptance. Dyed leather variants remain untested live. Public Stocks remains gated."
     ]
+  },
+  "subtype_item_description_reference": {
+    "run": "build/stockpile-storage-native-input-20261110-073136",
+    "dispatch": [
+      {
+        "name": "item_siegeammost",
+        "table": "0x16f5ea0",
+        "kind": 65,
+        "get_type": "0x28d340",
+        "subtype": "0xfd0c0",
+        "differences": {},
+        "type_hash": "05fb860fe1c710df"
+      },
+      {
+        "name": "item_toyst",
+        "table": "0x16fca08",
+        "kind": 14,
+        "get_type": "0x7b7a0",
+        "subtype": "0xfd0c0",
+        "differences": {},
+        "type_hash": "57c0fc2ead8fec2e"
+      },
+      {
+        "name": "item_trapcompst",
+        "table": "0x16f02e8",
+        "kind": 68,
+        "get_type": "0x8f45f0",
+        "subtype": "0xfd0c0",
+        "differences": {},
+        "type_hash": "dff05a9069db5ad0"
+      }
+    ],
+    "items": [
+      {
+        "kind": 14,
+        "id": 38294,
+        "description": "This is a iron puzzlebox.  ",
+        "uses": []
+      }
+    ],
+    "ownership": "TOY14,SIEGEAMMO65,TRAPCOMP68 share constructed-item description virtuals except getType. fd0c0 resolves each subtype pointer; it must equal the semantic raw definition before entering native description/Uses. No distinct item-type branch; c76815 compares improvement type, not TOY.",
+    "render": {
+      "crop": [
+        416,
+        52,
+        904,
+        760
+      ],
+      "different_pixels": 0,
+      "native_sha256": "ee630d1df9ebebec754e0c3cc43bb93435222d3dc2cd0a022bb8f5ab7e04fd53",
+      "viewer_sha256": "bc2af04d72e15065622f0c7f6527ed37646975d15a2529e302eeaa1c4e31e982"
+    },
+    "verification": [
+      "Native/viewer View and close, exact native/owned/wire description and Uses, full panel including carrier match for iron puzzlebox38294.",
+      "Core19, extension, item-state and MSVC pass in item-subtype-dispatch.",
+      "Source unchanged; DF4960 closed unsaved,30FPS, maximum sampled GPU73C(not peak), only documented thread/finalize/shutdown diagnostics."
+    ],
+    "limits": [
+      "Siege ammunition65 and trap components68 absent; no live acceptance. One toy subtype only. Public Stocks remains gated."
+    ]
   }
 }

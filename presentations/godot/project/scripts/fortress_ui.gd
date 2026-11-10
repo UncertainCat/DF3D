@@ -163,6 +163,7 @@ func controller(id: String):
 		controllers[id]=panel;return panel
 	if id=="standing_orders":
 		add_child(panel);panel.configure(world,actions,host)
+		panel.information_requested.connect(func(caption):_open_staged_information(panel,caption))
 		panel.work_details_requested.connect(func():controller("work_details").open_from_labor())
 		controllers[id]=panel;return panel
 	if id=="residents":

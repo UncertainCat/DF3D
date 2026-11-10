@@ -378,6 +378,15 @@ if os.getenv('DF3D_PLACES_INFORMATION')=='1' then
   click_label('Places');assert(info.current_mode==df.info_interface_mode_type.BUILDINGS,'Native return to Places failed')
   result.information_navigation[#result.information_navigation+1]={caption=target[1],mode=target[2],return_subtab=info.buildings.mode,self_preserves_subtab=true}
  end
+ result.labor_information_navigation={}
+ for _,page in ipairs{'Standing orders','Chores','Kitchen','Stone use'}do
+  click_label('Labor');assert(info.current_mode==df.info_interface_mode_type.LABOR)
+  if page=='Chores' then click_label('Standing orders')end
+  click_label(page)
+  local before=lines();click_label('Labor');local after=lines()
+  click_label('Places');assert(info.current_mode==df.info_interface_mode_type.BUILDINGS,'Labor header failed to return to Places')
+  result.labor_information_navigation[#result.labor_information_navigation+1]={page=page,before_self=before,after_self=after,return_subtab=info.buildings.mode}
+ end
  save()
 end
 gui.simulateInput(view,'LEAVESCREEN');settle();assert(not info.open,'Places did not close')

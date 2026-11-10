@@ -11301,5 +11301,43 @@
       "Standing orders and other Labor subpage top-level headers",
       "Nobles, Objects and Justice remain gated"
     ]
+  },
+  "labor_information_navigation_reference": {
+    "source": "build/stockpile-storage-native-input-20261110-165320",
+    "native": [
+      {
+        "page": "Standing orders",
+        "return_subtab": 0,
+        "self_text_identical": true
+      },
+      {
+        "page": "Chores",
+        "return_subtab": 0,
+        "self_text_identical": true
+      },
+      {
+        "page": "Kitchen",
+        "return_subtab": 0,
+        "self_text_identical": false
+      },
+      {
+        "page": "Stone use",
+        "return_subtab": 0,
+        "self_text_identical": true
+      }
+    ],
+    "viewer": "Actual main-scene pointer navigation from Standing orders, Chores, Kitchen and Stone use to Places at 912x552 and 1600x900; selected Labor header retains each page.",
+    "result": "passed_with_known_issues",
+    "known_diagnostics": [
+      "render-thread finalize",
+      "ObjectDB shutdown leak warning"
+    ],
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "Kitchen first-render column positions change on subsequent redraw; no native defect classification established",
+      "Pending sent mutations and active text drafts",
+      "Native resized header observation"
+    ]
   }
 }

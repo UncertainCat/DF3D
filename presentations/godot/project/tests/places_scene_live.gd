@@ -104,4 +104,23 @@ func exercise(expected: Dictionary) -> void:
 				if not await settle(owner.state):return
 				check(scene._ui.host.active==owner and not target_view.visible,"Live return to Places failed: "+target[1])
 				owner.close_panel()
+	if OS.get_environment("DF3D_PLACES_INFORMATION")=="1":
+		var standing=scene._ui.controller("standing_orders")
+		for extent in [Vector2i(912,552),Vector2i(1600,900)]:
+			root.size=extent;await process_frame;await process_frame
+			for page in ["standing","chores","kitchen","stone"]:
+				standing.open_panel()
+				if not await settle(standing.state):return
+				match page:
+					"chores":await pointer(standing.panel.get_global_transform_with_canvas()*standing.panel.category_rect(5).get_center())
+					"kitchen":await pointer(standing.panel.get_global_transform_with_canvas()*standing.panel.kitchen_rect().get_center())
+					"stone":await pointer(standing.panel.get_global_transform_with_canvas()*standing.panel.stone_use_rect().get_center())
+				if not await settle(standing.current_state()):return
+				var labor_view=standing.panel if page=="standing" else standing.chores_panel if page=="chores" else standing.kitchen_panel if page=="kitchen" else standing.stone_panel
+				await pointer(labor_view.get_global_transform_with_canvas()*Vector2(280,48 if extent.x<1240 else 24))
+				check(scene._ui.host.active==standing and labor_view.visible,"Selected Labor header lost subpage")
+				await pointer(labor_view.get_global_transform_with_canvas()*Vector2(200,48 if extent.x<1240 else 24))
+				if not await settle(owner.state):return
+				check(scene._ui.host.active==owner and not labor_view.visible,"Labor page did not return to Places: "+page)
+				owner.close_panel()
 	exercised=true

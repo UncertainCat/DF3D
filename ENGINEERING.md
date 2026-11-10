@@ -498,9 +498,32 @@ Headless actual main-scene composition in
 `build/qa/information-return-navigation` also verifies queued-read retirement,
 selected-tab preservation, gated destinations and overlay/closed-owner rejection;
 core19 and Places state checks pass. Native resized header observation, active
-text drafts/child dialogs and top-level navigation from other Labor subpages
-remain outstanding. These checks do not complete the destination screens or
+text drafts/child dialogs remain outstanding. These checks do not complete the destination screens or
 permit public exposure.
+
+Standing orders, Chores, Kitchen and Stone use now share information-header
+hit testing and owner routing. Selecting Labor preserves the current page;
+other implemented information tabs use the same staged router. The owner keeps
+an Applying mutation's input ownership, matching its existing subtab navigation
+guard. Accepted transitions close all local page states and retire queued reads.
+No public routes change. Tasks and Places inherit the shared header signal while
+retaining their own selected captions and input handlers.
+
+Protected165320 on2026-11-10 verifies native return-to-Places from all four Labor
+pages, and actual main-scene pointer transitions at912x552 and1600x900. The
+selected Labor header retains each displayed page. Native text is identical
+before/after self-click for Standing orders, Chores and Stone use; Kitchen's
+first-render column positions change on redraw, so text equality there is not
+claimed and no native defect classification is established. Source preservation
+passes; owned DF39392 closes unsaved,30FPS, GPU59–60C sampled. Only documented
+render-thread finalize/ObjectDB shutdown warnings remain. Evidence is scoped in
+`native_places.json.labor_information_navigation_reference`.
+
+`build/qa/labor-information-navigation` passes core19, actual main-scene
+composition and Places/Standing orders/Chores/Kitchen/Stone use state checks.
+Composition covers queued-read retirement, selected Labor preservation and the
+Applying guard at both sizes. Sent mutation retirement, active text drafts and
+child dialogs remain separate acceptance requirements.
 
 ## Management 176 Places subtitle identity
 

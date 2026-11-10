@@ -85,6 +85,7 @@ func _gui_input(event: InputEvent) -> void:
 		var bar=scrollbar if event.position.x<column_middle() else labor_scrollbar
 		bar.move_to(bar.first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1)*(capacity() if event.shift_pressed else 1));return
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
+	if information_click(event.position):return
 	if stone_use_rect().has_point(event.position):stone_use_requested.emit();accept_event();return
 	if work_details_rect().has_point(event.position):work_details_requested.emit();return
 	if kitchen_rect().has_point(event.position):kitchen_requested.emit();return

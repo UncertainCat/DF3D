@@ -172,6 +172,27 @@ func run():
 		places.information_requested.emit("Creatures")
 		check(ui.host.active==places,"Overlay blocks information handoff")
 		ui.host.set_overlay_blocked(false)
+	var standing=ui.controller("standing_orders")
+	for dimensions in [Vector2(912,552),Vector2(1600,900)]:
+		for page in ["standing","chores","kitchen","stone"]:
+			standing.open_panel()
+			match page:
+				"chores":standing.open_chores()
+				"kitchen":standing.open_kitchen()
+				"stone":standing.open_stone_use()
+			var model=standing.current_state()
+			var labor_view=standing.panel if page=="standing" else standing.chores_panel if page=="chores" else standing.kitchen_panel if page=="kitchen" else standing.stone_panel
+			labor_view.layout(dimensions)
+			var pending: int=model.ticket
+			var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=true
+			click.position=Vector2(280,48 if dimensions.x<1240 else 24);labor_view._gui_input(click)
+			check(ui.host.active==standing and model.ticket==pending,"Selected Labor retains "+page)
+			model.phase=model.Phase.Applying
+			click.position=Vector2(200,48 if dimensions.x<1240 else 24);labor_view._gui_input(click)
+			check(ui.host.active==standing,"Pending Labor mutation prevents handoff")
+			model.phase=model.Phase.Reading;labor_view._gui_input(click)
+			check(ui.host.active==places and not labor_view.visible,"Labor header opens Places from "+page)
+			check(model.ticket==0 and not ui.actions._queue.has(pending) and not ui.actions._requests.has(pending),"Labor handoff retires read from "+page)
 	ui.host.close_active()
 	places.information_requested.emit("Tasks")
 	check(ui.host.active==null,"Closed Places cannot steal input")

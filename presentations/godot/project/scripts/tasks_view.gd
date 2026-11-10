@@ -1,7 +1,6 @@
 extends "res://scripts/standing_orders_view.gd"
 # Native Tasks397c90 layout. Navigation is emitted to the panel owner; the
 # view never drives DF menus or derives capabilities from job types.
-signal information_requested(caption: String)
 signal navigation_requested(row: Dictionary,worker: bool,inspect: bool)
 const NameColor=preload("res://scripts/native_name_color.gd")
 var picture=preload("res://scripts/native_unit_picture_frame.gd").new()

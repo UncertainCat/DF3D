@@ -33,6 +33,7 @@ func _gui_input(event: InputEvent) -> void:
 	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
 	accept_event()
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
+	if information_click(event.position):return
 	if work_details_rect().has_point(event.position):work_details_requested.emit();return
 	if Rect2(136,list_top()-60,152,24).has_point(event.position):standing_requested.emit();return
 	if kitchen_rect().has_point(event.position):kitchen_requested.emit();return

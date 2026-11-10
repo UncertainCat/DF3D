@@ -1,6 +1,5 @@
 extends "res://scripts/standing_orders_view.gd"
 # Staged Places layout follows native39ac20; public exposure remains gated.
-signal information_requested(caption: String)
 signal navigation_requested(row: Dictionary,inspect: bool)
 signal siege_requested(building_id: int,action: int)
 const PLACE_TABS=["Zones","Locations","Stockpiles","Workshops","Farm plots","Siege engines"]

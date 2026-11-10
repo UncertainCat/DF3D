@@ -1,6 +1,7 @@
 extends "res://scripts/location_staff_candidates_frame.gd"
 # Staged scalar pages; native captures are recorded in native_standing_orders.json. Other Labor workflows remain
 # unfinished and this surface must not become a public replacement yet.
+signal information_requested(caption: String)
 signal cancelled
 signal stone_use_requested
 signal kitchen_requested
@@ -50,10 +51,16 @@ func _input(event: InputEvent) -> void:
 	if not allowed():return
 	if (event is InputEventKey and event.pressed and event.keycode==KEY_ESCAPE) or (event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_RIGHT):
 		cancelled.emit();get_viewport().set_input_as_handled()
+func information_click(point: Vector2,selected: String="Labor") -> bool:
+	var caption:=InfoTabs.caption_at(point,wide_tabs)
+	if caption.is_empty():return false
+	if caption!=selected:information_requested.emit(caption)
+	accept_event();return true
 func _gui_input(event: InputEvent) -> void:
 	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
 	accept_event()
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
+	if information_click(event.position):return
 	if work_details_rect().has_point(event.position):work_details_requested.emit();return
 	if stone_use_rect().has_point(event.position):stone_use_requested.emit();return
 	if kitchen_rect().has_point(event.position):kitchen_requested.emit();return

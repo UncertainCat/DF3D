@@ -1,4 +1,5 @@
 extends Node
+signal information_requested(caption: String)
 signal work_details_requested
 # Staged owner, pending all categories and native interaction acceptance.
 var ui_host
@@ -50,6 +51,8 @@ func configure(world,service,host) -> void:
 	stone_panel.configure_stone_use(world,stone_state);stone_panel.input_allowed=allowed
 	stone_panel.work_details_requested.connect(request_work_details);stone_panel.standing_requested.connect(return_standing)
 	stone_panel.kitchen_requested.connect(open_kitchen);stone_panel.cancelled.connect(close_panel)
+	for information_view in [panel,chores_panel,kitchen_panel,stone_panel]:
+		information_view.information_requested.connect(_request_information)
 	panel.cancelled.connect(close_panel);host.register(self);_layout();_sync()
 func open_stone_use() -> void:
 	var current=current_state()
@@ -81,6 +84,9 @@ func _rows() -> void:
 	if chores_panel!=null:chores_panel.display_rows(chores_state.rows.values())
 func allowed() -> bool:return play_enabled and ui_host!=null and ui_host.allows_panel_input(self)
 func _reset_labor_navigation() -> void:return_category=0
+func _request_information(caption: String) -> void:
+	var current=current_state()
+	if allowed() and current.phase!=current.Phase.Applying:information_requested.emit(caption)
 func request_work_details() -> void:
 	var current=current_state()
 	if not allowed() or current.phase==current.Phase.Applying:return

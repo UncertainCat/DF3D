@@ -65,14 +65,27 @@ native `building::getName` for Stockpiles, Workshops, Farm plots and Siege engin
 as the Places renderer does at39dba6/39de70/39e029/39e4a5. Protected141227 checks
 all six lists' coordinates, identical cold/warm names, and rendered primary names
 across all34 stockpiles,46 workshops and2 farm plots. The empty Siege engines
-list gives no populated-name acceptance. Zones/Locations headings remain
-unprovided; status/artwork/actions/transport/viewer remain unfinished. Owned
+list gives no populated-name acceptance. Status/artwork/actions/transport/viewer remain unfinished. Owned
 DF31620 closes unsaved, source preserved,30FPS and GPU41C/0% sampled. The two
 preceding probes141105/141147 failed because the discovery oracle supplied an
 out-of-range final scroll offset; native clamps the displayed page without
 rewriting that offset. The oracle now supplies valid offsets. No product scroll
 behavior changed. `native_places.json.building_names_reference` retains the
 accepted names and scoped provenance.
+
+Places zone headings now read the pinned immutable native dispatch/string operands
+at39c70c..39c7fe/table39f0fc, preserving custom names. This intentionally uses
+Places' simpler labels, not the inspector's furniture-sensitive headings.
+Location headings resolve the simulation fortress site's abstract building by
+location ID and call native English formatter a946e0 with an owned language name
+and output string, as renderer39d247 does. Native unnamed/unknown literals are
+retained. No renderer or menu scratch is called or borrowed. Protected141613
+matches all158 zone and6 location headings across rendered pages, rechecks the
+82 building names and confirms cold/warm equality and unchanged native menu.
+Owned DF2552 closes unsaved with source preservation,30FPS and GPU40C/3% sampled.
+`native_places.json.headings_reference` records provenance and omissions: custom
+renames, unnamed/missing locations, viewport truncation, secondary information,
+nonempty siege engines and the viewer are not accepted by this fixture.
 
 ## Management 174 Tasks contract
 

@@ -3386,7 +3386,7 @@
   "source_save_preserved": "Owned source unchanged",
   "owned_df_closed_unsaved": true,
   "omissions": [
-    "Zones/Locations headings, status/artwork/control providers",
+    "Status/artwork/control providers and heading edge-case fixtures",
     "Actions and lifecycle",
     "Viewer implementation and integration",
     "Empty/nonempty siege-engine fixtures"
@@ -4192,5 +4192,1527 @@
     "menu_preserved": true,
     "source_save_preserved": "Owned source unchanged",
     "owned_df_closed_unsaved": true
+  },
+  "headings_reference": {
+    "capture": "build/stockpile-storage-native-input-20261110-141613",
+    "scope": "All 158 Zones and 6 Locations primary headings match native rendered rows across pages; all prior 82 building names rechecked. Native menu unchanged by provider; cold/warm results identical. Full untruncated heading data only; viewport truncation, subtitles, status, art, navigation, transport and viewer not accepted.",
+    "zone_source": "Inline switch 39c70c..39c7fe, table39f0fc; immutable native strings, custom name precedence. Differs from inspector furniture-sensitive headings.",
+    "location_source": "39d1f9 reads plotinfo.main.fortress_site; lookup by zone.location_id, getName virtual10, native a946e0 English formatter with owned language_name/output. Native unnamed/unknown literals162b830/162bd58.",
+    "visible_counts": [
+      {
+        "count": 158,
+        "mode": 0
+      },
+      {
+        "count": 6,
+        "mode": 1
+      },
+      {
+        "count": 34,
+        "mode": 2
+      },
+      {
+        "count": 46,
+        "mode": 3
+      },
+      {
+        "count": 2,
+        "mode": 4
+      },
+      {
+        "count": 0,
+        "mode": 5
+      }
+    ],
+    "rows": [
+      [
+        {
+          "id": 245,
+          "name": "Garbage dump",
+          "position": [
+            101,
+            104,
+            165
+          ]
+        },
+        {
+          "id": 246,
+          "name": "Pit/pond",
+          "position": [
+            101,
+            105,
+            165
+          ]
+        },
+        {
+          "id": 244,
+          "name": "Pen/pasture",
+          "position": [
+            113,
+            112,
+            165
+          ]
+        },
+        {
+          "id": 259,
+          "name": "Meeting area",
+          "position": [
+            139,
+            100,
+            165
+          ]
+        },
+        {
+          "id": 489,
+          "name": "Meeting area",
+          "position": [
+            122,
+            79,
+            165
+          ]
+        },
+        {
+          "id": 914,
+          "name": "Meeting area",
+          "position": [
+            163,
+            65,
+            165
+          ]
+        },
+        {
+          "id": 496,
+          "name": "Meeting area",
+          "position": [
+            129,
+            81,
+            165
+          ]
+        },
+        {
+          "id": 956,
+          "name": "Meeting area",
+          "position": [
+            131,
+            96,
+            165
+          ]
+        },
+        {
+          "id": 235,
+          "name": "Meeting area",
+          "position": [
+            116,
+            90,
+            165
+          ]
+        },
+        {
+          "id": 536,
+          "name": "Barracks",
+          "position": [
+            130,
+            72,
+            165
+          ]
+        },
+        {
+          "id": 77,
+          "name": "Office",
+          "position": [
+            127,
+            99,
+            165
+          ]
+        },
+        {
+          "id": 924,
+          "name": "Office",
+          "position": [
+            171,
+            62,
+            165
+          ]
+        },
+        {
+          "id": 1337,
+          "name": "Office",
+          "position": [
+            137,
+            88,
+            164
+          ]
+        },
+        {
+          "id": 408,
+          "name": "Dining hall",
+          "position": [
+            126,
+            52,
+            165
+          ]
+        },
+        {
+          "id": 76,
+          "name": "Dining hall",
+          "position": [
+            124,
+            90,
+            165
+          ]
+        },
+        {
+          "id": 922,
+          "name": "Dining hall",
+          "position": [
+            177,
+            66,
+            165
+          ]
+        },
+        {
+          "id": 887,
+          "name": "Bedroom",
+          "position": [
+            153,
+            88,
+            164
+          ]
+        },
+        {
+          "id": 1465,
+          "name": "Bedroom",
+          "position": [
+            139,
+            76,
+            163
+          ]
+        },
+        {
+          "id": 23,
+          "name": "Bedroom",
+          "position": [
+            123,
+            95,
+            165
+          ]
+        },
+        {
+          "id": 1087,
+          "name": "Bedroom",
+          "position": [
+            163,
+            78,
+            164
+          ]
+        },
+        {
+          "id": 373,
+          "name": "Bedroom",
+          "position": [
+            149,
+            94,
+            165
+          ]
+        },
+        {
+          "id": 1088,
+          "name": "Bedroom",
+          "position": [
+            167,
+            78,
+            164
+          ]
+        },
+        {
+          "id": 375,
+          "name": "Bedroom",
+          "position": [
+            157,
+            88,
+            165
+          ]
+        },
+        {
+          "id": 1089,
+          "name": "Bedroom",
+          "position": [
+            171,
+            78,
+            164
+          ]
+        },
+        {
+          "id": 377,
+          "name": "Bedroom",
+          "position": [
+            149,
+            88,
+            165
+          ]
+        },
+        {
+          "id": 1090,
+          "name": "Bedroom",
+          "position": [
+            175,
+            78,
+            164
+          ]
+        },
+        {
+          "id": 379,
+          "name": "Bedroom",
+          "position": [
+            141,
+            88,
+            165
+          ]
+        },
+        {
+          "id": 1091,
+          "name": "Bedroom",
+          "position": [
+            179,
+            78,
+            164
+          ]
+        },
+        {
+          "id": 381,
+          "name": "Bedroom",
+          "position": [
+            137,
+            84,
+            165
+          ]
+        },
+        {
+          "id": 1092,
+          "name": "Bedroom",
+          "position": [
+            179,
+            72,
+            164
+          ]
+        },
+        {
+          "id": 383,
+          "name": "Bedroom",
+          "position": [
+            145,
+            84,
+            165
+          ]
+        },
+        {
+          "id": 1093,
+          "name": "Bedroom",
+          "position": [
+            175,
+            72,
+            164
+          ]
+        },
+        {
+          "id": 385,
+          "name": "Bedroom",
+          "position": [
+            153,
+            84,
+            165
+          ]
+        },
+        {
+          "id": 1094,
+          "name": "Bedroom",
+          "position": [
+            171,
+            72,
+            164
+          ]
+        },
+        {
+          "id": 387,
+          "name": "Bedroom",
+          "position": [
+            157,
+            78,
+            165
+          ]
+        },
+        {
+          "id": 1095,
+          "name": "Bedroom",
+          "position": [
+            167,
+            72,
+            164
+          ]
+        },
+        {
+          "id": 389,
+          "name": "Bedroom",
+          "position": [
+            149,
+            78,
+            165
+          ]
+        },
+        {
+          "id": 1096,
+          "name": "Bedroom",
+          "position": [
+            163,
+            72,
+            164
+          ]
+        },
+        {
+          "id": 372,
+          "name": "Bedroom",
+          "position": [
+            141,
+            94,
+            165
+          ]
+        },
+        {
+          "id": 1228,
+          "name": "Bedroom",
+          "position": [
+            185,
+            72,
+            164
+          ]
+        },
+        {
+          "id": 420,
+          "name": "Bedroom",
+          "position": [
+            141,
+            78,
+            165
+          ]
+        },
+        {
+          "id": 1229,
+          "name": "Bedroom",
+          "position": [
+            185,
+            78,
+            164
+          ]
+        },
+        {
+          "id": 371,
+          "name": "Bedroom",
+          "position": [
+            145,
+            94,
+            165
+          ]
+        },
+        {
+          "id": 1230,
+          "name": "Bedroom",
+          "position": [
+            189,
+            78,
+            164
+          ]
+        },
+        {
+          "id": 1231,
+          "name": "Bedroom",
+          "position": [
+            189,
+            72,
+            164
+          ]
+        },
+        {
+          "id": 597,
+          "name": "Bedroom",
+          "position": [
+            173,
+            88,
+            165
+          ]
+        },
+        {
+          "id": 1232,
+          "name": "Bedroom",
+          "position": [
+            179,
+            68,
+            164
+          ]
+        },
+        {
+          "id": 599,
+          "name": "Bedroom",
+          "position": [
+            165,
+            88,
+            165
+          ]
+        },
+        {
+          "id": 1233,
+          "name": "Bedroom",
+          "position": [
+            175,
+            68,
+            164
+          ]
+        },
+        {
+          "id": 601,
+          "name": "Bedroom",
+          "position": [
+            169,
+            94,
+            165
+          ]
+        },
+        {
+          "id": 1234,
+          "name": "Bedroom",
+          "position": [
+            171,
+            68,
+            164
+          ]
+        },
+        {
+          "id": 603,
+          "name": "Bedroom",
+          "position": [
+            179,
+            88,
+            165
+          ]
+        },
+        {
+          "id": 1235,
+          "name": "Bedroom",
+          "position": [
+            167,
+            68,
+            164
+          ]
+        },
+        {
+          "id": 605,
+          "name": "Bedroom",
+          "position": [
+            177,
+            78,
+            165
+          ]
+        },
+        {
+          "id": 1236,
+          "name": "Bedroom",
+          "position": [
+            167,
+            62,
+            164
+          ]
+        },
+        {
+          "id": 607,
+          "name": "Bedroom",
+          "position": [
+            169,
+            78,
+            165
+          ]
+        },
+        {
+          "id": 1237,
+          "name": "Bedroom",
+          "position": [
+            171,
+            62,
+            164
+          ]
+        },
+        {
+          "id": 609,
+          "name": "Bedroom",
+          "position": [
+            161,
+            78,
+            165
+          ]
+        },
+        {
+          "id": 1238,
+          "name": "Bedroom",
+          "position": [
+            175,
+            62,
+            164
+          ]
+        },
+        {
+          "id": 611,
+          "name": "Bedroom",
+          "position": [
+            169,
+            74,
+            165
+          ]
+        },
+        {
+          "id": 1239,
+          "name": "Bedroom",
+          "position": [
+            179,
+            62,
+            164
+          ]
+        },
+        {
+          "id": 613,
+          "name": "Bedroom",
+          "position": [
+            161,
+            84,
+            165
+          ]
+        },
+        {
+          "id": 1240,
+          "name": "Bedroom",
+          "position": [
+            179,
+            58,
+            164
+          ]
+        },
+        {
+          "id": 615,
+          "name": "Bedroom",
+          "position": [
+            169,
+            84,
+            165
+          ]
+        },
+        {
+          "id": 1241,
+          "name": "Bedroom",
+          "position": [
+            167,
+            58,
+            164
+          ]
+        },
+        {
+          "id": 872,
+          "name": "Bedroom",
+          "position": [
+            137,
+            94,
+            164
+          ]
+        },
+        {
+          "id": 1242,
+          "name": "Bedroom",
+          "position": [
+            175,
+            58,
+            164
+          ]
+        },
+        {
+          "id": 874,
+          "name": "Bedroom",
+          "position": [
+            141,
+            94,
+            164
+          ]
+        },
+        {
+          "id": 1243,
+          "name": "Bedroom",
+          "position": [
+            179,
+            52,
+            164
+          ]
+        },
+        {
+          "id": 876,
+          "name": "Bedroom",
+          "position": [
+            153,
+            94,
+            164
+          ]
+        },
+        {
+          "id": 1244,
+          "name": "Bedroom",
+          "position": [
+            175,
+            52,
+            164
+          ]
+        },
+        {
+          "id": 878,
+          "name": "Bedroom",
+          "position": [
+            161,
+            94,
+            164
+          ]
+        },
+        {
+          "id": 1245,
+          "name": "Bedroom",
+          "position": [
+            171,
+            52,
+            164
+          ]
+        },
+        {
+          "id": 880,
+          "name": "Bedroom",
+          "position": [
+            169,
+            94,
+            164
+          ]
+        },
+        {
+          "id": 1246,
+          "name": "Bedroom",
+          "position": [
+            167,
+            52,
+            164
+          ]
+        },
+        {
+          "id": 882,
+          "name": "Bedroom",
+          "position": [
+            173,
+            88,
+            164
+          ]
+        },
+        {
+          "id": 1247,
+          "name": "Bedroom",
+          "position": [
+            167,
+            48,
+            164
+          ]
+        },
+        {
+          "id": 884,
+          "name": "Bedroom",
+          "position": [
+            165,
+            88,
+            164
+          ]
+        },
+        {
+          "id": 1248,
+          "name": "Bedroom",
+          "position": [
+            167,
+            42,
+            164
+          ]
+        },
+        {
+          "id": 886,
+          "name": "Bedroom",
+          "position": [
+            157,
+            88,
+            164
+          ]
+        },
+        {
+          "id": 1249,
+          "name": "Bedroom",
+          "position": [
+            171,
+            42,
+            164
+          ]
+        },
+        {
+          "id": 888,
+          "name": "Bedroom",
+          "position": [
+            149,
+            88,
+            164
+          ]
+        },
+        {
+          "id": 1250,
+          "name": "Bedroom",
+          "position": [
+            171,
+            48,
+            164
+          ]
+        },
+        {
+          "id": 890,
+          "name": "Bedroom",
+          "position": [
+            141,
+            88,
+            164
+          ]
+        },
+        {
+          "id": 1251,
+          "name": "Bedroom",
+          "position": [
+            179,
+            48,
+            164
+          ]
+        },
+        {
+          "id": 27,
+          "name": "Bedroom",
+          "position": [
+            125,
+            85,
+            165
+          ]
+        },
+        {
+          "id": 1252,
+          "name": "Bedroom",
+          "position": [
+            175,
+            48,
+            164
+          ]
+        },
+        {
+          "id": 26,
+          "name": "Bedroom",
+          "position": [
+            129,
+            87,
+            165
+          ]
+        },
+        {
+          "id": 1253,
+          "name": "Bedroom",
+          "position": [
+            175,
+            42,
+            164
+          ]
+        },
+        {
+          "id": 374,
+          "name": "Bedroom",
+          "position": [
+            153,
+            94,
+            165
+          ]
+        },
+        {
+          "id": 1254,
+          "name": "Bedroom",
+          "position": [
+            179,
+            42,
+            164
+          ]
+        },
+        {
+          "id": 378,
+          "name": "Bedroom",
+          "position": [
+            145,
+            88,
+            165
+          ]
+        },
+        {
+          "id": 1312,
+          "name": "Bedroom",
+          "position": [
+            137,
+            98,
+            164
+          ]
+        },
+        {
+          "id": 382,
+          "name": "Bedroom",
+          "position": [
+            141,
+            84,
+            165
+          ]
+        },
+        {
+          "id": 1313,
+          "name": "Bedroom",
+          "position": [
+            141,
+            98,
+            164
+          ]
+        },
+        {
+          "id": 386,
+          "name": "Bedroom",
+          "position": [
+            157,
+            84,
+            165
+          ]
+        },
+        {
+          "id": 1314,
+          "name": "Bedroom",
+          "position": [
+            145,
+            98,
+            164
+          ]
+        },
+        {
+          "id": 390,
+          "name": "Bedroom",
+          "position": [
+            145,
+            78,
+            165
+          ]
+        },
+        {
+          "id": 1315,
+          "name": "Bedroom",
+          "position": [
+            149,
+            98,
+            164
+          ]
+        },
+        {
+          "id": 421,
+          "name": "Bedroom",
+          "position": [
+            157,
+            94,
+            165
+          ]
+        },
+        {
+          "id": 1316,
+          "name": "Bedroom",
+          "position": [
+            153,
+            98,
+            164
+          ]
+        },
+        {
+          "id": 596,
+          "name": "Bedroom",
+          "position": [
+            165,
+            94,
+            165
+          ]
+        },
+        {
+          "id": 1317,
+          "name": "Bedroom",
+          "position": [
+            157,
+            98,
+            164
+          ]
+        },
+        {
+          "id": 600,
+          "name": "Bedroom",
+          "position": [
+            161,
+            88,
+            165
+          ]
+        },
+        {
+          "id": 1318,
+          "name": "Bedroom",
+          "position": [
+            161,
+            98,
+            164
+          ]
+        },
+        {
+          "id": 604,
+          "name": "Bedroom",
+          "position": [
+            179,
+            84,
+            165
+          ]
+        },
+        {
+          "id": 1319,
+          "name": "Bedroom",
+          "position": [
+            165,
+            98,
+            164
+          ]
+        },
+        {
+          "id": 608,
+          "name": "Bedroom",
+          "position": [
+            165,
+            78,
+            165
+          ]
+        },
+        {
+          "id": 1320,
+          "name": "Bedroom",
+          "position": [
+            169,
+            98,
+            164
+          ]
+        },
+        {
+          "id": 612,
+          "name": "Bedroom",
+          "position": [
+            173,
+            74,
+            165
+          ]
+        },
+        {
+          "id": 1321,
+          "name": "Bedroom",
+          "position": [
+            173,
+            98,
+            164
+          ]
+        },
+        {
+          "id": 616,
+          "name": "Bedroom",
+          "position": [
+            173,
+            84,
+            165
+          ]
+        },
+        {
+          "id": 1323,
+          "name": "Bedroom",
+          "position": [
+            122,
+            58,
+            164
+          ]
+        },
+        {
+          "id": 875,
+          "name": "Bedroom",
+          "position": [
+            149,
+            94,
+            164
+          ]
+        },
+        {
+          "id": 1324,
+          "name": "Bedroom",
+          "position": [
+            122,
+            62,
+            164
+          ]
+        },
+        {
+          "id": 879,
+          "name": "Bedroom",
+          "position": [
+            165,
+            94,
+            164
+          ]
+        },
+        {
+          "id": 1325,
+          "name": "Bedroom",
+          "position": [
+            122,
+            66,
+            164
+          ]
+        },
+        {
+          "id": 883,
+          "name": "Bedroom",
+          "position": [
+            169,
+            88,
+            164
+          ]
+        },
+        {
+          "id": 1326,
+          "name": "Bedroom",
+          "position": [
+            122,
+            70,
+            164
+          ]
+        },
+        {
+          "id": 29,
+          "name": "Bedroom",
+          "position": [
+            123,
+            99,
+            165
+          ]
+        },
+        {
+          "id": 1327,
+          "name": "Bedroom",
+          "position": [
+            122,
+            74,
+            164
+          ]
+        },
+        {
+          "id": 28,
+          "name": "Bedroom",
+          "position": [
+            121,
+            85,
+            165
+          ]
+        },
+        {
+          "id": 1328,
+          "name": "Bedroom",
+          "position": [
+            122,
+            82,
+            164
+          ]
+        },
+        {
+          "id": 25,
+          "name": "Bedroom",
+          "position": [
+            129,
+            91,
+            165
+          ]
+        },
+        {
+          "id": 1329,
+          "name": "Bedroom",
+          "position": [
+            122,
+            78,
+            164
+          ]
+        },
+        {
+          "id": 380,
+          "name": "Bedroom",
+          "position": [
+            137,
+            88,
+            165
+          ]
+        },
+        {
+          "id": 24,
+          "name": "Bedroom",
+          "position": [
+            127,
+            95,
+            165
+          ]
+        },
+        {
+          "id": 388,
+          "name": "Bedroom",
+          "position": [
+            153,
+            78,
+            165
+          ]
+        },
+        {
+          "id": 1451,
+          "name": "Bedroom",
+          "position": [
+            149,
+            92,
+            163
+          ]
+        },
+        {
+          "id": 370,
+          "name": "Bedroom",
+          "position": [
+            137,
+            94,
+            165
+          ]
+        },
+        {
+          "id": 1452,
+          "name": "Bedroom",
+          "position": [
+            149,
+            88,
+            163
+          ]
+        },
+        {
+          "id": 602,
+          "name": "Bedroom",
+          "position": [
+            173,
+            94,
+            165
+          ]
+        },
+        {
+          "id": 1453,
+          "name": "Bedroom",
+          "position": [
+            149,
+            84,
+            163
+          ]
+        },
+        {
+          "id": 610,
+          "name": "Bedroom",
+          "position": [
+            165,
+            74,
+            165
+          ]
+        },
+        {
+          "id": 1454,
+          "name": "Bedroom",
+          "position": [
+            149,
+            80,
+            163
+          ]
+        },
+        {
+          "id": 873,
+          "name": "Bedroom",
+          "position": [
+            145,
+            94,
+            164
+          ]
+        },
+        {
+          "id": 1455,
+          "name": "Bedroom",
+          "position": [
+            149,
+            76,
+            163
+          ]
+        },
+        {
+          "id": 881,
+          "name": "Bedroom",
+          "position": [
+            173,
+            94,
+            164
+          ]
+        },
+        {
+          "id": 1456,
+          "name": "Bedroom",
+          "position": [
+            143,
+            76,
+            163
+          ]
+        },
+        {
+          "id": 889,
+          "name": "Bedroom",
+          "position": [
+            145,
+            88,
+            164
+          ]
+        },
+        {
+          "id": 1457,
+          "name": "Bedroom",
+          "position": [
+            143,
+            80,
+            163
+          ]
+        },
+        {
+          "id": 376,
+          "name": "Bedroom",
+          "position": [
+            153,
+            88,
+            165
+          ]
+        },
+        {
+          "id": 1458,
+          "name": "Bedroom",
+          "position": [
+            143,
+            84,
+            163
+          ]
+        },
+        {
+          "id": 419,
+          "name": "Bedroom",
+          "position": [
+            137,
+            78,
+            165
+          ]
+        },
+        {
+          "id": 1459,
+          "name": "Bedroom",
+          "position": [
+            143,
+            88,
+            163
+          ]
+        },
+        {
+          "id": 606,
+          "name": "Bedroom",
+          "position": [
+            173,
+            78,
+            165
+          ]
+        },
+        {
+          "id": 1460,
+          "name": "Bedroom",
+          "position": [
+            143,
+            92,
+            163
+          ]
+        },
+        {
+          "id": 877,
+          "name": "Bedroom",
+          "position": [
+            157,
+            94,
+            164
+          ]
+        },
+        {
+          "id": 1461,
+          "name": "Bedroom",
+          "position": [
+            139,
+            92,
+            163
+          ]
+        },
+        {
+          "id": 923,
+          "name": "Bedroom",
+          "position": [
+            171,
+            67,
+            165
+          ]
+        },
+        {
+          "id": 598,
+          "name": "Bedroom",
+          "position": [
+            169,
+            88,
+            165
+          ]
+        },
+        {
+          "id": 614,
+          "name": "Bedroom",
+          "position": [
+            165,
+            84,
+            165
+          ]
+        },
+        {
+          "id": 885,
+          "name": "Bedroom",
+          "position": [
+            161,
+            88,
+            164
+          ]
+        },
+        {
+          "id": 384,
+          "name": "Bedroom",
+          "position": [
+            149,
+            84,
+            165
+          ]
+        },
+        {
+          "id": 1462,
+          "name": "Bedroom",
+          "position": [
+            139,
+            88,
+            163
+          ]
+        },
+        {
+          "id": 1463,
+          "name": "Bedroom",
+          "position": [
+            139,
+            84,
+            163
+          ]
+        },
+        {
+          "id": 1464,
+          "name": "Bedroom",
+          "position": [
+            139,
+            80,
+            163
+          ]
+        },
+        {
+          "id": 228,
+          "name": "Tomb",
+          "position": [
+            93,
+            124,
+            165
+          ]
+        }
+      ],
+      [
+        {
+          "id": 489,
+          "name": "The Blockaded Sanctuary",
+          "position": [
+            122,
+            79,
+            165
+          ]
+        },
+        {
+          "id": 408,
+          "name": "The Oily Meal",
+          "position": [
+            126,
+            52,
+            165
+          ]
+        },
+        {
+          "id": 914,
+          "name": "The Constructive Bastion",
+          "position": [
+            163,
+            65,
+            165
+          ]
+        },
+        {
+          "id": 496,
+          "name": "The White Temple",
+          "position": [
+            129,
+            81,
+            165
+          ]
+        },
+        {
+          "id": 259,
+          "name": "The Golden Shrine",
+          "position": [
+            139,
+            100,
+            165
+          ]
+        },
+        {
+          "id": 956,
+          "name": "The Pears of Hide",
+          "position": [
+            131,
+            96,
+            165
+          ]
+        }
+      ]
+    ],
+    "source_save_preserved": "Owned source unchanged",
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "Unnamed/unknown location fixtures",
+      "Custom zone rename fixture",
+      "Populated siege engines",
+      "Truncation and secondary information"
+    ]
   }
 }

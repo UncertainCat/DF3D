@@ -70,7 +70,7 @@ for _,caption in ipairs{'Zones','Locations','Stockpiles','Workshops','Farm plots
  result.pages[#result.pages+1]=page;save();capture('places-'..caption:lower():gsub(' ','-'))
  assert(json.encode(probe())==json.encode(cold),'Owned Places lists depend on selected tab')
  assert(found,'Native Places tab missing: '..caption)
- if page.mode>=2 then
+ do
   local mode=page.mode;local rows=cold_rows[mode+1];local checked={}
   -- Discovery oracle only: page the native list to observe every existing name.
   -- Runtime row production never reads this menu or its scroll position.

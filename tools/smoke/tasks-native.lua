@@ -25,6 +25,16 @@ if os.getenv('DF3D_TASKS_CREATE')=='1' then
  created_job=assert(loadfile(path))(out,view);gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
 end
 local cold=probe()
+local destructive
+local function find_job(id)
+ for _,job in require('utils').listpairs(df.global.world.jobs.list)do if job.id==id then return job end end
+end
+if os.getenv('DF3D_TASKS_DESTRUCTIVE')=='1' then
+ local target=assert(find_job(382763));local worker=assert(df.unit.find(5697))
+ assert(worker.job.current_job==target and df.building.find(854) and find_job(372039) and df.building.find(1284),'Tasks action fixture changed')
+ destructive={step=0,flags=target.flags.whole,jobs={}}
+ for _,job in require('utils').listpairs(df.global.world.jobs.list)do destructive.jobs[job.id]=true end
+end
 if os.getenv('DF3D_TASKS_WIRE')=='1' then
  local job;for _,candidate in require('utils').listpairs(df.global.world.jobs.list)do if candidate.id==68196 then job=candidate;break end end
  assert(job and job.flags.suspend,'Expected suspended construction fixture')
@@ -44,12 +54,41 @@ if os.getenv('DF3D_TASKS_WIRE')=='1' then
     if n and n>repeats then assert(n==repeats+1);assert(created_job.flags.whole==(n==1 and (original_repeat ~ 1) or original_repeat),'Tasks Repeat effect differs');repeats=n;write('tasks-repeat-ack',tostring(n))end
    end
   end
+  if destructive then
+   local step=io.open(out..'/tasks-destructive-step')
+   if step then local n=tonumber(step:read('*a'));step:close()
+    if n and n>destructive.step then
+     assert(n==destructive.step+1 and n<=2,'Unexpected Tasks action step')
+     local target=assert(find_job(382763));local worker=assert(df.unit.find(5697))
+     assert(target.flags.whole==destructive.flags and worker.job.current_job==nil,'Remove worker changed flags or retained assignment')
+     for _,ref in ipairs(target.general_refs)do assert(ref:getType()~=df.general_ref_type.UNIT_WORKER,'Remove worker retained reference')end
+     local suppressed=false
+     for _,entry in ipairs(assert(df.building.find(854)).job_claim_suppress)do
+      if entry.unit==worker and entry.timer==100 then suppressed=true end
+     end
+     assert(suppressed,'Remove worker omitted native claim suppression')
+     if n==2 then assert(not find_job(372039) and not df.building.find(1284),'Cancel retained unstarted Well')end
+     local remaining={}
+     for _,job in require('utils').listpairs(df.global.world.jobs.list)do
+      assert(destructive.jobs[job.id],'Tasks action added unexpected job');remaining[job.id]=true
+     end
+     for id in pairs(destructive.jobs)do assert((remaining[id]==true)==(not(n==2 and id==372039)),'Tasks action changed unrelated job membership')end
+     destructive.step=n;write('tasks-destructive-ack',tostring(n))
+    end
+   end
+  end
   local ack=io.open(out..'/ack-tasks-wire');if ack then ack:close();break end
   assert(dfhack.getTickCount()<deadline,'Tasks wire timed out');script.sleep(1,'frames')
  end
  assert(checked==2 and job.flags.whole==original,'Tasks wire did not restore suspension')
  if created_job then assert(repeats==2 and created_job.flags.whole==original_repeat,'Tasks Repeat did not restore');write('tasks-repeat-native-result.json',json.encode{job_id=created_job.id,steps=repeats,restored=true})end
  assert(not df.global.game.main_interface.info.open,'Tasks transport opened native menu')
+ if destructive then
+  assert(destructive.step==2,'Tasks destructive actions incomplete')
+  local after=probe()
+  write('tasks-destructive-native-result.json',json.encode{before=cold,after=after,removed_worker=5697,retained_job=382763,cancelled_job=372039,cancelled_building=1284,other_jobs_preserved=true,claim_suppression=100})
+  cold=after -- Compare native menu initialization against the independently verified final world.
+ end
 end
 
 gui.simulateInput(view,'D_JOBLIST')

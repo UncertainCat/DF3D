@@ -81,6 +81,24 @@ func exercise(expected: Dictionary) -> void:
 	check(worker>=0,"Worker View fixture missing")
 	scene._ui.host.close_active();await process_frame
 	owner.open_panel();if not await ready_tasks():return
+	if OS.get_environment("DF3D_TASKS_DESTRUCTIVE")=="1":
+		for step in [1,2]:
+			var target_id: int=382763 if step==1 else 372039
+			var target: int=-1
+			for i in owner.state.rows.size():
+				if owner.state.rows[i].job_id==target_id:target=i;break
+			if not check(target>=0,"Tasks action target missing"):return
+			owner.state.seek(target,owner.panel.capacity());await process_frame
+			await pointer(owner.panel.get_global_transform_with_canvas()*owner.panel.button_rect(target-owner.panel.visible_first(),2 if step==1 else 4).get_center())
+			if not await ready_tasks():return
+			if step==1:
+				check(owner.state.rows.any(func(entry):return entry.job_id==target_id and entry.worker_id==-1 and not entry.can_remove_worker),"Remove worker did not refresh assignment")
+			else:
+				check(not owner.state.rows.any(func(entry):return entry.job_id==target_id),"Cancelled task remains visible")
+			var file=FileAccess.open(directory+"/tasks-destructive-step",FileAccess.WRITE);file.store_string(str(step));file.close()
+			var deadline:=Time.get_ticks_msec()+5000
+			while Time.get_ticks_msec()<deadline and FileAccess.get_file_as_string(directory+"/tasks-destructive-ack")!=str(step):await create_timer(0.01).timeout
+			if not check(FileAccess.get_file_as_string(directory+"/tasks-destructive-ack")==str(step),"Native Tasks action effect unconfirmed"):return
 	await pointer(owner.panel.get_global_transform_with_canvas()*Vector2(100,100),MOUSE_BUTTON_RIGHT)
 	check(not owner.panel.visible and scene._ui.host.active==null,"Tasks back did not release owner")
 	exercised=true

@@ -111,6 +111,15 @@ View/Back, exact-creature navigation and overlay checks still pass. Source prese
 owned DF32324 closes unsaved at30FPS, GPU43C/0% sampled, with documented engine
 diagnostics only (passed_with_known_issues). Native125823 ran at30FPS,
 GPU41C/0% sampled; later runs sampled40C/0%, not peak measurements.
+Protected131714 verifies actual Tasks Remove worker and Cancel clicks. Job382763
+retains its flags and membership while worker5697 loses its assignment and worker
+references; holder854 receives native100-tick claim suppression. Cancelling unstarted
+Well job372039 removes both that job and building1284; all other job IDs remain.
+The refreshed viewer reflects both effects. Native menu cold/warm comparisons use
+the explicitly recorded post-action world. Source preserved, owned DF38472 closed
+unsaved, both processes capped30FPS, GPU43C/0% sampled. Only documented engine
+diagnostics occur (passed_with_known_issues). Earlier131550 failed a Lua nil/false
+membership assertion after the intended cancellation; the oracle comparison is fixed.
 Remaining action branches, resize and disconnect/epoch
 live acceptance are unfinished; public exposure stays gated.
 

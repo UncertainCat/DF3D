@@ -2972,5 +2972,29 @@
     "native_confirmed_steps": 2,
     "restored": true,
     "source_save_preserved": true
+  },
+  "destructive_viewer_reference": {
+    "capture": "build/stockpile-storage-native-input-20261110-131714",
+    "surface": "actual main scene",
+    "remove_worker": {
+      "job_id": 382763,
+      "worker_id": 5697,
+      "building_id": 854,
+      "job_retained": true,
+      "flags_unchanged": true,
+      "worker_current_job_cleared": true,
+      "worker_refs_cleared": true,
+      "claim_suppression_timer": 100
+    },
+    "cancel": {
+      "job_id": 372039,
+      "building_id": 1284,
+      "unstarted_well_removed": true,
+      "other_jobs_preserved": true
+    },
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "diagnostics": "passed_with_known_issues",
+    "scope": "Actual clicks, refreshed rows and independent native effects. Does not accept other cancellation branches, assigned-worker suspension or lifecycle gaps."
   }
 }

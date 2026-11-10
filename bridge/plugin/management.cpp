@@ -113,6 +113,7 @@
 #include "kitchen_native.h"
 #include "stone_use_native.h"
 #include "stocks_native.h"
+#include "tasks_action_native.h"
 #include "df/gamest.h"
 #include "work_order_catalog_native.h"
 #include "work_order_rows_native.h"
@@ -510,6 +511,21 @@ struct StoneUseResult {
   std::vector<uint8_t> restrictions;
 };
 std::optional<StoneUseResult> stoneUse;
+// Revisions cover semantic edit preconditions, not artwork or animation phase.
+uint64_t tasksRowRevision(const df3d_tasks::Row& row) {
+  uint64_t h=UINT64_C(14695981039346656037);
+  for(int64_t value:{int64_t(row.jobId),int64_t(row.unitId),int64_t(row.buildingId),int64_t(row.itemId),
+      int64_t(row.flags),int64_t(row.canViewJob),int64_t(row.canRepeat),int64_t(row.canRemoveWorker),
+      int64_t(row.canSuspend),int64_t(row.canCancel),int64_t(row.repeating),int64_t(row.suspended)})
+    for(unsigned i=0;i<8;++i){h^=uint8_t(uint64_t(value)>>(8*i));h*=UINT64_C(1099511628211);}
+  return (h&INT64_MAX)?h&INT64_MAX:1;
+}
+struct TasksResult {
+  m::TasksOutcome outcome=m::TasksOutcome::Rejected;
+  uint64_t listRevision=0;uint32_t total=0,offset=0;int32_t jobId=-1;
+  std::vector<df3d_tasks::Row> rows;
+};
+std::optional<TasksResult> tasks;
 struct StocksItemResult : df3d_production::ItemFacts {
   std::optional<df3d_production::ItemInspectionAppearance> appearance;
 };
@@ -570,7 +586,7 @@ void clearResult() {
   residentsRows.reset();
   residentsSpecialization.reset();
   residentsActivity.reset();
-  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();stoneUse.reset();stocks.reset();
+  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();stoneUse.reset();stocks.reset();tasks.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -1236,6 +1252,23 @@ void publish() {
     }
     standingOrdersResult=m::CreateStandingOrdersState(b,standingOrders->category,standingOrders->outcome,b.CreateVector(rows));
   }
+  flatbuffers::Offset<m::TasksState> tasksResult;
+  if(tasks){
+    std::vector<flatbuffers::Offset<m::TasksRow>> rows;
+    for(const auto& row:tasks->rows){
+      flatbuffers::Offset<m::AreaNameColor> color;
+      if(row.workerColor){const auto& c=*row.workerColor;color=m::CreateAreaNameColor(b,c.color[0],c.color[1],c.color[2],c.alternate[0],c.alternate[1],c.alternate[2],c.effect);}
+      const auto validPos=[](const df::coord& p){return p.x>=0 && p.y>=0 && p.z>=0;};
+      const m::TilePos worker(row.workerPosition.x,row.workerPosition.y,row.workerPosition.z);
+      const m::TilePos buildingPos(row.buildingPosition.x,row.buildingPosition.y,row.buildingPosition.z);
+      rows.push_back(m::CreateTasksRow(b,row.jobId,row.unitId,row.buildingId,tasksRowRevision(row),
+        b.CreateString(row.caption),b.CreateString(row.workerName),b.CreateString(row.buildingCaption),
+        validPos(row.workerPosition)?&worker:nullptr,validPos(row.buildingPosition)?&buildingPos:nullptr,color,
+        row.canViewJob,row.canRepeat,row.canRemoveWorker,row.canSuspend,row.canCancel,row.repeating,row.suspended,
+        encodeItemRecipe(row.workerAppearance),encodeItemRecipe(row.buildingAppearance)));
+    }
+    tasksResult=m::CreateTasksState(b,tasks->outcome,tasks->listRevision,tasks->total,tasks->offset,b.CreateVector(rows),tasks->jobId);
+  }
   flatbuffers::Offset<m::StocksMenuState> stocksResult;
   if(stocks){
     std::vector<flatbuffers::Offset<m::StocksCategoryRow>> categories;
@@ -1305,7 +1338,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult);
   b.Finish(s);
   auto validationError=m::validateManagementState(
       *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()));
@@ -1324,6 +1357,8 @@ void publish() {
     const auto placed=construction.placed,skipped=construction.skipped;
     const auto first=construction.first_building;
     const auto standingCategory=standingOrders?standingOrders->category:0;
+    const auto tasksTarget=tasks?tasks->jobId:-1;
+    const bool tasksUnknown=tasks && (tasks->outcome==m::TasksOutcome::Applied || tasks->outcome==m::TasksOutcome::Unknown);
     const bool stocksUnknown=stocks && (stocks->outcome==m::StocksMenuOutcome::Applied || stocks->outcome==m::StocksMenuOutcome::Unknown);
     const bool stoneUseUnknown=stoneUse && (stoneUse->outcome==m::StoneUseOutcome::Applied || stoneUse->outcome==m::StoneUseOutcome::Unknown);
     const bool kitchenUnknown=kitchen && (kitchen->outcome==m::KitchenMenuOutcome::Applied || kitchen->outcome==m::KitchenMenuOutcome::Unknown);
@@ -1334,6 +1369,7 @@ void publish() {
     auto jobWrite=jobSettingsEdit;
     if(jobWrite && jobWrite->outcome!=m::JobSettingsEditOutcome::Applied && jobWrite->outcome!=m::JobSettingsEditOutcome::Unknown)jobWrite.reset();
     clearResult();
+    if(tasksUnknown){tasks.emplace();tasks->jobId=tasksTarget;tasks->outcome=m::TasksOutcome::Unknown;mutated=true;}
     if(stocksUnknown){stocks.emplace();stocks->outcome=m::StocksMenuOutcome::Unknown;mutated=true;}
     if(stoneUseUnknown){stoneUse.emplace();stoneUse->outcome=m::StoneUseOutcome::Unknown;mutated=true;}
     if(kitchenUnknown){kitchen.emplace();kitchen->outcome=m::KitchenMenuOutcome::Unknown;mutated=true;}
@@ -4305,6 +4341,41 @@ void run(color_ostream& out) {
         if(rows.size()==query.unit_ids()->size()) {residentsRows=std::move(rows);status=m::ManagementStatus::Ok;}
       }
     } catch(...) {residentsRows.reset();}
+    publish();return;
+  }
+  if(r->action()==m::ManagementAction::TasksRead || r->action()==m::ManagementAction::TasksApply){
+    namespace h=df3d_tasks;
+    const auto& q=*r->tasks();const bool edit=r->action()==m::ManagementAction::TasksApply;
+    status=m::ManagementStatus::Rejected;message.clear();tasks.emplace();tasks->jobId=edit?q.job_id():-1;
+    try {
+      auto current=h::rows(!edit);if(!current)throw std::runtime_error("tasks unavailable");
+      if(edit){
+        const auto row=std::find_if(current->begin(),current->end(),[&](const auto& v){return v.jobId==q.job_id();});
+        if(row==current->end() || tasksRowRevision(*row)!=q.expected_revision() || row->unitId!=q.worker_id() || row->buildingId!=q.building_id())tasks->outcome=m::TasksOutcome::Stale;
+        else {
+          const auto result=h::apply(h::Action(q.operation()),q.job_id(),q.worker_id(),q.building_id(),q.expected_state()==1);
+          if(result==h::Outcome::Applied){tasks->outcome=m::TasksOutcome::Applied;status=m::ManagementStatus::Ok;mutated=true;}
+          else if(result==h::Outcome::Unknown){tasks->outcome=m::TasksOutcome::Unknown;mutated=true;}
+        }
+      }else{
+        uint64_t list=UINT64_C(14695981039346656037);
+        for(const auto& row:*current)for(unsigned i=0;i<4;++i){list^=uint8_t(uint32_t(row.jobId)>>(8*i));list*=UINT64_C(1099511628211);}
+        list&=INT64_MAX;if(!list)list=1;
+        if((q.expected_list_revision() && q.expected_list_revision()!=list) || q.offset()>current->size())tasks->outcome=m::TasksOutcome::Stale;
+        else {
+          TasksResult page;page.listRevision=list;page.total=uint32_t(current->size());page.offset=q.offset();size_t bytes=0;
+          for(size_t i=q.offset();i<current->size() && page.rows.size()<q.limit();++i){
+            auto& row=(*current)[i];row.caption=DF2UTF(row.caption);row.workerName=DF2UTF(row.workerName);row.buildingCaption=DF2UTF(row.buildingCaption);
+            size_t rowBytes=128+row.caption.size()+row.workerName.size()+row.buildingCaption.size();
+            for(const auto* recipe:{&row.workerAppearance,&row.buildingAppearance})if(*recipe){size_t n=0;if(!df3d_production::validItemRecipe(**recipe,n))throw std::runtime_error("invalid tasks artwork");rowBytes+=n;}
+            if(bytes+rowBytes>384*1024)break;
+            bytes+=rowBytes;page.rows.push_back(std::move(row));
+          }
+          if(page.offset<page.total && page.rows.empty())throw std::runtime_error("tasks row exceeds page");
+          page.outcome=m::TasksOutcome::None;tasks=std::move(page);status=m::ManagementStatus::Ok;
+        }
+      }
+    }catch(...){status=m::ManagementStatus::Rejected;tasks.emplace();tasks->jobId=edit?q.job_id():-1;}
     publish();return;
   }
   if(r->action()==m::ManagementAction::StocksMenuRead || r->action()==m::ManagementAction::StocksGroupApply || r->action()==m::ManagementAction::StocksItemApply) {

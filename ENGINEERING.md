@@ -40,10 +40,15 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 Management174 uses `Local\df3d_management_v174`;173 peers cannot attach. There is
 no recording migration that invents Tasks rows from older captures. Rebuild bridge,
-model and viewer together. TasksRead/TasksApply add a separate Tasks domain;
+model and viewer together. TasksRead/TasksApply add a separate Tasks domain.
 The engine-independent model encodes read/edit requests and owns decoded Tasks
 rows, text, positions, colors and artwork after transport buffer retirement.
-Provider transport and UI remain unfinished; public exposure stays gated.
+Bridge handlers now collect owned native rows, page them by the payload budget
+and reject stale list/row revisions. Edits use the existing native action adapter
+with mailbox sequence, world-epoch and save admission. Revisions cover ordered
+job membership for pages and semantic identity/flags/capabilities for edits;
+artwork and animation phase do not invalidate edit receipts. The Godot request
+adapter and UI remain unfinished; public exposure stays gated.
 
 Read requests carry offset, limit1..64 and an expected ordered-list revision.
 A nonzero offset requires that revision. Replies preserve native order and can
@@ -67,7 +72,11 @@ rejections. MSVC bridge rebuild passes. Protected121211 on2026-11-10 loads the
 Management174 bridge against pinned DF53.16 and passes the existing Tasks native
 provider checks, preserving the source save and closing owned DF40404 unsaved.
 It runs at30FPS, GPU45C/11% sampled. This compatibility smoke does not exercise
-TasksRead/TasksApply transport; those handlers remain pending. Model codec
+TasksRead/TasksApply transport. Protected122611 loads the handler implementation
+and reruns native provider checks with source preservation and owned DF10156
+closed unsaved at30FPS (GPU39C/3% sampled). MSVC and core19 pass. This is a
+regression smoke, not end-to-end handler acceptance; typed request execution,
+stale pagination and mutation receipts still need live verification. Model codec
 checks cover page/edit preconditions, owned reply data and Unknown receipts.
 Core19, the protocol174 extension rebuild and headless editor import pass;
 this does not establish rendered Tasks behavior.

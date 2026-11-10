@@ -14,6 +14,12 @@ func exercise(expected: Dictionary) -> void:
 	var scrollbar=owner.panel.scrollbar
 	await pointer(scrollbar.get_global_transform_with_canvas()*Vector2(8,scrollbar.size.y-6))
 	check(owner.state.first==1,"Tasks scrollbar down did not advance one row")
+	for sample in [[Vector2(468,248),MOUSE_BUTTON_WHEEL_DOWN,false,2],[Vector2(468,248),MOUSE_BUTTON_WHEEL_UP,false,1],[Vector2(920,248),MOUSE_BUTTON_WHEEL_DOWN,true,18],[Vector2(920,248),MOUSE_BUTTON_WHEEL_UP,true,1],[Vector2(468,38),MOUSE_BUTTON_WHEEL_DOWN,false,1],[Vector2(-12,-32),MOUSE_BUTTON_WHEEL_DOWN,false,1]]:
+		var wheel:=InputEventMouseButton.new();wheel.position=owner.panel.get_global_transform_with_canvas()*sample[0];wheel.button_index=sample[1];wheel.shift_pressed=sample[2];wheel.pressed=true
+		root.push_input(wheel,true);wheel=wheel.duplicate();wheel.pressed=false;root.push_input(wheel,true);await process_frame
+		check(owner.state.first==sample[3],"Tasks contextual scrolling differs")
+	key(KEY_DOWN);key(KEY_PAGEDOWN);await process_frame
+	check(owner.state.first==1,"Tasks accepted inactive standard scrolling keys")
 	owner.state.seek(1048576,owner.panel.capacity());await process_frame
 	var hover_index: int=-1
 	for i in owner.state.rows.size():

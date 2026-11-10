@@ -45,6 +45,13 @@ func _process(_delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		pointer_known=true;pointer_position=get_global_transform_with_canvas().affine_inverse()*event.position
+	# Native396fd8 gates contextual scrolling by pointer cells, including the
+	# scrollbar and the blank row above the list. Standard scroll keys are inert.
+	if allowed() and state!=null and state.phase==state.Phase.Ready and event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN] and not event.ctrl_pressed and not event.alt_pressed and not event.meta_pressed:
+		var point: Vector2=get_global_transform_with_canvas().affine_inverse()*event.position
+		if Rect2(0,list_top()-12,size.x+8,size.y-list_top()+12).has_point(point):
+			var step: int=(capacity() if event.shift_pressed else 1)*(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1)
+			state.seek(visible_first()+step,capacity());get_viewport().set_input_as_handled();return
 	super._input(event)
 func hover_target(point: Vector2) -> String:
 	if state==null or state.phase!=state.Phase.Ready:return ""

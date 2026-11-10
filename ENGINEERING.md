@@ -120,6 +120,16 @@ the explicitly recorded post-action world. Source preserved, owned DF38472 close
 unsaved, both processes capped30FPS, GPU43C/0% sampled. Only documented engine
 diagnostics occur (passed_with_known_issues). Earlier131550 failed a Lua nil/false
 membership assertion after the intended cancellation; the oracle comparison is fixed.
+Tasks now supports native contextual wheel scrolling: one row per notch and one
+page with Shift, restricted to native list pointer bounds including its scrollbar.
+Native131949 confirms header/outside rejection and inactive standard Down/PageDown
+keys; installed bindings distinguish wheel context events from keyboard events.
+Protected132349 exercises these paths in the main scene alongside existing editing
+and navigation checks. Source preserved, owned DF39888 closed unsaved at30FPS,
+GPU44C/0% sampled; documented engine diagnostics only (passed_with_known_issues).
+Earlier132108 failed on a Godot inferred-type parse error, now explicit Vector2;
+132222 passed scrolling but failed subsequent suspension after synthetic wheel
+presses without releases. The final harness supplies paired events and passes.
 Remaining action branches, resize and disconnect/epoch
 live acceptance are unfinished; public exposure stays gated.
 

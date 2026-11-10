@@ -46,7 +46,7 @@ if os.getenv('DF3D_TASKS_WIRE')=='1' then
  while true do
   local step=io.open(out..'/tasks-wire-step')
   if step then local n=tonumber(step:read('*a'));step:close()
-   if n and n>checked then assert(n==checked+1);assert(job.flags.whole==(n==1 and (original ~ 2) or original),'Tasks wire suspend effect differs');checked=n;write('tasks-wire-ack',tostring(n))end
+   if n and n>checked then assert(n==checked+1);assert(job.flags.whole==(n==1 and (original ~ 2) or original),'Tasks wire suspend effect differs: step '..n..' original '..original..' actual '..job.flags.whole);checked=n;write('tasks-wire-ack',tostring(n))end
   end
   if created_job then
    local repeat_step=io.open(out..'/tasks-repeat-step')
@@ -217,6 +217,19 @@ local function capture(name)
  end
 end
 capture('tasks-root')
+result.scroll_input={}
+for _,sample in ipairs{{'wheel-down','CONTEXT_SCROLL_DOWN',500,300},{'wheel-up','CONTEXT_SCROLL_UP',500,300},
+ {'page-down','CONTEXT_SCROLL_PAGEDOWN',500,300},{'page-up','CONTEXT_SCROLL_PAGEUP',500,300},
+ {'standard-down','STANDARDSCROLL_DOWN',500,300},{'standard-page','STANDARDSCROLL_PAGEDOWN',500,300},
+ {'outside','CONTEXT_SCROLL_DOWN',20,20},{'header','CONTEXT_SCROLL_DOWN',500,90},
+ {'bar-wheel','CONTEXT_SCROLL_DOWN',952,300},{'bar-page','CONTEXT_SCROLL_PAGEDOWN',952,300}}do
+ info.jobs.scroll_position_cri_job=10;view:render(dfhack.getTickCount())
+ df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+ g.precise_mouse_x=sample[3];g.precise_mouse_y=sample[4];g.mouse_x=sample[3]//8;g.mouse_y=(sample[4]-4)//12
+ gui.simulateInput(view,sample[2]);view:render(dfhack.getTickCount())
+ result.scroll_input[#result.scroll_input+1]={name=sample[1],key=sample[2],point={sample[3],sample[4]},before=10,after=info.jobs.scroll_position_cri_job}
+end
+info.jobs.scroll_position_cri_job=0;view:render(dfhack.getTickCount())
 result.pages={}
 for page=1,2 do
  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1

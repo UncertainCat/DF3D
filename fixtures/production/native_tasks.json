@@ -2996,5 +2996,117 @@
     "owned_df_closed_unsaved": true,
     "diagnostics": "passed_with_known_issues",
     "scope": "Actual clicks, refreshed rows and independent native effects. Does not accept other cancellation branches, assigned-worker suspension or lifecycle gaps."
+  },
+  "scroll_input_reference": {
+    "native_capture": "build/stockpile-storage-native-input-20261110-131949",
+    "samples": [
+      {
+        "after": 11,
+        "before": 10,
+        "key": "CONTEXT_SCROLL_DOWN",
+        "name": "wheel-down",
+        "point": [
+          500,
+          300
+        ]
+      },
+      {
+        "after": 9,
+        "before": 10,
+        "key": "CONTEXT_SCROLL_UP",
+        "name": "wheel-up",
+        "point": [
+          500,
+          300
+        ]
+      },
+      {
+        "after": 24,
+        "before": 10,
+        "key": "CONTEXT_SCROLL_PAGEDOWN",
+        "name": "page-down",
+        "point": [
+          500,
+          300
+        ]
+      },
+      {
+        "after": 0,
+        "before": 10,
+        "key": "CONTEXT_SCROLL_PAGEUP",
+        "name": "page-up",
+        "point": [
+          500,
+          300
+        ]
+      },
+      {
+        "after": 10,
+        "before": 10,
+        "key": "STANDARDSCROLL_DOWN",
+        "name": "standard-down",
+        "point": [
+          500,
+          300
+        ]
+      },
+      {
+        "after": 10,
+        "before": 10,
+        "key": "STANDARDSCROLL_PAGEDOWN",
+        "name": "standard-page",
+        "point": [
+          500,
+          300
+        ]
+      },
+      {
+        "after": 10,
+        "before": 10,
+        "key": "CONTEXT_SCROLL_DOWN",
+        "name": "outside",
+        "point": [
+          20,
+          20
+        ]
+      },
+      {
+        "after": 10,
+        "before": 10,
+        "key": "CONTEXT_SCROLL_DOWN",
+        "name": "header",
+        "point": [
+          500,
+          90
+        ]
+      },
+      {
+        "after": 11,
+        "before": 10,
+        "key": "CONTEXT_SCROLL_DOWN",
+        "name": "bar-wheel",
+        "point": [
+          952,
+          300
+        ]
+      },
+      {
+        "after": 24,
+        "before": 10,
+        "key": "CONTEXT_SCROLL_PAGEDOWN",
+        "name": "bar-page",
+        "point": [
+          952,
+          300
+        ]
+      }
+    ],
+    "page_rows": 17,
+    "bindings": "Installed prefs/interface.txt: wheel CONTEXT_SCROLL, Shift+wheel CONTEXT_SCROLL_PAGE; standard arrow/page keys inactive.",
+    "viewer_capture": "build/stockpile-storage-native-input-20261110-132349",
+    "scope": "1200x800 actual main scene, row wheel, scrollbar Shift+wheel, header/outside rejection and inactive Down/PageDown; prior action/navigation workflows retained. Resize pending.",
+    "diagnostics": "passed_with_known_issues",
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true
   }
 }

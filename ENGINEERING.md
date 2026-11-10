@@ -346,11 +346,25 @@ helpers1453130,eb68b0,144dcd0,931860,1453230 and1451b10. STATUE22 and FIGURINE36
 instead expose image-reference fields through8f2eb0; c75758 can reachcc84d0,
 which also calls virtual238/210/218/220 and native artwork creation. Its complete
 body spanscc84d0..cc8816: the first Windows unwind entry ends atcc8519 and is
-only a fragment, so pinning that fragment is insufficient. cc83e0 invalidates
-native item/building graphics records when lazy artwork changes. These types
-remain disabled pending the full semantic dependency and incidental-invalidation
-audit; do not use their graphics records as runtime inputs or assume their
-getType-only differences are sufficient.
+only a fragment, so pinning that fragment is insufficient. cc83e0 updates
+persistent creation-zone records when lazy artwork changes; the earlier
+interpretation as graphics-cache invalidation was incorrect. The supported
+MSVC layout binds item0x50/0x54 to world_data_id/world_data_subid, building0x108
+to world_data_id, world0x11a668 to world_data, world_data0x208 to object_data,
+and world_object_data0x08 to altered_items (record size0x210). These offsets
+are compile-time assertions beside the existing cc83e0 body pin.
+
+cc83e0 resolves the creation zone through10aab0 or creates its semantic record
+through10a990, then b9e70 inserts the item sub-ID into altered_items without
+duplicates. It clears the item's world_data_id and propagates retirement to
+referenced items/buildings, clearing their from_worldgen flags. DFHack's XML
+identifies these flags as DO_NOT_RETAIN_IN_CREATION_ZONE. This routine does
+not read native menu or renderer storage. Its recursive relationship lifetimes
+and native mutation effects still need acceptance; it is not a read-only
+formatter. STATUE/FIGURINE remain disabled pending the rest of artwork creation
+and reference validation, not because this path requires a graphics-cache
+exception. Do not suppress its persistent effects or infer full type support
+from getType-only differences.
 
 Toys14, siege ammunition65 and trap components68 use the guarded constructed
 item-description path, with native subtype getters and pointer identity checked

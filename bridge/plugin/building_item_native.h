@@ -10,6 +10,9 @@
 #include "df/building_doorst.h"
 #include "df/buildingitemst.h"
 #include "df/item.h"
+#include "df/world.h"
+#include "df/world_data.h"
+#include "df/world_object_data.h"
 #include "df/job.h"
 #include "df/specific_ref.h"
 #include "modules/Buildings.h"
@@ -808,6 +811,16 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
         if(hash(0x66e90,0x3)!=UINT64_C(0x58389c18233078ff))return false;
         if(hash(0xcabd70,0x9b)!=UINT64_C(0x9d40a9da4ede71df))return false;
         if(hash(0xcabb50,0x21e)!=UINT64_C(0xee57b9bc216cc548))return false;
+        // cc83e0 records changed creation-zone items and clears their world-data
+        // association. These are persistent simulation records, not graphics
+        // caches. The native routine propagates this effect to related holders.
+        static_assert(offsetof(df::world,world_data)==0x11a668);
+        static_assert(offsetof(df::world_data,object_data)==0x208);
+        static_assert(offsetof(df::world_object_data,altered_items)==8);
+        static_assert(sizeof(df::world_object_data)==0x210);
+        static_assert(offsetof(df::item,world_data_id)==0x50);
+        static_assert(offsetof(df::item,world_data_subid)==0x54);
+        static_assert(offsetof(df::building,world_data_id)==0x108);
         if(hash(0xcc83e0,0xe6)!=UINT64_C(0x153208913b9388eb))return false;
         if(hash(0x1453130,0xf8)!=UINT64_C(0x8908ab4dc6f55824))return false;
         if(hash(0x1451b10,0x161c)!=UINT64_C(0x5afdbfca1604e13b))return false;

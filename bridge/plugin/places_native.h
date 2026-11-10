@@ -32,7 +32,7 @@
 namespace df3d_places {
 using Lists=std::array<std::vector<int32_t>,6>;
 struct BuildingRow {
-    int32_t id=-1;df::coord position;std::string name,subtitle,jobCaption,statusCaption,secondaryStatus;
+    int32_t id=-1;df::coord position;std::string name,subtitle,jobCaption,statusCaption,secondaryStatus,statusOverlay;
     int32_t additionalJobs=0;
 };
 using BuildingRows=std::array<std::vector<BuildingRow>,6>;
@@ -247,6 +247,8 @@ inline bool countStatusReady() {
             for(size_t i=0;i<count;++i){h^=base[rva+i];h*=UINT64_C(1099511628211);}return h;};
         return hash(0x39dbc9,0x1a6)==UINT64_C(0x98470b9a922b03c1) &&
             hash(0x39e1fe,0x64)==UINT64_C(0x2b001eaec2a55cc6) &&
+            hash(0x39df83,0x94)==UINT64_C(0x51710cd3b9de4e48) &&
+            hash(0x15e9298,2)==UINT64_C(0x08d90e07b578eac6) &&
             hash(0x52c2b0,0xd8)==UINT64_C(0x38b6489e35387929);
     }();return ready;
 }
@@ -351,6 +353,50 @@ inline bool farmStatus(df::building_farmplotst& farm,BuildingRow& row) {
     if(harvest>0)row.secondaryStatus=countCaption(int32_t(harvest),0x162bc98);
     return true;
 }
+inline bool hospitalStatus(df::building_civzonest& selected,BuildingRow& row) {
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool ready=[base]{
+        const auto hash=[base](size_t rva,size_t count){uint64_t h=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<count;++i){h^=base[rva+i];h*=UINT64_C(1099511628211);}return h;};
+        return hash(0x39d857,0x30d)==UINT64_C(0x6815f80ea73b75cf) &&
+            hash(0x138ed20,0xff)==UINT64_C(0x430951f9f3e403c2) &&
+            hash(0x5587b0,0x79)==UINT64_C(0x14b4f3f138690067) &&
+            hash(0x15e9298,2)==UINT64_C(0x08d90e07b578eac6);
+    }();
+    if(!ready || !countStatusReady())return false;
+    df::abstract_building* location=nullptr;
+    for(auto* entry:df::global::plotinfo->main.fortress_site->buildings)if(entry && entry->id==selected.location_id){location=entry;break;}
+    if(!location || int(location->getType())!=13)return true;
+    if(df::global::world->units.active.size()>1048576)return false;
+    int32_t patients=0;
+    for(auto* unit:df::global::world->units.active) {
+        if(!unit)return false;
+        if(!unit->job.current_job || unit->job.current_job->job_type!=df::job_type::Rest)continue;
+        // Native138ed20 is a leaf predicate: simulation reads only, no writes.
+        if(!reinterpret_cast<bool(*)(df::unit*)>(base+0x138ed20)(unit))continue;
+        df::coord position=unit->pos;
+        if(unit->flags1.bits.caged) {
+            position=df::coord(-30000,-30000,-30000);
+            for(auto* ref:unit->general_refs) {
+                if(!ref)return false;
+                if(ref->getType()!=df::general_ref_type::CONTAINED_IN_ITEM)continue;
+                if(auto* holder=ref->getItem()){auto resolved=df3d_production::itemPosition(holder);if(!resolved)return false;position=*resolved;break;}
+            }
+        }
+        if(position.x==-30000)continue;
+        // Native39d975 scans every zone belonging to this abstract location.
+        // Its inline extent test is identical to the read-only leaf5587b0.
+        for(auto* building:df::global::world->buildings.other[df::buildings_other_id::ACTIVITY_ZONE]) {
+            if(!building)return false;
+            if(building->site_id==location->site_id && building->location_id==location->id &&
+                reinterpret_cast<bool(*)(df::building*,int16_t,int16_t,int16_t)>(base+0x5587b0)(building,position.x,position.y,position.z)){++patients;break;}
+        }
+    }
+    // Native draws this over assigned staff on the SAME line without clearing.
+    // Keep both captions so the presentation can preserve that drawing order.
+    if(patients>0){row.statusOverlay=countCaption(patients,0x162bd28);if(patients!=1)row.statusOverlay+=reinterpret_cast<const char*>(base+0x15e9298);}
+    return true;
+}
 // Native Places39dba6/39de70/39e029/39e4a5 use building::getName for
 // Stockpiles, Workshops, Farm plots and Siege engines.
 inline std::optional<BuildingRows> buildingRows() {
@@ -367,6 +413,7 @@ inline std::optional<BuildingRows> buildingRows() {
             if(!zoneStatus(*zone,row))return std::nullopt;
         } else if(mode==1) {
             auto* zone=virtual_cast<df::building_civzonest>(building);if(!zone || !locationDetails(*zone,row))return std::nullopt;
+            if(!hospitalStatus(*zone,row))return std::nullopt;
         } else if(mode==2) {
             if(!stockpileStatus(*building,row))return std::nullopt;
         } else if(mode==3) {
@@ -390,6 +437,11 @@ inline std::optional<BuildingRows> buildingRows() {
                 if(!building->jobs.front())return std::nullopt;
                 reinterpret_cast<void(*)(df::job*,std::string*)>(base+0xd03170)(building->jobs.front(),&row.jobCaption);
                 row.additionalJobs=int32_t(building->jobs.size()-1);
+                if(row.additionalJobs>0) {
+                    if(!countStatusReady())return std::nullopt;
+                    row.secondaryStatus=std::string(reinterpret_cast<const char*>(base+0x162bc90))+countCaption(row.additionalJobs,0x162bc88);
+                    if(row.additionalJobs!=1)row.secondaryStatus+=reinterpret_cast<const char*>(base+0x15e9298);
+                }
             }
         } else if(mode==4) {
             // Native39e048..39e1ee reads the selected seasonal crop, not a

@@ -6933,5 +6933,63 @@
       "Dungeon chains and cages",
       "Colors, artwork, viewport behavior, transport and viewer"
     ]
+  },
+  "hospital_queue_reference": {
+    "capture": "build/stockpile-storage-native-input-20261110-144602",
+    "scope": "Controlled Rest-job unit inside hospital; patient count and native overlapping draw text match. Workshop second queued job shows native + 1 task. Read/display acceptance only.",
+    "hospital_setup": {
+      "job_id": 382763,
+      "job_type": 38,
+      "position": [
+        155,
+        73,
+        163
+      ],
+      "unit_id": 5697,
+      "zone_id": 489
+    },
+    "hospital_row": {
+      "additional_jobs": 0,
+      "id": 489,
+      "job_caption": "",
+      "name": "The Blockaded Sanctuary",
+      "position": [
+        122,
+        79,
+        165
+      ],
+      "secondary_status": "",
+      "status_caption": "4 assigned",
+      "status_overlay": "1 patient",
+      "subtitle": "Hospital"
+    },
+    "workshop_row": {
+      "additional_jobs": 1,
+      "id": 3,
+      "job_caption": "Make rock statue",
+      "name": "Stoneworker's Workshop",
+      "position": [
+        106,
+        95,
+        165
+      ],
+      "secondary_status": "+ 1 task",
+      "status_caption": "",
+      "status_overlay": "",
+      "subtitle": "Uzol Bardumtekkud, Miner"
+    },
+    "native_sources": {
+      "patient": "39d857..39db64 scans active units with Rest jobs and read-only138ed20 predicate, actual/container position in any matching hospital zone. Native5587b0 matches the inline extent test.",
+      "overlay": "Native39d76c and39da5d draw assigned and patient captions at the same position. 1 patient overwrites 4 assigned leaving 1 patientd. Keep separate status and overlay captions; no correction approved.",
+      "queue": "39df83..39e017 native + prefix, integer formatting, task suffix and plural s."
+    },
+    "source_save_preserved": "Owned source unchanged",
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "Plural patient/additional-task captions",
+      "Multiple hospital zones and caged patients",
+      "Other Rest-predicate rejection branches",
+      "Colors, artwork, controls, transport and viewer"
+    ]
   }
 }

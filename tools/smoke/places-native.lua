@@ -56,6 +56,13 @@ if os.getenv('DF3D_PLACES_PEN')=='1' then
  local target;for y=0,zone.room.height-1 do for x=0,zone.room.width-1 do if zone.room.extents[y*zone.room.width+x]~=0 then target={x=zone.room.x+x,y=zone.room.y+y,z=zone.z};break end end;if target then break end end
  assert(target,'Pen has no included tile');zone.assigned_units:resize(0);zone.assigned_units:insert('#',animal.id);animal.pos=target
 end
+local hospital_fixture
+if os.getenv('DF3D_PLACES_HOSPITAL')=='1' then
+ local zone=assert(df.building.find(489));local unit=assert(df.unit.find(5697));local job=assert(unit.job.current_job)
+ hospital_fixture={zone_id=zone.id,unit_id=unit.id,job_id=job.id,job_type=job.job_type,position={unit.pos.x,unit.pos.y,unit.pos.z}}
+ local target;for y=0,zone.room.height-1 do for x=0,zone.room.width-1 do if zone.room.extents[y*zone.room.width+x]~=0 then target={x=zone.room.x+x,y=zone.room.y+y,z=zone.z};break end end;if target then break end end
+ assert(target,'Hospital zone has no included tile');job.job_type=df.job_type.Rest;unit.pos=target
+end
 local cold=probe()
 local cold_rows=probe('places-building-rows-probe')
 gui.simulateInput(view,'D_LOCATIONS');settle()
@@ -74,6 +81,7 @@ end
 local result={initial_mode=info.buildings.mode,pages={},owned={cold=cold,warm=warm,menu_preserved=true},building_rows={rows=cold_rows,cold_warm_equal=true,visible_names={}}}
 result.secondary_fixture=secondary_fixture
 result.pen_fixture=pen_fixture
+result.hospital_fixture=hospital_fixture
 result.zone_subtitle_sources={}
 for _,row in ipairs(cold_rows[1])do
  local zone=assert(df.building.find(row.id));local kind='none'
@@ -125,6 +133,10 @@ for _,caption in ipairs{'Zones','Locations','Stockpiles','Workshops','Farm plots
      assert(table.concat(secondary):sub(1,#subtitle)==subtitle,'Places subtitle mismatch: '..caption..' row '..index)
      if rows[index].secondary_status~='' then assert(table.concat(secondary):find(dfhack.utf2df(rows[index].secondary_status),1,true),'Places secondary status mismatch: '..caption..' row '..index)end
      local status=mode==3 and rows[index].job_caption or rows[index].status_caption
+     if rows[index].status_overlay~='' then
+      local overlay=dfhack.utf2df(rows[index].status_overlay);local under=dfhack.utf2df(status)
+      status=dfhack.df2utf(overlay..under:sub(#overlay+1))
+     end
      if status~='' then
       local primary={};for x=13,g.dimx-1 do local ch=dfhack.screen.readTile(x,15+visible*3).ch;primary[#primary+1]=ch>=32 and ch<=255 and string.char(ch) or ' ' end
       assert(table.concat(primary):find(dfhack.utf2df(status),1,true),'Places status caption mismatch: '..caption..' row '..index)
@@ -147,5 +159,9 @@ end
 if pen_fixture then
  local zone=df.building.find(pen_fixture.zone_id);zone.assigned_units:resize(0);for _,id in ipairs(pen_fixture.assigned)do zone.assigned_units:insert('#',id)end
  local p=pen_fixture.position;df.unit.find(pen_fixture.unit_id).pos={x=p[1],y=p[2],z=p[3]}
+end
+if hospital_fixture then
+ local unit=df.unit.find(hospital_fixture.unit_id);assert(unit.job.current_job.id==hospital_fixture.job_id,'Patient job changed during paused capture')
+ unit.job.current_job.job_type=hospital_fixture.job_type;local p=hospital_fixture.position;unit.pos={x=p[1],y=p[2],z=p[3]}
 end
 result.closed=true;save();records[#records+1]={name='places-discovery',pages=#result.pages,closed=true}

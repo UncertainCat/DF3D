@@ -6,6 +6,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
+| Places hospital patient count overwrites assigned-staff count on the same line, leaving trailing characters. | No correction approved; retain both captions and native overlay order. | Protected144436/144602 on DF53.16:4 assigned plus1 patient renders1 patientd. Renderer39d76c/39da5d uses the same coordinates without clearing. `native_places.json.hospital_queue_reference`. Viewer implementation remains pending. |
 | Skin item composition repeats the first pattern color for the overlay instead of using the second. | No correction approved or implemented; preserve native packing. | Native c7f1d9 copies the first packed color before shifting it into the second byte. Protected104608 on2026-11-10 uses existing STRIPES_ORANGE_BLACK on a controlled skin-material fixture and produces ORANGE palette row73 on both layers, with a pixel-identical viewer panel. `native_stocks.json.corpse_item_description_reference.skin_selector_reference`. |
 | Stocks Recenter tooltip says "recenter the view on the time" instead of "item". | No correction approved or implemented; preserve the native wording. | Protected232831 pointer instruction205 and rendered text cells confirm the typo. `native_stocks.json.hover_reference`; the viewer uses those verbatim lines. Native overlay PNG capture is not accepted because the screenshot handshake loses the hover overlay. |
 | Work Details sort tooltips advertise keyboard bindings, but sort-widget feed handles only mouse input. | No correction approved or implemented; preserve inactive sort shortcuts. | Native211422/211654 identifies all four headers at feed3c6300..3c647e, with no event-set processing or base feed call. Earlier140139 forced-key-flag probes likewise leave Skills ordering unchanged. Filter has a separate working right-panel-focus gate and is not included in this defect. |
@@ -90,7 +91,7 @@ nonempty siege engines and the viewer are not accepted by this fixture.
 Workshop rows additionally expose the first permitted worker's native1330c30
 caption through the existing owned unit-description context, and first queued
 job's native d03170 caption. Additional job count is retained as semantic data;
-its rendered suffix remains unimplemented. Farm rows expose the selected current
+the native extra-task caption is also supplied for the second status line. Farm rows expose the selected current
 season crop's raw name with native inline ASCII capitalization, or the immutable
 native “Leave fallow” literal in a separate right-status field. No crop eligibility
 or job ordering is reconstructed. Protected142031 checks the baseline crop names;
@@ -155,6 +156,19 @@ is preserved;30FPS, GPU40C/0% sampled. Earlier143945 failed fixture setup on an
 invalid Lua flags field; it is corrected. MSVC/core checks pass. Evidence in
 `native_places.json.zone_status_reference` does not accept assignment actions,
 caged animals, dungeon populations, colors, artwork or the viewer.
+
+Hospital patient status now follows native39d857..39db64: active units with
+Rest jobs that pass read-only native138ed20, whose actual/container position
+falls within any zone of the hospital. The native containment leaf matches the
+renderer's inline extent test. Patient text is a separate overlay field because
+DF draws it over assigned-staff text on the same line, retaining trailing
+characters; that unfixed native bug is registered above. Workshop extra jobs now
+supply the native “+ N task(s)” second-line caption. Protected144602 matches one
+controlled patient and one extra queued task after144436 exposed the overlay
+mistake. Controlled job type/position and worker/crop setup are restored, owned
+DF14868 closes unsaved, source preserved,30FPS, GPU39C/0% sampled. MSVC/core
+checks pass. `native_places.json.hospital_queue_reference` records evidence;
+plural counts, multi-zone/caged patient cases, colors and viewer remain unaccepted.
 
 ## Management 174 Tasks contract
 

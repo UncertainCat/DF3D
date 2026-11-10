@@ -330,6 +330,28 @@ creature captions and artwork: native158450 skips item controls for unit rows,
 so those rows correctly have no View/flag buttons. Management168 separately
 adds native ordered Uses. Public Stocks remains gated.
 
+Remaining special-item description entry points (DF53.16): BOOK89's
+c75a35 branch walks writing improvements, then c7809e..c78269 invokes cc7020
+(length5d8, including its switch table). That helper reads written-content IDs,
+author history/names and delegates style/content wording to cc5d50. The
+adventure-reading gates in c7809e must be excluded by the fortress-mode contract,
+not supplied from a native menu. SHEET90 has no separate item-type branch;
+its written improvements still require the same dependency audit. Existing
+`written_detail_native.h` guards are diagnostic evidence, not blanket production
+acceptance of these item sheets.
+
+COIN74's c78c85..c78d6b branch resolves its coin-batch record and calls5beeb0
+(lengtha9f). This includes minted material/history wording and lazy imagery
+helpers1453130,eb68b0,144dcd0,931860,1453230 and1451b10. STATUE22 and FIGURINE36
+instead expose image-reference fields through8f2eb0; c75758 can reachcc84d0,
+which also calls virtual238/210/218/220 and native artwork creation. Its complete
+body spanscc84d0..cc8816: the first Windows unwind entry ends atcc8519 and is
+only a fragment, so pinning that fragment is insufficient. cc83e0 invalidates
+native item/building graphics records when lazy artwork changes. These types
+remain disabled pending the full semantic dependency and incidental-invalidation
+audit; do not use their graphics records as runtime inputs or assume their
+getType-only differences are sufficient.
+
 Toys14, siege ammunition65 and trap components68 use the guarded constructed
 item-description path, with native subtype getters and pointer identity checked
 against semantic raw definitions. Protected073136 on2026-11-10 verifies the iron

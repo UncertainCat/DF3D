@@ -63,6 +63,22 @@ if os.getenv('DF3D_PLACES_HOSPITAL')=='1' then
  local target;for y=0,zone.room.height-1 do for x=0,zone.room.width-1 do if zone.room.extents[y*zone.room.width+x]~=0 then target={x=zone.room.x+x,y=zone.room.y+y,z=zone.z};break end end;if target then break end end
  assert(target,'Hospital zone has no included tile');job.job_type=df.job_type.Rest;unit.pos=target
 end
+local siege_fixture
+if os.getenv('DF3D_PLACES_SIEGE')=='1' then
+ siege_fixture={}
+ for subtype=0,2 do
+  local placed
+  for y=60,140,4 do for x=80,160,4 do
+   local pos={x=x,y=y,z=165}
+   if not dfhack.buildings.findAtTile(pos) then
+    local ok,b=pcall(dfhack.buildings.constructBuilding,{type=df.building_type.SiegeEngine,subtype=subtype,pos=pos,direction=0,full_rectangle=true})
+    if ok and b then placed=b;break end
+   end
+  end;if placed then break end end
+  assert(placed,'No fixture site for siege subtype '..subtype)
+  siege_fixture[#siege_fixture+1]={id=placed.id,subtype=subtype,position={placed.centerx,placed.centery,placed.z}}
+ end
+end
 local cold=probe()
 local cold_rows=probe('places-building-rows-probe')
 gui.simulateInput(view,'D_LOCATIONS');settle()
@@ -82,6 +98,7 @@ local result={initial_mode=info.buildings.mode,pages={},owned={cold=cold,warm=wa
 result.secondary_fixture=secondary_fixture
 result.pen_fixture=pen_fixture
 result.hospital_fixture=hospital_fixture
+result.siege_fixture=siege_fixture
 result.zone_subtitle_sources={}
 for _,row in ipairs(cold_rows[1])do
  local zone=assert(df.building.find(row.id));local kind='none'
@@ -115,30 +132,32 @@ for _,caption in ipairs{'Zones','Locations','Stockpiles','Workshops','Farm plots
  assert(found,'Native Places tab missing: '..caption)
  do
   local mode=page.mode;local rows=cold_rows[mode+1];local checked={}
+  local first_y=mode==5 and 19 or 15;local capacity=mode==5 and 13 or 15
   -- Discovery oracle only: page the native list to observe every existing name.
   -- Runtime row production never reads this menu or its scroll position.
-  for first=0,#rows-1,15 do
-   info.buildings.scrolling_position[mode]=math.min(first,math.max(0,#rows-15));settle()
+  for first=0,#rows-1,capacity do
+   info.buildings.scrolling_position[mode]=math.min(first,math.max(0,#rows-capacity));settle()
    local actual=info.buildings.scrolling_position[mode]
-   for visible=0,math.min(14,#rows-actual-1)do
+   for visible=0,math.min(capacity-1,#rows-actual-1)do
     local index=actual+visible+1;local name=dfhack.utf2df(rows[index].name)
-    local chars={};for x=13,13+#name-1 do chars[#chars+1]=string.char(dfhack.screen.readTile(x,15+visible*3).ch)end
+    local chars={};for x=13,13+#name-1 do chars[#chars+1]=string.char(dfhack.screen.readTile(x,first_y+visible*3).ch)end
     if table.concat(chars)~=name then
      result.name_mismatch={caption=caption,index=index,requested_first=first,actual_first=actual,expected=rows[index].name,observed=dfhack.df2utf(table.concat(chars)),lines=lines()};save()
      error('Native Places name mismatch: '..caption..' row '..index)
     end
-    if mode<=4 then
-     local secondary={};for x=13,g.dimx-1 do local ch=dfhack.screen.readTile(x,16+visible*3).ch;secondary[#secondary+1]=ch>=32 and ch<=255 and string.char(ch) or ' ' end
+    if mode<=5 then
+     local secondary={};for x=13,g.dimx-1 do local ch=dfhack.screen.readTile(x,first_y+1+visible*3).ch;secondary[#secondary+1]=ch>=32 and ch<=255 and string.char(ch) or ' ' end
      local subtitle=dfhack.utf2df(rows[index].subtitle)
      assert(table.concat(secondary):sub(1,#subtitle)==subtitle,'Places subtitle mismatch: '..caption..' row '..index)
      if rows[index].secondary_status~='' then assert(table.concat(secondary):find(dfhack.utf2df(rows[index].secondary_status),1,true),'Places secondary status mismatch: '..caption..' row '..index)end
+     if rows[index].operator_caption~='' then assert(table.concat(secondary):find(dfhack.utf2df(rows[index].operator_caption),1,true),'Places operator caption mismatch: '..caption..' row '..index)end
      local status=mode==3 and rows[index].job_caption or rows[index].status_caption
      if rows[index].status_overlay~='' then
       local overlay=dfhack.utf2df(rows[index].status_overlay);local under=dfhack.utf2df(status)
       status=dfhack.df2utf(overlay..under:sub(#overlay+1))
      end
      if status~='' then
-      local primary={};for x=13,g.dimx-1 do local ch=dfhack.screen.readTile(x,15+visible*3).ch;primary[#primary+1]=ch>=32 and ch<=255 and string.char(ch) or ' ' end
+      local primary={};for x=13,g.dimx-1 do local ch=dfhack.screen.readTile(x,first_y+visible*3).ch;primary[#primary+1]=ch>=32 and ch<=255 and string.char(ch) or ' ' end
       assert(table.concat(primary):find(dfhack.utf2df(status),1,true),'Places status caption mismatch: '..caption..' row '..index)
      end
     end

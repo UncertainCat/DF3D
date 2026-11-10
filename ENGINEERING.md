@@ -170,6 +170,20 @@ DF14868 closes unsaved, source preserved,30FPS, GPU39C/0% sampled. MSVC/core
 checks pass. `native_places.json.hospital_queue_reference` records evidence;
 plural counts, multi-zone/caged patient cases, colors and viewer remain unaccepted.
 
+Siege rows now expose native-source ammunition/operator captions and the current
+simulation action. The renderer's ammunition selection is mirrored over contained
+items; native job-worker d09a90 and effective-position1367430 supply operator
+facts, with caller-owned outputs. Protected145146 creates Catapult, Ballista and
+Bolt Thrower fixtures through DFHack construction setup in the disposable paused
+clone. All three names/order/Unloaded captions match native. This is not
+construction or siege-action acceptance. The native tab adds an “All siege
+engines” control row: individual text starts at row19 rather than15 at1200x800;
+145041 caught that discovery-oracle assumption. Screenshot inspection confirms
+five action buttons on the aggregate and individual rows. Scroll capacity,
+loaded/operator states and button effects remain unaccepted. Owned DF14392
+closes unsaved, source preserved,30FPS, GPU40C/0% sampled. MSVC/core checks pass;
+`native_places.json.siege_reference` scopes evidence. Artwork/viewer remain pending.
+
 ## Management 174 Tasks contract
 
 Management174 uses `Local\df3d_management_v174`;173 peers cannot attach. There is

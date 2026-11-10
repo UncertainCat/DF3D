@@ -3389,7 +3389,7 @@
     "Status/artwork/control providers and heading edge-case fixtures",
     "Actions and lifecycle",
     "Viewer implementation and integration",
-    "Empty/nonempty siege-engine fixtures"
+    "Loaded/active siege-engine fixtures"
   ],
   "provider_reference": {
     "capture": "build/stockpile-storage-native-input-20261110-140539",
@@ -6990,6 +6990,106 @@
       "Multiple hospital zones and caged patients",
       "Other Rest-predicate rejection branches",
       "Colors, artwork, controls, transport and viewer"
+    ]
+  },
+  "siege_reference": {
+    "capture": "build/stockpile-storage-native-input-20261110-145146",
+    "scope": "Three siege subtypes populated via DFHack construction fixture setup in disposable paused clone. Native membership/order, names and Unloaded captions match. This is read/display evidence, not construction or siege action acceptance.",
+    "setup": [
+      {
+        "id": 1490,
+        "position": [
+          157,
+          65,
+          165
+        ],
+        "subtype": 0
+      },
+      {
+        "id": 1491,
+        "position": [
+          157,
+          69,
+          165
+        ],
+        "subtype": 1
+      },
+      {
+        "id": 1492,
+        "position": [
+          152,
+          60,
+          165
+        ],
+        "subtype": 2
+      }
+    ],
+    "rows": [
+      {
+        "additional_jobs": 0,
+        "id": 1490,
+        "job_caption": "",
+        "name": "Catapult",
+        "operator_caption": "",
+        "position": [
+          157,
+          65,
+          165
+        ],
+        "secondary_status": "",
+        "siege_action": 0,
+        "status_caption": "",
+        "status_overlay": "",
+        "subtitle": "Unloaded"
+      },
+      {
+        "additional_jobs": 0,
+        "id": 1491,
+        "job_caption": "",
+        "name": "Ballista",
+        "operator_caption": "",
+        "position": [
+          157,
+          69,
+          165
+        ],
+        "secondary_status": "",
+        "siege_action": 0,
+        "status_caption": "",
+        "status_overlay": "",
+        "subtitle": "Unloaded"
+      },
+      {
+        "additional_jobs": 0,
+        "id": 1492,
+        "job_caption": "",
+        "name": "Bolt Thrower",
+        "operator_caption": "",
+        "position": [
+          152,
+          60,
+          165
+        ],
+        "secondary_status": "",
+        "siege_action": 0,
+        "status_caption": "",
+        "status_overlay": "",
+        "subtitle": "Unloaded"
+      }
+    ],
+    "native_sources": {
+      "ammo": "39e498..39e77e counts contained item stack sizes except use_mode2; Bolt Thrower filters AMMO39. Native literals/formatter yield Unloaded, Loaded or N bolt(s).",
+      "operator": "First queued load/fire job. Native d09a90 first UNIT_WORKER reference; fire job uses native1367430 effective position and native one-tile range check. Labels read from immutable native operands.",
+      "actions": "Simulation siege.action copied as data only. No action transport or application yet."
+    },
+    "layout": "At1200x800, All siege engines header is at text row15; first individual row at19, next rows22/25. Five action buttons on aggregate and each row. Scroll capacity not accepted by this three-row fixture.",
+    "source_save_preserved": "Owned source unchanged",
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "Loaded ammunition and operator job states",
+      "Action buttons, aggregate actions and hover",
+      "Scroll capacity and resize",
+      "Colors/artwork provider, transport and viewer"
     ]
   }
 }

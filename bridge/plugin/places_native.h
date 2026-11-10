@@ -24,6 +24,8 @@
 #include "modules/Maps.h"
 #include "building_item_native.h"
 #include "df/building_chainst.h"
+#include "df/building_siegeenginest.h"
+#include "creature_follow_native.h"
 #include <array>
 #include <optional>
 #include <unordered_set>
@@ -33,7 +35,8 @@ namespace df3d_places {
 using Lists=std::array<std::vector<int32_t>,6>;
 struct BuildingRow {
     int32_t id=-1;df::coord position;std::string name,subtitle,jobCaption,statusCaption,secondaryStatus,statusOverlay;
-    int32_t additionalJobs=0;
+    int32_t additionalJobs=0,siegeAction=-1;
+    std::string operatorCaption;
 };
 using BuildingRows=std::array<std::vector<BuildingRow>,6>;
 // Native323a7e invokes375450 with a buildings_interfacest. The builder only
@@ -353,6 +356,45 @@ inline bool farmStatus(df::building_farmplotst& farm,BuildingRow& row) {
     if(harvest>0)row.secondaryStatus=countCaption(int32_t(harvest),0x162bc98);
     return true;
 }
+inline bool siegeDetails(df::building_siegeenginest& siege,BuildingRow& row) {
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool ready=[base]{
+        const auto hash=[base](size_t rva,size_t count){uint64_t h=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<count;++i){h^=base[rva+i];h*=UINT64_C(1099511628211);}return h;};
+        return hash(0x39e498,0x64d)==UINT64_C(0xebe6e8a4cff4b5d4) &&
+            hash(0xd09a90,0x63)==UINT64_C(0x3a4361e260fd4063);
+    }();
+    if(!ready || !countStatusReady() || siege.contained_items.size()>1048576)return false;
+    row.siegeAction=int(siege.action);
+    const auto literal=[base](size_t rva){return reinterpret_cast<const char*>(base+rva);};
+    int64_t ammo=0;
+    for(auto* entry:siege.contained_items) {
+        if(!entry)return false;if(int(entry->use_mode)==2)continue;
+        if(!entry->item)return false;
+        if(int(siege.type)==2 && int(entry->item->getType())!=39)continue;
+        ammo+=entry->item->getStackSize();
+    }
+    if(ammo<0 || ammo>INT32_MAX)return false;
+    if(ammo==0)row.subtitle=std::string(literal(0x39e749),8); // Native immediate "Unloaded".
+    else if(int(siege.type)!=2)row.subtitle=literal(0x162bcd8);
+    else {row.subtitle=countCaption(int32_t(ammo),0x15e873c)+literal(0x162bcb4);if(ammo!=1)row.subtitle+=literal(0x15e9298);}
+    if(siege.jobs.empty())return true;
+    auto* job=siege.jobs.front();if(!job || job->general_refs.size()>1048576)return false;
+    const int kind=int(job->job_type);
+    if(kind!=246 && kind!=135 && kind!=136 && kind!=247 && kind!=137 && kind!=138)return true;
+    for(auto* ref:job->general_refs)if(!ref)return false;
+    // Native d09a90 returns the first matching reference's unit (no UI state).
+    auto* worker=reinterpret_cast<df::unit*(*)(df::job*,int32_t)>(base+0xd09a90)(job,19);
+    if(kind==246 || kind==135 || kind==136)row.operatorCaption=literal(worker?0x162bcd0:0x162bbf0);
+    else if(!worker)row.operatorCaption=literal(0x162bc08);
+    else {
+        const auto position=df3d_creature::sheetPosition(worker);if(!position)return false;
+        const bool present=std::abs(int(position->x)-siege.centerx)<=1 &&
+            std::abs(int(position->y)-siege.centery)<=1 && int(position->z)==siege.z;
+        row.operatorCaption=literal(present?0x162bbd8:0x162bc18);
+    }
+    return true;
+}
 inline bool hospitalStatus(df::building_civzonest& selected,BuildingRow& row) {
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     static const bool ready=[base]{
@@ -456,6 +498,8 @@ inline std::optional<BuildingRows> buildingRows() {
                 if(!row.subtitle.empty() && row.subtitle[0]>='a' && row.subtitle[0]<='z')row.subtitle[0]-=32;
             }
             if(crop!=-1 && !farmStatus(*farm,row))return std::nullopt;
+        } else if(mode==5) {
+            auto* siege=virtual_cast<df::building_siegeenginest>(building);if(!siege || !siegeDetails(*siege,row))return std::nullopt;
         }
         if(row.name.size()>16384)return std::nullopt;
         if(row.subtitle.size()>16384 || row.jobCaption.size()>16384)return std::nullopt;

@@ -170,6 +170,19 @@ Source preserved; DF39076 exits unsaved, capped30FPS, GPU49C/2% sampled. MSVC/co
 pass. `worker_artwork_reference` retains recipe digests and explicit limits.
 Destination artwork and the public Tasks screen remain unfinished.
 
+`tasks_artwork_native.h` follows the destination icon selection embedded in
+native398d2f..399489, with pinned branch/table ranges. It covers building type,
+workshop/furnace/trap/siege/construction subtypes, custom raw list icons and
+stockpile category flags. Original installed icon slots are immediately converted
+to owned original-asset recipes; no generated texture or renderer state is used.
+Custom workshop/furnace icons precede their native generic fallback. The public
+Tasks contract does not yet exist; this data is diagnostic provider output.
+Protected120026 compares all five destination recipes with native anchored tile
+IDs in the rendered list: stockpiles, statue and Well match. Other type/subtype,
+custom raw and missing-art branches remain unverified, as does full viewer pixel
+parity. Source preserved; DF38832 exits unsaved at30FPS, GPU48C/2% sampled.
+`destination_artwork_reference` records these scoped results. MSVC/core pass.
+
 ## Stocks native discovery
 
 Stocks list icons now use every available item-sheet selector instead of a

@@ -9,6 +9,7 @@
 #include "df/building_trapst.h"
 #include "building_item_native.h"
 #include "zone_native.h"
+#include "tasks_artwork_native.h"
 #include <unordered_set>
 
 namespace df3d_tasks {
@@ -23,6 +24,7 @@ struct Row {
     df::coord buildingPosition=df::coord(-30000,-30000,-30000),workerPosition=df::coord(-30000,-30000,-30000);
     std::optional<df3d_area::ZoneOwnerNameColor> workerColor;
     std::optional<df3d_production::ItemAppearanceRecipe> workerAppearance;
+    std::optional<df3d_production::ItemAppearanceRecipe> buildingAppearance;
 };
 // Native396ee0/397c90 inline these checks; there is no standalone eligibility
 // call for the four edit buttons. Mirror that bounded branch over simulation
@@ -147,6 +149,7 @@ inline std::optional<std::vector<Row>> rows(bool includeArtwork=false) {
             }
         }
         if(!controls(row,entry->jb,entry->un,base))return std::nullopt;
+        if(includeArtwork && row.buildingId>=0)row.buildingAppearance=destinationArtwork(df::building::find(row.buildingId));
         result.push_back(std::move(row));
     }
     return result;

@@ -2665,5 +2665,156 @@
     "fps_cap": 30,
     "sampled_gpu_celsius": 49,
     "sampled_gpu_utilization_percent": 2
+  },
+  "destination_artwork_reference": {
+    "capture": "stockpile-storage-native-input-20261110-120026",
+    "rows": [
+      {
+        "job_id": 382763,
+        "building_id": 854,
+        "building_appearance": {
+          "layers": [
+            [
+              0,
+              0,
+              15,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          ],
+          "pages": [
+            "STOCKPILE_ICONS"
+          ],
+          "palettes": []
+        }
+      },
+      {
+        "job_id": 382774,
+        "building_id": 1259,
+        "building_appearance": {
+          "layers": [
+            [
+              0,
+              0,
+              15,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          ],
+          "pages": [
+            "STOCKPILE_ICONS"
+          ],
+          "palettes": []
+        }
+      },
+      {
+        "job_id": 382788,
+        "building_id": 446,
+        "building_appearance": {
+          "layers": [
+            [
+              0,
+              0,
+              9,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          ],
+          "pages": [
+            "STOCKPILE_ICONS"
+          ],
+          "palettes": []
+        }
+      },
+      {
+        "job_id": 68196,
+        "building_id": 965,
+        "building_appearance": {
+          "layers": [
+            [
+              0,
+              7,
+              5,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          ],
+          "pages": [
+            "BUILDING_ICONS"
+          ],
+          "palettes": []
+        }
+      },
+      {
+        "job_id": 372039,
+        "building_id": 1284,
+        "building_appearance": {
+          "layers": [
+            [
+              0,
+              1,
+              9,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          ],
+          "pages": [
+            "BUILDING_ICONS"
+          ],
+          "palettes": []
+        }
+      }
+    ],
+    "pins": [
+      {
+        "rva": "398d2f",
+        "length": "75a",
+        "fnv1a64": "730fc12ea3c2854d"
+      },
+      {
+        "rva": "399724",
+        "length": "265",
+        "fnv1a64": "f9ca45cd075d8991"
+      }
+    ],
+    "checks": [
+      "Owned original tile matches native anchored screen texture for all five destination rows.",
+      "Cold/warm recipes agree with native menu storage preserved."
+    ],
+    "limits": [
+      "Live coverage is stockpiles, statue and Well only.",
+      "Other type/subtype, custom workshop/furnace and missing-art branches remain unverified.",
+      "No full Tasks viewer pixel comparison or transport acceptance."
+    ],
+    "source_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "fps_cap": 30,
+    "sampled_gpu_celsius": 48,
+    "sampled_gpu_utilization_percent": 2
   }
 }

@@ -59,6 +59,7 @@ local verified_controls={}
 local verified_buildings={}
 local verified_workers={}
 local verified_artwork={}
+local verified_destination_art={}
 local function verify_captions()
  local first=info.jobs.scroll_position_cri_job
  for index=first,math.min(#warm-1,first+16)do
@@ -103,6 +104,20 @@ local function verify_captions()
    local holder=assert(df.building.find(row.building_id))
    assert(json.encode(row.building_position)==json.encode{holder.centerx,holder.centery,holder.z})
    verified_buildings[row.job_id]=true
+   local art=assert(row.building_appearance,'Tasks destination icon missing')
+   assert(#art.layers==1,'Expected original destination tile')
+   local layer=art.layers[1];local tile
+   for _,page in ipairs(df.global.texture.page)do
+    if page.token==art.pages[layer[1]+1]then tile=page.texpos[layer[3]*page.page_dim_x+layer[2]];break end
+   end
+   assert(tile and tile>0,'Destination icon page not installed')
+   local found=false
+   for xx=95,99 do for yy=10+(index-first)*3,12+(index-first)*3 do
+    local offset=xx*g.dimy+yy
+    if g.screentexpos_anchored[offset]==tile or g.screentexpos_top_anchored[offset]==tile then found=true end
+   end end
+   assert(found,'Tasks destination icon differs '..row.job_id)
+   verified_destination_art[row.job_id]=true
   end
   for _,control in ipairs{{'can_view_job',276,241},{'can_repeat',300,243},
     {'can_remove_worker',324,244},{'can_suspend',348,245},{'can_cancel',372,246}}do
@@ -151,6 +166,8 @@ result.verified_control_ids={}
 result.verified_building_ids={}
 result.verified_worker_ids={}
 result.verified_artwork_ids={}
+result.verified_destination_art_ids={}
+for _,row in ipairs(warm)do if verified_destination_art[row.job_id]then result.verified_destination_art_ids[#result.verified_destination_art_ids+1]=row.job_id end end
 for _,row in ipairs(warm)do if verified_artwork[row.job_id]then result.verified_artwork_ids[#result.verified_artwork_ids+1]=row.job_id end end
 for _,row in ipairs(warm)do if verified_workers[row.job_id]then result.verified_worker_ids[#result.verified_worker_ids+1]=row.job_id end end
 for _,row in ipairs(warm)do if verified_buildings[row.job_id]then result.verified_building_ids[#result.verified_building_ids+1]=row.job_id end end

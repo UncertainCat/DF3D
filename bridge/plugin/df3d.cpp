@@ -2520,11 +2520,12 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               color["effect"]=int(c.effect);color["source"]=int(c.source);
               for(auto value:c.color)color["color"].append(int(value));
               for(auto value:c.alternate)color["alternate"].append(int(value));}
-            if(entry.workerAppearance){const auto& recipe=*entry.workerAppearance;auto& art=row["worker_appearance"];
+            const auto writeArt=[&](const auto& source,const char* key){if(!source)return;const auto& recipe=*source;auto& art=row[key];
               art["pages"]=Json::Value(Json::arrayValue);art["palettes"]=Json::Value(Json::arrayValue);art["layers"]=Json::Value(Json::arrayValue);
               for(const auto& name:recipe.pages)art["pages"].append(name);
               for(const auto& name:recipe.palettes)art["palettes"].append(name);
-              for(const auto& layer:recipe.layers){Json::Value values(Json::arrayValue);for(auto value:layer)values.append(value);art["layers"].append(values);}}
+              for(const auto& layer:recipe.layers){Json::Value values(Json::arrayValue);for(auto value:layer)values.append(value);art["layers"].append(values);}};
+            writeArt(entry.workerAppearance,"worker_appearance");writeArt(entry.buildingAppearance,"building_appearance");
             result["rows"].append(row);
           }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;

@@ -114,6 +114,7 @@
 #include "item_owner_native.h"
 #include "residents_order_native.h"
 #include "residents_activity_native.h"
+#include "tasks_native.h"
 #include "residents_activity_description_native.h"
 #include "residents_query_native.h"
 #include "work_detail_query_native.h"
@@ -2479,6 +2480,19 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           }
           for(const auto& link:description->links){
             Json::Value value(Json::objectValue);value["type"]=link.type;value["id"]=link.id;value["subid"]=link.subid;result["links"].append(value);
+          }
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="tasks-rows-probe") {
+          if(parameters.size()!=1)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto rows=df3d_tasks::rows();if(!rows)return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["rows"]=Json::Value(Json::arrayValue);
+          for(const auto& entry:*rows) {
+            Json::Value row(Json::objectValue);row["job_id"]=entry.jobId;row["unit_id"]=entry.unitId;
+            row["item_id"]=entry.itemId;row["flags"]=entry.flags;
+            row["sort_name"]=DF2UTF(entry.professionKey);row["job_sort_name"]=DF2UTF(entry.jobKey);
+            result["rows"].append(row);
           }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }

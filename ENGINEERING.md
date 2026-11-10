@@ -46,12 +46,25 @@ exposed widget container. The Residents widget-query provider must not be
 assumed to supply this list. Activity, worker portrait/name/profession and
 Recenter/View controls are visible; navigation effects are not yet accepted.
 
-This is discovery evidence only. Runtime must independently invoke audited
-native semantics with owned inputs, never read this native menu vector. The
-list builder, eligibility/order, exact captions and action ownership remain
-unresolved. No DF3D Tasks route is implemented or exposed. Source preserved;
-DF3600 exits unsaved without advancing simulation, capped30FPS. GPU54C/3%
-was sampled, not a measured peak; the run starts no graphical Godot viewer.
+The diagnostic adapter in tasks_native.h now calls native374630 with a fresh
+jobs_interfacest. DF traverses the simulation job chain, applies its eligibility
+checks and stably inserts by job type. Native310e70 destroys temporary rows and
+strings; the adapter retains pointer-free IDs and normalized profession/job
+keys. Unit office lookup indices and historical-material cache backing are
+restored. The adapter never reads native menu rows or drives its input handler.
+
+Protected112227 verifies both cold and warm calls against all41 native rows from
+53 simulation jobs, including three unassigned jobs. Both calls preserve native
+vector allocation pointers, contents, scroll, open state and mode. The12 excluded
+jobs have type12/flags0x20000 in this save; do not generalize eligibility from
+that observation. MSVC and core19 pass. Source preserved; DF39528 exits unsaved
+without advancing simulation at30FPS, GPU51C/2% sampled, not a peak. No graphical
+Godot viewer runs. The fixture's provider_reference records bounded acceptance.
+
+The feed handler396ee0 includes navigation and destructive job/building actions;
+it is not admitted as a semantic API. Visible captions/colors, action ownership,
+transport, controller, rendering and lifecycle remain unfinished. No Tasks route
+is exposed. The earlier111555 layout-only reference remains separate.
 
 ## Stocks native discovery
 

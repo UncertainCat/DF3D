@@ -356,9 +356,157 @@
     "tasks-root.png": "00d9840cbc5f18e3f4d88be1b109d94f7232c0fcde1f8db869924c30882ea381"
   },
   "unresolved": [
-    "Native list construction/filtering/ordering entry point and owned scratch contract.",
-    "Exact caption/portrait providers and navigation behavior, including unassigned jobs.",
+    "Visible captions/colors/portraits and complete native action ownership, including unassigned jobs.",
     "Scroll, resize, hover, semantic actions and lifecycle.",
-    "No DF3D Tasks provider, transport, controller or public route is implemented."
-  ]
+    "Transport, controller and viewer are not implemented; no public Tasks route.",
+    "The provider matches this53-job save; broader eligibility branches and custom job types remain unaccepted."
+  ],
+  "provider_reference": {
+    "capture": "stockpile-storage-native-input-20261110-112227",
+    "provider": "df3d_tasks::rows / tasks-rows-probe",
+    "builder": {
+      "rva": "0x374630",
+      "length": "0x3cc",
+      "fnv1a64": "0xffafc144accbb830"
+    },
+    "cleanup": {
+      "rva": "0x310e70",
+      "length": "0x82",
+      "fnv1a64": "0x69713ac3fdf3ff0a"
+    },
+    "native_job_count": 53,
+    "result_count": 41,
+    "unassigned_count": 3,
+    "excluded_jobs": [
+      {
+        "flags": 131072,
+        "id": 1694,
+        "position": [
+          84,
+          105,
+          170
+        ],
+        "type": 12
+      },
+      {
+        "flags": 131072,
+        "id": 1695,
+        "position": [
+          84,
+          106,
+          170
+        ],
+        "type": 12
+      },
+      {
+        "flags": 131072,
+        "id": 1718,
+        "position": [
+          85,
+          105,
+          170
+        ],
+        "type": 12
+      },
+      {
+        "flags": 131072,
+        "id": 1719,
+        "position": [
+          85,
+          106,
+          170
+        ],
+        "type": 12
+      },
+      {
+        "flags": 131072,
+        "id": 1769,
+        "position": [
+          87,
+          105,
+          170
+        ],
+        "type": 12
+      },
+      {
+        "flags": 131072,
+        "id": 1770,
+        "position": [
+          87,
+          106,
+          170
+        ],
+        "type": 12
+      },
+      {
+        "flags": 131072,
+        "id": 1802,
+        "position": [
+          88,
+          105,
+          170
+        ],
+        "type": 12
+      },
+      {
+        "flags": 131072,
+        "id": 1803,
+        "position": [
+          88,
+          106,
+          170
+        ],
+        "type": 12
+      },
+      {
+        "flags": 131072,
+        "id": 1836,
+        "position": [
+          89,
+          105,
+          170
+        ],
+        "type": 12
+      },
+      {
+        "flags": 131072,
+        "id": 1837,
+        "position": [
+          89,
+          106,
+          170
+        ],
+        "type": 12
+      },
+      {
+        "flags": 131072,
+        "id": 1867,
+        "position": [
+          90,
+          105,
+          170
+        ],
+        "type": 12
+      },
+      {
+        "flags": 131072,
+        "id": 1868,
+        "position": [
+          90,
+          106,
+          170
+        ],
+        "type": 12
+      }
+    ],
+    "exact_comparison": "Both cold and warm owned rows equal native rows, including ordered IDs, flags and normalized profession/job strings.",
+    "menu_preservation": "Both calls preserve native vector begin/end/capacity, row identities/text, scroll position, open state and active mode.",
+    "ownership": "Fresh jobs_interfacest receives native rows; native cleanup destroys rows/strings. Pointer-free copies outlive context retirement. Unit office lookup indices and historical-material cache are restored.",
+    "checks": "MSVC Release and core19 pass. Protected live passed; no simulation advance, source unchanged, DF39528 exited unsaved. Native30FPS; GPU51C/2% sample, not peak. No Godot viewer.",
+    "hashes": {
+      "tasks-native.json": "5688e015026571c4090447ec0d38a733b09833668ca468e5ab9de781bc1a0a12",
+      "tasks-root.png": "90482622eb161605cd9bb0ce1dd883ddf17857a3470b03715c55aad888a8f68f",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    }
+  }
 }

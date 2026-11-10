@@ -340,6 +340,31 @@ its written improvements still require the same dependency audit. Existing
 `written_detail_native.h` guards are diagnostic evidence, not blanket production
 acceptance of these item sheets.
 
+EGG88 and REMAINS47 use the simple native item-description provider. Like
+fish, their nominal material fields identify race/caste; facts and artwork use
+native actual-material getters consistently. Remains shares the pinned fish
+material leaves. Eggs prefer their first stored egg material, falling back to
+bounded caste raw lookup. Both complete split getter bodies are pinned:
+cb2a10 lengthd1 andcb2af0 lengthd4, not their first unwind fragments.
+
+Protected083030 on2026-11-10 verifies masked lovebird remains47707: native,
+owned and wire descriptions/Uses agree; native/viewer View and close pass; the
+full initial panel has zero differing pixels. Earlier082338/082654 exposed319
+wrong artwork pixels. The resolver now selects the species' installed REMAINS
+state. Graphics parsing scopes its layered-state exclusion to the current
+CREATURE_GRAPHICS block, so a separate layered portrait cannot suppress later
+simple VERMIN/REMAINS states. Derived asset cache format10 invalidates old
+indexes; regression checks cover both file orders. This fixes DF3D's asset
+handling, not a native bug or parity exception.
+
+Core19, extension, item-state and MSVC pass. All three owned runs preserve the
+source and exit unsaved at30FPS with known engine diagnostics only; maximum
+sampled GPU43C is not a measured peak. Final DF40032 is closed. Fixture
+`native_stocks.json.egg_remains_item_description_reference` retains the evidence.
+Eggs are absent, so their implementation lacks live panel acceptance; other
+remains species and missing-art fallback are unverified here. Public Stocks
+remains gated. Select these families with DF3D_STOCKS_EGG_REMAINS_SHEETS.
+
 TOOL86 uses the guarded constructed-item description provider. Its type and
 face-up getters (28a0d0/28a360) are pinned alongside the shared BOX virtuals;
 subtypefd0c0 must resolve the same semantic raw as the item's subtype pointer.
@@ -23017,7 +23042,7 @@ Cut-gem candidate snapshots additionally publish the optional descriptor raw ID
 `gem_shape_raw`. It is valid only for SMALLGEM and participates in snapshot
 identity and payload limits. The picker uses installed
 `SHAPE_GRAPHICS_SMALL_GEM` definitions, with the native item-ID arrangement and
-native compositing/palette order. Asset cache format9 invalidates earlier indexes
+native compositing/palette order. Asset cache format10 (including the format9 gem-shape records) invalidates earlier indexes
 that omitted these definitions. Generic groups use `ITEM_GEMS`; absent shape
 facts keep that generic icon rather than guessing a cut. An empty item color
 uses the material color. This change does not publish individual map-item shapes.

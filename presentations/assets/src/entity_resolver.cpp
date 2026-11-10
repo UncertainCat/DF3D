@@ -1365,7 +1365,17 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
       r2.bodyPart = r2.found;
       return r2;
     }
-    case ItemKind::Remains: return single("ITEM_REMAINS", "remains");
+    case ItemKind::Remains: {
+      // Native item-panel capture: use the species' installed REMAINS state.
+      // The material token carries species identity even when its tissue is BONE.
+      const auto species = creatureOfToken(q.material);
+      const auto it = idx.creatures.find(std::string(species));
+      if (it != idx.creatures.end()) {
+        const auto state = it->second.states.find("REMAINS");
+        if (state != it->second.states.end()) return done(&state->second, "remains.creature");
+      }
+      return single("ITEM_REMAINS", "remains");
+    }
     case ItemKind::Vermin:
     case ItemKind::Pet: {
       const std::string_view species = creatureOfToken(q.material);

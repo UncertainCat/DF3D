@@ -37,6 +37,7 @@ if os.getenv('DF3D_STOCKS_FURNITURE_SHEETS')=='1' then
  if os.getenv('DF3D_STOCKS_EQUIPMENT_SHEETS')=='1' then families={24,27,31,61,62,82,83};reference.missing_furniture={}end
  if os.getenv('DF3D_STOCKS_SUBTYPE_SHEETS')=='1' then families={14,65,68};reference.missing_furniture={}end
  if os.getenv('DF3D_STOCKS_ART_SHEETS')=='1' then families={22,36};reference.missing_furniture={}end
+ if os.getenv('DF3D_STOCKS_EGG_REMAINS_SHEETS')=='1' then families={88,47};reference.missing_furniture={}end
  if os.getenv('DF3D_STOCKS_TOOL_SHEETS')=='1' then families={86};reference.missing_furniture={}end
  if os.getenv('DF3D_STOCKS_COIN_SHEETS')=='1' then families={74};reference.missing_furniture={}end
  if os.getenv('DF3D_STOCKS_LEATHER_SHEETS')=='1' then families={55,59,66,76,91};reference.missing_furniture={}end

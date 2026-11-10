@@ -343,11 +343,13 @@ inline std::optional<ItemBuildingHolder> itemBuildingHolder(df::item* item) {
 }
 // Independently owned semantic appearance, also used for off-map installed items.
 inline DFHack::MaterialInfo itemInspectionMaterial(df::item* item) {
-    // Fish expose race/caste through the nominal material getters. Use their
+    // Fish, eggs and remains expose race/caste through nominal getters. Use their
     // native actual material consistently in both item facts and appearance.
-    const bool fish=item->getType()==df::item_type::FISH || item->getType()==df::item_type::FISH_RAW;
-    return DFHack::MaterialInfo(fish?item->getActualMaterial():item->getMaterial(),
-        fish?item->getActualMaterialIndex():item->getMaterialIndex());
+    const auto type=item->getType();
+    const bool actual=type==df::item_type::FISH || type==df::item_type::FISH_RAW ||
+        type==df::item_type::EGG || type==df::item_type::REMAINS;
+    return DFHack::MaterialInfo(actual?item->getActualMaterial():item->getMaterial(),
+        actual?item->getActualMaterialIndex():item->getMaterialIndex());
 }
 inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
     if(!item)return std::nullopt;
@@ -489,7 +491,7 @@ inline bool simpleItemDescriptionDispatch(df::item* item) {
        table!=base+0x16cad20 && table!=base+0x16b7520 && table!=base+0x16f0ac0 && table!=base+0x16c6570 && table!=base+0x16c9420 &&
        table!=base+0x167b4d0 && table!=base+0x1659a68 && table!=base+0x16c34a0 && table!=base+0x16bdbc0 &&
        table!=base+0x16ba7c0 && table!=base+0x1655c40 && table!=base+0x16b8e88 && table!=base+0x16f2140 &&
-       table!=base+0x16c7ab0 && table!=base+0x16589e0 &&
+       table!=base+0x16c7ab0 && table!=base+0x16589e0 && table!=base+0x16b6698 && table!=base+0x16554c0 &&
        table!=base+0x161d330 && table!=base+0x16f4718 && table!=base+0x16f8db0 && table!=base+0x16f3040)return false;
     static const bool pinned=[base]() {
         struct Pin {size_t slot,target,length;uint64_t hash;};
@@ -521,7 +523,7 @@ inline bool simpleItemDescriptionDispatch(df::item* item) {
         // WOOD c750af and BOULDER c75244 adjust grammar from owned flags
         // and material getters only. All other used virtuals match SEEDS.
         for(const size_t table:{size_t(0x16d06e0),size_t(0x16f6da0),size_t(0x15fa918),
-            size_t(0x16cad20),size_t(0x16b7520),size_t(0x16f0ac0),size_t(0x16c6570),size_t(0x16c9420),size_t(0x167b4d0),size_t(0x1659a68),size_t(0x16c34a0),size_t(0x16bdbc0),size_t(0x16ba7c0),size_t(0x1655c40),size_t(0x16b8e88),size_t(0x16f2140),size_t(0x16c7ab0),size_t(0x16589e0),size_t(0x161d330),size_t(0x16f4718),size_t(0x16f8db0),size_t(0x16f3040)})for(auto pin:pins) {
+            size_t(0x16cad20),size_t(0x16b7520),size_t(0x16f0ac0),size_t(0x16c6570),size_t(0x16c9420),size_t(0x167b4d0),size_t(0x1659a68),size_t(0x16c34a0),size_t(0x16bdbc0),size_t(0x16ba7c0),size_t(0x1655c40),size_t(0x16b8e88),size_t(0x16f2140),size_t(0x16c7ab0),size_t(0x16589e0),size_t(0x16b6698),size_t(0x16554c0),size_t(0x161d330),size_t(0x16f4718),size_t(0x16f8db0),size_t(0x16f3040)})for(auto pin:pins) {
             // MEAT/PLANT/CHEESE/GLOB share all used SEEDS virtuals except type.
             // c751f7..c75239 chooses food grammar; PLANT c75073 reads raw flag4
             // through the pinned14d880 leaf. GLOB skips contaminants at c792de.
@@ -556,13 +558,22 @@ inline bool simpleItemDescriptionDispatch(df::item* item) {
             // Fish material fields are race/caste, not a material pair.
             // Actual-material leaves read creature caste raws with bounds checks;
             // caste -1 selects the first caste. Neither leaf uses native UI state.
-            if(table==0x16c7ab0 || table==0x16589e0) {
+            if(table==0x16c7ab0 || table==0x16589e0 || table==0x16b6698 || table==0x16554c0) {
                 if(pin.slot==0)pin=table==0x16c7ab0
                     ?Pin{0,0x100a70,6,UINT64_C(0x927fe8a6b4874f2f)}
                     :Pin{0,0x67180,6,UINT64_C(0x85d0077c37363532)};
                 else if(pin.slot==0x18)pin={pin.slot,0x5453b0,8,UINT64_C(0x6b157bd3663c271d)};
                 else if(pin.slot==0x38)pin={pin.slot,0xcb2890,0xb7,UINT64_C(0x2e00af0e1e7040bd)};
                 else if(pin.slot==0x40)pin={pin.slot,0xcb2950,0xb7,UINT64_C(0xf96ba04bd7b37069)};
+            }
+            if(table==0x16554c0 && pin.slot==0)
+                pin={0,0x100890,6,UINT64_C(0xe0ef8053da2f8491)};
+            // Egg actual-material getters prefer the first stored egg material,
+            // then fall back to the caste raw. Pin both complete split bodies.
+            if(table==0x16b6698) {
+                if(pin.slot==0)pin={0,0x7df660,6,UINT64_C(0x431133361e8afda4)};
+                if(pin.slot==0x38)pin={pin.slot,0xcb2a10,0xd1,UINT64_C(0x77376a358a06612e)};
+                if(pin.slot==0x40)pin={pin.slot,0xcb2af0,0xd4,UINT64_C(0x1bbd19d5fe042485)};
             }
             // Leather c78767..c78c7c shares THREAD's owned dye/name helpers.
             // Its color leaf reads its dye profile or raw solid-color pattern.
@@ -1112,6 +1123,7 @@ inline std::optional<ItemObservation> observeItem(df::item* item) {
     case df::item_type::TRACTION_BENCH:
     case df::item_type::TRAPPARTS:
     case df::item_type::FISH:case df::item_type::FISH_RAW:
+    case df::item_type::EGG:case df::item_type::REMAINS:
     case df::item_type::PLANT_GROWTH:case df::item_type::FOOD:
     case df::item_type::DRINK:case df::item_type::LIQUID_MISC:case df::item_type::POWDER_MISC:
     case df::item_type::MEAT:case df::item_type::PLANT:

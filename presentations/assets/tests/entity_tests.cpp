@@ -763,7 +763,10 @@ TEST_CASE("items: kind, itemdef raw, material and flags pick the sprite") {
   r = resolveItem(idx, iq(wm::ItemKind::Corpse, "INORGANIC:GRANITE"));
   CHECK_FALSE(r.found);
   CHECK(r.rule == std::string("corpse.no-species"));
-  CHECK(resolveItem(idx, iq(wm::ItemKind::Remains, "CREATURE:BIRD_CARDINAL:MUSCLE")).sprite ==
+  // Protected native capture 20261110-082338 uses the species REMAINS state.
+  CHECK(resolveItem(idx, iq(wm::ItemKind::Remains, "CREATURE:BIRD_CARDINAL:BONE")).sprite ==
+        at(idx, "CREATURES_SMALL", 8, 21));
+  CHECK(resolveItem(idx, iq(wm::ItemKind::Remains, "CREATURE:UNKNOWN_CREATURE:BONE")).sprite ==
         at(idx, "ITEM_NATURE", 2, 0));
 
   // No art in vanilla.

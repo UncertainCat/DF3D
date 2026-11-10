@@ -402,6 +402,7 @@ size_t ingestRawText(AssetIndex& index, std::string_view text, const std::string
     Block block = Block::None;
     PlantGraphics* plant = nullptr;
     CreatureGraphics* creature = nullptr;
+    bool creatureBlockLayered = false;
     std::string itemBlock;  // itemdef of the open *_GRAPHICS item block
     std::string statueKey;
     std::string customWorkshop;
@@ -541,6 +542,7 @@ size_t ingestRawText(AssetIndex& index, std::string_view text, const std::string
       if ((n == "CREATURE_GRAPHICS" && t.argc() >= 2) ||
           (n == "CREATURE_CASTE_GRAPHICS" && t.argc() >= 3)) {
         block = Block::Creature;
+        creatureBlockLayered = false;
         if (n == "CREATURE_GRAPHICS") {
           creature = &index.creatures[t.args[1]];
           index.stats.creatureGraphics += 1;
@@ -685,6 +687,7 @@ size_t ingestRawText(AssetIndex& index, std::string_view text, const std::string
       if (block == Block::Creature && creature) {
         if (n == "LAYER_SET") {
           creature->layered = true;
+          creatureBlockLayered = true;
           ++consumed;
           continue;
         }
@@ -698,7 +701,7 @@ size_t ingestRawText(AssetIndex& index, std::string_view text, const std::string
         const bool simple = std::find_if(std::begin(kSimpleStates), std::end(kSimpleStates),
                                          [&](const char* s) { return n == s; }) !=
                             std::end(kSimpleStates);
-        if (simple && !creature->layered && t.argc() >= 4) {
+        if (simple && !creatureBlockLayered && t.argc() >= 4) {
           if (auto s = parseSpriteArgs(index, t.args, 1, pending)) {
             // CHILD:...:AS_IS:<PARENT>: key child sprites by parent so
             // CHILD alone means the child form of DEFAULT.

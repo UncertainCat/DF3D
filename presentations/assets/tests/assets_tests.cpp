@@ -328,6 +328,25 @@ TEST_CASE("creature graphics: simple states, child parents, large images, layere
   CHECK(idx.creatures.at("BIRD_CARDINAL").states.count("DEFAULT") == 0);
 }
 
+TEST_CASE("layered portraits do not suppress separate simple creature graphics") {
+  for (bool portraitFirst : {false, true}) {
+    AssetIndex idx;
+    const std::string portrait = "[OBJECT:GRAPHICS][CREATURE_GRAPHICS:BIRD_TEST]"
+      "[LAYER_SET:PORTRAIT][LAYER_GROUP][LAYER:MAIN:PORTRAITS:4:2][END_LAYER_GROUP]";
+    const std::string simple = "[OBJECT:GRAPHICS][CREATURE_GRAPHICS:BIRD_TEST]"
+      "[VERMIN:SMALL:0:69][REMAINS:SMALL:3:69]";
+    ingestRawText(idx, portraitFirst ? portrait : simple, "/synthetic", "first", nullptr);
+    ingestRawText(idx, portraitFirst ? simple : portrait, "/synthetic", "second", nullptr);
+    finalizeIndex(idx);
+    const auto& states = idx.creatures.at("BIRD_TEST").states;
+    REQUIRE(states.count("REMAINS") == 1);
+    CHECK(states.at("REMAINS").x == 3);
+    CHECK(states.at("REMAINS").y == 69);
+    CHECK(states.count("VERMIN") == 1);
+    CHECK(states.count("LAYER") == 0);
+  }
+}
+
 TEST_CASE("materials: template inheritance, overrides, colours, flags") {
   const AssetIndex idx = synthIndex();
   CHECK(idx.stats.colors == 6);

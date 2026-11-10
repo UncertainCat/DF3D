@@ -36,7 +36,7 @@ namespace df3d_places {
 using Lists=std::array<std::vector<int32_t>,6>;
 struct BuildingRow {
     int32_t id=-1;df::coord position;std::string name,subtitle,jobCaption,statusCaption,secondaryStatus,statusOverlay;
-    int32_t additionalJobs=0,siegeAction=-1;
+    int32_t additionalJobs=0,siegeAction=-1,subtitleLocationId=-1;
     std::string operatorCaption;
     std::optional<df3d_production::ItemAppearanceRecipe> appearance;
 };
@@ -123,7 +123,8 @@ inline std::optional<std::string> heading(df::building& building,size_t mode) {
     reinterpret_cast<void(*)(df::language_name*,std::string*,bool,bool)>(base+0xa946e0)(&owned,&result,true,false);
     return result;
 }
-inline std::optional<std::string> zoneSubtitle(df::building_civzonest& zone) {
+inline std::optional<std::string> zoneSubtitle(df::building_civzonest& zone,int32_t& subtitleLocationId) {
+    subtitleLocationId=-1;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     static const bool ready=[base]{
         const auto hash=[base](size_t rva,size_t count){uint64_t h=UINT64_C(14695981039346656037);
@@ -142,6 +143,7 @@ inline std::optional<std::string> zoneSubtitle(df::building_civzonest& zone) {
         df::abstract_building* location=nullptr;
         for(auto* candidate:site->buildings){if(!candidate)return std::nullopt;if(candidate->id==zone.location_id){location=candidate;break;}}
         if(!location)return text;
+        subtitleLocationId=location->id;
         const auto* source=location->getName();
         if(!source || !source->has_name)return std::string(reinterpret_cast<const char*>(base+0x162b830));
         auto owned=*source;
@@ -455,7 +457,7 @@ inline std::optional<BuildingRows> buildingRows(size_t requestedMode=6) {
         auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
         if(mode==0) {
             auto* zone=virtual_cast<df::building_civzonest>(building);if(!zone)return std::nullopt;
-            auto subtitle=zoneSubtitle(*zone);if(!subtitle)return std::nullopt;row.subtitle=std::move(*subtitle);
+            auto subtitle=zoneSubtitle(*zone,row.subtitleLocationId);if(!subtitle)return std::nullopt;row.subtitle=std::move(*subtitle);
             if(!zoneStatus(*zone,row))return std::nullopt;
         } else if(mode==1) {
             auto* zone=virtual_cast<df::building_civzonest>(building);if(!zone || !locationDetails(*zone,row))return std::nullopt;

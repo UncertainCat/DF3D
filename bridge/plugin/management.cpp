@@ -1264,7 +1264,7 @@ void publish() {
       rows.push_back(m::CreatePlacesRow(b,row.id,row.position.x>=0 && row.position.y>=0 && row.position.z>=0?&pos:nullptr,
         b.CreateString(row.name),b.CreateString(row.subtitle),b.CreateString(row.jobCaption),b.CreateString(row.statusCaption),
         b.CreateString(row.secondaryStatus),b.CreateString(row.statusOverlay),b.CreateString(row.operatorCaption),
-        row.additionalJobs,int8_t(row.siegeAction),encodeItemRecipe(row.appearance)));}
+        row.additionalJobs,int8_t(row.siegeAction),encodeItemRecipe(row.appearance),row.subtitleLocationId));}
     placesResult=m::CreatePlacesState(b,places->outcome,places->tab,places->listRevision,places->total,places->offset,b.CreateVector(rows));
   }
   flatbuffers::Offset<m::TasksState> tasksResult;

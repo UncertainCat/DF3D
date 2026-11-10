@@ -9977,8 +9977,8 @@
     ]
   },
   "layout_reference": {
-    "native_source": "build/stockpile-storage-native-input-20261110-155458",
-    "viewer_source": "build/stockpile-storage-native-input-20261110-155657",
+    "native_source": "build/stockpile-storage-native-input-20261110-160951",
+    "viewer_source": "build/stockpile-storage-native-input-20261110-160951",
     "comparisons": [
       {
         "size": [
@@ -9992,7 +9992,7 @@
           680,
           504
         ],
-        "different_pixels": 203
+        "different_pixels": 0
       },
       {
         "size": [
@@ -10147,6 +10147,90 @@
           852
         ],
         "different_pixels": 0
+      },
+      {
+        "size": [
+          1200,
+          800
+        ],
+        "tab": 0,
+        "region": [
+          40,
+          64,
+          968,
+          752
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": [
+          1200,
+          800
+        ],
+        "tab": 1,
+        "region": [
+          40,
+          64,
+          968,
+          752
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": [
+          1200,
+          800
+        ],
+        "tab": 2,
+        "region": [
+          40,
+          64,
+          968,
+          752
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": [
+          1200,
+          800
+        ],
+        "tab": 3,
+        "region": [
+          40,
+          64,
+          968,
+          752
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": [
+          1200,
+          800
+        ],
+        "tab": 4,
+        "region": [
+          40,
+          64,
+          968,
+          752
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": [
+          1200,
+          800
+        ],
+        "tab": 5,
+        "region": [
+          40,
+          64,
+          968,
+          752
+        ],
+        "different_pixels": 0
       }
     ],
     "source_save_preserved": true,
@@ -10156,11 +10240,47 @@
       "render-thread finalize",
       "ObjectDB shutdown leak warning"
     ],
-    "remaining_difference": "203 pixels in narrow Zones: attached-location subtitles need semantic kind to apply native truncation without clipping owner captions.",
     "omissions": [
       "Resized pointer activation and hover boundaries",
       "Other viewport sizes and long custom names",
       "Empty tabs and mixed siege aggregate"
-    ]
+    ],
+    "subtitle_identity": {
+      "protocol": 176,
+      "location_zones": [
+        {
+          "id": 259,
+          "kind": "location",
+          "location_id": 0
+        },
+        {
+          "id": 489,
+          "kind": "location",
+          "location_id": 2
+        },
+        {
+          "id": 914,
+          "kind": "location",
+          "location_id": 4
+        },
+        {
+          "id": 496,
+          "kind": "location",
+          "location_id": 3
+        },
+        {
+          "id": 956,
+          "kind": "location",
+          "location_id": 5
+        },
+        {
+          "id": 408,
+          "kind": "location",
+          "location_id": 1
+        }
+      ],
+      "other_zone_captions_use_negative_identity": true,
+      "prior_203_pixel_difference_resolved": true
+    }
   }
 }

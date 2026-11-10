@@ -58,6 +58,7 @@ func _valid_page(value: Dictionary,intent: Dictionary) -> bool:
 		_seen[row.building_id]=true
 		for key in ["name","subtitle","job_caption","status_caption","secondary_status","status_overlay","operator_caption"]:
 			if typeof(row.get(key))!=TYPE_STRING or row[key].to_utf8_buffer().size()>16384:return false
+		if not _integer(row.get("subtitle_location_id"),-1,2147483647) or (tab!=0 and row.subtitle_location_id!=-1):return false
 		if not _integer(row.get("additional_jobs"),0,1048576) or not _integer(row.get("siege_action"),0 if tab==5 else -1,4 if tab==5 else -1):return false
 		if row.has("position"):
 			var p: Variant=row.position

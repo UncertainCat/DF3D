@@ -17,7 +17,7 @@ class Host extends RefCounted:
 func check(ok: bool,message: String) -> void:
 	if not ok:failures+=1;push_error(message)
 func row(id: int,tab:=0) -> Dictionary:
-	return {"building_id":id,"name":"fixture","subtitle":"","job_caption":"","status_caption":"","secondary_status":"","status_overlay":"","operator_caption":"","additional_jobs":0,"siege_action":0 if tab==5 else -1}
+	return {"subtitle_location_id":-1,"building_id":id,"name":"fixture","subtitle":"","job_caption":"","status_caption":"","secondary_status":"","status_overlay":"","operator_caption":"","additional_jobs":0,"siege_action":0 if tab==5 else -1}
 func page(tab:=0,offset:=0,ids: Array=[1],total:=1,revision:=8) -> Dictionary:
 	return {"places":{"outcome":C.PlacesOutcome.None,"tab":tab,"list_revision":revision,"offset":offset,"total":total,"rows":ids.map(func(id):return row(id,tab))}}
 func stale(tab:=0) -> Dictionary:

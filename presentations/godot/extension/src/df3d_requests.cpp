@@ -213,7 +213,7 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
             d["name"]=String::utf8(r.name.c_str());d["subtitle"]=String::utf8(r.subtitle.c_str());d["job_caption"]=String::utf8(r.jobCaption.c_str());
             d["status_caption"]=String::utf8(r.statusCaption.c_str());d["secondary_status"]=String::utf8(r.secondaryStatus.c_str());
             d["status_overlay"]=String::utf8(r.statusOverlay.c_str());d["operator_caption"]=String::utf8(r.operatorCaption.c_str());
-            d["additional_jobs"]=r.additionalJobs;d["siege_action"]=int(r.siegeAction);
+            d["subtitle_location_id"]=r.subtitleLocationId;d["additional_jobs"]=r.additionalJobs;d["siege_action"]=int(r.siegeAction);
             if(r.appearance)d["appearance"]=management::itemRecipeDictionary(*r.appearance);rows.push_back(d);
         }
         value["rows"]=rows;result["places"]=value;

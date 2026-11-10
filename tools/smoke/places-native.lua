@@ -115,7 +115,8 @@ for _,row in ipairs(cold_rows[1])do
  elseif zone.assigned_unit_id~=-1 then kind=df.unit.find(zone.assigned_unit_id) and 'present_owner' or 'absent_owner'
  elseif #zone.squad_room_info>1 then kind='multiple_squads'
  elseif #zone.squad_room_info==1 then kind='one_squad' end
- result.zone_subtitle_sources[#result.zone_subtitle_sources+1]={id=row.id,kind=kind}
+ assert(row.subtitle_location_id==(kind=='location' and zone.location_id or -1),'Places subtitle identity differs from simulation')
+ result.zone_subtitle_sources[#result.zone_subtitle_sources+1]={id=row.id,kind=kind,location_id=row.subtitle_location_id}
 end
 local function save()write('places-native.json',json.encode(result))end
 for _,caption in ipairs{'Zones','Locations','Stockpiles','Workshops','Farm plots','Siege engines'}do

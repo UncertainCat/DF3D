@@ -378,11 +378,10 @@ truncate to span minus3 cells, using the native ellipsis rule. Input and hover
 rectangles use the same computed column positions.
 Protected155458 captures all six native tabs at912x552,1600x900 and1200x800.
 Rendered155657 compares the panel interior at the two additional sizes: all six
-wide tabs and five narrow tabs match every RGB pixel. Narrow Zones retains203
-different pixels in attached-location subtitles: the current text-only row cannot
-distinguish those from owner/squad captions, which native does not truncate the
-same way. This remains unfinished pending semantic subtitle-kind transport;
-there is no heuristic clipping or parity exception. `layout_reference` retains
+wide tabs and five narrow tabs match every RGB pixel. That run exposed203 narrow Zones pixels in attached-location subtitles because
+the text-only row could not distinguish them from owner/squad captions. Protocol176
+below resolves the missing semantic identity; no heuristic clipping or parity
+exception is used. `layout_reference` retains
 regions/counts and the missing resized-pointer, empty-tab and custom-name scope.
 Both runs preserve the source save and close owned DF unsaved at30FPS. Viewer
 acceptance is `passed_with_known_issues` for the known Godot shutdown diagnostics;
@@ -399,6 +398,21 @@ location identities on other tabs. Both management schema defaults, version and
 shared-memory name advance together; rebuild/restart producer and consumer.
 Protocol175 replies lack this identity and cannot be upgraded by inventing it;
 recapture them on176. No simulation or native-menu ownership changes are implied.
+
+The native producer sets the location identity only after resolving the attached
+location in the existing native-caption branch; unresolved references and all
+other caption sources retain-1. The transport, owned decoder, Godot adapter and
+controller retain/validate the field. Places truncates a Zones subtitle only when
+that identity is present. Protected160951 checks all249 transported rows and
+independently verifies the six location identities against simulation zones.
+All18 panel-interior comparisons (six tabs at912x552,1200x800,1600x900) now have
+zero differing RGB pixels, including the previous203-pixel narrow Zones gap.
+The source save is unchanged and owned DF38200 closes unsaved at30FPS, with
+GPU59–61C sampled. This is `passed_with_known_issues` for the established
+render-thread finalize/ObjectDB shutdown diagnostics. Core19 and Places controller
+checks pass in `build/qa/places-subtitle-runtime`; MSVC bridge and extension builds
+pass. Resized pointer/hover activation, empty tabs and custom long-name cases are
+still separate acceptance gaps, as are typed siege mutations.
 
 ## Management 174 Tasks contract
 

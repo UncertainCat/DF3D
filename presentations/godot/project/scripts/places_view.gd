@@ -135,7 +135,7 @@ func _draw() -> void:
 		var portrait: Texture2D=portraits.get(row.building_id,{}).get("texture")
 		if portrait!=null:draw_texture_rect(portrait,Rect2(18,y+2,32,32),false)
 		text(location_caption(row.name) if state.tab==1 else row.name,Vector2(72,y+24),11)
-		text(location_caption(row.subtitle) if state.tab==1 else row.subtitle,Vector2(72,y+36),14 if state.tab>=4 else 15)
+		text(location_caption(row.subtitle) if state.tab==1 or row.subtitle_location_id>=0 else row.subtitle,Vector2(72,y+36),14 if state.tab>=4 else 15)
 		if state.tab==5 and has_status_column():
 			_siege_buttons(y,row.siege_action);text(row.operator_caption,Vector2(status_x(),y+36))
 		elif has_status_column():

@@ -38,7 +38,7 @@ func run() -> void:
 		for i in rows.size():
 			var row: Dictionary=rows[i];var expected: Dictionary=reference[tab][i]
 			check(row.building_id==int(expected.id),"Places identity differs")
-			for key in ["name","subtitle","job_caption","status_caption","secondary_status","status_overlay","operator_caption","additional_jobs","siege_action"]:
+			for key in ["name","subtitle","job_caption","status_caption","secondary_status","status_overlay","operator_caption","additional_jobs","siege_action","subtitle_location_id"]:
 				check(row.get(key)==expected.get(key),"Places field differs: "+key)
 			var p: Array=expected.position
 			check(row.get("position")==Vector3i(int(p[0]),int(p[1]),int(p[2])),"Places position differs")

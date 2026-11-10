@@ -388,6 +388,18 @@ Both runs preserve the source save and close owned DF unsaved at30FPS. Viewer
 acceptance is `passed_with_known_issues` for the known Godot shutdown diagnostics;
 GPU58–61C sampled. Core19/controller checks pass in `build/qa/places-layout-final`.
 
+## Management 176 Places subtitle identity
+
+Protocol176 adds `PlacesRow.subtitle_location_id`: the resolved abstract location
+supplying a Zones subtitle, or-1 for captions from other sources. Only tab0 may
+carry a nonnegative identity. The owned model retains this semantic fact so the
+presentation can apply native location-caption truncation without guessing from
+text or clipping creature/squad captions. Validators reject values below-1 and
+location identities on other tabs. Both management schema defaults, version and
+shared-memory name advance together; rebuild/restart producer and consumer.
+Protocol175 replies lack this identity and cannot be upgraded by inventing it;
+recapture them on176. No simulation or native-menu ownership changes are implied.
+
 ## Management 174 Tasks contract
 
 Management174 uses `Local\df3d_management_v174`;173 peers cannot attach. There is

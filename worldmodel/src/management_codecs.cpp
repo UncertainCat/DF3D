@@ -50,7 +50,7 @@ ManagementState decodeState(const m::ManagementState* s) {
     auto& out=next.places.emplace();out.outcome=PlacesOutcome(r->outcome());out.tab=r->tab();
     out.listRevision=r->list_revision();out.total=r->total();out.offset=r->offset();
     for(const auto* row:*r->rows()) {
-      PlacesRow v;v.buildingId=row->building_id();
+      PlacesRow v;v.buildingId=row->building_id();v.subtitleLocationId=row->subtitle_location_id();
       if(const auto* p=row->position())v.position=TilePos{p->x(),p->y(),p->z()};
       v.name=row->name()->str();v.subtitle=row->subtitle()->str();v.jobCaption=row->job_caption()->str();
       v.statusCaption=row->status_caption()->str();v.secondaryStatus=row->secondary_status()->str();

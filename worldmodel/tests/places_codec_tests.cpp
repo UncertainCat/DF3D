@@ -13,13 +13,13 @@ TEST_CASE("Places encoding retains selected tab and continuation identity") {
 TEST_CASE("Places decoding owns captions across reply retirement") {
  flatbuffers::FlatBufferBuilder b;const auto text=b.CreateString("fixture");
  const m::TilePos pos(12,13,14);
- auto row=m::CreatePlacesRow(b,7,&pos,text,text,text,text,text,text,text,2,3);
- auto payload=m::CreatePlacesState(b,m::PlacesOutcome::None,5,123,2,1,b.CreateVector(std::vector{row}));
+ auto row=m::CreatePlacesRow(b,7,&pos,text,text,text,text,text,text,text,2,-1,0,42);
+ auto payload=m::CreatePlacesState(b,m::PlacesOutcome::None,0,123,2,1,b.CreateVector(std::vector{row}));
  m::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(m::ManagementAction::PlacesRead);
  state.add_status(m::ManagementStatus::Ok);state.add_places(payload);b.Finish(state.Finish());
  const auto owned=codec::decodeState(flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()));b.Clear();
- REQUIRE(owned.places);CHECK(owned.places->tab==5);CHECK(owned.places->listRevision==123);
+ REQUIRE(owned.places);CHECK(owned.places->tab==0);CHECK(owned.places->listRevision==123);
  CHECK(owned.places->offset==1);REQUIRE(owned.places->rows.size()==1);const auto& v=owned.places->rows[0];
  CHECK(v.buildingId==7);CHECK(v.name=="fixture");CHECK(v.statusOverlay=="fixture");CHECK(v.operatorCaption=="fixture");
- CHECK(v.additionalJobs==2);CHECK(v.siegeAction==3);REQUIRE(v.position);CHECK(v.position->z==14);
+ CHECK(v.additionalJobs==2);CHECK(v.siegeAction==-1);CHECK(v.subtitleLocationId==42);REQUIRE(v.position);CHECK(v.position->z==14);
 }

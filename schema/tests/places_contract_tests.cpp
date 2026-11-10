@@ -20,3 +20,14 @@ TEST_CASE("Places pages reject duplicate identities invalid action and stalled p
   CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==(fault!=0));
  }
 }
+
+TEST_CASE("Places subtitle location belongs only to zone rows") {
+ for(int tab=0;tab<6;++tab)for(int location:{-2,-1,42}){
+  flatbuffers::FlatBufferBuilder b;auto text=b.CreateString("fixture");
+  auto row=m::CreatePlacesRow(b,7,nullptr,text,text,text,text,text,text,text,0,tab==5?0:-1,0,location);
+  auto payload=m::CreatePlacesState(b,m::PlacesOutcome::None,tab,1,1,0,b.CreateVector(std::vector{row}));
+  m::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(m::ManagementAction::PlacesRead);
+  state.add_status(m::ManagementStatus::Ok);state.add_places(payload);b.Finish(state.Finish());
+  CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==(location<-1 || (tab!=0 && location!=-1)));
+ }
+}

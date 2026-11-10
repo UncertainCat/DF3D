@@ -438,7 +438,7 @@ struct PlacesRequest {uint8_t tab=0;uint32_t offset=0;uint16_t limit=32;uint64_t
 struct PlacesRow {
   int32_t buildingId=-1;std::optional<TilePos> position;
   std::string name,subtitle,jobCaption,statusCaption,secondaryStatus,statusOverlay,operatorCaption;
-  int32_t additionalJobs=0;int8_t siegeAction=-1;std::optional<SelectionAppearance> appearance;
+  int32_t subtitleLocationId=-1,additionalJobs=0;int8_t siegeAction=-1;std::optional<SelectionAppearance> appearance;
 };
 struct PlacesState {
   PlacesOutcome outcome=PlacesOutcome::None;uint8_t tab=0;uint64_t listRevision=0;uint32_t total=0,offset=0;

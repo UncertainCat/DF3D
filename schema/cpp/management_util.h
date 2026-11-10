@@ -141,8 +141,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 175;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v175";
+inline constexpr uint32_t kManagementVersion = 176;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v176";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -1282,6 +1282,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     size_t bytes=0;std::unordered_set<int32_t> ids;
     for(const auto* row:*r->rows()){
       if(!row || row->building_id()<0 || !ids.insert(row->building_id()).second ||
+        row->subtitle_location_id()<-1 || (r->tab()!=0 && row->subtitle_location_id()!=-1) ||
         row->additional_jobs()<0 || row->additional_jobs()>1048576 ||
         (r->tab()==5 ? row->siege_action()<0 || row->siege_action()>4 : row->siege_action()!=-1))return "invalid places row";
       bytes+=128;

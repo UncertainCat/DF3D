@@ -16,10 +16,31 @@ local function capture(name)
  local deadline=dfhack.getTickCount()+10000
  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Places capture timed out');script.sleep(1,'frames')end
 end
-gui.simulateInput(view,'D_LOCATIONS');settle()
 local info=df.global.game.main_interface.info
+local function menu_snapshot()
+ local result={open=info.open,mode=info.current_mode,places_mode=info.buildings.mode,lists={}}
+ for mode=0,5 do
+  local ids={};for _,building in ipairs(info.buildings.list[mode])do ids[#ids+1]=building.id end
+  local _,address=df.sizeof(info.buildings.list[mode]);local allocation={}
+  for offset=0,16,8 do allocation[#allocation+1]=tostring(df.reinterpret_cast('uint64_t',address+offset).value)end
+  result.lists[#result.lists+1]={ids=ids,allocation=allocation,scroll=info.buildings.scrolling_position[mode],drag=info.buildings.scrolling[mode]}
+ end
+ return json.encode(result)
+end
+local function probe()
+ local before=menu_snapshot();local text,rc=dfhack.run_command_silent('df3d','places-lists-probe')
+ assert(rc==0,'Owned Places provider failed: '..text);assert(menu_snapshot()==before,'Owned Places provider changed native menu storage')
+ return json.decode(text)
+end
+local cold=probe()
+gui.simulateInput(view,'D_LOCATIONS');settle()
 assert(info.open and info.current_mode==df.info_interface_mode_type.BUILDINGS,'Places shortcut did not open native Buildings')
-local result={initial_mode=info.buildings.mode,pages={}}
+local warm=probe()
+for mode=0,5 do
+ local ids={};for _,building in ipairs(info.buildings.list[mode])do ids[#ids+1]=building.id end
+ assert(json.encode(ids)==json.encode(cold[mode+1]) and json.encode(ids)==json.encode(warm[mode+1]),'Owned Places order differs in mode '..mode)
+end
+local result={initial_mode=info.buildings.mode,pages={},owned={cold=cold,warm=warm,menu_preserved=true}}
 local function save()write('places-native.json',json.encode(result))end
 for _,caption in ipairs{'Zones','Locations','Stockpiles','Workshops','Farm plots','Siege engines'}do
  local found=false
@@ -40,6 +61,7 @@ for _,caption in ipairs{'Zones','Locations','Stockpiles','Workshops','Farm plots
   page.lists[#page.lists+1]={mode=mode,entries=entries,scroll=info.buildings.scrolling_position[mode]}
  end
  result.pages[#result.pages+1]=page;save();capture('places-'..caption:lower():gsub(' ','-'))
+ assert(json.encode(probe())==json.encode(cold),'Owned Places lists depend on selected tab')
  assert(found,'Native Places tab missing: '..caption)
 end
 gui.simulateInput(view,'LEAVESCREEN');settle();assert(not info.open,'Places did not close')

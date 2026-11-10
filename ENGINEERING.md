@@ -38,7 +38,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Places native discovery
 
-Places remains unimplemented and hidden. Protected140037 on DF53.16 captures
+Places presentation and transport remain unimplemented and hidden. Protected140037 on DF53.16 captures
 all six native tabs:158 Zones,6 Locations,34 Stockpiles,46 Workshops,2 Farm
 plots and no Siege engines. `fixtures/production/native_places.json` records
 ordered identities and visible text; screenshots stay in ignored capture output.
@@ -46,8 +46,16 @@ The native opening branch323a77 passes `info.buildings` to375450. That builder
 initializes six vectors and scroll state in its supplied `buildings_interfacest`,
 reads simulation building lists, deduplicates Locations using temporary owned
 IDs, and sorts the first four lists. It is a candidate for an independently owned
-context, not yet an accepted provider: comparator/callee side effects and
-cold/warm parity still require verification. Native feed399990 is a discovery
+context. `places_native.h` now calls it with private storage and copies only
+building IDs out. The four native comparators read zone subtype/name, location
+type, stockpile category and workshop names; temporary strings stay local and
+location lookup6ff00 is read-only. Builder/comparator bytes and context layout
+are pinned. Protected140539 verifies all six ordered lists cold, warm and after
+each tab switch, while native menu contents, vector allocations, scroll/drag
+state and mode/open flags remain unchanged. Owned DF11048 closes unsaved with
+source preservation at30FPS, GPU41C/0% sampled. MSVC rebuild passes. This is
+list membership/order acceptance only; captions/status/artwork, nonempty siege
+engines, transport and viewer remain unfinished. Native feed399990 is a discovery
 reference only, never a runtime semantic entry point. No Godot reconstruction
 or runtime menu-list reads have been added. Source preserved; owned DF40288
 closed unsaved at30FPS, GPU42C/0% sampled.

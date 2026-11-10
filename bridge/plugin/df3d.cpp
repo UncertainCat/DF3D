@@ -115,6 +115,7 @@
 #include "residents_order_native.h"
 #include "residents_activity_native.h"
 #include "tasks_native.h"
+#include "places_native.h"
 #include "tasks_action_native.h"
 #include "residents_activity_description_native.h"
 #include "residents_query_native.h"
@@ -2497,6 +2498,14 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(values[3]!=0 && values[3]!=1)return CR_WRONG_USAGE;
           const auto result=df3d_tasks::apply(action,values[0],values[1],values[2],values[3]!=0);
           out.print("{}\n",static_cast<int>(result));return CR_OK;
+        }
+        if(parameters[0]=="places-lists-probe") {
+          if(parameters.size()!=1)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto lists=df3d_places::lists();if(!lists)return CR_FAILURE;
+          Json::Value result(Json::arrayValue);
+          for(const auto& ids:*lists){Json::Value list(Json::arrayValue);for(auto id:ids)list.append(id);result.append(list);}
+          out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
         }
         if(parameters[0]=="tasks-rows-probe") {
           if(parameters.size()!=1)return CR_WRONG_USAGE;

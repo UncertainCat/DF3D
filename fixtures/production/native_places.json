@@ -1,7 +1,7 @@
 {
   "supported_game": "DF 53.16",
   "capture": "build/stockpile-storage-native-input-20261110-140037",
-  "scope": "Native discovery only; no runtime provider or public Places UI. Paused protected disposable save, all six tabs captured and closed.",
+  "scope": "Native list provider and discovery; no public Places UI or transport.",
   "pages": [
     {
       "caption": "Zones",
@@ -3375,7 +3375,7 @@
       "length": 1531,
       "fnv1a64": "0xe4828dbd4a7fe625",
       "caller": "0x323a77 passes info.buildings context; calls at 0x323a7e",
-      "ownership": "Candidate only: writes supplied buildings_interfacest and owns temporary location-ID vector. Comparators and called routines require full audit before runtime use."
+      "ownership": "Verified with independently owned df::buildings_interfacest; only IDs are copied out. Context vectors retire on return. Comparator audit: native type/category/name readers, local strings and read-only location lookup; no native menu input."
     },
     "feed": {
       "rva": "0x399990",
@@ -3386,11 +3386,32 @@
   "source_save_preserved": "Owned source unchanged",
   "owned_df_closed_unsaved": true,
   "omissions": [
-    "Private native context validation",
-    "Cold/warm list parity",
     "Native captions/artwork/status/control providers",
     "Actions and lifecycle",
     "Viewer implementation and integration",
     "Empty/nonempty siege-engine fixtures"
-  ]
+  ],
+  "provider_reference": {
+    "capture": "build/stockpile-storage-native-input-20261110-140539",
+    "scope": "Owned native list builder: six ordered building-ID lists match native cold, warm and after each tab change. Native menu list contents, allocation triples, scroll/drag state, selected mode and open state remain unchanged. No captions, artwork, status fields, transport or viewer acceptance.",
+    "cold_counts": [
+      158,
+      6,
+      34,
+      46,
+      2,
+      0
+    ],
+    "warm_counts": [
+      158,
+      6,
+      34,
+      46,
+      2,
+      0
+    ],
+    "menu_preserved": true,
+    "source_save_preserved": "Owned source unchanged",
+    "owned_df_closed_unsaved": true
+  }
 }

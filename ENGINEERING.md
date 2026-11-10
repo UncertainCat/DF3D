@@ -82,8 +82,16 @@ closing. Worker View obtains a current CreatureSheetLocate result and uses the
 existing inspector route; late navigation replies are retired with the owner.
 Headless checks exercise fresh versus displayed coordinates, close-before-reply
 and play-disable focus release. Native View task navigation remains under audit.
-Composed main-scene navigation, rendered input effects, resize/lifecycle and
-remaining hover acceptance are unfinished; public exposure stays gated.
+Protected125454 runs Tasks in the actual main scene through the staged registry:
+shared modal ownership, one-row scrollbar stepping, Suspend hover, HUD-overlay
+input blocking, two suspension clicks with independent native flag confirmation,
+building Recenter/current camera position, exact-creature View handoff, and
+right-click owner release all pass. Source preserved; owned DF19312 closes unsaved
+with both processes capped30FPS, GPU40C/0% sampled (not a peak). The captured last
+page panel has zero differing RGB pixels against native. Earlier125336 established
+the basic workflow;125454 adds exact creature, hover and overlay assertions.
+Remaining View task/Repeat semantics, all-action, resize and disconnect/epoch
+live acceptance are unfinished; public exposure stays gated.
 
 Read requests carry offset, limit1..64 and an expected ordered-list revision.
 A nonzero offset requires that revision. Replies preserve native order and can

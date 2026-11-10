@@ -2873,5 +2873,26 @@
       "No rendered input/effect or resize/lifecycle acceptance",
       "No public Tasks route"
     ]
+  },
+  "main_scene_reference": {
+    "capture": "stockpile-storage-native-input-20261110-125454",
+    "surface": "actual main scene",
+    "checks": [
+      "shared modal ownership",
+      "scrollbar down moves one row",
+      "Suspend tooltip shown via HUD hover service",
+      "HUD overlay blocks task edits",
+      "two Suspend clicks with independent native flags and restoration",
+      "building Recenter closes Tasks and focuses native position",
+      "worker View selects exact creature in inspector",
+      "right-click close releases ownership"
+    ],
+    "panel_different_pixels": 0,
+    "source_save_preserved": true,
+    "limits": [
+      "Native View task and Repeat remain incomplete",
+      "No all-action, resize, disconnect or epoch-change live acceptance",
+      "Only Suspend tooltip integrated here; not all tooltip pixels"
+    ]
   }
 }

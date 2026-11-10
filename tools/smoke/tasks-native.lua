@@ -25,8 +25,9 @@ if os.getenv('DF3D_TASKS_WIRE')=='1' then
  assert(job and job.flags.suspend,'Expected suspended construction fixture')
  local original=job.flags.whole
  write('tasks-wire-reference.json',json.encode(cold))
+ write('tasks-scene-reference.json',json.encode{rows=cold})
  write('shot.tmp','tasks-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))
- local deadline=dfhack.getTickCount()+30000;local checked=0
+ local deadline=dfhack.getTickCount()+(os.getenv('DF3D_TASKS_SCENE')=='1' and 120000 or 30000);local checked=0
  while true do
   local step=io.open(out..'/tasks-wire-step')
   if step then local n=tonumber(step:read('*a'));step:close()

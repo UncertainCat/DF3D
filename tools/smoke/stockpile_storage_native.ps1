@@ -257,6 +257,7 @@ try {
      if($env:DF3D_CHORES_RENDER -eq '1' -or $env:DF3D_HUNTER_AMMUNITION_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/job_settings_wire_live.gd')}
      if($name -eq 'tasks-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/tasks_wire_live.gd')}
      if($name -eq 'tasks-wire' -and $env:DF3D_TASKS_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/tasks_wire_live.gd')}
+     if($name -eq 'tasks-wire' -and $env:DF3D_TASKS_SCENE -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/tasks_scene_live.gd')}
      if($name -eq 'stocks-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/stocks_wire_live.gd')}
      if($name -eq 'stocks-wire' -and $env:DF3D_STOCKS_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/stocks_wire_live.gd')}
      if($name -eq 'stocks-wire' -and $env:DF3D_STOCKS_SCENE -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/stocks_scene_live.gd')}
@@ -273,6 +274,7 @@ try {
      # A rendered multi-family item batch includes graphics initialization and
      # several sheet captures. Keep this bounded separately from wire-only work.
      if($name -eq 'stocks-wire' -and $env:DF3D_STOCKS_RENDER -eq '1' -and $env:DF3D_STOCKS_FURNITURE_SHEETS -eq '1'){$wireTimeout=60000}
+     if($name -eq 'tasks-wire' -and $env:DF3D_TASKS_SCENE -eq '1'){$wireTimeout=115000}
      if($name -eq 'stocks-wire' -and $env:DF3D_STOCKS_SCENE -eq '1'){$wireTimeout=115000}
      if($name -eq 'stone-use-wire' -and $env:DF3D_STONE_USE_MAIN -eq '1'){$wireTimeout=115000}
      if($name -eq 'standing-automation-wire'){$wireTimeout=115000}

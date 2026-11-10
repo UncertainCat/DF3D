@@ -11,6 +11,10 @@
 #include "df/plant_raw.h"
 #include "df/workshop_profile.h"
 #include "unit_description_native.h"
+#include "knowledge_detail_native.h"
+#include "df/historical_figure.h"
+#include "df/squad.h"
+#include "df/building_squad_infost.h"
 #include <array>
 #include <optional>
 #include <unordered_set>
@@ -105,6 +109,66 @@ inline std::optional<std::string> heading(df::building& building,size_t mode) {
     reinterpret_cast<void(*)(df::language_name*,std::string*,bool,bool)>(base+0xa946e0)(&owned,&result,true,false);
     return result;
 }
+inline std::optional<std::string> zoneSubtitle(df::building_civzonest& zone) {
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool ready=[base]{
+        const auto hash=[base](size_t rva,size_t count){uint64_t h=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<count;++i){h^=base[rva+i];h*=UINT64_C(1099511628211);}return h;};
+        return df3d_creature::knowledgeDescriptionReady() &&
+            hash(0x30ff50,0x58)==UINT64_C(0x04257022b325dad5) &&
+            hash(0x39c809,0x335)==UINT64_C(0x60f6b8d4c02ea044);
+    }();
+    if(!ready)return std::nullopt;
+    std::string text;
+    // Native precedence: attached location, assigned owner, then squads.
+    if(zone.site_id!=-1 && zone.location_id!=-1) {
+        if(!df::world_site::find(zone.site_id))return text;
+        // Native39c83e uses the current fortress site after validating site_id.
+        auto* site=df::global::plotinfo->main.fortress_site;if(!site)return text;
+        df::abstract_building* location=nullptr;
+        for(auto* candidate:site->buildings){if(!candidate)return std::nullopt;if(candidate->id==zone.location_id){location=candidate;break;}}
+        if(!location)return text;
+        const auto* source=location->getName();
+        if(!source || !source->has_name)return std::string(reinterpret_cast<const char*>(base+0x162b830));
+        auto owned=*source;
+        reinterpret_cast<void(*)(df::language_name*,std::string*,bool,bool)>(base+0xa946e0)(&owned,&text,true,false);
+    } else if(zone.assigned_unit_id!=-1) {
+        // Do not pass zone.owner_unit_cached_index to native14db50. Unit lookup
+        // is read-only, while the formatter receives independently owned data.
+        if(auto* owner=df::unit::find(zone.assigned_unit_id)) {
+            if(owner->inventory.size()>10000)return std::nullopt;
+            for(auto* item:owner->inventory)if(!item)return std::nullopt;
+            df3d_creature::InventoryRandomRestore restore(base);
+            df3d_creature::InventoryDescriptionContext owned(*owner);
+            reinterpret_cast<void(*)(df::unit*,std::string*,bool)>(base+0x1330c30)(owned.unit(),&text,false);
+        } else {
+            // Read-only native reverse lookup by historical figure's unit ID.
+            auto* figure=reinterpret_cast<df::historical_figure*(*)(void*,int32_t)>(base+0x30ff50)(base+0x24f9cb8,zone.assigned_unit_id);
+            if(figure) {
+                df3d_creature::InventoryRandomRestore random(base);
+                df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
+                alignas(8) std::array<uint8_t,0xc8> context{};
+                reinterpret_cast<void(*)(void*)>(base+0x72080)(context.data());
+                using Name=void(*)(void*,std::string*,int32_t,void*,int16_t,int16_t);
+                reinterpret_cast<Name>(base+0xb92f10)(base+0x24f9cb8,&text,figure->id,context.data(),1,1);
+            }
+        }
+    } else if(zone.squad_room_info.size()>1) {
+        if(zone.squad_room_info.size()>1048576)return std::nullopt;
+        reinterpret_cast<void(*)(int32_t,std::string*)>(base+0x52c130)(int32_t(zone.squad_room_info.size()),&text);
+        text+=reinterpret_cast<const char*>(base+0x162b788);
+    } else if(zone.squad_room_info.size()==1) {
+        if(!zone.squad_room_info.front())return std::nullopt;
+        if(auto* squad=df::squad::find(zone.squad_room_info.front()->squad_id)) {
+            // Native uses the translated name here, not the squad alias.
+            auto owned=squad->name;
+            reinterpret_cast<void(*)(df::language_name*,std::string*,bool,bool)>(base+0xa946e0)(&owned,&text,true,false);
+            reinterpret_cast<void(*)(std::string*)>(base+0x52d650)(&text);
+            text+=reinterpret_cast<const char*>(base+0x162b778);
+        }
+    }
+    return text;
+}
 // Native Places39dba6/39de70/39e029/39e4a5 use building::getName for
 // Stockpiles, Workshops, Farm plots and Siege engines.
 inline std::optional<BuildingRows> buildingRows() {
@@ -115,7 +179,10 @@ inline std::optional<BuildingRows> buildingRows() {
         BuildingRow row;row.id=id;row.position=df::coord(building->centerx,building->centery,building->z);
         const auto name=heading(*building,mode);if(!name)return std::nullopt;row.name=*name;
         auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
-        if(mode==3) {
+        if(mode==0) {
+            auto* zone=virtual_cast<df::building_civzonest>(building);if(!zone)return std::nullopt;
+            auto subtitle=zoneSubtitle(*zone);if(!subtitle)return std::nullopt;row.subtitle=std::move(*subtitle);
+        } else if(mode==3) {
             if(!df3d_creature::inventoryDescriptionReady())return std::nullopt;
             // Native39de95 selects only the first permitted worker, if present.
             if(auto* profile=building->getWorkshopProfile();profile && !profile->permitted_workers.empty()) {

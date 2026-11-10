@@ -104,6 +104,19 @@ misclassified as a subtitle; the field is corrected. Recorded in
 `native_places.json.secondary_reference`. This does not accept assignment edits,
 status colors, additional-job suffix rendering, other status providers or viewer.
 
+Zone subtitles now follow native39c809..39cb3d precedence: attached location,
+otherwise assigned owner, otherwise squads. Location and squad names use owned
+language names and native formatting. Owner captions use the owned unit context;
+the zone's mutable owner lookup index is never passed to native. Absent owners
+use read-only native30ff50 and b92f10 with a private initialized history context,
+with semantic name-cache and random-state restoration. Squad aliases are ignored
+here as in native Places. Protected142702 matches all115 present-owner, six
+location and one squad subtitle across native pages;36 zones have no subtitle
+source. Absent-owner and multiple-squad branches remain unpopulated/unaccepted.
+Owned DF40220 closes unsaved, source preserved,30FPS, GPU40C/0% sampled. MSVC
+rebuild and core checks pass. `native_places.json.zone_subtitle_reference` retains
+coverage and omissions. No caption truncation, viewer or navigation acceptance.
+
 ## Management 174 Tasks contract
 
 Management174 uses `Local\df3d_management_v174`;173 peers cannot attach. There is

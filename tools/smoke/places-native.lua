@@ -61,6 +61,15 @@ for mode=0,5 do
 end
 local result={initial_mode=info.buildings.mode,pages={},owned={cold=cold,warm=warm,menu_preserved=true},building_rows={rows=cold_rows,cold_warm_equal=true,visible_names={}}}
 result.secondary_fixture=secondary_fixture
+result.zone_subtitle_sources={}
+for _,row in ipairs(cold_rows[1])do
+ local zone=assert(df.building.find(row.id));local kind='none'
+ if zone.site_id~=-1 and zone.location_id~=-1 then kind='location'
+ elseif zone.assigned_unit_id~=-1 then kind=df.unit.find(zone.assigned_unit_id) and 'present_owner' or 'absent_owner'
+ elseif #zone.squad_room_info>1 then kind='multiple_squads'
+ elseif #zone.squad_room_info==1 then kind='one_squad' end
+ result.zone_subtitle_sources[#result.zone_subtitle_sources+1]={id=row.id,kind=kind}
+end
 local function save()write('places-native.json',json.encode(result))end
 for _,caption in ipairs{'Zones','Locations','Stockpiles','Workshops','Farm plots','Siege engines'}do
  local found=false
@@ -97,7 +106,7 @@ for _,caption in ipairs{'Zones','Locations','Stockpiles','Workshops','Farm plots
      result.name_mismatch={caption=caption,index=index,requested_first=first,actual_first=actual,expected=rows[index].name,observed=dfhack.df2utf(table.concat(chars)),lines=lines()};save()
      error('Native Places name mismatch: '..caption..' row '..index)
     end
-    if mode==3 or mode==4 then
+    if mode==0 or mode==3 or mode==4 then
      local secondary={};for x=13,g.dimx-1 do local ch=dfhack.screen.readTile(x,16+visible*3).ch;secondary[#secondary+1]=ch>=32 and ch<=255 and string.char(ch) or ' ' end
      local subtitle=dfhack.utf2df(rows[index].subtitle)
      assert(table.concat(secondary):sub(1,#subtitle)==subtitle,'Places subtitle mismatch: '..caption..' row '..index)

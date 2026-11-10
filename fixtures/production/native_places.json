@@ -5788,5 +5788,825 @@
       "Subtitle/status colors, artwork, truncation and viewer",
       "Workshop assignment/edit action acceptance"
     ]
+  },
+  "zone_subtitle_reference": {
+    "capture": "build/stockpile-storage-native-input-20261110-142702",
+    "scope": "Native rendered subtitle prefix comparison across every zone page: 115 present owners, six attached locations and one assigned squad. Cold/warm provider equality and native menu preservation. Full untruncated captions, not viewer/layout acceptance.",
+    "sources": {
+      "precedence": "Native39c809..39cb3d: attached location, assigned owner, then squads",
+      "location": "Validate zone site ID; resolve abstract building in current fortress site, virtual getName and owned a946e0 English formatter",
+      "owner": "Owned InventoryDescriptionContext and native1330c30(false); no borrowed zone owner_unit_cached_index",
+      "absent_owner": "Read-only reverse lookup30ff50 by unit ID, nativeb92f10 with privately initialized72080 context and semantic cache/RNG restoration; unpopulated in this capture",
+      "one_squad": "Translate squad language name directly (ignoring alias as native), then52d650 and native assigned suffix",
+      "multiple_squads": "Native52c130 count formatter and native squads assigned suffix; unpopulated in this capture"
+    },
+    "counts": {
+      "none": 36,
+      "location": 6,
+      "one_squad": 1,
+      "present_owner": 115
+    },
+    "rows": [
+      {
+        "id": 245,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 246,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 244,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 259,
+        "kind": "location",
+        "subtitle": "The Golden Shrine"
+      },
+      {
+        "id": 489,
+        "kind": "location",
+        "subtitle": "The Blockaded Sanctuary"
+      },
+      {
+        "id": 914,
+        "kind": "location",
+        "subtitle": "The Constructive Bastion"
+      },
+      {
+        "id": 496,
+        "kind": "location",
+        "subtitle": "The White Temple"
+      },
+      {
+        "id": 956,
+        "kind": "location",
+        "subtitle": "The Pears of Hide"
+      },
+      {
+        "id": 235,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 536,
+        "kind": "one_squad",
+        "subtitle": "The Golden Beaks assigned"
+      },
+      {
+        "id": 77,
+        "kind": "present_owner",
+        "subtitle": "Unib Rakustazin, king"
+      },
+      {
+        "id": 924,
+        "kind": "present_owner",
+        "subtitle": "Kûbuk ïngizkor, mayor"
+      },
+      {
+        "id": 1337,
+        "kind": "present_owner",
+        "subtitle": "Stodir Tangakurvad, bookkeeper"
+      },
+      {
+        "id": 408,
+        "kind": "location",
+        "subtitle": "The Oily Meal"
+      },
+      {
+        "id": 76,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 922,
+        "kind": "present_owner",
+        "subtitle": "Kûbuk ïngizkor, mayor"
+      },
+      {
+        "id": 887,
+        "kind": "present_owner",
+        "subtitle": "Urist Kodzas, Clothier"
+      },
+      {
+        "id": 1465,
+        "kind": "present_owner",
+        "subtitle": "Sodel Nishrâluk, Fish Dissector"
+      },
+      {
+        "id": 23,
+        "kind": "present_owner",
+        "subtitle": "Kikrost Fikodshoduk, Bone Carver"
+      },
+      {
+        "id": 1087,
+        "kind": "present_owner",
+        "subtitle": "Mosus Logemïteb, Soap Maker"
+      },
+      {
+        "id": 373,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 1088,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 375,
+        "kind": "present_owner",
+        "subtitle": "Zefon Dorencatten, Weaponsmith"
+      },
+      {
+        "id": 1089,
+        "kind": "present_owner",
+        "subtitle": "Eshtân Avuzmusar, Peasant"
+      },
+      {
+        "id": 377,
+        "kind": "present_owner",
+        "subtitle": "èzum Amostmörul, Axe Lord"
+      },
+      {
+        "id": 1090,
+        "kind": "present_owner",
+        "subtitle": "Amost Zastathur, Glassmaker"
+      },
+      {
+        "id": 379,
+        "kind": "present_owner",
+        "subtitle": "Såkzul Nåzomkivish, militia commander"
+      },
+      {
+        "id": 1091,
+        "kind": "present_owner",
+        "subtitle": "Etur Avuzarkim, Trapper"
+      },
+      {
+        "id": 381,
+        "kind": "present_owner",
+        "subtitle": "Rigòth Shinatír, sacred call"
+      },
+      {
+        "id": 1092,
+        "kind": "present_owner",
+        "subtitle": "Stukos Kolsikel, Furnace Operator"
+      },
+      {
+        "id": 383,
+        "kind": "present_owner",
+        "subtitle": "Dodók Kilruderush, Swordmaster"
+      },
+      {
+        "id": 1093,
+        "kind": "present_owner",
+        "subtitle": "Dakost Rirasatîs, Peasant"
+      },
+      {
+        "id": 385,
+        "kind": "present_owner",
+        "subtitle": "Ineth Zuglariseth, Scholar"
+      },
+      {
+        "id": 1094,
+        "kind": "present_owner",
+        "subtitle": "Minkot Cattensákrith, Engraver"
+      },
+      {
+        "id": 387,
+        "kind": "present_owner",
+        "subtitle": "Zulur Putikamca, Human Poet"
+      },
+      {
+        "id": 1095,
+        "kind": "present_owner",
+        "subtitle": "Atír Estilshem, Lye Maker"
+      },
+      {
+        "id": 389,
+        "kind": "present_owner",
+        "subtitle": "Zuntîr Vutokrodim, Brewer"
+      },
+      {
+        "id": 1096,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 372,
+        "kind": "present_owner",
+        "subtitle": "Kûbuk ïngizkor, mayor"
+      },
+      {
+        "id": 1228,
+        "kind": "present_owner",
+        "subtitle": "Irene Ethithièÿida, Elf Poet"
+      },
+      {
+        "id": 420,
+        "kind": "present_owner",
+        "subtitle": "Ducim Mozibfikod, Farmer"
+      },
+      {
+        "id": 1229,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 371,
+        "kind": "present_owner",
+        "subtitle": "èrith Mamotavuz, Surgeon"
+      },
+      {
+        "id": 1230,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 1231,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 597,
+        "kind": "present_owner",
+        "subtitle": "Zutthan Kadôlnimak, Spearmaster"
+      },
+      {
+        "id": 1232,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 599,
+        "kind": "present_owner",
+        "subtitle": "Lòr Eshtânmìshos, Scribe"
+      },
+      {
+        "id": 1233,
+        "kind": "present_owner",
+        "subtitle": "Uram Felori, lord consort"
+      },
+      {
+        "id": 601,
+        "kind": "present_owner",
+        "subtitle": "Onget Solonmetul, Planter"
+      },
+      {
+        "id": 1234,
+        "kind": "present_owner",
+        "subtitle": "Avuz Rimtarnóton, Miller"
+      },
+      {
+        "id": 603,
+        "kind": "present_owner",
+        "subtitle": "Melbil Cattenlushôn, Planter"
+      },
+      {
+        "id": 1235,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 605,
+        "kind": "present_owner",
+        "subtitle": "Urdim Uzolvuthil, Siege Operator"
+      },
+      {
+        "id": 1236,
+        "kind": "present_owner",
+        "subtitle": "Kel Onolmelbil, Carpenter"
+      },
+      {
+        "id": 607,
+        "kind": "present_owner",
+        "subtitle": "Kogan Atîsteling, Miner"
+      },
+      {
+        "id": 1237,
+        "kind": "present_owner",
+        "subtitle": "Sibrek Enshalaban, Bowyer"
+      },
+      {
+        "id": 609,
+        "kind": "present_owner",
+        "subtitle": "Stukos Vudtharkûbuk, Performer"
+      },
+      {
+        "id": 1238,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 611,
+        "kind": "present_owner",
+        "subtitle": "Rakust ádolbomrek, Weaponsmith"
+      },
+      {
+        "id": 1239,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 613,
+        "kind": "present_owner",
+        "subtitle": "Urvad Kadôlbisek, Diagnostician"
+      },
+      {
+        "id": 1240,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 615,
+        "kind": "present_owner",
+        "subtitle": "Urvad Kosoththosbut, Woodworker"
+      },
+      {
+        "id": 1241,
+        "kind": "present_owner",
+        "subtitle": "Aban Atulilral, Lye Maker"
+      },
+      {
+        "id": 872,
+        "kind": "present_owner",
+        "subtitle": "Kûbuk Letmosral, Bowyer"
+      },
+      {
+        "id": 1242,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 874,
+        "kind": "present_owner",
+        "subtitle": "Kogan Riththocit, Carpenter"
+      },
+      {
+        "id": 1243,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 876,
+        "kind": "present_owner",
+        "subtitle": "Kadôl Nîlesmûthkat, Hammer Lord"
+      },
+      {
+        "id": 1244,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 878,
+        "kind": "present_owner",
+        "subtitle": "Stodir Olonadek, Woodworker"
+      },
+      {
+        "id": 1245,
+        "kind": "present_owner",
+        "subtitle": "Leto Jamaslonel, Human Bard"
+      },
+      {
+        "id": 880,
+        "kind": "present_owner",
+        "subtitle": "Ingish Imikfikod, Siege Engineer"
+      },
+      {
+        "id": 1246,
+        "kind": "present_owner",
+        "subtitle": "Vabôk Kìrarmeng, Animal Caretaker"
+      },
+      {
+        "id": 882,
+        "kind": "present_owner",
+        "subtitle": "Moldath Råshdomas, Furnace Operator"
+      },
+      {
+        "id": 1247,
+        "kind": "present_owner",
+        "subtitle": "Catten Nishkälán, Gem Setter"
+      },
+      {
+        "id": 884,
+        "kind": "present_owner",
+        "subtitle": "Rigòth Ralnóton, Stonecrafter"
+      },
+      {
+        "id": 1248,
+        "kind": "present_owner",
+        "subtitle": "Doren Mörulkûbuk, Carpenter"
+      },
+      {
+        "id": 886,
+        "kind": "present_owner",
+        "subtitle": "Kûbuk ïngizkosak, Fish Dissector"
+      },
+      {
+        "id": 1249,
+        "kind": "present_owner",
+        "subtitle": "Kumil Dorenothlest, Animal Trainer"
+      },
+      {
+        "id": 888,
+        "kind": "present_owner",
+        "subtitle": "Stodir ònulgúr, Farmer"
+      },
+      {
+        "id": 1250,
+        "kind": "present_owner",
+        "subtitle": "Lam Gukisubi, Human Poet"
+      },
+      {
+        "id": 890,
+        "kind": "present_owner",
+        "subtitle": "Rith Suluslogem, chief medical dwarf"
+      },
+      {
+        "id": 1251,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 27,
+        "kind": "present_owner",
+        "subtitle": "Olon Arzesnil, Miner"
+      },
+      {
+        "id": 1252,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 26,
+        "kind": "present_owner",
+        "subtitle": "Feb Anambomrek, Axe Lord"
+      },
+      {
+        "id": 1253,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 374,
+        "kind": "present_owner",
+        "subtitle": "Ustuth óssibrek, Planter"
+      },
+      {
+        "id": 1254,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 378,
+        "kind": "present_owner",
+        "subtitle": "Kikrost Thosbutuzol, militia captain"
+      },
+      {
+        "id": 1312,
+        "kind": "present_owner",
+        "subtitle": "Bëmbul Mozibsolon, Potash Maker"
+      },
+      {
+        "id": 382,
+        "kind": "present_owner",
+        "subtitle": "Uzol Bardumtekkud, Miner"
+      },
+      {
+        "id": 1313,
+        "kind": "present_owner",
+        "subtitle": "Goden Borushadil, Engraver"
+      },
+      {
+        "id": 386,
+        "kind": "present_owner",
+        "subtitle": "Logem Imeshdumat, Hunter"
+      },
+      {
+        "id": 1314,
+        "kind": "present_owner",
+        "subtitle": "Obok Ostarkeskal, Peasant"
+      },
+      {
+        "id": 390,
+        "kind": "present_owner",
+        "subtitle": "Adil Lolorgemsit, Dwarven Child"
+      },
+      {
+        "id": 1315,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 421,
+        "kind": "present_owner",
+        "subtitle": "Kel Iklistendok, Soap Maker"
+      },
+      {
+        "id": 1316,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 596,
+        "kind": "present_owner",
+        "subtitle": "Ilral Nikottun, Presser"
+      },
+      {
+        "id": 1317,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 600,
+        "kind": "present_owner",
+        "subtitle": "Thob âtastfikod, Gem Cutter"
+      },
+      {
+        "id": 1318,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 604,
+        "kind": "present_owner",
+        "subtitle": "Lòr Astthum, Bone Doctor"
+      },
+      {
+        "id": 1319,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 608,
+        "kind": "present_owner",
+        "subtitle": "îton Unibmamot, Dwarven Child"
+      },
+      {
+        "id": 1320,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 612,
+        "kind": "present_owner",
+        "subtitle": "Äs Mörulsebïr, Fisherdwarf"
+      },
+      {
+        "id": 1321,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 616,
+        "kind": "present_owner",
+        "subtitle": "Meng Ducimkezat, Farmer"
+      },
+      {
+        "id": 1323,
+        "kind": "present_owner",
+        "subtitle": "Meng Okilnomal, Bard"
+      },
+      {
+        "id": 875,
+        "kind": "present_owner",
+        "subtitle": "Ustuth Avédkeskal, Glassmaker"
+      },
+      {
+        "id": 1324,
+        "kind": "present_owner",
+        "subtitle": "Uvash Mengteshkad, Planter"
+      },
+      {
+        "id": 879,
+        "kind": "present_owner",
+        "subtitle": "Sazir Sosadid, Mason"
+      },
+      {
+        "id": 1325,
+        "kind": "present_owner",
+        "subtitle": "Rûxu Kodkasprax, Porcupine Man Bard"
+      },
+      {
+        "id": 883,
+        "kind": "present_owner",
+        "subtitle": "Alåth Nåzomavuz, Furnace Operator"
+      },
+      {
+        "id": 1326,
+        "kind": "present_owner",
+        "subtitle": "Eral ònulozkak, Potash Maker"
+      },
+      {
+        "id": 29,
+        "kind": "present_owner",
+        "subtitle": "Unib Rakustazin, king"
+      },
+      {
+        "id": 1327,
+        "kind": "present_owner",
+        "subtitle": "Moldath Etostingish, Gem Cutter"
+      },
+      {
+        "id": 28,
+        "kind": "present_owner",
+        "subtitle": "Doren Thosbutalåth, Dwarven Child"
+      },
+      {
+        "id": 1328,
+        "kind": "present_owner",
+        "subtitle": "Såkzul Rigòthost, Woodworker"
+      },
+      {
+        "id": 25,
+        "kind": "present_owner",
+        "subtitle": "Zon Mistêmrovod, Carpenter"
+      },
+      {
+        "id": 1329,
+        "kind": "present_owner",
+        "subtitle": "Uvash Kolnikuz, Fish Dissector"
+      },
+      {
+        "id": 380,
+        "kind": "present_owner",
+        "subtitle": "Atîs Kolzuntîr, Dwarven Child"
+      },
+      {
+        "id": 24,
+        "kind": "present_owner",
+        "subtitle": "Asën Govososlan, Spearmaster"
+      },
+      {
+        "id": 388,
+        "kind": "present_owner",
+        "subtitle": "Doren Matkadôl, Hammer Lord"
+      },
+      {
+        "id": 1451,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 370,
+        "kind": "present_owner",
+        "subtitle": "Asmel Akrulokol, Miner"
+      },
+      {
+        "id": 1452,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 602,
+        "kind": "present_owner",
+        "subtitle": "Zas Libashsigun, Planter"
+      },
+      {
+        "id": 1453,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 610,
+        "kind": "present_owner",
+        "subtitle": "Vucar Domasdoren, Diagnostician"
+      },
+      {
+        "id": 1454,
+        "kind": "present_owner",
+        "subtitle": "Kosoth Róthmörul, Engineer"
+      },
+      {
+        "id": 873,
+        "kind": "present_owner",
+        "subtitle": "Erush Kàlrethral, Milker"
+      },
+      {
+        "id": 1455,
+        "kind": "present_owner",
+        "subtitle": "Datan Datansazir, Siege Engineer"
+      },
+      {
+        "id": 881,
+        "kind": "present_owner",
+        "subtitle": "Vucar ântobul, Siege Operator"
+      },
+      {
+        "id": 1456,
+        "kind": "present_owner",
+        "subtitle": "Sazir Lolorurdim, Tanner"
+      },
+      {
+        "id": 889,
+        "kind": "present_owner",
+        "subtitle": "Rakust Kuletdatan, Fish Cleaner"
+      },
+      {
+        "id": 1457,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 376,
+        "kind": "present_owner",
+        "subtitle": "Fikod âbirlokum, Glazer"
+      },
+      {
+        "id": 1458,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 419,
+        "kind": "present_owner",
+        "subtitle": "Stodir Tangakurvad, bookkeeper"
+      },
+      {
+        "id": 1459,
+        "kind": "none",
+        "subtitle": ""
+      },
+      {
+        "id": 606,
+        "kind": "present_owner",
+        "subtitle": "Ingish Kêshshakubbul, Peasant"
+      },
+      {
+        "id": 1460,
+        "kind": "present_owner",
+        "subtitle": "Oddom Angenkûbuk, Diagnostician"
+      },
+      {
+        "id": 877,
+        "kind": "present_owner",
+        "subtitle": "Litast Urrïthzon, Axe Lord"
+      },
+      {
+        "id": 1461,
+        "kind": "present_owner",
+        "subtitle": "Goden Idenlaltur, Milker"
+      },
+      {
+        "id": 923,
+        "kind": "present_owner",
+        "subtitle": "Kûbuk ïngizkor, mayor"
+      },
+      {
+        "id": 598,
+        "kind": "present_owner",
+        "subtitle": "Rovod Gusiletes, Leatherworker"
+      },
+      {
+        "id": 614,
+        "kind": "present_owner",
+        "subtitle": "Id Tunthol, Planter"
+      },
+      {
+        "id": 885,
+        "kind": "present_owner",
+        "subtitle": "Cog Zondurad, Dyer"
+      },
+      {
+        "id": 384,
+        "kind": "present_owner",
+        "subtitle": "Sigun Ushatilrom, Bookbinder"
+      },
+      {
+        "id": 1462,
+        "kind": "present_owner",
+        "subtitle": "Ast Zonrithlut, Weaver"
+      },
+      {
+        "id": 1463,
+        "kind": "present_owner",
+        "subtitle": "Edëm Datannish, Fish Cleaner"
+      },
+      {
+        "id": 1464,
+        "kind": "present_owner",
+        "subtitle": "Kivish Åmmosus, Herbalist"
+      },
+      {
+        "id": 228,
+        "kind": "present_owner",
+        "subtitle": "Kol Asobstettad, Stoneworker"
+      }
+    ],
+    "omissions": [
+      "Absent owner fallback",
+      "Multiple squads",
+      "Missing site/location/squad references",
+      "Native caption truncation",
+      "Location-tab subtitles and remaining status fields",
+      "Colors, artwork, controls, transport and viewer"
+    ],
+    "source_save_preserved": "Owned source unchanged",
+    "owned_df_closed_unsaved": true
   }
 }

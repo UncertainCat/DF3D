@@ -36,6 +36,23 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
 
+## Tasks native discovery
+
+The protected native Tasks reference is `fixtures/production/native_tasks.json`.
+Capture111555 on2026-11-10 opens D_JOBLIST at1200x800, observes41 ordered job
+rows, then closes with LEAVESCREEN. The screenshot was inspected. Tasks uses
+info.jobs.cri_job and manual drawing; capture_widgets confirms it is not an
+exposed widget container. The Residents widget-query provider must not be
+assumed to supply this list. Activity, worker portrait/name/profession and
+Recenter/View controls are visible; navigation effects are not yet accepted.
+
+This is discovery evidence only. Runtime must independently invoke audited
+native semantics with owned inputs, never read this native menu vector. The
+list builder, eligibility/order, exact captions and action ownership remain
+unresolved. No DF3D Tasks route is implemented or exposed. Source preserved;
+DF3600 exits unsaved without advancing simulation, capped30FPS. GPU54C/3%
+was sampled, not a measured peak; the run starts no graphical Godot viewer.
+
 ## Stocks native discovery
 
 Stocks list icons now use every available item-sheet selector instead of a

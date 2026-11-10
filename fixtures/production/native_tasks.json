@@ -1,0 +1,364 @@
+{
+  "build": "DF 53.16 Steam build 24557528",
+  "capture": "stockpile-storage-native-input-20261110-111555",
+  "entry_key": "D_JOBLIST",
+  "focus": "dwarfmode/Info/JOBS",
+  "rows": [
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382772,
+      "job_sort_name": "eat",
+      "sort_name": "porcupine man bard",
+      "unit_id": 2346
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382783,
+      "job_sort_name": "eat",
+      "sort_name": "brewer",
+      "unit_id": 6274
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382742,
+      "job_sort_name": "drink",
+      "sort_name": "potash maker",
+      "unit_id": 7272
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382749,
+      "job_sort_name": "drink",
+      "sort_name": "weaver",
+      "unit_id": 7279
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382750,
+      "job_sort_name": "drink",
+      "sort_name": "planter",
+      "unit_id": 6277
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382751,
+      "job_sort_name": "drink",
+      "sort_name": "peasant",
+      "unit_id": 6974
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382758,
+      "job_sort_name": "drink",
+      "sort_name": "milker",
+      "unit_id": 7276
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382759,
+      "job_sort_name": "drink",
+      "sort_name": "carpenter",
+      "unit_id": 5574
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382760,
+      "job_sort_name": "drink",
+      "sort_name": "peasant",
+      "unit_id": 7280
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382762,
+      "job_sort_name": "drink",
+      "sort_name": "stonecrafter",
+      "unit_id": 6831
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382765,
+      "job_sort_name": "drink",
+      "sort_name": "dwarven child",
+      "unit_id": 7283
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382768,
+      "job_sort_name": "drink",
+      "sort_name": "mason",
+      "unit_id": 6972
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382769,
+      "job_sort_name": "drink",
+      "sort_name": "diagnostician",
+      "unit_id": 7282
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382773,
+      "job_sort_name": "drink",
+      "sort_name": "performer",
+      "unit_id": 6136
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382777,
+      "job_sort_name": "drink",
+      "sort_name": "dwarven child",
+      "unit_id": 988
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382780,
+      "job_sort_name": "drink",
+      "sort_name": "herbalist",
+      "unit_id": 7284
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382786,
+      "job_sort_name": "drink",
+      "sort_name": "fish dissector",
+      "unit_id": 7267
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382789,
+      "job_sort_name": "drink",
+      "sort_name": "engraver",
+      "unit_id": 7275
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382792,
+      "job_sort_name": "drink",
+      "sort_name": "miller",
+      "unit_id": 7207
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382679,
+      "job_sort_name": "sleep",
+      "sort_name": "milker",
+      "unit_id": 6685
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382713,
+      "job_sort_name": "sleep",
+      "sort_name": "gem cutter",
+      "unit_id": 6534
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382720,
+      "job_sort_name": "sleep",
+      "sort_name": "lord consort",
+      "unit_id": 4237
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382739,
+      "job_sort_name": "sleep",
+      "sort_name": "farmer",
+      "unit_id": 6824
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382748,
+      "job_sort_name": "sleep",
+      "sort_name": "axe lord",
+      "unit_id": 5575
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382757,
+      "job_sort_name": "sleep",
+      "sort_name": "weaponsmith",
+      "unit_id": 6683
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382778,
+      "job_sort_name": "sleep",
+      "sort_name": "dyer",
+      "unit_id": 6681
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382785,
+      "job_sort_name": "sleep",
+      "sort_name": "dwarven child",
+      "unit_id": 7041
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382763,
+      "job_sort_name": "store item in stockpile",
+      "sort_name": "miner",
+      "unit_id": 5697
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382774,
+      "job_sort_name": "store item in stockpile",
+      "sort_name": "sacred call",
+      "unit_id": 6134
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382788,
+      "job_sort_name": "store item in stockpile",
+      "sort_name": "farmer",
+      "unit_id": 5985
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 381348,
+      "job_sort_name": "store item in location",
+      "sort_name": "",
+      "unit_id": -1
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382740,
+      "job_sort_name": "store item in bin",
+      "sort_name": "baron consort",
+      "unit_id": 2747
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382775,
+      "job_sort_name": "store item in bin",
+      "sort_name": "carpenter",
+      "unit_id": 6807
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382779,
+      "job_sort_name": "store item in bin",
+      "sort_name": "woodworker",
+      "unit_id": 7268
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382781,
+      "job_sort_name": "store item in bin",
+      "sort_name": "potash maker",
+      "unit_id": 7266
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382791,
+      "job_sort_name": "store item in bin",
+      "sort_name": "human bard",
+      "unit_id": 2345
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382793,
+      "job_sort_name": "store item in bin",
+      "sort_name": "engineer",
+      "unit_id": 7281
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382776,
+      "job_sort_name": "pickup equipment",
+      "sort_name": "cook",
+      "unit_id": 7344
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 382782,
+      "job_sort_name": "pickup equipment",
+      "sort_name": "peasant",
+      "unit_id": 7345
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 68196,
+      "job_sort_name": "construct building",
+      "sort_name": "",
+      "unit_id": -1
+    },
+    {
+      "flags": 0,
+      "item_id": -1,
+      "job_id": 372039,
+      "job_sort_name": "construct building",
+      "sort_name": "",
+      "unit_id": -1
+    }
+  ],
+  "scroll": 0,
+  "reference": {
+    "window": [
+      1200,
+      800
+    ],
+    "visible_controls": [
+      "Recenter",
+      "View creature"
+    ],
+    "layout": "Activity at left, worker portrait and name/profession, then navigation controls. Tasks is not an exposed widget container.",
+    "capture_inspected": true,
+    "closed_by": "LEAVESCREEN",
+    "save": "Owned source unchanged; owned DF3600 exited unsaved; frame counter unchanged.",
+    "gpu": "30FPS native cap;54C/3% sample, not peak.",
+    "native_only": true
+  },
+  "hashes": {
+    "tasks-native.json": "9499f3bc0680a525b471dcea53b8799dc12e990900c7f4c27c0b2677903393ba",
+    "tasks-widgets.json": "f21d205cd1989dfab751e0ba5cae481bd369769ae1d534c22efda2f1c0ac7944",
+    "tasks-root.png": "00d9840cbc5f18e3f4d88be1b109d94f7232c0fcde1f8db869924c30882ea381"
+  },
+  "unresolved": [
+    "Native list construction/filtering/ordering entry point and owned scratch contract.",
+    "Exact caption/portrait providers and navigation behavior, including unassigned jobs.",
+    "Scroll, resize, hover, semantic actions and lifecycle.",
+    "No DF3D Tasks provider, transport, controller or public route is implemented."
+  ]
+}

@@ -9,6 +9,7 @@ namespace df3d_godot::management {
 // Callers own connection availability and request sequencing.
 void writeConstruction(godot::Dictionary& result, const wm::ManagementState& s);
 void writeArea(godot::Dictionary& result, const wm::AreaState& s);
+godot::Dictionary itemAppearanceDictionary(const wm::ItemInspectionAppearance& appearance);
 godot::Dictionary contentsDictionary(const wm::ItemContainerContentsFacts& contents);
 void writeProduction(godot::Dictionary& result, const wm::ProductionState& s);
 godot::Dictionary writeArtState(const wm::WorkOrderArtState& value);

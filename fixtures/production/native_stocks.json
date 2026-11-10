@@ -10004,5 +10004,567 @@
         "20261110-104458": "Semantic material scan confirmed no natural TAN_MAT piece; no compositor acceptance."
       }
     }
+  },
+  "extended_stocks_art_reference": {
+    "build": "DF 53.16 Steam build 24557528",
+    "capture": "stockpile-storage-native-input-20261110-105648",
+    "purpose": "Stocks uses the same complete owned appearance dictionary as inspection; remove the obsolete presentation type whitelist.",
+    "comparisons": [
+      {
+        "kind": 23,
+        "rows": [
+          {
+            "id": 7645,
+            "row": 1,
+            "rgb_different_pixels": 579
+          },
+          {
+            "id": 7637,
+            "row": 2,
+            "rgb_different_pixels": 591
+          },
+          {
+            "id": 7636,
+            "row": 3,
+            "rgb_different_pixels": 630
+          },
+          {
+            "id": 7634,
+            "row": 4,
+            "rgb_different_pixels": 597
+          },
+          {
+            "id": 6812,
+            "row": 5,
+            "rgb_different_pixels": 644
+          },
+          {
+            "id": 6811,
+            "row": 6,
+            "rgb_different_pixels": 586
+          },
+          {
+            "id": 6810,
+            "row": 7,
+            "rgb_different_pixels": 598
+          },
+          {
+            "id": 6809,
+            "row": 8,
+            "rgb_different_pixels": 586
+          },
+          {
+            "id": 6343,
+            "row": 9,
+            "rgb_different_pixels": 576
+          },
+          {
+            "id": 46883,
+            "row": 10,
+            "rgb_different_pixels": 589
+          },
+          {
+            "id": 47418,
+            "row": 11,
+            "rgb_different_pixels": 595
+          },
+          {
+            "id": 5170,
+            "row": 12,
+            "rgb_different_pixels": 590
+          },
+          {
+            "id": 47618,
+            "row": 13,
+            "rgb_different_pixels": 586
+          },
+          {
+            "id": 7820,
+            "row": 14,
+            "rgb_different_pixels": 523
+          },
+          {
+            "id": 8518,
+            "row": 15,
+            "rgb_different_pixels": 642
+          },
+          {
+            "id": 47685,
+            "row": 16,
+            "rgb_different_pixels": 0
+          }
+        ],
+        "unsupported_corpse_recipe_ids": [
+          7820
+        ]
+      },
+      {
+        "kind": 46,
+        "rows": [
+          {
+            "id": 23383,
+            "row": 1,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 16539,
+            "row": 2,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 36466,
+            "row": 3,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 23337,
+            "row": 4,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 23338,
+            "row": 5,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 16572,
+            "row": 6,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 23339,
+            "row": 7,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 16573,
+            "row": 8,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 16603,
+            "row": 9,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 16615,
+            "row": 10,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 34694,
+            "row": 11,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 23351,
+            "row": 12,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 27844,
+            "row": 13,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 27845,
+            "row": 14,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 27848,
+            "row": 15,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 27852,
+            "row": 16,
+            "rgb_different_pixels": 0
+          }
+        ],
+        "unsupported_corpse_recipe_ids": []
+      },
+      {
+        "kind": 55,
+        "rows": [
+          {
+            "id": 19630,
+            "row": 1,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 38170,
+            "row": 3,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 37966,
+            "row": 5,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 28235,
+            "row": 6,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 38185,
+            "row": 7,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 28236,
+            "row": 9,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 19683,
+            "row": 10,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 28344,
+            "row": 11,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 28233,
+            "row": 13,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 19593,
+            "row": 15,
+            "rgb_different_pixels": 0
+          }
+        ],
+        "unsupported_corpse_recipe_ids": []
+      },
+      {
+        "kind": 69,
+        "rows": [
+          {
+            "id": 42892,
+            "row": 1,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 43098,
+            "row": 2,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 47490,
+            "row": 4,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 47593,
+            "row": 5,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 47610,
+            "row": 6,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 45794,
+            "row": 8,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 43726,
+            "row": 9,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 43060,
+            "row": 10,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 47331,
+            "row": 11,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 47406,
+            "row": 12,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 45047,
+            "row": 13,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 47565,
+            "row": 14,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 42035,
+            "row": 15,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 45202,
+            "row": 16,
+            "rgb_different_pixels": 0
+          }
+        ],
+        "unsupported_corpse_recipe_ids": []
+      },
+      {
+        "kind": 70,
+        "rows": [
+          {
+            "id": 7507,
+            "row": 1,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 12893,
+            "row": 2,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 5952,
+            "row": 4,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 5865,
+            "row": 5,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 12863,
+            "row": 7,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 7481,
+            "row": 8,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 19839,
+            "row": 9,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 19774,
+            "row": 10,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 28452,
+            "row": 11,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 7451,
+            "row": 13,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 19849,
+            "row": 15,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 43638,
+            "row": 16,
+            "rgb_different_pixels": 0
+          }
+        ],
+        "unsupported_corpse_recipe_ids": []
+      },
+      {
+        "kind": 72,
+        "rows": [
+          {
+            "id": 46576,
+            "row": 1,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 42668,
+            "row": 3,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 42477,
+            "row": 5,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 42103,
+            "row": 7,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 42298,
+            "row": 9,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 42168,
+            "row": 11,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 42655,
+            "row": 13,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 48455,
+            "row": 14,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 42203,
+            "row": 16,
+            "rgb_different_pixels": 0
+          }
+        ],
+        "unsupported_corpse_recipe_ids": []
+      },
+      {
+        "kind": 74,
+        "rows": [
+          {
+            "id": 48520,
+            "row": 1,
+            "rgb_different_pixels": 0
+          }
+        ],
+        "unsupported_corpse_recipe_ids": []
+      },
+      {
+        "kind": 87,
+        "rows": [
+          {
+            "id": 11647,
+            "row": 1,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 25044,
+            "row": 3,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 24965,
+            "row": 4,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 8699,
+            "row": 6,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 35079,
+            "row": 8,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 39170,
+            "row": 9,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 35103,
+            "row": 10,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 31722,
+            "row": 11,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 35048,
+            "row": 12,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 39252,
+            "row": 13,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 31627,
+            "row": 14,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 17847,
+            "row": 15,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 31686,
+            "row": 16,
+            "rgb_different_pixels": 0
+          }
+        ],
+        "unsupported_corpse_recipe_ids": []
+      }
+    ],
+    "exact_families": [
+      46,
+      55,
+      69,
+      70,
+      72,
+      74,
+      87
+    ],
+    "exact_item_icon_count": 75,
+    "icon_crop_rule": "x362..394, y114+36*row..146+36*row; only complete visible 32x32 item icons.",
+    "native_and_viewer_icon_strips_inspected": true,
+    "corpse_status": "Not accepted: 8912 differing RGB pixels across 16 visible rows. Native skeletons use bone-pile artwork; existing corpse provider returns body layers. Item7820 has no corpse_selector recipe; absence does not establish why.",
+    "coin_fixture": {
+      "back": {
+        "id": 4,
+        "subid": 124
+      },
+      "batch_index": 0,
+      "cold_images_initialized": true,
+      "entity": 245,
+      "front": {
+        "id": 4,
+        "subid": 123
+      },
+      "item_id": 48520
+    },
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": 40184,
+    "native_and_viewer_fps_cap": 30,
+    "gpu_samples_c": [
+      58
+    ],
+    "gpu_limit": "Sample is not a measured peak.",
+    "diagnostics": "passed_with_known_issues: documented thread/finalize/shutdown notices only. Art comparison is separately partial, not full Stocks acceptance.",
+    "limits": [
+      "Corpse category remains visually incorrect despite repaired transport.",
+      "Portrait/cage-occupant dictionary fields now share the existing converter; they are not newly visually accepted by this list run.",
+      "Other families, full resize/lifecycle and public exposure remain outstanding."
+    ],
+    "excluded_attempts": {
+      "20261110-105124": "Caught dropped corpse recipes and empty coin fixture.",
+      "20261110-105525": "Shared converter repaired; rejected unresolved corpse recipe before native comparison."
+    },
+    "artifact_sha256": {
+      "extended-icon-comparison.json": "6c7e8ed238617edc7302dc743f75425fd5e047bbf2cd9bcfce896237e1b95f38",
+      "stocks-native.json": "c6f1f1cab00cd34fbc38982fa7909f2ec57f7b738750ff2a8ec6a0c864e25de8",
+      "stocks-view-art-23.json": "612354ca3c17928acf7befeb54d487eb2e56d96260755ce26700f0a149ba1ed8",
+      "stocks-view-art-87.json": "3e21ca51440c4e0e23387dbc38bfba3d72bc79e3af79defd48db5add7d4a803e"
+    }
   }
 }

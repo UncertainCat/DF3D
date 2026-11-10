@@ -80,8 +80,9 @@ func refresh() -> void:
 		if not entry.has("id"):continue
 		var row: Dictionary=state.items.get(entry.id,{})
 		# Native Stocks3a2a92 calls the shared item selector c7cbc0.
-		# Reuse owned sheet facts for these families; ammunition stays diagonal.
-		if row.get("type") not in [0,2,4,5,6,7,10,11,12,18,22,24,25,26,27,28,29,30,32,39,45,60] or not row.has("appearance"):continue
+		# Every family uses the shared owned selector; ammunition stays diagonal.
+		# Unknown artwork remains absent in that provider, not in a stale UI list.
+		if not row.has("appearance"):continue
 		var appearance: Dictionary=row.appearance.duplicate(true)
 		# Full native flags are already owned Stocks facts; artifact is distinct.
 		if row.type==24:appearance["artifact_mood"]=bool(row.flags&0x8000000)

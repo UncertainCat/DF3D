@@ -25,6 +25,7 @@ local function appearance_facts(item)
 end
 local kinds=os.getenv('DF3D_STOCKS_EQUIPMENT_ART')=='1' and {24,25,26,27,28,29,60} or {0,2,4,5,30,32}
 if os.getenv('DF3D_STOCKS_HOUSEHOLD_ART')=='1' then kinds={6,7,10,11,12,18,22,45}end
+if os.getenv('DF3D_STOCKS_EXTENDED_ART')=='1' then kinds={23,46,55,69,70,72,74,87}end
 if os.getenv('DF3D_STOCKS_DOOR_STATES')=='1' then kinds={6}end
 local function capture(name)
  local f=assert(io.open(out..'/shot.tmp','w'));f:write(name);f:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
@@ -40,6 +41,10 @@ for _,kind in ipairs(kinds)do
  gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
  assert(stocks.current_type==kind,'Stocks art category click failed')
  stocks.scroll_position_type=0;stocks.scroll_position_item=0
+ if os.getenv('DF3D_STOCKS_EXTENDED_ART')=='1' and #stocks.current_type_a_expanded>0 and not stocks.current_type_a_expanded[0] then
+  view:render(dfhack.getTickCount());g.precise_mouse_x=500;g.precise_mouse_y=130;g.mouse_x=62;g.mouse_y=10
+  gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+ end
  g.precise_mouse_x=0;g.precise_mouse_y=0;g.mouse_x=0;g.mouse_y=0
  gui.simulateInput(view,{});view:render(dfhack.getTickCount())
  local ids,facts={},{};for _,item in ipairs(stocks.current_type_i_list)do

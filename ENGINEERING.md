@@ -38,6 +38,31 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
+Stocks list icons now use every available item-sheet selector instead of a
+hardcoded family whitelist. Stocks, independent inspection, contents and carriers
+share itemAppearanceDictionary: corpse recipes, portrait/cage-occupant recipes
+and slab engraving no longer disappear in Stocks' separate converter. Unknown
+artwork remains unresolved by the shared provider; public Stocks stays gated.
+
+Core19, extension, Stocks state and item-sheet state pass (`stocks-shared-appearance`).
+Protected105648 on2026-11-10 verifies transport and native list captures for
+body parts46, tanned skins55, drinks69, powders70, meals72, coins74 and slabs87.
+All75 complete visible32x32 item icons match native RGB exactly. Native/viewer
+icon strips were inspected. Coins use the existing temporary copper fixture,
+with native descriptions initialized before this list-art check. Source preserved;
+DF40184 exits unsaved, native/viewer capped30FPS; GPU58C sample is not a peak.
+Only documented thread/finalize/shutdown diagnostics occur. Evidence and bounds:
+`native_stocks.json.extended_stocks_art_reference`.
+
+The same run exposes unfinished whole-corpse artwork:16 visible rows differ by
+8912 RGB pixels, predominantly native bone piles versus the provider's body
+layers. Item7820 lacks a corpse_selector recipe; its cause is not yet established
+by this capture. Do not count this category as accepted or hide the gap behind
+transport success. Native6d6738..6d6b13 contains the body/tissue override before
+layer selection and must be exposed with owned inputs. The seven exact families
+do not establish full Stocks, other item families or complete resize/lifecycle.
+
+
 Management173 appends an optional independent corpse-selector recipe to item
 inspection appearance. Rebuild bridge and viewer together;172 peers use a
 separate channel. Only CORPSE23/CORPSEPIECE46 may carry this recipe, using the

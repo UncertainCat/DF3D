@@ -414,6 +414,9 @@ if os.getenv('DF3D_STOCKS_COIN_FIXTURE')=='1' then
   created=dfhack.items.createItem(worker,df.item_type.COIN,-1,material.type,material.index)
   assert(#created>0,'Native coin creation failed')
   for _,item in ipairs(created)do item.coin_batch=index end
+  if os.getenv('DF3D_STOCKS_ART_RENDER')=='1' then
+   for _,item in ipairs(created)do probe('item-inspect-probe',tostring(item.id))end
+  end
   run()
   assert(batch.image_front.id>=0 and batch.image_back.id>=0,'Coin descriptions did not initialize both images')
   local f=assert(io.open(out..'/stocks-coin-fixture.json','w'))

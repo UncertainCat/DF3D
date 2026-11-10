@@ -184,6 +184,22 @@ loaded/operator states and button effects remain unaccepted. Owned DF14392
 closes unsaved, source preserved,30FPS, GPU40C/0% sampled. MSVC/core checks pass;
 `native_places.json.siege_reference` scopes evidence. Artwork/viewer remain pending.
 
+Places siege actions are staged in `places_action_native.h`. Native feed branches
+`39a2d0`, `39a554` and `39aad5` directly assign the action; no separate setter
+exists. The adapter uses independently collected engine IDs and copies these
+pinned branches. Actions0/1 cancel firing jobs through native `a67820`, scanning
+backwards; loading jobs remain. BoltThrower cancels type247, other engines137/138.
+Actions2/3/4 only change the action. The caller must supply safe-point lifecycle
+admission and receipt deduplication; Unknown must never be replayed. The diagnostic
+command is not a public transport route.
+
+Protected `stockpile-storage-native-input-20261110-145757` compares all five native
+buttons against the adapter for Catapult, Ballista, BoltThrower and the aggregate
+row (20 cases). Action values and retained construction-job identities match,
+and native menu storage remains unchanged. The paused disposable session closes
+unsaved and preserves the source save. Firing-job cancellation and retained
+loading-job effects are not yet live accepted; neither is viewer integration.
+
 ## Management 174 Tasks contract
 
 Management174 uses `Local\df3d_management_v174`;173 peers cannot attach. There is

@@ -116,6 +116,7 @@
 #include "residents_activity_native.h"
 #include "tasks_native.h"
 #include "places_native.h"
+#include "places_action_native.h"
 #include "tasks_action_native.h"
 #include "residents_activity_description_native.h"
 #include "residents_query_native.h"
@@ -2498,6 +2499,16 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(values[3]!=0 && values[3]!=1)return CR_WRONG_USAGE;
           const auto result=df3d_tasks::apply(action,values[0],values[1],values[2],values[3]!=0);
           out.print("{}\n",static_cast<int>(result));return CR_OK;
+        }
+        if(parameters[0]=="places-siege-action-probe") {
+          if(parameters.size()!=3)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          int32_t values[2];
+          for(size_t i=0;i<2;++i){const auto& raw=parameters[i+1];
+            const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i]);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;}
+          const auto outcome=df3d_places::siegeAction(values[0],values[1]);
+          out.print("{}\n",int(outcome));return CR_OK;
         }
         if(parameters[0]=="places-building-rows-probe") {
           if(parameters.size()!=1)return CR_WRONG_USAGE;

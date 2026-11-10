@@ -7091,5 +7091,257 @@
       "Scroll capacity and resize",
       "Colors/artwork provider, transport and viewer"
     ]
+  },
+  "siege_action_reference": {
+    "source": "build/stockpile-storage-native-input-20261110-145757",
+    "df_version": "53.16",
+    "cases": [
+      {
+        "target": -1,
+        "action": 3,
+        "resulting_actions": [
+          3,
+          3,
+          3
+        ],
+        "jobs_unchanged": true
+      },
+      {
+        "target": -1,
+        "action": 4,
+        "resulting_actions": [
+          4,
+          4,
+          4
+        ],
+        "jobs_unchanged": true
+      },
+      {
+        "target": -1,
+        "action": 2,
+        "resulting_actions": [
+          2,
+          2,
+          2
+        ],
+        "jobs_unchanged": true
+      },
+      {
+        "target": -1,
+        "action": 1,
+        "resulting_actions": [
+          1,
+          1,
+          1
+        ],
+        "jobs_unchanged": true
+      },
+      {
+        "target": -1,
+        "action": 0,
+        "resulting_actions": [
+          0,
+          0,
+          0
+        ],
+        "jobs_unchanged": true
+      },
+      {
+        "target": 1490,
+        "action": 3,
+        "resulting_actions": [
+          3,
+          0,
+          0
+        ],
+        "jobs_unchanged": true
+      },
+      {
+        "target": 1490,
+        "action": 4,
+        "resulting_actions": [
+          4,
+          0,
+          0
+        ],
+        "jobs_unchanged": true
+      },
+      {
+        "target": 1490,
+        "action": 2,
+        "resulting_actions": [
+          2,
+          0,
+          0
+        ],
+        "jobs_unchanged": true
+      },
+      {
+        "target": 1490,
+        "action": 1,
+        "resulting_actions": [
+          1,
+          0,
+          0
+        ],
+        "jobs_unchanged": true
+      },
+      {
+        "target": 1490,
+        "action": 0,
+        "resulting_actions": [
+          0,
+          0,
+          0
+        ],
+        "jobs_unchanged": true
+      },
+      {
+        "target": 1491,
+        "action": 3,
+        "resulting_actions": [
+          0,
+          3,
+          0
+        ],
+        "jobs_unchanged": true
+      },
+      {
+        "target": 1491,
+        "action": 4,
+        "resulting_actions": [
+          0,
+          4,
+          0
+        ],
+        "jobs_unchanged": true
+      },
+      {
+        "target": 1491,
+        "action": 2,
+        "resulting_actions": [
+          0,
+          2,
+          0
+        ],
+        "jobs_unchanged": true
+      },
+      {
+        "target": 1491,
+        "action": 1,
+        "resulting_actions": [
+          0,
+          1,
+          0
+        ],
+        "jobs_unchanged": true
+      },
+      {
+        "target": 1491,
+        "action": 0,
+        "resulting_actions": [
+          0,
+          0,
+          0
+        ],
+        "jobs_unchanged": true
+      },
+      {
+        "target": 1492,
+        "action": 3,
+        "resulting_actions": [
+          0,
+          0,
+          3
+        ],
+        "jobs_unchanged": true
+      },
+      {
+        "target": 1492,
+        "action": 4,
+        "resulting_actions": [
+          0,
+          0,
+          4
+        ],
+        "jobs_unchanged": true
+      },
+      {
+        "target": 1492,
+        "action": 2,
+        "resulting_actions": [
+          0,
+          0,
+          2
+        ],
+        "jobs_unchanged": true
+      },
+      {
+        "target": 1492,
+        "action": 1,
+        "resulting_actions": [
+          0,
+          0,
+          1
+        ],
+        "jobs_unchanged": true
+      },
+      {
+        "target": 1492,
+        "action": 0,
+        "resulting_actions": [
+          0,
+          0,
+          0
+        ],
+        "jobs_unchanged": true
+      }
+    ],
+    "menu_preserved": true,
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "native_sources": [
+      "39a2d0..39a49e aggregate inline action branch",
+      "39a554..39a66a ordinary engine branch",
+      "39aad5..39abba BoltThrower branch",
+      "a67820 simulation job cancellation"
+    ],
+    "omissions": [
+      "Firing-job cancellation and retained loading jobs",
+      "Transport epoch, deduplication and Unknown lifecycle",
+      "Viewer integration and hover"
+    ],
+    "initial_engines": [
+      {
+        "action": 0,
+        "id": 1490,
+        "jobs": [
+          {
+            "id": 382794,
+            "type": 66
+          }
+        ]
+      },
+      {
+        "action": 0,
+        "id": 1491,
+        "jobs": [
+          {
+            "id": 382795,
+            "type": 66
+          }
+        ]
+      },
+      {
+        "action": 0,
+        "id": 1492,
+        "jobs": [
+          {
+            "id": 382796,
+            "type": 66
+          }
+        ]
+      }
+    ]
   }
 }

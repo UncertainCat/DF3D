@@ -169,6 +169,32 @@ for _,caption in ipairs{'Zones','Locations','Stockpiles','Workshops','Farm plots
   info.buildings.scrolling_position[mode]=0;settle();save()
  end
 end
+if siege_fixture then
+ assert(info.buildings.mode==5,'Siege actions require native siege tab')
+ result.siege_actions={}
+ local function state()
+  local rows={};for _,f in ipairs(siege_fixture)do
+   local b=assert(df.building.find(f.id));local jobs={};for _,j in ipairs(b.jobs)do jobs[#jobs+1]={id=j.id,type=j.job_type}end
+   rows[#rows+1]={id=b.id,action=b.action,jobs=jobs}
+  end;return rows
+ end
+ local function reset()for _,f in ipairs(siege_fixture)do df.building.find(f.id).action=0 end;settle()end
+ for target=0,#siege_fixture do for button,action in ipairs{3,4,2,1,0}do
+  reset();local before=state()
+  local x=308+(button-1)*24;local y=target==0 and 190 or 238+(target-1)*36
+  g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=math.floor(x/8);g.mouse_y=math.floor(y/12)
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+  gui.simulateInput(view,'_MOUSE_L');df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1;settle()
+  local native=state();for i,row in ipairs(native)do assert(row.action==((target==0 or target==i) and action or 0),'Native siege button mapping changed')end
+  reset();local menu=menu_snapshot();local id=target==0 and -1 or siege_fixture[target].id
+  local text,rc=dfhack.run_command_silent('df3d','places-siege-action-probe',tostring(id),tostring(action))
+  assert(rc==0 and tonumber(text)==2,'Owned siege action failed: '..text)
+  assert(menu_snapshot()==menu,'Siege action borrowed native menu storage')
+  assert(json.encode(state())==json.encode(native),'Owned siege action differs from native click')
+  result.siege_actions[#result.siege_actions+1]={target=id,action=action,before=before,after=native}
+ end end
+ reset();save()
+end
 gui.simulateInput(view,'LEAVESCREEN');settle();assert(not info.open,'Places did not close')
 if secondary_fixture then
  local profile=df.building.find(secondary_fixture.building_id):getWorkshopProfile();profile.permitted_workers:resize(0)

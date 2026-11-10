@@ -97,8 +97,8 @@ active-unit figure hints and measured position lookup indices are unchanged by
 the diagnostic calls. Both pickers cancel without an appointment. Source
 preservation passes; owned DF6096 closes unsaved,30FPS, GPU59C/17% sampled.
 `native_nobles.json.owned_candidates_reference` records scope and omissions.
-MSVC rebuild passes; candidate captions/graphics, broader office cases, the
-appoint-button eligibility gate, actual appointments and typed UI remain pending.
+MSVC rebuild passes; candidate captions/graphics, broader office cases, actual
+appointments and typed UI remain pending. The overview gate is described below.
 
 Nobles overview rows now include `canAppoint`. DF duplicates its gate inline
 in feed425539..425699 and renderer42712b..42726c; no standalone predicate is
@@ -118,6 +118,29 @@ GPU61C/19% sampled. `native_nobles.json.appointment_gate_reference` scopes the
 fixture: absent living holders, succession transitions and absent appointing
 offices in other forts remain unaccepted. No viewer or appointment action is
 exposed. MSVC build and core checks pass.
+
+Nobles overview now exports native office titles, squad captions and full holder
+captions. Renderer426f06 chooses land_name or name[0], then capitalizes an owned
+string with52d650. Squad alias/name uses owned language_name witha946e0, and
+nativeede350 removes the leading article before the renderer's fixed20-byte
+ellipsis rule. Present holders use1330c30 with InventoryDescriptionContext;
+absent living holders usea94030 with an owned figure name and the native
+traveling suffix. NEW/VACANT and that suffix come from pinned executable text.
+The existing inventory formatter pins cover1330c30 and its naming helpers;
+additional capitalization/article/name helpers and title branches are pinned.
+No native menu or search scratch is borrowed. Holder clipping remains a future
+viewport responsibility, while the fixed squad caption follows native behavior.
+
+Protected172234 on2026-11-10 compares all14 native visible titles, squad subtitles
+and holder captions with cold/warm owned reads. Clipped holders compare only the
+visible prefix and ellipsis; hidden suffixes are not independently accepted.
+Menu bytes, RNG streams and measured lookup indices remain unchanged; the
+existing appointment gate and117-entry candidate comparisons also pass. Source
+preservation passes and owned DF23908 closes unsaved,30FPS, GPU59C/14% sampled.
+`native_nobles.json.caption_reference` retains evidence and exclusions: traveling
+holders, land titles and long squad truncation cases remain unaccepted. MSVC and
+core checks pass. This remains a staged native provider, not a complete Nobles
+screen.
 
 ## Places native discovery
 

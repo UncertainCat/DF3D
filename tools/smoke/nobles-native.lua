@@ -75,8 +75,27 @@ for index,row in ipairs(rows)do
  end
  assert(info.open and info.current_mode==df.info_interface_mode_type.ADMINISTRATORS,'Appointment button left overview')
 end
-local warm=probe();assert(json.encode(cold)==json.encode(rows) and json.encode(warm)==json.encode(rows),'Owned Nobles overview differs from native order/identities')
-local result={owned={cold=cold,warm=warm,menu_preserved=true,rng_preserved=true},dimensions={g.dimx,g.dimy},rows=rows,lines=lines(),scroll=menu.scroll_position_noblelist,choosing_candidate=menu.choosing_candidate,assigning_symbol=menu.assigning_symbol}
+local warm=probe()
+write('nobles-caption-observed.json',json.encode({cold=cold,warm=warm,lines=lines()}))
+local caption_reference={}
+local function cells(x,y,count)
+ local chars={};for i=0,count-1 do local ch=dfhack.screen.readTile(x+i,y).ch;chars[#chars+1]=ch>=32 and ch<=255 and string.char(ch)or' 'end
+ return table.concat(chars):gsub('%s+$','')
+end
+for index,row in ipairs(rows)do
+ local owned=warm[index];local y=14+(index-1)*3
+ local title=cells(6,y,22);local squad=cells(6,y+1,20);local holder=cells(39,y,26)
+ assert(title==dfhack.utf2df(owned.title),'Office title differs: '..index..' ['..title..'] vs ['..dfhack.utf2df(owned.title)..']')
+ assert(squad==dfhack.utf2df(owned.squad_caption),'Squad caption differs: '..index)
+ local full=dfhack.utf2df(owned.holder_caption)
+ if holder:sub(-3)=='...' then
+  assert(full:sub(1,#holder-3)==holder:sub(1,-4) and #full>#holder,'Clipped holder caption differs: '..index)
+ else assert(full==holder,'Holder caption differs: '..index)end
+ caption_reference[#caption_reference+1]={title=dfhack.df2utf(title),squad=dfhack.df2utf(squad),holder_visible=dfhack.df2utf(holder),holder_full=owned.holder_caption}
+ row.title=owned.title;row.squad_caption=owned.squad_caption;row.holder_caption=owned.holder_caption
+end
+assert(json.encode(cold)==json.encode(rows) and json.encode(warm)==json.encode(rows),'Owned Nobles overview differs from native order/identities')
+local result={caption_reference=caption_reference,owned={cold=cold,warm=warm,menu_preserved=true,rng_preserved=true},dimensions={g.dimx,g.dimy},rows=rows,lines=lines(),scroll=menu.scroll_position_noblelist,choosing_candidate=menu.choosing_candidate,assigning_symbol=menu.assigning_symbol}
 write('nobles-native.json',json.encode(result));capture('nobles-overview')
 local _,menu_address=df.sizeof(menu);result.menu_rva=menu_address-dfhack.internal.getImageBase()
 result.field_rvas={}

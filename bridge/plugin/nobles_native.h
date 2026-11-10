@@ -8,13 +8,15 @@
 #include "df/entity_position.h"
 #include "df/entity_position_assignment.h"
 #include "df/world.h"
+#include "df/squad.h"
+#include "df/language_name.h"
 #include "df/plotinfost.h"
 #include <optional>
 #include <vector>
 namespace df3d_nobles {
 struct Row {
     int32_t unitId=-1,nemesisId=-1,entityId=-1,positionId=-1,assignmentId=-1,value=0;
-    std::string positionName;
+    std::string positionName,title,squadCaption,holderCaption;
     bool canAppoint=false;
 };
 // Native feed425539..425699 and renderer42712b..42726c inline the same
@@ -50,7 +52,7 @@ inline std::optional<bool> appointmentAvailable(const df::noblelistst& row,const
 // All overview rows, parallel identity vectors and location summaries belong to
 // this private context. Never invoke the UI opener424280 or feed424330.
 inline bool ready() {
-    if(!df::global::world || !df::global::plotinfo)return false;
+    if(!df::global::world || !df::global::plotinfo || !df3d_creature::inventoryDescriptionReady())return false;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     // Bind observed RIP operands to semantic world storage, never menu aliases.
     const auto at=[base](const void* address,size_t rva){return address==base+rva;};
@@ -69,6 +71,11 @@ inline bool ready() {
     static const bool pinned=[base] {
         struct Pin {size_t rva,length;uint64_t hash;};
         constexpr Pin pins[]={
+        {0x52d650,0x2b4,UINT64_C(0x9e8023d09def7af9)},
+        {0xede350,0x31b,UINT64_C(0x1fddbdca853294d0)},
+        {0xa94030,0x6a1,UINT64_C(0xd81db68b3c9b33d2)},
+        {0x426f06,0x222,UINT64_C(0x98970e3046137975)},
+        {0x163ce54,0x62,UINT64_C(0x93f00cd61bbe39bd)},
         {0x425539,0x162,UINT64_C(0x497589726e70534e)},
         {0x42712b,0x147,UINT64_C(0x1001eb9865cf74f3)},
         {0x423df0,0x483,UINT64_C(0x76d34506cc3f6746)},
@@ -106,6 +113,45 @@ struct Context {
     Context(const Context&)=delete;
     Context& operator=(const Context&)=delete;
 };
+// Renderer426f06 supplies the office title and a fixed twenty-byte squad
+// caption. Holder captions remain full length: viewport clipping belongs to the
+// presentation. All mutating string/name/unit formatters receive owned inputs.
+inline bool captions(const df::noblelistst& source,Row& row,uint8_t* base) {
+    static_assert(offsetof(df::entity_position,name)==0x98);
+    static_assert(offsetof(df::entity_position,land_name)==0x258);
+    static_assert(offsetof(df::entity_position_assignment,squad_id)==0x28);
+    static_assert(offsetof(df::squad,name)==8);
+    static_assert(offsetof(df::squad,alias)==0x80);
+    static_assert(offsetof(df::historical_figure,name)==0x38);
+    row.title=source.ep->land_name.empty()?source.ep->name[0]:source.ep->land_name;
+    reinterpret_cast<void(*)(std::string*)>(base+0x52d650)(&row.title);
+    if(source.epp && source.epp->squad_id!=-1) {
+        if(auto* squad=df::squad::find(source.epp->squad_id)) {
+            if(!squad->alias.empty())row.squadCaption=squad->alias;
+            else {
+                auto name=squad->name;
+                reinterpret_cast<void(*)(df::language_name*,std::string*,bool,bool)>(base+0xa946e0)(&name,&row.squadCaption,true,false);
+            }
+            if(row.squadCaption.size()>=21) {
+                if(squad->alias.empty())reinterpret_cast<void(*)(std::string*)>(base+0xede350)(&row.squadCaption);
+                if(row.squadCaption.size()>=21){row.squadCaption.resize(20);row.squadCaption.replace(17,3,"...");}
+            }
+        }
+    }
+    if(source.un) {
+        if(source.un->inventory.size()>10000)return false;
+        for(auto* entry:source.un->inventory)if(!entry)return false;
+        df3d_creature::InventoryDescriptionContext owned(*source.un);
+        reinterpret_cast<void(*)(df::unit*,std::string*,bool)>(base+0x1330c30)(owned.unit(),&row.holderCaption,false);
+    } else if(source.nem && source.nem->figure && source.nem->figure->died_year==-1) {
+        auto name=source.nem->figure->name;
+        reinterpret_cast<void(*)(df::language_name*,std::string*)>(base+0xa94030)(&name,&row.holderCaption);
+        row.holderCaption.append(reinterpret_cast<const char*>(base+0x163ce58),12);
+    } else {
+        row.holderCaption.assign(reinterpret_cast<const char*>(base+(source.epp?0x163ceb0:0x163ce54)),source.epp?6:3);
+    }
+    return true;
+}
 inline std::optional<std::vector<Row>> overview() {
     if(!ready())return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
@@ -120,7 +166,9 @@ inline std::optional<std::vector<Row>> overview() {
         const auto available=appointmentAvailable(*source,owned.value.noblelist);if(!available)return std::nullopt;
         Row row;row.canAppoint=*available;row.unitId=source->un?source->un->id:-1;row.nemesisId=source->nem?source->nem->id:-1;
         row.entityId=source->enid;row.positionId=source->ep->id;row.assignmentId=source->epp?source->epp->id:-1;
-        row.value=source->value;row.positionName=source->ep->name[0];result.push_back(std::move(row));
+        row.value=source->value;row.positionName=source->ep->name[0];
+        if(!captions(*source,row,base))return std::nullopt;
+        result.push_back(std::move(row));
     }
     return result;
 }

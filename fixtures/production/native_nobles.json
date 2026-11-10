@@ -2069,5 +2069,290 @@
       "Appointment effects",
       "Rendered viewer button artwork/layout"
     ]
+  },
+  "caption_reference": {
+    "source": "build/stockpile-storage-native-input-20261110-172234",
+    "df_version": "53.16",
+    "rows": [
+      {
+        "holder_full": "Unib Rakustazin, king",
+        "holder_visible": "Unib Rakustazin, king",
+        "squad": "",
+        "title": "Monarch"
+      },
+      {
+        "holder_full": "Kûbuk ïngizkor, mayor",
+        "holder_visible": "Kûbuk ïngizkor, mayor",
+        "squad": "",
+        "title": "Mayor"
+      },
+      {
+        "holder_full": "Kûbuk ïngizkor, mayor",
+        "holder_visible": "Kûbuk ïngizkor, mayor",
+        "squad": "The Blockaded Lovers",
+        "title": "Captain of the guard"
+      },
+      {
+        "holder_full": "VACANT",
+        "holder_visible": "VACANT",
+        "squad": "",
+        "title": "Dungeon master"
+      },
+      {
+        "holder_full": "Såkzul Nåzomkivish, militia commander",
+        "holder_visible": "Såkzul Nåzomkivish, m...",
+        "squad": "The Golden Beaks",
+        "title": "Militia commander"
+      },
+      {
+        "holder_full": "VACANT",
+        "holder_visible": "VACANT",
+        "squad": "",
+        "title": "Hammerer"
+      },
+      {
+        "holder_full": "VACANT",
+        "holder_visible": "VACANT",
+        "squad": "",
+        "title": "Manager"
+      },
+      {
+        "holder_full": "Rith Suluslogem, chief medical dwarf",
+        "holder_visible": "Rith Suluslogem, chie...",
+        "squad": "",
+        "title": "Chief medical dwarf"
+      },
+      {
+        "holder_full": "VACANT",
+        "holder_visible": "VACANT",
+        "squad": "",
+        "title": "Broker"
+      },
+      {
+        "holder_full": "Stodir Tangakurvad, bookkeeper",
+        "holder_visible": "Stodir Tangakurvad, b...",
+        "squad": "",
+        "title": "Bookkeeper"
+      },
+      {
+        "holder_full": "VACANT",
+        "holder_visible": "VACANT",
+        "squad": "The Infamous Daggers",
+        "title": "Militia captain"
+      },
+      {
+        "holder_full": "NEW",
+        "holder_visible": "NEW",
+        "squad": "",
+        "title": "Militia captain"
+      },
+      {
+        "holder_full": "Kikrost Thosbutuzol, militia captain",
+        "holder_visible": "Kikrost Thosbutuzol, ...",
+        "squad": "The Brains of Glaze",
+        "title": "Militia captain"
+      },
+      {
+        "holder_full": "NEW",
+        "holder_visible": "NEW",
+        "squad": "",
+        "title": "Messenger"
+      }
+    ],
+    "owned_rows": [
+      {
+        "assignment_id": 3,
+        "can_appoint": false,
+        "entity_id": 245,
+        "holder_caption": "Unib Rakustazin, king",
+        "nemesis_id": 6233,
+        "position_id": 0,
+        "position_name": "monarch",
+        "squad_caption": "",
+        "title": "Monarch",
+        "unit_id": 5981,
+        "value": 1
+      },
+      {
+        "assignment_id": 7,
+        "can_appoint": false,
+        "entity_id": 865,
+        "holder_caption": "Kûbuk ïngizkor, mayor",
+        "nemesis_id": 6116,
+        "position_id": 9,
+        "position_name": "mayor",
+        "squad_caption": "",
+        "title": "Mayor",
+        "unit_id": 5813,
+        "value": 60
+      },
+      {
+        "assignment_id": 9,
+        "can_appoint": true,
+        "entity_id": 865,
+        "holder_caption": "Kûbuk ïngizkor, mayor",
+        "nemesis_id": 6116,
+        "position_id": 7,
+        "position_name": "captain of the guard",
+        "squad_caption": "The Blockaded Lovers",
+        "title": "Captain of the guard",
+        "unit_id": 5813,
+        "value": 105
+      },
+      {
+        "assignment_id": 0,
+        "can_appoint": true,
+        "entity_id": 865,
+        "holder_caption": "VACANT",
+        "nemesis_id": -1,
+        "position_id": 21,
+        "position_name": "dungeon master",
+        "squad_caption": "",
+        "title": "Dungeon master",
+        "unit_id": -1,
+        "value": 108
+      },
+      {
+        "assignment_id": 11,
+        "can_appoint": true,
+        "entity_id": 865,
+        "holder_caption": "Såkzul Nåzomkivish, militia commander",
+        "nemesis_id": 6936,
+        "position_id": 4,
+        "position_name": "militia commander",
+        "squad_caption": "The Golden Beaks",
+        "title": "Militia commander",
+        "unit_id": 6812,
+        "value": 120
+      },
+      {
+        "assignment_id": 1,
+        "can_appoint": true,
+        "entity_id": 865,
+        "holder_caption": "VACANT",
+        "nemesis_id": -1,
+        "position_id": 20,
+        "position_name": "hammerer",
+        "squad_caption": "",
+        "title": "Hammerer",
+        "unit_id": -1,
+        "value": 150
+      },
+      {
+        "assignment_id": 6,
+        "can_appoint": true,
+        "entity_id": 865,
+        "holder_caption": "VACANT",
+        "nemesis_id": -1,
+        "position_id": 10,
+        "position_name": "manager",
+        "squad_caption": "",
+        "title": "Manager",
+        "unit_id": -1,
+        "value": 160
+      },
+      {
+        "assignment_id": 5,
+        "can_appoint": true,
+        "entity_id": 865,
+        "holder_caption": "Rith Suluslogem, chief medical dwarf",
+        "nemesis_id": 6939,
+        "position_id": 11,
+        "position_name": "chief medical dwarf",
+        "squad_caption": "",
+        "title": "Chief medical dwarf",
+        "unit_id": 6815,
+        "value": 165
+      },
+      {
+        "assignment_id": 4,
+        "can_appoint": true,
+        "entity_id": 865,
+        "holder_caption": "VACANT",
+        "nemesis_id": -1,
+        "position_id": 12,
+        "position_name": "broker",
+        "squad_caption": "",
+        "title": "Broker",
+        "unit_id": -1,
+        "value": 170
+      },
+      {
+        "assignment_id": 3,
+        "can_appoint": true,
+        "entity_id": 865,
+        "holder_caption": "Stodir Tangakurvad, bookkeeper",
+        "nemesis_id": 1017,
+        "position_id": 13,
+        "position_name": "bookkeeper",
+        "squad_caption": "",
+        "title": "Bookkeeper",
+        "unit_id": 1017,
+        "value": 180
+      },
+      {
+        "assignment_id": 13,
+        "can_appoint": true,
+        "entity_id": 865,
+        "holder_caption": "VACANT",
+        "nemesis_id": -1,
+        "position_id": 5,
+        "position_name": "militia captain",
+        "squad_caption": "The Infamous Daggers",
+        "title": "Militia captain",
+        "unit_id": -1,
+        "value": 200
+      },
+      {
+        "assignment_id": -1,
+        "can_appoint": true,
+        "entity_id": 865,
+        "holder_caption": "NEW",
+        "nemesis_id": -1,
+        "position_id": 5,
+        "position_name": "militia captain",
+        "squad_caption": "",
+        "title": "Militia captain",
+        "unit_id": -1,
+        "value": 200
+      },
+      {
+        "assignment_id": 12,
+        "can_appoint": true,
+        "entity_id": 865,
+        "holder_caption": "Kikrost Thosbutuzol, militia captain",
+        "nemesis_id": 6235,
+        "position_id": 5,
+        "position_name": "militia captain",
+        "squad_caption": "The Brains of Glaze",
+        "title": "Militia captain",
+        "unit_id": 5984,
+        "value": 200
+      },
+      {
+        "assignment_id": -1,
+        "can_appoint": true,
+        "entity_id": 865,
+        "holder_caption": "NEW",
+        "nemesis_id": -1,
+        "position_id": 23,
+        "position_name": "messenger",
+        "squad_caption": "",
+        "title": "Messenger",
+        "unit_id": -1,
+        "value": 250
+      }
+    ],
+    "cold_warm_equal": true,
+    "native_visible_cells_match": true,
+    "menu_rng_lookup_caches_preserved": true,
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "Traveling absent holders and land titles not present in this fixture.",
+      "Long squad aliases and translated names requiring truncation not present in this fixture.",
+      "Clipped holder suffixes are not visible in the native grid; only the displayed prefix and ellipsis are compared.",
+      "No Nobles viewer, typed transport or appointment mutation is exposed."
+    ]
   }
 }

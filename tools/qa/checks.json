@@ -4204,6 +4204,11 @@
       "reason": "Protected Stocks main-scene navigation lane; run stockpile_storage_native.ps1 with DF3D_STOCKS_SCENE."
     },
     {
+      "path": "presentations/godot/project/tests/tasks_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected stockpile_storage_native.ps1 with DF3D_TASKS_NATIVE and DF3D_TASKS_WIRE; ordered pages, stale revisions and construction suspension with independent native effect checks."
+    },
+    {
       "path": "presentations/godot/project/tests/stocks_wire_live.gd",
       "status": "manual",
       "reason": "Protected stockpile_storage_native.ps1 with DF3D_STOCKS_NATIVE and DF3D_STOCKS_WIRE; cold typed categories, groups, member revisions and item rows, group visibility edits with independent whole-inventory flags and stale replay rejection."

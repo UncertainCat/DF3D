@@ -205,6 +205,22 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         for(const auto& l:v.links){Dictionary link;link["type"]=l.type;link["id"]=l.id;link["subid"]=l.subid;links.push_back(link);}
         value["words"]=words;value["links"]=links;result["residents_activity"]=value;
     }
+    if(s.tasks){
+        const auto& v=*s.tasks;Dictionary value;Array rows;
+        value["outcome"]=int(v.outcome);value["list_revision"]=int64_t(v.listRevision);value["total"]=int64_t(v.total);value["offset"]=int64_t(v.offset);value["job_id"]=v.jobId;
+        for(const auto& r:v.rows){Dictionary d;
+            d["job_id"]=r.jobId;d["worker_id"]=r.workerId;d["building_id"]=r.buildingId;d["revision"]=int64_t(r.revision);
+            d["caption"]=String::utf8(r.caption.c_str());d["worker_name"]=String::utf8(r.workerName.c_str());d["building_caption"]=String::utf8(r.buildingCaption.c_str());
+            if(r.workerPosition)d["worker_position"]=Vector3i(r.workerPosition->x,r.workerPosition->y,r.workerPosition->z);
+            if(r.buildingPosition)d["building_position"]=Vector3i(r.buildingPosition->x,r.buildingPosition->y,r.buildingPosition->z);
+            if(r.workerColor){Dictionary c;Array base,alternate;for(auto n:r.workerColor->color)base.push_back(int(n));for(auto n:r.workerColor->alternate)alternate.push_back(int(n));c["color"]=base;c["alternate"]=alternate;c["effect"]=int(r.workerColor->effect);d["worker_color"]=c;}
+            d["can_view_job"]=r.canViewJob;d["can_repeat"]=r.canRepeat;d["can_remove_worker"]=r.canRemoveWorker;d["can_suspend"]=r.canSuspend;d["can_cancel"]=r.canCancel;d["repeating"]=r.repeating;d["suspended"]=r.suspended;
+            if(r.workerAppearance)d["worker_appearance"]=management::itemRecipeDictionary(*r.workerAppearance);
+            if(r.buildingAppearance)d["building_appearance"]=management::itemRecipeDictionary(*r.buildingAppearance);
+            rows.push_back(d);
+        }
+        value["rows"]=rows;result["tasks"]=value;if(v.outcome==wm::TasksOutcome::Unknown)result["outcome"]="unknown";
+    }
     if(s.stocksMenu) {
         const auto& v=*s.stocksMenu;Dictionary value;Array categories,groups,items;
         for(const auto& row:v.categories){Dictionary d;d["type"]=row.type;d["caption"]=String::utf8(row.caption.c_str());d["stored"]=String::utf8(row.stored.c_str());d["unavailable"]=String::utf8(row.unavailable.c_str());d["matches"]=row.matches;categories.push_back(d);}
@@ -509,6 +525,24 @@ bool validateResidentsSpecialization(const Dictionary& data,String& error) {
 bool readResidentsSpecialization(const Dictionary& data,wm::ManagementRequest& request,String&) {
     request.action=wm::ManagementAction::ResidentsSpecialize;
     request.residentsSpecialization={int32_t(int64_t(data["unit_id"])),uint64_t(int64_t(data["expected_revision"])),bool(data["only_assigned"])};return true;
+}
+bool validateTasks(const Dictionary& data,String& error) {
+    error="Invalid tasks request";
+    const auto integer=[](const Dictionary& d,const char* k,int64_t lo,int64_t hi){return d.has(k) && d[k].get_type()==Variant::INT && int64_t(d[k])>=lo && int64_t(d[k])<=hi;};
+    if(int64_t(data["action"])==int64_t(wm::ManagementAction::TasksRead)){
+        if(data.size()!=4 || !integer(data,"offset",0,1048576) || !integer(data,"limit",1,64) || !integer(data,"expected_list_revision",0,INT64_MAX) || (int64_t(data["offset"]) && !int64_t(data["expected_list_revision"])))return false;
+    }else{
+        if(data.size()!=7 || !integer(data,"job_id",0,INT32_MAX) || !integer(data,"worker_id",-1,INT32_MAX) || !integer(data,"building_id",0,INT32_MAX) || !integer(data,"expected_revision",1,INT64_MAX) || !integer(data,"operation",0,3) || !integer(data,"expected_state",-1,1))return false;
+        const int64_t operation=data["operation"],expected=data["expected_state"];
+        if((operation<=1?expected<0:expected!=-1) || (operation==2 && int64_t(data["worker_id"])<0))return false;
+    }
+    error=String();return true;
+}
+bool readTasks(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction(int64_t(data["action"]));auto& q=request.tasks;
+    if(request.action==wm::ManagementAction::TasksRead){q.offset=uint32_t(int64_t(data["offset"]));q.limit=uint16_t(int64_t(data["limit"]));q.expectedListRevision=uint64_t(int64_t(data["expected_list_revision"]));}
+    else {q.jobId=int32_t(int64_t(data["job_id"]));q.workerId=int32_t(int64_t(data["worker_id"]));q.buildingId=int32_t(int64_t(data["building_id"]));q.expectedRevision=uint64_t(int64_t(data["expected_revision"]));q.operation=wm::TasksOperation(int64_t(data["operation"]));q.expectedState=int8_t(int64_t(data["expected_state"]));}
+    return true;
 }
 bool validateStocksMenu(const Dictionary& data,String& error) {
     error="Invalid stocks request";
@@ -868,6 +902,7 @@ const ManagementCodec managementCodecs[] = {
     {"work_detail_settings",validateWorkDetailSettings,readWorkDetailSettings},
     {"hunter_ammunition",validateHunterAmmunition,readHunterAmmunition},
     {"stocks_menu",validateStocksMenu,readStocksMenu},
+    {"tasks",validateTasks,readTasks},
     {"stone_use",validateStoneUse,readStoneUse},
     {"kitchen_menu",validateKitchenMenu,readKitchenMenu},
     {"chores",validateChores,readChores},
@@ -887,7 +922,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::StocksItemApply)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::TasksApply)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

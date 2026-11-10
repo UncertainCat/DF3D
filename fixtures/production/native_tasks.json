@@ -2816,5 +2816,26 @@
     "fps_cap": 30,
     "sampled_gpu_celsius": 48,
     "sampled_gpu_utilization_percent": 2
+  },
+  "transport_reference": {
+    "capture": "stockpile-storage-native-input-20261110-123222",
+    "protocol": 174,
+    "rows": 41,
+    "page_limit": 16,
+    "checks": [
+      "native ordered identities, captions and control flags",
+      "worker and destination recipe page names and layer values",
+      "stale list revision rejected",
+      "construction job 68196 suspend/resume checked by native flags after each edit",
+      "stale edit replay rejected after each mutation",
+      "native Tasks menu stays closed during transport"
+    ],
+    "source_save_preserved": true,
+    "limits": [
+      "No rendered Tasks view yet",
+      "Color, position and palette arrays are transported but not independently compared in this wire run",
+      "Repeat, assigned-worker Suspend, Remove worker and Cancel transport branches remain unverified",
+      "Disconnect, epoch change, Unknown outcomes and payload-budget pagination still need live acceptance"
+    ]
   }
 }

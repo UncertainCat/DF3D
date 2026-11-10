@@ -48,7 +48,8 @@ and reject stale list/row revisions. Edits use the existing native action adapte
 with mailbox sequence, world-epoch and save admission. Revisions cover ordered
 job membership for pages and semantic identity/flags/capabilities for edits;
 artwork and animation phase do not invalidate edit receipts. The Godot request
-adapter and UI remain unfinished; public exposure stays gated.
+adapter exposes this domain with strict typed inputs and owned reply dictionaries.
+The UI remains unfinished; public exposure stays gated.
 
 Read requests carry offset, limit1..64 and an expected ordered-list revision.
 A nonzero offset requires that revision. Replies preserve native order and can
@@ -76,7 +77,17 @@ TasksRead/TasksApply transport. Protected122611 loads the handler implementation
 and reruns native provider checks with source preservation and owned DF10156
 closed unsaved at30FPS (GPU39C/3% sampled). MSVC and core19 pass. This is a
 regression smoke, not end-to-end handler acceptance; typed request execution,
-stale pagination and mutation receipts still need live verification. Model codec
+stale pagination and mutation receipts were subsequently checked in protected
+123222: all41 rows arrive in pages of16, native captions/control flags and recipe
+page/layer values match, stale list/edit revisions are rejected, and job68196
+suspension toggles twice with native flag confirmation after each edit. The
+native Tasks menu stays closed throughout transport. Source preserved; owned
+DF35896 closes unsaved at30FPS with a headless client; passed_with_known_issues for the documented separate-thread
+notice only.
+Earlier123017 stopped on a Lua test lookup error;123108 completed edits but
+failed a JSON float-versus-integer string comparison, corrected to compare
+integer layer values. Neither earlier run counts as acceptance. Other mutation
+branches, lifecycle, full payload boundaries and rendered Tasks remain pending. Model codec
 checks cover page/edit preconditions, owned reply data and Unknown receipts.
 Core19, the protocol174 extension rebuild and headless editor import pass;
 this does not establish rendered Tasks behavior.

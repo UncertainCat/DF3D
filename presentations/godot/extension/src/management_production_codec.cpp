@@ -7,7 +7,7 @@
 
 namespace df3d_godot::management {
 using namespace godot;
-static Dictionary itemRecipeDictionary(const wm::SelectionAppearance& source) {
+Dictionary itemRecipeDictionary(const wm::SelectionAppearance& source) {
   Dictionary result;Array pages,palettes,layers;
   for(const auto& name:source.tilePages)pages.push_back(String::utf8(name.c_str()));
   for(const auto& name:source.palettes)palettes.push_back(String::utf8(name.c_str()));

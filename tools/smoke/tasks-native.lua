@@ -20,6 +20,25 @@ local function probe()
  return json.decode(text).rows
 end
 local cold=probe()
+if os.getenv('DF3D_TASKS_WIRE')=='1' then
+ local job;for _,candidate in require('utils').listpairs(df.global.world.jobs.list)do if candidate.id==68196 then job=candidate;break end end
+ assert(job and job.flags.suspend,'Expected suspended construction fixture')
+ local original=job.flags.whole
+ write('tasks-wire-reference.json',json.encode(cold))
+ write('shot.tmp','tasks-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))
+ local deadline=dfhack.getTickCount()+30000;local checked=0
+ while true do
+  local step=io.open(out..'/tasks-wire-step')
+  if step then local n=tonumber(step:read('*a'));step:close()
+   if n and n>checked then assert(n==checked+1);assert(job.flags.whole==(n==1 and (original ~ 2) or original),'Tasks wire suspend effect differs');checked=n;write('tasks-wire-ack',tostring(n))end
+  end
+  local ack=io.open(out..'/ack-tasks-wire');if ack then ack:close();break end
+  assert(dfhack.getTickCount()<deadline,'Tasks wire timed out');script.sleep(1,'frames')
+ end
+ assert(checked==2 and job.flags.whole==original,'Tasks wire did not restore suspension')
+ assert(not df.global.game.main_interface.info.open,'Tasks transport opened native menu')
+end
+
 gui.simulateInput(view,'D_JOBLIST')
 for _=1,3 do script.sleep(1,'frames')end
 view:render(dfhack.getTickCount())

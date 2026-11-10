@@ -68,8 +68,14 @@ Owned DF6476 closes unsaved with source preservation; both game/viewer capped30F
 GPU40C/0% sampled after the prior run, not a peak. Known separate-thread/finalize/
 shutdown diagnostics only: passed_with_known_issues. Earlier124137 failed view
 parsing;124308 exposed the row-background and action-art mistakes corrected in
-124435. Hover help, owner/navigation wiring, input effects, resize/lifecycle and
-main-screen integration remain unfinished; public exposure stays gated.
+124435. The six captured Tasks instructions now use the shared hover service: job/worker
+Recenter, worker View, Remove worker, Suspend and Cancel. Their copy/wrapping
+comes from113154; headless checks match the fixture and check capability-aware
+hitboxes. Pending requests, pointer exit and hidden/retired views release hover
+ownership. No Tasks hotkey text is inferred from other screens. Repeat and View
+task instructions still need native copy capture, and rendered Tasks tooltip
+acceptance remains pending. Owner/navigation wiring, input effects, resize/
+lifecycle and main-screen integration remain unfinished; public exposure stays gated.
 
 Read requests carry offset, limit1..64 and an expected ordered-list revision.
 A nonzero offset requires that revision. Replies preserve native order and can

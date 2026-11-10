@@ -325,7 +325,24 @@ close without returning to Stocks. Core19, extension, item-state and MSVC pass
 (`item-child-navigation-final`, `item-child-navigation-msvc`). Source preserved;
 DF6916 exits unsaved at30FPS,39C sampled, known diagnostics only. This is one
 bin/block workflow. Per-row flags and bounded scroll/resize are verified above;
-remaining scroll cases, creature rows and alternate item-use lists are unfinished. Public Stocks remains gated.
+remaining scroll cases are unfinished. The later cage capture verifies contained
+creature captions and artwork: native158450 skips item controls for unit rows,
+so those rows correctly have no View/flag buttons. Management168 separately
+adds native ordered Uses. Public Stocks remains gated.
+
+Food/plant item descriptions admit MEAT48, PLANT54, CHEESE71 and GLOB75
+through the same owned native description/Uses provider. Their used virtuals
+match SEEDS except getType; the additional bounded plant-raw flag lookup14d880
+is pinned independently. Protected065059 on2026-11-10 verifies red spinach5107
+View/close, exact native/owned/wire description and Uses, and zero differing
+pixels across the entire item panel including its plant-barrel carrier.
+`native_stocks.json.food_plant_description_reference` records the dispatch and
+omissions: meat, cheese and globs are absent from the save and lack live
+acceptance; meat/glob artwork is still unsupported. First064939 has valid semantic
+checks but an incomplete native redraw, so it is excluded from visual acceptance.
+Core19 passes on rerun after an intermittent buffered-capture counter failure;
+MSVC, extension and item-state checks pass. The protected run preserves the source
+save, exits DF1464 unsaved at30FPS, and reports only documented engine diagnostics.
 
 The item-detail provider now admits doors, floodgates, beds, chairs, flasks,
 goblets, barrels, buckets, tables, bins, cabinets and anvils through the pinned

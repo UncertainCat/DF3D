@@ -8269,5 +8269,82 @@
       "job-settings-wire-result.json": "cac1a52e9aa8934e706bfb557de0c0f375ab9323f855653fecc0ed54aa512040",
       "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
     }
+  },
+  "food_plant_description_reference": {
+    "run": "build/stockpile-storage-native-input-20261110-065059",
+    "game": "53.16",
+    "dispatch": [
+      {
+        "name": "MEAT",
+        "type": 48,
+        "table": "0x167b4d0",
+        "get_type": "0x28cb50",
+        "get_type_fnv": "9f2dc9d131d5032c",
+        "other_virtuals_match_seed": true,
+        "is_build_mat": "0x67050",
+        "wear_branch": "0xc79181"
+      },
+      {
+        "name": "PLANT",
+        "type": 54,
+        "table": "0x1659a68",
+        "get_type": "0x545970",
+        "get_type_fnv": "5314fad241f96526",
+        "other_virtuals_match_seed": true,
+        "is_build_mat": "0x67050",
+        "wear_branch": "0xc79181"
+      },
+      {
+        "name": "CHEESE",
+        "type": 71,
+        "table": "0x16c34a0",
+        "get_type": "0x8f2400",
+        "get_type_fnv": "b9e2b710f1eb72d9",
+        "other_virtuals_match_seed": true,
+        "is_build_mat": "0x67050",
+        "wear_branch": "0xc79181"
+      },
+      {
+        "name": "GLOB",
+        "type": 75,
+        "table": "0x16bdbc0",
+        "get_type": "0x106ef0",
+        "get_type_fnv": "5215dd0ed1a548fd",
+        "other_virtuals_match_seed": true,
+        "is_build_mat": "0x67050",
+        "wear_branch": "0xc79181"
+      }
+    ],
+    "ownership": "c75000 description and1a8df0 Uses builder with owned output context; plant raw flag leaf14d880 length5a FNV4aa033209ea95fd2 reads simulation raws only. Shared SEEDS virtuals and exclusions are pinned; no native view state is consumed.",
+    "items": [
+      {
+        "kind": 54,
+        "id": 5107,
+        "description": "This is a stack of 5 red spinach.  ",
+        "uses": []
+      }
+    ],
+    "render": {
+      "crop": [
+        416,
+        52,
+        904,
+        760
+      ],
+      "different_pixels": 0,
+      "native_sha256": "fe33f40b77ecceb5838610e33c8e67bfdebeef715b7bfb3f8e99b002686ef864",
+      "viewer_sha256": "cad2c890114ccfb6bf7a688617e5a2509570ca6054e5759afc3b9cbaa664618f"
+    },
+    "verification": [
+      "Native category selection, item View and close pass; native/owned/wire descriptions and ordered Uses match.",
+      "Core19 passes on rerun; first item-food-dispatch core run failed mirror_recovery_tests buffered capture counters (6 vs7). No product change made for that intermittent failure.",
+      "MSVC, viewer extension and item_sheet_state_test pass. Live diagnostics contain only documented engine thread/finalize/shutdown signatures.",
+      "Source save unchanged; owned DF1464 closed unsaved. 30FPS, maximum sampled GPU56C in this run (not peak)."
+    ],
+    "limits": [
+      "No MEAT48, CHEESE71 or GLOB75 in this save; their guarded dispatch is implemented but live acceptance remains pending. Meat/glob artwork remains unsupported.",
+      "Earlier064939 passes semantic assertions but native screenshot caught incomplete redraw; not visual acceptance. Capture now allows8 frames instead of3.",
+      "One red spinach stack5107 only; other food families and broader plant variants remain unfinished. Public Stocks remains gated."
+    ]
   }
 }

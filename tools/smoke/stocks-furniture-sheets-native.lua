@@ -41,7 +41,7 @@ for _,family in ipairs(read('stocks-wire-reference.json').furniture)do
   local f=assert(io.open(out..'/stocks-item-uses-'..family.kind..'.json','w'));f:write(json.encode(uses));f:close()
  end
  -- Allow the native renderer to finish drawing the new sheet before capture.
- script.sleep(3,'frames');view:render(dfhack.getTickCount())
+ script.sleep(8,'frames');view:render(dfhack.getTickCount())
  local name='stocks-furniture-native-'..family.kind
  local f=assert(io.open(out..'/shot.tmp','w'));f:write(name);f:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
  local deadline=dfhack.getTickCount()+10000

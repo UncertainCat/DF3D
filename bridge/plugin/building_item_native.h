@@ -462,7 +462,8 @@ inline bool simpleItemDescriptionDispatch(df::item* item) {
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     const auto* table=*reinterpret_cast<const void* const*>(item);
     if(table!=base+0x16d06e0 && table!=base+0x16f6da0 && table!=base+0x15fa918 &&
-       table!=base+0x16cad20 && table!=base+0x16b7520 && table!=base+0x16f0ac0 && table!=base+0x16c6570 && table!=base+0x16c9420)return false;
+       table!=base+0x16cad20 && table!=base+0x16b7520 && table!=base+0x16f0ac0 && table!=base+0x16c6570 && table!=base+0x16c9420 &&
+       table!=base+0x167b4d0 && table!=base+0x1659a68 && table!=base+0x16c34a0 && table!=base+0x16bdbc0)return false;
     static const bool pinned=[base]() {
         struct Pin {size_t slot,target,length;uint64_t hash;};
         constexpr Pin pins[]={
@@ -493,8 +494,15 @@ inline bool simpleItemDescriptionDispatch(df::item* item) {
         // WOOD c750af and BOULDER c75244 adjust grammar from owned flags
         // and material getters only. All other used virtuals match SEEDS.
         for(const size_t table:{size_t(0x16d06e0),size_t(0x16f6da0),size_t(0x15fa918),
-            size_t(0x16cad20),size_t(0x16b7520),size_t(0x16f0ac0),size_t(0x16c6570),size_t(0x16c9420)})for(auto pin:pins) {
+            size_t(0x16cad20),size_t(0x16b7520),size_t(0x16f0ac0),size_t(0x16c6570),size_t(0x16c9420),size_t(0x167b4d0),size_t(0x1659a68),size_t(0x16c34a0),size_t(0x16bdbc0)})for(auto pin:pins) {
+            // MEAT/PLANT/CHEESE/GLOB share all used SEEDS virtuals except type.
+            // c751f7..c75239 chooses food grammar; PLANT c75073 reads raw flag4
+            // through the pinned14d880 leaf. GLOB skips contaminants at c792de.
             if(pin.slot==0) {
+                if(table==0x167b4d0)pin={0,0x28cb50,6,UINT64_C(0x9f2dc9d131d5032c)};
+                if(table==0x1659a68)pin={0,0x545970,6,UINT64_C(0x5314fad241f96526)};
+                if(table==0x16c34a0)pin={0,0x8f2400,6,UINT64_C(0xb9e2b710f1eb72d9)};
+                if(table==0x16bdbc0)pin={0,0x106ef0,6,UINT64_C(0x5215dd0ed1a548fd)};
                 if(table==0x16cad20)pin={0,0x67a40,6,UINT64_C(0x0ba8a52fbdb51a10)};
                 if(table==0x16b7520)pin={0,0x67a50,6,UINT64_C(0xfef8c40540640013)};
                 if(table==0x16f0ac0)pin={0,0x67520,6,UINT64_C(0x18580e5a3b056825)};
@@ -522,6 +530,7 @@ inline bool simpleItemDescriptionDispatch(df::item* item) {
         // formats its semantic dye profile and dyer identity. Pair collection
         // uses owned local vectors; color/name helpers read raws/history only.
         constexpr Helper helpers[]={
+            {0x14d880,0x5a,UINT64_C(0x4aa033209ea95fd2)}, // bounded plant raw flag lookup
             {0x145bee0,0x5e,UINT64_C(0x6abc4e374e372eef)},
             {0x145c2b0,0x122,UINT64_C(0x0e578b2e7d721c3a)},
             {0x701e70,0x20e,UINT64_C(0xead0193006374e44)},
@@ -888,6 +897,8 @@ inline std::optional<ItemObservation> observeItem(df::item* item) {
     case df::item_type::WEAPON:case df::item_type::SHIELD:case df::item_type::BAG:
     case df::item_type::BACKPACK:case df::item_type::QUIVER:
     case df::item_type::SPLINT:case df::item_type::CRUTCH:
+    case df::item_type::MEAT:case df::item_type::PLANT:
+    case df::item_type::CHEESE:case df::item_type::GLOB:
     case df::item_type::THREAD:case df::item_type::CLOTH:
     case df::item_type::BAR:case df::item_type::BLOCKS:
     case df::item_type::BOULDER:case df::item_type::WOOD:

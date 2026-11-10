@@ -42,9 +42,7 @@ func configure(world,service,host,help=null) -> void:
 	conditions_view.cancelled.connect(_back_conditions)
 	for view in [global_orders_view,conditions_view]:
 		view.information_requested.connect(func(caption):
-			# Only accepted information destinations may be reached from this
-			# staged screen; Places must not expose the staged Zones workflow.
-			if caption in ["Creatures","Labor"] and play_enabled and ui_host.allows_panel_input(self):information_requested.emit(preload("res://scripts/native_info_frame.gd").destination(caption)))
+			if play_enabled and ui_host.allows_panel_input(self):information_requested.emit(caption))
 	panel.orders.conditions_requested.connect(func(id):conditions_view.open(state.building_id,id))
 	conditions.applied.connect(orders.refresh)
 	details_view=preload("res://scripts/work_order_details_view.gd").new();canvas.add_child(details_view);details_view.configure_details(world,details);details_view.hide()

@@ -359,6 +359,27 @@ for _,sample in ipairs{{'wheel-down','CONTEXT_SCROLL_DOWN',500,300},{'wheel-up',
  result.scroll_input[#result.scroll_input+1]={name=sample[1],key=sample[2],point={sample[3],sample[4]},before=10,after=info.buildings.scrolling_position[0]}
 end
 info.buildings.scrolling_position[0]=0;save()
+if os.getenv('DF3D_PLACES_INFORMATION')=='1' then
+ local function click_label(label)
+  for _,row in ipairs(lines())do local x=row.text:find(label,1,true);if x then
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=(x-1)*8+4;g.precise_mouse_y=row.y*12+6;g.mouse_x=x-1;g.mouse_y=row.y
+   df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+   return
+  end end
+  error('Information caption missing: '..label)
+ end
+ result.information_navigation={}
+ for _,target in ipairs{{'Creatures','CREATURES'},{'Tasks','JOBS'},{'Labor','LABOR'},{'Work orders','WORK_ORDERS'}}do
+  info.buildings.mode=4;view:render(dfhack.getTickCount());click_label('Places')
+  assert(info.buildings.mode==4,'Selected Places tab reset subtab')
+  click_label(target[1]);assert(info.current_mode==df.info_interface_mode_type[target[2]],'Wrong native information destination')
+  click_label('Places');assert(info.current_mode==df.info_interface_mode_type.BUILDINGS,'Native return to Places failed')
+  result.information_navigation[#result.information_navigation+1]={caption=target[1],mode=target[2],return_subtab=info.buildings.mode,self_preserves_subtab=true}
+ end
+ save()
+end
 gui.simulateInput(view,'LEAVESCREEN');settle();assert(not info.open,'Places did not close')
 if secondary_fixture then
  local profile=df.building.find(secondary_fixture.building_id):getWorkshopProfile();profile.permitted_workers:resize(0)

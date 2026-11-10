@@ -139,6 +139,7 @@ func controller(id: String):
 		controllers[id]=panel;return panel
 	if id=="tasks":
 		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
+		panel.information_requested.connect(func(caption):_open_staged_information(panel,caption))
 		panel.focus_requested.connect(focus_tile)
 		panel.inspect_requested.connect(func(tile,unit_id):
 			if host.allows_panel_input(panel) and controller("inspector").open_target(tile,1,unit_id,true):focus_tile(tile))
@@ -155,6 +156,7 @@ func controller(id: String):
 		controllers[id]=panel;return panel
 	if id=="work_details":
 		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
+		panel.information_requested.connect(func(caption):_open_staged_information(panel,caption))
 		panel.standing_orders_requested.connect(func():controller("standing_orders").open_from_labor())
 		panel.kitchen_requested.connect(func():controller("standing_orders").open_from_labor(true))
 		panel.stone_use_requested.connect(func():controller("standing_orders").open_from_labor(false,true))
@@ -165,6 +167,7 @@ func controller(id: String):
 		controllers[id]=panel;return panel
 	if id=="residents":
 		add_child(panel);panel.configure(world,actions,host)
+		panel.information_requested.connect(func(caption):_open_staged_information(panel,caption))
 		panel.panel.hover_help=view._fortress_hud.native_help
 		panel.focus_requested.connect(focus_tile)
 		panel.inspect_requested.connect(func(tile,unit_id):
@@ -176,7 +179,7 @@ func controller(id: String):
 		panel.holder_requested.connect(open_building_holder)
 		if id=="workshop":
 			panel.unit_requested.connect(func(unit_id):open_item_carrier(2,unit_id))
-			panel.information_requested.connect(open_destination)
+			panel.information_requested.connect(func(caption):_open_staged_information(panel,caption))
 		panel.item_owner.configure_follow(item_follow)
 		panel.item_owner.carrier_requested.connect(open_item_carrier)
 		panel.item_owner.stockpile_requested.connect(func(target):controller("areas").open_stockpile(target))
@@ -241,6 +244,7 @@ func _open_staged_information(source,caption: String) -> void:
 	match caption:
 		"Creatures":controller("residents").open_panel()
 		"Tasks":controller("tasks").open_panel()
+		"Places":controller("places").open_panel()
 		"Labor":controller("work_details").open_panel()
 		"Work orders":controller("workshop").open_global_orders()
 

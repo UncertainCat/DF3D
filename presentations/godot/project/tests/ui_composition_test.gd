@@ -132,17 +132,18 @@ func run():
 		var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=true
 		click.position=Vector2(200,48 if dimensions.x==1200 else 24)
 		workshop.global_orders_view._gui_input(click)
-		check(ui.host.active==workshop,"Places tab cannot expose unfinished Zones")
+		check(ui.host.active==ui.controller("places"),"Places tab opens staged Places, not Zones")
+		workshop.open_global_orders();workshop.global_orders_view.layout(dimensions)
 		click.position=Vector2(24,48 if dimensions.x==1200 else 24)
 		workshop.global_orders_view._gui_input(click)
-		check(ui.host.active==readout and readout.page=="Residents" and not workshop.global_orders_view.visible,"Creatures tab routes and retires standalone orders")
+		check(ui.host.active==ui.controller("residents") and not workshop.global_orders_view.visible,"Creatures tab routes and retires standalone orders")
 		workshop.open_global_orders();workshop.global_orders_view.hide();workshop.conditions_view.open(-2,27);workshop.conditions_view.layout(dimensions)
 		click.position=Vector2(352,48 if dimensions.x==1200 else 24)
 		workshop.conditions_view._gui_input(click)
 		check(ui.host.active==workshop and workshop.conditions_view.visible and workshop.conditions.order_id==27,"selected Work orders tab retains Conditions")
 		click.position=Vector2(280,48 if dimensions.x==1200 else 24)
 		workshop.conditions_view._gui_input(click)
-		check(ui.host.active==readout and readout.page=="Work Details" and not workshop.conditions_view.visible and workshop.conditions.order_id==-1,"Labor tab routes and retires Conditions")
+		check(ui.host.active==ui.controller("work_details") and not workshop.conditions_view.visible and workshop.conditions.order_id==-1,"Labor tab routes and retires Conditions")
 	var places=ui.controller("places")
 	for dimensions in [Vector2(912,552),Vector2(1600,900)]:
 		for target in [[24,"residents"],[136,"tasks"],[280,"work_details"],[352,"workshop"]]:
@@ -155,6 +156,10 @@ func run():
 			check(ui.host.active==ui.controller(target[1]) and not places.panel.visible,"Places header reaches native controller "+target[1])
 			check(places.state.phase==places.state.Phase.Closed and not ui.actions._requests.has(pending) and not ui.actions._queue.has(pending),"Information handoff retires Places read")
 			if target[1]=="workshop":check(workshop.global_orders_mode,"Work orders opens global list without workshop target")
+			var target_view=workshop.global_orders_view if target[1]=="workshop" else ui.controller(target[1]).panel
+			target_view.layout(dimensions)
+			click.position=Vector2(200,48 if dimensions.x<1240 else 24);target_view._gui_input(click)
+			check(ui.host.active==places and not target_view.visible,"Information screen returns to Places "+target[1])
 		places.open_panel();places.panel.layout(dimensions);places.state.select_tab(4)
 		var pending: int=places.state.ticket
 		var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=true

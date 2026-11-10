@@ -477,22 +477,30 @@ render-thread finalize/ObjectDB shutdown diagnostics. `native_places.json` field
 `resized_input_reference` scopes this evidence; scrollbar track/drag, global
 information-tab routing and mutation lifecycle acceptance remain outstanding.
 
-Places information-header clicks now use the shared native `InfoTabs` hit geometry.
-The selected Places caption preserves its subtab and pending read. Internal
-handoffs reach the staged Residents, Tasks, Work Details and global Work orders
-controllers, rather than the older readouts. The UI host accepts the destination
-before retiring the source; overlay and inactive-owner checks prevent hidden
-panels from taking focus. Nobles, Objects and Justice remain gated. No public
-launcher or general destination mapping changes.
+Places, Tasks, Residents, Work Details and global Work orders/Conditions now
+route information-header clicks through staged native controllers. The selected
+header retains the current subtab or child state. The UI host accepts a target
+before retiring the source and its reads; overlay/inactive-owner guards prevent
+hidden panels taking focus. No route falls back to the old readouts or treats
+Places as the Zones painting tool. Nobles, Objects and Justice remain gated.
+Public launchers and general destination mappings are unchanged.
 
-`build/qa/places-information-navigation` passes core19, Places state and actual
-main-scene headless composition. At912x552 and1600x900 it exercises all four
-handoffs during queued reads, verifies source request retirement, selected-tab
-retention, unavailable-tab gating, overlay blocking and closed-owner rejection.
-Shared header geometry/native selected-tab behavior has existing Work orders
-reference005417; this check does not establish a new live native Places header
-comparison, destination rendering or return navigation from those staged screens.
-Those remain integration requirements before exposure.
+Protected164740 on2026-11-10 compares native Places header navigation to
+Creatures, Tasks, Labor and Work orders and returns to Places. Native returns to
+Zones (subtab0), while clicking the selected Places header retains subtab4.
+Actual main-scene pointer round trips pass for all four destinations at912x552
+and1600x900. The owned DF23876 exits unsaved and source preservation passes;
+30FPS with sampled GPU59–60C. The run is passed_with_known_issues for documented
+render-thread finalize/ObjectDB shutdown warnings. `native_places.json` field
+`information_navigation_reference` retains the native observations and scope.
+
+Headless actual main-scene composition in
+`build/qa/information-return-navigation` also verifies queued-read retirement,
+selected-tab preservation, gated destinations and overlay/closed-owner rejection;
+core19 and Places state checks pass. Native resized header observation, active
+text drafts/child dialogs and top-level navigation from other Labor subpages
+remain outstanding. These checks do not complete the destination screens or
+permit public exposure.
 
 ## Management 176 Places subtitle identity
 
@@ -13153,17 +13161,12 @@ retirement and composed UI cleanup; it does not establish sent-write retirement,
 late transport replies or actual producer replacement.
 
 The global list and Conditions share native information-tab row geometry for
-drawing and hit testing. Creatures and Labor navigate through the shared UI host
-to the existing Residents and Work Details readouts, retiring the order panel.
-The selected Work orders tab does nothing, preserving an open Conditions page.
-Protected005417 on2026-11-06 confirms that native behavior and both destinations;
-DF40612 exits unsaved with source preservation. Other information destinations
-remain gated; in particular Places must not expose the unfinished Zones route.
-`build/qa/work-orders-tabs-gated` passes core19/19 and the actual main-scene
-composition check at both narrow/two-row and wide/one-row layouts, including
-target retirement, selected-tab behavior and the Places gate. These checks use
-the existing readouts; they do not complete the remaining information screens
-or authorize promotion of the staged editable Work orders route.
+drawing and hit testing. The selected Work orders tab does nothing, preserving
+an open Conditions page. Protected005417 on2026-11-06 confirms that behavior
+and Creatures/Labor destinations; its earlier viewer check used the old readouts.
+Current internal information handoffs instead use staged native controllers,
+including Places, with no public launcher promotion. See the Places information
+navigation evidence below; full child-dialog/draft navigation remains pending.
 
 The global empty-list message follows the first list text row instead of a
 fixed baseline. Native005820 on2026-11-06 captures empty lists with/without a

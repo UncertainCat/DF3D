@@ -11258,5 +11258,48 @@
       "Camera XY and map click blocking",
       "In-flight mutation lifecycle"
     ]
+  },
+  "information_navigation_reference": {
+    "source": "build/stockpile-storage-native-input-20261110-164740",
+    "native": [
+      {
+        "caption": "Creatures",
+        "mode": "CREATURES",
+        "return_subtab": 0,
+        "self_preserves_subtab": true
+      },
+      {
+        "caption": "Tasks",
+        "mode": "JOBS",
+        "return_subtab": 0,
+        "self_preserves_subtab": true
+      },
+      {
+        "caption": "Labor",
+        "mode": "LABOR",
+        "return_subtab": 0,
+        "self_preserves_subtab": true
+      },
+      {
+        "caption": "Work orders",
+        "mode": "WORK_ORDERS",
+        "return_subtab": 0,
+        "self_preserves_subtab": true
+      }
+    ],
+    "viewer": "Actual main-scene pointer round trips from Places to staged Residents, Tasks, Work Details and global Work orders, at 912x552 and 1600x900.",
+    "result": "passed_with_known_issues",
+    "known_diagnostics": [
+      "render-thread finalize",
+      "ObjectDB shutdown leak warning"
+    ],
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "Native header reference at resized widths",
+      "Navigation with child dialogs or active text drafts",
+      "Standing orders and other Labor subpage top-level headers",
+      "Nobles, Objects and Justice remain gated"
+    ]
   }
 }

@@ -1,6 +1,7 @@
 extends "res://scripts/location_staff_candidates_frame.gd"
 # Staged Residents surface. Indicators, actions, hover and remaining portrait
 # states need acceptance before this may replace the public readout.
+signal information_requested(caption: String)
 signal job_requested(unit_id: int)
 signal cancelled
 signal inspect_requested(unit_id: int)
@@ -155,6 +156,10 @@ func _gui_input(event: InputEvent) -> void:
 		accept_event()
 	elif event.button_index==MOUSE_BUTTON_LEFT:
 		search.release_focus()
+		var caption:=InfoTabs.caption_at(event.position,wide_tabs)
+		if not caption.is_empty():
+			if caption!="Creatures":information_requested.emit(caption)
+			accept_event();return
 		if state.activity_open():
 			if activity_close_rect().has_point(event.position):state.close_activity()
 			accept_event();return

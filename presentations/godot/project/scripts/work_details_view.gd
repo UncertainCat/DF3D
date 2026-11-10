@@ -234,6 +234,10 @@ func _gui_input(event: InputEvent) -> void:
 		accept_event();return
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
 	search.release_focus();accept_event()
+	var caption:=InfoTabs.caption_at(event.position,wide_tabs)
+	if not caption.is_empty():
+		if caption!="Labor":information_requested.emit(caption)
+		return
 	if standing_orders_rect().has_point(event.position):standing_orders_requested.emit();return
 	if stone_use_rect().has_point(event.position):stone_use_requested.emit();return
 	if kitchen_rect().has_point(event.position):kitchen_requested.emit();return

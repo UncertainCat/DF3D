@@ -1,6 +1,7 @@
 extends "res://scripts/standing_orders_view.gd"
 # Native Tasks397c90 layout. Navigation is emitted to the panel owner; the
 # view never drives DF menus or derives capabilities from job types.
+signal information_requested(caption: String)
 signal navigation_requested(row: Dictionary,worker: bool,inspect: bool)
 const NameColor=preload("res://scripts/native_name_color.gd")
 var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
@@ -76,7 +77,12 @@ func button_rect(index: int,slot: int) -> Rect2:return Rect2(232+slot*24,list_to
 func _gui_input(event: InputEvent) -> void:
 	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
 	accept_event()
-	if event.button_index!=MOUSE_BUTTON_LEFT or state.phase!=state.Phase.Ready:return
+	if event.button_index!=MOUSE_BUTTON_LEFT:return
+	var caption:=InfoTabs.caption_at(event.position,wide_tabs)
+	if not caption.is_empty():
+		if caption!="Tasks":information_requested.emit(caption)
+		accept_event();return
+	if state.phase!=state.Phase.Ready:return
 	for index in mini(capacity(),state.rows.size()-visible_first()):
 		var row: Dictionary=state.rows[visible_first()+index];var y:=list_top()+index*36
 		if row.has("building_position") and Rect2(208,y,24,36).has_point(event.position):navigation_requested.emit(row.duplicate(true),false,false);return

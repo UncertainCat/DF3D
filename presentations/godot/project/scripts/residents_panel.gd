@@ -1,5 +1,6 @@
 extends Node
 # Staged composition: public Residents remains on its existing route until complete.
+signal information_requested(caption: String)
 signal focus_requested(tile: Vector3i)
 signal inspect_requested(tile: Vector3i,unit_id: int)
 var ui_host
@@ -25,6 +26,8 @@ func configure(world,service,host) -> void:
 	panel=preload("res://scripts/residents_view.gd").new();layer.add_child(panel)
 	panel.configure_residents(world,state);panel.input_allowed=func():return allowed() and not job_open()
 	panel.cancelled.connect(close_panel)
+	panel.information_requested.connect(func(caption):
+		if allowed():information_requested.emit(caption))
 	panel.focus_requested.connect(_focus)
 	panel.inspect_requested.connect(state.inspect)
 	panel.job_requested.connect(_job)

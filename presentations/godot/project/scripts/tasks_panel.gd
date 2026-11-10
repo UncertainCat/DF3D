@@ -1,5 +1,6 @@
 extends Node
 # Staged Tasks owner. Public launchers remain gated until input/navigation parity.
+signal information_requested(caption: String)
 signal focus_requested(tile: Vector3i)
 signal inspect_requested(tile: Vector3i,unit_id: int)
 var ui_host
@@ -26,6 +27,8 @@ func configure(world,service,host,help=null) -> void:
 	panel.configure_tasks(world,state);panel.input_allowed=func():return allowed() and not job_open()
 	panel.hover_help=help
 	panel.cancelled.connect(close_panel);panel.navigation_requested.connect(_navigate)
+	panel.information_requested.connect(func(caption):
+		if allowed():information_requested.emit(caption))
 	job_panel=preload("res://scripts/work_order_details_view.gd").new();job_panel.job_context=true;job_panel.tasks_context=true;layer.add_child(job_panel)
 	job_panel.configure_details(world,job_state);job_panel.input_allowed=func():return allowed() and job_open()
 	job_panel.cancelled.connect(job_state.close)

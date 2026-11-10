@@ -91,4 +91,17 @@ func exercise(expected: Dictionary) -> void:
 	owner.open_panel();if not await settle(owner.state):return
 	key(KEY_ESCAPE);await process_frame
 	check(owner.state.phase==owner.state.Phase.Closed and scene._ui.host.active==null,"Escape retained Places")
+	if OS.get_environment("DF3D_PLACES_INFORMATION")=="1":
+		for extent in [Vector2i(912,552),Vector2i(1600,900)]:
+			root.size=extent;await process_frame;await process_frame
+			for target in [[24,"residents"],[136,"tasks"],[280,"work_details"],[352,"workshop"]]:
+				owner.open_panel();if not await settle(owner.state):return
+				await pointer(owner.panel.get_global_transform_with_canvas()*Vector2(target[0],48 if extent.x<1240 else 24))
+				var destination=scene._ui.controller(target[1]);await drain()
+				check(scene._ui.host.active==destination and not owner.panel.visible,"Live information handoff failed: "+target[1])
+				var target_view=destination.global_orders_view if target[1]=="workshop" else destination.panel
+				await pointer(target_view.get_global_transform_with_canvas()*Vector2(200,48 if extent.x<1240 else 24))
+				if not await settle(owner.state):return
+				check(scene._ui.host.active==owner and not target_view.visible,"Live return to Places failed: "+target[1])
+				owner.close_panel()
 	exercised=true

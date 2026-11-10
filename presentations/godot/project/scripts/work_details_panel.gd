@@ -1,5 +1,6 @@
 extends Node
 # Staged owner; settings/name editing and full native acceptance precede exposure.
+signal information_requested(caption: String)
 signal settings_requested
 signal rename_requested
 signal standing_orders_requested
@@ -27,6 +28,8 @@ func configure(world,service,host,hover_help=null) -> void:
 	panel=preload("res://scripts/work_details_view.gd").new();layer.add_child(panel)
 	panel.configure_work_details(world,state);panel.input_allowed=allowed;panel.hover_help=hover_help
 	panel.cancelled.connect(close_panel)
+	panel.information_requested.connect(func(caption):
+		if allowed():information_requested.emit(caption))
 	panel.settings_requested.connect(state.open_settings)
 	panel.reset_requested.connect(state.reset_settings)
 	panel.delete_requested.connect(state.delete_detail)

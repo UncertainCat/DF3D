@@ -2508,6 +2508,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             Json::Value row(Json::objectValue);row["id"]=entry.id;row["name"]=DF2UTF(entry.name);
             row["subtitle"]=DF2UTF(entry.subtitle);row["job_caption"]=DF2UTF(entry.jobCaption);row["additional_jobs"]=entry.additionalJobs;
             row["status_caption"]=DF2UTF(entry.statusCaption);
+            row["secondary_status"]=DF2UTF(entry.secondaryStatus);
             row["position"]=Json::Value(Json::arrayValue);for(auto v:{entry.position.x,entry.position.y,entry.position.z})row["position"].append(v);
             list.append(row);}result.append(list);}
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;

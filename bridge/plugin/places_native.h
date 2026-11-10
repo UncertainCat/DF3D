@@ -19,6 +19,9 @@
 #include "df/abstract_building_guildhallst.h"
 #include "df/historical_entity.h"
 #include "df/occupation.h"
+#include "df/buildingitemst.h"
+#include "df/map_block.h"
+#include "modules/Maps.h"
 #include <array>
 #include <optional>
 #include <unordered_set>
@@ -27,7 +30,7 @@
 namespace df3d_places {
 using Lists=std::array<std::vector<int32_t>,6>;
 struct BuildingRow {
-    int32_t id=-1;df::coord position;std::string name,subtitle,jobCaption,statusCaption;
+    int32_t id=-1;df::coord position;std::string name,subtitle,jobCaption,statusCaption,secondaryStatus;
     int32_t additionalJobs=0;
 };
 using BuildingRows=std::array<std::vector<BuildingRow>,6>;
@@ -235,6 +238,60 @@ inline bool locationDetails(df::building_civzonest& zone,BuildingRow& row) {
     }
     return true;
 }
+inline bool countStatusReady() {
+    static const bool ready=[] {
+        auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+        const auto hash=[base](size_t rva,size_t count){uint64_t h=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<count;++i){h^=base[rva+i];h*=UINT64_C(1099511628211);}return h;};
+        return hash(0x39dbc9,0x1a6)==UINT64_C(0x98470b9a922b03c1) &&
+            hash(0x39e1fe,0x64)==UINT64_C(0x2b001eaec2a55cc6) &&
+            hash(0x52c2b0,0xd8)==UINT64_C(0x38b6489e35387929);
+    }();return ready;
+}
+inline std::string countCaption(int32_t count,size_t suffix) {
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));std::string text;
+    reinterpret_cast<void(*)(int32_t,std::string*)>(base+0x52c2b0)(count,&text);
+    text+=reinterpret_cast<const char*>(base+suffix);return text;
+}
+inline bool stockpileStatus(df::building& building,BuildingRow& row) {
+    if(!countStatusReady())return false;
+    const auto& room=building.room;
+    if(room.width<0 || room.height<0 || int64_t(room.width)*room.height>1048576 ||
+        (room.width && room.height && !room.extents) || building.jobs.size()>1048576)return false;
+    int32_t total=0,occupied=0;
+    // Native39dbc9: enabled extent tiles, item occupancy OR a queued storage
+    // job at the tile. No item eligibility or capacity rules are re-created.
+    for(int32_t dy=0;dy<room.height;++dy)for(int32_t dx=0;dx<room.width;++dx) {
+        if(!int(room.extents[dy*room.width+dx]))continue;
+        ++total;const int32_t x=room.x+dx,y=room.y+dy;
+        if(x<0 || y<0 || x>32767 || y>32767 || building.z<0 || building.z>32767)return false;
+        bool reserved=false;
+        for(auto it=building.jobs.rbegin();it!=building.jobs.rend();++it) {
+            auto* job=*it;if(!job)return false;
+            if(job->job_type==df::job_type::StoreItemInStockpile && job->pos==df::coord(x,y,building.z)){reserved=true;break;}
+        }
+        auto* block=DFHack::Maps::getTileBlock(x,y,building.z);
+        if(reserved || (block && block->occupancy[x&15][y&15].bits.item))++occupied;
+    }
+    int32_t percentage=100;
+    if(occupied<total){percentage=std::min(99,occupied*100/total);if(occupied>0 && percentage<=0)percentage=1;}
+    row.statusCaption=countCaption(percentage,0x162bd48);return true;
+}
+inline bool farmStatus(df::building_farmplotst& farm,BuildingRow& row) {
+    if(!countStatusReady() || farm.contained_items.size()>1048576)return false;
+    int32_t planted=0;int64_t harvest=0;
+    // Native39e1fe: seeds count individually; plants contribute stack size.
+    for(auto* entry:farm.contained_items) {
+        if(!entry)return false;auto* item=entry->item;
+        if(!item || !item->flags.bits.in_building)continue;
+        if(item->getType()==df::item_type::SEEDS)++planted;
+        else if(item->getType()==df::item_type::PLANT)harvest+=item->getStackSize();
+    }
+    if(harvest<0 || harvest>INT32_MAX)return false;
+    if(planted>0)row.statusCaption=countCaption(planted,0x162bca8);
+    if(harvest>0)row.secondaryStatus=countCaption(int32_t(harvest),0x162bc98);
+    return true;
+}
 // Native Places39dba6/39de70/39e029/39e4a5 use building::getName for
 // Stockpiles, Workshops, Farm plots and Siege engines.
 inline std::optional<BuildingRows> buildingRows() {
@@ -250,6 +307,8 @@ inline std::optional<BuildingRows> buildingRows() {
             auto subtitle=zoneSubtitle(*zone);if(!subtitle)return std::nullopt;row.subtitle=std::move(*subtitle);
         } else if(mode==1) {
             auto* zone=virtual_cast<df::building_civzonest>(building);if(!zone || !locationDetails(*zone,row))return std::nullopt;
+        } else if(mode==2) {
+            if(!stockpileStatus(*building,row))return std::nullopt;
         } else if(mode==3) {
             if(!df3d_creature::inventoryDescriptionReady())return std::nullopt;
             // Native39de95 selects only the first permitted worker, if present.
@@ -284,6 +343,7 @@ inline std::optional<BuildingRows> buildingRows() {
                 row.subtitle=plant->name;
                 if(!row.subtitle.empty() && row.subtitle[0]>='a' && row.subtitle[0]<='z')row.subtitle[0]-=32;
             }
+            if(crop!=-1 && !farmStatus(*farm,row))return std::nullopt;
         }
         if(row.name.size()>16384)return std::nullopt;
         if(row.subtitle.size()>16384 || row.jobCaption.size()>16384)return std::nullopt;

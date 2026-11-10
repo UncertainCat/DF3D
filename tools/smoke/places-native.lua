@@ -106,10 +106,11 @@ for _,caption in ipairs{'Zones','Locations','Stockpiles','Workshops','Farm plots
      result.name_mismatch={caption=caption,index=index,requested_first=first,actual_first=actual,expected=rows[index].name,observed=dfhack.df2utf(table.concat(chars)),lines=lines()};save()
      error('Native Places name mismatch: '..caption..' row '..index)
     end
-    if mode==0 or mode==1 or mode==3 or mode==4 then
+    if mode<=4 then
      local secondary={};for x=13,g.dimx-1 do local ch=dfhack.screen.readTile(x,16+visible*3).ch;secondary[#secondary+1]=ch>=32 and ch<=255 and string.char(ch) or ' ' end
      local subtitle=dfhack.utf2df(rows[index].subtitle)
      assert(table.concat(secondary):sub(1,#subtitle)==subtitle,'Places subtitle mismatch: '..caption..' row '..index)
+     if rows[index].secondary_status~='' then assert(table.concat(secondary):find(dfhack.utf2df(rows[index].secondary_status),1,true),'Places secondary status mismatch: '..caption..' row '..index)end
      local status=mode==3 and rows[index].job_caption or rows[index].status_caption
      if status~='' then
       local primary={};for x=13,g.dimx-1 do local ch=dfhack.screen.readTile(x,15+visible*3).ch;primary[#primary+1]=ch>=32 and ch<=255 and string.char(ch) or ' ' end

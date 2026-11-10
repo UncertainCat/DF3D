@@ -6707,5 +6707,189 @@
       "Hospital patient count",
       "Viewport truncation, colors, artwork, controls, transport and viewer"
     ]
+  },
+  "count_status_reference": {
+    "capture": "build/stockpile-storage-native-input-20261110-143449",
+    "scope": "All 34 stockpile percentage captions and one populated planted-count caption match native rendered rows across pages. No harvestable plant fixture.",
+    "stockpiles": [
+      {
+        "id": 1132,
+        "status": "50% occupied"
+      },
+      {
+        "id": 508,
+        "status": "75% occupied"
+      },
+      {
+        "id": 327,
+        "status": "66% occupied"
+      },
+      {
+        "id": 331,
+        "status": "100% occupied"
+      },
+      {
+        "id": 333,
+        "status": "100% occupied"
+      },
+      {
+        "id": 330,
+        "status": "16% occupied"
+      },
+      {
+        "id": 329,
+        "status": "100% occupied"
+      },
+      {
+        "id": 492,
+        "status": "100% occupied"
+      },
+      {
+        "id": 461,
+        "status": "100% occupied"
+      },
+      {
+        "id": 163,
+        "status": "100% occupied"
+      },
+      {
+        "id": 490,
+        "status": "100% occupied"
+      },
+      {
+        "id": 243,
+        "status": "25% occupied"
+      },
+      {
+        "id": 231,
+        "status": "100% occupied"
+      },
+      {
+        "id": 446,
+        "status": "100% occupied"
+      },
+      {
+        "id": 504,
+        "status": "0% occupied"
+      },
+      {
+        "id": 393,
+        "status": "0% occupied"
+      },
+      {
+        "id": 506,
+        "status": "100% occupied"
+      },
+      {
+        "id": 533,
+        "status": "0% occupied"
+      },
+      {
+        "id": 505,
+        "status": "85% occupied"
+      },
+      {
+        "id": 1122,
+        "status": "10% occupied"
+      },
+      {
+        "id": 158,
+        "status": "0% occupied"
+      },
+      {
+        "id": 1259,
+        "status": "15% occupied"
+      },
+      {
+        "id": 854,
+        "status": "78% occupied"
+      },
+      {
+        "id": 462,
+        "status": "2% occupied"
+      },
+      {
+        "id": 332,
+        "status": "32% occupied"
+      },
+      {
+        "id": 328,
+        "status": "0% occupied"
+      },
+      {
+        "id": 507,
+        "status": "50% occupied"
+      },
+      {
+        "id": 1059,
+        "status": "33% occupied"
+      },
+      {
+        "id": 230,
+        "status": "8% occupied"
+      },
+      {
+        "id": 315,
+        "status": "33% occupied"
+      },
+      {
+        "id": 121,
+        "status": "48% occupied"
+      },
+      {
+        "id": 326,
+        "status": "8% occupied"
+      },
+      {
+        "id": 532,
+        "status": "15% occupied"
+      },
+      {
+        "id": 967,
+        "status": "12% occupied"
+      }
+    ],
+    "farms": [
+      {
+        "additional_jobs": 0,
+        "id": 227,
+        "job_caption": "",
+        "name": "Farm Plot",
+        "position": [
+          137,
+          111,
+          165
+        ],
+        "secondary_status": "",
+        "status_caption": "",
+        "subtitle": "Cave wheat"
+      },
+      {
+        "additional_jobs": 0,
+        "id": 968,
+        "job_caption": "",
+        "name": "Farm Plot",
+        "position": [
+          137,
+          119,
+          165
+        ],
+        "secondary_status": "",
+        "status_caption": "40 planted",
+        "subtitle": "Sweet pod"
+      }
+    ],
+    "native_sources": {
+      "occupancy": "Inline39dbc9..39dd6f: enabled room extents, map item occupancy OR matching StoreItemInStockpile job. Integer percentage constrained to 1..99 for positive partial occupancy; full/zero-extent result100.",
+      "farm": "Inline39e1fe..39e262: in_building contained seed items count individually; contained plant items contribute native virtual getStackSize. Counts emitted only when positive and not fallow.",
+      "formatting": "Native52c2b0 with immutable native suffixes; planted first status line, harvest second status line. No renderer invocation."
+    },
+    "source_save_preserved": "Owned source unchanged",
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "Harvestable plant fixture",
+      "Controlled hauling reservation, zero-extent and 1/99-percent boundary fixtures",
+      "Colors, artwork, viewport behavior, transport and viewer"
+    ]
   }
 }

@@ -130,6 +130,19 @@ source preserved,30FPS, GPU39C/0% sampled. MSVC rebuild and core checks pass.
 temple/guild tiers, deity-specific temples, missing staff targets and hospital
 patient counts remain unaccepted, along with truncation, artwork and viewer.
 
+Stockpile percentage and farm count status are inline in the Places renderer,
+with no independent semantic callable. The bridge mirrors those pinned branches
+using simulation data: stockpile enabled extents are occupied by a map item or
+a matching storage job, with native integer percentage handling; farm seed items
+count individually and plant items contribute native virtual stack sizes. The
+native integer formatter and immutable suffixes produce captions. Farm harvest
+status has a separate second-line field; fallow skips both counts. Protected143449
+matches all34 stockpile captions (0–100%) and the populated40-planted farm row.
+No harvestable plant fixture or controlled reservation/boundary coverage is
+claimed. Owned DF39316 closes unsaved, source preserved,30FPS, GPU39C/3% sampled.
+MSVC rebuild and core checks pass. `native_places.json.count_status_reference`
+records evidence and remaining gaps; colors, artwork and viewer remain unfinished.
+
 ## Management 174 Tasks contract
 
 Management174 uses `Local\df3d_management_v174`;173 peers cannot attach. There is

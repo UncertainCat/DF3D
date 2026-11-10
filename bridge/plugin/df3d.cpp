@@ -2499,6 +2499,17 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           const auto result=df3d_tasks::apply(action,values[0],values[1],values[2],values[3]!=0);
           out.print("{}\n",static_cast<int>(result));return CR_OK;
         }
+        if(parameters[0]=="places-building-rows-probe") {
+          if(parameters.size()!=1)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto rows=df3d_places::buildingRows();if(!rows)return CR_FAILURE;
+          Json::Value result(Json::arrayValue);
+          for(const auto& entries:*rows){Json::Value list(Json::arrayValue);for(const auto& entry:entries){
+            Json::Value row(Json::objectValue);row["id"]=entry.id;row["name"]=DF2UTF(entry.name);
+            row["position"]=Json::Value(Json::arrayValue);for(auto v:{entry.position.x,entry.position.y,entry.position.z})row["position"].append(v);
+            list.append(row);}result.append(list);}
+          out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
+        }
         if(parameters[0]=="places-lists-probe") {
           if(parameters.size()!=1)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;

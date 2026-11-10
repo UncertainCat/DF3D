@@ -60,6 +60,20 @@ reference only, never a runtime semantic entry point. No Godot reconstruction
 or runtime menu-list reads have been added. Source preserved; owned DF40288
 closed unsaved at30FPS, GPU42C/0% sampled.
 
+The owned building-row provider additionally copies center coordinates and calls
+native `building::getName` for Stockpiles, Workshops, Farm plots and Siege engines,
+as the Places renderer does at39dba6/39de70/39e029/39e4a5. Protected141227 checks
+all six lists' coordinates, identical cold/warm names, and rendered primary names
+across all34 stockpiles,46 workshops and2 farm plots. The empty Siege engines
+list gives no populated-name acceptance. Zones/Locations headings remain
+unprovided; status/artwork/actions/transport/viewer remain unfinished. Owned
+DF31620 closes unsaved, source preserved,30FPS and GPU41C/0% sampled. The two
+preceding probes141105/141147 failed because the discovery oracle supplied an
+out-of-range final scroll offset; native clamps the displayed page without
+rewriting that offset. The oracle now supplies valid offsets. No product scroll
+behavior changed. `native_places.json.building_names_reference` retains the
+accepted names and scoped provenance.
+
 ## Management 174 Tasks contract
 
 Management174 uses `Local\df3d_management_v174`;173 peers cannot attach. There is

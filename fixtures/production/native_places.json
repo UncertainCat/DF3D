@@ -3386,7 +3386,7 @@
   "source_save_preserved": "Owned source unchanged",
   "owned_df_closed_unsaved": true,
   "omissions": [
-    "Native captions/artwork/status/control providers",
+    "Zones/Locations headings, status/artwork/control providers",
     "Actions and lifecycle",
     "Viewer implementation and integration",
     "Empty/nonempty siege-engine fixtures"
@@ -3409,6 +3409,785 @@
       46,
       2,
       0
+    ],
+    "menu_preserved": true,
+    "source_save_preserved": "Owned source unchanged",
+    "owned_df_closed_unsaved": true
+  },
+  "building_names_reference": {
+    "capture": "build/stockpile-storage-native-input-20261110-141227",
+    "scope": "Owned building IDs and center coordinates match all six native lists. Cold/warm names are identical; all 34 stockpiles, 46 workshops and 2 farm plots match rendered primary names across pages. Siege engines empty: call-site audit only. Zones/Locations headings remain unprovided. No status, artwork, actions, transport or viewer acceptance.",
+    "native_calls": [
+      "39dba6",
+      "39de70",
+      "39e029",
+      "39e4a5"
+    ],
+    "source": "building::getName, virtual slot 0x188, output to owned string",
+    "visible_counts": [
+      {
+        "count": 34,
+        "mode": 2
+      },
+      {
+        "count": 46,
+        "mode": 3
+      },
+      {
+        "count": 2,
+        "mode": 4
+      },
+      {
+        "count": 0,
+        "mode": 5
+      }
+    ],
+    "rows": [
+      [
+        {
+          "id": 1132,
+          "name": "Armor Stockpile #37",
+          "position": [
+            129,
+            71,
+            165
+          ]
+        },
+        {
+          "id": 508,
+          "name": "Armor Stockpile #30",
+          "position": [
+            128,
+            71,
+            165
+          ]
+        },
+        {
+          "id": 327,
+          "name": "Bar/Block Stockpile #13",
+          "position": [
+            141,
+            64,
+            165
+          ]
+        },
+        {
+          "id": 331,
+          "name": "Bar/Block Stockpile #17",
+          "position": [
+            149,
+            64,
+            165
+          ]
+        },
+        {
+          "id": 333,
+          "name": "Bar/Block Stockpile #19",
+          "position": [
+            125,
+            63,
+            165
+          ]
+        },
+        {
+          "id": 330,
+          "name": "Bar/Block Stockpile #16",
+          "position": [
+            145,
+            71,
+            165
+          ]
+        },
+        {
+          "id": 329,
+          "name": "Bar/Block Stockpile #15",
+          "position": [
+            141,
+            71,
+            165
+          ]
+        },
+        {
+          "id": 492,
+          "name": "Bar/Block Stockpile #25",
+          "position": [
+            149,
+            71,
+            165
+          ]
+        },
+        {
+          "id": 461,
+          "name": "Food Stockpile #22",
+          "position": [
+            119,
+            49,
+            165
+          ]
+        },
+        {
+          "id": 163,
+          "name": "Food Stockpile #5",
+          "position": [
+            122,
+            91,
+            165
+          ]
+        },
+        {
+          "id": 490,
+          "name": "Food Stockpile #24",
+          "position": [
+            132,
+            53,
+            165
+          ]
+        },
+        {
+          "id": 243,
+          "name": "Food Stockpile #9",
+          "position": [
+            126,
+            116,
+            165
+          ]
+        },
+        {
+          "id": 231,
+          "name": "Food Stockpile #8",
+          "position": [
+            148,
+            110,
+            165
+          ]
+        },
+        {
+          "id": 446,
+          "name": "Food Stockpile #21",
+          "position": [
+            119,
+            53,
+            165
+          ]
+        },
+        {
+          "id": 504,
+          "name": "Furniture Stockpile #26",
+          "position": [
+            145,
+            99,
+            165
+          ]
+        },
+        {
+          "id": 393,
+          "name": "Furniture Stockpile #20",
+          "position": [
+            132,
+            64,
+            165
+          ]
+        },
+        {
+          "id": 506,
+          "name": "Furniture Stockpile #28",
+          "position": [
+            153,
+            99,
+            165
+          ]
+        },
+        {
+          "id": 533,
+          "name": "Furniture Stockpile #32",
+          "position": [
+            159,
+            100,
+            165
+          ]
+        },
+        {
+          "id": 505,
+          "name": "Furniture Stockpile #27",
+          "position": [
+            149,
+            99,
+            165
+          ]
+        },
+        {
+          "id": 1122,
+          "name": "Furniture Stockpile #36",
+          "position": [
+            115,
+            98,
+            165
+          ]
+        },
+        {
+          "id": 158,
+          "name": "Furniture Stockpile #4",
+          "position": [
+            106,
+            99,
+            165
+          ]
+        },
+        {
+          "id": 1259,
+          "name": "Stone Stockpile #38",
+          "position": [
+            142,
+            67,
+            164
+          ]
+        },
+        {
+          "id": 854,
+          "name": "Stone Stockpile #33",
+          "position": [
+            145,
+            79,
+            164
+          ]
+        },
+        {
+          "id": 462,
+          "name": "Stone Stockpile #23",
+          "position": [
+            114,
+            114,
+            165
+          ]
+        },
+        {
+          "id": 332,
+          "name": "Stone Stockpile #18",
+          "position": [
+            139,
+            59,
+            165
+          ]
+        },
+        {
+          "id": 328,
+          "name": "Stone Stockpile #14",
+          "position": [
+            137,
+            71,
+            165
+          ]
+        },
+        {
+          "id": 507,
+          "name": "Weapon Stockpile #29",
+          "position": [
+            132,
+            71,
+            165
+          ]
+        },
+        {
+          "id": 1059,
+          "name": "Weapon Stockpile #35",
+          "position": [
+            130,
+            70,
+            165
+          ]
+        },
+        {
+          "id": 230,
+          "name": "Cave Wheat",
+          "position": [
+            126,
+            112,
+            165
+          ]
+        },
+        {
+          "id": 315,
+          "name": "Milled Wheat",
+          "position": [
+            119,
+            109,
+            165
+          ]
+        },
+        {
+          "id": 121,
+          "name": "Stockpile #2",
+          "position": [
+            117,
+            72,
+            165
+          ]
+        },
+        {
+          "id": 326,
+          "name": "Stockpile #12",
+          "position": [
+            134,
+            65,
+            165
+          ]
+        },
+        {
+          "id": 532,
+          "name": "Stockpile #31",
+          "position": [
+            115,
+            94,
+            165
+          ]
+        },
+        {
+          "id": 967,
+          "name": "Stockpile #34",
+          "position": [
+            160,
+            65,
+            165
+          ]
+        }
+      ],
+      [
+        {
+          "id": 236,
+          "name": "Butcher's Shop",
+          "position": [
+            110,
+            111,
+            165
+          ]
+        },
+        {
+          "id": 4,
+          "name": "Carpenter's Workshop",
+          "position": [
+            106,
+            92,
+            165
+          ]
+        },
+        {
+          "id": 466,
+          "name": "Carpenter's Workshop",
+          "position": [
+            125,
+            70,
+            165
+          ]
+        },
+        {
+          "id": 248,
+          "name": "Clothier's Shop",
+          "position": [
+            110,
+            120,
+            165
+          ]
+        },
+        {
+          "id": 6,
+          "name": "Craftsdwarf's Workshop",
+          "position": [
+            109,
+            101,
+            165
+          ]
+        },
+        {
+          "id": 30,
+          "name": "Farmer's Workshop",
+          "position": [
+            106,
+            89,
+            165
+          ]
+        },
+        {
+          "id": 950,
+          "name": "Farmer's Workshop",
+          "position": [
+            123,
+            109,
+            165
+          ]
+        },
+        {
+          "id": 226,
+          "name": "Farmer's Workshop",
+          "position": [
+            126,
+            109,
+            165
+          ]
+        },
+        {
+          "id": 949,
+          "name": "Farmer's Workshop",
+          "position": [
+            126,
+            120,
+            165
+          ]
+        },
+        {
+          "id": 273,
+          "name": "Jeweler's Workshop",
+          "position": [
+            125,
+            73,
+            165
+          ]
+        },
+        {
+          "id": 422,
+          "name": "Kitchen",
+          "position": [
+            120,
+            116,
+            165
+          ]
+        },
+        {
+          "id": 238,
+          "name": "Kitchen",
+          "position": [
+            120,
+            113,
+            165
+          ]
+        },
+        {
+          "id": 423,
+          "name": "Kitchen",
+          "position": [
+            120,
+            119,
+            165
+          ]
+        },
+        {
+          "id": 31,
+          "name": "Kitchen",
+          "position": [
+            119,
+            101,
+            165
+          ]
+        },
+        {
+          "id": 247,
+          "name": "Leather Works",
+          "position": [
+            110,
+            117,
+            165
+          ]
+        },
+        {
+          "id": 5,
+          "name": "Mechanic's Workshop",
+          "position": [
+            106,
+            101,
+            165
+          ]
+        },
+        {
+          "id": 323,
+          "name": "Metalsmith's Forge",
+          "position": [
+            146,
+            67,
+            165
+          ]
+        },
+        {
+          "id": 324,
+          "name": "Metalsmith's Forge",
+          "position": [
+            149,
+            67,
+            165
+          ]
+        },
+        {
+          "id": 325,
+          "name": "Metalsmith's Forge",
+          "position": [
+            152,
+            67,
+            165
+          ]
+        },
+        {
+          "id": 411,
+          "name": "Millstone",
+          "position": [
+            136,
+            107,
+            165
+          ]
+        },
+        {
+          "id": 233,
+          "name": "Millstone",
+          "position": [
+            121,
+            107,
+            165
+          ]
+        },
+        {
+          "id": 409,
+          "name": "Millstone",
+          "position": [
+            133,
+            107,
+            165
+          ]
+        },
+        {
+          "id": 322,
+          "name": "Smelter",
+          "position": [
+            143,
+            67,
+            165
+          ]
+        },
+        {
+          "id": 58,
+          "name": "Smelter",
+          "position": [
+            119,
+            94,
+            165
+          ]
+        },
+        {
+          "id": 391,
+          "name": "Smelter",
+          "position": [
+            146,
+            60,
+            165
+          ]
+        },
+        {
+          "id": 392,
+          "name": "Smelter",
+          "position": [
+            149,
+            60,
+            165
+          ]
+        },
+        {
+          "id": 321,
+          "name": "Smelter",
+          "position": [
+            140,
+            67,
+            165
+          ]
+        },
+        {
+          "id": 946,
+          "name": "Still",
+          "position": [
+            155,
+            110,
+            165
+          ]
+        },
+        {
+          "id": 947,
+          "name": "Still",
+          "position": [
+            155,
+            113,
+            165
+          ]
+        },
+        {
+          "id": 948,
+          "name": "Still",
+          "position": [
+            152,
+            113,
+            165
+          ]
+        },
+        {
+          "id": 232,
+          "name": "Still",
+          "position": [
+            152,
+            110,
+            165
+          ]
+        },
+        {
+          "id": 37,
+          "name": "Still",
+          "position": [
+            110,
+            89,
+            165
+          ]
+        },
+        {
+          "id": 1256,
+          "name": "Stoneworker's Workshop",
+          "position": [
+            132,
+            67,
+            164
+          ]
+        },
+        {
+          "id": 1257,
+          "name": "Stoneworker's Workshop",
+          "position": [
+            132,
+            64,
+            164
+          ]
+        },
+        {
+          "id": 1258,
+          "name": "Stoneworker's Workshop",
+          "position": [
+            132,
+            61,
+            164
+          ]
+        },
+        {
+          "id": 270,
+          "name": "Stoneworker's Workshop",
+          "position": [
+            106,
+            109,
+            165
+          ]
+        },
+        {
+          "id": 271,
+          "name": "Stoneworker's Workshop",
+          "position": [
+            106,
+            112,
+            165
+          ]
+        },
+        {
+          "id": 3,
+          "name": "Stoneworker's Workshop",
+          "position": [
+            106,
+            95,
+            165
+          ]
+        },
+        {
+          "id": 272,
+          "name": "Stoneworker's Workshop",
+          "position": [
+            106,
+            115,
+            165
+          ]
+        },
+        {
+          "id": 1255,
+          "name": "Stoneworker's Workshop",
+          "position": [
+            163,
+            68,
+            164
+          ]
+        },
+        {
+          "id": 237,
+          "name": "Tanner's Shop",
+          "position": [
+            110,
+            114,
+            165
+          ]
+        },
+        {
+          "id": 56,
+          "name": "Wood Furnace",
+          "position": [
+            116,
+            101,
+            165
+          ]
+        },
+        {
+          "id": 319,
+          "name": "Wood Furnace",
+          "position": [
+            137,
+            67,
+            165
+          ]
+        },
+        {
+          "id": 425,
+          "name": "Wood Furnace",
+          "position": [
+            129,
+            67,
+            165
+          ]
+        },
+        {
+          "id": 891,
+          "name": "Wood Furnace",
+          "position": [
+            132,
+            67,
+            165
+          ]
+        },
+        {
+          "id": 320,
+          "name": "Wood Furnace",
+          "position": [
+            137,
+            64,
+            165
+          ]
+        }
+      ],
+      [
+        {
+          "id": 227,
+          "name": "Farm Plot",
+          "position": [
+            137,
+            111,
+            165
+          ]
+        },
+        {
+          "id": 968,
+          "name": "Farm Plot",
+          "position": [
+            137,
+            119,
+            165
+          ]
+        }
+      ],
+      []
     ],
     "menu_preserved": true,
     "source_save_preserved": "Owned source unchanged",

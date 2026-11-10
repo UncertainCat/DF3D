@@ -36,6 +36,22 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
 
+## Places native discovery
+
+Places remains unimplemented and hidden. Protected140037 on DF53.16 captures
+all six native tabs:158 Zones,6 Locations,34 Stockpiles,46 Workshops,2 Farm
+plots and no Siege engines. `fixtures/production/native_places.json` records
+ordered identities and visible text; screenshots stay in ignored capture output.
+The native opening branch323a77 passes `info.buildings` to375450. That builder
+initializes six vectors and scroll state in its supplied `buildings_interfacest`,
+reads simulation building lists, deduplicates Locations using temporary owned
+IDs, and sorts the first four lists. It is a candidate for an independently owned
+context, not yet an accepted provider: comparator/callee side effects and
+cold/warm parity still require verification. Native feed399990 is a discovery
+reference only, never a runtime semantic entry point. No Godot reconstruction
+or runtime menu-list reads have been added. Source preserved; owned DF40288
+closed unsaved at30FPS, GPU42C/0% sampled.
+
 ## Management 174 Tasks contract
 
 Management174 uses `Local\df3d_management_v174`;173 peers cannot attach. There is

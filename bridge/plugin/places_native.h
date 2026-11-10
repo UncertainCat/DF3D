@@ -34,6 +34,11 @@
 
 namespace df3d_places {
 using Lists=std::array<std::vector<int32_t>,6>;
+inline uint64_t membershipRevision(uint8_t tab,const std::vector<int32_t>& ids) {
+    uint64_t value=UINT64_C(14695981039346656037);value^=tab;value*=UINT64_C(1099511628211);
+    for(auto id:ids)for(unsigned i=0;i<4;++i){value^=uint8_t(uint32_t(id)>>(8*i));value*=UINT64_C(1099511628211);}
+    value&=INT64_MAX;return value?value:1;
+}
 struct BuildingRow {
     int32_t id=-1;df::coord position;std::string name,subtitle,jobCaption,statusCaption,secondaryStatus,statusOverlay;
     int32_t additionalJobs=0,siegeAction=-1,subtitleLocationId=-1;

@@ -114,7 +114,7 @@
 #include "stone_use_native.h"
 #include "stocks_native.h"
 #include "tasks_action_native.h"
-#include "places_native.h"
+#include "places_action_native.h"
 #include "df/gamest.h"
 #include "work_order_catalog_native.h"
 #include "work_order_rows_native.h"
@@ -530,6 +530,7 @@ std::optional<TasksResult> tasks;
 struct PlacesResult {
   m::PlacesOutcome outcome=m::PlacesOutcome::Rejected;uint8_t tab=0;
   uint64_t listRevision=0;uint32_t total=0,offset=0;std::vector<df3d_places::BuildingRow> rows;
+  int32_t buildingId=-1;int8_t siegeAction=-1;
 };
 std::optional<PlacesResult> places;
 struct StocksItemResult : df3d_production::ItemFacts {
@@ -1265,7 +1266,7 @@ void publish() {
         b.CreateString(row.name),b.CreateString(row.subtitle),b.CreateString(row.jobCaption),b.CreateString(row.statusCaption),
         b.CreateString(row.secondaryStatus),b.CreateString(row.statusOverlay),b.CreateString(row.operatorCaption),
         row.additionalJobs,int8_t(row.siegeAction),encodeItemRecipe(row.appearance),row.subtitleLocationId));}
-    placesResult=m::CreatePlacesState(b,places->outcome,places->tab,places->listRevision,places->total,places->offset,b.CreateVector(rows));
+    placesResult=m::CreatePlacesState(b,places->outcome,places->tab,places->listRevision,places->total,places->offset,b.CreateVector(rows),places->buildingId,places->siegeAction);
   }
   flatbuffers::Offset<m::TasksState> tasksResult;
   if(tasks){
@@ -4358,14 +4359,29 @@ void run(color_ostream& out) {
     } catch(...) {residentsRows.reset();}
     publish();return;
   }
+  if(r->action()==m::ManagementAction::PlacesApply){
+    const auto& q=*r->places();status=m::ManagementStatus::Rejected;message.clear();places.emplace();
+    places->tab=5;places->buildingId=q.building_id();places->siegeAction=q.siege_action();bool started=false;
+    try {
+      const auto current=df3d_places::lists();if(!current)throw std::runtime_error("places unavailable");
+      const auto& ids=(*current)[5];
+      if(df3d_places::membershipRevision(5,ids)!=q.expected_list_revision() ||
+        (q.building_id()!=-1 && std::find(ids.begin(),ids.end(),q.building_id())==ids.end()))places->outcome=m::PlacesOutcome::Stale;
+      else {
+        started=true;const auto result=df3d_places::siegeAction(q.building_id(),q.siege_action());
+        if(result==df3d_places::ActionOutcome::Applied){places->outcome=m::PlacesOutcome::Applied;status=m::ManagementStatus::Ok;mutated=true;}
+        else if(result==df3d_places::ActionOutcome::Unknown){places->outcome=m::PlacesOutcome::Unknown;mutated=true;}
+      }
+    }catch(...){if(started){places->outcome=m::PlacesOutcome::Unknown;mutated=true;}}
+    publish();return;
+  }
   if(r->action()==m::ManagementAction::PlacesRead){
     const auto& q=*r->places();status=m::ManagementStatus::Rejected;message.clear();places.emplace();places->tab=q.tab();
     try {
       auto all=df3d_places::buildingRows(q.tab());if(!all)throw std::runtime_error("places unavailable");
-      auto& current=(*all)[q.tab()];uint64_t revision=UINT64_C(14695981039346656037);
-      revision^=q.tab();revision*=UINT64_C(1099511628211);
-      for(const auto& row:current)for(unsigned i=0;i<4;++i){revision^=uint8_t(uint32_t(row.id)>>(8*i));revision*=UINT64_C(1099511628211);}
-      revision&=INT64_MAX;if(!revision)revision=1;
+      auto& current=(*all)[q.tab()];std::vector<int32_t> ids;ids.reserve(current.size());
+      for(const auto& row:current)ids.push_back(row.id);
+      const auto revision=df3d_places::membershipRevision(q.tab(),ids);
       if((q.expected_list_revision() && q.expected_list_revision()!=revision) || q.offset()>current.size())places->outcome=m::PlacesOutcome::Stale;
       else {
         PlacesResult page;page.tab=q.tab();page.listRevision=revision;page.total=uint32_t(current.size());page.offset=q.offset();size_t bytes=0;

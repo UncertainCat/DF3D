@@ -87,6 +87,18 @@ if os.getenv('DF3D_PLACES_WIRE')=='1' then
  write('shot.tmp','places-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))
  local deadline=dfhack.getTickCount()+(os.getenv('DF3D_PLACES_SCENE')=='1' and 120000 or 30000)
  while true do local ack=io.open(out..'/ack-places-wire');if ack then ack:close();break end
+  local step=io.open(out..'/places-siege-step')
+  if step then
+   local expected=json.decode(step:read('*a'));step:close();assert(os.remove(out..'/places-siege-step'))
+   local actual={}
+   for _,entry in ipairs(expected.engines)do
+    local engine=assert(df.building.find(entry.id));assert(tonumber(engine.action)==entry.action,'Wire siege action differs from simulation')
+    local jobs={};for _,job in ipairs(engine.jobs)do jobs[#jobs+1]=job.id end
+    actual[#actual+1]={id=engine.id,action=tonumber(engine.action),jobs=jobs}
+   end
+   write('places-siege-observed-'..expected.step..'.json',json.encode(actual))
+   write('places-siege-ack',tostring(expected.step))
+  end
   assert(dfhack.getTickCount()<deadline,'Places wire timeout');script.sleep(1,'frames')
  end
 end

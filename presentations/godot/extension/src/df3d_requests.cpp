@@ -216,7 +216,7 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
             d["subtitle_location_id"]=r.subtitleLocationId;d["additional_jobs"]=r.additionalJobs;d["siege_action"]=int(r.siegeAction);
             if(r.appearance)d["appearance"]=management::itemRecipeDictionary(*r.appearance);rows.push_back(d);
         }
-        value["rows"]=rows;result["places"]=value;
+        value["building_id"]=v.buildingId;value["siege_action"]=int(v.siegeAction);value["rows"]=rows;result["places"]=value;
     }
     if(s.tasks){
         const auto& v=*s.tasks;Dictionary value;Array rows;
@@ -542,14 +542,21 @@ bool readResidentsSpecialization(const Dictionary& data,wm::ManagementRequest& r
 bool validatePlaces(const Dictionary& data,String& error) {
     error="Invalid places request";
     const auto integer=[](const Dictionary& d,const char* k,int64_t lo,int64_t hi){return d.has(k) && d[k].get_type()==Variant::INT && int64_t(d[k])>=lo && int64_t(d[k])<=hi;};
-    if(data.size()!=5 || !integer(data,"tab",0,5) || !integer(data,"offset",0,1048576) || !integer(data,"limit",1,64) ||
-        !integer(data,"expected_list_revision",0,INT64_MAX) || (int64_t(data["offset"]) && !int64_t(data["expected_list_revision"])))return false;
+    if(int64_t(data["action"])==int64_t(wm::ManagementAction::PlacesRead)){
+        if(data.size()!=5 || !integer(data,"tab",0,5) || !integer(data,"offset",0,1048576) || !integer(data,"limit",1,64) ||
+            !integer(data,"expected_list_revision",0,INT64_MAX) || (int64_t(data["offset"]) && !int64_t(data["expected_list_revision"])))return false;
+    }else if(data.size()!=5 || !integer(data,"tab",5,5) || !integer(data,"expected_list_revision",1,INT64_MAX) ||
+        !integer(data,"building_id",-1,INT32_MAX) || !integer(data,"siege_action",0,4))return false;
     error=String();return true;
 }
 bool readPlaces(const Dictionary& data,wm::ManagementRequest& request,String&) {
-    request.action=wm::ManagementAction::PlacesRead;auto& q=request.places;q.tab=uint8_t(int64_t(data["tab"]));
-    q.offset=uint32_t(int64_t(data["offset"]));q.limit=uint16_t(int64_t(data["limit"]));q.expectedListRevision=uint64_t(int64_t(data["expected_list_revision"]));return true;
+    request.action=wm::ManagementAction(int64_t(data["action"]));auto& q=request.places;q.tab=uint8_t(int64_t(data["tab"]));
+    q.expectedListRevision=uint64_t(int64_t(data["expected_list_revision"]));
+    if(request.action==wm::ManagementAction::PlacesRead){q.offset=uint32_t(int64_t(data["offset"]));q.limit=uint16_t(int64_t(data["limit"]));}
+    else {q.buildingId=int32_t(int64_t(data["building_id"]));q.siegeAction=int8_t(int64_t(data["siege_action"]));}
+    return true;
 }
+
 bool validateTasks(const Dictionary& data,String& error) {
     error="Invalid tasks request";
     const auto integer=[](const Dictionary& d,const char* k,int64_t lo,int64_t hi){return d.has(k) && d[k].get_type()==Variant::INT && int64_t(d[k])>=lo && int64_t(d[k])<=hi;};
@@ -947,7 +954,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::PlacesRead)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::PlacesApply)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

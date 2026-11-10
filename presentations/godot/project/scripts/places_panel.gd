@@ -17,6 +17,8 @@ func configure(world,service,host,hover=null) -> void:
 	panel=preload("res://scripts/places_view.gd").new();layer.add_child(panel)
 	panel.configure_places(world,state);panel.input_allowed=allowed;panel.hover_help=hover
 	panel.cancelled.connect(close_panel);panel.navigation_requested.connect(_navigate)
+	panel.siege_requested.connect(func(id,action):
+		if allowed():state.apply(id,action))
 	host.register(self);_layout();_sync()
 func allowed() -> bool:return play_enabled and ui_host!=null and ui_host.allows_panel_input(self)
 func open_panel() -> void:

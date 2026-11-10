@@ -52,6 +52,21 @@ func run() -> void:
 			5:second.places.rows[0].position=Vector3i(-1,0,0)
 		service.reply(state.ticket,second);check(state.phase==State.Phase.Rejected and state.rows.is_empty(),"Malformed page accepted: %d"%fault)
 	state.open(4);service.reply(state.ticket,page(4,0,[],0));check(state.phase==State.Phase.Ready and state.rows.is_empty(),"Empty tab rejected")
+	state.open(5);service.reply(state.ticket,page(5));state.apply(1,3);var mutation:=state.ticket
+	check(state.phase==State.Phase.Applying and service.calls[mutation].intent.expected_list_revision==8,"Siege intent lost membership")
+	state.apply(-1,0);check(state.ticket==mutation,"Pending siege action duplicated")
+	var receipt: Dictionary={"places":{"outcome":C.PlacesOutcome.Applied,"tab":5,"building_id":1,"siege_action":3,"list_revision":0,"total":0,"offset":0,"rows":[]}}
+	service.reply(mutation,receipt);check(state.phase==State.Phase.Reading and service.calls[state.ticket].intent.action==C.ManagementAction.PlacesRead,"Applied siege action did not refresh")
+	service.reply(state.ticket,page(5));state.apply(-1,0);mutation=state.ticket
+	var unknown:=receipt.duplicate(true);unknown.status=C.ManagementStatus.Rejected;unknown.places.outcome=C.PlacesOutcome.Unknown;unknown.places.building_id=-1;unknown.places.siege_action=0
+	service.reply(mutation,unknown);check(state.phase==State.Phase.Unknown and state.ticket==0 and service.next==mutation,"Unknown siege action replayed")
+	for retire in ["close","tab","session"]:
+		state.open(5);service.reply(state.ticket,page(5));state.apply(1,3);mutation=state.ticket
+		if retire=="close":state.close()
+		elif retire=="tab":state.select_tab(0)
+		else:service.session_changed.emit()
+		var phase_before: int=state.phase;var ticket_before: int=state.ticket
+		service.reply(mutation,receipt);check(state.phase==phase_before and state.ticket==ticket_before,"Retired siege receipt changed owner")
 	state.dispose();state.open();check(state.phase==State.Phase.Unavailable,"Missing service retained read")
 	var view:=View.new();view.state=state;view.size=Vector2(944,708)
 	check(view.tab_rect(0)==Rect2(8,60,72,24) and view.tab_rect(3)==Rect2(8,84,104,24),"Places tabs differ from native reference")

@@ -2,7 +2,7 @@ extends RefCounted
 # Native membership and row data are authority; tabs, paging and scroll are local.
 signal changed
 const C=preload("res://scripts/management_contract.gd")
-enum Phase {Closed,Reading,Ready,Rejected,Unavailable}
+enum Phase {Closed,Reading,Ready,Rejected,Unavailable,Applying,Unknown}
 var service
 var phase:=Phase.Closed
 var tab:=0
@@ -41,11 +41,16 @@ func select_tab(value: int) -> void:
 	_scroll[tab]=first;_retire();_clear();tab=value;first=_scroll[tab]
 	phase=Phase.Rejected;refresh()
 func refresh() -> void:
-	if phase==Phase.Reading:return
+	if phase in [Phase.Reading,Phase.Applying]:return
 	_retire();_clear();_restarts=0;last_result={};phase=Phase.Reading;_page()
 func seek(value: int,capacity: int) -> void:
 	if phase!=Phase.Ready:return
 	first=clampi(value,0,maxi(0,rows.size()-maxi(1,capacity)));_scroll[tab]=first;changed.emit()
+func apply(building_id: int,action: int) -> void:
+	if phase!=Phase.Ready or tab!=5 or rows.is_empty() or action<0 or action>4:return
+	if building_id!=-1 and not rows.any(func(row):return row.building_id==building_id):return
+	var intent: Dictionary={"action":C.ManagementAction.PlacesApply,"tab":5,"building_id":building_id,"siege_action":action,"expected_list_revision":_revision}
+	_clear();phase=Phase.Applying;_submit(intent)
 func _page() -> void:
 	_submit({"action":C.ManagementAction.PlacesRead,"tab":tab,"offset":_pending_rows.size(),"limit":32,"expected_list_revision":_revision})
 func _integer(value: Variant,low: int,high: int) -> bool:return typeof(value)==TYPE_INT and value>=low and value<=high
@@ -66,7 +71,10 @@ func _valid_page(value: Dictionary,intent: Dictionary) -> bool:
 		if row.has("appearance") and not preload("res://scripts/item_sheet_state.gd")._valid_recipe(row.appearance):return false
 	return true
 func _reject(result: Dictionary) -> void:
-	_clear();last_result=result.duplicate(true);phase=Phase.Rejected;changed.emit()
+	_clear();last_result=result.duplicate(true)
+	var value: Variant=result.get("places",{})
+	phase=Phase.Unknown if result.get("outcome","")=="unknown" or (typeof(value)==TYPE_DICTIONARY and value.get("outcome")==C.PlacesOutcome.Unknown) else Phase.Rejected
+	changed.emit()
 func _submit(intent: Dictionary) -> void:
 	if service==null:_clear();phase=Phase.Unavailable;changed.emit();return
 	var owner:=generation
@@ -75,6 +83,9 @@ func _submit(intent: Dictionary) -> void:
 		ticket=0;var value: Variant=result.get("places",{})
 		if typeof(value)!=TYPE_DICTIONARY or result.get("action")!=intent.action or result.get("outcome","")=="unknown":_reject(result);return
 		if value.get("tab")!=intent.tab:_reject(result);return
+		if intent.action==C.ManagementAction.PlacesApply:
+			if result.get("status")!=C.ManagementStatus.Ok or value.get("outcome")!=C.PlacesOutcome.Applied or value.get("building_id")!=intent.building_id or value.get("siege_action")!=intent.siege_action or value.get("list_revision")!=0 or value.get("total")!=0 or value.get("offset")!=0 or typeof(value.get("rows"))!=TYPE_ARRAY or not value.rows.is_empty():_reject(result);return
+			phase=Phase.Rejected;refresh();return
 		if result.get("status")==C.ManagementStatus.Rejected and value.get("outcome")==C.PlacesOutcome.Stale and _restarts==0:
 			_clear();_restarts+=1;_page();return
 		if result.get("status")!=C.ManagementStatus.Ok or value.get("outcome")!=C.PlacesOutcome.None or not _valid_page(value,intent):_reject(result);return

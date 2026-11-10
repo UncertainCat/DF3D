@@ -5,9 +5,15 @@ func run() -> void:
 	Engine.max_fps=30;await super.run()
 func settle(model) -> bool:
 	var deadline:=Time.get_ticks_msec()+10000
-	while model.phase==model.Phase.Reading and Time.get_ticks_msec()<deadline:
+	while model.phase in [model.Phase.Reading,model.Phase.Applying] and Time.get_ticks_msec()<deadline:
 		world.poll();actions.poll(0.01);await create_timer(0.01).timeout
 	return check(model.phase==model.Phase.Ready,"Places did not become ready")
+func observe_siege(step: int,engines: Array) -> void:
+	var file=FileAccess.open(directory+"/places-siege-step.tmp",FileAccess.WRITE);file.store_string(JSON.stringify({"step":step,"engines":engines}));file.close()
+	DirAccess.rename_absolute(directory+"/places-siege-step.tmp",directory+"/places-siege-step")
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline and FileAccess.get_file_as_string(directory+"/places-siege-ack")!=str(step):await create_timer(0.01).timeout
+	check(FileAccess.get_file_as_string(directory+"/places-siege-ack")==str(step),"Native siege action observation missing")
 func exercise(expected: Dictionary) -> void:
 	owner=scene._ui.controller("places")
 	owner.open_panel();if not await settle(owner.state):return
@@ -43,6 +49,22 @@ func exercise(expected: Dictionary) -> void:
 		check(scene._ui.host.active==target and target.selected.get("id",-1)==row.building_id,"Places View opened wrong inspector: tab %d"%tab)
 		check(not scene._fortress_hud.native_help.displayed.begins_with("places_"),"Places hover survived navigation")
 		target.close_panel();await process_frame
+	if OS.get_environment("DF3D_PLACES_APPLY")=="1":
+		owner.open_panel();owner.state.select_tab(5);if not await settle(owner.state):return
+		var engines: Array=[]
+		for engine in owner.state.rows:engines.append({"id":engine.building_id,"action":engine.siege_action})
+		var step:=0
+		for target_index in range(engines.size()+1):
+			for slot in 5:
+				var y: int=owner.panel.list_top()-30 if target_index==engines.size() else owner.panel.list_top()+target_index*36+18
+				await pointer(owner.panel.get_global_transform_with_canvas()*Vector2(owner.panel.status_x()+slot*24+12,y))
+				if not await settle(owner.state):return
+				for index in engines.size():
+					if target_index==engines.size() or index==target_index:engines[index].action=owner.panel.SIEGE_ACTIONS[slot]
+				for engine in owner.state.rows:
+					check(engines.any(func(value):return value.id==engine.building_id and value.action==engine.siege_action),"Siege click refresh differs")
+				step+=1;await observe_siege(step,engines)
+		owner.close_panel()
 	owner.open_panel();if not await settle(owner.state):return
 	var row: Dictionary=owner.state.rows[0].duplicate(true)
 	await pointer(owner.panel.get_global_transform_with_canvas()*Vector2(492,owner.panel.list_top()+18));await drain()

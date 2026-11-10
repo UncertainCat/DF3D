@@ -10282,5 +10282,63 @@
       "other_zone_captions_use_negative_identity": true,
       "prior_203_pixel_difference_resolved": true
     }
+  },
+  "siege_transport_reference": {
+    "protocol": 177,
+    "wire_source": "build/stockpile-storage-native-input-20261110-162537",
+    "scene_source": "build/stockpile-storage-native-input-20261110-162715",
+    "individual_and_aggregate_actions": [
+      3,
+      4,
+      2,
+      1,
+      0
+    ],
+    "wire_applied_cases": 20,
+    "wire_stale_group_rejected_unchanged": true,
+    "scene_pointer_cases": 20,
+    "scene_refresh_matches_simulation": true,
+    "last_observation": [
+      {
+        "action": 0,
+        "id": 1490,
+        "jobs": [
+          382794
+        ]
+      },
+      {
+        "action": 0,
+        "id": 1491,
+        "jobs": [
+          382795
+        ]
+      },
+      {
+        "action": 0,
+        "id": 1492,
+        "jobs": [
+          382796
+        ]
+      }
+    ],
+    "construction_jobs_retained": true,
+    "controller_cases": [
+      "Pending click suppression",
+      "Applied receipt triggers fresh read",
+      "Unknown stops without replay",
+      "Close/tab/session retire late mutation receipts"
+    ],
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "scene_result": "passed_with_known_issues",
+    "known_diagnostics": [
+      "render-thread finalize",
+      "ObjectDB shutdown leak warning"
+    ],
+    "omissions": [
+      "Firing-job cancellation and loading-job retention",
+      "Live duplicate sequence, changed epoch and unknown sent mutation",
+      "Minimum/wide pointer targets and mixed aggregate artwork"
+    ]
   }
 }

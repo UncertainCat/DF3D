@@ -410,6 +410,34 @@ Core19 passes in `build/qa/places-siege-contract`, including malformed-intent,
 receipt-status and owned Unknown-receipt coverage. No bridge binary or live
 mutation acceptance is claimed by this schema-only change.
 
+The runtime routes PlacesApply through the existing owned native siege adapter.
+It hashes a fresh owned siege list with the same membership function as PlacesRead,
+rejects changed membership or a missing requested engine, and calls the native
+action path only after those checks. No caption/artwork generation is needed for
+mutation admission. The shared command admission and receipt deduplication remain
+in force; Applied/Unknown mark simulation changes, and a thrown call after entry
+is conservatively Unknown. Receipts echo target and action, including refusals.
+
+The Godot adapter accepts the typed intent. The controller admits clicks only on
+a Ready, populated Siege tab, suppresses duplicate pending clicks, refreshes only
+after a matching Applied receipt, and stops on uncertain/rejected outcomes without
+replay. Close, tab and session changes retire late observers. The panel connects
+individual and aggregate controls through this owner; public Places remains hidden.
+
+Protected162537 independently observes native engine actions after20 typed commands
+(five actions for each of three engine types and the aggregate), then confirms a
+stale aggregate request leaves all engines unchanged. Protected162715 exercises
+all20 through actual main-scene pointer clicks and checks refreshed rows against
+independent simulation observations. Both retain construction jobs; neither proves
+firing-job cancellation or loading-job retention. Live duplicate-sequence/epoch/
+unknown-send behavior remains separate from the headless retirement coverage.
+Both runs preserve the source save and close owned DF unsaved. The headless wire
+run has only the existing startup warning; the scene run is
+`passed_with_known_issues` for deferred render-thread finalize/ObjectDB diagnostics.
+Graphical clients are capped30FPS; GPU59–61C sampled. Core19/controller checks pass
+in `build/qa/places-siege-runtime`; MSVC bridge and Godot extension builds pass.
+`native_places.json.siege_transport_reference` retains the bounded evidence.
+
 ## Management 176 Places subtitle identity
 
 Protocol176 adds `PlacesRow.subtitle_location_id`: the resolved abstract location

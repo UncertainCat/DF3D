@@ -133,6 +133,18 @@ capped30FPS, GPU49C/3% sampled. `cancellation_reference` records this unstarted
 construction case; the other cancellation branches remain unverified. Transport,
 viewer and destructive lifecycle acceptance are still required before exposure.
 
+Tasks destination captions call building.getName directly, matching renderer
+39950c. Building navigation targets centerx/centery/z as feed3977b6 does, not the
+footprint midpoint or job.pos. Worker navigation follows397336..3973bd: ordinary
+unit.pos, or the contained item's native effective position through the existing
+owned itemPosition provider for caged workers. These reads do not move a camera.
+Protected115004 verifies all five destination captions against native text cells
+with its width-dependent ellipsis and compares native worker/building Recenter
+click targets with provider coordinates. Cold/warm and menu-preservation checks
+pass. Source preserved; DF32236 exits unsaved, capped30FPS, GPU48C/2% sampled.
+`destinations_reference` records these cases. Caged-worker resolution, worker
+View navigation, destination artwork and viewer integration remain unverified.
+
 ## Stocks native discovery
 
 Stocks list icons now use every available item-sheet selector instead of a

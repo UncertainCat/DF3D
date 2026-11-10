@@ -56,6 +56,7 @@ result.owned={cold=cold,warm=warm,native_menu_preserved=true}
 local g=df.global.gps
 local verified={}
 local verified_controls={}
+local verified_buildings={}
 local function verify_captions()
  local first=info.jobs.scroll_position_cri_job
  for index=first,math.min(#warm-1,first+16)do
@@ -66,6 +67,21 @@ local function verify_captions()
   end
   verified[warm[index+1].job_id]=true
   local row=warm[index+1]
+  if row.building_id>=0 then
+   local bytes=dfhack.utf2df(row.building_caption)
+   -- Native399512 clips against the scrollbar-adjusted right boundary.
+   local right=g.dimx-1-30-(#warm>17 and 2 or 0)
+   local length=right-95-8
+   if #bytes>=length+1 and length>=0 then
+    bytes=bytes:sub(1,length)
+    if length>3 then bytes=bytes:sub(1,length-3)..'...'end
+   end
+   for i=1,#bytes do assert(dfhack.screen.readTile(101+i,11+(index-first)*3).ch==bytes:byte(i),
+    'Tasks building caption differs '..row.job_id)end
+   local holder=assert(df.building.find(row.building_id))
+   assert(json.encode(row.building_position)==json.encode{holder.centerx,holder.centery,holder.z})
+   verified_buildings[row.job_id]=true
+  end
   for _,control in ipairs{{'can_view_job',276,241},{'can_repeat',300,243},
     {'can_remove_worker',324,244},{'can_suspend',348,245},{'can_cancel',372,246}}do
    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
@@ -110,11 +126,33 @@ result.verified_caption_ids={}
 for _,row in ipairs(warm)do if verified[row.job_id]then result.verified_caption_ids[#result.verified_caption_ids+1]=row.job_id end end
 assert(#result.verified_caption_ids==#warm,'Not all Tasks captions were observed')
 result.verified_control_ids={}
+result.verified_building_ids={}
+for _,row in ipairs(warm)do if verified_buildings[row.job_id]then result.verified_building_ids[#result.verified_building_ids+1]=row.job_id end end
 for _,row in ipairs(warm)do if verified_controls[row.job_id]then result.verified_control_ids[#result.verified_control_ids+1]=row.job_id end end
 assert(#result.verified_control_ids==#warm,'Not all Tasks controls were observed')
 if os.getenv('DF3D_TASKS_ACTIONS')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('tasks%-native.lua$','tasks-actions-native.lua')
  result.actions=assert(loadfile(source))(out,view,info,capture)
+else
+ result.navigation={}
+ local function recenter(row,x,y,expected)
+  g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+  gui.simulateInput(view,{});gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+  assert(not info.open,'Native Recenter did not close Tasks')
+  local actual={}
+  for axis=0,2 do actual[#actual+1]=df.reinterpret_cast('int16_t',base+0x18acefe+axis*2).value end
+  assert(json.encode(actual)==json.encode(expected),'Native Recenter target differs')
+  result.navigation[#result.navigation+1]={job_id=row.job_id,point={x,y},target=actual}
+  gui.simulateInput(view,'D_JOBLIST');view:render(dfhack.getTickCount())
+ end
+ local first=info.jobs.scroll_position_cri_job
+ recenter(warm[first+1],708,142,warm[first+1].worker_position)
+ for _=1,2 do
+  g.precise_mouse_x=500;g.precise_mouse_y=300;g.mouse_x=62;g.mouse_y=25
+  gui.simulateInput(view,'CONTEXT_SCROLL_PAGEDOWN');view:render(dfhack.getTickCount())
+ end
+ local row=warm[#warm];local y=142+(#warm-1-info.jobs.scroll_position_cri_job)*36
+ recenter(row,252,y,row.building_position)
 end
 write('tasks-native.json',json.encode(result))
 gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())

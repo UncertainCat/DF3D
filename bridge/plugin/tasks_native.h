@@ -7,6 +7,7 @@
 #include "df/job_list_link.h"
 #include "df/general_ref.h"
 #include "df/building_trapst.h"
+#include "building_item_native.h"
 #include <unordered_set>
 
 namespace df3d_tasks {
@@ -17,6 +18,8 @@ struct Row {
     int32_t buildingId=-1;
     bool canViewJob=false,canRepeat=false,canRemoveWorker=false,canSuspend=false,canCancel=false;
     bool repeating=false,suspended=false;
+    std::string buildingCaption;
+    df::coord buildingPosition=df::coord(-30000,-30000,-30000),workerPosition=df::coord(-30000,-30000,-30000);
 };
 // Native396ee0/397c90 inline these checks; there is no standalone eligibility
 // call for the four edit buttons. Mirror that bounded branch over simulation
@@ -29,6 +32,10 @@ inline bool controls(Row& row,df::job* job,df::unit* worker,uint8_t* base) {
     for(auto* ref:job->general_refs)if(ref->getType()==df::general_ref_type::BUILDING_HOLDER){holder=ref->getBuilding();break;}
     if(!holder)return true;
     row.buildingId=holder->id;
+    // Renderer39950c calls this virtual directly; feed3977b6 targets the
+    // work location, not the footprint midpoint or the task's position.
+    holder->getName(&row.buildingCaption);
+    row.buildingPosition=df::coord(holder->centerx,holder->centery,holder->z);
     row.canRemoveWorker=worker && !(job->flags.whole&0x20010);
     // Native scans with a signed16 index. Reject malformed/oversized lists
     // rather than wrap the diagnostic provider's safety bound.
@@ -107,6 +114,23 @@ inline std::optional<std::vector<Row>> rows() {
         // Retain full CP437 strings; width-dependent clipping is presentation.
         reinterpret_cast<void (*)(df::job*,std::string*)>(base+0xd03170)(entry->jb,&row.caption);
         if(entry->un)df3d_area::staffOrderingFunctions().name(entry->un,&row.workerName,false);
+        if(entry->un) {
+            auto* unit=entry->un;
+            // Native397336..3973bd. Caged workers navigate via their item's
+            // effective position; all outputs belong to this row.
+            if(!unit->flags1.bits.caged)row.workerPosition=unit->pos;
+            else {
+                if(unit->general_refs.size()>4096)return std::nullopt;
+                for(auto* ref:unit->general_refs){
+                    if(!ref)return std::nullopt;
+                    if(ref->getType()!=df::general_ref_type::CONTAINED_IN_ITEM)continue;
+                    auto* item=ref->getItem();if(!item)continue;
+                    const auto position=df3d_production::itemPosition(item);
+                    if(!position)return std::nullopt;
+                    row.workerPosition=*position;break;
+                }
+            }
+        }
         if(!controls(row,entry->jb,entry->un,base))return std::nullopt;
         result.push_back(std::move(row));
     }

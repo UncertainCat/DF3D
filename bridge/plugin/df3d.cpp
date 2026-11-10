@@ -2512,6 +2512,10 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             row["can_view_job"]=entry.canViewJob;row["can_repeat"]=entry.canRepeat;
             row["can_remove_worker"]=entry.canRemoveWorker;row["can_suspend"]=entry.canSuspend;
             row["can_cancel"]=entry.canCancel;row["repeating"]=entry.repeating;row["suspended"]=entry.suspended;
+            row["building_caption"]=DF2UTF(entry.buildingCaption);
+            row["building_position"]=Json::Value(Json::arrayValue);row["worker_position"]=Json::Value(Json::arrayValue);
+            for(auto v:{entry.buildingPosition.x,entry.buildingPosition.y,entry.buildingPosition.z})row["building_position"].append(v);
+            for(auto v:{entry.workerPosition.x,entry.workerPosition.y,entry.workerPosition.z})row["worker_position"].append(v);
             result["rows"].append(row);
           }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;

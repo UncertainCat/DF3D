@@ -9531,5 +9531,97 @@
       "One essay and apprenticeship-denial event. Other written types/reference combinations, long-description scrolling and additional binding materials are not newly live accepted.",
       "Public Stocks remains gated."
     ]
+  },
+  "corpse_item_description_reference": {
+    "df_version": "53.16",
+    "native_run": "build/stockpile-storage-native-input-20261110-095457",
+    "scope": "Native descriptions and Uses through owned bridge output and headless viewer wire; not rendered viewer acceptance.",
+    "cases": [
+      {
+        "description": "This is a Gogol Iralbathru's rotten mutilated corpse.  It is spattered with human blood.  It is spattered with human blood.  It is spattered with human blood.  It is spattered with human blood.  It is spattered with human blood.  It is spattered with Ngokang Womanhexes's goblin blood.  It is spattered with Ngokang Womanhexes's goblin blood.  It is spattered with human blood.  It is spattered with human blood.  It is spattered with Ngokang Womanhexes's goblin blood.  It is spattered with human blood.  It is spattered with Ngokang Womanhexes's goblin blood.  ",
+        "id": 47852,
+        "kind": 23,
+        "snapshot": {
+          "appearance": {
+            "color_token": "",
+            "flags": 0,
+            "material_token": "CREATURE:HUMAN:MUSCLE",
+            "stack": 1,
+            "subtype_raw": ""
+          },
+          "can_dump": true,
+          "can_melt": false,
+          "caption": "Gogol Iralbathru's rotten mutilated corpse",
+          "description": "This is a Gogol Iralbathru's rotten mutilated corpse.  It is spattered with human blood.  It is spattered with human blood.  It is spattered with human blood.  It is spattered with human blood.  It is spattered with human blood.  It is spattered with Ngokang Womanhexes's goblin blood.  It is spattered with Ngokang Womanhexes's goblin blood.  It is spattered with human blood.  It is spattered with human blood.  It is spattered with Ngokang Womanhexes's goblin blood.  It is spattered with human blood.  It is spattered with Ngokang Womanhexes's goblin blood.  ",
+          "dump": false,
+          "flags": 536871297,
+          "forbid": false,
+          "hidden": false,
+          "id": 47852,
+          "item_type": 23,
+          "material_token": "CREATURE:HUMAN:MUSCLE",
+          "melt": false,
+          "revision": "8327194384639685154",
+          "stockpile_categories": -1,
+          "weight": "93Γ"
+        },
+        "uses": []
+      },
+      {
+        "description": "This is a Rimtar Ebalrovod's lower right back tooth.  ",
+        "id": 21176,
+        "kind": 46,
+        "snapshot": {
+          "appearance": {
+            "color_token": "",
+            "flags": 0,
+            "material_token": "CREATURE:DWARF:TOOTH",
+            "stack": 1,
+            "subtype_raw": ""
+          },
+          "can_dump": true,
+          "can_melt": false,
+          "caption": "{Rimtar Ebalrovod's lower right back tooth}",
+          "description": "This is a Rimtar Ebalrovod's lower right back tooth.  ",
+          "dump": false,
+          "flags": 537395329,
+          "forbid": true,
+          "hidden": false,
+          "id": 21176,
+          "item_type": 46,
+          "material_token": "CREATURE:DWARF:TOOTH",
+          "melt": false,
+          "revision": "5256171902932113844",
+          "stockpile_categories": -1,
+          "weight": "<1Γ"
+        },
+        "uses": []
+      }
+    ],
+    "verification": {
+      "msvc": "build/notes/pm/item-corpse-material-msvc.log",
+      "qa": "build/qa/item-corpse-description/summary.json",
+      "source_save": "Owned source unchanged",
+      "owned_df_pid": 12536,
+      "owned_df_closed_unsaved": true,
+      "native_fps_cap": 30,
+      "gpu_temperature_samples_c": [
+        37,
+        38
+      ],
+      "gpu_sampling_limit": "Samples are not a measured peak.",
+      "godot": "Known separate-thread notice only; no unclassified diagnostics."
+    },
+    "limitations": [
+      "Independent corpse species/body-part flags/layered artwork remain unfinished; generic material appearance is not visual acceptance.",
+      "Unnamed resolved-unit cold lookup restoration, custom body plans and missing-body variants are not newly live accepted.",
+      "First run095258 failed the headless appearance requirement; excluded from acceptance.",
+      "Public Stocks remains gated; broader management and release backlog unchanged."
+    ],
+    "artifact_sha256": {
+      "stocks-native.json": "ffbbf4001d30bbd9d378688afcba37f33a20d6cd9a376ece7288cd475d0165d8",
+      "stocks-furniture-wire-23.json": "b71d09baf96fb708b815a8d125379a9b3a74825d650834b3bbdf844bc5709676",
+      "stocks-furniture-wire-46.json": "a1187e24dbed7985c1f7f5939fe06f21a3ae13d78d5628ff1d18b0b85c1c5671"
+    }
   }
 }

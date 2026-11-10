@@ -315,6 +315,7 @@ inline std::optional<std::string> buildingItemCaption(df::item* item) {
         return reinterpret_cast<Caption>(base+0xc65450);
     }();
     if(!caption||!item)return std::nullopt;
+    CorpseCaptionScope corpseScope(item);if(!corpseScope.ready)return std::nullopt;
     std::string result;caption(item,&result,false,-1);return result;
 }
 using ItemBuildingHolder=ItemLocationLink;
@@ -351,7 +352,8 @@ inline DFHack::MaterialInfo itemInspectionMaterial(df::item* item) {
     const auto type=item->getType();
     const bool actual=type==df::item_type::FISH || type==df::item_type::FISH_RAW ||
         type==df::item_type::EGG || type==df::item_type::REMAINS ||
-        type==df::item_type::PET || type==df::item_type::VERMIN;
+        type==df::item_type::PET || type==df::item_type::VERMIN ||
+        type==df::item_type::CORPSE || type==df::item_type::CORPSEPIECE;
     return DFHack::MaterialInfo(actual?item->getActualMaterial():item->getMaterial(),
         actual?item->getActualMaterialIndex():item->getMaterialIndex());
 }
@@ -1003,7 +1005,7 @@ inline bool boxItemDescriptionDispatch(df::item* item) {
     return item && item->getType()==df::item_type::BOX && constructedItemDescriptionDispatch(item);
 }
 inline bool itemDescriptionDispatch(df::item* item) {
-    return (simpleItemDescriptionDispatch(item) || constructedItemDescriptionDispatch(item)) && itemWrittenInputsReady(item);
+    return (simpleItemDescriptionDispatch(item) || constructedItemDescriptionDispatch(item) || corpseItemDescriptionDispatch(item)) && itemWrittenInputsReady(item);
 }
 // Native sheet options with owned output. BOX may initialize semantic art;
 // retain native effects and observe item facts only after formatting.
@@ -1020,6 +1022,7 @@ inline std::optional<std::string> itemDescription(df::item* item) {
     std::unique_ptr<df3d_creature::KnowledgeMaterialCacheRestore> writtenCache;
     if(writtenItem(item))writtenCache=std::make_unique<df3d_creature::KnowledgeMaterialCacheRestore>(df::global::world->raws.creatures.hist_fig_to_creature_map);
     std::string result;
+    CorpseCaptionScope corpseScope(item);if(!corpseScope.ready)return std::nullopt;
     reinterpret_cast<Describe>(base+0xc75000)(item,&result,true,true,false,0);
     return result;
 }
@@ -1182,6 +1185,7 @@ inline std::optional<ItemObservation> observeItem(df::item* item) {
     case df::item_type::FISH:case df::item_type::FISH_RAW:
     case df::item_type::EGG:case df::item_type::REMAINS:
     case df::item_type::PET:case df::item_type::VERMIN:
+    case df::item_type::CORPSE:case df::item_type::CORPSEPIECE:
     case df::item_type::PLANT_GROWTH:case df::item_type::FOOD:
     case df::item_type::DRINK:case df::item_type::LIQUID_MISC:case df::item_type::POWDER_MISC:
     case df::item_type::MEAT:case df::item_type::PLANT:

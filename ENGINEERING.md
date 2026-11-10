@@ -37,6 +37,28 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
+Corpse23 and body-part46 inspection call native c75000/1a8df0 for description
+and Uses. The guarded corpse dispatch pins ca1aa0, ca0d60, both body/identity
+getters and the dependent unit caption. Fortress mode excludes adventure UI
+branches. Admission validates body/status lengths, parent bounds and acyclic
+parent chains, body-part names, tissue-layer indices and material states before
+native's unchecked accesses. The unit/office lookup indices (including spouse
+positions) are scoped through the existing restoration helper, and material
+resolution uses an independently owned cache. Caption, description and Uses
+entry points all apply that scope. Actual tissue material supplies item facts;
+independent corpse species, body-part flags and layered artwork remain unfinished.
+
+MSVC and core19/extension/item-state checks pass (`item-corpse-description`).
+Protected095457 on2026-11-10 verifies corpse47852 and tooth21176: native, owned
+provider and headless viewer wire descriptions/Uses match exactly. This is not
+rendered viewer acceptance. Source preserved; owned DF12536 exits unsaved at
+30FPS; GPU samples37-38C are not a measured peak. Only the documented separate
+thread notice occurs. First attempt095258 failed the missing-appearance check
+and is excluded. `native_stocks.json.corpse_item_description_reference` retains
+observations and hashes. Unnamed resolved-unit cold-cache restoration, custom
+body plans and missing-body variants are not newly live accepted. Public Stocks
+remains gated pending complete screen coverage.
+
 Management172 appends the semantic slab engraving type to item inspection
 appearance. Rebuild bridge/viewer together;171 uses a separate channel. Unknown
 is -2, distinct from native unengraved -1; only SLAB87 may carry known -1..26.

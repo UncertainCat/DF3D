@@ -10566,5 +10566,795 @@
       "stocks-view-art-23.json": "612354ca3c17928acf7befeb54d487eb2e56d96260755ce26700f0a149ba1ed8",
       "stocks-view-art-87.json": "3e21ca51440c4e0e23387dbc38bfba3d72bc79e3af79defd48db5add7d4a803e"
     }
+  },
+  "corpse_skeleton_selector_reference": {
+    "build": "DF 53.16 Steam build 24557528",
+    "capture": "stockpile-storage-native-input-20261110-110719",
+    "native_selector": {
+      "rva": "0x6d6560",
+      "length": "0x1661",
+      "fnv1a64": "0x5ddf9622e1746db9",
+      "ownership": "Exact native corpse identity with copied status vectors and scalar inputs; owned creature/caste graphics contain only original skeleton tiles and a flat CORPSE sentinel. No native layer sets, unit textures, menu scratch or generated texture cache is supplied.",
+      "scope": "Early skeleton override only. Native getBodyInfo resolves read-only body plans; the native selector evaluates surviving tissue materials, connectivity, rot and TOTEMABLE parts."
+    },
+    "comparisons": [
+      {
+        "kind": 23,
+        "rows": [
+          {
+            "id": 7645,
+            "row": 1,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 7637,
+            "row": 2,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 7636,
+            "row": 3,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 7634,
+            "row": 4,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 6812,
+            "row": 5,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 6811,
+            "row": 6,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 6810,
+            "row": 7,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 6809,
+            "row": 8,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 6343,
+            "row": 9,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 46883,
+            "row": 10,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 47418,
+            "row": 11,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 5170,
+            "row": 12,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 47618,
+            "row": 13,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 7820,
+            "row": 14,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 8518,
+            "row": 15,
+            "rgb_different_pixels": 0
+          },
+          {
+            "id": 47685,
+            "row": 16,
+            "rgb_different_pixels": 0
+          }
+        ],
+        "rgb_different_pixels": 0
+      }
+    ],
+    "corpse_rows": [
+      {
+        "id": 7645,
+        "facts": {
+          "caste": 1,
+          "flags": 17,
+          "from_custom_body": 0,
+          "race": 572,
+          "unit_id": 6107,
+          "unit_resolved": true
+        },
+        "recipe": {
+          "layers": [
+            [
+              0,
+              0,
+              1,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          ],
+          "palettes": [],
+          "tile_pages": [
+            "BONE_PILE"
+          ]
+        }
+      },
+      {
+        "id": 7637,
+        "facts": {
+          "caste": 0,
+          "flags": 17,
+          "from_custom_body": 0,
+          "race": 572,
+          "unit_id": 6105,
+          "unit_resolved": true
+        },
+        "recipe": {
+          "layers": [
+            [
+              0,
+              0,
+              1,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          ],
+          "palettes": [],
+          "tile_pages": [
+            "BONE_PILE"
+          ]
+        }
+      },
+      {
+        "id": 7636,
+        "facts": {
+          "caste": 1,
+          "flags": 16913,
+          "from_custom_body": 0,
+          "race": 173,
+          "unit_id": 6106,
+          "unit_resolved": true
+        },
+        "recipe": {
+          "layers": [
+            [
+              0,
+              0,
+              0,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          ],
+          "palettes": [],
+          "tile_pages": [
+            "BONE_PILE"
+          ]
+        }
+      },
+      {
+        "id": 7634,
+        "facts": {
+          "caste": 1,
+          "flags": 17,
+          "from_custom_body": 0,
+          "race": 572,
+          "unit_id": 6108,
+          "unit_resolved": true
+        },
+        "recipe": {
+          "layers": [
+            [
+              0,
+              0,
+              1,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          ],
+          "palettes": [],
+          "tile_pages": [
+            "BONE_PILE"
+          ]
+        }
+      },
+      {
+        "id": 6812,
+        "facts": {
+          "caste": 1,
+          "flags": 273,
+          "from_custom_body": 0,
+          "race": 323,
+          "unit_id": 6025,
+          "unit_resolved": true
+        },
+        "recipe": {
+          "layers": [
+            [
+              0,
+              0,
+              0,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          ],
+          "palettes": [],
+          "tile_pages": [
+            "BONE_PILE"
+          ]
+        }
+      },
+      {
+        "id": 6811,
+        "facts": {
+          "caste": 0,
+          "flags": 17,
+          "from_custom_body": 0,
+          "race": 573,
+          "unit_id": 6026,
+          "unit_resolved": true
+        },
+        "recipe": {
+          "layers": [
+            [
+              0,
+              0,
+              1,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          ],
+          "palettes": [],
+          "tile_pages": [
+            "BONE_PILE"
+          ]
+        }
+      },
+      {
+        "id": 6810,
+        "facts": {
+          "caste": 1,
+          "flags": 17,
+          "from_custom_body": 0,
+          "race": 572,
+          "unit_id": 5814,
+          "unit_resolved": true
+        },
+        "recipe": {
+          "layers": [
+            [
+              0,
+              0,
+              1,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          ],
+          "palettes": [],
+          "tile_pages": [
+            "BONE_PILE"
+          ]
+        }
+      },
+      {
+        "id": 6809,
+        "facts": {
+          "caste": 1,
+          "flags": 17,
+          "from_custom_body": 0,
+          "race": 573,
+          "unit_id": 6024,
+          "unit_resolved": true
+        },
+        "recipe": {
+          "layers": [
+            [
+              0,
+              0,
+              1,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          ],
+          "palettes": [],
+          "tile_pages": [
+            "BONE_PILE"
+          ]
+        }
+      },
+      {
+        "id": 6343,
+        "facts": {
+          "caste": 0,
+          "flags": 17,
+          "from_custom_body": 0,
+          "race": 170,
+          "unit_id": 5579,
+          "unit_resolved": true
+        },
+        "recipe": {
+          "layers": [
+            [
+              0,
+              0,
+              0,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          ],
+          "palettes": [],
+          "tile_pages": [
+            "BONE_PILE"
+          ]
+        }
+      },
+      {
+        "id": 46883,
+        "facts": {
+          "caste": 0,
+          "flags": 17,
+          "from_custom_body": 0,
+          "race": 574,
+          "unit_id": 7246,
+          "unit_resolved": true
+        },
+        "recipe": {
+          "layers": [
+            [
+              0,
+              0,
+              1,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          ],
+          "palettes": [],
+          "tile_pages": [
+            "BONE_PILE"
+          ]
+        }
+      },
+      {
+        "id": 47418,
+        "facts": {
+          "caste": 1,
+          "flags": 17,
+          "from_custom_body": 0,
+          "race": 572,
+          "unit_id": 5982,
+          "unit_resolved": true
+        },
+        "recipe": {
+          "layers": [
+            [
+              0,
+              0,
+              1,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          ],
+          "palettes": [],
+          "tile_pages": [
+            "BONE_PILE"
+          ]
+        }
+      },
+      {
+        "id": 5170,
+        "facts": {
+          "caste": 1,
+          "flags": 17,
+          "from_custom_body": 0,
+          "race": 572,
+          "unit_id": 5577,
+          "unit_resolved": true
+        },
+        "recipe": {
+          "layers": [
+            [
+              0,
+              0,
+              1,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          ],
+          "palettes": [],
+          "tile_pages": [
+            "BONE_PILE"
+          ]
+        }
+      },
+      {
+        "id": 47618,
+        "facts": {
+          "caste": 1,
+          "flags": 17,
+          "from_custom_body": 0,
+          "race": 573,
+          "unit_id": 2446,
+          "unit_resolved": true
+        },
+        "recipe": {
+          "layers": [
+            [
+              0,
+              0,
+              1,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          ],
+          "palettes": [],
+          "tile_pages": [
+            "BONE_PILE"
+          ]
+        }
+      },
+      {
+        "id": 7820,
+        "facts": {
+          "caste": 1,
+          "flags": 17,
+          "from_custom_body": 0,
+          "race": 572,
+          "unit_id": 1028,
+          "unit_resolved": false
+        },
+        "recipe": {
+          "layers": [
+            [
+              0,
+              0,
+              1,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          ],
+          "palettes": [],
+          "tile_pages": [
+            "BONE_PILE"
+          ]
+        }
+      },
+      {
+        "id": 8518,
+        "facts": {
+          "caste": 0,
+          "flags": 16913,
+          "from_custom_body": 0,
+          "race": 172,
+          "unit_id": 6031,
+          "unit_resolved": true
+        },
+        "recipe": {
+          "layers": [
+            [
+              0,
+              0,
+              0,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          ],
+          "palettes": [],
+          "tile_pages": [
+            "BONE_PILE"
+          ]
+        }
+      },
+      {
+        "id": 47685,
+        "facts": {
+          "caste": 1,
+          "flags": 10257,
+          "from_custom_body": 0,
+          "race": 572,
+          "unit_id": 6975,
+          "unit_resolved": true
+        },
+        "recipe": {
+          "layers": [
+            [
+              0,
+              1,
+              3,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              2,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              1,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              0,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              7,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              8,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              4,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              5,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ],
+            [
+              0,
+              2,
+              7,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ],
+            [
+              1,
+              5,
+              5,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ],
+            [
+              1,
+              5,
+              20,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ],
+            [
+              0,
+              1,
+              6,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          ],
+          "palettes": [],
+          "tile_pages": [
+            "DWARF_BODY_CORPSE",
+            "DWARF_HAIR_CORPSE"
+          ]
+        }
+      }
+    ],
+    "unsupported_corpse_recipe_ids": [],
+    "source_hashes": {
+      "stocks-native.json": "8e7577bd45759bc8b4190f9ac5d32de9e5ae1def65c0961284d6c0a89b2bf146",
+      "stocks-view-art-23.json": "527fb5763600592b39c0325cbfd6f1d555cf7e660f0837f8c27a8528500d4ab6",
+      "stocks-art-23.png": "c39aedc148b8e43a63c8342811f8718a23fae45fc80047219bfd582e3df5c93f",
+      "stocks-view-art-23.png": "e76422d8b6fdba155bce3fac27dc3faf783d0495b13f9758f51c0e622ff144fa",
+      "extended-icon-comparison.json": "75f5a8ca6e4906b98d9a81e37f04efcc8d2443ae7803a324b79af608473bc483"
+    },
+    "verification": {
+      "core_tests": 19,
+      "headless": "stocks_state_test, item_sheet_state_test, extension build",
+      "bridge_build": "MSVC Release passed",
+      "live": "passed_with_known_issues: separate-thread notice, device finalize, shutdown objects; no unclassified diagnostics",
+      "save": "Owned source unchanged; DF40044 exited unsaved",
+      "gpu": "Native and viewer capped at30FPS; sample60C/2%, not a measured peak",
+      "visual": "All91 complete item icons across8 families have zero differing RGB pixels; combined native/viewer strips visually inspected."
+    },
+    "limits": [
+      "This establishes the16 visible corpse icons, including15 skeletons and one ordinary corpse, not all anatomy/custom-graphics branches.",
+      "Unitless non-skeleton generic71a410 composition remains unadmitted.",
+      "Coin fixture initializes native descriptions before list capture; not cold-description acceptance.",
+      "Full Stocks scroll/resize/lifecycle and remaining item-art gaps are still incomplete."
+    ],
+    "other_family_regression": [
+      {
+        "kind": 46,
+        "complete_icons": 16,
+        "rgb_different_pixels": 0
+      },
+      {
+        "kind": 55,
+        "complete_icons": 10,
+        "rgb_different_pixels": 0
+      },
+      {
+        "kind": 69,
+        "complete_icons": 14,
+        "rgb_different_pixels": 0
+      },
+      {
+        "kind": 70,
+        "complete_icons": 12,
+        "rgb_different_pixels": 0
+      },
+      {
+        "kind": 72,
+        "complete_icons": 9,
+        "rgb_different_pixels": 0
+      },
+      {
+        "kind": 74,
+        "complete_icons": 1,
+        "rgb_different_pixels": 0
+      },
+      {
+        "kind": 87,
+        "complete_icons": 13,
+        "rgb_different_pixels": 0
+      }
+    ]
   }
 }

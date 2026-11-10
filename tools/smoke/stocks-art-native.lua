@@ -7,6 +7,10 @@ local rows={};local g=df.global.gps
 local function appearance_facts(item)
  local row={id=item.id,quality=item:getQuality(),wear=item:getWear(),flags=item.flags.whole,
   material=item:getMaterial(),material_index=item:getMaterialIndex(),contents={}}
+ if df.item_body_component:is_instance(item)then
+  row.corpse={unit_id=item.unit_id,unit_resolved=df.unit.find(item.unit_id)~=nil,
+   race=item.race,caste=item.caste,flags=item.corpse_flags.whole,from_custom_body=item.from_custom_body}
+ end
  for _,ref in ipairs(item.general_refs)do
   local kind=ref:getType()
   if kind==df.general_ref_type.BUILDING_HOLDER then

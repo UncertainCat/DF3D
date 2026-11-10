@@ -54,13 +54,25 @@ DF40184 exits unsaved, native/viewer capped30FPS; GPU58C sample is not a peak.
 Only documented thread/finalize/shutdown diagnostics occur. Evidence and bounds:
 `native_stocks.json.extended_stocks_art_reference`.
 
-The same run exposes unfinished whole-corpse artwork:16 visible rows differ by
-8912 RGB pixels, predominantly native bone piles versus the provider's body
-layers. Item7820 lacks a corpse_selector recipe; its cause is not yet established
-by this capture. Do not count this category as accepted or hide the gap behind
-transport success. Native6d6738..6d6b13 contains the body/tissue override before
-layer selection and must be exposed with owned inputs. The seven exact families
-do not establish full Stocks, other item families or complete resize/lifecycle.
+Whole-corpse inspection now calls native6d6560 for its early skeleton override.
+An exact owned corpse identity carries copied body/layer status and scalar facts;
+owned creature/caste graphics retain only original skeleton tiles and a flat
+CORPSE sentinel. Empty layer/position tables, zero secondary tiles and role0x20
+exclude the later cache compositors. DF evaluates tissue materials, connectivity,
+rot and surviving TOTEMABLE parts; DF3D does not reconstruct this predicate.
+A sentinel result continues the existing ordinary corpse layer provider. Original
+skeleton tiles become independent asset recipes, including when the unit is gone.
+
+Protected110719 on2026-11-10 fixes the105648 mismatch: all16 visible corpse
+icons now match native RGB, including15 skeletons and one ordinary corpse.
+Item7820 has unit_id1028 with no resolved unit and now receives BONE_PILE artwork.
+The other75 icons still match; all91 complete icons and native/viewer strips were
+compared and visually inspected. Core19, extension, Stocks/item-sheet state and
+MSVC pass. Source preserved; DF40044 exits unsaved, both applications capped30FPS;
+GPU60C/2% sample is not a peak. Only documented Godot diagnostics occur.
+`native_stocks.json.corpse_skeleton_selector_reference` records facts, recipes,
+hashes and bounded acceptance. Unitless non-skeleton generic71a410, unobserved
+anatomy/custom graphics and full Stocks resize/lifecycle remain incomplete.
 
 
 Management173 appends an optional independent corpse-selector recipe to item

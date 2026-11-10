@@ -13,6 +13,9 @@
 #include "df/material.h"
 #include "df/descriptor_pattern.h"
 #include "df/descriptor_color.h"
+#include "df/item_corpsest.h"
+#include "df/caste_raw.h"
+#include "df/creature_raw_graphics.h"
 
 namespace df3d_production {
 struct CorpsePieceArtwork {
@@ -193,6 +196,64 @@ inline bool corpseItemDescriptionDispatch(df::item* item) {
         while(at>=0 && visited[at]==1){visited[at]=2;at=parts[at]->con_part_id;}
     }
     return true;
+}
+// Ask the native early body/tissue selector, without admitting its later
+// texture-cache compositor. Owned graphics retain only original skeleton tiles
+// and a flat CORPSE sentinel. Empty position/layer tables and zero secondary
+// tiles make every non-skeleton path return that sentinel before any compositor.
+// nullopt rejects unvalidated input; zero means continue normal layer selection.
+inline std::optional<int32_t> corpseSkeletonArtwork(df::item* source) {
+    if(!corpseItemDescriptionDispatch(source))return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    if(*reinterpret_cast<const void* const*>(source)!=base+0x1648790)return std::nullopt;
+    static const bool pinned=[base] {
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x1661;++i){hash^=base[0x6d6560+i];hash*=UINT64_C(1099511628211);}
+        constexpr uint32_t cases[]={0x6d6c8f,0x6d6c84,0x6d6c72,0x6d6c60,0x6d6c4e,0x6d6c3c,0x6d6c2a};
+        for(size_t i=0;i<7;++i)if(*reinterpret_cast<const uint32_t*>(base+0x6d7bc4+i*4)!=cases[i])return false;
+        return hash==UINT64_C(0x5ddf9622e1746db9);
+    }();
+    if(!pinned)return std::nullopt;
+    auto* corpse=static_cast<df::item_corpsest*>(source);
+    auto* raw=df::creature_raw::find(corpse->race);
+    if(!raw)return std::nullopt;
+    const auto* caste=corpse->caste>=0 && size_t(corpse->caste)<raw->caste.size()?raw->caste[corpse->caste]:nullptr;
+    if(!caste)return std::nullopt;
+    constexpr int32_t normal=INT32_MAX;
+    const auto graphics=[](const df::creature_raw_graphics* original) {
+        if(!original)return std::unique_ptr<df::creature_raw_graphics>{};
+        auto owned=std::make_unique<df::creature_raw_graphics>();
+        owned->creature_texture_texpos={};
+        owned->entity_link_texpos={};owned->site_link_texpos={};owned->profession_texpos={};
+        owned->creature_texture_add_color={};
+        owned->creature_texture_texpos[0][df::creature_graphics_role::CORPSE][0][0]=normal;
+        owned->skeleton_with_skull_texpos=original->skeleton_with_skull_texpos;
+        owned->skeleton_texpos=original->skeleton_texpos;
+        return owned;
+    };
+    auto raceGraphics=graphics(raw->graphics),casteGraphics=graphics(caste->caste_graphics);
+    auto ownedRaw=std::make_unique<df::creature_raw>();
+    auto ownedCaste=std::make_unique<df::caste_raw>();
+    ownedRaw->graphics=raceGraphics.get();ownedCaste->caste_graphics=casteGraphics.get();
+    ownedRaw->caste.push_back(ownedCaste.get());
+    const auto& identity=df::item_corpsest::_identity;
+    if(!identity.can_instantiate())return std::nullopt;
+    const auto destroy=[&identity](df::item_corpsest* value){identity.destroy(value);};
+    std::unique_ptr<df::item_corpsest,decltype(destroy)> owned(
+        static_cast<df::item_corpsest*>(identity.instantiate()),destroy);
+    if(!owned || *reinterpret_cast<const void* const*>(owned.get())!=base+0x1648790)return std::nullopt;
+    owned->race=corpse->race;owned->caste=corpse->caste;
+    owned->unit_id=corpse->unit_id;owned->hist_figure_id=corpse->hist_figure_id;
+    owned->hist_figure_id2=corpse->hist_figure_id2;
+    owned->from_custom_body=corpse->from_custom_body;owned->corpse_flags=corpse->corpse_flags;
+    owned->body.components.body_part_status=corpse->body.components.body_part_status;
+    owned->body.components.layer_status=corpse->body.components.layer_status;
+    std::string position;
+    using Selector=int32_t(*)(df::creature_raw*,int16_t,std::string*,int16_t,int16_t,int16_t,
+        uint32_t,df::unit*,df::item_body_component*,bool*);
+    const auto tile=reinterpret_cast<Selector>(base+0x6d6560)(ownedRaw.get(),0,&position,-1,-1,102,
+        0x20,nullptr,owned.get(),nullptr);
+    return tile==normal?0:tile;
 }
 // The corpse caption can select a unit profession and office title. Preserve
 // their lookup indices, including spouse-office links, around the whole call.

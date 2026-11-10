@@ -378,7 +378,9 @@ inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
     ItemInspectionAppearance appearance;
     if(item->getType()==df::item_type::CORPSE) {
         df3d_appearance::Result recipe;
-        if(df3d_appearance::resolveCorpseItemSelector(item,recipe))appearance.corpseSelector=ownedItemRecipe(recipe);
+        const auto skeleton=corpseSkeletonArtwork(item);
+        if(skeleton && (*skeleton>0?df3d_appearance::resolveOriginalItemTile(*skeleton,recipe):
+            df3d_appearance::resolveCorpseItemSelector(item,recipe)))appearance.corpseSelector=ownedItemRecipe(recipe);
     }
     if(item->getType()==df::item_type::CORPSEPIECE) {
         df3d_appearance::Result recipe;

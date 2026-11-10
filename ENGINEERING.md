@@ -49,7 +49,16 @@ with mailbox sequence, world-epoch and save admission. Revisions cover ordered
 job membership for pages and semantic identity/flags/capabilities for edits;
 artwork and animation phase do not invalidate edit receipts. The Godot request
 adapter exposes this domain with strict typed inputs and owned reply dictionaries.
-The UI remains unfinished; public exposure stays gated.
+The Tasks controller assembles complete pages before exposing edit authority,
+retains local scrolling, clears receipts while applying, refreshes after success,
+and detaches closed/replaced owners. A stale page restarts once; repeated stale
+results require explicit refresh. Unknown mutations never replay automatically.
+Focused headless checks cover cross-page duplicates, unavailable controls,
+close/reopen late replies and session retirement. Protected123806 verifies the
+controller's complete41-row read through the shared action service, alongside
+transport suspension checks; source preserved and owned DF39564 closed unsaved.
+The native game was capped30FPS and the viewer headless, GPU39C/0% sampled.
+The view and main-screen integration remain unfinished; public exposure stays gated.
 
 Read requests carry offset, limit1..64 and an expected ordered-list revision.
 A nonzero offset requires that revision. Replies preserve native order and can

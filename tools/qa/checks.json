@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "tasks_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/tasks_state_test.gd",
+      "completion": "^TASKS_STATE_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "stocks_state_test",
       "lane": "core",
       "kind": "godot",

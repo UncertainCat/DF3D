@@ -55,6 +55,13 @@ func run() -> void:
 				if row.job_id==target.job_id:target=row;found=true
 			offset+=entries.size()
 		check(found,"Edited Tasks row disappeared")
+	var actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(actions);actions.configure(world,true)
+	var state=preload("res://scripts/tasks_state.gd").new();state.configure(actions);state.open()
+	deadline=Time.get_ticks_msec()+5000
+	while state.phase==state.Phase.Reading and Time.get_ticks_msec()<deadline:
+		world.poll();await create_timer(0.01).timeout
+	check(state.phase==state.Phase.Ready and state.rows.size()==reference.size(),"Tasks controller did not assemble native pages")
+	state.dispose();actions.queue_free();await process_frame
 	var result=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	result.store_string(JSON.stringify({"success":not failed,"rows":rows.size(),"suspend_steps":2}));result.close()
 	quit(1 if failed else 0)

@@ -2837,5 +2837,11 @@
       "Repeat, assigned-worker Suspend, Remove worker and Cancel transport branches remain unverified",
       "Disconnect, epoch change, Unknown outcomes and payload-budget pagination still need live acceptance"
     ]
+  },
+  "controller_reference": {
+    "capture": "stockpile-storage-native-input-20261110-123806",
+    "rows": 41,
+    "scope": "Controller assembles all pages through the shared semantic action service; raw transport suspension checks also pass. No view or controller-driven mutation acceptance.",
+    "source_save_preserved": true
   }
 }

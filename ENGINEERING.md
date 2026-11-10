@@ -100,6 +100,25 @@ preservation passes; owned DF6096 closes unsaved,30FPS, GPU59C/17% sampled.
 MSVC rebuild passes; candidate captions/graphics, broader office cases, the
 appoint-button eligibility gate, actual appointments and typed UI remain pending.
 
+Nobles overview rows now include `canAppoint`. DF duplicates its gate inline
+in feed425539..425699 and renderer42712b..42726c; no standalone predicate is
+called there. The bridge mirrors those pinned branches using the fresh owned
+list: fortress entity, election flag, occupied succession offices, paired
+appointing-office identities and present appointing units, then absent living
+nemesis holders. Field offsets are asserted and malformed parallel arrays reject.
+Candidate reads now reject targets without this gate as well as missing/ambiguous
+identities. This does not add or authorize appointment mutations.
+
+Protected171435 on2026-11-10 clicks the plus-button region of all14 native rows,
+observes picker opening and exact target index, then cancels. Both cold and warm
+owned gates match: Monarch and Mayor decline; the other12 captured rows open.
+The existing Manager/Messenger candidate comparison and menu/RNG/cache guards
+also pass. Source preservation passes and owned DF39496 closes unsaved;30FPS,
+GPU61C/19% sampled. `native_nobles.json.appointment_gate_reference` scopes the
+fixture: absent living holders, succession transitions and absent appointing
+offices in other forts remain unaccepted. No viewer or appointment action is
+exposed. MSVC build and core checks pass.
+
 ## Places native discovery
 
 Places presentation and read transport are staged; public exposure remains hidden. Protected140037 on DF53.16 captures

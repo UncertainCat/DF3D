@@ -1972,5 +1972,102 @@
       "Candidate captions/portraits and rendered viewer",
       "Typed transport, lifecycle and public exposure"
     ]
+  },
+  "appointment_gate_reference": {
+    "source": "build/stockpile-storage-native-input-20261110-171435",
+    "rows": [
+      {
+        "entity_id": 245,
+        "position_id": 0,
+        "assignment_id": 3,
+        "can_appoint": false
+      },
+      {
+        "entity_id": 865,
+        "position_id": 9,
+        "assignment_id": 7,
+        "can_appoint": false
+      },
+      {
+        "entity_id": 865,
+        "position_id": 7,
+        "assignment_id": 9,
+        "can_appoint": true
+      },
+      {
+        "entity_id": 865,
+        "position_id": 21,
+        "assignment_id": 0,
+        "can_appoint": true
+      },
+      {
+        "entity_id": 865,
+        "position_id": 4,
+        "assignment_id": 11,
+        "can_appoint": true
+      },
+      {
+        "entity_id": 865,
+        "position_id": 20,
+        "assignment_id": 1,
+        "can_appoint": true
+      },
+      {
+        "entity_id": 865,
+        "position_id": 10,
+        "assignment_id": 6,
+        "can_appoint": true
+      },
+      {
+        "entity_id": 865,
+        "position_id": 11,
+        "assignment_id": 5,
+        "can_appoint": true
+      },
+      {
+        "entity_id": 865,
+        "position_id": 12,
+        "assignment_id": 4,
+        "can_appoint": true
+      },
+      {
+        "entity_id": 865,
+        "position_id": 13,
+        "assignment_id": 3,
+        "can_appoint": true
+      },
+      {
+        "entity_id": 865,
+        "position_id": 5,
+        "assignment_id": 13,
+        "can_appoint": true
+      },
+      {
+        "entity_id": 865,
+        "position_id": 5,
+        "assignment_id": -1,
+        "can_appoint": true
+      },
+      {
+        "entity_id": 865,
+        "position_id": 5,
+        "assignment_id": 12,
+        "can_appoint": true
+      },
+      {
+        "entity_id": 865,
+        "position_id": 23,
+        "assignment_id": -1,
+        "can_appoint": true
+      }
+    ],
+    "oracle": "Click plus-button area for each of 14 native rows, observe choosing_candidate and exact row index, cancel without selecting. Both cold/warm owned gates match.",
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "Other forts with absent living holders, succession transitions and absent appointing offices",
+      "Appointment effects",
+      "Rendered viewer button artwork/layout"
+    ]
   }
 }

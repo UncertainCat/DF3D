@@ -15,7 +15,37 @@ namespace df3d_nobles {
 struct Row {
     int32_t unitId=-1,nemesisId=-1,entityId=-1,positionId=-1,assignmentId=-1,value=0;
     std::string positionName;
+    bool canAppoint=false;
 };
+// Native feed425539..425699 and renderer42712b..42726c inline the same
+// appointment gate. No standalone helper exists at these call sites. Evaluate
+// those semantic tests against the fresh owned list, never the native menu.
+inline std::optional<bool> appointmentAvailable(const df::noblelistst& row,const std::vector<df::noblelistst*>& list) {
+    if(!row.ep || !df::global::plotinfo)return std::nullopt;
+    const auto& position=*row.ep;
+    static_assert(offsetof(df::entity_position,appointed_by)==0x2e0);
+    static_assert(offsetof(df::entity_position,appointed_by_civ)==0x2f8);
+    static_assert(offsetof(df::entity_position,succession_by_position)==0x310);
+    static_assert(offsetof(df::historical_figure,died_year)==0x30);
+    if(position.appointed_by.size()!=position.appointed_by_civ.size() || position.appointed_by.size()>65536)return std::nullopt;
+    bool allowed=row.enid==df::global::plotinfo->group_id && !position.flags.is_set(df::entity_position_flags::ELECTED);
+    if((position.flags.is_set(df::entity_position_flags::SUCCESSION_BY_HEIR) || !position.succession_by_position.empty()) && row.epp && row.epp->histfig!=-1)allowed=false;
+    if(allowed && !position.appointed_by_civ.empty()) {
+        allowed=false;
+        for(const auto* other:list) {
+            if(!other || !other->ep)return std::nullopt;
+            if(other==&row)continue;
+            for(size_t i=0;i<position.appointed_by.size();++i) {
+                if(position.appointed_by_civ[i]==other->enid && position.appointed_by[i]==other->ep->id && other->un)allowed=true;
+            }
+        }
+    }
+    if(!row.un && row.nem) {
+        if(!row.nem->figure)return std::nullopt;
+        if(row.nem->figure->died_year==-1)allowed=false;
+    }
+    return allowed;
+}
 // Native421f30 reads simulation entities, units, historical figures and positions.
 // All overview rows, parallel identity vectors and location summaries belong to
 // this private context. Never invoke the UI opener424280 or feed424330.
@@ -39,6 +69,8 @@ inline bool ready() {
     static const bool pinned=[base] {
         struct Pin {size_t rva,length;uint64_t hash;};
         constexpr Pin pins[]={
+        {0x425539,0x162,UINT64_C(0x497589726e70534e)},
+        {0x42712b,0x147,UINT64_C(0x1001eb9865cf74f3)},
         {0x423df0,0x483,UINT64_C(0x76d34506cc3f6746)},
         {0x421ea0,0x90,UINT64_C(0x66ce8e62615f3121)},
         {0x14219a0,0x1e,UINT64_C(0xbd7a0f718d1f235d)},
@@ -85,7 +117,8 @@ inline std::optional<std::vector<Row>> overview() {
     std::vector<Row> result;result.reserve(owned.value.noblelist.size());
     for(const auto* source:owned.value.noblelist) {
         if(!source || !source->ep)return std::nullopt;
-        Row row;row.unitId=source->un?source->un->id:-1;row.nemesisId=source->nem?source->nem->id:-1;
+        const auto available=appointmentAvailable(*source,owned.value.noblelist);if(!available)return std::nullopt;
+        Row row;row.canAppoint=*available;row.unitId=source->un?source->un->id:-1;row.nemesisId=source->nem?source->nem->id:-1;
         row.entityId=source->enid;row.positionId=source->ep->id;row.assignmentId=source->epp?source->epp->id:-1;
         row.value=source->value;row.positionName=source->ep->name[0];result.push_back(std::move(row));
     }
@@ -115,6 +148,8 @@ inline std::optional<std::vector<Candidate>> candidates(int32_t entityId,int32_t
         }
     }
     if(!target)return std::nullopt;
+    const auto available=appointmentAvailable(*target,owned.value.noblelist);
+    if(!available || !*available)return std::nullopt;
     reinterpret_cast<void(*)(df::administrators_interfacest*,df::noblelistst*)>(base+0x423df0)(&owned.value,target);
     if(owned.value.candidate.size()>1048576)return std::nullopt;
     std::vector<Candidate> result;result.reserve(owned.value.candidate.size());

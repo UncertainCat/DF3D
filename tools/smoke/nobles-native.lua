@@ -61,6 +61,20 @@ local rows={}
 for _,row in ipairs(menu.noblelist)do
  rows[#rows+1]={unit_id=row.un and row.un.id or -1,nemesis_id=row.nem and row.nem.id or -1,entity_id=row.enid,position_id=row.ep and row.ep.id or -1,assignment_id=row.epp and row.epp.id or -1,value=row.value,position_name=row.ep and dfhack.df2utf(row.ep.name[0])or''}
 end
+-- Observe the actual plus-button input for every captured row. Cancel each
+-- picker without selecting an appointment; no eligibility formula in the oracle.
+for index,row in ipairs(rows)do
+ local x,y=232,178+(index-1)*36
+ g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=y//12
+ df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+ gui.simulateInput(view,'_MOUSE_L');df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1;settle()
+ row.can_appoint=menu.choosing_candidate
+ if menu.choosing_candidate then
+  assert(menu.candidate_noblelist_ind==index-1,'Appointment button selected wrong row')
+  gui.simulateInput(view,'LEAVESCREEN');settle();assert(not menu.choosing_candidate,'Appointment Cancel failed')
+ end
+ assert(info.open and info.current_mode==df.info_interface_mode_type.ADMINISTRATORS,'Appointment button left overview')
+end
 local warm=probe();assert(json.encode(cold)==json.encode(rows) and json.encode(warm)==json.encode(rows),'Owned Nobles overview differs from native order/identities')
 local result={owned={cold=cold,warm=warm,menu_preserved=true,rng_preserved=true},dimensions={g.dimx,g.dimy},rows=rows,lines=lines(),scroll=menu.scroll_position_noblelist,choosing_candidate=menu.choosing_candidate,assigning_symbol=menu.assigning_symbol}
 write('nobles-native.json',json.encode(result));capture('nobles-overview')

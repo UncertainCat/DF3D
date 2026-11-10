@@ -25,6 +25,8 @@
 #include "df/descriptor_color.h"
 #include "df/descriptor_pattern.h"
 #include "df/item_boxst.h"
+#include "df/item_toolst.h"
+#include "df/itemdef_toolst.h"
 #include "df/item_toyst.h"
 #include "df/itemdef_toyst.h"
 #include "df/item_siegeammost.h"
@@ -675,7 +677,7 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
        table!=base+0x161edd8 && table!=base+0x16c9ba0 &&
        table!=base+0x16c4c00 && table!=base+0x15f74b0 &&
        table!=base+0x16f5ea0 && table!=base+0x16fca08 && table!=base+0x16f02e8 &&
-       table!=base+0x16f6620 && !furnitureItemDescriptionTable(base,table))return false;
+       table!=base+0x16f6620 && table!=base+0x1623918 && !furnitureItemDescriptionTable(base,table))return false;
     static const bool pinned=[base]() {
         struct Pin {size_t slot,target,length;uint64_t hash;};
         constexpr Pin pins[]={
@@ -706,7 +708,7 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
         // c75000 has no clothing-specific branch; subtype is a semantic raw.
         for(size_t table:{size_t(0x1623198),size_t(0x16c6cf0),size_t(0x161dd98),
                          size_t(0x161f840),size_t(0x1621b88),size_t(0x1624818),size_t(0x161edd8),size_t(0x16c9ba0),size_t(0x16c4c00),size_t(0x15f74b0),
-                         size_t(0x16c8230),size_t(0x16c2d20),size_t(0x1625280),size_t(0x1625a00),size_t(0x16f9cb0),size_t(0x1620b48),size_t(0x16212c8),size_t(0x16225f0),size_t(0x16c25a0),size_t(0x16fe8b8),size_t(0x16c3fe0),size_t(0x161e518),size_t(0x16f37c0),size_t(0x16fffe8),size_t(0x1701de8),size_t(0x16f19c0),size_t(0x16f7cf8),size_t(0x16ff868),size_t(0x16fd1e0),size_t(0x1702568),size_t(0x1700768),size_t(0x161c930),size_t(0x16c54c0),size_t(0x15f7d10),size_t(0x16fd960),size_t(0x16c8ca0),size_t(0x16f56c8),size_t(0x16f6620),size_t(0x16fc288),size_t(0x16f1240),size_t(0x16fa488),size_t(0x1701668),size_t(0x16f7520),size_t(0x16fac08),size_t(0x1624098),size_t(0x16fb388),size_t(0x16261f0),size_t(0x16f9530),size_t(0x1702d40),size_t(0x16f4f48),size_t(0x16b4dc0),size_t(0x16f8478),size_t(0x16c5cb0),size_t(0x16f28c0),size_t(0x16f3f40),size_t(0x16ca460),size_t(0x1700ee8),size_t(0x16b8268),size_t(0x16f5ea0),size_t(0x16fca08),size_t(0x16f02e8)})for(auto pin:pins) {
+                         size_t(0x16c8230),size_t(0x16c2d20),size_t(0x1625280),size_t(0x1625a00),size_t(0x16f9cb0),size_t(0x1620b48),size_t(0x16212c8),size_t(0x16225f0),size_t(0x16c25a0),size_t(0x16fe8b8),size_t(0x16c3fe0),size_t(0x161e518),size_t(0x16f37c0),size_t(0x16fffe8),size_t(0x1701de8),size_t(0x16f19c0),size_t(0x16f7cf8),size_t(0x16ff868),size_t(0x16fd1e0),size_t(0x1702568),size_t(0x1700768),size_t(0x161c930),size_t(0x16c54c0),size_t(0x15f7d10),size_t(0x16fd960),size_t(0x16c8ca0),size_t(0x16f56c8),size_t(0x16f6620),size_t(0x16fc288),size_t(0x16f1240),size_t(0x16fa488),size_t(0x1701668),size_t(0x16f7520),size_t(0x16fac08),size_t(0x1624098),size_t(0x16fb388),size_t(0x16261f0),size_t(0x16f9530),size_t(0x1702d40),size_t(0x16f4f48),size_t(0x16b4dc0),size_t(0x16f8478),size_t(0x16c5cb0),size_t(0x16f28c0),size_t(0x16f3f40),size_t(0x16ca460),size_t(0x1700ee8),size_t(0x16b8268),size_t(0x16f5ea0),size_t(0x16fca08),size_t(0x16f02e8),size_t(0x1623918)})for(auto pin:pins) {
             if(table==0x16c6cf0 && pin.slot==0)pin={0,0x673c0,6,UINT64_C(0x6470dd592ae1062b)};
             if(pin.slot==0) {
                 if(table==0x161dd98)pin={0,0x28a840,6,UINT64_C(0x3c0e712b7d27ecd8)};
@@ -717,6 +719,7 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
                 if(table==0x16f5ea0)pin={0,0x28d340,6,UINT64_C(0x05fb860fe1c710df)};
                 if(table==0x16fca08)pin={0,0x7b7a0,6,UINT64_C(0x57c0fc2ead8fec2e)};
                 if(table==0x16f02e8)pin={0,0x8f45f0,6,UINT64_C(0xdff05a9069db5ad0)};
+                if(table==0x1623918)pin={0,0x28a0d0,6,UINT64_C(0x9180cae344333306)};
                 if(table==0x16b8268)pin={0,0x103c90,6,UINT64_C(0x5ec3be394ef2fcfa)};
                 if(table==0x16ca460)pin={0,0x7a7b0,6,UINT64_C(0xbd391582980cf246)};
                 if(table==0x1700ee8)pin={0,0x548f00,6,UINT64_C(0xa1848a7f67a18cf0)};
@@ -769,6 +772,8 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
                 if(table==0x1702568)pin={0,0x54b450,6,UINT64_C(0xbae254d462406882)};
                 if(table==0x1700768)pin={0,0x79ce0,6,UINT64_C(0x4b131b0430423831)};
             }
+            if(table==0x1623918 && pin.slot==0x750)
+                pin={pin.slot,0x28a360,7,UINT64_C(0x34d5217814fb1d1b)};
             if((table==0x16ca460 || table==0x1700ee8) && pin.slot==0x230)
                 pin={pin.slot,0x8f2eb0,0x15,UINT64_C(0xaa49f78932ee531d)};
             if(table==0x16f6620) {
@@ -778,7 +783,7 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
             if(*reinterpret_cast<const void* const*>(base+table+pin.slot)!=base+pin.target || hash(pin.target,pin.length)!=pin.hash)return false;
         }
         for(size_t table:{size_t(0x16c6cf0),size_t(0x161dd98),size_t(0x161f840),
-                         size_t(0x1621b88),size_t(0x1624818),size_t(0x161edd8),size_t(0x16c9ba0),size_t(0x16c4c00),size_t(0x15f74b0),size_t(0x16f5ea0),size_t(0x16fca08),size_t(0x16f02e8)})
+                         size_t(0x1621b88),size_t(0x1624818),size_t(0x161edd8),size_t(0x16c9ba0),size_t(0x16c4c00),size_t(0x15f74b0),size_t(0x16f5ea0),size_t(0x16fca08),size_t(0x16f02e8),size_t(0x1623918)})
             if(*reinterpret_cast<const void* const*>(base+table+8)!=base+0xfd0c0)return false;
         for(size_t table:{size_t(0x16c8230),size_t(0x16c2d20),size_t(0x1625280),size_t(0x1625a00),size_t(0x16f9cb0),size_t(0x1620b48),size_t(0x16212c8),size_t(0x16225f0),size_t(0x16c25a0),size_t(0x16fe8b8),size_t(0x16c3fe0),size_t(0x161e518),size_t(0x16f37c0),size_t(0x16fffe8),size_t(0x1701de8),size_t(0x16f19c0),size_t(0x16f7cf8),size_t(0x16ff868),size_t(0x16fd1e0),size_t(0x1702568),size_t(0x1700768),size_t(0x161c930),size_t(0x16c54c0),size_t(0x15f7d10),size_t(0x16fd960),size_t(0x16c8ca0),size_t(0x16f56c8),size_t(0x16fc288),size_t(0x16f1240),size_t(0x16fa488),size_t(0x1701668),size_t(0x16f7520),size_t(0x16fac08),size_t(0x1624098),size_t(0x16fb388),size_t(0x16261f0),size_t(0x16f9530),size_t(0x1702d40),size_t(0x16f4f48),size_t(0x16b4dc0),size_t(0x16f8478),size_t(0x16c5cb0),size_t(0x16f28c0),size_t(0x16f3f40),size_t(0x16ca460),size_t(0x1700ee8),size_t(0x16b8268)})
             if(*reinterpret_cast<const void* const*>(base+table+8)!=base+0x66e60)return false;
@@ -898,6 +903,12 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
         if(!instrument->subtype || DFHack::Items::getSubtypeDef(df::item_type::INSTRUMENT,item->getSubtype())!=instrument->subtype)return false;
     }
     const df::itemdef* definition=nullptr;
+    // Tool prose reads the raw description; die-face wording reads face_up.
+    // Both are semantic item/raw fields. Native bounds-checks the face index.
+    static_assert(offsetof(df::item_toolst,subtype)==0xe8);
+    static_assert(offsetof(df::item_toolst,face_up)==0x104);
+    static_assert(offsetof(df::itemdef_toolst,description)==0x188);
+    if(table==base+0x1623918)definition=static_cast<df::item_toolst*>(item)->subtype;
     if(table==base+0x16f5ea0)definition=static_cast<df::item_siegeammost*>(item)->subtype;
     if(table==base+0x16fca08)definition=static_cast<df::item_toyst*>(item)->subtype;
     if(table==base+0x16f02e8)definition=static_cast<df::item_trapcompst*>(item)->subtype;
@@ -1081,7 +1092,7 @@ inline std::optional<ItemObservation> observeItem(df::item* item) {
     case df::item_type::WEAPON:case df::item_type::SHIELD:case df::item_type::BAG:
     case df::item_type::BACKPACK:case df::item_type::QUIVER:
     case df::item_type::SPLINT:case df::item_type::CRUTCH:
-    case df::item_type::TOY:case df::item_type::SIEGEAMMO:case df::item_type::TRAPCOMP:
+    case df::item_type::TOOL:case df::item_type::TOY:case df::item_type::SIEGEAMMO:case df::item_type::TRAPCOMP:
     case df::item_type::SKIN_TANNED:case df::item_type::ROCK:
     case df::item_type::BRANCH:case df::item_type::BALLISTAARROWHEAD:case df::item_type::TOTEM:
     case df::item_type::BALLISTAPARTS:

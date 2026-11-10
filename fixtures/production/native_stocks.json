@@ -9076,5 +9076,86 @@
       "Other materials, issuers, missing batch/issuer cases, explicit history-discovery setting variants and scrolled description pixels remain unverified in the coin-panel lane.",
       "Public Stocks remains gated."
     ]
+  },
+  "tool_item_description_reference": {
+    "source": "DF 53.16 protected stocks lane 20261110-081936",
+    "dispatch": {
+      "type": 86,
+      "table": "1623918",
+      "get_type": "28a0d0",
+      "subtype": "fd0c0",
+      "face_up": "28a360",
+      "native_description": "c75000"
+    },
+    "cases": [
+      {
+        "description": "This is a well-crafted steel jug.  ",
+        "id": 14934,
+        "kind": 86,
+        "snapshot": {
+          "appearance": {
+            "color_token": "BLUE-GRAY",
+            "flags": 0,
+            "material_token": "INORGANIC:STEEL",
+            "stack": 1,
+            "subtype_raw": "ITEM_TOOL_JUG"
+          },
+          "can_dump": true,
+          "can_melt": true,
+          "caption": "-steel jug-",
+          "carrier": {
+            "appearance": {
+              "color_token": "LIGHT_BROWN",
+              "flags": 0,
+              "material_token": "PLANT:PARADISE_NUT:WOOD",
+              "stack": 1,
+              "subtype_raw": ""
+            },
+            "id": 7608,
+            "item_type": 32,
+            "kind": 1,
+            "name": "-Finished Goods Bin (paradise nut wood) <#2>-"
+          },
+          "description": "This is a well-crafted steel jug.  ",
+          "dump": false,
+          "flags": 536870920,
+          "forbid": false,
+          "hidden": false,
+          "id": 14934,
+          "item_type": 86,
+          "material_token": "INORGANIC:STEEL",
+          "melt": false,
+          "revision": "2207495850854450819",
+          "stockpile": {
+            "id": 121,
+            "name": "Stockpile #2",
+            "type": 29
+          },
+          "stockpile_categories": 81601,
+          "weight": "2\u0393"
+        },
+        "uses": []
+      }
+    ],
+    "panel": {
+      "rectangle": [
+        416,
+        52,
+        488,
+        708
+      ],
+      "different_pixels": 0,
+      "native_sha256": "935689e36f833b44529568cfc87e1e3869001e553e181b77ee4b32c7eb1d73cd",
+      "viewer_sha256": "f34250f7c749b759a7e4f3b6cbd789864712fdfcddafc12d5e06b3d9570446b0"
+    },
+    "verification": [
+      "Steel jug14934: native/owned/wire description and Uses exact; native/viewer View and close pass; full panel pixel equality and visual inspection.",
+      "Core19, extension, item-state and MSVC pass; source preserved; DF36424 exits unsaved at30FPS.",
+      "Passed with known engine thread/finalize/shutdown diagnostics only. Maximum sampled GPU46C, not a measured peak."
+    ],
+    "limits": [
+      "Other tool subtypes, nonempty raw descriptions and die-face wording lack live panel acceptance.",
+      "Public Stocks remains gated."
+    ]
   }
 }

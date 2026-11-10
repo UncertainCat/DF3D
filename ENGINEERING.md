@@ -340,6 +340,23 @@ its written improvements still require the same dependency audit. Existing
 `written_detail_native.h` guards are diagnostic evidence, not blanket production
 acceptance of these item sheets.
 
+TOOL86 uses the guarded constructed-item description provider. Its type and
+face-up getters (28a0d0/28a360) are pinned alongside the shared BOX virtuals;
+subtypefd0c0 must resolve the same semantic raw as the item's subtype pointer.
+MSVC assertions bind subtypee8, face_up104 and raw description188. Native
+c79502 appends the raw description; c77ccb reads the face-up index and bounds
+checks it against the improvement's faces. Neither path borrows menu state.
+
+Protected081936 on2026-11-10 verifies steel jug14934: native/owned/wire prose
+and Uses agree, native/viewer View and close pass, and the full initial panel
+has zero differing pixels. Core19, extension, item-state and MSVC pass. Source
+is unchanged; DF36424 exits unsaved at30FPS, with only known engine diagnostics.
+Maximum sampled GPU46C is not a measured peak. The fixture's
+`tool_item_description_reference` records provenance and remaining gaps:
+other subtypes, nonempty raw descriptions and die-face wording still lack live
+panel acceptance. DF3D keeps public Stocks gated. The protected selector is
+DF3D_STOCKS_TOOL_SHEETS.
+
 COIN74 uses the guarded constructed-item description provider. Its
 c78c85..c78d6b branch resolves a coin batch and calls5beeb0 (lengtha9f) for mint,
 issuer, year and both image descriptions. Shared native image generation and

@@ -8346,5 +8346,71 @@
       "Earlier064939 passes semantic assertions but native screenshot caught incomplete redraw; not visual acceptance. Capture now allows8 frames instead of3.",
       "One red spinach stack5107 only; other food families and broader plant variants remain unfinished. Public Stocks remains gated."
     ]
+  },
+  "liquid_powder_description_reference": {
+    "run": "build/stockpile-storage-native-input-20261110-065615",
+    "game": "53.16",
+    "items": [
+      {
+        "kind": 69,
+        "id": 42892,
+        "description": "This is a stack of 18 dwarven beer.  ",
+        "uses": [],
+        "panel_different_pixels": 0,
+        "difference_bounds": null,
+        "native_sha256": "5fed7a7e31f6f926bc3b4928b06e9dccd9a9bc787923a9b792e0087d9a70a781",
+        "viewer_sha256": "9f97989c5ce7721bc08bbf129dd3f7c229471d9f03190397c051363fb39f014c"
+      },
+      {
+        "kind": 70,
+        "id": 12893,
+        "description": "This is a stack of 10 quicklime.  ",
+        "uses": [],
+        "panel_different_pixels": 0,
+        "difference_bounds": null,
+        "native_sha256": "24bab282516a715f4a3e882aaaa6fdcdc48d122dda4cd850ae36727e4c2834e6",
+        "viewer_sha256": "44c7dc04af0dcda84ab98f2ed3aed4f8415a1b62f0c84caa89a0db353180bebc"
+      },
+      {
+        "kind": 73,
+        "id": 30113,
+        "description": "This is a stack of 3 water laced with mud.  ",
+        "uses": [],
+        "panel_different_pixels": 264,
+        "difference_bounds": [
+          17,
+          19,
+          37,
+          42
+        ],
+        "native_sha256": "cb2a37a415b17c44c9315c684da413c501fdb94a7236770db05de2a51ef9d72a",
+        "viewer_sha256": "10dfbc0d2e8941b7bdb2abd105b2483446ac012961416f9116cf793810844f6f"
+      }
+    ],
+    "panel_crop": [
+      416,
+      52,
+      904,
+      760
+    ],
+    "dispatch": {
+      "DRINK": "16ba7c0 getType7dedf0",
+      "LIQUID_MISC": "1655c40 getType5450f0",
+      "POWDER_MISC": "16b8e88 getType104610",
+      "material_getters": "fcc30:c0 and545100:c4; all other description virtuals match SEEDS",
+      "powder_branch": "c78d7a..c78e1d uses pinned145c2b0 and descriptor raws",
+      "liquid_branch": "c75206 grammar, c792f1 skips contaminants"
+    },
+    "verification": [
+      "Native category/item View/close and native/owned/wire description and ordered Uses match for all3 families. Output context remains owned; no native UI storage used at runtime.",
+      "Core19, viewer extension, item_sheet_state_test and MSVC pass in item-liquid-dispatch.",
+      "Source save unchanged; DF39424 closed unsaved. 30FPS, maximum sampled GPU60C (not peak); only documented thread/finalize/shutdown diagnostics.",
+      "Initial065450 semantic checks pass but first drink screenshot catches incomplete redraw. Capture now waits750ms with yielded frames before screenshots; only065615 accepted for drink visual parity."
+    ],
+    "limits": [
+      "One item per family, no dye powder or nonempty Uses variant in this batch.",
+      "Water30113 header icon differs264pixels, bounds17,19,37,42 relative to panel; all remaining panel pixels match. Color correction remains pending native selector audit.",
+      "Public Stocks remains gated; this adds item families, not full screen acceptance."
+    ]
   }
 }

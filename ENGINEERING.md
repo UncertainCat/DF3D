@@ -330,6 +330,20 @@ creature captions and artwork: native158450 skips item controls for unit rows,
 so those rows correctly have no View/flag buttons. Management168 separately
 adds native ordered Uses. Public Stocks remains gated.
 
+Drink69, powder70 and other liquid73 item sheets use the owned native
+description/Uses provider with pinned material getters at c0/c4. Other used
+virtuals match SEEDS; powder dye wording reads native descriptor raws through
+the already guarded145c2b0 helper. Protected065615 on2026-11-10 verifies all
+three through actual native View/close and exact native/owned/wire descriptions
+and Uses. Beer42892 and quicklime12893 full panels match exactly, including
+barrel/bag carriers. Water30113 differs only264pixels in its header icon color;
+that artwork remains unfinished pending native selector audit. The fixture
+`native_stocks.json.liquid_powder_description_reference` scopes acceptance to
+these three items. Core19, extension, item-state and MSVC pass; source save is
+preserved and DF39424 exits unsaved at30FPS with documented diagnostics only.
+Native screenshot capture yields for750ms because simulation-frame counts alone
+can finish before the graphics thread completes its initial redraw.
+
 Food/plant item descriptions admit MEAT48, PLANT54, CHEESE71 and GLOB75
 through the same owned native description/Uses provider. Their used virtuals
 match SEEDS except getType; the additional bounded plant-raw flag lookup14d880

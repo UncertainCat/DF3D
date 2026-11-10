@@ -157,6 +157,19 @@ DF40076 exits unsaved, capped30FPS, GPU52C/0% sampled. Core and MSVC pass.
 `worker_text_reference` records the bounded evidence. Selector artwork and
 public Tasks integration remain unfinished.
 
+Tasks398117 calls6d6560 with selector flag400, the same full-body context as
+widget_unit_portrait1423240. Optional artwork collection reuses resolveUnitSelector
+and converts its result through ownedItemRecipe into bounded installed page,
+palette and layer references. No sheet_icon_texpos or generated texture enters
+the result. Action validation leaves artwork collection off. Protected115610
+returns valid recipes for all38 assigned rows with exact cold/warm agreement
+and native menu storage preserved. Existing text/color/control/navigation checks
+also pass. This establishes provider integration, not Tasks image pixel parity;
+missing-art and unusual creature/anatomy branches remain unverified here.
+Source preserved; DF39076 exits unsaved, capped30FPS, GPU49C/2% sampled. MSVC/core
+pass. `worker_artwork_reference` retains recipe digests and explicit limits.
+Destination artwork and the public Tasks screen remain unfinished.
+
 ## Stocks native discovery
 
 Stocks list icons now use every available item-sheet selector instead of a

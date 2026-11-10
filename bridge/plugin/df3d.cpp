@@ -2501,7 +2501,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         if(parameters[0]=="tasks-rows-probe") {
           if(parameters.size()!=1)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
-          const auto rows=df3d_tasks::rows();if(!rows)return CR_FAILURE;
+          const auto rows=df3d_tasks::rows(true);if(!rows)return CR_FAILURE;
           Json::Value result(Json::objectValue);result["rows"]=Json::Value(Json::arrayValue);
           for(const auto& entry:*rows) {
             Json::Value row(Json::objectValue);row["job_id"]=entry.jobId;row["unit_id"]=entry.unitId;
@@ -2520,6 +2520,11 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               color["effect"]=int(c.effect);color["source"]=int(c.source);
               for(auto value:c.color)color["color"].append(int(value));
               for(auto value:c.alternate)color["alternate"].append(int(value));}
+            if(entry.workerAppearance){const auto& recipe=*entry.workerAppearance;auto& art=row["worker_appearance"];
+              art["pages"]=Json::Value(Json::arrayValue);art["palettes"]=Json::Value(Json::arrayValue);art["layers"]=Json::Value(Json::arrayValue);
+              for(const auto& name:recipe.pages)art["pages"].append(name);
+              for(const auto& name:recipe.palettes)art["palettes"].append(name);
+              for(const auto& layer:recipe.layers){Json::Value values(Json::arrayValue);for(auto value:layer)values.append(value);art["layers"].append(values);}}
             result["rows"].append(row);
           }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;

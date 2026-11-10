@@ -22,6 +22,7 @@ struct Row {
     std::string buildingCaption;
     df::coord buildingPosition=df::coord(-30000,-30000,-30000),workerPosition=df::coord(-30000,-30000,-30000);
     std::optional<df3d_area::ZoneOwnerNameColor> workerColor;
+    std::optional<df3d_production::ItemAppearanceRecipe> workerAppearance;
 };
 // Native396ee0/397c90 inline these checks; there is no standalone eligibility
 // call for the four edit buttons. Mirror that bounded branch over simulation
@@ -63,7 +64,7 @@ inline bool controls(Row& row,df::job* job,df::unit* worker,uint8_t* base) {
 // Native323a68 opens Tasks by passing its jobs context to374630. That builder
 // reads the simulation job chain, filters workers/flags, and stably inserts by
 // job type. Its only output is the supplied context; no native menu is input.
-inline std::optional<std::vector<Row>> rows() {
+inline std::optional<std::vector<Row>> rows(bool includeArtwork=false) {
     if(!df::global::world || !df3d_residents::activitySupported())return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     if(reinterpret_cast<const void*>(&df::global::world->jobs.list.next)!=base+0x23e61c8)return std::nullopt;
@@ -122,6 +123,14 @@ inline std::optional<std::vector<Row>> rows() {
             // name-color context. Reuse its owned facts, never the gps writer.
             row.workerColor=df3d_area::nativeZoneOwnerNameColor(*unit);
             if(!row.workerColor)return std::nullopt;
+            // Tasks398117 uses6d6560 with flag400, the full-body selector
+            // context used by widget_unit_portrait1423240. Retain only original
+            // installed asset references, never native sheet_icon_texpos.
+            if(includeArtwork){
+                df3d_appearance::Result recipe;
+                if(df3d_appearance::resolveUnitSelector(unit,recipe))
+                    row.workerAppearance=df3d_production::ownedItemRecipe(recipe);
+            }
             // Native397336..3973bd. Caged workers navigate via their item's
             // effective position; all outputs belong to this row.
             if(!unit->flags1.bits.caged)row.workerPosition=unit->pos;

@@ -58,6 +58,7 @@ local verified={}
 local verified_controls={}
 local verified_buildings={}
 local verified_workers={}
+local verified_artwork={}
 local function verify_captions()
  local first=info.jobs.scroll_position_cri_job
  for index=first,math.min(#warm-1,first+16)do
@@ -80,6 +81,13 @@ local function verify_captions()
      'Tasks worker color differs '..row.job_id)
    end
    verified_workers[row.job_id]=true
+   local art=assert(row.worker_appearance,'Tasks worker selector recipe missing')
+   assert(#art.pages>0 and #art.layers>0,'Tasks selector recipe empty')
+   for _,layer in ipairs(art.layers)do
+    assert(art.pages[layer[1]+1] and #layer==10,'Invalid Tasks selector layer')
+    if layer[6]~=65535 then assert(art.palettes[layer[6]+1],'Invalid Tasks selector palette')end
+   end
+   verified_artwork[row.job_id]=true
   end
   if row.building_id>=0 then
    local bytes=dfhack.utf2df(row.building_caption)
@@ -142,6 +150,8 @@ assert(#result.verified_caption_ids==#warm,'Not all Tasks captions were observed
 result.verified_control_ids={}
 result.verified_building_ids={}
 result.verified_worker_ids={}
+result.verified_artwork_ids={}
+for _,row in ipairs(warm)do if verified_artwork[row.job_id]then result.verified_artwork_ids[#result.verified_artwork_ids+1]=row.job_id end end
 for _,row in ipairs(warm)do if verified_workers[row.job_id]then result.verified_worker_ids[#result.verified_worker_ids+1]=row.job_id end end
 for _,row in ipairs(warm)do if verified_buildings[row.job_id]then result.verified_building_ids[#result.verified_building_ids+1]=row.job_id end end
 for _,row in ipairs(warm)do if verified_controls[row.job_id]then result.verified_control_ids[#result.verified_control_ids+1]=row.job_id end end

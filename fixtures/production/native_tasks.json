@@ -2411,5 +2411,259 @@
     "fps_cap": 30,
     "sampled_gpu_celsius": 52,
     "sampled_gpu_utilization_percent": 0
+  },
+  "worker_artwork_reference": {
+    "capture": "stockpile-storage-native-input-20261110-115610",
+    "rows": [
+      {
+        "job_id": 382772,
+        "unit_id": 2346,
+        "layers": 10,
+        "recipe_sha256": "380588dfbb3c944501733f1f1d636001f456aba9215bafcf3427b5c31ea8c423"
+      },
+      {
+        "job_id": 382783,
+        "unit_id": 6274,
+        "layers": 21,
+        "recipe_sha256": "dcfab41a96eb30f571eaac56af56d259cbc4a22a078df43ed35d217b8b10d66e"
+      },
+      {
+        "job_id": 382742,
+        "unit_id": 7272,
+        "layers": 20,
+        "recipe_sha256": "85748ee6111c89142c11f36595e13a7ec3be4495eae8e33158da38fc101e11aa"
+      },
+      {
+        "job_id": 382749,
+        "unit_id": 7279,
+        "layers": 19,
+        "recipe_sha256": "e68163d4ef8757ccc98dbc2bd297b71e2eea8402ed5a0a7b83508f9139ab1f80"
+      },
+      {
+        "job_id": 382750,
+        "unit_id": 6277,
+        "layers": 20,
+        "recipe_sha256": "5cc0d85664c2b8009d61c61479a55e7c122d11abed0e465eb62b4b684e979e78"
+      },
+      {
+        "job_id": 382751,
+        "unit_id": 6974,
+        "layers": 19,
+        "recipe_sha256": "a7fd7c5cc1c9b273d73f7d89a3469306313d4178b7cf0b33908142b40c6db746"
+      },
+      {
+        "job_id": 382758,
+        "unit_id": 7276,
+        "layers": 21,
+        "recipe_sha256": "58caebbe9dee3d04b9f6d9749f8d840e3c19b918afde5ea1fdc9d4639f2d6d7e"
+      },
+      {
+        "job_id": 382759,
+        "unit_id": 5574,
+        "layers": 21,
+        "recipe_sha256": "95057bc6023faa9b2a56ba5b1b5d890db388f476294aac4963ba684833659aa0"
+      },
+      {
+        "job_id": 382760,
+        "unit_id": 7280,
+        "layers": 20,
+        "recipe_sha256": "cb7d30a2abf08c428a948886db5b2f751e9db90e2877466456e5fbc89204d755"
+      },
+      {
+        "job_id": 382762,
+        "unit_id": 6831,
+        "layers": 20,
+        "recipe_sha256": "61d0f9a44fadb2473f9add7b698c8f572d0f3b8573e7f47e9c44ee511df7715a"
+      },
+      {
+        "job_id": 382765,
+        "unit_id": 7283,
+        "layers": 19,
+        "recipe_sha256": "2b91830d0c80721c61b379056ba3f80b177c663d20cc460bf0617423c844b51c"
+      },
+      {
+        "job_id": 382768,
+        "unit_id": 6972,
+        "layers": 21,
+        "recipe_sha256": "48387639995019855525b8a35f6b22667e4d3652d6bf577d2d3e49d76a197fb7"
+      },
+      {
+        "job_id": 382769,
+        "unit_id": 7282,
+        "layers": 22,
+        "recipe_sha256": "427dea5af1287e89ceda137c69d7c4646e6c765df4105b02ce0fe4d2838930b8"
+      },
+      {
+        "job_id": 382773,
+        "unit_id": 6136,
+        "layers": 20,
+        "recipe_sha256": "fd8d07f4770dd9d0b263ec3feb98001dcb5c88bcbc28a68b087ffc4c96612d08"
+      },
+      {
+        "job_id": 382777,
+        "unit_id": 988,
+        "layers": 21,
+        "recipe_sha256": "895f91ab24d5a05233e8ae4561e07befeb7873f782bd4d50f97bc9e382e50dad"
+      },
+      {
+        "job_id": 382780,
+        "unit_id": 7284,
+        "layers": 20,
+        "recipe_sha256": "18fd4e589cf2ef89b38c0ea6298376f789ac21d4d0e9c42d2b6e5ea72a8445e2"
+      },
+      {
+        "job_id": 382786,
+        "unit_id": 7267,
+        "layers": 19,
+        "recipe_sha256": "8901191473116aad507327da53738f5ff17503c42a037caafa9d414d84d6c614"
+      },
+      {
+        "job_id": 382789,
+        "unit_id": 7275,
+        "layers": 22,
+        "recipe_sha256": "c5db12a1ab86a2f07b610dc40a4bdd642765cc80ffccdf1069d5c1b44756dcb6"
+      },
+      {
+        "job_id": 382792,
+        "unit_id": 7207,
+        "layers": 22,
+        "recipe_sha256": "2febe51c50c198f2fca1ff9bccdfa89275da6ab4ca329b6d7d97eb0a178abde9"
+      },
+      {
+        "job_id": 382679,
+        "unit_id": 6685,
+        "layers": 20,
+        "recipe_sha256": "c3c9de5eee27959a677af2421f0e9796e47f4d8ab55caaa65ad01b3845b1b01d"
+      },
+      {
+        "job_id": 382713,
+        "unit_id": 6534,
+        "layers": 22,
+        "recipe_sha256": "8e4bc1c3f24d543979356c25bac16f2de9b09a233660f96f2cdb3a38e138ec81"
+      },
+      {
+        "job_id": 382720,
+        "unit_id": 4237,
+        "layers": 20,
+        "recipe_sha256": "3266166b5878a1018b8a9a5f89185012538d3ee44baeb2e2a2670cf4a72b3770"
+      },
+      {
+        "job_id": 382739,
+        "unit_id": 6824,
+        "layers": 19,
+        "recipe_sha256": "12766f3c2630e3c92cdd9fc6c0e35ab147af329f502690d6f0f6bea75b675885"
+      },
+      {
+        "job_id": 382748,
+        "unit_id": 5575,
+        "layers": 32,
+        "recipe_sha256": "49918826db80c886cacaf39422e80e2713a2c10ae8228ed36252438587eaf46e"
+      },
+      {
+        "job_id": 382757,
+        "unit_id": 6683,
+        "layers": 21,
+        "recipe_sha256": "3efbde862d96b46c101ff2870d59cc844bc1bffab892b4b7bb98cc6eae9d6d48"
+      },
+      {
+        "job_id": 382778,
+        "unit_id": 6681,
+        "layers": 20,
+        "recipe_sha256": "f1a7965a20682d6c4db27b34b4c2d0c9a6549224d20c52d7c31d51a7cbc646e1"
+      },
+      {
+        "job_id": 382785,
+        "unit_id": 7041,
+        "layers": 21,
+        "recipe_sha256": "49047bb2e4efcb3980a3ee29fa06d869e04524a66127c84123d83948e6d76e48"
+      },
+      {
+        "job_id": 382763,
+        "unit_id": 5697,
+        "layers": 21,
+        "recipe_sha256": "8561b3c7135d6ab69608f741c347544eb448d4b0aa74eb204b92786e2d20206b"
+      },
+      {
+        "job_id": 382774,
+        "unit_id": 6134,
+        "layers": 19,
+        "recipe_sha256": "3998e9cdf10a6a5573f9408029528c27225b3cd150dba3619b7ced65c6b2d62d"
+      },
+      {
+        "job_id": 382788,
+        "unit_id": 5985,
+        "layers": 23,
+        "recipe_sha256": "cfe06efd3c1f02682ee4b24fe61df9a249aaf83d1ef5c4937f23585b3b9cc44a"
+      },
+      {
+        "job_id": 382740,
+        "unit_id": 2747,
+        "layers": 32,
+        "recipe_sha256": "50eacaec83dc8b3d46653e1a31f44db2f8bba4950ea56565ade9ebb2c3c55c2e"
+      },
+      {
+        "job_id": 382775,
+        "unit_id": 6807,
+        "layers": 23,
+        "recipe_sha256": "c0b05c02f8051c56905cf94e366b398b82c7e0bf1794b678b5aaee492454f59e"
+      },
+      {
+        "job_id": 382779,
+        "unit_id": 7268,
+        "layers": 19,
+        "recipe_sha256": "47b7ce616f52dfa88272f7e742da14a5ee026398d6b48972154d21ef59b38f91"
+      },
+      {
+        "job_id": 382781,
+        "unit_id": 7266,
+        "layers": 21,
+        "recipe_sha256": "a4391fe6382efad480c0040c7d2303e210a217f7e13ee7c873dd859f2205f9bc"
+      },
+      {
+        "job_id": 382791,
+        "unit_id": 2345,
+        "layers": 19,
+        "recipe_sha256": "f6e96f63dc7a97f21dca554c8dd1e29f235fa3391f4b141a3674c1ab8b1748d5"
+      },
+      {
+        "job_id": 382793,
+        "unit_id": 7281,
+        "layers": 21,
+        "recipe_sha256": "e420dcccc4a84e60ab64362fcb3df5f6bc254d5e5e1bf74023638c5ea267f2cc"
+      },
+      {
+        "job_id": 382776,
+        "unit_id": 7344,
+        "layers": 20,
+        "recipe_sha256": "dc19457ce3a0520a106fa248ca9c04c84ba3b3c63f7b6252b350858901fac68a"
+      },
+      {
+        "job_id": 382782,
+        "unit_id": 7345,
+        "layers": 21,
+        "recipe_sha256": "9841d71365a958432d8a0253f7d848b26cc433a81102b1b62b6573e92d6ce717"
+      }
+    ],
+    "native_context": {
+      "call_rva": "398117",
+      "selector_rva": "6d6560",
+      "flags": "400",
+      "existing_provider": "resolveUnitSelector"
+    },
+    "checks": [
+      "All 38 assigned rows have bounded owned original-asset recipes.",
+      "Cold and warm recipes agree with native menu storage preserved.",
+      "Existing text, color, control and navigation checks still pass."
+    ],
+    "limits": [
+      "Provider integration only; no Tasks worker-image pixel comparison.",
+      "Missing-art and unusual creature/anatomy branches remain unverified in Tasks.",
+      "Destination artwork and public viewer integration remain unfinished."
+    ],
+    "source_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "fps_cap": 30,
+    "sampled_gpu_celsius": 49,
+    "sampled_gpu_utilization_percent": 2
   }
 }

@@ -1,5 +1,6 @@
 extends Node
 # Staged owner; public Places entry stays gated while controls are incomplete.
+signal information_requested(caption: String)
 signal focus_requested(tile: Vector3i)
 signal inspect_requested(tab: int,building_id: int,tile: Vector3i)
 var ui_host
@@ -17,6 +18,8 @@ func configure(world,service,host,hover=null) -> void:
 	panel=preload("res://scripts/places_view.gd").new();layer.add_child(panel)
 	panel.configure_places(world,state);panel.input_allowed=allowed;panel.hover_help=hover
 	panel.cancelled.connect(close_panel);panel.navigation_requested.connect(_navigate)
+	panel.information_requested.connect(func(caption):
+		if allowed():information_requested.emit(caption))
 	panel.siege_requested.connect(func(id,action):
 		if allowed():state.apply(id,action))
 	host.register(self);_layout();_sync()

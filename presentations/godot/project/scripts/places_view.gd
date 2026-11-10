@@ -1,5 +1,6 @@
 extends "res://scripts/standing_orders_view.gd"
 # Staged Places layout follows native39ac20; public exposure remains gated.
+signal information_requested(caption: String)
 signal navigation_requested(row: Dictionary,inspect: bool)
 signal siege_requested(building_id: int,action: int)
 const PLACE_TABS=["Zones","Locations","Stockpiles","Workshops","Farm plots","Siege engines"]
@@ -96,6 +97,10 @@ func _gui_input(event: InputEvent) -> void:
 	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
 	accept_event()
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
+	var caption:=InfoTabs.caption_at(event.position,wide_tabs)
+	if not caption.is_empty():
+		if caption!="Places":information_requested.emit(caption)
+		return
 	for index in 6:
 		if tab_rect(index).has_point(event.position):state.select_tab(index);return
 	if state.phase!=state.Phase.Ready:return

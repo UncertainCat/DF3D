@@ -143,7 +143,34 @@ func run():
 		click.position=Vector2(280,48 if dimensions.x==1200 else 24)
 		workshop.conditions_view._gui_input(click)
 		check(ui.host.active==readout and readout.page=="Work Details" and not workshop.conditions_view.visible and workshop.conditions.order_id==-1,"Labor tab routes and retires Conditions")
+	var places=ui.controller("places")
+	for dimensions in [Vector2(912,552),Vector2(1600,900)]:
+		for target in [[24,"residents"],[136,"tasks"],[280,"work_details"],[352,"workshop"]]:
+			places.open_panel();places.panel.layout(dimensions)
+			var pending: int=places.state.ticket
+			check(pending>0,"Places begins with a queued owned read")
+			var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=true
+			click.position=Vector2(target[0],48 if dimensions.x<1240 else 24)
+			places.panel._gui_input(click)
+			check(ui.host.active==ui.controller(target[1]) and not places.panel.visible,"Places header reaches native controller "+target[1])
+			check(places.state.phase==places.state.Phase.Closed and not ui.actions._requests.has(pending) and not ui.actions._queue.has(pending),"Information handoff retires Places read")
+			if target[1]=="workshop":check(workshop.global_orders_mode,"Work orders opens global list without workshop target")
+		places.open_panel();places.panel.layout(dimensions);places.state.select_tab(4)
+		var pending: int=places.state.ticket
+		var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=true
+		click.position=Vector2(200,48 if dimensions.x<1240 else 24);places.panel._gui_input(click)
+		check(places.state.tab==4 and places.state.ticket==pending,"Selected Places header retains subtab/read")
+		for point in ([Vector2(24,24),Vector2(256,24),Vector2(328,24)] if dimensions.x<1240 else [Vector2(456,24),Vector2(688,24),Vector2(760,24)]):
+			click.position=point;places.panel._gui_input(click)
+			check(ui.host.active==places and places.state.ticket==pending,"Unfinished information route stays gated")
+		ui.host.set_overlay_blocked(true)
+		places.information_requested.emit("Creatures")
+		check(ui.host.active==places,"Overlay blocks information handoff")
+		ui.host.set_overlay_blocked(false)
 	ui.host.close_active()
+	places.information_requested.emit("Tasks")
+	check(ui.host.active==null,"Closed Places cannot steal input")
+	check(not ui.Registry.PANEL_ROUTES.values().has("places"),"Internal handoffs do not expose Places launcher")
 	print("ui_composition_test: ", "PASS" if failures == 0 else "FAIL", " failures=", failures)
 	scene.queue_free()
 	await process_frame

@@ -128,6 +128,7 @@ func controller(id: String):
 	var panel = load(Registry.PANEL_SCRIPTS[id]).new()
 	if id=="places":
 		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
+		panel.information_requested.connect(func(caption):_open_staged_information(panel,caption))
 		panel.focus_requested.connect(focus_tile)
 		panel.inspect_requested.connect(func(tab,building_id,tile):
 			if not host.play_enabled:return
@@ -231,6 +232,17 @@ func controller(id: String):
 				return
 			open_target(target.tile,1,unit_id))
 	return panel
+
+# Internal transitions between staged native information screens. Public routes
+# retain their separate acceptance gate; unknown tabs never fall back to Zones
+# or the older readouts. The host closes the source only after accepting a target.
+func _open_staged_information(source,caption: String) -> void:
+	if not host.allows_panel_input(source):return
+	match caption:
+		"Creatures":controller("residents").open_panel()
+		"Tasks":controller("tasks").open_panel()
+		"Labor":controller("work_details").open_panel()
+		"Work orders":controller("workshop").open_global_orders()
 
 func open_destination(destination: String) -> void:
 	destination = Registry.READ_LAUNCHERS.get(destination,destination)

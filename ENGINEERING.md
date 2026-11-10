@@ -477,6 +477,23 @@ render-thread finalize/ObjectDB shutdown diagnostics. `native_places.json` field
 `resized_input_reference` scopes this evidence; scrollbar track/drag, global
 information-tab routing and mutation lifecycle acceptance remain outstanding.
 
+Places information-header clicks now use the shared native `InfoTabs` hit geometry.
+The selected Places caption preserves its subtab and pending read. Internal
+handoffs reach the staged Residents, Tasks, Work Details and global Work orders
+controllers, rather than the older readouts. The UI host accepts the destination
+before retiring the source; overlay and inactive-owner checks prevent hidden
+panels from taking focus. Nobles, Objects and Justice remain gated. No public
+launcher or general destination mapping changes.
+
+`build/qa/places-information-navigation` passes core19, Places state and actual
+main-scene headless composition. At912x552 and1600x900 it exercises all four
+handoffs during queued reads, verifies source request retirement, selected-tab
+retention, unavailable-tab gating, overlay blocking and closed-owner rejection.
+Shared header geometry/native selected-tab behavior has existing Work orders
+reference005417; this check does not establish a new live native Places header
+comparison, destination rendering or return navigation from those staged screens.
+Those remain integration requirements before exposure.
+
 ## Management 176 Places subtitle identity
 
 Protocol176 adds `PlacesRow.subtitle_location_id`: the resolved abstract location

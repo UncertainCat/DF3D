@@ -784,13 +784,19 @@ bool resolveUnitSelector(df::unit* u, Result& out) {
     return buildCtx(u,c) && resolveCtx(c,out,false,false);
 }
 
-bool resolveOriginalItemTile(int32_t tile, Result& out) {
+bool resolveOriginalItemTile(int32_t tile, Result& out, int32_t color) {
     out=Result{};
     const df::tile_pagest* page=nullptr;
     int32_t x=0,y=0;
     if(tile<=0 || !texposToTile(tile,page,x,y))return false;
     Layer layer;layer.page=page;
     layer.tileX=static_cast<uint16_t>(x);layer.tileY=static_cast<uint16_t>(y);
+    if(color>=0) {
+        const auto* palette=standardPalette();
+        if(!palette)return false;
+        layer.palette=palette;layer.row=static_cast<int16_t>(paletteRowForColor(palette,color));
+        layer.keyRow=static_cast<int16_t>(palette->default_row);
+    }
     out.layers.push_back(layer);
     return true;
 }

@@ -69,7 +69,7 @@ bool resolveCritterItemPortrait(df::item* item, Result& out);
 // Independent corpse item selector; no map residency or cached texture input.
 bool resolveCorpseItemSelector(df::item* item, Result& out);
 // Convert only original installed page tiles; generated cache textures fail.
-bool resolveOriginalItemTile(int32_t tile, Result& out);
+bool resolveOriginalItemTile(int32_t tile, Result& out, int32_t color=-1);
 
 // Cheap per-frame change hint: a hash of the unit fields the layer
 // conditions read that can change between frames (profession, inventory

@@ -6,6 +6,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
+| Skin item composition repeats the first pattern color for the overlay instead of using the second. | No correction approved or implemented; preserve native packing. | Native c7f1d9 copies the first packed color before shifting it into the second byte. Protected104608 on2026-11-10 uses existing STRIPES_ORANGE_BLACK on a controlled skin-material fixture and produces ORANGE palette row73 on both layers, with a pixel-identical viewer panel. `native_stocks.json.corpse_item_description_reference.skin_selector_reference`. |
 | Stocks Recenter tooltip says "recenter the view on the time" instead of "item". | No correction approved or implemented; preserve the native wording. | Protected232831 pointer instruction205 and rendered text cells confirm the typo. `native_stocks.json.hover_reference`; the viewer uses those verbatim lines. Native overlay PNG capture is not accepted because the screenshot handshake loses the hover overlay. |
 | Work Details sort tooltips advertise keyboard bindings, but sort-widget feed handles only mouse input. | No correction approved or implemented; preserve inactive sort shortcuts. | Native211422/211654 identifies all four headers at feed3c6300..3c647e, with no event-set processing or base feed call. Earlier140139 forced-key-flag probes likewise leave Skills ordering unchanged. Filter has a separate working right-panel-focus gate and is not included in this defect. |
 | Hunter ammunition picker scrollbar clicks use the parent ammunition list's offset instead of the picker's offset. | Correction approval pending; the staged DF3D scrollbar uses its own displayed offset. Public exposure remains gated. | Native201120 on2026-11-08 reproduces150237: type offset7 draws the grip at y372–407, but a click at816,402 sets offset4 without starting a drag. Native45baf4(materials) and45bfd8(types) read context+4c (parent offset); dragging uses+120 (picker offset). Source save preserved and owned DF5504 closed. |
@@ -71,9 +72,10 @@ Body-part inspection now calls pinned c7cbc0/c7f0e7 with an exact native-type
 owned CORPSEPIECE. Only ID, corpse flags and actual tissue material are copied;
 DF chooses material-flag artwork, skull/unbutchered precedence and variants.
 The material lookup cache and SplitMix state are restored. Native cb1fb0 tests
-TAN_MAT first: that skin branch is excluded because cfc510 allocates/composites
-cached textures. Other results must map to an original installed tile page
-before becoming an owned corpse_selector recipe. No generated pixels or menu
+TAN_MAT first. Ordinary pieces call the native selector; skins publish the
+original hide base/overlay and material palette choices without calling
+cfc510, which allocates/composites cached textures. Every tile must map to an
+original installed page before becoming an owned corpse_selector recipe. No generated pixels or menu
 state are runtime inputs. C++ subclasses must not replace the native vtable;
 the provider uses DFHack's exact virtual-identity allocator.
 
@@ -86,9 +88,31 @@ DF37960 closed unsaved, both applications capped30FPS. GPU samples58–59C are
 not a measured peak. Only documented thread/finalize/shutdown diagnostics occur.
 `corpse_item_description_reference.body_part_selector_reference` records the
 recipe and evidence. Other part branches have pinned static selection evidence,
-not individual live visual acceptance. Skin composition, unitless corpses and
+not individual live visual acceptance. Naturally occurring skin samples, unitless corpses and
 broader Stocks coverage remain open. The earlier102803 fallback-only run and
 103048 failed temporary diagnostic are excluded from selector acceptance.
+
+Skin inspection uses c7f127's material solid-state pattern, not tissue names.
+The original BODYPART_SKIN_HAIR base and matching BICOLOR/STRIPES/SPOTS/MOTTLED
+arrays are identified by the installed loader and pinned cfc510. The default
+palette supplies descriptor-color rows. Native's repeated-first-color packing
+is preserved. Installed overlays have binary alpha, so the existing owned
+layer compositor reproduces native's nontransparent-overlay replacement.
+Custom overlays with partial alpha are not newly accepted by this evidence.
+
+Core19, extension/item-state and MSVC pass (`corpse-skin-selector`). Protected
+104608 on2026-11-10 verifies View/close, native/provider/wire description and
+Uses, and a complete488x708 pixel-identical skin panel; both crops inspected.
+The paused clone has no naturally occurring TAN_MAT pieces. This is a controlled
+material fixture on item21176: DWARF:SKIN with existing STRIPES_ORANGE_BLACK.
+It retains the original tooth's anatomy/name and is explicitly compositor
+acceptance, not a naturally occurring skin-item workflow. HIDES(0,0)+(2,0)
+with palette row73 on both layers matches native. Material, pattern and flags
+are restored; source preserved; DF26480 closes unsaved at30FPS with viewer30FPS.
+GPU sample60C is not a measured peak. Only documented thread/finalize/shutdown
+messages occur. `corpse_item_description_reference.skin_selector_reference`
+records the fixture, hashes and failed pre-acceptance attempts. Other patterns,
+natural skin items and modded partial-alpha overlays remain unaccepted.
 
 Core19, extension/item-state and MSVC pass (`corpse-selector173-contract`).
 Protected101233 on2026-11-10 verifies protocol173 and the existing corpse/tooth
@@ -106,7 +130,7 @@ native's unchecked accesses. The unit/office lookup indices (including spouse
 positions) are scoped through the existing restoration helper, and material
 resolution uses an independently owned cache. Caption, description and Uses
 entry points all apply that scope. Actual tissue material supplies item facts;
-skin composition and unitless corpse artwork remain unfinished.
+natural-skin acceptance and unitless corpse artwork remain unfinished.
 
 MSVC and core19/extension/item-state checks pass (`item-corpse-description`).
 Protected095457 on2026-11-10 verifies corpse47852 and tooth21176: native, owned

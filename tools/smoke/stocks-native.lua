@@ -426,4 +426,33 @@ if os.getenv('DF3D_STOCKS_DOOR_STATES')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('stocks%-native.lua$','stocks-door-states-native.lua')
  return assert(loadfile(source))(out,probe,run)
 end
+if os.getenv('DF3D_STOCKS_SKIN_SHEETS')=='1' then
+ -- This paused clone has no naturally occurring TAN_MAT pieces. Keep the
+ -- real body's identity/anatomy and temporarily supply native skin material
+ -- plus an existing two-color pattern to exercise the composition branch.
+ local selection=probe('stocks-selection-probe','46','')
+ local item=assert(df.item.find(selection.groups[1].ids[1]))
+ local skin=assert(dfhack.matinfo.find('CREATURE:DWARF:SKIN'))
+ local pattern_index,pattern
+ for index,value in ipairs(df.global.world.raws.descriptors.patterns)do
+  if value.pattern==df.pattern_type.STRIPES and #value.colors>=2 then pattern_index=index;pattern=value;break end
+ end
+ assert(pattern,'Missing native striped pattern fixture')
+ local old_type,old_index=item.largest_tissue.mat_type,item.largest_tissue.mat_index
+ local old_flags=item.corpse_flags.whole
+ local old_pattern=skin.material.state_color[df.matter_state.Solid]
+ local facts={controlled_material_fixture=true,item_id=item.id,material=skin:getToken(),pattern=pattern.id,
+  original_material_type=old_type,original_material_index=old_index,original_flags=old_flags,original_pattern=old_pattern}
+ local function record()local f=assert(io.open(out..'/stocks-skin-fixture.json','w'));f:write(json.encode(facts));f:close()end
+ return dfhack.with_finalize(function()
+  item.largest_tissue.mat_type=old_type;item.largest_tissue.mat_index=old_index;item.corpse_flags.whole=old_flags
+  skin.material.state_color[df.matter_state.Solid]=old_pattern
+  facts.restored=item.largest_tissue.mat_type==old_type and item.largest_tissue.mat_index==old_index and item.corpse_flags.whole==old_flags and skin.material.state_color[df.matter_state.Solid]==old_pattern
+  record();assert(facts.restored,'Skin fixture did not restore')
+ end,function()
+  item.largest_tissue.mat_type=skin.type;item.largest_tissue.mat_index=skin.index;item.corpse_flags.unbutchered=false
+  skin.material.state_color[df.matter_state.Solid]=pattern_index;record()
+  return run()
+ end)
+end
 return run()

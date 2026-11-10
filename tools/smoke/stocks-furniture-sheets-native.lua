@@ -14,12 +14,21 @@ for _,family in ipairs(read('stocks-wire-reference.json').furniture)do
  assert(found,'Missing native furniture category');view:render(dfhack.getTickCount());click(100,94)
  assert(stocks.current_type==family.kind,'Native category click failed')
  stocks.scroll_position_type=0;stocks.scroll_position_item=0;view:render(dfhack.getTickCount())
- if not stocks.current_type_a_expanded[0] then click(500,130) end
  local selection=probe('stocks-selection-probe',tostring(family.kind),'')
+ local target_row=1
+ if family.skin_facts then
+  for index in ipairs(stocks.current_type_a_expanded)do stocks.current_type_a_expanded[index]=false end
+  stocks.current_type_a_expanded[family.group_index]=true
+  target_row=family.group_index+family.member_index+1
+  stocks.scroll_position_item=(target_row-1)*3
+  view:render(dfhack.getTickCount())
+ else
+  if not stocks.current_type_a_expanded[0] then click(500,130) end
+ end
  local rows=0
  for index,group in ipairs(selection.groups)do rows=rows+1+(stocks.current_type_a_expanded[index-1] and #group.ids or 0)end
  local capacity=math.floor((g.dimy-10)/3)*3-3
- click(rows*3>capacity and 820 or 836,166)
+ click(rows*3>capacity and 820 or 836,130+(target_row-stocks.scroll_position_item/3)*36)
  assert(not stocks.open and sheet.open and sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==family.id,'Native furniture View differs')
  local wire=read('stocks-furniture-wire-'..family.kind..'.json')
  local description=dfhack.df2utf(sheet.raw_description)

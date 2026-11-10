@@ -41,6 +41,7 @@ if os.getenv('DF3D_STOCKS_FURNITURE_SHEETS')=='1' then
  if os.getenv('DF3D_STOCKS_EGG_REMAINS_SHEETS')=='1' then families={88,47};reference.missing_furniture={}end
  if os.getenv('DF3D_STOCKS_WRITTEN_SHEETS')=='1' then families={89,90};reference.missing_furniture={}end
   if os.getenv('DF3D_STOCKS_CORPSE_SHEETS')=='1' then families={23,46};reference.missing_furniture={}end
+ if os.getenv('DF3D_STOCKS_SKIN_SHEETS')=='1' then families={46};reference.missing_furniture={}end
  if os.getenv('DF3D_STOCKS_SLAB_SHEETS')=='1' then families={87};reference.missing_furniture={}end
  if os.getenv('DF3D_STOCKS_TOOL_SHEETS')=='1' then families={86};reference.missing_furniture={}end
  if os.getenv('DF3D_STOCKS_COIN_SHEETS')=='1' then families={74};reference.missing_furniture={}end
@@ -53,10 +54,37 @@ if os.getenv('DF3D_STOCKS_FURNITURE_SHEETS')=='1' then
  if os.getenv('DF3D_STOCKS_CONTAINER_SHEETS')=='1' then families={17,31,32};reference.missing_furniture={}end
  for _,kind in ipairs(families)do
   local selection=probe('stocks-selection-probe',tostring(kind),'')
+  local skin=os.getenv('DF3D_STOCKS_SKIN_SHEETS')=='1'
+  local selected
+  if skin then
+   for gi,group in ipairs(selection.groups)do
+    for mi,id in ipairs(group.ids)do
+     local item=df.item.find(id)
+     local info=dfhack.matinfo.decode(item:getActualMaterial(),item:getActualMaterialIndex())
+     if not item.corpse_flags.unbutchered and info and info.material then
+      for _,reaction in ipairs(info.material.reaction_product.id)do
+       if reaction.value=='TAN_MAT' then selected={kind=kind,id=id,group_index=gi-1,member_index=mi-1};break end
+      end
+     end
+     if selected then break end
+    end
+    if selected then break end
+   end
+   assert(selected,'No TAN_MAT body part available for native composition acceptance')
+   local item=df.item.find(selected.id)
+   local info=assert(dfhack.matinfo.decode(item:getActualMaterial(),item:getActualMaterialIndex()))
+   local pattern=df.descriptor_pattern.find(info.material.state_color[df.matter_state.Solid])
+   local facts={material=info:getToken(),corpse_flags=item.corpse_flags.whole,colors={}}
+   if pattern then
+    facts.pattern=pattern.id;facts.pattern_type=pattern.pattern
+    for _,color in ipairs(pattern.colors)do facts.colors[#facts.colors+1]=df.descriptor_color.find(color).id end
+   end
+   selected.skin_facts=facts
+  end
   if #selection.groups==0 and reference.missing_furniture then reference.missing_furniture[#reference.missing_furniture+1]=kind
   else
    assert(#selection.groups>0,'Missing furniture fixture '..kind)
-   reference.furniture[#reference.furniture+1]={kind=kind,id=selection.groups[1].ids[1]}
+   reference.furniture[#reference.furniture+1]=selected or {kind=kind,id=selection.groups[1].ids[1]}
   end
  end
 end

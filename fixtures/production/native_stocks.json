@@ -9904,6 +9904,105 @@
         "20261110-102803": "Panel matched using old fallback; new provider rejected subclass vtable, so not selector acceptance.",
         "20261110-103048": "Temporary diagnostic failed on nonexistent df.addressof; source preserved, owned DF closed. Diagnostic removed."
       }
+    },
+    "skin_selector_reference": {
+      "build": "DF 53.16 Steam build 24557528",
+      "capture": "stockpile-storage-native-input-20261110-104608",
+      "fixture": {
+        "controlled_material_fixture": true,
+        "item_id": 21176,
+        "material": "CREATURE:DWARF:SKIN",
+        "original_flags": 0,
+        "original_material_index": 572,
+        "original_material_type": 25,
+        "original_pattern": 49,
+        "pattern": "STRIPES_ORANGE_BLACK",
+        "restored": true
+      },
+      "native_material_facts": {
+        "colors": [
+          "ORANGE",
+          "BLACK"
+        ],
+        "corpse_flags": 0,
+        "material": "CREATURE:DWARF:SKIN",
+        "pattern": "STRIPES_ORANGE_BLACK",
+        "pattern_type": 1
+      },
+      "appearance": {
+        "color_token": "",
+        "corpse_selector": {
+          "layers": [
+            [
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              73,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              2,
+              0,
+              1,
+              1,
+              0,
+              73,
+              0,
+              0,
+              0
+            ]
+          ],
+          "palettes": [
+            "data/vanilla/vanilla_descriptors_graphics/graphics/images/palettes.png"
+          ],
+          "tile_pages": [
+            "HIDES"
+          ]
+        },
+        "flags": 0,
+        "material_token": "CREATURE:DWARF:SKIN",
+        "stack": 1,
+        "subtype_raw": ""
+      },
+      "panel_crop": [
+        416,
+        52,
+        904,
+        760
+      ],
+      "panel_rgb_different_pixels": 0,
+      "native_and_viewer_images_inspected": true,
+      "actual_view_and_close": true,
+      "source_save_preserved": true,
+      "owned_df_closed_unsaved": 26480,
+      "native_and_viewer_fps_cap": 30,
+      "gpu_samples_c": [
+        60
+      ],
+      "gpu_limit": "Samples are not a measured peak.",
+      "diagnostics": "passed_with_known_issues: documented separate-thread notice, device finalize and shutdown objects; no unclassified diagnostics.",
+      "limitations": [
+        "Controlled material/pattern fixture retains original tooth anatomy/name. No naturally occurring TAN_MAT piece is present in this save.",
+        "Other patterns and custom partial-alpha pattern overlays are not visually accepted. Installed pattern overlays have binary alpha.",
+        "Unitless corpse selection and broader Stocks coverage remain unfinished; public Stocks remains gated."
+      ],
+      "artifact_sha256": {
+        "stocks-furniture-native-46.png": "6d0d0661f32a94477abda2d0609c62f69a810f6bef64e6f0793271b60fc19650",
+        "stocks-furniture-view-46.png": "e1b434d9fe3f1a1653c825f266670a64ea4e5937ad7c9421eeaee1ea00fbe93c",
+        "stocks-furniture-wire-46.json": "033e5d343dea81ac5f6daa442d59a763cc639c9e3075cf324243164967d0eaa2",
+        "stocks-skin-fixture.json": "b20d798c9c4f350bbcd0b645d66ef4f7ebd2915fd05b01c0cb83d83bb2db4eac"
+      },
+      "excluded_attempts": {
+        "20261110-104030": "Harness selected unfiltered tooth while viewer changed category for skin query; destination mismatch.",
+        "20261110-104139": "No matching body-part group label for skin query.",
+        "20261110-104458": "Semantic material scan confirmed no natural TAN_MAT piece; no compositor acceptance."
+      }
     }
   }
 }

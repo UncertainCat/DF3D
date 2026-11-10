@@ -382,8 +382,16 @@ inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
     }
     if(item->getType()==df::item_type::CORPSEPIECE) {
         df3d_appearance::Result recipe;
-        const auto tile=corpsePieceOriginalTile(item);
-        if(tile && df3d_appearance::resolveOriginalItemTile(*tile,recipe))appearance.corpseSelector=ownedItemRecipe(recipe);
+        const auto art=corpsePieceArtwork(item);
+        if(art && df3d_appearance::resolveOriginalItemTile(art->tile,recipe,art->color)) {
+            bool ready=true;
+            if(art->overlay>0) {
+                df3d_appearance::Result overlay;
+                ready=df3d_appearance::resolveOriginalItemTile(art->overlay,overlay,art->overlayColor);
+                if(ready)recipe.layers.insert(recipe.layers.end(),overlay.layers.begin(),overlay.layers.end());
+            }
+            if(ready)appearance.corpseSelector=ownedItemRecipe(recipe);
+        }
     }
     if(item->getType()==df::item_type::PET || item->getType()==df::item_type::VERMIN){
         df3d_appearance::Result recipe;

@@ -275,14 +275,25 @@ func run() -> void:
 				if not check(response.get("status")==C.ManagementStatus.Ok and model._valid(snapshot) and snapshot.has("appearance"),"Headless item family observation invalid: "+str(family.kind)):break
 				if int(family.kind)==46 and snapshot.get("material_token","")=="CREATURE:DWARF:TOOTH":
 					check(not snapshot.get("appearance",{}).get("corpse_selector",{}).get("layers",[]).is_empty(),"Native tooth selector recipe missing")
+				if family.has("skin_facts"):
+					check(not snapshot.get("appearance",{}).get("corpse_selector",{}).get("layers",[]).is_empty(),"Native skin selector recipe missing")
 				var saved:=FileAccess.open(directory+"/stocks-furniture-wire-"+str(int(family.kind))+".json",FileAccess.WRITE);saved.store_string(JSON.stringify(snapshot));saved.close()
 				continue
 			owner.open_panel();if not await ready_state(owner.state):break
 			owner.state.select_category(int(family.kind));if not await ready_state(owner.state):break
-			if not owner.state.expanded(owner.state.groups[0]):
-				await click(Vector2(500,130))
-				if not await ready_state(owner.state):break
-			await click(owner.panel.position+owner.panel.item_canvas.position+owner.panel.control_rect(1,-1).get_center())
+			if family.has("skin_facts"):
+				for group in owner.state.groups:owner.state.expansion[owner.state.key(group)]=false
+				var group: Dictionary=owner.state.groups[int(family.group_index)]
+				owner.state.expansion[owner.state.key(group)]=true
+				owner.state.first_item=(int(family.group_index)+int(family.member_index))*3
+				owner.panel.refresh();if not await ready_state(owner.state):break
+			else:
+				if not owner.state.expanded(owner.state.groups[0]):
+					await click(Vector2(500,130))
+					if not await ready_state(owner.state):break
+			var selected_row: int=owner.panel.page.find_custom(func(row):return row.get("id",-1)==int(family.id))
+			if not check(selected_row>=0,"Furniture target is outside visible page"):break
+			await click(owner.panel.position+owner.panel.item_canvas.position+owner.panel.control_rect(selected_row,-1).get_center())
 			deadline=Time.get_ticks_msec()+5000
 			while Time.get_ticks_msec()<deadline:
 				world.poll();await process_frame
@@ -292,6 +303,8 @@ func run() -> void:
 			check(snapshot.has("appearance"),"Furniture appearance missing")
 			if int(family.kind)==46 and snapshot.get("material_token","")=="CREATURE:DWARF:TOOTH":
 				check(not snapshot.get("appearance",{}).get("corpse_selector",{}).get("layers",[]).is_empty(),"Native tooth selector recipe missing")
+			if family.has("skin_facts"):
+				check(not snapshot.get("appearance",{}).get("corpse_selector",{}).get("layers",[]).is_empty(),"Native skin selector recipe missing")
 			var saved:=FileAccess.open(directory+"/stocks-furniture-wire-"+str(int(family.kind))+".json",FileAccess.WRITE);saved.store_string(JSON.stringify(snapshot));saved.close()
 			await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(directory+"/stocks-furniture-view-"+str(int(family.kind))+".png")

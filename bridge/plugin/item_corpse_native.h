@@ -11,12 +11,18 @@
 #include "df/game_mode.h"
 #include "df/item_corpsepiecest.h"
 #include "df/material.h"
+#include "df/descriptor_pattern.h"
+#include "df/descriptor_color.h"
 
 namespace df3d_production {
+struct CorpsePieceArtwork {
+    int32_t tile=0,overlay=0,color=-1,overlayColor=-1;
+};
 // c7f0e7 returns original builtin tiles for ordinary parts. The TAN_MAT
-// branch instead calls a texture-cache compositor and is deliberately excluded.
+// branch's original layers and material palette facts are copied separately;
+// its texture-cache compositor is never called.
 // Only an owned minimal item enters the selector; no corpse/UI cache is input.
-inline std::optional<int32_t> corpsePieceOriginalTile(df::item* source) {
+inline std::optional<CorpsePieceArtwork> corpsePieceArtwork(df::item* source) {
     if(!source || !farmFunctions() || !df::global::world)return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     if(*reinterpret_cast<const void* const*>(source)!=base+0x167bc50 ||
@@ -25,6 +31,7 @@ inline std::optional<int32_t> corpsePieceOriginalTile(df::item* source) {
         struct Pin{size_t rva,length;uint64_t hash;};
         constexpr Pin pins[]={
             {0xc7cbc0,0x66b5,UINT64_C(0x98f324784f1accc3)},
+            {0xcfc510,0x5e3,UINT64_C(0xa545f31d54cf6f34)},
             {0xcb1fb0,0x6c,UINT64_C(0x5d211a52b84965f8)},
             {0x6b8af0,0x96,UINT64_C(0x8f67f7a1b9d42698)},
             {0x14add70,0x12f,UINT64_C(0x01f897b15772d540)},
@@ -68,14 +75,35 @@ inline std::optional<int32_t> corpsePieceOriginalTile(df::item* source) {
             for(const auto* id:material->reaction_product.id)if(!id || id->size()>65536)return std::nullopt;
         }
         std::string tan("TAN_MAT");
-        if(reinterpret_cast<bool(*)(df::item*,std::string*)>(base+0xcb1fb0)(&item,&tan))return std::nullopt;
+        if(reinterpret_cast<bool(*)(df::item*,std::string*)>(base+0xcb1fb0)(&item,&tan)) {
+            // c7f127 supplies no surface bits: cfc510 uses the hair-hide base
+            // and matching pattern overlay. Tissue names are not selectors.
+            CorpsePieceArtwork result;
+            result.tile=*reinterpret_cast<const int32_t*>(base+0x2685898);
+            auto* pattern=material?df::descriptor_pattern::find(material->state_color[df::matter_state::Solid]):nullptr;
+            if(!pattern)return result;
+            if(pattern->colors.empty())return std::nullopt; // Native indexes the first color unchecked.
+            const int first=pattern->colors.front();
+            const auto& colors=df::descriptor_color::get_vector();
+            if(first>=0 && first<255 && size_t(first)<colors.size() && colors[first])result.color=first;
+            if(pattern->colors.size()<2 || first<0 || first>=255 || pattern->colors[1]<0 || pattern->colors[1]>=255)return result;
+            // c7f1d9 packs the first color again when the second is valid.
+            // Preserve native packing; do not substitute a guessed second color.
+            size_t overlay=0x26858a8;
+            if(pattern->pattern==df::pattern_type::STRIPES)overlay=0x26858b8;
+            else if(pattern->pattern==df::pattern_type::SPOTS)overlay=0x26858c8;
+            else if(pattern->pattern==df::pattern_type::MOTTLED)overlay=0x26858d8;
+            result.overlay=*reinterpret_cast<const int32_t*>(base+overlay);
+            result.overlayColor=result.color;
+            return result;
+        }
     }
     struct RandomRestore {
         uint64_t& state;uint64_t saved;
         explicit RandomRestore(uint64_t& value):state(value),saved(value){}
         ~RandomRestore(){state=saved;}
     } random(*reinterpret_cast<uint64_t*>(base+0x18adf98));
-    return reinterpret_cast<int32_t(*)(df::item*,int32_t)>(base+0xc7cbc0)(&item,0);
+    return CorpsePieceArtwork{reinterpret_cast<int32_t(*)(df::item*,int32_t)>(base+0xc7cbc0)(&item,0)};
 }
 inline bool corpseItem(df::item* item) {
     return item && (item->getType()==df::item_type::CORPSE || item->getType()==df::item_type::CORPSEPIECE);

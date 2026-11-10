@@ -61,8 +61,20 @@ that observation. MSVC and core19 pass. Source preserved; DF39528 exits unsaved
 without advancing simulation at30FPS, GPU51C/2% sampled, not a peak. No graphical
 Godot viewer runs. The fixture's provider_reference records bounded acceptance.
 
-The feed handler396ee0 includes navigation and destructive job/building actions;
-it is not admitted as a semantic API. Visible captions/colors, action ownership,
+Tasks renderer397c90 calls d03170 for job captions and1330c30(unit,string,false)
+for worker names. The adapter exposes full original strings separately from
+normalized sort keys. Protected112745 verifies all41 job captions against
+native screen cells across scroll offsets0/17/24; cold/warm output agrees.
+Native captions of24 or more CP437 bytes display the first20 plus three periods.
+Worker clipping and colors are not yet accepted. Lower-page112504 was inspected:
+stockpile hauling has job navigation/destination artwork, construction jobs68196
+and372039 have Recenter/Suspend/Remove, and unassigned hauling381348 has no worker
+controls. `native_tasks.json.display_reference` retains text and scope.
+
+MSVC and core19 pass. Source preserved; DF38668 exits unsaved without advancing
+simulation, capped30FPS, GPU50C/2% sampled, not a peak; no Godot viewer. The feed
+handler396ee0 includes navigation and destructive job/building actions and is
+not admitted as a semantic API. Control eligibility/effects, worker presentation,
 transport, controller, rendering and lifecycle remain unfinished. No Tasks route
 is exposed. The earlier111555 layout-only reference remains separate.
 

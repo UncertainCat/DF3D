@@ -12,7 +12,7 @@ namespace df3d_tasks {
 struct Row {
     int32_t jobId=-1,unitId=-1,itemId=-1;
     uint32_t flags=0;
-    std::string professionKey,jobKey;
+    std::string professionKey,jobKey,caption,workerName;
 };
 // Native323a68 opens Tasks by passing its jobs context to374630. That builder
 // reads the simulation job chain, filters workers/flags, and stably inserts by
@@ -61,8 +61,13 @@ inline std::optional<std::vector<Row>> rows() {
     std::vector<Row> result;result.reserve(owned.value.cri_job.size());
     for(const auto* entry:owned.value.cri_job) {
         if(!entry || !entry->jb)return std::nullopt;
-        result.push_back({entry->jb->id,entry->un?entry->un->id:-1,entry->it?entry->it->id:-1,
-            entry->flag.whole,entry->sort_name,entry->job_sort_name});
+        Row row{entry->jb->id,entry->un?entry->un->id:-1,entry->it?entry->it->id:-1,
+            entry->flag.whole,entry->sort_name,entry->job_sort_name};
+        // Tasks renderer3984b6 and3981ce use these original formatters.
+        // Retain full CP437 strings; width-dependent clipping is presentation.
+        reinterpret_cast<void (*)(df::job*,std::string*)>(base+0xd03170)(entry->jb,&row.caption);
+        if(entry->un)df3d_area::staffOrderingFunctions().name(entry->un,&row.workerName,false);
+        result.push_back(std::move(row));
     }
     return result;
 }

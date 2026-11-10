@@ -356,8 +356,8 @@
     "tasks-root.png": "00d9840cbc5f18e3f4d88be1b109d94f7232c0fcde1f8db869924c30882ea381"
   },
   "unresolved": [
-    "Visible captions/colors/portraits and complete native action ownership, including unassigned jobs.",
-    "Scroll, resize, hover, semantic actions and lifecycle.",
+    "Worker clipping/colors/portraits and native control eligibility/action ownership, including construction Suspend/Remove and navigation destinations.",
+    "Resize, hover, semantic actions and lifecycle.",
     "Transport, controller and viewer are not implemented; no public Tasks route.",
     "The provider matches this53-job save; broader eligibility branches and custom job types remain unaccepted."
   ],
@@ -507,6 +507,287 @@
       "tasks-native.json": "5688e015026571c4090447ec0d38a733b09833668ca468e5ab9de781bc1a0a12",
       "tasks-root.png": "90482622eb161605cd9bb0ce1dd883ddf17857a3470b03715c55aad888a8f68f",
       "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    }
+  },
+  "display_reference": {
+    "capture": "stockpile-storage-native-input-20261110-112745",
+    "renderer_rva": "0x397c90",
+    "job_caption_call": "0x3984b6 -> d03170",
+    "worker_name_call": "0x3981ce -> 1330c30(unit,owned_string,false)",
+    "pages": [
+      0,
+      17,
+      24
+    ],
+    "verified_caption_ids": [
+      382772,
+      382783,
+      382742,
+      382749,
+      382750,
+      382751,
+      382758,
+      382759,
+      382760,
+      382762,
+      382765,
+      382768,
+      382769,
+      382773,
+      382777,
+      382780,
+      382786,
+      382789,
+      382792,
+      382679,
+      382713,
+      382720,
+      382739,
+      382748,
+      382757,
+      382778,
+      382785,
+      382763,
+      382774,
+      382788,
+      381348,
+      382740,
+      382775,
+      382779,
+      382781,
+      382791,
+      382793,
+      382776,
+      382782,
+      68196,
+      372039
+    ],
+    "rows": [
+      {
+        "job_id": 382772,
+        "caption": "Eat",
+        "worker_name": "RÃ»xu Kodkasprax, Porcupine Man Bard"
+      },
+      {
+        "job_id": 382783,
+        "caption": "Eat",
+        "worker_name": "ZuntÃ®r Vutokrodim, Brewer"
+      },
+      {
+        "job_id": 382742,
+        "caption": "Drink",
+        "worker_name": "BÃ«mbul Mozibsolon, Potash Maker"
+      },
+      {
+        "job_id": 382749,
+        "caption": "Drink",
+        "worker_name": "Ast Zonrithlut, Weaver"
+      },
+      {
+        "job_id": 382750,
+        "caption": "Drink",
+        "worker_name": "Ustuth Ã³ssibrek, Planter"
+      },
+      {
+        "job_id": 382751,
+        "caption": "Drink",
+        "worker_name": "Dakost RirasatÃ®s, Peasant"
+      },
+      {
+        "job_id": 382758,
+        "caption": "Drink",
+        "worker_name": "Goden Idenlaltur, Milker"
+      },
+      {
+        "job_id": 382759,
+        "caption": "Drink",
+        "worker_name": "Zon MistÃªmrovod, Carpenter"
+      },
+      {
+        "job_id": 382760,
+        "caption": "Drink",
+        "worker_name": "Obok Ostarkeskal, Peasant"
+      },
+      {
+        "job_id": 382762,
+        "caption": "Drink",
+        "worker_name": "RigÃ²th RalnÃ³ton, Stonecrafter"
+      },
+      {
+        "job_id": 382765,
+        "caption": "Drink",
+        "worker_name": "Imush AshmÃ´nustuth, Dwarven Child"
+      },
+      {
+        "job_id": 382768,
+        "caption": "Drink",
+        "worker_name": "Sazir Sosadid, Mason"
+      },
+      {
+        "job_id": 382769,
+        "caption": "Drink",
+        "worker_name": "Oddom AngenkÃ»buk, Diagnostician"
+      },
+      {
+        "job_id": 382773,
+        "caption": "Drink",
+        "worker_name": "Uzol Zulbanromlam, Performer"
+      },
+      {
+        "job_id": 382777,
+        "caption": "Drink",
+        "worker_name": "Ã®ton Unibmamot, Dwarven Child"
+      },
+      {
+        "job_id": 382780,
+        "caption": "Drink",
+        "worker_name": "Kivish Ã…mmosus, Herbalist"
+      },
+      {
+        "job_id": 382786,
+        "caption": "Drink",
+        "worker_name": "Uvash Kolnikuz, Fish Dissector"
+      },
+      {
+        "job_id": 382789,
+        "caption": "Drink",
+        "worker_name": "Goden Borushadil, Engraver"
+      },
+      {
+        "job_id": 382792,
+        "caption": "Drink",
+        "worker_name": "Avuz RimtarnÃ³ton, Miller"
+      },
+      {
+        "job_id": 382679,
+        "caption": "Sleep",
+        "worker_name": "Erush KÃ lrethral, Milker"
+      },
+      {
+        "job_id": 382713,
+        "caption": "Sleep",
+        "worker_name": "Thob Ã¢tastfikod, Gem Cutter"
+      },
+      {
+        "job_id": 382720,
+        "caption": "Sleep",
+        "worker_name": "Uram Felori, lord consort"
+      },
+      {
+        "job_id": 382739,
+        "caption": "Sleep",
+        "worker_name": "Stodir Ã²nulgÃºr, Farmer"
+      },
+      {
+        "job_id": 382748,
+        "caption": "Sleep",
+        "worker_name": "Feb Anambomrek, Axe Lord"
+      },
+      {
+        "job_id": 382757,
+        "caption": "Sleep",
+        "worker_name": "Rakust Ã¡dolbomrek, Weaponsmith"
+      },
+      {
+        "job_id": 382778,
+        "caption": "Sleep",
+        "worker_name": "Cog Zondurad, Dyer"
+      },
+      {
+        "job_id": 382785,
+        "caption": "Sleep",
+        "worker_name": "Onol ZastimnÃ¤r, Dwarven Child"
+      },
+      {
+        "job_id": 382763,
+        "caption": "Store item in stockpile",
+        "worker_name": "Uzol Bardumtekkud, Miner"
+      },
+      {
+        "job_id": 382774,
+        "caption": "Store item in stockpile",
+        "worker_name": "RigÃ²th ShinatÃ­r, sacred call"
+      },
+      {
+        "job_id": 382788,
+        "caption": "Store item in stockpile",
+        "worker_name": "DÃ´bar GÃ©barunib, Farmer"
+      },
+      {
+        "job_id": 381348,
+        "caption": "Store item in location",
+        "worker_name": ""
+      },
+      {
+        "job_id": 382740,
+        "caption": "Store item in bin",
+        "worker_name": "Thola Imeem, baron consort"
+      },
+      {
+        "job_id": 382775,
+        "caption": "Store item in bin",
+        "worker_name": "Kogan Riththocit, Carpenter"
+      },
+      {
+        "job_id": 382779,
+        "caption": "Store item in bin",
+        "worker_name": "SÃ¥kzul RigÃ²thost, Woodworker"
+      },
+      {
+        "job_id": 382781,
+        "caption": "Store item in bin",
+        "worker_name": "Eral Ã²nulozkak, Potash Maker"
+      },
+      {
+        "job_id": 382791,
+        "caption": "Store item in bin",
+        "worker_name": "Leto Jamaslonel, Human Bard"
+      },
+      {
+        "job_id": 382793,
+        "caption": "Store item in bin",
+        "worker_name": "Kosoth RÃ³thmÃ¶rul, Engineer"
+      },
+      {
+        "job_id": 382776,
+        "caption": "Pickup equipment",
+        "worker_name": "Ã®ton Oddomgigin, Cook"
+      },
+      {
+        "job_id": 382782,
+        "caption": "Pickup equipment",
+        "worker_name": "Kulet TÃ´sedoddom, Peasant"
+      },
+      {
+        "job_id": 68196,
+        "caption": "Construct building",
+        "worker_name": ""
+      },
+      {
+        "job_id": 372039,
+        "caption": "Construct building",
+        "worker_name": ""
+      }
+    ],
+    "caption_clipping": "Native3984bb..398537: when CP437 length >=24, keep first20 bytes followed by three periods (total23).",
+    "observed_controls": {
+      "assigned_workers": "Worker Recenter and View",
+      "stockpile_hauling": "Job Recenter plus stockpile destination",
+      "construction_jobs": [
+        68196,
+        372039
+      ],
+      "construction_controls": "Job Recenter, Suspend, Remove; destination building caption/art",
+      "unassigned_hauling_job": 381348,
+      "unassigned_hauling": "Store item in location row has no worker portrait or worker controls."
+    },
+    "acceptance": "Cold/warm provider output is identical, and every job caption matches the native screen cells on pages0/17/24. Earlier112504 lower-page screenshot inspected. Worker full strings use the original formatter; exact worker clipping/color not yet accepted.",
+    "checks": "MSVC and core19 pass. Source unchanged; simulation paused; DF38668 closed unsaved, native capped30FPS, sample50C/2% not peak. No Godot viewer.",
+    "hashes": {
+      "tasks-native.json": "8f70b4dc48d13831a8a9abf58ab186eaaea6f27d0cd09f8749c87a3c09d15ecb",
+      "tasks-root.png": "fa09907603a360840f766a3885a70cf28b1dc14d2c6fdf2a31ef10793a0f51cc",
+      "tasks-page-1.png": "8b2ef59cc061cb2f10ef333a4d55a054e7dce5d8d4b3e39b48e99a2469d6faaf",
+      "tasks-page-2.png": "127543bc9ac63612b869a6d951f635a8ad41ad414187fe8dfaa17bbe3d617111"
     }
   }
 }

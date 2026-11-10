@@ -2492,6 +2492,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             Json::Value row(Json::objectValue);row["job_id"]=entry.jobId;row["unit_id"]=entry.unitId;
             row["item_id"]=entry.itemId;row["flags"]=entry.flags;
             row["sort_name"]=DF2UTF(entry.professionKey);row["job_sort_name"]=DF2UTF(entry.jobKey);
+            row["caption"]=DF2UTF(entry.caption);row["worker_name"]=DF2UTF(entry.workerName);
             result["rows"].append(row);
           }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;

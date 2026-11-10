@@ -466,6 +466,17 @@ Core19/controller checks pass in `build/qa/places-empty-jobs`. Empty-message
 wrapping at other sizes and the other outstanding Places input/lifecycle gaps
 remain separate; `empty_reference` records the scoped evidence.
 
+Protected163829 exercises actual main-scene Places input at912x552 and1600x900.
+Pointer clicks select all six tabs; both navigation tooltips appear at the resized
+positions and View opens the correct area/building identity, retiring Places help.
+Zones scrollbar arrows move one row; Shift-wheel then reaches offsets10/21,
+matching capacities9/20. The hidden minimum-width aggregate siege region sends
+no action. Source save is unchanged and owned DF37776 closes unsaved;30FPS,
+sampled GPU62C/8%. The result is passed_with_known_issues for the documented
+render-thread finalize/ObjectDB shutdown diagnostics. `native_places.json` field
+`resized_input_reference` scopes this evidence; scrollbar track/drag, global
+information-tab routing and mutation lifecycle acceptance remain outstanding.
+
 ## Management 176 Places subtitle identity
 
 Protocol176 adds `PlacesRow.subtitle_location_id`: the resolved abstract location

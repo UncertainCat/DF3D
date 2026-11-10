@@ -25,30 +25,48 @@ func exercise(expected: Dictionary) -> void:
 	owner.state.seek(10,owner.panel.capacity());key(KEY_DOWN);key(KEY_PAGEDOWN);await process_frame
 	check(owner.state.first==10,"Places accepted inactive standard scrolling keys")
 	owner.close_panel()
-	for tab in 6:
-		owner.open_panel()
-		if tab>0:owner.state.select_tab(tab)
-		if not await settle(owner.state):return
-		check(owner.state.rows.size()==expected.rows[tab].size(),"Main Places membership differs")
-		for slot in 2:
-			var motion:=InputEventMouseMotion.new();motion.position=owner.panel.get_global_transform_with_canvas()*Vector2(492+24*slot,owner.panel.list_top()+18)
-			var deadline:=Time.get_ticks_msec()+650
+	var extents: Array=[[Vector2i(912,552),288,9],[Vector2i(1600,900),752,20]] if OS.get_environment("DF3D_PLACES_LAYOUT")=="1" else [[Vector2i(1200,800),480,15]]
+	for extent in extents:
+		root.size=extent[0];await process_frame;await process_frame
+		for tab in 6:
+			owner.open_panel()
+			if tab>0:await pointer(owner.panel.get_global_transform_with_canvas()*owner.panel.tab_rect(tab).get_center())
+			if not await settle(owner.state):return
+			check(owner.state.tab==tab,"Resized tab click selected wrong tab")
+			check(owner.panel.navigation_x()==extent[1],"Navigation column differs from native resized capture")
+			check(owner.state.rows.size()==expected.rows[tab].size(),"Main Places membership differs")
+			if tab==0 and OS.get_environment("DF3D_PLACES_LAYOUT")=="1":
+				var scrollbar=owner.panel.scrollbar
+				await pointer(scrollbar.get_global_transform_with_canvas()*Vector2(8,scrollbar.size.y-6))
+				check(owner.state.first==1,"Resized scrollbar arrow did not step one row")
+				var wheel:=InputEventMouseButton.new();wheel.position=owner.panel.get_global_transform_with_canvas()*Vector2(200,owner.panel.list_top()+18);wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN;wheel.shift_pressed=true;wheel.pressed=true
+				root.push_input(wheel,true);wheel=wheel.duplicate();wheel.pressed=false;root.push_input(wheel,true);await process_frame
+				check(owner.state.first==1+extent[2],"Resized page wheel differs from native capacity")
+				owner.state.seek(0,owner.panel.capacity());await process_frame
+			if tab==5 and extent[0].x==912:
+				var before: Array=owner.state.rows.duplicate(true)
+				await pointer(owner.panel.get_global_transform_with_canvas()*Vector2(84,owner.panel.list_top()-30));await drain()
+				check(owner.state.phase==owner.state.Phase.Ready and owner.state.rows==before,"Hidden siege control accepted input")
+			for slot in 2:
+				var motion:=InputEventMouseMotion.new();motion.position=owner.panel.get_global_transform_with_canvas()*Vector2(extent[1]+12+24*slot,owner.panel.list_top()+18)
+				var deadline:=Time.get_ticks_msec()+650
+				while Time.get_ticks_msec()<deadline:
+					root.push_input(motion.duplicate(),true);await process_frame
+				check(scene._fortress_hud.native_help.displayed==["places_recenter","places_view"][slot],"Places hover missing on tab %d"%tab)
+			var row: Dictionary=owner.state.rows[0].duplicate(true)
+			await pointer(owner.panel.get_global_transform_with_canvas()*Vector2(extent[1]+36,owner.panel.list_top()+18))
+			await drain()
+			check(owner.state.phase==owner.state.Phase.Closed and not owner.panel.visible,"View retained Places")
+			var target=scene._ui.controller("areas" if tab<3 else "inspector")
+			var deadline:=Time.get_ticks_msec()+5000
 			while Time.get_ticks_msec()<deadline:
-				root.push_input(motion.duplicate(),true);await process_frame
-			check(scene._fortress_hud.native_help.displayed==["places_recenter","places_view"][slot],"Places hover missing on tab %d"%tab)
-		var row: Dictionary=owner.state.rows[0].duplicate(true)
-		await pointer(owner.panel.get_global_transform_with_canvas()*Vector2(516,owner.panel.list_top()+18))
-		await drain()
-		check(owner.state.phase==owner.state.Phase.Closed and not owner.panel.visible,"View retained Places")
-		var target=scene._ui.controller("areas" if tab<3 else "inspector")
-		var deadline:=Time.get_ticks_msec()+5000
-		while Time.get_ticks_msec()<deadline:
-			world.poll();actions.poll(0.01)
-			if target.selected.get("id",-1)==row.building_id:break
-			await create_timer(0.01).timeout
-		check(scene._ui.host.active==target and target.selected.get("id",-1)==row.building_id,"Places View opened wrong inspector: tab %d"%tab)
-		check(not scene._fortress_hud.native_help.displayed.begins_with("places_"),"Places hover survived navigation")
-		target.close_panel();await process_frame
+				world.poll();actions.poll(0.01)
+				if target.selected.get("id",-1)==row.building_id:break
+				await create_timer(0.01).timeout
+			check(scene._ui.host.active==target and target.selected.get("id",-1)==row.building_id,"Places View opened wrong inspector: tab %d"%tab)
+			check(not scene._fortress_hud.native_help.displayed.begins_with("places_"),"Places hover survived navigation")
+			target.close_panel();await process_frame
+	root.size=Vector2i(1200,800);await process_frame;await process_frame
 	if OS.get_environment("DF3D_PLACES_APPLY")=="1":
 		owner.open_panel();owner.state.select_tab(5);if not await settle(owner.state):return
 		var engines: Array=[]

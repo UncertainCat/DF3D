@@ -11217,5 +11217,46 @@
       "Empty messages at other viewport sizes",
       "Natural empty-world membership beyond existing empty siege-list discovery"
     ]
+  },
+  "resized_input_reference": {
+    "source": "build/stockpile-storage-native-input-20261110-163829",
+    "surface": "actual main scene",
+    "viewports": [
+      [
+        912,
+        552
+      ],
+      [
+        1600,
+        900
+      ]
+    ],
+    "navigation_x": [
+      288,
+      752
+    ],
+    "ordinary_capacity": [
+      9,
+      20
+    ],
+    "checks": [
+      "Pointer tab selection and View destination identity on all six tabs at both sizes",
+      "Recenter/View hover text and retirement on all six tabs at both sizes",
+      "Zones scrollbar down arrow then Shift-wheel offsets 1 then 10/21",
+      "Minimum-width hidden aggregate siege region leaves state unchanged"
+    ],
+    "result": "passed_with_known_issues",
+    "known_diagnostics": [
+      "render-thread finalize",
+      "ObjectDB shutdown leak warning"
+    ],
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "Scrollbar track and drag",
+      "Global information-tab navigation",
+      "Camera XY and map click blocking",
+      "In-flight mutation lifecycle"
+    ]
   }
 }

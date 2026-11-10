@@ -182,6 +182,19 @@ func run() -> void:
 	service.reply(pending,{"production":{"item_position":{"id":7,"position":Vector3i(111,61,165)}}})
 	check(destinations.size()==calls,"Late navigation moved camera after close")
 	owner.free()
+	# A resize/scroll or reopen can replace the page in the same frame as
+	# a scheduled fetch. The request must follow the current visible rows.
+	view.show();ready(state,service);view.page=[{"id":7}]
+	view.requested=true;view._fetch.call_deferred();view.page=[{"id":8}]
+	await process_frame
+	check(state.phase==State.Phase.Reading and service.calls[state.ticket].intent.item_ids==[8] and not view.requested,"Deferred fetch retained old page IDs")
+	ready(state,service);view.page=[{"id":7}];view.requested=true;view._fetch.call_deferred()
+	state.close();ready(state,service);state.groups[0].item_ids=[9];view.page=[{"id":9}]
+	await process_frame
+	check(state.phase==State.Phase.Reading and service.calls[state.ticket].intent.item_ids==[9],"Retired-page fetch stranded reopened Stocks")
+	ready(state,service);view.page=[{"id":7}];view.requested=true;view._fetch.call_deferred()
+	state.close();calls=service.next;await process_frame
+	check(service.next==calls and not view.requested,"Deferred fetch submitted after closure")
 	view.free();hover.free();state.dispose();service.queue_free();await process_frame
 	if failures==0:print("STOCKS_STATE_PASS")
 	quit(1 if failures else 0)

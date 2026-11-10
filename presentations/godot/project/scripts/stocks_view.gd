@@ -93,15 +93,20 @@ func refresh() -> void:
 	icons=retained
 	category_canvas.queue_redraw();item_canvas.queue_redraw();queue_redraw()
 	if ready() and not requested:
-		var ids: Array=[];var missing:=false
+		var missing:=false
 		for row in page:
 			if row.has("id"):
-				ids.append(row.id)
 				if not state.items.has(row.id):missing=true
-		if missing:requested=true;_fetch.call_deferred(ids.slice(0,64))
-func _fetch(ids: Array) -> void:
+		if missing:requested=true;_fetch.call_deferred()
+func _fetch() -> void:
 	requested=false
-	if ready():state.request_items(ids)
+	if not ready():return
+	# Layout, category or session can change before deferred work runs. Fetch
+	# the current page, never IDs captured from the retired page/owner.
+	var ids: Array=[]
+	for row in page:
+		if row.has("id"):ids.append(row.id)
+	state.request_items(ids.slice(0,64))
 func _patch(canvas: Control,token: String,origin: Vector2,columns: int,texture: Texture2D=null) -> void:
 	if texture==null:texture=art.texture(token)
 	if texture==null:return

@@ -11356,5 +11356,71 @@
         "rgb_different_pixels": 0
       }
     ]
+  },
+  "deferred_page_reference": {
+    "capture": "stockpile-storage-native-input-20261110-111225",
+    "purpose": "Verify current-page deferred row fetching after page replacement, owner retirement and reopening.",
+    "headless": "stocks-deferred-page: core19, extension and Stocks state pass; deferred fetch follows replacement page/reopened membership and submits nothing after close.",
+    "rendered": "Actual wheel/page-wheel and return-to-top pass; all visible rows have facts after961x721,960x600,1600x900,1200x800 resizes.",
+    "native_sizes": [
+      {
+        "category_page": 11,
+        "category_scroll": 0,
+        "columns": 114,
+        "item_page": 30,
+        "item_scroll": 0,
+        "name": "minimum",
+        "rows": 46
+      },
+      {
+        "category_page": 13,
+        "category_scroll": 0,
+        "columns": 120,
+        "item_page": 36,
+        "item_scroll": 0,
+        "name": "small",
+        "rows": 50
+      },
+      {
+        "category_page": 21,
+        "category_scroll": 0,
+        "columns": 200,
+        "item_page": 45,
+        "item_scroll": 0,
+        "name": "wide",
+        "rows": 75
+      },
+      {
+        "category_page": 0,
+        "category_scroll": 0,
+        "columns": 150,
+        "item_page": 0,
+        "item_scroll": 0,
+        "name": "default",
+        "rows": 66
+      }
+    ],
+    "panel_rgb_differences": {
+      "960x600": 98,
+      "1600x900": 70,
+      "1200x800": 70
+    },
+    "limits": [
+      "Panel comparisons were inspected and are not pixel-identical.",
+      "Native minimum912x552 has no matching viewer capture in this lane;961x721 is viewer-only.",
+      "The same-frame retirement race is covered by deterministic headless scheduling, not induced through the live bridge.",
+      "Not full Stocks lifecycle, scrolling, artwork or public-launcher acceptance."
+    ],
+    "save": "Owned source unchanged; DF37396 closed unsaved.",
+    "gpu": "Native/viewer30FPS; sample55C/2%, not peak.",
+    "diagnostics": "passed_with_known_issues: separate-thread notice, device finalize, shutdown objects; no unclassified errors.",
+    "hashes": {
+      "stocks-resize.json": "3922ee079e93a3e4c78c7b459d6864fbf315ef09c5b128f5234715260c2ba4f8",
+      "stocks-native.json": "243fb5ac19c83d282804403bc94c364ce6105aada16abb1c221ae3d27a13fd06",
+      "stocks-view-scroll.png": "c4a82d8edbd08186a3e0e80503c17fa57e3349b3b0b820312b5dd886690087df",
+      "stocks-view-resize-960x600.png": "82a03089c631beece60a970ef643351ceeac42866bf17d32a638eb2c9ab527c1",
+      "stocks-view-resize-1600x900.png": "d7d7fdde3fa913a0d9345e1c2516189f2b40f37e4fbd7d26d4e44ad6ef5f622c",
+      "stocks-view-resize-1200x800.png": "4373d8aec09fc39b4cb286f2169f994a928d2a24f248eb661772eede0721fbf5"
+    }
   }
 }

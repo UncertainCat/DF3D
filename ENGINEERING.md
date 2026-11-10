@@ -44,6 +44,19 @@ share itemAppearanceDictionary: corpse recipes, portrait/cage-occupant recipes
 and slab engraving no longer disappear in Stocks' separate converter. Unknown
 artwork remains unresolved by the shared provider; public Stocks stays gated.
 
+Deferred Stocks row loading resolves the current page when queued work executes.
+It does not retain IDs from a page that was replaced by scrolling, resizing or a
+closed/reopened owner. Headless `stocks-deferred-page` covers replacement pages,
+reopened membership and closure before dispatch; core19 and extension pass.
+Protected111225 on2026-11-10 verifies wheel/page-wheel/return-to-top and fresh
+visible row facts after961x721,960x600,1600x900 and1200x800 resizes. The matching
+native/viewer panel crops retain98/70/70 differing RGB pixels at the latter
+three sizes; all were inspected, not accepted as pixel-identical. Native minimum
+912x552 has no matching viewer capture in this lane. Source preserved, DF37396
+closed unsaved, both applications capped30FPS; GPU55C/2% sample, known Godot
+diagnostics only. `native_stocks.json.deferred_page_reference` records this
+bounded workflow check; full lifecycle and visual acceptance remain unfinished.
+
 Core19, extension, Stocks state and item-sheet state pass (`stocks-shared-appearance`).
 Protected105648 on2026-11-10 verifies transport and native list captures for
 body parts46, tanned skins55, drinks69, powders70, meals72, coins74 and slabs87.

@@ -9299,5 +9299,45 @@
       "Cage holder facts include occupant item5969, but its renderer requires a resident map selection_icon; off-map occupant artwork needs independent owned input.",
       "VERMIN51 is absent. Named critter grammar and other species lack live acceptance. Public Stocks remains gated."
     ]
+  },
+  "critter_portrait_recipe_reference": {
+    "source": "DF53.16 protected Stocks20261110-084437",
+    "item_id": 5969,
+    "recipe": {
+      "layers": [
+        {
+          "height": 1,
+          "offset_x": 0,
+          "offset_y": 0,
+          "page": "PORTRAIT_CREATURE_SURFACE_SMALL",
+          "palette_row": -1,
+          "width": 1,
+          "x": 4,
+          "y": 2
+        }
+      ]
+    },
+    "native_initializer": "1a1cb0 item branch1a211b..1a2323 calls71a410",
+    "portrait_comparison": {
+      "rectangle": [
+        424,
+        64,
+        96,
+        96
+      ],
+      "different_pixels": 0,
+      "composition": "Installed page PORTRAIT_CREATURE_SURFACE_SMALL tile4:2 over DEFAULT_PORTRAIT_BACKGROUND then DEFAULT_PORTRAIT_FRAME.",
+      "native_sha256": "755aebedb92f0e0ac3b44ef8edd45a278f71b5b773b7555c9325d9de2261811a",
+      "owned_sha256": "82694e5c223c24d4956fbb94baa3cb46a5f1212a262988dbe5dfe605b39f1c0b"
+    },
+    "verification": [
+      "MSVC and core19/extension/item-state pass. Protected item-portrait-probe returns independent recipe; screenshot crops visually inspected.",
+      "Source preserved; DF11188 closed unsaved at30FPS, maximum sampled GPU39C, not a measured peak. Godot headless; known diagnostics classified separately."
+    ],
+    "limits": [
+      "Recipe is diagnostic only: management transport and panel rendering not yet connected.",
+      "One ordinary PET with valid caste and one simple portrait set. VERMIN, absent caste, multiple/caste-specific sets, conditional layers and cold template initialization not live-verified.",
+      "Cage holder occupant still needs independent recipe; public Stocks remains gated."
+    ]
   }
 }

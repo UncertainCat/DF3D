@@ -763,7 +763,8 @@ void reset() {
 }
 
 namespace {
-bool resolveCtx(const Ctx& c, Result& out, bool portrait = false, bool mapAnatomy = true);
+bool resolveCtx(const Ctx& c, Result& out, bool portrait = false, bool mapAnatomy = true,
+    const df::creature_graphics_layer_setst* selected = nullptr);
 }
 
 bool resolve(df::unit* u, Result& out) {
@@ -806,6 +807,31 @@ bool resolveCritterItemSelector(df::item* item, Result& out) {
     return true;
 }
 
+bool resolveCritterItemPortrait(df::item* item, Result& out) {
+    out = Result{};
+    if (!item || (item->getType()!=df::item_type::PET && item->getType()!=df::item_type::VERMIN)) return false;
+    Ctx c;
+    if (!buildCasteCtx(c,item->getMaterial(),item->getMaterialIndex())) return false;
+    // Native1a211b..1a2323: caste portrait sets precede creature sets. Unlike
+    // unit selection, there is no role/profession filter. Each matching set
+    // replaces the portrait, so retain the last result and native expansion
+    // effects for every selected set. No view_sheets or texture cache input.
+    const auto resolveSets=[&](const df::creature_raw_graphics* graphics)->int {
+        bool found=false;
+        if(graphics)for(const auto* set:graphics->graphics_layer_set) {
+            if(!set || !set->flags.bits.portrait)continue;
+            found=true;
+            Result current;
+            if(!resolveCtx(c,current,true,false,set))return -1;
+            out=std::move(current);
+        }
+        return found;
+    };
+    const int casteResult=resolveSets(c.caste->caste_graphics);
+    if(casteResult!=0)return casteResult>0;
+    return resolveSets(c.raw->graphics)>0;
+}
+
 bool resolvePortrait(df::unit* u, Result& out) {
     out = Result{};
     Ctx c;
@@ -821,9 +847,11 @@ bool resolveCorpse(df::item* it, Result& out) {
 }
 
 namespace {
-bool resolveCtx(const Ctx& c, Result& out, bool portrait, bool mapAnatomy) {
+bool resolveCtx(const Ctx& c, Result& out, bool portrait, bool mapAnatomy,
+    const df::creature_graphics_layer_setst* selected) {
     ensureTexposMap();
-    const df::creature_graphics_layer_setst* set = chooseSet(c, out.role, out.prof, portrait);
+    const df::creature_graphics_layer_setst* set = selected ? selected : chooseSet(c, out.role, out.prof, portrait);
+    if(selected){out.role=static_cast<int32_t>(selected->role);out.prof=static_cast<int32_t>(selected->prof);}
     if (!set) return !portrait && resolveSimple(c, out);
     if(!set->layer_set_template_token.empty()) {
         const auto expand=graphicsTemplateFunction();

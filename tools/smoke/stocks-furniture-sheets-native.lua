@@ -27,6 +27,9 @@ for _,family in ipairs(read('stocks-wire-reference.json').furniture)do
  local observed=probe('item-inspect-probe',tostring(family.id)).snapshot
  assert(observed.description==description,'Native provider description mismatch '..family.kind)
  results[#results+1]={kind=family.kind,id=family.id,description=description,snapshot=observed}
+ if os.getenv('DF3D_STOCKS_CRITTER_PORTRAIT')=='1' and (family.kind==51 or family.kind==52)then
+  results[#results].portrait_recipe=probe('item-portrait-probe',tostring(family.id))
+ end
  if os.getenv('DF3D_STOCKS_ITEM_USES')=='1' then
   local uses=probe('item-uses-probe',tostring(family.id))
   assert(uses.description==description,'Owned Uses builder description differs')

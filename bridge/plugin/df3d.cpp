@@ -2058,6 +2058,22 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             row["caption"]=DF2UTF(use.caption);row["reaction"]=use.reaction;result["uses"].append(row);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="item-portrait-probe") {
+          if(parameters.size()!=2 || !state.mapLoaded || df3d_session::saving())return CR_WRONG_USAGE;
+          int32_t id=-1;const auto& raw=parameters[1];
+          const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
+          if(parsed.ec!=std::errc{}||parsed.ptr!=raw.data()+raw.size()||id<0)return CR_WRONG_USAGE;
+          df3d_appearance::Result recipe;
+          if(!df3d_appearance::resolveCritterItemPortrait(df::item::find(id),recipe))return CR_FAILURE;
+          Json::Value result(Json::objectValue);result["layers"]=Json::Value(Json::arrayValue);
+          for(const auto& layer:recipe.layers) {
+            Json::Value row(Json::objectValue);row["page"]=df3d_appearance::pageToken(layer.page);
+            row["x"]=layer.tileX;row["y"]=layer.tileY;row["width"]=layer.cellsX;row["height"]=layer.cellsY;
+            row["offset_x"]=layer.offX;row["offset_y"]=layer.offY;row["palette_row"]=layer.row;
+            result["layers"].append(row);
+          }
+          out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
         if(parameters[0]=="item-inspect-probe"||parameters[0]=="item-flag-probe") {
           using namespace df3d_production;
           const bool edit=parameters[0]=="item-flag-probe";

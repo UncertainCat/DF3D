@@ -364,6 +364,27 @@ occupant recipe as well. Both gaps, named-grammar coverage and live VERMIN
 acceptance remain unfinished; public Stocks stays gated. The protected family
 selector is DF3D_STOCKS_CRITTER_SHEETS.
 
+The critter portrait initializer is native1a1cb0, item branch1a211b..1a2323.
+It processes portrait-flagged caste sets first, falling back to creature sets
+only when no caste portrait set matched. It does not apply unit role/profession
+filters. Each set calls71a410 with null unit/appearance inputs and portrait
+background mode2. `resolveCritterItemPortrait` reuses the existing graphics
+layer evaluator with these separate set-selection rules and native template
+expansion, publishing an independent recipe. It reads neither view_sheets nor
+the cached portrait texture. The diagnostic item-portrait-probe exposes the
+recipe; management transport and the panel are not yet wired to it.
+
+Protected084437 on2026-11-10 resolves PET5969 to one unpaletted layer,
+PORTRAIT_CREATURE_SURFACE_SMALL at4:2. Compositing that installed96x96 tile
+with DEFAULT_PORTRAIT_BACKGROUND/FRAME matches the native portrait crop exactly
+(zero differing pixels, both images inspected). Source is preserved; DF11188
+exits unsaved at30FPS; maximum sampled GPU39C is not a measured peak. Godot runs
+headless. MSVC, core19, extension and item-state checks pass. Fixture
+`critter_portrait_recipe_reference` records the recipe and scoped comparison.
+This is one valid-caste PET, not broad portrait acceptance. Missing caste,
+multiple/caste-specific sets, conditional layers, cold template initialization
+and live VERMIN remain unverified. The full panel/cage gaps above remain open.
+
 EGG88 and REMAINS47 use the simple native item-description provider. Like
 fish, their nominal material fields identify race/caste; facts and artwork use
 native actual-material getters consistently. Remains shares the pinned fish

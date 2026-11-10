@@ -9226,5 +9226,78 @@
       "installed_source": "vanilla_creatures_graphics/graphics/graphics_creatures_small.txt BIRD_LOVEBIRD_MASKED REMAINS CREATURES_SMALL:3:69",
       "cache_format": 10
     }
+  },
+  "critter_item_description_reference": {
+    "source": "DF53.16 protected Stocks20261110-083434",
+    "cases": [
+      {
+        "description": "This is a tame masked lovebird.  ",
+        "id": 5969,
+        "kind": 52,
+        "snapshot": {
+          "appearance": {
+            "color_token": "",
+            "flags": 0,
+            "material_token": "CREATURE:BIRD_LOVEBIRD_MASKED:BONE",
+            "stack": 1,
+            "subtype_raw": ""
+          },
+          "can_dump": true,
+          "can_melt": false,
+          "caption": "(tame masked lovebird)",
+          "carrier": {
+            "appearance": {
+              "color_token": "TAUPE_GRAY",
+              "flags": 0,
+              "material_token": "INORGANIC:LEAD",
+              "stack": 1,
+              "subtype_raw": ""
+            },
+            "id": 5968,
+            "item_type": 16,
+            "kind": 1,
+            "name": "(masked lovebird (\u2640) cage (lead))"
+          },
+          "description": "This is a tame masked lovebird.  ",
+          "dump": false,
+          "flags": 536887304,
+          "forbid": false,
+          "hidden": false,
+          "id": 5969,
+          "item_type": 52,
+          "material_token": "CREATURE:BIRD_LOVEBIRD_MASKED:BONE",
+          "melt": false,
+          "revision": "4021620981974918910",
+          "stockpile_categories": -1,
+          "weight": "<1\u0393"
+        },
+        "uses": []
+      }
+    ],
+    "missing_types": [
+      51
+    ],
+    "panel": {
+      "rectangle": [
+        416,
+        52,
+        488,
+        708
+      ],
+      "different_pixels": 11519,
+      "native_sha256": "17e5fcbcd38e6363277ae027dd513ccf06e087c4dacb28b5e6da9753882e0b30",
+      "viewer_sha256": "51ad7e24352e1982deda01a693bb265805a1be8db6689c54e5bbe2ba9248fac1"
+    },
+    "verification": [
+      "PET5969 native/owned/wire descriptions and Uses exact; native/viewer View and close pass.",
+      "Core19, extension, item-state and MSVC pass. Source preserved; DF36848 closed unsaved at30FPS; maximum sampled GPU41C, not a measured peak.",
+      "Known engine thread/finalize/shutdown diagnostics only."
+    ],
+    "limits": [
+      "Visual parity FAILED: native uses a large portrait and lower description start; viewer uses the small selector icon. Cage holder image is also absent in the viewer.",
+      "Native1546cb reads cached view_sheets.vermin_portrait_texpos at+74. Runtime must obtain owned portrait input instead of borrowing this UI cache.",
+      "Cage holder facts include occupant item5969, but its renderer requires a resident map selection_icon; off-map occupant artwork needs independent owned input.",
+      "VERMIN51 is absent. Named critter grammar and other species lack live acceptance. Public Stocks remains gated."
+    ]
   }
 }

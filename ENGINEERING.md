@@ -340,6 +340,30 @@ its written improvements still require the same dependency audit. Existing
 `written_detail_native.h` guards are diagnostic evidence, not blanket production
 acceptance of these item sheets.
 
+PET52 and VERMIN51 use the simple native description provider with the same
+actual-material identity as fish/remains. Type getters54b1d0/1035f0 and the
+true isCritter leaf67040 are pinned. Native c7529b adjusts grammar from the
+item's semantic name.has_name; an MSVC assertion binds it to item offset13a.
+No view-sheet field supplies description inputs.
+
+Protected083434 on2026-11-10 verifies tame masked lovebird PET5969: native,
+owned and wire prose/Uses match, and View/close pass. Core19, extension,
+item-state and MSVC pass; source is unchanged and DF36848 exits unsaved at30FPS,
+with only known engine diagnostics. Maximum sampled GPU41C is not a measured
+peak. VERMIN51 is absent. Fixture `critter_item_description_reference` records
+these semantic checks and the failed visual comparison (11519 panel pixels).
+
+The native critter detail panel has a large portrait and lower description
+start. Native1546cb..154722 draws view_sheets.vermin_portrait_texpos (+74);
+that UI cache is prohibited as a runtime input. An independent portrait recipe
+and corresponding panel layout are required. The existing small selector icon
+provider is not this portrait. Cage holder facts already carry occupant5969,
+but the presentation currently asks selection_icon for resident map artwork;
+that returns no texture for this off-map captive. The holder needs an owned
+occupant recipe as well. Both gaps, named-grammar coverage and live VERMIN
+acceptance remain unfinished; public Stocks stays gated. The protected family
+selector is DF3D_STOCKS_CRITTER_SHEETS.
+
 EGG88 and REMAINS47 use the simple native item-description provider. Like
 fish, their nominal material fields identify race/caste; facts and artwork use
 native actual-material getters consistently. Remains shares the pinned fish

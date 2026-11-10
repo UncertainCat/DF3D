@@ -330,6 +330,19 @@ creature captions and artwork: native158450 skips item controls for unit rows,
 so those rows correctly have no View/flag buttons. Management168 separately
 adds native ordered Uses. Public Stocks remains gated.
 
+Prepared food72 and plant growth56 descriptions use the owned native provider.
+Food follows the crafted-item virtuals with isConstructed=false and no color
+virtual; its ingredient vector and quality text are formatted by native
+c7586f..c75a20 and a82c10. The provider validates the food subtype and ingredient
+pointers/qualities without treating the meal as an item_constructed. Growths use
+the liquid material getters and otherwise SEEDS description dispatch.
+Protected070137 on2026-11-10 verifies meal46576 View/close, native/owned/wire
+description and Uses, and a zero-difference full panel including ingredient
+qualities, owner and backpack carrier. Plant growths are absent and retain a
+live-acceptance gap. `native_stocks.json.prepared_food_description_reference`
+records the bounded evidence. Core19, extension, item-state and MSVC pass;
+source is preserved, DF39992 exits unsaved at30FPS, known diagnostics only.
+
 Drink69, powder70 and other liquid73 item sheets use the owned native
 description/Uses provider with pinned material getters at c0/c4. Other used
 virtuals match SEEDS; powder dye wording reads native descriptor raws through

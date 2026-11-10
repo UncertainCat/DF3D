@@ -20,6 +20,9 @@
 #include "df/descriptor_color.h"
 #include "df/descriptor_pattern.h"
 #include "df/item_boxst.h"
+#include "df/item_foodst.h"
+#include "df/itemdef_foodst.h"
+#include "df/food_ingredientst.h"
 #include "df/item_ammost.h"
 #include "df/item_weaponst.h"
 #include "df/item_shieldst.h"
@@ -464,7 +467,7 @@ inline bool simpleItemDescriptionDispatch(df::item* item) {
     if(table!=base+0x16d06e0 && table!=base+0x16f6da0 && table!=base+0x15fa918 &&
        table!=base+0x16cad20 && table!=base+0x16b7520 && table!=base+0x16f0ac0 && table!=base+0x16c6570 && table!=base+0x16c9420 &&
        table!=base+0x167b4d0 && table!=base+0x1659a68 && table!=base+0x16c34a0 && table!=base+0x16bdbc0 &&
-       table!=base+0x16ba7c0 && table!=base+0x1655c40 && table!=base+0x16b8e88)return false;
+       table!=base+0x16ba7c0 && table!=base+0x1655c40 && table!=base+0x16b8e88 && table!=base+0x16f2140)return false;
     static const bool pinned=[base]() {
         struct Pin {size_t slot,target,length;uint64_t hash;};
         constexpr Pin pins[]={
@@ -495,7 +498,7 @@ inline bool simpleItemDescriptionDispatch(df::item* item) {
         // WOOD c750af and BOULDER c75244 adjust grammar from owned flags
         // and material getters only. All other used virtuals match SEEDS.
         for(const size_t table:{size_t(0x16d06e0),size_t(0x16f6da0),size_t(0x15fa918),
-            size_t(0x16cad20),size_t(0x16b7520),size_t(0x16f0ac0),size_t(0x16c6570),size_t(0x16c9420),size_t(0x167b4d0),size_t(0x1659a68),size_t(0x16c34a0),size_t(0x16bdbc0),size_t(0x16ba7c0),size_t(0x1655c40),size_t(0x16b8e88)})for(auto pin:pins) {
+            size_t(0x16cad20),size_t(0x16b7520),size_t(0x16f0ac0),size_t(0x16c6570),size_t(0x16c9420),size_t(0x167b4d0),size_t(0x1659a68),size_t(0x16c34a0),size_t(0x16bdbc0),size_t(0x16ba7c0),size_t(0x1655c40),size_t(0x16b8e88),size_t(0x16f2140)})for(auto pin:pins) {
             // MEAT/PLANT/CHEESE/GLOB share all used SEEDS virtuals except type.
             // c751f7..c75239 chooses food grammar; PLANT c75073 reads raw flag4
             // through the pinned14d880 leaf. GLOB skips contaminants at c792de.
@@ -512,8 +515,9 @@ inline bool simpleItemDescriptionDispatch(df::item* item) {
             // Liquid/powder materials use c0/c4 fields. Powder c78d7a reads
             // its raw dye descriptor through the already pinned145c2b0 helper;
             // LIQUID_MISC skips contaminants at c792f1. Other dispatch is SEEDS.
-            if(table==0x16ba7c0 || table==0x1655c40 || table==0x16b8e88) {
+            if(table==0x16ba7c0 || table==0x1655c40 || table==0x16b8e88 || table==0x16f2140) {
                 if(pin.slot==0) {
+                    if(table==0x16f2140)pin={0,0x1018f0,6,UINT64_C(0x04a5e3251c520944)};
                     if(table==0x16ba7c0)pin={0,0x7dedf0,6,UINT64_C(0xd3407965ec8a40d3)};
                     if(table==0x1655c40)pin={0,0x5450f0,6,UINT64_C(0x6b739f63cc4416f7)};
                     if(table==0x16b8e88)pin={0,0x104610,6,UINT64_C(0xc692983b6f3c8cd6)};
@@ -613,7 +617,7 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
        table!=base+0x161f840 && table!=base+0x1621b88 && table!=base+0x1624818 &&
        table!=base+0x161edd8 && table!=base+0x16c9ba0 &&
        table!=base+0x16c4c00 && table!=base+0x15f74b0 &&
-       !furnitureItemDescriptionTable(base,table))return false;
+       table!=base+0x16f6620 && !furnitureItemDescriptionTable(base,table))return false;
     static const bool pinned=[base]() {
         struct Pin {size_t slot,target,length;uint64_t hash;};
         constexpr Pin pins[]={
@@ -644,7 +648,7 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
         // c75000 has no clothing-specific branch; subtype is a semantic raw.
         for(size_t table:{size_t(0x1623198),size_t(0x16c6cf0),size_t(0x161dd98),
                          size_t(0x161f840),size_t(0x1621b88),size_t(0x1624818),size_t(0x161edd8),size_t(0x16c9ba0),size_t(0x16c4c00),size_t(0x15f74b0),
-                         size_t(0x16c8230),size_t(0x16c2d20),size_t(0x1625280),size_t(0x1625a00),size_t(0x16f9cb0),size_t(0x1620b48),size_t(0x16212c8),size_t(0x16225f0),size_t(0x16c25a0),size_t(0x16fe8b8),size_t(0x16c3fe0),size_t(0x161e518),size_t(0x16f37c0),size_t(0x16fffe8),size_t(0x1701de8),size_t(0x16f19c0),size_t(0x16f7cf8),size_t(0x16ff868),size_t(0x16fd1e0),size_t(0x1702568),size_t(0x1700768),size_t(0x161c930),size_t(0x16c54c0),size_t(0x15f7d10),size_t(0x16fd960),size_t(0x16c8ca0),size_t(0x16f56c8)})for(auto pin:pins) {
+                         size_t(0x16c8230),size_t(0x16c2d20),size_t(0x1625280),size_t(0x1625a00),size_t(0x16f9cb0),size_t(0x1620b48),size_t(0x16212c8),size_t(0x16225f0),size_t(0x16c25a0),size_t(0x16fe8b8),size_t(0x16c3fe0),size_t(0x161e518),size_t(0x16f37c0),size_t(0x16fffe8),size_t(0x1701de8),size_t(0x16f19c0),size_t(0x16f7cf8),size_t(0x16ff868),size_t(0x16fd1e0),size_t(0x1702568),size_t(0x1700768),size_t(0x161c930),size_t(0x16c54c0),size_t(0x15f7d10),size_t(0x16fd960),size_t(0x16c8ca0),size_t(0x16f56c8),size_t(0x16f6620)})for(auto pin:pins) {
             if(table==0x16c6cf0 && pin.slot==0)pin={0,0x673c0,6,UINT64_C(0x6470dd592ae1062b)};
             if(pin.slot==0) {
                 if(table==0x161dd98)pin={0,0x28a840,6,UINT64_C(0x3c0e712b7d27ecd8)};
@@ -652,6 +656,7 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
                 if(table==0x1621b88)pin={0,0x776a0,6,UINT64_C(0x556c3b8077c6c86a)};
                 if(table==0x1624818)pin={0,0x722d0,6,UINT64_C(0xd1ead67b27153938)};
                 if(table==0x16c9ba0)pin={0,0x548fa0,6,UINT64_C(0x7b7766ffefb27e79)};
+                if(table==0x16f6620)pin={0,0x8f4e90,6,UINT64_C(0x7821808e4991caf4)};
                 if(table==0x161edd8)pin={0,0x28a950,6,UINT64_C(0x2f5f1000ffd7ac5b)};
                 if(table==0x16c54c0)pin={0,0x724a0,6,UINT64_C(0xc53af550a9c41f3b)};
                 if(table==0x15f7d10)pin={0,0xfd300,6,UINT64_C(0x16014dac0538de61)};
@@ -683,6 +688,10 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
                 if(table==0x1702568)pin={0,0x54b450,6,UINT64_C(0xbae254d462406882)};
                 if(table==0x1700768)pin={0,0x79ce0,6,UINT64_C(0x4b131b0430423831)};
             }
+            if(table==0x16f6620) {
+                if(pin.slot==0x5a8)pin={pin.slot,0x67050,3,UINT64_C(0x62941518298855c4)};
+                if(pin.slot==0x6b0)pin={pin.slot,0x66e60,6,UINT64_C(0x62d2efd24138f070)};
+            }
             if(*reinterpret_cast<const void* const*>(base+table+pin.slot)!=base+pin.target || hash(pin.target,pin.length)!=pin.hash)return false;
         }
         for(size_t table:{size_t(0x16c6cf0),size_t(0x161dd98),size_t(0x161f840),
@@ -690,6 +699,13 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
             if(*reinterpret_cast<const void* const*>(base+table+8)!=base+0xfd0c0)return false;
         for(size_t table:{size_t(0x16c8230),size_t(0x16c2d20),size_t(0x1625280),size_t(0x1625a00),size_t(0x16f9cb0),size_t(0x1620b48),size_t(0x16212c8),size_t(0x16225f0),size_t(0x16c25a0),size_t(0x16fe8b8),size_t(0x16c3fe0),size_t(0x161e518),size_t(0x16f37c0),size_t(0x16fffe8),size_t(0x1701de8),size_t(0x16f19c0),size_t(0x16f7cf8),size_t(0x16ff868),size_t(0x16fd1e0),size_t(0x1702568),size_t(0x1700768),size_t(0x161c930),size_t(0x16c54c0),size_t(0x15f7d10),size_t(0x16fd960),size_t(0x16c8ca0),size_t(0x16f56c8)})
             if(*reinterpret_cast<const void* const*>(base+table+8)!=base+0x66e60)return false;
+        // FOOD c7586f..c75a20 walks its ingredient vector and calls the
+        // semantic item formatter with owned output. No UI or graphics inputs.
+        if(*reinterpret_cast<const void* const*>(base+0x16f6620+8)!=base+0xc60510)return false;
+        if(hash(0xc60510,0xc)!=UINT64_C(0x9008a7578cd9bf32) ||
+           hash(0x6ee50,0xc)!=UINT64_C(0xe8047875ae27a4aa) ||
+           hash(0x6f220,0x8)!=UINT64_C(0x2bba791d9cd7ac1d) ||
+           hash(0xa82c10,0x56ec)!=UINT64_C(0x66347214dfd39a0b))return false;
         if(hash(0xfd0c0,12)!=UINT64_C(0xf68164ec06d8d50a))return false;
         if(hash(0x67520,0x6)!=UINT64_C(0x18580e5a3b056825))return false;
         if(hash(0x67540,0x6)!=UINT64_C(0x2505ef84b8531c22))return false;
@@ -725,6 +741,16 @@ inline bool constructedItemDescriptionDispatch(df::item* item) {
         return true;
     }();
     if(!pinned)return false;
+    if(table==base+0x16f6620) {
+        const auto* food=static_cast<df::item_foodst*>(item);
+        static_assert(offsetof(df::item_foodst,ingredients)==0xe0);
+        static_assert(offsetof(df::food_ingredientst,quality)==0x10);
+        if(!food->subtype || DFHack::Items::getSubtypeDef(df::item_type::FOOD,item->getSubtype())!=food->subtype ||
+           int(food->quality)<0 || int(food->quality)>int(df::item_quality::Artifact))return false;
+        for(const auto* ingredient:food->ingredients)if(!ingredient ||
+            int(ingredient->quality)<0 || int(ingredient->quality)>int(df::item_quality::Artifact))return false;
+        return true; // item_crafted, not item_constructed; there is no improvements vector.
+    }
     if(table==base+0x16c6cf0) {
         const auto* instrument=static_cast<df::item_instrumentst*>(item);
         // c7691f reads component definitions; c795a9 appends the definition's
@@ -911,6 +937,7 @@ inline std::optional<ItemObservation> observeItem(df::item* item) {
     case df::item_type::WEAPON:case df::item_type::SHIELD:case df::item_type::BAG:
     case df::item_type::BACKPACK:case df::item_type::QUIVER:
     case df::item_type::SPLINT:case df::item_type::CRUTCH:
+    case df::item_type::PLANT_GROWTH:case df::item_type::FOOD:
     case df::item_type::DRINK:case df::item_type::LIQUID_MISC:case df::item_type::POWDER_MISC:
     case df::item_type::MEAT:case df::item_type::PLANT:
     case df::item_type::CHEESE:case df::item_type::GLOB:

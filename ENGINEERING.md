@@ -67,6 +67,29 @@ peak. The run passes with documented thread/finalize/shutdown diagnostics only.
 Unitless corpses, custom profession sets and other species/conditions remain
 unaccepted; skin/material classification and public Stocks coverage remain open.
 
+Body-part inspection now calls pinned c7cbc0/c7f0e7 with an exact native-type
+owned CORPSEPIECE. Only ID, corpse flags and actual tissue material are copied;
+DF chooses material-flag artwork, skull/unbutchered precedence and variants.
+The material lookup cache and SplitMix state are restored. Native cb1fb0 tests
+TAN_MAT first: that skin branch is excluded because cfc510 allocates/composites
+cached textures. Other results must map to an original installed tile page
+before becoming an owned corpse_selector recipe. No generated pixels or menu
+state are runtime inputs. C++ subclasses must not replace the native vtable;
+the provider uses DFHack's exact virtual-identity allocator.
+
+Core19, extension/item-state and MSVC pass (`corpse-piece-selector-owned`).
+Protected103255 on2026-11-10 requires the new tooth recipe, verifies actual
+View/close and exact description/Uses, and matches the complete488x708 native
+panels for tooth21176 and corpse47852 with zero differing RGB pixels. All four
+crops were inspected. Tooth now carries BODYPARTS(0,20); source preserved,
+DF37960 closed unsaved, both applications capped30FPS. GPU samples58–59C are
+not a measured peak. Only documented thread/finalize/shutdown diagnostics occur.
+`corpse_item_description_reference.body_part_selector_reference` records the
+recipe and evidence. Other part branches have pinned static selection evidence,
+not individual live visual acceptance. Skin composition, unitless corpses and
+broader Stocks coverage remain open. The earlier102803 fallback-only run and
+103048 failed temporary diagnostic are excluded from selector acceptance.
+
 Core19, extension/item-state and MSVC pass (`corpse-selector173-contract`).
 Protected101233 on2026-11-10 verifies protocol173 and the existing corpse/tooth
 native description and Uses responses with a headless viewer. Source preserved;
@@ -83,7 +106,7 @@ native's unchecked accesses. The unit/office lookup indices (including spouse
 positions) are scoped through the existing restoration helper, and material
 resolution uses an independently owned cache. Caption, description and Uses
 entry points all apply that scope. Actual tissue material supplies item facts;
-body-part classification and unitless corpse artwork remain unfinished.
+skin composition and unitless corpse artwork remain unfinished.
 
 MSVC and core19/extension/item-state checks pass (`item-corpse-description`).
 Protected095457 on2026-11-10 verifies corpse47852 and tooth21176: native, owned

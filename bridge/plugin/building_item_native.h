@@ -380,6 +380,11 @@ inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
         df3d_appearance::Result recipe;
         if(df3d_appearance::resolveCorpseItemSelector(item,recipe))appearance.corpseSelector=ownedItemRecipe(recipe);
     }
+    if(item->getType()==df::item_type::CORPSEPIECE) {
+        df3d_appearance::Result recipe;
+        const auto tile=corpsePieceOriginalTile(item);
+        if(tile && df3d_appearance::resolveOriginalItemTile(*tile,recipe))appearance.corpseSelector=ownedItemRecipe(recipe);
+    }
     if(item->getType()==df::item_type::PET || item->getType()==df::item_type::VERMIN){
         df3d_appearance::Result recipe;
         if(df3d_appearance::resolveCritterItemPortrait(item,recipe))appearance.portrait=ownedItemRecipe(recipe);

@@ -9,8 +9,74 @@
 #include "df/creature_raw.h"
 #include "df/tissue.h"
 #include "df/game_mode.h"
+#include "df/item_corpsepiecest.h"
+#include "df/material.h"
 
 namespace df3d_production {
+// c7f0e7 returns original builtin tiles for ordinary parts. The TAN_MAT
+// branch instead calls a texture-cache compositor and is deliberately excluded.
+// Only an owned minimal item enters the selector; no corpse/UI cache is input.
+inline std::optional<int32_t> corpsePieceOriginalTile(df::item* source) {
+    if(!source || !farmFunctions() || !df::global::world)return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    if(*reinterpret_cast<const void* const*>(source)!=base+0x167bc50 ||
+       reinterpret_cast<void*>(df::global::world)!=base+0x23d14f0)return std::nullopt;
+    static const bool pinned=[base] {
+        struct Pin{size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={
+            {0xc7cbc0,0x66b5,UINT64_C(0x98f324784f1accc3)},
+            {0xcb1fb0,0x6c,UINT64_C(0x5d211a52b84965f8)},
+            {0x6b8af0,0x96,UINT64_C(0x8f67f7a1b9d42698)},
+            {0x14add70,0x12f,UINT64_C(0x01f897b15772d540)},
+            {0x71f90,0x31,UINT64_C(0x9073e1e4054b7394)},
+            {0x2471c0,75,UINT64_C(0xa34702d10f978500)},
+            {0x28c660,6,UINT64_C(0xed9d617e577d388e)},
+            {0x66e60,6,UINT64_C(0x62d2efd24138f070)},
+            {0x4e0e80,8,UINT64_C(0x639f7364c3538714)},
+            {0x4e0e90,7,UINT64_C(0x1e41d758869db9c1)},
+        };
+        for(const auto& p:pins){uint64_t h=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<p.length;++i){h^=base[p.rva+i];h*=UINT64_C(1099511628211);}if(h!=p.hash)return false;}
+        constexpr std::pair<size_t,size_t> slots[]={{0,0x28c660},{0x10,0x66e60},{0x18,0x66e60},{0x38,0x4e0e80},{0x40,0x4e0e90}};
+        for(auto [slot,target]:slots)if(*reinterpret_cast<const void* const*>(base+0x167bc50+slot)!=base+target)return false;
+        return *reinterpret_cast<const uint32_t*>(base+0xc83278+46*4)==0xc7f0e7 &&
+            std::string(reinterpret_cast<const char*>(base+0x1651c18))=="TAN_MAT";
+    }();
+    if(!pinned)return std::nullopt;
+    static_assert(offsetof(df::item_body_component,corpse_flags)==0x324);
+    static_assert(offsetof(df::item_body_component,largest_tissue.mat_type)==0x374);
+    static_assert(offsetof(df::item_body_component,largest_tissue.mat_index)==0x378);
+    static_assert(offsetof(df::material,reaction_product.id)==0x350);
+    // A C++ subclass installs its own vtable after DFHack's constructor.
+    // Instantiate the exact native identity so virtual getters stay native.
+    const auto& identity=df::item_corpsepiecest::_identity;
+    if(!identity.can_instantiate())return std::nullopt;
+    const auto destroy=[&identity](df::item_corpsepiecest* value){identity.destroy(value);};
+    std::unique_ptr<df::item_corpsepiecest,decltype(destroy)> owned(
+        static_cast<df::item_corpsepiecest*>(identity.instantiate()),destroy);
+    if(!owned)return std::nullopt;
+    auto& item=*owned;
+    if(*reinterpret_cast<const void* const*>(&item)!=base+0x167bc50)return std::nullopt;
+    const auto* piece=static_cast<const df::item_corpsepiecest*>(source);
+    item.id=piece->id;item.corpse_flags=piece->corpse_flags;item.largest_tissue=piece->largest_tissue;
+    df3d_creature::KnowledgeMaterialCacheRestore materials(df::global::world->raws.creatures.hist_fig_to_creature_map);
+    if(!item.corpse_flags.bits.unbutchered) {
+        auto* material=reinterpret_cast<df::material*(*)(df::world*,int16_t,int32_t)>(base+0x14add70)(
+            df::global::world,item.largest_tissue.mat_type,item.largest_tissue.mat_index);
+        if(material) {
+            if(material->reaction_product.id.size()>4096)return std::nullopt;
+            for(const auto* id:material->reaction_product.id)if(!id || id->size()>65536)return std::nullopt;
+        }
+        std::string tan("TAN_MAT");
+        if(reinterpret_cast<bool(*)(df::item*,std::string*)>(base+0xcb1fb0)(&item,&tan))return std::nullopt;
+    }
+    struct RandomRestore {
+        uint64_t& state;uint64_t saved;
+        explicit RandomRestore(uint64_t& value):state(value),saved(value){}
+        ~RandomRestore(){state=saved;}
+    } random(*reinterpret_cast<uint64_t*>(base+0x18adf98));
+    return reinterpret_cast<int32_t(*)(df::item*,int32_t)>(base+0xc7cbc0)(&item,0);
+}
 inline bool corpseItem(df::item* item) {
     return item && (item->getType()==df::item_type::CORPSE || item->getType()==df::item_type::CORPSEPIECE);
 }

@@ -784,6 +784,17 @@ bool resolveUnitSelector(df::unit* u, Result& out) {
     return buildCtx(u,c) && resolveCtx(c,out,false,false);
 }
 
+bool resolveOriginalItemTile(int32_t tile, Result& out) {
+    out=Result{};
+    const df::tile_pagest* page=nullptr;
+    int32_t x=0,y=0;
+    if(tile<=0 || !texposToTile(tile,page,x,y))return false;
+    Layer layer;layer.page=page;
+    layer.tileX=static_cast<uint16_t>(x);layer.tileY=static_cast<uint16_t>(y);
+    out.layers.push_back(layer);
+    return true;
+}
+
 bool resolveCritterItemSelector(df::item* item, Result& out) {
     out = Result{};
     if (!item || (item->getType()!=df::item_type::PET && item->getType()!=df::item_type::VERMIN)) return false;

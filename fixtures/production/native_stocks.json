@@ -9837,6 +9837,73 @@
         "Tooth uses the existing material-based selector, not the new recipe; other body-part classifications and skin patterns remain unfinished.",
         "Public Stocks remains gated."
       ]
+    },
+    "body_part_selector_reference": {
+      "build": "DF 53.16 Steam build 24557528",
+      "capture": "stockpile-storage-native-input-20261110-103255",
+      "provider": "Pinned c7cbc0/c7f0e7 on an exact native-identity owned CORPSEPIECE; native cb1fb0 excludes TAN_MAT cache-compositor branch; scoped material-cache and SplitMix restoration.",
+      "item_id": 21176,
+      "material_token": "CREATURE:DWARF:TOOTH",
+      "appearance": {
+        "color_token": "",
+        "corpse_selector": {
+          "layers": [
+            [
+              0,
+              0,
+              20,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          ],
+          "palettes": [],
+          "tile_pages": [
+            "BODYPARTS"
+          ]
+        },
+        "flags": 0,
+        "material_token": "CREATURE:DWARF:TOOTH",
+        "stack": 1,
+        "subtype_raw": ""
+      },
+      "panel_crop": [
+        416,
+        52,
+        904,
+        760
+      ],
+      "panel_rgb_different_pixels": 0,
+      "corpse23_regression_panel_rgb_different_pixels": 0,
+      "native_and_viewer_images_inspected": true,
+      "actual_view_and_close": true,
+      "source_save_preserved": true,
+      "owned_df_closed_unsaved": 37960,
+      "native_and_viewer_fps_cap": 30,
+      "gpu_samples_c": [
+        58,
+        59
+      ],
+      "gpu_limit": "Samples are not a measured peak.",
+      "diagnostics": "passed_with_known_issues: documented separate-thread notice, device finalize and shutdown objects; no unclassified diagnostics.",
+      "artifact_sha256": {
+        "stocks-furniture-native-46.png": "6e0d57ef63d3c5034aa01ce81275ac43d8d969762944ece88be5b675d10e8f85",
+        "stocks-furniture-view-46.png": "69cff0fd034c8bdabbd2a62b0ac7c4c9fe157f6c85d73fc7d536e23b3de77902",
+        "stocks-furniture-wire-46.json": "fb2d72f4b2f444feed514b6bf4747d9d8f1ac1025579267c625b2bbb5e494dcb"
+      },
+      "limitations": [
+        "Only the tooth is newly rendered/live accepted; native flags, skull/unbutchered precedence and random branches are admitted from the pinned selector, not separate live visual cases.",
+        "TAN_MAT skin composition and unitless whole-corpse selection remain unfinished.",
+        "Public Stocks remains gated."
+      ],
+      "excluded_attempts": {
+        "20261110-102803": "Panel matched using old fallback; new provider rejected subclass vtable, so not selector acceptance.",
+        "20261110-103048": "Temporary diagnostic failed on nonexistent df.addressof; source preserved, owned DF closed. Diagnostic removed."
+      }
     }
   }
 }

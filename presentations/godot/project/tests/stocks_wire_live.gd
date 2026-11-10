@@ -273,6 +273,8 @@ func run() -> void:
 				var receipt:=FileAccess.open(directory+"/stocks-family-response-"+str(int(family.kind))+".json",FileAccess.WRITE);receipt.store_string(JSON.stringify(response));receipt.close()
 				var model=preload("res://scripts/item_sheet_state.gd").new();model.item_id=int(family.id)
 				if not check(response.get("status")==C.ManagementStatus.Ok and model._valid(snapshot) and snapshot.has("appearance"),"Headless item family observation invalid: "+str(family.kind)):break
+				if int(family.kind)==46 and snapshot.get("material_token","")=="CREATURE:DWARF:TOOTH":
+					check(not snapshot.get("appearance",{}).get("corpse_selector",{}).get("layers",[]).is_empty(),"Native tooth selector recipe missing")
 				var saved:=FileAccess.open(directory+"/stocks-furniture-wire-"+str(int(family.kind))+".json",FileAccess.WRITE);saved.store_string(JSON.stringify(snapshot));saved.close()
 				continue
 			owner.open_panel();if not await ready_state(owner.state):break
@@ -288,6 +290,8 @@ func run() -> void:
 			if not check(owner.state.phase==State.Phase.Closed and owner.item_owner.state.phase==owner.item_owner.state.Phase.Ready and owner.item_owner.state.item_id==int(family.id),"Furniture View destination failed: "+str(family.kind)+" stocks="+str(owner.state.phase)+" item="+str(owner.item_owner.state.phase)+" id="+str(owner.item_owner.state.item_id)+" expected="+str(family.id)):break
 			var snapshot: Dictionary=owner.item_owner.state.snapshot
 			check(snapshot.has("appearance"),"Furniture appearance missing")
+			if int(family.kind)==46 and snapshot.get("material_token","")=="CREATURE:DWARF:TOOTH":
+				check(not snapshot.get("appearance",{}).get("corpse_selector",{}).get("layers",[]).is_empty(),"Native tooth selector recipe missing")
 			var saved:=FileAccess.open(directory+"/stocks-furniture-wire-"+str(int(family.kind))+".json",FileAccess.WRITE);saved.store_string(JSON.stringify(snapshot));saved.close()
 			await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(directory+"/stocks-furniture-view-"+str(int(family.kind))+".png")

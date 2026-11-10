@@ -10340,5 +10340,882 @@
       "Live duplicate sequence, changed epoch and unknown sent mutation",
       "Minimum/wide pointer targets and mixed aggregate artwork"
     ]
+  },
+  "siege_job_effect_reference": {
+    "source": "build/stockpile-storage-native-input-20261110-163208",
+    "cases": [
+      {
+        "action": 1,
+        "after": [
+          {
+            "action": 1,
+            "id": 1490,
+            "types": [
+              66,
+              135
+            ]
+          },
+          {
+            "action": 1,
+            "id": 1491,
+            "types": [
+              66,
+              136
+            ]
+          },
+          {
+            "action": 1,
+            "id": 1492,
+            "types": [
+              66,
+              246
+            ]
+          }
+        ],
+        "before": [
+          {
+            "action": 3,
+            "id": 1490,
+            "jobs": [
+              {
+                "id": 382794,
+                "type": 66
+              },
+              {
+                "id": 382797,
+                "type": 135
+              },
+              {
+                "id": 382798,
+                "type": 137
+              },
+              {
+                "id": 382799,
+                "type": 137
+              }
+            ]
+          },
+          {
+            "action": 3,
+            "id": 1491,
+            "jobs": [
+              {
+                "id": 382795,
+                "type": 66
+              },
+              {
+                "id": 382800,
+                "type": 136
+              },
+              {
+                "id": 382801,
+                "type": 138
+              },
+              {
+                "id": 382802,
+                "type": 138
+              }
+            ]
+          },
+          {
+            "action": 3,
+            "id": 1492,
+            "jobs": [
+              {
+                "id": 382796,
+                "type": 66
+              },
+              {
+                "id": 382803,
+                "type": 246
+              },
+              {
+                "id": 382804,
+                "type": 247
+              },
+              {
+                "id": 382805,
+                "type": 247
+              }
+            ]
+          }
+        ],
+        "target": -1
+      },
+      {
+        "action": 0,
+        "after": [
+          {
+            "action": 0,
+            "id": 1490,
+            "types": [
+              66,
+              135
+            ]
+          },
+          {
+            "action": 0,
+            "id": 1491,
+            "types": [
+              66,
+              136
+            ]
+          },
+          {
+            "action": 0,
+            "id": 1492,
+            "types": [
+              66,
+              246
+            ]
+          }
+        ],
+        "before": [
+          {
+            "action": 3,
+            "id": 1490,
+            "jobs": [
+              {
+                "id": 382794,
+                "type": 66
+              },
+              {
+                "id": 382815,
+                "type": 135
+              },
+              {
+                "id": 382816,
+                "type": 137
+              },
+              {
+                "id": 382817,
+                "type": 137
+              }
+            ]
+          },
+          {
+            "action": 3,
+            "id": 1491,
+            "jobs": [
+              {
+                "id": 382795,
+                "type": 66
+              },
+              {
+                "id": 382818,
+                "type": 136
+              },
+              {
+                "id": 382819,
+                "type": 138
+              },
+              {
+                "id": 382820,
+                "type": 138
+              }
+            ]
+          },
+          {
+            "action": 3,
+            "id": 1492,
+            "jobs": [
+              {
+                "id": 382796,
+                "type": 66
+              },
+              {
+                "id": 382821,
+                "type": 246
+              },
+              {
+                "id": 382822,
+                "type": 247
+              },
+              {
+                "id": 382823,
+                "type": 247
+              }
+            ]
+          }
+        ],
+        "target": -1
+      },
+      {
+        "action": 1,
+        "after": [
+          {
+            "action": 1,
+            "id": 1490,
+            "types": [
+              66,
+              135
+            ]
+          },
+          {
+            "action": 3,
+            "id": 1491,
+            "types": [
+              66,
+              136,
+              138,
+              138
+            ]
+          },
+          {
+            "action": 3,
+            "id": 1492,
+            "types": [
+              66,
+              246,
+              247,
+              247
+            ]
+          }
+        ],
+        "before": [
+          {
+            "action": 3,
+            "id": 1490,
+            "jobs": [
+              {
+                "id": 382794,
+                "type": 66
+              },
+              {
+                "id": 382833,
+                "type": 135
+              },
+              {
+                "id": 382834,
+                "type": 137
+              },
+              {
+                "id": 382835,
+                "type": 137
+              }
+            ]
+          },
+          {
+            "action": 3,
+            "id": 1491,
+            "jobs": [
+              {
+                "id": 382795,
+                "type": 66
+              },
+              {
+                "id": 382836,
+                "type": 136
+              },
+              {
+                "id": 382837,
+                "type": 138
+              },
+              {
+                "id": 382838,
+                "type": 138
+              }
+            ]
+          },
+          {
+            "action": 3,
+            "id": 1492,
+            "jobs": [
+              {
+                "id": 382796,
+                "type": 66
+              },
+              {
+                "id": 382839,
+                "type": 246
+              },
+              {
+                "id": 382840,
+                "type": 247
+              },
+              {
+                "id": 382841,
+                "type": 247
+              }
+            ]
+          }
+        ],
+        "target": 1490
+      },
+      {
+        "action": 0,
+        "after": [
+          {
+            "action": 0,
+            "id": 1490,
+            "types": [
+              66,
+              135
+            ]
+          },
+          {
+            "action": 3,
+            "id": 1491,
+            "types": [
+              66,
+              136,
+              138,
+              138
+            ]
+          },
+          {
+            "action": 3,
+            "id": 1492,
+            "types": [
+              66,
+              246,
+              247,
+              247
+            ]
+          }
+        ],
+        "before": [
+          {
+            "action": 3,
+            "id": 1490,
+            "jobs": [
+              {
+                "id": 382794,
+                "type": 66
+              },
+              {
+                "id": 382851,
+                "type": 135
+              },
+              {
+                "id": 382852,
+                "type": 137
+              },
+              {
+                "id": 382853,
+                "type": 137
+              }
+            ]
+          },
+          {
+            "action": 3,
+            "id": 1491,
+            "jobs": [
+              {
+                "id": 382795,
+                "type": 66
+              },
+              {
+                "id": 382854,
+                "type": 136
+              },
+              {
+                "id": 382855,
+                "type": 138
+              },
+              {
+                "id": 382856,
+                "type": 138
+              }
+            ]
+          },
+          {
+            "action": 3,
+            "id": 1492,
+            "jobs": [
+              {
+                "id": 382796,
+                "type": 66
+              },
+              {
+                "id": 382857,
+                "type": 246
+              },
+              {
+                "id": 382858,
+                "type": 247
+              },
+              {
+                "id": 382859,
+                "type": 247
+              }
+            ]
+          }
+        ],
+        "target": 1490
+      },
+      {
+        "action": 1,
+        "after": [
+          {
+            "action": 3,
+            "id": 1490,
+            "types": [
+              66,
+              135,
+              137,
+              137
+            ]
+          },
+          {
+            "action": 1,
+            "id": 1491,
+            "types": [
+              66,
+              136
+            ]
+          },
+          {
+            "action": 3,
+            "id": 1492,
+            "types": [
+              66,
+              246,
+              247,
+              247
+            ]
+          }
+        ],
+        "before": [
+          {
+            "action": 3,
+            "id": 1490,
+            "jobs": [
+              {
+                "id": 382794,
+                "type": 66
+              },
+              {
+                "id": 382869,
+                "type": 135
+              },
+              {
+                "id": 382870,
+                "type": 137
+              },
+              {
+                "id": 382871,
+                "type": 137
+              }
+            ]
+          },
+          {
+            "action": 3,
+            "id": 1491,
+            "jobs": [
+              {
+                "id": 382795,
+                "type": 66
+              },
+              {
+                "id": 382872,
+                "type": 136
+              },
+              {
+                "id": 382873,
+                "type": 138
+              },
+              {
+                "id": 382874,
+                "type": 138
+              }
+            ]
+          },
+          {
+            "action": 3,
+            "id": 1492,
+            "jobs": [
+              {
+                "id": 382796,
+                "type": 66
+              },
+              {
+                "id": 382875,
+                "type": 246
+              },
+              {
+                "id": 382876,
+                "type": 247
+              },
+              {
+                "id": 382877,
+                "type": 247
+              }
+            ]
+          }
+        ],
+        "target": 1491
+      },
+      {
+        "action": 0,
+        "after": [
+          {
+            "action": 3,
+            "id": 1490,
+            "types": [
+              66,
+              135,
+              137,
+              137
+            ]
+          },
+          {
+            "action": 0,
+            "id": 1491,
+            "types": [
+              66,
+              136
+            ]
+          },
+          {
+            "action": 3,
+            "id": 1492,
+            "types": [
+              66,
+              246,
+              247,
+              247
+            ]
+          }
+        ],
+        "before": [
+          {
+            "action": 3,
+            "id": 1490,
+            "jobs": [
+              {
+                "id": 382794,
+                "type": 66
+              },
+              {
+                "id": 382887,
+                "type": 135
+              },
+              {
+                "id": 382888,
+                "type": 137
+              },
+              {
+                "id": 382889,
+                "type": 137
+              }
+            ]
+          },
+          {
+            "action": 3,
+            "id": 1491,
+            "jobs": [
+              {
+                "id": 382795,
+                "type": 66
+              },
+              {
+                "id": 382890,
+                "type": 136
+              },
+              {
+                "id": 382891,
+                "type": 138
+              },
+              {
+                "id": 382892,
+                "type": 138
+              }
+            ]
+          },
+          {
+            "action": 3,
+            "id": 1492,
+            "jobs": [
+              {
+                "id": 382796,
+                "type": 66
+              },
+              {
+                "id": 382893,
+                "type": 246
+              },
+              {
+                "id": 382894,
+                "type": 247
+              },
+              {
+                "id": 382895,
+                "type": 247
+              }
+            ]
+          }
+        ],
+        "target": 1491
+      },
+      {
+        "action": 1,
+        "after": [
+          {
+            "action": 3,
+            "id": 1490,
+            "types": [
+              66,
+              135,
+              137,
+              137
+            ]
+          },
+          {
+            "action": 3,
+            "id": 1491,
+            "types": [
+              66,
+              136,
+              138,
+              138
+            ]
+          },
+          {
+            "action": 1,
+            "id": 1492,
+            "types": [
+              66,
+              246
+            ]
+          }
+        ],
+        "before": [
+          {
+            "action": 3,
+            "id": 1490,
+            "jobs": [
+              {
+                "id": 382794,
+                "type": 66
+              },
+              {
+                "id": 382905,
+                "type": 135
+              },
+              {
+                "id": 382906,
+                "type": 137
+              },
+              {
+                "id": 382907,
+                "type": 137
+              }
+            ]
+          },
+          {
+            "action": 3,
+            "id": 1491,
+            "jobs": [
+              {
+                "id": 382795,
+                "type": 66
+              },
+              {
+                "id": 382908,
+                "type": 136
+              },
+              {
+                "id": 382909,
+                "type": 138
+              },
+              {
+                "id": 382910,
+                "type": 138
+              }
+            ]
+          },
+          {
+            "action": 3,
+            "id": 1492,
+            "jobs": [
+              {
+                "id": 382796,
+                "type": 66
+              },
+              {
+                "id": 382911,
+                "type": 246
+              },
+              {
+                "id": 382912,
+                "type": 247
+              },
+              {
+                "id": 382913,
+                "type": 247
+              }
+            ]
+          }
+        ],
+        "target": 1492
+      },
+      {
+        "action": 0,
+        "after": [
+          {
+            "action": 3,
+            "id": 1490,
+            "types": [
+              66,
+              135,
+              137,
+              137
+            ]
+          },
+          {
+            "action": 3,
+            "id": 1491,
+            "types": [
+              66,
+              136,
+              138,
+              138
+            ]
+          },
+          {
+            "action": 0,
+            "id": 1492,
+            "types": [
+              66,
+              246
+            ]
+          }
+        ],
+        "before": [
+          {
+            "action": 3,
+            "id": 1490,
+            "jobs": [
+              {
+                "id": 382794,
+                "type": 66
+              },
+              {
+                "id": 382923,
+                "type": 135
+              },
+              {
+                "id": 382924,
+                "type": 137
+              },
+              {
+                "id": 382925,
+                "type": 137
+              }
+            ]
+          },
+          {
+            "action": 3,
+            "id": 1491,
+            "jobs": [
+              {
+                "id": 382795,
+                "type": 66
+              },
+              {
+                "id": 382926,
+                "type": 136
+              },
+              {
+                "id": 382927,
+                "type": 138
+              },
+              {
+                "id": 382928,
+                "type": 138
+              }
+            ]
+          },
+          {
+            "action": 3,
+            "id": 1492,
+            "jobs": [
+              {
+                "id": 382796,
+                "type": 66
+              },
+              {
+                "id": 382929,
+                "type": 246
+              },
+              {
+                "id": 382930,
+                "type": 247
+              },
+              {
+                "id": 382931,
+                "type": 247
+              }
+            ]
+          }
+        ],
+        "target": 1492
+      }
+    ],
+    "fixture": "Paused disposable clone; each engine receives one linked loading job and two linked firing jobs with building-holder references, no workers or items; construction jobs already present.",
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "Naturally scheduled jobs on completed engines",
+      "Worker/item cleanup and in-flight typed mutation lifecycle"
+    ]
+  },
+  "empty_reference": {
+    "native_source": "build/stockpile-storage-native-input-20261110-163317",
+    "viewer_source": "build/stockpile-storage-native-input-20261110-163512",
+    "captions": [
+      [
+        "You do not have any zones.",
+        "Zones can be added using the zone menu at the bottom of the screen."
+      ],
+      [
+        "You do not have any locations.",
+        "Locations can be created from zones."
+      ],
+      [
+        "You do not have any stockpiles",
+        "Stockpiles can be placed using the stockpile menu at the bottom of the screen."
+      ],
+      [
+        "You do not have any workshops.",
+        "Workshops are placed using the building menu at the bottom of the screen."
+      ],
+      [
+        "You do not have any farm plots.",
+        "Farm plots are placed using the building menu at the bottom of the screen."
+      ],
+      [
+        "You do not have any siege engines.",
+        "Siege engines are placed using the building menu at the bottom of the screen."
+      ]
+    ],
+    "native_fixture": "Temporarily clear each native menu list and restore all pointers; simulation buildings unchanged. Discovery only.",
+    "viewer_fixture": "Temporarily render an empty local Ready list, then restore native-fed rows.",
+    "region": [
+      40,
+      64,
+      968,
+      752
+    ],
+    "different_pixels_by_tab": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "result": "passed_with_known_issues",
+    "known_diagnostics": [
+      "render-thread finalize",
+      "ObjectDB shutdown leak warning"
+    ],
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "Empty messages at other viewport sizes",
+      "Natural empty-world membership beyond existing empty siege-list discovery"
+    ]
   }
 }

@@ -3,6 +3,8 @@ extends "res://scripts/standing_orders_view.gd"
 signal navigation_requested(row: Dictionary,inspect: bool)
 signal siege_requested(building_id: int,action: int)
 const PLACE_TABS=["Zones","Locations","Stockpiles","Workshops","Farm plots","Siege engines"]
+# Verbatim native empty-tab instructions, protected163317.
+const EMPTY_CAPTIONS=[["You do not have any zones.", "Zones can be added using the zone menu at the bottom of the screen."], ["You do not have any locations.", "Locations can be created from zones."], ["You do not have any stockpiles", "Stockpiles can be placed using the stockpile menu at the bottom of the screen."], ["You do not have any workshops.", "Workshops are placed using the building menu at the bottom of the screen."], ["You do not have any farm plots.", "Farm plots are placed using the building menu at the bottom of the screen."], ["You do not have any siege engines.", "Siege engines are placed using the building menu at the bottom of the screen."]]
 const SIEGE_ACTIONS=[3,4,2,1,0]
 const SIEGE_TOKENS=["FIRE_AT_WILL","PRACTICE_FIRE","PREPARE_TO_FIRE","KEEP_LOADED","NOT_IN_USE"]
 var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
@@ -122,6 +124,9 @@ func _draw() -> void:
 		for caption in groups[index]:x+=tab(caption,Vector2(x,12+index*24),"SHORT_TAB",caption=="Places")
 	for index in 6:tab(PLACE_TABS[index],tab_rect(index).position,"SHORT_SUBTAB",index==state.tab)
 	if state.phase!=state.Phase.Ready:return
+	if state.rows.is_empty():
+		for line in 2:text(EMPTY_CAPTIONS[state.tab][line],Vector2(16,list_top()+24+line*24))
+		return
 	if state.tab==5 and not state.rows.is_empty():
 		text("All siege engines",Vector2(72,list_top()-24),11)
 		var selected: int=state.rows[0].siege_action

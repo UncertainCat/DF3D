@@ -438,6 +438,34 @@ Graphical clients are capped30FPS; GPU59–61C sampled. Core19/controller checks
 in `build/qa/places-siege-runtime`; MSVC bridge and Godot extension builds pass.
 `native_places.json.siege_transport_reference` retains the bounded evidence.
 
+
+Protected163208 extends siege cancellation evidence with eight native-button versus
+owned-adapter comparisons: Keep loaded/Not in use, individually for each engine
+type and for all engines. Each engine receives one loading and two firing jobs,
+linked through the inspected DFHack job API with building-holder references in a
+paused disposable clone. Native and adapter both remove every targeted firing job
+from the world/building lists while retaining loading and construction jobs;
+untargeted firing jobs survive. Fresh job sets are compared by type/action, and
+survivors are removed through DFHack's native cancellation wrapper afterward.
+The first163114 attempt stopped on an unavailable `df.job.find` harness API;
+the accepted run uses the existing world-job-list lookup. Source save preserved,
+owned DF26804 closed unsaved,30FPS. This does not establish naturally scheduled
+jobs on completed engines, worker/item cleanup, or typed in-flight lifecycle.
+`siege_job_effect_reference` retains the controlled observations.
+
+Places empty tabs now display the native instructions. Protected163317 captures
+all six empty layouts by temporarily clearing/restoring native menu pointers for
+discovery, without deleting simulation buildings. Runtime code never accesses
+those menu lists. Rendered163512 supplies empty local Ready rows and matches all
+six panel interiors pixel-for-pixel at1200x800, including native Stockpiles' missing
+period. Both fixtures restore their lists; natural empty-world membership is not
+inferred from this rendering check. Source saves preserved and owned DF closed
+unsaved; graphical runs capped30FPS, GPU59–61C sampled. The viewer run is
+`passed_with_known_issues` for the documented Godot shutdown diagnostics.
+Core19/controller checks pass in `build/qa/places-empty-jobs`. Empty-message
+wrapping at other sizes and the other outstanding Places input/lifecycle gaps
+remain separate; `empty_reference` records the scoped evidence.
+
 ## Management 176 Places subtitle identity
 
 Protocol176 adds `PlacesRow.subtitle_location_id`: the resolved abstract location

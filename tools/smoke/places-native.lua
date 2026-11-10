@@ -229,6 +229,59 @@ if siege_fixture then
   assert(json.encode(state())==json.encode(native),'Owned siege action differs from native click')
   result.siege_actions[#result.siege_actions+1]={target=id,action=action,before=before,after=native}
  end end
+ if os.getenv('DF3D_PLACES_SIEGE_JOBS')=='1' then
+  result.siege_job_effects={}
+  local function find_job(id)
+   for _,job in require('utils').listpairs(df.global.world.jobs.list)do if job.id==id then return job end end
+  end
+  local function seed()
+   local seeded={}
+   for i,f in ipairs(siege_fixture)do
+    local engine=assert(df.building.find(f.id));engine.action=3
+    local load=df.job_type[({'LoadCatapult','LoadBallista','LoadBoltThrower'})[i]]
+    local fire=df.job_type[({'FireCatapult','FireBallista','FireBoltThrower'})[i]]
+    local ids={}
+    for _,kind in ipairs{load,fire,fire}do
+     local job=df.job:new();job.job_type=kind;job.posting_index=-1
+     job.pos={x=engine.centerx,y=engine.centery,z=engine.z}
+     local ref=df.general_ref_building_holderst:new();ref.building_id=engine.id;job.general_refs:insert('#',ref)
+     assert(dfhack.job.linkIntoWorld(job,true));engine.jobs:insert('#',job);ids[#ids+1]=job.id
+    end
+    seeded[#seeded+1]={engine=engine.id,load=ids[1],fire={ids[2],ids[3]}}
+   end
+   settle();return seeded
+  end
+  local function check_jobs(seeded,target,action)
+   local observed={}
+   for i,entry in ipairs(seeded)do
+    local engine=assert(df.building.find(entry.engine));local selected=target==0 or target==i
+    assert(tonumber(engine.action)==(selected and action or 3),'Siege fixture action differs')
+    assert(find_job(entry.load),'Loading job was cancelled')
+    for _,id in ipairs(entry.fire)do assert((find_job(id)==nil)==selected,'Firing job lifetime differs')end
+    local types={};for _,job in ipairs(engine.jobs)do types[#types+1]=tonumber(job.job_type)end
+    observed[#observed+1]={id=engine.id,action=tonumber(engine.action),types=types}
+   end
+   return observed
+  end
+  local function cleanup(seeded)
+   for _,entry in ipairs(seeded)do for _,id in ipairs{entry.load,entry.fire[1],entry.fire[2]}do
+    local job=find_job(id);if job then assert(dfhack.job.removeJob(job))end
+   end end
+  end
+  for target=0,#siege_fixture do for _,action in ipairs{1,0}do
+   local seeded=seed();local before=state()
+   local x=action==1 and 380 or 404;local y=target==0 and 190 or 238+(target-1)*36
+   g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+   gui.simulateInput(view,'_MOUSE_L');df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1;settle()
+   local native=check_jobs(seeded,target,action);cleanup(seeded)
+   seeded=seed();local menu=menu_snapshot();local id=target==0 and -1 or siege_fixture[target].id
+   local text,rc=dfhack.run_command_silent('df3d','places-siege-action-probe',tostring(id),tostring(action))
+   assert(rc==0 and tonumber(text)==2,'Siege job adapter failed: '..text);assert(menu_snapshot()==menu,'Siege job adapter borrowed menu')
+   local actual=check_jobs(seeded,target,action);assert(json.encode(actual)==json.encode(native),'Native siege job effects differ')
+   cleanup(seeded);result.siege_job_effects[#result.siege_job_effects+1]={target=id,action=action,before=before,after=native}
+  end end
+ end
  reset();save()
 end
 if os.getenv('DF3D_PLACES_LAYOUT')=='1' then
@@ -243,6 +296,18 @@ if os.getenv('DF3D_PLACES_LAYOUT')=='1' then
    result.layouts[#result.layouts+1]={size=size,tab=mode,columns=g.dimx,rows=g.dimy,text=lines()}
    capture('places-layout-'..size..'-'..mode)
   end
+ end
+ save()
+end
+if os.getenv('DF3D_PLACES_EMPTY')=='1' then
+ result.empty_pages={}
+ -- Discovery-only menu fixture: observe native empty rendering without deleting
+ -- simulation buildings. Restore every pointer before continuing native checks.
+ for mode=0,5 do
+  local saved={};for _,building in ipairs(info.buildings.list[mode])do saved[#saved+1]=building end
+  info.buildings.list[mode]:resize(0);info.buildings.mode=mode;info.buildings.scrolling_position[mode]=0;settle()
+  result.empty_pages[#result.empty_pages+1]={tab=mode,columns=g.dimx,rows=g.dimy,text=lines()};capture('places-empty-'..mode)
+  for _,building in ipairs(saved)do info.buildings.list[mode]:insert('#',building)end
  end
  save()
 end

@@ -87,6 +87,11 @@ func run() -> void:
 		if view!=null:
 			await process_frame;await process_frame;await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(directory+"/places-view-%d.png"%tab)
+			if OS.get_environment("DF3D_PLACES_EMPTY")=="1":
+				var retained: Array=controller.rows;controller.rows=[];view.refresh()
+				await process_frame;await process_frame;await RenderingServer.frame_post_draw
+				root.get_texture().get_image().save_png(directory+"/places-empty-view-%d.png"%tab)
+				controller.rows=retained;view.refresh()
 			if OS.get_environment("DF3D_PLACES_LAYOUT")=="1":
 				for extent in [Vector2i(912,552),Vector2i(1600,900)]:
 					root.size=extent;view.layout(Vector2(extent));await process_frame;await process_frame;await RenderingServer.frame_post_draw

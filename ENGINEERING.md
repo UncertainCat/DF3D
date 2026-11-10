@@ -87,6 +87,23 @@ Owned DF2552 closes unsaved with source preservation,30FPS and GPU40C/3% sampled
 renames, unnamed/missing locations, viewport truncation, secondary information,
 nonempty siege engines and the viewer are not accepted by this fixture.
 
+Workshop rows additionally expose the first permitted worker's native1330c30
+caption through the existing owned unit-description context, and first queued
+job's native d03170 caption. Additional job count is retained as semantic data;
+its rendered suffix remains unimplemented. Farm rows expose the selected current
+season crop's raw name with native inline ASCII capitalization, or the immutable
+native “Leave fallow” literal in a separate right-status field. No crop eligibility
+or job ordering is reconstructed. Protected142031 checks the baseline crop names;
+its workshops had no permitted workers or jobs, so it does not accept those
+branches. Protected142251 creates two real statue jobs through native controls
+and sets one permitted worker/fallow selection in the disposable clone. It
+matches worker5697's caption, first job caption, additional count1 and fallow
+status; restores worker/crop setup and closes owned DF22656 unsaved. Source
+preserved,30FPS, GPU40C/0% sampled. Earlier142134 caught the fallow caption being
+misclassified as a subtitle; the field is corrected. Recorded in
+`native_places.json.secondary_reference`. This does not accept assignment edits,
+status colors, additional-job suffix rendering, other status providers or viewer.
+
 ## Management 174 Tasks contract
 
 Management174 uses `Local\df3d_management_v174`;173 peers cannot attach. There is

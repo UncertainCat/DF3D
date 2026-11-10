@@ -5714,5 +5714,79 @@
       "Populated siege engines",
       "Truncation and secondary information"
     ]
+  },
+  "secondary_reference": {
+    "capture": "build/stockpile-storage-native-input-20261110-142251",
+    "baseline_capture": "build/stockpile-storage-native-input-20261110-142031",
+    "scope": "Workshop first permitted worker and first queued job captions; selected seasonal crop name or fallow status. Names/subtitles checked across native pages. Other secondary fields unimplemented.",
+    "native_sources": {
+      "worker": "39de95 getWorkshopProfile first permitted_workers ID, 39df00 calls1330c30(false), supplied owned unit context",
+      "job": "39df6c callsd03170 for first queued job; additionalJobs copies queue size minus one",
+      "crop": "39e048..39e1ee reads current seasonal plant ID and raw name, uppercases first ASCII lowercase letter inline",
+      "fallow": "39e0c2 native literal1601fc8 is drawn in right status column, not subtitle"
+    },
+    "controlled_fixture": {
+      "building_id": 3,
+      "farm_id": 227,
+      "job_ids": [
+        382794,
+        382795
+      ],
+      "original_crop": 175,
+      "original_workers": [],
+      "season": 1,
+      "worker_id": 5697
+    },
+    "workshop_row": {
+      "additional_jobs": 1,
+      "id": 3,
+      "job_caption": "Make rock statue",
+      "name": "Stoneworker's Workshop",
+      "position": [
+        106,
+        95,
+        165
+      ],
+      "status_caption": "",
+      "subtitle": "Uzol Bardumtekkud, Miner"
+    },
+    "farm_rows": [
+      {
+        "additional_jobs": 0,
+        "id": 227,
+        "job_caption": "",
+        "name": "Farm Plot",
+        "position": [
+          137,
+          111,
+          165
+        ],
+        "status_caption": "Leave fallow",
+        "subtitle": ""
+      },
+      {
+        "additional_jobs": 0,
+        "id": 968,
+        "job_caption": "",
+        "name": "Farm Plot",
+        "position": [
+          137,
+          119,
+          165
+        ],
+        "status_caption": "",
+        "subtitle": "Sweet pod"
+      }
+    ],
+    "setup": "Two real jobs created through native workshop controls. Permitted worker and seasonal fallow selection set only in disposable clone and restored. Owned game closed without saving.",
+    "source_save_preserved": "Owned source unchanged",
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "Additional-job suffix rendering",
+      "Harvest/planted and stockpile occupancy counts",
+      "Zone/location secondary information",
+      "Subtitle/status colors, artwork, truncation and viewer",
+      "Workshop assignment/edit action acceptance"
+    ]
   }
 }

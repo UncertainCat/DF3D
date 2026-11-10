@@ -7,6 +7,10 @@
 #include "df/plotinfost.h"
 #include "df/world_site.h"
 #include "df/world.h"
+#include "df/building_farmplotst.h"
+#include "df/plant_raw.h"
+#include "df/workshop_profile.h"
+#include "unit_description_native.h"
 #include <array>
 #include <optional>
 #include <unordered_set>
@@ -14,7 +18,10 @@
 
 namespace df3d_places {
 using Lists=std::array<std::vector<int32_t>,6>;
-struct BuildingRow {int32_t id=-1;df::coord position;std::string name;};
+struct BuildingRow {
+    int32_t id=-1;df::coord position;std::string name,subtitle,jobCaption,statusCaption;
+    int32_t additionalJobs=0;
+};
 using BuildingRows=std::array<std::vector<BuildingRow>,6>;
 // Native323a7e invokes375450 with a buildings_interfacest. The builder only
 // writes that context and a local location-ID vector. Sort callbacks read zone
@@ -64,6 +71,8 @@ inline std::optional<std::string> heading(df::building& building,size_t mode) {
         return hash(0x39c70c,0xf2)==UINT64_C(0x70abcfd93acd33b6) &&
             hash(0x39f0fc,0x4c)==UINT64_C(0x0e9e313b6cc4485d) &&
             hash(0x162a000,0x2000)==UINT64_C(0xe8ebf9afb96d15b8) &&
+            hash(0x39e048,0x1ab)==UINT64_C(0xed6f67d3565c0cc5) &&
+            hash(0x1601fc8,12)==UINT64_C(0x322fc54d5030cedf) &&
             hash(0xa946e0,0x7c2)==UINT64_C(0xdbc3db5f052419ee);
     }();
     if(!pinned)return std::nullopt;
@@ -105,7 +114,44 @@ inline std::optional<BuildingRows> buildingRows() {
         auto* building=df::building::find(id);if(!building)return std::nullopt;
         BuildingRow row;row.id=id;row.position=df::coord(building->centerx,building->centery,building->z);
         const auto name=heading(*building,mode);if(!name)return std::nullopt;row.name=*name;
+        auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+        if(mode==3) {
+            if(!df3d_creature::inventoryDescriptionReady())return std::nullopt;
+            // Native39de95 selects only the first permitted worker, if present.
+            if(auto* profile=building->getWorkshopProfile();profile && !profile->permitted_workers.empty()) {
+                if(auto* worker=df::unit::find(profile->permitted_workers.front())) {
+                    if(worker->inventory.size()>10000)return std::nullopt;
+                    for(auto* entry:worker->inventory)if(!entry)return std::nullopt;
+                    df3d_creature::InventoryRandomRestore restore(base);
+                    df3d_creature::InventoryDescriptionContext owned(*worker);
+                    reinterpret_cast<void(*)(df::unit*,std::string*,bool)>(base+0x1330c30)(owned.unit(),&row.subtitle,false);
+                }
+            }
+            // Native39df6c uses the first queued job, including suspended jobs.
+            static const bool jobPinned=[base]{uint64_t hash=UINT64_C(14695981039346656037);
+                for(size_t i=0;i<0x12b;++i){hash^=base[0xd03170+i];hash*=UINT64_C(1099511628211);}
+                return hash==UINT64_C(0x90da46373e49508e);}();
+            if(!jobPinned || building->jobs.size()>1048576)return std::nullopt;
+            if(!building->jobs.empty()) {
+                if(!building->jobs.front())return std::nullopt;
+                reinterpret_cast<void(*)(df::job*,std::string*)>(base+0xd03170)(building->jobs.front(),&row.jobCaption);
+                row.additionalJobs=int32_t(building->jobs.size()-1);
+            }
+        } else if(mode==4) {
+            // Native39e048..39e1ee reads the selected seasonal crop, not a
+            // reconstructed eligibility list. Capitalization is inline in DF.
+            auto* farm=virtual_cast<df::building_farmplotst>(building);
+            if(!farm || !df::global::cur_season || unsigned(*df::global::cur_season)>3)return std::nullopt;
+            const int crop=farm->plant_id[*df::global::cur_season];
+            if(crop==-1)row.statusCaption=std::string(reinterpret_cast<const char*>(base+0x1601fc8),12);
+            else if(crop>=0 && size_t(crop)<df::global::world->raws.plants.all.size()) {
+                auto* plant=df::global::world->raws.plants.all[crop];if(!plant)return std::nullopt;
+                row.subtitle=plant->name;
+                if(!row.subtitle.empty() && row.subtitle[0]>='a' && row.subtitle[0]<='z')row.subtitle[0]-=32;
+            }
+        }
         if(row.name.size()>16384)return std::nullopt;
+        if(row.subtitle.size()>16384 || row.jobCaption.size()>16384)return std::nullopt;
         result[mode].push_back(std::move(row));
     }
     return result;

@@ -32,6 +32,18 @@ local function probe(command)
  assert(rc==0,'Owned Places provider failed: '..text);assert(menu_snapshot()==before,'Owned Places provider changed native menu storage')
  return json.decode(text)
 end
+local secondary_fixture
+if os.getenv('DF3D_PLACES_SECONDARY')=='1' then
+ local path=debug.getinfo(1,'S').source:sub(2):gsub('places%-native.lua$','residents-job-create-native.lua')
+ local first=assert(loadfile(path))(out,view);gui.simulateInput(view,'LEAVESCREEN');settle()
+ local second=assert(loadfile(path))(out,view);gui.simulateInput(view,'LEAVESCREEN');settle()
+ local holder;for _,ref in ipairs(first.general_refs)do if ref:getType()==df.general_ref_type.BUILDING_HOLDER then holder=ref:getBuilding();break end end
+ assert(holder and #holder.jobs==2 and holder.jobs[1]==second,'Places two-job fixture missing')
+ local profile=assert(holder:getWorkshopProfile());local workers={};for _,id in ipairs(profile.permitted_workers)do workers[#workers+1]=id end
+ assert(df.unit.find(5697),'Places worker fixture missing');profile.permitted_workers:resize(0);profile.permitted_workers:insert('#',5697)
+ local farm=assert(df.global.world.buildings.other.FARM_PLOT[0]);local season=df.global.cur_season;local crop=farm.plant_id[season];farm.plant_id[season]=-1
+ secondary_fixture={building_id=holder.id,worker_id=5697,job_ids={first.id,second.id},farm_id=farm.id,season=season,original_crop=crop,original_workers=workers}
+end
 local cold=probe()
 local cold_rows=probe('places-building-rows-probe')
 gui.simulateInput(view,'D_LOCATIONS');settle()
@@ -48,6 +60,7 @@ for mode=0,5 do
  end
 end
 local result={initial_mode=info.buildings.mode,pages={},owned={cold=cold,warm=warm,menu_preserved=true},building_rows={rows=cold_rows,cold_warm_equal=true,visible_names={}}}
+result.secondary_fixture=secondary_fixture
 local function save()write('places-native.json',json.encode(result))end
 for _,caption in ipairs{'Zones','Locations','Stockpiles','Workshops','Farm plots','Siege engines'}do
  local found=false
@@ -84,6 +97,16 @@ for _,caption in ipairs{'Zones','Locations','Stockpiles','Workshops','Farm plots
      result.name_mismatch={caption=caption,index=index,requested_first=first,actual_first=actual,expected=rows[index].name,observed=dfhack.df2utf(table.concat(chars)),lines=lines()};save()
      error('Native Places name mismatch: '..caption..' row '..index)
     end
+    if mode==3 or mode==4 then
+     local secondary={};for x=13,g.dimx-1 do local ch=dfhack.screen.readTile(x,16+visible*3).ch;secondary[#secondary+1]=ch>=32 and ch<=255 and string.char(ch) or ' ' end
+     local subtitle=dfhack.utf2df(rows[index].subtitle)
+     assert(table.concat(secondary):sub(1,#subtitle)==subtitle,'Places subtitle mismatch: '..caption..' row '..index)
+     local status=mode==3 and rows[index].job_caption or rows[index].status_caption
+     if status~='' then
+      local primary={};for x=13,g.dimx-1 do local ch=dfhack.screen.readTile(x,15+visible*3).ch;primary[#primary+1]=ch>=32 and ch<=255 and string.char(ch) or ' ' end
+      assert(table.concat(primary):find(dfhack.utf2df(status),1,true),'Places status caption mismatch: '..caption..' row '..index)
+     end
+    end
     checked[index]=true
    end
   end
@@ -93,4 +116,9 @@ for _,caption in ipairs{'Zones','Locations','Stockpiles','Workshops','Farm plots
  end
 end
 gui.simulateInput(view,'LEAVESCREEN');settle();assert(not info.open,'Places did not close')
+if secondary_fixture then
+ local profile=df.building.find(secondary_fixture.building_id):getWorkshopProfile();profile.permitted_workers:resize(0)
+ for _,id in ipairs(secondary_fixture.original_workers)do profile.permitted_workers:insert('#',id)end
+ df.building.find(secondary_fixture.farm_id).plant_id[secondary_fixture.season]=secondary_fixture.original_crop
+end
 result.closed=true;save();records[#records+1]={name='places-discovery',pages=#result.pages,closed=true}

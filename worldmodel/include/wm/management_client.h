@@ -434,6 +434,24 @@ struct ProductionState {
   std::string detail;
 };
 struct StocksGroupKey {int16_t type=-1,subtype=-1,subcat1=-1,subcat2=-1;};
+struct TasksRequest {
+  uint32_t offset=0;uint16_t limit=32;uint64_t expectedListRevision=0;
+  int32_t jobId=-1,workerId=-1,buildingId=-1;uint64_t expectedRevision=0;
+  TasksOperation operation=TasksOperation::Repeat;int8_t expectedState=-1;
+};
+struct TasksRow {
+  int32_t jobId=-1,workerId=-1,buildingId=-1;uint64_t revision=0;
+  std::string caption,workerName,buildingCaption;
+  std::optional<TilePos> workerPosition,buildingPosition;
+  std::optional<AreaNameColor> workerColor;
+  bool canViewJob=false,canRepeat=false,canRemoveWorker=false,canSuspend=false,canCancel=false;
+  bool repeating=false,suspended=false;
+  std::optional<SelectionAppearance> workerAppearance,buildingAppearance;
+};
+struct TasksState {
+  TasksOutcome outcome=TasksOutcome::None;uint64_t listRevision=0;uint32_t total=0,offset=0;
+  std::vector<TasksRow> rows;int32_t jobId=-1;
+};
 struct StocksMenuRequest {int16_t category=-1;std::string query;std::vector<int32_t> itemIds;std::optional<StocksGroupKey> target;uint64_t expectedRevision=0;StocksFlagAction operation=StocksFlagAction::Forbid;int8_t value=-1;int32_t itemId=-1;uint64_t pageRequest=0;uint32_t pageOffset=0;};
 struct StocksCategoryRow {int16_t type=-1;std::string caption,stored,unavailable;bool matches=false;};
 struct StocksGroupRow {StocksGroupKey key;int32_t amount=0;std::string caption;bool matches=false,expanded=false;uint8_t flags=0;uint64_t revision=0;std::vector<int32_t> itemIds;};
@@ -874,6 +892,7 @@ struct ManagementRequest {
   KitchenMenuRequest kitchenMenu;
   StoneUseRequest stoneUse;
   StocksMenuRequest stocksMenu;
+  TasksRequest tasks;
   ResidentsRowsRequest residentsRows;
   ResidentsSpecializationRequest residentsSpecialization;
   ResidentsActivityRequest residentsActivity;
@@ -941,6 +960,7 @@ struct ManagementState {
   std::optional<KitchenMenuState> kitchenMenu;
   std::optional<StoneUseState> stoneUse;
   std::optional<StocksMenuState> stocksMenu;
+  std::optional<TasksState> tasks;
   std::optional<ResidentsSpecializationState> residentsSpecialization;
   std::optional<ResidentsActivityState> residentsActivity;
   std::optional<JobSettingsState> jobSettings;

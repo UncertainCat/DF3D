@@ -41,8 +41,9 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 Management174 uses `Local\df3d_management_v174`;173 peers cannot attach. There is
 no recording migration that invents Tasks rows from older captures. Rebuild bridge,
 model and viewer together. TasksRead/TasksApply add a separate Tasks domain;
-provider transport, model codecs and UI remain unfinished and public exposure
-stays gated. This contract commit does not claim a usable Tasks screen.
+The engine-independent model encodes read/edit requests and owns decoded Tasks
+rows, text, positions, colors and artwork after transport buffer retirement.
+Provider transport and UI remain unfinished; public exposure stays gated.
 
 Read requests carry offset, limit1..64 and an expected ordered-list revision.
 A nonzero offset requires that revision. Replies preserve native order and can
@@ -66,7 +67,10 @@ rejections. MSVC bridge rebuild passes. Protected121211 on2026-11-10 loads the
 Management174 bridge against pinned DF53.16 and passes the existing Tasks native
 provider checks, preserving the source save and closing owned DF40404 unsaved.
 It runs at30FPS, GPU45C/11% sampled. This compatibility smoke does not exercise
-TasksRead/TasksApply transport; those handlers/codecs remain pending.
+TasksRead/TasksApply transport; those handlers remain pending. Model codec
+checks cover page/edit preconditions, owned reply data and Unknown receipts.
+Core19, the protocol174 extension rebuild and headless editor import pass;
+this does not establish rendered Tasks behavior.
 
 ## Tasks native discovery
 

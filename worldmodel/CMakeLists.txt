@@ -62,6 +62,7 @@ add_executable(worldmodel_tests
   tests/command_tests.cpp
   tests/management_tests.cpp
   tests/management_codec_tests.cpp
+  tests/tasks_codec_tests.cpp
   tests/resident_info_tests.cpp
   tests/session_tests.cpp)
 target_link_libraries(worldmodel_tests PRIVATE worldmodel mirror_support doctest)

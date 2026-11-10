@@ -46,6 +46,23 @@ ManagementState decodeState(const m::ManagementState* s) {
     next.creatureHeader=std::move(header);
   }
   if(const auto* r=s->residents())next.residents=ResidentsState{{r->unit_ids()->begin(),r->unit_ids()->end()}};
+  if(const auto* r=s->tasks()) {
+    auto& out=next.tasks.emplace();out.outcome=TasksOutcome(r->outcome());out.listRevision=r->list_revision();
+    out.total=r->total();out.offset=r->offset();out.jobId=r->job_id();
+    for(const auto* row:*r->rows()) {
+      TasksRow v;v.jobId=row->job_id();v.workerId=row->worker_id();v.buildingId=row->building_id();v.revision=row->revision();
+      v.caption=row->caption()->str();v.workerName=row->worker_name()->str();v.buildingCaption=row->building_caption()->str();
+      if(const auto* p=row->worker_position())v.workerPosition=TilePos{p->x(),p->y(),p->z()};
+      if(const auto* p=row->building_position())v.buildingPosition=TilePos{p->x(),p->y(),p->z()};
+      if(const auto* c=row->worker_color())v.workerColor=AreaNameColor{{c->foreground(),c->background(),c->bright()},
+        {c->alternate_foreground(),c->alternate_background(),c->alternate_bright()},c->effect()};
+      v.canViewJob=row->can_view_job();v.canRepeat=row->can_repeat();v.canRemoveWorker=row->can_remove_worker();
+      v.canSuspend=row->can_suspend();v.canCancel=row->can_cancel();v.repeating=row->repeating();v.suspended=row->suspended();
+      if(row->worker_appearance())v.workerAppearance=decodeItemRecipe(row->worker_appearance());
+      if(row->building_appearance())v.buildingAppearance=decodeItemRecipe(row->building_appearance());
+      out.rows.push_back(std::move(v));
+    }
+  }
   if(const auto* r=s->stocks_menu()) {
     next.stocksMenu.emplace();auto& out=*next.stocksMenu;out.outcome=StocksMenuOutcome(r->outcome());out.category=r->category();
     for(const auto* row:*r->categories())out.categories.push_back({row->type(),row->caption()->str(),row->stored()->str(),row->unavailable()->str(),row->matches()});
@@ -240,6 +257,12 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
   }
   const auto anchor=r.materialAnchor.value_or(TilePos{r.x,r.y,r.z});
   const m::TilePos materialAnchor(anchor.x,anchor.y,anchor.z);
+  flatbuffers::Offset<m::TasksRequest> tasks;
+  if(r.action==ManagementAction::TasksRead || r.action==ManagementAction::TasksApply){
+    const auto& q=r.tasks;
+    tasks=m::CreateTasksRequest(b,q.offset,q.limit,q.expectedListRevision,q.jobId,q.workerId,q.buildingId,
+      q.expectedRevision,m::TasksOperation(q.operation),q.expectedState);
+  }
   flatbuffers::Offset<m::StocksMenuRequest> stocksMenu;
   if(r.action==ManagementAction::StocksMenuRead || r.action==ManagementAction::StocksGroupApply || r.action==ManagementAction::StocksItemApply){
     const auto& q=r.stocksMenu;flatbuffers::Offset<m::StocksGroupKey> target;
@@ -345,7 +368,7 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
           flatbuffers::Offset<m::WorkDetailSettingsRequest>{},
       (r.action==ManagementAction::StandingOrdersRead || r.action==ManagementAction::StandingOrdersSet)?
           m::CreateStandingOrdersRequest(b,r.standingOrders.category,r.standingOrders.settingId,r.standingOrders.expectedValue,r.standingOrders.value):
-          flatbuffers::Offset<m::StandingOrdersRequest>{},hunter,chores,kitchenMenu,stoneUse,stocksMenu);
+          flatbuffers::Offset<m::StandingOrdersRequest>{},hunter,chores,kitchenMenu,stoneUse,stocksMenu,tasks);
   b.Finish(request);
 }
 }  // namespace wm::detail::management

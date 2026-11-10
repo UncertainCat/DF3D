@@ -3376,5 +3376,18 @@
     "source_save_preserved": true,
     "owned_df_closed_unsaved": true,
     "diagnostics": "passed_with_known_issues"
+  },
+  "workshop_cancel_viewer_reference": {
+    "capture": "build/stockpile-storage-native-input-20261110-135705",
+    "effect": {
+      "building_id": 3,
+      "job_id": 382795,
+      "other_jobs_preserved": true,
+      "workshop_preserved": true
+    },
+    "scope": "Actual main-scene Cancel click removes a second native-created statue job from world and holder queues, retaining workshop and every other job ID. This covers ordinary unassigned workshop-job cancellation, not assigned jobs, demolition or started construction.",
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "diagnostics": "passed_with_known_issues"
   }
 }

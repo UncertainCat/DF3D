@@ -65,7 +65,7 @@ func exercise(expected: Dictionary) -> void:
 	if OS.get_environment("DF3D_TASKS_CREATE")=="1":
 		var target: int=-1
 		for i in owner.state.rows.size():
-			if owner.state.rows[i].can_view_job:target=i;break
+			if owner.state.rows[i].can_view_job and owner.state.rows[i].job_id==int(expected.details_job):target=i;break
 		if not check(target>=0,"Created Tasks Details target missing"):return
 		var job: int=owner.state.rows[target].job_id
 		owner.state.seek(target,owner.panel.capacity());await process_frame
@@ -163,6 +163,19 @@ func exercise(expected: Dictionary) -> void:
 			var deadline:=Time.get_ticks_msec()+5000
 			while Time.get_ticks_msec()<deadline and FileAccess.get_file_as_string(directory+"/tasks-destructive-ack")!=str(step):await create_timer(0.01).timeout
 			if not check(FileAccess.get_file_as_string(directory+"/tasks-destructive-ack")==str(step),"Native Tasks action effect unconfirmed"):return
+	if OS.get_environment("DF3D_TASKS_CANCEL_WORKSHOP")=="1":
+		var target: int=-1
+		for i in owner.state.rows.size():
+			if owner.state.rows[i].job_id==int(expected.cancel_job):target=i;break
+		if not check(target>=0 and owner.state.rows[target].can_cancel,"Workshop cancel target missing"):return
+		owner.state.seek(target,owner.panel.capacity());await process_frame
+		await pointer(owner.panel.get_global_transform_with_canvas()*owner.panel.button_rect(target-owner.panel.visible_first(),4).get_center())
+		if not await ready_tasks():return
+		check(not owner.state.rows.any(func(row):return row.job_id==int(expected.cancel_job)),"Cancelled workshop job retained in Tasks")
+		var file=FileAccess.open(directory+"/tasks-workshop-cancel-step",FileAccess.WRITE);file.store_string("1");file.close()
+		var deadline:=Time.get_ticks_msec()+5000
+		while Time.get_ticks_msec()<deadline and FileAccess.get_file_as_string(directory+"/tasks-workshop-cancel-ack")!="1":await create_timer(0.01).timeout
+		if not check(FileAccess.get_file_as_string(directory+"/tasks-workshop-cancel-ack")=="1","Native workshop cancellation effect unconfirmed"):return
 	await pointer(owner.panel.get_global_transform_with_canvas()*Vector2(100,100),MOUSE_BUTTON_RIGHT)
 	check(not owner.panel.visible and scene._ui.host.active==null,"Tasks back did not release owner")
 	if OS.get_environment("DF3D_TASKS_LIFECYCLE")=="1":

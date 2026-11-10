@@ -181,6 +181,16 @@ Native before/after Tasks rows are recorded before subsequent menu comparisons.
 Source preserved, owned DF36148 closed unsaved at30FPS, GPU43C/0% sampled;
 documented engine diagnostics only (passed_with_known_issues). Earlier134418
 verifies the material portion alone.
+Protected135705 verifies ordinary workshop-job Cancel through the main Tasks
+screen. Two statue jobs are created using native workshop controls; cancelling
+job382795 removes only that job from world and workshop queues. Workshop3,
+the first statue job and every other world/holder job ID remain intact. The
+viewer refresh omits the cancelled row. Native checks use IDs after deletion,
+never the freed target pointer; post-action rows become the explicit cold
+reference for subsequent native menu comparisons. Source preserved, owned
+DF38916 closed unsaved, both processes capped30FPS, GPU43C/0% sampled; only
+documented engine diagnostics (passed_with_known_issues). Assigned jobs,
+demolition and started-construction cancellation are not covered by this run.
 Remaining action branches, Details subpage/overflow backgrounds and producer/epoch
 live acceptance are unfinished; public exposure stays gated.
 

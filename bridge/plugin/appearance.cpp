@@ -164,6 +164,7 @@ struct Ctx {
     int32_t casteIdx = -1;
     int32_t seedId = 0;        // Legacy corpse fallback, still awaiting native parity.
     uint32_t randomAppearanceNumber = 0;
+    bool itemCorpse = false;
     int32_t profession = -1;   // df::profession of the unit (or the dead unit)
     bool child = false, baby = false, ghost = false, undead = false;
     int32_t haulCount = 0;
@@ -556,7 +557,7 @@ RandomOverride g_randomOverride;
 int32_t randomPartIndex(const Ctx& c, const std::string& name, int32_t max) {
     if (max <= 0) return 1;
     if (g_randomOverride.name && *g_randomOverride.name == name) return g_randomOverride.index;
-    if (c.u) return df3d_appearance::nativeRandomPart(c.randomAppearanceNumber, name, max);
+    if (c.u || c.itemCorpse) return df3d_appearance::nativeRandomPart(c.randomAppearanceNumber, name, max);
     const uint32_t h = (static_cast<uint32_t>(c.seedId) * 2654435761u) ^ fnv(name);
     return static_cast<int32_t>(h % static_cast<uint32_t>(max)) + 1;
 }
@@ -691,7 +692,7 @@ std::vector<df::creature_graphics_role> rolesFor(const Ctx& c) {
 // unit's profession; for a corpse the dead unit's CHILD / BABY key when
 // it was one (the CORPSE sets only key on those), else none.
 int32_t setProfessionKey(const Ctx& c) {
-    if (!c.corpse) return c.profession;
+    if (!c.corpse || c.itemCorpse) return c.profession;
     if (c.baby) return static_cast<int32_t>(df::profession::BABY);
     if (c.child) return static_cast<int32_t>(df::profession::CHILD);
     return -1;
@@ -844,6 +845,24 @@ bool resolveCorpse(df::item* it, Result& out) {
     Ctx c;
     if (!buildCorpseCtx(static_cast<df::item_body_component*>(it), c)) return false;
     return resolveCtx(c, out);
+}
+
+bool resolveCorpseItemSelector(df::item* it, Result& out) {
+    out=Result{};
+    if(!it || it->getType()!=df::item_type::CORPSE)return false;
+    auto* corpse=static_cast<df::item_body_component*>(it);
+    auto* unit=df::unit::find(corpse->unit_id);
+    // Native c7f500 supplies the resolved unit to 6d6560/71e040. The
+    // unitless generic71a410 path is separate and not yet admitted here.
+    if(!unit)return false;
+    Ctx c;
+    if(!buildCorpseCtx(corpse,c))return false;
+    c.itemCorpse=true;
+    c.profession=int32_t(unit->profession);
+    c.randomAppearanceNumber=unit->job.random_appearance_number;
+    // Keep c.u null: corpse anatomy/colors come from the item, and it has
+    // no worn inventory. Only the native random condition uses the unit seed.
+    return resolveCtx(c,out,false,false);
 }
 
 namespace {

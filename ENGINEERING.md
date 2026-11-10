@@ -44,8 +44,28 @@ existing bounded SelectionAppearance asset-reference format. Empty recipes,
 invalid page/palette references and recipes exceeding the combined131072-byte
 budget are rejected. Decoding owns its strings and layers after transport
 retirement. Legacy absence remains unknown; do not invent corpse artwork from
-old recordings or require a resident map item to supply missing facts. This
-contract alone does not publish or render the new recipe.
+old recordings or require a resident map item to supply missing facts.
+
+The bridge publishes the owned corpse recipe through every item appearance
+serializer, copy, validator and revision hash. Godot consumes it directly for
+the small item selector, without portrait framing or map residency. The
+item-specific provider keeps anatomy/colors on the corpse and uses the resolved
+unit's profession and random_appearance_number, following c7f500/6d70a5/71f220;
+it does not enable worn inventory or borrow cached native textures. Unitless
+generic71a410 selection remains unadmitted rather than using the map provider's
+historical-figure profession fallback or guessed random hash.
+
+Core19, extension/item-state and MSVC pass (`corpse-selector-wired`). Protected
+101742 on2026-11-10 verifies actual View/close, exact description/Uses and full
+488x708 pixel-identical panels for human corpse47852 and tooth21176; all four
+reference/viewer crops were inspected. The corpse carries twelve independent
+original-asset layers. The tooth retains the existing material-based selector;
+this does not accept all body-part classifications. Source preserved; DF27932
+closes unsaved; both applications run at30FPS. GPU samples37C are not a measured
+peak. The run passes with documented thread/finalize/shutdown diagnostics only.
+`corpse_item_description_reference.panel_acceptance` records recipes and hashes.
+Unitless corpses, custom profession sets and other species/conditions remain
+unaccepted; skin/material classification and public Stocks coverage remain open.
 
 Core19, extension/item-state and MSVC pass (`corpse-selector173-contract`).
 Protected101233 on2026-11-10 verifies protocol173 and the existing corpse/tooth
@@ -63,7 +83,7 @@ native's unchecked accesses. The unit/office lookup indices (including spouse
 positions) are scoped through the existing restoration helper, and material
 resolution uses an independently owned cache. Caption, description and Uses
 entry points all apply that scope. Actual tissue material supplies item facts;
-independent corpse species, body-part flags and layered artwork remain unfinished.
+body-part classification and unitless corpse artwork remain unfinished.
 
 MSVC and core19/extension/item-state checks pass (`item-corpse-description`).
 Protected095457 on2026-11-10 verifies corpse47852 and tooth21176: native, owned
@@ -85,7 +105,7 @@ renderer reuses the existing verified itemVariantSeed; the former ID-modulo
 and odd/even assumptions are removed. Core19 and extension/item-state pass
 (`corpse-native-variants-final`); this establishes the traced selector rules,
 not new rendered corpse-panel acceptance. Skin/material classification and
-independent corpse recipes remain unfinished. Do not generalize the map
+body-part recipes remain unfinished. Do not generalize the map
 provider's historical-figure profession fallback or legacy random-part hash
 to item inspection: native c7f500 resolves the unit directly and passes
 profession102 when absent to f26e0. The complete layered selector still needs

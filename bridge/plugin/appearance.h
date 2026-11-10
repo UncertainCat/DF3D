@@ -66,6 +66,8 @@ bool resolveUnitSelector(df::unit* u, Result& out);
 bool resolveCritterItemSelector(df::item* item, Result& out);
 // Detail portrait recipe; separate from the small selector tile.
 bool resolveCritterItemPortrait(df::item* item, Result& out);
+// Independent corpse item selector; no map residency or cached texture input.
+bool resolveCorpseItemSelector(df::item* item, Result& out);
 
 // Cheap per-frame change hint: a hash of the unit fields the layer
 // conditions read that can change between frames (profession, inventory

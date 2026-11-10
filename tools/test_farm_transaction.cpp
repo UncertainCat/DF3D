@@ -669,4 +669,13 @@ TEST_CASE("item recipes own references and invalidate observations") {
     CHECK(itemObservationRevision(item)!=carrier);
     cage.cageOccupantEntity=0;cage.cageOccupantId=-1;
     CHECK_FALSE(validInspectionInstrument(cage,16));
+    item.carrier.reset();item.appearance.emplace();item.appearance->corpseSelector=recipe;
+    CHECK(validInspectionInstrument(*item.appearance,23));
+    CHECK(validInspectionInstrument(*item.appearance,46));
+    CHECK_FALSE(validInspectionInstrument(*item.appearance,52));
+    const auto corpse=itemObservationRevision(item);
+    item.appearance->corpseSelector->layers[0][2]++;
+    CHECK(itemObservationRevision(item)!=corpse);
+    item.appearance->corpseSelector->layers[0][5]=0;
+    CHECK_FALSE(validInspectionInstrument(*item.appearance,23));
 }

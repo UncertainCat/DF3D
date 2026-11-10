@@ -376,6 +376,10 @@ inline std::optional<ItemAppearanceRecipe> ownedItemRecipe(const df3d_appearance
 inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
     if(!item)return std::nullopt;
     ItemInspectionAppearance appearance;
+    if(item->getType()==df::item_type::CORPSE) {
+        df3d_appearance::Result recipe;
+        if(df3d_appearance::resolveCorpseItemSelector(item,recipe))appearance.corpseSelector=ownedItemRecipe(recipe);
+    }
     if(item->getType()==df::item_type::PET || item->getType()==df::item_type::VERMIN){
         df3d_appearance::Result recipe;
         if(df3d_appearance::resolveCritterItemPortrait(item,recipe))appearance.portrait=ownedItemRecipe(recipe);

@@ -9613,7 +9613,7 @@
       "godot": "Known separate-thread notice only; no unclassified diagnostics."
     },
     "limitations": [
-      "Independent corpse species/body-part flags/layered artwork remain unfinished; generic material appearance is not visual acceptance.",
+      "This baseline description run excludes artwork; panel_acceptance records the subsequent resolved-unit corpse recipe comparison.",
       "Unnamed resolved-unit cold lookup restoration, custom body plans and missing-body variants are not newly live accepted.",
       "First run095258 failed the headless appearance requirement; excluded from acceptance.",
       "Public Stocks remains gated; broader management and release backlog unchanged."
@@ -9622,6 +9622,221 @@
       "stocks-native.json": "ffbbf4001d30bbd9d378688afcba37f33a20d6cd9a376ece7288cd475d0165d8",
       "stocks-furniture-wire-23.json": "b71d09baf96fb708b815a8d125379a9b3a74825d650834b3bbdf844bc5709676",
       "stocks-furniture-wire-46.json": "a1187e24dbed7985c1f7f5939fe06f21a3ae13d78d5628ff1d18b0b85c1c5671"
+    },
+    "panel_acceptance": {
+      "run": "build/stockpile-storage-native-input-20261110-101742",
+      "cases": [
+        {
+          "item_type": 23,
+          "item_id": 47852,
+          "appearance": {
+            "color_token": "",
+            "corpse_selector": {
+              "layers": [
+                [
+                  0,
+                  1,
+                  3,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  2,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  1,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  0,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  7,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  8,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  4,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  5,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  2,
+                  6,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ],
+                [
+                  1,
+                  5,
+                  3,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ],
+                [
+                  1,
+                  5,
+                  19,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1,
+                  6,
+                  1,
+                  1,
+                  65535,
+                  -1,
+                  -1,
+                  0,
+                  0
+                ]
+              ],
+              "palettes": [],
+              "tile_pages": [
+                "HUMAN_BODY_CORPSE",
+                "HUMAN_HAIR_CORPSE"
+              ]
+            },
+            "flags": 0,
+            "material_token": "CREATURE:HUMAN:MUSCLE",
+            "stack": 1,
+            "subtype_raw": ""
+          },
+          "panel_rgb_different_pixels": 0,
+          "native_and_viewer_images_inspected": true,
+          "artifact_sha256": {
+            "stocks-furniture-native-23.png": "25f42d9801404c6db32081b7a88df1ea8fc76fb40009749a58d5db912e978867",
+            "stocks-furniture-view-23.png": "7e0c3ffa54bd70589437574253305b4c7af6811f6a76d2eb6e2d61cc50a4eb14",
+            "stocks-furniture-wire-23.json": "0f443448713b2b0fd39382a64071c4a1e656b7b3e7fa993bb5962f8432edb46e"
+          }
+        },
+        {
+          "item_type": 46,
+          "item_id": 21176,
+          "appearance": {
+            "color_token": "",
+            "flags": 0,
+            "material_token": "CREATURE:DWARF:TOOTH",
+            "stack": 1,
+            "subtype_raw": ""
+          },
+          "panel_rgb_different_pixels": 0,
+          "native_and_viewer_images_inspected": true,
+          "artifact_sha256": {
+            "stocks-furniture-native-46.png": "6e0d57ef63d3c5034aa01ce81275ac43d8d969762944ece88be5b675d10e8f85",
+            "stocks-furniture-view-46.png": "69cff0fd034c8bdabbd2a62b0ac7c4c9fe157f6c85d73fc7d536e23b3de77902",
+            "stocks-furniture-wire-46.json": "34cbd96e7423ceca92ab220748206372e590fcd092b10955055f03695e123ec1"
+          }
+        }
+      ],
+      "panel_crop": [
+        416,
+        52,
+        904,
+        760
+      ],
+      "actual_view_and_close": true,
+      "source_save_preserved": true,
+      "owned_df_closed_unsaved": 27932,
+      "native_and_viewer_fps_cap": 30,
+      "gpu_samples_c": [
+        37,
+        37
+      ],
+      "gpu_limit": "Samples are not a measured peak.",
+      "diagnostics": "passed_with_known_issues: separate-thread notice, device finalize and shutdown objects; no unclassified diagnostics.",
+      "limitations": [
+        "Resolved-unit human corpse only for the independent recipe. Unitless generic native selection, custom profession sets and other corpse species/conditions remain unaccepted.",
+        "Tooth uses the existing material-based selector, not the new recipe; other body-part classifications and skin patterns remain unfinished.",
+        "Public Stocks remains gated."
+      ]
     }
   }
 }

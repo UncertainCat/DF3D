@@ -3218,5 +3218,26 @@
     "source_save_preserved": true,
     "owned_df_closed_unsaved": true,
     "diagnostics": "passed_with_known_issues"
+  },
+  "lifecycle_viewer_reference": {
+    "capture": "build/stockpile-storage-native-input-20261110-134013",
+    "surface": "actual main scene and real shared transport",
+    "queued_read_close": "not_sent",
+    "sent_read_close_reopen": "old reply drains independently; replacement assembles fresh rows",
+    "late_details": "parent close retires child; reply cannot reopen it",
+    "sent_repeat_close_reopen": {
+      "job_id": 382794,
+      "repeat_steps": 2,
+      "restored": true
+    },
+    "viewer_detach": "sent read unknown; rows, panels and modal ownership retired",
+    "exclusions": [
+      "producer restart",
+      "changed native world epoch",
+      "unknown sent mutation"
+    ],
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "diagnostics": "passed_with_known_issues"
   }
 }

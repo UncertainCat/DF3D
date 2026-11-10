@@ -124,4 +124,41 @@ func exercise(expected: Dictionary) -> void:
 			if not check(FileAccess.get_file_as_string(directory+"/tasks-destructive-ack")==str(step),"Native Tasks action effect unconfirmed"):return
 	await pointer(owner.panel.get_global_transform_with_canvas()*Vector2(100,100),MOUSE_BUTTON_RIGHT)
 	check(not owner.panel.visible and scene._ui.host.active==null,"Tasks back did not release owner")
+	if OS.get_environment("DF3D_TASKS_LIFECYCLE")=="1":
+		# Queued requests must be cancelled; sent requests must drain without
+		# giving their retired panel a new receipt or reopening its child view.
+		owner.open_panel();var queued: int=owner.state.ticket
+		owner.close_panel();await drain()
+		check(actions.result(queued).get("outcome")=="not_sent" and owner.state.rows.is_empty() and not owner.panel.visible,"Closed queued Tasks request retained authority")
+		owner.open_panel();actions.poll(0.0);var sent: int=owner.state.ticket
+		if not check(actions._requests.has(sent) and actions._requests[sent].sequence>0,"Tasks lifecycle read was not sent"):return
+		owner.close_panel();owner.open_panel();var replacement: int=owner.state.ticket
+		if not await ready_tasks():return
+		check(replacement!=sent and owner.state.ticket==0 and actions.result(sent).get("status")==C.ManagementStatus.Ok,"Late Tasks read was not drained independently")
+		if OS.get_environment("DF3D_TASKS_CREATE")=="1":
+			var detail_row: Dictionary={}
+			for entry in owner.state.rows:
+				if entry.can_view_job:detail_row=entry;break
+			if not check(not detail_row.is_empty(),"Tasks lifecycle Details fixture missing"):return
+			owner._navigate(detail_row,false,true);actions.poll(0.0)
+			owner.close_panel();await drain()
+			check(not owner.job_open() and not owner.job_panel.visible and scene._ui.host.active==null,"Late Details reply reopened retired Tasks")
+			owner.open_panel();if not await ready_tasks():return
+			for step in [1,2]:
+				owner.state.apply(detail_row.job_id,C.TasksOperation.Repeat);actions.poll(0.0)
+				var mutation: int=owner.state.ticket
+				if not check(actions._requests.has(mutation) and actions._requests[mutation].sequence>0,"Tasks lifecycle mutation was not sent"):return
+				owner.close_panel();owner.open_panel()
+				if not await ready_tasks():return
+				check(actions.result(mutation).get("tasks",{}).get("outcome")==C.TasksOutcome.Applied,"Detached Tasks mutation receipt missing")
+				var file=FileAccess.open(directory+"/tasks-lifecycle-step",FileAccess.WRITE);file.store_string(str(step));file.close()
+				var deadline:=Time.get_ticks_msec()+5000
+				while Time.get_ticks_msec()<deadline and FileAccess.get_file_as_string(directory+"/tasks-lifecycle-ack")!=str(step):await create_timer(0.01).timeout
+				if not check(FileAccess.get_file_as_string(directory+"/tasks-lifecycle-ack")==str(step),"Detached Tasks mutation effect unconfirmed"):return
+		owner.open_panel();if not await ready_tasks():return
+		owner.state.refresh();actions.poll(0.0);var detached: int=owner.state.ticket
+		if not check(actions._requests.has(detached) and actions._requests[detached].sequence>0,"Tasks disconnect read was not sent"):return
+		world.detach_live();actions.poll(0.0);await process_frame
+		check(owner.state.rows.is_empty() and not owner.panel.visible and not owner.job_panel.visible and scene._ui.host.active==null,"Detached world retained Tasks authority")
+		check(actions.result(detached).get("outcome")=="unknown","Sent Tasks read did not retire on detach")
 	exercised=true

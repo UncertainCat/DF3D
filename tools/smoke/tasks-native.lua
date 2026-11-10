@@ -42,7 +42,7 @@ if os.getenv('DF3D_TASKS_WIRE')=='1' then
  write('tasks-wire-reference.json',json.encode(cold))
  write('tasks-scene-reference.json',json.encode{rows=cold})
  write('shot.tmp','tasks-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))
- local deadline=dfhack.getTickCount()+(os.getenv('DF3D_TASKS_SCENE')=='1' and 120000 or 30000);local checked=0;local repeats=0;local original_repeat=created_job and created_job.flags.whole
+ local deadline=dfhack.getTickCount()+(os.getenv('DF3D_TASKS_SCENE')=='1' and 120000 or 30000);local checked=0;local repeats=0;local lifecycle_steps=0;local original_repeat=created_job and created_job.flags.whole
  while true do
   local step=io.open(out..'/tasks-wire-step')
   if step then local n=tonumber(step:read('*a'));step:close()
@@ -77,12 +77,26 @@ if os.getenv('DF3D_TASKS_WIRE')=='1' then
     end
    end
   end
+  if created_job and os.getenv('DF3D_TASKS_LIFECYCLE')=='1' then
+   local step=io.open(out..'/tasks-lifecycle-step')
+   if step then local n=tonumber(step:read('*a'));step:close()
+    if n and n>lifecycle_steps then
+     assert(n==lifecycle_steps+1 and n<=2)
+     assert(created_job.flags.whole==(n==1 and (original_repeat ~ 1) or original_repeat),'Detached Tasks mutation effect differs')
+     lifecycle_steps=n;write('tasks-lifecycle-ack',tostring(n))
+    end
+   end
+  end
   local ack=io.open(out..'/ack-tasks-wire');if ack then ack:close();break end
   assert(dfhack.getTickCount()<deadline,'Tasks wire timed out');script.sleep(1,'frames')
  end
  assert(checked==2 and job.flags.whole==original,'Tasks wire did not restore suspension')
  if created_job then assert(repeats==2 and created_job.flags.whole==original_repeat,'Tasks Repeat did not restore');write('tasks-repeat-native-result.json',json.encode{job_id=created_job.id,steps=repeats,restored=true})end
  assert(not df.global.game.main_interface.info.open,'Tasks transport opened native menu')
+ if created_job and os.getenv('DF3D_TASKS_LIFECYCLE')=='1' then
+  assert(lifecycle_steps==2,'Detached Tasks mutation was not restored')
+  write('tasks-lifecycle-native-result.json',json.encode{job_id=created_job.id,repeat_steps=lifecycle_steps,restored=created_job.flags.whole==original_repeat})
+ end
  if destructive then
   assert(destructive.step==2,'Tasks destructive actions incomplete')
   local after=probe()

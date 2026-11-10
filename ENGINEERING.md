@@ -148,7 +148,18 @@ Tasks retains modal ownership and neither camera position nor level changes.
 Source preserved; owned DF17160 closed unsaved at30FPS, with documented engine
 diagnostics only (passed_with_known_issues). Initial133421 incorrectly expected
 Recenter to work there; the native observation establishes the inactive behavior.
-Remaining action branches, overflow backgrounds and disconnect/epoch live
+Protected134013 verifies Tasks ownership through the actual main scene and real
+shared transport: a queued read closes as not_sent; a sent read drains after
+close/reopen without granting its receipt to the replacement owner; closing the
+parent retires pending Details. Sent Repeat edits also drain across close/reopen,
+with native job382794 flag checks after both toggles and restoration. Explicit
+viewer detach retires a sent read as unknown and clears rows, child panels and
+modal ownership. This does not establish producer restart, changed native world
+epoch or unknown sent-mutation behavior. Source preserved, owned DF19564 closed
+unsaved, both processes capped30FPS, GPU44C/0% sampled; documented engine
+diagnostics only (passed_with_known_issues). Earlier133831 covers read/Details
+retirement without the additional detached edits.
+Remaining action branches, overflow backgrounds and producer/epoch live
 acceptance are unfinished; public exposure stays gated.
 
 Read requests carry offset, limit1..64 and an expected ordered-list revision.

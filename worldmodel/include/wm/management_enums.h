@@ -2,6 +2,19 @@
 #pragma once
 #include <cstdint>
 namespace wm {
+enum class TasksOutcome : uint8_t {
+  None = 0,
+  Applied = 1,
+  Rejected = 2,
+  Stale = 3,
+  Unknown = 4,
+};
+enum class TasksOperation : uint8_t {
+  Repeat = 0,
+  Suspend = 1,
+  RemoveWorker = 2,
+  Cancel = 3,
+};
 enum class StocksMenuOutcome : uint8_t {
   None = 0,
   Applied = 1,
@@ -274,6 +287,8 @@ enum class ManagementAction : uint8_t {
   StocksMenuRead = 102,
   StocksGroupApply = 103,
   StocksItemApply = 104,
+  TasksRead = 105,
+  TasksApply = 106,
 };
 enum class ManagementStatus : uint8_t {
   Idle = 0,
@@ -589,11 +604,15 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::StocksMenuRead: return true;
   case ManagementAction::StocksGroupApply: return true;
   case ManagementAction::StocksItemApply: return true;
+  case ManagementAction::TasksRead: return true;
+  case ManagementAction::TasksApply: return true;
   default: return false;
   }
 }
 constexpr const char* managementDomain(ManagementAction action) {
   switch (action) {
+  case ManagementAction::TasksRead: return "tasks";
+  case ManagementAction::TasksApply: return "tasks";
   case ManagementAction::StocksMenuRead: return "stocks_menu";
   case ManagementAction::StocksGroupApply: return "stocks_menu";
   case ManagementAction::StocksItemApply: return "stocks_menu";

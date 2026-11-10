@@ -141,8 +141,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 173;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v173";
+inline constexpr uint32_t kManagementVersion = 174;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v174";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -440,7 +440,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::StocksItemApply &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::TasksApply &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -529,7 +529,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::StocksItemApply)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::TasksApply)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -623,6 +623,18 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     const auto* q=r.residents_specialization();
     if(!q || q->unit_id()<0 || !q->expected_revision() || q->expected_revision()>INT64_MAX)return "invalid residents specialization request";
   } else if(r.residents_specialization())return "unexpected residents specialization request";
+  if(r.action()==ManagementAction::TasksRead || r.action()==ManagementAction::TasksApply) {
+    const auto* q=r.tasks();if(!q || q->operation()>TasksOperation::Cancel)return "invalid tasks request";
+    if(r.action()==ManagementAction::TasksRead){
+      if(!q->limit() || q->limit()>64 || q->offset()>1048576 || q->expected_list_revision()>INT64_MAX ||
+         (q->offset() && !q->expected_list_revision()) || q->job_id()!=-1 || q->worker_id()!=-1 || q->building_id()!=-1 ||
+         q->expected_revision() || q->operation()!=TasksOperation::Repeat || q->expected_state()!=-1)return "invalid tasks page request";
+    }else if(q->offset() || q->limit()!=32 || q->expected_list_revision() || q->job_id()<0 || q->worker_id()<-1 ||
+      q->building_id()<0 || !q->expected_revision() || q->expected_revision()>INT64_MAX ||
+      ((q->operation()==TasksOperation::Repeat || q->operation()==TasksOperation::Suspend)?
+        (q->expected_state()<0 || q->expected_state()>1):q->expected_state()!=-1) ||
+      (q->operation()==TasksOperation::RemoveWorker && q->worker_id()<0))return "invalid tasks edit";
+  }else if(r.tasks())return "unexpected tasks request";
   if(r.action()==ManagementAction::StocksMenuRead || r.action()==ManagementAction::StocksGroupApply || r.action()==ManagementAction::StocksItemApply) {
     const auto* q=r.stocks_menu();if(!q || q->category()<-1 || q->category()>=93 || !q->query() || q->query()->size()>4096 || q->operation()>StocksFlagAction::Hidden)return "invalid stocks request";
     if(q->page_request()) {
@@ -1170,7 +1182,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::StocksItemApply ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::TasksApply ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -1253,6 +1265,35 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     for(auto id:*r->unit_ids())if(id<0 || !ids.insert(id).second)return "invalid residents identity";
   } else if((s.action()==ManagementAction::ResidentsQuery || s.action()==ManagementAction::WorkDetailWorkersQuery) && s.status()==ManagementStatus::Ok)
     return "residents result required";
+  if(const auto* r=s.tasks()) {
+    const bool read=s.action()==ManagementAction::TasksRead,apply=s.action()==ManagementAction::TasksApply;
+    if((!read && !apply) || !r->rows() || r->rows()->size()>64 || r->outcome()>TasksOutcome::Unknown)return "invalid tasks result";
+    if(s.status()==ManagementStatus::Ok){
+      if(read){
+        if(r->outcome()!=TasksOutcome::None || !r->list_revision() || r->list_revision()>INT64_MAX || r->total()>1048576 ||
+          r->offset()>r->total() || r->rows()->size()>r->total()-r->offset() ||
+          (r->offset()<r->total() && r->rows()->size()==0) || r->job_id()!=-1)return "invalid tasks page";
+      }else if(r->outcome()!=TasksOutcome::Applied || r->job_id()<0 || r->list_revision() || r->total() || r->offset() || r->rows()->size())return "invalid tasks receipt";
+    }else if(s.status()!=ManagementStatus::Rejected || r->list_revision() || r->total() || r->offset() || r->rows()->size() ||
+      (read?r->job_id()!=-1:r->job_id()<0) || (r->outcome()!=TasksOutcome::Rejected && r->outcome()!=TasksOutcome::Stale && (!apply || r->outcome()!=TasksOutcome::Unknown)))return "invalid tasks refusal";
+    size_t bytes=0;std::unordered_set<int32_t> ids;
+    for(const auto* row:*r->rows()){
+      if(!row || row->job_id()<0 || !ids.insert(row->job_id()).second || row->worker_id()<-1 || row->building_id()<-1 ||
+        !row->revision() || row->revision()>INT64_MAX || !row->caption() || row->caption()->size()>16384 ||
+        !row->worker_name() || row->worker_name()->size()>16384 || !row->building_caption() || row->building_caption()->size()>16384)return "invalid tasks row";
+      bytes+=128+row->caption()->size()+row->worker_name()->size()+row->building_caption()->size();
+      if((row->worker_id()<0 && (row->worker_name()->size() || row->worker_color() || row->worker_position() || row->worker_appearance() || row->can_remove_worker())) ||
+        (row->building_id()<0 && (row->building_caption()->size() || row->building_position() || row->building_appearance() || row->can_repeat() || row->can_suspend() || row->can_cancel() || row->can_remove_worker())) ||
+        (row->worker_id()>=0 && !row->worker_color()))return "invalid tasks row ownership";
+      for(const auto* p:{row->worker_position(),row->building_position()})if(p && (p->x()<0 || p->y()<0 || p->z()<0 || p->x()>32767 || p->y()>32767 || p->z()>32767))return "invalid tasks position";
+      if(const auto* c=row->worker_color())if(c->foreground()>7 || c->background()>7 || c->bright()>1 || c->alternate_foreground()>7 || c->alternate_background()>7 || c->alternate_bright()>1 || c->effect()>3)return "invalid tasks color";
+      for(const auto* a:{row->worker_appearance(),row->building_appearance()})if(a){
+        size_t recipe=0;if(auto error=validateOwnerAppearance(*a,recipe))return error;
+        if(!a->layers()->size() || recipe>131072)return "invalid tasks artwork";bytes+=recipe;
+      }
+      if(bytes>384*1024)return "tasks page payload exceeded";
+    }
+  }else if(s.status()==ManagementStatus::Ok && (s.action()==ManagementAction::TasksRead || s.action()==ManagementAction::TasksApply))return "missing tasks result";
   if(const auto* r=s.stocks_menu()) {
     const bool read=s.action()==ManagementAction::StocksMenuRead,apply=s.action()==ManagementAction::StocksGroupApply || s.action()==ManagementAction::StocksItemApply;
     if((!read && !apply) || !r->categories() || !r->groups() || !r->items() || r->category()<-1 || r->category()>=93)return "invalid stocks result";

@@ -36,6 +36,38 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
 
+## Management 174 Tasks contract
+
+Management174 uses `Local\df3d_management_v174`;173 peers cannot attach. There is
+no recording migration that invents Tasks rows from older captures. Rebuild bridge,
+model and viewer together. TasksRead/TasksApply add a separate Tasks domain;
+provider transport, model codecs and UI remain unfinished and public exposure
+stays gated. This contract commit does not claim a usable Tasks screen.
+
+Read requests carry offset, limit1..64 and an expected ordered-list revision.
+A nonzero offset requires that revision. Replies preserve native order and can
+return fewer rows to keep the text/recipe payload below384KiB within the512KiB
+management region; next offset is offset plus row count. A nonterminal empty
+page is invalid. Changed membership/order returns Stale so the owner restarts
+at offset0. Artwork recipes are independently bounded at128KiB each.
+
+Edits carry job/worker/building identities and the displayed row revision.
+Repeat/Suspend additionally carry the expected boolean state; Remove worker
+requires a worker. Apply receipts carry the targeted job ID and no row page.
+Unknown mutation outcomes must never be retried automatically. Existing envelope
+client/sequence/world-epoch checks and receipt ownership remain mandatory.
+Validators reject duplicate jobs, inconsistent owner fields, invalid positions,
+colors/recipes, malformed pagination and oversized pages. Optional positions
+mean unavailable; they never encode a fabricated location. Native copy and
+original-asset recipes are reused from the owned provider described below.
+
+Contract validation: core19 passes with focused Tasks request/page/receipt
+rejections. MSVC bridge rebuild passes. Protected121211 on2026-11-10 loads the
+Management174 bridge against pinned DF53.16 and passes the existing Tasks native
+provider checks, preserving the source save and closing owned DF40404 unsaved.
+It runs at30FPS, GPU45C/11% sampled. This compatibility smoke does not exercise
+TasksRead/TasksApply transport; those handlers/codecs remain pending.
+
 ## Tasks native discovery
 
 The protected native Tasks reference is `fixtures/production/native_tasks.json`.

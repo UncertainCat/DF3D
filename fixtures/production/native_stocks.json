@@ -8450,5 +8450,44 @@
       "Plant growth56 absent from this save: implementation audited and built, no live acceptance.",
       "One prepared meal46576; no empty ingredients, artifact/masterwork meal or nonempty Uses variant accepted in this batch. Public Stocks remains gated."
     ]
+  },
+  "fish_description_reference": {
+    "run": "build/stockpile-storage-native-input-20261110-071642",
+    "game": "53.16",
+    "headless_viewer": true,
+    "items": [
+      {
+        "kind": 50,
+        "id": 6028,
+        "description": "This is a stack of 5 raw pond turtle, ♀.  It is coated with water.  ",
+        "uses": [],
+        "material_token": "CREATURE:POND_TURTLE:BONE",
+        "appearance": {
+          "color_token": "",
+          "flags": 0,
+          "material_token": "CREATURE:POND_TURTLE:BONE",
+          "stack": 5,
+          "subtype_raw": ""
+        }
+      }
+    ],
+    "dispatch": {
+      "FISH": "16c7ab0 getType100a70 len6 FNV927fe8a6b4874f2f",
+      "FISH_RAW": "16589e0 getType67180 len6 FNV85d0077c37363532",
+      "caste": "5453b0 len8 FNV6b157bd3663c271d",
+      "actual_material": "cb2890 lenb7 FNV2e00af0e1e7040bd",
+      "actual_material_index": "cb2950 lenb7 FNVf96ba04bd7b37069",
+      "ownership": "Actual material leaves read bounded creature/caste raws, caste-1 uses first caste; no UI inputs. Other used description virtuals match SEEDS."
+    },
+    "verification": [
+      "Native item View/close and native/owned/wire descriptions and Uses match for raw pond turtle6028 including water coating. Headless viewer validates observation and material identity; no viewer visual parity claimed.",
+      "Item facts and appearance both use native actual material: CREATURE:POND_TURTLE:BONE. The prior nominal race/caste decoding conflicted with appearance and failed validation.",
+      "Core19, extension, item-state and MSVC pass in item-fish-facts; headless script parse check passes.",
+      "Source unchanged; DF28276 closed unsaved, native30FPS, headless Godot. Maximum sampled GPU62C (not peak); only documented thread notice."
+    ],
+    "limits": [
+      "Prepared fish49 absent from save. Fish artwork is not implemented; this is semantic bridge acceptance only. Public Stocks remains gated.",
+      "Prior070612 failed missing appearance;070856 timed out on authority;071148 failed a test action-name parse error;071257 reproduced invalid observation headlessly. None count as acceptance. Those sessions preserved the source and exited unsaved."
+    ]
   }
 }

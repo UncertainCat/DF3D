@@ -264,8 +264,17 @@ func run() -> void:
 		if view!=null:view.queue_free();view=null;await process_frame
 		state.dispose()
 		var host:=Host.new();root.add_child(host)
-		var owner=preload("res://scripts/stocks_panel.gd").new();root.add_child(owner);owner.configure(world,service,host,hover)
+		var owner=preload("res://scripts/stocks_panel.gd").new();root.add_child(owner)
+		if OS.get_environment("DF3D_STOCKS_RENDER")=="1":owner.configure(world,service,host,hover)
 		for family in reference.furniture:
+			if OS.get_environment("DF3D_STOCKS_RENDER")!="1":
+				var response:=await request("production",{"action":C.ManagementAction.ProductionInspect,"independent_item":true,"item_id":int(family.id)})
+				var snapshot: Dictionary=response.get("production",{}).get("independent_item",{}).get("snapshot",{})
+				var receipt:=FileAccess.open(directory+"/stocks-family-response-"+str(int(family.kind))+".json",FileAccess.WRITE);receipt.store_string(JSON.stringify(response));receipt.close()
+				var model=preload("res://scripts/item_sheet_state.gd").new();model.item_id=int(family.id)
+				if not check(response.get("status")==C.ManagementStatus.Ok and model._valid(snapshot) and snapshot.has("appearance"),"Headless item family observation invalid: "+str(family.kind)):break
+				var saved:=FileAccess.open(directory+"/stocks-furniture-wire-"+str(int(family.kind))+".json",FileAccess.WRITE);saved.store_string(JSON.stringify(snapshot));saved.close()
+				continue
 			owner.open_panel();if not await ready_state(owner.state):break
 			owner.state.select_category(int(family.kind));if not await ready_state(owner.state):break
 			if not owner.state.expanded(owner.state.groups[0]):

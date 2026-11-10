@@ -330,6 +330,20 @@ creature captions and artwork: native158450 skips item controls for unit rows,
 so those rows correctly have no View/flag buttons. Management168 separately
 adds native ordered Uses. Public Stocks remains gated.
 
+Fish49 and raw fish50 use the owned native item-description provider. Their
+nominal material getters contain race/caste, so item facts and appearance both
+resolve DF's actual material through bounded creature/caste raw getters
+cb2890/cb2950. Mixing nominal facts with actual appearance fails the observation
+validator and is not an accepted fallback. Protected071642 on2026-11-10 verifies
+raw pond turtle6028 through a headless viewer: native/owned/wire descriptions
+(including water coating), Uses, snapshot validation and matching actual-material
+tokens pass. Native View/close passes; viewer artwork and graphical navigation
+are not accepted by this headless check. Prepared fish49 is absent. The owning
+fixture is `native_stocks.json.fish_description_reference`. Core19, extension,
+item-state and MSVC pass; the source remains unchanged and DF28276 exits unsaved.
+The family smoke supports headless semantic reads separately from rendered
+View/close, avoiding renderer startup for bridge-only diagnosis.
+
 Prepared food72 and plant growth56 descriptions use the owned native provider.
 Food follows the crafted-item virtuals with isConstructed=false and no color
 virtual; its ingredient vector and quality text are formatted by native

@@ -368,6 +368,26 @@ pass in `build/qa/places-hover-final`. `native_places.json.hover_reference`
 retains the observations and scope. Typed siege actions and responsive layout
 remain pending; the public Places route stays hidden.
 
+
+Places responsive geometry follows renderer39ac99/39b30e..39b6ce: at155 text
+columns the six Places tabs use one row and ordinary content starts48px higher.
+The caption span grows by two thirds of excess width, navigation follows that
+span, and the status column starts halfway across it. Below40 caption cells,
+native hides the status column and siege controls. Location headings/subtitles
+truncate to span minus3 cells, using the native ellipsis rule. Input and hover
+rectangles use the same computed column positions.
+Protected155458 captures all six native tabs at912x552,1600x900 and1200x800.
+Rendered155657 compares the panel interior at the two additional sizes: all six
+wide tabs and five narrow tabs match every RGB pixel. Narrow Zones retains203
+different pixels in attached-location subtitles: the current text-only row cannot
+distinguish those from owner/squad captions, which native does not truncate the
+same way. This remains unfinished pending semantic subtitle-kind transport;
+there is no heuristic clipping or parity exception. `layout_reference` retains
+regions/counts and the missing resized-pointer, empty-tab and custom-name scope.
+Both runs preserve the source save and close owned DF unsaved at30FPS. Viewer
+acceptance is `passed_with_known_issues` for the known Godot shutdown diagnostics;
+GPU58–61C sampled. Core19/controller checks pass in `build/qa/places-layout-final`.
+
 ## Management 174 Tasks contract
 
 Management174 uses `Local\df3d_management_v174`;173 peers cannot attach. There is

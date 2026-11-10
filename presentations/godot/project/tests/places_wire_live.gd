@@ -66,6 +66,11 @@ func run() -> void:
 		if view!=null:
 			await process_frame;await process_frame;await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(directory+"/places-view-%d.png"%tab)
+			if OS.get_environment("DF3D_PLACES_LAYOUT")=="1":
+				for extent in [Vector2i(912,552),Vector2i(1600,900)]:
+					root.size=extent;view.layout(Vector2(extent));await process_frame;await process_frame;await RenderingServer.frame_post_draw
+					root.get_texture().get_image().save_png(directory+"/places-view-%dx%d-%d.png"%[extent.x,extent.y,tab])
+				root.size=Vector2i(1200,800);view.layout(Vector2(1200,800))
 	if view!=null:view.queue_free();await process_frame
 	controller.refresh();controller.close()
 	for i in 5:world.poll();await create_timer(0.01).timeout

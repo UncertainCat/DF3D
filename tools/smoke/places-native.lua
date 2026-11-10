@@ -218,6 +218,21 @@ if siege_fixture then
  end end
  reset();save()
 end
+if os.getenv('DF3D_PLACES_LAYOUT')=='1' then
+ result.layouts={}
+ for _,size in ipairs{'minimum','wide','default'}do
+  write('owner-input-request.tmp','name-resize-'..size);assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+  local deadline=dfhack.getTickCount()+10000
+  while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Places resize timed out');script.sleep(1,'frames')end
+  assert(os.remove(out..'/owner-input-ack'));script.sleep(5,'frames')
+  for mode=0,5 do
+   info.buildings.mode=mode;info.buildings.scrolling_position[mode]=0;settle()
+   result.layouts[#result.layouts+1]={size=size,tab=mode,columns=g.dimx,rows=g.dimy,text=lines()}
+   capture('places-layout-'..size..'-'..mode)
+  end
+ end
+ save()
+end
 result.hover={}
 for mode=0,5 do
  info.buildings.mode=mode;info.buildings.scrolling_position[mode]=0;settle()

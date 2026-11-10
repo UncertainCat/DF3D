@@ -9975,5 +9975,192 @@
       "Pixel comparison of the hover overlay",
       "Other sizes and target disappearance while hovered"
     ]
+  },
+  "layout_reference": {
+    "native_source": "build/stockpile-storage-native-input-20261110-155458",
+    "viewer_source": "build/stockpile-storage-native-input-20261110-155657",
+    "comparisons": [
+      {
+        "size": [
+          912,
+          552
+        ],
+        "tab": 0,
+        "region": [
+          40,
+          60,
+          680,
+          504
+        ],
+        "different_pixels": 203
+      },
+      {
+        "size": [
+          912,
+          552
+        ],
+        "tab": 1,
+        "region": [
+          40,
+          60,
+          680,
+          504
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": [
+          912,
+          552
+        ],
+        "tab": 2,
+        "region": [
+          40,
+          60,
+          680,
+          504
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": [
+          912,
+          552
+        ],
+        "tab": 3,
+        "region": [
+          40,
+          60,
+          680,
+          504
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": [
+          912,
+          552
+        ],
+        "tab": 4,
+        "region": [
+          40,
+          60,
+          680,
+          504
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": [
+          912,
+          552
+        ],
+        "tab": 5,
+        "region": [
+          40,
+          60,
+          680,
+          504
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": [
+          1600,
+          900
+        ],
+        "tab": 0,
+        "region": [
+          40,
+          60,
+          1368,
+          852
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": [
+          1600,
+          900
+        ],
+        "tab": 1,
+        "region": [
+          40,
+          60,
+          1368,
+          852
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": [
+          1600,
+          900
+        ],
+        "tab": 2,
+        "region": [
+          40,
+          60,
+          1368,
+          852
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": [
+          1600,
+          900
+        ],
+        "tab": 3,
+        "region": [
+          40,
+          60,
+          1368,
+          852
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": [
+          1600,
+          900
+        ],
+        "tab": 4,
+        "region": [
+          40,
+          60,
+          1368,
+          852
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": [
+          1600,
+          900
+        ],
+        "tab": 5,
+        "region": [
+          40,
+          60,
+          1368,
+          852
+        ],
+        "different_pixels": 0
+      }
+    ],
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "result": "passed_with_known_issues",
+    "known_diagnostics": [
+      "render-thread finalize",
+      "ObjectDB shutdown leak warning"
+    ],
+    "remaining_difference": "203 pixels in narrow Zones: attached-location subtitles need semantic kind to apply native truncation without clipping owner captions.",
+    "omissions": [
+      "Resized pointer activation and hover boundaries",
+      "Other viewport sizes and long custom names",
+      "Empty tabs and mixed siege aggregate"
+    ]
   }
 }

@@ -66237,81 +66237,101 @@
         }
       },
       "written_owned_probe_reference": {
-        "source": "build/stockpile-storage-native-farm-discovery-20261101-043716",
-        "df_pid": 40852,
-        "bridge_sha256": "2613e670637543b09327211ba598697ace20a87ec84b97be0cc502d8cdbd1df5",
+        "source": "build/stockpile-storage-native-farm-discovery-20261110-074900",
+        "df_pid": 21152,
+        "bridge_sha256": "98c119846dce276df22de3fc23ec6afe838c3726d1838396b905435efb623b71",
         "status": "passed_with_known_issues",
         "source_preservation": "Owned source unchanged; owned DF exited unsaved",
-        "diagnostics": "skills-diagnostics.json: three Godot processes, known startup notices only",
-        "scope": "Exact full native descriptions for all eleven cases across ten content types. Guards cover content and copied-reference sources, selected event/entity/site/occasion records, UI/random state. Embedded art-form roots are guarded here; deep art graphs have separate adapter evidence, not complete transitive coverage in this run. Diagnostic only, no production transport or rendered parity. Other reference/event types and controlled title/author cases remain.",
+        "diagnostics": "Two Godot processes: known separate-renderer startup notices only; no unclassified diagnostics.",
+        "scope": "Exact full native descriptions for eleven written works after guarding all 71 native reference-class dispatches and their 21 already-pinned formatter bodies. Checks both original and copied reference tables; historical-event validation uses table identity without an unguarded getType call. Source guards cover content/reference records, selected event/entity/site/occasion records, UI/random state. Embedded art roots are guarded, not all transitive backing storage. Carrier wire and actual main-scene checks pass. Diagnostic formatter only: books/sheets and general event-graph production admission remain unfinished.",
         "cases": [
           {
-            "id": 302,
-            "type": "Manual",
-            "characters": 190,
+            "id": 617,
+            "type": "Poem",
+            "characters": 1155,
+            "text_sha256": "99876566f2e9bd1d8aee9d674b5d73ba4576196797fd9ce61588cafd013113dc",
             "guards_unchanged": true
           },
           {
             "id": 0,
             "type": "Poem",
             "characters": 871,
+            "text_sha256": "584ce1d13621dadb10577e44404fd648bf75ba4f168d3dd921995766dbd05af6",
             "guards_unchanged": true
           },
           {
             "id": 7,
             "type": "Essay",
             "characters": 257,
+            "text_sha256": "50b9a7b7ea92accce789d3f42a681a9b87da50418616c610bdd2edc80674e811",
             "guards_unchanged": true
           },
           {
             "id": 9,
             "type": "MusicalComposition",
             "characters": 2594,
+            "text_sha256": "54c0cce28226939a0ff530589d4ff56cf8dabbb7a4dfa031f9ee0e84675255d3",
             "guards_unchanged": true
           },
           {
             "id": 10,
             "type": "Choreography",
             "characters": 2011,
+            "text_sha256": "99b59062a1483a384af1b4d2bcfe635a19de067573c756540f0f1120e7d2d5fc",
             "guards_unchanged": true
           },
           {
             "id": 17,
             "type": "Guide",
             "characters": 173,
+            "text_sha256": "96b40c5d4f95ed3e7693bfdc56b6d1e69feab895977154d1a16d1f2f4cb48127",
             "guards_unchanged": true
           },
           {
             "id": 41,
             "type": "ShortStory",
             "characters": 220,
+            "text_sha256": "278fdd915549b5497f9868f2a14b5014ca1ad6f1b44471893200188b81b7a1bd",
             "guards_unchanged": true
           },
           {
             "id": 247,
             "type": "Manual",
             "characters": 180,
+            "text_sha256": "0d220504051be299a047722540861b3f6204e794801e696038eeabf8607252ae",
             "guards_unchanged": true
           },
           {
             "id": 253,
             "type": "Novel",
             "characters": 220,
+            "text_sha256": "757e25049b7f221998fa6c216a61f6891eb70c5cedb44e5897072017d2ece39e",
             "guards_unchanged": true
           },
           {
             "id": 361,
             "type": "CulturalHistory",
             "characters": 696,
+            "text_sha256": "e868cb7730fa47352f1e31e4a08f25525329f700e4560910be6f679a607be025",
             "guards_unchanged": true
           },
           {
             "id": 416,
             "type": "Chronicle",
             "characters": 848,
+            "text_sha256": "b7a64b1692db7e397bf2f60c8c7c7f0ce36e6849d67c9faaa9475395c8fbae03",
             "guards_unchanged": true
           }
-        ]
+        ],
+        "dispatch_classes": 71,
+        "dispatch_bodies": 21,
+        "verification": {
+          "core_tests": 19,
+          "msvc": "build/notes/pm/written-reference-dispatch-msvc.log",
+          "graphics_fps_cap": 30,
+          "maximum_sampled_gpu_celsius": 61,
+          "prior_attempt": "074659 matched all eleven written descriptions, but failed the companion scene because its invocation omitted DF3D_UNIT_SKILLS_PROBE. Corrected invocation 074900 passes; prior run is not full-lane acceptance."
+        }
       },
       "written_cases_reference": {
         "source": "build/stockpile-storage-native-farm-discovery-20261101-044000",

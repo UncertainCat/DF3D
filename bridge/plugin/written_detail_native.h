@@ -75,6 +75,92 @@ inline bool writtenDescriptionReady() {
     for(const auto& pin:pins){uint64_t h=UINT64_C(14695981039346656037);for(size_t i=0;i<pin.length;++i){h^=base[pin.rva+i];h*=UINT64_C(1099511628211);}if(h!=pin.hash)return false;}
     return true;
 }
+// Bind each reference class to the audited getDescription implementation before
+// either cloning it or allowing cc5d50 to dispatch through slot18. Function
+// bodies are pinned by writtenDescriptionReady; a matching body alone does not
+// establish that an arbitrary reference class has the expected input layout.
+inline bool writtenReferenceDispatch(const df::general_ref* reference) {
+    if(!reference)return false;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    const auto* table=*reinterpret_cast<const void* const*>(reference);
+    struct Dispatch {size_t table,description;};
+    constexpr Dispatch dispatch[]={
+        {0x16eb320,0xeed3b0}, // abstract_buildingst
+        {0x15ea388,0x72280}, // activity_eventst
+        {0x16ea5d8,0xeec6b0}, // artifactst
+        {0x1744ad0,0x72280}, // building_cagedst
+        {0x17434d0,0x72280}, // building_chainst
+        {0x17448c0,0x72280}, // building_civzone_assignedst
+        {0x1743b00,0x72280}, // building_destinationst
+        {0x1744550,0x72280}, // building_display_furniturest
+        {0x1743630,0x72280}, // building_holderst
+        {0x17444a0,0x72280}, // building_nest_boxst
+        {0x17432c0,0x72280}, // building_triggerst
+        {0x1744290,0x72280}, // building_triggertargetst
+        {0x1744340,0x72280}, // building_use_target_1st
+        {0x1743790,0x72280}, // building_use_target_2st
+        {0x16cb550,0x72280}, // building_well_tagst
+        {0x16cb4a0,0x72280}, // buildingst
+        {0x165e328,0x72280}, // coinbatchst
+        {0x1743370,0x72280}, // contained_in_itemst
+        {0x1743a50,0x72280}, // contains_itemst
+        {0x17438f0,0x72280}, // contains_unitst
+        {0x1744600,0xef4c10}, // creaturest
+        {0x16e7eb8,0xedffe0}, // dance_formst
+        {0x16159d0,0x72280}, // entity_art_imagest
+        {0x1744760,0xef5280}, // entity_itemownerst
+        {0x17443f0,0xef5280}, // entity_offeredst
+        {0x1744970,0xef49a0}, // entity_popst
+        {0x1743e70,0xef5280}, // entity_stolenst
+        {0x16e75b8,0xef5280}, // entityst
+        {0x16e9818,0xef4350}, // feature_layerst
+        {0x16e82b8,0xeedd40}, // historical_eventst
+        {0x16eb490,0xef0690}, // historical_figurest
+        {0x16e8898,0xee3560}, // interactionst
+        {0x1744810,0xeec6b0}, // is_artifactst
+        {0x1744ef0,0x72280}, // is_nemesisst
+        {0x16f8ca8,0xef4e10}, // item_typest
+        {0x17446b0,0x72280}, // itemst
+        {0x15eaf88,0xee0ca0}, // knowledge_scholar_flagst
+        {0x16e9698,0xee02b0}, // languagest
+        {0x1744b80,0x72280}, // locationst
+        {0x16cc0f8,0x72280}, // mapsquarest
+        {0x16e9e58,0xedfe50}, // musical_formst
+        {0x1743210,0x72280}, // nemesisst
+        {0x16e87e8,0xedfd50}, // poetic_formst
+        {0x1744c30,0x72280}, // projectilest
+        {0x16e7508,0xef1770}, // sitest
+        {0x1743580,0xef14a0}, // spherest
+        {0x16eb0a0,0xef2d60}, // subregionst
+        {0x17436e0,0x72280}, // unit_beateest
+        {0x1744d90,0x72280}, // unit_cageest
+        {0x17451b0,0x72280}, // unit_climberst
+        {0x17439a0,0x72280}, // unit_foodreceiverst
+        {0x1743420,0x72280}, // unit_geldeest
+        {0x17441e0,0x72280}, // unit_holderst
+        {0x1744130,0x72280}, // unit_infantst
+        {0x1743dc0,0x72280}, // unit_interrogateest
+        {0x1743840,0x72280}, // unit_itemownerst
+        {0x1743c60,0x72280}, // unit_kidnapeest
+        {0x1744e40,0x72280}, // unit_milkeest
+        {0x1745050,0x72280}, // unit_patientst
+        {0x1743fd0,0x72280}, // unit_reporteest
+        {0x1743bb0,0x72280}, // unit_riderst
+        {0x1745100,0x72280}, // unit_sheareest
+        {0x1744fa0,0x72280}, // unit_slaughtereest
+        {0x1743d10,0x72280}, // unit_suckeest
+        {0x1744ce0,0x72280}, // unit_tradebringerst
+        {0x1743f20,0x72280}, // unit_traineest
+        {0x1744080,0x72280}, // unit_workerst
+        {0x1744a20,0x72280}, // unitst
+        {0x15e9c00,0xee0380}, // value_levelst
+        {0x16eaff0,0xee0170}, // written_contentst
+        {0x15ea818,0x72280}, // general_refst
+    };
+    for(const auto& entry:dispatch)if(table==base+entry.table)
+        return *reinterpret_cast<const void* const*>(base+entry.table+0x90)==base+entry.description;
+    return false;
+}
 class WrittenDescriptionContext {
     struct OwnedContent final:df::written_content {OwnedContent():df::written_content(){}} content;
     struct DeleteReference {
@@ -89,15 +175,17 @@ public:
         static_cast<df::written_content&>(content)=source;
         content.refs.clear();refs.clear();
         for(auto* original:source.refs){
-            if(!original)return false;
-            if(original->getType()==df::general_ref_type::HISTORICAL_EVENT &&
+            if(!writtenReferenceDispatch(original))return false;
+            // Table identity avoids an additional unguarded getType virtual.
+            const auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+            if(*reinterpret_cast<const void* const*>(original)==base+0x16e82b8 &&
                !knowledgeEventInputsValid(static_cast<df::general_ref_historical_eventst*>(original)->event_id))return false;
             const auto* identity=DFHack::virtual_identity::get(original);
             if(!identity || !identity->can_instantiate())return false;
             auto* copy=static_cast<df::general_ref*>(identity->instantiate());
             if(!copy)return false;
             std::unique_ptr<df::general_ref,DeleteReference> owned(copy,DeleteReference{identity});
-            if(!identity->copy(copy,original))return false;
+            if(!identity->copy(copy,original) || !writtenReferenceDispatch(copy))return false;
             content.refs.push_back(copy);refs.push_back(std::move(owned));
         }
         return true;

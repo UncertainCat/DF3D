@@ -8341,15 +8341,26 @@ author sequence uses pinned native literals and c0f660/a94030 name formatting.
 Poetry, music and dance append through their existing owned adapters. Runtime
 native sheet state is never an input.
 
-Protected043716 matches all eleven native descriptions exactly (173–2,594
-characters), including the embedded art forms, scholarly topics, site, histories,
-ceremony and plundering references. Content/reference, selected historical and
-occasion records, UI and random guards remain unchanged. Art-form roots are guarded
-in this comparison; deep graphs have separate adapter evidence and this run does
-not establish every transitive backing store. DF40852 exits unsaved with source
-preservation and only known Godot startup notices. `written_owned_probe_reference`
-retains the bridge hash and bounded results. Controlled title/author variants,
-other references/events, production transport and rendered Skills remain unfinished.
+The written adapter binds all71 supported native general-reference classes to
+their21 pinned slot18 description bodies before cloning or formatting. Both
+original and copied references must retain an audited class/target pair.
+Historical-event validation uses the guarded table identity, avoiding another
+unguarded virtual call. This dispatch check does not establish transitive event
+ownership or production admission.
+
+Protected074900 on2026-11-10 matches all eleven native written descriptions
+exactly, including art forms, scholarly topics, site, histories, ceremony and
+plundering references. Content/reference, selected historical/occasion records,
+UI and random guards remain unchanged. Art roots are guarded here; this does
+not establish every transitive backing store. Carrier wire and actual main-scene
+checks also pass. DF21152 exits unsaved with source preservation; both Godot
+processes have only known startup notices. Native/viewer graphics are capped
+at30FPS; maximum sampled GPU temperature is61C, not a measured peak.
+`written_owned_probe_reference` retains the bridge hash, text hashes and scope.
+Core19 and MSVC pass. Prior074659 completed the written comparisons but failed
+its companion scene because the invocation omitted DF3D_UNIT_SKILLS_PROBE;
+it is not full-lane acceptance. Other reference/event inputs, production
+transport and rendered written-detail parity remain unfinished.
 
 Protected044000 adds thirty controlled written-work comparisons on content302:
 empty title, absent author, unresolved author, selected creature as author, and

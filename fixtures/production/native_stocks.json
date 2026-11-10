@@ -8937,5 +8937,71 @@
     "limits": [
       "Siege ammunition65 and trap components68 absent; no live acceptance. One toy subtype only. Public Stocks remains gated."
     ]
+  },
+  "art_item_description_reference": {
+    "source": "build/stockpile-storage-native-input-20261110-080159",
+    "status": "passed_with_known_issues",
+    "bridge_sha256": "a74d605d1b96eb57d79fd7ee52a7a6788188089348e49363b7ea508cb3f9b888",
+    "families_enabled": [
+      22,
+      36
+    ],
+    "cases": [
+      {
+        "description": "This is a masterful bronze statue of Kasmko Stakeclutch created by an unknown artisan.  The item is a masterfully designed image of Kasmko Stakeclutch the human in bronze.  ",
+        "id": 45125,
+        "kind": 22,
+        "snapshot": {
+          "appearance": {
+            "color_token": "BRONZE",
+            "flags": 0,
+            "material_token": "INORGANIC:BRONZE",
+            "stack": 1,
+            "subtype_raw": ""
+          },
+          "can_dump": true,
+          "can_melt": true,
+          "caption": "\u263cbronze statue of Kasmko Stakeclutch\u263c",
+          "description": "This is a masterful bronze statue of Kasmko Stakeclutch created by an unknown artisan.  The item is a masterfully designed image of Kasmko Stakeclutch the human in bronze.  ",
+          "dump": false,
+          "flags": 536870913,
+          "forbid": false,
+          "hidden": false,
+          "id": 45125,
+          "item_type": 22,
+          "material_token": "INORGANIC:BRONZE",
+          "melt": false,
+          "revision": "8179773581261427823",
+          "stockpile_categories": -1,
+          "weight": "495\u0393"
+        },
+        "uses": []
+      }
+    ],
+    "missing_furniture": [
+      36
+    ],
+    "panel": {
+      "item_type": 22,
+      "rectangle": [
+        416,
+        52,
+        488,
+        708
+      ],
+      "different_pixels": 0,
+      "native_sha256": "2482336a715f53371b4a55a73490ccb40d7ef69349077cd4b03dde67b9190e0f",
+      "viewer_sha256": "e3f7dca099524e77d89b52dbe82aa4e932438b0575ae745df494bb2dbd84e948"
+    },
+    "verification": [
+      "Native/viewer View and close, exact native/owned/wire description and Uses for masterful bronze statue45125; full panel pixel equality.",
+      "Core19, extension, item-state and MSVC pass in item-art-dispatch.",
+      "Source unchanged; DF40496 closed unsaved, DF/viewer30FPS, maximum sampled GPU59C(not peak), only known thread/finalize/shutdown diagnostics."
+    ],
+    "shared_native_evidence": "native_farm.json chest_header_reference.unit_skills_reference.artifact_initialization_reference:16 temporary statue/figurine cold/warm cases on the same DF53.16 cc84d0 helper, including existing/missing creation-zone records. This older artifact-caption evidence does not establish complete new item-panel cold workflows.",
+    "limits": [
+      "Figurine36 absent; no live item-panel acceptance. Cold full item-panel and recursive containing-item/building creation-zone effects remain unverified.",
+      "Public Stocks remains gated."
+    ]
   }
 }

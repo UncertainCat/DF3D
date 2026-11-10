@@ -361,10 +361,32 @@ referenced items/buildings, clearing their from_worldgen flags. DFHack's XML
 identifies these flags as DO_NOT_RETAIN_IN_CREATION_ZONE. This routine does
 not read native menu or renderer storage. Its recursive relationship lifetimes
 and native mutation effects still need acceptance; it is not a read-only
-formatter. STATUE/FIGURINE remain disabled pending the rest of artwork creation
-and reference validation, not because this path requires a graphics-cache
-exception. Do not suppress its persistent effects or infer full type support
+formatter. Do not suppress its persistent effects or infer full type support
 from getType-only differences.
+
+STATUE22 and FIGURINE36 now use the guarded constructed-item description
+provider. In addition to their type/image-reference getters, slots210/218/220/238
+are pinned: image description, native artwork outputs and creator civ/site.
+The complete cc84d0 body and shared144dcd0 generator are pinned. The latter is
+already reached through supported improvement helpercabb50; statues supply
+true at stack argument7 and image category4 instead of false/category16.
+Its two bounded dispatch tables contain69/14 entries and a74-byte remap;
+3782 reached instructions exclude table data. Direct globals are world records,
+raws and time. Naming reuses931860/a92860;149690 derives native artwork fields
+from semantic image contents. No native menu storage supplies these inputs.
+
+Protected080159 on2026-11-10 verifies masterful bronze statue45125: exact
+native/owned/wire description and Uses, native/viewer View/close, and zero
+differing pixels in the full panel. Figurine36 is absent. Core19, extension,
+item-state and MSVC pass. Source remains unchanged and DF40496 exits unsaved
+at30FPS, with only documented Godot diagnostics. Maximum sampled GPU is59C,
+not a measured peak. `native_stocks.json.art_item_description_reference`
+retains evidence and gaps. The existing artifact-initialization fixture
+Protected063142 on2026-11-01 covers16 cold/warm statue/figurine cases through
+the same cc84d0 helper, including existing/missing creation-zone records;
+this is shared native-effect evidence, not full cold item-panel acceptance.
+Recursive holder effects and cold full-panel workflows remain unverified.
+Public Stocks remains gated.
 
 Toys14, siege ammunition65 and trap components68 use the guarded constructed
 item-description path, with native subtype getters and pointer identity checked

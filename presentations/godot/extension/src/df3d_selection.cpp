@@ -68,12 +68,12 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
     }
     std::optional<wm::ContainerContentsFacts> contents;
     if(appearance.has("contents")) {
-        if(itemType!=32 || appearance["contents"].get_type()!=Variant::DICTIONARY)return {};
+        if((itemType!=31 && itemType!=32) || appearance["contents"].get_type()!=Variant::DICTIONARY)return {};
         const Dictionary value=appearance["contents"];
         if(value.size()!=2 || !value.has("container") || value["container"].get_type()!=Variant::BOOL ||
            !value.has("entries") || value["entries"].get_type()!=Variant::ARRAY)return {};
         const Array entries=value["entries"];auto& facts=contents.emplace();facts.container=bool(value["container"]);
-        if(entries.size()>4096 || (!facts.container && !entries.is_empty()))return {};
+        if(entries.size()>(itemType==31?1:4096) || (itemType==32 && !facts.container && !entries.is_empty()))return {};
         for(int64_t i=0;i<entries.size();++i) {
             if(entries[i].get_type()!=Variant::DICTIONARY)return {};
             const Dictionary row=entries[i];if(row.size()!=10)return {};
@@ -257,7 +257,7 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
         }
         const bool doorLock=query.door && !query.door->open && query.door->forbidden && assets_->index.tile("ITEM_DOOR_FORBIDDEN");
         // BUCKET cf84c9..cf8633 replaces nonzero-alpha liquid pixels, like BIN.
-        const bool replaceContents=query.kind==wm::ItemKind::Bin || (query.kind==wm::ItemKind::Bucket && query.bucketLiquid>=0);
+        const bool replaceContents=query.kind==wm::ItemKind::Bin || query.kind==wm::ItemKind::Bag || (query.kind==wm::ItemKind::Bucket && query.bucketLiquid>=0);
         const int composite=compositeBuildingTile(layers,false,true,false,replaceContents,doorLock);
         const auto* resource=composite>=0?spriteResources_.slots.find(composite):nullptr;
         if(resource)return resource->texture;

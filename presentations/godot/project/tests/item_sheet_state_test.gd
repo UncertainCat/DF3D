@@ -28,6 +28,17 @@ func completed(wrong_flag:=false) -> void:
 
 func run() -> void:
 	setup();model.item_id=1000
+	var bag_look={"material_token":"PLANT:COTTON:THREAD","subtype_raw":"","color_token":"WHITE","stack":1,"flags":0,
+		"contents":{"container":false,"entries":[]}}
+	check(model._valid_appearance(bag_look,31),"Empty bag appearance rejected")
+	var selected={"item_type":53,"effective_armor_level":0,"material_token":"","color_token":"BROWN",
+		"metal":false,"coal":false,"contains_powder":false,"rolls_sheets":false,"protects_folded_sheets":false,"contains_writing":false}
+	bag_look.contents.entries=[selected]
+	check(model._valid_appearance(bag_look,31),"Bag incorrectly requires container flag")
+	check(not model._valid_appearance(bag_look,32),"Bin lost container flag validation")
+	check(not model._valid_appearance(bag_look,17),"Barrel accepts unsupported contents contract")
+	bag_look.contents.entries.append(selected.duplicate())
+	check(not model._valid_appearance(bag_look,31),"Bag accepted multiple selected references")
 	var uses_item:=item();uses_item.uses=[]
 	check(model._valid(uses_item),"Known empty Uses rejected")
 	uses_item.uses=[{"caption":"Native reaction","reaction":84}]

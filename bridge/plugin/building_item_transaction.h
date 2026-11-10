@@ -27,7 +27,7 @@ inline bool validInspectionInstrument(const ItemInspectionAppearance& a,int32_t 
     else if(type!=16 || a.cageOccupantEntity<0 || (a.cageOccupantEntity==0 ? a.cageOccupantId!=-1 : a.cageOccupantId<0))return false;
     if(a.floodgateOpen < -1 || a.floodgateOpen>1 || (type!=7 && a.floodgateOpen!=-1))return false;
     if(a.contents) {
-        if(type!=32 || a.contents->entries.size()>4096 || (!a.contents->container && !a.contents->entries.empty()))return false;
+        if((type!=31 && type!=32) || a.contents->entries.size()>(type==31?1u:4096u) || (type==32 && !a.contents->container && !a.contents->entries.empty()))return false;
         for(const auto& e:a.contents->entries)if(e.itemType < -1 || e.itemType>92 || e.materialToken.size()>256 || e.colorToken.size()>128)return false;
     }
     return type==13 ? a.instrumentFamily>=0&&a.instrumentFamily<=3&&a.instrumentPlaced>=0&&a.instrumentPlaced<=1 : a.instrumentFamily==-1&&a.instrumentPlaced==-1;

@@ -220,7 +220,7 @@ static func _valid_appearance(look: Variant,item_type: int) -> bool:
 		if typeof(door.get("open"))!=TYPE_BOOL or typeof(door.get("forbidden"))!=TYPE_BOOL or typeof(door.get("wear"))!=TYPE_INT:return false
 		if door.wear<0 or door.wear>3:return false
 	if look.has("floodgate_open") and (item_type!=7 or typeof(look.floodgate_open)!=TYPE_BOOL):return false
-	if look.has("contents") and (item_type!=32 or not _valid_contents(look.contents)):return false
+	if look.has("contents") and (item_type not in [31,32] or not _valid_contents(look.contents,item_type)):return false
 	if item_type==13:
 		var instrument=look.get("instrument")
 		if typeof(instrument)!=TYPE_DICTIONARY or instrument.size()!=2:return false
@@ -235,9 +235,9 @@ static func _valid_appearance(look: Variant,item_type: int) -> bool:
 		if typeof(look.get(key))!=TYPE_INT:return false
 	return look.stack>=1 and look.stack<=2147483647 and look.flags>=0 and (look.flags&~96)==0
 
-static func _valid_contents(contents: Variant) -> bool:
+static func _valid_contents(contents: Variant,item_type: int) -> bool:
 	if typeof(contents)!=TYPE_DICTIONARY or contents.size()!=2 or typeof(contents.get("container"))!=TYPE_BOOL or typeof(contents.get("entries"))!=TYPE_ARRAY:return false
-	if contents.entries.size()>4096 or (not contents.container and not contents.entries.is_empty()):return false
+	if contents.entries.size()>(1 if item_type==31 else 4096) or (item_type==32 and not contents.container and not contents.entries.is_empty()):return false
 	for row in contents.entries:
 		if typeof(row)!=TYPE_DICTIONARY or row.size()!=10:return false
 		if typeof(row.get("item_type"))!=TYPE_INT or row.item_type< -1 or row.item_type>92:return false

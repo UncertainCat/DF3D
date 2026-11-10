@@ -1243,6 +1243,23 @@ TEST_CASE("bag contents artwork follows native powder seeds and plant categories
   }
 }
 
+TEST_CASE("known bag facts override legacy occupancy without requiring container flag") {
+  AssetIndex idx;
+  idx.tileGraphics["ITEM_BAG_EMPTY"]={{0,0,0,1,1}};
+  idx.tileGraphics["ITEM_BAG_IN_USE"]={{0,1,0,1,1}};
+  idx.tileGraphics["SEEDS_FOR_BAG"]={{0,2,0,1,1}};
+  wm::ContainerContentsFacts facts;ItemQuery q;q.kind=wm::ItemKind::Bag;q.contents=&facts;
+  q.containedCount=1;q.containedKind=wm::ItemKind::Plant;
+  CHECK(resolveItem(idx,q).sprite.x==0);
+  facts.entries.emplace_back();facts.entries.back().kind=wm::ItemKind::Seeds;
+  for(bool container:{false,true}) {
+    facts.container=container;const auto r=resolveItem(idx,q);
+    CHECK(r.sprite.x==1);REQUIRE(r.overlays.size()==1);CHECK(r.overlays[0].sprite.x==2);
+  }
+  facts.entries.back().kind=wm::ItemKind::Unknown;
+  const auto unresolved=resolveItem(idx,q);CHECK(unresolved.sprite.x==0);CHECK(unresolved.overlays.empty());
+}
+
 TEST_CASE("owned door artwork suppresses closed overlays while open and follows wear") {
   AssetIndex idx;idx.inorganics["GRANITE"].flags=kMatStone;
   idx.tileGraphics["ITEM_DOOR_STONE"]={{0,0,0,1,1}};

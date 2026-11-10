@@ -8032,6 +8032,125 @@
       },
       "runtime_constraint": "c7c500 is not a safe semantic provider: later branches read native graphics vectors and can write the shared random seed. Do not call it or publish its packed graphics key."
     },
-    "implementation_status": "Shared bag resolver corrects category/base selection. Item-sheet bag/barrel semantic data and native-color supply remain unfinished; no new live/pixel acceptance."
+    "implementation_status": "Bag category/base selection and Management169 selected contents/color facts implemented. Protected060343 verifies the rice bag header with zero pixel differences; barrel carrier retains102 differences. Other bag contents variants remain unaccepted live."
+  },
+  "bag_contents_appearance_reference": {
+    "management_version": 169,
+    "capture": "build/stockpile-storage-native-input-20261110-060343",
+    "status": "passed_with_known_issues",
+    "source_preserved": true,
+    "owned_df_pid": 23860,
+    "owned_df_closed_unsaved": true,
+    "fps_cap": 30,
+    "maximum_sampled_gpu_celsius": 58,
+    "sample_is_not_peak": true,
+    "scope": "Actual Stocks View and item-sheet close for seven equipment families; exact native description and Uses comparisons. Bag header artwork matches; barrel carrier icon remains incomplete.",
+    "panel_crop": [
+      416,
+      52,
+      904,
+      760
+    ],
+    "panels": [
+      {
+        "type": 24,
+        "different_rgb_pixels": 0,
+        "difference_bounds": null
+      },
+      {
+        "type": 27,
+        "different_rgb_pixels": 0,
+        "difference_bounds": null
+      },
+      {
+        "type": 31,
+        "different_rgb_pixels": 102,
+        "difference_bounds": [
+          18,
+          218,
+          35,
+          228
+        ]
+      },
+      {
+        "type": 61,
+        "different_rgb_pixels": 0,
+        "difference_bounds": null
+      },
+      {
+        "type": 62,
+        "different_rgb_pixels": 0,
+        "difference_bounds": null
+      },
+      {
+        "type": 82,
+        "different_rgb_pixels": 0,
+        "difference_bounds": null
+      },
+      {
+        "type": 83,
+        "different_rgb_pixels": 0,
+        "difference_bounds": null
+      }
+    ],
+    "bag_appearance": {
+      "color_token": "WHITE",
+      "contents": {
+        "container": true,
+        "entries": [
+          {
+            "coal": false,
+            "color_token": "BROWN",
+            "contains_powder": false,
+            "contains_writing": false,
+            "effective_armor_level": 0,
+            "item_type": 53,
+            "material_token": "",
+            "metal": false,
+            "protects_folded_sheets": false,
+            "rolls_sheets": false
+          }
+        ]
+      },
+      "flags": 0,
+      "material_token": "CREATURE:SPIDER_CAVE_GIANT:SILK",
+      "stack": 1,
+      "subtype_raw": ""
+    },
+    "offline": [
+      "build/qa/item-bag169: core19, extension build and item_sheet_state_test passed",
+      "build/notes/pm/item-bag169-msvc.log: plugin build passed"
+    ],
+    "known_diagnostics": [
+      "godot-separate-thread-notice",
+      "godot-device-finalize",
+      "godot-shutdown-objects"
+    ],
+    "omissions": [
+      "No new live acceptance for powder profiles, plant contents, empty or unresolved selected references, or container flag false.",
+      "Barrel appearance provider remains unfinished. Public Stocks remains gated."
+    ],
+    "prior_attempts": [
+      {
+        "capture": "build/stockpile-storage-native-input-20261110-055341",
+        "status": "failed before loading: installed DF53.17 was incompatible; maintainer restored exact pinned53.16; source preserved and owned process closed"
+      },
+      {
+        "capture": "build/stockpile-storage-native-input-20261110-055939",
+        "status": "rendered client exceeded25s; no acceptance; source preserved and owned process closed"
+      },
+      {
+        "capture": "build/stockpile-storage-native-input-20261110-060235",
+        "status": "headless live Stocks wire passed; source preserved and owned process closed"
+      }
+    ],
+    "hashes": {
+      "stocks-native.json": "b18e22c4690865be1a95364c3dc52a28ee13cc31dfba45f1282ff5cc62a8bbc3",
+      "stocks-furniture-wire-31.json": "b4a9fb8dd6250db2541210933642a3fc03ed75dda6953802ef5cfb588d9fc0a4",
+      "stocks-furniture-native-31.png": "41cc12d19bf3804bb6be05bacbd77f774290415c9f986bcd1c3eb37aa321b915",
+      "stocks-furniture-view-31.png": "8e3524db2abe6a4a8758489abc680c694cc773499d39a882c46285bfe5ab3c15",
+      "job-settings-wire-result.json": "cac1a52e9aa8934e706bfb557de0c0f375ab9323f855653fecc0ed54aa512040",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    }
   }
 }

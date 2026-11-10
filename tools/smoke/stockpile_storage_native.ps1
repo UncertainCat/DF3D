@@ -268,6 +268,9 @@ try {
      $client=Start-Process -FilePath $engine -ArgumentList $clientArgs -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/job-settings-wire.stdout.log" -RedirectStandardError "$out/job-settings-wire.stderr.log"
      $null=$client.Handle
      $wireTimeout=if($name -eq 'kitchen-wire' -and $env:DF3D_KITCHEN_MAIN -eq '1'){115000}else{25000}
+     # A rendered multi-family item batch includes graphics initialization and
+     # several sheet captures. Keep this bounded separately from wire-only work.
+     if($name -eq 'stocks-wire' -and $env:DF3D_STOCKS_RENDER -eq '1' -and $env:DF3D_STOCKS_FURNITURE_SHEETS -eq '1'){$wireTimeout=60000}
      if($name -eq 'stocks-wire' -and $env:DF3D_STOCKS_SCENE -eq '1'){$wireTimeout=115000}
      if($name -eq 'stone-use-wire' -and $env:DF3D_STONE_USE_MAIN -eq '1'){$wireTimeout=115000}
      if($name -eq 'standing-automation-wire'){$wireTimeout=115000}

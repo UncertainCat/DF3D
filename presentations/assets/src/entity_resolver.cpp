@@ -1150,9 +1150,11 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
   };
 
   const bool binFacts=q.kind==ItemKind::Bin && q.contents;
-  const bool occupied = binFacts ? q.contents->container && !q.contents->entries.empty() :
+  const bool bagFacts=q.kind==ItemKind::Bag && q.contents;
+  const bool occupied = bagFacts ? !q.contents->entries.empty() : binFacts ? q.contents->container && !q.contents->entries.empty() :
       q.containedCount != UINT32_MAX && q.containedCount > 0;
-  const auto* firstContent=binFacts && occupied?&q.contents->entries.front():nullptr;
+  const auto* firstContent=(binFacts || bagFacts) && occupied?&q.contents->entries.front():nullptr;
+  const auto bagContentKind=bagFacts?(firstContent?firstContent->kind:ItemKind::Unknown):q.containedKind;
   const std::string_view contentsColor=firstContent?firstContent->colorToken:q.containedColor;
   const std::string_view contentsMaterial=firstContent?firstContent->materialToken:q.containedMaterial;
   const bool liquid = q.containedKind == ItemKind::Drink || q.containedKind == ItemKind::LiquidMisc;
@@ -1353,14 +1355,14 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
       // Native c7e3ae..c7e405 recognizes POWDER_MISC(70), SEEDS(53)
       // and PLANT(54), not PLANT_GROWTH(56). cf938f selects IN_USE
       // only for those categories, even when other contents are present.
-      const bool shown=occupied && (q.containedKind==ItemKind::Seeds ||
-          q.containedKind==ItemKind::PowderMisc || q.containedKind==ItemKind::Plant);
+      const bool shown=occupied && (bagContentKind==ItemKind::Seeds ||
+          bagContentKind==ItemKind::PowderMisc || bagContentKind==ItemKind::Plant);
       single(shown ? "ITEM_BAG_IN_USE" : "ITEM_BAG_EMPTY","bag");
       if (!r.found) single("ITEM_BAG","bag");
       if (shown) {
-        if (q.containedKind==ItemKind::Seeds) contentsOverlay("SEEDS_FOR_BAG");
-        else if (q.containedKind==ItemKind::PowderMisc) contentsOverlay("POWDER_FOR_BAG");
-        else if (q.containedKind==ItemKind::Plant) contentsOverlay("LEAVES_FOR_BAG");
+        if (bagContentKind==ItemKind::Seeds) contentsOverlay("SEEDS_FOR_BAG");
+        else if (bagContentKind==ItemKind::PowderMisc) contentsOverlay("POWDER_FOR_BAG");
+        else if (bagContentKind==ItemKind::Plant) contentsOverlay("LEAVES_FOR_BAG");
       }
       return r;
     }

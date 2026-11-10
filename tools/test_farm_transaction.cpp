@@ -611,3 +611,19 @@ TEST_CASE("item Uses changes invalidate the full item revision") {
  const auto caption=item.revision;item.uses->front().reaction=84;item.revision=itemObservationRevision(item);CHECK(item.revision!=caption);
  item.uses->front().reaction=-2;item.revision=itemObservationRevision(item);CHECK_FALSE(validItemObservation(item));
 }
+
+TEST_CASE("bag selected contents retain flag-independent validation and revision") {
+    using namespace df3d_production;
+    ItemObservation item;item.item.id=1;item.item.itemType=31;
+    item.item.materialToken="PLANT:COTTON:THREAD";
+    item.appearance.emplace();item.appearance->materialToken=item.item.materialToken;
+    const auto unknown=itemObservationRevision(item);
+    item.appearance->contents.emplace();
+    CHECK(itemObservationRevision(item)!=unknown);
+    auto& facts=*item.appearance->contents;facts.entries.emplace_back();facts.entries.back().itemType=53;
+    CHECK(validInspectionInstrument(*item.appearance,31));
+    CHECK_FALSE(validInspectionInstrument(*item.appearance,32));
+    const auto before=itemObservationRevision(item);facts.entries.back().colorToken="BROWN";
+    CHECK(itemObservationRevision(item)!=before);
+    facts.entries.emplace_back();CHECK_FALSE(validInspectionInstrument(*item.appearance,31));
+}

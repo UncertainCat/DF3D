@@ -37,6 +37,31 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
+Management169 extends item appearance contents to bags. Rebuild bridge/viewer
+together;168 peers use a separate channel. Absence stays unknown. BIN retains
+all ordered references and its container-flag gate; BAG carries at most the last
+CONTAINS_ITEM reference, including an unresolved entry, regardless of that flag.
+Bag base color uses native solid material color; recognized contents use actual
+solid material color, with POWDER_MISC's explicit dye-profile color taking
+precedence. This uses simulation references and guarded native material resolution,
+not native graphics state. Existing codecs and revisions retain the facts;
+validators enforce the distinct per-family bounds. Core19, extension/item-state
+(`item-bag169`) and MSVC (`item-bag169-msvc`) pass. Protected060343 on2026-11-10
+verifies actual View/close and exact native descriptions/Uses for seven equipment
+families. The rice bag header now matches native pixels; its panel retains102
+pixels confined to the carrier barrel icon. The other six full panels match.
+Source preserved, DF23860 closes unsaved at30FPS;58C maximum sampled (not peak).
+Only documented Godot thread/finalize/shutdown diagnostics occurred.
+`bag_contents_appearance_reference` records facts, hashes and scope. Powder,
+plant, empty and unresolved-reference variants are not newly live accepted.
+
+The rendered multi-family lane has a60s deadline, distinct from25s wire-only
+work, and logs progress milestones. A25s rendered attempt055939 timed out;
+headless live060235 then passed before rendered060343. The earlier055341 attempt
+failed before loading because installed DF53.17 was incompatible. The maintainer
+restored53.16 and its exact executable hash was verified before subsequent runs.
+Every failed attempt preserved the source and closed owned DF; none is acceptance.
+
 Management168 adds optional ordered item Uses rows (native caption/reaction ID).
 Rebuild bridge/viewer together;167 peers use a separate channel. Legacy absence
 remains unknown; present empty means the native builder returned no rows.
@@ -119,14 +144,14 @@ rows and all remaining panel pixels match. Core19, extension/item-state
 at30FPS,60C sampled (not peak); documented Godot diagnostics only.
 `equipment_description_reference` retains dispatch pins, observations and hashes.
 Other equipment variants and per-family edits are not newly live accepted.
-Public Stocks remains gated; container-aware bag/barrel appearance is unfinished.
+Public Stocks remains gated; container-aware barrel appearance is unfinished. Bag contents are supported by169 above.
 The offline container-selector audit (`container_selector_reference`) identifies
 bag categories as SEEDS53, PLANT54 and POWDER_MISC70. The shared resolver uses
 these three categories for IN_USE artwork and preserves EMPTY artwork for
 other contents, including PLANT_GROWTH56. Native selects the last contained-item
 reference, ignores the bag container flag, and uses solid material colors rather
-than the dyed item color. The item-sheet appearance provider still needs those
-facts; this renderer correction alone does not resolve the captured791 pixels.
+than the dyed item color. Management169 supplies those
+facts; protected060343 reduces the captured791 pixels to102 in the carrier barrel.
 Barrels also select the last contained-item reference, but require the container
 flag and use isLiquid plus liquid-state color for liquid contents. Their native
 selector c7c500 additionally touches graphics vectors and shared random state;

@@ -36,7 +36,9 @@ func run() -> void:
 	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/stocks-wire-reference.json"))
 	reference.matches=reference.matches.map(func(id):return int(id))
 	for group in reference.selection.groups:group.ids=group.ids.map(func(id):return int(id))
+	print("STOCKS_STAGE creating_world")
 	world=Df3dWorld.new();root.add_child(world)
+	print("STOCKS_STAGE world_ready")
 	if not check(world.attach(),"Stocks attach failed"):quit(1);return
 	var deadline:=Time.get_ticks_msec()+5000
 	while Time.get_ticks_msec()<deadline:
@@ -44,6 +46,7 @@ func run() -> void:
 		if world.poll_management().get("transport_alive",false):break
 		await create_timer(0.01).timeout
 	await request("construction",{"action":C.ManagementAction.Catalog})
+	print("STOCKS_STAGE catalog_ready")
 	var value:=await read_stocks(-1,"iron")
 	if not check(value.get("categories",[]).size()==93,"Stocks catalog missing"):quit(1);return
 	for i in 93:
@@ -51,6 +54,7 @@ func run() -> void:
 		check(row.type==type and row.matches==reference.matches.has(type),"Stocks category order/filter differs")
 		var native: Dictionary=reference.display[type]
 		for key in ["caption","stored","unavailable"]:check(row[key]==native[key],"Stocks category caption differs")
+	print("STOCKS_STAGE categories_ready")
 	var ids: Array=reference.selection.groups[0].ids
 	value=await read_stocks(39,"",ids)
 	if not check(value.get("groups",[]).size()==reference.selection.groups.size(),"Stocks groups missing"):quit(1);return
@@ -95,6 +99,7 @@ func run() -> void:
 					for key in ["material_token","subtype_raw","stack"]:check(row.appearance[key]==native[key],"Contents appearance differs: "+key)
 			observed.append(snapshot)
 		var saved:=FileAccess.open(directory+"/stocks-contents-wire-result.json",FileAccess.WRITE);saved.store_string(JSON.stringify({"success":not failed,"snapshots":observed}));saved.close()
+	print("STOCKS_STAGE items_ready")
 	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true)
 	for frame in 5:world.poll();await process_frame
 	var state:=State.new();state.configure(service);state.open()

@@ -49,11 +49,12 @@
 #include "df/material.h"
 #include "df/material_flags.h"
 #include "df/tool_uses.h"
+#include "df/item_powder_miscst.h"
 
 namespace df3d_production {
 // Native BIN c7e08d..c7e109: material resolver, solid-state pattern, first
 // descriptor color. Some item classes leave their color virtual at -1.
-inline std::optional<int32_t> itemContentsMaterialColor(df::item* item) {
+inline std::optional<int32_t> itemContentsMaterialColor(df::item* item,bool actual=false) {
     using Resolve=df::material* (*)(df::world*,int16_t,int32_t);
     static const auto resolve=[]()->Resolve {
         if(!farmFunctions())return nullptr;
@@ -66,11 +67,44 @@ inline std::optional<int32_t> itemContentsMaterialColor(df::item* item) {
     if(!resolve || !item)return std::nullopt;
     static_assert(offsetof(df::material,state_color)==0x9c);
     static_assert(offsetof(df::descriptor_pattern,colors)==0x20);
-    auto* material=resolve(df::global::world,item->getMaterial(),item->getMaterialIndex());
+    auto* material=resolve(df::global::world,actual?item->getActualMaterial():item->getMaterial(),
+        actual?item->getActualMaterialIndex():item->getMaterialIndex());
     if(!material)return -1;
     auto* pattern=df::descriptor_pattern::find(material->state_color[0]);
     if(!pattern || pattern->colors.empty())return -1;
     return int32_t(pattern->colors.front());
+}
+// BAG c7e33a..c7e4c3 selects only the last item reference, even when it
+// resolves to null, and does not consult the container flag. This is distinct
+// from BIN's all-reference consensus and dyed contents color.
+inline std::optional<ItemContainerContentsFacts> itemBagContents(df::item* item) {
+    if(!item || !farmFunctions() || item->getType()!=df::item_type::BAG)return std::nullopt;
+    ItemContainerContentsFacts result;result.container=item->flags.bits.container;
+    for(auto it=item->general_refs.rbegin();it!=item->general_refs.rend();++it) {
+        auto* ref=*it;if(!ref)return std::nullopt;
+        if(ref->getType()!=df::general_ref_type::CONTAINS_ITEM)continue;
+        ItemContainerContentFacts entry;
+        if(auto* child=ref->getItem()) {
+            const auto type=child->getType();entry.itemType=int16_t(type);
+            if(type==df::item_type::SEEDS || type==df::item_type::PLANT || type==df::item_type::POWDER_MISC) {
+                std::optional<int32_t> color;
+                if(type==df::item_type::POWDER_MISC) {
+                    auto* powder=virtual_cast<df::item_powder_miscst>(child);if(!powder)return std::nullopt;
+                    static_assert(offsetof(df::item_powder_miscst,dye_profile)==0xc8);
+                    if(powder->dye_profile.color_index!=-1)color=powder->dye_profile.color_index;
+                }
+                if(!color)color=itemContentsMaterialColor(child,true);
+                if(!color)return std::nullopt;
+                if(*color>=0 && *color<255) {
+                    auto* descriptor=df::descriptor_color::find(*color);if(!descriptor)return std::nullopt;
+                    entry.colorToken=descriptor->id;
+                    if(entry.colorToken.size()>128)return std::nullopt;
+                }
+            }
+        }
+        result.entries.push_back(std::move(entry));break;
+    }
+    return result;
 }
 // Direct simulation references and native virtual getters, never the item
 // renderer's packed graphics keys or cache. Preserve reference order and
@@ -260,7 +294,9 @@ inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
     DFHack::MaterialInfo material(item->getMaterial(),item->getMaterialIndex());
     if(!material.isValid())return std::nullopt;appearance.materialToken=material.getToken();
     if(auto* subtype=DFHack::Items::getSubtypeDef(item->getType(),item->getSubtype()))appearance.subtypeRaw=subtype->id;
-    const auto color=item->getColorWhetherDyedOrNot();
+    const auto nativeColor=item->getType()==df::item_type::BAG?itemContentsMaterialColor(item):std::optional<int32_t>(item->getColorWhetherDyedOrNot());
+    if(!nativeColor)return std::nullopt;
+    const auto color=item->getType()==df::item_type::BAG && (*nativeColor<0 || *nativeColor>=255)?-1:*nativeColor;
     if(color>=0){auto* descriptor=df::descriptor_color::find(color);if(!descriptor)return std::nullopt;appearance.colorToken=descriptor->id;}
     else if(color!=-1)return std::nullopt;
     if(item->getType()==df::item_type::BUCKET) {
@@ -324,6 +360,7 @@ inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
         appearance.instrumentPlaced=definition->flags.is_set(df::instrument_flags::PLACED_AS_BUILDING)?1:0;
     }
     if(item->getType()==df::item_type::BIN){appearance.contents=itemContainerContents(item);if(!appearance.contents || appearance.contents->entries.size()>4096)return std::nullopt;}
+    if(item->getType()==df::item_type::BAG){appearance.contents=itemBagContents(item);if(!appearance.contents)return std::nullopt;}
     appearance.stack=item->getStackSize();appearance.flags=(item->flags.bits.artifact?32:0)|(item->flags.bits.spider_web?64:0);
     if(appearance.materialToken.empty()||appearance.materialToken.size()>256||appearance.subtypeRaw.size()>128||appearance.colorToken.size()>128||appearance.stack<1)return std::nullopt;
     return appearance;

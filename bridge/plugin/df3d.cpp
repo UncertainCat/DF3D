@@ -116,6 +116,7 @@
 #include "residents_activity_native.h"
 #include "tasks_native.h"
 #include "places_native.h"
+#include "nobles_native.h"
 #include "places_action_native.h"
 #include "tasks_action_native.h"
 #include "residents_activity_description_native.h"
@@ -2529,6 +2530,17 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               for(const auto& layer:recipe.layers){Json::Value values(Json::arrayValue);for(auto value:layer)values.append(value);art["layers"].append(values);}}
             row["position"]=Json::Value(Json::arrayValue);for(auto v:{entry.position.x,entry.position.y,entry.position.z})row["position"].append(v);
             list.append(row);}result.append(list);}
+          out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
+        }
+        if(parameters[0]=="nobles-overview-probe") {
+          if(parameters.size()!=1)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto rows=df3d_nobles::overview();if(!rows)return CR_FAILURE;
+          Json::Value result(Json::arrayValue);
+          for(const auto& entry:*rows){Json::Value row(Json::objectValue);
+            row["unit_id"]=entry.unitId;row["nemesis_id"]=entry.nemesisId;row["entity_id"]=entry.entityId;
+            row["position_id"]=entry.positionId;row["assignment_id"]=entry.assignmentId;row["value"]=entry.value;
+            row["position_name"]=DF2UTF(entry.positionName);result.append(row);}
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
         }
         if(parameters[0]=="places-lists-probe") {

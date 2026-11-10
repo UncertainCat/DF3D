@@ -1921,13 +1921,28 @@
     "overview_cleanup": "0x421dc0",
     "menu_open_wrapper_do_not_call": "0x424280",
     "input_handler_do_not_call": "0x424330",
-    "status": "Located by native menu RVA cross-references; owned-input and global dependency audit pending. Not runtime-authorized."
+    "status": "Overview421f30/cleanup421dc0 now used with private storage and preserved RNG; candidate422d10 remains under audit."
   },
   "omissions": [
-    "Owned native provider and cold/warm parity",
+    "Owned candidate provider and broader overview fixtures",
     "Appointment eligibility/effects and cancellation cleanup audit",
     "Status captions, room requirements, demands, mandates, symbols and precision controls",
     "Native hover/input/resize and complete rendered viewer",
     "Typed transport, controller, lifecycle and public exposure"
-  ]
+  ],
+  "owned_overview_reference": {
+    "source": "build/stockpile-storage-native-input-20261110-170529",
+    "rows": 14,
+    "cold_warm_native_equal": true,
+    "menu_context_bytes_preserved": true,
+    "random_streams_preserved": true,
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "Owned candidate builder",
+      "Other fortresses, absent rulers and unusual position histories",
+      "Room/status/appearance output and appointment effects",
+      "Typed transport and complete UI"
+    ]
+  }
 }

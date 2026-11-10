@@ -16,6 +16,22 @@ local function capture(name)
  local deadline=dfhack.getTickCount()+10000
  while true do local ack=io.open(out..'/ack-'..name);if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Nobles capture timeout');script.sleep(1,'frames')end
 end
+local function bytes(address,size)
+ local chars={};for offset=0,size-1 do chars[#chars+1]=string.char(df.reinterpret_cast('uint8_t',address+offset).value)end
+ return table.concat(chars)
+end
+local function probe()
+ local menu=df.global.game.main_interface.info.administrators
+ local size,address=df.sizeof(menu);local before=bytes(address,size)
+ local base=dfhack.internal.getImageBase();local rng={}
+ for _,range in ipairs{{0x234e990,0x6180},{0x2131b30,40},{0x2159084,2},{0x18adf98,8}}do rng[#rng+1]={range[1],range[2],bytes(base+range[1],range[2])}end
+ local output,rc=dfhack.run_command_silent('df3d','nobles-overview-probe')
+ assert(rc==0,'Owned Nobles overview failed: '..output)
+ assert(bytes(address,size)==before,'Owned Nobles overview changed native menu')
+ for _,r in ipairs(rng)do assert(bytes(base+r[1],r[2])==r[3],'Owned Nobles overview advanced randomness')end
+ return json.decode(output)
+end
+local cold=probe()
 gui.simulateInput(view,'D_NOBLES');settle()
 local info=df.global.game.main_interface.info
 assert(info.open and info.current_mode==df.info_interface_mode_type.ADMINISTRATORS,'Nobles shortcut failed')
@@ -24,7 +40,8 @@ local rows={}
 for _,row in ipairs(menu.noblelist)do
  rows[#rows+1]={unit_id=row.un and row.un.id or -1,nemesis_id=row.nem and row.nem.id or -1,entity_id=row.enid,position_id=row.ep and row.ep.id or -1,assignment_id=row.epp and row.epp.id or -1,value=row.value,position_name=row.ep and dfhack.df2utf(row.ep.name[0])or''}
 end
-local result={dimensions={g.dimx,g.dimy},rows=rows,lines=lines(),scroll=menu.scroll_position_noblelist,choosing_candidate=menu.choosing_candidate,assigning_symbol=menu.assigning_symbol}
+local warm=probe();assert(json.encode(cold)==json.encode(rows) and json.encode(warm)==json.encode(rows),'Owned Nobles overview differs from native order/identities')
+local result={owned={cold=cold,warm=warm,menu_preserved=true,rng_preserved=true},dimensions={g.dimx,g.dimy},rows=rows,lines=lines(),scroll=menu.scroll_position_noblelist,choosing_candidate=menu.choosing_candidate,assigning_symbol=menu.assigning_symbol}
 write('nobles-native.json',json.encode(result));capture('nobles-overview')
 local _,menu_address=df.sizeof(menu);result.menu_rva=menu_address-dfhack.internal.getImageBase()
 result.field_rvas={}

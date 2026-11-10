@@ -55,10 +55,28 @@ vector at18a6ab8 and choosing-candidate flag at18a6aac. Static cross-references
 identify overview builder421f30, cleanup421dc0 and candidate path422d10 as
 candidates for independently owned invocation. Open wrapper424280 resets UI
 state and calls global interface helpers; feed424330 reads input. Neither is a
-runtime semantic API. The actual ownership/global dependency and destruction
-audits are unfinished; these addresses are discovery evidence, not authorization
-to call routines or borrow native menu storage. No Nobles runtime provider,
-transport, controller, mutations or public route has been added.
+runtime semantic API. Candidate422d10 still requires its own ownership and
+destruction audit; no candidate provider or appointment mutation is accepted.
+
+`nobles_native.h` now calls overview421f30 with a private administrators context.
+Its RIP operands are bound to world entities, units, active units, historical
+figures, nemeses and the fortress entity before invocation. Native row priority
+sorting1421960 reads only row values. Cleanup421dc0 frees each allocated row and
+its optional unit-location summary, clears parallel vectors, and lets the owned
+C++ containers release their allocations. Both normal and early-return paths use
+that cleanup. The location helper136ccc0/136dbc0 can draw from MT while selecting
+among equivalent locations, so the existing complete RNG-restoration guard
+surrounds the call. No UI opener/feed or native menu context is used.
+
+Protected170529 on2026-11-10 invokes the diagnostic `nobles-overview-probe` before
+and after opening the native overview. All14 ordered identities/priority/raw
+position-name fields match native, including occupied/vacant/NEW rows. The native
+administrators context bytes and all preserved random streams remain unchanged.
+Source preservation passes and owned DF2456 closes unsaved;30FPS, GPU60C/15%
+sampled. `native_nobles.json.owned_overview_reference` records this scope. MSVC
+bridge builds successfully. This is not full simulation-memory immutability or
+acceptance of other fortresses, candidate eligibility, captions, graphics or
+appointments. No typed Nobles transport, controller or public route is exposed.
 
 ## Places native discovery
 

@@ -50,11 +50,13 @@
 #include "df/material_flags.h"
 #include "df/tool_uses.h"
 #include "df/item_powder_miscst.h"
+#include "df/plant_raw.h"
 
 namespace df3d_production {
 // Native BIN c7e08d..c7e109: material resolver, solid-state pattern, first
-// descriptor color. Some item classes leave their color virtual at -1.
-inline std::optional<int32_t> itemContentsMaterialColor(df::item* item,bool actual=false) {
+// descriptor color. BARREL additionally uses actual material and liquid state.
+// Some item classes leave their color virtual at -1.
+inline std::optional<int32_t> itemContentsMaterialColor(df::item* item,bool actual=false,int state=0) {
     using Resolve=df::material* (*)(df::world*,int16_t,int32_t);
     static const auto resolve=[]()->Resolve {
         if(!farmFunctions())return nullptr;
@@ -70,7 +72,7 @@ inline std::optional<int32_t> itemContentsMaterialColor(df::item* item,bool actu
     auto* material=resolve(df::global::world,actual?item->getActualMaterial():item->getMaterial(),
         actual?item->getActualMaterialIndex():item->getMaterialIndex());
     if(!material)return -1;
-    auto* pattern=df::descriptor_pattern::find(material->state_color[0]);
+    auto* pattern=df::descriptor_pattern::find(material->state_color[state]);
     if(!pattern || pattern->colors.empty())return -1;
     return int32_t(pattern->colors.front());
 }
@@ -100,6 +102,41 @@ inline std::optional<ItemContainerContentsFacts> itemBagContents(df::item* item)
                     entry.colorToken=descriptor->id;
                     if(entry.colorToken.size()>128)return std::nullopt;
                 }
+            }
+        }
+        result.entries.push_back(std::move(entry));break;
+    }
+    return result;
+}
+// BARREL c7c500..c7c900: owned simulation facts only. Do not call the
+// packed selector: its later branches read graphics vectors and mutate RNG.
+inline std::optional<ItemContainerContentsFacts> itemBarrelContents(df::item* item) {
+    if(!item || !farmFunctions() || item->getType()!=df::item_type::BARREL)return std::nullopt;
+    ItemContainerContentsFacts result;result.container=item->flags.bits.container;
+    result.materialInorganic=item->getActualMaterial()==0?1:0;
+    const auto assignColor=[](const std::optional<int32_t>& color,std::string& token) {
+        if(!color)return false;
+        if(*color>=0 && *color<255) {
+            auto* descriptor=df::descriptor_color::find(*color);if(!descriptor)return false;
+            token=descriptor->id;if(token.size()>128)return false;
+        }
+        return true;
+    };
+    if(!assignColor(itemContentsMaterialColor(item,true),result.solidColor))return std::nullopt;
+    if(!result.container)return result;
+    for(auto it=item->general_refs.rbegin();it!=item->general_refs.rend();++it) {
+        auto* ref=*it;if(!ref)return std::nullopt;
+        if(ref->getType()!=df::general_ref_type::CONTAINS_ITEM)continue;
+        ItemContainerContentFacts entry;
+        if(auto* child=ref->getItem()) {
+            const auto type=child->getType();entry.itemType=int16_t(type);
+            entry.liquid=child->isLiquid();
+            if(entry.liquid && !assignColor(itemContentsMaterialColor(child,true,1),entry.colorToken))return std::nullopt;
+            if(type==df::item_type::PLANT || type==df::item_type::PLANT_GROWTH) {
+                if(auto* plant=df::plant_raw::find(child->getMaterialIndex()))
+                    entry.subterraneanPlant=plant->flags.is_set(df::plant_raw_flags::BIOME_SUBTERRANEAN_WATER) ||
+                        plant->flags.is_set(df::plant_raw_flags::BIOME_SUBTERRANEAN_CHASM) ||
+                        plant->flags.is_set(df::plant_raw_flags::BIOME_SUBTERRANEAN_LAVA);
             }
         }
         result.entries.push_back(std::move(entry));break;
@@ -361,6 +398,7 @@ inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
     }
     if(item->getType()==df::item_type::BIN){appearance.contents=itemContainerContents(item);if(!appearance.contents || appearance.contents->entries.size()>4096)return std::nullopt;}
     if(item->getType()==df::item_type::BAG){appearance.contents=itemBagContents(item);if(!appearance.contents)return std::nullopt;}
+    if(item->getType()==df::item_type::BARREL){appearance.contents=itemBarrelContents(item);if(!appearance.contents)return std::nullopt;}
     appearance.stack=item->getStackSize();appearance.flags=(item->flags.bits.artifact?32:0)|(item->flags.bits.spider_web?64:0);
     if(appearance.materialToken.empty()||appearance.materialToken.size()>256||appearance.subtypeRaw.size()>128||appearance.colorToken.size()>128||appearance.stack<1)return std::nullopt;
     return appearance;

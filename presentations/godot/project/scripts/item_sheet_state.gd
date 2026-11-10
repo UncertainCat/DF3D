@@ -220,7 +220,7 @@ static func _valid_appearance(look: Variant,item_type: int) -> bool:
 		if typeof(door.get("open"))!=TYPE_BOOL or typeof(door.get("forbidden"))!=TYPE_BOOL or typeof(door.get("wear"))!=TYPE_INT:return false
 		if door.wear<0 or door.wear>3:return false
 	if look.has("floodgate_open") and (item_type!=7 or typeof(look.floodgate_open)!=TYPE_BOOL):return false
-	if look.has("contents") and (item_type not in [31,32] or not _valid_contents(look.contents,item_type)):return false
+	if look.has("contents") and (item_type not in [17,31,32] or not _valid_contents(look.contents,item_type)):return false
 	if item_type==13:
 		var instrument=look.get("instrument")
 		if typeof(instrument)!=TYPE_DICTIONARY or instrument.size()!=2:return false
@@ -236,14 +236,19 @@ static func _valid_appearance(look: Variant,item_type: int) -> bool:
 	return look.stack>=1 and look.stack<=2147483647 and look.flags>=0 and (look.flags&~96)==0
 
 static func _valid_contents(contents: Variant,item_type: int) -> bool:
-	if typeof(contents)!=TYPE_DICTIONARY or contents.size()!=2 or typeof(contents.get("container"))!=TYPE_BOOL or typeof(contents.get("entries"))!=TYPE_ARRAY:return false
-	if contents.entries.size()>(1 if item_type==31 else 4096) or (item_type==32 and not contents.container and not contents.entries.is_empty()):return false
+	if typeof(contents)!=TYPE_DICTIONARY or contents.size()!=(4 if item_type==17 else 2) or typeof(contents.get("container"))!=TYPE_BOOL or typeof(contents.get("entries"))!=TYPE_ARRAY:return false
+	if contents.entries.size()>(4096 if item_type==32 else 1) or (item_type!=31 and not contents.container and not contents.entries.is_empty()):return false
+	if item_type==17:
+		if typeof(contents.get("material_inorganic"))!=TYPE_BOOL or typeof(contents.get("solid_color"))!=TYPE_STRING or contents.solid_color.to_utf8_buffer().size()>128:return false
 	for row in contents.entries:
-		if typeof(row)!=TYPE_DICTIONARY or row.size()!=10:return false
+		if typeof(row)!=TYPE_DICTIONARY or row.size()!=(12 if item_type==17 else 10):return false
 		if typeof(row.get("item_type"))!=TYPE_INT or row.item_type< -1 or row.item_type>92:return false
 		if typeof(row.get("effective_armor_level"))!=TYPE_INT or row.effective_armor_level< -128 or row.effective_armor_level>127:return false
 		for key in ["material_token","color_token"]:
 			if typeof(row.get(key))!=TYPE_STRING or row[key].to_utf8_buffer().size()>(256 if key=="material_token" else 128):return false
+		if item_type==17:
+			for key in ["liquid","subterranean_plant"]:
+				if typeof(row.get(key))!=TYPE_BOOL:return false
 		for key in ["metal","coal","contains_powder","rolls_sheets","protects_folded_sheets","contains_writing"]:
 			if typeof(row.get(key))!=TYPE_BOOL:return false
 	return true

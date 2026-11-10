@@ -5146,3 +5146,22 @@ TEST_CASE("item Uses preserves absent empty ordered rows and rejects malformed f
     if(mode==2){REQUIRE(decoded.uses->size()==2);CHECK(decoded.uses->at(0).reaction==-1);CHECK(decoded.uses->at(1).caption=="Native reaction");CHECK(decoded.uses->at(1).reaction==84);}}
  }
 }
+
+TEST_CASE("barrel contents codec preserves material and liquid facts and validates family bounds") {
+ for(int mode=0;mode<7;++mode) {
+  flatbuffers::FlatBufferBuilder b;
+  const auto entry=wire::CreateItemContainerContentFacts(b,69,b.CreateString(""),b.CreateString("AMBER"),0,false,false,false,false,false,false,true,true);
+  std::vector<flatbuffers::Offset<wire::ItemContainerContentFacts>> entries;
+  if(mode!=0)entries.push_back(entry);if(mode==6)entries.push_back(entry);
+  const auto contents=wire::CreateItemContainerContentsFacts(b,mode!=3,b.CreateVector(entries),mode==4?-1:1,b.CreateString(mode==5?std::string(129,'x'):"COPPER"));
+  auto appearance=wire::CreateItemInspectionAppearance(b,b.CreateString("INORGANIC:COPPER"),b.CreateString(""),b.CreateString(""),1,0,-1,-1,contents);
+  auto carrier=wire::CreateItemCarrier(b,1,7,mode==2?31:17,b.CreateString("container"),appearance);
+  auto item=wire::CreateIndependentItemSnapshot(b,45,1,39,b.CreateString("item"),b.CreateString(""),b.CreateString(""),false,false,false,false,true,false,false,false,b.CreateString(""),b.CreateString(""),0,0,-1,carrier);
+  auto independent=wire::CreateIndependentItemState(b,item);wire::ProductionStateBuilder p(b);p.add_independent_item(independent);auto payload=p.Finish();
+  wire::ManagementStateBuilder state(b);state.add_revision(1);state.add_production(payload);state.add_action(wire::ManagementAction::ProductionInspect);state.add_status(wire::ManagementStatus::Ok);b.Finish(state.Finish());
+  const auto* value=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());CHECK(bool(wire::validateManagementState(*value))==(mode>=2));
+  if(mode<2){const auto facts=*codec::decodeProduction(value->production()).independentItem->snapshot->carrier->appearance->contents;
+    CHECK(facts.materialInorganic==1);CHECK(facts.solidColor=="COPPER");CHECK(facts.entries.size()==size_t(mode));
+    if(mode==1){CHECK(facts.entries[0].liquid);CHECK(facts.entries[0].subterraneanPlant);CHECK(facts.entries[0].colorToken=="AMBER");}}
+ }
+}

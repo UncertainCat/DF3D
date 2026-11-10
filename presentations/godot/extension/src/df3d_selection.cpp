@@ -68,15 +68,20 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
     }
     std::optional<wm::ContainerContentsFacts> contents;
     if(appearance.has("contents")) {
-        if((itemType!=31 && itemType!=32) || appearance["contents"].get_type()!=Variant::DICTIONARY)return {};
+        if((itemType!=17 && itemType!=31 && itemType!=32) || appearance["contents"].get_type()!=Variant::DICTIONARY)return {};
         const Dictionary value=appearance["contents"];
-        if(value.size()!=2 || !value.has("container") || value["container"].get_type()!=Variant::BOOL ||
+        if(value.size()!=(itemType==17?4:2) || !value.has("container") || value["container"].get_type()!=Variant::BOOL ||
            !value.has("entries") || value["entries"].get_type()!=Variant::ARRAY)return {};
         const Array entries=value["entries"];auto& facts=contents.emplace();facts.container=bool(value["container"]);
-        if(entries.size()>(itemType==31?1:4096) || (itemType==32 && !facts.container && !entries.is_empty()))return {};
+        if(itemType==17) {
+            if(!value.has("material_inorganic") || value["material_inorganic"].get_type()!=Variant::BOOL || !value.has("solid_color") || value["solid_color"].get_type()!=Variant::STRING)return {};
+            const String color=value["solid_color"];if(color.utf8().length()>128)return {};
+            facts.materialInorganic=bool(value["material_inorganic"])?1:0;facts.solidColor=color.utf8().get_data();
+        }
+        if(entries.size()>(itemType==32?4096:1) || (itemType!=31 && !facts.container && !entries.is_empty()))return {};
         for(int64_t i=0;i<entries.size();++i) {
             if(entries[i].get_type()!=Variant::DICTIONARY)return {};
-            const Dictionary row=entries[i];if(row.size()!=10)return {};
+            const Dictionary row=entries[i];if(row.size()!=(itemType==17?12:10))return {};
             for(const auto* key:{"item_type","effective_armor_level"})
                 if(!row.has(key) || row[key].get_type()!=Variant::INT)return {};
             const int64_t type=row["item_type"],armor=row["effective_armor_level"];
@@ -91,6 +96,10 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
             entry.materialToken=material.utf8().get_data();entry.colorToken=color.utf8().get_data();
             entry.metal=bool(row["metal"]);entry.coal=bool(row["coal"]);entry.containsPowder=bool(row["contains_powder"]);
             entry.rollsSheets=bool(row["rolls_sheets"]);entry.protectsFoldedSheets=bool(row["protects_folded_sheets"]);entry.containsWriting=bool(row["contains_writing"]);
+            if(itemType==17) {
+                for(const auto* key:{"liquid","subterranean_plant"})if(!row.has(key) || row[key].get_type()!=Variant::BOOL)return {};
+                entry.liquid=bool(row["liquid"]);entry.subterraneanPlant=bool(row["subterranean_plant"]);
+            }
             facts.entries.push_back(std::move(entry));
         }
     }
@@ -237,8 +246,9 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
     const bool rawSlab=query.kind==wm::ItemKind::Slab && (genericGroup || (slabEngraving>=1 && slabEngraving<=5));
     // Native hunter list captures142845 use the untinted diagonal sprite for
     // silver, iron and copper alike. Other icon callers retain material tint.
-    const int palette=rawSlab || diagonalAmmo ? -1 : colorToken.empty()?resolved.paletteRow:assets_->index.paletteRow(colorToken);
-    if(!colorToken.empty() && palette<0 && !rawSlab && !diagonalAmmo)return {};
+    const bool nativeBarrel=query.kind==wm::ItemKind::Barrel && contents.has_value();
+    const int palette=rawSlab || diagonalAmmo ? -1 : (nativeBarrel || colorToken.empty() ? resolved.paletteRow : assets_->index.paletteRow(colorToken));
+    if(!colorToken.empty() && palette<0 && !rawSlab && !diagonalAmmo && !nativeBarrel)return {};
     const int slot=slotFor(resolved.sprite.page,palette,false);
     const TextureSlot* texture=slot>=0?spriteResources_.slots.find(slot):nullptr;
     if(!texture || texture->texture.is_null())return {};
@@ -257,7 +267,7 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
         }
         const bool doorLock=query.door && !query.door->open && query.door->forbidden && assets_->index.tile("ITEM_DOOR_FORBIDDEN");
         // BUCKET cf84c9..cf8633 replaces nonzero-alpha liquid pixels, like BIN.
-        const bool replaceContents=query.kind==wm::ItemKind::Bin || query.kind==wm::ItemKind::Bag || (query.kind==wm::ItemKind::Bucket && query.bucketLiquid>=0);
+        const bool replaceContents=query.kind==wm::ItemKind::Bin || query.kind==wm::ItemKind::Bag || nativeBarrel || (query.kind==wm::ItemKind::Bucket && query.bucketLiquid>=0);
         const int composite=compositeBuildingTile(layers,false,true,false,replaceContents,doorLock);
         const auto* resource=composite>=0?spriteResources_.slots.find(composite):nullptr;
         if(resource)return resource->texture;

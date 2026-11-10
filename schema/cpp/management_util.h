@@ -107,7 +107,8 @@ inline bool validInspectionInstrument(const ItemInspectionAppearance& a,int32_t 
   else if(type!=16 || a.cage_occupant_entity()<0 || (a.cage_occupant_entity()==0 ? a.cage_occupant_id()!=-1 : a.cage_occupant_id()<0))return false;
   if(a.floodgate_open() < -1 || a.floodgate_open()>1 || (type!=7 && a.floodgate_open()!=-1))return false;
   if(const auto* c=a.contents()) {
-    if((type!=31 && type!=32) || !c->entries() || c->entries()->size()>(type==31?1u:4096u) || (type==32 && !c->container() && c->entries()->size()))return false;
+    if(c->material_inorganic() < -1 || c->material_inorganic()>1 || (type==17 ? c->material_inorganic()==-1 : c->material_inorganic()!=-1) || (c->solid_color() && (c->solid_color()->size()>128 || (type!=17 && c->solid_color()->size()))))return false;
+    if((type!=17 && type!=31 && type!=32) || !c->entries() || c->entries()->size()>(type==32?4096u:1u) || (type!=31 && !c->container() && c->entries()->size()))return false;
     for(const auto* e:*c->entries())if(!e || e->item_type() < -1 || e->item_type()>92 ||
       !e->material_token() || e->material_token()->size()>256 || !e->color_token() || e->color_token()->size()>128)return false;
   }
@@ -126,8 +127,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 169;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v169";
+inline constexpr uint32_t kManagementVersion = 170;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v170";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;

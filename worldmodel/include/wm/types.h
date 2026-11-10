@@ -503,7 +503,8 @@ enum class ItemKind : uint8_t {
   BoltThrowerParts,
 };
 
-// Ordered direct containment facts, independent of native UI/graphics caches.
+// Containment facts, independent of native UI/graphics caches. BIN retains all
+// direct references in order; BAG/BARREL retain the selected last item reference.
 // A contained unit or unresolved reference has Unknown item kind. Preserve it:
 // it still occupies the container and cannot be skipped when summarizing it.
 struct ContainerContentFacts {
@@ -513,10 +514,13 @@ struct ContainerContentFacts {
   bool metal = false, coal = false;
   bool containsPowder = false;
   bool rollsSheets = false, protectsFoldedSheets = false, containsWriting = false;
+  bool liquid = false, subterraneanPlant = false;
 };
 struct ContainerContentsFacts {
   bool container = false;
   std::vector<ContainerContentFacts> entries;
+  int8_t materialInorganic = -1;
+  std::string solidColor;
 };
 
 // MapItem::flags bits (DF item.flags of the same name).

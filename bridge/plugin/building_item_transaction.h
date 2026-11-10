@@ -10,10 +10,12 @@ struct ItemContainerContentFacts {
     int8_t effectiveArmorLevel=0;
     bool metal=false,coal=false,containsPowder=false;
     bool rollsSheets=false,protectsFoldedSheets=false,containsWriting=false;
+    bool liquid=false,subterraneanPlant=false;
 };
 struct ItemContainerContentsFacts {
     bool container=false;
     std::vector<ItemContainerContentFacts> entries;
+    int8_t materialInorganic=-1;std::string solidColor;
 };
 struct ItemInspectionAppearance { std::string materialToken,subtypeRaw,colorToken;int32_t stack=1;uint8_t flags=0;int8_t instrumentFamily=-1,instrumentPlaced=-1;std::optional<ItemContainerContentsFacts> contents={};int8_t floodgateOpen=-1,doorOpen=-1,doorForbidden=-1,doorWear=-1,bucketLiquid=-1;std::string bucketLiquidColor; int8_t cageMaterialFamily=-1,cageOccupantEntity=-1;int32_t cageOccupantId=-1;std::string cageSolidColor;int8_t restraintRope=-1;std::string restraintSolidColor; };
 inline bool validInspectionInstrument(const ItemInspectionAppearance& a,int32_t type) {
@@ -27,7 +29,9 @@ inline bool validInspectionInstrument(const ItemInspectionAppearance& a,int32_t 
     else if(type!=16 || a.cageOccupantEntity<0 || (a.cageOccupantEntity==0 ? a.cageOccupantId!=-1 : a.cageOccupantId<0))return false;
     if(a.floodgateOpen < -1 || a.floodgateOpen>1 || (type!=7 && a.floodgateOpen!=-1))return false;
     if(a.contents) {
-        if((type!=31 && type!=32) || a.contents->entries.size()>(type==31?1u:4096u) || (type==32 && !a.contents->container && !a.contents->entries.empty()))return false;
+        const auto& c=*a.contents;
+        if(c.materialInorganic < -1 || c.materialInorganic>1 || (type==17 ? c.materialInorganic==-1 : c.materialInorganic!=-1) || c.solidColor.size()>128 || (type!=17 && !c.solidColor.empty()))return false;
+        if((type!=17 && type!=31 && type!=32) || a.contents->entries.size()>(type==32?4096u:1u) || (type!=31 && !a.contents->container && !a.contents->entries.empty()))return false;
         for(const auto& e:a.contents->entries)if(e.itemType < -1 || e.itemType>92 || e.materialToken.size()>256 || e.colorToken.size()>128)return false;
     }
     return type==13 ? a.instrumentFamily>=0&&a.instrumentFamily<=3&&a.instrumentPlaced>=0&&a.instrumentPlaced<=1 : a.instrumentFamily==-1&&a.instrumentPlaced==-1;
@@ -74,7 +78,7 @@ inline uint64_t buildingContentsRevision(const BuildingContentsSnapshot& value) 
         byte(row.forbid);byte(row.dump);byte(row.melt);byte(row.hidden);byte(row.canDump);byte(row.canMelt);
         byte(row.appearance.has_value());if(row.appearance){const auto& a=*row.appearance;
             for(const auto* text:{&a.materialToken,&a.subtypeRaw,&a.colorToken}){number(text->size());for(unsigned char c:*text)byte(c);}
-            number(a.stack);byte(a.flags);byte(a.instrumentFamily);byte(a.instrumentPlaced);byte(a.floodgateOpen);byte(a.doorOpen);byte(a.doorForbidden);byte(a.doorWear);byte(a.bucketLiquid);hashText(a.bucketLiquidColor);byte(a.cageMaterialFamily);byte(a.cageOccupantEntity);number(a.cageOccupantId);hashText(a.cageSolidColor);byte(a.restraintRope);hashText(a.restraintSolidColor);byte(a.contents.has_value());if(a.contents){byte(a.contents->container);number(a.contents->entries.size());for(const auto& e:a.contents->entries){number(e.itemType);hashText(e.materialToken);hashText(e.colorToken);byte(e.effectiveArmorLevel);byte(e.metal);byte(e.coal);byte(e.containsPowder);byte(e.rollsSheets);byte(e.protectsFoldedSheets);byte(e.containsWriting);}}}
+            number(a.stack);byte(a.flags);byte(a.instrumentFamily);byte(a.instrumentPlaced);byte(a.floodgateOpen);byte(a.doorOpen);byte(a.doorForbidden);byte(a.doorWear);byte(a.bucketLiquid);hashText(a.bucketLiquidColor);byte(a.cageMaterialFamily);byte(a.cageOccupantEntity);number(a.cageOccupantId);hashText(a.cageSolidColor);byte(a.restraintRope);hashText(a.restraintSolidColor);byte(a.contents.has_value());if(a.contents){byte(a.contents->container);byte(a.contents->materialInorganic);hashText(a.contents->solidColor);number(a.contents->entries.size());for(const auto& e:a.contents->entries){number(e.itemType);hashText(e.materialToken);hashText(e.colorToken);byte(e.effectiveArmorLevel);byte(e.metal);byte(e.coal);byte(e.containsPowder);byte(e.rollsSheets);byte(e.protectsFoldedSheets);byte(e.containsWriting);byte(e.liquid);byte(e.subterraneanPlant);}}}
         number(row.jobs.size());for(const auto& job:row.jobs){number(job.id);number(job.type);number(job.flags);}
     }
     return (hash&INT64_MAX)?(hash&INT64_MAX):1;

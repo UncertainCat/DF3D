@@ -627,3 +627,23 @@ TEST_CASE("bag selected contents retain flag-independent validation and revision
     CHECK(itemObservationRevision(item)!=before);
     facts.entries.emplace_back();CHECK_FALSE(validInspectionInstrument(*item.appearance,31));
 }
+
+TEST_CASE("barrel material and selected liquid facts participate in item authority") {
+    using namespace df3d_production;
+    ItemObservation item;item.item.id=1;item.item.itemType=17;
+    item.appearance.emplace();item.appearance->materialToken="PLANT:OAK:WOOD";
+    item.appearance->contents.emplace();auto& facts=*item.appearance->contents;
+    CHECK_FALSE(validInspectionInstrument(*item.appearance,17));
+    facts.materialInorganic=0;facts.solidColor="BROWN";
+    CHECK(validInspectionInstrument(*item.appearance,17));
+    const auto base=itemObservationRevision(item);facts.solidColor="WHITE";
+    CHECK(itemObservationRevision(item)!=base);
+    facts.entries.emplace_back();facts.entries.back().itemType=69;
+    CHECK_FALSE(validInspectionInstrument(*item.appearance,17));
+    facts.container=true;CHECK(validInspectionInstrument(*item.appearance,17));
+    const auto solid=itemObservationRevision(item);facts.entries.back().liquid=true;
+    CHECK(itemObservationRevision(item)!=solid);
+    const auto liquid=itemObservationRevision(item);facts.entries.back().subterraneanPlant=true;
+    CHECK(itemObservationRevision(item)!=liquid);
+    CHECK_FALSE(validInspectionInstrument(*item.appearance,31));
+}

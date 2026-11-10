@@ -330,10 +330,12 @@ struct ItemContainerContentFacts {
     int8_t effectiveArmorLevel=0;
     bool metal=false,coal=false,containsPowder=false;
     bool rollsSheets=false,protectsFoldedSheets=false,containsWriting=false;
+    bool liquid=false,subterraneanPlant=false;
 };
 struct ItemContainerContentsFacts {
     bool container=false;
     std::vector<ItemContainerContentFacts> entries;
+    int8_t materialInorganic=-1;std::string solidColor;
 };
 struct ItemInspectionAppearance { std::string materialToken,subtypeRaw,colorToken;int32_t stack=1;uint8_t flags=0;int8_t instrumentFamily=-1,instrumentPlaced=-1;std::optional<ItemContainerContentsFacts> contents={};int8_t floodgateOpen=-1,doorOpen=-1,doorForbidden=-1,doorWear=-1,bucketLiquid=-1;std::string bucketLiquidColor; int8_t cageMaterialFamily=-1,cageOccupantEntity=-1;int32_t cageOccupantId=-1;std::string cageSolidColor;int8_t restraintRope=-1;std::string restraintSolidColor; };
 struct BuildingContentsItem {

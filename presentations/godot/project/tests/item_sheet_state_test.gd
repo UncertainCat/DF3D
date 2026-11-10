@@ -37,6 +37,14 @@ func run() -> void:
 	check(model._valid_appearance(bag_look,31),"Bag incorrectly requires container flag")
 	check(not model._valid_appearance(bag_look,32),"Bin lost container flag validation")
 	check(not model._valid_appearance(bag_look,17),"Barrel accepts unsupported contents contract")
+	var barrel_look: Dictionary=bag_look.duplicate(true)
+	barrel_look.contents.container=true
+	barrel_look.contents.material_inorganic=false;barrel_look.contents.solid_color="BROWN"
+	barrel_look.contents.entries[0].liquid=false;barrel_look.contents.entries[0].subterranean_plant=false
+	check(model._valid_appearance(barrel_look,17),"Known barrel facts rejected")
+	check(not model._valid_appearance(barrel_look,31),"Bag accepted barrel-only facts")
+	barrel_look.contents.container=false
+	check(not model._valid_appearance(barrel_look,17),"Barrel lost container gate")
 	bag_look.contents.entries.append(selected.duplicate())
 	check(not model._valid_appearance(bag_look,31),"Bag accepted multiple selected references")
 	var uses_item:=item();uses_item.uses=[]

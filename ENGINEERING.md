@@ -37,6 +37,29 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
+Management170 adds barrel actual-material classification/solid color and selected
+contents liquid/subterranean-plant facts. Rebuild bridge/viewer together;169 peers
+use a separate channel. Absent barrel facts remain unknown; only a known barrel
+observation carries the new dictionary fields. BIN and BAG contracts are retained.
+Native c7c500..c7c900 supplies the reference for simulation getters and last-item
+selection, gated by the container flag. Native ceef70 selects liquid artwork or
+an empty base under a known overlay, with generic ITEM fallback when that overlay
+is missing. Unsupported resolved contents clear native material/color selection;
+unresolved references preserve it. The supported selector retains variant zero
+because it shifts the category before its bounds check. Runtime never calls this
+graphics/RNG-coupled selector. Core19, extension/item-state (`item-barrel170-checked`)
+and MSVC (`item-barrel170-msvc`) pass. The initial extension check caught an
+unrelated icon-path edit, corrected before acceptance. Protected062551 on2026-11-10
+verifies View/close and exact native descriptions/Uses for barrel, bag and bin.
+The empty iron barrel header and seed-filled pecan barrel carrier match native;
+whole BAG and BIN panels have zero RGB differences. The barrel panel retains835
+pixels solely in its Kitchen building-holder icon. Source preserved; DF14412
+closes unsaved at30FPS,60C maximum sampled (not peak), with documented Godot
+thread/finalize/shutdown diagnostics only. `barrel_contents_appearance_reference`
+records facts/hashes/limits. Liquid, subterranean-plant, missing-overlay and
+unresolved/unsupported-reference variants have headless/native-code evidence but
+are not newly live accepted.
+
 Management169 extends item appearance contents to bags. Rebuild bridge/viewer
 together;168 peers use a separate channel. Absence stays unknown. BIN retains
 all ordered references and its container-flag gate; BAG carries at most the last
@@ -144,19 +167,20 @@ rows and all remaining panel pixels match. Core19, extension/item-state
 at30FPS,60C sampled (not peak); documented Godot diagnostics only.
 `equipment_description_reference` retains dispatch pins, observations and hashes.
 Other equipment variants and per-family edits are not newly live accepted.
-Public Stocks remains gated; container-aware barrel appearance is unfinished. Bag contents are supported by169 above.
+Public Stocks remains gated. Bag/barrel contents are supported by169/170 above; remaining item-detail workflows and subtype-dependent building-holder artwork are unfinished.
 The offline container-selector audit (`container_selector_reference`) identifies
 bag categories as SEEDS53, PLANT54 and POWDER_MISC70. The shared resolver uses
 these three categories for IN_USE artwork and preserves EMPTY artwork for
 other contents, including PLANT_GROWTH56. Native selects the last contained-item
 reference, ignores the bag container flag, and uses solid material colors rather
 than the dyed item color. Management169 supplies those
-facts; protected060343 reduces the captured791 pixels to102 in the carrier barrel.
+facts; protected060343 reduces the captured791 pixels to102 in the carrier barrel,
+resolved by170 in protected062551.
 Barrels also select the last contained-item reference, but require the container
 flag and use isLiquid plus liquid-state color for liquid contents. Their native
 selector c7c500 additionally touches graphics vectors and shared random state;
-it must not be exposed as a runtime semantic API. Preserve these ownership
-constraints when adding pointer-free simulation facts to item appearance.
+it must not be exposed as a runtime semantic API. Management170 instead supplies
+pointer-free simulation facts under these ownership constraints.
 
 Item inspection also admits THREAD and CLOTH through the native description
 builder. THREAD adds its guarded dye-color virtual and semantic dye/name

@@ -8032,7 +8032,7 @@
       },
       "runtime_constraint": "c7c500 is not a safe semantic provider: later branches read native graphics vectors and can write the shared random seed. Do not call it or publish its packed graphics key."
     },
-    "implementation_status": "Bag category/base selection and Management169 selected contents/color facts implemented. Protected060343 verifies the rice bag header with zero pixel differences; barrel carrier retains102 differences. Other bag contents variants remain unaccepted live."
+    "implementation_status": "Bag169 and barrel170 semantic appearance implemented. Protected062551 matches empty iron barrel header and seed-filled pecan barrel carrier; entire BAG and BIN panels match. Other contents variants remain unaccepted live."
   },
   "bag_contents_appearance_reference": {
     "management_version": 169,
@@ -8149,6 +8149,123 @@
       "stocks-furniture-wire-31.json": "b4a9fb8dd6250db2541210933642a3fc03ed75dda6953802ef5cfb588d9fc0a4",
       "stocks-furniture-native-31.png": "41cc12d19bf3804bb6be05bacbd77f774290415c9f986bcd1c3eb37aa321b915",
       "stocks-furniture-view-31.png": "8e3524db2abe6a4a8758489abc680c694cc773499d39a882c46285bfe5ab3c15",
+      "job-settings-wire-result.json": "cac1a52e9aa8934e706bfb557de0c0f375ab9323f855653fecc0ed54aa512040",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    }
+  },
+  "barrel_contents_appearance_reference": {
+    "management_version": 170,
+    "capture": "build/stockpile-storage-native-input-20261110-062551",
+    "status": "passed_with_known_issues",
+    "source_preserved": true,
+    "owned_df_pid": 14412,
+    "owned_df_closed_unsaved": true,
+    "fps_cap": 30,
+    "maximum_sampled_gpu_celsius": 60,
+    "sample_is_not_peak": true,
+    "scope": "Actual Stocks View/close and exact native descriptions/Uses for BARREL17, BAG31 and BIN32. Empty iron barrel header and seed-filled pecan barrel carrier match native. Whole BAG and BIN panels match.",
+    "panel_crop": [
+      416,
+      52,
+      904,
+      760
+    ],
+    "panels": [
+      {
+        "type": 17,
+        "different_rgb_pixels": 835,
+        "difference_bounds": [
+          11,
+          183,
+          41,
+          214
+        ]
+      },
+      {
+        "type": 31,
+        "different_rgb_pixels": 0,
+        "difference_bounds": null
+      },
+      {
+        "type": 32,
+        "different_rgb_pixels": 0,
+        "difference_bounds": null
+      }
+    ],
+    "empty_barrel_appearance": {
+      "color_token": "GRAY",
+      "contents": {
+        "container": true,
+        "entries": [],
+        "material_inorganic": true,
+        "solid_color": "GRAY"
+      },
+      "flags": 0,
+      "material_token": "INORGANIC:IRON",
+      "stack": 1,
+      "subtype_raw": ""
+    },
+    "filled_barrel_appearance": {
+      "color_token": "PEACH",
+      "contents": {
+        "container": true,
+        "entries": [
+          {
+            "coal": false,
+            "color_token": "",
+            "contains_powder": false,
+            "contains_writing": false,
+            "effective_armor_level": 0,
+            "item_type": 31,
+            "liquid": false,
+            "material_token": "",
+            "metal": false,
+            "protects_folded_sheets": false,
+            "rolls_sheets": false,
+            "subterranean_plant": false
+          }
+        ],
+        "material_inorganic": false,
+        "solid_color": "PEACH"
+      },
+      "flags": 0,
+      "material_token": "PLANT:PECAN:WOOD",
+      "stack": 1,
+      "subtype_raw": ""
+    },
+    "remaining_difference": "BARREL panel835 pixels are solely the Kitchen building-holder icon, not barrel artwork.",
+    "offline": [
+      "build/qa/item-barrel170-checked: core19, extension build, item_sheet_state_test passed",
+      "build/notes/pm/item-barrel170-msvc.log: plugin build passed"
+    ],
+    "prior_check": "item-barrel170 passed core but failed extension: an overly broad palette edit reached an unrelated icon path. Corrected before the checked run; no live acceptance from that failed check.",
+    "native_reference": {
+      "selector": "c7c500..c7cb61",
+      "compositor_category_switch": "ceef70..cef1ed, tablecefa48",
+      "variant": "c7c90f shifts category before c7c933 bounds check, so ordinary barrel categories retain variant zero",
+      "overlay": "ceef70 compositor replaces nonzero-alpha overlay pixels (cef800..cef8b8).",
+      "graphics_bindings": "12372c9..1237bd1 and following BAG binding; installed ITEM_BARREL_* and LIQUID_FOR_BARREL_* names"
+    },
+    "omissions": [
+      "No new live acceptance of liquid colors, subterranean plants, missing overlay assets, unresolved or unsupported contained-item references.",
+      "Kitchen and other subtype-dependent holder artwork remains incomplete; public Stocks remains gated."
+    ],
+    "known_diagnostics": [
+      "godot-separate-thread-notice",
+      "godot-device-finalize",
+      "godot-shutdown-objects"
+    ],
+    "hashes": {
+      "stocks-native.json": "b1680d9f31fb5ebe0fdcfb7a74064f21792903f3d8b4135ca893afb59576d0e6",
+      "stocks-furniture-wire-17.json": "8419efd6daf9cc5d3b5f1715e27329f21a252a3c1531854ca9dbc4278b1712d3",
+      "stocks-furniture-wire-31.json": "0719d5c99617c2ddd067e7b65e814536e2f5f8c1faae1da4ac3776074e9ae848",
+      "stocks-furniture-wire-32.json": "0831cf6f69fd253f43ac9b6a2a578e23ace944f4b915192067e6b3ca73626f76",
+      "stocks-furniture-native-17.png": "2fce3ce437af7057b8501bfbbb3234244f5c8ac9799d225cd71f1b446b07067d",
+      "stocks-furniture-view-17.png": "c11f1b9096b4041a5a66dcde48f7421891e7a8570ee691054077c0854c1b72d4",
+      "stocks-furniture-native-31.png": "41cc12d19bf3804bb6be05bacbd77f774290415c9f986bcd1c3eb37aa321b915",
+      "stocks-furniture-view-31.png": "c5cc328809cf0f4ae9449e25d47b52b7db06c7bbd16b695e54cd04936d6bf671",
+      "stocks-furniture-native-32.png": "b338439f177aaafd84ce7a637961637b4297e46376d6fef39c5296658df615dc",
+      "stocks-furniture-view-32.png": "b17cf04a431e2d89a15a3b049127a3a30bf54b1bbd2693db1e8ba643b16f31c8",
       "job-settings-wire-result.json": "cac1a52e9aa8934e706bfb557de0c0f375ab9323f855653fecc0ed54aa512040",
       "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
     }

@@ -8,8 +8,8 @@ inline ItemInspectionAppearance decodeInspectionAppearance(const df3d::mirror::I
   result.restraintRope=a->restraint_rope();if(a->restraint_solid_color())result.restraintSolidColor=a->restraint_solid_color()->str();
   result.cageMaterialFamily=a->cage_material_family();result.cageOccupantEntity=a->cage_occupant_entity();result.cageOccupantId=a->cage_occupant_id();if(a->cage_solid_color())result.cageSolidColor=a->cage_solid_color()->str();
   result.floodgateOpen=a->floodgate_open();result.doorOpen=a->door_open();result.doorForbidden=a->door_forbidden();result.doorWear=a->door_wear();result.bucketLiquid=a->bucket_liquid();if(a->bucket_liquid_color())result.bucketLiquidColor=a->bucket_liquid_color()->str();
-  if(const auto* contents=a->contents()){auto& c=result.contents.emplace();c.container=contents->container();
-    for(const auto* e:*contents->entries())c.entries.push_back({e->item_type(),e->material_token()->str(),e->color_token()->str(),e->effective_armor_level(),e->metal(),e->coal(),e->contains_powder(),e->rolls_sheets(),e->protects_folded_sheets(),e->contains_writing()});}
+  if(const auto* contents=a->contents()){auto& c=result.contents.emplace();c.container=contents->container();c.materialInorganic=contents->material_inorganic();if(contents->solid_color())c.solidColor=contents->solid_color()->str();
+    for(const auto* e:*contents->entries())c.entries.push_back({e->item_type(),e->material_token()->str(),e->color_token()->str(),e->effective_armor_level(),e->metal(),e->coal(),e->contains_powder(),e->rolls_sheets(),e->protects_folded_sheets(),e->contains_writing(),e->liquid(),e->subterranean_plant()});}
   return result;
 }
 // Only validated wire tables enter these decoders. Each domain owns its fields;

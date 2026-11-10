@@ -1279,6 +1279,44 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
     case ItemKind::Window: return single("ITEM_WINDOW_GLASS", "window");
     case ItemKind::Cage: return member("ITEM_CAGE", "", "cage");
     case ItemKind::Barrel: {
+      if(q.contents && q.contents->materialInorganic>=0) {
+        // Native c7c500 selects one item reference; ceef70 composes its
+        // category over EMPTY, falling back to ITEM when an overlay is absent.
+        const auto& facts=*q.contents;
+        const auto* child=facts.container && !facts.entries.empty()?&facts.entries.front():nullptr;
+        std::string_view top;
+        bool liquidContents=false,recognized=false;
+        if(child && child->kind!=ItemKind::Unknown) {
+          recognized=true;
+          switch(child->kind) {
+            case ItemKind::Bag:top="BAG";break;
+            case ItemKind::Fish:case ItemKind::FishRaw:top="FISH";break;
+            case ItemKind::Meat:top="MEAT";break;
+            case ItemKind::Food:top="MEAL";break;
+            case ItemKind::Cheese:top="CHEESE";break;
+            case ItemKind::Glob:break;
+            case ItemKind::Plant:case ItemKind::PlantGrowth:
+              top=child->subterraneanPlant?"PLANT_SUBTERRANEAN":"PLANT";break;
+            default:liquidContents=child->liquid;recognized=liquidContents;break;
+          }
+        }
+        // c7cb3f clears the complete selector for an unsupported resolved
+        // child. A missing reference instead preserves the barrel material.
+        const bool cleared=child && child->kind!=ItemKind::Unknown && !recognized;
+        const std::string material=!cleared && facts.materialInorganic==1?"METAL":"WOOD";
+        if(recognized) {
+          const std::string overlay=liquidContents?"LIQUID_FOR_BARREL_"+material:
+              top.empty()?"":"ITEM_BARREL_TOP_"+std::string(top);
+          // The supported selector shifts the category before its variant
+          // bounds check (c7c90f/c7c933), retaining variant zero for barrels.
+          if(!overlay.empty())if(const auto* sprite=idx.tile(overlay,0))
+            r.overlays.push_back({*sprite,idx.paletteRow(child->colorToken)});
+        }
+        const char* suffix=liquidContents?"_LIQUID":recognized && r.overlays.empty()?"_ITEM":"_EMPTY";
+        single(("ITEM_BARREL_"+material+suffix).c_str(),"barrel.contents");
+        r.paletteRow=cleared?-1:idx.paletteRow(facts.solidColor);
+        return r;
+      }
       const std::string material=cls==MaterialClass::Metal ? "METAL" : "WOOD";
       single(("ITEM_BARREL_"+material+(occupied ? (liquid ? "_LIQUID" : "_ITEM") : "_EMPTY")).c_str(),"barrel");
       if (occupied && liquid) contentsOverlay("LIQUID_FOR_BARREL_"+material);

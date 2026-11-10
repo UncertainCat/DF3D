@@ -914,8 +914,8 @@ void publish() {
   const auto encodeContainerContents=[&](const auto& facts) {
     flatbuffers::Offset<m::ItemContainerContentsFacts> result;
     if(facts){std::vector<flatbuffers::Offset<m::ItemContainerContentFacts>> entries;
-      for(const auto& e:facts->entries)entries.push_back(m::CreateItemContainerContentFacts(b,e.itemType,b.CreateString(e.materialToken),b.CreateString(e.colorToken),e.effectiveArmorLevel,e.metal,e.coal,e.containsPowder,e.rollsSheets,e.protectsFoldedSheets,e.containsWriting));
-      result=m::CreateItemContainerContentsFacts(b,facts->container,b.CreateVector(entries));}
+      for(const auto& e:facts->entries)entries.push_back(m::CreateItemContainerContentFacts(b,e.itemType,b.CreateString(e.materialToken),b.CreateString(e.colorToken),e.effectiveArmorLevel,e.metal,e.coal,e.containsPowder,e.rollsSheets,e.protectsFoldedSheets,e.containsWriting,e.liquid,e.subterraneanPlant));
+      result=m::CreateItemContainerContentsFacts(b,facts->container,b.CreateVector(entries),facts->materialInorganic,b.CreateString(facts->solidColor));}
     return result;
   };
   const auto encodeInspectionAppearance=[&](const std::optional<ItemInspectionAppearance>& look) {
@@ -3072,8 +3072,8 @@ std::optional<BuildingItemSnapshot> observeFarmItem(int32_t buildingId,int32_t i
 ItemInspectionAppearance copyInspectionAppearance(const df3d_production::ItemInspectionAppearance& a) {
   ItemInspectionAppearance result{DF2UTF(a.materialToken),DF2UTF(a.subtypeRaw),DF2UTF(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced};
   result.floodgateOpen=a.floodgateOpen;result.doorOpen=a.doorOpen;result.doorForbidden=a.doorForbidden;result.doorWear=a.doorWear;result.bucketLiquid=a.bucketLiquid;result.bucketLiquidColor=DF2UTF(a.bucketLiquidColor);result.cageMaterialFamily=a.cageMaterialFamily;result.cageOccupantEntity=a.cageOccupantEntity;result.cageOccupantId=a.cageOccupantId;result.cageSolidColor=DF2UTF(a.cageSolidColor);result.restraintRope=a.restraintRope;result.restraintSolidColor=DF2UTF(a.restraintSolidColor);
-  if(a.contents){auto& c=result.contents.emplace();c.container=a.contents->container;
-    for(const auto& e:a.contents->entries)c.entries.push_back({e.itemType,DF2UTF(e.materialToken),DF2UTF(e.colorToken),e.effectiveArmorLevel,e.metal,e.coal,e.containsPowder,e.rollsSheets,e.protectsFoldedSheets,e.containsWriting});}
+  if(a.contents){auto& c=result.contents.emplace();c.container=a.contents->container;c.materialInorganic=a.contents->materialInorganic;c.solidColor=DF2UTF(a.contents->solidColor);
+    for(const auto& e:a.contents->entries)c.entries.push_back({e.itemType,DF2UTF(e.materialToken),DF2UTF(e.colorToken),e.effectiveArmorLevel,e.metal,e.coal,e.containsPowder,e.rollsSheets,e.protectsFoldedSheets,e.containsWriting,e.liquid,e.subterraneanPlant});}
   return result;
 }
 std::optional<IndependentItemSnapshot> independentItemSnapshot(const df3d_production::ItemObservation& observed) {

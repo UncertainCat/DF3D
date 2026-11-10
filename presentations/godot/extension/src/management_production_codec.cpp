@@ -9,9 +9,10 @@ namespace df3d_godot::management {
 using namespace godot;
 Dictionary contentsDictionary(const wm::ItemContainerContentsFacts& contents) {
   Dictionary result;result["container"]=contents.container;Array entries;
+  if(contents.materialInorganic!=-1){result["material_inorganic"]=bool(contents.materialInorganic);result["solid_color"]=String::utf8(contents.solidColor.c_str());}
   for(const auto& e:contents.entries){Dictionary row;row["item_type"]=e.itemType;
     row["material_token"]=String::utf8(e.materialToken.c_str());row["color_token"]=String::utf8(e.colorToken.c_str());row["effective_armor_level"]=e.effectiveArmorLevel;
-    row["metal"]=e.metal;row["coal"]=e.coal;row["contains_powder"]=e.containsPowder;row["rolls_sheets"]=e.rollsSheets;row["protects_folded_sheets"]=e.protectsFoldedSheets;row["contains_writing"]=e.containsWriting;entries.push_back(row);}
+    row["metal"]=e.metal;row["coal"]=e.coal;row["contains_powder"]=e.containsPowder;row["rolls_sheets"]=e.rollsSheets;row["protects_folded_sheets"]=e.protectsFoldedSheets;row["contains_writing"]=e.containsWriting;if(contents.materialInorganic!=-1){row["liquid"]=e.liquid;row["subterranean_plant"]=e.subterraneanPlant;}entries.push_back(row);}
   result["entries"]=entries;return result;
 }
 namespace {

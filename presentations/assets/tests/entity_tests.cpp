@@ -1286,3 +1286,32 @@ TEST_CASE("owned door artwork suppresses closed overlays while open and follows 
   }
   q.door->wear=4;CHECK_FALSE(resolveItem(idx,q).found);
 }
+
+TEST_CASE("native barrel facts choose contents base and preserve unresolved material") {
+  AssetIndex idx;
+  for(const auto* material:{"WOOD","METAL"}) {
+    const std::string prefix=std::string("ITEM_BARREL_")+material;
+    const int offset=std::string(material)=="METAL"?10:0;
+    idx.tileGraphics[prefix+"_EMPTY"]={{0,offset,0,1,1}};
+    idx.tileGraphics[prefix+"_ITEM"]={{0,offset+1,0,1,1}};
+    idx.tileGraphics[prefix+"_LIQUID"]={{0,offset+2,0,1,1}};
+    idx.tileGraphics[std::string("LIQUID_FOR_BARREL_")+material]={{0,offset+3,0,1,1}};
+  }
+  idx.tileGraphics["ITEM_BARREL_TOP_BAG"]={{0,20,0,1,1},{0,21,0,1,1}};
+  idx.tileGraphics["ITEM_BARREL_TOP_PLANT_SUBTERRANEAN"]={{0,22,0,1,1}};
+  wm::ContainerContentsFacts facts;facts.materialInorganic=1;facts.container=true;
+  ItemQuery q;q.kind=wm::ItemKind::Barrel;q.contents=&facts;q.id=123;
+  CHECK(resolveItem(idx,q).sprite.x==10);
+  facts.entries.emplace_back();CHECK(resolveItem(idx,q).sprite.x==10);
+  auto& child=facts.entries.back();child.kind=wm::ItemKind::Bag;
+  auto r=resolveItem(idx,q);CHECK(r.sprite.x==10);REQUIRE(r.overlays.size()==1);CHECK(r.overlays[0].sprite.x==20);
+  child.kind=wm::ItemKind::Drink;child.liquid=true;r=resolveItem(idx,q);
+  CHECK(r.sprite.x==12);REQUIRE(r.overlays.size()==1);CHECK(r.overlays[0].sprite.x==13);
+  child.liquid=false;child.kind=wm::ItemKind::Plant;child.subterraneanPlant=true;
+  r=resolveItem(idx,q);CHECK(r.sprite.x==10);REQUIRE(r.overlays.size()==1);CHECK(r.overlays[0].sprite.x==22);
+  child.kind=wm::ItemKind::Glob;r=resolveItem(idx,q);CHECK(r.sprite.x==11);CHECK(r.overlays.empty());
+  child.kind=wm::ItemKind::Blocks;r=resolveItem(idx,q);CHECK(r.sprite.x==0);CHECK(r.paletteRow==-1);CHECK(r.overlays.empty());
+  child.kind=wm::ItemKind::Bag;idx.tileGraphics.erase("ITEM_BARREL_TOP_BAG");
+  r=resolveItem(idx,q);CHECK(r.sprite.x==11);CHECK(r.overlays.empty());
+  facts.container=false;CHECK(resolveItem(idx,q).sprite.x==10);
+}

@@ -159,8 +159,22 @@ epoch or unknown sent-mutation behavior. Source preserved, owned DF19564 closed
 unsaved, both processes capped30FPS, GPU44C/0% sampled; documented engine
 diagnostics only (passed_with_known_issues). Earlier133831 covers read/Details
 retirement without the additional detached edits.
-Remaining action branches, overflow backgrounds and producer/epoch live
-acceptance are unfinished; public exposure stays gated.
+Protected134635 verifies Tasks View task through material and image-subject
+edits in the actual main scene. Selecting Dolomite sets job382794 and its first
+input to material0/index169 while preserving the original0/-1 requirement.
+Selecting a historical figure sets the native job art specification to type0
+and the displayed figure ID. Both confirmed edits close Details and refresh Tasks.
+The shared native-backed Details implementation supplies choices and edits; no
+Tasks-specific rule reconstruction is introduced. Screenshots are inspected,
+but subpage pixel parity and all material/artwork categories are not claimed.
+The captured first figure rows display empty names with native punctuation;
+comparison against native Tasks artwork rendering remains unresolved.
+Native before/after Tasks rows are recorded before subsequent menu comparisons.
+Source preserved, owned DF36148 closed unsaved at30FPS, GPU43C/0% sampled;
+documented engine diagnostics only (passed_with_known_issues). Earlier134418
+verifies the material portion alone.
+Remaining action branches, Details subpage/overflow backgrounds and producer/epoch
+live acceptance are unfinished; public exposure stays gated.
 
 Read requests carry offset, limit1..64 and an expected ordered-list revision.
 A nonzero offset requires that revision. Replies preserve native order and can

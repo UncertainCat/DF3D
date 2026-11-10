@@ -42,7 +42,7 @@ if os.getenv('DF3D_TASKS_WIRE')=='1' then
  write('tasks-wire-reference.json',json.encode(cold))
  write('tasks-scene-reference.json',json.encode{rows=cold})
  write('shot.tmp','tasks-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))
- local deadline=dfhack.getTickCount()+(os.getenv('DF3D_TASKS_SCENE')=='1' and 120000 or 30000);local checked=0;local repeats=0;local lifecycle_steps=0;local original_repeat=created_job and created_job.flags.whole
+ local deadline=dfhack.getTickCount()+(os.getenv('DF3D_TASKS_SCENE')=='1' and 120000 or 30000);local checked=0;local repeats=0;local lifecycle_steps=0;local material_checked=false;local art_checked=false;local original_repeat=created_job and created_job.flags.whole
  while true do
   local step=io.open(out..'/tasks-wire-step')
   if step then local n=tonumber(step:read('*a'));step:close()
@@ -87,12 +87,37 @@ if os.getenv('DF3D_TASKS_WIRE')=='1' then
     end
    end
   end
+  if created_job and os.getenv('DF3D_TASKS_MATERIAL')=='1' and not material_checked then
+   local step=io.open(out..'/tasks-material-step')
+   if step then
+    step:close();local material=assert(dfhack.matinfo.find('INORGANIC:DOLOMITE'))
+    local input=assert(created_job.job_items.elements[0])
+    assert(created_job.mat_type==material.type and created_job.mat_index==material.index,'Tasks material did not update job')
+    assert(input.mat_type==material.type and input.mat_index==material.index,'Tasks material did not update requirement')
+    assert((input.job_details_flags.whole&1)~=0 and input.job_details_mat_type==0 and input.job_details_mat_index==-1,'Tasks material lost original requirement')
+    material_checked=true;write('tasks-material-ack','1')
+    write('tasks-material-native-result.json',json.encode{job_id=created_job.id,material='INORGANIC:DOLOMITE',mat_type=material.type,mat_index=material.index,original_requirement_preserved=true})
+   end
+  end
+  if created_job and os.getenv('DF3D_TASKS_MATERIAL')=='1' and not art_checked then
+   local step=io.open(out..'/tasks-art-step')
+   if step then
+    local id=tonumber(step:read('*a'));step:close();assert(id and df.historical_figure.find(id),'Invalid Tasks figure selection')
+    assert(created_job.art_spec.type==0 and created_job.art_spec.id==id,'Tasks artwork did not update native job')
+    art_checked=true;write('tasks-art-ack','1')
+    write('tasks-art-native-result.json',json.encode{job_id=created_job.id,type=created_job.art_spec.type,id=id,subid=created_job.art_spec.subid})
+   end
+  end
   local ack=io.open(out..'/ack-tasks-wire');if ack then ack:close();break end
   assert(dfhack.getTickCount()<deadline,'Tasks wire timed out');script.sleep(1,'frames')
  end
  assert(checked==2 and job.flags.whole==original,'Tasks wire did not restore suspension')
  if created_job then assert(repeats==2 and created_job.flags.whole==original_repeat,'Tasks Repeat did not restore');write('tasks-repeat-native-result.json',json.encode{job_id=created_job.id,steps=repeats,restored=true})end
  assert(not df.global.game.main_interface.info.open,'Tasks transport opened native menu')
+ if os.getenv('DF3D_TASKS_MATERIAL')=='1' then
+  assert(material_checked and art_checked,'Tasks Details workflow incomplete')
+  local after=probe();write('tasks-material-rows.json',json.encode{before=cold,after=after});cold=after
+ end
  if created_job and os.getenv('DF3D_TASKS_LIFECYCLE')=='1' then
   assert(lifecycle_steps==2,'Detached Tasks mutation was not restored')
   write('tasks-lifecycle-native-result.json',json.encode{job_id=created_job.id,repeat_steps=lifecycle_steps,restored=created_job.flags.whole==original_repeat})

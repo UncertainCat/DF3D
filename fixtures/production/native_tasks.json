@@ -3239,5 +3239,27 @@
     "source_save_preserved": true,
     "owned_df_closed_unsaved": true,
     "diagnostics": "passed_with_known_issues"
+  },
+  "details_edit_viewer_reference": {
+    "capture": "build/stockpile-storage-native-input-20261110-134635",
+    "material": {
+      "job_id": 382794,
+      "mat_index": 169,
+      "mat_type": 0,
+      "material": "INORGANIC:DOLOMITE",
+      "original_requirement_preserved": true
+    },
+    "artwork": {
+      "id": 9876,
+      "job_id": 382794,
+      "subid": -1,
+      "type": 0
+    },
+    "surface": "Actual main scene: Tasks View task, material/figure row clicks, return to refreshed Tasks after each edit.",
+    "scope": "Native job and input requirement checked independently; saved original material requirement preserved. Historical figure ID checked against native job art specification. This does not establish pixel parity for Details subpages or every material/artwork category.",
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "diagnostics": "passed_with_known_issues",
+    "unresolved_display": "First historical-figure rows render empty names with punctuation; native Tasks artwork comparison pending."
   }
 }

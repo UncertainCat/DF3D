@@ -86,6 +86,47 @@ func exercise(expected: Dictionary) -> void:
 			var deadline:=Time.get_ticks_msec()+5000
 			while Time.get_ticks_msec()<deadline and FileAccess.get_file_as_string(directory+"/tasks-repeat-ack")!=str(step):await create_timer(0.01).timeout
 			if not check(FileAccess.get_file_as_string(directory+"/tasks-repeat-ack")==str(step),"Native Repeat effect unconfirmed"):return
+		if OS.get_environment("DF3D_TASKS_MATERIAL")=="1":
+			var index: int=-1
+			for i in owner.state.rows.size():
+				if owner.state.rows[i].job_id==job:index=i
+			owner.state.seek(index,owner.panel.capacity());await process_frame
+			await pointer(owner.panel.get_global_transform_with_canvas()*owner.panel.button_rect(index-owner.panel.visible_first(),0).get_center())
+			if not await settle(owner.job_state):return
+			await pointer(owner.job_panel.get_global_transform_with_canvas()*Vector2(120,66))
+			if not await settle(owner.job_state):return
+			var choice: int=-1
+			for i in owner.job_state.rows.size():
+				if owner.job_state.rows[i].caption=="Dolomite":choice=i;break
+			if not check(choice>=0,"Native Dolomite material choice missing"):return
+			owner.job_state.seek(choice);await process_frame
+			await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/tasks-main-materials.png")
+			await pointer(owner.job_panel.get_global_transform_with_canvas()*Vector2(120,owner.job_panel.list_top()+18));await drain()
+			if not await ready_tasks():return
+			check(not owner.job_open() and owner.panel.visible,"Material edit did not return to Tasks")
+			var file=FileAccess.open(directory+"/tasks-material-step",FileAccess.WRITE);file.store_string("1");file.close()
+			var deadline:=Time.get_ticks_msec()+5000
+			while Time.get_ticks_msec()<deadline and FileAccess.get_file_as_string(directory+"/tasks-material-ack")!="1":await create_timer(0.01).timeout
+			if not check(FileAccess.get_file_as_string(directory+"/tasks-material-ack")=="1","Native Tasks material effect unconfirmed"):return
+			for i in owner.state.rows.size():
+				if owner.state.rows[i].job_id==job:index=i
+			owner.state.seek(index,owner.panel.capacity());await process_frame
+			await pointer(owner.panel.get_global_transform_with_canvas()*owner.panel.button_rect(index-owner.panel.visible_first(),0).get_center())
+			if not await settle(owner.job_state):return
+			await pointer(owner.job_panel.get_global_transform_with_canvas()*Vector2(120,102))
+			if not await settle(owner.job_state):return
+			await pointer(owner.job_panel.get_global_transform_with_canvas()*Vector2(120,114))
+			if not await settle(owner.job_state):return
+			if not check(owner.job_state.art_page()==1 and not owner.job_state.rows.is_empty(),"Tasks figure choices missing"):return
+			var figure: int=owner.job_state.rows[0].id
+			await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/tasks-main-figures.png")
+			await pointer(owner.job_panel.get_global_transform_with_canvas()*Vector2(120,owner.job_panel.list_top()+18));await drain()
+			if not await ready_tasks():return
+			check(not owner.job_open(),"Artwork edit did not close Tasks Details")
+			file=FileAccess.open(directory+"/tasks-art-step",FileAccess.WRITE);file.store_string(str(figure));file.close()
+			deadline=Time.get_ticks_msec()+5000
+			while Time.get_ticks_msec()<deadline and FileAccess.get_file_as_string(directory+"/tasks-art-ack")!="1":await create_timer(0.01).timeout
+			if not check(FileAccess.get_file_as_string(directory+"/tasks-art-ack")=="1","Native Tasks artwork effect unconfirmed"):return
 		owner.state.seek(1048576,owner.panel.capacity());await process_frame
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/tasks-main-scene.png")

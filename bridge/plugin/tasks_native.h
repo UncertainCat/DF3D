@@ -6,6 +6,7 @@
 #include "df/cri_unitst.h"
 #include "df/job_list_link.h"
 #include "df/general_ref.h"
+#include "df/building_trapst.h"
 #include <unordered_set>
 
 namespace df3d_tasks {
@@ -13,7 +14,43 @@ struct Row {
     int32_t jobId=-1,unitId=-1,itemId=-1;
     uint32_t flags=0;
     std::string professionKey,jobKey,caption,workerName;
+    int32_t buildingId=-1;
+    bool canViewJob=false,canRepeat=false,canRemoveWorker=false,canSuspend=false,canCancel=false;
+    bool repeating=false,suspended=false;
 };
+// Native396ee0/397c90 inline these checks; there is no standalone eligibility
+// call for the four edit buttons. Mirror that bounded branch over simulation
+// objects only. Never call the whole feed handler or consult its menu rows.
+inline bool controls(Row& row,df::job* job,df::unit* worker,uint8_t* base) {
+    row.repeating=job->flags.bits.repeat;
+    row.suspended=job->flags.bits.suspend;
+    row.canViewJob=reinterpret_cast<bool (*)(df::job*)>(base+0xd15ef0)(job);
+    df::building* holder=nullptr;
+    for(auto* ref:job->general_refs)if(ref->getType()==df::general_ref_type::BUILDING_HOLDER){holder=ref->getBuilding();break;}
+    if(!holder)return true;
+    row.buildingId=holder->id;
+    row.canRemoveWorker=worker && !(job->flags.whole&0x20010);
+    // Native scans with a signed16 index. Reject malformed/oversized lists
+    // rather than wrap the diagnostic provider's safety bound.
+    if(holder->jobs.size()>32767)return false;
+    bool removing=false;
+    for(auto* other:holder->jobs){if(!other)return false;removing|=other->job_type==df::job_type::DestroyBuilding;}
+    const auto first=holder->jobs.empty()?-1:static_cast<int>(holder->jobs.front()->job_type);
+    if(holder->getBuildStage()==holder->getMaxBuildStage() && !removing && !(first>=53 && first<=65)) {
+        const auto type=holder->getType();
+        bool editable=type==df::building_type::Furnace || type==df::building_type::Workshop || static_cast<uint32_t>(type)>54;
+        if(type==df::building_type::Trap){
+            const auto subtype=static_cast<int>(static_cast<df::building_trapst*>(holder)->trap_type);
+            editable=subtype<2 || subtype>5;
+        }
+        row.canRepeat=editable && !(job->flags.whole&0x200);
+        row.canSuspend=row.canCancel=editable;
+    } else {
+        row.canSuspend=job->job_type==df::job_type::ConstructBuilding;
+        row.canCancel=row.canSuspend || job->job_type==df::job_type::DestroyBuilding;
+    }
+    return true;
+}
 // Native323a68 opens Tasks by passing its jobs context to374630. That builder
 // reads the simulation job chain, filters workers/flags, and stably inserts by
 // job type. Its only output is the supplied context; no native menu is input.
@@ -27,6 +64,9 @@ inline std::optional<std::vector<Row>> rows() {
             {0x374630,0x3cc,UINT64_C(0xffafc144accbb830)},
             {0x310e70,0x82,UINT64_C(0x69713ac3fdf3ff0a)},
             {0x70bd0,0x15c,UINT64_C(0x4f81ccfaa39439f5)},
+            {0xd15ef0,0x1d0,UINT64_C(0x41e934528fc15d5a)},
+            {0x3974bd,0x298,UINT64_C(0x723f222c9c8bdbe4)},
+            {0x397c18,0x77,UINT64_C(0x8d3868aec27bb264)},
         };
         for(const auto& p:pins){uint64_t h=UINT64_C(14695981039346656037);
             for(size_t i=0;i<p.length;++i){h^=base[p.rva+i];h*=UINT64_C(1099511628211);}if(h!=p.hash)return false;}
@@ -67,6 +107,7 @@ inline std::optional<std::vector<Row>> rows() {
         // Retain full CP437 strings; width-dependent clipping is presentation.
         reinterpret_cast<void (*)(df::job*,std::string*)>(base+0xd03170)(entry->jb,&row.caption);
         if(entry->un)df3d_area::staffOrderingFunctions().name(entry->un,&row.workerName,false);
+        if(!controls(row,entry->jb,entry->un,base))return std::nullopt;
         result.push_back(std::move(row));
     }
     return result;

@@ -90,6 +90,17 @@ assigned-worker release, ordinary job cancellation, partially built construction
 removal and navigation effects remain unverified. The complete native feed
 handler remains prohibited as a runtime adapter.
 
+The owned Tasks provider exposes holder building ID, repeat/suspend state and
+View job/Repeat/Remove worker/Suspend/Cancel eligibility. View job calls native
+d15ef0 directly. The other four checks are inline in native feed396ee0 and
+renderer397c90, so the bridge follows that bounded branch over simulation
+objects, with pinned code/table ranges; Godot does not reconstruct eligibility.
+Protected113713 compares five hover targets for each of41 native tasks across
+three pages with the owned facts, cold/warm agreement and unchanged native menu
+storage. All pass. The capture does not cover every workshop, furnace, trap or
+demolition branch, nor action submission. Source preserved; DF38572 closes
+unsaved, capped30FPS, GPU48C/3% sampled. `controls_reference` records the scope.
+
 ## Stocks native discovery
 
 Stocks list icons now use every available item-sheet selector instead of a

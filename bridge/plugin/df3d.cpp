@@ -2493,6 +2493,10 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             row["item_id"]=entry.itemId;row["flags"]=entry.flags;
             row["sort_name"]=DF2UTF(entry.professionKey);row["job_sort_name"]=DF2UTF(entry.jobKey);
             row["caption"]=DF2UTF(entry.caption);row["worker_name"]=DF2UTF(entry.workerName);
+            row["building_id"]=entry.buildingId;
+            row["can_view_job"]=entry.canViewJob;row["can_repeat"]=entry.canRepeat;
+            row["can_remove_worker"]=entry.canRemoveWorker;row["can_suspend"]=entry.canSuspend;
+            row["can_cancel"]=entry.canCancel;row["repeating"]=entry.repeating;row["suspended"]=entry.suspended;
             result["rows"].append(row);
           }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;

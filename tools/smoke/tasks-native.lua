@@ -55,6 +55,7 @@ assert(json.encode(cold)==json.encode(warm),'Tasks display text depends on menu 
 result.owned={cold=cold,warm=warm,native_menu_preserved=true}
 local g=df.global.gps
 local verified={}
+local verified_controls={}
 local function verify_captions()
  local first=info.jobs.scroll_position_cri_job
  for index=first,math.min(#warm-1,first+16)do
@@ -64,6 +65,18 @@ local function verify_captions()
    assert(dfhack.screen.readTile(5+i,11+(index-first)*3).ch==bytes:byte(i),'Tasks visible job caption differs '..index)
   end
   verified[warm[index+1].job_id]=true
+  local row=warm[index+1]
+  for _,control in ipairs{{'can_view_job',276,241},{'can_repeat',300,243},
+    {'can_remove_worker',324,244},{'can_suspend',348,245},{'can_cancel',372,246}}do
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=control[2];g.precise_mouse_y=142+(index-first)*36
+   g.mouse_x=control[2]//8;g.mouse_y=(g.precise_mouse_y-4)//12
+   df.global.game.main_interface.current_hover=0
+   gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+   assert((df.global.game.main_interface.current_hover==control[3])==row[control[1]],
+     'Tasks control differs: '..row.job_id..' '..control[1])
+  end
+  verified_controls[row.job_id]=true
  end
 end
 verify_captions()
@@ -96,6 +109,9 @@ end
 result.verified_caption_ids={}
 for _,row in ipairs(warm)do if verified[row.job_id]then result.verified_caption_ids[#result.verified_caption_ids+1]=row.job_id end end
 assert(#result.verified_caption_ids==#warm,'Not all Tasks captions were observed')
+result.verified_control_ids={}
+for _,row in ipairs(warm)do if verified_controls[row.job_id]then result.verified_control_ids[#result.verified_control_ids+1]=row.job_id end end
+assert(#result.verified_control_ids==#warm,'Not all Tasks controls were observed')
 if os.getenv('DF3D_TASKS_ACTIONS')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('tasks%-native.lua$','tasks-actions-native.lua')
  result.actions=assert(loadfile(source))(out,view,info,capture)

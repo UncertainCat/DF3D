@@ -168,6 +168,8 @@ public:
     void reconcile_resident_icons();
     godot::Ref<godot::Texture2D> creature_portrait(int64_t id);
     godot::Ref<godot::Texture2D> resident_icon(int64_t id);
+    godot::Ref<godot::Texture2D> item_portrait_icon(const godot::Dictionary& recipe);
+    godot::Ref<godot::Texture2D> candidateIcon(const godot::Dictionary& recipe,bool portrait);
     godot::Ref<godot::Texture2D> candidate_icon(const godot::Dictionary& recipe);
     godot::Ref<godot::Texture2D> animal_container_icon(const godot::Dictionary& facts);
     godot::Ref<godot::Texture2D> animal_restraint_icon(const godot::Dictionary& facts);

@@ -1,5 +1,6 @@
 #pragma once
 #include "farm_native.h"
+#include "appearance.h"
 #include "zone_native.h"
 #include "building_item_transaction.h"
 #include "item_transaction.h"
@@ -353,9 +354,29 @@ inline DFHack::MaterialInfo itemInspectionMaterial(df::item* item) {
     return DFHack::MaterialInfo(actual?item->getActualMaterial():item->getMaterial(),
         actual?item->getActualMaterialIndex():item->getMaterialIndex());
 }
+inline std::optional<ItemAppearanceRecipe> ownedItemRecipe(const df3d_appearance::Result& source) {
+    if(source.layers.empty() || source.layers.size()>256)return std::nullopt;
+    ItemAppearanceRecipe recipe;
+    const auto intern=[](auto& names,const std::string& name){
+        const auto it=std::find(names.begin(),names.end(),name);
+        if(it!=names.end())return int32_t(it-names.begin());
+        names.push_back(name);return int32_t(names.size()-1);
+    };
+    for(const auto& l:source.layers){
+        if(!l.page)return std::nullopt;
+        recipe.layers.push_back({intern(recipe.pages,df3d_appearance::pageToken(l.page)),l.tileX,l.tileY,l.cellsX,l.cellsY,
+            l.palette?intern(recipe.palettes,df3d_appearance::paletteInstallPath(l.palette)):65535,l.row,l.keyRow,l.offX,l.offY});
+    }
+    size_t bytes=0;if(!validItemRecipe(recipe,bytes))return std::nullopt;
+    return recipe;
+}
 inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
     if(!item)return std::nullopt;
     ItemInspectionAppearance appearance;
+    if(item->getType()==df::item_type::PET || item->getType()==df::item_type::VERMIN){
+        df3d_appearance::Result recipe;
+        if(df3d_appearance::resolveCritterItemPortrait(item,recipe))appearance.portrait=ownedItemRecipe(recipe);
+    }
     const auto material=itemInspectionMaterial(item);
     if(!material.isValid())return std::nullopt;appearance.materialToken=material.getToken();
     if(auto* subtype=DFHack::Items::getSubtypeDef(item->getType(),item->getSubtype()))appearance.subtypeRaw=subtype->id;
@@ -390,6 +411,10 @@ inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
         const auto cage=df3d_area::nativeZoneAnimalContainer(*item);if(!cage)return std::nullopt;
         appearance.cageMaterialFamily=int8_t(cage->materialFamily);appearance.cageOccupantEntity=int8_t(cage->occupantEntity);
         appearance.cageOccupantId=cage->occupantId;appearance.cageSolidColor=cage->solidColor;
+        df3d_appearance::Result recipe;
+        const bool resolved=appearance.cageOccupantEntity==1?df3d_appearance::resolveUnitSelector(df::unit::find(cage->occupantId),recipe):
+            appearance.cageOccupantEntity==2 && df3d_appearance::resolveCritterItemSelector(df::item::find(cage->occupantId),recipe);
+        if(resolved)appearance.cageOccupant=ownedItemRecipe(recipe);
     }
     if(item->getType()==df::item_type::DOOR) {
         // Native c80c7c..c80cbc: BUILDING_HOLDER, forbidden and positive

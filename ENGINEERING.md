@@ -45,16 +45,25 @@ a valid occupant identity. Both require nonempty, bounded, valid asset reference
 and have a combined131072-byte validation budget. Decoding owns its strings and
 layers after transport retirement. Absent recipes remain unknown: do not fabricate
 art from old recordings or treat an absent portrait as verified absence of art.
-This contract commit does not yet publish either field or connect panel rendering.
+The bridge publishes these owned references at the item observation safe point,
+and includes them in observation revisions. The viewer renders the portrait with
+original framing and uses the cage's independently owned occupant recipe, without
+requiring an off-map captive to be resident in the terrain model. Small selectors
+remain distinct from detail portraits. Native153b85..153bd8 reserves four rows
+for critter descriptions;154830..154864 supplies the seven-column header shift.
 
-Core19, extension, item-state and MSVC pass in item-recipes-contract. Codec checks
-cover absent recipes, correct portrait/occupant decoding, invalid types, empty
-recipes, invalid layer references and retained ownership after buffer release.
-Protected085722 on2026-11-10 verifies bridge/viewer171 compatibility through the
-existing PET5969 typed inspection/description/Uses path. Godot is headless; the
-source is preserved and DF31272 exits unsaved at30FPS. Maximum sampled GPU38C
-is not a measured peak; only the known separate-thread notice occurs. New recipe
-publication and full-panel acceptance remain separate unfinished work.
+Core19, extension/item-state and MSVC pass in item-recipes-wired. Recipe checks
+cover ownership, revision invalidation and malformed references; the contract's
+codec checks cover transport lifetime and validation. Protected090826 on2026-11-10
+verifies PET5969 View/close, native description/Uses, framed portrait and occupied
+lead-cage5968 carrier. The full488x708 panel is RGB-identical to native and both
+images were inspected. Source preserved; owned DF9304 exits unsaved at30FPS.
+GPU samples37-38C are not a measured peak. The rendered run passed with only the
+documented separate-thread, device-finalize and shutdown-object diagnostics.
+`native_stocks.json.critter_portrait_recipe_reference.panel_acceptance` records
+recipes and hashes. VERMIN, absent caste, multiple/caste-specific portrait sets,
+conditional layers and cold templates are not newly live accepted; Stocks remains
+gated pending the rest of its screen coverage.
 
 The retained Management170 fields provide barrel actual-material classification,
 solid color and selected contents liquid/subterranean-plant facts. Absent barrel facts remain unknown; only a known barrel

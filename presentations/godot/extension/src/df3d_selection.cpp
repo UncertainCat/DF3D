@@ -42,7 +42,7 @@ Ref<Texture2D> Df3dWorld::ammunition_icon(const Dictionary& appearance,int64_t i
 }
 Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,bool genericGroup,int64_t itemId,bool sheet,bool diagonalAmmo) {
     if(!assets_ || itemType<0 || itemType>=int(wm::ItemKind::BoltThrowerParts) ||
-       appearance.size()!=5+int(appearance.has("bedding"))+int(appearance.has("instrument"))+int(appearance.has("slab_engraving"))+int(appearance.has("gem_shape_raw"))+int(appearance.has("contents"))+int(appearance.has("artifact_mood"))+int(appearance.has("floodgate_open"))+int(appearance.has("door"))+int(appearance.has("bucket_liquid"))+int(appearance.has("cage"))+int(appearance.has("restraint")))return {};
+       appearance.size()!=5+int(appearance.has("bedding"))+int(appearance.has("instrument"))+int(appearance.has("slab_engraving"))+int(appearance.has("gem_shape_raw"))+int(appearance.has("contents"))+int(appearance.has("artifact_mood"))+int(appearance.has("floodgate_open"))+int(appearance.has("door"))+int(appearance.has("bucket_liquid"))+int(appearance.has("cage"))+int(appearance.has("restraint"))+int(appearance.has("portrait")))return {};
     if(itemId < -1 || itemId>INT32_MAX)return {};
     if(appearance.has("artifact_mood") && (itemType!=24 || appearance["artifact_mood"].get_type()!=Variant::BOOL))return {};
     if(appearance.has("floodgate_open") && (itemType!=7 || appearance["floodgate_open"].get_type()!=Variant::BOOL))return {};
@@ -160,13 +160,15 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
     }
     if(appearance.has("cage")) {
         if(itemType!=16 || appearance["cage"].get_type()!=Variant::DICTIONARY)return {};
-        const Dictionary cage=appearance["cage"];if(cage.size()!=4)return {};
+        const Dictionary cage=appearance["cage"];if(cage.size()!=4+int(cage.has("occupant")))return {};
         for(const char* key:{"material_family","occupant_entity","occupant_id"})if(!cage.has(key) || cage[key].get_type()!=Variant::INT)return {};
         if(!cage.has("solid_color") || cage["solid_color"].get_type()!=Variant::STRING)return {};
         const int64_t family=cage["material_family"],entity=cage["occupant_entity"],id=cage["occupant_id"];
         const auto color=String(cage["solid_color"]).utf8();
         if(family<0 || family>2 || entity<0 || entity>2 || color.length()>128 || (entity==0 ? id!=-1 : id<0 || id>INT32_MAX))return {};
-        Ref<Texture2D> occupant;if(entity){occupant=selection_icon(int(entity),id,true);if(occupant.is_null())return {};}
+        Ref<Texture2D> occupant;
+        if(cage.has("occupant") && (!entity || cage["occupant"].get_type()!=Variant::DICTIONARY))return {};
+        if(entity){if(!cage.has("occupant"))return {};occupant=candidate_icon(cage["occupant"]);if(occupant.is_null())return {};}
         const char* families[]={"METAL","WOOD","GLASS"};
         return composite_container_texture(std::string("ITEM_CAGE_")+families[family]+(entity?"_OCCUPIED":""),std::string_view(color.get_data(),color.length()),occupant);
     }
@@ -315,7 +317,9 @@ Ref<Texture2D> Df3dWorld::originalItemIcon(std::string_view material,wm::ItemKin
     icon->set_region(Rect2(pixels.px,pixels.py,pixels.pw,pixels.ph));return icon;
 }
 
-Ref<Texture2D> Df3dWorld::candidate_icon(const Dictionary& recipe) {
+Ref<Texture2D> Df3dWorld::candidate_icon(const Dictionary& recipe) {return candidateIcon(recipe,false);}
+Ref<Texture2D> Df3dWorld::item_portrait_icon(const Dictionary& recipe) {return candidateIcon(recipe,true);}
+Ref<Texture2D> Df3dWorld::candidateIcon(const Dictionary& recipe,bool portrait) {
     // Only caller-owned original-asset references; no live/map identity lookup.
     wm::SelectionAppearance source;
     for(const char* key:{"tile_pages","palettes","layers"})
@@ -343,7 +347,7 @@ Ref<Texture2D> Df3dWorld::candidate_icon(const Dictionary& recipe) {
         if(size_t(v[0])>=source.tilePages.size() || (v[5]!=65535 && size_t(v[5])>=source.palettes.size()))return {};
         source.layers.push_back({uint16_t(v[0]),uint16_t(v[1]),uint16_t(v[2]),uint8_t(v[3]),uint8_t(v[4]),uint16_t(v[5]),int16_t(v[6]),int16_t(v[7]),int8_t(v[8]),int8_t(v[9])});
     }
-    return composite_appearance_texture(source,false,true);
+    return portrait?composite_portrait(source):composite_appearance_texture(source,false,true);
 }
 
 Ref<Texture2D> Df3dWorld::animal_container_icon(const Dictionary& facts) {

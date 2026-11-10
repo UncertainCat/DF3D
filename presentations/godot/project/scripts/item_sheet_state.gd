@@ -196,19 +196,21 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 	if editing and owner==generation:applied.emit()
 
 static func _valid_appearance(look: Variant,item_type: int) -> bool:
-	if typeof(look)!=TYPE_DICTIONARY or look.size()!=5+int(item_type==13)+int(look.has("contents"))+int(look.has("floodgate_open"))+int(look.has("door"))+int(look.has("bucket_liquid"))+int(look.has("cage"))+int(look.has("restraint")):return false
+	if typeof(look)!=TYPE_DICTIONARY or look.size()!=5+int(item_type==13)+int(look.has("contents"))+int(look.has("floodgate_open"))+int(look.has("door"))+int(look.has("bucket_liquid"))+int(look.has("cage"))+int(look.has("restraint"))+int(look.has("portrait")):return false
+	if look.has("portrait") and (item_type not in [51,52] or not _valid_recipe(look.portrait)):return false
 	if look.has("restraint"):
 		var restraint=look.restraint
 		if item_type!=10 or typeof(restraint)!=TYPE_DICTIONARY or restraint.size()!=2:return false
 		if typeof(restraint.get("rope"))!=TYPE_BOOL or typeof(restraint.get("solid_color"))!=TYPE_STRING or restraint.solid_color.to_utf8_buffer().size()>128:return false
 	if look.has("cage"):
 		var cage=look.cage
-		if item_type!=16 or typeof(cage)!=TYPE_DICTIONARY or cage.size()!=4:return false
+		if item_type!=16 or typeof(cage)!=TYPE_DICTIONARY or cage.size()!=4+int(cage.has("occupant")):return false
 		for key in ["material_family","occupant_entity","occupant_id"]:
 			if typeof(cage.get(key))!=TYPE_INT:return false
 		if typeof(cage.get("solid_color"))!=TYPE_STRING or cage.solid_color.to_utf8_buffer().size()>128:return false
 		if cage.material_family<0 or cage.material_family>2 or cage.occupant_entity<0 or cage.occupant_entity>2:return false
 		if cage.occupant_id < -1 or cage.occupant_id>2147483647 or (cage.occupant_id!=-1 if cage.occupant_entity==0 else cage.occupant_id<0):return false
+		if cage.has("occupant") and (cage.occupant_entity==0 or not _valid_recipe(cage.occupant)):return false
 	if look.has("bucket_liquid"):
 		var liquid=look.bucket_liquid
 		if item_type!=18 or typeof(liquid)!=TYPE_DICTIONARY or liquid.size()!=2:return false
@@ -252,3 +254,25 @@ static func _valid_contents(contents: Variant,item_type: int) -> bool:
 		for key in ["metal","coal","contains_powder","rolls_sheets","protects_folded_sheets","contains_writing"]:
 			if typeof(row.get(key))!=TYPE_BOOL:return false
 	return true
+
+static func _valid_recipe(recipe: Variant) -> bool:
+	if typeof(recipe)!=TYPE_DICTIONARY or recipe.size()!=3:return false
+	var bytes:=12
+	for key in ["tile_pages","palettes","layers"]:
+		if typeof(recipe.get(key))!=TYPE_ARRAY or recipe[key].size()>256:return false
+	if recipe.tile_pages.is_empty() or recipe.layers.is_empty():return false
+	for key in ["tile_pages","palettes"]:
+		for value in recipe[key]:
+			if typeof(value)!=TYPE_STRING or value.is_empty():return false
+			var length: int=value.to_utf8_buffer().size()
+			if length>(256 if key=="tile_pages" else 512):return false
+			bytes+=4+length
+	var low=[0,0,0,1,1,0,-32768,-32768,-128,-128]
+	var high=[65535,65535,65535,255,255,65535,32767,32767,127,127]
+	for layer in recipe.layers:
+		if typeof(layer)!=TYPE_ARRAY or layer.size()!=10:return false
+		for i in 10:
+			if typeof(layer[i])!=TYPE_INT or layer[i]<low[i] or layer[i]>high[i]:return false
+		if layer[0]>=recipe.tile_pages.size() or (layer[5]!=65535 and layer[5]>=recipe.palettes.size()):return false
+		bytes+=16
+	return bytes<=131072

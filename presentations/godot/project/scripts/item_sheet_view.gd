@@ -14,6 +14,7 @@ var snapshot: Dictionary={}
 var colors: Array[Color]=[]
 var icon: Texture2D
 var carrier_icon: Texture2D
+var portrait: Texture2D
 var hover_help
 var pointer_known:=false
 var pointer_position:=Vector2.ZERO
@@ -40,7 +41,13 @@ func configure(world,help=null) -> void:
 func present(value: Dictionary) -> void:
 	var reset_description: bool=snapshot.get("id",-1)!=value.get("id",-1) or snapshot.get("description","")!=value.get("description","")
 	if snapshot.get("id",-1)!=value.get("id",-1):_leave_hover()
-	snapshot=value.duplicate(true);icon=null;carrier_icon=null
+	snapshot=value.duplicate(true);icon=null;carrier_icon=null;portrait=null
+	if snapshot.get("item_type",-1) in [51,52] and snapshot.get("appearance",{}).has("portrait") and source.has_method("item_portrait_icon"):
+		portrait=source.item_portrait_icon(snapshot.appearance.portrait)
+	# Native153b85..153bd8 reserves four additional rows for critter headers.
+	description_scroll.position.y=120 if critter_header() else 72
+	description_scroll.size.y=48 if critter_header() else 96
+	description_scroll.page=4 if critter_header() else 8
 	if snapshot.has("carrier") and source.has_method("selection_icon"):
 		var carrier: Dictionary=snapshot.carrier
 		if carrier.kind==1 and carrier.has("appearance") and source.has_method("item_sheet_icon"):
@@ -126,9 +133,11 @@ func patch(texture: Texture2D,rect: Rect2,rows:=3) -> void:
 func text_at(value: String,point: Vector2,color:=Color.WHITE) -> void:
 	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point,value,HORIZONTAL_ALIGNMENT_LEFT,-1,12,color)
 
+func critter_header() -> bool:return snapshot.get("item_type",-1) in [51,52]
+
 func header_text(value: String) -> String:
 	# Native154937/154ad7: panel cell span minus22, with three cells for a job.
-	var columns:=maxi(0,floori(size.x/8)-23-(3 if snapshot.get("in_job",false) else 0))
+	var columns:=maxi(0,floori(size.x/8)-23-(7 if critter_header() else 0)-(3 if snapshot.get("in_job",false) else 0))
 	if value.length()<columns:return value
 	var clipped:=value.left(maxi(0,columns-1))
 	return clipped.left(columns-4)+"..." if columns>4 else clipped
@@ -150,13 +159,17 @@ static func description_lines(value: String) -> PackedStringArray:
 func _draw() -> void:
 	if snapshot.is_empty():return
 	patch(art.texture("HOVER_RECTANGLE"),Rect2(Vector2.ZERO,size))
-	patch(picture.texture(false),Rect2(8,12,40,36))
-	if icon!=null:draw_texture_rect(icon,Rect2(10,14,32,32),false)
-	text_at(header_text(snapshot.get("name","")),Vector2(56,24 if snapshot.has("owner") else 36))
-	if snapshot.has("owner"):text_at(header_text("Owner: "+snapshot.owner.name),Vector2(56,36),colors[14])
-	if not snapshot.get("weight","").is_empty():text_at("Weight: "+snapshot.weight,Vector2(56,48),colors[14])
+	if critter_header():
+		if portrait!=null:draw_texture_rect(portrait,Rect2(8,12,96,96),false)
+	else:
+		patch(picture.texture(false),Rect2(8,12,40,36))
+		if icon!=null:draw_texture_rect(icon,Rect2(10,14,32,32),false)
+	var header_x:=112 if critter_header() else 56
+	text_at(header_text(snapshot.get("name","")),Vector2(header_x,24 if snapshot.has("owner") else 36))
+	if snapshot.has("owner"):text_at(header_text("Owner: "+snapshot.owner.name),Vector2(header_x,36),colors[14])
+	if not snapshot.get("weight","").is_empty():text_at("Weight: "+snapshot.weight,Vector2(header_x,48),colors[14])
 	var lines:=description_lines(snapshot.get("description",""))
-	for index in mini(8,lines.size()-description_scroll.first):text_at(lines[description_scroll.first+index],Vector2(16,84+index*12))
+	for index in mini(description_scroll.page,lines.size()-description_scroll.first):text_at(lines[description_scroll.first+index],Vector2(16,(132 if critter_header() else 84)+index*12))
 	if snapshot.get("in_job",false):
 		var task: Texture2D=art.texture("BUILDING_ITEM_TASK")
 		if task!=null:draw_texture_rect(task,Rect2(328,6,24,36),false)

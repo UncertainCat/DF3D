@@ -9335,9 +9335,75 @@
       "Source preserved; DF11188 closed unsaved at30FPS, maximum sampled GPU39C, not a measured peak. Godot headless; known diagnostics classified separately."
     ],
     "limits": [
-      "Recipe is diagnostic only: management transport and panel rendering not yet connected.",
       "One ordinary PET with valid caste and one simple portrait set. VERMIN, absent caste, multiple/caste-specific sets, conditional layers and cold template initialization not live-verified.",
-      "Cage holder occupant still needs independent recipe; public Stocks remains gated."
-    ]
+      "Absent recipes remain unknown. Public Stocks remains gated."
+    ],
+    "panel_acceptance": {
+      "source": "DF53.16 protected Stocks20261110-090826, management171",
+      "item_id": 5969,
+      "carrier_id": 5968,
+      "portrait": {
+        "layers": [
+          [
+            0,
+            4,
+            2,
+            1,
+            1,
+            65535,
+            -1,
+            -1,
+            0,
+            0
+          ]
+        ],
+        "palettes": [],
+        "tile_pages": [
+          "PORTRAIT_CREATURE_SURFACE_SMALL"
+        ]
+      },
+      "cage": {
+        "material_family": 0,
+        "occupant": {
+          "layers": [
+            [
+              0,
+              0,
+              69,
+              1,
+              1,
+              65535,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          ],
+          "palettes": [],
+          "tile_pages": [
+            "CREATURES_SMALL"
+          ]
+        },
+        "occupant_entity": 2,
+        "occupant_id": 5969,
+        "solid_color": "TAUPE_GRAY"
+      },
+      "rectangle": [
+        416,
+        52,
+        488,
+        708
+      ],
+      "different_pixels": 0,
+      "native_sha256": "17e5fcbcd38e6363277ae027dd513ccf06e087c4dacb28b5e6da9753882e0b30",
+      "viewer_sha256": "c23ace838059f954b4e8873cea01342fbbec2d43457d0ca4e0a579d2034781f7",
+      "description": "This is a tame masked lovebird.  ",
+      "uses": [],
+      "verification": [
+        "Actual View/close passed; full panels visually inspected and RGB-identical.",
+        "Core19, extension/item-state and MSVC pass in item-recipes-wired.",
+        "Source preserved; owned DF9304 closed unsaved at30FPS. GPU samples37-38C are not a peak measurement. Only documented separate-thread, device-finalize and shutdown-object diagnostics."
+      ]
+    }
   }
 }

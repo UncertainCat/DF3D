@@ -647,3 +647,26 @@ TEST_CASE("barrel material and selected liquid facts participate in item authori
     CHECK(itemObservationRevision(item)!=liquid);
     CHECK_FALSE(validInspectionInstrument(*item.appearance,31));
 }
+
+TEST_CASE("item recipes own references and invalidate observations") {
+    using namespace df3d_production;
+    ItemAppearanceRecipe recipe{{"TEST_PORTRAIT"},{},{{0,4,2,1,1,65535,-1,-1,0,0}}};
+    ItemObservation item;item.appearance.emplace();item.appearance->portrait=recipe;
+    CHECK(validInspectionInstrument(*item.appearance,52));
+    CHECK_FALSE(validInspectionInstrument(*item.appearance,16));
+    const auto before=itemObservationRevision(item);
+    recipe.pages[0]="CHANGED";
+    CHECK(item.appearance->portrait->pages[0]=="TEST_PORTRAIT");
+    item.appearance->portrait->layers[0][1]++;
+    CHECK(itemObservationRevision(item)!=before);
+    item.appearance->portrait->layers[0][0]=1;
+    CHECK_FALSE(validInspectionInstrument(*item.appearance,52));
+    ItemInspectionAppearance cage;cage.cageMaterialFamily=0;cage.cageOccupantEntity=2;cage.cageOccupantId=5969;cage.cageOccupant=recipe;
+    CHECK(validInspectionInstrument(cage,16));
+    item.appearance.reset();item.carrier=ItemCarrier{1,5968,16,"cage"};item.carrier->appearance=cage;
+    const auto carrier=itemObservationRevision(item);
+    item.carrier->appearance->cageOccupant->layers[0][2]++;
+    CHECK(itemObservationRevision(item)!=carrier);
+    cage.cageOccupantEntity=0;cage.cageOccupantId=-1;
+    CHECK_FALSE(validInspectionInstrument(cage,16));
+}

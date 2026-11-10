@@ -47,6 +47,14 @@ func run() -> void:
 	check(not model._valid_appearance(barrel_look,17),"Barrel lost container gate")
 	bag_look.contents.entries.append(selected.duplicate())
 	check(not model._valid_appearance(bag_look,31),"Bag accepted multiple selected references")
+	var recipe={"tile_pages":["TEST_PORTRAIT"],"palettes":[],"layers":[[0,4,2,1,1,65535,-1,-1,0,0]]}
+	var pet_look={"material_token":"BONE","subtype_raw":"","color_token":"","stack":1,"flags":0,"portrait":recipe}
+	check(model._valid_appearance(pet_look,52),"Owned critter portrait rejected")
+	check(not model._valid_appearance(pet_look,16),"Cage accepted critter portrait")
+	var occupied={"material_token":"LEAD","subtype_raw":"","color_token":"","stack":1,"flags":0,"cage":{"material_family":0,"solid_color":"GRAY","occupant_entity":2,"occupant_id":5969,"occupant":recipe}}
+	check(model._valid_appearance(occupied,16),"Off-map cage occupant recipe rejected")
+	recipe.layers[0][0]=1
+	check(not model._valid_appearance(pet_look,52) and not model._valid_appearance(occupied,16),"Invalid recipe page accepted")
 	var uses_item:=item();uses_item.uses=[]
 	check(model._valid(uses_item),"Known empty Uses rejected")
 	uses_item.uses=[{"caption":"Native reaction","reaction":84}]

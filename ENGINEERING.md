@@ -42,6 +42,22 @@ appearance. Rebuild bridge/viewer together;171 uses a separate channel. Unknown
 is -2, distinct from native unengraved -1; only SLAB87 may carry known -1..26.
 Old recordings retain unknown rather than inventing an engraving.
 
+Slab descriptions call native c75000 with owned output after validating the
+constructed-item dispatch (table16fbb08, typea6af90). The slab branch
+c78e30..c79136 reads semantic inscription e8; explicit DWARF mode at189c298
+excludes adventure knowledge and identity effects. Topic108 and engraving10c
+are structure-asserted. Typed engraving reaches the existing original-art slab
+renderer, and holder type46 uses installed BUILDING_ICON_SLAB.
+
+Core19, extension/item-state and MSVC pass (item-slab172, item-slab172-holder).
+Protected092658 on2026-11-10 verifies memorial11647: native/owned/wire prose and
+Uses match, View/close passes, and the full488x708 panel matches native pixels.
+Both panels were inspected. Source preserved; DF8188 exits unsaved at30FPS;
+GPU samples38-39C are not a measured peak. Only documented thread/finalize/
+shutdown diagnostics occur. `native_stocks.json.slab_sheet_reference` records
+hashes and earlier appearance/holder failures. Other engravings and long
+inscriptions are not newly live accepted; public Stocks remains gated.
+
 Management171 adds optional independent portrait and cage-occupant recipes to
 ItemInspectionAppearance, using the existing SelectionAppearance format. Rebuild
 bridge/viewer together:170 peers use a separate channel. Portrait recipes are

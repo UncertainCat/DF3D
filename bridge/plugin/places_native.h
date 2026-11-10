@@ -498,7 +498,8 @@ inline std::optional<BuildingRows> buildingRows(size_t requestedMode=6) {
             if(crop==-1)row.statusCaption=std::string(reinterpret_cast<const char*>(base+0x1601fc8),12);
             else if(crop>=0 && size_t(crop)<df::global::world->raws.plants.all.size()) {
                 auto* plant=df::global::world->raws.plants.all[crop];if(!plant)return std::nullopt;
-                row.subtitle=plant->name;
+                static_assert(offsetof(df::plant_raw,name_plural)==0x70);
+                row.subtitle=plant->name_plural;
                 if(!row.subtitle.empty() && row.subtitle[0]>='a' && row.subtitle[0]<='z')row.subtitle[0]-=32;
             }
             if(crop!=-1 && !farmStatus(*farm,row))return std::nullopt;

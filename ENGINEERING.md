@@ -92,7 +92,7 @@ Workshop rows additionally expose the first permitted worker's native1330c30
 caption through the existing owned unit-description context, and first queued
 job's native d03170 caption. Additional job count is retained as semantic data;
 the native extra-task caption is also supplied for the second status line. Farm rows expose the selected current
-season crop's raw name with native inline ASCII capitalization, or the immutable
+season crop's raw plural name (plant_raw+0x70) with native inline ASCII capitalization, or the immutable
 native “Leave fallow” literal in a separate right-status field. No crop eligibility
 or job ordering is reconstructed. Protected142031 checks the baseline crop names;
 its workshops had no permitted workers or jobs, so it does not accept those
@@ -278,6 +278,30 @@ reply or disconnect/reconnect; those require later live lifecycle acceptance.
 The source save remains unchanged and the owned DF process closes unsaved.
 Headless controller and core19 checks pass in `build/qa/places-state`.
 The Places view, modal owner, navigation and typed siege mutation remain pending.
+
+`places_view.gd` stages the native six-tab screen, row icons/captions/status,
+scrollbar and navigation/siege button artwork. Tab clicks update the controller;
+navigation and siege clicks emit intents for a future modal owner. This is not a
+public screen. Width-dependent positions/truncation, empty-tab copy, mixed siege
+aggregate state, wheel/hover behavior, modal ownership and typed mutations remain
+unfinished. The currently implemented geometry is accepted only at1200x800.
+
+Protected `stockpile-storage-native-input-20261110-153325` captures all six tabs
+from the real read/controller path, capped30FPS. RGB comparison of native and
+DF3D region `[40,64,968,712)` has zero differing pixels on every tab. This covers
+headers, populated first-page rows, captions, icons, status and applicable
+scrollbars, not offscreen rows or other viewport sizes. It caught and corrected
+short row backgrounds without a scrollbar, planted-count brightness, and a
+provider error reading singular crop names: native39e165 reads name_plural+0x70.
+Earlier prefix-only subtitle checks did not establish the full crop suffix;
+the oracle now checks the remaining crop column is blank. The crop-name fix is
+a DF3D correction, not a native-behavior exception.
+
+The source save is preserved and owned DF closes unsaved. Core/controller checks
+pass in `build/qa/places-view-final`; the rendered run is
+`passed_with_known_issues` for the existing render-thread finalize/ObjectDB
+shutdown diagnostics. These engine diagnostics remain deferred. Installed assets
+and screenshots stay ignored; the fixture retains only comparison metadata.
 
 ## Management 174 Tasks contract
 

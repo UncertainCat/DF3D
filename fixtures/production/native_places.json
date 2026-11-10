@@ -9391,5 +9391,40 @@
       "Rendered view, modal owner, navigation and hover",
       "Siege mutation transport"
     ]
+  },
+  "view_reference": {
+    "source": "build/stockpile-storage-native-input-20261110-153325",
+    "viewport": [
+      1200,
+      800
+    ],
+    "comparison_region": [
+      40,
+      64,
+      968,
+      712
+    ],
+    "different_pixels_by_tab": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "farm_crop_source": "plant_raw.name_plural at 0x70; native39e165",
+    "result": "passed_with_known_issues",
+    "known_diagnostics": [
+      "render-thread finalize",
+      "ObjectDB shutdown leak warning"
+    ],
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "Other sizes, truncation, empty tabs and mixed siege aggregate state",
+      "Offscreen rows and unpopulated status branches",
+      "Wheel, hover, modal owner and navigation effects",
+      "Typed siege mutations"
+    ]
   }
 }

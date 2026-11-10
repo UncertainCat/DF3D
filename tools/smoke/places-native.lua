@@ -157,6 +157,7 @@ for _,caption in ipairs{'Zones','Locations','Stockpiles','Workshops','Farm plots
      local secondary={};for x=13,g.dimx-1 do local ch=dfhack.screen.readTile(x,first_y+1+visible*3).ch;secondary[#secondary+1]=ch>=32 and ch<=255 and string.char(ch) or ' ' end
      local subtitle=dfhack.utf2df(rows[index].subtitle)
      assert(table.concat(secondary):sub(1,#subtitle)==subtitle,'Places subtitle mismatch: '..caption..' row '..index)
+     if mode==4 and #subtitle<24 then assert(table.concat(secondary):sub(#subtitle+1,24):match('^ *$'),'Places crop caption has an omitted native suffix')end
      if rows[index].secondary_status~='' then assert(table.concat(secondary):find(dfhack.utf2df(rows[index].secondary_status),1,true),'Places secondary status mismatch: '..caption..' row '..index)end
      if rows[index].operator_caption~='' then assert(table.concat(secondary):find(dfhack.utf2df(rows[index].operator_caption),1,true),'Places operator caption mismatch: '..caption..' row '..index)end
      local status=mode==3 and rows[index].job_caption or rows[index].status_caption

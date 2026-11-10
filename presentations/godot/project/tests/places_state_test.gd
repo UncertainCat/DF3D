@@ -1,4 +1,5 @@
 extends SceneTree
+const View=preload("res://scripts/places_view.gd")
 const State=preload("res://scripts/places_state.gd")
 const C=preload("res://scripts/management_contract.gd")
 const Service=preload("res://tests/work_details_state_test.gd").Service
@@ -41,6 +42,9 @@ func run() -> void:
 		service.reply(state.ticket,second);check(state.phase==State.Phase.Rejected and state.rows.is_empty(),"Malformed page accepted: %d"%fault)
 	state.open(4);service.reply(state.ticket,page(4,0,[],0));check(state.phase==State.Phase.Ready and state.rows.is_empty(),"Empty tab rejected")
 	state.dispose();state.open();check(state.phase==State.Phase.Unavailable,"Missing service retained read")
-	state.dispose();service.queue_free();await process_frame
+	var view:=View.new();view.state=state;view.size=Vector2(944,708)
+	check(view.tab_rect(0)==Rect2(8,60,72,24) and view.tab_rect(3)==Rect2(8,84,104,24),"Places tabs differ from native reference")
+	check(view.list_top()==120 and view.capacity()==15,"Places row geometry differs")
+	view.free();state.dispose();service.queue_free();await process_frame
 	if failures==0:print("PLACES_STATE_PASS")
 	quit(1 if failures else 0)

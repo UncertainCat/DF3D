@@ -39,6 +39,11 @@ func run() -> void:
 		counts.append(rows.size())
 	var actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(actions);actions.configure(world,true)
 	var controller=preload("res://scripts/places_state.gd").new();controller.configure(actions);controller.open()
+	var view
+	if OS.get_environment("DF3D_PLACES_RENDER")=="1":
+		root.size=Vector2i(1200,800)
+		check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Places assets unavailable")
+		view=preload("res://scripts/places_view.gd").new();root.add_child(view);view.configure_places(world,controller);view.layout(Vector2(1200,800))
 	for tab in 6:
 		if tab>0:controller.select_tab(tab)
 		deadline=Time.get_ticks_msec()+5000
@@ -46,6 +51,10 @@ func run() -> void:
 			world.poll();await create_timer(0.01).timeout
 		check(controller.phase==controller.Phase.Ready and controller.rows.size()==reference[tab].size(),"Places controller failed tab %d"%tab)
 		for i in controller.rows.size():check(controller.rows[i].building_id==int(reference[tab][i].id),"Controller row order differs")
+		if view!=null:
+			await process_frame;await process_frame;await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/places-view-%d.png"%tab)
+	if view!=null:view.queue_free();await process_frame
 	controller.refresh();controller.close()
 	for i in 5:world.poll();await create_timer(0.01).timeout
 	check(controller.phase==controller.Phase.Closed and controller.rows.is_empty(),"Late live reply reopened Places")

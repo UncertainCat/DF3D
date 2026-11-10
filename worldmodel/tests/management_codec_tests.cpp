@@ -5165,3 +5165,36 @@ TEST_CASE("barrel contents codec preserves material and liquid facts and validat
     if(mode==1){CHECK(facts.entries[0].liquid);CHECK(facts.entries[0].subterraneanPlant);CHECK(facts.entries[0].colorToken=="AMBER");}}
  }
 }
+
+TEST_CASE("item portraits and cage occupants carry independent bounded recipes") {
+  for(int mode=0;mode<8;++mode) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto pages=b.CreateVector(std::vector<flatbuffers::Offset<flatbuffers::String>>{b.CreateString("SYNTHETIC_PORTRAIT")});
+    const auto palettes=b.CreateVector(std::vector<flatbuffers::Offset<flatbuffers::String>>{});
+    std::vector<wire::AppearanceLayer> layers;
+    if(mode!=5)layers.emplace_back(mode==4?1:0,4,2,1,1,65535,-1,-1,0,0);
+    const auto recipe=wire::CreateSelectionAppearance(b,pages,palettes,b.CreateVectorOfStructs(layers));
+    const auto material=b.CreateString("CREATURE:TEST:BONE"),empty=b.CreateString("");
+    wire::ItemInspectionAppearanceBuilder appearance(b);
+    appearance.add_material_token(material);appearance.add_subtype_raw(empty);appearance.add_color_token(empty);appearance.add_stack(1);
+    const bool cage=mode==1 || mode==3 || mode==6;
+    if(cage) {
+      appearance.add_cage_material_family(0);appearance.add_cage_occupant_entity(mode==3?0:2);
+      appearance.add_cage_occupant_id(mode==3?-1:5969);appearance.add_cage_solid_color(empty);
+      appearance.add_cage_occupant(recipe);
+    } else if(mode!=7)appearance.add_portrait(recipe);
+    b.Finish(appearance.Finish());
+    const auto* value=flatbuffers::GetRoot<wire::ItemInspectionAppearance>(b.GetBufferPointer());
+    const int type=mode==2 || mode==6?0:cage?16:52;
+    const bool valid=mode==0 || mode==1 || mode==7;
+    CHECK(wire::validInspectionInstrument(*value,type)==valid);
+    if(!valid)continue;
+    auto decoded=codec::decodeInspectionAppearance(value);
+    if(mode==7){CHECK_FALSE(decoded.portrait);CHECK_FALSE(decoded.cageOccupant);continue;}
+    const auto& owned=cage?decoded.cageOccupant:decoded.portrait;
+    REQUIRE(owned);REQUIRE(owned->layers.size()==1);
+    CHECK(owned->tilePages[0]=="SYNTHETIC_PORTRAIT");CHECK(owned->layers[0].tileX==4);CHECK(owned->layers[0].tileY==2);
+    // The decoded recipe owns strings and layers after the transport is retired.
+    b.Clear();CHECK(owned->tilePages[0]=="SYNTHETIC_PORTRAIT");
+  }
+}

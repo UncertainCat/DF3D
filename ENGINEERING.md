@@ -37,9 +37,27 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
-Management170 adds barrel actual-material classification/solid color and selected
-contents liquid/subterranean-plant facts. Rebuild bridge/viewer together;169 peers
-use a separate channel. Absent barrel facts remain unknown; only a known barrel
+Management171 adds optional independent portrait and cage-occupant recipes to
+ItemInspectionAppearance, using the existing SelectionAppearance format. Rebuild
+bridge/viewer together:170 peers use a separate channel. Portrait recipes are
+valid only for PET52/VERMIN51; occupant recipes require an occupied CAGE16 with
+a valid occupant identity. Both require nonempty, bounded, valid asset references
+and have a combined131072-byte validation budget. Decoding owns its strings and
+layers after transport retirement. Absent recipes remain unknown: do not fabricate
+art from old recordings or treat an absent portrait as verified absence of art.
+This contract commit does not yet publish either field or connect panel rendering.
+
+Core19, extension, item-state and MSVC pass in item-recipes-contract. Codec checks
+cover absent recipes, correct portrait/occupant decoding, invalid types, empty
+recipes, invalid layer references and retained ownership after buffer release.
+Protected085722 on2026-11-10 verifies bridge/viewer171 compatibility through the
+existing PET5969 typed inspection/description/Uses path. Godot is headless; the
+source is preserved and DF31272 exits unsaved at30FPS. Maximum sampled GPU38C
+is not a measured peak; only the known separate-thread notice occurs. New recipe
+publication and full-panel acceptance remain separate unfinished work.
+
+The retained Management170 fields provide barrel actual-material classification,
+solid color and selected contents liquid/subterranean-plant facts. Absent barrel facts remain unknown; only a known barrel
 observation carries the new dictionary fields. BIN and BAG contracts are retained.
 Native c7c500..c7c900 supplies the reference for simulation getters and last-item
 selection, gated by the container flag. Native ceef70 selects liquid artwork or

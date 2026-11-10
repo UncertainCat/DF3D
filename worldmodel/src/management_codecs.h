@@ -3,8 +3,18 @@
 #include "wm/management_client.h"
 
 namespace wm::detail::management {
+inline SelectionAppearance decodeItemRecipe(const df3d::mirror::SelectionAppearance* p) {
+  SelectionAppearance result;
+  for(const auto* t:*p->tile_pages())result.tilePages.push_back(t->str());
+  for(const auto* t:*p->palettes())result.palettes.push_back(t->str());
+  for(const auto* l:*p->layers())result.layers.push_back({l->page(),l->tile_x(),l->tile_y(),l->cells_x(),l->cells_y(),
+    l->palette(),l->palette_row(),l->palette_key_row(),l->offset_x(),l->offset_y()});
+  return result;
+}
 inline ItemInspectionAppearance decodeInspectionAppearance(const df3d::mirror::ItemInspectionAppearance* a) {
   ItemInspectionAppearance result{a->material_token()->str(),a->subtype_raw()->str(),a->color_token()->str(),a->stack(),a->flags(),a->instrument_family(),a->instrument_placed()};
+  if(a->portrait())result.portrait=decodeItemRecipe(a->portrait());
+  if(a->cage_occupant())result.cageOccupant=decodeItemRecipe(a->cage_occupant());
   result.restraintRope=a->restraint_rope();if(a->restraint_solid_color())result.restraintSolidColor=a->restraint_solid_color()->str();
   result.cageMaterialFamily=a->cage_material_family();result.cageOccupantEntity=a->cage_occupant_entity();result.cageOccupantId=a->cage_occupant_id();if(a->cage_solid_color())result.cageSolidColor=a->cage_solid_color()->str();
   result.floodgateOpen=a->floodgate_open();result.doorOpen=a->door_open();result.doorForbidden=a->door_forbidden();result.doorWear=a->door_wear();result.bucketLiquid=a->bucket_liquid();if(a->bucket_liquid_color())result.bucketLiquidColor=a->bucket_liquid_color()->str();

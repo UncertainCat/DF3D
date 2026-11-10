@@ -5209,3 +5209,30 @@ TEST_CASE("item slab engraving preserves unknown and validates type and range") 
   if(mode<4)CHECK(codec::decodeInspectionAppearance(look).slabEngraving==engraving[mode]);
  }
 }
+
+TEST_CASE("corpse inspection recipes own their assets independently of map residency") {
+  for(int mode=0;mode<7;++mode) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto pages=b.CreateVector(std::vector<flatbuffers::Offset<flatbuffers::String>>{b.CreateString("SYNTHETIC_CORPSE")});
+    const auto palettes=b.CreateVector(std::vector<flatbuffers::Offset<flatbuffers::String>>{});
+    std::vector<wire::AppearanceLayer> layers;
+    if(mode!=4)layers.emplace_back(mode==3?1:0,2,3,1,1,mode==6?0:65535,-1,-1,0,0);
+    const auto recipe=wire::CreateSelectionAppearance(b,pages,palettes,b.CreateVectorOfStructs(layers));
+    const auto material=b.CreateString("CREATURE:TEST:BONE"),empty=b.CreateString("");
+    wire::ItemInspectionAppearanceBuilder a(b);
+    a.add_material_token(material);a.add_subtype_raw(empty);a.add_color_token(empty);a.add_stack(1);
+    if(mode!=5)a.add_corpse_selector(recipe);
+    b.Finish(a.Finish());
+    const auto* look=flatbuffers::GetRoot<wire::ItemInspectionAppearance>(b.GetBufferPointer());
+    const bool valid=mode==0 || mode==1 || mode==5;
+    CHECK(wire::validInspectionInstrument(*look,mode==1?46:mode==2?52:23)==valid);
+    if(!valid)continue;
+    const auto owned=codec::decodeInspectionAppearance(look);
+    b.Clear();
+    if(mode==5){CHECK_FALSE(owned.corpseSelector);continue;}
+    REQUIRE(owned.corpseSelector);REQUIRE(owned.corpseSelector->layers.size()==1);
+    CHECK(owned.corpseSelector->tilePages[0]=="SYNTHETIC_CORPSE");
+    CHECK(owned.corpseSelector->layers[0].tileX==2);
+    CHECK(owned.corpseSelector->layers[0].tileY==3);
+  }
+}

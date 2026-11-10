@@ -37,6 +37,23 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
+Management173 appends an optional independent corpse-selector recipe to item
+inspection appearance. Rebuild bridge and viewer together;172 peers use a
+separate channel. Only CORPSE23/CORPSEPIECE46 may carry this recipe, using the
+existing bounded SelectionAppearance asset-reference format. Empty recipes,
+invalid page/palette references and recipes exceeding the combined131072-byte
+budget are rejected. Decoding owns its strings and layers after transport
+retirement. Legacy absence remains unknown; do not invent corpse artwork from
+old recordings or require a resident map item to supply missing facts. This
+contract alone does not publish or render the new recipe.
+
+Core19, extension/item-state and MSVC pass (`corpse-selector173-contract`).
+Protected101233 on2026-11-10 verifies protocol173 and the existing corpse/tooth
+native description and Uses responses with a headless viewer. Source preserved;
+DF6356 closes unsaved at30FPS; GPU samples36-37C are not a measured peak. Only
+the documented separate-thread notice occurs. This is compatibility evidence,
+not new corpse-selector publication or pixel acceptance.
+
 Corpse23 and body-part46 inspection call native c75000/1a8df0 for description
 and Uses. The guarded corpse dispatch pins ca1aa0, ca0d60, both body/identity
 getters and the dependent unit caption. Fortress mode excludes adventure UI

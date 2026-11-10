@@ -59,6 +59,21 @@ observations and hashes. Unnamed resolved-unit cold-cache restoration, custom
 body plans and missing-body variants are not newly live accepted. Public Stocks
 remains gated pending complete screen coverage.
 
+Body-part variant selection follows native c7f0e7/c7f4a8: unbutchered takes
+precedence over skull and chooses LARGE_1..3 from the upper word of the
+item-ID-seeded2471c0 draw modulo three. Skull selection atc7f470 chooses
+SKULL_1/2 from that word's low bit. Loader1247e6a/1247f04/1247f9e and
+1246b98/1246c32 identify the corresponding installed artwork globals. The
+renderer reuses the existing verified itemVariantSeed; the former ID-modulo
+and odd/even assumptions are removed. Core19 and extension/item-state pass
+(`corpse-native-variants-final`); this establishes the traced selector rules,
+not new rendered corpse-panel acceptance. Skin/material classification and
+independent corpse recipes remain unfinished. Do not generalize the map
+provider's historical-figure profession fallback or legacy random-part hash
+to item inspection: native c7f500 resolves the unit directly and passes
+profession102 when absent to f26e0. The complete layered selector still needs
+comparison before those existing map-provider assumptions can be reused.
+
 Management172 appends the semantic slab engraving type to item inspection
 appearance. Rebuild bridge/viewer together;171 uses a separate channel. Unknown
 is -2, distinct from native unengraved -1; only SLAB87 may carry known -1..26.

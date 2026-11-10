@@ -1002,13 +1002,15 @@ std::string corpsePieceTileName(uint16_t f, std::string_view material, uint32_t 
   const std::string_view tissue = tissueOfToken(material);
   auto is = [&](const char* name) { return tissue == name; };
   // Flags first: they are DF's own semantics of what the piece counts as.
-  // Measured (corpse_probe, 53.16): Unbutchered pieces draw BODYPART_LARGE_1..3 whatever else they count as; variant spread by id (assumed), SMALL_1..3 unobserved.
-  if (f & wm::kCorpseUnbutchered && !(f & wm::kCorpseSkull)) {
+  // Native c7f0e7 tests unbutchered before skin/skull/material. c7f4a8
+  // seeds 2471c0 with item.id and reduces the upper word modulo three.
+  if (f & wm::kCorpseUnbutchered) {
     static const char* const kLarge[3] = {"BODYPART_LARGE_1", "BODYPART_LARGE_2", "BODYPART_LARGE_3"};
-    return kLarge[id % 3];
+    return kLarge[itemVariantSeed(id) % 3];
   }
-  // One lone skull observed (item 50048, even id) drew BODYPART_SKULL_2.
-  if (f & wm::kCorpseSkull) return id % 2 ? "BODYPART_SKULL_1" : "BODYPART_SKULL_2";
+  // Native c7f470 uses the same independent draw; loader1246b98/1246c32
+  // identifies bit zero as SKULL_1 and bit one as SKULL_2.
+  if (f & wm::kCorpseSkull) return itemVariantSeed(id) & 1 ? "BODYPART_SKULL_2" : "BODYPART_SKULL_1";
   if (f & wm::kCorpseBone) return "BODYPART_BONE";
   if (f & wm::kCorpseTooth) return "BODYPART_TEETH";
   if (f & wm::kCorpseHorn) {

@@ -783,17 +783,21 @@ TEST_CASE("items: kind, itemdef raw, material and flags pick the sprite") {
 TEST_CASE("corpse pieces: the body-part tile name from corpse flags and tissue") {
   using namespace std::string_literals;
   CHECK(corpsePieceTileName(wm::kCorpseBone | wm::kCorpseSkull, "CREATURE:GOBLIN:BONE", 8) ==
-        "BODYPART_SKULL_2"s);
+        "BODYPART_SKULL_1"s);
   CHECK(corpsePieceTileName(wm::kCorpseBone | wm::kCorpseSkull, "CREATURE:GOBLIN:BONE", 9) ==
         "BODYPART_SKULL_1"s);
   CHECK(corpsePieceTileName(wm::kCorpseBone, "CREATURE:DWARF:BONE", 1) == "BODYPART_BONE"s);
   // A severed, rotted limb (Unbutchered | Bone) is a LARGE part, not a bone
   // (measured live: goblin limbs on lone tiles draw LARGE_1..3).
   CHECK(corpsePieceTileName(wm::kCorpseUnbutchered | wm::kCorpseBone, "CREATURE:GOBLIN:BONE", 93135) ==
-        "BODYPART_LARGE_1"s);
-  CHECK(corpsePieceTileName(wm::kCorpseUnbutchered | wm::kCorpseBone, "CREATURE:GOBLIN:BONE", 93136) ==
         "BODYPART_LARGE_2"s);
-  CHECK(corpsePieceTileName(wm::kCorpseUnbutchered, "CREATURE:GOBLIN:MUSCLE", 93134) == "BODYPART_LARGE_3"s);
+  CHECK(corpsePieceTileName(wm::kCorpseUnbutchered | wm::kCorpseBone, "CREATURE:GOBLIN:BONE", 93136) ==
+        "BODYPART_LARGE_1"s);
+  CHECK(corpsePieceTileName(wm::kCorpseUnbutchered, "CREATURE:GOBLIN:MUSCLE", 93134) == "BODYPART_LARGE_1"s);
+  // Native seed evidence from the bin/item variant provider, independent of
+  // these branch expectations. Unbutchered wins even when skull is also set.
+  CHECK(corpsePieceTileName(wm::kCorpseUnbutchered | wm::kCorpseSkull, "CREATURE:DWARF:BONE", 1) == "BODYPART_LARGE_2"s);
+  CHECK(corpsePieceTileName(wm::kCorpseSkull, "CREATURE:DWARF:BONE", 0) == "BODYPART_SKULL_2"s);
   CHECK(corpsePieceTileName(wm::kCorpseTooth, "CREATURE:ELEPHANT:TOOTH", 1) == "BODYPART_TEETH"s);
   // A butchered tooth carries no corpse flag (measured live, corpse_probe).
   CHECK(corpsePieceTileName(0, "CREATURE:PIG:TOOTH", 55181) == "BODYPART_TEETH"s);
@@ -842,10 +846,10 @@ TEST_CASE("items: corpse pieces, skeletons and webs resolve to DF's tiles") {
     CHECK(r.found);
     CHECK(r.bodyPart);
     CHECK(std::string(r.rule) == "piece.bodypart");
-    CHECK(r.sprite == at(idx, "BODYPARTS", 1, 14));  // even id -> SKULL_2 (measured on item 50048)
+    CHECK(r.sprite == at(idx, "BODYPARTS", 0, 14));  // Native seeded draw, not ID parity.
     r = resolveItem(idx, q(wm::ItemKind::CorpsePiece, "CREATURE:GOBLIN:BONE",
                            wm::kCorpseBone | wm::kCorpseSkull, 11));
-    CHECK(r.sprite == at(idx, "BODYPARTS", 0, 14));
+    CHECK(r.sprite == at(idx, "BODYPARTS", 1, 14));
     r = resolveItem(idx, q(wm::ItemKind::CorpsePiece, "CREATURE:DWARF:BONE", wm::kCorpseBone, 1));
     CHECK(r.sprite == at(idx, "BODYPARTS", 0, 19));
     r = resolveItem(idx, q(wm::ItemKind::CorpsePiece, "CREATURE:DWARF:SKIN", wm::kCorpseLeather, 1));

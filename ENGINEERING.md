@@ -78,6 +78,18 @@ not admitted as a semantic API. Control eligibility/effects, worker presentation
 transport, controller, rendering and lifecycle remain unfinished. No Tasks route
 is exposed. The earlier111555 layout-only reference remains separate.
 
+Protected113154 records six native hover instructions and their displayed text
+in `native_tasks.json.actions_reference`: job Recenter, Suspend, Cancel, worker
+Recenter/View and Remove worker. The hauling red button removes the worker; it
+is not a task-cancellation button. Two unassigned construction tasks start
+suspended; clicking twice resumes and suspends them, restoring all flags.
+Cancelling the unstarted Well removes job372039 and building1284 while preserving
+all other job IDs. Source preserved; owned DF40832 exits unsaved, capped30FPS,
+GPU49C/2% sampled. No Godot viewer runs. This is native reference evidence only:
+assigned-worker release, ordinary job cancellation, partially built construction
+removal and navigation effects remain unverified. The complete native feed
+handler remains prohibited as a runtime adapter.
+
 ## Stocks native discovery
 
 Stocks list icons now use every available item-sheet selector instead of a

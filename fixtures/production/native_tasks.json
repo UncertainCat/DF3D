@@ -789,5 +789,127 @@
       "tasks-page-1.png": "8b2ef59cc061cb2f10ef333a4d55a054e7dce5d8d4b3e39b48e99a2469d6faaf",
       "tasks-page-2.png": "127543bc9ac63612b869a6d951f635a8ad41ad414187fe8dfaa17bbe3d617111"
     }
+  },
+  "actions_reference": {
+    "capture": "stockpile-storage-native-input-20261110-113154",
+    "actions": {
+      "hover": [
+        {
+          "active": true,
+          "instruction": 240,
+          "kind": "job-recenter",
+          "lines": [
+            "Leave this menu and",
+            "recenter on the task's",
+            "building."
+          ],
+          "point": [
+            252,
+            718
+          ]
+        },
+        {
+          "active": true,
+          "instruction": 245,
+          "kind": "suspend",
+          "lines": [
+            "Suspend this task.",
+            "This removes the",
+            "worker.  The task can",
+            "be unsuspended."
+          ],
+          "point": [
+            348,
+            718
+          ]
+        },
+        {
+          "active": true,
+          "instruction": 246,
+          "kind": "remove",
+          "lines": [
+            "Cancel this task."
+          ],
+          "point": [
+            372,
+            718
+          ]
+        },
+        {
+          "active": true,
+          "instruction": 234,
+          "kind": "worker-recenter",
+          "lines": [
+            "Leave this menu and",
+            "recenter on this",
+            "creature."
+          ],
+          "point": [
+            708,
+            142
+          ]
+        },
+        {
+          "active": true,
+          "instruction": 235,
+          "kind": "worker-view",
+          "lines": [
+            "Leave this menu and",
+            "view this creature's",
+            "sheet."
+          ],
+          "point": [
+            732,
+            142
+          ]
+        },
+        {
+          "active": true,
+          "instruction": 244,
+          "kind": "remove-worker",
+          "lines": [
+            "Remove the current",
+            "worker from the task."
+          ],
+          "point": [
+            324,
+            250
+          ]
+        }
+      ],
+      "removal": {
+        "building_id": 1284,
+        "building_removed": true,
+        "job_id": 372039,
+        "job_removed": true,
+        "other_jobs_preserved": true,
+        "stage_before": 0
+      },
+      "suspension": [
+        {
+          "after": 0,
+          "before": 2,
+          "job_id": 68196,
+          "restored": 2
+        },
+        {
+          "after": 0,
+          "before": 2,
+          "job_id": 372039,
+          "restored": 2
+        }
+      ]
+    },
+    "source_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "fps_cap": 30,
+    "sampled_gpu_celsius": 49,
+    "sampled_gpu_utilization_percent": 2,
+    "limits": [
+      "Native observations only; no DF3D action API or viewer acceptance.",
+      "Both construction tasks start suspended; clicks resume then suspend, restoring all flags.",
+      "No assigned-worker release, ordinary job cancellation, partially built construction removal or navigation effect acceptance.",
+      "GPU readings are samples, not peak measurements."
+    ]
   }
 }

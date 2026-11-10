@@ -96,6 +96,10 @@ end
 result.verified_caption_ids={}
 for _,row in ipairs(warm)do if verified[row.job_id]then result.verified_caption_ids[#result.verified_caption_ids+1]=row.job_id end end
 assert(#result.verified_caption_ids==#warm,'Not all Tasks captions were observed')
+if os.getenv('DF3D_TASKS_ACTIONS')=='1' then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('tasks%-native.lua$','tasks-actions-native.lua')
+ result.actions=assert(loadfile(source))(out,view,info,capture)
+end
 write('tasks-native.json',json.encode(result))
 gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
 assert(not info.open,'Tasks did not close')

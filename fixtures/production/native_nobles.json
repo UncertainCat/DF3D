@@ -1,0 +1,1933 @@
+{
+  "assigning_symbol": false,
+  "choosing_candidate": false,
+  "closed": true,
+  "dimensions": [
+    150,
+    66
+  ],
+  "field_rvas": {
+    "candidate": 25848504,
+    "candidate_noblelist_ind": 25848496,
+    "choosing_candidate": 25848492,
+    "noblelist": 25848352
+  },
+  "lines": [
+    {
+      "text": "                  Roderònul           Pop                                  Food  Drink           20th Malachite",
+      "y": 0
+    },
+    {
+      "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+      "y": 1
+    },
+    {
+      "text": "                  Metropolis          141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+      "y": 2
+    },
+    {
+      "text": "",
+      "y": 3
+    },
+    {
+      "text": "",
+      "y": 4
+    },
+    {
+      "text": "       Creatures    Tasks    Places    Labor    Work orders",
+      "y": 5
+    },
+    {
+      "text": "       Creatures    Tasks    Places    Labor    Work orders",
+      "y": 6
+    },
+    {
+      "text": "       Nobles and administrators    Objects    Justice",
+      "y": 7
+    },
+    {
+      "text": "       Nobles and administrators    Objects    Justice",
+      "y": 8
+    },
+    {
+      "text": "",
+      "y": 9
+    },
+    {
+      "text": "      Members of the nobility have required rooms and can make demands. They cannot be reassigned.",
+      "y": 10
+    },
+    {
+      "text": "      Administrators handle various aspects of your fortress and can be reassigned. Many administrators also require",
+      "y": 11
+    },
+    {
+      "text": "      rooms.",
+      "y": 12
+    },
+    {
+      "text": "",
+      "y": 13
+    },
+    {
+      "text": "      Monarch                          Unib Rakustazin, king",
+      "y": 14
+    },
+    {
+      "text": "",
+      "y": 15
+    },
+    {
+      "text": "                                                                                                                                    Elevation 36",
+      "y": 16
+    },
+    {
+      "text": "      Mayor                            Kûbuk ïngizkor, mayor",
+      "y": 17
+    },
+    {
+      "text": "",
+      "y": 18
+    },
+    {
+      "text": "",
+      "y": 19
+    },
+    {
+      "text": "      Captain of the guard             Kûbuk ïngizkor, mayor",
+      "y": 20
+    },
+    {
+      "text": "      The Blockaded Lovers",
+      "y": 21
+    },
+    {
+      "text": "",
+      "y": 22
+    },
+    {
+      "text": "      Dungeon master                   VACANT",
+      "y": 23
+    },
+    {
+      "text": "",
+      "y": 24
+    },
+    {
+      "text": "",
+      "y": 25
+    },
+    {
+      "text": "      Militia commander                Såkzul Nåzomkivish, m...",
+      "y": 26
+    },
+    {
+      "text": "      The Golden Beaks",
+      "y": 27
+    },
+    {
+      "text": "",
+      "y": 28
+    },
+    {
+      "text": "      Hammerer                         VACANT",
+      "y": 29
+    },
+    {
+      "text": "",
+      "y": 30
+    },
+    {
+      "text": "",
+      "y": 31
+    },
+    {
+      "text": "      Manager                          VACANT",
+      "y": 32
+    },
+    {
+      "text": "",
+      "y": 33
+    },
+    {
+      "text": "",
+      "y": 34
+    },
+    {
+      "text": "      Chief medical dwarf              Rith Suluslogem, chie...",
+      "y": 35
+    },
+    {
+      "text": "",
+      "y": 36
+    },
+    {
+      "text": "",
+      "y": 37
+    },
+    {
+      "text": "      Broker                           VACANT",
+      "y": 38
+    },
+    {
+      "text": "",
+      "y": 39
+    },
+    {
+      "text": "",
+      "y": 40
+    },
+    {
+      "text": "      Bookkeeper                       Stodir Tangakurvad, b...",
+      "y": 41
+    },
+    {
+      "text": "",
+      "y": 42
+    },
+    {
+      "text": "",
+      "y": 43
+    },
+    {
+      "text": "      Militia captain                  VACANT",
+      "y": 44
+    },
+    {
+      "text": "      The Infamous Daggers",
+      "y": 45
+    },
+    {
+      "text": "",
+      "y": 46
+    },
+    {
+      "text": "      Militia captain                  NEW",
+      "y": 47
+    },
+    {
+      "text": "",
+      "y": 48
+    },
+    {
+      "text": "",
+      "y": 49
+    },
+    {
+      "text": "      Militia captain                  Kikrost Thosbutuzol, ...",
+      "y": 50
+    },
+    {
+      "text": "      The Brains of Glaze",
+      "y": 51
+    },
+    {
+      "text": "",
+      "y": 52
+    },
+    {
+      "text": "      Messenger                        NEW",
+      "y": 53
+    },
+    {
+      "text": "",
+      "y": 54
+    },
+    {
+      "text": "",
+      "y": 55
+    },
+    {
+      "text": "",
+      "y": 56
+    },
+    {
+      "text": "",
+      "y": 57
+    },
+    {
+      "text": "",
+      "y": 58
+    },
+    {
+      "text": "",
+      "y": 59
+    },
+    {
+      "text": "",
+      "y": 60
+    },
+    {
+      "text": "",
+      "y": 61
+    },
+    {
+      "text": "",
+      "y": 62
+    },
+    {
+      "text": "",
+      "y": 63
+    },
+    {
+      "text": "",
+      "y": 64
+    },
+    {
+      "text": "",
+      "y": 65
+    }
+  ],
+  "menu_rva": 25848352,
+  "pickers": [
+    {
+      "candidates": [
+        {
+          "unit_id": -1,
+          "value": 100000000
+        },
+        {
+          "unit_id": 6598,
+          "value": 12
+        },
+        {
+          "unit_id": 6812,
+          "value": 10
+        },
+        {
+          "unit_id": 5981,
+          "value": 10
+        },
+        {
+          "unit_id": 6838,
+          "value": 6
+        },
+        {
+          "unit_id": 6811,
+          "value": 5
+        },
+        {
+          "unit_id": 5575,
+          "value": 5
+        },
+        {
+          "unit_id": 1017,
+          "value": 5
+        },
+        {
+          "unit_id": 6837,
+          "value": 4
+        },
+        {
+          "unit_id": 6531,
+          "value": 3
+        },
+        {
+          "unit_id": 6539,
+          "value": 3
+        },
+        {
+          "unit_id": 6032,
+          "value": 2
+        },
+        {
+          "unit_id": 6661,
+          "value": 1
+        },
+        {
+          "unit_id": 6392,
+          "value": 1
+        },
+        {
+          "unit_id": 6814,
+          "value": 1
+        },
+        {
+          "unit_id": 5984,
+          "value": 1
+        },
+        {
+          "unit_id": 6597,
+          "value": 1
+        },
+        {
+          "unit_id": 5813,
+          "value": 0
+        },
+        {
+          "unit_id": 5985,
+          "value": 0
+        },
+        {
+          "unit_id": 5697,
+          "value": 0
+        },
+        {
+          "unit_id": 6134,
+          "value": 0
+        },
+        {
+          "unit_id": 6135,
+          "value": 0
+        },
+        {
+          "unit_id": 6136,
+          "value": 0
+        },
+        {
+          "unit_id": 6274,
+          "value": 0
+        },
+        {
+          "unit_id": 6277,
+          "value": 0
+        },
+        {
+          "unit_id": 5574,
+          "value": 0
+        },
+        {
+          "unit_id": 5573,
+          "value": 0
+        },
+        {
+          "unit_id": 6534,
+          "value": 0
+        },
+        {
+          "unit_id": 6536,
+          "value": 0
+        },
+        {
+          "unit_id": 6538,
+          "value": 0
+        },
+        {
+          "unit_id": 4338,
+          "value": 0
+        },
+        {
+          "unit_id": 6540,
+          "value": 0
+        },
+        {
+          "unit_id": 6541,
+          "value": 0
+        },
+        {
+          "unit_id": 6542,
+          "value": 0
+        },
+        {
+          "unit_id": 6544,
+          "value": 0
+        },
+        {
+          "unit_id": 6546,
+          "value": 0
+        },
+        {
+          "unit_id": 6549,
+          "value": 0
+        },
+        {
+          "unit_id": 6553,
+          "value": 0
+        },
+        {
+          "unit_id": 6554,
+          "value": 0
+        },
+        {
+          "unit_id": 6555,
+          "value": 0
+        },
+        {
+          "unit_id": 6591,
+          "value": 0
+        },
+        {
+          "unit_id": 6592,
+          "value": 0
+        },
+        {
+          "unit_id": 6594,
+          "value": 0
+        },
+        {
+          "unit_id": 6595,
+          "value": 0
+        },
+        {
+          "unit_id": 4237,
+          "value": 0
+        },
+        {
+          "unit_id": 3845,
+          "value": 0
+        },
+        {
+          "unit_id": 3326,
+          "value": 0
+        },
+        {
+          "unit_id": 6677,
+          "value": 0
+        },
+        {
+          "unit_id": 6678,
+          "value": 0
+        },
+        {
+          "unit_id": 6681,
+          "value": 0
+        },
+        {
+          "unit_id": 6683,
+          "value": 0
+        },
+        {
+          "unit_id": 6684,
+          "value": 0
+        },
+        {
+          "unit_id": 6685,
+          "value": 0
+        },
+        {
+          "unit_id": 6807,
+          "value": 0
+        },
+        {
+          "unit_id": 6808,
+          "value": 0
+        },
+        {
+          "unit_id": 6809,
+          "value": 0
+        },
+        {
+          "unit_id": 3050,
+          "value": 0
+        },
+        {
+          "unit_id": 2571,
+          "value": 0
+        },
+        {
+          "unit_id": 2569,
+          "value": 0
+        },
+        {
+          "unit_id": 6815,
+          "value": 0
+        },
+        {
+          "unit_id": 6817,
+          "value": 0
+        },
+        {
+          "unit_id": 6819,
+          "value": 0
+        },
+        {
+          "unit_id": 6822,
+          "value": 0
+        },
+        {
+          "unit_id": 6824,
+          "value": 0
+        },
+        {
+          "unit_id": 6827,
+          "value": 0
+        },
+        {
+          "unit_id": 6828,
+          "value": 0
+        },
+        {
+          "unit_id": 6830,
+          "value": 0
+        },
+        {
+          "unit_id": 6831,
+          "value": 0
+        },
+        {
+          "unit_id": 6832,
+          "value": 0
+        },
+        {
+          "unit_id": 6835,
+          "value": 0
+        },
+        {
+          "unit_id": 6836,
+          "value": 0
+        },
+        {
+          "unit_id": 2346,
+          "value": 0
+        },
+        {
+          "unit_id": 2345,
+          "value": 0
+        },
+        {
+          "unit_id": 6969,
+          "value": 0
+        },
+        {
+          "unit_id": 6970,
+          "value": 0
+        },
+        {
+          "unit_id": 6971,
+          "value": 0
+        },
+        {
+          "unit_id": 6972,
+          "value": 0
+        },
+        {
+          "unit_id": 6973,
+          "value": 0
+        },
+        {
+          "unit_id": 6974,
+          "value": 0
+        },
+        {
+          "unit_id": 6976,
+          "value": 0
+        },
+        {
+          "unit_id": 6977,
+          "value": 0
+        },
+        {
+          "unit_id": 7117,
+          "value": 0
+        },
+        {
+          "unit_id": 7118,
+          "value": 0
+        },
+        {
+          "unit_id": 7120,
+          "value": 0
+        },
+        {
+          "unit_id": 7123,
+          "value": 0
+        },
+        {
+          "unit_id": 7124,
+          "value": 0
+        },
+        {
+          "unit_id": 7125,
+          "value": 0
+        },
+        {
+          "unit_id": 7126,
+          "value": 0
+        },
+        {
+          "unit_id": 7202,
+          "value": 0
+        },
+        {
+          "unit_id": 7203,
+          "value": 0
+        },
+        {
+          "unit_id": 7204,
+          "value": 0
+        },
+        {
+          "unit_id": 7205,
+          "value": 0
+        },
+        {
+          "unit_id": 7206,
+          "value": 0
+        },
+        {
+          "unit_id": 7207,
+          "value": 0
+        },
+        {
+          "unit_id": 7208,
+          "value": 0
+        },
+        {
+          "unit_id": 7209,
+          "value": 0
+        },
+        {
+          "unit_id": 7262,
+          "value": 0
+        },
+        {
+          "unit_id": 7263,
+          "value": 0
+        },
+        {
+          "unit_id": 7266,
+          "value": 0
+        },
+        {
+          "unit_id": 7267,
+          "value": 0
+        },
+        {
+          "unit_id": 7268,
+          "value": 0
+        },
+        {
+          "unit_id": 7271,
+          "value": 0
+        },
+        {
+          "unit_id": 7272,
+          "value": 0
+        },
+        {
+          "unit_id": 7273,
+          "value": 0
+        },
+        {
+          "unit_id": 7274,
+          "value": 0
+        },
+        {
+          "unit_id": 7275,
+          "value": 0
+        },
+        {
+          "unit_id": 7276,
+          "value": 0
+        },
+        {
+          "unit_id": 7278,
+          "value": 0
+        },
+        {
+          "unit_id": 7279,
+          "value": 0
+        },
+        {
+          "unit_id": 7280,
+          "value": 0
+        },
+        {
+          "unit_id": 7281,
+          "value": 0
+        },
+        {
+          "unit_id": 7282,
+          "value": 0
+        },
+        {
+          "unit_id": 7284,
+          "value": 0
+        },
+        {
+          "unit_id": 7344,
+          "value": 0
+        },
+        {
+          "unit_id": 7345,
+          "value": 0
+        },
+        {
+          "unit_id": 7348,
+          "value": 0
+        },
+        {
+          "unit_id": 7349,
+          "value": 0
+        }
+      ],
+      "lines": [
+        {
+          "text": "                  Roderònul           Pop                                  Food  Drink           20th Malachite",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+          "y": 1
+        },
+        {
+          "text": "                  Metropolis          141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+          "y": 2
+        },
+        {
+          "text": "",
+          "y": 3
+        },
+        {
+          "text": "",
+          "y": 4
+        },
+        {
+          "text": "       Creatures    Tasks    Places    Labor    Work orders",
+          "y": 5
+        },
+        {
+          "text": "       Creatures    Tasks    Places    Labor    Work orders",
+          "y": 6
+        },
+        {
+          "text": "       Nobles and administrators    Objects    Justice",
+          "y": 7
+        },
+        {
+          "text": "       Nobles and administrators    Objects    Justice",
+          "y": 8
+        },
+        {
+          "text": "",
+          "y": 9
+        },
+        {
+          "text": "",
+          "y": 10
+        },
+        {
+          "text": "             Leave Vacant",
+          "y": 11
+        },
+        {
+          "text": "",
+          "y": 12
+        },
+        {
+          "text": "",
+          "y": 13
+        },
+        {
+          "text": "             Zutthan Kadôlnimak, Spearmaster             Master Organizer",
+          "y": 14
+        },
+        {
+          "text": "",
+          "y": 15
+        },
+        {
+          "text": "                                                                                                                                    Elevation 36",
+          "y": 16
+        },
+        {
+          "text": "             Såkzul Nåzomkivish, militia commander       Accomplished Organzr",
+          "y": 17
+        },
+        {
+          "text": "",
+          "y": 18
+        },
+        {
+          "text": "",
+          "y": 19
+        },
+        {
+          "text": "             Unib Rakustazin, king                       Accomplished Organzr",
+          "y": 20
+        },
+        {
+          "text": "",
+          "y": 21
+        },
+        {
+          "text": "",
+          "y": 22
+        },
+        {
+          "text": "             Litast Urrïthzon, Axe Lord                  Talented Organizer",
+          "y": 23
+        },
+        {
+          "text": "",
+          "y": 24
+        },
+        {
+          "text": "",
+          "y": 25
+        },
+        {
+          "text": "             èzum Amostmörul, Axe Lord                   Proficient Organizer",
+          "y": 26
+        },
+        {
+          "text": "",
+          "y": 27
+        },
+        {
+          "text": "",
+          "y": 28
+        },
+        {
+          "text": "             Feb Anambomrek, Axe Lord                    Proficient Organizer",
+          "y": 29
+        },
+        {
+          "text": "",
+          "y": 30
+        },
+        {
+          "text": "",
+          "y": 31
+        },
+        {
+          "text": "             Stodir Tangakurvad, bookkeeper              Proficient Organizer",
+          "y": 32
+        },
+        {
+          "text": "",
+          "y": 33
+        },
+        {
+          "text": "",
+          "y": 34
+        },
+        {
+          "text": "             Kadôl Nîlesmûthkat, Hammer Lord             Skilled Organizer",
+          "y": 35
+        },
+        {
+          "text": "",
+          "y": 36
+        },
+        {
+          "text": "",
+          "y": 37
+        },
+        {
+          "text": "             Asën Govososlan, Spearmaster                Competent Organizer",
+          "y": 38
+        },
+        {
+          "text": "",
+          "y": 39
+        },
+        {
+          "text": "",
+          "y": 40
+        },
+        {
+          "text": "             Doren Matkadôl, Hammer Lord                 Competent Organizer",
+          "y": 41
+        },
+        {
+          "text": "",
+          "y": 42
+        },
+        {
+          "text": "",
+          "y": 43
+        },
+        {
+          "text": "             Dodók Kilruderush, Swordmaster              Adequate Organizer",
+          "y": 44
+        },
+        {
+          "text": "",
+          "y": 45
+        },
+        {
+          "text": "",
+          "y": 46
+        },
+        {
+          "text": "             Id Tunthol, Planter                         Novice Organizer",
+          "y": 47
+        },
+        {
+          "text": "",
+          "y": 48
+        },
+        {
+          "text": "",
+          "y": 49
+        },
+        {
+          "text": "             Kogan Atîsteling, Miner                     Novice Organizer",
+          "y": 50
+        },
+        {
+          "text": "",
+          "y": 51
+        },
+        {
+          "text": "",
+          "y": 52
+        },
+        {
+          "text": "             Äs Mörulsebïr, Fisherdwarf                  Novice Organizer",
+          "y": 53
+        },
+        {
+          "text": "",
+          "y": 54
+        },
+        {
+          "text": "",
+          "y": 55
+        },
+        {
+          "text": "             Kikrost Thosbutuzol, militia captain        Novice Organizer",
+          "y": 56
+        },
+        {
+          "text": "",
+          "y": 57
+        },
+        {
+          "text": "",
+          "y": 58
+        },
+        {
+          "text": "             Meng Ducimkezat, Farmer                     Novice Organizer",
+          "y": 59
+        },
+        {
+          "text": "",
+          "y": 60
+        },
+        {
+          "text": "",
+          "y": 61
+        },
+        {
+          "text": "",
+          "y": 62
+        },
+        {
+          "text": "",
+          "y": 63
+        },
+        {
+          "text": "",
+          "y": 64
+        },
+        {
+          "text": "",
+          "y": 65
+        }
+      ],
+      "position": "manager",
+      "selected": {
+        "assignment_id": 6,
+        "entity_id": 865,
+        "nemesis_id": -1,
+        "position_id": 10,
+        "position_name": "manager",
+        "unit_id": -1,
+        "value": 160
+      }
+    },
+    {
+      "candidates": [
+        {
+          "unit_id": -1,
+          "value": 100000000
+        },
+        {
+          "unit_id": 5813,
+          "value": 76
+        },
+        {
+          "unit_id": 6811,
+          "value": 69
+        },
+        {
+          "unit_id": 6812,
+          "value": 66
+        },
+        {
+          "unit_id": 6134,
+          "value": 63
+        },
+        {
+          "unit_id": 6598,
+          "value": 60
+        },
+        {
+          "unit_id": 6837,
+          "value": 57
+        },
+        {
+          "unit_id": 6531,
+          "value": 53
+        },
+        {
+          "unit_id": 6549,
+          "value": 49
+        },
+        {
+          "unit_id": 6661,
+          "value": 46
+        },
+        {
+          "unit_id": 6838,
+          "value": 45
+        },
+        {
+          "unit_id": 6392,
+          "value": 42
+        },
+        {
+          "unit_id": 6683,
+          "value": 42
+        },
+        {
+          "unit_id": 5697,
+          "value": 42
+        },
+        {
+          "unit_id": 6032,
+          "value": 41
+        },
+        {
+          "unit_id": 7262,
+          "value": 41
+        },
+        {
+          "unit_id": 6553,
+          "value": 41
+        },
+        {
+          "unit_id": 6539,
+          "value": 40
+        },
+        {
+          "unit_id": 6973,
+          "value": 39
+        },
+        {
+          "unit_id": 5985,
+          "value": 38
+        },
+        {
+          "unit_id": 7123,
+          "value": 38
+        },
+        {
+          "unit_id": 6835,
+          "value": 37
+        },
+        {
+          "unit_id": 6591,
+          "value": 36
+        },
+        {
+          "unit_id": 7126,
+          "value": 36
+        },
+        {
+          "unit_id": 6685,
+          "value": 35
+        },
+        {
+          "unit_id": 6274,
+          "value": 35
+        },
+        {
+          "unit_id": 6546,
+          "value": 35
+        },
+        {
+          "unit_id": 6809,
+          "value": 35
+        },
+        {
+          "unit_id": 7263,
+          "value": 35
+        },
+        {
+          "unit_id": 6828,
+          "value": 34
+        },
+        {
+          "unit_id": 7204,
+          "value": 34
+        },
+        {
+          "unit_id": 6830,
+          "value": 34
+        },
+        {
+          "unit_id": 7120,
+          "value": 34
+        },
+        {
+          "unit_id": 7345,
+          "value": 34
+        },
+        {
+          "unit_id": 7282,
+          "value": 34
+        },
+        {
+          "unit_id": 6815,
+          "value": 33
+        },
+        {
+          "unit_id": 7206,
+          "value": 33
+        },
+        {
+          "unit_id": 5575,
+          "value": 33
+        },
+        {
+          "unit_id": 6277,
+          "value": 32
+        },
+        {
+          "unit_id": 7267,
+          "value": 32
+        },
+        {
+          "unit_id": 7124,
+          "value": 32
+        },
+        {
+          "unit_id": 7118,
+          "value": 31
+        },
+        {
+          "unit_id": 7281,
+          "value": 30
+        },
+        {
+          "unit_id": 6542,
+          "value": 30
+        },
+        {
+          "unit_id": 6678,
+          "value": 30
+        },
+        {
+          "unit_id": 7274,
+          "value": 30
+        },
+        {
+          "unit_id": 6807,
+          "value": 30
+        },
+        {
+          "unit_id": 6597,
+          "value": 29
+        },
+        {
+          "unit_id": 7276,
+          "value": 29
+        },
+        {
+          "unit_id": 7202,
+          "value": 29
+        },
+        {
+          "unit_id": 6836,
+          "value": 29
+        },
+        {
+          "unit_id": 6970,
+          "value": 29
+        },
+        {
+          "unit_id": 7125,
+          "value": 29
+        },
+        {
+          "unit_id": 6592,
+          "value": 29
+        },
+        {
+          "unit_id": 6536,
+          "value": 29
+        },
+        {
+          "unit_id": 7207,
+          "value": 28
+        },
+        {
+          "unit_id": 6808,
+          "value": 28
+        },
+        {
+          "unit_id": 7117,
+          "value": 27
+        },
+        {
+          "unit_id": 1017,
+          "value": 26
+        },
+        {
+          "unit_id": 6827,
+          "value": 26
+        },
+        {
+          "unit_id": 7278,
+          "value": 26
+        },
+        {
+          "unit_id": 7279,
+          "value": 25
+        },
+        {
+          "unit_id": 6971,
+          "value": 24
+        },
+        {
+          "unit_id": 6831,
+          "value": 24
+        },
+        {
+          "unit_id": 6681,
+          "value": 24
+        },
+        {
+          "unit_id": 6972,
+          "value": 23
+        },
+        {
+          "unit_id": 6814,
+          "value": 22
+        },
+        {
+          "unit_id": 6824,
+          "value": 22
+        },
+        {
+          "unit_id": 7280,
+          "value": 22
+        },
+        {
+          "unit_id": 7271,
+          "value": 22
+        },
+        {
+          "unit_id": 6595,
+          "value": 21
+        },
+        {
+          "unit_id": 6976,
+          "value": 20
+        },
+        {
+          "unit_id": 6554,
+          "value": 20
+        },
+        {
+          "unit_id": 7273,
+          "value": 20
+        },
+        {
+          "unit_id": 6684,
+          "value": 19
+        },
+        {
+          "unit_id": 7209,
+          "value": 19
+        },
+        {
+          "unit_id": 6977,
+          "value": 19
+        },
+        {
+          "unit_id": 7203,
+          "value": 19
+        },
+        {
+          "unit_id": 3326,
+          "value": 18
+        },
+        {
+          "unit_id": 7348,
+          "value": 18
+        },
+        {
+          "unit_id": 7275,
+          "value": 18
+        },
+        {
+          "unit_id": 6969,
+          "value": 17
+        },
+        {
+          "unit_id": 6594,
+          "value": 17
+        },
+        {
+          "unit_id": 7268,
+          "value": 17
+        },
+        {
+          "unit_id": 5984,
+          "value": 17
+        },
+        {
+          "unit_id": 6832,
+          "value": 17
+        },
+        {
+          "unit_id": 3845,
+          "value": 16
+        },
+        {
+          "unit_id": 6538,
+          "value": 15
+        },
+        {
+          "unit_id": 7272,
+          "value": 15
+        },
+        {
+          "unit_id": 2569,
+          "value": 14
+        },
+        {
+          "unit_id": 6136,
+          "value": 13
+        },
+        {
+          "unit_id": 7284,
+          "value": 13
+        },
+        {
+          "unit_id": 6534,
+          "value": 13
+        },
+        {
+          "unit_id": 6540,
+          "value": 13
+        },
+        {
+          "unit_id": 4338,
+          "value": 13
+        },
+        {
+          "unit_id": 6555,
+          "value": 12
+        },
+        {
+          "unit_id": 6544,
+          "value": 12
+        },
+        {
+          "unit_id": 2345,
+          "value": 12
+        },
+        {
+          "unit_id": 7205,
+          "value": 12
+        },
+        {
+          "unit_id": 6541,
+          "value": 11
+        },
+        {
+          "unit_id": 6819,
+          "value": 11
+        },
+        {
+          "unit_id": 6817,
+          "value": 11
+        },
+        {
+          "unit_id": 3050,
+          "value": 11
+        },
+        {
+          "unit_id": 7266,
+          "value": 10
+        },
+        {
+          "unit_id": 7208,
+          "value": 9
+        },
+        {
+          "unit_id": 6135,
+          "value": 9
+        },
+        {
+          "unit_id": 5981,
+          "value": 9
+        },
+        {
+          "unit_id": 4237,
+          "value": 9
+        },
+        {
+          "unit_id": 2571,
+          "value": 9
+        },
+        {
+          "unit_id": 6822,
+          "value": 8
+        },
+        {
+          "unit_id": 6677,
+          "value": 8
+        },
+        {
+          "unit_id": 6974,
+          "value": 6
+        },
+        {
+          "unit_id": 7344,
+          "value": 5
+        },
+        {
+          "unit_id": 5573,
+          "value": 4
+        },
+        {
+          "unit_id": 7349,
+          "value": 4
+        },
+        {
+          "unit_id": 5574,
+          "value": 3
+        },
+        {
+          "unit_id": 2346,
+          "value": 2
+        }
+      ],
+      "lines": [
+        {
+          "text": "                  Roderònul           Pop                                  Food  Drink           20th Malachite",
+          "y": 0
+        },
+        {
+          "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+          "y": 1
+        },
+        {
+          "text": "                  Metropolis          141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+          "y": 2
+        },
+        {
+          "text": "",
+          "y": 3
+        },
+        {
+          "text": "",
+          "y": 4
+        },
+        {
+          "text": "       Creatures    Tasks    Places    Labor    Work orders",
+          "y": 5
+        },
+        {
+          "text": "       Creatures    Tasks    Places    Labor    Work orders",
+          "y": 6
+        },
+        {
+          "text": "       Nobles and administrators    Objects    Justice",
+          "y": 7
+        },
+        {
+          "text": "       Nobles and administrators    Objects    Justice",
+          "y": 8
+        },
+        {
+          "text": "",
+          "y": 9
+        },
+        {
+          "text": "",
+          "y": 10
+        },
+        {
+          "text": "             Leave Vacant",
+          "y": 11
+        },
+        {
+          "text": "",
+          "y": 12
+        },
+        {
+          "text": "                                                         Profcnt Jdg of Intnt  Adept Liar",
+          "y": 13
+        },
+        {
+          "text": "             Kûbuk ïngizkor, mayor                       Adept Persuader       Talented Negotiator",
+          "y": 14
+        },
+        {
+          "text": "                                                         Proficient Intimidtr  Proficint Cnvrstnlst",
+          "y": 15
+        },
+        {
+          "text": "                                                         Skilled Jdg of Intnt  Skilled Liar                                         Elevation 36",
+          "y": 16
+        },
+        {
+          "text": "             èzum Amostmörul, Axe Lord                   Skilled Persuader     Skilled Negotiator",
+          "y": 17
+        },
+        {
+          "text": "                                                         Skilled Intimidator   Skilled Converstnlst",
+          "y": 18
+        },
+        {
+          "text": "                                                         Comptnt Jdg of Intnt  Competent Liar",
+          "y": 19
+        },
+        {
+          "text": "             Såkzul Nåzomkivish, militia commander       Competent Persuader   Competent Negotiator",
+          "y": 20
+        },
+        {
+          "text": "                                                         Competent Intimidatr  Skilled Converstnlst",
+          "y": 21
+        },
+        {
+          "text": "                                                         Profcnt Jdg of Intnt  Skilled Liar",
+          "y": 22
+        },
+        {
+          "text": "             Rigòth Shinatír, sacred call                Expert Persuader      Adept Negotiator",
+          "y": 23
+        },
+        {
+          "text": "                                                         Competent Intimidatr  Talented Convrstnlst",
+          "y": 24
+        },
+        {
+          "text": "                                                         Comptnt Jdg of Intnt  Adequate Liar",
+          "y": 25
+        },
+        {
+          "text": "             Zutthan Kadôlnimak, Spearmaster             Adequate Persuader    Competent Negotiator",
+          "y": 26
+        },
+        {
+          "text": "                                                         Novice Intimidator    Competent Cnvrstnlst",
+          "y": 27
+        },
+        {
+          "text": "                                                         Comptnt Jdg of Intnt  Adequate Liar",
+          "y": 28
+        },
+        {
+          "text": "             Kadôl Nîlesmûthkat, Hammer Lord             Competent Persuader   Competent Negotiator",
+          "y": 29
+        },
+        {
+          "text": "                                                         Adequate Intimidator  Adequate Convrstnlst",
+          "y": 30
+        },
+        {
+          "text": "                                                         Adequat Jdg of Intnt  Adequate Liar",
+          "y": 31
+        },
+        {
+          "text": "             Asën Govososlan, Spearmaster                Adequate Persuader    Adequate Negotiator",
+          "y": 32
+        },
+        {
+          "text": "                                                         Novice Intimidator    Novice Conversatnlst",
+          "y": 33
+        },
+        {
+          "text": "                                                         Skilled Jdg of Intnt  Competent Liar",
+          "y": 34
+        },
+        {
+          "text": "             Ineth Zuglariseth, Scholar                  Skilled Persuader     Skilled Negotiator",
+          "y": 35
+        },
+        {
+          "text": "                                                         Skilled Intimidator   Skilled Converstnlst",
+          "y": 36
+        },
+        {
+          "text": "                                                         Skilled Jdg of Intnt  Skilled Liar",
+          "y": 37
+        },
+        {
+          "text": "             Id Tunthol, Planter                         Proficient Persuader  Competent Negotiator",
+          "y": 38
+        },
+        {
+          "text": "                                                         Proficient Intimidtr  Skilled Converstnlst",
+          "y": 39
+        },
+        {
+          "text": "                                                         Novice Liar           Adequate Intimidator",
+          "y": 40
+        },
+        {
+          "text": "             Litast Urrïthzon, Axe Lord                  Novice Persuader      Novice Judg of Intnt",
+          "y": 41
+        },
+        {
+          "text": "                                                         Novice Conversatnlst  Novice Comedian",
+          "y": 42
+        },
+        {
+          "text": "                                                         Skilled Jdg of Intnt  Competent Liar",
+          "y": 43
+        },
+        {
+          "text": "             Kogan Atîsteling, Miner                     Proficient Persuader  Skilled Negotiator",
+          "y": 44
+        },
+        {
+          "text": "                                                         Skilled Intimidator   Proficint Cnvrstnlst",
+          "y": 45
+        },
+        {
+          "text": "                                                         Skilled Jdg of Intnt  Skilled Liar",
+          "y": 46
+        },
+        {
+          "text": "             Rakust ádolbomrek, Weaponsmith              Skilled Persuader     Skilled Negotiator",
+          "y": 47
+        },
+        {
+          "text": "                                                         Adequate Intimidator  Skilled Converstnlst",
+          "y": 48
+        },
+        {
+          "text": "                                                         Comptnt Jdg of Intnt  Adequate Liar",
+          "y": 49
+        },
+        {
+          "text": "             Uzol Bardumtekkud, Miner                    Proficient Persuader  Competent Negotiator",
+          "y": 50
+        },
+        {
+          "text": "                                                         Proficient Intimidtr  Competent Cnvrstnlst",
+          "y": 51
+        },
+        {
+          "text": "                                                         Adequate Intimidator  Legendary Observer",
+          "y": 52
+        },
+        {
+          "text": "             Dodók Kilruderush, Swordmaster              Novice Persuader      Talentd Jdg of Intnt",
+          "y": 53
+        },
+        {
+          "text": "                                                         Novice Speaker",
+          "y": 54
+        },
+        {
+          "text": "                                                         Comptnt Jdg of Intnt  Skilled Liar",
+          "y": 55
+        },
+        {
+          "text": "             Uvash Mengteshkad, Planter                  Proficient Persuader  Skilled Negotiator",
+          "y": 56
+        },
+        {
+          "text": "                                                         Competent Intimidatr  Skilled Converstnlst",
+          "y": 57
+        },
+        {
+          "text": "                                                         Competent Negotiator  Adequat Jdg of Intnt",
+          "y": 58
+        },
+        {
+          "text": "             Logem Imeshdumat, Hunter                    Accomplished Ambushr  Competent Persuader",
+          "y": 59
+        },
+        {
+          "text": "                                                         Adequate Liar         Competent Intimidatr",
+          "y": 60
+        },
+        {
+          "text": "",
+          "y": 61
+        },
+        {
+          "text": "",
+          "y": 62
+        },
+        {
+          "text": "",
+          "y": 63
+        },
+        {
+          "text": "",
+          "y": 64
+        },
+        {
+          "text": "",
+          "y": 65
+        }
+      ],
+      "position": "messenger",
+      "selected": {
+        "assignment_id": -1,
+        "entity_id": 865,
+        "nemesis_id": -1,
+        "position_id": 23,
+        "position_name": "messenger",
+        "unit_id": -1,
+        "value": 250
+      }
+    }
+  ],
+  "rows": [
+    {
+      "assignment_id": 3,
+      "entity_id": 245,
+      "nemesis_id": 6233,
+      "position_id": 0,
+      "position_name": "monarch",
+      "unit_id": 5981,
+      "value": 1
+    },
+    {
+      "assignment_id": 7,
+      "entity_id": 865,
+      "nemesis_id": 6116,
+      "position_id": 9,
+      "position_name": "mayor",
+      "unit_id": 5813,
+      "value": 60
+    },
+    {
+      "assignment_id": 9,
+      "entity_id": 865,
+      "nemesis_id": 6116,
+      "position_id": 7,
+      "position_name": "captain of the guard",
+      "unit_id": 5813,
+      "value": 105
+    },
+    {
+      "assignment_id": 0,
+      "entity_id": 865,
+      "nemesis_id": -1,
+      "position_id": 21,
+      "position_name": "dungeon master",
+      "unit_id": -1,
+      "value": 108
+    },
+    {
+      "assignment_id": 11,
+      "entity_id": 865,
+      "nemesis_id": 6936,
+      "position_id": 4,
+      "position_name": "militia commander",
+      "unit_id": 6812,
+      "value": 120
+    },
+    {
+      "assignment_id": 1,
+      "entity_id": 865,
+      "nemesis_id": -1,
+      "position_id": 20,
+      "position_name": "hammerer",
+      "unit_id": -1,
+      "value": 150
+    },
+    {
+      "assignment_id": 6,
+      "entity_id": 865,
+      "nemesis_id": -1,
+      "position_id": 10,
+      "position_name": "manager",
+      "unit_id": -1,
+      "value": 160
+    },
+    {
+      "assignment_id": 5,
+      "entity_id": 865,
+      "nemesis_id": 6939,
+      "position_id": 11,
+      "position_name": "chief medical dwarf",
+      "unit_id": 6815,
+      "value": 165
+    },
+    {
+      "assignment_id": 4,
+      "entity_id": 865,
+      "nemesis_id": -1,
+      "position_id": 12,
+      "position_name": "broker",
+      "unit_id": -1,
+      "value": 170
+    },
+    {
+      "assignment_id": 3,
+      "entity_id": 865,
+      "nemesis_id": 1017,
+      "position_id": 13,
+      "position_name": "bookkeeper",
+      "unit_id": 1017,
+      "value": 180
+    },
+    {
+      "assignment_id": 13,
+      "entity_id": 865,
+      "nemesis_id": -1,
+      "position_id": 5,
+      "position_name": "militia captain",
+      "unit_id": -1,
+      "value": 200
+    },
+    {
+      "assignment_id": -1,
+      "entity_id": 865,
+      "nemesis_id": -1,
+      "position_id": 5,
+      "position_name": "militia captain",
+      "unit_id": -1,
+      "value": 200
+    },
+    {
+      "assignment_id": 12,
+      "entity_id": 865,
+      "nemesis_id": 6235,
+      "position_id": 5,
+      "position_name": "militia captain",
+      "unit_id": 5984,
+      "value": 200
+    },
+    {
+      "assignment_id": -1,
+      "entity_id": 865,
+      "nemesis_id": -1,
+      "position_id": 23,
+      "position_name": "messenger",
+      "unit_id": -1,
+      "value": 250
+    }
+  ],
+  "scroll": 0,
+  "provenance": {
+    "game": "DF 53.16",
+    "executable_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
+    "source": "build/stockpile-storage-native-input-20261110-165820",
+    "scope": "Diagnostic native overview and cancelled Manager/Messenger candidate pickers; no appointment submitted.",
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "artwork": "Original installed artwork captured only in ignored build output."
+  },
+  "native_entry_point_candidates": {
+    "overview_builder": "0x421f30",
+    "candidate_builder": "0x422d10",
+    "overview_cleanup": "0x421dc0",
+    "menu_open_wrapper_do_not_call": "0x424280",
+    "input_handler_do_not_call": "0x424330",
+    "status": "Located by native menu RVA cross-references; owned-input and global dependency audit pending. Not runtime-authorized."
+  },
+  "omissions": [
+    "Owned native provider and cold/warm parity",
+    "Appointment eligibility/effects and cancellation cleanup audit",
+    "Status captions, room requirements, demands, mandates, symbols and precision controls",
+    "Native hover/input/resize and complete rendered viewer",
+    "Typed transport, controller, lifecycle and public exposure"
+  ]
+}

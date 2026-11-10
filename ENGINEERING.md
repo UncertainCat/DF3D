@@ -37,6 +37,29 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
 
+## Nobles and administrators native discovery
+
+Protected165820 on2026-11-10 captures DF53.16's native overview and cancelled
+Manager/Messenger appointment pickers. `fixtures/production/native_nobles.json`
+retains14 ordered overview identities, native text cells and both117-entry
+candidate lists, including the null-unit Leave Vacant row. Manager and Messenger
+have different candidate values/order. The overview includes civilization-level
+monarch and local administrators, occupied/vacant assignments, and separate NEW
+rows without an assignment ID. Do not infer those distinctions in Godot.
+Original-art screenshots stay ignored; the overview and Manager picker were
+visually inspected. No appointment was submitted; source preservation passes,
+owned DF24360 closes unsaved,30FPS, GPU60C/17% sampled.
+
+Diagnostic field addresses place administrators at RVA18a6a20, its candidate
+vector at18a6ab8 and choosing-candidate flag at18a6aac. Static cross-references
+identify overview builder421f30, cleanup421dc0 and candidate path422d10 as
+candidates for independently owned invocation. Open wrapper424280 resets UI
+state and calls global interface helpers; feed424330 reads input. Neither is a
+runtime semantic API. The actual ownership/global dependency and destruction
+audits are unfinished; these addresses are discovery evidence, not authorization
+to call routines or borrow native menu storage. No Nobles runtime provider,
+transport, controller, mutations or public route has been added.
+
 ## Places native discovery
 
 Places presentation and read transport are staged; public exposure remains hidden. Protected140037 on DF53.16 captures

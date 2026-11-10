@@ -35,6 +35,7 @@ if os.getenv('DF3D_STOCKS_FURNITURE_SHEETS')=='1' then
  if os.getenv('DF3D_STOCKS_MATERIAL_SHEETS')=='1' then families={0,1,2,3,4,5};reference.missing_furniture={}end
  if os.getenv('DF3D_STOCKS_TEXTILE_SHEETS')=='1' then families={57,58};reference.missing_furniture={}end
  if os.getenv('DF3D_STOCKS_EQUIPMENT_SHEETS')=='1' then families={24,27,31,61,62,82,83};reference.missing_furniture={}end
+ if os.getenv('DF3D_STOCKS_LEATHER_SHEETS')=='1' then families={55,59,66,76,91};reference.missing_furniture={}end
  if os.getenv('DF3D_STOCKS_REMAINING_FURNITURE')=='1' then families={40,41,42,43,44,63,64,67,77,78,79,80,81,84,85,92};reference.missing_furniture={}end
  if os.getenv('DF3D_STOCKS_FISH_SHEETS')=='1' then families={49,50};reference.missing_furniture={}end
  if os.getenv('DF3D_STOCKS_MEAL_SHEETS')=='1' then families={56,72};reference.missing_furniture={}end

@@ -8826,5 +8826,56 @@
       "Header art differs for crown40,ring41,gem44,grate79,millstone81. Building-holder icons differ for mechanisms67,pipe77,grate79,millstone81,traction bench84. Differences are recorded above; visual completion is not claimed.",
       "Six absent families lack live acceptance. This extends item descriptions; Public Stocks remains gated."
     ]
+  },
+  "leather_description_reference": {
+    "run": "build/stockpile-storage-native-input-20261110-072707",
+    "items": [
+      {
+        "kind": 55,
+        "id": 19630,
+        "description": "This is cave blob leather.  The material is brown.  ",
+        "uses": [
+          {
+            "caption": "Make magel bellows",
+            "reaction": 353
+          },
+          {
+            "caption": "Make vúsh bellows",
+            "reaction": 363
+          },
+          {
+            "caption": "Make vúsh bag",
+            "reaction": 364
+          }
+        ]
+      }
+    ],
+    "dispatch": {
+      "SKIN_TANNED55": "161d330 type2896a0 FNV466599a7c4a924a9; colorcae8d0 lenc4 FNV2074115b1d2aa1fd",
+      "ROCK76": "16f4718 type8f47f0 FNV456673e45454fae8",
+      "BALLISTAARROWHEAD66": "16f8db0 type5c1710 FNVf94da4e564795ce2",
+      "BRANCH91": "16f3040 type8f5330 FNV1d040fb6a69bef2d",
+      "TOTEM59": "16f3f40 typeb4e5d0 FNVde98bfa5a462facd"
+    },
+    "ownership": "Leather dye/color branchc78767..c78c7c uses existing THREAD semantic helpers; color leaf reads owned item dye profile or raw solid-color pattern. Rock/branch/arrowhead share SEEDS virtuals except type; totem shares BOX except type. Descriptions and Uses are produced by native code with owned output.",
+    "render": {
+      "crop": [
+        416,
+        52,
+        904,
+        760
+      ],
+      "different_pixels": 0,
+      "native_sha256": "bc86322b10a1b5c6d93507aa22c901d7f172f2aca2d0293581daee2bef03a6bf",
+      "viewer_sha256": "756d77c0bed6657ee30fdf0c95fbff5cd469dcf8156735cb5aa2816010b05703"
+    },
+    "verification": [
+      "Native/viewer View and close, exact native/owned/wire description and three ordered Uses rows, full panel including bin carrier match for cave blob leather19630.",
+      "Core19, extension, item-state and MSVC pass in item-leather-dispatch.",
+      "Source preserved, DF28184 closed unsaved. 30FPS, maximum sampled GPU67C (not peak), only documented thread/finalize/shutdown diagnostics."
+    ],
+    "limits": [
+      "Totem59,ballista arrowhead66,rock76,branch91 absent; no live acceptance. Dyed leather variants remain untested live. Public Stocks remains gated."
+    ]
   }
 }

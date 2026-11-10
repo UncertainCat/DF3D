@@ -330,6 +330,18 @@ creature captions and artwork: native158450 skips item controls for unit rows,
 so those rows correctly have no View/flag buttons. Management168 separately
 adds native ordered Uses. Public Stocks remains gated.
 
+Leather55, totems59, ballista arrowheads66, rocks76 and branches91 use the
+owned native item-description provider. Leather's dye/color branch shares the
+THREAD semantic dependencies; its pinned color leaf resolves the item's dye
+profile or raw solid-color pattern. The other simple types share SEEDS virtuals,
+and totems share BOX. Protected072707 on2026-11-10 verifies cave blob leather19630:
+View/close, exact native/owned/wire description and three Uses rows, and a
+zero-difference full panel including its bin carrier. The other four families
+are absent and retain live-acceptance gaps; dyed leather is also untested live.
+`native_stocks.json.leather_description_reference` records the bounded evidence.
+Core19, extension, item-state and MSVC pass; source is preserved and DF28184
+exits unsaved at30FPS with only documented engine diagnostics.
+
 Additional constructed-item dispatch covers crowns40, rings41, earrings42,
 bracelets43, large gems44, catapult parts63, ballista parts64, mechanisms67,
 pipe sections77, hatch covers78, grates79, querns80, millstones81, traction

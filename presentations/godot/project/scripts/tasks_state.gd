@@ -1,8 +1,9 @@
 extends RefCounted
 # Native rows and capabilities are authority. Paging, scroll and ownership are local.
 signal changed
+signal inspect_ready(tile: Vector3i,unit_id: int)
 const C=preload("res://scripts/management_contract.gd")
-enum Phase {Closed,Reading,Ready,Applying,Rejected,Unknown,Unavailable}
+enum Phase {Closed,Reading,Ready,Applying,Rejected,Unknown,Unavailable,Navigating}
 var service
 var phase:=Phase.Closed
 var rows: Array=[]
@@ -33,11 +34,27 @@ func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
 func open() -> void:close();refresh()
 func refresh() -> void:
-	if phase in [Phase.Reading,Phase.Applying]:return
+	if phase in [Phase.Reading,Phase.Applying,Phase.Navigating]:return
 	_retire();_clear();_restarts=0;phase=Phase.Reading;_page()
 func seek(value: int,capacity: int) -> void:
 	if phase!=Phase.Ready:return
 	first=clampi(value,0,maxi(0,rows.size()-maxi(1,capacity)));changed.emit()
+func inspect_worker(job_id: int) -> void:
+	if phase!=Phase.Ready or service==null:return
+	for row in rows:
+		if row.job_id!=job_id or row.worker_id<0:continue
+		var id: int=row.worker_id;var owner:=generation
+		_clear();phase=Phase.Navigating
+		ticket=service.submit("creature_sheet_location",{"action":C.ManagementAction.CreatureSheetLocate,"unit_id":id},func(received,result,_sent):
+			if owner!=generation or received!=ticket:return
+			ticket=0
+			var value: Variant=result.get("creature_position",{})
+			if typeof(value)!=TYPE_DICTIONARY or result.get("outcome","")=="unknown" or result.get("status")!=C.ManagementStatus.Ok or result.get("action")!=C.ManagementAction.CreatureSheetLocate or value.get("unit_id")!=id or typeof(value.get("position"))!=TYPE_VECTOR3I:_reject(result);return
+			var tile: Vector3i=value.position
+			if tile.x<0 or tile.y<0 or tile.z<0 or tile.x>32767 or tile.y>32767 or tile.z>32767:_reject(result);return
+			inspect_ready.emit(tile,id))
+		if ticket==0:phase=Phase.Unavailable
+		changed.emit();return
 func apply(job_id: int,operation: int) -> void:
 	if phase!=Phase.Ready or operation<0 or operation>3:return
 	for row in rows:

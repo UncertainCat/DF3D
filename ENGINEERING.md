@@ -74,8 +74,16 @@ comes from113154; headless checks match the fixture and check capability-aware
 hitboxes. Pending requests, pointer exit and hidden/retired views release hover
 ownership. No Tasks hotkey text is inferred from other screens. Repeat and View
 task instructions still need native copy capture, and rendered Tasks tooltip
-acceptance remains pending. Owner/navigation wiring, input effects, resize/
-lifecycle and main-screen integration remain unfinished; public exposure stays gated.
+acceptance remains pending. The staged Tasks owner is registered in the main UI controller registry, without
+adding a public launcher. It owns modal focus, close/back/play-disable retirement,
+scaled layout and hover-service injection. Recenter re-reads the ordered native
+rows and verifies job/worker/building identity before moving the camera and
+closing. Worker View obtains a current CreatureSheetLocate result and uses the
+existing inspector route; late navigation replies are retired with the owner.
+Headless checks exercise fresh versus displayed coordinates, close-before-reply
+and play-disable focus release. Native View task navigation remains under audit.
+Composed main-scene navigation, rendered input effects, resize/lifecycle and
+remaining hover acceptance are unfinished; public exposure stays gated.
 
 Read requests carry offset, limit1..64 and an expected ordered-list revision.
 A nonzero offset requires that revision. Replies preserve native order and can

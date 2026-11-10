@@ -126,6 +126,12 @@ func controller(id: String):
 	if not Registry.PANEL_SCRIPTS.has(id): return null
 	if controllers.has(id): return controllers[id]
 	var panel = load(Registry.PANEL_SCRIPTS[id]).new()
+	if id=="tasks":
+		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
+		panel.focus_requested.connect(focus_tile)
+		panel.inspect_requested.connect(func(tile,unit_id):
+			if host.allows_panel_input(panel) and controller("inspector").open_target(tile,1,unit_id,true):focus_tile(tile))
+		controllers[id]=panel;return panel
 	if id=="stocks":
 		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
 		panel.focus_requested.connect(focus_tile);ensure_follow()

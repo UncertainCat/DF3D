@@ -259,6 +259,26 @@ The client emits the existing experimental rendering-thread warning, with no
 script errors. This is transport acceptance, not screen/pixel acceptance or
 changed-epoch/disconnect/late-reply controller acceptance.
 
+`places_state.gd` owns selected tab, per-tab scrolling, page assembly and request
+retirement. Partial lists stay private until every page passes identity, bounds,
+caption, position and recipe validation. Switching tabs detaches the previous
+request and starts a fresh native read; returning to a tab retains its local
+scroll position. Close/session change clears rows and advances the generation,
+so retired observers cannot populate a new tab or reopened panel. One stale
+membership response restarts from offset zero; repeated staleness rejects without
+an automatic loop. These states add no authored gameplay text or public entry.
+
+`places_state_test` verifies partial-page ownership, scroll/tab transitions,
+close and epoch retirement, bounded stale restart, duplicates, wrong tabs,
+changed revisions, stalled pages, invalid siege state/position and empty lists.
+Protected `stockpile-storage-native-input-20261110-152503` additionally assembles
+all249 rows through the real semantic action service across all six tabs and
+retires a queued refresh on close. The queued close is not proof of an in-flight
+reply or disconnect/reconnect; those require later live lifecycle acceptance.
+The source save remains unchanged and the owned DF process closes unsaved.
+Headless controller and core19 checks pass in `build/qa/places-state`.
+The Places view, modal owner, navigation and typed siege mutation remain pending.
+
 ## Management 174 Tasks contract
 
 Management174 uses `Local\df3d_management_v174`;173 peers cannot attach. There is

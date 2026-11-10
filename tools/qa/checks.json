@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "places_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/places_state_test.gd",
+      "completion": "^PLACES_STATE_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "tasks_state_test",
       "lane": "core",
       "kind": "godot",

@@ -37,6 +37,19 @@ func run() -> void:
 		var stale:=await page(tab,0,revision ^ 1)
 		check(stale.get("places",{}).get("outcome")==C.PlacesOutcome.Stale,"Places stale list accepted")
 		counts.append(rows.size())
+	var actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(actions);actions.configure(world,true)
+	var controller=preload("res://scripts/places_state.gd").new();controller.configure(actions);controller.open()
+	for tab in 6:
+		if tab>0:controller.select_tab(tab)
+		deadline=Time.get_ticks_msec()+5000
+		while controller.phase==controller.Phase.Reading and Time.get_ticks_msec()<deadline:
+			world.poll();await create_timer(0.01).timeout
+		check(controller.phase==controller.Phase.Ready and controller.rows.size()==reference[tab].size(),"Places controller failed tab %d"%tab)
+		for i in controller.rows.size():check(controller.rows[i].building_id==int(reference[tab][i].id),"Controller row order differs")
+	controller.refresh();controller.close()
+	for i in 5:world.poll();await create_timer(0.01).timeout
+	check(controller.phase==controller.Phase.Closed and controller.rows.is_empty(),"Late live reply reopened Places")
+	controller.dispose();actions.queue_free();await process_frame
 	var result=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
-	result.store_string(JSON.stringify({"success":not failed,"counts":counts,"stale_tabs":6}));result.close()
+	result.store_string(JSON.stringify({"success":not failed,"counts":counts,"stale_tabs":6,"controller_tabs":6,"closed_read_retired":true}));result.close()
 	quit(1 if failed else 0)

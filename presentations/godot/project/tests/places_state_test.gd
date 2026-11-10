@@ -1,0 +1,46 @@
+extends SceneTree
+const State=preload("res://scripts/places_state.gd")
+const C=preload("res://scripts/management_contract.gd")
+const Service=preload("res://tests/work_details_state_test.gd").Service
+var failures:=0
+func check(ok: bool,message: String) -> void:
+	if not ok:failures+=1;push_error(message)
+func row(id: int,tab:=0) -> Dictionary:
+	return {"building_id":id,"name":"fixture","subtitle":"","job_caption":"","status_caption":"","secondary_status":"","status_overlay":"","operator_caption":"","additional_jobs":0,"siege_action":0 if tab==5 else -1}
+func page(tab:=0,offset:=0,ids: Array=[1],total:=1,revision:=8) -> Dictionary:
+	return {"places":{"outcome":C.PlacesOutcome.None,"tab":tab,"list_revision":revision,"offset":offset,"total":total,"rows":ids.map(func(id):return row(id,tab))}}
+func stale(tab:=0) -> Dictionary:
+	return {"status":C.ManagementStatus.Rejected,"places":{"outcome":C.PlacesOutcome.Stale,"tab":tab,"list_revision":0,"total":0,"offset":0,"rows":[]}}
+func _initialize() -> void:call_deferred("run")
+func run() -> void:
+	var service:=Service.new();root.add_child(service);var state:=State.new();state.configure(service);state.open()
+	service.reply(state.ticket,page(0,0,[1],2));check(state.phase==State.Phase.Reading and state.rows.is_empty(),"Partial list exposed")
+	check(service.calls[state.ticket].intent.offset==1 and service.calls[state.ticket].intent.expected_list_revision==8,"Continuation lost identity")
+	service.reply(state.ticket,page(0,1,[2],2));check(state.phase==State.Phase.Ready and state.rows.size()==2,"Pages not assembled")
+	state.seek(99,1);check(state.first==1,"Scroll not clamped")
+	state.select_tab(5);service.reply(state.ticket,page(5));check(state.tab==5 and state.first==0 and state.rows[0].siege_action==0,"Tab data mixed")
+	state.select_tab(0);service.reply(state.ticket,page(0,0,[1,2],2));check(state.first==1,"Tab scroll not retained")
+	state.refresh();var old: int=state.ticket;state.select_tab(3);var current: int=state.ticket
+	service.reply(old,page());check(state.ticket==current and state.tab==3 and state.rows.is_empty() and service.detached.has(old),"Old tab reply changed current tab")
+	service.reply(current,page(3));state.refresh();old=state.ticket;state.close();service.reply(old,page(3))
+	check(state.phase==State.Phase.Closed and state.rows.is_empty(),"Closed controller accepted late reply")
+	state.open();old=state.ticket;service.session_changed.emit();service.reply(old,page())
+	check(state.phase==State.Phase.Unavailable and state.rows.is_empty(),"Epoch change retained rows")
+	state.open();service.reply(state.ticket,page(0,0,[1],2));service.reply(state.ticket,stale())
+	check(service.calls[state.ticket].intent.offset==0 and service.calls[state.ticket].intent.expected_list_revision==0,"Stale list did not restart from zero")
+	service.reply(state.ticket,stale());check(state.phase==State.Phase.Rejected and state.rows.is_empty(),"Stale restart unbounded")
+	for fault in 6:
+		state.open();service.reply(state.ticket,page(0,0,[1],2));var second:=page(0,1,[2],2)
+		match fault:
+			0:second.places.rows[0].building_id=1
+			1:second.places.tab=1
+			2:second.places.list_revision=9
+			3:second.places.rows=[]
+			4:second.places.rows[0].siege_action=0
+			5:second.places.rows[0].position=Vector3i(-1,0,0)
+		service.reply(state.ticket,second);check(state.phase==State.Phase.Rejected and state.rows.is_empty(),"Malformed page accepted: %d"%fault)
+	state.open(4);service.reply(state.ticket,page(4,0,[],0));check(state.phase==State.Phase.Ready and state.rows.is_empty(),"Empty tab rejected")
+	state.dispose();state.open();check(state.phase==State.Phase.Unavailable,"Missing service retained read")
+	state.dispose();service.queue_free();await process_frame
+	if failures==0:print("PLACES_STATE_PASS")
+	quit(1 if failures else 0)

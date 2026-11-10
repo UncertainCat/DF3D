@@ -9370,5 +9370,26 @@
       "Viewer layout, pixel fidelity, navigation and hover",
       "Siege mutation transport"
     ]
+  },
+  "controller_reference": {
+    "source": "build/stockpile-storage-native-input-20261110-152503",
+    "management_version": 175,
+    "counts_by_tab": [
+      158,
+      6,
+      34,
+      46,
+      2,
+      3
+    ],
+    "all_tabs_assembled_in_native_order": true,
+    "queued_refresh_retired_on_close": true,
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "Live in-flight reply retirement and reconnect/changed epoch",
+      "Rendered view, modal owner, navigation and hover",
+      "Siege mutation transport"
+    ]
   }
 }

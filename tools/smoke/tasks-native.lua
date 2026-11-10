@@ -301,6 +301,20 @@ if os.getenv('DF3D_TASKS_LAYOUT')=='1' then
    gui.simulateInput(view,'CONTEXT_SCROLL_PAGEDOWN');view:render(dfhack.getTickCount())
   end
   sample.last=info.jobs.scroll_position_cri_job;capture('tasks-layout-'..size..'-last')
+  if size=='minimum' then
+   info.jobs.scroll_position_cri_job=0;view:render(dfhack.getTickCount())
+   sample.overflow_controls={}
+   for _,x in ipairs{708,732}do
+    local before={};for axis=0,2 do before[#before+1]=df.reinterpret_cast('int16_t',base+0x18acefe+axis*2).value end
+    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+    g.precise_mouse_x=x;g.precise_mouse_y=142;g.mouse_x=x//8;g.mouse_y=11
+    gui.simulateInput(view,{});gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+    assert(info.open and info.current_mode==df.info_interface_mode_type.JOBS,'Narrow Tasks overflow control changed panel')
+    local actual={};for axis=0,2 do actual[#actual+1]=df.reinterpret_cast('int16_t',base+0x18acefe+axis*2).value end
+    assert(json.encode(actual)==json.encode(before),'Narrow Tasks overflow control moved camera')
+    sample.overflow_controls[#sample.overflow_controls+1]={point={x,142},inactive=true}
+   end
+  end
  end
 end
 write('tasks-native.json',json.encode(result))

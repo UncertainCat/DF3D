@@ -16,6 +16,12 @@ func exercise(expected: Dictionary) -> void:
 			root.size=sample[1];await process_frame;await process_frame
 			owner.state.seek(0,owner.panel.capacity());await process_frame;await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(directory+"/tasks-main-layout-"+sample[0]+".png")
+			if sample[0]=="minimum":
+				var camera: Vector3=scene.camera_rig.position;var z: int=world.get_top_z()
+				for x in [708,732]:
+					await pointer(Vector2(x,142));await drain()
+					check(owner.state.phase==owner.state.Phase.Ready and scene._ui.host.active==owner and owner.panel.visible,"Overflow worker control changed Tasks owner")
+					check(scene.camera_rig.position==camera and world.get_top_z()==z,"Overflow worker control moved camera")
 			for page in 5:
 				var wheel:=InputEventMouseButton.new();wheel.position=Vector2(500,200);wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN;wheel.shift_pressed=true;wheel.pressed=true
 				root.push_input(wheel,true);wheel=wheel.duplicate();wheel.pressed=false;root.push_input(wheel,true);await process_frame

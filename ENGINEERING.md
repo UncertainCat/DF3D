@@ -136,15 +136,20 @@ for42 rows, corresponding to capacities10/11/20/17. All panel RGB differences
 are confined to unsynchronized animated worker-name regions; other pixels match.
 Native negative-width destination names remain untruncated, now replacing the
 incorrect DF3D ellipsis; widths0..3 truncate without ellipsis. Native draws worker
-controls and destination names outside narrow panels. Those overflow backgrounds
-and input hitboxes remain unaccepted; panel crop comparisons exclude them.
+controls and destination names outside narrow panels. Panel crop comparisons exclude those overflow backgrounds and controls.
 Source preserved, owned DF5664 closed unsaved, both processes capped30FPS,
 GPU45C/0% sampled; documented engine diagnostics only (passed_with_known_issues).
 Earlier132633 completed the viewer workflow but native resize timed out because
 the launcher gate omitted Tasks.132924 missed the final native scroll after focus
 loss; the capture now restores mouse focus before each context event.
-Remaining action branches, overflow input/backgrounds and disconnect/epoch
-live acceptance are unfinished; public exposure stays gated.
+Protected133533 confirms native minimum-width worker Recenter/View controls at
+708,142 and732,142 are inactive outside the panel. The actual viewer matches:
+Tasks retains modal ownership and neither camera position nor level changes.
+Source preserved; owned DF17160 closed unsaved at30FPS, with documented engine
+diagnostics only (passed_with_known_issues). Initial133421 incorrectly expected
+Recenter to work there; the native observation establishes the inactive behavior.
+Remaining action branches, overflow backgrounds and disconnect/epoch live
+acceptance are unfinished; public exposure stays gated.
 
 Read requests carry offset, limit1..64 and an expected ordered-list revision.
 A nonzero offset requires that revision. Replies preserve native order and can

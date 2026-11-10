@@ -3191,5 +3191,32 @@
     "diagnostics": "passed_with_known_issues",
     "source_save_preserved": true,
     "owned_df_closed_unsaved": true
+  },
+  "overflow_input_reference": {
+    "capture": "build/stockpile-storage-native-input-20261110-133533",
+    "native": [
+      {
+        "inactive": true,
+        "point": [
+          708,
+          142
+        ]
+      },
+      {
+        "inactive": true,
+        "point": [
+          732,
+          142
+        ]
+      }
+    ],
+    "viewport": [
+      912,
+      552
+    ],
+    "scope": "First-row visible Recenter/View outside panel are inactive in native and viewer; Tasks retains ownership and camera remains unchanged. Does not accept overflow text backgrounds.",
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "diagnostics": "passed_with_known_issues"
   }
 }

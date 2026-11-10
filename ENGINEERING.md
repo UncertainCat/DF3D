@@ -101,7 +101,7 @@ storage. All pass. The capture does not cover every workshop, furnace, trap or
 demolition branch, nor action submission. Source preserved; DF38572 closes
 unsaved, capped30FPS, GPU48C/3% sampled. `controls_reference` records the scope.
 
-`tasks_action_native.h` provides Repeat, Suspend and Remove worker intents.
+`tasks_action_native.h` provides Repeat, Suspend, Remove worker and Cancel intents.
 Each rebuilds the owned list and checks current eligibility, job/worker/building
 identity and expected toggle state before mutation. Native1325080 releases the
 worker; Remove worker first calls57c760 to add the native building claim
@@ -118,8 +118,20 @@ owned DF27800/33892 exit unsaved, capped30FPS, GPU49C/2% sampled. Earlier114100 
 114148 failed because the worker click followed destructive Well cancellation;
 114148's hitbox assertion identified that invalid target. The successful order
 observes worker removal before cancellation. Repeat and assigned-worker Suspend
-remain unverified; Cancel is not yet a semantic action. No viewer/transport
-acceptance is claimed. `semantic_actions_reference` retains the comparison.
+remain unverified. No viewer/transport acceptance is claimed.
+`semantic_actions_reference` retains the comparison.
+
+Cancel follows native397b10..397b9f:54c130 cancels demolition;587d80 removes
+unstarted construction; the building's queueDestroy virtual handles started
+construction; a67820 destroys an ordinary job found in the holder's job list.
+The native helpers own simulation cleanup. The adapter does not clean up native
+menu rows or dereference deleted targets. Protected114609 closes the diagnostic
+Tasks menu before semantic cancellation and reopens it afterward. It matches
+native114231: Well1284 and job372039 disappear, all other jobs remain, stale
+building and duplicate requests reject. Source preserved; DF9680 exits unsaved,
+capped30FPS, GPU49C/3% sampled. `cancellation_reference` records this unstarted
+construction case; the other cancellation branches remain unverified. Transport,
+viewer and destructive lifecycle acceptance are still required before exposure.
 
 ## Stocks native discovery
 

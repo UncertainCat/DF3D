@@ -1499,5 +1499,33 @@
     "fps_cap": 30,
     "sampled_gpu_celsius": 49,
     "sampled_gpu_utilization_percent": 2
+  },
+  "cancellation_reference": {
+    "native_capture": "stockpile-storage-native-input-20261110-114231",
+    "semantic_capture": "stockpile-storage-native-input-20261110-114609",
+    "removal": {
+      "building_id": 1284,
+      "building_removed": true,
+      "job_id": 372039,
+      "job_removed": true,
+      "other_jobs_preserved": true,
+      "stage_before": 0
+    },
+    "checks": [
+      "Semantic cancellation executes with native Tasks closed.",
+      "Stale building identity rejects without removing job/building.",
+      "Duplicate cancellation rejects.",
+      "All other job IDs survive.",
+      "Suspend and worker-removal effects still match native."
+    ],
+    "limits": [
+      "Unstarted construction only; partially built construction, demolition cancellation and ordinary jobs not exercised.",
+      "No public transport or viewer integration acceptance."
+    ],
+    "source_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "fps_cap": 30,
+    "sampled_gpu_celsius": 49,
+    "sampled_gpu_utilization_percent": 3
   }
 }

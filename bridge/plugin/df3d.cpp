@@ -2488,8 +2488,9 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           if(parameters.size()!=6)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving() || !df::global::pause_state || !*df::global::pause_state)return CR_FAILURE;
           const auto action=parameters[1]=="repeat"?df3d_tasks::Action::Repeat:
-              parameters[1]=="suspend"?df3d_tasks::Action::Suspend:df3d_tasks::Action::RemoveWorker;
-          if(parameters[1]!="repeat" && parameters[1]!="suspend" && parameters[1]!="remove-worker")return CR_WRONG_USAGE;
+              parameters[1]=="suspend"?df3d_tasks::Action::Suspend:
+              parameters[1]=="cancel"?df3d_tasks::Action::Cancel:df3d_tasks::Action::RemoveWorker;
+          if(parameters[1]!="repeat" && parameters[1]!="suspend" && parameters[1]!="remove-worker" && parameters[1]!="cancel")return CR_WRONG_USAGE;
           int32_t values[4];
           for(size_t i=0;i<4;++i){const auto& raw=parameters[i+2];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i]);
             if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;}

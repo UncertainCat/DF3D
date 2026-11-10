@@ -101,7 +101,16 @@ end
 assert(building and building:getBuildStage()==0,'Removal fixture must be unstarted')
 local id=building.id;local before_ids={}
 for _,value in require('utils').listpairs(df.global.world.jobs.list)do before_ids[#before_ids+1]=value.id end
-local yy=row_y(job.id);click(372,yy)
+if semantic then
+ -- Retire the diagnostic native menu before deleting a job it references.
+ -- The runtime adapter must neither read nor repair native menu scratch.
+ gui.simulateInput(view,'LEAVESCREEN');assert(not info.open)
+ assert(apply('cancel',372039,-1,id+1,false)==1,'Stale building accepted')
+ assert(job_by_id(372039) and df.building.find(id),'Rejected cancellation changed target')
+ assert(apply('cancel',372039,-1,id,false)==2,'Semantic cancellation failed')
+ assert(apply('cancel',372039,-1,id,false)==1,'Duplicate cancellation accepted')
+ gui.simulateInput(view,'D_JOBLIST');view:render(dfhack.getTickCount())
+else local yy=row_y(job.id);click(372,yy)end
 assert(not job_by_id(372039) and not df.building.find(id),'Native Remove retained unstarted building/job')
 for _,other in ipairs(before_ids)do if other~=372039 then assert(job_by_id(other),'Remove lost unrelated job')end end
 result.removal={job_id=372039,building_id=id,stage_before=0,job_removed=true,building_removed=true,other_jobs_preserved=true}

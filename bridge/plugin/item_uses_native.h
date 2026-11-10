@@ -1,5 +1,6 @@
 #pragma once
 #include "item_transaction.h"
+#include "item_written_native.h"
 #include "workshop_catalog_native.h"
 #include "stone_use_native.h"
 #include "df/reaction.h"
@@ -70,6 +71,8 @@ inline std::optional<ItemUses> itemUses(df::item* item) {
     const auto* entity=df::global::plotinfo->main.fortress_entity;
     if(entity)for(const auto index:entity->resources.reaction_idx)
         if(index<0 || size_t(index)>=reactions.size())return std::nullopt;
+    std::unique_ptr<df3d_creature::KnowledgeMaterialCacheRestore> writtenCache;
+    if(writtenItem(item))writtenCache=std::make_unique<df3d_creature::KnowledgeMaterialCacheRestore>(df::global::world->raws.creatures.hist_fig_to_creature_map);
     ItemUsesContext owned(base);
     reinterpret_cast<void(*)(void*,df::item*)>(base+0x1a8df0)(&owned,item);
     if(owned.uses.size()!=owned.reactions.size() || owned.uses.size()>4096 || owned.description.size()>128*1024)return std::nullopt;

@@ -1318,3 +1318,22 @@ TEST_CASE("native barrel facts choose contents base and preserve unresolved mate
   r=resolveItem(idx,q);CHECK(r.sprite.x==11);CHECK(r.overlays.empty());
   facts.container=false;CHECK(resolveItem(idx,q).sprite.x==10);
 }
+
+TEST_CASE("book material selection follows native gem glass branch without furniture fallback") {
+  AssetIndex idx;idx.pages.push_back({"TEST_BOOK","","/synthetic",32,32,128,32});
+  idx.tileGraphics["ITEM_BOOK_WOOD"]={{0,0,0,1,1}};
+  idx.tileGraphics["ITEM_BOOK_STONE"]={{0,1,0,1,1}};
+  idx.tileGraphics["ITEM_BOOK_METAL"]={{0,2,0,1,1}};
+  idx.tileGraphics["ITEM_BOOK_GLASS"]={{0,3,0,1,1}};
+  idx.inorganics["TEST_GEM"].flags=kMatGem;
+  idx.inorganics["TEST_METAL"].flags=kMatMetal;
+  ItemQuery q;q.kind=wm::ItemKind::Book;
+  for(const auto& row:std::vector<std::pair<std::string,int>>{
+      {"PLANT:TEST:WOOD",0},{"PLANT:TEST:THREAD",0},{"INORGANIC:TEST_STONE",1},
+      {"INORGANIC:TEST_METAL",2},{"INORGANIC:TEST_GEM",3},{"GLASS_GREEN",3}}){
+    q.material=row.first;const auto result=resolveItem(idx,q);
+    REQUIRE(result.found);CHECK(result.sprite.x==row.second);
+  }
+  idx.tileGraphics.erase("ITEM_BOOK_GLASS");q.material="INORGANIC:TEST_GEM";
+  CHECK_FALSE(resolveItem(idx,q).found);
+}

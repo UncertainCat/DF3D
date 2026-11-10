@@ -1507,7 +1507,20 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
       return r;
     }
     case ItemKind::Egg: return single("ITEM_EGG_SIZE2", "egg");
-    case ItemKind::Book: return member("ITEM_BOOK", "", "book");
+    case ItemKind::Book: {
+      // Native c7eab4..c7eba0 / cfbcf1..cfbd14: plant materials use wood,
+      // inorganic gems use glass, other nonmetals use stone, default is metal.
+      // Do not use the general furniture class fallback (which treats gems as stone).
+      const auto flags=idx.materialFlags(q.material);
+      const char* name="ITEM_BOOK_METAL";
+      if(startsWith(q.material,"PLANT:") || isWoodToken(q.material))name="ITEM_BOOK_WOOD";
+      if(startsWith(q.material,"INORGANIC:")) {
+        if(flags&kMatGem)name="ITEM_BOOK_GLASS";
+        else if(!(flags&kMatMetal))name="ITEM_BOOK_STONE";
+      }
+      if(q.material=="GLASS_GREEN" || q.material=="GLASS_CLEAR" || q.material=="GLASS_CRYSTAL")name="ITEM_BOOK_GLASS";
+      return single(name,"book.native");
+    }
     case ItemKind::Sheet: return single("ITEM_SHEET", "sheet");
     case ItemKind::Meat:
     case ItemKind::Fish:

@@ -9456,5 +9456,80 @@
       "One dolomite memorial. Other engraving types, long inscriptions and non-memorial slabs are not newly live accepted.",
       "Public Stocks remains gated."
     ]
+  },
+  "written_item_sheet_reference": {
+    "source": "DF53.16 management172 protected Stocks20261110-093301/093932",
+    "cases": [
+      {
+        "item_type": 89,
+        "id": 110,
+        "description": "This is a picture jasper-bound codex.    The written portion consists of a 25 page essay entitled The Denial: Problems And Solutions, authored by Lum Licpuja.  It concerns the denial of apprenticeship of the human Lum Strifebent under the dwarf Bomrek Weakengravel in  Basementskulls in the midsummer of 64.  The writing is forceful.  Overall, the prose is amateurish at best.    ",
+        "uses": [],
+        "appearance": {
+          "color_token": "GOLDEN_YELLOW",
+          "flags": 32,
+          "material_token": "INORGANIC:PICTURE JASPER",
+          "stack": 1,
+          "subtype_raw": ""
+        },
+        "native_capture": "stockpile-storage-native-input-20261110-093301",
+        "viewer_capture": "stockpile-storage-native-input-20261110-093932",
+        "rectangle": [
+          416,
+          52,
+          488,
+          708
+        ],
+        "different_pixels": 0,
+        "native_sha256": "aad7850dd4ffcf123e76d04d6aaaacc4c5f7d116cc3e966c91bbefd6042e159a",
+        "viewer_sha256": "442b1a48ce457a875f85258f4e31cb5cd632ea4577e8a4a415edf611612a87a2"
+      },
+      {
+        "item_type": 90,
+        "id": 48520,
+        "description": "This is a giant cougar parchment sheet (1%).    Written on the item is an essay entitled The Denial: Problems And Solutions, authored by Lum Licpuja.  It concerns the denial of apprenticeship of the human Lum Strifebent under the dwarf Bomrek Weakengravel in  Basementskulls in the midsummer of 64.  The writing is forceful.  Overall, the prose is amateurish at best.    ",
+        "uses": [],
+        "appearance": {
+          "color_token": "WHITE",
+          "flags": 0,
+          "material_token": "CREATURE:GIANT_COUGAR:PARCHMENT",
+          "stack": 1,
+          "subtype_raw": ""
+        },
+        "native_capture": "stockpile-storage-native-input-20261110-093932",
+        "viewer_capture": "stockpile-storage-native-input-20261110-093932",
+        "rectangle": [
+          416,
+          52,
+          488,
+          708
+        ],
+        "different_pixels": 0,
+        "native_sha256": "9cfb52a5e0568f0b4d10a809ecf88d9b0df82218d2c5a40b4d3d2fae0c2a14f4",
+        "viewer_sha256": "96a8b4ef22aeddfe29a256e5d1602b7fb2bb160a726329cfda6e80593355d52f"
+      }
+    ],
+    "sheet_fixture": {
+      "content_id": 660,
+      "item_id": 48520,
+      "mat_index": 295,
+      "mat_type": 39
+    },
+    "native_helpers": [
+      "c75000 calls cc7020/5d8 for BOOK pages and cc6a10/610 for writing improvements, then cc5d50.",
+      "BOOK table16ff038 type8f4fb0, SHEET table16fe0e0 type8f50d0 share guarded constructed virtuals.",
+      "Explicit actual DWARF mode excludes adventure reading/knowledge gates; singleton written IDs use shared reference/event input validation. Output is owned and historical-material cache storage is privately copied/restored."
+    ],
+    "artwork": "Native c7eab4..c7eba0 / cfbcf1..cfbd14 selects glass for inorganic gems, wood for plant materials, stone for other nonmetal inorganics, otherwise metal. Fixed holder type52 uses BUILDING_ICON_BOOKCASE.",
+    "verification": [
+      "Native/owned/wire description and Uses match for both cases; View/close passes. Both accepted panel pairs visually inspected and RGB-identical.",
+      "Sheet48520 is created through native createItem in a disposable paused clone, with a writing improvement referencing existing content660. Finalizer removes the item; owned DF30064 exits unsaved and source is unchanged.",
+      "Core19, extension/item-state and MSVC pass; final material regression passes in item-written-final. GPU samples38C during final lane are not a peak measurement. Only documented thread/finalize/shutdown diagnostics."
+    ],
+    "limits": [
+      "093932 native book screenshot captured the map after panel closure and is excluded. Book comparison uses the valid093301 native image of the same unchanged item110.",
+      "One essay and apprenticeship-denial event. Other written types/reference combinations, long-description scrolling and additional binding materials are not newly live accepted.",
+      "Public Stocks remains gated."
+    ]
   }
 }

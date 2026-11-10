@@ -378,15 +378,32 @@ creature captions and artwork: native158450 skips item controls for unit rows,
 so those rows correctly have no View/flag buttons. Management168 separately
 adds native ordered Uses. Public Stocks remains gated.
 
-Remaining special-item description entry points (DF53.16): BOOK89's
-c75a35 branch walks writing improvements, then c7809e..c78269 invokes cc7020
-(length5d8, including its switch table). That helper reads written-content IDs,
-author history/names and delegates style/content wording to cc5d50. The
-adventure-reading gates in c7809e must be excluded by the fortress-mode contract,
-not supplied from a native menu. SHEET90 has no separate item-type branch;
-its written improvements still require the same dependency audit. Existing
-`written_detail_native.h` guards are diagnostic evidence, not blanket production
-acceptance of these item sheets.
+BOOK89 and SHEET90 use the native item description provider. BOOK's pages
+branch calls cc7020 (complete5d8 including its switch table); ordinary writing
+calls cc6a10 (complete610), then cc5d50. The bridge explicitly requires actual
+DWARF mode to exclude adventure reading/knowledge gates, validates singleton
+written-content references with the shared written/event guards, and supplies
+owned prose output. Historical-material formatting uses private cache backing
+restored afterward. Neither menu state nor native sheet caches are inputs.
+The separate composed Skills detail adapter remains diagnostic; item acceptance
+does not extend its coverage. Book/sheet virtual tables16ff038/16fe0e0 and type
+getters8f4fb0/8f50d0 are pinned alongside existing constructed-item virtuals.
+
+Protected093932 on2026-11-10 verifies book110 and controlled parchment sheet48520:
+native/owned/wire descriptions and Uses match and View/close passes. The sheet
+references existing essay660, created through native createItem in a disposable
+paused clone and removed by its finalizer. Full panels match native pixels and
+were visually inspected. The book comparison uses valid native093301 evidence;
+093932's book PNG caught the map after closure and is explicitly excluded.
+Native c7eab4..c7eba0 / cfbcf1..cfbd14 supplies book material selection (gems use
+glass artwork, distinct from general furniture classification). Holder type52
+uses BUILDING_ICON_BOOKCASE. Core19, extension/item-state and MSVC pass; the
+material-selection regression passes in item-written-final. Source preserved;
+DF30064 exits unsaved at30FPS; GPU samples38C are not peak measurements. Only
+known thread/finalize/shutdown diagnostics occur. `native_stocks.json` field
+`written_item_sheet_reference` records hashes and limitations. Other written
+reference/type combinations and long-description scrolling are not newly live
+accepted; public Stocks remains gated.
 
 PET52 and VERMIN51 use the simple native description provider with the same
 actual-material identity as fish/remains. Type getters54b1d0/1035f0 and the

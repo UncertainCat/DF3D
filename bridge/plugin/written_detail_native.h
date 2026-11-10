@@ -6,9 +6,9 @@
 #include "df/written_content.h"
 #include "df/historical_figure.h"
 namespace df3d_creature {
-// Diagnostic only. The native body owns its output/scratch. All content fields
-// and references are copied; referenced world names/events remain read-only.
-// Complete production acceptance still requires the remaining event paths.
+// Native written formatter guards are shared with item sheets. The composed
+// Skills detail adapter below remains diagnostic: it owns copied content and
+// references; referenced world names/events remain read-only.
 inline bool writtenDescriptionReady() {
     if(!knowledgeDescriptionReady())return false;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
@@ -161,6 +161,19 @@ inline bool writtenReferenceDispatch(const df::general_ref* reference) {
         return *reinterpret_cast<const void* const*>(base+entry.table+0x90)==base+entry.description;
     return false;
 }
+// Shared input validation for native written prose. Formatting reads content
+// and references; its mutable prose/context storage belongs to the caller.
+inline bool writtenContentInputsValid(const df::written_content& source) {
+    if(source.refs.size()>4096 || source.styles.size()>4096 ||
+       source.refs.size()!=source.ref_aux.size() || source.styles.size()!=source.style_strength.size())return false;
+    const auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    for(const auto* reference:source.refs){
+        if(!writtenReferenceDispatch(reference))return false;
+        if(*reinterpret_cast<const void* const*>(reference)==base+0x16e82b8 &&
+           !knowledgeEventInputsValid(static_cast<const df::general_ref_historical_eventst*>(reference)->event_id))return false;
+    }
+    return true;
+}
 class WrittenDescriptionContext {
     struct OwnedContent final:df::written_content {OwnedContent():df::written_content(){}} content;
     struct DeleteReference {
@@ -170,8 +183,7 @@ class WrittenDescriptionContext {
     std::vector<std::unique_ptr<df::general_ref,DeleteReference>> refs;
 public:
     bool prepare(const df::written_content& source) {
-        if(source.refs.size()>4096 || source.styles.size()>4096 ||
-           source.refs.size()!=source.ref_aux.size() || source.styles.size()!=source.style_strength.size())return false;
+        if(!writtenContentInputsValid(source))return false;
         static_cast<df::written_content&>(content)=source;
         content.refs.clear();refs.clear();
         for(auto* original:source.refs){

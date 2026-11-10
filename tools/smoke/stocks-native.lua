@@ -364,6 +364,33 @@ gui.simulateInput(view,'LEAVESCREEN');assert(not stocks.open,'Stocks did not clo
 end
 -- A coinless save must not turn the coin-family lane into a vacuous pass.
 -- Only this disposable, paused native fixture creates items; product reads do not.
+if os.getenv('DF3D_STOCKS_WRITTEN_FIXTURE')=='1' then
+ local worker,pages
+ for _,unit in ipairs(df.global.world.units.active)do if dfhack.units.isCitizen(unit)then worker=unit;break end end
+ for _,book in ipairs(df.global.world.items.other.BOOK)do
+  for _,improvement in ipairs(book.improvements)do
+   if df.itemimprovement_pagesst:is_instance(improvement) and #improvement.contents==1 then pages=improvement;break end
+  end
+  if pages then break end
+ end
+ assert(worker and pages,'Written sheet fixture needs a citizen and a book with content')
+ local created={}
+ return dfhack.with_finalize(function()
+  for _,item in ipairs(created)do dfhack.items.remove(item)end
+ end,function()
+  created=dfhack.items.createItem(worker,df.item_type.SHEET,-1,pages.mat_type,pages.mat_index)
+  assert(#created>0,'Native sheet creation failed')
+  for _,item in ipairs(created)do
+   local writing=df.itemimprovement_writingst:new()
+   writing.mat_type=pages.mat_type;writing.mat_index=pages.mat_index
+   writing.maker=pages.maker;writing.quality=pages.quality
+   writing.contents:insert('#',pages.contents[0]);item.improvements:insert('#',writing)
+  end
+  local f=assert(io.open(out..'/stocks-written-fixture.json','w'))
+  f:write(json.encode({item_id=created[1].id,content_id=pages.contents[0],mat_type=pages.mat_type,mat_index=pages.mat_index}));f:close()
+  run()
+ end)
+end
 if os.getenv('DF3D_STOCKS_COIN_FIXTURE')=='1' then
  local worker
  for _,unit in ipairs(df.global.world.units.active)do

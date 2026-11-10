@@ -83,8 +83,9 @@ local cold=probe()
 local cold_rows=probe('places-building-rows-probe')
 if os.getenv('DF3D_PLACES_WIRE')=='1' then
  write('places-wire-reference.json',json.encode(cold_rows))
+ write('places-scene-reference.json',json.encode{rows=cold_rows})
  write('shot.tmp','places-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))
- local deadline=dfhack.getTickCount()+30000
+ local deadline=dfhack.getTickCount()+(os.getenv('DF3D_PLACES_SCENE')=='1' and 120000 or 30000)
  while true do local ack=io.open(out..'/ack-places-wire');if ack then ack:close();break end
   assert(dfhack.getTickCount()<deadline,'Places wire timeout');script.sleep(1,'frames')
  end

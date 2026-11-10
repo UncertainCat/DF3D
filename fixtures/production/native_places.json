@@ -9441,5 +9441,28 @@
       "Viewport click routing and map input blocking",
       "Siege mutation ownership, hover and remaining layout/input gaps"
     ]
+  },
+  "main_scene_navigation_reference": {
+    "source": "build/stockpile-storage-native-input-20261110-154110",
+    "viewport": [
+      1200,
+      800
+    ],
+    "view_pointer_tabs": 6,
+    "exact_destination_identity": true,
+    "recenter_releases_owner": true,
+    "recenter_elevation": true,
+    "escape_closes": true,
+    "result": "passed_with_known_issues",
+    "known_diagnostics": [
+      "render-thread finalize",
+      "ObjectDB shutdown leak warning"
+    ],
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "Camera XY position and map click blocking",
+      "Hover, wheel, other sizes and typed siege mutations"
+    ]
   }
 }

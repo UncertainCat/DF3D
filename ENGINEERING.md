@@ -39,7 +39,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Places native discovery
 
-Places presentation and transport remain unimplemented and hidden. Protected140037 on DF53.16 captures
+Places presentation and read transport are staged; public exposure remains hidden. Protected140037 on DF53.16 captures
 all six native tabs:158 Zones,6 Locations,34 Stockpiles,46 Workshops,2 Farm
 plots and no Siege engines. `fixtures/production/native_places.json` records
 ordered identities and visible text; screenshots stay in ignored capture output.
@@ -322,6 +322,18 @@ inspector opening, map input blocking and viewport click routing are not accepte
 by that signal-level check. Core19 and controller checks pass in
 `build/qa/places-owner-final`; DF closes unsaved and the source save is unchanged.
 Siege mutation ownership, hover and remaining input/layout gaps remain pending.
+
+Protected `stockpile-storage-native-input-20261110-154110` additionally runs the
+actual main scene at1200x800 through `places_scene_live.gd`. View pointer clicks
+on the first row of each of the six tabs open the matching zone, stockpile or
+building inspector with the exact building identity and release Places ownership.
+Building handoffs require an exact entity match rather than falling back to another
+tile occupant. Recenter releases the modal owner and selects the target elevation;
+Escape also closes Places. Camera XY position and map click blocking are not
+asserted by this check. The run is `passed_with_known_issues` for the documented
+render-thread finalize/ObjectDB shutdown diagnostics. Source save preserved;
+owned DF35908 closed unsaved, graphical clients capped at30FPS, GPU60C/42% sampled.
+Core19 and Places controller checks pass in `build/qa/places-scene-final`.
 
 ## Management 174 Tasks contract
 

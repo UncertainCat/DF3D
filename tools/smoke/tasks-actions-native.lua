@@ -3,6 +3,15 @@ local out,view,info,capture=...
 local gui=require('gui');local script=require('gui.script')
 local g=df.global.gps;local main=df.global.game.main_interface
 local result={hover={},suspension={}}
+local semantic=os.getenv('DF3D_TASKS_SEMANTIC')=='1'
+result.semantic=semantic
+local function apply(action,id,worker,holder,state)
+ local text,code=dfhack.run_command_silent('df3d','tasks-action-probe',action,tostring(id),tostring(worker),tostring(holder),state and '1' or '0')
+ assert(code==0,'Tasks action probe failed: '..text);return tonumber(text)
+end
+local function holder_of(job)
+ for _,ref in ipairs(job.general_refs)do if ref:getType()==df.general_ref_type.BUILDING_HOLDER then return ref:getBuilding()end end
+end
 local function move(x,y)
  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
  g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
@@ -44,12 +53,46 @@ end
 for _,id in ipairs{68196,372039}do
  local job=assert(job_by_id(id));assert(job.job_type==df.job_type.ConstructBuilding)
  local before=job.flags.whole;local suspended=job.flags.suspend
- local yy=row_y(id);click(348,yy)
+ local holder=assert(holder_of(job));local yy=row_y(id)
+ if semantic then
+  assert(apply('suspend',id,-1,holder.id,not suspended)==1,'Stale suspend state accepted')
+  assert(job.flags.whole==before,'Rejected action changed flags')
+  assert(apply('suspend',id,-1,holder.id,suspended)==2,'Suspend failed')
+ else click(348,yy)end
  assert(job.flags.suspend~=suspended,'Native Suspend did not toggle')
  local after=job.flags.whole;capture('tasks-suspended-'..id)
- click(348,yy);assert(job.flags.whole==before,'Native resume changed other flags')
+ if semantic then
+  assert(apply('suspend',id,-1,holder.id,suspended)==1,'Duplicate toggle accepted')
+  assert(apply('suspend',id,-1,holder.id,not suspended)==2,'Suspend restore failed')
+ else click(348,yy)end
+ assert(job.flags.whole==before,'Suspend restore changed other flags')
  result.suspension[#result.suspension+1]={job_id=id,before=before,after=after,restored=job.flags.whole}
 end
+-- Assigned stockpile hauling: native removes the worker, not the task.
+local target=assert(job_by_id(382763));local holder=assert(holder_of(target));local worker
+for _,ref in ipairs(target.general_refs)do if ref:getType()==df.general_ref_type.UNIT_WORKER then worker=ref:getUnit();break end end
+assert(worker and worker.job.current_job==target,'Worker removal fixture changed')
+local worker_id=worker.id;local target_id=target.id
+local function effect()
+ local current=job_by_id(target_id);local refs={};local restrictions={}
+ if current then for _,ref in ipairs(current.general_refs)do
+  if ref:getType()==df.general_ref_type.UNIT_WORKER then local unit=ref:getUnit();refs[#refs+1]=unit and unit.id or -1 end
+ end end
+ for _,entry in ipairs(holder.job_claim_suppress)do restrictions[#restrictions+1]={unit_id=entry.unit and entry.unit.id or -1,timer=entry.timer}end
+ return {job_exists=current~=nil,job_flags=current and current.flags.whole or -1,worker_refs=refs,
+  worker_job=worker.job.current_job and worker.job.current_job.id or -1,claim_suppression=restrictions}
+end
+result.worker_removal={job_id=target_id,worker_id=worker_id,building_id=holder.id,before=effect()}
+if semantic then
+ assert(apply('remove-worker',target_id,worker_id+1,holder.id,false)==1,'Stale worker accepted')
+ assert(apply('remove-worker',target_id,worker_id,holder.id,false)==2,'Remove worker failed')
+else
+ local yy=row_y(target_id);move(324,yy)
+ assert(main.current_hover==244,'Worker removal did not target native control')
+ click(324,yy)
+end
+result.worker_removal.after=effect()
+if semantic and worker.job.current_job~=target then assert(apply('remove-worker',target_id,worker_id,holder.id,false)==1,'Duplicate worker removal accepted')end
 -- Last action: remove the unstarted Well and end this clone without saving.
 local job=assert(job_by_id(372039));local building
 for _,ref in ipairs(job.general_refs)do

@@ -115,6 +115,7 @@
 #include "residents_order_native.h"
 #include "residents_activity_native.h"
 #include "tasks_native.h"
+#include "tasks_action_native.h"
 #include "residents_activity_description_native.h"
 #include "residents_query_native.h"
 #include "work_detail_query_native.h"
@@ -2482,6 +2483,19 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             Json::Value value(Json::objectValue);value["type"]=link.type;value["id"]=link.id;value["subid"]=link.subid;result["links"].append(value);
           }
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
+        }
+        if(parameters[0]=="tasks-action-probe") {
+          if(parameters.size()!=6)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving() || !df::global::pause_state || !*df::global::pause_state)return CR_FAILURE;
+          const auto action=parameters[1]=="repeat"?df3d_tasks::Action::Repeat:
+              parameters[1]=="suspend"?df3d_tasks::Action::Suspend:df3d_tasks::Action::RemoveWorker;
+          if(parameters[1]!="repeat" && parameters[1]!="suspend" && parameters[1]!="remove-worker")return CR_WRONG_USAGE;
+          int32_t values[4];
+          for(size_t i=0;i<4;++i){const auto& raw=parameters[i+2];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i]);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;}
+          if(values[3]!=0 && values[3]!=1)return CR_WRONG_USAGE;
+          const auto result=df3d_tasks::apply(action,values[0],values[1],values[2],values[3]!=0);
+          out.print("{}\n",static_cast<int>(result));return CR_OK;
         }
         if(parameters[0]=="tasks-rows-probe") {
           if(parameters.size()!=1)return CR_WRONG_USAGE;

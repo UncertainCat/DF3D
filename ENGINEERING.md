@@ -101,6 +101,26 @@ storage. All pass. The capture does not cover every workshop, furnace, trap or
 demolition branch, nor action submission. Source preserved; DF38572 closes
 unsaved, capped30FPS, GPU48C/3% sampled. `controls_reference` records the scope.
 
+`tasks_action_native.h` provides Repeat, Suspend and Remove worker intents.
+Each rebuilds the owned list and checks current eligibility, job/worker/building
+identity and expected toggle state before mutation. Native1325080 releases the
+worker; Remove worker first calls57c760 to add the native building claim
+suppression. Exceptions after mutation return Unknown, which must not be replayed.
+Epoch/save admission and receipt deduplication remain the future transport owner's
+responsibility. The paused diagnostic command is not a public gameplay route.
+
+Protected native114231 and semantic114310 have identical recorded effects:
+unassigned construction tasks resume/suspend with all flags restored, and removing
+worker5697 from hauling job382763 retains the job, clears its worker reference and
+unit current_job, and adds building854 claim suppression with timer100. Stale
+state/worker and duplicate requests reject. Both source saves are preserved and
+owned DF27800/33892 exit unsaved, capped30FPS, GPU49C/2% sampled. Earlier114100 and
+114148 failed because the worker click followed destructive Well cancellation;
+114148's hitbox assertion identified that invalid target. The successful order
+observes worker removal before cancellation. Repeat and assigned-worker Suspend
+remain unverified; Cancel is not yet a semantic action. No viewer/transport
+acceptance is claimed. `semantic_actions_reference` retains the comparison.
+
 ## Stocks native discovery
 
 Stocks list icons now use every available item-sheet selector instead of a

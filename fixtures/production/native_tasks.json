@@ -1440,5 +1440,64 @@
     "fps_cap": 30,
     "sampled_gpu_celsius": 48,
     "sampled_gpu_utilization_percent": 3
+  },
+  "semantic_actions_reference": {
+    "native_capture": "stockpile-storage-native-input-20261110-114231",
+    "semantic_capture": "stockpile-storage-native-input-20261110-114310",
+    "suspension": [
+      {
+        "after": 0,
+        "before": 2,
+        "job_id": 68196,
+        "restored": 2
+      },
+      {
+        "after": 0,
+        "before": 2,
+        "job_id": 372039,
+        "restored": 2
+      }
+    ],
+    "worker_removal": {
+      "after": {
+        "claim_suppression": [
+          {
+            "timer": 100,
+            "unit_id": 5697
+          }
+        ],
+        "job_exists": true,
+        "job_flags": 16384,
+        "worker_job": -1,
+        "worker_refs": []
+      },
+      "before": {
+        "claim_suppression": [],
+        "job_exists": true,
+        "job_flags": 16384,
+        "worker_job": 382763,
+        "worker_refs": [
+          5697
+        ]
+      },
+      "building_id": 854,
+      "job_id": 382763,
+      "worker_id": 5697
+    },
+    "checks": [
+      "Native and semantic before/after effects agree.",
+      "Stale suspend state and duplicate toggles reject without flag changes.",
+      "Stale worker identity and duplicate worker removal reject.",
+      "Both source saves preserved and owned processes closed unsaved."
+    ],
+    "limits": [
+      "Repeat action has not been exercised.",
+      "Suspend worker-release branch not exercised; two construction jobs are unassigned.",
+      "Cancel remains native-only evidence, not a semantic action.",
+      "No transport, epoch receipt or viewer integration acceptance."
+    ],
+    "fps_cap": 30,
+    "sampled_gpu_celsius": 49,
+    "sampled_gpu_utilization_percent": 2
   }
 }

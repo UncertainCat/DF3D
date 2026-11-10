@@ -401,9 +401,37 @@ if os.getenv('DF3D_TASKS_DETAILS')=='1' then
  evidence.context=details.context;evidence.building_id=details.bld and details.bld.id or -1;evidence.info_open=info.open;evidence.options={}
  for i,kind in ipairs(details.option)do evidence.options[#evidence.options+1]={kind=kind,index=details.option_index[i]}end
  capture('tasks-job-details')
- gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+ local function click_at(x,yy)
+  g.precise_mouse_x=x;g.precise_mouse_y=yy;g.mouse_x=x//8;g.mouse_y=(yy-4)//12
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  gui.simulateInput(view,{});gui.simulateInput(view,'_MOUSE_L')
+  for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
+ end
+ click_at(152,154)
+ local art=df.global.game.main_interface.image_creator
+ assert(art.open,'Tasks native image option did not open')
+ click_at(136,154)
+ assert(art.current_option==1 and #art.hf>0,'Tasks native historical figures did not open')
+ evidence.figures={}
+ for i=0,math.min(13,#art.hf-1)do
+  local figure=art.hf[i];local chars={}
+  for xx=4,100 do local ch=dfhack.screen.readTile(xx,15+i*3).ch;chars[#chars+1]=ch>=32 and ch<=255 and string.char(ch)or' 'end
+  evidence.figures[#evidence.figures+1]={id=figure.id,has_name=figure.name.has_name,first_name=dfhack.df2utf(figure.name.first_name),rendered=dfhack.df2utf(table.concat(chars)):gsub('%s+$','')}
+ end
+ capture('tasks-native-figures')
+ gui.simulateInput(view,'LEAVESCREEN');for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
+ assert(art.open and art.current_option==1,'Tasks artwork Escape changed page')
+ evidence.escape_inactive=true
+ evidence.back_steps={}
+ for _=1,3 do
+  df.global.enabler.mouse_rbut_lift=0;gui.simulateInput(view,'_MOUSE_R')
+  df.global.enabler.mouse_rbut=0;df.global.enabler.mouse_rbut_down=0;df.global.enabler.mouse_rbut_lift=1
+  for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
+  evidence.back_steps[#evidence.back_steps+1]={art_open=art.open,art_page=art.current_option,details_open=details.open,info_open=info.open}
+  if not art.open and not details.open then break end
+ end
  evidence.returned=not details.open and info.open and info.current_mode==df.info_interface_mode_type.JOBS
- assert(evidence.returned,'Details did not return to Tasks')
  write('tasks-details-native.json',json.encode(evidence))
+ assert(evidence.returned,'Details did not return to Tasks')
  gui.simulateInput(view,'LEAVESCREEN')
 end

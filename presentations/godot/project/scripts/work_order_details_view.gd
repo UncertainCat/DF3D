@@ -204,7 +204,7 @@ func draw_art() -> void:
 	for index in mini(page_rows,state.rows.size()-offset):
 		var row: Dictionary=state.rows[offset+index]
 		var width:=columns-(2 if scrollbar.visible else 0)
-		patch("BUTTON_RECTANGLE_DARK",Vector2i(2,11+index*3),width,3)
+		patch("BUTTON_RECTANGLE" if tasks_context else "BUTTON_RECTANGLE_DARK",Vector2i(2,11+index*3),width,3)
 		var label: String=row.caption
 		if label.length()>width-2:label=label.left(maxi(0,width-5))+"..."
 		text(label,Vector2(16,152+index*36),11)

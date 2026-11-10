@@ -167,8 +167,16 @@ and the displayed figure ID. Both confirmed edits close Details and refresh Task
 The shared native-backed Details implementation supplies choices and edits; no
 Tasks-specific rule reconstruction is introduced. Screenshots are inspected,
 but subpage pixel parity and all material/artwork categories are not claimed.
-The captured first figure rows display empty names with native punctuation;
-comparison against native Tasks artwork rendering remains unresolved.
+Native135222 confirms the first14 historical figures have no names and render
+only native punctuation. The captured figure-list region(32,176)..(976,676)
+now matches main-scene135343 with zero RGB differences after selecting the normal
+Tasks artwork-row background. This excludes heading, native toolbar overlap and
+other artwork pages. Native Escape leaves the image editor unchanged; right-click
+returns from figures to the image menu, then to Tasks. The shared viewer already
+guards Escape. Earlier134927/135021/135107 incorrectly expected Escape to close
+the native image editor; they are not successful navigation checks. Source saves
+are preserved; owned DF36596(native) and32032(viewer) close unsaved at30FPS,
+GPU43C/0% sampled; viewer diagnostics are documented engine signatures only.
 Native before/after Tasks rows are recorded before subsequent menu comparisons.
 Source preserved, owned DF36148 closed unsaved at30FPS, GPU43C/0% sampled;
 documented engine diagnostics only (passed_with_known_issues). Earlier134418

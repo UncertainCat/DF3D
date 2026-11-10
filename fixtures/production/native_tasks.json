@@ -3259,7 +3259,122 @@
     "scope": "Native job and input requirement checked independently; saved original material requirement preserved. Historical figure ID checked against native job art specification. This does not establish pixel parity for Details subpages or every material/artwork category.",
     "source_save_preserved": true,
     "owned_df_closed_unsaved": true,
-    "diagnostics": "passed_with_known_issues",
-    "unresolved_display": "First historical-figure rows render empty names with punctuation; native Tasks artwork comparison pending."
+    "diagnostics": "passed_with_known_issues"
+  },
+  "figure_display_reference": {
+    "native_capture": "build/stockpile-storage-native-input-20261110-135222",
+    "viewer_capture": "build/stockpile-storage-native-input-20261110-135343",
+    "figures": [
+      {
+        "first_name": "",
+        "has_name": false,
+        "id": 9876,
+        "rendered": ", \"\""
+      },
+      {
+        "first_name": "",
+        "has_name": false,
+        "id": 9637,
+        "rendered": ", \"\""
+      },
+      {
+        "first_name": "",
+        "has_name": false,
+        "id": 9635,
+        "rendered": ", \"\""
+      },
+      {
+        "first_name": "",
+        "has_name": false,
+        "id": 10400,
+        "rendered": ", \"\""
+      },
+      {
+        "first_name": "",
+        "has_name": false,
+        "id": 10402,
+        "rendered": ", \"\""
+      },
+      {
+        "first_name": "",
+        "has_name": false,
+        "id": 9371,
+        "rendered": ", \"\""
+      },
+      {
+        "first_name": "",
+        "has_name": false,
+        "id": 9373,
+        "rendered": ", \"\""
+      },
+      {
+        "first_name": "",
+        "has_name": false,
+        "id": 10232,
+        "rendered": ", \"\""
+      },
+      {
+        "first_name": "",
+        "has_name": false,
+        "id": 9770,
+        "rendered": ", \"\""
+      },
+      {
+        "first_name": "",
+        "has_name": false,
+        "id": 10183,
+        "rendered": ", \"\""
+      },
+      {
+        "first_name": "",
+        "has_name": false,
+        "id": 9548,
+        "rendered": ", \"\""
+      },
+      {
+        "first_name": "",
+        "has_name": false,
+        "id": 10181,
+        "rendered": ", \"\""
+      },
+      {
+        "first_name": "",
+        "has_name": false,
+        "id": 9546,
+        "rendered": ", \"\""
+      },
+      {
+        "first_name": "",
+        "has_name": false,
+        "id": 10094,
+        "rendered": ", \"\""
+      }
+    ],
+    "escape_inactive": true,
+    "right_click_steps": [
+      {
+        "art_open": true,
+        "art_page": -1,
+        "details_open": true,
+        "info_open": true
+      },
+      {
+        "art_open": false,
+        "art_page": -1,
+        "details_open": false,
+        "info_open": true
+      }
+    ],
+    "pixel_region": [
+      32,
+      176,
+      976,
+      676
+    ],
+    "differing_rgb_pixels": 0,
+    "scope": "First historical-figure list only, excluding heading, native toolbar overlap and other artwork subpages. Native figures have no names; punctuation is preserved. Tasks artwork row background uses the captured normal button artwork.",
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "diagnostics": "passed_with_known_issues"
   }
 }

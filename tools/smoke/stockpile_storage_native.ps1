@@ -256,6 +256,7 @@ try {
      $clientArgs+=@('--path',"$repo/presentations/godot/project",'--script','res://tests/job_settings_wire_live.gd')
      if($env:DF3D_CHORES_RENDER -eq '1' -or $env:DF3D_HUNTER_AMMUNITION_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/job_settings_wire_live.gd')}
      if($name -eq 'tasks-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/tasks_wire_live.gd')}
+     if($name -eq 'tasks-wire' -and $env:DF3D_TASKS_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/tasks_wire_live.gd')}
      if($name -eq 'stocks-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/stocks_wire_live.gd')}
      if($name -eq 'stocks-wire' -and $env:DF3D_STOCKS_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/stocks_wire_live.gd')}
      if($name -eq 'stocks-wire' -and $env:DF3D_STOCKS_SCENE -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/stocks_scene_live.gd')}

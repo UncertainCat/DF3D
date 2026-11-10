@@ -58,7 +58,18 @@ close/reopen late replies and session retirement. Protected123806 verifies the
 controller's complete41-row read through the shared action service, alongside
 transport suspension checks; source preserved and owned DF39564 closed unsaved.
 The native game was capped30FPS and the viewer headless, GPU39C/0% sampled.
-The view and main-screen integration remain unfinished; public exposure stays gated.
+The staged Tasks view uses the native information frame, original row/control
+artwork, worker/destination recipes and native caption truncation. Protected124435
+compares the1200x800 panel at offsets0/17/24: first and last pages have zero
+RGB differences. The middle page has1127 differing pixels confined to the two
+legendary worker names (jobs382748/382740, effect1); animation phase was not
+synchronized. This is not whole-screen or all-animation pixel acceptance.
+Owned DF6476 closes unsaved with source preservation; both game/viewer capped30FPS,
+GPU40C/0% sampled after the prior run, not a peak. Known separate-thread/finalize/
+shutdown diagnostics only: passed_with_known_issues. Earlier124137 failed view
+parsing;124308 exposed the row-background and action-art mistakes corrected in
+124435. Hover help, owner/navigation wiring, input effects, resize/lifecycle and
+main-screen integration remain unfinished; public exposure stays gated.
 
 Read requests carry offset, limit1..64 and an expected ordered-list revision.
 A nonzero offset requires that revision. Replies preserve native order and can

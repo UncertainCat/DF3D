@@ -2843,5 +2843,35 @@
     "rows": 41,
     "scope": "Controller assembles all pages through the shared semantic action service; raw transport suspension checks also pass. No view or controller-driven mutation acceptance.",
     "source_save_preserved": true
+  },
+  "view_reference": {
+    "capture": "stockpile-storage-native-input-20261110-124435",
+    "size": [
+      1200,
+      800
+    ],
+    "panel": [
+      32,
+      52,
+      976,
+      760
+    ],
+    "offsets": [
+      0,
+      17,
+      24
+    ],
+    "different_pixels": [
+      0,
+      1127,
+      0
+    ],
+    "middle_page_difference": "Two legendary worker name color phases, job IDs 382748 and 382740; not synchronized.",
+    "source_save_preserved": true,
+    "limits": [
+      "No hover help or panel owner/navigation integration",
+      "No rendered input/effect or resize/lifecycle acceptance",
+      "No public Tasks route"
+    ]
   }
 }

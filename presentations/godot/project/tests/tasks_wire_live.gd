@@ -61,6 +61,15 @@ func run() -> void:
 	while state.phase==state.Phase.Reading and Time.get_ticks_msec()<deadline:
 		world.poll();await create_timer(0.01).timeout
 	check(state.phase==state.Phase.Ready and state.rows.size()==reference.size(),"Tasks controller did not assemble native pages")
+	if OS.get_environment("DF3D_TASKS_RENDER")=="1":
+		root.size=Vector2i(1200,800)
+		check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Tasks assets unavailable")
+		var view=preload("res://scripts/tasks_view.gd").new();root.add_child(view)
+		view.configure_tasks(world,state);view.layout(Vector2(1200,800))
+		for first in [0,17,24]:
+			state.seek(first,view.capacity());await process_frame;await process_frame;await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/tasks-view-%d.png"%first)
+		view.queue_free();await process_frame
 	state.dispose();actions.queue_free();await process_frame
 	var result=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	result.store_string(JSON.stringify({"success":not failed,"rows":rows.size(),"suspend_steps":2}));result.close()

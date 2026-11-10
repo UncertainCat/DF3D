@@ -2952,6 +2952,25 @@
     },
     "scope": "Native-created statue job; View opens context2 job-backed Details and back returns to Tasks. Repeat toggles flag1 and restores. Repeat hover inactive in this sample; no tooltip text accepted.",
     "viewer_capture": "stockpile-storage-native-input-20261110-130643",
-    "viewer_scope": "Actual main scene View task and Back retain Tasks owner/list. Existing controls, native-confirmed suspension and navigation also pass. Shared Details row background is darker than native; material/art option edits not exercised through Tasks."
+    "viewer_scope": "Actual main scene View task and Back retain Tasks owner/list. Existing controls, native-confirmed suspension and navigation also pass. Material/art option edits not exercised through Tasks.",
+    "background_reference": {
+      "capture": "stockpile-storage-native-input-20261110-130953",
+      "native": "stockpile-storage-native-input-20261110-125823",
+      "interior": [
+        32,
+        52,
+        976,
+        760
+      ],
+      "different_pixels": 0,
+      "scope": "Tasks context2 root options only; native toolbar overlap and other subpages excluded"
+    }
+  },
+  "repeat_viewer_reference": {
+    "capture": "stockpile-storage-native-input-20261110-130953",
+    "job_id": 382794,
+    "native_confirmed_steps": 2,
+    "restored": true,
+    "source_save_preserved": true
   }
 }

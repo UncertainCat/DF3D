@@ -101,10 +101,17 @@ panel initially exposed an unreachable hover injection after a same-line lambda
 return; injection is now a separate statement. The final run passes with source
 preservation, owned DF39672 closed unsaved and both processes capped30FPS.
 Only documented separate-thread/finalize/shutdown diagnostics occur
-(passed_with_known_issues). The captured shared Details row background is darker
-than native Tasks Details; that visual gap remains. Native125823 ran at30FPS,
+(passed_with_known_issues). Tasks context2 now selects the captured normal root-option background without
+changing other Details contexts. Protected130953 compares the Details interior
+(32,52)..(976,760) against native125823 with zero differing RGB pixels. This
+comparison excludes the native toolbar overlap and other Details subpages.
+The same main-scene run clicks Repeat twice on native-created statue job382794;
+independent native checks confirm flag1 toggles and restoration. Prior suspension,
+View/Back, exact-creature navigation and overlay checks still pass. Source preserved;
+owned DF32324 closes unsaved at30FPS, GPU43C/0% sampled, with documented engine
+diagnostics only (passed_with_known_issues). Native125823 ran at30FPS,
 GPU41C/0% sampled; later runs sampled40C/0%, not peak measurements.
-Repeat through the viewer, remaining action branches, resize and disconnect/epoch
+Remaining action branches, resize and disconnect/epoch
 live acceptance are unfinished; public exposure stays gated.
 
 Read requests carry offset, limit1..64 and an expected ordered-list revision.

@@ -52,6 +52,17 @@ func exercise(expected: Dictionary) -> void:
 		await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/tasks-main-details.png")
 		key(KEY_ESCAPE);await process_frame
 		check(not owner.job_open() and owner.panel.visible and scene._ui.host.active==owner,"Details Back did not return to Tasks")
+		for step in [1,2]:
+			var index: int=-1
+			for i in owner.state.rows.size():
+				if owner.state.rows[i].job_id==job:index=i-owner.panel.visible_first()
+			if not check(index>=0 and index<owner.panel.capacity(),"Repeat target not visible"):return
+			await pointer(owner.panel.get_global_transform_with_canvas()*owner.panel.button_rect(index,1).get_center())
+			if not await ready_tasks():return
+			var file=FileAccess.open(directory+"/tasks-repeat-step",FileAccess.WRITE);file.store_string(str(step));file.close()
+			var deadline:=Time.get_ticks_msec()+5000
+			while Time.get_ticks_msec()<deadline and FileAccess.get_file_as_string(directory+"/tasks-repeat-ack")!=str(step):await create_timer(0.01).timeout
+			if not check(FileAccess.get_file_as_string(directory+"/tasks-repeat-ack")==str(step),"Native Repeat effect unconfirmed"):return
 		owner.state.seek(1048576,owner.panel.capacity());await process_frame
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/tasks-main-scene.png")

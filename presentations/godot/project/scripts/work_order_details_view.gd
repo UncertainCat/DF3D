@@ -4,6 +4,8 @@ extends "res://scripts/location_staff_candidates_frame.gd"
 signal cancelled
 var state
 var job_context:=false
+# Tasks context2 root rows: protected native125823. Other contexts retain their art.
+var tasks_context:=false
 var input_allowed: Callable
 var colors: Array[Color]=[]
 var search_focused:=false
@@ -154,7 +156,7 @@ func _draw() -> void:
 	var selected: int=state.snapshot.get("selected_option",-1)
 	if selected<0:
 		for index in state.snapshot.options.size():
-			patch("BUTTON_RECTANGLE_DARK",Vector2i(2,4+index*3),int((size.x-32)/8),3)
+			patch("BUTTON_RECTANGLE" if tasks_context else "BUTTON_RECTANGLE_DARK",Vector2i(2,4+index*3),int((size.x-32)/8),3)
 			text(state.snapshot.options[index].caption,Vector2(16,68+index*36))
 		return
 	var kind: int=state.snapshot.options[selected].kind

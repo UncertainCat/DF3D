@@ -19,9 +19,10 @@ local function probe()
  assert(before==snapshot(),'Owned Tasks provider changed native menu storage')
  return json.decode(text).rows
 end
+local created_job
 if os.getenv('DF3D_TASKS_CREATE')=='1' then
  local path=debug.getinfo(1,'S').source:sub(2):gsub('tasks%-native.lua$','residents-job-create-native.lua')
- assert(loadfile(path))(out,view);gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+ created_job=assert(loadfile(path))(out,view);gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
 end
 local cold=probe()
 if os.getenv('DF3D_TASKS_WIRE')=='1' then
@@ -31,16 +32,23 @@ if os.getenv('DF3D_TASKS_WIRE')=='1' then
  write('tasks-wire-reference.json',json.encode(cold))
  write('tasks-scene-reference.json',json.encode{rows=cold})
  write('shot.tmp','tasks-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))
- local deadline=dfhack.getTickCount()+(os.getenv('DF3D_TASKS_SCENE')=='1' and 120000 or 30000);local checked=0
+ local deadline=dfhack.getTickCount()+(os.getenv('DF3D_TASKS_SCENE')=='1' and 120000 or 30000);local checked=0;local repeats=0;local original_repeat=created_job and created_job.flags.whole
  while true do
   local step=io.open(out..'/tasks-wire-step')
   if step then local n=tonumber(step:read('*a'));step:close()
    if n and n>checked then assert(n==checked+1);assert(job.flags.whole==(n==1 and (original ~ 2) or original),'Tasks wire suspend effect differs');checked=n;write('tasks-wire-ack',tostring(n))end
   end
+  if created_job then
+   local repeat_step=io.open(out..'/tasks-repeat-step')
+   if repeat_step then local n=tonumber(repeat_step:read('*a'));repeat_step:close()
+    if n and n>repeats then assert(n==repeats+1);assert(created_job.flags.whole==(n==1 and (original_repeat ~ 1) or original_repeat),'Tasks Repeat effect differs');repeats=n;write('tasks-repeat-ack',tostring(n))end
+   end
+  end
   local ack=io.open(out..'/ack-tasks-wire');if ack then ack:close();break end
   assert(dfhack.getTickCount()<deadline,'Tasks wire timed out');script.sleep(1,'frames')
  end
  assert(checked==2 and job.flags.whole==original,'Tasks wire did not restore suspension')
+ if created_job then assert(repeats==2 and created_job.flags.whole==original_repeat,'Tasks Repeat did not restore');write('tasks-repeat-native-result.json',json.encode{job_id=created_job.id,steps=repeats,restored=true})end
  assert(not df.global.game.main_interface.info.open,'Tasks transport opened native menu')
 end
 

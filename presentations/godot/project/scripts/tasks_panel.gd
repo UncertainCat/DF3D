@@ -26,7 +26,7 @@ func configure(world,service,host,help=null) -> void:
 	panel.configure_tasks(world,state);panel.input_allowed=func():return allowed() and not job_open()
 	panel.hover_help=help
 	panel.cancelled.connect(close_panel);panel.navigation_requested.connect(_navigate)
-	job_panel=preload("res://scripts/work_order_details_view.gd").new();job_panel.job_context=true;layer.add_child(job_panel)
+	job_panel=preload("res://scripts/work_order_details_view.gd").new();job_panel.job_context=true;job_panel.tasks_context=true;layer.add_child(job_panel)
 	job_panel.configure_details(world,job_state);job_panel.input_allowed=func():return allowed() and job_open()
 	job_panel.cancelled.connect(job_state.close)
 	host.register(self);_layout();_sync()

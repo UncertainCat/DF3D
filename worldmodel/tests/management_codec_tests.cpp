@@ -5198,3 +5198,14 @@ TEST_CASE("item portraits and cage occupants carry independent bounded recipes")
     b.Clear();CHECK(owned->tilePages[0]=="SYNTHETIC_PORTRAIT");
   }
 }
+
+TEST_CASE("item slab engraving preserves unknown and validates type and range") {
+ for(int mode=0;mode<6;++mode){
+  flatbuffers::FlatBufferBuilder b;const auto material=b.CreateString("INORGANIC:DOLOMITE"),empty=b.CreateString("");
+  const int engraving[]={-2,-1,0,26,27,0};
+  wire::ItemInspectionAppearanceBuilder a(b);a.add_material_token(material);a.add_subtype_raw(empty);a.add_color_token(empty);a.add_stack(1);a.add_slab_engraving(int8_t(engraving[mode]));
+  b.Finish(a.Finish());const auto* look=flatbuffers::GetRoot<wire::ItemInspectionAppearance>(b.GetBufferPointer());
+  CHECK(wire::validInspectionInstrument(*look,mode==5?30:87)==(mode<4));
+  if(mode<4)CHECK(codec::decodeInspectionAppearance(look).slabEngraving==engraving[mode]);
+ }
+}

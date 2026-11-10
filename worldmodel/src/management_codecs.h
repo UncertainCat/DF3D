@@ -13,6 +13,7 @@ inline SelectionAppearance decodeItemRecipe(const df3d::mirror::SelectionAppeara
 }
 inline ItemInspectionAppearance decodeInspectionAppearance(const df3d::mirror::ItemInspectionAppearance* a) {
   ItemInspectionAppearance result{a->material_token()->str(),a->subtype_raw()->str(),a->color_token()->str(),a->stack(),a->flags(),a->instrument_family(),a->instrument_placed()};
+  result.slabEngraving=a->slab_engraving();
   if(a->portrait())result.portrait=decodeItemRecipe(a->portrait());
   if(a->cage_occupant())result.cageOccupant=decodeItemRecipe(a->cage_occupant());
   result.restraintRope=a->restraint_rope();if(a->restraint_solid_color())result.restraintSolidColor=a->restraint_solid_color()->str();

@@ -37,6 +37,11 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Stocks native discovery
 
+Management172 appends the semantic slab engraving type to item inspection
+appearance. Rebuild bridge/viewer together;171 uses a separate channel. Unknown
+is -2, distinct from native unengraved -1; only SLAB87 may carry known -1..26.
+Old recordings retain unknown rather than inventing an engraving.
+
 Management171 adds optional independent portrait and cage-occupant recipes to
 ItemInspectionAppearance, using the existing SelectionAppearance format. Rebuild
 bridge/viewer together:170 peers use a separate channel. Portrait recipes are

@@ -6891,5 +6891,47 @@
       "Controlled hauling reservation, zero-extent and 1/99-percent boundary fixtures",
       "Colors, artwork, viewport behavior, transport and viewer"
     ]
+  },
+  "zone_status_reference": {
+    "capture": "build/stockpile-storage-native-input-20261110-144030",
+    "baseline_capture": "build/stockpile-storage-native-input-20261110-143824",
+    "scope": "Controlled uncaged animal assigned and positioned inside pen244 in disposable paused clone; native rendered first/second status captions match. Original assignment and position restored. This is read/display acceptance, not animal assignment action acceptance.",
+    "setup": {
+      "assigned": [],
+      "position": [
+        156,
+        38,
+        81
+      ],
+      "unit_id": 5688,
+      "zone_id": 244
+    },
+    "row": {
+      "additional_jobs": 0,
+      "id": 244,
+      "job_caption": "",
+      "name": "Pen/pasture",
+      "position": [
+        113,
+        112,
+        165
+      ],
+      "secondary_status": "1 present",
+      "status_caption": "1 assigned",
+      "subtitle": ""
+    },
+    "native_sources": {
+      "pen": "Inline39ce5b..39d1f9: resolve assigned units, use actual position or native itemPosition for caged holders, native5587b0 tests containment.",
+      "dungeon": "Inline39cb3d..39ce5b: chained pointers and contained cage unit references count imprisoned; unoccupied chain/cage counts available. Implemented but unpopulated in captures.",
+      "format": "Native52c2b0 and immutable native suffixes; both count lines retained."
+    },
+    "source_save_preserved": "Owned source unchanged",
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "Caged animal presence",
+      "Outside/missing assigned animals",
+      "Dungeon chains and cages",
+      "Colors, artwork, viewport behavior, transport and viewer"
+    ]
   }
 }

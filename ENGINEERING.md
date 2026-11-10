@@ -143,6 +143,19 @@ claimed. Owned DF39316 closes unsaved, source preserved,30FPS, GPU39C/3% sampled
 MSVC rebuild and core checks pass. `native_places.json.count_status_reference`
 records evidence and remaining gaps; colors, artwork and viewer remain unfinished.
 
+Pen status follows native assigned-unit resolution and zone containment5587b0;
+caged animals resolve their holder using the existing native item-position
+adapter. Dungeon status counts chained units and cage unit references separately
+from available empty restraints. Both branches mirror pinned inline Places
+selection and use native integer formatting/suffixes. Protected143824 covers
+empty rows only. Protected144030 temporarily assigns an uncaged animal inside
+pen244 in the disposable paused clone and matches “1 assigned” / “1 present”.
+Assignment and position are restored, owned DF39016 closes unsaved and source
+is preserved;30FPS, GPU40C/0% sampled. Earlier143945 failed fixture setup on an
+invalid Lua flags field; it is corrected. MSVC/core checks pass. Evidence in
+`native_places.json.zone_status_reference` does not accept assignment actions,
+caged animals, dungeon populations, colors, artwork or the viewer.
+
 ## Management 174 Tasks contract
 
 Management174 uses `Local\df3d_management_v174`;173 peers cannot attach. There is

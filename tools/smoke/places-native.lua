@@ -44,6 +44,18 @@ if os.getenv('DF3D_PLACES_SECONDARY')=='1' then
  local farm=assert(df.global.world.buildings.other.FARM_PLOT[0]);local season=df.global.cur_season;local crop=farm.plant_id[season];farm.plant_id[season]=-1
  secondary_fixture={building_id=holder.id,worker_id=5697,job_ids={first.id,second.id},farm_id=farm.id,season=season,original_crop=crop,original_workers=workers}
 end
+local pen_fixture
+if os.getenv('DF3D_PLACES_PEN')=='1' then
+ local zone=assert(df.building.find(244));assert(zone.type==88,'Places pen fixture changed')
+ local animal;for _,unit in ipairs(df.global.world.units.active)do
+  if dfhack.units.isAnimal(unit) and not unit.flags1.caged and not unit.flags1.inactive and unit.pos.x>=0 then animal=unit;break end
+ end
+ assert(animal,'No live uncaged animal for Places pen fixture')
+ local ids={};for _,id in ipairs(zone.assigned_units)do ids[#ids+1]=id end
+ pen_fixture={zone_id=zone.id,unit_id=animal.id,assigned=ids,position={animal.pos.x,animal.pos.y,animal.pos.z}}
+ local target;for y=0,zone.room.height-1 do for x=0,zone.room.width-1 do if zone.room.extents[y*zone.room.width+x]~=0 then target={x=zone.room.x+x,y=zone.room.y+y,z=zone.z};break end end;if target then break end end
+ assert(target,'Pen has no included tile');zone.assigned_units:resize(0);zone.assigned_units:insert('#',animal.id);animal.pos=target
+end
 local cold=probe()
 local cold_rows=probe('places-building-rows-probe')
 gui.simulateInput(view,'D_LOCATIONS');settle()
@@ -61,6 +73,7 @@ for mode=0,5 do
 end
 local result={initial_mode=info.buildings.mode,pages={},owned={cold=cold,warm=warm,menu_preserved=true},building_rows={rows=cold_rows,cold_warm_equal=true,visible_names={}}}
 result.secondary_fixture=secondary_fixture
+result.pen_fixture=pen_fixture
 result.zone_subtitle_sources={}
 for _,row in ipairs(cold_rows[1])do
  local zone=assert(df.building.find(row.id));local kind='none'
@@ -130,5 +143,9 @@ if secondary_fixture then
  local profile=df.building.find(secondary_fixture.building_id):getWorkshopProfile();profile.permitted_workers:resize(0)
  for _,id in ipairs(secondary_fixture.original_workers)do profile.permitted_workers:insert('#',id)end
  df.building.find(secondary_fixture.farm_id).plant_id[secondary_fixture.season]=secondary_fixture.original_crop
+end
+if pen_fixture then
+ local zone=df.building.find(pen_fixture.zone_id);zone.assigned_units:resize(0);for _,id in ipairs(pen_fixture.assigned)do zone.assigned_units:insert('#',id)end
+ local p=pen_fixture.position;df.unit.find(pen_fixture.unit_id).pos={x=p[1],y=p[2],z=p[3]}
 end
 result.closed=true;save();records[#records+1]={name='places-discovery',pages=#result.pages,closed=true}

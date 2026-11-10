@@ -22,6 +22,8 @@
 #include "df/buildingitemst.h"
 #include "df/map_block.h"
 #include "modules/Maps.h"
+#include "building_item_native.h"
+#include "df/building_chainst.h"
 #include <array>
 #include <optional>
 #include <unordered_set>
@@ -253,6 +255,63 @@ inline std::string countCaption(int32_t count,size_t suffix) {
     reinterpret_cast<void(*)(int32_t,std::string*)>(base+0x52c2b0)(count,&text);
     text+=reinterpret_cast<const char*>(base+suffix);return text;
 }
+inline bool zoneStatus(df::building_civzonest& zone,BuildingRow& row) {
+    if(int(zone.type)!=88 && int(zone.type)!=96)return true;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool pinned=[base]{
+        const auto hash=[base](size_t rva,size_t count){uint64_t h=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<count;++i){h^=base[rva+i];h*=UINT64_C(1099511628211);}return h;};
+        return hash(0x39cb3d,0x6bc)==UINT64_C(0x499a5488333ae955) &&
+            hash(0x5587b0,0x79)==UINT64_C(0x14b4f3f138690067) &&
+            hash(0x1615860,11)==UINT64_C(0x8517038a788c3c2a);
+    }();
+    if(!pinned || !countStatusReady())return false;
+    int32_t first=0,second=0;
+    if(int(zone.type)==88) {
+        if(zone.assigned_units.size()>1048576)return false;
+        for(auto id:zone.assigned_units) {
+            auto* unit=df::unit::find(id);if(!unit)continue;++first;
+            df::coord position=unit->pos;
+            if(unit->flags1.bits.caged) {
+                position=df::coord(-30000,-30000,-30000);
+                for(auto* ref:unit->general_refs) {
+                    if(!ref)return false;
+                    if(ref->getType()!=df::general_ref_type::CONTAINED_IN_ITEM)continue;
+                    if(auto* holder=ref->getItem()) {
+                        const auto resolved=df3d_production::itemPosition(holder);if(!resolved)return false;
+                        position=*resolved;break;
+                    }
+                }
+            }
+            if(position.x!=-30000 && reinterpret_cast<bool(*)(df::building*,int16_t,int16_t,int16_t)>(base+0x5587b0)(&zone,position.x,position.y,position.z))++second;
+        }
+        if(first>0){row.statusCaption=countCaption(first,0x162b778);row.secondaryStatus=countCaption(second,0x162b7b0);}
+    } else {
+        static_assert(offsetof(df::building_chainst,chained)==0x150);
+        if(zone.contained_buildings.size()>1048576)return false;
+        for(auto* building:zone.contained_buildings) {
+            if(!building)return false;
+            if(auto* chain=virtual_cast<df::building_chainst>(building)) {
+                if(chain->chained)++first;else ++second;
+            } else if(int(building->getType())==28) {
+                auto* cage=virtual_cast<df::building_actual>(building);if(!cage)return false;
+                int32_t contained=0;
+                // Native39cbd6 inspects only the first contained cage item.
+                if(!cage->contained_items.empty()) {
+                    auto* entry=cage->contained_items.front();if(!entry || !entry->item)return false;
+                    if(entry->item->general_refs.size()>1048576)return false;
+                    for(auto* ref:entry->item->general_refs) {
+                        if(!ref)return false;
+                        if(ref->getType()==df::general_ref_type::CONTAINS_UNIT && ref->getUnit())++contained;
+                    }
+                }
+                if(contained>0)first+=contained;else ++second;
+            }
+        }
+        if(first>0 || second>0){row.statusCaption=countCaption(first,0x162b7a0);row.secondaryStatus=countCaption(second,0x1615860);}
+    }
+    return true;
+}
 inline bool stockpileStatus(df::building& building,BuildingRow& row) {
     if(!countStatusReady())return false;
     const auto& room=building.room;
@@ -305,6 +364,7 @@ inline std::optional<BuildingRows> buildingRows() {
         if(mode==0) {
             auto* zone=virtual_cast<df::building_civzonest>(building);if(!zone)return std::nullopt;
             auto subtitle=zoneSubtitle(*zone);if(!subtitle)return std::nullopt;row.subtitle=std::move(*subtitle);
+            if(!zoneStatus(*zone,row))return std::nullopt;
         } else if(mode==1) {
             auto* zone=virtual_cast<df::building_civzonest>(building);if(!zone || !locationDetails(*zone,row))return std::nullopt;
         } else if(mode==2) {

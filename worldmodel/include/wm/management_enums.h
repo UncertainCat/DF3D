@@ -6,6 +6,8 @@ enum class PlacesOutcome : uint8_t {
   None = 0,
   Rejected = 1,
   Stale = 2,
+  Applied = 3,
+  Unknown = 4,
 };
 enum class TasksOutcome : uint8_t {
   None = 0,
@@ -295,6 +297,7 @@ enum class ManagementAction : uint8_t {
   TasksRead = 105,
   TasksApply = 106,
   PlacesRead = 107,
+  PlacesApply = 108,
 };
 enum class ManagementStatus : uint8_t {
   Idle = 0,
@@ -613,12 +616,14 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::TasksRead: return true;
   case ManagementAction::TasksApply: return true;
   case ManagementAction::PlacesRead: return true;
+  case ManagementAction::PlacesApply: return true;
   default: return false;
   }
 }
 constexpr const char* managementDomain(ManagementAction action) {
   switch (action) {
   case ManagementAction::PlacesRead: return "places";
+  case ManagementAction::PlacesApply: return "places";
   case ManagementAction::TasksRead: return "tasks";
   case ManagementAction::TasksApply: return "tasks";
   case ManagementAction::StocksMenuRead: return "stocks_menu";

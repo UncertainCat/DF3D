@@ -49,6 +49,7 @@ ManagementState decodeState(const m::ManagementState* s) {
   if(const auto* r=s->places()) {
     auto& out=next.places.emplace();out.outcome=PlacesOutcome(r->outcome());out.tab=r->tab();
     out.listRevision=r->list_revision();out.total=r->total();out.offset=r->offset();
+    out.buildingId=r->building_id();out.siegeAction=r->siege_action();
     for(const auto* row:*r->rows()) {
       PlacesRow v;v.buildingId=row->building_id();v.subtitleLocationId=row->subtitle_location_id();
       if(const auto* p=row->position())v.position=TilePos{p->x(),p->y(),p->z()};
@@ -272,8 +273,8 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
   const auto anchor=r.materialAnchor.value_or(TilePos{r.x,r.y,r.z});
   const m::TilePos materialAnchor(anchor.x,anchor.y,anchor.z);
   flatbuffers::Offset<m::PlacesRequest> places;
-  if(r.action==ManagementAction::PlacesRead){const auto& q=r.places;
-    places=m::CreatePlacesRequest(b,q.tab,q.offset,q.limit,q.expectedListRevision);}
+  if(r.action==ManagementAction::PlacesRead || r.action==ManagementAction::PlacesApply){const auto& q=r.places;
+    places=m::CreatePlacesRequest(b,q.tab,q.offset,q.limit,q.expectedListRevision,q.buildingId,q.siegeAction);}
   flatbuffers::Offset<m::TasksRequest> tasks;
   if(r.action==ManagementAction::TasksRead || r.action==ManagementAction::TasksApply){
     const auto& q=r.tasks;

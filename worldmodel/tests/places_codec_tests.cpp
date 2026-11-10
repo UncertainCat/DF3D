@@ -23,3 +23,20 @@ TEST_CASE("Places decoding owns captions across reply retirement") {
  CHECK(v.buildingId==7);CHECK(v.name=="fixture");CHECK(v.statusOverlay=="fixture");CHECK(v.operatorCaption=="fixture");
  CHECK(v.additionalJobs==2);CHECK(v.siegeAction==-1);CHECK(v.subtitleLocationId==42);REQUIRE(v.position);CHECK(v.position->z==14);
 }
+
+TEST_CASE("Places siege mutation encoding and uncertain receipt retain identity") {
+ wm::ManagementRequest q;q.action=wm::ManagementAction::PlacesApply;q.places={5,0,32,17,42,3};
+ flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,q,11,12,13);
+ auto* request=flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer());
+ REQUIRE_FALSE(m::validateConstructionRequest(*request));REQUIRE(request->places());
+ CHECK(request->places()->building_id()==42);CHECK(request->places()->siege_action()==3);
+ CHECK(request->places()->expected_list_revision()==17);b.Clear();
+ auto payload=m::CreatePlacesState(b,m::PlacesOutcome::Unknown,5,0,0,0,
+   b.CreateVector(std::vector<flatbuffers::Offset<m::PlacesRow>>{}),42,3);
+ m::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(m::ManagementAction::PlacesApply);
+ state.add_status(m::ManagementStatus::Rejected);state.add_places(payload);b.Finish(state.Finish());
+ REQUIRE_FALSE(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())));
+ const auto owned=codec::decodeState(flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()));b.Clear();
+ REQUIRE(owned.places);CHECK(owned.places->outcome==wm::PlacesOutcome::Unknown);
+ CHECK(owned.places->buildingId==42);CHECK(owned.places->siegeAction==3);CHECK(owned.places->rows.empty());
+}

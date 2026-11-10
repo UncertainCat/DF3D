@@ -434,7 +434,8 @@ struct ProductionState {
   std::string detail;
 };
 struct StocksGroupKey {int16_t type=-1,subtype=-1,subcat1=-1,subcat2=-1;};
-struct PlacesRequest {uint8_t tab=0;uint32_t offset=0;uint16_t limit=32;uint64_t expectedListRevision=0;};
+struct PlacesRequest {uint8_t tab=0;uint32_t offset=0;uint16_t limit=32;uint64_t expectedListRevision=0;
+  int32_t buildingId=-1;int8_t siegeAction=-1;};
 struct PlacesRow {
   int32_t buildingId=-1;std::optional<TilePos> position;
   std::string name,subtitle,jobCaption,statusCaption,secondaryStatus,statusOverlay,operatorCaption;
@@ -442,7 +443,7 @@ struct PlacesRow {
 };
 struct PlacesState {
   PlacesOutcome outcome=PlacesOutcome::None;uint8_t tab=0;uint64_t listRevision=0;uint32_t total=0,offset=0;
-  std::vector<PlacesRow> rows;
+  std::vector<PlacesRow> rows;int32_t buildingId=-1;int8_t siegeAction=-1;
 };
 struct TasksRequest {
   uint32_t offset=0;uint16_t limit=32;uint64_t expectedListRevision=0;

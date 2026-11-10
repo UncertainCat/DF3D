@@ -387,6 +387,29 @@ Both runs preserve the source save and close owned DF unsaved at30FPS. Viewer
 acceptance is `passed_with_known_issues` for the known Godot shutdown diagnostics;
 GPU58–61C sampled. Core19/controller checks pass in `build/qa/places-layout-final`.
 
+
+## Management 177 Places siege mutation contract
+
+Protocol177 adds `PlacesApply` to the Places domain and mutation classification.
+The request uses tab5, a nonzero observed membership revision, target building ID
+(-1 means all current siege engines), and an absolute native action0..4. Read
+paging fields stay at their defaults for edits; read requests reject edit fields.
+A mutation receipt carries the requested target/action and an explicit Applied,
+Rejected, Stale or Unknown outcome, with no rows or read revision. Only Applied
+may accompany Ok. Unknown must not be replayed automatically; a later read is a
+separate observation, not proof of the original mutation. Existing session/epoch
+admission and receipt deduplication remain required at the producer.
+
+Both schema defaults, version and shared-memory name advance together. Rebuild
+and restart producer and consumer;176 cannot carry these mutations. Structural
+validation and owned codec tests cover target bounds, membership requirements,
+read/edit separation and uncertain receipts. Runtime siege routing, native effects
+and viewer ownership are not accepted merely by this contract addition. The
+existing diagnostic native adapter remains the audited implementation candidate.
+Core19 passes in `build/qa/places-siege-contract`, including malformed-intent,
+receipt-status and owned Unknown-receipt coverage. No bridge binary or live
+mutation acceptance is claimed by this schema-only change.
+
 ## Management 176 Places subtitle identity
 
 Protocol176 adds `PlacesRow.subtitle_location_id`: the resolved abstract location

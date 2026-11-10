@@ -9347,5 +9347,28 @@
       "Unpopulated location tiers and custom raw icons",
       "Missing-reference fallbacks"
     ]
+  },
+  "transport_reference": {
+    "source": "build/stockpile-storage-native-input-20261110-152108",
+    "management_version": 175,
+    "counts_by_tab": [
+      158,
+      6,
+      34,
+      46,
+      2,
+      3
+    ],
+    "all_fields_positions_recipes_match": true,
+    "pagination": true,
+    "stale_revisions_rejected_tabs": 6,
+    "headless_godot": true,
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "Controller lifecycle, disconnect, changed epoch and late replies",
+      "Viewer layout, pixel fidelity, navigation and hover",
+      "Siege mutation transport"
+    ]
   }
 }

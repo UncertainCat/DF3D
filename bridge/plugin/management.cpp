@@ -114,6 +114,7 @@
 #include "stone_use_native.h"
 #include "stocks_native.h"
 #include "tasks_action_native.h"
+#include "places_native.h"
 #include "df/gamest.h"
 #include "work_order_catalog_native.h"
 #include "work_order_rows_native.h"
@@ -526,6 +527,11 @@ struct TasksResult {
   std::vector<df3d_tasks::Row> rows;
 };
 std::optional<TasksResult> tasks;
+struct PlacesResult {
+  m::PlacesOutcome outcome=m::PlacesOutcome::Rejected;uint8_t tab=0;
+  uint64_t listRevision=0;uint32_t total=0,offset=0;std::vector<df3d_places::BuildingRow> rows;
+};
+std::optional<PlacesResult> places;
 struct StocksItemResult : df3d_production::ItemFacts {
   std::optional<df3d_production::ItemInspectionAppearance> appearance;
 };
@@ -586,7 +592,7 @@ void clearResult() {
   residentsRows.reset();
   residentsSpecialization.reset();
   residentsActivity.reset();
-  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();stoneUse.reset();stocks.reset();tasks.reset();
+  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();stoneUse.reset();stocks.reset();tasks.reset();places.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -1252,6 +1258,15 @@ void publish() {
     }
     standingOrdersResult=m::CreateStandingOrdersState(b,standingOrders->category,standingOrders->outcome,b.CreateVector(rows));
   }
+  flatbuffers::Offset<m::PlacesState> placesResult;
+  if(places){std::vector<flatbuffers::Offset<m::PlacesRow>> rows;
+    for(const auto& row:places->rows){const m::TilePos pos(row.position.x,row.position.y,row.position.z);
+      rows.push_back(m::CreatePlacesRow(b,row.id,row.position.x>=0 && row.position.y>=0 && row.position.z>=0?&pos:nullptr,
+        b.CreateString(row.name),b.CreateString(row.subtitle),b.CreateString(row.jobCaption),b.CreateString(row.statusCaption),
+        b.CreateString(row.secondaryStatus),b.CreateString(row.statusOverlay),b.CreateString(row.operatorCaption),
+        row.additionalJobs,int8_t(row.siegeAction),encodeItemRecipe(row.appearance)));}
+    placesResult=m::CreatePlacesState(b,places->outcome,places->tab,places->listRevision,places->total,places->offset,b.CreateVector(rows));
+  }
   flatbuffers::Offset<m::TasksState> tasksResult;
   if(tasks){
     std::vector<flatbuffers::Offset<m::TasksRow>> rows;
@@ -1338,7 +1353,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult);
   b.Finish(s);
   auto validationError=m::validateManagementState(
       *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()));
@@ -4341,6 +4356,30 @@ void run(color_ostream& out) {
         if(rows.size()==query.unit_ids()->size()) {residentsRows=std::move(rows);status=m::ManagementStatus::Ok;}
       }
     } catch(...) {residentsRows.reset();}
+    publish();return;
+  }
+  if(r->action()==m::ManagementAction::PlacesRead){
+    const auto& q=*r->places();status=m::ManagementStatus::Rejected;message.clear();places.emplace();places->tab=q.tab();
+    try {
+      auto all=df3d_places::buildingRows(q.tab());if(!all)throw std::runtime_error("places unavailable");
+      auto& current=(*all)[q.tab()];uint64_t revision=UINT64_C(14695981039346656037);
+      revision^=q.tab();revision*=UINT64_C(1099511628211);
+      for(const auto& row:current)for(unsigned i=0;i<4;++i){revision^=uint8_t(uint32_t(row.id)>>(8*i));revision*=UINT64_C(1099511628211);}
+      revision&=INT64_MAX;if(!revision)revision=1;
+      if((q.expected_list_revision() && q.expected_list_revision()!=revision) || q.offset()>current.size())places->outcome=m::PlacesOutcome::Stale;
+      else {
+        PlacesResult page;page.tab=q.tab();page.listRevision=revision;page.total=uint32_t(current.size());page.offset=q.offset();size_t bytes=0;
+        for(size_t i=q.offset();i<current.size() && page.rows.size()<q.limit();++i){
+          auto& row=current[i];size_t rowBytes=128;
+          for(auto* text:{&row.name,&row.subtitle,&row.jobCaption,&row.statusCaption,&row.secondaryStatus,&row.statusOverlay,&row.operatorCaption}){
+            *text=DF2UTF(*text);if(text->size()>16384)throw std::runtime_error("places caption exceeds limit");rowBytes+=text->size();}
+          if(row.appearance){size_t n=0;if(!df3d_production::validItemRecipe(*row.appearance,n))throw std::runtime_error("invalid places artwork");rowBytes+=n;}
+          if(bytes+rowBytes>384*1024)break;bytes+=rowBytes;page.rows.push_back(std::move(row));
+        }
+        if(page.offset<page.total && page.rows.empty())throw std::runtime_error("places row exceeds page");
+        page.outcome=m::PlacesOutcome::None;places=std::move(page);status=m::ManagementStatus::Ok;
+      }
+    }catch(...){places.emplace();places->tab=q.tab();}
     publish();return;
   }
   if(r->action()==m::ManagementAction::TasksRead || r->action()==m::ManagementAction::TasksApply){

@@ -443,10 +443,11 @@ inline bool hospitalStatus(df::building_civzonest& selected,BuildingRow& row) {
 }
 // Native Places39dba6/39de70/39e029/39e4a5 use building::getName for
 // Stockpiles, Workshops, Farm plots and Siege engines.
-inline std::optional<BuildingRows> buildingRows() {
+inline std::optional<BuildingRows> buildingRows(size_t requestedMode=6) {
     const auto ids=lists();if(!ids)return std::nullopt;
     BuildingRows result;
     for(size_t mode=0;mode<ids->size();++mode)for(auto id:(*ids)[mode]) {
+        if(requestedMode<6 && mode!=requestedMode)continue;
         auto* building=df::building::find(id);if(!building)return std::nullopt;
         BuildingRow row;row.id=id;row.position=df::coord(building->centerx,building->centery,building->z);
         row.appearance=artwork(*building,mode);

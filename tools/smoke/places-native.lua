@@ -81,6 +81,14 @@ if os.getenv('DF3D_PLACES_SIEGE')=='1' then
 end
 local cold=probe()
 local cold_rows=probe('places-building-rows-probe')
+if os.getenv('DF3D_PLACES_WIRE')=='1' then
+ write('places-wire-reference.json',json.encode(cold_rows))
+ write('shot.tmp','places-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))
+ local deadline=dfhack.getTickCount()+30000
+ while true do local ack=io.open(out..'/ack-places-wire');if ack then ack:close();break end
+  assert(dfhack.getTickCount()<deadline,'Places wire timeout');script.sleep(1,'frames')
+ end
+end
 gui.simulateInput(view,'D_LOCATIONS');settle()
 assert(info.open and info.current_mode==df.info_interface_mode_type.BUILDINGS,'Places shortcut did not open native Buildings')
 local warm=probe()

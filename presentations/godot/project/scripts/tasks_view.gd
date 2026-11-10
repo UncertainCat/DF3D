@@ -51,7 +51,7 @@ func hover_target(point: Vector2) -> String:
 	for index in mini(capacity(),state.rows.size()-visible_first()):
 		var row: Dictionary=state.rows[visible_first()+index];var y:=list_top()+index*36
 		if row.has("building_position") and Rect2(208,y,24,36).has_point(point):return "job-recenter"
-		for entry in [[2,"can_remove_worker","remove-worker"],[3,"can_suspend","suspend"],[4,"can_cancel","remove"]]:
+		for entry in [[0,"can_view_job","view-task"],[2,"can_remove_worker","remove-worker"],[3,"can_suspend","suspend"],[4,"can_cancel","remove"]]:
 			if row[entry[1]] and button_rect(index,entry[0]).has_point(point):return entry[2]
 		if row.worker_id>=0:
 			if Rect2(664,y,24,36).has_point(point):return "worker-recenter"

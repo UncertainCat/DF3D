@@ -68,12 +68,12 @@ Owned DF6476 closes unsaved with source preservation; both game/viewer capped30F
 GPU40C/0% sampled after the prior run, not a peak. Known separate-thread/finalize/
 shutdown diagnostics only: passed_with_known_issues. Earlier124137 failed view
 parsing;124308 exposed the row-background and action-art mistakes corrected in
-124435. The six captured Tasks instructions now use the shared hover service: job/worker
+124435. The captured Tasks instructions now use the shared hover service: job/worker
 Recenter, worker View, Remove worker, Suspend and Cancel. Their copy/wrapping
 comes from113154; headless checks match the fixture and check capability-aware
 hitboxes. Pending requests, pointer exit and hidden/retired views release hover
-ownership. No Tasks hotkey text is inferred from other screens. Repeat and View
-task instructions still need native copy capture, and rendered Tasks tooltip
+ownership. No Tasks hotkey text is inferred from other screens. Repeat help remains
+unverified; rendered Tasks tooltip
 acceptance remains pending. The staged Tasks owner is registered in the main UI controller registry, without
 adding a public launcher. It owns modal focus, close/back/play-disable retirement,
 scaled layout and hover-service injection. Recenter re-reads the ordered native
@@ -81,7 +81,12 @@ rows and verifies job/worker/building identity before moving the camera and
 closing. Worker View obtains a current CreatureSheetLocate result and uses the
 existing inspector route; late navigation replies are retired with the owner.
 Headless checks exercise fresh versus displayed coordinates, close-before-reply
-and play-disable focus release. Native View task navigation remains under audit.
+and play-disable focus release. Native125823 creates a real stoneworker statue job and verifies View task opens
+job-backed Details with context2; closing returns to Tasks. Feed397a33 calls the
+same opener213420 used by the existing Details provider. Tasks now composes that
+shared Details state/view under its owner, retaining the task list and scroll.
+The captured View instruction241 is reused verbatim. Native Repeat flips flag1
+and restores it; its hover was inactive in this sample, so no help is inferred.
 Protected125454 runs Tasks in the actual main scene through the staged registry:
 shared modal ownership, one-row scrollbar stepping, Suspend hover, HUD-overlay
 input blocking, two suspension clicks with independent native flag confirmation,
@@ -90,7 +95,16 @@ right-click owner release all pass. Source preserved; owned DF19312 closes unsav
 with both processes capped30FPS, GPU40C/0% sampled (not a peak). The captured last
 page panel has zero differing RGB pixels against native. Earlier125336 established
 the basic workflow;125454 adds exact creature, hover and overlay assertions.
-Remaining View task/Repeat semantics, all-action, resize and disconnect/epoch
+Protected130643 verifies View task/Back in the actual main scene using the
+native-created statue, along with prior controls/navigation. Adding the Details
+panel initially exposed an unreachable hover injection after a same-line lambda
+return; injection is now a separate statement. The final run passes with source
+preservation, owned DF39672 closed unsaved and both processes capped30FPS.
+Only documented separate-thread/finalize/shutdown diagnostics occur
+(passed_with_known_issues). The captured shared Details row background is darker
+than native Tasks Details; that visual gap remains. Native125823 ran at30FPS,
+GPU41C/0% sampled; later runs sampled40C/0%, not peak measurements.
+Repeat through the viewer, remaining action branches, resize and disconnect/epoch
 live acceptance are unfinished; public exposure stays gated.
 
 Read requests carry offset, limit1..64 and an expected ordered-list revision.

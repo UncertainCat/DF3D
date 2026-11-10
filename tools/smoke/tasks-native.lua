@@ -19,6 +19,10 @@ local function probe()
  assert(before==snapshot(),'Owned Tasks provider changed native menu storage')
  return json.decode(text).rows
 end
+if os.getenv('DF3D_TASKS_CREATE')=='1' then
+ local path=debug.getinfo(1,'S').source:sub(2):gsub('tasks%-native.lua$','residents-job-create-native.lua')
+ assert(loadfile(path))(out,view);gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+end
 local cold=probe()
 if os.getenv('DF3D_TASKS_WIRE')=='1' then
  local job;for _,candidate in require('utils').listpairs(df.global.world.jobs.list)do if candidate.id==68196 then job=candidate;break end end
@@ -221,3 +225,50 @@ write('tasks-native.json',json.encode(result))
 gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
 assert(not info.open,'Tasks did not close')
 records[#records+1]={name='tasks-discovery',rows=#result.rows,closed=true}
+
+if os.getenv('DF3D_TASKS_DETAILS')=='1' then
+ local create_path=debug.getinfo(1,'S').source:sub(2):gsub('tasks%-native.lua$','residents-job-create-native.lua')
+ local job=assert(loadfile(create_path))(out,view)
+ gui.simulateInput(view,'LEAVESCREEN');gui.simulateInput(view,'D_JOBLIST')
+ for _=1,3 do script.sleep(1,'frames')end
+ local index
+ for i,entry in ipairs(info.jobs.cri_job)do if entry.jb==job then index=i;break end end
+ assert(index,'Created job missing from Tasks')
+ info.jobs.scroll_position_cri_job=math.min(index,math.max(0,#info.jobs.cri_job-17))
+ view:render(dfhack.getTickCount())
+ local y=142+(index-info.jobs.scroll_position_cri_job)*36
+ local function move(x)
+  g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+ end
+ local function click(x)
+  move(x);gui.simulateInput(view,'_MOUSE_L')
+  for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())
+ end
+ local evidence={job_id=job.id,hover={}}
+ for _,target in ipairs{{'view-task',276},{'repeat',300}}do
+  local deadline=dfhack.getTickCount()+650
+  repeat move(target[2]);script.sleep(1,'frames')until dfhack.getTickCount()>=deadline
+  local sample={kind=target[1],instruction=df.global.game.main_interface.current_hover,lines={}}
+  for yy=0,17 do
+   local chars={};for xx=g.dimx-24,g.dimx-1 do local ch=dfhack.screen.readTile(xx,yy).ch;chars[#chars+1]=ch>=32 and string.char(ch%256) or ' ' end
+   sample.lines[#sample.lines+1]=dfhack.df2utf(table.concat(chars)):gsub('%s+$','')
+  end
+  while #sample.lines>0 and sample.lines[#sample.lines]==''do table.remove(sample.lines)end
+  evidence.hover[#evidence.hover+1]=sample
+ end
+ local initial=job.flags.whole;click(300);evidence.repeat_before=initial;evidence.repeat_after=job.flags.whole
+ assert(job.flags.whole==(initial ~ 1),'Native Repeat effect differs');click(300);assert(job.flags.whole==initial)
+ click(276)
+ local details=df.global.game.main_interface.job_details
+ assert(details.open and details.jb==job and not details.wq,'Tasks View did not open job Details')
+ evidence.context=details.context;evidence.building_id=details.bld and details.bld.id or -1;evidence.info_open=info.open;evidence.options={}
+ for i,kind in ipairs(details.option)do evidence.options[#evidence.options+1]={kind=kind,index=details.option_index[i]}end
+ capture('tasks-job-details')
+ gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
+ evidence.returned=not details.open and info.open and info.current_mode==df.info_interface_mode_type.JOBS
+ assert(evidence.returned,'Details did not return to Tasks')
+ write('tasks-details-native.json',json.encode(evidence))
+ gui.simulateInput(view,'LEAVESCREEN')
+end

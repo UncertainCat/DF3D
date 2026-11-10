@@ -18,7 +18,7 @@ const WORK_DETAIL_WIDGET_HELP={
 # Residents native052559: main-interface instructions234/235/252..257/260.
 # Header/filter widget tooltips need capture. Tier6: native052947.
 # Tasks native113154 instructions240/245/246/234/235/244.
-const TASKS_HELP={"job-recenter": ["Leave this menu and", "recenter on the task's", "building."], "suspend": ["Suspend this task.", "This removes the", "worker.  The task can", "be unsuspended."], "remove": ["Cancel this task."], "worker-recenter": ["Leave this menu and", "recenter on this", "creature."], "worker-view": ["Leave this menu and", "view this creature's", "sheet."], "remove-worker": ["Remove the current", "worker from the task."]}
+const TASKS_HELP={"view-task":["Set the details of this","task, such as the","material used."],"job-recenter": ["Leave this menu and", "recenter on the task's", "building."], "suspend": ["Suspend this task.", "This removes the", "worker.  The task can", "be unsuspended."], "remove": ["Cancel this task."], "worker-recenter": ["Leave this menu and", "recenter on this", "creature."], "worker-view": ["Leave this menu and", "view this creature's", "sheet."], "remove-worker": ["Remove the current", "worker from the task."]}
 const RESIDENTS_HELP={
 	"recenter":["Leave this menu and","recenter on this","creature."],
 	"details":["Leave this menu and","view this creature's","sheet."],

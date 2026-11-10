@@ -14,14 +14,19 @@ func exercise(expected: Dictionary) -> void:
 	var scrollbar=owner.panel.scrollbar
 	await pointer(scrollbar.get_global_transform_with_canvas()*Vector2(8,scrollbar.size.y-6))
 	check(owner.state.first==1,"Tasks scrollbar down did not advance one row")
-	owner.state.seek(24,owner.panel.capacity());await process_frame
-	var motion:=InputEventMouseMotion.new();motion.position=owner.panel.get_global_transform_with_canvas()*owner.panel.button_rect(15,3).get_center();root.push_input(motion,true)
-	await create_timer(0.65).timeout
-	check(scene._fortress_hud.native_help.displayed=="tasks_suspend","Main Tasks hover service did not show native instruction")
+	owner.state.seek(1048576,owner.panel.capacity());await process_frame
+	var hover_index: int=-1
+	for i in owner.state.rows.size():
+		if owner.state.rows[i].job_id==68196:hover_index=i-owner.panel.visible_first()
+	var motion:=InputEventMouseMotion.new();motion.position=owner.panel.get_global_transform_with_canvas()*owner.panel.button_rect(hover_index,3).get_center();root.push_input(motion,true)
+	var hover_deadline:=Time.get_ticks_msec()+700
+	while Time.get_ticks_msec()<hover_deadline:
+		root.push_input(motion.duplicate(),true);await process_frame
+	check(scene._fortress_hud.native_help.displayed=="tasks_suspend","Main Tasks hover differs: "+scene._fortress_hud.native_help.displayed+" target="+owner.panel.hover_target(owner.panel.pointer_position)+" known="+str(owner.panel.pointer_known)+" allowed="+str(owner.panel.allowed())+" help="+str(is_instance_valid(owner.panel.hover_help))+" key="+scene._fortress_hud.native_help.state.key)
 	scene._fortress_hud.toggle_game_menu();await process_frame
 	check(scene._ui.host.overlay_blocked,"Tasks overlay did not block input")
 	await pointer(motion.position);await drain()
-	check(owner.state.phase==owner.state.Phase.Ready and owner.state.rows[39].suspended,"Overlay allowed Tasks mutation")
+	check(owner.state.phase==owner.state.Phase.Ready and owner.state.rows.any(func(row):return row.job_id==68196 and row.suspended),"Overlay allowed Tasks mutation")
 	scene._fortress_hud.close_menus();await process_frame
 	for step in [1,2]:
 		var index: int=-1
@@ -34,6 +39,20 @@ func exercise(expected: Dictionary) -> void:
 		var deadline:=Time.get_ticks_msec()+5000
 		while Time.get_ticks_msec()<deadline and FileAccess.get_file_as_string(directory+"/tasks-wire-ack")!=str(step):await create_timer(0.01).timeout
 		if not check(FileAccess.get_file_as_string(directory+"/tasks-wire-ack")==str(step),"Native suspension effect unconfirmed"):return
+	if OS.get_environment("DF3D_TASKS_CREATE")=="1":
+		var target: int=-1
+		for i in owner.state.rows.size():
+			if owner.state.rows[i].can_view_job:target=i;break
+		if not check(target>=0,"Created Tasks Details target missing"):return
+		var job: int=owner.state.rows[target].job_id
+		owner.state.seek(target,owner.panel.capacity());await process_frame
+		await pointer(owner.panel.get_global_transform_with_canvas()*owner.panel.button_rect(target-owner.panel.visible_first(),0).get_center())
+		if not await settle(owner.job_state):return
+		check(owner.job_state.job_id==job and owner.job_panel.visible and not owner.panel.visible and scene._ui.host.active==owner,"View task did not open owned Details")
+		await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/tasks-main-details.png")
+		key(KEY_ESCAPE);await process_frame
+		check(not owner.job_open() and owner.panel.visible and scene._ui.host.active==owner,"Details Back did not return to Tasks")
+		owner.state.seek(1048576,owner.panel.capacity());await process_frame
 	await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/tasks-main-scene.png")
 	# Building Recenter leaves Tasks and focuses its current native work location.

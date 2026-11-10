@@ -70,6 +70,12 @@ func run() -> void:
 	check(focused==[Vector3i(4,5,6)] and owner.state.phase==State.Phase.Closed and host.active==null,"Recenter failed to close owner and use fresh destination")
 	owner.open_panel();service.reply(owner.state.ticket,initial);owner._navigate(owner.state.rows[0].duplicate(true),false,false);pending=owner.state.ticket
 	owner.close_panel();service.reply(pending,fresh_page);check(focused.size()==1,"Retired navigation moved camera")
+	owner.job_state.configure(service);owner.open_panel();service.reply(owner.state.ticket,initial)
+	owner._navigate(owner.state.rows[0].duplicate(true),false,true)
+	check(owner.job_open() and owner.job_state.job_id==1 and owner.job_state.building_id==7 and host.active==owner,"View task did not enter owned Details")
+	owner.job_state.close();check(owner.state.phase==State.Phase.Ready and host.active==owner,"Details close lost Tasks owner")
+	owner._navigate(owner.state.rows[0].duplicate(true),false,true);owner.close_panel()
+	check(not owner.job_open() and host.active==null,"Closing Tasks retained Details")
 	owner.open_panel();owner.set_play_enabled(false);check(owner.state.phase==State.Phase.Closed and host.active==null,"Disabled play retained Tasks owner")
 	owner.queue_free();await process_frame
 	state.dispose();service.queue_free();await process_frame

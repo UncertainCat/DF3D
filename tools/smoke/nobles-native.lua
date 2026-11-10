@@ -20,18 +20,39 @@ local function bytes(address,size)
  local chars={};for offset=0,size-1 do chars[#chars+1]=string.char(df.reinterpret_cast('uint8_t',address+offset).value)end
  return table.concat(chars)
 end
-local function probe()
+local function cache_snapshot()
+ local result={}
+ for _,unit in ipairs(df.global.world.units.active)do
+  result[#result+1]={unit.id,unit.enemy.histfig_vector_idx}
+  local hf=df.historical_figure.find(unit.hist_figure_id)
+  if hf then for _,link in ipairs(hf.entity_links)do
+   if link:getType()==df.histfig_entity_link_type.POSITION then
+    local assignment=-1;local entity=df.historical_entity.find(link.entity_id)
+    if entity then for _,entry in ipairs(entity.positions.assignments)do if entry.id==link.assignment_id then assignment=entry.position_vector_idx;break end end end
+    result[#result+1]={hf.id,link.entity_id,link.entity_vector_idx,link.assignment_id,link.assignment_vector_idx,assignment}
+   end
+  end end
+ end
+ return json.encode(result)
+end
+local function probe(command)
  local menu=df.global.game.main_interface.info.administrators
  local size,address=df.sizeof(menu);local before=bytes(address,size)
  local base=dfhack.internal.getImageBase();local rng={}
  for _,range in ipairs{{0x234e990,0x6180},{0x2131b30,40},{0x2159084,2},{0x18adf98,8}}do rng[#rng+1]={range[1],range[2],bytes(base+range[1],range[2])}end
- local output,rc=dfhack.run_command_silent('df3d','nobles-overview-probe')
+ local caches=cache_snapshot()
+ local output,rc=dfhack.run_command_silent('df3d',table.unpack(command or {'nobles-overview-probe'}))
  assert(rc==0,'Owned Nobles overview failed: '..output)
  assert(bytes(address,size)==before,'Owned Nobles overview changed native menu')
  for _,r in ipairs(rng)do assert(bytes(base+r[1],r[2])==r[3],'Owned Nobles overview advanced randomness')end
+ assert(caches==cache_snapshot(),'Owned Nobles read changed lookup caches')
  return json.decode(output)
 end
 local cold=probe()
+local cold_candidates={}
+for _,row in ipairs(cold)do if row.position_name=='manager' or row.position_name=='messenger' then
+ cold_candidates[row.position_name]=probe({'nobles-candidates-probe',tostring(row.entity_id),tostring(row.position_id),tostring(row.assignment_id)})
+end end
 gui.simulateInput(view,'D_NOBLES');settle()
 local info=df.global.game.main_interface.info
 assert(info.open and info.current_mode==df.info_interface_mode_type.ADMINISTRATORS,'Nobles shortcut failed')
@@ -57,7 +78,9 @@ for _,target in ipairs{{'manager',232,394},{'messenger',232,646}}do
  assert(menu.choosing_candidate,'Appointment picker did not open')
  local selected=rows[menu.candidate_noblelist_ind+1];assert(selected.position_name==target[1],'Wrong appointment target')
  local candidates={};for _,row in ipairs(menu.candidate)do candidates[#candidates+1]={unit_id=row.un and row.un.id or -1,value=row.value}end
- result.pickers[#result.pickers+1]={position=target[1],selected=selected,candidates=candidates,lines=lines()}
+ local owned=probe({'nobles-candidates-probe',tostring(selected.entity_id),tostring(selected.position_id),tostring(selected.assignment_id)})
+ assert(json.encode(owned)==json.encode(candidates) and json.encode(cold_candidates[target[1]])==json.encode(candidates),'Owned candidate ordering/value differs')
+ result.pickers[#result.pickers+1]={position=target[1],selected=selected,candidates=candidates,lines=lines(),owned_cold_warm_equal=true,menu_rng_caches_preserved=true}
  write('nobles-native.json',json.encode(result));capture('nobles-candidates-'..target[1])
  gui.simulateInput(view,'LEAVESCREEN');settle();assert(info.open and not menu.choosing_candidate,'Picker Cancel did not return to overview')
 end

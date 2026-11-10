@@ -52,11 +52,11 @@ owned DF24360 closes unsaved,30FPS, GPU60C/17% sampled.
 
 Diagnostic field addresses place administrators at RVA18a6a20, its candidate
 vector at18a6ab8 and choosing-candidate flag at18a6aac. Static cross-references
-identify overview builder421f30, cleanup421dc0 and candidate path422d10 as
+identify overview builder421f30, cleanup421dc0 and appointment candidate path423df0 as
 candidates for independently owned invocation. Open wrapper424280 resets UI
 state and calls global interface helpers; feed424330 reads input. Neither is a
-runtime semantic API. Candidate422d10 still requires its own ownership and
-destruction audit; no candidate provider or appointment mutation is accepted.
+runtime semantic API. Path422d10 builds symbol choices, not appointment
+candidates; symbol selection and appointment mutations remain unfinished.
 
 `nobles_native.h` now calls overview421f30 with a private administrators context.
 Its RIP operands are bound to world entities, units, active units, historical
@@ -77,6 +77,28 @@ sampled. `native_nobles.json.owned_overview_reference` records this scope. MSVC
 bridge builds successfully. This is not full simulation-memory immutability or
 acceptance of other fortresses, candidate eligibility, captions, graphics or
 appointments. No typed Nobles transport, controller or public route is exposed.
+
+Appointment candidates now use native423df0 with a fresh owned overview and a
+unique entity/position/assignment identity, including assignment-1 for NEW rows.
+Missing or ambiguous targets reject. This is a candidate read, not authority to
+appoint or proof that native exposes the appointment button for every position.
+The native builder supplies Leave Vacant eligibility, unit eligibility, skill
+scores and ordering; none are reconstructed in Godot. Its skill-list helper is
+99a1f0 and descending-score comparator14219a0. Cleanup421ea0 frees the0x10-byte
+candidate records before overview cleanup; the owned vectors free their buffers.
+The existing LaborEligibilityCacheRestore captures all active units' figure hints
+and related position-link/assignment indices with group-1, restoring them after
+the native membership/eligibility helpers refresh those semantic lookup caches.
+
+Protected171028 on2026-11-10 compares cold and warm owned candidate reads with
+both117-entry native Manager and Messenger pickers. Identities, scores and
+ordering match, including Leave Vacant. The native menu context, random streams,
+active-unit figure hints and measured position lookup indices are unchanged by
+the diagnostic calls. Both pickers cancel without an appointment. Source
+preservation passes; owned DF6096 closes unsaved,30FPS, GPU59C/17% sampled.
+`native_nobles.json.owned_candidates_reference` records scope and omissions.
+MSVC rebuild passes; candidate captions/graphics, broader office cases, the
+appoint-button eligibility gate, actual appointments and typed UI remain pending.
 
 ## Places native discovery
 

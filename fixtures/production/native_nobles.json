@@ -1917,14 +1917,16 @@
   },
   "native_entry_point_candidates": {
     "overview_builder": "0x421f30",
-    "candidate_builder": "0x422d10",
+    "candidate_builder": "0x423df0",
     "overview_cleanup": "0x421dc0",
     "menu_open_wrapper_do_not_call": "0x424280",
     "input_handler_do_not_call": "0x424330",
-    "status": "Overview421f30/cleanup421dc0 now used with private storage and preserved RNG; candidate422d10 remains under audit."
+    "status": "Overview and appointment candidates now use private contexts; symbol choices and appointment effects remain under audit.",
+    "symbol_choice_builder": "0x422d10",
+    "candidate_cleanup": "0x421ea0"
   },
   "omissions": [
-    "Owned candidate provider and broader overview fixtures",
+    "Broader overview and candidate fixtures beyond Manager/Messenger",
     "Appointment eligibility/effects and cancellation cleanup audit",
     "Status captions, room requirements, demands, mandates, symbols and precision controls",
     "Native hover/input/resize and complete rendered viewer",
@@ -1943,6 +1945,32 @@
       "Other fortresses, absent rulers and unusual position histories",
       "Room/status/appearance output and appointment effects",
       "Typed transport and complete UI"
+    ]
+  },
+  "owned_candidates_reference": {
+    "source": "build/stockpile-storage-native-input-20261110-171028",
+    "cases": [
+      {
+        "position": "manager",
+        "count": 117,
+        "owned_cold_warm_equal": true,
+        "menu_rng_caches_preserved": true
+      },
+      {
+        "position": "messenger",
+        "count": 117,
+        "owned_cold_warm_equal": true,
+        "menu_rng_caches_preserved": true
+      }
+    ],
+    "cache_scope": "Active unit historical-figure hints and their POSITION links/entity assignment lookup indices; runtime guard also restores first-spouse position hints.",
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "Other appointment types and occupied military leaders with subordinates",
+      "Overview appoint-button eligibility and appointment effects",
+      "Candidate captions/portraits and rendered viewer",
+      "Typed transport, lifecycle and public exposure"
     ]
   }
 }

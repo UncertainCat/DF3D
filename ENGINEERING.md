@@ -200,6 +200,32 @@ and native menu storage remains unchanged. The paused disposable session closes
 unsaved and preserves the source save. Firing-job cancellation and retained
 loading-job effects are not yet live accepted; neither is viewer integration.
 
+Places row artwork is exported as owned original-page recipes by
+`places_artwork_native.h`, from pinned renderer dispatch39ba3b..39c68a and
+tables39ef50..39f0e4. Workshop/furnace, farm, siege and nonempty stockpile
+selectors agree with Tasks and reuse its provider. Empty stockpiles use the
+Places-specific slot264b490. Zone types79..97 use their native slots; meeting
+areas and location rows resolve the current site's abstract building and use
+its type and contents tier (including temple and guild variants). No composed
+texture cache or renderer scratch is read.
+
+Protected `stockpile-storage-native-input-20261110-150205` checks all249 recipes
+against native anchored icon tiles across158 zones,6 locations,34 stockpiles,
+46 workshops/furnaces,2 farms and3 siege engines. All rows have artwork and
+match. Cold/warm provider equality and menu-storage preservation pass. This is
+native selector acceptance, not DF3D pixel rendering. Empty-stockpile,
+unpopulated tier/custom-raw variants and missing-reference fallbacks remain
+unaccepted. `native_places.json.artwork_reference` retains a grouped recipe
+digest; source save is unchanged and the owned DF session closes unsaved.
+
+Native View dispatch at39ac00 routes modes0/1 to zone inspection39a77d,
+mode2 to stockpile inspection39a937, and modes3/4/5 to building inspection
+39aabf (1a01d0 with building ID). Recenter39a6b5 and View39a14f both use
+building center coordinates and reject invalid center X (-30000). These
+branches manipulate native camera/menu state and are discovery evidence only;
+future viewer navigation must own its camera and panels. Runtime routing,
+hover controls, row layout and pixel rendering remain unfinished.
+
 ## Management 174 Tasks contract
 
 Management174 uses `Local\df3d_management_v174`;173 peers cannot attach. There is

@@ -2522,6 +2522,11 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             row["secondary_status"]=DF2UTF(entry.secondaryStatus);
             row["status_overlay"]=DF2UTF(entry.statusOverlay);
             row["operator_caption"]=DF2UTF(entry.operatorCaption);row["siege_action"]=entry.siegeAction;
+            if(entry.appearance){const auto& recipe=*entry.appearance;auto& art=row["appearance"];
+              art["pages"]=Json::Value(Json::arrayValue);art["palettes"]=Json::Value(Json::arrayValue);art["layers"]=Json::Value(Json::arrayValue);
+              for(const auto& name:recipe.pages)art["pages"].append(name);
+              for(const auto& name:recipe.palettes)art["palettes"].append(name);
+              for(const auto& layer:recipe.layers){Json::Value values(Json::arrayValue);for(auto value:layer)values.append(value);art["layers"].append(values);}}
             row["position"]=Json::Value(Json::arrayValue);for(auto v:{entry.position.x,entry.position.y,entry.position.z})row["position"].append(v);
             list.append(row);}result.append(list);}
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;

@@ -161,6 +161,19 @@ for _,caption in ipairs{'Zones','Locations','Stockpiles','Workshops','Farm plots
       assert(table.concat(primary):find(dfhack.utf2df(status),1,true),'Places status caption mismatch: '..caption..' row '..index)
      end
     end
+    local art=rows[index].appearance
+    if art then
+     assert(#art.layers==1,'Expected original Places icon');local layer=art.layers[1];local tile
+     for _,page in ipairs(df.global.texture.page)do
+      if page.token==art.pages[layer[1]+1]then tile=page.texpos[layer[3]*page.page_dim_x+layer[2]];break end
+     end
+     assert(tile and tile>0,'Places icon page not installed');local found=false
+     for xx=6,10 do for yy=first_y-1+visible*3,first_y+1+visible*3 do
+      local offset=xx*g.dimy+yy
+      if g.screentexpos_anchored[offset]==tile or g.screentexpos_top_anchored[offset]==tile then found=true end
+     end end
+     assert(found,'Places artwork mismatch: '..caption..' row '..index)
+    end
     checked[index]=true
    end
   end

@@ -26,6 +26,7 @@
 #include "df/building_chainst.h"
 #include "df/building_siegeenginest.h"
 #include "creature_follow_native.h"
+#include "places_artwork_native.h"
 #include <array>
 #include <optional>
 #include <unordered_set>
@@ -37,6 +38,7 @@ struct BuildingRow {
     int32_t id=-1;df::coord position;std::string name,subtitle,jobCaption,statusCaption,secondaryStatus,statusOverlay;
     int32_t additionalJobs=0,siegeAction=-1;
     std::string operatorCaption;
+    std::optional<df3d_production::ItemAppearanceRecipe> appearance;
 };
 using BuildingRows=std::array<std::vector<BuildingRow>,6>;
 // Native323a7e invokes375450 with a buildings_interfacest. The builder only
@@ -447,6 +449,7 @@ inline std::optional<BuildingRows> buildingRows() {
     for(size_t mode=0;mode<ids->size();++mode)for(auto id:(*ids)[mode]) {
         auto* building=df::building::find(id);if(!building)return std::nullopt;
         BuildingRow row;row.id=id;row.position=df::coord(building->centerx,building->centery,building->z);
+        row.appearance=artwork(*building,mode);
         const auto name=heading(*building,mode);if(!name)return std::nullopt;row.name=*name;
         auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
         if(mode==0) {

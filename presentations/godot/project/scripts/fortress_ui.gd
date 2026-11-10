@@ -126,6 +126,16 @@ func controller(id: String):
 	if not Registry.PANEL_SCRIPTS.has(id): return null
 	if controllers.has(id): return controllers[id]
 	var panel = load(Registry.PANEL_SCRIPTS[id]).new()
+	if id=="places":
+		add_child(panel);panel.configure(world,actions,host)
+		panel.focus_requested.connect(focus_tile)
+		panel.inspect_requested.connect(func(tab,building_id,tile):
+			if not host.play_enabled:return
+			focus_tile(tile)
+			if tab in [0,1]:controller("areas").open_zone(building_id)
+			elif tab==2:controller("areas").open_stockpile(building_id)
+			else:open_target(tile,3,building_id))
+		controllers[id]=panel;return panel
 	if id=="tasks":
 		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
 		panel.focus_requested.connect(focus_tile)

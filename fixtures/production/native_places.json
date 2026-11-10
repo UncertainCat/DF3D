@@ -9426,5 +9426,20 @@
       "Wheel, hover, modal owner and navigation effects",
       "Typed siege mutations"
     ]
+  },
+  "owner_reference": {
+    "source": "build/stockpile-storage-native-input-20261110-153749",
+    "headless_client": true,
+    "stub_modal_host": true,
+    "view_handoff_tabs": 6,
+    "recenter_handoff": true,
+    "fresh_native_reads": true,
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "Actual main-scene camera and destination inspectors",
+      "Viewport click routing and map input blocking",
+      "Siege mutation ownership, hover and remaining layout/input gaps"
+    ]
   }
 }

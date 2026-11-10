@@ -303,6 +303,26 @@ pass in `build/qa/places-view-final`; the rendered run is
 shutdown diagnostics. These engine diagnostics remain deferred. Installed assets
 and screenshots stay ignored; the fixture retains only comparison metadata.
 
+`places_panel.gd` owns modal focus, opening/closing, layout and navigation intent.
+View/recenter first refresh native membership and coordinates, retaining only tab
+and building ID across the read. Missing targets do not navigate. Tab changes,
+close, session invalidation and disabled play retire the intent. Successful
+handoffs close Places and release its input owner before emitting the destination.
+The main composition routes tabs0/1 to zone inspection,2 to stockpile inspection,
+and3/4/5 to building inspection, matching the audited native View dispatch.
+Only the internal panel factory is registered; `PANEL_ROUTES` still excludes Places.
+
+Headless `places_state_test` covers fresh-coordinate use, all six View identity
+handoffs, owner release, tab-change retirement and disabled-play late replies,
+and parses the main composition while asserting the public gate remains closed.
+Protected `stockpile-storage-native-input-20261110-153749` exercises all six View
+handoff signals and recenter through real native refreshes and the semantic action
+service, with a stub modal host and headless client. The actual main-scene camera,
+inspector opening, map input blocking and viewport click routing are not accepted
+by that signal-level check. Core19 and controller checks pass in
+`build/qa/places-owner-final`; DF closes unsaved and the source save is unchanged.
+Siege mutation ownership, hover and remaining input/layout gaps remain pending.
+
 ## Management 174 Tasks contract
 
 Management174 uses `Local\df3d_management_v174`;173 peers cannot attach. There is

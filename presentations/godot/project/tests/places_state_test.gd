@@ -1,9 +1,19 @@
 extends SceneTree
 const View=preload("res://scripts/places_view.gd")
+const Owner=preload("res://scripts/places_panel.gd")
+const Shell=preload("res://scripts/fortress_ui.gd")
 const State=preload("res://scripts/places_state.gd")
 const C=preload("res://scripts/management_contract.gd")
 const Service=preload("res://tests/work_details_state_test.gd").Service
 var failures:=0
+class Host extends RefCounted:
+	var active
+	func activate(owner) -> bool:
+		if is_instance_valid(active) and active!=owner:active.close_panel()
+		active=owner;return true
+	func allows_panel_input(owner) -> bool:return active==owner
+	func release(owner) -> void:
+		if active==owner:active=null
 func check(ok: bool,message: String) -> void:
 	if not ok:failures+=1;push_error(message)
 func row(id: int,tab:=0) -> Dictionary:
@@ -14,6 +24,7 @@ func stale(tab:=0) -> Dictionary:
 	return {"status":C.ManagementStatus.Rejected,"places":{"outcome":C.PlacesOutcome.Stale,"tab":tab,"list_revision":0,"total":0,"offset":0,"rows":[]}}
 func _initialize() -> void:call_deferred("run")
 func run() -> void:
+	check(Shell.Registry.PANEL_SCRIPTS.has("places") and not Shell.Registry.PANEL_ROUTES.has("Places"),"Places public gate changed")
 	var service:=Service.new();root.add_child(service);var state:=State.new();state.configure(service);state.open()
 	service.reply(state.ticket,page(0,0,[1],2));check(state.phase==State.Phase.Reading and state.rows.is_empty(),"Partial list exposed")
 	check(service.calls[state.ticket].intent.offset==1 and service.calls[state.ticket].intent.expected_list_revision==8,"Continuation lost identity")
@@ -45,6 +56,28 @@ func run() -> void:
 	var view:=View.new();view.state=state;view.size=Vector2(944,708)
 	check(view.tab_rect(0)==Rect2(8,60,72,24) and view.tab_rect(3)==Rect2(8,84,104,24),"Places tabs differ from native reference")
 	check(view.list_top()==120 and view.capacity()==15,"Places row geometry differs")
-	view.free();state.dispose();service.queue_free();await process_frame
+	view.free();state.dispose()
+	var owner:=Owner.new();root.add_child(owner);var host:=Host.new();owner.ui_host=host;owner.state.configure(service)
+	var focused: Array=[];var inspected: Array=[]
+	owner.focus_requested.connect(func(tile):focused.append(tile))
+	owner.inspect_requested.connect(func(tab,id,tile):inspected.append([tab,id,tile]))
+	var initial:=page();initial.places.rows[0].position=Vector3i(1,2,3)
+	var fresh:=page();fresh.places.rows[0].position=Vector3i(4,5,6)
+	owner.open_panel();service.reply(owner.state.ticket,initial);owner._navigate(owner.state.rows[0],false)
+	check(focused.is_empty() and owner.state.phase==State.Phase.Reading,"Recenter used displayed coordinates")
+	service.reply(owner.state.ticket,fresh)
+	check(focused==[Vector3i(4,5,6)] and host.active==null and owner.state.phase==State.Phase.Closed,"Recenter did not release owner with fresh coordinates")
+	for tab in 6:
+		owner.open_panel();if tab>0:owner.state.select_tab(tab)
+		var current_page:=page(tab);current_page.places.rows[0].position=Vector3i(4,5,6)
+		service.reply(owner.state.ticket,current_page);owner._navigate(owner.state.rows[0],true);service.reply(owner.state.ticket,current_page)
+		check(inspected[-1]==[tab,1,Vector3i(4,5,6)] and host.active==null,"Inspector handoff lost identity or retained input")
+	owner.open_panel();service.reply(owner.state.ticket,initial);owner._navigate(owner.state.rows[0],false);old=owner.state.ticket
+	owner.state.select_tab(2);service.reply(old,fresh);service.reply(owner.state.ticket,page(2))
+	check(focused.size()==1 and owner.destination.is_empty(),"Tab change retained navigation intent")
+	owner.close_panel();owner.open_panel();service.reply(owner.state.ticket,initial);owner._navigate(owner.state.rows[0],true);old=owner.state.ticket
+	owner.set_play_enabled(false);service.reply(old,fresh)
+	check(inspected.size()==6 and host.active==null,"Disabled play accepted late navigation")
+	owner.queue_free();service.queue_free();await process_frame
 	if failures==0:print("PLACES_STATE_PASS")
 	quit(1 if failures else 0)

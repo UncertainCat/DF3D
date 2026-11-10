@@ -15,6 +15,10 @@
 #include "df/historical_figure.h"
 #include "df/squad.h"
 #include "df/building_squad_infost.h"
+#include "df/abstract_building_templest.h"
+#include "df/abstract_building_guildhallst.h"
+#include "df/historical_entity.h"
+#include "df/occupation.h"
 #include <array>
 #include <optional>
 #include <unordered_set>
@@ -169,6 +173,68 @@ inline std::optional<std::string> zoneSubtitle(df::building_civzonest& zone) {
     }
     return text;
 }
+inline bool locationDetails(df::building_civzonest& zone,BuildingRow& row) {
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool ready=[base]{
+        const auto hash=[base](size_t rva,size_t count){uint64_t h=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<count;++i){h^=base[rva+i];h*=UINT64_C(1099511628211);}return h;};
+        return df3d_creature::knowledgeDescriptionReady() &&
+            hash(0x39d32a,0x52d)==UINT64_C(0x064d3ad96b0c0caf) &&
+            hash(0x132e0c0,0x368)==UINT64_C(0x5020a6b8e463a24d) &&
+            hash(0x132cc10,0x14a4)==UINT64_C(0x32cb3990ee45026b) &&
+            hash(0x52c2b0,0xd8)==UINT64_C(0x38b6489e35387929) &&
+            hash(0x15eb518,5)==UINT64_C(0x39ead4ecd4054252) &&
+            hash(0x15ed5b4,5)==UINT64_C(0x56a7d5c347508a2a);
+    }();
+    if(!ready || !df::global::plotinfo->main.fortress_site)return false;
+    df::abstract_building* location=nullptr;
+    for(auto* entry:df::global::plotinfo->main.fortress_site->buildings){if(!entry)return false;if(entry->id==zone.location_id){location=entry;break;}}
+    if(!location)return true;
+    const auto literal=[base](size_t rva){return reinterpret_cast<const char*>(base+rva);};
+    const auto translated=[base](const df::language_name& name,bool capitalize){
+        auto owned=name;std::string text;
+        reinterpret_cast<void(*)(df::language_name*,std::string*,bool,bool)>(base+0xa946e0)(&owned,&text,true,false);
+        if(capitalize)reinterpret_cast<void(*)(std::string*)>(base+0x52d650)(&text);return text;
+    };
+    switch(int(location->getType())) {
+    case 8:row.subtitle=literal(0x162b7c8);break;
+    case 9:row.subtitle=literal(0x162b7c0);break;
+    case 13:row.subtitle=literal(0x162bd38);break;
+    case 11: {
+        auto* guild=virtual_cast<df::abstract_building_guildhallst>(location);if(!guild)return false;
+        const auto& contents=guild->contents;
+        using Profession=bool(*)(std::string*,int16_t,int16_t,int16_t,bool,bool,int16_t);
+        const auto race=df::global::plotinfo->race_id;
+        // Explicit default race avoids the formatter's -2 UI-mode fallback.
+        // Renderer guild/member scans before this call do not feed its output.
+        reinterpret_cast<Profession>(base+0x132e0c0)(&row.subtitle,int16_t(contents.profession),race,-1,true,true,race);
+        const size_t suffix[]={0x162bce0,0x162bd18,0x162bd00};
+        if(contents.location_tier>=0 && contents.location_tier<=2)row.subtitle+=literal(suffix[contents.location_tier]);
+        break;
+    }
+    case 2: {
+        auto* temple=virtual_cast<df::abstract_building_templest>(location);if(!temple)return false;
+        const auto tier=temple->contents.location_tier;const size_t labels[]={0x162b7d8,0x162b7d0,0x162bcf0};
+        if(tier>=0 && tier<=2)row.subtitle=literal(labels[tier]);
+        if(int(temple->deity_type)==1) {
+            if(auto* religion=df::historical_entity::find(temple->deity_data.practice_id))row.subtitle+=std::string(literal(0x15eb518))+translated(religion->name,true);
+        } else if(int(temple->deity_type)==0) {
+            if(auto* deity=df::historical_figure::find(temple->deity_data.practice_id))row.subtitle+=std::string(literal(tier==0?0x15ed5b4:0x15eb518))+translated(deity->name,false);
+        }
+        break;
+    }
+    default:break;
+    }
+    // Native39d4eb counts occupied slots only when their unit resolves in all.
+    if(location->occupations.size()>1048576)return false;
+    int32_t assigned=0;
+    for(auto* slot:location->occupations){if(!slot)return false;if(slot->unit_id!=-1 && df::unit::find(slot->unit_id))++assigned;}
+    if(assigned>0) {
+        reinterpret_cast<void(*)(int32_t,std::string*)>(base+0x52c2b0)(assigned,&row.statusCaption);
+        row.statusCaption+=literal(0x162b778);
+    }
+    return true;
+}
 // Native Places39dba6/39de70/39e029/39e4a5 use building::getName for
 // Stockpiles, Workshops, Farm plots and Siege engines.
 inline std::optional<BuildingRows> buildingRows() {
@@ -182,6 +248,8 @@ inline std::optional<BuildingRows> buildingRows() {
         if(mode==0) {
             auto* zone=virtual_cast<df::building_civzonest>(building);if(!zone)return std::nullopt;
             auto subtitle=zoneSubtitle(*zone);if(!subtitle)return std::nullopt;row.subtitle=std::move(*subtitle);
+        } else if(mode==1) {
+            auto* zone=virtual_cast<df::building_civzonest>(building);if(!zone || !locationDetails(*zone,row))return std::nullopt;
         } else if(mode==3) {
             if(!df3d_creature::inventoryDescriptionReady())return std::nullopt;
             // Native39de95 selects only the first permitted worker, if present.

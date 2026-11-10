@@ -117,6 +117,19 @@ Owned DF40220 closes unsaved, source preserved,30FPS, GPU40C/0% sampled. MSVC
 rebuild and core checks pass. `native_places.json.zone_subtitle_reference` retains
 coverage and omissions. No caption truncation, viewer or navigation acceptance.
 
+Location-tab subtitles now use native type/tier literals plus native English
+religious-name or profession formatting. Guild captions pass the explicit
+simulation race to avoid the formatter's UI-mode fallback. The renderer's guild
+and membership scans do not feed the caption; those calls are not reproduced.
+Assigned-staff status follows native39d4eb: count occupation slots with a unit
+that still resolves, then format through52c2b0 and the native suffix. Protected
+143101 matches hospital, tavern, library, two religion-specific temples and a
+Farmers meeting place, with assigned counts4/2/1/1. Owned DF40048 closes unsaved,
+source preserved,30FPS, GPU39C/0% sampled. MSVC rebuild and core checks pass.
+`native_places.json.location_details_reference` scopes this evidence: other
+temple/guild tiers, deity-specific temples, missing staff targets and hospital
+patient counts remain unaccepted, along with truncation, artwork and viewer.
+
 ## Management 174 Tasks contract
 
 Management174 uses `Local\df3d_management_v174`;173 peers cannot attach. There is

@@ -106,7 +106,7 @@ for _,caption in ipairs{'Zones','Locations','Stockpiles','Workshops','Farm plots
      result.name_mismatch={caption=caption,index=index,requested_first=first,actual_first=actual,expected=rows[index].name,observed=dfhack.df2utf(table.concat(chars)),lines=lines()};save()
      error('Native Places name mismatch: '..caption..' row '..index)
     end
-    if mode==0 or mode==3 or mode==4 then
+    if mode==0 or mode==1 or mode==3 or mode==4 then
      local secondary={};for x=13,g.dimx-1 do local ch=dfhack.screen.readTile(x,16+visible*3).ch;secondary[#secondary+1]=ch>=32 and ch<=255 and string.char(ch) or ' ' end
      local subtitle=dfhack.utf2df(rows[index].subtitle)
      assert(table.concat(secondary):sub(1,#subtitle)==subtitle,'Places subtitle mismatch: '..caption..' row '..index)

@@ -6608,5 +6608,104 @@
     ],
     "source_save_preserved": "Owned source unchanged",
     "owned_df_closed_unsaved": true
+  },
+  "location_details_reference": {
+    "capture": "build/stockpile-storage-native-input-20261110-143101",
+    "scope": "All six location subtitles and four nonzero assigned-staff status captions match native rendered text. Full captions only; no viewport truncation, colors or viewer acceptance.",
+    "rows": [
+      {
+        "additional_jobs": 0,
+        "id": 489,
+        "job_caption": "",
+        "name": "The Blockaded Sanctuary",
+        "position": [
+          122,
+          79,
+          165
+        ],
+        "status_caption": "4 assigned",
+        "subtitle": "Hospital"
+      },
+      {
+        "additional_jobs": 0,
+        "id": 408,
+        "job_caption": "",
+        "name": "The Oily Meal",
+        "position": [
+          126,
+          52,
+          165
+        ],
+        "status_caption": "",
+        "subtitle": "Tavern"
+      },
+      {
+        "additional_jobs": 0,
+        "id": 914,
+        "job_caption": "",
+        "name": "The Constructive Bastion",
+        "position": [
+          163,
+          65,
+          165
+        ],
+        "status_caption": "2 assigned",
+        "subtitle": "Library"
+      },
+      {
+        "additional_jobs": 0,
+        "id": 496,
+        "job_caption": "",
+        "name": "The White Temple",
+        "position": [
+          129,
+          81,
+          165
+        ],
+        "status_caption": "1 assigned",
+        "subtitle": "Temple of The Scintillating Bejeweled Sect"
+      },
+      {
+        "additional_jobs": 0,
+        "id": 259,
+        "job_caption": "",
+        "name": "The Golden Shrine",
+        "position": [
+          139,
+          100,
+          165
+        ],
+        "status_caption": "1 assigned",
+        "subtitle": "Temple of The Bejeweled Creed"
+      },
+      {
+        "additional_jobs": 0,
+        "id": 956,
+        "job_caption": "",
+        "name": "The Pears of Hide",
+        "position": [
+          131,
+          96,
+          165
+        ],
+        "status_caption": "",
+        "subtitle": "Farmers meeting place"
+      }
+    ],
+    "native_sources": {
+      "type_caption": "Inline39d32a..39d73a with immutable native label/suffix operands. Temple religious entity/deity names use owned English formatter, guild profession uses132e0c0 with explicit default race.",
+      "assigned_count": "39d4eb..39d852 counts occupation slots whose unit resolves, formats through52c2b0 and native assigned suffix. No occupancy/eligibility inference.",
+      "ownership": "No native render invocation. Guild/entity membership helper results do not feed displayed caption and are omitted. Native profession fallback receives explicit simulation race rather than UI-mode fallback."
+    },
+    "source_save_preserved": "Owned source unchanged",
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "Shrine and temple-complex tiers",
+      "Deity-specific temples",
+      "Guildhall and grand-guildhall tiers",
+      "Missing/absent occupation targets",
+      "Hospital patient count",
+      "Viewport truncation, colors, artwork, controls, transport and viewer"
+    ]
   }
 }

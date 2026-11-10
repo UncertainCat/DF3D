@@ -3108,5 +3108,88 @@
     "diagnostics": "passed_with_known_issues",
     "source_save_preserved": true,
     "owned_df_closed_unsaved": true
+  },
+  "layout_reference": {
+    "capture": "build/stockpile-storage-native-input-20261110-133117",
+    "sizes": [
+      {
+        "size": "minimum",
+        "columns": 114,
+        "rows": 46,
+        "last": 32
+      },
+      {
+        "size": "small",
+        "columns": 120,
+        "rows": 50,
+        "last": 31
+      },
+      {
+        "size": "wide",
+        "columns": 200,
+        "rows": 75,
+        "last": 22
+      },
+      {
+        "size": "default",
+        "columns": 150,
+        "rows": 66,
+        "last": 25
+      }
+    ],
+    "comparison": [
+      {
+        "size": "minimum",
+        "page": "first",
+        "differing_pixels": 1139,
+        "outside_animated_worker_names": 0
+      },
+      {
+        "size": "minimum",
+        "page": "-last",
+        "differing_pixels": 0,
+        "outside_animated_worker_names": 0
+      },
+      {
+        "size": "small",
+        "page": "first",
+        "differing_pixels": 0,
+        "outside_animated_worker_names": 0
+      },
+      {
+        "size": "small",
+        "page": "-last",
+        "differing_pixels": 0,
+        "outside_animated_worker_names": 0
+      },
+      {
+        "size": "wide",
+        "page": "first",
+        "differing_pixels": 0,
+        "outside_animated_worker_names": 0
+      },
+      {
+        "size": "wide",
+        "page": "-last",
+        "differing_pixels": 1127,
+        "outside_animated_worker_names": 0
+      },
+      {
+        "size": "default",
+        "page": "first",
+        "differing_pixels": 1162,
+        "outside_animated_worker_names": 0
+      },
+      {
+        "size": "default",
+        "page": "-last",
+        "differing_pixels": 556,
+        "outside_animated_worker_names": 0
+      }
+    ],
+    "scope": "First and last panel crops; all differences confined to native animated worker-name regions, without synchronized animation. Main scene Shift+wheel reaches native last offsets at each size. Destination negative-width text corrected to native untruncated behavior. Outside-panel overflow backgrounds and controls are not pixel/input accepted.",
+    "diagnostics": "passed_with_known_issues",
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true
   }
 }

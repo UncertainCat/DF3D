@@ -130,7 +130,20 @@ GPU44C/0% sampled; documented engine diagnostics only (passed_with_known_issues)
 Earlier132108 failed on a Godot inferred-type parse error, now explicit Vector2;
 132222 passed scrolling but failed subsequent suspension after synthetic wheel
 presses without releases. The final harness supplies paired events and passes.
-Remaining action branches, resize and disconnect/epoch
+Protected133117 verifies first/last Tasks panel layouts at912x552,960x600,
+1600x900 and1200x800. Shift+wheel reaches native last offsets32/31/22/25
+for42 rows, corresponding to capacities10/11/20/17. All panel RGB differences
+are confined to unsynchronized animated worker-name regions; other pixels match.
+Native negative-width destination names remain untruncated, now replacing the
+incorrect DF3D ellipsis; widths0..3 truncate without ellipsis. Native draws worker
+controls and destination names outside narrow panels. Those overflow backgrounds
+and input hitboxes remain unaccepted; panel crop comparisons exclude them.
+Source preserved, owned DF5664 closed unsaved, both processes capped30FPS,
+GPU45C/0% sampled; documented engine diagnostics only (passed_with_known_issues).
+Earlier132633 completed the viewer workflow but native resize timed out because
+the launcher gate omitted Tasks.132924 missed the final native scroll after focus
+loss; the capture now restores mouse focus before each context event.
+Remaining action branches, overflow input/backgrounds and disconnect/epoch
 live acceptance are unfinished; public exposure stays gated.
 
 Read requests carry offset, limit1..64 and an expected ordered-list revision.

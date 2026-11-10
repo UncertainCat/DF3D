@@ -281,6 +281,28 @@ else
  local row=warm[#warm];local y=142+(#warm-1-info.jobs.scroll_position_cri_job)*36
  recenter(row,252,y,row.building_position)
 end
+if os.getenv('DF3D_TASKS_LAYOUT')=='1' then
+ result.layouts={}
+ for _,size in ipairs{'minimum','small','wide','default'}do
+  write('owner-input-request.tmp','name-resize-'..size);assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+  local deadline=dfhack.getTickCount()+10000
+  while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Tasks resize timed out');script.sleep(1,'frames')end
+  assert(os.remove(out..'/owner-input-ack'));script.sleep(5,'frames')
+  info.jobs.scroll_position_cri_job=0;view:render(dfhack.getTickCount())
+  local sample={size=size,columns=g.dimx,rows=g.dimy,text={}}
+  for y=0,g.dimy-1 do
+   local chars={};for x=0,g.dimx-1 do chars[#chars+1]=dfhack.screen.readTile(x,y).ch end
+   sample.text[#sample.text+1]=chars
+  end
+  result.layouts[#result.layouts+1]=sample;capture('tasks-layout-'..size)
+  g.precise_mouse_x=500;g.precise_mouse_y=200;g.mouse_x=62;g.mouse_y=16
+  for _=1,5 do
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   gui.simulateInput(view,'CONTEXT_SCROLL_PAGEDOWN');view:render(dfhack.getTickCount())
+  end
+  sample.last=info.jobs.scroll_position_cri_job;capture('tasks-layout-'..size..'-last')
+ end
+end
 write('tasks-native.json',json.encode(result))
 gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount())
 assert(not info.open,'Tasks did not close')

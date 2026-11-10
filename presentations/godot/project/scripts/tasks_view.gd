@@ -123,4 +123,9 @@ func _draw() -> void:
 				if icon!=null:draw_texture_rect(icon,Rect2(664+slot*24,y,24,36),false)
 		if row.building_id>=0:
 			var cells:=int(size.x/8)-102-(2 if state.rows.size()>capacity() else 0)
-			text(row.building_caption if row.building_caption.length()<=cells else row.building_caption.left(maxi(0,cells-3))+"...",Vector2(784,y+24))
+			var caption: String=row.building_caption
+			# Native399512 leaves negative-width names untruncated; zero-to-three
+			# cells truncate without an ellipsis. Preserve the narrow-window spill.
+			if cells>=0 and caption.length()>cells:
+				caption=caption.left(cells-3)+"..." if cells>3 else caption.left(cells)
+			text(caption,Vector2(784,y+24))

@@ -11,6 +11,17 @@ func exercise(expected: Dictionary) -> void:
 	owner=scene._ui.controller("tasks");owner.open_panel()
 	if not await ready_tasks():return
 	check(owner.state.rows.size()==expected.rows.size(),"Main Tasks list differs")
+	if OS.get_environment("DF3D_TASKS_LAYOUT")=="1":
+		for sample in [["minimum",Vector2i(912,552)],["small",Vector2i(960,600)],["wide",Vector2i(1600,900)],["default",Vector2i(1200,800)]]:
+			root.size=sample[1];await process_frame;await process_frame
+			owner.state.seek(0,owner.panel.capacity());await process_frame;await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/tasks-main-layout-"+sample[0]+".png")
+			for page in 5:
+				var wheel:=InputEventMouseButton.new();wheel.position=Vector2(500,200);wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN;wheel.shift_pressed=true;wheel.pressed=true
+				root.push_input(wheel,true);wheel=wheel.duplicate();wheel.pressed=false;root.push_input(wheel,true);await process_frame
+			check(owner.state.first==maxi(0,owner.state.rows.size()-owner.panel.capacity()),"Tasks resize wheel did not reach last page")
+			await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/tasks-main-layout-"+sample[0]+"-last.png")
+		owner.state.seek(0,owner.panel.capacity());await process_frame
 	var scrollbar=owner.panel.scrollbar
 	await pointer(scrollbar.get_global_transform_with_canvas()*Vector2(8,scrollbar.size.y-6))
 	check(owner.state.first==1,"Tasks scrollbar down did not advance one row")

@@ -2744,6 +2744,21 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           }
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),rows));return CR_OK;
         }
+        if(parameters[0]=="justice-cases-probe") {
+          if(parameters.size()!=1)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto lists=df3d_justice::cases();if(!lists)return CR_FAILURE;
+          Json::Value result(Json::arrayValue);
+          for(const auto& ids:*lists) {
+            Json::Value rows(Json::arrayValue);
+            for(auto id:ids) {
+              const auto caption=df3d_justice::caption(df::crime::find(id));if(!caption)return CR_FAILURE;
+              Json::Value row(Json::objectValue);row["id"]=id;row["caption"]=DF2UTF(*caption);rows.append(row);
+            }
+            result.append(rows);
+          }
+          out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
+        }
         if(parameters[0]=="objects-lists-probe") {
           if(parameters.size()!=1)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;

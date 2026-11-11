@@ -40,6 +40,35 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+`df3d_justice::cases` isolates native470757..470f7e's inline case selection.
+No standalone list function exists at this widget-construction boundary, so the
+adapter copies only the audited semantic selection, with code/global-layout
+pins (827bytes, FNV64 d3944d9a7b7de020), without invoking the builder or reading
+menu lists. It preserves `world.crimes.all` order. Discovered cases must match
+the fortress site and entity. No trial required, or an existing accused unit,
+selects Closed. Otherwise the discovery anniversary selects Open/Cold, with
+equality at the current year tick counting as Cold; unknown year stays Open.
+The actual criminal and sentenced bit do not substitute for those conditions.
+`justice-cases-probe` exposes owned IDs and native captions diagnostically.
+
+Protected174708 on2026-11-11 checks16 scenarios against all three native case
+lists. Giving the17 existing crimes distinct native crime-type titles makes
+ordered comparisons meaningful even where the original captions were identical.
+Coverage includes discovery/site/entity exclusions, -1 site/entity, trial and
+sentenced flags, existing/missing accused versus actual criminal, future/unknown
+discovery year and both sides of the anniversary tick. Baseline ordered IDs are
+Open9,10,11,13,14,15,16; Closed7,8,12; Cold0–6. All temporary facts are restored.
+Menu/crime/RNG preservation guards pass on cold and scenario queries.
+`native_justice.json.cases_reference` records results. Run with
+`DF3D_JUSTICE_CASES=1` alongside the native flag. Earlier174627 failed the Lua
+fixture's C++-style `.bits` access; the final test uses exposed Lua bitfields.
+Owned DF26604 closes unsaved with source preservation and restored preferences,
+native30FPS/no viewer, GPU60C/1%/44W. MSVC `justice-cases-build-final.log` and
+core19 `build/qa/justice-cases` pass. Installed bridge SHA256
+`3F75A9281A05A904BDE46C7A89E21961E9589C72955C86E1E867001AAA6A0F80`;
+protocol191 is unchanged. Detailed reports, candidate choices, effects and the
+screen itself remain pending.
+
 The first owned Justice helper is `df3d_justice::caption` in
 `bridge/plugin/justice_native.h`. It calls native46d660 with an independently
 copied crime and owned string; the pinned function plus19-way jump table spans
@@ -62,8 +91,8 @@ closes unsaved with source preservation and restored preferences, native30FPS,
 no viewer. MSVC build `justice-caption-build.log` and core19
 `build/qa/justice-captions` pass. Installed bridge SHA256
 `0BDD59EAFB1DE53072B07E090902A46AF890539DCCA6C4BDCB5CE0ACA6DE8F4C`;
-protocol191 remains unchanged. Membership, ordering, details and effects still
-require native helpers and live verification.
+protocol191 remains unchanged. The later list reference above covers membership
+and ordering; details and effects still require native helpers and verification.
 
 The Justice screen remains unimplemented and gated. Protected173422 on2026-11-11 captures
 all six native categories at1200x800: Open cases, Closed cases, Cold cases,

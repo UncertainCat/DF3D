@@ -1199,5 +1199,862 @@
       "Missing victim",
       "List membership/order and effects"
     ]
+  },
+  "cases_reference": {
+    "cases": [
+      {
+        "name": "unique-title-order",
+        "native": [
+          [
+            "Robbery",
+            "Blood-drinking",
+            "Embezzlement",
+            "Kidnapping",
+            "Attempted kidnapping",
+            "Attempted theft",
+            "Treason"
+          ],
+          [
+            "Vandalism",
+            "Theft",
+            "Attempted murder"
+          ],
+          [
+            "Violation of production order",
+            "Violation of export prohibition",
+            "Violation of job order",
+            "Conspiracy to alow labor",
+            "Murder",
+            "Disorderly conduct",
+            "Building destruction"
+          ]
+        ],
+        "ids": [
+          [
+            9,
+            10,
+            11,
+            13,
+            14,
+            15,
+            16
+          ],
+          [
+            7,
+            8,
+            12
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        ]
+      },
+      {
+        "name": "undiscovered",
+        "native": [
+          [
+            "Blood-drinking",
+            "Embezzlement",
+            "Kidnapping",
+            "Attempted kidnapping",
+            "Attempted theft",
+            "Treason"
+          ],
+          [
+            "Vandalism",
+            "Theft",
+            "Attempted murder"
+          ],
+          [
+            "Violation of production order",
+            "Violation of export prohibition",
+            "Violation of job order",
+            "Conspiracy to alow labor",
+            "Murder",
+            "Disorderly conduct",
+            "Building destruction"
+          ]
+        ],
+        "ids": [
+          [
+            10,
+            11,
+            13,
+            14,
+            15,
+            16
+          ],
+          [
+            7,
+            8,
+            12
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        ]
+      },
+      {
+        "name": "foreign-site",
+        "native": [
+          [
+            "Blood-drinking",
+            "Embezzlement",
+            "Kidnapping",
+            "Attempted kidnapping",
+            "Attempted theft",
+            "Treason"
+          ],
+          [
+            "Vandalism",
+            "Theft",
+            "Attempted murder"
+          ],
+          [
+            "Violation of production order",
+            "Violation of export prohibition",
+            "Violation of job order",
+            "Conspiracy to alow labor",
+            "Murder",
+            "Disorderly conduct",
+            "Building destruction"
+          ]
+        ],
+        "ids": [
+          [
+            10,
+            11,
+            13,
+            14,
+            15,
+            16
+          ],
+          [
+            7,
+            8,
+            12
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        ]
+      },
+      {
+        "name": "foreign-entity",
+        "native": [
+          [
+            "Blood-drinking",
+            "Embezzlement",
+            "Kidnapping",
+            "Attempted kidnapping",
+            "Attempted theft",
+            "Treason"
+          ],
+          [
+            "Vandalism",
+            "Theft",
+            "Attempted murder"
+          ],
+          [
+            "Violation of production order",
+            "Violation of export prohibition",
+            "Violation of job order",
+            "Conspiracy to alow labor",
+            "Murder",
+            "Disorderly conduct",
+            "Building destruction"
+          ]
+        ],
+        "ids": [
+          [
+            10,
+            11,
+            13,
+            14,
+            15,
+            16
+          ],
+          [
+            7,
+            8,
+            12
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        ]
+      },
+      {
+        "name": "site-minus-one",
+        "native": [
+          [
+            "Blood-drinking",
+            "Embezzlement",
+            "Kidnapping",
+            "Attempted kidnapping",
+            "Attempted theft",
+            "Treason"
+          ],
+          [
+            "Vandalism",
+            "Theft",
+            "Attempted murder"
+          ],
+          [
+            "Violation of production order",
+            "Violation of export prohibition",
+            "Violation of job order",
+            "Conspiracy to alow labor",
+            "Murder",
+            "Disorderly conduct",
+            "Building destruction"
+          ]
+        ],
+        "ids": [
+          [
+            10,
+            11,
+            13,
+            14,
+            15,
+            16
+          ],
+          [
+            7,
+            8,
+            12
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        ]
+      },
+      {
+        "name": "entity-minus-one",
+        "native": [
+          [
+            "Blood-drinking",
+            "Embezzlement",
+            "Kidnapping",
+            "Attempted kidnapping",
+            "Attempted theft",
+            "Treason"
+          ],
+          [
+            "Vandalism",
+            "Theft",
+            "Attempted murder"
+          ],
+          [
+            "Violation of production order",
+            "Violation of export prohibition",
+            "Violation of job order",
+            "Conspiracy to alow labor",
+            "Murder",
+            "Disorderly conduct",
+            "Building destruction"
+          ]
+        ],
+        "ids": [
+          [
+            10,
+            11,
+            13,
+            14,
+            15,
+            16
+          ],
+          [
+            7,
+            8,
+            12
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        ]
+      },
+      {
+        "name": "no-trial",
+        "native": [
+          [
+            "Blood-drinking",
+            "Embezzlement",
+            "Kidnapping",
+            "Attempted kidnapping",
+            "Attempted theft",
+            "Treason"
+          ],
+          [
+            "Vandalism",
+            "Theft",
+            "Robbery",
+            "Attempted murder"
+          ],
+          [
+            "Violation of production order",
+            "Violation of export prohibition",
+            "Violation of job order",
+            "Conspiracy to alow labor",
+            "Murder",
+            "Disorderly conduct",
+            "Building destruction"
+          ]
+        ],
+        "ids": [
+          [
+            10,
+            11,
+            13,
+            14,
+            15,
+            16
+          ],
+          [
+            7,
+            8,
+            9,
+            12
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        ]
+      },
+      {
+        "name": "sentenced-needs-trial",
+        "native": [
+          [
+            "Robbery",
+            "Blood-drinking",
+            "Embezzlement",
+            "Kidnapping",
+            "Attempted kidnapping",
+            "Attempted theft",
+            "Treason"
+          ],
+          [
+            "Vandalism",
+            "Theft",
+            "Attempted murder"
+          ],
+          [
+            "Violation of production order",
+            "Violation of export prohibition",
+            "Violation of job order",
+            "Conspiracy to alow labor",
+            "Murder",
+            "Disorderly conduct",
+            "Building destruction"
+          ]
+        ],
+        "ids": [
+          [
+            9,
+            10,
+            11,
+            13,
+            14,
+            15,
+            16
+          ],
+          [
+            7,
+            8,
+            12
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        ]
+      },
+      {
+        "name": "existing-accused",
+        "native": [
+          [
+            "Blood-drinking",
+            "Embezzlement",
+            "Kidnapping",
+            "Attempted kidnapping",
+            "Attempted theft",
+            "Treason"
+          ],
+          [
+            "Vandalism",
+            "Theft",
+            "Robbery",
+            "Attempted murder"
+          ],
+          [
+            "Violation of production order",
+            "Violation of export prohibition",
+            "Violation of job order",
+            "Conspiracy to alow labor",
+            "Murder",
+            "Disorderly conduct",
+            "Building destruction"
+          ]
+        ],
+        "ids": [
+          [
+            10,
+            11,
+            13,
+            14,
+            15,
+            16
+          ],
+          [
+            7,
+            8,
+            9,
+            12
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        ]
+      },
+      {
+        "name": "existing-criminal-only",
+        "native": [
+          [
+            "Robbery",
+            "Blood-drinking",
+            "Embezzlement",
+            "Kidnapping",
+            "Attempted kidnapping",
+            "Attempted theft",
+            "Treason"
+          ],
+          [
+            "Vandalism",
+            "Theft",
+            "Attempted murder"
+          ],
+          [
+            "Violation of production order",
+            "Violation of export prohibition",
+            "Violation of job order",
+            "Conspiracy to alow labor",
+            "Murder",
+            "Disorderly conduct",
+            "Building destruction"
+          ]
+        ],
+        "ids": [
+          [
+            9,
+            10,
+            11,
+            13,
+            14,
+            15,
+            16
+          ],
+          [
+            7,
+            8,
+            12
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        ]
+      },
+      {
+        "name": "missing-accused",
+        "native": [
+          [
+            "Robbery",
+            "Blood-drinking",
+            "Embezzlement",
+            "Kidnapping",
+            "Attempted kidnapping",
+            "Attempted theft",
+            "Treason"
+          ],
+          [
+            "Vandalism",
+            "Theft",
+            "Attempted murder"
+          ],
+          [
+            "Violation of production order",
+            "Violation of export prohibition",
+            "Violation of job order",
+            "Conspiracy to alow labor",
+            "Murder",
+            "Disorderly conduct",
+            "Building destruction"
+          ]
+        ],
+        "ids": [
+          [
+            9,
+            10,
+            11,
+            13,
+            14,
+            15,
+            16
+          ],
+          [
+            7,
+            8,
+            12
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        ]
+      },
+      {
+        "name": "anniversary-not-reached",
+        "native": [
+          [
+            "Robbery",
+            "Blood-drinking",
+            "Embezzlement",
+            "Kidnapping",
+            "Attempted kidnapping",
+            "Attempted theft",
+            "Treason"
+          ],
+          [
+            "Vandalism",
+            "Theft",
+            "Attempted murder"
+          ],
+          [
+            "Violation of production order",
+            "Violation of export prohibition",
+            "Violation of job order",
+            "Conspiracy to alow labor",
+            "Murder",
+            "Disorderly conduct",
+            "Building destruction"
+          ]
+        ],
+        "ids": [
+          [
+            9,
+            10,
+            11,
+            13,
+            14,
+            15,
+            16
+          ],
+          [
+            7,
+            8,
+            12
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        ]
+      },
+      {
+        "name": "anniversary-equal",
+        "native": [
+          [
+            "Blood-drinking",
+            "Embezzlement",
+            "Kidnapping",
+            "Attempted kidnapping",
+            "Attempted theft",
+            "Treason"
+          ],
+          [
+            "Vandalism",
+            "Theft",
+            "Attempted murder"
+          ],
+          [
+            "Violation of production order",
+            "Violation of export prohibition",
+            "Violation of job order",
+            "Conspiracy to alow labor",
+            "Murder",
+            "Disorderly conduct",
+            "Building destruction",
+            "Robbery"
+          ]
+        ],
+        "ids": [
+          [
+            10,
+            11,
+            13,
+            14,
+            15,
+            16
+          ],
+          [
+            7,
+            8,
+            12
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            9
+          ]
+        ]
+      },
+      {
+        "name": "older-year",
+        "native": [
+          [
+            "Blood-drinking",
+            "Embezzlement",
+            "Kidnapping",
+            "Attempted kidnapping",
+            "Attempted theft",
+            "Treason"
+          ],
+          [
+            "Vandalism",
+            "Theft",
+            "Attempted murder"
+          ],
+          [
+            "Violation of production order",
+            "Violation of export prohibition",
+            "Violation of job order",
+            "Conspiracy to alow labor",
+            "Murder",
+            "Disorderly conduct",
+            "Building destruction",
+            "Robbery"
+          ]
+        ],
+        "ids": [
+          [
+            10,
+            11,
+            13,
+            14,
+            15,
+            16
+          ],
+          [
+            7,
+            8,
+            12
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            9
+          ]
+        ]
+      },
+      {
+        "name": "unknown-year",
+        "native": [
+          [
+            "Robbery",
+            "Blood-drinking",
+            "Embezzlement",
+            "Kidnapping",
+            "Attempted kidnapping",
+            "Attempted theft",
+            "Treason"
+          ],
+          [
+            "Vandalism",
+            "Theft",
+            "Attempted murder"
+          ],
+          [
+            "Violation of production order",
+            "Violation of export prohibition",
+            "Violation of job order",
+            "Conspiracy to alow labor",
+            "Murder",
+            "Disorderly conduct",
+            "Building destruction"
+          ]
+        ],
+        "ids": [
+          [
+            9,
+            10,
+            11,
+            13,
+            14,
+            15,
+            16
+          ],
+          [
+            7,
+            8,
+            12
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        ]
+      },
+      {
+        "name": "future-year",
+        "native": [
+          [
+            "Robbery",
+            "Blood-drinking",
+            "Embezzlement",
+            "Kidnapping",
+            "Attempted kidnapping",
+            "Attempted theft",
+            "Treason"
+          ],
+          [
+            "Vandalism",
+            "Theft",
+            "Attempted murder"
+          ],
+          [
+            "Violation of production order",
+            "Violation of export prohibition",
+            "Violation of job order",
+            "Conspiracy to alow labor",
+            "Murder",
+            "Disorderly conduct",
+            "Building destruction"
+          ]
+        ],
+        "ids": [
+          [
+            9,
+            10,
+            11,
+            13,
+            14,
+            15,
+            16
+          ],
+          [
+            7,
+            8,
+            12
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ]
+        ]
+      }
+    ],
+    "crime_id": 9,
+    "source": "build/stockpile-storage-native-input-20261111-174708",
+    "status": "passed",
+    "owned_df_pid": 26604,
+    "source_preserved": true,
+    "pin_rva": "0x470757",
+    "pin_length": "0x827",
+    "pin_fnv64": "0xd3944d9a7b7de020",
+    "scope": "Audited inline selection, not native widget invocation. Unique native type captions establish ordered membership; all temporary facts restored.",
+    "limitations": [
+      "Detailed reports",
+      "Candidate choices",
+      "Actions",
+      "No public screen yet"
+    ]
   }
 }

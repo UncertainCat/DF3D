@@ -7,11 +7,11 @@ local function bytes(address,size)
  local chars={};for offset=0,size-1 do chars[#chars+1]=string.char(df.reinterpret_cast('uint8_t',address+offset).value)end
  return table.concat(chars)
 end
-local function probe()
+local function probe(command)
  local menu=df.global.game.main_interface.info.justice;local size,address=df.sizeof(menu)
  local before=bytes(address,size);local rng=bytes(base+0x234e990,0x6180);local crimes={}
  for _,crime in ipairs(df.global.world.crimes.all)do local n,p=df.sizeof(crime);crimes[#crimes+1]={p=p,n=n,before=bytes(p,n)}end
- local text,rc=dfhack.run_command_silent('df3d','justice-captions-probe');assert(rc==0,'Justice captions provider failed: '..text)
+ local text,rc=dfhack.run_command_silent('df3d',command or 'justice-captions-probe');assert(rc==0,'Justice captions provider failed: '..text)
  assert(bytes(address,size)==before,'Justice caption provider changed menu')
  assert(bytes(base+0x234e990,0x6180)==rng,'Justice caption provider advanced randomness')
  for _,crime in ipairs(crimes)do assert(bytes(crime.p,crime.n)==crime.before,'Justice caption provider changed crime')end
@@ -65,6 +65,7 @@ local function callbacks(vector)
 end
 local result={tabs={},crimes={}}
 if os.getenv('DF3D_JUSTICE_CAPTIONS')=='1' then result.cold_captions=probe()end
+if os.getenv('DF3D_JUSTICE_CASES')=='1' then result.cold_cases=probe('justice-cases-probe')end
 for _,crime in ipairs(df.global.world.crimes.all)do
  result.crimes[#result.crimes+1]={id=crime.id,mode=crime.mode,site=crime.site,entity=crime.entity,criminal=crime.criminal,accused=crime.accused,victim=crime.victim,flags=crime.flags.whole,event_year=crime.event_year,event_time=crime.event_time,discovered_year=crime.discovered_year,discovered_time=crime.discovered_time}
 end
@@ -96,21 +97,6 @@ for index,caption in ipairs{'Open cases','Closed cases','Cold cases','Fortress g
  assert(loadfile(source))(out..'/justice-widgets-'..(index-1)..'.json','templates')
  write('justice-native.json',json.encode(result));capture('justice-tab-'..(index-1))
 end
-if os.getenv('DF3D_JUSTICE_CAPTIONS')=='1' then
- caption_click('Open cases')
- local target
- local function find_target(widget)
-  local _,address=df.sizeof(widget.custom_activated);local first=df.reinterpret_cast('uint64_t',address).value;local last=df.reinterpret_cast('uint64_t',address+8).value
-  for at=first,last-1,64 do
-   local context=df.reinterpret_cast('uint64_t',at+56).value
-   if context~=0 then
-    local vt=df.reinterpret_cast('uint64_t',context).value
-    if df.reinterpret_cast('uint64_t',vt+16).value-base==0x486d70 then target=df.reinterpret_cast(df.crime,df.reinterpret_cast('uint64_t',context+24).value)end
-   end
-  end
-  if df.widget_container:is_instance(widget)then for index,child in ipairs(dfhack.gui.getWidgetChildren(widget))do if not df.widget_tabs:is_instance(widget)or index-1==widget.cur_idx then find_target(child)end end end
- end
- find_target(info.justice);assert(target and df.crime.find(target.id)==target,'Native selected case missing')
  local function native_captions()
   local values={}
   local function text(widget)
@@ -132,6 +118,21 @@ if os.getenv('DF3D_JUSTICE_CAPTIONS')=='1' then
   end
   find(info.justice);return values
  end
+if os.getenv('DF3D_JUSTICE_CAPTIONS')=='1' then
+ caption_click('Open cases')
+ local target
+ local function find_target(widget)
+  local _,address=df.sizeof(widget.custom_activated);local first=df.reinterpret_cast('uint64_t',address).value;local last=df.reinterpret_cast('uint64_t',address+8).value
+  for at=first,last-1,64 do
+   local context=df.reinterpret_cast('uint64_t',at+56).value
+   if context~=0 then
+    local vt=df.reinterpret_cast('uint64_t',context).value
+    if df.reinterpret_cast('uint64_t',vt+16).value-base==0x486d70 then target=df.reinterpret_cast(df.crime,df.reinterpret_cast('uint64_t',context+24).value)end
+   end
+  end
+  if df.widget_container:is_instance(widget)then for index,child in ipairs(dfhack.gui.getWidgetChildren(widget))do if not df.widget_tabs:is_instance(widget)or index-1==widget.cur_idx then find_target(child)end end end
+ end
+ find_target(info.justice);assert(target and df.crime.find(target.id)==target,'Native selected case missing')
  local old=target.mode;local samples={}
  local ok,err=xpcall(function()
   for mode=0,18 do
@@ -147,6 +148,10 @@ if os.getenv('DF3D_JUSTICE_CAPTIONS')=='1' then
   end
  end,debug.traceback)
  target.mode=old;assert(ok,err)
+end
+if os.getenv('DF3D_JUSTICE_CASES')=='1' then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-native%.lua$','justice-cases-native.lua')
+ assert(loadfile(source))(out,view,probe,settle,caption_click,native_captions)
 end
 gui.simulateInput(view,'LEAVESCREEN');settle();assert(not info.open,'Justice did not close')
 records[#records+1]={name='justice-discovery',closed=true}

@@ -39,6 +39,24 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Objects native discovery
 
+Protected172238 on2026-11-11 verifies29 controlled ownership cases against
+native rendered text cells for local artifact252. Coverage includes all four
+fortress/civilization claim types, civilization claims before/after king arrival,
+renounced fortress claims, personal/family heirlooms and treasures, their
+renunciation, no claims, and competing fortress→civilization→personal→family
+precedence. The provider matches every caption, including empty ownership.
+`native_objects.json.claims_reference` records the exact native/provider pairs.
+`DF3D_OBJECTS_CLAIMS=1` runs the restored semantic fixture in the protected
+Objects lane; it does not supply native menu state to runtime code. Symbol cases
+without a valid office use the native entity-name fallback; the separate
+Manager reference below covers a valid office title. Other office titles and
+missing-history branches are not established by this fixture. Owned DF25760
+closes unsaved with source preservation and restored preferences; native30FPS,
+headless viewer, GPU60C/1%/43W. Only the known separate-rendering-thread notice
+remains. Earlier172100 had an escaped-path error in the test helper;172155 used
+an off-map artifact removed from membership when its claims were cleared.
+Neither is accepted as ownership evidence. No runtime change was required.
+
 Objects has a staged main-scene factory and information-header route. It reuses
 the shared UI host, hover owner, camera focus and existing item-sheet owner.
 Nobles can hand off to Objects through its existing commit-before-navigation
@@ -56,8 +74,8 @@ wire and Symbols flags. The scene client has a55-second deadline. The first
 as product evidence. The final run closes owned DF16124 unsaved, preserves the
 source and restores preferences, with both processes capped30FPS. GPU observed
 59–62C; known separate-thread/finalize/ObjectDB diagnostics only
-(`passed_with_known_issues`). Additional ownership variants and full session
-replacement remain outside this composed check.
+(`passed_with_known_issues`). Full session replacement remains outside this
+composed check; ownership branch coverage is recorded separately above.
 
 Protected171050 on2026-11-11 populates Symbols using the existing native semantic
 Nobles symbol assignment: artifact255/item27491 belongs to Manager office
@@ -70,8 +88,9 @@ with counts10/1/2/11. The assignment is removed after capture; owned DF8096 clos
 unsaved with source preservation and restored preferences. Both processes30FPS,
 GPU59C/1%/43W; known separate-thread/finalize/ObjectDB diagnostics only.
 `native_objects.json.symbols_reference` records scope and evidence. Enable with
-`DF3D_OBJECTS_SYMBOLS=1`; this does not accept other office/civilization claim
-variants. MSVC bridge builds (`objects-symbol-caption-build-final.log`), core19
+`DF3D_OBJECTS_SYMBOLS=1`; this does not accept other office titles. The controlled
+claims reference above covers civilization claims. MSVC bridge builds
+(`objects-symbol-caption-build-final.log`), core19
 passes `build/qa/objects-composition`; no protocol change from191.
 
 Objects scrollbar input is covered at912x552 with11 Written content rows and
@@ -108,8 +127,8 @@ panel crops. Protected run passes with known Godot separate-thread/finalize/
 ObjectDB diagnostics; owned DF22652 closes unsaved with source preservation and
 restored preferences, both30FPS, GPU54C/20%/44W. Later references above cover
 scrollbar pointer/drag, populated Manager Symbols and main-scene composition.
-Additional claims, longer-list paging and remaining session lifecycle are still
-pending; public exposure remains gated.
+Longer-list paging and remaining session lifecycle are still pending; public
+exposure remains gated. Claim coverage and its limits are recorded above.
 
 Protocol191 adds optional `coffin_unused` to shared appearance facts: -1 unknown,
 0 false,1 installed in a coffin building with at most one contained item. Native

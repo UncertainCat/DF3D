@@ -140,6 +140,10 @@ for mode,x in ipairs{90,184,296,443}do
  result.tabs[#result.tabs+1]={mode=menu.mode,lines=screen};capture('objects-tab-'..tostring(mode-1))
  assert(json.encode(probe())==json.encode(cold),'Owned Objects lists depend on native tab')
 end
+if os.getenv('DF3D_OBJECTS_CLAIMS')=='1' then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('objects%-native%.lua$','objects-claims-native.lua')
+ assert(loadfile(source))(out,view,probe,settle)
+end
 if os.getenv('DF3D_OBJECTS_LAYOUT')=='1' then
  result.layouts={}
  for _,size in ipairs{'minimum','wide','default'}do

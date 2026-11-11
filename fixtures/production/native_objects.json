@@ -1852,5 +1852,168 @@
       "Full session replacement",
       "Long-list intermediate scrolling and keyboard paging"
     ]
+  },
+  "claims_reference": {
+    "artifact_id": 252,
+    "cases": [
+      {
+        "name": "unclaimed",
+        "native": "",
+        "provider": ""
+      },
+      {
+        "name": "fortress-0",
+        "native": "Symbol of The Rough Crystal",
+        "provider": "Symbol of The Rough Crystal"
+      },
+      {
+        "name": "fortress-renounced-0",
+        "native": "",
+        "provider": ""
+      },
+      {
+        "name": "civilization-before-king-0",
+        "native": "",
+        "provider": ""
+      },
+      {
+        "name": "civilization-after-king-0",
+        "native": "Symbol of The Matched Clasps",
+        "provider": "Symbol of The Matched Clasps"
+      },
+      {
+        "name": "fortress-1",
+        "native": "Heirloom of The Rough Crystal",
+        "provider": "Heirloom of The Rough Crystal"
+      },
+      {
+        "name": "fortress-renounced-1",
+        "native": "",
+        "provider": ""
+      },
+      {
+        "name": "civilization-before-king-1",
+        "native": "",
+        "provider": ""
+      },
+      {
+        "name": "civilization-after-king-1",
+        "native": "Heirloom of The Matched Clasps",
+        "provider": "Heirloom of The Matched Clasps"
+      },
+      {
+        "name": "fortress-2",
+        "native": "Treasure of The Rough Crystal",
+        "provider": "Treasure of The Rough Crystal"
+      },
+      {
+        "name": "fortress-renounced-2",
+        "native": "",
+        "provider": ""
+      },
+      {
+        "name": "civilization-before-king-2",
+        "native": "",
+        "provider": ""
+      },
+      {
+        "name": "civilization-after-king-2",
+        "native": "Treasure of The Matched Clasps",
+        "provider": "Treasure of The Matched Clasps"
+      },
+      {
+        "name": "fortress-3",
+        "native": "Sacred to The Rough Crystal",
+        "provider": "Sacred to The Rough Crystal"
+      },
+      {
+        "name": "fortress-renounced-3",
+        "native": "",
+        "provider": ""
+      },
+      {
+        "name": "civilization-before-king-3",
+        "native": "",
+        "provider": ""
+      },
+      {
+        "name": "civilization-after-king-3",
+        "native": "Sacred to The Matched Clasps",
+        "provider": "Sacred to The Matched Clasps"
+      },
+      {
+        "name": "personal-1",
+        "native": "Heirloom of Zon Portalarch's",
+        "provider": "Heirloom of Zon Portalarch's"
+      },
+      {
+        "name": "personal-renounced-1",
+        "native": "",
+        "provider": ""
+      },
+      {
+        "name": "family-1",
+        "native": "Zon Portalarch's family heirloom",
+        "provider": "Zon Portalarch's family heirloom"
+      },
+      {
+        "name": "family-renounced-1",
+        "native": "",
+        "provider": ""
+      },
+      {
+        "name": "personal-2",
+        "native": "Treasure of Zon Portalarch's",
+        "provider": "Treasure of Zon Portalarch's"
+      },
+      {
+        "name": "personal-renounced-2",
+        "native": "",
+        "provider": ""
+      },
+      {
+        "name": "family-2",
+        "native": "Zon Portalarch's family treasure",
+        "provider": "Zon Portalarch's family treasure"
+      },
+      {
+        "name": "family-renounced-2",
+        "native": "",
+        "provider": ""
+      },
+      {
+        "name": "fortress-precedence",
+        "native": "Treasure of The Rough Crystal",
+        "provider": "Treasure of The Rough Crystal"
+      },
+      {
+        "name": "civilization-precedence",
+        "native": "Sacred to The Matched Clasps",
+        "provider": "Sacred to The Matched Clasps"
+      },
+      {
+        "name": "personal-precedence",
+        "native": "Heirloom of Zon Portalarch's",
+        "provider": "Heirloom of Zon Portalarch's"
+      },
+      {
+        "name": "family-fallback",
+        "native": "Zon Portalarch's family treasure",
+        "provider": "Zon Portalarch's family treasure"
+      }
+    ],
+    "family_id": 9268,
+    "figure_id": 9268,
+    "source": "build/stockpile-storage-native-input-20261111-172238",
+    "game": "DF 53.16",
+    "status": "passed_with_known_issues",
+    "owned_df_pid": 25760,
+    "source_preserved": true,
+    "scope": "Controlled semantic claims, restored before return; exact native rendered ownership cells versus owned provider. No product change.",
+    "limitations": [
+      "Valid office titles other than Manager",
+      "Missing-history branches",
+      "Full session replacement"
+    ]
   }
 }

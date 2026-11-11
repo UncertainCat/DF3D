@@ -7,11 +7,11 @@ local function bytes(address,size)
  local chars={};for offset=0,size-1 do chars[#chars+1]=string.char(df.reinterpret_cast('uint8_t',address+offset).value)end
  return table.concat(chars)
 end
-local function probe(command)
+local function probe(command,argument)
  local menu=df.global.game.main_interface.info.justice;local size,address=df.sizeof(menu)
  local before=bytes(address,size);local rng=bytes(base+0x234e990,0x6180);local crimes={}
  for _,crime in ipairs(df.global.world.crimes.all)do local n,p=df.sizeof(crime);crimes[#crimes+1]={p=p,n=n,before=bytes(p,n)}end
- local text,rc=dfhack.run_command_silent('df3d',command or 'justice-captions-probe');assert(rc==0,'Justice captions provider failed: '..text)
+ local text,rc=dfhack.run_command_silent('df3d',command or 'justice-captions-probe',table.unpack(argument and {tostring(argument)}or{}));assert(rc==0,'Justice captions provider failed: '..text)
  assert(bytes(address,size)==before,'Justice caption provider changed menu')
  assert(bytes(base+0x234e990,0x6180)==rng,'Justice caption provider advanced randomness')
  for _,crime in ipairs(crimes)do assert(bytes(crime.p,crime.n)==crime.before,'Justice caption provider changed crime')end
@@ -66,6 +66,7 @@ end
 local result={tabs={},crimes={}}
 if os.getenv('DF3D_JUSTICE_CAPTIONS')=='1' then result.cold_captions=probe()end
 if os.getenv('DF3D_JUSTICE_CASES')=='1' then result.cold_cases=probe('justice-cases-probe')end
+if os.getenv('DF3D_JUSTICE_CANDIDATES')=='1' then result.cold_candidate_facts=probe('justice-candidate-facts-probe',9)end
 for _,crime in ipairs(df.global.world.crimes.all)do
  result.crimes[#result.crimes+1]={id=crime.id,mode=crime.mode,site=crime.site,entity=crime.entity,criminal=crime.criminal,accused=crime.accused,victim=crime.victim,flags=crime.flags.whole,event_year=crime.event_year,event_time=crime.event_time,discovered_year=crime.discovered_year,discovered_time=crime.discovered_time}
 end
@@ -152,6 +153,10 @@ end
 if os.getenv('DF3D_JUSTICE_CASES')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-native%.lua$','justice-cases-native.lua')
  assert(loadfile(source))(out,view,probe,settle,caption_click,native_captions)
+end
+if os.getenv('DF3D_JUSTICE_CANDIDATES')=='1' then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-native%.lua$','justice-candidates-native.lua')
+ assert(loadfile(source))(out,view,probe,settle,caption_click,capture,result.cold_candidate_facts)
 end
 gui.simulateInput(view,'LEAVESCREEN');settle();assert(not info.open,'Justice did not close')
 records[#records+1]={name='justice-discovery',closed=true}

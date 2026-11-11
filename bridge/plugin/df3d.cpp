@@ -2744,6 +2744,17 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           }
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),rows));return CR_OK;
         }
+        if(parameters[0]=="justice-candidate-facts-probe") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          try {
+            const auto facts=df3d_justice::candidateFacts(df::crime::find(std::stoi(parameters[1])));if(!facts)return CR_FAILURE;
+            Json::Value result(Json::arrayValue);
+            for(const auto& fact:*facts){Json::Value row(Json::objectValue);row["unit_id"]=fact.unitId;
+              row["rank"]=fact.rank;row["flags"]=fact.flags;result.append(row);}
+            out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
+          }catch(const std::exception&){return CR_WRONG_USAGE;}
+        }
         if(parameters[0]=="justice-cases-probe") {
           if(parameters.size()!=1)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;

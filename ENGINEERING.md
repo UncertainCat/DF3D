@@ -40,6 +40,34 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+`df3d_justice::candidateFacts` calls native46e260 using an owned crime copy and
+an independently constructed context containing only the rank and flag maps at
+360/3a0. It has no widget vtable, callbacks or borrowed menu storage. MSVC map
+layout and native function pins are checked. The native helper computes the
+case-specific values for active units; the adapter returns IDs, ranks and flags.
+It does not yet return the filtered, sorted candidate list or perform an action.
+The native comparator487db0 reads the global Justice rank map directly, so it
+must not be called by the runtime adapter. Visibility137bd50 is an existing
+semantic helper; candidate ordering and display still require their own path.
+
+Protected175513 on2026-11-11 compares all339 units' rank/flag values against
+DF's maps for case9, both before opening native Justice and after navigating to
+the selected case. Exact values and native map backing remain unchanged after
+owned queries. The Interrogate and Convict pickers are opened and captured, then
+closed without selecting anyone. The reference includes the native entry arrays
+as observations, not acceptance of a filtered/sorted DF3D query. The case's
+39-witness accused receives rank3901101; all339 flag values are0, so positive
+interrogation/intelligence flags remain outside this fixture.
+`native_justice.json.candidate_facts_reference` records the result. Enable via
+`DF3D_JUSTICE_CANDIDATES=1` with the native flag. The first175342/175422 probes
+were blocked at Convict by the first-use help reappearing after reopening Justice;
+the final probe dismisses it on every reopen. Owned DF32036 closes unsaved with
+source preservation/restored preferences, native30FPS/no viewer, GPU59–62C.
+MSVC `justice-candidates-build.log` and core19 `build/qa/justice-candidate-facts`
+pass. Installed bridge SHA256
+`22D0F2761D923D063EBE1508C5C63A796D2CEA5B1FF2386F09E1A1766289ABC0`;
+protocol191 remains unchanged.
+
 `df3d_justice::cases` isolates native470757..470f7e's inline case selection.
 No standalone list function exists at this widget-construction boundary, so the
 adapter copies only the audited semantic selection, with code/global-layout

@@ -181,8 +181,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 187;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v187";
+inline constexpr uint32_t kManagementVersion = 188;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v188";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -480,7 +480,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::NoblesSymbolsRetire &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::ObjectsLocate &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -569,7 +569,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::NoblesSymbolsRetire)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::ObjectsLocate)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -721,6 +721,13 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
       }else if(q->target() || q->expected_candidate_revision())return "unexpected nobles candidate target";
     }
   }else if(r.nobles())return "unexpected nobles request";
+  if(r.action()==ManagementAction::ObjectsRead || r.action()==ManagementAction::ObjectsLocate){
+    const auto* q=r.objects();if(!q || q->tab()>3 || q->expected_list_revision()>INT64_MAX)return "invalid objects request";
+    if(r.action()==ManagementAction::ObjectsRead){
+      if(!q->limit() || q->limit()>64 || q->offset()>1048576 ||
+        (q->offset() && !q->expected_list_revision()) || q->artifact_id()!=-1)return "invalid objects page request";
+    }else if(q->offset() || q->limit()!=32 || !q->expected_list_revision() || q->artifact_id()<0)return "invalid objects destination request";
+  }else if(r.objects())return "unexpected objects request";
   if(r.action()==ManagementAction::PlacesRead || r.action()==ManagementAction::PlacesApply){
     const auto* q=r.places();if(!q || q->tab()>5 || q->expected_list_revision()>INT64_MAX)return "invalid places request";
     if(r.action()==ManagementAction::PlacesRead){
@@ -1288,7 +1295,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::NoblesSymbolsRetire ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::ObjectsLocate ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -1480,6 +1487,35 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       if(bytes>384*1024)return "nobles page payload exceeded";
     }
   }else if(s.status()==ManagementStatus::Ok && s.action()>=ManagementAction::NoblesRead && s.action()<=ManagementAction::NoblesSymbolsRetire)return "missing nobles result";
+  if(const auto* r=s.objects()) {
+    const bool read=s.action()==ManagementAction::ObjectsRead,locate=s.action()==ManagementAction::ObjectsLocate;
+    if((!read && !locate) || r->tab()>3 || !r->rows() || r->rows()->size()>64 ||
+      r->outcome()>ObjectsOutcome::Stale)return "invalid objects result";
+    const auto validPosition=[](const TilePos* p){return !p || (p->x()>=0 && p->y()>=0 && p->z()>=0 && p->x()<=32767 && p->y()<=32767 && p->z()<=32767);};
+    if(s.status()==ManagementStatus::Ok){
+      if(r->outcome()!=ObjectsOutcome::None || !r->list_revision() || r->list_revision()>INT64_MAX)return "invalid objects revision";
+      if(read){
+        if(r->destination() || r->total()>1048576 || r->offset()>r->total() || r->rows()->size()>r->total()-r->offset() ||
+          (r->offset()<r->total() && !r->rows()->size()))return "invalid objects page";
+      }else{
+        const auto* d=r->destination();
+        if(r->total() || r->offset() || r->rows()->size() || !d || d->artifact_id()<0 || d->item_id()<0 || !validPosition(d->position()))return "invalid objects destination";
+      }
+    }else if(s.status()!=ManagementStatus::Rejected || r->outcome()==ObjectsOutcome::None ||
+      r->list_revision() || r->total() || r->offset() || r->rows()->size() || r->destination())return "invalid objects refusal";
+    size_t bytes=0;std::unordered_set<int32_t> ids;
+    for(const auto* row:*r->rows()){
+      if(!row || row->artifact_id()<0 || row->item_id()<0 || !ids.insert(row->artifact_id()).second || !validPosition(row->position()))return "invalid objects row";
+      bytes+=128;
+      for(const auto* text:{row->native_name(),row->translated_name(),row->ownership()}){
+        if(!text || text->size()>16384)return "invalid objects caption";bytes+=text->size();}
+      if(const auto* a=row->appearance()){
+        size_t recipe=0;if(auto error=validateOwnerAppearance(*a,recipe))return error;
+        if(!a->layers()->size() || recipe>131072)return "invalid objects artwork";bytes+=recipe;
+      }
+      if(bytes>384*1024)return "objects page payload exceeded";
+    }
+  }else if(s.status()==ManagementStatus::Ok && (s.action()==ManagementAction::ObjectsRead || s.action()==ManagementAction::ObjectsLocate))return "missing objects result";
   if(const auto* r=s.places()) {
     const bool read=s.action()==ManagementAction::PlacesRead,apply=s.action()==ManagementAction::PlacesApply;
     if((!read && !apply) || r->tab()>5 || !r->rows() ||

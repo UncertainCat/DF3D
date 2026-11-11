@@ -39,6 +39,23 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Objects native discovery
 
+Protocol188 adds read-only `ObjectsRead` and `ObjectsLocate` requests and typed
+Objects rows/destinations. Requests carry a category and membership revision;
+continuation pages and destination lookups require an observed revision. Rows
+own original/translated names, ownership captions, optional position and optional
+semantic artwork. A destination without a position explicitly disables navigation.
+Refusals cannot carry usable rows or destinations. Pages are bounded to64 rows,
+16384 bytes per caption and384KiB total, with unique artifact IDs and bounded
+coordinates. Optional artwork remains absent until its native selector is exposed.
+
+Both request/reply defaults and validators use188 and mailbox
+`Local\df3d_management_v188`. Rebuild bridge and viewer together before live use;
+187 peers cannot share that mailbox. Older recordings do not acquire Objects
+facts. This is the schema-only step: producer, model codecs and viewer wiring
+remain pending. Core19, including Objects malformed-page, destination, refusal
+and scope cases, passes `build/qa/objects-contract-final`. The installed bridge
+is still187; this contract gate is not live acceptance of188.
+
 `objects_native.h` invokes DF53.16's375a70 list builder with an independently
 owned128-byte `artifacts_interfacest`. Native323aba is its caller; the native
 menu at RVA18a6b50 is never passed to the runtime provider. The builder reads

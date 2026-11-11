@@ -35,7 +35,7 @@ if(TARGET doctest)
 add_executable(schema_tests tests/validate_tests.cpp tests/shm_tests.cpp
   tests/terrain_tests.cpp tests/appearance_tests.cpp tests/entity_tests.cpp
   tests/corpse_glyph_tests.cpp tests/command_tests.cpp tests/item_visibility_tests.cpp)
-target_sources(schema_tests PRIVATE tests/designation_tests.cpp tests/unit_status_tests.cpp tests/track_route_tests.cpp tests/location_name_tests.cpp tests/stocks_reply_pages_tests.cpp tests/tasks_contract_tests.cpp tests/places_contract_tests.cpp tests/nobles_contract_tests.cpp)
+target_sources(schema_tests PRIVATE tests/designation_tests.cpp tests/unit_status_tests.cpp tests/track_route_tests.cpp tests/location_name_tests.cpp tests/stocks_reply_pages_tests.cpp tests/tasks_contract_tests.cpp tests/objects_contract_tests.cpp tests/places_contract_tests.cpp tests/nobles_contract_tests.cpp)
 target_link_libraries(schema_tests PRIVATE mirror_support doctest)
 df3d_apply_warnings(schema_tests)
 add_test(NAME schema_tests COMMAND schema_tests)

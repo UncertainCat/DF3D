@@ -1,4 +1,8 @@
 // Generated exhaustive model/wire correspondence checks.
+static_assert(static_cast<int>(wm::ObjectsOutcome::None) == static_cast<int>(df3d::mirror::ObjectsOutcome::None));
+static_assert(static_cast<int>(wm::ObjectsOutcome::Rejected) == static_cast<int>(df3d::mirror::ObjectsOutcome::Rejected));
+static_assert(static_cast<int>(wm::ObjectsOutcome::Stale) == static_cast<int>(df3d::mirror::ObjectsOutcome::Stale));
+static_assert(sizeof(df3d::mirror::EnumValuesObjectsOutcome()) / sizeof(df3d::mirror::ObjectsOutcome) == 3);
 static_assert(static_cast<int>(wm::NoblesOutcome::None) == static_cast<int>(df3d::mirror::NoblesOutcome::None));
 static_assert(static_cast<int>(wm::NoblesOutcome::Rejected) == static_cast<int>(df3d::mirror::NoblesOutcome::Rejected));
 static_assert(static_cast<int>(wm::NoblesOutcome::Stale) == static_cast<int>(df3d::mirror::NoblesOutcome::Stale));
@@ -283,7 +287,9 @@ static_assert(static_cast<int>(wm::ManagementAction::NoblesSymbolNameRead) == st
 static_assert(static_cast<int>(wm::ManagementAction::NoblesSymbolNameEdit) == static_cast<int>(df3d::mirror::ManagementAction::NoblesSymbolNameEdit));
 static_assert(static_cast<int>(wm::ManagementAction::NoblesSymbolsContinue) == static_cast<int>(df3d::mirror::ManagementAction::NoblesSymbolsContinue));
 static_assert(static_cast<int>(wm::ManagementAction::NoblesSymbolsRetire) == static_cast<int>(df3d::mirror::ManagementAction::NoblesSymbolsRetire));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 119);
+static_assert(static_cast<int>(wm::ManagementAction::ObjectsRead) == static_cast<int>(df3d::mirror::ManagementAction::ObjectsRead));
+static_assert(static_cast<int>(wm::ManagementAction::ObjectsLocate) == static_cast<int>(df3d::mirror::ManagementAction::ObjectsLocate));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 121);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -609,3 +615,5 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::NoblesSymbolNameRead) ==
 static_assert(wm::isRuntimeAction(wm::ManagementAction::NoblesSymbolNameEdit) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::NoblesSymbolNameEdit));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::NoblesSymbolsContinue) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::NoblesSymbolsContinue));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::NoblesSymbolsRetire) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::NoblesSymbolsRetire));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::ObjectsRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ObjectsRead));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::ObjectsLocate) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ObjectsLocate));

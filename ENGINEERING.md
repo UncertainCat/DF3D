@@ -77,7 +77,7 @@ sampled. `native_nobles.json.owned_overview_reference` records this scope. MSVC
 bridge builds successfully. This is not full simulation-memory immutability or
 acceptance of other fortresses, candidate eligibility, captions, graphics or
 appointments. Typed read transport is documented under Management178 below;
-no Nobles controller or public route is exposed.
+the read controller is staged and no Nobles public route is exposed.
 
 Appointment candidates now use native423df0 with a fresh owned overview and a
 unique entity/position/assignment identity, including assignment-1 for NEW rows.
@@ -562,7 +562,7 @@ Rebuild and restart bridge and consumer together using
 invent Nobles data when migrating older recordings; retain them as older-schema
 evidence or recapture. This schema commit reserves the read vocabulary only;
 provider transport and owned model/Godot codecs are now implemented as described
-below. Controller/view and public routing remain pending. Diagnostic native
+below. The read controller is implemented below; view and public routing remain pending. Diagnostic native
 Nobles reads remain independent of this wire contract. No appointment mutation or legacy menu-backed Appointments route is
 revived.
 
@@ -590,8 +590,27 @@ Existing native caption/room/obligation/gate/candidate checks also pass. Source
 preservation passes and owned DF42108 closes unsaved;30FPS, GPU59C/1% sampled.
 The headless client emits the existing experimental rendering-thread warning;
 no script/runtime errors are present. `native_nobles.json.wire_reference` scopes
-this evidence. Producer-restart/world-epoch cases, controller/view, artwork and
+this evidence. Producer-restart/world-epoch cases, rendered view, artwork and
 appointment actions remain unfinished. Public Nobles routing remains hidden.
+
+`nobles_state.gd` now owns read paging and local scroll. It publishes the list
+atomically, preserves exact64-bit continuation revisions, validates unique
+entity/position/assignment triples across pages, and deep-copies accepted rows.
+The per-page384KiB bound is complemented by a64MiB retained-list budget; exceeding
+it rejects the read instead of retaining a partial list. Closing, reopening,
+disposal and session changes detach requests and invalidate their generation.
+Stale membership permits one restart from offset0; uncertain replies do not
+replay automatically. No appointment mutation or rendering logic is added.
+
+`nobles_state_test` verifies paging, NEW/assigned identity, local scroll, bounded
+stale restart, malformed assessments, and late close/reopen/session callbacks.
+Protected081415 on2026-11-11 additionally loads all14 real rows through the
+semantic action service into the controller, compares them with direct wire
+results, and closes a pending refresh without accepting late data. The preceding
+wire/native checks pass. Owned DF15196 closes unsaved with source preservation;
+DF is capped at30FPS and the headless-client GPU sample is52C/0%.
+`native_nobles.json.controller_reference` scopes this evidence. No rendered
+Nobles view, panel ownership, artwork or appointment workflow is accepted yet.
 
 ## Management 177 Places siege mutation contract
 

@@ -2723,5 +2723,18 @@
       "No Nobles controller, rendered viewer or appointment mutation is exposed.",
       "This run does not simulate a producer restart or mid-read world epoch change."
     ]
+  },
+  "controller_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-081415",
+    "protocol": 178,
+    "rows": 14,
+    "ready_matches_wire": true,
+    "closed_refresh_retired": true,
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "No rendered Nobles view or input ownership acceptance.",
+      "Session-change and late-reply permutations are deterministic headless tests, not live producer-restart evidence."
+    ]
   }
 }

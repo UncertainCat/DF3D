@@ -32,6 +32,16 @@ func run() -> void:
 	check(stale.get("status")==C.ManagementStatus.Rejected and stale.get("nobles",{}).get("outcome")==C.NoblesOutcome.Stale,"Nobles stale revision accepted")
 	var end_page:=await page(rows.size(),revision)
 	check(end_page.get("status")==C.ManagementStatus.Ok and end_page.get("nobles",{}).get("rows",[1]).is_empty(),"Nobles end page differs")
+	var actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(actions);actions.configure(world,true)
+	var model=preload("res://scripts/nobles_state.gd").new();model.configure(actions);model.open()
+	deadline=Time.get_ticks_msec()+5000
+	while model.phase==model.Phase.Reading and Time.get_ticks_msec()<deadline:
+		world.poll();await create_timer(0.01).timeout
+	check(model.phase==model.Phase.Ready and model.rows==rows,"Live Nobles controller differs from transport")
+	model.refresh();model.close()
+	for frame in 5:world.poll();await process_frame
+	check(model.phase==model.Phase.Closed and model.rows.is_empty() and model.ticket==0,"Closed Nobles controller accepted live read")
+	model.dispose();actions.queue_free();await process_frame
 	var result=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
-	result.store_string(JSON.stringify({"success":not failed,"rows":rows.size(),"pages":pages,"stale_rejected":true,"empty_end_page":true}));result.close()
+	result.store_string(JSON.stringify({"controller_ready":true,"closed_read_retired":true,"success":not failed,"rows":rows.size(),"pages":pages,"stale_rejected":true,"empty_end_page":true}));result.close()
 	quit(1 if failed else 0)

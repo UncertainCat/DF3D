@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "nobles_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/nobles_state_test.gd",
+      "completion": "^NOBLES_STATE_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "places_state_test",
       "lane": "core",
       "kind": "godot",

@@ -1,6 +1,71 @@
 #include <doctest.h>
 #include "management_util.h"
 namespace m=df3d::mirror;
+TEST_CASE("Nobles draft requests bind their base and only reference earlier NEW slots") {
+ for(int fault=0;fault<8;++fault){flatbuffers::FlatBufferBuilder b;
+  m::NoblesOffice key(7,2,fault==3?42:-1,fault==1 || fault==3?1:0);
+  auto choice=m::CreateNoblesChoice(b,&key,-1,fault==4?-2:10);
+  auto choices=b.CreateVector(std::vector<flatbuffers::Offset<m::NoblesChoice>>{choice});
+  auto q=m::CreateNoblesRequest(b,0,32,fault==2?0:11,choices,fault==5?&key:nullptr,fault==6?1:0);
+  m::ConstructionRequestBuilder r(b);r.add_client_id(1);r.add_seq(1);r.add_world_epoch(1);
+  r.add_action(fault==7?m::ManagementAction::PlacesRead:m::ManagementAction::NoblesRead);r.add_nobles(q);b.Finish(r.Finish());
+  CHECK(bool(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
+ }
+}
+TEST_CASE("Nobles candidate continuation binds both office and candidate order") {
+ for(int fault=0;fault<6;++fault){flatbuffers::FlatBufferBuilder b;
+  m::NoblesOffice key(7,2,-1,fault==4?1:0);
+  auto q=m::CreateNoblesRequest(b,1,32,fault==1?0:11,0,fault==2?nullptr:&key,fault==3?0:12);
+  m::ConstructionRequestBuilder r(b);r.add_client_id(1);r.add_seq(1);r.add_world_epoch(1);
+  r.add_action(fault==5?m::ManagementAction::NoblesRead:m::ManagementAction::NoblesCandidates);r.add_nobles(q);b.Finish(r.Finish());
+  CHECK(bool(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
+ }
+}
+TEST_CASE("Nobles commit cannot be disguised as a paged read") {
+ for(int fault=0;fault<6;++fault){flatbuffers::FlatBufferBuilder b;
+  m::NoblesOffice key(7,2,42,0);
+  auto choice=m::CreateNoblesChoice(b,&key,10,-1);
+  std::vector<flatbuffers::Offset<m::NoblesChoice>> entries;if(fault!=1)entries.push_back(choice);
+  auto q=m::CreateNoblesRequest(b,fault==2?1:0,fault==3?64:32,fault==4?0:11,b.CreateVector(entries),fault==5?&key:nullptr);
+  m::ConstructionRequestBuilder r(b);r.add_client_id(1);r.add_seq(1);r.add_world_epoch(1);r.add_action(m::ManagementAction::NoblesCommit);r.add_nobles(q);b.Finish(r.Finish());
+  CHECK(bool(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
+ }
+}
+TEST_CASE("Nobles candidate pages validate native captions and positive distinct skills") {
+ for(int fault=0;fault<9;++fault){flatbuffers::FlatBufferBuilder b;
+  auto text=b.CreateString("fixture");auto empty=b.CreateString("");
+  std::vector<flatbuffers::Offset<m::NoblesCandidateSkill>> skills;
+  skills.push_back(m::CreateNoblesCandidateSkill(b,fault==1?-1:4,fault==2?0:7,text));
+  if(fault==3)skills.push_back(m::CreateNoblesCandidateSkill(b,4,8,text));
+  auto candidate=m::CreateNoblesCandidate(b,fault==4?-1:10,7,text,fault==5?text:empty,b.CreateVector(skills));
+  auto rows=b.CreateVector(std::vector<flatbuffers::Offset<m::NoblesRow>>{});
+  std::vector<flatbuffers::Offset<m::NoblesCandidate>> entries{candidate};if(fault==6)entries.push_back(candidate);
+  m::NoblesOffice key(7,2,-1,0);
+  auto payload=m::CreateNoblesState(b,m::NoblesOutcome::None,11,entries.size(),0,rows,fault==7?nullptr:&key,fault==8?0:12,b.CreateVector(entries));
+  m::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(m::ManagementAction::NoblesCandidates);state.add_status(m::ManagementStatus::Ok);state.add_nobles(payload);b.Finish(state.Finish());
+  CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==(fault!=0));
+ }
+}
+TEST_CASE("Nobles NEW slots remain distinct and existing assignments cannot carry slots") {
+ for(int fault=0;fault<3;++fault){flatbuffers::FlatBufferBuilder b;
+  auto text=b.CreateString("fixture");auto zero=b.CreateVector(std::vector<int32_t>(4,0));
+  std::vector<flatbuffers::Offset<m::NoblesRow>> rows;
+  for(uint32_t slot:{0u,1u})rows.push_back(m::CreateNoblesRow(b,7,2,fault==2?42:-1,-1,-1,0,text,text,text,true,false,zero,zero,zero,zero,-1,-1,0,0,fault==1?0:slot));
+  auto payload=m::CreateNoblesState(b,m::NoblesOutcome::None,11,2,0,b.CreateVector(rows));
+  m::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(m::ManagementAction::NoblesRead);state.add_status(m::ManagementStatus::Ok);state.add_nobles(payload);b.Finish(state.Finish());
+  CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==(fault!=0));
+ }
+}
+TEST_CASE("Nobles commit receipts distinguish unknown effects from successful application") {
+ for(auto outcome:{m::NoblesOutcome::Applied,m::NoblesOutcome::Unknown,m::NoblesOutcome::Stale,m::NoblesOutcome::Rejected})for(int fault=0;fault<3;++fault){
+  flatbuffers::FlatBufferBuilder b;auto rows=b.CreateVector(std::vector<flatbuffers::Offset<m::NoblesRow>>{});
+  auto payload=m::CreateNoblesState(b,outcome,fault==1?11:0,0,0,rows);
+  m::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(fault==2?m::ManagementAction::NoblesRead:m::ManagementAction::NoblesCommit);
+  state.add_status(outcome==m::NoblesOutcome::Applied?m::ManagementStatus::Ok:m::ManagementStatus::Rejected);state.add_nobles(payload);b.Finish(state.Finish());
+  const bool bad=fault==1 || (fault==2 && (outcome==m::NoblesOutcome::Applied || outcome==m::NoblesOutcome::Unknown));
+  CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==bad);
+ }
+}
 TEST_CASE("Nobles continuations require bounded pages and membership identity") {
  for(int fault=0;fault<7;++fault){flatbuffers::FlatBufferBuilder b;
   auto q=m::CreateNoblesRequest(b,fault==1?65537:fault==2?1:0,fault==3?0:fault==4?65:32,fault==5?UINT64_MAX:0);

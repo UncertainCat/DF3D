@@ -4403,6 +4403,9 @@ void run(color_ostream& out) {
   }
   if(r->action()==m::ManagementAction::NoblesRead){
     const auto& q=*r->nobles();status=m::ManagementStatus::Rejected;message.clear();nobles.emplace();
+    // Protocol181 declares draft reads before their handler is connected.
+    // Never silently answer a staged request with the unstaged overview.
+    if(q.choices() && q.choices()->size()){publish();return;}
     try {
       auto current=df3d_nobles::overview(true);if(!current)throw std::runtime_error("nobles unavailable");
       uint64_t list=UINT64_C(14695981039346656037);

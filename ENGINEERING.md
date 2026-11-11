@@ -729,6 +729,56 @@ acceptance is `passed_with_known_issues` for the known Godot shutdown diagnostic
 GPU58–61C sampled. Core19/controller checks pass in `build/qa/places-layout-final`.
 
 
+## Management 181 Nobles appointment contract
+
+Protocol181 uses `Local\df3d_management_v181`; bridge, model and extension must
+be rebuilt together. NoblesCandidates110 is read-only and NoblesCommit111 is a
+mutation in the generated routing policy. Existing NoblesRead109 still supplies
+initial overview pages. The new handlers and picker UI are not implemented by
+this contract commit; the bridge explicitly rejects draft-bearing overview
+reads until they can be answered correctly.
+
+Requests carry the initial office-list revision and an ordered vector of
+appointment choices, each with an office key, expected holder and selected unit.
+An existing assignment always uses draft_slot0. A NEW office's initial slot is0;
+a replacement placeholder created by choice N uses N (one-based). The slot is
+local to that replay/base revision and never a native menu index. Deleted slots
+are not renumbered. References must point backward; the runtime must also verify
+that each referenced slot actually exists. This permits repeated NEW offices
+with the same entity/position/assignment and unit without conflating them.
+
+Drafts are bounded to4096 choices to bound retained/replay resources, comfortably
+below the2MiB shared command capacity. Candidate requests include an office key;
+continuations bind both the base-list and candidate-order revisions. Candidate
+pages contain at most64 rows, native captions and ordered positive distinct skill
+captions, plus optional independent artwork. The page remains bounded to384KiB.
+NEW overview rows include draft_slot in their identity; existing assignment rows
+cannot carry nonzero slots. Read outcomes cannot claim effects or uncertainty.
+
+Commit requests contain a nonempty draft and base revision, without paging or
+candidate-target fields. Applied is an Ok receipt; Rejected, Stale and Unknown
+are rejected receipts without page payload. Unknown never permits automatic
+replay. Session epochs, sequencing and deduplication remain the surrounding
+semantic service's responsibility. The new runtime handler must revalidate the
+base and every choice at its safe point before calling the native commit adapter.
+
+This is a breaking management contract; do not map old candidate/commit data
+from recordings that never carried it. Existing initial overview rows retain
+slot0, and absent candidate data remains absent. The generated enums/policies
+and validators are updated together. Contract cases cover forward slot references,
+base/continuation revisions, duplicate candidates/skills, NEW row identity,
+read-versus-commit separation and terminal outcome/payload combinations.
+
+Protocol181 verification: core `build/qa/nobles-appointment-contract` and
+Godot controller `build/qa/nobles-appointment-contract-extension` pass; MSVC
+bridge rebuild passes. Protected095937 on2026-11-11 verifies the existing native
+candidate/text checks plus fourteen typed overview rows across four pages,
+stale rejection, terminal empty page and closed-controller reply retirement.
+The headless client reports only the documented experimental-render-thread
+warning. DF5152 closes unsaved, source unchanged,30FPS, GPU37C/7% sampled.
+This establishes compatibility of existing reads, not acceptance of the new
+candidate/commit handlers, which remain unconnected.
+
 ## Management 180 Nobles hover content
 
 Protocol180 adds optional native Nobles help: office description, four room and

@@ -2,7 +2,9 @@
 static_assert(static_cast<int>(wm::NoblesOutcome::None) == static_cast<int>(df3d::mirror::NoblesOutcome::None));
 static_assert(static_cast<int>(wm::NoblesOutcome::Rejected) == static_cast<int>(df3d::mirror::NoblesOutcome::Rejected));
 static_assert(static_cast<int>(wm::NoblesOutcome::Stale) == static_cast<int>(df3d::mirror::NoblesOutcome::Stale));
-static_assert(sizeof(df3d::mirror::EnumValuesNoblesOutcome()) / sizeof(df3d::mirror::NoblesOutcome) == 3);
+static_assert(static_cast<int>(wm::NoblesOutcome::Applied) == static_cast<int>(df3d::mirror::NoblesOutcome::Applied));
+static_assert(static_cast<int>(wm::NoblesOutcome::Unknown) == static_cast<int>(df3d::mirror::NoblesOutcome::Unknown));
+static_assert(sizeof(df3d::mirror::EnumValuesNoblesOutcome()) / sizeof(df3d::mirror::NoblesOutcome) == 5);
 static_assert(static_cast<int>(wm::PlacesOutcome::None) == static_cast<int>(df3d::mirror::PlacesOutcome::None));
 static_assert(static_cast<int>(wm::PlacesOutcome::Rejected) == static_cast<int>(df3d::mirror::PlacesOutcome::Rejected));
 static_assert(static_cast<int>(wm::PlacesOutcome::Stale) == static_cast<int>(df3d::mirror::PlacesOutcome::Stale));
@@ -272,7 +274,9 @@ static_assert(static_cast<int>(wm::ManagementAction::TasksApply) == static_cast<
 static_assert(static_cast<int>(wm::ManagementAction::PlacesRead) == static_cast<int>(df3d::mirror::ManagementAction::PlacesRead));
 static_assert(static_cast<int>(wm::ManagementAction::PlacesApply) == static_cast<int>(df3d::mirror::ManagementAction::PlacesApply));
 static_assert(static_cast<int>(wm::ManagementAction::NoblesRead) == static_cast<int>(df3d::mirror::ManagementAction::NoblesRead));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 110);
+static_assert(static_cast<int>(wm::ManagementAction::NoblesCandidates) == static_cast<int>(df3d::mirror::ManagementAction::NoblesCandidates));
+static_assert(static_cast<int>(wm::ManagementAction::NoblesCommit) == static_cast<int>(df3d::mirror::ManagementAction::NoblesCommit));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 112);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -589,3 +593,5 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::TasksApply) == df3d::mir
 static_assert(wm::isRuntimeAction(wm::ManagementAction::PlacesRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::PlacesRead));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::PlacesApply) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::PlacesApply));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::NoblesRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::NoblesRead));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::NoblesCandidates) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::NoblesCandidates));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::NoblesCommit) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::NoblesCommit));

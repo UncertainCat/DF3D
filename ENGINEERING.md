@@ -39,6 +39,22 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Objects native discovery
 
+Protocol191 adds optional `coffin_unused` to shared appearance facts: -1 unknown,
+0 false,1 installed in a coffin building with at most one contained item. Native
+c7ed0b..c7ed43 calls semantic holder lookup cb16b0, checks building type3 and the
+contained-item vector length, and sets selector bit10. Graphics cache cf6570 uses
+that bit for the installed `_UNUSED` member; runtime providers must not call it.
+Protected163725 on2026-11-11 confirms the remaining Objects mismatch is item13105,
+artifact254, installed in coffin491 with contained count1. Owned DF40456 closes
+unsaved with source preservation; native30FPS/headless viewer, GPU60C/18%/45W.
+The source facts are in `native_objects.json.coffin_reference`.
+
+This is the191 contract/neutral codec only; producer and renderer wiring remain
+pending. Non-coffin appearances reject known values. Older recordings remain
+unknown. Rebuild bridge and viewer together for `Local\df3d_management_v191`
+before live use; installed binaries are still190.
+
+
 Protocol190 supplies optional weapon `artifact_mood` in shared item appearance
 facts (-1 unknown,0 false,1 true). Native c7ce83..c7ce94 selects weapon artwork
 from item flag bit27, independently of general artifact status. The provider,

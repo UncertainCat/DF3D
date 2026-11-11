@@ -1415,5 +1415,18 @@
     },
     "status": "passed_with_known_issues",
     "remaining": "Artifacts coffin picture differs; other sizes, scrolling, claims and full composition remain pending"
+  },
+  "coffin_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-163725",
+    "artifact_id": 254,
+    "item_id": 13105,
+    "holder_id": 491,
+    "holder_type": 3,
+    "holder_count": 1,
+    "native_condition": "building type3 and contained_items.size() <= 1",
+    "selector_branch": "0xc7ed0b..0xc7ed43",
+    "semantic_holder_lookup": "0xcb16b0",
+    "graphics_cache_not_runtime": "0xcf6570",
+    "status": "native state confirmed; provider and rendering pending"
   }
 }

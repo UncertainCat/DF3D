@@ -51,9 +51,17 @@ for mode,rows in ipairs(ownership)do
  appearances[mode]={}
  for _,row in ipairs(rows)do
   local item=assert(df.item.find(row.item_id))
-  appearances[mode][#appearances[mode]+1]={item_type=item:getType(),artifact=item.flags.artifact,artifact_mood=item.flags.artifact_mood}
+  local facts={item_type=item:getType(),artifact=item.flags.artifact,artifact_mood=item.flags.artifact_mood}
+  if item:getType()==df.item_type.COFFIN then
+   local holder=dfhack.items.getHolderBuilding(item)
+   facts.holder_id=holder and holder.id or -1
+   facts.holder_type=holder and holder:getType()or -1
+   facts.holder_count=holder and #holder.contained_items or -1
+  end
+  appearances[mode][#appearances[mode]+1]=facts
  end
 end
+write('objects-appearance-facts.json',json.encode(appearances))
 if os.getenv('DF3D_OBJECTS_WIRE')=='1' then
  local size,address=df.sizeof(df.global.game.main_interface.info.artifacts)
  local menu_before=bytes(address,size);local base=dfhack.internal.getImageBase()

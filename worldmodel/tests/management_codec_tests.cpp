@@ -5314,3 +5314,19 @@ TEST_CASE("weapon mood appearance preserves unknown independently of artifact st
     }
   }
 }
+
+TEST_CASE("coffin appearance preserves unknown and restricts unused state to coffins") {
+  for(int value:{-2,-1,0,1,2}) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto material=b.CreateString("INORGANIC:TEST"),empty=b.CreateString("");
+    wire::ItemInspectionAppearanceBuilder a(b);
+    a.add_material_token(material);a.add_subtype_raw(empty);a.add_color_token(empty);a.add_stack(1);
+    a.add_coffin_unused(int8_t(value));b.Finish(a.Finish());
+    const auto* look=flatbuffers::GetRoot<wire::ItemInspectionAppearance>(b.GetBufferPointer());
+    for(int type=0;type<=92;++type)
+      CHECK(wire::validInspectionInstrument(*look,type)==((value==-1 && type!=13) || (type==21 && value>=0 && value<=1)));
+    if(value>=-1 && value<=1) {
+      const auto owned=codec::decodeInspectionAppearance(look);b.Clear();CHECK(owned.coffinUnused==value);
+    }
+  }
+}

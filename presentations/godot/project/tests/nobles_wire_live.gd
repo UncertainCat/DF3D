@@ -167,6 +167,26 @@ func run() -> void:
 	model.refresh();model.close()
 	for frame in 5:world.poll();await process_frame
 	check(model.phase==model.Phase.Closed and model.rows.is_empty() and model.ticket==0,"Closed Nobles controller accepted live read")
+	if OS.get_environment("DF3D_NOBLES_COMMIT_WIRE")=="1":
+		model.open();deadline=Time.get_ticks_msec()+5000
+		while model.phase==model.Phase.Reading and Time.get_ticks_msec()<deadline:
+			world.poll();await create_timer(0.01).timeout
+		model.begin_appointment(target);deadline=Time.get_ticks_msec()+5000
+		while model.phase==model.Phase.CandidatesReading and Time.get_ticks_msec()<deadline:
+			world.poll();await create_timer(0.01).timeout
+		if not check(model.phase==model.Phase.CandidatesReady,"Commit picker unavailable"):quit(1);return
+		model.choose_candidate(chosen);deadline=Time.get_ticks_msec()+5000
+		while model.phase==model.Phase.Reading and Time.get_ticks_msec()<deadline:
+			world.poll();await create_timer(0.01).timeout
+		if not check(model.phase==model.Phase.Ready,"Commit draft unavailable"):quit(1);return
+		model.request_dismiss();var commit_ticket: int=model.ticket;model.request_dismiss()
+		check(commit_ticket>0 and model.ticket==commit_ticket,"Dismissal did not retain one commit")
+		deadline=Time.get_ticks_msec()+5000
+		while model.phase==model.Phase.Applying and Time.get_ticks_msec()<deadline:
+			world.poll();await create_timer(0.01).timeout
+		if not check(model.phase==model.Phase.Closed,"Typed appointment commit did not confirm"):quit(1);return
+		var effect=FileAccess.open(directory+"/nobles-commit-wire.json",FileAccess.WRITE)
+		effect.store_string(JSON.stringify({"unit_id":chosen,"entity_id":target.entity_id,"assignment_id":target.assignment_id}));effect.close()
 	model.dispose();actions.queue_free();await process_frame
 	var result=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	result.store_string(JSON.stringify({"controller_ready":true,"closed_read_retired":true,"success":not failed,"rows":rows.size(),"pages":pages,"stale_rejected":true,"empty_end_page":true}));result.close()

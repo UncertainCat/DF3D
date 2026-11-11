@@ -73,6 +73,21 @@ func run() -> void:
 	service.reply(state.ticket,stale())
 	check(state.phase==State.Phase.Rejected and state.choices.size()==2 and service.next==submitted,"Stale draft silently rebased or discarded")
 	state.close();check(state.choices.is_empty() and state.candidates.is_empty(),"Closed draft retained owned data")
+	var dismissals: Array=[];state.dismissed.connect(func():dismissals.append(true))
+	for outcome in ["applied","rejected","unknown","malformed"]:
+		state.open();service.reply(state.ticket,page())
+		state.choices=[{"target":target,"expected_unit_id":-1,"unit_id":10}]
+		state.request_dismiss();var commit: int=state.ticket;submitted=service.next
+		state.request_dismiss();check(state.phase==State.Phase.Applying and service.next==submitted,"Repeated dismissal resubmitted mutation")
+		check(service.calls[commit].intent.action==C.ManagementAction.NoblesCommit,"Dismissal did not commit draft")
+		var result: Dictionary={"nobles":{"outcome":C.NoblesOutcome.Applied}}
+		if outcome=="rejected":result={"status":C.ManagementStatus.Rejected,"nobles":{"outcome":C.NoblesOutcome.Stale}}
+		elif outcome=="unknown":result={"outcome":"unknown"}
+		elif outcome=="malformed":result={}
+		service.reply(commit,result)
+		check(state.phase==(State.Phase.Closed if outcome=="applied" else State.Phase.Rejected if outcome=="rejected" else State.Phase.Unknown),"Dismissal outcome misclassified: "+outcome)
+		state.request_dismiss();check(service.next==submitted,"Failed dismissal replayed automatically")
+	check(dismissals.size()==1,"Non-applied mutation granted dismissal")
 	state.dispose();state.open();check(state.phase==State.Phase.Unavailable,"Missing service retained rows")
 	var view:=View.new();view.state=state;view.size=Vector2(944,708)
 	check(view.list_top()==108 and view.capacity()==16 and view.status_x()==496,"Nobles native geometry differs")

@@ -1,9 +1,10 @@
 extends RefCounted
 # Native order and assessments are authority; paging and scroll belong here.
 signal changed
+signal dismissed
 const C=preload("res://scripts/management_contract.gd")
 const MAX_RETAINED_BYTES=64*1024*1024
-enum Phase {Closed,Reading,Ready,Rejected,Unavailable,CandidatesReading,CandidatesReady}
+enum Phase {Closed,Reading,Ready,Rejected,Unavailable,CandidatesReading,CandidatesReady,Applying,Unknown}
 var service
 var phase:=Phase.Closed
 var rows: Array=[]
@@ -202,4 +203,29 @@ func _candidate_page() -> void:
 		if _candidate_pending.size()<_candidate_total:_candidate_page();return
 		candidates=_candidate_pending;_candidate_pending=[];_candidate_seen={};phase=Phase.CandidatesReady;changed.emit())
 	if ticket==0:_candidate_reject({})
+	changed.emit()
+
+# User dismissal applies the accumulated native draft. close() is reserved for
+# owner teardown/session loss; it must never be used as the product Back action.
+func request_dismiss() -> void:
+	if phase in [Phase.CandidatesReading,Phase.CandidatesReady]:cancel_appointment();return
+	if phase!=Phase.Ready:return
+	if choices.is_empty():close();dismissed.emit();return
+	if service==null:last_result={"outcome":"not_sent"};phase=Phase.Rejected;changed.emit();return
+	_retire();phase=Phase.Applying;last_result={}
+	var intent: Dictionary={"action":C.ManagementAction.NoblesCommit,"offset":0,"limit":32,"expected_list_revision":_revision,"choices":choices.duplicate(true)}
+	var owner:=generation
+	ticket=service.submit("nobles",intent,func(received,result,_sent):
+		if owner!=generation or received!=ticket:return
+		ticket=0;last_result=result.duplicate(true)
+		var value: Variant=result.get("nobles",{})
+		if result.get("outcome","")=="not_sent":phase=Phase.Rejected;changed.emit();return
+		if result.get("outcome","")=="unknown" or typeof(value)!=TYPE_DICTIONARY or result.get("action")!=intent.action:
+			phase=Phase.Unknown;changed.emit();return
+		if result.get("status")==C.ManagementStatus.Ok and value.get("outcome")==C.NoblesOutcome.Applied:
+			close();dismissed.emit();return
+		if result.get("status")==C.ManagementStatus.Rejected and value.get("outcome") in [C.NoblesOutcome.Rejected,C.NoblesOutcome.Stale]:phase=Phase.Rejected
+		else:phase=Phase.Unknown
+		changed.emit())
+	if ticket==0:last_result={"outcome":"not_sent"};phase=Phase.Rejected
 	changed.emit()

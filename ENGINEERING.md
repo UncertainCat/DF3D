@@ -39,6 +39,26 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Nobles and administrators native discovery
 
+The controller's `request_dismiss` submits its accumulated appointment draft
+once and emits `dismissed` only after an Applied receipt (or immediately for an
+empty draft). Repeated dismissal while Applying cannot resubmit. Rejected and
+Stale receipts retain an unresolved draft; transport uncertainty, native Unknown
+and malformed receipts enter Unknown without replay. Explicit teardown remains
+separate from this user action. The panel host's immediate transition behavior
+still needs an asynchronous handoff before dismissal/navigation is integrated.
+
+Protected102933 on2026-11-11 uses `DF3D_NOBLES_COMMIT_WIRE=1` with the native
+Nobles menu closed before the typed command. The actual controller/service
+appoints a Manager, retains one ticket on repeated dismissal and closes after
+Applied. Independent Lua verifies current/previous holder fields, the historical
+figure's position link and exactly one added history event. Evidence is in
+`nobles-native.json.typed_commit` in that run; the source save is unchanged and
+DF43136 closes unsaved. Native is capped at30FPS and the viewer is headless;
+GPU39C/2% sampled. Only the known rendering-thread notice occurs. Core and
+controller outcome tests pass in `build/qa/nobles-dismissal`. Replacement,
+vacating, military conflicts, repeated NEW slots, commit navigation and actual
+disconnect/late-receipt scenarios remain outside this typed effect acceptance.
+
 Protocol181 now carries owned appointment drafts, paged candidates and commit
 receipts through the bridge, model and Godot request API. Each request rebuilds
 an independent native overview, checks its base revision before replay, then

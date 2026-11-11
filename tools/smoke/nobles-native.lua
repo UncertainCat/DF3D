@@ -306,7 +306,13 @@ if os.getenv('DF3D_NOBLES_ACCOUNTING')=='1' then
  capture('nobles-accounting-wide');resize('default')
 end
 
+local wire_commit=os.getenv('DF3D_NOBLES_COMMIT_WIRE')=='1'
+local wire_events
 if os.getenv('DF3D_NOBLES_WIRE')=='1' then
+ if wire_commit then
+  gui.simulateInput(view,'LEAVESCREEN');settle();assert(not info.open)
+  wire_events=#df.global.world.history.events
+ end
  write('nobles-wire-reference.json',json.encode(probe({'nobles-help-probe'})))
  write('shot.tmp','nobles-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))
  local deadline=dfhack.getTickCount()+30000
@@ -314,7 +320,21 @@ if os.getenv('DF3D_NOBLES_WIRE')=='1' then
   assert(dfhack.getTickCount()<deadline,'Nobles wire timeout');script.sleep(1,'frames')
  end
 end
-gui.simulateInput(view,'LEAVESCREEN');settle();assert(not info.open,'Nobles did not close')
+if wire_commit then
+ local f=assert(io.open(out..'/nobles-commit-wire.json'));local receipt=json.decode(f:read('*a'));f:close()
+ local entity=assert(df.historical_entity.find(receipt.entity_id));local assignment
+ for _,row in ipairs(entity.positions.assignments)do if row.id==receipt.assignment_id then assignment=row;break end end
+ local unit=assert(df.unit.find(receipt.unit_id));assert(assignment and assignment.histfig==unit.hist_figure_id and assignment.histfig2==unit.hist_figure_id,'Typed commit holder differs')
+ assert(#df.global.world.history.events==wire_events+1,'Typed appointment history count differs')
+ local figure=assert(df.historical_figure.find(unit.hist_figure_id));local linked=false
+ for _,link in ipairs(figure.entity_links)do
+  if link:getType()==df.histfig_entity_link_type.POSITION and link.entity_id==entity.id and link:getPosition()==assignment.id then linked=true end
+ end
+ assert(linked,'Typed appointment lacks position link')
+ result.typed_commit={unit_id=unit.id,histfig=unit.hist_figure_id,assignment_id=assignment.id,events_added=#df.global.world.history.events-wire_events,position_link=true}
+end
+if info.open then gui.simulateInput(view,'LEAVESCREEN');settle()end
+assert(not info.open,'Nobles did not close')
 if os.getenv('DF3D_NOBLES_APPOINTMENT')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('nobles%-native%.lua$','nobles-appointment-native.lua')
  assert(loadfile(source))(out,view,probe)

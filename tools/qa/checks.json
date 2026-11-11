@@ -4256,6 +4256,11 @@
       "reason": "Protected stockpile_storage_native.ps1 with DF3D_OBJECTS_NATIVE and DF3D_OBJECTS_WIRE; native ordered pages, captions, destination lookups and stale membership rejection."
     },
     {
+      "path": "presentations/godot/project/tests/objects_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected Objects native/wire lane with DF3D_OBJECTS_SCENE; main-scene information headers, camera/item-sheet handoffs, overlay blocking and close/retirement."
+    },
+    {
       "path": "presentations/godot/project/tests/places_wire_live.gd",
       "status": "manual",
       "reason": "Protected stockpile_storage_native.ps1 with DF3D_PLACES_NATIVE and DF3D_PLACES_WIRE; all six tabs, ordered pagination, owned row fields/artwork and stale membership revisions."

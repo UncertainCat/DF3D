@@ -1818,5 +1818,39 @@
     },
     "status": "passed_with_known_issues",
     "scope": "Existing artifact assigned to vacant Manager office via native semantic apply, then removed; unsaved owned session. Other claim variants remain pending."
+  },
+  "scene_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-171633",
+    "game": "DF 53.16",
+    "protocol": 191,
+    "surface": "actual main scene",
+    "sizes": [
+      [
+        912,
+        552
+      ],
+      [
+        1600,
+        900
+      ]
+    ],
+    "checks": [
+      "Places header opens Objects and returns",
+      "all four category memberships with populated Symbols",
+      "fresh Recenter focuses item tile without follow",
+      "View opens existing item sheet for selected item",
+      "overlay blocks navigation",
+      "Escape releases Objects and item sheet",
+      "play disable retires pending read without reopening"
+    ],
+    "status": "passed_with_known_issues",
+    "owned_df_pid": 16124,
+    "source_preserved": true,
+    "fps_cap": 30,
+    "limitations": [
+      "Other ownership variants",
+      "Full session replacement",
+      "Long-list intermediate scrolling and keyboard paging"
+    ]
   }
 }

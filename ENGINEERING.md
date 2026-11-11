@@ -44,7 +44,20 @@ the shared UI host, hover owner, camera focus and existing item-sheet owner.
 Nobles can hand off to Objects through its existing commit-before-navigation
 flow. No public launcher is promoted. Offline `build/qa/objects-composition-final`
 verifies Places→Objects→Places at narrow/wide widths, factory reuse and pending
-read retirement. Live composed item-sheet/camera handoff remains pending.
+read retirement. Protected171633 on2026-11-11 verifies actual main-scene
+Places→Objects→Places header clicks at912x552 and1600x900, all four category
+memberships with populated Symbols, and default-size Recenter/View handoffs.
+The camera reaches the item's tile without enabling follow; View opens the
+existing item-sheet owner and Escape releases it. HUD overlays block navigation,
+Escape closes Objects, and disabling play during a pending read retires the
+panel without reopening it. Run with `DF3D_OBJECTS_SCENE=1` alongside native,
+wire and Symbols flags. The scene client has a55-second deadline. The first
+171530 probe clicked before the resized source panel settled; it is not accepted
+as product evidence. The final run closes owned DF16124 unsaved, preserves the
+source and restores preferences, with both processes capped30FPS. GPU observed
+59–62C; known separate-thread/finalize/ObjectDB diagnostics only
+(`passed_with_known_issues`). Additional ownership variants and full session
+replacement remain outside this composed check.
 
 Protected171050 on2026-11-11 populates Symbols using the existing native semantic
 Nobles symbol assignment: artifact255/item27491 belongs to Manager office
@@ -78,7 +91,7 @@ their existing deadlines. Both owned runs close unsaved with source preservation
 and restored preferences. Viewer165906 uses both30FPS and GPU59C/10%/45W, with
 known separate-thread/finalize/ObjectDB diagnostics. Native170158 uses a headless
 viewer and retains only the known separate-thread notice. Public exposure stays
-gated pending remaining acceptance and composition.
+gated pending remaining acceptance.
 
 Protected165411 on2026-11-11 extends Objects layout coverage to912x552,
 1600x900 and1200x800. All four panel crops match native exactly at each size;
@@ -93,9 +106,10 @@ Run this coverage with `DF3D_OBJECTS_LAYOUT=1` alongside the Objects native,
 wire and render flags. `native_objects.json.layout_reference` records13 matched
 panel crops. Protected run passes with known Godot separate-thread/finalize/
 ObjectDB diagnostics; owned DF22652 closes unsaved with source preservation and
-restored preferences, both30FPS, GPU54C/20%/44W. Scrollbar pointer/drag, paging,
-populated Symbols/additional claims, remaining lifecycle and main-scene
-composition remain pending; public exposure is still gated.
+restored preferences, both30FPS, GPU54C/20%/44W. Later references above cover
+scrollbar pointer/drag, populated Manager Symbols and main-scene composition.
+Additional claims, longer-list paging and remaining session lifecycle are still
+pending; public exposure remains gated.
 
 Protocol191 adds optional `coffin_unused` to shared appearance facts: -1 unknown,
 0 false,1 installed in a coffin building with at most one contained item. Native

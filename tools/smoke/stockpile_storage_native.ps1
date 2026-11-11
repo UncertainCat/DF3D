@@ -260,6 +260,7 @@ try {
      if($name -eq 'nobles-wire' -and $env:DF3D_NOBLES_SCENE -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/nobles_scene_live.gd')}
      if($name -eq 'objects-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/objects_wire_live.gd')}
      if($name -eq 'objects-wire' -and $env:DF3D_OBJECTS_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/objects_wire_live.gd')}
+     if($name -eq 'objects-wire' -and $env:DF3D_OBJECTS_SCENE -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/objects_scene_live.gd')}
      if($name -eq 'places-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/places_wire_live.gd')}
      if($name -eq 'places-wire' -and $env:DF3D_PLACES_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/places_wire_live.gd')}
      if($name -eq 'places-wire' -and $env:DF3D_PLACES_SCENE -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/places_scene_live.gd')}
@@ -283,6 +284,7 @@ try {
      # several sheet captures. Keep this bounded separately from wire-only work.
      if($name -eq 'stocks-wire' -and $env:DF3D_STOCKS_RENDER -eq '1' -and $env:DF3D_STOCKS_FURNITURE_SHEETS -eq '1'){$wireTimeout=60000}
      if($name -eq 'places-wire' -and $env:DF3D_PLACES_SCENE -eq '1'){$wireTimeout=115000}
+     if($name -eq 'objects-wire' -and $env:DF3D_OBJECTS_SCENE -eq '1'){$wireTimeout=55000}
      if($name -eq 'tasks-wire' -and $env:DF3D_TASKS_SCENE -eq '1'){$wireTimeout=115000}
      if($name -eq 'stocks-wire' -and $env:DF3D_STOCKS_SCENE -eq '1'){$wireTimeout=115000}
      if($name -eq 'stone-use-wire' -and $env:DF3D_STONE_USE_MAIN -eq '1'){$wireTimeout=115000}

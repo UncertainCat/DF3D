@@ -7,6 +7,16 @@ struct SymbolDisplay {
     int32_t itemId=-1;
     std::string caption,officeCaption,valueCaption;
 };
+// Same owned office fields and capitalization used by the selected row caption.
+// Call after symbolDisplay has admitted the pinned display provider.
+inline std::optional<std::string> symbolOfficeCaption(Context& owned,const OfficeKey& key) {
+    for(const auto* office:owned.value.noblelist)if(office && office->ep && office->epp &&
+        office->enid==key.entityId && office->ep->id==key.positionId && office->epp->id==key.assignmentId && owned.slot(office)==key.draftSlot) {
+        auto text=office->ep->land_name.empty()?office->ep->name[0]:office->ep->land_name;
+        reinterpret_cast<void(*)(std::string*)>(owned.base+0x52d650)(&text);return text;
+    }
+    return std::nullopt;
+}
 // Native425d10/425e42/425fd1. Sorting uses c66c30; displayed value uses
 // c66020 including contents, then broker appraisal and native77f920 formatting.
 // e64560 reads semantic office/unit state and can refresh the broker's semantic

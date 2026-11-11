@@ -443,7 +443,7 @@ struct NoblesRequest {uint32_t offset=0;uint16_t limit=32;uint64_t expectedListR
   std::optional<LocationNameQuery> nameQuery;std::optional<LocationNameEdit> nameEdit;};
 struct NoblesSymbol {int32_t itemId=-1;int16_t itemType=-1;int32_t value=0;
   std::optional<NoblesOffice> currentOffice,selectedOffice;
-  std::string caption,officeCaption,valueCaption;std::optional<ItemInspectionAppearance> appearance;};
+  std::string caption,officeCaption,valueCaption;std::optional<ItemInspectionAppearance> appearance;bool artifactMood=false;};
 struct NoblesSymbolStep {uint64_t token=0;int32_t namingArtifactId=-1;uint32_t remaining=0;};
 struct NoblesSymbolName {int32_t artifactId=-1,itemId=-1;uint64_t revision=0;LocationNameValue value;
   std::string nativeHeader,englishHeader;uint8_t component=0;std::vector<uint8_t> queryBytes;
@@ -470,6 +470,7 @@ struct NoblesState {
   std::vector<NoblesRow> rows;
   std::optional<NoblesOffice> target;uint64_t candidateRevision=0;std::vector<NoblesCandidate> candidates;
   std::vector<NoblesSymbol> symbols;std::optional<NoblesSymbolStep> step;std::optional<NoblesSymbolName> name;
+  std::optional<std::string> symbolTargetCaption;
 };
 struct PlacesRequest {uint8_t tab=0;uint32_t offset=0;uint16_t limit=32;uint64_t expectedListRevision=0;
   int32_t buildingId=-1;int8_t siegeAction=-1;};

@@ -49,6 +49,7 @@ ManagementState decodeState(const m::ManagementState* s) {
   if(const auto* r=s->nobles()) {
     auto& out=next.nobles.emplace();out.outcome=NoblesOutcome(r->outcome());out.listRevision=r->list_revision();out.total=r->total();out.offset=r->offset();
     out.candidateRevision=r->candidate_revision();
+    if(r->symbol_target_caption())out.symbolTargetCaption=r->symbol_target_caption()->str();
     if(const auto* key=r->target())out.target=NoblesOffice{key->entity_id(),key->position_id(),key->assignment_id(),key->draft_slot()};
     if(const auto* step=r->step())out.step=NoblesSymbolStep{step->token(),step->naming_artifact_id(),step->remaining()};
     if(const auto* n=r->name()){
@@ -62,7 +63,7 @@ ManagementState decodeState(const m::ManagementState* s) {
       for(const auto* c:*n->choices())name.choices.push_back({c->word(),c->part(),c->english()->str(),c->translated()->str()});
     }
     if(r->symbols())for(const auto* row:*r->symbols()){
-      NoblesSymbol v;v.itemId=row->item_id();v.itemType=row->item_type();v.value=row->value();
+      NoblesSymbol v;v.itemId=row->item_id();v.itemType=row->item_type();v.value=row->value();v.artifactMood=row->artifact_mood();
       v.caption=row->caption()->str();v.officeCaption=row->office_caption()->str();v.valueCaption=row->value_caption()->str();
       const auto office=[](const m::NoblesOffice* key)->std::optional<NoblesOffice>{if(!key)return {};return NoblesOffice{key->entity_id(),key->position_id(),key->assignment_id(),key->draft_slot()};};
       v.currentOffice=office(row->current_office());v.selectedOffice=office(row->selected_office());
@@ -320,7 +321,7 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
   const auto anchor=r.materialAnchor.value_or(TilePos{r.x,r.y,r.z});
   const m::TilePos materialAnchor(anchor.x,anchor.y,anchor.z);
   flatbuffers::Offset<m::NoblesRequest> nobles;
-  if(r.action>=ManagementAction::NoblesRead && r.action<=ManagementAction::NoblesSymbolsContinue){
+  if(r.action>=ManagementAction::NoblesRead && r.action<=ManagementAction::NoblesSymbolsRetire){
     std::vector<flatbuffers::Offset<m::NoblesChoice>> choices;
     for(const auto& choice:r.nobles.choices){const auto& key=choice.target;m::NoblesOffice target(key.entityId,key.positionId,key.assignmentId,key.draftSlot);
       choices.push_back(m::CreateNoblesChoice(b,&target,choice.expectedUnitId,choice.unitId));}

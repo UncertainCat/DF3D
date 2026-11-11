@@ -1177,7 +1177,7 @@ table SessionCommand {
 }
 
 // Bounded fortress management channel; independently versioned from map snapshots.
-enum ManagementAction : uint8 { Catalog, Preview, Place, Inspect, Remove, InspectAtTile, RemoveConstruction, AreaCatalog, AreaInspectAtTile, AreaInspect, AreaCreate, AreaUpdate, AreaDelete, AreaLink, AreaCandidates, ProductionList, ProductionInspect, ProductionQueue, ProductionJobEdit, FarmEdit, WorkOrderList, WorkOrderInspect, WorkOrderCreate, WorkOrderUpdate, WorkOrderDelete, WorkOrderCondition, WorkOrderCandidates, WorkOrderCatalog, CitizenList, CitizenInspect, WorkDetailList, WorkDetailInspect, WorkDetailMembership, WorkDetailMode, ReportList, ReportInspect, AgreementList, AgreementInspect, TradeList, TradeInspect, TradeUpdate, TradeGoods, TradeBring, TradeExchangeOpen, TradeExchangeInspect, TradeExchangeSelect, TradeExchangeSubmit, TradeExchangeClose, StocksOpen, StocksList, StocksInspect, StocksClose, AppointmentsOpen, AppointmentsCandidates, AppointmentsAssign, AppointmentsBack, KitchenOpen, KitchenList, KitchenSetPermission, KitchenClose, Alert, Selection, CreatureInspect, ConstructionMaterials, WorkDetailCreate, WorkDetailDelete, WorkDetailEdit, CitizenWorkScope, PrepareAlertDismissal, DismissAlert, WorldHover, CreatureHeaderRead, CreatureHeaderEdit, CreatureLocate, CreatureExpelRead, CreatureExpelApply, CreatureKnowledgeRead, CreatureWorkshopRemove, CreatureLocationRemove, CreatureAnimalEdit, ResidentsQuery, ResidentsRowsRead, ResidentsSpecialize, CreatureSheetLocate, ResidentsActivityRead, JobSettingsRead, JobSettingsApply, WorkDetailWorkersQuery, WorkDetailRowsRead, WorkDetailSettingsRead, WorkDetailSettingsToggle, StandingOrdersRead, StandingOrdersSet, HunterAmmunitionRead, HunterAmmunitionCandidates, HunterAmmunitionApply, ChoresRead, ChoresApply, KitchenRead, KitchenApply, StoneUseRead, StoneUseApply, StocksMenuRead, StocksGroupApply, StocksItemApply, TasksRead, TasksApply, PlacesRead, PlacesApply, NoblesRead, NoblesCandidates, NoblesCommit, NoblesAccounting, NoblesSymbolsRead, NoblesSymbolsApply, NoblesSymbolNameRead, NoblesSymbolNameEdit, NoblesSymbolsContinue }
+enum ManagementAction : uint8 { Catalog, Preview, Place, Inspect, Remove, InspectAtTile, RemoveConstruction, AreaCatalog, AreaInspectAtTile, AreaInspect, AreaCreate, AreaUpdate, AreaDelete, AreaLink, AreaCandidates, ProductionList, ProductionInspect, ProductionQueue, ProductionJobEdit, FarmEdit, WorkOrderList, WorkOrderInspect, WorkOrderCreate, WorkOrderUpdate, WorkOrderDelete, WorkOrderCondition, WorkOrderCandidates, WorkOrderCatalog, CitizenList, CitizenInspect, WorkDetailList, WorkDetailInspect, WorkDetailMembership, WorkDetailMode, ReportList, ReportInspect, AgreementList, AgreementInspect, TradeList, TradeInspect, TradeUpdate, TradeGoods, TradeBring, TradeExchangeOpen, TradeExchangeInspect, TradeExchangeSelect, TradeExchangeSubmit, TradeExchangeClose, StocksOpen, StocksList, StocksInspect, StocksClose, AppointmentsOpen, AppointmentsCandidates, AppointmentsAssign, AppointmentsBack, KitchenOpen, KitchenList, KitchenSetPermission, KitchenClose, Alert, Selection, CreatureInspect, ConstructionMaterials, WorkDetailCreate, WorkDetailDelete, WorkDetailEdit, CitizenWorkScope, PrepareAlertDismissal, DismissAlert, WorldHover, CreatureHeaderRead, CreatureHeaderEdit, CreatureLocate, CreatureExpelRead, CreatureExpelApply, CreatureKnowledgeRead, CreatureWorkshopRemove, CreatureLocationRemove, CreatureAnimalEdit, ResidentsQuery, ResidentsRowsRead, ResidentsSpecialize, CreatureSheetLocate, ResidentsActivityRead, JobSettingsRead, JobSettingsApply, WorkDetailWorkersQuery, WorkDetailRowsRead, WorkDetailSettingsRead, WorkDetailSettingsToggle, StandingOrdersRead, StandingOrdersSet, HunterAmmunitionRead, HunterAmmunitionCandidates, HunterAmmunitionApply, ChoresRead, ChoresApply, KitchenRead, KitchenApply, StoneUseRead, StoneUseApply, StocksMenuRead, StocksGroupApply, StocksItemApply, TasksRead, TasksApply, PlacesRead, PlacesApply, NoblesRead, NoblesCandidates, NoblesCommit, NoblesAccounting, NoblesSymbolsRead, NoblesSymbolsApply, NoblesSymbolNameRead, NoblesSymbolNameEdit, NoblesSymbolsContinue, NoblesSymbolsRetire }
 enum AreaKind : uint8 { Stockpile, Zone, Workshop }
 enum AreaOperation : uint8 { None, SettingsPage, SettingsSet, Preset, Rename, Paint, LocationList, LocationSet, LocationCreate, ZoneSettings, Links, AssignUnits, SquadUse, Toggles, CandidateList, WorkshopLink, MultiCreate, MultiUndo, MultiFinish, PaintCounts, LocationChoices, LocationDetails, LocationOpen, LocationAccess, LocationStaffCandidates, LocationStaffEdit, LinkTarget, LocationQuantity, LocationNameRead, LocationNameChoices, LocationNameEdit, LocationRecognitionRead, LocationRecognize, LocationReligiousStaffRead, LocationReligiousStaffRemove, LocationReligiousCandidates, LocationReligiousAssignmentRead, LocationReligiousAssign, LocationSpecializationRead, LocationSpecializationSet, LocationStaffAssignmentsRead }
 enum LocationNameMode : uint8 { Clear, SelectWord, RandomComponent, RandomWhole }
@@ -2163,6 +2163,7 @@ table NoblesSymbol {
   current_office:NoblesOffice; selected_office:NoblesOffice;
   caption:string (required); office_caption:string (required); value_caption:string (required);
   appearance:ItemInspectionAppearance;
+  artifact_mood:bool;
 }
 // The bridge owns the continuation. No client-supplied pending list or order.
 table NoblesSymbolStep { token:uint64; naming_artifact_id:int32 = -1; remaining:uint32; }
@@ -2211,6 +2212,7 @@ table NoblesState {
   rows:[NoblesRow] (required);
   target:NoblesOffice; candidate_revision:uint64; candidates:[NoblesCandidate];
   symbols:[NoblesSymbol]; step:NoblesSymbolStep; name:NoblesSymbolName;
+  symbol_target_caption:string;
 }
 
 enum PlacesOutcome : uint8 { None, Rejected, Stale, Applied, Unknown }
@@ -2364,7 +2366,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 183;
+  schema_version:uint32 = 184;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2433,7 +2435,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 183;
+  schema_version:uint32 = 184;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

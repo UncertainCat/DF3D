@@ -1021,6 +1021,29 @@ acceptance is `passed_with_known_issues` for the known Godot shutdown diagnostic
 GPU58–61C sampled. Core19/controller checks pass in `build/qa/places-layout-final`.
 
 
+## Management 184 symbol presentation and retirement contract
+
+Management184 uses `Local\\df3d_management_v184`; rebuild both peers. Symbol
+pages now include the native target-office caption even when no item is assigned
+there, and each row carries weapon artifact_mood separately from artifact.
+This permits local checkbox rendering and the existing semantic weapon selector
+without inventing captions or conflating flags. Old recordings cannot synthesize
+these facts. Symbol pages require the target caption; other replies reject it.
+
+Action118 NoblesSymbolsRetire is a client-owned sequence retirement intent with
+no draft, target, token or pagination fields. Its terminal receipt follows the
+Nobles mutation outcome contract. Intended runtime semantics discard only that
+client's unfinished bridge tail, never undo effects or process another item.
+It is ordered after any already submitted effect on the same channel. Runtime
+retirement and presentation consumption are staged separately from this migration.
+
+Core19, Nobles state and UI host checks pass in
+`build/qa/nobles-symbol-presentation-contract`; bridge and extension builds pass.
+Protected123915 on2026-11-11 exercises the existing typed three-symbol/name flow
+with both peers on184. DF42240 closes unsaved with source preservation,
+native30FPS/headless viewer, sampled GPU60C/24%. This accepts the migration;
+new retirement behavior and rendered consumption require separate verification.
+
 ## Management 183 Nobles symbol contract
 
 Management183 uses `Local\\df3d_management_v183`; rebuild bridge, model and

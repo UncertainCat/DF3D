@@ -535,8 +535,9 @@ struct NoblesResult {
   std::vector<df3d_nobles::Row> rows;
   std::optional<m::NoblesOffice> target;uint64_t candidateRevision=0;
   std::vector<df3d_nobles::Candidate> candidates;
-  struct Symbol {df3d_nobles::SymbolRow facts;df3d_nobles::SymbolDisplay text;int16_t type=-1;std::optional<ItemInspectionAppearance> appearance;};
+  struct Symbol {df3d_nobles::SymbolRow facts;df3d_nobles::SymbolDisplay text;int16_t type=-1;std::optional<ItemInspectionAppearance> appearance;bool artifactMood=false;};
   std::vector<Symbol> symbols;
+  std::optional<std::string> symbolTargetCaption;
   struct Step {uint64_t token=0;int32_t artifact=-1;uint32_t remaining=0;};
   std::optional<Step> step;
   struct Name {df3d_nobles::SymbolName snapshot;uint8_t component=0;std::string query;uint32_t cursor=0,total=0,next=0;std::vector<df3d_area::LocationNameWord> choices;};
@@ -1311,7 +1312,7 @@ void publish() {
     std::vector<flatbuffers::Offset<m::NoblesSymbol>> symbols;
     for(const auto& row:nobles->symbols){const auto current=office(row.facts.currentOffice),selected=office(row.facts.selectedOffice);
       symbols.push_back(m::CreateNoblesSymbol(b,row.facts.itemId,row.type,row.facts.value,current?&*current:nullptr,selected?&*selected:nullptr,
-        b.CreateString(row.text.caption),b.CreateString(row.text.officeCaption),b.CreateString(row.text.valueCaption),encodeInspectionAppearance(row.appearance)));}
+        b.CreateString(row.text.caption),b.CreateString(row.text.officeCaption),b.CreateString(row.text.valueCaption),encodeInspectionAppearance(row.appearance),row.artifactMood));}
     flatbuffers::Offset<m::NoblesSymbolStep> step;
     if(nobles->step){const auto& s=*nobles->step;step=m::CreateNoblesSymbolStep(b,s.token,s.artifact,s.remaining);}
     flatbuffers::Offset<m::NoblesSymbolName> name;
@@ -1325,7 +1326,8 @@ void publish() {
         p.component,b.CreateVector(reinterpret_cast<const uint8_t*>(p.query.data()),p.query.size()),p.cursor,p.total,p.next,b.CreateVector(choices));
     }
     noblesResult=m::CreateNoblesState(b,nobles->outcome,nobles->listRevision,nobles->total,nobles->offset,b.CreateVector(rows),
-      nobles->target?&*nobles->target:nullptr,nobles->candidateRevision,b.CreateVector(candidates),b.CreateVector(symbols),step,name);
+      nobles->target?&*nobles->target:nullptr,nobles->candidateRevision,b.CreateVector(candidates),b.CreateVector(symbols),step,name,
+      nobles->symbolTargetCaption?b.CreateString(*nobles->symbolTargetCaption):flatbuffers::Offset<flatbuffers::String>{});
   }
   flatbuffers::Offset<m::PlacesState> placesResult;
   if(places){std::vector<flatbuffers::Offset<m::PlacesRow>> rows;
@@ -4443,6 +4445,8 @@ void run(color_ostream& out) {
     }catch(...){if(started){places->outcome=m::PlacesOutcome::Unknown;mutated=true;}}
     publish();return;
   }
+  // Contract migration: explicit retirement is wired separately.
+  if(r->action()==m::ManagementAction::NoblesSymbolsRetire){status=m::ManagementStatus::Rejected;message.clear();nobles.emplace();publish();return;}
   // A closed mailbox retires its unfinished tail. Already applied effects stay.
   if(noblesSymbolOwner && !sh::ClientMailbox::open(m::kManagementRegionName,
       sh::atomicLoadAcquire(&m::sessionOwner(region)->generation),noblesSymbolOwner->client,m::kManagementVersion,m::kManagementCapacity))noblesSymbolOwner.reset();
@@ -4500,9 +4504,11 @@ void run(color_ostream& out) {
         if((q.expected_candidate_revision() && q.expected_candidate_revision()!=revision) || q.offset()>rows->size()){nobles->outcome=m::NoblesOutcome::Stale;publish();return;}
         auto display=df3d_nobles::symbolDisplay(owned,q.offset(),q.limit());if(!display){publish();return;}
         NoblesResult page;page.listRevision=owned.baseRevision;page.candidateRevision=revision;page.target=*q.target();page.total=uint32_t(rows->size());page.offset=q.offset();
+        const auto caption=df3d_nobles::symbolOfficeCaption(owned,intent.office);if(!caption){publish();return;}
+        page.symbolTargetCaption=DF2UTF(*caption);if(page.symbolTargetCaption->size()>16384){publish();return;}
         size_t bytes=0;
         for(auto& text:*display){const auto& facts=(*rows)[q.offset()+page.symbols.size()];auto* item=df::item::find(facts.itemId);if(!item || text.itemId!=facts.itemId)throw std::runtime_error("symbol item changed");
-          NoblesResult::Symbol row;row.facts=facts;row.type=int16_t(item->getType());row.text=std::move(text);
+          NoblesResult::Symbol row;row.facts=facts;row.type=int16_t(item->getType());row.text=std::move(text);row.artifactMood=row.type==24 && item->flags.bits.artifact_mood;
           for(auto* value:{&row.text.caption,&row.text.officeCaption,&row.text.valueCaption}){*value=DF2UTF(*value);if(value->size()>16384)throw std::runtime_error("symbol caption exceeds limit");}
           // Artwork projection is staged separately; never call the native render cache.
           const auto size=128+row.text.caption.size()+row.text.officeCaption.size()+row.text.valueCaption.size();if(bytes+size>384*1024)break;bytes+=size;page.symbols.push_back(std::move(row));

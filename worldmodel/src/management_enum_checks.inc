@@ -282,7 +282,8 @@ static_assert(static_cast<int>(wm::ManagementAction::NoblesSymbolsApply) == stat
 static_assert(static_cast<int>(wm::ManagementAction::NoblesSymbolNameRead) == static_cast<int>(df3d::mirror::ManagementAction::NoblesSymbolNameRead));
 static_assert(static_cast<int>(wm::ManagementAction::NoblesSymbolNameEdit) == static_cast<int>(df3d::mirror::ManagementAction::NoblesSymbolNameEdit));
 static_assert(static_cast<int>(wm::ManagementAction::NoblesSymbolsContinue) == static_cast<int>(df3d::mirror::ManagementAction::NoblesSymbolsContinue));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 118);
+static_assert(static_cast<int>(wm::ManagementAction::NoblesSymbolsRetire) == static_cast<int>(df3d::mirror::ManagementAction::NoblesSymbolsRetire));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 119);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -607,3 +608,4 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::NoblesSymbolsApply) == d
 static_assert(wm::isRuntimeAction(wm::ManagementAction::NoblesSymbolNameRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::NoblesSymbolNameRead));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::NoblesSymbolNameEdit) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::NoblesSymbolNameEdit));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::NoblesSymbolsContinue) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::NoblesSymbolsContinue));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::NoblesSymbolsRetire) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::NoblesSymbolsRetire));

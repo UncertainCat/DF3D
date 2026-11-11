@@ -3,6 +3,17 @@
 #include "management_util.h"
 namespace m=df3d::mirror;
 namespace codec=wm::detail::management;
+TEST_CASE("Symbol retirement carries no replacement draft or effect token") {
+ for(int fault=0;fault<6;++fault){wm::ManagementRequest q;q.action=wm::ManagementAction::NoblesSymbolsRetire;
+  if(fault==1)q.nobles.stepToken=123;
+  if(fault==2)q.nobles.expectedListRevision=123;
+  if(fault==3)q.nobles.symbolChoices={{1,true}};
+  if(fault==4)q.nobles.target=wm::NoblesOffice{7,2,42,0};
+  if(fault==5)q.nobles.offset=1;
+  flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,q,11,12,13);
+  CHECK(bool(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
+ }
+}
 TEST_CASE("Symbol operations serialize owned selection and token-only continuation") {
  for(auto action:{wm::ManagementAction::NoblesSymbolsRead,wm::ManagementAction::NoblesSymbolsApply,
      wm::ManagementAction::NoblesSymbolNameRead,wm::ManagementAction::NoblesSymbolNameEdit,wm::ManagementAction::NoblesSymbolsContinue}) {

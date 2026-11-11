@@ -173,8 +173,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 183;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v183";
+inline constexpr uint32_t kManagementVersion = 184;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v184";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -472,7 +472,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::NoblesSymbolsContinue &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::NoblesSymbolsRetire &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -561,7 +561,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::NoblesSymbolsContinue)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::NoblesSymbolsRetire)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -655,7 +655,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     const auto* q=r.residents_specialization();
     if(!q || q->unit_id()<0 || !q->expected_revision() || q->expected_revision()>INT64_MAX)return "invalid residents specialization request";
   } else if(r.residents_specialization())return "unexpected residents specialization request";
-  if(r.action()>=ManagementAction::NoblesRead && r.action()<=ManagementAction::NoblesSymbolsContinue){
+  if(r.action()>=ManagementAction::NoblesRead && r.action()<=ManagementAction::NoblesSymbolsRetire){
     const auto* q=r.nobles();
     if(!q || q->expected_list_revision()>INT64_MAX || q->expected_candidate_revision()>INT64_MAX)return "invalid nobles request";
     const auto count=q->choices()?q->choices()->size():0;
@@ -670,13 +670,17 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     const bool nameRead=r.action()==ManagementAction::NoblesSymbolNameRead;
     const bool nameEdit=r.action()==ManagementAction::NoblesSymbolNameEdit;
     const bool continuation=r.action()==ManagementAction::NoblesSymbolsContinue;
+    const bool retire=r.action()==ManagementAction::NoblesSymbolsRetire;
     const bool step=nameRead || nameEdit || continuation;
     const auto symbolCount=q->symbol_choices()?q->symbol_choices()->size():0;
     if(!applySymbols && symbolCount)return "unexpected nobles symbol choices";
     if(!step && (q->step_token() || q->expected_name_revision() || q->name_query() || q->name_edit()))return "unexpected nobles naming fields";
     const bool accounting=r.action()==ManagementAction::NoblesAccounting;
     if(!accounting && (q->expected_setting()!=-1 || q->setting()!=-1))return "unexpected nobles accounting setting";
-    if(step){
+    if(retire){
+      // FIFO cleanup of this client's bridge-owned tail, never simulation undo.
+      if(count || q->target() || q->expected_list_revision() || q->expected_candidate_revision() || q->offset() || q->limit()!=32)return "invalid nobles symbol retirement";
+    }else if(step){
       // The token binds the session, office, appointment draft and pending tail.
       // Clients cannot replace any of those inputs while naming is in progress.
       if(!q->step_token() || q->step_token()>INT64_MAX || q->expected_name_revision()>INT64_MAX ||
@@ -1276,7 +1280,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::NoblesSymbolsContinue ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::NoblesSymbolsRetire ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -1363,10 +1367,12 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     const bool read=s.action()==ManagementAction::NoblesRead,candidates=s.action()==ManagementAction::NoblesCandidates;
     const bool symbols=s.action()==ManagementAction::NoblesSymbolsRead,name=s.action()==ManagementAction::NoblesSymbolNameRead;
     const bool symbolStep=s.action()==ManagementAction::NoblesSymbolsApply || s.action()==ManagementAction::NoblesSymbolsContinue;
-    const bool commit=s.action()==ManagementAction::NoblesCommit || s.action()==ManagementAction::NoblesAccounting || symbolStep || s.action()==ManagementAction::NoblesSymbolNameEdit;
+    const bool commit=s.action()==ManagementAction::NoblesCommit || s.action()==ManagementAction::NoblesAccounting || symbolStep || s.action()==ManagementAction::NoblesSymbolNameEdit || s.action()==ManagementAction::NoblesSymbolsRetire;
     if((!read && !candidates && !symbols && !name && !commit) || !r->rows() || r->rows()->size()>64 || r->outcome()>NoblesOutcome::Unknown)return "invalid nobles result";
     const auto candidateCount=r->candidates()?r->candidates()->size():0;
     const auto symbolCount=r->symbols()?r->symbols()->size():0;
+    if(symbols && s.status()==ManagementStatus::Ok){if(!r->symbol_target_caption() || r->symbol_target_caption()->size()>16384)return "invalid nobles symbol target caption";}
+    else if(r->symbol_target_caption())return "unexpected nobles symbol target caption";
     if((!symbols && symbolCount) || (!name && r->name()) || ((!name && !symbolStep) && r->step()) ||
        (s.status()!=ManagementStatus::Ok && (symbolCount || r->step() || r->name())))return "unexpected nobles symbol payload";
     if(const auto* step=r->step())if(!step->token() || step->token()>INT64_MAX || step->naming_artifact_id()<0 || step->remaining()>4096)return "invalid nobles symbol step";
@@ -1400,7 +1406,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
              (s.status()==ManagementStatus::Rejected && (r->outcome()==NoblesOutcome::Rejected || r->outcome()==NoblesOutcome::Stale || r->outcome()==NoblesOutcome::Unknown))))return "invalid nobles commit outcome";
       }else if(s.status()!=ManagementStatus::Rejected || (r->outcome()!=NoblesOutcome::Rejected && r->outcome()!=NoblesOutcome::Stale))return "invalid nobles refusal";
     }
-    size_t bytes=0;std::set<std::tuple<int32_t,int32_t,int32_t,uint32_t>> ids;
+    size_t bytes=r->symbol_target_caption()?r->symbol_target_caption()->size():0;std::set<std::tuple<int32_t,int32_t,int32_t,uint32_t>> ids;
     for(const auto* row:*r->rows()){
       if(!row || row->entity_id()<0 || row->position_id()<0 || row->assignment_id()<-1 || row->unit_id()<-1 || row->nemesis_id()<-1 ||
          !ids.emplace(row->entity_id(),row->position_id(),row->assignment_id(),row->draft_slot()).second || row->draft_slot()>4096 ||
@@ -1426,7 +1432,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     if(symbolCount>64)return "too many nobles symbols";
     std::set<int32_t> symbolIds;
     if(r->symbols())for(const auto* row:*r->symbols()){
-      if(!row || row->item_id()<0 || row->item_type()<0 || row->item_type()>92 || !symbolIds.insert(row->item_id()).second ||
+      if(!row || row->item_id()<0 || row->item_type()<0 || row->item_type()>92 || (row->artifact_mood() && row->item_type()!=24) || !symbolIds.insert(row->item_id()).second ||
          (row->current_office() && !validNoblesOffice(row->current_office(),4096)) ||
          (row->selected_office() && !validNoblesOffice(row->selected_office(),4096)))return "invalid nobles symbol";
       bytes+=128;
@@ -1465,7 +1471,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       }
       if(bytes>384*1024)return "nobles page payload exceeded";
     }
-  }else if(s.status()==ManagementStatus::Ok && s.action()>=ManagementAction::NoblesRead && s.action()<=ManagementAction::NoblesSymbolsContinue)return "missing nobles result";
+  }else if(s.status()==ManagementStatus::Ok && s.action()>=ManagementAction::NoblesRead && s.action()<=ManagementAction::NoblesSymbolsRetire)return "missing nobles result";
   if(const auto* r=s.places()) {
     const bool read=s.action()==ManagementAction::PlacesRead,apply=s.action()==ManagementAction::PlacesApply;
     if((!read && !apply) || r->tab()>5 || !r->rows() ||

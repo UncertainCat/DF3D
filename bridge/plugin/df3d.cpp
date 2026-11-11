@@ -121,6 +121,7 @@
 #include "nobles_symbols_native.h"
 #include "nobles_symbols_mutation_native.h"
 #include "nobles_symbol_name_native.h"
+#include "nobles_symbol_display_native.h"
 #include "places_action_native.h"
 #include "tasks_action_native.h"
 #include "residents_activity_description_native.h"
@@ -2535,6 +2536,21 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             row["position"]=Json::Value(Json::arrayValue);for(auto v:{entry.position.x,entry.position.y,entry.position.z})row["position"].append(v);
             list.append(row);}result.append(list);}
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
+        }
+        if(parameters[0]=="nobles-symbol-text-probe") {
+          if(parameters.size()!=6)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          try {
+            const df3d_nobles::OfficeKey key{std::stoi(parameters[1]),std::stoi(parameters[2]),std::stoi(parameters[3])};
+            if(!df3d_nobles::ready())return CR_FAILURE;
+            df3d_nobles::Context owned(reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr)));
+            if(!df3d_nobles::prepareDraft(owned,{}) || !df3d_nobles::projectSymbols(owned,key))return CR_FAILURE;
+            const auto rows=df3d_nobles::symbolDisplay(owned,std::stoul(parameters[4]),std::stoul(parameters[5]));if(!rows)return CR_FAILURE;
+            Json::Value result(Json::arrayValue);
+            for(const auto& entry:*rows){Json::Value row;row["item_id"]=entry.itemId;row["caption"]=DF2UTF(entry.caption);
+              row["office"]=DF2UTF(entry.officeCaption);row["value"]=DF2UTF(entry.valueCaption);result.append(row);}
+            out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
+          }catch(const std::exception&){return CR_FAILURE;}
         }
         if(parameters[0]=="nobles-symbol-name-probe" || parameters[0]=="nobles-symbol-name-edit-probe") {
           const bool edit=parameters[0]=="nobles-symbol-name-edit-probe";

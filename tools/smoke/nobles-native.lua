@@ -301,6 +301,38 @@ if os.getenv('DF3D_NOBLES_SYMBOLS')=='1' then
   symbols[#symbols+1]={item_id=item.id,new_index=menu.cand_symbol_new_ind[i],current_index=menu.cand_symbol_is_symbol_of_ind[i],value=menu.cand_symbol_value[i]}
  end
  result.symbol_reference={office=office,rows=symbols,lines=lines(),columns=g.dimx,height=g.dimy,owned_candidates_match=true}
+ if os.getenv('DF3D_NOBLES_SYMBOL_TEXT')=='1' then
+  local function text_rows()
+   local actual=probe({'nobles-symbol-text-probe',tostring(office.entity_id),tostring(office.position_id),tostring(office.assignment_id),'0','15'})
+   assert(#actual==15)
+   for i,row in ipairs(actual)do
+    local chars={};for column=0,g.dimx-1 do chars[#chars+1]=string.char(dfhack.screen.readTile(column,15+(i-1)*3).ch)end
+    local line=table.concat(chars);local caption=dfhack.utf2df(row.caption);local value=dfhack.utf2df(row.value)
+    if #caption<23 then assert(line:find(caption,1,true),'Native symbol caption differs at '..i)end
+    if #value>0 then assert(line:find(value,1,true),'Native symbol value differs at '..i..': '..row.value)
+    else assert(not line:find('Value: ',1,true),'Owned symbol value missing')end
+   end
+   return actual
+  end
+  result.symbol_reference.text={initial=text_rows()}
+  local assignment
+  for _,row in ipairs(menu.noblelist)do if row.ep.responsibilities.TRADE and row.epp then assignment=row.epp;break end end
+  assert(assignment,'Missing broker assignment')
+  local holder
+  for _,unit in ipairs(df.global.world.units.active)do if unit.hist_figure_id>=0 and unit.status.current_soul then holder=unit;break end end
+  assert(holder)
+  local previous=assignment.histfig
+  local trade=df.global.plotinfo.main.fortress_entity.assignments_by_type.TRADE
+  local inserted=true;for _,entry in ipairs(trade)do if entry==assignment then inserted=false end end
+  local insertion_index=#trade
+  local ok,err=xpcall(function()
+   assignment.histfig=holder.hist_figure_id;if inserted then trade:insert('#',assignment)end;settle()
+   result.symbol_reference.text.with_broker=text_rows()
+   assert(#result.symbol_reference.text.with_broker[1].value>0,'Broker value remained hidden')
+  end,debug.traceback)
+  assignment.histfig=previous;if inserted then trade:erase(insertion_index)end;settle();assert(ok,err)
+  result.symbol_reference.text.broker_restored=true
+ end
  write('nobles-native.json',json.encode(result));capture('nobles-symbols-manager')
  gui.simulateInput(view,'LEAVESCREEN');settle()
  assert(info.open and not menu.assigning_symbol and menu.handling_symbol_closure_ind==-1,'Symbol Back did not return to overview')

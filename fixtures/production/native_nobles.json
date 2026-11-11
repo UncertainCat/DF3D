@@ -7976,6 +7976,195 @@
       ],
       "evidence": "build/stockpile-storage-native-input-20261111-113210",
       "scope": "Owned edits compared against native Clear, word selection, component Random and whole-name Random on the first elevated Manager symbol. Exact name fields and active RNG match; stale requests leave them unchanged; native name-editor bytes unchanged. No typed or rendered DF3D naming acceptance."
+    },
+    "text_reference": {
+      "broker_restored": true,
+      "initial": [
+        {
+          "caption": "Enkoserib",
+          "item_id": 27491,
+          "office": "",
+          "value": ""
+        },
+        {
+          "caption": "Kulin Odur",
+          "item_id": 9035,
+          "office": "",
+          "value": ""
+        },
+        {
+          "caption": "Koresis",
+          "item_id": 48318,
+          "office": "",
+          "value": ""
+        },
+        {
+          "caption": "Cilobireg Lelum Thad",
+          "item_id": 8201,
+          "office": "",
+          "value": ""
+        },
+        {
+          "caption": "Rinulshem",
+          "item_id": 31264,
+          "office": "",
+          "value": ""
+        },
+        {
+          "caption": "Izeglîlar",
+          "item_id": 33758,
+          "office": "",
+          "value": ""
+        },
+        {
+          "caption": "violet spessartine niwir",
+          "item_id": 15047,
+          "office": "",
+          "value": ""
+        },
+        {
+          "caption": "clear glass odshith",
+          "item_id": 20196,
+          "office": "",
+          "value": ""
+        },
+        {
+          "caption": "≡«+tiger hair earring+»≡",
+          "item_id": 13147,
+          "office": "",
+          "value": ""
+        },
+        {
+          "caption": "(-«-steel mace-»-)",
+          "item_id": 7447,
+          "office": "",
+          "value": ""
+        },
+        {
+          "caption": "(«steel helm»)",
+          "item_id": 7313,
+          "office": "",
+          "value": ""
+        },
+        {
+          "caption": "*«-gray langur leather quiver-»*",
+          "item_id": 28419,
+          "office": "",
+          "value": ""
+        },
+        {
+          "caption": "☼steel breastplate☼",
+          "item_id": 29546,
+          "office": "",
+          "value": ""
+        },
+        {
+          "caption": "☼steel shield☼",
+          "item_id": 29668,
+          "office": "",
+          "value": ""
+        },
+        {
+          "caption": "☼steel flask☼",
+          "item_id": 32986,
+          "office": "",
+          "value": ""
+        }
+      ],
+      "with_broker": [
+        {
+          "caption": "Enkoserib",
+          "item_id": 27491,
+          "office": "",
+          "value": "Value: 2000☼?"
+        },
+        {
+          "caption": "Kulin Odur",
+          "item_id": 9035,
+          "office": "",
+          "value": "Value: 2000☼?"
+        },
+        {
+          "caption": "Koresis",
+          "item_id": 48318,
+          "office": "",
+          "value": "Value: 2000☼?"
+        },
+        {
+          "caption": "Cilobireg Lelum Thad",
+          "item_id": 8201,
+          "office": "",
+          "value": "Value: 2000☼?"
+        },
+        {
+          "caption": "Rinulshem",
+          "item_id": 31264,
+          "office": "",
+          "value": "Value: 2000☼?"
+        },
+        {
+          "caption": "Izeglîlar",
+          "item_id": 33758,
+          "office": "",
+          "value": "Value: ~1000☼"
+        },
+        {
+          "caption": "violet spessartine niwir",
+          "item_id": 15047,
+          "office": "",
+          "value": "Value: 2000☼?"
+        },
+        {
+          "caption": "clear glass odshith",
+          "item_id": 20196,
+          "office": "",
+          "value": "Value: ~1000☼"
+        },
+        {
+          "caption": "≡«+tiger hair earring+»≡",
+          "item_id": 13147,
+          "office": "",
+          "value": "Value: ~1000☼"
+        },
+        {
+          "caption": "(-«-steel mace-»-)",
+          "item_id": 7447,
+          "office": "",
+          "value": "Value: ~1000☼"
+        },
+        {
+          "caption": "(«steel helm»)",
+          "item_id": 7313,
+          "office": "",
+          "value": "Value: ~1000☼"
+        },
+        {
+          "caption": "*«-gray langur leather quiver-»*",
+          "item_id": 28419,
+          "office": "",
+          "value": "Value: ~1000☼"
+        },
+        {
+          "caption": "☼steel breastplate☼",
+          "item_id": 29546,
+          "office": "",
+          "value": "Value: ~1000☼"
+        },
+        {
+          "caption": "☼steel shield☼",
+          "item_id": 29668,
+          "office": "",
+          "value": "Value: ~1000☼"
+        },
+        {
+          "caption": "☼steel flask☼",
+          "item_id": 32986,
+          "office": "",
+          "value": "Value: ~1000☼"
+        }
+      ],
+      "evidence": "build/stockpile-storage-native-input-20261111-114036",
+      "scope": "First15 native rows: untruncated captions and all value strings match without broker and with controlled broker assignment. Broker holder/index restored. Long-caption clipping, selected-office line and artwork are not accepted here."
     }
   }
 }

@@ -155,6 +155,26 @@ stopped on a Lua test allocation error before edits, fixed to use the generated
 language_name constructor. Typed requests, name paging and rendered DF3D
 interaction remain unfinished; this evidence covers the diagnostic editor only.
 
+`nobles_symbol_display_native.h` projects bounded pages of full item captions,
+selected-office captions and native value strings. Presentation owns clipping.
+The sort value from c66c30 is distinct from the displayed value: native c66020
+includes contents, e64560 supplies broker appraisal availability/skill, and77f920
+formats the result. Values remain blank without an available broker. These
+semantic calls do not use native menu/rendering caches; appraisal may refresh
+the broker's semantic body/vision caches. Random state is preserved. The native
+graphics path c7cbc0 uses rendering caches and is not called by this provider;
+independent symbol artwork remains outstanding.
+
+Protected114036 on2026-11-11 compares the first15 rows: all displayed values and
+untruncated captions match the native screen both without a broker and with a
+controlled broker holder/trade-assignment index. The test restores both fields;
+native menu bytes, RNG and measured historical lookup caches are preserved.
+`symbol_reference.text_reference` retains the bounded rows. Core passes in
+`build/qa/nobles-symbol-display`; the plugin builds. DF16224 closes unsaved with
+source preservation,30FPS, sampled GPU59C/32%. Earlier113932 omitted the trade
+index in its controlled setup and correctly kept values hidden. This does not
+accept long-caption clipping, office-caption rendering, artwork or a typed UI.
+
 Owned accounting changes use `setAccounting` in `nobles_draft_native.h`.
 Native425712..4257b4 contains an inline occupied-ACCOUNTING-row check followed
 by a direct int16 store to the requested setting; there is no separate semantic

@@ -1,5 +1,5 @@
 extends "res://scripts/standing_orders_view.gd"
-# Staged native4257d0 overview and appointment picker; dismissal commit remains pending.
+# Staged native4257d0 overview and child pickers.
 var hovered: Dictionary={}
 var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
 var portraits: Dictionary={}
@@ -18,13 +18,15 @@ func groups() -> Array:
 	if not wide_tabs:result.reverse()
 	return result
 func picking() -> bool:return state!=null and state.phase in [state.Phase.CandidatesReading,state.Phase.CandidatesReady]
-func displayed_rows() -> Array:return state.candidates if picking() else state.rows
+func symbols() -> bool:return state!=null and state.phase==state.Phase.Symbols
+func displayed_rows() -> Array:return state.symbols.rows if symbols() else state.candidates if picking() else state.rows
 func seek_rows(value: int) -> void:
-	if picking():state.seek_candidates(value,capacity())
+	if symbols():state.symbols.seek(value,capacity())
+	elif picking():state.seek_candidates(value,capacity())
 	else:state.seek(value,capacity())
-func list_top() -> int:return (48 if wide_tabs else 72) if picking() else (84 if wide_tabs else 108)
+func list_top() -> int:return (96 if wide_tabs else 120) if symbols() else (48 if wide_tabs else 72) if picking() else (84 if wide_tabs else 108)
 func capacity() -> int:return maxi(0,int((size.y-list_top()-24)/36))
-func visible_first() -> int:return mini(state.candidate_first if picking() else state.first,maxi(0,displayed_rows().size()-capacity()))
+func visible_first() -> int:return mini(state.symbols.first if symbols() else state.candidate_first if picking() else state.first,maxi(0,displayed_rows().size()-capacity()))
 func spacing_columns() -> int:return maxi(0,int((int(size.x/8)-121-(2 if state.rows.size()>capacity() else 0))/2))
 func status_x() -> int:return (62+spacing_columns())*8
 func content_columns() -> int:return int(size.x/8)-4-(2 if state.rows.size()>capacity() else 0)
@@ -86,6 +88,7 @@ func refresh() -> void:
 	var retained: Dictionary={}
 	for index in range(visible_first(),mini(displayed_rows().size(),visible_first()+capacity())):
 		var row: Dictionary=displayed_rows()[index]
+		if symbols():continue
 		if not row.has("appearance"):continue
 		var prior: Dictionary=portraits.get(row.unit_id,{})
 		retained[row.unit_id]=prior if prior.get("recipe")==row.appearance else {"recipe":row.appearance.duplicate(true),"texture":world.candidate_icon(row.appearance)}
@@ -96,9 +99,11 @@ func _exit_tree() -> void:
 	hovered={}
 	if state!=null and state.changed.is_connected(refresh):state.changed.disconnect(refresh)
 func _input(event: InputEvent) -> void:
+	if allowed() and symbols() and ((event is InputEventKey and event.pressed and event.keycode==KEY_ESCAPE) or (event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_RIGHT)):
+		state.symbols.dismiss();get_viewport().set_input_as_handled();return
 	if allowed() and picking() and ((event is InputEventKey and event.pressed and event.keycode==KEY_ESCAPE) or (event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_RIGHT)):
 		state.cancel_appointment();get_viewport().set_input_as_handled();return
-	if allowed() and state!=null and state.phase in [state.Phase.Ready,state.Phase.CandidatesReady] and event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN] and not event.ctrl_pressed and not event.alt_pressed and not event.meta_pressed:
+	if allowed() and state!=null and state.phase in [state.Phase.Ready,state.Phase.CandidatesReady,state.Phase.Symbols] and event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN] and not event.ctrl_pressed and not event.alt_pressed and not event.meta_pressed:
 		var point: Vector2=get_global_transform_with_canvas().affine_inverse()*event.position
 		if Rect2(0,list_top(),size.x,size.y-list_top()).has_point(point):
 			seek_rows(visible_first()+(capacity() if event.shift_pressed else 1)*(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1));get_viewport().set_input_as_handled();return
@@ -107,6 +112,12 @@ func _gui_input(event: InputEvent) -> void:
 	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
 	accept_event()
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
+	if symbols():
+		if Rect2(size.x-80,list_top()-42,64,24).has_point(event.position):state.symbols.dismiss();return
+		if state.symbols.phase==state.symbols.Phase.Ready:
+			for index in mini(capacity(),state.symbols.rows.size()-visible_first()):
+				if Rect2(16,list_top()+index*36,size.x-48,36).has_point(event.position):state.symbols.toggle(state.symbols.rows[visible_first()+index].item_id);return
+		return
 	var tabs:=groups()
 	for index in tabs.size():
 		var x:=8
@@ -149,6 +160,7 @@ func _draw() -> void:
 		var x:=8.0
 		for caption in tabs[index]:x+=tab(caption,Vector2(x,12+index*24),"SHORT_TAB",caption=="Nobles and administrators")
 	if picking():draw_candidates();return
+	if symbols():draw_symbols();return
 	for line in intro_lines():text(line.text,line.point,line.color)
 	if state.phase!=state.Phase.Ready:return
 	for index in mini(capacity(),state.rows.size()-visible_first()):
@@ -170,6 +182,22 @@ func _draw() -> void:
 		if accounting_visible(row):
 			for setting in 5:icon("NOBLES_ACCOUNTING_%d_%s"%[setting+1,"ACTIVE" if row.help.accounting.setting==setting else "INACTIVE"],Vector2(status_x()+304+setting*32,top))
 
+func draw_symbols() -> void:
+	text("Choose symbols for the position holder to carry or wear.",Vector2(16,list_top()-24))
+	patch("HORIZONTAL_OPTION_CONFIRM",Vector2i(int(size.x/8)-10,int((list_top()-48)/12)),8,3)
+	text("Done",Vector2(size.x-64,list_top()-24))
+	if state.symbols.phase!=state.symbols.Phase.Ready:return
+	var right: int=int(size.x/8)-2-(2 if state.symbols.rows.size()>capacity() else 0)
+	for index in mini(capacity(),state.symbols.rows.size()-visible_first()):
+		var row: Dictionary=state.symbols.rows[visible_first()+index];var top:=list_top()+index*36
+		patch("BUTTON_RECTANGLE",Vector2i(2,int(top/12)),right-2,3)
+		patch("",Vector2i(2,int(top/12)),5,3,picture.texture(false))
+		var caption: String=row.caption
+		if caption.length()>=23:caption=caption.left(19)+"..."
+		text(caption,Vector2(64,top+24),14)
+		text(row.value_caption,Vector2(256,top+24),6)
+		text(row.office_caption,Vector2(256,top+12),11)
+		icon("BUILDING_SHEET_FARM_ACTIVE_OPTION" if state.symbols.checked(row) else "BUILDING_SHEET_FARM_INACTIVE_OPTION",Vector2((right-6)*8,top))
 func candidate_right() -> int:return int(size.x/8)-2-(2 if state.candidates.size()>capacity() else 0)
 func candidate_skill_column() -> int:
 	var right:=candidate_right()

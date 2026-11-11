@@ -4,7 +4,20 @@ signal changed
 signal dismissed
 const C=preload("res://scripts/management_contract.gd")
 const MAX_RETAINED_BYTES=64*1024*1024
-enum Phase {Closed,Reading,Ready,Rejected,Unavailable,CandidatesReading,CandidatesReady,Applying,Unknown,Accounting}
+enum Phase {Closed,Reading,Ready,Rejected,Unavailable,CandidatesReading,CandidatesReady,Applying,Unknown,Accounting,Symbols}
+var symbols=preload("res://scripts/nobles_symbols_state.gd").new()
+func _init() -> void:
+	symbols.changed.connect(_symbols_changed)
+	symbols.finished.connect(_symbols_finished)
+func _symbols_changed() -> void:changed.emit()
+func _symbols_finished() -> void:
+	if phase!=Phase.Symbols:return
+	rows=[];_pending=[];_seen={};_bytes=0;_total=0;phase=Phase.Reading;_page()
+func begin_symbols(target: Dictionary) -> void:
+	if phase!=Phase.Ready:return
+	for row in rows:
+		if office(row)==target and row.assignment_id>=0:
+			_retire();phase=Phase.Symbols;symbols.open(target,choices,_revision);changed.emit();return
 var service
 var phase:=Phase.Closed
 var rows: Array=[]
@@ -29,7 +42,7 @@ var _candidate_total:=0
 var _candidate_bytes:=0
 var _expected_unit: int=-1
 func configure(source) -> void:
-	dispose();service=source
+	dispose();service=source;symbols.configure(source)
 	if service!=null:service.session_changed.connect(_session_changed)
 func dispose() -> void:
 	close()
@@ -41,6 +54,7 @@ func _retire() -> void:
 	generation+=1;var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
 func close() -> void:
+	symbols.close()
 	_retire();_clear();choices=[];_clear_candidates();first=0;last_result={};phase=Phase.Closed;changed.emit()
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
@@ -208,6 +222,7 @@ func _candidate_page() -> void:
 # User dismissal applies the accumulated native draft. close() is reserved for
 # owner teardown/session loss; it must never be used as the product Back action.
 func request_dismiss() -> void:
+	if phase==Phase.Symbols:symbols.dismiss();return
 	if phase in [Phase.CandidatesReading,Phase.CandidatesReady]:cancel_appointment();return
 	if phase!=Phase.Ready:return
 	if choices.is_empty():close();dismissed.emit();return

@@ -10,6 +10,65 @@ func page(offset: int,revision: int) -> Dictionary:
 	return await request("nobles",{"action":C.ManagementAction.NoblesRead,"offset":offset,"limit":4,"expected_list_revision":revision})
 func symbol_step(action: int,token: int) -> Dictionary:
 	return {"action":action,"offset":0,"limit":32,"expected_list_revision":0,"step_token":token}
+func wait_symbol(model,phase: int) -> bool:
+	var deadline:=Time.get_ticks_msec()+10000
+	while Time.get_ticks_msec()<deadline:
+		world.poll()
+		if model.phase==phase and not model.busy():return true
+		await create_timer(0.01).timeout
+	return false
+func click_at(point: Vector2) -> void:
+	var event:=InputEventMouseButton.new();event.button_index=MOUSE_BUTTON_LEFT;event.position=point;event.pressed=true;root.push_input(event,true)
+	event=event.duplicate();event.pressed=false;root.push_input(event,true)
+func check_symbol_panel() -> void:
+	var reference: Dictionary=normalize(JSON.parse_string(FileAccess.get_file_as_string(directory+"/nobles-symbol-wire-reference.json")))
+	if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Symbol panel assets unavailable"):return
+	root.size=Vector2i(1200,800)
+	var actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(actions);actions.configure(world,true)
+	var interaction=preload("res://tests/ui_host_test.gd").Interaction.new();root.add_child(interaction)
+	var host=preload("res://scripts/ui_host.gd").new();root.add_child(host);host.interaction=interaction
+	var owner=preload("res://scripts/nobles_panel.gd").new();root.add_child(owner);owner.configure(world,actions,host);owner.open_panel()
+	var deadline:=Time.get_ticks_msec()+5000
+	while owner.state.phase==owner.state.Phase.Reading and Time.get_ticks_msec()<deadline:world.poll();await create_timer(0.01).timeout
+	if not check(owner.state.phase==owner.state.Phase.Ready,"Symbol overview not ready"):return
+	var index: int=-1
+	for i in owner.state.rows.size():
+		if owner.state.office(owner.state.rows[i])==reference.target:index=i;break
+	if not check(index>=0,"Symbol office missing"):return
+	var panel=owner.panel
+	click_at(panel.position+Vector2(panel.status_x()+16,panel.list_top()+index*36+18))
+	var symbols=owner.state.symbols
+	if not check(await wait_symbol(symbols,symbols.Phase.Ready),"Symbol icon did not open picker"):return
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/nobles-symbol-picker-view.png")
+	for item in reference.items:
+		var ordinal: int=-1
+		for i in symbols.rows.size():
+			if symbols.rows[i].item_id==item:ordinal=i;break
+		if not check(ordinal>=0,"Symbol row missing"):return
+		symbols.seek(maxi(0,ordinal-5),panel.capacity());await process_frame
+		click_at(panel.position+Vector2(100,panel.list_top()+(ordinal-symbols.first)*36+18))
+	check(symbols.selected.size()==3,"Symbol pointer toggles failed")
+	click_at(panel.position+Vector2(panel.size.x-48,panel.list_top()-30))
+	var artifacts: Array=[]
+	for i in 3:
+		if not check(await wait_symbol(symbols,symbols.Phase.Naming),"Symbol name did not open"):return
+		check(symbols.naming.phase==symbols.naming.Phase.Ready,"Name word pages incomplete")
+		artifacts.append(symbols.step.naming_artifact_id)
+		var name_view=owner.name_panel
+		await process_frame
+		if i==0:
+			await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/nobles-symbol-name-view.png")
+			click_at(name_view.position+name_view.clear_rect(0).get_center())
+			if not check(await wait_symbol(symbols,symbols.Phase.Naming),"Symbol name edit did not settle"):return
+			check(symbols.naming.snapshot.value.words[0]==-1,"Name Clear pointer failed")
+		click_at(name_view.position+Vector2(name_view.size.x-64,30))
+	deadline=Time.get_ticks_msec()+10000
+	while owner.state.phase!=owner.state.Phase.Ready and Time.get_ticks_msec()<deadline:world.poll();await create_timer(0.01).timeout
+	check(owner.state.phase==owner.state.Phase.Ready and not owner.name_panel.visible and owner.panel.visible,"Symbol Done did not restore overview")
+	var output=FileAccess.open(directory+"/nobles-symbol-wire.json",FileAccess.WRITE)
+	output.store_string(JSON.stringify({"artifacts":artifacts,"items":reference.items,"success":not failed,"pointer_workflow":true}));output.close()
+	owner.free();host.free();interaction.free();actions.queue_free();await process_frame
 func check_symbols(revision: int) -> void:
 	var reference: Dictionary=normalize(JSON.parse_string(FileAccess.get_file_as_string(directory+"/nobles-symbol-wire-reference.json")))
 	var intent: Dictionary={"action":C.ManagementAction.NoblesSymbolsRead,"offset":0,"limit":64,"expected_list_revision":revision,"target":reference.target,"expected_candidate_revision":0}
@@ -268,7 +327,8 @@ func run() -> void:
 		var effect=FileAccess.open(directory+"/nobles-commit-wire.json",FileAccess.WRITE)
 		effect.store_string(JSON.stringify({"unit_id":chosen,"entity_id":target.entity_id,"assignment_id":target.assignment_id,"accounting_values":accounting_values,"accounting_restored":original_setting}));effect.close()
 	model.dispose();actions.queue_free();await process_frame
-	if OS.get_environment("DF3D_NOBLES_SYMBOL_WIRE")=="1":await check_symbols(revision)
+	if OS.get_environment("DF3D_NOBLES_SYMBOL_PANEL")=="1":await check_symbol_panel()
+	elif OS.get_environment("DF3D_NOBLES_SYMBOL_WIRE")=="1":await check_symbols(revision)
 	var result=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	result.store_string(JSON.stringify({"controller_ready":true,"closed_read_retired":true,"success":not failed,"rows":rows.size(),"pages":pages,"stale_rejected":true,"empty_end_page":true}));result.close()
 	quit(1 if failed else 0)

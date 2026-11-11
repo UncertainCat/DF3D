@@ -1027,7 +1027,8 @@ Management183 uses `Local\\df3d_management_v183`; rebuild bridge, model and
 extension together. Management182 peers are incompatible. Actions113–117 add
 SymbolsRead, SymbolsApply, SymbolNameRead, SymbolNameEdit and SymbolsContinue
 in the Nobles domain. Apply, Edit and Continue are mutations. The typed runtime
-and extension support all five actions; the panel and artwork remain staged.
+and extension support all five actions. The staged panel supports selection and
+the naming sequence; artwork and full lifecycle acceptance remain incomplete.
 
 Symbol pages bind an existing office, appointment draft/base revision and
 ordered candidate revision. Rows carry native captions, office identities,
@@ -1070,6 +1071,34 @@ bridge and extension builds pass. DF35320 closes unsaved with source preservatio
 native30FPS/headless viewer, sampled GPU60C/11%. Foreign-client, disconnect,
 epoch/unknown faults, word-page continuations and rendered picker/naming remain
 unverified; this does not authorize public screen exposure.
+
+The staged symbol controller owns local checkboxes and paged candidates while
+the parent retains its appointment draft/base. Back/Done submits final states
+once. Naming uses the shared location name view with the native symbol heading,
+revision-bound edits and token-bound Done. Teardown retires callbacks without
+submitting effects. Weak parent references and bound signal methods avoid
+retaining the controller tree.
+
+Protected122535 on2026-11-11 exercises pointer input through the staged owner:
+symbol icon, three checkboxes, Done, first-name Clear, three naming Done clicks
+and return to overview. Native readback confirms the same three artifacts/claims
+and six events as121257. At1200x800, instruction, caption rows, checkboxes and
+Done crops are pixel-identical to native110219. Item artwork is absent and not
+accepted. Naming uses the captured111450 shared layout. Source preservation
+passes and DF38360 closes unsaved; both renderers30FPS, GPU60C/31% sampled.
+Logs classify passed_with_known_issues for documented startup/shutdown signatures
+only. Core19/controller/UI host checks pass in `build/qa/nobles-symbol-panel-final`;
+controller checks cover late replies, retired effects, retained draft receipts
+and no replay after unknown outcomes.
+
+Remaining symbol work includes independent item artwork (weapons require
+artifact_mood, distinct from artifact), native office captions after local
+checkbox changes, header handoff, and retiring an unfinished bridge sequence
+when the panel tears down without disconnecting its shared mailbox. Widths,
+scroll drag, naming search/word/random controls, foreign clients and fault
+outcomes still need composed acceptance. Initial122152 stopped on a test host
+setup error before effects;122258 established pointer effects before the final
+clipping/checkbox/Done geometry corrections. Public exposure remains gated.
 
 ## Management 182 Nobles accounting contract
 

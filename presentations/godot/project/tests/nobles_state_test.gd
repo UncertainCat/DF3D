@@ -13,8 +13,28 @@ func page(ids: Array=[-1],total:=1,offset:=0,revision:=9007199254740993) -> Dict
 func stale() -> Dictionary:
 	return {"status":C.ManagementStatus.Rejected,"nobles":{"outcome":C.NoblesOutcome.Stale,"list_revision":0,"total":0,"offset":0,"rows":[]}}
 func _initialize() -> void:call_deferred("run")
+func symbol_checks(service) -> void:
+	var symbols=preload("res://scripts/nobles_symbols_state.gd").new()
+	symbols.configure(service)
+	var target: Dictionary={"entity_id":7,"position_id":2,"assignment_id":42,"draft_slot":0}
+	var draft: Array=[{"target":target,"expected_unit_id":-1,"unit_id":10}]
+	var payload: Dictionary={"nobles":{"outcome":C.NoblesOutcome.None,"list_revision":123,"candidate_revision":456,"target":target,"total":1,"offset":0,"symbols":[{"item_id":9,"item_type":5,"value":1,"caption":"fixture","office_caption":"","value_caption":""}]}}
+	symbols.open(target,draft,123);var old: int=symbols.ticket
+	symbols.close();service.reply(old,payload)
+	check(symbols.phase==symbols.Phase.Closed and symbols.rows.is_empty(),"Closed symbol picker accepted late page")
+	symbols.open(target,draft,123);service.reply(symbols.ticket,payload);symbols.toggle(9);symbols.dismiss()
+	var apply: int=symbols.ticket;var submitted: int=service.next;symbols.dismiss()
+	check(symbols.phase==symbols.Phase.Applying and service.next==submitted,"Repeated symbol Back submitted twice")
+	check(service.calls[apply].intent.choices==draft and service.calls[apply].intent.expected_candidate_revision==456,"Symbol apply lost appointment draft or candidate receipt")
+	service.reply(apply,{"outcome":"unknown"})
+	symbols.dismiss();check(symbols.phase==symbols.Phase.Unknown and service.next==submitted,"Unknown symbol effects replayed")
+	symbols.close();symbols.open(target,draft,123);service.reply(symbols.ticket,payload);symbols.toggle(9);symbols.dismiss();apply=symbols.ticket
+	symbols.close();service.reply(apply,{"nobles":{"outcome":C.NoblesOutcome.Applied,"step":{"token":1,"naming_artifact_id":10,"remaining":0}}})
+	check(symbols.phase==symbols.Phase.Closed and symbols.step.is_empty(),"Retired apply reopened naming")
+	symbols.configure(null)
 func run() -> void:
 	var service:=Service.new();root.add_child(service);var state:=State.new();state.configure(service);state.open()
+	symbol_checks(service)
 	service.reply(state.ticket,page([-1],2));check(state.phase==State.Phase.Reading and state.rows.is_empty(),"Partial Nobles list exposed")
 	check(service.calls[state.ticket].intent.offset==1 and service.calls[state.ticket].intent.expected_list_revision==9007199254740993,"Continuation lost exact identity")
 	service.reply(state.ticket,page([42],2,1));check(state.phase==State.Phase.Ready and state.rows.size()==2,"NEW and assigned office conflated")

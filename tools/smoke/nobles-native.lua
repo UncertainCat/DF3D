@@ -144,6 +144,16 @@ local result={room_reference=room_reference,caption_reference=caption_reference,
 if os.getenv('DF3D_NOBLES_SYMBOL_ITEM_FACTS')=='1' then
  local item=assert(df.item.find(13147));local material=assert(dfhack.matinfo.decode(item))
  local facts={id=item.id,item_type=item:getType(),material=material:getToken(),color=item:getColorWhetherDyedOrNot(),improvements={}}
+ facts.soft_flags={thread=material.material.flags.THREAD_PLANT,leather=material.material.flags.LEATHER,silk=material.material.flags.SILK,yarn=material.material.flags.YARN}
+ facts.base_tiles={}
+ for _,rva in ipairs{0x2685338,0x2685354}do
+  local tile=df.reinterpret_cast('int32_t',dfhack.internal.getImageBase()+rva).value
+  local source={rva=rva,tile=tile}
+  for _,page in ipairs(df.global.texture.page)do for i,value in ipairs(page.texpos)do
+   if value==tile then source.page=page.token;source.x=i%page.page_dim_x;source.y=i//page.page_dim_x end
+  end end
+  facts.base_tiles[#facts.base_tiles+1]=source
+ end
  for _,entry in ipairs(item.improvements)do
   local mat=assert(dfhack.matinfo.decode(entry.mat_type,entry.mat_index))
   facts.improvements[#facts.improvements+1]={kind=entry:getType(),material=mat:getToken(),decoration=entry:isDecoration(),quality=entry.quality}

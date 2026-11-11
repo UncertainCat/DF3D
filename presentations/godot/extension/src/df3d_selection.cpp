@@ -42,7 +42,7 @@ Ref<Texture2D> Df3dWorld::ammunition_icon(const Dictionary& appearance,int64_t i
 }
 Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,bool genericGroup,int64_t itemId,bool sheet,bool diagonalAmmo) {
     if(!assets_ || itemType<0 || itemType>=int(wm::ItemKind::BoltThrowerParts) ||
-       appearance.size()!=5+int(appearance.has("bedding"))+int(appearance.has("instrument"))+int(appearance.has("slab_engraving"))+int(appearance.has("gem_shape_raw"))+int(appearance.has("contents"))+int(appearance.has("artifact_mood"))+int(appearance.has("floodgate_open"))+int(appearance.has("door"))+int(appearance.has("bucket_liquid"))+int(appearance.has("cage"))+int(appearance.has("restraint"))+int(appearance.has("portrait"))+int(appearance.has("corpse_selector"))+int(appearance.has("legwear_selector")))return {};
+       appearance.size()!=5+int(appearance.has("bedding"))+int(appearance.has("instrument"))+int(appearance.has("slab_engraving"))+int(appearance.has("gem_shape_raw"))+int(appearance.has("contents"))+int(appearance.has("artifact_mood"))+int(appearance.has("floodgate_open"))+int(appearance.has("door"))+int(appearance.has("bucket_liquid"))+int(appearance.has("cage"))+int(appearance.has("restraint"))+int(appearance.has("portrait"))+int(appearance.has("corpse_selector"))+int(appearance.has("legwear_selector"))+int(appearance.has("craft_gem_color")))return {};
     if(itemId < -1 || itemId>INT32_MAX)return {};
     if(appearance.has("legwear_selector")) {
         if(itemType!=60 || appearance["legwear_selector"].get_type()!=Variant::DICTIONARY)return {};
@@ -54,6 +54,12 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
     }
     if(appearance.has("artifact_mood") && (itemType!=24 || appearance["artifact_mood"].get_type()!=Variant::BOOL))return {};
     if(appearance.has("floodgate_open") && (itemType!=7 || appearance["floodgate_open"].get_type()!=Variant::BOOL))return {};
+    std::string craftGemColor;
+    if(appearance.has("craft_gem_color")) {
+        if(itemType<36 || itemType>43 || itemType==39 || appearance["craft_gem_color"].get_type()!=Variant::STRING)return {};
+        const String color=appearance["craft_gem_color"];if(color.utf8().length()>128)return {};
+        craftGemColor=color.utf8().get_data();
+    }
     int8_t bucketLiquid=-1;std::string bucketLiquidColor;
     if(appearance.has("bucket_liquid")) {
         if(itemType!=18 || appearance["bucket_liquid"].get_type()!=Variant::DICTIONARY)return {};
@@ -240,7 +246,7 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
         return {};
     }
     df3d::assets::ItemQuery query;query.kind=wm::ItemKind(itemType+1);query.material=materialToken;
-    query.diagonalAmmo=diagonalAmmo;query.door=door;query.bucketLiquid=bucketLiquid;query.bucketLiquidColor=bucketLiquidColor;
+    query.diagonalAmmo=diagonalAmmo;query.door=door;query.bucketLiquid=bucketLiquid;query.bucketLiquidColor=bucketLiquidColor;query.craftGemColor=craftGemColor;
     if(appearance.has("floodgate_open"))query.floodgateOpen=bool(appearance["floodgate_open"])?1:0;
     if(itemId>=0)query.id=uint32_t(itemId);
     if(contents)query.contents=&*contents;
@@ -277,7 +283,9 @@ Ref<Texture2D> Df3dWorld::itemIcon(int itemType,const Dictionary& appearance,boo
         }
         const bool doorLock=query.door && !query.door->open && query.door->forbidden && assets_->index.tile("ITEM_DOOR_FORBIDDEN");
         // BUCKET cf84c9..cf8633 replaces nonzero-alpha liquid pixels, like BIN.
-        const bool replaceContents=query.kind==wm::ItemKind::Bin || query.kind==wm::ItemKind::Bag || nativeBarrel || (query.kind==wm::ItemKind::Bucket && query.bucketLiquid>=0);
+        // Craft cec52e..cec5d4 likewise copies a nontransparent gem pixel,
+        // including its alpha, instead of blending it over the base material.
+        const bool replaceContents=query.kind==wm::ItemKind::Bin || query.kind==wm::ItemKind::Bag || nativeBarrel || (query.kind==wm::ItemKind::Bucket && query.bucketLiquid>=0) || !query.craftGemColor.empty();
         const int composite=compositeBuildingTile(layers,false,true,false,replaceContents,doorLock);
         const auto* resource=composite>=0?spriteResources_.slots.find(composite):nullptr;
         if(resource)return resource->texture;

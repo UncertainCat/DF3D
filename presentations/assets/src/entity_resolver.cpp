@@ -1139,6 +1139,15 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
     return single((std::string(family) + (cls == MaterialClass::Metal ? "_METAL" : "_WOOD")).c_str(),
                   rule);
   };
+  auto craft = [&](const char* family, const char* rule) -> ItemSprite& {
+    metalOrWood(family,rule);
+    if(!q.craftGemColor.empty()) {
+      const auto color=idx.paletteRow(q.craftGemColor);
+      const auto token=std::string(family)+(cls==MaterialClass::Metal?"_METAL_ENCRUSTED":"_WOOD_ENCRUSTED");
+      if(const auto* overlay=idx.tile(token);overlay && color>=0)r.overlays.push_back({*overlay,color});
+    }
+    return r;
+  };
   auto creature = [&](CreatureState state, const char* rule, const char* why) -> ItemSprite& {
     const std::string_view species = creatureOfToken(q.material);
     if (species.empty()) {
@@ -1430,13 +1439,13 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
       single((std::string("ITEM_BIN_")+(cls==MaterialClass::Metal ? "METAL" : "WOOD")+
           (occupied && r.overlays.empty() ? "_IN_USE" : "_EMPTY")).c_str(),"bin");
       return r;
-    case ItemKind::Figurine: return metalOrWood("ITEM_FIGURINE", "craft.figurine");
-    case ItemKind::Amulet: return metalOrWood("ITEM_AMULET", "craft.amulet");
-    case ItemKind::Scepter: return metalOrWood("ITEM_SCEPTER", "craft.scepter");
-    case ItemKind::Crown: return metalOrWood("ITEM_CROWN", "craft.crown");
-    case ItemKind::Ring: return metalOrWood("ITEM_RING", "craft.ring");
-    case ItemKind::Earring: return metalOrWood("ITEM_EARRING", "craft.earring");
-    case ItemKind::Bracelet: return metalOrWood("ITEM_BRACELET", "craft.bracelet");
+    case ItemKind::Figurine: return craft("ITEM_FIGURINE", "craft.figurine");
+    case ItemKind::Amulet: return craft("ITEM_AMULET", "craft.amulet");
+    case ItemKind::Scepter: return craft("ITEM_SCEPTER", "craft.scepter");
+    case ItemKind::Crown: return craft("ITEM_CROWN", "craft.crown");
+    case ItemKind::Ring: return craft("ITEM_RING", "craft.ring");
+    case ItemKind::Earring: return craft("ITEM_EARRING", "craft.earring");
+    case ItemKind::Bracelet: return craft("ITEM_BRACELET", "craft.bracelet");
     case ItemKind::Totem: return single("ITEM_TOTEM", "craft.totem");
     case ItemKind::Ammo:
       return def(q.diagonalAmmo ? (cls == MaterialClass::Wood ? "DIAGONAL_WOOD" : "DIAGONAL_DEFAULT") :

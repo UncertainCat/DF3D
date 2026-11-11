@@ -28,6 +28,7 @@ Dictionary contentsDictionary(const wm::ItemContainerContentsFacts& contents) {
 Dictionary itemAppearanceDictionary(const wm::ItemInspectionAppearance& a) {
   Dictionary look;
   if(a.slabEngraving!=-2)look["slab_engraving"]=a.slabEngraving;
+  if(a.craftGemColor)look["craft_gem_color"]=String::utf8(a.craftGemColor->c_str());
   if(a.legwearSelector)look["legwear_selector"]=itemRecipeDictionary(*a.legwearSelector);
   if(a.portrait)look["portrait"]=itemRecipeDictionary(*a.portrait);
   if(a.corpseSelector)look["corpse_selector"]=itemRecipeDictionary(*a.corpseSelector);look["material_token"]=String::utf8(a.materialToken.c_str());look["subtype_raw"]=String::utf8(a.subtypeRaw.c_str());look["color_token"]=String::utf8(a.colorToken.c_str());look["stack"]=a.stack;look["flags"]=a.flags;

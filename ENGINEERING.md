@@ -48,8 +48,10 @@ UTF-8 bytes. The model retains an owned optional string. Do not backfill absent
 values from base material or other decorations. Rebuild bridge and viewer
 together before live use; protocol185 peers cannot share the new mailbox.
 Core19 and codec ownership/unknown/empty/type/bounds cases pass in
-`build/qa/craft-gem-contract`. Producer, renderer and protected live acceptance
-of protocol186 remain pending; the currently installed plugin is still185.
+`build/qa/craft-gem-contract`. The bridge populates this field, includes it in
+item/content revisions and serializes it through all shared appearance paths.
+The shared item renderer uses the installed encrustation overlay and native
+nontransparent-pixel replacement semantics. Bridge and viewer are built at186.
 
 `item_craft_native.h` extracts native c811ea..c812e5's encrustation-color
 selection for craft item types36–43 excluding ammunition39. It calls pinned
@@ -58,8 +60,8 @@ native order: first non-glazed COVERED improvement with inorganic IS_GEM
 material, then its solid-state pattern's first descriptor color. A missing or
 invalid color ends selection without trying later gems. No graphics_info or
 native compositor cache is accessed. `item-craft-gem-probe` exposes this reader
-for protected diagnostics; transport and rendered overlay consumption remain
-pending and protocol185 is unchanged.
+for protected diagnostics. Transport and shared rendered overlay consumption
+use the protocol186 field above.
 
 Protected140501 on2026-11-11 confirms symbol item13147 is tiger-hair jewelry
 with17 gemstone decorations. The reader selects rock crystal/CLEAR24; a temporary
@@ -67,8 +69,26 @@ glazed flag on that improvement selects pink jade81, then the flag is restored.
 The bounded fixture is `symbol_reference.encrustation_reference`. DF10848 closes
 unsaved with source preservation, native30FPS, sampled GPU60C/32%/54W. The MSVC
 bridge builds. Native cebf90 uses the selected color for the installed
-ITEM_EARRING_WOOD_ENCRUSTED overlay (ITEM_CRAFTS3,5); the current renderer lacks
-that input. This establishes the missing selector, not a repaired pixel match.
+earring encrustation overlay (ITEM_CRAFTS3,5).
+
+Protected142132 on2026-11-11 verifies protocol186's rendered three-symbol
+assignment/naming flow, three artifacts and six history events. Fourteen of
+the first fifteen item icon crops remain identical to native140501. Item13147
+now differs in40 base-sprite pixels (previously58); full artwork parity remains
+open. Protected142521 confirms its tiger-hair material has none of native's
+THREAD_PLANT, LEATHER, SILK or YARN flags. Native c81020..c8117c consequently
+selects base family0: ITEM_EARRING_METAL, original ITEM_CRAFTS0,5. Only those
+four soft-material flags select family1/ITEM_EARRING_WOOD, cell1,5. The current
+generic metal-versus-other fallback incorrectly selects wood for this item;
+the native base selection still needs to be exposed to the renderer.
+
+Core19, item-sheet state, Nobles state and UI host pass in
+`build/qa/craft-gem-composite`; the MSVC bridge builds. Viewer acceptance is
+passed_with_known_issues (only the three deferred Godot diagnostics). Both
+live runs close their owned DF processes unsaved with source preservation and
+restored preferences; graphical processes are capped at30FPS, sampled GPU
+temperature60–61C. This evidence does not close the remaining Nobles workflow
+or artwork gaps.
 
 
 `item_legwear_native.h` reads native cf24bc..cf24e7's original artwork choice

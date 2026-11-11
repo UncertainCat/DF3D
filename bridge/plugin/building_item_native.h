@@ -409,6 +409,15 @@ inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
     const auto color=item->getType()==df::item_type::BAG && (*nativeColor<0 || *nativeColor>=255)?-1:*nativeColor;
     if(color>=0){auto* descriptor=df::descriptor_color::find(color);if(!descriptor)return std::nullopt;appearance.colorToken=descriptor->id;}
     else if(color!=-1)return std::nullopt;
+    const auto kind=int(item->getType());
+    if(kind>=36 && kind<=43 && kind!=39) {
+        const auto gem=craftGemColor(item);if(!gem)return std::nullopt;
+        appearance.craftGemColor=std::string{};
+        if(*gem>=0) {
+            const auto* descriptor=df::descriptor_color::find(*gem);if(!descriptor)return std::nullopt;
+            appearance.craftGemColor=descriptor->id;
+        }
+    }
     if(item->getType()==df::item_type::PANTS) {
         df3d_appearance::Result recipe;
         const auto tile=legwearOriginalTile(item);

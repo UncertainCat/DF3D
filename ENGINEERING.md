@@ -169,6 +169,30 @@ DF34392 closes unsaved,30FPS, GPU59C/23% sampled.
 transport, portrait/status artwork mapping, demands/mandates, viewer and mutations
 remain unfinished.
 
+Nobles obligation indicators expose native demand/mandate severity separately:
+-1 absent,0 fulfilled demands or export-only mandates, then1/2/3 increasing
+urgency. Native134a920 determines demand fulfillment using an owned unit shell,
+copied demand records and owned zone-pointer vector. Its zone/building/item
+references remain read-only; the audited graph reads room types, constructed
+furniture and item type/subtype/material getters, plus the leaf item-category
+predicateaca720. Container bounds and required references are checked before
+invocation. Neither native menu state nor staged edits are inputs.
+Renderer42845a..4285e4 supplies the pinned inline aggregation: unfulfilled demand
+elapsed counters2500/5000 raise urgency; Make/Guild mandates with less than5000/
+2500 ticks remaining raise urgency. Mandates come from the bound semantic world
+vector, matched to the holder; native signed32-bit subtraction is preserved.
+
+Protected074125 on2026-11-11 checks native indicator tiles for all seven occupied
+rows plus four controlled office-demand cases: fulfilled wildcard furniture,
+unfulfilled drink demand, and elapsed2500/5000 boundaries. All match owned
+results. The temporary demand is removed before leaving the paused clone. Menu,
+RNG and measured lookup caches remain unchanged by provider reads; preceding
+room/caption/gate/candidate checks also pass. Source preservation passes and
+owned DF25416 closes unsaved,30FPS, GPU60C/12% sampled.
+`native_nobles.json.obligation_reference` retains cases and omissions. Mandate
+boundary/mixed-type cases and broader demand room/material combinations remain
+unaccepted; this does not complete the Nobles viewer or mutation workflow.
+
 ## Places native discovery
 
 Places presentation and read transport are staged; public exposure remains hidden. Protected140037 on DF53.16 captures

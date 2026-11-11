@@ -2,6 +2,11 @@
 #include "unit_description_native.h"
 #include "creature_office_native.h"
 #include "df/unitpropertyplacementst.h"
+#include "df/unit_demand.h"
+#include "df/mandate.h"
+#include "df/building_civzonest.h"
+#include "df/building_actual.h"
+#include "df/buildingitemst.h"
 #include "df/administrators_interfacest.h"
 #include "df/noblelistst.h"
 #include "df/appointment_candidatest.h"
@@ -20,6 +25,8 @@ struct Row {
     int32_t unitId=-1,nemesisId=-1,entityId=-1,positionId=-1,assignmentId=-1,value=0;
     std::string positionName,title,squadCaption,holderCaption;
     bool canAppoint=false,hasRoomAssessment=false;
+    // Native severity: -1 absent, 0 fulfilled/export-only, 1 pending, 2 urgent, 3 critical.
+    int32_t demandStatus=-1,mandateStatus=-1;
     // Office, bedroom, dining room, tomb; chests, cabinets, weapon racks, armor stands.
     std::array<int32_t,4> requiredRooms{},actualRooms{},requiredFurniture{},actualFurniture{};
 };
@@ -65,6 +72,7 @@ inline bool ready() {
        !at(&df::global::world->units.active,0x23e50c8) ||
        !at(&df::global::world->nemesis.all,0x23e5178) ||
        !at(&df::global::world->entities.all,0x23d17f8) ||
+       !at(&df::global::world->mandates.all,0x23d17e0) ||
        !at(&df::global::plotinfo->main.fortress_entity,0x239a1e8))return false;
     if(df::global::world->units.all.size()>1048576 || df::global::world->history.figures.size()>1048576)return false;
     static_assert(sizeof(df::noblelistst)==0x30);
@@ -75,6 +83,9 @@ inline bool ready() {
     static const bool pinned=[base] {
         struct Pin {size_t rva,length;uint64_t hash;};
         constexpr Pin pins[]={
+        {0x134a920,0x2ee,UINT64_C(0x95c1b7403988ffe4)},
+        {0xaca720,0x7a,UINT64_C(0x12b032d63e998c99)},
+        {0x42845a,0x18a,UINT64_C(0x1765d28735cd452e)},
         {0x134a5e0,0x246,UINT64_C(0xd73a74b32f6acbe4)},
         {0xba0a0,0xa8,UINT64_C(0xcf6b2a7b534d3331)},
         {0x134c0c0,0x1fc,UINT64_C(0xbc0da304f524beb3)},
@@ -199,6 +210,53 @@ struct RequirementsContext {
         return true;
     }
 };
+// Native134a920 only reads demand fields, owned zones, contained buildings and
+// item type/material getters. Own the unit/demand containers; buildings/items
+// remain read-only simulation references. No menu context is reachable here.
+inline bool obligations(const df::noblelistst& source,Row& row,uint8_t* base) {
+    if(!source.un)return true;
+    if(source.un->status.demands.size()>65536 || source.un->owned_buildings.size()>4096 || df::global::world->mandates.all.size()>1048576)return false;
+    static_assert(offsetof(df::unit,status)+offsetof(df::unit::T_status,demands)==0xaa0);
+    static_assert(offsetof(df::unit_demand,timeout_counter)==0x10);
+    static_assert(offsetof(df::mandate,mode)==8);
+    static_assert(offsetof(df::mandate,timeout_counter)==0x18);
+    static_assert(offsetof(df::mandate,timeout_limit)==0x1c);
+    static_assert(offsetof(df::building_civzonest,contained_buildings)==0x188);
+    static_assert(offsetof(df::building_actual,contained_items)==0x128);
+    struct OwnedUnit final:df::unit {OwnedUnit():df::unit(){}} owned;
+    std::vector<df::unit_demand> demands;demands.reserve(source.un->status.demands.size());
+    for(const auto* demand:source.un->status.demands){if(!demand)return false;demands.push_back(*demand);}
+    for(auto& demand:demands)owned.status.demands.push_back(&demand);
+    owned.owned_buildings=source.un->owned_buildings;
+    for(const auto* zone:owned.owned_buildings) {
+        if(!zone || zone->contained_buildings.size()>65536)return false;
+        for(auto* building:zone->contained_buildings) {
+            if(!building)return false;
+            if(auto* actual=virtual_cast<df::building_actual>(building)) {
+                if(actual->contained_items.size()>65536)return false;
+                for(const auto* entry:actual->contained_items)if(!entry || !entry->item)return false;
+            }
+        }
+    }
+    for(size_t i=0;i<demands.size();++i) {
+        const bool fulfilled=reinterpret_cast<bool(*)(df::unit*,int32_t)>(base+0x134a920)(&owned,static_cast<int32_t>(i));
+        const int32_t severity=fulfilled?0:demands[i].timeout_counter>=5000?3:demands[i].timeout_counter>=2500?2:1;
+        row.demandStatus=std::max(row.demandStatus,severity);
+    }
+    // Renderer42853b aggregates mandates inline; there is no helper call.
+    for(const auto* mandate:df::global::world->mandates.all) {
+        if(!mandate)return false;
+        if(mandate->unit!=source.un)continue;
+        int32_t severity=0;
+        if(mandate->mode==df::mandate_type::Make || mandate->mode==df::mandate_type::Guild) {
+            // Match the native signed 32-bit subtraction, including wraparound.
+            const auto remaining=static_cast<int32_t>(static_cast<uint32_t>(mandate->timeout_limit)-static_cast<uint32_t>(mandate->timeout_counter));
+            severity=remaining<2500?3:remaining<5000?2:1;
+        }
+        row.mandateStatus=std::max(row.mandateStatus,severity);
+    }
+    return true;
+}
 inline std::optional<std::vector<Row>> overview() {
     if(!ready())return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
@@ -215,7 +273,7 @@ inline std::optional<std::vector<Row>> overview() {
         Row row;row.canAppoint=*available;row.unitId=source->un?source->un->id:-1;row.nemesisId=source->nem?source->nem->id:-1;
         row.entityId=source->enid;row.positionId=source->ep->id;row.assignmentId=source->epp?source->epp->id:-1;
         row.value=source->value;row.positionName=source->ep->name[0];
-        if(!captions(*source,row,base) || !requirements.assess(*source,row,base))return std::nullopt;
+        if(!captions(*source,row,base) || !requirements.assess(*source,row,base) || !obligations(*source,row,base))return std::nullopt;
         result.push_back(std::move(row));
     }
     return result;

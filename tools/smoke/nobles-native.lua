@@ -116,9 +116,11 @@ for index,owned in ipairs(warm)do
    if actual[k]<furniture[k] then furniture_state=math.max(furniture_state,actual[k]<=0 and 2 or 1)end
   end
   native_icon(0x26502b8+(furniture_state==2 and 1 or furniture_state==1 and 2 or 0)*0x30,88,13+(index-1)*3)
-  room_reference[#room_reference+1]={unit_id=owned.unit_id,room_states=states,furniture_state=furniture_state,required_rooms=requirements,actual_rooms=owned.actual_rooms,required_furniture=furniture,actual_furniture=actual}
+  native_icon(0x26500d8+(owned.demand_status+1)*0x30,94,13+(index-1)*3)
+  native_icon(0x26501c8+(owned.mandate_status+1)*0x30,98,13+(index-1)*3)
+  room_reference[#room_reference+1]={unit_id=owned.unit_id,demand_status=owned.demand_status,mandate_status=owned.mandate_status,room_states=states,furniture_state=furniture_state,required_rooms=requirements,actual_rooms=owned.actual_rooms,required_furniture=furniture,actual_furniture=actual}
  end
- for _,field in ipairs{'has_room_assessment','required_rooms','actual_rooms','required_furniture','actual_furniture'}do rows[index][field]=owned[field]end
+ for _,field in ipairs{'demand_status','mandate_status','has_room_assessment','required_rooms','actual_rooms','required_furniture','actual_furniture'}do rows[index][field]=owned[field]end
 end
 local caption_reference={}
 local function cells(x,y,count)
@@ -140,6 +142,22 @@ end
 assert(json.encode(cold)==json.encode(rows) and json.encode(warm)==json.encode(rows),'Owned Nobles overview differs from native order/identities')
 local result={room_reference=room_reference,caption_reference=caption_reference,owned={cold=cold,warm=warm,menu_preserved=true,rng_preserved=true},dimensions={g.dimx,g.dimy},rows=rows,lines=lines(),scroll=menu.scroll_position_noblelist,choosing_candidate=menu.choosing_candidate,assigning_symbol=menu.assigning_symbol}
 write('nobles-native.json',json.encode(result));capture('nobles-overview')
+-- Controlled semantic cases in the paused unsaved clone. Native renders the
+-- changed demand; the owned provider must agree with every indicator tile.
+local demand_target=menu.noblelist[1].un
+assert(demand_target and #demand_target.status.demands==0,'Demand fixture needs the mayor without existing demands')
+local demand=df.unit_demand:new();demand.overtype=df.demand_type.ROOM_ITEM;demand.place=df.demand_room.Office
+ demand.item_subtype=-1;demand.mat_type=-1;demand.mat_index=-1;demand.timeout_limit=10000
+ demand_target.status.demands:insert('#',demand)
+result.demand_cases={}
+for _,case in ipairs{{-1,0,0},{df.item_type.DRINK,0,1},{df.item_type.DRINK,2500,2},{df.item_type.DRINK,5000,3}}do
+ demand.item_type=case[1];demand.timeout_counter=case[2];settle()
+ local owned=probe();assert(owned[2].demand_status==case[3],'Controlled demand status differs')
+ native_icon(0x26500d8+(owned[2].demand_status+1)*0x30,94,16)
+ result.demand_cases[#result.demand_cases+1]={item_type=case[1],elapsed=case[2],status=owned[2].demand_status,native_icon_match=true}
+end
+demand_target.status.demands:erase(#demand_target.status.demands-1);demand:delete();settle()
+write('nobles-native.json',json.encode(result))
 local _,menu_address=df.sizeof(menu);result.menu_rva=menu_address-dfhack.internal.getImageBase()
 result.field_rvas={}
 for _,field in ipairs{'noblelist','candidate','choosing_candidate','candidate_noblelist_ind'}do

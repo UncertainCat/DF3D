@@ -2631,5 +2631,81 @@
       "The fixture has no intermediate furniture deficit without a missing furniture category.",
       "No Nobles viewer or appointment mutation is exposed."
     ]
+  },
+  "obligation_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-074125",
+    "df_version": "53.16",
+    "rows": [
+      {
+        "unit_id": 5981,
+        "demand_status": -1,
+        "mandate_status": 1
+      },
+      {
+        "unit_id": 5813,
+        "demand_status": -1,
+        "mandate_status": 1
+      },
+      {
+        "unit_id": 5813,
+        "demand_status": -1,
+        "mandate_status": 1
+      },
+      {
+        "unit_id": 6812,
+        "demand_status": -1,
+        "mandate_status": -1
+      },
+      {
+        "unit_id": 6815,
+        "demand_status": -1,
+        "mandate_status": -1
+      },
+      {
+        "unit_id": 1017,
+        "demand_status": -1,
+        "mandate_status": -1
+      },
+      {
+        "unit_id": 5984,
+        "demand_status": -1,
+        "mandate_status": -1
+      }
+    ],
+    "demand_cases": [
+      {
+        "elapsed": 0,
+        "item_type": -1,
+        "native_icon_match": true,
+        "status": 0
+      },
+      {
+        "elapsed": 0,
+        "item_type": 69,
+        "native_icon_match": true,
+        "status": 1
+      },
+      {
+        "elapsed": 2500,
+        "item_type": 69,
+        "native_icon_match": true,
+        "status": 2
+      },
+      {
+        "elapsed": 5000,
+        "item_type": 69,
+        "native_icon_match": true,
+        "status": 3
+      }
+    ],
+    "native_indicator_tiles_match": true,
+    "menu_rng_lookup_caches_preserved": true,
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "Mandate timing boundaries and mixed mandate types are not independently exercised.",
+      "Demand fulfillment is checked for the controlled office case, not every room and material combination.",
+      "No Nobles viewer or mutation route is exposed."
+    ]
   }
 }

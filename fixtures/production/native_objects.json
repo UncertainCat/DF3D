@@ -242,7 +242,7 @@
           "y": 10
         },
         {
-          "text": "             Merig Torir                                                  Rîsen Whippedtunnel's family heirloom",
+          "text": "             Merig Torir                                                  R\u00eesen Whippedtunnel's family heirloom",
           "y": 13
         },
         {
@@ -250,7 +250,7 @@
           "y": 14
         },
         {
-          "text": "             Kebul Kälán                                                  Rîsen Whippedtunnel's family heirloom                     Elevation 36",
+          "text": "             Kebul K\u00e4l\u00e1n                                                  R\u00eesen Whippedtunnel's family heirloom                     Elevation 36",
           "y": 16
         },
         {
@@ -392,7 +392,7 @@
           "y": 10
         },
         {
-          "text": "             Nêcikisan                                                    Meng Teststaves's family heirloom",
+          "text": "             N\u00eacikisan                                                    Meng Teststaves's family heirloom",
           "y": 13
         },
         {
@@ -400,7 +400,7 @@
           "y": 14
         },
         {
-          "text": "             Izeglîlar                                                    Feb Ageswhip's family heirloom                            Elevation 36",
+          "text": "             Izegl\u00eelar                                                    Feb Ageswhip's family heirloom                            Elevation 36",
           "y": 16
         },
         {
@@ -546,7 +546,7 @@
         {
           "artifact_id": 62,
           "item_id": 62,
-          "native_name": "Kebul Kälán",
+          "native_name": "Kebul K\u00e4l\u00e1n",
           "translated_name": "\"The Sparkles of Trailing\""
         },
         {
@@ -603,13 +603,13 @@
         {
           "artifact_id": 196,
           "item_id": 196,
-          "native_name": "Nêcikisan",
+          "native_name": "N\u00eacikisan",
           "translated_name": "\"Singedstill\""
         },
         {
           "artifact_id": 259,
           "item_id": 33758,
-          "native_name": "Izeglîlar",
+          "native_name": "Izegl\u00eelar",
           "translated_name": "\"Apespatterned\""
         }
       ],
@@ -687,5 +687,180 @@
       "Unclipped name formatting verified on23 rows; narrow-width truncation remains presentation work.",
       "Symbols category empty; ownership captions and actions are separate."
     ]
+  },
+  "ownership_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-151909",
+    "rows": [
+      [
+        {
+          "artifact_id": 20,
+          "item_id": 20,
+          "native_name": "Merig Torir",
+          "ownership": "R\u00eesen Whippedtunnel's family heirloom",
+          "translated_name": "\"The Clarity of Voids\""
+        },
+        {
+          "artifact_id": 62,
+          "item_id": 62,
+          "native_name": "Kebul K\u00e4l\u00e1n",
+          "ownership": "R\u00eesen Whippedtunnel's family heirloom",
+          "translated_name": "\"The Sparkles of Trailing\""
+        },
+        {
+          "artifact_id": 219,
+          "item_id": 219,
+          "native_name": "Betantilesh Sedurthokit",
+          "ownership": "Meng Teststaves's family heirloom",
+          "translated_name": "\"Calmtrussed the Emerald Affliction\""
+        },
+        {
+          "artifact_id": 240,
+          "item_id": 240,
+          "native_name": "Mirstalsanreb Imkethsosh",
+          "ownership": "Meng Teststaves's family heirloom",
+          "translated_name": "\"Velvetyown the Just Sandal\""
+        },
+        {
+          "artifact_id": 252,
+          "item_id": 8201,
+          "native_name": "Cilobireg Lelum Thad",
+          "ownership": "Treasure of The Rough Crystal",
+          "translated_name": "\"Roofflush the Wane of Crowding\""
+        },
+        {
+          "artifact_id": 253,
+          "item_id": 9035,
+          "native_name": "Kulin Odur",
+          "ownership": "Treasure of The Rough Crystal",
+          "translated_name": "\"The Palm of Roots\""
+        },
+        {
+          "artifact_id": 254,
+          "item_id": 13105,
+          "native_name": "Gongithosal",
+          "ownership": "Zon Portalarch's family heirloom",
+          "translated_name": "\"Squidsong\""
+        },
+        {
+          "artifact_id": 255,
+          "item_id": 27491,
+          "native_name": "Enkoserib",
+          "ownership": "Feb Ageswhip's family heirloom",
+          "translated_name": "\"Takegorges\""
+        },
+        {
+          "artifact_id": 256,
+          "item_id": 31264,
+          "native_name": "Rinulshem",
+          "ownership": "Treasure of The Rough Crystal",
+          "translated_name": "\"The Intense Plank\""
+        },
+        {
+          "artifact_id": 260,
+          "item_id": 48318,
+          "native_name": "Koresis",
+          "ownership": "Treasure of The Rough Crystal",
+          "translated_name": "\"Caverntrots\""
+        }
+      ],
+      [],
+      [
+        {
+          "artifact_id": 196,
+          "item_id": 196,
+          "native_name": "N\u00eacikisan",
+          "ownership": "Meng Teststaves's family heirloom",
+          "translated_name": "\"Singedstill\""
+        },
+        {
+          "artifact_id": 259,
+          "item_id": 33758,
+          "native_name": "Izegl\u00eelar",
+          "ownership": "Feb Ageswhip's family heirloom",
+          "translated_name": "\"Apespatterned\""
+        }
+      ],
+      [
+        {
+          "artifact_id": 41,
+          "item_id": 41,
+          "native_name": "Unknown Lever",
+          "ownership": "",
+          "translated_name": "\"Unknown Lever\""
+        },
+        {
+          "artifact_id": 45,
+          "item_id": 45,
+          "native_name": "Do We Understand The Lever?",
+          "ownership": "",
+          "translated_name": "\"Do We Understand The Lever?\""
+        },
+        {
+          "artifact_id": 64,
+          "item_id": 64,
+          "native_name": "The Lever Explained",
+          "ownership": "",
+          "translated_name": "\"The Lever Explained\""
+        },
+        {
+          "artifact_id": 89,
+          "item_id": 89,
+          "native_name": "Introduction To Thur Thronepleated",
+          "ownership": "",
+          "translated_name": "\"Introduction To Thur Thronepleated\""
+        },
+        {
+          "artifact_id": 110,
+          "item_id": 110,
+          "native_name": "The Denial: Problems And Solutions",
+          "ownership": "",
+          "translated_name": "\"The Denial: Problems And Solutions\""
+        },
+        {
+          "artifact_id": 174,
+          "item_id": 174,
+          "native_name": "The Humans For Everyone",
+          "ownership": "",
+          "translated_name": "\"The Humans For Everyone\""
+        },
+        {
+          "artifact_id": 185,
+          "item_id": 185,
+          "native_name": "Uncanny Conversations",
+          "ownership": "",
+          "translated_name": "\"Uncanny Conversations\""
+        },
+        {
+          "artifact_id": 236,
+          "item_id": 236,
+          "native_name": "Give Me Sources",
+          "ownership": "",
+          "translated_name": "\"Give Me Sources\""
+        },
+        {
+          "artifact_id": 238,
+          "item_id": 238,
+          "native_name": "Victory By The Dwarf",
+          "ownership": "",
+          "translated_name": "\"Victory By The Dwarf\""
+        },
+        {
+          "artifact_id": 257,
+          "item_id": 37251,
+          "native_name": "The Study Of The Moving Sun",
+          "ownership": "",
+          "translated_name": "\"The Study Of The Moving Sun\""
+        },
+        {
+          "artifact_id": 258,
+          "item_id": 37266,
+          "native_name": "The Moon And Other Topics",
+          "ownership": "",
+          "translated_name": "\"The Moon And Other Topics\""
+        }
+      ]
+    ],
+    "matches_native_visible_text": true,
+    "limits": "Current fixture covers fortress treasure and family heirlooms. Symbols is empty; civilization, individual and office-symbol claim captions still need populated live coverage. Captions are returned without width clipping."
   }
 }

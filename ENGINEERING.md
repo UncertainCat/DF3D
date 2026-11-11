@@ -70,10 +70,23 @@ restored preferences; native30FPS, sampled GPU55C/41%/52W. Core19 passes
 `build/qa/objects-native-names`; the MSVC bridge builds. The diagnostic is
 `objects-names-probe`; no protocol or public UI change is made.
 
-Objects remains unexposed and unfinished. Next are native ownership captions
-and item action targets, typed transport and the rendered four-tab panel.
-Renderer39faf0's inline ownership branch3a0cc2..3a147e handles fortress/civilization
-claims and family heirlooms; do not replace it with a generic owner label.
+`objects_native.h::ownership` adapts renderer39faf0's inline branch3a0cc2..3a147e:
+fortress claims precede civilization claims (only after king arrival), followed
+by residents' personal and family claims. Native helpers supply entity names,
+office titles and historical names; formatting context and the assignment whose
+position-index cache may change are owned copies. Native caption literals and
+the inline branch are pinned. The runtime never calls the renderer or borrows
+menu scratch. `objects-ownership-probe` exposes full, unclipped captions.
+Protected151909 on2026-11-11 matches the populated fortress-treasure and family
+heirloom captions against native screen text across all four tabs. Menu/vector
+backing and primary RNG guards pass. Owned DF45144 closes unsaved with source
+preservation and restored preferences; native30FPS, sampled GPU57C/42%/56W.
+Core19 passes `build/qa/objects-native-ownership`; the MSVC bridge builds.
+`native_objects.json.ownership_reference` records the bounded evidence.
+Civilization, individual and office-symbol claims still need populated coverage.
+
+Objects remains unexposed and unfinished. Next are native item action targets,
+typed transport and the rendered four-tab panel.
 Input handler39f150 contains the item view/recenter dispatch. Populated Symbols, scrolling, inputs and lifecycle still need acceptance.
 The current reference includes native blank artwork for two written objects;
 do not infer replacement artwork from the fixture alone.

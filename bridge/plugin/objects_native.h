@@ -4,6 +4,17 @@
 #include "df/item.h"
 #include "df/plotinfost.h"
 #include "df/world.h"
+#include "df/artifact_claim.h"
+#include "df/entity_position_assignment.h"
+#include "df/entity_position.h"
+#include "df/historical_entity.h"
+#include "df/historical_figure.h"
+#include "df/historical_figure_info.h"
+#include "df/historical_figure_relationships.h"
+#include "df/relationship_profile_artifactst.h"
+#include "df/nemesis_record.h"
+#include "df/familyst.h"
+#include "df/family_artifact_claimst.h"
 #include <array>
 #include <optional>
 #include <unordered_set>
@@ -12,6 +23,101 @@
 namespace df3d_objects {
 using Lists=std::array<std::vector<int32_t>,4>;
 struct Names {int32_t artifactId=-1,itemId=-1;std::string nativeName,translatedName;};
+// Native renderer3a0cc2..3a147e has no standalone caption helper. Preserve its
+// claim precedence here, calling native lookup/title/history formatters with
+// owned formatting scratch. Never invoke the renderer or inspect its menu.
+inline std::optional<std::string> ownership(int32_t id) {
+    auto* world=df::global::world;auto* plot=df::global::plotinfo;
+    if(!world || !plot || !plot->main.fortress_entity || !df::artifact_record::find(id))return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    const auto at=[base](const void* p,size_t rva){return reinterpret_cast<const uint8_t*>(p)==base+rva;};
+    if(!at(&plot->king_arrived,0x23912da) || !at(&plot->civ_id,0x2393670) ||
+       !at(&plot->main.fortress_entity,0x239a1e8) || !at(&world->family_info.family,0x2506068) ||
+       !at(&world->history,0x24f9cb8))return std::nullopt;
+    static const bool pinned=[base] {
+        struct Pin {size_t at,length;uint64_t expected;};
+        constexpr Pin pins[]={
+            {0x3a0cc2,0x7bc,UINT64_C(0x9ebb33b65430ce65)},
+            {0xb9dc0,0xa7,UINT64_C(0x4d8961b901732215)},
+            {0xbbe40,0xad,UINT64_C(0x062a266340f9bf38)},
+            {0x99a3c0,0x113,UINT64_C(0x14b5664261afc791)},
+            {0xb92900,0x178,UINT64_C(0x7485ca6699669626)},
+            {0xb92f10,0xa17,UINT64_C(0x07701ee83ad6d384)},
+            {0x72080,0xed,UINT64_C(0xe0cf31f3be155555)},
+        };
+        for(const auto& pin:pins){uint64_t hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin.length;++i){hash^=base[pin.at+i];hash*=UINT64_C(1099511628211);}
+            if(hash!=pin.expected)return false;}
+        return true;
+    }();
+    if(!pinned)return std::nullopt;
+    static_assert(offsetof(df::historical_entity,artifact_claims)==0x1318);
+    static_assert(offsetof(df::historical_entity,nemesis)==0x1450);
+    static_assert(offsetof(df::historical_figure,info)==0x130);
+    static_assert(offsetof(df::historical_figure,family_head_id)==0xc0);
+    static_assert(offsetof(df::historical_figure,id)==0xe0);
+    static_assert(offsetof(df::historical_figure_info,relationships)==0x60);
+    static_assert(offsetof(df::historical_figure_relationships,artifact_claims)==0x60);
+    const auto literal=[base](size_t rva){return reinterpret_cast<const char*>(base+rva);};
+    const auto prefix=[&](int32_t type)->const char* {
+        switch(type){case 0:return literal(0x162bf70);case 1:return literal(0x162bfc8);
+            case 2:return literal(0x162bfb8);case 3:return literal(0x162bff0);default:return nullptr;}
+    };
+    using Lookup=void*(*)(int32_t,const void*);
+    const auto lookup=reinterpret_cast<Lookup>(base+0xb9dc0);
+    std::string text;
+    const auto entityCaption=[&](df::historical_entity* entity) {
+        if(!entity)return;
+        auto* claim=static_cast<df::artifact_claim*>(lookup(id,&entity->artifact_claims));
+        if(!claim || claim->renounce_event!=-1)return;
+        const auto* start=prefix(int32_t(claim->claim_type));if(!start)return;text=start;
+        if(int32_t(claim->claim_type)==0){
+            auto* assignment=static_cast<df::entity_position_assignment*>(lookup(claim->symbol_claim_id,&entity->positions.assignments));
+            if(assignment){
+                auto owned=*assignment; // bbe40 updates the position-index cache.
+                using Position=df::entity_position*(*)(df::historical_entity*,df::entity_position_assignment*);
+                if(auto* position=reinterpret_cast<Position>(base+0xbbe40)(entity,&owned)){
+                    using Title=const std::string*(*)(df::entity_position*,int8_t,bool,bool);
+                    text=*reinterpret_cast<Title>(base+0x99a3c0)(position,-1,false,false);return;
+                }
+            }
+        }
+        // b92900 ignores its first argument and appends the semantic entity name.
+        reinterpret_cast<void(*)(void*,std::string*,int32_t,int32_t)>(base+0xb92900)(nullptr,&text,entity->id,0);
+    };
+    const auto figureName=[&](int32_t figureId) {
+        alignas(8) std::array<uint8_t,0xc8> context{};
+        reinterpret_cast<void(*)(void*)>(base+0x72080)(context.data());
+        using Name=void(*)(void*,std::string*,int32_t,void*,int16_t,int16_t);
+        reinterpret_cast<Name>(base+0xb92f10)(&world->history,&text,figureId,context.data(),2,1);
+    };
+    entityCaption(plot->main.fortress_entity);
+    if(text.empty() && plot->king_arrived)entityCaption(df::historical_entity::find(plot->civ_id));
+    if(text.empty())for(const auto* resident:plot->main.fortress_entity->nemesis){
+        auto* figure=resident?resident->figure:nullptr;
+        if(!figure || !figure->info || !figure->info->relationships)continue;
+        for(const auto* claim:figure->info->relationships->artifact_claims){
+            if(!claim || claim->artifact_id!=id || claim->renounce_event!=-1)continue;
+            if(int32_t(claim->type)==1 || int32_t(claim->type)==2){text=prefix(int32_t(claim->type));figureName(figure->id);}
+            break;
+        }
+        if(!text.empty())break;
+        if(figure->family_head_id==-1)continue;
+        auto* family=static_cast<df::familyst*>(lookup(figure->family_head_id,&world->family_info.family));
+        if(!family)continue;
+        for(const auto* claim:family->claims){
+            if(!claim || claim->artifact!=id || claim->renounced_heid!=-1)continue;
+            if(df::historical_figure::find(figure->family_head_id) &&
+               (int32_t(claim->type)==1 || int32_t(claim->type)==2)){
+                figureName(figure->id);text+=literal(int32_t(claim->type)==1?0x162bfd8:0x162be80);
+            }
+            break;
+        }
+        if(!text.empty())break;
+    }
+    if(text.size()>16384)return std::nullopt;
+    return text;
+}
 // Renderer3a06ca/3a083a formats both names using a94030/a946e0. Copy the
 // semantic name before calling DF, and leave width-dependent clipping to UI.
 inline std::optional<Names> names(int32_t id) {

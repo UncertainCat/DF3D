@@ -44,12 +44,13 @@ local function probe(command)
 end
 local cold=probe()
 local native_names=probe('objects-names-probe')
+local ownership=probe('objects-ownership-probe')
 gui.simulateInput(view,'D_NOBLES');settle();click(310,100)
 local info=df.global.game.main_interface.info
 assert(info.open and info.current_mode==df.info_interface_mode_type.ARTIFACTS,'Objects header failed')
 local menu=info.artifacts
 local size,address=df.sizeof(menu)
-local result={native_names=native_names,owned_cold=cold,owned_warm=probe(),mode=menu.mode,menu_rva=address-dfhack.internal.getImageBase(),menu_size=size,lists={},lines=lines()}
+local result={ownership=ownership,native_names=native_names,owned_cold=cold,owned_warm=probe(),mode=menu.mode,menu_rva=address-dfhack.internal.getImageBase(),menu_size=size,lists={},lines=lines()}
 for mode=0,3 do
  local rows={}
  for _,artifact in ipairs(menu.list[mode])do
@@ -71,6 +72,8 @@ for mode,x in ipairs{90,184,296,443}do
    local name_line=screen[14+(index-1)*3].text;local translated_line=screen[15+(index-1)*3].text
    assert(name_line:find(row.native_name,1,true),'Native Objects name differs: '..row.native_name)
    assert(translated_line:find(row.translated_name,1,true),'Native Objects translated name differs: '..row.translated_name)
+   local caption=ownership[mode][index].ownership
+   assert(name_line:find(caption,1,true),'Native Objects ownership differs: '..caption)
   end
  end
  result.tabs[#result.tabs+1]={mode=menu.mode,lines=screen};capture('objects-tab-'..tostring(mode-1))

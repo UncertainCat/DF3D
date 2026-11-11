@@ -3,6 +3,20 @@
 local out,view,records=...
 local gui=require('gui');local script=require('gui.script');local json=require('json')
 local g=df.global.gps;local base=dfhack.internal.getImageBase()
+local function bytes(address,size)
+ local chars={};for offset=0,size-1 do chars[#chars+1]=string.char(df.reinterpret_cast('uint8_t',address+offset).value)end
+ return table.concat(chars)
+end
+local function probe()
+ local menu=df.global.game.main_interface.info.justice;local size,address=df.sizeof(menu)
+ local before=bytes(address,size);local rng=bytes(base+0x234e990,0x6180);local crimes={}
+ for _,crime in ipairs(df.global.world.crimes.all)do local n,p=df.sizeof(crime);crimes[#crimes+1]={p=p,n=n,before=bytes(p,n)}end
+ local text,rc=dfhack.run_command_silent('df3d','justice-captions-probe');assert(rc==0,'Justice captions provider failed: '..text)
+ assert(bytes(address,size)==before,'Justice caption provider changed menu')
+ assert(bytes(base+0x234e990,0x6180)==rng,'Justice caption provider advanced randomness')
+ for _,crime in ipairs(crimes)do assert(bytes(crime.p,crime.n)==crime.before,'Justice caption provider changed crime')end
+ return json.decode(text)
+end
 local function write(name,value)local f=assert(io.open(out..'/'..name,'w'));f:write(value);f:close()end
 local function settle()for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())end
 local function lines()
@@ -50,6 +64,7 @@ local function callbacks(vector)
  return result
 end
 local result={tabs={},crimes={}}
+if os.getenv('DF3D_JUSTICE_CAPTIONS')=='1' then result.cold_captions=probe()end
 for _,crime in ipairs(df.global.world.crimes.all)do
  result.crimes[#result.crimes+1]={id=crime.id,mode=crime.mode,site=crime.site,entity=crime.entity,criminal=crime.criminal,accused=crime.accused,victim=crime.victim,flags=crime.flags.whole,event_year=crime.event_year,event_time=crime.event_time,discovered_year=crime.discovered_year,discovered_time=crime.discovered_time}
 end
@@ -80,6 +95,58 @@ for index,caption in ipairs{'Open cases','Closed cases','Cold cases','Fortress g
  result.tabs[#result.tabs+1]=observed
  assert(loadfile(source))(out..'/justice-widgets-'..(index-1)..'.json','templates')
  write('justice-native.json',json.encode(result));capture('justice-tab-'..(index-1))
+end
+if os.getenv('DF3D_JUSTICE_CAPTIONS')=='1' then
+ caption_click('Open cases')
+ local target
+ local function find_target(widget)
+  local _,address=df.sizeof(widget.custom_activated);local first=df.reinterpret_cast('uint64_t',address).value;local last=df.reinterpret_cast('uint64_t',address+8).value
+  for at=first,last-1,64 do
+   local context=df.reinterpret_cast('uint64_t',at+56).value
+   if context~=0 then
+    local vt=df.reinterpret_cast('uint64_t',context).value
+    if df.reinterpret_cast('uint64_t',vt+16).value-base==0x486d70 then target=df.reinterpret_cast(df.crime,df.reinterpret_cast('uint64_t',context+24).value)end
+   end
+  end
+  if df.widget_container:is_instance(widget)then for index,child in ipairs(dfhack.gui.getWidgetChildren(widget))do if not df.widget_tabs:is_instance(widget)or index-1==widget.cur_idx then find_target(child)end end end
+ end
+ find_target(info.justice);assert(target and df.crime.find(target.id)==target,'Native selected case missing')
+ local function native_captions()
+  local values={}
+  local function text(widget)
+   if df.widget_text:is_instance(widget)and widget.name=='Text' then values[#values+1]=dfhack.df2utf(widget.str)end
+   if df.widget_container:is_instance(widget)then for _,child in ipairs(dfhack.gui.getWidgetChildren(widget))do text(child)end end
+  end
+  local function find(widget)
+   if widget.name=='Cases' then
+    -- Native1416040 counts shared row widgets at Cases+2c0/+2c8 and
+    -- appends through its embedded container at+160. DFHack does
+    -- not expose this concrete widget type. Oracle-only bounded traversal.
+    local _,address=df.sizeof(widget)
+    local first=df.reinterpret_cast('uint64_t',address+0x2c0).value;local last=df.reinterpret_cast('uint64_t',address+0x2c8).value
+    assert(last>=first and (last-first)%16==0 and last-first<=16384,'Invalid native case rows')
+    for at=first,last-1,16 do text(df.reinterpret_cast(df.widget,df.reinterpret_cast('uint64_t',at).value))end
+   elseif df.widget_container:is_instance(widget)then
+    for index,child in ipairs(dfhack.gui.getWidgetChildren(widget))do if not df.widget_tabs:is_instance(widget)or index-1==widget.cur_idx then find(child)end end
+   end
+  end
+  find(info.justice);return values
+ end
+ local old=target.mode;local samples={}
+ local ok,err=xpcall(function()
+  for mode=0,18 do
+   gui.simulateInput(view,'LEAVESCREEN');settle();target.mode=mode
+   local supplied
+   for _,row in ipairs(probe())do if row.id==target.id then supplied=row.caption;break end end
+   gui.simulateInput(view,'D_JUSTICE');settle()
+   local native=native_captions();local found=false
+   for _,caption in ipairs(native)do if caption==supplied then found=true end end
+   samples[#samples+1]={mode=mode,provider=supplied,native=native}
+   write('justice-captions.json',json.encode{crime_id=target.id,cases=samples})
+   assert(found and supplied~='','Justice native caption differs for mode '..mode)
+  end
+ end,debug.traceback)
+ target.mode=old;assert(ok,err)
 end
 gui.simulateInput(view,'LEAVESCREEN');settle();assert(not info.open,'Justice did not close')
 records[#records+1]={name='justice-discovery',closed=true}

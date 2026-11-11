@@ -117,6 +117,7 @@
 #include "tasks_native.h"
 #include "places_native.h"
 #include "objects_native.h"
+#include "justice_native.h"
 #include "nobles_native.h"
 #include "nobles_draft_native.h"
 #include "nobles_symbols_native.h"
@@ -2731,6 +2732,17 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             }
           }result.append(rows);}
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
+        }
+        if(parameters[0]=="justice-captions-probe") {
+          if(parameters.size()!=1)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          Json::Value rows(Json::arrayValue);
+          for(const auto* crime:df::global::world->crimes.all) {
+            const auto caption=df3d_justice::caption(crime);if(!caption)return CR_FAILURE;
+            Json::Value row(Json::objectValue);row["id"]=crime->id;
+            row["mode"]=int(crime->mode);row["caption"]=DF2UTF(*caption);rows.append(row);
+          }
+          out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),rows));return CR_OK;
         }
         if(parameters[0]=="objects-lists-probe") {
           if(parameters.size()!=1)return CR_WRONG_USAGE;

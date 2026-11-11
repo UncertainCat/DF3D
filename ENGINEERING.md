@@ -6,6 +6,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
+| Justice's conspiracy case title says “Conspiracy to alow labor”. | No correction approved or implemented; preserve the native title. | Protected174105 on2026-11-11 changes one owned test case through all19 crime types and compares the native case widget text with formatter46d660. Type3 matches this spelling in both. `native_justice.json.caption_reference`. |
 | Places hospital patient count overwrites assigned-staff count on the same line, leaving trailing characters. | No correction approved; retain both captions and native overlay order. | Protected144436/144602 on DF53.16:4 assigned plus1 patient renders1 patientd. Renderer39d76c/39da5d uses the same coordinates without clearing. `native_places.json.hospital_queue_reference`. Viewer implementation remains pending. |
 | Skin item composition repeats the first pattern color for the overlay instead of using the second. | No correction approved or implemented; preserve native packing. | Native c7f1d9 copies the first packed color before shifting it into the second byte. Protected104608 on2026-11-10 uses existing STRIPES_ORANGE_BLACK on a controlled skin-material fixture and produces ORANGE palette row73 on both layers, with a pixel-identical viewer panel. `native_stocks.json.corpse_item_description_reference.skin_selector_reference`. |
 | Stocks Recenter tooltip says "recenter the view on the time" instead of "item". | No correction approved or implemented; preserve the native wording. | Protected232831 pointer instruction205 and rendered text cells confirm the typo. `native_stocks.json.hover_reference`; the viewer uses those verbatim lines. Native overlay PNG capture is not accepted because the screenshot handshake loses the hover overlay. |
@@ -39,7 +40,32 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
-Justice remains unimplemented and gated. Protected173422 on2026-11-11 captures
+The first owned Justice helper is `df3d_justice::caption` in
+`bridge/plugin/justice_native.h`. It calls native46d660 with an independently
+copied crime and owned string; the pinned function plus19-way jump table spans
+4f8bytes (FNV64 ec4ef57098e332dc). Native case-list creation47083f/470c89 uses
+this same routine. It reads semantic unit names and agreement details, with no
+Justice widget input. `justice-captions-probe` exposes the helper diagnostically;
+there is no management protocol or public UI change yet.
+
+Protected174105 on2026-11-11 compares all19 crime-type titles against the actual
+native case row text. Existing case9 is temporarily switched through each type
+and restored; Murder includes the existing victim's name/profession. Menu bytes,
+crime bytes and random state remain unchanged by every provider call, including
+a cold call before opening Justice. `native_justice.json.caption_reference`
+records the exact pairs. Agreement-specific suffixes and a missing victim are
+outside this fixture. Oracle traversal reads native Cases' embedded row vector
+at2c0/2c8, as established by1416040; that inspection is not a runtime input.
+Earlier173950/174028 failed oracle cast syntax/vector-offset checks, before
+acceptance; the bounds check prevented reading the wrong vector. Owned DF19616
+closes unsaved with source preservation and restored preferences, native30FPS,
+no viewer. MSVC build `justice-caption-build.log` and core19
+`build/qa/justice-captions` pass. Installed bridge SHA256
+`0BDD59EAFB1DE53072B07E090902A46AF890539DCCA6C4BDCB5CE0ACA6DE8F4C`;
+protocol191 remains unchanged. Membership, ordering, details and effects still
+require native helpers and live verification.
+
+The Justice screen remains unimplemented and gated. Protected173422 on2026-11-11 captures
 all six native categories at1200x800: Open cases, Closed cases, Cold cases,
 Fortress guard, Convicts and Intelligence. The paused fixture contains17 semantic
 crime records. `fixtures/production/native_justice.json` preserves bounded

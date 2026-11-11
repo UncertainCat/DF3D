@@ -929,5 +929,275 @@
     "Widget-bound callbacks are not semantic APIs",
     "Case membership/order and action effects require independent native providers",
     "No editing, lifecycle or Godot implementation acceptance"
-  ]
+  ],
+  "caption_reference": {
+    "cases": [
+      {
+        "mode": 0,
+        "native": [
+          "Violation of production order",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct"
+        ],
+        "provider": "Violation of production order"
+      },
+      {
+        "mode": 1,
+        "native": [
+          "Violation of export prohibition",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct"
+        ],
+        "provider": "Violation of export prohibition"
+      },
+      {
+        "mode": 2,
+        "native": [
+          "Violation of job order",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct"
+        ],
+        "provider": "Violation of job order"
+      },
+      {
+        "mode": 3,
+        "native": [
+          "Conspiracy to alow labor",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct"
+        ],
+        "provider": "Conspiracy to alow labor"
+      },
+      {
+        "mode": 4,
+        "native": [
+          "Murder of L\u00c3\u00b2r Astthum, Bone Doctor",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct"
+        ],
+        "provider": "Murder of L\u00c3\u00b2r Astthum, Bone Doctor"
+      },
+      {
+        "mode": 5,
+        "native": [
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct"
+        ],
+        "provider": "Disorderly conduct"
+      },
+      {
+        "mode": 6,
+        "native": [
+          "Building destruction",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct"
+        ],
+        "provider": "Building destruction"
+      },
+      {
+        "mode": 7,
+        "native": [
+          "Vandalism",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct"
+        ],
+        "provider": "Vandalism"
+      },
+      {
+        "mode": 8,
+        "native": [
+          "Theft",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct"
+        ],
+        "provider": "Theft"
+      },
+      {
+        "mode": 9,
+        "native": [
+          "Robbery",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct"
+        ],
+        "provider": "Robbery"
+      },
+      {
+        "mode": 10,
+        "native": [
+          "Blood-drinking",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct"
+        ],
+        "provider": "Blood-drinking"
+      },
+      {
+        "mode": 11,
+        "native": [
+          "Embezzlement",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct"
+        ],
+        "provider": "Embezzlement"
+      },
+      {
+        "mode": 12,
+        "native": [
+          "Attempted murder",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct"
+        ],
+        "provider": "Attempted murder"
+      },
+      {
+        "mode": 13,
+        "native": [
+          "Kidnapping",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct"
+        ],
+        "provider": "Kidnapping"
+      },
+      {
+        "mode": 14,
+        "native": [
+          "Attempted kidnapping",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct"
+        ],
+        "provider": "Attempted kidnapping"
+      },
+      {
+        "mode": 15,
+        "native": [
+          "Attempted theft",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct"
+        ],
+        "provider": "Attempted theft"
+      },
+      {
+        "mode": 16,
+        "native": [
+          "Treason",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct"
+        ],
+        "provider": "Treason"
+      },
+      {
+        "mode": 17,
+        "native": [
+          "Espionage",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct"
+        ],
+        "provider": "Espionage"
+      },
+      {
+        "mode": 18,
+        "native": [
+          "Bribery",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct",
+          "Disorderly conduct"
+        ],
+        "provider": "Bribery"
+      }
+    ],
+    "crime_id": 9,
+    "source": "build/stockpile-storage-native-input-20261111-174105",
+    "native_rva": "0x46d660",
+    "pin_length": "0x4f8",
+    "pin_fnv64": "0xec4ef57098e332dc",
+    "status": "passed",
+    "owned_df_pid": 19616,
+    "source_preserved": true,
+    "guards": [
+      "Justice context bytes",
+      "All crime object bytes",
+      "Native RNG bytes"
+    ],
+    "scope": "Cold provider and all19 types against native case widgets; existing case mode restored; no runtime menu input.",
+    "limitations": [
+      "Agreement-specific suffixes",
+      "Missing victim",
+      "List membership/order and effects"
+    ]
+  }
 }

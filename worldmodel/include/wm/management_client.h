@@ -435,11 +435,17 @@ struct ProductionState {
 };
 struct StocksGroupKey {int16_t type=-1,subtype=-1,subcat1=-1,subcat2=-1;};
 struct NoblesRequest {uint32_t offset=0;uint16_t limit=32;uint64_t expectedListRevision=0;};
+struct NoblesAssessmentHelp {std::string actual,required;uint8_t color=15;};
+struct NoblesObligationHelp {std::string text;uint8_t color=15;};
+struct NoblesAccountingHelp {uint8_t setting=0,level=0;std::string title,examples,attained,progress;};
+struct NoblesHelp {std::string description;std::array<NoblesAssessmentHelp,4> rooms,furniture;
+  std::vector<NoblesObligationHelp> demands,mandates;std::optional<NoblesAccountingHelp> accounting;};
 struct NoblesRow {
   int32_t entityId=-1,positionId=-1,assignmentId=-1,unitId=-1,nemesisId=-1,priority=0;
   std::string title,squadCaption,holderCaption;bool canAppoint=false,hasRoomAssessment=false;
   std::array<int32_t,4> requiredRooms{},actualRooms{},requiredFurniture{},actualFurniture{};
   int8_t demandStatus=-1,mandateStatus=-1;
+  std::optional<NoblesHelp> help;
   std::optional<SelectionAppearance> appearance;
 };
 struct NoblesState {

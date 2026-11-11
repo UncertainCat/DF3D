@@ -96,7 +96,7 @@ Room hover42a331/42a340 uses the existing requirements/valuation providers;
 42a3a4/42a417 calls pinned ab4f20 on owned strings for actual/required captions.
 The native `Needs: ` literal comes from161be30. Color helperab4ee0 writes gps,
 so only its scalar palette rule is reproduced; no native drawing helper runs.
-Normal overview reads do not request this additional diagnostic data yet.
+The default diagnostic overview omits help; runtime NoblesRead requests it through protocol180.
 
 Protected084447 on2026-11-11 verifies all28 room captions/requirements and colors
 across seven occupied rows against actual native hover rendering, including
@@ -639,7 +639,30 @@ rows. Each text remains capped at16KiB, obligations at65536 entries, and all
 help bytes count toward the existing384KiB page budget. No native pixel/menu
 state crosses the contract. Bridge and viewer must be rebuilt together for
 `Local\df3d_management_v180`; DF53.16 and DFHack pins remain unchanged.
-Runtime production, transport integration and viewer acceptance are pending.
+The Nobles read now requests owned help, converts its text to UTF8 and counts
+all help bytes toward each page budget. Model decoding owns every string/vector;
+the Godot controller validates the shape, palette values, holder-only fields
+and accounting bounds before retaining a complete page. The view replaces its
+introduction with native description/assessment/obligation/accounting help,
+clears it when unavailable or outside its hitboxes, and shows the five installed
+accounting icons at native wide layouts. Accounting clicks currently emit an
+unconnected staged intent; no semantic mutation or public route is exposed.
+
+Core and codec-ownership checks pass in `build/qa/nobles-help-view`; the first
+Godot check found a type-inference error, corrected and passed separately in
+`build/qa/nobles-help-view-godot`. MSVC bridge and Godot extension builds pass.
+Protected091412 on2026-11-11 compares all help fields in14 typed rows with the
+owned native probe. Five controlled component captures (rooms, furniture,
+mandates, description, accounting) were visually inspected. The1600x900
+baseline panel crop (32,48)..(1376,864) has zero differing RGB pixels against
+native085619, including accounting controls and corrected wide spacing.
+`native_nobles.json.help_transport_reference` records this scope. Help captures
+select component hover directly; actual pointer timing, composed ownership,
+minimum-width/scroll/long-text cases and action effects remain unfinished.
+Native hover screenshots still lose hover, so no hover pixel-parity claim is
+made. Source preservation passes and DF22836 closes unsaved,30FPS, GPU49C/3%
+sampled. The live run is passed_with_known_issues for documented Godot shutdown
+diagnostics; the screen remains hidden.
 
 ## Management 179 Nobles holder appearance
 

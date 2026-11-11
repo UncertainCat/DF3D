@@ -55,6 +55,21 @@ func run() -> void:
 	check(view.room_suffix(0,0)=="NA" and view.room_suffix(1,0)=="MISSING" and view.room_suffix(2,1)=="PARTIAL" and view.room_suffix(1,1)=="GOOD","Nobles room artwork mapping differs")
 	view.size=Vector2(1344,804);view.wide_tabs=true
 	check(view.status_x()==680 and view.list_top()==84,"Nobles wide native status spacing differs")
+	var part={"actual":"fixture","required":"fixture","color":15}
+	var help={"description":"fixture description","rooms":[part,part,part,part],"furniture":[part,part,part,part],"demands":[],"mandates":[{"text":"fixture mandate","color":6}],"accounting":{"setting":2,"level":1,"title":"fixture title","examples":"fixture examples","attained":"fixture attained","progress":""}}
+	check(state._help_bytes(help,true)>0 and state._help_bytes(help,false)==-1,"Nobles holder help accepted on vacancy")
+	var bad: Dictionary=help.duplicate(true);bad.rooms[0].color=6
+	check(state._help_bytes(bad,true)==-1,"Nobles room help accepted obligation-only color")
+	bad=help.duplicate(true);bad.accounting.setting=5
+	check(state._help_bytes(bad,true)==-1,"Nobles accounting setting unbounded")
+	var holder:=row(42);holder.unit_id=10;holder.has_room_assessment=true;holder.help=help
+	state.rows=[holder];state.phase=State.Phase.Ready
+	view.hovered=view.hover_at(Vector2(view.status_x()+56,view.list_top()+18))
+	check(view.hovered.get("kind")=="rooms" and view.intro_lines().size()==8,"Nobles room hover omitted assessment text")
+	check(view.hover_at(Vector2(24,view.list_top()+18)).get("kind")=="description","Nobles description hitbox excludes native left row")
+	check(view.hover_at(Vector2(view.status_x()+320,view.list_top()+18)).get("kind")=="accounting","Nobles accounting hover missing")
+	check(view.hover_at(Vector2(0,0)).is_empty(),"Nobles hover retained outside row")
+	state.close();check(view.hover_at(Vector2(24,view.list_top()+18)).is_empty(),"Retired Nobles data retained hover")
 	view.free();state.dispose();service.queue_free();await process_frame
 	if failures==0:print("NOBLES_STATE_PASS")
 	quit(1 if failures else 0)

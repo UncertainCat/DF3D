@@ -54,6 +54,13 @@ ManagementState decodeState(const m::ManagementState* s) {
       v.title=row->title()->str();v.squadCaption=row->squad_caption()->str();v.holderCaption=row->holder_caption()->str();
       v.canAppoint=row->can_appoint();v.hasRoomAssessment=row->has_room_assessment();v.demandStatus=row->demand_status();v.mandateStatus=row->mandate_status();
       if(row->appearance())v.appearance=decodeItemRecipe(row->appearance());
+      if(const auto* h=row->help()){auto& help=v.help.emplace();help.description=h->description()->str();
+        const auto assessments=[](const auto* src,auto& dst){for(size_t i=0;i<4;++i){const auto* part=src->Get(i);dst[i]={part->actual()->str(),part->required()->str(),part->color()};}};
+        assessments(h->rooms(),help.rooms);assessments(h->furniture(),help.furniture);
+        for(const auto* item:*h->demands())help.demands.push_back({item->text()->str(),item->color()});
+        for(const auto* item:*h->mandates())help.mandates.push_back({item->text()->str(),item->color()});
+        if(const auto* a=h->accounting())help.accounting=NoblesAccountingHelp{a->setting(),a->level(),a->title()->str(),a->examples()->str(),a->attained()->str(),a->progress()->str()};
+      }
       for(size_t i=0;i<4;++i){v.requiredRooms[i]=row->required_rooms()->Get(i);v.actualRooms[i]=row->actual_rooms()->Get(i);
         v.requiredFurniture[i]=row->required_furniture()->Get(i);v.actualFurniture[i]=row->actual_furniture()->Get(i);}
       out.rows.push_back(std::move(v));

@@ -213,6 +213,13 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
             entry["can_appoint"]=row.canAppoint;entry["has_room_assessment"]=row.hasRoomAssessment;
             entry["demand_status"]=int(row.demandStatus);entry["mandate_status"]=int(row.mandateStatus);
             if(row.appearance)entry["appearance"]=management::itemRecipeDictionary(*row.appearance);
+            if(row.help){const auto& h=*row.help;Dictionary help;help["description"]=String::utf8(h.description.c_str());
+                const auto assessments=[](const auto& src){Array values;for(const auto& p:src){Dictionary part;part["actual"]=String::utf8(p.actual.c_str());part["required"]=String::utf8(p.required.c_str());part["color"]=int(p.color);values.push_back(part);}return values;};
+                const auto obligations=[](const auto& src){Array values;for(const auto& p:src){Dictionary part;part["text"]=String::utf8(p.text.c_str());part["color"]=int(p.color);values.push_back(part);}return values;};
+                help["rooms"]=assessments(h.rooms);help["furniture"]=assessments(h.furniture);help["demands"]=obligations(h.demands);help["mandates"]=obligations(h.mandates);
+                if(h.accounting){const auto& a=*h.accounting;Dictionary value;value["setting"]=int(a.setting);value["level"]=int(a.level);value["title"]=String::utf8(a.title.c_str());value["examples"]=String::utf8(a.examples.c_str());value["attained"]=String::utf8(a.attained.c_str());value["progress"]=String::utf8(a.progress.c_str());help["accounting"]=value;}
+                entry["help"]=help;
+            }
             Array required,actual,furniture,owned;for(size_t i=0;i<4;++i){required.push_back(row.requiredRooms[i]);actual.push_back(row.actualRooms[i]);furniture.push_back(row.requiredFurniture[i]);owned.push_back(row.actualFurniture[i]);}
             entry["required_rooms"]=required;entry["actual_rooms"]=actual;entry["required_furniture"]=furniture;entry["actual_furniture"]=owned;rows.push_back(entry);
         }

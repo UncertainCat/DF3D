@@ -1,4 +1,11 @@
 extends "res://tests/item_carrier_wire_live.gd"
+func normalize(value: Variant) -> Variant:
+	if value is Dictionary:
+		var result: Dictionary={}
+		for key in value:result[key]=normalize(value[key])
+		return result
+	if value is Array:return value.map(normalize)
+	return int(value) if typeof(value)==TYPE_FLOAT else value
 func page(offset: int,revision: int) -> Dictionary:
 	return await request("nobles",{"action":C.ManagementAction.NoblesRead,"offset":offset,"limit":4,"expected_list_revision":revision})
 func run() -> void:
@@ -23,8 +30,8 @@ func run() -> void:
 		revision=state.list_revision;rows.append_array(state.rows);pages+=1
 	for i in rows.size():
 		var expected: Dictionary=reference[i];var row: Dictionary=rows[i]
-		for key in ["entity_id","position_id","assignment_id","unit_id","nemesis_id","title","squad_caption","holder_caption","can_appoint","has_room_assessment","required_rooms","actual_rooms","required_furniture","actual_furniture","demand_status","mandate_status"]:
-			var wanted: Variant=expected.get(key)
+		for key in ["entity_id","position_id","assignment_id","unit_id","nemesis_id","title","squad_caption","holder_caption","can_appoint","has_room_assessment","required_rooms","actual_rooms","required_furniture","actual_furniture","demand_status","mandate_status","help"]:
+			var wanted: Variant=normalize(expected.get(key))
 			if wanted is Array:wanted=wanted.map(func(value):return int(value))
 			check(row.get(key)==wanted,"Nobles field differs: "+key)
 		check(row.priority==expected.value,"Nobles priority differs")
@@ -48,6 +55,22 @@ func run() -> void:
 		for frame in 5:await process_frame
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(directory+"/nobles-view.png")
+		view.set_process(false)
+		for sample in [["rooms",Vector2(552,126)],["furniture",Vector2(680,126)],["mandates",Vector2(760,126)],["description",Vector2(24,342)]]:
+			view.hovered=view.hover_at(sample[1]);check(view.hovered.get("kind")==sample[0],"Nobles live hover selection differs: "+sample[0]);view.queue_redraw()
+			await process_frame;await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/nobles-help-"+sample[0]+".png")
+		root.size=Vector2i(1600,900);view.layout(Vector2(1600,900));view.hovered={};view.queue_redraw()
+		await process_frame;await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/nobles-wide.png")
+		var accounting_row:=-1
+		for index in model.rows.size():
+			if model.rows[index].get("help",{}).has("accounting"):accounting_row=index;break
+		check(accounting_row>=0,"Live fixture lacks accounting holder")
+		if accounting_row>=0:
+			view.hovered=view.hover_at(Vector2(view.status_x()+320,view.list_top()+accounting_row*36+18));check(view.hovered.get("kind")=="accounting","Nobles accounting hover missing")
+			view.queue_redraw();await process_frame;await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/nobles-help-accounting.png")
 		view.queue_free();await process_frame
 	model.refresh();model.close()
 	for frame in 5:world.poll();await process_frame

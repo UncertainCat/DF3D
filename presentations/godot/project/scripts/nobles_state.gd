@@ -70,8 +70,37 @@ func _valid_page(value: Dictionary,intent: Dictionary) -> bool:
 			bytes+=12+row.appearance.layers.size()*16
 			for key in ["tile_pages","palettes"]:
 				for name in row.appearance[key]:bytes+=4+name.to_utf8_buffer().size()
+		if row.has("help"):
+			var help_size:=_help_bytes(row.help,row.unit_id>=0)
+			if help_size<0:return false
+			bytes+=help_size
 	if bytes>384*1024 or _bytes+bytes>MAX_RETAINED_BYTES:return false
 	_bytes+=bytes;return true
+func _help_bytes(help: Variant,present: bool) -> int:
+	if typeof(help)!=TYPE_DICTIONARY or typeof(help.get("description"))!=TYPE_STRING or help.description.to_utf8_buffer().size()>16384:return -1
+	var bytes: int=68+help.description.to_utf8_buffer().size()
+	for key in ["rooms","furniture"]:
+		if typeof(help.get(key))!=TYPE_ARRAY or help[key].size()!=4:return -1
+		for part in help[key]:
+			if typeof(part)!=TYPE_DICTIONARY or not _integer(part.get("color"),0,15) or part.color not in [11,12,14,15]:return -1
+			bytes+=16
+			for field in ["actual","required"]:
+				if typeof(part.get(field))!=TYPE_STRING or part[field].to_utf8_buffer().size()>16384:return -1
+				if not present and (not part[field].is_empty() or part.color!=15):return -1
+				bytes+=4+part[field].to_utf8_buffer().size()
+	for key in ["demands","mandates"]:
+		if typeof(help.get(key))!=TYPE_ARRAY or help[key].size()>65536 or (not present and not help[key].is_empty()):return -1
+		for part in help[key]:
+			if typeof(part)!=TYPE_DICTIONARY or typeof(part.get("text"))!=TYPE_STRING or part.text.to_utf8_buffer().size()>16384 or not _integer(part.get("color"),0,15) or part.color not in [6,12,14,15]:return -1
+			bytes+=20+part.text.to_utf8_buffer().size()
+	if help.has("accounting"):
+		var a: Variant=help.accounting
+		if not present or typeof(a)!=TYPE_DICTIONARY or not _integer(a.get("setting"),0,4) or not _integer(a.get("level"),0,4):return -1
+		bytes+=16
+		for key in ["title","examples","attained","progress"]:
+			if typeof(a.get(key))!=TYPE_STRING or a[key].to_utf8_buffer().size()>16384:return -1
+			bytes+=4+a[key].to_utf8_buffer().size()
+	return bytes if bytes<=384*1024 else -1
 func _reject(result: Dictionary) -> void:
 	_clear();last_result=result.duplicate(true);phase=Phase.Rejected;changed.emit()
 func _page() -> void:

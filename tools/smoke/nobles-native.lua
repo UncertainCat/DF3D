@@ -291,7 +291,7 @@ if os.getenv('DF3D_NOBLES_ACCOUNTING')=='1' then
 end
 
 if os.getenv('DF3D_NOBLES_WIRE')=='1' then
- write('nobles-wire-reference.json',json.encode(probe()))
+ write('nobles-wire-reference.json',json.encode(probe({'nobles-help-probe'})))
  write('shot.tmp','nobles-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))
  local deadline=dfhack.getTickCount()+30000
  while true do local ack=io.open(out..'/ack-nobles-wire');if ack then ack:close();break end

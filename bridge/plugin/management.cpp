@@ -1265,12 +1265,24 @@ void publish() {
     }
     standingOrdersResult=m::CreateStandingOrdersState(b,standingOrders->category,standingOrders->outcome,b.CreateVector(rows));
   }
+  const auto encodeNoblesHelp=[&](const std::optional<df3d_nobles::HoverHelp>& source)->flatbuffers::Offset<m::NoblesHelp>{
+    if(!source)return {};const auto& h=*source;
+    const auto assessments=[&](const auto& group){std::vector<flatbuffers::Offset<m::NoblesAssessmentHelp>> values;
+      for(const auto& v:group)values.push_back(m::CreateNoblesAssessmentHelp(b,b.CreateString(v.actual),b.CreateString(v.required),uint8_t(v.color)));
+      return b.CreateVector(values);};
+    const auto obligations=[&](const auto& group){std::vector<flatbuffers::Offset<m::NoblesObligationHelp>> values;
+      for(const auto& v:group)values.push_back(m::CreateNoblesObligationHelp(b,b.CreateString(v.text),uint8_t(v.color)));
+      return b.CreateVector(values);};
+    flatbuffers::Offset<m::NoblesAccountingHelp> accounting;
+    if(h.accounting){const auto& a=*h.accounting;accounting=m::CreateNoblesAccountingHelp(b,uint8_t(a.setting),uint8_t(a.level),b.CreateString(a.title),b.CreateString(a.examples),b.CreateString(a.attained),b.CreateString(a.progress));}
+    return m::CreateNoblesHelp(b,b.CreateString(h.description),assessments(h.rooms),assessments(h.furniture),obligations(h.demands),obligations(h.mandates),accounting);
+  };
   flatbuffers::Offset<m::NoblesState> noblesResult;
   if(nobles){std::vector<flatbuffers::Offset<m::NoblesRow>> rows;
     for(const auto& row:nobles->rows)rows.push_back(m::CreateNoblesRow(b,row.entityId,row.positionId,row.assignmentId,row.unitId,row.nemesisId,row.value,
       b.CreateString(row.title),b.CreateString(row.squadCaption),b.CreateString(row.holderCaption),row.canAppoint,row.hasRoomAssessment,
       b.CreateVector(row.requiredRooms.data(),4),b.CreateVector(row.actualRooms.data(),4),b.CreateVector(row.requiredFurniture.data(),4),b.CreateVector(row.actualFurniture.data(),4),
-      int8_t(row.demandStatus),int8_t(row.mandateStatus),encodeItemRecipe(row.appearance)));
+      int8_t(row.demandStatus),int8_t(row.mandateStatus),encodeItemRecipe(row.appearance),encodeNoblesHelp(row.help)));
     noblesResult=m::CreateNoblesState(b,nobles->outcome,nobles->listRevision,nobles->total,nobles->offset,b.CreateVector(rows));
   }
   flatbuffers::Offset<m::PlacesState> placesResult;
@@ -4392,7 +4404,7 @@ void run(color_ostream& out) {
   if(r->action()==m::ManagementAction::NoblesRead){
     const auto& q=*r->nobles();status=m::ManagementStatus::Rejected;message.clear();nobles.emplace();
     try {
-      auto current=df3d_nobles::overview();if(!current)throw std::runtime_error("nobles unavailable");
+      auto current=df3d_nobles::overview(true);if(!current)throw std::runtime_error("nobles unavailable");
       uint64_t list=UINT64_C(14695981039346656037);
       for(const auto& row:*current)for(auto id:{row.entityId,row.positionId,row.assignmentId,row.unitId,row.nemesisId})
         for(unsigned i=0;i<4;++i){list^=uint8_t(uint32_t(id)>>(8*i));list*=UINT64_C(1099511628211);}
@@ -4402,6 +4414,13 @@ void run(color_ostream& out) {
         NoblesResult page;page.listRevision=list;page.total=uint32_t(current->size());page.offset=q.offset();size_t bytes=0;
         for(size_t i=q.offset();i<current->size() && page.rows.size()<q.limit();++i){
           auto& row=(*current)[i];size_t rowBytes=192;
+          if(row.help){auto& help=*row.help;rowBytes+=64;
+            const auto text=[&](std::string& value){value=DF2UTF(value);if(value.size()>16384)throw std::runtime_error("nobles help text exceeds limit");rowBytes+=4+value.size();};
+            text(help.description);
+            for(auto* group:{&help.rooms,&help.furniture})for(auto& part:*group){text(part.actual);text(part.required);rowBytes+=16;}
+            for(auto* group:{&help.demands,&help.mandates}){if(group->size()>65536)throw std::runtime_error("nobles obligations exceed limit");for(auto& item:*group){text(item.text);rowBytes+=16;}}
+            if(help.accounting){auto& a=*help.accounting;text(a.title);text(a.examples);text(a.attained);text(a.progress);rowBytes+=16;}
+          }
           // Native4276d3 uses6d6560 with flag400, matching the shared full-body
           // selector. Resolve only this page, independently of map residency.
           if(row.unitId>=0){df3d_appearance::Result recipe;

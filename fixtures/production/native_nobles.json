@@ -3801,5 +3801,39 @@
       "Captured PNG verifies wide control placement but loses hover; text samples establish help captions only.",
       "No boundary sweep or mixed requested/achieved precision combinations."
     ]
+  },
+  "help_transport_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-091412",
+    "protocol": 180,
+    "rows": 14,
+    "all_help_fields_match_owned_native_reference": true,
+    "rendered_sections_inspected": [
+      "rooms",
+      "furniture",
+      "mandates",
+      "description",
+      "accounting"
+    ],
+    "wide_overview_comparison": {
+      "native_source": "build/stockpile-storage-native-input-20261111-085619/nobles-accounting-wide.png",
+      "viewer": "nobles-wide.png",
+      "crop": [
+        32,
+        48,
+        1376,
+        864
+      ],
+      "different_rgb_pixels": 0
+    },
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "diagnostics": "passed_with_known_issues: documented Godot render-thread shutdown and ObjectDB diagnostics",
+    "omissions": [
+      "Help captures select component hover directly; actual pointer timing and composed owner/input lifecycle remain unverified.",
+      "Native PNG handshake loses hover; help layout uses recorded native text-cell/color evidence, not native hover pixel comparisons.",
+      "Demand rendering uses the same ordered obligation path but was not separately captured with nonempty demands.",
+      "No semantic accounting, appointment or symbol action route.",
+      "Minimum-width layout, long/help overflow and scrolling cases remain unfinished."
+    ]
   }
 }

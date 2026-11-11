@@ -111,6 +111,28 @@ for mode,x in ipairs{90,184,296,443}do
  result.tabs[#result.tabs+1]={mode=menu.mode,lines=screen};capture('objects-tab-'..tostring(mode-1))
  assert(json.encode(probe())==json.encode(cold),'Owned Objects lists depend on native tab')
 end
+if os.getenv('DF3D_OBJECTS_LAYOUT')=='1' then
+ result.layouts={}
+ for _,size in ipairs{'minimum','wide','default'}do
+  write('owner-input-request.tmp','name-resize-'..size);assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+  local deadline=dfhack.getTickCount()+10000
+  while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Objects resize timed out');script.sleep(1,'frames')end
+  assert(os.remove(out..'/owner-input-ack'));script.sleep(5,'frames')
+  for mode=0,3 do
+   menu.mode=mode;menu.scroll_position[mode]=0;settle()
+   result.layouts[#result.layouts+1]={size=size,tab=mode,columns=g.dimx,rows=g.dimy,text=lines()}
+   capture('objects-layout-'..size..'-'..mode)
+  end
+  if size=='minimum' then
+   menu.mode=3;menu.scroll_position[3]=0;settle()
+   g.precise_mouse_x=500;g.precise_mouse_y=300;g.mouse_x=62;g.mouse_y=25
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   gui.simulateInput(view,'CONTEXT_SCROLL_DOWN');view:render(dfhack.getTickCount())
+   result.layout_scroll={after=menu.scroll_position[3],lines=lines()}
+   capture('objects-layout-minimum-scroll')
+  end
+ end
+end
 result.owned_lists_match=true
 result.destinations=destinations
 -- Actual native controls, not synthesized calls to the item-sheet opener.

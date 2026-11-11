@@ -1467,5 +1467,201 @@
       "success": true
     },
     "scope": "1200x800, source save counts10/0/2/11; other sizes/scroll/claims/composition remain pending"
+  },
+  "layout_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-165411",
+    "protocol": 191,
+    "comparison": [
+      {
+        "label": "minimum",
+        "tab": "0",
+        "native_size": [
+          912,
+          552
+        ],
+        "viewer_size": [
+          912,
+          552
+        ],
+        "different_pixels": 0,
+        "bounds": null
+      },
+      {
+        "label": "minimum",
+        "tab": "1",
+        "native_size": [
+          912,
+          552
+        ],
+        "viewer_size": [
+          912,
+          552
+        ],
+        "different_pixels": 0,
+        "bounds": null
+      },
+      {
+        "label": "minimum",
+        "tab": "2",
+        "native_size": [
+          912,
+          552
+        ],
+        "viewer_size": [
+          912,
+          552
+        ],
+        "different_pixels": 0,
+        "bounds": null
+      },
+      {
+        "label": "minimum",
+        "tab": "3",
+        "native_size": [
+          912,
+          552
+        ],
+        "viewer_size": [
+          912,
+          552
+        ],
+        "different_pixels": 0,
+        "bounds": null
+      },
+      {
+        "label": "wide",
+        "tab": "0",
+        "native_size": [
+          1600,
+          900
+        ],
+        "viewer_size": [
+          1600,
+          900
+        ],
+        "different_pixels": 0,
+        "bounds": null
+      },
+      {
+        "label": "wide",
+        "tab": "1",
+        "native_size": [
+          1600,
+          900
+        ],
+        "viewer_size": [
+          1600,
+          900
+        ],
+        "different_pixels": 0,
+        "bounds": null
+      },
+      {
+        "label": "wide",
+        "tab": "2",
+        "native_size": [
+          1600,
+          900
+        ],
+        "viewer_size": [
+          1600,
+          900
+        ],
+        "different_pixels": 0,
+        "bounds": null
+      },
+      {
+        "label": "wide",
+        "tab": "3",
+        "native_size": [
+          1600,
+          900
+        ],
+        "viewer_size": [
+          1600,
+          900
+        ],
+        "different_pixels": 0,
+        "bounds": null
+      },
+      {
+        "label": "default",
+        "tab": "0",
+        "native_size": [
+          1200,
+          800
+        ],
+        "viewer_size": [
+          1200,
+          800
+        ],
+        "different_pixels": 0,
+        "bounds": null
+      },
+      {
+        "label": "default",
+        "tab": "1",
+        "native_size": [
+          1200,
+          800
+        ],
+        "viewer_size": [
+          1200,
+          800
+        ],
+        "different_pixels": 0,
+        "bounds": null
+      },
+      {
+        "label": "default",
+        "tab": "2",
+        "native_size": [
+          1200,
+          800
+        ],
+        "viewer_size": [
+          1200,
+          800
+        ],
+        "different_pixels": 0,
+        "bounds": null
+      },
+      {
+        "label": "default",
+        "tab": "3",
+        "native_size": [
+          1200,
+          800
+        ],
+        "viewer_size": [
+          1200,
+          800
+        ],
+        "different_pixels": 0,
+        "bounds": null
+      },
+      {
+        "label": "minimum",
+        "tab": "scroll",
+        "native_size": [
+          912,
+          552
+        ],
+        "viewer_size": [
+          912,
+          552
+        ],
+        "different_pixels": 0,
+        "bounds": null
+      }
+    ],
+    "native_scroll_after": 1,
+    "viewer_scroll_after": 1,
+    "status": "passed_with_known_issues",
+    "remaining": [
+      "scrollbar pointer/drag and paging",
+      "populated Symbols and additional claims",
+      "remaining lifecycle and main-scene composition"
+    ]
   }
 }

@@ -89,6 +89,19 @@ func run() -> void:
 				var motion:=InputEventMouseMotion.new();motion.position=view.position+Vector2(view.navigation_x()+12,view.list_top()+unavailable*36+18)
 				Input.parse_input_event(motion);Input.flush_buffered_events();await create_timer(0.1).timeout
 				check(hover.displayed.is_empty(),"Unavailable Objects row retained hover: "+str(view.pointer_position)+" / "+str(unavailable)+" / "+hover.displayed)
+	if view!=null and OS.get_environment("DF3D_OBJECTS_LAYOUT")=="1":
+		for extent in [Vector2i(912,552),Vector2i(1600,900),Vector2i(1200,800)]:
+			root.size=extent;view.layout(Vector2(extent));hover.layout(Vector2(extent))
+			var label: String="minimum" if extent.x==912 else "wide" if extent.x==1600 else "default"
+			for tab in 4:
+				controller.select_tab(tab);await settle_objects(controller);controller.seek(0,view.capacity())
+				await process_frame;await process_frame;await RenderingServer.frame_post_draw
+				root.get_texture().get_image().save_png(directory+"/objects-view-layout-%s-%d.png"%[label,tab])
+			if extent.x==912:
+				var wheel:=InputEventMouseButton.new();wheel.position=Vector2(500,300);wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN;wheel.pressed=true
+				Input.parse_input_event(wheel);Input.flush_buffered_events();await create_timer(0.1).timeout
+				check(controller.first==1,"Objects minimum-height wheel did not advance one row")
+				await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/objects-view-layout-minimum-scroll.png")
 	controller.close();controller.open();controller.close()
 	for i in 5:world.poll();await create_timer(0.01).timeout
 	check(controller.phase==controller.Phase.Closed and controller.rows.is_empty(),"Objects late read reopened closed panel")

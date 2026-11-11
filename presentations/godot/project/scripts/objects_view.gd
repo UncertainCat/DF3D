@@ -26,7 +26,8 @@ func tab_rect(index: int) -> Rect2:
 	var x:=8
 	for previous in index:x+=(OBJECT_TABS[previous].length()+4)*8
 	return Rect2(x,36 if wide_tabs else 60,(OBJECT_TABS[index].length()+4)*8,24)
-func right_cell() -> int:return int(size.x/8)+2-(2 if state.rows.size()>capacity() else 0)
+# Native3a007b..3a00c6 uses the inclusive right cell, less scrollbar space.
+func right_cell() -> int:return int(size.x/8)+1-(2 if state.rows.size()>capacity() else 0)
 func extra_cells() -> int:return maxi(0,int(2*(right_cell()-74)/3))
 func navigation_x() -> int:return (32+extra_cells())*8
 func ownership_x() -> int:return (40+extra_cells())*8

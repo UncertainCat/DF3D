@@ -39,6 +39,23 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Objects native discovery
 
+Protected165411 on2026-11-11 extends Objects layout coverage to912x552,
+1600x900 and1200x800. All four panel crops match native exactly at each size;
+Symbols remains empty in this save. Minimum-height Written content shows nine
+rows and a scrollbar; one wheel-down step selects offset1 in native and viewer,
+with another pixel-identical panel crop. Native3a007b..3a00c6 uses the inclusive
+right cell for column expansion and clipping. The viewer now matches that bound;
+the prior one-cell error was masked by rounding at default width. Drawing,
+navigation hitboxes and name/ownership truncation share these column positions.
+
+Run this coverage with `DF3D_OBJECTS_LAYOUT=1` alongside the Objects native,
+wire and render flags. `native_objects.json.layout_reference` records13 matched
+panel crops. Protected run passes with known Godot separate-thread/finalize/
+ObjectDB diagnostics; owned DF22652 closes unsaved with source preservation and
+restored preferences, both30FPS, GPU54C/20%/44W. Scrollbar pointer/drag, paging,
+populated Symbols/additional claims, remaining lifecycle and main-scene
+composition remain pending; public exposure is still gated.
+
 Protocol191 adds optional `coffin_unused` to shared appearance facts: -1 unknown,
 0 false,1 installed in a coffin building with at most one contained item. Native
 c7ed0b..c7ed43 calls semantic holder lookup cb16b0, checks building type3 and the

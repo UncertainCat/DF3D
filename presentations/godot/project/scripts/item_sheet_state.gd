@@ -196,9 +196,10 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 	if editing and owner==generation:applied.emit()
 
 static func _valid_appearance(look: Variant,item_type: int) -> bool:
-	if typeof(look)!=TYPE_DICTIONARY or look.size()!=5+int(item_type==13)+int(look.has("contents"))+int(look.has("floodgate_open"))+int(look.has("door"))+int(look.has("bucket_liquid"))+int(look.has("cage"))+int(look.has("restraint"))+int(look.has("portrait"))+int(look.has("slab_engraving"))+int(look.has("corpse_selector"))+int(look.has("legwear_selector"))+int(look.has("craft_gem_color"))+int(look.has("craft_soft_material")):return false
+	if typeof(look)!=TYPE_DICTIONARY or look.size()!=5+int(item_type==13)+int(look.has("contents"))+int(look.has("floodgate_open"))+int(look.has("door"))+int(look.has("bucket_liquid"))+int(look.has("cage"))+int(look.has("restraint"))+int(look.has("portrait"))+int(look.has("slab_engraving"))+int(look.has("corpse_selector"))+int(look.has("legwear_selector"))+int(look.has("craft_gem_color"))+int(look.has("craft_soft_material"))+int(look.has("artifact_mood")):return false
 	if look.has("slab_engraving") and (item_type!=87 or typeof(look.slab_engraving)!=TYPE_INT or look.slab_engraving< -1 or look.slab_engraving>26):return false
 	if look.has("portrait") and (item_type not in [51,52] or not _valid_recipe(look.portrait)):return false
+	if look.has("artifact_mood") and (item_type!=24 or typeof(look.artifact_mood)!=TYPE_BOOL):return false
 	if look.has("craft_soft_material") and (item_type not in [36,37,38,40,41,42,43] or typeof(look.craft_soft_material)!=TYPE_INT or look.craft_soft_material not in [0,1]):return false
 	if look.has("craft_gem_color") and (item_type not in [36,37,38,40,41,42,43] or typeof(look.craft_gem_color)!=TYPE_STRING or look.craft_gem_color.to_utf8_buffer().size()>128):return false
 	if look.has("legwear_selector") and (item_type!=60 or not _valid_recipe(look.legwear_selector)):return false

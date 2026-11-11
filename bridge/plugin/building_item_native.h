@@ -497,6 +497,8 @@ inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
     if(item->getType()==df::item_type::BIN){appearance.contents=itemContainerContents(item);if(!appearance.contents || appearance.contents->entries.size()>4096)return std::nullopt;}
     if(item->getType()==df::item_type::BAG){appearance.contents=itemBagContents(item);if(!appearance.contents)return std::nullopt;}
     if(item->getType()==df::item_type::BARREL){appearance.contents=itemBarrelContents(item);if(!appearance.contents)return std::nullopt;}
+    // Native c7ce83..c7ce94 selects weapon artwork from flag27, not artifact status.
+    if(item->getType()==df::item_type::WEAPON)appearance.artifactMood=item->flags.bits.artifact_mood?1:0;
     appearance.stack=item->getStackSize();appearance.flags=(item->flags.bits.artifact?32:0)|(item->flags.bits.spider_web?64:0);
     if(appearance.materialToken.empty()||appearance.materialToken.size()>256||appearance.subtypeRaw.size()>128||appearance.colorToken.size()>128||appearance.stack<1)return std::nullopt;
     return appearance;

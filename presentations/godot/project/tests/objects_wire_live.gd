@@ -38,6 +38,10 @@ func run() -> void:
 		for i in rows.size():
 			for key in ["artifact_id","item_id","native_name","translated_name","ownership"]:
 				check(rows[i].get(key)==expected[i][key],"Objects row differs: "+key)
+			var facts: Dictionary=reference.appearances[tab][i]
+			check(rows[i].item_type==facts.item_type,"Objects item type differs")
+			if rows[i].item_type==24:
+				check(rows[i].get("appearance",{}).get("artifact_mood")==facts.artifact_mood,"Objects weapon mood differs")
 			var target: Dictionary=reference.destinations[tab][i]
 			check(rows[i].has("position")==target.available,"Objects availability differs")
 			if target.available:

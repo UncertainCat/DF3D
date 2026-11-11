@@ -39,18 +39,27 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Objects native discovery
 
-Protocol190 adds optional weapon `artifact_mood` to shared item appearance facts
-(-1 unknown,0 false,1 true). Native c7ce83..c7ce94 selects weapon artwork from
-item flag bit27, independently of general artifact status. Nobles already carries
-this fact separately; Objects and other item views must receive it through the
-shared contract. Non-weapon appearances reject known values. This is the contract
-and neutral codec change only; the producer and viewer dictionary are not yet
-connected. Do not infer the fact from an older recording's artifact flag.
-Bridge and viewer must be rebuilt together for `Local\df3d_management_v190`;
-installed binaries remain189 until that rebuild and protected live acceptance.
-Core19 passes `build/qa/weapon-mood-contract`, including independent artifact
-status, unknown mood, invalid values/type scope and owned decode checks.
+Protocol190 supplies optional weapon `artifact_mood` in shared item appearance
+facts (-1 unknown,0 false,1 true). Native c7ce83..c7ce94 selects weapon artwork
+from item flag bit27, independently of general artifact status. The provider,
+owned copies, serializers, revision hashes, neutral codec and viewer dictionary
+preserve this distinction. Non-weapon appearances reject known values. The shared
+item renderer already consumes this fact; old recordings retain unknown rather
+than inferring it from artifact status. Nobles' existing row fact remains compatible.
 
+Bridge and viewer are rebuilt together for `Local\df3d_management_v190`. Core19,
+item-sheet state, Nobles state and UI-host checks pass `build/qa/weapon-mood-runtime`;
+the MSVC bridge builds. Protected163511 on2026-11-11 verifies the typed facts and
+rendered Objects panel. Both named weapons have artifact=true, artifact_mood=false.
+The entire Named objects panel crop now matches native exactly, as do Symbols and
+Written content at1200x800. The single coffin picture still differs by318 pixels
+in Artifacts; no broader artwork acceptance is claimed. Existing navigation,
+hover, close/late-read and native menu/RNG/camera guards pass. Owned DF44500 closes
+unsaved with source preservation and restored preferences, both processes30FPS,
+sampled GPU60C/1%/46W. Known separate-thread/finalize/ObjectDB diagnostics remain
+(passed_with_known_issues). `native_objects.json.weapon_mood_reference` records
+this evidence. Core contract checks in `build/qa/weapon-mood-contract` also cover
+independent artifact status, unknown mood, invalid values/type scope and owned decode.
 
 Protocol189 corrects Objects' previously unused artwork field from a layer
 recipe to `ItemInspectionAppearance`, with an `item_type` field (-1 when unknown).
@@ -65,7 +74,7 @@ including malformed appearance cases and decoding after source bytes are overwri
 
 The protocol189 producer supplies shared semantic item appearance facts and the
 viewer uses the existing item renderer. Bridge and viewer are rebuilt together;
-the mailbox is `Local\df3d_management_v189`. No188 layer recipes are migrated.
+protocol190 extends these facts as described above. No188 layer recipes are migrated.
 
 The staged Objects controller owns category selection, paging, scroll and request
 retirement. Both navigation controls perform a fresh revision-checked native
@@ -113,7 +122,7 @@ Refusals cannot carry usable rows or destinations. Pages are bounded to64 rows,
 coordinates. Optional artwork follows the shared item appearance contract.
 
 The188 live evidence below uses `Local\df3d_management_v188`; current compatibility
-is189 as described above. Older recordings do not acquire Objects facts.
+is190 as described above. Older recordings do not acquire Objects facts.
 Core19, including Objects malformed-page, destination, refusal and scope
 cases, passes `build/qa/objects-contract-final`.
 

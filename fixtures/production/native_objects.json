@@ -1356,5 +1356,64 @@
       "other window sizes and scrolled row hitboxes",
       "composed main-scene hover ownership"
     ]
+  },
+  "weapon_mood_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-163511",
+    "protocol": 190,
+    "named_weapon_facts": [
+      {
+        "artifact": true,
+        "artifact_mood": false,
+        "item_type": 24
+      },
+      {
+        "artifact": true,
+        "artifact_mood": false,
+        "item_type": 24
+      }
+    ],
+    "panel_comparison": [
+      {
+        "tab": 0,
+        "different_pixels": 318,
+        "bounds": [
+          25,
+          316,
+          43,
+          340
+        ]
+      },
+      {
+        "tab": 1,
+        "different_pixels": 0,
+        "bounds": null
+      },
+      {
+        "tab": 2,
+        "different_pixels": 0,
+        "bounds": null
+      },
+      {
+        "tab": 3,
+        "different_pixels": 0,
+        "bounds": null
+      }
+    ],
+    "wire": {
+      "controller_tabs": 4,
+      "counts": [
+        10,
+        0,
+        2,
+        11
+      ],
+      "late_read_closed": true,
+      "lookups": 4,
+      "owner_navigation": true,
+      "stale_tabs": 4,
+      "success": true
+    },
+    "status": "passed_with_known_issues",
+    "remaining": "Artifacts coffin picture differs; other sizes, scrolling, claims and full composition remain pending"
   }
 }

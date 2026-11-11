@@ -46,12 +46,20 @@ local cold=probe()
 local native_names=probe('objects-names-probe')
 local ownership=probe('objects-ownership-probe')
 local destinations=probe('objects-destinations-probe')
+local appearances={}
+for mode,rows in ipairs(ownership)do
+ appearances[mode]={}
+ for _,row in ipairs(rows)do
+  local item=assert(df.item.find(row.item_id))
+  appearances[mode][#appearances[mode]+1]={item_type=item:getType(),artifact=item.flags.artifact,artifact_mood=item.flags.artifact_mood}
+ end
+end
 if os.getenv('DF3D_OBJECTS_WIRE')=='1' then
  local size,address=df.sizeof(df.global.game.main_interface.info.artifacts)
  local menu_before=bytes(address,size);local base=dfhack.internal.getImageBase()
  local rng_before=bytes(base+0x234e990,0x6180)
  local window_before={df.global.window_x,df.global.window_y,df.global.window_z}
- write('objects-wire-reference.json',json.encode{ownership=ownership,destinations=destinations})
+ write('objects-wire-reference.json',json.encode{ownership=ownership,destinations=destinations,appearances=appearances})
  write('shot.tmp','objects-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))
  local deadline=dfhack.getTickCount()+30000
  while true do local ack=io.open(out..'/ack-objects-wire');if ack then ack:close();break end

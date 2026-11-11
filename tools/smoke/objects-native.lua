@@ -107,6 +107,28 @@ for index,row in ipairs(destinations[1])do
  end
 end
 assert(available and unavailable,'Need local and nonlocal artifact destinations')
+result.hover={}
+for _,target in ipairs{{'recenter',540,available,236},{'view',564,available,237},{'unavailable-recenter',540,unavailable,-1},{'unavailable-view',564,unavailable,-1}}do
+ local x,y=target[2],166+(target[3]-1)*36
+ local function point()
+  g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  df.global.game.main_interface.current_hover=0
+  gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+ end
+ local deadline=dfhack.getTickCount()+650
+ repeat point();script.sleep(1,'frames')until dfhack.getTickCount()>=deadline
+ point()
+ local sample={kind=target[1],instruction=df.global.game.main_interface.current_hover,lines={}}
+ assert(sample.instruction==target[4],'Objects hover instruction differs: '..target[1])
+ for yy=0,17 do
+  local chars={};for xx=g.dimx-24,g.dimx-1 do local ch=dfhack.screen.readTile(xx,yy).ch;chars[#chars+1]=ch>=32 and string.char(ch%256)or' 'end
+  sample.lines[#sample.lines+1]=dfhack.df2utf(table.concat(chars)):gsub('%s+$','')
+ end
+ while #sample.lines>0 and sample.lines[#sample.lines]==''do table.remove(sample.lines)end
+ result.hover[#result.hover+1]=sample
+ write('objects-hover.json',json.encode(result.hover))
+end
 local sheet=df.global.game.main_interface.view_sheets
 local function observed()
  return {objects=info.open,sheet=sheet.open,sheet_type=sheet.active_sheet,sheet_id=sheet.active_id,

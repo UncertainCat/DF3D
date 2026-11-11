@@ -56,10 +56,12 @@ func run() -> void:
 	var actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(actions);actions.configure(world,true)
 	var controller=preload("res://scripts/objects_state.gd").new();controller.configure(actions);controller.open()
 	var view
+	var hover
 	if OS.get_environment("DF3D_OBJECTS_RENDER")=="1":
 		root.size=Vector2i(1200,800)
 		check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Objects assets unavailable")
 		view=preload("res://scripts/objects_view.gd").new();root.add_child(view);view.configure_objects(world,controller);view.layout(Vector2(1200,800))
+		hover=preload("res://scripts/native_hover_view.gd").new();root.add_child(hover);hover.configure(world);hover.layout(Vector2(1200,800));view.hover_help=hover
 	for tab in 4:
 		if tab>0:controller.select_tab(tab)
 		await settle_objects(controller)
@@ -67,10 +69,24 @@ func run() -> void:
 		if view!=null:
 			await process_frame;await process_frame;await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(directory+"/objects-view-%d.png"%tab)
+			if tab==0:
+				var available: int=-1;var unavailable: int=-1
+				for index in controller.rows.size():
+					if controller.rows[index].has("position") and available<0:available=index
+					elif not controller.rows[index].has("position") and unavailable<0:unavailable=index
+				check(available>=0 and unavailable>=0,"Objects hover fixture missing rows")
+				for slot in 2:
+					var motion:=InputEventMouseMotion.new();motion.position=view.position+Vector2(view.navigation_x()+slot*24+12,view.list_top()+available*36+18)
+					Input.parse_input_event(motion);await create_timer(0.6).timeout
+					check(hover.displayed==["objects_recenter","objects_view"][slot],"Objects pointer hover missing")
+					await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/objects-hover-%d.png"%slot)
+				var motion:=InputEventMouseMotion.new();motion.position=view.position+Vector2(view.navigation_x()+12,view.list_top()+unavailable*36+18)
+				Input.parse_input_event(motion);Input.flush_buffered_events();await create_timer(0.1).timeout
+				check(hover.displayed.is_empty(),"Unavailable Objects row retained hover: "+str(view.pointer_position)+" / "+str(unavailable)+" / "+hover.displayed)
 	controller.close();controller.open();controller.close()
 	for i in 5:world.poll();await create_timer(0.01).timeout
 	check(controller.phase==controller.Phase.Closed and controller.rows.is_empty(),"Objects late read reopened closed panel")
-	if view!=null:view.queue_free();await process_frame
+	if view!=null:view.queue_free();hover.queue_free();await process_frame
 	controller.dispose()
 	var owner=preload("res://scripts/objects_panel.gd").new();root.add_child(owner)
 	var host:=OwnerHost.new();owner.ui_host=host;owner.state.configure(actions)

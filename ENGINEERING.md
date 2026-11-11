@@ -66,7 +66,7 @@ native exactly for empty Symbols and populated Written content, including its tw
 blank item pictures. Artifacts differs by318 pixels in one item picture; Named
 objects differs by306 pixels within its two pictures. These artwork differences
 remain unresolved; this is not full visual acceptance. Header drawing and hitboxes
-use Objects' native narrow-width row order. Hover copy, other sizes/scrolling,
+use Objects' native narrow-width row order. Other sizes/scrolling,
 populated Symbols, remaining claim variants, lifecycle coverage and main-scene
 composition remain pending.
 
@@ -77,6 +77,18 @@ at30FPS, sampled GPU60C/9–27%/44–54W. Owned DF14076 closes unsaved with sour
 preservation and restored preferences. `native_objects.json.panel_reference`
 records bounded evidence. Set `DF3D_OBJECTS_RENDER=1` alongside Objects native
 and wire flags for the rendered protected lane.
+
+Objects hover uses native instructions236/237 captured in protected161918 and
+162135: “Leave this menu and / recenter on this object.” and “Leave this menu and /
+view this object's / sheet.” The shared hover owner supplies its existing500ms
+cold delay and warm interval. Only rows with current positions expose help over
+their visible navigation buttons. Native unavailable rows report instruction-1;
+DF3D clears help there. Protected162135 exercises both viewer pointer targets,
+captures their rendered help, and verifies clearing after buffered pointer delivery.
+Other sizes, scrolled rows and composed main-scene ownership remain pending.
+Owned DF44596 closes unsaved, source save and preferences are preserved; both
+processes30FPS, sampled GPU60C/19%/47W. Known Godot diagnostics remain unchanged.
+`native_objects.json.hover_reference` retains the native text cells and scope.
 
 Protocol188 adds read-only `ObjectsRead` and `ObjectsLocate` requests and typed
 Objects rows/destinations. Requests carry a category and membership revision;

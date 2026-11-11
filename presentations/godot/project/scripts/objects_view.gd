@@ -44,9 +44,10 @@ func refresh() -> void:
 	scrollbar.position=Vector2(size.x-32,list_top());scrollbar.size=Vector2(16,capacity()*36)
 	scrollbar.page=capacity();scrollbar.set_rows(state.rows.size(),visible_first());queue_redraw()
 func update_hover() -> void:
-	# Objects instructions236/237 still need their own captured copy. Never show
-	# Places' inherited help for these item controls while this panel is staged.
-	if is_instance_valid(hover_help):hover_help.leave(get_instance_id())
+	if not is_instance_valid(hover_help):return
+	var target:=hover_target(pointer_position) if pointer_known and allowed() else ""
+	if target.is_empty():hover_help.leave(get_instance_id())
+	else:hover_help.enter_objects(get_instance_id(),target)
 func _input(event: InputEvent) -> void:
 	if allowed() and state!=null and state.phase==state.Phase.Ready and state.rows.size()>capacity() and event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN] and not event.ctrl_pressed and not event.alt_pressed and not event.meta_pressed:
 		var point: Vector2=get_global_transform_with_canvas().affine_inverse()*event.position

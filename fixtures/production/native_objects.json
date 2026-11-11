@@ -1273,11 +1273,88 @@
     "owned_df_closed_unsaved": true,
     "pending": [
       "Artifacts and Named objects item artwork differences",
-      "Objects hover instructions236/237",
       "other widths and scroll",
       "populated Symbols and additional ownership claims",
       "remaining lifecycle checks",
       "main-scene composition and public exposure"
+    ]
+  },
+  "hover_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-162135",
+    "native": [
+      {
+        "instruction": 236,
+        "kind": "recenter",
+        "lines": [
+          "Leave this menu and",
+          "recenter on this object."
+        ]
+      },
+      {
+        "instruction": 237,
+        "kind": "view",
+        "lines": [
+          "Leave this menu and",
+          "view this object's",
+          "sheet."
+        ]
+      },
+      {
+        "instruction": -1,
+        "kind": "unavailable-recenter",
+        "lines": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "      Elevation 36"
+        ]
+      },
+      {
+        "instruction": -1,
+        "kind": "unavailable-view",
+        "lines": [
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "      Elevation 36"
+        ]
+      }
+    ],
+    "viewer_pointer_controls": [
+      "recenter",
+      "view"
+    ],
+    "unavailable_row_clears_hover": true,
+    "status": "passed_with_known_issues",
+    "remaining": [
+      "other window sizes and scrolled row hitboxes",
+      "composed main-scene hover ownership"
     ]
   }
 }

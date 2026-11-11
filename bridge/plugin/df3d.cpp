@@ -2533,6 +2533,13 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             list.append(row);}result.append(list);}
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
         }
+        if(parameters[0]=="nobles-accounting-probe") {
+          if(parameters.size()!=6)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          try {df3d_nobles::OfficeKey key{std::stoi(parameters[1]),std::stoi(parameters[2]),std::stoi(parameters[3])};
+            out.print("{}\n",int(df3d_nobles::setAccounting({},0,key,std::stoi(parameters[4]),std::stoi(parameters[5]))));return CR_OK;}
+          catch(...){return CR_WRONG_USAGE;}
+        }
         if(parameters[0]=="nobles-draft-probe" || parameters[0]=="nobles-commit-probe") {
           if(parameters.size()<6 || (parameters.size()-1)%5)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;

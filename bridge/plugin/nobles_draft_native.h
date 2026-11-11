@@ -185,6 +185,36 @@ inline bool draftCommitReady() {
     return pinned;
 }
 enum class DraftCommitOutcome {Unavailable,Rejected,Applied,Unknown,Stale};
+struct OfficeKey {int32_t entityId,positionId,assignmentId;uint32_t draftSlot=0;};
+// Native425712..4257b4 has no semantic call: after the occupied ACCOUNTING
+// row and button hit tests it stores the selected int16 setting directly.
+// Geometry belongs to the viewer; eligibility uses independently replayed rows.
+inline DraftCommitOutcome setAccounting(const std::vector<DraftChoice>& choices,uint64_t expectedRevision,
+        const OfficeKey& key,int32_t expectedSetting,int32_t setting) {
+    if(!ready())return DraftCommitOutcome::Unavailable;
+    if(expectedSetting<0 || expectedSetting>4 || setting<0 || setting>4)return DraftCommitOutcome::Rejected;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    auto& current=df::global::plotinfo->nobles.bookkeeper_settings;
+    if(reinterpret_cast<const void*>(&current)!=base+0x23912b0)return DraftCommitOutcome::Unavailable;
+    static_assert(sizeof(current)==2);
+    static_assert(offsetof(df::entity_position,responsibilities)+int(df::entity_position_responsibility::ACCOUNTING)==0x32e);
+    static const bool pinned=[base]{uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0xa2;++i){hash^=base[0x425712+i];hash*=UINT64_C(1099511628211);}
+        return hash==UINT64_C(0x019805401f82a325);}();
+    if(!pinned)return DraftCommitOutcome::Unavailable;
+    try {
+        Context owned(base);
+        if(!prepareDraft(owned,choices,expectedRevision))return owned.stale?DraftCommitOutcome::Stale:DraftCommitOutcome::Rejected;
+        const df::noblelistst* target=nullptr;
+        for(const auto* row:owned.value.noblelist)if(row->enid==key.entityId && row->ep->id==key.positionId &&
+            (row->epp?row->epp->id:-1)==key.assignmentId && owned.slot(row)==key.draftSlot){
+            if(target)return DraftCommitOutcome::Rejected;target=row;}
+        if(!target || !target->un || !target->ep->responsibilities[df::entity_position_responsibility::ACCOUNTING])return DraftCommitOutcome::Rejected;
+        if(int32_t(current)!=expectedSetting)return DraftCommitOutcome::Stale;
+        current=static_cast<std::remove_reference_t<decltype(current)>>(setting);
+        return int32_t(current)==setting?DraftCommitOutcome::Applied:DraftCommitOutcome::Unknown;
+    }catch(const std::exception&){return DraftCommitOutcome::Rejected;}
+}
 // Runs at a bridge safe point. The future request owner must bind this operation
 // to its session/revision and deduplicate it; Unknown must never be replayed.
 // The diagnostic route below is not a public asynchronous command contract.

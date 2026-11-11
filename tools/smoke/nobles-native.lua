@@ -293,13 +293,28 @@ if os.getenv('DF3D_NOBLES_ACCOUNTING')=='1' then
   local current=probe({'nobles-help-probe'});local help
   for _,row in ipairs(current)do if row.help.accounting then help=row.help.accounting;break end end
   assert(help and help.setting==level-1,'Owned accounting settings differ')
+  local accounting_row
+  for _,row in ipairs(current)do if row.help.accounting then accounting_row=row;break end end
+  local function set_owned(expected,value,target)
+   target=target or accounting_row
+   return probe({'nobles-accounting-probe',tostring(target.entity_id),tostring(target.position_id),tostring(target.assignment_id),tostring(expected),tostring(value)})
+  end
+  local desired=level-1;local different=(desired+1)%5
+  assert(set_owned(desired,different)==2 and facts.bookkeeper_settings==different,'Owned accounting setting did not apply')
+  assert(facts.bookkeeper_precision==precision,'Accounting setting changed attained precision')
+  assert(set_owned(desired,desired)==4 and facts.bookkeeper_settings==different,'Stale accounting setting accepted')
+  assert(set_owned(different,desired)==2 and facts.bookkeeper_settings==desired,'Owned setting differs from native click')
+  assert(set_owned(desired,5)==1 and facts.bookkeeper_settings==desired,'Invalid accounting setting accepted')
+  local invalid
+  for _,row in ipairs(current)do if not row.help.accounting then invalid=row;break end end
+  assert(invalid and set_owned(desired,different,invalid)==1 and facts.bookkeeper_settings==desired,'Non-accounting office accepted setting')
   local sample=hover_sample('accounting-'..level,x,y)
   for _,key in ipairs{'title','examples','attained','progress'}do
    local found=help[key]==''
    for _,line in ipairs(sample.lines)do if line.text:find(help[key],1,true)then found=true end end
    assert(found,'Native accounting caption differs: '..key..' '..help[key])
   end
-  result.accounting_reference.cases[#result.accounting_reference.cases+1]={precision=precision,help=help,lines=sample.lines,native_text_match=true,native_click_effect=true}
+  result.accounting_reference.cases[#result.accounting_reference.cases+1]={precision=precision,help=help,lines=sample.lines,native_text_match=true,native_click_effect=true,owned_setting_effect=true,stale_rejected=true,invalid_rejected=true,precision_unchanged=true}
  end
  facts.bookkeeper_settings=original_setting;facts.bookkeeper_precision=original_precision
  result.accounting_reference.restored=true;write('nobles-native.json',json.encode(result))

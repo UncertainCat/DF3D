@@ -39,6 +39,27 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Nobles and administrators native discovery
 
+Owned accounting changes use `setAccounting` in `nobles_draft_native.h`.
+Native425712..4257b4 contains an inline occupied-ACCOUNTING-row check followed
+by a direct int16 store to the requested setting; there is no separate semantic
+callee. The adapter fingerprints that branch, binds the destination to
+`plotinfo.nobles.bookkeeper_settings`, and checks the same semantic eligibility
+against independently prepared draft rows. It validates the base revision and
+expected setting before the store. Attained precision is never changed.
+`nobles-accounting-probe` exercises this adapter synchronously; typed mutation
+transport and UI submission remain unfinished.
+
+Protected103749 on2026-11-11 compares all five settings with actual native
+button clicks. Each case changes away from the native choice through the owned
+adapter, rejects the old expected setting, restores the native choice, rejects
+an invalid setting and rejects a non-accounting office. Attained precision,
+native menu bytes, random streams and measured lookup caches are preserved.
+Original setting/precision are restored before unsaved exit; DF24216 closes and
+source preservation passes. Evidence is `nobles-native.json.accounting_reference`
+in that run. MSVC and core pass (`build/qa/nobles-accounting-mutation`); native
+is capped at30FPS, GPU38C/3% sampled. Drafted-holder eligibility and typed
+asynchronous outcomes are not established by this diagnostic acceptance.
+
 The controller's `request_dismiss` submits its accumulated appointment draft
 once and emits `dismissed` only after an Applied receipt (or immediately for an
 empty draft). Repeated dismissal while Applying cannot resubmit. Rejected and

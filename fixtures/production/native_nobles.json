@@ -4744,5 +4744,384 @@
       "092234": "Oracle assumed Manager initially occupied; clone office is vacant.",
       "092322": "Appoint/replace succeeded; replacement chose militia commander, for whom native candidate list omitted Leave Vacant. Final scenario selects a non-commanding candidate."
     }
+  },
+  "owned_appointment_draft_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-093032",
+    "df_version": "53.16",
+    "status": "passed",
+    "scope": "Independent owned draft rows match actual native Manager appoint/replace/vacate staging, both before and after native selection. Native menu, RNG streams and measured lookup caches preserved; captured simulation fields unchanged.",
+    "cases": [
+      {
+        "operation": "appoint",
+        "selected_unit": 6598,
+        "cold_warm_match": true,
+        "menu_rng_caches_preserved": true,
+        "rows": [
+          {
+            "assignment_id": 3,
+            "entity_id": 245,
+            "histfig_id": 9492,
+            "nemesis_id": 6233,
+            "position_id": 0,
+            "unit_id": 5981
+          },
+          {
+            "assignment_id": 7,
+            "entity_id": 865,
+            "histfig_id": 9375,
+            "nemesis_id": 6116,
+            "position_id": 9,
+            "unit_id": 5813
+          },
+          {
+            "assignment_id": 9,
+            "entity_id": 865,
+            "histfig_id": 9375,
+            "nemesis_id": 6116,
+            "position_id": 7,
+            "unit_id": 5813
+          },
+          {
+            "assignment_id": 0,
+            "entity_id": 865,
+            "histfig_id": -1,
+            "nemesis_id": -1,
+            "position_id": 21,
+            "unit_id": -1
+          },
+          {
+            "assignment_id": 11,
+            "entity_id": 865,
+            "histfig_id": 10195,
+            "nemesis_id": 6936,
+            "position_id": 4,
+            "unit_id": 6812
+          },
+          {
+            "assignment_id": 1,
+            "entity_id": 865,
+            "histfig_id": -1,
+            "nemesis_id": -1,
+            "position_id": 20,
+            "unit_id": -1
+          },
+          {
+            "assignment_id": 6,
+            "entity_id": 865,
+            "histfig_id": 10051,
+            "nemesis_id": 6792,
+            "position_id": 10,
+            "unit_id": 6598
+          },
+          {
+            "assignment_id": 5,
+            "entity_id": 865,
+            "histfig_id": 10198,
+            "nemesis_id": 6939,
+            "position_id": 11,
+            "unit_id": 6815
+          },
+          {
+            "assignment_id": 4,
+            "entity_id": 865,
+            "histfig_id": -1,
+            "nemesis_id": -1,
+            "position_id": 12,
+            "unit_id": -1
+          },
+          {
+            "assignment_id": 3,
+            "entity_id": 865,
+            "histfig_id": 1217,
+            "nemesis_id": 1017,
+            "position_id": 13,
+            "unit_id": 1017
+          },
+          {
+            "assignment_id": 13,
+            "entity_id": 865,
+            "histfig_id": -1,
+            "nemesis_id": -1,
+            "position_id": 5,
+            "unit_id": -1
+          },
+          {
+            "assignment_id": -1,
+            "entity_id": 865,
+            "histfig_id": -1,
+            "nemesis_id": -1,
+            "position_id": 5,
+            "unit_id": -1
+          },
+          {
+            "assignment_id": 12,
+            "entity_id": 865,
+            "histfig_id": 9494,
+            "nemesis_id": 6235,
+            "position_id": 5,
+            "unit_id": 5984
+          },
+          {
+            "assignment_id": -1,
+            "entity_id": 865,
+            "histfig_id": -1,
+            "nemesis_id": -1,
+            "position_id": 23,
+            "unit_id": -1
+          }
+        ]
+      },
+      {
+        "operation": "replace",
+        "selected_unit": 5981,
+        "cold_warm_match": true,
+        "menu_rng_caches_preserved": true,
+        "rows": [
+          {
+            "assignment_id": 3,
+            "entity_id": 245,
+            "histfig_id": 9492,
+            "nemesis_id": 6233,
+            "position_id": 0,
+            "unit_id": 5981
+          },
+          {
+            "assignment_id": 7,
+            "entity_id": 865,
+            "histfig_id": 9375,
+            "nemesis_id": 6116,
+            "position_id": 9,
+            "unit_id": 5813
+          },
+          {
+            "assignment_id": 9,
+            "entity_id": 865,
+            "histfig_id": 9375,
+            "nemesis_id": 6116,
+            "position_id": 7,
+            "unit_id": 5813
+          },
+          {
+            "assignment_id": 0,
+            "entity_id": 865,
+            "histfig_id": -1,
+            "nemesis_id": -1,
+            "position_id": 21,
+            "unit_id": -1
+          },
+          {
+            "assignment_id": 11,
+            "entity_id": 865,
+            "histfig_id": 10195,
+            "nemesis_id": 6936,
+            "position_id": 4,
+            "unit_id": 6812
+          },
+          {
+            "assignment_id": 1,
+            "entity_id": 865,
+            "histfig_id": -1,
+            "nemesis_id": -1,
+            "position_id": 20,
+            "unit_id": -1
+          },
+          {
+            "assignment_id": 6,
+            "entity_id": 865,
+            "histfig_id": 9492,
+            "nemesis_id": 6233,
+            "position_id": 10,
+            "unit_id": 5981
+          },
+          {
+            "assignment_id": 5,
+            "entity_id": 865,
+            "histfig_id": 10198,
+            "nemesis_id": 6939,
+            "position_id": 11,
+            "unit_id": 6815
+          },
+          {
+            "assignment_id": 4,
+            "entity_id": 865,
+            "histfig_id": -1,
+            "nemesis_id": -1,
+            "position_id": 12,
+            "unit_id": -1
+          },
+          {
+            "assignment_id": 3,
+            "entity_id": 865,
+            "histfig_id": 1217,
+            "nemesis_id": 1017,
+            "position_id": 13,
+            "unit_id": 1017
+          },
+          {
+            "assignment_id": 13,
+            "entity_id": 865,
+            "histfig_id": -1,
+            "nemesis_id": -1,
+            "position_id": 5,
+            "unit_id": -1
+          },
+          {
+            "assignment_id": -1,
+            "entity_id": 865,
+            "histfig_id": -1,
+            "nemesis_id": -1,
+            "position_id": 5,
+            "unit_id": -1
+          },
+          {
+            "assignment_id": 12,
+            "entity_id": 865,
+            "histfig_id": 9494,
+            "nemesis_id": 6235,
+            "position_id": 5,
+            "unit_id": 5984
+          },
+          {
+            "assignment_id": -1,
+            "entity_id": 865,
+            "histfig_id": -1,
+            "nemesis_id": -1,
+            "position_id": 23,
+            "unit_id": -1
+          }
+        ]
+      },
+      {
+        "operation": "vacate",
+        "selected_unit": -1,
+        "cold_warm_match": true,
+        "menu_rng_caches_preserved": true,
+        "rows": [
+          {
+            "assignment_id": 3,
+            "entity_id": 245,
+            "histfig_id": 9492,
+            "nemesis_id": 6233,
+            "position_id": 0,
+            "unit_id": 5981
+          },
+          {
+            "assignment_id": 7,
+            "entity_id": 865,
+            "histfig_id": 9375,
+            "nemesis_id": 6116,
+            "position_id": 9,
+            "unit_id": 5813
+          },
+          {
+            "assignment_id": 9,
+            "entity_id": 865,
+            "histfig_id": 9375,
+            "nemesis_id": 6116,
+            "position_id": 7,
+            "unit_id": 5813
+          },
+          {
+            "assignment_id": 0,
+            "entity_id": 865,
+            "histfig_id": -1,
+            "nemesis_id": -1,
+            "position_id": 21,
+            "unit_id": -1
+          },
+          {
+            "assignment_id": 11,
+            "entity_id": 865,
+            "histfig_id": 10195,
+            "nemesis_id": 6936,
+            "position_id": 4,
+            "unit_id": 6812
+          },
+          {
+            "assignment_id": 1,
+            "entity_id": 865,
+            "histfig_id": -1,
+            "nemesis_id": -1,
+            "position_id": 20,
+            "unit_id": -1
+          },
+          {
+            "assignment_id": 6,
+            "entity_id": 865,
+            "histfig_id": -1,
+            "nemesis_id": -1,
+            "position_id": 10,
+            "unit_id": -1
+          },
+          {
+            "assignment_id": 5,
+            "entity_id": 865,
+            "histfig_id": 10198,
+            "nemesis_id": 6939,
+            "position_id": 11,
+            "unit_id": 6815
+          },
+          {
+            "assignment_id": 4,
+            "entity_id": 865,
+            "histfig_id": -1,
+            "nemesis_id": -1,
+            "position_id": 12,
+            "unit_id": -1
+          },
+          {
+            "assignment_id": 3,
+            "entity_id": 865,
+            "histfig_id": 1217,
+            "nemesis_id": 1017,
+            "position_id": 13,
+            "unit_id": 1017
+          },
+          {
+            "assignment_id": 13,
+            "entity_id": 865,
+            "histfig_id": -1,
+            "nemesis_id": -1,
+            "position_id": 5,
+            "unit_id": -1
+          },
+          {
+            "assignment_id": -1,
+            "entity_id": 865,
+            "histfig_id": -1,
+            "nemesis_id": -1,
+            "position_id": 5,
+            "unit_id": -1
+          },
+          {
+            "assignment_id": 12,
+            "entity_id": 865,
+            "histfig_id": 9494,
+            "nemesis_id": 6235,
+            "position_id": 5,
+            "unit_id": 5984
+          },
+          {
+            "assignment_id": -1,
+            "entity_id": 865,
+            "histfig_id": -1,
+            "nemesis_id": -1,
+            "position_id": 23,
+            "unit_id": -1
+          }
+        ]
+      }
+    ],
+    "source_preserved": true,
+    "owned_df_closed": 12796,
+    "limitations": [
+      "No semantic commit or public UI route.",
+      "NEW placeholder insertion/removal, military-conflict retirement, ambiguous repeated NEW targets and multiple choices in one draft are not yet live-verified.",
+      "Only captured assignment/figure/unit/history fields establish simulation preservation, not every byte of simulation memory."
+    ],
+    "failed_attempt": {
+      "source": "build/stockpile-storage-native-input-20261111-092920",
+      "reason": "Draft rejected before staging: reference lookup used NEMESIS(2), corrected to native IS_NEMESIS(3)."
+    }
   }
 }

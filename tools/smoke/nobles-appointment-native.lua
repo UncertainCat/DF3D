@@ -1,6 +1,6 @@
 -- Native effect oracle in the protected, paused, unsaved clone only.
 -- No runtime code may consume this menu storage.
-local out,view=...
+local out,view,probe=...
 local gui=require('gui');local script=require('gui.script');local json=require('json')
 local g=df.global.gps;local info=df.global.game.main_interface.info
 local function settle()for _=1,3 do script.sleep(1,'frames')end;view:render(dfhack.getTickCount())end
@@ -56,10 +56,20 @@ for _,operation in ipairs{'appoint','replace','vacate'}do
  local figures={};if prior>=0 then figures[#figures+1]=prior end;if selected then figures[#figures+1]=expected end
  local case={operation=operation,entity_id=entity.id,assignment_id=assignment.id,
   selected_unit=selected and selected.id or -1,selected_figure=expected,before=state(entity,assignment,figures)}
+ local command={'nobles-draft-probe',tostring(entity.id),tostring(target.ep.id),tostring(assignment.id),tostring(target.un and target.un.id or -1),tostring(case.selected_unit)}
+ local owned=probe(command)
+ assert(json.encode(case.before)==json.encode(state(entity,assignment,figures)),'Owned draft changed simulation')
  result.cases[#result.cases+1]=case;write()
  click(200,142+chosen*36)
  assert(not menu.choosing_candidate and info.open,'Candidate did not return to overview')
  case.staged=state(entity,assignment,figures);case.staged_holder=menu.spec_hfid[index]
+ local native={}
+ for i,row in ipairs(menu.noblelist)do native[#native+1]={entity_id=row.enid,position_id=row.ep.id,
+  assignment_id=row.epp and row.epp.id or -1,unit_id=row.un and row.un.id or -1,
+  nemesis_id=row.nem and row.nem.id or -1,histfig_id=menu.spec_hfid[i]}end
+ local warm=probe(command)
+ assert(json.encode(owned)==json.encode(native) and json.encode(warm)==json.encode(native),'Owned draft differs from native staging')
+ case.owned_draft={rows=owned,cold_warm_match=true,menu_rng_caches_preserved=true}
  write()
  assert(case.staged_holder==expected,'Native staged wrong holder')
  assert(json.encode(case.before)==json.encode(case.staged),'Candidate click committed simulation effects early')

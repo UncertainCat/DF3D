@@ -39,6 +39,29 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Nobles and administrators native discovery
 
+`nobles_draft_native.h` prepares private appointment drafts without committing
+simulation changes. Each choice revalidates the appointment gate and invokes
+native423df0 against the current owned rows. General historical-position
+eligibility remains simulation-based; native military-conflict checks inspect
+the staged rows. The inline draft updates424b3f..4251b3 are fingerprinted:
+selected unit/nemesis and holder IDs, owned location summaries, reverse-order
+military conflict retirement, and unlimited NEW placeholder insertion/removal.
+DF allocates the private rows/summaries so native421dc0 can release them. Native
+input/feed is never called. `nobles-draft-probe` replays semantic office/expected
+holder/selected-unit tuples in an ephemeral context with RNG/cache restoration.
+The eventual transport still needs unambiguous identities for repeated NEW
+slots and stale-draft admission; this diagnostic is not that public contract.
+
+Protected093032 on2026-11-11 compares every staged row's office, assignment,
+unit, nemesis and holder IDs against native Manager appoint/replace/vacate.
+Cold/warm calls preserve native menu bytes, random streams, measured lookup
+caches and captured simulation fields. `native_nobles.json` records this as
+`owned_appointment_draft_reference`. MSVC passes; source remains unchanged and
+DF12796 closes unsaved,30FPS, GPU41C/0% sampled. The initial092920 provider
+rejection used reference enum NEMESIS instead of native IS_NEMESIS; corrected
+before the passing capture. NEW slots, military conflicts and multi-choice
+replay remain unverified, and no semantic commit or public route exists yet.
+
 Appointment application is separate from candidate selection. Native feed424b3f
 updates the owned-row-compatible holder fields and parallel staged IDs; it does
 not commit the office. Native close/apply42a5a0(context, apply) compares staged

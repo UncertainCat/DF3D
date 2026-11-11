@@ -301,6 +301,6 @@ end
 gui.simulateInput(view,'LEAVESCREEN');settle();assert(not info.open,'Nobles did not close')
 if os.getenv('DF3D_NOBLES_APPOINTMENT')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('nobles%-native%.lua$','nobles-appointment-native.lua')
- assert(loadfile(source))(out,view)
+ assert(loadfile(source))(out,view,probe)
 end
 result.closed=true;write('nobles-native.json',json.encode(result));records[#records+1]={name='nobles-discovery',rows=#rows,closed=true}

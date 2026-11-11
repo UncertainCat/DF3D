@@ -117,6 +117,7 @@
 #include "tasks_native.h"
 #include "places_native.h"
 #include "nobles_native.h"
+#include "nobles_draft_native.h"
 #include "places_action_native.h"
 #include "tasks_action_native.h"
 #include "residents_activity_description_native.h"
@@ -2530,6 +2531,19 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               for(const auto& layer:recipe.layers){Json::Value values(Json::arrayValue);for(auto value:layer)values.append(value);art["layers"].append(values);}}
             row["position"]=Json::Value(Json::arrayValue);for(auto v:{entry.position.x,entry.position.y,entry.position.z})row["position"].append(v);
             list.append(row);}result.append(list);}
+          out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
+        }
+        if(parameters[0]=="nobles-draft-probe") {
+          if(parameters.size()<6 || (parameters.size()-1)%5)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          std::vector<df3d_nobles::DraftChoice> choices;
+          try {for(size_t i=1;i<parameters.size();i+=5)choices.push_back({std::stoi(parameters[i]),std::stoi(parameters[i+1]),std::stoi(parameters[i+2]),std::stoi(parameters[i+3]),std::stoi(parameters[i+4])});}
+          catch(...){return CR_WRONG_USAGE;}
+          const auto rows=df3d_nobles::draftPreview(choices);if(!rows)return CR_FAILURE;
+          Json::Value result(Json::arrayValue);
+          for(const auto& entry:*rows){Json::Value row(Json::objectValue);
+            row["entity_id"]=entry.entityId;row["position_id"]=entry.positionId;row["assignment_id"]=entry.assignmentId;
+            row["unit_id"]=entry.unitId;row["nemesis_id"]=entry.nemesisId;row["histfig_id"]=entry.histfigId;result.append(row);}
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
         }
         if(parameters[0]=="nobles-candidates-probe") {

@@ -53,3 +53,17 @@ TEST_CASE("Nobles holder artwork rejects vacant rows and empty recipes") {
   CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==(fault!=0));
  }
 }
+
+TEST_CASE("Nobles help validates holder-only facts, colors and shared page budget") {
+ for(int fault=0;fault<8;++fault){flatbuffers::FlatBufferBuilder b;
+  auto text=b.CreateString("fixture");auto empty=b.CreateString("");
+  auto part=m::CreateNoblesAssessmentHelp(b,text,empty,fault==2?5:15);
+  auto parts=b.CreateVector(std::vector<flatbuffers::Offset<m::NoblesAssessmentHelp>>(fault==1?3:4,part));
+  auto item=m::CreateNoblesObligationHelp(b,text,fault==3?11:6);
+  auto items=b.CreateVector(std::vector<flatbuffers::Offset<m::NoblesObligationHelp>>{item});
+  auto accounting=m::CreateNoblesAccountingHelp(b,fault==4?5:0,fault==5?5:0,text,text,text,empty);
+  auto help=m::CreateNoblesHelp(b,text,parts,parts,items,items,accounting);b.Finish(help);
+  size_t bytes=fault==7?384*1024:0;
+  CHECK(bool(m::validateNoblesHelp(*flatbuffers::GetRoot<m::NoblesHelp>(b.GetBufferPointer()),fault!=6,bytes))==(fault!=0));
+ }
+}

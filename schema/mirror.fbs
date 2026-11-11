@@ -2143,6 +2143,19 @@ table TradeState { depots:[TradeDepot]; caravans:[TradeCaravan]; goods:[TradeGoo
 // is the entity/position/assignment triple, never a native menu index.
 enum NoblesOutcome : uint8 { None, Rejected, Stale }
 table NoblesRequest { offset:uint32; limit:uint16 = 32; expected_list_revision:uint64; }
+// Native help content; layout and hover selection remain presentation-owned.
+table NoblesAssessmentHelp { actual:string (required); required:string (required); color:uint8 = 15; }
+table NoblesObligationHelp { text:string (required); color:uint8 = 15; }
+table NoblesAccountingHelp {
+  setting:uint8; level:uint8;
+  title:string (required); examples:string (required); attained:string (required); progress:string (required);
+}
+table NoblesHelp {
+  description:string (required);
+  rooms:[NoblesAssessmentHelp] (required); furniture:[NoblesAssessmentHelp] (required);
+  demands:[NoblesObligationHelp] (required); mandates:[NoblesObligationHelp] (required);
+  accounting:NoblesAccountingHelp;
+}
 table NoblesRow {
   entity_id:int32 = -1; position_id:int32 = -1; assignment_id:int32 = -1;
   unit_id:int32 = -1; nemesis_id:int32 = -1; priority:int32;
@@ -2155,6 +2168,7 @@ table NoblesRow {
   demand_status:int8 = -1; mandate_status:int8 = -1;
   // Independent full-body holder selector; absent is unavailable, never vacant.
   appearance:SelectionAppearance;
+  help:NoblesHelp;
 }
 table NoblesState {
   outcome:NoblesOutcome; list_revision:uint64; total:uint32; offset:uint32;
@@ -2312,7 +2326,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 179;
+  schema_version:uint32 = 180;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2381,7 +2395,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 179;
+  schema_version:uint32 = 180;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

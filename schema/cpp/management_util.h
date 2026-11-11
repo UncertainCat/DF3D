@@ -11,6 +11,33 @@
 #include "location_name_util.h"
 #include "location_recognition_util.h"
 namespace df3d::mirror {
+inline std::optional<std::string> validateNoblesHelp(const NoblesHelp& help,bool present,size_t& bytes) {
+  bytes+=64;
+  const auto text=[&](const flatbuffers::String* value){if(!value || value->size()>16384)return false;bytes+=4+value->size();return true;};
+  if(!text(help.description()))return "invalid nobles help description";
+  for(const auto* group:{help.rooms(),help.furniture()}){
+    if(!group || group->size()!=4)return "invalid nobles help assessments";
+    for(const auto* part:*group){
+      if(!part || !text(part->actual()) || !text(part->required()) ||
+         (part->color()!=11 && part->color()!=12 && part->color()!=14 && part->color()!=15))return "invalid nobles help assessment";
+      bytes+=16;
+      if(!present && (part->actual()->size() || part->required()->size() || part->color()!=15))return "unexpected nobles holder help";
+    }
+  }
+  for(const auto* group:{help.demands(),help.mandates()}){
+    if(!group || group->size()>65536 || (!present && group->size()))return "invalid nobles help obligations";
+    for(const auto* item:*group){
+      if(!item || !text(item->text()) || (item->color()!=6 && item->color()!=12 && item->color()!=14 && item->color()!=15))return "invalid nobles help obligation";
+      bytes+=16;
+    }
+  }
+  if(const auto* a=help.accounting()){
+    if(!present || a->setting()>4 || a->level()>4 || !text(a->title()) || !text(a->examples()) || !text(a->attained()) || !text(a->progress()))return "invalid nobles accounting help";
+    bytes+=16;
+  }
+  if(bytes>384*1024)return "nobles help payload exceeded";
+  return std::nullopt;
+}
 inline bool validArtDraftElement(const WorkOrderArtDraftElement* e) {
   return e && e->kind()>=7 && e->kind()<=13 && e->id()>=0 && e->secondary()>=-1 &&
     e->quantity()>=0 && e->quantity()<=1000000000 &&
@@ -142,8 +169,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 179;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v179";
+inline constexpr uint32_t kManagementVersion = 180;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v180";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -1303,6 +1330,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         if(row->unit_id()<0 || a->layers()->size()==0 || recipe>131072)return "invalid nobles appearance";
         bytes+=recipe;
       }
+      if(row->help())if(auto error=validateNoblesHelp(*row->help(),row->unit_id()>=0,bytes))return error;
       if(bytes>384*1024)return "nobles page payload exceeded";
     }
   }else if(s.status()==ManagementStatus::Ok && s.action()==ManagementAction::NoblesRead)return "missing nobles result";

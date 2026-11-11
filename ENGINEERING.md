@@ -629,6 +629,18 @@ acceptance is `passed_with_known_issues` for the known Godot shutdown diagnostic
 GPU58–61C sampled. Core19/controller checks pass in `build/qa/places-layout-final`.
 
 
+## Management 180 Nobles hover content
+
+Protocol180 adds optional native Nobles help: office description, four room and
+four furniture assessments with colors, ordered demand/mandate descriptions,
+and accounting setting/achieved-level captions. Absent help means unavailable;
+old recordings do not invent it. Holder-only data is forbidden on absent-unit
+rows. Each text remains capped at16KiB, obligations at65536 entries, and all
+help bytes count toward the existing384KiB page budget. No native pixel/menu
+state crosses the contract. Bridge and viewer must be rebuilt together for
+`Local\df3d_management_v180`; DF53.16 and DFHack pins remain unchanged.
+Runtime production, transport integration and viewer acceptance are pending.
+
 ## Management 179 Nobles holder appearance
 
 Protocol179 adds an optional independently owned full-body holder appearance

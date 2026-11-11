@@ -45,6 +45,27 @@ func resize_symbol_picker(owner) -> bool:
 	var output=FileAccess.open(directory+"/nobles-symbol-resize.json",FileAccess.WRITE);output.store_string(JSON.stringify(evidence));output.close()
 	return true
 func exercise_symbol_name(symbols,name_view) -> bool:
+	if OS.get_environment("DF3D_NOBLES_SYMBOL_NAME_RESIZE")=="1":
+		var evidence: Array=[]
+		for extent in [Vector2i(912,552),Vector2i(1600,900),Vector2i(1200,800)]:
+			root.size=extent;await process_frame;await process_frame;await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/nobles-name-size-%dx%d.png"%[extent.x,extent.y])
+			await drag_symbol_scrollbar(name_view.scrollbar,true)
+			if not check(name_view.first==symbols.naming.rows.size()-name_view.page and not name_view.scrollbar.dragging,"Name scrollbar did not reach last row"):return false
+			evidence.append({"width":extent.x,"height":extent.y,"page":name_view.page,"rows":symbols.naming.rows.size(),"last_first":name_view.first})
+			await drag_symbol_scrollbar(name_view.scrollbar,false)
+			if not check(name_view.first==0 and not name_view.scrollbar.dragging,"Name scrollbar did not return to first row"):return false
+		for component in 7:
+			click_at(name_view.position+name_view.component_rect(component).get_center())
+			if not check(await wait_symbol(symbols,symbols.Phase.Naming) and symbols.naming.phase==symbols.naming.Phase.Ready and symbols.naming.component==component,"Name component page unavailable"):return false
+			var target: int=(component+1)%7
+			click_at(name_view.position+name_view.random_rect(target).get_center())
+			if not check(await wait_symbol(symbols,symbols.Phase.Naming) and symbols.naming.phase==symbols.naming.Phase.Ready,"Cross-component Random rejected"):return false
+			var chosen: int=symbols.naming.snapshot.value.words[target]
+			if not check(symbols.naming.rows.any(func(row):return row.word==chosen),"Cross-component Random did not use displayed native choices"):return false
+			click_at(name_view.position+name_view.clear_rect(target).get_center())
+			if not check(await wait_symbol(symbols,symbols.Phase.Naming) and symbols.naming.snapshot.value.words[target]==-1,"Cross-component Clear failed"):return false
+		var output=FileAccess.open(directory+"/nobles-name-resize.json",FileAccess.WRITE);output.store_string(JSON.stringify(evidence));output.close()
 	click_at(name_view.position+name_view.component_rect(1).get_center())
 	if not check(await wait_symbol(symbols,symbols.Phase.Naming) and symbols.naming.component==1,"Name component selection failed"):return false
 	click_at(name_view.position+Vector2(400,90))

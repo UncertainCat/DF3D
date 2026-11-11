@@ -8483,6 +8483,145 @@
         "Icon parity retains the documented ordinary earring discrepancy.",
         "Intermediate native scrollbar drag positions and name-editor resize are not established."
       ]
+    },
+    "name_resize_components": {
+      "native_source": "build/stockpile-storage-native-input-20261111-133132",
+      "viewer_source": "build/stockpile-storage-native-input-20261111-133508",
+      "layout_comparison": [
+        {
+          "width": 912,
+          "height": 552,
+          "crops": {
+            "components": [
+              32,
+              108,
+              216,
+              360
+            ],
+            "rows": [
+              368,
+              144,
+              672,
+              504
+            ],
+            "filter": [
+              368,
+              108,
+              688,
+              144
+            ]
+          },
+          "different_pixels": {
+            "components": 0,
+            "rows": 0,
+            "filter": 0
+          }
+        },
+        {
+          "width": 1600,
+          "height": 900,
+          "crops": {
+            "components": [
+              32,
+              108,
+              216,
+              360
+            ],
+            "rows": [
+              368,
+              144,
+              1360,
+              864
+            ],
+            "filter": [
+              368,
+              108,
+              1376,
+              144
+            ]
+          },
+          "different_pixels": {
+            "components": 0,
+            "rows": 0,
+            "filter": 0
+          }
+        },
+        {
+          "width": 1200,
+          "height": 800,
+          "crops": {
+            "components": [
+              32,
+              112,
+              216,
+              364
+            ],
+            "rows": [
+              368,
+              148,
+              960,
+              760
+            ],
+            "filter": [
+              368,
+              112,
+              976,
+              148
+            ]
+          },
+          "different_pixels": {
+            "components": 0,
+            "rows": 0,
+            "filter": 0
+          }
+        }
+      ],
+      "scroll_endpoints": [
+        {
+          "height": 552,
+          "last_first": 3207,
+          "page": 10,
+          "rows": 3217,
+          "width": 912
+        },
+        {
+          "height": 900,
+          "last_first": 3197,
+          "page": 20,
+          "rows": 3217,
+          "width": 1600
+        },
+        {
+          "height": 800,
+          "last_first": 3200,
+          "page": 17,
+          "rows": 3217,
+          "width": 1200
+        }
+      ],
+      "displayed_components": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "random_clear_targets": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        0
+      ],
+      "final_words_native_match": true,
+      "limits": [
+        "Intermediate native drag mapping and lifecycle fault injection remain separate.",
+        "Header name text differs with generated names and is outside these pixel crops."
+      ]
     }
   },
   "typed_symbols": {

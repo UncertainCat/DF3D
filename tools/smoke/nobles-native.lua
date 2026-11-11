@@ -462,6 +462,17 @@ if os.getenv('DF3D_NOBLES_SYMBOLS')=='1' then
    pending_index=menu.handling_symbol_closure_ind,artifacts_added=#df.global.world.artifacts.all-artifacts_before,lines=lines()}
   assert(not second_item.flags.artifact and menu.handling_symbol_closure_ind==second_index,'Second symbol did not wait for naming')
   capture('nobles-symbol-name-open')
+  if os.getenv('DF3D_NOBLES_SYMBOL_NAME_RESIZE')=='1' then
+   result.symbol_reference.naming.resize={}
+   for _,size in ipairs({'minimum','wide','default'})do
+    write('owner-input-request.tmp','name-resize-'..size);assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+    local deadline=dfhack.getTickCount()+10000
+    while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Symbol name resize timed out');script.sleep(1,'frames')end
+    assert(os.remove(out..'/owner-input-ack'));script.sleep(5,'frames');settle()
+    result.symbol_reference.naming.resize[#result.symbol_reference.naming.resize+1]={size=size,columns=g.dimx,height=g.dimy,lines=lines()}
+    capture('nobles-symbol-name-'..size)
+   end
+  end
   if os.getenv('DF3D_NOBLES_SYMBOL_NAME_EDIT')=='1' then
    local artifact
    for _,ref in ipairs(item.general_refs)do if ref:getType()==df.general_ref_type.IS_ARTIFACT then artifact=ref:getArtifact();break end end
@@ -624,7 +635,7 @@ if os.getenv('DF3D_NOBLES_WIRE')=='1' then
  end
  write('nobles-wire-reference.json',json.encode(probe({'nobles-help-probe'})))
  write('shot.tmp','nobles-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))
- local deadline=dfhack.getTickCount()+30000
+ local deadline=dfhack.getTickCount()+(os.getenv('DF3D_NOBLES_SYMBOL_NAME_RESIZE')=='1' and 120000 or 30000)
  while true do local ack=io.open(out..'/ack-nobles-wire');if ack then ack:close();break end
   assert(dfhack.getTickCount()<deadline,'Nobles wire timeout');script.sleep(1,'frames')
  end

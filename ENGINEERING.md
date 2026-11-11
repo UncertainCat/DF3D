@@ -1225,10 +1225,29 @@ a missing resize-request harness gate, fixed before the accepted runs.
 `picker_resize` retains bounded geometry/comparison evidence. Intermediate
 native drag-position mapping and name-editor resize remain unverified.
 
-Remaining symbol work includes the earring artwork discrepancy, name-editor
-resize/scrolling, intermediate drag-position parity, cross-component naming
-controls, foreign-client and disconnect/epoch/unknown fault acceptance, plus
-cross-office/civilization claims.
+Name-editor native133132 and rendered133508 on2026-11-11 establish matching
+component-label, word-row and filter crops at912x552,1200x800 and1600x900, with
+zero differing RGB pixels. The initial3217-word list shows10,17 and20 rows;
+actual viewer scrollbar dragging reaches both endpoints and releases capture.
+The composed run selects all seven components, performs Random into the next
+component and Clear there, then exercises rapid search, word selection, whole
+Random, final Clear, retirement and reopening. Independent DF readback confirms
+the final words and exactly three artifacts/six events. This accepts the
+cross-component targeting path; arbitrary RNG-stream identity is established
+only by the earlier controlled native adapter cases.
+
+Core19/state/UI host pass in `build/qa/nobles-name-complete-controls`. Both owned
+DF38244/9436 close unsaved with source preservation, both renderers30FPS;
+sampled GPU60C/34% and58C/35%. Only known Godot signatures remain. Initial133324
+completed component checks but exceeded the short combined-client deadline;
+the name-resize/comprehensive-controls lane now has a bounded115-second client
+limit and120-second native acknowledgment limit. Production deadlines are
+unchanged. `name_resize_components` retains bounded comparison and endpoint
+facts. Intermediate native drag mapping remains separate.
+
+Remaining symbol work includes the earring artwork discrepancy, intermediate
+drag-position parity, foreign-client and disconnect/epoch/unknown fault
+acceptance, plus cross-office/civilization claims.
 Public exposure and full management completion remain gated.
 
 ## Management 182 Nobles accounting contract

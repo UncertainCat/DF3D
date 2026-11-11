@@ -39,6 +39,23 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Nobles and administrators native discovery
 
+Protected145008 on2026-11-11 verifies actual main-scene Nobles recovery after
+bridge disable/enable with an unsent Manager appointment draft (candidate6598).
+Connection loss retires rows, draft, ticket and input ownership. Reconnection
+does not reopen the panel; an explicit open reads the still-vacant office.
+Native history remains unchanged. The recovery gate requires a claimed,
+play-ready connection identity stable for500ms, matching the existing Labor
+lane; initial144842 reopened during connection reconciliation and is not
+acceptance evidence. `DF3D_NOBLES_LIFECYCLE=1` with NATIVE/WIRE/SCENE enables
+this bounded case. Sent effects, unknown receipts and symbol continuation
+ownership remain separate acceptance gaps.
+
+Core19, Nobles state and UI host checks pass in `build/qa/nobles-lifecycle`.
+The protected run closes owned DF42892 unsaved with source preservation and
+restored preferences, both graphical processes capped at30FPS, sampled GPU60C.
+Only the three known Godot diagnostics occur (passed_with_known_issues).
+
+
 Protocol187 appends `ItemInspectionAppearance.craft_soft_material` and uses
 `Local\df3d_management_v187`. The field is -1 when unknown, including older
 recordings; 0 means none of native's four soft-material flags, and1 means

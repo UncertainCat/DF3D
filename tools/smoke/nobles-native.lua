@@ -691,9 +691,27 @@ if os.getenv('DF3D_NOBLES_WIRE')=='1' then
   local source=debug.getinfo(1,'S').source:sub(2):gsub('nobles%-native%.lua$','nobles-new-offices-native.lua')
   assert(loadfile(source))(out,view)
  end
+ local lifecycle_stage=0;local lifecycle_disabled=false
  local deadline=dfhack.getTickCount()+((os.getenv('DF3D_NOBLES_SYMBOL_NAME_RESIZE')=='1' or os.getenv('DF3D_NOBLES_SCENE')=='1') and 120000 or 30000)
  while true do local ack=io.open(out..'/ack-nobles-wire');if ack then ack:close();break end
+  if os.getenv('DF3D_NOBLES_LIFECYCLE')=='1' then
+   local file=io.open(out..'/nobles-lifecycle-request')
+   if file then
+    local wanted=tonumber(file:read('*a'));file:close()
+    if wanted~=lifecycle_stage then
+     assert(wanted==lifecycle_stage+1 and wanted<=2,'Unexpected Nobles lifecycle handshake')
+     lifecycle_disabled=wanted==1
+     assert(dfhack.run_command(lifecycle_disabled and 'disable' or 'enable','df3d')==0,'Nobles transport toggle failed')
+     lifecycle_stage=wanted;write('nobles-lifecycle-ack',tostring(wanted))
+    end
+   end
+  end
   assert(dfhack.getTickCount()<deadline,'Nobles wire timeout');script.sleep(1,'frames')
+ end
+ if os.getenv('DF3D_NOBLES_LIFECYCLE')=='1' then
+  assert(lifecycle_stage==2 and not lifecycle_disabled,'Nobles lifecycle incomplete')
+  assert(#df.global.world.history.events==wire_events,'Unsent Nobles draft changed history')
+  result.lifecycle_reference={stages=lifecycle_stage,events_unchanged=true}
  end
 end
 if wire_symbols then

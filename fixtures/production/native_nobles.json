@@ -10176,5 +10176,23 @@
     "confirmed_before_navigation": true,
     "diagnostics": "passed_with_known_issues",
     "scope": "Actual main-scene pointer appointment and repeated header clicks; no live transport-fault recovery claim."
+  },
+  "main_scene_lifecycle_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-145008",
+    "receipt": {
+      "chosen": 6598,
+      "draft_retired": true,
+      "fresh_read": true,
+      "holder": -1,
+      "success": true
+    },
+    "native": {
+      "events_unchanged": true,
+      "stages": 2
+    },
+    "status": "passed_with_known_issues",
+    "limits": [
+      "Unsent appointment draft only; sent effects and symbol continuation recovery remain unverified."
+    ]
   }
 }

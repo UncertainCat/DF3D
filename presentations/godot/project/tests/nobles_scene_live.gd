@@ -31,11 +31,69 @@ func commit_handoff(expected: Dictionary) -> bool:
 	file.store_string(JSON.stringify({"unit_id":chosen,"entity_id":int(target.entity_id),"assignment_id":int(target.assignment_id),"accounting_values":[],"accounting_restored":setting,"main_scene_handoff":true}));file.close()
 	owner.open_panel()
 	return await settle(owner.state)
+func lifecycle_handshake(step: int) -> bool:
+	var file=FileAccess.open(directory+"/nobles-lifecycle-request",FileAccess.WRITE)
+	file.store_string(str(step));file.close()
+	var deadline:=Time.get_ticks_msec()+10000
+	while Time.get_ticks_msec()<deadline:
+		if FileAccess.file_exists(directory+"/nobles-lifecycle-ack") and FileAccess.get_file_as_string(directory+"/nobles-lifecycle-ack")==str(step):return true
+		await create_timer(0.01).timeout
+	return check(false,"Nobles lifecycle handshake timed out")
+func lifecycle_recovery(expected: Dictionary) -> bool:
+	# Keep a local appointment draft across a real producer loss. No dismissal
+	# or mutation is requested; the native oracle checks unchanged history.
+	var target: Dictionary=expected.pickers[0].selected
+	var row: Dictionary={}
+	for candidate in owner.state.rows:
+		if candidate.entity_id==int(target.entity_id) and candidate.assignment_id==int(target.assignment_id):row=candidate;break
+	if not check(not row.is_empty(),"Lifecycle office missing"):return false
+	owner.state.begin_appointment(owner.state.office(row));await drain()
+	if not check(owner.state.phase==owner.state.Phase.CandidatesReady,"Lifecycle candidates unavailable"):return false
+	var chosen:=-1
+	for candidate in owner.state.candidates:
+		if candidate.unit_id>=0:chosen=candidate.unit_id;break
+	if not check(chosen>=0,"Lifecycle candidate missing"):return false
+	owner.state.choose_candidate(chosen)
+	if not await settle(owner.state):return false
+	if not check(owner.state.choices.size()==1,"Lifecycle draft missing"):return false
+	var generation: int=owner.state.generation
+	actions.set_process(true)
+	if not await lifecycle_handshake(1):return false
+	var deadline:=Time.get_ticks_msec()+10000
+	while owner.panel.visible and Time.get_ticks_msec()<deadline:await create_timer(0.01).timeout
+	check(not owner.panel.visible and not owner.name_panel.visible and scene._ui.host.active==null,"Nobles loss retained input ownership")
+	check(owner.state.generation>generation and owner.state.ticket==0 and owner.state.rows.is_empty() and owner.state.choices.is_empty(),"Nobles loss retained draft authority")
+	if not await lifecycle_handshake(2):return false
+	deadline=Time.get_ticks_msec()+60000
+	var stable_since:=0;var epoch: int=-1;var connection_generation: int=-1
+	while Time.get_ticks_msec()<deadline:
+		var ready: bool=scene._loader.entered and scene._ui.host.play_enabled and not actions._transport_lost and not actions._needs_claim and actions._epoch>0 and actions._generation==world.session_generation()
+		if not ready or epoch!=actions._epoch or connection_generation!=actions._generation:stable_since=0
+		epoch=actions._epoch;connection_generation=actions._generation
+		if ready:
+			if stable_since==0:stable_since=Time.get_ticks_msec()
+			elif Time.get_ticks_msec()-stable_since>=500:break
+		await create_timer(0.02).timeout
+	if not check(stable_since>0 and Time.get_ticks_msec()-stable_since>=500,"Nobles replacement connection unavailable"):return false
+	check(not owner.panel.visible and scene._ui.host.active==null,"Reconnect reopened stale Nobles panel")
+	actions.set_process(false)
+	owner.open_panel()
+	if not await settle(owner.state):
+		print("NOBLES_RECOVERY_FAILED ",owner.state.phase," ",owner.state.last_result," ",actions._epoch," ",actions._generation," ",world.session_generation());return false
+	check(owner.panel.visible and owner.state.choices.is_empty(),"Fresh Nobles read restored stale draft")
+	var refreshed: Dictionary={}
+	for candidate in owner.state.rows:
+		if owner.state.office(candidate)==owner.state.office(row):refreshed=candidate;break
+	check(not refreshed.is_empty() and refreshed.get("unit_id")!=chosen,"Reconnect replayed unsent appointment")
+	var file=FileAccess.open(directory+"/nobles-lifecycle-result.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"draft_retired":true,"fresh_read":true,"chosen":chosen,"holder":refreshed.get("unit_id"),"success":not failed}));file.close()
+	return not failed
 func exercise(expected: Dictionary) -> void:
 	owner=scene._ui.controller("nobles");owner.open_panel()
 	if not await settle(owner.state):return
 	check(owner.state.rows.size()==expected.rows.size(),"Composed Nobles rows differ")
 	check(scene._interaction.construction_active,"Nobles does not own world input")
+	if OS.get_environment("DF3D_NOBLES_LIFECYCLE")=="1" and not await lifecycle_recovery(expected):return
 	for dimensions in [Vector2i(912,552),Vector2i(1600,900)]:
 		root.size=dimensions;await process_frame;await process_frame
 		await pointer(owner.panel.get_global_transform_with_canvas()*Vector2(136,24));await drain()

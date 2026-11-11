@@ -593,7 +593,7 @@ if os.getenv('DF3D_NOBLES_ACCOUNTING')=='1' then
  capture('nobles-accounting-wide');resize('default')
 end
 
-local wire_commit=os.getenv('DF3D_NOBLES_COMMIT_WIRE')=='1'
+local wire_commit=os.getenv('DF3D_NOBLES_COMMIT_WIRE')=='1' or os.getenv('DF3D_NOBLES_SCENE_COMMIT')=='1'
 local wire_symbols=os.getenv('DF3D_NOBLES_SYMBOL_WIRE')=='1'
 local symbol_wire
 local wire_events,wire_precision,wire_setting

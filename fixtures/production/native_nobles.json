@@ -9799,5 +9799,21 @@
       "diagnostics": "passed_with_known_issues",
       "omissions": "No claim for all military conflict branches, active-job cancellation, live fault recovery, main-scene composition or pixel parity."
     }
+  },
+  "main_scene_commit_reference": {
+    "evidence": "build/stockpile-storage-native-input-20261111-135702",
+    "effect": {
+      "assignment_id": 6,
+      "events_added": 1,
+      "histfig": 10051,
+      "position_link": true,
+      "unit_id": 6598
+    },
+    "source_preserved": true,
+    "single_pending_ticket": true,
+    "destination": "global Work orders",
+    "confirmed_before_navigation": true,
+    "diagnostics": "passed_with_known_issues",
+    "scope": "Actual main-scene pointer appointment and repeated header clicks; no live transport-fault recovery claim."
   }
 }

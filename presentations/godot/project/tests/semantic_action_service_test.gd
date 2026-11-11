@@ -79,7 +79,26 @@ func test_construction_outcomes() -> void:
 		check(service.submit_continuation(ticket,"construction",{"action":2},Callable())==0,"failed construction cannot schedule a success continuation")
 		service.free()
 
+func test_nobles_unknown() -> void:
+	for action in [Contract.ManagementAction.NoblesCommit,Contract.ManagementAction.NoblesSymbolsApply,Contract.ManagementAction.NoblesSymbolNameEdit]:
+		for status in [Contract.ManagementStatus.Ok,Contract.ManagementStatus.Rejected]:
+			var world:=HeaderWorld.new()
+			var service:=Service.new();service.configure(world)
+			var observations: Array=[]
+			var ticket:=service.submit("nobles",{"action":action},func(received,result,_request):
+				observations.append(result)
+				check(service.submit_continuation(received,"nobles",{"action":action},Callable())==0,"Uncertain Nobles receipt cannot authorize another mutation"))
+			service.poll()
+			world.state={"world_epoch":5,"revision":2,"request_seq":1,"status":status,"action":action,"nobles":{"outcome":Contract.NoblesOutcome.Unknown}}
+			service.poll();service.poll()
+			check(observations.size()==1 and observations[0].get("outcome")=="unknown","Native Nobles uncertainty was not delivered exactly once")
+			var retained: Dictionary=service.last_detached_mutation("nobles")
+			check(retained.get("ticket")==ticket and retained.get("result",{}).get("outcome")=="unknown","Nobles uncertainty is missing from recovery outcomes")
+			check(world.calls.size()==1,"Uncertain Nobles mutation was replayed")
+			service.free()
+
 func run():
+	test_nobles_unknown()
 	test_header_payload_delivery()
 	test_result_ownership()
 	test_independent_item_unknown()

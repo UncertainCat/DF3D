@@ -280,6 +280,25 @@ global Work orders, Unknown retaining Nobles, reset suppressing a late receipt,
 session read retirement and public gating. Live mutation handoff and transport
 fault recovery are not established by this read/navigation run.
 
+Protected135702 adds `DF3D_NOBLES_SCENE_COMMIT=1`: actual main-scene Manager
+selection followed by two Work orders header clicks retains one commit ticket
+and keeps Nobles active until confirmation, then opens global Work orders.
+Independent native readback confirms unit6598/figure10051 on assignment6, the
+position link and exactly one added history event; bookkeeping settings and
+achieved precision are unchanged. The source is preserved and owned DF8284
+closes unsaved, both applications capped at30FPS, sampled GPU60C/35%/57W.
+Only the three known Godot diagnostics occur. This tests successful delayed
+navigation, not a lost live receipt.
+
+The shared semantic action service classifies `NoblesOutcome.Unknown` as
+uncertain regardless of envelope status, retains it as a detached mutation for
+recovery and denies success-continuation authority. The Nobles controller's
+existing Unknown state still blocks edits and automatic replay. Core19, service,
+Nobles state, host and composition checks pass in `build/qa/nobles-unknown-service`;
+injected appointment/symbol/name receipts cover one-shot delivery, retention,
+no replay and no continuation. Live transport-fault recovery and pending/unknown
+presentation remain incomplete.
+
 Protected103341 on2026-11-11 exercises the configured Nobles owner, actual
 action service and shared UI host with a destination test panel. Switching waits
 for a single Manager commit receipt, then activates the destination. Independent

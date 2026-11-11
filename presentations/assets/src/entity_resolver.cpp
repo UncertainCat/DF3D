@@ -1140,10 +1140,11 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
                   rule);
   };
   auto craft = [&](const char* family, const char* rule) -> ItemSprite& {
-    metalOrWood(family,rule);
+    const bool soft=q.craftSoftMaterial==-1?cls!=MaterialClass::Metal:q.craftSoftMaterial==1;
+    single((std::string(family)+(soft?"_WOOD":"_METAL")).c_str(),rule);
     if(!q.craftGemColor.empty()) {
       const auto color=idx.paletteRow(q.craftGemColor);
-      const auto token=std::string(family)+(cls==MaterialClass::Metal?"_METAL_ENCRUSTED":"_WOOD_ENCRUSTED");
+      const auto token=std::string(family)+(soft?"_WOOD_ENCRUSTED":"_METAL_ENCRUSTED");
       if(const auto* overlay=idx.tile(token);overlay && color>=0)r.overlays.push_back({*overlay,color});
     }
     return r;

@@ -45,8 +45,22 @@ recordings; 0 means none of native's four soft-material flags, and1 means
 THREAD_PLANT, LEATHER, SILK or YARN. Known values are restricted to craft item
 types36–43 excluding ammunition39. Do not infer this field from generic
 material classification. Rebuild bridge and viewer together before live use;
-protocol186 peers cannot share the new mailbox. Producer/rendering acceptance
-of187 remains pending at this contract boundary.
+protocol186 peers cannot share the new mailbox. `craftSoftMaterial` calls the
+pinned native material-flag helper145bee0 using the item's virtual material
+and index, following c81020..c8117b. No menu or graphics cache is accessed.
+All shared appearance serializers, revisions and validators carry the fact;
+the renderer uses it for the installed base and encrustation families.
+
+Protected144446 on2026-11-11 verifies this protocol187 path: all fifteen visible
+symbol-picker icon crops match native140501 exactly, including tiger-hair
+item13147. The three-symbol pointer/naming flow adds the expected three
+artifacts and six history events. The owned DF42300 closes unsaved with source
+preservation and preferences restored; both graphical processes are capped
+at30FPS, sampled GPU61C/38%/54W. Only the three deferred Godot diagnostics occur
+(passed_with_known_issues). Core19, item-sheet state, Nobles state and UI host
+pass in `build/qa/craft-soft-render`; the MSVC bridge builds. Protocol187's
+contract cases pass in `build/qa/craft-soft-contract-final`. This closes the
+observed earring artwork discrepancy, not the remaining Nobles lifecycle gaps.
 
 
 Protocol186 appends nullable `ItemInspectionAppearance.craft_gem_color` and
@@ -84,13 +98,13 @@ earring encrustation overlay (ITEM_CRAFTS3,5).
 Protected142132 on2026-11-11 verifies protocol186's rendered three-symbol
 assignment/naming flow, three artifacts and six history events. Fourteen of
 the first fifteen item icon crops remain identical to native140501. Item13147
-now differs in40 base-sprite pixels (previously58); full artwork parity remains
-open. Protected142521 confirms its tiger-hair material has none of native's
+then differed in40 base-sprite pixels (previously58); protocol187 resolves
+that remaining difference as recorded above. Protected142521 confirms its tiger-hair material has none of native's
 THREAD_PLANT, LEATHER, SILK or YARN flags. Native c81020..c8117c consequently
 selects base family0: ITEM_EARRING_METAL, original ITEM_CRAFTS0,5. Only those
-four soft-material flags select family1/ITEM_EARRING_WOOD, cell1,5. The current
-generic metal-versus-other fallback incorrectly selects wood for this item;
-the native base selection still needs to be exposed to the renderer.
+four soft-material flags select family1/ITEM_EARRING_WOOD, cell1,5. The former
+generic metal-versus-other fallback incorrectly selected wood for this item;
+protocol187 now transports the native material fact, as verified above.
 
 Core19, item-sheet state, Nobles state and UI host pass in
 `build/qa/craft-gem-composite`; the MSVC bridge builds. Viewer acceptance is

@@ -1341,3 +1341,17 @@ TEST_CASE("book material selection follows native gem glass branch without furni
   idx.tileGraphics.erase("ITEM_BOOK_GLASS");q.material="INORGANIC:TEST_GEM";
   CHECK_FALSE(resolveItem(idx,q).found);
 }
+
+TEST_CASE("native craft material fact overrides generic hair classification") {
+  AssetIndex idx;
+  idx.pages.push_back({"CRAFTS","","/synthetic",32,32,256,320});
+  idx.tileGraphics["ITEM_EARRING_METAL"]={{0,0,5,1,1}};
+  idx.tileGraphics["ITEM_EARRING_WOOD"]={{0,1,5,1,1}};
+  ItemQuery q;q.kind=wm::ItemKind::Earring;q.material="CREATURE:TIGER:HAIR";
+  // Native142521: hair has none of THREAD_PLANT/LEATHER/SILK/YARN.
+  q.craftSoftMaterial=0;auto hard=resolveItem(idx,q);
+  REQUIRE(hard.found);CHECK(hard.sprite.x==0);
+  q.craftSoftMaterial=1;auto soft=resolveItem(idx,q);
+  REQUIRE(soft.found);CHECK(soft.sprite.x==1);
+  q.craftSoftMaterial=-1;CHECK(resolveItem(idx,q).sprite.x==1);
+}

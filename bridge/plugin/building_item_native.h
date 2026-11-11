@@ -411,6 +411,8 @@ inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
     else if(color!=-1)return std::nullopt;
     const auto kind=int(item->getType());
     if(kind>=36 && kind<=43 && kind!=39) {
+        const auto soft=craftSoftMaterial(item);if(!soft)return std::nullopt;
+        appearance.craftSoftMaterial=*soft?1:0;
         const auto gem=craftGemColor(item);if(!gem)return std::nullopt;
         appearance.craftGemColor=std::string{};
         if(*gem>=0) {

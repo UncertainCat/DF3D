@@ -8768,7 +8768,7 @@
           }
         ],
         "native_family": 0,
-        "limitation": "Native soft-material selection is not yet transported; generic material fallback still selects the wrong base for item13147."
+        "limitation": "Native soft-material selection transported and consumed in protocol187; see rendered_symbols.native_craft_family_reference."
       }
     }
   },
@@ -8977,6 +8977,133 @@
       "events_added": 6,
       "status": "passed_with_known_issues",
       "limitation": "Item13147 base artwork still differs; full pixel parity is not accepted."
+    },
+    "native_craft_family_reference": {
+      "source": "build/stockpile-storage-native-input-20261111-144446",
+      "protocol": 187,
+      "native_icon_reference": "build/stockpile-storage-native-input-20261111-140501/nobles-symbols-manager.png",
+      "icon_comparison": [
+        {
+          "row": 0,
+          "different_pixels": 0,
+          "max_channel_error": 0
+        },
+        {
+          "row": 1,
+          "different_pixels": 0,
+          "max_channel_error": 0
+        },
+        {
+          "row": 2,
+          "different_pixels": 0,
+          "max_channel_error": 0
+        },
+        {
+          "row": 3,
+          "different_pixels": 0,
+          "max_channel_error": 0
+        },
+        {
+          "row": 4,
+          "different_pixels": 0,
+          "max_channel_error": 0
+        },
+        {
+          "row": 5,
+          "different_pixels": 0,
+          "max_channel_error": 0
+        },
+        {
+          "row": 6,
+          "different_pixels": 0,
+          "max_channel_error": 0
+        },
+        {
+          "row": 7,
+          "different_pixels": 0,
+          "max_channel_error": 0
+        },
+        {
+          "row": 8,
+          "different_pixels": 0,
+          "max_channel_error": 0
+        },
+        {
+          "row": 9,
+          "different_pixels": 0,
+          "max_channel_error": 0
+        },
+        {
+          "row": 10,
+          "different_pixels": 0,
+          "max_channel_error": 0
+        },
+        {
+          "row": 11,
+          "different_pixels": 0,
+          "max_channel_error": 0
+        },
+        {
+          "row": 12,
+          "different_pixels": 0,
+          "max_channel_error": 0
+        },
+        {
+          "row": 13,
+          "different_pixels": 0,
+          "max_channel_error": 0
+        },
+        {
+          "row": 14,
+          "different_pixels": 0,
+          "max_channel_error": 0
+        }
+      ],
+      "receipt": {
+        "artifacts": [
+          261,
+          262,
+          263
+        ],
+        "first_name": {
+          "first_name_bytes": [],
+          "has_name": true,
+          "language": 0,
+          "nickname_bytes": [],
+          "parts": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "type": 1,
+          "words": [
+            -1,
+            1455,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ]
+        },
+        "items": [
+          15047,
+          20196,
+          13147
+        ],
+        "pointer_workflow": true,
+        "success": true
+      },
+      "artifacts_added": 3,
+      "events_added": 6,
+      "status": "passed_with_known_issues",
+      "limits": [
+        "Only first fifteen visible icons compared; this does not close other Nobles lifecycle gaps."
+      ]
     }
   },
   "typed_appointment_sequence_reference": {

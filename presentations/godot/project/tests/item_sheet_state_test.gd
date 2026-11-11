@@ -28,6 +28,11 @@ func completed(wrong_flag:=false) -> void:
 
 func run() -> void:
 	setup();model.item_id=1000
+	var craft_look={"material_token":"CREATURE:TIGER:HAIR","subtype_raw":"","color_token":"GRAY","stack":1,"flags":0,"craft_soft_material":0,"craft_gem_color":"CLEAR"}
+	check(model._valid_appearance(craft_look,42),"Native craft material fact rejected")
+	check(not model._valid_appearance(craft_look,39),"Ammo accepted craft facts")
+	craft_look.craft_soft_material=2
+	check(not model._valid_appearance(craft_look,42),"Invalid craft material accepted")
 	var bag_look={"material_token":"PLANT:COTTON:THREAD","subtype_raw":"","color_token":"WHITE","stack":1,"flags":0,
 		"contents":{"container":false,"entries":[]}}
 	check(model._valid_appearance(bag_look,31),"Empty bag appearance rejected")

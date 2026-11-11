@@ -8,6 +8,30 @@
 #include <optional>
 
 namespace df3d_production {
+// Native c81020..c8117b classifies the material before composing craft art.
+// These are semantic material flags, not the generic metal/wood classification.
+inline std::optional<bool> craftSoftMaterial(df::item* item) {
+    if(!item || !df::global::world || !farmFunctions())return std::nullopt;
+    const auto kind=int(item->getType());
+    if(kind<36 || kind>43 || kind==39)return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool pinned=[base] {
+        const auto hash=[base](size_t at,size_t count) {
+            uint64_t value=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<count;++i){value^=base[at+i];value*=UINT64_C(1099511628211);}
+            return value;
+        };
+        return hash(0xc81020,0x15c)==UINT64_C(0x4a91a763dfcc9532) &&
+            hash(0x145bee0,0x5e)==UINT64_C(0x6abc4e374e372eef);
+    }();
+    if(!pinned)return std::nullopt;
+    using Flag=bool(*)(df::world*,int32_t,int16_t,int32_t);
+    const auto material=item->getMaterial();const auto index=item->getMaterialIndex();
+    for(const int flag:{0x18,0x1d,0x1e,0x3e})
+        if(reinterpret_cast<Flag>(base+0x145bee0)(df::global::world,flag,material,index))return true;
+    return false;
+}
+
 // Native c811ea..c812e5's first qualifying encrustation, before the craft
 // compositor. Semantic improvement/material inputs only; no graphics_info.
 // -1 means no usable overlay color; nullopt means unavailable/invalid inputs.

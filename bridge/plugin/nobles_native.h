@@ -2,6 +2,7 @@
 #include "unit_description_native.h"
 #include "item_appearance_recipe.h"
 #include "creature_office_native.h"
+#include "knowledge_detail_native.h"
 #include "df/unitpropertyplacementst.h"
 #include "df/unit_demand.h"
 #include "df/mandate.h"
@@ -23,7 +24,8 @@
 #include <vector>
 namespace df3d_nobles {
 struct RoomHelp {std::string actual,required;int32_t color=15;};
-struct HoverHelp {std::string description;std::array<RoomHelp,4> rooms;};
+struct ObligationHelp {std::string text;int32_t color=15;};
+struct HoverHelp {std::string description;std::array<RoomHelp,4> rooms,furniture;std::vector<ObligationHelp> demands,mandates;};
 struct Row {
     int32_t unitId=-1,nemesisId=-1,entityId=-1,positionId=-1,assignmentId=-1,value=0;
     std::string positionName,title,squadCaption,holderCaption;
@@ -215,6 +217,14 @@ struct RequirementsContext {
         return true;
     }
 };
+// Same owned-string formatter and scalar arguments as native429911/429c92.
+inline std::string obligationItem(uint8_t* base,int16_t type,int16_t subtype,int16_t material,int32_t index,int32_t quantity) {
+    df3d_creature::KnowledgeMaterialCacheRestore restore(df::global::world->raws.creatures.hist_fig_to_creature_map);
+    std::string text;
+    using Item=void(*)(std::string*,int16_t,int16_t,int16_t,int32_t,int32_t,int32_t,bool,void*,int32_t,int32_t,bool,int32_t,int32_t);
+    reinterpret_cast<Item>(base+0xa82c10)(&text,type,subtype,material,index,quantity,0,false,nullptr,-1,-1,true,0,0);
+    return text;
+}
 // Native134a920 only reads demand fields, owned zones, contained buildings and
 // item type/material getters. Own the unit/demand containers; buildings/items
 // remain read-only simulation references. No menu context is reachable here.
@@ -247,6 +257,16 @@ inline bool obligations(const df::noblelistst& source,Row& row,uint8_t* base) {
         const bool fulfilled=reinterpret_cast<bool(*)(df::unit*,int32_t)>(base+0x134a920)(&owned,static_cast<int32_t>(i));
         const int32_t severity=fulfilled?0:demands[i].timeout_counter>=5000?3:demands[i].timeout_counter>=2500?2:1;
         row.demandStatus=std::max(row.demandStatus,severity);
+        if(row.help){const auto& demand=demands[i];ObligationHelp help;
+            help.color=severity==0?15:severity==1?6:severity==2?14:12;
+            if(demand.overtype==df::demand_type::ROOM_ITEM){
+                help.text=obligationItem(base,int16_t(demand.item_type),demand.item_subtype,demand.mat_type,demand.mat_index,1);
+                help.text+=" in "; // Native42994c inline literal.
+                constexpr size_t places[]={0x163cdf0,0x162b8a8,0x163cde0,0x162b844};
+                const int place=int(demand.place);if(place>=0 && place<4)help.text+=reinterpret_cast<const char*>(base+places[place]);
+            }
+            row.help->demands.push_back(std::move(help));
+        }
     }
     // Renderer42853b aggregates mandates inline; there is no helper call.
     for(const auto* mandate:df::global::world->mandates.all) {
@@ -259,6 +279,19 @@ inline bool obligations(const df::noblelistst& source,Row& row,uint8_t* base) {
             severity=remaining<2500?3:remaining<5000?2:1;
         }
         row.mandateStatus=std::max(row.mandateStatus,severity);
+        if(row.help){const df::mandate value=*mandate;ObligationHelp help;
+            const auto literal=[base](size_t rva){return reinterpret_cast<const char*>(base+rva);};
+            help.color=severity==0?15:severity==1?6:severity==2?14:12;
+            if(value.mode==df::mandate_type::Export || value.mode==df::mandate_type::Make){
+                help.text=literal(value.mode==df::mandate_type::Export?0x163cdd0:0x163ce4c);
+                help.text+=obligationItem(base,int16_t(value.item_type),value.item_subtype,value.mat_type,value.mat_index,-1);
+            }
+            if(value.mode==df::mandate_type::Make || value.mode==df::mandate_type::Guild){
+                help.text+=literal(0x1615540);help.text+=std::to_string(value.amount_remaining);
+                help.text+=literal(0x15eb514);help.text+=std::to_string(value.amount_total);help.text+=literal(0x1615580);
+            }else if(value.mode==df::mandate_type::Export)help.text+=literal(0x163ce40);
+            row.help->mandates.push_back(std::move(help));
+        }
     }
     return true;
 }
@@ -266,9 +299,15 @@ inline bool obligations(const df::noblelistst& source,Row& row,uint8_t* base) {
 // above. Native42a3a4/42a417 names both values through ab4f20. All strings are
 // owned; ab4ee0 is a gps writer and is never invoked for its scalar color rule.
 inline bool hoverHelp(const df::noblelistst& source,Row& row,uint8_t* base) {
-    static const bool pinned=[base]{uint64_t h=UINT64_C(14695981039346656037);
-        for(size_t i=0;i<0x3b0;++i){h^=base[0xab4f20+i];h*=UINT64_C(1099511628211);}
-        return h==UINT64_C(0x7740ba5bc0108c80);}();
+    static const bool pinned=[base]{
+        for(const auto& pin:std::array<std::array<uint64_t,3>,3>{{
+            {0xab4f20,0x3b0,UINT64_C(0x7740ba5bc0108c80)},
+            {0xa82c10,0x56ec,UINT64_C(0x66347214dfd39a0b)},
+            {0x52c2b0,0xd8,UINT64_C(0x38b6489e35387929)}}}){
+            uint64_t h=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin[1];++i){h^=base[pin[0]+i];h*=UINT64_C(1099511628211);}
+            if(h!=pin[2])return false;
+        }return true;}();
     if(!pinned || source.ep->description.size()>16384)return false;
     static_assert(offsetof(df::entity_position,description)==0x358);
     auto& help=row.help.emplace();help.description=source.ep->description;
@@ -281,6 +320,21 @@ inline bool hoverHelp(const df::noblelistst& source,Row& row,uint8_t* base) {
             out.required.insert(0,reinterpret_cast<const char*>(base+0x161be30));
         }
         out.color=row.requiredRooms[i]==0?11:row.actualRooms[i]>=row.requiredRooms[i]?15:row.actualRooms[i]>0?14:12;
+    }
+    static constexpr size_t nouns[]={0x163cea8,0x163cea0,0x163ce90,0x163ce08};
+    for(size_t i=0;i<4;++i){const int32_t actual=row.actualFurniture[i],required=row.requiredFurniture[i];
+        if(actual<=0 && required<=0)continue;
+        auto& out=help.furniture[i];
+        const auto count=[&](int32_t n,bool zeroWord){std::string text;
+            if(n==0 && zeroWord)text=reinterpret_cast<const char*>(base+0x1604520);
+            else reinterpret_cast<void(*)(int32_t,std::string*)>(base+0x52c2b0)(n,&text);
+            text+=reinterpret_cast<const char*>(base+0x15e873c);text+=reinterpret_cast<const char*>(base+nouns[i]);
+            if(n!=1)text+=reinterpret_cast<const char*>(base+0x15e9298);return text;};
+        out.actual=count(actual,true);
+        // Native429322/42952f/429724 gate every Needs caption on the chest
+        // requirement, even when formatting another furniture category.
+        if(row.requiredFurniture[0]>0)out.required=std::string(reinterpret_cast<const char*>(base+0x161be30))+count(required,false);
+        out.color=required==0?11:actual>=required?15:actual>0?14:12;
     }
     return true;
 }
@@ -300,8 +354,9 @@ inline std::optional<std::vector<Row>> overview(bool includeHelp=false) {
         Row row;row.canAppoint=*available;row.unitId=source->un?source->un->id:-1;row.nemesisId=source->nem?source->nem->id:-1;
         row.entityId=source->enid;row.positionId=source->ep->id;row.assignmentId=source->epp?source->epp->id:-1;
         row.value=source->value;row.positionName=source->ep->name[0];
-        if(!captions(*source,row,base) || !requirements.assess(*source,row,base) || !obligations(*source,row,base))return std::nullopt;
+        if(!captions(*source,row,base) || !requirements.assess(*source,row,base))return std::nullopt;
         if(includeHelp && !hoverHelp(*source,row,base))return std::nullopt;
+        if(!obligations(*source,row,base))return std::nullopt;
         result.push_back(std::move(row));
     }
     return result;

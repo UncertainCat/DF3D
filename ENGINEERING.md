@@ -39,6 +39,30 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Nobles and administrators native discovery
 
+The optional owned help provider also formats furniture and obligations.
+Furniture text follows native428f95..4297e1, using pinned52c2b0 for counts and
+installed literals for names/plurals. It preserves native429322/42952f/429724's
+chest-requirement gate for every Needs caption; no correction is authorized or
+implemented. This static observation has not been independently reproduced with
+divergent furniture requirements and is not claimed as a confirmed native bug.
+Demand/mandate item text calls pinned a82c10 with native429911/429c92 arguments,
+owned output strings and the existing historical-material-map restoration guard.
+Fulfillment uses the existing independently owned demand/unit context. Status
+colors and surrounding literal/count composition mirror the inline native code;
+no drawing routine or menu scratch is used. Accounting help remains pending.
+
+Protected085035 on2026-11-11 matches16 displayed furniture assessments, four
+mandate rows (three distinct mandates), and four controlled office-demand cases
+against native hover text and colors. Fulfilled/pending/urgent/critical demands
+produce palettes15/6/14/12 respectively. Native menu bytes, random streams and
+measured lookup caches remain preserved. `native_nobles.json.obligation_help_reference`
+records the outputs and limits: Export/Guild, mandate urgency boundaries,
+non-office demands and divergent furniture requirements lack live comparison.
+No typed help transport or Godot help rendering exists yet, and the PNG handshake
+still does not establish visual hover fidelity. MSVC and core QA
+`build/qa/nobles-obligation-help` pass. DF39260 closes unsaved, source preserved,
+30FPS, GPU42C/0% sampled.
+
 `nobles-help-probe` optionally collects office descriptions and room help from
 an owned overview. Native428eea wraps `entity_position.description` (+358).
 Room hover42a331/42a340 uses the existing requirements/valuation providers;
@@ -53,8 +77,8 @@ unrequired, missing, partial and satisfied rooms. The owned help probe preserves
 native menu bytes, random streams and measured lookup caches. Native samples
 show help replacing introduction rows10..12; hovering any of the four room icons
 shows the same assessment. Symbol hover shows nonempty office descriptions.
-Furniture/demand/mandate help is observed but its text providers remain pending;
-accounting help is also unfinished. `native_nobles.json.hover_discovery_reference`
+Furniture/demand/mandate help providers are covered by the later text/color
+comparison below; accounting help remains unfinished. `native_nobles.json.hover_discovery_reference`
 retains the samples. The PNG handshake loses hover, so it is not visual hover
 acceptance. No typed help transport or viewer implementation exists yet.
 MSVC bridge and `build/qa/nobles-room-help` core checks pass. Source preservation

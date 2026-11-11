@@ -176,6 +176,26 @@ if os.getenv('DF3D_NOBLES_HOVER')=='1' then
   end
   result.room_help_reference[#result.room_help_reference+1]={unit_id=row.unit_id,rooms=row.help.rooms,native_text_colors_match=true}
  end end
+ result.furniture_help_reference={};result.mandate_help_reference={}
+ for index,row in ipairs(result.owned_help)do if row.unit_id>=0 then
+  hover_sample('furniture-'..index,720,178+(index-1)*36)
+  for kind,part in ipairs(row.help.furniture)do if part.actual~=''then
+   local x=6+54*((kind-1)//2);local y=10+(kind-1)%2
+   assert(cells(x,y,#dfhack.utf2df(part.actual))==dfhack.utf2df(part.actual),'Native furniture caption differs')
+   if part.required~=''then assert(cells(x+27,y,#dfhack.utf2df(part.required))==dfhack.utf2df(part.required),'Native furniture requirement differs')end
+   local tile=dfhack.screen.readTile(x,y);local color=tile.fg+((tile.bold and tile.bold~=0) and 8 or 0)
+   assert(color==part.color,'Native furniture hover color differs')
+  end end
+  result.furniture_help_reference[#result.furniture_help_reference+1]={unit_id=row.unit_id,parts=row.help.furniture,native_text_colors_match=true}
+  hover_sample('mandates-'..index,800,178+(index-1)*36)
+  for offset,item in ipairs(row.help.mandates)do
+   local x=6+30*((offset-1)//3);local y=10+(offset-1)%3
+   assert(cells(x,y,#dfhack.utf2df(item.text))==dfhack.utf2df(item.text),'Native mandate caption differs: '..item.text)
+   local tile=dfhack.screen.readTile(x,y);local color=tile.fg+((tile.bold and tile.bold~=0) and 8 or 0)
+   assert(color==item.color,'Native mandate hover color differs')
+  end
+  result.mandate_help_reference[#result.mandate_help_reference+1]={unit_id=row.unit_id,items=row.help.mandates,native_text_colors_match=true}
+ end end
  result.hover[#result.hover+1]=hover_sample('manager-description',544,394)
  result.hover[#result.hover+1]=hover_sample('bookkeeper-symbol',544,502)
  result.hover[#result.hover+1]=hover_sample('rooms-final',592,178)
@@ -195,6 +215,15 @@ for _,case in ipairs{{-1,0,0},{df.item_type.DRINK,0,1},{df.item_type.DRINK,2500,
  local owned=probe();assert(owned[2].demand_status==case[3],'Controlled demand status differs')
  native_icon(0x26500d8+(owned[2].demand_status+1)*0x30,94,16)
  result.demand_cases[#result.demand_cases+1]={item_type=case[1],elapsed=case[2],status=owned[2].demand_status,native_icon_match=true}
+ if os.getenv('DF3D_NOBLES_HOVER')=='1' then
+  local help=probe({'nobles-help-probe'})[2].help.demands[1]
+  hover_sample('controlled-demand',768,214)
+  assert(cells(6,10,#dfhack.utf2df(help.text))==dfhack.utf2df(help.text),'Native demand caption differs: '..help.text)
+  local tile=dfhack.screen.readTile(6,10);local color=tile.fg+((tile.bold and tile.bold~=0) and 8 or 0)
+  assert(color==help.color,'Native demand hover color differs')
+  result.demand_cases[#result.demand_cases].help=help
+  result.demand_cases[#result.demand_cases].native_help_match=true
+ end
 end
 demand_target.status.demands:erase(#demand_target.status.demands-1);demand:delete();settle()
 write('nobles-native.json',json.encode(result))

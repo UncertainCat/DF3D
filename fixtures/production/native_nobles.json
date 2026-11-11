@@ -3345,5 +3345,304 @@
       "Description and room help are diagnostic-only; typed transport and Godot rendering are not implemented.",
       "No responsive, hover timing or composed input acceptance."
     ]
+  },
+  "obligation_help_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-085035",
+    "furniture": [
+      {
+        "native_text_colors_match": true,
+        "parts": [
+          {
+            "actual": "No chests",
+            "color": 12,
+            "required": "Needs: 10 chests"
+          },
+          {
+            "actual": "1 cabinet",
+            "color": 14,
+            "required": "Needs: 5 cabinets"
+          },
+          {
+            "actual": "No weapon racks",
+            "color": 12,
+            "required": "Needs: 5 weapon racks"
+          },
+          {
+            "actual": "No armor stands",
+            "color": 12,
+            "required": "Needs: 5 armor stands"
+          }
+        ],
+        "unit_id": 5981
+      },
+      {
+        "native_text_colors_match": true,
+        "parts": [
+          {
+            "actual": "2 chests",
+            "color": 15,
+            "required": "Needs: 2 chests"
+          },
+          {
+            "actual": "3 cabinets",
+            "color": 15,
+            "required": "Needs: 1 cabinet"
+          },
+          {
+            "actual": "1 weapon rack",
+            "color": 15,
+            "required": "Needs: 1 weapon rack"
+          },
+          {
+            "actual": "1 armor stand",
+            "color": 15,
+            "required": "Needs: 1 armor stand"
+          }
+        ],
+        "unit_id": 5813
+      },
+      {
+        "native_text_colors_match": true,
+        "parts": [
+          {
+            "actual": "2 chests",
+            "color": 15,
+            "required": "Needs: 2 chests"
+          },
+          {
+            "actual": "3 cabinets",
+            "color": 15,
+            "required": "Needs: 1 cabinet"
+          },
+          {
+            "actual": "1 weapon rack",
+            "color": 15,
+            "required": "Needs: 1 weapon rack"
+          },
+          {
+            "actual": "1 armor stand",
+            "color": 15,
+            "required": "Needs: 1 armor stand"
+          }
+        ],
+        "unit_id": 5813
+      },
+      {
+        "native_text_colors_match": true,
+        "parts": [
+          {
+            "actual": "",
+            "color": 15,
+            "required": ""
+          },
+          {
+            "actual": "1 cabinet",
+            "color": 11,
+            "required": ""
+          },
+          {
+            "actual": "",
+            "color": 15,
+            "required": ""
+          },
+          {
+            "actual": "",
+            "color": 15,
+            "required": ""
+          }
+        ],
+        "unit_id": 6812
+      },
+      {
+        "native_text_colors_match": true,
+        "parts": [
+          {
+            "actual": "",
+            "color": 15,
+            "required": ""
+          },
+          {
+            "actual": "1 cabinet",
+            "color": 11,
+            "required": ""
+          },
+          {
+            "actual": "",
+            "color": 15,
+            "required": ""
+          },
+          {
+            "actual": "",
+            "color": 15,
+            "required": ""
+          }
+        ],
+        "unit_id": 6815
+      },
+      {
+        "native_text_colors_match": true,
+        "parts": [
+          {
+            "actual": "",
+            "color": 15,
+            "required": ""
+          },
+          {
+            "actual": "1 cabinet",
+            "color": 11,
+            "required": ""
+          },
+          {
+            "actual": "",
+            "color": 15,
+            "required": ""
+          },
+          {
+            "actual": "",
+            "color": 15,
+            "required": ""
+          }
+        ],
+        "unit_id": 1017
+      },
+      {
+        "native_text_colors_match": true,
+        "parts": [
+          {
+            "actual": "",
+            "color": 15,
+            "required": ""
+          },
+          {
+            "actual": "1 cabinet",
+            "color": 11,
+            "required": ""
+          },
+          {
+            "actual": "",
+            "color": 15,
+            "required": ""
+          },
+          {
+            "actual": "",
+            "color": 15,
+            "required": ""
+          }
+        ],
+        "unit_id": 5984
+      }
+    ],
+    "mandates": [
+      {
+        "items": [
+          {
+            "color": 6,
+            "text": "Make bags (1/1)"
+          },
+          {
+            "color": 6,
+            "text": "Make hoods (2/2)"
+          }
+        ],
+        "native_text_colors_match": true,
+        "unit_id": 5981
+      },
+      {
+        "items": [
+          {
+            "color": 6,
+            "text": "Make picks (2/2)"
+          }
+        ],
+        "native_text_colors_match": true,
+        "unit_id": 5813
+      },
+      {
+        "items": [
+          {
+            "color": 6,
+            "text": "Make picks (2/2)"
+          }
+        ],
+        "native_text_colors_match": true,
+        "unit_id": 5813
+      },
+      {
+        "items": [],
+        "native_text_colors_match": true,
+        "unit_id": 6812
+      },
+      {
+        "items": [],
+        "native_text_colors_match": true,
+        "unit_id": 6815
+      },
+      {
+        "items": [],
+        "native_text_colors_match": true,
+        "unit_id": 1017
+      },
+      {
+        "items": [],
+        "native_text_colors_match": true,
+        "unit_id": 5984
+      }
+    ],
+    "demands": [
+      {
+        "elapsed": 0,
+        "help": {
+          "color": 15,
+          "text": "item in Throne Room/Office"
+        },
+        "item_type": -1,
+        "native_help_match": true,
+        "native_icon_match": true,
+        "status": 0
+      },
+      {
+        "elapsed": 0,
+        "help": {
+          "color": 6,
+          "text": "drink in Throne Room/Office"
+        },
+        "item_type": 69,
+        "native_help_match": true,
+        "native_icon_match": true,
+        "status": 1
+      },
+      {
+        "elapsed": 2500,
+        "help": {
+          "color": 14,
+          "text": "drink in Throne Room/Office"
+        },
+        "item_type": 69,
+        "native_help_match": true,
+        "native_icon_match": true,
+        "status": 2
+      },
+      {
+        "elapsed": 5000,
+        "help": {
+          "color": 12,
+          "text": "drink in Throne Room/Office"
+        },
+        "item_type": 69,
+        "native_help_match": true,
+        "native_icon_match": true,
+        "status": 3
+      }
+    ],
+    "menu_rng_lookup_caches_preserved": true,
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "No typed help transport or Godot rendering yet.",
+      "Export/Guild mandates, mandate urgency boundaries and non-office demands lack independent live comparison.",
+      "The native chest-requirement gate for other furniture Needs captions is preserved from disassembly; divergent requirement combinations lack a controlled comparison.",
+      "Screenshot handshake loses hover state; no visual hover acceptance.",
+      "Accounting help remains unfinished."
+    ]
   }
 }

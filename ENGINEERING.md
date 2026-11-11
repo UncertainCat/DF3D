@@ -88,8 +88,7 @@ sampled GPU60C/7%. Cross-office restoration still needs live acceptance.
 
 Native4227b0 applies staged entries from handling_symbol_closure_ind through the
 end. Feed424794 toggles a candidate between the selected office, its previous
-office and unassigned, and Done starts apply at index0. Claim mutation and apply
-ownership still require audit before admitting4227b0 as a runtime call.
+office and unassigned, and Done starts apply at index0.
 
 Ordinary items require a continuation, not just artifact-claim edits. Native
 4227b0 stops at the first selected non-artifact and leaves
@@ -108,8 +107,33 @@ this sequence and native text. The inspected first dialog is headed “Name the
 symbol” and uses the shared component/word picker. Earlier111257 establishes
 the single-item case with closure index-1 while naming remains open. Both
 protected runs close unsaved with source preservation. The two-item run uses
-30FPS, sampled GPU59C/14%. This is native workflow evidence only; owned artifact
-elevation, continuation and naming remain unfinished.
+30FPS, sampled GPU59C/14%. This is native workflow evidence only.
+
+`nobles_symbols_mutation_native.h` now calls4227b0 on a freshly prepared/staged
+owned context. It checks live item/assignment membership and artifact reference
+consistency before effects. A step elevates at most one ordinary item with the
+pinned semantic allocation/reference/history/name helpers, then resumes native
+claim application. Semantic globals are bound to artifact/event IDs, dates,
+world-history collections, active mission and worldgen history visibility.
+No global menu update or name-editor opener is invoked. Native naming consumes
+ordinary simulation randomness; read-only scratch guards do not cover effects.
+Completed claims are checked afterward. Failures after entering effects return
+Unknown. The result contains the artifact to name and remaining item IDs in
+native order, with no retained pointers. An asynchronous owner still needs
+continuation ordering, stale validation, naming lifetime and deduplication.
+
+Protected112645 on2026-11-11 exercises `nobles-symbol-apply-probe`. Existing
+artifact assignment/removal match native claim snapshots. Two ordinary items
+are elevated in separate steps: the second remains ordinary until its step;
+both acquire generated names, artifact-category membership and office claims,
+with two artifact records and four history events added. Native administrators
+and name-creator bytes remain unchanged. Core passes in
+`build/qa/nobles-symbol-apply-checked`; the MSVC plugin builds. DF11200 closes
+unsaved with source preservation,30FPS, sampled GPU59C/14%. Earlier112505 tests
+the same effects before adding postcondition checks. This is diagnostic effect
+acceptance, not typed transport, rendered picker/naming or failure-lifecycle
+acceptance. Cross-office/civilization claims and mixed continuation ordering
+remain unverified.
 
 Owned accounting changes use `setAccounting` in `nobles_draft_native.h`.
 Native425712..4257b4 contains an inline occupied-ACCOUNTING-row check followed

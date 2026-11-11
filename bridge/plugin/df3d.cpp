@@ -119,6 +119,7 @@
 #include "nobles_native.h"
 #include "nobles_draft_native.h"
 #include "nobles_symbols_native.h"
+#include "nobles_symbols_mutation_native.h"
 #include "places_action_native.h"
 #include "tasks_action_native.h"
 #include "residents_activity_description_native.h"
@@ -2533,6 +2534,25 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             row["position"]=Json::Value(Json::arrayValue);for(auto v:{entry.position.x,entry.position.y,entry.position.z})row["position"].append(v);
             list.append(row);}result.append(list);}
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
+        }
+        if(parameters[0]=="nobles-symbol-apply-probe") {
+          if(parameters.size()<6 || (parameters.size()-4)%2)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving() || !df3d_nobles::symbolApplyReady())return CR_FAILURE;
+          try {
+            const df3d_nobles::OfficeKey key{std::stoi(parameters[1]),std::stoi(parameters[2]),std::stoi(parameters[3])};
+            df3d_nobles::Context owned(reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr)));
+            if(!df3d_nobles::prepareDraft(owned,{}))return CR_FAILURE;
+            const auto rows=df3d_nobles::projectSymbols(owned,key);if(!rows)return CR_FAILURE;
+            std::vector<df3d_nobles::SymbolChoice> edits;
+            for(size_t i=4;i<parameters.size();i+=2){const auto selected=std::stoi(parameters[i+1]);
+              if(selected!=0 && selected!=1)return CR_WRONG_USAGE;edits.push_back({std::stoi(parameters[i]),selected!=0});}
+            if(!df3d_nobles::stageSymbols(owned,key,df3d_nobles::symbolRevision(*rows),edits))return CR_FAILURE;
+            const auto effect=df3d_nobles::applySymbolStep(owned,key);
+            Json::Value result;result["outcome"]=int(effect.outcome);result["naming_artifact_id"]=effect.namingArtifactId;
+            result["remaining"]=Json::Value(Json::arrayValue);
+            for(const auto& entry:effect.remaining){Json::Value row;row["item_id"]=entry.itemId;row["selected"]=entry.selected;result["remaining"].append(row);}
+            out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
+          }catch(const std::exception&){return CR_FAILURE;}
         }
         if(parameters[0]=="nobles-symbols-probe" || parameters[0]=="nobles-symbol-stage-probe") {
           const bool stage=parameters[0]=="nobles-symbol-stage-probe";

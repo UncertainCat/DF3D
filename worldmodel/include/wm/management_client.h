@@ -472,6 +472,16 @@ struct NoblesState {
   std::vector<NoblesSymbol> symbols;std::optional<NoblesSymbolStep> step;std::optional<NoblesSymbolName> name;
   std::optional<std::string> symbolTargetCaption;
 };
+struct ObjectsRequest {uint8_t tab=0;uint32_t offset=0;uint16_t limit=32;uint64_t expectedListRevision=0;int32_t artifactId=-1;};
+struct ObjectsRow {
+  int32_t artifactId=-1,itemId=-1;std::string nativeName,translatedName,ownership;
+  std::optional<TilePos> position;std::optional<SelectionAppearance> appearance;
+};
+struct ObjectsDestination {int32_t artifactId=-1,itemId=-1;std::optional<TilePos> position;};
+struct ObjectsState {
+  ObjectsOutcome outcome=ObjectsOutcome::None;uint8_t tab=0;uint64_t listRevision=0;uint32_t total=0,offset=0;
+  std::vector<ObjectsRow> rows;std::optional<ObjectsDestination> destination;
+};
 struct PlacesRequest {uint8_t tab=0;uint32_t offset=0;uint16_t limit=32;uint64_t expectedListRevision=0;
   int32_t buildingId=-1;int8_t siegeAction=-1;};
 struct PlacesRow {
@@ -943,6 +953,7 @@ struct ManagementRequest {
   StocksMenuRequest stocksMenu;
   TasksRequest tasks;
   PlacesRequest places;
+  ObjectsRequest objects;
   NoblesRequest nobles;
   ResidentsRowsRequest residentsRows;
   ResidentsSpecializationRequest residentsSpecialization;
@@ -1013,6 +1024,7 @@ struct ManagementState {
   std::optional<StocksMenuState> stocksMenu;
   std::optional<TasksState> tasks;
   std::optional<PlacesState> places;
+  std::optional<ObjectsState> objects;
   std::optional<NoblesState> nobles;
   std::optional<ResidentsSpecializationState> residentsSpecialization;
   std::optional<ResidentsActivityState> residentsActivity;

@@ -94,6 +94,21 @@ ManagementState decodeState(const m::ManagementState* s) {
       out.rows.push_back(std::move(v));
     }
   }
+  if(const auto* r=s->objects()) {
+    auto& out=next.objects.emplace();out.outcome=ObjectsOutcome(r->outcome());out.tab=r->tab();
+    out.listRevision=r->list_revision();out.total=r->total();out.offset=r->offset();
+    for(const auto* row:*r->rows()){
+      ObjectsRow v;v.artifactId=row->artifact_id();v.itemId=row->item_id();
+      v.nativeName=row->native_name()->str();v.translatedName=row->translated_name()->str();v.ownership=row->ownership()->str();
+      if(const auto* p=row->position())v.position=TilePos{p->x(),p->y(),p->z()};
+      if(row->appearance())v.appearance=decodeItemRecipe(row->appearance());
+      out.rows.push_back(std::move(v));
+    }
+    if(const auto* d=r->destination()){
+      auto& v=out.destination.emplace();v.artifactId=d->artifact_id();v.itemId=d->item_id();
+      if(const auto* p=d->position())v.position=TilePos{p->x(),p->y(),p->z()};
+    }
+  }
   if(const auto* r=s->places()) {
     auto& out=next.places.emplace();out.outcome=PlacesOutcome(r->outcome());out.tab=r->tab();
     out.listRevision=r->list_revision();out.total=r->total();out.offset=r->offset();
@@ -336,6 +351,9 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
     nobles=m::CreateNoblesRequest(b,r.nobles.offset,r.nobles.limit,r.nobles.expectedListRevision,b.CreateVector(choices),target?&*target:nullptr,r.nobles.expectedCandidateRevision,r.nobles.expectedSetting,r.nobles.setting,
       b.CreateVector(symbols),r.nobles.stepToken,r.nobles.expectedNameRevision,query,edit);
   }
+  flatbuffers::Offset<m::ObjectsRequest> objects;
+  if(r.action==ManagementAction::ObjectsRead || r.action==ManagementAction::ObjectsLocate){const auto& q=r.objects;
+    objects=m::CreateObjectsRequest(b,q.tab,q.offset,q.limit,q.expectedListRevision,q.artifactId);}
   flatbuffers::Offset<m::PlacesRequest> places;
   if(r.action==ManagementAction::PlacesRead || r.action==ManagementAction::PlacesApply){const auto& q=r.places;
     places=m::CreatePlacesRequest(b,q.tab,q.offset,q.limit,q.expectedListRevision,q.buildingId,q.siegeAction);}
@@ -450,7 +468,7 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
           flatbuffers::Offset<m::WorkDetailSettingsRequest>{},
       (r.action==ManagementAction::StandingOrdersRead || r.action==ManagementAction::StandingOrdersSet)?
           m::CreateStandingOrdersRequest(b,r.standingOrders.category,r.standingOrders.settingId,r.standingOrders.expectedValue,r.standingOrders.value):
-          flatbuffers::Offset<m::StandingOrdersRequest>{},hunter,chores,kitchenMenu,stoneUse,stocksMenu,tasks,places,nobles);
+          flatbuffers::Offset<m::StandingOrdersRequest>{},hunter,chores,kitchenMenu,stoneUse,stocksMenu,tasks,places,nobles,objects);
   b.Finish(request);
 }
 }  // namespace wm::detail::management

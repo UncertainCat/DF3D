@@ -51,10 +51,16 @@ coordinates. Optional artwork remains absent until its native selector is expose
 Both request/reply defaults and validators use188 and mailbox
 `Local\df3d_management_v188`. Rebuild bridge and viewer together before live use;
 187 peers cannot share that mailbox. Older recordings do not acquire Objects
-facts. This is the schema-only step: producer, model codecs and viewer wiring
-remain pending. Core19, including Objects malformed-page, destination, refusal
+facts. Producer and viewer wiring remain pending. Core19, including Objects malformed-page, destination, refusal
 and scope cases, passes `build/qa/objects-contract-final`. The installed bridge
 is still187; this contract gate is not live acceptance of188.
+
+The engine-independent model owns Objects requests, rows and destinations.
+Its codec preserves paging/category/revision identity, copies all captions and
+optional artwork, and keeps unavailable destinations distinct from stale refusals.
+`objects_codec_tests.cpp` overwrites source reply bytes after decoding to check
+ownership. Core19 passes `build/qa/objects-model-codec-final`. This verifies the
+model codec only; typed live transport and rendered navigation remain pending.
 
 `objects_native.h` invokes DF53.16's375a70 list builder with an independently
 owned128-byte `artifacts_interfacest`. Native323aba is its caller; the native

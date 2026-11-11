@@ -434,13 +434,20 @@ struct ProductionState {
   std::string detail;
 };
 struct StocksGroupKey {int16_t type=-1,subtype=-1,subcat1=-1,subcat2=-1;};
-struct NoblesRequest {uint32_t offset=0;uint16_t limit=32;uint64_t expectedListRevision=0;};
+struct NoblesOffice {int32_t entityId=-1,positionId=-1,assignmentId=-1;uint32_t draftSlot=0;};
+struct NoblesChoice {NoblesOffice target;int32_t expectedUnitId=-1,unitId=-1;};
+struct NoblesRequest {uint32_t offset=0;uint16_t limit=32;uint64_t expectedListRevision=0;
+  std::vector<NoblesChoice> choices;std::optional<NoblesOffice> target;uint64_t expectedCandidateRevision=0;};
+struct NoblesCandidateSkill {int16_t id=-1;int32_t rating=0;std::string caption;};
+struct NoblesCandidate {int32_t unitId=-1,value=0;std::string caption,noSkills;
+  std::vector<NoblesCandidateSkill> skills;std::optional<SelectionAppearance> appearance;};
 struct NoblesAssessmentHelp {std::string actual,required;uint8_t color=15;};
 struct NoblesObligationHelp {std::string text;uint8_t color=15;};
 struct NoblesAccountingHelp {uint8_t setting=0,level=0;std::string title,examples,attained,progress;};
 struct NoblesHelp {std::string description;std::array<NoblesAssessmentHelp,4> rooms,furniture;
   std::vector<NoblesObligationHelp> demands,mandates;std::optional<NoblesAccountingHelp> accounting;};
 struct NoblesRow {
+  uint32_t draftSlot=0;
   int32_t entityId=-1,positionId=-1,assignmentId=-1,unitId=-1,nemesisId=-1,priority=0;
   std::string title,squadCaption,holderCaption;bool canAppoint=false,hasRoomAssessment=false;
   std::array<int32_t,4> requiredRooms{},actualRooms{},requiredFurniture{},actualFurniture{};
@@ -451,6 +458,7 @@ struct NoblesRow {
 struct NoblesState {
   NoblesOutcome outcome=NoblesOutcome::None;uint64_t listRevision=0;uint32_t total=0,offset=0;
   std::vector<NoblesRow> rows;
+  std::optional<NoblesOffice> target;uint64_t candidateRevision=0;std::vector<NoblesCandidate> candidates;
 };
 struct PlacesRequest {uint8_t tab=0;uint32_t offset=0;uint16_t limit=32;uint64_t expectedListRevision=0;
   int32_t buildingId=-1;int8_t siegeAction=-1;};

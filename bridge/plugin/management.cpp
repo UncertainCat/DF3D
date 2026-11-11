@@ -140,7 +140,7 @@
 #error "df3d management channel: shared memory transport is Windows-only"
 #endif
 #include "client_mailbox.h"
-#include "nobles_native.h"
+#include "nobles_draft_native.h"
 namespace df3d_management {
 namespace m = df3d::mirror;
 namespace sh = df3d::shm;
@@ -531,6 +531,8 @@ std::optional<TasksResult> tasks;
 struct NoblesResult {
   m::NoblesOutcome outcome=m::NoblesOutcome::Rejected;uint64_t listRevision=0;uint32_t total=0,offset=0;
   std::vector<df3d_nobles::Row> rows;
+  std::optional<m::NoblesOffice> target;uint64_t candidateRevision=0;
+  std::vector<df3d_nobles::Candidate> candidates;
 };
 std::optional<NoblesResult> nobles;
 struct PlacesResult {
@@ -1282,8 +1284,13 @@ void publish() {
     for(const auto& row:nobles->rows)rows.push_back(m::CreateNoblesRow(b,row.entityId,row.positionId,row.assignmentId,row.unitId,row.nemesisId,row.value,
       b.CreateString(row.title),b.CreateString(row.squadCaption),b.CreateString(row.holderCaption),row.canAppoint,row.hasRoomAssessment,
       b.CreateVector(row.requiredRooms.data(),4),b.CreateVector(row.actualRooms.data(),4),b.CreateVector(row.requiredFurniture.data(),4),b.CreateVector(row.actualFurniture.data(),4),
-      int8_t(row.demandStatus),int8_t(row.mandateStatus),encodeItemRecipe(row.appearance),encodeNoblesHelp(row.help)));
-    noblesResult=m::CreateNoblesState(b,nobles->outcome,nobles->listRevision,nobles->total,nobles->offset,b.CreateVector(rows));
+      int8_t(row.demandStatus),int8_t(row.mandateStatus),encodeItemRecipe(row.appearance),encodeNoblesHelp(row.help),row.draftSlot));
+    std::vector<flatbuffers::Offset<m::NoblesCandidate>> candidates;
+    for(const auto& row:nobles->candidates){std::vector<flatbuffers::Offset<m::NoblesCandidateSkill>> skills;
+      for(const auto& skill:row.skills)skills.push_back(m::CreateNoblesCandidateSkill(b,skill.id,skill.rating,b.CreateString(skill.caption)));
+      candidates.push_back(m::CreateNoblesCandidate(b,row.unitId,row.value,b.CreateString(row.caption),b.CreateString(row.noSkills),b.CreateVector(skills),encodeItemRecipe(row.appearance)));}
+    noblesResult=m::CreateNoblesState(b,nobles->outcome,nobles->listRevision,nobles->total,nobles->offset,b.CreateVector(rows),
+      nobles->target?&*nobles->target:nullptr,nobles->candidateRevision,b.CreateVector(candidates));
   }
   flatbuffers::Offset<m::PlacesState> placesResult;
   if(places){std::vector<flatbuffers::Offset<m::PlacesRow>> rows;
@@ -4401,18 +4408,59 @@ void run(color_ostream& out) {
     }catch(...){if(started){places->outcome=m::PlacesOutcome::Unknown;mutated=true;}}
     publish();return;
   }
-  if(r->action()==m::ManagementAction::NoblesRead){
+  if(r->action()==m::ManagementAction::NoblesRead || r->action()==m::ManagementAction::NoblesCandidates || r->action()==m::ManagementAction::NoblesCommit){
     const auto& q=*r->nobles();status=m::ManagementStatus::Rejected;message.clear();nobles.emplace();
-    // Protocol181 declares draft reads before their handler is connected.
-    // Never silently answer a staged request with the unstaged overview.
-    if(q.choices() && q.choices()->size()){publish();return;}
     try {
-      auto current=df3d_nobles::overview(true);if(!current)throw std::runtime_error("nobles unavailable");
-      uint64_t list=UINT64_C(14695981039346656037);
-      for(const auto& row:*current)for(auto id:{row.entityId,row.positionId,row.assignmentId,row.unitId,row.nemesisId})
-        for(unsigned i=0;i<4;++i){list^=uint8_t(uint32_t(id)>>(8*i));list*=UINT64_C(1099511628211);}
-      list&=INT64_MAX;if(!list)list=1;
-      if((q.expected_list_revision() && q.expected_list_revision()!=list) || q.offset()>current->size())nobles->outcome=m::NoblesOutcome::Stale;
+      std::vector<df3d_nobles::DraftChoice> choices;
+      if(q.choices())for(const auto* choice:*q.choices()){const auto& key=*choice->target();
+        choices.push_back({key.entity_id(),key.position_id(),key.assignment_id(),choice->expected_unit_id(),choice->unit_id(),key.draft_slot()});}
+      if(r->action()==m::ManagementAction::NoblesCommit){
+        using Outcome=df3d_nobles::DraftCommitOutcome;
+        switch(df3d_nobles::commitDraft(choices,q.expected_list_revision())){
+          case Outcome::Applied:nobles->outcome=m::NoblesOutcome::Applied;status=m::ManagementStatus::Ok;mutated=true;break;
+          case Outcome::Unknown:nobles->outcome=m::NoblesOutcome::Unknown;mutated=true;break;
+          case Outcome::Stale:nobles->outcome=m::NoblesOutcome::Stale;break;
+          default:break;
+        }
+        publish();return;
+      }
+      if(!df3d_nobles::ready())throw std::runtime_error("nobles unavailable");
+      df3d_nobles::Context owned(reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr)));
+      if(!df3d_nobles::prepareDraft(owned,choices,q.expected_list_revision())){
+        if(owned.stale)nobles->outcome=m::NoblesOutcome::Stale;
+        publish();return;
+      }
+      const auto list=owned.baseRevision;
+      if(r->action()==m::ManagementAction::NoblesCandidates){
+        const auto& key=*q.target();df::noblelistst* target=nullptr;
+        for(auto* row:owned.value.noblelist)if(row->enid==key.entity_id() && row->ep->id==key.position_id() &&
+            (row->epp?row->epp->id:-1)==key.assignment_id() && owned.slot(row)==key.draft_slot()){
+          if(target)throw std::runtime_error("ambiguous nobles draft target");target=row;}
+        auto current=df3d_nobles::projectCandidates(owned,target,true);
+        if(!current)throw std::runtime_error("nobles candidates unavailable");
+        uint64_t revision=UINT64_C(14695981039346656037);
+        const auto number=[&](int32_t value){for(unsigned i=0;i<4;++i){revision^=uint8_t(uint32_t(value)>>(8*i));revision*=UINT64_C(1099511628211);}};
+        const auto text=[&](const std::string& value){if(value.size()>16384)throw std::runtime_error("nobles candidate text exceeds limit");number(int32_t(value.size()));for(unsigned char byte:value){revision^=byte;revision*=UINT64_C(1099511628211);}};
+        for(const auto& row:*current){number(row.unitId);number(row.value);text(row.caption);text(row.noSkills);number(int32_t(row.skills.size()));
+          for(const auto& skill:row.skills){number(skill.id);number(skill.rating);text(skill.caption);}}
+        revision&=INT64_MAX;if(!revision)revision=1;
+        if((q.expected_candidate_revision() && q.expected_candidate_revision()!=revision) || q.offset()>current->size())nobles->outcome=m::NoblesOutcome::Stale;
+        else {
+          NoblesResult page;page.listRevision=list;page.candidateRevision=revision;page.target=key;page.total=uint32_t(current->size());page.offset=q.offset();size_t bytes=0;
+          for(size_t i=q.offset();i<current->size() && page.candidates.size()<q.limit();++i){auto& row=(*current)[i];size_t rowBytes=64;
+            const auto convert=[&](std::string& value){value=DF2UTF(value);if(value.size()>16384)throw std::runtime_error("nobles candidate text exceeds limit");rowBytes+=value.size();};
+            convert(row.caption);convert(row.noSkills);for(auto& skill:row.skills){rowBytes+=16;convert(skill.caption);}
+            if(row.unitId>=0){df3d_appearance::Result recipe;if(df3d_appearance::resolveUnitSelector(df::unit::find(row.unitId),recipe))row.appearance=df3d_production::ownedItemRecipe(recipe);}
+            if(row.appearance){size_t n=0;if(!df3d_production::validItemRecipe(*row.appearance,n))throw std::runtime_error("invalid nobles candidate artwork");rowBytes+=n;}
+            if(bytes+rowBytes>384*1024)break;bytes+=rowBytes;page.candidates.push_back(std::move(row));
+          }
+          if(page.offset<page.total && page.candidates.empty())throw std::runtime_error("nobles candidate exceeds page");
+          page.outcome=m::NoblesOutcome::None;nobles=std::move(page);status=m::ManagementStatus::Ok;
+        }
+        publish();return;
+      }
+      auto current=df3d_nobles::projectOverview(owned,true);if(!current)throw std::runtime_error("nobles unavailable");
+      if(q.offset()>current->size())nobles->outcome=m::NoblesOutcome::Stale;
       else {
         NoblesResult page;page.listRevision=list;page.total=uint32_t(current->size());page.offset=q.offset();size_t bytes=0;
         for(size_t i=q.offset();i<current->size() && page.rows.size()<q.limit();++i){

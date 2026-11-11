@@ -9,7 +9,7 @@ namespace df3d_nobles {
 // Local draft operations only. The context must be built independently by
 // 421f30, never copied from game.main_interface. No simulation assignment is
 // modified here. The caller must discard the context if preparation fails.
-inline bool stageAppointment(Context& owned,size_t index,int32_t unitId) {
+inline bool stageAppointment(Context& owned,size_t index,int32_t unitId,uint32_t newSlot) {
     auto& value=owned.value;
     const auto count=value.noblelist.size();
     if(count>65535 || index>=count || value.spec_prof.size()!=count ||
@@ -61,6 +61,7 @@ inline bool stageAppointment(Context& owned,size_t index,int32_t unitId) {
     value.spec_hfid[index]=selected?selected->hist_figure_id:-1;
     const auto erase=[&](size_t at) {
         auto* row=value.noblelist[at];
+        owned.draftSlots.erase(row);
         if(row->upplist)release(row->upplist,sizeof(df::unitpropertyplacementst));
         release(row,sizeof(df::noblelistst));
         value.noblelist.erase(value.noblelist.begin()+at);
@@ -96,16 +97,17 @@ inline bool stageAppointment(Context& owned,size_t index,int32_t unitId) {
         value.spec_prof.insert(value.spec_prof.begin()+insertion,nullptr);
         value.spec_hfid.insert(value.spec_hfid.begin()+insertion,-1);
         value.spec_enid.insert(value.spec_enid.begin()+insertion,blank->enid);
+        owned.draftSlots.emplace(blank,newSlot);
     }
     return true;
 }
 
-struct DraftChoice {int32_t entityId,positionId,assignmentId,expectedUnitId,unitId;};
-struct DraftRow {int32_t entityId,positionId,assignmentId,unitId,nemesisId,histfigId;};
+struct DraftChoice {int32_t entityId,positionId,assignmentId,expectedUnitId,unitId;uint32_t draftSlot=0;};
+struct DraftRow {int32_t entityId,positionId,assignmentId,unitId,nemesisId,histfigId;uint32_t draftSlot=0;};
 // Preparation restores read-only scratch before returning. In particular these
 // guards must not surround a subsequent simulation commit.
-inline bool prepareDraft(Context& owned,const std::vector<DraftChoice>& choices) {
-    if(!ready() || choices.size()>65536)return false;
+inline bool prepareDraft(Context& owned,const std::vector<DraftChoice>& choices,uint64_t expectedRevision=0) {
+    if(!ready() || choices.size()>4096 || expectedRevision>INT64_MAX)return false;
     auto* base=owned.base;
     static const bool pinned=[base] {
         uint64_t hash=UINT64_C(14695981039346656037);
@@ -117,17 +119,31 @@ inline bool prepareDraft(Context& owned,const std::vector<DraftChoice>& choices)
     df3d_creature::LaborEligibilityCacheRestore caches;
     for(auto* unit:df::global::world->units.active)if(!caches.capture(unit,-1))return false;
     reinterpret_cast<void(*)(df::administrators_interfacest*)>(base+0x421f30)(&owned.value);
+    if(owned.value.noblelist.size()>65536)return false;
+    uint64_t revision=UINT64_C(14695981039346656037);
+    for(const auto* row:owned.value.noblelist) {
+        if(!row || !row->ep)return false;
+        for(auto id:{row->enid,row->ep->id,row->epp?row->epp->id:-1,row->un?row->un->id:-1,row->nem?row->nem->id:-1})
+            for(unsigned i=0;i<4;++i){revision^=uint8_t(uint32_t(id)>>(8*i));revision*=UINT64_C(1099511628211);}
+        owned.draftSlots.emplace(row,0);
+    }
+    revision&=INT64_MAX;owned.baseRevision=revision?revision:1;
+    if(expectedRevision && expectedRevision!=owned.baseRevision){owned.stale=true;return false;}
+    uint32_t ordinal=0;
     for(const auto& choice:choices) {
+        if(choice.draftSlot>ordinal || (choice.assignmentId>=0 && choice.draftSlot))return false;
+        ++ordinal;
         size_t target=owned.value.noblelist.size();
         for(size_t i=0;i<owned.value.noblelist.size();++i) {
             const auto* row=owned.value.noblelist[i];if(!row || !row->ep)return false;
             if(row->enid==choice.entityId && row->ep->id==choice.positionId &&
-               (row->epp?row->epp->id:-1)==choice.assignmentId && (row->un?row->un->id:-1)==choice.expectedUnitId) {
+               (row->epp?row->epp->id:-1)==choice.assignmentId && owned.slot(row)==choice.draftSlot &&
+               (row->un?row->un->id:-1)==choice.expectedUnitId) {
                 if(target!=owned.value.noblelist.size())return false;
                 target=i;
             }
         }
-        if(!stageAppointment(owned,target,choice.unitId))return false;
+        if(!stageAppointment(owned,target,choice.unitId,ordinal))return false;
     }
     return true;
 }
@@ -141,7 +157,7 @@ inline std::optional<std::vector<DraftRow>> draftPreview(const std::vector<Draft
     for(size_t i=0;i<owned.value.noblelist.size();++i) {
         const auto* row=owned.value.noblelist[i];if(!row || !row->ep)return std::nullopt;
         rows.push_back({row->enid,row->ep->id,row->epp?row->epp->id:-1,row->un?row->un->id:-1,
-            row->nem?row->nem->id:-1,owned.value.spec_hfid[i]});
+            row->nem?row->nem->id:-1,owned.value.spec_hfid[i],owned.slot(row)});
     }
     return rows;
 }
@@ -168,18 +184,18 @@ inline bool draftCommitReady() {
     }();
     return pinned;
 }
-enum class DraftCommitOutcome {Unavailable,Rejected,Applied,Unknown};
+enum class DraftCommitOutcome {Unavailable,Rejected,Applied,Unknown,Stale};
 // Runs at a bridge safe point. The future request owner must bind this operation
 // to its session/revision and deduplicate it; Unknown must never be replayed.
 // The diagnostic route below is not a public asynchronous command contract.
-inline DraftCommitOutcome commitDraft(const std::vector<DraftChoice>& choices) {
+inline DraftCommitOutcome commitDraft(const std::vector<DraftChoice>& choices,uint64_t expectedRevision=0) {
     if(!draftCommitReady())return DraftCommitOutcome::Unavailable;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     Context owned(base);
     struct Expected {df::historical_entity* entity;int32_t assignment,holder,previous;bool created;};
     std::vector<Expected> effects;
     try {
-        if(choices.empty() || !prepareDraft(owned,choices))return DraftCommitOutcome::Rejected;
+        if(choices.empty() || !prepareDraft(owned,choices,expectedRevision))return owned.stale?DraftCommitOutcome::Stale:DraftCommitOutcome::Rejected;
         using FindNemesis=df::nemesis_record*(*)(std::vector<df::nemesis_record*>*,int32_t);
         const auto findNemesis=reinterpret_cast<FindNemesis>(base+0xdde080);
         for(const auto* row:owned.value.noblelist) {

@@ -25,6 +25,7 @@
 #include "df/plotinfost.h"
 #include <optional>
 #include <vector>
+#include <unordered_map>
 namespace df3d_nobles {
 struct RoomHelp {std::string actual,required;int32_t color=15;};
 struct ObligationHelp {std::string text;int32_t color=15;};
@@ -33,6 +34,7 @@ struct HoverHelp {std::optional<AccountingHelp> accounting;std::string descripti
 struct Row {
     int32_t unitId=-1,nemesisId=-1,entityId=-1,positionId=-1,assignmentId=-1,value=0;
     std::string positionName,title,squadCaption,holderCaption;
+    uint32_t draftSlot=0;
     std::optional<df3d_production::ItemAppearanceRecipe> appearance;
     std::optional<HoverHelp> help;
     bool canAppoint=false,hasRoomAssessment=false;
@@ -137,6 +139,10 @@ inline bool ready() {
 struct Context {
     df::administrators_interfacest value;
     uint8_t* base;
+    std::unordered_map<const df::noblelistst*,uint32_t> draftSlots;
+    uint64_t baseRevision=0;
+    bool stale=false;
+    uint32_t slot(const df::noblelistst* row) const {const auto it=draftSlots.find(row);return it==draftSlots.end()?0:it->second;}
     explicit Context(uint8_t* address):base(address){}
     ~Context(){
         reinterpret_cast<void(*)(df::administrators_interfacest*)>(base+0x421ea0)(&value);
@@ -376,13 +382,9 @@ inline bool hoverHelp(const df::noblelistst& source,Row& row,uint8_t* base) {
     }
     return true;
 }
-inline std::optional<std::vector<Row>> overview(bool includeHelp=false) {
-    if(!ready())return std::nullopt;
-    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
-    // Unit location summaries can choose between equivalent locations using MT.
+inline std::optional<std::vector<Row>> projectOverview(Context& owned,bool includeHelp=false) {
+    auto* base=owned.base;
     df3d_creature::InventoryRandomRestore random(base);
-    Context owned(base);
-    reinterpret_cast<void(*)(df::administrators_interfacest*)>(base+0x421f30)(&owned.value);
     if(owned.value.noblelist.size()>65536)return std::nullopt;
     RequirementsContext requirements;if(!requirements.capture(owned.value))return std::nullopt;
     std::vector<Row> result;result.reserve(owned.value.noblelist.size());
@@ -391,7 +393,7 @@ inline std::optional<std::vector<Row>> overview(bool includeHelp=false) {
         const auto available=appointmentAvailable(*source,owned.value.noblelist);if(!available)return std::nullopt;
         Row row;row.canAppoint=*available;row.unitId=source->un?source->un->id:-1;row.nemesisId=source->nem?source->nem->id:-1;
         row.entityId=source->enid;row.positionId=source->ep->id;row.assignmentId=source->epp?source->epp->id:-1;
-        row.value=source->value;row.positionName=source->ep->name[0];
+        row.value=source->value;row.positionName=source->ep->name[0];row.draftSlot=owned.slot(source);
         if(!captions(*source,row,base) || !requirements.assess(*source,row,base))return std::nullopt;
         if(includeHelp && !hoverHelp(*source,row,base))return std::nullopt;
         if(!obligations(*source,row,base))return std::nullopt;
@@ -399,11 +401,20 @@ inline std::optional<std::vector<Row>> overview(bool includeHelp=false) {
     }
     return result;
 }
+inline std::optional<std::vector<Row>> overview(bool includeHelp=false) {
+    if(!ready())return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    df3d_creature::InventoryRandomRestore random(base);
+    Context owned(base);
+    reinterpret_cast<void(*)(df::administrators_interfacest*)>(base+0x421f30)(&owned.value);
+    return projectOverview(owned,includeHelp);
+}
 struct CandidateSkill {int16_t id=-1;int32_t rating=0;std::string caption;};
 struct Candidate {
     int32_t unitId=-1,value=0;
     std::string caption,noSkills;
     std::vector<CandidateSkill> skills;
+    std::optional<df3d_production::ItemAppearanceRecipe> appearance;
 };
 inline bool candidateTextReady() {
     if(!df3d_creature::skillsCaptionReady())return false;
@@ -448,30 +459,13 @@ inline bool candidateText(df::unit* unit,const std::vector<int16_t>& relevant,Ca
     if(row.skills.empty())row.noSkills.assign(reinterpret_cast<const char*>(base+0x163ce68),18);
     return true;
 }
-// Selection identity comes from a fresh owned overview; no menu index crosses
-// this boundary. This only lists candidates, not permission to appoint them.
-inline std::optional<std::vector<Candidate>> candidates(int32_t entityId,int32_t positionId,int32_t assignmentId,bool includeText=false) {
-    if(!ready() || entityId<0 || positionId<0 || assignmentId< -1)return std::nullopt;
-    if(includeText && !candidateTextReady())return std::nullopt;
-    static_assert(sizeof(df::appointment_candidatest)==0x10);
-    static_assert(offsetof(df::appointment_candidatest,value)==8);
-    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+inline std::optional<std::vector<Candidate>> projectCandidates(Context& owned,df::noblelistst* target,bool includeText=false) {
+    if(!target || (includeText && !candidateTextReady()))return std::nullopt;
+    auto* base=owned.base;
     df3d_creature::InventoryRandomRestore random(base);
     df3d_creature::LaborEligibilityCacheRestore caches;
     if(df::global::world->units.active.size()>1048576)return std::nullopt;
     for(auto* unit:df::global::world->units.active)if(!caches.capture(unit,-1))return std::nullopt;
-    Context owned(base);
-    reinterpret_cast<void(*)(df::administrators_interfacest*)>(base+0x421f30)(&owned.value);
-    if(owned.value.noblelist.size()>65536)return std::nullopt;
-    df::noblelistst* target=nullptr;
-    for(auto* row:owned.value.noblelist) {
-        if(!row || !row->ep)return std::nullopt;
-        if(row->enid==entityId && row->ep->id==positionId && (row->epp?row->epp->id:-1)==assignmentId) {
-            if(target)return std::nullopt;
-            target=row;
-        }
-    }
-    if(!target)return std::nullopt;
     const auto available=appointmentAvailable(*target,owned.value.noblelist);
     if(!available || !*available)return std::nullopt;
     reinterpret_cast<void(*)(df::administrators_interfacest*,df::noblelistst*)>(base+0x423df0)(&owned.value,target);
@@ -489,5 +483,27 @@ inline std::optional<std::vector<Candidate>> candidates(int32_t entityId,int32_t
         result.push_back(std::move(candidate));
     }
     return result;
+}
+// Selection identity comes from a fresh owned overview; no menu index crosses
+// this boundary. This only lists candidates, not permission to appoint them.
+inline std::optional<std::vector<Candidate>> candidates(int32_t entityId,int32_t positionId,int32_t assignmentId,bool includeText=false) {
+    if(!ready() || entityId<0 || positionId<0 || assignmentId< -1)return std::nullopt;
+    static_assert(sizeof(df::appointment_candidatest)==0x10);
+    static_assert(offsetof(df::appointment_candidatest,value)==8);
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    df3d_creature::InventoryRandomRestore random(base);
+    Context owned(base);
+    reinterpret_cast<void(*)(df::administrators_interfacest*)>(base+0x421f30)(&owned.value);
+    if(owned.value.noblelist.size()>65536)return std::nullopt;
+    df::noblelistst* target=nullptr;
+    for(auto* row:owned.value.noblelist) {
+        if(!row || !row->ep)return std::nullopt;
+        if(row->enid==entityId && row->ep->id==positionId && (row->epp?row->epp->id:-1)==assignmentId) {
+            if(target)return std::nullopt;
+            target=row;
+        }
+    }
+    if(!target)return std::nullopt;
+    return projectCandidates(owned,target,includeText);
 }
 }

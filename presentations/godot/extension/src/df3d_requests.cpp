@@ -205,8 +205,15 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         for(const auto& l:v.links){Dictionary link;link["type"]=l.type;link["id"]=l.id;link["subid"]=l.subid;links.push_back(link);}
         value["words"]=words;value["links"]=links;result["residents_activity"]=value;
     }
-    if(s.nobles){const auto& v=*s.nobles;Dictionary value;Array rows;
-        for(const auto& row:v.rows){Dictionary entry;
+    if(s.nobles){const auto& v=*s.nobles;Dictionary value;Array rows,candidates;
+        if(v.target){const auto& key=*v.target;Dictionary target;target["entity_id"]=key.entityId;target["position_id"]=key.positionId;target["assignment_id"]=key.assignmentId;target["draft_slot"]=int64_t(key.draftSlot);value["target"]=target;}
+        value["candidate_revision"]=int64_t(v.candidateRevision);
+        for(const auto& row:v.candidates){Dictionary entry;Array skills;entry["unit_id"]=row.unitId;entry["value"]=row.value;
+            entry["caption"]=String::utf8(row.caption.c_str());entry["no_skills"]=String::utf8(row.noSkills.c_str());
+            for(const auto& skill:row.skills){Dictionary part;part["id"]=int(skill.id);part["rating"]=skill.rating;part["caption"]=String::utf8(skill.caption.c_str());skills.push_back(part);}
+            entry["skills"]=skills;if(row.appearance)entry["appearance"]=management::itemRecipeDictionary(*row.appearance);candidates.push_back(entry);}
+        value["candidates"]=candidates;
+        for(const auto& row:v.rows){Dictionary entry;entry["draft_slot"]=int64_t(row.draftSlot);
             entry["entity_id"]=row.entityId;entry["position_id"]=row.positionId;entry["assignment_id"]=row.assignmentId;
             entry["unit_id"]=row.unitId;entry["nemesis_id"]=row.nemesisId;entry["priority"]=row.priority;
             entry["title"]=String::utf8(row.title.c_str());entry["squad_caption"]=String::utf8(row.squadCaption.c_str());entry["holder_caption"]=String::utf8(row.holderCaption.c_str());
@@ -562,13 +569,32 @@ bool readResidentsSpecialization(const Dictionary& data,wm::ManagementRequest& r
 bool validateNobles(const Dictionary& data,String& error) {
     error="Invalid nobles request";
     const auto integer=[](const Dictionary& d,const char* k,int64_t lo,int64_t hi){return d.has(k) && d[k].get_type()==Variant::INT && int64_t(d[k])>=lo && int64_t(d[k])<=hi;};
-    if(data.size()!=4 || !integer(data,"offset",0,65536) || !integer(data,"limit",1,64) || !integer(data,"expected_list_revision",0,INT64_MAX) ||
-       (int64_t(data["offset"]) && !int64_t(data["expected_list_revision"])))return false;
+    const auto office=[&](const Variant& value,int64_t lastSlot){if(value.get_type()!=Variant::DICTIONARY)return false;const Dictionary key=value;
+        return key.size()==4 && integer(key,"entity_id",0,INT32_MAX) && integer(key,"position_id",0,INT32_MAX) && integer(key,"assignment_id",-1,INT32_MAX) &&
+          integer(key,"draft_slot",0,lastSlot) && (int64_t(key["assignment_id"])==-1 || int64_t(key["draft_slot"])==0);};
+    const Array keys=data.keys();for(int i=0;i<keys.size();++i){const String key=keys[i];if(key!="action" && key!="offset" && key!="limit" && key!="expected_list_revision" && key!="choices" && key!="target" && key!="expected_candidate_revision")return false;}
+    if(!integer(data,"action",int64_t(wm::ManagementAction::NoblesRead),int64_t(wm::ManagementAction::NoblesCommit)) ||
+       !integer(data,"offset",0,1048576) || !integer(data,"limit",1,64) || !integer(data,"expected_list_revision",0,INT64_MAX))return false;
+    Array choices;if(data.has("choices")){if(data["choices"].get_type()!=Variant::ARRAY)return false;choices=data["choices"];}
+    if(choices.size()>4096 || (choices.size() && !int64_t(data["expected_list_revision"])))return false;
+    for(int i=0;i<choices.size();++i){if(choices[i].get_type()!=Variant::DICTIONARY)return false;const Dictionary choice=choices[i];
+        if(choice.size()!=3 || !choice.has("target") || !office(choice["target"],i) || !integer(choice,"expected_unit_id",-1,INT32_MAX) || !integer(choice,"unit_id",-1,INT32_MAX))return false;}
+    if(data.has("expected_candidate_revision") && !integer(data,"expected_candidate_revision",0,INT64_MAX))return false;
+    const int64_t action=data["action"],offset=data["offset"],revision=data["expected_list_revision"],candidate=data.get("expected_candidate_revision",0);
+    if(action==int64_t(wm::ManagementAction::NoblesCommit)){
+        if(!choices.size() || !revision || offset || int64_t(data["limit"])!=32 || data.has("target") || candidate)return false;
+    }else if(action==int64_t(wm::ManagementAction::NoblesCandidates)){
+        if(!revision || !data.has("target") || !office(data["target"],choices.size()) || (offset && !candidate))return false;
+    }else if(offset>65536 || (offset && !revision) || data.has("target") || candidate)return false;
     error=String();return true;
 }
 bool readNobles(const Dictionary& data,wm::ManagementRequest& request,String&) {
-    request.action=wm::ManagementAction::NoblesRead;
-    request.nobles={uint32_t(int64_t(data["offset"])),uint16_t(int64_t(data["limit"])),uint64_t(int64_t(data["expected_list_revision"]))};return true;
+    request.action=wm::ManagementAction(int64_t(data["action"]));
+    auto& q=request.nobles;q.offset=uint32_t(int64_t(data["offset"]));q.limit=uint16_t(int64_t(data["limit"]));q.expectedListRevision=uint64_t(int64_t(data["expected_list_revision"]));
+    const auto office=[](const Dictionary& d){return wm::NoblesOffice{int32_t(int64_t(d["entity_id"])),int32_t(int64_t(d["position_id"])),int32_t(int64_t(d["assignment_id"])),uint32_t(int64_t(d["draft_slot"]))};};
+    if(data.has("choices")){const Array choices=data["choices"];for(int i=0;i<choices.size();++i){const Dictionary choice=choices[i];q.choices.push_back({office(choice["target"]),int32_t(int64_t(choice["expected_unit_id"])),int32_t(int64_t(choice["unit_id"]))});}}
+    if(data.has("target"))q.target=office(data["target"]);
+    q.expectedCandidateRevision=uint64_t(int64_t(data.get("expected_candidate_revision",0)));return true;
 }
 bool validatePlaces(const Dictionary& data,String& error) {
     error="Invalid places request";
@@ -986,7 +1012,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::NoblesRead)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::NoblesCommit)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

@@ -48,8 +48,16 @@ ManagementState decodeState(const m::ManagementState* s) {
   if(const auto* r=s->residents())next.residents=ResidentsState{{r->unit_ids()->begin(),r->unit_ids()->end()}};
   if(const auto* r=s->nobles()) {
     auto& out=next.nobles.emplace();out.outcome=NoblesOutcome(r->outcome());out.listRevision=r->list_revision();out.total=r->total();out.offset=r->offset();
+    out.candidateRevision=r->candidate_revision();
+    if(const auto* key=r->target())out.target=NoblesOffice{key->entity_id(),key->position_id(),key->assignment_id(),key->draft_slot()};
+    if(r->candidates())for(const auto* row:*r->candidates()){
+      NoblesCandidate v;v.unitId=row->unit_id();v.value=row->value();v.caption=row->caption()->str();v.noSkills=row->no_skills()->str();
+      for(const auto* skill:*row->skills())v.skills.push_back({skill->id(),skill->rating(),skill->caption()->str()});
+      if(row->appearance())v.appearance=decodeItemRecipe(row->appearance());
+      out.candidates.push_back(std::move(v));
+    }
     for(const auto* row:*r->rows()){
-      NoblesRow v;v.entityId=row->entity_id();v.positionId=row->position_id();v.assignmentId=row->assignment_id();
+      NoblesRow v;v.draftSlot=row->draft_slot();v.entityId=row->entity_id();v.positionId=row->position_id();v.assignmentId=row->assignment_id();
       v.unitId=row->unit_id();v.nemesisId=row->nemesis_id();v.priority=row->priority();
       v.title=row->title()->str();v.squadCaption=row->squad_caption()->str();v.holderCaption=row->holder_caption()->str();
       v.canAppoint=row->can_appoint();v.hasRoomAssessment=row->has_room_assessment();v.demandStatus=row->demand_status();v.mandateStatus=row->mandate_status();
@@ -293,7 +301,14 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
   const auto anchor=r.materialAnchor.value_or(TilePos{r.x,r.y,r.z});
   const m::TilePos materialAnchor(anchor.x,anchor.y,anchor.z);
   flatbuffers::Offset<m::NoblesRequest> nobles;
-  if(r.action==ManagementAction::NoblesRead)nobles=m::CreateNoblesRequest(b,r.nobles.offset,r.nobles.limit,r.nobles.expectedListRevision);
+  if(r.action>=ManagementAction::NoblesRead && r.action<=ManagementAction::NoblesCommit){
+    std::vector<flatbuffers::Offset<m::NoblesChoice>> choices;
+    for(const auto& choice:r.nobles.choices){const auto& key=choice.target;m::NoblesOffice target(key.entityId,key.positionId,key.assignmentId,key.draftSlot);
+      choices.push_back(m::CreateNoblesChoice(b,&target,choice.expectedUnitId,choice.unitId));}
+    std::optional<m::NoblesOffice> target;
+    if(r.nobles.target){const auto& key=*r.nobles.target;target.emplace(key.entityId,key.positionId,key.assignmentId,key.draftSlot);}
+    nobles=m::CreateNoblesRequest(b,r.nobles.offset,r.nobles.limit,r.nobles.expectedListRevision,b.CreateVector(choices),target?&*target:nullptr,r.nobles.expectedCandidateRevision);
+  }
   flatbuffers::Offset<m::PlacesRequest> places;
   if(r.action==ManagementAction::PlacesRead || r.action==ManagementAction::PlacesApply){const auto& q=r.places;
     places=m::CreatePlacesRequest(b,q.tab,q.offset,q.limit,q.expectedListRevision,q.buildingId,q.siegeAction);}

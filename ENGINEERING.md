@@ -39,6 +39,29 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Nobles and administrators native discovery
 
+Protocol181 now carries owned appointment drafts, paged candidates and commit
+receipts through the bridge, model and Godot request API. Each request rebuilds
+an independent native overview, checks its base revision before replay, then
+uses that owned draft for candidate selection or overview projection. Initial
+NEW placeholders have slot0; placeholders created by choiceN have slotN.
+Removing rows never renumbers these identities. Candidate continuation also
+checks ordered identity, score and text. Only the requested page resolves art.
+Commit invokes the native apply routine after preparation guards have retired;
+native outcomes are explicitly mapped to the distinct protocol enum values.
+The existing mailbox sequence and world admission checks remain in force.
+
+Protected101714 on2026-11-11 verifies two117-candidate lists across transport
+pages against the native probe, including ordered scores, names and all skill
+captions. It verifies a Manager draft preview, stale candidate rejection and
+stale commit rejection with an unchanged fresh overview. Core19, codec ownership
+and request encoding tests, the headless Nobles controller and both builds pass
+in `build/qa/nobles-transport-implementation`. The live viewer reports only the
+known experimental rendering-thread warning. DF4788 closes unsaved, source
+preservation passes, and GPU37C/0% is sampled with native capped at30FPS.
+This does not establish successful typed commit effects, NEW-slot replay,
+military conflicts or picker UI/lifecycle acceptance. The public screen remains
+gated; the controller still supplies read-only overview behavior.
+
 Candidate text is available from `nobles-candidate-text-probe`, alongside the
 unchanged identity/value-only probe. Native99a1f0 supplies ordered position
 skills, ba1a0 looks up each actual skill, and only positive ratings are included,
@@ -57,7 +80,8 @@ and observations. Earlier094213 sampled column56 instead of57;094301 exposed
 DF's abbreviation (Accomplished Organzr), now handled by52d910 rather than a
 substring. MSVC passes; source preservation passes and DF42860 closes unsaved,
 30FPS, GPU38C/0% sampled. Further skill columns, lower scroll pages, portraits,
-responsive layout and typed picker transport/view remain unfinished.
+responsive layout and picker view remain unfinished. Typed transport evidence
+is scoped separately above.
 
 Owned appointment commits now call the complete native42a5a0 apply/cleanup
 routine with independently prepared rows. `prepareDraft` finishes and restores
@@ -74,8 +98,9 @@ The wrapper, historical-figure-to-nemesis lookupdde080, assignment constructor
 pins cover shared position/history, military/job and personality helpers. World
 squads, civilized actors and equipment-update RIP operands are explicitly bound
 to simulation storage. No global native menu/input/camera/render state is used.
-`nobles-commit-probe` is a synchronous diagnostic; public session/revision,
-deduplication and pending/unknown ownership are still required before exposure.
+`nobles-commit-probe` is a synchronous diagnostic; typed transport now supplies
+session/revision and sequence admission. UI pending/unknown ownership and
+successful typed effect acceptance are still required before exposure.
 
 Protected093735 on2026-11-11 (also093551 before NEW-ID preflight tightening)
 compares existing Manager appoint/replace/vacate with the recorded native092416
@@ -98,8 +123,8 @@ military conflict retirement, and unlimited NEW placeholder insertion/removal.
 DF allocates the private rows/summaries so native421dc0 can release them. Native
 input/feed is never called. `nobles-draft-probe` replays semantic office/expected
 holder/selected-unit tuples in an ephemeral context with RNG/cache restoration.
-The eventual transport still needs unambiguous identities for repeated NEW
-slots and stale-draft admission; this diagnostic is not that public contract.
+Protocol181 supplies repeated NEW-slot identities and stale-draft admission;
+this diagnostic alone does not verify that public contract.
 
 Protected093032 on2026-11-11 compares every staged row's office, assignment,
 unit, nemesis and holder IDs against native Manager appoint/replace/vacate.

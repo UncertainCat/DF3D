@@ -18,7 +18,7 @@ func groups() -> Array:
 func list_top() -> int:return 84 if wide_tabs else 108
 func capacity() -> int:return maxi(0,int((size.y-list_top()-24)/36))
 func visible_first() -> int:return mini(state.first,maxi(0,state.rows.size()-capacity()))
-func spacing_columns() -> int:return maxi(0,int((int(size.x/8)-120-(2 if state.rows.size()>capacity() else 0))/2))
+func spacing_columns() -> int:return maxi(0,int((int(size.x/8)-121-(2 if state.rows.size()>capacity() else 0))/2))
 func status_x() -> int:return (62+spacing_columns())*8
 func holder_caption(row: Dictionary) -> String:
 	if row.unit_id<0:return row.holder_caption

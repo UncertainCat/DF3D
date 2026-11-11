@@ -248,6 +248,48 @@ for _,target in ipairs{{'manager',232,394},{'messenger',232,646}}do
  gui.simulateInput(view,'LEAVESCREEN');settle();assert(info.open and not menu.choosing_candidate,'Picker Cancel did not return to overview')
 end
 
+if os.getenv('DF3D_NOBLES_ACCOUNTING')=='1' then
+ local function resize(size)
+  write('owner-input-request.tmp','name-resize-'..size);assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+  local deadline=dfhack.getTickCount()+10000
+  while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Nobles resize timed out');script.sleep(1,'frames')end
+  assert(os.remove(out..'/owner-input-ack'));script.sleep(5,'frames');settle()
+ end
+ resize('wide');assert(g.dimx>=200,'Accounting requires wide native layout')
+ local base=dfhack.internal.getImageBase()
+ local inactive=df.reinterpret_cast('int32_t',base+0x2650378).value
+ local active=df.reinterpret_cast('int32_t',base+0x2650468).value
+ local sx,sy
+ for x=0,g.dimx-1 do for y=0,g.dimy-1 do
+  local at=x*g.dimy+y;local tile=g.screentexpos_lower[at];local top=g.screentexpos_top_lower[at]
+  if tile==inactive or tile==active or top==inactive or top==active then assert(not sx,'Ambiguous accounting first icon');sx=x;sy=y end
+ end end
+ assert(sx,'Native accounting icons unavailable')
+ local facts=df.global.plotinfo.nobles;local original_setting=facts.bookkeeper_settings;local original_precision=facts.bookkeeper_precision
+ result.accounting_reference={columns=g.dimx,rows=g.dimy,first_icon={x=sx,y=sy},original_setting=original_setting,original_precision=original_precision,cases={}}
+ for level,precision in ipairs{0,150,1500,15000,100000}do
+  facts.bookkeeper_precision=precision
+  local x=(sx+(level-1)*4)*8+16;local y=sy*12+18
+  g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=y//12
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+  gui.simulateInput(view,'_MOUSE_L');df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1;settle()
+  assert(facts.bookkeeper_settings==level-1,'Native accounting button selected wrong precision')
+  local current=probe({'nobles-help-probe'});local help
+  for _,row in ipairs(current)do if row.help.accounting then help=row.help.accounting;break end end
+  assert(help and help.setting==level-1,'Owned accounting settings differ')
+  local sample=hover_sample('accounting-'..level,x,y)
+  for _,key in ipairs{'title','examples','attained','progress'}do
+   local found=help[key]==''
+   for _,line in ipairs(sample.lines)do if line.text:find(help[key],1,true)then found=true end end
+   assert(found,'Native accounting caption differs: '..key..' '..help[key])
+  end
+  result.accounting_reference.cases[#result.accounting_reference.cases+1]={precision=precision,help=help,lines=sample.lines,native_text_match=true,native_click_effect=true}
+ end
+ facts.bookkeeper_settings=original_setting;facts.bookkeeper_precision=original_precision
+ result.accounting_reference.restored=true;write('nobles-native.json',json.encode(result))
+ capture('nobles-accounting-wide');resize('default')
+end
+
 if os.getenv('DF3D_NOBLES_WIRE')=='1' then
  write('nobles-wire-reference.json',json.encode(probe()))
  write('shot.tmp','nobles-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))

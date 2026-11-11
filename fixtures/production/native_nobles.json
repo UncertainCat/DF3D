@@ -3644,5 +3644,162 @@
       "Screenshot handshake loses hover state; no visual hover acceptance.",
       "Accounting help remains unfinished."
     ]
+  },
+  "accounting_reference": {
+    "cases": [
+      {
+        "help": {
+          "attained": "Your bookkeeper needs to work in an office to improve precision.",
+          "examples": "Stocks amount display: 77 -> 80   777 -> 800   7777 -> 8000   77777 -> 80000",
+          "level": 0,
+          "progress": "",
+          "setting": 0,
+          "title": "Lowest Precision"
+        },
+        "lines": [
+          {
+            "text": "      Lowest Precision     Stocks amount display: 77 -> 80   777 -> 800   7777 -> 8000   77777 -> 80000",
+            "y": 8
+          },
+          {
+            "text": "      Your bookkeeper needs to work in an office to improve precision.",
+            "y": 9
+          },
+          {
+            "text": "",
+            "y": 10
+          }
+        ],
+        "native_click_effect": true,
+        "native_text_match": true,
+        "precision": 0
+      },
+      {
+        "help": {
+          "attained": "Your bookkeeper has done enough work to attain low precision.",
+          "examples": "Stocks amount display: 77 -> 77   777 -> 780   7777 -> 7800   77777 -> 78000",
+          "level": 1,
+          "progress": "The stockpile records are 5% updated toward the next precision level.",
+          "setting": 1,
+          "title": "Low Precision"
+        },
+        "lines": [
+          {
+            "text": "      Low Precision        Stocks amount display: 77 -> 77   777 -> 780   7777 -> 7800   77777 -> 78000",
+            "y": 8
+          },
+          {
+            "text": "      Your bookkeeper has done enough work to attain low precision.",
+            "y": 9
+          },
+          {
+            "text": "      The stockpile records are 5% updated toward the next precision level.",
+            "y": 10
+          }
+        ],
+        "native_click_effect": true,
+        "native_text_match": true,
+        "precision": 150
+      },
+      {
+        "help": {
+          "attained": "Your bookkeeper has done enough work to attain medium precision.",
+          "examples": "Stocks amount display: 77 -> 77   777 -> 777   7777 -> 7780   77777 -> 77800",
+          "level": 2,
+          "progress": "The stockpile records are 5% updated toward the next precision level.",
+          "setting": 2,
+          "title": "Medium Precision"
+        },
+        "lines": [
+          {
+            "text": "      Medium Precision     Stocks amount display: 77 -> 77   777 -> 777   7777 -> 7780   77777 -> 77800",
+            "y": 8
+          },
+          {
+            "text": "      Your bookkeeper has done enough work to attain medium precision.",
+            "y": 9
+          },
+          {
+            "text": "      The stockpile records are 5% updated toward the next precision level.",
+            "y": 10
+          }
+        ],
+        "native_click_effect": true,
+        "native_text_match": true,
+        "precision": 1500
+      },
+      {
+        "help": {
+          "attained": "Your bookkeeper has done enough work to attain high precision.",
+          "examples": "Stocks amount display: 77 -> 77   777 -> 777   7777 -> 7777   77777 -> 77780",
+          "level": 3,
+          "progress": "The stockpile records are 5% updated toward the next precision level.",
+          "setting": 3,
+          "title": "High Precision"
+        },
+        "lines": [
+          {
+            "text": "      High Precision       Stocks amount display: 77 -> 77   777 -> 777   7777 -> 7777   77777 -> 77780",
+            "y": 8
+          },
+          {
+            "text": "      Your bookkeeper has done enough work to attain high precision.",
+            "y": 9
+          },
+          {
+            "text": "      The stockpile records are 5% updated toward the next precision level.",
+            "y": 10
+          }
+        ],
+        "native_click_effect": true,
+        "native_text_match": true,
+        "precision": 15000
+      },
+      {
+        "help": {
+          "attained": "Your bookkeeper has done enough work to attain highest precision.",
+          "examples": "Stocks amount display: All counts accurate",
+          "level": 4,
+          "progress": "",
+          "setting": 4,
+          "title": "Highest Precision"
+        },
+        "lines": [
+          {
+            "text": "      Highest Precision    Stocks amount display: All counts accurate",
+            "y": 8
+          },
+          {
+            "text": "      Your bookkeeper has done enough work to attain highest precision.",
+            "y": 9
+          },
+          {
+            "text": "",
+            "y": 10
+          }
+        ],
+        "native_click_effect": true,
+        "native_text_match": true,
+        "precision": 100000
+      }
+    ],
+    "columns": 200,
+    "first_icon": {
+      "x": 127,
+      "y": 38
+    },
+    "original_precision": 0,
+    "original_setting": 0,
+    "restored": true,
+    "rows": 75,
+    "source": "build/stockpile-storage-native-input-20261111-085619",
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "menu_rng_lookup_caches_preserved": true,
+    "omissions": [
+      "No typed help transport, semantic accounting mutation or Godot accounting controls yet.",
+      "Captured PNG verifies wide control placement but loses hover; text samples establish help captions only.",
+      "No boundary sweep or mixed requested/achieved precision combinations."
+    ]
   }
 }

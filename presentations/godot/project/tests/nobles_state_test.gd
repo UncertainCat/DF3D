@@ -53,6 +53,8 @@ func run() -> void:
 	check(view.list_top()==108 and view.capacity()==16 and view.status_x()==496,"Nobles native geometry differs")
 	check(view.groups()[1][0]=="Nobles and administrators","Nobles selected header row differs")
 	check(view.room_suffix(0,0)=="NA" and view.room_suffix(1,0)=="MISSING" and view.room_suffix(2,1)=="PARTIAL" and view.room_suffix(1,1)=="GOOD","Nobles room artwork mapping differs")
+	view.size=Vector2(1344,804);view.wide_tabs=true
+	check(view.status_x()==680 and view.list_top()==84,"Nobles wide native status spacing differs")
 	view.free();state.dispose();service.queue_free();await process_frame
 	if failures==0:print("NOBLES_STATE_PASS")
 	quit(1 if failures else 0)

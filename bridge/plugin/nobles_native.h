@@ -25,7 +25,8 @@
 namespace df3d_nobles {
 struct RoomHelp {std::string actual,required;int32_t color=15;};
 struct ObligationHelp {std::string text;int32_t color=15;};
-struct HoverHelp {std::string description;std::array<RoomHelp,4> rooms,furniture;std::vector<ObligationHelp> demands,mandates;};
+struct AccountingHelp {int32_t setting=0,level=0;std::string title,examples,attained,progress;};
+struct HoverHelp {std::optional<AccountingHelp> accounting;std::string description;std::array<RoomHelp,4> rooms,furniture;std::vector<ObligationHelp> demands,mandates;};
 struct Row {
     int32_t unitId=-1,nemesisId=-1,entityId=-1,positionId=-1,assignmentId=-1,value=0;
     std::string positionName,title,squadCaption,holderCaption;
@@ -295,6 +296,36 @@ inline bool obligations(const df::noblelistst& source,Row& row,uint8_t* base) {
     }
     return true;
 }
+// Native429ee1..42a2f5 reads fortress bookkeeping facts, not menu state.
+inline std::optional<AccountingHelp> accountingHelp(uint8_t* base) {
+    if(reinterpret_cast<uint8_t*>(&df::global::plotinfo->nobles.bookkeeper_settings)!=base+0x23912b0 ||
+       reinterpret_cast<uint8_t*>(&df::global::plotinfo->nobles.bookkeeper_precision)!=base+0x23912ac)return std::nullopt;
+    static const bool pinned=[base]{for(const auto& pin:std::array<std::array<uint64_t,3>,2>{{
+        {0x74f3b0,0x33,UINT64_C(0xa79eb9788734ac38)},
+        {0x74f3f0,0x32,UINT64_C(0xc1c41de0b8b11b93)}}}){
+        uint64_t h=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<pin[1];++i){h^=base[pin[0]+i];h*=UINT64_C(1099511628211);}if(h!=pin[2])return false;
+    }return true;}();if(!pinned)return std::nullopt;
+    AccountingHelp out;out.setting=int(df::global::plotinfo->nobles.bookkeeper_settings);
+    if(out.setting<0 || out.setting>4)return std::nullopt;
+    const int32_t precision=df::global::plotinfo->nobles.bookkeeper_precision;
+    out.level=reinterpret_cast<int16_t(*)(int32_t)>(base+0x74f3b0)(precision);
+    const auto literal=[base](size_t rva){return reinterpret_cast<const char*>(base+rva);};
+    constexpr size_t titles[]={0x163ce28,0x163ce18,0x163ccd8,0x163ccc8,0x163ccb0};
+    constexpr size_t examples[]={0x163cd98,0x163cd60,0x163cd28,0x163ccf0,0x163cbf8};
+    constexpr size_t levels[]={0,0x163cbb8,0x163cba0,0x163cc88,0x163cc70};
+    out.title=literal(titles[out.setting]);out.examples=literal(0x163cc98);out.examples+=literal(examples[out.setting]);
+    out.attained=literal(out.level==0?0x163cc30:0x163cbc8);
+    if(out.level>0)out.attained+=literal(levels[out.level]);out.attained+=literal(0x15e85b4);
+    if(out.level<4){using Threshold=int32_t(*)(int16_t);
+        const auto threshold=reinterpret_cast<Threshold>(base+0x74f3f0);
+        const int32_t low=threshold(int16_t(out.level)),high=threshold(int16_t(out.level+1));
+        if(high!=low){const int32_t percent=static_cast<int32_t>((static_cast<uint32_t>(precision)-uint32_t(low))*100u)/(high-low);
+            if(uint16_t(percent-1)<=98){out.progress=literal(0x163cc10);out.progress+=std::to_string(int16_t(percent));out.progress+=literal(0x163d170);}
+        }
+    }
+    return out;
+}
 // Native42a331/42a340 supplies the same room assessments already retained
 // above. Native42a3a4/42a417 names both values through ab4f20. All strings are
 // owned; ab4ee0 is a gps writer and is never invoked for its scalar color rule.
@@ -312,6 +343,10 @@ inline bool hoverHelp(const df::noblelistst& source,Row& row,uint8_t* base) {
     static_assert(offsetof(df::entity_position,description)==0x358);
     auto& help=row.help.emplace();help.description=source.ep->description;
     if(!row.hasRoomAssessment)return true;
+    static_assert(offsetof(df::entity_position,responsibilities)+int(df::entity_position_responsibility::ACCOUNTING)==0x32e);
+    if(source.ep->responsibilities[df::entity_position_responsibility::ACCOUNTING]){
+        help.accounting=accountingHelp(base);if(!help.accounting)return false;
+    }
     using Caption=void(*)(std::string*,int32_t,int16_t);
     for(int16_t i=0;i<4;++i){auto& out=help.rooms[i];
         reinterpret_cast<Caption>(base+0xab4f20)(&out.actual,row.actualRooms[i],i);

@@ -39,6 +39,33 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Nobles and administrators native discovery
 
+Optional Nobles accounting help reads `plotinfo.nobles.bookkeeper_settings` and
+`bookkeeper_precision`, bound to native23912b0/23912ac. Pinned scalar routines
+74f3b0 and74f3f0 supply the achieved level and thresholds; installed literals
+supply the requested-setting title, stock-count examples, attained text and
+progress sentence. Native429ee1..42a2f5's integer percentage/display gate is
+preserved. Help is available only on occupied ACCOUNTING-responsibility rows.
+Native feed4257ad writes the requested setting directly after its office/button
+hit test; a semantic mutation route remains unimplemented.
+
+Protected085619 on2026-11-11 verifies native clicks for all five settings at
+1600x900 and compares owned help with actual rendered text. Controlled precision
+values0/150/1500/15000/100000 cover all achieved levels and three5% progress
+sentences. Original setting/precision are restored before leaving; DF20892
+closes unsaved and source preservation passes. The native menu, random streams
+and measured lookup caches remain preserved by the owned reads. The first
+accounting icon is cell127,38. The wide PNG was inspected for control placement;
+it loses hover, so only the text samples establish the help captions.
+`native_nobles.json.accounting_reference` records this scope. The preceding
+085526 run failed because the shared harness did not service this check's resize
+request; its owned process closed and it is not acceptance evidence.
+MSVC and core `build/qa/nobles-accounting` pass,30FPS, GPU52C/1% sampled.
+The native wide layout also establishes status x712 at1600 pixels: the staged
+view's spacing threshold is corrected to121 columns, with a headless geometry
+check in `build/qa/nobles-wide-spacing`. No wide rendered viewer acceptance is
+claimed. Typed help transport, Godot hover/accounting controls, semantic setting
+changes and the appointment/symbol workflows remain unfinished.
+
 The optional owned help provider also formats furniture and obligations.
 Furniture text follows native428f95..4297e1, using pinned52c2b0 for counts and
 installed literals for names/plurals. It preserves native429322/42952f/429724's
@@ -49,7 +76,7 @@ Demand/mandate item text calls pinned a82c10 with native429911/429c92 arguments,
 owned output strings and the existing historical-material-map restoration guard.
 Fulfillment uses the existing independently owned demand/unit context. Status
 colors and surrounding literal/count composition mirror the inline native code;
-no drawing routine or menu scratch is used. Accounting help remains pending.
+no drawing routine or menu scratch is used. Accounting help is covered by the later provider/click comparison above.
 
 Protected085035 on2026-11-11 matches16 displayed furniture assessments, four
 mandate rows (three distinct mandates), and four controlled office-demand cases

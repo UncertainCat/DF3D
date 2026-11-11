@@ -2557,6 +2557,8 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               for(const auto& room:entry.help->rooms){Json::Value value(Json::objectValue);value["actual"]=DF2UTF(room.actual);value["required"]=DF2UTF(room.required);value["color"]=room.color;help["rooms"].append(value);}
               for(const auto& room:entry.help->furniture){Json::Value value(Json::objectValue);value["actual"]=DF2UTF(room.actual);value["required"]=DF2UTF(room.required);value["color"]=room.color;help["furniture"].append(value);}
               for(const auto& field:{"demands","mandates"}){help[field]=Json::Value(Json::arrayValue);for(const auto& item:std::string_view(field)=="demands"?entry.help->demands:entry.help->mandates){Json::Value value(Json::objectValue);value["text"]=DF2UTF(item.text);value["color"]=item.color;help[field].append(value);}}
+              if(entry.help->accounting){const auto& a=*entry.help->accounting;Json::Value value(Json::objectValue);
+                value["setting"]=a.setting;value["level"]=a.level;value["title"]=DF2UTF(a.title);value["examples"]=DF2UTF(a.examples);value["attained"]=DF2UTF(a.attained);value["progress"]=DF2UTF(a.progress);help["accounting"]=value;}
               row["help"]=help;}
             row["demand_status"]=entry.demandStatus;row["mandate_status"]=entry.mandateStatus;
             for(size_t i=0;i<4;++i){row["required_rooms"].append(entry.requiredRooms[i]);row["actual_rooms"].append(entry.actualRooms[i]);

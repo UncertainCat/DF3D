@@ -2153,6 +2153,8 @@ table NoblesRow {
   required_furniture:[int32] (required); actual_furniture:[int32] (required);
   // -1 absent, 0 fulfilled/export-only, 1 pending, 2 urgent, 3 critical.
   demand_status:int8 = -1; mandate_status:int8 = -1;
+  // Independent full-body holder selector; absent is unavailable, never vacant.
+  appearance:SelectionAppearance;
 }
 table NoblesState {
   outcome:NoblesOutcome; list_revision:uint64; total:uint32; offset:uint32;
@@ -2310,7 +2312,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 178;
+  schema_version:uint32 = 179;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2379,7 +2381,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 178;
+  schema_version:uint32 = 179;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

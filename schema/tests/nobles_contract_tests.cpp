@@ -38,3 +38,18 @@ TEST_CASE("Nobles refusals cannot carry a successful page") {
   CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==(fault!=0));
  }
 }
+
+TEST_CASE("Nobles holder artwork rejects vacant rows and empty recipes") {
+ for(int fault=0;fault<3;++fault){flatbuffers::FlatBufferBuilder b;
+  auto text=b.CreateString("fixture");auto zero=b.CreateVector(std::vector<int32_t>(4,0));
+  auto names=b.CreateVector(std::vector<flatbuffers::Offset<flatbuffers::String>>{text});
+  std::vector<m::AppearanceLayer> layers;
+  if(fault!=2)layers.emplace_back(0,0,0,1,1,65535,0,0,0,0);
+  auto look=m::CreateSelectionAppearance(b,names,b.CreateVector(std::vector<flatbuffers::Offset<flatbuffers::String>>{}),b.CreateVectorOfStructs(layers));
+  auto row=m::CreateNoblesRow(b,7,2,42,fault==1?-1:10,-1,0,text,text,text,true,fault!=1,zero,zero,zero,zero,-1,-1,look);
+  auto payload=m::CreateNoblesState(b,m::NoblesOutcome::None,1,1,0,b.CreateVector(std::vector<flatbuffers::Offset<m::NoblesRow>>{row}));
+  m::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(m::ManagementAction::NoblesRead);
+  state.add_status(m::ManagementStatus::Ok);state.add_nobles(payload);b.Finish(state.Finish());
+  CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==(fault!=0));
+ }
+}

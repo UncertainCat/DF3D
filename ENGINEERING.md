@@ -557,6 +557,17 @@ acceptance is `passed_with_known_issues` for the known Godot shutdown diagnostic
 GPU58–61C sampled. Core19/controller checks pass in `build/qa/places-layout-final`.
 
 
+## Management 179 Nobles holder appearance
+
+Protocol179 adds an optional independently owned full-body holder appearance
+recipe to each Nobles row. Only present-unit rows may carry it. The shared
+recipe validator bounds references/layers and caps each recipe at128KiB; recipe
+bytes count toward the existing384KiB page budget. Absence means unavailable,
+not vacancy. Older recordings retain missing artwork rather than inventing it.
+Bridge and viewer must be rebuilt together for `Local\df3d_management_v179`;
+DF53.16 and DFHack pins are unchanged. Runtime production and visual acceptance
+are pending.
+
 ## Management 178 Nobles read contract
 
 Protocol178 reserves `NoblesRead` and bounded native-order overview pages.

@@ -142,8 +142,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 178;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v178";
+inline constexpr uint32_t kManagementVersion = 179;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v179";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -1298,6 +1298,11 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         if(!row->has_room_assessment())for(auto value:*values)if(value)return "unexpected nobles assessment";
       }
       if(!row->has_room_assessment() && (row->demand_status()!=-1 || row->mandate_status()!=-1))return "unexpected nobles obligation";
+      if(const auto* a=row->appearance()){
+        size_t recipe=0;if(auto error=validateOwnerAppearance(*a,recipe))return error;
+        if(row->unit_id()<0 || a->layers()->size()==0 || recipe>131072)return "invalid nobles appearance";
+        bytes+=recipe;
+      }
       if(bytes>384*1024)return "nobles page payload exceeded";
     }
   }else if(s.status()==ManagementStatus::Ok && s.action()==ManagementAction::NoblesRead)return "missing nobles result";

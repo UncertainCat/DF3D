@@ -5262,3 +5262,22 @@ TEST_CASE("legwear selector recipes retain owned original asset references") {
     CHECK(owned.legwearSelector->layers[0].tileY==3);
   }
 }
+
+TEST_CASE("craft gemstone color preserves unknown absence and native color") {
+  for(int mode=0;mode<5;++mode) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto material=b.CreateString("CREATURE:TEST:HAIR"),empty=b.CreateString("");
+    const auto gem=mode==0?flatbuffers::Offset<flatbuffers::String>{}:b.CreateString(mode==1?"":mode==4?std::string(129,'X'):"CLEAR");
+    wire::ItemInspectionAppearanceBuilder a(b);
+    a.add_material_token(material);a.add_subtype_raw(empty);a.add_color_token(empty);a.add_stack(1);
+    if(mode!=0)a.add_craft_gem_color(gem);
+    b.Finish(a.Finish());
+    const auto* look=flatbuffers::GetRoot<wire::ItemInspectionAppearance>(b.GetBufferPointer());
+    CHECK(wire::validInspectionInstrument(*look,mode==3?39:42)==(mode<3));
+    if(mode>=3)continue;
+    for(int type:{36,37,38,40,41,42,43})CHECK(wire::validInspectionInstrument(*look,type));
+    const auto owned=codec::decodeInspectionAppearance(look);b.Clear();
+    CHECK(owned.craftGemColor.has_value()==(mode!=0));
+    if(mode!=0)CHECK(*owned.craftGemColor==(mode==1?"":"CLEAR"));
+  }
+}

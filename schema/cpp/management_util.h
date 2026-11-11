@@ -143,6 +143,9 @@ inline bool validInspectionInstrument(const ItemInspectionAppearance& a,int32_t 
   if(const auto* legwear=a.legwear_selector()) {
     if(type!=60 || validateOwnerAppearance(*legwear,recipeBytes) || legwear->layers()->size()==0)return false;
   }
+  if(const auto* gem=a.craft_gem_color()) {
+    if(type<36 || type>43 || type==39 || gem->size()>128)return false;
+  }
   if(recipeBytes>131072)return false;
 
     const auto* liquidColor=a.bucket_liquid_color();
@@ -176,8 +179,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 185;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v185";
+inline constexpr uint32_t kManagementVersion = 186;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v186";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -1447,7 +1450,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         size_t recipe=0;
         for(const auto* p:{a->portrait(),a->corpse_selector(),a->cage_occupant(),a->legwear_selector()})if(p)if(auto error=validateOwnerAppearance(*p,recipe))return error;
         bytes+=recipe;
-        for(const auto* text:{a->restraint_solid_color(),a->cage_solid_color(),a->bucket_liquid_color()})if(text)bytes+=text->size();
+        for(const auto* text:{a->restraint_solid_color(),a->cage_solid_color(),a->bucket_liquid_color(),a->craft_gem_color()})if(text)bytes+=text->size();
         if(const auto* c=a->contents()){
           bytes+=64;if(c->solid_color())bytes+=c->solid_color()->size();
           for(const auto* e:*c->entries())bytes+=64+e->material_token()->size()+e->color_token()->size();

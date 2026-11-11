@@ -39,6 +39,18 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Nobles and administrators native discovery
 
+Protocol186 appends nullable `ItemInspectionAppearance.craft_gem_color` and
+uses `Local\df3d_management_v186`. Absence means unknown (including older
+recordings); a present empty string means the native selector found no usable
+gem overlay; otherwise the value is a descriptor color token. The validator
+restricts present values to craft types36–43 excluding ammunition39 and128
+UTF-8 bytes. The model retains an owned optional string. Do not backfill absent
+values from base material or other decorations. Rebuild bridge and viewer
+together before live use; protocol185 peers cannot share the new mailbox.
+Core19 and codec ownership/unknown/empty/type/bounds cases pass in
+`build/qa/craft-gem-contract`. Producer, renderer and protected live acceptance
+of protocol186 remain pending; the currently installed plugin is still185.
+
 `item_craft_native.h` extracts native c811ea..c812e5's encrustation-color
 selection for craft item types36–43 excluding ammunition39. It calls pinned
 native material flag/resolution helpers and reads semantic improvements in

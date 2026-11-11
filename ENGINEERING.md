@@ -50,11 +50,33 @@ item inspection validation and ownership rules. Appearance requires a known item
 type; absent facts remain absent. Core19 passes `build/qa/objects-art-contract`,
 including malformed appearance cases and decoding after source bytes are overwritten.
 
-This is the schema/codec correction only. The producer does not yet populate
-Objects artwork, and189 has not had live acceptance. Request/reply defaults and
-the mailbox now use189 (`Local\df3d_management_v189`); rebuild bridge and viewer
-together before live use. The installed bridge/viewer remain188. There is no
-migration of188's layer recipe into item facts; that field had no runtime producer.
+The protocol189 producer supplies shared semantic item appearance facts and the
+viewer uses the existing item renderer. Bridge and viewer are rebuilt together;
+the mailbox is `Local\df3d_management_v189`. No188 layer recipes are migrated.
+
+The staged Objects controller owns category selection, paging, scroll and request
+retirement. Both navigation controls perform a fresh revision-checked native
+lookup before emitting viewer camera/item-sheet destinations. Closing detaches
+pending reads; late replies cannot reopen the panel. Public exposure remains gated.
+
+Protected161602 on2026-11-11 verifies all four controller categories (10/0/2/11),
+late-read closure and both owner navigation signals, alongside the existing wire
+and native menu/RNG/camera guards. At1200x800, the complete panel crop matches
+native exactly for empty Symbols and populated Written content, including its two
+blank item pictures. Artifacts differs by318 pixels in one item picture; Named
+objects differs by306 pixels within its two pictures. These artwork differences
+remain unresolved; this is not full visual acceptance. Header drawing and hitboxes
+use Objects' native narrow-width row order. Hover copy, other sizes/scrolling,
+populated Symbols, remaining claim variants, lifecycle coverage and main-scene
+composition remain pending.
+
+Core19 and UI host pass `build/qa/objects-panel`; the MSVC bridge and Godot
+extension build. The protected run passes with known separate-render-thread,
+finalize and ObjectDB shutdown diagnostics. Both graphical processes are capped
+at30FPS, sampled GPU60C/9–27%/44–54W. Owned DF14076 closes unsaved with source
+preservation and restored preferences. `native_objects.json.panel_reference`
+records bounded evidence. Set `DF3D_OBJECTS_RENDER=1` alongside Objects native
+and wire flags for the rendered protected lane.
 
 Protocol188 adds read-only `ObjectsRead` and `ObjectsLocate` requests and typed
 Objects rows/destinations. Requests carry a category and membership revision;
@@ -63,7 +85,7 @@ own original/translated names, ownership captions, optional position and optiona
 item artwork facts. A destination without a position explicitly disables navigation.
 Refusals cannot carry usable rows or destinations. Pages are bounded to64 rows,
 16384 bytes per caption and384KiB total, with unique artifact IDs and bounded
-coordinates. Optional artwork remains absent until the shared provider is connected.
+coordinates. Optional artwork follows the shared item appearance contract.
 
 The188 live evidence below uses `Local\df3d_management_v188`; current compatibility
 is189 as described above. Older recordings do not acquire Objects facts.
@@ -75,13 +97,13 @@ Its codec preserves paging/category/revision identity, copies all captions and
 optional artwork, and keeps unavailable destinations distinct from stale refusals.
 `objects_codec_tests.cpp` overwrites source reply bytes after decoding to check
 ownership. Core19 passes `build/qa/objects-model-codec-final`. This verifies the
-model codec only; rendered navigation remains pending.
+model codec; owner navigation is separately covered above.
 
 The management producer formats only the requested native list page and rejects
 changed membership revisions or destination targets outside the selected category.
 `ObjectsLocate` resolves current holder coordinates without changing native UI or
 camera state. Godot's `objects` request domain validates the complete intent shape
-and projects the owned model into dictionaries. No runtime artwork is supplied yet.
+and projects the owned model into dictionaries. Artwork uses semantic item facts.
 
 Protected155225 on2026-11-11 verifies protocol188 through the rebuilt bridge,
 world model and headless Godot client: four-row pages match all23 native rows
@@ -93,7 +115,7 @@ sampled GPU61C/40%/57W. The only Godot diagnostic is the known separate-render-t
 notice (passed_with_known_issues). Core19 and UI host pass `build/qa/objects-wire-final`;
 the MSVC bridge and Godot extension build. `native_objects.json.wire_reference`
 records the result. Run with `DF3D_OBJECTS_NATIVE=1` and `DF3D_OBJECTS_WIRE=1` through
-`stockpile_storage_native.ps1`. Rendered Objects and lifecycle acceptance remain pending.
+`stockpile_storage_native.ps1`. Protocol189 rendered coverage and remaining gaps are described above.
 
 `objects_native.h` invokes DF53.16's375a70 list builder with an independently
 owned128-byte `artifacts_interfacest`. Native323aba is its caller; the native

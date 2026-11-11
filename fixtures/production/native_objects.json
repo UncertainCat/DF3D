@@ -1203,5 +1203,81 @@
     },
     "native_menu_rng_camera_unchanged": true,
     "limits": "Headless transport only. Runtime artwork, rendered panel and lifecycle acceptance remain pending. Symbols fixture is empty. Only the known separate rendering thread Godot notice occurred (passed_with_known_issues)."
+  },
+  "panel_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-161602",
+    "protocol": 189,
+    "viewport": [
+      1200,
+      800
+    ],
+    "panel_crop": [
+      32,
+      52,
+      976,
+      760
+    ],
+    "result": {
+      "controller_tabs": 4,
+      "counts": [
+        10,
+        0,
+        2,
+        11
+      ],
+      "late_read_closed": true,
+      "lookups": 4,
+      "owner_navigation": true,
+      "stale_tabs": 4,
+      "success": true
+    },
+    "rendered_comparison": [
+      {
+        "tab": 0,
+        "panel_different_pixels": 318,
+        "difference_bounds": [
+          25,
+          316,
+          43,
+          340
+        ]
+      },
+      {
+        "tab": 1,
+        "panel_different_pixels": 0,
+        "difference_bounds": null
+      },
+      {
+        "tab": 2,
+        "panel_different_pixels": 306,
+        "difference_bounds": [
+          20,
+          100,
+          49,
+          162
+        ]
+      },
+      {
+        "tab": 3,
+        "panel_different_pixels": 0,
+        "difference_bounds": null
+      }
+    ],
+    "status": "passed_with_known_issues",
+    "known_diagnostics": [
+      "separate rendering thread",
+      "render thread finalize",
+      "ObjectDB shutdown leaks"
+    ],
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "pending": [
+      "Artifacts and Named objects item artwork differences",
+      "Objects hover instructions236/237",
+      "other widths and scroll",
+      "populated Symbols and additional ownership claims",
+      "remaining lifecycle checks",
+      "main-scene composition and public exposure"
+    ]
   }
 }

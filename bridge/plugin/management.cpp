@@ -555,7 +555,7 @@ struct NoblesSymbolOwner {
   int32_t artifact=-1;bool uncertain=false;
 };
 std::optional<NoblesSymbolOwner> noblesSymbolOwner;
-struct ObjectsRow {df3d_objects::Names names;std::string ownership;df3d_objects::Destination destination;};
+struct ObjectsRow {df3d_objects::Names names;std::string ownership;df3d_objects::Destination destination;int16_t itemType=-1;std::optional<ItemInspectionAppearance> appearance;};
 struct ObjectsResult {
   m::ObjectsOutcome outcome=m::ObjectsOutcome::Rejected;uint8_t tab=0;
   uint64_t listRevision=0;uint32_t total=0,offset=0;std::vector<ObjectsRow> rows;
@@ -1341,7 +1341,7 @@ void publish() {
   if(objects){std::vector<flatbuffers::Offset<m::ObjectsRow>> rows;
     for(const auto& row:objects->rows){const auto& p=row.destination.position;const m::TilePos pos(p.x,p.y,p.z);
       rows.push_back(m::CreateObjectsRow(b,row.names.artifactId,row.names.itemId,b.CreateString(row.names.nativeName),
-        b.CreateString(row.names.translatedName),b.CreateString(row.ownership),row.destination.available?&pos:nullptr));}
+        b.CreateString(row.names.translatedName),b.CreateString(row.ownership),row.destination.available?&pos:nullptr,encodeInspectionAppearance(row.appearance),row.itemType));}
     flatbuffers::Offset<m::ObjectsDestination> destination;
     if(objects->destination){const auto& d=*objects->destination;const m::TilePos pos(d.position.x,d.position.y,d.position.z);
       destination=m::CreateObjectsDestination(b,objects->artifactId,d.itemId,d.available?&pos:nullptr);}
@@ -4668,6 +4668,14 @@ void run(color_ostream& out) {
             auto names=df3d_objects::names(ids[i]);auto caption=df3d_objects::ownership(ids[i]);auto target=df3d_objects::destination(ids[i]);
             if(!names || !caption || !target)throw std::runtime_error("objects row unavailable");
             ObjectsRow row{std::move(*names),std::move(*caption),*target};size_t rowBytes=128;
+            auto* item=df::artifact_record::find(ids[i])->item;row.itemType=int16_t(item->getType());
+            if(const auto look=df3d_production::itemAppearance(item))row.appearance=copyInspectionAppearance(*look);
+            if(row.appearance){const auto& a=*row.appearance;
+              rowBytes+=256+a.materialToken.size()+a.subtypeRaw.size()+a.colorToken.size()+a.bucketLiquidColor.size()+a.cageSolidColor.size()+a.restraintSolidColor.size();
+              if(a.craftGemColor)rowBytes+=4+a.craftGemColor->size();
+              for(const auto* recipe:{&a.portrait,&a.cageOccupant,&a.corpseSelector,&a.legwearSelector})if(*recipe){size_t n=0;if(!df3d_production::validItemRecipe(**recipe,n))throw std::runtime_error("invalid objects artwork");rowBytes+=n;}
+              if(a.contents){rowBytes+=64+a.contents->solidColor.size();for(const auto& e:a.contents->entries)rowBytes+=64+e.materialToken.size()+e.colorToken.size();}
+            }
             for(auto* text:{&row.names.nativeName,&row.names.translatedName,&row.ownership}){
               *text=DF2UTF(*text);if(text->size()>16384)throw std::runtime_error("objects caption exceeds limit");rowBytes+=text->size();}
             if(bytes+rowBytes>384*1024)break;bytes+=rowBytes;page.rows.push_back(std::move(row));

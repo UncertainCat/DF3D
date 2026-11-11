@@ -1,4 +1,14 @@
 extends "res://tests/item_carrier_wire_live.gd"
+class OwnerHost extends RefCounted:
+	var active
+	func activate(owner) -> bool:active=owner;return true
+	func allows_panel_input(owner) -> bool:return active==owner
+	func release(owner) -> void:
+		if active==owner:active=null
+func settle_objects(model) -> void:
+	var deadline:=Time.get_ticks_msec()+5000
+	while model.phase in [model.Phase.Reading,model.Phase.Locating] and Time.get_ticks_msec()<deadline:
+		world.poll();await create_timer(0.01).timeout
 func page(tab: int, offset: int, revision: int) -> Dictionary:
 	return await request("objects",{"action":C.ManagementAction.ObjectsRead,"tab":tab,"offset":offset,"limit":4,"expected_list_revision":revision})
 func locate(tab: int, artifact: int, revision: int) -> Dictionary:
@@ -43,6 +53,39 @@ func run() -> void:
 		var missing:=await locate(tab,2147483647,revision)
 		check(missing.get("status")==C.ManagementStatus.Rejected and missing.get("objects",{}).get("outcome")==C.ObjectsOutcome.Stale,"Objects foreign target accepted")
 		counts.append(rows.size())
+	var actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(actions);actions.configure(world,true)
+	var controller=preload("res://scripts/objects_state.gd").new();controller.configure(actions);controller.open()
+	var view
+	if OS.get_environment("DF3D_OBJECTS_RENDER")=="1":
+		root.size=Vector2i(1200,800)
+		check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Objects assets unavailable")
+		view=preload("res://scripts/objects_view.gd").new();root.add_child(view);view.configure_objects(world,controller);view.layout(Vector2(1200,800))
+	for tab in 4:
+		if tab>0:controller.select_tab(tab)
+		await settle_objects(controller)
+		check(controller.phase==controller.Phase.Ready and controller.rows.size()==reference.ownership[tab].size(),"Objects controller page failed")
+		if view!=null:
+			await process_frame;await process_frame;await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/objects-view-%d.png"%tab)
+	controller.close();controller.open();controller.close()
+	for i in 5:world.poll();await create_timer(0.01).timeout
+	check(controller.phase==controller.Phase.Closed and controller.rows.is_empty(),"Objects late read reopened closed panel")
+	if view!=null:view.queue_free();await process_frame
+	controller.dispose()
+	var owner=preload("res://scripts/objects_panel.gd").new();root.add_child(owner)
+	var host:=OwnerHost.new();owner.ui_host=host;owner.state.configure(actions)
+	var inspected: Array=[];var focused: Array=[]
+	owner.inspect_requested.connect(func(id,tile):inspected.append([id,tile]))
+	owner.focus_requested.connect(func(tile):focused.append(tile))
+	for inspect in [true,false]:
+		owner.open_panel();await settle_objects(owner.state)
+		var available: Array=owner.state.rows.filter(func(row):return row.has("position"))
+		if not check(not available.is_empty(),"Objects owner has no target"):quit(1);return
+		var target: Dictionary=available[0].duplicate(true)
+		owner._navigate(target,inspect);await settle_objects(owner.state)
+		check(owner.state.phase==owner.state.Phase.Closed and host.active==null,"Objects navigation retained panel")
+		check(inspected==[[target.item_id,target.position]] if inspect else focused==[target.position],"Objects navigation destination differs")
+	owner.queue_free();await process_frame;actions.queue_free();await process_frame
 	var result=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
-	result.store_string(JSON.stringify({"success":not failed,"counts":counts,"lookups":lookups,"stale_tabs":4}));result.close()
+	result.store_string(JSON.stringify({"success":not failed,"counts":counts,"lookups":lookups,"stale_tabs":4,"controller_tabs":4,"late_read_closed":true,"owner_navigation":true}));result.close()
 	quit(1 if failed else 0)

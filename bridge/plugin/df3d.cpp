@@ -118,6 +118,7 @@
 #include "places_native.h"
 #include "nobles_native.h"
 #include "nobles_draft_native.h"
+#include "nobles_symbols_native.h"
 #include "places_action_native.h"
 #include "tasks_action_native.h"
 #include "residents_activity_description_native.h"
@@ -2532,6 +2533,24 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             row["position"]=Json::Value(Json::arrayValue);for(auto v:{entry.position.x,entry.position.y,entry.position.z})row["position"].append(v);
             list.append(row);}result.append(list);}
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
+        }
+        if(parameters[0]=="nobles-symbols-probe") {
+          if(parameters.size()!=4)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving() || !df3d_nobles::symbolsReady())return CR_FAILURE;
+          try {
+            df3d_nobles::OfficeKey key{std::stoi(parameters[1]),std::stoi(parameters[2]),std::stoi(parameters[3])};
+            df3d_nobles::Context owned(reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr)));
+            if(!df3d_nobles::prepareDraft(owned,{}))return CR_FAILURE;
+            const auto rows=df3d_nobles::projectSymbols(owned,key);if(!rows)return CR_FAILURE;
+            const auto office=[](const std::optional<df3d_nobles::OfficeKey>& key) {
+              Json::Value result;if(key){result["entity_id"]=key->entityId;result["position_id"]=key->positionId;
+                result["assignment_id"]=key->assignmentId;result["draft_slot"]=key->draftSlot;}return result;
+            };
+            Json::Value result(Json::arrayValue);
+            for(const auto& entry:*rows){Json::Value row;row["item_id"]=entry.itemId;row["value"]=entry.value;
+              row["selected_office"]=office(entry.selectedOffice);row["current_office"]=office(entry.currentOffice);result.append(row);}
+            out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
+          }catch(const std::exception&){return CR_FAILURE;}
         }
         if(parameters[0]=="nobles-accounting-probe") {
           if(parameters.size()!=6)return CR_WRONG_USAGE;

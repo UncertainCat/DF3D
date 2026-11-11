@@ -268,16 +268,33 @@ if os.getenv('DF3D_NOBLES_SYMBOLS')=='1' then
  local index,office
  for i,row in ipairs(menu.noblelist)do if row.ep.name[0]=='manager' then index=i;office=rows[i+1];break end end
  assert(index and office and office.assignment_id>=0,'Missing Manager symbol office')
+ local symbol_command={'nobles-symbols-probe',tostring(office.entity_id),tostring(office.position_id),tostring(office.assignment_id)}
+ local cold_symbols=probe(symbol_command)
+ local function compare_symbols(owned)
+  assert(#owned==#menu.cand_symbol,'Owned symbol candidate count differs')
+  local function compare_office(actual,ind)
+   if ind==-1 then assert(actual==nil,'Unexpected symbol office');return end
+   local row=menu.noblelist[ind]
+   assert(actual and actual.entity_id==row.enid and actual.position_id==row.ep.id and
+    actual.assignment_id==(row.epp and row.epp.id or -1) and actual.draft_slot==0,'Symbol office identity differs')
+  end
+  for i,item in ipairs(menu.cand_symbol)do
+   local row=owned[i+1];assert(row.item_id==item.id and row.value==menu.cand_symbol_value[i],'Symbol order/value differs at '..i)
+   compare_office(row.current_office,menu.cand_symbol_is_symbol_of_ind[i])
+   compare_office(row.selected_office,menu.cand_symbol_new_ind[i])
+  end
+ end
  local x,y=544,178+index*36
  g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=y//12
  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
  gui.simulateInput(view,'_MOUSE_L');df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1;settle()
  assert(menu.assigning_symbol and menu.symbol_noblelist_ind==index,'Wrong native symbol picker')
+ compare_symbols(cold_symbols);compare_symbols(probe(symbol_command))
  local symbols={}
  for i,item in ipairs(menu.cand_symbol)do
   symbols[#symbols+1]={item_id=item.id,new_index=menu.cand_symbol_new_ind[i],current_index=menu.cand_symbol_is_symbol_of_ind[i],value=menu.cand_symbol_value[i]}
  end
- result.symbol_reference={office=office,rows=symbols,lines=lines(),columns=g.dimx,height=g.dimy}
+ result.symbol_reference={office=office,rows=symbols,lines=lines(),columns=g.dimx,height=g.dimy,owned_candidates_match=true}
  write('nobles-native.json',json.encode(result));capture('nobles-symbols-manager')
  gui.simulateInput(view,'LEAVESCREEN');settle()
  assert(info.open and not menu.assigning_symbol and menu.handling_symbol_closure_ind==-1,'Symbol Back did not return to overview')
@@ -302,6 +319,7 @@ if os.getenv('DF3D_NOBLES_SYMBOLS')=='1' then
  end
  for _,operation in ipairs{'back','done'}do
   click_symbol(x,y);assert(menu.assigning_symbol and menu.cand_symbol[0].id==symbols[1].item_id)
+  compare_symbols(probe(symbol_command))
   local before=claims();local previous=menu.cand_symbol_new_ind[0]
   click_symbol(912,190);assert(menu.cand_symbol_new_ind[0]~=previous,'Symbol checkbox did not toggle')
   assert(json.encode(claims())==json.encode(before),'Symbol toggle applied before dismissal')

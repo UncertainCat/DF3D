@@ -55,13 +55,28 @@ passes; DF44136 closes unsaved,30FPS, GPU46C/4% sampled. Core passes in
 `build/qa/nobles-native-symbols`. Earlier110049 captures only opening/unchanged
 Back. These are native reference checks, not semantic adapter acceptance.
 
-Native422d10 builds the symbol candidates in the supplied administrators context;
-4227b0 applies staged entries from handling_symbol_closure_ind through the end.
-Feed424794 toggles a candidate between the selected office, its previous office
-and unassigned, and the Done branch starts apply at index0. These functions have
-not yet been admitted as runtime calls: item valuation/predicate callees, globals,
-claim mutation and ownership still require audit. No global picker vectors or
-native row indices may cross the eventual semantic boundary.
+`nobles_symbols_native.h` calls native422d10 on an independently prepared
+administrators context, including appointment drafts. It binds the builder's
+globals to semantic entities, artifacts, IN_PLAY/ANY_ARTIFACT item vectors and
+map storage. Position/reference getters may refresh semantic reference caches;
+valuation uses the accepted Stocks/room graph and its semantic lazy artwork
+initialization. Random state is restored. Candidate vectors and sorting scratch
+are owned; native menu, camera/search scratch and item temporary scores are not
+borrowed. Native office indices become stable entity/position/assignment/draft
+identities before leaving the provider.
+
+Protected111006 on2026-11-11 compares all786 ordered item IDs, values and office
+identities through `nobles-symbols-probe`: before opening the native picker,
+while it is open, and after native symbol assignment. Native menu bytes, random
+state and the measured historical lookup caches remain unchanged. Core passes
+in `build/qa/nobles-symbol-provider`; the MSVC plugin builds. DF5012 closes
+unsaved with source preservation,30FPS, sampled GPU56C/4%. This accepts the
+read provider, not symbol editing, transport or rendered DF3D picker behavior.
+
+Native4227b0 applies staged entries from handling_symbol_closure_ind through the
+end. Feed424794 toggles a candidate between the selected office, its previous
+office and unassigned, and Done starts apply at index0. Claim mutation and apply
+ownership still require audit before admitting4227b0 as a runtime call.
 
 Owned accounting changes use `setAccounting` in `nobles_draft_native.h`.
 Native425712..4257b4 contains an inline occupied-ACCOUNTING-row check followed

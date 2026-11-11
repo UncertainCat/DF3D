@@ -4408,6 +4408,8 @@ void run(color_ostream& out) {
     }catch(...){if(started){places->outcome=m::PlacesOutcome::Unknown;mutated=true;}}
     publish();return;
   }
+  // Contract-only action: reject until the typed accounting adapter is connected.
+  if(r->action()==m::ManagementAction::NoblesAccounting){status=m::ManagementStatus::Rejected;message.clear();nobles.emplace();publish();return;}
   if(r->action()==m::ManagementAction::NoblesRead || r->action()==m::ManagementAction::NoblesCandidates || r->action()==m::ManagementAction::NoblesCommit){
     const auto& q=*r->nobles();status=m::ManagementStatus::Rejected;message.clear();nobles.emplace();
     try {

@@ -849,6 +849,32 @@ acceptance is `passed_with_known_issues` for the known Godot shutdown diagnostic
 GPU58–61C sampled. Core19/controller checks pass in `build/qa/places-layout-final`.
 
 
+## Management 182 Nobles accounting contract
+
+Management182 uses `Local\\df3d_management_v182`; rebuild bridge, model and
+extension together. Action112 `NoblesAccounting` is a mutation in the Nobles
+domain. Its request carries the base overview revision, owned draft choices and
+target office, plus expected_setting and setting in0..4. Offset must be0, limit32
+and candidate revision0. No draft choices are required for an existing office;
+NEW-slot references obey the same replay rules as candidate requests. Other
+Nobles actions require both setting fields to remain at their default-1.
+
+Accounting replies are empty terminal Nobles receipts: Ok/Applied or
+Rejected/{Rejected,Stale,Unknown}. Unknown is never permission to replay.
+The base revision and expected setting provide independent stale checks;
+attained bookkeeping precision is not part of the requested change. Old
+recordings must not synthesize these mutation facts. This contract commit
+explicitly rejects the new action until its typed runtime adapter is connected;
+it does not expose an accounting control or claim end-to-end acceptance.
+
+Core, model/schema tests, extension, Nobles controller and host checks pass in
+`build/qa/nobles-accounting-contract`; MSVC passes. Protected104852 on2026-11-11
+repeats all five native/owned accounting-setting comparisons and existing
+overview/candidate/draft wire checks with both binaries on182. Source preservation
+passes and DF24028 closes unsaved, native30FPS, GPU37C/1% sampled. Headless
+stderr contains only the known rendering-thread notice. This verifies migration
+compatibility and the existing adapter, not the new typed mutation handler.
+
 ## Management 181 Nobles appointment contract
 
 Protocol181 uses `Local\df3d_management_v181`; bridge, model and extension must

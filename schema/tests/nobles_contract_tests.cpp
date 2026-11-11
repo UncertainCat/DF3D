@@ -1,6 +1,23 @@
 #include <doctest.h>
 #include "management_util.h"
 namespace m=df3d::mirror;
+TEST_CASE("Nobles accounting requires a fresh office and bounded expected setting") {
+ for(int fault=0;fault<10;++fault){flatbuffers::FlatBufferBuilder b;
+  m::NoblesOffice key(7,2,42,0);
+  auto q=m::CreateNoblesRequest(b,fault==1?1:0,fault==2?64:32,fault==3?0:11,0,fault==4?nullptr:&key,fault==5?12:0,fault==6?-1:fault==7?5:2,fault==8?5:3);
+  m::ConstructionRequestBuilder r(b);r.add_client_id(1);r.add_seq(1);r.add_world_epoch(1);r.add_action(fault==9?m::ManagementAction::NoblesCandidates:m::ManagementAction::NoblesAccounting);r.add_nobles(q);b.Finish(r.Finish());
+  CHECK(bool(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
+ }
+}
+TEST_CASE("Nobles accounting receipts cannot carry pages or hide uncertainty") {
+ for(auto outcome:{m::NoblesOutcome::Applied,m::NoblesOutcome::Unknown,m::NoblesOutcome::Stale,m::NoblesOutcome::Rejected})for(int fault=0;fault<2;++fault){
+  flatbuffers::FlatBufferBuilder b;auto rows=b.CreateVector(std::vector<flatbuffers::Offset<m::NoblesRow>>{});
+  auto payload=m::CreateNoblesState(b,outcome,fault?11:0,0,0,rows);
+  m::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(m::ManagementAction::NoblesAccounting);
+  state.add_status(outcome==m::NoblesOutcome::Applied?m::ManagementStatus::Ok:m::ManagementStatus::Rejected);state.add_nobles(payload);b.Finish(state.Finish());
+  CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==bool(fault));
+ }
+}
 TEST_CASE("Nobles draft requests bind their base and only reference earlier NEW slots") {
  for(int fault=0;fault<8;++fault){flatbuffers::FlatBufferBuilder b;
   m::NoblesOffice key(7,2,fault==3?42:-1,fault==1 || fault==3?1:0);

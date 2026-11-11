@@ -39,6 +39,30 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Nobles and administrators native discovery
 
+Native symbol assignment has a separate local draft and apply-on-dismiss flow.
+Protected110219 on2026-11-11 opens the Manager symbol picker at1200x800 and
+records786 ordered items, fifteen visible rows, the instruction caption, Done
+button and checkbox layout. Toggling artifact255/item27491 only changes the
+picker's staged index; its entity claims remain unchanged until dismissal.
+Back applies a symbol claim for entity865/assignment6. Reopening, unticking the
+item and clicking Done removes that claim. Both paths return to the overview;
+Back must not be implemented as discarding the symbol draft.
+
+`fixtures/production/native_nobles.json.symbol_reference` retains bounded rows,
+the complete ordered-list hash and before/after claim observations. Full lists
+and inspected screenshots remain in the protected run. Source preservation
+passes; DF44136 closes unsaved,30FPS, GPU46C/4% sampled. Core passes in
+`build/qa/nobles-native-symbols`. Earlier110049 captures only opening/unchanged
+Back. These are native reference checks, not semantic adapter acceptance.
+
+Native422d10 builds the symbol candidates in the supplied administrators context;
+4227b0 applies staged entries from handling_symbol_closure_ind through the end.
+Feed424794 toggles a candidate between the selected office, its previous office
+and unassigned, and the Done branch starts apply at index0. These functions have
+not yet been admitted as runtime calls: item valuation/predicate callees, globals,
+claim mutation and ownership still require audit. No global picker vectors or
+native row indices may cross the eventual semantic boundary.
+
 Owned accounting changes use `setAccounting` in `nobles_draft_native.h`.
 Native425712..4257b4 contains an inline occupied-ACCOUNTING-row check followed
 by a direct int16 store to the requested setting; there is no separate semantic

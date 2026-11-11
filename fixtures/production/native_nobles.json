@@ -7213,5 +7213,452 @@
     },
     "owned_df_closed": 42860,
     "source_preserved": true
+  },
+  "symbol_reference": {
+    "back_returns_overview": true,
+    "columns": 150,
+    "effects": [
+      {
+        "after": [
+          {
+            "assignment": 6,
+            "entity": 865,
+            "renounced": -1,
+            "tick": 157249,
+            "type": 0,
+            "year": 106
+          }
+        ],
+        "artifact_id": 255,
+        "before": [],
+        "item_id": 27491,
+        "operation": "back",
+        "previous_index": -1,
+        "staged_index": 6,
+        "toggle_is_local": true
+      },
+      {
+        "after": [],
+        "artifact_id": 255,
+        "before": [
+          {
+            "assignment": 6,
+            "entity": 865,
+            "renounced": -1,
+            "tick": 157249,
+            "type": 0,
+            "year": 106
+          }
+        ],
+        "item_id": 27491,
+        "operation": "done",
+        "previous_index": 6,
+        "staged_index": -1,
+        "toggle_is_local": true
+      }
+    ],
+    "height": 66,
+    "lines": [
+      {
+        "text": "                  Roderònul           Pop                                  Food  Drink           20th Malachite",
+        "y": 0
+      },
+      {
+        "text": "                  Baldmirror                                      Stocks                         Mid-Summer",
+        "y": 1
+      },
+      {
+        "text": "                  Metropolis          141 23 20 45 25 13  8  7            ~2000   ~400           Year 106",
+        "y": 2
+      },
+      {
+        "text": "",
+        "y": 3
+      },
+      {
+        "text": "",
+        "y": 4
+      },
+      {
+        "text": "       Creatures    Tasks    Places    Labor    Work orders",
+        "y": 5
+      },
+      {
+        "text": "       Creatures    Tasks    Places    Labor    Work orders",
+        "y": 6
+      },
+      {
+        "text": "       Nobles and administrators    Objects    Justice",
+        "y": 7
+      },
+      {
+        "text": "       Nobles and administrators    Objects    Justice",
+        "y": 8
+      },
+      {
+        "text": "",
+        "y": 9
+      },
+      {
+        "text": "",
+        "y": 10
+      },
+      {
+        "text": "      Choose symbols for the position holder to carry or wear.                                                    Done",
+        "y": 11
+      },
+      {
+        "text": "",
+        "y": 12
+      },
+      {
+        "text": "",
+        "y": 13
+      },
+      {
+        "text": "",
+        "y": 14
+      },
+      {
+        "text": "            Enkoserib",
+        "y": 15
+      },
+      {
+        "text": "                                                                                                                                    Elevation 36",
+        "y": 16
+      },
+      {
+        "text": "",
+        "y": 17
+      },
+      {
+        "text": "            Kulin Odur",
+        "y": 18
+      },
+      {
+        "text": "",
+        "y": 19
+      },
+      {
+        "text": "",
+        "y": 20
+      },
+      {
+        "text": "            Koresis",
+        "y": 21
+      },
+      {
+        "text": "",
+        "y": 22
+      },
+      {
+        "text": "",
+        "y": 23
+      },
+      {
+        "text": "            Cilobireg Lelum Thad",
+        "y": 24
+      },
+      {
+        "text": "",
+        "y": 25
+      },
+      {
+        "text": "",
+        "y": 26
+      },
+      {
+        "text": "            Rinulshem",
+        "y": 27
+      },
+      {
+        "text": "",
+        "y": 28
+      },
+      {
+        "text": "",
+        "y": 29
+      },
+      {
+        "text": "            Izeglîlar",
+        "y": 30
+      },
+      {
+        "text": "",
+        "y": 31
+      },
+      {
+        "text": "",
+        "y": 32
+      },
+      {
+        "text": "            violet spessartine ...",
+        "y": 33
+      },
+      {
+        "text": "",
+        "y": 34
+      },
+      {
+        "text": "",
+        "y": 35
+      },
+      {
+        "text": "            clear glass odshith",
+        "y": 36
+      },
+      {
+        "text": "",
+        "y": 37
+      },
+      {
+        "text": "",
+        "y": 38
+      },
+      {
+        "text": "            ≡«+tiger hair earri...",
+        "y": 39
+      },
+      {
+        "text": "",
+        "y": 40
+      },
+      {
+        "text": "",
+        "y": 41
+      },
+      {
+        "text": "            (-«-steel mace-»-)",
+        "y": 42
+      },
+      {
+        "text": "",
+        "y": 43
+      },
+      {
+        "text": "",
+        "y": 44
+      },
+      {
+        "text": "            («steel helm»)",
+        "y": 45
+      },
+      {
+        "text": "",
+        "y": 46
+      },
+      {
+        "text": "",
+        "y": 47
+      },
+      {
+        "text": "            *«-gray langur leat...",
+        "y": 48
+      },
+      {
+        "text": "",
+        "y": 49
+      },
+      {
+        "text": "",
+        "y": 50
+      },
+      {
+        "text": "             steel breastplate",
+        "y": 51
+      },
+      {
+        "text": "",
+        "y": 52
+      },
+      {
+        "text": "",
+        "y": 53
+      },
+      {
+        "text": "             steel shield",
+        "y": 54
+      },
+      {
+        "text": "",
+        "y": 55
+      },
+      {
+        "text": "",
+        "y": 56
+      },
+      {
+        "text": "             steel flask",
+        "y": 57
+      },
+      {
+        "text": "",
+        "y": 58
+      },
+      {
+        "text": "",
+        "y": 59
+      },
+      {
+        "text": "",
+        "y": 60
+      },
+      {
+        "text": "",
+        "y": 61
+      },
+      {
+        "text": "",
+        "y": 62
+      },
+      {
+        "text": "",
+        "y": 63
+      },
+      {
+        "text": "",
+        "y": 64
+      },
+      {
+        "text": "",
+        "y": 65
+      }
+    ],
+    "office": {
+      "actual_furniture": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "actual_rooms": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "assignment_id": 6,
+      "can_appoint": true,
+      "demand_status": -1,
+      "entity_id": 865,
+      "has_room_assessment": false,
+      "holder_caption": "VACANT",
+      "mandate_status": -1,
+      "nemesis_id": -1,
+      "position_id": 10,
+      "position_name": "manager",
+      "required_furniture": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "required_rooms": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "squad_caption": "",
+      "title": "Manager",
+      "unit_id": -1,
+      "value": 160
+    },
+    "candidate_count": 786,
+    "visible_candidates": [
+      {
+        "current_index": -1,
+        "item_id": 27491,
+        "new_index": -1,
+        "value": 5800
+      },
+      {
+        "current_index": -1,
+        "item_id": 9035,
+        "new_index": -1,
+        "value": 4600
+      },
+      {
+        "current_index": -1,
+        "item_id": 48318,
+        "new_index": -1,
+        "value": 3400
+      },
+      {
+        "current_index": -1,
+        "item_id": 8201,
+        "new_index": -1,
+        "value": 3200
+      },
+      {
+        "current_index": -1,
+        "item_id": 31264,
+        "new_index": -1,
+        "value": 2000
+      },
+      {
+        "current_index": -1,
+        "item_id": 33758,
+        "new_index": -1,
+        "value": 410
+      },
+      {
+        "current_index": -1,
+        "item_id": 15047,
+        "new_index": -1,
+        "value": 1520
+      },
+      {
+        "current_index": -1,
+        "item_id": 20196,
+        "new_index": -1,
+        "value": 1210
+      },
+      {
+        "current_index": -1,
+        "item_id": 13147,
+        "new_index": -1,
+        "value": 1086
+      },
+      {
+        "current_index": -1,
+        "item_id": 7447,
+        "new_index": -1,
+        "value": 804
+      },
+      {
+        "current_index": -1,
+        "item_id": 7313,
+        "new_index": -1,
+        "value": 700
+      },
+      {
+        "current_index": -1,
+        "item_id": 28419,
+        "new_index": -1,
+        "value": 690
+      },
+      {
+        "current_index": -1,
+        "item_id": 29546,
+        "new_index": -1,
+        "value": 630
+      },
+      {
+        "current_index": -1,
+        "item_id": 29668,
+        "new_index": -1,
+        "value": 630
+      },
+      {
+        "current_index": -1,
+        "item_id": 32986,
+        "new_index": -1,
+        "value": 630
+      }
+    ],
+    "ordered_candidates_sha256": "3d95950240c5c6775f6841cec331432a583b82c012fffdb8f7fa8357e52ea4e3",
+    "evidence": "build/stockpile-storage-native-input-20261111-110219",
+    "scope": "Native Manager picker at 1200x800; first artifact checkbox stages locally, Back applies assignment, Done applies removal. No semantic adapter acceptance."
   }
 }

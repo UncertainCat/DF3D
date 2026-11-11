@@ -264,6 +264,55 @@ for _,target in ipairs{{'manager',232,394},{'messenger',232,646}}do
  gui.simulateInput(view,'LEAVESCREEN');settle();assert(info.open and not menu.choosing_candidate,'Picker Cancel did not return to overview')
 end
 
+if os.getenv('DF3D_NOBLES_SYMBOLS')=='1' then
+ local index,office
+ for i,row in ipairs(menu.noblelist)do if row.ep.name[0]=='manager' then index=i;office=rows[i+1];break end end
+ assert(index and office and office.assignment_id>=0,'Missing Manager symbol office')
+ local x,y=544,178+index*36
+ g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=y//12
+ df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+ gui.simulateInput(view,'_MOUSE_L');df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1;settle()
+ assert(menu.assigning_symbol and menu.symbol_noblelist_ind==index,'Wrong native symbol picker')
+ local symbols={}
+ for i,item in ipairs(menu.cand_symbol)do
+  symbols[#symbols+1]={item_id=item.id,new_index=menu.cand_symbol_new_ind[i],current_index=menu.cand_symbol_is_symbol_of_ind[i],value=menu.cand_symbol_value[i]}
+ end
+ result.symbol_reference={office=office,rows=symbols,lines=lines(),columns=g.dimx,height=g.dimy}
+ write('nobles-native.json',json.encode(result));capture('nobles-symbols-manager')
+ gui.simulateInput(view,'LEAVESCREEN');settle()
+ assert(info.open and not menu.assigning_symbol and menu.handling_symbol_closure_ind==-1,'Symbol Back did not return to overview')
+ result.symbol_reference.back_returns_overview=true
+ result.symbol_reference.effects={}
+ local function click_symbol(px,py)
+  g.precise_mouse_x=px;g.precise_mouse_y=py;g.mouse_x=px//8;g.mouse_y=py//12
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+  gui.simulateInput(view,'_MOUSE_L');df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1;settle()
+ end
+ local artifact
+ for _,ref in ipairs(df.item.find(symbols[1].item_id).general_refs)do
+  if ref:getType()==df.general_ref_type.IS_ARTIFACT then artifact=ref:getArtifact();break end
+ end
+ assert(artifact,'Symbol fixture first item is not an artifact')
+ local function claims()
+  local entries={}
+  for _,entity in ipairs(df.global.world.entities.all)do for _,claim in ipairs(entity.artifact_claims)do
+   if claim.artifact_id==artifact.id then entries[#entries+1]={entity=entity.id,type=claim.claim_type,assignment=claim.symbol_claim_id,year=claim.claim_year,tick=claim.claim_year_tick,renounced=claim.renounce_event}end
+  end end
+  return entries
+ end
+ for _,operation in ipairs{'back','done'}do
+  click_symbol(x,y);assert(menu.assigning_symbol and menu.cand_symbol[0].id==symbols[1].item_id)
+  local before=claims();local previous=menu.cand_symbol_new_ind[0]
+  click_symbol(912,190);assert(menu.cand_symbol_new_ind[0]~=previous,'Symbol checkbox did not toggle')
+  assert(json.encode(claims())==json.encode(before),'Symbol toggle applied before dismissal')
+  local staged=menu.cand_symbol_new_ind[0]
+  capture('nobles-symbols-selected-'..operation)
+  if operation=='back' then gui.simulateInput(view,'LEAVESCREEN');settle()else click_symbol(928,142)end
+  assert(info.open and not menu.assigning_symbol and menu.handling_symbol_closure_ind==-1,'Symbol dismissal did not finish')
+  result.symbol_reference.effects[#result.symbol_reference.effects+1]={operation=operation,item_id=symbols[1].item_id,artifact_id=artifact.id,before=before,after=claims(),previous_index=previous,staged_index=staged,toggle_is_local=true}
+ end
+end
+
 if os.getenv('DF3D_NOBLES_ACCOUNTING')=='1' then
  local function resize(size)
   write('owner-input-request.tmp','name-resize-'..size);assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))

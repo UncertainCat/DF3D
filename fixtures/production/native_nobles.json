@@ -7942,6 +7942,40 @@
       "total_artifacts_added": 2,
       "evidence": "build/stockpile-storage-native-input-20261111-111450",
       "scope": "Native two ordinary items: first is elevated and named while second waits; Back opens second naming, then finishes. Existing artifact and assigned-claim paths are separate. No owned mutation or rendered DF3D acceptance."
+    },
+    "name_edit_reference": {
+      "edits": [
+        {
+          "mode": 0,
+          "name_matches": true,
+          "native_ui_unchanged": true,
+          "rng_matches": true,
+          "stale_rejected": true
+        },
+        {
+          "mode": 1,
+          "name_matches": true,
+          "native_ui_unchanged": true,
+          "rng_matches": true,
+          "stale_rejected": true
+        },
+        {
+          "mode": 2,
+          "name_matches": true,
+          "native_ui_unchanged": true,
+          "rng_matches": true,
+          "stale_rejected": true
+        },
+        {
+          "mode": 3,
+          "name_matches": true,
+          "native_ui_unchanged": true,
+          "rng_matches": true,
+          "stale_rejected": true
+        }
+      ],
+      "evidence": "build/stockpile-storage-native-input-20261111-113210",
+      "scope": "Owned edits compared against native Clear, word selection, component Random and whole-name Random on the first elevated Manager symbol. Exact name fields and active RNG match; stale requests leave them unchanged; native name-editor bytes unchanged. No typed or rendered DF3D naming acceptance."
     }
   }
 }

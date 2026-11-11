@@ -393,6 +393,47 @@ if os.getenv('DF3D_NOBLES_SYMBOLS')=='1' then
    pending_index=menu.handling_symbol_closure_ind,artifacts_added=#df.global.world.artifacts.all-artifacts_before,lines=lines()}
   assert(not second_item.flags.artifact and menu.handling_symbol_closure_ind==second_index,'Second symbol did not wait for naming')
   capture('nobles-symbol-name-open')
+  if os.getenv('DF3D_NOBLES_SYMBOL_NAME_EDIT')=='1' then
+   local artifact
+   for _,ref in ipairs(item.general_refs)do if ref:getType()==df.general_ref_type.IS_ARTIFACT then artifact=ref:getArtifact();break end end
+   assert(artifact)
+   local function name_value()
+    local n=artifact.name;local v={first=n.first_name,nickname=n.nickname,language=n.language,type=n.type,has_name=n.has_name,words={},parts={}}
+    for i=0,6 do v.words[#v.words+1]=n.words[i];v.parts[#v.parts+1]=n.parts_of_speech[i] end;return v
+   end
+   local base=dfhack.internal.getImageBase()
+   local function rng()
+    local context=df.reinterpret_cast('int16_t',base+0x2159084).value;assert(context>=0 and context<16)
+    local r={context=context,cursor=df.reinterpret_cast('uint32_t',base+0x2131b30+context*4).value,words={}}
+    for i=0,623 do r.words[i+1]=df.reinterpret_cast('uint32_t',base+0x234e990+context*0x9c0+i*4).value end;return r
+   end
+   local function restore_rng(r)
+    assert(df.reinterpret_cast('int16_t',base+0x2159084).value==r.context)
+    df.reinterpret_cast('uint32_t',base+0x2131b30+r.context*4).value=r.cursor
+    for i,v in ipairs(r.words)do df.reinterpret_cast('uint32_t',base+0x234e990+r.context*0x9c0+(i-1)*4).value=v end
+   end
+   local function command(edit,...)
+    local args={edit and 'nobles-symbol-name-edit-probe' or 'nobles-symbol-name-probe',tostring(office.entity_id),tostring(office.position_id),tostring(office.assignment_id),tostring(artifact.id),...}
+    local text,rc=dfhack.run_command_silent('df3d',table.unpack(args));assert(rc==0,text);return json.decode(text)
+   end
+   result.symbol_reference.naming.edits={}
+   for _,test in ipairs{{0,316,130},{1,500,166},{2,256,130},{3,848,70}}do
+    local before=df.language_name:new();before:assign(artifact.name)
+    local revision=command(false).revision;local random_before=rng()
+    click_symbol(test[2],test[3]);local expected=name_value();local random_after=rng()
+    artifact.name:assign(before);before:delete();restore_rng(random_before)
+    local mode=test[1];local target=mode==3 and -1 or 0
+    local word=mode==1 and expected.words[1] or -1;local part=mode==1 and expected.parts[1] or -1
+    local size,address=df.sizeof(creator);local menu_before=bytes(address,size)
+    assert(command(true,revision,tostring(mode),tostring(target),tostring(target),tostring(word),tostring(part),'')==2,'Owned name edit failed')
+    assert(json.encode(name_value())==json.encode(expected),'Owned/native symbol name differs')
+    assert(json.encode(rng())==json.encode(random_after),'Owned/native symbol name RNG differs')
+    assert(bytes(address,size)==menu_before,'Owned name edit changed native editor')
+    assert(command(true,'1','0','0','0','-1','-1','')==4,'Stale symbol name edit was accepted')
+    assert(json.encode(name_value())==json.encode(expected) and json.encode(rng())==json.encode(random_after),'Stale symbol name changed state')
+    result.symbol_reference.naming.edits[#result.symbol_reference.naming.edits+1]={mode=mode,name_matches=true,rng_matches=true,stale_rejected=true,native_ui_unchanged=true}
+   end
+  end
   gui.simulateInput(view,'LEAVESCREEN');settle()
   assert(creator.open and second_item.flags.artifact,'Closing first name did not open second')
   result.symbol_reference.naming.second_context=creator.context

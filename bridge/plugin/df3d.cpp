@@ -120,6 +120,7 @@
 #include "nobles_draft_native.h"
 #include "nobles_symbols_native.h"
 #include "nobles_symbols_mutation_native.h"
+#include "nobles_symbol_name_native.h"
 #include "places_action_native.h"
 #include "tasks_action_native.h"
 #include "residents_activity_description_native.h"
@@ -2534,6 +2535,27 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             row["position"]=Json::Value(Json::arrayValue);for(auto v:{entry.position.x,entry.position.y,entry.position.z})row["position"].append(v);
             list.append(row);}result.append(list);}
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
+        }
+        if(parameters[0]=="nobles-symbol-name-probe" || parameters[0]=="nobles-symbol-name-edit-probe") {
+          const bool edit=parameters[0]=="nobles-symbol-name-edit-probe";
+          if(parameters.size()!=(edit?12:5))return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          try {
+            const df3d_nobles::OfficeKey key{std::stoi(parameters[1]),std::stoi(parameters[2]),std::stoi(parameters[3])};
+            const auto id=std::stoi(parameters[4]);
+            if(edit) {
+              const auto mode=std::stoi(parameters[6]);if(mode<0 || mode>3)return CR_WRONG_USAGE;
+              out.print("{}\n",int(df3d_nobles::editSymbolName(key,id,std::stoull(parameters[5]),df3d_area::LocationNameEdit(mode),
+                std::stoi(parameters[7]),std::stoi(parameters[8]),std::stoi(parameters[9]),std::stoi(parameters[10]),parameters[11])));return CR_OK;
+            }
+            const auto name=df3d_nobles::observeSymbolName(key,id);if(!name)return CR_FAILURE;
+            Json::Value result;result["revision"]=std::to_string(name->revision);result["native"]=DF2UTF(name->nativeHeader);result["english"]=DF2UTF(name->englishHeader);
+            result["words"]=Json::Value(Json::arrayValue);for(auto v:name->value.words)result["words"].append(v);
+            result["parts"]=Json::Value(Json::arrayValue);for(auto v:name->value.parts)result["parts"].append(v);
+            result["first_name"]=DF2UTF(name->value.firstNameCp437);result["nickname"]=DF2UTF(name->value.nicknameCp437);
+            result["language"]=name->value.language;result["type"]=name->value.type;result["has_name"]=name->value.hasName;
+            out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
+          }catch(const std::exception&){return CR_FAILURE;}
         }
         if(parameters[0]=="nobles-symbol-apply-probe") {
           if(parameters.size()<6 || (parameters.size()-4)%2)return CR_WRONG_USAGE;

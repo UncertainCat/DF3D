@@ -135,6 +135,26 @@ acceptance, not typed transport, rendered picker/naming or failure-lifecycle
 acceptance. Cross-office/civilization claims and mixed continuation ordering
 remain unverified.
 
+`nobles_symbol_name_native.h` observes an artifact name only while its expected
+office assignment and active symbol claim still exist. Its receipt binds that
+office, artifact/item identity and all name fields. Edits reject stale receipts
+before RNG or writes. The pinned shared name-editor branch supplies field scope;
+word eligibility and component Random reuse the native owned word providers,
+and whole-name Random calls931860 with the fortress entity and category1.
+Native editor/context storage is never an input. The future typed owner must
+also bind the outstanding naming step and retire it on session changes.
+
+Protected113210 on2026-11-11 compares native clicks for Clear, Select Word,
+Random Component and Random Whole against the adapter with the same initial
+name/RNG. All name fields and the active RNG state match; stale edits preserve
+both and native name-editor bytes remain unchanged. The bounded reference is
+`symbol_reference.name_edit_reference`. Core passes in
+`build/qa/nobles-symbol-name`; the plugin builds. DF22572 closes unsaved with
+source preservation,30FPS. A post-run GPU sample was60C/32%. Earlier113127
+stopped on a Lua test allocation error before edits, fixed to use the generated
+language_name constructor. Typed requests, name paging and rendered DF3D
+interaction remain unfinished; this evidence covers the diagnostic editor only.
+
 Owned accounting changes use `setAccounting` in `nobles_draft_native.h`.
 Native425712..4257b4 contains an inline occupied-ACCOUNTING-row check followed
 by a direct int16 store to the requested setting; there is no separate semantic

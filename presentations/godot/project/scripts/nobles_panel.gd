@@ -10,6 +10,8 @@ var state=preload("res://scripts/nobles_state.gd").new()
 var layout_size:=Vector2.ZERO
 var opening:=false
 var _destination: Callable
+var information_available: Callable
+var completing_information_handoff:=false
 func _init() -> void:
 	state.changed.connect(_sync)
 	state.dismissed.connect(_dismissed)
@@ -27,7 +29,11 @@ func configure(world,service,host) -> void:
 	panel.accounting_requested.connect(func(row,setting):
 		if allowed():state.set_accounting(state.office(row),setting))
 	panel.information_requested.connect(func(caption):
-		if allowed():request_handoff(func():information_requested.emit(caption)))
+		if allowed() and (not information_available.is_valid() or information_available.call(caption)):
+			request_handoff(func():
+				completing_information_handoff=true
+				information_requested.emit(caption)
+				completing_information_handoff=false))
 	host.register(self);_layout();_sync()
 func allowed() -> bool:
 	if state.phase==state.Phase.Symbols and state.symbols.busy():

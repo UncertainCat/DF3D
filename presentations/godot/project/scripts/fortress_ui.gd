@@ -126,6 +126,11 @@ func controller(id: String):
 	if not Registry.PANEL_SCRIPTS.has(id): return null
 	if controllers.has(id): return controllers[id]
 	var panel = load(Registry.PANEL_SCRIPTS[id]).new()
+	if id=="nobles":
+		add_child(panel);panel.configure(world,actions,host)
+		panel.information_available=func(caption):return caption in ["Creatures","Tasks","Places","Labor","Work orders"]
+		panel.information_requested.connect(func(caption):_open_staged_information(panel,caption))
+		controllers[id]=panel;return panel
 	if id=="places":
 		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
 		panel.information_requested.connect(func(caption):_open_staged_information(panel,caption))
@@ -241,13 +246,15 @@ func controller(id: String):
 # retain their separate acceptance gate; unknown tabs never fall back to Zones
 # or the older readouts. The host closes the source only after accepting a target.
 func _open_staged_information(source,caption: String) -> void:
-	if not host.allows_panel_input(source):return
+	var completed_nobles: bool=controllers.get("nobles")==source and source.completing_information_handoff and host.active==null
+	if not host.play_enabled or host.overlay_blocked or (not host.allows_panel_input(source) and not completed_nobles):return
 	match caption:
 		"Creatures":controller("residents").open_panel()
 		"Tasks":controller("tasks").open_panel()
 		"Places":controller("places").open_panel()
 		"Labor":controller("work_details").open_panel()
 		"Work orders":controller("workshop").open_global_orders()
+		"Nobles and administrators":controller("nobles").open_panel()
 
 func open_destination(destination: String) -> void:
 	destination = Registry.READ_LAUNCHERS.get(destination,destination)

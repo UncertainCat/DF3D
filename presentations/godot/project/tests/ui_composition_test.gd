@@ -165,13 +165,46 @@ func run():
 		var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=true
 		click.position=Vector2(200,48 if dimensions.x<1240 else 24);places.panel._gui_input(click)
 		check(places.state.tab==4 and places.state.ticket==pending,"Selected Places header retains subtab/read")
-		for point in ([Vector2(24,24),Vector2(256,24),Vector2(328,24)] if dimensions.x<1240 else [Vector2(456,24),Vector2(688,24),Vector2(760,24)]):
+		for point in ([Vector2(256,24),Vector2(328,24)] if dimensions.x<1240 else [Vector2(688,24),Vector2(760,24)]):
 			click.position=point;places.panel._gui_input(click)
 			check(ui.host.active==places and places.state.ticket==pending,"Unfinished information route stays gated")
 		ui.host.set_overlay_blocked(true)
 		places.information_requested.emit("Creatures")
 		check(ui.host.active==places,"Overlay blocks information handoff")
 		ui.host.set_overlay_blocked(false)
+	var nobles=ui.controller("nobles")
+	check(nobles==ui.controller("nobles") and not ui.Registry.allows_launcher("Nobles and administrators"),"Nobles factory is reused without public exposure")
+	for dimensions in [Vector2(912,552),Vector2(1600,900)]:
+		places.open_panel();places.panel.layout(dimensions)
+		var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=true
+		click.position=Vector2(24 if dimensions.x<1240 else 456,24);places.panel._gui_input(click)
+		check(ui.host.active==nobles and not places.panel.visible,"Native Nobles header opens composed owner")
+		nobles.state._retire();nobles.state.phase=nobles.state.Phase.Ready;nobles.panel.layout(dimensions)
+		var pending: int=nobles.state.ticket
+		nobles.panel.information_requested.emit("Justice")
+		check(ui.host.active==nobles and nobles.state.ticket==pending,"Unavailable Nobles destination does not dismiss or commit")
+		click.position=Vector2(136,24);nobles.panel._gui_input(click)
+		check(ui.host.active==ui.controller("tasks") and not nobles.panel.visible,"Completed Nobles handoff reaches Tasks after source release: width=%s phase=%s active=%s"%[dimensions.x,nobles.state.phase,ui.host.active])
+		nobles.information_requested.emit("Places")
+		check(ui.host.active==ui.controller("tasks"),"Closed Nobles cannot navigate with an unsolicited signal")
+	for outcome in ["applied","unknown","reset"]:
+		nobles.open_panel();nobles.state._retire();nobles.state.phase=nobles.state.Phase.Ready
+		nobles.state._revision=123
+		nobles.state.choices=[{"target":{"entity_id":865,"position_id":10,"assignment_id":6,"draft_slot":0},"expected_unit_id":-1,"unit_id":6598}]
+		nobles.panel.information_requested.emit("Work orders")
+		var pending: int=nobles.state.ticket
+		check(pending>0 and ui.host.active==nobles and nobles.state.phase==nobles.state.Phase.Applying,"Composed handoff retains source until commit")
+		var C=preload("res://scripts/management_contract.gd")
+		check(ui.actions._requests[pending].request.action==C.ManagementAction.NoblesCommit,"Composed handoff submits appointment commit")
+		var observer: Callable=ui.actions._requests[pending].observer
+		if outcome=="reset":ui.host.reset_local_views()
+		observer.call(pending,{"action":C.ManagementAction.NoblesCommit,"status":C.ManagementStatus.Ok,"nobles":{"outcome":C.NoblesOutcome.Applied},"outcome":"unknown" if outcome=="unknown" else "applied"},true)
+		if outcome=="applied":check(ui.host.active==workshop and workshop.global_orders_mode,"Confirmed Nobles handoff opens global Work orders")
+		elif outcome=="unknown":check(ui.host.active==nobles and nobles.state.phase==nobles.state.Phase.Unknown,"Unknown Nobles result retains owner and blocks navigation")
+		else:check(ui.host.active==null,"Reset suppresses late Nobles navigation")
+		ui.host.reset_local_views()
+	nobles.open_panel();var noble_read: int=nobles.state.ticket;ui.actions.session_changed.emit()
+	check(ui.host.active==null and not nobles.panel.visible and nobles.state.ticket==0 and not ui.actions._requests.has(noble_read),"Session change retires composed Nobles read")
 	var standing=ui.controller("standing_orders")
 	for dimensions in [Vector2(912,552),Vector2(1600,900)]:
 		for page in ["standing","chores","kitchen","stone"]:

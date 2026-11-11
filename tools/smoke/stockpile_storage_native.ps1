@@ -257,6 +257,7 @@ try {
      if($env:DF3D_CHORES_RENDER -eq '1' -or $env:DF3D_HUNTER_AMMUNITION_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/job_settings_wire_live.gd')}
      if($name -eq 'nobles-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/nobles_wire_live.gd')}
      if($name -eq 'nobles-wire' -and $env:DF3D_NOBLES_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/nobles_wire_live.gd')}
+     if($name -eq 'nobles-wire' -and $env:DF3D_NOBLES_SCENE -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/nobles_scene_live.gd')}
      if($name -eq 'places-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/places_wire_live.gd')}
      if($name -eq 'places-wire' -and $env:DF3D_PLACES_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/places_wire_live.gd')}
      if($name -eq 'places-wire' -and $env:DF3D_PLACES_SCENE -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/places_scene_live.gd')}
@@ -287,6 +288,7 @@ try {
      if($name -eq 'labor-lifecycle-wire'){$wireTimeout=295000}
      if($name -eq 'hunter-ammunition-wire' -and $env:DF3D_HUNTER_AMMUNITION_MAIN -eq '1'){$wireTimeout=115000}
      if($name -eq 'nobles-wire' -and $env:DF3D_NOBLES_SYMBOL_NAME_RESIZE -eq '1'){$wireTimeout=115000}
+     if($name -eq 'nobles-wire' -and $env:DF3D_NOBLES_SCENE -eq '1'){$wireTimeout=115000}
      if(-not $client.WaitForExit($wireTimeout)){$client.Kill();$client.WaitForExit();throw 'Job settings wire client timed out; no replay'}
      if($client.ExitCode -ne 0 -or -not (Test-Path "$out/job-settings-wire-result.json")){throw 'Job settings wire client failed'}
     }

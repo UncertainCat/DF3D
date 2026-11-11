@@ -261,7 +261,24 @@ before forwarding a header destination or completing an opt-in host handoff.
 The shared host retains its existing immediate switching for other owners.
 Reset/session teardown clears the pending destination and retires its observer;
 unknown/rejected results cannot open the requested destination. Public Nobles
-entry and main-scene composition remain gated.
+entry remains gated; the main-scene factory and internal information routes are
+composed for acceptance. A completed Nobles header handoff carries a synchronous
+completion scope because the source has already released the host. Only that
+scope may navigate from an inactive Nobles owner, with play/overlay gates still
+enforced. Closed-owner unsolicited signals cannot navigate. Unsupported tabs
+are rejected before dismissing or committing the draft.
+
+Protected135305 on2026-11-11 exercises the actual main scene through
+`DF3D_NOBLES_SCENE=1` plus NOBLES_NATIVE/WIRE: Nobles-to-Tasks and back at912x552
+and1600x900, HUD overlay input blocking, and F10 release of panel/map ownership.
+The original14 overview rows load through the shared service. DF29644 closes
+unsaved with source preservation; both applications run at30FPS, sampled
+GPU60C/39%/57W. Only the known Godot startup/finalize/shutdown diagnostics occur
+(passed_with_known_issues). Core19, Nobles state, UI host and composition pass
+in `build/qa/nobles-composition-final`. Composition checks cover Applied opening
+global Work orders, Unknown retaining Nobles, reset suppressing a late receipt,
+session read retirement and public gating. Live mutation handoff and transport
+fault recovery are not established by this read/navigation run.
 
 Protected103341 on2026-11-11 exercises the configured Nobles owner, actual
 action service and shared UI host with a destination test panel. Switching waits

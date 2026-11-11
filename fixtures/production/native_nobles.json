@@ -5753,5 +5753,1465 @@
       "Captured fields do not establish every historical/personality/intrigue effect or complete simulation-memory equivalence."
     ],
     "earlier_passing_source": "build/stockpile-storage-native-input-20261111-093551"
+  },
+  "candidate_text_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-094509",
+    "df_version": "53.16",
+    "cases": [
+      {
+        "position": "manager",
+        "candidate_count": 117,
+        "visible": [
+          {
+            "caption": "Leave Vacant",
+            "first_skill": "",
+            "unit_id": -1
+          },
+          {
+            "caption": "Zutthan Kadôlnimak, Spearmaster",
+            "first_skill": "Master Organizer",
+            "unit_id": 6598
+          },
+          {
+            "caption": "Såkzul Nåzomkivish, militia commander",
+            "first_skill": "Accomplished Organzr",
+            "unit_id": 6812
+          },
+          {
+            "caption": "Unib Rakustazin, king",
+            "first_skill": "Accomplished Organzr",
+            "unit_id": 5981
+          },
+          {
+            "caption": "Litast Urrïthzon, Axe Lord",
+            "first_skill": "Talented Organizer",
+            "unit_id": 6838
+          },
+          {
+            "caption": "èzum Amostmörul, Axe Lord",
+            "first_skill": "Proficient Organizer",
+            "unit_id": 6811
+          },
+          {
+            "caption": "Feb Anambomrek, Axe Lord",
+            "first_skill": "Proficient Organizer",
+            "unit_id": 5575
+          },
+          {
+            "caption": "Stodir Tangakurvad, bookkeeper",
+            "first_skill": "Proficient Organizer",
+            "unit_id": 1017
+          },
+          {
+            "caption": "Kadôl Nîlesmûthkat, Hammer Lord",
+            "first_skill": "Skilled Organizer",
+            "unit_id": 6837
+          },
+          {
+            "caption": "Asën Govososlan, Spearmaster",
+            "first_skill": "Competent Organizer",
+            "unit_id": 6531
+          },
+          {
+            "caption": "Doren Matkadôl, Hammer Lord",
+            "first_skill": "Competent Organizer",
+            "unit_id": 6539
+          },
+          {
+            "caption": "Dodók Kilruderush, Swordmaster",
+            "first_skill": "Adequate Organizer",
+            "unit_id": 6032
+          },
+          {
+            "caption": "Id Tunthol, Planter",
+            "first_skill": "Novice Organizer",
+            "unit_id": 6661
+          },
+          {
+            "caption": "Kogan Atîsteling, Miner",
+            "first_skill": "Novice Organizer",
+            "unit_id": 6392
+          },
+          {
+            "caption": "Äs Mörulsebïr, Fisherdwarf",
+            "first_skill": "Novice Organizer",
+            "unit_id": 6814
+          },
+          {
+            "caption": "Kikrost Thosbutuzol, militia captain",
+            "first_skill": "Novice Organizer",
+            "unit_id": 5984
+          },
+          {
+            "caption": "Meng Ducimkezat, Farmer",
+            "first_skill": "Novice Organizer",
+            "unit_id": 6597
+          }
+        ],
+        "owned_visible": [
+          {
+            "caption": "Leave Vacant",
+            "no_skills": "",
+            "skills": [],
+            "unit_id": -1,
+            "value": 100000000
+          },
+          {
+            "caption": "Zutthan Kadôlnimak, Spearmaster",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Master Organizer",
+                "id": 74,
+                "rating": 12
+              }
+            ],
+            "unit_id": 6598,
+            "value": 12
+          },
+          {
+            "caption": "Såkzul Nåzomkivish, militia commander",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Accomplished Organzr",
+                "id": 74,
+                "rating": 10
+              }
+            ],
+            "unit_id": 6812,
+            "value": 10
+          },
+          {
+            "caption": "Unib Rakustazin, king",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Accomplished Organzr",
+                "id": 74,
+                "rating": 10
+              }
+            ],
+            "unit_id": 5981,
+            "value": 10
+          },
+          {
+            "caption": "Litast Urrïthzon, Axe Lord",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Talented Organizer",
+                "id": 74,
+                "rating": 6
+              }
+            ],
+            "unit_id": 6838,
+            "value": 6
+          },
+          {
+            "caption": "èzum Amostmörul, Axe Lord",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Proficient Organizer",
+                "id": 74,
+                "rating": 5
+              }
+            ],
+            "unit_id": 6811,
+            "value": 5
+          },
+          {
+            "caption": "Feb Anambomrek, Axe Lord",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Proficient Organizer",
+                "id": 74,
+                "rating": 5
+              }
+            ],
+            "unit_id": 5575,
+            "value": 5
+          },
+          {
+            "caption": "Stodir Tangakurvad, bookkeeper",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Proficient Organizer",
+                "id": 74,
+                "rating": 5
+              }
+            ],
+            "unit_id": 1017,
+            "value": 5
+          },
+          {
+            "caption": "Kadôl Nîlesmûthkat, Hammer Lord",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Skilled Organizer",
+                "id": 74,
+                "rating": 4
+              }
+            ],
+            "unit_id": 6837,
+            "value": 4
+          },
+          {
+            "caption": "Asën Govososlan, Spearmaster",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Competent Organizer",
+                "id": 74,
+                "rating": 3
+              }
+            ],
+            "unit_id": 6531,
+            "value": 3
+          },
+          {
+            "caption": "Doren Matkadôl, Hammer Lord",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Competent Organizer",
+                "id": 74,
+                "rating": 3
+              }
+            ],
+            "unit_id": 6539,
+            "value": 3
+          },
+          {
+            "caption": "Dodók Kilruderush, Swordmaster",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Adequate Organizer",
+                "id": 74,
+                "rating": 2
+              }
+            ],
+            "unit_id": 6032,
+            "value": 2
+          },
+          {
+            "caption": "Id Tunthol, Planter",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Novice Organizer",
+                "id": 74,
+                "rating": 1
+              }
+            ],
+            "unit_id": 6661,
+            "value": 1
+          },
+          {
+            "caption": "Kogan Atîsteling, Miner",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Novice Organizer",
+                "id": 74,
+                "rating": 1
+              }
+            ],
+            "unit_id": 6392,
+            "value": 1
+          },
+          {
+            "caption": "Äs Mörulsebïr, Fisherdwarf",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Novice Organizer",
+                "id": 74,
+                "rating": 1
+              }
+            ],
+            "unit_id": 6814,
+            "value": 1
+          },
+          {
+            "caption": "Kikrost Thosbutuzol, militia captain",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Novice Organizer",
+                "id": 74,
+                "rating": 1
+              }
+            ],
+            "unit_id": 5984,
+            "value": 1
+          },
+          {
+            "caption": "Meng Ducimkezat, Farmer",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Novice Organizer",
+                "id": 74,
+                "rating": 1
+              }
+            ],
+            "unit_id": 6597,
+            "value": 1
+          }
+        ],
+        "menu_rng_caches_preserved": true
+      },
+      {
+        "position": "messenger",
+        "candidate_count": 117,
+        "visible": [
+          {
+            "caption": "Leave Vacant",
+            "first_skill": "",
+            "unit_id": -1
+          },
+          {
+            "caption": "Kûbuk ïngizkor, mayor",
+            "first_skill": "Adept Persuader",
+            "unit_id": 5813
+          },
+          {
+            "caption": "èzum Amostmörul, Axe Lord",
+            "first_skill": "Skilled Persuader",
+            "unit_id": 6811
+          },
+          {
+            "caption": "Såkzul Nåzomkivish, militia commander",
+            "first_skill": "Competent Persuader",
+            "unit_id": 6812
+          },
+          {
+            "caption": "Rigòth Shinatír, sacred call",
+            "first_skill": "Expert Persuader",
+            "unit_id": 6134
+          },
+          {
+            "caption": "Zutthan Kadôlnimak, Spearmaster",
+            "first_skill": "Adequate Persuader",
+            "unit_id": 6598
+          },
+          {
+            "caption": "Kadôl Nîlesmûthkat, Hammer Lord",
+            "first_skill": "Competent Persuader",
+            "unit_id": 6837
+          },
+          {
+            "caption": "Asën Govososlan, Spearmaster",
+            "first_skill": "Adequate Persuader",
+            "unit_id": 6531
+          },
+          {
+            "caption": "Ineth Zuglariseth, Scholar",
+            "first_skill": "Skilled Persuader",
+            "unit_id": 6549
+          },
+          {
+            "caption": "Id Tunthol, Planter",
+            "first_skill": "Proficient Persuader",
+            "unit_id": 6661
+          },
+          {
+            "caption": "Litast Urrïthzon, Axe Lord",
+            "first_skill": "Novice Persuader",
+            "unit_id": 6838
+          },
+          {
+            "caption": "Kogan Atîsteling, Miner",
+            "first_skill": "Proficient Persuader",
+            "unit_id": 6392
+          },
+          {
+            "caption": "Rakust ádolbomrek, Weaponsmith",
+            "first_skill": "Skilled Persuader",
+            "unit_id": 6683
+          },
+          {
+            "caption": "Uzol Bardumtekkud, Miner",
+            "first_skill": "Proficient Persuader",
+            "unit_id": 5697
+          },
+          {
+            "caption": "Dodók Kilruderush, Swordmaster",
+            "first_skill": "Novice Persuader",
+            "unit_id": 6032
+          },
+          {
+            "caption": "Uvash Mengteshkad, Planter",
+            "first_skill": "Proficient Persuader",
+            "unit_id": 7262
+          },
+          {
+            "caption": "Logem Imeshdumat, Hunter",
+            "first_skill": "Accomplished Ambushr",
+            "unit_id": 6553
+          }
+        ],
+        "owned_visible": [
+          {
+            "caption": "Leave Vacant",
+            "no_skills": "",
+            "skills": [],
+            "unit_id": -1,
+            "value": 100000000
+          },
+          {
+            "caption": "Kûbuk ïngizkor, mayor",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Adept Persuader",
+                "id": 70,
+                "rating": 7
+              },
+              {
+                "caption": "Talented Negotiator",
+                "id": 71,
+                "rating": 6
+              },
+              {
+                "caption": "Profcnt Jdg of Intnt",
+                "id": 72,
+                "rating": 5
+              },
+              {
+                "caption": "Adept Liar",
+                "id": 76,
+                "rating": 7
+              },
+              {
+                "caption": "Proficient Intimidtr",
+                "id": 77,
+                "rating": 5
+              },
+              {
+                "caption": "Proficint Cnvrstnlst",
+                "id": 78,
+                "rating": 5
+              },
+              {
+                "caption": "Adept Comedian",
+                "id": 79,
+                "rating": 7
+              },
+              {
+                "caption": "Adept Flatterer",
+                "id": 80,
+                "rating": 7
+              },
+              {
+                "caption": "Expert Consoler",
+                "id": 81,
+                "rating": 8
+              },
+              {
+                "caption": "Adept Pacifier",
+                "id": 82,
+                "rating": 7
+              },
+              {
+                "caption": "Professional Observr",
+                "id": 87,
+                "rating": 9
+              },
+              {
+                "caption": "Competent Speaker",
+                "id": 92,
+                "rating": 3
+              }
+            ],
+            "unit_id": 5813,
+            "value": 76
+          },
+          {
+            "caption": "èzum Amostmörul, Axe Lord",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Skilled Persuader",
+                "id": 70,
+                "rating": 4
+              },
+              {
+                "caption": "Skilled Negotiator",
+                "id": 71,
+                "rating": 4
+              },
+              {
+                "caption": "Skilled Jdg of Intnt",
+                "id": 72,
+                "rating": 4
+              },
+              {
+                "caption": "Skilled Liar",
+                "id": 76,
+                "rating": 4
+              },
+              {
+                "caption": "Skilled Intimidator",
+                "id": 77,
+                "rating": 4
+              },
+              {
+                "caption": "Skilled Converstnlst",
+                "id": 78,
+                "rating": 4
+              },
+              {
+                "caption": "Competent Comedian",
+                "id": 79,
+                "rating": 3
+              },
+              {
+                "caption": "Competent Flatterer",
+                "id": 80,
+                "rating": 3
+              },
+              {
+                "caption": "Adequate Consoler",
+                "id": 81,
+                "rating": 2
+              },
+              {
+                "caption": "Competent Pacifier",
+                "id": 82,
+                "rating": 3
+              },
+              {
+                "caption": "Legendary Observer",
+                "id": 87,
+                "rating": 31
+              },
+              {
+                "caption": "Competent Speaker",
+                "id": 92,
+                "rating": 3
+              }
+            ],
+            "unit_id": 6811,
+            "value": 69
+          },
+          {
+            "caption": "Såkzul Nåzomkivish, militia commander",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Competent Persuader",
+                "id": 70,
+                "rating": 3
+              },
+              {
+                "caption": "Competent Negotiator",
+                "id": 71,
+                "rating": 3
+              },
+              {
+                "caption": "Comptnt Jdg of Intnt",
+                "id": 72,
+                "rating": 3
+              },
+              {
+                "caption": "Competent Liar",
+                "id": 76,
+                "rating": 3
+              },
+              {
+                "caption": "Competent Intimidatr",
+                "id": 77,
+                "rating": 3
+              },
+              {
+                "caption": "Skilled Converstnlst",
+                "id": 78,
+                "rating": 4
+              },
+              {
+                "caption": "Skilled Comedian",
+                "id": 79,
+                "rating": 4
+              },
+              {
+                "caption": "Skilled Flatterer",
+                "id": 80,
+                "rating": 4
+              },
+              {
+                "caption": "Adequate Consoler",
+                "id": 81,
+                "rating": 2
+              },
+              {
+                "caption": "Skilled Pacifier",
+                "id": 82,
+                "rating": 4
+              },
+              {
+                "caption": "Legendary Observer",
+                "id": 87,
+                "rating": 31
+              },
+              {
+                "caption": "Adequate Speaker",
+                "id": 92,
+                "rating": 2
+              }
+            ],
+            "unit_id": 6812,
+            "value": 66
+          },
+          {
+            "caption": "Rigòth Shinatír, sacred call",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Expert Persuader",
+                "id": 70,
+                "rating": 8
+              },
+              {
+                "caption": "Adept Negotiator",
+                "id": 71,
+                "rating": 7
+              },
+              {
+                "caption": "Profcnt Jdg of Intnt",
+                "id": 72,
+                "rating": 5
+              },
+              {
+                "caption": "Skilled Liar",
+                "id": 76,
+                "rating": 4
+              },
+              {
+                "caption": "Competent Intimidatr",
+                "id": 77,
+                "rating": 3
+              },
+              {
+                "caption": "Talented Convrstnlst",
+                "id": 78,
+                "rating": 6
+              },
+              {
+                "caption": "Talented Comedian",
+                "id": 79,
+                "rating": 6
+              },
+              {
+                "caption": "Competent Flatterer",
+                "id": 80,
+                "rating": 3
+              },
+              {
+                "caption": "Expert Consoler",
+                "id": 81,
+                "rating": 8
+              },
+              {
+                "caption": "Adept Pacifier",
+                "id": 82,
+                "rating": 7
+              },
+              {
+                "caption": "Novice Observer",
+                "id": 87,
+                "rating": 1
+              },
+              {
+                "caption": "Proficient Speaker",
+                "id": 92,
+                "rating": 5
+              }
+            ],
+            "unit_id": 6134,
+            "value": 63
+          },
+          {
+            "caption": "Zutthan Kadôlnimak, Spearmaster",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Adequate Persuader",
+                "id": 70,
+                "rating": 2
+              },
+              {
+                "caption": "Competent Negotiator",
+                "id": 71,
+                "rating": 3
+              },
+              {
+                "caption": "Comptnt Jdg of Intnt",
+                "id": 72,
+                "rating": 3
+              },
+              {
+                "caption": "Adequate Liar",
+                "id": 76,
+                "rating": 2
+              },
+              {
+                "caption": "Novice Intimidator",
+                "id": 77,
+                "rating": 1
+              },
+              {
+                "caption": "Competent Cnvrstnlst",
+                "id": 78,
+                "rating": 3
+              },
+              {
+                "caption": "Competent Comedian",
+                "id": 79,
+                "rating": 3
+              },
+              {
+                "caption": "Competent Flatterer",
+                "id": 80,
+                "rating": 3
+              },
+              {
+                "caption": "Competent Consoler",
+                "id": 81,
+                "rating": 3
+              },
+              {
+                "caption": "Adequate Pacifier",
+                "id": 82,
+                "rating": 2
+              },
+              {
+                "caption": "Legendary Observer",
+                "id": 87,
+                "rating": 32
+              },
+              {
+                "caption": "Competent Speaker",
+                "id": 92,
+                "rating": 3
+              }
+            ],
+            "unit_id": 6598,
+            "value": 60
+          },
+          {
+            "caption": "Kadôl Nîlesmûthkat, Hammer Lord",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Competent Persuader",
+                "id": 70,
+                "rating": 3
+              },
+              {
+                "caption": "Competent Negotiator",
+                "id": 71,
+                "rating": 3
+              },
+              {
+                "caption": "Comptnt Jdg of Intnt",
+                "id": 72,
+                "rating": 3
+              },
+              {
+                "caption": "Adequate Liar",
+                "id": 76,
+                "rating": 2
+              },
+              {
+                "caption": "Adequate Intimidator",
+                "id": 77,
+                "rating": 2
+              },
+              {
+                "caption": "Adequate Convrstnlst",
+                "id": 78,
+                "rating": 2
+              },
+              {
+                "caption": "Competent Comedian",
+                "id": 79,
+                "rating": 3
+              },
+              {
+                "caption": "Adequate Flatterer",
+                "id": 80,
+                "rating": 2
+              },
+              {
+                "caption": "Adequate Consoler",
+                "id": 81,
+                "rating": 2
+              },
+              {
+                "caption": "Adequate Pacifier",
+                "id": 82,
+                "rating": 2
+              },
+              {
+                "caption": "Legendary Observer",
+                "id": 87,
+                "rating": 32
+              },
+              {
+                "caption": "Novice Speaker",
+                "id": 92,
+                "rating": 1
+              }
+            ],
+            "unit_id": 6837,
+            "value": 57
+          },
+          {
+            "caption": "Asën Govososlan, Spearmaster",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Adequate Persuader",
+                "id": 70,
+                "rating": 2
+              },
+              {
+                "caption": "Adequate Negotiator",
+                "id": 71,
+                "rating": 2
+              },
+              {
+                "caption": "Adequat Jdg of Intnt",
+                "id": 72,
+                "rating": 2
+              },
+              {
+                "caption": "Adequate Liar",
+                "id": 76,
+                "rating": 2
+              },
+              {
+                "caption": "Novice Intimidator",
+                "id": 77,
+                "rating": 1
+              },
+              {
+                "caption": "Novice Conversatnlst",
+                "id": 78,
+                "rating": 1
+              },
+              {
+                "caption": "Adequate Comedian",
+                "id": 79,
+                "rating": 2
+              },
+              {
+                "caption": "Adequate Flatterer",
+                "id": 80,
+                "rating": 2
+              },
+              {
+                "caption": "Competent Consoler",
+                "id": 81,
+                "rating": 3
+              },
+              {
+                "caption": "Competent Pacifier",
+                "id": 82,
+                "rating": 3
+              },
+              {
+                "caption": "Legendary Observer",
+                "id": 87,
+                "rating": 32
+              },
+              {
+                "caption": "Novice Speaker",
+                "id": 92,
+                "rating": 1
+              }
+            ],
+            "unit_id": 6531,
+            "value": 53
+          },
+          {
+            "caption": "Ineth Zuglariseth, Scholar",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Skilled Persuader",
+                "id": 70,
+                "rating": 4
+              },
+              {
+                "caption": "Skilled Negotiator",
+                "id": 71,
+                "rating": 4
+              },
+              {
+                "caption": "Skilled Jdg of Intnt",
+                "id": 72,
+                "rating": 4
+              },
+              {
+                "caption": "Competent Liar",
+                "id": 76,
+                "rating": 3
+              },
+              {
+                "caption": "Skilled Intimidator",
+                "id": 77,
+                "rating": 4
+              },
+              {
+                "caption": "Skilled Converstnlst",
+                "id": 78,
+                "rating": 4
+              },
+              {
+                "caption": "Competent Comedian",
+                "id": 79,
+                "rating": 3
+              },
+              {
+                "caption": "Competent Flatterer",
+                "id": 80,
+                "rating": 3
+              },
+              {
+                "caption": "Competent Consoler",
+                "id": 81,
+                "rating": 3
+              },
+              {
+                "caption": "Skilled Pacifier",
+                "id": 82,
+                "rating": 4
+              },
+              {
+                "caption": "Great Observer",
+                "id": 87,
+                "rating": 11
+              },
+              {
+                "caption": "Adequate Speaker",
+                "id": 92,
+                "rating": 2
+              }
+            ],
+            "unit_id": 6549,
+            "value": 49
+          },
+          {
+            "caption": "Id Tunthol, Planter",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Proficient Persuader",
+                "id": 70,
+                "rating": 5
+              },
+              {
+                "caption": "Competent Negotiator",
+                "id": 71,
+                "rating": 3
+              },
+              {
+                "caption": "Skilled Jdg of Intnt",
+                "id": 72,
+                "rating": 4
+              },
+              {
+                "caption": "Skilled Liar",
+                "id": 76,
+                "rating": 4
+              },
+              {
+                "caption": "Proficient Intimidtr",
+                "id": 77,
+                "rating": 5
+              },
+              {
+                "caption": "Skilled Converstnlst",
+                "id": 78,
+                "rating": 4
+              },
+              {
+                "caption": "Proficient Comedian",
+                "id": 79,
+                "rating": 5
+              },
+              {
+                "caption": "Skilled Flatterer",
+                "id": 80,
+                "rating": 4
+              },
+              {
+                "caption": "Proficient Consoler",
+                "id": 81,
+                "rating": 5
+              },
+              {
+                "caption": "Skilled Pacifier",
+                "id": 82,
+                "rating": 4
+              },
+              {
+                "caption": "Competent Speaker",
+                "id": 92,
+                "rating": 3
+              }
+            ],
+            "unit_id": 6661,
+            "value": 46
+          },
+          {
+            "caption": "Litast Urrïthzon, Axe Lord",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Novice Persuader",
+                "id": 70,
+                "rating": 1
+              },
+              {
+                "caption": "Novice Judg of Intnt",
+                "id": 72,
+                "rating": 1
+              },
+              {
+                "caption": "Novice Liar",
+                "id": 76,
+                "rating": 1
+              },
+              {
+                "caption": "Adequate Intimidator",
+                "id": 77,
+                "rating": 2
+              },
+              {
+                "caption": "Novice Conversatnlst",
+                "id": 78,
+                "rating": 1
+              },
+              {
+                "caption": "Novice Comedian",
+                "id": 79,
+                "rating": 1
+              },
+              {
+                "caption": "Adequate Flatterer",
+                "id": 80,
+                "rating": 2
+              },
+              {
+                "caption": "Adequate Consoler",
+                "id": 81,
+                "rating": 2
+              },
+              {
+                "caption": "Novice Pacifier",
+                "id": 82,
+                "rating": 1
+              },
+              {
+                "caption": "Legendary Observer",
+                "id": 87,
+                "rating": 30
+              },
+              {
+                "caption": "Competent Speaker",
+                "id": 92,
+                "rating": 3
+              }
+            ],
+            "unit_id": 6838,
+            "value": 45
+          },
+          {
+            "caption": "Kogan Atîsteling, Miner",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Proficient Persuader",
+                "id": 70,
+                "rating": 5
+              },
+              {
+                "caption": "Skilled Negotiator",
+                "id": 71,
+                "rating": 4
+              },
+              {
+                "caption": "Skilled Jdg of Intnt",
+                "id": 72,
+                "rating": 4
+              },
+              {
+                "caption": "Competent Liar",
+                "id": 76,
+                "rating": 3
+              },
+              {
+                "caption": "Skilled Intimidator",
+                "id": 77,
+                "rating": 4
+              },
+              {
+                "caption": "Proficint Cnvrstnlst",
+                "id": 78,
+                "rating": 5
+              },
+              {
+                "caption": "Competent Comedian",
+                "id": 79,
+                "rating": 3
+              },
+              {
+                "caption": "Adequate Flatterer",
+                "id": 80,
+                "rating": 2
+              },
+              {
+                "caption": "Skilled Consoler",
+                "id": 81,
+                "rating": 4
+              },
+              {
+                "caption": "Proficient Pacifier",
+                "id": 82,
+                "rating": 5
+              },
+              {
+                "caption": "Competent Speaker",
+                "id": 92,
+                "rating": 3
+              }
+            ],
+            "unit_id": 6392,
+            "value": 42
+          },
+          {
+            "caption": "Rakust ádolbomrek, Weaponsmith",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Skilled Persuader",
+                "id": 70,
+                "rating": 4
+              },
+              {
+                "caption": "Skilled Negotiator",
+                "id": 71,
+                "rating": 4
+              },
+              {
+                "caption": "Skilled Jdg of Intnt",
+                "id": 72,
+                "rating": 4
+              },
+              {
+                "caption": "Skilled Liar",
+                "id": 76,
+                "rating": 4
+              },
+              {
+                "caption": "Adequate Intimidator",
+                "id": 77,
+                "rating": 2
+              },
+              {
+                "caption": "Skilled Converstnlst",
+                "id": 78,
+                "rating": 4
+              },
+              {
+                "caption": "Competent Comedian",
+                "id": 79,
+                "rating": 3
+              },
+              {
+                "caption": "Skilled Flatterer",
+                "id": 80,
+                "rating": 4
+              },
+              {
+                "caption": "Proficient Consoler",
+                "id": 81,
+                "rating": 5
+              },
+              {
+                "caption": "Proficient Pacifier",
+                "id": 82,
+                "rating": 5
+              },
+              {
+                "caption": "Competent Speaker",
+                "id": 92,
+                "rating": 3
+              }
+            ],
+            "unit_id": 6683,
+            "value": 42
+          },
+          {
+            "caption": "Uzol Bardumtekkud, Miner",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Proficient Persuader",
+                "id": 70,
+                "rating": 5
+              },
+              {
+                "caption": "Competent Negotiator",
+                "id": 71,
+                "rating": 3
+              },
+              {
+                "caption": "Comptnt Jdg of Intnt",
+                "id": 72,
+                "rating": 3
+              },
+              {
+                "caption": "Adequate Liar",
+                "id": 76,
+                "rating": 2
+              },
+              {
+                "caption": "Proficient Intimidtr",
+                "id": 77,
+                "rating": 5
+              },
+              {
+                "caption": "Competent Cnvrstnlst",
+                "id": 78,
+                "rating": 3
+              },
+              {
+                "caption": "Competent Comedian",
+                "id": 79,
+                "rating": 3
+              },
+              {
+                "caption": "Competent Flatterer",
+                "id": 80,
+                "rating": 3
+              },
+              {
+                "caption": "Competent Consoler",
+                "id": 81,
+                "rating": 3
+              },
+              {
+                "caption": "Skilled Pacifier",
+                "id": 82,
+                "rating": 4
+              },
+              {
+                "caption": "Talented Observer",
+                "id": 87,
+                "rating": 6
+              },
+              {
+                "caption": "Adequate Speaker",
+                "id": 92,
+                "rating": 2
+              }
+            ],
+            "unit_id": 5697,
+            "value": 42
+          },
+          {
+            "caption": "Dodók Kilruderush, Swordmaster",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Novice Persuader",
+                "id": 70,
+                "rating": 1
+              },
+              {
+                "caption": "Talentd Jdg of Intnt",
+                "id": 72,
+                "rating": 6
+              },
+              {
+                "caption": "Adequate Intimidator",
+                "id": 77,
+                "rating": 2
+              },
+              {
+                "caption": "Legendary Observer",
+                "id": 87,
+                "rating": 31
+              },
+              {
+                "caption": "Novice Speaker",
+                "id": 92,
+                "rating": 1
+              }
+            ],
+            "unit_id": 6032,
+            "value": 41
+          },
+          {
+            "caption": "Uvash Mengteshkad, Planter",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Proficient Persuader",
+                "id": 70,
+                "rating": 5
+              },
+              {
+                "caption": "Skilled Negotiator",
+                "id": 71,
+                "rating": 4
+              },
+              {
+                "caption": "Comptnt Jdg of Intnt",
+                "id": 72,
+                "rating": 3
+              },
+              {
+                "caption": "Skilled Liar",
+                "id": 76,
+                "rating": 4
+              },
+              {
+                "caption": "Competent Intimidatr",
+                "id": 77,
+                "rating": 3
+              },
+              {
+                "caption": "Skilled Converstnlst",
+                "id": 78,
+                "rating": 4
+              },
+              {
+                "caption": "Skilled Comedian",
+                "id": 79,
+                "rating": 4
+              },
+              {
+                "caption": "Adequate Flatterer",
+                "id": 80,
+                "rating": 2
+              },
+              {
+                "caption": "Competent Consoler",
+                "id": 81,
+                "rating": 3
+              },
+              {
+                "caption": "Skilled Pacifier",
+                "id": 82,
+                "rating": 4
+              },
+              {
+                "caption": "Competent Observer",
+                "id": 87,
+                "rating": 3
+              },
+              {
+                "caption": "Adequate Speaker",
+                "id": 92,
+                "rating": 2
+              }
+            ],
+            "unit_id": 7262,
+            "value": 41
+          },
+          {
+            "caption": "Logem Imeshdumat, Hunter",
+            "no_skills": "",
+            "skills": [
+              {
+                "caption": "Accomplished Ambushr",
+                "id": 56,
+                "rating": 10
+              },
+              {
+                "caption": "Competent Persuader",
+                "id": 70,
+                "rating": 3
+              },
+              {
+                "caption": "Competent Negotiator",
+                "id": 71,
+                "rating": 3
+              },
+              {
+                "caption": "Adequat Jdg of Intnt",
+                "id": 72,
+                "rating": 2
+              },
+              {
+                "caption": "Adequate Liar",
+                "id": 76,
+                "rating": 2
+              },
+              {
+                "caption": "Competent Intimidatr",
+                "id": 77,
+                "rating": 3
+              },
+              {
+                "caption": "Skilled Converstnlst",
+                "id": 78,
+                "rating": 4
+              },
+              {
+                "caption": "Competent Comedian",
+                "id": 79,
+                "rating": 3
+              },
+              {
+                "caption": "Competent Flatterer",
+                "id": 80,
+                "rating": 3
+              },
+              {
+                "caption": "Competent Consoler",
+                "id": 81,
+                "rating": 3
+              },
+              {
+                "caption": "Adequate Pacifier",
+                "id": 82,
+                "rating": 2
+              },
+              {
+                "caption": "Competent Speaker",
+                "id": 92,
+                "rating": 3
+              }
+            ],
+            "unit_id": 6553,
+            "value": 41
+          }
+        ],
+        "menu_rng_caches_preserved": true
+      }
+    ],
+    "scope": "Names and first skill column of seventeen visible rows in each native Manager/Messenger picker, at1200x800. Includes Leave Vacant. Native ordering/value and menu/RNG/cache preservation remain verified.",
+    "limits": [
+      "Remaining skill columns, lower scroll pages, portrait/glyph artwork and responsive layout remain unverified.",
+      "No typed candidate transport or picker UI exists yet."
+    ],
+    "failed_attempts": {
+      "094213": "Oracle sampled skill column56 instead of57.",
+      "094301": "Detected native abbreviation, not substring clipping; provider now invokes string-only52d910."
+    },
+    "owned_df_closed": 42860,
+    "source_preserved": true
   }
 }

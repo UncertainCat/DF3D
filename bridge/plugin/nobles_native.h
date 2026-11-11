@@ -13,6 +13,9 @@
 #include "df/noblelistst.h"
 #include "df/appointment_candidatest.h"
 #include "labor_eligibility_cache.h"
+#include "skills_caption_native.h"
+#include "df/unit_soul.h"
+#include "df/unit_skill.h"
 #include "df/nemesis_record.h"
 #include "df/entity_position.h"
 #include "df/entity_position_assignment.h"
@@ -396,11 +399,60 @@ inline std::optional<std::vector<Row>> overview(bool includeHelp=false) {
     }
     return result;
 }
-struct Candidate {int32_t unitId=-1,value=0;};
+struct CandidateSkill {int16_t id=-1;int32_t rating=0;std::string caption;};
+struct Candidate {
+    int32_t unitId=-1,value=0;
+    std::string caption,noSkills;
+    std::vector<CandidateSkill> skills;
+};
+inline bool candidateTextReady() {
+    if(!df3d_creature::skillsCaptionReady())return false;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool pinned=[base] {
+        struct Pin {size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={
+            {0xba1a0,0xa8,UINT64_C(0xd89351eac3ad0410)},
+            {0x52d910,0x5c4,UINT64_C(0x3cc66a9b45f7baa9)},
+            {0x4266da,0x59,UINT64_C(0x6a659db75cf0511e)},
+            {0x426875,0x265,UINT64_C(0x578f9a81f6cf06d0)},
+            {0x163ce68,0x24,UINT64_C(0xfe000536532ac48d)}};
+        for(const auto& pin:pins){uint64_t hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin.length;++i){hash^=base[pin.rva+i];hash*=UINT64_C(1099511628211);}
+            if(hash!=pin.hash)return false;}
+        return true;
+    }();
+    return pinned;
+}
+// Native426723 names each candidate;4268a0 visits the position's ordered
+// relevant skills and includes only positive ratings. Names remain full length;
+// skills use DF's abbreviation routine for the native fixed twenty-cell slot.
+inline bool candidateText(df::unit* unit,const std::vector<int16_t>& relevant,Candidate& row,uint8_t* base) {
+    if(!unit){row.caption.assign(reinterpret_cast<const char*>(base+0x163ce80),12);return true;}
+    if(unit->inventory.size()>10000)return false;
+    for(auto* entry:unit->inventory)if(!entry)return false;
+    df3d_creature::InventoryDescriptionContext owned(*unit);
+    reinterpret_cast<void(*)(df::unit*,std::string*,bool)>(base+0x1330c30)(owned.unit(),&row.caption,false);
+    if(const auto* soul=unit->status.current_soul) {
+        if(soul->skills.size()>4096)return false;
+        for(const auto* skill:soul->skills)if(!skill)return false;
+        for(auto id:relevant) {
+            if(id==-1)continue;
+            const auto* skill=reinterpret_cast<df::unit_skill*(*)(int16_t,const std::vector<df::unit_skill*>*)>(base+0xba1a0)(id,&soul->skills);
+            if(skill && int32_t(skill->rating)>0) {
+                auto caption=df3d_creature::nativeSkillCaption(id,int32_t(skill->rating),unit->race,unit->caste);
+                if(caption.size()>20)reinterpret_cast<void(*)(std::string*,int32_t)>(base+0x52d910)(&caption,20);
+                row.skills.push_back({id,int32_t(skill->rating),std::move(caption)});
+            }
+        }
+    }
+    if(row.skills.empty())row.noSkills.assign(reinterpret_cast<const char*>(base+0x163ce68),18);
+    return true;
+}
 // Selection identity comes from a fresh owned overview; no menu index crosses
 // this boundary. This only lists candidates, not permission to appoint them.
-inline std::optional<std::vector<Candidate>> candidates(int32_t entityId,int32_t positionId,int32_t assignmentId) {
+inline std::optional<std::vector<Candidate>> candidates(int32_t entityId,int32_t positionId,int32_t assignmentId,bool includeText=false) {
     if(!ready() || entityId<0 || positionId<0 || assignmentId< -1)return std::nullopt;
+    if(includeText && !candidateTextReady())return std::nullopt;
     static_assert(sizeof(df::appointment_candidatest)==0x10);
     static_assert(offsetof(df::appointment_candidatest,value)==8);
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
@@ -424,10 +476,17 @@ inline std::optional<std::vector<Candidate>> candidates(int32_t entityId,int32_t
     if(!available || !*available)return std::nullopt;
     reinterpret_cast<void(*)(df::administrators_interfacest*,df::noblelistst*)>(base+0x423df0)(&owned.value,target);
     if(owned.value.candidate.size()>1048576)return std::nullopt;
+    std::vector<int16_t> relevant;
+    if(includeText) {
+        reinterpret_cast<void(*)(df::entity_position*,std::vector<int16_t>*)>(base+0x99a1f0)(target->ep,&relevant);
+        if(relevant.size()>4096)return std::nullopt;
+    }
     std::vector<Candidate> result;result.reserve(owned.value.candidate.size());
     for(const auto* row:owned.value.candidate) {
         if(!row)return std::nullopt;
-        result.push_back({row->un?row->un->id:-1,row->value});
+        Candidate candidate;candidate.unitId=row->un?row->un->id:-1;candidate.value=row->value;
+        if(includeText && !candidateText(row->un,relevant,candidate,base))return std::nullopt;
+        result.push_back(std::move(candidate));
     }
     return result;
 }

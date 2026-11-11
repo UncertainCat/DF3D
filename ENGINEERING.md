@@ -39,6 +39,26 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Nobles and administrators native discovery
 
+Candidate text is available from `nobles-candidate-text-probe`, alongside the
+unchanged identity/value-only probe. Native99a1f0 supplies ordered position
+skills, ba1a0 looks up each actual skill, and only positive ratings are included,
+matching renderer426875. Unit names use1330c30 with owned description inputs.
+Skill captions reuse native7737c0/774730, then native52d910 abbreviates owned
+strings to the fixed twenty-cell skill slot. The drawing wrapperad9960 is not
+called. Names remain full length for viewport clipping. Leave Vacant and No
+relevant skills are verbatim installed literals; absent candidate rows have no
+skill text. All relevant routines/inline selection branches are fingerprinted.
+
+Protected094509 on2026-11-11 compares names and the first skill column for17
+visible rows in each Manager/Messenger picker. Both lists contain117 candidates;
+native ordering/value and menu/RNG/measured-cache preservation checks pass.
+`native_nobles.json.candidate_text_reference` retains the bounded visible rows
+and observations. Earlier094213 sampled column56 instead of57;094301 exposed
+DF's abbreviation (Accomplished Organzr), now handled by52d910 rather than a
+substring. MSVC passes; source preservation passes and DF42860 closes unsaved,
+30FPS, GPU38C/0% sampled. Further skill columns, lower scroll pages, portraits,
+responsive layout and typed picker transport/view remain unfinished.
+
 Owned appointment commits now call the complete native42a5a0 apply/cleanup
 routine with independently prepared rows. `prepareDraft` finishes and restores
 read-only RNG/cache scratch before the commit begins; simulation mutations and

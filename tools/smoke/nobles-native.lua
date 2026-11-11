@@ -244,6 +244,22 @@ for _,target in ipairs{{'manager',232,394},{'messenger',232,646}}do
  local owned=probe({'nobles-candidates-probe',tostring(selected.entity_id),tostring(selected.position_id),tostring(selected.assignment_id)})
  assert(json.encode(owned)==json.encode(candidates) and json.encode(cold_candidates[target[1]])==json.encode(candidates),'Owned candidate ordering/value differs')
  result.pickers[#result.pickers+1]={position=target[1],selected=selected,candidates=candidates,lines=lines(),owned_cold_warm_equal=true,menu_rng_caches_preserved=true}
+ local text=probe({'nobles-candidate-text-probe',tostring(selected.entity_id),tostring(selected.position_id),tostring(selected.assignment_id)})
+ local observed={}
+ for index=1,math.min(#text,17)do
+  local row=text[index];assert(row.unit_id==candidates[index].unit_id and row.value==candidates[index].value)
+  local y=11+(index-1)*3;local caption=cells(13,y,42);local full=dfhack.utf2df(row.caption)
+  if caption:sub(-3)=='...' then
+   assert(full:sub(1,#caption-3)==caption:sub(1,-4) and #full>#caption,'Candidate clipped name differs')
+  else assert(caption==full,'Candidate name differs: '..caption..' vs '..full)end
+  local skill=cells(57,y,20)
+  if row.unit_id>=0 then
+   local expected=#row.skills>0 and dfhack.utf2df(row.skills[1].caption) or row.no_skills
+   assert(skill==expected,'Candidate first skill differs: '..skill..' vs '..expected)
+  end
+  observed[#observed+1]={unit_id=row.unit_id,caption=dfhack.df2utf(caption),first_skill=dfhack.df2utf(skill)}
+ end
+ result.pickers[#result.pickers].text_reference={rows=text,visible=observed,menu_rng_caches_preserved=true}
  write('nobles-native.json',json.encode(result));capture('nobles-candidates-'..target[1])
  gui.simulateInput(view,'LEAVESCREEN');settle();assert(info.open and not menu.choosing_candidate,'Picker Cancel did not return to overview')
 end

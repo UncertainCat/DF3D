@@ -2549,14 +2549,18 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             row["unit_id"]=entry.unitId;row["nemesis_id"]=entry.nemesisId;row["histfig_id"]=entry.histfigId;result.append(row);}
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
         }
-        if(parameters[0]=="nobles-candidates-probe") {
+        if(parameters[0]=="nobles-candidates-probe" || parameters[0]=="nobles-candidate-text-probe") {
           if(parameters.size()!=4)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
           int32_t entity=-1,position=-1,assignment=-1;
           try {entity=std::stoi(parameters[1]);position=std::stoi(parameters[2]);assignment=std::stoi(parameters[3]);}catch(...){return CR_WRONG_USAGE;}
-          const auto rows=df3d_nobles::candidates(entity,position,assignment);if(!rows)return CR_FAILURE;
+          const bool includeText=parameters[0]=="nobles-candidate-text-probe";
+          const auto rows=df3d_nobles::candidates(entity,position,assignment,includeText);if(!rows)return CR_FAILURE;
           Json::Value result(Json::arrayValue);
-          for(const auto& entry:*rows){Json::Value row(Json::objectValue);row["unit_id"]=entry.unitId;row["value"]=entry.value;result.append(row);}
+          for(const auto& entry:*rows){Json::Value row(Json::objectValue);row["unit_id"]=entry.unitId;row["value"]=entry.value;
+            if(includeText){row["caption"]=DF2UTF(entry.caption);row["no_skills"]=DF2UTF(entry.noSkills);row["skills"]=Json::Value(Json::arrayValue);
+              for(const auto& skill:entry.skills){Json::Value text(Json::objectValue);text["id"]=skill.id;text["rating"]=skill.rating;text["caption"]=DF2UTF(skill.caption);row["skills"].append(text);}}
+            result.append(row);}
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
         }
         if(parameters[0]=="nobles-overview-probe" || parameters[0]=="nobles-help-probe") {

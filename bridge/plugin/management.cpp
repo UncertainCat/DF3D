@@ -4408,17 +4408,20 @@ void run(color_ostream& out) {
     }catch(...){if(started){places->outcome=m::PlacesOutcome::Unknown;mutated=true;}}
     publish();return;
   }
-  // Contract-only action: reject until the typed accounting adapter is connected.
-  if(r->action()==m::ManagementAction::NoblesAccounting){status=m::ManagementStatus::Rejected;message.clear();nobles.emplace();publish();return;}
-  if(r->action()==m::ManagementAction::NoblesRead || r->action()==m::ManagementAction::NoblesCandidates || r->action()==m::ManagementAction::NoblesCommit){
+  if(r->action()==m::ManagementAction::NoblesRead || r->action()==m::ManagementAction::NoblesCandidates || r->action()==m::ManagementAction::NoblesCommit || r->action()==m::ManagementAction::NoblesAccounting){
     const auto& q=*r->nobles();status=m::ManagementStatus::Rejected;message.clear();nobles.emplace();
     try {
       std::vector<df3d_nobles::DraftChoice> choices;
       if(q.choices())for(const auto* choice:*q.choices()){const auto& key=*choice->target();
         choices.push_back({key.entity_id(),key.position_id(),key.assignment_id(),choice->expected_unit_id(),choice->unit_id(),key.draft_slot()});}
-      if(r->action()==m::ManagementAction::NoblesCommit){
+      if(r->action()==m::ManagementAction::NoblesCommit || r->action()==m::ManagementAction::NoblesAccounting){
         using Outcome=df3d_nobles::DraftCommitOutcome;
-        switch(df3d_nobles::commitDraft(choices,q.expected_list_revision())){
+        const auto outcome=[&] {
+          if(r->action()==m::ManagementAction::NoblesCommit)return df3d_nobles::commitDraft(choices,q.expected_list_revision());
+          const auto& key=*q.target();return df3d_nobles::setAccounting(choices,q.expected_list_revision(),
+            {key.entity_id(),key.position_id(),key.assignment_id(),key.draft_slot()},q.expected_setting(),q.setting());
+        }();
+        switch(outcome){
           case Outcome::Applied:nobles->outcome=m::NoblesOutcome::Applied;status=m::ManagementStatus::Ok;mutated=true;break;
           case Outcome::Unknown:nobles->outcome=m::NoblesOutcome::Unknown;mutated=true;break;
           case Outcome::Stale:nobles->outcome=m::NoblesOutcome::Stale;break;

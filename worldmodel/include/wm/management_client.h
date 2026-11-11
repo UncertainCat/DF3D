@@ -437,7 +437,7 @@ struct StocksGroupKey {int16_t type=-1,subtype=-1,subcat1=-1,subcat2=-1;};
 struct NoblesOffice {int32_t entityId=-1,positionId=-1,assignmentId=-1;uint32_t draftSlot=0;};
 struct NoblesChoice {NoblesOffice target;int32_t expectedUnitId=-1,unitId=-1;};
 struct NoblesRequest {uint32_t offset=0;uint16_t limit=32;uint64_t expectedListRevision=0;
-  std::vector<NoblesChoice> choices;std::optional<NoblesOffice> target;uint64_t expectedCandidateRevision=0;};
+  std::vector<NoblesChoice> choices;std::optional<NoblesOffice> target;uint64_t expectedCandidateRevision=0;int8_t expectedSetting=-1,setting=-1;};
 struct NoblesCandidateSkill {int16_t id=-1;int32_t rating=0;std::string caption;};
 struct NoblesCandidate {int32_t unitId=-1,value=0;std::string caption,noSkills;
   std::vector<NoblesCandidateSkill> skills;std::optional<SelectionAppearance> appearance;};

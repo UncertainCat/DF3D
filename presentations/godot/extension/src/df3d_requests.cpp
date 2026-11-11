@@ -572,8 +572,8 @@ bool validateNobles(const Dictionary& data,String& error) {
     const auto office=[&](const Variant& value,int64_t lastSlot){if(value.get_type()!=Variant::DICTIONARY)return false;const Dictionary key=value;
         return key.size()==4 && integer(key,"entity_id",0,INT32_MAX) && integer(key,"position_id",0,INT32_MAX) && integer(key,"assignment_id",-1,INT32_MAX) &&
           integer(key,"draft_slot",0,lastSlot) && (int64_t(key["assignment_id"])==-1 || int64_t(key["draft_slot"])==0);};
-    const Array keys=data.keys();for(int i=0;i<keys.size();++i){const String key=keys[i];if(key!="action" && key!="offset" && key!="limit" && key!="expected_list_revision" && key!="choices" && key!="target" && key!="expected_candidate_revision")return false;}
-    if(!integer(data,"action",int64_t(wm::ManagementAction::NoblesRead),int64_t(wm::ManagementAction::NoblesCommit)) ||
+    const Array keys=data.keys();for(int i=0;i<keys.size();++i){const String key=keys[i];if(key!="action" && key!="offset" && key!="limit" && key!="expected_list_revision" && key!="choices" && key!="target" && key!="expected_candidate_revision" && key!="expected_setting" && key!="setting")return false;}
+    if(!integer(data,"action",int64_t(wm::ManagementAction::NoblesRead),int64_t(wm::ManagementAction::NoblesAccounting)) ||
        !integer(data,"offset",0,1048576) || !integer(data,"limit",1,64) || !integer(data,"expected_list_revision",0,INT64_MAX))return false;
     Array choices;if(data.has("choices")){if(data["choices"].get_type()!=Variant::ARRAY)return false;choices=data["choices"];}
     if(choices.size()>4096 || (choices.size() && !int64_t(data["expected_list_revision"])))return false;
@@ -581,7 +581,12 @@ bool validateNobles(const Dictionary& data,String& error) {
         if(choice.size()!=3 || !choice.has("target") || !office(choice["target"],i) || !integer(choice,"expected_unit_id",-1,INT32_MAX) || !integer(choice,"unit_id",-1,INT32_MAX))return false;}
     if(data.has("expected_candidate_revision") && !integer(data,"expected_candidate_revision",0,INT64_MAX))return false;
     const int64_t action=data["action"],offset=data["offset"],revision=data["expected_list_revision"],candidate=data.get("expected_candidate_revision",0);
-    if(action==int64_t(wm::ManagementAction::NoblesCommit)){
+    for(const char* key:{"expected_setting","setting"})if(data.has(key) && !integer(data,key,-1,4))return false;
+    if(action!=int64_t(wm::ManagementAction::NoblesAccounting) && (int64_t(data.get("expected_setting",-1))!=-1 || int64_t(data.get("setting",-1))!=-1))return false;
+    if(action==int64_t(wm::ManagementAction::NoblesAccounting)){
+        if(!revision || offset || int64_t(data["limit"])!=32 || candidate || !data.has("target") || !office(data["target"],choices.size()) ||
+           !integer(data,"expected_setting",0,4) || !integer(data,"setting",0,4))return false;
+    }else if(action==int64_t(wm::ManagementAction::NoblesCommit)){
         if(!choices.size() || !revision || offset || int64_t(data["limit"])!=32 || data.has("target") || candidate)return false;
     }else if(action==int64_t(wm::ManagementAction::NoblesCandidates)){
         if(!revision || !data.has("target") || !office(data["target"],choices.size()) || (offset && !candidate))return false;
@@ -594,7 +599,8 @@ bool readNobles(const Dictionary& data,wm::ManagementRequest& request,String&) {
     const auto office=[](const Dictionary& d){return wm::NoblesOffice{int32_t(int64_t(d["entity_id"])),int32_t(int64_t(d["position_id"])),int32_t(int64_t(d["assignment_id"])),uint32_t(int64_t(d["draft_slot"]))};};
     if(data.has("choices")){const Array choices=data["choices"];for(int i=0;i<choices.size();++i){const Dictionary choice=choices[i];q.choices.push_back({office(choice["target"]),int32_t(int64_t(choice["expected_unit_id"])),int32_t(int64_t(choice["unit_id"]))});}}
     if(data.has("target"))q.target=office(data["target"]);
-    q.expectedCandidateRevision=uint64_t(int64_t(data.get("expected_candidate_revision",0)));return true;
+    q.expectedCandidateRevision=uint64_t(int64_t(data.get("expected_candidate_revision",0)));
+    q.expectedSetting=int8_t(int64_t(data.get("expected_setting",-1)));q.setting=int8_t(int64_t(data.get("setting",-1)));return true;
 }
 bool validatePlaces(const Dictionary& data,String& error) {
     error="Invalid places request";
@@ -1012,7 +1018,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::NoblesCommit)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::NoblesAccounting)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

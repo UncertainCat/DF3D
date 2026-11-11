@@ -322,11 +322,12 @@ if os.getenv('DF3D_NOBLES_ACCOUNTING')=='1' then
 end
 
 local wire_commit=os.getenv('DF3D_NOBLES_COMMIT_WIRE')=='1'
-local wire_events
+local wire_events,wire_precision,wire_setting
 if os.getenv('DF3D_NOBLES_WIRE')=='1' then
  if wire_commit then
   gui.simulateInput(view,'LEAVESCREEN');settle();assert(not info.open)
   wire_events=#df.global.world.history.events
+  wire_precision=df.global.plotinfo.nobles.bookkeeper_precision;wire_setting=df.global.plotinfo.nobles.bookkeeper_settings
  end
  write('nobles-wire-reference.json',json.encode(probe({'nobles-help-probe'})))
  write('shot.tmp','nobles-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))
@@ -346,6 +347,9 @@ if wire_commit then
   if link:getType()==df.histfig_entity_link_type.POSITION and link.entity_id==entity.id and link:getPosition()==assignment.id then linked=true end
  end
  assert(linked,'Typed appointment lacks position link')
+ assert(receipt.accounting_restored==wire_setting and df.global.plotinfo.nobles.bookkeeper_settings==wire_setting,'Typed accounting was not restored')
+ assert(df.global.plotinfo.nobles.bookkeeper_precision==wire_precision,'Typed accounting changed achieved precision')
+ result.typed_accounting={values=receipt.accounting_values,restored=true,precision_unchanged=true}
  result.typed_commit={unit_id=unit.id,histfig=unit.hist_figure_id,assignment_id=assignment.id,events_added=#df.global.world.history.events-wire_events,position_link=true}
 end
 if info.open then gui.simulateInput(view,'LEAVESCREEN');settle()end

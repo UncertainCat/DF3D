@@ -103,12 +103,20 @@ func run() -> void:
 	bad=help.duplicate(true);bad.accounting.setting=5
 	check(state._help_bytes(bad,true)==-1,"Nobles accounting setting unbounded")
 	var holder:=row(42);holder.unit_id=10;holder.has_room_assessment=true;holder.help=help
-	state.rows=[holder];state.phase=State.Phase.Ready
+	state.configure(service);state.rows=[holder];state.phase=State.Phase.Ready
 	view.hovered=view.hover_at(Vector2(view.status_x()+56,view.list_top()+18))
 	check(view.hovered.get("kind")=="rooms" and view.intro_lines().size()==8,"Nobles room hover omitted assessment text")
 	check(view.hover_at(Vector2(24,view.list_top()+18)).get("kind")=="description","Nobles description hitbox excludes native left row")
 	check(view.hover_at(Vector2(view.status_x()+320,view.list_top()+18)).get("kind")=="accounting","Nobles accounting hover missing")
 	check(view.hover_at(Vector2(0,0)).is_empty(),"Nobles hover retained outside row")
+	state._revision=123;state.choices=[{"target":target,"expected_unit_id":-1,"unit_id":10}]
+	state.set_accounting(state.office(holder),4);var accounting_ticket: int=state.ticket;submitted=service.next
+	state.set_accounting(state.office(holder),3);state.request_dismiss()
+	check(state.phase==State.Phase.Accounting and service.next==submitted,"Accounting allowed overlapping writes")
+	check(service.calls[accounting_ticket].intent.expected_setting==2 and service.calls[accounting_ticket].intent.setting==4 and service.calls[accounting_ticket].intent.choices==state.choices,"Accounting lost setting authority or draft")
+	service.reply(accounting_ticket,{"nobles":{"outcome":C.NoblesOutcome.Applied}})
+	check(state.phase==State.Phase.Reading and state.choices.size()==1 and service.calls[state.ticket].intent.expected_list_revision==123,"Accounting application discarded appointment draft")
+	state.close()
 	state.close();check(view.hover_at(Vector2(24,view.list_top()+18)).is_empty(),"Retired Nobles data retained hover")
 	var interaction=preload("res://tests/ui_host_test.gd").Interaction.new();root.add_child(interaction)
 	var host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)

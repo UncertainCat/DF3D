@@ -185,6 +185,26 @@ func run() -> void:
 		while committing.phase==committing.Phase.Reading and Time.get_ticks_msec()<deadline:
 			world.poll();await create_timer(0.01).timeout
 		if not check(committing.phase==committing.Phase.Ready,"Commit draft unavailable"):quit(1);return
+		root.size=Vector2i(1600,900);owner._layout();await process_frame
+		var accounting_index: int=-1
+		for index in committing.rows.size():
+			if committing.rows[index].get("help",{}).has("accounting"):accounting_index=index;break
+		if not check(accounting_index>=0,"Accounting office missing"):quit(1);return
+		var accounting_target: Dictionary=committing.office(committing.rows[accounting_index])
+		var original_setting: int=committing.rows[accounting_index].help.accounting.setting
+		var accounting_values: Array=[]
+		for setting in [0,1,2,3,4,original_setting]:
+			var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=true
+			click.position=owner.panel.position+Vector2(owner.panel.status_x()+320+setting*32,owner.panel.list_top()+accounting_index*36+18)
+			root.push_input(click,true);click=click.duplicate();click.pressed=false;root.push_input(click,true)
+			if not check(committing.phase==committing.Phase.Accounting,"Accounting pointer did not submit mutation"):quit(1);return
+			deadline=Time.get_ticks_msec()+5000
+			while committing.phase in [committing.Phase.Accounting,committing.Phase.Reading] and Time.get_ticks_msec()<deadline:
+				world.poll();await create_timer(0.01).timeout
+			if not check(committing.phase==committing.Phase.Ready and committing.rows[accounting_index].help.accounting.setting==setting and committing.choices.size()==1,"Accounting did not confirm or lost appointment draft"):quit(1);return
+			accounting_values.append(setting)
+		var stale_accounting:=await request("nobles",{"action":C.ManagementAction.NoblesAccounting,"offset":0,"limit":32,"expected_list_revision":committing._revision,"choices":committing.choices,"target":accounting_target,"expected_setting":(original_setting+1)%5,"setting":original_setting})
+		check(stale_accounting.get("nobles",{}).get("outcome")==C.NoblesOutcome.Stale,"Stale accounting expected setting accepted")
 		destination.open_panel();var commit_ticket: int=committing.ticket;destination.open_panel()
 		check(host.active==owner and not destination.panel.visible,"Destination opened before receipt")
 		check(commit_ticket>0 and committing.ticket==commit_ticket,"Dismissal did not retain one commit")
@@ -195,7 +215,7 @@ func run() -> void:
 		check(host.active==destination and destination.panel.visible,"Applied appointment did not finish handoff")
 		owner.queue_free();destination.queue_free();host.queue_free();interaction.queue_free();await process_frame
 		var effect=FileAccess.open(directory+"/nobles-commit-wire.json",FileAccess.WRITE)
-		effect.store_string(JSON.stringify({"unit_id":chosen,"entity_id":target.entity_id,"assignment_id":target.assignment_id}));effect.close()
+		effect.store_string(JSON.stringify({"unit_id":chosen,"entity_id":target.entity_id,"assignment_id":target.assignment_id,"accounting_values":accounting_values,"accounting_restored":original_setting}));effect.close()
 	model.dispose();actions.queue_free();await process_frame
 	var result=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	result.store_string(JSON.stringify({"controller_ready":true,"closed_read_retired":true,"success":not failed,"rows":rows.size(),"pages":pages,"stale_rejected":true,"empty_end_page":true}));result.close()

@@ -4,7 +4,7 @@ signal changed
 signal dismissed
 const C=preload("res://scripts/management_contract.gd")
 const MAX_RETAINED_BYTES=64*1024*1024
-enum Phase {Closed,Reading,Ready,Rejected,Unavailable,CandidatesReading,CandidatesReady,Applying,Unknown}
+enum Phase {Closed,Reading,Ready,Rejected,Unavailable,CandidatesReading,CandidatesReady,Applying,Unknown,Accounting}
 var service
 var phase:=Phase.Closed
 var rows: Array=[]
@@ -224,6 +224,29 @@ func request_dismiss() -> void:
 			phase=Phase.Unknown;changed.emit();return
 		if result.get("status")==C.ManagementStatus.Ok and value.get("outcome")==C.NoblesOutcome.Applied:
 			close();dismissed.emit();return
+		if result.get("status")==C.ManagementStatus.Rejected and value.get("outcome") in [C.NoblesOutcome.Rejected,C.NoblesOutcome.Stale]:phase=Phase.Rejected
+		else:phase=Phase.Unknown
+		changed.emit())
+	if ticket==0:last_result={"outcome":"not_sent"};phase=Phase.Rejected
+	changed.emit()
+
+func set_accounting(target: Dictionary,setting: int) -> void:
+	if phase!=Phase.Ready or setting<0 or setting>4 or service==null:return
+	var expected: int=-1
+	for row in rows:
+		if office(row)==target and row.unit_id>=0 and row.get("help",{}).has("accounting"):expected=row.help.accounting.setting;break
+	if expected<0:return
+	_retire();phase=Phase.Accounting;last_result={}
+	var intent: Dictionary={"action":C.ManagementAction.NoblesAccounting,"offset":0,"limit":32,"expected_list_revision":_revision,"choices":choices.duplicate(true),"target":target.duplicate(true),"expected_setting":expected,"setting":setting}
+	var owner:=generation
+	ticket=service.submit("nobles",intent,func(received,result,_sent):
+		if owner!=generation or received!=ticket:return
+		ticket=0;last_result=result.duplicate(true);var value: Variant=result.get("nobles",{})
+		if result.get("outcome","")=="not_sent":phase=Phase.Rejected;changed.emit();return
+		if result.get("outcome","")=="unknown" or typeof(value)!=TYPE_DICTIONARY or result.get("action")!=intent.action:
+			phase=Phase.Unknown;changed.emit();return
+		if result.get("status")==C.ManagementStatus.Ok and value.get("outcome")==C.NoblesOutcome.Applied:
+			_pending=[];_seen={};_bytes=0;_total=0;_restarts=0;phase=Phase.Reading;_page();return
 		if result.get("status")==C.ManagementStatus.Rejected and value.get("outcome") in [C.NoblesOutcome.Rejected,C.NoblesOutcome.Stale]:phase=Phase.Rejected
 		else:phase=Phase.Unknown
 		changed.emit())

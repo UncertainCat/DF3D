@@ -3,6 +3,17 @@
 #include "management_util.h"
 namespace m=df3d::mirror;
 namespace codec=wm::detail::management;
+TEST_CASE("Nobles accounting request retains expected setting and owned draft") {
+ wm::ManagementRequest q;q.action=wm::ManagementAction::NoblesAccounting;
+ q.nobles.expectedListRevision=123;q.nobles.target=wm::NoblesOffice{7,2,42,0};
+ q.nobles.expectedSetting=2;q.nobles.setting=4;
+ q.nobles.choices.push_back({{7,3,43,0},-1,10});
+ flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,q,11,12,13);
+ const auto* r=flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer());
+ REQUIRE_FALSE(m::validateConstructionRequest(*r));REQUIRE(r->nobles());
+ CHECK(r->nobles()->expected_setting()==2);CHECK(r->nobles()->setting()==4);
+ CHECK(r->nobles()->target()->assignment_id()==42);CHECK(r->nobles()->choices()->size()==1);
+}
 TEST_CASE("Nobles draft requests retain slot and candidate identities") {
  wm::ManagementRequest q;q.action=wm::ManagementAction::NoblesCandidates;
  q.nobles.expectedListRevision=123;q.nobles.offset=4;q.nobles.limit=4;

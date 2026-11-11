@@ -18,13 +18,15 @@ func configure(world,service,host) -> void:
 	panel=preload("res://scripts/nobles_view.gd").new();layer.add_child(panel)
 	panel.configure_nobles(world,state);panel.input_allowed=allowed
 	panel.cancelled.connect(handle_back)
+	panel.accounting_requested.connect(func(row,setting):
+		if allowed():state.set_accounting(state.office(row),setting))
 	panel.information_requested.connect(func(caption):
 		if allowed():request_handoff(func():information_requested.emit(caption)))
 	host.register(self);_layout();_sync()
 func allowed() -> bool:
-	return play_enabled and ui_host!=null and ui_host.allows_panel_input(self) and state.phase not in [state.Phase.Applying,state.Phase.Unknown]
+	return play_enabled and ui_host!=null and ui_host.allows_panel_input(self) and state.phase not in [state.Phase.Applying,state.Phase.Accounting,state.Phase.Unknown]
 func open_panel() -> void:
-	if state.phase==state.Phase.Applying:return
+	if state.phase in [state.Phase.Applying,state.Phase.Accounting]:return
 	if play_enabled and ui_host!=null and ui_host.activate(self):
 		opening=true;_destination=Callable();state.open();opening=false;_sync()
 # Explicit host reset/session teardown does not submit simulation mutations.

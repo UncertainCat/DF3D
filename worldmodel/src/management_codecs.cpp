@@ -301,13 +301,13 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
   const auto anchor=r.materialAnchor.value_or(TilePos{r.x,r.y,r.z});
   const m::TilePos materialAnchor(anchor.x,anchor.y,anchor.z);
   flatbuffers::Offset<m::NoblesRequest> nobles;
-  if(r.action>=ManagementAction::NoblesRead && r.action<=ManagementAction::NoblesCommit){
+  if(r.action>=ManagementAction::NoblesRead && r.action<=ManagementAction::NoblesAccounting){
     std::vector<flatbuffers::Offset<m::NoblesChoice>> choices;
     for(const auto& choice:r.nobles.choices){const auto& key=choice.target;m::NoblesOffice target(key.entityId,key.positionId,key.assignmentId,key.draftSlot);
       choices.push_back(m::CreateNoblesChoice(b,&target,choice.expectedUnitId,choice.unitId));}
     std::optional<m::NoblesOffice> target;
     if(r.nobles.target){const auto& key=*r.nobles.target;target.emplace(key.entityId,key.positionId,key.assignmentId,key.draftSlot);}
-    nobles=m::CreateNoblesRequest(b,r.nobles.offset,r.nobles.limit,r.nobles.expectedListRevision,b.CreateVector(choices),target?&*target:nullptr,r.nobles.expectedCandidateRevision);
+    nobles=m::CreateNoblesRequest(b,r.nobles.offset,r.nobles.limit,r.nobles.expectedListRevision,b.CreateVector(choices),target?&*target:nullptr,r.nobles.expectedCandidateRevision,r.nobles.expectedSetting,r.nobles.setting);
   }
   flatbuffers::Offset<m::PlacesRequest> places;
   if(r.action==ManagementAction::PlacesRead || r.action==ManagementAction::PlacesApply){const auto& q=r.places;

@@ -46,8 +46,25 @@ callee. The adapter fingerprints that branch, binds the destination to
 `plotinfo.nobles.bookkeeper_settings`, and checks the same semantic eligibility
 against independently prepared draft rows. It validates the base revision and
 expected setting before the store. Attained precision is never changed.
-`nobles-accounting-probe` exercises this adapter synchronously; typed mutation
-transport and UI submission remain unfinished.
+`nobles-accounting-probe` exercises this adapter synchronously. Action112 now
+connects it through the typed model/Godot API and the staged owner's accounting
+buttons. The controller blocks overlapping edits/dismissal while pending, then
+reprojects the same appointment draft after Applied. Failed or unknown effects
+cannot trigger automatic replay; the existing owner prevents handoff in flight.
+
+Protected105814 on2026-11-11 sends actual viewport clicks to all five accounting
+buttons in the configured owner at1600x900 with a Manager appointment still in
+draft. Each confirmed read reflects the requested setting and retains that
+choice. A stale expected-setting request rejects; the original setting is
+restored before the appointment commits and navigation completes. Independent
+Lua verifies restored setting, unchanged achieved precision and the Manager's
+holder/link/single history event. DF40860 closes unsaved with source preservation;
+native30FPS/headless viewer, GPU37C/0% sampled, known startup notice only.
+Core/model codec and both builds pass in `build/qa/nobles-accounting-runtime`;
+the controller test initially lacked its service after a prior disconnect case.
+After reconnecting that fixture, controller/host checks pass in
+`build/qa/nobles-accounting-runtime-fixed`. This establishes typed input/effects
+with a retained draft, not rendered pending/unknown states or live fault recovery.
 
 Protected103749 on2026-11-11 compares all five settings with actual native
 button clicks. Each case changes away from the native choice through the owned
@@ -863,9 +880,9 @@ Accounting replies are empty terminal Nobles receipts: Ok/Applied or
 Rejected/{Rejected,Stale,Unknown}. Unknown is never permission to replay.
 The base revision and expected setting provide independent stale checks;
 attained bookkeeping precision is not part of the requested change. Old
-recordings must not synthesize these mutation facts. This contract commit
-explicitly rejects the new action until its typed runtime adapter is connected;
-it does not expose an accounting control or claim end-to-end acceptance.
+recordings must not synthesize these mutation facts. The typed runtime adapter
+and staged buttons now use this contract; public screen exposure remains gated
+by the unfinished Nobles workflow. Runtime acceptance is scoped above.
 
 Core, model/schema tests, extension, Nobles controller and host checks pass in
 `build/qa/nobles-accounting-contract`; MSVC passes. Protected104852 on2026-11-11

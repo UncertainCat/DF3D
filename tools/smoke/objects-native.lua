@@ -98,10 +98,24 @@ if os.getenv('DF3D_OBJECTS_WIRE')=='1' then
  local window_before={df.global.window_x,df.global.window_y,df.global.window_z}
  write('objects-wire-reference.json',json.encode{ownership=ownership,destinations=destinations,appearances=appearances})
  write('shot.tmp','objects-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))
- local deadline=dfhack.getTickCount()+60000
+ local lifecycle=os.getenv('DF3D_OBJECTS_LIFECYCLE')=='1'
+ local stage=0
+ local deadline=dfhack.getTickCount()+(lifecycle and 120000 or 60000)
  while true do local ack=io.open(out..'/ack-objects-wire');if ack then ack:close();break end
+  if lifecycle then
+   local f=io.open(out..'/objects-lifecycle-request')
+   if f then
+    local wanted=tonumber(f:read('*a'));f:close()
+    if wanted~=stage then
+     assert(wanted==stage+1 and wanted<=2,'Unexpected Objects lifecycle step')
+     assert(dfhack.run_command(wanted==1 and 'disable' or 'enable','df3d')==0,'Objects transport toggle failed')
+     stage=wanted;write('objects-lifecycle-ack',tostring(stage))
+    end
+   end
+  end
   assert(dfhack.getTickCount()<deadline,'Objects wire timed out');script.sleep(1,'frames')
  end
+ if lifecycle then assert(stage==2,'Objects lifecycle incomplete')end
  assert(bytes(address,size)==menu_before,'Objects wire changed native menu')
  assert(bytes(base+0x234e990,0x6180)==rng_before,'Objects wire advanced randomness')
  assert(json.encode(window_before)==json.encode{df.global.window_x,df.global.window_y,df.global.window_z},'Objects wire moved native camera')

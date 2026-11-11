@@ -2015,5 +2015,25 @@
       "Missing-history branches",
       "Full session replacement"
     ]
+  },
+  "lifecycle_reference": {
+    "fresh_read": true,
+    "navigation": [],
+    "new_connection": 3,
+    "new_epoch": 187226214367233,
+    "old_connection": 1,
+    "old_epoch": 187226214367233,
+    "sent_locate_retired": true,
+    "success": true,
+    "source": "build/stockpile-storage-native-input-20261111-172651",
+    "game": "DF 53.16",
+    "status": "passed_with_known_issues",
+    "owned_df_pid": 43592,
+    "source_preserved": true,
+    "scope": "Actual main-scene producer loss after sent View lookup and before receipt consumption; hidden owner, cleared rows and destination, unknown retired ticket, fresh read after reconnect.",
+    "limitations": [
+      "Same world epoch; not save/world replacement",
+      "Scene loader camera reset is independent of Objects navigation"
+    ]
   }
 }

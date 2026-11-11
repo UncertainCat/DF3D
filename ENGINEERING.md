@@ -39,6 +39,24 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Objects native discovery
 
+Protected172651 on2026-11-11 covers bridge disconnect/reconnect during a sent
+Objects View lookup. The main-scene client sends the lookup and stops observing
+before the protected native script disables the producer. Loss retires the
+ticket as unknown, clears rows and pending destination, hides the panel and
+releases input. Reconnecting changes connection generation1→3 without changing
+the world epoch. Neither focus nor inspection is emitted; reopening performs a
+fresh read matching unchanged native rows. `native_objects.json.lifecycle_reference`
+records this evidence. Run with `DF3D_OBJECTS_LIFECYCLE=1` alongside the native,
+wire and scene flags; its client/native deadlines are115/120seconds.
+This is producer recovery, not a save/world replacement test. The scene loader
+may reposition the camera during reconnect independently of Objects; navigation
+signals establish the absence of a delayed Objects action. Initial172512 wrongly
+expected a changed world epoch and an unchanged camera; it is not accepted as a
+product failure. Final owned DF43592 closes unsaved with source preservation and
+restored preferences, both30FPS, GPU59–60C/1–21%/43–46W. Known separate-thread,
+finalize and ObjectDB diagnostics only; core19 and composition pass in
+`build/qa/objects-lifecycle-final`. No runtime fix was required.
+
 Protected172238 on2026-11-11 verifies29 controlled ownership cases against
 native rendered text cells for local artifact252. Coverage includes all four
 fortress/civilization claim types, civilization claims before/after king arrival,
@@ -127,8 +145,8 @@ panel crops. Protected run passes with known Godot separate-thread/finalize/
 ObjectDB diagnostics; owned DF22652 closes unsaved with source preservation and
 restored preferences, both30FPS, GPU54C/20%/44W. Later references above cover
 scrollbar pointer/drag, populated Manager Symbols and main-scene composition.
-Longer-list paging and remaining session lifecycle are still pending; public
-exposure remains gated. Claim coverage and its limits are recorded above.
+Longer-list paging and save/world replacement are outside these checks; public
+exposure remains gated. Claim and producer-recovery coverage are recorded above.
 
 Protocol191 adds optional `coffin_unused` to shared appearance facts: -1 unknown,
 0 false,1 installed in a coffin building with at most one contained item. Native

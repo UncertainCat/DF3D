@@ -115,6 +115,7 @@
 #include "stocks_native.h"
 #include "tasks_action_native.h"
 #include "places_action_native.h"
+#include "objects_native.h"
 #include "df/gamest.h"
 #include "work_order_catalog_native.h"
 #include "work_order_rows_native.h"
@@ -554,6 +555,13 @@ struct NoblesSymbolOwner {
   int32_t artifact=-1;bool uncertain=false;
 };
 std::optional<NoblesSymbolOwner> noblesSymbolOwner;
+struct ObjectsRow {df3d_objects::Names names;std::string ownership;df3d_objects::Destination destination;};
+struct ObjectsResult {
+  m::ObjectsOutcome outcome=m::ObjectsOutcome::Rejected;uint8_t tab=0;
+  uint64_t listRevision=0;uint32_t total=0,offset=0;std::vector<ObjectsRow> rows;
+  int32_t artifactId=-1;std::optional<df3d_objects::Destination> destination;
+};
+std::optional<ObjectsResult> objects;
 struct PlacesResult {
   m::PlacesOutcome outcome=m::PlacesOutcome::Rejected;uint8_t tab=0;
   uint64_t listRevision=0;uint32_t total=0,offset=0;std::vector<df3d_places::BuildingRow> rows;
@@ -620,7 +628,7 @@ void clearResult() {
   residentsRows.reset();
   residentsSpecialization.reset();
   residentsActivity.reset();
-  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();stoneUse.reset();stocks.reset();tasks.reset();places.reset();nobles.reset();
+  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();stoneUse.reset();stocks.reset();tasks.reset();objects.reset();places.reset();nobles.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -1329,6 +1337,16 @@ void publish() {
       nobles->target?&*nobles->target:nullptr,nobles->candidateRevision,b.CreateVector(candidates),b.CreateVector(symbols),step,name,
       nobles->symbolTargetCaption?b.CreateString(*nobles->symbolTargetCaption):flatbuffers::Offset<flatbuffers::String>{});
   }
+  flatbuffers::Offset<m::ObjectsState> objectsResult;
+  if(objects){std::vector<flatbuffers::Offset<m::ObjectsRow>> rows;
+    for(const auto& row:objects->rows){const auto& p=row.destination.position;const m::TilePos pos(p.x,p.y,p.z);
+      rows.push_back(m::CreateObjectsRow(b,row.names.artifactId,row.names.itemId,b.CreateString(row.names.nativeName),
+        b.CreateString(row.names.translatedName),b.CreateString(row.ownership),row.destination.available?&pos:nullptr));}
+    flatbuffers::Offset<m::ObjectsDestination> destination;
+    if(objects->destination){const auto& d=*objects->destination;const m::TilePos pos(d.position.x,d.position.y,d.position.z);
+      destination=m::CreateObjectsDestination(b,objects->artifactId,d.itemId,d.available?&pos:nullptr);}
+    objectsResult=m::CreateObjectsState(b,objects->outcome,objects->tab,objects->listRevision,objects->total,objects->offset,b.CreateVector(rows),destination);
+  }
   flatbuffers::Offset<m::PlacesState> placesResult;
   if(places){std::vector<flatbuffers::Offset<m::PlacesRow>> rows;
     for(const auto& row:places->rows){const m::TilePos pos(row.position.x,row.position.y,row.position.z);
@@ -1424,7 +1442,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult,noblesResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult,noblesResult,objectsResult);
   b.Finish(s);
   auto validationError=m::validateManagementState(
       *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()));
@@ -4627,6 +4645,38 @@ void run(color_ostream& out) {
         page.outcome=m::NoblesOutcome::None;nobles=std::move(page);status=m::ManagementStatus::Ok;
       }
     }catch(...){nobles.emplace();}
+    publish();return;
+  }
+  if(r->action()==m::ManagementAction::ObjectsRead || r->action()==m::ManagementAction::ObjectsLocate){
+    const auto& q=*r->objects();status=m::ManagementStatus::Rejected;message.clear();objects.emplace();objects->tab=q.tab();
+    try {
+      const auto all=df3d_objects::lists();if(!all)throw std::runtime_error("objects unavailable");
+      const auto& ids=(*all)[q.tab()];
+      uint64_t revision=UINT64_C(14695981039346656037);revision^=q.tab();revision*=UINT64_C(1099511628211);
+      for(auto id:ids)for(unsigned i=0;i<4;++i){revision^=uint8_t(uint32_t(id)>>(8*i));revision*=UINT64_C(1099511628211);}
+      revision&=INT64_MAX;if(!revision)revision=1;
+      const bool locate=r->action()==m::ManagementAction::ObjectsLocate;
+      if((q.expected_list_revision() && q.expected_list_revision()!=revision) || q.offset()>ids.size() ||
+        (locate && std::find(ids.begin(),ids.end(),q.artifact_id())==ids.end()))objects->outcome=m::ObjectsOutcome::Stale;
+      else {
+        ObjectsResult page;page.tab=q.tab();page.listRevision=revision;
+        if(locate){page.artifactId=q.artifact_id();page.destination=df3d_objects::destination(q.artifact_id());
+          if(!page.destination)throw std::runtime_error("objects destination unavailable");}
+        else {
+          page.total=uint32_t(ids.size());page.offset=q.offset();size_t bytes=0;
+          for(size_t i=q.offset();i<ids.size() && page.rows.size()<q.limit();++i){
+            auto names=df3d_objects::names(ids[i]);auto caption=df3d_objects::ownership(ids[i]);auto target=df3d_objects::destination(ids[i]);
+            if(!names || !caption || !target)throw std::runtime_error("objects row unavailable");
+            ObjectsRow row{std::move(*names),std::move(*caption),*target};size_t rowBytes=128;
+            for(auto* text:{&row.names.nativeName,&row.names.translatedName,&row.ownership}){
+              *text=DF2UTF(*text);if(text->size()>16384)throw std::runtime_error("objects caption exceeds limit");rowBytes+=text->size();}
+            if(bytes+rowBytes>384*1024)break;bytes+=rowBytes;page.rows.push_back(std::move(row));
+          }
+          if(page.offset<page.total && page.rows.empty())throw std::runtime_error("objects row exceeds page");
+        }
+        page.outcome=m::ObjectsOutcome::None;objects=std::move(page);status=m::ManagementStatus::Ok;
+      }
+    }catch(...){objects.emplace();objects->tab=q.tab();}
     publish();return;
   }
   if(r->action()==m::ManagementAction::PlacesRead){

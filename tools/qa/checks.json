@@ -4251,6 +4251,11 @@
       "reason": "Protected stockpile_storage_native.ps1 with DF3D_NOBLES_NATIVE, DF3D_NOBLES_WIRE and DF3D_NOBLES_SCENE; actual main-scene header navigation, overlay blocking and reset."
     },
     {
+      "path": "presentations/godot/project/tests/objects_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected stockpile_storage_native.ps1 with DF3D_OBJECTS_NATIVE and DF3D_OBJECTS_WIRE; native ordered pages, captions, destination lookups and stale membership rejection."
+    },
+    {
       "path": "presentations/godot/project/tests/places_wire_live.gd",
       "status": "manual",
       "reason": "Protected stockpile_storage_native.ps1 with DF3D_PLACES_NATIVE and DF3D_PLACES_WIRE; all six tabs, ordered pagination, owned row fields/artwork and stale membership revisions."

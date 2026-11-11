@@ -46,6 +46,21 @@ local cold=probe()
 local native_names=probe('objects-names-probe')
 local ownership=probe('objects-ownership-probe')
 local destinations=probe('objects-destinations-probe')
+if os.getenv('DF3D_OBJECTS_WIRE')=='1' then
+ local size,address=df.sizeof(df.global.game.main_interface.info.artifacts)
+ local menu_before=bytes(address,size);local base=dfhack.internal.getImageBase()
+ local rng_before=bytes(base+0x234e990,0x6180)
+ local window_before={df.global.window_x,df.global.window_y,df.global.window_z}
+ write('objects-wire-reference.json',json.encode{ownership=ownership,destinations=destinations})
+ write('shot.tmp','objects-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))
+ local deadline=dfhack.getTickCount()+30000
+ while true do local ack=io.open(out..'/ack-objects-wire');if ack then ack:close();break end
+  assert(dfhack.getTickCount()<deadline,'Objects wire timed out');script.sleep(1,'frames')
+ end
+ assert(bytes(address,size)==menu_before,'Objects wire changed native menu')
+ assert(bytes(base+0x234e990,0x6180)==rng_before,'Objects wire advanced randomness')
+ assert(json.encode(window_before)==json.encode{df.global.window_x,df.global.window_y,df.global.window_z},'Objects wire moved native camera')
+end
 gui.simulateInput(view,'D_NOBLES');settle();click(310,100)
 local info=df.global.game.main_interface.info
 assert(info.open and info.current_mode==df.info_interface_mode_type.ARTIFACTS,'Objects header failed')

@@ -247,6 +247,17 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         }
         value["outcome"]=int(v.outcome);value["list_revision"]=int64_t(v.listRevision);value["total"]=int64_t(v.total);value["offset"]=int64_t(v.offset);value["rows"]=rows;result["nobles"]=value;
     }
+    if(s.objects){const auto& v=*s.objects;Dictionary value;Array rows;
+        value["outcome"]=int(v.outcome);value["tab"]=int(v.tab);value["list_revision"]=int64_t(v.listRevision);
+        value["total"]=int64_t(v.total);value["offset"]=int64_t(v.offset);
+        for(const auto& r:v.rows){Dictionary d;d["artifact_id"]=r.artifactId;d["item_id"]=r.itemId;
+            d["native_name"]=String::utf8(r.nativeName.c_str());d["translated_name"]=String::utf8(r.translatedName.c_str());d["ownership"]=String::utf8(r.ownership.c_str());
+            if(r.position)d["position"]=Vector3i(r.position->x,r.position->y,r.position->z);
+            if(r.appearance)d["appearance"]=management::itemRecipeDictionary(*r.appearance);rows.push_back(d);}
+        if(v.destination){const auto& r=*v.destination;Dictionary d;d["artifact_id"]=r.artifactId;d["item_id"]=r.itemId;
+            if(r.position)d["position"]=Vector3i(r.position->x,r.position->y,r.position->z);value["destination"]=d;}
+        value["rows"]=rows;result["objects"]=value;
+    }
     if(s.places){const auto& v=*s.places;Dictionary value;Array rows;
         value["outcome"]=int(v.outcome);value["tab"]=int(v.tab);value["list_revision"]=int64_t(v.listRevision);
         value["total"]=int64_t(v.total);value["offset"]=int64_t(v.offset);
@@ -662,6 +673,22 @@ bool readNobles(const Dictionary& data,wm::ManagementRequest& request,String&) {
     if(data.has("name_edit")){const Dictionary n=data["name_edit"];q.nameEdit=wm::LocationNameEdit{wm::LocationNameMode(int64_t(n["mode"])),int8_t(int64_t(n["target"])),int8_t(int64_t(n["displayed"])),int32_t(int64_t(n["word"])),int16_t(int64_t(n["part"])),bytes(n)};}
     return true;
 }
+bool validateObjects(const Dictionary& data,String& error) {
+    error="Invalid objects request";
+    const auto integer=[](const Dictionary& d,const char* k,int64_t lo,int64_t hi){return d.has(k) && d[k].get_type()==Variant::INT && int64_t(d[k])>=lo && int64_t(d[k])<=hi;};
+    if(!integer(data,"tab",0,3))return false;
+    if(int64_t(data["action"])==int64_t(wm::ManagementAction::ObjectsRead)){
+        if(data.size()!=5 || !integer(data,"offset",0,1048576) || !integer(data,"limit",1,64) ||
+          !integer(data,"expected_list_revision",0,INT64_MAX) || (int64_t(data["offset"]) && !int64_t(data["expected_list_revision"])))return false;
+    }else if(data.size()!=4 || !integer(data,"artifact_id",0,INT32_MAX) || !integer(data,"expected_list_revision",1,INT64_MAX))return false;
+    error=String();return true;
+}
+bool readObjects(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction(int64_t(data["action"]));auto& q=request.objects;
+    q.tab=uint8_t(int64_t(data["tab"]));q.expectedListRevision=uint64_t(int64_t(data["expected_list_revision"]));
+    if(request.action==wm::ManagementAction::ObjectsRead){q.offset=uint32_t(int64_t(data["offset"]));q.limit=uint16_t(int64_t(data["limit"]));}
+    else q.artifactId=int32_t(int64_t(data["artifact_id"]));return true;
+}
 bool validatePlaces(const Dictionary& data,String& error) {
     error="Invalid places request";
     const auto integer=[](const Dictionary& d,const char* k,int64_t lo,int64_t hi){return d.has(k) && d[k].get_type()==Variant::INT && int64_t(d[k])>=lo && int64_t(d[k])<=hi;};
@@ -1058,6 +1085,7 @@ const ManagementCodec managementCodecs[] = {
     {"stocks_menu",validateStocksMenu,readStocksMenu},
     {"nobles",validateNobles,readNobles},
     {"places",validatePlaces,readPlaces},
+    {"objects",validateObjects,readObjects},
     {"tasks",validateTasks,readTasks},
     {"stone_use",validateStoneUse,readStoneUse},
     {"kitchen_menu",validateKitchenMenu,readKitchenMenu},
@@ -1078,7 +1106,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::NoblesSymbolsRetire)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::ObjectsLocate)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

@@ -1186,5 +1186,22 @@
       }
     },
     "limits": "Actual native clicks cover one nonlocal artifact and one local artifact. Effective coordinates agree with the item position helper; native camera level and item-sheet target are checked. Nested holders, scrolling, viewer transport and rendered navigation remain pending."
+  },
+  "wire_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-155225",
+    "protocol": 188,
+    "result": {
+      "counts": [
+        10,
+        0,
+        2,
+        11
+      ],
+      "lookups": 4,
+      "stale_tabs": 4,
+      "success": true
+    },
+    "native_menu_rng_camera_unchanged": true,
+    "limits": "Headless transport only. Runtime artwork, rendered panel and lifecycle acceptance remain pending. Symbols fixture is empty. Only the known separate rendering thread Godot notice occurred (passed_with_known_issues)."
   }
 }

@@ -51,16 +51,33 @@ coordinates. Optional artwork remains absent until its native selector is expose
 Both request/reply defaults and validators use188 and mailbox
 `Local\df3d_management_v188`. Rebuild bridge and viewer together before live use;
 187 peers cannot share that mailbox. Older recordings do not acquire Objects
-facts. Producer and viewer wiring remain pending. Core19, including Objects malformed-page, destination, refusal
-and scope cases, passes `build/qa/objects-contract-final`. The installed bridge
-is still187; this contract gate is not live acceptance of188.
+facts. Core19, including Objects malformed-page, destination, refusal and scope
+cases, passes `build/qa/objects-contract-final`.
 
 The engine-independent model owns Objects requests, rows and destinations.
 Its codec preserves paging/category/revision identity, copies all captions and
 optional artwork, and keeps unavailable destinations distinct from stale refusals.
 `objects_codec_tests.cpp` overwrites source reply bytes after decoding to check
 ownership. Core19 passes `build/qa/objects-model-codec-final`. This verifies the
-model codec only; typed live transport and rendered navigation remain pending.
+model codec only; rendered navigation remains pending.
+
+The management producer formats only the requested native list page and rejects
+changed membership revisions or destination targets outside the selected category.
+`ObjectsLocate` resolves current holder coordinates without changing native UI or
+camera state. Godot's `objects` request domain validates the complete intent shape
+and projects the owned model into dictionaries. No runtime artwork is supplied yet.
+
+Protected155225 on2026-11-11 verifies protocol188 through the rebuilt bridge,
+world model and headless Godot client: four-row pages match all23 native rows
+(10/0/2/11), all captions and available coordinates; four destination lookups
+match, and all four tabs reject stale revisions and invalid targets. Native menu,
+primary RNG and camera remain unchanged across wire requests. Owned DF11832
+closes unsaved with source preservation and restored preferences; native30FPS,
+sampled GPU61C/40%/57W. The only Godot diagnostic is the known separate-render-thread
+notice (passed_with_known_issues). Core19 and UI host pass `build/qa/objects-wire-final`;
+the MSVC bridge and Godot extension build. `native_objects.json.wire_reference`
+records the result. Run with `DF3D_OBJECTS_NATIVE=1` and `DF3D_OBJECTS_WIRE=1` through
+`stockpile_storage_native.ps1`. Rendered Objects and lifecycle acceptance remain pending.
 
 `objects_native.h` invokes DF53.16's375a70 list builder with an independently
 owned128-byte `artifacts_interfacest`. Native323aba is its caller; the native
@@ -123,8 +140,8 @@ preservation and restored preferences; native30FPS, sampled GPU63C. Core19 passe
 `build/qa/objects-native-destinations`; the MSVC bridge builds. Evidence is in
 `native_objects.json.destination_reference`; nested holders remain unverified here.
 
-Objects remains unexposed and unfinished. Next are typed transport and the
-rendered four-tab panel.
+Objects remains unexposed and unfinished. Next are the native artwork selector
+and rendered four-tab panel.
 Input handler39f150 contains the item view/recenter dispatch. Populated Symbols, scrolling, inputs and lifecycle still need acceptance.
 The current reference includes native blank artwork for two written objects;
 do not infer replacement artwork from the fixture alone.

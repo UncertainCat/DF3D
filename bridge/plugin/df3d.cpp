@@ -2711,7 +2711,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             result.append(row);}
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
         }
-        if(parameters[0]=="objects-names-probe" || parameters[0]=="objects-ownership-probe") {
+        if(parameters[0]=="objects-names-probe" || parameters[0]=="objects-ownership-probe" || parameters[0]=="objects-destinations-probe") {
           if(parameters.size()!=1)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
           const auto lists=df3d_objects::lists();if(!lists)return CR_FAILURE;
@@ -2723,6 +2723,11 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             if(parameters[0]=="objects-ownership-probe"){
               const auto caption=df3d_objects::ownership(id);if(!caption)return CR_FAILURE;
               rows[rows.size()-1]["ownership"]=DF2UTF(*caption);
+            }
+            if(parameters[0]=="objects-destinations-probe"){
+              const auto target=df3d_objects::destination(id);if(!target)return CR_FAILURE;
+              auto& value=rows[rows.size()-1];value["available"]=target->available;
+              if(target->available){value["position"].append(target->position.x);value["position"].append(target->position.y);value["position"].append(target->position.z);}
             }
           }result.append(rows);}
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;

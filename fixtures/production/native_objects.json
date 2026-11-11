@@ -862,5 +862,329 @@
     ],
     "matches_native_visible_text": true,
     "limits": "Current fixture covers fortress treasure and family heirlooms. Symbols is empty; civilization, individual and office-symbol claim captions still need populated live coverage. Captions are returned without width clipping."
+  },
+  "destination_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-152246",
+    "rows": [
+      [
+        {
+          "artifact_id": 20,
+          "available": false,
+          "item_id": 20,
+          "native_name": "Merig Torir",
+          "translated_name": "\"The Clarity of Voids\""
+        },
+        {
+          "artifact_id": 62,
+          "available": false,
+          "item_id": 62,
+          "native_name": "Kebul K\u00e4l\u00e1n",
+          "translated_name": "\"The Sparkles of Trailing\""
+        },
+        {
+          "artifact_id": 219,
+          "available": false,
+          "item_id": 219,
+          "native_name": "Betantilesh Sedurthokit",
+          "translated_name": "\"Calmtrussed the Emerald Affliction\""
+        },
+        {
+          "artifact_id": 240,
+          "available": false,
+          "item_id": 240,
+          "native_name": "Mirstalsanreb Imkethsosh",
+          "translated_name": "\"Velvetyown the Just Sandal\""
+        },
+        {
+          "artifact_id": 252,
+          "available": true,
+          "item_id": 8201,
+          "native_name": "Cilobireg Lelum Thad",
+          "position": [
+            113,
+            77,
+            165
+          ],
+          "translated_name": "\"Roofflush the Wane of Crowding\""
+        },
+        {
+          "artifact_id": 253,
+          "available": true,
+          "item_id": 9035,
+          "native_name": "Kulin Odur",
+          "position": [
+            114,
+            92,
+            165
+          ],
+          "translated_name": "\"The Palm of Roots\""
+        },
+        {
+          "artifact_id": 254,
+          "available": true,
+          "item_id": 13105,
+          "native_name": "Gongithosal",
+          "position": [
+            140,
+            98,
+            165
+          ],
+          "translated_name": "\"Squidsong\""
+        },
+        {
+          "artifact_id": 255,
+          "available": true,
+          "item_id": 27491,
+          "native_name": "Enkoserib",
+          "position": [
+            122,
+            62,
+            165
+          ],
+          "translated_name": "\"Takegorges\""
+        },
+        {
+          "artifact_id": 256,
+          "available": true,
+          "item_id": 31264,
+          "native_name": "Rinulshem",
+          "position": [
+            116,
+            61,
+            165
+          ],
+          "translated_name": "\"The Intense Plank\""
+        },
+        {
+          "artifact_id": 260,
+          "available": true,
+          "item_id": 48318,
+          "native_name": "Koresis",
+          "position": [
+            122,
+            62,
+            165
+          ],
+          "translated_name": "\"Caverntrots\""
+        }
+      ],
+      [],
+      [
+        {
+          "artifact_id": 196,
+          "available": false,
+          "item_id": 196,
+          "native_name": "N\u00eacikisan",
+          "translated_name": "\"Singedstill\""
+        },
+        {
+          "artifact_id": 259,
+          "available": true,
+          "item_id": 33758,
+          "native_name": "Izegl\u00eelar",
+          "position": [
+            128,
+            87,
+            165
+          ],
+          "translated_name": "\"Apespatterned\""
+        }
+      ],
+      [
+        {
+          "artifact_id": 41,
+          "available": true,
+          "item_id": 41,
+          "native_name": "Unknown Lever",
+          "position": [
+            190,
+            105,
+            163
+          ],
+          "translated_name": "\"Unknown Lever\""
+        },
+        {
+          "artifact_id": 45,
+          "available": true,
+          "item_id": 45,
+          "native_name": "Do We Understand The Lever?",
+          "position": [
+            190,
+            105,
+            163
+          ],
+          "translated_name": "\"Do We Understand The Lever?\""
+        },
+        {
+          "artifact_id": 64,
+          "available": true,
+          "item_id": 64,
+          "native_name": "The Lever Explained",
+          "position": [
+            190,
+            105,
+            163
+          ],
+          "translated_name": "\"The Lever Explained\""
+        },
+        {
+          "artifact_id": 89,
+          "available": true,
+          "item_id": 89,
+          "native_name": "Introduction To Thur Thronepleated",
+          "position": [
+            133,
+            57,
+            165
+          ],
+          "translated_name": "\"Introduction To Thur Thronepleated\""
+        },
+        {
+          "artifact_id": 110,
+          "available": true,
+          "item_id": 110,
+          "native_name": "The Denial: Problems And Solutions",
+          "position": [
+            167,
+            65,
+            165
+          ],
+          "translated_name": "\"The Denial: Problems And Solutions\""
+        },
+        {
+          "artifact_id": 174,
+          "available": true,
+          "item_id": 174,
+          "native_name": "The Humans For Everyone",
+          "position": [
+            134,
+            74,
+            165
+          ],
+          "translated_name": "\"The Humans For Everyone\""
+        },
+        {
+          "artifact_id": 185,
+          "available": true,
+          "item_id": 185,
+          "native_name": "Uncanny Conversations",
+          "position": [
+            190,
+            106,
+            163
+          ],
+          "translated_name": "\"Uncanny Conversations\""
+        },
+        {
+          "artifact_id": 236,
+          "available": true,
+          "item_id": 236,
+          "native_name": "Give Me Sources",
+          "position": [
+            190,
+            105,
+            163
+          ],
+          "translated_name": "\"Give Me Sources\""
+        },
+        {
+          "artifact_id": 238,
+          "available": true,
+          "item_id": 238,
+          "native_name": "Victory By The Dwarf",
+          "position": [
+            134,
+            80,
+            165
+          ],
+          "translated_name": "\"Victory By The Dwarf\""
+        },
+        {
+          "artifact_id": 257,
+          "available": true,
+          "item_id": 37251,
+          "native_name": "The Study Of The Moving Sun",
+          "position": [
+            167,
+            65,
+            165
+          ],
+          "translated_name": "\"The Study Of The Moving Sun\""
+        },
+        {
+          "artifact_id": 258,
+          "available": true,
+          "item_id": 37266,
+          "native_name": "The Moon And Other Topics",
+          "position": [
+            167,
+            67,
+            165
+          ],
+          "translated_name": "\"The Moon And Other Topics\""
+        }
+      ]
+    ],
+    "navigation": {
+      "before": {
+        "follow_item": -1,
+        "follow_unit": -1,
+        "objects": true,
+        "sheet": false,
+        "sheet_id": -1,
+        "sheet_type": -1,
+        "window": [
+          98,
+          60,
+          165
+        ]
+      },
+      "recenter": {
+        "follow_item": -1,
+        "follow_unit": -1,
+        "objects": false,
+        "sheet": false,
+        "sheet_id": -1,
+        "sheet_type": -1,
+        "window": [
+          101,
+          69,
+          165
+        ]
+      },
+      "target": {
+        "artifact_id": 252,
+        "available": true,
+        "item_id": 8201,
+        "native_name": "Cilobireg Lelum Thad",
+        "position": [
+          113,
+          77,
+          165
+        ],
+        "translated_name": "\"Roofflush the Wane of Crowding\""
+      },
+      "unavailable": {
+        "artifact_id": 20,
+        "available": false,
+        "item_id": 20,
+        "native_name": "Merig Torir",
+        "translated_name": "\"The Clarity of Voids\""
+      },
+      "view": {
+        "follow_item": -1,
+        "follow_unit": -1,
+        "objects": false,
+        "sheet": true,
+        "sheet_id": 8201,
+        "sheet_type": 1,
+        "window": [
+          108,
+          69,
+          165
+        ]
+      }
+    },
+    "limits": "Actual native clicks cover one nonlocal artifact and one local artifact. Effective coordinates agree with the item position helper; native camera level and item-sheet target are checked. Nested holders, scrolling, viewer transport and rendered navigation remain pending."
   }
 }

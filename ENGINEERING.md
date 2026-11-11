@@ -85,8 +85,23 @@ Core19 passes `build/qa/objects-native-ownership`; the MSVC bridge builds.
 `native_objects.json.ownership_reference` records the bounded evidence.
 Civilization, individual and office-symbol claims still need populated coverage.
 
-Objects remains unexposed and unfinished. Next are native item action targets,
-typed transport and the rendered four-tab panel.
+`objects_native.h::destination` calls native1f9dc0 for IN_PLAY membership and
+the existing pinned c8baa0 effective-position provider. This is the standalone
+equivalent of Objects' inline holder resolution in39f694/39f7c6 and3a0a44.
+Both controls require a valid position; View additionally opens the item sheet.
+The provider returns an item ID and coordinates; it never changes native camera,
+cursor or UI state. `objects-destinations-probe` exposes the facts for diagnostics.
+Protected152246 on2026-11-11 verifies actual native Recenter and View clicks for
+one local artifact and inactive control locations for one nonlocal artifact.
+Recenter closes Objects; View closes Objects and opens the expected item sheet.
+The effective coordinates agree with the item-position helper and native camera
+level. Menu/backing/RNG guards pass. Owned DF22220 closes unsaved with source
+preservation and restored preferences; native30FPS, sampled GPU63C. Core19 passes
+`build/qa/objects-native-destinations`; the MSVC bridge builds. Evidence is in
+`native_objects.json.destination_reference`; nested holders remain unverified here.
+
+Objects remains unexposed and unfinished. Next are typed transport and the
+rendered four-tab panel.
 Input handler39f150 contains the item view/recenter dispatch. Populated Symbols, scrolling, inputs and lifecycle still need acceptance.
 The current reference includes native blank artwork for two written objects;
 do not infer replacement artwork from the fixture alone.

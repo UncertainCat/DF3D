@@ -45,6 +45,7 @@ end
 local cold=probe()
 local native_names=probe('objects-names-probe')
 local ownership=probe('objects-ownership-probe')
+local destinations=probe('objects-destinations-probe')
 gui.simulateInput(view,'D_NOBLES');settle();click(310,100)
 local info=df.global.game.main_interface.info
 assert(info.open and info.current_mode==df.info_interface_mode_type.ARTIFACTS,'Objects header failed')
@@ -80,7 +81,40 @@ for mode,x in ipairs{90,184,296,443}do
  assert(json.encode(probe())==json.encode(cold),'Owned Objects lists depend on native tab')
 end
 result.owned_lists_match=true
+result.destinations=destinations
+-- Actual native controls, not synthesized calls to the item-sheet opener.
+click(90,124)
+local available,unavailable
+for index,row in ipairs(destinations[1])do
+ if index<=16 then
+  if row.available and not available then available=index end
+  if not row.available and not unavailable then unavailable=index end
+ end
+end
+assert(available and unavailable,'Need local and nonlocal artifact destinations')
+local sheet=df.global.game.main_interface.view_sheets
+local function observed()
+ return {objects=info.open,sheet=sheet.open,sheet_type=sheet.active_sheet,sheet_id=sheet.active_id,
+  window={df.global.window_x,df.global.window_y,df.global.window_z},
+  follow_item=df.global.plotinfo.follow_item,follow_unit=df.global.plotinfo.follow_unit}
+end
+result.navigation={before=observed(),unavailable=destinations[1][unavailable],target=destinations[1][available]}
+for _,x in ipairs{540,564}do
+ click(x,166+(unavailable-1)*36)
+ assert(info.open and not sheet.open,'Nonlocal artifact control navigated')
+end
+local target=destinations[1][available]
+local x,y,z=dfhack.items.getPosition(df.item.find(target.item_id))
+assert(json.encode({x,y,z})==json.encode(target.position),'Owned destination differs from effective item position')
+click(540,166+(available-1)*36)
+result.navigation.recenter=observed()
+assert(not info.open and not sheet.open and df.global.window_z==z,'Objects recenter failed')
+gui.simulateInput(view,'D_NOBLES');settle();click(310,100);click(90,124)
+click(564,166+(available-1)*36)
+result.navigation.view=observed()
+assert(not info.open and sheet.open and sheet.active_sheet==df.view_sheet_type.ITEM and sheet.active_id==target.item_id,'Objects View opened wrong item')
+gui.simulateInput(view,'LEAVESCREEN');settle();assert(not sheet.open,'Objects destination sheet did not close')
 write('objects-native.json',json.encode(result))
-gui.simulateInput(view,'LEAVESCREEN');settle();assert(not info.open,'Objects did not close')
+assert(not info.open,'Objects did not close')
 records[#records+1]={name='objects-discovery',closed=true}
 

@@ -1,4 +1,5 @@
 #pragma once
+#include "building_item_native.h"
 #include "df/artifacts_interfacest.h"
 #include "df/artifact_record.h"
 #include "df/item.h"
@@ -23,6 +24,28 @@
 namespace df3d_objects {
 using Lists=std::array<std::vector<int32_t>,4>;
 struct Names {int32_t artifactId=-1,itemId=-1;std::string nativeName,translatedName;};
+struct Destination {int32_t itemId=-1;bool available=false;df::coord position;};
+// Input39f64e uses native IN_PLAY lookup; both controls then resolve the same
+// effective holder position. c8baa0 is the standalone form of the inlined
+// resolver at39f694/39f7c6 and renderer3a0a44. Navigation remains viewer-owned.
+inline std::optional<Destination> destination(int32_t id) {
+    auto* artifact=df::artifact_record::find(id);
+    if(!df::global::world || !artifact || !artifact->item)return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    const auto& items=df::global::world->items.other[df::items_other_id::IN_PLAY];
+    if(reinterpret_cast<const uint8_t*>(&items)!=base+0x23e5468 || items.size()>1048576)return std::nullopt;
+    static const bool pinned=[base]{uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x9c;++i){hash^=base[0x1f9dc0+i];hash*=UINT64_C(1099511628211);}
+        return hash==UINT64_C(0x7cff96b5a9586fec);}();
+    if(!pinned)return std::nullopt;
+    Destination result;result.itemId=artifact->item->id;
+    using Find=int32_t(*)(int32_t,const std::vector<df::item*>*);
+    if(reinterpret_cast<Find>(base+0x1f9dc0)(result.itemId,&items)==-1)return result;
+    const auto position=df3d_production::itemPosition(artifact->item);if(!position)return std::nullopt;
+    result.available=position->x!=-30000;
+    if(result.available)result.position=*position;
+    return result;
+}
 // Native renderer3a0cc2..3a147e has no standalone caption helper. Preserve its
 // claim precedence here, calling native lookup/title/history formatters with
 // owned formatting scratch. Never invoke the renderer or inspect its menu.

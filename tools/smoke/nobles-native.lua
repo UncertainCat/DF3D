@@ -334,6 +334,17 @@ if os.getenv('DF3D_NOBLES_SYMBOLS')=='1' then
   result.symbol_reference.text.broker_restored=true
  end
  write('nobles-native.json',json.encode(result));capture('nobles-symbols-manager')
+ if os.getenv('DF3D_NOBLES_SYMBOL_RESIZE')=='1' then
+  result.symbol_reference.resize={}
+  for _,size in ipairs({'minimum','wide','default'})do
+   write('owner-input-request.tmp','name-resize-'..size);assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+   local deadline=dfhack.getTickCount()+10000
+   while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline,'Symbol resize timed out');script.sleep(1,'frames')end
+   assert(os.remove(out..'/owner-input-ack'));script.sleep(5,'frames');settle()
+   result.symbol_reference.resize[#result.symbol_reference.resize+1]={size=size,columns=g.dimx,height=g.dimy,first=menu.scroll_position_symbol,count=#menu.cand_symbol,lines=lines()}
+   capture('nobles-symbols-'..size)
+  end
+ end
  gui.simulateInput(view,'LEAVESCREEN');settle()
  assert(info.open and not menu.assigning_symbol and menu.handling_symbol_closure_ind==-1,'Symbol Back did not return to overview')
  result.symbol_reference.back_returns_overview=true

@@ -22,6 +22,28 @@ func click_at(point: Vector2) -> void:
 	event=event.duplicate();event.pressed=false;root.push_input(event,true)
 func type_name_key(code: int,unicode: int=0) -> void:
 	var event:=InputEventKey.new();event.keycode=code;event.unicode=unicode;event.pressed=true;root.push_input(event,true)
+func drag_symbol_scrollbar(bar,to_bottom: bool) -> void:
+	var grip: Vector2i=bar.thumb()
+	var start: Vector2=bar.get_global_transform_with_canvas()*Vector2(8,grip.x*12+6)
+	var finish: Vector2=bar.get_global_transform_with_canvas()*Vector2(8,bar.size.y-13 if to_bottom else 13)
+	var press:=InputEventMouseButton.new();press.button_index=MOUSE_BUTTON_LEFT;press.pressed=true;press.position=start;root.push_input(press,true)
+	var motion:=InputEventMouseMotion.new();motion.position=finish;motion.relative=finish-start;motion.button_mask=MOUSE_BUTTON_MASK_LEFT;root.push_input(motion,true)
+	press=press.duplicate();press.pressed=false;press.position=finish;root.push_input(press,true)
+	await process_frame
+func resize_symbol_picker(owner) -> bool:
+	var evidence: Array=[]
+	for extent in [Vector2i(912,552),Vector2i(1600,900),Vector2i(1200,800)]:
+		root.size=extent;await process_frame;await process_frame
+		var panel=owner.panel;var symbols=owner.state.symbols
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/nobles-symbol-size-%dx%d.png"%[extent.x,extent.y])
+		await drag_symbol_scrollbar(panel.scrollbar,true)
+		if not check(symbols.first==symbols.rows.size()-panel.capacity() and not panel.scrollbar.dragging,"Symbol scrollbar failed to reach last row or release drag"):return false
+		evidence.append({"width":extent.x,"height":extent.y,"capacity":panel.capacity(),"last_first":symbols.first})
+		await drag_symbol_scrollbar(panel.scrollbar,false)
+		if not check(symbols.first==0 and not panel.scrollbar.dragging,"Symbol scrollbar failed to return to first row"):return false
+	var output=FileAccess.open(directory+"/nobles-symbol-resize.json",FileAccess.WRITE);output.store_string(JSON.stringify(evidence));output.close()
+	return true
 func exercise_symbol_name(symbols,name_view) -> bool:
 	click_at(name_view.position+name_view.component_rect(1).get_center())
 	if not check(await wait_symbol(symbols,symbols.Phase.Naming) and symbols.naming.component==1,"Name component selection failed"):return false
@@ -67,6 +89,8 @@ func check_symbol_panel() -> void:
 	for row in symbols.rows.slice(0,15):check(row.has("appearance") and panel.symbol_icons.get(row.item_id,{}).get("texture")!=null,"Symbol artwork unavailable for item %s: %s"%[row.item_id,row.get("appearance",{})])
 	await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/nobles-symbol-picker-view.png")
+	if OS.get_environment("DF3D_NOBLES_SYMBOL_RESIZE")=="1":
+		if not await resize_symbol_picker(owner):return
 	if OS.get_environment("DF3D_NOBLES_SYMBOL_NAVIGATION")=="1":
 		var handoffs: Array=[]
 		owner.information_requested.connect(func(caption):handoffs.append(caption);owner.close_panel())

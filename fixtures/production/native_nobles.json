@@ -8343,6 +8343,146 @@
         "Cross-component Random, all seven component layouts, resize and scroll dragging are not established by this run.",
         "Unknown/disconnect/epoch fault behavior remains separate."
       ]
+    },
+    "picker_resize": {
+      "native_source": "build/stockpile-storage-native-input-20261111-132630",
+      "viewer_source": "build/stockpile-storage-native-input-20261111-132830",
+      "native_rows": [
+        {
+          "columns": 114,
+          "count": 786,
+          "first": 0,
+          "height": 46,
+          "size": "minimum"
+        },
+        {
+          "columns": 200,
+          "count": 786,
+          "first": 0,
+          "height": 75,
+          "size": "wide"
+        },
+        {
+          "columns": 150,
+          "count": 786,
+          "first": 0,
+          "height": 66,
+          "size": "default"
+        }
+      ],
+      "viewer_drag_endpoints": [
+        {
+          "capacity": 9,
+          "height": 552,
+          "last_first": 777,
+          "width": 912
+        },
+        {
+          "capacity": 19,
+          "height": 900,
+          "last_first": 767,
+          "width": 1600
+        },
+        {
+          "capacity": 15,
+          "height": 800,
+          "last_first": 771,
+          "width": 1200
+        }
+      ],
+      "layout_comparison": [
+        {
+          "width": 912,
+          "height": 552,
+          "crops": {
+            "caption_rows": [
+              96,
+              168,
+              624,
+              492
+            ],
+            "instruction": [
+              48,
+              132,
+              560,
+              144
+            ],
+            "done": [
+              608,
+              126,
+              672,
+              150
+            ]
+          },
+          "different_pixels": {
+            "caption_rows": 0,
+            "instruction": 0,
+            "done": 0
+          }
+        },
+        {
+          "width": 1600,
+          "height": 900,
+          "crops": {
+            "caption_rows": [
+              96,
+              144,
+              1312,
+              828
+            ],
+            "instruction": [
+              48,
+              108,
+              560,
+              120
+            ],
+            "done": [
+              1296,
+              102,
+              1360,
+              126
+            ]
+          },
+          "different_pixels": {
+            "caption_rows": 0,
+            "instruction": 0,
+            "done": 0
+          }
+        },
+        {
+          "width": 1200,
+          "height": 800,
+          "crops": {
+            "caption_rows": [
+              96,
+              172,
+              912,
+              712
+            ],
+            "instruction": [
+              48,
+              136,
+              560,
+              148
+            ],
+            "done": [
+              896,
+              130,
+              960,
+              154
+            ]
+          },
+          "different_pixels": {
+            "caption_rows": 0,
+            "instruction": 0,
+            "done": 0
+          }
+        }
+      ],
+      "limits": [
+        "Icon parity retains the documented ordinary earring discrepancy.",
+        "Intermediate native scrollbar drag positions and name-editor resize are not established."
+      ]
     }
   },
   "typed_symbols": {

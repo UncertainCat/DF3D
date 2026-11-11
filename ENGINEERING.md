@@ -1208,9 +1208,27 @@ Godot diagnostic signatures remain. `rendered_name_controls` records bounded
 evidence. Cross-component Random and all seven component layouts remain outside
 this composed case.
 
-Remaining symbol work includes the earring artwork discrepancy, widths, scroll
-dragging, cross-component naming controls, foreign-client and
-disconnect/epoch/unknown fault acceptance, plus cross-office/civilization claims.
+Symbol-picker sizing is verified at912x552,1200x800 and1600x900. Native132630
+on2026-11-11 establishes nine, fifteen and nineteen visible rows. Rendered132830
+matches instruction, caption-row and Done crops with zero differing RGB pixels
+at all three sizes. Actual scrollbar press/motion/release reaches both endpoints
+and clears dragging; the last first-row indices are777,771 and767 for786 items.
+The same run completes header navigation, name controls, retirement/reopen and
+native three-artifact/six-event readback. No layout implementation change was
+needed. The icon discrepancy remains outside these text/control comparisons.
+
+Core19/state/UI host pass in `build/qa/nobles-symbol-resize`. Both protected runs
+preserve the source and close owned DF6400/39804 unsaved. Both renderers are
+capped at30FPS; sampled GPU60C/0% for native and61C/6% for composed capture.
+The viewer has only the documented Godot signatures. Initial132525 stopped on
+a missing resize-request harness gate, fixed before the accepted runs.
+`picker_resize` retains bounded geometry/comparison evidence. Intermediate
+native drag-position mapping and name-editor resize remain unverified.
+
+Remaining symbol work includes the earring artwork discrepancy, name-editor
+resize/scrolling, intermediate drag-position parity, cross-component naming
+controls, foreign-client and disconnect/epoch/unknown fault acceptance, plus
+cross-office/civilization claims.
 Public exposure and full management completion remain gated.
 
 ## Management 182 Nobles accounting contract

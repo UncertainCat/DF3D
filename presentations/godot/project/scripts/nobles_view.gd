@@ -1,11 +1,13 @@
 extends "res://scripts/standing_orders_view.gd"
-# Staged overview from native4257d0. Portraits, hover and action workflows remain pending.
+# Staged overview from native4257d0. Hover and action workflows remain pending.
+var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
+var portraits: Dictionary={}
 signal appointment_requested(row: Dictionary)
 signal symbol_requested(row: Dictionary)
 const INTRO=["Members of the nobility have required rooms and can make demands. They cannot be reassigned.","Administrators handle various aspects of your fortress and can be reassigned. Many administrators also require rooms."]
 const ROOM_TOKENS=["OFFICE","BEDROOM","DINING","TOMB"]
 func configure_nobles(source,model) -> void:
-	configure_standing_orders(source,model)
+	configure_standing_orders(source,model);picture.configure(source)
 	scrollbar.input_allowed=allowed;scrollbar.wheel_enabled=false
 	scrollbar.row_changed.connect(func(value):state.seek(value,capacity()))
 	state.changed.connect(refresh);refresh()
@@ -28,6 +30,13 @@ func layout(view: Vector2) -> void:
 	super.layout(view)
 	if state!=null:refresh()
 func refresh() -> void:
+	var retained: Dictionary={}
+	for index in range(visible_first(),mini(state.rows.size(),visible_first()+capacity())):
+		var row: Dictionary=state.rows[index]
+		if not row.has("appearance"):continue
+		var prior: Dictionary=portraits.get(row.unit_id,{})
+		retained[row.unit_id]=prior if prior.get("recipe")==row.appearance else {"recipe":row.appearance.duplicate(true),"texture":world.candidate_icon(row.appearance)}
+	portraits=retained
 	scrollbar.position=Vector2(size.x-32,list_top());scrollbar.size=Vector2(16,capacity()*36)
 	scrollbar.page=capacity();scrollbar.set_rows(state.rows.size(),visible_first());queue_redraw()
 func _exit_tree() -> void:
@@ -89,6 +98,10 @@ func _draw() -> void:
 		patch("BUTTON_RECTANGLE",Vector2i(2,int(top/12)),int(size.x/8)-(6 if state.rows.size()>capacity() else 4),3)
 		text(row.title,Vector2(16,top+24),11);text(row.squad_caption,Vector2(16,top+36))
 		text(holder_caption(row),Vector2(280,top+24),15 if row.unit_id>=0 or row.nemesis_id>=0 else 14)
+		if row.unit_id>=0:
+			patch("",Vector2i(28,int(top/12)),5,3,picture.texture(false))
+			var portrait: Texture2D=portraits.get(row.unit_id,{}).get("texture")
+			if portrait!=null:draw_texture_rect(portrait,Rect2(226,top+2,32,32),false)
 		if row.can_appoint:icon("NOBLES_ADD",Vector2(184,top))
 		if row.assignment_id>=0:icon("NOBLES_ASSIGN_SYMBOL",Vector2(status_x(),top))
 		if not row.has_room_assessment or int(size.x/8)+32<101:continue

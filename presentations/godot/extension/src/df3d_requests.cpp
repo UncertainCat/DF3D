@@ -212,6 +212,7 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
             entry["title"]=String::utf8(row.title.c_str());entry["squad_caption"]=String::utf8(row.squadCaption.c_str());entry["holder_caption"]=String::utf8(row.holderCaption.c_str());
             entry["can_appoint"]=row.canAppoint;entry["has_room_assessment"]=row.hasRoomAssessment;
             entry["demand_status"]=int(row.demandStatus);entry["mandate_status"]=int(row.mandateStatus);
+            if(row.appearance)entry["appearance"]=management::itemRecipeDictionary(*row.appearance);
             Array required,actual,furniture,owned;for(size_t i=0;i<4;++i){required.push_back(row.requiredRooms[i]);actual.push_back(row.actualRooms[i]);furniture.push_back(row.requiredFurniture[i]);owned.push_back(row.actualFurniture[i]);}
             entry["required_rooms"]=required;entry["actual_rooms"]=actual;entry["required_furniture"]=furniture;entry["actual_furniture"]=owned;rows.push_back(entry);
         }

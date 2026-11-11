@@ -43,6 +43,8 @@ func run() -> void:
 		root.size=Vector2i(1200,800)
 		var view=preload("res://scripts/nobles_view.gd").new();root.add_child(view);view.configure_nobles(world,model);view.layout(Vector2(1200,800))
 		for token in ["NOBLES_ADD","NOBLES_ASSIGN_SYMBOL","NOBLES_OFFICE_GOOD","NOBLES_FURN_MISSING","NOBLES_DEMANDS_NA","NOBLES_MANDATES_TIME_WARN_1"]:check(view.art.texture(token)!=null,"Missing native Nobles artwork: "+token)
+		for row in model.rows:
+			if row.unit_id>=0:check(row.has("appearance") and view.portraits.get(row.unit_id,{}).get("texture")!=null,"Nobles holder portrait unavailable")
 		for frame in 5:await process_frame
 		await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(directory+"/nobles-view.png")

@@ -37,6 +37,14 @@ func run() -> void:
 			5:second.nobles.rows[0].mandate_status=0
 			6:second.nobles.total=3
 		service.reply(state.ticket,second);check(state.phase==State.Phase.Rejected and state.rows.is_empty(),"Invalid Nobles page accepted: %d"%fault)
+	for fault in 3:
+		state.open();var portrait_page:=page()
+		var holder: Dictionary=portrait_page.nobles.rows[0]
+		holder.unit_id=10 if fault!=1 else -1;holder.has_room_assessment=fault!=1
+		holder.appearance={"tile_pages":["fixture"],"palettes":[],"layers":[[0,0,0,1,1,65535,0,0,0,0]]}
+		if fault==2:holder.appearance.layers[0][0]=1
+		service.reply(state.ticket,portrait_page)
+		check(state.phase==(State.Phase.Ready if fault==0 else State.Phase.Rejected),"Nobles holder recipe validation differs")
 	state.open();service.reply(state.ticket,page([],0));check(state.phase==State.Phase.Ready and state.rows.is_empty(),"Empty Nobles list rejected")
 	state.refresh();old=state.ticket;var submitted: int=service.next;service.reply(old,{"outcome":"unknown"})
 	check(state.phase==State.Phase.Rejected and service.next==submitted,"Uncertain read replayed automatically")

@@ -47,8 +47,8 @@ installed assets; the earlier081857 missing-art run is failed evidence. Core and
 controller/geometry checks pass in `build/qa/nobles-view-final`. The protected run
 preserves the source save and closes DF4664 unsaved, capped30FPS; sampled GPU45C/1%.
 It reports passed_with_known_issues for documented Godot shutdown diagnostics.
-`native_nobles.json.overview_view_reference` scopes this evidence. Portraits,
-hover help, appointment/symbol workflows, responsive behavior and composed input
+`native_nobles.json.overview_view_reference` scopes this evidence. The later protocol179 check below covers portraits.
+Hover help, appointment/symbol workflows, responsive behavior and composed input
 ownership remain unfinished; no public route is exposed.
 
 Protected165820 on2026-11-10 captures DF53.16's native overview and cancelled
@@ -565,8 +565,21 @@ recipe validator bounds references/layers and caps each recipe at128KiB; recipe
 bytes count toward the existing384KiB page budget. Absence means unavailable,
 not vacancy. Older recordings retain missing artwork rather than inventing it.
 Bridge and viewer must be rebuilt together for `Local\df3d_management_v179`;
-DF53.16 and DFHack pins are unchanged. Runtime production and visual acceptance
-are pending.
+DF53.16 and DFHack pins are unchanged. The bridge resolves page-local holder artwork using the existing full-body
+selector, corresponding to native4276d3's6d6560 flag400 call. Original installed
+asset recipes cross the model; no map residency or native menu cache is needed.
+The viewer caches visible holder recipes, retires missing rows and draws the
+native40x36 frame with the32x32 image at+2,+2.
+
+Core, codec ownership and Godot controller checks pass in
+`build/qa/nobles-portraits`; MSVC bridge and Godot extension builds pass.
+Protected083846 on2026-11-11 verifies14 typed rows and seven occupied-row
+portraits. All seven40x36 framed crops have zero differing RGB pixels against
+native172234 at1200x800. Source save preservation passes; DF31224 closes unsaved,
+30FPS, GPU39C/0% sampled. This run is passed_with_known_issues for the documented
+Godot render-thread shutdown and ObjectDB diagnostics. Provenance and omissions
+are in `native_nobles.json.holder_portrait_reference`. Hover, appointment/symbol
+actions, responsive behavior and composed input ownership remain unfinished.
 
 ## Management 178 Nobles read contract
 

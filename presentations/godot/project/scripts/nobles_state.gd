@@ -65,6 +65,11 @@ func _valid_page(value: Dictionary,intent: Dictionary) -> bool:
 				if not _integer(number,-2147483648,2147483647) or (not row.has_room_assessment and number!=0):return false
 		for key in ["demand_status","mandate_status"]:
 			if not _integer(row.get(key),-1,3) or (not row.has_room_assessment and row[key]!=-1):return false
+		if row.has("appearance"):
+			if row.unit_id<0 or not preload("res://scripts/item_sheet_state.gd")._valid_recipe(row.appearance):return false
+			bytes+=12+row.appearance.layers.size()*16
+			for key in ["tile_pages","palettes"]:
+				for name in row.appearance[key]:bytes+=4+name.to_utf8_buffer().size()
 	if bytes>384*1024 or _bytes+bytes>MAX_RETAINED_BYTES:return false
 	_bytes+=bytes;return true
 func _reject(result: Dictionary) -> void:

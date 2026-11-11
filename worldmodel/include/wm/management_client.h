@@ -440,6 +440,7 @@ struct NoblesRow {
   std::string title,squadCaption,holderCaption;bool canAppoint=false,hasRoomAssessment=false;
   std::array<int32_t,4> requiredRooms{},actualRooms{},requiredFurniture{},actualFurniture{};
   int8_t demandStatus=-1,mandateStatus=-1;
+  std::optional<SelectionAppearance> appearance;
 };
 struct NoblesState {
   NoblesOutcome outcome=NoblesOutcome::None;uint64_t listRevision=0;uint32_t total=0,offset=0;

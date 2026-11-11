@@ -1270,7 +1270,7 @@ void publish() {
     for(const auto& row:nobles->rows)rows.push_back(m::CreateNoblesRow(b,row.entityId,row.positionId,row.assignmentId,row.unitId,row.nemesisId,row.value,
       b.CreateString(row.title),b.CreateString(row.squadCaption),b.CreateString(row.holderCaption),row.canAppoint,row.hasRoomAssessment,
       b.CreateVector(row.requiredRooms.data(),4),b.CreateVector(row.actualRooms.data(),4),b.CreateVector(row.requiredFurniture.data(),4),b.CreateVector(row.actualFurniture.data(),4),
-      int8_t(row.demandStatus),int8_t(row.mandateStatus)));
+      int8_t(row.demandStatus),int8_t(row.mandateStatus),encodeItemRecipe(row.appearance)));
     noblesResult=m::CreateNoblesState(b,nobles->outcome,nobles->listRevision,nobles->total,nobles->offset,b.CreateVector(rows));
   }
   flatbuffers::Offset<m::PlacesState> placesResult;
@@ -4402,6 +4402,13 @@ void run(color_ostream& out) {
         NoblesResult page;page.listRevision=list;page.total=uint32_t(current->size());page.offset=q.offset();size_t bytes=0;
         for(size_t i=q.offset();i<current->size() && page.rows.size()<q.limit();++i){
           auto& row=(*current)[i];size_t rowBytes=192;
+          // Native4276d3 uses6d6560 with flag400, matching the shared full-body
+          // selector. Resolve only this page, independently of map residency.
+          if(row.unitId>=0){df3d_appearance::Result recipe;
+            if(df3d_appearance::resolveUnitSelector(df::unit::find(row.unitId),recipe))
+              row.appearance=df3d_production::ownedItemRecipe(recipe);
+          }
+          if(row.appearance){size_t n=0;if(!df3d_production::validItemRecipe(*row.appearance,n))throw std::runtime_error("invalid nobles artwork");rowBytes+=n;}
           for(auto* text:{&row.title,&row.squadCaption,&row.holderCaption}){
             *text=DF2UTF(*text);if(text->size()>16384)throw std::runtime_error("nobles caption exceeds limit");rowBytes+=text->size();}
           if(bytes+rowBytes>384*1024)break;bytes+=rowBytes;page.rows.push_back(std::move(row));

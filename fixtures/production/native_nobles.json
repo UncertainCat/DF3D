@@ -2759,5 +2759,66 @@
       "No public route or composed owner/input acceptance.",
       "Responsive layouts and scrollbar interaction remain unverified."
     ]
+  },
+  "holder_portrait_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-083846",
+    "native_image_source": "build/stockpile-storage-native-input-20261110-172234/nobles-overview.png",
+    "protocol": 179,
+    "viewport": [
+      1200,
+      800
+    ],
+    "native_selector": "4276d3 calls6d6560 with flag0x400; same full-body selector as1423240",
+    "framed_regions": {
+      "x": 256,
+      "first_y": 160,
+      "row_step": 36,
+      "width": 40,
+      "height": 36
+    },
+    "rows": [
+      {
+        "index": 0,
+        "unit_id": 5981,
+        "different_rgb_pixels": 0
+      },
+      {
+        "index": 1,
+        "unit_id": 5813,
+        "different_rgb_pixels": 0
+      },
+      {
+        "index": 2,
+        "unit_id": 5813,
+        "different_rgb_pixels": 0
+      },
+      {
+        "index": 4,
+        "unit_id": 6812,
+        "different_rgb_pixels": 0
+      },
+      {
+        "index": 7,
+        "unit_id": 6815,
+        "different_rgb_pixels": 0
+      },
+      {
+        "index": 9,
+        "unit_id": 1017,
+        "different_rgb_pixels": 0
+      },
+      {
+        "index": 12,
+        "unit_id": 5984,
+        "different_rgb_pixels": 0
+      }
+    ],
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "diagnostics": "passed_with_known_issues",
+    "omissions": [
+      "Other fortresses and nonhuman holder appearances are not independently compared.",
+      "Hover, appointment/symbol actions, responsive and composed owner/input behavior remain unfinished."
+    ]
   }
 }

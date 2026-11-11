@@ -1,5 +1,6 @@
 #pragma once
 #include "unit_description_native.h"
+#include "item_appearance_recipe.h"
 #include "creature_office_native.h"
 #include "df/unitpropertyplacementst.h"
 #include "df/unit_demand.h"
@@ -24,6 +25,7 @@ namespace df3d_nobles {
 struct Row {
     int32_t unitId=-1,nemesisId=-1,entityId=-1,positionId=-1,assignmentId=-1,value=0;
     std::string positionName,title,squadCaption,holderCaption;
+    std::optional<df3d_production::ItemAppearanceRecipe> appearance;
     bool canAppoint=false,hasRoomAssessment=false;
     // Native severity: -1 absent, 0 fulfilled/export-only, 1 pending, 2 urgent, 3 critical.
     int32_t demandStatus=-1,mandateStatus=-1;

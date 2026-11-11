@@ -87,6 +87,31 @@ func run() -> void:
 	while model.phase==model.Phase.Reading and Time.get_ticks_msec()<deadline:
 		world.poll();await create_timer(0.01).timeout
 	check(model.phase==model.Phase.Ready and model.rows==rows,"Live Nobles controller differs from transport")
+	var native: Dictionary=normalize(JSON.parse_string(FileAccess.get_file_as_string(directory+"/nobles-native.json")))
+	var manager: Dictionary=native.pickers[0].selected
+	var target: Dictionary={"entity_id":manager.entity_id,"position_id":manager.position_id,"assignment_id":manager.assignment_id,"draft_slot":0}
+	model.begin_appointment(target)
+	deadline=Time.get_ticks_msec()+5000
+	while model.phase==model.Phase.CandidatesReading and Time.get_ticks_msec()<deadline:
+		world.poll();await create_timer(0.01).timeout
+	if not check(model.phase==model.Phase.CandidatesReady and model.candidates.size()==native.pickers[0].candidates.size(),"Live picker controller did not finish native pages"):quit(1);return
+	var chosen: int=-1
+	for candidate in model.candidates:
+		if candidate.unit_id>=0 and candidate.unit_id!=manager.unit_id:chosen=candidate.unit_id;break
+	model.choose_candidate(chosen)
+	deadline=Time.get_ticks_msec()+5000
+	while model.phase==model.Phase.Reading and Time.get_ticks_msec()<deadline:
+		world.poll();await create_timer(0.01).timeout
+	check(model.phase==model.Phase.Ready and model.choices.size()==1,"Live draft controller rejected selection")
+	var selected:=false
+	for row in model.rows:
+		if model.office(row)==target:selected=row.unit_id==chosen
+	check(selected,"Live controller failed to project selected holder")
+	model.open()
+	deadline=Time.get_ticks_msec()+5000
+	while model.phase==model.Phase.Reading and Time.get_ticks_msec()<deadline:
+		world.poll();await create_timer(0.01).timeout
+	check(model.phase==model.Phase.Ready and model.rows==rows and model.choices.is_empty(),"Abandoned draft changed fresh overview")
 	if OS.get_environment("DF3D_NOBLES_RENDER")=="1":
 		if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Nobles assets unavailable"):quit(1);return
 		root.size=Vector2i(1200,800)

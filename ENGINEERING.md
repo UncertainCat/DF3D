@@ -60,7 +60,25 @@ known experimental rendering-thread warning. DF4788 closes unsaved, source
 preservation passes, and GPU37C/0% is sampled with native capped at30FPS.
 This does not establish successful typed commit effects, NEW-slot replay,
 military conflicts or picker UI/lifecycle acceptance. The public screen remains
-gated; the controller still supplies read-only overview behavior.
+gated; successful typed commit effects and UI commit ownership remain pending.
+
+The staged Nobles controller retains the exact base revision and ordered local
+choices, loads candidates atomically across pages, and requests a fresh owned
+draft projection after selection. It identifies offices by entity, position,
+assignment and draft slot. Cancelling the picker retires its read without
+discarding earlier choices; stale draft replies reject without rebasing or
+replaying choices. Refresh cannot discard a nonempty draft. Explicit controller
+teardown clears local data; this is not yet the native apply-on-dismiss flow.
+
+Headless `build/qa/nobles-draft-controller` passes core and controller checks,
+including late picker replies, exact large revisions, distinct NEW slots and
+stale-draft retirement. Protected102122 on2026-11-11 loads all117 Manager
+candidates through the actual controller/service, selects a replacement and
+observes its projected holder, then discards the local draft and confirms the
+unchanged fresh overview. Source preservation passes; DF38924 closes unsaved,
+30FPS, GPU37C/0% sampled. Only the documented rendering-thread warning occurs.
+Picker rendering/input, successful typed commits and dismissal ownership remain
+unfinished; this evidence does not establish those workflows.
 
 Candidate text is available from `nobles-candidate-text-probe`, alongside the
 unchanged identity/value-only probe. Native99a1f0 supplies ordered position

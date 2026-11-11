@@ -7,7 +7,7 @@ var failures:=0
 func check(ok: bool,message: String) -> void:
 	if not ok:failures+=1;push_error(message)
 func row(assignment: int) -> Dictionary:
-	return {"entity_id":7,"position_id":2,"assignment_id":assignment,"unit_id":-1,"nemesis_id":-1,"priority":0,"title":"fixture","squad_caption":"","holder_caption":"fixture","can_appoint":true,"has_room_assessment":false,"required_rooms":[0,0,0,0],"actual_rooms":[0,0,0,0],"required_furniture":[0,0,0,0],"actual_furniture":[0,0,0,0],"demand_status":-1,"mandate_status":-1}
+	return {"draft_slot":0,"entity_id":7,"position_id":2,"assignment_id":assignment,"unit_id":-1,"nemesis_id":-1,"priority":0,"title":"fixture","squad_caption":"","holder_caption":"fixture","can_appoint":true,"has_room_assessment":false,"required_rooms":[0,0,0,0],"actual_rooms":[0,0,0,0],"required_furniture":[0,0,0,0],"actual_furniture":[0,0,0,0],"demand_status":-1,"mandate_status":-1}
 func page(ids: Array=[-1],total:=1,offset:=0,revision:=9007199254740993) -> Dictionary:
 	return {"nobles":{"outcome":C.NoblesOutcome.None,"list_revision":revision,"total":total,"offset":offset,"rows":ids.map(func(id):return row(id))}}
 func stale() -> Dictionary:
@@ -48,6 +48,31 @@ func run() -> void:
 	state.open();service.reply(state.ticket,page([],0));check(state.phase==State.Phase.Ready and state.rows.is_empty(),"Empty Nobles list rejected")
 	state.refresh();old=state.ticket;var submitted: int=service.next;service.reply(old,{"outcome":"unknown"})
 	check(state.phase==State.Phase.Rejected and service.next==submitted,"Uncertain read replayed automatically")
+	state.open();service.reply(state.ticket,page())
+	var target: Dictionary=state.office(state.rows[0]);state.begin_appointment(target);old=state.ticket
+	state.cancel_appointment();service.reply(old,{"outcome":"unknown"})
+	check(state.phase==State.Phase.Ready and state.rows.size()==1 and state.choices.is_empty(),"Cancelled picker accepted late reply")
+	state.begin_appointment(target)
+	var candidate: Dictionary={"unit_id":10,"value":42,"caption":"fixture","no_skills":"fixture","skills":[]}
+	var candidate_page: Dictionary={"nobles":{"outcome":C.NoblesOutcome.None,"list_revision":9007199254740993,"target":target,"candidate_revision":9007199254740995,"total":2,"offset":0,"candidates":[candidate]}}
+	service.reply(state.ticket,candidate_page)
+	check(state.phase==State.Phase.CandidatesReading and state.candidates.is_empty(),"Partial picker exposed")
+	check(service.calls[state.ticket].intent.expected_candidate_revision==9007199254740995,"Candidate revision lost precision")
+	candidate_page.nobles.offset=1;candidate_page.nobles.candidates=[{"unit_id":-1,"value":0,"caption":"fixture","no_skills":"","skills":[]}]
+	service.reply(state.ticket,candidate_page)
+	check(state.phase==State.Phase.CandidatesReady and state.candidates.size()==2,"Candidate list not published")
+	state.choose_candidate(999);check(state.phase==State.Phase.CandidatesReady,"Unlisted candidate selected")
+	state.choose_candidate(10);var draft_intent: Dictionary=service.calls[state.ticket].intent
+	check(state.phase==State.Phase.Reading and draft_intent.choices==[{"target":target,"expected_unit_id":-1,"unit_id":10}] and draft_intent.expected_list_revision==9007199254740993,"Draft selection lost target or base")
+	var draft_page:=page([-1,-1],2);draft_page.nobles.rows[1].draft_slot=1
+	service.reply(state.ticket,draft_page)
+	check(state.phase==State.Phase.Ready and state.rows.size()==2,"Distinct NEW slots conflated")
+	state.refresh();check(state.ticket==0 and state.choices.size()==1,"Refresh discarded pending draft")
+	state.begin_appointment(state.office(state.rows[1]));candidate_page.nobles.target=state.office(state.rows[1]);candidate_page.nobles.offset=0;candidate_page.nobles.total=1
+	service.reply(state.ticket,candidate_page);state.choose_candidate(-1);submitted=service.next
+	service.reply(state.ticket,stale())
+	check(state.phase==State.Phase.Rejected and state.choices.size()==2 and service.next==submitted,"Stale draft silently rebased or discarded")
+	state.close();check(state.choices.is_empty() and state.candidates.is_empty(),"Closed draft retained owned data")
 	state.dispose();state.open();check(state.phase==State.Phase.Unavailable,"Missing service retained rows")
 	var view:=View.new();view.state=state;view.size=Vector2(944,708)
 	check(view.list_top()==108 and view.capacity()==16 and view.status_x()==496,"Nobles native geometry differs")

@@ -30,12 +30,7 @@ inline std::optional<std::string> validateLocationNameEdit(const LocationNameEdi
   }
   return std::nullopt;
 }
-inline std::optional<std::string> validateLocationNameSnapshot(const LocationNameSnapshot& s) {
-  if(!s.native_header() || !s.english_header() || s.native_header()->size()>kLocationNameHeaderBytes ||
-      s.english_header()->size()>kLocationNameHeaderBytes)return "invalid location name headers";
-  if(s.site_id()<0 || s.id()<0 || s.kind()<1 || s.kind()>5 || s.namer_id()<0 || s.namer_race()<-1 ||
-      !s.revision() || s.revision()>INT64_MAX || !s.value())return "invalid location name identity";
-  const auto& v=*s.value();
+inline std::optional<std::string> validateLocationNameValue(const LocationNameValue& v) {
   if(!v.first_name_bytes() || !v.nickname_bytes() || v.first_name_bytes()->size()>kLocationNameBytes ||
       v.nickname_bytes()->size()>kLocationNameBytes || !v.words() || v.words()->size()!=7 ||
       !v.parts() || v.parts()->size()!=7 || v.language()<-1 || v.type()<-1)
@@ -45,6 +40,13 @@ inline std::optional<std::string> validateLocationNameSnapshot(const LocationNam
   // Do not require unused components to have part0, or infer has_name/type from
   // the words. Native edits can retain those independent fields.
   return std::nullopt;
+}
+inline std::optional<std::string> validateLocationNameSnapshot(const LocationNameSnapshot& s) {
+  if(!s.native_header() || !s.english_header() || s.native_header()->size()>kLocationNameHeaderBytes ||
+      s.english_header()->size()>kLocationNameHeaderBytes)return "invalid location name headers";
+  if(s.site_id()<0 || s.id()<0 || s.kind()<1 || s.kind()>5 || s.namer_id()<0 || s.namer_race()<-1 ||
+      !s.revision() || s.revision()>INT64_MAX || !s.value())return "invalid location name identity";
+  return validateLocationNameValue(*s.value());
 }
 inline std::optional<std::string> validateLocationNamePage(const LocationNamePage& p) {
   if(!p.snapshot())return "missing location name snapshot";

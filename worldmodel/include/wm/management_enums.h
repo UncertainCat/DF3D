@@ -309,6 +309,11 @@ enum class ManagementAction : uint8_t {
   NoblesCandidates = 110,
   NoblesCommit = 111,
   NoblesAccounting = 112,
+  NoblesSymbolsRead = 113,
+  NoblesSymbolsApply = 114,
+  NoblesSymbolNameRead = 115,
+  NoblesSymbolNameEdit = 116,
+  NoblesSymbolsContinue = 117,
 };
 enum class ManagementStatus : uint8_t {
   Idle = 0,
@@ -632,6 +637,11 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::NoblesCandidates: return true;
   case ManagementAction::NoblesCommit: return true;
   case ManagementAction::NoblesAccounting: return true;
+  case ManagementAction::NoblesSymbolsRead: return true;
+  case ManagementAction::NoblesSymbolsApply: return true;
+  case ManagementAction::NoblesSymbolNameRead: return true;
+  case ManagementAction::NoblesSymbolNameEdit: return true;
+  case ManagementAction::NoblesSymbolsContinue: return true;
   default: return false;
   }
 }
@@ -641,6 +651,11 @@ constexpr const char* managementDomain(ManagementAction action) {
   case ManagementAction::NoblesCandidates: return "nobles";
   case ManagementAction::NoblesCommit: return "nobles";
   case ManagementAction::NoblesAccounting: return "nobles";
+  case ManagementAction::NoblesSymbolsRead: return "nobles";
+  case ManagementAction::NoblesSymbolsApply: return "nobles";
+  case ManagementAction::NoblesSymbolNameRead: return "nobles";
+  case ManagementAction::NoblesSymbolNameEdit: return "nobles";
+  case ManagementAction::NoblesSymbolsContinue: return "nobles";
   case ManagementAction::PlacesRead: return "places";
   case ManagementAction::PlacesApply: return "places";
   case ManagementAction::TasksRead: return "tasks";

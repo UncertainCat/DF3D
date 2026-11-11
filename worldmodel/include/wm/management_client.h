@@ -436,8 +436,18 @@ struct ProductionState {
 struct StocksGroupKey {int16_t type=-1,subtype=-1,subcat1=-1,subcat2=-1;};
 struct NoblesOffice {int32_t entityId=-1,positionId=-1,assignmentId=-1;uint32_t draftSlot=0;};
 struct NoblesChoice {NoblesOffice target;int32_t expectedUnitId=-1,unitId=-1;};
+struct NoblesSymbolChoice {int32_t itemId=-1;bool selected=false;};
 struct NoblesRequest {uint32_t offset=0;uint16_t limit=32;uint64_t expectedListRevision=0;
-  std::vector<NoblesChoice> choices;std::optional<NoblesOffice> target;uint64_t expectedCandidateRevision=0;int8_t expectedSetting=-1,setting=-1;};
+  std::vector<NoblesChoice> choices;std::optional<NoblesOffice> target;uint64_t expectedCandidateRevision=0;int8_t expectedSetting=-1,setting=-1;
+  std::vector<NoblesSymbolChoice> symbolChoices;uint64_t stepToken=0,expectedNameRevision=0;
+  std::optional<LocationNameQuery> nameQuery;std::optional<LocationNameEdit> nameEdit;};
+struct NoblesSymbol {int32_t itemId=-1;int16_t itemType=-1;int32_t value=0;
+  std::optional<NoblesOffice> currentOffice,selectedOffice;
+  std::string caption,officeCaption,valueCaption;std::optional<ItemInspectionAppearance> appearance;};
+struct NoblesSymbolStep {uint64_t token=0;int32_t namingArtifactId=-1;uint32_t remaining=0;};
+struct NoblesSymbolName {int32_t artifactId=-1,itemId=-1;uint64_t revision=0;LocationNameValue value;
+  std::string nativeHeader,englishHeader;uint8_t component=0;std::vector<uint8_t> queryBytes;
+  uint32_t cursor=0,total=0,nextCursor=0;std::vector<LocationNameChoice> choices;};
 struct NoblesCandidateSkill {int16_t id=-1;int32_t rating=0;std::string caption;};
 struct NoblesCandidate {int32_t unitId=-1,value=0;std::string caption,noSkills;
   std::vector<NoblesCandidateSkill> skills;std::optional<SelectionAppearance> appearance;};
@@ -459,6 +469,7 @@ struct NoblesState {
   NoblesOutcome outcome=NoblesOutcome::None;uint64_t listRevision=0;uint32_t total=0,offset=0;
   std::vector<NoblesRow> rows;
   std::optional<NoblesOffice> target;uint64_t candidateRevision=0;std::vector<NoblesCandidate> candidates;
+  std::vector<NoblesSymbol> symbols;std::optional<NoblesSymbolStep> step;std::optional<NoblesSymbolName> name;
 };
 struct PlacesRequest {uint8_t tab=0;uint32_t offset=0;uint16_t limit=32;uint64_t expectedListRevision=0;
   int32_t buildingId=-1;int8_t siegeAction=-1;};

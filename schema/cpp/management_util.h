@@ -173,8 +173,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 182;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v182";
+inline constexpr uint32_t kManagementVersion = 183;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v183";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -472,7 +472,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::NoblesAccounting &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::NoblesSymbolsContinue &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -561,7 +561,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::NoblesAccounting)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::NoblesSymbolsContinue)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -655,7 +655,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     const auto* q=r.residents_specialization();
     if(!q || q->unit_id()<0 || !q->expected_revision() || q->expected_revision()>INT64_MAX)return "invalid residents specialization request";
   } else if(r.residents_specialization())return "unexpected residents specialization request";
-  if(r.action()==ManagementAction::NoblesRead || r.action()==ManagementAction::NoblesCandidates || r.action()==ManagementAction::NoblesCommit || r.action()==ManagementAction::NoblesAccounting){
+  if(r.action()>=ManagementAction::NoblesRead && r.action()<=ManagementAction::NoblesSymbolsContinue){
     const auto* q=r.nobles();
     if(!q || q->expected_list_revision()>INT64_MAX || q->expected_candidate_revision()>INT64_MAX)return "invalid nobles request";
     const auto count=q->choices()?q->choices()->size():0;
@@ -665,19 +665,47 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     for(uint32_t i=0;i<count;++i){const auto* choice=q->choices()->Get(i);
       if(!choice || !validNoblesOffice(choice->target(),i) || choice->expected_unit_id()<-1 || choice->unit_id()<-1)return "invalid nobles choice";
     }
+    const bool symbols=r.action()==ManagementAction::NoblesSymbolsRead;
+    const bool applySymbols=r.action()==ManagementAction::NoblesSymbolsApply;
+    const bool nameRead=r.action()==ManagementAction::NoblesSymbolNameRead;
+    const bool nameEdit=r.action()==ManagementAction::NoblesSymbolNameEdit;
+    const bool continuation=r.action()==ManagementAction::NoblesSymbolsContinue;
+    const bool step=nameRead || nameEdit || continuation;
+    const auto symbolCount=q->symbol_choices()?q->symbol_choices()->size():0;
+    if(!applySymbols && symbolCount)return "unexpected nobles symbol choices";
+    if(!step && (q->step_token() || q->expected_name_revision() || q->name_query() || q->name_edit()))return "unexpected nobles naming fields";
     const bool accounting=r.action()==ManagementAction::NoblesAccounting;
     if(!accounting && (q->expected_setting()!=-1 || q->setting()!=-1))return "unexpected nobles accounting setting";
-    if(accounting){
+    if(step){
+      // The token binds the session, office, appointment draft and pending tail.
+      // Clients cannot replace any of those inputs while naming is in progress.
+      if(!q->step_token() || q->step_token()>INT64_MAX || q->expected_name_revision()>INT64_MAX ||
+         count || q->target() || q->expected_list_revision() || q->expected_candidate_revision() ||
+         q->offset() || q->limit()!=32)return "invalid nobles symbol step";
+      if(nameRead){
+        if(!q->name_query() || q->name_edit() || (q->name_query()->cursor() && !q->expected_name_revision()))return "invalid nobles symbol name read";
+        if(auto error=validateLocationNameQuery(*q->name_query()))return error;
+      }else if(nameEdit){
+        if(!q->expected_name_revision() || !q->name_edit() || q->name_query())return "invalid nobles symbol name edit";
+        if(auto error=validateLocationNameEdit(*q->name_edit()))return error;
+      }else if(q->expected_name_revision() || q->name_query() || q->name_edit())return "unexpected nobles continuation fields";
+    }else if(applySymbols){
+      if(!q->expected_list_revision() || !q->expected_candidate_revision() || !validNoblesOffice(q->target(),0) ||
+         q->target()->assignment_id()<0 || q->offset() || q->limit()!=32 || !symbolCount || symbolCount>4096)return "invalid nobles symbol apply";
+      std::set<int32_t> items;
+      for(const auto* choice:*q->symbol_choices())if(!choice || choice->item_id()<0 || !items.insert(choice->item_id()).second)return "invalid nobles symbol choice";
+    }else if(accounting){
       if(!q->expected_list_revision() || !validNoblesOffice(q->target(),count) || q->offset() || q->limit()!=32 || q->expected_candidate_revision() ||
          q->expected_setting()<0 || q->expected_setting()>4 || q->setting()<0 || q->setting()>4)return "invalid nobles accounting request";
     }else if(r.action()==ManagementAction::NoblesCommit){
       if(!count || !q->expected_list_revision() || q->offset() || q->limit()!=32 || q->target() || q->expected_candidate_revision())return "invalid nobles commit";
     }else{
-      const bool candidates=r.action()==ManagementAction::NoblesCandidates;
+      const bool candidates=r.action()==ManagementAction::NoblesCandidates || symbols;
       if(!q->limit() || q->limit()>64 || q->offset()>(candidates?1048576u:65536u) ||
          (q->offset() && !q->expected_list_revision()))return "invalid nobles page request";
       if(candidates){
         if(!q->expected_list_revision() || !validNoblesOffice(q->target(),count) || (q->offset() && !q->expected_candidate_revision()))return "invalid nobles candidate request";
+        if(symbols && (q->target()->assignment_id()<0 || q->target()->draft_slot()))return "invalid nobles symbol office";
       }else if(q->target() || q->expected_candidate_revision())return "unexpected nobles candidate target";
     }
   }else if(r.nobles())return "unexpected nobles request";
@@ -1248,7 +1276,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::NoblesAccounting ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::NoblesSymbolsContinue ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -1332,15 +1360,38 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   } else if((s.action()==ManagementAction::ResidentsQuery || s.action()==ManagementAction::WorkDetailWorkersQuery) && s.status()==ManagementStatus::Ok)
     return "residents result required";
   if(const auto* r=s.nobles()) {
-    const bool read=s.action()==ManagementAction::NoblesRead,candidates=s.action()==ManagementAction::NoblesCandidates,commit=s.action()==ManagementAction::NoblesCommit || s.action()==ManagementAction::NoblesAccounting;
-    if((!read && !candidates && !commit) || !r->rows() || r->rows()->size()>64 || r->outcome()>NoblesOutcome::Unknown)return "invalid nobles result";
+    const bool read=s.action()==ManagementAction::NoblesRead,candidates=s.action()==ManagementAction::NoblesCandidates;
+    const bool symbols=s.action()==ManagementAction::NoblesSymbolsRead,name=s.action()==ManagementAction::NoblesSymbolNameRead;
+    const bool symbolStep=s.action()==ManagementAction::NoblesSymbolsApply || s.action()==ManagementAction::NoblesSymbolsContinue;
+    const bool commit=s.action()==ManagementAction::NoblesCommit || s.action()==ManagementAction::NoblesAccounting || symbolStep || s.action()==ManagementAction::NoblesSymbolNameEdit;
+    if((!read && !candidates && !symbols && !name && !commit) || !r->rows() || r->rows()->size()>64 || r->outcome()>NoblesOutcome::Unknown)return "invalid nobles result";
     const auto candidateCount=r->candidates()?r->candidates()->size():0;
-    if(s.status()==ManagementStatus::Ok && !commit){
-      const auto count=candidates?candidateCount:r->rows()->size();
-      if(r->outcome()!=NoblesOutcome::None || !r->list_revision() || r->list_revision()>INT64_MAX || r->total()>(candidates?1048576u:65536u) ||
+    const auto symbolCount=r->symbols()?r->symbols()->size():0;
+    if((!symbols && symbolCount) || (!name && r->name()) || ((!name && !symbolStep) && r->step()) ||
+       (s.status()!=ManagementStatus::Ok && (symbolCount || r->step() || r->name())))return "unexpected nobles symbol payload";
+    if(const auto* step=r->step())if(!step->token() || step->token()>INT64_MAX || step->naming_artifact_id()<0 || step->remaining()>4096)return "invalid nobles symbol step";
+    if(name && s.status()==ManagementStatus::Ok){
+      if(r->outcome()!=NoblesOutcome::None || !r->name() || !r->step() || r->list_revision() || r->total() || r->offset() || r->rows()->size() || r->target() || r->candidate_revision() || candidateCount)return "invalid nobles name payload";
+      const auto& n=*r->name();
+      if(n.artifact_id()!=r->step()->naming_artifact_id() || n.item_id()<0 || !n.revision() || n.revision()>INT64_MAX || !n.value() ||
+         !n.native_header() || !n.english_header() || n.native_header()->size()>kLocationNameHeaderBytes || n.english_header()->size()>kLocationNameHeaderBytes)return "invalid nobles name identity";
+      if(auto error=validateLocationNameValue(*n.value()))return error;
+      if(n.component()>6 || !n.query_bytes() || n.query_bytes()->size()>kLocationNameBytes || !n.choices() || n.choices()->size()>kLocationNamePageRows || n.cursor()>n.total())return "invalid nobles name page";
+      const uint64_t end=uint64_t(n.cursor())+n.choices()->size();
+      if(end>n.total() || n.next_cursor()!=(end<n.total()?end:0) || (end<n.total() && !n.choices()->size()))return "invalid nobles name pagination";
+      size_t bytes=512+n.query_bytes()->size()+n.value()->first_name_bytes()->size()+n.value()->nickname_bytes()->size()+n.native_header()->size()+n.english_header()->size();
+      for(const auto* c:*n.choices()){
+        if(!c || c->word()<0 || c->part()<0 || c->part()>8 || !c->english() || !c->translated())return "invalid nobles name choice";
+        bytes+=64+uint64_t(c->english()->size())+c->translated()->size();
+      }
+      if(bytes>kLocationNamePageBytes)return "nobles name page too large";
+    }else if(s.status()==ManagementStatus::Ok && !commit){
+      const auto count=symbols?symbolCount:candidates?candidateCount:r->rows()->size();
+      if(r->outcome()!=NoblesOutcome::None || !r->list_revision() || r->list_revision()>INT64_MAX || r->total()>((candidates || symbols)?1048576u:65536u) ||
          r->offset()>r->total() || count>r->total()-r->offset() || (r->offset()<r->total() && !count))return "invalid nobles page";
-      if(candidates){
-        if(!validNoblesOffice(r->target(),4096) || !r->candidate_revision() || r->candidate_revision()>INT64_MAX || !r->candidates() || r->rows()->size())return "invalid nobles candidate page";
+      if(candidates || symbols){
+        if(!validNoblesOffice(r->target(),4096) || !r->candidate_revision() || r->candidate_revision()>INT64_MAX || (symbols?!r->symbols():!r->candidates()) || r->rows()->size())return "invalid nobles candidate page";
+        if(symbols && (candidateCount || r->target()->assignment_id()<0 || r->target()->draft_slot()))return "invalid nobles symbol page";
       }else if(r->target() || r->candidate_revision() || candidateCount)return "unexpected nobles candidates";
     }else{
       if(r->list_revision() || r->total() || r->offset() || r->rows()->size() || r->target() || r->candidate_revision() || candidateCount)return "unexpected nobles terminal payload";
@@ -1372,6 +1423,29 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       if(bytes>384*1024)return "nobles page payload exceeded";
     }
     if(candidateCount>64)return "too many nobles candidates";
+    if(symbolCount>64)return "too many nobles symbols";
+    std::set<int32_t> symbolIds;
+    if(r->symbols())for(const auto* row:*r->symbols()){
+      if(!row || row->item_id()<0 || row->item_type()<0 || row->item_type()>92 || !symbolIds.insert(row->item_id()).second ||
+         (row->current_office() && !validNoblesOffice(row->current_office(),4096)) ||
+         (row->selected_office() && !validNoblesOffice(row->selected_office(),4096)))return "invalid nobles symbol";
+      bytes+=128;
+      for(const auto* text:{row->caption(),row->office_caption(),row->value_caption()}){if(!text || text->size()>16384)return "invalid nobles symbol text";bytes+=text->size();}
+      if(const auto* a=row->appearance()){
+        if(!validInspectionInstrument(*a,row->item_type()) || !a->material_token() || !a->material_token()->size() || a->material_token()->size()>256 ||
+           !a->subtype_raw() || a->subtype_raw()->size()>128 || !a->color_token() || a->color_token()->size()>128 || a->stack()<1 || (a->flags()&~96))return "invalid nobles symbol appearance";
+        bytes+=256+a->material_token()->size()+a->subtype_raw()->size()+a->color_token()->size();
+        size_t recipe=0;
+        for(const auto* p:{a->portrait(),a->corpse_selector(),a->cage_occupant()})if(p)if(auto error=validateOwnerAppearance(*p,recipe))return error;
+        bytes+=recipe;
+        for(const auto* text:{a->restraint_solid_color(),a->cage_solid_color(),a->bucket_liquid_color()})if(text)bytes+=text->size();
+        if(const auto* c=a->contents()){
+          bytes+=64;if(c->solid_color())bytes+=c->solid_color()->size();
+          for(const auto* e:*c->entries())bytes+=64+e->material_token()->size()+e->color_token()->size();
+        }
+      }
+      if(bytes>384*1024)return "nobles page payload exceeded";
+    }
     std::set<int32_t> candidateIds;
     if(r->candidates())for(const auto* row:*r->candidates()){
       if(!row || row->unit_id()<-1 || !candidateIds.emplace(row->unit_id()).second || !row->caption() || !row->no_skills() || !row->skills() || row->skills()->size()>4096)return "invalid nobles candidate";
@@ -1391,7 +1465,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       }
       if(bytes>384*1024)return "nobles page payload exceeded";
     }
-  }else if(s.status()==ManagementStatus::Ok && (s.action()==ManagementAction::NoblesRead || s.action()==ManagementAction::NoblesCandidates || s.action()==ManagementAction::NoblesCommit || s.action()==ManagementAction::NoblesAccounting))return "missing nobles result";
+  }else if(s.status()==ManagementStatus::Ok && s.action()>=ManagementAction::NoblesRead && s.action()<=ManagementAction::NoblesSymbolsContinue)return "missing nobles result";
   if(const auto* r=s.places()) {
     const bool read=s.action()==ManagementAction::PlacesRead,apply=s.action()==ManagementAction::PlacesApply;
     if((!read && !apply) || r->tab()>5 || !r->rows() ||

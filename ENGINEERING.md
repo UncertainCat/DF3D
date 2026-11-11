@@ -1019,6 +1019,36 @@ acceptance is `passed_with_known_issues` for the known Godot shutdown diagnostic
 GPU58–61C sampled. Core19/controller checks pass in `build/qa/places-layout-final`.
 
 
+## Management 183 Nobles symbol contract
+
+Management183 uses `Local\\df3d_management_v183`; rebuild bridge, model and
+extension together. Management182 peers are incompatible. Actions113–117 add
+SymbolsRead, SymbolsApply, SymbolNameRead, SymbolNameEdit and SymbolsContinue
+in the Nobles domain. Apply, Edit and Continue are mutations. Runtime symbol
+requests currently return Rejected; the session owner and presentation remain
+staged separately from this contract migration.
+
+Symbol pages bind an existing office, appointment draft/base revision and
+ordered candidate revision. Rows carry native captions, office identities,
+intrinsic sort value and optional semantic item appearance. Apply carries
+unique item IDs and final checkbox states, bounded to4096 choices. Naming and
+continuation requests carry only an opaque positive step token, with a name
+revision/query or edit when appropriate. The bridge must bind that token to
+its session, office, original draft and remaining native order; clients cannot
+submit a pending item list. Successful Apply/Continue may return a naming step;
+no step means completion. Name reads return the matching artifact, structured
+name and bounded native word page. Refusals carry no step or authoritative
+page; unknown mutation outcomes must never replay. Old recordings cannot
+synthesize missing symbol or naming facts.
+
+Core19, Nobles state and UI host checks pass in
+`build/qa/nobles-symbol-contract`; bridge and extension builds pass. Protected
+120506 on2026-11-11 verifies existing Nobles paging, stale rejection, owner
+retirement, Manager appointment and accounting0..4/restoration with both peers
+on183. DF38348 closes unsaved and source preservation passes; native30FPS,
+headless viewer, sampled GPU60C/31%. This accepts the migration and existing
+workflows, not typed symbol runtime, naming ownership or rendered symbol UI.
+
 ## Management 182 Nobles accounting contract
 
 Management182 uses `Local\\df3d_management_v182`; rebuild bridge, model and

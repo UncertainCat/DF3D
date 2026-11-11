@@ -1,6 +1,29 @@
 #include <doctest.h>
 #include "management_util.h"
 namespace m=df3d::mirror;
+TEST_CASE("Symbol steps only accompany successful symbol effects") {
+ for(int fault=0;fault<7;++fault){flatbuffers::FlatBufferBuilder b;
+  auto rows=b.CreateVector(std::vector<flatbuffers::Offset<m::NoblesRow>>{});
+  auto step=m::CreateNoblesSymbolStep(b,fault==1?0:123,fault==2?-1:261,fault==3?4097:2);
+  auto payload=m::CreateNoblesState(b,fault==4?m::NoblesOutcome::Unknown:m::NoblesOutcome::Applied,0,0,0,rows,0,0,0,0,step);
+  m::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(fault==5?m::ManagementAction::NoblesCommit:fault==6?m::ManagementAction::NoblesSymbolNameEdit:m::ManagementAction::NoblesSymbolsApply);
+  state.add_status(fault==4?m::ManagementStatus::Rejected:m::ManagementStatus::Ok);state.add_nobles(payload);b.Finish(state.Finish());
+  CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==(fault!=0));
+ }
+}
+TEST_CASE("Symbol pages require unique items and an existing office") {
+ for(int fault=0;fault<5;++fault){flatbuffers::FlatBufferBuilder b;
+  auto text=b.CreateString("fixture");auto empty=b.CreateString("");
+  auto row=m::CreateNoblesSymbol(b,fault==1?-1:123,5,100,nullptr,nullptr,text,empty,empty);
+  std::vector<flatbuffers::Offset<m::NoblesSymbol>> entries{row};if(fault==2)entries.push_back(row);
+  auto symbols=b.CreateVector(entries);auto rows=b.CreateVector(std::vector<flatbuffers::Offset<m::NoblesRow>>{});
+  m::NoblesOffice target(7,2,fault==3?-1:42,0);
+  auto payload=m::CreateNoblesState(b,m::NoblesOutcome::None,11,entries.size(),0,rows,&target,12,0,symbols);
+  m::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(fault==4?m::ManagementAction::NoblesRead:m::ManagementAction::NoblesSymbolsRead);
+  state.add_status(m::ManagementStatus::Ok);state.add_nobles(payload);b.Finish(state.Finish());
+  CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==(fault!=0));
+ }
+}
 TEST_CASE("Nobles accounting requires a fresh office and bounded expected setting") {
  for(int fault=0;fault<10;++fault){flatbuffers::FlatBufferBuilder b;
   m::NoblesOffice key(7,2,42,0);

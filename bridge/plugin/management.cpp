@@ -4408,6 +4408,11 @@ void run(color_ostream& out) {
     }catch(...){if(started){places->outcome=m::PlacesOutcome::Unknown;mutated=true;}}
     publish();return;
   }
+  // Contract migration only: typed symbol ownership is not installed yet.
+  if(r->action()>=m::ManagementAction::NoblesSymbolsRead && r->action()<=m::ManagementAction::NoblesSymbolsContinue){
+    status=m::ManagementStatus::Rejected;message.clear();nobles.emplace();
+    nobles->outcome=m::NoblesOutcome::Rejected;publish();return;
+  }
   if(r->action()==m::ManagementAction::NoblesRead || r->action()==m::ManagementAction::NoblesCandidates || r->action()==m::ManagementAction::NoblesCommit || r->action()==m::ManagementAction::NoblesAccounting){
     const auto& q=*r->nobles();status=m::ManagementStatus::Rejected;message.clear();nobles.emplace();
     try {

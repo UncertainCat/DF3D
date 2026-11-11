@@ -3,6 +3,50 @@
 #include "management_util.h"
 namespace m=df3d::mirror;
 namespace codec=wm::detail::management;
+TEST_CASE("Symbol operations serialize owned selection and token-only continuation") {
+ for(auto action:{wm::ManagementAction::NoblesSymbolsRead,wm::ManagementAction::NoblesSymbolsApply,
+     wm::ManagementAction::NoblesSymbolNameRead,wm::ManagementAction::NoblesSymbolNameEdit,wm::ManagementAction::NoblesSymbolsContinue}) {
+  wm::ManagementRequest q;q.action=action;
+  if(action<=wm::ManagementAction::NoblesSymbolsApply){q.nobles.expectedListRevision=123;q.nobles.expectedCandidateRevision=456;q.nobles.target=wm::NoblesOffice{7,2,42,0};}
+  else q.nobles.stepToken=789;
+  if(action==wm::ManagementAction::NoblesSymbolsApply)q.nobles.symbolChoices={{1234,true},{5678,false}};
+  if(action==wm::ManagementAction::NoblesSymbolNameRead)q.nobles.nameQuery=wm::LocationNameQuery{2,{128,65},0};
+  if(action==wm::ManagementAction::NoblesSymbolNameEdit){q.nobles.expectedNameRevision=987;q.nobles.nameEdit=wm::LocationNameEdit{wm::LocationNameMode::RandomWhole};}
+  flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,q,11,12,13);
+  const auto* r=flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer());
+  REQUIRE_FALSE(m::validateConstructionRequest(*r));REQUIRE(r->nobles());
+  CHECK(r->nobles()->step_token()==q.nobles.stepToken);
+  CHECK(r->nobles()->expected_name_revision()==q.nobles.expectedNameRevision);
+  if(action==wm::ManagementAction::NoblesSymbolsApply){REQUIRE(r->nobles()->symbol_choices()->size()==2);CHECK(r->nobles()->symbol_choices()->Get(0)->item_id()==1234);CHECK_FALSE(r->nobles()->symbol_choices()->Get(1)->selected());}
+  if(action==wm::ManagementAction::NoblesSymbolNameRead)CHECK(r->nobles()->name_query()->query_bytes()->Get(0)==128);
+ }
+}
+TEST_CASE("Symbol continuation cannot replace the office or replay a stale name page") {
+ for(int fault=0;fault<8;++fault){
+  wm::ManagementRequest q;q.action=wm::ManagementAction::NoblesSymbolNameRead;q.nobles.stepToken=789;q.nobles.nameQuery=wm::LocationNameQuery{};
+  if(fault==1)q.nobles.stepToken=0;
+  if(fault==2)q.nobles.target=wm::NoblesOffice{7,2,42,0};
+  if(fault==3)q.nobles.symbolChoices={{123,true}};
+  if(fault==4)q.nobles.nameQuery->cursor=1;
+  if(fault==5)q.nobles.expectedListRevision=123;
+  if(fault==6)q.nobles.nameEdit=wm::LocationNameEdit{};
+  if(fault==7)q.action=wm::ManagementAction::NoblesRead;
+  flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,q,11,12,13);
+  CHECK(bool(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
+ }
+}
+TEST_CASE("Symbol apply rejects duplicate choices and unbound candidate lists") {
+ for(int fault=0;fault<5;++fault){
+  wm::ManagementRequest q;q.action=wm::ManagementAction::NoblesSymbolsApply;
+  q.nobles.expectedListRevision=123;q.nobles.expectedCandidateRevision=456;q.nobles.target=wm::NoblesOffice{7,2,42,0};q.nobles.symbolChoices={{123,true}};
+  if(fault==1)q.nobles.symbolChoices.push_back({123,false});
+  if(fault==2)q.nobles.expectedCandidateRevision=0;
+  if(fault==3)q.nobles.target->assignmentId=-1;
+  if(fault==4)q.nobles.symbolChoices.clear();
+  flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,q,11,12,13);
+  CHECK(bool(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
+ }
+}
 TEST_CASE("Nobles accounting request retains expected setting and owned draft") {
  wm::ManagementRequest q;q.action=wm::ManagementAction::NoblesAccounting;
  q.nobles.expectedListRevision=123;q.nobles.target=wm::NoblesOffice{7,2,42,0};

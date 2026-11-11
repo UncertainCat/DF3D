@@ -50,6 +50,25 @@ ManagementState decodeState(const m::ManagementState* s) {
     auto& out=next.nobles.emplace();out.outcome=NoblesOutcome(r->outcome());out.listRevision=r->list_revision();out.total=r->total();out.offset=r->offset();
     out.candidateRevision=r->candidate_revision();
     if(const auto* key=r->target())out.target=NoblesOffice{key->entity_id(),key->position_id(),key->assignment_id(),key->draft_slot()};
+    if(const auto* step=r->step())out.step=NoblesSymbolStep{step->token(),step->naming_artifact_id(),step->remaining()};
+    if(const auto* n=r->name()){
+      auto& name=out.name.emplace();name.artifactId=n->artifact_id();name.itemId=n->item_id();name.revision=n->revision();
+      name.nativeHeader=n->native_header()->str();name.englishHeader=n->english_header()->str();name.component=n->component();
+      name.queryBytes.assign(n->query_bytes()->begin(),n->query_bytes()->end());name.cursor=n->cursor();name.total=n->total();name.nextCursor=n->next_cursor();
+      const auto& v=*n->value();name.value.firstNameBytes.assign(v.first_name_bytes()->begin(),v.first_name_bytes()->end());
+      name.value.nicknameBytes.assign(v.nickname_bytes()->begin(),v.nickname_bytes()->end());
+      name.value.words.assign(v.words()->begin(),v.words()->end());name.value.parts.assign(v.parts()->begin(),v.parts()->end());
+      name.value.language=v.language();name.value.type=v.type();name.value.hasName=v.has_name();
+      for(const auto* c:*n->choices())name.choices.push_back({c->word(),c->part(),c->english()->str(),c->translated()->str()});
+    }
+    if(r->symbols())for(const auto* row:*r->symbols()){
+      NoblesSymbol v;v.itemId=row->item_id();v.itemType=row->item_type();v.value=row->value();
+      v.caption=row->caption()->str();v.officeCaption=row->office_caption()->str();v.valueCaption=row->value_caption()->str();
+      const auto office=[](const m::NoblesOffice* key)->std::optional<NoblesOffice>{if(!key)return {};return NoblesOffice{key->entity_id(),key->position_id(),key->assignment_id(),key->draft_slot()};};
+      v.currentOffice=office(row->current_office());v.selectedOffice=office(row->selected_office());
+      if(row->appearance())v.appearance=decodeInspectionAppearance(row->appearance());
+      out.symbols.push_back(std::move(v));
+    }
     if(r->candidates())for(const auto* row:*r->candidates()){
       NoblesCandidate v;v.unitId=row->unit_id();v.value=row->value();v.caption=row->caption()->str();v.noSkills=row->no_skills()->str();
       for(const auto* skill:*row->skills())v.skills.push_back({skill->id(),skill->rating(),skill->caption()->str()});
@@ -301,13 +320,20 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
   const auto anchor=r.materialAnchor.value_or(TilePos{r.x,r.y,r.z});
   const m::TilePos materialAnchor(anchor.x,anchor.y,anchor.z);
   flatbuffers::Offset<m::NoblesRequest> nobles;
-  if(r.action>=ManagementAction::NoblesRead && r.action<=ManagementAction::NoblesAccounting){
+  if(r.action>=ManagementAction::NoblesRead && r.action<=ManagementAction::NoblesSymbolsContinue){
     std::vector<flatbuffers::Offset<m::NoblesChoice>> choices;
     for(const auto& choice:r.nobles.choices){const auto& key=choice.target;m::NoblesOffice target(key.entityId,key.positionId,key.assignmentId,key.draftSlot);
       choices.push_back(m::CreateNoblesChoice(b,&target,choice.expectedUnitId,choice.unitId));}
     std::optional<m::NoblesOffice> target;
     if(r.nobles.target){const auto& key=*r.nobles.target;target.emplace(key.entityId,key.positionId,key.assignmentId,key.draftSlot);}
-    nobles=m::CreateNoblesRequest(b,r.nobles.offset,r.nobles.limit,r.nobles.expectedListRevision,b.CreateVector(choices),target?&*target:nullptr,r.nobles.expectedCandidateRevision,r.nobles.expectedSetting,r.nobles.setting);
+    std::vector<flatbuffers::Offset<m::NoblesSymbolChoice>> symbols;
+    for(const auto& choice:r.nobles.symbolChoices)symbols.push_back(m::CreateNoblesSymbolChoice(b,choice.itemId,choice.selected));
+    flatbuffers::Offset<m::LocationNameQuery> query;
+    if(r.nobles.nameQuery){const auto& q=*r.nobles.nameQuery;query=m::CreateLocationNameQuery(b,q.component,b.CreateVector(q.queryBytes),q.cursor);}
+    flatbuffers::Offset<m::LocationNameEdit> edit;
+    if(r.nobles.nameEdit){const auto& e=*r.nobles.nameEdit;edit=m::CreateLocationNameEdit(b,m::LocationNameMode(e.mode),e.target,e.displayed,e.word,e.part,b.CreateVector(e.queryBytes));}
+    nobles=m::CreateNoblesRequest(b,r.nobles.offset,r.nobles.limit,r.nobles.expectedListRevision,b.CreateVector(choices),target?&*target:nullptr,r.nobles.expectedCandidateRevision,r.nobles.expectedSetting,r.nobles.setting,
+      b.CreateVector(symbols),r.nobles.stepToken,r.nobles.expectedNameRevision,query,edit);
   }
   flatbuffers::Offset<m::PlacesRequest> places;
   if(r.action==ManagementAction::PlacesRead || r.action==ManagementAction::PlacesApply){const auto& q=r.places;

@@ -44,6 +44,18 @@ func check_symbol_panel() -> void:
 	for row in symbols.rows.slice(0,15):check(row.has("appearance") and panel.symbol_icons.get(row.item_id,{}).get("texture")!=null,"Symbol artwork unavailable for item %s: %s"%[row.item_id,row.get("appearance",{})])
 	await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/nobles-symbol-picker-view.png")
+	if OS.get_environment("DF3D_NOBLES_SYMBOL_NAVIGATION")=="1":
+		var handoffs: Array=[]
+		owner.information_requested.connect(func(caption):handoffs.append(caption);owner.close_panel())
+		symbols.toggle(reference.items[0])
+		click_at(Vector2(170,75));await process_frame
+		if not check(handoffs==["Tasks"] and owner.state.phase==owner.state.Phase.Closed,"Symbol header did not discard draft and hand off"):return
+		owner.open_panel();deadline=Time.get_ticks_msec()+10000
+		while owner.state.phase==owner.state.Phase.Reading and Time.get_ticks_msec()<deadline:world.poll();await create_timer(0.01).timeout
+		if not check(owner.state.phase==owner.state.Phase.Ready,"Header handoff blocked reopening"):return
+		owner.state.begin_symbols(reference.target)
+		if not check(await wait_symbol(symbols,symbols.Phase.Ready),"Header handoff left a pending symbol sequence"):return
+		check(symbols.selected.is_empty(),"Header handoff retained discarded checks")
 	for item in reference.items:
 		var ordinal: int=-1
 		for i in symbols.rows.size():

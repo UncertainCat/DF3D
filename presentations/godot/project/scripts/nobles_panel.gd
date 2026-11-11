@@ -46,6 +46,7 @@ func handle_back() -> void:
 func request_handoff(completed: Callable) -> void:
 	if not allowed() or _destination.is_valid():return
 	if state.phase in [state.Phase.CandidatesReading,state.Phase.CandidatesReady]:state.cancel_appointment()
+	if state.phase==state.Phase.Symbols:state.cancel_symbols_for_handoff()
 	if state.phase!=state.Phase.Ready:return
 	_destination=completed;state.request_dismiss()
 func _dismissed() -> void:

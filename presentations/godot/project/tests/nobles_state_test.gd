@@ -145,7 +145,10 @@ func run() -> void:
 	for outcome in ["applied","unknown","reset"]:
 		owner.open_panel();service.reply(owner.state.ticket,page())
 		owner.state.choices=[{"target":target,"expected_unit_id":-1,"unit_id":10}]
+		owner.state.phase=State.Phase.Symbols;owner.state.symbols.phase=owner.state.symbols.Phase.Ready
+		owner.state.symbols.selected={9:true}
 		destination.open_panel();var commit: int=owner.state.ticket
+		check(owner.state.symbols.phase==owner.state.symbols.Phase.Closed and owner.state.symbols.selected.is_empty() and service.calls[commit].intent.action==C.ManagementAction.NoblesCommit,"Header applied symbol draft instead of retaining appointment commit")
 		check(host.active==owner and not destination.panel.visible and owner.state.phase==State.Phase.Applying,"Host switched before appointment receipt")
 		submitted=service.next;destination.open_panel();check(service.next==submitted,"Repeated handoff resubmitted appointment")
 		if outcome=="reset":host.reset_local_views()

@@ -1165,8 +1165,27 @@ startup/shutdown signatures. Core19, Nobles state, item-sheet state and UI host
 checks pass in `build/qa/nobles-legwear-render`; both builds pass. Bounded receipt
 and comparison facts are in `native_nobles.json.rendered_symbols`.
 
-Remaining symbol work includes the earring artwork discrepancy, header handoff,
-widths, scroll dragging, naming search/word/random controls, foreign-client and
+Header navigation has distinct native semantics: it discards unsubmitted symbol
+checkboxes instead of invoking symbol Done/Back. The view dispatches visible tabs
+before symbol-row handling; the owner closes only a ready symbol draft, retains
+parent appointment choices and follows the existing appointment-commit handoff.
+Busy/naming/unknown symbol states cannot take that route.
+
+Protected131757 on2026-11-11 selects an artifact in native DF, clicks Tasks and
+verifies unchanged claims, cleared symbol selection mode, no pending continuation
+and a clean reopened overview. The rendered viewer clicks the same Tasks tab
+with an ordinary item checked, emits the Tasks handoff, reopens with no retained
+checks, then completes the three-item naming/retirement flow with exactly three
+artifacts and six events. This live case uses no parent appointment draft;
+controller/host checks cover retained appointment commit, duplicate handoffs,
+unknown receipts and teardown. Core19/state/UI host pass in
+`build/qa/nobles-symbol-header-pointer`. Source preservation passes; DF24552 closes
+unsaved, both renderers30FPS, GPU60C/22% sampled, known Godot diagnostics only.
+Earlier131629 exposed the view consuming the tab click before dispatch, which
+was corrected. The fixture records bounded header-navigation evidence.
+
+Remaining symbol work includes the earring artwork discrepancy, widths, scroll
+dragging, naming search/word/random controls, foreign-client and
 disconnect/epoch/unknown fault acceptance, plus cross-office/civilization claims.
 Public exposure and full management completion remain gated.
 

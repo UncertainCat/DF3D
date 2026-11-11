@@ -18,6 +18,10 @@ func begin_symbols(target: Dictionary) -> void:
 	for row in rows:
 		if office(row)==target and row.assignment_id>=0:
 			_retire();phase=Phase.Symbols;symbols.open(target,choices,_revision);changed.emit();return
+func cancel_symbols_for_handoff() -> void:
+	if phase!=Phase.Symbols or symbols.phase!=symbols.Phase.Ready:return
+	# Native header navigation discards only the unsubmitted symbol checkboxes.
+	symbols.close();phase=Phase.Ready;changed.emit()
 var service
 var phase:=Phase.Closed
 var rows: Array=[]

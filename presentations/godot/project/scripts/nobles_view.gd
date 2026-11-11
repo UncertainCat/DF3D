@@ -122,12 +122,6 @@ func _gui_input(event: InputEvent) -> void:
 	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
 	accept_event()
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
-	if symbols():
-		if Rect2(size.x-80,list_top()-42,64,24).has_point(event.position):state.symbols.dismiss();return
-		if state.symbols.phase==state.symbols.Phase.Ready:
-			for index in mini(capacity(),state.symbols.rows.size()-visible_first()):
-				if Rect2(16,list_top()+index*36,size.x-48,36).has_point(event.position):state.symbols.toggle(state.symbols.rows[visible_first()+index].item_id);return
-		return
 	var tabs:=groups()
 	for index in tabs.size():
 		var x:=8
@@ -137,6 +131,12 @@ func _gui_input(event: InputEvent) -> void:
 				if caption!="Nobles and administrators":information_requested.emit(caption)
 				return
 			x+=width
+	if symbols():
+		if Rect2(size.x-80,list_top()-42,64,24).has_point(event.position):state.symbols.dismiss();return
+		if state.symbols.phase==state.symbols.Phase.Ready:
+			for index in mini(capacity(),state.symbols.rows.size()-visible_first()):
+				if Rect2(16,list_top()+index*36,size.x-48,36).has_point(event.position):state.symbols.toggle(state.symbols.rows[visible_first()+index].item_id);return
+		return
 	if picking():
 		if state.phase==state.Phase.CandidatesReady:
 			for index in mini(capacity(),state.candidates.size()-visible_first()):

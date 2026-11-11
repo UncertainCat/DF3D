@@ -8258,6 +8258,30 @@
         "Original artwork selection only; transport and rendered selector consumption remain pending.",
         "Procedural greaves branch is pinned but has no live item case here."
       ]
+    },
+    "header_navigation": {
+      "source": "build/stockpile-storage-native-input-20261111-131757",
+      "native": {
+        "after": [],
+        "assigning_symbol": false,
+        "before": [],
+        "mode": 1,
+        "open": true,
+        "pending": -1,
+        "reopened": {
+          "assigning_symbol": false,
+          "mode": 5,
+          "pending": -1
+        },
+        "selected_before": true
+      },
+      "viewer_pointer_handoff": "Tasks",
+      "viewer_draft_discarded": true,
+      "reopen_then_three_symbol_effects": true,
+      "limits": [
+        "Main-scene destination composition remains gated.",
+        "Appointment draft outcome handling is covered by controller/host checks, not this empty-parent-draft live case."
+      ]
     }
   },
   "typed_symbols": {

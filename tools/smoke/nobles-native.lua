@@ -368,6 +368,20 @@ if os.getenv('DF3D_NOBLES_SYMBOLS')=='1' then
   assert(info.open and not menu.assigning_symbol and menu.handling_symbol_closure_ind==-1,'Symbol dismissal did not finish')
   result.symbol_reference.effects[#result.symbol_reference.effects+1]={operation=operation,item_id=symbols[1].item_id,artifact_id=artifact.id,before=before,after=claims(),previous_index=previous,staged_index=staged,toggle_is_local=true}
  end
+ if os.getenv('DF3D_NOBLES_SYMBOL_NAVIGATION')=='1' then
+  click_symbol(x,y);assert(menu.assigning_symbol,'Navigation fixture did not open symbols')
+  click_symbol(912,190)
+  assert(menu.cand_symbol_new_ind[0]==index,'Navigation fixture did not select the artifact')
+  local before=claims()
+  click_symbol(170,75)
+  result.symbol_reference.header_navigation={mode=info.current_mode,open=info.open,
+   assigning_symbol=menu.assigning_symbol,pending=menu.handling_symbol_closure_ind,before=before,after=claims(),selected_before=true,lines=lines()}
+  assert(info.current_mode==df.info_interface_mode_type.JOBS and not menu.assigning_symbol and menu.handling_symbol_closure_ind==-1 and json.encode(claims())==json.encode(before),'Native header did not discard symbols and open Tasks')
+  write('nobles-native.json',json.encode(result));capture('nobles-symbol-header-navigation')
+  gui.simulateInput(view,'D_NOBLES');settle()
+  result.symbol_reference.header_navigation.reopened={mode=info.current_mode,assigning_symbol=menu.assigning_symbol,pending=menu.handling_symbol_closure_ind}
+  if menu.assigning_symbol then gui.simulateInput(view,'LEAVESCREEN');settle()end
+ end
  if os.getenv('DF3D_NOBLES_SYMBOL_APPLY')=='1' then
   local function symbol_call(name,expected,...)
    local size,address=df.sizeof(menu);local before=bytes(address,size)

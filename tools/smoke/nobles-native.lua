@@ -599,7 +599,8 @@ local symbol_wire
 local wire_events,wire_precision,wire_setting
 if os.getenv('DF3D_NOBLES_WIRE')=='1' then
  local appointment_wire=os.getenv('DF3D_NOBLES_APPOINTMENT_WIRE')=='1'
- if wire_commit or wire_symbols or appointment_wire then
+ local new_offices_wire=os.getenv('DF3D_NOBLES_NEW_OFFICES_WIRE')=='1'
+ if wire_commit or wire_symbols or appointment_wire or new_offices_wire then
   gui.simulateInput(view,'LEAVESCREEN');settle();assert(not info.open)
   wire_events=#df.global.world.history.events
   wire_precision=df.global.plotinfo.nobles.bookkeeper_precision;wire_setting=df.global.plotinfo.nobles.bookkeeper_settings
@@ -641,6 +642,11 @@ if os.getenv('DF3D_NOBLES_WIRE')=='1' then
   local source=debug.getinfo(1,'S').source:sub(2):gsub('nobles%-native%.lua$','nobles-appointment-native.lua')
   assert(loadfile(source))(out,view,probe)
  end
+ if new_offices_wire then
+  assert(not wire_commit and not wire_symbols and not appointment_wire,'NEW offices require isolated effects')
+  local source=debug.getinfo(1,'S').source:sub(2):gsub('nobles%-native%.lua$','nobles-new-offices-native.lua')
+  assert(loadfile(source))(out,view)
+ end
  local deadline=dfhack.getTickCount()+(os.getenv('DF3D_NOBLES_SYMBOL_NAME_RESIZE')=='1' and 120000 or 30000)
  while true do local ack=io.open(out..'/ack-nobles-wire');if ack then ack:close();break end
   assert(dfhack.getTickCount()<deadline,'Nobles wire timeout');script.sleep(1,'frames')
@@ -679,6 +685,10 @@ if wire_commit then
 end
 if info.open then gui.simulateInput(view,'LEAVESCREEN');settle()end
 assert(not info.open,'Nobles did not close')
+if os.getenv('DF3D_NOBLES_NEW_OFFICES')=='1' then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('nobles%-native%.lua$','nobles-new-offices-native.lua')
+ assert(loadfile(source))(out,view)
+end
 if os.getenv('DF3D_NOBLES_APPOINTMENT')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('nobles%-native%.lua$','nobles-appointment-native.lua')
  assert(loadfile(source))(out,view,probe)

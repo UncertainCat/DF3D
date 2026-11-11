@@ -8777,5 +8777,1027 @@
     "native_menu_closed": true,
     "scope": "Existing Manager appoint, replace and vacate through visible controls and Escape dismissal; full recorded effect snapshots match after each step. NEW, military conflicts, multi-choice and live faults remain unverified.",
     "diagnostics": "passed_with_known_issues"
+  },
+  "new_offices_reference": {
+    "applied": {
+      "assignments": [
+        {
+          "holder": -1,
+          "holder2": -1,
+          "id": 0,
+          "position": 21,
+          "squad": -1
+        },
+        {
+          "holder": -1,
+          "holder2": -1,
+          "id": 1,
+          "position": 20,
+          "squad": -1
+        },
+        {
+          "holder": -1,
+          "holder2": -1,
+          "id": 2,
+          "position": 19,
+          "squad": -1
+        },
+        {
+          "holder": 1217,
+          "holder2": 1217,
+          "id": 3,
+          "position": 13,
+          "squad": -1
+        },
+        {
+          "holder": -1,
+          "holder2": 9492,
+          "id": 4,
+          "position": 12,
+          "squad": -1
+        },
+        {
+          "holder": 10198,
+          "holder2": 10198,
+          "id": 5,
+          "position": 11,
+          "squad": -1
+        },
+        {
+          "holder": -1,
+          "holder2": 9492,
+          "id": 6,
+          "position": 10,
+          "squad": -1
+        },
+        {
+          "holder": 9375,
+          "holder2": 9375,
+          "id": 7,
+          "position": 9,
+          "squad": -1
+        },
+        {
+          "holder": -1,
+          "holder2": 9264,
+          "id": 8,
+          "position": 8,
+          "squad": -1
+        },
+        {
+          "holder": -1,
+          "holder2": 9375,
+          "id": 9,
+          "position": 7,
+          "squad": 125
+        },
+        {
+          "holder": -1,
+          "holder2": -1,
+          "id": 10,
+          "position": 6,
+          "squad": -1
+        },
+        {
+          "holder": 10195,
+          "holder2": 10195,
+          "id": 11,
+          "position": 4,
+          "squad": 120
+        },
+        {
+          "holder": 9494,
+          "holder2": 9494,
+          "id": 12,
+          "position": 5,
+          "squad": 128
+        },
+        {
+          "holder": -1,
+          "holder2": -1,
+          "id": 13,
+          "position": 5,
+          "squad": 132
+        },
+        {
+          "holder": 9375,
+          "holder2": 9375,
+          "id": 14,
+          "position": 5,
+          "squad": -1
+        },
+        {
+          "holder": 10194,
+          "holder2": 10194,
+          "id": 15,
+          "position": 23,
+          "squad": -1
+        },
+        {
+          "holder": 9648,
+          "holder2": 9648,
+          "id": 16,
+          "position": 23,
+          "squad": -1
+        }
+      ],
+      "events": 54235,
+      "next_assignment": 17,
+      "squads": [
+        {
+          "id": 120,
+          "occupants": [
+            10195,
+            6114,
+            9267,
+            9555,
+            9995,
+            10000,
+            10051,
+            10194,
+            10213,
+            10212
+          ]
+        },
+        {
+          "id": 125,
+          "occupants": [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ]
+        }
+      ],
+      "units": [
+        {
+          "id": 5813,
+          "job": -1,
+          "links": [
+            {
+              "end_year": -1,
+              "entity": 245,
+              "position": -1,
+              "start_year": -1,
+              "strength": 100,
+              "type": 0
+            },
+            {
+              "end_year": -1,
+              "entity": 383,
+              "position": -1,
+              "start_year": -1,
+              "strength": 100,
+              "type": 0
+            },
+            {
+              "end_year": -1,
+              "entity": 865,
+              "position": -1,
+              "start_year": -1,
+              "strength": 100,
+              "type": 0
+            },
+            {
+              "end_year": -1,
+              "entity": 383,
+              "position": 2,
+              "start_year": 103,
+              "strength": 100,
+              "type": 10
+            },
+            {
+              "end_year": -1,
+              "entity": 865,
+              "position": 7,
+              "start_year": 104,
+              "strength": 100,
+              "type": 10
+            },
+            {
+              "end_year": 106,
+              "entity": 865,
+              "position": 9,
+              "start_year": 104,
+              "strength": 100,
+              "type": 11
+            },
+            {
+              "end_year": -1,
+              "entity": 865,
+              "position": 14,
+              "start_year": 106,
+              "strength": 100,
+              "type": 10
+            }
+          ],
+          "position": -1,
+          "profession": 17,
+          "profession2": 17,
+          "squad": -1
+        },
+        {
+          "id": 6134,
+          "job": 382774,
+          "links": [
+            {
+              "end_year": -1,
+              "entity": 245,
+              "position": -1,
+              "start_year": -1,
+              "strength": 100,
+              "type": 0
+            },
+            {
+              "end_year": -1,
+              "entity": 434,
+              "position": -1,
+              "start_year": -1,
+              "strength": 100,
+              "type": 0
+            },
+            {
+              "end_year": -1,
+              "entity": 865,
+              "position": -1,
+              "start_year": -1,
+              "strength": 100,
+              "type": 0
+            },
+            {
+              "end_year": -1,
+              "entity": 434,
+              "position": 1,
+              "start_year": 103,
+              "strength": 100,
+              "type": 10
+            },
+            {
+              "end_year": -1,
+              "entity": 1316,
+              "position": -1,
+              "start_year": -1,
+              "strength": 100,
+              "type": 0
+            },
+            {
+              "end_year": -1,
+              "entity": 865,
+              "position": 16,
+              "start_year": 106,
+              "strength": 100,
+              "type": 10
+            }
+          ],
+          "position": -1,
+          "profession": 50,
+          "profession2": 25,
+          "squad": -1
+        },
+        {
+          "id": 6811,
+          "job": -1,
+          "links": [
+            {
+              "end_year": -1,
+              "entity": 245,
+              "position": -1,
+              "start_year": -1,
+              "strength": 100,
+              "type": 0
+            },
+            {
+              "end_year": -1,
+              "entity": 383,
+              "position": -1,
+              "start_year": -1,
+              "strength": 100,
+              "type": 0
+            },
+            {
+              "end_year": -1,
+              "entity": 865,
+              "position": -1,
+              "start_year": -1,
+              "strength": 100,
+              "type": 0
+            },
+            {
+              "end_year": -1,
+              "entity": 865,
+              "position": -1,
+              "start_year": 104,
+              "strength": 100,
+              "type": 13
+            },
+            {
+              "end_year": -1,
+              "entity": 865,
+              "position": 15,
+              "start_year": 106,
+              "strength": 100,
+              "type": 10
+            }
+          ],
+          "position": 7,
+          "profession": 84,
+          "profession2": 25,
+          "squad": 120
+        }
+      ]
+    },
+    "before": {
+      "assignments": [
+        {
+          "holder": -1,
+          "holder2": -1,
+          "id": 0,
+          "position": 21,
+          "squad": -1
+        },
+        {
+          "holder": -1,
+          "holder2": -1,
+          "id": 1,
+          "position": 20,
+          "squad": -1
+        },
+        {
+          "holder": -1,
+          "holder2": -1,
+          "id": 2,
+          "position": 19,
+          "squad": -1
+        },
+        {
+          "holder": 1217,
+          "holder2": 1217,
+          "id": 3,
+          "position": 13,
+          "squad": -1
+        },
+        {
+          "holder": -1,
+          "holder2": 9492,
+          "id": 4,
+          "position": 12,
+          "squad": -1
+        },
+        {
+          "holder": 10198,
+          "holder2": 10198,
+          "id": 5,
+          "position": 11,
+          "squad": -1
+        },
+        {
+          "holder": -1,
+          "holder2": 9492,
+          "id": 6,
+          "position": 10,
+          "squad": -1
+        },
+        {
+          "holder": 9375,
+          "holder2": 9375,
+          "id": 7,
+          "position": 9,
+          "squad": -1
+        },
+        {
+          "holder": -1,
+          "holder2": 9264,
+          "id": 8,
+          "position": 8,
+          "squad": -1
+        },
+        {
+          "holder": 9375,
+          "holder2": 9375,
+          "id": 9,
+          "position": 7,
+          "squad": 125
+        },
+        {
+          "holder": -1,
+          "holder2": -1,
+          "id": 10,
+          "position": 6,
+          "squad": -1
+        },
+        {
+          "holder": 10195,
+          "holder2": 10195,
+          "id": 11,
+          "position": 4,
+          "squad": 120
+        },
+        {
+          "holder": 9494,
+          "holder2": 9494,
+          "id": 12,
+          "position": 5,
+          "squad": 128
+        },
+        {
+          "holder": -1,
+          "holder2": -1,
+          "id": 13,
+          "position": 5,
+          "squad": 132
+        }
+      ],
+      "events": 54231,
+      "next_assignment": 14,
+      "squads": [
+        {
+          "id": 120,
+          "occupants": [
+            10195,
+            6114,
+            9267,
+            9555,
+            9995,
+            10000,
+            10051,
+            10194,
+            10213,
+            10212
+          ]
+        },
+        {
+          "id": 125,
+          "occupants": [
+            9375,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ]
+        }
+      ],
+      "units": [
+        {
+          "id": 5813,
+          "job": -1,
+          "links": [
+            {
+              "end_year": -1,
+              "entity": 245,
+              "position": -1,
+              "start_year": -1,
+              "strength": 100,
+              "type": 0
+            },
+            {
+              "end_year": -1,
+              "entity": 383,
+              "position": -1,
+              "start_year": -1,
+              "strength": 100,
+              "type": 0
+            },
+            {
+              "end_year": -1,
+              "entity": 865,
+              "position": -1,
+              "start_year": -1,
+              "strength": 100,
+              "type": 0
+            },
+            {
+              "end_year": -1,
+              "entity": 383,
+              "position": 2,
+              "start_year": 103,
+              "strength": 100,
+              "type": 10
+            },
+            {
+              "end_year": -1,
+              "entity": 865,
+              "position": 7,
+              "start_year": 104,
+              "strength": 100,
+              "type": 10
+            },
+            {
+              "end_year": -1,
+              "entity": 865,
+              "position": 9,
+              "start_year": 104,
+              "strength": 100,
+              "type": 10
+            }
+          ],
+          "position": 0,
+          "profession": 17,
+          "profession2": 17,
+          "squad": 125
+        },
+        {
+          "id": 6134,
+          "job": 382774,
+          "links": [
+            {
+              "end_year": -1,
+              "entity": 245,
+              "position": -1,
+              "start_year": -1,
+              "strength": 100,
+              "type": 0
+            },
+            {
+              "end_year": -1,
+              "entity": 434,
+              "position": -1,
+              "start_year": -1,
+              "strength": 100,
+              "type": 0
+            },
+            {
+              "end_year": -1,
+              "entity": 865,
+              "position": -1,
+              "start_year": -1,
+              "strength": 100,
+              "type": 0
+            },
+            {
+              "end_year": -1,
+              "entity": 434,
+              "position": 1,
+              "start_year": 103,
+              "strength": 100,
+              "type": 10
+            },
+            {
+              "end_year": -1,
+              "entity": 1316,
+              "position": -1,
+              "start_year": -1,
+              "strength": 100,
+              "type": 0
+            }
+          ],
+          "position": -1,
+          "profession": 50,
+          "profession2": 25,
+          "squad": -1
+        },
+        {
+          "id": 6811,
+          "job": -1,
+          "links": [
+            {
+              "end_year": -1,
+              "entity": 245,
+              "position": -1,
+              "start_year": -1,
+              "strength": 100,
+              "type": 0
+            },
+            {
+              "end_year": -1,
+              "entity": 383,
+              "position": -1,
+              "start_year": -1,
+              "strength": 100,
+              "type": 0
+            },
+            {
+              "end_year": -1,
+              "entity": 865,
+              "position": -1,
+              "start_year": -1,
+              "strength": 100,
+              "type": 0
+            },
+            {
+              "end_year": -1,
+              "entity": 865,
+              "position": -1,
+              "start_year": 104,
+              "strength": 100,
+              "type": 13
+            }
+          ],
+          "position": 7,
+          "profession": 84,
+          "profession2": 25,
+          "squad": 120
+        }
+      ]
+    },
+    "choices": [
+      {
+        "assignment_id": -1,
+        "entity_id": 865,
+        "expected_unit_id": -1,
+        "kind": "messenger",
+        "position_id": 23,
+        "prior_squad": 120,
+        "prior_squad_position": 7,
+        "unit_id": 6811
+      },
+      {
+        "assignment_id": -1,
+        "entity_id": 865,
+        "expected_unit_id": -1,
+        "kind": "messenger",
+        "position_id": 23,
+        "prior_squad": -1,
+        "prior_squad_position": -1,
+        "unit_id": 6134
+      },
+      {
+        "assignment_id": -1,
+        "entity_id": 865,
+        "expected_unit_id": -1,
+        "kind": "militia captain",
+        "position_id": 5,
+        "prior_squad": 125,
+        "prior_squad_position": 0,
+        "unit_id": 5813
+      }
+    ],
+    "closed": true,
+    "drafts": [
+      [
+        {
+          "assignment_id": 3,
+          "entity_id": 245,
+          "histfig_id": 9492,
+          "position_id": 0,
+          "unit_id": 5981
+        },
+        {
+          "assignment_id": 7,
+          "entity_id": 865,
+          "histfig_id": 9375,
+          "position_id": 9,
+          "unit_id": 5813
+        },
+        {
+          "assignment_id": 9,
+          "entity_id": 865,
+          "histfig_id": 9375,
+          "position_id": 7,
+          "unit_id": 5813
+        },
+        {
+          "assignment_id": 0,
+          "entity_id": 865,
+          "histfig_id": -1,
+          "position_id": 21,
+          "unit_id": -1
+        },
+        {
+          "assignment_id": 11,
+          "entity_id": 865,
+          "histfig_id": 10195,
+          "position_id": 4,
+          "unit_id": 6812
+        },
+        {
+          "assignment_id": 1,
+          "entity_id": 865,
+          "histfig_id": -1,
+          "position_id": 20,
+          "unit_id": -1
+        },
+        {
+          "assignment_id": 6,
+          "entity_id": 865,
+          "histfig_id": -1,
+          "position_id": 10,
+          "unit_id": -1
+        },
+        {
+          "assignment_id": 5,
+          "entity_id": 865,
+          "histfig_id": 10198,
+          "position_id": 11,
+          "unit_id": 6815
+        },
+        {
+          "assignment_id": 4,
+          "entity_id": 865,
+          "histfig_id": -1,
+          "position_id": 12,
+          "unit_id": -1
+        },
+        {
+          "assignment_id": 3,
+          "entity_id": 865,
+          "histfig_id": 1217,
+          "position_id": 13,
+          "unit_id": 1017
+        },
+        {
+          "assignment_id": 13,
+          "entity_id": 865,
+          "histfig_id": -1,
+          "position_id": 5,
+          "unit_id": -1
+        },
+        {
+          "assignment_id": -1,
+          "entity_id": 865,
+          "histfig_id": -1,
+          "position_id": 5,
+          "unit_id": -1
+        },
+        {
+          "assignment_id": 12,
+          "entity_id": 865,
+          "histfig_id": 9494,
+          "position_id": 5,
+          "unit_id": 5984
+        },
+        {
+          "assignment_id": -1,
+          "entity_id": 865,
+          "histfig_id": 10194,
+          "position_id": 23,
+          "unit_id": 6811
+        },
+        {
+          "assignment_id": -1,
+          "entity_id": 865,
+          "histfig_id": -1,
+          "position_id": 23,
+          "unit_id": -1
+        }
+      ],
+      [
+        {
+          "assignment_id": 3,
+          "entity_id": 245,
+          "histfig_id": 9492,
+          "position_id": 0,
+          "unit_id": 5981
+        },
+        {
+          "assignment_id": 7,
+          "entity_id": 865,
+          "histfig_id": 9375,
+          "position_id": 9,
+          "unit_id": 5813
+        },
+        {
+          "assignment_id": 9,
+          "entity_id": 865,
+          "histfig_id": 9375,
+          "position_id": 7,
+          "unit_id": 5813
+        },
+        {
+          "assignment_id": 0,
+          "entity_id": 865,
+          "histfig_id": -1,
+          "position_id": 21,
+          "unit_id": -1
+        },
+        {
+          "assignment_id": 11,
+          "entity_id": 865,
+          "histfig_id": 10195,
+          "position_id": 4,
+          "unit_id": 6812
+        },
+        {
+          "assignment_id": 1,
+          "entity_id": 865,
+          "histfig_id": -1,
+          "position_id": 20,
+          "unit_id": -1
+        },
+        {
+          "assignment_id": 6,
+          "entity_id": 865,
+          "histfig_id": -1,
+          "position_id": 10,
+          "unit_id": -1
+        },
+        {
+          "assignment_id": 5,
+          "entity_id": 865,
+          "histfig_id": 10198,
+          "position_id": 11,
+          "unit_id": 6815
+        },
+        {
+          "assignment_id": 4,
+          "entity_id": 865,
+          "histfig_id": -1,
+          "position_id": 12,
+          "unit_id": -1
+        },
+        {
+          "assignment_id": 3,
+          "entity_id": 865,
+          "histfig_id": 1217,
+          "position_id": 13,
+          "unit_id": 1017
+        },
+        {
+          "assignment_id": 13,
+          "entity_id": 865,
+          "histfig_id": -1,
+          "position_id": 5,
+          "unit_id": -1
+        },
+        {
+          "assignment_id": -1,
+          "entity_id": 865,
+          "histfig_id": -1,
+          "position_id": 5,
+          "unit_id": -1
+        },
+        {
+          "assignment_id": 12,
+          "entity_id": 865,
+          "histfig_id": 9494,
+          "position_id": 5,
+          "unit_id": 5984
+        },
+        {
+          "assignment_id": -1,
+          "entity_id": 865,
+          "histfig_id": 10194,
+          "position_id": 23,
+          "unit_id": 6811
+        },
+        {
+          "assignment_id": -1,
+          "entity_id": 865,
+          "histfig_id": 9648,
+          "position_id": 23,
+          "unit_id": 6134
+        },
+        {
+          "assignment_id": -1,
+          "entity_id": 865,
+          "histfig_id": -1,
+          "position_id": 23,
+          "unit_id": -1
+        }
+      ],
+      [
+        {
+          "assignment_id": 3,
+          "entity_id": 245,
+          "histfig_id": 9492,
+          "position_id": 0,
+          "unit_id": 5981
+        },
+        {
+          "assignment_id": 7,
+          "entity_id": 865,
+          "histfig_id": 9375,
+          "position_id": 9,
+          "unit_id": 5813
+        },
+        {
+          "assignment_id": 9,
+          "entity_id": 865,
+          "histfig_id": -1,
+          "position_id": 7,
+          "unit_id": -1
+        },
+        {
+          "assignment_id": 0,
+          "entity_id": 865,
+          "histfig_id": -1,
+          "position_id": 21,
+          "unit_id": -1
+        },
+        {
+          "assignment_id": 11,
+          "entity_id": 865,
+          "histfig_id": 10195,
+          "position_id": 4,
+          "unit_id": 6812
+        },
+        {
+          "assignment_id": 1,
+          "entity_id": 865,
+          "histfig_id": -1,
+          "position_id": 20,
+          "unit_id": -1
+        },
+        {
+          "assignment_id": 6,
+          "entity_id": 865,
+          "histfig_id": -1,
+          "position_id": 10,
+          "unit_id": -1
+        },
+        {
+          "assignment_id": 5,
+          "entity_id": 865,
+          "histfig_id": 10198,
+          "position_id": 11,
+          "unit_id": 6815
+        },
+        {
+          "assignment_id": 4,
+          "entity_id": 865,
+          "histfig_id": -1,
+          "position_id": 12,
+          "unit_id": -1
+        },
+        {
+          "assignment_id": 3,
+          "entity_id": 865,
+          "histfig_id": 1217,
+          "position_id": 13,
+          "unit_id": 1017
+        },
+        {
+          "assignment_id": 13,
+          "entity_id": 865,
+          "histfig_id": -1,
+          "position_id": 5,
+          "unit_id": -1
+        },
+        {
+          "assignment_id": -1,
+          "entity_id": 865,
+          "histfig_id": 9375,
+          "position_id": 5,
+          "unit_id": 5813
+        },
+        {
+          "assignment_id": -1,
+          "entity_id": 865,
+          "histfig_id": -1,
+          "position_id": 5,
+          "unit_id": -1
+        },
+        {
+          "assignment_id": 12,
+          "entity_id": 865,
+          "histfig_id": 9494,
+          "position_id": 5,
+          "unit_id": 5984
+        },
+        {
+          "assignment_id": -1,
+          "entity_id": 865,
+          "histfig_id": 10194,
+          "position_id": 23,
+          "unit_id": 6811
+        },
+        {
+          "assignment_id": -1,
+          "entity_id": 865,
+          "histfig_id": 9648,
+          "position_id": 23,
+          "unit_id": 6134
+        },
+        {
+          "assignment_id": -1,
+          "entity_id": 865,
+          "histfig_id": -1,
+          "position_id": 23,
+          "unit_id": -1
+        }
+      ]
+    ],
+    "status": "passed",
+    "evidence": "build/stockpile-storage-native-input-20261111-134534",
+    "unit_scope": [
+      5813,
+      6134,
+      6811
+    ],
+    "source_preserved": true,
+    "scope": "Combined draft: two NEW Messengers and existing military leader moved to NEW Militia captain; all entity assignments, selected/changed units and historical links, their prior squads and all changed squad occupants.",
+    "squad_scope": [
+      120,
+      125
+    ],
+    "typed_reference": {
+      "evidence": "build/stockpile-storage-native-input-20261111-134722",
+      "draft_rows_match": true,
+      "staged_without_effects": true,
+      "native_effects_match": true,
+      "source_preserved": true,
+      "diagnostics": "passed_with_known_issues",
+      "omissions": "No claim for all military conflict branches, active-job cancellation, live fault recovery, main-scene composition or pixel parity."
+    }
   }
 }

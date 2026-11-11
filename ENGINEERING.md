@@ -298,8 +298,29 @@ Core19, Nobles state and host checks pass in `build/qa/nobles-appointment-sequen
 The rendered run is passed_with_known_issues (the three documented Godot
 startup/finalize/shutdown signatures only). DF14176 closes unsaved with source
 preservation; both applications are capped at30FPS, sampled GPU60C/30%/54W.
-Military conflicts, repeated NEW slots, multi-choice drafts and actual
-disconnect/late-receipt scenarios remain outside this acceptance.
+This sequence does not cover military conflicts, repeated NEW slots,
+multi-choice drafts or actual disconnect/late-receipt scenarios.
+
+`new_offices_reference` adds a combined draft: two NEW Messengers followed by
+an existing Captain of the guard moved to a NEW Militia captain office. Native
+protected134534 on2026-11-11 allocates three assignments and adds four history
+events on dismissal; the prior military office becomes vacant and its squad
+loses that occupant. All three selections remain effect-free while staged.
+Typed rendered134722 reproduces each ordered draft through the owner and
+candidate controls, then commits all three choices with Escape. Independent
+Lua confirms the recorded assignment IDs/counters, historical links, unit
+profession/squad/job state and squad occupants. The fixture retains selected
+or changed units and their prior/changed squads; the full native snapshot stays
+in ignored evidence. Candidate scrolling here uses the controller, so this is
+not native scrollbar-input parity. No pixel-parity claim is made.
+
+Native capture uses `DF3D_NOBLES_NEW_OFFICES=1`; typed acceptance uses
+`DF3D_NOBLES_NEW_OFFICES_WIRE=1` with WIRE/RENDER enabled and other effect flags
+off. Both runs preserve the source and close owned DF41548/15684 unsaved.
+Both applications are capped at30FPS; sampled GPU60C/35% native and59C/32%
+typed. The viewer reports only the three known Godot diagnostics. Other military
+conflict branches, active-job cancellation, main-scene composition and live
+pending/unknown/disconnect recovery remain open.
 
 Protocol181 now carries owned appointment drafts, paged candidates and commit
 receipts through the bridge, model and Godot request API. Each request rebuilds

@@ -2736,5 +2736,28 @@
       "No rendered Nobles view or input ownership acceptance.",
       "Session-change and late-reply permutations are deterministic headless tests, not live producer-restart evidence."
     ]
+  },
+  "overview_view_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-082227",
+    "native_image_source": "build/stockpile-storage-native-input-20261110-172234/nobles-overview.png",
+    "viewport": [
+      1200,
+      800
+    ],
+    "rows": 14,
+    "visually_inspected": [
+      "native headings and introduction",
+      "ordered titles and holder captions",
+      "appointment and symbol icons",
+      "room, furniture, demand and mandate indicators"
+    ],
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "diagnostics": "passed_with_known_issues: documented rendering-thread shutdown and ObjectDB diagnostics",
+    "omissions": [
+      "Portraits, hover help and action workflows remain unfinished.",
+      "No public route or composed owner/input acceptance.",
+      "Responsive layouts and scrollbar interaction remain unverified."
+    ]
   }
 }

@@ -1,4 +1,5 @@
 extends SceneTree
+const View=preload("res://scripts/nobles_view.gd")
 const State=preload("res://scripts/nobles_state.gd")
 const C=preload("res://scripts/management_contract.gd")
 const Service=preload("res://tests/work_details_state_test.gd").Service
@@ -40,6 +41,10 @@ func run() -> void:
 	state.refresh();old=state.ticket;var submitted: int=service.next;service.reply(old,{"outcome":"unknown"})
 	check(state.phase==State.Phase.Rejected and service.next==submitted,"Uncertain read replayed automatically")
 	state.dispose();state.open();check(state.phase==State.Phase.Unavailable,"Missing service retained rows")
-	state.dispose();service.queue_free();await process_frame
+	var view:=View.new();view.state=state;view.size=Vector2(944,708)
+	check(view.list_top()==108 and view.capacity()==16 and view.status_x()==496,"Nobles native geometry differs")
+	check(view.groups()[1][0]=="Nobles and administrators","Nobles selected header row differs")
+	check(view.room_suffix(0,0)=="NA" and view.room_suffix(1,0)=="MISSING" and view.room_suffix(2,1)=="PARTIAL" and view.room_suffix(1,1)=="GOOD","Nobles room artwork mapping differs")
+	view.free();state.dispose();service.queue_free();await process_frame
 	if failures==0:print("NOBLES_STATE_PASS")
 	quit(1 if failures else 0)

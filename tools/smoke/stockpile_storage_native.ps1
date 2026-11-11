@@ -256,6 +256,7 @@ try {
      $clientArgs+=@('--path',"$repo/presentations/godot/project",'--script','res://tests/job_settings_wire_live.gd')
      if($env:DF3D_CHORES_RENDER -eq '1' -or $env:DF3D_HUNTER_AMMUNITION_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/job_settings_wire_live.gd')}
      if($name -eq 'nobles-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/nobles_wire_live.gd')}
+     if($name -eq 'nobles-wire' -and $env:DF3D_NOBLES_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/nobles_wire_live.gd')}
      if($name -eq 'places-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/places_wire_live.gd')}
      if($name -eq 'places-wire' -and $env:DF3D_PLACES_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/places_wire_live.gd')}
      if($name -eq 'places-wire' -and $env:DF3D_PLACES_SCENE -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/places_scene_live.gd')}

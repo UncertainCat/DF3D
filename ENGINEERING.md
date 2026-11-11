@@ -39,6 +39,18 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Nobles and administrators native discovery
 
+The staged `nobles_view.gd` renders the native overview headings, introduction,
+ordered captions and installed status artwork. Protected082227 on2026-11-11
+compares its1200x800 capture visually with native172234:14 rows, native captions
+and indicator placement match at this size. The graphical test explicitly loads
+installed assets; the earlier081857 missing-art run is failed evidence. Core and
+controller/geometry checks pass in `build/qa/nobles-view-final`. The protected run
+preserves the source save and closes DF4664 unsaved, capped30FPS; sampled GPU45C/1%.
+It reports passed_with_known_issues for documented Godot shutdown diagnostics.
+`native_nobles.json.overview_view_reference` scopes this evidence. Portraits,
+hover help, appointment/symbol workflows, responsive behavior and composed input
+ownership remain unfinished; no public route is exposed.
+
 Protected165820 on2026-11-10 captures DF53.16's native overview and cancelled
 Manager/Messenger appointment pickers. `fixtures/production/native_nobles.json`
 retains14 ordered overview identities, native text cells and both117-entry

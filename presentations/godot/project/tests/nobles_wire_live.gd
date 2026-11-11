@@ -38,6 +38,15 @@ func run() -> void:
 	while model.phase==model.Phase.Reading and Time.get_ticks_msec()<deadline:
 		world.poll();await create_timer(0.01).timeout
 	check(model.phase==model.Phase.Ready and model.rows==rows,"Live Nobles controller differs from transport")
+	if OS.get_environment("DF3D_NOBLES_RENDER")=="1":
+		if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Nobles assets unavailable"):quit(1);return
+		root.size=Vector2i(1200,800)
+		var view=preload("res://scripts/nobles_view.gd").new();root.add_child(view);view.configure_nobles(world,model);view.layout(Vector2(1200,800))
+		for token in ["NOBLES_ADD","NOBLES_ASSIGN_SYMBOL","NOBLES_OFFICE_GOOD","NOBLES_FURN_MISSING","NOBLES_DEMANDS_NA","NOBLES_MANDATES_TIME_WARN_1"]:check(view.art.texture(token)!=null,"Missing native Nobles artwork: "+token)
+		for frame in 5:await process_frame
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/nobles-view.png")
+		view.queue_free();await process_frame
 	model.refresh();model.close()
 	for frame in 5:world.poll();await process_frame
 	check(model.phase==model.Phase.Closed and model.rows.is_empty() and model.ticket==0,"Closed Nobles controller accepted live read")

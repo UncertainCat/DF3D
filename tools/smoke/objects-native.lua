@@ -69,7 +69,7 @@ if os.getenv('DF3D_OBJECTS_WIRE')=='1' then
  local window_before={df.global.window_x,df.global.window_y,df.global.window_z}
  write('objects-wire-reference.json',json.encode{ownership=ownership,destinations=destinations,appearances=appearances})
  write('shot.tmp','objects-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))
- local deadline=dfhack.getTickCount()+30000
+ local deadline=dfhack.getTickCount()+60000
  while true do local ack=io.open(out..'/ack-objects-wire');if ack then ack:close();break end
   assert(dfhack.getTickCount()<deadline,'Objects wire timed out');script.sleep(1,'frames')
  end
@@ -130,6 +130,24 @@ if os.getenv('DF3D_OBJECTS_LAYOUT')=='1' then
    gui.simulateInput(view,'CONTEXT_SCROLL_DOWN');view:render(dfhack.getTickCount())
    result.layout_scroll={after=menu.scroll_position[3],lines=lines()}
    capture('objects-layout-minimum-scroll')
+   result.scroll_controls={}
+   local function record(name)result.scroll_controls[#result.scroll_controls+1]={name=name,offset=menu.scroll_position[3],drag=menu.scrolling[3]}end
+   menu.scroll_position[3]=0;settle();click(660,462);record('down')
+   click(660,150);record('up')
+   click(660,450);record('track')
+   click(90,120);assert(menu.mode==0,'Objects tab input failed')
+   click(443,120);assert(menu.mode==3,'Objects return tab failed');record('tab-return')
+   menu.scroll_position[3]=0;settle()
+   g.precise_mouse_x=660;g.precise_mouse_y=270;g.mouse_x=82;g.mouse_y=22
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+   gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount());record('drag-start')
+   -- gui.simulateInput resets mouse fields unless the corresponding fake key is supplied.
+   df.global.enabler.mouse_lbut_lift=0
+   g.precise_mouse_y=450;g.mouse_y=37;gui.simulateInput(view,'_MOUSE_L_DOWN');view:render(dfhack.getTickCount());record('drag-bottom')
+   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+   gui.simulateInput(view,{});view:render(dfhack.getTickCount());record('drag-release')
+   write('objects-scroll-controls.json',json.encode(result.scroll_controls))
+
   end
  end
 end

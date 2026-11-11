@@ -1663,5 +1663,67 @@
       "populated Symbols and additional claims",
       "remaining lifecycle and main-scene composition"
     ]
+  },
+  "scroll_controls_reference": {
+    "native_source": "build/stockpile-storage-native-input-20261111-170158",
+    "viewer_source": "build/stockpile-storage-native-input-20261111-165906",
+    "viewport": [
+      912,
+      552
+    ],
+    "tab": "Written content",
+    "count": 11,
+    "visible": 9,
+    "native": [
+      {
+        "drag": false,
+        "name": "down",
+        "offset": 1
+      },
+      {
+        "drag": false,
+        "name": "up",
+        "offset": 0
+      },
+      {
+        "drag": false,
+        "name": "track",
+        "offset": 2
+      },
+      {
+        "drag": false,
+        "name": "tab-return",
+        "offset": 2
+      },
+      {
+        "drag": true,
+        "name": "drag-start",
+        "offset": 0
+      },
+      {
+        "drag": true,
+        "name": "drag-bottom",
+        "offset": 2
+      },
+      {
+        "drag": false,
+        "name": "drag-release",
+        "offset": 2
+      }
+    ],
+    "viewer_controls": [
+      "down=1",
+      "up=0",
+      "track=2",
+      "tab-return=2",
+      "drag-start=true",
+      "drag-bottom=2",
+      "drag-release=false"
+    ],
+    "status": "passed_with_known_issues",
+    "limitations": [
+      "two-row scroll range; intermediate long-list drag positions not covered",
+      "keyboard paging and scrolled hover remain pending"
+    ]
   }
 }

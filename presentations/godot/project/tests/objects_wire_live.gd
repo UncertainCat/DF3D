@@ -13,6 +13,11 @@ func page(tab: int, offset: int, revision: int) -> Dictionary:
 	return await request("objects",{"action":C.ManagementAction.ObjectsRead,"tab":tab,"offset":offset,"limit":4,"expected_list_revision":revision})
 func locate(tab: int, artifact: int, revision: int) -> Dictionary:
 	return await request("objects",{"action":C.ManagementAction.ObjectsLocate,"tab":tab,"artifact_id":artifact,"expected_list_revision":revision})
+func pointer_click(point: Vector2) -> void:
+	for pressed in [true,false]:
+		var event:=InputEventMouseButton.new();event.position=point;event.global_position=point;event.button_index=MOUSE_BUTTON_LEFT;event.pressed=pressed
+		Input.parse_input_event(event);Input.flush_buffered_events();await process_frame
+	await create_timer(0.1).timeout
 func run() -> void:
 	Engine.max_fps=30;directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
 	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/objects-wire-reference.json"))
@@ -102,6 +107,22 @@ func run() -> void:
 				Input.parse_input_event(wheel);Input.flush_buffered_events();await create_timer(0.1).timeout
 				check(controller.first==1,"Objects minimum-height wheel did not advance one row")
 				await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/objects-view-layout-minimum-scroll.png")
+				print("OBJECTS_SCROLL_CONTROLS_START")
+				controller.seek(0,view.capacity());await pointer_click(Vector2(660,462));check(controller.first==1,"Objects scrollbar down differs")
+				await pointer_click(Vector2(660,150));check(controller.first==0,"Objects scrollbar up differs")
+				await pointer_click(Vector2(660,450));check(controller.first==2,"Objects scrollbar track differs")
+				await pointer_click(Vector2(90,120));await settle_objects(controller);check(controller.tab==0,"Objects artifact tab pointer failed")
+				await pointer_click(Vector2(443,120));await settle_objects(controller);check(controller.tab==3 and controller.first==2,"Objects tab scroll retention differs")
+				controller.seek(0,view.capacity())
+				var press:=InputEventMouseButton.new();press.position=Vector2(660,270);press.button_index=MOUSE_BUTTON_LEFT;press.pressed=true
+				Input.parse_input_event(press);Input.flush_buffered_events();await process_frame
+				check(view.scrollbar.dragging,"Objects scrollbar did not acquire drag")
+				var drag:=InputEventMouseMotion.new();drag.position=Vector2(660,450);drag.button_mask=MOUSE_BUTTON_MASK_LEFT
+				Input.parse_input_event(drag);Input.flush_buffered_events();await create_timer(0.1).timeout
+				check(controller.first==2,"Objects drag did not reach bottom")
+				press.pressed=false;press.position=drag.position;Input.parse_input_event(press);Input.flush_buffered_events();await process_frame
+				check(not view.scrollbar.dragging,"Objects scrollbar retained released drag");print("OBJECTS_SCROLL_CONTROLS_PASS")
+
 	controller.close();controller.open();controller.close()
 	for i in 5:world.poll();await create_timer(0.01).timeout
 	check(controller.phase==controller.Phase.Closed and controller.rows.is_empty(),"Objects late read reopened closed panel")

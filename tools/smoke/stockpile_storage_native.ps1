@@ -278,7 +278,7 @@ try {
      if($name -eq 'standing-automation-wire'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/standing_automation_wire_live.gd')}
      $client=Start-Process -FilePath $engine -ArgumentList $clientArgs -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/job-settings-wire.stdout.log" -RedirectStandardError "$out/job-settings-wire.stderr.log"
      $null=$client.Handle
-     $wireTimeout=if($name -eq 'kitchen-wire' -and $env:DF3D_KITCHEN_MAIN -eq '1'){115000}else{25000}
+     $wireTimeout=if($name -eq 'objects-wire' -and $env:DF3D_OBJECTS_LAYOUT -eq '1'){55000}elseif($name -eq 'kitchen-wire' -and $env:DF3D_KITCHEN_MAIN -eq '1'){115000}else{25000}
      # A rendered multi-family item batch includes graphics initialization and
      # several sheet captures. Keep this bounded separately from wire-only work.
      if($name -eq 'stocks-wire' -and $env:DF3D_STOCKS_RENDER -eq '1' -and $env:DF3D_STOCKS_FURNITURE_SHEETS -eq '1'){$wireTimeout=60000}

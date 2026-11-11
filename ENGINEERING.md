@@ -39,6 +39,25 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Objects native discovery
 
+Objects scrollbar input is covered at912x552 with11 Written content rows and
+nine visible. Native170158 and viewer165906 agree: down arrow0→1, up1→0,
+track click0→2, switch to Artifacts and back retains2, thumb press acquires drag,
+drag to bottom reaches2, and release clears capture. The viewer uses real pointer
+events through the existing shared scrollbar; no runtime change was needed.
+`native_objects.json.scroll_controls_reference` records both runs and limits.
+The native probe must use `_MOUSE_L_DOWN` during drag because DFHack's
+`gui.simulateInput` clears unspecified mouse fields. Earlier probes that omitted
+it do not establish native drag behavior. Longer-list intermediate positions,
+keyboard paging and scrolled hover are not covered by this check.
+
+The rendered Objects layout client now has a55-second deadline (native wait60)
+to include actual pointer interactions and asset startup; other clients retain
+their existing deadlines. Both owned runs close unsaved with source preservation
+and restored preferences. Viewer165906 uses both30FPS and GPU59C/10%/45W, with
+known separate-thread/finalize/ObjectDB diagnostics. Native170158 uses a headless
+viewer and retains only the known separate-thread notice. Public exposure stays
+gated pending remaining acceptance and composition.
+
 Protected165411 on2026-11-11 extends Objects layout coverage to912x552,
 1600x900 and1200x800. All four panel crops match native exactly at each size;
 Symbols remains empty in this save. Minimum-height Written content shows nine

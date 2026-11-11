@@ -168,23 +168,32 @@ func run() -> void:
 	for frame in 5:world.poll();await process_frame
 	check(model.phase==model.Phase.Closed and model.rows.is_empty() and model.ticket==0,"Closed Nobles controller accepted live read")
 	if OS.get_environment("DF3D_NOBLES_COMMIT_WIRE")=="1":
-		model.open();deadline=Time.get_ticks_msec()+5000
-		while model.phase==model.Phase.Reading and Time.get_ticks_msec()<deadline:
+		if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Owner assets unavailable"):quit(1);return
+		var interaction=preload("res://tests/ui_host_test.gd").Interaction.new();root.add_child(interaction)
+		var host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)
+		var owner=preload("res://scripts/nobles_panel.gd").new();root.add_child(owner);owner.configure(world,actions,host)
+		var destination=preload("res://tests/ui_host_test.gd").View.new();root.add_child(destination);host.register(destination)
+		var committing=owner.state
+		owner.open_panel();deadline=Time.get_ticks_msec()+5000
+		while committing.phase==committing.Phase.Reading and Time.get_ticks_msec()<deadline:
 			world.poll();await create_timer(0.01).timeout
-		model.begin_appointment(target);deadline=Time.get_ticks_msec()+5000
-		while model.phase==model.Phase.CandidatesReading and Time.get_ticks_msec()<deadline:
+		committing.begin_appointment(target);deadline=Time.get_ticks_msec()+5000
+		while committing.phase==committing.Phase.CandidatesReading and Time.get_ticks_msec()<deadline:
 			world.poll();await create_timer(0.01).timeout
-		if not check(model.phase==model.Phase.CandidatesReady,"Commit picker unavailable"):quit(1);return
-		model.choose_candidate(chosen);deadline=Time.get_ticks_msec()+5000
-		while model.phase==model.Phase.Reading and Time.get_ticks_msec()<deadline:
+		if not check(committing.phase==committing.Phase.CandidatesReady,"Commit picker unavailable"):quit(1);return
+		committing.choose_candidate(chosen);deadline=Time.get_ticks_msec()+5000
+		while committing.phase==committing.Phase.Reading and Time.get_ticks_msec()<deadline:
 			world.poll();await create_timer(0.01).timeout
-		if not check(model.phase==model.Phase.Ready,"Commit draft unavailable"):quit(1);return
-		model.request_dismiss();var commit_ticket: int=model.ticket;model.request_dismiss()
-		check(commit_ticket>0 and model.ticket==commit_ticket,"Dismissal did not retain one commit")
+		if not check(committing.phase==committing.Phase.Ready,"Commit draft unavailable"):quit(1);return
+		destination.open_panel();var commit_ticket: int=committing.ticket;destination.open_panel()
+		check(host.active==owner and not destination.panel.visible,"Destination opened before receipt")
+		check(commit_ticket>0 and committing.ticket==commit_ticket,"Dismissal did not retain one commit")
 		deadline=Time.get_ticks_msec()+5000
-		while model.phase==model.Phase.Applying and Time.get_ticks_msec()<deadline:
+		while committing.phase==committing.Phase.Applying and Time.get_ticks_msec()<deadline:
 			world.poll();await create_timer(0.01).timeout
-		if not check(model.phase==model.Phase.Closed,"Typed appointment commit did not confirm"):quit(1);return
+		if not check(committing.phase==committing.Phase.Closed,"Typed appointment commit did not confirm"):quit(1);return
+		check(host.active==destination and destination.panel.visible,"Applied appointment did not finish handoff")
+		owner.queue_free();destination.queue_free();host.queue_free();interaction.queue_free();await process_frame
 		var effect=FileAccess.open(directory+"/nobles-commit-wire.json",FileAccess.WRITE)
 		effect.store_string(JSON.stringify({"unit_id":chosen,"entity_id":target.entity_id,"assignment_id":target.assignment_id}));effect.close()
 	model.dispose();actions.queue_free();await process_frame

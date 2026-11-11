@@ -110,6 +110,21 @@ func run() -> void:
 	check(view.hover_at(Vector2(view.status_x()+320,view.list_top()+18)).get("kind")=="accounting","Nobles accounting hover missing")
 	check(view.hover_at(Vector2(0,0)).is_empty(),"Nobles hover retained outside row")
 	state.close();check(view.hover_at(Vector2(24,view.list_top()+18)).is_empty(),"Retired Nobles data retained hover")
+	var interaction=preload("res://tests/ui_host_test.gd").Interaction.new();root.add_child(interaction)
+	var host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)
+	var owner=preload("res://scripts/nobles_panel.gd").new();root.add_child(owner);owner.state.configure(service);host.register(owner)
+	var destination=preload("res://tests/ui_host_test.gd").View.new();root.add_child(destination);host.register(destination)
+	for outcome in ["applied","unknown","reset"]:
+		owner.open_panel();service.reply(owner.state.ticket,page())
+		owner.state.choices=[{"target":target,"expected_unit_id":-1,"unit_id":10}]
+		destination.open_panel();var commit: int=owner.state.ticket
+		check(host.active==owner and not destination.panel.visible and owner.state.phase==State.Phase.Applying,"Host switched before appointment receipt")
+		submitted=service.next;destination.open_panel();check(service.next==submitted,"Repeated handoff resubmitted appointment")
+		if outcome=="reset":host.reset_local_views()
+		service.reply(commit,{"outcome":"unknown"} if outcome=="unknown" else {"nobles":{"outcome":C.NoblesOutcome.Applied}})
+		check((host.active==destination and destination.panel.visible) if outcome=="applied" else (host.active==owner if outcome=="unknown" else host.active==null),"Handoff ignored mutation outcome or teardown")
+		destination.close_panel();owner.close_panel()
+	owner.free();destination.free();host.free();interaction.free()
 	view.free();state.dispose();service.queue_free();await process_frame
 	if failures==0:print("NOBLES_STATE_PASS")
 	quit(1 if failures else 0)

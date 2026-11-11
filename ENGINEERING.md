@@ -44,8 +44,24 @@ once and emits `dismissed` only after an Applied receipt (or immediately for an
 empty draft). Repeated dismissal while Applying cannot resubmit. Rejected and
 Stale receipts retain an unresolved draft; transport uncertainty, native Unknown
 and malformed receipts enter Unknown without replay. Explicit teardown remains
-separate from this user action. The panel host's immediate transition behavior
-still needs an asynchronous handoff before dismissal/navigation is integrated.
+separate from this user action. The staged panel owner now waits for that signal
+before forwarding a header destination or completing an opt-in host handoff.
+The shared host retains its existing immediate switching for other owners.
+Reset/session teardown clears the pending destination and retires its observer;
+unknown/rejected results cannot open the requested destination. Public Nobles
+entry and main-scene composition remain gated.
+
+Protected103341 on2026-11-11 exercises the configured Nobles owner, actual
+action service and shared UI host with a destination test panel. Switching waits
+for a single Manager commit receipt, then activates the destination. Independent
+Lua confirms holder10051 on assignment6, its position link and one added event.
+DF41368 closes unsaved with source preservation; GPU38C/0% sampled, native30FPS
+and headless viewer. Only the known rendering-thread notice occurs. Core,
+Nobles owner and existing host tests pass in `build/qa/nobles-owner-handoff-fixed`,
+including unknown outcomes and reset before a late success. The first check
+failed a GDScript inferred-Variant declaration; the corrected explicit WeakRef
+passes. This is owner/service acceptance, not main-scene or native header-click
+parity, and it does not establish live disconnect recovery.
 
 Protected102933 on2026-11-11 uses `DF3D_NOBLES_COMMIT_WIRE=1` with the native
 Nobles menu closed before the typed command. The actual controller/service

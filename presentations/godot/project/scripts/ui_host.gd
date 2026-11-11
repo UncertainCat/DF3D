@@ -33,7 +33,14 @@ func register(controller: Node) -> void:
 
 func activate(controller: Node) -> bool:
 	if not play_enabled or overlay_blocked or not is_instance_valid(controller): return false
-	if is_instance_valid(active) and active != controller: active.close_panel()
+	if is_instance_valid(active) and active != controller:
+		if active.has_method("request_handoff"):
+			var target: WeakRef=weakref(controller)
+			active.request_handoff(func():
+				var next=target.get_ref()
+				if not is_instance_valid(active) and is_instance_valid(next) and play_enabled and not overlay_blocked:next.open_panel())
+			return false
+		active.close_panel()
 	active = controller
 	interaction.cancel_selection()
 	_sync_input()

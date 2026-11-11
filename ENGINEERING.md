@@ -39,6 +39,35 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Nobles and administrators native discovery
 
+Owned appointment commits now call the complete native42a5a0 apply/cleanup
+routine with independently prepared rows. `prepareDraft` finishes and restores
+read-only RNG/cache scratch before the commit begins; simulation mutations and
+randomness are not rolled back by those guards. Admission validates choices,
+position/assignment membership, affected nemesis/unit records and squad slots.
+Native allocates NEW assignment IDs; expected IDs account only for earlier NEW
+rows in the same entity. Postconditions check current/previous holder fields.
+Preparation failure rejects before effects; exceptions or failed postconditions
+after invocation report Unknown, which must never be automatically replayed.
+
+The wrapper, historical-figure-to-nemesis lookupdde080, assignment constructor
+109420 and private text cleanupbb9b0 are fingerprinted. Existing religious-staff
+pins cover shared position/history, military/job and personality helpers. World
+squads, civilized actors and equipment-update RIP operands are explicitly bound
+to simulation storage. No global native menu/input/camera/render state is used.
+`nobles-commit-probe` is a synchronous diagnostic; public session/revision,
+deduplication and pending/unknown ownership are still required before exposure.
+
+Protected093735 on2026-11-11 (also093551 before NEW-ID preflight tightening)
+compares existing Manager appoint/replace/vacate with the recorded native092416
+sequence. Assignment holders, involved entity links, history-event counts and
+unit profession/squad/job IDs match; native menu bytes remain unchanged. Repeating
+each original-holder choice rejects with no added effects. Run the protected
+appointment lane with `DF3D_NOBLES_COMMIT=1`; exact observations and scope are in
+`native_nobles.json.owned_appointment_commit_reference`. Source preservation
+passes; DF30824 closes unsaved,30FPS, GPU39C/0% sampled. NEW offices, military
+conflicts, active job cancellation and multi-choice drafts remain unverified.
+This does not accept the picker UI or asynchronous command lifecycle.
+
 `nobles_draft_native.h` prepares private appointment drafts without committing
 simulation changes. Each choice revalidates the appointment gate and invokes
 native423df0 against the current owned rows. General historical-position
@@ -60,7 +89,8 @@ caches and captured simulation fields. `native_nobles.json` records this as
 DF12796 closes unsaved,30FPS, GPU41C/0% sampled. The initial092920 provider
 rejection used reference enum NEMESIS instead of native IS_NEMESIS; corrected
 before the passing capture. NEW slots, military conflicts and multi-choice
-replay remain unverified, and no semantic commit or public route exists yet.
+replay remain unverified. The subsequent owned commit evidence is described
+above; no public route exists yet.
 
 Appointment application is separate from candidate selection. Native feed424b3f
 updates the owned-row-compatible holder fields and parallel staged IDs; it does
@@ -71,7 +101,8 @@ b9fa0 for civilized-actor membership and c2fde0 for personality/intrigue follow-
 Military retirement13cbf10/13d4d80 and manager/bookkeeper job cancellation1325080
 are conditional effects. The semantic helpers are already pinned for religious
 staff in `location_staff_mutation_native.h`; the whole close/apply wrapper is
-not yet an accepted runtime entry point. Symbol application4227b0 is unrelated.
+now fingerprinted and invoked only with owned inputs as described above.
+Symbol application4227b0 is unrelated.
 Candidate feed also resolves conflicting military office drafts and creates NEW
 placeholder rows; these draft rules must not be omitted by a future adapter.
 Runtime must never call feed or borrow the global administrators context.

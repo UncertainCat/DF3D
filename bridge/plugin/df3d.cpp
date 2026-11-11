@@ -2533,12 +2533,15 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             list.append(row);}result.append(list);}
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
         }
-        if(parameters[0]=="nobles-draft-probe") {
+        if(parameters[0]=="nobles-draft-probe" || parameters[0]=="nobles-commit-probe") {
           if(parameters.size()<6 || (parameters.size()-1)%5)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
           std::vector<df3d_nobles::DraftChoice> choices;
           try {for(size_t i=1;i<parameters.size();i+=5)choices.push_back({std::stoi(parameters[i]),std::stoi(parameters[i+1]),std::stoi(parameters[i+2]),std::stoi(parameters[i+3]),std::stoi(parameters[i+4])});}
           catch(...){return CR_WRONG_USAGE;}
+          if(parameters[0]=="nobles-commit-probe") {
+            out.print("{}\n",int(df3d_nobles::commitDraft(choices)));return CR_OK;
+          }
           const auto rows=df3d_nobles::draftPreview(choices);if(!rows)return CR_FAILURE;
           Json::Value result(Json::arrayValue);
           for(const auto& entry:*rows){Json::Value row(Json::objectValue);

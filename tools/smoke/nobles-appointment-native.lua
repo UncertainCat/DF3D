@@ -10,7 +10,14 @@ local function click(x,y)
  gui.simulateInput(view,'_MOUSE_L');df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1;settle()
 end
 assert(df.global.pause_state and df.global.world.frame_counter==0 and not info.open)
-local result={cases={}}
+local semantic=os.getenv('DF3D_NOBLES_COMMIT')=='1'
+local result={cases={},semantic_commit=semantic}
+local reference
+if semantic then
+ local path=debug.getinfo(1,'S').source:sub(2):gsub('tools/smoke/nobles%-appointment%-native%.lua$','fixtures/production/native_nobles.json')
+ local f=assert(io.open(path));reference=json.decode(f:read('*a')).appointment_effect_reference.cases;f:close()
+ assert(reference and #reference==3)
+end
 local function write()
  local f=assert(io.open(out..'/nobles-appointment-native.json','w'));f:write(json.encode(result));f:close()
 end
@@ -60,6 +67,28 @@ for _,operation in ipairs{'appoint','replace','vacate'}do
  local owned=probe(command)
  assert(json.encode(case.before)==json.encode(state(entity,assignment,figures)),'Owned draft changed simulation')
  result.cases[#result.cases+1]=case;write()
+ if semantic then
+  local oracle=reference[#result.cases]
+  assert(oracle.operation==operation and oracle.selected_unit==case.selected_unit and
+   json.encode(oracle.before)==json.encode(case.before),'Semantic scenario differs from native reference')
+  gui.simulateInput(view,'LEAVESCREEN');settle();assert(not menu.choosing_candidate)
+  gui.simulateInput(view,'LEAVESCREEN');settle();assert(not info.open)
+  local size,address=df.sizeof(menu)
+  local function menu_bytes()
+   local bytes={};for offset=0,size-1 do bytes[#bytes+1]=string.char(df.reinterpret_cast('uint8_t',address+offset).value)end
+   return table.concat(bytes)
+  end
+  local before=menu_bytes();command[1]='nobles-commit-probe'
+  local output,rc=dfhack.run_command_silent('df3d',table.unpack(command))
+  case.outcome=tonumber(output);case.applied=state(entity,assignment,figures);write()
+  assert(rc==0 and case.outcome==2,'Semantic appointment did not apply: '..output)
+  assert(before==menu_bytes(),'Semantic commit changed native menu')
+  assert(json.encode(case.applied)==json.encode(oracle.applied),'Semantic appointment effects differ from native reference')
+  local repeated,repeat_rc=dfhack.run_command_silent('df3d',table.unpack(command))
+  assert(repeat_rc==0 and tonumber(repeated)==1,'Stale original holder was accepted twice')
+  assert(json.encode(case.applied)==json.encode(state(entity,assignment,figures)),'Rejected stale choice changed effects')
+  case.native_effects_match=true;case.menu_preserved=true;case.stale_rejected=true
+ else
  click(200,142+chosen*36)
  assert(not menu.choosing_candidate and info.open,'Candidate did not return to overview')
  case.staged=state(entity,assignment,figures);case.staged_holder=menu.spec_hfid[index]
@@ -75,6 +104,7 @@ for _,operation in ipairs{'appoint','replace','vacate'}do
  assert(json.encode(case.before)==json.encode(case.staged),'Candidate click committed simulation effects early')
  gui.simulateInput(view,'LEAVESCREEN');settle();assert(not info.open)
  case.applied=state(entity,assignment,figures);write()
+ end
  assert(assignment.histfig==expected and assignment.histfig2==(selected and expected or prior),'Native close did not apply appointment')
  assert(df.global.pause_state and df.global.world.frame_counter==0,'Appointment advanced simulation')
  case.passed=true;write()

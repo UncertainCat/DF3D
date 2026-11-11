@@ -5123,5 +5123,635 @@
       "source": "build/stockpile-storage-native-input-20261111-092920",
       "reason": "Draft rejected before staging: reference lookup used NEMESIS(2), corrected to native IS_NEMESIS(3)."
     }
+  },
+  "owned_appointment_commit_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-093735",
+    "df_version": "53.16",
+    "status": "passed",
+    "scope": "Owned native42a5a0 commit, with the native menu closed. Existing Manager appoint/replace/vacate matches recorded native092416 assignment holders, entity links, history-event counts and unit profession/squad/job IDs. Repeating each stale original-holder choice rejects without additional effects.",
+    "cases": [
+      {
+        "applied": {
+          "assignment": 6,
+          "assignments": 14,
+          "events": 54232,
+          "figures": [
+            {
+              "id": 10051,
+              "links": [
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 434,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 1316,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": 104,
+                  "strength": 100,
+                  "type": 13
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": 6,
+                  "start_year": 106,
+                  "strength": 100,
+                  "type": 10
+                }
+              ],
+              "unit": {
+                "id": 6598,
+                "job": -1,
+                "position": 6,
+                "profession": 78,
+                "profession2": 61,
+                "squad": 120
+              }
+            }
+          ],
+          "holder": 10051,
+          "holder2": 10051,
+          "next_assignment": 14,
+          "position": 10
+        },
+        "assignment_id": 6,
+        "before": {
+          "assignment": 6,
+          "assignments": 14,
+          "events": 54231,
+          "figures": [
+            {
+              "id": 10051,
+              "links": [
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 434,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 1316,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": 104,
+                  "strength": 100,
+                  "type": 13
+                }
+              ],
+              "unit": {
+                "id": 6598,
+                "job": -1,
+                "position": 6,
+                "profession": 78,
+                "profession2": 61,
+                "squad": 120
+              }
+            }
+          ],
+          "holder": -1,
+          "holder2": 9492,
+          "next_assignment": 14,
+          "position": 10
+        },
+        "entity_id": 865,
+        "menu_preserved": true,
+        "native_effects_match": true,
+        "operation": "appoint",
+        "outcome": 2,
+        "passed": true,
+        "selected_figure": 10051,
+        "selected_unit": 6598,
+        "stale_rejected": true
+      },
+      {
+        "applied": {
+          "assignment": 6,
+          "assignments": 14,
+          "events": 54234,
+          "figures": [
+            {
+              "id": 10051,
+              "links": [
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 434,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 1316,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": 104,
+                  "strength": 100,
+                  "type": 13
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 6,
+                  "start_year": 106,
+                  "strength": 100,
+                  "type": 11
+                }
+              ],
+              "unit": {
+                "id": 6598,
+                "job": -1,
+                "position": 6,
+                "profession": 78,
+                "profession2": 61,
+                "squad": 120
+              }
+            },
+            {
+              "id": 9492,
+              "links": [
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 383,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 3,
+                  "start_year": 101,
+                  "strength": 100,
+                  "type": 11
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 4,
+                  "start_year": 101,
+                  "strength": 100,
+                  "type": 11
+                },
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": 3,
+                  "start_year": 106,
+                  "strength": 100,
+                  "type": 10
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": 6,
+                  "start_year": 106,
+                  "strength": 100,
+                  "type": 10
+                }
+              ],
+              "unit": {
+                "id": 5981,
+                "job": -1,
+                "position": -1,
+                "profession": 18,
+                "profession2": 18,
+                "squad": -1
+              }
+            }
+          ],
+          "holder": 9492,
+          "holder2": 9492,
+          "next_assignment": 14,
+          "position": 10
+        },
+        "assignment_id": 6,
+        "before": {
+          "assignment": 6,
+          "assignments": 14,
+          "events": 54232,
+          "figures": [
+            {
+              "id": 10051,
+              "links": [
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 434,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 1316,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": 104,
+                  "strength": 100,
+                  "type": 13
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": 6,
+                  "start_year": 106,
+                  "strength": 100,
+                  "type": 10
+                }
+              ],
+              "unit": {
+                "id": 6598,
+                "job": -1,
+                "position": 6,
+                "profession": 78,
+                "profession2": 61,
+                "squad": 120
+              }
+            },
+            {
+              "id": 9492,
+              "links": [
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 383,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 3,
+                  "start_year": 101,
+                  "strength": 100,
+                  "type": 11
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 4,
+                  "start_year": 101,
+                  "strength": 100,
+                  "type": 11
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 6,
+                  "start_year": 101,
+                  "strength": 100,
+                  "type": 11
+                },
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": 3,
+                  "start_year": 106,
+                  "strength": 100,
+                  "type": 10
+                }
+              ],
+              "unit": {
+                "id": 5981,
+                "job": -1,
+                "position": -1,
+                "profession": 18,
+                "profession2": 18,
+                "squad": -1
+              }
+            }
+          ],
+          "holder": 10051,
+          "holder2": 10051,
+          "next_assignment": 14,
+          "position": 10
+        },
+        "entity_id": 865,
+        "menu_preserved": true,
+        "native_effects_match": true,
+        "operation": "replace",
+        "outcome": 2,
+        "passed": true,
+        "selected_figure": 9492,
+        "selected_unit": 5981,
+        "stale_rejected": true
+      },
+      {
+        "applied": {
+          "assignment": 6,
+          "assignments": 14,
+          "events": 54235,
+          "figures": [
+            {
+              "id": 9492,
+              "links": [
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 383,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 3,
+                  "start_year": 101,
+                  "strength": 100,
+                  "type": 11
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 4,
+                  "start_year": 101,
+                  "strength": 100,
+                  "type": 11
+                },
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": 3,
+                  "start_year": 106,
+                  "strength": 100,
+                  "type": 10
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 6,
+                  "start_year": 106,
+                  "strength": 100,
+                  "type": 11
+                }
+              ],
+              "unit": {
+                "id": 5981,
+                "job": -1,
+                "position": -1,
+                "profession": 18,
+                "profession2": 18,
+                "squad": -1
+              }
+            }
+          ],
+          "holder": -1,
+          "holder2": 9492,
+          "next_assignment": 14,
+          "position": 10
+        },
+        "assignment_id": 6,
+        "before": {
+          "assignment": 6,
+          "assignments": 14,
+          "events": 54234,
+          "figures": [
+            {
+              "id": 9492,
+              "links": [
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 383,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 3,
+                  "start_year": 101,
+                  "strength": 100,
+                  "type": 11
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 4,
+                  "start_year": 101,
+                  "strength": 100,
+                  "type": 11
+                },
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": 3,
+                  "start_year": 106,
+                  "strength": 100,
+                  "type": 10
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": 6,
+                  "start_year": 106,
+                  "strength": 100,
+                  "type": 10
+                }
+              ],
+              "unit": {
+                "id": 5981,
+                "job": -1,
+                "position": -1,
+                "profession": 18,
+                "profession2": 18,
+                "squad": -1
+              }
+            }
+          ],
+          "holder": 9492,
+          "holder2": 9492,
+          "next_assignment": 14,
+          "position": 10
+        },
+        "entity_id": 865,
+        "menu_preserved": true,
+        "native_effects_match": true,
+        "operation": "vacate",
+        "outcome": 2,
+        "passed": true,
+        "selected_figure": -1,
+        "selected_unit": -1,
+        "stale_rejected": true
+      }
+    ],
+    "source_preserved": true,
+    "owned_df_closed": 30824,
+    "limitations": [
+      "Diagnostic synchronous path only: no public request revision/session/deduplication contract or UI.",
+      "NEW office creation, military conflicts, active job cancellation and multi-choice drafts remain unverified.",
+      "Captured fields do not establish every historical/personality/intrigue effect or complete simulation-memory equivalence."
+    ],
+    "earlier_passing_source": "build/stockpile-storage-native-input-20261111-093551"
   }
 }

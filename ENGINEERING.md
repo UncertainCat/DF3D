@@ -49,11 +49,25 @@ artifact254, installed in coffin491 with contained count1. Owned DF40456 closes
 unsaved with source preservation; native30FPS/headless viewer, GPU60C/18%/45W.
 The source facts are in `native_objects.json.coffin_reference`.
 
-This is the191 contract/neutral codec only; producer and renderer wiring remain
-pending. Non-coffin appearances reject known values. Older recordings remain
-unknown. Rebuild bridge and viewer together for `Local\df3d_management_v191`
-before live use; installed binaries are still190.
+The191 producer uses the pinned semantic holder lookup and audited native branch,
+with owned output. Item/carrier/contents revisions include the fact. The viewer
+selects the installed `_UNUSED` member only when the fact is true. Non-coffin
+appearances reject known values; older recordings retain unknown. Bridge and
+viewer are rebuilt together for `Local\df3d_management_v191`.
 
+Core19, item-sheet state, Nobles state and UI-host checks pass
+`build/qa/coffin-state-runtime`; MSVC bridge and Godot extension build. The earlier
+contract check `build/qa/coffin-state-contract` verifies value/type scope, unknown
+state and owned decode. Protected165010 on2026-11-11 verifies current holder facts
+and all four Objects panel crops at1200x800: each crop has zero differing pixels
+against native, including the formerly mismatched coffin. Symbols is empty in
+this save; other window sizes, scrolling, claim variants, remaining lifecycle and
+main-scene composition are not covered by that pixel comparison. Existing wire,
+navigation, hover and late-close checks pass. Owned DF41116 closes unsaved with
+source preservation and restored preferences; both processes30FPS, GPU61C/37%/46W.
+Known separate-thread/finalize/ObjectDB shutdown diagnostics remain
+(passed_with_known_issues). `native_objects.json.coffin_reference` records the
+bounded current evidence. Public Objects exposure remains gated.
 
 Protocol190 supplies optional weapon `artifact_mood` in shared item appearance
 facts (-1 unknown,0 false,1 true). Native c7ce83..c7ce94 selects weapon artwork
@@ -68,8 +82,8 @@ item-sheet state, Nobles state and UI-host checks pass `build/qa/weapon-mood-run
 the MSVC bridge builds. Protected163511 on2026-11-11 verifies the typed facts and
 rendered Objects panel. Both named weapons have artifact=true, artifact_mood=false.
 The entire Named objects panel crop now matches native exactly, as do Symbols and
-Written content at1200x800. The single coffin picture still differs by318 pixels
-in Artifacts; no broader artwork acceptance is claimed. Existing navigation,
+Written content at1200x800. That recording retains the318-pixel coffin difference, corrected in the191
+evidence above; no broader artwork acceptance is claimed. Existing navigation,
 hover, close/late-read and native menu/RNG/camera guards pass. Owned DF44500 closes
 unsaved with source preservation and restored preferences, both processes30FPS,
 sampled GPU60C/1%/46W. Known separate-thread/finalize/ObjectDB diagnostics remain

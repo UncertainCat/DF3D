@@ -1427,6 +1427,45 @@
     "selector_branch": "0xc7ed0b..0xc7ed43",
     "semantic_holder_lookup": "0xcb16b0",
     "graphics_cache_not_runtime": "0xcf6570",
-    "status": "native state confirmed; provider and rendering pending"
+    "status": "implemented; passed_with_known_issues",
+    "rendered_source": "build/stockpile-storage-native-input-20261111-165010",
+    "protocol": 191,
+    "panel_comparison": [
+      {
+        "tab": 0,
+        "different_pixels": 0,
+        "bounds": null
+      },
+      {
+        "tab": 1,
+        "different_pixels": 0,
+        "bounds": null
+      },
+      {
+        "tab": 2,
+        "different_pixels": 0,
+        "bounds": null
+      },
+      {
+        "tab": 3,
+        "different_pixels": 0,
+        "bounds": null
+      }
+    ],
+    "wire": {
+      "controller_tabs": 4,
+      "counts": [
+        10,
+        0,
+        2,
+        11
+      ],
+      "late_read_closed": true,
+      "lookups": 4,
+      "owner_navigation": true,
+      "stale_tabs": 4,
+      "success": true
+    },
+    "scope": "1200x800, source save counts10/0/2/11; other sizes/scroll/claims/composition remain pending"
   }
 }

@@ -167,6 +167,7 @@ struct DoorItemFacts { bool open=false, forbidden=false;uint8_t wear=0; };
 struct ItemQuery {
   int8_t bucketLiquid=-1; // Unknown versus known absence/presence of the native-selected liquid.
   std::string_view bucketLiquidColor;
+  int8_t coffinUnused=-1; // Native installed-coffin state; unknown retains legacy artwork.
   int8_t craftSoftMaterial=-1; // Native semantic flags; -1 preserves unknown for legacy/map callers.
   std::string_view craftGemColor; // Native-selected descriptor token; empty never invents an overlay.
   std::optional<DoorItemFacts> door; // Absent until the caller owns linked-door and wear facts.

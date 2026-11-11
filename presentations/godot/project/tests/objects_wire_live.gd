@@ -40,6 +40,8 @@ func run() -> void:
 				check(rows[i].get(key)==expected[i][key],"Objects row differs: "+key)
 			var facts: Dictionary=reference.appearances[tab][i]
 			check(rows[i].item_type==facts.item_type,"Objects item type differs")
+			if rows[i].item_type==21:
+				check(rows[i].get("appearance",{}).get("coffin_unused")==bool(facts.holder_type==3 and facts.holder_count<=1),"Objects coffin state differs")
 			if rows[i].item_type==24:
 				check(rows[i].get("appearance",{}).get("artifact_mood")==facts.artifact_mood,"Objects weapon mood differs")
 			var target: Dictionary=reference.destinations[tab][i]

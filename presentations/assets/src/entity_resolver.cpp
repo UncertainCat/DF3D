@@ -1260,7 +1260,7 @@ ItemSprite resolveItem(const AssetIndex& idx, const ItemQuery& q) {
     case ItemKind::Bed: return member("ITEM_BED", "", "item.bed");
     case ItemKind::Chair: return member("ITEM_CHAIR", "", "item.chair");
     case ItemKind::Table: return member("ITEM_TABLE", "", "item.table");
-    case ItemKind::Coffin: return member("ITEM_COFFIN", "", "item.coffin");
+    case ItemKind::Coffin: return member("ITEM_COFFIN", q.coffinUnused==1?"_UNUSED":"", "item.coffin");
     // Loose statues use the native wrapped transport artwork. The installed
     // building draws its quality pedestal and depicted subject separately.
     case ItemKind::Statue: return single("ITEM_STATUE", "item.statue");

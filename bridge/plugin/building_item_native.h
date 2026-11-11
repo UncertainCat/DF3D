@@ -11,6 +11,7 @@
 #include "df/building_stockpilest.h"
 #include "df/building_floodgatest.h"
 #include "df/building_doorst.h"
+#include "df/building_coffinst.h"
 #include "df/buildingitemst.h"
 #include "df/item.h"
 #include "df/item_coinst.h"
@@ -375,6 +376,21 @@ inline std::optional<ItemAppearanceRecipe> ownedItemRecipe(const df3d_appearance
     size_t bytes=0;if(!validItemRecipe(recipe,bytes))return std::nullopt;
     return recipe;
 }
+// Native c7ed0b..c7ed43 selects the unused picture for a coffin installed in
+// a coffin building with at most one contained item. No graphics cache access.
+inline std::optional<bool> itemCoffinUnused(df::item* item) {
+    const auto find=itemBuildingLookup();if(!find || !item)return std::nullopt;
+    static_assert(offsetof(df::building_coffinst,contained_items)==0x128);
+    static const bool pinned=[] {
+        auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x3c;++i){hash^=base[0xc7ed0b+i];hash*=UINT64_C(1099511628211);}
+        return hash==UINT64_C(0x25bbc7cded8e89e0);
+    }();
+    if(!pinned)return std::nullopt;
+    const auto* coffin=virtual_cast<df::building_coffinst>(find(item,0x24));
+    return coffin && coffin->contained_items.size()<=1;
+}
 inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
     if(!item)return std::nullopt;
     ItemInspectionAppearance appearance;
@@ -497,6 +513,10 @@ inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
     if(item->getType()==df::item_type::BIN){appearance.contents=itemContainerContents(item);if(!appearance.contents || appearance.contents->entries.size()>4096)return std::nullopt;}
     if(item->getType()==df::item_type::BAG){appearance.contents=itemBagContents(item);if(!appearance.contents)return std::nullopt;}
     if(item->getType()==df::item_type::BARREL){appearance.contents=itemBarrelContents(item);if(!appearance.contents)return std::nullopt;}
+    if(item->getType()==df::item_type::COFFIN) {
+        const auto unused=itemCoffinUnused(item);if(!unused)return std::nullopt;
+        appearance.coffinUnused=*unused?1:0;
+    }
     // Native c7ce83..c7ce94 selects weapon artwork from flag27, not artifact status.
     if(item->getType()==df::item_type::WEAPON)appearance.artifactMood=item->flags.bits.artifact_mood?1:0;
     appearance.stack=item->getStackSize();appearance.flags=(item->flags.bits.artifact?32:0)|(item->flags.bits.spider_web?64:0);

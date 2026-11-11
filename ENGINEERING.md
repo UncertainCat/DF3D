@@ -73,6 +73,19 @@ in `build/qa/nobles-symbol-provider`; the MSVC plugin builds. DF5012 closes
 unsaved with source preservation,30FPS, sampled GPU56C/4%. This accepts the
 read provider, not symbol editing, transport or rendered DF3D picker behavior.
 
+`stageSymbols` accepts final checkbox states keyed by item ID and an expected
+ordered-candidate revision. It rebuilds candidates in the caller's owned
+appointment context, rejects stale lists and missing/duplicate edits before
+staging, and maps unchecked items back to their previous office (or unassigned
+when previously held by the selected office). The inline native checkbox branch
+is fingerprinted. This changes owned vectors only; no claim or artifact effects
+are submitted. `nobles-symbol-stage-probe` exercises this preparatory operation.
+Protected111930 on2026-11-11 compares full staged rows after native selection
+and removal, and checks stale/missing/duplicate rejection. Native menu, RNG and
+measured lookup caches are preserved. Core passes in `build/qa/nobles-symbol-stage`,
+the plugin builds, and DF41316 closes unsaved with source preservation,30FPS,
+sampled GPU60C/7%. Cross-office restoration still needs live acceptance.
+
 Native4227b0 applies staged entries from handling_symbol_closure_ind through the
 end. Feed424794 toggles a candidate between the selected office, its previous
 office and unassigned, and Done starts apply at index0. Claim mutation and apply

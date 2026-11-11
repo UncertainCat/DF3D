@@ -2534,14 +2534,29 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             list.append(row);}result.append(list);}
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
         }
-        if(parameters[0]=="nobles-symbols-probe") {
-          if(parameters.size()!=4)return CR_WRONG_USAGE;
+        if(parameters[0]=="nobles-symbols-probe" || parameters[0]=="nobles-symbol-stage-probe") {
+          const bool stage=parameters[0]=="nobles-symbol-stage-probe";
+          if((!stage && parameters.size()!=4) || (stage && (parameters.size()<5 || (parameters.size()-5)%2)))return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving() || !df3d_nobles::symbolsReady())return CR_FAILURE;
           try {
             df3d_nobles::OfficeKey key{std::stoi(parameters[1]),std::stoi(parameters[2]),std::stoi(parameters[3])};
             df3d_nobles::Context owned(reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr)));
             if(!df3d_nobles::prepareDraft(owned,{}))return CR_FAILURE;
-            const auto rows=df3d_nobles::projectSymbols(owned,key);if(!rows)return CR_FAILURE;
+            auto rows=df3d_nobles::projectSymbols(owned,key);if(!rows)return CR_FAILURE;
+            if(stage) {
+              std::vector<df3d_nobles::SymbolChoice> edits;
+              for(size_t i=5;i<parameters.size();i+=2){const auto selected=std::stoi(parameters[i+1]);
+                if(selected!=0 && selected!=1)return CR_WRONG_USAGE;edits.push_back({std::stoi(parameters[i]),selected!=0});}
+              auto revision=std::stoull(parameters[4]);if(!revision)revision=df3d_nobles::symbolRevision(*rows);
+              if(!df3d_nobles::stageSymbols(owned,key,revision,edits)) {
+                Json::Value result;result["rejected"]=true;result["stale"]=owned.stale;
+                out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
+              }
+              for(size_t i=0;i<rows->size();++i){const auto index=owned.value.cand_symbol_new_ind[i];
+                if(index==-1)(*rows)[i].selectedOffice.reset();
+                else {const auto* row=owned.value.noblelist[index];(*rows)[i].selectedOffice=df3d_nobles::OfficeKey{
+                  row->enid,row->ep->id,row->epp?row->epp->id:-1,owned.slot(row)};}}
+            }
             const auto office=[](const std::optional<df3d_nobles::OfficeKey>& key) {
               Json::Value result;if(key){result["entity_id"]=key->entityId;result["position_id"]=key->positionId;
                 result["assignment_id"]=key->assignmentId;result["draft_slot"]=key->draftSlot;}return result;

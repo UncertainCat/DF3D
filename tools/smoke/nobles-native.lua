@@ -269,6 +269,9 @@ if os.getenv('DF3D_NOBLES_SYMBOLS')=='1' then
  for i,row in ipairs(menu.noblelist)do if row.ep.name[0]=='manager' then index=i;office=rows[i+1];break end end
  assert(index and office and office.assignment_id>=0,'Missing Manager symbol office')
  local symbol_command={'nobles-symbols-probe',tostring(office.entity_id),tostring(office.position_id),tostring(office.assignment_id)}
+ local function staged(revision,...)
+  return probe({'nobles-symbol-stage-probe',tostring(office.entity_id),tostring(office.position_id),tostring(office.assignment_id),tostring(revision),...})
+ end
  local cold_symbols=probe(symbol_command)
  local function compare_symbols(owned)
   assert(#owned==#menu.cand_symbol,'Owned symbol candidate count differs')
@@ -290,6 +293,9 @@ if os.getenv('DF3D_NOBLES_SYMBOLS')=='1' then
  gui.simulateInput(view,'_MOUSE_L');df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1;settle()
  assert(menu.assigning_symbol and menu.symbol_noblelist_ind==index,'Wrong native symbol picker')
  compare_symbols(cold_symbols);compare_symbols(probe(symbol_command))
+ assert(staged(1).stale,'Stale symbol revision was accepted')
+ assert(staged(0,'-1','1').rejected,'Missing symbol item was accepted')
+ assert(staged(0,tostring(menu.cand_symbol[0].id),'1',tostring(menu.cand_symbol[0].id),'0').rejected,'Duplicate symbol edit was accepted')
  local symbols={}
  for i,item in ipairs(menu.cand_symbol)do
   symbols[#symbols+1]={item_id=item.id,new_index=menu.cand_symbol_new_ind[i],current_index=menu.cand_symbol_is_symbol_of_ind[i],value=menu.cand_symbol_value[i]}
@@ -324,6 +330,7 @@ if os.getenv('DF3D_NOBLES_SYMBOLS')=='1' then
   click_symbol(912,190);assert(menu.cand_symbol_new_ind[0]~=previous,'Symbol checkbox did not toggle')
   assert(json.encode(claims())==json.encode(before),'Symbol toggle applied before dismissal')
   local staged=menu.cand_symbol_new_ind[0]
+  compare_symbols(probe({'nobles-symbol-stage-probe',tostring(office.entity_id),tostring(office.position_id),tostring(office.assignment_id),'0',tostring(symbols[1].item_id),staged==index and '1' or '0'}))
   capture('nobles-symbols-selected-'..operation)
   if operation=='back' then gui.simulateInput(view,'LEAVESCREEN');settle()else click_symbol(928,142)end
   assert(info.open and not menu.assigning_symbol and menu.handling_symbol_closure_ind==-1,'Symbol dismissal did not finish')

@@ -9,6 +9,17 @@ struct SymbolRow {
     int32_t itemId=-1,value=0;
     std::optional<OfficeKey> currentOffice,selectedOffice;
 };
+struct SymbolChoice {int32_t itemId=-1;bool selected=false;};
+inline uint64_t symbolRevision(const std::vector<SymbolRow>& rows) {
+    uint64_t hash=UINT64_C(14695981039346656037);
+    const auto number=[&](uint32_t v){for(unsigned i=0;i<4;++i){hash^=uint8_t(v>>(i*8));hash*=UINT64_C(1099511628211);}};
+    const auto office=[&](const std::optional<OfficeKey>& key) {
+        number(key?1:0);if(key){number(key->entityId);number(key->positionId);number(key->assignmentId);number(key->draftSlot);}
+    };
+    number(uint32_t(rows.size()));
+    for(const auto& row:rows){number(row.itemId);number(row.value);office(row.currentOffice);office(row.selectedOffice);}
+    hash&=INT64_MAX;return hash?hash:1;
+}
 // 422d10 writes only the supplied candidate vectors and local sorting arrays.
 // Position/reference getters can refresh semantic reference caches; valuation
 // has the same semantic lazy artwork initialization as Stocks. No native menu,
@@ -33,6 +44,7 @@ inline bool symbolsReady() {
         struct Pin {size_t rva,length;uint64_t hash;};
         constexpr Pin pins[]={
             {0x422d10,0x10d8,UINT64_C(0x9b8c1fea577b3390)},
+            {0x424794,0x47,UINT64_C(0xa1447d0600f41dc2)},
             {0xb9dc0,0xa7,UINT64_C(0x4d8961b901732215)},
             {0x1367430,0xc6,UINT64_C(0xc0292be8a6dacf2c)},
             {0xc8baa0,0x11a,UINT64_C(0x2c62fce4a0555c66)},
@@ -87,5 +99,33 @@ inline std::optional<std::vector<SymbolRow>> projectSymbols(Context& owned,const
         result.push_back(std::move(row));
     }
     return result;
+}
+// Native424794..4247db toggles to the selected office, then restores the prior
+// office (or unassigns if it was already this office). The presentation sends
+// final checkbox states, not menu indices. This only stages the supplied owned
+// context; a later apply must validate all edits before crossing into effects.
+inline bool stageSymbols(Context& owned,const OfficeKey& key,uint64_t expectedRevision,
+        const std::vector<SymbolChoice>& choices) {
+    if(!expectedRevision || expectedRevision>INT64_MAX || choices.size()>4096)return false;
+    const auto rows=projectSymbols(owned,key);if(!rows)return false;
+    if(symbolRevision(*rows)!=expectedRevision){owned.stale=true;return false;}
+    auto& value=owned.value;
+    int32_t target=-1;
+    for(size_t i=0;i<value.noblelist.size();++i) {
+        const auto* row=value.noblelist[i];
+        if(row->enid==key.entityId && row->ep->id==key.positionId &&
+           (row->epp?row->epp->id:-1)==key.assignmentId && owned.slot(row)==key.draftSlot)target=int32_t(i);
+    }
+    if(target<0)return false;
+    std::unordered_map<int32_t,size_t> indices;
+    for(size_t i=0;i<rows->size();++i)if(!indices.emplace((*rows)[i].itemId,i).second)return false;
+    std::unordered_map<int32_t,bool> edits;
+    for(const auto& choice:choices)if(!indices.count(choice.itemId) || !edits.emplace(choice.itemId,choice.selected).second)return false;
+    for(const auto& choice:choices) {
+        const auto i=indices.at(choice.itemId);
+        const auto previous=value.cand_symbol_is_symbol_of_ind[i];
+        value.cand_symbol_new_ind[i]=choice.selected?target:(previous==target?-1:previous);
+    }
+    return true;
 }
 }

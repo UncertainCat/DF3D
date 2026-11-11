@@ -1,0 +1,933 @@
+{
+  "source": "build/stockpile-storage-native-input-20261111-173422",
+  "game": "DF 53.16",
+  "exe_sha256": "205770918fd54c96cbbcf89223ebd449e2e113c7c873ed81177c4511a3450db7",
+  "scope": "Native discovery only, six unobscured categories; no runtime implementation or effects accepted.",
+  "status": "passed",
+  "owned_df_pid": 26312,
+  "source_preserved": true,
+  "fps_cap": 30,
+  "crime_records": [
+    {
+      "accused": -1,
+      "criminal": 5698,
+      "discovered_time": 63130,
+      "discovered_year": 104,
+      "entity": 865,
+      "event_time": 285931,
+      "event_year": 103,
+      "flags": 6,
+      "id": 0,
+      "mode": 5,
+      "site": 651,
+      "victim": 6034
+    },
+    {
+      "accused": -1,
+      "criminal": 5698,
+      "discovered_time": 297584,
+      "discovered_year": 103,
+      "entity": 865,
+      "event_time": 286080,
+      "event_year": 103,
+      "flags": 6,
+      "id": 1,
+      "mode": 5,
+      "site": 651,
+      "victim": 5697
+    },
+    {
+      "accused": -1,
+      "criminal": 5698,
+      "discovered_time": 294645,
+      "discovered_year": 103,
+      "entity": 865,
+      "event_time": 286245,
+      "event_year": 103,
+      "flags": 6,
+      "id": 2,
+      "mode": 5,
+      "site": 651,
+      "victim": 5984
+    },
+    {
+      "accused": -1,
+      "criminal": 5698,
+      "discovered_time": 295421,
+      "discovered_year": 103,
+      "entity": 865,
+      "event_time": 287021,
+      "event_year": 103,
+      "flags": 6,
+      "id": 3,
+      "mode": 5,
+      "site": 651,
+      "victim": 5984
+    },
+    {
+      "accused": -1,
+      "criminal": 5698,
+      "discovered_time": 295595,
+      "discovered_year": 103,
+      "entity": 865,
+      "event_time": 287195,
+      "event_year": 103,
+      "flags": 6,
+      "id": 4,
+      "mode": 6,
+      "site": 651,
+      "victim": -1
+    },
+    {
+      "accused": -1,
+      "criminal": 5698,
+      "discovered_time": 295633,
+      "discovered_year": 103,
+      "entity": 865,
+      "event_time": 287233,
+      "event_year": 103,
+      "flags": 6,
+      "id": 5,
+      "mode": 5,
+      "site": 651,
+      "victim": 5984
+    },
+    {
+      "accused": -1,
+      "criminal": 5698,
+      "discovered_time": 63130,
+      "discovered_year": 104,
+      "entity": 865,
+      "event_time": 287684,
+      "event_year": 103,
+      "flags": 6,
+      "id": 6,
+      "mode": 5,
+      "site": 651,
+      "victim": 2345
+    },
+    {
+      "accused": 6546,
+      "criminal": 6546,
+      "discovered_time": 370030,
+      "discovered_year": 103,
+      "entity": 865,
+      "event_time": 370030,
+      "event_year": 103,
+      "flags": 3,
+      "id": 7,
+      "mode": 0,
+      "site": 651,
+      "victim": 5578
+    },
+    {
+      "accused": 6032,
+      "criminal": 6032,
+      "discovered_time": 39350,
+      "discovered_year": 106,
+      "entity": 865,
+      "event_time": 39350,
+      "event_year": 106,
+      "flags": 3,
+      "id": 8,
+      "mode": 0,
+      "site": 651,
+      "victim": 2446
+    },
+    {
+      "accused": -1,
+      "criminal": 5698,
+      "discovered_time": 52145,
+      "discovered_year": 106,
+      "entity": 865,
+      "event_time": 50172,
+      "event_year": 106,
+      "flags": 6,
+      "id": 9,
+      "mode": 5,
+      "site": 651,
+      "victim": 7124
+    },
+    {
+      "accused": -1,
+      "criminal": 5698,
+      "discovered_time": 100842,
+      "discovered_year": 106,
+      "entity": 865,
+      "event_time": 50955,
+      "event_year": 106,
+      "flags": 6,
+      "id": 10,
+      "mode": 5,
+      "site": 651,
+      "victim": 6822
+    },
+    {
+      "accused": -1,
+      "criminal": 5698,
+      "discovered_time": 100842,
+      "discovered_year": 106,
+      "entity": 865,
+      "event_time": 51046,
+      "event_year": 106,
+      "flags": 6,
+      "id": 11,
+      "mode": 5,
+      "site": 651,
+      "victim": 6835
+    },
+    {
+      "accused": 6970,
+      "criminal": 6970,
+      "discovered_time": 57690,
+      "discovered_year": 106,
+      "entity": 865,
+      "event_time": 57690,
+      "event_year": 106,
+      "flags": 3,
+      "id": 12,
+      "mode": 0,
+      "site": 651,
+      "victim": 5813
+    },
+    {
+      "accused": -1,
+      "criminal": 5698,
+      "discovered_time": 111281,
+      "discovered_year": 106,
+      "entity": 865,
+      "event_time": 109121,
+      "event_year": 106,
+      "flags": 6,
+      "id": 13,
+      "mode": 5,
+      "site": 651,
+      "victim": 6595
+    },
+    {
+      "accused": -1,
+      "criminal": 5698,
+      "discovered_time": 109416,
+      "discovered_year": 106,
+      "entity": 865,
+      "event_time": 109245,
+      "event_year": 106,
+      "flags": 6,
+      "id": 14,
+      "mode": 5,
+      "site": 651,
+      "victim": 6553
+    },
+    {
+      "accused": -1,
+      "criminal": 5698,
+      "discovered_time": 111633,
+      "discovered_year": 106,
+      "entity": 865,
+      "event_time": 109355,
+      "event_year": 106,
+      "flags": 6,
+      "id": 15,
+      "mode": 5,
+      "site": 651,
+      "victim": 5982
+    },
+    {
+      "accused": -1,
+      "criminal": 5698,
+      "discovered_time": 118682,
+      "discovered_year": 106,
+      "entity": 865,
+      "event_time": 110565,
+      "event_year": 106,
+      "flags": 6,
+      "id": 16,
+      "mode": 5,
+      "site": 651,
+      "victim": 1017
+    }
+  ],
+  "tabs": [
+    {
+      "caption": "Open cases",
+      "selected_widget_tab": 0,
+      "legacy_mode": 0,
+      "texts": [
+        {
+          "text": "Injured party: L\u00c3\u00b2r Astthum, Bone Doctor.",
+          "rect": [
+            64,
+            12,
+            117,
+            12
+          ],
+          "foreground": 7,
+          "background": 0,
+          "bright": false
+        },
+        {
+          "text": "Unsolved.",
+          "rect": [
+            64,
+            13,
+            72,
+            13
+          ],
+          "foreground": 3,
+          "background": 0,
+          "bright": true
+        },
+        {
+          "text": "Interrogate",
+          "rect": [
+            65,
+            15,
+            75,
+            15
+          ],
+          "foreground": 7,
+          "background": 0,
+          "bright": true
+        },
+        {
+          "text": "Convict",
+          "rect": [
+            78,
+            15,
+            84,
+            15
+          ],
+          "foreground": 7,
+          "background": 0,
+          "bright": true
+        },
+        {
+          "text": "Witness: Mosus Paintposts.",
+          "rect": [
+            64,
+            18,
+            116,
+            18
+          ],
+          "foreground": 7,
+          "background": 0,
+          "bright": true
+        },
+        {
+          "text": "Accuses: Doren Thosbutal\u00c3\u00a5th, Dwarven Child.",
+          "rect": [
+            64,
+            19,
+            116,
+            19
+          ],
+          "foreground": 6,
+          "background": 0,
+          "bright": true
+        },
+        {
+          "text": "Date: 14th Slate, 106",
+          "rect": [
+            64,
+            20,
+            84,
+            20
+          ],
+          "foreground": 7,
+          "background": 0,
+          "bright": false
+        },
+        {
+          "text": "Reported: 15th Slate, 106",
+          "rect": [
+            64,
+            21,
+            88,
+            21
+          ],
+          "foreground": 7,
+          "background": 0,
+          "bright": false
+        }
+      ],
+      "callbacks": [
+        {
+          "activated": [
+            4746608
+          ],
+          "feed": [],
+          "logic": [],
+          "name": "",
+          "rect": [
+            64,
+            14,
+            76,
+            16
+          ],
+          "render": []
+        },
+        {
+          "activated": [
+            4746080
+          ],
+          "feed": [],
+          "logic": [],
+          "name": "",
+          "rect": [
+            77,
+            14,
+            85,
+            16
+          ],
+          "render": []
+        }
+      ]
+    },
+    {
+      "caption": "Closed cases",
+      "selected_widget_tab": 1,
+      "legacy_mode": 0,
+      "texts": [
+        {
+          "text": "Injured party: Zas Rig\u00c3\u00b2throsat, Wrestler.",
+          "rect": [
+            64,
+            12,
+            117,
+            12
+          ],
+          "foreground": 7,
+          "background": 0,
+          "bright": false
+        },
+        {
+          "text": "Convicted: L\u00c3\u00b2r Esht\u00c3\u00a2nm\u00c3\u00acshos, Scribe.",
+          "rect": [
+            64,
+            13,
+            117,
+            13
+          ],
+          "foreground": 5,
+          "background": 0,
+          "bright": true
+        }
+      ],
+      "callbacks": []
+    },
+    {
+      "caption": "Cold cases",
+      "selected_widget_tab": 2,
+      "legacy_mode": 0,
+      "texts": [
+        {
+          "text": "Injured party: Rimtar Ebalrovod, Stoneworker.",
+          "rect": [
+            64,
+            12,
+            117,
+            12
+          ],
+          "foreground": 7,
+          "background": 0,
+          "bright": false
+        },
+        {
+          "text": "Unsolved.",
+          "rect": [
+            64,
+            13,
+            72,
+            13
+          ],
+          "foreground": 3,
+          "background": 0,
+          "bright": true
+        },
+        {
+          "text": "Interrogate",
+          "rect": [
+            65,
+            15,
+            75,
+            15
+          ],
+          "foreground": 7,
+          "background": 0,
+          "bright": true
+        },
+        {
+          "text": "Convict",
+          "rect": [
+            78,
+            15,
+            84,
+            15
+          ],
+          "foreground": 7,
+          "background": 0,
+          "bright": true
+        },
+        {
+          "text": "Witness: Rimtar Reverearch.",
+          "rect": [
+            64,
+            18,
+            116,
+            18
+          ],
+          "foreground": 7,
+          "background": 0,
+          "bright": true
+        },
+        {
+          "text": "Accuses: Doren Thosbutal\u00c3\u00a5th, Dwarven Child.",
+          "rect": [
+            64,
+            19,
+            116,
+            19
+          ],
+          "foreground": 6,
+          "background": 0,
+          "bright": true
+        },
+        {
+          "text": "Date: 15th Timber, 103",
+          "rect": [
+            64,
+            20,
+            85,
+            20
+          ],
+          "foreground": 7,
+          "background": 0,
+          "bright": false
+        },
+        {
+          "text": "Reported: 25th Slate, 103",
+          "rect": [
+            64,
+            21,
+            88,
+            21
+          ],
+          "foreground": 7,
+          "background": 0,
+          "bright": false
+        }
+      ],
+      "callbacks": [
+        {
+          "activated": [
+            4746608
+          ],
+          "feed": [],
+          "logic": [],
+          "name": "",
+          "rect": [
+            64,
+            14,
+            76,
+            16
+          ],
+          "render": []
+        },
+        {
+          "activated": [
+            4746080
+          ],
+          "feed": [],
+          "logic": [],
+          "name": "",
+          "rect": [
+            77,
+            14,
+            85,
+            16
+          ],
+          "render": []
+        }
+      ]
+    },
+    {
+      "caption": "Fortress guard",
+      "selected_widget_tab": 3,
+      "legacy_mode": 0,
+      "texts": [
+        {
+          "text": "Desired metal cages and chains in dungeons: 0 of 14",
+          "rect": [
+            6,
+            12,
+            56,
+            12
+          ],
+          "foreground": 4,
+          "background": 0,
+          "bright": true
+        }
+      ],
+      "callbacks": [
+        {
+          "activated": [
+            4022496
+          ],
+          "feed": [],
+          "logic": [],
+          "name": "Name",
+          "rect": [
+            11,
+            14,
+            20,
+            14
+          ],
+          "render": []
+        },
+        {
+          "activated": [
+            4022496
+          ],
+          "feed": [],
+          "logic": [],
+          "name": "Cat",
+          "rect": [
+            21,
+            14,
+            29,
+            14
+          ],
+          "render": []
+        },
+        {
+          "activated": [
+            4022496
+          ],
+          "feed": [],
+          "logic": [],
+          "name": "Prof",
+          "rect": [
+            30,
+            14,
+            39,
+            14
+          ],
+          "render": []
+        },
+        {
+          "activated": [
+            4022496
+          ],
+          "feed": [],
+          "logic": [],
+          "name": "",
+          "rect": [
+            50,
+            14,
+            53,
+            14
+          ],
+          "render": []
+        },
+        {
+          "activated": [],
+          "feed": [],
+          "logic": [],
+          "name": "",
+          "rect": [
+            6,
+            16,
+            48,
+            18
+          ],
+          "render": [
+            990336
+          ]
+        },
+        {
+          "activated": [
+            21114016
+          ],
+          "feed": [],
+          "logic": [],
+          "name": "Recenter button",
+          "rect": [
+            42,
+            16,
+            44,
+            18
+          ],
+          "render": []
+        },
+        {
+          "activated": [
+            21113840
+          ],
+          "feed": [],
+          "logic": [],
+          "name": "Unit sheet button",
+          "rect": [
+            46,
+            16,
+            48,
+            18
+          ],
+          "render": []
+        }
+      ]
+    },
+    {
+      "caption": "Convicts",
+      "selected_widget_tab": 4,
+      "legacy_mode": 0,
+      "texts": [
+        {
+          "text": "No sentence pending.",
+          "rect": [
+            65,
+            12,
+            117,
+            12
+          ],
+          "foreground": 7,
+          "background": 0,
+          "bright": true
+        },
+        {
+          "text": "Violation of production order",
+          "rect": [
+            65,
+            14,
+            117,
+            14
+          ],
+          "foreground": 7,
+          "background": 0,
+          "bright": true
+        },
+        {
+          "text": "Injured party: K\u00c3\u00bbbuk \u00c3\u00afngizkor, mayor.",
+          "rect": [
+            67,
+            15,
+            117,
+            15
+          ],
+          "foreground": 7,
+          "background": 0,
+          "bright": false
+        }
+      ],
+      "callbacks": [
+        {
+          "activated": [
+            4022496
+          ],
+          "feed": [],
+          "logic": [],
+          "name": "Name",
+          "rect": [
+            11,
+            12,
+            20,
+            12
+          ],
+          "render": []
+        },
+        {
+          "activated": [
+            4022496
+          ],
+          "feed": [],
+          "logic": [],
+          "name": "Cat",
+          "rect": [
+            21,
+            12,
+            29,
+            12
+          ],
+          "render": []
+        },
+        {
+          "activated": [
+            4022496
+          ],
+          "feed": [],
+          "logic": [],
+          "name": "Prof",
+          "rect": [
+            30,
+            12,
+            39,
+            12
+          ],
+          "render": []
+        },
+        {
+          "activated": [
+            4747248
+          ],
+          "feed": [],
+          "logic": [],
+          "name": "",
+          "rect": [
+            6,
+            14,
+            48,
+            16
+          ],
+          "render": [
+            990336
+          ]
+        },
+        {
+          "activated": [
+            21114016
+          ],
+          "feed": [],
+          "logic": [],
+          "name": "Recenter button",
+          "rect": [
+            42,
+            14,
+            44,
+            16
+          ],
+          "render": []
+        },
+        {
+          "activated": [
+            21113840
+          ],
+          "feed": [],
+          "logic": [],
+          "name": "Unit sheet button",
+          "rect": [
+            46,
+            14,
+            48,
+            16
+          ],
+          "render": []
+        },
+        {
+          "activated": [
+            4747248
+          ],
+          "feed": [],
+          "logic": [],
+          "name": "",
+          "rect": [
+            6,
+            17,
+            48,
+            19
+          ],
+          "render": [
+            990336
+          ]
+        },
+        {
+          "activated": [
+            21114016
+          ],
+          "feed": [],
+          "logic": [],
+          "name": "Recenter button",
+          "rect": [
+            42,
+            17,
+            44,
+            19
+          ],
+          "render": []
+        },
+        {
+          "activated": [
+            21113840
+          ],
+          "feed": [],
+          "logic": [],
+          "name": "Unit sheet button",
+          "rect": [
+            46,
+            17,
+            48,
+            19
+          ],
+          "render": []
+        },
+        {
+          "activated": [
+            4747248
+          ],
+          "feed": [],
+          "logic": [],
+          "name": "",
+          "rect": [
+            6,
+            20,
+            48,
+            22
+          ],
+          "render": [
+            990336
+          ]
+        },
+        {
+          "activated": [
+            21114016
+          ],
+          "feed": [],
+          "logic": [],
+          "name": "Recenter button",
+          "rect": [
+            42,
+            20,
+            44,
+            22
+          ],
+          "render": []
+        },
+        {
+          "activated": [
+            21113840
+          ],
+          "feed": [],
+          "logic": [],
+          "name": "Unit sheet button",
+          "rect": [
+            46,
+            20,
+            48,
+            22
+          ],
+          "render": []
+        }
+      ]
+    },
+    {
+      "caption": "Intelligence",
+      "selected_widget_tab": 5,
+      "legacy_mode": 0,
+      "texts": [],
+      "callbacks": []
+    }
+  ],
+  "entry_points": {
+    "vtable": "0x16cfc70",
+    "page_widgets": "0x46faa0",
+    "case_details_widgets": "0x472ac0",
+    "interrogate_wrapper": "0x486d70",
+    "interrogate_ui": "0x474210",
+    "convict_wrapper": "0x486b60",
+    "convict_ui": "0x474a70",
+    "candidate_widget": "0x46e5a0"
+  },
+  "limitations": [
+    "Widget-bound callbacks are not semantic APIs",
+    "Case membership/order and action effects require independent native providers",
+    "No editing, lifecycle or Godot implementation acceptance"
+  ]
+}

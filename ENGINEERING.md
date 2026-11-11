@@ -37,6 +37,37 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
 
+## Justice native discovery
+
+Justice remains unimplemented and gated. Protected173422 on2026-11-11 captures
+all six native categories at1200x800: Open cases, Closed cases, Cold cases,
+Fortress guard, Convicts and Intelligence. The paused fixture contains17 semantic
+crime records. `fixtures/production/native_justice.json` preserves bounded
+widget text/layout and callback observations; screenshots and full widget trees
+stay in the ignored capture directory. `DF3D_JUSTICE_NATIVE=1` selects this lane
+through `stockpile_storage_native.ps1`. It dismisses the native first-use Justice
+help through Okay before inspecting the unobscured page. Earlier173208 attempted
+legacy text-cell discovery;173318 left help over the right side. Neither provides
+complete screen acceptance. Final owned DF26312 closes unsaved, source unchanged,
+preferences restored, native30FPS, GPU60C/2%/43W; no viewer is launched.
+
+On this build the selected widget tab changes0–5 while
+`justice_interfacest.current_mode` stays0. The legacy field is not an authority
+for the current native tab. Widget state remains prohibited runtime input;
+DF3D will own navigation and use independently owned semantic queries.
+
+Pinned53.16 static entry points: vtable16cfc70; page construction46faa0;
+case-detail widget construction472ac0; Interrogate callback486d70 tail-calls
+474210 and Convict486b60 tail-calls474a70. Both construct the candidate widget
+through46e5a0. These are UI closures containing weak widget ownership, not
+standalone semantic action APIs. The apparently useful46db60 also constructs
+widgets, rather than returning plain text. Do not invoke these against global
+menus or treat them as safe semantic providers. Lower-level eligibility,
+ordering, descriptions and final effect routines still require audit. The
+installed DFHack `justice` script directly changes `prison_counter`; it does
+not establish native Pardon semantics. No Justice runtime behavior is accepted
+by this discovery fixture, and no conviction/interrogation/pardon is performed.
+
 ## Objects native discovery
 
 Protected172651 on2026-11-11 covers bridge disconnect/reconnect during a sent

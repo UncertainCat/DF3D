@@ -976,7 +976,7 @@ void publish() {
   };
   const auto encodeInspectionAppearance=[&](const std::optional<ItemInspectionAppearance>& look) {
     flatbuffers::Offset<m::ItemInspectionAppearance> result;
-    if(look){const auto& a=*look;result=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents),a.floodgateOpen,a.doorOpen,a.doorForbidden,a.doorWear,a.bucketLiquid,b.CreateString(a.bucketLiquidColor),a.cageMaterialFamily,a.cageOccupantEntity,a.cageOccupantId,b.CreateString(a.cageSolidColor),a.restraintRope,b.CreateString(a.restraintSolidColor),encodeItemRecipe(a.portrait),encodeItemRecipe(a.cageOccupant),a.slabEngraving,encodeItemRecipe(a.corpseSelector));}return result;
+    if(look){const auto& a=*look;result=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents),a.floodgateOpen,a.doorOpen,a.doorForbidden,a.doorWear,a.bucketLiquid,b.CreateString(a.bucketLiquidColor),a.cageMaterialFamily,a.cageOccupantEntity,a.cageOccupantId,b.CreateString(a.cageSolidColor),a.restraintRope,b.CreateString(a.restraintSolidColor),encodeItemRecipe(a.portrait),encodeItemRecipe(a.cageOccupant),a.slabEngraving,encodeItemRecipe(a.corpseSelector),encodeItemRecipe(a.legwearSelector));}return result;
   };
   flatbuffers::Offset<m::BuildingContentsPage> contentsPage;
   if(production.contents) {
@@ -1003,10 +1003,10 @@ void publish() {
       const auto holder=link(v.holder),stockpile=link(v.stockpile);
       flatbuffers::Offset<m::ItemCarrier> carrier;
       if(v.carrier){const auto& c=*v.carrier;flatbuffers::Offset<m::ItemInspectionAppearance> appearance;
-        if(c.appearance){const auto& a=*c.appearance;appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents),a.floodgateOpen,a.doorOpen,a.doorForbidden,a.doorWear,a.bucketLiquid,b.CreateString(a.bucketLiquidColor),a.cageMaterialFamily,a.cageOccupantEntity,a.cageOccupantId,b.CreateString(a.cageSolidColor),a.restraintRope,b.CreateString(a.restraintSolidColor),encodeItemRecipe(a.portrait),encodeItemRecipe(a.cageOccupant),a.slabEngraving,encodeItemRecipe(a.corpseSelector));}
+        if(c.appearance){const auto& a=*c.appearance;appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents),a.floodgateOpen,a.doorOpen,a.doorForbidden,a.doorWear,a.bucketLiquid,b.CreateString(a.bucketLiquidColor),a.cageMaterialFamily,a.cageOccupantEntity,a.cageOccupantId,b.CreateString(a.cageSolidColor),a.restraintRope,b.CreateString(a.restraintSolidColor),encodeItemRecipe(a.portrait),encodeItemRecipe(a.cageOccupant),a.slabEngraving,encodeItemRecipe(a.corpseSelector),encodeItemRecipe(a.legwearSelector));}
         carrier=m::CreateItemCarrier(b,int8_t(c.kind),c.id,c.itemType,b.CreateString(c.name),appearance);}
       flatbuffers::Offset<m::ItemInspectionAppearance> appearance;
-      if(v.appearance){const auto& a=*v.appearance;appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents),a.floodgateOpen,a.doorOpen,a.doorForbidden,a.doorWear,a.bucketLiquid,b.CreateString(a.bucketLiquidColor),a.cageMaterialFamily,a.cageOccupantEntity,a.cageOccupantId,b.CreateString(a.cageSolidColor),a.restraintRope,b.CreateString(a.restraintSolidColor),encodeItemRecipe(a.portrait),encodeItemRecipe(a.cageOccupant),a.slabEngraving,encodeItemRecipe(a.corpseSelector));}
+      if(v.appearance){const auto& a=*v.appearance;appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents),a.floodgateOpen,a.doorOpen,a.doorForbidden,a.doorWear,a.bucketLiquid,b.CreateString(a.bucketLiquidColor),a.cageMaterialFamily,a.cageOccupantEntity,a.cageOccupantId,b.CreateString(a.cageSolidColor),a.restraintRope,b.CreateString(a.restraintSolidColor),encodeItemRecipe(a.portrait),encodeItemRecipe(a.cageOccupant),a.slabEngraving,encodeItemRecipe(a.corpseSelector),encodeItemRecipe(a.legwearSelector));}
       flatbuffers::Offset<m::ItemOwner> owner;
       if(v.owner)owner=m::CreateItemOwner(b,v.owner->id,b.CreateString(v.owner->name));
       flatbuffers::Offset<m::ItemAmmunitionAssignment> assignment;
@@ -1014,7 +1014,7 @@ void publish() {
       flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<m::ItemSheetContent>>> contents;
       if(v.contents){std::vector<flatbuffers::Offset<m::ItemSheetContent>> rows;
         for(const auto& row:*v.contents){flatbuffers::Offset<m::ItemInspectionAppearance> look;
-          if(row.appearance){const auto& a=*row.appearance;look=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents),a.floodgateOpen,a.doorOpen,a.doorForbidden,a.doorWear,a.bucketLiquid,b.CreateString(a.bucketLiquidColor),a.cageMaterialFamily,a.cageOccupantEntity,a.cageOccupantId,b.CreateString(a.cageSolidColor),a.restraintRope,b.CreateString(a.restraintSolidColor),encodeItemRecipe(a.portrait),encodeItemRecipe(a.cageOccupant),a.slabEngraving,encodeItemRecipe(a.corpseSelector));}
+          if(row.appearance){const auto& a=*row.appearance;look=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents),a.floodgateOpen,a.doorOpen,a.doorForbidden,a.doorWear,a.bucketLiquid,b.CreateString(a.bucketLiquidColor),a.cageMaterialFamily,a.cageOccupantEntity,a.cageOccupantId,b.CreateString(a.cageSolidColor),a.restraintRope,b.CreateString(a.restraintSolidColor),encodeItemRecipe(a.portrait),encodeItemRecipe(a.cageOccupant),a.slabEngraving,encodeItemRecipe(a.corpseSelector),encodeItemRecipe(a.legwearSelector));}
           rows.push_back(m::CreateItemSheetContent(b,int8_t(row.kind),row.id,b.CreateString(row.caption),row.itemType,row.flags,row.canDump,row.canMelt,look));
         }contents=b.CreateVector(rows);
       }
@@ -1370,7 +1370,7 @@ void publish() {
     for(const auto& row:stocks->items){
       flatbuffers::Offset<m::ItemInspectionAppearance> appearance;
       if(row.appearance){const auto& a=*row.appearance;
-        appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents),a.floodgateOpen,a.doorOpen,a.doorForbidden,a.doorWear,a.bucketLiquid,b.CreateString(a.bucketLiquidColor),a.cageMaterialFamily,a.cageOccupantEntity,a.cageOccupantId,b.CreateString(a.cageSolidColor),a.restraintRope,b.CreateString(a.restraintSolidColor),encodeItemRecipe(a.portrait),encodeItemRecipe(a.cageOccupant),a.slabEngraving,encodeItemRecipe(a.corpseSelector));}
+        appearance=m::CreateItemInspectionAppearance(b,b.CreateString(a.materialToken),b.CreateString(a.subtypeRaw),b.CreateString(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced,encodeContainerContents(a.contents),a.floodgateOpen,a.doorOpen,a.doorForbidden,a.doorWear,a.bucketLiquid,b.CreateString(a.bucketLiquidColor),a.cageMaterialFamily,a.cageOccupantEntity,a.cageOccupantId,b.CreateString(a.cageSolidColor),a.restraintRope,b.CreateString(a.restraintSolidColor),encodeItemRecipe(a.portrait),encodeItemRecipe(a.cageOccupant),a.slabEngraving,encodeItemRecipe(a.corpseSelector),encodeItemRecipe(a.legwearSelector));}
       items.push_back(m::CreateStocksItemRow(b,row.id,int16_t(row.itemType),b.CreateString(row.caption),row.flags,row.canDump,row.canMelt,
         b.CreateString(row.materialToken),b.CreateString(row.subtypeRaw),appearance));
     }
@@ -3200,7 +3200,7 @@ std::optional<BuildingItemSnapshot> observeFarmItem(int32_t buildingId,int32_t i
 }
 ItemInspectionAppearance copyInspectionAppearance(const df3d_production::ItemInspectionAppearance& a) {
   ItemInspectionAppearance result{DF2UTF(a.materialToken),DF2UTF(a.subtypeRaw),DF2UTF(a.colorToken),a.stack,a.flags,a.instrumentFamily,a.instrumentPlaced};
-  result.floodgateOpen=a.floodgateOpen;result.doorOpen=a.doorOpen;result.doorForbidden=a.doorForbidden;result.doorWear=a.doorWear;result.bucketLiquid=a.bucketLiquid;result.bucketLiquidColor=DF2UTF(a.bucketLiquidColor);result.cageMaterialFamily=a.cageMaterialFamily;result.cageOccupantEntity=a.cageOccupantEntity;result.cageOccupantId=a.cageOccupantId;result.cageSolidColor=DF2UTF(a.cageSolidColor);result.restraintRope=a.restraintRope;result.restraintSolidColor=DF2UTF(a.restraintSolidColor);result.slabEngraving=a.slabEngraving;result.portrait=a.portrait;result.cageOccupant=a.cageOccupant;result.corpseSelector=a.corpseSelector;
+  result.floodgateOpen=a.floodgateOpen;result.doorOpen=a.doorOpen;result.doorForbidden=a.doorForbidden;result.doorWear=a.doorWear;result.bucketLiquid=a.bucketLiquid;result.bucketLiquidColor=DF2UTF(a.bucketLiquidColor);result.cageMaterialFamily=a.cageMaterialFamily;result.cageOccupantEntity=a.cageOccupantEntity;result.cageOccupantId=a.cageOccupantId;result.cageSolidColor=DF2UTF(a.cageSolidColor);result.restraintRope=a.restraintRope;result.restraintSolidColor=DF2UTF(a.restraintSolidColor);result.slabEngraving=a.slabEngraving;result.portrait=a.portrait;result.cageOccupant=a.cageOccupant;result.corpseSelector=a.corpseSelector;result.legwearSelector=a.legwearSelector;
   if(a.contents){auto& c=result.contents.emplace();c.container=a.contents->container;c.materialInorganic=a.contents->materialInorganic;c.solidColor=DF2UTF(a.contents->solidColor);
     for(const auto& e:a.contents->entries)c.entries.push_back({e.itemType,DF2UTF(e.materialToken),DF2UTF(e.colorToken),e.effectiveArmorLevel,e.metal,e.coal,e.containsPowder,e.rollsSheets,e.protectsFoldedSheets,e.containsWriting,e.liquid,e.subterraneanPlant});}
   return result;
@@ -4445,8 +4445,11 @@ void run(color_ostream& out) {
     }catch(...){if(started){places->outcome=m::PlacesOutcome::Unknown;mutated=true;}}
     publish();return;
   }
-  // Contract migration: explicit retirement is wired separately.
-  if(r->action()==m::ManagementAction::NoblesSymbolsRetire){status=m::ManagementStatus::Rejected;message.clear();nobles.emplace();publish();return;}
+  if(r->action()==m::ManagementAction::NoblesSymbolsRetire){
+    status=m::ManagementStatus::Rejected;message.clear();nobles.emplace();
+    if(!noblesSymbolOwner || noblesSymbolOwner->client==client){noblesSymbolOwner.reset();nobles->outcome=m::NoblesOutcome::Applied;status=m::ManagementStatus::Ok;}
+    publish();return;
+  }
   // A closed mailbox retires its unfinished tail. Already applied effects stay.
   if(noblesSymbolOwner && !sh::ClientMailbox::open(m::kManagementRegionName,
       sh::atomicLoadAcquire(&m::sessionOwner(region)->generation),noblesSymbolOwner->client,m::kManagementVersion,m::kManagementCapacity))noblesSymbolOwner.reset();
@@ -4510,8 +4513,14 @@ void run(color_ostream& out) {
         for(auto& text:*display){const auto& facts=(*rows)[q.offset()+page.symbols.size()];auto* item=df::item::find(facts.itemId);if(!item || text.itemId!=facts.itemId)throw std::runtime_error("symbol item changed");
           NoblesResult::Symbol row;row.facts=facts;row.type=int16_t(item->getType());row.text=std::move(text);row.artifactMood=row.type==24 && item->flags.bits.artifact_mood;
           for(auto* value:{&row.text.caption,&row.text.officeCaption,&row.text.valueCaption}){*value=DF2UTF(*value);if(value->size()>16384)throw std::runtime_error("symbol caption exceeds limit");}
-          // Artwork projection is staged separately; never call the native render cache.
-          const auto size=128+row.text.caption.size()+row.text.officeCaption.size()+row.text.valueCaption.size();if(bytes+size>384*1024)break;bytes+=size;page.symbols.push_back(std::move(row));
+          if(const auto appearance=df3d_production::itemAppearance(item))row.appearance=copyInspectionAppearance(*appearance);
+          size_t size=128+row.text.caption.size()+row.text.officeCaption.size()+row.text.valueCaption.size();
+          if(row.appearance){const auto& a=*row.appearance;
+            size+=256+a.materialToken.size()+a.subtypeRaw.size()+a.colorToken.size()+a.bucketLiquidColor.size()+a.cageSolidColor.size()+a.restraintSolidColor.size();
+            for(const auto* recipe:{&a.portrait,&a.cageOccupant,&a.corpseSelector,&a.legwearSelector})if(*recipe){size_t n=0;if(!df3d_production::validItemRecipe(**recipe,n))throw std::runtime_error("invalid symbol artwork");size+=n;}
+            if(a.contents){size+=64+a.contents->solidColor.size();for(const auto& e:a.contents->entries)size+=64+e.materialToken.size()+e.colorToken.size();}
+          }
+          if(bytes+size+page.symbolTargetCaption->size()>384*1024)break;bytes+=size;page.symbols.push_back(std::move(row));
         }
         if(page.offset<page.total && page.symbols.empty()){publish();return;}
         page.outcome=m::NoblesOutcome::None;nobles=std::move(page);status=m::ManagementStatus::Ok;publish();return;

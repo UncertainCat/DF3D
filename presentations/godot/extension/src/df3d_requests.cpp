@@ -214,7 +214,8 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
             entry["skills"]=skills;if(row.appearance)entry["appearance"]=management::itemRecipeDictionary(*row.appearance);candidates.push_back(entry);}
         value["candidates"]=candidates;
         const auto office=[](const wm::NoblesOffice& key){Dictionary d;d["entity_id"]=key.entityId;d["position_id"]=key.positionId;d["assignment_id"]=key.assignmentId;d["draft_slot"]=int64_t(key.draftSlot);return d;};
-        Array symbols;for(const auto& row:v.symbols){Dictionary d;d["item_id"]=row.itemId;d["item_type"]=int(row.itemType);d["value"]=row.value;
+        if(v.symbolTargetCaption)value["symbol_target_caption"]=String::utf8(v.symbolTargetCaption->c_str());
+        Array symbols;for(const auto& row:v.symbols){Dictionary d;d["item_id"]=row.itemId;d["item_type"]=int(row.itemType);d["value"]=row.value;d["artifact_mood"]=row.artifactMood;
           d["caption"]=String::utf8(row.caption.c_str());d["office_caption"]=String::utf8(row.officeCaption.c_str());d["value_caption"]=String::utf8(row.valueCaption.c_str());
           if(row.currentOffice)d["current_office"]=office(*row.currentOffice);if(row.selectedOffice)d["selected_office"]=office(*row.selectedOffice);
           if(row.appearance)d["appearance"]=management::itemAppearanceDictionary(*row.appearance);symbols.push_back(d);}
@@ -587,7 +588,7 @@ bool validateNobles(const Dictionary& data,String& error) {
         return key.size()==4 && integer(key,"entity_id",0,INT32_MAX) && integer(key,"position_id",0,INT32_MAX) && integer(key,"assignment_id",-1,INT32_MAX) &&
           integer(key,"draft_slot",0,lastSlot) && (int64_t(key["assignment_id"])==-1 || int64_t(key["draft_slot"])==0);};
     const Array keys=data.keys();for(int i=0;i<keys.size();++i){const String key=keys[i];if(key!="action" && key!="offset" && key!="limit" && key!="expected_list_revision" && key!="choices" && key!="target" && key!="expected_candidate_revision" && key!="expected_setting" && key!="setting" && key!="symbol_choices" && key!="step_token" && key!="expected_name_revision" && key!="name_query" && key!="name_edit")return false;}
-    if(!integer(data,"action",int64_t(wm::ManagementAction::NoblesRead),int64_t(wm::ManagementAction::NoblesSymbolsContinue)) ||
+    if(!integer(data,"action",int64_t(wm::ManagementAction::NoblesRead),int64_t(wm::ManagementAction::NoblesSymbolsRetire)) ||
        !integer(data,"offset",0,1048576) || !integer(data,"limit",1,64) || !integer(data,"expected_list_revision",0,INT64_MAX))return false;
     Array choices;if(data.has("choices")){if(data["choices"].get_type()!=Variant::ARRAY)return false;choices=data["choices"];}
     if(choices.size()>4096 || (choices.size() && !int64_t(data["expected_list_revision"])))return false;
@@ -598,6 +599,10 @@ bool validateNobles(const Dictionary& data,String& error) {
     for(const char* key:{"expected_setting","setting"})if(data.has(key) && !integer(data,key,-1,4))return false;
     if(action!=int64_t(wm::ManagementAction::NoblesAccounting) && (int64_t(data.get("expected_setting",-1))!=-1 || int64_t(data.get("setting",-1))!=-1))return false;
     const bool symbols=action==int64_t(wm::ManagementAction::NoblesSymbolsRead),apply=action==int64_t(wm::ManagementAction::NoblesSymbolsApply);
+    if(action==int64_t(wm::ManagementAction::NoblesSymbolsRetire)){
+      if(data.size()!=4 || offset || int64_t(data["limit"])!=32 || revision)return false;
+      error=String();return true;
+    }
     const bool nameRead=action==int64_t(wm::ManagementAction::NoblesSymbolNameRead),nameEdit=action==int64_t(wm::ManagementAction::NoblesSymbolNameEdit);
     const bool step=action>=int64_t(wm::ManagementAction::NoblesSymbolNameRead);
     if(!apply && data.has("symbol_choices"))return false;
@@ -1073,7 +1078,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::NoblesSymbolsContinue)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::NoblesSymbolsRetire)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

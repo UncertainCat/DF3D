@@ -408,6 +408,11 @@ inline std::optional<ItemInspectionAppearance> itemAppearance(df::item* item) {
     const auto color=item->getType()==df::item_type::BAG && (*nativeColor<0 || *nativeColor>=255)?-1:*nativeColor;
     if(color>=0){auto* descriptor=df::descriptor_color::find(color);if(!descriptor)return std::nullopt;appearance.colorToken=descriptor->id;}
     else if(color!=-1)return std::nullopt;
+    if(item->getType()==df::item_type::PANTS) {
+        df3d_appearance::Result recipe;
+        const auto tile=legwearOriginalTile(item);
+        if(tile && df3d_appearance::resolveOriginalItemTile(*tile,recipe,color))appearance.legwearSelector=ownedItemRecipe(recipe);
+    }
     if(item->getType()==df::item_type::BUCKET) {
         // Native c7d7a0..c7d8af: last qualifying liquid reference, without
         // a container-flag gate. Unlike BIN, always use solid material color.

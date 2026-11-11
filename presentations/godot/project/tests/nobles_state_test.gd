@@ -18,7 +18,7 @@ func symbol_checks(service) -> void:
 	symbols.configure(service)
 	var target: Dictionary={"entity_id":7,"position_id":2,"assignment_id":42,"draft_slot":0}
 	var draft: Array=[{"target":target,"expected_unit_id":-1,"unit_id":10}]
-	var payload: Dictionary={"nobles":{"outcome":C.NoblesOutcome.None,"list_revision":123,"candidate_revision":456,"target":target,"total":1,"offset":0,"symbols":[{"item_id":9,"item_type":5,"value":1,"caption":"fixture","office_caption":"","value_caption":""}]}}
+	var payload: Dictionary={"nobles":{"outcome":C.NoblesOutcome.None,"list_revision":123,"candidate_revision":456,"symbol_target_caption":"fixture office","target":target,"total":1,"offset":0,"symbols":[{"item_id":9,"item_type":5,"artifact_mood":false,"value":1,"caption":"fixture","office_caption":"","value_caption":""}]}}
 	symbols.open(target,draft,123);var old: int=symbols.ticket
 	symbols.close();service.reply(old,payload)
 	check(symbols.phase==symbols.Phase.Closed and symbols.rows.is_empty(),"Closed symbol picker accepted late page")

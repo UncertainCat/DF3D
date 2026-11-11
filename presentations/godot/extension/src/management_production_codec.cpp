@@ -28,6 +28,7 @@ Dictionary contentsDictionary(const wm::ItemContainerContentsFacts& contents) {
 Dictionary itemAppearanceDictionary(const wm::ItemInspectionAppearance& a) {
   Dictionary look;
   if(a.slabEngraving!=-2)look["slab_engraving"]=a.slabEngraving;
+  if(a.legwearSelector)look["legwear_selector"]=itemRecipeDictionary(*a.legwearSelector);
   if(a.portrait)look["portrait"]=itemRecipeDictionary(*a.portrait);
   if(a.corpseSelector)look["corpse_selector"]=itemRecipeDictionary(*a.corpseSelector);look["material_token"]=String::utf8(a.materialToken.c_str());look["subtype_raw"]=String::utf8(a.subtypeRaw.c_str());look["color_token"]=String::utf8(a.colorToken.c_str());look["stack"]=a.stack;look["flags"]=a.flags;
   if(a.bucketLiquid>=0){Dictionary liquid;liquid["present"]=bool(a.bucketLiquid);liquid["color_token"]=String::utf8(a.bucketLiquidColor.c_str());look["bucket_liquid"]=liquid;}if(a.restraintRope>=0){Dictionary restraint;restraint["rope"]=bool(a.restraintRope);restraint["solid_color"]=String::utf8(a.restraintSolidColor.c_str());look["restraint"]=restraint;}if(a.cageMaterialFamily>=0){Dictionary cage;cage["material_family"]=a.cageMaterialFamily;cage["occupant_entity"]=a.cageOccupantEntity;cage["occupant_id"]=a.cageOccupantId;cage["solid_color"]=String::utf8(a.cageSolidColor.c_str());

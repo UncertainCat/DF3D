@@ -39,6 +39,9 @@ func check_symbol_panel() -> void:
 	click_at(panel.position+Vector2(panel.status_x()+16,panel.list_top()+index*36+18))
 	var symbols=owner.state.symbols
 	if not check(await wait_symbol(symbols,symbols.Phase.Ready),"Symbol icon did not open picker"):return
+	var artwork_facts:=FileAccess.open(directory+"/nobles-symbol-artwork.json",FileAccess.WRITE)
+	artwork_facts.store_string(JSON.stringify(symbols.rows.slice(0,15),"\t"));artwork_facts.close()
+	for row in symbols.rows.slice(0,15):check(row.has("appearance") and panel.symbol_icons.get(row.item_id,{}).get("texture")!=null,"Symbol artwork unavailable for item %s: %s"%[row.item_id,row.get("appearance",{})])
 	await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(directory+"/nobles-symbol-picker-view.png")
 	for item in reference.items:
@@ -49,6 +52,10 @@ func check_symbol_panel() -> void:
 		symbols.seek(maxi(0,ordinal-5),panel.capacity());await process_frame
 		click_at(panel.position+Vector2(100,panel.list_top()+(ordinal-symbols.first)*36+18))
 	check(symbols.selected.size()==3,"Symbol pointer toggles failed")
+	for row in symbols.rows:
+		if row.item_id in reference.items:check(symbols.office_caption(row)==symbols.target_caption and not symbols.target_caption.is_empty(),"Selected symbol office caption missing")
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/nobles-symbol-selected-view.png")
 	click_at(panel.position+Vector2(panel.size.x-48,panel.list_top()-30))
 	var artifacts: Array=[]
 	for i in 3:
@@ -62,6 +69,14 @@ func check_symbol_panel() -> void:
 			click_at(name_view.position+name_view.clear_rect(0).get_center())
 			if not check(await wait_symbol(symbols,symbols.Phase.Naming),"Symbol name edit did not settle"):return
 			check(symbols.naming.snapshot.value.words[0]==-1,"Name Clear pointer failed")
+			if OS.get_environment("DF3D_NOBLES_SYMBOL_RETIRE")=="1":
+				owner.close_panel();owner.open_panel();deadline=Time.get_ticks_msec()+10000
+				while owner.state.phase==owner.state.Phase.Reading and Time.get_ticks_msec()<deadline:world.poll();await create_timer(0.01).timeout
+				if not check(owner.state.phase==owner.state.Phase.Ready,"Retired naming tail blocked reopened overview"):return
+				owner.state.begin_symbols(reference.target)
+				if not check(await wait_symbol(symbols,symbols.Phase.Ready),"Retired naming tail blocked new symbol picker"):return
+				for item in reference.items.slice(1):symbols.toggle(item)
+				symbols.dismiss();continue
 		click_at(name_view.position+Vector2(name_view.size.x-64,30))
 	deadline=Time.get_ticks_msec()+10000
 	while owner.state.phase!=owner.state.Phase.Ready and Time.get_ticks_msec()<deadline:world.poll();await create_timer(0.01).timeout

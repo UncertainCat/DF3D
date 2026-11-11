@@ -8275,5 +8275,110 @@
     ],
     "name_clear": true,
     "order_matches": true
+  },
+  "rendered_symbols": {
+    "source": "build/stockpile-storage-native-input-20261111-130924",
+    "protocol": 185,
+    "receipt": {
+      "artifacts": [
+        261,
+        262,
+        263
+      ],
+      "items": [
+        15047,
+        20196,
+        13147
+      ],
+      "pointer_workflow": true,
+      "success": true
+    },
+    "retire_during_naming": true,
+    "reopen_same_service": true,
+    "artifacts_added": 3,
+    "events_added": 6,
+    "native_icon_reference": "build/stockpile-storage-native-input-20261111-110219/nobles-symbols-manager.png",
+    "icon_comparison": [
+      {
+        "row": 0,
+        "different_pixels": 0,
+        "max_channel_error": 0
+      },
+      {
+        "row": 1,
+        "different_pixels": 0,
+        "max_channel_error": 0
+      },
+      {
+        "row": 2,
+        "different_pixels": 0,
+        "max_channel_error": 0
+      },
+      {
+        "row": 3,
+        "different_pixels": 0,
+        "max_channel_error": 0
+      },
+      {
+        "row": 4,
+        "different_pixels": 0,
+        "max_channel_error": 0
+      },
+      {
+        "row": 5,
+        "different_pixels": 0,
+        "max_channel_error": 0
+      },
+      {
+        "row": 6,
+        "different_pixels": 0,
+        "max_channel_error": 0
+      },
+      {
+        "row": 7,
+        "different_pixels": 0,
+        "max_channel_error": 0
+      },
+      {
+        "row": 8,
+        "different_pixels": 58,
+        "max_channel_error": 138
+      },
+      {
+        "row": 9,
+        "different_pixels": 0,
+        "max_channel_error": 0
+      },
+      {
+        "row": 10,
+        "different_pixels": 0,
+        "max_channel_error": 0
+      },
+      {
+        "row": 11,
+        "different_pixels": 0,
+        "max_channel_error": 0
+      },
+      {
+        "row": 12,
+        "different_pixels": 0,
+        "max_channel_error": 0
+      },
+      {
+        "row": 13,
+        "different_pixels": 0,
+        "max_channel_error": 0
+      },
+      {
+        "row": 14,
+        "different_pixels": 0,
+        "max_channel_error": 0
+      }
+    ],
+    "status": "passed_with_known_issues",
+    "limitations": [
+      "Ordinary earring13147 differs by58 pixels.",
+      "Header handoff, resize/drag, other naming controls and cross-client/fault acceptance remain open."
+    ]
   }
 }

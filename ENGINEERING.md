@@ -54,8 +54,8 @@ also passes. Owned DF44872 closes unsaved with source preservation; native30FPS,
 headless viewer, sampled GPU61C/24%. Core19, Nobles state and UI host checks pass
 in `build/qa/nobles-legwear-native`; the MSVC bridge builds. The fixture's
 symbol_reference.legwear_artwork_reference records these bounded facts. This is
-original-art selection evidence, not rendered picker acceptance; transporting
-this selector and the procedural greaves live case remain open.
+original-art selection evidence; rendered consumption is recorded with the
+symbol panel below. The procedural greaves live case remains open.
 
 
 Native symbol assignment has a separate local draft and apply-on-dismiss flow.
@@ -201,7 +201,7 @@ formats the result. Values remain blank without an available broker. These
 semantic calls do not use native menu/rendering caches; appraisal may refresh
 the broker's semantic body/vision caches. Random state is preserved. The native
 graphics path c7cbc0 uses rendering caches and is not called by this provider;
-independent symbol artwork remains outstanding.
+the runtime must use the independent appearance path described below.
 
 Protected114036 on2026-11-11 compares the first15 rows: all displayed values and
 untruncated captions match the native screen both without a broker and with a
@@ -1047,8 +1047,8 @@ item appearance can carry an optional legwear_selector with owned original asset
 references. It is valid only for PANTS(type60), requires a nonempty valid recipe,
 and participates in the bounded recipe payload. Missing recipes stay missing;
 older recordings cannot synthesize generated clothing artwork. The world model
-owns the decoded recipe independently of the incoming buffer. Producer population
-and presentation consumption remain a separate implementation step.
+owns the decoded recipe independently of the incoming buffer. The producer copies original tiles and native color through the shared recipe
+path; the viewer consumes the owned recipe without native rendering-cache access.
 
 Core19, Nobles state and UI host checks pass in
 `build/qa/legwear-selector-contract`; both builds pass. Codec cases cover absent
@@ -1070,10 +1070,10 @@ these facts. Symbol pages require the target caption; other replies reject it.
 
 Action118 NoblesSymbolsRetire is a client-owned sequence retirement intent with
 no draft, target, token or pagination fields. Its terminal receipt follows the
-Nobles mutation outcome contract. Intended runtime semantics discard only that
-client's unfinished bridge tail, never undo effects or process another item.
+Nobles mutation outcome contract. Runtime retirement discards only that
+client's unfinished bridge tail, never undoing effects or processing another item.
 It is ordered after any already submitted effect on the same channel. Runtime
-retirement and presentation consumption are staged separately from this migration.
+retirement is verified with the symbol panel below.
 
 Core19, Nobles state and UI host checks pass in
 `build/qa/nobles-symbol-presentation-contract`; bridge and extension builds pass.
@@ -1136,30 +1136,39 @@ unverified; this does not authorize public screen exposure.
 The staged symbol controller owns local checkboxes and paged candidates while
 the parent retains its appointment draft/base. Back/Done submits final states
 once. Naming uses the shared location name view with the native symbol heading,
-revision-bound edits and token-bound Done. Teardown retires callbacks without
-submitting effects. Weak parent references and bound signal methods avoid
-retaining the controller tree.
+revision-bound edits and token-bound Done. Teardown detaches callbacks and queues
+client-owned sequence retirement after any sent effect on the same service.
+Retirement neither undoes existing assignments nor processes remaining items;
+a foreign client's sequence cannot be retired. Weak parent references and bound
+signal methods avoid retaining the controller tree.
 
-Protected122535 on2026-11-11 exercises pointer input through the staged owner:
-symbol icon, three checkboxes, Done, first-name Clear, three naming Done clicks
-and return to overview. Native readback confirms the same three artifacts/claims
-and six events as121257. At1200x800, instruction, caption rows, checkboxes and
-Done crops are pixel-identical to native110219. Item artwork is absent and not
-accepted. Naming uses the captured111450 shared layout. Source preservation
-passes and DF38360 closes unsaved; both renderers30FPS, GPU60C/31% sampled.
-Logs classify passed_with_known_issues for documented startup/shutdown signatures
-only. Core19/controller/UI host checks pass in `build/qa/nobles-symbol-panel-final`;
-controller checks cover late replies, retired effects, retained draft receipts
-and no replay after unknown outcomes.
+The picker renders independent item appearances, native weapon artifact_mood
+separately from artifact, and native target-office captions for local selections.
+Legwear uses the original selector recipe through the common item appearance
+path. Item/carrier/contents revisions include that recipe; no global native
+menu or rendering cache is borrowed.
 
-Remaining symbol work includes independent item artwork (weapons require
-artifact_mood, distinct from artifact), native office captions after local
-checkbox changes, header handoff, and retiring an unfinished bridge sequence
-when the panel tears down without disconnecting its shared mailbox. Widths,
-scroll drag, naming search/word/random controls, foreign clients and fault
-outcomes still need composed acceptance. Initial122152 stopped on a test host
-setup error before effects;122258 established pointer effects before the final
-clipping/checkbox/Done geometry corrections. Public exposure remains gated.
+Protected130924 on2026-11-11 exercises pointer selection of three items, Done,
+first-name Clear, explicit panel teardown during naming, reopening the overview
+and picker, selecting the two remaining items, and both naming Done clicks.
+Native readback confirms exactly three artifacts/claims and six events, with
+the first cleared name preserved. Reopening is not blocked by the abandoned
+sequence. The selected Manager captions are visible under their item names.
+At1200x800, fourteen of fifteen icon crops exactly match native110219, including
+the generated skirt and ordinary legwear. Ordinary earring13147 differs by58
+pixels and remains an artwork gap; no full-icon parity claim is made. Earlier
+122535 establishes matching instruction, caption, checkbox and Done crops.
+
+Source preservation passes; owned DF22224 closes unsaved, both renderers30FPS,
+sampled GPU59C/16%. Logs classify passed_with_known_issues with only documented
+startup/shutdown signatures. Core19, Nobles state, item-sheet state and UI host
+checks pass in `build/qa/nobles-legwear-render`; both builds pass. Bounded receipt
+and comparison facts are in `native_nobles.json.rendered_symbols`.
+
+Remaining symbol work includes the earring artwork discrepancy, header handoff,
+widths, scroll dragging, naming search/word/random controls, foreign-client and
+disconnect/epoch/unknown fault acceptance, plus cross-office/civilization claims.
+Public exposure and full management completion remain gated.
 
 ## Management 182 Nobles accounting contract
 

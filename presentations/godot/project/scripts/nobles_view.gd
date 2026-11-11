@@ -3,6 +3,7 @@ extends "res://scripts/standing_orders_view.gd"
 var hovered: Dictionary={}
 var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
 var portraits: Dictionary={}
+var symbol_icons: Dictionary={}
 signal appointment_requested(row: Dictionary)
 signal symbol_requested(row: Dictionary)
 signal accounting_requested(row: Dictionary,setting: int)
@@ -86,13 +87,22 @@ func layout(view: Vector2) -> void:
 func refresh() -> void:
 	hovered=hover_at(get_local_mouse_position()) if is_inside_tree() and allowed() else {}
 	var retained: Dictionary={}
+	var retained_symbols: Dictionary={}
 	for index in range(visible_first(),mini(displayed_rows().size(),visible_first()+capacity())):
 		var row: Dictionary=displayed_rows()[index]
-		if symbols():continue
+		if symbols():
+			if row.has("appearance"):
+				var appearance: Dictionary=row.appearance.duplicate(true)
+				if row.item_type==24:appearance.artifact_mood=row.artifact_mood
+				var cached: Dictionary=symbol_icons.get(row.item_id,{})
+				if cached.get("appearance")!=appearance:cached={"appearance":appearance,"texture":world.ammunition_icon(appearance,row.item_id) if row.item_type==39 else world.item_sheet_icon(row.item_type,appearance,row.item_id)}
+				retained_symbols[row.item_id]=cached
+			continue
 		if not row.has("appearance"):continue
 		var prior: Dictionary=portraits.get(row.unit_id,{})
 		retained[row.unit_id]=prior if prior.get("recipe")==row.appearance else {"recipe":row.appearance.duplicate(true),"texture":world.candidate_icon(row.appearance)}
 	portraits=retained
+	symbol_icons=retained_symbols
 	scrollbar.position=Vector2(size.x-32,list_top());scrollbar.size=Vector2(16,capacity()*36)
 	scrollbar.page=capacity();scrollbar.set_rows(displayed_rows().size(),visible_first());queue_redraw()
 func _exit_tree() -> void:
@@ -192,11 +202,15 @@ func draw_symbols() -> void:
 		var row: Dictionary=state.symbols.rows[visible_first()+index];var top:=list_top()+index*36
 		patch("BUTTON_RECTANGLE",Vector2i(2,int(top/12)),right-2,3)
 		patch("",Vector2i(2,int(top/12)),5,3,picture.texture(false))
+		var texture: Texture2D=symbol_icons.get(row.item_id,{}).get("texture")
+		if texture!=null:draw_texture_rect(texture,Rect2(18,top+2,32,32),false)
 		var caption: String=row.caption
 		if caption.length()>=23:caption=caption.left(19)+"..."
 		text(caption,Vector2(64,top+24),14)
 		text(row.value_caption,Vector2(256,top+24),6)
-		text(row.office_caption,Vector2(256,top+12),11)
+		var office_caption: String=state.symbols.office_caption(row)
+		if office_caption.length()>=23:office_caption=office_caption.left(19)+"..."
+		text(office_caption,Vector2(64,top+36),11)
 		icon("BUILDING_SHEET_FARM_ACTIVE_OPTION" if state.symbols.checked(row) else "BUILDING_SHEET_FARM_INACTIVE_OPTION",Vector2((right-6)*8,top))
 func candidate_right() -> int:return int(size.x/8)-2-(2 if state.candidates.size()>capacity() else 0)
 func candidate_skill_column() -> int:

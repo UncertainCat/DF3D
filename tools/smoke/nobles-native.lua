@@ -179,5 +179,13 @@ for _,target in ipairs{{'manager',232,394},{'messenger',232,646}}do
  gui.simulateInput(view,'LEAVESCREEN');settle();assert(info.open and not menu.choosing_candidate,'Picker Cancel did not return to overview')
 end
 
+if os.getenv('DF3D_NOBLES_WIRE')=='1' then
+ write('nobles-wire-reference.json',json.encode(probe()))
+ write('shot.tmp','nobles-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))
+ local deadline=dfhack.getTickCount()+30000
+ while true do local ack=io.open(out..'/ack-nobles-wire');if ack then ack:close();break end
+  assert(dfhack.getTickCount()<deadline,'Nobles wire timeout');script.sleep(1,'frames')
+ end
+end
 gui.simulateInput(view,'LEAVESCREEN');settle();assert(not info.open,'Nobles did not close')
 result.closed=true;write('nobles-native.json',json.encode(result));records[#records+1]={name='nobles-discovery',rows=#rows,closed=true}

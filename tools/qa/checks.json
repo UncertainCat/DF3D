@@ -4232,6 +4232,11 @@
       "reason": "Protected Places native/wire lane with DF3D_PLACES_SCENE; actual main-scene inspector handoffs and recenter."
     },
     {
+      "path": "presentations/godot/project/tests/nobles_wire_live.gd",
+      "status": "manual",
+      "reason": "Protected stockpile_storage_native.ps1 with DF3D_NOBLES_NATIVE and DF3D_NOBLES_WIRE; native ordered pages, captions/assessments, stale revisions and terminal empty page."
+    },
+    {
       "path": "presentations/godot/project/tests/places_wire_live.gd",
       "status": "manual",
       "reason": "Protected stockpile_storage_native.ps1 with DF3D_PLACES_NATIVE and DF3D_PLACES_WIRE; all six tabs, ordered pagination, owned row fields/artwork and stale membership revisions."

@@ -76,7 +76,8 @@ Source preservation passes and owned DF2456 closes unsaved;30FPS, GPU60C/15%
 sampled. `native_nobles.json.owned_overview_reference` records this scope. MSVC
 bridge builds successfully. This is not full simulation-memory immutability or
 acceptance of other fortresses, candidate eligibility, captions, graphics or
-appointments. No typed Nobles transport, controller or public route is exposed.
+appointments. Typed read transport is documented under Management178 below;
+no Nobles controller or public route is exposed.
 
 Appointment candidates now use native423df0 with a fresh owned overview and a
 unique entity/position/assignment identity, including assignment-1 for NEW rows.
@@ -165,9 +166,9 @@ native room totals are not independently captured here; the comparison proves
 the displayed states. Menu/RNG/lookup-cache guards and preceding caption,
 appointment-gate and candidate checks pass. Source preservation passes and owned
 DF34392 closes unsaved,30FPS, GPU59C/23% sampled.
-`native_nobles.json.room_assessment_reference` records the scope. Typed Nobles
-transport, portrait/status artwork mapping, demands/mandates, viewer and mutations
-remain unfinished.
+`native_nobles.json.room_assessment_reference` records the scope. Portrait/status
+artwork mapping, viewer and mutations remain unfinished; obligation assessments
+and typed transport are documented separately below.
 
 Nobles obligation indicators expose native demand/mandate severity separately:
 -1 absent,0 fulfilled demands or export-only mandates, then1/2/3 increasing
@@ -560,9 +561,9 @@ Rebuild and restart bridge and consumer together using
 `Local\df3d_management_v178`. Protocol177 cannot represent Nobles pages. Do not
 invent Nobles data when migrating older recordings; retain them as older-schema
 evidence or recapture. This schema commit reserves the read vocabulary only;
-provider transport, model codecs, controller/view and public routing remain
-pending. Existing diagnostic native Nobles reads are independent of this wire
-contract. No appointment mutation or legacy menu-backed Appointments route is
+provider transport and owned model/Godot codecs are now implemented as described
+below. Controller/view and public routing remain pending. Diagnostic native
+Nobles reads remain independent of this wire contract. No appointment mutation or legacy menu-backed Appointments route is
 revived.
 
 Core19 and the new contract cases pass in `build/qa/nobles-contract`; the
@@ -572,6 +573,25 @@ passes the established native Nobles diagnostic suite with protocol178 loaded;
 owned DF23556 closes unsaved and source preservation passes,30FPS, GPU60C/21%.
 This checks bridge compatibility and existing native providers, not end-to-end
 Nobles wire replies, which are not implemented in this contract commit.
+
+NoblesRead now invokes the owned native overview at a bridge safe point. The
+membership revision hashes ordered entity/position/assignment and holder IDs;
+changed identities/order reject continuation, while semantic values may refresh.
+The producer converts native captions to UTF-8, bounds pages by requested rows
+and384KiB, and publishes explicit Rejected/Stale outcomes without partial data.
+Model decoding owns all strings and four-value arrays. The Godot dictionary
+adapter accepts the typed read intent and exposes only model data. Native menu
+scratch and legacy Appointments actions are not part of this path.
+
+Protected080953 on2026-11-11 runs the headless Godot Nobles wire client through
+four pages of four rows, comparing all14 ordered rows and every field with the
+owned native reference. Stale revision rejects and the terminal page is empty.
+Existing native caption/room/obligation/gate/candidate checks also pass. Source
+preservation passes and owned DF42108 closes unsaved;30FPS, GPU59C/1% sampled.
+The headless client emits the existing experimental rendering-thread warning;
+no script/runtime errors are present. `native_nobles.json.wire_reference` scopes
+this evidence. Producer-restart/world-epoch cases, controller/view, artwork and
+appointment actions remain unfinished. Public Nobles routing remains hidden.
 
 ## Management 177 Places siege mutation contract
 

@@ -205,6 +205,18 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         for(const auto& l:v.links){Dictionary link;link["type"]=l.type;link["id"]=l.id;link["subid"]=l.subid;links.push_back(link);}
         value["words"]=words;value["links"]=links;result["residents_activity"]=value;
     }
+    if(s.nobles){const auto& v=*s.nobles;Dictionary value;Array rows;
+        for(const auto& row:v.rows){Dictionary entry;
+            entry["entity_id"]=row.entityId;entry["position_id"]=row.positionId;entry["assignment_id"]=row.assignmentId;
+            entry["unit_id"]=row.unitId;entry["nemesis_id"]=row.nemesisId;entry["priority"]=row.priority;
+            entry["title"]=String::utf8(row.title.c_str());entry["squad_caption"]=String::utf8(row.squadCaption.c_str());entry["holder_caption"]=String::utf8(row.holderCaption.c_str());
+            entry["can_appoint"]=row.canAppoint;entry["has_room_assessment"]=row.hasRoomAssessment;
+            entry["demand_status"]=int(row.demandStatus);entry["mandate_status"]=int(row.mandateStatus);
+            Array required,actual,furniture,owned;for(size_t i=0;i<4;++i){required.push_back(row.requiredRooms[i]);actual.push_back(row.actualRooms[i]);furniture.push_back(row.requiredFurniture[i]);owned.push_back(row.actualFurniture[i]);}
+            entry["required_rooms"]=required;entry["actual_rooms"]=actual;entry["required_furniture"]=furniture;entry["actual_furniture"]=owned;rows.push_back(entry);
+        }
+        value["outcome"]=int(v.outcome);value["list_revision"]=int64_t(v.listRevision);value["total"]=int64_t(v.total);value["offset"]=int64_t(v.offset);value["rows"]=rows;result["nobles"]=value;
+    }
     if(s.places){const auto& v=*s.places;Dictionary value;Array rows;
         value["outcome"]=int(v.outcome);value["tab"]=int(v.tab);value["list_revision"]=int64_t(v.listRevision);
         value["total"]=int64_t(v.total);value["offset"]=int64_t(v.offset);
@@ -538,6 +550,17 @@ bool validateResidentsSpecialization(const Dictionary& data,String& error) {
 bool readResidentsSpecialization(const Dictionary& data,wm::ManagementRequest& request,String&) {
     request.action=wm::ManagementAction::ResidentsSpecialize;
     request.residentsSpecialization={int32_t(int64_t(data["unit_id"])),uint64_t(int64_t(data["expected_revision"])),bool(data["only_assigned"])};return true;
+}
+bool validateNobles(const Dictionary& data,String& error) {
+    error="Invalid nobles request";
+    const auto integer=[](const Dictionary& d,const char* k,int64_t lo,int64_t hi){return d.has(k) && d[k].get_type()==Variant::INT && int64_t(d[k])>=lo && int64_t(d[k])<=hi;};
+    if(data.size()!=4 || !integer(data,"offset",0,65536) || !integer(data,"limit",1,64) || !integer(data,"expected_list_revision",0,INT64_MAX) ||
+       (int64_t(data["offset"]) && !int64_t(data["expected_list_revision"])))return false;
+    error=String();return true;
+}
+bool readNobles(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction::NoblesRead;
+    request.nobles={uint32_t(int64_t(data["offset"])),uint16_t(int64_t(data["limit"])),uint64_t(int64_t(data["expected_list_revision"]))};return true;
 }
 bool validatePlaces(const Dictionary& data,String& error) {
     error="Invalid places request";
@@ -933,6 +956,7 @@ const ManagementCodec managementCodecs[] = {
     {"work_detail_settings",validateWorkDetailSettings,readWorkDetailSettings},
     {"hunter_ammunition",validateHunterAmmunition,readHunterAmmunition},
     {"stocks_menu",validateStocksMenu,readStocksMenu},
+    {"nobles",validateNobles,readNobles},
     {"places",validatePlaces,readPlaces},
     {"tasks",validateTasks,readTasks},
     {"stone_use",validateStoneUse,readStoneUse},
@@ -954,7 +978,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::PlacesApply)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::NoblesRead)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

@@ -2707,5 +2707,21 @@
       "Demand fulfillment is checked for the controlled office case, not every room and material combination.",
       "No Nobles viewer or mutation route is exposed."
     ]
+  },
+  "wire_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-080953",
+    "protocol": 178,
+    "rows": 14,
+    "pages": 4,
+    "page_limit": 4,
+    "all_fields_match_owned_native_reference": true,
+    "stale_revision_rejected": true,
+    "terminal_page_empty": true,
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "No Nobles controller, rendered viewer or appointment mutation is exposed.",
+      "This run does not simulate a producer restart or mid-read world epoch change."
+    ]
   }
 }

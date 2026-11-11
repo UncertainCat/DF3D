@@ -434,6 +434,17 @@ struct ProductionState {
   std::string detail;
 };
 struct StocksGroupKey {int16_t type=-1,subtype=-1,subcat1=-1,subcat2=-1;};
+struct NoblesRequest {uint32_t offset=0;uint16_t limit=32;uint64_t expectedListRevision=0;};
+struct NoblesRow {
+  int32_t entityId=-1,positionId=-1,assignmentId=-1,unitId=-1,nemesisId=-1,priority=0;
+  std::string title,squadCaption,holderCaption;bool canAppoint=false,hasRoomAssessment=false;
+  std::array<int32_t,4> requiredRooms{},actualRooms{},requiredFurniture{},actualFurniture{};
+  int8_t demandStatus=-1,mandateStatus=-1;
+};
+struct NoblesState {
+  NoblesOutcome outcome=NoblesOutcome::None;uint64_t listRevision=0;uint32_t total=0,offset=0;
+  std::vector<NoblesRow> rows;
+};
 struct PlacesRequest {uint8_t tab=0;uint32_t offset=0;uint16_t limit=32;uint64_t expectedListRevision=0;
   int32_t buildingId=-1;int8_t siegeAction=-1;};
 struct PlacesRow {
@@ -905,6 +916,7 @@ struct ManagementRequest {
   StocksMenuRequest stocksMenu;
   TasksRequest tasks;
   PlacesRequest places;
+  NoblesRequest nobles;
   ResidentsRowsRequest residentsRows;
   ResidentsSpecializationRequest residentsSpecialization;
   ResidentsActivityRequest residentsActivity;
@@ -974,6 +986,7 @@ struct ManagementState {
   std::optional<StocksMenuState> stocksMenu;
   std::optional<TasksState> tasks;
   std::optional<PlacesState> places;
+  std::optional<NoblesState> nobles;
   std::optional<ResidentsSpecializationState> residentsSpecialization;
   std::optional<ResidentsActivityState> residentsActivity;
   std::optional<JobSettingsState> jobSettings;

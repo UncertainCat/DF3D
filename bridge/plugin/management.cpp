@@ -140,6 +140,7 @@
 #error "df3d management channel: shared memory transport is Windows-only"
 #endif
 #include "client_mailbox.h"
+#include "nobles_native.h"
 namespace df3d_management {
 namespace m = df3d::mirror;
 namespace sh = df3d::shm;
@@ -527,6 +528,11 @@ struct TasksResult {
   std::vector<df3d_tasks::Row> rows;
 };
 std::optional<TasksResult> tasks;
+struct NoblesResult {
+  m::NoblesOutcome outcome=m::NoblesOutcome::Rejected;uint64_t listRevision=0;uint32_t total=0,offset=0;
+  std::vector<df3d_nobles::Row> rows;
+};
+std::optional<NoblesResult> nobles;
 struct PlacesResult {
   m::PlacesOutcome outcome=m::PlacesOutcome::Rejected;uint8_t tab=0;
   uint64_t listRevision=0;uint32_t total=0,offset=0;std::vector<df3d_places::BuildingRow> rows;
@@ -593,7 +599,7 @@ void clearResult() {
   residentsRows.reset();
   residentsSpecialization.reset();
   residentsActivity.reset();
-  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();stoneUse.reset();stocks.reset();tasks.reset();places.reset();
+  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();stoneUse.reset();stocks.reset();tasks.reset();places.reset();nobles.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -1259,6 +1265,14 @@ void publish() {
     }
     standingOrdersResult=m::CreateStandingOrdersState(b,standingOrders->category,standingOrders->outcome,b.CreateVector(rows));
   }
+  flatbuffers::Offset<m::NoblesState> noblesResult;
+  if(nobles){std::vector<flatbuffers::Offset<m::NoblesRow>> rows;
+    for(const auto& row:nobles->rows)rows.push_back(m::CreateNoblesRow(b,row.entityId,row.positionId,row.assignmentId,row.unitId,row.nemesisId,row.value,
+      b.CreateString(row.title),b.CreateString(row.squadCaption),b.CreateString(row.holderCaption),row.canAppoint,row.hasRoomAssessment,
+      b.CreateVector(row.requiredRooms.data(),4),b.CreateVector(row.actualRooms.data(),4),b.CreateVector(row.requiredFurniture.data(),4),b.CreateVector(row.actualFurniture.data(),4),
+      int8_t(row.demandStatus),int8_t(row.mandateStatus)));
+    noblesResult=m::CreateNoblesState(b,nobles->outcome,nobles->listRevision,nobles->total,nobles->offset,b.CreateVector(rows));
+  }
   flatbuffers::Offset<m::PlacesState> placesResult;
   if(places){std::vector<flatbuffers::Offset<m::PlacesRow>> rows;
     for(const auto& row:places->rows){const m::TilePos pos(row.position.x,row.position.y,row.position.z);
@@ -1354,7 +1368,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult,noblesResult);
   b.Finish(s);
   auto validationError=m::validateManagementState(
       *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()));
@@ -4373,6 +4387,29 @@ void run(color_ostream& out) {
         else if(result==df3d_places::ActionOutcome::Unknown){places->outcome=m::PlacesOutcome::Unknown;mutated=true;}
       }
     }catch(...){if(started){places->outcome=m::PlacesOutcome::Unknown;mutated=true;}}
+    publish();return;
+  }
+  if(r->action()==m::ManagementAction::NoblesRead){
+    const auto& q=*r->nobles();status=m::ManagementStatus::Rejected;message.clear();nobles.emplace();
+    try {
+      auto current=df3d_nobles::overview();if(!current)throw std::runtime_error("nobles unavailable");
+      uint64_t list=UINT64_C(14695981039346656037);
+      for(const auto& row:*current)for(auto id:{row.entityId,row.positionId,row.assignmentId,row.unitId,row.nemesisId})
+        for(unsigned i=0;i<4;++i){list^=uint8_t(uint32_t(id)>>(8*i));list*=UINT64_C(1099511628211);}
+      list&=INT64_MAX;if(!list)list=1;
+      if((q.expected_list_revision() && q.expected_list_revision()!=list) || q.offset()>current->size())nobles->outcome=m::NoblesOutcome::Stale;
+      else {
+        NoblesResult page;page.listRevision=list;page.total=uint32_t(current->size());page.offset=q.offset();size_t bytes=0;
+        for(size_t i=q.offset();i<current->size() && page.rows.size()<q.limit();++i){
+          auto& row=(*current)[i];size_t rowBytes=192;
+          for(auto* text:{&row.title,&row.squadCaption,&row.holderCaption}){
+            *text=DF2UTF(*text);if(text->size()>16384)throw std::runtime_error("nobles caption exceeds limit");rowBytes+=text->size();}
+          if(bytes+rowBytes>384*1024)break;bytes+=rowBytes;page.rows.push_back(std::move(row));
+        }
+        if(page.offset<page.total && page.rows.empty())throw std::runtime_error("nobles row exceeds page");
+        page.outcome=m::NoblesOutcome::None;nobles=std::move(page);status=m::ManagementStatus::Ok;
+      }
+    }catch(...){nobles.emplace();}
     publish();return;
   }
   if(r->action()==m::ManagementAction::PlacesRead){

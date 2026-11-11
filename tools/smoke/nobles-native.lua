@@ -575,6 +575,25 @@ if os.getenv('DF3D_NOBLES_WIRE')=='1' then
   for _,row in ipairs(candidates)do local item=df.item.find(row.item_id);if item and not item.flags.artifact and #items<3 then items[#items+1]=item.id end end
   assert(#items==3,'Missing ordinary symbols')
   symbol_wire={target={entity_id=target.entity_id,position_id=target.position_id,assignment_id=target.assignment_id,draft_slot=0},rows=candidates,items=items}
+  local clothing={}
+  for i=1,math.min(15,#candidates)do
+   local item=df.item.find(candidates[i].item_id)
+   if item:getType()==df.item_type.PANTS then
+    local raw=df.itemdef_pantsst.find(item:getSubtype())
+    local art={item_id=item.id,raw_id=raw.id,procedural=raw.procedural_item_graphics,original_tile=raw.texpos_item,source_hfid=raw.source_hfid}
+    art.selected_tile=probe({'item-legwear-probe',tostring(item.id)}).tile
+    for _,page in ipairs(df.global.texture.page)do for index,tile in ipairs(page.texpos)do
+     if tile==raw.texpos_item then art.page=page.token;art.x=index%page.page_dim_x;art.y=index//page.page_dim_x end
+     if tile==art.selected_tile then art.selected_page=page.token;art.selected_x=index%page.page_dim_x;art.selected_y=index//page.page_dim_x end
+    end end
+    assert(art.selected_page,'Legwear selector did not return original installed artwork')
+    if raw.procedural_item_graphics==11 then
+     assert(art.selected_page=='ITEM_EQUIPMENT' and art.selected_x==0 and art.selected_y==12,'Generated skirt artwork differs')
+    elseif raw.procedural_item_graphics==-1 then assert(art.selected_tile==raw.texpos_item,'Raw legwear artwork differs')end
+    clothing[#clothing+1]=art
+   end
+  end
+  write('nobles-symbol-clothing-native.json',json.encode(clothing))
   write('nobles-symbol-wire-reference.json',json.encode(symbol_wire))
   symbol_wire.artifacts_before=#df.global.world.artifacts.all
  end

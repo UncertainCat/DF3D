@@ -39,6 +39,25 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Nobles and administrators native discovery
 
+
+`item_legwear_native.h` reads native cf24bc..cf24e7's original artwork choice
+before the tint/cache compositor. It uses the raw tile for ordinary legwear and
+the pinned original-art globals for generated greaves/skirts; it never reads or
+populates graphics_info. The native procedural values10/11 differ from the
+current generated DFHack enum labels, so this adapter pins the executable branch
+and field offsets rather than using those labels.
+
+Protected125547 on2026-11-11 verifies generated silk skirt48318 uses installed
+ITEM_EQUIPMENT cell0,12 despite its empty raw tile, and ordinary skirt8201 and
+pants31264 preserve cells0,13 and0,9. The typed three-symbol naming/effect flow
+also passes. Owned DF44872 closes unsaved with source preservation; native30FPS,
+headless viewer, sampled GPU61C/24%. Core19, Nobles state and UI host checks pass
+in `build/qa/nobles-legwear-native`; the MSVC bridge builds. The fixture's
+symbol_reference.legwear_artwork_reference records these bounded facts. This is
+original-art selection evidence, not rendered picker acceptance; transporting
+this selector and the procedural greaves live case remain open.
+
+
 Native symbol assignment has a separate local draft and apply-on-dismiss flow.
 Protected110219 on2026-11-11 opens the Manager symbol picker at1200x800 and
 records786 ordered items, fifteen visible rows, the instruction caption, Done

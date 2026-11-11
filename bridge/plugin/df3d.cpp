@@ -2537,6 +2537,15 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             list.append(row);}result.append(list);}
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
         }
+        if(parameters[0]=="item-legwear-probe") {
+          if(parameters.size()!=2 || !state.mapLoaded || df3d_session::saving())return CR_WRONG_USAGE;
+          try {
+            const auto tile=df3d_production::legwearOriginalTile(df::item::find(std::stoi(parameters[1])));
+            if(!tile)return CR_FAILURE;
+            Json::Value result;result["tile"]=*tile;
+            out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
+          }catch(const std::exception&){return CR_FAILURE;}
+        }
         if(parameters[0]=="nobles-symbol-text-probe") {
           if(parameters.size()!=6)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;

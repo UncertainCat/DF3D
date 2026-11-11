@@ -8207,6 +8207,57 @@
       },
       "evidence": "build/stockpile-storage-native-input-20261111-114521",
       "scope": "Three ordinary symbol elevations in native order through two stable-ID continuations; replayed prior receipt rejects without adding records. Diagnostic safe-point adapter only; no typed owner or rendered naming acceptance."
+    },
+    "legwear_artwork_reference": {
+      "source": "build/stockpile-storage-native-input-20261111-125547",
+      "df_version": "53.16",
+      "selector": "cf24bc..cf24e7",
+      "runtime_cache_access": false,
+      "rows": [
+        {
+          "item_id": 48318,
+          "original_tile": 0,
+          "procedural": 11,
+          "raw_id": "HF424 EI1CPN1",
+          "selected_page": "ITEM_EQUIPMENT",
+          "selected_tile": 42869,
+          "selected_x": 0,
+          "selected_y": 12,
+          "source_hfid": 424
+        },
+        {
+          "item_id": 8201,
+          "original_tile": 42877,
+          "page": "ITEM_EQUIPMENT",
+          "procedural": -1,
+          "raw_id": "ITEM_PANTS_SKIRT_LONG",
+          "selected_page": "ITEM_EQUIPMENT",
+          "selected_tile": 42877,
+          "selected_x": 0,
+          "selected_y": 13,
+          "source_hfid": -1,
+          "x": 0,
+          "y": 13
+        },
+        {
+          "item_id": 31264,
+          "original_tile": 42845,
+          "page": "ITEM_EQUIPMENT",
+          "procedural": -1,
+          "raw_id": "ITEM_PANTS_PANTS",
+          "selected_page": "ITEM_EQUIPMENT",
+          "selected_tile": 42845,
+          "selected_x": 0,
+          "selected_y": 9,
+          "source_hfid": -1,
+          "x": 0,
+          "y": 9
+        }
+      ],
+      "limits": [
+        "Original artwork selection only; transport and rendered selector consumption remain pending.",
+        "Procedural greaves branch is pinned but has no live item case here."
+      ]
     }
   },
   "typed_symbols": {

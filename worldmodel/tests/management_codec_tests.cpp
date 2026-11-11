@@ -5281,3 +5281,19 @@ TEST_CASE("craft gemstone color preserves unknown absence and native color") {
     if(mode!=0)CHECK(*owned.craftGemColor==(mode==1?"":"CLEAR"));
   }
 }
+
+TEST_CASE("craft soft material preserves unknown and rejects invalid scope") {
+  for(int value:{-2,-1,0,1,2}) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto material=b.CreateString("CREATURE:TEST:HAIR"),empty=b.CreateString("");
+    wire::ItemInspectionAppearanceBuilder a(b);
+    a.add_material_token(material);a.add_subtype_raw(empty);a.add_color_token(empty);a.add_stack(1);
+    a.add_craft_soft_material(int8_t(value));b.Finish(a.Finish());
+    const auto* look=flatbuffers::GetRoot<wire::ItemInspectionAppearance>(b.GetBufferPointer());
+    for(int type=0;type<91;++type) {
+      const bool craft=type>=36 && type<=43 && type!=39;
+      CHECK(wire::validInspectionInstrument(*look,type)==((value==-1 && type!=13) || (craft && value>=0 && value<=1)));
+    }
+    if(value>=-1 && value<=1)CHECK(codec::decodeInspectionAppearance(look).craftSoftMaterial==value);
+  }
+}

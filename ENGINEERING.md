@@ -39,6 +39,16 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Nobles and administrators native discovery
 
+Protocol187 appends `ItemInspectionAppearance.craft_soft_material` and uses
+`Local\df3d_management_v187`. The field is -1 when unknown, including older
+recordings; 0 means none of native's four soft-material flags, and1 means
+THREAD_PLANT, LEATHER, SILK or YARN. Known values are restricted to craft item
+types36–43 excluding ammunition39. Do not infer this field from generic
+material classification. Rebuild bridge and viewer together before live use;
+protocol186 peers cannot share the new mailbox. Producer/rendering acceptance
+of187 remains pending at this contract boundary.
+
+
 Protocol186 appends nullable `ItemInspectionAppearance.craft_gem_color` and
 uses `Local\df3d_management_v186`. Absence means unknown (including older
 recordings); a present empty string means the native selector found no usable

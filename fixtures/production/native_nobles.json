@@ -8165,6 +8165,48 @@
       ],
       "evidence": "build/stockpile-storage-native-input-20261111-114036",
       "scope": "First15 native rows: untruncated captions and all value strings match without broker and with controlled broker assignment. Broker holder/index restored. Long-caption clipping, selected-office line and artwork are not accepted here."
+    },
+    "continuation_reference": {
+      "artifacts_added": 3,
+      "events_added": 6,
+      "existing_claim_matches": true,
+      "existing_removal_matches": true,
+      "first": {
+        "continuation_revision": "4232115348563220662",
+        "naming_artifact_id": 261,
+        "outcome": 2,
+        "remaining": [
+          {
+            "item_id": 20196,
+            "selected": true
+          },
+          {
+            "item_id": 13147,
+            "selected": true
+          }
+        ]
+      },
+      "native_ui_unchanged": true,
+      "replay_rejected": true,
+      "second": {
+        "continuation_revision": "5109127311048589542",
+        "naming_artifact_id": 262,
+        "outcome": 2,
+        "remaining": [
+          {
+            "item_id": 13147,
+            "selected": true
+          }
+        ]
+      },
+      "third": {
+        "continuation_revision": "0",
+        "naming_artifact_id": 263,
+        "outcome": 2,
+        "remaining": []
+      },
+      "evidence": "build/stockpile-storage-native-input-20261111-114521",
+      "scope": "Three ordinary symbol elevations in native order through two stable-ID continuations; replayed prior receipt rejects without adding records. Diagnostic safe-point adapter only; no typed owner or rendered naming acceptance."
     }
   }
 }

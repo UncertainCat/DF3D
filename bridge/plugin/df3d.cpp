@@ -2573,8 +2573,10 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
           }catch(const std::exception&){return CR_FAILURE;}
         }
-        if(parameters[0]=="nobles-symbol-apply-probe") {
-          if(parameters.size()<6 || (parameters.size()-4)%2)return CR_WRONG_USAGE;
+        if(parameters[0]=="nobles-symbol-apply-probe" || parameters[0]=="nobles-symbol-continue-probe") {
+          const bool continuation=parameters[0]=="nobles-symbol-continue-probe";
+          const size_t start=continuation?5:4;
+          if(parameters.size()<start+2 || (parameters.size()-start)%2)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving() || !df3d_nobles::symbolApplyReady())return CR_FAILURE;
           try {
             const df3d_nobles::OfficeKey key{std::stoi(parameters[1]),std::stoi(parameters[2]),std::stoi(parameters[3])};
@@ -2582,11 +2584,15 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             if(!df3d_nobles::prepareDraft(owned,{}))return CR_FAILURE;
             const auto rows=df3d_nobles::projectSymbols(owned,key);if(!rows)return CR_FAILURE;
             std::vector<df3d_nobles::SymbolChoice> edits;
-            for(size_t i=4;i<parameters.size();i+=2){const auto selected=std::stoi(parameters[i+1]);
+            for(size_t i=start;i<parameters.size();i+=2){const auto selected=std::stoi(parameters[i+1]);
               if(selected!=0 && selected!=1)return CR_WRONG_USAGE;edits.push_back({std::stoi(parameters[i]),selected!=0});}
-            if(!df3d_nobles::stageSymbols(owned,key,df3d_nobles::symbolRevision(*rows),edits))return CR_FAILURE;
+            const bool staged=continuation?df3d_nobles::stageSymbolContinuation(owned,key,std::stoull(parameters[4]),edits):
+              df3d_nobles::stageSymbols(owned,key,df3d_nobles::symbolRevision(*rows),edits);
+            if(!staged){Json::Value result;result["outcome"]=int(owned.stale?df3d_nobles::DraftCommitOutcome::Stale:df3d_nobles::DraftCommitOutcome::Rejected);
+              out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;}
             const auto effect=df3d_nobles::applySymbolStep(owned,key);
             Json::Value result;result["outcome"]=int(effect.outcome);result["naming_artifact_id"]=effect.namingArtifactId;
+            result["continuation_revision"]=std::to_string(effect.continuationRevision);
             result["remaining"]=Json::Value(Json::arrayValue);
             for(const auto& entry:effect.remaining){Json::Value row;row["item_id"]=entry.itemId;row["selected"]=entry.selected;result["remaining"].append(row);}
             out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;

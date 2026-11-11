@@ -41,6 +41,7 @@ inline bool symbolApplyReady() {
 struct SymbolStep {
     DraftCommitOutcome outcome=DraftCommitOutcome::Rejected;
     int32_t namingArtifactId=-1;
+    uint64_t continuationRevision=0;
     // Native order is preserved for the next step, after the name editor closes.
     std::vector<SymbolChoice> remaining;
 };
@@ -129,6 +130,8 @@ inline SymbolStep applySymbolStep(Context& owned,const OfficeKey& key) {
         if(next!=-1) {
             for(size_t i=size_t(next);i<count;++i)if(value.cand_symbol_new_ind[i]!=value.cand_symbol_is_symbol_of_ind[i])
                 result.remaining.push_back({value.cand_symbol[i]->id,value.cand_symbol_new_ind[i]==target});
+            const auto refreshed=projectSymbols(owned,key);if(!refreshed)return result;
+            result.continuationRevision=symbolRevision(*refreshed);
         }
         result.outcome=DraftCommitOutcome::Applied;
     }catch(const std::exception&){result.outcome=DraftCommitOutcome::Unknown;}

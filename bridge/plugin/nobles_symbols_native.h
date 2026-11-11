@@ -128,4 +128,27 @@ inline bool stageSymbols(Context& owned,const OfficeKey& key,uint64_t expectedRe
     }
     return true;
 }
+// Continuations carry the untouched tail in its original order. Rebuilding the
+// native list can reorder newly elevated artifacts, so filter/reorder only our
+// private vectors after revalidating the fresh list. The command owner must
+// authenticate this tail against its outstanding step, not arbitrary UI order.
+inline bool stageSymbolContinuation(Context& owned,const OfficeKey& key,uint64_t expectedRevision,
+        const std::vector<SymbolChoice>& remaining) {
+    if(remaining.empty() || !stageSymbols(owned,key,expectedRevision,remaining))return false;
+    auto& value=owned.value;
+    std::unordered_map<int32_t,size_t> indices;
+    for(size_t i=0;i<value.cand_symbol.size();++i)indices.emplace(value.cand_symbol[i]->id,i);
+    std::vector<df::item*> items;std::vector<int32_t> selected,previous,amounts;
+    items.reserve(remaining.size());selected.reserve(remaining.size());previous.reserve(remaining.size());amounts.reserve(remaining.size());
+    for(const auto& edit:remaining) {
+        const auto i=indices.at(edit.itemId);
+        // A prior effect arriving here twice must not be silently accepted.
+        if(value.cand_symbol_new_ind[i]==value.cand_symbol_is_symbol_of_ind[i])return false;
+        items.push_back(value.cand_symbol[i]);selected.push_back(value.cand_symbol_new_ind[i]);
+        previous.push_back(value.cand_symbol_is_symbol_of_ind[i]);amounts.push_back(value.cand_symbol_value[i]);
+    }
+    value.cand_symbol=std::move(items);value.cand_symbol_new_ind=std::move(selected);
+    value.cand_symbol_is_symbol_of_ind=std::move(previous);value.cand_symbol_value=std::move(amounts);
+    return true;
+}
 }

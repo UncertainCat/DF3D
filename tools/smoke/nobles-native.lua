@@ -369,15 +369,21 @@ if os.getenv('DF3D_NOBLES_SYMBOLS')=='1' then
   result.symbol_reference.effects[#result.symbol_reference.effects+1]={operation=operation,item_id=symbols[1].item_id,artifact_id=artifact.id,before=before,after=claims(),previous_index=previous,staged_index=staged,toggle_is_local=true}
  end
  if os.getenv('DF3D_NOBLES_SYMBOL_APPLY')=='1' then
-  local function apply(...)
+  local function symbol_call(name,expected,...)
    local size,address=df.sizeof(menu);local before=bytes(address,size)
    local creator=df.global.game.main_interface.name_creator
    local cs,ca=df.sizeof(creator);local creator_before=bytes(ca,cs)
-   local command={'nobles-symbol-apply-probe',tostring(office.entity_id),tostring(office.position_id),tostring(office.assignment_id),...}
+   local command={name,tostring(office.entity_id),tostring(office.position_id),tostring(office.assignment_id),...}
    local text,rc=dfhack.run_command_silent('df3d',table.unpack(command));assert(rc==0,text)
-   local value=json.decode(text);assert(value.outcome==2,'Owned symbol apply failed: '..text)
+   local value=json.decode(text);assert(value.outcome==expected,'Owned symbol outcome differs: '..text)
    assert(bytes(address,size)==before and bytes(ca,cs)==creator_before,'Owned apply changed native UI')
    return value
+  end
+  local function apply(...)return symbol_call('nobles-symbol-apply-probe',2,...)end
+  local function continue_step(previous,expected)
+   local args={previous.continuation_revision}
+   for _,row in ipairs(previous.remaining)do args[#args+1]=tostring(row.item_id);args[#args+1]=row.selected and '1' or '0' end
+   return symbol_call('nobles-symbol-continue-probe',expected,table.unpack(args))
   end
   local selected=apply(tostring(symbols[1].item_id),'1')
   assert(selected.naming_artifact_id==-1 and #selected.remaining==0)
@@ -385,16 +391,22 @@ if os.getenv('DF3D_NOBLES_SYMBOLS')=='1' then
   apply(tostring(symbols[1].item_id),'0')
   assert(json.encode(claims())==json.encode(result.symbol_reference.effects[2].after),'Owned artifact removal differs from native')
   local ordinary={}
-  for _,row in ipairs(symbols)do if not df.item.find(row.item_id).flags.artifact then ordinary[#ordinary+1]=row.item_id;if #ordinary==2 then break end end end
-  assert(#ordinary==2)
+  for _,row in ipairs(symbols)do if not df.item.find(row.item_id).flags.artifact then ordinary[#ordinary+1]=row.item_id;if #ordinary==3 then break end end end
+  assert(#ordinary==3)
   local artifacts_before=#df.global.world.artifacts.all;local events_before=#df.global.world.history.events
-  local first=apply(tostring(ordinary[1]),'1',tostring(ordinary[2]),'1')
-  assert(first.naming_artifact_id>=0 and #first.remaining==1 and first.remaining[1].item_id==ordinary[2] and first.remaining[1].selected)
+  local first=apply(tostring(ordinary[3]),'1',tostring(ordinary[2]),'1',tostring(ordinary[1]),'1')
+  assert(first.naming_artifact_id>=0 and #first.remaining==2 and first.remaining[1].item_id==ordinary[2] and first.remaining[2].item_id==ordinary[3])
   assert(not df.item.find(ordinary[2]).flags.artifact,'Second ordinary item was elevated early')
-  local second=apply(tostring(ordinary[2]),'1')
-  assert(second.naming_artifact_id>=0 and #second.remaining==0)
+  local second=continue_step(first,2)
+  assert(second.naming_artifact_id>=0 and #second.remaining==1 and second.remaining[1].item_id==ordinary[3])
+  local artifact_count=#df.global.world.artifacts.all;local event_count=#df.global.world.history.events
+  continue_step(first,4)
+  assert(#df.global.world.artifacts.all==artifact_count and #df.global.world.history.events==event_count,'Replayed continuation changed records')
+  assert(not df.item.find(ordinary[3]).flags.artifact,'Replay elevated the next item')
+  local third=continue_step(second,2)
+  assert(third.naming_artifact_id>=0 and #third.remaining==0 and third.continuation_revision=='0')
   local entity=df.historical_entity.find(office.entity_id)
-  for i,id in ipairs{first.naming_artifact_id,second.naming_artifact_id}do
+  for i,id in ipairs{first.naming_artifact_id,second.naming_artifact_id,third.naming_artifact_id}do
    local artifact=df.artifact_record.find(id);assert(artifact and artifact.item.id==ordinary[i] and artifact.item.flags.artifact and artifact.name.has_name)
    local found=false;for _,claim in ipairs(entity.artifact_claims)do
     if claim.artifact_id==id and claim.symbol_claim_id==office.assignment_id and claim.renounce_event==-1 then found=true end
@@ -402,8 +414,8 @@ if os.getenv('DF3D_NOBLES_SYMBOLS')=='1' then
    found=false;for _,candidate in ipairs(df.global.world.items.other.ANY_ARTIFACT)do if candidate.id==ordinary[i] then found=true end end
    assert(found,'Elevated item missing artifact category')
   end
-  assert(#df.global.world.artifacts.all==artifacts_before+2 and #df.global.world.history.events==events_before+4,'Owned elevation event/record count differs')
-  result.symbol_reference.owned_apply={existing_claim_matches=true,existing_removal_matches=true,first=first,second=second,artifacts_added=2,events_added=4,native_ui_unchanged=true}
+  assert(#df.global.world.artifacts.all==artifacts_before+3 and #df.global.world.history.events==events_before+6,'Owned elevation event/record count differs')
+  result.symbol_reference.owned_apply={existing_claim_matches=true,existing_removal_matches=true,first=first,second=second,third=third,artifacts_added=3,events_added=6,replay_rejected=true,native_ui_unchanged=true}
  end
  if os.getenv('DF3D_NOBLES_SYMBOL_NAME')=='1' then
   click_symbol(x,y);assert(menu.assigning_symbol)

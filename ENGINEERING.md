@@ -120,7 +120,7 @@ ordinary simulation randomness; read-only scratch guards do not cover effects.
 Completed claims are checked afterward. Failures after entering effects return
 Unknown. The result contains the artifact to name and remaining item IDs in
 native order, with no retained pointers. An asynchronous owner still needs
-continuation ordering, stale validation, naming lifetime and deduplication.
+outstanding-step binding, naming lifetime and request deduplication.
 
 Protected112645 on2026-11-11 exercises `nobles-symbol-apply-probe`. Existing
 artifact assignment/removal match native claim snapshots. Two ordinary items
@@ -134,6 +134,23 @@ the same effects before adding postcondition checks. This is diagnostic effect
 acceptance, not typed transport, rendered picker/naming or failure-lifecycle
 acceptance. Cross-office/civilization claims and mixed continuation ordering
 remain unverified.
+
+Each nonterminal symbol step now returns a fresh full candidate revision after
+its effects. `stageSymbolContinuation` validates that revision and all remaining
+item IDs before compacting only the owned candidate vectors into the original
+remaining order. Already-applied entries reject instead of being silently
+accepted. The typed owner must authenticate this list against its outstanding
+step; it must not expose arbitrary client-specified processing order.
+Protected114521 on2026-11-11 submits three ordinary items in reverse order to
+the initial apply, then follows two returned continuations. Artifact IDs follow
+native candidate order; all three names, claims and categories are present,
+with three artifacts and six history events added. Replaying the first
+continuation after the second step returns Stale with unchanged record counts
+and leaves the third item ordinary. Native menu/name-editor bytes are preserved.
+`symbol_reference.continuation_reference` retains the bounded observations.
+Core passes in `build/qa/nobles-symbol-continuation`; the plugin builds. DF10752
+closes unsaved with source preservation,30FPS, sampled GPU59C/4%. This is adapter
+acceptance; typed session/epoch ownership and UI navigation remain pending.
 
 `nobles_symbol_name_native.h` observes an artifact name only while its expected
 office assignment and active symbol claim still exist. Its receipt binds that

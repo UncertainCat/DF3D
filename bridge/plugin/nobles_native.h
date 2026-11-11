@@ -22,10 +22,13 @@
 #include <optional>
 #include <vector>
 namespace df3d_nobles {
+struct RoomHelp {std::string actual,required;int32_t color=15;};
+struct HoverHelp {std::string description;std::array<RoomHelp,4> rooms;};
 struct Row {
     int32_t unitId=-1,nemesisId=-1,entityId=-1,positionId=-1,assignmentId=-1,value=0;
     std::string positionName,title,squadCaption,holderCaption;
     std::optional<df3d_production::ItemAppearanceRecipe> appearance;
+    std::optional<HoverHelp> help;
     bool canAppoint=false,hasRoomAssessment=false;
     // Native severity: -1 absent, 0 fulfilled/export-only, 1 pending, 2 urgent, 3 critical.
     int32_t demandStatus=-1,mandateStatus=-1;
@@ -259,7 +262,29 @@ inline bool obligations(const df::noblelistst& source,Row& row,uint8_t* base) {
     }
     return true;
 }
-inline std::optional<std::vector<Row>> overview() {
+// Native42a331/42a340 supplies the same room assessments already retained
+// above. Native42a3a4/42a417 names both values through ab4f20. All strings are
+// owned; ab4ee0 is a gps writer and is never invoked for its scalar color rule.
+inline bool hoverHelp(const df::noblelistst& source,Row& row,uint8_t* base) {
+    static const bool pinned=[base]{uint64_t h=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x3b0;++i){h^=base[0xab4f20+i];h*=UINT64_C(1099511628211);}
+        return h==UINT64_C(0x7740ba5bc0108c80);}();
+    if(!pinned || source.ep->description.size()>16384)return false;
+    static_assert(offsetof(df::entity_position,description)==0x358);
+    auto& help=row.help.emplace();help.description=source.ep->description;
+    if(!row.hasRoomAssessment)return true;
+    using Caption=void(*)(std::string*,int32_t,int16_t);
+    for(int16_t i=0;i<4;++i){auto& out=help.rooms[i];
+        reinterpret_cast<Caption>(base+0xab4f20)(&out.actual,row.actualRooms[i],i);
+        if(row.requiredRooms[i]>0){
+            reinterpret_cast<Caption>(base+0xab4f20)(&out.required,row.requiredRooms[i],i);
+            out.required.insert(0,reinterpret_cast<const char*>(base+0x161be30));
+        }
+        out.color=row.requiredRooms[i]==0?11:row.actualRooms[i]>=row.requiredRooms[i]?15:row.actualRooms[i]>0?14:12;
+    }
+    return true;
+}
+inline std::optional<std::vector<Row>> overview(bool includeHelp=false) {
     if(!ready())return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     // Unit location summaries can choose between equivalent locations using MT.
@@ -276,6 +301,7 @@ inline std::optional<std::vector<Row>> overview() {
         row.entityId=source->enid;row.positionId=source->ep->id;row.assignmentId=source->epp?source->epp->id:-1;
         row.value=source->value;row.positionName=source->ep->name[0];
         if(!captions(*source,row,base) || !requirements.assess(*source,row,base) || !obligations(*source,row,base))return std::nullopt;
+        if(includeHelp && !hoverHelp(*source,row,base))return std::nullopt;
         result.push_back(std::move(row));
     }
     return result;

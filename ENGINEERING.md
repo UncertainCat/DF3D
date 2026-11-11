@@ -39,6 +39,27 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Nobles and administrators native discovery
 
+`nobles-help-probe` optionally collects office descriptions and room help from
+an owned overview. Native428eea wraps `entity_position.description` (+358).
+Room hover42a331/42a340 uses the existing requirements/valuation providers;
+42a3a4/42a417 calls pinned ab4f20 on owned strings for actual/required captions.
+The native `Needs: ` literal comes from161be30. Color helperab4ee0 writes gps,
+so only its scalar palette rule is reproduced; no native drawing helper runs.
+Normal overview reads do not request this additional diagnostic data yet.
+
+Protected084447 on2026-11-11 verifies all28 room captions/requirements and colors
+across seven occupied rows against actual native hover rendering, including
+unrequired, missing, partial and satisfied rooms. The owned help probe preserves
+native menu bytes, random streams and measured lookup caches. Native samples
+show help replacing introduction rows10..12; hovering any of the four room icons
+shows the same assessment. Symbol hover shows nonempty office descriptions.
+Furniture/demand/mandate help is observed but its text providers remain pending;
+accounting help is also unfinished. `native_nobles.json.hover_discovery_reference`
+retains the samples. The PNG handshake loses hover, so it is not visual hover
+acceptance. No typed help transport or viewer implementation exists yet.
+MSVC bridge and `build/qa/nobles-room-help` core checks pass. Source preservation
+passes; DF38708 closes unsaved,30FPS, GPU39C/1% sampled.
+
 The staged `nobles_view.gd` renders the native overview headings, introduction,
 ordered captions and installed status artwork. Protected082227 on2026-11-11
 compares its1200x800 capture visually with native172234:14 rows, native captions

@@ -2542,10 +2542,10 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           for(const auto& entry:*rows){Json::Value row(Json::objectValue);row["unit_id"]=entry.unitId;row["value"]=entry.value;result.append(row);}
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
         }
-        if(parameters[0]=="nobles-overview-probe") {
+        if(parameters[0]=="nobles-overview-probe" || parameters[0]=="nobles-help-probe") {
           if(parameters.size()!=1)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
-          const auto rows=df3d_nobles::overview();if(!rows)return CR_FAILURE;
+          const auto rows=df3d_nobles::overview(parameters[0]=="nobles-help-probe");if(!rows)return CR_FAILURE;
           Json::Value result(Json::arrayValue);
           for(const auto& entry:*rows){Json::Value row(Json::objectValue);
             row["unit_id"]=entry.unitId;row["nemesis_id"]=entry.nemesisId;row["entity_id"]=entry.entityId;
@@ -2553,6 +2553,8 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             row["position_name"]=DF2UTF(entry.positionName);row["can_appoint"]=entry.canAppoint;
             row["title"]=DF2UTF(entry.title);row["squad_caption"]=DF2UTF(entry.squadCaption);
             row["holder_caption"]=DF2UTF(entry.holderCaption);row["has_room_assessment"]=entry.hasRoomAssessment;
+            if(entry.help){Json::Value help(Json::objectValue);help["description"]=DF2UTF(entry.help->description);
+              for(const auto& room:entry.help->rooms){Json::Value value(Json::objectValue);value["actual"]=DF2UTF(room.actual);value["required"]=DF2UTF(room.required);value["color"]=room.color;help["rooms"].append(value);}row["help"]=help;}
             row["demand_status"]=entry.demandStatus;row["mandate_status"]=entry.mandateStatus;
             for(size_t i=0;i<4;++i){row["required_rooms"].append(entry.requiredRooms[i]);row["actual_rooms"].append(entry.actualRooms[i]);
               row["required_furniture"].append(entry.requiredFurniture[i]);row["actual_furniture"].append(entry.actualFurniture[i]);}

@@ -2820,5 +2820,530 @@
       "Other fortresses and nonhuman holder appearances are not independently compared.",
       "Hover, appointment/symbol actions, responsive and composed owner/input behavior remain unfinished."
     ]
+  },
+  "hover_discovery_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-084447",
+    "viewport": [
+      1200,
+      800
+    ],
+    "behavior": "Holder help replaces the introduction at text rows10..12; the four room icons all show the same four-room assessment. Furniture, demands and mandates select distinct help. Symbol hover shows the position description when nonempty.",
+    "native_samples": [
+      {
+        "kind": "appointment",
+        "x": 232,
+        "y": 250,
+        "instruction": -1,
+        "intro_lines": [
+          {
+            "text": "      Members of the nobility have required rooms and can make demands. They cannot be reassigned.",
+            "y": 10
+          },
+          {
+            "text": "      Administrators handle various aspects of your fortress and can be reassigned. Many administrators also require",
+            "y": 11
+          },
+          {
+            "text": "      rooms.",
+            "y": 12
+          }
+        ]
+      },
+      {
+        "kind": "portrait",
+        "x": 272,
+        "y": 178,
+        "instruction": -1,
+        "intro_lines": [
+          {
+            "text": "      Members of the nobility have required rooms and can make demands. They cannot be reassigned.",
+            "y": 10
+          },
+          {
+            "text": "      Administrators handle various aspects of your fortress and can be reassigned. Many administrators also require",
+            "y": 11
+          },
+          {
+            "text": "      rooms.",
+            "y": 12
+          }
+        ]
+      },
+      {
+        "kind": "title",
+        "x": 96,
+        "y": 178,
+        "instruction": -1,
+        "intro_lines": [
+          {
+            "text": "      Members of the nobility have required rooms and can make demands. They cannot be reassigned.",
+            "y": 10
+          },
+          {
+            "text": "      Administrators handle various aspects of your fortress and can be reassigned. Many administrators also require",
+            "y": 11
+          },
+          {
+            "text": "      rooms.",
+            "y": 12
+          }
+        ]
+      },
+      {
+        "kind": "symbol",
+        "x": 544,
+        "y": 178,
+        "instruction": -1,
+        "intro_lines": [
+          {
+            "text": "      Members of the nobility have required rooms and can make demands. They cannot be reassigned.",
+            "y": 10
+          },
+          {
+            "text": "      Administrators handle various aspects of your fortress and can be reassigned. Many administrators also require",
+            "y": 11
+          },
+          {
+            "text": "      rooms.",
+            "y": 12
+          }
+        ]
+      },
+      {
+        "kind": "office",
+        "x": 592,
+        "y": 178,
+        "instruction": -1,
+        "intro_lines": [
+          {
+            "text": "      Study                      Needs: Royal Throne Room   No Dining Room             Needs: Royal Dining Room",
+            "y": 10
+          },
+          {
+            "text": "      Quarters                   Needs: Royal Bedroom       No Tomb                    Needs: Royal Mausoleum",
+            "y": 11
+          },
+          {
+            "text": "",
+            "y": 12
+          }
+        ]
+      },
+      {
+        "kind": "bedroom",
+        "x": 624,
+        "y": 178,
+        "instruction": -1,
+        "intro_lines": [
+          {
+            "text": "      Study                      Needs: Royal Throne Room   No Dining Room             Needs: Royal Dining Room",
+            "y": 10
+          },
+          {
+            "text": "      Quarters                   Needs: Royal Bedroom       No Tomb                    Needs: Royal Mausoleum",
+            "y": 11
+          },
+          {
+            "text": "",
+            "y": 12
+          }
+        ]
+      },
+      {
+        "kind": "dining",
+        "x": 656,
+        "y": 178,
+        "instruction": -1,
+        "intro_lines": [
+          {
+            "text": "      Study                      Needs: Royal Throne Room   No Dining Room             Needs: Royal Dining Room",
+            "y": 10
+          },
+          {
+            "text": "      Quarters                   Needs: Royal Bedroom       No Tomb                    Needs: Royal Mausoleum",
+            "y": 11
+          },
+          {
+            "text": "",
+            "y": 12
+          }
+        ]
+      },
+      {
+        "kind": "tomb",
+        "x": 688,
+        "y": 178,
+        "instruction": -1,
+        "intro_lines": [
+          {
+            "text": "      Study                      Needs: Royal Throne Room   No Dining Room             Needs: Royal Dining Room",
+            "y": 10
+          },
+          {
+            "text": "      Quarters                   Needs: Royal Bedroom       No Tomb                    Needs: Royal Mausoleum",
+            "y": 11
+          },
+          {
+            "text": "",
+            "y": 12
+          }
+        ]
+      },
+      {
+        "kind": "furniture",
+        "x": 720,
+        "y": 178,
+        "instruction": -1,
+        "intro_lines": [
+          {
+            "text": "      No chests                  Needs: 10 chests           No weapon racks            Needs: 5 weapon racks",
+            "y": 10
+          },
+          {
+            "text": "      1 cabinet                  Needs: 5 cabinets          No armor stands            Needs: 5 armor stands",
+            "y": 11
+          },
+          {
+            "text": "",
+            "y": 12
+          }
+        ]
+      },
+      {
+        "kind": "demands",
+        "x": 768,
+        "y": 178,
+        "instruction": -1,
+        "intro_lines": [
+          {
+            "text": "",
+            "y": 10
+          },
+          {
+            "text": "",
+            "y": 11
+          },
+          {
+            "text": "",
+            "y": 12
+          }
+        ]
+      },
+      {
+        "kind": "mandates",
+        "x": 800,
+        "y": 178,
+        "instruction": -1,
+        "intro_lines": [
+          {
+            "text": "      Make bags (1/1)",
+            "y": 10
+          },
+          {
+            "text": "      Make hoods (2/2)",
+            "y": 11
+          },
+          {
+            "text": "",
+            "y": 12
+          }
+        ]
+      },
+      {
+        "kind": "footer-clear",
+        "x": 900,
+        "y": 700,
+        "instruction": -1,
+        "intro_lines": [
+          {
+            "text": "      Members of the nobility have required rooms and can make demands. They cannot be reassigned.",
+            "y": 10
+          },
+          {
+            "text": "      Administrators handle various aspects of your fortress and can be reassigned. Many administrators also require",
+            "y": 11
+          },
+          {
+            "text": "      rooms.",
+            "y": 12
+          }
+        ]
+      },
+      {
+        "kind": "manager-description",
+        "x": 544,
+        "y": 394,
+        "instruction": -1,
+        "intro_lines": [
+          {
+            "text": "      The manager handles work orders. Once your fortress reaches a certain population, the manager must work in an",
+            "y": 10
+          },
+          {
+            "text": "      office to validate work orders.",
+            "y": 11
+          },
+          {
+            "text": "",
+            "y": 12
+          }
+        ]
+      },
+      {
+        "kind": "bookkeeper-symbol",
+        "x": 544,
+        "y": 502,
+        "instruction": -1,
+        "intro_lines": [
+          {
+            "text": "      The bookkeeper keeps an accurate count of items in the fortress. They work in their office to improve the",
+            "y": 10
+          },
+          {
+            "text": "      precision of the count.",
+            "y": 11
+          },
+          {
+            "text": "",
+            "y": 12
+          }
+        ]
+      },
+      {
+        "kind": "rooms-final",
+        "x": 592,
+        "y": 178,
+        "instruction": -1,
+        "intro_lines": [
+          {
+            "text": "      Study                      Needs: Royal Throne Room   No Dining Room             Needs: Royal Dining Room",
+            "y": 10
+          },
+          {
+            "text": "      Quarters                   Needs: Royal Bedroom       No Tomb                    Needs: Royal Mausoleum",
+            "y": 11
+          },
+          {
+            "text": "",
+            "y": 12
+          }
+        ]
+      }
+    ],
+    "rooms": [
+      {
+        "native_text_colors_match": true,
+        "rooms": [
+          {
+            "actual": "Study",
+            "color": 14,
+            "required": "Needs: Royal Throne Room"
+          },
+          {
+            "actual": "Quarters",
+            "color": 14,
+            "required": "Needs: Royal Bedroom"
+          },
+          {
+            "actual": "No Dining Room",
+            "color": 12,
+            "required": "Needs: Royal Dining Room"
+          },
+          {
+            "actual": "No Tomb",
+            "color": 12,
+            "required": "Needs: Royal Mausoleum"
+          }
+        ],
+        "unit_id": 5981
+      },
+      {
+        "native_text_colors_match": true,
+        "rooms": [
+          {
+            "actual": "Decent Study",
+            "color": 15,
+            "required": "Needs: Decent Study"
+          },
+          {
+            "actual": "Fine Quarters",
+            "color": 15,
+            "required": "Needs: Decent Quarters"
+          },
+          {
+            "actual": "Fine Dining Room",
+            "color": 15,
+            "required": "Needs: Decent Dining Room"
+          },
+          {
+            "actual": "No Tomb",
+            "color": 11,
+            "required": ""
+          }
+        ],
+        "unit_id": 5813
+      },
+      {
+        "native_text_colors_match": true,
+        "rooms": [
+          {
+            "actual": "Decent Study",
+            "color": 15,
+            "required": "Needs: Decent Study"
+          },
+          {
+            "actual": "Fine Quarters",
+            "color": 15,
+            "required": "Needs: Decent Quarters"
+          },
+          {
+            "actual": "Fine Dining Room",
+            "color": 15,
+            "required": "Needs: Decent Dining Room"
+          },
+          {
+            "actual": "No Tomb",
+            "color": 11,
+            "required": ""
+          }
+        ],
+        "unit_id": 5813
+      },
+      {
+        "native_text_colors_match": true,
+        "rooms": [
+          {
+            "actual": "No Study",
+            "color": 11,
+            "required": ""
+          },
+          {
+            "actual": "Quarters",
+            "color": 11,
+            "required": ""
+          },
+          {
+            "actual": "No Dining Room",
+            "color": 11,
+            "required": ""
+          },
+          {
+            "actual": "No Tomb",
+            "color": 11,
+            "required": ""
+          }
+        ],
+        "unit_id": 6812
+      },
+      {
+        "native_text_colors_match": true,
+        "rooms": [
+          {
+            "actual": "No Study",
+            "color": 11,
+            "required": ""
+          },
+          {
+            "actual": "Quarters",
+            "color": 11,
+            "required": ""
+          },
+          {
+            "actual": "No Dining Room",
+            "color": 11,
+            "required": ""
+          },
+          {
+            "actual": "No Tomb",
+            "color": 11,
+            "required": ""
+          }
+        ],
+        "unit_id": 6815
+      },
+      {
+        "native_text_colors_match": true,
+        "rooms": [
+          {
+            "actual": "Study",
+            "color": 15,
+            "required": "Needs: Meager Study"
+          },
+          {
+            "actual": "Quarters",
+            "color": 11,
+            "required": ""
+          },
+          {
+            "actual": "No Dining Room",
+            "color": 11,
+            "required": ""
+          },
+          {
+            "actual": "No Tomb",
+            "color": 11,
+            "required": ""
+          }
+        ],
+        "unit_id": 1017
+      },
+      {
+        "native_text_colors_match": true,
+        "rooms": [
+          {
+            "actual": "No Study",
+            "color": 11,
+            "required": ""
+          },
+          {
+            "actual": "Quarters",
+            "color": 11,
+            "required": ""
+          },
+          {
+            "actual": "No Dining Room",
+            "color": 11,
+            "required": ""
+          },
+          {
+            "actual": "No Tomb",
+            "color": 11,
+            "required": ""
+          }
+        ],
+        "unit_id": 5984
+      }
+    ],
+    "descriptions": [
+      {
+        "entity_id": 865,
+        "position_id": 10,
+        "description": "The manager handles work orders. Once your fortress reaches a certain population, the manager must work in an office to validate work orders."
+      },
+      {
+        "entity_id": 865,
+        "position_id": 11,
+        "description": "The chief medical dwarf allows you to see the overall health of dwarves in your fortress."
+      },
+      {
+        "entity_id": 865,
+        "position_id": 12,
+        "description": "The broker uses their appraisal skill to allow you to see the value of items in the fortress. They are also the default negotiator with visiting merchants."
+      },
+      {
+        "entity_id": 865,
+        "position_id": 13,
+        "description": "The bookkeeper keeps an accurate count of items in the fortress. They work in their office to improve the precision of the count."
+      }
+    ],
+    "menu_rng_lookup_caches_preserved": true,
+    "source_save_preserved": true,
+    "owned_df_closed_unsaved": true,
+    "omissions": [
+      "The screenshot handshake loses the hover state; PNG is not visual hover acceptance.",
+      "Furniture/demand/mandate text providers and accounting help remain unfinished.",
+      "Description and room help are diagnostic-only; typed transport and Godot rendering are not implemented.",
+      "No responsive, hover timing or composed input acceptance."
+    ]
   }
 }

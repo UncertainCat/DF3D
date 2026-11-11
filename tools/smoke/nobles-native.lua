@@ -142,6 +142,46 @@ end
 assert(json.encode(cold)==json.encode(rows) and json.encode(warm)==json.encode(rows),'Owned Nobles overview differs from native order/identities')
 local result={room_reference=room_reference,caption_reference=caption_reference,owned={cold=cold,warm=warm,menu_preserved=true,rng_preserved=true},dimensions={g.dimx,g.dimy},rows=rows,lines=lines(),scroll=menu.scroll_position_noblelist,choosing_candidate=menu.choosing_candidate,assigning_symbol=menu.assigning_symbol}
 write('nobles-native.json',json.encode(result));capture('nobles-overview')
+-- Native hover discovery: sample actual input/rendering, never use these menu
+-- fields as runtime sources. Preserve whole text cells because Nobles also draws
+-- holder-specific help in place of its introduction rather than only the global help.
+local function hover_sample(kind,x,y)
+ local deadline=dfhack.getTickCount()+650
+ repeat
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+  g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+  df.global.game.main_interface.current_hover=0
+  gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(1,'frames')
+ until dfhack.getTickCount()>=deadline
+ g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=(y-4)//12
+ df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+ gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+ return {kind=kind,x=x,y=y,instruction=df.global.game.main_interface.current_hover,lines=lines()}
+end
+if os.getenv('DF3D_NOBLES_HOVER')=='1' then
+ result.hover={}
+ for _,target in ipairs{{'appointment',232,250},{'portrait',272,178},{'title',96,178},{'symbol',544,178},{'office',592,178},{'bedroom',624,178},{'dining',656,178},{'tomb',688,178},{'furniture',720,178},{'demands',768,178},{'mandates',800,178},{'footer-clear',900,700}}do
+  result.hover[#result.hover+1]=hover_sample(table.unpack(target))
+ end
+ result.owned_help=probe({'nobles-help-probe'})
+ result.room_help_reference={}
+ for index,row in ipairs(result.owned_help)do if row.unit_id>=0 then
+  local sample=hover_sample('rooms-'..index,592,178+(index-1)*36)
+  for kind,room in ipairs(row.help.rooms)do
+   local x=6+54*((kind-1)//2);local y=10+(kind-1)%2
+   assert(cells(x,y,#dfhack.utf2df(room.actual))==dfhack.utf2df(room.actual),'Native room hover caption differs')
+   if room.required~=''then assert(cells(x+27,y,#dfhack.utf2df(room.required))==dfhack.utf2df(room.required),'Native required room hover differs')end
+   local tile=dfhack.screen.readTile(x,y);local color=tile.fg+((tile.bold and tile.bold~=0) and 8 or 0)
+   assert(color==room.color,'Native room hover color differs: '..color..' vs '..room.color)
+  end
+  result.room_help_reference[#result.room_help_reference+1]={unit_id=row.unit_id,rooms=row.help.rooms,native_text_colors_match=true}
+ end end
+ result.hover[#result.hover+1]=hover_sample('manager-description',544,394)
+ result.hover[#result.hover+1]=hover_sample('bookkeeper-symbol',544,502)
+ result.hover[#result.hover+1]=hover_sample('rooms-final',592,178)
+ write('nobles-native.json',json.encode(result))
+ capture('nobles-hover-rooms')
+end
 -- Controlled semantic cases in the paused unsaved clone. Native renders the
 -- changed demand; the owned provider must agree with every indicator tile.
 local demand_target=menu.noblelist[1].un

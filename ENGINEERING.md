@@ -39,6 +39,19 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Objects native discovery
 
+Protocol190 adds optional weapon `artifact_mood` to shared item appearance facts
+(-1 unknown,0 false,1 true). Native c7ce83..c7ce94 selects weapon artwork from
+item flag bit27, independently of general artifact status. Nobles already carries
+this fact separately; Objects and other item views must receive it through the
+shared contract. Non-weapon appearances reject known values. This is the contract
+and neutral codec change only; the producer and viewer dictionary are not yet
+connected. Do not infer the fact from an older recording's artifact flag.
+Bridge and viewer must be rebuilt together for `Local\df3d_management_v190`;
+installed binaries remain189 until that rebuild and protected live acceptance.
+Core19 passes `build/qa/weapon-mood-contract`, including independent artifact
+status, unknown mood, invalid values/type scope and owned decode checks.
+
+
 Protocol189 corrects Objects' previously unused artwork field from a layer
 recipe to `ItemInspectionAppearance`, with an `item_type` field (-1 when unknown).
 Objects renderer3a060a calls shared item selectorc7cbc0, also used by Stocks and

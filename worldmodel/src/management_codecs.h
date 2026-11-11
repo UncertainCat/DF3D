@@ -14,7 +14,7 @@ inline SelectionAppearance decodeItemRecipe(const df3d::mirror::SelectionAppeara
 inline ItemInspectionAppearance decodeInspectionAppearance(const df3d::mirror::ItemInspectionAppearance* a) {
   ItemInspectionAppearance result{a->material_token()->str(),a->subtype_raw()->str(),a->color_token()->str(),a->stack(),a->flags(),a->instrument_family(),a->instrument_placed()};
   result.slabEngraving=a->slab_engraving();
-  result.craftSoftMaterial=a->craft_soft_material();
+  result.craftSoftMaterial=a->craft_soft_material();result.artifactMood=a->artifact_mood();
   if(a->craft_gem_color())result.craftGemColor=a->craft_gem_color()->str();
   if(a->legwear_selector())result.legwearSelector=decodeItemRecipe(a->legwear_selector());
   if(a->corpse_selector())result.corpseSelector=decodeItemRecipe(a->corpse_selector());

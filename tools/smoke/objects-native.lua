@@ -25,7 +25,7 @@ local function bytes(address,size)
  local chars={};for offset=0,size-1 do chars[#chars+1]=string.char(df.reinterpret_cast('uint8_t',address+offset).value)end
  return table.concat(chars)
 end
-local function probe()
+local function probe(command)
  local menu=df.global.game.main_interface.info.artifacts;local size,address=df.sizeof(menu)
  local before=bytes(address,size);local backing={}
  for mode=0,3 do
@@ -33,7 +33,7 @@ local function probe()
   backing[mode]=bytes(data,#menu.list[mode]*8)
  end
  local base=dfhack.internal.getImageBase();local rng=bytes(base+0x234e990,0x6180)
- local text,rc=dfhack.run_command_silent('df3d','objects-lists-probe');assert(rc==0,'Owned Objects provider failed: '..text)
+ local text,rc=dfhack.run_command_silent('df3d',command or 'objects-lists-probe');assert(rc==0,'Owned Objects provider failed: '..text)
  assert(bytes(address,size)==before,'Owned Objects provider changed menu')
  for mode=0,3 do
   local _,vector=df.sizeof(menu.list[mode]);local data=df.reinterpret_cast('uint64_t',vector).value
@@ -43,12 +43,13 @@ local function probe()
  return json.decode(text)
 end
 local cold=probe()
+local native_names=probe('objects-names-probe')
 gui.simulateInput(view,'D_NOBLES');settle();click(310,100)
 local info=df.global.game.main_interface.info
 assert(info.open and info.current_mode==df.info_interface_mode_type.ARTIFACTS,'Objects header failed')
 local menu=info.artifacts
 local size,address=df.sizeof(menu)
-local result={owned_cold=cold,owned_warm=probe(),mode=menu.mode,menu_rva=address-dfhack.internal.getImageBase(),menu_size=size,lists={},lines=lines()}
+local result={native_names=native_names,owned_cold=cold,owned_warm=probe(),mode=menu.mode,menu_rva=address-dfhack.internal.getImageBase(),menu_size=size,lists={},lines=lines()}
 for mode=0,3 do
  local rows={}
  for _,artifact in ipairs(menu.list[mode])do
@@ -63,7 +64,16 @@ end
 result.tabs={}
 for mode,x in ipairs{90,184,296,443}do
  click(x,124);assert(menu.mode==mode-1,'Objects category click failed')
- result.tabs[#result.tabs+1]={mode=menu.mode,lines=lines()};capture('objects-tab-'..tostring(mode-1))
+ local screen=lines()
+ for index,row in ipairs(native_names[mode])do
+  assert(row.artifact_id==result.lists[mode].rows[index].id,'Objects names order differs')
+  if index<=16 then
+   local name_line=screen[14+(index-1)*3].text;local translated_line=screen[15+(index-1)*3].text
+   assert(name_line:find(row.native_name,1,true),'Native Objects name differs: '..row.native_name)
+   assert(translated_line:find(row.translated_name,1,true),'Native Objects translated name differs: '..row.translated_name)
+  end
+ end
+ result.tabs[#result.tabs+1]={mode=menu.mode,lines=screen};capture('objects-tab-'..tostring(mode-1))
  assert(json.encode(probe())==json.encode(cold),'Owned Objects lists depend on native tab')
 end
 result.owned_lists_match=true

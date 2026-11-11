@@ -2711,6 +2711,18 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             result.append(row);}
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
         }
+        if(parameters[0]=="objects-names-probe") {
+          if(parameters.size()!=1)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto lists=df3d_objects::lists();if(!lists)return CR_FAILURE;
+          Json::Value result(Json::arrayValue);
+          for(const auto& ids:*lists){Json::Value rows(Json::arrayValue);for(auto id:ids){
+            const auto names=df3d_objects::names(id);if(!names)return CR_FAILURE;
+            Json::Value row(Json::objectValue);row["artifact_id"]=id;row["item_id"]=names->itemId;
+            row["native_name"]=DF2UTF(names->nativeName);row["translated_name"]=DF2UTF(names->translatedName);rows.append(row);
+          }result.append(rows);}
+          out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
+        }
         if(parameters[0]=="objects-lists-probe") {
           if(parameters.size()!=1)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;

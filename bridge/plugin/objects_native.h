@@ -1,6 +1,7 @@
 #pragma once
 #include "df/artifacts_interfacest.h"
 #include "df/artifact_record.h"
+#include "df/item.h"
 #include "df/plotinfost.h"
 #include "df/world.h"
 #include <array>
@@ -10,6 +11,29 @@
 
 namespace df3d_objects {
 using Lists=std::array<std::vector<int32_t>,4>;
+struct Names {int32_t artifactId=-1,itemId=-1;std::string nativeName,translatedName;};
+// Renderer3a06ca/3a083a formats both names using a94030/a946e0. Copy the
+// semantic name before calling DF, and leave width-dependent clipping to UI.
+inline std::optional<Names> names(int32_t id) {
+    auto* artifact=df::artifact_record::find(id);if(!artifact || !artifact->item)return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool pinned=[base] {
+        const auto hash=[base](size_t at,size_t count){uint64_t result=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<count;++i){result^=base[at+i];result*=UINT64_C(1099511628211);}return result;};
+        return hash(0xa94030,0x6a1)==UINT64_C(0xd81db68b3c9b33d2) &&
+            hash(0xa946e0,0x7c2)==UINT64_C(0xdbc3db5f052419ee);
+    }();
+    if(!pinned)return std::nullopt;
+    static_assert(offsetof(df::artifact_record,name)==8);
+    Names result;result.artifactId=id;result.itemId=artifact->item->id;
+    auto owned=artifact->name;
+    reinterpret_cast<void(*)(df::language_name*,std::string*)>(base+0xa94030)(&owned,&result.nativeName);
+    reinterpret_cast<void(*)(df::language_name*,std::string*,bool,bool)>(base+0xa946e0)(&owned,&result.translatedName,true,false);
+    result.translatedName='"'+result.translatedName+'"'; // Native3a0816/3a086c quote literal.
+    if(result.nativeName.size()>16384 || result.translatedName.size()>16384)return std::nullopt;
+    return result;
+}
+
 // Native323aba invokes375a70. Only the supplied context/list vectors are
 // written. Native membership, category and ordered unique insertion remain DF
 // decisions; position helpers write local coordinates, never rendering scratch.

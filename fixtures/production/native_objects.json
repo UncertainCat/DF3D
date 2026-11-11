@@ -532,5 +532,160 @@
     "Symbols list empty in this fortress; claimed-symbol category needs a separate populated case.",
     "No typed Objects transport or DF3D presentation yet.",
     "Row text, ownership captions, item actions, scrolling and lifecycle remain unfinished."
-  ]
+  ],
+  "name_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-151133",
+    "rows": [
+      [
+        {
+          "artifact_id": 20,
+          "item_id": 20,
+          "native_name": "Merig Torir",
+          "translated_name": "\"The Clarity of Voids\""
+        },
+        {
+          "artifact_id": 62,
+          "item_id": 62,
+          "native_name": "Kebul Kälán",
+          "translated_name": "\"The Sparkles of Trailing\""
+        },
+        {
+          "artifact_id": 219,
+          "item_id": 219,
+          "native_name": "Betantilesh Sedurthokit",
+          "translated_name": "\"Calmtrussed the Emerald Affliction\""
+        },
+        {
+          "artifact_id": 240,
+          "item_id": 240,
+          "native_name": "Mirstalsanreb Imkethsosh",
+          "translated_name": "\"Velvetyown the Just Sandal\""
+        },
+        {
+          "artifact_id": 252,
+          "item_id": 8201,
+          "native_name": "Cilobireg Lelum Thad",
+          "translated_name": "\"Roofflush the Wane of Crowding\""
+        },
+        {
+          "artifact_id": 253,
+          "item_id": 9035,
+          "native_name": "Kulin Odur",
+          "translated_name": "\"The Palm of Roots\""
+        },
+        {
+          "artifact_id": 254,
+          "item_id": 13105,
+          "native_name": "Gongithosal",
+          "translated_name": "\"Squidsong\""
+        },
+        {
+          "artifact_id": 255,
+          "item_id": 27491,
+          "native_name": "Enkoserib",
+          "translated_name": "\"Takegorges\""
+        },
+        {
+          "artifact_id": 256,
+          "item_id": 31264,
+          "native_name": "Rinulshem",
+          "translated_name": "\"The Intense Plank\""
+        },
+        {
+          "artifact_id": 260,
+          "item_id": 48318,
+          "native_name": "Koresis",
+          "translated_name": "\"Caverntrots\""
+        }
+      ],
+      [],
+      [
+        {
+          "artifact_id": 196,
+          "item_id": 196,
+          "native_name": "Nêcikisan",
+          "translated_name": "\"Singedstill\""
+        },
+        {
+          "artifact_id": 259,
+          "item_id": 33758,
+          "native_name": "Izeglîlar",
+          "translated_name": "\"Apespatterned\""
+        }
+      ],
+      [
+        {
+          "artifact_id": 41,
+          "item_id": 41,
+          "native_name": "Unknown Lever",
+          "translated_name": "\"Unknown Lever\""
+        },
+        {
+          "artifact_id": 45,
+          "item_id": 45,
+          "native_name": "Do We Understand The Lever?",
+          "translated_name": "\"Do We Understand The Lever?\""
+        },
+        {
+          "artifact_id": 64,
+          "item_id": 64,
+          "native_name": "The Lever Explained",
+          "translated_name": "\"The Lever Explained\""
+        },
+        {
+          "artifact_id": 89,
+          "item_id": 89,
+          "native_name": "Introduction To Thur Thronepleated",
+          "translated_name": "\"Introduction To Thur Thronepleated\""
+        },
+        {
+          "artifact_id": 110,
+          "item_id": 110,
+          "native_name": "The Denial: Problems And Solutions",
+          "translated_name": "\"The Denial: Problems And Solutions\""
+        },
+        {
+          "artifact_id": 174,
+          "item_id": 174,
+          "native_name": "The Humans For Everyone",
+          "translated_name": "\"The Humans For Everyone\""
+        },
+        {
+          "artifact_id": 185,
+          "item_id": 185,
+          "native_name": "Uncanny Conversations",
+          "translated_name": "\"Uncanny Conversations\""
+        },
+        {
+          "artifact_id": 236,
+          "item_id": 236,
+          "native_name": "Give Me Sources",
+          "translated_name": "\"Give Me Sources\""
+        },
+        {
+          "artifact_id": 238,
+          "item_id": 238,
+          "native_name": "Victory By The Dwarf",
+          "translated_name": "\"Victory By The Dwarf\""
+        },
+        {
+          "artifact_id": 257,
+          "item_id": 37251,
+          "native_name": "The Study Of The Moving Sun",
+          "translated_name": "\"The Study Of The Moving Sun\""
+        },
+        {
+          "artifact_id": 258,
+          "item_id": 37266,
+          "native_name": "The Moon And Other Topics",
+          "translated_name": "\"The Moon And Other Topics\""
+        }
+      ]
+    ],
+    "native_screen_lines_match": true,
+    "limits": [
+      "Unclipped name formatting verified on23 rows; narrow-width truncation remains presentation work.",
+      "Symbols category empty; ownership captions and actions are separate."
+    ]
+  }
 }

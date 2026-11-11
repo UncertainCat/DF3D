@@ -60,9 +60,21 @@ and restored preferences, native30FPS, sampled GPU55C/38%/52W. Core19 passes
 `build/qa/objects-native-provider`; the MSVC bridge builds. The protected lane
 uses `DF3D_OBJECTS_NATIVE=1` with `stockpile_storage_native.ps1`.
 
-Objects remains unexposed and unfinished. Next are native row names/ownership
-captions and item action targets, typed transport and the rendered four-tab
-panel. Populated Symbols, scrolling, inputs and lifecycle still need acceptance.
+`objects_native.h::names` calls native a94030 and a946e0 on an owned copy of
+artifact.name, matching renderer3a06ca/3a083a. It returns the original name and
+quoted translated name without width-dependent truncation. Protected151133
+on2026-11-11 compares both lines against actual native screen text for all23
+rows across the populated categories. Menu/vector backing and primary RNG
+guards still pass. Owned DF24180 closes unsaved with source preservation and
+restored preferences; native30FPS, sampled GPU55C/41%/52W. Core19 passes
+`build/qa/objects-native-names`; the MSVC bridge builds. The diagnostic is
+`objects-names-probe`; no protocol or public UI change is made.
+
+Objects remains unexposed and unfinished. Next are native ownership captions
+and item action targets, typed transport and the rendered four-tab panel.
+Renderer39faf0's inline ownership branch3a0cc2..3a147e handles fortress/civilization
+claims and family heirlooms; do not replace it with a generic owner label.
+Input handler39f150 contains the item view/recenter dispatch. Populated Symbols, scrolling, inputs and lifecycle still need acceptance.
 The current reference includes native blank artwork for two written objects;
 do not infer replacement artwork from the fixture alone.
 

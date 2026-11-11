@@ -141,6 +141,8 @@
 #endif
 #include "client_mailbox.h"
 #include "nobles_draft_native.h"
+#include "nobles_symbol_name_native.h"
+#include "nobles_symbol_display_native.h"
 namespace df3d_management {
 namespace m = df3d::mirror;
 namespace sh = df3d::shm;
@@ -533,8 +535,24 @@ struct NoblesResult {
   std::vector<df3d_nobles::Row> rows;
   std::optional<m::NoblesOffice> target;uint64_t candidateRevision=0;
   std::vector<df3d_nobles::Candidate> candidates;
+  struct Symbol {df3d_nobles::SymbolRow facts;df3d_nobles::SymbolDisplay text;int16_t type=-1;std::optional<ItemInspectionAppearance> appearance;};
+  std::vector<Symbol> symbols;
+  struct Step {uint64_t token=0;int32_t artifact=-1;uint32_t remaining=0;};
+  std::optional<Step> step;
+  struct Name {df3d_nobles::SymbolName snapshot;uint8_t component=0;std::string query;uint32_t cursor=0,total=0,next=0;std::vector<df3d_area::LocationNameWord> choices;};
+  std::optional<Name> name;
 };
 std::optional<NoblesResult> nobles;
+// One symbol workflow owns the native effect sequence. It retains values only;
+// every step rebuilds an independent administrators context at the safe point.
+struct NoblesSymbolOwner {
+  uint64_t client=0,epoch=0,token=0,baseRevision=0,candidateRevision=0;
+  df3d_nobles::OfficeKey office;
+  std::vector<df3d_nobles::DraftChoice> draft;
+  std::vector<df3d_nobles::SymbolChoice> remaining;
+  int32_t artifact=-1;bool uncertain=false;
+};
+std::optional<NoblesSymbolOwner> noblesSymbolOwner;
 struct PlacesResult {
   m::PlacesOutcome outcome=m::PlacesOutcome::Rejected;uint8_t tab=0;
   uint64_t listRevision=0;uint32_t total=0,offset=0;std::vector<df3d_places::BuildingRow> rows;
@@ -1289,8 +1307,25 @@ void publish() {
     for(const auto& row:nobles->candidates){std::vector<flatbuffers::Offset<m::NoblesCandidateSkill>> skills;
       for(const auto& skill:row.skills)skills.push_back(m::CreateNoblesCandidateSkill(b,skill.id,skill.rating,b.CreateString(skill.caption)));
       candidates.push_back(m::CreateNoblesCandidate(b,row.unitId,row.value,b.CreateString(row.caption),b.CreateString(row.noSkills),b.CreateVector(skills),encodeItemRecipe(row.appearance)));}
+    const auto office=[](const std::optional<df3d_nobles::OfficeKey>& key)->std::optional<m::NoblesOffice>{if(!key)return {};return m::NoblesOffice(key->entityId,key->positionId,key->assignmentId,key->draftSlot);};
+    std::vector<flatbuffers::Offset<m::NoblesSymbol>> symbols;
+    for(const auto& row:nobles->symbols){const auto current=office(row.facts.currentOffice),selected=office(row.facts.selectedOffice);
+      symbols.push_back(m::CreateNoblesSymbol(b,row.facts.itemId,row.type,row.facts.value,current?&*current:nullptr,selected?&*selected:nullptr,
+        b.CreateString(row.text.caption),b.CreateString(row.text.officeCaption),b.CreateString(row.text.valueCaption),encodeInspectionAppearance(row.appearance)));}
+    flatbuffers::Offset<m::NoblesSymbolStep> step;
+    if(nobles->step){const auto& s=*nobles->step;step=m::CreateNoblesSymbolStep(b,s.token,s.artifact,s.remaining);}
+    flatbuffers::Offset<m::NoblesSymbolName> name;
+    if(nobles->name){const auto& p=*nobles->name;const auto& s=p.snapshot;const auto& n=s.value;
+      const auto value=m::CreateLocationNameValue(b,b.CreateVector(reinterpret_cast<const uint8_t*>(n.firstNameCp437.data()),n.firstNameCp437.size()),
+        b.CreateVector(reinterpret_cast<const uint8_t*>(n.nicknameCp437.data()),n.nicknameCp437.size()),b.CreateVector(n.words.data(),n.words.size()),
+        b.CreateVector(n.parts.data(),n.parts.size()),n.language,n.type,n.hasName);
+      std::vector<flatbuffers::Offset<m::LocationNameChoice>> choices;
+      for(const auto& c:p.choices)choices.push_back(m::CreateLocationNameChoice(b,c.word,int16_t(c.partOfSpeech),b.CreateString(c.english),b.CreateString(c.translated)));
+      name=m::CreateNoblesSymbolName(b,s.artifactId,s.itemId,s.revision,value,b.CreateString(s.nativeHeader),b.CreateString(s.englishHeader),
+        p.component,b.CreateVector(reinterpret_cast<const uint8_t*>(p.query.data()),p.query.size()),p.cursor,p.total,p.next,b.CreateVector(choices));
+    }
     noblesResult=m::CreateNoblesState(b,nobles->outcome,nobles->listRevision,nobles->total,nobles->offset,b.CreateVector(rows),
-      nobles->target?&*nobles->target:nullptr,nobles->candidateRevision,b.CreateVector(candidates));
+      nobles->target?&*nobles->target:nullptr,nobles->candidateRevision,b.CreateVector(candidates),b.CreateVector(symbols),step,name);
   }
   flatbuffers::Offset<m::PlacesState> placesResult;
   if(places){std::vector<flatbuffers::Offset<m::PlacesRow>> rows;
@@ -4408,13 +4443,92 @@ void run(color_ostream& out) {
     }catch(...){if(started){places->outcome=m::PlacesOutcome::Unknown;mutated=true;}}
     publish();return;
   }
-  // Contract migration only: typed symbol ownership is not installed yet.
+  // A closed mailbox retires its unfinished tail. Already applied effects stay.
+  if(noblesSymbolOwner && !sh::ClientMailbox::open(m::kManagementRegionName,
+      sh::atomicLoadAcquire(&m::sessionOwner(region)->generation),noblesSymbolOwner->client,m::kManagementVersion,m::kManagementCapacity))noblesSymbolOwner.reset();
   if(r->action()>=m::ManagementAction::NoblesSymbolsRead && r->action()<=m::ManagementAction::NoblesSymbolsContinue){
     status=m::ManagementStatus::Rejected;message.clear();nobles.emplace();
-    nobles->outcome=m::NoblesOutcome::Rejected;publish();return;
+    const auto& q=*r->nobles();using Outcome=df3d_nobles::DraftCommitOutcome;
+    bool effects=false;
+    const auto finish=[&](Outcome outcome){
+      if(outcome==Outcome::Applied){nobles->outcome=m::NoblesOutcome::Applied;status=m::ManagementStatus::Ok;mutated=true;}
+      else if(outcome==Outcome::Unknown){nobles->outcome=m::NoblesOutcome::Unknown;mutated=true;if(noblesSymbolOwner)noblesSymbolOwner->uncertain=true;}
+      else if(outcome==Outcome::Stale)nobles->outcome=m::NoblesOutcome::Stale;
+    };
+    const auto receipt=[&]{const auto& owner=*noblesSymbolOwner;nobles->step=NoblesResult::Step{owner.token,owner.artifact,uint32_t(owner.remaining.size())};};
+    try {
+      const bool initial=r->action()==m::ManagementAction::NoblesSymbolsRead || r->action()==m::ManagementAction::NoblesSymbolsApply;
+      if(initial && noblesSymbolOwner){publish();return;}
+      if(!initial){
+        if(!noblesSymbolOwner || noblesSymbolOwner->client!=client || noblesSymbolOwner->epoch!=epoch ||
+            noblesSymbolOwner->token!=q.step_token() || noblesSymbolOwner->uncertain){nobles->outcome=m::NoblesOutcome::Stale;publish();return;}
+        auto& owner=*noblesSymbolOwner;
+        if(r->action()==m::ManagementAction::NoblesSymbolNameRead){
+          auto snapshot=df3d_nobles::observeSymbolName(owner.office,owner.artifact);
+          if(!snapshot || (q.expected_name_revision() && q.expected_name_revision()!=snapshot->revision)){nobles->outcome=m::NoblesOutcome::Stale;publish();return;}
+          const auto& query=*q.name_query();NoblesResult::Name page;page.snapshot=std::move(*snapshot);page.component=query.component();
+          page.query.assign(reinterpret_cast<const char*>(query.query_bytes()->data()),query.query_bytes()->size());page.cursor=query.cursor();
+          auto words=df3d_area::observeNativeLocationNameWords(page.component,page.query,page.snapshot.value.language);
+          if(!words || words->size()>UINT32_MAX || page.cursor>words->size()){publish();return;}
+          page.total=uint32_t(words->size());
+          size_t bytes=512+page.query.size()+page.snapshot.value.firstNameCp437.size()+page.snapshot.value.nicknameCp437.size()+page.snapshot.nativeHeader.size()+page.snapshot.englishHeader.size();
+          for(size_t i=page.cursor;i<words->size() && page.choices.size()<m::kLocationNamePageRows;++i){auto word=std::move((*words)[i]);
+            const auto added=64+word.english.size()+word.translated.size();if(bytes+added>m::kLocationNamePageBytes)break;bytes+=added;page.choices.push_back(std::move(word));}
+          const auto end=page.cursor+uint32_t(page.choices.size());if(end<page.total && page.choices.empty()){publish();return;}
+          page.next=end<page.total?end:0;nobles->name=std::move(page);receipt();nobles->outcome=m::NoblesOutcome::None;status=m::ManagementStatus::Ok;publish();return;
+        }
+        if(r->action()==m::ManagementAction::NoblesSymbolNameEdit){
+          const auto& edit=*q.name_edit();const std::string query(reinterpret_cast<const char*>(edit.query_bytes()->data()),edit.query_bytes()->size());
+          effects=true;const auto outcome=df3d_nobles::editSymbolName(owner.office,owner.artifact,q.expected_name_revision(),
+            df3d_area::LocationNameEdit(edit.mode()),edit.target(),edit.displayed(),edit.word(),edit.part(),query);
+          finish(outcome);publish();return;
+        }
+        if(!df3d_nobles::namedSymbol(owner.office,owner.artifact)){nobles->outcome=m::NoblesOutcome::Stale;publish();return;}
+        if(owner.remaining.empty()){noblesSymbolOwner.reset();finish(Outcome::Applied);publish();return;}
+      }
+      if(!df3d_nobles::symbolsReady()){publish();return;}
+      df3d_nobles::Context owned(reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr)));
+      NoblesSymbolOwner intent;
+      if(initial){intent.client=client;intent.epoch=epoch;intent.baseRevision=q.expected_list_revision();
+        const auto& key=*q.target();intent.office={key.entity_id(),key.position_id(),key.assignment_id(),key.draft_slot()};
+        if(q.choices())for(const auto* choice:*q.choices()){const auto& key=*choice->target();intent.draft.push_back({key.entity_id(),key.position_id(),key.assignment_id(),choice->expected_unit_id(),choice->unit_id(),key.draft_slot()});}
+      }else intent=*noblesSymbolOwner;
+      if(!df3d_nobles::prepareDraft(owned,intent.draft,intent.baseRevision)){if(owned.stale)nobles->outcome=m::NoblesOutcome::Stale;publish();return;}
+      if(r->action()==m::ManagementAction::NoblesSymbolsRead){
+        auto rows=df3d_nobles::projectSymbols(owned,intent.office);if(!rows || rows->size()>1048576){publish();return;}
+        const auto revision=df3d_nobles::symbolRevision(*rows);
+        if((q.expected_candidate_revision() && q.expected_candidate_revision()!=revision) || q.offset()>rows->size()){nobles->outcome=m::NoblesOutcome::Stale;publish();return;}
+        auto display=df3d_nobles::symbolDisplay(owned,q.offset(),q.limit());if(!display){publish();return;}
+        NoblesResult page;page.listRevision=owned.baseRevision;page.candidateRevision=revision;page.target=*q.target();page.total=uint32_t(rows->size());page.offset=q.offset();
+        size_t bytes=0;
+        for(auto& text:*display){const auto& facts=(*rows)[q.offset()+page.symbols.size()];auto* item=df::item::find(facts.itemId);if(!item || text.itemId!=facts.itemId)throw std::runtime_error("symbol item changed");
+          NoblesResult::Symbol row;row.facts=facts;row.type=int16_t(item->getType());row.text=std::move(text);
+          for(auto* value:{&row.text.caption,&row.text.officeCaption,&row.text.valueCaption}){*value=DF2UTF(*value);if(value->size()>16384)throw std::runtime_error("symbol caption exceeds limit");}
+          // Artwork projection is staged separately; never call the native render cache.
+          const auto size=128+row.text.caption.size()+row.text.officeCaption.size()+row.text.valueCaption.size();if(bytes+size>384*1024)break;bytes+=size;page.symbols.push_back(std::move(row));
+        }
+        if(page.offset<page.total && page.symbols.empty()){publish();return;}
+        page.outcome=m::NoblesOutcome::None;nobles=std::move(page);status=m::ManagementStatus::Ok;publish();return;
+      }
+      if(initial){std::vector<df3d_nobles::SymbolChoice> choices;
+        for(const auto* choice:*q.symbol_choices())choices.push_back({choice->item_id(),choice->selected()});
+        if(!df3d_nobles::stageSymbols(owned,intent.office,q.expected_candidate_revision(),choices)){if(owned.stale)nobles->outcome=m::NoblesOutcome::Stale;publish();return;}
+      }else if(!df3d_nobles::stageSymbolContinuation(owned,intent.office,intent.candidateRevision,intent.remaining)){if(owned.stale)nobles->outcome=m::NoblesOutcome::Stale;publish();return;}
+      // Install ownership before effects. Any ambiguous result poisons this
+      // sequence rather than making an initial Apply available for replay.
+      noblesSymbolOwner=std::move(intent);effects=true;
+      auto step=df3d_nobles::applySymbolStep(owned,noblesSymbolOwner->office);finish(step.outcome);
+      if(step.outcome==Outcome::Applied){
+        if(step.namingArtifactId<0)noblesSymbolOwner.reset();
+        else {auto& owner=*noblesSymbolOwner;owner.artifact=step.namingArtifactId;owner.remaining=std::move(step.remaining);owner.candidateRevision=step.continuationRevision;
+          owner.token=executionSerial;receipt();}
+      }else if(step.outcome!=Outcome::Unknown && initial)noblesSymbolOwner.reset();
+    }catch(...){nobles.emplace();if(effects)finish(Outcome::Unknown);}
+    publish();return;
   }
   if(r->action()==m::ManagementAction::NoblesRead || r->action()==m::ManagementAction::NoblesCandidates || r->action()==m::ManagementAction::NoblesCommit || r->action()==m::ManagementAction::NoblesAccounting){
     const auto& q=*r->nobles();status=m::ManagementStatus::Rejected;message.clear();nobles.emplace();
+    if(noblesSymbolOwner){publish();return;}
     try {
       std::vector<df3d_nobles::DraftChoice> choices;
       if(q.choices())for(const auto* choice:*q.choices()){const auto& key=*choice->target();
@@ -6394,6 +6508,7 @@ bool printTrackMaterialCandidates(color_ostream& out,const std::array<int32_t,6>
   lua_settop(L,top);return ok;
 }
 void stop() {
+  noblesSymbolOwner.reset();
   roomUndo.clear();
   helpers.reset();builderActive=0;builderStart=0;builderSteps=builderLastUs=0;
   areaHints.clear();terrainHint=false;mutated=false;
@@ -6472,6 +6587,7 @@ void update(color_ostream& out, uint64_t worldEpoch, bool saving) {
     startBackoff.reset();
   }
   if (epoch != worldEpoch) {
+    noblesSymbolOwner.reset();
     roomUndo.clear();
     citizenRecalcPending=false;citizenRecalcDone=citizenRecalcTotal=0;
     helpers.reset();builderActive=0;builderStart=0;builderSteps=builderLastUs=0;

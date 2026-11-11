@@ -8208,5 +8208,21 @@
       "evidence": "build/stockpile-storage-native-input-20261111-114521",
       "scope": "Three ordinary symbol elevations in native order through two stable-ID continuations; replayed prior receipt rejects without adding records. Diagnostic safe-point adapter only; no typed owner or rendered naming acceptance."
     }
+  },
+  "typed_symbols": {
+    "artifacts": [
+      261,
+      262,
+      263
+    ],
+    "artifacts_added": 3,
+    "events_added": 6,
+    "items": [
+      15047,
+      20196,
+      13147
+    ],
+    "name_clear": true,
+    "order_matches": true
   }
 }

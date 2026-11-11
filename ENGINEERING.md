@@ -119,8 +119,8 @@ No global menu update or name-editor opener is invoked. Native naming consumes
 ordinary simulation randomness; read-only scratch guards do not cover effects.
 Completed claims are checked afterward. Failures after entering effects return
 Unknown. The result contains the artifact to name and remaining item IDs in
-native order, with no retained pointers. An asynchronous owner still needs
-outstanding-step binding, naming lifetime and request deduplication.
+native order, with no retained pointers. The typed management owner binds this
+tail to a client, world epoch, original appointment draft and opaque step token.
 
 Protected112645 on2026-11-11 exercises `nobles-symbol-apply-probe`. Existing
 artifact assignment/removal match native claim snapshots. Two ordinary items
@@ -150,7 +150,8 @@ and leaves the third item ordinary. Native menu/name-editor bytes are preserved.
 `symbol_reference.continuation_reference` retains the bounded observations.
 Core passes in `build/qa/nobles-symbol-continuation`; the plugin builds. DF10752
 closes unsaved with source preservation,30FPS, sampled GPU59C/4%. This is adapter
-acceptance; typed session/epoch ownership and UI navigation remain pending.
+acceptance; typed runtime acceptance is recorded below. UI navigation remains
+pending.
 
 `nobles_symbol_name_native.h` observes an artifact name only while its expected
 office assignment and active symbol claim still exist. Its receipt binds that
@@ -158,8 +159,9 @@ office, artifact/item identity and all name fields. Edits reject stale receipts
 before RNG or writes. The pinned shared name-editor branch supplies field scope;
 word eligibility and component Random reuse the native owned word providers,
 and whole-name Random calls931860 with the fortress entity and category1.
-Native editor/context storage is never an input. The future typed owner must
-also bind the outstanding naming step and retire it on session changes.
+Native editor/context storage is never an input. The typed owner binds the
+outstanding naming step and retires it on world/producer changes or when the
+next request observes that its client mailbox has closed.
 
 Protected113210 on2026-11-11 compares native clicks for Clear, Select Word,
 Random Component and Random Whole against the adapter with the same initial
@@ -169,8 +171,8 @@ both and native name-editor bytes remain unchanged. The bounded reference is
 `build/qa/nobles-symbol-name`; the plugin builds. DF22572 closes unsaved with
 source preservation,30FPS. A post-run GPU sample was60C/32%. Earlier113127
 stopped on a Lua test allocation error before edits, fixed to use the generated
-language_name constructor. Typed requests, name paging and rendered DF3D
-interaction remain unfinished; this evidence covers the diagnostic editor only.
+language_name constructor. This evidence covers the diagnostic editor only;
+typed runtime acceptance is recorded below. Rendered interaction is unfinished.
 
 `nobles_symbol_display_native.h` projects bounded pages of full item captions,
 selected-office captions and native value strings. Presentation owns clipping.
@@ -1024,16 +1026,15 @@ GPU58–61C sampled. Core19/controller checks pass in `build/qa/places-layout-fi
 Management183 uses `Local\\df3d_management_v183`; rebuild bridge, model and
 extension together. Management182 peers are incompatible. Actions113–117 add
 SymbolsRead, SymbolsApply, SymbolNameRead, SymbolNameEdit and SymbolsContinue
-in the Nobles domain. Apply, Edit and Continue are mutations. Runtime symbol
-requests currently return Rejected; the session owner and presentation remain
-staged separately from this contract migration.
+in the Nobles domain. Apply, Edit and Continue are mutations. The typed runtime
+and extension support all five actions; the panel and artwork remain staged.
 
 Symbol pages bind an existing office, appointment draft/base revision and
 ordered candidate revision. Rows carry native captions, office identities,
 intrinsic sort value and optional semantic item appearance. Apply carries
 unique item IDs and final checkbox states, bounded to4096 choices. Naming and
 continuation requests carry only an opaque positive step token, with a name
-revision/query or edit when appropriate. The bridge must bind that token to
+revision/query or edit when appropriate. The bridge binds that token to
 its session, office, original draft and remaining native order; clients cannot
 submit a pending item list. Successful Apply/Continue may return a naming step;
 no step means completion. Name reads return the matching artifact, structured
@@ -1048,6 +1049,27 @@ retirement, Manager appointment and accounting0..4/restoration with both peers
 on183. DF38348 closes unsaved and source preservation passes; native30FPS,
 headless viewer, sampled GPU60C/31%. This accepts the migration and existing
 workflows, not typed symbol runtime, naming ownership or rendered symbol UI.
+
+The bridge owns one pending symbol sequence, retaining no native pointers.
+Initial Apply and other Nobles actions reject while it is pending. Name reads,
+edits and Continue require its client/epoch/token; each successful elevation
+issues a fresh token. Unknown effects poison the sequence against replay.
+World changes and plugin stop clear it; a later request retires it if its client
+mailbox has closed. Already completed effects are never rolled back. Rebuilding
+the owned draft and validating the candidate receipt precede continuation.
+
+Protected121257 on2026-11-11 compares all786 typed candidate IDs/values/offices
+with the independently verified provider, then submits three ordinary items in
+reverse order. Items15047/20196/13147 become artifacts261/262/263 in native
+order, with three records and six events. First-name Clear reaches DF. Another
+initial Apply rejects while naming, old Continue tokens return Stale, each Done
+advances one naming step, and final Done releases the overview. Native readback
+confirms all three claims and the cleared name. `native_nobles.json.typed_symbols`
+retains the effects. Core19/state/UI host checks pass in `build/qa/nobles-symbol-wire`;
+bridge and extension builds pass. DF35320 closes unsaved with source preservation,
+native30FPS/headless viewer, sampled GPU60C/11%. Foreign-client, disconnect,
+epoch/unknown faults, word-page continuations and rendered picker/naming remain
+unverified; this does not authorize public screen exposure.
 
 ## Management 182 Nobles accounting contract
 

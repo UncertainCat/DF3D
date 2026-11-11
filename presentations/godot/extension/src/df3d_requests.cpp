@@ -213,6 +213,20 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
             for(const auto& skill:row.skills){Dictionary part;part["id"]=int(skill.id);part["rating"]=skill.rating;part["caption"]=String::utf8(skill.caption.c_str());skills.push_back(part);}
             entry["skills"]=skills;if(row.appearance)entry["appearance"]=management::itemRecipeDictionary(*row.appearance);candidates.push_back(entry);}
         value["candidates"]=candidates;
+        const auto office=[](const wm::NoblesOffice& key){Dictionary d;d["entity_id"]=key.entityId;d["position_id"]=key.positionId;d["assignment_id"]=key.assignmentId;d["draft_slot"]=int64_t(key.draftSlot);return d;};
+        Array symbols;for(const auto& row:v.symbols){Dictionary d;d["item_id"]=row.itemId;d["item_type"]=int(row.itemType);d["value"]=row.value;
+          d["caption"]=String::utf8(row.caption.c_str());d["office_caption"]=String::utf8(row.officeCaption.c_str());d["value_caption"]=String::utf8(row.valueCaption.c_str());
+          if(row.currentOffice)d["current_office"]=office(*row.currentOffice);if(row.selectedOffice)d["selected_office"]=office(*row.selectedOffice);
+          if(row.appearance)d["appearance"]=management::itemAppearanceDictionary(*row.appearance);symbols.push_back(d);}
+        value["symbols"]=symbols;
+        if(v.step){Dictionary d;d["token"]=int64_t(v.step->token);d["naming_artifact_id"]=v.step->namingArtifactId;d["remaining"]=int64_t(v.step->remaining);value["step"]=d;}
+        if(v.name){const auto& n=*v.name;Dictionary d,name;const auto integers=[](const auto& values){Array out;for(auto x:values)out.push_back(int64_t(x));return out;};
+          d["artifact_id"]=n.artifactId;d["item_id"]=n.itemId;d["revision"]=int64_t(n.revision);d["native_header"]=String::utf8(n.nativeHeader.c_str());d["english_header"]=String::utf8(n.englishHeader.c_str());
+          name["first_name_bytes"]=integers(n.value.firstNameBytes);name["nickname_bytes"]=integers(n.value.nicknameBytes);name["words"]=integers(n.value.words);name["parts"]=integers(n.value.parts);
+          name["language"]=n.value.language;name["type"]=int(n.value.type);name["has_name"]=n.value.hasName;d["value"]=name;
+          d["component"]=int(n.component);d["query_bytes"]=integers(n.queryBytes);d["cursor"]=int64_t(n.cursor);d["total"]=int64_t(n.total);d["next_cursor"]=int64_t(n.nextCursor);
+          Array choices;for(const auto& c:n.choices){Dictionary row;row["word"]=c.word;row["part"]=int(c.part);row["english"]=String::utf8(c.english.c_str());row["translated"]=String::utf8(c.translated.c_str());choices.push_back(row);}d["choices"]=choices;value["name"]=d;
+        }
         for(const auto& row:v.rows){Dictionary entry;entry["draft_slot"]=int64_t(row.draftSlot);
             entry["entity_id"]=row.entityId;entry["position_id"]=row.positionId;entry["assignment_id"]=row.assignmentId;
             entry["unit_id"]=row.unitId;entry["nemesis_id"]=row.nemesisId;entry["priority"]=row.priority;
@@ -572,8 +586,8 @@ bool validateNobles(const Dictionary& data,String& error) {
     const auto office=[&](const Variant& value,int64_t lastSlot){if(value.get_type()!=Variant::DICTIONARY)return false;const Dictionary key=value;
         return key.size()==4 && integer(key,"entity_id",0,INT32_MAX) && integer(key,"position_id",0,INT32_MAX) && integer(key,"assignment_id",-1,INT32_MAX) &&
           integer(key,"draft_slot",0,lastSlot) && (int64_t(key["assignment_id"])==-1 || int64_t(key["draft_slot"])==0);};
-    const Array keys=data.keys();for(int i=0;i<keys.size();++i){const String key=keys[i];if(key!="action" && key!="offset" && key!="limit" && key!="expected_list_revision" && key!="choices" && key!="target" && key!="expected_candidate_revision" && key!="expected_setting" && key!="setting")return false;}
-    if(!integer(data,"action",int64_t(wm::ManagementAction::NoblesRead),int64_t(wm::ManagementAction::NoblesAccounting)) ||
+    const Array keys=data.keys();for(int i=0;i<keys.size();++i){const String key=keys[i];if(key!="action" && key!="offset" && key!="limit" && key!="expected_list_revision" && key!="choices" && key!="target" && key!="expected_candidate_revision" && key!="expected_setting" && key!="setting" && key!="symbol_choices" && key!="step_token" && key!="expected_name_revision" && key!="name_query" && key!="name_edit")return false;}
+    if(!integer(data,"action",int64_t(wm::ManagementAction::NoblesRead),int64_t(wm::ManagementAction::NoblesSymbolsContinue)) ||
        !integer(data,"offset",0,1048576) || !integer(data,"limit",1,64) || !integer(data,"expected_list_revision",0,INT64_MAX))return false;
     Array choices;if(data.has("choices")){if(data["choices"].get_type()!=Variant::ARRAY)return false;choices=data["choices"];}
     if(choices.size()>4096 || (choices.size() && !int64_t(data["expected_list_revision"])))return false;
@@ -583,6 +597,41 @@ bool validateNobles(const Dictionary& data,String& error) {
     const int64_t action=data["action"],offset=data["offset"],revision=data["expected_list_revision"],candidate=data.get("expected_candidate_revision",0);
     for(const char* key:{"expected_setting","setting"})if(data.has(key) && !integer(data,key,-1,4))return false;
     if(action!=int64_t(wm::ManagementAction::NoblesAccounting) && (int64_t(data.get("expected_setting",-1))!=-1 || int64_t(data.get("setting",-1))!=-1))return false;
+    const bool symbols=action==int64_t(wm::ManagementAction::NoblesSymbolsRead),apply=action==int64_t(wm::ManagementAction::NoblesSymbolsApply);
+    const bool nameRead=action==int64_t(wm::ManagementAction::NoblesSymbolNameRead),nameEdit=action==int64_t(wm::ManagementAction::NoblesSymbolNameEdit);
+    const bool step=action>=int64_t(wm::ManagementAction::NoblesSymbolNameRead);
+    if(!apply && data.has("symbol_choices"))return false;
+    if(!step && (data.has("step_token") || data.has("expected_name_revision") || data.has("name_query") || data.has("name_edit")))return false;
+    if(step){
+      if(!integer(data,"step_token",1,INT64_MAX) || revision || candidate || offset || int64_t(data["limit"])!=32 || choices.size() || data.has("target"))return false;
+      if(data.has("expected_name_revision") && !integer(data,"expected_name_revision",0,INT64_MAX))return false;
+      const int64_t nameRevision=data.get("expected_name_revision",0);
+      if(nameRead || nameEdit){
+        const char* field=nameRead?"name_query":"name_edit";
+        if(!data.has(field) || data[field].get_type()!=Variant::DICTIONARY || data.has(nameRead?"name_edit":"name_query"))return false;
+        const Dictionary n=data[field];
+        if(!n.has("query_bytes") || n["query_bytes"].get_type()!=Variant::ARRAY)return false;
+        const Array bytes=n["query_bytes"];if(bytes.size()>4096)return false;for(int i=0;i<bytes.size();++i)if(bytes[i].get_type()!=Variant::INT || int64_t(bytes[i])<0 || int64_t(bytes[i])>255)return false;
+        if(nameRead){if(n.size()!=3 || !integer(n,"component",0,6) || !integer(n,"cursor",0,UINT32_MAX) || (int64_t(n["cursor"]) && !nameRevision))return false;}
+        else {
+          if(!nameRevision || n.size()!=6 || !integer(n,"mode",0,3) || !integer(n,"target",-1,6) || !integer(n,"displayed",-1,6) || !integer(n,"word",-1,INT32_MAX) || !integer(n,"part",-1,8))return false;
+          const int64_t mode=n["mode"],target=n["target"],displayed=n["displayed"],word=n["word"],part=n["part"];
+          if(mode==3){if(target!=-1 || displayed!=-1 || word!=-1 || part!=-1 || bytes.size())return false;}
+          else if(target<0 || displayed<0 || (mode==1?(target!=displayed || word<0 || part<0):(word!=-1 || part!=-1)))return false;
+        }
+      }else if(nameRevision || data.has("name_query") || data.has("name_edit"))return false;
+      error=String();return true;
+    }
+    if(symbols || apply){
+      if(!revision || !data.has("target") || !office(data["target"],0) || int64_t(Dictionary(data["target"])["assignment_id"])<0 || (offset && !candidate))return false;
+      if(apply){
+        if(!candidate || offset || int64_t(data["limit"])!=32 || !data.has("symbol_choices") || data["symbol_choices"].get_type()!=Variant::ARRAY)return false;
+        const Array edits=data["symbol_choices"];if(!edits.size() || edits.size()>4096)return false;std::unordered_set<int64_t> ids;
+        for(int i=0;i<edits.size();++i){if(edits[i].get_type()!=Variant::DICTIONARY)return false;const Dictionary edit=edits[i];
+          if(edit.size()!=2 || !integer(edit,"item_id",0,INT32_MAX) || !edit.has("selected") || edit["selected"].get_type()!=Variant::BOOL || !ids.insert(int64_t(edit["item_id"])).second)return false;}
+      }
+      error=String();return true;
+    }
     if(action==int64_t(wm::ManagementAction::NoblesAccounting)){
         if(!revision || offset || int64_t(data["limit"])!=32 || candidate || !data.has("target") || !office(data["target"],choices.size()) ||
            !integer(data,"expected_setting",0,4) || !integer(data,"setting",0,4))return false;
@@ -600,7 +649,13 @@ bool readNobles(const Dictionary& data,wm::ManagementRequest& request,String&) {
     if(data.has("choices")){const Array choices=data["choices"];for(int i=0;i<choices.size();++i){const Dictionary choice=choices[i];q.choices.push_back({office(choice["target"]),int32_t(int64_t(choice["expected_unit_id"])),int32_t(int64_t(choice["unit_id"]))});}}
     if(data.has("target"))q.target=office(data["target"]);
     q.expectedCandidateRevision=uint64_t(int64_t(data.get("expected_candidate_revision",0)));
-    q.expectedSetting=int8_t(int64_t(data.get("expected_setting",-1)));q.setting=int8_t(int64_t(data.get("setting",-1)));return true;
+    q.expectedSetting=int8_t(int64_t(data.get("expected_setting",-1)));q.setting=int8_t(int64_t(data.get("setting",-1)));
+    q.stepToken=uint64_t(int64_t(data.get("step_token",0)));q.expectedNameRevision=uint64_t(int64_t(data.get("expected_name_revision",0)));
+    if(data.has("symbol_choices")){const Array edits=data["symbol_choices"];for(int i=0;i<edits.size();++i){const Dictionary edit=edits[i];q.symbolChoices.push_back({int32_t(int64_t(edit["item_id"])),bool(edit["selected"])});}}
+    const auto bytes=[](const Dictionary& n){std::vector<uint8_t> out;const Array values=n["query_bytes"];for(int i=0;i<values.size();++i)out.push_back(uint8_t(int64_t(values[i])));return out;};
+    if(data.has("name_query")){const Dictionary n=data["name_query"];q.nameQuery=wm::LocationNameQuery{uint8_t(int64_t(n["component"])),bytes(n),uint32_t(int64_t(n["cursor"]))};}
+    if(data.has("name_edit")){const Dictionary n=data["name_edit"];q.nameEdit=wm::LocationNameEdit{wm::LocationNameMode(int64_t(n["mode"])),int8_t(int64_t(n["target"])),int8_t(int64_t(n["displayed"])),int32_t(int64_t(n["word"])),int16_t(int64_t(n["part"])),bytes(n)};}
+    return true;
 }
 bool validatePlaces(const Dictionary& data,String& error) {
     error="Invalid places request";
@@ -1018,7 +1073,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::NoblesAccounting)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::NoblesSymbolsContinue)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

@@ -558,12 +558,25 @@ if os.getenv('DF3D_NOBLES_ACCOUNTING')=='1' then
 end
 
 local wire_commit=os.getenv('DF3D_NOBLES_COMMIT_WIRE')=='1'
+local wire_symbols=os.getenv('DF3D_NOBLES_SYMBOL_WIRE')=='1'
+local symbol_wire
 local wire_events,wire_precision,wire_setting
 if os.getenv('DF3D_NOBLES_WIRE')=='1' then
- if wire_commit then
+ if wire_commit or wire_symbols then
   gui.simulateInput(view,'LEAVESCREEN');settle();assert(not info.open)
   wire_events=#df.global.world.history.events
   wire_precision=df.global.plotinfo.nobles.bookkeeper_precision;wire_setting=df.global.plotinfo.nobles.bookkeeper_settings
+ end
+ if wire_symbols then
+  assert(not wire_commit,'Symbol and appointment effects use separate oracle counts')
+  local target=result.pickers[1].selected
+  local candidates=probe({'nobles-symbols-probe',tostring(target.entity_id),tostring(target.position_id),tostring(target.assignment_id)})
+  local items={}
+  for _,row in ipairs(candidates)do local item=df.item.find(row.item_id);if item and not item.flags.artifact and #items<3 then items[#items+1]=item.id end end
+  assert(#items==3,'Missing ordinary symbols')
+  symbol_wire={target={entity_id=target.entity_id,position_id=target.position_id,assignment_id=target.assignment_id,draft_slot=0},rows=candidates,items=items}
+  write('nobles-symbol-wire-reference.json',json.encode(symbol_wire))
+  symbol_wire.artifacts_before=#df.global.world.artifacts.all
  end
  write('nobles-wire-reference.json',json.encode(probe({'nobles-help-probe'})))
  write('shot.tmp','nobles-wire');assert(os.rename(out..'/shot.tmp',out..'/shot'))
@@ -571,6 +584,18 @@ if os.getenv('DF3D_NOBLES_WIRE')=='1' then
  while true do local ack=io.open(out..'/ack-nobles-wire');if ack then ack:close();break end
   assert(dfhack.getTickCount()<deadline,'Nobles wire timeout');script.sleep(1,'frames')
  end
+end
+if wire_symbols then
+ local f=assert(io.open(out..'/nobles-symbol-wire.json'));local receipt=json.decode(f:read('*a'));f:close()
+ assert(receipt.success and #receipt.artifacts==3,'Typed symbol client failed')
+ assert(#df.global.world.artifacts.all==symbol_wire.artifacts_before+3 and #df.global.world.history.events==wire_events+6,'Typed symbol effect count differs')
+ local entity=assert(df.historical_entity.find(symbol_wire.target.entity_id))
+ for i,id in ipairs(receipt.artifacts)do
+  local artifact=assert(df.artifact_record.find(id));assert(artifact.item.id==symbol_wire.items[i] and artifact.item.flags.artifact,'Typed symbol item/order differs')
+  local claim=false;for _,c in ipairs(entity.artifact_claims)do if c.artifact_id==id and c.symbol_claim_id==symbol_wire.target.assignment_id and c.claim_type==0 and c.renounce_event==-1 then claim=true end end
+  assert(claim,'Typed symbol claim missing');if i==1 then assert(artifact.name.words[0]==-1,'Typed name clear missing')end
+ end
+ result.typed_symbols={items=receipt.items,artifacts=receipt.artifacts,artifacts_added=3,events_added=6,name_clear=true,order_matches=true}
 end
 if wire_commit then
  local f=assert(io.open(out..'/nobles-commit-wire.json'));local receipt=json.decode(f:read('*a'));f:close()

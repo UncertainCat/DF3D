@@ -8,6 +8,57 @@ func normalize(value: Variant) -> Variant:
 	return int(value) if typeof(value)==TYPE_FLOAT else value
 func page(offset: int,revision: int) -> Dictionary:
 	return await request("nobles",{"action":C.ManagementAction.NoblesRead,"offset":offset,"limit":4,"expected_list_revision":revision})
+func symbol_step(action: int,token: int) -> Dictionary:
+	return {"action":action,"offset":0,"limit":32,"expected_list_revision":0,"step_token":token}
+func check_symbols(revision: int) -> void:
+	var reference: Dictionary=normalize(JSON.parse_string(FileAccess.get_file_as_string(directory+"/nobles-symbol-wire-reference.json")))
+	var intent: Dictionary={"action":C.ManagementAction.NoblesSymbolsRead,"offset":0,"limit":64,"expected_list_revision":revision,"target":reference.target,"expected_candidate_revision":0}
+	var symbols: Array=[]
+	while symbols.size()<reference.rows.size():
+		var reply:=await request("nobles",intent)
+		if not check(reply.get("status")==C.ManagementStatus.Ok,"Symbol page rejected"):return
+		var state: Dictionary=reply.nobles
+		if not check(not state.symbols.is_empty(),"Symbol paging stalled"):return
+		symbols.append_array(state.symbols);intent.offset=symbols.size();intent.expected_candidate_revision=state.candidate_revision
+	for i in symbols.size():
+		for key in ["item_id","value","current_office","selected_office"]:check(symbols[i].get(key)==reference.rows[i].get(key),"Symbol native facts differ: "+key)
+	intent.action=C.ManagementAction.NoblesSymbolsApply;intent.offset=0;intent.limit=32;intent.symbol_choices=[]
+	for item in reference.items:intent.symbol_choices.push_front({"item_id":item,"selected":true})
+	var applied:=await request("nobles",intent)
+	if not check(applied.get("nobles",{}).get("outcome")==C.NoblesOutcome.Applied,"Symbol apply failed"):return
+	var step: Dictionary=applied.nobles.step
+	var duplicate:=await request("nobles",intent)
+	check(duplicate.get("nobles",{}).get("outcome")==C.NoblesOutcome.Rejected,"Initial Apply advanced pending sequence")
+	var artifacts: Array=[];var old_token:=0
+	for index in 3:
+		check(step.remaining==2-index,"Symbol tail count differs")
+		var naming:=symbol_step(C.ManagementAction.NoblesSymbolNameRead,step.token)
+		naming.name_query={"component":0,"query_bytes":[],"cursor":0}
+		var named:=await request("nobles",naming)
+		if not check(named.get("status")==C.ManagementStatus.Ok,"Symbol name read rejected"):return
+		check(named.nobles.name.item_id==reference.items[index],"Symbol elevation order differs")
+		check(named.nobles.step==step,"Naming step identity differs")
+		artifacts.append(step.naming_artifact_id)
+		if index==0:
+			var edit:=symbol_step(C.ManagementAction.NoblesSymbolNameEdit,step.token)
+			edit.expected_name_revision=named.nobles.name.revision
+			edit.name_edit={"mode":0,"target":0,"displayed":0,"word":-1,"part":-1,"query_bytes":[]}
+			var edited:=await request("nobles",edit)
+			check(edited.get("nobles",{}).get("outcome")==C.NoblesOutcome.Applied,"Symbol name edit rejected")
+			named=await request("nobles",naming)
+			check(named.get("nobles",{}).get("name",{}).get("value",{}).get("words",[0])[0]==-1,"Symbol name edit did not apply")
+		if old_token:
+			var stale:=await request("nobles",symbol_step(C.ManagementAction.NoblesSymbolsContinue,old_token))
+			check(stale.get("nobles",{}).get("outcome")==C.NoblesOutcome.Stale,"Old symbol step advanced tail")
+		old_token=step.token
+		var continued:=await request("nobles",symbol_step(C.ManagementAction.NoblesSymbolsContinue,step.token))
+		if not check(continued.get("nobles",{}).get("outcome")==C.NoblesOutcome.Applied,"Symbol continuation rejected"):return
+		if index<2:step=continued.nobles.step
+		else:check(not continued.nobles.has("step"),"Completed symbol sequence retained a step")
+	var refreshed:=await page(0,revision)
+	check(refreshed.get("status")==C.ManagementStatus.Ok,"Completed symbols blocked overview")
+	var output=FileAccess.open(directory+"/nobles-symbol-wire.json",FileAccess.WRITE)
+	output.store_string(JSON.stringify({"artifacts":artifacts,"items":reference.items,"success":not failed}));output.close()
 func check_candidates(revision: int,rows: Array) -> void:
 	var native: Dictionary=normalize(JSON.parse_string(FileAccess.get_file_as_string(directory+"/nobles-native.json")))
 	for picker in native.pickers:
@@ -217,6 +268,7 @@ func run() -> void:
 		var effect=FileAccess.open(directory+"/nobles-commit-wire.json",FileAccess.WRITE)
 		effect.store_string(JSON.stringify({"unit_id":chosen,"entity_id":target.entity_id,"assignment_id":target.assignment_id,"accounting_values":accounting_values,"accounting_restored":original_setting}));effect.close()
 	model.dispose();actions.queue_free();await process_frame
+	if OS.get_environment("DF3D_NOBLES_SYMBOL_WIRE")=="1":await check_symbols(revision)
 	var result=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	result.store_string(JSON.stringify({"controller_ready":true,"closed_read_retired":true,"success":not failed,"rows":rows.size(),"pages":pages,"stale_rejected":true,"empty_end_page":true}));result.close()
 	quit(1 if failed else 0)

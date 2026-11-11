@@ -544,6 +544,35 @@ acceptance is `passed_with_known_issues` for the known Godot shutdown diagnostic
 GPU58–61C sampled. Core19/controller checks pass in `build/qa/places-layout-final`.
 
 
+## Management 178 Nobles read contract
+
+Protocol178 reserves `NoblesRead` and bounded native-order overview pages.
+Identity is the entity/position/assignment triple; assignment-1 denotes a NEW
+row and does not collide with an existing vacancy. Pages carry a membership
+revision, offset and total; noninitial requests require the observed revision.
+Rows carry verified native captions, holder IDs, appointment availability,
+room/furnishing values and demand/mandate severity. Absent holders have no room
+assessment or obligation status. The contract rejects duplicate identities,
+malformed four-value assessments, missing successful payloads and oversized or
+stalled pages. Rejected/Stale replies carry no successful page data.
+
+Rebuild and restart bridge and consumer together using
+`Local\df3d_management_v178`. Protocol177 cannot represent Nobles pages. Do not
+invent Nobles data when migrating older recordings; retain them as older-schema
+evidence or recapture. This schema commit reserves the read vocabulary only;
+provider transport, model codecs, controller/view and public routing remain
+pending. Existing diagnostic native Nobles reads are independent of this wire
+contract. No appointment mutation or legacy menu-backed Appointments route is
+revived.
+
+Core19 and the new contract cases pass in `build/qa/nobles-contract`; the
+rebuilt extension passes `places_state_test` in `nobles-contract-extension`.
+MSVC bridge and Godot extension builds pass. Protected075520 on2026-11-11
+passes the established native Nobles diagnostic suite with protocol178 loaded;
+owned DF23556 closes unsaved and source preservation passes,30FPS, GPU60C/21%.
+This checks bridge compatibility and existing native providers, not end-to-end
+Nobles wire replies, which are not implemented in this contract commit.
+
 ## Management 177 Places siege mutation contract
 
 Protocol177 adds `PlacesApply` to the Places domain and mutation classification.

@@ -250,10 +250,10 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
     if(s.objects){const auto& v=*s.objects;Dictionary value;Array rows;
         value["outcome"]=int(v.outcome);value["tab"]=int(v.tab);value["list_revision"]=int64_t(v.listRevision);
         value["total"]=int64_t(v.total);value["offset"]=int64_t(v.offset);
-        for(const auto& r:v.rows){Dictionary d;d["artifact_id"]=r.artifactId;d["item_id"]=r.itemId;
+        for(const auto& r:v.rows){Dictionary d;d["artifact_id"]=r.artifactId;d["item_id"]=r.itemId;d["item_type"]=int(r.itemType);
             d["native_name"]=String::utf8(r.nativeName.c_str());d["translated_name"]=String::utf8(r.translatedName.c_str());d["ownership"]=String::utf8(r.ownership.c_str());
             if(r.position)d["position"]=Vector3i(r.position->x,r.position->y,r.position->z);
-            if(r.appearance)d["appearance"]=management::itemRecipeDictionary(*r.appearance);rows.push_back(d);}
+            if(r.appearance)d["appearance"]=management::itemAppearanceDictionary(*r.appearance);rows.push_back(d);}
         if(v.destination){const auto& r=*v.destination;Dictionary d;d["artifact_id"]=r.artifactId;d["item_id"]=r.itemId;
             if(r.position)d["position"]=Vector3i(r.position->x,r.position->y,r.position->z);value["destination"]=d;}
         value["rows"]=rows;result["objects"]=value;

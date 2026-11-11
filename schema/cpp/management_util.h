@@ -181,8 +181,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 188;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v188";
+inline constexpr uint32_t kManagementVersion = 189;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v189";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -1505,13 +1505,22 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       r->list_revision() || r->total() || r->offset() || r->rows()->size() || r->destination())return "invalid objects refusal";
     size_t bytes=0;std::unordered_set<int32_t> ids;
     for(const auto* row:*r->rows()){
-      if(!row || row->artifact_id()<0 || row->item_id()<0 || !ids.insert(row->artifact_id()).second || !validPosition(row->position()))return "invalid objects row";
+      if(!row || row->artifact_id()<0 || row->item_id()<0 || row->item_type()<-1 || row->item_type()>92 || !ids.insert(row->artifact_id()).second || !validPosition(row->position()))return "invalid objects row";
       bytes+=128;
       for(const auto* text:{row->native_name(),row->translated_name(),row->ownership()}){
         if(!text || text->size()>16384)return "invalid objects caption";bytes+=text->size();}
       if(const auto* a=row->appearance()){
-        size_t recipe=0;if(auto error=validateOwnerAppearance(*a,recipe))return error;
-        if(!a->layers()->size() || recipe>131072)return "invalid objects artwork";bytes+=recipe;
+        if(row->item_type()<0 || !validInspectionInstrument(*a,row->item_type()) || !a->material_token() || !a->material_token()->size() || a->material_token()->size()>256 ||
+           !a->subtype_raw() || a->subtype_raw()->size()>128 || !a->color_token() || a->color_token()->size()>128 || a->stack()<1 || (a->flags()&~96))return "invalid objects appearance";
+        bytes+=256+a->material_token()->size()+a->subtype_raw()->size()+a->color_token()->size();
+        size_t recipe=0;
+        for(const auto* p:{a->portrait(),a->corpse_selector(),a->cage_occupant(),a->legwear_selector()})if(p)if(auto error=validateOwnerAppearance(*p,recipe))return error;
+        bytes+=recipe;
+        for(const auto* text:{a->restraint_solid_color(),a->cage_solid_color(),a->bucket_liquid_color(),a->craft_gem_color()})if(text)bytes+=text->size();
+        if(const auto* c=a->contents()){
+          bytes+=64;if(c->solid_color())bytes+=c->solid_color()->size();
+          for(const auto* e:*c->entries())bytes+=64+e->material_token()->size()+e->color_token()->size();
+        }
       }
       if(bytes>384*1024)return "objects page payload exceeded";
     }

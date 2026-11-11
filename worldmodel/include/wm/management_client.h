@@ -474,8 +474,8 @@ struct NoblesState {
 };
 struct ObjectsRequest {uint8_t tab=0;uint32_t offset=0;uint16_t limit=32;uint64_t expectedListRevision=0;int32_t artifactId=-1;};
 struct ObjectsRow {
-  int32_t artifactId=-1,itemId=-1;std::string nativeName,translatedName,ownership;
-  std::optional<TilePos> position;std::optional<SelectionAppearance> appearance;
+  int32_t artifactId=-1,itemId=-1;int16_t itemType=-1;std::string nativeName,translatedName,ownership;
+  std::optional<TilePos> position;std::optional<ItemInspectionAppearance> appearance;
 };
 struct ObjectsDestination {int32_t artifactId=-1,itemId=-1;std::optional<TilePos> position;};
 struct ObjectsState {

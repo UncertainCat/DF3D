@@ -39,19 +39,35 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Objects native discovery
 
+Protocol189 corrects Objects' previously unused artwork field from a layer
+recipe to `ItemInspectionAppearance`, with an `item_type` field (-1 when unknown).
+Objects renderer3a060a calls shared item selectorc7cbc0, also used by Stocks and
+Nobles. That selector uses rendering caches and must not be called on live items
+by this provider. Reuse the existing semantic item-appearance provider and viewer
+item renderer; do not invent replacement icons for the native blank written items.
+The type/material/subtype/color/stack facts and nested selectors follow the existing
+item inspection validation and ownership rules. Appearance requires a known item
+type; absent facts remain absent. Core19 passes `build/qa/objects-art-contract`,
+including malformed appearance cases and decoding after source bytes are overwritten.
+
+This is the schema/codec correction only. The producer does not yet populate
+Objects artwork, and189 has not had live acceptance. Request/reply defaults and
+the mailbox now use189 (`Local\df3d_management_v189`); rebuild bridge and viewer
+together before live use. The installed bridge/viewer remain188. There is no
+migration of188's layer recipe into item facts; that field had no runtime producer.
+
 Protocol188 adds read-only `ObjectsRead` and `ObjectsLocate` requests and typed
 Objects rows/destinations. Requests carry a category and membership revision;
 continuation pages and destination lookups require an observed revision. Rows
 own original/translated names, ownership captions, optional position and optional
-semantic artwork. A destination without a position explicitly disables navigation.
+item artwork facts. A destination without a position explicitly disables navigation.
 Refusals cannot carry usable rows or destinations. Pages are bounded to64 rows,
 16384 bytes per caption and384KiB total, with unique artifact IDs and bounded
-coordinates. Optional artwork remains absent until its native selector is exposed.
+coordinates. Optional artwork remains absent until the shared provider is connected.
 
-Both request/reply defaults and validators use188 and mailbox
-`Local\df3d_management_v188`. Rebuild bridge and viewer together before live use;
-187 peers cannot share that mailbox. Older recordings do not acquire Objects
-facts. Core19, including Objects malformed-page, destination, refusal and scope
+The188 live evidence below uses `Local\df3d_management_v188`; current compatibility
+is189 as described above. Older recordings do not acquire Objects facts.
+Core19, including Objects malformed-page, destination, refusal and scope
 cases, passes `build/qa/objects-contract-final`.
 
 The engine-independent model owns Objects requests, rows and destinations.
@@ -140,8 +156,8 @@ preservation and restored preferences; native30FPS, sampled GPU63C. Core19 passe
 `build/qa/objects-native-destinations`; the MSVC bridge builds. Evidence is in
 `native_objects.json.destination_reference`; nested holders remain unverified here.
 
-Objects remains unexposed and unfinished. Next are the native artwork selector
-and rendered four-tab panel.
+Objects remains unexposed and unfinished. Next are shared item-artwork production
+and the rendered four-tab panel, followed by native comparison and lifecycle checks.
 Input handler39f150 contains the item view/recenter dispatch. Populated Symbols, scrolling, inputs and lifecycle still need acceptance.
 The current reference includes native blank artwork for two written objects;
 do not infer replacement artwork from the fixture alone.

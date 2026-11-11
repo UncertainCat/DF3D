@@ -2229,7 +2229,8 @@ table ObjectsRequest {
 table ObjectsRow {
   artifact_id:int32 = -1; item_id:int32 = -1;
   native_name:string (required); translated_name:string (required);
-  ownership:string (required); position:TilePos; appearance:SelectionAppearance;
+  ownership:string (required); position:TilePos; appearance:ItemInspectionAppearance;
+  item_type:int16 = -1;
 }
 table ObjectsDestination { artifact_id:int32 = -1; item_id:int32 = -1; position:TilePos; }
 table ObjectsState {
@@ -2388,7 +2389,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 188;
+  schema_version:uint32 = 189;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2458,7 +2459,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 188;
+  schema_version:uint32 = 189;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

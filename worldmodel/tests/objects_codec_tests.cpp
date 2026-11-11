@@ -18,11 +18,9 @@ TEST_CASE("Objects request codec preserves continuation and navigation identity"
 TEST_CASE("Objects rows own captions and artwork after source bytes are replaced") {
  flatbuffers::FlatBufferBuilder b;
  auto original=b.CreateString("synthetic original"),translated=b.CreateString("synthetic translation"),owner=b.CreateString("synthetic owner");
- const auto pages=b.CreateVector(std::vector{b.CreateString("SYNTHETIC_OBJECT")});
- const auto palettes=b.CreateVector(std::vector<flatbuffers::Offset<flatbuffers::String>>{});
- const auto layers=b.CreateVectorOfStructs(std::vector<m::AppearanceLayer>{{0,2,3,1,1,65535,-1,-1,0,0}});
- const auto art=m::CreateSelectionAppearance(b,pages,palettes,layers);const m::TilePos pos(4,5,6);
- const auto row=m::CreateObjectsRow(b,42,43,original,translated,owner,&pos,art);
+ const auto material=b.CreateString("SYNTHETIC_MATERIAL"),subtype=b.CreateString("SYNTHETIC_SUBTYPE"),color=b.CreateString("SYNTHETIC_COLOR");
+ const auto art=m::CreateItemInspectionAppearance(b,material,subtype,color,1,32);const m::TilePos pos(4,5,6);
+ const auto row=m::CreateObjectsRow(b,42,43,original,translated,owner,&pos,art,36);
  const auto payload=m::CreateObjectsState(b,m::ObjectsOutcome::None,2,123,33,32,b.CreateVector(std::vector{row}));
  m::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(m::ManagementAction::ObjectsRead);
  state.add_status(m::ManagementStatus::Ok);state.add_objects(payload);b.Finish(state.Finish());
@@ -33,7 +31,7 @@ TEST_CASE("Objects rows own captions and artwork after source bytes are replaced
  REQUIRE(r.rows.size()==1);const auto& v=r.rows[0];CHECK(v.artifactId==42);CHECK(v.itemId==43);
  CHECK(v.nativeName=="synthetic original");CHECK(v.translatedName=="synthetic translation");CHECK(v.ownership=="synthetic owner");
  REQUIRE(v.position);CHECK(v.position->x==4);CHECK(v.position->z==6);
- REQUIRE(v.appearance);CHECK(v.appearance->tilePages[0]=="SYNTHETIC_OBJECT");CHECK(v.appearance->layers[0].tileX==2);
+ REQUIRE(v.appearance);CHECK(v.itemType==36);CHECK(v.appearance->materialToken=="SYNTHETIC_MATERIAL");CHECK(v.appearance->subtypeRaw=="SYNTHETIC_SUBTYPE");CHECK(v.appearance->colorToken=="SYNTHETIC_COLOR");
  CHECK_FALSE(r.destination);
 }
 TEST_CASE("Objects lookup preserves unavailable destination and typed stale refusal") {

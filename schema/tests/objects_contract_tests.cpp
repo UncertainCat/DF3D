@@ -1,6 +1,18 @@
 #include <doctest.h>
 #include "management_util.h"
 namespace m=df3d::mirror;
+TEST_CASE("Objects artwork carries bounded item facts with a known item type") {
+ for(int fault=0;fault<7;++fault){flatbuffers::FlatBufferBuilder b;
+  const auto text=b.CreateString("fixture"),empty=b.CreateString("");
+  const auto material=b.CreateString(fault==3?std::string(257,'x'):"INORGANIC:IRON");
+  const auto art=m::CreateItemInspectionAppearance(b,fault==2?0:material,empty,empty,fault==4?0:1,fault==5?1:32);
+  const auto row=m::CreateObjectsRow(b,7,8,text,text,text,nullptr,art,fault==1?-1:fault==6?93:36);
+  const auto payload=m::CreateObjectsState(b,m::ObjectsOutcome::None,0,1,1,0,b.CreateVector(std::vector{row}));
+  m::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(m::ManagementAction::ObjectsRead);
+  state.add_status(m::ManagementStatus::Ok);state.add_objects(payload);b.Finish(state.Finish());
+  CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==(fault!=0));
+ }
+}
 TEST_CASE("Objects pages and destinations require scoped read identities") {
  for(bool locate:{false,true})for(int fault=0;fault<9;++fault){
   flatbuffers::FlatBufferBuilder b;

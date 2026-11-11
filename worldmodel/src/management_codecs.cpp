@@ -98,10 +98,10 @@ ManagementState decodeState(const m::ManagementState* s) {
     auto& out=next.objects.emplace();out.outcome=ObjectsOutcome(r->outcome());out.tab=r->tab();
     out.listRevision=r->list_revision();out.total=r->total();out.offset=r->offset();
     for(const auto* row:*r->rows()){
-      ObjectsRow v;v.artifactId=row->artifact_id();v.itemId=row->item_id();
+      ObjectsRow v;v.artifactId=row->artifact_id();v.itemId=row->item_id();v.itemType=row->item_type();
       v.nativeName=row->native_name()->str();v.translatedName=row->translated_name()->str();v.ownership=row->ownership()->str();
       if(const auto* p=row->position())v.position=TilePos{p->x(),p->y(),p->z()};
-      if(row->appearance())v.appearance=decodeItemRecipe(row->appearance());
+      if(row->appearance())v.appearance=decodeInspectionAppearance(row->appearance());
       out.rows.push_back(std::move(v));
     }
     if(const auto* d=r->destination()){

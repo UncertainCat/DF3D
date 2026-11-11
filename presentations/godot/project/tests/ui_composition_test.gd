@@ -165,13 +165,24 @@ func run():
 		var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=true
 		click.position=Vector2(200,48 if dimensions.x<1240 else 24);places.panel._gui_input(click)
 		check(places.state.tab==4 and places.state.ticket==pending,"Selected Places header retains subtab/read")
-		for point in ([Vector2(256,24),Vector2(328,24)] if dimensions.x<1240 else [Vector2(688,24),Vector2(760,24)]):
+		for point in ([Vector2(328,24)] if dimensions.x<1240 else [Vector2(800,24)]):
 			click.position=point;places.panel._gui_input(click)
 			check(ui.host.active==places and places.state.ticket==pending,"Unfinished information route stays gated")
 		ui.host.set_overlay_blocked(true)
 		places.information_requested.emit("Creatures")
 		check(ui.host.active==places,"Overlay blocks information handoff")
 		ui.host.set_overlay_blocked(false)
+	var objects=ui.controller("objects")
+	check(objects==ui.controller("objects") and not ui.Registry.allows_launcher("Objects"),"Objects factory is reused without public exposure")
+	for dimensions in [Vector2(912,552),Vector2(1600,900)]:
+		places.open_panel();places.panel.layout(dimensions)
+		var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.pressed=true
+		click.position=Vector2(256 if dimensions.x<1240 else 688,24);places.panel._gui_input(click)
+		check(ui.host.active==objects and not places.panel.visible,"Objects information header opens composed owner")
+		objects.panel.layout(dimensions);var pending: int=objects.state.ticket
+		click.position=Vector2(200,24);objects.panel._gui_input(click)
+		check(ui.host.active==places and not objects.panel.visible and objects.state.phase==objects.state.Phase.Closed,"Objects header returns to Places")
+		check(not ui.actions._requests.has(pending) and not ui.actions._queue.has(pending),"Objects handoff retires pending read")
 	var nobles=ui.controller("nobles")
 	check(nobles==ui.controller("nobles") and not ui.Registry.allows_launcher("Nobles and administrators"),"Nobles factory is reused without public exposure")
 	for dimensions in [Vector2(912,552),Vector2(1600,900)]:

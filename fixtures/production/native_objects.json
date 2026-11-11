@@ -1725,5 +1725,98 @@
       "two-row scroll range; intermediate long-list drag positions not covered",
       "keyboard paging and scrolled hover remain pending"
     ]
+  },
+  "symbols_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-171050",
+    "fixture": {
+      "item_id": 27491,
+      "office": {
+        "actual_furniture": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "actual_rooms": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "assignment_id": 6,
+        "can_appoint": true,
+        "demand_status": -1,
+        "entity_id": 865,
+        "has_room_assessment": false,
+        "holder_caption": "VACANT",
+        "mandate_status": -1,
+        "nemesis_id": -1,
+        "position_id": 10,
+        "position_name": "manager",
+        "required_furniture": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "required_rooms": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "squad_caption": "",
+        "title": "Manager",
+        "unit_id": -1,
+        "value": 160
+      }
+    },
+    "symbols": [
+      {
+        "artifact_id": 255,
+        "item_id": 27491,
+        "native_name": "Enkoserib",
+        "ownership": "Symbol of the manager",
+        "translated_name": "\"Takegorges\""
+      }
+    ],
+    "comparison": [
+      {
+        "tab": 0,
+        "different_pixels": 0,
+        "bounds": null
+      },
+      {
+        "tab": 1,
+        "different_pixels": 0,
+        "bounds": null
+      },
+      {
+        "tab": 2,
+        "different_pixels": 0,
+        "bounds": null
+      },
+      {
+        "tab": 3,
+        "different_pixels": 0,
+        "bounds": null
+      }
+    ],
+    "wire": {
+      "controller_tabs": 4,
+      "counts": [
+        10,
+        1,
+        2,
+        11
+      ],
+      "late_read_closed": true,
+      "lookups": 5,
+      "owner_navigation": true,
+      "stale_tabs": 4,
+      "success": true
+    },
+    "status": "passed_with_known_issues",
+    "scope": "Existing artifact assigned to vacant Manager office via native semantic apply, then removed; unsaved owned session. Other claim variants remain pending."
   }
 }

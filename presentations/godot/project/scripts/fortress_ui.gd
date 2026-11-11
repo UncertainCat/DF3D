@@ -128,8 +128,16 @@ func controller(id: String):
 	var panel = load(Registry.PANEL_SCRIPTS[id]).new()
 	if id=="nobles":
 		add_child(panel);panel.configure(world,actions,host)
-		panel.information_available=func(caption):return caption in ["Creatures","Tasks","Places","Labor","Work orders"]
+		panel.information_available=func(caption):return caption in ["Creatures","Tasks","Places","Labor","Work orders","Objects"]
 		panel.information_requested.connect(func(caption):_open_staged_information(panel,caption))
+		controllers[id]=panel;return panel
+	if id=="objects":
+		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
+		panel.information_requested.connect(func(caption):_open_staged_information(panel,caption))
+		panel.focus_requested.connect(focus_tile)
+		panel.inspect_requested.connect(func(item_id,tile):
+			if not host.play_enabled:return
+			focus_tile(tile);controller("farm").item_owner.open_target(item_id))
 		controllers[id]=panel;return panel
 	if id=="places":
 		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
@@ -252,6 +260,7 @@ func _open_staged_information(source,caption: String) -> void:
 		"Creatures":controller("residents").open_panel()
 		"Tasks":controller("tasks").open_panel()
 		"Places":controller("places").open_panel()
+		"Objects":controller("objects").open_panel()
 		"Labor":controller("work_details").open_panel()
 		"Work orders":controller("workshop").open_global_orders()
 		"Nobles and administrators":controller("nobles").open_panel()

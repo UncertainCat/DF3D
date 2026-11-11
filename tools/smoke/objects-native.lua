@@ -42,9 +42,38 @@ local function probe(command)
  assert(bytes(base+0x234e990,0x6180)==rng,'Owned Objects provider advanced randomness')
  return json.decode(text)
 end
+local symbol_fixture
+if os.getenv('DF3D_OBJECTS_SYMBOLS')=='1' then
+ local function call(args)
+  local text,rc=dfhack.run_command_silent('df3d',table.unpack(args));assert(rc==0,text);return json.decode(text)
+ end
+ local office
+ for _,row in ipairs(call({'nobles-overview-probe'}))do if row.position_name=='manager' and row.assignment_id>=0 then office=row;break end end
+ assert(office,'Objects fixture needs Manager office')
+ local key={tostring(office.entity_id),tostring(office.position_id),tostring(office.assignment_id)}
+ local candidates=call({'nobles-symbols-probe',table.unpack(key)})
+ local item
+ for _,row in ipairs(candidates)do
+  local candidate=df.item.find(row.item_id)
+  if candidate and candidate.flags.artifact then item=candidate;break end
+ end
+ assert(item,'Objects fixture needs existing artifact candidate')
+ local function apply(selected)
+  local value=call({'nobles-symbol-apply-probe',key[1],key[2],key[3],tostring(item.id),selected and '1' or '0'})
+  assert(value.outcome==2 and value.naming_artifact_id==-1 and #value.remaining==0,'Objects symbol fixture effect failed')
+ end
+ apply(true)
+ symbol_fixture={office=office,item_id=item.id}
+ write('objects-symbol-fixture.json',json.encode(symbol_fixture))
+ symbol_fixture.restore=function()apply(false)end
+end
 local cold=probe()
+if symbol_fixture then assert(#cold[2]>0,'Objects Symbols fixture missing from native provider')end
 local native_names=probe('objects-names-probe')
 local ownership=probe('objects-ownership-probe')
+if symbol_fixture then
+ assert(#ownership[2]==1 and ownership[2][1].item_id==symbol_fixture.item_id and ownership[2][1].ownership=='Symbol of the manager','Objects symbol office caption differs from native170421')
+end
 local destinations=probe('objects-destinations-probe')
 local appearances={}
 for mode,rows in ipairs(ownership)do
@@ -209,5 +238,6 @@ assert(not info.open and sheet.open and sheet.active_sheet==df.view_sheet_type.I
 gui.simulateInput(view,'LEAVESCREEN');settle();assert(not sheet.open,'Objects destination sheet did not close')
 write('objects-native.json',json.encode(result))
 assert(not info.open,'Objects did not close')
+if symbol_fixture then symbol_fixture.restore()end
 records[#records+1]={name='objects-discovery',closed=true}
 

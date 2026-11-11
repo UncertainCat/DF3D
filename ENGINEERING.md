@@ -39,6 +39,28 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Objects native discovery
 
+Objects has a staged main-scene factory and information-header route. It reuses
+the shared UI host, hover owner, camera focus and existing item-sheet owner.
+Nobles can hand off to Objects through its existing commit-before-navigation
+flow. No public launcher is promoted. Offline `build/qa/objects-composition-final`
+verifies Places→Objects→Places at narrow/wide widths, factory reuse and pending
+read retirement. Live composed item-sheet/camera handoff remains pending.
+
+Protected171050 on2026-11-11 populates Symbols using the existing native semantic
+Nobles symbol assignment: artifact255/item27491 belongs to Manager office
+entity865/position10/assignment6. The provider now appends native “Symbol of ”,
+then literal “the ” (RVA15e8e48), then the native office title. Earlier code
+replaced the prefix with the title; the populated reference exposed that defect.
+Native3a0f61/3a0ff2 establishes the article append. The tightened fixture checks
+“Symbol of the manager” exactly, and all four panel crops match native at1200x800
+with counts10/1/2/11. The assignment is removed after capture; owned DF8096 closes
+unsaved with source preservation and restored preferences. Both processes30FPS,
+GPU59C/1%/43W; known separate-thread/finalize/ObjectDB diagnostics only.
+`native_objects.json.symbols_reference` records scope and evidence. Enable with
+`DF3D_OBJECTS_SYMBOLS=1`; this does not accept other office/civilization claim
+variants. MSVC bridge builds (`objects-symbol-caption-build-final.log`), core19
+passes `build/qa/objects-composition`; no protocol change from191.
+
 Objects scrollbar input is covered at912x552 with11 Written content rows and
 nine visible. Native170158 and viewer165906 agree: down arrow0→1, up1→0,
 track click0→2, switch to Artifacts and back retains2, thumb press acquires drag,

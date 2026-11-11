@@ -101,7 +101,8 @@ inline std::optional<std::string> ownership(int32_t id) {
                 using Position=df::entity_position*(*)(df::historical_entity*,df::entity_position_assignment*);
                 if(auto* position=reinterpret_cast<Position>(base+0xbbe40)(entity,&owned)){
                     using Title=const std::string*(*)(df::entity_position*,int8_t,bool,bool);
-                    text=*reinterpret_cast<Title>(base+0x99a3c0)(position,-1,false,false);return;
+                    text+=literal(0x15e8e48); // Native3a0f61/3a0ff2 appends "the ".
+                    text+=*reinterpret_cast<Title>(base+0x99a3c0)(position,-1,false,false);return;
                 }
             }
         }

@@ -39,6 +39,23 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Nobles and administrators native discovery
 
+Protected145344 on2026-11-11 verifies a sent Manager appointment whose reply is
+not consumed before producer loss. The viewer submits once, stops polling,
+and the native oracle waits for candidate6598 to hold the office before
+disabling the bridge. The service retains an unknown outcome; loss retires
+panel/draft authority. After enable and stable reconnect, explicit reopening
+reads holder6598. Native history increases by exactly one event through the
+whole recovery/navigation flow, establishing no replay. Enable this variant
+with `DF3D_NOBLES_LIFECYCLE_SENT=1` alongside LIFECYCLE/NATIVE/WIRE/SCENE.
+This is confirmed producer-loss recovery, not timeout-only late-receipt or
+symbol-continuation acceptance. No runtime change was necessary.
+
+Core19, Nobles state and UI host checks pass in `build/qa/nobles-sent-recovery`.
+Owned DF38080 closes unsaved with source preservation and preferences restored;
+both graphical processes are capped at30FPS, sampled GPU61C/30%/53W. The
+viewer reports only the three known Godot diagnostics (passed_with_known_issues).
+
+
 Protected145008 on2026-11-11 verifies actual main-scene Nobles recovery after
 bridge disable/enable with an unsent Manager appointment draft (candidate6598).
 Connection loss retires rows, draft, ticket and input ownership. Reconnection
@@ -47,8 +64,9 @@ Native history remains unchanged. The recovery gate requires a claimed,
 play-ready connection identity stable for500ms, matching the existing Labor
 lane; initial144842 reopened during connection reconciliation and is not
 acceptance evidence. `DF3D_NOBLES_LIFECYCLE=1` with NATIVE/WIRE/SCENE enables
-this bounded case. Sent effects, unknown receipts and symbol continuation
-ownership remain separate acceptance gaps.
+this bounded case. Timeout-only late receipts and symbol continuation
+ownership remain separate acceptance gaps; sent producer-loss recovery is
+verified above.
 
 Core19, Nobles state and UI host checks pass in `build/qa/nobles-lifecycle`.
 The protected run closes owned DF42892 unsaved with source preservation and

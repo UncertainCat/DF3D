@@ -10194,5 +10194,26 @@
     "limits": [
       "Unsent appointment draft only; sent effects and symbol continuation recovery remain unverified."
     ]
+  },
+  "main_scene_sent_recovery_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-145344",
+    "receipt": {
+      "chosen": 6598,
+      "draft_retired": true,
+      "fresh_read": true,
+      "holder": 6598,
+      "sent_case": true,
+      "sent_outcome": "unknown",
+      "success": true
+    },
+    "native": {
+      "events_added": 1,
+      "sent": true,
+      "stages": 2
+    },
+    "status": "passed_with_known_issues",
+    "limits": [
+      "Producer loss after a confirmed native effect; timeout-only late receipts and symbol continuation remain separate."
+    ]
   }
 }

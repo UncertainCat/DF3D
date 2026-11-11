@@ -40,8 +40,10 @@ func lifecycle_handshake(step: int) -> bool:
 		await create_timer(0.01).timeout
 	return check(false,"Nobles lifecycle handshake timed out")
 func lifecycle_recovery(expected: Dictionary) -> bool:
-	# Keep a local appointment draft across a real producer loss. No dismissal
-	# or mutation is requested; the native oracle checks unchanged history.
+	# Optionally send once, then stop observing until DF confirms the effect
+	# and disables the producer. Recovery must never replay that request.
+	var sent_case:=OS.get_environment("DF3D_NOBLES_LIFECYCLE_SENT")=="1"
+	var sent_ticket:=0
 	var target: Dictionary=expected.pickers[0].selected
 	var row: Dictionary={}
 	for candidate in owner.state.rows:
@@ -57,12 +59,23 @@ func lifecycle_recovery(expected: Dictionary) -> bool:
 	if not await settle(owner.state):return false
 	if not check(owner.state.choices.size()==1,"Lifecycle draft missing"):return false
 	var generation: int=owner.state.generation
-	actions.set_process(true)
+	if sent_case:
+		await drain();owner.state.request_dismiss();sent_ticket=owner.state.ticket
+		var send_deadline:=Time.get_ticks_msec()+10000
+		while actions._requests.has(sent_ticket) and int(actions._requests[sent_ticket].sequence)==0 and Time.get_ticks_msec()<send_deadline:
+			actions.poll(0.01)
+			if int(actions._requests.get(sent_ticket,{}).get("sequence",0))>0:break
+			await create_timer(0.01).timeout
+		if not check(sent_ticket>0 and int(actions._requests.get(sent_ticket,{}).get("sequence",0))>0 and owner.state.phase==owner.state.Phase.Applying,"Appointment was not sent exactly once before loss"):return false
+		var intent_file=FileAccess.open(directory+"/nobles-lifecycle-intent.json",FileAccess.WRITE)
+		intent_file.store_string(JSON.stringify({"chosen":chosen,"target":owner.state.office(row)}));intent_file.close()
 	if not await lifecycle_handshake(1):return false
+	actions.set_process(true)
 	var deadline:=Time.get_ticks_msec()+10000
 	while owner.panel.visible and Time.get_ticks_msec()<deadline:await create_timer(0.01).timeout
 	check(not owner.panel.visible and not owner.name_panel.visible and scene._ui.host.active==null,"Nobles loss retained input ownership")
 	check(owner.state.generation>generation and owner.state.ticket==0 and owner.state.rows.is_empty() and owner.state.choices.is_empty(),"Nobles loss retained draft authority")
+	if sent_case:check(actions.result(sent_ticket).get("outcome")=="unknown","Lost sent appointment was not retained as unknown")
 	if not await lifecycle_handshake(2):return false
 	deadline=Time.get_ticks_msec()+60000
 	var stable_since:=0;var epoch: int=-1;var connection_generation: int=-1
@@ -84,9 +97,9 @@ func lifecycle_recovery(expected: Dictionary) -> bool:
 	var refreshed: Dictionary={}
 	for candidate in owner.state.rows:
 		if owner.state.office(candidate)==owner.state.office(row):refreshed=candidate;break
-	check(not refreshed.is_empty() and refreshed.get("unit_id")!=chosen,"Reconnect replayed unsent appointment")
+	check(not refreshed.is_empty() and (refreshed.get("unit_id")==chosen if sent_case else refreshed.get("unit_id")!=chosen),"Recovered holder differs from native effect")
 	var file=FileAccess.open(directory+"/nobles-lifecycle-result.json",FileAccess.WRITE)
-	file.store_string(JSON.stringify({"draft_retired":true,"fresh_read":true,"chosen":chosen,"holder":refreshed.get("unit_id"),"success":not failed}));file.close()
+	file.store_string(JSON.stringify({"sent_case":sent_case,"sent_outcome":actions.result(sent_ticket).get("outcome","") if sent_case else "not_sent","draft_retired":true,"fresh_read":true,"chosen":chosen,"holder":refreshed.get("unit_id"),"success":not failed}));file.close()
 	return not failed
 func exercise(expected: Dictionary) -> void:
 	owner=scene._ui.controller("nobles");owner.open_panel()

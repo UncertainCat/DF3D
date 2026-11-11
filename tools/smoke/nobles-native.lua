@@ -700,6 +700,17 @@ if os.getenv('DF3D_NOBLES_WIRE')=='1' then
     local wanted=tonumber(file:read('*a'));file:close()
     if wanted~=lifecycle_stage then
      assert(wanted==lifecycle_stage+1 and wanted<=2,'Unexpected Nobles lifecycle handshake')
+     if wanted==1 and os.getenv('DF3D_NOBLES_LIFECYCLE_SENT')=='1' then
+      local intent_file=assert(io.open(out..'/nobles-lifecycle-intent.json'));local intent=json.decode(intent_file:read('*a'));intent_file:close()
+      local unit=assert(df.unit.find(intent.chosen));local entity=assert(df.historical_entity.find(intent.target.entity_id));local assignment
+      for _,entry in ipairs(entity.positions.assignments)do if entry.id==intent.target.assignment_id then assignment=entry;break end end
+      assert(assignment,'Lifecycle assignment missing')
+      local effect_deadline=dfhack.getTickCount()+5000
+      while assignment.histfig~=unit.hist_figure_id do
+       assert(dfhack.getTickCount()<effect_deadline,'Sent appointment did not apply before loss');script.sleep(1,'frames')
+      end
+      assert(assignment.histfig2==unit.hist_figure_id and #df.global.world.history.events==wire_events+1,'Sent appointment native effect differs')
+     end
      lifecycle_disabled=wanted==1
      assert(dfhack.run_command(lifecycle_disabled and 'disable' or 'enable','df3d')==0,'Nobles transport toggle failed')
      lifecycle_stage=wanted;write('nobles-lifecycle-ack',tostring(wanted))
@@ -710,8 +721,9 @@ if os.getenv('DF3D_NOBLES_WIRE')=='1' then
  end
  if os.getenv('DF3D_NOBLES_LIFECYCLE')=='1' then
   assert(lifecycle_stage==2 and not lifecycle_disabled,'Nobles lifecycle incomplete')
-  assert(#df.global.world.history.events==wire_events,'Unsent Nobles draft changed history')
-  result.lifecycle_reference={stages=lifecycle_stage,events_unchanged=true}
+  local sent=os.getenv('DF3D_NOBLES_LIFECYCLE_SENT')=='1'
+  assert(#df.global.world.history.events==wire_events+(sent and 1 or 0),'Nobles lifecycle replayed or lost effects')
+  result.lifecycle_reference={stages=lifecycle_stage,events_added=#df.global.world.history.events-wire_events,sent=sent}
  end
 end
 if wire_symbols then

@@ -258,6 +258,53 @@ func check_candidates(revision: int,rows: Array) -> void:
 		check(stale.get("nobles",{}).get("outcome")==C.NoblesOutcome.Stale,"Stale appointment commit accepted")
 		var fresh:=await request("nobles",{"action":C.ManagementAction.NoblesRead,"offset":0,"limit":64,"expected_list_revision":revision})
 		check(fresh.get("nobles",{}).get("rows")==rows,"Draft or stale commit changed simulation overview")
+func wait_appointment(model,phase: int) -> bool:
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline:
+		world.poll()
+		if model.phase==phase:return true
+		await create_timer(0.01).timeout
+	return false
+func appointment_marker(name: String) -> bool:
+	var file=FileAccess.open(directory+"/"+name,FileAccess.WRITE);file.store_string("ready");file.close()
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline:
+		world.poll()
+		if FileAccess.file_exists(directory+"/ack-"+name):return true
+		await create_timer(0.01).timeout
+	return false
+func check_appointment_sequence(actions) -> void:
+	if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Appointment assets unavailable"):return
+	var reference: Array=normalize(JSON.parse_string(FileAccess.get_file_as_string(directory+"/nobles-appointment-reference.json")))
+	var interaction=preload("res://tests/ui_host_test.gd").Interaction.new();root.add_child(interaction)
+	var host=preload("res://scripts/ui_host.gd").new();host.interaction=interaction;root.add_child(host)
+	var owner=preload("res://scripts/nobles_panel.gd").new();root.add_child(owner);owner.configure(world,actions,host)
+	root.size=Vector2i(1200,800);owner._layout()
+	var model=owner.state
+	for oracle in reference:
+		owner.open_panel()
+		if not check(await wait_appointment(model,model.Phase.Ready),"Appointment overview unavailable"):return
+		var index:=-1
+		for i in model.rows.size():
+			if model.rows[i].entity_id==oracle.entity_id and model.rows[i].assignment_id==oracle.assignment_id:index=i;break
+		if not check(index>=0 and index<owner.panel.capacity(),"Appointment target not visible"):return
+		await process_frame
+		click_at(owner.panel.position+Vector2(200,owner.panel.list_top()+index*36+18))
+		if not check(await wait_appointment(model,model.Phase.CandidatesReady),"Appointment pointer did not open candidates"):return
+		index=-1
+		for i in model.candidates.size():
+			if model.candidates[i].unit_id==oracle.selected_unit:index=i;break
+		if not check(index>=0 and index<owner.panel.capacity(),"Appointment choice not visible"):return
+		await process_frame
+		click_at(owner.panel.position+Vector2(100,owner.panel.list_top()+index*36+18))
+		if not check(await wait_appointment(model,model.Phase.Ready) and model.choices.size()==1,"Appointment pointer did not stage choice"):return
+		if not check(await appointment_marker("appointment-"+oracle.operation+"-staged"),"Staged appointment changed simulation"):return
+		await process_frame;await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/appointment-"+oracle.operation+".png")
+		type_name_key(KEY_ESCAPE)
+		if not check(await wait_appointment(model,model.Phase.Closed),"Appointment dismissal did not confirm"):return
+		if not check(await appointment_marker("appointment-"+oracle.operation+"-applied"),"Appointment native effects differ"):return
+	owner.queue_free();host.queue_free();interaction.queue_free();await process_frame
 func run() -> void:
 	Engine.max_fps=30;directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
 	var reference: Array=JSON.parse_string(FileAccess.get_file_as_string(directory+"/nobles-wire-reference.json"))
@@ -425,6 +472,7 @@ func run() -> void:
 		owner.queue_free();destination.queue_free();host.queue_free();interaction.queue_free();await process_frame
 		var effect=FileAccess.open(directory+"/nobles-commit-wire.json",FileAccess.WRITE)
 		effect.store_string(JSON.stringify({"unit_id":chosen,"entity_id":target.entity_id,"assignment_id":target.assignment_id,"accounting_values":accounting_values,"accounting_restored":original_setting}));effect.close()
+	if OS.get_environment("DF3D_NOBLES_APPOINTMENT_WIRE")=="1":await check_appointment_sequence(actions)
 	model.dispose();actions.queue_free();await process_frame
 	if OS.get_environment("DF3D_NOBLES_SYMBOL_PANEL")=="1":await check_symbol_panel()
 	elif OS.get_environment("DF3D_NOBLES_SYMBOL_WIRE")=="1":await check_symbols(revision)

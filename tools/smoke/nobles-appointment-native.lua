@@ -11,9 +11,10 @@ local function click(x,y)
 end
 assert(df.global.pause_state and df.global.world.frame_counter==0 and not info.open)
 local semantic=os.getenv('DF3D_NOBLES_COMMIT')=='1'
+local wire=os.getenv('DF3D_NOBLES_APPOINTMENT_WIRE')=='1'
 local result={cases={},semantic_commit=semantic}
 local reference
-if semantic then
+if semantic or wire then
  local path=debug.getinfo(1,'S').source:sub(2):gsub('tools/smoke/nobles%-appointment%-native%.lua$','fixtures/production/native_nobles.json')
  local f=assert(io.open(path));reference=json.decode(f:read('*a')).appointment_effect_reference.cases;f:close()
  assert(reference and #reference==3)
@@ -38,6 +39,33 @@ local function state(entity,assignment,figures)
   value.figures[#value.figures+1]=row
  end
  return value
+end
+if wire then
+ local f=assert(io.open(out..'/nobles-appointment-reference.json','w'));f:write(json.encode(reference));f:close()
+ local function await_marker(name)
+  local deadline=dfhack.getTickCount()+15000
+  while true do
+   local f=io.open(out..'/'..name);if f then f:close();return end
+   assert(dfhack.getTickCount()<deadline,'Appointment client timeout: '..name);script.sleep(1,'frames')
+  end
+ end
+ for _,oracle in ipairs(reference)do
+  local entity=assert(df.historical_entity.find(oracle.entity_id));local assignment
+  for _,row in ipairs(entity.positions.assignments)do if row.id==oracle.assignment_id then assignment=row;break end end
+  assert(assignment)
+  local figures={};for _,figure in ipairs(oracle.before.figures)do figures[#figures+1]=figure.id end
+  assert(json.encode(state(entity,assignment,figures))==json.encode(oracle.before),'Typed appointment initial state differs')
+  for _,step in ipairs{'staged','applied'}do
+   local marker='appointment-'..oracle.operation..'-'..step
+   await_marker(marker)
+   local observed=state(entity,assignment,figures)
+   assert(json.encode(observed)==json.encode(step=='staged' and oracle.before or oracle.applied),'Typed appointment effects differ: '..marker)
+   assert(not info.open and df.global.pause_state and df.global.world.frame_counter==0,'Typed appointment changed native navigation or advanced simulation')
+   local f=assert(io.open(out..'/ack-'..marker,'w'));f:write('ok');f:close()
+  end
+  result.cases[#result.cases+1]={operation=oracle.operation,selected_unit=oracle.selected_unit,native_effects_match=true,staged_without_effects=true}
+ end
+ result.typed_pointer=true;result.closed=true;result.status='passed';write();return
 end
 for _,operation in ipairs{'appoint','replace','vacate'}do
  gui.simulateInput(view,'D_NOBLES');settle()

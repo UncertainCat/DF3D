@@ -283,9 +283,23 @@ figure's position link and exactly one added history event. Evidence is in
 `nobles-native.json.typed_commit` in that run; the source save is unchanged and
 DF43136 closes unsaved. Native is capped at30FPS and the viewer is headless;
 GPU39C/2% sampled. Only the known rendering-thread notice occurs. Core and
-controller outcome tests pass in `build/qa/nobles-dismissal`. Replacement,
-vacating, military conflicts, repeated NEW slots, commit navigation and actual
-disconnect/late-receipt scenarios remain outside this typed effect acceptance.
+controller outcome tests pass in `build/qa/nobles-dismissal`.
+
+Protected134155 on2026-11-11 extends typed acceptance to the complete existing
+Manager appoint/replace/vacate sequence through visible add/candidate controls
+and Escape dismissal. Independent Lua compares each staged and applied state
+with the recorded native sequence: holders, entity links, event counts,
+assignment allocation counters and unit profession/squad/job identities match.
+Selections have no simulation effects before dismissal. The native menu stays
+closed and simulation stays paused. Run with `DF3D_NOBLES_APPOINTMENT_WIRE=1`,
+`DF3D_NOBLES_WIRE=1` and `DF3D_NOBLES_RENDER=1`; other effect flags must be off.
+`native_nobles.json.typed_appointment_sequence_reference` records the scope.
+Core19, Nobles state and host checks pass in `build/qa/nobles-appointment-sequence`.
+The rendered run is passed_with_known_issues (the three documented Godot
+startup/finalize/shutdown signatures only). DF14176 closes unsaved with source
+preservation; both applications are capped at30FPS, sampled GPU60C/30%/54W.
+Military conflicts, repeated NEW slots, multi-choice drafts and actual
+disconnect/late-receipt scenarios remain outside this acceptance.
 
 Protocol181 now carries owned appointment drafts, paged candidates and commit
 receipts through the bridge, model and Godot request API. Each request rebuilds
@@ -308,7 +322,7 @@ known experimental rendering-thread warning. DF4788 closes unsaved, source
 preservation passes, and GPU37C/0% is sampled with native capped at30FPS.
 This does not establish successful typed commit effects, NEW-slot replay,
 military conflicts or picker UI/lifecycle acceptance. The public screen remains
-gated; successful typed commit effects and UI commit ownership remain pending.
+gated; later typed effect and owner evidence is scoped above.
 
 The staged Nobles controller retains the exact base revision and ordered local
 choices, loads candidates atomically across pages, and requests a fresh owned
@@ -316,7 +330,7 @@ draft projection after selection. It identifies offices by entity, position,
 assignment and draft slot. Cancelling the picker retires its read without
 discarding earlier choices; stale draft replies reject without rebasing or
 replaying choices. Refresh cannot discard a nonempty draft. Explicit controller
-teardown clears local data; this is not yet the native apply-on-dismiss flow.
+teardown clears local data; user dismissal uses the separate commit flow above.
 
 Headless `build/qa/nobles-draft-controller` passes core and controller checks,
 including late picker replies, exact large revisions, distinct NEW slots and
@@ -325,8 +339,8 @@ candidates through the actual controller/service, selects a replacement and
 observes its projected holder, then discards the local draft and confirms the
 unchanged fresh overview. Source preservation passes; DF38924 closes unsaved,
 30FPS, GPU37C/0% sampled. Only the documented rendering-thread warning occurs.
-Successful typed commits and dismissal ownership remain unfinished; this
-controller evidence does not establish those workflows.
+This draft-only run does not establish commit workflows; their separate
+acceptance is described above.
 
 The staged picker now renders native candidate names, owned portraits and the
 native skill grid, with local scrolling and candidate selection. Its appointment
@@ -385,8 +399,8 @@ pins cover shared position/history, military/job and personality helpers. World
 squads, civilized actors and equipment-update RIP operands are explicitly bound
 to simulation storage. No global native menu/input/camera/render state is used.
 `nobles-commit-probe` is a synchronous diagnostic; typed transport now supplies
-session/revision and sequence admission. UI pending/unknown ownership and
-successful typed effect acceptance are still required before exposure.
+session/revision and sequence admission. Live pending/unknown recovery and the
+remaining appointment variants are still required before exposure.
 
 Protected093735 on2026-11-11 (also093551 before NEW-ID preflight tightening)
 compares existing Manager appoint/replace/vacate with the recorded native092416

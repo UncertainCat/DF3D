@@ -8744,5 +8744,38 @@
       "Ordinary earring13147 differs by58 pixels.",
       "Header handoff, resize/drag, other naming controls and cross-client/fault acceptance remain open."
     ]
+  },
+  "typed_appointment_sequence_reference": {
+    "cases": [
+      {
+        "native_effects_match": true,
+        "operation": "appoint",
+        "selected_unit": 6598,
+        "staged_without_effects": true
+      },
+      {
+        "native_effects_match": true,
+        "operation": "replace",
+        "selected_unit": 5981,
+        "staged_without_effects": true
+      },
+      {
+        "native_effects_match": true,
+        "operation": "vacate",
+        "selected_unit": -1,
+        "staged_without_effects": true
+      }
+    ],
+    "closed": true,
+    "semantic_commit": false,
+    "status": "passed",
+    "typed_pointer": true,
+    "evidence": "build/stockpile-storage-native-input-20261111-134155",
+    "native_reference": "appointment_effect_reference",
+    "source_preserved": true,
+    "paused": true,
+    "native_menu_closed": true,
+    "scope": "Existing Manager appoint, replace and vacate through visible controls and Escape dismissal; full recorded effect snapshots match after each step. NEW, military conflicts, multi-choice and live faults remain unverified.",
+    "diagnostics": "passed_with_known_issues"
   }
 }

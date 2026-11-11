@@ -1,0 +1,536 @@
+{
+  "source": "build/stockpile-storage-native-input-20261111-150614",
+  "game": "DF 53.16",
+  "native_builder_rva": "0x375a70",
+  "menu_rva": "0x18a6b50",
+  "menu_size": 128,
+  "lists": [
+    {
+      "drag": false,
+      "mode": 0,
+      "rows": [
+        {
+          "id": 20,
+          "item_id": 20,
+          "name": "The Clarity of Voids"
+        },
+        {
+          "id": 62,
+          "item_id": 62,
+          "name": "The Sparkles of Trailing"
+        },
+        {
+          "id": 219,
+          "item_id": 219,
+          "name": "Calmtrussed the Emerald Affliction"
+        },
+        {
+          "id": 240,
+          "item_id": 240,
+          "name": "Velvetyown the Just Sandal"
+        },
+        {
+          "id": 252,
+          "item_id": 8201,
+          "name": "Roofflush the Wane of Crowding"
+        },
+        {
+          "id": 253,
+          "item_id": 9035,
+          "name": "The Palm of Roots"
+        },
+        {
+          "id": 254,
+          "item_id": 13105,
+          "name": "Squidsong"
+        },
+        {
+          "id": 255,
+          "item_id": 27491,
+          "name": "Takegorges"
+        },
+        {
+          "id": 256,
+          "item_id": 31264,
+          "name": "The Intense Plank"
+        },
+        {
+          "id": 260,
+          "item_id": 48318,
+          "name": "Caverntrots"
+        }
+      ],
+      "scroll": 0
+    },
+    {
+      "drag": false,
+      "mode": 1,
+      "rows": [],
+      "scroll": 0
+    },
+    {
+      "drag": false,
+      "mode": 2,
+      "rows": [
+        {
+          "id": 196,
+          "item_id": 196,
+          "name": "Singedstill"
+        },
+        {
+          "id": 259,
+          "item_id": 33758,
+          "name": "Apespatterned"
+        }
+      ],
+      "scroll": 0
+    },
+    {
+      "drag": false,
+      "mode": 3,
+      "rows": [
+        {
+          "id": 41,
+          "item_id": 41,
+          "name": "Unknown Lever"
+        },
+        {
+          "id": 45,
+          "item_id": 45,
+          "name": "Do We Understand the Lever?"
+        },
+        {
+          "id": 64,
+          "item_id": 64,
+          "name": "The Lever Explained"
+        },
+        {
+          "id": 89,
+          "item_id": 89,
+          "name": "Introduction to Thur Thronepleated"
+        },
+        {
+          "id": 110,
+          "item_id": 110,
+          "name": "The Denial: Problems And Solutions"
+        },
+        {
+          "id": 174,
+          "item_id": 174,
+          "name": "The Humans For Everyone"
+        },
+        {
+          "id": 185,
+          "item_id": 185,
+          "name": "Uncanny Conversations"
+        },
+        {
+          "id": 236,
+          "item_id": 236,
+          "name": "Give Me Sources"
+        },
+        {
+          "id": 238,
+          "item_id": 238,
+          "name": "Victory By the Dwarf"
+        },
+        {
+          "id": 257,
+          "item_id": 37251,
+          "name": "The Study of the Moving Sun"
+        },
+        {
+          "id": 258,
+          "item_id": 37266,
+          "name": "The Moon and Other Topics"
+        }
+      ],
+      "scroll": 0
+    }
+  ],
+  "owned_lists_match": true,
+  "owned_cold": [
+    [
+      20,
+      62,
+      219,
+      240,
+      252,
+      253,
+      254,
+      255,
+      256,
+      260
+    ],
+    [],
+    [
+      196,
+      259
+    ],
+    [
+      41,
+      45,
+      64,
+      89,
+      110,
+      174,
+      185,
+      236,
+      238,
+      257,
+      258
+    ]
+  ],
+  "owned_warm": [
+    [
+      20,
+      62,
+      219,
+      240,
+      252,
+      253,
+      254,
+      255,
+      256,
+      260
+    ],
+    [],
+    [
+      196,
+      259
+    ],
+    [
+      41,
+      45,
+      64,
+      89,
+      110,
+      174,
+      185,
+      236,
+      238,
+      257,
+      258
+    ]
+  ],
+  "tabs": [
+    {
+      "mode": 0,
+      "lines": [
+        {
+          "text": "       Creatures    Tasks    Places    Labor    Work orders",
+          "y": 5
+        },
+        {
+          "text": "       Creatures    Tasks    Places    Labor    Work orders",
+          "y": 6
+        },
+        {
+          "text": "       Nobles and administrators    Objects    Justice",
+          "y": 7
+        },
+        {
+          "text": "       Nobles and administrators    Objects    Justice",
+          "y": 8
+        },
+        {
+          "text": "       Artifacts    Symbols    Named objects    Written content",
+          "y": 9
+        },
+        {
+          "text": "       Artifacts    Symbols    Named objects    Written content",
+          "y": 10
+        },
+        {
+          "text": "             Merig Torir                                                  Rîsen Whippedtunnel's family heirloom",
+          "y": 13
+        },
+        {
+          "text": "             \"The Clarity of Voids\"",
+          "y": 14
+        },
+        {
+          "text": "             Kebul Kälán                                                  Rîsen Whippedtunnel's family heirloom                     Elevation 36",
+          "y": 16
+        },
+        {
+          "text": "             \"The Sparkles of Trailing\"",
+          "y": 17
+        },
+        {
+          "text": "             Betantilesh Sedurthokit                                      Meng Teststaves's family heirloom",
+          "y": 19
+        },
+        {
+          "text": "             \"Calmtrussed the Emerald Affliction\"",
+          "y": 20
+        },
+        {
+          "text": "             Mirstalsanreb Imkethsosh                                     Meng Teststaves's family heirloom",
+          "y": 22
+        },
+        {
+          "text": "             \"Velvetyown the Just Sandal\"",
+          "y": 23
+        },
+        {
+          "text": "             Cilobireg Lelum Thad                                         Treasure of The Rough Crystal",
+          "y": 25
+        },
+        {
+          "text": "             \"Roofflush the Wane of Crowding\"",
+          "y": 26
+        },
+        {
+          "text": "             Kulin Odur                                                   Treasure of The Rough Crystal",
+          "y": 28
+        },
+        {
+          "text": "             \"The Palm of Roots\"",
+          "y": 29
+        },
+        {
+          "text": "             Gongithosal                                                  Zon Portalarch's family heirloom",
+          "y": 31
+        },
+        {
+          "text": "             \"Squidsong\"",
+          "y": 32
+        },
+        {
+          "text": "             Enkoserib                                                    Feb Ageswhip's family heirloom",
+          "y": 34
+        },
+        {
+          "text": "             \"Takegorges\"",
+          "y": 35
+        },
+        {
+          "text": "             Rinulshem                                                    Treasure of The Rough Crystal",
+          "y": 37
+        },
+        {
+          "text": "             \"The Intense Plank\"",
+          "y": 38
+        },
+        {
+          "text": "             Koresis                                                      Treasure of The Rough Crystal",
+          "y": 40
+        },
+        {
+          "text": "             \"Caverntrots\"",
+          "y": 41
+        }
+      ]
+    },
+    {
+      "mode": 1,
+      "lines": [
+        {
+          "text": "       Creatures    Tasks    Places    Labor    Work orders",
+          "y": 5
+        },
+        {
+          "text": "       Creatures    Tasks    Places    Labor    Work orders",
+          "y": 6
+        },
+        {
+          "text": "       Nobles and administrators    Objects    Justice",
+          "y": 7
+        },
+        {
+          "text": "       Nobles and administrators    Objects    Justice",
+          "y": 8
+        },
+        {
+          "text": "       Artifacts    Symbols    Named objects    Written content",
+          "y": 9
+        },
+        {
+          "text": "       Artifacts    Symbols    Named objects    Written content",
+          "y": 10
+        },
+        {
+          "text": "      You haven't named any position symbols yet.",
+          "y": 13
+        },
+        {
+          "text": "      You can do this from the Nobles and Administrators menu.",
+          "y": 15
+        },
+        {
+          "text": "                                                                                                                                    Elevation 36",
+          "y": 16
+        }
+      ]
+    },
+    {
+      "mode": 2,
+      "lines": [
+        {
+          "text": "       Creatures    Tasks    Places    Labor    Work orders",
+          "y": 5
+        },
+        {
+          "text": "       Creatures    Tasks    Places    Labor    Work orders",
+          "y": 6
+        },
+        {
+          "text": "       Nobles and administrators    Objects    Justice",
+          "y": 7
+        },
+        {
+          "text": "       Nobles and administrators    Objects    Justice",
+          "y": 8
+        },
+        {
+          "text": "       Artifacts    Symbols    Named objects    Written content",
+          "y": 9
+        },
+        {
+          "text": "       Artifacts    Symbols    Named objects    Written content",
+          "y": 10
+        },
+        {
+          "text": "             Nêcikisan                                                    Meng Teststaves's family heirloom",
+          "y": 13
+        },
+        {
+          "text": "             \"Singedstill\"",
+          "y": 14
+        },
+        {
+          "text": "             Izeglîlar                                                    Feb Ageswhip's family heirloom                            Elevation 36",
+          "y": 16
+        },
+        {
+          "text": "             \"Apespatterned\"",
+          "y": 17
+        }
+      ]
+    },
+    {
+      "mode": 3,
+      "lines": [
+        {
+          "text": "       Creatures    Tasks    Places    Labor    Work orders",
+          "y": 5
+        },
+        {
+          "text": "       Creatures    Tasks    Places    Labor    Work orders",
+          "y": 6
+        },
+        {
+          "text": "       Nobles and administrators    Objects    Justice",
+          "y": 7
+        },
+        {
+          "text": "       Nobles and administrators    Objects    Justice",
+          "y": 8
+        },
+        {
+          "text": "       Artifacts    Symbols    Named objects    Written content",
+          "y": 9
+        },
+        {
+          "text": "       Artifacts    Symbols    Named objects    Written content",
+          "y": 10
+        },
+        {
+          "text": "             Unknown Lever",
+          "y": 13
+        },
+        {
+          "text": "             \"Unknown Lever\"",
+          "y": 14
+        },
+        {
+          "text": "             Do We Understand The Lever?                                                                                            Elevation 36",
+          "y": 16
+        },
+        {
+          "text": "             \"Do We Understand The Lever?\"",
+          "y": 17
+        },
+        {
+          "text": "             The Lever Explained",
+          "y": 19
+        },
+        {
+          "text": "             \"The Lever Explained\"",
+          "y": 20
+        },
+        {
+          "text": "             Introduction To Thur Thronepleated",
+          "y": 22
+        },
+        {
+          "text": "             \"Introduction To Thur Thronepleated\"",
+          "y": 23
+        },
+        {
+          "text": "             The Denial: Problems And Solutions",
+          "y": 25
+        },
+        {
+          "text": "             \"The Denial: Problems And Solutions\"",
+          "y": 26
+        },
+        {
+          "text": "             The Humans For Everyone",
+          "y": 28
+        },
+        {
+          "text": "             \"The Humans For Everyone\"",
+          "y": 29
+        },
+        {
+          "text": "             Uncanny Conversations",
+          "y": 31
+        },
+        {
+          "text": "             \"Uncanny Conversations\"",
+          "y": 32
+        },
+        {
+          "text": "             Give Me Sources",
+          "y": 34
+        },
+        {
+          "text": "             \"Give Me Sources\"",
+          "y": 35
+        },
+        {
+          "text": "             Victory By The Dwarf",
+          "y": 37
+        },
+        {
+          "text": "             \"Victory By The Dwarf\"",
+          "y": 38
+        },
+        {
+          "text": "             The Study Of The Moving Sun",
+          "y": 40
+        },
+        {
+          "text": "             \"The Study Of The Moving Sun\"",
+          "y": 41
+        },
+        {
+          "text": "             The Moon And Other Topics",
+          "y": 43
+        }
+      ]
+    }
+  ],
+  "ownership_checks": [
+    "Native menu bytes and vector backing unchanged by owned provider",
+    "Primary random state unchanged",
+    "Lists match before native open and across all four selected tabs"
+  ],
+  "limits": [
+    "Symbols list empty in this fortress; claimed-symbol category needs a separate populated case.",
+    "No typed Objects transport or DF3D presentation yet.",
+    "Row text, ownership captions, item actions, scrolling and lifecycle remain unfinished."
+  ]
+}

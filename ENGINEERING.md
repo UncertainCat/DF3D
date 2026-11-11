@@ -37,6 +37,35 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
 
+## Objects native discovery
+
+`objects_native.h` invokes DF53.16's375a70 list builder with an independently
+owned128-byte `artifacts_interfacest`. Native323aba is its caller; the native
+menu at RVA18a6b50 is never passed to the runtime provider. The builder reads
+fortress artifact claims, resident/family claims, the world artifact index and
+local item/holder positions, then uses native ordered unique insertion for
+Artifacts, Symbols, Named objects and Written content. Context/list storage is
+owned. Pinned helpers c8baa0/1367430 resolve holder coordinates into local
+outputs; they do not invoke item graphics or rendering caches. Semantic
+reference getters retain DF's existing cache behavior. No eligibility/category
+rules are reconstructed in Godot. `objects-lists-probe` exposes the provider
+for protected diagnostics; protocol187 remains unchanged.
+
+Protected150614 on2026-11-11 matches all four ordered lists before native open,
+while open, and across actual tab clicks. Counts are10/0/2/11. Native menu
+bytes/vector backing and primary random state remain unchanged by every probe.
+The bounded fixture is `fixtures/production/native_objects.json`; screenshots
+are in the protected run. Owned DF44144 closes unsaved with source preservation
+and restored preferences, native30FPS, sampled GPU55C/38%/52W. Core19 passes
+`build/qa/objects-native-provider`; the MSVC bridge builds. The protected lane
+uses `DF3D_OBJECTS_NATIVE=1` with `stockpile_storage_native.ps1`.
+
+Objects remains unexposed and unfinished. Next are native row names/ownership
+captions and item action targets, typed transport and the rendered four-tab
+panel. Populated Symbols, scrolling, inputs and lifecycle still need acceptance.
+The current reference includes native blank artwork for two written objects;
+do not infer replacement artwork from the fixture alone.
+
 ## Nobles and administrators native discovery
 
 Maintainer-approved uncertainty close (2026-11-11): Escape can dismiss Nobles

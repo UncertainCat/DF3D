@@ -116,6 +116,7 @@
 #include "residents_activity_native.h"
 #include "tasks_native.h"
 #include "places_native.h"
+#include "objects_native.h"
 #include "nobles_native.h"
 #include "nobles_draft_native.h"
 #include "nobles_symbols_native.h"
@@ -2708,6 +2709,14 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             for(size_t i=0;i<4;++i){row["required_rooms"].append(entry.requiredRooms[i]);row["actual_rooms"].append(entry.actualRooms[i]);
               row["required_furniture"].append(entry.requiredFurniture[i]);row["actual_furniture"].append(entry.actualFurniture[i]);}
             result.append(row);}
+          out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
+        }
+        if(parameters[0]=="objects-lists-probe") {
+          if(parameters.size()!=1)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto lists=df3d_objects::lists();if(!lists)return CR_FAILURE;
+          Json::Value result(Json::arrayValue);
+          for(const auto& ids:*lists){Json::Value list(Json::arrayValue);for(auto id:ids)list.append(id);result.append(list);}
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
         }
         if(parameters[0]=="places-lists-probe") {

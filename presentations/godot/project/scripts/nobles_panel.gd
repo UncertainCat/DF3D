@@ -48,6 +48,11 @@ func open_panel() -> void:
 func close_panel() -> void:
 	_destination=Callable();state.close()
 func handle_back() -> void:
+	# Maintainer-approved uncertainty escape: dismiss only local ownership.
+	# The service retains sent work; symbol close queues retirement, never retry.
+	var uncertain: bool=state.phase==state.Phase.Unknown or (state.phase==state.Phase.Symbols and state.symbols.phase==state.symbols.Phase.Unknown)
+	if uncertain and play_enabled and ui_host!=null and ui_host.allows_panel_input(self):
+		close_panel();return
 	if not allowed():return
 	_destination=Callable();state.request_dismiss()
 func request_handoff(completed: Callable) -> void:

@@ -200,9 +200,26 @@ func run():
 		if outcome=="reset":ui.host.reset_local_views()
 		observer.call(pending,{"action":C.ManagementAction.NoblesCommit,"status":C.ManagementStatus.Ok,"nobles":{"outcome":C.NoblesOutcome.Applied},"outcome":"unknown" if outcome=="unknown" else "applied"},true)
 		if outcome=="applied":check(ui.host.active==workshop and workshop.global_orders_mode,"Confirmed Nobles handoff opens global Work orders")
-		elif outcome=="unknown":check(ui.host.active==nobles and nobles.state.phase==nobles.state.Phase.Unknown,"Unknown Nobles result retains owner and blocks navigation")
+		elif outcome=="unknown":
+			check(ui.host.active==nobles and nobles.state.phase==nobles.state.Phase.Unknown,"Unknown Nobles result retains owner and blocks navigation")
+			var next_ticket: int=ui.actions._next_ticket
+			ui.host.set_overlay_blocked(true);nobles.handle_back()
+			check(ui.host.active==nobles,"Uncertainty close bypassed overlay")
+			ui.host.set_overlay_blocked(false)
+			var escape:=InputEventKey.new();escape.keycode=KEY_ESCAPE;escape.pressed=true;ui.host._input(escape)
+			check(ui.host.active==null and nobles.state.phase==nobles.state.Phase.Closed and ui.actions._next_ticket==next_ticket,"Escape did not close uncertain Nobles without retry")
+			observer.call(pending,{"action":C.ManagementAction.NoblesCommit,"status":C.ManagementStatus.Ok,"nobles":{"outcome":C.NoblesOutcome.Applied}},true)
+			check(ui.host.active==null,"Late appointment reply reopened closed owner or handoff")
 		else:check(ui.host.active==null,"Reset suppresses late Nobles navigation")
 		ui.host.reset_local_views()
+	nobles.open_panel();nobles.state._retire();nobles.state.phase=nobles.state.Phase.Symbols
+	var symbols=nobles.state.symbols
+	symbols.phase=symbols.Phase.Unknown;symbols._owns_sequence=true
+	symbols.step={"token":999,"naming_artifact_id":10,"remaining":2};nobles._sync()
+	var before_close: int=ui.actions._next_ticket
+	var symbol_escape:=InputEventKey.new();symbol_escape.keycode=KEY_ESCAPE;symbol_escape.pressed=true;ui.host._input(symbol_escape)
+	check(ui.host.active==null and not nobles.name_panel.visible and symbols.phase==symbols.Phase.Closed,"Escape retained uncertain symbol naming owner")
+	check(ui.actions._next_ticket==before_close+1 and ui.actions._requests[before_close].request.action==preload("res://scripts/management_contract.gd").ManagementAction.NoblesSymbolsRetire,"Closing uncertain symbols submitted something other than retirement")
 	nobles.open_panel();var noble_read: int=nobles.state.ticket;ui.actions.session_changed.emit()
 	check(ui.host.active==null and not nobles.panel.visible and nobles.state.ticket==0 and not ui.actions._requests.has(noble_read),"Session change retires composed Nobles read")
 	var standing=ui.controller("standing_orders")

@@ -168,6 +168,34 @@ func check_symbol_panel() -> void:
 	var output=FileAccess.open(directory+"/nobles-symbol-wire.json",FileAccess.WRITE)
 	output.store_string(JSON.stringify({"artifacts":artifacts,"items":reference.items,"success":not failed,"pointer_workflow":true,"first_name":first_name}));output.close()
 	owner.free();host.free();interaction.free();actions.queue_free();await process_frame
+func check_symbol_foreign_client(step: Dictionary,named: Dictionary) -> bool:
+	var owning_world=world
+	var peer=Df3dWorld.new();root.add_child(peer);world=peer
+	if not check(peer.attach(),"Foreign symbol client attach failed"):
+		world=owning_world;peer.queue_free();return false
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline:
+		peer.poll()
+		if peer.poll_management().get("transport_alive",false):break
+		await create_timer(0.01).timeout
+	await request("construction",{"action":C.ManagementAction.Catalog})
+	var read:=symbol_step(C.ManagementAction.NoblesSymbolNameRead,step.token)
+	read.name_query={"component":0,"query_bytes":[],"cursor":0}
+	var edit:=symbol_step(C.ManagementAction.NoblesSymbolNameEdit,step.token)
+	edit.expected_name_revision=named.nobles.name.revision
+	edit.name_edit={"mode":0,"target":0,"displayed":0,"word":-1,"part":-1,"query_bytes":[]}
+	var results: Array=[]
+	for intent in [read,edit,symbol_step(C.ManagementAction.NoblesSymbolsContinue,step.token),{"action":C.ManagementAction.NoblesSymbolsRetire,"offset":0,"limit":32,"expected_list_revision":0}]:
+		var reply:=await request("nobles",intent)
+		var outcome: int=reply.get("nobles",{}).get("outcome",-1)
+		check(reply.get("status")==C.ManagementStatus.Rejected and outcome==(C.NoblesOutcome.Rejected if intent.action==C.ManagementAction.NoblesSymbolsRetire else C.NoblesOutcome.Stale),"Foreign client changed symbol continuation")
+		results.append({"action":intent.action,"outcome":outcome})
+	world=owning_world;peer.detach_live();peer.queue_free();await process_frame
+	var retained:=await request("nobles",read)
+	check(retained.get("status")==C.ManagementStatus.Ok and retained.get("nobles",{}).get("step")==step and retained.get("nobles",{}).get("name")==named.nobles.name,"Foreign client damaged owning symbol sequence")
+	var file=FileAccess.open(directory+"/nobles-symbol-foreign-client.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"requests":results,"owner_step_preserved":not failed,"success":not failed}));file.close()
+	return not failed
 func check_symbols(revision: int) -> void:
 	var reference: Dictionary=normalize(JSON.parse_string(FileAccess.get_file_as_string(directory+"/nobles-symbol-wire-reference.json")))
 	var intent: Dictionary={"action":C.ManagementAction.NoblesSymbolsRead,"offset":0,"limit":64,"expected_list_revision":revision,"target":reference.target,"expected_candidate_revision":0}
@@ -198,6 +226,7 @@ func check_symbols(revision: int) -> void:
 		check(named.nobles.step==step,"Naming step identity differs")
 		artifacts.append(step.naming_artifact_id)
 		if index==0:
+			if OS.get_environment("DF3D_NOBLES_SYMBOL_FOREIGN")=="1" and not await check_symbol_foreign_client(step,named):return
 			var edit:=symbol_step(C.ManagementAction.NoblesSymbolNameEdit,step.token)
 			edit.expected_name_revision=named.nobles.name.revision
 			edit.name_edit={"mode":0,"target":0,"displayed":0,"word":-1,"part":-1,"query_bytes":[]}

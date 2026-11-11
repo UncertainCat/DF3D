@@ -8770,6 +8770,50 @@
         "native_family": 0,
         "limitation": "Native soft-material selection transported and consumed in protocol187; see rendered_symbols.native_craft_family_reference."
       }
+    },
+    "foreign_client_reference": {
+      "source": "build/stockpile-storage-native-input-20261111-145750",
+      "receipt": {
+        "owner_step_preserved": true,
+        "requests": [
+          {
+            "action": 115,
+            "outcome": 2
+          },
+          {
+            "action": 116,
+            "outcome": 2
+          },
+          {
+            "action": 117,
+            "outcome": 2
+          },
+          {
+            "action": 118,
+            "outcome": 1
+          }
+        ],
+        "success": true
+      },
+      "native": {
+        "artifacts": [
+          261,
+          262,
+          263
+        ],
+        "artifacts_added": 3,
+        "events_added": 6,
+        "items": [
+          15047,
+          20196,
+          13147
+        ],
+        "name_clear": true,
+        "order_matches": true
+      },
+      "limits": [
+        "Distinct live client with known current token; world-epoch replacement remains separate."
+      ]
     }
   },
   "typed_symbols": {

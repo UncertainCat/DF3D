@@ -192,6 +192,13 @@ copy, fabricated progress percentages or broader native-UI departures.
 
 ## 3. Assets and native UI
 
+- Maintainer decision, 2026-11-11: allow closing Nobles when an edit's outcome
+  is unknown, including symbol naming. Closing retires local UI ownership;
+  it must not retry the edit or advance an unfinished symbol sequence.
+  Reopening reads current DF state. This approval does not authorize new
+  status copy. Native safe-point work may hold DF frames as already permitted
+  in section2; avoid unnecessary delay while loading panels.
+
 - Maintainer decision, 2026-11-06: at narrow widths, visible Work orders
   buttons take priority over overlapping workshop-limit text and controls.
   Do not reproduce native Conditions clicks editing the workshop limit.

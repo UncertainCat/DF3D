@@ -39,6 +39,28 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Nobles and administrators native discovery
 
+Maintainer-approved uncertainty close (2026-11-11): Escape can dismiss Nobles
+when an appointment/accounting or symbol/name edit has an unknown outcome.
+The normal play/overlay/active-owner gates still apply. Closing clears local
+state and any pending navigation destination; the action service retains sent
+work. Symbol close queues only owner retirement, never a retry or continuation.
+No new visible status copy is introduced. Composed UI checks in
+`build/qa/nobles-uncertain-close` verify Escape, overlay blocking, late-reply
+suppression and symbol retirement; core19, Nobles state and UI host also pass.
+The close path is verified offline through the actual host/controller wiring;
+this does not claim a live timeout-only receipt test.
+
+Protected145750 on2026-11-11 verifies symbol continuation client isolation.
+A second attached client knows the active token but receives Stale for name
+read, name edit and Continue, and Rejected for Retire. The owner's step and
+complete name snapshot remain identical afterward; it finishes all three
+symbols with exactly three artifacts and six history events. Enable the
+headless viewer variant with NATIVE/WIRE/SYMBOL_WIRE/SYMBOL_FOREIGN. Owned
+DF21136 closes unsaved with source preservation and restored preferences;
+native30FPS, sampled GPU57C/40%/53W. Only the known separate-render-thread
+notice occurs (passed_with_known_issues). World-epoch replacement remains separate.
+
+
 Protected145344 on2026-11-11 verifies a sent Manager appointment whose reply is
 not consumed before producer loss. The viewer submits once, stops polling,
 and the native oracle waits for candidate6598 to hold the office before

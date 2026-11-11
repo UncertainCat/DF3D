@@ -39,6 +39,32 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Nobles and administrators native discovery
 
+Appointment application is separate from candidate selection. Native feed424b3f
+updates the owned-row-compatible holder fields and parallel staged IDs; it does
+not commit the office. Native close/apply42a5a0(context, apply) compares staged
+nemeses with current assignment holders, removes former links with b96300,
+creates missing assignment records, then calls b97610 for the new position,
+b9fa0 for civilized-actor membership and c2fde0 for personality/intrigue follow-up.
+Military retirement13cbf10/13d4d80 and manager/bookkeeper job cancellation1325080
+are conditional effects. The semantic helpers are already pinned for religious
+staff in `location_staff_mutation_native.h`; the whole close/apply wrapper is
+not yet an accepted runtime entry point. Symbol application4227b0 is unrelated.
+Candidate feed also resolves conflicting military office drafts and creates NEW
+placeholder rows; these draft rules must not be omitted by a future adapter.
+Runtime must never call feed or borrow the global administrators context.
+
+Protected092416 on2026-11-11 confirms native existing-Manager appointment,
+replacement and Leave Vacant. Before dismissal, assignment holders, captured
+figure links, history-event count and unit profession/squad/job IDs remain
+unchanged. Dismissal produces one, two and one history events respectively;
+vacating clears histfig but retains histfig2 as the previous holder. The oracle
+runs with `DF3D_NOBLES_NATIVE=1` and `DF3D_NOBLES_APPOINTMENT=1` through
+`stockpile_storage_native.ps1`. `native_nobles.json.appointment_effect_reference`
+retains exact observations and failed-attempt scope. Source preservation passes,
+DF26016 closes unsaved,30FPS, GPU43C/0% sampled. No DF3D mutation is implemented
+or accepted by this native-only check. NEW offices, military conflicts, active
+job cancellation, multi-edit drafts and navigation/lifecycle remain outstanding.
+
 Optional Nobles accounting help reads `plotinfo.nobles.bookkeeper_settings` and
 `bookkeeper_precision`, bound to native23912b0/23912ac. Pinned scalar routines
 74f3b0 and74f3f0 supply the achieved level and thresholds; installed literals

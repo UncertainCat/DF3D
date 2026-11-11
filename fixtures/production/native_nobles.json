@@ -3835,5 +3835,914 @@
       "No semantic accounting, appointment or symbol action route.",
       "Minimum-width layout, long/help overflow and scrolling cases remain unfinished."
     ]
+  },
+  "appointment_effect_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-092416",
+    "df_version": "53.16",
+    "status": "passed",
+    "scope": "Native existing Manager assignment: appoint, replace, vacate through actual candidate clicks and overview dismissal. Simulation paused at frame 0; owned source unchanged; DF26016 closed unsaved.",
+    "commit_rva": "42a5a0",
+    "cases": [
+      {
+        "applied": {
+          "assignment": 6,
+          "assignments": 14,
+          "events": 54232,
+          "figures": [
+            {
+              "id": 10051,
+              "links": [
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 434,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 1316,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": 104,
+                  "strength": 100,
+                  "type": 13
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": 6,
+                  "start_year": 106,
+                  "strength": 100,
+                  "type": 10
+                }
+              ],
+              "unit": {
+                "id": 6598,
+                "job": -1,
+                "position": 6,
+                "profession": 78,
+                "profession2": 61,
+                "squad": 120
+              }
+            }
+          ],
+          "holder": 10051,
+          "holder2": 10051,
+          "next_assignment": 14,
+          "position": 10
+        },
+        "assignment_id": 6,
+        "before": {
+          "assignment": 6,
+          "assignments": 14,
+          "events": 54231,
+          "figures": [
+            {
+              "id": 10051,
+              "links": [
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 434,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 1316,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": 104,
+                  "strength": 100,
+                  "type": 13
+                }
+              ],
+              "unit": {
+                "id": 6598,
+                "job": -1,
+                "position": 6,
+                "profession": 78,
+                "profession2": 61,
+                "squad": 120
+              }
+            }
+          ],
+          "holder": -1,
+          "holder2": 9492,
+          "next_assignment": 14,
+          "position": 10
+        },
+        "entity_id": 865,
+        "operation": "appoint",
+        "passed": true,
+        "selected_figure": 10051,
+        "selected_unit": 6598,
+        "staged": {
+          "assignment": 6,
+          "assignments": 14,
+          "events": 54231,
+          "figures": [
+            {
+              "id": 10051,
+              "links": [
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 434,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 1316,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": 104,
+                  "strength": 100,
+                  "type": 13
+                }
+              ],
+              "unit": {
+                "id": 6598,
+                "job": -1,
+                "position": 6,
+                "profession": 78,
+                "profession2": 61,
+                "squad": 120
+              }
+            }
+          ],
+          "holder": -1,
+          "holder2": 9492,
+          "next_assignment": 14,
+          "position": 10
+        },
+        "staged_holder": 10051
+      },
+      {
+        "applied": {
+          "assignment": 6,
+          "assignments": 14,
+          "events": 54234,
+          "figures": [
+            {
+              "id": 10051,
+              "links": [
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 434,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 1316,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": 104,
+                  "strength": 100,
+                  "type": 13
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 6,
+                  "start_year": 106,
+                  "strength": 100,
+                  "type": 11
+                }
+              ],
+              "unit": {
+                "id": 6598,
+                "job": -1,
+                "position": 6,
+                "profession": 78,
+                "profession2": 61,
+                "squad": 120
+              }
+            },
+            {
+              "id": 9492,
+              "links": [
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 383,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 3,
+                  "start_year": 101,
+                  "strength": 100,
+                  "type": 11
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 4,
+                  "start_year": 101,
+                  "strength": 100,
+                  "type": 11
+                },
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": 3,
+                  "start_year": 106,
+                  "strength": 100,
+                  "type": 10
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": 6,
+                  "start_year": 106,
+                  "strength": 100,
+                  "type": 10
+                }
+              ],
+              "unit": {
+                "id": 5981,
+                "job": -1,
+                "position": -1,
+                "profession": 18,
+                "profession2": 18,
+                "squad": -1
+              }
+            }
+          ],
+          "holder": 9492,
+          "holder2": 9492,
+          "next_assignment": 14,
+          "position": 10
+        },
+        "assignment_id": 6,
+        "before": {
+          "assignment": 6,
+          "assignments": 14,
+          "events": 54232,
+          "figures": [
+            {
+              "id": 10051,
+              "links": [
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 434,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 1316,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": 104,
+                  "strength": 100,
+                  "type": 13
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": 6,
+                  "start_year": 106,
+                  "strength": 100,
+                  "type": 10
+                }
+              ],
+              "unit": {
+                "id": 6598,
+                "job": -1,
+                "position": 6,
+                "profession": 78,
+                "profession2": 61,
+                "squad": 120
+              }
+            },
+            {
+              "id": 9492,
+              "links": [
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 383,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 3,
+                  "start_year": 101,
+                  "strength": 100,
+                  "type": 11
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 4,
+                  "start_year": 101,
+                  "strength": 100,
+                  "type": 11
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 6,
+                  "start_year": 101,
+                  "strength": 100,
+                  "type": 11
+                },
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": 3,
+                  "start_year": 106,
+                  "strength": 100,
+                  "type": 10
+                }
+              ],
+              "unit": {
+                "id": 5981,
+                "job": -1,
+                "position": -1,
+                "profession": 18,
+                "profession2": 18,
+                "squad": -1
+              }
+            }
+          ],
+          "holder": 10051,
+          "holder2": 10051,
+          "next_assignment": 14,
+          "position": 10
+        },
+        "entity_id": 865,
+        "operation": "replace",
+        "passed": true,
+        "selected_figure": 9492,
+        "selected_unit": 5981,
+        "staged": {
+          "assignment": 6,
+          "assignments": 14,
+          "events": 54232,
+          "figures": [
+            {
+              "id": 10051,
+              "links": [
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 434,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 1316,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": 104,
+                  "strength": 100,
+                  "type": 13
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": 6,
+                  "start_year": 106,
+                  "strength": 100,
+                  "type": 10
+                }
+              ],
+              "unit": {
+                "id": 6598,
+                "job": -1,
+                "position": 6,
+                "profession": 78,
+                "profession2": 61,
+                "squad": 120
+              }
+            },
+            {
+              "id": 9492,
+              "links": [
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 383,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 3,
+                  "start_year": 101,
+                  "strength": 100,
+                  "type": 11
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 4,
+                  "start_year": 101,
+                  "strength": 100,
+                  "type": 11
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 6,
+                  "start_year": 101,
+                  "strength": 100,
+                  "type": 11
+                },
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": 3,
+                  "start_year": 106,
+                  "strength": 100,
+                  "type": 10
+                }
+              ],
+              "unit": {
+                "id": 5981,
+                "job": -1,
+                "position": -1,
+                "profession": 18,
+                "profession2": 18,
+                "squad": -1
+              }
+            }
+          ],
+          "holder": 10051,
+          "holder2": 10051,
+          "next_assignment": 14,
+          "position": 10
+        },
+        "staged_holder": 9492
+      },
+      {
+        "applied": {
+          "assignment": 6,
+          "assignments": 14,
+          "events": 54235,
+          "figures": [
+            {
+              "id": 9492,
+              "links": [
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 383,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 3,
+                  "start_year": 101,
+                  "strength": 100,
+                  "type": 11
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 4,
+                  "start_year": 101,
+                  "strength": 100,
+                  "type": 11
+                },
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": 3,
+                  "start_year": 106,
+                  "strength": 100,
+                  "type": 10
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 6,
+                  "start_year": 106,
+                  "strength": 100,
+                  "type": 11
+                }
+              ],
+              "unit": {
+                "id": 5981,
+                "job": -1,
+                "position": -1,
+                "profession": 18,
+                "profession2": 18,
+                "squad": -1
+              }
+            }
+          ],
+          "holder": -1,
+          "holder2": 9492,
+          "next_assignment": 14,
+          "position": 10
+        },
+        "assignment_id": 6,
+        "before": {
+          "assignment": 6,
+          "assignments": 14,
+          "events": 54234,
+          "figures": [
+            {
+              "id": 9492,
+              "links": [
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 383,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 3,
+                  "start_year": 101,
+                  "strength": 100,
+                  "type": 11
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 4,
+                  "start_year": 101,
+                  "strength": 100,
+                  "type": 11
+                },
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": 3,
+                  "start_year": 106,
+                  "strength": 100,
+                  "type": 10
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": 6,
+                  "start_year": 106,
+                  "strength": 100,
+                  "type": 10
+                }
+              ],
+              "unit": {
+                "id": 5981,
+                "job": -1,
+                "position": -1,
+                "profession": 18,
+                "profession2": 18,
+                "squad": -1
+              }
+            }
+          ],
+          "holder": 9492,
+          "holder2": 9492,
+          "next_assignment": 14,
+          "position": 10
+        },
+        "entity_id": 865,
+        "operation": "vacate",
+        "passed": true,
+        "selected_figure": -1,
+        "selected_unit": -1,
+        "staged": {
+          "assignment": 6,
+          "assignments": 14,
+          "events": 54234,
+          "figures": [
+            {
+              "id": 9492,
+              "links": [
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 383,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": -1,
+                  "start_year": -1,
+                  "strength": 100,
+                  "type": 0
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 3,
+                  "start_year": 101,
+                  "strength": 100,
+                  "type": 11
+                },
+                {
+                  "end_year": 106,
+                  "entity": 865,
+                  "position": 4,
+                  "start_year": 101,
+                  "strength": 100,
+                  "type": 11
+                },
+                {
+                  "end_year": -1,
+                  "entity": 245,
+                  "position": 3,
+                  "start_year": 106,
+                  "strength": 100,
+                  "type": 10
+                },
+                {
+                  "end_year": -1,
+                  "entity": 865,
+                  "position": 6,
+                  "start_year": 106,
+                  "strength": 100,
+                  "type": 10
+                }
+              ],
+              "unit": {
+                "id": 5981,
+                "job": -1,
+                "position": -1,
+                "profession": 18,
+                "profession2": 18,
+                "squad": -1
+              }
+            }
+          ],
+          "holder": 9492,
+          "holder2": 9492,
+          "next_assignment": 14,
+          "position": 10
+        },
+        "staged_holder": -1
+      }
+    ],
+    "limitations": [
+      "No semantic DF3D mutation or wire route yet.",
+      "NEW assignments, military office conflicts, active manager/bookkeeper job cleanup, multiple staged edits, header navigation, cancellation of an edited draft and disconnect outcomes remain unverified.",
+      "Captured fields cover assignment holders, involved historical-figure entity links, history-event count and unit profession/squad/job IDs, not every effect reachable from native assignment."
+    ],
+    "failed_attempts": {
+      "092140": "Diagnostic path substitution recursively loaded the overview script; fixed escaped Lua pattern.",
+      "092234": "Oracle assumed Manager initially occupied; clone office is vacant.",
+      "092322": "Appoint/replace succeeded; replacement chose militia commander, for whom native candidate list omitted Leave Vacant. Final scenario selects a non-commanding candidate."
+    }
   }
 }

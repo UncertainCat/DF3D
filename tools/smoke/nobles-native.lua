@@ -329,6 +329,46 @@ if os.getenv('DF3D_NOBLES_SYMBOLS')=='1' then
   assert(info.open and not menu.assigning_symbol and menu.handling_symbol_closure_ind==-1,'Symbol dismissal did not finish')
   result.symbol_reference.effects[#result.symbol_reference.effects+1]={operation=operation,item_id=symbols[1].item_id,artifact_id=artifact.id,before=before,after=claims(),previous_index=previous,staged_index=staged,toggle_is_local=true}
  end
+ if os.getenv('DF3D_NOBLES_SYMBOL_NAME')=='1' then
+  click_symbol(x,y);assert(menu.assigning_symbol)
+  local ordinary_index,item,second_index,second_item
+  for i,candidate in ipairs(menu.cand_symbol)do
+   if not candidate.flags.artifact then
+    if not item then ordinary_index=i;item=candidate else second_index=i;second_item=candidate;break end
+   end
+  end
+  assert(second_index and second_index<15,'No two visible ordinary symbol items')
+  local artifacts_before=#df.global.world.artifacts.all
+  click_symbol(912,190+ordinary_index*36)
+  click_symbol(912,190+second_index*36)
+  assert(not item.flags.artifact,'Ordinary symbol toggle applied early')
+  click_symbol(928,142)
+  local creator=df.global.game.main_interface.name_creator
+  assert(creator.open and item.flags.artifact,'Ordinary symbol did not enter artifact naming')
+  result.symbol_reference.naming={item_id=item.id,index=ordinary_index,second_item_id=second_item.id,second_index=second_index,context=creator.context,
+   pending_index=menu.handling_symbol_closure_ind,artifacts_added=#df.global.world.artifacts.all-artifacts_before,lines=lines()}
+  assert(not second_item.flags.artifact and menu.handling_symbol_closure_ind==second_index,'Second symbol did not wait for naming')
+  capture('nobles-symbol-name-open')
+  gui.simulateInput(view,'LEAVESCREEN');settle()
+  assert(creator.open and second_item.flags.artifact,'Closing first name did not open second')
+  result.symbol_reference.naming.second_context=creator.context
+  result.symbol_reference.naming.second_pending_index=menu.handling_symbol_closure_ind
+  capture('nobles-symbol-name-second')
+  gui.simulateInput(view,'LEAVESCREEN');settle()
+  assert(not creator.open and menu.handling_symbol_closure_ind==-1,'Symbol naming Back did not finish assignment')
+  result.symbol_reference.naming.back_finishes=true
+  local created
+  for _,ref in ipairs(item.general_refs)do if ref:getType()==df.general_ref_type.IS_ARTIFACT then created=ref:getArtifact();break end end
+  assert(created,'Ordinary item lacks artifact record')
+  result.symbol_reference.naming.artifact_id=created.id
+  local entity=assert(df.historical_entity.find(office.entity_id));local assigned=false
+  for _,claim in ipairs(entity.artifact_claims)do
+   if claim.artifact_id==created.id and claim.symbol_claim_id==office.assignment_id and claim.renounce_event==-1 then assigned=true end
+  end
+  assert(assigned,'Naming Back lost the symbol claim');result.symbol_reference.naming.assigned=true
+  result.symbol_reference.naming.total_artifacts_added=#df.global.world.artifacts.all-artifacts_before
+  capture('nobles-symbol-name-back')
+ end
 end
 
 if os.getenv('DF3D_NOBLES_ACCOUNTING')=='1' then

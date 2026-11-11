@@ -78,6 +78,26 @@ end. Feed424794 toggles a candidate between the selected office, its previous
 office and unassigned, and Done starts apply at index0. Claim mutation and apply
 ownership still require audit before admitting4227b0 as a runtime call.
 
+Ordinary items require a continuation, not just artifact-claim edits. Native
+4227b0 stops at the first selected non-artifact and leaves
+handling_symbol_closure_ind there. Update8b842c..8b852c elevates that item,
+generates its artifact name, opens name-creator context5, then resumes4227b0.
+The current symbol is therefore assigned while its name editor is open; another
+ordinary item waits for that editor to close. Do not call the global update or
+name-editor opener from the runtime adapter. Its inline orchestration must use
+owned continuation inputs and the native semantic allocation/naming helpers.
+
+Protected111450 on2026-11-11 selects ordinary items15047 and20196. Opening the
+first name adds one artifact and leaves closure index7 for the second item.
+Back opens the second name, then another Back finishes with two new artifacts;
+the first has the Manager claim. `symbol_reference.naming_reference` retains
+this sequence and native text. The inspected first dialog is headed “Name the
+symbol” and uses the shared component/word picker. Earlier111257 establishes
+the single-item case with closure index-1 while naming remains open. Both
+protected runs close unsaved with source preservation. The two-item run uses
+30FPS, sampled GPU59C/14%. This is native workflow evidence only; owned artifact
+elevation, continuation and naming remain unfinished.
+
 Owned accounting changes use `setAccounting` in `nobles_draft_native.h`.
 Native425712..4257b4 contains an inline occupied-ACCOUNTING-row check followed
 by a direct int16 store to the requested setting; there is no separate semantic

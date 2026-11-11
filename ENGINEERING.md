@@ -1184,8 +1184,32 @@ unsaved, both renderers30FPS, GPU60C/22% sampled, known Godot diagnostics only.
 Earlier131629 exposed the view consuming the tab click before dispatch, which
 was corrected. The fixture records bounded header-navigation evidence.
 
+The symbol name editor retains the latest component/query while a read-only
+word-list request is pending. Superseded pages are discarded and the latest
+query is requested after that read completes; requests do not overlap. Only
+read-only loading admits further search input. Editing, initial symbol effects
+and uncertain outcomes retain their mutation gate. Teardown generation checks
+prevent a late search from reopening or restarting the editor.
+
+Protected132209 on2026-11-11 uses the rendered editor to select Rear Compound,
+type AB without waiting between keys, backspace to A, select a native word,
+randomize that component, randomize the whole name, and clear Front Compound.
+The selected word reaches its native slot; component Random remains in the
+native filtered choices. Independent DF readback matches all seven final words.
+The same run retains header handoff, close/reopen retirement and exact
+three-artifact/six-event acceptance. The inspected screenshot shows the native
+heading, updated name, selected component and filtered rows. No claim is made
+for a matched screenshot after the identical native edit sequence.
+
+Core19/state/UI host pass in `build/qa/nobles-symbol-name-input`, including rapid
+query coalescing and late-read retirement. Source preservation passes; DF44360
+closes unsaved, both renderers30FPS, GPU61C/38% sampled. Only the three documented
+Godot diagnostic signatures remain. `rendered_name_controls` records bounded
+evidence. Cross-component Random and all seven component layouts remain outside
+this composed case.
+
 Remaining symbol work includes the earring artwork discrepancy, widths, scroll
-dragging, naming search/word/random controls, foreign-client and
+dragging, cross-component naming controls, foreign-client and
 disconnect/epoch/unknown fault acceptance, plus cross-office/civilization claims.
 Public exposure and full management completion remain gated.
 

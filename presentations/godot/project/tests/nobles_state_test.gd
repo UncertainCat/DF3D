@@ -31,6 +31,15 @@ func symbol_checks(service) -> void:
 	symbols.close();symbols.open(target,draft,123);service.reply(symbols.ticket,payload);symbols.toggle(9);symbols.dismiss();apply=symbols.ticket
 	symbols.close();service.reply(apply,{"nobles":{"outcome":C.NoblesOutcome.Applied,"step":{"token":1,"naming_artifact_id":10,"remaining":0}}})
 	check(symbols.phase==symbols.Phase.Closed and symbols.step.is_empty(),"Retired apply reopened naming")
+	symbols.phase=symbols.Phase.Naming;symbols.step={"token":5,"naming_artifact_id":10,"remaining":0}
+	symbols.naming.open();var initial_read: int=symbols.ticket
+	symbols.naming.set_choices(0,PackedByteArray([65]));symbols.naming.set_choices(0,PackedByteArray([65,66]))
+	check(symbols.ticket==initial_read and symbols.naming.query==PackedByteArray([65,66]),"Pending name search lost rapid typing or overlapped requests")
+	service.reply(initial_read,{})
+	var latest_read: int=symbols.ticket
+	check(latest_read!=initial_read and service.calls[latest_read].intent.name_query.query_bytes==[65,66],"Superseded search did not request latest query")
+	symbols.close();service.reply(latest_read,{})
+	check(symbols.phase==symbols.Phase.Closed and symbols.naming.phase==symbols.naming.Phase.Closed,"Late search reopened retired name editor")
 	symbols.configure(null)
 func run() -> void:
 	var service:=Service.new();root.add_child(service);var state:=State.new();state.configure(service);state.open()

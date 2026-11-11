@@ -30,7 +30,8 @@ func configure(world,service,host) -> void:
 		if allowed():request_handoff(func():information_requested.emit(caption)))
 	host.register(self);_layout();_sync()
 func allowed() -> bool:
-	if state.phase==state.Phase.Symbols and state.symbols.busy():return false
+	if state.phase==state.Phase.Symbols and state.symbols.busy():
+		if state.symbols.phase!=state.symbols.Phase.Naming or state.symbols.naming.phase!=state.symbols.naming.Phase.Reading:return false
 	return play_enabled and ui_host!=null and ui_host.allows_panel_input(self) and state.phase not in [state.Phase.Applying,state.Phase.Accounting,state.Phase.Unknown]
 func open_panel() -> void:
 	if state.phase==state.Phase.Symbols:return

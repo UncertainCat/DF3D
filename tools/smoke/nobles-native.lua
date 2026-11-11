@@ -627,6 +627,9 @@ if wire_symbols then
   local artifact=assert(df.artifact_record.find(id));assert(artifact.item.id==symbol_wire.items[i] and artifact.item.flags.artifact,'Typed symbol item/order differs')
   local claim=false;for _,c in ipairs(entity.artifact_claims)do if c.artifact_id==id and c.symbol_claim_id==symbol_wire.target.assignment_id and c.claim_type==0 and c.renounce_event==-1 then claim=true end end
   assert(claim,'Typed symbol claim missing');if i==1 then assert(artifact.name.words[0]==-1,'Typed name clear missing')end
+  if i==1 and receipt.first_name then
+   for slot=0,6 do assert(artifact.name.words[slot]==receipt.first_name.words[slot+1],'Rendered name differs from native final name')end
+  end
  end
  result.typed_symbols={items=receipt.items,artifacts=receipt.artifacts,artifacts_added=3,events_added=6,name_clear=true,order_matches=true}
 end

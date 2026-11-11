@@ -22,9 +22,11 @@ func open() -> void:reset();_read(0)
 func done() -> void:
 	if phase in [Phase.Ready,Phase.Rejected] and not parent.busy():parent.continue_step()
 func set_choices(selected: int,filter_bytes: PackedByteArray) -> void:
-	if parent.phase!=parent.Phase.Naming or parent.busy() or selected<0 or selected>6 or filter_bytes.size()>10:return
+	if parent.phase!=parent.Phase.Naming or (parent.busy() and phase!=Phase.Reading) or selected<0 or selected>6 or filter_bytes.size()>10:return
 	if selected==component and filter_bytes==query:return
-	component=selected;query=filter_bytes.duplicate();_read(0)
+	component=selected;query=filter_bytes.duplicate()
+	if parent.busy():changed.emit();return
+	_read(0)
 func choose(index: int) -> void:
 	if index>=0 and index<rows.size():_edit(1,component,rows[index].word,rows[index].part)
 func clear_component(target: int) -> void:_edit(0,target)
@@ -48,6 +50,8 @@ func _read(cursor: int) -> void:
 	var intent: Dictionary=parent.step_intent(parent.C.ManagementAction.NoblesSymbolNameRead)
 	intent.expected_name_revision=revision;intent.name_query={"component":component,"query_bytes":Array(query),"cursor":cursor}
 	parent._request(intent,func(result):
+		# Search is read-only. Keep typing responsive and discard superseded pages.
+		if component!=intent.name_query.component or Array(query)!=intent.name_query.query_bytes:_read(0);return
 		var value: Dictionary=result.get("nobles",{});var name: Dictionary=value.get("name",{})
 		if result.get("status")!=parent.C.ManagementStatus.Ok or result.get("action")!=intent.action or value.get("outcome")!=parent.C.NoblesOutcome.None or value.get("step")!=parent.step or not _valid_page(name,cursor):
 			parent.last_result=result.duplicate(true);phase=Phase.Rejected;rows=[];changed.emit();return

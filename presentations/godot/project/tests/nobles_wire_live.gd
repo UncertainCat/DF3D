@@ -20,6 +20,29 @@ func wait_symbol(model,phase: int) -> bool:
 func click_at(point: Vector2) -> void:
 	var event:=InputEventMouseButton.new();event.button_index=MOUSE_BUTTON_LEFT;event.position=point;event.pressed=true;root.push_input(event,true)
 	event=event.duplicate();event.pressed=false;root.push_input(event,true)
+func type_name_key(code: int,unicode: int=0) -> void:
+	var event:=InputEventKey.new();event.keycode=code;event.unicode=unicode;event.pressed=true;root.push_input(event,true)
+func exercise_symbol_name(symbols,name_view) -> bool:
+	click_at(name_view.position+name_view.component_rect(1).get_center())
+	if not check(await wait_symbol(symbols,symbols.Phase.Naming) and symbols.naming.component==1,"Name component selection failed"):return false
+	click_at(name_view.position+Vector2(400,90))
+	type_name_key(KEY_A,97);type_name_key(KEY_B,98)
+	if not check(await wait_symbol(symbols,symbols.Phase.Naming) and symbols.naming.query==PackedByteArray([65,66]),"Rapid name search dropped input"):return false
+	type_name_key(KEY_BACKSPACE)
+	if not check(await wait_symbol(symbols,symbols.Phase.Naming) and symbols.naming.phase==symbols.naming.Phase.Ready and not symbols.naming.rows.is_empty(),"Filtered word list unavailable"):return false
+	type_name_key(KEY_ENTER)
+	var word: Dictionary=symbols.naming.rows[0].duplicate(true)
+	click_at(name_view.position+name_view.row_rect(0).get_center())
+	if not check(await wait_symbol(symbols,symbols.Phase.Naming) and symbols.naming.snapshot.value.words[1]==word.word,"Selected word did not reach native name"):return false
+	click_at(name_view.position+name_view.random_rect(1).get_center())
+	if not check(await wait_symbol(symbols,symbols.Phase.Naming) and symbols.naming.phase==symbols.naming.Phase.Ready,"Component Random failed"):return false
+	var selected: int=symbols.naming.snapshot.value.words[1]
+	if not check(symbols.naming.rows.any(func(row):return row.word==selected),"Component Random escaped native filtered choices"):return false
+	click_at(name_view.position+Vector2(name_view.size.x-144,30))
+	if not check(await wait_symbol(symbols,symbols.Phase.Naming) and symbols.naming.phase==symbols.naming.Phase.Ready,"Whole name Random failed"):return false
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/nobles-symbol-name-controls.png")
+	return true
 func check_symbol_panel() -> void:
 	var reference: Dictionary=normalize(JSON.parse_string(FileAccess.get_file_as_string(directory+"/nobles-symbol-wire-reference.json")))
 	if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Symbol panel assets unavailable"):return
@@ -70,6 +93,7 @@ func check_symbol_panel() -> void:
 	root.get_texture().get_image().save_png(directory+"/nobles-symbol-selected-view.png")
 	click_at(panel.position+Vector2(panel.size.x-48,panel.list_top()-30))
 	var artifacts: Array=[]
+	var first_name: Dictionary={}
 	for i in 3:
 		if not check(await wait_symbol(symbols,symbols.Phase.Naming),"Symbol name did not open"):return
 		check(symbols.naming.phase==symbols.naming.Phase.Ready,"Name word pages incomplete")
@@ -78,9 +102,12 @@ func check_symbol_panel() -> void:
 		await process_frame
 		if i==0:
 			await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/nobles-symbol-name-view.png")
+			if OS.get_environment("DF3D_NOBLES_SYMBOL_NAME_CONTROLS")=="1":
+				if not await exercise_symbol_name(symbols,name_view):return
 			click_at(name_view.position+name_view.clear_rect(0).get_center())
 			if not check(await wait_symbol(symbols,symbols.Phase.Naming),"Symbol name edit did not settle"):return
 			check(symbols.naming.snapshot.value.words[0]==-1,"Name Clear pointer failed")
+			first_name=symbols.naming.snapshot.value.duplicate(true)
 			if OS.get_environment("DF3D_NOBLES_SYMBOL_RETIRE")=="1":
 				owner.close_panel();owner.open_panel();deadline=Time.get_ticks_msec()+10000
 				while owner.state.phase==owner.state.Phase.Reading and Time.get_ticks_msec()<deadline:world.poll();await create_timer(0.01).timeout
@@ -94,7 +121,7 @@ func check_symbol_panel() -> void:
 	while owner.state.phase!=owner.state.Phase.Ready and Time.get_ticks_msec()<deadline:world.poll();await create_timer(0.01).timeout
 	check(owner.state.phase==owner.state.Phase.Ready and not owner.name_panel.visible and owner.panel.visible,"Symbol Done did not restore overview")
 	var output=FileAccess.open(directory+"/nobles-symbol-wire.json",FileAccess.WRITE)
-	output.store_string(JSON.stringify({"artifacts":artifacts,"items":reference.items,"success":not failed,"pointer_workflow":true}));output.close()
+	output.store_string(JSON.stringify({"artifacts":artifacts,"items":reference.items,"success":not failed,"pointer_workflow":true,"first_name":first_name}));output.close()
 	owner.free();host.free();interaction.free();actions.queue_free();await process_frame
 func check_symbols(revision: int) -> void:
 	var reference: Dictionary=normalize(JSON.parse_string(FileAccess.get_file_as_string(directory+"/nobles-symbol-wire-reference.json")))

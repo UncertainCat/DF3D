@@ -7,6 +7,7 @@
 #include "item_owner_native.h"
 #include "item_uses_native.h"
 #include "item_legwear_native.h"
+#include "item_craft_native.h"
 #include "df/building_stockpilest.h"
 #include "df/building_floodgatest.h"
 #include "df/building_doorst.h"

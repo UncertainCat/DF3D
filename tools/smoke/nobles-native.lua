@@ -141,6 +141,40 @@ for index,row in ipairs(rows)do
 end
 assert(json.encode(cold)==json.encode(rows) and json.encode(warm)==json.encode(rows),'Owned Nobles overview differs from native order/identities')
 local result={room_reference=room_reference,caption_reference=caption_reference,owned={cold=cold,warm=warm,menu_preserved=true,rng_preserved=true},dimensions={g.dimx,g.dimy},rows=rows,lines=lines(),scroll=menu.scroll_position_noblelist,choosing_candidate=menu.choosing_candidate,assigning_symbol=menu.assigning_symbol}
+if os.getenv('DF3D_NOBLES_SYMBOL_ITEM_FACTS')=='1' then
+ local item=assert(df.item.find(13147));local material=assert(dfhack.matinfo.decode(item))
+ local facts={id=item.id,item_type=item:getType(),material=material:getToken(),color=item:getColorWhetherDyedOrNot(),improvements={}}
+ for _,entry in ipairs(item.improvements)do
+  local mat=assert(dfhack.matinfo.decode(entry.mat_type,entry.mat_index))
+  facts.improvements[#facts.improvements+1]={kind=entry:getType(),material=mat:getToken(),decoration=entry:isDecoration(),quality=entry.quality}
+ end
+ local function expected_color()
+  for _,entry in ipairs(item.improvements)do
+   if entry:getType()==df.improvement_type.COVERED and not entry.cover_flags.glazed and entry.mat_type==0 then
+    local mat=dfhack.matinfo.decode(entry.mat_type,entry.mat_index)
+    if mat.material.flags.IS_GEM then
+     local pattern=df.descriptor_pattern.find(mat.material.state_color.Solid)
+     local color=pattern and #pattern.colors>0 and pattern.colors[0] or -1
+     return color>=0 and color<255 and color or -1,entry,mat:getToken()
+    end
+   end
+  end
+  return -1
+ end
+ local color,first,token=expected_color()
+ facts.gem_color=probe({'item-craft-gem-probe',tostring(item.id)}).color
+ assert(facts.gem_color==color,'Owned gemstone selection differs')
+ facts.gem_material=token;facts.gem_color_token=color>=0 and df.descriptor_color.find(color).id or ''
+ assert(first,'Fixture needs a qualifying gemstone')
+ local previous=first.cover_flags.whole
+ first.cover_flags.glazed=true
+ local next_color,_,next_token=expected_color()
+ local ok,observed=pcall(probe,{'item-craft-gem-probe',tostring(item.id)})
+ first.cover_flags.whole=previous
+ assert(ok and observed.color==next_color,'Owned gemstone selection did not skip glazing')
+ facts.glazed_skip={color=next_color,material=next_token};facts.restored=true
+ write('nobles-symbol-item-facts.json',json.encode(facts))
+end
 write('nobles-native.json',json.encode(result));capture('nobles-overview')
 -- Native hover discovery: sample actual input/rendering, never use these menu
 -- fields as runtime sources. Preserve whole text cells because Nobles also draws

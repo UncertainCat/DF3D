@@ -8622,6 +8622,127 @@
         "Intermediate native drag mapping and lifecycle fault injection remain separate.",
         "Header name text differs with generated names and is outside these pixel crops."
       ]
+    },
+    "encrustation_reference": {
+      "color": 49,
+      "gem_color": 24,
+      "gem_color_token": "CLEAR",
+      "gem_material": "INORGANIC:CRYSTAL_ROCK",
+      "glazed_skip": {
+        "color": 81,
+        "material": "INORGANIC:PINK JADE"
+      },
+      "id": 13147,
+      "improvements": [
+        {
+          "decoration": true,
+          "kind": 3,
+          "material": "INORGANIC:PRASE",
+          "quality": 1
+        },
+        {
+          "decoration": true,
+          "kind": 2,
+          "material": "INORGANIC:SARDONYX",
+          "quality": 0
+        },
+        {
+          "decoration": true,
+          "kind": 2,
+          "material": "INORGANIC:PICTURE JASPER",
+          "quality": 1
+        },
+        {
+          "decoration": true,
+          "kind": 2,
+          "material": "INORGANIC:CITRINE",
+          "quality": 3
+        },
+        {
+          "decoration": true,
+          "kind": 1,
+          "material": "INORGANIC:CRYSTAL_ROCK",
+          "quality": 0
+        },
+        {
+          "decoration": true,
+          "kind": 0,
+          "material": "INORGANIC:ONYX",
+          "quality": 0
+        },
+        {
+          "decoration": true,
+          "kind": 0,
+          "material": "INORGANIC:CHRYSOPRASE",
+          "quality": 3
+        },
+        {
+          "decoration": true,
+          "kind": 4,
+          "material": "INORGANIC:AVENTURINE",
+          "quality": 1
+        },
+        {
+          "decoration": true,
+          "kind": 0,
+          "material": "INORGANIC:SMOKY QUARTZ",
+          "quality": 1
+        },
+        {
+          "decoration": true,
+          "kind": 4,
+          "material": "INORGANIC:DENDRITIC AGATE",
+          "quality": 2
+        },
+        {
+          "decoration": true,
+          "kind": 1,
+          "material": "INORGANIC:PINK JADE",
+          "quality": 0
+        },
+        {
+          "decoration": true,
+          "kind": 3,
+          "material": "INORGANIC:LAVENDER JADE",
+          "quality": 1
+        },
+        {
+          "decoration": true,
+          "kind": 0,
+          "material": "INORGANIC:PYRITE",
+          "quality": 1
+        },
+        {
+          "decoration": true,
+          "kind": 0,
+          "material": "INORGANIC:WOOD OPAL",
+          "quality": 0
+        },
+        {
+          "decoration": true,
+          "kind": 3,
+          "material": "INORGANIC:BLOODSTONE",
+          "quality": 3
+        },
+        {
+          "decoration": true,
+          "kind": 3,
+          "material": "INORGANIC:SARD",
+          "quality": 0
+        },
+        {
+          "decoration": true,
+          "kind": 1,
+          "material": "INORGANIC:TIGER IRON",
+          "quality": 4
+        }
+      ],
+      "item_type": 42,
+      "material": "CREATURE:TIGER:HAIR",
+      "restored": true,
+      "evidence": "build/stockpile-storage-native-input-20261111-140501",
+      "source_preserved": true,
+      "scope": "Pinned semantic gemstone-color reader only; transport and overlay rendering pending."
     }
   },
   "typed_symbols": {

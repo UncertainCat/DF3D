@@ -2546,6 +2546,15 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
           }catch(const std::exception&){return CR_FAILURE;}
         }
+        if(parameters[0]=="item-craft-gem-probe") {
+          if(parameters.size()!=2 || !state.mapLoaded || df3d_session::saving())return CR_WRONG_USAGE;
+          try {
+            const auto color=df3d_production::craftGemColor(df::item::find(std::stoi(parameters[1])));
+            if(!color)return CR_FAILURE;
+            Json::Value result;result["color"]=*color;
+            out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
+          }catch(const std::exception&){return CR_FAILURE;}
+        }
         if(parameters[0]=="nobles-symbol-text-probe") {
           if(parameters.size()!=6)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;

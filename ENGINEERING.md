@@ -39,6 +39,25 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Nobles and administrators native discovery
 
+`item_craft_native.h` extracts native c811ea..c812e5's encrustation-color
+selection for craft item types36–43 excluding ammunition39. It calls pinned
+native material flag/resolution helpers and reads semantic improvements in
+native order: first non-glazed COVERED improvement with inorganic IS_GEM
+material, then its solid-state pattern's first descriptor color. A missing or
+invalid color ends selection without trying later gems. No graphics_info or
+native compositor cache is accessed. `item-craft-gem-probe` exposes this reader
+for protected diagnostics; transport and rendered overlay consumption remain
+pending and protocol185 is unchanged.
+
+Protected140501 on2026-11-11 confirms symbol item13147 is tiger-hair jewelry
+with17 gemstone decorations. The reader selects rock crystal/CLEAR24; a temporary
+glazed flag on that improvement selects pink jade81, then the flag is restored.
+The bounded fixture is `symbol_reference.encrustation_reference`. DF10848 closes
+unsaved with source preservation, native30FPS, sampled GPU60C/32%/54W. The MSVC
+bridge builds. Native cebf90 uses the selected color for the installed
+ITEM_EARRING_WOOD_ENCRUSTED overlay (ITEM_CRAFTS3,5); the current renderer lacks
+that input. This establishes the missing selector, not a repaired pixel match.
+
 
 `item_legwear_native.h` reads native cf24bc..cf24e7's original artwork choice
 before the tint/cache compositor. It uses the raw tile for ordinary legwear and

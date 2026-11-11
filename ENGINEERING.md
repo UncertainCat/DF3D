@@ -77,8 +77,28 @@ candidates through the actual controller/service, selects a replacement and
 observes its projected holder, then discards the local draft and confirms the
 unchanged fresh overview. Source preservation passes; DF38924 closes unsaved,
 30FPS, GPU37C/0% sampled. Only the documented rendering-thread warning occurs.
-Picker rendering/input, successful typed commits and dismissal ownership remain
-unfinished; this evidence does not establish those workflows.
+Successful typed commits and dismissal ownership remain unfinished; this
+controller evidence does not establish those workflows.
+
+The staged picker now renders native candidate names, owned portraits and the
+native skill grid, with local scrolling and candidate selection. Its appointment
+button invokes the controller; Escape/right-click retires the picker while
+retaining prior draft choices. Native426739 supplies name clipping geometry;
+426907/426a12 supplies skill row order and twenty-two-cell column spacing.
+Skill captions themselves remain native-formatted by the provider.
+
+Protected102605 on2026-11-11 compares the entire944x708 Manager picker panel
+at1200x800: all668352 pixels match the native capture. Actual viewport pointer
+input selects a candidate into the draft; Escape from a reopened picker retains
+that choice, and explicit test teardown confirms the simulation is unchanged.
+Core and headless controller checks pass in `build/qa/nobles-picker-view-final`.
+The graphical run has only the three documented Godot separate-thread/shutdown
+diagnostics, so its result is passed with known issues. DF38680 closes unsaved,
+source preservation passes, native/viewer are capped at30FPS, GPU38C/0% sampled.
+Earlier102407 differed only in the last background cell of each row, corrected
+before the accepted capture. Other widths, scrolled/multiple-skill layouts and
+composed owner/header/dismissal behavior remain unverified; no public route is
+enabled by this component acceptance.
 
 Candidate text is available from `nobles-candidate-text-probe`, alongside the
 unchanged identity/value-only probe. Native99a1f0 supplies ordered position

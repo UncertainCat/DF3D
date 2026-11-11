@@ -1,5 +1,5 @@
 extends "res://scripts/standing_orders_view.gd"
-# Staged overview from native4257d0. Action workflows remain pending.
+# Staged native4257d0 overview and appointment picker; dismissal commit remains pending.
 var hovered: Dictionary={}
 var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
 var portraits: Dictionary={}
@@ -11,15 +11,20 @@ const ROOM_TOKENS=["OFFICE","BEDROOM","DINING","TOMB"]
 func configure_nobles(source,model) -> void:
 	configure_standing_orders(source,model);picture.configure(source)
 	scrollbar.input_allowed=allowed;scrollbar.wheel_enabled=false
-	scrollbar.row_changed.connect(func(value):state.seek(value,capacity()))
+	scrollbar.row_changed.connect(func(value):seek_rows(value))
 	state.changed.connect(refresh);refresh()
 func groups() -> Array:
 	var result:=InfoTabs.rows(wide_tabs)
 	if not wide_tabs:result.reverse()
 	return result
-func list_top() -> int:return 84 if wide_tabs else 108
+func picking() -> bool:return state!=null and state.phase in [state.Phase.CandidatesReading,state.Phase.CandidatesReady]
+func displayed_rows() -> Array:return state.candidates if picking() else state.rows
+func seek_rows(value: int) -> void:
+	if picking():state.seek_candidates(value,capacity())
+	else:state.seek(value,capacity())
+func list_top() -> int:return (48 if wide_tabs else 72) if picking() else (84 if wide_tabs else 108)
 func capacity() -> int:return maxi(0,int((size.y-list_top()-24)/36))
-func visible_first() -> int:return mini(state.first,maxi(0,state.rows.size()-capacity()))
+func visible_first() -> int:return mini(state.candidate_first if picking() else state.first,maxi(0,displayed_rows().size()-capacity()))
 func spacing_columns() -> int:return maxi(0,int((int(size.x/8)-121-(2 if state.rows.size()>capacity() else 0))/2))
 func status_x() -> int:return (62+spacing_columns())*8
 func content_columns() -> int:return int(size.x/8)-4-(2 if state.rows.size()>capacity() else 0)
@@ -41,6 +46,7 @@ func _process(_delta: float) -> void:
 	var next: Dictionary=hover_at(get_local_mouse_position()) if allowed() else {}
 	if next!=hovered:hovered=next;queue_redraw()
 func intro_lines() -> Array:
+	if picking():return []
 	var result: Array=[];var baseline:=list_top()-24
 	var kind: String=hovered.get("kind","")
 	if kind in ["rooms","furniture"]:
@@ -78,22 +84,24 @@ func layout(view: Vector2) -> void:
 func refresh() -> void:
 	hovered=hover_at(get_local_mouse_position()) if is_inside_tree() and allowed() else {}
 	var retained: Dictionary={}
-	for index in range(visible_first(),mini(state.rows.size(),visible_first()+capacity())):
-		var row: Dictionary=state.rows[index]
+	for index in range(visible_first(),mini(displayed_rows().size(),visible_first()+capacity())):
+		var row: Dictionary=displayed_rows()[index]
 		if not row.has("appearance"):continue
 		var prior: Dictionary=portraits.get(row.unit_id,{})
 		retained[row.unit_id]=prior if prior.get("recipe")==row.appearance else {"recipe":row.appearance.duplicate(true),"texture":world.candidate_icon(row.appearance)}
 	portraits=retained
 	scrollbar.position=Vector2(size.x-32,list_top());scrollbar.size=Vector2(16,capacity()*36)
-	scrollbar.page=capacity();scrollbar.set_rows(state.rows.size(),visible_first());queue_redraw()
+	scrollbar.page=capacity();scrollbar.set_rows(displayed_rows().size(),visible_first());queue_redraw()
 func _exit_tree() -> void:
 	hovered={}
 	if state!=null and state.changed.is_connected(refresh):state.changed.disconnect(refresh)
 func _input(event: InputEvent) -> void:
-	if allowed() and state!=null and state.phase==state.Phase.Ready and event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN] and not event.ctrl_pressed and not event.alt_pressed and not event.meta_pressed:
+	if allowed() and picking() and ((event is InputEventKey and event.pressed and event.keycode==KEY_ESCAPE) or (event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_RIGHT)):
+		state.cancel_appointment();get_viewport().set_input_as_handled();return
+	if allowed() and state!=null and state.phase in [state.Phase.Ready,state.Phase.CandidatesReady] and event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN] and not event.ctrl_pressed and not event.alt_pressed and not event.meta_pressed:
 		var point: Vector2=get_global_transform_with_canvas().affine_inverse()*event.position
 		if Rect2(0,list_top(),size.x,size.y-list_top()).has_point(point):
-			state.seek(visible_first()+(capacity() if event.shift_pressed else 1)*(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1),capacity());get_viewport().set_input_as_handled();return
+			seek_rows(visible_first()+(capacity() if event.shift_pressed else 1)*(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1));get_viewport().set_input_as_handled();return
 	super._input(event)
 func _gui_input(event: InputEvent) -> void:
 	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
@@ -108,12 +116,17 @@ func _gui_input(event: InputEvent) -> void:
 				if caption!="Nobles and administrators":information_requested.emit(caption)
 				return
 			x+=width
+	if picking():
+		if state.phase==state.Phase.CandidatesReady:
+			for index in mini(capacity(),state.candidates.size()-visible_first()):
+				if Rect2(16,list_top()+index*36,size.x-48,36).has_point(event.position):state.choose_candidate(state.candidates[visible_first()+index].unit_id);return
+		return
 	if state.phase!=state.Phase.Ready:return
 	for index in mini(capacity(),state.rows.size()-visible_first()):
 		var row: Dictionary=state.rows[visible_first()+index];var y:=list_top()+index*36
 		if accounting_visible(row) and Rect2(status_x()+304,y,160,36).has_point(event.position):
 			accounting_requested.emit(row.duplicate(true),int((event.position.x-status_x()-304)/32));return
-		if row.can_appoint and Rect2(184,y,32,36).has_point(event.position):appointment_requested.emit(row.duplicate(true));return
+		if row.can_appoint and Rect2(184,y,32,36).has_point(event.position):state.begin_appointment(state.office(row));appointment_requested.emit(row.duplicate(true));return
 		if row.assignment_id>=0 and Rect2(status_x(),y,32,36).has_point(event.position):symbol_requested.emit(row.duplicate(true));return
 func icon(token: String,point: Vector2) -> void:
 	var texture: Texture2D=art.texture(token)
@@ -135,6 +148,7 @@ func _draw() -> void:
 	for index in tabs.size():
 		var x:=8.0
 		for caption in tabs[index]:x+=tab(caption,Vector2(x,12+index*24),"SHORT_TAB",caption=="Nobles and administrators")
+	if picking():draw_candidates();return
 	for line in intro_lines():text(line.text,line.point,line.color)
 	if state.phase!=state.Phase.Ready:return
 	for index in mini(capacity(),state.rows.size()-visible_first()):
@@ -155,3 +169,30 @@ func _draw() -> void:
 		icon("NOBLES_MANDATES_"+obligation_suffix(row.mandate_status),Vector2(status_x()+256,top))
 		if accounting_visible(row):
 			for setting in 5:icon("NOBLES_ACCOUNTING_%d_%s"%[setting+1,"ACTIVE" if row.help.accounting.setting==setting else "INACTIVE"],Vector2(status_x()+304+setting*32,top))
+
+func candidate_right() -> int:return int(size.x/8)-2-(2 if state.candidates.size()>capacity() else 0)
+func candidate_skill_column() -> int:
+	var right:=candidate_right()
+	return right-30-maxi(0,int((right-2-50)/2))
+func candidate_caption(value: String) -> String:
+	var threshold:=candidate_skill_column()-9
+	if value.length()<threshold:return value
+	var count:=maxi(0,threshold-1)
+	return value.left(count-3)+"..." if count>3 else value.left(count)
+func draw_candidates() -> void:
+	if state.phase!=state.Phase.CandidatesReady:return
+	for index in mini(capacity(),state.candidates.size()-visible_first()):
+		var ordinal:=visible_first()+index;var row: Dictionary=state.candidates[ordinal];var top:=list_top()+index*36
+		patch("BUTTON_RECTANGLE",Vector2i(2,int(top/12)),candidate_right()-2,3)
+		text(candidate_caption(row.caption),Vector2(72,top+24))
+		if row.unit_id<0:continue
+		patch("",Vector2i(2,int(top/12)),5,3,picture.texture(false))
+		var portrait: Texture2D=portraits.get(row.unit_id,{}).get("texture")
+		if portrait!=null:draw_texture_rect(portrait,Rect2(18,top+2,32,32),false)
+		var column:=candidate_skill_column();var line:=0
+		if row.skills.is_empty():text(row.no_skills,Vector2(column*8,top+24),8)
+		for skill in row.skills:
+			if line>=3:break
+			text(skill.caption,Vector2(column*8,top+[24,12,36][line]),15 if ordinal%2==1 else 7)
+			column+=22
+			if column+20>=candidate_right():column=candidate_skill_column();line+=1

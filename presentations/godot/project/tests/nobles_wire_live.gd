@@ -116,6 +116,31 @@ func run() -> void:
 		if not check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Nobles assets unavailable"):quit(1);return
 		root.size=Vector2i(1200,800)
 		var view=preload("res://scripts/nobles_view.gd").new();root.add_child(view);view.configure_nobles(world,model);view.layout(Vector2(1200,800))
+		model.begin_appointment(target)
+		deadline=Time.get_ticks_msec()+5000
+		while model.phase==model.Phase.CandidatesReading and Time.get_ticks_msec()<deadline:
+			world.poll();await create_timer(0.01).timeout
+		check(model.phase==model.Phase.CandidatesReady,"Rendered picker did not load")
+		for frame in 5:await process_frame
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/nobles-picker-view.png")
+		var click:=InputEventMouseButton.new();click.button_index=MOUSE_BUTTON_LEFT;click.position=view.position+Vector2(100,view.list_top()+54);click.pressed=true
+		root.push_input(click,true);click=click.duplicate();click.pressed=false;root.push_input(click,true)
+		deadline=Time.get_ticks_msec()+5000
+		while model.phase==model.Phase.Reading and Time.get_ticks_msec()<deadline:
+			world.poll();await create_timer(0.01).timeout
+		check(model.phase==model.Phase.Ready and model.choices.size()==1,"Picker pointer did not stage candidate")
+		model.begin_appointment(target)
+		deadline=Time.get_ticks_msec()+5000
+		while model.phase==model.Phase.CandidatesReading and Time.get_ticks_msec()<deadline:
+			world.poll();await create_timer(0.01).timeout
+		var escape:=InputEventKey.new();escape.keycode=KEY_ESCAPE;escape.pressed=true;root.push_input(escape,true)
+		check(model.phase==model.Phase.Ready and model.choices.size()==1,"Picker Escape discarded prior draft or failed to return")
+		model.open()
+		deadline=Time.get_ticks_msec()+5000
+		while model.phase==model.Phase.Reading and Time.get_ticks_msec()<deadline:
+			world.poll();await create_timer(0.01).timeout
+		check(model.rows==rows,"Picker pointer draft changed simulation")
 		for token in ["NOBLES_ADD","NOBLES_ASSIGN_SYMBOL","NOBLES_OFFICE_GOOD","NOBLES_FURN_MISSING","NOBLES_DEMANDS_NA","NOBLES_MANDATES_TIME_WARN_1"]:check(view.art.texture(token)!=null,"Missing native Nobles artwork: "+token)
 		for row in model.rows:
 			if row.unit_id>=0:check(row.has("appearance") and view.portraits.get(row.unit_id,{}).get("texture")!=null,"Nobles holder portrait unavailable")

@@ -1040,6 +1040,25 @@ acceptance is `passed_with_known_issues` for the known Godot shutdown diagnostic
 GPU58–61C sampled. Core19/controller checks pass in `build/qa/places-layout-final`.
 
 
+## Management 185 legwear artwork contract
+
+Management185 uses `Local\\df3d_management_v185`; rebuild both peers. The shared
+item appearance can carry an optional legwear_selector with owned original asset
+references. It is valid only for PANTS(type60), requires a nonempty valid recipe,
+and participates in the bounded recipe payload. Missing recipes stay missing;
+older recordings cannot synthesize generated clothing artwork. The world model
+owns the decoded recipe independently of the incoming buffer. Producer population
+and presentation consumption remain a separate implementation step.
+
+Core19, Nobles state and UI host checks pass in
+`build/qa/legwear-selector-contract`; both builds pass. Codec cases cover absent
+recipes, wrong item types, invalid page/palette references, empty layers and
+owned lifetime. Protected130634 on2026-11-11 verifies the existing typed three-item
+symbol/name/effect flow on185 and the native original legwear reader. Owned
+DF45400 closes unsaved with source preservation, native30FPS/headless viewer,
+sampled GPU60C/23%. This establishes migration compatibility, not rendered
+consumption of the new field.
+
 ## Management 184 symbol presentation and retirement contract
 
 Management184 uses `Local\\df3d_management_v184`; rebuild both peers. Symbol

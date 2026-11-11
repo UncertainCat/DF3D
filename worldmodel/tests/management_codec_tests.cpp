@@ -5236,3 +5236,29 @@ TEST_CASE("corpse inspection recipes own their assets independently of map resid
     CHECK(owned.corpseSelector->layers[0].tileY==3);
   }
 }
+
+TEST_CASE("legwear selector recipes retain owned original asset references") {
+  for(int mode=0;mode<6;++mode) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto pages=b.CreateVector(std::vector<flatbuffers::Offset<flatbuffers::String>>{b.CreateString("SYNTHETIC_LEGWEAR")});
+    const auto palettes=b.CreateVector(std::vector<flatbuffers::Offset<flatbuffers::String>>{});
+    std::vector<wire::AppearanceLayer> layers;
+    if(mode!=3)layers.emplace_back(mode==2?1:0,2,3,1,1,mode==4?0:65535,-1,-1,0,0);
+    const auto recipe=wire::CreateSelectionAppearance(b,pages,palettes,b.CreateVectorOfStructs(layers));
+    const auto material=b.CreateString("CREATURE:TEST:SILK"),empty=b.CreateString("");
+    wire::ItemInspectionAppearanceBuilder a(b);
+    a.add_material_token(material);a.add_subtype_raw(empty);a.add_color_token(empty);a.add_stack(1);
+    if(mode!=5)a.add_legwear_selector(recipe);
+    b.Finish(a.Finish());
+    const auto* look=flatbuffers::GetRoot<wire::ItemInspectionAppearance>(b.GetBufferPointer());
+    const bool valid=mode==0 || mode==5;
+    CHECK(wire::validInspectionInstrument(*look,mode==1?25:60)==valid);
+    if(!valid)continue;
+    const auto owned=codec::decodeInspectionAppearance(look);b.Clear();
+    if(mode==5){CHECK_FALSE(owned.legwearSelector);continue;}
+    REQUIRE(owned.legwearSelector);REQUIRE(owned.legwearSelector->layers.size()==1);
+    CHECK(owned.legwearSelector->tilePages[0]=="SYNTHETIC_LEGWEAR");
+    CHECK(owned.legwearSelector->layers[0].tileX==2);
+    CHECK(owned.legwearSelector->layers[0].tileY==3);
+  }
+}

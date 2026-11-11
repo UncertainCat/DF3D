@@ -140,6 +140,9 @@ inline bool validInspectionInstrument(const ItemInspectionAppearance& a,int32_t 
   if(const auto* corpse=a.corpse_selector()) {
     if((type!=23 && type!=46) || validateOwnerAppearance(*corpse,recipeBytes) || corpse->layers()->size()==0)return false;
   }
+  if(const auto* legwear=a.legwear_selector()) {
+    if(type!=60 || validateOwnerAppearance(*legwear,recipeBytes) || legwear->layers()->size()==0)return false;
+  }
   if(recipeBytes>131072)return false;
 
     const auto* liquidColor=a.bucket_liquid_color();
@@ -173,8 +176,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 184;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v184";
+inline constexpr uint32_t kManagementVersion = 185;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v185";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -1442,7 +1445,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
            !a->subtype_raw() || a->subtype_raw()->size()>128 || !a->color_token() || a->color_token()->size()>128 || a->stack()<1 || (a->flags()&~96))return "invalid nobles symbol appearance";
         bytes+=256+a->material_token()->size()+a->subtype_raw()->size()+a->color_token()->size();
         size_t recipe=0;
-        for(const auto* p:{a->portrait(),a->corpse_selector(),a->cage_occupant()})if(p)if(auto error=validateOwnerAppearance(*p,recipe))return error;
+        for(const auto* p:{a->portrait(),a->corpse_selector(),a->cage_occupant(),a->legwear_selector()})if(p)if(auto error=validateOwnerAppearance(*p,recipe))return error;
         bytes+=recipe;
         for(const auto* text:{a->restraint_solid_color(),a->cage_solid_color(),a->bucket_liquid_color()})if(text)bytes+=text->size();
         if(const auto* c=a->contents()){

@@ -16,6 +16,7 @@ var type_icon: TextureRect
 var owner_label: Label
 var owner_status: Label
 var owner_portrait: TextureRect
+var owner_sprite_id: int = -1
 var religion_label: Label
 var world
 var controls: Dictionary = {}
@@ -82,7 +83,7 @@ func configure(source) -> void:
 	religion_label.add_theme_font_size_override("font_size",12)
 	religion_label.add_theme_color_override("font_color",Color.YELLOW)
 	religion_label.clip_text = true; selected_panel.add_child(religion_label)
-	owner_portrait = TextureRect.new(); owner_portrait.position = Vector2(6,82); owner_portrait.size = Vector2(32,36)
+	owner_portrait = TextureRect.new(); owner_portrait.position = Vector2(8,82); owner_portrait.size = Vector2(32,36)
 	owner_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	owner_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	owner_portrait.mouse_filter = Control.MOUSE_FILTER_IGNORE; selected_panel.add_child(owner_portrait)
@@ -188,9 +189,9 @@ func display(rows: Array, editable: bool, area: Dictionary = {}) -> void:
 		if not str(area.get("owner_profession","")).is_empty(): owner_label.text += ", " + str(area.owner_profession)
 		if int(area.get("owner_sex",-1)) in [0,1]: owner_label.text += ", " + ("♀" if int(area.owner_sex) == 0 else "♂")
 		owner_label.tooltip_text = owner_label.text
+		owner_sprite_id = int(area.get("owner_id",-1))
 		owner_portrait.texture = null
-		if int(area.get("owner_id",-1)) >= 0 and world.has_method("creature_portrait"):
-			owner_portrait.texture = world.creature_portrait(int(area.owner_id))
+		_refresh_owner_sprite()
 		for key in controls:
 			controls[key].disabled = not editable
 		controls.owner.visible = bool(area.get("owner_allowed",false))
@@ -235,3 +236,15 @@ func set_overlap_navigation(multiple: bool, enabled: bool) -> void:
 func cancel_edit() -> bool:
 	if not name_entry.editing: return false
 	name_entry.finish(); return true
+
+func _refresh_owner_sprite() -> void:
+	if owner_portrait == null:return
+	if not is_visible_in_tree() or not selected_panel.visible or owner_sprite_id<0:
+		owner_portrait.texture=null;return
+	if world!=null and world.has_method("selection_icon"):
+		# Native selected-zone owner uses the full unit sprite. The indexed icon
+		# may arrive after the area receipt, so refresh while this panel is visible.
+		owner_portrait.texture=world.selection_icon(1,owner_sprite_id,true)
+
+func _process(_delta: float) -> void:
+	_refresh_owner_sprite()

@@ -380,7 +380,7 @@
     },
     "bridge_sha256": "41EE8038A779B2986604ED4B606A27F186E4850CB4444E3B08619ACE16D56DF0",
     "limitations": [
-      "No composed rendered DF3D Tomb assignment/settings workflow",
+      "Composed Tomb controls are covered by tomb_scene_reference; initial fixture selection is not map picking",
       "Inactive-owner assignment eligibility is covered separately in inactive_tomb_owner_reference",
       "Active-toggle decision remains pending"
     ],
@@ -415,7 +415,7 @@
     "bridge_sha256": "9EF69D85F3D6217A4BC95B98AC4A9793E3713B5B762DFF98F1CC5405A7C89079",
     "limitations": [
       "Owner and inactive flag seeded in paused diagnostics; no natural death progression acceptance",
-      "No composed rendered DF3D Tomb owner-status workflow"
+      "Composed owner-status and sprite coverage is in tomb_scene_reference; owner-name abbreviation remains separate"
     ],
     "excluded_run": "154718 used wrong action for candidate read and is not acceptance",
     "native_hashes": {
@@ -427,6 +427,65 @@
       "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
       "native.log": "b754674e66679b888af00e540836588866b1704196642771e005e6d0fa6cea86",
       "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
+    }
+  },
+  "tomb_scene_reference": {
+    "run": "build/areas-acceptance-20261112-155423",
+    "driver": "areas_acceptance.ps1 -ControllerScene -ZonesOnly with DF3D_TOMB_SCENE=1",
+    "status": "passed_with_known_issues",
+    "diagnostics": [
+      "godot-separate-thread-notice"
+    ],
+    "scope": [
+      "actual main scene, staged Zones entry and fixture Tomb selection",
+      "four burial-permission viewport clicks with independent DF readback",
+      "owner assignment through native-backed picker; exactly one native ownership membership",
+      "assigned Tomb hides burial controls",
+      "inactive flag seeded after real assignment; hides assignment control and shows Deceased",
+      "click former assignment control dispatches no work",
+      "restoring owner flag restores assignment control",
+      "actual Remove control removes Tomb"
+    ],
+    "sprite_fix": "Selected-zone owner uses selection_icon(1,id,true) instead of creature_portrait, refreshes asynchronous icon while visible, and uses native x8 offset.",
+    "pixel_regions": {
+      "owner_sprite": {
+        "rect": [
+          40,
+          136,
+          72,
+          172
+        ],
+        "differing_pixels": 0
+      },
+      "deceased": {
+        "rect": [
+          88,
+          160,
+          152,
+          172
+        ],
+        "differing_pixels": 0
+      }
+    },
+    "native_reference": "stockpile-storage-native-zone-defaults-20261112-154426/tomb-inactive-owner.png",
+    "preservation": "Owned DF12828 exited unsaved; two save manifests unchanged",
+    "gpu": "Both clients capped30FPS; samples49-52C across focused runs; samples are not peaks",
+    "limitations": [
+      "Initial zone selection uses observed fixture identity, not map picking",
+      "Known candidate row positioned directly before actual assignment click; no new scroll acceptance",
+      "Inactive flag is diagnostic seeding, not natural death progression",
+      "Owner-name line still clips rather than matching native abbreviation; no whole-panel pixel parity",
+      "Only the captured owner sprite is pixel-compared"
+    ],
+    "hashes": {
+      "result.json": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+      "native.log": "b6a2999e5512f5b1acd48a05f338c4eee5f0e34429881c2684c53e78d0f401d9",
+      "godot.log": "184895c8d47883d6f9a192b9666afe9560e2baac410b70208b3edf18d4b9bc1d",
+      "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "scene_tomb_unassigned.png": "7fc103b277406132deb9f03ff148a9c3e088d65ff8600fc59e2e2fef69163566",
+      "scene_tomb_assigned.png": "3b8cd16090c4c32a6cff6fb11929e2433b79d15af5074efbc4a6be0672b9a10c",
+      "scene_tomb_inactive.png": "fb15d691d74af1f85618cdd9c4d2e8599cd21e1fb31655964655c859788486d0"
     }
   }
 }

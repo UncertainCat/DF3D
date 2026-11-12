@@ -102,6 +102,8 @@ func capture(label: String) -> void:
 		if not check(editor.panel.size.x == 324,"native stockpile panel width changed: "+str(editor.panel.size)+" minimum="+str(editor.panel.get_combined_minimum_size())): return
 
 func pointer_areas() -> void:
+	if OS.get_environment("DF3D_TOMB_SCENE")=="1":
+		await pointer_tomb_workflow();return
 	var p: Dictionary = fixture.origin
 	var origin := Vector3i(int(p.x)+8,int(p.y)+8,int(p.z))
 	world.set_top_z(origin.z)
@@ -2442,3 +2444,66 @@ func pointer_animals(id: int) -> void:
 	if not check(not view.visible,"failed animal picker did not close"):return
 	await pointer_click(tile_screen(original_tile))
 	if not await wait_ui(func():return settled() and int(editor.selected.get("id",-1))==id,"animal explicit stale refresh"):return
+
+func pointer_tomb_workflow() -> void:
+	step="Tomb ownership viewport workflow"
+	await seed_catalog()
+	var id:=zone("Tomb")
+	if not check(id>=0,"Tomb fixture absent"):return
+	var setup:=await native("tomb_scene_prepare")
+	var area:=await inspect(id,1)
+	if stopped:return
+	world.set_top_z(area.origin.z)
+	scene.camera_rig.focus_on(Vector3(area.origin.x+0.5,area.origin.z+1.0,area.origin.y+0.5),30)
+	var launcher: Button=scene._fortress_hud.navigation.Zones
+	launcher.show();scene._fortress_hud.layout(scene._fortress_hud.logical_view_size())
+	await click_control(launcher,true)
+	if not await wait_ui(func():return settled() and editor.available,"Tomb Zones entry"):return
+	editor.use_area(area)
+	if not await wait_ui(settled,"Tomb observation"):return
+	for index in [2,3]:
+		var button: Button=editor.zone_menu.setting_buttons[index]
+		var key: String=editor.zone_menu.SETTINGS[index][1]
+		var original: int=editor.selected.zone_settings[key]
+		if not check(button.visible and not button.disabled,"Unassigned Tomb setting hidden"):return
+		for value in [1-original,original]:
+			await click_control(button)
+			if not await wait_ui(settled,"Tomb burial toggle"):return
+			var expected: Dictionary={};expected[key]=value
+			await native("zone_settings",{"id":id,"expected":expected})
+	await capture("tomb_unassigned")
+	await click_control(editor.zone_menu.controls.owner)
+	if not await wait_ui(func():return settled() and not editor.candidates_state.busy() and not editor.candidates_state.rows.is_empty(),"Tomb owner choices"):return
+	var chosen: int=-1
+	for index in editor.candidates_state.rows.size():
+		if int(editor.candidates_state.rows[index].id)==int(setup.unit):chosen=index;break
+	if not check(chosen>=0,"Living citizen absent from native Tomb choices"):return
+	# Position the known row; the assignment itself is a viewport button click.
+	editor.candidates_view.owner_scrollbar.move_to(chosen)
+	await process_frame;await process_frame
+	await click_control(editor.candidates_view.choices[chosen])
+	if not await wait_ui(func():return settled() and editor.stockpile_page=="types" and int(editor.selected.get("owner_id",-1))==int(setup.unit),"Tomb assignment"):return
+	await native("tomb_scene_state",{"id":id})
+	if not check(not editor.zone_menu.setting_buttons[2].visible and not editor.zone_menu.setting_buttons[3].visible and editor.zone_menu.controls.owner.visible and not editor.zone_menu.owner_status.visible,"Assigned Tomb controls differ"):return
+	if not await wait_ui(func():return editor.zone_menu.owner_portrait.texture!=null,"Tomb owner sprite"):return
+	await capture("tomb_assigned")
+	await native("tomb_scene_state",{"id":id,"inactive":true})
+	editor.use_area(await inspect(id,1))
+	if not await wait_ui(settled,"Inactive Tomb refresh"):return
+	if not check(not editor.zone_menu.controls.owner.visible and editor.zone_menu.owner_status.visible,"Inactive owner status differs"):return
+	var before: int=receipts.size()
+	await pointer_click(editor.zone_menu.controls.owner.get_global_rect().get_center())
+	if not await wait_ui(settled,"Hidden assignment click"):return
+	if not check(editor.stockpile_page=="types" and receipts.size()==before,"Hidden assignment dispatched work"):return
+	if not await wait_ui(func():return editor.zone_menu.owner_portrait.texture!=null,"Inactive Tomb owner sprite"):return
+	await capture("tomb_inactive")
+	await native("tomb_scene_state",{"id":id,"inactive":false})
+	editor.use_area(await inspect(id,1))
+	if not await wait_ui(settled,"Living owner restoration"):return
+	if not check(editor.zone_menu.controls.owner.visible and not editor.zone_menu.owner_status.visible,"Restored owner did not recover assignment"):return
+	await native("tomb_scene_restore")
+	await click_control(editor.zone_menu.controls.remove)
+	if not await wait_ui(func():return settled() and editor.selected.is_empty(),"Tomb removal"):return
+	await native("removed",{"id":id})
+	await native("final")
+	print("TOMB_SCENE_PASS burial_toggles=4 owner_assignment=true inactive_display=true hidden_click_inert=true removal=true")

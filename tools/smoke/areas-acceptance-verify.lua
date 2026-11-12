@@ -152,7 +152,25 @@ local function check_properties(actual,expected,path)
   else assert(actual[key]==value,path..'.'..key..' mismatch: '..tostring(actual[key])..' / '..tostring(value)) end
  end
 end
-if request.op=='tomb_owner_inactive' then
+if request.op=='tomb_scene_prepare' then
+ assert(not _G.df3d_tomb_scene)
+ for _,u in ipairs(df.global.world.units.active)do
+  if dfhack.units.isCitizen(u)and not u.flags1.inactive then
+   local tomb=false;for _,room in ipairs(u.owned_buildings)do if df.building_civzonest:is_instance(room)and room.type==df.civzone_type.Tomb then tomb=true end end
+   if not tomb then _G.df3d_tomb_scene={unit=u.id,flags=u.flags1.whole};result.unit=u.id;break end
+  end
+ end
+ assert(_G.df3d_tomb_scene,'No living citizen without a Tomb')
+elseif request.op=='tomb_scene_state' then
+ local saved=assert(_G.df3d_tomb_scene);local u=assert(df.unit.find(saved.unit));local b=building()
+ assert(b.assigned_unit_id==u.id,'Tomb owner not assigned')
+ local count=0;for _,room in ipairs(u.owned_buildings)do if room.id==b.id then count=count+1 end end
+ assert(count==1,'Tomb owner membership missing or duplicated')
+ if request.inactive~=nil then u.flags1.inactive=request.inactive end
+elseif request.op=='tomb_scene_restore' then
+ local saved=assert(_G.df3d_tomb_scene);local u=assert(df.unit.find(saved.unit));u.flags1.whole=saved.flags
+ _G.df3d_tomb_scene=nil
+elseif request.op=='tomb_owner_inactive' then
  local b=building();local saved=assert(_G.df3d_tomb_settings_owner)
  local u=assert(df.unit.find(b.assigned_unit_id));assert(saved.id==b.id)
  if request.begin then saved.unit=u.id;saved.flags=u.flags1.whole;u.flags1.inactive=true

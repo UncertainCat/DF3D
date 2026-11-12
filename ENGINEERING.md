@@ -15059,6 +15059,29 @@ is session-lifecycle acceptance, not a completed typing UI.
 
 ### Current Zones revalidation and remaining semantic audit
 
+Selected-zone owner artwork uses the native-backed full-unit selection icon,
+refreshing while visible so an icon arriving after the area receipt is displayed.
+It no longer uses the portrait API. Native sprite placement starts at x40
+(panel-relative8), with its32x32 image centered in the32x36 owner region.
+Protected `areas-acceptance-20261112-155423` with DF3D_TOMB_SCENE=1 exercises
+four burial-permission clicks, actual picker assignment, native membership
+readback, hidden burial controls, inactive-owner status and inert assignment
+clicks, restored controls, and removal. Owner identity comes from the native
+candidate list; the target row is positioned directly before its viewport click.
+The initial Tomb is selected from observed fixture identity, not by map picking.
+Inactive state is seeded after real assignment and restored before removal.
+The final screenshot was inspected. Owner sprite crop(40,136)-(72,172) and
+Deceased text crop(88,160)-(152,172) have zero differing RGB pixels against
+native154426. The owner-name line still clips instead of matching native
+abbreviation; this is a remaining presentation gap, not whole-panel acceptance.
+Owned DF12828 exits unsaved with two unchanged save manifests. Only the known
+separate-render-thread notice qualifies the run. Both graphical processes are
+capped30FPS; sampled GPU49–52C across these focused runs is not a peak claim.
+Headless `zone-owner-sprite` passes. `native_zone_defaults.json.tomb_scene_reference`
+retains hashes and scope. Earlier155059 exposed the blank owner sprite, and
+155250 exposed its two-pixel horizontal offset; neither is final artwork acceptance.
+
+
 Tomb ownership now follows native34bd3b..34bdb9: when the assigned unit resolves
 and flags1.inactive is set, hide the assignment button and display native
 "Deceased" in installed LMAGENTA. Preserve that exact predicate; it is not a
@@ -15075,7 +15098,7 @@ Owned DF34744/46976 exit unsaved; the wire run verifies two unchanged save
 manifests. Installed bridge SHA256 is
 `9EF69D85F3D6217A4BC95B98AC4A9793E3713B5B762DFF98F1CC5405A7C89079`.
 Owner identity/flag were seeded in paused diagnostics; this is neither natural
-death progression nor composed rendered DF3D status acceptance. Earlier154718
+death progression. Composed status acceptance is recorded above. Earlier154718
 used the wrong action for its picker-read probe and is excluded.
 `native_zone_defaults.json.inactive_tomb_owner_reference` retains evidence.
 
@@ -15093,7 +15116,8 @@ both assigned-Tomb rejections, with unchanged settings and restored owner.
 Owned DF6528/15948 exit unsaved; the wire run verifies two unchanged save manifests.
 Installed bridge SHA256 is `41EE8038A779B2986604ED4B606A27F186E4850CB4444E3B08619ACE16D56DF0`.
 The viewer check is headless; native graphics are capped30FPS. This does not
-qualify a composed rendered Tomb assignment/settings workflow. The adjacent
+alone qualify a composed rendered Tomb assignment/settings workflow; see the
+current scene qualification above. The adjacent
 inactive-owner predicate is qualified separately above. Evidence is retained in
 `native_zone_defaults.json.assigned_tomb_settings_reference`.
 

@@ -41,6 +41,47 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+Management protocol201 adds read-only `JusticeIntelligenceRead` with tab5.
+An absent report index reads ordered report rows; a selected index requires the
+observed list receipt and1-512 text columns. Offset/limit page rows or detail
+lines respectively. Report identity is scoped to the receipt and epoch, not a
+persistent ID: the receipt covers ordered titles, officer captions, viewed flags
+and raw paragraphs independently of wrapping width. Other Justice actions reject
+these selectors. Replies own report captions or wrapped lines, never pointers.
+Both defaults and the mailbox are201 (`Local\df3d_management_v201`); rebuild
+bridge and client together. Older recordings imply no Intelligence facts.
+Session/map versions are unchanged.
+
+The staged Intelligence controller publishes complete lists/details, retires
+reads on close, session/tab changes and width changes, and refuses changed
+receipts without retrying selection. DF supplies wrapped detail text at the
+current panel width. The viewer renders report rows and opens them by click.
+Actors, Organizations and Plots remain drawing placeholders without actions;
+their availability, layout and empty-Intelligence state remain unfinished.
+Do not infer graph availability from the report count. Public Justice is hidden.
+
+Protected `stockpile-storage-native-input-20261112-090634` verifies two synthetic
+reports through protocol201, the visible first-row click, exact native detail
+lines and stale-receipt rejection. Report-area crops `(40,160)-(960,740)` match
+native with zero differing pixels for both list and detail at1200x800. The full
+panel differs by1242 pixels confined to the three unfinished graph tabs, whose
+availability/style this report-only integration does not claim. Headless tests
+verify partial-page withholding, old-width reply retirement, close and changed
+receipts. Schema tests reject unbound selections and mixed case selectors;
+codec tests retain owned lines after buffer retirement. MSVC, extension, UI
+composition, management contract and all19 core checks pass.
+
+Live status is `passed_with_known_issues` for the established separate-renderer,
+finalize and two ObjectDB shutdown diagnostics. Owned DF6436 closes unsaved;
+synthetic records are removed and source save/preferences preserved. Native and
+viewer are capped at30FPS; observed50C/0% GPU samples are not continuous peaks.
+`native_justice.json.intelligence_transport_reference` retains bounded evidence.
+Pagination/scrolling, resize rendering, keyboard/hover, actual populated fortress
+reports and the three graph sub-tabs still require live acceptance. The current
+reader wraps the bounded report set per request; selected-detail optimization
+is possible without borrowing native menu storage.
+
+
 Intelligence uses legacy direct drawing in native4769d0, not populated child
 widgets. Its four sub-tabs are Interrogations, Actors, Organizations and Plots.
 The report source is semantic `world.status.interrogation_reports`; native471a1f
@@ -49,8 +90,7 @@ officer captions, viewed facts and wrapped detail lines. It calls native8e7310
 with independent strings/text-box storage and releases native-allocated lines
 through bb9b0. Native4789b5 supplies the `Prepared by ` prefix and paragraph
 spacing;478c8a supplies list title and `Officer: ` captions. It never initializes
-or reads the native Justice menu. Protocol200 is unchanged; the provider is not
-yet exposed through management transport or the viewer.
+or reads the native Justice menu. The provider now feeds the protocol201 integration above.
 
 Protected `stockpile-storage-native-input-20261112-074905` appends two explicitly
 synthetic reports in the disposable paused clone. It verifies empty/nonempty
@@ -80,9 +120,8 @@ crime pages also require the same detail revision (`expected_case_revision`).
 They cannot carry conviction/interrogation mutation state. `JusticeUnitRow`
 renames the shared Guard identity row and now also serves Convicts. Separate
 Convicts pages/details carry owned sentence, officer and crime text. Older
-recordings imply none of these facts. Both defaults/mailbox are200
-(`Local\df3d_management_v200`); rebuild bridge and client together. Session/map
-versions are unchanged. Convicts is wired to the staged viewer tab; public Justice
+recordings imply none of these facts. Protocol201 supersedes the200 defaults/mailbox; bridge and client must use
+the current matching protocol. Session/map versions are unchanged. Convicts is wired to the staged viewer tab; public Justice
 exposure remains gated by the unfinished workflows below.
 
 

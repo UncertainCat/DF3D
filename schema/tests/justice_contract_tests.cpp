@@ -173,3 +173,11 @@ TEST_CASE("Convicts detail requires target and list receipt, and excludes crime 
   CHECK(bool(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
  }
 }
+
+TEST_CASE("Intelligence detail binds index to receipt and rejects case selectors") {
+ for(int fault=0;fault<5;++fault){flatbuffers::FlatBufferBuilder b;
+  m::JusticeRequestBuilder q(b);q.add_tab(5);q.add_limit(32);q.add_report_index(0);q.add_text_columns(fault==1?0:112);q.add_expected_list_revision(fault==2?0:7);if(fault==3)q.add_crime_id(9);auto request=q.Finish();
+  m::ConstructionRequestBuilder r(b);r.add_client_id(1);r.add_seq(1);r.add_world_epoch(1);r.add_action(fault==4?m::ManagementAction::JusticeRead:m::ManagementAction::JusticeIntelligenceRead);r.add_justice(request);b.Finish(r.Finish());
+  CHECK(bool(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
+ }
+}

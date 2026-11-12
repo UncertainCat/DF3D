@@ -289,8 +289,14 @@ func case_return() -> void:
 	var view=preload("res://scripts/justice_view.gd").new();root.add_child(view);view.configure_justice(world,controller);view.layout(Vector2(1200,800))
 	var samples: Array=JSON.parse_string(FileAccess.get_file_as_string(directory+"/justice-case-return.json"));var index:=0
 	for sample: Dictionary in samples:
-		index+=1;var tab:=0 if sample.tab=="Open cases" else 2
-		if sample.label=="initial":
+		index+=1;var tab: int={"Open cases":0,"Closed cases":1,"Cold cases":2}[sample.tab]
+		if sample.has("width"):
+			root.size=Vector2i(int(sample.width),int(sample.height));view.layout(Vector2(root.size))
+			await pointer_click(view.position+view.tab_rect(tab).get_center());await settle_controller(controller)
+			if sample.label=="minimum-fresh":
+				await pointer_click(view.position+view.case_rect(1).get_center());await settle_controller(controller)
+				await pointer_click(view.position+view.case_rect(0).get_center());await settle_controller(controller)
+		elif sample.label=="initial":
 			await pointer_click(view.position+view.tab_rect(tab).get_center());await settle_controller(controller)
 		elif sample.label.contains(":STANDARDSCROLL_"):
 			var parts: PackedStringArray=sample.label.split(":")
@@ -304,8 +310,14 @@ func case_return() -> void:
 		else:
 			await pointer_click(view.position+view.tab_rect(1).get_center());await settle_controller(controller)
 			await pointer_click(view.position+view.tab_rect(tab).get_center());await settle_controller(controller)
-		check(controller.phase==controller.Phase.Ready and controller.selected_id==int(sample.crime_id) and controller.detail.get("crime_id")==int(sample.crime_id),"Case return selection/detail differs from native")
+		var expected_id: int=int(sample.crime_id) if sample.has("crime_id") else int(controller.rows[0].crime_id)
+		check(controller.phase==controller.Phase.Ready and controller.selected_id==expected_id and controller.detail.get("crime_id")==expected_id,"Case return selection/detail differs from native")
 		await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/justice-case-return-view-"+str(index)+".png")
+		if sample.get("interrogate_round_trip",false):
+			await pointer_click(view.position+view.interrogate_rect().get_center());await settle_picker(controller)
+			check(controller.candidates.phase==controller.candidates.Phase.Ready and controller.candidates.interrogate and controller.candidates.crime_id==expected_id,"Wrapped Interrogate button opened wrong case")
+			var back:=InputEventKey.new();back.pressed=true;back.keycode=KEY_LEFT;Input.parse_input_event(back);await create_timer(0.05).timeout
+			check(not view.picker_open() and controller.selected_id==expected_id,"Wrapped picker failed to return to selected case")
 	controller.dispose();view.queue_free();actions.queue_free();world.queue_free();await process_frame
 	var result:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);result.store_string(JSON.stringify({"success":not failed,"case_return_states":samples.size()}));result.close();quit(1 if failed else 0)
 

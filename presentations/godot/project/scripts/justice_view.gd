@@ -28,8 +28,8 @@ func guard_allowed() -> bool:return allowed() and roster().phase in [roster().Ph
 func picker_open() -> bool:return state.candidates.phase not in [state.candidates.Phase.Closed,state.candidates.Phase.Unavailable]
 func picker_capacity() -> int:return maxi(0,int((size.y-list_top()-120)/36))
 func picker_rect(index: int) -> Rect2:return Rect2(detail_x(),list_top()+24+index*36,size.x-detail_x()-40,36)
-func interrogate_rect() -> Rect2:return Rect2(detail_x(),list_top()+24,104,36)
-func convict_rect() -> Rect2:return Rect2(detail_x()+104,list_top()+24,72,36)
+func interrogate_rect() -> Rect2:return Rect2(detail_x(),list_top()+summary_height(),104,36)
+func convict_rect() -> Rect2:return Rect2(detail_x()+104,list_top()+summary_height(),72,36)
 func sort_rect(index: int) -> Rect2:return Rect2(detail_x()+[5,15,24,35][index]*8,list_top(),[10,9,10,4][index]*8,12)
 func picker_allowed() -> bool:return allowed() and state.candidates.phase==state.candidates.Phase.Ready
 func configure_justice(source,model,help=null) -> void:
@@ -74,7 +74,19 @@ func list_top() -> int:
 	return bottom
 func detail_x() -> int:return int(size.x/16)*8+8
 func capacity() -> int:return maxi(0,int((size.y-list_top()-24)/36))
-func witness_capacity() -> int:return maxi(0,int((size.y-list_top()-96)/60))
+func detail_lines(value: String) -> PackedStringArray:
+	var lines: PackedStringArray=[];var columns:=maxi(1,int((size.x-detail_x()-32)/8));var offset:=0
+	while value.length()-offset>columns:
+		var split:=value.substr(offset,columns).rfind(" ")
+		if split<=0:split=columns
+		lines.append(value.substr(offset,split));offset+=split
+		while offset<value.length() and value.unicode_at(offset)==32:offset+=1
+	if offset<value.length():lines.append(value.substr(offset))
+	return lines
+func summary_height() -> int:
+	return (detail_lines(state.detail.get("injured_party","")).size()+detail_lines(state.detail.get("status","")).size())*12
+func witness_top() -> int:return list_top()+summary_height()+48
+func witness_capacity() -> int:return maxi(0,int((size.y-witness_top()-24)/60))
 func visible_first() -> int:return mini(state.first,maxi(0,state.rows.size()-capacity()))
 func witness_first() -> int:return mini(state.witness_first,maxi(0,state.detail.get("witnesses",[]).size()-witness_capacity()))
 func tab_rect(index: int) -> Rect2:
@@ -97,7 +109,7 @@ func layout(view: Vector2) -> void:
 func refresh() -> void:
 	scrollbar.position=Vector2(detail_x()-40,list_top());scrollbar.size=Vector2(16,capacity()*36)
 	scrollbar.page=capacity();scrollbar.set_rows(state.rows.size(),visible_first())
-	witness_scroll.position=Vector2(size.x-32,list_top()+72);witness_scroll.size=Vector2(16,maxi(0,int((size.y-list_top()-96)/12))*12)
+	witness_scroll.position=Vector2(size.x-32,witness_top());witness_scroll.size=Vector2(16,maxi(0,int((size.y-witness_top()-24)/12))*12)
 	witness_scroll.page=witness_capacity();witness_scroll.set_rows(state.detail.get("witnesses",[]).size(),witness_first())
 	if picker_open():witness_scroll.hide()
 	candidate_scroll.position=Vector2(size.x-32,list_top()+24);candidate_scroll.size=Vector2(16,maxi(36,size.y-list_top()-108))
@@ -362,18 +374,19 @@ func _draw() -> void:
 	if picker_open():draw_picker();return
 	if state.detail.is_empty():return
 	var d: Dictionary=state.detail;var x:=detail_x();var top:=list_top()
-	if d.has("injured_party"):text(d.injured_party,Vector2(x,top+12),7)
-	text(d.status,Vector2(x,top+24),11 if d.resolution==C.JusticeCaseResolution.Unsolved else 13)
+	var y:=top
+	for line in detail_lines(d.get("injured_party","")):y+=12;text(line,Vector2(x,y),7)
+	for line in detail_lines(d.status):y+=12;text(line,Vector2(x,y),11 if d.resolution==C.JusticeCaseResolution.Unsolved else 13)
 	if state.tab!=1:
-		patch("HORIZONTAL_OPTION_ACTIVE",Vector2i(x/8,(top+24)/12),13,3)
-		patch("HORIZONTAL_OPTION_ACTIVE",Vector2i((x+104)/8,(top+24)/12),9,3)
-		text("Interrogate",Vector2(x+8,top+48));text("Convict",Vector2(x+112,top+48))
+		patch("HORIZONTAL_OPTION_ACTIVE",Vector2i(x/8,y/12),13,3)
+		patch("HORIZONTAL_OPTION_ACTIVE",Vector2i((x+104)/8,y/12),9,3)
+		text("Interrogate",Vector2(x+8,y+24));text("Convict",Vector2(x+112,y+24))
 	var witnesses: Array=d.witnesses
-	if witnesses.is_empty():text("No witnesses.",Vector2(x,top+84),13)
+	if witnesses.is_empty() and state.tab!=1:text("No witnesses.",Vector2(x,witness_top()+12),13)
 	for index in mini(witness_capacity(),witnesses.size()-witness_first()):
-		var row: Dictionary=witnesses[witness_first()+index];var y:=top+72+index*60
-		text(row.witness,Vector2(x,y+12));text(row.description,Vector2(x,y+24),14)
-		text(row.date,Vector2(x,y+36),7);text(row.reported,Vector2(x,y+48),7)
+		var row: Dictionary=witnesses[witness_first()+index];var row_y:=witness_top()+index*60
+		text(row.witness,Vector2(x,row_y+12));text(row.description,Vector2(x,row_y+24),14)
+		text(row.date,Vector2(x,row_y+36),7);text(row.reported,Vector2(x,row_y+48),7)
 func hover_target(point: Vector2) -> String:
 	if state==null:return ""
 	if picker_open() and picker_allowed():

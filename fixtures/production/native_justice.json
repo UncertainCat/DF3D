@@ -15650,4 +15650,179 @@
     ],
     "offline_lifecycle": "Rapid navigation discards late old details; page/boundary clamping; boundary key redraws selection after independent wheel scroll."
   }
+,
+  "case_responsive_reference": {
+    "source": "build\\stockpile-storage-native-input-20261112-144725",
+    "scope": "Open/Closed/Cold first-case minimum912x552, reselected at minimum, restored1200x800. Native multiline injured/status headings, repositioned actions and witness origins. Minimum Open Interrogate/Left round trip reads same crime.",
+    "samples": [
+      {
+        "tab": "Open cases",
+        "label": "minimum",
+        "width": 912,
+        "height": 552,
+        "crime_id": 9,
+        "scrolling": [
+          {
+            "scroll": 0,
+            "visible": 8,
+            "x": 46,
+            "y": 21
+          }
+        ]
+      },
+      {
+        "tab": "Open cases",
+        "label": "minimum-fresh",
+        "width": 912,
+        "height": 552,
+        "crime_id": 9,
+        "scrolling": [
+          {
+            "scroll": 0,
+            "visible": 4,
+            "x": 46,
+            "y": 21
+          }
+        ],
+        "interrogate_round_trip": true
+      },
+      {
+        "tab": "Open cases",
+        "label": "default",
+        "width": 1200,
+        "height": 800,
+        "crime_id": 9,
+        "scrolling": [
+          {
+            "scroll": 0,
+            "visible": 8,
+            "x": 64,
+            "y": 18
+          }
+        ]
+      },
+      {
+        "tab": "Closed cases",
+        "label": "minimum",
+        "width": 912,
+        "height": 552,
+        "scrolling": []
+      },
+      {
+        "tab": "Closed cases",
+        "label": "minimum-fresh",
+        "width": 912,
+        "height": 552,
+        "scrolling": []
+      },
+      {
+        "tab": "Closed cases",
+        "label": "default",
+        "width": 1200,
+        "height": 800,
+        "scrolling": []
+      },
+      {
+        "tab": "Cold cases",
+        "label": "minimum",
+        "width": 912,
+        "height": 552,
+        "crime_id": 0,
+        "scrolling": [
+          {
+            "scroll": 0,
+            "visible": 1,
+            "x": 46,
+            "y": 21
+          }
+        ]
+      },
+      {
+        "tab": "Cold cases",
+        "label": "minimum-fresh",
+        "width": 912,
+        "height": 552,
+        "crime_id": 0,
+        "scrolling": [
+          {
+            "scroll": 0,
+            "visible": 1,
+            "x": 46,
+            "y": 21
+          }
+        ]
+      },
+      {
+        "tab": "Cold cases",
+        "label": "default",
+        "width": 1200,
+        "height": 800,
+        "crime_id": 0,
+        "scrolling": [
+          {
+            "scroll": 0,
+            "visible": 1,
+            "x": 64,
+            "y": 18
+          }
+        ]
+      }
+    ],
+    "panel_crops": {
+      "minimum": [
+        32,
+        48,
+        688,
+        516
+      ],
+      "default": [
+        32,
+        52,
+        976,
+        760
+      ]
+    },
+    "different_pixels": [
+      3051,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "pending_exception": "After shrinking native keeps8 visible witness rows; reselecting the case rebuilds4. DF3D already recomputes capacity for current size. Approval requested for retaining that behavior; no public acceptance/exposure of the difference.",
+    "sha256": {
+      "justice-case-return-1.png": "05be0ea6201d96ae6f669752c92808a741fc17a2e17354b3b3ae4f91efcbcc80",
+      "justice-case-return-2.png": "65229c63c18a7907fb4dbb9c47f9d9e2f6add0f4ab1af4a1c7f13d82a63ebf94",
+      "justice-case-return-3.png": "3c8b344a724e71c3fa38d26ac108a718e6c50b04b32e84ce762e4a8fbd4713cc",
+      "justice-case-return-4.png": "61a4ac15407d94dcb60108a82d43ed9570920c65c790ad4fcf4b01bae85d9900",
+      "justice-case-return-5.png": "61a4ac15407d94dcb60108a82d43ed9570920c65c790ad4fcf4b01bae85d9900",
+      "justice-case-return-6.png": "165ba17f77f2d5ec96dd44d93a5c68074289b483b6e9fb1676b231e6b3ef7d19",
+      "justice-case-return-7.png": "1c418f74f8d8b0657ed8682f032c32dd52dde381a01ea27ee4b9453c7db224cf",
+      "justice-case-return-8.png": "1c418f74f8d8b0657ed8682f032c32dd52dde381a01ea27ee4b9453c7db224cf",
+      "justice-case-return-9.png": "04682b044ecedce8de6b7081106137ed818111ae0312e166c8adc58603dbc4ae",
+      "justice-case-return-view-1.png": "3f41d323163e216a7adc69ad16caf2a22a3e3cbfc4d30d7baafc7afe8ffb8e44",
+      "justice-case-return-view-2.png": "3f41d323163e216a7adc69ad16caf2a22a3e3cbfc4d30d7baafc7afe8ffb8e44",
+      "justice-case-return-view-3.png": "a3164c4fa7fc9c11728bf3821e075ee43a5ba07f9ffead39b744733cce78a8f4",
+      "justice-case-return-view-4.png": "77c1bc0628bf5dfc21740fffdcaadeaddea59587717b56959348a42d5847a8e5",
+      "justice-case-return-view-5.png": "77c1bc0628bf5dfc21740fffdcaadeaddea59587717b56959348a42d5847a8e5",
+      "justice-case-return-view-6.png": "076082fe715c5af95b6270efc98e38500589641fa0d6a647dfe85524b0d57adf",
+      "justice-case-return-view-7.png": "d30643e2245e40b13d366cf2bc33057bc26a649a47603bd8a9bc3a8b24d11627",
+      "justice-case-return-view-8.png": "d30643e2245e40b13d366cf2bc33057bc26a649a47603bd8a9bc3a8b24d11627",
+      "justice-case-return-view-9.png": "eff8870ebce9bc43e028e41b68b82d46139e10fcdddf411f7bf2ce679c3ae50b"
+    },
+    "validation": [
+      "core19 passed",
+      "justice-case-responsive-final state/composition passed",
+      "live passed_with_known_issues: known renderer/finalize/two ObjectDB shutdown"
+    ],
+    "limitations": [
+      "No arbitrary long unbroken headings or missing-victim layout acceptance.",
+      "Witness descriptions preserve observed native unbounded text; this change does not clip those strings.",
+      "Earlier144123 showed23914/2173/9861 narrow Open/Closed/Cold pixel differences and278 incorrect Closed No witnesses pixels at default."
+    ]
+  }
 }

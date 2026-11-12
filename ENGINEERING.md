@@ -7,6 +7,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
 | Justice's Name sort tooltip advertises Ctrl+n, but the native sort command leaves the list unchanged. | No correction approved or implemented; preserve inactive shortcut. | Protected130514 on2026-11-12 sends UNITLIST_SORT_NAME before filter focus in Guard, Convicts, Interrogate and Convict. Native priorities and ordered row IDs remain unchanged; FILTER works in the same lists. `native_justice.json.filter_keyboard_reference`. |
+| Justice witness viewport retains its previous row count after shrinking the window. | Approval pending for retaining DF3D's immediate capacity recalculation. Current staged behavior differs; no public acceptance. | Protected144525/144725 on2026-11-12: resizing1200x800 to912x552 leaves native num_visible8; reselecting the same case yields4. Only that first resize differs in3051 panel pixels. `native_justice.json.case_responsive_reference`. |
 | Intelligence report byline depends on whether input or rendering rebuilds the text first. | Approval pending for consistently retaining the renderer's Prepared by prefix. The existing staged provider uses that variant; full report-detail parity is not accepted. | Protected105001 on2026-11-12 invalidates only the diagnostic menu text width, then invokes render versus input: renderer4789b5 adds Prepared by, input4761bc uses officer_name directly. Mixed live104816 differs by637 pixels only in this byline. `native_justice.json.intelligence_report_byline_reference`. |
 | Justice's conspiracy case title says “Conspiracy to alow labor”. | No correction approved or implemented; preserve the native title. | Protected174105 on2026-11-11 changes one owned test case through all19 crime types and compares the native case widget text with formatter46d660. Type3 matches this spelling in both. `native_justice.json.caption_reference`. |
 | Justice witness “Reported” uses the event year instead of the report year. | No correction approved or implemented; preserve native output. | Protected182446 on2026-11-11 changes the first witness's reported_year106→107 while retaining event year106. Native still displays “Reported: 15th Slate, 106”, matching the owned formatter. Builder473eaa loads offsetc (year), although its day/month uses reported_year_tick at74. The field is restored. `native_justice.json.witness_dates_reference`. |
@@ -1184,6 +1185,29 @@ failed missing explicit boolean types; corrected checks pass. DF46372 closes
 unsaved, source/prefs preserved, serial30FPS, GPU48C sampled. Only known Godot
 shutdown diagnostics remain. Closed tab, overflowing case lists, other sizes
 and physical numeric-key delivery are not claimed by this live run.
+
+Justice case injured-party and status headings use the native multiline column
+width, moving actions and witnesses down when they wrap. Button hitboxes and
+witness scrollbar geometry use the same measured heading height. Closed cases
+omit the empty-witness label; Open/Cold retain native "No witnesses.". Witness
+descriptions keep their observed native unbounded drawing behavior.
+
+Final mixed144725 on2026-11-12 covers all three first cases at912x552, fresh
+selection at that size, and restored1200x800. Eight of nine full panel crops are
+pixel-identical. Minimum Open Interrogate opens the correct crime and Left
+returns to it. Native multiline types are independently recorded in widget dumps.
+The first Open shrink retains native's old eight-row witness viewport until
+reselection; DF3D computes four immediately. This3051-pixel difference is a
+pending maintainer decision in the native-bug register, not full resize acceptance.
+Initial144123 exposed missing heading wraps and the incorrect Closed empty label;
+intermediate144525 isolated the stale native viewport after those fixes.
+
+`case_responsive_reference` records exact crops/hashes and limits. Core19 and
+`justice-case-responsive-final` state/composition pass. DF28132 closes unsaved
+with source/prefs preserved, serial30FPS, GPU47–53C sampled. Known Godot shutdown
+diagnostics qualify the live run as passed_with_known_issues. Enable
+CASE_RETURN/CASE_RESIZE/WIRE/RENDER through the protected Justice lane. Protocol
+and bridge are unchanged; public Justice remains gated.
 
 Protected `stockpile-storage-native-input-20261111-191326` verifies this controller
 through the real semantic action service on all three case tabs, initial detail

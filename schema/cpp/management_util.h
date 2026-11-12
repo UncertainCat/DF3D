@@ -183,8 +183,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 202;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v202";
+inline constexpr uint32_t kManagementVersion = 203;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v203";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -1571,9 +1571,10 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         for(size_t i=0;i<4;++i)if(i!=kind && sizes[i])return "mixed intelligence graph kinds";
         const auto reference=[](int32_t index,uint32_t total){return index>=-1 && (index==-1 || uint32_t(index)<total);};
         for(const auto* row:*p->actors()){
-          if(!row || row->historical_figure()<0 || row->identity()< -1 || !text(row->name()) || !reference(row->principal_organization(),p->organization_count()) || !row->aliases() || !row->organizations() || !row->plots() || row->aliases()->size()>65536 || row->organizations()->size()>65536 || row->plots()->size()>65536)return "invalid intelligence actor";
+          if(!row || row->historical_figure()<0 || row->identity()< -1 || !text(row->name()) || !reference(row->principal_organization(),p->organization_count()) || !row->aliases() || !row->organizations() || !row->plots() || !row->lines() || row->lines()->size()>65536 || row->aliases()->size()>65536 || row->organizations()->size()>65536 || row->plots()->size()>65536)return "invalid intelligence actor";
           bytes+=64+4*(size_t(row->aliases()->size())+row->organizations()->size()+row->plots()->size());
           for(auto id:*row->aliases())if(id<0)return "invalid intelligence alias";
+          for(const auto* line:*row->lines()){bytes+=8;if(!text(line))return "invalid intelligence actor text";}
           for(auto id:*row->organizations())if(id<0 || !reference(id,p->organization_count()))return "invalid intelligence organization link";
           for(auto id:*row->plots())if(id<0 || !reference(id,p->plot_count()))return "invalid intelligence plot link";
         }
@@ -1581,7 +1582,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
           if(!row || !text(row->name()) || !reference(row->principal_actor(),p->actor_count()) || row->first_node()>p->node_count() || row->node_count()>p->node_count()-row->first_node())return "invalid intelligence organization";bytes+=48;
         }
         for(const auto* row:*p->plots()){
-          if(!row || row->agreement()<0 || row->master()< -1 || !text(row->name()))return "invalid intelligence plot";bytes+=32;
+          if(!row || row->agreement()<0 || row->master()< -1 || !reference(row->organization(),p->organization_count()) || !text(row->name()))return "invalid intelligence plot";bytes+=32;
         }
         for(const auto* row:*p->nodes()){
           if(!row || row->organization()>=p->organization_count() || !reference(row->actor(),p->actor_count()) || !reference(row->parent(),p->node_count()) || !text(row->label()) || !text(row->name()) || !text(row->status()) || row->foreground()<0 || row->foreground()>7 || row->background()<0 || row->background()>7 || row->bright()<0 || row->bright()>1)return "invalid intelligence node";bytes+=64;

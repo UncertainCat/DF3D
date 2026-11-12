@@ -158,7 +158,7 @@ TEST_CASE("Intelligence detail owns lines after wire retirement") {
 
 TEST_CASE("Intelligence graph decoding owns names and cross-page references") {
  flatbuffers::FlatBufferBuilder b;auto none=b.CreateVector(std::vector<int32_t>{});
- auto row=m::CreateJusticeGraphActor(b,907,-1,b.CreateString("synthetic actor"),b.CreateVector(std::vector<int32_t>{42}),0,none,b.CreateVector(std::vector<int32_t>{0}));
+ auto row=m::CreateJusticeGraphActor(b,907,-1,b.CreateString("synthetic actor"),b.CreateVector(std::vector<int32_t>{42}),0,none,b.CreateVector(std::vector<int32_t>{0}),b.CreateVector(std::vector{b.CreateString("synthetic detail")}));
  auto graph=m::CreateJusticeGraphPage(b,m::JusticeGraphKind::Actors,1,1,1,0,b.CreateVector(std::vector{row}),b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeGraphOrganization>>{}),b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeGraphPlot>>{}),b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeGraphNode>>{}));
  auto rows=b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeCaseRow>>{});
  m::JusticeStateBuilder j(b);j.add_tab(5);j.add_list_revision(33);j.add_total(1);j.add_rows(rows);j.add_graph(graph);auto result=j.Finish();

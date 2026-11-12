@@ -2268,12 +2268,13 @@ table JusticeGraphActor {
   historical_figure:int32 = -1; identity:int32 = -1; name:string (required);
   aliases:[int32] (required); principal_organization:int32 = -1;
   organizations:[int32] (required); plots:[int32] (required);
+  lines:[string] (required); // Native alias/relationship text before viewer clipping.
 }
 table JusticeGraphOrganization {
   name:string (required); principal_actor:int32 = -1;
   first_node:uint32; node_count:uint32;
 }
-table JusticeGraphPlot { agreement:int32 = -1; master:int32 = -1; name:string (required); }
+table JusticeGraphPlot { agreement:int32 = -1; master:int32 = -1; name:string (required); organization:int32 = -1; }
 table JusticeGraphNode {
   organization:uint32; actor:int32 = -1; parent:int32 = -1;
   sort:int32; tier:int32;
@@ -2496,7 +2497,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 202;
+  schema_version:uint32 = 203;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2567,7 +2568,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 202;
+  schema_version:uint32 = 203;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

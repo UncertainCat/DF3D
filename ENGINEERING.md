@@ -41,6 +41,16 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+Management protocol203 appends required actor detail lines and a plot's
+organization index to the graph contract. Lines retain native alias/relationship
+wording before viewer clipping; organization references address the same graph
+receipt. Older recordings imply neither field. Both defaults and the mailbox
+are203 (`Local\\df3d_management_v203`); bridge and client must be rebuilt together.
+Protocol202 graph lifecycle and paging semantics remain unchanged. The captions
+adapter and presentation are being integrated; this migration alone does not
+establish their native acceptance.
+
+
 Management protocol202 adds read-only `JusticeIntelligenceGraphRead` with tab5
 and a required Actors/Organizations/Plots/Nodes page kind. The four streams
 share one graph receipt and carry total counts for reference validation. Nodes
@@ -50,8 +60,7 @@ one receipt before publishing links. Nonzero offsets require a receipt; graph
 reads reject report, crime, candidate, query/sort and mutation selectors.
 
 Pages carry at most64 records within the existing384KiB payload budget. Old
-recordings imply no graph facts. Both defaults and the mailbox are202
-(`Local\\df3d_management_v202`); bridge and client must be rebuilt together.
+recordings imply no graph facts. Protocol203 supersedes the202 defaults/mailbox; rebuild bridge and client together.
 The bridge hashes the complete owned graph before slicing a requested stream;
 the model and extension copy all strings and references. The Intelligence
 controller loads all four streams under one receipt, verifies organization node

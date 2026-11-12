@@ -195,7 +195,7 @@ TEST_CASE("Intelligence graph requests bind pages and exclude report and mutatio
 TEST_CASE("Intelligence graph pages reject dangling edges and mixed kinds") {
  for(int fault=0;fault<8;++fault){flatbuffers::FlatBufferBuilder b;
   const auto empty=b.CreateVector(std::vector<int32_t>{});
-  const auto actor=m::CreateJusticeGraphActor(b,907,-1,b.CreateString("synthetic actor"),empty,fault==1?1:0,empty,b.CreateVector(std::vector<int32_t>{fault==2?1:0}));
+  const auto actor=m::CreateJusticeGraphActor(b,907,-1,b.CreateString("synthetic actor"),empty,fault==1?1:0,empty,b.CreateVector(std::vector<int32_t>{fault==2?1:0}),b.CreateVector(std::vector<flatbuffers::Offset<flatbuffers::String>>{}));
   const auto org=m::CreateJusticeGraphOrganization(b,b.CreateString("synthetic organization"),0,0,0);
   const auto page=m::CreateJusticeGraphPage(b,m::JusticeGraphKind::Actors,1,1,1,0,b.CreateVector(std::vector{actor}),b.CreateVector(fault==3?std::vector{org}:std::vector<flatbuffers::Offset<m::JusticeGraphOrganization>>{}),b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeGraphPlot>>{}),b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeGraphNode>>{}));
   auto rows=b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeCaseRow>>{});

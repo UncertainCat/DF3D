@@ -65,7 +65,31 @@ retains this evidence. This is static discovery plus live address classification
 not live effect acceptance or permission to bypass current-case admission,
 confirmation, revision checks or receipt deduplication. Button eligibility,
 the confirmation workflow and protected native-versus-provider effect comparison
-remain required. No conviction command is exposed yet.
+remain required. No public conviction command is exposed yet.
+
+`justice_action_native.h::convict` now calls this pinned effect directly after
+checking live crime/unit identity, expected accused and current candidate
+membership. It does not construct widgets, read menu state or restore the native
+refresh notification. The diagnostic `justice-conviction-probe` supplies map/save
+admission; product transport must additionally supply session/revision checks and
+receipt deduplication. Partial exceptions remain Unknown and must not be replayed.
+
+Protected native `20261111-222032` clicks the first Convict candidate for case9:
+the row click immediately convicts unit5698 without a separate confirmation
+dialog. Protected provider `20261111-222215` loads a fresh clone and performs the
+same effect through the adapter. Before/after crime identity, punishment fields,
+both counters, the new history event and all changed emotion rows match exactly.
+One creature's emotions change and one conviction history event is added. A stale
+repeat is rejected with no changes to those observations. Both runs close unsaved
+and preserve the source save; native30FPS, no viewer. GPU samples are61C/35%/96.98W
+and61C/29%/84.56W respectively, not peak measurements. MSVC bridge build passes;
+installed plugin SHA256 is`915e64ab3831e33100022d5db7919f8305bfa214ea6b02cfc736cb3a5349cb70`.
+Protocol193 is unchanged. `native_justice.json.conviction_effect_reference` retains
+the bounded comparison and hashes. This covers one ordinary historical identity
+and prison punishment; assumed identities, severe punishment counters, other
+thought branches, transport/lifecycle and the rendered DF3D picker are not yet
+accepted. Native post-click help overlays the captured screenshot, so this is
+effect evidence rather than unobscured post-action visual acceptance.
 
 The staged `justice_panel.gd`/`justice_view.gd` now renders the read-only Open,
 Closed and Cold case surface through the typed controller. Installed native

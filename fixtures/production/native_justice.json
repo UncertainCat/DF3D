@@ -8107,5 +8107,85 @@
       "Conviction effects not compared to provider",
       "No conviction command exposed"
     ]
+  },
+  "conviction_effect_reference": {
+    "native_source": "build\\stockpile-storage-native-input-20261111-222032",
+    "provider_source": "build\\stockpile-storage-native-input-20261111-222215",
+    "status": "passed",
+    "crime_id": 9,
+    "unit_id": 5698,
+    "before": {
+      "accused": -1,
+      "accused_hf": {
+        "hfid": -1,
+        "historical_hfid": -1,
+        "identities": [],
+        "visual_hfid": -1
+      },
+      "counters": [
+        0,
+        0
+      ],
+      "flags": 6,
+      "hammerstrikes": 0,
+      "history_count": 54231,
+      "prison_time": 1,
+      "punishment_flags": 1
+    },
+    "after": {
+      "accused": 5698,
+      "accused_hf": {
+        "hfid": 9317,
+        "historical_hfid": 9317,
+        "identities": [],
+        "visual_hfid": 9317
+      },
+      "counters": [
+        0,
+        0
+      ],
+      "flags": 6,
+      "hammerstrikes": 0,
+      "history_count": 54232,
+      "prison_time": 1,
+      "punishment_flags": 1
+    },
+    "new_events": [
+      {
+        "convicted_hf": 9317,
+        "convicter_entity": 865,
+        "crime": 5,
+        "hammerstrikes": 0,
+        "id": 64037,
+        "plot_flags": 0,
+        "prison_time": 1,
+        "punishment_flags": 1,
+        "seconds": 157249,
+        "type": 130,
+        "year": 106
+      }
+    ],
+    "changed_emotion_units": [
+      7124
+    ],
+    "exact_fields_compared": [
+      "before",
+      "after",
+      "new_events",
+      "changed_emotions"
+    ],
+    "native_receipt_sha256": "faf14eaaa82934a83c462864e452c3e333023ec94a1b14be26c7ac318696c307",
+    "provider_receipt_sha256": "b63939f34c0bea65739e02689f0ebc420eab45c4c11dfeae1bd9ab9f73f22daa",
+    "stale_repeat_rejected": true,
+    "native_row_click_applies_immediately": true,
+    "source_preserved": true,
+    "fps_cap": 30,
+    "limitations": [
+      "One ordinary historical identity and prison punishment only",
+      "Assumed identity and severe punishment counters not exercised",
+      "Other thought branches not exercised",
+      "No action transport or DF3D picker acceptance",
+      "Native post-action help overlays screenshot"
+    ]
   }
 }

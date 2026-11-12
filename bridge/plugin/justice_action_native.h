@@ -8,6 +8,32 @@
 
 namespace df3d_justice {
 enum class ActionOutcome { Unsupported, Rejected, Applied, Unknown };
+// The native row callback474dd0 delegates simulation effects to46f0d0.
+// This routine reads simulation data, not menu selections. Its final write
+// invalidates native Justice (do_init); do not save/restore that notification.
+// Caller supplies safe-point/session admission and receipt deduplication. Never
+// replay Unknown: history and thoughts may already have changed.
+inline ActionOutcome convict(df::crime* crime,df::unit* unit,int32_t expectedAccused) {
+    if(!crime || !unit || df::crime::find(crime->id)!=crime || df::unit::find(unit->id)!=unit ||
+       crime->accused!=expectedAccused)return ActionOutcome::Rejected;
+    const auto candidates=convictionCandidates(crime);
+    if(!candidates)return ActionOutcome::Unsupported;
+    if(std::none_of(candidates->begin(),candidates->end(),[unit](const CandidateFact& row){return row.unitId==unit->id;}))
+        return ActionOutcome::Rejected;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool pinned=[base] {
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x5f6;++i){hash^=base[0x46f0d0+i];hash*=UINT64_C(1099511628211);}
+        return hash==UINT64_C(0xaaec6a9f4cfce197);
+    }();
+    if(!pinned)return ActionOutcome::Unsupported;
+    static_assert(offsetof(df::crime,accused)==0x40 && offsetof(df::crime,accused_hf)==0x48);
+    static_assert(offsetof(df::unit,id)==0x130 && offsetof(df::unit,hist_figure_id)==0xc30);
+    try {
+        reinterpret_cast<void(*)(df::crime*,df::unit*)>(base+0x46f0d0)(crime,unit);
+        return ActionOutcome::Applied;
+    }catch(...) {return ActionOutcome::Unknown;}
+}
 // Native474550 inlines the report changes around a global Justice-map write.
 // There is no callable semantic boundary for that handler. Keep the audited
 // effects here, use native identity/job helpers, and never update its menu map.

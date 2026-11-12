@@ -2783,6 +2783,15 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
           }catch(const std::exception&){return CR_WRONG_USAGE;}
         }
+        if(parameters[0]=="justice-conviction-probe") {
+          if(parameters.size()!=4)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          try {
+            const auto outcome=df3d_justice::convict(df::crime::find(std::stoi(parameters[1])),
+              df::unit::find(std::stoi(parameters[2])),std::stoi(parameters[3]));
+            out.print("{}\n",int(outcome));return CR_OK;
+          }catch(const std::exception&){return CR_WRONG_USAGE;}
+        }
         if(parameters[0]=="justice-interrogation-probe") {
           if(parameters.size()!=4)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;

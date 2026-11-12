@@ -210,6 +210,16 @@ require('gui.script').start(function()
      active=b.spec_sub_flag.active,frame=df.global.world.frame_counter}
     assert(df.global.pause_state and df.global.world.frame_counter==frame)
     capture('defaults-'..entry[1])
+    if os.getenv('DF3D_ZONE_ACTIVE_AUDIT')=='1'then
+     local original_first,original_second=raw.i1,raw.i2
+     local function active_snapshot(label)
+      local children={};for _,child in ipairs(b.contained_buildings)do children[#children+1]=child.id end
+      records[#records+1]={name='active-'..entry[1]..'-'..label,id=b.id,type=entry[1],active=b.spec_sub_flag.active,first=raw.i1,second=raw.i2,children=children}
+     end
+     active_snapshot('before');click(38,9);assert(not b.spec_sub_flag.active,'Native suspend did not disable zone');active_snapshot('off')
+     click(38,9);assert(b.spec_sub_flag.active,'Native suspend did not restore zone');active_snapshot('on')
+     raw.i1=original_first;raw.i2=original_second
+    end
    end
    -- Controlled native oracle: only the target-center list is provisioned.
    -- Rectangle creation and direction selection still run through actual clicks.

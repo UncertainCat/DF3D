@@ -6,6 +6,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
+| Zone Active toggles OR both low bits into the settings union regardless of zone type, changing unrelated options. | Decision pending on preserving unrelated settings. Current staged Lua changes only Active but still performs an unaudited DFHack membership refresh; no correction accepted. | Protected151907 on2026-11-12: Pen1→3, Pond2→3, Tomb1→3, Archery dir_x1→3; Gathering7 stays7. Both off/on retain3. Native34b436..34b493 changes Active then ORs1 and2 at zone+164. `native_zone_defaults.json.active_toggle_reference`. |
 | Justice's Name sort tooltip advertises Ctrl+n, but the native sort command leaves the list unchanged. | No correction approved or implemented; preserve inactive shortcut. | Protected130514 on2026-11-12 sends UNITLIST_SORT_NAME before filter focus in Guard, Convicts, Interrogate and Convict. Native priorities and ordered row IDs remain unchanged; FILTER works in the same lists. `native_justice.json.filter_keyboard_reference`. |
 | Justice witness captions can extend past the panel edge. | No correction approved or implemented; preserve native full captions. | Protected150238 on2026-11-12 rebuilds a case after a controlled long witness name. Constructor14195c0 sets a120-cell minimum and the caption draws past the panel. `native_justice.json.witness_intrinsic_width_reference`. |
 | Justice witness viewport retains its previous row count after shrinking the window. | Approval pending for retaining DF3D's immediate capacity recalculation. Current staged behavior differs; no public acceptance. | Protected144525/144725 on2026-11-12: resizing1200x800 to912x552 leaves native num_visible8; reselecting the same case yields4. Only that first resize differs in3051 panel pixels. `native_justice.json.case_responsive_reference`. |
@@ -15055,6 +15056,39 @@ native editing-caption pixels and main-scene connection remain unverified; this
 is session-lifecycle acceptance, not a completed typing UI.
 
 ## Locations integration verification
+
+### Current Zones revalidation and remaining semantic audit
+
+Protected `areas-acceptance-20261112-151424 -ControllerScene -ZonesOnly`
+revalidates the existing main-scene Zones workflow against management203. Creation,
+inline naming, owner selection/recentering/removal, immediate repaint/erase,
+elevation/exit retention, removal, boundary cases and small-window Sand/Clay
+reachability pass. The native log contains58 semantic pass records, including
+setup/teardown; this is not58 distinct user workflows. The repaint-away capture
+was inspected. Owned DF40908 exits unsaved with two unchanged save manifests;
+the only diagnostic is the known separate-render-thread notice. Both graphical
+processes are capped at30FPS; sampled GPU47–50C, up to30% load. The Areas launcher
+now explicitly caps graphical Godot drivers at30FPS; headless drivers are unchanged.
+
+Current control wiring includes location access, quantities, recognition, ordinary
+and religious staffing, specialization and naming. Historical statements about
+unspecified unfinished Details controls do not establish current missing controls.
+This audit does identify remaining reconstructed zone effects: `areas.lua` calls
+DFHack `notifyCivzoneModified` for Active and non-gathering settings changes. That
+helper removes/rebuilds reciprocal room membership, unlike the observed native
+inline Active handler. Its replacement still needs scoped semantic verification.
+
+Protected `stockpile-storage-native-zone-defaults-20261112-151907` compares actual
+Active off/on clicks for five newly created native zone types. Native also changes
+the settings union's low bits; the separate bug-register decision is pending.
+The oracle records empty contained-building lists, so it does not establish live
+nonempty membership preservation. Settings are restored before proceeding; owned
+DF34508 exits unsaved with source/preferences preserved. The earlier151743 probe
+used a nonexistent child field, and151821 clicked Repaint instead of Active;
+neither is acceptance. `native_zone_defaults.json.active_toggle_reference` and
+`current_main_scene_reference` retain bounded evidence. Runtime zone mutations
+and public exposure remain unchanged. Core19 passes; a full readiness audit and
+current Locations-suite revalidation remain outstanding.
 
 ### Zones palette at minimum height
 

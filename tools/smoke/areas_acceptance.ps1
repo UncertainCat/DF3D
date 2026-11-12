@@ -197,7 +197,8 @@ try {
  if($NamingOnly){$driver='location_name_live.gd'}
  if($RecognitionOnly){$driver='location_recognition_live.gd'}
  if($ReligiousStaffOnly){$driver='location_religious_staff_live.gd'}
- $g=Start-ContainedProcess -Exe $(if($env:DF3D_GODOT){$env:DF3D_GODOT}else{'C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'}) -Arguments "$renderer --path `"$project`" --script res://tests/$driver --log-file `"$out/godot.log`"" -WorkingDir $project
+ $frameCap=if($renderer -notmatch '--headless'){'--max-fps 30'}else{''}
+ $g=Start-ContainedProcess -Exe $(if($env:DF3D_GODOT){$env:DF3D_GODOT}else{'C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'}) -Arguments "$renderer $frameCap --path `"$project`" --script res://tests/$driver --log-file `"$out/godot.log`"" -WorkingDir $project
  while(-not $g.HasExited -and (Get-Date) -lt $deadline) {
   if(Test-Path "$out/verify.txt") {
    $index=[int](Get-Content -Raw "$out/verify.txt")

@@ -9513,5 +9513,162 @@
       "continuous_peak": false
     },
     "plugin_sha256": "875027132F27E34ECB57B2C64ED30C56D0950609804BA89638AAE7CB1FED325A"
+  },
+  "guard_provider_reference": {
+    "run": "stockpile-storage-native-input-20261112-012334",
+    "status": "passed",
+    "protocol": 198,
+    "owned_df_pid": 40108,
+    "source_preserved": true,
+    "native_fps": 30,
+    "viewer_launched": false,
+    "samples": [
+      {
+        "name": "baseline",
+        "native_caption": "Desired metal cages and chains in dungeons: 0 of 14",
+        "native_ids": [
+          5813
+        ],
+        "provider": {
+          "available": 0,
+          "caption": "Desired metal cages and chains in dungeons: 0 of 14",
+          "color": 12,
+          "desired": 14,
+          "members": [
+            {
+              "rank": 2000,
+              "unit_id": 5813
+            }
+          ]
+        },
+        "ranks": {
+          "5813": 2000
+        }
+      },
+      {
+        "name": "individual-enforcer",
+        "native_caption": "Desired metal cages and chains in dungeons: 0 of 14",
+        "native_ids": [
+          5813
+        ],
+        "provider": {
+          "available": 0,
+          "caption": "Desired metal cages and chains in dungeons: 0 of 14",
+          "color": 12,
+          "desired": 14,
+          "members": [
+            {
+              "rank": 10000,
+              "unit_id": 5813
+            }
+          ]
+        },
+        "ranks": {
+          "5813": 10000
+        }
+      },
+      {
+        "name": "execution-precedence",
+        "native_caption": "Desired metal cages and chains in dungeons: 0 of 14",
+        "native_ids": [
+          5813
+        ],
+        "provider": {
+          "available": 0,
+          "caption": "Desired metal cages and chains in dungeons: 0 of 14",
+          "color": 12,
+          "desired": 14,
+          "members": [
+            {
+              "rank": 1000000,
+              "unit_id": 5813
+            }
+          ]
+        },
+        "ranks": {
+          "5813": 1000000
+        }
+      },
+      {
+        "name": "without-executions",
+        "native_caption": "Desired metal cages and chains in dungeons: 0 of 14",
+        "native_ids": [
+          5813
+        ],
+        "provider": {
+          "available": 0,
+          "caption": "Desired metal cages and chains in dungeons: 0 of 14",
+          "color": 12,
+          "desired": 14,
+          "members": [
+            {
+              "rank": 2000,
+              "unit_id": 5813
+            }
+          ]
+        },
+        "ranks": {
+          "5813": 2000
+        }
+      },
+      {
+        "name": "without-enforcement",
+        "native_caption": "Desired metal cages and chains in dungeons: 0 of 14",
+        "native_ids": [],
+        "provider": {
+          "available": 0,
+          "caption": "Desired metal cages and chains in dungeons: 0 of 14",
+          "color": 12,
+          "desired": 14,
+          "members": []
+        },
+        "ranks": {
+          "5813": 2000
+        }
+      },
+      {
+        "name": "no-guard-assignments",
+        "native_caption": "Desired metal cages and chains in dungeons: 0 of 14",
+        "native_ids": [],
+        "provider": {
+          "available": 0,
+          "caption": "Desired metal cages and chains in dungeons: 0 of 14",
+          "color": 12,
+          "desired": 14,
+          "members": []
+        },
+        "ranks": {
+          "5813": 2000
+        }
+      }
+    ],
+    "restored": true,
+    "scope": [
+      "Native capacity caption, roster membership, and rank match in six scenarios",
+      "Queries preserve native Justice bytes, crimes, witness records and RNG",
+      "Execution precedence and squad leader bonus checked",
+      "Temporary assignment vectors and squad link restored"
+    ],
+    "limitations": [
+      "No product transport/controller/view for Guard yet",
+      "Search, sort ordering, navigation, hover and resize not accepted",
+      "Nonzero restraint capacity and population thresholds not exercised",
+      "Ordinary nonleader squad members and inactive/foreign unit exclusions not live exercised"
+    ],
+    "entry_points": {
+      "required_capacity": "e52290",
+      "available_capacity": "e52370",
+      "chain_eligibility": "57c120",
+      "cage_eligibility": "57c160",
+      "resolve_histfig_unit": "13cc4d0",
+      "roster_inline": "4713a5..471a15"
+    },
+    "plugin_sha256": "D7437F86476E5D5D5F30727B3607B021BAF03A1D51265ECC1185042ED2AE0AFF",
+    "gpu_sample": {
+      "temperature_c": 38,
+      "utilization_percent": 8,
+      "power_w": 22.46,
+      "continuous_peak": false
+    }
   }
 }

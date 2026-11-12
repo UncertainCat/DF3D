@@ -118,6 +118,7 @@
 #include "places_native.h"
 #include "objects_native.h"
 #include "justice_native.h"
+#include "justice_guard_native.h"
 #include "justice_action_native.h"
 #include "justice_presentation_native.h"
 #include <sstream>
@@ -2838,6 +2839,16 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               row["rank"]=fact.rank;row["flags"]=fact.flags;result.append(row);}
             out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
           }catch(const std::exception&){return CR_WRONG_USAGE;}
+        }
+        if(parameters[0]=="justice-guard-probe") {
+          if(parameters.size()!=1)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto value=df3d_justice::guardOverview();if(!value)return CR_FAILURE;
+          Json::Value result(Json::objectValue),rows(Json::arrayValue);
+          result["available"]=value->available;result["desired"]=value->desired;
+          result["caption"]=DF2UTF(value->caption);result["color"]=value->color;
+          for(const auto& fact:value->members){Json::Value row(Json::objectValue);row["unit_id"]=fact.unitId;row["rank"]=fact.rank;rows.append(row);}
+          result["members"]=rows;out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
         }
         if(parameters[0]=="justice-cases-probe") {
           if(parameters.size()!=1)return CR_WRONG_USAGE;

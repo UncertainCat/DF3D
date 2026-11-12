@@ -548,6 +548,48 @@ the comparisons. Enable `DF3D_JUSTICE_DETAILS=1` with the native flag. This
 accepts date text only; witness identity/description/status and case-detail
 rendering still need their semantic providers and public-screen integration.
 
+`df3d_justice::guardOverview` in `justice_guard_native.h` calls nativee52290
+for desired dungeon capacity ande52370 for available restraints. These readers
+use semantic active units and Chain/Cage building lists, not Justice caches.
+Native virtual slot60 is pinned to57c120(chain) and57c160(cage), including the
+latter's material resolver14add70. Caption assembly follows4701d1..4702bb with
+owned strings and native integer formatter52c130; the insufficient/sufficient
+colors are bright red/green. Counts retain the native signed16-bit behavior.
+
+The guard roster is inline in the page builder at4713a5..471a15, so the adapter
+isolates that semantic selection rather than invoking a widget constructor.
+It traverses the fortress entity's EXECUTIONS assignments in reverse, then
+LAW_ENFORCEMENT in reverse. Native13cc4d0 resolves historical figures to units;
+138ed20 supplies the controllable-unit predicate and inactive units are excluded.
+Execution holders rank1000000. A law holder without a squad ranks10000; squad
+positions are traversed in reverse with rank1000, plus1000 for the appointed
+leader. Previously inserted units are skipped, preserving execution precedence.
+The output owns stable unit IDs/ranks in insertion order; filtering and user
+sorting still require integration. No native guard list or guardvals map enters
+runtime. Static offsets, semantic global bindings and executable spans are pinned.
+
+Protected `stockpile-storage-native-input-20261112-012334` compares caption,
+member IDs and native guardvals ranks across six scenarios: baseline squad
+leader5813(rank2000), individual enforcer(rank10000), execution precedence
+(rank1000000), no executions, no enforcement and neither role. All match; the
+capacity caption is “Desired metal cages and chains in dungeons: 0 of 14”.
+Temporary responsibility vectors and squad link are restored; queries preserve
+Justice/crime/witness/RNG bytes. Native guardvals retains an old entry after
+removing all roles, but its displayed roster is empty and the provider likewise
+returns no members. That unused cache entry is not a runtime input or exception.
+Initial011856 rejected an incorrect historical-figure storage binding before
+calling native code.012037/012142 caught the missing leader rank increment;
+the corrected branch follows47180f..47183c. No failed run establishes acceptance.
+
+DF40108 closes unsaved with source preservation and restored preferences. Native
+runs at30FPS without a viewer; GPU sample38C/8%/22.46W is not a peak. MSVC
+`justice-guard-build.log` and all19 core tests pass. Installed protocol198 bridge
+SHA256 is `d7437f86476e5d5d5f30727b3607b021baf03a1d51265ecc1185042ed2ae0aff`.
+`native_justice.json.guard_provider_reference` records the bounded evidence.
+Enable `DF3D_JUSTICE_GUARD=1` with the native lane. Product Guard transport/view,
+search/sorting/navigation and nonzero restraint/population-threshold cases remain
+unfinished; the screen stays hidden.
+
 `df3d_justice::interrogationCandidates` reuses the owned candidate query and
 stable-partitions scheduled candidates first after sorting. The generic native
 pipeline142cb85 calls1430be0; the latter is pinned. Its predicate wrappers
@@ -761,7 +803,7 @@ no viewer. MSVC build `justice-caption-build.log` and core19
 protocol191 remains unchanged. The later list reference above covers membership
 and ordering; details and effects still require native helpers and verification.
 
-The Justice screen remains unimplemented and gated. Protected173422 on2026-11-11 captures
+The full Justice screen remains incomplete and gated. Protected173422 on2026-11-11 captures
 all six native categories at1200x800: Open cases, Closed cases, Cold cases,
 Fortress guard, Convicts and Intelligence. The paused fixture contains17 semantic
 crime records. `fixtures/production/native_justice.json` preserves bounded

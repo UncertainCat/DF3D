@@ -213,6 +213,9 @@ func run() -> void:
 		if interview_view!=null:
 			await process_frame;await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(directory+"/justice-interrogate-view.png")
+			var down:=InputEventKey.new();down.pressed=true;down.keycode=KEY_DOWN;Input.parse_input_event(down);await create_timer(0.1).timeout
+			await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/justice-interrogate-away-view.png")
+			var up:=InputEventKey.new();up.pressed=true;up.keycode=KEY_UP;Input.parse_input_event(up);await create_timer(0.1).timeout
 		var repeated:=await request("justice",old_intent)
 		check(repeated.get("justice",{}).get("outcome")==C.JusticeOutcome.Stale,"Repeated interrogation receipt accepted")
 		if interview_view!=null:await pointer_click(interview_view.position+interview_view.sort_rect(0).get_center())

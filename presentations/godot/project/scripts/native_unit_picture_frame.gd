@@ -4,9 +4,13 @@ extends RefCounted
 # different image. Select the original nine variants retained by the asset index.
 var normal: Texture2D
 var selected: Texture2D
+var highlighted: Texture2D
+var selected_highlighted: Texture2D
 
 func configure(world) -> void:
 	selected=world.ui_texture("BUTTON_PICTURE_BOX_SELECTED")
+	highlighted=world.ui_texture("BUTTON_PICTURE_BOX_HIGHLIGHTED")
+	selected_highlighted=world.ui_texture("BUTTON_PICTURE_BOX_SEL_HIGHLIGHTED")
 	var cells:Array[Texture2D]=[]
 	for index in 9:
 		var cell:Texture2D=world.ui_texture("BUTTON_PICTURE_BOX",index)
@@ -25,5 +29,6 @@ func configure(world) -> void:
 	normal=ImageTexture.create_from_image(image)
 	world.set_meta("df3d_unit_picture_frame",{"cells":cells,"normal":normal})
 
-func texture(is_selected: bool) -> Texture2D:
+func texture(is_selected: bool,is_highlighted:=false) -> Texture2D:
+	if is_highlighted:return selected_highlighted if is_selected else highlighted
 	return selected if is_selected else normal

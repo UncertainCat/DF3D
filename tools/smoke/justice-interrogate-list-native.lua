@@ -38,6 +38,9 @@ assert(json.encode(selected)==json.encode(before),'Checkbox unexpectedly reorder
 local f=assert(io.open(out..'/justice-interrogate-list.json','w'))
 f:write(json.encode({target=target,selected_callback_rva=callback,before=before,selected=selected}));f:close()
 capture('justice-interrogate-grouped')
+local gui=require('gui')
+gui.simulateInput(view,'STANDARDSCROLL_DOWN');settle();capture('justice-interrogate-selected-away')
+gui.simulateInput(view,'STANDARDSCROLL_UP');settle()
 -- Record checkbox-time ordering before requesting a header re-sort.
 click(592,154)
 local sorted=current()

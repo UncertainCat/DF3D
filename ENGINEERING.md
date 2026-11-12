@@ -1253,8 +1253,9 @@ Interrogate test now has a bounded55-second limit.
 Panel crop(32,52)-(976,760) against native004703 differs by318 pixels, all within
 the selected unit7123 portrait at(516,392)-(544,420). Checkbox artwork, scheduled
 caption, selection frame, row order and all remaining panel pixels match. This
-additional appearance mismatch remains unresolved alongside the sorted5815/2459
-portraits; it is not a native-parity exception. Full Justice remains hidden.
+appearance mismatch was the scheduled portrait frame, resolved by133347 below;
+the separate sorted5815/2459 portrait fixes are recorded in their owning sections.
+Full Justice remains hidden.
 Assumed identities and missing figures still lack live acceptance. Controlled
 assigned-job cancellation is covered below; organically progressed interviews
 remain outside that acceptance. `native_justice.json.interrogation_transport_reference` records scope.
@@ -1295,7 +1296,8 @@ also remove a controlled assigned interview job and release its worker.
 The provider required no runtime change. Report/history counts and existing
 menu/RNG/witness guards pass. The scheduled panel still differs from native by
 318 pixels in unit7123's portrait(516,392)-(544,420); all other panel pixels
-match. Earlier hair/dye fixes did not resolve this tint defect.
+match. Earlier hair/dye fixes did not resolve this frame-selection defect;
+the subsequent correction is recorded below.
 
 Both runs preserve source/prefs and close owned DF10736/38384 unsaved, with
 serial30FPS and GPU48–49C samples. Core19 passes; the mixed run has only the
@@ -1303,6 +1305,23 @@ known separate-renderer/finalize/two-ObjectDB diagnostics and is qualified as
 passed_with_known_issues. `interrogation_job_cleanup_reference` retains bounded
 effects and hashes. Enable DF3D_JUSTICE_INTERROGATION_JOBS with INTERROGATION
 for native/provider comparison or WIRE_INTERROGATE for the viewer workflow.
+
+Scheduled interviews now use installed BUTTON_PICTURE_BOX_HIGHLIGHTED or
+BUTTON_PICTURE_BOX_SEL_HIGHLIGHTED according to cursor selection. The green
+portrait background is native scheduled-state artwork, independent of creature
+appearance. Other callers retain their existing normal/selected frames.
+Protected133347 on2026-11-12 compares the scheduled row both selected and after
+Down moves selection away. All portrait pixels match native; the only differences
+in either full panel crop are1176 animated-name pixels on two other rows.
+The actual schedule/sort/cancel flow still removes the controlled interview job
+and releases its worker. This resolves the318-pixel defect retained in010743
+and132956, without changing simulation rules or creature palettes.
+
+Justice state/composition QA `justice-scheduled-picture` and core19 pass.
+Owned DF45028 closes unsaved with source/prefs preserved; serial30FPS and
+GPU48–49C samples. Known Godot shutdown diagnostics qualify the live run as
+passed_with_known_issues. `interrogation_picture_frame_reference` records hashes
+and the two comparisons. Assumed identities and missing figures remain open.
 
 Protected181858 on2026-11-11 compares actual native checkbox clicks with the
 owned action for case9/unit5698. Both schedule exactly one record

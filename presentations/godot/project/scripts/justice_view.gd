@@ -301,7 +301,7 @@ func draw_picker() -> void:
 		var row: Dictionary=state.candidates.rows[state.candidates.first+index];var rect:=picker_rect(index)
 		var selected: bool=row.unit_id==state.candidates.cursor_id
 		patch("BUTTON_RECTANGLE_SELECTED" if selected else "BUTTON_RECTANGLE",Vector2i(rect.position/Vector2(8,12)),int(rect.size.x/8),3)
-		patch("",Vector2i(rect.position/Vector2(8,12)),5,3,picture.texture(selected))
+		patch("",Vector2i(rect.position/Vector2(8,12)),5,3,picture.texture(selected,state.candidates.interrogate and row.interrogation_pending))
 		var portrait: Texture2D=portraits.get(row.unit_id,{}).get("texture")
 		if portrait!=null:draw_texture_rect(portrait,Rect2(rect.position+Vector2(2,2),Vector2(32,32)),false)
 		var d: Dictionary=row.display

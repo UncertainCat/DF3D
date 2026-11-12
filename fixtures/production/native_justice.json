@@ -14252,5 +14252,59 @@
       "stockpile-storage-native-input-20261112-132956/justice-interrogate-grouped.png": "054daf1e4bdb30f9c90bd7951b791e10e0eb57eb1fac6da0f93d79776b8e547f",
       "stockpile-storage-native-input-20261112-132956/justice-interrogate-view.png": "1bec241688ebe02bb8dacafe9971e46992fb4e4eb5c00bade99ea637fbb98b41"
     }
+  },
+  "interrogation_picture_frame_reference": {
+    "source": "build/stockpile-storage-native-input-20261112-133347",
+    "status": "passed_with_known_issues",
+    "scope": "Native scheduled portrait frame, selected and after moving cursor down, at1200x800. Resolves prior318-pixel mismatch; no creature palette or simulation change.",
+    "assets": [
+      "BUTTON_PICTURE_BOX_HIGHLIGHTED",
+      "BUTTON_PICTURE_BOX_SEL_HIGHLIGHTED"
+    ],
+    "fps_cap": 30,
+    "gpu_samples_celsius": [
+      48,
+      49
+    ],
+    "owned_df_closed": 45028,
+    "source_preserved": true,
+    "comparisons": [
+      {
+        "native": "justice-interrogate-grouped.png",
+        "viewer": "justice-interrogate-view.png",
+        "panel_crop": [
+          32,
+          52,
+          976,
+          760
+        ],
+        "different_pixels": 1176,
+        "portrait_different_pixels": 0,
+        "remaining_difference": "606 brown/yellow and570 white/gray animated name pixels on two other rows; all other panel pixels match.",
+        "native_sha256": "11047d08a4d44fa6b4ca8ab7d602d871508ef2428e116aba60f466d906f15ee6",
+        "viewer_sha256": "c22f86d9633b7c7fd1b3dbab0970fed48b79df9229592cd6c7333e11eaaa91b2"
+      },
+      {
+        "native": "justice-interrogate-selected-away.png",
+        "viewer": "justice-interrogate-away-view.png",
+        "panel_crop": [
+          32,
+          52,
+          976,
+          760
+        ],
+        "different_pixels": 1176,
+        "portrait_different_pixels": 0,
+        "remaining_difference": "606 brown/yellow and570 white/gray animated name pixels on two other rows; all other panel pixels match.",
+        "native_sha256": "9e2d644e00fcbd3f8bfc6980efce479c25335eef1b83a0a511ad415d7797cd09",
+        "viewer_sha256": "08eb951f3c8a92ca1b032370292d063b7940e02f0c2856f574d2617e6449ee9b"
+      }
+    ],
+    "job_cleanup": {
+      "job_id_counter_restored": true,
+      "job_removed": true,
+      "subject": 7123,
+      "worker_released": true
+    }
   }
 }

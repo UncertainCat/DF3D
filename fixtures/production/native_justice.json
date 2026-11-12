@@ -11586,5 +11586,49 @@
       "This capture covers the candidate panel, not all remaining Justice workflows.",
       "Known separate-renderer/finalize/two-ObjectDB diagnostics qualify the live result."
     ]
+  },
+  "convicts_sentence_presentation_reference": {
+    "run": "build/stockpile-storage-native-input-20261112-115022",
+    "owned_df_pid": 39380,
+    "source_preserved": true,
+    "status": "passed_with_known_issues",
+    "native_fps": 30,
+    "viewer_fps": 30,
+    "unit_id": 6970,
+    "punishment": {
+      "beating": 1,
+      "hammer_strikes": 2,
+      "prison_counter": 120,
+      "officer": 6970
+    },
+    "scope": [
+      "Native/provider text and order; typed detail reads for all three convicts.",
+      "Full populated sentence/officer/crime panel matches at corresponding name animation phase.",
+      "Actual row selection, empty/cleared search, fresh sheet-location dispatch, stale-detail rejection.",
+      "Temporary punishment removed and freed; owned session closes unsaved."
+    ],
+    "panel_crop": [
+      32,
+      52,
+      976,
+      760
+    ],
+    "panel_different_pixels": 0,
+    "matching_view": "justice-convicts-phase-500.png",
+    "alternate_phase_differences": 735,
+    "alternate_phase_scope": "Only legendary unit6032 name pixels, as in baseline074030.",
+    "limitations": [
+      "No composed inspector navigation acceptance.",
+      "No long/multiple crime wrapping, roster overflow or resize acceptance.",
+      "Known separate-renderer/finalize/two-ObjectDB diagnostics."
+    ],
+    "artifacts": {
+      "justice-convicts.json": "a8145df3fa72f863176426b401917a7527d9e74756262bc8ab359943524d8f71",
+      "justice-convicts-sentence.png": "aa88751f4f5701cfbc27686c4a4836a06af19966f90a312397cc1710e40e85c2",
+      "justice-convicts-view.png": "4665bcec20ea433c225919cdbad19ea3fb49f5ae5e67bddbf70990129f05499f",
+      "justice-convicts-phase-500.png": "4665bcec20ea433c225919cdbad19ea3fb49f5ae5e67bddbf70990129f05499f",
+      "justice-wire-reference.json": "d08b80e7e7a5d588dfe27aa595190b0f380bdea65b0187e9055d2aee6388c689",
+      "job-settings-wire-result.json": "888259657a7a06d1e55702d2b5d738b12aa3b560db57d40d8b9cbcf5ba660ea0"
+    }
   }
 }

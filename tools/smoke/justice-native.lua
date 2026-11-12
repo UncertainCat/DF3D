@@ -184,7 +184,7 @@ if os.getenv('DF3D_JUSTICE_SORTS')=='1' then
 end
 if os.getenv('DF3D_JUSTICE_CONVICTS')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-native%.lua$','justice-convicts-native.lua')
- assert(loadfile(source))(out,view,probe,settle,caption_click,capture)
+ assert(loadfile(source))(out,view,probe,settle,caption_click,capture,bytes)
 end
 if os.getenv('DF3D_JUSTICE_GUARD')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-native%.lua$','justice-guard-native.lua')
@@ -202,7 +202,7 @@ if os.getenv('DF3D_JUSTICE_INTELLIGENCE')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-native%.lua$','justice-intelligence-native.lua')
  assert(loadfile(source))(out,view,probe,settle,caption_click,capture,bytes)
 end
-if os.getenv('DF3D_JUSTICE_WIRE')=='1' and os.getenv('DF3D_JUSTICE_WIRE_INTELLIGENCE')~='1' and os.getenv('DF3D_JUSTICE_WIRE_GRAPH')~='1' then
+if os.getenv('DF3D_JUSTICE_WIRE')=='1' and os.getenv('DF3D_JUSTICE_WIRE_INTELLIGENCE')~='1' and os.getenv('DF3D_JUSTICE_WIRE_GRAPH')~='1' and os.getenv('DF3D_JUSTICE_CONVICTS_SENTENCE')~='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-native%.lua$','justice-wire-native.lua')
  assert(loadfile(source))(out,probe,bytes)
 end

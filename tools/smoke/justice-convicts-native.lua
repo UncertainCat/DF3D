@@ -1,6 +1,6 @@
 -- Protected native oracle. Temporary punishment records exist only in the owned
 -- paused clone and are removed before exit; no runtime widget access is used.
-local out,view,probe,settle,tab,capture=...
+local out,view,probe,settle,tab,capture,bytes=...
 local gui=require('gui');local json=require('json');local g=df.global.gps
 local punishments=df.global.plotinfo.punishments
 local supplied=probe('justice-convicts-probe');assert(#supplied>0,'Fixture requires convicts')
@@ -57,6 +57,11 @@ local ok,err=xpcall(function()
  observe('combined-singular')
  added.hammer_strikes=2;added.prison_counter=120;added.officer=id
  observe('combined-plural-officer');capture('justice-convicts-sentence')
+ if os.getenv('DF3D_JUSTICE_CONVICTS_SENTENCE')=='1' then
+  assert(os.getenv('DF3D_JUSTICE_WIRE_CONVICTS')=='1','Sentence viewer requires Convicts wire mode')
+  local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-convicts%-native%.lua$','justice-wire-native.lua')
+  assert(loadfile(source))(out,probe,bytes)
+ end
 end,debug.traceback)
 if #punishments>original_count then assert(punishments[#punishments-1]==added);punishments:erase(#punishments-1)end
 added:delete();assert(#punishments==original_count)

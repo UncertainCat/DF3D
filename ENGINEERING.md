@@ -401,11 +401,27 @@ status is `passed_with_known_issues` for the established separate-renderer,
 finalize and two ObjectDB shutdown diagnostics. Bounded provenance is retained
 in `native_justice.json.convicts_transport_reference`.
 
+Protected115022 extends Convicts viewer acceptance to a populated sentence:
+unit6970 has two hammer strikes, a beating, two prison days and a named officer.
+The controlled punishment remains present while the real viewer reads and renders
+it, then is removed and freed before the owned session closes unsaved. All three
+convicts' detail facts, actual row selection, empty/cleared filtering, fresh
+sheet-location dispatch and stale-detail rejection pass. The full panel
+crop(32,52)-(976,760) matches native with zero differing pixels at the corresponding
+name-animation phase; the alternate phase differs only in the established735
+legendary-name pixels. Existing runtime rendering required no change.
+
+Owned DF39380 closes unsaved with source/preferences preserved; both applications
+run at30FPS, sampled GPU47C/0%. All19 core checks pass. The existing separate-
+renderer/finalize/two-ObjectDB diagnostics qualify this as passed_with_known_issues.
+Fixture convicts_sentence_presentation_reference retains images, native text and
+typed read evidence. Enable CONVICTS, CONVICTS_SENTENCE, WIRE_CONVICTS, WIRE and
+RENDER under the DF3D_JUSTICE_ prefix to repeat this protected workflow.
+
 Convicts remains staged: alternate sorts, scrolling, hover, keyboard, resize,
-long/multiple crime wrapping, populated sentence rendering and composed inspector
-navigation are not accepted by this baseline. The earlier native-only sentence
-cases do not establish viewer coverage. Intelligence and the documented shared
-candidate artwork gaps remain unfinished.
+long/multiple crime wrapping and composed inspector navigation remain unaccepted.
+Sheet-location dispatch alone does not establish inspector composition. The
+baseline and populated-sentence captures do not establish those other workflows.
 
 The protected oracle reads deferred row builds as well as the selected row's
 name widget: these captures retain unselected rows in the native deferred-build

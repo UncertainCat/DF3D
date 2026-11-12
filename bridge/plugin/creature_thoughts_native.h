@@ -17,6 +17,12 @@ inline bool thoughtDescriptionReady() {
             {0xa94030,0x6a1,UINT64_C(0xd81db68b3c9b33d2)},
             {0xa946e0,0x7c2,UINT64_C(0xdbc3db5f052419ee)},
             {0xc65450,0xaba,UINT64_C(0x47fa672b7bbcd332)},
+            {0x1a7d15,0x16d,UINT64_C(0x3613f07f43a550ca)},
+            {0xaa47b0,0x4b,UINT64_C(0x661c9f89182f8905)},
+            {0xaa4850,0x6e,UINT64_C(0xd802cdd04b552aaa)},
+            {0x1602c60,0xba,UINT64_C(0xdb20e3ff5c8e85ba)},
+            {0x1602ad8,0xb,UINT64_C(0x3803be9098ba43c1)},
+            {0x1602430,0x1a,UINT64_C(0xd23ecfead90e0c1e)},
         };
         for(const auto& p:pins){uint64_t h=UINT64_C(14695981039346656037);for(size_t i=0;i<p.length;++i){h^=base[p.rva+i];h*=UINT64_C(1099511628211);}if(h!=p.hash)return false;}
         return true;
@@ -27,7 +33,8 @@ inline bool thoughtDescriptionReady() {
 // pointer is not passed to a callee. All text storage is owned. World lookups
 // supply names/items/history, including history_event_collection::getName.
 inline std::optional<std::string> thoughtCircumstance(const df::unit* source,
-        int32_t thought,int32_t subthought,int32_t severity,bool normal) {
+        int32_t thought,int32_t subthought,int32_t severity,bool normal,
+        uint32_t emotionFlags=0,bool past=false) {
     if(!source || !df::global::world || !thoughtDescriptionReady())return std::nullopt;
     if(thought<0 || thought>280)return std::string{};
     struct OwnedUnit final:df::unit {OwnedUnit():df::unit(){}} owned;
@@ -40,6 +47,29 @@ inline std::optional<std::string> thoughtCircumstance(const df::unit* source,
     std::string text;
     using Describe=void(*)(df::unit*,std::string*,int32_t,int32_t,int32_t,bool);
     reinterpret_cast<Describe>(base+0xe2c460)(&owned,&text,thought,subthought,severity,normal);
+    // Native1a7d15..1a7e82 is inline in the sheet builder, not a callable
+    // semantic routine. Adapt only its flag dispatch using immutable native
+    // literals and native pronoun helpers; never call the UI/cache builder.
+    // Memory-tab callers omit flags: this elaboration belongs to emotions.
+    if(!normal && (emotionFlags&0x70) && (emotionFlags&0x180)) {
+        std::string object,possessive;
+        using ObjectPronoun=void(*)(uint8_t,std::string*);
+        using PossessivePronoun=void(*)(uint8_t,std::string*,bool);
+        reinterpret_cast<ObjectPronoun>(base+0xaa47b0)(owned.sex,&object);
+        reinterpret_cast<PossessivePronoun>(base+0xaa4850)(owned.sex,&possessive,false);
+        const auto literal=[&](size_t rva){return reinterpret_cast<const char*>(base+rva);};
+        text+=literal(past?0x1602ad8:0x1602d10);
+        text+=literal(0x1602ce8);
+        if(emotionFlags&0x100) {
+            text+=literal(0x1602cd8);text+=object;text+=literal(0x1602cc8);text+=possessive;
+            if(emotionFlags&0x80) {
+                text+=literal(0x1602ca0);text+=possessive;text+=literal(0x1602c88);
+            } else text+=literal(0x1602c60);
+        } else {
+            text+=literal(0x1602c78);text+=possessive;text+=literal(0x1602c88);
+        }
+        text+=literal(past?0x1602440:0x1602430);
+    }
     if(text.size()>65536)return std::nullopt;
     return text;
 }

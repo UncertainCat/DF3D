@@ -11728,5 +11728,30 @@
       "justice-main-sheet-3.png": "13db1d8345105cc44dabe7da228308cd61175862d5475ef5883aac8de23251d7",
       "justice-main-sheet-4.png": "c680e09528a4197739481d1834c0b41889c1a4fd243bcfe0161c2edda4f77067"
     }
+  },
+  "overview_memory_elaboration_reference": {
+    "captured_at": "2026-11-12",
+    "run": "build/stockpile-storage-native-input-20261112-121435",
+    "status": "passed_with_known_issues",
+    "unit_id": 6970,
+    "emotion_id": 23,
+    "emotion_flags": 452,
+    "native_reference": "Inline1a7d15..1a7e82; native object/possessive pronouns aa47b0/aa4850; immutable native text. Owned strings only; no runtime sheet-cache access.",
+    "whole_recalled_clause_matches_native": true,
+    "main_scene_display_inspected": true,
+    "limitations": [
+      "Opening quote and thought wrapping remain incomplete; no whole-Overview parity.",
+      "This sample covers both elaboration flags, past tense, male pronouns; other combinations have code-trace evidence only.",
+      "Known separate-renderer/finalize/two-ObjectDB diagnostics."
+    ],
+    "bridge_sha256": "f189ab1e9746a9c916f9823204699d7ed2946f034c212e046862f3e6a4ee49be",
+    "artifacts": {
+      "justice-sheet-navigation.json": "a8c98c94b63f9fb2e7340aca8980b7651b82473e4b8037dc95952c1c2ed82106",
+      "overview-memory-6970.json": "9fa0580968ed3bbea1e0943462a2efca357a51139195203760c04e31a6fa5b20",
+      "justice-sheet-1.png": "0f66c491f3c5d4938bb880969422e4e36be59eca65f8e31be556aa0dc89ea240",
+      "justice-main-sheet-4.png": "c693dfa3f1efc158acce5d77d2edeac595da7bd1fa21a0faed625f284eb64c1a",
+      "job-settings-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+      "result.json": "55ea401f0907968b16baa48a037a247d52b778f816392f061952e6daa810f1ec"
+    }
   }
 }

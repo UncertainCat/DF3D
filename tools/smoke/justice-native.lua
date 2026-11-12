@@ -220,6 +220,8 @@ if os.getenv('DF3D_JUSTICE_SHEET_NAV')=='1' then
   assert(main.view_sheets.open,'Justice sheet did not open: '..name)
   local sample={tab=name,unit_id=main.view_sheets.active_id,info_open=main.info.open,sheet_type=main.view_sheets.active_sheet}
   sample.skill_groups={}
+  sample.thoughts={}
+  for _,text in ipairs(main.view_sheets.raw_thought_str)do sample.thoughts[#sample.thoughts+1]=dfhack.df2utf(text.value)end
   for group,prefix in ipairs{'labor','combat','other'}do
    local count=main.view_sheets[prefix..'_skill_num'];local ids=main.view_sheets[prefix..'_skill_ind']
    for i=0,count-1 do sample.skill_groups[tostring(ids[i])]=group-1 end

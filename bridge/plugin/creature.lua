@@ -349,7 +349,7 @@ return function(request)
    fact(s,r,'thought',enum(df.unit_thought_type,v.thought));fact(s,r,'strength',v.strength);fact(s,r,'relative_strength',v.relative_strength)
    fact(s,r,'severity',v.severity);fact(s,r,'year',v.year);fact(s,r,'year_tick',v.year_tick);fact(s,r,'subthought_id',v.subthought)
    fact(s,r,'native_circumstance',request.thought_circumstance(u.id,v.thought,v.subthought,v.severity,true))
-   fact(s,r,'native_recalled_circumstance',request.thought_circumstance(u.id,v.thought,v.subthought,v.severity,false))
+   fact(s,r,'native_recalled_circumstance',request.thought_circumstance(u.id,v.thought,v.subthought,v.severity,false,v.flags.whole,v.strength<=0 and v.relative_strength<=0))
   end)
   s.reason='Native circumstance descriptions with observed emotion facts'
  end)

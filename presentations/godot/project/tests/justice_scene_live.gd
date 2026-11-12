@@ -23,6 +23,21 @@ func exercise(expected: Dictionary) -> void:
 			var group:=int(inspector.creature_sheet.fact_value(row,"overview_group",-1))
 			check(sample.skill_groups.has(str(row.id)) and group==int(sample.skill_groups.get(str(row.id),-2)),"Overview skill group differs from native collection")
 		check(owner.panel.visible==bool(sample.info_open),"Justice visibility behind native sheet differs")
+		var native_thoughts: String=" ".join(sample.thoughts)
+		var elaborations:=0
+		var memory_evidence: Array=[]
+		for row in inspector.creature_sheet.records_for("emotions"):
+			var flags:=int(inspector.creature_sheet.fact_value(row,"mood_flags",0))
+			if int(inspector.creature_sheet.fact_value(row,"thought_id",-1)) in [-1,6] or int(inspector.creature_sheet.fact_value(row,"emotion_id",-2)) in [165,166]:continue
+			if (flags&0x70)==0 or (flags&0x180)==0:continue
+			var clause:=str(inspector.creature_sheet.fact_value(row,"native_recalled_circumstance",""))
+			var start:=clause.find(", [C:5:")
+			var suffix:=clause.substr(start) if start>=0 else ""
+			memory_evidence.append({"id":row.id,"flags":flags,"clause":clause,"suffix":suffix,"whole_clause_matches":native_thoughts.contains(clause)})
+			check(suffix.contains("and mulling over the recurring memory ") and native_thoughts.contains(clause),"Recalled emotion elaboration differs from native")
+			elaborations+=1
+		FileAccess.open(directory+"/overview-memory-%d.json"%int(sample.unit_id),FileAccess.WRITE).store_string(JSON.stringify(memory_evidence))
+		check(elaborations>0 if int(sample.unit_id)==6970 else true,"Convict reference no longer exercises recalled emotion elaboration")
 		await process_frame;await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(directory+"/justice-main-sheet-%d.png"%tab)
 		key(KEY_ESCAPE);await process_frame;await drain()

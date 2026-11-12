@@ -429,11 +429,11 @@ wrong Guard height/failed to dismiss reopening help and are not accepted.
 
 Full Overview rendering is not accepted by this navigation check. In crop
 (416,52)-(904,760), Guard differs by32029 pixels and Convict by30457. The Convict
-capture lacks the native opening quote and memory elaboration and shows a
-different last skill. These are unresolved creature-sheet content gaps, independent
-of the now-verified Justice handoff. The current Overview still locally selects
-skill rows and recent thought snippets in creature_sheet.gd; audit native sources
-before changing that content.
+capture lacked the native opening quote and memory elaboration and showed a
+different last skill. The native skill-group and recalled-memory providers below
+correct the latter two gaps. The opening quote and thought wrapping remain
+unresolved, independent of the verified Justice handoff. Overview still locally
+selects skill rows and recent thought snippets in creature_sheet.gd.
 
 Owned DF41836 closes unsaved with source/preferences preserved; both clients
 run at30FPS, sampled GPU48–49C/0–12%. All19 core checks pass. Known separate-
@@ -11115,8 +11115,8 @@ Protected120250 compares all40/30 skill groups for Guard5813/Convict6970 with
 native collections, then exercises the actual main-scene sheet transitions.
 All70 groups match. Labor text crop(424,458)-(658,536) and combat crop
 (664,374)-(896,452) each match native pixels for both creatures. Musician no
-longer displaces Brewer from the Convict labor summary. Native quote/memory
-elaboration and a two-pixel divider position remain unresolved; this is not full
+longer displaces Brewer from the Convict labor summary. The opening quote and a
+two-pixel divider position remain unresolved; this is not full
 Overview acceptance. Fixture native_justice.json.overview_skill_groups_reference
 retains bounded provenance. MSVC/install, context/thought-text checks and all19
 core checks pass. The context fixture's obsolete local Skills filtering assertions
@@ -11125,6 +11125,32 @@ from legacy facts. The new Justice main-scene driver is cataloged as protected
 manual coverage. Owned DF32836 closes unsaved with source/preferences preserved,
 both applications30FPS, sampled GPU47–50C. Known separate-renderer/finalize/two-
 ObjectDB diagnostics qualify the live run as passed_with_known_issues.
+
+Recalled emotion circumstances include native's recurring-memory elaboration.
+The sheet builder's inline branch1a7d15..1a7e82 selects intellectual-value and
+personal-tendency clauses from flags0x100/0x80. There is no separate callable
+formatter for this branch: the bridge adapts that dispatch using pinned native
+literals and native pronoun helpers aa47b0/aa4850 with owned strings. It never
+calls the sheet builder or reads its caches. Existing circumstance formatting,
+RNG/material-cache restoration and record bounds remain in place. Only emotion
+callers supply these flags and past/present state; Memory-tab callers retain
+their separate effect formatting. Godot receives the expanded existing fact.
+
+Protected121435 on2026-11-12 compares the complete recalled circumstance for
+Convict6970, emotion23/flags452, against native's sheet text: exact match,
+including both elaborations and embedded palette commands. The actual main
+scene displays the expanded paragraph and preserves both Justice inspector
+transitions. The opening quote and narrower native thought wrapping still
+differ; no whole-sheet pixel parity is claimed. Other flag/tense/sex combinations
+have code-trace evidence but are not covered by this live sample. Earlier121153
+and121328 failed because the new assertion included an emotion that native
+filters out;121328 recorded an exact match for the visible clause. The final
+assertion uses native's thought/emotion exclusions, without weakening the
+complete-clause comparison. Fixture overview_memory_elaboration_reference in
+native_justice.json records the final evidence. MSVC/install, core19 and the
+context/thought-text headless checks pass. Owned DF11216 closes unsaved with
+source/preferences preserved, both clients30FPS, GPU47C sampled. Known Godot
+separate-renderer/finalize/two-ObjectDB diagnostics qualify the live result.
 
 Overview skill colors use native764a70's profession selector, transported as
 the numeric native_profession fact on each skill. Its pinned body and tables

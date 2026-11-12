@@ -5530,7 +5530,8 @@ void run(color_ostream& out) {
     });lua_setfield(L,-2,"groups");
     lua_pushcfunction(L,[](lua_State* state)->int {
       const auto text=df3d_creature::thoughtCircumstance(df::unit::find(int32_t(luaL_checkinteger(state,1))),
-        int32_t(luaL_checkinteger(state,2)),int32_t(luaL_checkinteger(state,3)),int32_t(luaL_checkinteger(state,4)),lua_toboolean(state,5)!=0);
+        int32_t(luaL_checkinteger(state,2)),int32_t(luaL_checkinteger(state,3)),int32_t(luaL_checkinteger(state,4)),lua_toboolean(state,5)!=0,
+        uint32_t(luaL_optinteger(state,6,0)),lua_toboolean(state,7)!=0);
       if(!text)return luaL_error(state,"Native thought description unavailable");
       lua_pushlstring(state,text->data(),text->size());return 1;
     });lua_setfield(L,-2,"thought_circumstance");

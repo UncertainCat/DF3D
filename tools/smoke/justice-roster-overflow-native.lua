@@ -8,17 +8,20 @@ local template=assert(df.crime.find(9),'Overflow fixture requires crime9')
 local used={};local next_id=0
 for _,crime in ipairs(crimes)do used[crime.accused]=true;next_id=math.max(next_id,crime.id+1)end
 local function observe(label)
- local list;local scrolling={}
+ local list;local scrolling={};local names={}
  local function walk(w)
   if(w.flag.whole&1)==0 then return end
   if df.widget_unit_list:is_instance(w)then list=w end
+  if df.widget_unit_name:is_instance(w)and w.u then names[#names+1]={id=w.u.id,y=w.rect.y1}end
   if df.widget_scroll_rows:is_instance(w)then scrolling[#scrolling+1]={x=w.rect.x1,y=w.rect.y1,scroll=w.scroll,visible=w.num_visible}end
   if df.widget_container:is_instance(w)then for i,c in ipairs(dfhack.gui.getWidgetChildren(w))do
-   if not df.widget_tabs:is_instance(w)or i-1==w.cur_idx then walk(c)end
+   if (not df.widget_tabs:is_instance(w)or i-1==w.cur_idx)and(not df.widget_scroll_rows:is_instance(w)or(i>w.scroll and i<=w.scroll+w.num_visible))then walk(c)end
   end end
  end
  walk(df.global.game.main_interface.info.justice);assert(list,'Convicts list absent')
- samples[#samples+1]={label=label,cursor=list.cursor_idx,scrolling=scrolling}
+ table.sort(names,function(a,b)return a.y<b.y end)
+ local ids={};for _,name in ipairs(names)do ids[#ids+1]=name.id end
+ samples[#samples+1]={label=label,cursor=list.cursor_idx,scrolling=scrolling,visible_ids=ids}
 end
 local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');settle()

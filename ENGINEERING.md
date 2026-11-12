@@ -700,14 +700,29 @@ removed after Justice closes; source/prefs are preserved and DF40880/6612 close
 unsaved. The native run is capped30FPS, as is the mixed viewer; sampled GPU48C.
 This establishes selection/scroll retention only, not complete overflow parity.
 
-The larger roster exposes incorrect ordering among equal-category rows and a
-24px scrollbar X offset. Both panel crops differ in19901 pixels. Native470829
-calls ec980, which hashes eight pointer bytes with FNV1a into buckets; the
-provider's current `std::set<unit*>` assumption is wrong. Owned native collection
-initialization/iteration requires audit before repair. No runtime repair or
-ordering acceptance is claimed. `roster_overflow_reference` retains evidence.
-The initial141501 failed because the help overlay intercepted tab selection;
-it provides no acceptance. Mixed141649 has known Godot shutdown diagnostics.
+The initial larger-roster capture exposed incorrect equal-category ordering
+and a24px scrollbar X offset. Convicts now uses native ec980 insertion and
+its ecc90 rehash helper on an independently owned MSVC unordered collection.
+The native initialization contract is8 buckets and load factor1; container
+size and defaults are checked. Native helpers touch only the owned collection,
+allocation storage and unit pointer values; no widget/menu storage is borrowed.
+The resulting iteration order feeds the existing stable native-key sorting.
+Unlike a pointer-ordered set, this preserves DF's ordering among equal keys.
+The Convicts scrollbar now sits16px before the detail column, matching native.
+
+Final mixed142332 on2026-11-12 compares visible native rows (excluding offscreen
+widget children), selected detail, cursor and scroll across all three states.
+Both scrolled and returned whole-panel crops(32,52)-(976,760) are pixel-identical.
+DF46684 closes unsaved with source/prefs preserved; sampled GPU47–48C and30FPS
+caps. Known rendering-thread/finalize/two ObjectDB shutdown diagnostics qualify
+this as passed_with_known_issues. Core19 and `justice-roster-overflow-fix`
+state/composition checks pass. Bridge protocol203 is unchanged.
+`roster_overflow_reference.correction` records hashes and observations.
+
+The preceding142155 captures also matched but its new oracle incorrectly
+included offscreen rows, so that run failed and is not accepted. Initial141501
+failed help-overlay setup. Guard overflow, dragging, larger roster rehash scales,
+and overflow at other dimensions remain outside this scoped acceptance.
 
 
 Management protocol198 adds `JusticeInterrogate`, the candidate request/page

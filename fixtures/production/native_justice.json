@@ -15221,7 +15221,7 @@
 ,
   "roster_overflow_reference": {
     "source": "protected stockpile-storage-native-input-20261112-141649, DF53.16, 2026-11-12",
-    "scope": "Controlled 24 additional crimes produce 27 Convicts. Native and actual viewer Down22/tab return retain cursor22, first10, capacity13. This is NOT full ordering/render acceptance.",
+    "scope": "Original141649 recorded selection/scroll retention with ordering/art defects; correction142332 below supersedes those defects.",
     "observations": {
       "provider_ids": [
         6970,
@@ -15293,15 +15293,155 @@
       ]
     },
     "unresolved": [
-      "Visible equal-category convict ordering differs; existing provider incorrectly assumes pointer-ordered std::set. Native470829 calls ec980 which hashes all8 pointer bytes using FNV1a and indexes hash buckets. Audit owned unordered collection initialization/iteration before repair.",
-      "Convicts scrollbar is24px left of native in1200x800 capture.",
-      "Both panel comparisons contain19901 differing pixels; not explained by animation alone."
+      "Guard overflow, scrollbar dragging, larger roster rehash scales, and overflow at other dimensions remain unaccepted."
     ],
     "sha256": {
       "justice-roster-overflow-down.png": "c9814cccf9b8a01169844d1358143dbbc919b21bf6d48984943f04008a589e37",
       "justice-roster-overflow-return.png": "c9814cccf9b8a01169844d1358143dbbc919b21bf6d48984943f04008a589e37",
       "justice-roster-overflow-view-down22.png": "ec49a7fd0a63858edb132d0703bc8f703f2fedf68febb5751d7609c605066f45",
       "justice-roster-overflow-view-returned.png": "ec49a7fd0a63858edb132d0703bc8f703f2fedf68febb5751d7609c605066f45"
+    },
+    "correction": {
+      "source": "build\\stockpile-storage-native-input-20261112-142332",
+      "bridge_sha256": "4D83D176CACB203B53F13ECA2E4BAAC75E1722C4026097C2A6CC6B418C8F4DAA",
+      "behavior": "Native ec980 insertion/ecc90 rehash on owned64-byte MSVC unordered_set with8 default buckets/load1; native pointer-hash iteration before stable category sort. Scrollbar moved24px right.",
+      "observations": {
+        "provider_ids": [
+          6970,
+          1012,
+          1025,
+          1017,
+          6546,
+          6032,
+          2905,
+          2335,
+          2747,
+          996,
+          988,
+          998,
+          3845,
+          2569,
+          2570,
+          2588,
+          3050,
+          3115,
+          3326,
+          2346,
+          2571,
+          2345,
+          1531,
+          2465,
+          2446,
+          2449,
+          2574
+        ],
+        "restored": true,
+        "samples": [
+          {
+            "cursor": 0,
+            "label": "initial",
+            "scrolling": [
+              {
+                "scroll": 0,
+                "visible": 13,
+                "x": 6,
+                "y": 14
+              }
+            ],
+            "visible_ids": [
+              6970,
+              1012,
+              1025,
+              1017,
+              6546,
+              6032,
+              2905,
+              2335,
+              2747,
+              996,
+              988,
+              998,
+              3845
+            ]
+          },
+          {
+            "cursor": 22,
+            "label": "down22",
+            "scrolling": [
+              {
+                "scroll": 10,
+                "visible": 13,
+                "x": 6,
+                "y": 14
+              }
+            ],
+            "visible_ids": [
+              988,
+              998,
+              3845,
+              2569,
+              2570,
+              2588,
+              3050,
+              3115,
+              3326,
+              2346,
+              2571,
+              2345,
+              1531
+            ]
+          },
+          {
+            "cursor": 22,
+            "label": "returned",
+            "scrolling": [
+              {
+                "scroll": 10,
+                "visible": 13,
+                "x": 6,
+                "y": 14
+              }
+            ],
+            "visible_ids": [
+              988,
+              998,
+              3845,
+              2569,
+              2570,
+              2588,
+              3050,
+              3115,
+              3326,
+              2346,
+              2571,
+              2345,
+              1531
+            ]
+          }
+        ]
+      },
+      "panel_crop": [
+        32,
+        52,
+        976,
+        760
+      ],
+      "different_pixels": {
+        "down": 0,
+        "return": 0
+      },
+      "sha256": {
+        "justice-roster-overflow-down.png": "67399d54d02fd43cfdf6938aa840559daac2158b33bc6a255140a6c55348aecc",
+        "justice-roster-overflow-return.png": "67399d54d02fd43cfdf6938aa840559daac2158b33bc6a255140a6c55348aecc",
+        "justice-roster-overflow-view-down22.png": "78721768b5fffa97170600b98fa861bdffec19f383810efd37b39a1cd7b48443",
+        "justice-roster-overflow-view-returned.png": "78721768b5fffa97170600b98fa861bdffec19f383810efd37b39a1cd7b48443"
+      },
+      "validation": [
+        "root19 passed",
+        "justice-roster-overflow-fix state/composition passed",
+        "live passed_with_known_issues: separate-render-thread, finalize, two ObjectDB shutdown"
+      ],
+      "failed_attempt": "142155 included offscreen widgets in its assertion; not accepted despite matching captures."
     }
   }
 }

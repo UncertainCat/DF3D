@@ -1,7 +1,7 @@
 #pragma once
 #include "justice_native.h"
 #include "df/punishment.h"
-#include <set>
+#include <unordered_set>
 
 namespace df3d_justice {
 struct ConvictCrime {int32_t id=-1;std::string caption;std::optional<std::string> injuredParty;};
@@ -23,6 +23,10 @@ inline bool convictsReady() {
     static const bool pinned=[base] {
         struct Pin {size_t rva,length;uint64_t hash;};
         constexpr Pin pins[]={
+            {0xec3b0,0x115,UINT64_C(0xf53b8cf39899d109)},
+            {0xec980,0x2e7,UINT64_C(0x2230db9b36ca4285)},
+            {0xecc90,0x1df,UINT64_C(0x7e8b87af1025223a)},
+            {0x470d67,0x3a,UINT64_C(0x03362a6114920064)},
             {0x470757,0x827,UINT64_C(0xd3944d9a7b7de020)},
             {0x471eb0,0x170,UINT64_C(0x6e219b3329eb6c78)},
             {0x472020,0x877,UINT64_C(0x88208a2ece102d6e)},
@@ -43,10 +47,19 @@ inline bool convictCrimeInScope(const df::crime& crime) {
 }
 inline std::optional<std::vector<CandidateFact>> convicts(std::string query={},std::vector<CandidateSort> sorts={{CandidateColumn::Category,false}}) {
     if(!convictsReady())return std::nullopt;
-    // Native470816 inserts into an owned std::set<unit*> before generic sorting.
-    std::set<df::unit*> units;
+    // Native470829 inserts into an unordered collection; equal category keys
+    // retain its iteration order. Use the native insertion/rehash routine on
+    // our own MSVC container, never the Justice widget's roster or hash table.
+    std::unordered_set<df::unit*> units;
+    static_assert(sizeof(units)==0x40);
+    if(units.bucket_count()!=8 || units.max_load_factor()!=1.0f)return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    struct InsertResult {void* node=nullptr;bool inserted=false;uint8_t padding[7]{};};
     for(const auto* crime:df::global::world->crimes.all){if(!crime)return std::nullopt;
-        if(convictCrimeInScope(*crime))if(auto* unit=df::unit::find(crime->accused))units.insert(unit);}
+        if(convictCrimeInScope(*crime))if(auto* unit=df::unit::find(crime->accused)){
+            InsertResult inserted;
+            reinterpret_cast<void(*)(void*,InsertResult*,df::unit**)>(base+0xec980)(&units,&inserted,&unit);
+        }}
     std::vector<CandidateFact> result;result.reserve(units.size());
     for(auto* unit:units)result.push_back({unit->id,0,0});
     return orderedCandidateFacts(result,std::move(query),std::move(sorts));

@@ -108,7 +108,7 @@ func refresh() -> void:
 	search.set_bytes(state.candidates.query.to_utf8_buffer())
 	if roster_open():
 		scrollbar.hide();witness_scroll.hide()
-		candidate_scroll.position=Vector2(size.x-32 if guard_open() else detail_x()-40,list_top()+(48 if guard_open() else 24));candidate_scroll.size=Vector2(16,maxi(36,size.y-list_top()-(132 if guard_open() else 108)))
+		candidate_scroll.position=Vector2(size.x-32 if guard_open() else detail_x()-16,list_top()+(48 if guard_open() else 24));candidate_scroll.size=Vector2(16,maxi(36,size.y-list_top()-(132 if guard_open() else 108)))
 		candidate_scroll.page=guard_capacity();candidate_scroll.set_rows(roster().rows.size(),roster().first)
 		search.position.x=32;search.visible=true
 		search.editable=allowed() and roster().phase in [roster().Phase.Ready,roster().Phase.Reading,roster().Phase.Rejected,roster().Phase.DetailReading]

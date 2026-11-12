@@ -299,6 +299,7 @@ func roster_overflow() -> void:
 		check(model.phase==model.Phase.Ready and model.rows.map(func(row):return row.unit_id)==reference.provider_ids.map(func(id):return int(id)),"Overflow roster differs")
 		check(model.cursor_id==int(reference.provider_ids[int(sample.cursor)]) and model.first==int(sample.scrolling[-1].scroll),"Overflow cursor/scroll differs")
 		check(view.guard_capacity()==int(sample.scrolling[-1].visible) and model.detail.get("unit_id")==model.cursor_id,"Overflow capacity/detail differs")
+		check(model.rows.slice(model.first,model.first+view.guard_capacity()).map(func(row):return row.unit_id)==sample.visible_ids.map(func(id):return int(id)),"Native visible overflow order differs")
 		await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/justice-roster-overflow-view-"+sample.label+".png")
 	controller.dispose();view.queue_free();actions.queue_free();world.queue_free();await process_frame
 	var result:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);result.store_string(JSON.stringify({"success":not failed,"roster_overflow_states":reference.samples.size()}));result.close();quit(1 if failed else 0)

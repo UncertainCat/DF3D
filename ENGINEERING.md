@@ -41,6 +41,20 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+The owned candidate presentation helper calls native name1330c30 and
+abbreviation52d910, following the one-line renderer14237a0. It counts witness
+reports naming the candidate, independently of sort rank, and preserves the
+inline46eb60 witness captions. No native widget or drawing string is a runtime
+input. Native's Deceased branch tests flags1.inactive, not a separate dead flag.
+Protected `stockpile-storage-native-input-20261111-230636` matches names and
+witness labels for the13 visible Convict rows at1200x800. Earlier checks exposed
+oracle omissions of CP437 gender symbols and offscreen widget clipping; both
+are corrected in the bounded reference. This does not accept name colors,
+Deceased labels, scrolling, responsive layout or DF3D picker rendering.
+MSVC builds; DF23812 closes unsaved with source preservation and prefs restoration.
+Native30FPS, no viewer; GPU sample59C/32%/55.03W is not a peak measurement.
+`native_justice.json.candidate_presentation_reference` retains semantic evidence.
+
 Management protocol194 adds staged `JusticeCandidatesRead` and `JusticeConvict`
 contracts. Candidate requests carry the current list and case revisions, native
 search query (at most512 UTF-8 bytes, no embedded NUL), and a candidate revision

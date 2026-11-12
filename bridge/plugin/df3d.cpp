@@ -119,6 +119,7 @@
 #include "objects_native.h"
 #include "justice_native.h"
 #include "justice_action_native.h"
+#include "justice_presentation_native.h"
 #include "justice_witness_native.h"
 #include "nobles_native.h"
 #include "nobles_draft_native.h"
@@ -2780,6 +2781,22 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               const auto dates=df3d_justice::witnessDates(*report);if(!dates)return CR_FAILURE;
               Json::Value row(Json::objectValue);row["date"]=DF2UTF(dates->date);row["reported"]=DF2UTF(dates->reported);result.append(row);
             }
+            out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
+          }catch(const std::exception&){return CR_WRONG_USAGE;}
+        }
+        if(parameters[0]=="justice-candidate-presentation-probe") {
+          if(parameters.size()!=4)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          try {
+            const auto row=df3d_justice::candidatePresentation(df::crime::find(std::stoi(parameters[1])),
+              df::unit::find(std::stoi(parameters[2])),std::stoi(parameters[3]));
+            if(!row)return CR_FAILURE;
+            Json::Value result(Json::objectValue),color(Json::arrayValue),alternate(Json::arrayValue);
+            for(auto value:row->nameColor.color)color.append(int(value));
+            for(auto value:row->nameColor.alternate)alternate.append(int(value));
+            result["name"]=DF2UTF(row->name);result["witness_label"]=DF2UTF(row->witnessLabel);result["deceased"]=row->deceased;
+            result["witness_count"]=row->witnessCount;result["witness_color"]=int(row->witnessColor);
+            result["color"]=color;result["alternate"]=alternate;result["effect"]=int(row->nameColor.effect);
             out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
           }catch(const std::exception&){return CR_WRONG_USAGE;}
         }

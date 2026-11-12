@@ -8258,5 +8258,444 @@
       "Interrogate and alternative sorting remain unfinished",
       "Known separate-thread notice only"
     ]
+  },
+  "candidate_presentation_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-230636",
+    "status": "passed",
+    "scope": "13 visible Convict candidate names and witness labels at1200x800; colors, deceased labels, scrolling and DF3D rendering not accepted",
+    "owned_df_pid": 23812,
+    "source_preserved": true,
+    "fps_cap": 30,
+    "rows": [
+      {
+        "columns": 28,
+        "label_found": true,
+        "name_found": true,
+        "one_line": true,
+        "rect": [
+          69,
+          16,
+          96,
+          15
+        ],
+        "show_gender": true,
+        "show_profession": true,
+        "supplied": {
+          "alternate": [
+            4,
+            0,
+            0
+          ],
+          "color": [
+            4,
+            0,
+            0
+          ],
+          "deceased": "",
+          "effect": 0,
+          "name": "Drn Thsbtl\u00e5th, Dwrvn Chld, \u2642",
+          "witness_color": 10,
+          "witness_count": 39,
+          "witness_label": "39 witnesses"
+        },
+        "unit_id": 5698
+      },
+      {
+        "columns": 28,
+        "label_found": true,
+        "name_found": true,
+        "one_line": true,
+        "rect": [
+          69,
+          19,
+          96,
+          18
+        ],
+        "show_gender": true,
+        "show_profession": true,
+        "supplied": {
+          "alternate": [
+            6,
+            0,
+            0
+          ],
+          "color": [
+            6,
+            0,
+            0
+          ],
+          "deceased": "",
+          "effect": 0,
+          "name": "Aban Atulilral, Lye Maker, \u2640",
+          "witness_color": 6,
+          "witness_count": 0,
+          "witness_label": "No witnesses"
+        },
+        "unit_id": 7202
+      },
+      {
+        "columns": 28,
+        "label_found": true,
+        "name_found": true,
+        "one_line": true,
+        "rect": [
+          69,
+          22,
+          96,
+          21
+        ],
+        "show_gender": true,
+        "show_profession": true,
+        "supplied": {
+          "alternate": [
+            4,
+            0,
+            0
+          ],
+          "color": [
+            4,
+            0,
+            0
+          ],
+          "deceased": "",
+          "effect": 0,
+          "name": "\u00c5blel Evonkulet, Humn Bby, \u2640",
+          "witness_color": 6,
+          "witness_count": 0,
+          "witness_label": "No witnesses"
+        },
+        "unit_id": 7218
+      },
+      {
+        "columns": 28,
+        "label_found": true,
+        "name_found": true,
+        "one_line": true,
+        "rect": [
+          69,
+          25,
+          96,
+          24
+        ],
+        "show_gender": true,
+        "show_profession": true,
+        "supplied": {
+          "alternate": [
+            5,
+            0,
+            0
+          ],
+          "color": [
+            5,
+            0,
+            0
+          ],
+          "deceased": "",
+          "effect": 0,
+          "name": "Abpa Umaconu, Human Poet, \u2640",
+          "witness_color": 6,
+          "witness_count": 0,
+          "witness_label": "No witnesses"
+        },
+        "unit_id": 3115
+      },
+      {
+        "columns": 28,
+        "label_found": true,
+        "name_found": true,
+        "one_line": true,
+        "rect": [
+          69,
+          28,
+          96,
+          27
+        ],
+        "show_gender": true,
+        "show_profession": true,
+        "supplied": {
+          "alternate": [
+            4,
+            0,
+            0
+          ],
+          "color": [
+            4,
+            0,
+            0
+          ],
+          "deceased": "",
+          "effect": 0,
+          "name": "Adil Lolrgmst, Dwrvn Chld, \u2640",
+          "witness_color": 6,
+          "witness_count": 0,
+          "witness_label": "No witnesses"
+        },
+        "unit_id": 5699
+      },
+      {
+        "columns": 28,
+        "label_found": true,
+        "name_found": true,
+        "one_line": true,
+        "rect": [
+          69,
+          31,
+          96,
+          30
+        ],
+        "show_gender": true,
+        "show_profession": true,
+        "supplied": {
+          "alternate": [
+            0,
+            0,
+            1
+          ],
+          "color": [
+            0,
+            0,
+            1
+          ],
+          "deceased": "",
+          "effect": 0,
+          "name": "Al\u00e5th N\u00e5zomvz, Frnc Oprtr, \u2640",
+          "witness_color": 6,
+          "witness_count": 0,
+          "witness_label": "No witnesses"
+        },
+        "unit_id": 6835
+      },
+      {
+        "columns": 28,
+        "label_found": true,
+        "name_found": true,
+        "one_line": true,
+        "rect": [
+          69,
+          34,
+          96,
+          33
+        ],
+        "show_gender": true,
+        "show_profession": true,
+        "supplied": {
+          "alternate": [
+            1,
+            0,
+            1
+          ],
+          "color": [
+            1,
+            0,
+            1
+          ],
+          "deceased": "",
+          "effect": 0,
+          "name": "Amost Zastathur, Glassmkr, \u2642",
+          "witness_color": 6,
+          "witness_count": 0,
+          "witness_label": "No witnesses"
+        },
+        "unit_id": 7123
+      },
+      {
+        "columns": 28,
+        "label_found": true,
+        "name_found": true,
+        "one_line": true,
+        "rect": [
+          69,
+          37,
+          96,
+          36
+        ],
+        "show_gender": true,
+        "show_profession": true,
+        "supplied": {
+          "alternate": [
+            1,
+            0,
+            0
+          ],
+          "color": [
+            1,
+            0,
+            0
+          ],
+          "deceased": "",
+          "effect": 0,
+          "name": "\u00c4s M\u00f6rulseb\u00efr, Fisherdwrf, \u2642",
+          "witness_color": 6,
+          "witness_count": 0,
+          "witness_label": "No witnesses"
+        },
+        "unit_id": 6814
+      },
+      {
+        "columns": 28,
+        "label_found": true,
+        "name_found": true,
+        "one_line": true,
+        "rect": [
+          69,
+          40,
+          96,
+          39
+        ],
+        "show_gender": true,
+        "show_profession": true,
+        "supplied": {
+          "alternate": [
+            6,
+            0,
+            1
+          ],
+          "color": [
+            6,
+            0,
+            1
+          ],
+          "deceased": "",
+          "effect": 0,
+          "name": "As\u00ebn Govososlan, Spermstr, \u2640",
+          "witness_color": 6,
+          "witness_count": 0,
+          "witness_label": "No witnesses"
+        },
+        "unit_id": 6531
+      },
+      {
+        "columns": 28,
+        "label_found": true,
+        "name_found": true,
+        "one_line": true,
+        "rect": [
+          69,
+          43,
+          96,
+          42
+        ],
+        "show_gender": true,
+        "show_profession": true,
+        "supplied": {
+          "alternate": [
+            7,
+            0,
+            0
+          ],
+          "color": [
+            7,
+            0,
+            0
+          ],
+          "deceased": "",
+          "effect": 0,
+          "name": "Asmel Akrulokol, Miner, \u2642",
+          "witness_color": 6,
+          "witness_count": 0,
+          "witness_label": "No witnesses"
+        },
+        "unit_id": 6135
+      },
+      {
+        "columns": 28,
+        "label_found": true,
+        "name_found": true,
+        "one_line": true,
+        "rect": [
+          69,
+          46,
+          96,
+          45
+        ],
+        "show_gender": true,
+        "show_profession": true,
+        "supplied": {
+          "alternate": [
+            1,
+            0,
+            1
+          ],
+          "color": [
+            1,
+            0,
+            1
+          ],
+          "deceased": "",
+          "effect": 0,
+          "name": "Ast Zonrithlut, Weaver, \u2640",
+          "witness_color": 6,
+          "witness_count": 0,
+          "witness_label": "No witnesses"
+        },
+        "unit_id": 7279
+      },
+      {
+        "columns": 28,
+        "label_found": true,
+        "name_found": true,
+        "one_line": true,
+        "rect": [
+          69,
+          49,
+          96,
+          48
+        ],
+        "show_gender": true,
+        "show_profession": true,
+        "supplied": {
+          "alternate": [
+            4,
+            0,
+            0
+          ],
+          "color": [
+            4,
+            0,
+            0
+          ],
+          "deceased": "",
+          "effect": 0,
+          "name": "Astsh Mlblshsh, Dwrvn Chld, ",
+          "witness_color": 6,
+          "witness_count": 0,
+          "witness_label": "No witnesses"
+        },
+        "unit_id": 7043
+      },
+      {
+        "columns": 28,
+        "label_found": true,
+        "name_found": true,
+        "one_line": true,
+        "rect": [
+          69,
+          52,
+          96,
+          51
+        ],
+        "show_gender": true,
+        "show_profession": true,
+        "supplied": {
+          "alternate": [
+            5,
+            0,
+            0
+          ],
+          "color": [
+            5,
+            0,
+            0
+          ],
+          "deceased": "",
+          "effect": 0,
+          "name": "Atir Ekullon, Human Poet, \u2640",
+          "witness_color": 6,
+          "witness_count": 0,
+          "witness_label": "No witnesses"
+        },
+        "unit_id": 3326
+      }
+    ]
   }
 }

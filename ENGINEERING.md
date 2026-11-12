@@ -41,6 +41,24 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+Conviction has a native semantic-effect candidate at RVA `46f0d0`, called by
+the picker callback `474dd0` at `474ef5` with `(crime*, unit*)`. The picker
+builder `474a70` installs the callback through the function object at vtable
+`1641968`; the callback checks the selected confirmation control before applying
+the effect. Do not call either widget builder or callback from the bridge.
+Static inspection of the pinned53.16 executable covers the complete effect span
+`46f0d0..46f6c6` (length`5f6`, FNV-1a`aaec6a9f4cfce197`). It writes accused
+and accused identity, records a history event, updates two global counters when
+the punishment field at crime offset8 is at least50,
+and applies thoughts to the victim, relatives and eligible active units. Merely
+assigning `crime.accused` would omit native effects. Identity/history helpers and
+simulation globals are used; the final byte write at RVA`18a6ff0` still needs
+ownership classification before exposing this routine. This is static discovery,
+not live effect acceptance or permission to bypass current-case admission,
+confirmation, revision checks or receipt deduplication. Button eligibility,
+the confirmation workflow and protected native-versus-provider effect comparison
+remain required. No conviction command is exposed yet.
+
 The staged `justice_panel.gd`/`justice_view.gd` now renders the read-only Open,
 Closed and Cold case surface through the typed controller. Installed native
 category-button artwork supplies case rows; shared information chrome and separate

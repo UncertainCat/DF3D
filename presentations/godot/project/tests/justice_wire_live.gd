@@ -38,6 +38,7 @@ func run() -> void:
 		if world.poll_management().get("transport_alive",false):break
 		await create_timer(0.01).timeout
 	await request("construction",{"action":C.ManagementAction.Catalog})
+	if OS.get_environment("DF3D_JUSTICE_CASE_RETURN")=="1":await case_return();return
 	if OS.get_environment("DF3D_JUSTICE_ROSTER_OVERFLOW")=="1":await roster_overflow();return
 	if OS.get_environment("DF3D_JUSTICE_ROSTER_RESIZE")=="1":await roster_resize();return
 	if OS.get_environment("DF3D_JUSTICE_ROSTER_RETURN")=="1":await roster_return();return
@@ -280,6 +281,26 @@ func run() -> void:
 	result.store_string(JSON.stringify({"success":not failed,"counts":counts,"witnesses":report_count,"stale_tabs":3,"controller_tabs":3,
 		"closed_read_retired":true,"candidate_count":candidate_count,"candidate_queries":3,"sort_scopes":reference.sorts.size(),"interrogated":interrogated,"convicted":applied,"picker_controller":applied}));result.close()
 	quit(1 if failed else 0)
+
+func case_return() -> void:
+	root.size=Vector2i(1200,800);check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Case return assets unavailable")
+	var actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(actions);actions.configure(world,true)
+	var controller=preload("res://scripts/justice_state.gd").new();controller.configure(actions);controller.open()
+	var view=preload("res://scripts/justice_view.gd").new();root.add_child(view);view.configure_justice(world,controller);view.layout(Vector2(1200,800))
+	var samples: Array=JSON.parse_string(FileAccess.get_file_as_string(directory+"/justice-case-return.json"));var index:=0
+	for sample: Dictionary in samples:
+		index+=1;var tab:=0 if sample.tab=="Open cases" else 2
+		if sample.label=="initial":
+			await pointer_click(view.position+view.tab_rect(tab).get_center());await settle_controller(controller)
+		elif sample.label=="second":
+			await pointer_click(view.position+view.case_rect(1).get_center());await settle_controller(controller)
+		else:
+			await pointer_click(view.position+view.tab_rect(1).get_center());await settle_controller(controller)
+			await pointer_click(view.position+view.tab_rect(tab).get_center());await settle_controller(controller)
+		check(controller.phase==controller.Phase.Ready and controller.selected_id==int(sample.crime_id) and controller.detail.get("crime_id")==int(sample.crime_id),"Case return selection/detail differs from native")
+		await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/justice-case-return-view-"+str(index)+".png")
+	controller.dispose();view.queue_free();actions.queue_free();world.queue_free();await process_frame
+	var result:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);result.store_string(JSON.stringify({"success":not failed,"case_return_states":samples.size()}));result.close();quit(1 if failed else 0)
 
 func roster_overflow() -> void:
 	root.size=Vector2i(1200,800);check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Roster overflow assets unavailable")

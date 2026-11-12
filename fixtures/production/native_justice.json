@@ -15444,4 +15444,76 @@
       "failed_attempt": "142155 included offscreen widgets in its assertion; not accepted despite matching captures."
     }
   }
+,
+  "case_tab_return_reference": {
+    "source": "build\\stockpile-storage-native-input-20261112-143012",
+    "native_reference": "stockpile-storage-native-input-20261112-142735",
+    "scope": "Open and Cold first/second case selection, Closed tab detour and return at1200x800; native empty witness label. Closed-case selection retention and nonzero witness scroll are not established here.",
+    "observations": [
+      {
+        "crime_id": 9,
+        "label": "initial",
+        "tab": "Open cases"
+      },
+      {
+        "crime_id": 10,
+        "label": "second",
+        "tab": "Open cases"
+      },
+      {
+        "crime_id": 10,
+        "label": "returned",
+        "tab": "Open cases"
+      },
+      {
+        "crime_id": 0,
+        "label": "initial",
+        "tab": "Cold cases"
+      },
+      {
+        "crime_id": 1,
+        "label": "second",
+        "tab": "Cold cases"
+      },
+      {
+        "crime_id": 1,
+        "label": "returned",
+        "tab": "Cold cases"
+      }
+    ],
+    "panel_crop": [
+      32,
+      52,
+      976,
+      760
+    ],
+    "different_pixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "sha256": {
+      "justice-case-return-1.png": "6bfba14315a43d78cde2d89042810a3cb66bc9eac5f5e67cae02b01f8c280fed",
+      "justice-case-return-2.png": "74754c0feea20013a495546c4334962d369543c3aa966cd6f97d13240a1ba85d",
+      "justice-case-return-3.png": "74754c0feea20013a495546c4334962d369543c3aa966cd6f97d13240a1ba85d",
+      "justice-case-return-4.png": "9818402eff742a074d6a93d42f808ea90b5ee0eda5bce48f54f6e03bbae0b884",
+      "justice-case-return-5.png": "7ca133e5488590f331358fce8c048ef2e03d81d98be7927ca150311db16c163c",
+      "justice-case-return-6.png": "7ca133e5488590f331358fce8c048ef2e03d81d98be7927ca150311db16c163c",
+      "justice-case-return-view-1.png": "a3164c4fa7fc9c11728bf3821e075ee43a5ba07f9ffead39b744733cce78a8f4",
+      "justice-case-return-view-2.png": "895b5db036df323b68c64c2076a3f25af1467c75b2a2b601c6709f34d6e07491",
+      "justice-case-return-view-3.png": "895b5db036df323b68c64c2076a3f25af1467c75b2a2b601c6709f34d6e07491",
+      "justice-case-return-view-4.png": "eff8870ebce9bc43e028e41b68b82d46139e10fcdddf411f7bf2ce679c3ae50b",
+      "justice-case-return-view-5.png": "57ab41a3c988c81c24867ed6cc66170fa7e4e69f08fc8a4d9f2116d1d44c4377",
+      "justice-case-return-view-6.png": "57ab41a3c988c81c24867ed6cc66170fa7e4e69f08fc8a4d9f2116d1d44c4377"
+    },
+    "validation": [
+      "core19 passed",
+      "justice-case-return-final state/composition passed",
+      "live passed_with_known_issues: known renderer/finalize/two ObjectDB shutdown"
+    ],
+    "previous_gap": "142858 passed selection/detail but lacked278 native No witnesses pixels on Cold case1; corrected in143012."
+  }
 }

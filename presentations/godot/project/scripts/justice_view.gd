@@ -361,6 +361,7 @@ func _draw() -> void:
 		patch("HORIZONTAL_OPTION_ACTIVE",Vector2i((x+104)/8,(top+24)/12),9,3)
 		text("Interrogate",Vector2(x+8,top+48));text("Convict",Vector2(x+112,top+48))
 	var witnesses: Array=d.witnesses
+	if witnesses.is_empty():text("No witnesses.",Vector2(x,top+84),13)
 	for index in mini(witness_capacity(),witnesses.size()-witness_first()):
 		var row: Dictionary=witnesses[witness_first()+index];var y:=top+72+index*60
 		text(row.witness,Vector2(x,y+12));text(row.description,Vector2(x,y+24),14)

@@ -15,7 +15,8 @@ func _init() -> void:
 	intelligence.changed.connect(_candidates_changed)
 	candidates.convicted.connect(_convicted)
 func _candidates_changed() -> void:changed.emit()
-func _convicted(_crime: int,_unit: int) -> void:refresh()
+func _convicted(_crime: int,_unit: int) -> void:
+	_case_selections[tab]=-1;refresh()
 func open_candidates(interrogate:=false) -> void:
 	if phase==Phase.Ready and tab!=1 and not detail.is_empty():candidates.open(tab,selected_id,_revision,detail.revision,interrogate)
 func close_candidates() -> bool:
@@ -33,6 +34,7 @@ var generation:=0
 var last_result: Dictionary={}
 var _scroll: Array[int]=[0,0,0,0,0,0]
 var _roster_drafts: Dictionary={}
+var _case_selections: Array[int]=[-1,-1,-1]
 var _pending: Array=[]
 var _pending_detail: Dictionary={}
 var _seen: Dictionary={}
@@ -64,7 +66,7 @@ func _retire() -> void:
 func _clear() -> void:
 	rows=[];detail={};selected_id=-1;witness_first=0;_pending=[];_pending_detail={};_seen={};_revision=0;_total=0
 func close() -> void:
-	_retire();_clear();phase=Phase.Closed;tab=0;first=0;_scroll=[0,0,0,0,0,0];_roster_drafts.clear();last_result={};changed.emit()
+	_retire();_clear();phase=Phase.Closed;tab=0;first=0;_scroll=[0,0,0,0,0,0];_roster_drafts.clear();_case_selections=[-1,-1,-1];last_result={};changed.emit()
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
 func open(selected_tab:=0) -> void:
@@ -91,7 +93,7 @@ func seek_witness(value: int,capacity: int) -> void:
 func select_case(id: int) -> void:
 	if phase not in [Phase.Ready,Phase.DetailReading] or not rows.any(func(row):return row.crime_id==id):return
 	if selected_id==id and (phase==Phase.DetailReading or not detail.is_empty()):return
-	_retire();selected_id=id;detail={};_pending_detail={};witness_first=0;last_result={};phase=Phase.DetailReading;_case_page()
+	_retire();selected_id=id;_case_selections[tab]=id;detail={};_pending_detail={};witness_first=0;last_result={};phase=Phase.DetailReading;_case_page()
 func _page() -> void:
 	_submit({"action":C.ManagementAction.JusticeRead,"tab":tab,"offset":_pending.size(),"limit":32,"expected_list_revision":_revision})
 func _case_page() -> void:
@@ -148,7 +150,9 @@ func _submit(intent: Dictionary) -> void:
 		_revision=value.list_revision;_total=value.total;_pending.append_array(value.rows.duplicate(true))
 		if _pending.size()<_total:_page();return
 		rows=_pending;_pending=[];_seen={};first=mini(first,maxi(0,rows.size()-1));_scroll[tab]=first;phase=Phase.Ready;last_result={}
-		if not rows.is_empty():select_case(rows[0].crime_id)
+		if not rows.is_empty():
+			var retained: int=_case_selections[tab]
+			select_case(retained if rows.any(func(row):return row.crime_id==retained) else rows[0].crime_id)
 		else:changed.emit())
 	if ticket==0:_clear();phase=Phase.Unavailable
 	changed.emit()

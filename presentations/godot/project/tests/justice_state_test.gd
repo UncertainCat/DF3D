@@ -18,6 +18,16 @@ func candidates(ids: Array=[42,43],offset:=0,total:=2,revision:=22) -> Dictionar
 		"offset":offset,"total":total,"rows":ids.map(func(id):return {"unit_id":id,"rank":3,"interrogation_pending":false,"counterintelligence":true,"display":{"columns":28,"name":"fixture","witness_count":0,"witness_label":"fixture","witness_color":6,"deceased":"","name_color":{"color":[4,0,0],"alternate":[4,0,0],"effect":0}}})}}}
 func ready(service,state) -> void:
 	state.open();service.reply(state.ticket,page());service.reply(state.ticket,report())
+func test_case_return(service,state) -> void:
+	ready(service,state);state.select_case(10);var old: int=state.ticket
+	state.select_tab(2);service.reply(state.ticket,page([0,1],0,2,2));service.reply(state.ticket,report(0,0,1,12,2))
+	state.select_tab(0);var current: int=state.ticket
+	service.reply(old,report(10));check(state.ticket==current and state.detail.is_empty(),"Hidden case reply revived details")
+	check(service.calls[current].intent.expected_list_revision==0,"Case return reused stale list receipt")
+	service.reply(current,page());check(state.selected_id==10 and state.detail.is_empty() and service.calls[state.ticket].intent.crime_id==10,"Case return lost selection or reused details")
+	service.reply(state.ticket,report(10));state.select_tab(2);state.select_tab(0)
+	service.reply(state.ticket,page([9],0,1));check(state.selected_id==9,"Removed retained case did not fall back")
+	state.close();ready(service,state);check(state.selected_id==9,"Closed Justice retained case selection")
 func test_candidates(service,state) -> void:
 	ready(service,state);state.open_candidates();var picker=state.candidates
 	service.reply(picker.ticket,candidates([42],0,2))
@@ -179,6 +189,7 @@ func run() -> void:
 	test_candidates(service,state)
 	test_sorts(service,state)
 	test_interrogation(service,state)
+	test_case_return(service,state)
 	test_guard(service,state)
 	test_convicts(service,state)
 	test_intelligence(service,state)

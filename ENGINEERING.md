@@ -1142,12 +1142,31 @@ protected rendered run. Earlier193154/193618 captures exposed incorrect row art
 and a two-pixel text offset; both are corrected, rather than accepted departures.
 
 `justice_state.gd` stages case selection independently from the unfinished view.
-It assembles each list/detail before publishing it, selects the first native case,
-keeps per-tab list scroll and selected-case witness scroll local, and retires
+It assembles each list/detail before publishing it, initially selects the first
+native case, retains per-tab selected crime IDs for navigation, keeps per-tab
+list scroll and selected-case witness scroll local, and retires
 pending reads on selection/tab changes, close and session replacement. List stale
 recovery is bounded to one fresh read. Failed detail reads discard partial data
 without replay; reselecting or refreshing is explicit. Headless
 `build/qa/justice-state` passes controller checks and all19 root CTest checks.
+
+Protected142735 and final mixed143012 on2026-11-12 establish Open/Cold
+case selection retention across a Closed-tab detour. The viewer retains only the
+local crime ID; returning reads a fresh roster and fresh selected detail. A
+missing retained ID falls back to the first row. Close/session replacement clear
+these drafts, and successful conviction keeps its existing first-case refresh.
+The empty witness list now renders native "No witnesses." in palette13 at the
+native position; intermediate142858 exposed this missing278-pixel label.
+
+All six final panel crops(32,52)-(976,760) are pixel-identical. State tests cover
+late hidden detail replies, fresh receipts, removed selection and close reset.
+`justice-case-return-final` state/composition and core19 pass. Owned DF41248
+closes unsaved with source/prefs preserved, serial30FPS, GPU48C sampled. Known
+renderer/finalize/two ObjectDB diagnostics qualify the live run as
+passed_with_known_issues. `case_tab_return_reference` retains observations and
+hashes. Closed-case selection retention, nonzero witness scroll on return and
+other dimensions are outside this check's scope. Run CASE_RETURN/WIRE/RENDER
+with the protected Justice native lane; protocol203 and bridge are unchanged.
 
 Protected `stockpile-storage-native-input-20261111-191326` verifies this controller
 through the real semantic action service on all three case tabs, initial detail

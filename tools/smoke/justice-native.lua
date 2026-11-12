@@ -182,6 +182,10 @@ if os.getenv('DF3D_JUSTICE_SORTS')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-native%.lua$','justice-sorts-native.lua')
  assert(loadfile(source))(out,view,probe,settle,caption_click,capture)
 end
+if os.getenv('DF3D_JUSTICE_CASE_RETURN')=='1' then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-native%.lua$','justice-case-return-native.lua')
+ assert(loadfile(source))(out,view,settle,caption_click,capture)
+end
 if os.getenv('DF3D_JUSTICE_ROSTER_OVERFLOW')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-native%.lua$','justice-roster-overflow-native.lua')
  assert(loadfile(source))(out,view,probe,settle,caption_click,capture,bytes)

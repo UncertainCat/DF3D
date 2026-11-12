@@ -15977,5 +15977,70 @@
       "source": "unchanged; name fields restored; exits unsaved",
       "gpu": "native only, serial30FPS, sampled47C/0%"
     }
+  },
+  "information_header_reference": {
+    "lane": "build/stockpile-storage-native-input-20261112-151043",
+    "native_build": "DF 53.16",
+    "protocol": 203,
+    "samples": [
+      {
+        "justice_tab": 5,
+        "owner": "places",
+        "x": 232,
+        "y": 76
+      },
+      {
+        "justice_tab": 5,
+        "owner": "justice",
+        "x": 404,
+        "y": 76
+      },
+      {
+        "justice_tab": 5,
+        "owner": "nobles",
+        "x": 160,
+        "y": 100
+      },
+      {
+        "justice_tab": 5,
+        "owner": "justice",
+        "x": 404,
+        "y": 100
+      }
+    ],
+    "panel_crop": [
+      32,
+      52,
+      976,
+      760
+    ],
+    "differing_pixels": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "sha256": {
+      "justice-header-navigation.json": "0b90c9c58d183b56e4f6689dfdca52f46bd39dd4827b08e62c0f0999d9092246",
+      "job-settings-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "justice-header-1.png": "bcd5ad40f6566915d1ed1435122b67486062068cea2fa30d301479ec64bf0f79",
+      "justice-header-view-1.png": "6dff525096714c06978bf2020b9f4c77fc5ee5f0e486fa0db6aab0b338b66ac3",
+      "justice-header-2.png": "9fefd494dd8406eb8b42428b89c33d2662fb0f469494855c55f065dd81e5a9d9",
+      "justice-header-view-2.png": "0059c320c9f707a689880770484c35972189a9b096c63aa9c48dd9afd94ff7d9",
+      "justice-header-3.png": "82033bf776d3cad54c009d06cddb71fb3907295192de0ee1aa91d487a8632e22",
+      "justice-header-view-3.png": "9cd618ac45a8eb476f02740bc8cad93169c3028b12e7536615b80b941ad6a434",
+      "justice-header-4.png": "3b57f415237064eded14a13170421f722c57e51d77f84c491cf6497c34037798",
+      "justice-header-view-4.png": "0059c320c9f707a689880770484c35972189a9b096c63aa9c48dd9afd94ff7d9"
+    },
+    "scope": "Actual native and DF3D main-scene header clicks; incoming Places/Nobles Justice navigation and Intelligence tab retention with fresh reads. No public exposure or full child-draft retention acceptance.",
+    "verification": {
+      "live": "passed_with_known_issues: separate renderer, finalize, two ObjectDB shutdown diagnostics",
+      "core_ctest": "19 passed",
+      "headless": "build/qa/justice-header-tab-return",
+      "owned_df_pid": 38212,
+      "source": "unchanged; exit unsaved; prefs restored",
+      "gpu": "serial30FPS; sampled47C/2%"
+    }
   }
 }

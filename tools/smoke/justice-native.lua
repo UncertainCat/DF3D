@@ -312,6 +312,24 @@ if os.getenv('DF3D_JUSTICE_SHEET_NAV')=='1' then
  end
  local f=assert(io.open(out..'/justice-sheet-navigation.json','w'));f:write(require('json').encode{samples=samples});f:close()
 end
+if os.getenv('DF3D_JUSTICE_HEADER_NAV')=='1' then
+ caption_click('Intelligence');settle()
+ local samples={}
+ for i,step in ipairs{{'places',232,76,'BUILDINGS'},{'justice',404,76,'JUSTICE'},{'nobles',160,100,'ADMINISTRATORS'},{'justice',404,100,'JUSTICE'}}do
+  g.precise_mouse_x=step[2];g.precise_mouse_y=step[3];g.mouse_x=step[2]//8;g.mouse_y=step[3]//12
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+  gui.simulateInput(view,'_MOUSE_L');df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1;settle()
+  assert(info.open and info.current_mode==df.info_interface_mode_type[step[4]],'Native header did not reach '..step[1])
+  if df.global.game.main_interface.help.open then
+   g.precise_mouse_x=711;g.precise_mouse_y=430;g.mouse_x=88;g.mouse_y=35
+   df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L')
+   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1;settle()
+   assert(not df.global.game.main_interface.help.open,'Header help did not dismiss')
+  end
+  samples[#samples+1]={owner=step[1],x=step[2],y=step[3],justice_tab=5};capture('justice-header-'..i)
+ end
+ write('justice-header-navigation.json',json.encode({samples=samples}))
+end
 if os.getenv('DF3D_JUSTICE_WIRE')=='1' and os.getenv('DF3D_JUSTICE_ROSTER_OVERFLOW')~='1' and os.getenv('DF3D_JUSTICE_WIRE_INTELLIGENCE')~='1' and os.getenv('DF3D_JUSTICE_WIRE_GRAPH')~='1' and os.getenv('DF3D_JUSTICE_CONVICTS_SENTENCE')~='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-native%.lua$','justice-wire-native.lua')
  assert(loadfile(source))(out,probe,bytes)

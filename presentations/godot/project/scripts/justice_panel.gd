@@ -10,6 +10,7 @@ var panel
 var state=preload("res://scripts/justice_state.gd").new()
 var layout_size:=Vector2.ZERO
 var opening:=false
+var return_tab:=0
 func _init() -> void:state.changed.connect(_sync)
 func configure(world,service,host,hover=null) -> void:
 	ui_host=host;state.configure(service)
@@ -24,13 +25,18 @@ func configure(world,service,host,hover=null) -> void:
 	state.guard.inspect_ready.connect(func(tile,id):
 		if allowed():inspect_requested.emit(tile,id))
 	panel.information_requested.connect(func(caption):
-		if allowed():information_requested.emit(caption))
+		if allowed():
+			var selected: int=state.tab
+			information_requested.emit(caption)
+			if state.phase==state.Phase.Closed:return_tab=selected)
+	service.session_changed.connect(func():return_tab=0)
+	host.views_reset.connect(func():return_tab=0)
 	host.register(self);_layout();_sync()
 func allowed() -> bool:return play_enabled and ui_host!=null and ui_host.allows_panel_input(self)
 func open_panel() -> void:
 	if allowed() or (play_enabled and ui_host!=null and ui_host.activate(self)):
-		opening=true;state.open();opening=false;_sync()
-func close_panel() -> void:state.close()
+		opening=true;state.open(return_tab);return_tab=0;opening=false;_sync()
+func close_panel() -> void:return_tab=0;state.close()
 func handle_back() -> void:
 	if allowed():close_panel()
 func set_play_enabled(value: bool) -> void:

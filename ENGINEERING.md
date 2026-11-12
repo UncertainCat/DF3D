@@ -1118,8 +1118,27 @@ The staged `justice_panel.gd`/`justice_view.gd` now renders the read-only Open,
 Closed and Cold case surface through the typed controller. Installed native
 category-button artwork supplies case rows; shared information chrome and separate
 case/witness scrollbars preserve local selection. `PANEL_SCRIPTS` registers the
-owner without adding a public route or incoming Justice header destination. Escape
-and information handoff retire owned reads through the real host.
+owner without adding a public launcher. Internal information headers, including
+Nobles' commit-aware handoff, can open Justice. Returning through a header retains
+the locally selected Justice tab and fetches fresh data. Explicit close, session
+change and host reset discard that return intent. Escape and information handoff
+retire owned reads through the real host.
+
+Protected151043 on2026-11-12 clicks Justice → Places → Justice → Nobles → Justice
+in native DF and the actual DF3D main scene at1200x800. Both Justice returns retain
+Intelligence; all four full panel crops(32,52)-(976,760) are pixel-identical.
+Destination reads finish and source owners close; final Escape releases input.
+The native oracle dismisses first-use help before capture. Initial150832 exposed
+DF3D's lost tab and had help-obscured Justice images; it is not visual acceptance.
+`native_justice.json.information_header_reference` records the final evidence.
+Composition checks additionally cover incoming Places/Nobles clicks at912/1600
+widths, pending-read retirement, unknown destinations, overlay gating and reset.
+Appointment commit/unknown-outcome rules are unchanged. This verifies tab return,
+not retention of every child selection/filter/scroll across information screens.
+`justice-header-tab-return` extension/composition and core19 pass. Owned DF38212
+exits unsaved, preserving source/preferences; serial30FPS, GPU47C/2% sampled.
+Known separate-renderer/finalize/two-ObjectDB shutdown diagnostics qualify live
+acceptance as passed_with_known_issues. Public management launchers remain gated.
 
 Protected `stockpile-storage-native-input-20261111-193806` exercises actual tab and
 case clicks plus witness-wheel scrolling at1200x800. The captured case rows,

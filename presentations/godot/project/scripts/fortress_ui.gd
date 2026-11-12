@@ -128,7 +128,7 @@ func controller(id: String):
 	var panel = load(Registry.PANEL_SCRIPTS[id]).new()
 	if id=="nobles":
 		add_child(panel);panel.configure(world,actions,host)
-		panel.information_available=func(caption):return caption in ["Creatures","Tasks","Places","Labor","Work orders","Objects"]
+		panel.information_available=func(caption):return caption in ["Creatures","Tasks","Places","Labor","Work orders","Objects","Justice"]
 		panel.information_requested.connect(func(caption):_open_staged_information(panel,caption))
 		controllers[id]=panel;return panel
 	if id=="justice":
@@ -268,6 +268,7 @@ func _open_staged_information(source,caption: String) -> void:
 		"Tasks":controller("tasks").open_panel()
 		"Places":controller("places").open_panel()
 		"Objects":controller("objects").open_panel()
+		"Justice":controller("justice").open_panel()
 		"Labor":controller("work_details").open_panel()
 		"Work orders":controller("workshop").open_global_orders()
 		"Nobles and administrators":controller("nobles").open_panel()

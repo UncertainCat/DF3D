@@ -1,9 +1,11 @@
 extends "res://tests/chest_scene_live.gd"
-func expected_filename() -> String:return "justice-sheet-navigation.json"
+func expected_filename() -> String:return "justice-header-navigation.json" if OS.get_environment("DF3D_JUSTICE_HEADER_NAV")=="1" else "justice-sheet-navigation.json"
 func result_filename() -> String:return "job-settings-wire-result.json"
 func run() -> void:
 	Engine.max_fps=30;await super.run()
 func exercise(expected: Dictionary) -> void:
+	if OS.get_environment("DF3D_JUSTICE_HEADER_NAV")=="1":
+		await header_navigation(expected);return
 	owner=scene._ui.controller("justice")
 	for sample in expected.samples:
 		owner.open_panel();await drain()
@@ -58,4 +60,20 @@ func exercise(expected: Dictionary) -> void:
 		check(inspector.panel.visible==bool(sample.after_escape_sheet_open),"Sheet Escape differs from native")
 		check(owner.panel.visible==bool(sample.after_escape_info_open),"Justice return visibility differs from native")
 		check(scene._ui.host.active==(owner if sample.after_escape_info_open else null),"Sheet Escape retained wrong input owner")
+	exercised=true
+func header_navigation(expected: Dictionary) -> void:
+	owner=scene._ui.controller("justice");owner.open_panel();await drain()
+	await pointer(owner.panel.get_global_transform_with_canvas()*owner.panel.tab_rect(5).get_center());await drain()
+	var index:=0
+	for sample in expected.samples:
+		var previous=scene._ui.host.active
+		await pointer(Vector2(sample.x,sample.y));await drain()
+		var target=scene._ui.controller(sample.owner)
+		if not check(scene._ui.host.active==target and target.panel.visible and not previous.panel.visible,"Information header did not reach "+str(sample.owner)):return
+		check(target.state.phase==target.state.Phase.Ready,"Information destination not ready")
+		if sample.owner=="justice":check(target.state.tab==int(sample.justice_tab),"Justice header return lost selected tab")
+		check(previous.state.phase==previous.state.Phase.Closed and previous.state.ticket==0,"Header handoff retained source ownership")
+		await process_frame;await RenderingServer.frame_post_draw
+		index+=1;root.get_texture().get_image().save_png(directory+"/justice-header-view-%d.png"%index)
+	key(KEY_ESCAPE);await drain();check(scene._ui.host.active==null,"Header destination did not release on Escape")
 	exercised=true

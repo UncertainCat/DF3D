@@ -153,10 +153,15 @@ func run():
 	ui.host.set_overlay_blocked(false)
 	var justice_escape:=InputEventKey.new();justice_escape.keycode=KEY_ESCAPE;justice_escape.pressed=true;ui.host._input(justice_escape)
 	check(ui.host.active==null and not justice.panel.visible and justice.state.phase==justice.state.Phase.Closed and not ui.actions._requests.has(justice_ticket),"Justice Escape retained queued read")
-	justice.open_panel();justice_ticket=justice.state.ticket
+	justice.open_panel();justice.state.tab=5;justice_ticket=justice.state.ticket
 	var justice_header:=InputEventMouseButton.new();justice_header.button_index=MOUSE_BUTTON_LEFT;justice_header.pressed=true;justice_header.position=Vector2(200,24)
 	justice.panel.layout(Vector2(1200,800));justice.panel._gui_input(justice_header)
 	check(ui.host.active==ui.controller("places") and not ui.actions._requests.has(justice_ticket),"Justice header failed to retire read on Places handoff")
+	ui.controller("places").information_requested.emit("Justice")
+	check(ui.host.active==justice and justice.state.tab==5 and justice.state.intelligence.ticket>0,"Justice header return retains tab with fresh read")
+	justice.information_requested.emit("Places");ui.host.reset_local_views();justice.open_panel()
+	check(justice.state.tab==0,"View reset retained Justice navigation intent")
+	justice.close_panel()
 	var places=ui.controller("places")
 	for dimensions in [Vector2(912,552),Vector2(1600,900)]:
 		for target in [[24,"residents"],[136,"tasks"],[280,"work_details"],[352,"workshop"]]:
@@ -180,10 +185,10 @@ func run():
 		check(places.state.tab==4 and places.state.ticket==pending,"Selected Places header retains subtab/read")
 		for point in ([Vector2(328,24)] if dimensions.x<1240 else [Vector2(800,24)]):
 			click.position=point;places.panel._gui_input(click)
-			check(ui.host.active==places and places.state.ticket==pending,"Unfinished information route stays gated")
+			check(ui.host.active==justice and justice.state.ticket>0 and not places.panel.visible and not ui.actions._requests.has(pending),"Places Justice header retires old read and opens fresh Justice")
 		ui.host.set_overlay_blocked(true)
-		places.information_requested.emit("Creatures")
-		check(ui.host.active==places,"Overlay blocks information handoff")
+		justice.information_requested.emit("Creatures")
+		check(ui.host.active==justice,"Overlay blocks information handoff")
 		ui.host.set_overlay_blocked(false)
 	var objects=ui.controller("objects")
 	check(objects==ui.controller("objects") and not ui.Registry.allows_launcher("Objects"),"Objects factory is reused without public exposure")
@@ -205,8 +210,19 @@ func run():
 		check(ui.host.active==nobles and not places.panel.visible,"Native Nobles header opens composed owner")
 		nobles.state._retire();nobles.state.phase=nobles.state.Phase.Ready;nobles.panel.layout(dimensions)
 		var pending: int=nobles.state.ticket
-		nobles.panel.information_requested.emit("Justice")
+		nobles.panel.information_requested.emit("Unknown destination")
 		check(ui.host.active==nobles and nobles.state.ticket==pending,"Unavailable Nobles destination does not dismiss or commit")
+		var justice_x:=8
+		var info_rows: Array=nobles.panel.groups()
+		for caption in info_rows[-1]:
+			if caption=="Justice":break
+			justice_x+=(caption.length()+4)*8
+		click.position=Vector2(justice_x+24,12+(info_rows.size()-1)*24+12);nobles.panel._gui_input(click)
+		check(ui.host.active==justice and not nobles.panel.visible and justice.state.ticket>0,"Nobles header opens fresh Justice owner")
+		justice_ticket=justice.state.ticket
+		justice.panel.layout(dimensions);click.position=Vector2(200,24);justice.panel._gui_input(click)
+		check(ui.host.active==places and not ui.actions._requests.has(justice_ticket),"Justice return retires owned read")
+		nobles.open_panel();nobles.state._retire();nobles.state.phase=nobles.state.Phase.Ready;nobles.panel.layout(dimensions)
 		click.position=Vector2(136,24);nobles.panel._gui_input(click)
 		check(ui.host.active==ui.controller("tasks") and not nobles.panel.visible,"Completed Nobles handoff reaches Tasks after source release: width=%s phase=%s active=%s"%[dimensions.x,nobles.state.phase,ui.host.active])
 		nobles.information_requested.emit("Places")

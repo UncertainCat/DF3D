@@ -332,9 +332,24 @@ require('gui.script').start(function()
     end
     if os.getenv('DF3D_ZONE_ACTIVE_AUDIT')=='1'then
      local original_first,original_second=raw.i1,raw.i2
+     if entry[1]=='Tomb'then
+      if b.zone_settings.tomb.flags.no_citizens then click(34,12)end
+      if b.zone_settings.tomb.flags.no_pets then click(38,12)end
+      assert(not b.zone_settings.tomb.flags.no_citizens and not b.zone_settings.tomb.flags.no_pets,'Tomb setup did not enable both burial options')
+     elseif entry[1]=='ArcheryRange'then
+      click(11,12)
+      assert(b.zone_settings.archery.dir_x==1 and b.zone_settings.archery.dir_y==0,'Archery setup did not choose positive X')
+     end
      local function active_snapshot(label)
       local children={};for _,child in ipairs(b.contained_buildings)do children[#children+1]=child.id end
-      records[#records+1]={name='active-'..entry[1]..'-'..label,id=b.id,type=entry[1],active=b.spec_sub_flag.active,first=raw.i1,second=raw.i2,children=children}
+      local row={name='active-'..entry[1]..'-'..label,id=b.id,type=entry[1],active=b.spec_sub_flag.active,first=raw.i1,second=raw.i2,children=children,frame=df.global.world.frame_counter}
+      if entry[1]=='Tomb'then
+       row.allow_citizens=not b.zone_settings.tomb.flags.no_citizens;row.allow_pets=not b.zone_settings.tomb.flags.no_pets
+      elseif entry[1]=='ArcheryRange'then
+       row.dir_x=b.zone_settings.archery.dir_x;row.dir_y=b.zone_settings.archery.dir_y
+      end
+      records[#records+1]=row
+      if entry[1]=='Tomb'or entry[1]=='ArcheryRange'then capture(row.name)end
      end
      active_snapshot('before');click(38,9);assert(not b.spec_sub_flag.active,'Native suspend did not disable zone');active_snapshot('off')
      click(38,9);assert(b.spec_sub_flag.active,'Native suspend did not restore zone');active_snapshot('on')

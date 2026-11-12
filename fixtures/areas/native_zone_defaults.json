@@ -163,8 +163,8 @@
     }
   },
   "active_toggle_reference": {
-    "lane": "build/stockpile-storage-native-zone-defaults-20261112-151907",
-    "scope": "Native Active clicks, five new zone types; no viewer or nonempty membership acceptance. Settings low bits ORed unconditionally; decision pending.",
+    "lane": "build/stockpile-storage-native-zone-defaults-20261112-170600",
+    "scope": "Native pointer clicks while paused, five zone types. Tomb permissions enabled and archery dir_x=1 set through native controls before toggling. Confirmed native defect; maintainer conditionally authorized correction, verified 2026-11-12.",
     "inline_rva": [
       "34b436",
       "34b493"
@@ -174,33 +174,37 @@
         "active": true,
         "children": [],
         "first": 1,
+        "frame": 0,
         "id": 1490,
         "name": "active-Pen-before",
-        "second": 0,
+        "second": 15,
         "type": "Pen"
       },
       {
         "active": false,
         "children": [],
         "first": 3,
+        "frame": 0,
         "id": 1490,
         "name": "active-Pen-off",
-        "second": 0,
+        "second": 15,
         "type": "Pen"
       },
       {
         "active": true,
         "children": [],
         "first": 3,
+        "frame": 0,
         "id": 1490,
         "name": "active-Pen-on",
-        "second": 0,
+        "second": 15,
         "type": "Pen"
       },
       {
         "active": true,
         "children": [],
         "first": 2,
+        "frame": 0,
         "id": 1491,
         "name": "active-Pond-before",
         "second": 0,
@@ -210,6 +214,7 @@
         "active": false,
         "children": [],
         "first": 3,
+        "frame": 0,
         "id": 1491,
         "name": "active-Pond-off",
         "second": 0,
@@ -219,6 +224,7 @@
         "active": true,
         "children": [],
         "first": 3,
+        "frame": 0,
         "id": 1491,
         "name": "active-Pond-on",
         "second": 0,
@@ -226,35 +232,60 @@
       },
       {
         "active": true,
+        "allow_citizens": true,
+        "allow_pets": true,
         "children": [],
-        "first": 1,
+        "first": 0,
+        "frame": 0,
         "id": 1492,
         "name": "active-Tomb-before",
         "second": 0,
         "type": "Tomb"
       },
       {
+        "id": 1492,
+        "name": "active-Tomb-before",
+        "zone_type": "Tomb"
+      },
+      {
         "active": false,
+        "allow_citizens": false,
+        "allow_pets": false,
         "children": [],
         "first": 3,
+        "frame": 0,
         "id": 1492,
         "name": "active-Tomb-off",
         "second": 0,
         "type": "Tomb"
       },
       {
+        "id": 1492,
+        "name": "active-Tomb-off",
+        "zone_type": "Tomb"
+      },
+      {
         "active": true,
+        "allow_citizens": false,
+        "allow_pets": false,
         "children": [],
         "first": 3,
+        "frame": 0,
         "id": 1492,
         "name": "active-Tomb-on",
         "second": 0,
         "type": "Tomb"
       },
       {
+        "id": 1492,
+        "name": "active-Tomb-on",
+        "zone_type": "Tomb"
+      },
+      {
         "active": true,
         "children": [],
         "first": 7,
+        "frame": 0,
         "id": 1493,
         "name": "active-PlantGathering-before",
         "second": 0,
@@ -264,6 +295,7 @@
         "active": false,
         "children": [],
         "first": 7,
+        "frame": 0,
         "id": 1493,
         "name": "active-PlantGathering-off",
         "second": 0,
@@ -273,6 +305,7 @@
         "active": true,
         "children": [],
         "first": 7,
+        "frame": 0,
         "id": 1493,
         "name": "active-PlantGathering-on",
         "second": 0,
@@ -281,38 +314,204 @@
       {
         "active": true,
         "children": [],
+        "dir_x": 1,
+        "dir_y": 0,
         "first": 1,
+        "frame": 0,
         "id": 1494,
         "name": "active-ArcheryRange-before",
         "second": 0,
         "type": "ArcheryRange"
       },
       {
+        "id": 1494,
+        "name": "active-ArcheryRange-before",
+        "zone_type": "ArcheryRange"
+      },
+      {
         "active": false,
         "children": [],
+        "dir_x": 3,
+        "dir_y": 0,
         "first": 3,
+        "frame": 0,
         "id": 1494,
         "name": "active-ArcheryRange-off",
         "second": 0,
         "type": "ArcheryRange"
       },
       {
+        "id": 1494,
+        "name": "active-ArcheryRange-off",
+        "zone_type": "ArcheryRange"
+      },
+      {
         "active": true,
         "children": [],
+        "dir_x": 3,
+        "dir_y": 0,
         "first": 3,
+        "frame": 0,
         "id": 1494,
         "name": "active-ArcheryRange-on",
         "second": 0,
         "type": "ArcheryRange"
+      },
+      {
+        "id": 1494,
+        "name": "active-ArcheryRange-on",
+        "zone_type": "ArcheryRange"
       }
     ],
-    "hashes": {
-      "result.json": "af001887a411aabc2e757cf40d941bdc0c71397e5f5e529779466a386c2528c8",
-      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
-    },
-    "owned_df_pid": 34508,
+    "owned_df_pid": 1880,
     "source_preserved": true,
-    "closed_unsaved": true
+    "closed_unsaved": true,
+    "viewer_lane": "build/areas-acceptance-20261112-171315",
+    "viewer_status": "passed_with_known_issues: separate-render-thread notice only",
+    "viewer_observations": [
+      {
+        "active": false,
+        "kind": "Tomb",
+        "settings": {
+          "facing": 0,
+          "gather_fallen": -1,
+          "gather_shrubs": -1,
+          "gather_trees": -1,
+          "pond_mode": 0,
+          "tomb_citizens": 1,
+          "tomb_pets": 1
+        }
+      },
+      {
+        "active": true,
+        "kind": "Tomb",
+        "settings": {
+          "facing": 0,
+          "gather_fallen": -1,
+          "gather_shrubs": -1,
+          "gather_trees": -1,
+          "pond_mode": 0,
+          "tomb_citizens": 1,
+          "tomb_pets": 1
+        }
+      },
+      {
+        "active": false,
+        "kind": "ArcheryRange",
+        "settings": {
+          "facing": 2,
+          "gather_fallen": -1,
+          "gather_shrubs": -1,
+          "gather_trees": -1,
+          "pond_mode": 0,
+          "tomb_citizens": -1,
+          "tomb_pets": -1
+        }
+      },
+      {
+        "active": true,
+        "kind": "ArcheryRange",
+        "settings": {
+          "facing": 2,
+          "gather_fallen": -1,
+          "gather_shrubs": -1,
+          "gather_trees": -1,
+          "pond_mode": 0,
+          "tomb_citizens": -1,
+          "tomb_pets": -1
+        }
+      },
+      {
+        "active": false,
+        "kind": "Pen",
+        "settings": {
+          "facing": 0,
+          "gather_fallen": -1,
+          "gather_shrubs": -1,
+          "gather_trees": -1,
+          "pond_mode": 0,
+          "tomb_citizens": -1,
+          "tomb_pets": -1
+        }
+      },
+      {
+        "active": true,
+        "kind": "Pen",
+        "settings": {
+          "facing": 0,
+          "gather_fallen": -1,
+          "gather_shrubs": -1,
+          "gather_trees": -1,
+          "pond_mode": 0,
+          "tomb_citizens": -1,
+          "tomb_pets": -1
+        }
+      },
+      {
+        "active": false,
+        "kind": "Pond",
+        "settings": {
+          "facing": 0,
+          "gather_fallen": -1,
+          "gather_shrubs": -1,
+          "gather_trees": -1,
+          "pond_mode": 1,
+          "tomb_citizens": -1,
+          "tomb_pets": -1
+        }
+      },
+      {
+        "active": true,
+        "kind": "Pond",
+        "settings": {
+          "facing": 0,
+          "gather_fallen": -1,
+          "gather_shrubs": -1,
+          "gather_trees": -1,
+          "pond_mode": 1,
+          "tomb_citizens": -1,
+          "tomb_pets": -1
+        }
+      },
+      {
+        "active": false,
+        "kind": "PlantGathering",
+        "settings": {
+          "facing": 0,
+          "gather_fallen": 0,
+          "gather_shrubs": 0,
+          "gather_trees": 0,
+          "pond_mode": 0,
+          "tomb_citizens": -1,
+          "tomb_pets": -1
+        }
+      },
+      {
+        "active": true,
+        "kind": "PlantGathering",
+        "settings": {
+          "facing": 0,
+          "gather_fallen": 0,
+          "gather_shrubs": 0,
+          "gather_trees": 0,
+          "pond_mode": 0,
+          "tomb_citizens": -1,
+          "tomb_pets": -1
+        }
+      }
+    ],
+    "viewer_owned_df_pid": 34960,
+    "limitations": [
+      "Tested zones have empty contained_buildings; populated target-membership gameplay not claimed.",
+      "Whole-world relation and containment lists and both raw settings words remain unchanged across each viewer click."
+    ],
+    "hashes": {
+      "build/stockpile-storage-native-zone-defaults-20261112-170600/result.json": "1bc90e3fbdbf778819ba7e13f19bb720db6915669167c1436c1f38fa85692068",
+      "build/stockpile-storage-native-zone-defaults-20261112-170600/save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "build/areas-acceptance-20261112-171315/result.json": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+      "build/areas-acceptance-20261112-171315/zone-active-view.json": "ec9b21ac2d405711b68ffbe5d9ae2404fc44f4b081b5511621f8bcb2a7f1ae0c",
+      "build/areas-acceptance-20261112-171315/save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
+    }
   },
   "current_main_scene_reference": {
     "lane": "build/areas-acceptance-20261112-151424",
@@ -327,7 +526,7 @@
     "owned_df_pid": 40908,
     "unchanged_save_manifests": 2,
     "closed_unsaved": true,
-    "gpu": "both graphical processes capped30FPS; samples47–50C, highest sampled load30%",
+    "gpu": "both graphical processes capped30FPS; samples47\u00e2\u20ac\u201c50C, highest sampled load30%",
     "hashes": {
       "result.json": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
       "native.log": "749b4b2e13f08cf6a92d3887a3727c301e9c3d57a725fe61a9f9ce1e8cf7e2a6",
@@ -903,8 +1102,7 @@
       "This discovery run establishes native text only; final transport and rendered evidence is in selected_owner_rows_integration"
     ],
     "result_sha256": "9d5df71cd5051bd46ed293fd3e9624eb3965802c5f9e890022bec3ca295f69a1"
-  }
-,
+  },
   "selected_owner_rows_integration": {
     "protocol": 204,
     "native_directory": "build/stockpile-storage-native-zone-defaults-20261112-163559",

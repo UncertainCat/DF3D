@@ -1571,10 +1571,9 @@ local function native_operation(r)
    if not assigned then return reject(problem) end
   end
   if default(a,'active',-1)>=0 then
+   -- Native34b436..34b493 writes Active without rebuilding memberships.
+   -- Maintainer-approved correction: omit its unrelated settings-union OR3.
    b.spec_sub_flag.active=a.active==1
-   unknown_work=true
-   local notified=pcall(B.notifyCivzoneModified,b)
-   if not notified then return reject('Native zone notification failed; inspect before retrying') end
   end
  elseif op==15 or legacy_link then
   local first,second=workshop,b

@@ -98,6 +98,12 @@ copy, fabricated progress percentages or broader native-UI departures.
   frame responsiveness takes priority over simulation throughput during these
   interactive actions. Keep Godot asynchronous and validate native behavior
   before release. Do not drive or borrow the global native build-menu state.
+- Maintainer decision, 2026-11-12: after independently reproducing native DF's
+  Zone Active toggle corruption, keep unrelated zone settings unchanged when
+  switching a zone off/on. Protected native170600 confirms both Tomb burial
+  permissions are disabled and archery dir_x changes1 to3 by native clicks.
+  Preserve only the intended Active change and document the exact reproduction
+  in ENGINEERING.md's native bug register. Do not rebuild room memberships.
 - Maintainer decision, 2026-10-23: Track material ordering may use fresh
   DF-calculated distances instead of reproducing the observed stale-distance
   bug, where opening and cancelling an unrelated Floor picker changes suggested

@@ -203,6 +203,26 @@ elseif request.op=='tomb_settings_owner' then
   assert(saved.first==b.zone_settings.whole.i1 and saved.second==b.zone_settings.whole.i2,'Rejected Tomb settings changed state')
   b.assigned_unit_id=saved.owner;_G.df3d_tomb_settings_owner=nil
  end
+elseif request.op=='zone_active_fixture' then
+ local b=building()
+ if request.begin then _G.df3d_active_fixture={id=b.id,first=b.zone_settings.whole.i1,second=b.zone_settings.whole.i2}
+ else
+  local saved=assert(_G.df3d_active_fixture);assert(saved.id==b.id)
+  b.zone_settings.whole.i1=saved.first;b.zone_settings.whole.i2=saved.second;_G.df3d_active_fixture=nil
+ end
+elseif request.op=='zone_active_guard' then
+ local b=building();local snapshot=area(b);snapshot.active=nil
+ local memberships={}
+ for _,v in ipairs(df.global.world.buildings.all)do
+  memberships[#memberships+1]={id=v.id,relations=array(v.relations,function(p)return p.id end),
+   contained=df.building_civzonest:is_instance(v)and array(v.contained_buildings,function(p)return p.id end)or{}}
+ end
+ local fingerprint=canonical({snapshot=snapshot,memberships=memberships,first=b.zone_settings.whole.i1,second=b.zone_settings.whole.i2})
+ if request.begin then _G.df3d_active_guard={id=b.id,fingerprint=fingerprint}
+ else
+  local saved=assert(_G.df3d_active_guard);assert(saved.id==b.id and saved.fingerprint==fingerprint,'Active changed unrelated settings or membership')
+  assert(b.spec_sub_flag.active==request.active,'Active effect mismatch');_G.df3d_active_guard=nil
+ end
 elseif request.op=='zone_settings_guard' then
  local rows={}
  for _,b in ipairs(df.global.world.buildings.all)do

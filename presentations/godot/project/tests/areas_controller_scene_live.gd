@@ -102,6 +102,8 @@ func capture(label: String) -> void:
 		if not check(editor.panel.size.x == 324,"native stockpile panel width changed: "+str(editor.panel.size)+" minimum="+str(editor.panel.get_combined_minimum_size())): return
 
 func pointer_areas() -> void:
+	if OS.get_environment("DF3D_ZONE_ACTIVE_SCENE")=="1":
+		await pointer_zone_active();return
 	if OS.get_environment("DF3D_ZONE_HOVER_SCENE")=="1":
 		await pointer_zone_help();return
 	if OS.get_environment("DF3D_TOMB_SCENE")=="1":
@@ -2584,3 +2586,40 @@ func zone_hover_sample(control: Button,key: String,instruction: String,reference
 	if not check(rect.position.x==float(expected.left)*8 and rect.end.y==bottom,"Native zone help anchor differs: "+key+" "+str(rect)):return
 	samples.append({"key":key,"instruction":instruction,"rect":[rect.position.x,rect.position.y,rect.size.x,rect.size.y],"lines":help.lines.duplicate()})
 	if key in ["zone/type/Bedroom","zone/type/Pond","zone/control/repaint","zone/paint/erase"]:await capture("zone_help_"+key.replace("/","_"))
+
+func pointer_zone_active() -> void:
+	step="Zone Active setting preservation"
+	await seed_catalog()
+	var launcher: Button=scene._fortress_hud.navigation.Zones
+	launcher.show();scene._fortress_hud.layout(scene._fortress_hud.logical_view_size())
+	await click_control(launcher,true)
+	if not await wait_ui(func():return settled() and editor.available,"Zone Active entry"):return
+	var results: Array=[]
+	for kind in ["Tomb","ArcheryRange","Pen","Pond","PlantGathering"]:
+		var id:=zone(kind)
+		await native("zone_active_fixture",{"id":id,"begin":true})
+		if kind=="Tomb":
+			await edit(id,1,{"operation":9,"zone_settings":{"tomb_citizens":1,"tomb_pets":1}})
+		elif kind=="ArcheryRange":
+			await edit(id,1,{"operation":9,"zone_settings":{"facing":2}})
+		if stopped:return
+		editor.use_area(await inspect(id,1))
+		if not await wait_ui(settled,"Zone Active observation"):return
+		var settings: Dictionary=editor.selected.zone_settings.duplicate(true)
+		if kind in ["Tomb","ArcheryRange"]:await capture("active_"+kind+"_before")
+		for active in [false,true]:
+			var revision: int=editor.selected.revision
+			await native("zone_active_guard",{"id":id,"begin":true})
+			await click_control(editor.zone_menu.controls.suspend)
+			if not await wait_ui(func():return settled() and bool(editor.selected.get("active",not active))==active,"Zone Active click"):return
+			await native("zone_active_guard",{"id":id,"begin":false,"active":active})
+			if not check(editor.selected.zone_settings==settings and int(editor.selected.revision)!=revision,"Active changed unrelated options or retained revision"):return
+			results.append({"kind":kind,"active":active,"settings":settings.duplicate(true)})
+			if kind in ["Tomb","ArcheryRange"]:await capture("active_"+kind+("_on" if active else "_off"))
+			if not active:
+				await request({"action":11,"kind":1,"id":id,"expected_revision":revision,"active":1},"Area changed; inspect again")
+				if stopped:return
+		await native("zone_active_fixture",{"id":id,"begin":false})
+	editor.close_panel();write_json("zone-active-view.json",results)
+	await native("final")
+	print("ZONE_ACTIVE_SCENE_PASS toggles=",results.size()," settings_and_memberships_unchanged=true")

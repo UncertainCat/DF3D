@@ -1186,6 +1186,19 @@ def main():
     lua.execute("fail_owner=false")
     active_only = call(11, {"kind": 1, "id": 6, "active": 1, "expected_revision": zone_revision()})
     assert active_only["ok"] and active_only["steps"] == 16 and active_only["areas"][1]["active"]
+    # Active writes must not call DFHack's membership reconstruction helper.
+    before_notifications = lua.eval("notification_calls")
+    lua.execute("force_notification_error=true")
+    for zone_type in [2, 3, 4, 5]:
+        lua.globals().zone["type"] = zone_type
+        before_settings = dict(call(9, {"kind": 1, "id": 6})["areas"][1]["zone_settings"].items())
+        for active in [0, 1]:
+            result = call(11, {"kind": 1, "id": 6, "active": active, "expected_revision": zone_revision()})
+            assert result["ok"] and not result["work_unknown"]
+            assert bool(result["areas"][1]["active"]) == bool(active)
+            assert dict(result["areas"][1]["zone_settings"].items()) == before_settings
+            assert lua.eval("notification_calls") == before_notifications
+    lua.execute("force_notification_error=false;zone.type=0")
     lua.execute("""
     local function clone(value)
      if type(value)~='table' then return value end

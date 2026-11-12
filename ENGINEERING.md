@@ -6,7 +6,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
-| Zone Active toggles OR both low bits into the settings union regardless of zone type, changing unrelated options. | Decision pending on preserving unrelated settings. Current staged Lua changes only Active but still performs an unaudited DFHack membership refresh; no correction accepted. | Protected151907 on2026-11-12: Pen1→3, Pond2→3, Tomb1→3, Archery dir_x1→3; Gathering7 stays7. Both off/on retain3. Native34b436..34b493 changes Active then ORs1 and2 at zone+164. `native_zone_defaults.json.active_toggle_reference`. |
+| Zone Active toggles OR both low bits into the settings union regardless of zone type, changing unrelated options. | Implemented approved correction: change only Active, preserve zone settings, and omit the unrelated DFHack membership rebuild. | Independently reproduced through native clicks in protected170600 on2026-11-12: Tomb permissions both enabled to disabled, archery dir_x1 to3; re-enabling retains the corruption. Viewer171315 passes10 clicks across5 types and stale-edit rejection. `native_zone_defaults.json.active_toggle_reference`; reproduction below. |
 | Justice's Name sort tooltip advertises Ctrl+n, but the native sort command leaves the list unchanged. | No correction approved or implemented; preserve inactive shortcut. | Protected130514 on2026-11-12 sends UNITLIST_SORT_NAME before filter focus in Guard, Convicts, Interrogate and Convict. Native priorities and ordered row IDs remain unchanged; FILTER works in the same lists. `native_justice.json.filter_keyboard_reference`. |
 | Justice witness captions can extend past the panel edge. | No correction approved or implemented; preserve native full captions. | Protected150238 on2026-11-12 rebuilds a case after a controlled long witness name. Constructor14195c0 sets a120-cell minimum and the caption draws past the panel. `native_justice.json.witness_intrinsic_width_reference`. |
 | Justice witness viewport retains its previous row count after shrinking the window. | Approval pending for retaining DF3D's immediate capacity recalculation. Current staged behavior differs; no public acceptance. | Protected144525/144725 on2026-11-12: resizing1200x800 to912x552 leaves native num_visible8; reselecting the same case yields4. Only that first resize differs in3051 panel pixels. `native_justice.json.case_responsive_reference`. |
@@ -43,6 +43,36 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Overview evaluates pain twice and can show duplicate Pain rows with different colors. | No correction authorized or implemented. | Confirmed native165937 on2026-10-30: pain50 displays palette6 then14. Reference branches165cfe and1662aa; `native_farm.json.unit_health_reference`. Preserve native behavior pending a separate maintainer decision. |
 | Location staff occupation/work-detail tooltips activate over the portrait instead of their visible indicators. | Attach help to the visible indicator. | Implemented under approval2026-10-27. Native102205 covers all occupation roles and workshop/furnace hitboxes; location-staff-help-hitboxes verifies visible hover regions, with baseline live101533. `native_location_details.json.staff_indicator_reference`, native091520. Workshop/furnace visible-icon miss and portrait activation are also captured in native102205. |
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
+
+### Reproducing Zone Active settings corruption (DF53.16)
+
+Keep the game paused. Open Zones and select an unassigned Tomb; enable both
+citizen and pet burial icons. Click the Active/Suspend flag once. Both burial
+permissions turn off along with Active. Click the flag again: Active returns,
+but both permissions remain off. Separately select an archery range and choose
+the direction with native `dir_x=1, dir_y=0`; suspend and re-enable it. The first
+click changes `dir_x` to3 and the second leaves3. This is a stored settings
+change, not merely an icon redraw.
+
+Protected `build/stockpile-storage-native-zone-defaults-20261112-170600`
+records before/off/on screenshots and named-field readbacks at paused frame0.
+The native handler at RVAs34b436..34b493 flips Active at zone+154, then ORs1
+and2 into the settings union at zone+164 without checking zone type. The same
+bits encode Tomb burial restrictions and archery direction. Diagnostic setup
+uses native clicks for both permissions and direction. Owned DF1880 exited
+unsaved and source saves were preserved.
+
+The maintainer authorized preserving settings if independently verified.
+DF3D changes only Active and does not call DFHack's membership reconstruction.
+Protected viewer `build/areas-acceptance-20261112-171315` verifies actual off/on
+clicks for Tomb, ArcheryRange, Pen, Pond and PlantGathering, unchanged settings
+words and world building relations/containment lists, and stale-edit rejection.
+Test zones have empty contained-building lists; populated-target gameplay is
+not claimed. The lane passed with only the documented Godot rendering-thread
+notice; owned DF34960 exited unsaved with save manifests and preferences restored.
+Native observations and evidence hashes live in
+`fixtures/areas/native_zone_defaults.json.active_toggle_reference`.
+
 
 ## Justice native discovery
 

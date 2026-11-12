@@ -222,6 +222,17 @@ if os.getenv('DF3D_JUSTICE_SHEET_NAV')=='1' then
   sample.skill_groups={}
   sample.thoughts={}
   sample.quote=dfhack.df2utf(main.view_sheets.raw_current_thought)
+  sample.thought_layout={columns=main.view_sheets.thought_box_width,quote_columns=main.view_sheets.current_thought_width,quote_lines={},paragraphs={}}
+  for _,line in ipairs(main.view_sheets.current_thought.text)do sample.thought_layout.quote_lines[#sample.thought_layout.quote_lines+1]=dfhack.df2utf(line.value)end
+  for _,box in ipairs(main.view_sheets.thought_box)do
+   local paragraph={}
+   for _,line in ipairs(box.line)do
+    local _,p=df.sizeof(line);local text=bytes(p,769):match('^[^%z]*');local colors={}
+    for i=0,#text-1 do colors[#colors+1]=bytes(p+769+i,1):byte()end
+    paragraph[#paragraph+1]={text=dfhack.df2utf(text),colors=colors}
+   end
+   sample.thought_layout.paragraphs[#sample.thought_layout.paragraphs+1]=paragraph
+  end
   local quote_unit=df.unit.find(sample.unit_id);local quote_n,quote_p=df.sizeof(quote_unit);local quote_before=bytes(quote_p,quote_n)
   sample.quote_fallback=probe('creature-quote-fallback-probe',sample.unit_id)
   assert(sample.quote_fallback.equal,'Copied quote inputs differ from native fallback')

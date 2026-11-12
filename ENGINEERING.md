@@ -432,8 +432,8 @@ Full Overview rendering is not accepted by this navigation check. In crop
 capture lacked the native opening quote and memory elaboration and showed a
 different last skill. The native skill-group and recalled-memory providers below
 correct the latter two gaps. The native quote provider below also supplies the
-opening quote; its remaining selection coverage and thought wrapping are
-independent of the verified Justice handoff. Overview still locally
+opening quote; its remaining selection coverage and the layout acceptance below
+are independent of the verified Justice handoff. Overview still locally
 selects skill rows and recent thought snippets in creature_sheet.gd.
 
 Owned DF41836 closes unsaved with source/preferences preserved; both clients
@@ -11141,8 +11141,8 @@ Protected121435 on2026-11-12 compares the complete recalled circumstance for
 Convict6970, emotion23/flags452, against native's sheet text: exact match,
 including both elaborations and embedded palette commands. The actual main
 scene displays the expanded paragraph and preserves both Justice inspector
-transitions. That capture predates the quote provider below; narrower native
-thought wrapping still differs. No whole-sheet pixel parity is claimed. Other flag/tense/sex combinations
+transitions. That capture predates the quote and layout providers below.
+No whole-sheet pixel parity is claimed. Other flag/tense/sex combinations
 have code-trace evidence but are not covered by this live sample. Earlier121153
 and121328 failed because the new assertion included an emotion that native
 filters out;121328 recorded an exact match for the visible clause. The final
@@ -11192,8 +11192,41 @@ unsaved with source/preferences preserved. Both applications run at30FPS;
 sampled GPU45–48C. MSVC/install, context/thought-text headless checks and core19
 pass. Known renderer/finalize/two-ObjectDB diagnostics qualify the live result.
 Fixture native_justice.json.overview_quote_reference records the bounded scope.
-Thought wrapping, quote spacing and divider placement still differ; no complete
-Overview visual acceptance or broader Justice exposure is established.
+The text layout acceptance below is separate; divider placement still differs.
+No complete Overview visual acceptance or broader Justice exposure is established.
+
+Overview text uses creature_overview_text.gd and the existing native color-word
+formatter shared with Health. Native168cb0/168ebd reserve six body columns;
+the observed body472 pixels yields53 text columns. Native169160 rejects a
+paragraph when its final row would not fit. The viewer follows that whole-
+paragraph rule rather than imposing an eight-paragraph limit or letting Godot
+wrap and scroll the text block. A blank row separates the quote from thoughts,
+including an absent quote. The control follows the remaining viewport height
+and recomputes layout when its position or width changes; it owns no simulation
+state. Plain quote wrapping preserves internal spaces, with native8e7310/8e7440
+as the reference, while thought color-word layout collapses separators.
+
+Protected123515 records native widths, quote lines and thought text/color lines.
+Protected123848 exercises the actual main scene with this control. Guard5813's
+whole visible thought block, crop(424,568)-(896,748), has zero differing pixels
+and displays nine complete paragraphs. Convict6970's first five paragraphs also
+have zero differences: native crop(424,580)-(896,736) versus viewer
+(424,568)-(896,724). This comparison translates one row because the earlier
+native cached quote occupies two rows and the fresh viewer quote occupies one;
+it does not claim identical complete-panel images. The corresponding recorded
+two-line quote passes the headless control check and fits five of the first six
+thought paragraphs, omitting the sixth rather than clipping it. Recorded first
+three/six native paragraphs also match all line text and color bytes in the
+shared formatter. Main-scene checks compare width and first-three line wrapping.
+
+Fixture native_justice.json.overview_text_layout_reference retains that scoped
+evidence. Context, thought-text, native word-layout and core19 checks pass.
+DF11776/34812 close unsaved with source/preferences preserved; graphical work
+is serial30FPS, sampled GPU45–49C. The final live result has the known Godot
+renderer/finalize/two-ObjectDB diagnostics. No bridge change is involved.
+Other viewport sizes, long unbroken quotes and the existing two-pixel divider
+position remain outside this visual acceptance; active-emotion quote selection
+also remains unaccepted as described above.
 
 Overview skill colors use native764a70's profession selector, transported as
 the numeric native_profession fact on each skill. Its pinned body and tables

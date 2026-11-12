@@ -44,6 +44,15 @@ func exercise(expected: Dictionary) -> void:
 		FileAccess.open(directory+"/overview-memory-%d.json"%int(sample.unit_id),FileAccess.WRITE).store_string(JSON.stringify(memory_evidence))
 		check(elaborations>0 if int(sample.unit_id)==6970 else true,"Convict reference no longer exercises recalled emotion elaboration")
 		await process_frame;await RenderingServer.frame_post_draw
+		var overview_text=inspector.body.find_child("OverviewText",true,false)
+		if check(overview_text!=null,"Overview native text control unavailable"):
+			check(overview_text.columns==int(sample.thought_layout.columns),"Overview wrap width differs from native")
+			for index in mini(3,overview_text.paragraphs.size()):
+				var actual=overview_text.Layout.new().build(overview_text.paragraphs[index],overview_text.columns)
+				var expected_lines: Array=sample.thought_layout.paragraphs[index]
+				if not check(actual.size()==expected_lines.size(),"Overview paragraph line count differs from native"):continue
+				for line in actual.size():check(actual[line].text==expected_lines[line].text,"Overview paragraph wraps differently from native")
+			FileAccess.open(directory+"/overview-layout-%d.json"%int(sample.unit_id),FileAccess.WRITE).store_string(JSON.stringify({"position":overview_text.global_position,"size":overview_text.size,"columns":overview_text.columns,"visible_paragraphs":overview_text.visible_paragraphs,"lines":overview_text.lines}))
 		root.get_texture().get_image().save_png(directory+"/justice-main-sheet-%d.png"%tab)
 		key(KEY_ESCAPE);await process_frame;await drain()
 		check(inspector.panel.visible==bool(sample.after_escape_sheet_open),"Sheet Escape differs from native")

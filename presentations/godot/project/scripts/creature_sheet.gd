@@ -348,8 +348,13 @@ func overview(parent: Node, detail: Dictionary):
  var quote:=""
  for row in records_for("identity"):
   if fact_value(row,"record_type")=="overview_quote":quote+=str(fact_value(row,"native_text",""))
- if not quote.is_empty():paragraph(parent,[{"text":quote,"color":NativeText.colors[15]}])
- for spans in Thoughts.recent(self,int(detail.get("sex",-1))).slice(0,8): paragraph(parent,spans,0)
+ var recent: Array=[]
+ for spans in Thoughts.recent(self,int(detail.get("sex",-1))):recent.append(Thoughts.tagged_spans(spans))
+ var overview_text:=preload("res://scripts/creature_overview_text.gd").new()
+ overview_text.name="OverviewText"
+ overview_text.size_flags_horizontal=Control.SIZE_EXPAND_FILL
+ parent.add_child(overview_text)
+ overview_text.configure(scroll,owner.body.get_theme_font("font","Label"),quote,recent)
 
 func render(controller, state: Dictionary):
  owner=controller

@@ -11791,5 +11791,206 @@
       "job-settings-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
       "result.json": "55ea401f0907968b16baa48a037a247d52b778f816392f061952e6daa810f1ec"
     }
+  },
+  "overview_text_layout_reference": {
+    "native_run": "build/stockpile-storage-native-input-20261112-123848",
+    "status": "passed_with_known_issues",
+    "native_source": "Overview168cb0/168ebd width calculation;169160 whole-paragraph fit. Native858550 color-text wrapping;8e7310 quote wrapping.",
+    "samples": [
+      {
+        "unit_id": 5813,
+        "columns": 53,
+        "quote_columns": 53,
+        "quote": "\"Everything's good.\"",
+        "quote_lines": [
+          "\"Everything's good.\""
+        ],
+        "raw": [
+          "[C:7:0:0]She felt [C:2:0:1]satisfied [C:7:0:0]at work.",
+          "[C:7:0:0]She felt [C:2:0:1]satisfied [C:7:0:0]upon improving growing.",
+          "[C:7:0:0]She didn't feel [C:7:0:0]anything [C:7:0:0]after seeing a goblin's dead body."
+        ],
+        "paragraphs": [
+          [
+            {
+              "colors": [7, 7, 7, 7, 7, 7, 7, 7, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 7, 7, 7, 7, 7, 7, 7, 7, 7],
+              "text": "She felt satisfied at work."
+            }
+          ],
+          [
+            {
+              "colors": [7, 7, 7, 7, 7, 7, 7, 7, 66, 66, 66, 66, 66, 66, 66, 66, 66, 66, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7],
+              "text": "She felt satisfied upon improving growing."
+            }
+          ],
+          [
+            {
+              "colors": [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7],
+              "text": "She didn't feel anything after seeing a goblin's dead"
+            },
+            {
+              "colors": [7, 7, 7, 7, 7],
+              "text": "body."
+            }
+          ]
+        ],
+        "viewport_size": [
+          472,
+          210
+        ],
+        "visible_prefix_paragraphs": 3
+      },
+      {
+        "unit_id": 6970,
+        "columns": 53,
+        "quote_columns": 53,
+        "quote": "\"An artisan, their materials and the tools to shape them!\"",
+        "quote_lines": [
+          "\"An artisan, their materials and the tools to shape ",
+          "them!\""
+        ],
+        "raw": [
+          "[C:7:0:0]He felt [C:1:0:1]wonder [C:5:0:0]remembering  [C:7:0:0]performing the rites of The Scintillating Bejeweled Sect in a dedicated temple.",
+          "[C:7:0:0]He was [C:6:0:0]uneasy [C:5:0:0]dwelling upon  [C:7:0:0]seeing Goden Constructpacks's dead body, [C:5:0:0]and mulling over the recurring memory allowed him to rethink his intellectual values and changed his personal tendencies[C:7:0:0].",
+          "[C:7:0:0]He was [C:2:0:1]content [C:7:0:0]after eating a fine dish.",
+          "[C:7:0:0]He was [C:6:0:0]bored [C:7:0:0]after being unable to practice a martial art for too long.",
+          "[C:7:0:0]He was [C:6:0:0]bored [C:7:0:0]after being unable to practice a craft for too long.",
+          "[C:7:0:0]He didn't feel [C:7:0:0]anything [C:7:0:0]after being unable to acquire something for too long."
+        ],
+        "paragraphs": [
+          [
+            {
+              "colors": [7, 7, 7, 7, 7, 7, 7, 65, 65, 65, 65, 65, 65, 65, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7],
+              "text": "He felt wonder remembering performing the rites of"
+            },
+            {
+              "colors": [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7],
+              "text": "The Scintillating Bejeweled Sect in a dedicated"
+            },
+            {
+              "colors": [7, 7, 7, 7, 7, 7, 7],
+              "text": "temple."
+            }
+          ],
+          [
+            {
+              "colors": [7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7],
+              "text": "He was uneasy dwelling upon seeing Goden"
+            },
+            {
+              "colors": [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
+              "text": "Constructpacks's dead body, and mulling over the"
+            },
+            {
+              "colors": [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
+              "text": "recurring memory allowed him to rethink his"
+            },
+            {
+              "colors": [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
+              "text": "intellectual values and changed his personal"
+            },
+            {
+              "colors": [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 7],
+              "text": "tendencies."
+            }
+          ],
+          [
+            {
+              "colors": [7, 7, 7, 7, 7, 7, 66, 66, 66, 66, 66, 66, 66, 66, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7],
+              "text": "He was content after eating a fine dish."
+            }
+          ],
+          [
+            {
+              "colors": [7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7],
+              "text": "He was bored after being unable to practice a martial"
+            },
+            {
+              "colors": [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7],
+              "text": "art for too long."
+            }
+          ],
+          [
+            {
+              "colors": [7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7],
+              "text": "He was bored after being unable to practice a craft"
+            },
+            {
+              "colors": [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7],
+              "text": "for too long."
+            }
+          ],
+          [
+            {
+              "colors": [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7],
+              "text": "He didn't feel anything after being unable to acquire"
+            },
+            {
+              "colors": [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7],
+              "text": "something for too long."
+            }
+          ]
+        ],
+        "viewport_size": [
+          472,
+          210
+        ],
+        "visible_prefix_paragraphs": 5
+      }
+    ],
+    "native_artifact_sha256": "0cad1e47cb47e1f021c5ce8535df022958f2bbd1128b7e5a821707666a04a204",
+    "pixel_comparisons": [
+      {
+        "unit_id": 5813,
+        "native_crop": [
+          424,
+          568,
+          896,
+          748
+        ],
+        "viewer_crop": [
+          424,
+          568,
+          896,
+          748
+        ],
+        "different_pixels": 0,
+        "scope": "Entire visible thought block; nine paragraphs."
+      },
+      {
+        "unit_id": 6970,
+        "native_crop": [
+          424,
+          580,
+          896,
+          736
+        ],
+        "viewer_crop": [
+          424,
+          568,
+          896,
+          724
+        ],
+        "different_pixels": 0,
+        "scope": "First five paragraphs. Native cached quote occupies two rows; fresh viewer quote occupies one. Comparison translates by that one row."
+      }
+    ],
+    "limitations": [
+      "Exact captures cover the 1200x800 main scene; other sizes remain unaccepted.",
+      "Quote wording differs due to earlier native random state; no whole-sheet image parity.",
+      "The existing two-pixel divider-position difference remains.",
+      "Known separate-renderer/finalize/two-ObjectDB diagnostics."
+    ],
+    "artifacts": {
+      "justice-sheet-navigation.json": "0cad1e47cb47e1f021c5ce8535df022958f2bbd1128b7e5a821707666a04a204",
+      "overview-layout-5813.json": "060ab2a606f31f7debae79a40065de9be98a4b429c5227200ff5e7e3566999d1",
+      "overview-layout-6970.json": "231101498144a833c8e3de4e4fddc92716a7e4042b3bf690920e8d4e0862b33a",
+      "justice-sheet-0.png": "e303a44c995b33a4cb2865d0ec257f4b1a4427ceb33c71bd7aadded1fd35cd57",
+      "justice-sheet-1.png": "d6c62e3c3f18ac6f91c3e5151f8fd477be62409452c922ba5896881847825c31",
+      "justice-main-sheet-3.png": "bcd81a83291f83beb27fbbc6c133e1cb131843e6f5a30c4f2f473b0cac7d5ce9",
+      "justice-main-sheet-4.png": "564b8d79e43e3ab7aeedfdf75b00f9925785af446729499929925600292ed160",
+      "job-settings-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+      "result.json": "55ea401f0907968b16baa48a037a247d52b778f816392f061952e6daa810f1ec"
+    }
   }
 }

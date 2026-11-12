@@ -181,3 +181,26 @@ TEST_CASE("Intelligence detail binds index to receipt and rejects case selectors
   CHECK(bool(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
  }
 }
+
+TEST_CASE("Intelligence graph requests bind pages and exclude report and mutation selectors") {
+ for(int fault=0;fault<8;++fault){flatbuffers::FlatBufferBuilder b;
+  m::JusticeRequestBuilder q(b);q.add_tab(5);q.add_graph_kind(fault==1?m::JusticeGraphKind::None:m::JusticeGraphKind::Actors);
+  q.add_offset(fault==2?1:0);q.add_crime_id(fault==3?9:-1);q.add_report_index(fault==4?0:-1);
+  q.add_text_columns(fault==5?80:0);q.add_interrogate(fault==6);auto payload=q.Finish();
+  m::ConstructionRequestBuilder r(b);r.add_client_id(1);r.add_seq(1);r.add_world_epoch(1);
+  r.add_action(fault==7?m::ManagementAction::JusticeIntelligenceRead:m::ManagementAction::JusticeIntelligenceGraphRead);r.add_justice(payload);b.Finish(r.Finish());
+  CHECK(bool(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
+ }
+}
+TEST_CASE("Intelligence graph pages reject dangling edges and mixed kinds") {
+ for(int fault=0;fault<8;++fault){flatbuffers::FlatBufferBuilder b;
+  const auto empty=b.CreateVector(std::vector<int32_t>{});
+  const auto actor=m::CreateJusticeGraphActor(b,907,-1,b.CreateString("synthetic actor"),empty,fault==1?1:0,empty,b.CreateVector(std::vector<int32_t>{fault==2?1:0}));
+  const auto org=m::CreateJusticeGraphOrganization(b,b.CreateString("synthetic organization"),0,0,0);
+  const auto page=m::CreateJusticeGraphPage(b,m::JusticeGraphKind::Actors,1,1,1,0,b.CreateVector(std::vector{actor}),b.CreateVector(fault==3?std::vector{org}:std::vector<flatbuffers::Offset<m::JusticeGraphOrganization>>{}),b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeGraphPlot>>{}),b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeGraphNode>>{}));
+  auto rows=b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeCaseRow>>{});
+  m::JusticeStateBuilder j(b);j.add_tab(5);j.add_list_revision(fault==4?0:7);j.add_total(fault==5?2:1);j.add_rows(rows);j.add_graph(page);j.add_outcome(fault==6?m::JusticeOutcome::Stale:m::JusticeOutcome::None);auto result=j.Finish();
+  m::ManagementStateBuilder r(b);r.add_revision(1);r.add_action(fault==7?m::ManagementAction::JusticeIntelligenceRead:m::ManagementAction::JusticeIntelligenceGraphRead);r.add_status(m::ManagementStatus::Ok);r.add_justice(result);b.Finish(r.Finish());
+  CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==(fault!=0));
+ }
+}

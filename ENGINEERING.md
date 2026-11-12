@@ -41,6 +41,22 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+Management protocol202 adds read-only `JusticeIntelligenceGraphRead` with tab5
+and a required Actors/Organizations/Plots/Nodes page kind. The four streams
+share one graph receipt and carry total counts for reference validation. Nodes
+are flattened in organization order; organization ranges and parent/actor links
+refer to that same snapshot. A consumer must assemble the complete graph under
+one receipt before publishing links. Nonzero offsets require a receipt; graph
+reads reject report, crime, candidate, query/sort and mutation selectors.
+
+Pages carry at most64 records within the existing384KiB payload budget. Old
+recordings imply no graph facts. Both defaults and the mailbox are202
+(`Local\\df3d_management_v202`); bridge and client must be rebuilt together.
+The typed provider is verified separately below; graph transport and viewer
+integration are not yet implemented by this schema migration. Public Justice
+remains hidden. Report transport retains the protocol201 field semantics.
+
+
 Management protocol201 adds read-only `JusticeIntelligenceRead` with tab5.
 An absent report index reads ordered report rows; a selected index requires the
 observed list receipt and1-512 text columns. Offset/limit page rows or detail

@@ -6,11 +6,11 @@ import argparse
 import re
 
 ROOT = Path(__file__).resolve().parents[1]
-ENUMS = ("JusticeCandidateColumn", "JusticeCaseResolution", "JusticeOutcome", "ObjectsOutcome", "NoblesOutcome", "PlacesOutcome", "TasksOutcome", "TasksOperation", "StocksMenuOutcome", "StocksFlagAction", "StoneUseOutcome", "KitchenMenuOutcome", "KitchenSortColumn", "ChoresOutcome", "ChoresOperation", "HunterAmmunitionOutcome", "HunterAmmunitionOperation", "StandingOrdersOutcome", "WorkDetailWorkerSort", "JobSettingsEditOutcome", "ResidentsSpecializationOutcome", "ResidentsSort", "WorkOrderPhase", "CreatureAnimalOutcome", "CreatureLocationOutcome", "CreatureWorkshopOutcome", "CreatureKnowledgeOutcome", "CreatureExpelOutcome", "CreatureHeaderOutcome", "ConstructionOutcome", "FarmEditOutcome", "FarmOperation", "ManagementAction", "ManagementStatus", "AreaKind", "AreaCandidateEntity", "AreaOperation", "LocationStaffAssignmentKind", "AreaRoomOutcome", "LocationEntryOutcome", "LocationEditOutcome", "LocationQuantityMode", "LocationNameMode", "LocationRecognitionState", "AlertOperation", "AlertView",
+ENUMS = ("JusticeGraphKind", "JusticeCandidateColumn", "JusticeCaseResolution", "JusticeOutcome", "ObjectsOutcome", "NoblesOutcome", "PlacesOutcome", "TasksOutcome", "TasksOperation", "StocksMenuOutcome", "StocksFlagAction", "StoneUseOutcome", "KitchenMenuOutcome", "KitchenSortColumn", "ChoresOutcome", "ChoresOperation", "HunterAmmunitionOutcome", "HunterAmmunitionOperation", "StandingOrdersOutcome", "WorkDetailWorkerSort", "JobSettingsEditOutcome", "ResidentsSpecializationOutcome", "ResidentsSort", "WorkOrderPhase", "CreatureAnimalOutcome", "CreatureLocationOutcome", "CreatureWorkshopOutcome", "CreatureKnowledgeOutcome", "CreatureExpelOutcome", "CreatureHeaderOutcome", "ConstructionOutcome", "FarmEditOutcome", "FarmOperation", "ManagementAction", "ManagementStatus", "AreaKind", "AreaCandidateEntity", "AreaOperation", "LocationStaffAssignmentKind", "AreaRoomOutcome", "LocationEntryOutcome", "LocationEditOutcome", "LocationQuantityMode", "LocationNameMode", "LocationRecognitionState", "AlertOperation", "AlertView",
          "SelectionOperation", "SelectionKind", "SelectionSection", "CreatureSectionKind", "ReportView", "ReportTab", "ReportZoom")
 
 DOMAINS = {
-    "justice": ("JusticeRead", "JusticeIntelligenceRead"),
+    "justice": ("JusticeRead", "JusticeIntelligenceGraphRead"),
     "objects": ("ObjectsRead", "ObjectsLocate"),
     "nobles": ("NoblesRead", "NoblesSymbolsRetire"),
     "places": ("PlacesRead", "PlacesApply"),

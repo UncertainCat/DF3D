@@ -2,6 +2,13 @@
 #pragma once
 #include <cstdint>
 namespace wm {
+enum class JusticeGraphKind : uint8_t {
+  None = 0,
+  Actors = 1,
+  Organizations = 2,
+  Plots = 3,
+  Nodes = 4,
+};
 enum class JusticeCandidateColumn : uint8_t {
   Category = 0,
   Name = 1,
@@ -350,6 +357,7 @@ enum class ManagementAction : uint8_t {
   JusticeConvictsRead = 127,
   JusticeConvictDetailRead = 128,
   JusticeIntelligenceRead = 129,
+  JusticeIntelligenceGraphRead = 130,
 };
 enum class ManagementStatus : uint8_t {
   Idle = 0,
@@ -690,6 +698,7 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::JusticeConvictsRead: return true;
   case ManagementAction::JusticeConvictDetailRead: return true;
   case ManagementAction::JusticeIntelligenceRead: return true;
+  case ManagementAction::JusticeIntelligenceGraphRead: return true;
   default: return false;
   }
 }
@@ -704,6 +713,7 @@ constexpr const char* managementDomain(ManagementAction action) {
   case ManagementAction::JusticeConvictsRead: return "justice";
   case ManagementAction::JusticeConvictDetailRead: return "justice";
   case ManagementAction::JusticeIntelligenceRead: return "justice";
+  case ManagementAction::JusticeIntelligenceGraphRead: return "justice";
   case ManagementAction::ObjectsRead: return "objects";
   case ManagementAction::ObjectsLocate: return "objects";
   case ManagementAction::NoblesRead: return "nobles";

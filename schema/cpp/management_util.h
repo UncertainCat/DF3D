@@ -183,8 +183,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 201;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v201";
+inline constexpr uint32_t kManagementVersion = 202;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v202";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -482,7 +482,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::JusticeIntelligenceRead &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::JusticeIntelligenceGraphRead &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -571,7 +571,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::JusticeIntelligenceRead)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::JusticeIntelligenceGraphRead)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -724,7 +724,11 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     }
   }else if(r.nobles())return "unexpected nobles request";
   if(r.justice() && r.action()!=ManagementAction::JusticeIntelligenceRead && (r.justice()->report_index()!=-1 || r.justice()->text_columns()))return "unexpected intelligence selectors";
-  if(r.action()==ManagementAction::JusticeIntelligenceRead){
+  if(r.justice() && r.action()!=ManagementAction::JusticeIntelligenceGraphRead && r.justice()->graph_kind()!=JusticeGraphKind::None)return "unexpected intelligence graph selector";
+  if(r.action()==ManagementAction::JusticeIntelligenceGraphRead){
+    const auto* q=r.justice();
+    if(!q || q->tab()!=5 || q->graph_kind()<JusticeGraphKind::Actors || q->graph_kind()>JusticeGraphKind::Nodes || !q->limit() || q->limit()>64 || q->offset()>65536 || q->expected_list_revision()>INT64_MAX || (q->offset() && !q->expected_list_revision()) || q->crime_id()!=-1 || q->unit_id()!=-1 || q->expected_case_revision() || q->expected_candidate_revision() || q->query() || q->sorts() || q->interrogate() || q->expected_selected())return "invalid intelligence graph scope";
+  }else if(r.action()==ManagementAction::JusticeIntelligenceRead){
     const auto* q=r.justice();
     if(!q || q->tab()!=5 || !q->limit() || q->limit()>64 || q->offset()>1048576 || q->expected_list_revision()>INT64_MAX || q->crime_id()!=-1 || q->unit_id()!=-1 || q->expected_case_revision() || q->expected_candidate_revision() || q->query() || q->sorts() || q->interrogate() || q->expected_selected() || q->report_index()< -1)return "invalid intelligence scope";
     if(q->report_index()==-1 ? q->text_columns()!=0 : !q->text_columns() || q->text_columns()>512 || !q->expected_list_revision())return "invalid intelligence target";
@@ -1344,7 +1348,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::JusticeIntelligenceRead ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::JusticeIntelligenceGraphRead ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -1541,11 +1545,12 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     const bool candidates=s.action()==ManagementAction::JusticeCandidatesRead,convict=s.action()==ManagementAction::JusticeConvict || s.action()==ManagementAction::JusticeInterrogate;
     const bool guard=s.action()==ManagementAction::JusticeGuardRead;
     const bool convicts=s.action()==ManagementAction::JusticeConvictsRead,convictDetail=s.action()==ManagementAction::JusticeConvictDetailRead;
-    const bool intelligence=s.action()==ManagementAction::JusticeIntelligenceRead;
-    if((!read && !detail && !candidates && !convict && !guard && !convicts && !convictDetail && !intelligence) || (intelligence?r->tab()!=5:convicts || convictDetail?r->tab()!=4:guard?r->tab()!=3:r->tab()>2) || r->outcome()>JusticeOutcome::Unknown || !r->rows() || r->rows()->size()>64)return "invalid justice result";
+    const bool intelligence=s.action()==ManagementAction::JusticeIntelligenceRead,graph=s.action()==ManagementAction::JusticeIntelligenceGraphRead;
+    if((!read && !detail && !candidates && !convict && !guard && !convicts && !convictDetail && !intelligence && !graph) || ((intelligence || graph)?r->tab()!=5:convicts || convictDetail?r->tab()!=4:guard?r->tab()!=3:r->tab()>2) || r->outcome()>JusticeOutcome::Unknown || !r->rows() || r->rows()->size()>64)return "invalid justice result";
     const auto page=[](uint32_t total,uint32_t offset,size_t count){return total<=1048576 && offset<=total && count<=64 && count<=total-offset && (offset==total || count!=0);};
     size_t bytes=0;
     const auto text=[&](const flatbuffers::String* value){if(!value || value->size()>16384)return false;bytes+=value->size();return bytes<=384*1024;};
+    if(!graph && r->graph())return "unexpected intelligence graph page";
     if(!intelligence && r->intelligence())return "unexpected intelligence page";
     if(!guard && r->guard())return "unexpected justice guard page";
     if(!convicts && r->convicts())return "unexpected convicts page";
@@ -1556,7 +1561,33 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
          s.status()!=ManagementStatus::Rejected || (r->outcome()!=JusticeOutcome::Rejected && r->outcome()!=JusticeOutcome::Stale && r->outcome()!=JusticeOutcome::Unknown))return "invalid justice mutation outcome";
     }else if(s.status()==ManagementStatus::Ok){
       if(r->outcome()!=JusticeOutcome::None || !r->list_revision() || r->list_revision()>INT64_MAX)return "invalid justice revision";
-      if(intelligence){
+      if(graph){
+        const auto* p=r->graph();
+        if(!p || p->kind()<JusticeGraphKind::Actors || p->kind()>JusticeGraphKind::Nodes || !p->actors() || !p->organizations() || !p->plots() || !p->nodes() || p->actor_count()>65536 || p->organization_count()>65536 || p->plot_count()>65536 || p->node_count()>65536 || r->rows()->size() || r->detail() || r->candidates())return "invalid intelligence graph page";
+        const std::array<uint32_t,4> totals{p->actor_count(),p->organization_count(),p->plot_count(),p->node_count()};
+        const std::array<size_t,4> sizes{p->actors()->size(),p->organizations()->size(),p->plots()->size(),p->nodes()->size()};
+        const auto kind=size_t(p->kind())-1;
+        if(r->total()!=totals[kind] || !page(r->total(),r->offset(),sizes[kind]))return "invalid intelligence graph range";
+        for(size_t i=0;i<4;++i)if(i!=kind && sizes[i])return "mixed intelligence graph kinds";
+        const auto reference=[](int32_t index,uint32_t total){return index>=-1 && (index==-1 || uint32_t(index)<total);};
+        for(const auto* row:*p->actors()){
+          if(!row || row->historical_figure()<0 || row->identity()< -1 || !text(row->name()) || !reference(row->principal_organization(),p->organization_count()) || !row->aliases() || !row->organizations() || !row->plots() || row->aliases()->size()>65536 || row->organizations()->size()>65536 || row->plots()->size()>65536)return "invalid intelligence actor";
+          bytes+=64+4*(size_t(row->aliases()->size())+row->organizations()->size()+row->plots()->size());
+          for(auto id:*row->aliases())if(id<0)return "invalid intelligence alias";
+          for(auto id:*row->organizations())if(id<0 || !reference(id,p->organization_count()))return "invalid intelligence organization link";
+          for(auto id:*row->plots())if(id<0 || !reference(id,p->plot_count()))return "invalid intelligence plot link";
+        }
+        for(const auto* row:*p->organizations()){
+          if(!row || !text(row->name()) || !reference(row->principal_actor(),p->actor_count()) || row->first_node()>p->node_count() || row->node_count()>p->node_count()-row->first_node())return "invalid intelligence organization";bytes+=48;
+        }
+        for(const auto* row:*p->plots()){
+          if(!row || row->agreement()<0 || row->master()< -1 || !text(row->name()))return "invalid intelligence plot";bytes+=32;
+        }
+        for(const auto* row:*p->nodes()){
+          if(!row || row->organization()>=p->organization_count() || !reference(row->actor(),p->actor_count()) || !reference(row->parent(),p->node_count()) || !text(row->label()) || !text(row->name()) || !text(row->status()) || row->foreground()<0 || row->foreground()>7 || row->background()<0 || row->background()>7 || row->bright()<0 || row->bright()>1)return "invalid intelligence node";bytes+=64;
+        }
+        if(bytes>384*1024)return "intelligence graph payload exceeded";
+      }else if(intelligence){
         const auto* p=r->intelligence();
         if(!p || !p->reports() || !p->lines() || p->report_index()< -1 || r->rows()->size() || r->detail() || r->candidates())return "invalid intelligence page";
         if(p->report_index()==-1){
@@ -1612,13 +1643,13 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
           if(!w || !text(w->witness()) || !text(w->description()) || !text(w->date()) || !text(w->reported()))return "invalid justice witness";
         }
       }
-    }else if(s.status()!=ManagementStatus::Rejected || (r->outcome()!=JusticeOutcome::Rejected && r->outcome()!=JusticeOutcome::Stale) || r->list_revision() || r->total() || r->offset() || r->rows()->size() || r->detail() || r->candidates() || r->guard() || r->convicts() || r->convict_detail() || r->intelligence())return "invalid justice refusal";
+    }else if(s.status()!=ManagementStatus::Rejected || (r->outcome()!=JusticeOutcome::Rejected && r->outcome()!=JusticeOutcome::Stale) || r->list_revision() || r->total() || r->offset() || r->rows()->size() || r->detail() || r->candidates() || r->guard() || r->convicts() || r->convict_detail() || r->intelligence() || r->graph())return "invalid justice refusal";
     std::unordered_set<int32_t> ids;
     for(const auto* row:*r->rows()){
       bytes+=32;
       if(!row || row->crime_id()<0 || !ids.insert(row->crime_id()).second || !text(row->caption()))return "invalid justice row";
     }
-  }else if(s.status()==ManagementStatus::Ok && s.action()>=ManagementAction::JusticeRead && s.action()<=ManagementAction::JusticeIntelligenceRead)return "missing justice result";
+  }else if(s.status()==ManagementStatus::Ok && s.action()>=ManagementAction::JusticeRead && s.action()<=ManagementAction::JusticeIntelligenceGraphRead)return "missing justice result";
   if(const auto* r=s.objects()) {
     const bool read=s.action()==ManagementAction::ObjectsRead,locate=s.action()==ManagementAction::ObjectsLocate;
     if((!read && !locate) || r->tab()>3 || !r->rows() || r->rows()->size()>64 ||

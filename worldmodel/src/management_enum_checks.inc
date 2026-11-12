@@ -1,4 +1,10 @@
 // Generated exhaustive model/wire correspondence checks.
+static_assert(static_cast<int>(wm::JusticeGraphKind::None) == static_cast<int>(df3d::mirror::JusticeGraphKind::None));
+static_assert(static_cast<int>(wm::JusticeGraphKind::Actors) == static_cast<int>(df3d::mirror::JusticeGraphKind::Actors));
+static_assert(static_cast<int>(wm::JusticeGraphKind::Organizations) == static_cast<int>(df3d::mirror::JusticeGraphKind::Organizations));
+static_assert(static_cast<int>(wm::JusticeGraphKind::Plots) == static_cast<int>(df3d::mirror::JusticeGraphKind::Plots));
+static_assert(static_cast<int>(wm::JusticeGraphKind::Nodes) == static_cast<int>(df3d::mirror::JusticeGraphKind::Nodes));
+static_assert(sizeof(df3d::mirror::EnumValuesJusticeGraphKind()) / sizeof(df3d::mirror::JusticeGraphKind) == 5);
 static_assert(static_cast<int>(wm::JusticeCandidateColumn::Category) == static_cast<int>(df3d::mirror::JusticeCandidateColumn::Category));
 static_assert(static_cast<int>(wm::JusticeCandidateColumn::Name) == static_cast<int>(df3d::mirror::JusticeCandidateColumn::Name));
 static_assert(static_cast<int>(wm::JusticeCandidateColumn::Profession) == static_cast<int>(df3d::mirror::JusticeCandidateColumn::Profession));
@@ -314,7 +320,8 @@ static_assert(static_cast<int>(wm::ManagementAction::JusticeGuardRead) == static
 static_assert(static_cast<int>(wm::ManagementAction::JusticeConvictsRead) == static_cast<int>(df3d::mirror::ManagementAction::JusticeConvictsRead));
 static_assert(static_cast<int>(wm::ManagementAction::JusticeConvictDetailRead) == static_cast<int>(df3d::mirror::ManagementAction::JusticeConvictDetailRead));
 static_assert(static_cast<int>(wm::ManagementAction::JusticeIntelligenceRead) == static_cast<int>(df3d::mirror::ManagementAction::JusticeIntelligenceRead));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 130);
+static_assert(static_cast<int>(wm::ManagementAction::JusticeIntelligenceGraphRead) == static_cast<int>(df3d::mirror::ManagementAction::JusticeIntelligenceGraphRead));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 131);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -651,3 +658,4 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::JusticeGuardRead) == df3
 static_assert(wm::isRuntimeAction(wm::ManagementAction::JusticeConvictsRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::JusticeConvictsRead));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::JusticeConvictDetailRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::JusticeConvictDetailRead));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::JusticeIntelligenceRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::JusticeIntelligenceRead));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::JusticeIntelligenceGraphRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::JusticeIntelligenceGraphRead));

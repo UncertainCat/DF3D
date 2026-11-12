@@ -41,6 +41,37 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+`df3d_justice::witnessText` in `justice_witness_native.h` returns ordered witness
+rows with name, report description and both date captions. It calls native
+b92a80 for the recorded historical/assumed identity, formats copied names with
+a946e0, and falls back to1330c30 on owned unit context. Missing witness/subject
+names retain native “unknown”/“somebody”. Builder4731dc..473a52's inline
+description branches are pinned: an accused ID takes precedence over report
+type; type6 says “Implicates”, otherwise “Accuses”. Without an accused, the
+body/object observations and blank descriptions follow native selection.
+
+Native4866b0 sorts an owned copy of the report pointer array. Its helpers and
+comparator474fe0, including both dispatch tables, are pinned; they only read
+report type/accused presence and rearrange the supplied array. This retains
+native tie ordering instead of substituting a stable sort. Date strings are
+formatted from the same sorted report as each name/description.
+
+Protected183622 on2026-11-11 compares all39 ordered rows in ten scenarios:
+baseline, NONE and all seven witness types without an accused, plus an accused
+with COCONSPIRATOR_IMPLICATED. Every name, description and date matches native
+widget text. Report type/accused fields are restored; menu/crime/witness/RNG
+guards pass. Earlier183428 accepted text/order before dates were incorporated.
+Owned DF25244 closes unsaved with source preservation/restored preferences,
+native30FPS/no viewer, GPU60C/1%. MSVC `justice-witness-rows-build.log` and core19
+`build/qa/justice-witness-rows` pass. Installed bridge SHA256
+`B27431FE4628D1F9769E8C40705A8002F30B8169641C441C518404D639868C47`;
+protocol191 is unchanged. `native_justice.json.witness_text_reference` stores
+deduplicated rows and native/owned order indices. Enable WITNESSES with
+DETAILS/NATIVE; this branch skips summary/date-only checks. Recorded historical
+names are covered, but assumed identities and missing-name fallbacks are not
+independently exercised. This remains semantic-provider acceptance, not a
+rendered DF3D page or complete Justice-screen acceptance.
+
 `df3d_justice::caseSummary` supplies the optional injured-party row and status
 above the witness list. Native46db60 mixes its inline selection with widget
 construction, so the adapter isolates those branches and calls native1330c30

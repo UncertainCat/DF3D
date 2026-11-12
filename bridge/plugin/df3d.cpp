@@ -119,6 +119,7 @@
 #include "objects_native.h"
 #include "justice_native.h"
 #include "justice_action_native.h"
+#include "justice_witness_native.h"
 #include "nobles_native.h"
 #include "nobles_draft_native.h"
 #include "nobles_symbols_native.h"
@@ -2744,6 +2745,17 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             row["mode"]=int(crime->mode);row["caption"]=DF2UTF(*caption);rows.append(row);
           }
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),rows));return CR_OK;
+        }
+        if(parameters[0]=="justice-witness-text-probe") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          try {
+            const auto rows=df3d_justice::witnessText(df::crime::find(std::stoi(parameters[1])));if(!rows)return CR_FAILURE;
+            Json::Value result(Json::arrayValue);
+            for(const auto& row:*rows){Json::Value value(Json::objectValue);value["witness"]=DF2UTF(row.witness);value["description"]=DF2UTF(row.description);
+              value["date"]=DF2UTF(row.date);value["reported"]=DF2UTF(row.reported);result.append(value);}
+            out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
+          }catch(const std::exception&){return CR_WRONG_USAGE;}
         }
         if(parameters[0]=="justice-summary-probe") {
           if(parameters.size()!=2)return CR_WRONG_USAGE;

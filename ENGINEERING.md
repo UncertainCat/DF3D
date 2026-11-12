@@ -41,6 +41,33 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+The owned Convict candidate adapter now accepts ordered Category/Name/Profession/
+Crime priorities and per-column reversal. Native142c879 applies stable sorts
+from last priority to first; lexicographic comparison over the native keys is
+equivalent. Duplicate priorities share one direction, and only their first
+occurrence affects order. The adapter rejects conflicting directions for the
+same column. Category/name/profession keys come from pinned1425050/1330c30/
+132f980 and native normalization. Crime ordering uses owned candidate ranks,
+never comparator487db0's global Justice map. Category1425050 is read-only and
+reads the current semantic unit through an owned tagged reference: the
+inventory/name copy omits status inputs needed for category ordering. The first
+protected234653 check exposed that missing input; it is corrected.
+
+Protected `stockpile-storage-native-input-20261111-235119` compares all293 IDs
+in23 sort states, including every header in both directions, repeated priorities,
+shared direction changes, Ctrl removal and fallback Category. All orders match.
+Window-message Shift did not set the cumulative flag; it is inconclusive input
+delivery, not evidence that Shift is inactive. Eight controlled cases temporarily
+set and immediately restore native modifier byte238d0b8 around feed3c6300, as in
+the existing Work Details oracle. Native SDL8eba80 maps Shift to bit0. These
+widgets/modifier bytes are protected oracle inputs only, never runtime inputs.
+DF4808 closes unsaved, source preserved and prefs restored; native30FPS/no viewer,
+GPU sample44C/2%/14.76W (not peak). MSVC builds; plugin SHA256 is
+`f88842c5559d9173cc2313208ff6c589cdbc09030328d68f641615174b59efde`.
+`native_justice.json.sort_reference` retains ordered-ID digests and transitions.
+Protocol195 still sends only default priorities; sort transport, controller
+gestures and rendered sorted-list acceptance remain pending.
+
 The staged Justice view now opens the Convict picker through its native button,
 draws candidate names/witness labels and unit-selector artwork, accepts typed
 search, and sends a revision-checked conviction on row click. Visible artwork

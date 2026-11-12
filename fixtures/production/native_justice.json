@@ -8784,5 +8784,579 @@
       "witnesses": 134
     },
     "limits": "Default1200x800 rendering and first-row conviction only. Sort controls/Interrogate unfinished; scroll/resize/keyboard/hover and offscreen/deceased rows not accepted. Public Justice remains hidden."
+  },
+  "sort_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-235119",
+    "status": "passed",
+    "owned_df_pid": 4808,
+    "source_preserved": true,
+    "fps_cap": 30,
+    "samples": [
+      {
+        "label": "default",
+        "priorities": [
+          "Crime",
+          "Name"
+        ],
+        "directions": {
+          "Cat": false,
+          "Crime": false,
+          "Name": false,
+          "Prof": false
+        },
+        "count": 293,
+        "ordered_ids_sha256": "082df98472e195ed6baafab27514e8341afe13e418467e91c2a5ca619f135f31",
+        "first_ids": [
+          5698,
+          7202,
+          7218,
+          3115,
+          5699,
+          6835,
+          7123,
+          6814
+        ]
+      },
+      {
+        "label": "Name-1",
+        "priorities": [
+          "Name"
+        ],
+        "directions": {
+          "Cat": false,
+          "Crime": false,
+          "Name": true,
+          "Prof": false
+        },
+        "count": 293,
+        "ordered_ids_sha256": "46b922a7603d1668ae2bce46c90538c0c37a34b7153b7f4218bd1bb5ac231156",
+        "first_ids": [
+          6598,
+          6274,
+          3845,
+          7348,
+          6596,
+          6105,
+          5574,
+          6634
+        ]
+      },
+      {
+        "label": "Name-2",
+        "priorities": [
+          "Name"
+        ],
+        "directions": {
+          "Cat": false,
+          "Crime": false,
+          "Name": false,
+          "Prof": false
+        },
+        "count": 293,
+        "ordered_ids_sha256": "4a597353576d18b4226ec511a4266b46ff41698a0b0c00f70622c45654b887e9",
+        "first_ids": [
+          7202,
+          6550,
+          7218,
+          4851,
+          3115,
+          5699,
+          6835,
+          7123
+        ]
+      },
+      {
+        "label": "Cat-1",
+        "priorities": [
+          "Cat"
+        ],
+        "directions": {
+          "Cat": false,
+          "Crime": false,
+          "Name": false,
+          "Prof": false
+        },
+        "count": 293,
+        "ordered_ids_sha256": "f095fe4a7cd35475f11536d3b33366597352d87a7b6fa9efc708131caeeba943",
+        "first_ids": [
+          5573,
+          5697,
+          6135,
+          6392,
+          5572,
+          6969,
+          6970,
+          7268
+        ]
+      },
+      {
+        "label": "Cat-2",
+        "priorities": [
+          "Cat"
+        ],
+        "directions": {
+          "Cat": true,
+          "Crime": false,
+          "Name": false,
+          "Prof": false
+        },
+        "count": 293,
+        "ordered_ids_sha256": "72391270ac7f93dba3978c16e2e634d7318759b57ddf3da6102c2d15844d680c",
+        "first_ids": [
+          5815,
+          6136,
+          6536,
+          4237,
+          2446,
+          2449,
+          2465,
+          2574
+        ]
+      },
+      {
+        "label": "Prof-1",
+        "priorities": [
+          "Prof"
+        ],
+        "directions": {
+          "Cat": true,
+          "Crime": false,
+          "Name": false,
+          "Prof": false
+        },
+        "count": 293,
+        "ordered_ids_sha256": "9b6b3c767ad36945cfc68f44a6e33f37ab9ed27c1b8471b049ac32b46c88f295",
+        "first_ids": [
+          7205,
+          7204,
+          7104,
+          5575,
+          6811,
+          6838,
+          6543,
+          2472
+        ]
+      },
+      {
+        "label": "Prof-2",
+        "priorities": [
+          "Prof"
+        ],
+        "directions": {
+          "Cat": true,
+          "Crime": false,
+          "Name": false,
+          "Prof": true
+        },
+        "count": 293,
+        "ordered_ids_sha256": "c52090f4aa622d9a4785dccccc0a45163695f8ea8dda815ae2897349ceee692b",
+        "first_ids": [
+          6769,
+          5578,
+          6682,
+          5814,
+          6969,
+          6970,
+          7268,
+          7348
+        ]
+      },
+      {
+        "label": "Crime-1",
+        "priorities": [
+          "Crime"
+        ],
+        "directions": {
+          "Cat": true,
+          "Crime": false,
+          "Name": false,
+          "Prof": true
+        },
+        "count": 293,
+        "ordered_ids_sha256": "3432a98113b8038d111cc7c5fd953082305a26cae485af2cbf0e404f46e64945",
+        "first_ids": [
+          5698,
+          988,
+          1017,
+          2335,
+          2345,
+          2346,
+          2569,
+          2570
+        ]
+      },
+      {
+        "label": "Crime-2",
+        "priorities": [
+          "Crime"
+        ],
+        "directions": {
+          "Cat": true,
+          "Crime": true,
+          "Name": false,
+          "Prof": true
+        },
+        "count": 293,
+        "ordered_ids_sha256": "ac6edd8878f2967b0add60de8ece5b9c2eb360edc8445e2baeb2fe775f064f45",
+        "first_ids": [
+          5561,
+          5769,
+          5774,
+          6025,
+          6106,
+          6109,
+          6769,
+          6771
+        ]
+      },
+      {
+        "label": "shift-name",
+        "priorities": [
+          "Name"
+        ],
+        "directions": {
+          "Cat": true,
+          "Crime": true,
+          "Name": false,
+          "Prof": true
+        },
+        "count": 293,
+        "ordered_ids_sha256": "4a597353576d18b4226ec511a4266b46ff41698a0b0c00f70622c45654b887e9",
+        "first_ids": [
+          7202,
+          6550,
+          7218,
+          4851,
+          3115,
+          5699,
+          6835,
+          7123
+        ]
+      },
+      {
+        "label": "shift-name-again",
+        "priorities": [
+          "Name"
+        ],
+        "directions": {
+          "Cat": true,
+          "Crime": true,
+          "Name": true,
+          "Prof": true
+        },
+        "count": 293,
+        "ordered_ids_sha256": "46b922a7603d1668ae2bce46c90538c0c37a34b7153b7f4218bd1bb5ac231156",
+        "first_ids": [
+          6598,
+          6274,
+          3845,
+          7348,
+          6596,
+          6105,
+          5574,
+          6634
+        ]
+      },
+      {
+        "label": "control-crime",
+        "priorities": [
+          "Name"
+        ],
+        "directions": {
+          "Cat": true,
+          "Crime": true,
+          "Name": true,
+          "Prof": true
+        },
+        "count": 293,
+        "ordered_ids_sha256": "46b922a7603d1668ae2bce46c90538c0c37a34b7153b7f4218bd1bb5ac231156",
+        "first_ids": [
+          6598,
+          6274,
+          3845,
+          7348,
+          6596,
+          6105,
+          5574,
+          6634
+        ]
+      },
+      {
+        "label": "control-name",
+        "priorities": [
+          "Cat"
+        ],
+        "directions": {
+          "Cat": true,
+          "Crime": true,
+          "Name": true,
+          "Prof": true
+        },
+        "count": 293,
+        "ordered_ids_sha256": "72391270ac7f93dba3978c16e2e634d7318759b57ddf3da6102c2d15844d680c",
+        "first_ids": [
+          5815,
+          6136,
+          6536,
+          4237,
+          2446,
+          2449,
+          2465,
+          2574
+        ]
+      },
+      {
+        "label": "shift-profession",
+        "priorities": [
+          "Prof"
+        ],
+        "directions": {
+          "Cat": true,
+          "Crime": true,
+          "Name": true,
+          "Prof": true
+        },
+        "count": 293,
+        "ordered_ids_sha256": "c52090f4aa622d9a4785dccccc0a45163695f8ea8dda815ae2897349ceee692b",
+        "first_ids": [
+          6769,
+          5578,
+          6682,
+          5814,
+          6969,
+          6970,
+          7268,
+          7348
+        ]
+      },
+      {
+        "label": "control-category",
+        "priorities": [
+          "Prof"
+        ],
+        "directions": {
+          "Cat": true,
+          "Crime": true,
+          "Name": true,
+          "Prof": true
+        },
+        "count": 293,
+        "ordered_ids_sha256": "c52090f4aa622d9a4785dccccc0a45163695f8ea8dda815ae2897349ceee692b",
+        "first_ids": [
+          6769,
+          5578,
+          6682,
+          5814,
+          6969,
+          6970,
+          7268,
+          7348
+        ]
+      },
+      {
+        "label": "controlled-name",
+        "priorities": [
+          "Name"
+        ],
+        "directions": {
+          "Cat": true,
+          "Crime": true,
+          "Name": true,
+          "Prof": true
+        },
+        "count": 293,
+        "ordered_ids_sha256": "46b922a7603d1668ae2bce46c90538c0c37a34b7153b7f4218bd1bb5ac231156",
+        "first_ids": [
+          6598,
+          6274,
+          3845,
+          7348,
+          6596,
+          6105,
+          5574,
+          6634
+        ]
+      },
+      {
+        "label": "controlled-append-crime",
+        "priorities": [
+          "Name",
+          "Crime"
+        ],
+        "directions": {
+          "Cat": true,
+          "Crime": true,
+          "Name": true,
+          "Prof": true
+        },
+        "count": 293,
+        "ordered_ids_sha256": "46b922a7603d1668ae2bce46c90538c0c37a34b7153b7f4218bd1bb5ac231156",
+        "first_ids": [
+          6598,
+          6274,
+          3845,
+          7348,
+          6596,
+          6105,
+          5574,
+          6634
+        ]
+      },
+      {
+        "label": "controlled-append-category",
+        "priorities": [
+          "Name",
+          "Crime",
+          "Cat"
+        ],
+        "directions": {
+          "Cat": true,
+          "Crime": true,
+          "Name": true,
+          "Prof": true
+        },
+        "count": 293,
+        "ordered_ids_sha256": "46b922a7603d1668ae2bce46c90538c0c37a34b7153b7f4218bd1bb5ac231156",
+        "first_ids": [
+          6598,
+          6274,
+          3845,
+          7348,
+          6596,
+          6105,
+          5574,
+          6634
+        ]
+      },
+      {
+        "label": "controlled-repeat-name",
+        "priorities": [
+          "Name",
+          "Crime",
+          "Cat",
+          "Name"
+        ],
+        "directions": {
+          "Cat": true,
+          "Crime": true,
+          "Name": false,
+          "Prof": true
+        },
+        "count": 293,
+        "ordered_ids_sha256": "4a597353576d18b4226ec511a4266b46ff41698a0b0c00f70622c45654b887e9",
+        "first_ids": [
+          7202,
+          6550,
+          7218,
+          4851,
+          3115,
+          5699,
+          6835,
+          7123
+        ]
+      },
+      {
+        "label": "controlled-repeat-name-again",
+        "priorities": [
+          "Name",
+          "Crime",
+          "Cat",
+          "Name",
+          "Name"
+        ],
+        "directions": {
+          "Cat": true,
+          "Crime": true,
+          "Name": true,
+          "Prof": true
+        },
+        "count": 293,
+        "ordered_ids_sha256": "46b922a7603d1668ae2bce46c90538c0c37a34b7153b7f4218bd1bb5ac231156",
+        "first_ids": [
+          6598,
+          6274,
+          3845,
+          7348,
+          6596,
+          6105,
+          5574,
+          6634
+        ]
+      },
+      {
+        "label": "controlled-remove-name",
+        "priorities": [
+          "Crime",
+          "Cat"
+        ],
+        "directions": {
+          "Cat": true,
+          "Crime": true,
+          "Name": true,
+          "Prof": true
+        },
+        "count": 293,
+        "ordered_ids_sha256": "94727f7fa286bb510a6401973db87c3fc7f988a681770ce7baa3a38773f88b0f",
+        "first_ids": [
+          5561,
+          5769,
+          5774,
+          6025,
+          6106,
+          6109,
+          6769,
+          6771
+        ]
+      },
+      {
+        "label": "controlled-remove-crime",
+        "priorities": [
+          "Cat"
+        ],
+        "directions": {
+          "Cat": true,
+          "Crime": true,
+          "Name": true,
+          "Prof": true
+        },
+        "count": 293,
+        "ordered_ids_sha256": "72391270ac7f93dba3978c16e2e634d7318759b57ddf3da6102c2d15844d680c",
+        "first_ids": [
+          5815,
+          6136,
+          6536,
+          4237,
+          2446,
+          2449,
+          2465,
+          2574
+        ]
+      },
+      {
+        "label": "controlled-remove-category",
+        "priorities": [
+          "Cat"
+        ],
+        "directions": {
+          "Cat": true,
+          "Crime": true,
+          "Name": true,
+          "Prof": true
+        },
+        "count": 293,
+        "ordered_ids_sha256": "72391270ac7f93dba3978c16e2e634d7318759b57ddf3da6102c2d15844d680c",
+        "first_ids": [
+          5815,
+          6136,
+          6536,
+          4237,
+          2446,
+          2449,
+          2465,
+          2574
+        ]
+      }
+    ],
+    "limits": "Native owned-helper ordering only. Shift window delivery inconclusive; controlled modifier cases restore native input byte. Sort transport and viewer gestures remain pending."
   }
 }

@@ -138,11 +138,20 @@ inline std::optional<std::vector<CandidateFact>> candidateFacts(const df::crime*
     return result;
 }
 using Cases=std::array<std::vector<int32_t>,3>; // Open, Closed, Cold.
+enum class CandidateColumn:uint8_t {Category,Name,Profession,Crime};
+struct CandidateSort {CandidateColumn column;bool reverse=false;};
 // Convict picker search, with native default Crime then Name priorities.
 // The generic widget builder142c4b0 has no standalone list boundary. Adapt its
 // stable sort pipeline over owned facts, calling the semantic visibility/name
 // readers. Never call487db0: that comparator reads the global Justice map.
-inline std::optional<std::vector<CandidateFact>> convictionCandidates(const df::crime* crime,std::string query={}) {
+inline std::optional<std::vector<CandidateFact>> convictionCandidates(const df::crime* crime,std::string query={},
+    std::vector<CandidateSort> sorts={{CandidateColumn::Crime,false},{CandidateColumn::Name,false}}) {
+    if(sorts.size()>65536)return std::nullopt;
+    if(sorts.empty())sorts.push_back({CandidateColumn::Category,false});
+    std::array<int8_t,4> directions{-1,-1,-1,-1};std::vector<CandidateSort> priorities;
+    for(const auto& sort:sorts){const auto column=size_t(sort.column);if(column>=directions.size())return std::nullopt;
+        if(directions[column]>=0){if(bool(directions[column])!=sort.reverse)return std::nullopt;continue;}
+        directions[column]=int8_t(sort.reverse);priorities.push_back(sort);}
     const auto facts=candidateFacts(crime);
     const auto& text=df3d_area::staffOrderingFunctions();
     if(!facts || !text || query.size()>512 || !df3d_creature::inventoryDescriptionReady())return std::nullopt;
@@ -153,6 +162,9 @@ inline std::optional<std::vector<CandidateFact>> convictionCandidates(const df::
             {0x487db0,0x94,UINT64_C(0xe48b5fbbfc0a83b0)},
             {0x487c90,0x31,UINT64_C(0xdd03a6e3629b5c52)},
             {0x1435a10,0x110,UINT64_C(0x98ce3d80a8c10b09)},
+            {0x1431370,0x64,UINT64_C(0x5854757b83da8810)},
+            {0x14358c0,0x110,UINT64_C(0x7476642b05457b5b)},
+            {0x1425170,0x89,UINT64_C(0x86b6c3e85719b169)},
             {0x14240d0,0x89,UINT64_C(0x4b41b81d7b2cdc3e)},
             {0x142c4b0,0x73e,UINT64_C(0x2dcc9b7815303ef5)},
             {0x1424c30,0x218,UINT64_C(0x14952fd1a693777f)},
@@ -177,7 +189,7 @@ inline std::optional<std::vector<CandidateFact>> convictionCandidates(const df::
     if(!pinned)return std::nullopt;
     detail::CandidateSearch search;search.query=std::move(query);text.normalize(&search.query);
     auto* searchPointer=&search;
-    struct Row {CandidateFact fact;std::string name;};
+    struct Row {CandidateFact fact;std::string name,profession;std::array<int32_t,2> category{};};
     std::vector<Row> rows;rows.reserve(facts->size());
     df3d_creature::InventoryRandomRestore restore(base);
     for(const auto& fact:*facts) {
@@ -189,11 +201,30 @@ inline std::optional<std::vector<CandidateFact>> convictionCandidates(const df::
         const df3d_area::StaffUnitReference reference{owned.unit()};
         if(reinterpret_cast<bool(*)(detail::CandidateSearch**,const df3d_area::StaffUnitReference*)>(base+0x1424c30)(&searchPointer,&reference))continue;
         Row row{fact,{}};text.name(owned.unit(),&row.name,false);text.normalize(&row.name);
-        if(row.name.size()>16384)return std::nullopt;
+        if(directions[size_t(CandidateColumn::Profession)]>=0){text.profession(owned.unit(),&row.profession,false);text.normalize(&row.profession);}
+        if(directions[size_t(CandidateColumn::Category)]>=0){
+            // Pinned1425050 is read-only and needs status/curse fields outside
+            // the inventory/name context. Its tagged input is independently
+            // owned; the referenced unit is authoritative simulation data.
+            const df3d_area::StaffUnitReference categoryReference{unit};text.category(&row.category,&categoryReference);
+        }
+        if(row.name.size()>16384 || row.profession.size()>16384)return std::nullopt;
         rows.push_back(std::move(row));
     }
-    std::stable_sort(rows.begin(),rows.end(),[](const Row& a,const Row& b) {
-        return a.fact.rank!=b.fact.rank ? a.fact.rank>b.fact.rank : a.name<b.name;
+    // Native142c879 applies stable sorts from the last priority to the first.
+    // Equivalent keys retain source order. Duplicate priorities share one native
+    // direction entry, so only their first occurrence can affect the result.
+    std::stable_sort(rows.begin(),rows.end(),[&](const Row& a,const Row& b) {
+        for(const auto& sort:priorities){int order=0;
+            switch(sort.column){
+                case CandidateColumn::Category:order=a.category<b.category?-1:a.category>b.category?1:0;break;
+                case CandidateColumn::Name:order=a.name.compare(b.name);break;
+                case CandidateColumn::Profession:order=a.profession.compare(b.profession);break;
+                case CandidateColumn::Crime:order=a.fact.rank>b.fact.rank?-1:a.fact.rank<b.fact.rank?1:0;break;
+            }
+            if(order)return sort.reverse?order>0:order<0;
+        }
+        return false;
     });
     std::vector<CandidateFact> result;result.reserve(rows.size());
     for(const auto& row:rows)result.push_back(row.fact);

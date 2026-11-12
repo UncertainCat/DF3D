@@ -120,6 +120,7 @@
 #include "justice_native.h"
 #include "justice_action_native.h"
 #include "justice_presentation_native.h"
+#include <sstream>
 #include "justice_witness_native.h"
 #include "nobles_native.h"
 #include "nobles_draft_native.h"
@@ -2819,12 +2820,18 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           }catch(const std::exception&){return CR_WRONG_USAGE;}
         }
         if(parameters[0]=="justice-candidate-facts-probe" || parameters[0]=="justice-conviction-candidates-probe") {
-          if(parameters.size()<2 || parameters.size()>3)return CR_WRONG_USAGE;
+          if(parameters.size()<2 || parameters.size()>4)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
           try {
             const auto* crime=df::crime::find(std::stoi(parameters[1]));
+            std::vector<df3d_justice::CandidateSort> sorts={{df3d_justice::CandidateColumn::Crime,false},{df3d_justice::CandidateColumn::Name,false}};
+            if(parameters.size()==4){sorts.clear();std::istringstream input(parameters[3]);std::string part;
+              while(std::getline(input,part,',')){
+                if(part.size()!=3 || part[0]<'0' || part[0]>'3' || part[1]!=':' || (part[2]!='0' && part[2]!='1'))return CR_WRONG_USAGE;
+                sorts.push_back({df3d_justice::CandidateColumn(part[0]-'0'),part[2]=='1'});
+              }}
             const auto facts=parameters[0]=="justice-candidate-facts-probe" ? df3d_justice::candidateFacts(crime) :
-              df3d_justice::convictionCandidates(crime,parameters.size()==3?UTF2DF(parameters[2]):std::string{});if(!facts)return CR_FAILURE;
+              df3d_justice::convictionCandidates(crime,parameters.size()>=3?UTF2DF(parameters[2]):std::string{},sorts);if(!facts)return CR_FAILURE;
             Json::Value result(Json::arrayValue);
             for(const auto& fact:*facts){Json::Value row(Json::objectValue);row["unit_id"]=fact.unitId;
               row["rank"]=fact.rank;row["flags"]=fact.flags;result.append(row);}

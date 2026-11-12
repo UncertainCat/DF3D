@@ -2785,15 +2785,6 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           }
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),rows));return CR_OK;
         }
-        if(parameters[0]=="justice-witness-display-probe") {
-          if(parameters.size()!=3)return CR_WRONG_USAGE;
-          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
-          try {
-            const auto text=df3d_justice::witnessDisplay(UTF2DF(parameters[2]),std::stoi(parameters[1]));if(!text)return CR_FAILURE;
-            Json::Value result(Json::objectValue);result["text"]=DF2UTF(*text);
-            out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
-          }catch(const std::exception&){return CR_WRONG_USAGE;}
-        }
         if(parameters[0]=="justice-witness-text-probe") {
           if(parameters.size()!=2)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;

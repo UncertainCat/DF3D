@@ -1,6 +1,6 @@
 -- Protected oracle only: selected crime comes from the native Interrogate
 -- closure, never from a runtime provider's menu state.
-local out,view,settle,tab,capture,probe=...
+local out,view,settle,tab,capture=...
 local gui=require('gui');local json=require('json');local base=dfhack.internal.getImageBase()
 local function click(x,y)
  local g=df.global.gps;g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=y//12
@@ -8,42 +8,14 @@ local function click(x,y)
  gui.simulateInput(view,'_MOUSE_L');df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1;settle()
 end
 local samples={}
-local display_samples={}
-local function display_probe()
- local target
- local function find(w)
-  if(w.flag.whole&1)==0 then return end
-  if not target and df.widget_text_truncated:is_instance(w)and w.original_str:sub(1,9)=='Witness: 'then target=w end
-  if df.widget_container:is_instance(w)then for i,c in ipairs(dfhack.gui.getWidgetChildren(w))do
-   if not df.widget_tabs:is_instance(w)or i-1==w.cur_idx then find(c)end
-  end end
- end
- find(df.global.game.main_interface.info.justice);assert(target,'Witness truncation widget missing')
- local original=target.original_str
- local ok,err=xpcall(function()
-  local columns=math.max(target.min_w,target.rect.x2-target.rect.x1+1)
-  assert(target.truncate_mode_flags.whole==3)
-  for _,text in ipairs{string.rep('A',columns-1),string.rep('B',columns),string.rep('C',columns+1),
-   'Witness: The extraordinarily lengthy name of a fortress visitor.',
-   'Accuses: The extraordinarily lengthy name of a fortress visitor, Hammerdwarf.'}do
-   target.original_str=text;target:arrange()
-   local native=dfhack.df2utf(target.str);local owned=probe('justice-witness-display-probe',{tostring(columns),text})
-   display_samples[#display_samples+1]={columns=columns,source=text,native=native,owned=owned.text}
-   local f=assert(io.open(out..'/justice-witness-display.json','w'));f:write(json.encode(display_samples));f:close()
-   assert(native==owned.text,'Witness abbreviation differs from native')
-  end
- end,debug.traceback)
- target.original_str=original;target:arrange();settle();assert(ok,err)
-end
 local function observe(name,label,width,height)
- if os.getenv('DF3D_JUSTICE_CASE_TEXT')=='1'and name=='Open cases'and label~='minimum-fresh' then display_probe()end
  local selected;local scrolling={};local case_feed;local texts={};local truncated={}
  local function walk(w)
   if(w.flag.whole&1)==0 then return end
   if width and df.widget_text:is_instance(w)and #texts<24 then texts[#texts+1]={text=dfhack.df2utf(w.str),rect={w.rect.x1,w.rect.y1,w.rect.x2,w.rect.y2}}end
   if df.widget_text_truncated:is_instance(w) then
    local _,p=df.sizeof(w);local vt=df.reinterpret_cast('uint64_t',p).value
-   truncated[#truncated+1]={text=dfhack.df2utf(w.str),original=dfhack.df2utf(w.original_str),mode=w.truncate_mode_flags.whole,
+   truncated[#truncated+1]={text=dfhack.df2utf(w.str),original=dfhack.df2utf(w.original_str),mode=w.truncate_mode_flags.whole,min_w=w.min_w,
     rect={w.rect.x1,w.rect.y1,w.rect.x2,w.rect.y2},arrange=df.reinterpret_cast('uint64_t',vt+32).value-base}
   end
   if w.name=='Cases' then local _,p=df.sizeof(w);local vt=df.reinterpret_cast('uint64_t',p).value;case_feed=df.reinterpret_cast('uint64_t',vt+8).value-base end

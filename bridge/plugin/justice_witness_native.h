@@ -4,32 +4,6 @@
 
 namespace df3d_justice {
 struct WitnessText {std::string witness,description,date,reported;};
-// widget_text_truncated::arrange (mode3) first abbreviates with DF's plain
-// string helper, then applies ellipses if needed. Never invoke the widget or
-// read its geometry at runtime: both text and width belong to the caller.
-inline std::optional<std::string> witnessDisplay(std::string text,int32_t columns) {
-    if(columns<1 || columns>2048 || text.size()>16384)return std::nullopt;
-    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
-    static const bool pinned=[base] {
-        struct Pin {size_t rva,length;uint64_t hash;};
-        constexpr Pin pins[]={
-            {0x14196e0,0x177,UINT64_C(0x11c21b36ec438114)},
-            {0x52d910,0x5c4,UINT64_C(0x3cc66a9b45f7baa9)},
-        };
-        for(const auto& p:pins){uint64_t h=UINT64_C(14695981039346656037);
-            for(size_t i=0;i<p.length;++i){h^=base[p.rva+i];h*=UINT64_C(1099511628211);}
-            if(h!=p.hash)return false;}
-        return true;
-    }();
-    if(!pinned)return std::nullopt;
-    if(text.size()>size_t(columns))
-        reinterpret_cast<void(*)(std::string*,int32_t)>(base+0x52d910)(&text,columns);
-    if(text.size()>size_t(columns)) {
-        text.resize(columns);
-        if(columns>3)text.replace(columns-3,3,"...");
-    }
-    return text;
-}
 // Resolve the report's recorded identity with DF's semantic helper, then format
 // a copied name. The widget builder's equivalent inline branches are pinned.
 inline std::optional<std::vector<WitnessText>> witnessText(const df::crime* crime) {

@@ -7,6 +7,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
 | Justice's Name sort tooltip advertises Ctrl+n, but the native sort command leaves the list unchanged. | No correction approved or implemented; preserve inactive shortcut. | Protected130514 on2026-11-12 sends UNITLIST_SORT_NAME before filter focus in Guard, Convicts, Interrogate and Convict. Native priorities and ordered row IDs remain unchanged; FILTER works in the same lists. `native_justice.json.filter_keyboard_reference`. |
+| Justice witness captions can extend past the panel edge. | No correction approved or implemented; preserve native full captions. | Protected150238 on2026-11-12 rebuilds a case after a controlled long witness name. Constructor14195c0 sets a120-cell minimum and the caption draws past the panel. `native_justice.json.witness_intrinsic_width_reference`. |
 | Justice witness viewport retains its previous row count after shrinking the window. | Approval pending for retaining DF3D's immediate capacity recalculation. Current staged behavior differs; no public acceptance. | Protected144525/144725 on2026-11-12: resizing1200x800 to912x552 leaves native num_visible8; reselecting the same case yields4. Only that first resize differs in3051 panel pixels. `native_justice.json.case_responsive_reference`. |
 | Intelligence report byline depends on whether input or rendering rebuilds the text first. | Approval pending for consistently retaining the renderer's Prepared by prefix. The existing staged provider uses that variant; full report-detail parity is not accepted. | Protected105001 on2026-11-12 invalidates only the diagnostic menu text width, then invokes render versus input: renderer4789b5 adds Prepared by, input4761bc uses officer_name directly. Mixed live104816 differs by637 pixels only in this byline. `native_justice.json.intelligence_report_byline_reference`. |
 | Justice's conspiracy case title says “Conspiracy to alow labor”. | No correction approved or implemented; preserve the native title. | Protected174105 on2026-11-11 changes one owned test case through all19 crime types and compares the native case widget text with formatter46d660. Type3 matches this spelling in both. `native_justice.json.caption_reference`. |
@@ -1211,26 +1212,26 @@ diagnostics qualify the live run as passed_with_known_issues. Enable
 CASE_RETURN/CASE_RESIZE/WIRE/RENDER through the protected Justice lane. Protocol
 and bridge are unchanged; public Justice remains gated.
 
-Native witness names and accusation descriptions both use
-`widget_text_truncated` with mode3. Its arrange routine14196e0 copies the original
-string, invokes plain abbreviation52d910, then applies ellipses only if the result
-still exceeds the effective width. `witnessDisplay` exposes this formatting over
-an owned string and caller-supplied width; it never invokes a widget or reads
-native menu geometry. Both code spans are pinned. The adapter is diagnostic-only
-until width-aware case transport and viewer resize handling are integrated.
+Native witness names and accusation descriptions use `widget_text_truncated`,
+but text constructor14195c0 sets `min_w` to the original caption length and case
+builder472ac0 never reduces it. Arrange14196e0 honors that minimum. Preserve the
+full semantic captions: these rows can extend beyond the panel. Protected150113
+on2026-11-12 records a26-cell name minimum and43-cell accusation minimum; at the
+narrow window their actual widths are35 and43. Protected150238 changes the source
+witness's first name in the paused owned clone, then reselects the case to build
+fresh native widgets. The resulting120-cell caption remains unshortened and draws
+across the panel edge. The existing owned witness provider matches all rows.
+Source names are restored before exit; the source save/preferences are preserved.
 
-Protected145824 on2026-11-12 compares the adapter with the actual native widget
-at35 and53 cells. Five controlled ASCII strings per width cover below/exact/above
-width and long witness/accusation captions. All ten outputs match, including
-native removal of vowels and abbreviation of the caption prefixes. The oracle
-temporarily changes only widget text and restores it; provider calls preserve
-menu/crime/report/RNG guards. This verifies the formatter, not naturally long
-gameplay names, rendered DF3D output or Unicode boundaries. The narrow native
-accusation widget can occupy43 cells while the witness name occupies35; transport
-integration must establish each effective width rather than assume they match.
-`native_justice.json.witness_display_reference` records outputs and provenance.
-MSVC and core19 pass. Owned DF33076 exits unsaved with source/preferences
-preserved; native runs alone at30FPS, GPU47C/9% sampled. Protocol203 is unchanged.
+The earlier145824 controlled formatter experiment changed `original_str` without
+rebuilding the widget, retaining its shorter minimum width. It proves native
+abbreviation behavior, not the behavior of freshly built case rows. Its proposed
+width-aware transport is unnecessary; the unused diagnostic formatter and probe
+have been removed. `witness_display_reference` retains that experiment's scope,
+and `witness_intrinsic_width_reference` records the corrected semantic evidence.
+No protocol or viewer behavior changes are required. MSVC and core19 pass; both
+new native runs are serial at30FPS, GPU47C/0% sampled, with owned DF4060/1496
+closed unsaved. No long-name rendered DF3D comparison is claimed.
 
 Protected `stockpile-storage-native-input-20261111-191326` verifies this controller
 through the real semantic action service on all three case tabs, initial detail

@@ -23,7 +23,7 @@ tab('Open cases');click(100,202);click(100,166)
 local reference={crime_id=9,cases={}}
 if os.getenv('DF3D_JUSTICE_WITNESSES')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-details%-native%.lua$','justice-witnesses-native.lua')
- assert(loadfile(source))(out,probe,click,crime,info)
+ assert(loadfile(source))(out,probe,click,crime,info,capture)
  return
 end
 local function summary()

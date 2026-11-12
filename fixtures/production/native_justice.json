@@ -15900,7 +15900,7 @@
       "result.json": "55ea401f0907968b16baa48a037a247d52b778f816392f061952e6daa810f1ec",
       "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
     },
-    "scope": "Controlled native widget text versus owned string formatter, 35 and 53 cells; all ten match. Diagnostic provider only; no viewer integration or Unicode acceptance. Narrow accusation geometry can exceed witness-name width.",
+    "scope": "Controlled original_str replacement with the old widget minimum width retained. This verifies the formatter only, NOT freshly built case rows. Superseded for integration by witness_intrinsic_width_reference; the unused formatter was removed.",
     "verification": {
       "msvc": "passed",
       "core_ctest": "19 passed",
@@ -15908,6 +15908,74 @@
       "owned_df_pid": 33076,
       "source": "unchanged; exit unsaved",
       "gpu": "30FPS native only; sampled 47C/9%"
+    }
+  },
+  "witness_intrinsic_width_reference": {
+    "native_build": "DF 53.16",
+    "protocol": 203,
+    "geometry_lane": "build/stockpile-storage-native-input-20261112-150113",
+    "long_name_lane": "build/stockpile-storage-native-input-20261112-150238",
+    "native_constructor_rva": "14195c0",
+    "case_builder_rva": "472ac0",
+    "scope": "Freshly built native case widgets retain original caption byte length as minimum width. Full semantic captions are correct; do not integrate width-based abbreviation. No rendered DF3D long-name comparison.",
+    "narrow_widgets": [
+      {
+        "arrange": 21075680,
+        "min_w": 26,
+        "mode": 3,
+        "original": "Witness: Mosus Paintposts.",
+        "rect": [
+          46,
+          21,
+          80,
+          21
+        ],
+        "text": "Witness: Mosus Paintposts."
+      },
+      {
+        "arrange": 21075680,
+        "min_w": 43,
+        "mode": 3,
+        "original": "Accuses: Doren Thosbutalåth, Dwarven Child.",
+        "rect": [
+          46,
+          22,
+          88,
+          22
+        ],
+        "text": "Accuses: Doren Thosbutalåth, Dwarven Child."
+      }
+    ],
+    "long_widgets": [
+      {
+        "min_w": 120,
+        "original": "Witness: LongwitnessLongwitnessLongwitnessLongwitnessLongwitnessLongwitnessLongwitnessLongwitnessLongwitness Paintposts.",
+        "rect": [
+          64,
+          18,
+          183,
+          18
+        ],
+        "text": "Witness: LongwitnessLongwitnessLongwitnessLongwitnessLongwitnessLongwitnessLongwitnessLongwitnessLongwitness Paintposts."
+      }
+    ],
+    "all_native_rows_equal_owned": true,
+    "sha256": {
+      "justice-witness-long-name.json": "94e5ed0170342bbea06c0d53a4d01a9e2b1be253e7b0a7b0dcd0c4d4d020208c",
+      "justice-witness-long-name.png": "6dfa83ff7beacfc3d7d39fc38ad55251bcb6b3aa840d2906f57f6f41420fd221",
+      "result.json": "55ea401f0907968b16baa48a037a247d52b778f816392f061952e6daa810f1ec",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    },
+    "verification": {
+      "core_ctest": "19 passed",
+      "msvc": "passed after removing unused formatter",
+      "owned_df_pids": [
+        4060,
+        1496
+      ],
+      "live": "passed",
+      "source": "unchanged; name fields restored; exits unsaved",
+      "gpu": "native only, serial30FPS, sampled47C/0%"
     }
   }
 }

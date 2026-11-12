@@ -276,6 +276,10 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
                 entries.push_back(row);}
             page["rows"]=entries;value["convicts"]=page;
         }
+        if(v.intelligence){const auto& p=*v.intelligence;Dictionary page;Array rows,lines;page["report_index"]=p.reportIndex;page["text_columns"]=int(p.textColumns);
+            for(const auto& r:p.reports){Dictionary row;row["index"]=int64_t(r.index);row["title"]=String::utf8(r.title.c_str());row["officer"]=String::utf8(r.officer.c_str());row["viewed"]=r.viewed;rows.push_back(row);}
+            for(const auto& line:p.lines)lines.push_back(String::utf8(line.c_str()));page["reports"]=rows;page["lines"]=lines;value["intelligence"]=page;
+        }
         if(v.convictDetail){const auto& d=*v.convictDetail;Dictionary detail;Array sentence,crimes;
             detail["unit_id"]=d.unitId;detail["revision"]=int64_t(d.revision);detail["total"]=int64_t(d.total);detail["offset"]=int64_t(d.offset);
             for(const auto& line:d.sentence)sentence.push_back(String::utf8(line.c_str()));detail["sentence"]=sentence;if(d.officer)detail["officer"]=String::utf8(d.officer->c_str());
@@ -726,6 +730,12 @@ bool readNobles(const Dictionary& data,wm::ManagementRequest& request,String&) {
 bool validateJustice(const Dictionary& data,String& error) {
     error="Invalid justice request";
     const auto integer=[](const Dictionary& d,const char* k,int64_t lo,int64_t hi){return d.has(k) && d[k].get_type()==Variant::INT && int64_t(d[k])>=lo && int64_t(d[k])<=hi;};
+    if(int64_t(data["action"])==int64_t(wm::ManagementAction::JusticeIntelligenceRead)){
+        if(data.size()!=7 || !integer(data,"tab",5,5) || !integer(data,"offset",0,1048576) || !integer(data,"limit",1,64) || !integer(data,"expected_list_revision",0,INT64_MAX) || !integer(data,"report_index",-1,INT32_MAX) || !integer(data,"text_columns",0,512))return false;
+        if(int64_t(data["report_index"])==-1 ? int64_t(data["text_columns"])!=0 : !int64_t(data["text_columns"]) || !int64_t(data["expected_list_revision"]))return false;
+        if(int64_t(data["offset"]) && !int64_t(data["expected_list_revision"]))return false;
+        error=String();return true;
+    }
     const bool convicts=int64_t(data["action"])==int64_t(wm::ManagementAction::JusticeConvictsRead),convictDetail=int64_t(data["action"])==int64_t(wm::ManagementAction::JusticeConvictDetailRead);
     if(convicts || convictDetail){
         if(data.size()!=(convictDetail?9:7) || !integer(data,"tab",4,4) || !integer(data,"offset",0,1048576) || !integer(data,"limit",1,64) || !integer(data,"expected_list_revision",convictDetail?1:0,INT64_MAX))return false;
@@ -781,6 +791,7 @@ bool readJustice(const Dictionary& data,wm::ManagementRequest& request,String&) 
     request.action=wm::ManagementAction(int64_t(data["action"]));auto& q=request.justice;
     q.tab=uint8_t(int64_t(data["tab"]));q.offset=uint32_t(int64_t(data["offset"]));q.limit=uint16_t(int64_t(data["limit"]));
     q.expectedListRevision=uint64_t(int64_t(data["expected_list_revision"]));
+    if(request.action==wm::ManagementAction::JusticeIntelligenceRead){q.reportIndex=int32_t(int64_t(data["report_index"]));q.textColumns=uint16_t(int64_t(data["text_columns"]));return true;}
     if(request.action==wm::ManagementAction::JusticeConvictsRead || request.action==wm::ManagementAction::JusticeConvictDetailRead){
         q.query=String(data["query"]).utf8().get_data();q.sorts.clear();const Array sorts=data["sorts"];for(int i=0;i<sorts.size();++i){const Dictionary sort=sorts[i];q.sorts.push_back({wm::JusticeCandidateColumn(int64_t(sort["column"])),bool(sort["reverse"])});}
         if(request.action==wm::ManagementAction::JusticeConvictDetailRead){q.unitId=int32_t(int64_t(data["unit_id"]));q.expectedCaseRevision=uint64_t(int64_t(data["expected_case_revision"]));}return true;
@@ -1230,7 +1241,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::JusticeConvictDetailRead)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::JusticeIntelligenceRead)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

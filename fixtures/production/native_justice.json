@@ -10174,5 +10174,81 @@
       "Actors, Organizations and Plots remain unimplemented",
       "synthetic report text is oracle input, never product copy"
     ]
+  },
+  "intelligence_transport_reference": {
+    "run": "stockpile-storage-native-input-20261112-090634",
+    "status": "passed_with_known_issues",
+    "protocol": 201,
+    "owned_df_pid": 6436,
+    "source_preserved": true,
+    "native_fps": 30,
+    "viewer_fps": 30,
+    "reports": 2,
+    "synthetic_reports": true,
+    "checks": [
+      "ordered report titles and officer captions",
+      "visible first report click",
+      "native wrapped lines",
+      "stale report receipt rejected"
+    ],
+    "pixels": {
+      "roster": {
+        "panel": {
+          "different_pixels": 1242,
+          "bbox": [
+            168,
+            85,
+            448,
+            106
+          ]
+        },
+        "reports": {
+          "different_pixels": 0,
+          "bbox": null
+        }
+      },
+      "detail": {
+        "panel": {
+          "different_pixels": 1242,
+          "bbox": [
+            168,
+            85,
+            448,
+            106
+          ]
+        },
+        "reports": {
+          "different_pixels": 0,
+          "bbox": null
+        }
+      }
+    },
+    "report_crop": [
+      40,
+      160,
+      960,
+      740
+    ],
+    "panel_crop": [
+      32,
+      52,
+      976,
+      760
+    ],
+    "remaining_panel_difference": "1242 pixels confined to unfinished Actors, Organizations and Plots tabs",
+    "artifacts": {
+      "justice-intelligence-roster.png": "32a5824f1407167e630f96c060bbc46e8a76b4fd57b4058d867f387335c72b6c",
+      "justice-intelligence-roster-view.png": "76307743918f34d31142e291ab9c29103701ebff72c5b413895754b1a85540fb",
+      "justice-intelligence-detail.png": "423760e332624301e45f1feeff703330a7ff6b104a63369f9c3003e951cadd4a",
+      "justice-intelligence-detail-view.png": "411291195b442415f0c49d4e75e596f5f0ed3b2e99c25866119aabaea322fa04",
+      "job-settings-wire-result.json": "7e9ef0d25507095d8e3ae44bb45fb3e2800d9b4dd015eaad2a6e5e4021e70543",
+      "justice-intelligence-pixels.json": "328c6a155d35a11084a6819c0250b2c502c49cfd35b774c3f7d3d0b47fc8c253"
+    },
+    "limits": [
+      "no graph availability or empty Intelligence acceptance",
+      "no pagination, scrolling, resize rendering, keyboard or hover acceptance",
+      "synthetic reports do not cover a naturally populated fortress",
+      "Justice remains hidden from public routes"
+    ]
   }
 }

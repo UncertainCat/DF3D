@@ -146,3 +146,12 @@ TEST_CASE("Convict details own sentence, officer and crime text after buffer ret
  std::fill(b.GetBufferPointer(),b.GetBufferPointer()+b.GetSize(),uint8_t(0));b.Clear();REQUIRE(owned.justice);REQUIRE(owned.justice->convictDetail);
  const auto& v=*owned.justice->convictDetail;CHECK(v.unitId==42);CHECK(v.revision==11);REQUIRE(v.sentence.size()==1);CHECK(v.sentence[0]=="synthetic sentence");REQUIRE(v.officer);CHECK(*v.officer=="synthetic officer");REQUIRE(v.crimes.size()==1);CHECK(v.crimes[0].caption=="synthetic crime");REQUIRE(v.crimes[0].injuredParty);CHECK(*v.crimes[0].injuredParty=="synthetic victim");
 }
+
+TEST_CASE("Intelligence detail owns lines after wire retirement") {
+ flatbuffers::FlatBufferBuilder b;
+ auto p=m::CreateJusticeIntelligencePage(b,0,112,b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeIntelligenceReport>>{}),b.CreateVector(std::vector{b.CreateString("synthetic report")}));
+ auto result=m::CreateJusticeState(b,m::JusticeOutcome::None,5,7,1,0,b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeCaseRow>>{}),0,0,0,0,0,p);
+ m::ManagementStateBuilder s(b);s.add_revision(1);s.add_action(m::ManagementAction::JusticeIntelligenceRead);s.add_status(m::ManagementStatus::Ok);s.add_justice(result);b.Finish(s.Finish());
+ const auto* wire=flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer());REQUIRE_FALSE(m::validateManagementState(*wire));const auto owned=codec::decodeState(wire);std::fill(b.GetBufferPointer(),b.GetBufferPointer()+b.GetSize(),uint8_t(0));b.Clear();
+ REQUIRE(owned.justice);REQUIRE(owned.justice->intelligence);CHECK(owned.justice->intelligence->lines==std::vector<std::string>{"synthetic report"});
+}

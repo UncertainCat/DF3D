@@ -475,6 +475,7 @@ struct NoblesState {
 // Pointer-free Justice reads retain native row order and paired witness dates.
 struct JusticeSort {JusticeCandidateColumn column=JusticeCandidateColumn::Category;bool reverse=false;};
 struct JusticeRequest {
+  int32_t reportIndex=-1;uint16_t textColumns=0;
   uint8_t tab=0;uint32_t offset=0;uint16_t limit=32;
   uint64_t expectedListRevision=0;int32_t crimeId=-1;uint64_t expectedCaseRevision=0;
   std::string query;uint64_t expectedCandidateRevision=0;int32_t unitId=-1;
@@ -509,7 +510,10 @@ struct JusticeGuardPage {std::string caption;uint8_t color=0;std::vector<Justice
 struct JusticeConvictsPage {std::vector<JusticeUnitRow> rows;};
 struct JusticeConvictCrime {int32_t crimeId=-1;std::string caption;std::optional<std::string> injuredParty;};
 struct JusticeConvictDetail {int32_t unitId=-1;uint64_t revision=0;std::vector<std::string> sentence;std::optional<std::string> officer;uint32_t total=0,offset=0;std::vector<JusticeConvictCrime> crimes;};
+struct JusticeIntelligenceReport {uint32_t index=0;std::string title,officer;bool viewed=false;};
+struct JusticeIntelligencePage {int32_t reportIndex=-1;uint16_t textColumns=0;std::vector<JusticeIntelligenceReport> reports;std::vector<std::string> lines;};
 struct JusticeState {
+  std::optional<JusticeIntelligencePage> intelligence;
   JusticeOutcome outcome=JusticeOutcome::None;uint8_t tab=0;uint64_t listRevision=0;
   uint32_t total=0,offset=0;std::vector<JusticeCaseRow> rows;std::optional<JusticeCaseDetail> detail;
   std::optional<JusticeCandidatePage> candidates;std::optional<JusticeGuardPage> guard;std::optional<JusticeConvictsPage> convicts;std::optional<JusticeConvictDetail> convictDetail;

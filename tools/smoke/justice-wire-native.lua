@@ -3,6 +3,7 @@
 local out,probe,bytes=...
 local script=require('gui.script');local json=require('json');local base=dfhack.internal.getImageBase()
 local expected={lists=probe('justice-cases-probe'),details={}}
+expected.intelligence=probe('justice-intelligence-reports-probe',112)
 expected.guard=probe('justice-guard-probe')
 expected.convicts=probe('justice-convicts-probe')
 for _,row in ipairs(expected.convicts)do row.name_color=probe('zone-owner-name-color-read',tostring(row.unit_id))end

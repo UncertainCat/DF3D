@@ -2,6 +2,7 @@
 #include "justice_native.h"
 #include "justice_guard_native.h"
 #include "justice_convicts_native.h"
+#include "justice_intelligence_native.h"
 #include "residents_row_native.h"
 #include "justice_witness_native.h"
 #include "justice_action_native.h"
@@ -30,6 +31,8 @@ struct ReadResult {
     std::optional<std::vector<GuardRow>> convicts;
     struct ConvictPage {ConvictDetail facts;uint64_t revision=0;uint32_t total=0,offset=0;};
     std::optional<ConvictPage> convictDetail;
+    struct Intelligence {int32_t index=-1;uint16_t columns=0;std::vector<IntelligenceReport> reports;std::vector<std::string> lines;};
+    std::optional<Intelligence> intelligence;
 };
 struct ReadHash {
     uint64_t value=UINT64_C(14695981039346656037);
@@ -202,6 +205,29 @@ inline ReadResult convictsRequest(const m::JusticeRequest& q,bool selected) {
         return result;
     }catch(...){return refused;}
 }
+inline ReadResult intelligenceRequest(const m::JusticeRequest& q){
+    ReadResult refused;refused.tab=5;
+    try {
+        // Fixed-width owned contents define identity independently of requested layout.
+        const auto source=intelligenceReports(112);if(!source)return refused;
+        ReadHash hash;hash.number(source->size());for(const auto& r:*source){hash.number(r.index);hash.text(r.title);hash.text(r.officer);hash.number(r.viewed);hash.number(r.paragraphs.size());for(const auto& line:r.paragraphs)hash.text(line);}
+        const auto revision=hash.finish();
+        if(q.expected_list_revision() && q.expected_list_revision()!=revision){refused.outcome=m::JusticeOutcome::Stale;return refused;}
+        ReadResult result;result.tab=5;result.outcome=m::JusticeOutcome::None;result.revision=revision;result.offset=q.offset();auto& page=result.intelligence.emplace();page.index=q.report_index();page.columns=q.text_columns();size_t bytes=0;
+        if(page.index<0){
+            result.total=uint32_t(source->size());if(q.offset()>result.total){refused.outcome=m::JusticeOutcome::Stale;return refused;}
+            for(size_t i=q.offset();i<source->size() && page.reports.size()<q.limit();++i){auto row=(*source)[i];row.title=readText(row.title);row.officer=readText(row.officer);row.lines.clear();row.paragraphs.clear();const auto size=32+row.title.size()+row.officer.size();if(bytes+size>384*1024)break;bytes+=size;page.reports.push_back(std::move(row));}
+            if(q.offset()<result.total && page.reports.empty())return refused;
+        }else{
+            if(size_t(page.index)>=source->size()){refused.outcome=m::JusticeOutcome::Stale;return refused;}
+            auto wrapped=intelligenceReports(page.columns);if(!wrapped)return refused;const auto& lines=(*wrapped)[page.index].lines;result.total=uint32_t(lines.size());
+            if(q.offset()>result.total){refused.outcome=m::JusticeOutcome::Stale;return refused;}
+            for(size_t i=q.offset();i<lines.size() && page.lines.size()<q.limit();++i){auto line=readText(lines[i]);if(bytes+line.size()>384*1024)break;bytes+=line.size();page.lines.push_back(std::move(line));}
+            if(q.offset()<result.total && page.lines.empty())return refused;
+        }
+        return result;
+    }catch(...){return refused;}
+}
 inline flatbuffers::Offset<m::JusticeState> encode(flatbuffers::FlatBufferBuilder& b,const ReadResult& r){
     std::vector<flatbuffers::Offset<m::JusticeCaseRow>> rows;
     for(const auto& row:r.rows)rows.push_back(m::CreateJusticeCaseRow(b,row.id,b.CreateString(row.caption)));
@@ -234,6 +260,10 @@ inline flatbuffers::Offset<m::JusticeState> encode(flatbuffers::FlatBufferBuilde
     if(r.convictDetail){const auto& p=*r.convictDetail;std::vector<flatbuffers::Offset<flatbuffers::String>> sentence;for(const auto& line:p.facts.sentence)sentence.push_back(b.CreateString(line));
         std::vector<flatbuffers::Offset<m::JusticeConvictCrime>> crimes;for(const auto& c:p.facts.crimes)crimes.push_back(m::CreateJusticeConvictCrime(b,c.id,b.CreateString(c.caption),c.injuredParty?b.CreateString(*c.injuredParty):0));
         convictDetail=m::CreateJusticeConvictDetail(b,p.facts.unitId,p.revision,b.CreateVector(sentence),p.facts.officer?b.CreateString(*p.facts.officer):0,p.total,p.offset,b.CreateVector(crimes));}
-    return m::CreateJusticeState(b,r.outcome,r.tab,r.revision,r.total,r.offset,b.CreateVector(rows),detail,candidates,guard,convicts,convictDetail);
+    flatbuffers::Offset<m::JusticeIntelligencePage> intelligence;
+    if(r.intelligence){const auto& p=*r.intelligence;std::vector<flatbuffers::Offset<m::JusticeIntelligenceReport>> reports;std::vector<flatbuffers::Offset<flatbuffers::String>> lines;
+        for(const auto& row:p.reports)reports.push_back(m::CreateJusticeIntelligenceReport(b,row.index,b.CreateString(row.title),b.CreateString(row.officer),row.viewed));
+        for(const auto& line:p.lines)lines.push_back(b.CreateString(line));intelligence=m::CreateJusticeIntelligencePage(b,p.index,p.columns,b.CreateVector(reports),b.CreateVector(lines));}
+    return m::CreateJusticeState(b,r.outcome,r.tab,r.revision,r.total,r.offset,b.CreateVector(rows),detail,candidates,guard,convicts,convictDetail,intelligence);
 }
 }

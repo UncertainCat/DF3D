@@ -167,6 +167,21 @@ func run() -> void:
 	test_interrogation(service,state)
 	test_guard(service,state)
 	test_convicts(service,state)
+	test_intelligence(service,state)
 	state.dispose();service.queue_free();await process_frame
 	if failures==0:print("JUSTICE_STATE_PASS")
 	quit(1 if failures else 0)
+
+func intelligence_page(selected: int=-1,offset: int=0,total: int=1,revision: int=22,columns: int=0) -> Dictionary:
+	return {"justice":{"outcome":C.JusticeOutcome.None,"tab":5,"list_revision":revision,"offset":offset,"total":total,"intelligence":{"report_index":selected,"text_columns":columns,"reports":[{"index":offset,"title":"synthetic","officer":"synthetic","viewed":false}] if selected<0 else [],"lines":["synthetic line"] if selected>=0 else []}}}
+func test_intelligence(service,state) -> void:
+	state.open(5);var model=state.intelligence
+	service.reply(model.ticket,intelligence_page(-1,0,2));check(model.rows.is_empty(),"Partial intelligence roster exposed")
+	service.reply(model.ticket,intelligence_page(-1,1,2));model.select_report(0)
+	service.reply(model.ticket,intelligence_page(0,0,2,22,112));check(model.lines.is_empty(),"Partial intelligence text exposed")
+	var old: int=model.ticket;model.resize_columns(70);var current: int=model.ticket
+	service.reply(old,intelligence_page(0,1,2,22,112));check(model.ticket==current and model.lines.is_empty(),"Old wrap width replaced report")
+	service.reply(current,intelligence_page(0,0,1,22,70));check(model.lines==["synthetic line"],"Intelligence detail did not settle")
+	model.select_report(1);old=model.ticket;state.close();service.reply(old,intelligence_page(1,0,1,22,70));check(model.phase==model.Phase.Closed and model.lines.is_empty(),"Closed intelligence accepted late report")
+	state.open(5);service.reply(model.ticket,intelligence_page());model.select_report(0)
+	service.reply(model.ticket,intelligence_page(0,0,1,23,70));check(model.phase==model.Phase.Rejected and model.lines.is_empty(),"Changed intelligence receipt accepted")

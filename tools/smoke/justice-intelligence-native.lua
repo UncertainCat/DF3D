@@ -1,6 +1,6 @@
 -- Protected oracle only: synthetic reports live in the paused disposable clone.
 -- These labels test copying/wrapping and are never product UI copy.
-local out,view,probe,settle,tab,capture=...
+local out,view,probe,settle,tab,capture,bytes=...
 local gui=require('gui');local json=require('json');local g=df.global.gps
 local reports=df.global.world.status.interrogation_reports;local original=#reports
 local added={};local samples={}
@@ -35,6 +35,10 @@ local ok,err=xpcall(function()
  samples[#samples+1]={name='detail',columns=columns,native=native,provider=supplied[1],viewed=added[1].flags.viewed};write()
  assert(json.encode(native)==json.encode(supplied[1].lines),'Native report wrapping differs')
  capture('justice-intelligence-detail')
+ if os.getenv('DF3D_JUSTICE_WIRE_INTELLIGENCE')=='1' then
+  local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-intelligence%-native%.lua$','justice-wire-native.lua')
+  assert(loadfile(source))(out,probe,bytes)
+ end
 end,debug.traceback)
 gui.simulateInput(view,'LEAVESCREEN');settle()
 while #reports>original do reports:erase(#reports-1)end

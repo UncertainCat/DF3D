@@ -27,6 +27,7 @@ func run() -> void:
 		if world.poll_management().get("transport_alive",false):break
 		await create_timer(0.01).timeout
 	await request("construction",{"action":C.ManagementAction.Catalog})
+	if OS.get_environment("DF3D_JUSTICE_WIRE_INTELLIGENCE")=="1":await run_intelligence(reference.intelligence);return
 	if OS.get_environment("DF3D_JUSTICE_WIRE_CONVICTS")=="1":await run_convicts(reference.convicts);return
 	if OS.get_environment("DF3D_JUSTICE_WIRE_GUARD")=="1":await run_guard(reference.guard);return
 	var counts: Array=[];var report_count:=0
@@ -341,4 +342,35 @@ func run_convicts(reference: Array) -> void:
 	controller.dispose();if view!=null:view.queue_free()
 	actions.queue_free();await process_frame
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"convicts":reference.size(),"selection_and_filter":true}));file.close()
+	quit(1 if failed else 0)
+
+func settle_intelligence(model) -> void:
+	var deadline:=Time.get_ticks_msec()+5000
+	while model.phase==model.Phase.Reading and Time.get_ticks_msec()<deadline:
+		world.poll();await create_timer(0.01).timeout
+func run_intelligence(reference: Array) -> void:
+	var actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(actions);actions.configure(world,true)
+	var controller=preload("res://scripts/justice_state.gd").new();controller.configure(actions);controller.open(5)
+	var model=controller.intelligence;var view
+	if OS.get_environment("DF3D_JUSTICE_RENDER")=="1":
+		root.size=Vector2i(1200,800);check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Intelligence assets unavailable")
+		view=preload("res://scripts/justice_view.gd").new();root.add_child(view);view.configure_justice(world,controller);view.layout(Vector2(1200,800))
+	await settle_intelligence(model)
+	check(model.phase==model.Phase.Ready and model.rows.size()==reference.size(),"Intelligence list did not settle")
+	for i in mini(model.rows.size(),reference.size()):check(model.rows[i].title==reference[i].title and model.rows[i].officer==reference[i].officer,"Intelligence report order or captions differ")
+	if view!=null:
+		await process_frame;await process_frame;await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/justice-intelligence-roster-view.png")
+		await pointer_click(view.position+view.intelligence_rect(0).position+Vector2(80,18))
+	else:model.select_report(0)
+	await settle_intelligence(model)
+	check(model.phase==model.Phase.Ready and model.lines==reference[0].lines,"Intelligence native report lines differ")
+	if view!=null:
+		await process_frame;await process_frame;await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/justice-intelligence-detail-view.png")
+	var stale:=await request("justice",{"action":C.ManagementAction.JusticeIntelligenceRead,"tab":5,"offset":0,"limit":32,"expected_list_revision":model.revision+1,"report_index":0,"text_columns":112})
+	check(stale.get("status")==C.ManagementStatus.Rejected and stale.get("justice",{}).get("outcome")==C.JusticeOutcome.Stale,"Stale report selection accepted")
+	controller.dispose();if view!=null:view.queue_free()
+	actions.queue_free();await process_frame
+	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"intelligence_reports":reference.size()}));file.close()
 	quit(1 if failed else 0)

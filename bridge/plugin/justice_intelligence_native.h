@@ -9,7 +9,7 @@
 namespace df3d_justice {
 // Native471a1f copies the semantic report vector in storage order. The report
 // renderer4789b5 wraps owned strings; never call the Justice menu initializer.
-struct IntelligenceReport {uint32_t index=0;std::string title,officer;bool viewed=false;std::vector<std::string> lines;};
+struct IntelligenceReport {uint32_t index=0;std::string title,officer;bool viewed=false;std::vector<std::string> lines,paragraphs;};
 inline bool intelligenceReportsReady() {
     if(!df::global::world)return false;
     const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
@@ -44,7 +44,7 @@ inline std::optional<std::vector<IntelligenceReport>> intelligenceReports(int co
         wrap(row.title);wrap("Prepared by "+report->officer_name);
         const auto copy=[&](){for(const auto* line:box.text){if(!line || line->size()>16384)return false;totalBytes+=line->size();if(totalBytes>4*1024*1024)return false;row.lines.push_back(*line);}reinterpret_cast<void(*)(std::vector<std::string*>*)>(base+0xbb9b0)(&box.text);return true;};
         if(!copy())return std::nullopt;row.lines.emplace_back();
-        for(const auto* detail:report->details){if(!detail || detail->size()>65536)return std::nullopt;row.lines.emplace_back();wrap(*detail);if(!copy())return std::nullopt;}
+        for(const auto* detail:report->details){if(!detail || detail->size()>65536)return std::nullopt;row.paragraphs.push_back(*detail);row.lines.emplace_back();wrap(*detail);if(!copy())return std::nullopt;}
         result.push_back(std::move(row));
     }
     return result;

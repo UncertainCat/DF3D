@@ -12,6 +12,8 @@ var search
 var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
 var portraits: Dictionary={}
 var ticks_override: int=-1
+func intelligence_capacity() -> int:return maxi(0,int((size.y-list_top()-48)/(36 if state.intelligence.selected<0 else 12)))
+func intelligence_rect(index: int) -> Rect2:return Rect2(16,list_top()+24+index*36,size.x-32,36)
 func guard_open() -> bool:return state.tab==3
 func roster_open() -> bool:return state.tab in [3,4]
 func roster():return state.guard if guard_open() else state.convicts
@@ -29,7 +31,9 @@ func picker_allowed() -> bool:return allowed() and state.candidates.phase==state
 func configure_justice(source,model) -> void:
 	configure_standing_orders(source,model)
 	scrollbar.input_allowed=allowed;scrollbar.wheel_enabled=false
-	scrollbar.row_changed.connect(func(value):state.seek(value,capacity()))
+	scrollbar.row_changed.connect(func(value):
+		if state.tab==5:state.intelligence.seek(value,intelligence_capacity())
+		else:state.seek(value,capacity()))
 	witness_scroll=preload("res://scripts/area_location_scrollbar.gd").new();add_child(witness_scroll);witness_scroll.configure(source)
 	witness_scroll.use_classic_art=true
 	witness_scroll.input_allowed=allowed;witness_scroll.wheel_enabled=false
@@ -69,7 +73,8 @@ func case_rect(index: int) -> Rect2:
 	return Rect2(16,list_top()+index*36,detail_x()-40-(16 if state.rows.size()>capacity() else 0),36)
 func layout(view: Vector2) -> void:
 	super.layout(view)
-	if state!=null:refresh()
+	if state!=null:
+		state.intelligence.resize_columns(int((size.x-48)/8));refresh()
 func refresh() -> void:
 	scrollbar.position=Vector2(detail_x()-40,list_top());scrollbar.size=Vector2(16,capacity()*36)
 	scrollbar.page=capacity();scrollbar.set_rows(state.rows.size(),visible_first())
@@ -89,6 +94,8 @@ func refresh() -> void:
 		search.position.x=32;search.visible=true
 		search.editable=allowed() and roster().phase in [roster().Phase.Ready,roster().Phase.Reading,roster().Phase.Rejected,roster().Phase.DetailReading]
 		search.set_bytes(roster().query.to_utf8_buffer())
+	if state.tab==5:
+		scrollbar.position=Vector2(size.x-32,list_top()+24);scrollbar.size=Vector2(16,intelligence_capacity()*(36 if state.intelligence.selected<0 else 12));scrollbar.page=intelligence_capacity();scrollbar.set_rows(state.intelligence.rows.size() if state.intelligence.selected<0 else state.intelligence.lines.size(),state.intelligence.first)
 	if not search.visible:search.release_focus()
 	var retained: Dictionary={}
 	var roster_state=roster() if roster_open() else state.candidates
@@ -113,7 +120,8 @@ func _input(event: InputEvent) -> void:
 		var point: Vector2=get_global_transform_with_canvas().affine_inverse()*event.position
 		if Rect2(Vector2(0,list_top()),size-Vector2(0,list_top())).has_point(point):
 			var step: int=-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1
-			if roster_open():roster().seek(roster().first+step,guard_capacity())
+			if state.tab==5:state.intelligence.seek(state.intelligence.first+step,intelligence_capacity())
+			elif roster_open():roster().seek(roster().first+step,guard_capacity())
 			elif point.x<detail_x():state.seek(visible_first()+step,capacity())
 			elif picker_open():state.candidates.seek(state.candidates.first+step,picker_capacity())
 			else:state.seek_witness(witness_first()+step,witness_capacity())
@@ -133,9 +141,14 @@ func _gui_input(event: InputEvent) -> void:
 				if caption!="Justice":information_requested.emit(caption)
 				return
 			x+=width
-	for index in 5:
+	for index in 6:
 		if tab_rect(index).has_point(event.position):state.select_tab(index);return
 	if state.phase not in [state.Phase.Ready,state.Phase.DetailReading]:return
+	if state.tab==5:
+		if state.intelligence.selected<0:
+			for index in mini(intelligence_capacity(),state.intelligence.rows.size()-state.intelligence.first):
+				if intelligence_rect(index).has_point(event.position):state.intelligence.select_report(state.intelligence.rows[state.intelligence.first+index].index);return
+		return
 	if roster_open():
 		for index in (4 if guard_open() else 3):
 			if guard_sort_rect(index).has_point(event.position):roster().select_sort(SORT_COLUMNS[index],event.shift_pressed,event.ctrl_pressed);return
@@ -161,6 +174,22 @@ func _gui_input(event: InputEvent) -> void:
 	elif state.tab!=1 and not state.detail.is_empty():
 		if convict_rect().has_point(event.position):state.open_candidates()
 		elif interrogate_rect().has_point(event.position):state.open_candidates(true)
+func draw_intelligence() -> void:
+	var model=state.intelligence;var x:=8.0
+	for caption in ["Interrogations","Actors","Organizations","Plots"]:x+=tab(caption,Vector2(x,list_top()-12),"SHORT_SUBSUBTAB",caption=="Interrogations")
+	if model.phase!=model.Phase.Ready:return
+	if model.selected<0:
+		for index in mini(intelligence_capacity(),model.rows.size()-model.first):
+			var row: Dictionary=model.rows[model.first+index];var rect:=intelligence_rect(index)
+			patch("BUTTON_RECTANGLE",Vector2i(rect.position/Vector2(8,12)),int(rect.size.x/8),3)
+			var width:=int((rect.size.x-24)/8)
+			var title: String=row.title
+			if title.length()>=width:title=title.left(width-3)+"..."
+			var officer: String=row.officer
+			if officer.length()>=width-1:officer=officer.left(width-4)+"..."
+			text(title,rect.position+Vector2(16,24));text(officer,rect.position+Vector2(24,36),9)
+	else:
+		for index in mini(intelligence_capacity(),model.lines.size()-model.first):text(model.lines[model.first+index],Vector2(16,list_top()+36+index*12))
 func draw_guard() -> void:
 	if guard_open():text(roster().caption,Vector2(16,list_top()+12),roster().color)
 	for index in (4 if guard_open() else 3):
@@ -243,6 +272,7 @@ func _draw() -> void:
 		var x:=8.0
 		for caption in groups[index]:x+=tab(caption,Vector2(x,12+index*24),"SHORT_TAB",caption=="Justice")
 	for index in 6:tab(CASE_TABS[index],tab_rect(index).position,"SHORT_SUBTAB",index==state.tab)
+	if state.tab==5:draw_intelligence();return
 	if roster_open():
 		draw_guard()
 		if not guard_open():draw_convict_detail()

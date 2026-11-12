@@ -173,6 +173,7 @@ func poll(delta: float = 0.0) -> void:
 				or int(state.get("job_settings_edit",{}).get("outcome",-1)) == Contract.JobSettingsEditOutcome.Unknown
 				or int(state.get("creature_expel",{}).get("outcome",-1)) == Contract.CreatureExpelOutcome.Unknown
 				or int(state.get("nobles",{}).get("outcome",-1)) == Contract.NoblesOutcome.Unknown
+				or int(state.get("justice",{}).get("outcome",-1)) == Contract.JusticeOutcome.Unknown
 				or int(state.get("construction",{}).get("outcome",0)) == Contract.ConstructionOutcome.Unknown):
 				state["outcome"] = "unknown"
 			elif int(state.get("construction",{}).get("outcome",0)) == Contract.ConstructionOutcome.Partial:

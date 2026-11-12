@@ -8187,5 +8187,46 @@
       "No action transport or DF3D picker acceptance",
       "Native post-action help overlays screenshot"
     ]
+  },
+  "candidate_wire_reference": {
+    "source": "build\\stockpile-storage-native-input-20261111-224833",
+    "protocol": 194,
+    "status": "passed_with_known_issues",
+    "receipt": {
+      "candidate_count": 293,
+      "candidate_queries": 3,
+      "closed_read_retired": true,
+      "controller_tabs": 3,
+      "convicted": true,
+      "counts": [
+        7,
+        3,
+        7
+      ],
+      "stale_tabs": 3,
+      "success": true,
+      "witnesses": 134
+    },
+    "source_preserved": true,
+    "owned_df_pid": 13072,
+    "fps_cap": 30,
+    "reference_sha256": "fe78ee7f52f300ceea760f6fdb6c17491d3beeb02c8a8549375e71e846aee20e",
+    "eligibility_callbacks": {
+      "closed": "486e50 -> 46db60 summary only",
+      "open_cold": "486ac0 -> 472ac0 action detail"
+    },
+    "conviction": {
+      "unit_id": 5698,
+      "historical_hfid": 9317,
+      "new_history_events": 1,
+      "convicter_entity": 865
+    },
+    "limitations": [
+      "No candidate rendering or picker lifecycle acceptance",
+      "Native mutation permits menu invalidation and RNG changes",
+      "All simulation fields not compared",
+      "Unknown publication fallback not fault-injected live",
+      "Known Godot separate-thread warning"
+    ]
   }
 }

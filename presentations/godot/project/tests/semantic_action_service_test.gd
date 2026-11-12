@@ -97,7 +97,24 @@ func test_nobles_unknown() -> void:
 			check(world.calls.size()==1,"Uncertain Nobles mutation was replayed")
 			service.free()
 
+func test_justice_unknown() -> void:
+	var world:=HeaderWorld.new();var service:=Service.new();service.configure(world)
+	var observations: Array=[];var action:=Contract.ManagementAction.JusticeConvict
+	var ticket:=service.submit("justice",{"action":action},func(received,result,_request):
+		observations.append(result)
+		check(service.submit_continuation(received,"justice",{"action":action},Callable())==0,"Uncertain conviction authorized a continuation"))
+	service.poll()
+	world.state={"world_epoch":5,"revision":2,"request_seq":1,"status":Contract.ManagementStatus.Rejected,
+		"action":action,"justice":{"outcome":Contract.JusticeOutcome.Unknown}}
+	for i in 5:service.poll()
+	check(observations.size()==1 and observations[0].get("outcome")=="unknown","Justice uncertainty was not delivered once")
+	var retained: Dictionary=service.last_detached_mutation("justice")
+	check(retained.get("ticket")==ticket and retained.get("result",{}).get("outcome")=="unknown","Justice recovery lost uncertainty")
+	check(world.calls.size()==1,"Uncertain conviction was replayed")
+	service.free()
+
 func run():
+	test_justice_unknown()
 	test_nobles_unknown()
 	test_header_payload_delivery()
 	test_result_ownership()

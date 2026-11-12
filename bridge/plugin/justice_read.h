@@ -1,6 +1,7 @@
 #pragma once
 #include "justice_native.h"
 #include "justice_witness_native.h"
+#include "justice_action_native.h"
 #include "management_util.h"
 #include "MiscUtils.h"
 #include <stdexcept>
@@ -15,6 +16,8 @@ struct Detail {
 struct ReadResult {
     m::JusticeOutcome outcome=m::JusticeOutcome::Rejected;uint8_t tab=0;
     uint64_t revision=0;uint32_t total=0,offset=0;std::vector<CaseRow> rows;std::optional<Detail> detail;
+    struct Candidates {int32_t crimeId=-1;uint64_t revision=0;uint32_t total=0,offset=0;std::vector<CandidateFact> rows;};
+    std::optional<Candidates> candidates;
 };
 struct ReadHash {
     uint64_t value=UINT64_C(14695981039346656037);
@@ -65,6 +68,47 @@ inline ReadResult read(const m::JusticeRequest& q,bool selected) {
         return result;
     }catch(...){return refused;}
 }
+// Open/Cold rows install486ac0->472ac0 (actions); Closed rows install486e50
+// (summary only), in the pinned case-list builder used by cases(). Never use
+// native tab/selection state to admit a candidate request or mutation.
+inline ReadResult candidateRequest(const m::JusticeRequest& q,bool apply) {
+    ReadResult refused;refused.tab=q.tab();
+    try {
+        if(q.tab()==1)return refused;
+        flatbuffers::FlatBufferBuilder scope;
+        scope.Finish(m::CreateJusticeRequest(scope,q.tab(),0,1,q.expected_list_revision(),q.crime_id(),q.expected_case_revision()));
+        const auto observed=read(*flatbuffers::GetRoot<m::JusticeRequest>(scope.GetBufferPointer()),true);
+        if(observed.outcome!=m::JusticeOutcome::None){refused.outcome=observed.outcome;return refused;}
+        auto* crime=df::crime::find(q.crime_id());if(!crime || !observed.detail)return refused;
+        const auto query=q.query()?q.query()->str():std::string{};
+        const auto nativeQuery=UTF2DF(query);
+        if(DF2UTF(nativeQuery)!=query)return refused;
+        const auto facts=convictionCandidates(crime,nativeQuery);if(!facts || facts->size()>1048576)return refused;
+        ReadHash hash;hash.number(observed.revision);hash.number(observed.detail->revision);hash.text(query);
+        // Include effect-relevant crime values absent from the displayed summary.
+        for(auto value:{int32_t(crime->mode),crime->criminal,crime->accused,crime->victim,crime->incident_id,
+                       crime->site,crime->entity,crime->punishment.hammerstrikes,crime->punishment.prison_time})hash.number(uint32_t(value));
+        hash.number(crime->flags.whole);hash.number(crime->punishment.flags.whole);hash.number(facts->size());
+        for(const auto& row:*facts){hash.number(uint32_t(row.unitId));hash.number(uint32_t(row.rank));hash.number(row.flags);}
+        const auto revision=hash.finish();
+        if((q.expected_candidate_revision() && q.expected_candidate_revision()!=revision) || q.offset()>facts->size()){
+            refused.outcome=m::JusticeOutcome::Stale;return refused;
+        }
+        if(apply){
+            if(std::none_of(facts->begin(),facts->end(),[&](const CandidateFact& row){return row.unitId==q.unit_id();})){
+                refused.outcome=m::JusticeOutcome::Stale;return refused;
+            }
+            const auto outcome=convict(crime,df::unit::find(q.unit_id()),crime->accused);
+            refused.outcome=outcome==ActionOutcome::Applied?m::JusticeOutcome::Applied:
+                outcome==ActionOutcome::Unknown?m::JusticeOutcome::Unknown:m::JusticeOutcome::Rejected;
+            return refused;
+        }
+        ReadResult result;result.tab=q.tab();result.revision=observed.revision;result.outcome=m::JusticeOutcome::None;
+        auto& page=result.candidates.emplace();page.crimeId=crime->id;page.revision=revision;page.total=uint32_t(facts->size());page.offset=q.offset();
+        for(size_t i=q.offset();i<facts->size() && page.rows.size()<q.limit();++i)page.rows.push_back((*facts)[i]);
+        return result;
+    }catch(...){return refused;}
+}
 inline flatbuffers::Offset<m::JusticeState> encode(flatbuffers::FlatBufferBuilder& b,const ReadResult& r){
     std::vector<flatbuffers::Offset<m::JusticeCaseRow>> rows;
     for(const auto& row:r.rows)rows.push_back(m::CreateJusticeCaseRow(b,row.id,b.CreateString(row.caption)));
@@ -73,6 +117,10 @@ inline flatbuffers::Offset<m::JusticeState> encode(flatbuffers::FlatBufferBuilde
         for(const auto& w:d.witnesses)witnesses.push_back(m::CreateJusticeWitnessRow(b,b.CreateString(w.witness),b.CreateString(w.description),b.CreateString(w.date),b.CreateString(w.reported)));
         detail=m::CreateJusticeCaseDetail(b,d.id,d.revision,b.CreateString(d.caption),d.summary.injuredParty?b.CreateString(*d.summary.injuredParty):0,
             b.CreateString(d.summary.status),d.total,d.offset,b.CreateVector(witnesses),m::JusticeCaseResolution(d.summary.resolution));}
-    return m::CreateJusticeState(b,r.outcome,r.tab,r.revision,r.total,r.offset,b.CreateVector(rows),detail);
+    flatbuffers::Offset<m::JusticeCandidatePage> candidates;
+    if(r.candidates){const auto& page=*r.candidates;std::vector<flatbuffers::Offset<m::JusticeCandidateRow>> entries;
+        for(const auto& row:page.rows)entries.push_back(m::CreateJusticeCandidateRow(b,row.unitId,row.rank,bool(row.flags&1),bool(row.flags&2)));
+        candidates=m::CreateJusticeCandidatePage(b,page.crimeId,page.revision,page.total,page.offset,b.CreateVector(entries));}
+    return m::CreateJusticeState(b,r.outcome,r.tab,r.revision,r.total,r.offset,b.CreateVector(rows),detail,candidates);
 }
 }

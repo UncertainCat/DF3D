@@ -87,6 +87,56 @@ func run() -> void:
 	await create_timer(0.1).timeout;world.poll()
 	check(controller.phase==controller.Phase.Closed and controller.rows.is_empty() and controller.detail.is_empty(),"Closed Justice controller revived")
 	controller.dispose();actions.queue_free();await process_frame
+	var list_reply:=await page(0,0,0)
+	var list_revision: int=list_reply.justice.list_revision
+	var case_reply:=await details(0,9,0,list_revision,0)
+	var case_revision: int=case_reply.justice.detail.revision
+	var candidate_revision:=0;var candidate_count:=0
+	for sample in reference.candidates:
+		var rows: Array=[];var revision:=0;var first:=true
+		while first or rows.size()<sample.rows.size():
+			first=false
+			var intent: Dictionary={"action":C.ManagementAction.JusticeCandidatesRead,"tab":0,"offset":rows.size(),"limit":64,
+				"expected_list_revision":list_revision,"crime_id":9,"expected_case_revision":case_revision,
+				"query":sample.query,"expected_candidate_revision":revision}
+			var reply:=await request("justice",intent)
+			if not check(reply.get("status")==C.ManagementStatus.Ok,"Justice candidates rejected"):quit(1);return
+			var c: Dictionary=reply.justice.candidates
+			check(c.crime_id==9 and c.offset==rows.size() and c.total==sample.rows.size(),"Justice candidate identity differs")
+			revision=c.revision
+			if not check(not c.rows.is_empty() or rows.size()==sample.rows.size(),"Justice candidates stalled"):quit(1);return
+			rows.append_array(c.rows)
+		for i in rows.size():
+			var native: Dictionary=sample.rows[i]
+			check(rows[i].unit_id==native.unit_id and rows[i].rank==native.rank and rows[i].interrogation_pending==bool(int(native.flags)&1)
+				and rows[i].counterintelligence==bool(int(native.flags)&2),"Justice candidate order/facts differ")
+		if sample.query=="":candidate_revision=revision;candidate_count=rows.size()
+	var intent: Dictionary={"action":C.ManagementAction.JusticeConvict,"tab":0,"offset":0,"limit":32,
+		"expected_list_revision":list_revision,"crime_id":9,"expected_case_revision":case_revision,
+		"query":"","expected_candidate_revision":candidate_revision,"unit_id":5698}
+	for patch in [{"expected_list_revision":list_revision+1},{"expected_case_revision":case_revision+1},
+		{"expected_candidate_revision":candidate_revision+1},{"unit_id":2147483647}]:
+		var stale:=intent.duplicate(true);stale.merge(patch,true)
+		var reply:=await request("justice",stale)
+		check(reply.get("status")==C.ManagementStatus.Rejected and reply.get("justice",{}).get("outcome")==C.JusticeOutcome.Stale,
+			"Stale conviction was not rejected")
+	var closed_reply:=await page(1,0,0)
+	var closed_id: int=closed_reply.justice.rows[0].crime_id
+	var closed_detail:=await details(1,closed_id,0,closed_reply.justice.list_revision,0)
+	var closed: Dictionary=intent.duplicate(true);closed.action=C.ManagementAction.JusticeCandidatesRead;closed.erase("unit_id")
+	closed.tab=1;closed.crime_id=closed_id;closed.expected_list_revision=closed_reply.justice.list_revision
+	closed.expected_case_revision=closed_detail.justice.detail.revision;closed.expected_candidate_revision=0
+	var closed_result:=await request("justice",closed)
+	check(closed_result.get("status")==C.ManagementStatus.Rejected,"Closed case exposed Convict candidates")
+	var applied:=false
+	if OS.get_environment("DF3D_JUSTICE_WIRE_CONVICT")=="1":
+		var reply:=await request("justice",intent)
+		applied=reply.get("status")==C.ManagementStatus.Ok and reply.get("justice",{}).get("outcome")==C.JusticeOutcome.Applied
+		check(applied,"Wire conviction did not apply")
+		var repeated:=await request("justice",intent)
+		check(repeated.get("status")==C.ManagementStatus.Rejected and repeated.get("justice",{}).get("outcome")==C.JusticeOutcome.Stale,
+			"Repeated old conviction was not rejected")
 	var result=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
-	result.store_string(JSON.stringify({"success":not failed,"counts":counts,"witnesses":report_count,"stale_tabs":3,"controller_tabs":3,"closed_read_retired":true}));result.close()
+	result.store_string(JSON.stringify({"success":not failed,"counts":counts,"witnesses":report_count,"stale_tabs":3,"controller_tabs":3,
+		"closed_read_retired":true,"candidate_count":candidate_count,"candidate_queries":3,"convicted":applied}));result.close()
 	quit(1 if failed else 0)

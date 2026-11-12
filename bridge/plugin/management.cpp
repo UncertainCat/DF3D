@@ -1465,6 +1465,8 @@ void publish() {
     const auto first=construction.first_building;
     const auto standingCategory=standingOrders?standingOrders->category:0;
     const auto tasksTarget=tasks?tasks->jobId:-1;
+    const auto justiceTab=justice?justice->tab:0;
+    const bool justiceUnknown=justice && (justice->outcome==m::JusticeOutcome::Applied || justice->outcome==m::JusticeOutcome::Unknown);
     const bool tasksUnknown=tasks && (tasks->outcome==m::TasksOutcome::Applied || tasks->outcome==m::TasksOutcome::Unknown);
     const bool stocksUnknown=stocks && (stocks->outcome==m::StocksMenuOutcome::Applied || stocks->outcome==m::StocksMenuOutcome::Unknown);
     const bool stoneUseUnknown=stoneUse && (stoneUse->outcome==m::StoneUseOutcome::Applied || stoneUse->outcome==m::StoneUseOutcome::Unknown);
@@ -1476,6 +1478,7 @@ void publish() {
     auto jobWrite=jobSettingsEdit;
     if(jobWrite && jobWrite->outcome!=m::JobSettingsEditOutcome::Applied && jobWrite->outcome!=m::JobSettingsEditOutcome::Unknown)jobWrite.reset();
     clearResult();
+    if(justiceUnknown){justice.emplace();justice->tab=justiceTab;justice->outcome=m::JusticeOutcome::Unknown;mutated=true;}
     if(tasksUnknown){tasks.emplace();tasks->jobId=tasksTarget;tasks->outcome=m::TasksOutcome::Unknown;mutated=true;}
     if(stocksUnknown){stocks.emplace();stocks->outcome=m::StocksMenuOutcome::Unknown;mutated=true;}
     if(stoneUseUnknown){stoneUse.emplace();stoneUse->outcome=m::StoneUseOutcome::Unknown;mutated=true;}
@@ -4650,9 +4653,12 @@ void run(color_ostream& out) {
     }catch(...){nobles.emplace();}
     publish();return;
   }
-  if(r->action()==m::ManagementAction::JusticeRead || r->action()==m::ManagementAction::JusticeCaseRead){
-    justice=df3d_justice::read(*r->justice(),r->action()==m::ManagementAction::JusticeCaseRead);
-    status=justice->outcome==m::JusticeOutcome::None?m::ManagementStatus::Ok:m::ManagementStatus::Rejected;
+  if(r->action()>=m::ManagementAction::JusticeRead && r->action()<=m::ManagementAction::JusticeConvict){
+    justice=r->action()>=m::ManagementAction::JusticeCandidatesRead?
+      df3d_justice::candidateRequest(*r->justice(),r->action()==m::ManagementAction::JusticeConvict):
+      df3d_justice::read(*r->justice(),r->action()==m::ManagementAction::JusticeCaseRead);
+    status=(justice->outcome==m::JusticeOutcome::None || justice->outcome==m::JusticeOutcome::Applied)?m::ManagementStatus::Ok:m::ManagementStatus::Rejected;
+    if(justice->outcome==m::JusticeOutcome::Applied || justice->outcome==m::JusticeOutcome::Unknown)mutated=true;
     message.clear();publish();return;
   }
   if(r->action()==m::ManagementAction::ObjectsRead || r->action()==m::ManagementAction::ObjectsLocate){

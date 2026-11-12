@@ -56,10 +56,9 @@ never trigger automatic replay. Read replies cannot carry mutation outcomes.
 Migration194: rebuild bridge and clients together; mailbox is
 `Local\df3d_management_v194`. Installed protocol193 binaries must not be used with
 new clients. Session/map recording formats are unchanged. This commit defines
-and validates the contract. Model codecs and the Godot dictionary adapter now
-carry candidate pages and mutation requests; producer, action dispatch and
-Godot picker integration remain pending. Existing protocol193 evidence below
-does not establish acceptance of this new contract or expose public Justice.
+and validates the contract. Model codecs, the Godot dictionary adapter, bridge
+candidate producer and conviction dispatch now carry these requests. Godot picker
+integration remains pending; no public Justice route is exposed.
 `build/qa/justice-candidate-contract` passes the root build and all19 core tests,
 including malformed candidate scopes, duplicate IDs, paging and outcome isolation.
 `build/qa/justice-candidate-model` passes the root and extension builds, all19 core
@@ -69,7 +68,37 @@ discarding wire storage, independent candidate flags and all four mutation
 outcomes. Godot rejects malformed candidate/conviction dictionaries locally.
 `JusticeConvict` is explicitly classified as a mutation for action ownership and
 uncertainty handling. These checks do not verify a live194 producer, candidate
-rendering or player-facing conviction. The installed bridge remains protocol193.
+rendering or player-facing conviction.
+
+The194 producer scopes candidates to current Open/Cold membership and verified
+case/list revisions. Native Closed row closure486e50 renders only summary46db60;
+Open/Cold closure486ac0 calls472ac0, which builds the action controls. The pinned
+case-list branches install these distinct closures at470a06/470c72. Candidate
+revision covers query, full ordered IDs/ranks/flags, observed case/list revisions
+and crime fields affecting conviction, including punishment. Query conversion
+rejects text that cannot round-trip through native CP437. Each conviction checks
+current filtered membership before calling the native effect; there is no native
+menu input. Applied/Unknown mark the operation as mutated, and publication fallback
+preserves Unknown. The action service retains native Justice Unknown for recovery,
+delivers it once and disallows success continuations or automatic replay.
+
+Protected `stockpile-storage-native-input-20261111-224833` passes protocol194:
+293 candidates in native order across three searches, all three stale-revision
+refusals, absent-target refusal, Closed-case refusal, actual conviction and a
+rejected repeat of the old request. Native checks confirm accused unit5698,
+historical identity9317 and exactly one matching conviction history event.
+Other crimes and every witness report remain unchanged. Existing17-case,
+134-witness reads and controller ownership checks also pass. The mutation run
+does not assert unchanged RNG or menu bytes: native thoughts and menu invalidation
+are expected effects. It does not prove every other simulation field unchanged.
+DF13072 closes unsaved with source preservation and prefs restoration; native30FPS,
+headless viewer, GPU sample62C/49%/104.77W (not peak). Only the known separate-thread
+notice remains: passed_with_known_issues. `native_justice.json.candidate_wire_reference`
+retains the receipt and limits. MSVC build passes; installed194 plugin SHA256 is
+`2f95f78002d31c5d4a7777638b3c0a017e4de32dc3fa68dba972bfbe461b0af1`.
+`build/qa/justice-candidate-bridge` passes all19 core tests and the headless action
+service uncertainty test. Candidate appearance/name rendering, picker lifecycle,
+Interrogate controls/sorting and remaining Justice categories remain unfinished.
 
 Conviction has a native semantic-effect candidate at RVA `46f0d0`, called by
 the picker callback `474dd0` at `474ef5` with `(crime*, unit*)`. The picker

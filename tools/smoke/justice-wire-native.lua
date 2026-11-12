@@ -46,6 +46,26 @@ for _,crime in ipairs(df.global.world.crimes.all)do
  for _,report in ipairs(crime.witnesses)do guard(report)end
 end
 local rng=bytes(base+0x234e990,0x6180)
+local quote_guards={}
+if os.getenv('DF3D_JUSTICE_SHEET_NAV')=='1' then
+ local function remember(object,label)
+  local n,p=df.sizeof(object);quote_guards[#quote_guards+1]={n=n,p=p,value=bytes(p,n),label=label}
+ end
+ for _,id in ipairs{5813,6970}do
+  local unit=df.unit.find(id);remember(unit,'unit '..id)
+  local soul=unit.status.current_soul
+  if soul then
+   remember(soul,'soul '..id)
+   for _,emotion in ipairs(soul.personality.emotions)do remember(emotion,'emotion '..id)end
+   for _,value in ipairs(soul.personality.values)do remember(value,'value '..id)end
+   if soul.personality.temporary_trait_changes then remember(soul.personality.temporary_trait_changes,'temporary traits '..id)end
+  end
+  for _,trait in ipairs(unit.status.misc_traits)do remember(trait,'misc trait '..id)end
+ end
+ for _,span in ipairs{{0x2131b30,40},{0x2159084,2},{0x18adf98,8}}do
+  local p=base+span[1];quote_guards[#quote_guards+1]={p=p,n=span[2],value=bytes(p,span[2]),label='random state '..span[1]}
+ end
+end
 local f=assert(io.open(out..'/justice-wire-reference.json','w'));f:write(json.encode(expected));f:close()
 f=assert(io.open(out..'/shot.tmp','w'));f:write('justice-wire');f:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
 local deadline=dfhack.getTickCount()+120000
@@ -53,6 +73,7 @@ while true do local ack=io.open(out..'/ack-justice-wire');if ack then ack:close(
  assert(dfhack.getTickCount()<deadline,'Justice wire timeout');script.sleep(1,'frames')
 end
 for _,g in ipairs(guards)do assert(bytes(g.p,g.n)==g.value,'Justice reads changed native state')end
+for _,g in ipairs(quote_guards)do assert(bytes(g.p,g.n)==g.value,'Creature reads changed '..g.label)end
 if not mutating then assert(bytes(base+0x234e990,0x6180)==rng,'Justice reads changed randomness')
 else
  assert(df.crime.find(9).accused==5698,'Wire conviction did not apply')

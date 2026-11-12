@@ -431,8 +431,9 @@ Full Overview rendering is not accepted by this navigation check. In crop
 (416,52)-(904,760), Guard differs by32029 pixels and Convict by30457. The Convict
 capture lacked the native opening quote and memory elaboration and showed a
 different last skill. The native skill-group and recalled-memory providers below
-correct the latter two gaps. The opening quote and thought wrapping remain
-unresolved, independent of the verified Justice handoff. Overview still locally
+correct the latter two gaps. The native quote provider below also supplies the
+opening quote; its remaining selection coverage and thought wrapping are
+independent of the verified Justice handoff. Overview still locally
 selects skill rows and recent thought snippets in creature_sheet.gd.
 
 Owned DF41836 closes unsaved with source/preferences preserved; both clients
@@ -11115,8 +11116,8 @@ Protected120250 compares all40/30 skill groups for Guard5813/Convict6970 with
 native collections, then exercises the actual main-scene sheet transitions.
 All70 groups match. Labor text crop(424,458)-(658,536) and combat crop
 (664,374)-(896,452) each match native pixels for both creatures. Musician no
-longer displaces Brewer from the Convict labor summary. The opening quote and a
-two-pixel divider position remain unresolved; this is not full
+longer displaces Brewer from the Convict labor summary. Quote acceptance below
+is separate, and a two-pixel divider position remains unresolved; this is not full
 Overview acceptance. Fixture native_justice.json.overview_skill_groups_reference
 retains bounded provenance. MSVC/install, context/thought-text checks and all19
 core checks pass. The context fixture's obsolete local Skills filtering assertions
@@ -11140,8 +11141,8 @@ Protected121435 on2026-11-12 compares the complete recalled circumstance for
 Convict6970, emotion23/flags452, against native's sheet text: exact match,
 including both elaborations and embedded palette commands. The actual main
 scene displays the expanded paragraph and preserves both Justice inspector
-transitions. The opening quote and narrower native thought wrapping still
-differ; no whole-sheet pixel parity is claimed. Other flag/tense/sex combinations
+transitions. That capture predates the quote provider below; narrower native
+thought wrapping still differs. No whole-sheet pixel parity is claimed. Other flag/tense/sex combinations
 have code-trace evidence but are not covered by this live sample. Earlier121153
 and121328 failed because the new assertion included an emotion that native
 filters out;121328 recorded an exact match for the visible clause. The final
@@ -11151,6 +11152,48 @@ native_justice.json records the final evidence. MSVC/install, core19 and the
 context/thought-text headless checks pass. Owned DF11216 closes unsaved with
 source/preferences preserved, both clients30FPS, GPU47C sampled. Known Godot
 separate-renderer/finalize/two-ObjectDB diagnostics qualify the live result.
+
+Overview's opening quote is supplied by creature_quote_native.h. Native's
+inline1a6c44..1a7065 selection uses speech/personality/control predicates, mood,
+unconsciousness and soldier-mood gates. Active emotion weighting reads the
+immutable native tables1a8138/1a814c; first equal-weight emotion wins. It retains
+the thought6 random gate and native intensity thresholds. Selected emotions use
+native66fe50 for event context and667f50/6681a0/6691e0/669f40/66aca0 for wording;
+otherwise native666470 describes personality/stress. The native caste77 text
+transform67b6c0 is retained for fallback quotes. No prose is reconstructed in
+Godot, and no native sheet/cache is a runtime input.
+
+The provider copies unit scalars, soul storage and misc-trait vector ownership.
+Pointed-to personality values, temporary trait changes and misc traits are
+read-only in these paths. Historical-name index writes target the copied unit;
+random streams and the historical-material lookup cache are restored. Passing
+null as the context formatter's second unit excludes relationship/knowledge
+cache refreshes in66fe50/66ba00. Native737b0 is only a read-only misc-trait lookup;
+the adjacent mutating737e0 is not called. Complete leaf formatter spans include
+their dispatch tables; exception metadata alone omits these leaf functions.
+The bridge sends chunked overview_quote identity facts; Godot joins them and
+draws the quote above recent thoughts. Older captures without a quote stay blank.
+
+Protected122811 on2026-11-12 compares native666470 on original units5813/6970
+with the copied-input provider at identical random state: both strings match
+exactly. The protected-only creature-quote-fallback-probe requires SHEET_NAV=1,
+rejects active-emotion/thought6 cases, and restores the original historical-name
+index. This establishes the fallback path, not active-emotion selection, special
+moods, caste77 transformation or every eligibility gate. Native's cached quote
+can differ from a fresh invocation because it used an earlier random state;
+ordinary captures122508/122811 retain those differences without treating them
+as exact-string parity. Do not use the cached native quote as a runtime source.
+
+Actual main-scene Justice-to-inspector navigation, loaded quote display and
+memory elaboration pass. The protected wire guard verifies original units,
+souls, emotions, personal values, temporary traits, misc traits and all tracked
+MT/index/stream/SplitMix storage remain byte-identical. Owned DF36572 closes
+unsaved with source/preferences preserved. Both applications run at30FPS;
+sampled GPU45–48C. MSVC/install, context/thought-text headless checks and core19
+pass. Known renderer/finalize/two-ObjectDB diagnostics qualify the live result.
+Fixture native_justice.json.overview_quote_reference records the bounded scope.
+Thought wrapping, quote spacing and divider placement still differ; no complete
+Overview visual acceptance or broader Justice exposure is established.
 
 Overview skill colors use native764a70's profession selector, transported as
 the numeric native_profession fact on each skill. Its pinned body and tables

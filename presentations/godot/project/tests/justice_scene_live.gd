@@ -24,6 +24,11 @@ func exercise(expected: Dictionary) -> void:
 			check(sample.skill_groups.has(str(row.id)) and group==int(sample.skill_groups.get(str(row.id),-2)),"Overview skill group differs from native collection")
 		check(owner.panel.visible==bool(sample.info_open),"Justice visibility behind native sheet differs")
 		var native_thoughts: String=" ".join(sample.thoughts)
+		var quote:=""
+		for row in inspector.creature_sheet.records_for("identity"):
+			if inspector.creature_sheet.fact_value(row,"record_type")=="overview_quote":quote+=str(inspector.creature_sheet.fact_value(row,"native_text",""))
+		check(quote.is_empty()==str(sample.quote).is_empty(),"Overview quote eligibility differs from native")
+		FileAccess.open(directory+"/overview-quote-%d.json"%int(sample.unit_id),FileAccess.WRITE).store_string(JSON.stringify({"native":sample.quote,"viewer":quote}))
 		var elaborations:=0
 		var memory_evidence: Array=[]
 		for row in inspector.creature_sheet.records_for("emotions"):

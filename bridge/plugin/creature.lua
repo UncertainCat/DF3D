@@ -96,6 +96,11 @@ return function(request)
    local task=record(s,id,'')
    fact(s,task,'record_type','overview_hauling');fact(s,task,'native_text',text)
   end
+  local quote=request.overview_quote(u.id)
+  for first=1,#quote,256 do
+   local part=record(s,-8000-(first-1)//256,'')
+   fact(s,part,'record_type','overview_quote');fact(s,part,'native_text',quote:sub(first,first+255))
+  end
   local room_warning=''
   if request.room_requirements then
    local rooms=record(s,-5,'')

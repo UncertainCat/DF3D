@@ -345,6 +345,10 @@ func overview(parent: Node, detail: Dictionary):
   # the following needs column paints over overlapping text in its own rows.
   if skill_line!=null: skill_line.clip_contents=false
  for spans in NativeText.overview_needs(self).slice(0,6): paragraph(cells[7],spans,0,false,true)
+ var quote:=""
+ for row in records_for("identity"):
+  if fact_value(row,"record_type")=="overview_quote":quote+=str(fact_value(row,"native_text",""))
+ if not quote.is_empty():paragraph(parent,[{"text":quote,"color":NativeText.colors[15]}])
  for spans in Thoughts.recent(self,int(detail.get("sex",-1))).slice(0,8): paragraph(parent,spans,0)
 
 func render(controller, state: Dictionary):

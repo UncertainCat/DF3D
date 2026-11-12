@@ -11753,5 +11753,43 @@
       "job-settings-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
       "result.json": "55ea401f0907968b16baa48a037a247d52b778f816392f061952e6daa810f1ec"
     }
+  },
+  "overview_quote_reference": {
+    "captured_at": "2026-11-12",
+    "run": "build/stockpile-storage-native-input-20261112-122811",
+    "status": "passed_with_known_issues",
+    "native_reference": "Inline selector1a6c44..1a7065, immutable weights1a8138/1a814c; native666470 fallback,66fe50 event context, five emotion-intensity formatters. No runtime sheet/cache access.",
+    "fallback_same_random_state": [
+      {
+        "equal": true,
+        "native": "\"I've been alright.\"",
+        "owned": "\"I've been alright.\"",
+        "unit_id": 5813
+      },
+      {
+        "equal": true,
+        "native": "\"I don't really get attached to people.\"",
+        "owned": "\"I don't really get attached to people.\"",
+        "unit_id": 6970
+      }
+    ],
+    "main_scene_display_inspected": true,
+    "source_unit_personality_and_random_state_preserved": true,
+    "limitations": [
+      "Controlled exact comparison covers fallback on two ordinary creatures. Active-emotion selection, thought6 random gate, special moods, caste77 and other eligibility gates retain code-trace evidence only.",
+      "Fresh native-generated wording can differ from the earlier native cached quote; captured native/viewer strings are retained, not declared identical.",
+      "Thought wrapping, quote spacing and divider placement remain incomplete; no whole-Overview parity.",
+      "Known separate-renderer/finalize/two-ObjectDB diagnostics."
+    ],
+    "bridge_sha256": "cb1f78fb3b2927d3963681747c95af9591639005dd08de795280b04c05bcec62",
+    "artifacts": {
+      "justice-sheet-navigation.json": "e39757293c991915103b33a7cae166ba74337db7f061d0dc3f316216afb1db42",
+      "overview-quote-5813.json": "50646550d637f8a74b2c3651ee376bfa003c786c3363a780c944b6011086a36a",
+      "overview-quote-6970.json": "345ef7b87c43847e154b630cb844de34ff29baac54b1582966b1d0a8e8d0a7be",
+      "justice-sheet-1.png": "f6006354c6106292ba958b80154c1eb54de87aace11a50002787868223b9635e",
+      "justice-main-sheet-4.png": "b349afd789bd31bd116be7fdf0c263bdad9129bed7b65c670b0469efdab29849",
+      "job-settings-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
+      "result.json": "55ea401f0907968b16baa48a037a247d52b778f816392f061952e6daa810f1ec"
+    }
   }
 }

@@ -221,6 +221,11 @@ if os.getenv('DF3D_JUSTICE_SHEET_NAV')=='1' then
   local sample={tab=name,unit_id=main.view_sheets.active_id,info_open=main.info.open,sheet_type=main.view_sheets.active_sheet}
   sample.skill_groups={}
   sample.thoughts={}
+  sample.quote=dfhack.df2utf(main.view_sheets.raw_current_thought)
+  local quote_unit=df.unit.find(sample.unit_id);local quote_n,quote_p=df.sizeof(quote_unit);local quote_before=bytes(quote_p,quote_n)
+  sample.quote_fallback=probe('creature-quote-fallback-probe',sample.unit_id)
+  assert(sample.quote_fallback.equal,'Copied quote inputs differ from native fallback')
+  assert(bytes(quote_p,quote_n)==quote_before,'Quote oracle changed original unit')
   for _,text in ipairs(main.view_sheets.raw_thought_str)do sample.thoughts[#sample.thoughts+1]=dfhack.df2utf(text.value)end
   for group,prefix in ipairs{'labor','combat','other'}do
    local count=main.view_sheets[prefix..'_skill_num'];local ids=main.view_sheets[prefix..'_skill_ind']

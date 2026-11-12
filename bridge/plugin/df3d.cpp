@@ -87,6 +87,7 @@
 #include "building_item_native.h"
 #include "creature_office_native.h"
 #include "creature_header_native.h"
+#include "creature_quote_native.h"
 #include "creature_follow_native.h"
 #include "creature_expel_action_native.h"
 #include "creature_expel_preview_native.h"
@@ -2740,6 +2741,37 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               if(target->available){value["position"].append(target->position.x);value["position"].append(target->position.y);value["position"].append(target->position.z);}
             }
           }result.append(rows);}
+          out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
+        }
+        if(parameters[0]=="creature-quote-fallback-probe") {
+          // Protected oracle only: compare copied inputs to DF's formatter on
+          // the real unit at identical random state, restoring its name cache.
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          const char* oracle=std::getenv("DF3D_JUSTICE_SHEET_NAV");
+          if(!oracle || std::string(oracle)!="1" || !state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          int32_t id=-1;try{id=std::stoi(parameters[1]);}catch(...){return CR_WRONG_USAGE;}
+          auto* unit=df::unit::find(id);if(!unit || !unit->status.current_soul)return CR_FAILURE;
+          // Exclude the emotion-selection branch and its random thought6 gate;
+          // this comparison establishes fallback formatting, not that branch.
+          for(const auto* emotion:unit->status.current_soul->personality.emotions) {
+            if(int(emotion->thought)==6)return CR_FAILURE;
+            if(int(emotion->thought)!=-1 && int(emotion->type)!=-1 && int(emotion->type)!=165 && int(emotion->type)!=166 &&
+               !(emotion->flags.whole&0x70) && (emotion->strength>0 || emotion->relative_strength>0))return CR_FAILURE;
+          }
+          const auto owned=df3d_creature::overviewQuote(unit);if(!owned || owned->empty())return CR_FAILURE;
+          auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+          df3d_creature::InventoryRandomRestore random(base);
+          df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
+          const auto savedIndex=unit->enemy.histfig_vector_idx;
+          std::string native;
+          reinterpret_cast<void(*)(df::unit*,std::string*,bool)>(base+0x666470)(unit,&native,false);
+          unit->enemy.histfig_vector_idx=savedIndex;
+          if(reinterpret_cast<bool(*)(void*,int16_t,int16_t,int32_t)>(base+0x72850)(base+0x24eca48,unit->race,unit->caste,0x77))
+            reinterpret_cast<void(*)(std::string*)>(base+0x67b6c0)(&native);
+          const auto* quote=reinterpret_cast<const char*>(base+0x15e9718);
+          native=std::string(quote)+native+quote;
+          Json::Value result(Json::objectValue);result["unit_id"]=id;
+          result["native"]=DF2UTF(native);result["owned"]=DF2UTF(*owned);result["equal"]=native==*owned;
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
         }
         if(parameters[0]=="justice-captions-probe") {

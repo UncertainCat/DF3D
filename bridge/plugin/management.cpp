@@ -97,6 +97,7 @@
 #include "creature_relations_native.h"
 #include "creature_groups_native.h"
 #include "creature_thoughts_native.h"
+#include "creature_quote_native.h"
 #include "creature_personality_native.h"
 #include "creature_preferences_native.h"
 #include "creature_needs_native.h"
@@ -5535,6 +5536,11 @@ void run(color_ostream& out) {
       if(!text)return luaL_error(state,"Native thought description unavailable");
       lua_pushlstring(state,text->data(),text->size());return 1;
     });lua_setfield(L,-2,"thought_circumstance");
+    lua_pushcfunction(L,[](lua_State* state)->int {
+      const auto text=df3d_creature::overviewQuote(df::unit::find(int32_t(luaL_checkinteger(state,1))));
+      if(!text)return luaL_error(state,"Native creature quote unavailable");
+      lua_pushlstring(state,text->data(),text->size());return 1;
+    });lua_setfield(L,-2,"overview_quote");
     lua_pushcfunction(L,[](lua_State* state)->int {
       const auto text=df3d_creature::personalityValues(df::unit::find(int32_t(luaL_checkinteger(state,1))));
       if(!text)return luaL_error(state,"Native personality values unavailable");

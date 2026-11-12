@@ -6444,5 +6444,103 @@
       }
     ],
     "limits": "Native Date/Reported text for 39 witnesses and controlled cross-year report. Preserves native event-year reuse for Reported. Does not accept other case-detail text or rendering. Widget inspection is oracle only."
+  },
+  "summary_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-182854",
+    "status": "passed",
+    "owned_df_pid": 41128,
+    "source_preserved": true,
+    "fps_cap": 30,
+    "crime_id": 9,
+    "cases": [
+      {
+        "case": {
+          "accused": -1,
+          "name": "baseline",
+          "victim": 7124
+        },
+        "native": {
+          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "status": "Unsolved."
+        },
+        "owned": {
+          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "status": "Unsolved."
+        }
+      },
+      {
+        "case": {
+          "accused": -1,
+          "name": "no-victim",
+          "victim": -1
+        },
+        "native": {
+          "status": "Unsolved."
+        },
+        "owned": {
+          "status": "Unsolved."
+        }
+      },
+      {
+        "case": {
+          "accused": -1,
+          "name": "missing-victim",
+          "victim": 2147483647
+        },
+        "native": {
+          "status": "Unsolved."
+        },
+        "owned": {
+          "status": "Unsolved."
+        }
+      },
+      {
+        "case": {
+          "accused": 5698,
+          "name": "convicted",
+          "victim": 7124
+        },
+        "native": {
+          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "status": "Convicted: Doren Thosbutal\u00e5th, Dwarven Child."
+        },
+        "owned": {
+          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "status": "Convicted: Doren Thosbutal\u00e5th, Dwarven Child."
+        }
+      },
+      {
+        "case": {
+          "accused": 2147483647,
+          "name": "unknown-convict",
+          "victim": 7124
+        },
+        "native": {
+          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "status": "Unknown convict."
+        },
+        "owned": {
+          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "status": "Unknown convict."
+        }
+      },
+      {
+        "case": {
+          "accused": -1,
+          "name": "no-trial-unsolved",
+          "no_trial": true,
+          "victim": 7124
+        },
+        "native": {
+          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "status": "Unsolved."
+        },
+        "owned": {
+          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "status": "Unsolved."
+        }
+      }
+    ],
+    "limits": "Native summary text and injured-party omission only. Controlled victim/accused/flags restored. Does not accept a rendered DF3D page or case action eligibility; native widgets are oracle only."
   }
 }

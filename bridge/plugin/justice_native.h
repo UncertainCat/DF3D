@@ -16,6 +16,43 @@
 
 namespace df3d_justice {
 struct CandidateFact {int32_t unitId=-1,rank=0;uint32_t flags=0;};
+struct CaseSummary {std::optional<std::string> injuredParty;std::string status;};
+// Native46db60 builds widgets around these inline branches; there is no plain
+// summary formatter. Isolate its semantic selection and use the same native
+// name formatter on owned units. Missing victims produce no injured-party row.
+inline std::optional<CaseSummary> caseSummary(const df::crime* crime) {
+    if(!crime || !df::global::world || !df3d_creature::inventoryDescriptionReady())return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    if(reinterpret_cast<uint8_t*>(&df::global::world->units.all)!=base+0x23e50b0)return std::nullopt;
+    static const bool pinned=[base] {
+        uint64_t h=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x700;++i){h^=base[0x46db60+i];h*=UINT64_C(1099511628211);}
+        return h==UINT64_C(0x323159eb80349041);
+    }();
+    if(!pinned)return std::nullopt;
+    static_assert(offsetof(df::crime,victim)==0x70 && offsetof(df::crime,accused)==0x40);
+    df3d_creature::InventoryRandomRestore restore(base);
+    const auto name=[base](df::unit* unit)->std::optional<std::string> {
+        if(unit->inventory.size()>10000)return std::nullopt;
+        for(const auto* entry:unit->inventory)if(!entry)return std::nullopt;
+        df3d_creature::InventoryDescriptionContext owned(*unit);
+        std::string result;
+        reinterpret_cast<void(*)(df::unit*,std::string*,bool)>(base+0x1330c30)(owned.unit(),&result,false);
+        if(result.size()>16384)return std::nullopt;
+        return result;
+    };
+    CaseSummary result;
+    if(auto* victim=df::unit::find(crime->victim)) {
+        const auto text=name(victim);if(!text)return std::nullopt;
+        result.injuredParty="Injured party: "+*text+".";
+    }
+    if(crime->accused==-1)result.status="Unsolved.";
+    else if(auto* accused=df::unit::find(crime->accused)) {
+        const auto text=name(accused);if(!text)return std::nullopt;
+        result.status="Convicted: "+*text+".";
+    }else result.status="Unknown convict.";
+    return result;
+}
 struct WitnessDates {std::string date,reported;};
 // Case-detail builder473a8d..473ed30 uses the standalone tick and integer
 // formatters. Preserve its year source for Reported (report.year, not

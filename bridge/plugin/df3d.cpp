@@ -2745,6 +2745,17 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           }
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),rows));return CR_OK;
         }
+        if(parameters[0]=="justice-summary-probe") {
+          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          try {
+            const auto summary=df3d_justice::caseSummary(df::crime::find(std::stoi(parameters[1])));if(!summary)return CR_FAILURE;
+            Json::Value result(Json::objectValue);
+            if(summary->injuredParty)result["injured_party"]=DF2UTF(*summary->injuredParty);
+            result["status"]=DF2UTF(summary->status);
+            out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
+          }catch(const std::exception&){return CR_WRONG_USAGE;}
+        }
         if(parameters[0]=="justice-witness-dates-probe") {
           if(parameters.size()!=2)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;

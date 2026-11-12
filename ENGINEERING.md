@@ -41,6 +41,28 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+`df3d_justice::caseSummary` supplies the optional injured-party row and status
+above the witness list. Native46db60 mixes its inline selection with widget
+construction, so the adapter isolates those branches and calls native1330c30
+on independently owned unit context. It pins the full builder span and checks
+the semantic unit-vector address. No native widget or staged selection is read.
+An existing victim produces “Injured party: <native name>.”; a missing victim
+produces no row. accused-1 produces “Unsolved.”, an existing accused produces
+“Convicted: <native name>.”, and a nonnegative missing accused produces
+“Unknown convict.”. The needs_trial flag does not choose the summary text.
+
+Protected182854 on2026-11-11 compares six controlled case9 summaries against
+native widget text: baseline, victim-1, missing victim, known accused, missing
+accused, and no-trial with no accused. Every text/omission matches. The temporary
+victim, accused and flags are restored; menu/crime/witness/RNG query guards pass.
+Owned DF41128 closes unsaved with source preservation/restored preferences,
+native30FPS/no viewer, sampled GPU60C/0%. MSVC `justice-summary-build.log` and
+core19 `build/qa/justice-summary` pass. Installed bridge SHA256
+`B84FD7DE8EC76CCD50FDA62BC465BD4DCE7F67148905D84151D9C833CA430356`;
+protocol191 is unchanged. `native_justice.json.summary_reference` records the
+comparisons. Enable `DF3D_JUSTICE_SUMMARY=1` with DETAILS/NATIVE; the summary
+branch skips date checks. This accepts summary text, not a rendered DF3D page.
+
 `df3d_justice::witnessDates` supplies the native Date/Reported strings using
 standalone tick formatter7734e0 and integer formatter52c2b0 with owned strings.
 The month helper773390 and tick formatter's ordinal dispatch tables are pinned,

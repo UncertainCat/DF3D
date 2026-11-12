@@ -15073,10 +15073,25 @@ now explicitly caps graphical Godot drivers at30FPS; headless drivers are unchan
 Current control wiring includes location access, quantities, recognition, ordinary
 and religious staffing, specialization and naming. Historical statements about
 unspecified unfinished Details controls do not establish current missing controls.
-This audit does identify remaining reconstructed zone effects: `areas.lua` calls
-DFHack `notifyCivzoneModified` for Active and non-gathering settings changes. That
-helper removes/rebuilds reciprocal room membership, unlike the observed native
-inline Active handler. Its replacement still needs scoped semantic verification.
+The remaining reconstructed zone effect is Active: `areas.lua` still calls
+DFHack `notifyCivzoneModified`, which removes/rebuilds reciprocal room membership,
+unlike the observed native inline Active handler. Its replacement still needs
+scoped semantic verification and the separate pending settings-bit decision.
+
+Settings edits no longer call that membership helper. Native inline Tomb and
+archery handlers write only their respective fields; Pit/Pond also sets the
+occupant-recheck bit. Both visible Pit/Pond icons toggle the current mode.
+Protected `stockpile-storage-native-zone-defaults-20261112-152525` establishes
+these effects with eleven native clicks and unchanged world membership lists.
+Protected `areas-acceptance-20261112-153027` passes sixteen typed settings edits,
+including Gathering, with independent native readback and membership guards.
+The Pond guard clears the recheck bit before each edit to prove it is restored.
+Owned DF9928 exits unsaved with two unchanged save manifests. The viewer is
+headless and native graphics capped30FPS; sampled GPU51C/1% is not a peak.
+Headless `zone-settings-effects` verifies both Pit/Pond button intents. These
+checks do not establish a composed rendered DF3D settings workflow or nonempty
+target-zone membership coverage. `native_zone_defaults.json.settings_effect_reference`
+records provenance and the installed bridge hash.
 
 Protected `stockpile-storage-native-zone-defaults-20261112-151907` compares actual
 Active off/on clicks for five newly created native zone types. Native also changes

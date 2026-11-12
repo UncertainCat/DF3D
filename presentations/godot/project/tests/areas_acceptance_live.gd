@@ -274,17 +274,8 @@ func candidates_and_zones() -> void:
 				else:
 					await native("candidates", {"id":id, "kind":entry[1], "sort":sort, "descending":descending, "rows":reply.candidates})
 				if stopped:return
-	step = "7 zone settings and assignments"
-	for entry in [["Pond", "pond_mode", [1,2]], ["ArcheryRange", "facing", [1,2,3,4]],
-		["Tomb", "tomb_citizens", [0,1]], ["Tomb", "tomb_pets", [0,1]],
-		["PlantGathering", "gather_trees", [0,1]], ["PlantGathering", "gather_shrubs", [0,1]], ["PlantGathering", "gather_fallen", [0,1]]]:
-		var id := zone(entry[0])
-		if id < 0: continue
-		for value in entry[2]:
-			var fields: Dictionary = {}; fields[entry[1]] = value
-			await edit(id, 1, {"operation":9, "zone_settings":fields})
-			await native("zone_settings", {"id":id, "expected":fields})
-			if stopped: return
+	await zone_settings_edits()
+	if stopped:return
 	var bedroom := zone("Bedroom")
 	if bedroom >= 0:
 		var current := await inspect(bedroom, 1)
@@ -464,6 +455,22 @@ func workshop_links() -> void:
 				"give":give, "unlink":unlink, "expected_revision":current.revision})
 			await native("link", {"id":workshop, "pile_id":pile, "give":give, "linked":not unlink})
 			await pages({"action":9, "id":pile, "operation":10}, "links")
+			if stopped: return
+
+func zone_settings_edits() -> void:
+	step = "zone settings"
+	for entry in [["Pond", "pond_mode", [1,2]], ["ArcheryRange", "facing", [1,2,3,4]],
+		["Tomb", "tomb_citizens", [0,1]], ["Tomb", "tomb_pets", [0,1]],
+		["PlantGathering", "gather_trees", [0,1]], ["PlantGathering", "gather_shrubs", [0,1]], ["PlantGathering", "gather_fallen", [0,1]]]:
+		var id := zone(entry[0])
+		if id < 0: continue
+		for value in entry[2]:
+			var fields: Dictionary = {}; fields[entry[1]] = value
+			await native("zone_settings_guard", {"id":id,"begin":true})
+			await edit(id, 1, {"operation":9, "zone_settings":fields})
+			if entry[0]=="Pond":fields.check_occupants=true
+			await native("zone_settings", {"id":id, "expected":fields})
+			await native("zone_settings_guard", {"id":id,"begin":false})
 			if stopped: return
 
 func created_zone_defaults() -> void:
@@ -832,6 +839,10 @@ func exercise() -> void:
 	await seed_catalog()
 	if stopped: return
 	fixture = JSON.parse_string(FileAccess.get_file_as_string(directory + "/fixture.json"))
+	if OS.get_environment("DF3D_ZONE_SETTINGS_AUDIT")=="1":
+		await zone_settings_edits()
+		if not stopped:await native("final")
+		return
 	if FileAccess.file_exists(directory + "/zone-animals-only.json"):
 		await animal_assignments()
 		if not stopped: await item_assignments()

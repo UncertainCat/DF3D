@@ -335,5 +335,34 @@
       "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
       "scene_zones_repaint_escape_away.png": "0ca04cadc7d5fe1be3a017ce91d69edfbde4e8ac5ea3890bd468663850dff68c"
     }
+  },
+  "settings_effect_reference": {
+    "native_run": "stockpile-storage-native-zone-defaults-20261112-152525",
+    "wire_run": "areas-acceptance-20261112-153027",
+    "native_clicks": 11,
+    "wire_edits": 16,
+    "status": "passed",
+    "native_handlers": [
+      "34ba35",
+      "34beb7",
+      "34bf2c",
+      "34c0ec..34c178"
+    ],
+    "effects": [
+      "Both Pit/Pond icons toggle mode; occupant recheck is set",
+      "Tomb and archery write only their fields",
+      "All world membership lists unchanged"
+    ],
+    "bridge_sha256": "01453FB452DDEBB97C60321A3FCA9E6CA66CF58FF63532A1DCFD439E19B8064E",
+    "limitations": [
+      "No composed rendered DF3D settings acceptance",
+      "No nonempty target-zone membership acceptance",
+      "Active path remains separate"
+    ],
+    "wire_hashes": {
+      "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "native.log": "93dee6331b3b6e594eaea60bdec8e9188915b36c83c5f0bdc689a44bf765b907",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
+    }
   }
 }

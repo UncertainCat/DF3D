@@ -116,6 +116,8 @@ func configure(source) -> void:
 			if button.disabled: return
 			var key: String = entry[1]
 			var value := int(entry[2]) if int(entry[2]) >= 0 else 1-int(settings.get(key,0))
+			# Native34b9e2 covers both Pit/Pond icons with the same toggle.
+			if key=="pond_mode":value=3-int(settings.get(key,1))
 			setting_requested.emit(key,value))
 		selected_panel.add_child(button); setting_buttons.append(button)
 	var definitions: Array = Data.read().zones

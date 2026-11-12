@@ -1584,7 +1584,10 @@ local function native_operation(r)
  elseif op==9 then
   clear_lists();steps=steps+1
   local z=a.zone_settings;local native=b.zone_settings
-  if default(z,'pond_mode',0)~=0 then native.pond.flag.keep_filled=z.pond_mode==2 end
+  if default(z,'pond_mode',0)~=0 then
+   native.pond.flag.keep_filled=z.pond_mode==2
+   native.pond.flag.check_occupants=true
+  end
   if default(z,'facing',0)~=0 then
    native.archery.dir_x=z.facing==1 and -1 or z.facing==2 and 1 or 0
    native.archery.dir_y=z.facing==3 and -1 or z.facing==4 and 1 or 0
@@ -1594,13 +1597,9 @@ local function native_operation(r)
   if default(z,'gather_trees',-1)~=-1 then native.gather.flags.pick_trees=z.gather_trees==1 end
   if default(z,'gather_shrubs',-1)~=-1 then native.gather.flags.pick_shrubs=z.gather_shrubs==1 end
   if default(z,'gather_fallen',-1)~=-1 then native.gather.flags.gather_fallen=z.gather_fallen==1 end
-  -- Native gathering handlers only change these bits (34b81e..34b926);
-  -- rebuilding room membership is unrelated to a gathering toggle.
-  if df.civzone_type[b.type]~='PlantGathering' then
-   unknown_work=true
-   local notified=pcall(B.notifyCivzoneModified,b)
-   if not notified then return reject('Native zone notification failed; inspect before retrying') end
-  end
+  -- Native settings handlers only write the fields above: gathering34b81e,
+  -- Pond34ba35 (also requests occupant recheck), Tomb34beb7/34bf2c, and
+  -- archery34c0ec..34c178. None rebuilds room memberships.
  elseif op==5 then
   if default(a,'paint_z',-1)~=-1 and a.paint_z~=b.z then return reject("Paint must stay on the area's z level") end
   if default(r,'area_retire_capacity',0)<1 then return reject('Area retire capacity reached; restart DF3D bridge') end

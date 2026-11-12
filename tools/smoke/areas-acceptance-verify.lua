@@ -152,7 +152,21 @@ local function check_properties(actual,expected,path)
   else assert(actual[key]==value,path..'.'..key..' mismatch: '..tostring(actual[key])..' / '..tostring(value)) end
  end
 end
-if request.op=='zone_name_contents' then
+if request.op=='zone_settings_guard' then
+ local rows={}
+ for _,b in ipairs(df.global.world.buildings.all)do
+  rows[#rows+1]={id=b.id,relations=array(b.relations,function(v)return v.id end),
+   contained=df.building_civzonest:is_instance(b)and array(b.contained_buildings,function(v)return v.id end)or{}}
+ end
+ if request.begin then
+  _G.df3d_settings_memberships=canonical(rows)
+  -- Exercise the native recheck side effect instead of inheriting its default.
+  local b=building();if df.civzone_type[b.type]=='Pond'then b.zone_settings.pond.flag.check_occupants=false end
+ else
+  assert(_G.df3d_settings_memberships==canonical(rows),'Zone setting rebuilt room memberships')
+  _G.df3d_settings_memberships=nil
+ end
+elseif request.op=='zone_name_contents' then
  local b=building();assert(df.building_civzonest:is_instance(b) and b.type==df.civzone_type.MeetingHall)
  local saved=_G.df3d_name_fixture
  if not saved then

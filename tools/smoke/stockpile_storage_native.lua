@@ -210,6 +210,29 @@ require('gui.script').start(function()
      active=b.spec_sub_flag.active,frame=df.global.world.frame_counter}
     assert(df.global.pause_state and df.global.world.frame_counter==frame)
     capture('defaults-'..entry[1])
+    if os.getenv('DF3D_ZONE_SETTINGS_AUDIT')=='1'then
+     local original_first,original_second=raw.i1,raw.i2
+     local function memberships()
+      local rows={}
+      for _,building in ipairs(df.global.world.buildings.all)do
+       local related={};for _,parent in ipairs(building.relations)do related[#related+1]=parent.id end
+       local contained={};if df.building_civzonest:is_instance(building)then for _,child in ipairs(building.contained_buildings)do contained[#contained+1]=child.id end end
+       rows[#rows+1]={id=building.id,related=related,contained=contained}
+      end
+      return json.encode(rows)
+     end
+     local before=memberships()
+     local cases=entry[1]=='Pond'and {34,38,34}
+      or entry[1]=='Tomb'and {34,34,38,38}
+      or entry[1]=='ArcheryRange'and {7,11,15,19}or{}
+     for _,x in ipairs(cases)do
+      local before_first,before_second=raw.i1,raw.i2
+      click(x,12)
+      assert(memberships()==before,'Native zone setting changed room membership')
+      records[#records+1]={name='setting-'..entry[1],x=x,before_first=before_first,before_second=before_second,first=raw.i1,second=raw.i2,memberships_unchanged=true}
+     end
+     raw.i1=original_first;raw.i2=original_second
+    end
     if os.getenv('DF3D_ZONE_ACTIVE_AUDIT')=='1'then
      local original_first,original_second=raw.i1,raw.i2
      local function active_snapshot(label)

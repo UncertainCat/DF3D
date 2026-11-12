@@ -68,6 +68,12 @@ func run() -> void:
 	check(not zones.overlap_label.visible and not zones.type_label.has_theme_color_override("font_color"),"selection without observation clears overlap heading")
 	zones.display(observed,true)
 	check(not zones.overlap_label.visible and not zones.selected_panel.visible,"empty selection clears heading")
+	var pond_changes: Array=[]
+	zones.setting_requested.connect(func(key,value):pond_changes.append([key,value]))
+	for mode in [1,2]:
+		zones.display([{"id":86,"name":"Pond","icon":"ZONE_POND"}],true,{"zone_type":86,"zone_settings":{"pond_mode":mode}})
+		for index in [0,1]:zones.setting_buttons[index].pressed.emit()
+	check(pond_changes==[["pond_mode",2],["pond_mode",2],["pond_mode",1],["pond_mode",1]],"Both native Pit/Pond icons toggle current mode")
 	zones.free()
 	var state := preload("res://scripts/area_settings_state.gd").new()
 	var settings := preload("res://scripts/area_settings_view.gd").new()

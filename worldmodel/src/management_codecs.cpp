@@ -117,6 +117,13 @@ ManagementState decodeState(const m::ManagementState* s) {
         page.rows.push_back(std::move(value));
       }
     }
+    if(const auto* p=r->graph()){
+      auto& value=out.graph.emplace();value.kind=JusticeGraphKind(p->kind());value.actorCount=p->actor_count();value.organizationCount=p->organization_count();value.plotCount=p->plot_count();value.nodeCount=p->node_count();
+      for(const auto* row:*p->actors())value.actors.push_back({row->historical_figure(),row->identity(),row->principal_organization(),row->name()->str(),{row->aliases()->begin(),row->aliases()->end()},{row->organizations()->begin(),row->organizations()->end()},{row->plots()->begin(),row->plots()->end()}});
+      for(const auto* row:*p->organizations())value.organizations.push_back({row->name()->str(),row->principal_actor(),row->first_node(),row->node_count()});
+      for(const auto* row:*p->plots())value.plots.push_back({row->agreement(),row->master(),row->name()->str()});
+      for(const auto* row:*p->nodes())value.nodes.push_back({row->organization(),row->actor(),row->parent(),row->sort(),row->tier(),row->label()->str(),row->name()->str(),row->status()->str(),row->foreground(),row->background(),row->bright()});
+    }
     if(const auto* p=r->intelligence()){
       auto& value=out.intelligence.emplace();value.reportIndex=p->report_index();value.textColumns=p->text_columns();
       for(const auto* row:*p->reports())value.reports.push_back({row->index(),row->title()->str(),row->officer()->str(),row->viewed()});
@@ -407,12 +414,12 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
       b.CreateVector(symbols),r.nobles.stepToken,r.nobles.expectedNameRevision,query,edit);
   }
   flatbuffers::Offset<m::JusticeRequest> justice;
-  if(r.action>=ManagementAction::JusticeRead && r.action<=ManagementAction::JusticeIntelligenceRead){const auto& q=r.justice;
+  if(r.action>=ManagementAction::JusticeRead && r.action<=ManagementAction::JusticeIntelligenceGraphRead){const auto& q=r.justice;
     const bool candidates=r.action>=ManagementAction::JusticeCandidatesRead && r.action<=ManagementAction::JusticeConvictDetailRead;
     std::vector<flatbuffers::Offset<m::JusticeSort>> sorts;
     if(candidates)for(const auto& sort:q.sorts)sorts.push_back(m::CreateJusticeSort(b,m::JusticeCandidateColumn(sort.column),sort.reverse));
     justice=m::CreateJusticeRequest(b,q.tab,q.offset,q.limit,q.expectedListRevision,q.crimeId,q.expectedCaseRevision,
-      candidates?b.CreateString(q.query):0,q.expectedCandidateRevision,q.unitId,candidates?b.CreateVector(sorts):0,q.interrogate,q.expectedSelected,q.reportIndex,q.textColumns);}
+      candidates?b.CreateString(q.query):0,q.expectedCandidateRevision,q.unitId,candidates?b.CreateVector(sorts):0,q.interrogate,q.expectedSelected,q.reportIndex,q.textColumns,m::JusticeGraphKind(q.graphKind));}
   flatbuffers::Offset<m::ObjectsRequest> objects;
   if(r.action==ManagementAction::ObjectsRead || r.action==ManagementAction::ObjectsLocate){const auto& q=r.objects;
     objects=m::CreateObjectsRequest(b,q.tab,q.offset,q.limit,q.expectedListRevision,q.artifactId);}

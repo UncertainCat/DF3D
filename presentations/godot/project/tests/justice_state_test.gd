@@ -168,6 +168,7 @@ func run() -> void:
 	test_guard(service,state)
 	test_convicts(service,state)
 	test_intelligence(service,state)
+	test_graph(service,state)
 	state.dispose();service.queue_free();await process_frame
 	if failures==0:print("JUSTICE_STATE_PASS")
 	quit(1 if failures else 0)
@@ -185,3 +186,22 @@ func test_intelligence(service,state) -> void:
 	model.select_report(1);old=model.ticket;state.close();service.reply(old,intelligence_page(1,0,1,22,70));check(model.phase==model.Phase.Closed and model.lines.is_empty(),"Closed intelligence accepted late report")
 	state.open(5);service.reply(model.ticket,intelligence_page());model.select_report(0)
 	service.reply(model.ticket,intelligence_page(0,0,1,23,70));check(model.phase==model.Phase.Rejected and model.lines.is_empty(),"Changed intelligence receipt accepted")
+
+func graph_page(kind: int,offset: int=0,revision: int=33) -> Dictionary:
+	var data:={"kind":kind,"actor_count":2,"organization_count":1,"plot_count":1,"node_count":2,"actors":[],"organizations":[],"plots":[],"nodes":[]}
+	match kind:
+		1:data.actors=[{"historical_figure":offset,"identity":-1,"name":"synthetic","aliases":[],"principal_organization":0,"organizations":[],"plots":[0]}]
+		2:data.organizations=[{"name":"synthetic","principal_actor":0,"first_node":0,"node_count":2}]
+		3:data.plots=[{"agreement":11,"master":0,"name":"synthetic"}]
+		4:data.nodes=[{"organization":0,"actor":0,"parent":-1},{"organization":0,"actor":1,"parent":0}]
+	return {"justice":{"outcome":C.JusticeOutcome.None,"tab":5,"list_revision":revision,"offset":offset,"total":[2,1,1,2][kind-1],"graph":data}}
+func test_graph(service,state) -> void:
+	state.open(5);var model=state.intelligence.graph
+	service.reply(model.ticket,graph_page(1));check(model.graph.is_empty() and service.calls[model.ticket].intent.offset==1,"Partial graph actor stream escaped")
+	service.reply(model.ticket,graph_page(1,1));service.reply(model.ticket,graph_page(2));service.reply(model.ticket,graph_page(3))
+	check(model.graph.is_empty(),"Graph published before node stream")
+	service.reply(model.ticket,graph_page(4));check(model.phase==model.Phase.Ready and model.graph.nodes.size()==2,"Graph did not assemble")
+	state.open(5);service.reply(model.ticket,graph_page(1));service.reply(model.ticket,graph_page(1,1));service.reply(model.ticket,graph_page(2,0,34))
+	check(model.phase==model.Phase.Rejected and model.graph.is_empty(),"Graph mixed receipts between kinds")
+	state.open(5);var old: int=model.ticket;state.close();service.reply(old,graph_page(1));check(model.phase==model.Phase.Closed and model.graph.is_empty(),"Closed graph accepted late data")
+	state.open(5);old=model.ticket;service.session_changed.emit();service.reply(old,graph_page(1));check(model.phase in [model.Phase.Closed,model.Phase.Unavailable] and model.graph.is_empty() and state.phase==state.Phase.Unavailable,"Graph crossed session boundary")

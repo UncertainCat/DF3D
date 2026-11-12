@@ -52,9 +52,26 @@ reads reject report, crime, candidate, query/sort and mutation selectors.
 Pages carry at most64 records within the existing384KiB payload budget. Old
 recordings imply no graph facts. Both defaults and the mailbox are202
 (`Local\\df3d_management_v202`); bridge and client must be rebuilt together.
-The typed provider is verified separately below; graph transport and viewer
-integration are not yet implemented by this schema migration. Public Justice
+The bridge hashes the complete owned graph before slicing a requested stream;
+the model and extension copy all strings and references. The Intelligence
+controller loads all four streams under one receipt, verifies organization node
+ranges, and publishes only the complete graph. Close and session changes retire
+pending reads; changed receipts are rejected without replay. Public Justice
 remains hidden. Report transport retains the protocol201 field semantics.
+
+Protected `stockpile-storage-native-input-20261112-095621` verifies the graph
+through protocol202 against the populated native provider: three actors, one
+organization, one plot and three hierarchy nodes. Separate limit1 requests
+verify actor/node continuation order and links; a changed receipt is rejected.
+The source evidence/entity/figures/agreement/menu byte guards remain unchanged.
+Owned DF21644 closes unsaved with source save and preferences preserved. Native
+runs at30FPS, Godot headless; observed58C/4% GPU is a sample, not a continuous
+peak. Live qualification is `passed_with_known_issues` for the established
+separate-renderer warning only. MSVC, root/client builds, state tests, management
+contract, UI composition and all19 core checks pass. Fixture
+`intelligence_graph_transport_reference` retains provenance and captured facts.
+The three graph tabs still require actual rendering, detail text, search and
+navigation integration and acceptance; the loader alone does not expose them.
 
 
 Management protocol201 adds read-only `JusticeIntelligenceRead` with tab5.
@@ -162,7 +179,8 @@ node labels/status and colors. Graph indices are snapshot-local, not persistent
 IDs. The collector's window-clipped plot `organization_name` is deliberately
 not exported; the adapter neither reads nor changes native window geometry.
 The native call internally clips that unused field. Report counts do not imply
-graph availability. This provider is diagnostic-only pending protocol/UI wiring.
+graph availability. This provider feeds the protocol202 graph transport above; graph tab rendering
+and details remain unfinished.
 
 Protected `stockpile-storage-native-input-20261112-092919` checks empty evidence
 and a controlled repository referencing existing corruption agreement11. All

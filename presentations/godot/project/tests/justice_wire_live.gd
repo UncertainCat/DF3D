@@ -27,6 +27,7 @@ func run() -> void:
 		if world.poll_management().get("transport_alive",false):break
 		await create_timer(0.01).timeout
 	await request("construction",{"action":C.ManagementAction.Catalog})
+	if OS.get_environment("DF3D_JUSTICE_WIRE_GRAPH")=="1":await run_graph(reference.graph);return
 	if OS.get_environment("DF3D_JUSTICE_WIRE_INTELLIGENCE")=="1":await run_intelligence(reference.intelligence);return
 	if OS.get_environment("DF3D_JUSTICE_WIRE_CONVICTS")=="1":await run_convicts(reference.convicts);return
 	if OS.get_environment("DF3D_JUSTICE_WIRE_GUARD")=="1":await run_guard(reference.guard);return
@@ -373,4 +374,46 @@ func run_intelligence(reference: Array) -> void:
 	controller.dispose();if view!=null:view.queue_free()
 	actions.queue_free();await process_frame
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"intelligence_reports":reference.size()}));file.close()
+	quit(1 if failed else 0)
+
+# JSON numbers are floats; Godot container equality distinguishes them from
+# the typed transport integers even when scalar numeric equality succeeds.
+func graph_reference_integers(value: Variant) -> Variant:
+	if typeof(value)==TYPE_FLOAT and value==int(value):return int(value)
+	if typeof(value)==TYPE_ARRAY:return value.map(graph_reference_integers)
+	if typeof(value)==TYPE_DICTIONARY:
+		var converted: Dictionary={}
+		for key in value:converted[key]=graph_reference_integers(value[key])
+		return converted
+	return value
+func run_graph(reference: Dictionary) -> void:
+	var Service=preload("res://scripts/semantic_action_service.gd");var actions=Service.new();root.add_child(actions);actions.configure(world,true)
+	var model=preload("res://scripts/justice_graph_state.gd").new();model.configure(actions);model.open()
+	var deadline:=Time.get_ticks_msec()+15000
+	while model.phase==model.Phase.Reading and Time.get_ticks_msec()<deadline:await process_frame
+	if not check(model.phase==model.Phase.Ready,"Graph controller did not settle"):model.dispose();actions.queue_free();quit(1);return
+	var expected: Dictionary=graph_reference_integers(reference);expected.nodes=[]
+	for i in expected.organizations.size():
+		var org: Dictionary=expected.organizations[i];var first: int=expected.nodes.size();org.first_node=first;org.node_count=org.nodes.size()
+		for original in org.nodes:
+			var node: Dictionary=original.duplicate(true);node.erase("descendants");node.organization=i
+			if node.parent>=0:node.parent+=first
+			expected.nodes.append(node)
+		org.erase("nodes")
+	var evidence:=FileAccess.open(directory+"/justice-graph-wire.json",FileAccess.WRITE);evidence.store_string(JSON.stringify({"expected":expected,"actual":model.graph}));evidence.close()
+	check(model.graph==expected,"Graph transport differs from native provider")
+	# Limit1 forces the actor and node streams through continuation pages.
+	for kind in [1,4]:
+		var key: String=["actors","organizations","plots","nodes"][kind-1];var rows: Array=[]
+		while rows.size()<expected[key].size():
+			var reply:=await request("justice",{"action":C.ManagementAction.JusticeIntelligenceGraphRead,"tab":5,"offset":rows.size(),"limit":1,"expected_list_revision":model.revision,"graph_kind":kind})
+			if not check(reply.get("status")==C.ManagementStatus.Ok,"Graph continuation rejected"):break
+			var part: Array=reply.justice.graph[key]
+			if not check(part.size()==1,"Graph continuation stalled"):break
+			rows.append_array(part)
+		check(rows==expected[key],"Graph continuation changed order or links")
+	var stale:=await request("justice",{"action":C.ManagementAction.JusticeIntelligenceGraphRead,"tab":5,"offset":0,"limit":32,"expected_list_revision":model.revision+1,"graph_kind":1})
+	check(stale.get("status")==C.ManagementStatus.Rejected and stale.get("justice",{}).get("outcome")==C.JusticeOutcome.Stale,"Changed graph receipt accepted")
+	model.dispose();actions.queue_free();await process_frame
+	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"graph_actors":reference.actors.size(),"graph_organizations":reference.organizations.size(),"graph_plots":reference.plots.size(),"paged_nodes":expected.nodes.size()}));file.close()
 	quit(1 if failed else 0)

@@ -3,6 +3,7 @@
 #include "justice_guard_native.h"
 #include "justice_convicts_native.h"
 #include "justice_intelligence_native.h"
+#include "justice_graph_read.h"
 #include "residents_row_native.h"
 #include "justice_witness_native.h"
 #include "justice_action_native.h"
@@ -33,6 +34,7 @@ struct ReadResult {
     std::optional<ConvictPage> convictDetail;
     struct Intelligence {int32_t index=-1;uint16_t columns=0;std::vector<IntelligenceReport> reports;std::vector<std::string> lines;};
     std::optional<Intelligence> intelligence;
+    std::optional<IntelligenceGraphRead> graph;
 };
 struct ReadHash {
     uint64_t value=UINT64_C(14695981039346656037);
@@ -228,6 +230,11 @@ inline ReadResult intelligenceRequest(const m::JusticeRequest& q){
         return result;
     }catch(...){return refused;}
 }
+inline ReadResult graphRequest(const m::JusticeRequest& q){
+    auto page=readIntelligenceGraph(q);ReadResult result;result.tab=5;result.outcome=page.outcome;
+    if(page.outcome==m::JusticeOutcome::None){result.revision=page.revision;result.total=page.total;result.offset=page.offset;result.graph=std::move(page);}
+    return result;
+}
 inline flatbuffers::Offset<m::JusticeState> encode(flatbuffers::FlatBufferBuilder& b,const ReadResult& r){
     std::vector<flatbuffers::Offset<m::JusticeCaseRow>> rows;
     for(const auto& row:r.rows)rows.push_back(m::CreateJusticeCaseRow(b,row.id,b.CreateString(row.caption)));
@@ -264,6 +271,6 @@ inline flatbuffers::Offset<m::JusticeState> encode(flatbuffers::FlatBufferBuilde
     if(r.intelligence){const auto& p=*r.intelligence;std::vector<flatbuffers::Offset<m::JusticeIntelligenceReport>> reports;std::vector<flatbuffers::Offset<flatbuffers::String>> lines;
         for(const auto& row:p.reports)reports.push_back(m::CreateJusticeIntelligenceReport(b,row.index,b.CreateString(row.title),b.CreateString(row.officer),row.viewed));
         for(const auto& line:p.lines)lines.push_back(b.CreateString(line));intelligence=m::CreateJusticeIntelligencePage(b,p.index,p.columns,b.CreateVector(reports),b.CreateVector(lines));}
-    return m::CreateJusticeState(b,r.outcome,r.tab,r.revision,r.total,r.offset,b.CreateVector(rows),detail,candidates,guard,convicts,convictDetail,intelligence);
+    return m::CreateJusticeState(b,r.outcome,r.tab,r.revision,r.total,r.offset,b.CreateVector(rows),detail,candidates,guard,convicts,convictDetail,intelligence,r.graph?encodeIntelligenceGraph(b,*r.graph):0);
 }
 }

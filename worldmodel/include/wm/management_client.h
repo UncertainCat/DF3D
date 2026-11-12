@@ -475,6 +475,7 @@ struct NoblesState {
 // Pointer-free Justice reads retain native row order and paired witness dates.
 struct JusticeSort {JusticeCandidateColumn column=JusticeCandidateColumn::Category;bool reverse=false;};
 struct JusticeRequest {
+  JusticeGraphKind graphKind=JusticeGraphKind::None;
   int32_t reportIndex=-1;uint16_t textColumns=0;
   uint8_t tab=0;uint32_t offset=0;uint16_t limit=32;
   uint64_t expectedListRevision=0;int32_t crimeId=-1;uint64_t expectedCaseRevision=0;
@@ -512,7 +513,24 @@ struct JusticeConvictCrime {int32_t crimeId=-1;std::string caption;std::optional
 struct JusticeConvictDetail {int32_t unitId=-1;uint64_t revision=0;std::vector<std::string> sentence;std::optional<std::string> officer;uint32_t total=0,offset=0;std::vector<JusticeConvictCrime> crimes;};
 struct JusticeIntelligenceReport {uint32_t index=0;std::string title,officer;bool viewed=false;};
 struct JusticeIntelligencePage {int32_t reportIndex=-1;uint16_t textColumns=0;std::vector<JusticeIntelligenceReport> reports;std::vector<std::string> lines;};
+struct JusticeGraphActor {
+  int32_t historicalFigure=-1,identity=-1,principalOrganization=-1;
+  std::string name;std::vector<int32_t> aliases,organizations,plots;
+};
+struct JusticeGraphOrganization {std::string name;int32_t principalActor=-1;uint32_t firstNode=0,nodeCount=0;};
+struct JusticeGraphPlot {int32_t agreement=-1,master=-1;std::string name;};
+struct JusticeGraphNode {
+  uint32_t organization=0;int32_t actor=-1,parent=-1,sort=0,tier=0;
+  std::string label,name,status;int16_t foreground=0,background=0;int8_t bright=0;
+};
+struct JusticeGraphPage {
+  JusticeGraphKind kind=JusticeGraphKind::None;
+  uint32_t actorCount=0,organizationCount=0,plotCount=0,nodeCount=0;
+  std::vector<JusticeGraphActor> actors;std::vector<JusticeGraphOrganization> organizations;
+  std::vector<JusticeGraphPlot> plots;std::vector<JusticeGraphNode> nodes;
+};
 struct JusticeState {
+  std::optional<JusticeGraphPage> graph;
   std::optional<JusticeIntelligencePage> intelligence;
   JusticeOutcome outcome=JusticeOutcome::None;uint8_t tab=0;uint64_t listRevision=0;
   uint32_t total=0,offset=0;std::vector<JusticeCaseRow> rows;std::optional<JusticeCaseDetail> detail;

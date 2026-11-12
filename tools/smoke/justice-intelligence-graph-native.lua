@@ -74,6 +74,16 @@ local ok,err=xpcall(function()
  local data={agreement=chosen.id,empty=empty,native=native,provider=supplied}
  local f=assert(io.open(out..'/justice-intelligence-graph.json','w'));f:write(json.encode(data));f:close()
  assert(json.encode(native)==json.encode(supplied),'Native graph facts differ')
+ if os.getenv('DF3D_JUSTICE_WIRE_GRAPH')=='1' then
+  local script=require('gui.script')
+  local wire=assert(io.open(out..'/justice-wire-reference.json','w'));wire:write(json.encode({graph=supplied}));wire:close()
+  wire=assert(io.open(out..'/shot.tmp','w'));wire:write('justice-wire');wire:close();assert(os.rename(out..'/shot.tmp',out..'/shot'))
+  local deadline=dfhack.getTickCount()+120000
+  while true do local ack=io.open(out..'/ack-justice-wire');if ack then ack:close();break end
+   assert(dfhack.getTickCount()<deadline,'Intelligence graph wire timeout');script.sleep(1,'frames')
+  end
+  for _,entry in ipairs(guards)do assert(bytes(entry.p,entry.n)==entry.data,'Graph wire changed native source')end
+ end
  capture('justice-intelligence-graph')
 end,debug.traceback)
 entity.evidence_repository=original;reopen()

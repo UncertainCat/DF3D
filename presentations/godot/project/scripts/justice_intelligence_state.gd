@@ -3,6 +3,9 @@ signal changed
 const C=preload("res://scripts/management_contract.gd")
 enum Phase {Closed,Reading,Ready,Rejected,Unavailable}
 var service
+var graph=preload("res://scripts/justice_graph_state.gd").new()
+func _init() -> void:graph.changed.connect(_graph_changed)
+func _graph_changed() -> void:changed.emit()
 var phase:=Phase.Closed
 var rows: Array=[]
 var lines: Array=[]
@@ -17,9 +20,11 @@ var _pending: Array=[]
 var _total:=0
 func configure(source) -> void:
 	dispose();service=source
+	graph.configure(source)
 	if service!=null:service.session_changed.connect(_session_changed)
 func dispose() -> void:
 	close()
+	graph.dispose()
 	if service!=null and service.session_changed.is_connected(_session_changed):service.session_changed.disconnect(_session_changed)
 	service=null
 func _retire() -> void:
@@ -27,9 +32,10 @@ func _retire() -> void:
 	if service!=null and old!=0:service.detach(old)
 	_pending=[]
 func close() -> void:
+	graph.close()
 	_retire();rows=[];lines=[];selected=-1;first=0;revision=0;phase=Phase.Closed;last_result={};changed.emit()
 func _session_changed() -> void:close();phase=Phase.Unavailable;changed.emit()
-func open() -> void:close();phase=Phase.Reading;_page()
+func open() -> void:close();phase=Phase.Reading;graph.open();_page()
 func select_report(index: int) -> void:
 	if phase!=Phase.Ready or not rows.any(func(row):return row.index==index):return
 	_retire();selected=index;lines=[];first=0;phase=Phase.Reading;_page()

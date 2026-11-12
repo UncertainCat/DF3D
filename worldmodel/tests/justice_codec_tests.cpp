@@ -155,3 +155,17 @@ TEST_CASE("Intelligence detail owns lines after wire retirement") {
  const auto* wire=flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer());REQUIRE_FALSE(m::validateManagementState(*wire));const auto owned=codec::decodeState(wire);std::fill(b.GetBufferPointer(),b.GetBufferPointer()+b.GetSize(),uint8_t(0));b.Clear();
  REQUIRE(owned.justice);REQUIRE(owned.justice->intelligence);CHECK(owned.justice->intelligence->lines==std::vector<std::string>{"synthetic report"});
 }
+
+TEST_CASE("Intelligence graph decoding owns names and cross-page references") {
+ flatbuffers::FlatBufferBuilder b;auto none=b.CreateVector(std::vector<int32_t>{});
+ auto row=m::CreateJusticeGraphActor(b,907,-1,b.CreateString("synthetic actor"),b.CreateVector(std::vector<int32_t>{42}),0,none,b.CreateVector(std::vector<int32_t>{0}));
+ auto graph=m::CreateJusticeGraphPage(b,m::JusticeGraphKind::Actors,1,1,1,0,b.CreateVector(std::vector{row}),b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeGraphOrganization>>{}),b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeGraphPlot>>{}),b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeGraphNode>>{}));
+ auto rows=b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeCaseRow>>{});
+ m::JusticeStateBuilder j(b);j.add_tab(5);j.add_list_revision(33);j.add_total(1);j.add_rows(rows);j.add_graph(graph);auto result=j.Finish();
+ m::ManagementStateBuilder r(b);r.add_revision(1);r.add_action(m::ManagementAction::JusticeIntelligenceGraphRead);r.add_status(m::ManagementStatus::Ok);r.add_justice(result);b.Finish(r.Finish());
+ auto owned=codec::decodeState(flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()));
+ std::fill(b.GetBufferPointer(),b.GetBufferPointer()+b.GetSize(),uint8_t(0));b.Clear();
+ REQUIRE(owned.justice);REQUIRE(owned.justice->graph);const auto& page=*owned.justice->graph;
+ CHECK(page.kind==wm::JusticeGraphKind::Actors);CHECK(page.organizationCount==1);REQUIRE(page.actors.size()==1);
+ CHECK(page.actors[0].name=="synthetic actor");CHECK(page.actors[0].historicalFigure==907);CHECK(page.actors[0].aliases==std::vector<int32_t>{42});CHECK(page.actors[0].plots==std::vector<int32_t>{0});
+}

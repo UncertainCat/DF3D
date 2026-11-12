@@ -11,11 +11,11 @@ var state=preload("res://scripts/justice_state.gd").new()
 var layout_size:=Vector2.ZERO
 var opening:=false
 func _init() -> void:state.changed.connect(_sync)
-func configure(world,service,host,_hover=null) -> void:
+func configure(world,service,host,hover=null) -> void:
 	ui_host=host;state.configure(service)
 	var layer:=CanvasLayer.new();layer.layer=10;add_child(layer)
 	panel=preload("res://scripts/justice_view.gd").new();layer.add_child(panel)
-	panel.configure_justice(world,state);panel.input_allowed=allowed
+	panel.configure_justice(world,state,hover);panel.input_allowed=allowed
 	panel.cancelled.connect(close_panel)
 	panel.focus_requested.connect(func(tile):
 		if allowed():close_panel();focus_requested.emit(tile))

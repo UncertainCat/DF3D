@@ -269,6 +269,7 @@ func run_guard(reference: Dictionary) -> void:
 	for i in guard.rows.size():
 		check(guard.rows[i].unit_id==reference.members[i].unit_id and guard.rows[i].rank==reference.members[i].rank,"Guard ID/rank differs")
 	var baseline: Array=guard.rows.duplicate(true);var revision: int=guard.revision
+	if view!=null and OS.get_environment("DF3D_JUSTICE_HOVER")=="1":await roster_hover(view,controller)
 	if view!=null:
 		await process_frame;await process_frame;await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(directory+"/justice-guard-view.png")
@@ -300,6 +301,26 @@ func settle_convicts(roster) -> void:
 	var deadline:=Time.get_ticks_msec()+5000
 	while roster.phase in [roster.Phase.Reading,roster.Phase.DetailReading,roster.Phase.Navigating] and Time.get_ticks_msec()<deadline:
 		world.poll();await create_timer(0.01).timeout
+
+func roster_hover(view,controller) -> void:
+	var help=preload("res://scripts/native_hover_view.gd").new();root.add_child(help);help.configure(world);help.layout(Vector2(1200,800));view.hover_help=help
+	var observations: Array=JSON.parse_string(FileAccess.get_file_as_string(directory+"/justice-hover.json"))
+	var index:=0
+	for observation: Dictionary in observations:
+		index+=1
+		var tab:=3 if observation.tab=="Fortress guard" else 4
+		if controller.tab!=tab:
+			controller.select_tab(tab);await settle_convicts(controller.convicts)
+		var event:=InputEventMouseMotion.new();event.position=Vector2(observation.x,observation.y);event.global_position=event.position
+		Input.parse_input_event(event);await create_timer(0.65).timeout
+		var expected: String="detail_widget_"+observation.kind if observation.kind in ["name","category","profession"] else "owner_filter" if observation.kind=="filter" else "residents_"+("details" if observation.kind=="view" else "recenter") if observation.kind in ["view","recenter"] else ""
+		check(help.displayed==expected,"Justice hover differs: "+observation.tab+"/"+observation.kind)
+		await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/justice-hover-view-"+str(index)+".png")
+	view.hide();await process_frame
+	check(help.widget_owner==0 and help.state.owner==0,"Hidden Justice retained hover")
+	view.show();controller.select_tab(3);await settle_guard(controller.guard)
+	view.hover_help=null;help.queue_free();await process_frame
 func run_convicts(reference: Array) -> void:
 	var actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(actions);actions.configure(world,true)
 	var controller=preload("res://scripts/justice_state.gd").new();controller.configure(actions);controller.open(4)

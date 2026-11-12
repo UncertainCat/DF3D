@@ -442,7 +442,7 @@ renderer/finalize/two-ObjectDB diagnostics qualify the live run. Fixture
 sheet_main_scene_navigation_reference records native state and screenshot hashes.
 Repeat with DF3D_JUSTICE_SHEET_NAV/SCENE/WIRE=1 through the protected native lane.
 
-Convicts remains staged: alternate sorts, scrolling, hover, keyboard, resize and
+Convicts remains staged: alternate sorts, scrolling, keyboard, resize and
 long/multiple crime wrapping remain unaccepted. The navigation evidence does not
 establish complete creature-sheet visual parity or the other Justice workflows.
 
@@ -486,7 +486,26 @@ core tests, controller lifecycle, contract/owned codec checks and UI composition
 Installed199 plugin SHA256 is
 `2118db5e221178e47520b635e3faeff8e105b7924d9e3df2b595d3d3ae6b6c02`.
 `native_justice.json.guard_transport_reference` records the bounded evidence.
-Justice remains staged and hidden pending the remaining categories and acceptance.
+Guard and Convicts use the shared native hover owner for Name/Category/Profession
+sort headers, the unit filter, recenter and sheet buttons. Protected125323 on
+2026-11-12 captures exact native text cells and hotkey hints for both rosters;
+instructions234/235 match the existing Residents help. Widget help is captured
+after the normal frame draws it, while main instructions are sampled immediately
+after rendering with the injected pointer restored. The unlabeled rank header
+has no help in this probe. Runtime inputs remain local pointer/roster state.
+
+Protected125043 exercises all fourteen pointer targets through the rendered
+viewer, including the two blank rank positions, and verifies that hiding the
+panel releases both hover owners. Shared composition wiring, Justice state checks
+and all19 core checks pass. Known separate-renderer/finalize/two-ObjectDB
+diagnostics qualify the viewer run as `passed_with_known_issues`. Native capture
+handshakes retire the overlay, so screenshots do not establish pixel equality;
+viewer screenshots were inspected and reuse the existing verified help renderer.
+Both clients run serially at30FPS; sampled GPU45–49C is not a continuous peak.
+Owned DF35140/47000 close unsaved with source and preferences preserved.
+`native_justice.json.roster_hover_reference` retains text and bounded hashes.
+Candidate-picker hover, keyboard execution of advertised shortcuts, resize and
+full Justice acceptance remain unfinished. Public Justice stays hidden.
 
 
 Management protocol198 adds `JusticeInterrogate`, the candidate request/page

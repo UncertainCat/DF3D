@@ -202,6 +202,47 @@ if os.getenv('DF3D_JUSTICE_INTELLIGENCE')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-native%.lua$','justice-intelligence-native.lua')
  assert(loadfile(source))(out,view,probe,settle,caption_click,capture,bytes)
 end
+if os.getenv('DF3D_JUSTICE_HOVER')=='1' then
+ local observations={}
+ local function hover_lines()
+  local result={}
+  for y=0,17 do
+   local chars={};for x=g.dimx-24,g.dimx-1 do local ch=dfhack.screen.readTile(x,y).ch;chars[#chars+1]=ch>=32 and string.char(ch%256)or' 'end
+   result[#result+1]=dfhack.df2utf(table.concat(chars)):gsub('%s+$','')
+  end
+  return result
+ end
+ for _,name in ipairs{'Fortress guard','Convicts'}do
+  caption_click(name);settle()
+  local top=name=='Fortress guard'and 172 or 148
+  for _,target in ipairs{{'name',100,top+6},{'category',180,top+6},{'profession',250,top+6},{'rank',410,top+6},{'recenter',348,top+42},{'view',380,top+42},{'filter',100,718}}do
+   local widget_lines
+   local first_line=({name='Sort units by name.',category='Sort units by profession',profession='Sort units by profession',filter='Filter the unit list by'})[target[1]]
+   local deadline=dfhack.getTickCount()+1600
+   repeat
+    g.precise_mouse_x=target[2];g.precise_mouse_y=target[3];g.mouse_x=target[2]//8;g.mouse_y=(target[3]-4)//12
+    df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+    gui.simulateInput(view,{});view:render(dfhack.getTickCount());script.sleep(1,'frames')
+    local rendered=hover_lines()
+    if first_line and rendered[2]==first_line then widget_lines=rendered end
+   until dfhack.getTickCount()>=deadline
+   g.precise_mouse_x=target[2];g.precise_mouse_y=target[3];g.mouse_x=target[2]//8;g.mouse_y=(target[3]-4)//12
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+   local main=df.global.game.main_interface
+   local row={tab=name,kind=target[1],x=target[2],y=target[3],instruction=main.current_hover,active=main.hover_instructions_on,lines={}}
+   for y=0,17 do
+    local chars={};for x=g.dimx-24,g.dimx-1 do local ch=dfhack.screen.readTile(x,y).ch;chars[#chars+1]=ch>=32 and string.char(ch%256)or' 'end
+    row.lines[#row.lines+1]=dfhack.df2utf(table.concat(chars)):gsub('%s+$','')
+   end
+   if first_line then assert(widget_lines,'Missing Justice widget tooltip: '..name..'/'..target[1]);row.lines=widget_lines end
+   if target[1]=='recenter'or target[1]=='view'then assert(row.instruction==(target[1]=='recenter'and 234 or 235),'Missing Justice instruction')end
+   observations[#observations+1]=row
+   capture('justice-hover-'..#observations)
+  end
+ end
+ write('justice-hover.json',json.encode(observations))
+end
 if os.getenv('DF3D_JUSTICE_SHEET_NAV')=='1' then
  local samples={}
  for _,name in ipairs{'Fortress guard','Convicts'}do

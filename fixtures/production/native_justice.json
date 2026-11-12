@@ -11992,5 +11992,163 @@
       "job-settings-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f",
       "result.json": "55ea401f0907968b16baa48a037a247d52b778f816392f061952e6daa810f1ec"
     }
+  },
+  "roster_hover_reference": {
+    "native_source": "build/stockpile-storage-native-input-20261112-125323",
+    "viewer_source": "build/stockpile-storage-native-input-20261112-125043",
+    "scope": "Guard and Convicts default-size roster hover: native text-cell observations and viewer pointer dispatch/rendering. Screenshot handshake retires native overlays; no native/viewer pixel equality claimed. Candidate lists and keyboard execution are not accepted here.",
+    "native_status": "passed",
+    "viewer_status": "passed_with_known_issues",
+    "fps_cap": 30,
+    "source_preserved": true,
+    "native_owned_df_closed": 47000,
+    "viewer_owned_df_closed": 35140,
+    "samples": [
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "name",
+        "lines": ["", "Sort units by name.", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "Hotkey: Ctrl+n", ""],
+        "tab": "Fortress guard",
+        "x": 100,
+        "y": 178
+      },
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "category",
+        "lines": ["", "Sort units by profession", "category.", "", "", "", "", "", "", "", "", "", "", "", "", "", "Hotkey: ?", ""],
+        "tab": "Fortress guard",
+        "x": 180,
+        "y": 178
+      },
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "profession",
+        "lines": ["", "Sort units by profession", "name.", "", "", "", "", "", "", "", "", "", "", "", "", "", "Hotkey: ?", ""],
+        "tab": "Fortress guard",
+        "x": 250,
+        "y": 178
+      },
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "rank",
+        "lines": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "      Elevation 36", ""],
+        "tab": "Fortress guard",
+        "x": 410,
+        "y": 178
+      },
+      {
+        "active": true,
+        "instruction": 234,
+        "kind": "recenter",
+        "lines": ["Leave this menu and", "recenter on this", "creature.", "", "Hotkey: Ctrl+c", "", "", "", "", "", "", "", "", "", "", "", "", ""],
+        "tab": "Fortress guard",
+        "x": 348,
+        "y": 214
+      },
+      {
+        "active": true,
+        "instruction": 235,
+        "kind": "view",
+        "lines": ["Leave this menu and", "view this creature's", "sheet.", "", "Hotkey: Ctrl+v", "", "", "", "", "", "", "", "", "", "", "", "", ""],
+        "tab": "Fortress guard",
+        "x": 380,
+        "y": 214
+      },
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "filter",
+        "lines": ["", "Filter the unit list by", "name or job.", "", "", "", "", "", "", "", "", "", "", "", "", "", "Hotkey: Ctrl+f", ""],
+        "tab": "Fortress guard",
+        "x": 100,
+        "y": 718
+      },
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "name",
+        "lines": ["", "Sort units by name.", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "Hotkey: Ctrl+n", ""],
+        "tab": "Convicts",
+        "x": 100,
+        "y": 154
+      },
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "category",
+        "lines": ["", "Sort units by profession", "category.", "", "", "", "", "", "", "", "", "", "", "", "", "", "Hotkey: ?", ""],
+        "tab": "Convicts",
+        "x": 180,
+        "y": 154
+      },
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "profession",
+        "lines": ["", "Sort units by profession", "name.", "", "", "", "", "", "", "", "", "", "", "", "", "", "Hotkey: ?", ""],
+        "tab": "Convicts",
+        "x": 250,
+        "y": 154
+      },
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "rank",
+        "lines": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "      Elevation 36", ""],
+        "tab": "Convicts",
+        "x": 410,
+        "y": 154
+      },
+      {
+        "active": true,
+        "instruction": 234,
+        "kind": "recenter",
+        "lines": ["Leave this menu and", "recenter on this", "creature.", "", "Hotkey: Ctrl+c", "", "", "", "", "", "", "", "", "", "", "", "", ""],
+        "tab": "Convicts",
+        "x": 348,
+        "y": 190
+      },
+      {
+        "active": true,
+        "instruction": 235,
+        "kind": "view",
+        "lines": ["Leave this menu and", "view this creature's", "sheet.", "", "Hotkey: Ctrl+v", "", "", "", "", "", "", "", "", "", "", "", "", ""],
+        "tab": "Convicts",
+        "x": 380,
+        "y": 190
+      },
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "filter",
+        "lines": ["", "Filter the unit list by", "name or job.", "", "", "", "", "", "", "", "", "", "", "", "", "", "Hotkey: Ctrl+f", ""],
+        "tab": "Convicts",
+        "x": 100,
+        "y": 718
+      }
+    ],
+    "hashes": {
+      "native/justice-hover.json": "fd458ace688ace6297808863741eecef31109d351a480dea95729d0a61080a4d",
+      "native/result.json": "55ea401f0907968b16baa48a037a247d52b778f816392f061952e6daa810f1ec",
+      "viewer/job-settings-wire-result.json": "5fcc9e72718d4707afff7abfa592a915ea9d18f4af2e9c25052d34eb8ed7bf11",
+      "viewer/justice-hover-view-1.png": "ce0bb747f2145d18703badf0126ce4e63921f0b55126c0eaefafb891f5faa492",
+      "viewer/justice-hover-view-2.png": "4efcf55ac9cd3576454d88fc5eb4b3becc27dc13c8c829a749fb0616ac185154",
+      "viewer/justice-hover-view-3.png": "40afa6b15f35db7e924b55213d2c47836be84ab7384779c53ec44749def0a91e",
+      "viewer/justice-hover-view-4.png": "744b285b17df2df6ed6dfb58f02e871b7d50c5a850121cf8a25de1eaa0fdacc6",
+      "viewer/justice-hover-view-5.png": "029c9e1a49bfea8a075e500096ac7629d18f5cad2affd8e567d6d83d095c438a",
+      "viewer/justice-hover-view-6.png": "371aafbec2405618a9238dda07cc788996b8da9239532cd1cb871de9ec8333d4",
+      "viewer/justice-hover-view-7.png": "eaee703a0d2970823904355a03777a74ef1b44ad76ed59bbf8c62404a578ddf0",
+      "viewer/justice-hover-view-8.png": "c781719f4ddb83c38abacfe2f67745fbac59b3d3278e5095b6bac176570e20db",
+      "viewer/justice-hover-view-9.png": "3937259213a22174d3c546c29d697b5a37884e689a1f4bcd0b163b35ca5327ea",
+      "viewer/justice-hover-view-10.png": "d1734405cfe1f03ece67b0d6097ab78ec132f234822819feb3a15bce3a6bbe10",
+      "viewer/justice-hover-view-11.png": "62eca391c7a0f90254c00c62d8a9e25298b4c45a19d1d04cc6c0a3a0440f9ccf",
+      "viewer/justice-hover-view-12.png": "5ebc243aadd8c67b5deb973a933e313cfc368f12c0d0a2c104f2227f8a37061c",
+      "viewer/justice-hover-view-13.png": "c808cd3f59aa322000c40ee43a1f1d400cb86b2d5740729574bb9c556d1b26df",
+      "viewer/justice-hover-view-14.png": "be6f981b9705530e5ee5c482894cee0c0ae349b8e45614adeec8892fe716a68b"
+    }
   }
 }

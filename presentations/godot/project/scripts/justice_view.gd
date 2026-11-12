@@ -13,6 +13,9 @@ var search
 var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
 var portraits: Dictionary={}
 var ticks_override: int=-1
+var hover_help
+var pointer_known:=false
+var pointer_position:=Vector2.ZERO
 func intelligence_capacity() -> int:return maxi(0,int((size.y-list_top()-48)/(36 if state.intelligence.selected<0 else 12)))
 func intelligence_rect(index: int) -> Rect2:return Rect2(16,list_top()+24+index*36,size.x-32,36)
 func guard_open() -> bool:return state.tab==3
@@ -29,7 +32,9 @@ func interrogate_rect() -> Rect2:return Rect2(detail_x(),list_top()+24,104,36)
 func convict_rect() -> Rect2:return Rect2(detail_x()+104,list_top()+24,72,36)
 func sort_rect(index: int) -> Rect2:return Rect2(detail_x()+[5,15,24,35][index]*8,list_top(),[10,9,10,4][index]*8,12)
 func picker_allowed() -> bool:return allowed() and state.candidates.phase==state.candidates.Phase.Ready
-func configure_justice(source,model) -> void:
+func configure_justice(source,model,help=null) -> void:
+	hover_help=help;mouse_exited.connect(_leave_hover)
+	visibility_changed.connect(func():if not is_visible_in_tree():_leave_hover())
 	graph_view.configure(self)
 	configure_standing_orders(source,model)
 	scrollbar.input_allowed=allowed;scrollbar.wheel_enabled=false
@@ -117,6 +122,7 @@ func refresh() -> void:
 		retained[id]=previous if previous.get("recipe",{})==recipe else {"recipe":recipe.duplicate(true),"texture":world.candidate_icon(recipe)}
 	portraits=retained;queue_redraw()
 func _process(_delta: float) -> void:
+	update_hover()
 	if ticks_override<0 and is_visible_in_tree() and state!=null and picker_open():
 		for index in range(state.candidates.first,mini(state.candidates.rows.size(),state.candidates.first+picker_capacity())):
 			if state.candidates.rows[index].display.name_color.effect!=0:queue_redraw();break
@@ -124,6 +130,9 @@ func _process(_delta: float) -> void:
 		for index in range(roster().first,mini(roster().rows.size(),roster().first+guard_capacity())):
 			if roster().rows[index].name_color.effect!=0:queue_redraw();break
 func _input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		pointer_known=true;pointer_position=get_global_transform_with_canvas().affine_inverse()*event.position
+		update_hover()
 	if allowed() and state!=null and (picker_open() or roster_open()) and event is InputEventKey and event.pressed and event.keycode!=KEY_ESCAPE and search.has_focus():
 		search.feed_key(event);get_viewport().set_input_as_handled();return
 	if allowed() and state!=null and event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
@@ -327,6 +336,28 @@ func _draw() -> void:
 		var row: Dictionary=witnesses[witness_first()+index];var y:=top+72+index*60
 		text(row.witness,Vector2(x,y+12));text(row.description,Vector2(x,y+24),14)
 		text(row.date,Vector2(x,y+36),7);text(row.reported,Vector2(x,y+48),7)
+func hover_target(point: Vector2) -> String:
+	if state==null or not roster_open() or not guard_allowed():return ""
+	if search.get_rect().has_point(point):return "filter"
+	for index in 3:
+		if guard_sort_rect(index).has_point(point):return ["name","category","profession"][index]
+	for index in mini(guard_capacity(),roster().rows.size()-roster().first):
+		var row: Dictionary=roster().rows[roster().first+index];var rect:=guard_rect(index)
+		if row.has("position") and Rect2(rect.position+Vector2(288,0),Vector2(24,36)).has_point(point):return "recenter"
+		if Rect2(rect.position+Vector2(320,0),Vector2(24,36)).has_point(point):return "details"
+	return ""
+func update_hover() -> void:
+	if not is_instance_valid(hover_help):return
+	var target:=hover_target(pointer_position) if pointer_known and allowed() else ""
+	if target=="filter":hover_help.enter_owner_filter(get_instance_id());return
+	if target in ["name","category","profession"]:hover_help.enter_work_detail_widget(get_instance_id(),target);return
+	if hover_help.widget_owner==get_instance_id():hover_help.leave(get_instance_id())
+	if target in ["recenter","details"]:hover_help.enter_residents(get_instance_id(),target)
+	else:hover_help.leave(get_instance_id())
+func _leave_hover() -> void:
+	pointer_known=false
+	if is_instance_valid(hover_help):hover_help.leave(get_instance_id())
 func _exit_tree() -> void:
+	_leave_hover()
 	if state!=null and state.changed.is_connected(refresh):state.changed.disconnect(refresh)
 	super._exit_tree()

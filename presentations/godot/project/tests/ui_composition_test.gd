@@ -145,6 +145,7 @@ func run():
 		workshop.conditions_view._gui_input(click)
 		check(ui.host.active==ui.controller("work_details") and not workshop.conditions_view.visible and workshop.conditions.order_id==-1,"Labor tab routes and retires Conditions")
 	var justice=ui.controller("justice");justice.open_panel()
+	check(justice.panel.hover_help==hud.native_help,"Justice uses shared native hover owner")
 	var justice_ticket: int=justice.state.ticket
 	check(ui.host.active==justice and justice.panel.visible and justice_ticket>0,"Justice factory did not own queued read")
 	ui.host.set_overlay_blocked(true);justice.handle_back()

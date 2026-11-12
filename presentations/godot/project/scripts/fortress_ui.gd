@@ -131,6 +131,10 @@ func controller(id: String):
 		panel.information_available=func(caption):return caption in ["Creatures","Tasks","Places","Labor","Work orders","Objects"]
 		panel.information_requested.connect(func(caption):_open_staged_information(panel,caption))
 		controllers[id]=panel;return panel
+	if id=="justice":
+		add_child(panel);panel.configure(world,actions,host)
+		panel.information_requested.connect(func(caption):_open_staged_information(panel,caption))
+		controllers[id]=panel;return panel
 	if id=="objects":
 		add_child(panel);panel.configure(world,actions,host,view._fortress_hud.native_help)
 		panel.information_requested.connect(func(caption):_open_staged_information(panel,caption))

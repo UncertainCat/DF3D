@@ -7979,5 +7979,110 @@
     "limitations": [
       "Native color assertions and typed resolution verified; no rendered DF3D Justice panel yet"
     ]
+  },
+  "read_view_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-193806",
+    "status": "passed_with_known_issues",
+    "known_diagnostics": [
+      "Godot separate rendering thread notice",
+      "render-thread finalize shutdown",
+      "2 ObjectDB instances at exit"
+    ],
+    "protocol": 193,
+    "owned_df_pid": 21748,
+    "source_preserved": true,
+    "closed_unsaved": true,
+    "native_and_viewer_fps_cap": 30,
+    "viewport": [
+      1200,
+      800
+    ],
+    "receipt": {
+      "closed_read_retired": true,
+      "controller_tabs": 3,
+      "counts": [
+        7,
+        3,
+        7
+      ],
+      "stale_tabs": 3,
+      "success": true,
+      "witnesses": 134
+    },
+    "pixel_differences": {
+      "0": {
+        "case_rows": 0,
+        "summary": 0,
+        "witnesses": 0,
+        "frame_and_header": 0,
+        "full_panel": 4074
+      },
+      "1": {
+        "case_rows": 0,
+        "summary": 0,
+        "witnesses": 0,
+        "frame_and_header": 0,
+        "full_panel": 0
+      },
+      "2": {
+        "case_rows": 0,
+        "summary": 0,
+        "witnesses": 0,
+        "frame_and_header": 0,
+        "full_panel": 4048
+      }
+    },
+    "regions": {
+      "case_rows": [
+        48,
+        148,
+        488,
+        400
+      ],
+      "summary": [
+        512,
+        148,
+        944,
+        172
+      ],
+      "witnesses": [
+        512,
+        220,
+        944,
+        700
+      ],
+      "frame_and_header": [
+        32,
+        52,
+        976,
+        136
+      ],
+      "full_panel": [
+        32,
+        52,
+        976,
+        760
+      ]
+    },
+    "images": {
+      "justice-view-0.png": "def70c7e122f4d3239a3bafbeafa98bcbb5644b468cc6f36c555d7352ba1b17f",
+      "justice-view-1.png": "076082fe715c5af95b6270efc98e38500589641fa0d6a647dfe85524b0d57adf",
+      "justice-view-2.png": "1e56141a58927b172eb6d7a9d53fe6bf66610d482ad2a6159001b38ecdf050e0",
+      "justice-view-witness-scroll.png": "cd3c7e085d7f404dea646a0c561cffa3d3edffedd5cb4f38dac7553f6c8f7696"
+    },
+    "verified": [
+      "actual case/tab clicks",
+      "witness wheel advances one row",
+      "first-page captured case rows/summary/witness/header pixels match native",
+      "captured Closed cases panel matches in full",
+      "headless real factory owner, overlay Escape gate, Escape retirement and Places handoff"
+    ],
+    "limitations": [
+      "No Interrogate/Convict controls or effects",
+      "Fortress guard/Convicts/Intelligence tabs draw but remain inactive",
+      "Open panel retains26 scrollbar-arrow pixels different from native beyond missing action buttons",
+      "Only1200x800 rendered acceptance; resizing, empty/no-victim cases, long text and other witness descriptions remain unverified",
+      "No rendered full main-scene or live disconnect/world replacement acceptance"
+    ]
   }
 }

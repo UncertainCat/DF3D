@@ -3,6 +3,10 @@ func page(tab: int,offset: int,revision: int) -> Dictionary:
 	return await request("justice",{"action":C.ManagementAction.JusticeRead,"tab":tab,"offset":offset,"limit":4,"expected_list_revision":revision})
 func details(tab: int,id: int,offset: int,list_revision: int,case_revision: int) -> Dictionary:
 	return await request("justice",{"action":C.ManagementAction.JusticeCaseRead,"tab":tab,"crime_id":id,"offset":offset,"limit":8,"expected_list_revision":list_revision,"expected_case_revision":case_revision})
+func pointer_click(point: Vector2) -> void:
+	for pressed in [true,false]:
+		var event:=InputEventMouseButton.new();event.position=point;event.global_position=point;event.button_index=MOUSE_BUTTON_LEFT;event.pressed=pressed
+		Input.parse_input_event(event);Input.flush_buffered_events();await process_frame
 func settle_controller(controller) -> void:
 	var deadline:=Time.get_ticks_msec()+5000
 	while controller.phase in [controller.Phase.Reading,controller.Phase.DetailReading] and Time.get_ticks_msec()<deadline:
@@ -52,14 +56,33 @@ func run() -> void:
 		check(missing.get("status")==C.ManagementStatus.Rejected and missing.get("justice",{}).get("outcome")==C.JusticeOutcome.Stale,"Justice missing target accepted")
 	var actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(actions);actions.configure(world,true)
 	var controller=preload("res://scripts/justice_state.gd").new();controller.configure(actions);controller.open()
+	var view
+	if OS.get_environment("DF3D_JUSTICE_RENDER")=="1":
+		root.size=Vector2i(1200,800)
+		check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Justice assets unavailable")
+		view=preload("res://scripts/justice_view.gd").new();root.add_child(view);view.configure_justice(world,controller);view.layout(Vector2(1200,800))
 	for tab in 3:
-		if tab>0:controller.select_tab(tab)
+		if tab>0:
+			if view!=null:await pointer_click(view.position+view.tab_rect(tab).get_center())
+			else:controller.select_tab(tab)
 		await settle_controller(controller)
 		if not check(controller.phase==controller.Phase.Ready,"Justice controller read did not settle"):quit(1);return
 		check(controller.rows.size()==reference.lists[tab].size(),"Justice controller list differs")
 		if not controller.rows.is_empty():
 			var id: int=controller.rows[0].crime_id
 			check(controller.selected_id==id and controller.detail.get("witnesses")==reference.details[str(id)].witnesses,"Justice controller initial detail differs")
+		if view!=null:
+			await process_frame;await process_frame;await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/justice-view-%d.png"%tab)
+			if tab==0:
+				await pointer_click(view.position+view.case_rect(1).get_center());await settle_controller(controller)
+				check(controller.selected_id==controller.rows[1].crime_id,"Justice case click selected wrong row")
+				await pointer_click(view.position+view.case_rect(0).get_center());await settle_controller(controller)
+				var wheel:=InputEventMouseButton.new();wheel.position=view.position+Vector2(view.detail_x()+20,view.list_top()+100);wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN;wheel.pressed=true
+				Input.parse_input_event(wheel);Input.flush_buffered_events();await process_frame
+				check(controller.witness_first==1,"Justice witness wheel did not advance")
+				await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/justice-view-witness-scroll.png")
+	if view!=null:view.queue_free();await process_frame
 	controller.open();controller.close()
 	await create_timer(0.1).timeout;world.poll()
 	check(controller.phase==controller.Phase.Closed and controller.rows.is_empty() and controller.detail.is_empty(),"Closed Justice controller revived")

@@ -265,6 +265,7 @@ try {
      if($name -eq 'nobles-wire' -and $env:DF3D_NOBLES_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/nobles_wire_live.gd')}
      if($name -eq 'nobles-wire' -and $env:DF3D_NOBLES_SCENE -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/nobles_scene_live.gd')}
      if($name -eq 'justice-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/justice_wire_live.gd')}
+     if($name -eq 'justice-wire' -and $env:DF3D_JUSTICE_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/justice_wire_live.gd')}
      if($name -eq 'objects-wire'){$clientArgs=@('--headless','--path',"$repo/presentations/godot/project",'--script','res://tests/objects_wire_live.gd')}
      if($name -eq 'objects-wire' -and $env:DF3D_OBJECTS_RENDER -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/objects_wire_live.gd')}
      if($name -eq 'objects-wire' -and $env:DF3D_OBJECTS_SCENE -eq '1'){$clientArgs=@('--max-fps','30','--path',"$repo/presentations/godot/project",'--script','res://tests/objects_scene_live.gd')}

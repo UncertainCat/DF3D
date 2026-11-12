@@ -41,6 +41,35 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+The staged `justice_panel.gd`/`justice_view.gd` now renders the read-only Open,
+Closed and Cold case surface through the typed controller. Installed native
+category-button artwork supplies case rows; shared information chrome and separate
+case/witness scrollbars preserve local selection. `PANEL_SCRIPTS` registers the
+owner without adding a public route or incoming Justice header destination. Escape
+and information handoff retire owned reads through the real host.
+
+Protected `stockpile-storage-native-input-20261111-193806` exercises actual tab and
+case clicks plus witness-wheel scrolling at1200x800. The captured case rows,
+summary, witness text and frame/header regions have zero differing pixels from
+native across all three first-case screenshots. The Closed cases panel matches
+in full. Open/Cold omit the unfinished action controls (4048pixels); Open also
+retains26 differing scrollbar-arrow pixels. Do not call the whole screen complete.
+Interrogate/Convict, remaining category pages, responsive/empty/no-victim layouts,
+long text, other report descriptions and full main-scene/live lifecycle acceptance
+remain outstanding. Remaining-category tabs are drawn but inactive in this staged
+view. No public Justice route is exposed.
+
+DF21748 closes unsaved with source preservation and prefs restoration; native and
+viewer both use30FPS. A nearby GPU sample reads47C,1%,23.48W (not peak telemetry).
+Only the existing separate-thread/finalize/ObjectDB shutdown signatures remain:
+passed_with_known_issues. `native_justice.json.read_view_reference` retains image
+hashes, compared regions, receipts and limits; captured art remains unshipped.
+`build/qa/justice-owner` passes root19, state and real main-scene composition checks
+for factory construction, overlay-blocked Escape, ordinary Escape and queued-read
+retirement on Places handoff. The final category-art correction is verified by the
+protected rendered run. Earlier193154/193618 captures exposed incorrect row art
+and a two-pixel text offset; both are corrected, rather than accepted departures.
+
 `justice_state.gd` stages case selection independently from the unfinished view.
 It assembles each list/detail before publishing it, selects the first native case,
 keeps per-tab list scroll and selected-case witness scroll local, and retires
@@ -114,7 +143,8 @@ preservation/prefs restoration, native30FPS and a headless viewer (GPU45C,7%,22.
 Only the documented Godot separate-thread notice remains: passed_with_known_issues.
 Fixture `resolution_reference` retains the controlled cases and scope. MSVC
 `justice-resolution-build.log` and `build/qa/justice-resolution` root19/controller
-checks pass. Rendered DF3D Justice fidelity remains unverified.
+checks pass. That run alone does not establish rendered DF3D Justice fidelity;
+the staged read-view evidence above has its own narrower coverage.
 
 The installed protocol193 bridge SHA256 is
 `938F922B901F414064DF89C2CCB260968DAB1127C0B7BF0321C9D6719EA4FBC6`.

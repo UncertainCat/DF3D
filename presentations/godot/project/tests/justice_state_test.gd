@@ -1,4 +1,7 @@
 extends SceneTree
+const View=preload("res://scripts/justice_view.gd")
+const Owner=preload("res://scripts/justice_panel.gd")
+const Registry=preload("res://scripts/ui_availability.gd")
 const State=preload("res://scripts/justice_state.gd")
 const C=preload("res://scripts/management_contract.gd")
 const Service=preload("res://tests/work_details_state_test.gd").Service
@@ -11,6 +14,7 @@ func report(id:=9,offset:=0,total:=1,revision:=12,tab:=0) -> Dictionary:
 	return {"justice":{"outcome":C.JusticeOutcome.None,"tab":tab,"list_revision":8,"detail":{"crime_id":id,"resolution":C.JusticeCaseResolution.Unsolved,"revision":revision,"caption":"fixture","status":"fixture status","total":total,"offset":offset,"witnesses":[{"witness":"fixture witness","description":"","date":"event","reported":"reported"}]}}}
 func _initialize() -> void:call_deferred("run")
 func run() -> void:
+	check(Registry.PANEL_SCRIPTS.has("justice") and not Registry.PANEL_ROUTES.has("Justice"),"Justice public gate changed")
 	var service:=Service.new();root.add_child(service);var state:=State.new();state.configure(service);state.open()
 	service.reply(state.ticket,page([9],0,2));check(state.rows.is_empty() and state.phase==State.Phase.Reading,"Partial cases exposed")
 	check(service.calls[state.ticket].intent.offset==1 and service.calls[state.ticket].intent.expected_list_revision==8,"Case continuation lost receipt")

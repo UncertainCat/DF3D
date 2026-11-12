@@ -144,6 +144,18 @@ func run():
 		click.position=Vector2(280,48 if dimensions.x==1200 else 24)
 		workshop.conditions_view._gui_input(click)
 		check(ui.host.active==ui.controller("work_details") and not workshop.conditions_view.visible and workshop.conditions.order_id==-1,"Labor tab routes and retires Conditions")
+	var justice=ui.controller("justice");justice.open_panel()
+	var justice_ticket: int=justice.state.ticket
+	check(ui.host.active==justice and justice.panel.visible and justice_ticket>0,"Justice factory did not own queued read")
+	ui.host.set_overlay_blocked(true);justice.handle_back()
+	check(ui.host.active==justice,"Justice Escape bypassed overlay")
+	ui.host.set_overlay_blocked(false)
+	var justice_escape:=InputEventKey.new();justice_escape.keycode=KEY_ESCAPE;justice_escape.pressed=true;ui.host._input(justice_escape)
+	check(ui.host.active==null and not justice.panel.visible and justice.state.phase==justice.state.Phase.Closed and not ui.actions._requests.has(justice_ticket),"Justice Escape retained queued read")
+	justice.open_panel();justice_ticket=justice.state.ticket
+	var justice_header:=InputEventMouseButton.new();justice_header.button_index=MOUSE_BUTTON_LEFT;justice_header.pressed=true;justice_header.position=Vector2(200,24)
+	justice.panel.layout(Vector2(1200,800));justice.panel._gui_input(justice_header)
+	check(ui.host.active==ui.controller("places") and not ui.actions._requests.has(justice_ticket),"Justice header failed to retire read on Places handoff")
 	var places=ui.controller("places")
 	for dimensions in [Vector2(912,552),Vector2(1600,900)]:
 		for target in [[24,"residents"],[136,"tasks"],[280,"work_details"],[352,"workshop"]]:

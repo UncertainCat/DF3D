@@ -335,10 +335,9 @@ func overview(parent: Node, detail: Dictionary):
   return int(a.get("id",0))<int(b.get("id",0)))
  var counts := [0,0]
  for row in skills:
-  var category := skill_category(row)
-  var combat := category=="Combat"
-  if not combat and category!="Labor": continue
-  var group := 1 if combat else 0
+  var group := int(fact_value(row,"overview_group",2))
+  if group not in [0,1]: continue
+  var combat := group==1
   if counts[group]>=(5 if combat else 6): continue
   counts[group]+=1
   var skill_line := paragraph(cells[5 if combat else 6],skill_spans(row,true),0,false)

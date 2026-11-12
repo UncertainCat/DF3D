@@ -66,9 +66,9 @@ func run():
    if sheet.recipe.subtabs.has(name):
     for sub in sheet.recipe.subtabs[name]: sheet.change_tab(sub,true)
  sheet.change_tab("Skills");sheet.change_tab("Combat",true)
- check(sheet.filtered_records("skills",world.creature.detail.sections[0].records).size()==1,"Combat skill classification")
+ check(sheet.skills_view.kind==1 and sheet.skills_view.rows.is_empty(),"Combat tab must wait for native page, not infer rows from legacy skill facts")
  sheet.change_tab("Other skills",true)
- check(sheet.filtered_records("skills",world.creature.detail.sections[0].records)[0].name=="Swimming","Personal skills in Other skills")
+ check(sheet.skills_view.kind==3 and sheet.skills_view.rows.is_empty(),"Other skills tab must wait for native page, not infer rows from legacy skill facts")
  first=view.body.get_child(0)
  world.creature.generation=2;world.creature.detail.captured_tick=2;view._process(.25)
  check(view.body.get_child(0)==first,"Publication-only changes preserve controls")

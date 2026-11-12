@@ -5609,6 +5609,12 @@ void run(color_ostream& out) {
     });
     lua_setfield(L,-2,"skill_profession");
     lua_pushcfunction(L,[](lua_State* state)->int {
+      const auto value=df3d_creature::overviewSkillGroup(int16_t(luaL_checkinteger(state,1)));
+      if(!value)return luaL_error(state,"Native Overview skill group unavailable");
+      lua_pushinteger(state,*value);return 1;
+    });
+    lua_setfield(L,-2,"overview_skill_group");
+    lua_pushcfunction(L,[](lua_State* state)->int {
       const auto value=df3d_creature::headerName(df::unit::find(int32_t(luaL_checkinteger(state,1))));
       if(!value)return luaL_error(state,"Native creature header name unavailable");
       lua_newtable(state);field(state,"combined",value->combined);field(state,"name",value->name);field(state,"profession",value->profession);

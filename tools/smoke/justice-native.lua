@@ -219,6 +219,11 @@ if os.getenv('DF3D_JUSTICE_SHEET_NAV')=='1' then
   gui.simulateInput(view,'_MOUSE_L');df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1;settle()
   assert(main.view_sheets.open,'Justice sheet did not open: '..name)
   local sample={tab=name,unit_id=main.view_sheets.active_id,info_open=main.info.open,sheet_type=main.view_sheets.active_sheet}
+  sample.skill_groups={}
+  for group,prefix in ipairs{'labor','combat','other'}do
+   local count=main.view_sheets[prefix..'_skill_num'];local ids=main.view_sheets[prefix..'_skill_ind']
+   for i=0,count-1 do sample.skill_groups[tostring(ids[i])]=group-1 end
+  end
   capture('justice-sheet-'..#samples)
   gui.simulateInput(view,'LEAVESCREEN');settle()
   sample.after_escape_info_open=main.info.open;sample.after_escape_sheet_open=main.view_sheets.open

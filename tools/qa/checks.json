@@ -4260,6 +4260,11 @@
       "reason": "Protected stockpile_storage_native.ps1 with DF3D_NOBLES_NATIVE, DF3D_NOBLES_WIRE and DF3D_NOBLES_SCENE; actual main-scene header navigation, overlay blocking and reset."
     },
     {
+      "path": "presentations/godot/project/tests/justice_scene_live.gd",
+      "status": "manual",
+      "reason": "Protected actual-main-scene Justice sheet navigation via stockpile_storage_native.ps1 with DF3D_JUSTICE_NATIVE/SHEET_NAV/SCENE/WIRE=1; requires owned paused save and Df3dLane. Also compares Overview skill groups to native oracle collections."
+    },
+    {
       "path": "presentations/godot/project/tests/justice_wire_live.gd",
       "status": "manual",
       "reason": "Protected stockpile_storage_native.ps1 with DF3D_JUSTICE_NATIVE and DF3D_JUSTICE_WIRE; verifies ordered native case and witness pages through the typed model and rejects stale reads."

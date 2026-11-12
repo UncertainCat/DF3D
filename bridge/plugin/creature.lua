@@ -191,6 +191,7 @@ return function(request)
    fact(s,r,'rusty',v.rusty)
    fact(s,r,'skill_class',enum(df.job_skill_class,attrs.type))
    if request.skill_profession then fact(s,r,'native_profession',request.skill_profession(v.id))end
+   if request.overview_skill_group then fact(s,r,'overview_group',request.overview_skill_group(v.id))end
    -- Raw profession-name overrides provide species-specific skill nouns
    -- (e.g. swordsdwarf); do not substitute generic profession captions.
    if attrs.profession>=0 then

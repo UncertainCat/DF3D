@@ -19,6 +19,9 @@ func exercise(expected: Dictionary) -> void:
 		while inspector.creature_display.get("detail",{}).is_empty() and Time.get_ticks_msec()<deadline:
 			world.poll();actions.poll(0.01);await create_timer(0.01).timeout
 		check(not inspector.creature_display.get("detail",{}).is_empty(),"Justice creature sheet details did not load")
+		for row in inspector.creature_sheet.records_for("skills"):
+			var group:=int(inspector.creature_sheet.fact_value(row,"overview_group",-1))
+			check(sample.skill_groups.has(str(row.id)) and group==int(sample.skill_groups.get(str(row.id),-2)),"Overview skill group differs from native collection")
 		check(owner.panel.visible==bool(sample.info_open),"Justice visibility behind native sheet differs")
 		await process_frame;await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(directory+"/justice-main-sheet-%d.png"%tab)

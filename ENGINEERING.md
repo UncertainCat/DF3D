@@ -11103,6 +11103,29 @@ Both final sessions exit unsaved with source manifests unchanged and four GPU
 logs containing only the known renderer notice. unit-header-activity-gates QA
 passes core19/19, context and thought-text checks; runtime code is unchanged.
 
+Overview skill membership uses the native collector's immutable dispatch tables,
+not the Skills-tab categories. Collector1a5c53 selects labor1a5d83, combat1a5c7b
+or other1a5e9c through tables1a8014/1a8020; IDs above136 take other. The bridge
+pins the selector bytes and tables and exports numeric overview_group on skill
+facts. No native sheet arrays are runtime inputs. Godot retains local drawing
+and the existing rating order/row limits; absent group facts do not imply
+membership. The Skills tabs retain their separate native ordered page provider.
+
+Protected120250 compares all40/30 skill groups for Guard5813/Convict6970 with
+native collections, then exercises the actual main-scene sheet transitions.
+All70 groups match. Labor text crop(424,458)-(658,536) and combat crop
+(664,374)-(896,452) each match native pixels for both creatures. Musician no
+longer displaces Brewer from the Convict labor summary. Native quote/memory
+elaboration and a two-pixel divider position remain unresolved; this is not full
+Overview acceptance. Fixture native_justice.json.overview_skill_groups_reference
+retains bounded provenance. MSVC/install, context/thought-text checks and all19
+core checks pass. The context fixture's obsolete local Skills filtering assertions
+now verify that native Skills pages are required instead of synthesizing rows
+from legacy facts. The new Justice main-scene driver is cataloged as protected
+manual coverage. Owned DF32836 closes unsaved with source/preferences preserved,
+both applications30FPS, sampled GPU47–50C. Known separate-renderer/finalize/two-
+ObjectDB diagnostics qualify the live run as passed_with_known_issues.
+
 Overview skill colors use native764a70's profession selector, transported as
 the numeric native_profession fact on each skill. Its pinned body and tables
 span3c9 bytes, FNVfe54e4ebd35a80fa. Native167219..16727b uses profession color

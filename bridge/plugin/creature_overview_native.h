@@ -56,6 +56,26 @@ inline std::optional<int16_t> overviewSkillProfession(int16_t skill) {
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     return reinterpret_cast<int16_t (*)(int16_t)>(base+0x764a70)(skill);
 }
+// Overview's inline collector1a5c53 uses this immutable native dispatch table,
+// not the Skills tab categories. 0=labor, 1=combat, 2=other; no sheet/cache reads.
+inline std::optional<int32_t> overviewSkillGroup(int16_t skill) {
+    static const bool supported=[] {
+        if(!df3d_production::farmFunctions())return false;
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        const auto hash=[&](size_t at,size_t count) {
+            uint64_t h=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<count;++i){h^=base[at+i];h*=UINT64_C(1099511628211);}
+            return h;
+        };
+        return hash(0x1a5c53,0x26)==UINT64_C(0x59608393cd837907) &&
+               hash(0x1a8014,0x95)==UINT64_C(0x93a409a7f44448fb);
+    }();
+    if(!supported)return std::nullopt;
+    if(skill<0 || skill>0x88)return 2;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    const auto group=base[0x1a8020+skill];
+    return group<=2?std::optional<int32_t>(group):std::nullopt;
+}
 struct OverviewStatus {
     bool personality=false,needs=false,assignedSquad=false;
     std::string squad;

@@ -11675,5 +11675,58 @@
       "justice-main-sheet-4.png": "383b641e3e914d7648c249ac08af3590a741f9fa19d7c3159d2bc19456f7d682",
       "job-settings-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f"
     }
+  },
+  "overview_skill_groups_reference": {
+    "run": "build/stockpile-storage-native-input-20261112-120250",
+    "owned_df_pid": 32836,
+    "source_preserved": true,
+    "status": "passed_with_known_issues",
+    "native_reference": "Collector1a5c53 dispatches via immutable byte table1a8020 and target table1a8014: labor1a5d83, combat1a5c7b, other1a5e9c. Skills above136 take other.",
+    "units": [
+      5813,
+      6970
+    ],
+    "skill_counts": [
+      40,
+      30
+    ],
+    "all_transported_groups_match_native": true,
+    "labor_text_crop": [
+      424,
+      458,
+      658,
+      536
+    ],
+    "labor_text_different_pixels": [
+      0,
+      0
+    ],
+    "combat_crop": [
+      664,
+      374,
+      896,
+      452
+    ],
+    "combat_different_pixels": [
+      0,
+      0
+    ],
+    "findings": [
+      "Overview no longer uses Skills-tab categories; Musician belongs to other, leaving Brewer in the native labor summary.",
+      "The generic fact contract carries optional numeric overview_group. Older recordings without it do not imply membership. Skills tabs continue using their native ordered pages."
+    ],
+    "limitations": [
+      "Native quote and memory elaboration remain missing.",
+      "A separate two-pixel divider-position difference remains below the labor block; no whole-Overview parity claimed.",
+      "Known separate-renderer/finalize/two-ObjectDB diagnostics."
+    ],
+    "bridge_sha256": "dc8b0888c4647d30edf137ec6342dacdbb2e917382db55e0a0d925ad94b109fa",
+    "artifacts": {
+      "justice-sheet-navigation.json": "29b9c2cbf11e286737c7bec5cdbb861154429ad9fcb4b251020452e5555f1596",
+      "justice-sheet-0.png": "a9ece4334bc6ab82ea5b6fe403f721dc4185a6fef24fe53ba5d3eda046d95112",
+      "justice-sheet-1.png": "3e78cfe104212df50ead9da5d8823ec9f2a97607ee437af8fa0a6130fae10fab",
+      "justice-main-sheet-3.png": "13db1d8345105cc44dabe7da228308cd61175862d5475ef5883aac8de23251d7",
+      "justice-main-sheet-4.png": "c680e09528a4197739481d1834c0b41889c1a4fd243bcfe0161c2edda4f77067"
+    }
   }
 }

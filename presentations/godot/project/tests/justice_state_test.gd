@@ -18,6 +18,17 @@ func candidates(ids: Array=[42,43],offset:=0,total:=2,revision:=22) -> Dictionar
 		"offset":offset,"total":total,"rows":ids.map(func(id):return {"unit_id":id,"rank":3,"interrogation_pending":false,"counterintelligence":true,"display":{"columns":28,"name":"fixture","witness_count":0,"witness_label":"fixture","witness_color":6,"deceased":"","name_color":{"color":[4,0,0],"alternate":[4,0,0],"effect":0}}})}}}
 func ready(service,state) -> void:
 	state.open();service.reply(state.ticket,page());service.reply(state.ticket,report())
+func test_case_keyboard(service,state) -> void:
+	ready(service,state);state.move_case(1,1);var old: int=state.ticket
+	check(state.selected_id==10 and state.first==1,"Case Down did not keep selection visible")
+	state.move_case(-1,1);var current: int=state.ticket
+	service.reply(old,report(10));check(state.ticket==current and state.detail.is_empty(),"Rapid case navigation accepted old detail")
+	service.reply(current,report());check(state.selected_id==9 and state.first==0,"Case Up did not restore first row")
+	var count: int=service.next;state.move_case(-10,1);check(service.next==count,"Boundary case key needlessly reread details")
+	state.seek(1,1);var changes: Array=[];var listener:=func():changes.append(state.first)
+	state.changed.connect(listener);state.move_case(-1,1);state.changed.disconnect(listener)
+	check(state.first==0 and changes==[0],"Boundary key failed to redraw the selected case after wheel scrolling")
+	state.move_case(10,1);check(state.selected_id==10 and state.first==1,"Case page navigation did not clamp")
 func test_case_return(service,state) -> void:
 	ready(service,state);state.select_case(10);var old: int=state.ticket
 	state.select_tab(2);service.reply(state.ticket,page([0,1],0,2,2));service.reply(state.ticket,report(0,0,1,12,2))
@@ -189,6 +200,7 @@ func run() -> void:
 	test_candidates(service,state)
 	test_sorts(service,state)
 	test_interrogation(service,state)
+	test_case_keyboard(service,state)
 	test_case_return(service,state)
 	test_guard(service,state)
 	test_convicts(service,state)

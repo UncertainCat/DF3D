@@ -90,6 +90,17 @@ func seek(value: int,capacity: int) -> void:
 func seek_witness(value: int,capacity: int) -> void:
 	if phase!=Phase.Ready or detail.is_empty():return
 	witness_first=clampi(value,0,maxi(0,detail.witnesses.size()-maxi(1,capacity)));changed.emit()
+func move_case(step: int,capacity: int) -> void:
+	if tab>=3 or phase not in [Phase.Ready,Phase.DetailReading] or rows.is_empty():return
+	# Native1416b40/1416760 clamps selection and keeps that row visible.
+	var previous_first:=first;var previous_id:=selected_id
+	var index:=rows.find_custom(func(row):return row.crime_id==selected_id)
+	index=clampi(maxi(0,index)+step,0,rows.size()-1)
+	if capacity<=0:first=0
+	elif index<first:first=index
+	elif index>=first+capacity:first=index-capacity+1
+	_scroll[tab]=first;select_case(rows[index].crime_id)
+	if selected_id==previous_id and first!=previous_first:changed.emit()
 func select_case(id: int) -> void:
 	if phase not in [Phase.Ready,Phase.DetailReading] or not rows.any(func(row):return row.crime_id==id):return
 	if selected_id==id and (phase==Phase.DetailReading or not detail.is_empty()):return

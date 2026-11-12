@@ -292,6 +292,13 @@ func case_return() -> void:
 		index+=1;var tab:=0 if sample.tab=="Open cases" else 2
 		if sample.label=="initial":
 			await pointer_click(view.position+view.tab_rect(tab).get_center());await settle_controller(controller)
+		elif sample.label.contains(":STANDARDSCROLL_"):
+			var parts: PackedStringArray=sample.label.split(":")
+			var motion:=InputEventMouseMotion.new();motion.position=Vector2(100 if parts[0]=="case" else 700,300);Input.parse_input_event(motion)
+			var event:=InputEventKey.new();event.pressed=true
+			event.keycode={"STANDARDSCROLL_UP":KEY_UP,"STANDARDSCROLL_DOWN":KEY_DOWN,"STANDARDSCROLL_PAGEUP":KEY_PAGEUP,"STANDARDSCROLL_PAGEDOWN":KEY_PAGEDOWN}[parts[1]]
+			if parts[0]=="witness":event.keycode={"STANDARDSCROLL_UP":KEY_KP_8,"STANDARDSCROLL_DOWN":KEY_KP_2,"STANDARDSCROLL_PAGEUP":KEY_KP_9,"STANDARDSCROLL_PAGEDOWN":KEY_KP_3}[parts[1]]
+			Input.parse_input_event(event);await create_timer(0.05).timeout;await settle_controller(controller)
 		elif sample.label=="second":
 			await pointer_click(view.position+view.case_rect(1).get_center());await settle_controller(controller)
 		else:

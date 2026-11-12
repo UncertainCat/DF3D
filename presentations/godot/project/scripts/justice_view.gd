@@ -139,6 +139,14 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		pointer_known=true;pointer_position=get_global_transform_with_canvas().affine_inverse()*event.position
 		update_hover()
+	if allowed() and state!=null and state.tab<3 and not picker_open() and state.phase in [state.Phase.Ready,state.Phase.DetailReading] and event is InputEventKey and event.pressed and not event.ctrl_pressed and not event.shift_pressed and not event.alt_pressed and not event.meta_pressed:
+		var up: bool=event.keycode in [KEY_UP,KEY_8,KEY_KP_8]
+		var down: bool=event.keycode in [KEY_DOWN,KEY_2,KEY_KP_2]
+		var page_up: bool=event.keycode in [KEY_PAGEUP,KEY_9,KEY_KP_9]
+		var page_down: bool=event.keycode in [KEY_PAGEDOWN,KEY_3,KEY_KP_3]
+		if up or down or page_up or page_down:
+			state.move_case((-1 if up or page_up else 1)*(capacity() if page_up or page_down else 1),capacity())
+			get_viewport().set_input_as_handled();return
 	if allowed() and state!=null and (picker_open() or roster_open()) and search.visible and search.editable and event is InputEventKey and event.pressed and not event.echo and event.ctrl_pressed and not event.shift_pressed and not event.alt_pressed and not event.meta_pressed and event.keycode==KEY_F:
 		search.grab_focus();get_viewport().set_input_as_handled();return
 	if allowed() and state!=null and picker_open() and event is InputEventKey and event.pressed and not event.ctrl_pressed and not event.shift_pressed and not event.alt_pressed and not event.meta_pressed and event.keycode==KEY_LEFT:

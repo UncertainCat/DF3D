@@ -15516,4 +15516,138 @@
     ],
     "previous_gap": "142858 passed selection/detail but lacked278 native No witnesses pixels on Cold case1; corrected in143012."
   }
+,
+  "case_keyboard_reference": {
+    "source": "build\\stockpile-storage-native-input-20261112-143730",
+    "scope": "Open/Cold case Up/Down/PageUp/PageDown with pointer over case and witness columns;18 native/viewer selections with actual arrow/page and keypad events. Numeric aliases follow installed interface bindings but physical SDL delivery is not tested. Closed tab, overflowing case lists and other dimensions remain outside live coverage.",
+    "samples": [
+      {
+        "tab": "Open cases",
+        "label": "initial",
+        "crime_id": 9
+      },
+      {
+        "tab": "Open cases",
+        "label": "case:STANDARDSCROLL_DOWN",
+        "crime_id": 10
+      },
+      {
+        "tab": "Open cases",
+        "label": "case:STANDARDSCROLL_PAGEDOWN",
+        "crime_id": 16
+      },
+      {
+        "tab": "Open cases",
+        "label": "case:STANDARDSCROLL_UP",
+        "crime_id": 15
+      },
+      {
+        "tab": "Open cases",
+        "label": "case:STANDARDSCROLL_PAGEUP",
+        "crime_id": 9
+      },
+      {
+        "tab": "Open cases",
+        "label": "witness:STANDARDSCROLL_DOWN",
+        "crime_id": 10
+      },
+      {
+        "tab": "Open cases",
+        "label": "witness:STANDARDSCROLL_PAGEDOWN",
+        "crime_id": 16
+      },
+      {
+        "tab": "Open cases",
+        "label": "witness:STANDARDSCROLL_UP",
+        "crime_id": 15
+      },
+      {
+        "tab": "Open cases",
+        "label": "witness:STANDARDSCROLL_PAGEUP",
+        "crime_id": 9
+      },
+      {
+        "tab": "Cold cases",
+        "label": "initial",
+        "crime_id": 0
+      },
+      {
+        "tab": "Cold cases",
+        "label": "case:STANDARDSCROLL_DOWN",
+        "crime_id": 1
+      },
+      {
+        "tab": "Cold cases",
+        "label": "case:STANDARDSCROLL_PAGEDOWN",
+        "crime_id": 6
+      },
+      {
+        "tab": "Cold cases",
+        "label": "case:STANDARDSCROLL_UP",
+        "crime_id": 5
+      },
+      {
+        "tab": "Cold cases",
+        "label": "case:STANDARDSCROLL_PAGEUP",
+        "crime_id": 0
+      },
+      {
+        "tab": "Cold cases",
+        "label": "witness:STANDARDSCROLL_DOWN",
+        "crime_id": 1
+      },
+      {
+        "tab": "Cold cases",
+        "label": "witness:STANDARDSCROLL_PAGEDOWN",
+        "crime_id": 6
+      },
+      {
+        "tab": "Cold cases",
+        "label": "witness:STANDARDSCROLL_UP",
+        "crime_id": 5
+      },
+      {
+        "tab": "Cold cases",
+        "label": "witness:STANDARDSCROLL_PAGEUP",
+        "crime_id": 0
+      }
+    ],
+    "native_functions": {
+      "0x1416b40": {
+        "size": 113,
+        "sha256": "6f783e4141bf8029ba2ea936d955e2c491f98d261fa65b355e122012e767ac66"
+      },
+      "0x140f050": {
+        "size": 418,
+        "sha256": "412bf08838f9a0aa1dd88f74be6fb7a568e15e9c6da08184c1874d2c6906b893"
+      },
+      "0x1416760": {
+        "size": 265,
+        "sha256": "0e114af438be91e5e42cb63704f12e261bb26be4e4bfb80c6d3ac73d35eb9d2e"
+      }
+    },
+    "native_behavior": "1416b40 passes Cases+2e4 page count to140f050;1416760 clamps selected index, activates detail callback and adjusts first row to include selection. No runtime widget inputs.",
+    "crop": [
+      32,
+      52,
+      976,
+      760
+    ],
+    "final_panel_different_pixels": {
+      "Open": 0,
+      "Cold": 0
+    },
+    "sha256": {
+      "justice-case-keys-Open-cases.png": "a249ad1b360385c6b52c5ac3125ae9c661edbc1145db912615e64dd04bc073c6",
+      "justice-case-keys-Cold-cases.png": "04682b044ecedce8de6b7081106137ed818111ae0312e166c8adc58603dbc4ae",
+      "justice-case-return-view-9.png": "a3164c4fa7fc9c11728bf3821e075ee43a5ba07f9ffead39b744733cce78a8f4",
+      "justice-case-return-view-18.png": "eff8870ebce9bc43e028e41b68b82d46139e10fcdddf411f7bf2ce679c3ae50b"
+    },
+    "validation": [
+      "core19 passed",
+      "justice-case-keyboard-final state/composition passed",
+      "live passed_with_known_issues: known renderer/finalize/two ObjectDB shutdown"
+    ],
+    "offline_lifecycle": "Rapid navigation discards late old details; page/boundary clamping; boundary key redraws selection after independent wheel scroll."
+  }
 }

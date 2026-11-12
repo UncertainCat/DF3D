@@ -1168,6 +1168,23 @@ hashes. Closed-case selection retention, nonzero witness scroll on return and
 other dimensions are outside this check's scope. Run CASE_RETURN/WIRE/RENDER
 with the protected Justice native lane; protocol203 and bridge are unchanged.
 
+Case lists accept unmodified Up/Down and Page Up/Page Down, including the
+installed2/8/3/9 and keypad aliases. Native1416b40/140f050/1416760 establish
+selection stepping, page size, clamping and keeping selection visible. Mouse
+position over the witness column does not redirect these keys. The viewer
+uses owned selection/scroll and fresh detail requests; rapid input retires old
+reads. A boundary key also redraws when it brings a scrolled-off selection back.
+
+Native143239/143431 and mixed143730 on2026-11-12 establish18 Open/Cold states
+with actual arrow/page and keypad events. Both end-state panel crops are
+pixel-identical. `case_keyboard_reference` retains native function hashes and
+observations. State/composition in `justice-case-keyboard-final` and core19 pass;
+tests include rapid navigation and boundary redraw. Initial headless checks
+failed missing explicit boolean types; corrected checks pass. DF46372 closes
+unsaved, source/prefs preserved, serial30FPS, GPU48C sampled. Only known Godot
+shutdown diagnostics remain. Closed tab, overflowing case lists, other sizes
+and physical numeric-key delivery are not claimed by this live run.
+
 Protected `stockpile-storage-native-input-20261111-191326` verifies this controller
 through the real semantic action service on all three case tabs, initial detail
 assembly and close during a read. Existing17-case/134-witness transport assertions

@@ -346,6 +346,7 @@ enum class ManagementAction : uint8_t {
   JusticeCandidatesRead = 123,
   JusticeConvict = 124,
   JusticeInterrogate = 125,
+  JusticeGuardRead = 126,
 };
 enum class ManagementStatus : uint8_t {
   Idle = 0,
@@ -682,6 +683,7 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::JusticeCandidatesRead: return true;
   case ManagementAction::JusticeConvict: return true;
   case ManagementAction::JusticeInterrogate: return true;
+  case ManagementAction::JusticeGuardRead: return true;
   default: return false;
   }
 }
@@ -692,6 +694,7 @@ constexpr const char* managementDomain(ManagementAction action) {
   case ManagementAction::JusticeCandidatesRead: return "justice";
   case ManagementAction::JusticeConvict: return "justice";
   case ManagementAction::JusticeInterrogate: return "justice";
+  case ManagementAction::JusticeGuardRead: return "justice";
   case ManagementAction::ObjectsRead: return "objects";
   case ManagementAction::ObjectsLocate: return "objects";
   case ManagementAction::NoblesRead: return "nobles";

@@ -41,6 +41,19 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+Management protocol199 adds the read-only `JusticeGuardRead` action and an
+optional `JusticeGuardPage` on `JusticeState`. Guard requests use tab3 and owned
+query/sort/page inputs, and cannot carry case identities or mutation comparisons.
+The numeric `Crime` sort enum denotes the guard judiciary rank in this context;
+its native comparator is ascending, unlike the conviction score comparator.
+Rows carry owned native name lines, name colors, selector artwork and positions.
+Older recordings do not imply a guard roster. Both protocol defaults and the
+mailbox are199 (`Local\df3d_management_v199`); rebuild bridge and client together.
+Session/map versions are unchanged. The staged Guard integration is not yet
+accepted for public exposure; search/order, rendered rows and navigation need
+protected live verification.
+
+
 Management protocol198 adds `JusticeInterrogate`, the candidate request/page
 `interrogate` mode, and an `expected_selected` comparison for checkbox edits.
 The mutation requires Interrogate mode and all three list/case/candidate

@@ -310,7 +310,8 @@ static_assert(static_cast<int>(wm::ManagementAction::JusticeCaseRead) == static_
 static_assert(static_cast<int>(wm::ManagementAction::JusticeCandidatesRead) == static_cast<int>(df3d::mirror::ManagementAction::JusticeCandidatesRead));
 static_assert(static_cast<int>(wm::ManagementAction::JusticeConvict) == static_cast<int>(df3d::mirror::ManagementAction::JusticeConvict));
 static_assert(static_cast<int>(wm::ManagementAction::JusticeInterrogate) == static_cast<int>(df3d::mirror::ManagementAction::JusticeInterrogate));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 126);
+static_assert(static_cast<int>(wm::ManagementAction::JusticeGuardRead) == static_cast<int>(df3d::mirror::ManagementAction::JusticeGuardRead));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 127);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -643,3 +644,4 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::JusticeCaseRead) == df3d
 static_assert(wm::isRuntimeAction(wm::ManagementAction::JusticeCandidatesRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::JusticeCandidatesRead));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::JusticeConvict) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::JusticeConvict));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::JusticeInterrogate) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::JusticeInterrogate));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::JusticeGuardRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::JusticeGuardRead));

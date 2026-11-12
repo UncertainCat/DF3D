@@ -146,3 +146,21 @@ TEST_CASE("Justice interrogation binds explicit mode and expected checkbox state
   CHECK(bool(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer())))==!valid);
  }
 }
+
+TEST_CASE("Justice guard requests cannot carry case or mutation state") {
+ for(int fault=0;fault<8;++fault){flatbuffers::FlatBufferBuilder b;
+  auto q=m::CreateJusticeRequest(b,fault==1?0:3,fault==2?1:0,32,0,fault==3?9:-1,fault==4?8:0,b.CreateString(""),fault==5?9:0,fault==6?42:-1,0,fault==7);
+  m::ConstructionRequestBuilder r(b);r.add_client_id(1);r.add_seq(1);r.add_world_epoch(1);r.add_action(m::ManagementAction::JusticeGuardRead);r.add_justice(q);b.Finish(r.Finish());
+  CHECK(bool(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
+ }
+}
+TEST_CASE("Justice guard replies reject mixed pages and duplicate identities") {
+ for(int fault=0;fault<5;++fault){flatbuffers::FlatBufferBuilder b;
+  auto empty=b.CreateString("");auto color=m::CreateAreaNameColor(b);auto row=m::CreateJusticeGuardRow(b,42,2000,empty,empty,color);
+  auto other=m::CreateJusticeGuardRow(b,fault==2?42:43,1000,empty,empty,color);
+  auto guard=m::CreateJusticeGuardPage(b,empty,fault==3?16:12,b.CreateVector(std::vector{row,other}));
+  auto payload=m::CreateJusticeState(b,m::JusticeOutcome::None,fault==1?0:3,9,2,0,b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeCaseRow>>{}),0,0,guard);
+  m::ManagementStateBuilder r(b);r.add_revision(1);r.add_action(fault==4?m::ManagementAction::JusticeRead:m::ManagementAction::JusticeGuardRead);r.add_status(m::ManagementStatus::Ok);r.add_justice(payload);b.Finish(r.Finish());
+  CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==(fault!=0));
+ }
+}

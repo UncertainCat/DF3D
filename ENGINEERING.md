@@ -41,12 +41,22 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+Management protocol198 adds `JusticeInterrogate`, the candidate request/page
+`interrogate` mode, and an `expected_selected` comparison for checkbox edits.
+The mutation requires Interrogate mode and all three list/case/candidate
+revisions; Convict cannot carry Interrogate mode. Reads cannot carry checkbox
+comparison state. Candidate revisions include mode, query, sorts and current
+semantic facts. Mutation replies contain only an explicit outcome, never a
+reusable candidate page. Unknown outcomes must not replay automatically.
+Both request/reply defaults and the mailbox are198
+(`Local\df3d_management_v198`). Rebuild bridge and client together; protocol197
+clients are incompatible. Older recordings do not imply an interrogation
+operation or selected-state comparison. Session/map versions are unchanged.
+
 Management protocol197 adds an optional owned unit-selector recipe to each
 Justice candidate row. Missing recipes remain absent; older recordings do not
 invent artwork. The shared appearance validator checks references and sizes
-within the candidate page's384KiB budget. Bridge/client must rebuild together;
-mailbox is `Local\df3d_management_v197`. Protocol196 clients are incompatible;
-session/map versions are unchanged. The bridge collects recipes from semantic
+within the candidate page's384KiB budget. The bridge collects recipes from semantic
 candidate units with `resolveUnitSelector`; it does not use Residents eligibility.
 Page byte limits can shorten a page, and the existing candidate offset/revision
 checks govern continuation. Godot retains recipes with candidate rows and creates

@@ -134,3 +134,15 @@ TEST_CASE("Justice candidate artwork validates page references and preserves abs
   CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==(fault==1 || fault==2 || fault==4));
  }
 }
+
+TEST_CASE("Justice interrogation binds explicit mode and expected checkbox state") {
+ for(auto action:{m::ManagementAction::JusticeCandidatesRead,m::ManagementAction::JusticeConvict,m::ManagementAction::JusticeInterrogate})
+ for(bool mode:{false,true})for(bool selected:{false,true}) {
+  flatbuffers::FlatBufferBuilder b;
+  const bool read=action==m::ManagementAction::JusticeCandidatesRead;
+  auto q=m::CreateJusticeRequest(b,0,0,32,7,9,8,b.CreateString(""),9,read?-1:42,0,mode,selected);
+  m::ConstructionRequestBuilder r(b);r.add_client_id(1);r.add_seq(1);r.add_world_epoch(1);r.add_action(action);r.add_justice(q);b.Finish(r.Finish());
+  const bool valid=action==m::ManagementAction::JusticeInterrogate?mode:!selected && (read || !mode);
+  CHECK(bool(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer())))==!valid);
+ }
+}

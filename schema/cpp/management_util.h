@@ -183,8 +183,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 197;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v197";
+inline constexpr uint32_t kManagementVersion = 198;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v198";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -482,7 +482,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::JusticeConvict &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::JusticeInterrogate &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -571,7 +571,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::JusticeConvict)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::JusticeInterrogate)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -723,12 +723,14 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
       }else if(q->target() || q->expected_candidate_revision())return "unexpected nobles candidate target";
     }
   }else if(r.nobles())return "unexpected nobles request";
-  if(r.action()>=ManagementAction::JusticeRead && r.action()<=ManagementAction::JusticeConvict){
+  if(r.action()>=ManagementAction::JusticeRead && r.action()<=ManagementAction::JusticeInterrogate){
     const auto* q=r.justice();
     if(!q || q->tab()>2 || !q->limit() || q->limit()>64 || q->offset()>1048576 ||
       q->expected_list_revision()>INT64_MAX || q->expected_case_revision()>INT64_MAX ||
       q->expected_candidate_revision()>INT64_MAX)return "invalid justice request";
-    const bool candidates=r.action()==ManagementAction::JusticeCandidatesRead,convict=r.action()==ManagementAction::JusticeConvict;
+    const bool candidates=r.action()==ManagementAction::JusticeCandidatesRead,interrogate=r.action()==ManagementAction::JusticeInterrogate;
+    const bool convict=r.action()==ManagementAction::JusticeConvict || interrogate;
+    if(interrogate ? !q->interrogate() : q->expected_selected() || (!candidates && q->interrogate()))return "invalid justice candidate mode";
     if(candidates || convict){
       if(const auto* sorts=q->sorts()){
         if(sorts->size()==0 || sorts->size()>65536)return "invalid justice sorts";
@@ -1322,7 +1324,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::JusticeConvict ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::JusticeInterrogate ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -1516,7 +1518,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
   }else if(s.status()==ManagementStatus::Ok && s.action()>=ManagementAction::NoblesRead && s.action()<=ManagementAction::NoblesSymbolsRetire)return "missing nobles result";
   if(const auto* r=s.justice()) {
     const bool read=s.action()==ManagementAction::JusticeRead,detail=s.action()==ManagementAction::JusticeCaseRead;
-    const bool candidates=s.action()==ManagementAction::JusticeCandidatesRead,convict=s.action()==ManagementAction::JusticeConvict;
+    const bool candidates=s.action()==ManagementAction::JusticeCandidatesRead,convict=s.action()==ManagementAction::JusticeConvict || s.action()==ManagementAction::JusticeInterrogate;
     if((!read && !detail && !candidates && !convict) || r->tab()>2 || r->outcome()>JusticeOutcome::Unknown || !r->rows() || r->rows()->size()>64)return "invalid justice result";
     const auto page=[](uint32_t total,uint32_t offset,size_t count){return total<=1048576 && offset<=total && count<=64 && count<=total-offset && (offset==total || count!=0);};
     size_t bytes=0;
@@ -1561,7 +1563,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       bytes+=32;
       if(!row || row->crime_id()<0 || !ids.insert(row->crime_id()).second || !text(row->caption()))return "invalid justice row";
     }
-  }else if(s.status()==ManagementStatus::Ok && s.action()>=ManagementAction::JusticeRead && s.action()<=ManagementAction::JusticeConvict)return "missing justice result";
+  }else if(s.status()==ManagementStatus::Ok && s.action()>=ManagementAction::JusticeRead && s.action()<=ManagementAction::JusticeInterrogate)return "missing justice result";
   if(const auto* r=s.objects()) {
     const bool read=s.action()==ManagementAction::ObjectsRead,locate=s.action()==ManagementAction::ObjectsLocate;
     if((!read && !locate) || r->tab()>3 || !r->rows() || r->rows()->size()>64 ||

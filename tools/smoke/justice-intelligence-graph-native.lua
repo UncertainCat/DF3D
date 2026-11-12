@@ -67,7 +67,7 @@ local ok,err=xpcall(function()
    local count=0;for _,party in ipairs(agreement.parties)do for _,id in ipairs(party.histfig_ids)do if df.historical_figure.find(id)then count=count+1 end end end
    if count>=2 then
     agreements[#agreements+1]=agreement;chosen=chosen or agreement
-    if os.getenv('DF3D_JUSTICE_GRAPH_CONNECTED')~='1' or #agreements>=12 then break end
+    if os.getenv('DF3D_JUSTICE_GRAPH_CONNECTED')~='1' or #agreements>=(os.getenv('DF3D_JUSTICE_GRAPH_WIDE')=='1' and 96 or 12)then break end
    end
   end
  end
@@ -143,6 +143,14 @@ local ok,err=xpcall(function()
    states[name]=state;capture('justice-graph-'..name)
   end
   click(220,148);assert(menu.counterintelligence_mode==1,'Actors tab missed');record('actors')
+  if os.getenv('DF3D_JUSTICE_GRAPH_WHEEL')=='1' then
+   for _,step in ipairs{{'CONTEXT_SCROLL_DOWN','actors-wheel'},{'CONTEXT_SCROLL_PAGEDOWN','actors-wheel-page'}}do
+    g.precise_mouse_x=200;g.precise_mouse_y=250;g.mouse_x=25;g.mouse_y=20;df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+    gui.simulateInput(view,step[1]);settle();record(step[2])
+   end
+   click(952,730);record('actors-arrow-down')
+   click(324,148);click(220,148)
+  end
   if os.getenv('DF3D_JUSTICE_GRAPH_LARGE')=='1' then
    gui.simulateInput(view,'STANDARDSCROLL_DOWN');settle();record('actors-scroll-down')
    gui.simulateInput(view,'STANDARDSCROLL_PAGEDOWN');settle();record('actors-scroll-page')
@@ -173,6 +181,11 @@ local ok,err=xpcall(function()
    menu.interrogation_report_box_width=0;gui.simulateInput(view,'CURSOR_DOWN');settle();record('report-input-rebuild')
    click(220,148);record('report-to-actors')
    click(96,148);record('reports-return')
+   if os.getenv('DF3D_JUSTICE_REPORT_BACK')=='1' then
+    click(120,190);gui.simulateInput(view,'LEAVESCREEN');settle()
+    record('report-back');states['report-back'].panel_open=df.global.game.main_interface.info.open
+    if not df.global.game.main_interface.info.open then gui.simulateInput(view,'D_JUSTICE');settle();tab('Intelligence')end
+   end
   end
   if os.getenv('DF3D_JUSTICE_GRAPH_RESIZE')=='1' then
    local function resize(name)

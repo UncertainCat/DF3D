@@ -431,6 +431,15 @@ func run_graph(reference: Dictionary) -> void:
 			await process_frame;await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(directory+"/justice-graph-"+["actors","organizations","plots"][mode-1]+"-view.png")
 			if mode==1:
+				if OS.get_environment("DF3D_JUSTICE_GRAPH_WHEEL")=="1":
+					for step in [{"name":"actors-wheel","shift":false,"scroll":1},{"name":"actors-wheel-page","shift":true,"scroll":48}]:
+						var event:=InputEventMouseButton.new();event.position=Vector2(200,250);event.global_position=event.position;event.button_index=MOUSE_BUTTON_WHEEL_DOWN;event.pressed=true;event.shift_pressed=step.shift
+						Input.parse_input_event(event);Input.flush_buffered_events();await process_frame
+						check(controller.intelligence.graph_scroll==step.scroll,"Intelligence context scroll differs")
+						await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/justice-graph-"+step.name+"-view.png")
+					await pointer_click(Vector2(952,730));check(controller.intelligence.graph_scroll==49,"Intelligence down arrow differs")
+					await process_frame;await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/justice-graph-actors-arrow-down-view.png")
+					await pointer_click(view.position+view.intelligence_tab_rect(2).get_center());await pointer_click(view.position+view.intelligence_tab_rect(1).get_center())
 				if OS.get_environment("DF3D_JUSTICE_GRAPH_LARGE")=="1":
 					await pointer_click(Vector2(944,716))
 					check(controller.intelligence.graph_scroll==47,"Actor scrollbar track step differs from native")

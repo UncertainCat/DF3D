@@ -11253,5 +11253,68 @@
       "justice-graph-report-render-rebuild.png": "f751b65a76f56db5bd1b330e225adb4b565514fcb8e9b158649e853358f74304",
       "justice-graph-report-input-rebuild.png": "d70d223852276f7c9d9218ab8795cc76196a13f51e729704f3666e2eb61ce6a3"
     }
+  },
+  "intelligence_context_scroll_reference": {
+    "run": "build/stockpile-storage-native-input-20261112-110029",
+    "protocol": 203,
+    "status": "passed_with_known_issues",
+    "owned_df_pid": 17748,
+    "source_preserved": true,
+    "fps": 30,
+    "scroll_cells": {
+      "actors-wheel": 1,
+      "actors-wheel-page": 48,
+      "actors-arrow-down": 49
+    },
+    "native_inputs": [
+      "CONTEXT_SCROLL_DOWN",
+      "CONTEXT_SCROLL_PAGEDOWN",
+      "left click at952,730"
+    ],
+    "viewer_inputs": [
+      "wheel down at200,250",
+      "Shift-wheel down at200,250",
+      "left click at952,730"
+    ],
+    "binding_source": "installed prefs/interface.txt maps wheel and Shift-wheel to CONTEXT_SCROLL commands; native140f2b0 implements one-cell/page steps",
+    "different_pixels": {
+      "actors-wheel": 0,
+      "actors-wheel-page": 0,
+      "actors-arrow-down": 0
+    },
+    "panel_crop": [
+      32,
+      52,
+      976,
+      760
+    ],
+    "artifacts": {
+      "justice-graph-presentation.json": "0a38c45afc11474c531b7f0feee09f89be8cb6581d9b71d983594847d7c0831a",
+      "job-settings-wire-result.json": "48e125b96db82001a2dd3cf003335fc2763ddec66893215561f06d93b8741a7b",
+      "justice-graph-actors-wheel.png": "0a85b412a65708a42de28122bd4507f6a7c4bc2d5a6331bd8ba6393ead30d6dc",
+      "justice-graph-actors-wheel-view.png": "789a1e67d9eb77cb5fa27dd353cb887a11efd114965c4f9654cfae4294c754aa",
+      "justice-graph-actors-wheel-page.png": "a7a08ad92c16cbe7746c05d4aba817f8c3659bfbd7acf227c5e1cbfeeabad7bf",
+      "justice-graph-actors-wheel-page-view.png": "e642e5daeda29b6e43d9c533e9de49e29723ceaa8f460e1e0de2ff0a6fb2f197",
+      "justice-graph-actors-arrow-down.png": "1bc44d45b82485cc12be307fffed9b7c29107ef6f4ac9b99454fe40989a69a3f",
+      "justice-graph-actors-arrow-down-view.png": "161749d725d3b51ad8712ab7fdea42cc7d00722671b087a8c91fcc4205b4e04f"
+    },
+    "limits": [
+      "native command semantics verified; physical Windows wheel delivery not accepted",
+      "dragging and report-specific scrolling remain pending",
+      "known separate-renderer/finalize/ObjectDB shutdown diagnostics"
+    ]
+  },
+  "intelligence_report_back_reference": {
+    "run": "build/stockpile-storage-native-input-20261112-105240",
+    "owned_df_pid": 20684,
+    "source_preserved": true,
+    "native_input": "LEAVESCREEN from report detail",
+    "panel_open": false,
+    "viewing_report": true,
+    "meaning": "native closes the whole information panel; cached report pointer remains but is not visible",
+    "artifacts": {
+      "justice-graph-presentation.json": "85b186222c14f545291ab1ecaaf0b724a157fa91303ea85a69d36692d7e11460",
+      "justice-graph-report-back.png": "40538f9382e4d22f72cf367c6a4e7e721c8d6b69fec89b997f761e8a21bc4ed0"
+    }
   }
 }

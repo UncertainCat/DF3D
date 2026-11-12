@@ -139,8 +139,28 @@ and state/composition checks pass; known shutdown diagnostics retain the live
 `passed_with_known_issues` qualification. Fixture
 `intelligence_connected_graph_reference` retains bounded hashes and state.
 
+Protected `stockpile-storage-native-input-20261112-110029` verifies native
+context-scroll commands and the visible down arrow on the20-actor list.
+CONTEXT_SCROLL_DOWN advances one text cell; CONTEXT_SCROLL_PAGEDOWN advances
+one page(47 cells here), and the arrow adds one cell. Viewer wheel, Shift-wheel
+and arrow input produce offsets1/48/49 and pixel-identical panel crops. The
+installed bindings map wheel and Shift-wheel to these native commands; native
+helper140f2b0 implements their steps. Intelligence now honors Shift-wheel paging
+and scopes wheel handling to the list viewport. Physical Windows wheel injection
+was inconclusive and is not claimed as native acceptance. Core19/state/composition
+checks pass; owned DF17748 exits unsaved with source/prefs preserved. Both
+clients run at30FPS; observed51C/0% is a sample. Known shutdown diagnostics
+qualify the live run. `intelligence_context_scroll_reference` retains evidence.
+
+Native report Back discovery105240 confirms LEAVESCREEN closes the whole info
+panel, matching the current panel owner; the cached report pointer remains but
+is no longer visible. `intelligence_report_back_reference` records this scope.
+The expanded native-only discovery105325 includes115 actors,30 organizations
+and88 plots with exact provider facts, but its largest organization has only11
+nodes: it does not establish horizontal panning acceptance.
+
 Horizontal panning of very wide charts, other edge rasterization patterns,
-wheel/arrow/drag acceptance and other keyboard behavior remain unfinished.
+dragging, report-specific scrolling and other keyboard behavior remain unfinished.
 
 Protected `stockpile-storage-native-input-20261112-104816` exercises a populated
 report roster alongside the graph tabs. Switching from an open report to Actors

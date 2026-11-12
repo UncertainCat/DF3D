@@ -128,9 +128,12 @@ func _input(event: InputEvent) -> void:
 		search.feed_key(event);get_viewport().set_input_as_handled();return
 	if allowed() and state!=null and event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
 		var point: Vector2=get_global_transform_with_canvas().affine_inverse()*event.position
-		if Rect2(Vector2(0,list_top()),size-Vector2(0,list_top())).has_point(point):
+		var region:=Rect2(Vector2(0,list_top()),size-Vector2(0,list_top()))
+		if state.tab==5:region=graph_view.viewport_rect() if state.intelligence.mode>0 else Rect2(16,list_top()+24,size.x-32,intelligence_capacity()*(36 if state.intelligence.selected<0 else 12))
+		if region.has_point(point):
 			var step: int=-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1
 			if state.tab==5:
+				if event.shift_pressed:step*=graph_view.capacity() if state.intelligence.mode>0 else intelligence_capacity()
 				if state.intelligence.mode>0:graph_view.seek(state.intelligence.graph_scroll+step)
 				else:state.intelligence.seek(state.intelligence.first+step,intelligence_capacity())
 			elif roster_open():roster().seek(roster().first+step,guard_capacity())

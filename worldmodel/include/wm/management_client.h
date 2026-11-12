@@ -478,6 +478,7 @@ struct JusticeRequest {
   uint8_t tab=0;uint32_t offset=0;uint16_t limit=32;
   uint64_t expectedListRevision=0;int32_t crimeId=-1;uint64_t expectedCaseRevision=0;
   std::string query;uint64_t expectedCandidateRevision=0;int32_t unitId=-1;
+  bool interrogate=false,expectedSelected=false;
   std::vector<JusticeSort> sorts={{JusticeCandidateColumn::Crime,false},{JusticeCandidateColumn::Name,false}};
 };
 struct JusticeCaseRow {int32_t crimeId=-1;std::string caption;};
@@ -497,6 +498,7 @@ struct JusticeCandidateRow {
   JusticeCandidateDisplay display;std::optional<SelectionAppearance> sheetIcon;
 };
 struct JusticeCandidatePage {
+  bool interrogate=false;
   int32_t crimeId=-1;uint64_t revision=0;uint32_t total=0,offset=0;std::vector<JusticeCandidateRow> rows;
 };
 struct JusticeState {

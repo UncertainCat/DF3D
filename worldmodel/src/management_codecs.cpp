@@ -98,7 +98,7 @@ ManagementState decodeState(const m::ManagementState* s) {
     auto& out=next.justice.emplace();out.outcome=JusticeOutcome(r->outcome());out.tab=r->tab();
     out.listRevision=r->list_revision();out.total=r->total();out.offset=r->offset();
     if(const auto* c=r->candidates()){
-      auto& page=out.candidates.emplace();page.crimeId=c->crime_id();page.revision=c->revision();page.total=c->total();page.offset=c->offset();
+      auto& page=out.candidates.emplace();page.crimeId=c->crime_id();page.revision=c->revision();page.total=c->total();page.offset=c->offset();page.interrogate=c->interrogate();
       for(const auto* row:*c->rows()){
         JusticeCandidateRow value;value.unitId=row->unit_id();value.rank=row->rank();
         if(row->sheet_icon())value.sheetIcon=decodeItemRecipe(row->sheet_icon());
@@ -377,12 +377,12 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
       b.CreateVector(symbols),r.nobles.stepToken,r.nobles.expectedNameRevision,query,edit);
   }
   flatbuffers::Offset<m::JusticeRequest> justice;
-  if(r.action>=ManagementAction::JusticeRead && r.action<=ManagementAction::JusticeConvict){const auto& q=r.justice;
-    const bool candidates=r.action==ManagementAction::JusticeCandidatesRead || r.action==ManagementAction::JusticeConvict;
+  if(r.action>=ManagementAction::JusticeRead && r.action<=ManagementAction::JusticeInterrogate){const auto& q=r.justice;
+    const bool candidates=r.action>=ManagementAction::JusticeCandidatesRead && r.action<=ManagementAction::JusticeInterrogate;
     std::vector<flatbuffers::Offset<m::JusticeSort>> sorts;
     if(candidates)for(const auto& sort:q.sorts)sorts.push_back(m::CreateJusticeSort(b,m::JusticeCandidateColumn(sort.column),sort.reverse));
     justice=m::CreateJusticeRequest(b,q.tab,q.offset,q.limit,q.expectedListRevision,q.crimeId,q.expectedCaseRevision,
-      candidates?b.CreateString(q.query):0,q.expectedCandidateRevision,q.unitId,candidates?b.CreateVector(sorts):0);}
+      candidates?b.CreateString(q.query):0,q.expectedCandidateRevision,q.unitId,candidates?b.CreateVector(sorts):0,q.interrogate,q.expectedSelected);}
   flatbuffers::Offset<m::ObjectsRequest> objects;
   if(r.action==ManagementAction::ObjectsRead || r.action==ManagementAction::ObjectsLocate){const auto& q=r.objects;
     objects=m::CreateObjectsRequest(b,q.tab,q.offset,q.limit,q.expectedListRevision,q.artifactId);}

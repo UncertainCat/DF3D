@@ -71,6 +71,27 @@ func test_sorts(service,state) -> void:
 	service.reply(current,{"status":C.ManagementStatus.Rejected,"justice":{"outcome":C.JusticeOutcome.Unknown}})
 	picker.select_sort(2);check(picker.priorities==[0] and picker.ticket==0,"Unknown mutation allowed sorting")
 	state.close();check(picker.priorities==[3,1] and picker.directions==[false,false,false,false],"Close retained old sort state")
+func test_interrogation(service,state) -> void:
+	ready(service,state);state.open_candidates(true);var picker=state.candidates
+	var read:=candidates();read.justice.candidates.interrogate=true
+	service.reply(picker.ticket,read);picker.seek(1,1);picker.toggle_interrogation(43)
+	var sent: Dictionary=service.calls[picker.ticket].intent
+	check(sent.action==C.ManagementAction.JusticeInterrogate and sent.interrogate and not sent.expected_selected and sent.unit_id==43,"Interrogation lost comparison scope")
+	var current: int=picker.ticket;picker.toggle_interrogation(43);picker.search("retry");picker.select_sort(0)
+	check(picker.ticket==current,"Pending interrogation replayed")
+	service.reply(current,{"justice":{"outcome":C.JusticeOutcome.Applied}})
+	read=candidates([43,42],0,2,23);read.justice.candidates.interrogate=true;read.justice.candidates.rows[0].interrogation_pending=true
+	service.reply(picker.ticket,read)
+	check(picker.rows.map(func(row):return row.unit_id)==[42,43] and picker.rows[1].interrogation_pending and picker.first==1 and picker.cursor_id==43,"Checkbox refresh reordered rows or lost scroll/selection")
+	picker.select_sort(1);service.reply(picker.ticket,read)
+	check(picker.rows[0].unit_id==43,"Explicit sort did not adopt native partition")
+	picker.toggle_interrogation(43);check(service.calls[picker.ticket].intent.expected_selected,"Cancellation lost selected comparison")
+	service.reply(picker.ticket,{"status":C.ManagementStatus.Rejected,"justice":{"outcome":C.JusticeOutcome.Unknown}})
+	var count: int=service.next;picker.toggle_interrogation(43);picker.search("");picker.select_sort(0)
+	check(picker.phase==picker.Phase.Unknown and service.next==count,"Unknown interrogation replayed")
+	state.close();check(picker.phase==picker.Phase.Closed,"Unknown interrogation could not retire")
+	ready(service,state);state.open_candidates(true);service.reply(picker.ticket,candidates())
+	check(picker.phase==picker.Phase.Rejected,"Wrong candidate mode accepted")
 func run() -> void:
 	check(Registry.PANEL_SCRIPTS.has("justice") and not Registry.PANEL_ROUTES.has("Justice"),"Justice public gate changed")
 	var service:=Service.new();root.add_child(service);var state:=State.new();state.configure(service);state.open()
@@ -103,6 +124,7 @@ func run() -> void:
 	service.reply(state.ticket,stale);check(state.phase==State.Phase.Rejected and state.ticket==0,"Stale retry unbounded")
 	test_candidates(service,state)
 	test_sorts(service,state)
+	test_interrogation(service,state)
 	state.dispose();service.queue_free();await process_frame
 	if failures==0:print("JUSTICE_STATE_PASS")
 	quit(1 if failures else 0)

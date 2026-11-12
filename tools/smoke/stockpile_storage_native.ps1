@@ -291,6 +291,7 @@ try {
      # A rendered multi-family item batch includes graphics initialization and
      # several sheet captures. Keep this bounded separately from wire-only work.
      if($name -eq 'stocks-wire' -and $env:DF3D_STOCKS_RENDER -eq '1' -and $env:DF3D_STOCKS_FURNITURE_SHEETS -eq '1'){$wireTimeout=60000}
+     if($name -eq 'justice-wire' -and $env:DF3D_JUSTICE_WIRE_INTERROGATE -eq '1'){$wireTimeout=55000}
      if($name -eq 'places-wire' -and $env:DF3D_PLACES_SCENE -eq '1'){$wireTimeout=115000}
      if($name -eq 'objects-wire' -and $env:DF3D_OBJECTS_SCENE -eq '1'){$wireTimeout=55000}
      if($name -eq 'objects-wire' -and $env:DF3D_OBJECTS_LIFECYCLE -eq '1'){$wireTimeout=115000}

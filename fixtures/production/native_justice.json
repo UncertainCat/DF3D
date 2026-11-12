@@ -9448,5 +9448,70 @@
     "before_sha256": "082df98472e195ed6baafab27514e8341afe13e418467e91c2a5ca619f135f31",
     "sorted_sha256": "4e7b688d5d2842b553a3b269529272af3e4f3876237c6130561d12a208440ba4",
     "limits": "Native selected grouping and checkbox-time order retention verified for one normal historical figure; product Interrogate transport/controller/view remain pending. Does not cover assumed identities or active interrogation jobs."
+  },
+  "interrogation_transport_reference": {
+    "protocol": 198,
+    "run": "stockpile-storage-native-input-20261112-010743",
+    "native_reference": "stockpile-storage-native-input-20261112-004703",
+    "status": "passed_with_known_issues",
+    "crime_id": 9,
+    "unit_id": 7123,
+    "candidate_count": 293,
+    "verified": [
+      "visible Interrogate button and checkbox schedule/cancel",
+      "mode-scoped ordered candidate pages",
+      "checkbox preserves row order and selected row",
+      "explicit Name sort groups scheduled interview first",
+      "stale scheduling receipt rejected",
+      "cancel restores original report count",
+      "native menu/crime/witness/RNG guards and history count preserved",
+      "owned source unchanged; DF26356 closed unsaved"
+    ],
+    "panel_comparison": {
+      "crop": [
+        32,
+        52,
+        976,
+        760
+      ],
+      "differing_pixels": 318,
+      "difference_bounds": [
+        516,
+        392,
+        544,
+        420
+      ],
+      "scope": "All differences confined to selected unit7123 portrait. Full visual parity remains unaccepted."
+    },
+    "limits": [
+      "assumed identities, active job cancellation and missing historical figures not live accepted",
+      "keyboard/hover/resize and remaining Justice sections unfinished",
+      "existing sorted portrait mismatches for5815/2459 remain open"
+    ],
+    "diagnostics": [
+      "godot-separate-thread-notice",
+      "godot-device-finalize",
+      "godot-shutdown-objects"
+    ],
+    "prior_run": "010553 completed assertions but exceeded old25-second client shutdown limit; not accepted; interrogation lane now bounded55seconds",
+    "gpu_samples": {
+      "temperature_c": [
+        38,
+        39,
+        38
+      ],
+      "utilization_percent": [
+        0,
+        6,
+        0
+      ],
+      "power_w": [
+        22.56,
+        25.63,
+        13.79
+      ],
+      "continuous_peak": false
+    },
+    "plugin_sha256": "875027132F27E34ECB57B2C64ED30C56D0950609804BA89638AAE7CB1FED325A"
   }
 }

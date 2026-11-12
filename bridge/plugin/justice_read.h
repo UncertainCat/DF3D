@@ -19,7 +19,7 @@ struct ReadResult {
     m::JusticeOutcome outcome=m::JusticeOutcome::Rejected;uint8_t tab=0;
     uint64_t revision=0;uint32_t total=0,offset=0;std::vector<CaseRow> rows;std::optional<Detail> detail;
     struct Candidate {CandidateFact fact;CandidatePresentation display;df3d_management::ResidentAppearanceRecipe icon;};
-    struct Candidates {int32_t crimeId=-1;uint64_t revision=0;uint32_t total=0,offset=0;std::vector<Candidate> rows;};
+    struct Candidates {bool interrogate=false;int32_t crimeId=-1;uint64_t revision=0;uint32_t total=0,offset=0;std::vector<Candidate> rows;};
     std::optional<Candidates> candidates;
 };
 struct ReadHash {
@@ -88,8 +88,8 @@ inline ReadResult candidateRequest(const m::JusticeRequest& q,bool apply) {
         if(DF2UTF(nativeQuery)!=query)return refused;
         std::vector<CandidateSort> sorts={{CandidateColumn::Crime,false},{CandidateColumn::Name,false}};
         if(q.sorts()){sorts.clear();for(const auto* sort:*q.sorts())sorts.push_back({CandidateColumn(sort->column()),sort->reverse()});}
-        const auto facts=convictionCandidates(crime,nativeQuery,sorts);if(!facts || facts->size()>1048576)return refused;
-        ReadHash hash;hash.number(observed.revision);hash.number(observed.detail->revision);hash.text(query);
+        const auto facts=q.interrogate()?interrogationCandidates(crime,nativeQuery,sorts):convictionCandidates(crime,nativeQuery,sorts);if(!facts || facts->size()>1048576)return refused;
+        ReadHash hash;hash.number(observed.revision);hash.number(observed.detail->revision);hash.text(query);hash.number(q.interrogate());
         hash.number(sorts.size());for(const auto& sort:sorts){hash.number(uint8_t(sort.column));hash.number(sort.reverse);}
         // Include effect-relevant crime values absent from the displayed summary.
         for(auto value:{int32_t(crime->mode),crime->criminal,crime->accused,crime->victim,crime->incident_id,
@@ -104,13 +104,13 @@ inline ReadResult candidateRequest(const m::JusticeRequest& q,bool apply) {
             if(std::none_of(facts->begin(),facts->end(),[&](const CandidateFact& row){return row.unitId==q.unit_id();})){
                 refused.outcome=m::JusticeOutcome::Stale;return refused;
             }
-            const auto outcome=convict(crime,df::unit::find(q.unit_id()),crime->accused);
+            const auto outcome=q.interrogate()?toggleInterrogation(crime,df::unit::find(q.unit_id()),q.expected_selected()):convict(crime,df::unit::find(q.unit_id()),crime->accused);
             refused.outcome=outcome==ActionOutcome::Applied?m::JusticeOutcome::Applied:
                 outcome==ActionOutcome::Unknown?m::JusticeOutcome::Unknown:m::JusticeOutcome::Rejected;
             return refused;
         }
         ReadResult result;result.tab=q.tab();result.revision=observed.revision;result.outcome=m::JusticeOutcome::None;
-        auto& page=result.candidates.emplace();page.crimeId=crime->id;page.revision=revision;page.total=uint32_t(facts->size());page.offset=q.offset();
+        auto& page=result.candidates.emplace();page.interrogate=q.interrogate();page.crimeId=crime->id;page.revision=revision;page.total=uint32_t(facts->size());page.offset=q.offset();
         size_t bytes=0;
         for(size_t i=q.offset();i<facts->size() && page.rows.size()<q.limit();++i){
             // The accepted1200x800 reference uses the native28-column minimum.
@@ -144,7 +144,7 @@ inline flatbuffers::Offset<m::JusticeState> encode(flatbuffers::FlatBufferBuilde
             auto display=m::CreateJusticeCandidateDisplay(b,28,b.CreateString(d.name),color,d.witnessCount,
                 b.CreateString(d.witnessLabel),d.witnessColor,b.CreateString(d.deceased));
             entries.push_back(m::CreateJusticeCandidateRow(b,f.unitId,f.rank,bool(f.flags&1),bool(f.flags&2),display,row.icon.layers.empty()?0:row.icon.build(b)));}
-        candidates=m::CreateJusticeCandidatePage(b,page.crimeId,page.revision,page.total,page.offset,b.CreateVector(entries));}
+        candidates=m::CreateJusticeCandidatePage(b,page.crimeId,page.revision,page.total,page.offset,b.CreateVector(entries),page.interrogate);}
     return m::CreateJusticeState(b,r.outcome,r.tab,r.revision,r.total,r.offset,b.CreateVector(rows),detail,candidates);
 }
 }

@@ -176,6 +176,45 @@ func run() -> void:
 	closed.expected_case_revision=closed_detail.justice.detail.revision;closed.expected_candidate_revision=0
 	var closed_result:=await request("justice",closed)
 	check(closed_result.get("status")==C.ManagementStatus.Rejected,"Closed case exposed Convict candidates")
+	var interrogated:=false
+	if OS.get_environment("DF3D_JUSTICE_WIRE_INTERROGATE")=="1":
+		var interview_actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(interview_actions);interview_actions.configure(world,true)
+		var owner=preload("res://scripts/justice_state.gd").new();owner.configure(interview_actions);owner.open()
+		var interview_view
+		if OS.get_environment("DF3D_JUSTICE_RENDER")=="1":
+			interview_view=preload("res://scripts/justice_view.gd").new();root.add_child(interview_view);interview_view.configure_justice(world,owner);interview_view.layout(Vector2(1200,800))
+		await settle_controller(owner)
+		if interview_view!=null:await pointer_click(interview_view.position+interview_view.interrogate_rect().get_center())
+		else:owner.open_candidates(true)
+		await settle_picker(owner)
+		var picker=owner.candidates
+		if not check(picker.phase==picker.Phase.Ready and picker.interrogate and picker.rows.size()==candidate_count,"Interrogate button failed"):quit(1);return
+		var original: Array=picker.rows.map(func(row):return row.unit_id)
+		check(original==reference.interrogation.map(func(row):return int(row.unit_id)),"Interrogate candidate order differs")
+		var target: int=picker.rows[6].unit_id
+		check(target==7123 and not picker.rows[6].interrogation_pending,"Interrogate baseline target differs")
+		var old_intent: Dictionary=picker._intent(C.ManagementAction.JusticeInterrogate);old_intent.unit_id=target;old_intent.expected_selected=false
+		if interview_view!=null:await pointer_click(interview_view.position+interview_view.picker_rect(6).position+Vector2(296,18))
+		else:picker.toggle_interrogation(target)
+		await settle_picker(owner)
+		if not check(picker.phase==picker.Phase.Ready,"Interrogate did not settle"):quit(1);return
+		check(picker.rows.map(func(row):return row.unit_id)==original and picker.rows[6].interrogation_pending,"Scheduling reordered the picker or failed")
+		if interview_view!=null:
+			await process_frame;await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/justice-interrogate-view.png")
+		var repeated:=await request("justice",old_intent)
+		check(repeated.get("justice",{}).get("outcome")==C.JusticeOutcome.Stale,"Repeated interrogation receipt accepted")
+		if interview_view!=null:await pointer_click(interview_view.position+interview_view.sort_rect(0).get_center())
+		else:picker.select_sort(C.JusticeCandidateColumn.Name)
+		await settle_picker(owner)
+		check(picker.phase==picker.Phase.Ready and picker.rows[0].unit_id==target,"Sort failed to group scheduled interview first")
+		if interview_view!=null:await pointer_click(interview_view.position+interview_view.picker_rect(0).position+Vector2(296,18))
+		else:picker.toggle_interrogation(target)
+		await settle_picker(owner)
+		interrogated=picker.phase==picker.Phase.Ready and picker.rows[0].unit_id==target and not picker.rows[0].interrogation_pending
+		check(interrogated,"Interrogation cancellation failed or moved the row")
+		if interview_view!=null:interview_view.queue_free();await process_frame
+		owner.dispose();interview_actions.queue_free();await process_frame
 	var applied:=false
 	if OS.get_environment("DF3D_JUSTICE_WIRE_CONVICT")=="1":
 		var picker_actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(picker_actions);picker_actions.configure(world,true)
@@ -202,5 +241,5 @@ func run() -> void:
 			"Repeated old conviction was not rejected")
 	var result=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	result.store_string(JSON.stringify({"success":not failed,"counts":counts,"witnesses":report_count,"stale_tabs":3,"controller_tabs":3,
-		"closed_read_retired":true,"candidate_count":candidate_count,"candidate_queries":3,"sort_scopes":reference.sorts.size(),"convicted":applied,"picker_controller":applied}));result.close()
+		"closed_read_retired":true,"candidate_count":candidate_count,"candidate_queries":3,"sort_scopes":reference.sorts.size(),"interrogated":interrogated,"convicted":applied,"picker_controller":applied}));result.close()
 	quit(1 if failed else 0)

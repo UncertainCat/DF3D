@@ -1,6 +1,6 @@
 extends "res://scripts/standing_orders_view.gd"
 # Staged Justice case/Convict view. Native190710 and230636 establish the
-#1200x800 layout; full sorted artwork, Interrogate and other categories remain pending.
+#1200x800 layout; full sorted artwork and other categories remain pending.
 const C=preload("res://scripts/management_contract.gd")
 const CASE_TABS=["Open cases","Closed cases","Cold cases","Fortress guard","Convicts","Intelligence"]
 const NameColor=preload("res://scripts/native_name_color.gd")
@@ -14,6 +14,7 @@ var ticks_override: int=-1
 func picker_open() -> bool:return state.candidates.phase not in [state.candidates.Phase.Closed,state.candidates.Phase.Unavailable]
 func picker_capacity() -> int:return maxi(0,int((size.y-list_top()-120)/36))
 func picker_rect(index: int) -> Rect2:return Rect2(detail_x(),list_top()+24+index*36,size.x-detail_x()-40,36)
+func interrogate_rect() -> Rect2:return Rect2(detail_x(),list_top()+24,104,36)
 func convict_rect() -> Rect2:return Rect2(detail_x()+104,list_top()+24,72,36)
 func sort_rect(index: int) -> Rect2:return Rect2(detail_x()+[5,15,24,35][index]*8,list_top(),[10,9,10,4][index]*8,12)
 func picker_allowed() -> bool:return allowed() and state.candidates.phase==state.candidates.Phase.Ready
@@ -117,8 +118,14 @@ func _gui_input(event: InputEvent) -> void:
 		if case_rect(index).has_point(event.position):state.select_case(state.rows[visible_first()+index].crime_id);return
 	if picker_open():
 		for index in mini(picker_capacity(),state.candidates.rows.size()-state.candidates.first):
-			if picker_rect(index).has_point(event.position):state.candidates.convict(state.candidates.rows[state.candidates.first+index].unit_id);return
-	elif state.tab!=1 and not state.detail.is_empty() and convict_rect().has_point(event.position):state.open_candidates()
+			if picker_rect(index).has_point(event.position):
+				var id: int=state.candidates.rows[state.candidates.first+index].unit_id
+				if state.candidates.interrogate:state.candidates.toggle_interrogation(id)
+				else:state.candidates.convict(id)
+				return
+	elif state.tab!=1 and not state.detail.is_empty():
+		if convict_rect().has_point(event.position):state.open_candidates()
+		elif interrogate_rect().has_point(event.position):state.open_candidates(true)
 func draw_picker() -> void:
 	for index in 4:
 		var x: int=detail_x()+[5,15,24,35][index]*8;var width: int=[10,9,10,4][index]
@@ -134,7 +141,7 @@ func draw_picker() -> void:
 		if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),Vector2(x+40,list_top()+12),["Name","Cat","Prof"][index],HORIZONTAL_ALIGNMENT_LEFT,-1,12,colors[0] if suffix=="ACTIVE" else Color8(160,160,160))
 	for index in mini(picker_capacity(),state.candidates.rows.size()-state.candidates.first):
 		var row: Dictionary=state.candidates.rows[state.candidates.first+index];var rect:=picker_rect(index)
-		var selected: bool=state.candidates.first+index==0
+		var selected: bool=row.unit_id==state.candidates.cursor_id
 		patch("BUTTON_RECTANGLE_SELECTED" if selected else "BUTTON_RECTANGLE",Vector2i(rect.position/Vector2(8,12)),int(rect.size.x/8),3)
 		patch("",Vector2i(rect.position/Vector2(8,12)),5,3,picture.texture(selected))
 		var portrait: Texture2D=portraits.get(row.unit_id,{}).get("texture")
@@ -142,8 +149,13 @@ func draw_picker() -> void:
 		var d: Dictionary=row.display
 		var ink:=NameColor.choose(d.name_color,ticks_override if ticks_override>=0 else Time.get_ticks_msec(),0 if ticks_override>=0 else randi_range(0,1))
 		if not ink.is_empty():text(d.name,rect.position+Vector2(40,24),int(ink[0])+8*int(ink[2]))
-		text(d.witness_label,rect.position+Vector2(280,12),d.witness_color)
-		text(d.deceased,rect.position+Vector2(280,24),13)
+		var witness_x:=320 if state.candidates.interrogate else 280
+		text(d.witness_label,rect.position+Vector2(witness_x,12),d.witness_color)
+		text(d.deceased,rect.position+Vector2(witness_x,24),13)
+		if state.candidates.interrogate:
+			var checkbox: Texture2D=art.texture("LABOR_WORKER_ASSIGNED" if row.interrogation_pending else "LABOR_WORKER_UNASSIGNED")
+			if checkbox!=null:draw_texture_rect(checkbox,Rect2(rect.position+Vector2(280,0),Vector2(32,36)),false)
+			if row.interrogation_pending:text("Interview Scheduled",rect.position+Vector2(40,36),14)
 func _draw() -> void:
 	if world==null or state==null:return
 	draw_rect(Rect2(Vector2(4,4),size-Vector2(8,8)),Color8(28,28,28));patch("HOVER_RECTANGLE",Vector2i.ZERO,int(size.x/8),frame_rows)

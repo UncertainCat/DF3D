@@ -112,3 +112,12 @@ TEST_CASE("Justice refusal decoding does not retain prior detail") {
   CHECK(r.outcome==wm::JusticeOutcome(outcome));CHECK(r.rows.empty());CHECK_FALSE(r.detail);CHECK(r.listRevision==0);
  }
 }
+
+TEST_CASE("Justice interrogation request retains comparison state") {
+ wm::ManagementRequest r;r.action=wm::ManagementAction::JusticeInterrogate;
+ auto& q=r.justice;q.crimeId=9;q.unitId=42;q.expectedListRevision=7;q.expectedCaseRevision=8;q.expectedCandidateRevision=9;
+ q.interrogate=true;q.expectedSelected=true;
+ flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,1,1);
+ const auto* request=flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer());
+ REQUIRE_FALSE(m::validateConstructionRequest(*request));CHECK(request->justice()->interrogate());CHECK(request->justice()->expected_selected());
+}

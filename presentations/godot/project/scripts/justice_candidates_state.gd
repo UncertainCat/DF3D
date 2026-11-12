@@ -1,5 +1,5 @@
 extends RefCounted
-# Staged Convict picker ownership. DF supplies order, search and mutation effects.
+# Staged candidate picker ownership. DF supplies order, search and mutation effects.
 signal changed
 signal convicted(crime_id: int,unit_id: int)
 const C=preload("res://scripts/management_contract.gd")
@@ -11,6 +11,10 @@ var crime_id:=-1
 var list_revision:=0
 var case_revision:=0
 var candidate_revision:=0
+var interrogate:=false
+var cursor_id:=-1
+var _retained_ids: Array=[]
+var _retained_first:=0
 var query:=""
 var priorities: Array[int]=[C.JusticeCandidateColumn.Crime,C.JusticeCandidateColumn.Name]
 var directions: Array[bool]=[false,false,false,false]
@@ -35,15 +39,21 @@ func _retire() -> void:
 func close() -> void:
 	_retire();phase=Phase.Closed;crime_id=-1;rows=[];_pending=[];_seen={};_total=0
 	list_revision=0;case_revision=0;candidate_revision=0;query="";first=0;last_result={}
+	interrogate=false;cursor_id=-1;_retained_ids=[];_retained_first=0
 	priorities=[C.JusticeCandidateColumn.Crime,C.JusticeCandidateColumn.Name];directions=[false,false,false,false];changed.emit()
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
-func open(selected_tab: int,id: int,list_rev: int,case_rev: int) -> void:
+func open(selected_tab: int,id: int,list_rev: int,case_rev: int,interview:=false) -> void:
 	if phase in [Phase.Applying,Phase.Unknown] or selected_tab not in [0,2] or id<0 or list_rev<=0 or case_rev<=0:return
-	close();tab=selected_tab;crime_id=id;list_revision=list_rev;case_revision=case_rev;search("")
+	close();interrogate=interview;tab=selected_tab;crime_id=id;list_revision=list_rev;case_revision=case_rev;search("")
 func search(value: String) -> void:
+	_read(value,false)
+func _read(value: String,retain: bool) -> void:
 	var bytes:=value.to_utf8_buffer()
 	if crime_id<0 or phase in [Phase.Applying,Phase.Unknown,Phase.Unavailable] or bytes.size()>512 or bytes.has(0):return
+	_retained_ids=rows.map(func(row):return row.unit_id) if retain else []
+	_retained_first=first if retain else 0
+	if not retain:cursor_id=-1
 	_retire();query=value;rows=[];_pending=[];_seen={};candidate_revision=0;_total=0;first=0
 	last_result={};phase=Phase.Reading;_page()
 func seek(value: int,capacity: int) -> void:
@@ -64,10 +74,11 @@ func _intent(action: int) -> Dictionary:
 	var sorts: Array=[]
 	for column in priorities:sorts.append({"column":column,"reverse":directions[column]})
 	return {"action":action,"tab":tab,"crime_id":crime_id,"expected_list_revision":list_revision,
-		"expected_case_revision":case_revision,"expected_candidate_revision":candidate_revision,"query":query,"sorts":sorts,"offset":0,"limit":32}
+		"expected_case_revision":case_revision,"expected_candidate_revision":candidate_revision,"query":query,"sorts":sorts,"offset":0,"limit":32,"interrogate":interrogate}
 func _fail(result: Dictionary,unknown:=false) -> void:
 	_pending=[];_seen={};last_result=result.duplicate(true);phase=Phase.Unknown if unknown else Phase.Rejected;changed.emit()
 func _valid(page: Dictionary,intent: Dictionary) -> bool:
+	if page.get("interrogate",false)!=interrogate:return false
 	if page.get("crime_id")!=crime_id or typeof(page.get("revision"))!=TYPE_INT or page.revision<=0 or typeof(page.get("total"))!=TYPE_INT or page.total<0 or page.total>1048576:return false
 	if page.get("offset")!=intent.offset or typeof(page.get("rows"))!=TYPE_ARRAY:return false
 	if page.rows.size()>intent.limit or intent.offset+page.rows.size()>page.total or (intent.offset<page.total and page.rows.is_empty()):return false
@@ -104,12 +115,32 @@ func _page() -> void:
 		if not _valid(page,intent):_fail(result);return
 		candidate_revision=page.revision;_total=page.total;_pending.append_array(page.rows.duplicate(true))
 		if _pending.size()<_total:_page();return
-		rows=_pending;_pending=[];_seen={};phase=Phase.Ready;changed.emit())
+		if not _retained_ids.is_empty():
+			var by_id: Dictionary={}
+			for row in _pending:by_id[row.unit_id]=row
+			var retained: Array=[]
+			for id in _retained_ids:
+				if by_id.has(id):retained.append(by_id[id]);by_id.erase(id)
+			for row in _pending:
+				if by_id.has(row.unit_id):retained.append(row)
+			_pending=retained
+		rows=_pending;_pending=[];_seen={};first=mini(_retained_first,maxi(0,rows.size()-1));_retained_ids=[]
+		if cursor_id<0 and not rows.is_empty():cursor_id=rows[0].unit_id
+		phase=Phase.Ready;changed.emit())
 	if ticket==0:phase=Phase.Unavailable
 	changed.emit()
 func convict(id: int) -> void:
+	if interrogate:return
+	_apply(id)
+func toggle_interrogation(id: int) -> void:
+	if not interrogate:return
+	_apply(id)
+func _apply(id: int) -> void:
 	if phase!=Phase.Ready or not rows.any(func(row):return row.unit_id==id):return
-	var intent:=_intent(C.ManagementAction.JusticeConvict);intent.unit_id=id
+	var intent:=_intent(C.ManagementAction.JusticeInterrogate if interrogate else C.ManagementAction.JusticeConvict);intent.unit_id=id
+	if interrogate:
+		intent.expected_selected=rows.filter(func(row):return row.unit_id==id)[0].interrogation_pending
+		cursor_id=id
 	var owner:=generation;phase=Phase.Applying;last_result={}
 	ticket=service.submit("justice",intent,func(received,result,_sent):
 		if owner!=generation or received!=ticket:return
@@ -117,6 +148,8 @@ func convict(id: int) -> void:
 		if result.get("outcome","")=="unknown" or typeof(value)!=TYPE_DICTIONARY or result.get("action")!=intent.action:_fail(result,true);return
 		if value.get("outcome")==C.JusticeOutcome.Unknown:_fail(result,true);return
 		if result.get("status")==C.ManagementStatus.Ok and value.get("outcome")==C.JusticeOutcome.Applied:
+			if interrogate:
+				phase=Phase.Ready;_read(query,true);return
 			var completed:=crime_id;close();convicted.emit(completed,id);return
 		if result.get("status")==C.ManagementStatus.Rejected and value.get("outcome") in [C.JusticeOutcome.Rejected,C.JusticeOutcome.Stale]:_fail(result);return
 		_fail(result,true))

@@ -3,6 +3,7 @@
 local out,probe,bytes=...
 local script=require('gui.script');local json=require('json');local base=dfhack.internal.getImageBase()
 local expected={lists=probe('justice-cases-probe'),details={}}
+expected.interrogation=probe('justice-interrogation-candidates-probe',{'9',''})
 expected.candidates={}
 for _,query in ipairs{'','dvn','zznomatch'}do
  expected.candidates[#expected.candidates+1]={query=query,rows=probe('justice-conviction-candidates-probe',{'9',query})}
@@ -20,6 +21,8 @@ for i=1,math.min(13,#expected.candidates[1].rows)do
  expected.presentation[tostring(id)]=probe('justice-candidate-presentation-probe',{'9',tostring(id),'28'})
 end
 local mutating=os.getenv('DF3D_JUSTICE_WIRE_CONVICT')=='1'
+local interrogating=os.getenv('DF3D_JUSTICE_WIRE_INTERROGATE')=='1'
+local initial_reports=#df.crime.find(9).reports
 local history_count=#df.global.world.history.events
 for _,list in ipairs(expected.lists)do for _,row in ipairs(list)do
  expected.details[tostring(row.id)]={summary=probe('justice-summary-probe',row.id),witnesses=probe('justice-witness-text-probe',row.id)}
@@ -28,7 +31,14 @@ local guards={}
 local function guard(object)local n,p=df.sizeof(object);guards[#guards+1]={n=n,p=p,value=bytes(p,n)}end
 if not mutating then guard(df.global.game.main_interface.info.justice)end
 for _,crime in ipairs(df.global.world.crimes.all)do
- if not mutating or crime.id~=9 then guard(crime)end
+ if interrogating and crime.id==9 then
+  -- Add/cancel may retain vector capacity. Guard every other crime byte and
+  -- all existing report objects; require the original count after cancellation.
+  local n,p=df.sizeof(crime)
+  guards[#guards+1]={n=0xc8,p=p,value=bytes(p,0xc8)}
+  guards[#guards+1]={n=n-0xe0,p=p+0xe0,value=bytes(p+0xe0,n-0xe0)}
+  for _,report in ipairs(crime.reports)do guard(report)end
+ elseif not mutating or crime.id~=9 then guard(crime)end
  for _,report in ipairs(crime.witnesses)do guard(report)end
 end
 local rng=bytes(base+0x234e990,0x6180)
@@ -48,3 +58,5 @@ else
   'Wire conviction history identity differs')
  assert(df.crime.find(9).accused_hf.historical_hfid==9317,'Wire conviction accused identity differs')
 end
+
+if interrogating then assert(#df.crime.find(9).reports==initial_reports,'Interrogation cancellation did not restore reports');assert(#df.global.world.history.events==history_count,'Interrogation changed history')end

@@ -564,8 +564,37 @@ established the refresh boundary before implementing the adapter. No gameplay
 exception is needed. MSVC `justice-interrogate-list-build.log` passes. DF22700
 closes unsaved with source preservation and preferences restored, native30FPS/no
 viewer; GPU sample38C/0%/14.36W, not a peak. The fixture's
-`interrogation_list_reference` records the scope. Interrogate transport, controller
-and visible checkbox integration remain pending; protocol197 is unchanged.
+`interrogation_list_reference` records this provider scope. Protocol198 now wires
+the Interrogate button and row checkboxes through model/service/controller to
+`toggleInterrogation`. An Applied edit refreshes candidate facts/revision while
+retaining local row order, scroll and clicked-row selection. Explicit search,
+sort or reopening adopts native order. Pending/Unknown edits cannot replay;
+closing retires UI ownership and late replies cannot reopen it.
+
+Protected `stockpile-storage-native-input-20261112-010743` exercises the actual
+button/checkbox at1200x800: schedule case9/unit7123 at row7, retain all293 row IDs,
+reject the old receipt, click Name to group the scheduled unit first, then cancel
+without moving that row. The original report count and history count are restored;
+menu/RNG/witness guards and crime bytes outside the report vector are unchanged.
+Vector allocation/capacity may remain after cancellation. Source preservation
+passes, owned DF26356 closes unsaved and preferences are restored. Both apps run
+at30FPS; GPU samples38–39C/0–6%/13.79–25.63W are not continuous peaks. The run is
+`passed_with_known_issues` for the documented separate-thread notice, finalize
+error and two-ObjectDB shutdown signature. Initial010553 completed assertions but
+hit the old25-second client limit during shutdown and is not accepted; this
+Interrogate test now has a bounded55-second limit.
+
+Panel crop(32,52)-(976,760) against native004703 differs by318 pixels, all within
+the selected unit7123 portrait at(516,392)-(544,420). Checkbox artwork, scheduled
+caption, selection frame, row order and all remaining panel pixels match. This
+additional appearance mismatch remains unresolved alongside the sorted5815/2459
+portraits; it is not a native-parity exception. Full Justice remains hidden.
+Assumed identities, running-job cancellation and missing figures still lack live
+acceptance. `native_justice.json.interrogation_transport_reference` records scope.
+MSVC `justice-interrogate-build.log` and QA `build/qa/justice-interrogate` pass
+(root/extension, core19, Justice state, management contract and UI composition).
+Installed198 bridge SHA256 is
+`875027132f27e34ecb57b2c64ed30c56d0950609804ba89638aae7cb1fed325a`.
 
 `df3d_justice::toggleInterrogation` in `justice_action_native.h` adds/removes
 pending interview records without opening a native picker. Handler474550 has

@@ -261,7 +261,7 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
             detail["witnesses"]=witnesses;value["detail"]=detail;
         }
         if(v.candidates){const auto& c=*v.candidates;Dictionary page;Array candidates;
-            page["crime_id"]=c.crimeId;page["revision"]=int64_t(c.revision);page["total"]=int64_t(c.total);page["offset"]=int64_t(c.offset);
+            page["interrogate"]=c.interrogate;page["crime_id"]=c.crimeId;page["revision"]=int64_t(c.revision);page["total"]=int64_t(c.total);page["offset"]=int64_t(c.offset);
             for(const auto& r:c.rows){Dictionary row;row["unit_id"]=r.unitId;row["rank"]=r.rank;
                 row["interrogation_pending"]=r.interrogationPending;row["counterintelligence"]=r.counterintelligence;
                 const auto& d=r.display;Dictionary display,color;Array primary,alternate;
@@ -707,9 +707,14 @@ bool validateJustice(const Dictionary& data,String& error) {
     const auto integer=[](const Dictionary& d,const char* k,int64_t lo,int64_t hi){return d.has(k) && d[k].get_type()==Variant::INT && int64_t(d[k])>=lo && int64_t(d[k])<=hi;};
     const bool detail=int64_t(data["action"])==int64_t(wm::ManagementAction::JusticeCaseRead);
     const bool candidates=int64_t(data["action"])==int64_t(wm::ManagementAction::JusticeCandidatesRead);
-    const bool convict=int64_t(data["action"])==int64_t(wm::ManagementAction::JusticeConvict);
+    const bool interrogate=int64_t(data["action"])==int64_t(wm::ManagementAction::JusticeInterrogate);
+    const bool convict=int64_t(data["action"])==int64_t(wm::ManagementAction::JusticeConvict) || interrogate;
+    const bool mode=(candidates||convict) && data.has("interrogate");
+    const bool selected=interrogate && data.has("expected_selected");
+    if(mode && data["interrogate"].get_type()!=Variant::BOOL)return false;
+    if(interrogate ? !mode || !bool(data["interrogate"]) || !selected || data["expected_selected"].get_type()!=Variant::BOOL : convict && mode && bool(data["interrogate"]))return false;
     const bool sorts=(candidates||convict) && data.has("sorts");
-    if(data.size()!=(convict?10:candidates?9:detail?7:5)+int(sorts) || !integer(data,"tab",0,2) || !integer(data,"offset",0,1048576) || !integer(data,"limit",1,64) ||
+    if(data.size()!=(convict?10:candidates?9:detail?7:5)+int(sorts)+int(mode)+int(selected) || !integer(data,"tab",0,2) || !integer(data,"offset",0,1048576) || !integer(data,"limit",1,64) ||
         !integer(data,"expected_list_revision",(detail||candidates||convict)?1:0,INT64_MAX))return false;
     if(detail || candidates || convict){if(!integer(data,"crime_id",0,INT32_MAX) || !integer(data,"expected_case_revision",(candidates||convict)?1:0,INT64_MAX) ||
         (int64_t(data["offset"]) && !int64_t(data["expected_case_revision"])))return false;
@@ -737,11 +742,13 @@ bool readJustice(const Dictionary& data,wm::ManagementRequest& request,String&) 
     q.tab=uint8_t(int64_t(data["tab"]));q.offset=uint32_t(int64_t(data["offset"]));q.limit=uint16_t(int64_t(data["limit"]));
     q.expectedListRevision=uint64_t(int64_t(data["expected_list_revision"]));
     if(request.action!=wm::ManagementAction::JusticeRead){q.crimeId=int32_t(int64_t(data["crime_id"]));q.expectedCaseRevision=uint64_t(int64_t(data["expected_case_revision"]));}
-    if(request.action==wm::ManagementAction::JusticeCandidatesRead || request.action==wm::ManagementAction::JusticeConvict){
+    if(request.action>=wm::ManagementAction::JusticeCandidatesRead && request.action<=wm::ManagementAction::JusticeInterrogate){
         q.query=String(data["query"]).utf8().get_data();q.expectedCandidateRevision=uint64_t(int64_t(data["expected_candidate_revision"]));
         if(data.has("sorts")){q.sorts.clear();const Array list=data["sorts"];
             for(int64_t i=0;i<list.size();++i){const Dictionary sort=list[i];q.sorts.push_back({wm::JusticeCandidateColumn(int64_t(sort["column"])),bool(sort["reverse"])});}}
-        if(request.action==wm::ManagementAction::JusticeConvict)q.unitId=int32_t(int64_t(data["unit_id"]));
+        if(data.has("interrogate"))q.interrogate=bool(data["interrogate"]);
+        if(data.has("expected_selected"))q.expectedSelected=bool(data["expected_selected"]);
+        if(request.action!=wm::ManagementAction::JusticeCandidatesRead)q.unitId=int32_t(int64_t(data["unit_id"]));
     }
     return true;
 }
@@ -1179,7 +1186,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::JusticeConvict)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::JusticeInterrogate)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

@@ -4040,6 +4040,11 @@
   ],
   "exclusions": [
     {
+      "path": "presentations/godot/project/tests/workshop_selector_layout_live.gd",
+      "status": "manual",
+      "reason": "Protected stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader -FarmItemCarriers with DF3D_WORKSHOP_NATIVE=1 and DF3D_WORKSHOP_SELECTOR_LAYOUT=1. Native geometry and composed viewer/filter/Escape checks in an owned paused clone. Never run standalone."
+    },
+    {
       "path": "presentations/godot/project/tests/work_order_navigation_wire_live.gd",
       "status": "manual",
       "reason": "Protected assembled Work orders navigation via stockpile_storage_native.ps1 with DF3D_WORK_ORDER_ARTWORK_REFERENCE=1 and DF3D_WORK_ORDER_NAVIGATION=1; owned unsaved clone and 30 FPS client."

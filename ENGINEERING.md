@@ -17101,10 +17101,26 @@ unchanged. Protected174353 on2026-11-01 verifies11 rows at960x600, filter focus 
 Enter, then restoration to16 rows at1200x800 before the assignment/mode/removal
 flow. Native/Godot small screenshots were inspected. DF47784 exits unsaved and
 source preservation passes; logs contain only classified known diagnostics.
-`worker_height_reference` records this scope. Native narrows its outer selector
-frame at960 pixels (unit-list rect right68 vs76 atdefault); DF3D still retains608px
-width. That width mismatch, larger indicator counts, full selector parity and
-public workshop routing remain unfinished. Composition passes in
+`worker_height_reference` records this scope. Native selector width now follows its separate frame and row-table constraints.
+Protected173040/173525 on2026-11-12 records root anchors left0/right1 with offsets
+4/-72 and min_w66; the rendered frame adds two columns. The row table has its
+own intrinsic minimum, so rows can extend past the frame at small widths.
+The viewer preserves that layout, including the separate scrollbar position;
+Location selector defaults are unchanged. Composed173525 verifies widths544,
+1008 and608 at960x600,1600x900 and1200x800, row widths and scrollbar positions,
+filter pointer/Enter and Escape. The final small selector was visually inspected.
+Eight of nine compared frame-edge strips have zero differing RGB pixels; the
+small right edge retains11 scrollbar-edge differences. This is geometry
+acceptance, not full selector pixel parity or assignment-effect acceptance.
+Owned DF32596 exits unsaved with source and preferences preserved; GPU samples
+59-60C, both clients capped30FPS. The client has only the documented startup,
+render-device-finalize and two-ObjectDB shutdown diagnostics. Metadata and hashes
+are in `native_workshop.json.worker_width_reference`. Headless composition and
+candidate-state checks pass in `workshop-selector-width`; core19 passes.
+Larger indicator-count layout, full selector parity and public workshop routing
+remain unfinished. Task categories, Priority and Details also remain explicit
+functional gaps: the latter two currently emit unhandled signals; they are not
+accepted working buttons. Composition passes in
 `workshop-selector-height`; the live flow supplies the resize/effect evidence.
 
 Still root choices now include Extract from plants from native inline branch

@@ -8,6 +8,11 @@ for _,b in ipairs(df.global.world.buildings.other.WORKSHOP_ANY)do
  if df.building_workshopst:is_instance(b) and b.type==df.workshop_type.Carpenters and b:getBuildStage()==b:getMaxBuildStage()then building=b;break end
 end
 assert(building,'Native workshop reference needs a completed carpenter workshop')
+if os.getenv('DF3D_WORKSHOP_SELECTOR_LAYOUT')=='1'then
+ for _,candidate in ipairs(df.global.world.buildings.other.WORKSHOP_ANY)do
+  if df.building_workshopst:is_instance(candidate) and candidate.type==df.workshop_type.Still then building=candidate;break end
+ end
+end
 local jobs={};for _,job in ipairs(building.jobs)do jobs[#jobs+1]=job.id end
 local result={building_id=building.id,type=df.workshop_type[building.type],position={building.centerx,building.centery,building.z},jobs=jobs,pages={}}
 -- Diagnostic oracle only; runtime worker reads never traverse widgets.
@@ -41,7 +46,9 @@ local function worker_geometry(widget,rows,depth)
  if (widget.flag.whole&1)==0 then return end
  local r=widget.rect
  if r.y1>=0 and r.y1<64 and r.y2>=r.y1 then
-  rows[#rows+1]={name=widget.name,type=tostring(widget._type),rect={r.x1,r.y1,r.x2,r.y2},depth=depth}
+  rows[#rows+1]={name=widget.name,type=tostring(widget._type),rect={r.x1,r.y1,r.x2,r.y2},depth=depth,
+   min_w=widget.min_w,min_h=widget.min_h,anchors={widget.anchor_left,widget.anchor_top,widget.anchor_right,widget.anchor_bottom},
+   offsets={widget.offset_left,widget.offset_top,widget.offset_right,widget.offset_bottom}}
   if df.widget_columns_container:is_instance(widget)then rows[#rows].padding=df.reinterpret_cast(df.widget_columns_container,widget).padding end
  end
  if not df.widget_container:is_instance(widget)then return end
@@ -113,6 +120,16 @@ local ok,err=xpcall(function()
  df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
  shot('worker-selector')
  result.worker_candidates_reference=read_worker_reference(building)
+ if os.getenv('DF3D_WORKSHOP_SELECTOR_LAYOUT')=='1'then
+  result.selector_layout={}
+  for _,size in ipairs{'small','wide','default'}do
+   resize_worker(size)
+   local geometry={};worker_geometry(df.global.game.main_interface.unit_selector,geometry,0)
+   result.selector_layout[#result.selector_layout+1]={size=size,dimx=g.dimx,dimy=g.dimy,geometry=geometry}
+   shot('selector-layout-'..size)
+  end
+  gui.simulateInput(view,'LEAVESCREEN');capture('workshop-wire');return
+ end
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(click_label('Work orders'),'Native Work orders tab not found')
  shot('work-orders')

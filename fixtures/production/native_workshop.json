@@ -3338,5 +3338,470 @@
       "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
       "godot-diagnostics.json": "edafb1af8c5609a654cee690f3ea0440427a3e78fd0e71187796d20ecb88f5f9"
     }
+  },
+  "worker_width_reference": {
+    "run": "build/stockpile-storage-native-farm-discovery-20261112-173525",
+    "scope": "Frame and row intrinsic-width geometry, scrollbar position, filter focus/Enter and Escape at960x600,1600x900,1200x800. Read-only composed worker selector; no task/assignment action acceptance inferred.",
+    "native_geometry": [
+      {
+        "size": "small",
+        "dimx": 120,
+        "dimy": 50,
+        "geometry": [
+          {
+            "anchors": [
+              0.0,
+              0.0,
+              1.0,
+              1.0
+            ],
+            "depth": 0,
+            "min_h": 0,
+            "min_w": 66,
+            "name": "",
+            "offsets": [
+              4,
+              4,
+              -72,
+              -4
+            ],
+            "rect": [
+              4,
+              4,
+              69,
+              46
+            ],
+            "type": "<type: unit_selector_interfacest>"
+          },
+          {
+            "anchors": [
+              0.0,
+              0.0,
+              1.0,
+              1.0
+            ],
+            "depth": 1,
+            "min_h": 0,
+            "min_w": 0,
+            "name": "Unit selector",
+            "offsets": [
+              1,
+              1,
+              -1,
+              -1
+            ],
+            "rect": [
+              5,
+              5,
+              68,
+              45
+            ],
+            "type": "<type: widget_unit_list>"
+          },
+          {
+            "anchors": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "depth": 2,
+            "min_h": 0,
+            "min_w": 66,
+            "name": "Unit List",
+            "offsets": [
+              -2,
+              0,
+              0,
+              0
+            ],
+            "rect": [
+              3,
+              5,
+              68,
+              45
+            ],
+            "type": "<type: widget_table>"
+          },
+          {
+            "anchors": [
+              0.0,
+              0.0,
+              1.0,
+              1.0
+            ],
+            "depth": 3,
+            "min_h": 0,
+            "min_w": 66,
+            "name": "",
+            "offsets": [
+              2,
+              2,
+              -1,
+              -5
+            ],
+            "rect": [
+              5,
+              7,
+              70,
+              40
+            ],
+            "type": "<type: widget_scroll_rows>"
+          }
+        ]
+      },
+      {
+        "size": "wide",
+        "dimx": 200,
+        "dimy": 75,
+        "geometry": [
+          {
+            "anchors": [
+              0.0,
+              0.0,
+              1.0,
+              1.0
+            ],
+            "depth": 0,
+            "min_h": 0,
+            "min_w": 66,
+            "name": "",
+            "offsets": [
+              4,
+              4,
+              -72,
+              -4
+            ],
+            "rect": [
+              4,
+              4,
+              127,
+              71
+            ],
+            "type": "<type: unit_selector_interfacest>"
+          },
+          {
+            "anchors": [
+              0.0,
+              0.0,
+              1.0,
+              1.0
+            ],
+            "depth": 1,
+            "min_h": 0,
+            "min_w": 0,
+            "name": "Unit selector",
+            "offsets": [
+              1,
+              1,
+              -1,
+              -1
+            ],
+            "rect": [
+              5,
+              5,
+              126,
+              70
+            ],
+            "type": "<type: widget_unit_list>"
+          },
+          {
+            "anchors": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "depth": 2,
+            "min_h": 0,
+            "min_w": 122,
+            "name": "Unit List",
+            "offsets": [
+              -2,
+              0,
+              0,
+              0
+            ],
+            "rect": [
+              3,
+              5,
+              124,
+              70
+            ],
+            "type": "<type: widget_table>"
+          },
+          {
+            "anchors": [
+              0.0,
+              0.0,
+              1.0,
+              1.0
+            ],
+            "depth": 3,
+            "min_h": 0,
+            "min_w": 122,
+            "name": "",
+            "offsets": [
+              2,
+              2,
+              -1,
+              -5
+            ],
+            "rect": [
+              5,
+              7,
+              126,
+              65
+            ],
+            "type": "<type: widget_scroll_rows>"
+          }
+        ]
+      },
+      {
+        "size": "default",
+        "dimx": 150,
+        "dimy": 66,
+        "geometry": [
+          {
+            "anchors": [
+              0.0,
+              0.0,
+              1.0,
+              1.0
+            ],
+            "depth": 0,
+            "min_h": 0,
+            "min_w": 66,
+            "name": "",
+            "offsets": [
+              4,
+              4,
+              -72,
+              -4
+            ],
+            "rect": [
+              4,
+              4,
+              77,
+              62
+            ],
+            "type": "<type: unit_selector_interfacest>"
+          },
+          {
+            "anchors": [
+              0.0,
+              0.0,
+              1.0,
+              1.0
+            ],
+            "depth": 1,
+            "min_h": 0,
+            "min_w": 0,
+            "name": "Unit selector",
+            "offsets": [
+              1,
+              1,
+              -1,
+              -1
+            ],
+            "rect": [
+              5,
+              5,
+              76,
+              61
+            ],
+            "type": "<type: widget_unit_list>"
+          },
+          {
+            "anchors": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "depth": 2,
+            "min_h": 0,
+            "min_w": 72,
+            "name": "Unit List",
+            "offsets": [
+              -2,
+              0,
+              0,
+              0
+            ],
+            "rect": [
+              3,
+              5,
+              74,
+              61
+            ],
+            "type": "<type: widget_table>"
+          },
+          {
+            "anchors": [
+              0.0,
+              0.0,
+              1.0,
+              1.0
+            ],
+            "depth": 3,
+            "min_h": 0,
+            "min_w": 72,
+            "name": "",
+            "offsets": [
+              2,
+              2,
+              -1,
+              -5
+            ],
+            "rect": [
+              5,
+              7,
+              76,
+              56
+            ],
+            "type": "<type: widget_scroll_rows>"
+          }
+        ]
+      }
+    ],
+    "viewer": {
+      "selector_layout": [
+        {
+          "row_columns": 65,
+          "scrollbar_x": 568.0,
+          "size": "small",
+          "width": 544.0
+        },
+        {
+          "row_columns": 121,
+          "scrollbar_x": 1016.0,
+          "size": "wide",
+          "width": 1008.0
+        },
+        {
+          "row_columns": 71,
+          "scrollbar_x": 616.0,
+          "size": "default",
+          "width": 608.0
+        }
+      ],
+      "success": true
+    },
+    "chrome_comparison": [
+      {
+        "size": "small",
+        "region": "left",
+        "box": [
+          32,
+          48,
+          40,
+          564
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": "small",
+        "region": "right",
+        "box": [
+          568,
+          48,
+          576,
+          564
+        ],
+        "different_pixels": 11
+      },
+      {
+        "size": "small",
+        "region": "bottom",
+        "box": [
+          32,
+          552,
+          576,
+          564
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": "default",
+        "region": "left",
+        "box": [
+          32,
+          52,
+          40,
+          760
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": "default",
+        "region": "right",
+        "box": [
+          632,
+          52,
+          640,
+          760
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": "default",
+        "region": "bottom",
+        "box": [
+          32,
+          748,
+          640,
+          760
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": "wide",
+        "region": "left",
+        "box": [
+          32,
+          48,
+          40,
+          864
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": "wide",
+        "region": "right",
+        "box": [
+          1032,
+          48,
+          1040,
+          864
+        ],
+        "different_pixels": 0
+      },
+      {
+        "size": "wide",
+        "region": "bottom",
+        "box": [
+          32,
+          852,
+          1040,
+          864
+        ],
+        "different_pixels": 0
+      }
+    ],
+    "limitations": [
+      "Small right border retains11 differing scrollbar-edge pixels; full selector pixel parity is not claimed.",
+      "Task categories, Priority and Details remain unfinished."
+    ],
+    "status": "passed_with_known_issues: separate-render-thread, device-finalize and2 ObjectDB shutdown signatures only",
+    "owned_df_pid": 32596,
+    "source_preserved": true,
+    "closed_unsaved": true,
+    "hashes": {
+      "workshop-native.json": "94ebc80026705b2a45ed3dfe6ae6a1b90fb01d71c4605a9da71a125112754dfb",
+      "workshop-wire-result.json": "7d042de8c685729345b193db5a381617a160ea897e13d6e07f3a8c6f0ad9f95c",
+      "godot-diagnostics.json": "3696e4d2f3d7552e33b69bb9c5cef9404d521e56ad8e82e4d461f0a9d889141d",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    }
   }
 }

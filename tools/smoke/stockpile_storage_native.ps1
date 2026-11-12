@@ -416,7 +416,7 @@ try {
     if($FarmItemCarriers -and $name -in @('workshop-wire','workshop-order-wire')) {
      $env:DF3D_CARRIER_DIRECTORY=$out
      $engine='C:/Program Files (x86)/Steam/steamapps/common/Godot Engine/godot.windows.opt.tools.64.exe'
-     $script=if($name -eq 'workshop-order-wire'){'res://tests/workshop_order_wire_live.gd'}else{'res://tests/workshop_wire_live.gd'}
+     $script=if($env:DF3D_WORKSHOP_SELECTOR_LAYOUT -eq '1'){'res://tests/workshop_selector_layout_live.gd'}elseif($name -eq 'workshop-order-wire'){'res://tests/workshop_order_wire_live.gd'}else{'res://tests/workshop_wire_live.gd'}
      $client=Start-Process -FilePath $engine -ArgumentList @('--max-fps','30','--path',"$repo/presentations/godot/project",'--script',$script) -WindowStyle Hidden -PassThru -RedirectStandardOutput "$out/$name.stdout.log" -RedirectStandardError "$out/$name.stderr.log"
      $null=$client.Handle
      if(-not $client.WaitForExit(45000)){$client.Kill();$client.WaitForExit();throw 'Workshop client timed out; no replay'}

@@ -16,6 +16,8 @@ var responsive_height:=false
 var frame_rows:=59
 var page_rows:=16
 func filter_cell() -> int:return frame_rows-4
+func frame_columns() -> int:return 74+extra_columns
+func row_columns() -> int:return 69+extra_columns
 
 func configure(source) -> void:
 	world=source;art.configure(source);theme=art.theme
@@ -28,12 +30,12 @@ func configure(source) -> void:
 func layout(view: Vector2) -> void:
 	frame_rows=maxi(13,floori(view.y/12)-7) if responsive_height else 59
 	page_rows=maxi(1,int((frame_rows-9)/3))
-	position=Vector2(368,48+fposmod(view.y,12)*0.5);size=Vector2(592+extra_columns*8,frame_rows*12)
+	position=Vector2(368,48+fposmod(view.y,12)*0.5);size=Vector2(frame_columns()*8,frame_rows*12)
 	if scrollbar!=null:
 		var height: int=(frame_rows-9)*12
 		var changed: bool=scrollbar.size.y!=height or scrollbar.page!=page_rows
 		if changed:scrollbar.dragging=false
-		scrollbar.position.x=568+extra_columns*8;scrollbar.size.y=height;scrollbar.page=page_rows
+		scrollbar.position.x=(row_columns()+2)*8;scrollbar.size.y=height;scrollbar.page=page_rows
 		if changed:scrollbar.set_rows(scrollbar.count,scrollbar.first)
 
 func display(total: int, first := 0, header := 3, directions: Array = [true,true,true,true]) -> void:
@@ -56,7 +58,7 @@ func patch(token: String, origin: Vector2i, columns: int, rows: int, source: Tex
 func _draw() -> void:
 	if world==null:return
 	# The native rendered right edge is cell119, although the widget rect ends117.
-	patch("HOVER_RECTANGLE",Vector2i.ZERO,74+extra_columns,frame_rows)
+	patch("HOVER_RECTANGLE",Vector2i.ZERO,frame_columns(),frame_rows)
 	for header in 4:
 		var suffix: String="ACTIVE" if header==active_header else "INACTIVE"
 		# Each native header retains its direction when another header is selected.

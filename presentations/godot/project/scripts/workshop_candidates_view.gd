@@ -3,6 +3,17 @@ extends "res://scripts/location_staff_candidates_view.gd"
 # click1431c60, tooltip1433d40. The widget callbacks are never runtime inputs.
 const Indicators=preload("res://scripts/location_staff_indicators.gd")
 var indicator_columns:=1
+var viewport_columns:=150
+# Native selector anchors: left4/right-72, min_w66. The frame draws two
+# extra columns; the child row table has its own intrinsic width and may
+# extend past the frame at small sizes (native selector-layout173040).
+func frame_columns() -> int:return maxi(68,viewport_columns-74)
+func row_columns() -> int:return maxi(62+indicator_columns*4,viewport_columns-78)-1
+func layout(view: Vector2) -> void:
+ viewport_columns=floori(view.x/8)
+ super.layout(view)
+ queue_redraw()
+
 var modes
 var hover_help
 var pointer_known:=false

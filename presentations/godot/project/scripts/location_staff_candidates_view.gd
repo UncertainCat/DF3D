@@ -153,14 +153,14 @@ func _gui_input(event: InputEvent) -> void:
 			var width: int=20 if header==3 else HEADER_WIDTH[header]
 			if Rect2(HEADER_X[header]*8,12,width*8,12).has_point(event.position):
 				select_sort(header);accept_event();return
-		if actions_enabled and Rect2(8,36,552+extra_columns*8,page_rows*36).has_point(event.position):
+		if actions_enabled and Rect2(8,36,row_columns()*8,page_rows*36).has_point(event.position):
 			var index:=first+int((event.position.y-36)/36)
 			if index<rows.size():
 				unit_chosen.emit(int(rows[index].unit_id));accept_event();return
 		# A click reaching the blank panel dismisses textbox focus. Header and
 		# textbox handlers above retain it, matching the native widget dispatch.
 		filter_focused=false;queue_redraw()
-	if not Rect2(8,36,560+extra_columns*8,(frame_rows-9)*12).has_point(event.position):return
+	if not Rect2(8,36,(row_columns()+1)*8,(frame_rows-9)*12).has_point(event.position):return
 	if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
 		scrollbar.move_to(first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1)*(page_rows if event.shift_pressed else 1))
 		accept_event()
@@ -233,13 +233,13 @@ func _draw() -> void:
 		var row: Dictionary=rows[first+index]
 		var top := 3+index*3
 		var token := "BUTTON_RECTANGLE_SELECTED" if first+index==selected else row_background_token
-		patch(token,Vector2i(1,top),69+extra_columns,3)
+		patch(token,Vector2i(1,top),row_columns(),3)
 		patch("",Vector2i(1,top),5,3,picture.texture(first+index==selected))
 		# Protected020926: native anchored full-body image32x32, offset2,2.
 		var icon: Texture2D=unit_icons.get(int(row.get("unit_id",-1)))
 		if icon!=null:draw_texture_rect(icon,Rect2(10,top*12+2,32,32),false)
 		for y in 3:
-			for x in range(1,70+extra_columns):glyphs.erase(Vector2i(x,top+y))
+			for x in range(1,row_columns()+1):glyphs.erase(Vector2i(x,top+y))
 		var names = Format.name_lines(row.get("base_name"),row.get("profession_name"))
 		var color := Format.name_color_index(row.get("profession_color"),row.get("legendary",false),ticks)
 		if names!=null and color>=0:

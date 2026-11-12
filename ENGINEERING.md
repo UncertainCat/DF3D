@@ -576,6 +576,28 @@ source/prefs preserved; serial30FPS, GPU48–49C samples. Known Godot diagnostic
 qualify the live result. `candidate_keyboard_navigation_reference` retains
 bounded states, comparisons and hashes.
 
+Guard and Convicts use the same native cursor/keep-visible rules for Up/Down
+and Page Up/Down. Convicts selection invokes its existing receipted native
+detail read; retired replies cannot replace the newly selected creature's
+sentence/crimes. Roster refresh keeps the filter visible throughout, preserving
+keyboard focus while selection and asynchronous detail reads redraw the panel.
+
+Protected132533 on2026-11-12 verifies26 cursor/scroll/focus states with one
+guard and three convicts, both with and without filter focus. Convicts moves
+0/1/2/2/1/0 and every selected creature's detail text/colors match native.
+Nine of20 panel crops(32,52)-(976,760) match exactly; other differences are
+confined to506 Guard or735 Convict animated name-color pixels and/or8 filter
+caret pixels. Other panel pixels match. Earlier132208 exposed transient
+search hide/show losing focus and a JSON numeric-type comparison in the test;
+neither failure is counted as acceptance.
+
+Justice state/composition and core19 pass. Owned DF46512 closes unsaved with
+source/prefs preserved; serial30FPS, GPU52C sample. Known Godot shutdown
+diagnostics qualify the live result as passed_with_known_issues.
+`roster_keyboard_navigation_reference` retains bounded states and hashes.
+Overflow, other sizes, numeric/keypad aliases and physical wheel remain outside
+this run's acceptance scope.
+
 
 Management protocol198 adds `JusticeInterrogate`, the candidate request/page
 `interrogate` mode, and an `expected_selected` comparison for checkbox edits.

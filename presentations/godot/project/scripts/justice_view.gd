@@ -97,7 +97,7 @@ func refresh() -> void:
 	candidate_scroll.position=Vector2(size.x-32,list_top()+24);candidate_scroll.size=Vector2(16,maxi(36,size.y-list_top()-108))
 	candidate_scroll.page=picker_capacity();candidate_scroll.set_rows(state.candidates.rows.size(),state.candidates.first)
 	if not picker_open():candidate_scroll.hide()
-	search.position=Vector2(detail_x()+16,size.y-60);search.size=Vector2(312,36);search.visible=picker_open()
+	search.position=Vector2(detail_x()+16,size.y-60);search.size=Vector2(312,36);search.visible=picker_open() or roster_open()
 	search.editable=allowed() and state.candidates.phase in [state.candidates.Phase.Ready,state.candidates.Phase.Reading,state.candidates.Phase.Rejected]
 	search.set_bytes(state.candidates.query.to_utf8_buffer())
 	if roster_open():
@@ -137,9 +137,11 @@ func _input(event: InputEvent) -> void:
 		search.grab_focus();get_viewport().set_input_as_handled();return
 	if allowed() and state!=null and picker_open() and event is InputEventKey and event.pressed and not event.ctrl_pressed and not event.shift_pressed and not event.alt_pressed and not event.meta_pressed and event.keycode==KEY_LEFT:
 		state.close_candidates();get_viewport().set_input_as_handled();return
-	if state!=null and picker_allowed() and event is InputEventKey and event.pressed and not event.ctrl_pressed and not event.shift_pressed and not event.alt_pressed and not event.meta_pressed and event.keycode in [KEY_UP,KEY_DOWN,KEY_PAGEUP,KEY_PAGEDOWN]:
-		var step:=(-1 if event.keycode in [KEY_UP,KEY_PAGEUP] else 1)*(picker_capacity() if event.keycode in [KEY_PAGEUP,KEY_PAGEDOWN] else 1)
-		state.candidates.move_cursor(step,picker_capacity());get_viewport().set_input_as_handled();return
+	if state!=null and (guard_allowed() if roster_open() else picker_allowed()) and event is InputEventKey and event.pressed and not event.ctrl_pressed and not event.shift_pressed and not event.alt_pressed and not event.meta_pressed and event.keycode in [KEY_UP,KEY_DOWN,KEY_PAGEUP,KEY_PAGEDOWN]:
+		var page_size:=guard_capacity() if roster_open() else picker_capacity()
+		var step:=(-1 if event.keycode in [KEY_UP,KEY_PAGEUP] else 1)*(page_size if event.keycode in [KEY_PAGEUP,KEY_PAGEDOWN] else 1)
+		var model=roster() if roster_open() else state.candidates
+		model.move_cursor(step,page_size);get_viewport().set_input_as_handled();return
 	if allowed() and state!=null and (picker_open() or roster_open()) and event is InputEventKey and event.pressed and event.keycode!=KEY_ESCAPE and search.has_focus():
 		search.feed_key(event);get_viewport().set_input_as_handled();return
 	if allowed() and state!=null and event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:

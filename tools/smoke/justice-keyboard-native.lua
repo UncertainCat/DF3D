@@ -9,18 +9,20 @@ end
 local samples={}
 local navigation=os.getenv('DF3D_JUSTICE_PICKER_NAV')=='1'
 local list_navigation=os.getenv('DF3D_JUSTICE_LIST_NAV')=='1'
-for attempt,name in ipairs((list_navigation or navigation)and {'Interrogate','Convict','Interrogate','Convict'}or{'Fortress guard','Convicts','Interrogate','Convict'})do
+local roster_navigation=os.getenv('DF3D_JUSTICE_ROSTER_NAV')=='1'
+for attempt,name in ipairs(roster_navigation and {'Fortress guard','Convicts','Fortress guard','Convicts'}or(list_navigation or navigation)and {'Interrogate','Convict','Interrogate','Convict'}or{'Fortress guard','Convicts','Interrogate','Convict'})do
  if name=='Interrogate'or name=='Convict'then
   tab('Open cases');click(100,202);click(100,166);click(name=='Interrogate'and 560 or 652,190)
  else tab(name)end
  local function observe(label)
-  local filter,list;local ids={};local scrolling={}
+  local filter,list;local ids={};local scrolling={};local detail={}
   local function walk(w)
    if (w.flag.whole&1)==0 then return end
    if w.name=='Filter box'then filter=w end
    if df.widget_unit_list:is_instance(w)then list=w end
    if df.widget_scroll_rows:is_instance(w)then scrolling[#scrolling+1]={x=w.rect.x1,y=w.rect.y1,scroll=w.scroll,visible=w.num_visible}end
    if df.widget_unit_name:is_instance(w)and w.u then ids[#ids+1]=w.u.id end
+   if name=='Convicts'and df.widget_text:is_instance(w)and w.rect.x1>=65 then detail[#detail+1]={text=dfhack.df2utf(w.str),color=w.fg+(w.bright and 8 or 0)}end
    if df.widget_container:is_instance(w)then for i,c in ipairs(dfhack.gui.getWidgetChildren(w))do
     if not df.widget_tabs:is_instance(w)or i-1==w.cur_idx then walk(c)end
    end end
@@ -35,13 +37,13 @@ for attempt,name in ipairs((list_navigation or navigation)and {'Interrogate','Co
   local _,address=df.sizeof(filter);local focused=false
   if df.global.gview.cur_textbox then local _,p=df.sizeof(df.global.gview.cur_textbox);focused=p==address end
   local vt=df.reinterpret_cast('uint64_t',address).value
-  samples[#samples+1]={tab=name,label=label,flags=filter.flag.whole,focused=focused,sorts=sorts,ids=ids,scrolling=scrolling,cursor=list and list.cursor_idx or -1,filter_feed=df.reinterpret_cast('uint64_t',vt+8).value-dfhack.internal.getImageBase()}
+  samples[#samples+1]={tab=name,label=label,flags=filter.flag.whole,focused=focused,sorts=sorts,ids=ids,scrolling=scrolling,detail=detail,cursor=list and list.cursor_idx or -1,filter_feed=df.reinterpret_cast('uint64_t',vt+8).value-dfhack.internal.getImageBase()}
   local file=assert(io.open(out..'/justice-keyboard.json','w'));file:write(json.encode(samples));file:close()
  end
  local function key(label,event)
   df.global.enabler.mouse_focus=true;gui.simulateInput(view,event);settle();observe(label)
  end
- if list_navigation then
+ if list_navigation or roster_navigation then
   if attempt>2 then key('filter','FILTER')end
   observe('initial')
   for _,event in ipairs{'STANDARDSCROLL_DOWN','STANDARDSCROLL_DOWN','STANDARDSCROLL_PAGEDOWN','STANDARDSCROLL_UP','STANDARDSCROLL_PAGEUP','CONTEXT_SCROLL_DOWN','CONTEXT_SCROLL_PAGEDOWN'}do

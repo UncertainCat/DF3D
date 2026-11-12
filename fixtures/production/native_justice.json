@@ -13744,5 +13744,380 @@
       "justice-list-nav-view-6.png": "9576e4c85bf895f98e54bcbce1ca0593bf49ee3e3ad69c5670979152c88797f2",
       "justice-list-nav-6.png": "835178aa289a585bf48252efafeca7583eab699d8e9def0dc046b7d7f7c03910"
     }
+  },
+  "roster_keyboard_navigation_reference": {
+    "source": "build/stockpile-storage-native-input-20261112-132533",
+    "status": "passed_with_known_issues",
+    "scope": "Guard and Convicts Up/Down/PageUp/PageDown at1200x800, with and without focused filter. One guard and three convicts; Convicts selection loads native sentence/crime details. Overflow, other dimensions, numeric/keypad aliases and physical wheel are not accepted by this run.",
+    "fps_cap": 30,
+    "gpu_sample_celsius": 52,
+    "owned_df_closed": 46512,
+    "source_preserved": true,
+    "keyboard_states": 26,
+    "samples": [
+      {
+        "index": 1,
+        "tab": "Fortress guard",
+        "key": "initial",
+        "cursor": 0,
+        "first": 0,
+        "focused": false,
+        "unit_id": 5813
+      },
+      {
+        "index": 2,
+        "tab": "Fortress guard",
+        "key": "STANDARDSCROLL_DOWN",
+        "cursor": 0,
+        "first": 0,
+        "focused": false,
+        "unit_id": 5813
+      },
+      {
+        "index": 3,
+        "tab": "Fortress guard",
+        "key": "STANDARDSCROLL_DOWN",
+        "cursor": 0,
+        "first": 0,
+        "focused": false,
+        "unit_id": 5813
+      },
+      {
+        "index": 4,
+        "tab": "Fortress guard",
+        "key": "STANDARDSCROLL_PAGEDOWN",
+        "cursor": 0,
+        "first": 0,
+        "focused": false,
+        "unit_id": 5813
+      },
+      {
+        "index": 5,
+        "tab": "Fortress guard",
+        "key": "STANDARDSCROLL_UP",
+        "cursor": 0,
+        "first": 0,
+        "focused": false,
+        "unit_id": 5813
+      },
+      {
+        "index": 6,
+        "tab": "Fortress guard",
+        "key": "STANDARDSCROLL_PAGEUP",
+        "cursor": 0,
+        "first": 0,
+        "focused": false,
+        "unit_id": 5813
+      },
+      {
+        "index": 9,
+        "tab": "Convicts",
+        "key": "initial",
+        "cursor": 0,
+        "first": 0,
+        "focused": false,
+        "unit_id": 6970
+      },
+      {
+        "index": 10,
+        "tab": "Convicts",
+        "key": "STANDARDSCROLL_DOWN",
+        "cursor": 1,
+        "first": 0,
+        "focused": false,
+        "unit_id": 6546
+      },
+      {
+        "index": 11,
+        "tab": "Convicts",
+        "key": "STANDARDSCROLL_DOWN",
+        "cursor": 2,
+        "first": 0,
+        "focused": false,
+        "unit_id": 6032
+      },
+      {
+        "index": 12,
+        "tab": "Convicts",
+        "key": "STANDARDSCROLL_PAGEDOWN",
+        "cursor": 2,
+        "first": 0,
+        "focused": false,
+        "unit_id": 6032
+      },
+      {
+        "index": 13,
+        "tab": "Convicts",
+        "key": "STANDARDSCROLL_UP",
+        "cursor": 1,
+        "first": 0,
+        "focused": false,
+        "unit_id": 6546
+      },
+      {
+        "index": 14,
+        "tab": "Convicts",
+        "key": "STANDARDSCROLL_PAGEUP",
+        "cursor": 0,
+        "first": 0,
+        "focused": false,
+        "unit_id": 6970
+      },
+      {
+        "index": 17,
+        "tab": "Fortress guard",
+        "key": "filter",
+        "cursor": 0,
+        "first": 0,
+        "focused": true,
+        "unit_id": 5813
+      },
+      {
+        "index": 18,
+        "tab": "Fortress guard",
+        "key": "initial",
+        "cursor": 0,
+        "first": 0,
+        "focused": true,
+        "unit_id": 5813
+      },
+      {
+        "index": 19,
+        "tab": "Fortress guard",
+        "key": "STANDARDSCROLL_DOWN",
+        "cursor": 0,
+        "first": 0,
+        "focused": true,
+        "unit_id": 5813
+      },
+      {
+        "index": 20,
+        "tab": "Fortress guard",
+        "key": "STANDARDSCROLL_DOWN",
+        "cursor": 0,
+        "first": 0,
+        "focused": true,
+        "unit_id": 5813
+      },
+      {
+        "index": 21,
+        "tab": "Fortress guard",
+        "key": "STANDARDSCROLL_PAGEDOWN",
+        "cursor": 0,
+        "first": 0,
+        "focused": true,
+        "unit_id": 5813
+      },
+      {
+        "index": 22,
+        "tab": "Fortress guard",
+        "key": "STANDARDSCROLL_UP",
+        "cursor": 0,
+        "first": 0,
+        "focused": true,
+        "unit_id": 5813
+      },
+      {
+        "index": 23,
+        "tab": "Fortress guard",
+        "key": "STANDARDSCROLL_PAGEUP",
+        "cursor": 0,
+        "first": 0,
+        "focused": true,
+        "unit_id": 5813
+      },
+      {
+        "index": 26,
+        "tab": "Convicts",
+        "key": "filter",
+        "cursor": 0,
+        "first": 0,
+        "focused": true,
+        "unit_id": 6970
+      },
+      {
+        "index": 27,
+        "tab": "Convicts",
+        "key": "initial",
+        "cursor": 0,
+        "first": 0,
+        "focused": true,
+        "unit_id": 6970
+      },
+      {
+        "index": 28,
+        "tab": "Convicts",
+        "key": "STANDARDSCROLL_DOWN",
+        "cursor": 1,
+        "first": 0,
+        "focused": true,
+        "unit_id": 6546
+      },
+      {
+        "index": 29,
+        "tab": "Convicts",
+        "key": "STANDARDSCROLL_DOWN",
+        "cursor": 2,
+        "first": 0,
+        "focused": true,
+        "unit_id": 6032
+      },
+      {
+        "index": 30,
+        "tab": "Convicts",
+        "key": "STANDARDSCROLL_PAGEDOWN",
+        "cursor": 2,
+        "first": 0,
+        "focused": true,
+        "unit_id": 6032
+      },
+      {
+        "index": 31,
+        "tab": "Convicts",
+        "key": "STANDARDSCROLL_UP",
+        "cursor": 1,
+        "first": 0,
+        "focused": true,
+        "unit_id": 6546
+      },
+      {
+        "index": 32,
+        "tab": "Convicts",
+        "key": "STANDARDSCROLL_PAGEUP",
+        "cursor": 0,
+        "first": 0,
+        "focused": true,
+        "unit_id": 6970
+      }
+    ],
+    "panel_comparisons": [
+      {
+        "index": 2,
+        "different_pixels": 0,
+        "native_sha256": "01cc8e188b345bf587049c663045cbfbb64311fd6291fd6db1551f5dbc556530",
+        "viewer_sha256": "310310090cf43de72ae36fa309e48f4516d666593f3070a696998e7b3dfd80b9"
+      },
+      {
+        "index": 3,
+        "different_pixels": 0,
+        "native_sha256": "01cc8e188b345bf587049c663045cbfbb64311fd6291fd6db1551f5dbc556530",
+        "viewer_sha256": "310310090cf43de72ae36fa309e48f4516d666593f3070a696998e7b3dfd80b9"
+      },
+      {
+        "index": 4,
+        "different_pixels": 506,
+        "native_sha256": "01cc8e188b345bf587049c663045cbfbb64311fd6291fd6db1551f5dbc556530",
+        "viewer_sha256": "744b285b17df2df6ed6dfb58f02e871b7d50c5a850121cf8a25de1eaa0fdacc6"
+      },
+      {
+        "index": 5,
+        "different_pixels": 506,
+        "native_sha256": "01cc8e188b345bf587049c663045cbfbb64311fd6291fd6db1551f5dbc556530",
+        "viewer_sha256": "744b285b17df2df6ed6dfb58f02e871b7d50c5a850121cf8a25de1eaa0fdacc6"
+      },
+      {
+        "index": 6,
+        "different_pixels": 0,
+        "native_sha256": "3670ae9ad4335ad14207b253940263bf04d31bfca1ce3885fbf6205c26d503a1",
+        "viewer_sha256": "744b285b17df2df6ed6dfb58f02e871b7d50c5a850121cf8a25de1eaa0fdacc6"
+      },
+      {
+        "index": 10,
+        "different_pixels": 0,
+        "native_sha256": "90ff89578a8d3258becd58ba797005daa30d667bd4f02bd37ac1f19c66fcc6a9",
+        "viewer_sha256": "83841a8374f8af662a415fffabb60b5bfc6c2c058734f6b9f9d7d88a721f02a9"
+      },
+      {
+        "index": 11,
+        "different_pixels": 0,
+        "native_sha256": "93406857fcdf76ce7c44aff5f1ae1813c34956d1c46112a225cfe4219369af2e",
+        "viewer_sha256": "a721e24dfae6064d177251a17c35cfa777a7dd5133c1218ce1e4cc50fe9a39ab"
+      },
+      {
+        "index": 12,
+        "different_pixels": 0,
+        "native_sha256": "93406857fcdf76ce7c44aff5f1ae1813c34956d1c46112a225cfe4219369af2e",
+        "viewer_sha256": "a721e24dfae6064d177251a17c35cfa777a7dd5133c1218ce1e4cc50fe9a39ab"
+      },
+      {
+        "index": 13,
+        "different_pixels": 0,
+        "native_sha256": "90ff89578a8d3258becd58ba797005daa30d667bd4f02bd37ac1f19c66fcc6a9",
+        "viewer_sha256": "83841a8374f8af662a415fffabb60b5bfc6c2c058734f6b9f9d7d88a721f02a9"
+      },
+      {
+        "index": 14,
+        "different_pixels": 0,
+        "native_sha256": "8b9c7d4d0e5d1ff4f5cc91bd8737ba4c0cf87769eb74f2861b97cb7f4944eb53",
+        "viewer_sha256": "d4a5a3bfa697eb6a2b65bc5c8d9985a2e586119083af73334d72ecc19fda3154"
+      },
+      {
+        "index": 19,
+        "different_pixels": 8,
+        "native_sha256": "c4a6acbb73061036490d4a33d12de24cdb09f9913b4aead80291171f5573ab9f",
+        "viewer_sha256": "0fe1a9536734aa50b73c69d60c57d858c0ce271388d34f5769198c82b1dd8415"
+      },
+      {
+        "index": 20,
+        "different_pixels": 8,
+        "native_sha256": "c4a6acbb73061036490d4a33d12de24cdb09f9913b4aead80291171f5573ab9f",
+        "viewer_sha256": "0fe1a9536734aa50b73c69d60c57d858c0ce271388d34f5769198c82b1dd8415"
+      },
+      {
+        "index": 21,
+        "different_pixels": 0,
+        "native_sha256": "c4a6acbb73061036490d4a33d12de24cdb09f9913b4aead80291171f5573ab9f",
+        "viewer_sha256": "310310090cf43de72ae36fa309e48f4516d666593f3070a696998e7b3dfd80b9"
+      },
+      {
+        "index": 22,
+        "different_pixels": 514,
+        "native_sha256": "8801532b70e6d25516a3a00fc7842d3673733cd4f181b5561228beb31843ebb1",
+        "viewer_sha256": "310310090cf43de72ae36fa309e48f4516d666593f3070a696998e7b3dfd80b9"
+      },
+      {
+        "index": 23,
+        "different_pixels": 514,
+        "native_sha256": "8801532b70e6d25516a3a00fc7842d3673733cd4f181b5561228beb31843ebb1",
+        "viewer_sha256": "310310090cf43de72ae36fa309e48f4516d666593f3070a696998e7b3dfd80b9"
+      },
+      {
+        "index": 28,
+        "different_pixels": 743,
+        "native_sha256": "ae3beeb296f716e407961c3781117eadef68b6b9bf61c7d8219adbc63d900f8a",
+        "viewer_sha256": "5dbd3ee846ce2a23aa937aa2ed5824613e3c8314e19f206314417cdfa506bc28"
+      },
+      {
+        "index": 29,
+        "different_pixels": 8,
+        "native_sha256": "664bf71726424dd5d49d52ffbca076f46f141d4961ffd5de9a8a5fc8fdd3a702",
+        "viewer_sha256": "b3f6f2ef4f9a0cf42ccddc1e7843a28de70c10c1a7bd40b52c86a6f91093b3c0"
+      },
+      {
+        "index": 30,
+        "different_pixels": 8,
+        "native_sha256": "664bf71726424dd5d49d52ffbca076f46f141d4961ffd5de9a8a5fc8fdd3a702",
+        "viewer_sha256": "b3f6f2ef4f9a0cf42ccddc1e7843a28de70c10c1a7bd40b52c86a6f91093b3c0"
+      },
+      {
+        "index": 31,
+        "different_pixels": 743,
+        "native_sha256": "c17d0f7bdb889da5362bbc0702136a58aa3194ecd74f024d05c44b6f2ba9ac87",
+        "viewer_sha256": "83841a8374f8af662a415fffabb60b5bfc6c2c058734f6b9f9d7d88a721f02a9"
+      },
+      {
+        "index": 32,
+        "different_pixels": 743,
+        "native_sha256": "b6291925123a8fac69a52f8c5a50c37b557d2cb1eab2ea688847a027f5b5022a",
+        "viewer_sha256": "62eca391c7a0f90254c00c62d8a9e25298b4c45a19d1d04cc6c0a3a0440f9ccf"
+      }
+    ],
+    "sha256": {
+      "justice-keyboard.json": "3347b45ed3f21bb9c38b6c5778d4ff85b32f5ab8c1c026f6fada567fd83c07db",
+      "justice-wire-reference.json": "b27092587ee9880f2996d0e13014310d5d1285969ff496acd1905ea284a285ed",
+      "job-settings-wire-result.json": "1e2edc6f84cc3c01a85df4708013684ea3a8147f5beb0bf8be0fd1683080b2f8"
+    },
+    "visual_scope": "Nine of20 panel crops(32,52)-(976,760) match exactly. Remaining differences are506 Guard or735 Convict animated name-color pixels and/or8 filter-caret pixels. Other panel pixels match.",
+    "prior_failure": "132208 exposed transient search hide/show losing filter focus and a JSON float-versus-int detail comparison. Final run keeps roster search visible and normalizes oracle colors before comparison."
   }
 }

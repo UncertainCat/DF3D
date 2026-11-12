@@ -56,6 +56,21 @@ func search(value: String) -> void:
 func seek(value: int,capacity: int) -> void:
 	if phase not in [Phase.Ready,Phase.DetailReading]:return
 	first=clampi(value,0,maxi(0,rows.size()-maxi(1,capacity)));changed.emit()
+func select_unit(id: int) -> void:
+	if phase not in [Phase.Ready,Phase.DetailReading] or cursor_id==id or not rows.any(func(row):return row.unit_id==id):return
+	cursor_id=id;changed.emit()
+func move_cursor(step: int,capacity: int) -> void:
+	if phase not in [Phase.Ready,Phase.DetailReading] or rows.is_empty():return
+	# Native142cc00 keeps the cursor in view; Convicts activates its detail
+	# callback on selection, supplied by the select_unit override.
+	var previous_cursor:=cursor_id;var previous_first:=first
+	var index:=rows.find_custom(func(row):return row.unit_id==cursor_id)
+	index=clampi(maxi(0,index)+step,0,rows.size()-1)
+	if capacity<=0:first=0
+	elif index<first:first=index
+	elif index>=first+capacity:first=index-capacity+1
+	select_unit(rows[index].unit_id)
+	if cursor_id==previous_cursor and first!=previous_first:changed.emit()
 func select_sort(column: int,retain:=false,remove:=false) -> void:
 	if column<0 or column>_max_sort() or phase not in [Phase.Ready,Phase.Reading,Phase.Rejected,Phase.DetailReading]:return
 	if remove:

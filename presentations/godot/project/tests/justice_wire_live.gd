@@ -27,7 +27,7 @@ func run() -> void:
 		if world.poll_management().get("transport_alive",false):break
 		await create_timer(0.01).timeout
 	await request("construction",{"action":C.ManagementAction.Catalog})
-	if OS.get_environment("DF3D_JUSTICE_LIST_NAV")=="1":await candidate_list_navigation();return
+	if OS.get_environment("DF3D_JUSTICE_LIST_NAV")=="1" or OS.get_environment("DF3D_JUSTICE_ROSTER_NAV")=="1":await candidate_list_navigation();return
 	if OS.get_environment("DF3D_JUSTICE_PICKER_NAV")=="1":await picker_navigation();return
 	if OS.get_environment("DF3D_JUSTICE_KEYBOARD")=="1":await keyboard_focus();return
 	if OS.get_environment("DF3D_JUSTICE_CANDIDATE_HOVER")=="1":await candidate_hover();return
@@ -265,16 +265,34 @@ func candidate_list_navigation() -> void:
 	for observation: Dictionary in observations:
 		index+=1
 		if observation.tab!=mode:
-			controller.candidates.close();controller.open_candidates(observation.tab=="Interrogate");await settle_picker(controller);mode=observation.tab
+			if observation.tab in ["Fortress guard","Convicts"]:
+				controller.open(3 if observation.tab=="Fortress guard" else 4)
+				if observation.tab=="Fortress guard":await settle_guard(controller.guard)
+				else:await settle_convicts(controller.convicts)
+			else:
+				controller.candidates.close();controller.open_candidates(observation.tab=="Interrogate");await settle_picker(controller)
+			mode=observation.tab
 		if observation.label=="filter":
 			var event:=InputEventKey.new();event.keycode=KEY_F;event.ctrl_pressed=true;event.pressed=true;Input.parse_input_event(event);await create_timer(0.1).timeout
 		if keys.has(observation.label):
 			var event:=InputEventKey.new();event.keycode=keys[observation.label];event.pressed=true;Input.parse_input_event(event);await create_timer(0.1).timeout
 		if observation.label.begins_with("CONTEXT_"):continue
-		var model=controller.candidates;var selected: int=model.rows.find_custom(func(row):return row.unit_id==model.cursor_id)
+		if mode=="Convicts":await settle_convicts(controller.convicts)
+		var model=controller.guard if mode=="Fortress guard" else controller.convicts if mode=="Convicts" else controller.candidates
+		var selected: int=model.rows.find_custom(func(row):return row.unit_id==model.cursor_id)
 		var native_scroll: Dictionary=observation.scrolling[-1]
 		check(selected==int(observation.cursor) and model.first==int(native_scroll.scroll),"Candidate keyboard selection/scroll differs at "+str(index))
 		check(view.search.has_focus()==observation.focused,"Candidate navigation filter focus differs")
+		if mode=="Convicts":
+			var expected: Array=[];var detail: Dictionary=model.detail
+			for line in detail.get("sentence",[]):expected.append({"text":line,"color":15})
+			if detail.has("officer"):expected.append({"text":detail.officer,"color":9})
+			for crime in detail.get("crimes",[]):
+				if not crime.caption.is_empty():expected.append({"text":crime.caption,"color":15})
+				if crime.has("injured_party"):expected.append({"text":crime.injured_party,"color":7})
+			var native_detail: Array=[]
+			for line in observation.detail:native_detail.append({"text":line.text,"color":int(line.color)})
+			check(detail.get("unit_id")==model.cursor_id and expected==native_detail,"Convict keyboard selection did not update native details: "+JSON.stringify(expected)+" versus "+JSON.stringify(native_detail))
 		checked+=1
 		if keys.has(observation.label):
 			await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/justice-list-nav-view-"+str(index)+".png")

@@ -452,8 +452,17 @@ func run_graph(reference: Dictionary) -> void:
 				await pointer_click(view.position+view.intelligence_tab_rect(2).get_center())
 				await process_frame;await RenderingServer.frame_post_draw
 				root.get_texture().get_image().save_png(directory+"/justice-graph-organizations-return-view.png")
+			if mode==2 and OS.get_environment("DF3D_JUSTICE_GRAPH_CONNECTED")=="1":
+				for step in [{"name":"organizations-scroll","point":Vector2(944,716)},{"name":"organization-last","point":Vector2(96,690)}]:
+					await pointer_click(step.point)
+					await process_frame;await RenderingServer.frame_post_draw
+					root.get_texture().get_image().save_png(directory+"/justice-graph-"+step.name+"-view.png")
 		if OS.get_environment("DF3D_JUSTICE_GRAPH_RESIZE")=="1":
 			await pointer_click(view.position+view.intelligence_tab_rect(2).get_center())
+			if OS.get_environment("DF3D_JUSTICE_GRAPH_CONNECTED")=="1":
+				await pointer_click(Vector2(944,716));await pointer_click(Vector2(96,690));await pointer_click(Vector2(532,568))
+				await process_frame;await RenderingServer.frame_post_draw
+				root.get_texture().get_image().save_png(directory+"/justice-graph-organization-last-node-view.png")
 			root.size=Vector2i(912,552);view.layout(Vector2(912,552))
 			await process_frame;await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(directory+"/justice-graph-organizations-minimum-view.png")

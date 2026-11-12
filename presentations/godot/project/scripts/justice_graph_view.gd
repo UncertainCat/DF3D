@@ -45,7 +45,15 @@ func positions(org: Dictionary,box: Rect2) -> Dictionary:
 			if nodes[child].parent==i:
 				xs[child]=start+int(descendants[child]*5/2.0);start+=descendants[child]*5+5
 	var output: Dictionary={};var center:=int((box.position.x*2+box.size.x-8)/16)*8-16
-	for i in range(org.first_node,org.first_node+org.node_count):output[i]=Rect2(center+xs[i]*8,box.position.y+nodes[i].tier*72,40,60)
+	# Native477d44 keeps the selected tier visible when the chart exceeds its
+	# row, clamping at the bottom of the whole hierarchy.
+	var bottom:=0;var vertical_shift:=0;var height:=int(box.size.y/12)-2
+	for i in range(org.first_node,org.first_node+org.node_count):bottom=maxi(bottom,nodes[i].tier*6+4)
+	var selected: int=model().selected_node if xs.has(model().selected_node) else org.first_node
+	if org.node_count>0 and bottom+1>=height-2:
+		vertical_shift=6-nodes[selected].tier*6
+		if height-8+nodes[selected].tier*6>bottom:vertical_shift=height-bottom-2
+	for i in range(org.first_node,org.first_node+org.node_count):output[i]=Rect2(center+xs[i]*8,box.position.y+(nodes[i].tier*6+vertical_shift)*12,40,60)
 	return output
 func click(point: Vector2) -> void:
 	if not viewport_rect().has_point(point):return
@@ -79,13 +87,13 @@ func draw() -> void:
 		elif m.mode==3:
 			if row.organization>=0:clipped_text(clipped("Org: "+all.organizations[row.organization].name,m.columns),box.position+Vector2(16,24),viewport,11 if selected else 3)
 		elif selected:draw_organization(row,box)
+		else:clipped_text("One member" if row.node_count==1 else str(row.node_count)+" members",box.position+Vector2(16,36),viewport,7)
 func draw_organization(org: Dictionary,box: Rect2) -> void:
 	var m=model();var all: Dictionary=m.graph.graph;var positions_by_node:=positions(org,box)
 	chart_clip=Rect2(box.position+Vector2(16,12),box.size-Vector2(32,24)).intersection(viewport_rect())
 	var selected: int=m.selected_node if positions_by_node.has(m.selected_node) else org.first_node
 	if org.node_count==0:return
 	var actor: int=all.nodes[selected].actor
-	if actor>=0:clipped_text(clipped("Selected actor: "+all.actors[actor].name,m.columns),box.position+Vector2(16,24),viewport_rect())
 	for index in positions_by_node:
 		var node: Dictionary=all.nodes[index];var node_box: Rect2=positions_by_node[index]
 		if positions_by_node.has(node.parent):
@@ -98,6 +106,9 @@ func draw_organization(org: Dictionary,box: Rect2) -> void:
 		chart_text(node.label,node_box.position+Vector2(0,12),node.foreground+node.bright*8)
 		chart_text(node.name,node_box.position+Vector2(8,36))
 		chart_text(node.status,node_box.position+Vector2(8,48))
+	# Native4781c7 paints this caption after the clipped chart, including when
+	# vertical panning places part of a node behind the caption row.
+	if actor>=0:clipped_text(clipped("Selected actor: "+all.actors[actor].name,m.columns),box.position+Vector2(16,24),viewport_rect())
 func chart_text(value: String,point: Vector2,color:=15) -> void:
 	clipped_text(value,point,chart_clip,color)
 func clipped_text(value: String,point: Vector2,clip: Rect2,color:=15) -> void:

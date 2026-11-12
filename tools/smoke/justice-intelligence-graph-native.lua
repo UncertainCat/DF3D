@@ -51,26 +51,37 @@ local ok,err=xpcall(function()
  entity.evidence_repository=repository
  local empty=probe('justice-intelligence-graph-probe')
  assert(#empty.actors==0 and #empty.organizations==0 and #empty.plots==0,'Empty evidence invented graph entries')
- local chosen
+ local chosen;local agreements={}
  for _,agreement in ipairs(df.global.world.agreements.all)do
   local intrigue=false
   for _,detail in ipairs(agreement.details)do if detail.type>=5 and detail.type<=15 then intrigue=true;break end end
   if intrigue and #agreement.parties>=2 then
    local count=0;for _,party in ipairs(agreement.parties)do for _,id in ipairs(party.histfig_ids)do if df.historical_figure.find(id)then count=count+1 end end end
-   if count>=2 then chosen=agreement;break end
+   if count>=2 then
+    agreements[#agreements+1]=agreement;chosen=chosen or agreement
+    if os.getenv('DF3D_JUSTICE_GRAPH_CONNECTED')~='1' or #agreements>=12 then break end
+   end
   end
  end
  assert(chosen,'Fixture requires an existing intrigue agreement with two historical figures')
  local hfids,seen={},{}
- for _,party in ipairs(chosen.parties)do for _,id in ipairs(party.histfig_ids)do if not seen[id] and df.historical_figure.find(id)then hfids[#hfids+1]=id;seen[id]=true end end end
+ local associations={}
+ for _,agreement in ipairs(agreements)do
+  repository.foiled_plot_agreements:insert('#',agreement.id)
+  for _,party in ipairs(agreement.parties)do for _,id in ipairs(party.histfig_ids)do
+   if df.historical_figure.find(id)then
+    if not seen[id]then hfids[#hfids+1]=id;seen[id]=true;associations[id]={}end
+    associations[id][agreement.id]=true
+   end
+  end end
+ end
  table.sort(hfids)
  for _,id in ipairs(hfids)do
   local file=df.evidence_hf_filest:new();file.hfid=id;file.flags.whole=8
   if os.getenv('DF3D_JUSTICE_GRAPH_ALIASES')=='1' and #files==0 then file.used_identity:insert('#',df.global.world.identities.all[0].id)end
-  file.agreement:insert('#',chosen.id)
+  for _,agreement in ipairs(agreements)do if associations[id][agreement.id]then file.agreement:insert('#',agreement.id)end end
   repository.hf_file:insert('#',file);files[#files+1]=file
  end
- repository.foiled_plot_agreements:insert('#',chosen.id)
  if os.getenv('DF3D_JUSTICE_GRAPH_LARGE')=='1' then
   for _,figure in ipairs(df.global.world.history.figures)do
    if not seen[figure.id] and figure.name.has_name then
@@ -88,7 +99,7 @@ local ok,err=xpcall(function()
  local function guard(value)local n,p=df.sizeof(value);guards[#guards+1]={n=n,p=p,data=bytes(p,n)}end
  for _,file in ipairs(files)do file.temp_flags.whole=123;guard(file)end
  for _,id in ipairs(hfids)do guard(df.historical_figure.find(id))end
- guard(repository);guard(entity);guard(menu);guard(chosen)
+ guard(repository);guard(entity);guard(menu);for _,agreement in ipairs(agreements)do guard(agreement)end
  local supplied=probe('justice-intelligence-graph-probe')
  assert(df.global.plotinfo.main.fortress_entity==entity,'Entity pointer not restored')
  for _,entry in ipairs(guards)do assert(bytes(entry.p,entry.n)==entry.data,'Graph provider modified source evidence/entity/menu/agreement')end
@@ -110,7 +121,7 @@ local ok,err=xpcall(function()
   local states={}
   local function record(name)
    local state={mode=menu.counterintelligence_mode,selected=menu.counterintelligence_selected,scroll=menu.scroll_position_counterintelligence,selected_node=-1,actors={},organizations={},plots={},lines={}}
-   if #menu.organization_entry>0 then state.selected_node=index(menu.organization_entry[0].node,menu.selected_counterintelligence_oen)end
+   if menu.selected_counterintelligence_oen and menu.counterintelligence_selected>=0 and menu.counterintelligence_selected<#menu.organization_entry then state.selected_node=index(menu.organization_entry[menu.counterintelligence_selected].node,menu.selected_counterintelligence_oen)end
    for _,row in ipairs(menu.actor_entry)do
     local lines={};for _,line in ipairs(row.main_text_box.text)do lines[#lines+1]=dfhack.df2utf(line.value)end
     state.actors[#state.actors+1]={name=dfhack.df2utf(row.p_list_name),lines=lines}
@@ -132,6 +143,10 @@ local ok,err=xpcall(function()
   end
   click(64,250);record('actor-selected')
   click(324,148);assert(menu.counterintelligence_mode==2,'Organizations tab missed');record('organizations')
+  if os.getenv('DF3D_JUSTICE_GRAPH_CONNECTED')=='1' then
+   click(944,716);record('organizations-scroll')
+   click(96,690);record('organization-last')
+  end
   if os.getenv('DF3D_JUSTICE_GRAPH_NAVIGATION')=='1' then
    click(496,340);assert(menu.selected_counterintelligence_oen==menu.organization_entry[0].node[1]);record('node-selected')
    click(96,220);assert(menu.selected_counterintelligence_oen==menu.organization_entry[0].node[1],'Blank organization click changed selection');record('node-blank')
@@ -151,7 +166,11 @@ local ok,err=xpcall(function()
      assert(dfhack.getTickCount()<deadline,'Graph resize timeout');require('gui.script').sleep(1,'frames')end
     assert(os.remove(out..'/owner-input-ack'));settle()
    end
-   click(324,148);resize('minimum');record('organizations-minimum')
+   click(324,148)
+   if os.getenv('DF3D_JUSTICE_GRAPH_CONNECTED')=='1' then
+    click(944,716);click(96,690);click(532,568);record('organization-last-node')
+   end
+   resize('minimum');record('organizations-minimum')
    resize('default');record('organizations-restored')
   end
   local output=assert(io.open(out..'/justice-graph-presentation.json','w'));output:write(json.encode(states));output:close()

@@ -120,9 +120,27 @@ shutdown diagnostics retain `passed_with_known_issues` qualification.
 `intelligence_graph_scroll_reference` records states, crop hashes and omissions.
 Native STANDARDSCROLL_DOWN/PAGEDOWN leave scroll unchanged in this probe.
 
-Wheel/arrow/drag acceptance, other keyboard behavior, larger/branching chart
-panning and clipping, multiple organizations and mixed report/graph workflows
-remain unfinished.
+Protected `stockpile-storage-native-input-20261112-104418` covers twelve existing
+intrigue agreements with21 actors, seven organizations and21 hierarchy nodes.
+Native/provider/typed transport match all graph facts. The first organization
+branches; the last has six nodes across four tiers. Collapsed organizations show
+the native One member/N members captions (literals15ec7b8/15ec818). Selecting
+the last organization after scrolling, then its bottom node, retains native
+selection and edge colors. Vertical positioning follows477d44: when the hierarchy
+exceeds the row, shift toward the selected tier and clamp to the hierarchy bottom.
+The selected-actor caption draws after the chart, as in4781c7.
+
+Nine panel crops match native pixels, including the selected bottom node at
+minimum size and after restoring the window. Owned DF33152 closes unsaved;
+source agreements/evidence/entity/figures/menu and preferences are preserved.
+Both clients run at30FPS; GPU49C/0% is a sample, not a continuous peak. Core19
+and state/composition checks pass; known shutdown diagnostics retain the live
+`passed_with_known_issues` qualification. Fixture
+`intelligence_connected_graph_reference` retains bounded hashes and state.
+
+Horizontal panning of very wide charts, other edge rasterization patterns,
+wheel/arrow/drag acceptance, other keyboard behavior and mixed report/graph
+workflows remain unfinished.
 Public Justice stays hidden.
 
 

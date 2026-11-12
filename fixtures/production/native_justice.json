@@ -10999,5 +10999,132 @@
       "large or branching organization charts remain unaccepted",
       "established separate-renderer/finalize/ObjectDB shutdown diagnostics"
     ]
+  },
+  "intelligence_connected_graph_reference": {
+    "run": "build/stockpile-storage-native-input-20261112-104418",
+    "protocol": 203,
+    "status": "passed_with_known_issues",
+    "owned_df_pid": 33152,
+    "source_preserved": true,
+    "fps": 30,
+    "controlled_repository": "first twelve existing intrigue agreements and all their known-name historical figures; source agreements unchanged",
+    "sample": {
+      "graph_actors": 21,
+      "graph_organizations": 7,
+      "graph_plots": 12,
+      "paged_nodes": 21,
+      "success": true
+    },
+    "states": {
+      "actor-selected": {
+        "mode": 1,
+        "selected": 1,
+        "scroll": 0,
+        "selected_node": -1
+      },
+      "actors": {
+        "mode": 1,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": -1
+      },
+      "organization-last": {
+        "mode": 2,
+        "selected": 6,
+        "scroll": 23,
+        "selected_node": 0
+      },
+      "organization-last-node": {
+        "mode": 2,
+        "selected": 6,
+        "scroll": 23,
+        "selected_node": 5
+      },
+      "organizations": {
+        "mode": 2,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": 0
+      },
+      "organizations-minimum": {
+        "mode": 2,
+        "selected": 6,
+        "scroll": 23,
+        "selected_node": 5
+      },
+      "organizations-restored": {
+        "mode": 2,
+        "selected": 6,
+        "scroll": 23,
+        "selected_node": 5
+      },
+      "organizations-scroll": {
+        "mode": 2,
+        "selected": 0,
+        "scroll": 23,
+        "selected_node": 0
+      },
+      "plots": {
+        "mode": 3,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": -1
+      }
+    },
+    "different_pixels": {
+      "actors": 0,
+      "actor-selected": 0,
+      "organizations": 0,
+      "organizations-scroll": 0,
+      "organization-last": 0,
+      "plots": 0,
+      "organization-last-node": 0,
+      "organizations-minimum": 0,
+      "organizations-restored": 0
+    },
+    "panel_crops": {
+      "default": [
+        32,
+        52,
+        976,
+        760
+      ],
+      "minimum": [
+        32,
+        48,
+        688,
+        516
+      ]
+    },
+    "artifacts": {
+      "justice-graph-presentation.json": "edd602b662f16a0e67ba222ec3a6e6f91d6b95e9c8794c8d5ab67e88516e2cd2",
+      "justice-graph-wire.json": "e95bfe6ba5d60bfa7cca906d99c9694b4359d862a87a63bc4f728da919cde21f",
+      "justice-intelligence-graph.json": "b39c7a155575cd91ebd62864d487751e8d896ed23206d0fea37c92b24f3f4056",
+      "job-settings-wire-result.json": "10c7e0d482a8ba5b25669d04629c4b8bcc4fb855784259d71cddf2d392ff8b3b",
+      "justice-graph-actors.png": "3a3cbf780377d83e90204fe1e0fce7dd07c21cc63751585eca651bc5801637ca",
+      "justice-graph-actors-view.png": "3cc2966aa17f1262c3edc54588cee561d610e10a4d2ff7097b48a3ed3db08245",
+      "justice-graph-actor-selected.png": "f07462aa95b82171ef2704c1dcab4050b0e7a54825e7a7a8f056461931e07023",
+      "justice-graph-actor-selected-view.png": "453d7e69c4f85120dbe06b3975f2e41bad782963ec4ed0fa4e106aaf877f8984",
+      "justice-graph-organizations.png": "d76696170f0da8a8823ae19c54fa8954bbd5ceaf1d973563585fc75fa763f009",
+      "justice-graph-organizations-view.png": "fc79508205be39818e934ef1242839d1da914d7be36f15d207306c9878229d27",
+      "justice-graph-organizations-scroll.png": "23c51de9b1587127f4db68458ebbdb27df5ec629678e3b144041d360c0199910",
+      "justice-graph-organizations-scroll-view.png": "c1caebb6718cfdb14af897251e3db895a1e92718bb20976ba18d35bbc14e1aa3",
+      "justice-graph-organization-last.png": "edfd3b0b3583215448b73ec17bd9e6e147e15e5078187d0d7860580b05f8f019",
+      "justice-graph-organization-last-view.png": "040b1c28282f7d25e539cf74e48e7317b160c0a7202db714eea04d7a16669d9c",
+      "justice-graph-plots.png": "a4733787a4b66531fa24bb59538af38e91f5cde40a8e790b94deb8967bee0753",
+      "justice-graph-plots-view.png": "41f9a7b994bf843327a52bc3fca852bb0847813b0f320c6b06c07ea9abda4025",
+      "justice-graph-organization-last-node.png": "ca491566e3d1651ca90ace4759a90e79ac977e952d26c31ebd00457c844cf878",
+      "justice-graph-organization-last-node-view.png": "1681698a19bc59a46f8e508e12f1545783130744c1f95c93aca1239bf02f4ae3",
+      "justice-graph-organizations-minimum.png": "241a31402f489a26c933c625a1af3b2d28a506b8a1f29b3b217068b725bd0210",
+      "justice-graph-organizations-minimum-view.png": "864040e5bee8ab3811c463160909daead223f5436ab8069a989204af6ddf828d",
+      "justice-graph-organizations-restored.png": "9dd831de18248cf6e56e65131af7267214d04e63a68b9b9ce01fad9d8da3c9db",
+      "justice-graph-organizations-restored-view.png": "1681698a19bc59a46f8e508e12f1545783130744c1f95c93aca1239bf02f4ae3"
+    },
+    "limits": [
+      "horizontal panning of very wide charts remains unfinished",
+      "nine captures cover these branching organizations, not every edge rasterization pattern",
+      "mixed report/graph workflows and wheel/arrow/drag acceptance remain pending",
+      "established separate-renderer/finalize/ObjectDB shutdown diagnostics"
+    ]
   }
 }

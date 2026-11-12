@@ -51,7 +51,8 @@ func run() -> void:
 		"crime_id":9,"expected_case_revision":456,"query":"","expected_candidate_revision":789,"unit_id":42}
 	for patch in [{"expected_candidate_revision":0},{"expected_candidate_revision":789.0},{"unit_id":-1},
 		{"unit_id":42.0},{"offset":1},{"query":"x".repeat(513)},{"query":false},{"expected_case_revision":0},
-		{"extra":true}]:
+		{"extra":true},{"sorts":[]},{"sorts":false},{"sorts":[{"column":4,"reverse":false}]},
+		{"sorts":[{"column":1,"reverse":0}]},{"sorts":[{"column":1,"reverse":true},{"column":1,"reverse":false}]}]:
 		var invalid := justice.duplicate(true);invalid.merge(patch,true)
 		assert(world.management_request("justice",invalid)==0)
 		assert(world.last_error()=="Invalid justice request")

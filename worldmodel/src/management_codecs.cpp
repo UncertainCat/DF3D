@@ -378,8 +378,10 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
   flatbuffers::Offset<m::JusticeRequest> justice;
   if(r.action>=ManagementAction::JusticeRead && r.action<=ManagementAction::JusticeConvict){const auto& q=r.justice;
     const bool candidates=r.action==ManagementAction::JusticeCandidatesRead || r.action==ManagementAction::JusticeConvict;
+    std::vector<flatbuffers::Offset<m::JusticeSort>> sorts;
+    if(candidates)for(const auto& sort:q.sorts)sorts.push_back(m::CreateJusticeSort(b,m::JusticeCandidateColumn(sort.column),sort.reverse));
     justice=m::CreateJusticeRequest(b,q.tab,q.offset,q.limit,q.expectedListRevision,q.crimeId,q.expectedCaseRevision,
-      candidates?b.CreateString(q.query):0,q.expectedCandidateRevision,q.unitId);}
+      candidates?b.CreateString(q.query):0,q.expectedCandidateRevision,q.unitId,candidates?b.CreateVector(sorts):0);}
   flatbuffers::Offset<m::ObjectsRequest> objects;
   if(r.action==ManagementAction::ObjectsRead || r.action==ManagementAction::ObjectsLocate){const auto& q=r.objects;
     objects=m::CreateObjectsRequest(b,q.tab,q.offset,q.limit,q.expectedListRevision,q.artifactId);}

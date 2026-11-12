@@ -707,12 +707,23 @@ bool validateJustice(const Dictionary& data,String& error) {
     const bool detail=int64_t(data["action"])==int64_t(wm::ManagementAction::JusticeCaseRead);
     const bool candidates=int64_t(data["action"])==int64_t(wm::ManagementAction::JusticeCandidatesRead);
     const bool convict=int64_t(data["action"])==int64_t(wm::ManagementAction::JusticeConvict);
-    if(data.size()!=(convict?10:candidates?9:detail?7:5) || !integer(data,"tab",0,2) || !integer(data,"offset",0,1048576) || !integer(data,"limit",1,64) ||
+    const bool sorts=(candidates||convict) && data.has("sorts");
+    if(data.size()!=(convict?10:candidates?9:detail?7:5)+int(sorts) || !integer(data,"tab",0,2) || !integer(data,"offset",0,1048576) || !integer(data,"limit",1,64) ||
         !integer(data,"expected_list_revision",(detail||candidates||convict)?1:0,INT64_MAX))return false;
     if(detail || candidates || convict){if(!integer(data,"crime_id",0,INT32_MAX) || !integer(data,"expected_case_revision",(candidates||convict)?1:0,INT64_MAX) ||
         (int64_t(data["offset"]) && !int64_t(data["expected_case_revision"])))return false;
     }else if(int64_t(data["offset"]) && !int64_t(data["expected_list_revision"]))return false;
     if(candidates || convict){
+        if(sorts){
+            if(data["sorts"].get_type()!=Variant::ARRAY)return false;
+            const Array list=data["sorts"];if(list.is_empty() || list.size()>65536)return false;
+            std::array<int8_t,4> directions{-1,-1,-1,-1};
+            for(int64_t i=0;i<list.size();++i){if(list[i].get_type()!=Variant::DICTIONARY)return false;
+                const Dictionary sort=list[i];if(sort.size()!=2 || !integer(sort,"column",0,3) || !sort.has("reverse") || sort["reverse"].get_type()!=Variant::BOOL)return false;
+                auto& direction=directions[size_t(int64_t(sort["column"]))];const bool reverse=sort["reverse"];
+                if(direction>=0 && bool(direction)!=reverse)return false;direction=int8_t(reverse);
+            }
+        }
         if(!data.has("query") || data["query"].get_type()!=Variant::STRING || !integer(data,"expected_candidate_revision",convict?1:0,INT64_MAX))return false;
         const auto raw=String(data["query"]).utf8();const std::string query(raw.get_data(),raw.length());
         if(query.size()>512 || query.find('\0')!=std::string::npos || (int64_t(data["offset"]) && !int64_t(data["expected_candidate_revision"])))return false;
@@ -727,6 +738,8 @@ bool readJustice(const Dictionary& data,wm::ManagementRequest& request,String&) 
     if(request.action!=wm::ManagementAction::JusticeRead){q.crimeId=int32_t(int64_t(data["crime_id"]));q.expectedCaseRevision=uint64_t(int64_t(data["expected_case_revision"]));}
     if(request.action==wm::ManagementAction::JusticeCandidatesRead || request.action==wm::ManagementAction::JusticeConvict){
         q.query=String(data["query"]).utf8().get_data();q.expectedCandidateRevision=uint64_t(int64_t(data["expected_candidate_revision"]));
+        if(data.has("sorts")){q.sorts.clear();const Array list=data["sorts"];
+            for(int64_t i=0;i<list.size();++i){const Dictionary sort=list[i];q.sorts.push_back({wm::JusticeCandidateColumn(int64_t(sort["column"])),bool(sort["reverse"])});}}
         if(request.action==wm::ManagementAction::JusticeConvict)q.unitId=int32_t(int64_t(data["unit_id"]));
     }
     return true;

@@ -473,10 +473,12 @@ struct NoblesState {
   std::optional<std::string> symbolTargetCaption;
 };
 // Pointer-free Justice reads retain native row order and paired witness dates.
+struct JusticeSort {JusticeCandidateColumn column=JusticeCandidateColumn::Category;bool reverse=false;};
 struct JusticeRequest {
   uint8_t tab=0;uint32_t offset=0;uint16_t limit=32;
   uint64_t expectedListRevision=0;int32_t crimeId=-1;uint64_t expectedCaseRevision=0;
   std::string query;uint64_t expectedCandidateRevision=0;int32_t unitId=-1;
+  std::vector<JusticeSort> sorts={{JusticeCandidateColumn::Crime,false},{JusticeCandidateColumn::Name,false}};
 };
 struct JusticeCaseRow {int32_t crimeId=-1;std::string caption;};
 struct JusticeWitnessRow {std::string witness,description,date,reported;};

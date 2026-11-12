@@ -12,6 +12,8 @@ var list_revision:=0
 var case_revision:=0
 var candidate_revision:=0
 var query:=""
+var priorities: Array[int]=[C.JusticeCandidateColumn.Crime,C.JusticeCandidateColumn.Name]
+var directions: Array[bool]=[false,false,false,false]
 var rows: Array=[]
 var first:=0
 var ticket:=0
@@ -37,7 +39,8 @@ func _retire() -> void:
 	icon_ticket=0;icon_scope=PackedInt32Array();icons={}
 func close() -> void:
 	_retire();phase=Phase.Closed;crime_id=-1;rows=[];_pending=[];_seen={};_total=0
-	list_revision=0;case_revision=0;candidate_revision=0;query="";first=0;last_result={};changed.emit()
+	list_revision=0;case_revision=0;candidate_revision=0;query="";first=0;last_result={}
+	priorities=[C.JusticeCandidateColumn.Crime,C.JusticeCandidateColumn.Name];directions=[false,false,false,false];changed.emit()
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
 func open(selected_tab: int,id: int,list_rev: int,case_rev: int) -> void:
@@ -51,6 +54,17 @@ func search(value: String) -> void:
 func seek(value: int,capacity: int) -> void:
 	if phase!=Phase.Ready:return
 	first=clampi(value,0,maxi(0,rows.size()-maxi(1,capacity)));changed.emit()
+func select_sort(column: int,retain:=false,remove:=false) -> void:
+	if crime_id<0 or column<0 or column>3 or phase in [Phase.Closed,Phase.Applying,Phase.Unknown,Phase.Unavailable]:return
+	if remove:
+		while priorities.has(column):priorities.erase(column)
+		if priorities.is_empty():priorities.append(C.JusticeCandidateColumn.Category)
+	else:
+		if retain and priorities.size()>=65536:return
+		if priorities.has(column):directions[column]=not directions[column]
+		if not retain:priorities.clear()
+		priorities.append(column)
+	search(query)
 func read_icons(capacity: int) -> void:
 	if service==null or phase!=Phase.Ready:return
 	var wanted:=PackedInt32Array()
@@ -72,8 +86,10 @@ func read_icons(capacity: int) -> void:
 			if page[index].has("sheet_icon"):next[wanted[index]]=page[index].sheet_icon.duplicate(true)
 		icons=next;changed.emit())
 func _intent(action: int) -> Dictionary:
+	var sorts: Array=[]
+	for column in priorities:sorts.append({"column":column,"reverse":directions[column]})
 	return {"action":action,"tab":tab,"crime_id":crime_id,"expected_list_revision":list_revision,
-		"expected_case_revision":case_revision,"expected_candidate_revision":candidate_revision,"query":query,"offset":0,"limit":32}
+		"expected_case_revision":case_revision,"expected_candidate_revision":candidate_revision,"query":query,"sorts":sorts,"offset":0,"limit":32}
 func _fail(result: Dictionary,unknown:=false) -> void:
 	_pending=[];_seen={};last_result=result.duplicate(true);phase=Phase.Unknown if unknown else Phase.Rejected;changed.emit()
 func _valid(page: Dictionary,intent: Dictionary) -> bool:

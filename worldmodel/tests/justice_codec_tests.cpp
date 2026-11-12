@@ -14,10 +14,13 @@ TEST_CASE("Justice candidate and conviction codecs retain query, target and all 
   q.justice.crimeId=9;q.justice.expectedListRevision=123;q.justice.expectedCaseRevision=456;
   q.justice.expectedCandidateRevision=789;q.justice.query="synthetic query";
   q.justice.unitId=apply?42:-1;q.justice.offset=apply?0:32;
+  q.justice.sorts={{wm::JusticeCandidateColumn::Name,true},{wm::JusticeCandidateColumn::Crime,false},{wm::JusticeCandidateColumn::Name,true}};
   flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,q,11,12,13);
   const auto* wire=flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer());
   REQUIRE_FALSE(m::validateConstructionRequest(*wire));const auto* r=wire->justice();REQUIRE(r);
   CHECK(r->crime_id()==9);CHECK(r->expected_list_revision()==123);CHECK(r->expected_case_revision()==456);
+  REQUIRE(r->sorts());REQUIRE(r->sorts()->size()==3);CHECK(r->sorts()->Get(0)->column()==m::JusticeCandidateColumn::Name);
+  CHECK(r->sorts()->Get(0)->reverse());CHECK(r->sorts()->Get(1)->column()==m::JusticeCandidateColumn::Crime);CHECK_FALSE(r->sorts()->Get(1)->reverse());CHECK(r->sorts()->Get(2)->reverse());
   CHECK(r->expected_candidate_revision()==789);CHECK(r->unit_id()==(apply?42:-1));CHECK(r->query()->str()==q.justice.query);
  }
 }

@@ -48,7 +48,29 @@ rejected. Candidate revision includes the requested priorities and directions,
 so changing sort requires a fresh read before selecting a candidate.
 Migration196: rebuild bridge and clients together; mailbox is
 `Local\df3d_management_v196`. Protocol195 binaries cannot serve196 clients.
-Session/map formats are unchanged. Transport and rendered acceptance are pending.
+Session/map formats are unchanged. QA `build/qa/justice-sort-transport` passes
+root/extension builds, all19 core tests, Justice state and management contract
+checks. The MSVC plugin builds; installed SHA256 is
+`1065c1ea5edb84ad20945b561a41d54f8a01c52c319c61602f35667405550077`.
+
+Protected `stockpile-storage-native-input-20261112-000941` verifies293 candidates
+in nine sort scopes, actual ordinary/Shift/Ctrl header gestures, repeated keys,
+Category reversal and rejection of a conviction carrying an old sort revision.
+This run is read-only. DF19776 closes unsaved; source and preferences are
+preserved. Both applications run at30FPS. Ten GPU samples range38–41C,
+0–34% utilization and13.36–100.35W; these are not continuous peak measurements.
+Only the known separate-thread/finalize/two-ObjectDB diagnostics remain
+(`passed_with_known_issues`). Sorted text crop(552,172)-(936,640) and active
+Category header(632,148)-(704,160) match native235119 with zero differing pixels.
+
+Full sorted-panel visual acceptance remains pending: this run exposes that the
+picker's ResidentsRowsRead artwork request rejects non-residents/deceased
+candidates, dropping the entire visible artwork page. Justice needs its own
+bounded candidate artwork path using the existing unit-selector recipe, without
+loosening Residents eligibility. Inactive arrows also remember different prior
+gestures in the two screenshots; they are not evidence of a direction defect.
+The public Justice route remains hidden. `native_justice.json.sort_transport_reference`
+records the scoped acceptance and artwork gap.
 
 The owned Convict candidate adapter now accepts ordered Category/Name/Profession/
 Crime priorities and per-column reversal. Native142c879 applies stable sorts
@@ -74,8 +96,8 @@ DF4808 closes unsaved, source preserved and prefs restored; native30FPS/no viewe
 GPU sample44C/2%/14.76W (not peak). MSVC builds; plugin SHA256 is
 `f88842c5559d9173cc2313208ff6c589cdbc09030328d68f641615174b59efde`.
 `native_justice.json.sort_reference` retains ordered-ID digests and transitions.
-Protocol195 still sends only default priorities; sort transport, controller
-gestures and rendered sorted-list acceptance remain pending.
+Protocol196 carries these priorities; transport and gestures are verified above.
+Full sorted-list artwork acceptance remains pending.
 
 The staged Justice view now opens the Convict picker through its native button,
 draws candidate names/witness labels and unit-selector artwork, accepts typed
@@ -86,8 +108,7 @@ different picker. Native name text remains the Justice one-line formatter.
 `build/qa/justice-picker-view-final` passes all19 core tests, the headless Justice
 state test (including late-artwork retirement) and main-scene composition.
 The fixed1200x800 reference uses13 visible rows and28-column names. Sort headers
-are drawn in native default Crime/Name order, but alternate sorting and
-Interrogate actions are still pending. Justice remains hidden from public routes.
+now accept the native gestures described above; Interrogate actions remain pending. Justice remains hidden from public routes.
 
 Protected `stockpile-storage-native-input-20261111-233934` matches every pixel in
 the panel crop(32,52)-(976,760) for Open/Closed/Cold and the initial Convict picker,

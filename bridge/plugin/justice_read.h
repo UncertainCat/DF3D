@@ -85,8 +85,11 @@ inline ReadResult candidateRequest(const m::JusticeRequest& q,bool apply) {
         const auto query=q.query()?q.query()->str():std::string{};
         const auto nativeQuery=UTF2DF(query);
         if(DF2UTF(nativeQuery)!=query)return refused;
-        const auto facts=convictionCandidates(crime,nativeQuery);if(!facts || facts->size()>1048576)return refused;
+        std::vector<CandidateSort> sorts={{CandidateColumn::Crime,false},{CandidateColumn::Name,false}};
+        if(q.sorts()){sorts.clear();for(const auto* sort:*q.sorts())sorts.push_back({CandidateColumn(sort->column()),sort->reverse()});}
+        const auto facts=convictionCandidates(crime,nativeQuery,sorts);if(!facts || facts->size()>1048576)return refused;
         ReadHash hash;hash.number(observed.revision);hash.number(observed.detail->revision);hash.text(query);
+        hash.number(sorts.size());for(const auto& sort:sorts){hash.number(uint8_t(sort.column));hash.number(sort.reverse);}
         // Include effect-relevant crime values absent from the displayed summary.
         for(auto value:{int32_t(crime->mode),crime->criminal,crime->accused,crime->victim,crime->incident_id,
                        crime->site,crime->entity,crime->punishment.hammerstrikes,crime->punishment.prison_time})hash.number(uint32_t(value));

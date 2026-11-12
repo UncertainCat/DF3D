@@ -7,6 +7,13 @@ expected.candidates={}
 for _,query in ipairs{'','dvn','zznomatch'}do
  expected.candidates[#expected.candidates+1]={query=query,rows=probe('justice-conviction-candidates-probe',{'9',query})}
 end
+-- Representative verified native sort scopes, including repeated priorities.
+expected.sorts={}
+for _,spec in ipairs{'1:1','0:0','0:1','2:0','2:1','3:0','3:1','1:1,3:0','1:1,3:0,1:1'}do
+ local sorts={}
+ for column,reverse in spec:gmatch('(%d):(%d)')do sorts[#sorts+1]={column=tonumber(column),reverse=reverse=='1'}end
+ expected.sorts[#expected.sorts+1]={sorts=sorts,rows=probe('justice-conviction-candidates-probe',{'9','',spec})}
+end
 expected.presentation={}
 for i=1,math.min(13,#expected.candidates[1].rows)do
  local id=expected.candidates[1].rows[i].unit_id

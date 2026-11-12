@@ -1,9 +1,10 @@
 extends "res://scripts/standing_orders_view.gd"
 # Staged Justice case/Convict view. Native190710 and230636 establish the
-#1200x800 layout; alternate sorting, Interrogate and other categories remain pending.
+#1200x800 layout; full sorted artwork, Interrogate and other categories remain pending.
 const C=preload("res://scripts/management_contract.gd")
 const CASE_TABS=["Open cases","Closed cases","Cold cases","Fortress guard","Convicts","Intelligence"]
 const NameColor=preload("res://scripts/native_name_color.gd")
+const SORT_COLUMNS=[C.JusticeCandidateColumn.Name,C.JusticeCandidateColumn.Category,C.JusticeCandidateColumn.Profession,C.JusticeCandidateColumn.Crime]
 var witness_scroll
 var candidate_scroll
 var search
@@ -14,6 +15,7 @@ func picker_open() -> bool:return state.candidates.phase not in [state.candidate
 func picker_capacity() -> int:return maxi(0,int((size.y-list_top()-120)/36))
 func picker_rect(index: int) -> Rect2:return Rect2(detail_x(),list_top()+24+index*36,size.x-detail_x()-40,36)
 func convict_rect() -> Rect2:return Rect2(detail_x()+104,list_top()+24,72,36)
+func sort_rect(index: int) -> Rect2:return Rect2(detail_x()+[5,15,24,35][index]*8,list_top(),[10,9,10,4][index]*8,12)
 func picker_allowed() -> bool:return allowed() and state.candidates.phase==state.candidates.Phase.Ready
 func configure_justice(source,model) -> void:
 	configure_standing_orders(source,model)
@@ -107,6 +109,9 @@ func _gui_input(event: InputEvent) -> void:
 	for index in 3:
 		if tab_rect(index).has_point(event.position):state.select_tab(index);return
 	if state.phase not in [state.Phase.Ready,state.Phase.DetailReading]:return
+	if picker_open():
+		for index in 4:
+			if sort_rect(index).has_point(event.position):state.candidates.select_sort(SORT_COLUMNS[index],event.shift_pressed,event.ctrl_pressed);return
 	for index in mini(capacity(),state.rows.size()-visible_first()):
 		if case_rect(index).has_point(event.position):state.select_case(state.rows[visible_first()+index].crime_id);return
 	if picker_open():
@@ -116,9 +121,10 @@ func _gui_input(event: InputEvent) -> void:
 func draw_picker() -> void:
 	for index in 4:
 		var x: int=detail_x()+[5,15,24,35][index]*8;var width: int=[10,9,10,4][index]
-		var suffix: String="ACTIVE" if index in [0,3] else "INACTIVE"
+		var suffix: String="ACTIVE" if state.candidates.priorities.has(SORT_COLUMNS[index]) else "INACTIVE"
+		var direction: String="ASCENDING" if state.candidates.directions[SORT_COLUMNS[index]] else "DESCENDING"
 		for cell in 4:
-			var arrow:=strip("SORT_DESCENDING_"+suffix,cell)
+			var arrow:=strip("SORT_"+direction+"_"+suffix,cell)
 			if arrow!=null:draw_texture_rect(arrow,Rect2(x+cell*8,list_top(),8,12),false)
 		if index==3:continue
 		for cell in width-4:

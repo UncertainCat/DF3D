@@ -58,6 +58,25 @@ func test_candidates(service,state) -> void:
 	check(picker.phase==picker.Phase.Closed and picker.rows.is_empty(),"Case switch retained old candidate picker")
 	ready(service,state);state.open_candidates();old=picker.ticket;service.session_changed.emit();service.reply(old,candidates())
 	check(state.phase==State.Phase.Unavailable and picker.phase in [picker.Phase.Closed,picker.Phase.Unavailable] and picker.rows.is_empty(),"Session change accepted late candidates")
+func test_sorts(service,state) -> void:
+	ready(service,state);state.open_candidates();var picker=state.candidates
+	var old: int=picker.ticket
+	picker.select_sort(C.JusticeCandidateColumn.Name)
+	var current: int=picker.ticket
+	check(picker.priorities==[1] and picker.directions[1] and picker.candidate_revision==0,"Name header did not reverse/reset native default")
+	service.reply(old,candidates());check(picker.ticket==current and picker.rows.is_empty(),"Retired sort read replaced current rows")
+	picker.select_sort(3,true);picker.select_sort(0,true);picker.select_sort(1,true);picker.select_sort(1,true)
+	check(picker.priorities==[1,3,0,1,1] and picker.directions[1],"Repeated priorities lost shared direction")
+	var intent: Dictionary=service.calls[picker.ticket].intent
+	check(intent.sorts==[{"column":1,"reverse":true},{"column":3,"reverse":false},{"column":0,"reverse":false},{"column":1,"reverse":true},{"column":1,"reverse":true}],"Sort request lost priorities")
+	picker.select_sort(1,false,true);check(picker.priorities==[3,0],"Ctrl did not remove all matching priorities")
+	picker.select_sort(3,false,true);picker.select_sort(0);picker.select_sort(0,false,true)
+	check(picker.priorities==[0] and picker.directions[0],"Empty-priority fallback lost remembered Category direction")
+	service.reply(picker.ticket,candidates());picker.convict(42);current=picker.ticket
+	picker.select_sort(2);check(picker.ticket==current and picker.priorities==[0],"Sort changed during mutation")
+	service.reply(current,{"status":C.ManagementStatus.Rejected,"justice":{"outcome":C.JusticeOutcome.Unknown}})
+	picker.select_sort(2);check(picker.priorities==[0] and picker.ticket==0,"Unknown mutation allowed sorting")
+	state.close();check(picker.priorities==[3,1] and picker.directions==[false,false,false,false],"Close retained old sort state")
 func run() -> void:
 	check(Registry.PANEL_SCRIPTS.has("justice") and not Registry.PANEL_ROUTES.has("Justice"),"Justice public gate changed")
 	var service:=Service.new();root.add_child(service);var state:=State.new();state.configure(service);state.open()
@@ -89,6 +108,7 @@ func run() -> void:
 	service.reply(state.ticket,stale);check(service.calls[state.ticket].intent.expected_list_revision==0,"Stale list restart lost initial request")
 	service.reply(state.ticket,stale);check(state.phase==State.Phase.Rejected and state.ticket==0,"Stale retry unbounded")
 	test_candidates(service,state)
+	test_sorts(service,state)
 	state.dispose();service.queue_free();await process_frame
 	if failures==0:print("JUSTICE_STATE_PASS")
 	quit(1 if failures else 0)

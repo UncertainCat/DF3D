@@ -9357,6 +9357,33 @@
         ]
       }
     ],
-    "limits": "Native owned-helper ordering only. Shift window delivery inconclusive; controlled modifier cases restore native input byte. Sort transport and viewer gestures remain pending."
+    "limits": "Native owned-helper ordering verified. Shift window delivery inconclusive; controlled modifier cases restore native input byte. Transport and viewer gestures subsequently verified in sort_transport_reference; full sorted artwork remains pending."
+  },
+  "sort_transport_reference": {
+    "source": "build/stockpile-storage-native-input-20261112-000941",
+    "protocol": 196,
+    "candidate_count": 293,
+    "sort_scopes": 9,
+    "gestures": "Ordinary, Shift append/repeated priorities, Ctrl remove; Category reversal",
+    "stale_sort_selection_rejected": true,
+    "read_only": true,
+    "source_preserved": true,
+    "render_reference": "build/stockpile-storage-native-input-20261111-235119/justice-sorts.png",
+    "matching_crops": {
+      "sorted_text": [
+        552,
+        172,
+        936,
+        640
+      ],
+      "active_category_header": [
+        632,
+        148,
+        704,
+        160
+      ]
+    },
+    "different_pixels_in_matching_crops": 0,
+    "limits": "Sorted portraits absent: ResidentsRowsRead rejects non-resident candidates, causing the entire artwork page to be rejected. Full sorted-panel visual acceptance pending. Inactive arrow directions differ because the reference uses different remembered prior gestures. Known separate-thread/finalize/two-ObjectDB diagnostics only."
   }
 }

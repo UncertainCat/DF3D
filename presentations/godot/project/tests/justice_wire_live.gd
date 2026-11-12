@@ -3,9 +3,9 @@ func page(tab: int,offset: int,revision: int) -> Dictionary:
 	return await request("justice",{"action":C.ManagementAction.JusticeRead,"tab":tab,"offset":offset,"limit":4,"expected_list_revision":revision})
 func details(tab: int,id: int,offset: int,list_revision: int,case_revision: int) -> Dictionary:
 	return await request("justice",{"action":C.ManagementAction.JusticeCaseRead,"tab":tab,"crime_id":id,"offset":offset,"limit":8,"expected_list_revision":list_revision,"expected_case_revision":case_revision})
-func pointer_click(point: Vector2) -> void:
+func pointer_click(point: Vector2,shift:=false,ctrl:=false) -> void:
 	for pressed in [true,false]:
-		var event:=InputEventMouseButton.new();event.position=point;event.global_position=point;event.button_index=MOUSE_BUTTON_LEFT;event.pressed=pressed
+		var event:=InputEventMouseButton.new();event.position=point;event.global_position=point;event.button_index=MOUSE_BUTTON_LEFT;event.pressed=pressed;event.shift_pressed=shift;event.ctrl_pressed=ctrl
 		Input.parse_input_event(event);Input.flush_buffered_events();await process_frame
 func settle_controller(controller) -> void:
 	var deadline:=Time.get_ticks_msec()+5000
@@ -91,6 +91,20 @@ func run() -> void:
 				check(controller.candidates.icons.size()==view.picker_capacity(),"Visible candidate artwork missing")
 				await process_frame;await RenderingServer.frame_post_draw
 				root.get_texture().get_image().save_png(directory+"/justice-picker-view.png")
+				for gesture in [[0,false,false,0],[3,true,false,7],[0,true,false,-1],[0,true,false,8],[0,false,true,5]]:
+					await pointer_click(view.position+view.sort_rect(gesture[0]).get_center(),gesture[1],gesture[2]);await settle_picker(controller)
+					check(controller.candidates.phase==controller.candidates.Phase.Ready,"Sort header read did not settle")
+					if gesture[3]>=0:
+						var expected_sort: Dictionary=reference.sorts[gesture[3]]
+						check(controller.candidates.rows.map(func(row):return row.unit_id)==expected_sort.rows.map(func(row):return int(row.unit_id)),"Header gesture produced wrong native order")
+				for _step in 2:
+					await pointer_click(view.position+view.sort_rect(1).get_center());await settle_picker(controller)
+				check(controller.candidates.rows.map(func(row):return row.unit_id)==reference.sorts[2].rows.map(func(row):return int(row.unit_id)),"Category reverse order differs")
+				icon_deadline=Time.get_ticks_msec()+5000
+				while controller.candidates.icon_ticket!=0 and Time.get_ticks_msec()<icon_deadline:
+					world.poll();await create_timer(0.01).timeout
+				await process_frame;await RenderingServer.frame_post_draw
+				root.get_texture().get_image().save_png(directory+"/justice-picker-sorted-view.png")
 				await pointer_click(view.position+view.search.position+Vector2(24,18))
 				for letter in "zznomatch":
 					var key:=InputEventKey.new();key.pressed=true;key.unicode=letter.unicode_at(0);key.keycode=letter.unicode_at(0)
@@ -136,11 +150,23 @@ func run() -> void:
 					and d.witness_color==p.witness_color and d.deceased==p.deceased,"Justice candidate display differs")
 				check(d.name_color.color==p.color and d.name_color.alternate==p.alternate and d.name_color.effect==p.effect,"Justice candidate name color differs")
 		if sample.query=="":candidate_revision=revision;candidate_count=rows.size()
+	for sample in reference.sorts:
+		var sorted_rows: Array=[];var revision:=0
+		while sorted_rows.size()<sample.rows.size():
+			var sorts: Array=[]
+			for sort in sample.sorts:sorts.append({"column":int(sort.column),"reverse":sort.reverse})
+			var reply:=await request("justice",{"action":C.ManagementAction.JusticeCandidatesRead,"tab":0,"offset":sorted_rows.size(),"limit":64,
+				"expected_list_revision":list_revision,"crime_id":9,"expected_case_revision":case_revision,"query":"","expected_candidate_revision":revision,"sorts":sorts})
+			if not check(reply.get("status")==C.ManagementStatus.Ok,"Sorted candidate page rejected"):quit(1);return
+			var c: Dictionary=reply.justice.candidates;revision=c.revision
+			if not check(not c.rows.is_empty(),"Sorted candidates stalled"):quit(1);return
+			sorted_rows.append_array(c.rows)
+		check(sorted_rows.map(func(row):return row.unit_id)==sample.rows.map(func(row):return int(row.unit_id)),"Transport changed native sorted order")
 	var intent: Dictionary={"action":C.ManagementAction.JusticeConvict,"tab":0,"offset":0,"limit":32,
 		"expected_list_revision":list_revision,"crime_id":9,"expected_case_revision":case_revision,
 		"query":"","expected_candidate_revision":candidate_revision,"unit_id":5698}
 	for patch in [{"expected_list_revision":list_revision+1},{"expected_case_revision":case_revision+1},
-		{"expected_candidate_revision":candidate_revision+1},{"unit_id":2147483647}]:
+		{"expected_candidate_revision":candidate_revision+1},{"unit_id":2147483647},{"sorts":[{"column":1,"reverse":true}]}]:
 		var stale:=intent.duplicate(true);stale.merge(patch,true)
 		var reply:=await request("justice",stale)
 		check(reply.get("status")==C.ManagementStatus.Rejected and reply.get("justice",{}).get("outcome")==C.JusticeOutcome.Stale,
@@ -179,5 +205,5 @@ func run() -> void:
 			"Repeated old conviction was not rejected")
 	var result=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	result.store_string(JSON.stringify({"success":not failed,"counts":counts,"witnesses":report_count,"stale_tabs":3,"controller_tabs":3,
-		"closed_read_retired":true,"candidate_count":candidate_count,"candidate_queries":3,"convicted":applied,"picker_controller":applied}));result.close()
+		"closed_read_retired":true,"candidate_count":candidate_count,"candidate_queries":3,"sort_scopes":reference.sorts.size(),"convicted":applied,"picker_controller":applied}));result.close()
 	quit(1 if failed else 0)

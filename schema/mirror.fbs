@@ -1177,7 +1177,7 @@ table SessionCommand {
 }
 
 // Bounded fortress management channel; independently versioned from map snapshots.
-enum ManagementAction : uint8 { Catalog, Preview, Place, Inspect, Remove, InspectAtTile, RemoveConstruction, AreaCatalog, AreaInspectAtTile, AreaInspect, AreaCreate, AreaUpdate, AreaDelete, AreaLink, AreaCandidates, ProductionList, ProductionInspect, ProductionQueue, ProductionJobEdit, FarmEdit, WorkOrderList, WorkOrderInspect, WorkOrderCreate, WorkOrderUpdate, WorkOrderDelete, WorkOrderCondition, WorkOrderCandidates, WorkOrderCatalog, CitizenList, CitizenInspect, WorkDetailList, WorkDetailInspect, WorkDetailMembership, WorkDetailMode, ReportList, ReportInspect, AgreementList, AgreementInspect, TradeList, TradeInspect, TradeUpdate, TradeGoods, TradeBring, TradeExchangeOpen, TradeExchangeInspect, TradeExchangeSelect, TradeExchangeSubmit, TradeExchangeClose, StocksOpen, StocksList, StocksInspect, StocksClose, AppointmentsOpen, AppointmentsCandidates, AppointmentsAssign, AppointmentsBack, KitchenOpen, KitchenList, KitchenSetPermission, KitchenClose, Alert, Selection, CreatureInspect, ConstructionMaterials, WorkDetailCreate, WorkDetailDelete, WorkDetailEdit, CitizenWorkScope, PrepareAlertDismissal, DismissAlert, WorldHover, CreatureHeaderRead, CreatureHeaderEdit, CreatureLocate, CreatureExpelRead, CreatureExpelApply, CreatureKnowledgeRead, CreatureWorkshopRemove, CreatureLocationRemove, CreatureAnimalEdit, ResidentsQuery, ResidentsRowsRead, ResidentsSpecialize, CreatureSheetLocate, ResidentsActivityRead, JobSettingsRead, JobSettingsApply, WorkDetailWorkersQuery, WorkDetailRowsRead, WorkDetailSettingsRead, WorkDetailSettingsToggle, StandingOrdersRead, StandingOrdersSet, HunterAmmunitionRead, HunterAmmunitionCandidates, HunterAmmunitionApply, ChoresRead, ChoresApply, KitchenRead, KitchenApply, StoneUseRead, StoneUseApply, StocksMenuRead, StocksGroupApply, StocksItemApply, TasksRead, TasksApply, PlacesRead, PlacesApply, NoblesRead, NoblesCandidates, NoblesCommit, NoblesAccounting, NoblesSymbolsRead, NoblesSymbolsApply, NoblesSymbolNameRead, NoblesSymbolNameEdit, NoblesSymbolsContinue, NoblesSymbolsRetire, ObjectsRead, ObjectsLocate }
+enum ManagementAction : uint8 { Catalog, Preview, Place, Inspect, Remove, InspectAtTile, RemoveConstruction, AreaCatalog, AreaInspectAtTile, AreaInspect, AreaCreate, AreaUpdate, AreaDelete, AreaLink, AreaCandidates, ProductionList, ProductionInspect, ProductionQueue, ProductionJobEdit, FarmEdit, WorkOrderList, WorkOrderInspect, WorkOrderCreate, WorkOrderUpdate, WorkOrderDelete, WorkOrderCondition, WorkOrderCandidates, WorkOrderCatalog, CitizenList, CitizenInspect, WorkDetailList, WorkDetailInspect, WorkDetailMembership, WorkDetailMode, ReportList, ReportInspect, AgreementList, AgreementInspect, TradeList, TradeInspect, TradeUpdate, TradeGoods, TradeBring, TradeExchangeOpen, TradeExchangeInspect, TradeExchangeSelect, TradeExchangeSubmit, TradeExchangeClose, StocksOpen, StocksList, StocksInspect, StocksClose, AppointmentsOpen, AppointmentsCandidates, AppointmentsAssign, AppointmentsBack, KitchenOpen, KitchenList, KitchenSetPermission, KitchenClose, Alert, Selection, CreatureInspect, ConstructionMaterials, WorkDetailCreate, WorkDetailDelete, WorkDetailEdit, CitizenWorkScope, PrepareAlertDismissal, DismissAlert, WorldHover, CreatureHeaderRead, CreatureHeaderEdit, CreatureLocate, CreatureExpelRead, CreatureExpelApply, CreatureKnowledgeRead, CreatureWorkshopRemove, CreatureLocationRemove, CreatureAnimalEdit, ResidentsQuery, ResidentsRowsRead, ResidentsSpecialize, CreatureSheetLocate, ResidentsActivityRead, JobSettingsRead, JobSettingsApply, WorkDetailWorkersQuery, WorkDetailRowsRead, WorkDetailSettingsRead, WorkDetailSettingsToggle, StandingOrdersRead, StandingOrdersSet, HunterAmmunitionRead, HunterAmmunitionCandidates, HunterAmmunitionApply, ChoresRead, ChoresApply, KitchenRead, KitchenApply, StoneUseRead, StoneUseApply, StocksMenuRead, StocksGroupApply, StocksItemApply, TasksRead, TasksApply, PlacesRead, PlacesApply, NoblesRead, NoblesCandidates, NoblesCommit, NoblesAccounting, NoblesSymbolsRead, NoblesSymbolsApply, NoblesSymbolNameRead, NoblesSymbolNameEdit, NoblesSymbolsContinue, NoblesSymbolsRetire, ObjectsRead, ObjectsLocate, JusticeRead, JusticeCaseRead }
 enum AreaKind : uint8 { Stockpile, Zone, Workshop }
 enum AreaOperation : uint8 { None, SettingsPage, SettingsSet, Preset, Rename, Paint, LocationList, LocationSet, LocationCreate, ZoneSettings, Links, AssignUnits, SquadUse, Toggles, CandidateList, WorkshopLink, MultiCreate, MultiUndo, MultiFinish, PaintCounts, LocationChoices, LocationDetails, LocationOpen, LocationAccess, LocationStaffCandidates, LocationStaffEdit, LinkTarget, LocationQuantity, LocationNameRead, LocationNameChoices, LocationNameEdit, LocationRecognitionRead, LocationRecognize, LocationReligiousStaffRead, LocationReligiousStaffRemove, LocationReligiousCandidates, LocationReligiousAssignmentRead, LocationReligiousAssign, LocationSpecializationRead, LocationSpecializationSet, LocationStaffAssignmentsRead }
 enum LocationNameMode : uint8 { Clear, SelectWord, RandomComponent, RandomWhole }
@@ -2220,6 +2220,30 @@ table NoblesState {
   symbol_target_caption:string;
 }
 
+// Case tabs are Open, Closed, Cold. Other Justice categories have separate
+// semantic providers; this read contract does not claim their implementation.
+enum JusticeOutcome : uint8 { None, Rejected, Stale }
+table JusticeRequest {
+  tab:uint8; offset:uint32; limit:uint16 = 32;
+  expected_list_revision:uint64; crime_id:int32 = -1;
+  expected_case_revision:uint64;
+}
+table JusticeCaseRow { crime_id:int32 = -1; caption:string (required); }
+table JusticeWitnessRow {
+  witness:string (required); description:string (required);
+  date:string (required); reported:string (required);
+}
+table JusticeCaseDetail {
+  crime_id:int32 = -1; revision:uint64; caption:string (required);
+  injured_party:string; status:string (required);
+  total:uint32; offset:uint32; witnesses:[JusticeWitnessRow] (required);
+}
+table JusticeState {
+  outcome:JusticeOutcome; tab:uint8; list_revision:uint64;
+  total:uint32; offset:uint32; rows:[JusticeCaseRow] (required);
+  detail:JusticeCaseDetail;
+}
+
 // Objects pages retain native category/order; navigation resolves current facts
 // without changing DF camera or native UI state. Optional position enables both
 // View and Recenter. No absent artwork or destination is synthesized.
@@ -2391,7 +2415,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 191;
+  schema_version:uint32 = 192;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2455,13 +2479,14 @@ table ConstructionRequest {
   places:PlacesRequest;
   nobles:NoblesRequest;
   objects:ObjectsRequest;
+  justice:JusticeRequest;
 }
 // Native ordered world-hover descriptions. Missing means unavailable, never guessed.
 table WorldHoverEntry { text:string (required); foreground:uint8; background:uint8; bright:bool; kind:uint8; object_id:int32 = -1; }
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 191;
+  schema_version:uint32 = 192;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;
@@ -2520,6 +2545,7 @@ table ManagementState {
   places:PlacesState;
   nobles:NoblesState;
   objects:ObjectsState;
+  justice:JusticeState;
 }
 
 table WorkOrderInput { index:uint16; description:string; mat_type:int16 = -1; mat_index:int32 = -1; editable:bool; }

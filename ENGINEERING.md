@@ -41,6 +41,27 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+The staged read contract uses management protocol192 and
+`Local\df3d_management_v192`. `JusticeRead` pages native Open/Closed/Cold case
+IDs and captions; `JusticeCaseRead` carries the selected crime caption, optional
+injured-party line, status and ordered witness rows with paired date captions.
+List revisions scope selection and pagination; case revisions scope witness
+pagination. Refusals cannot carry usable rows or details. Pages are bounded to64
+rows, individual captions to16KiB and cumulative text/row accounting to384KiB.
+These are transport bounds, not limits on the native case list.
+
+Migration: rebuild bridge and clients together. Protocol191 processes do not
+share this mailbox. Session/map recording formats are unchanged; older recordings
+do not acquire synthetic Justice facts. This contract alone does not implement
+the producer, model codec or panel; Justice stays publicly unavailable. Native
+providers below remain the source for the next integration step. The installed
+bridge is still protocol191 pending integration and protected live acceptance.
+
+Root build and all19 CTest checks pass in `build/qa/justice-read-contract`, including
+new request/reply checks for wrong domains, stale payloads, duplicate IDs, page
+bounds and witness text budgets. This is structural transport evidence, not
+rendered/live acceptance. A subsequent comment relocation passed root CTest again.
+
 `df3d_justice::witnessText` in `justice_witness_native.h` returns ordered witness
 rows with name, report description and both date captions. It calls native
 b92a80 for the recorded historical/assumed identity, formats copied names with

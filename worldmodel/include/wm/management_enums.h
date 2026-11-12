@@ -2,6 +2,11 @@
 #pragma once
 #include <cstdint>
 namespace wm {
+enum class JusticeOutcome : uint8_t {
+  None = 0,
+  Rejected = 1,
+  Stale = 2,
+};
 enum class ObjectsOutcome : uint8_t {
   None = 0,
   Rejected = 1,
@@ -322,6 +327,8 @@ enum class ManagementAction : uint8_t {
   NoblesSymbolsRetire = 118,
   ObjectsRead = 119,
   ObjectsLocate = 120,
+  JusticeRead = 121,
+  JusticeCaseRead = 122,
 };
 enum class ManagementStatus : uint8_t {
   Idle = 0,
@@ -653,11 +660,15 @@ constexpr bool isRuntimeAction(ManagementAction action) {
   case ManagementAction::NoblesSymbolsRetire: return true;
   case ManagementAction::ObjectsRead: return true;
   case ManagementAction::ObjectsLocate: return true;
+  case ManagementAction::JusticeRead: return true;
+  case ManagementAction::JusticeCaseRead: return true;
   default: return false;
   }
 }
 constexpr const char* managementDomain(ManagementAction action) {
   switch (action) {
+  case ManagementAction::JusticeRead: return "justice";
+  case ManagementAction::JusticeCaseRead: return "justice";
   case ManagementAction::ObjectsRead: return "objects";
   case ManagementAction::ObjectsLocate: return "objects";
   case ManagementAction::NoblesRead: return "nobles";

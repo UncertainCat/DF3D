@@ -120,6 +120,7 @@
 #include "justice_native.h"
 #include "justice_guard_native.h"
 #include "justice_convicts_native.h"
+#include "justice_intelligence_native.h"
 #include "justice_action_native.h"
 #include "justice_presentation_native.h"
 #include <sstream>
@@ -2840,6 +2841,15 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               row["rank"]=fact.rank;row["flags"]=fact.flags;result.append(row);}
             out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
           }catch(const std::exception&){return CR_WRONG_USAGE;}
+        }
+        if(parameters[0]=="justice-intelligence-reports-probe") {
+            if(parameters.size()!=2)return CR_WRONG_USAGE;
+            int columns=0;const auto& argument=parameters[1];const auto parsed=std::from_chars(argument.data(),argument.data()+argument.size(),columns);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=argument.data()+argument.size())return CR_WRONG_USAGE;
+            const auto rows=df3d_justice::intelligenceReports(columns);if(!rows)return CR_FAILURE;
+            Json::Value output(Json::arrayValue);
+            for(const auto& row:*rows){Json::Value value;value["index"]=row.index;value["title"]=DF2UTF(row.title);value["officer"]=DF2UTF(row.officer);value["viewed"]=row.viewed;value["lines"]=Json::Value(Json::arrayValue);for(const auto& line:row.lines)value["lines"].append(DF2UTF(line));output.append(value);}
+            out.print("{}",Json::FastWriter().write(output));return CR_OK;
         }
         if(parameters[0]=="justice-convicts-probe") {
           if(parameters.size()!=1 || !state.mapLoaded || df3d_session::saving())return CR_FAILURE;

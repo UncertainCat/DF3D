@@ -10075,5 +10075,104 @@
       "shared candidate portrait gaps remain",
       "Justice remains hidden from public routes"
     ]
+  },
+  "intelligence_report_reference": {
+    "run": "stockpile-storage-native-input-20261112-074905",
+    "status": "passed",
+    "protocol": 200,
+    "owned_df_pid": 6620,
+    "source_preserved": true,
+    "native_fps": 30,
+    "viewer_launched": false,
+    "synthetic_reports": true,
+    "samples": [
+      {
+        "name": "roster",
+        "provider": [
+          {
+            "index": 0,
+            "lines": [
+              "Synthetic interrogation report 1: a deliberately long title for native wrapping ",
+              "verification.",
+              "Prepared by Synthetic officer 1",
+              "",
+              "",
+              "Synthetic detail paragraph: native wrapping words native wrapping words native ",
+              "wrapping words native wrapping words native wrapping words native wrapping ",
+              "words native wrapping words native wrapping words native wrapping words native ",
+              "wrapping words native wrapping words native wrapping words ",
+              "",
+              "Second synthetic detail paragraph."
+            ],
+            "officer": "Officer: Synthetic officer 1",
+            "title": "Synthetic interrogation report 1: a deliberately long title for native wrapping verification.",
+            "viewed": false
+          },
+          {
+            "index": 1,
+            "lines": [
+              "Synthetic interrogation report 2: a deliberately long title for native wrapping ",
+              "verification.",
+              "Prepared by Synthetic officer 2",
+              "",
+              "",
+              "Synthetic detail paragraph: native wrapping words native wrapping words native ",
+              "wrapping words native wrapping words native wrapping words native wrapping ",
+              "words native wrapping words native wrapping words native wrapping words native ",
+              "wrapping words native wrapping words native wrapping words ",
+              "",
+              "Second synthetic detail paragraph."
+            ],
+            "officer": "Officer: Synthetic officer 2",
+            "title": "Synthetic interrogation report 2: a deliberately long title for native wrapping verification.",
+            "viewed": false
+          }
+        ]
+      },
+      {
+        "columns": 112,
+        "name": "detail",
+        "native": [
+          "Synthetic interrogation report 1: a deliberately long title for native wrapping verification.",
+          "Prepared by Synthetic officer 1",
+          "",
+          "",
+          "Synthetic detail paragraph: native wrapping words native wrapping words native wrapping words native wrapping ",
+          "words native wrapping words native wrapping words native wrapping words native wrapping words native wrapping ",
+          "words native wrapping words native wrapping words native wrapping words ",
+          "",
+          "Second synthetic detail paragraph."
+        ],
+        "provider": {
+          "index": 0,
+          "lines": [
+            "Synthetic interrogation report 1: a deliberately long title for native wrapping verification.",
+            "Prepared by Synthetic officer 1",
+            "",
+            "",
+            "Synthetic detail paragraph: native wrapping words native wrapping words native wrapping words native wrapping ",
+            "words native wrapping words native wrapping words native wrapping words native wrapping words native wrapping ",
+            "words native wrapping words native wrapping words native wrapping words ",
+            "",
+            "Second synthetic detail paragraph."
+          ],
+          "officer": "Officer: Synthetic officer 1",
+          "title": "Synthetic interrogation report 1: a deliberately long title for native wrapping verification.",
+          "viewed": false
+        },
+        "viewed": false
+      }
+    ],
+    "artifacts": {
+      "justice-intelligence.json": "0e69cb4f46ff64392d25b38f2117c356d354e34d635106ecf9fb309699ac2d50",
+      "justice-intelligence-roster.png": "12c6da0f97b6ebf03183911b4c1420137c5361fdbf77516e1a9087ad11618db0",
+      "justice-intelligence-detail.png": "295b9a07fb07f48265c0de85e57276f9ca40e1b1a77641a47ee7579bf35ab916"
+    },
+    "limits": [
+      "report provider only, no management transport or viewer",
+      "no report scrolling, resize or lifecycle acceptance",
+      "Actors, Organizations and Plots remain unimplemented",
+      "synthetic report text is oracle input, never product copy"
+    ]
   }
 }

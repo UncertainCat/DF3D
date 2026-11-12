@@ -41,6 +41,38 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+Intelligence uses legacy direct drawing in native4769d0, not populated child
+widgets. Its four sub-tabs are Interrogations, Actors, Organizations and Plots.
+The report source is semantic `world.status.interrogation_reports`; native471a1f
+copies it in storage order. `justice_intelligence_native.h` owns report titles,
+officer captions, viewed facts and wrapped detail lines. It calls native8e7310
+with independent strings/text-box storage and releases native-allocated lines
+through bb9b0. Native4789b5 supplies the `Prepared by ` prefix and paragraph
+spacing;478c8a supplies list title and `Officer: ` captions. It never initializes
+or reads the native Justice menu. Protocol200 is unchanged; the provider is not
+yet exposed through management transport or the viewer.
+
+Protected `stockpile-storage-native-input-20261112-074905` appends two explicitly
+synthetic reports in the disposable paused clone. It verifies empty/nonempty
+provider reads, native report order, actual first-row opening, and exact native
+detail lines at112 columns including wrapping and blank paragraphs. Opening the
+report leaves its viewed flag false in this case; no viewed mutation is inferred.
+The synthetic text is oracle data, never product copy. Added reports and strings
+are removed, the menu is rebuilt to retire their pointers, source save and
+preferences are preserved, and owned DF6620 closes unsaved. MSVC and all19 core
+checks pass. Native runs at30FPS without Godot; observed42C/0% GPU samples are
+not continuous peaks. `native_justice.json.intelligence_report_reference`
+retains bounded provenance. This does not establish viewer rendering, pagination,
+scrolling, resize, report lifecycle or nonempty graph behavior.
+
+The Actors/Organizations/Plots collector2b6760 reads the fortress entity's
+`evidence_repository` (entity+1358), constructs presentation entries, writes
+`evidence_hf_filest.temp_flags` at98, and finishes by filtering menu-owned lists.
+Do not call it with the live Justice menu or assume it is a read-only semantic
+API. An owned evidence/graph adapter and native comparison remain required.
+The report provider does not imply that the other three sub-tabs are empty.
+
+
 Management protocol200 appends `JusticeConvictsRead` and
 `JusticeConvictDetailRead`. Convicts requests use tab4, owned query and three
 native sort columns. Detail reads require a unit ID and list revision; subsequent

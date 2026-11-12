@@ -50,7 +50,7 @@ local guards={}
 local function guard(object)local n,p=df.sizeof(object);guards[#guards+1]={n=n,p=p,value=bytes(p,n)}end
 if not mutating then guard(df.global.game.main_interface.info.justice)end
 for _,crime in ipairs(df.global.world.crimes.all)do
- if interrogating and crime.id==9 then
+ if interrogating and not mutating and crime.id==9 then
   -- Add/cancel may retain vector capacity. Guard every other crime byte and
   -- all existing report objects; require the original count after cancellation.
   local n,p=df.sizeof(crime)
@@ -99,7 +99,7 @@ else
  assert(df.crime.find(9).accused_hf.historical_hfid==9317,'Wire conviction accused identity differs')
 end
 
-if interrogating then assert(#df.crime.find(9).reports==initial_reports,'Interrogation cancellation did not restore reports');assert(#df.global.world.history.events==history_count,'Interrogation changed history')end
+if interrogating then assert(#df.crime.find(9).reports==initial_reports,'Interrogation cancellation did not restore reports');assert(#df.global.world.history.events==history_count+(mutating and 1 or 0),'Unexpected interrogation/conviction history count')end
 if interview_job then
  for _,job in require('utils').listpairs(df.global.world.jobs.list)do assert(job.id~=interview_job,'Checkbox did not cancel the controlled interview job')end
  assert(not interview_worker.job.current_job,'Checkbox did not release the interview worker')

@@ -576,6 +576,35 @@ source/prefs preserved; serial30FPS, GPU48–49C samples. Known Godot diagnostic
 qualify the live result. `candidate_keyboard_navigation_reference` retains
 bounded states, comparisons and hashes.
 
+Enter and keypad Enter activate the selected candidate through the existing
+receipted Interrogate/Convict semantic actions. Native installed SELECT bindings
+are unmodified Enter and Numpad Enter with REPEAT_NOT. The viewer rejects echo
+and modified activation; pending/unknown edits retain their existing no-replay
+guards. Activation precedes filter input: native Interrogate keeps filter focus
+while toggling the checkbox, whereas conviction closes the picker.
+
+Protected133818 and133900 on2026-11-12 verify native SELECT with the filter
+unfocused/focused. Both schedule and cancel case9/unit5698 and then convict
+that unit, producing one conviction event. Focus remains set across focused
+interview toggles and clears after conviction. Earlier133636/133731 were
+intercepted by the reopened introductory help panel and are not accepted.
+
+Mixed134156/134304 verify actual viewer Enter/keypad Enter, respectively, with
+unfocused/focused filters. Six Down presses select interview subject7123;
+activation retains native order, Name sorting groups it first, and activation
+cancels it. Enter then convicts5698 through the separate picker. Ctrl/Shift/Alt/
+Meta-modified and repeated Enter submit no action. Source guards, native effects
+and history checks pass. Earlier134040 passed viewer assertions but failed a
+test guard that incorrectly treated the deliberately convicted case as read-only;
+the final combined lane admits both requested mutations and still guards other
+crimes and all witness records. This is semantic-key input acceptance, not a
+physical Windows keyboard delivery test or full Justice completion.
+
+Justice state/composition QA `justice-select-key` and core19 pass. Owned
+DF36700/42024/38848/24504 close unsaved with source/prefs preserved; serial30FPS,
+GPU49–51C samples. Known Godot shutdown diagnostics qualify mixed runs as
+passed_with_known_issues. `candidate_activation_reference` retains evidence.
+
 Guard and Convicts use the same native cursor/keep-visible rules for Up/Down
 and Page Up/Down. Convicts selection invokes its existing receipted native
 detail read; retired replies cannot replace the newly selected creature's

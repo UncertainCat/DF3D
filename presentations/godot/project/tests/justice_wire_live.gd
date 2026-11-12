@@ -7,6 +7,17 @@ func pointer_click(point: Vector2,shift:=false,ctrl:=false) -> void:
 	for pressed in [true,false]:
 		var event:=InputEventMouseButton.new();event.position=point;event.global_position=point;event.button_index=MOUSE_BUTTON_LEFT;event.pressed=pressed;event.shift_pressed=shift;event.ctrl_pressed=ctrl
 		Input.parse_input_event(event);Input.flush_buffered_events();await process_frame
+func activate_picker_key(view) -> void:
+	var focused:=OS.get_environment("DF3D_JUSTICE_SELECT_FOCUSED")=="1"
+	if focused:
+		var focus:=InputEventKey.new();focus.pressed=true;focus.ctrl_pressed=true;focus.keycode=KEY_F;Input.parse_input_event(focus);await create_timer(0.1).timeout
+	check(view.search.has_focus()==focused,"Activation filter focus differs")
+	# Installed SELECT is REPEAT_NOT and excludes modifiers. Neither may submit.
+	var model=view.state.candidates;var revision: int=model.candidate_revision
+	for modifier in ["ctrl_pressed","shift_pressed","alt_pressed","meta_pressed","echo"]:
+		var ignored:=InputEventKey.new();ignored.pressed=true;ignored.keycode=KEY_ENTER;ignored.set(modifier,true);Input.parse_input_event(ignored);await create_timer(0.1).timeout
+		check(model.phase==model.Phase.Ready and model.ticket==0 and model.candidate_revision==revision,"Modified/repeated Enter activated a candidate")
+	var key:=InputEventKey.new();key.pressed=true;key.keycode=KEY_KP_ENTER if focused else KEY_ENTER;Input.parse_input_event(key);await create_timer(0.1).timeout
 func settle_controller(controller) -> void:
 	var deadline:=Time.get_ticks_msec()+5000
 	while controller.phase in [controller.Phase.Reading,controller.Phase.DetailReading] and Time.get_ticks_msec()<deadline:
@@ -205,11 +216,17 @@ func run() -> void:
 		var target: int=picker.rows[6].unit_id
 		check(target==7123 and not picker.rows[6].interrogation_pending,"Interrogate baseline target differs")
 		var old_intent: Dictionary=picker._intent(C.ManagementAction.JusticeInterrogate);old_intent.unit_id=target;old_intent.expected_selected=false
-		if interview_view!=null:await pointer_click(interview_view.position+interview_view.picker_rect(6).position+Vector2(296,18))
+		if interview_view!=null and OS.get_environment("DF3D_JUSTICE_SELECT")=="1":
+			for _step in 6:
+				var down:=InputEventKey.new();down.pressed=true;down.keycode=KEY_DOWN;Input.parse_input_event(down);await create_timer(0.1).timeout
+			check(picker.cursor_id==target,"Keyboard did not select the interview subject")
+			await activate_picker_key(interview_view)
+		elif interview_view!=null:await pointer_click(interview_view.position+interview_view.picker_rect(6).position+Vector2(296,18))
 		else:picker.toggle_interrogation(target)
 		await settle_picker(owner)
 		if not check(picker.phase==picker.Phase.Ready,"Interrogate did not settle"):quit(1);return
 		check(picker.rows.map(func(row):return row.unit_id)==original and picker.rows[6].interrogation_pending,"Scheduling reordered the picker or failed")
+		if interview_view!=null and OS.get_environment("DF3D_JUSTICE_SELECT")=="1":check(interview_view.search.has_focus()==(OS.get_environment("DF3D_JUSTICE_SELECT_FOCUSED")=="1"),"Interview activation lost filter focus")
 		if interview_view!=null:
 			await process_frame;await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(directory+"/justice-interrogate-view.png")
@@ -222,7 +239,8 @@ func run() -> void:
 		else:picker.select_sort(C.JusticeCandidateColumn.Name)
 		await settle_picker(owner)
 		check(picker.phase==picker.Phase.Ready and picker.rows[0].unit_id==target,"Sort failed to group scheduled interview first")
-		if interview_view!=null:await pointer_click(interview_view.position+interview_view.picker_rect(0).position+Vector2(296,18))
+		if interview_view!=null and OS.get_environment("DF3D_JUSTICE_SELECT")=="1":await activate_picker_key(interview_view)
+		elif interview_view!=null:await pointer_click(interview_view.position+interview_view.picker_rect(0).position+Vector2(296,18))
 		else:picker.toggle_interrogation(target)
 		await settle_picker(owner)
 		interrogated=picker.phase==picker.Phase.Ready and picker.rows[0].unit_id==target and not picker.rows[0].interrogation_pending
@@ -243,7 +261,9 @@ func run() -> void:
 		owner.candidates.search("");await settle_picker(owner)
 		var commits: Array=[];owner.candidates.convicted.connect(func(id,unit):commits.append([id,unit]))
 		if picker_view!=null:
-			await process_frame;await pointer_click(picker_view.position+picker_view.picker_rect(0).get_center())
+			await process_frame
+			if OS.get_environment("DF3D_JUSTICE_SELECT")=="1":await activate_picker_key(picker_view)
+			else:await pointer_click(picker_view.position+picker_view.picker_rect(0).get_center())
 		else:owner.candidates.convict(5698)
 		await settle_picker(owner)
 		applied=commits==[[9,5698]]

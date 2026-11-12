@@ -15,10 +15,21 @@ local function selected()
  error('Interrogation unit vanished')
 end
 local before=reports();assert(not selected(),'Fixture requires unselected first candidate')
-click(808,190);assert(selected(),'Native interrogation checkbox did not schedule')
+local activation={}
+local function activate()
+ if os.getenv('DF3D_JUSTICE_SELECT')=='1' then
+  local gui=require('gui')
+  df.global.enabler.mouse_focus=true
+  if os.getenv('DF3D_JUSTICE_SELECT_FOCUSED')=='1' then gui.simulateInput(view,'FILTER');settle()end
+  local focused=df.global.gview.cur_textbox~=nil
+  gui.simulateInput(view,'SELECT');settle()
+  activation[#activation+1]={focused_before=focused,focused_after=df.global.gview.cur_textbox~=nil,selected_after=selected()}
+ else click(808,190)end
+end
+activate();assert(selected(),'Native interrogation activation did not schedule')
 local native_on=reports();assert(#native_on==#before+1,'Native interrogation did not add exactly one report')
 capture('justice-interrogation-selected')
-click(808,190);assert(not selected(),'Native interrogation checkbox did not cancel')
+activate();assert(not selected(),'Native interrogation activation did not cancel')
 local native_off=reports();assert(json.encode(native_off)==json.encode(before),'Native interrogation did not restore reports')
 assert(probe('justice-interrogation-probe',{'9',tostring(unit_id),'0'},true)==2,'Owned interrogation scheduling failed')
 local owned_on=reports();assert(selected(),'Owned interrogation was not selected')
@@ -28,7 +39,7 @@ assert(json.encode(reports())==json.encode(owned_on),'Rejected interrogation cha
 assert(probe('justice-interrogation-probe',{'9',tostring(unit_id),'1'},true)==2,'Owned interrogation cancellation failed')
 local owned_off=reports();assert(not selected(),'Owned interrogation stayed selected')
 assert(json.encode(owned_off)==json.encode(before),'Owned interrogation did not restore reports')
-local result={crime_id=9,unit_id=unit_id,before=before,native_on=native_on,native_off=native_off,owned_on=owned_on,owned_off=owned_off,stale_toggle_rejected=true}
+local result={crime_id=9,unit_id=unit_id,before=before,native_on=native_on,native_off=native_off,owned_on=owned_on,owned_off=owned_off,stale_toggle_rejected=true,keyboard_activation=activation}
 if os.getenv('DF3D_JUSTICE_INTERROGATION_JOBS')=='1' then
  local utils=require('utils');assert(df.global.pause_state)
  local worker,other

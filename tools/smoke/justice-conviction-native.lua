@@ -35,17 +35,25 @@ local function state()
   punishment_flags=crime.punishment.flags.whole,history_count=#df.global.world.history.events,
   counters={df.reinterpret_cast('int32_t',base+0x2393410).value,df.reinterpret_cast('int32_t',base+0x2393440).value}}
 end
+if df.global.game.main_interface.help.open then click(711,430);assert(not df.global.game.main_interface.help.open)end
 tab('Open cases');click(100,202);click(100,166);click(652,190)
 local before=state();local before_emotions=emotions()
 capture('justice-conviction-before')
 local provider=os.getenv('DF3D_JUSTICE_CONVICTION_PROVIDER')=='1'
+local focused_before=false
 if provider then
  -- The native effect legitimately sets Justice.do_init, so do not use the
  -- read-only probe's unchanged-menu guard or restore the notification.
  local text,rc=dfhack.run_command_silent('df3d','justice-conviction-probe','9','5698','-1')
  assert(rc==0 and json.decode(text)==2,'Native conviction effect adapter failed')
+elseif os.getenv('DF3D_JUSTICE_SELECT')=='1' then
+ df.global.enabler.mouse_focus=true
+ if os.getenv('DF3D_JUSTICE_SELECT_FOCUSED')=='1' then gui.simulateInput(view,'FILTER');settle()end
+ focused_before=df.global.gview.cur_textbox~=nil
+ gui.simulateInput(view,'SELECT');settle()
 else click(600,190)end
 local result={crime_id=crime.id,unit_id=unit.id,provider=provider,before=before,after=state(),changed_emotions={},new_events={}}
+result.keyboard_activation={enabled=os.getenv('DF3D_JUSTICE_SELECT')=='1',focused_before=focused_before,focused_after=df.global.gview.cur_textbox~=nil}
 local after_emotions=emotions()
 for id,rows in pairs(after_emotions)do
  if json.encode(rows)~=json.encode(before_emotions[id])then

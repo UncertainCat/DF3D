@@ -14306,5 +14306,180 @@
       "subject": 7123,
       "worker_released": true
     }
+  },
+  "candidate_activation_reference": {
+    "scope": "Native SELECT and viewer Enter/keypad Enter candidate activation, filter focused and unfocused. Interrogate preserves filter focus; conviction closes picker. Modifier/echo rejection verified in viewer. Physical Windows key delivery, assumed identities and missing figures are not accepted here.",
+    "status": "passed_with_known_issues",
+    "fps_cap": 30,
+    "gpu_samples_celsius": [
+      49,
+      50,
+      51
+    ],
+    "source_preserved": true,
+    "native": [
+      {
+        "source": "build/stockpile-storage-native-input-20261112-133818",
+        "owned_df_closed": 36700,
+        "focused": false,
+        "interrogation_activation": [
+          {
+            "focused_after": false,
+            "focused_before": false,
+            "selected_after": true
+          },
+          {
+            "focused_after": false,
+            "focused_before": false,
+            "selected_after": false
+          }
+        ],
+        "conviction_activation": {
+          "enabled": true,
+          "focused_after": false,
+          "focused_before": false
+        },
+        "convicted_unit": 5698,
+        "new_events": [
+          {
+            "convicted_hf": 9317,
+            "convicter_entity": 865,
+            "crime": 5,
+            "hammerstrikes": 0,
+            "id": 64037,
+            "plot_flags": 0,
+            "prison_time": 1,
+            "punishment_flags": 1,
+            "seconds": 157249,
+            "type": 130,
+            "year": 106
+          }
+        ],
+        "sha256": {
+          "justice-candidates.json": "ea51a76f069b71baed452dc43d8eef29c56e051e7a57ef0f23fd33733f3047ae",
+          "justice-conviction.json": "3add16767ba507ae8cf167473d0bfc11dac6d44da174b35edf4af8a69c365b49"
+        }
+      },
+      {
+        "source": "build/stockpile-storage-native-input-20261112-133900",
+        "owned_df_closed": 42024,
+        "focused": true,
+        "interrogation_activation": [
+          {
+            "focused_after": true,
+            "focused_before": true,
+            "selected_after": true
+          },
+          {
+            "focused_after": true,
+            "focused_before": true,
+            "selected_after": false
+          }
+        ],
+        "conviction_activation": {
+          "enabled": true,
+          "focused_after": false,
+          "focused_before": true
+        },
+        "convicted_unit": 5698,
+        "new_events": [
+          {
+            "convicted_hf": 9317,
+            "convicter_entity": 865,
+            "crime": 5,
+            "hammerstrikes": 0,
+            "id": 64037,
+            "plot_flags": 0,
+            "prison_time": 1,
+            "punishment_flags": 1,
+            "seconds": 157249,
+            "type": 130,
+            "year": 106
+          }
+        ],
+        "sha256": {
+          "justice-candidates.json": "f21a9cb1d389e2f7f115c189fe57aa658217df6f4c90e06db1854e4c00205a43",
+          "justice-conviction.json": "b4199f03a211331044c90ed64d4386ed256af6a21d2f9826efb6fd0da306acef"
+        }
+      }
+    ],
+    "viewer": [
+      {
+        "source": "build/stockpile-storage-native-input-20261112-134156",
+        "owned_df_closed": 38848,
+        "focused": false,
+        "key": "Enter",
+        "result": {
+          "candidate_count": 293,
+          "candidate_queries": 3,
+          "closed_read_retired": true,
+          "controller_tabs": 3,
+          "convicted": true,
+          "counts": [
+            7,
+            3,
+            7
+          ],
+          "interrogated": true,
+          "picker_controller": true,
+          "sort_scopes": 9,
+          "stale_tabs": 3,
+          "success": true,
+          "witnesses": 134
+        },
+        "ignored_variants": [
+          "Ctrl+Enter",
+          "Shift+Enter",
+          "Alt+Enter",
+          "Meta+Enter",
+          "echo Enter"
+        ],
+        "sha256": {
+          "justice-wire-reference.json": "b27092587ee9880f2996d0e13014310d5d1285969ff496acd1905ea284a285ed",
+          "job-settings-wire-result.json": "bda387cc7b28c69c90b87bb56e88924cbde7c3a4036b74b224bccfa72b496f03",
+          "justice-interrogate-view.png": "c22f86d9633b7c7fd1b3dbab0970fed48b79df9229592cd6c7333e11eaaa91b2"
+        }
+      },
+      {
+        "source": "build/stockpile-storage-native-input-20261112-134304",
+        "owned_df_closed": 24504,
+        "focused": true,
+        "key": "Keypad Enter",
+        "result": {
+          "candidate_count": 293,
+          "candidate_queries": 3,
+          "closed_read_retired": true,
+          "controller_tabs": 3,
+          "convicted": true,
+          "counts": [
+            7,
+            3,
+            7
+          ],
+          "interrogated": true,
+          "picker_controller": true,
+          "sort_scopes": 9,
+          "stale_tabs": 3,
+          "success": true,
+          "witnesses": 134
+        },
+        "ignored_variants": [
+          "Ctrl+Enter",
+          "Shift+Enter",
+          "Alt+Enter",
+          "Meta+Enter",
+          "echo Enter"
+        ],
+        "sha256": {
+          "justice-wire-reference.json": "b27092587ee9880f2996d0e13014310d5d1285969ff496acd1905ea284a285ed",
+          "job-settings-wire-result.json": "bda387cc7b28c69c90b87bb56e88924cbde7c3a4036b74b224bccfa72b496f03",
+          "justice-interrogate-view.png": "f304d7762022105047fda4454473c0f6b477170ec55a308318f648bab25d88df"
+        }
+      }
+    ],
+    "rejected_evidence": {
+      "133636_and_133731": "Introductory native help intercepted the conviction probe.",
+      "134040": "Combined viewer effects passed, but test incorrectly guarded the deliberately convicted case as read-only."
+    }
   }
 }

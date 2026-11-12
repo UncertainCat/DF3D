@@ -202,6 +202,31 @@ if os.getenv('DF3D_JUSTICE_INTELLIGENCE')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-native%.lua$','justice-intelligence-native.lua')
  assert(loadfile(source))(out,view,probe,settle,caption_click,capture,bytes)
 end
+if os.getenv('DF3D_JUSTICE_SHEET_NAV')=='1' then
+ local samples={}
+ for _,name in ipairs{'Fortress guard','Convicts'}do
+  if not df.global.game.main_interface.info.open then gui.simulateInput(view,'D_JUSTICE');settle()end
+  if df.global.game.main_interface.help.open then
+   g.precise_mouse_x=711;g.precise_mouse_y=430;g.mouse_x=88;g.mouse_y=35
+   df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L')
+   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1;settle()
+  end
+  caption_click(name);settle()
+  capture('justice-sheet-source-'..#samples)
+  local main=df.global.game.main_interface
+  local g=df.global.gps;g.precise_mouse_x=380;g.precise_mouse_y=name=='Fortress guard'and 214 or 190;g.mouse_x=47;g.mouse_y=g.precise_mouse_y//12
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+  gui.simulateInput(view,'_MOUSE_L');df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1;settle()
+  assert(main.view_sheets.open,'Justice sheet did not open: '..name)
+  local sample={tab=name,unit_id=main.view_sheets.active_id,info_open=main.info.open,sheet_type=main.view_sheets.active_sheet}
+  capture('justice-sheet-'..#samples)
+  gui.simulateInput(view,'LEAVESCREEN');settle()
+  sample.after_escape_info_open=main.info.open;sample.after_escape_sheet_open=main.view_sheets.open
+  capture('justice-sheet-back-'..#samples)
+  samples[#samples+1]=sample
+ end
+ local f=assert(io.open(out..'/justice-sheet-navigation.json','w'));f:write(require('json').encode{samples=samples});f:close()
+end
 if os.getenv('DF3D_JUSTICE_WIRE')=='1' and os.getenv('DF3D_JUSTICE_WIRE_INTELLIGENCE')~='1' and os.getenv('DF3D_JUSTICE_WIRE_GRAPH')~='1' and os.getenv('DF3D_JUSTICE_CONVICTS_SENTENCE')~='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-native%.lua$','justice-wire-native.lua')
  assert(loadfile(source))(out,probe,bytes)

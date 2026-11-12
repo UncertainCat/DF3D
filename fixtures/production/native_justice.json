@@ -11630,5 +11630,50 @@
       "justice-wire-reference.json": "d08b80e7e7a5d588dfe27aa595190b0f380bdea65b0187e9055d2aee6388c689",
       "job-settings-wire-result.json": "888259657a7a06d1e55702d2b5d738b12aa3b560db57d40d8b9cbcf5ba660ea0"
     }
+  },
+  "sheet_main_scene_navigation_reference": {
+    "run": "build/stockpile-storage-native-input-20261112-115633",
+    "owned_df_pid": 41836,
+    "source_preserved": true,
+    "status": "passed_with_known_issues",
+    "native_fps": 30,
+    "viewer_fps": 30,
+    "navigation": [
+      {
+        "after_escape_info_open": false,
+        "after_escape_sheet_open": false,
+        "info_open": false,
+        "sheet_type": 0,
+        "tab": "Fortress guard",
+        "unit_id": 5813
+      },
+      {
+        "after_escape_info_open": false,
+        "after_escape_sheet_open": false,
+        "info_open": false,
+        "sheet_type": 0,
+        "tab": "Convicts",
+        "unit_id": 6970
+      }
+    ],
+    "scope": [
+      "Actual main scene and production FortressUI/controller/inspector composition.",
+      "Visible sheet buttons open exact Guard5813 and Convict6970; wait for nonempty creature detail payload.",
+      "Justice closes on sheet entry; Escape closes sheet and releases input to map, matching native."
+    ],
+    "not_accepted": [
+      "Full creature Overview pixel parity: Guard crop416,52..904,760 differs by32029 pixels; Convict by30457.",
+      "Convict capture lacks native opening quote and memory elaboration, and shows a different last skill. These are unresolved existing creature Overview content gaps.",
+      "115510 only waited for a nonempty display wrapper and captured loading UI; superseded by115633 payload check.",
+      "Known separate-renderer/finalize/two-ObjectDB diagnostics."
+    ],
+    "artifacts": {
+      "justice-sheet-navigation.json": "5e78ccd303d079a558b7e59da9a56e1487cc456d1328d8f566e4afb727406f09",
+      "justice-sheet-0.png": "e18485a8b52eae240aceb68162be1401f09ea97e5aed98f5c634395d5b3dfcf5",
+      "justice-sheet-1.png": "8a3c6f3be2d7612708ac885b0904485597dd85ba674635c12076629521f6bc94",
+      "justice-main-sheet-3.png": "8a66cec33c80788d416436138d377ec3e31629794c815e02fe6b8b63044787c7",
+      "justice-main-sheet-4.png": "383b641e3e914d7648c249ac08af3590a741f9fa19d7c3159d2bc19456f7d682",
+      "job-settings-wire-result.json": "5b64037f9c6418246587e17a01144eb83bea68ebfccb244260a33b3859b4239f"
+    }
   }
 }

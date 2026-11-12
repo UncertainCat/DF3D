@@ -418,10 +418,32 @@ Fixture convicts_sentence_presentation_reference retains images, native text and
 typed read evidence. Enable CONVICTS, CONVICTS_SENTENCE, WIRE_CONVICTS, WIRE and
 RENDER under the DF3D_JUSTICE_ prefix to repeat this protected workflow.
 
-Convicts remains staged: alternate sorts, scrolling, hover, keyboard, resize,
-long/multiple crime wrapping and composed inspector navigation remain unaccepted.
-Sheet-location dispatch alone does not establish inspector composition. The
-baseline and populated-sentence captures do not establish those other workflows.
+Protected115633 verifies Guard and Convicts sheet navigation through the actual
+main scene and production FortressUI composition. Visible buttons open exact
+units5813/6970 and wait for nonempty creature detail payloads. Native closes
+Justice on entry, and Escape closes the creature sheet to the map; viewer panel
+visibility and input ownership match both transitions. No product routing change
+was needed. Earlier115510 waited only for a display wrapper and captured loading
+UI; it is not loaded-sheet acceptance. Native probes115309/115417 clicked the
+wrong Guard height/failed to dismiss reopening help and are not accepted.
+
+Full Overview rendering is not accepted by this navigation check. In crop
+(416,52)-(904,760), Guard differs by32029 pixels and Convict by30457. The Convict
+capture lacks the native opening quote and memory elaboration and shows a
+different last skill. These are unresolved creature-sheet content gaps, independent
+of the now-verified Justice handoff. The current Overview still locally selects
+skill rows and recent thought snippets in creature_sheet.gd; audit native sources
+before changing that content.
+
+Owned DF41836 closes unsaved with source/preferences preserved; both clients
+run at30FPS, sampled GPU48–49C/0–12%. All19 core checks pass. Known separate-
+renderer/finalize/two-ObjectDB diagnostics qualify the live run. Fixture
+sheet_main_scene_navigation_reference records native state and screenshot hashes.
+Repeat with DF3D_JUSTICE_SHEET_NAV/SCENE/WIRE=1 through the protected native lane.
+
+Convicts remains staged: alternate sorts, scrolling, hover, keyboard, resize and
+long/multiple crime wrapping remain unaccepted. The navigation evidence does not
+establish complete creature-sheet visual parity or the other Justice workflows.
 
 The protected oracle reads deferred row builds as well as the selected row's
 name widget: these captures retain unselected rows in the native deferred-build

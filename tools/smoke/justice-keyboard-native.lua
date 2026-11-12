@@ -11,7 +11,9 @@ local navigation=os.getenv('DF3D_JUSTICE_PICKER_NAV')=='1'
 local list_navigation=os.getenv('DF3D_JUSTICE_LIST_NAV')=='1'
 local roster_navigation=os.getenv('DF3D_JUSTICE_ROSTER_NAV')=='1'
 local roster_select=os.getenv('DF3D_JUSTICE_ROSTER_SELECT')=='1'
-for attempt,name in ipairs((roster_navigation or roster_select)and {'Fortress guard','Convicts','Fortress guard','Convicts'}or(list_navigation or navigation)and {'Interrogate','Convict','Interrogate','Convict'}or{'Fortress guard','Convicts','Interrogate','Convict'})do
+local roster_return=os.getenv('DF3D_JUSTICE_ROSTER_RETURN')=='1'
+for attempt,name in ipairs(roster_return and {'Fortress guard','Convicts','Fortress guard','Convicts','Fortress guard','Convicts'}or(roster_navigation or roster_select)and {'Fortress guard','Convicts','Fortress guard','Convicts'}or(list_navigation or navigation)and {'Interrogate','Convict','Interrogate','Convict'}or{'Fortress guard','Convicts','Interrogate','Convict'})do
+ if roster_return and attempt==5 then gui.simulateInput(view,'LEAVESCREEN');settle()end
  if not df.global.game.main_interface.info.open then gui.simulateInput(view,'D_JUSTICE');settle()end
  if df.global.game.main_interface.help.open then click(711,430);assert(not df.global.game.main_interface.help.open)end
  if name=='Interrogate'or name=='Convict'then
@@ -41,12 +43,25 @@ for attempt,name in ipairs((roster_navigation or roster_select)and {'Fortress gu
   if df.global.gview.cur_textbox then local _,p=df.sizeof(df.global.gview.cur_textbox);focused=p==address end
   local vt=df.reinterpret_cast('uint64_t',address).value
   samples[#samples+1]={tab=name,label=label,flags=filter.flag.whole,focused=focused,sorts=sorts,ids=ids,scrolling=scrolling,detail=detail,cursor=list and list.cursor_idx or -1,filter_feed=df.reinterpret_cast('uint64_t',vt+8).value-dfhack.internal.getImageBase(),info_open=df.global.game.main_interface.info.open,sheet_open=df.global.game.main_interface.view_sheets.open}
+  if roster_return then samples[#samples].query=list.filter_str;samples[#samples].sort_flags=list.sort_flags.whole&0xff;samples[#samples].attempt=attempt end
   local file=assert(io.open(out..'/justice-keyboard.json','w'));file:write(json.encode(samples));file:close()
  end
  local function key(label,event)
   df.global.enabler.mouse_focus=true;gui.simulateInput(view,event);settle();observe(label)
  end
- if roster_select then
+ if roster_return then
+  observe(attempt<=2 and 'initial'or attempt<=4 and 'returned'or'reopened')
+  if attempt<=2 then
+   click(100,718)
+   local f=assert(io.open(out..'/justice-search-input.json','w'));f:write(json.encode({clear_count=0,text='o'}));f:close()
+   f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('justice-search');f:close();assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+   local deadline=dfhack.getTickCount()+30000
+   while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end;assert(dfhack.getTickCount()<deadline);require('gui.script').sleep(1,'frames')end
+   assert(os.remove(out..'/owner-input-ack'));settle()
+   click(100,name=='Fortress guard'and 178 or 154);key('prepared','STANDARDSCROLL_DOWN')
+  end
+  capture('justice-roster-return-'..attempt)
+ elseif roster_select then
   if attempt>2 then key('filter','FILTER')end
   observe('initial');key('down','STANDARDSCROLL_DOWN');key('activate','SELECT');capture('justice-roster-select-'..attempt)
   if df.global.game.main_interface.view_sheets.open then gui.simulateInput(view,'LEAVESCREEN');settle()end

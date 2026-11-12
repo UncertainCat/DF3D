@@ -11,7 +11,7 @@ func _has_caption() -> bool:return false
 func _retire() -> void:
 	detail={};_detail_pending={};_detail_seen={};super._retire()
 func _loaded() -> void:
-	if not rows.is_empty():select_unit(rows[0].unit_id)
+	if not rows.is_empty():select_unit(cursor_id)
 func select_unit(id: int) -> void:
 	if phase not in [Phase.Ready,Phase.DetailReading] or not rows.any(func(row):return row.unit_id==id):return
 	if cursor_id==id and (not detail.is_empty() or phase==Phase.DetailReading):return

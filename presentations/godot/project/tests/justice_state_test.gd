@@ -139,6 +139,13 @@ func test_convicts(service,state) -> void:
 	service.reply(roster.ticket,convict_detail(42,1,2,34));check(roster.detail.is_empty() and roster.phase==roster.Phase.Ready,"Changed sentence revision mixed pages")
 	roster.select_unit(43);old=roster.ticket;state.select_tab(3);service.reply(old,convict_detail(43))
 	check(roster.phase==roster.Phase.Closed and roster.detail.is_empty(),"Tab switch retained convict selection")
+	state.select_tab(4)
+	check(roster.query=="new" and roster.rows.is_empty() and roster.revision==0 and service.calls[roster.ticket].intent.expected_list_revision==0,"Tab return reused stale roster facts or lost query")
+	service.reply(roster.ticket,convicts_page());check(roster.cursor_id==43 and roster.detail.is_empty() and service.calls[roster.ticket].intent.unit_id==43,"Tab return lost selected convict or reused detail")
+	old=roster.ticket;state.select_tab(3);state.select_tab(4);current=roster.ticket
+	service.reply(old,convict_detail(43));check(roster.ticket==current and roster.detail.is_empty(),"Retired tab detail replaced fresh read")
+	service.reply(current,convicts_page([42]));check(roster.cursor_id==42,"Shrunken roster did not clamp retained cursor")
+	state.close();state.open(4);check(roster.query.is_empty() and roster.draft().cursor==0,"Closed Justice retained roster draft")
 func run() -> void:
 	check(Registry.PANEL_SCRIPTS.has("justice") and not Registry.PANEL_ROUTES.has("Justice"),"Justice public gate changed")
 	var service:=Service.new();root.add_child(service);var state:=State.new();state.configure(service);state.open()

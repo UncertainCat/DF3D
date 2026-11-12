@@ -24,6 +24,8 @@ var _seen: Dictionary={}
 var _total:=0
 var _caption:=""
 var _color:=0
+var _resume_cursor:=0
+var _resume_first:=0
 func _tab() -> int:return 3
 func _roster_action() -> int:return C.ManagementAction.JusticeGuardRead
 func _roster_key() -> String:return "guard"
@@ -43,15 +45,22 @@ func _retire() -> void:
 func close() -> void:
 	_retire();phase=Phase.Closed;rows=[];caption="";color=0;query="";first=0;cursor_id=-1;revision=0
 	_pending=[];_seen={};_total=0;last_result={}
+	_resume_cursor=0;_resume_first=0
 	priorities=[C.JusticeCandidateColumn.Category];directions=[false,false,false,false];changed.emit()
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
-func open() -> void:
-	close();phase=Phase.Reading;search("")
+func draft() -> Dictionary:
+	return {"query":query,"priorities":priorities.duplicate(),"directions":directions.duplicate(),"cursor":maxi(0,rows.find_custom(func(row):return row.unit_id==cursor_id)) if not rows.is_empty() else _resume_cursor,"first":first if not rows.is_empty() else _resume_first}
+func open(retained: Dictionary={}) -> void:
+	close();query=retained.get("query","")
+	priorities.assign(retained.get("priorities",[C.JusticeCandidateColumn.Category]));directions.assign(retained.get("directions",[false,false,false,false]))
+	_resume_cursor=retained.get("cursor",0);_resume_first=retained.get("first",0)
+	phase=Phase.Reading;_page()
 func search(value: String) -> void:
 	var bytes:=value.to_utf8_buffer()
 	if phase in [Phase.Closed,Phase.Navigating,Phase.Unavailable] or bytes.size()>512 or bytes.has(0):return
 	_retire();query=value;rows=[];caption="";first=0;cursor_id=-1;revision=0;_pending=[];_seen={};_total=0
+	_resume_cursor=0;_resume_first=0
 	last_result={};phase=Phase.Reading;_page()
 func seek(value: int,capacity: int) -> void:
 	if phase not in [Phase.Ready,Phase.DetailReading]:return
@@ -114,7 +123,9 @@ func _page() -> void:
 		if value.get("outcome")!=C.JusticeOutcome.None or not _valid(value,intent):_fail(result);return
 		revision=value.list_revision;_total=value.total;_caption=value[_roster_key()].get("caption","");_color=value[_roster_key()].get("color",0);_pending.append_array(value[_roster_key()].rows.duplicate(true))
 		if _pending.size()<_total:_page();return
-		rows=_pending;_pending=[];_seen={};caption=_caption;color=_color;cursor_id=rows[0].unit_id if not rows.is_empty() else -1;phase=Phase.Ready;_loaded();changed.emit())
+		rows=_pending;_pending=[];_seen={};caption=_caption;color=_color
+		cursor_id=rows[clampi(_resume_cursor,0,rows.size()-1)].unit_id if not rows.is_empty() else -1
+		first=clampi(_resume_first,0,maxi(0,rows.size()-1));phase=Phase.Ready;_loaded();changed.emit())
 	if ticket==0:phase=Phase.Unavailable
 	changed.emit()
 func inspect(id: int) -> void:

@@ -32,6 +32,7 @@ var ticket:=0
 var generation:=0
 var last_result: Dictionary={}
 var _scroll: Array[int]=[0,0,0,0,0,0]
+var _roster_drafts: Dictionary={}
 var _pending: Array=[]
 var _pending_detail: Dictionary={}
 var _seen: Dictionary={}
@@ -63,7 +64,7 @@ func _retire() -> void:
 func _clear() -> void:
 	rows=[];detail={};selected_id=-1;witness_first=0;_pending=[];_pending_detail={};_seen={};_revision=0;_total=0
 func close() -> void:
-	_retire();_clear();phase=Phase.Closed;tab=0;first=0;_scroll=[0,0,0,0,0,0];last_result={};changed.emit()
+	_retire();_clear();phase=Phase.Closed;tab=0;first=0;_scroll=[0,0,0,0,0,0];_roster_drafts.clear();last_result={};changed.emit()
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
 func open(selected_tab:=0) -> void:
@@ -71,13 +72,14 @@ func open(selected_tab:=0) -> void:
 	close();tab=selected_tab;refresh()
 func select_tab(value: int) -> void:
 	if phase in [Phase.Closed,Phase.Unavailable] or value<0 or value>5 or value==tab:return
+	if tab in [3,4]:_roster_drafts[tab]=(guard if tab==3 else convicts).draft()
 	_scroll[tab]=first;_retire();_clear();tab=value;first=_scroll[tab];phase=Phase.Ready;refresh()
 func refresh() -> void:
 	_retire();_clear();_restarts=0;last_result={};phase=Phase.Reading
 	if tab>=3:
 		phase=Phase.Ready
-		if tab==3:guard.open()
-		elif tab==4:convicts.open()
+		if tab==3:guard.open(_roster_drafts.get(3,{}))
+		elif tab==4:convicts.open(_roster_drafts.get(4,{}))
 		else:intelligence.open()
 	else:_page()
 func seek(value: int,capacity: int) -> void:

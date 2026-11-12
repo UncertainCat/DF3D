@@ -633,16 +633,39 @@ focus. Native SELECT does not open the creature sheet in these tabs. Protected
 the selected convict's detail remains attached to that selection. The viewer
 consumes these keys before the shared textbox's normal Enter-to-release behavior.
 Live engine checks exercise both Enter keys in both focus states, ensure no
-new semantic request, then type and close the panel. Roster/tab-return parity
-is not implied: native retains Convicts cursor1 across a tab round trip in
-this probe, while DF3D currently reopens the roster at its first row. Query,
-sort and scroll retention need an independent native reference before correction.
+new semantic request, then type and close the panel. This probe also exposed
+native Convicts cursor retention across tabs; the correction and broader
+query/sort reference are recorded below.
 
 QA `justice-roster-enter` and core19 pass. Owned DF29164/44328 close unsaved,
 source/prefs preserved, serial30FPS and GPU49–50C samples. Known Godot shutdown
 diagnostics qualify the mixed run as passed_with_known_issues.
-`roster_enter_reference` retains state/hashes and the unresolved tab-return gap.
+`roster_enter_reference` retains state/hashes and the original tab-return gap.
 Native camera/recenter effects were not instrumented by this probe.
+
+Justice retains Guard/Convicts local query, sort directions/priorities and cursor
+across tab changes. Hidden rosters still retire their requests and discard
+semantic facts. Returning issues a fresh zero-receipt roster read and, for
+Convicts, a fresh selected-creature detail read. A smaller refreshed list clamps
+the retained cursor. Closing Justice or changing sessions clears local drafts.
+Sort-header clicks preserve roster filter focus, matching native behavior.
+
+Native135140 and final mixed135505 on2026-11-12 exercise query `o`, Name sort,
+Down selection, tab round trips and complete close/reopen in both rosters.
+All eight state observations match; native resets query/sort/cursor on full
+close. Five of six panel crops(32,52)-(976,760) match exactly; the remaining
+prepared Convicts capture differs only in735 animated name-color pixels and
+the8-pixel filter caret. Earlier135338 passed query/sort/cursor checks but
+exposed sort clicks releasing filter focus; final135505 includes focus checks.
+Initial135001/135034 stopped on probe setup errors and establish no acceptance.
+
+QA `justice-roster-return-final` and core19 pass. State tests cover fresh
+receipts, retired detail replies, shrinking membership and close reset. Owned
+DF6116/44084 close unsaved with source/prefs preserved; serial30FPS and GPU49–50C
+samples. Known Godot shutdown diagnostics qualify mixed acceptance as
+passed_with_known_issues. `roster_tab_return_reference` retains provenance.
+This small roster has no overflow; nonzero scroll retention, reverse/multiple
+sort priorities and other viewport sizes remain separate acceptance gaps.
 
 
 Management protocol198 adds `JusticeInterrogate`, the candidate request/page

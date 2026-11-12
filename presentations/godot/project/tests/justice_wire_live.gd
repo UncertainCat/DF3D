@@ -38,6 +38,7 @@ func run() -> void:
 		if world.poll_management().get("transport_alive",false):break
 		await create_timer(0.01).timeout
 	await request("construction",{"action":C.ManagementAction.Catalog})
+	if OS.get_environment("DF3D_JUSTICE_ROSTER_RETURN")=="1":await roster_return();return
 	if OS.get_environment("DF3D_JUSTICE_LIST_NAV")=="1" or OS.get_environment("DF3D_JUSTICE_ROSTER_NAV")=="1":await candidate_list_navigation();return
 	if OS.get_environment("DF3D_JUSTICE_PICKER_NAV")=="1":await picker_navigation();return
 	if OS.get_environment("DF3D_JUSTICE_KEYBOARD")=="1" or OS.get_environment("DF3D_JUSTICE_ROSTER_SELECT")=="1":await keyboard_focus();return
@@ -277,6 +278,41 @@ func run() -> void:
 	result.store_string(JSON.stringify({"success":not failed,"counts":counts,"witnesses":report_count,"stale_tabs":3,"controller_tabs":3,
 		"closed_read_retired":true,"candidate_count":candidate_count,"candidate_queries":3,"sort_scopes":reference.sorts.size(),"interrogated":interrogated,"convicted":applied,"picker_controller":applied}));result.close()
 	quit(1 if failed else 0)
+
+func roster_return() -> void:
+	root.size=Vector2i(1200,800);check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Roster return assets unavailable")
+	var actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(actions);actions.configure(world,true)
+	var controller=preload("res://scripts/justice_state.gd").new();controller.configure(actions);controller.open(3)
+	var view=preload("res://scripts/justice_view.gd").new();root.add_child(view);view.configure_justice(world,controller);view.layout(Vector2(1200,800))
+	var samples: Array=JSON.parse_string(FileAccess.get_file_as_string(directory+"/justice-keyboard.json"));var attempt:=0
+	for sample: Dictionary in samples:
+		var next: int=int(sample.attempt);var tab:=3 if sample.tab=="Fortress guard" else 4
+		if next!=attempt:
+			if next==5:controller.close();controller.open(3)
+			elif next>1:await pointer_click(view.position+view.tab_rect(tab).get_center())
+			attempt=next
+		var model=controller.guard if tab==3 else controller.convicts
+		if tab==3:await settle_guard(model)
+		else:await settle_convicts(model)
+		if sample.label=="prepared":
+			await pointer_click(view.position+view.search.position+Vector2(24,18))
+			var typed:=InputEventKey.new();typed.pressed=true;typed.keycode=KEY_O;typed.unicode=111;Input.parse_input_event(typed);await create_timer(0.1).timeout
+			if tab==3:await settle_guard(model)
+			else:await settle_convicts(model)
+			await pointer_click(view.position+view.guard_sort_rect(0).get_center())
+			if tab==3:await settle_guard(model)
+			else:await settle_convicts(model)
+			var down:=InputEventKey.new();down.pressed=true;down.keycode=KEY_DOWN;Input.parse_input_event(down);await create_timer(0.1).timeout
+			if tab==4:await settle_convicts(model)
+		check(model.phase==model.Phase.Ready and model.query==sample.query and model.rows.map(func(row):return row.unit_id)==sample.ids.map(func(id):return int(id)),"Returned roster query/order differs")
+		check(model.cursor_id==int(sample.ids[int(sample.cursor)]) and model.first==int(sample.scrolling[-1].scroll),"Returned roster selection/scroll differs")
+		check(model.priorities==([C.JusticeCandidateColumn.Name] if sample.sorts==["Name"] else [C.JusticeCandidateColumn.Category]),"Returned roster sort differs")
+		check(view.search.has_focus()==sample.focused,"Roster sort/tab filter focus differs")
+		if tab==4:check(model.detail.get("unit_id")==model.cursor_id,"Returned convict details differ")
+		if sample.label!="initial":
+			await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/justice-roster-return-view-"+str(attempt)+".png")
+	controller.dispose();view.queue_free();actions.queue_free();world.queue_free();await process_frame
+	var result:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);result.store_string(JSON.stringify({"success":not failed,"roster_return_states":samples.size()}));result.close();quit(1 if failed else 0)
 
 func candidate_list_navigation() -> void:
 	root.size=Vector2i(1200,800);check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Justice list navigation assets unavailable")

@@ -171,7 +171,11 @@ func _gui_input(event: InputEvent) -> void:
 	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
 	accept_event()
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
-	search.release_focus()
+	var roster_sort:=false
+	if roster_open():
+		for index in (4 if guard_open() else 3):
+			if guard_sort_rect(index).has_point(event.position):roster_sort=true;break
+	if not roster_sort:search.release_focus()
 	var groups:=information_rows()
 	for row in groups.size():
 		var x:=8

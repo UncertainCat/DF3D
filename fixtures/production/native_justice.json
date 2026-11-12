@@ -14622,5 +14622,373 @@
       "justice-keyboard.json": "c004ee818188f8b764125ca140dbba031b6b112350a2747c8a21e0a475aac2dd",
       "job-settings-wire-result.json": "626303c304b3c88bffc2d1b846c30f9b7debf041cc4bdbb86fa5988b00931051"
     }
+  },
+  "roster_tab_return_reference": {
+    "source": "build/stockpile-storage-native-input-20261112-135505",
+    "native_discovery": "build/stockpile-storage-native-input-20261112-135140",
+    "status": "passed_with_known_issues",
+    "scope": "Guard/Convicts query o, Name sort, Down cursor, tab-return restoration and full close/reopen reset at1200x800. Fresh semantic receipts and no hidden reply revival. Nonzero scroll, reverse/multiple sorts, other sizes unaccepted.",
+    "owned_df_closed": [
+      6116,
+      44084
+    ],
+    "source_preserved": true,
+    "fps_cap": 30,
+    "gpu_samples_celsius": [
+      49,
+      50
+    ],
+    "samples": [
+      {
+        "attempt": 1,
+        "cursor": 0,
+        "detail": [],
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": false,
+        "ids": [
+          5813
+        ],
+        "info_open": true,
+        "label": "initial",
+        "query": "",
+        "scrolling": [
+          {
+            "scroll": 0,
+            "visible": 1,
+            "x": 6,
+            "y": 16
+          }
+        ],
+        "sheet_open": false,
+        "sort_flags": 0,
+        "sorts": [
+          "Cat"
+        ],
+        "tab": "Fortress guard"
+      },
+      {
+        "attempt": 1,
+        "cursor": 0,
+        "detail": [],
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": true,
+        "ids": [
+          5813
+        ],
+        "info_open": true,
+        "label": "prepared",
+        "query": "o",
+        "scrolling": [
+          {
+            "scroll": 0,
+            "visible": 1,
+            "x": 6,
+            "y": 16
+          }
+        ],
+        "sheet_open": false,
+        "sort_flags": 0,
+        "sorts": [
+          "Name"
+        ],
+        "tab": "Fortress guard"
+      },
+      {
+        "attempt": 2,
+        "cursor": 0,
+        "detail": [
+          {
+            "color": 15,
+            "text": "No sentence pending."
+          },
+          {
+            "color": 15,
+            "text": "Violation of production order"
+          },
+          {
+            "color": 7,
+            "text": "Injured party: Kûbuk ïngizkor, mayor."
+          }
+        ],
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": false,
+        "ids": [
+          6970,
+          6546,
+          6032
+        ],
+        "info_open": true,
+        "label": "initial",
+        "query": "",
+        "scrolling": [
+          {
+            "scroll": 0,
+            "visible": 3,
+            "x": 6,
+            "y": 14
+          }
+        ],
+        "sheet_open": false,
+        "sort_flags": 0,
+        "sorts": [
+          "Cat"
+        ],
+        "tab": "Convicts"
+      },
+      {
+        "attempt": 2,
+        "cursor": 1,
+        "detail": [
+          {
+            "color": 15,
+            "text": "No sentence pending."
+          },
+          {
+            "color": 15,
+            "text": "Violation of production order"
+          },
+          {
+            "color": 7,
+            "text": "Injured party: Zas Rigòthrosat, Wrestler."
+          }
+        ],
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": true,
+        "ids": [
+          6032,
+          6546,
+          6970
+        ],
+        "info_open": true,
+        "label": "prepared",
+        "query": "o",
+        "scrolling": [
+          {
+            "scroll": 0,
+            "visible": 3,
+            "x": 6,
+            "y": 14
+          }
+        ],
+        "sheet_open": false,
+        "sort_flags": 0,
+        "sorts": [
+          "Name"
+        ],
+        "tab": "Convicts"
+      },
+      {
+        "attempt": 3,
+        "cursor": 0,
+        "detail": [],
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": false,
+        "ids": [
+          5813
+        ],
+        "info_open": true,
+        "label": "returned",
+        "query": "o",
+        "scrolling": [
+          {
+            "scroll": 0,
+            "visible": 1,
+            "x": 6,
+            "y": 16
+          }
+        ],
+        "sheet_open": false,
+        "sort_flags": 0,
+        "sorts": [
+          "Name"
+        ],
+        "tab": "Fortress guard"
+      },
+      {
+        "attempt": 4,
+        "cursor": 1,
+        "detail": [
+          {
+            "color": 15,
+            "text": "No sentence pending."
+          },
+          {
+            "color": 15,
+            "text": "Violation of production order"
+          },
+          {
+            "color": 7,
+            "text": "Injured party: Zas Rigòthrosat, Wrestler."
+          }
+        ],
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": false,
+        "ids": [
+          6032,
+          6546,
+          6970
+        ],
+        "info_open": true,
+        "label": "returned",
+        "query": "o",
+        "scrolling": [
+          {
+            "scroll": 0,
+            "visible": 3,
+            "x": 6,
+            "y": 14
+          }
+        ],
+        "sheet_open": false,
+        "sort_flags": 0,
+        "sorts": [
+          "Name"
+        ],
+        "tab": "Convicts"
+      },
+      {
+        "attempt": 5,
+        "cursor": 0,
+        "detail": [],
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": false,
+        "ids": [
+          5813
+        ],
+        "info_open": true,
+        "label": "reopened",
+        "query": "",
+        "scrolling": [
+          {
+            "scroll": 0,
+            "visible": 1,
+            "x": 6,
+            "y": 16
+          }
+        ],
+        "sheet_open": false,
+        "sort_flags": 0,
+        "sorts": [
+          "Cat"
+        ],
+        "tab": "Fortress guard"
+      },
+      {
+        "attempt": 6,
+        "cursor": 0,
+        "detail": [
+          {
+            "color": 15,
+            "text": "No sentence pending."
+          },
+          {
+            "color": 15,
+            "text": "Violation of production order"
+          },
+          {
+            "color": 7,
+            "text": "Injured party: Kûbuk ïngizkor, mayor."
+          }
+        ],
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": false,
+        "ids": [
+          6970,
+          6546,
+          6032
+        ],
+        "info_open": true,
+        "label": "reopened",
+        "query": "",
+        "scrolling": [
+          {
+            "scroll": 0,
+            "visible": 3,
+            "x": 6,
+            "y": 14
+          }
+        ],
+        "sheet_open": false,
+        "sort_flags": 0,
+        "sorts": [
+          "Cat"
+        ],
+        "tab": "Convicts"
+      }
+    ],
+    "panel_crop": [
+      32,
+      52,
+      976,
+      760
+    ],
+    "comparisons": [
+      {
+        "attempt": 1,
+        "different_pixels": 0,
+        "remaining_difference": "",
+        "sha256": {
+          "justice-roster-return-1.png": "0a1de471737639831892c7fda9ccbf362a992e3210124fa49ac662456942f803",
+          "justice-roster-return-view-1.png": "e0915740584887d1ce1a9df914b4141b8d0e2d3915750b4fddb43cf5bfd8b77f"
+        }
+      },
+      {
+        "attempt": 2,
+        "different_pixels": 743,
+        "remaining_difference": "735 animated-name pixels and8 caret pixels",
+        "sha256": {
+          "justice-roster-return-2.png": "7be485d1b0d94e8810eea6243af6a2f128fee0bda0c6a8885bf46c512d5f08e8",
+          "justice-roster-return-view-2.png": "9b77a87e0f4b067c89f345b2c76afd8191c00abbad09f74142a05b9d27ee1f88"
+        }
+      },
+      {
+        "attempt": 3,
+        "different_pixels": 0,
+        "remaining_difference": "",
+        "sha256": {
+          "justice-roster-return-3.png": "3ff0842acd9b9e04b412b079d6966f5924bd97315f13537de80dfae2021672cd",
+          "justice-roster-return-view-3.png": "805842404ef37496dc79b75717484a9f5d89c85bbfb46f0d99153380aba6619b"
+        }
+      },
+      {
+        "attempt": 4,
+        "different_pixels": 0,
+        "remaining_difference": "",
+        "sha256": {
+          "justice-roster-return-4.png": "7e9c03e6a980c3086a44e81d0a1df0acaa476965213c0245fabcfa33ebd1ca06",
+          "justice-roster-return-view-4.png": "731b61f3171260d4632e95ff505f1a50e1c8e585204d30ebf82ff323785aa5ac"
+        }
+      },
+      {
+        "attempt": 5,
+        "different_pixels": 0,
+        "remaining_difference": "",
+        "sha256": {
+          "justice-roster-return-5.png": "01cc8e188b345bf587049c663045cbfbb64311fd6291fd6db1551f5dbc556530",
+          "justice-roster-return-view-5.png": "310310090cf43de72ae36fa309e48f4516d666593f3070a696998e7b3dfd80b9"
+        }
+      },
+      {
+        "attempt": 6,
+        "different_pixels": 0,
+        "remaining_difference": "",
+        "sha256": {
+          "justice-roster-return-6.png": "f1394a975e0c48b97dccc5b4b7c2bf9698ca7a44bb21bbb143b81aaa33e5e063",
+          "justice-roster-return-view-6.png": "62eca391c7a0f90254c00c62d8a9e25298b4c45a19d1d04cc6c0a3a0440f9ccf"
+        }
+      }
+    ],
+    "sha256": {
+      "justice-keyboard.json": "926cda648694ff65014ca2b16647f1905a825d9f7216c83c1f882cd7938e3b62",
+      "job-settings-wire-result.json": "a73e5d0896411347b62cafb086aa26b1b5bbceae4ea162dab83a19952a2a3043"
+    }
   }
 }

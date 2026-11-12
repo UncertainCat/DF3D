@@ -77,6 +77,10 @@ for _,kind in ipairs{'Interrogate','Convict'}do
  result.panels[#result.panels+1]={kind=kind,facts=supplied,lists=lists}
  local f=assert(io.open(out..'/justice-candidates.json','w'));f:write(json.encode(result));f:close()
  assert(#lists==1 and #lists[1].ids>0,'Justice candidate picker missing')
+ if kind=='Interrogate' and os.getenv('DF3D_JUSTICE_INTERROGATE_LIST')=='1' then
+  local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-candidates%-native%.lua$','justice-interrogate-list-native.lua')
+  assert(loadfile(source))(out,view,probe,settle,click,capture)
+ end
  if kind=='Interrogate' and os.getenv('DF3D_JUSTICE_INTERROGATION')=='1' then
   local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-candidates%-native%.lua$','justice-interrogation-native.lua')
   result.interrogation=assert(loadfile(source))(view,probe,settle,click,capture,lists[1].displayed_ids[1])

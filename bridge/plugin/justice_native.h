@@ -230,6 +230,24 @@ inline std::optional<std::vector<CandidateFact>> convictionCandidates(const df::
     for(const auto& row:rows)result.push_back(row.fact);
     return result;
 }
+// Interrogate rebuilds the same filtered/sorted list, then stable-partitions
+// selected entries first (142cb85 ->1430be0). Native1432690/1433fe0 read the
+// widget's selected set; use the independently observed crime flag instead.
+// A checkbox alone does not rebuild native row order. The presentation retains
+// that order until an explicit search/sort/reopen triggers this query again.
+inline std::optional<std::vector<CandidateFact>> interrogationCandidates(const df::crime* crime,std::string query={},
+    std::vector<CandidateSort> sorts={{CandidateColumn::Crime,false},{CandidateColumn::Name,false}}) {
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool pinned=[base] {
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x1a6;++i){hash^=base[0x1430be0+i];hash*=UINT64_C(1099511628211);}
+        return hash==UINT64_C(0xda252c1126314abf);
+    }();
+    if(!pinned)return std::nullopt;
+    auto rows=convictionCandidates(crime,std::move(query),std::move(sorts));if(!rows)return std::nullopt;
+    std::stable_partition(rows->begin(),rows->end(),[](const CandidateFact& row){return bool(row.flags&1);});
+    return rows;
+}
 // DF inlines this selection in widget construction470757..470f7e; there is
 // no standalone list API at that boundary. Copy the audited selection only,
 // preserving world-vector order. Never call the UI builder or read its lists.

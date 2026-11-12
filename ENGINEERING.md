@@ -538,6 +538,25 @@ the comparisons. Enable `DF3D_JUSTICE_DETAILS=1` with the native flag. This
 accepts date text only; witness identity/description/status and case-detail
 rendering still need their semantic providers and public-screen integration.
 
+`df3d_justice::interrogationCandidates` reuses the owned candidate query and
+stable-partitions scheduled candidates first after sorting. The generic native
+pipeline142cb85 calls1430be0; the latter is pinned. Its predicate wrappers
+1432690/1433fe0 read the native widget's selected set, so the runtime adapter uses
+owned crime-derived flags instead. No widget, callback or selected set is borrowed.
+
+Protected `stockpile-storage-native-input-20261112-004703` matches all293 IDs in
+the initial Crime/Name order and Name-reversed order with unit7123 scheduled.
+Native checkbox selection leaves that unit at row7; a subsequent header click
+moves it first. Cancellation removes the selected flag. Presentation must retain
+current row order on a checkbox edit until search/sort/reopen requests a rebuild.
+The first004155 check incorrectly expected immediate movement and failed;004310
+established the refresh boundary before implementing the adapter. No gameplay
+exception is needed. MSVC `justice-interrogate-list-build.log` passes. DF22700
+closes unsaved with source preservation and preferences restored, native30FPS/no
+viewer; GPU sample38C/0%/14.36W, not a peak. The fixture's
+`interrogation_list_reference` records the scope. Interrogate transport, controller
+and visible checkbox integration remain pending; protocol197 is unchanged.
+
 `df3d_justice::toggleInterrogation` in `justice_action_native.h` adds/removes
 pending interview records without opening a native picker. Handler474550 has
 no standalone action boundary: it interleaves a forbidden global Justice-map

@@ -2819,7 +2819,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             out.print("{}\n",int(outcome));return CR_OK;
           }catch(const std::exception&){return CR_WRONG_USAGE;}
         }
-        if(parameters[0]=="justice-candidate-facts-probe" || parameters[0]=="justice-conviction-candidates-probe") {
+        if(parameters[0]=="justice-candidate-facts-probe" || parameters[0]=="justice-conviction-candidates-probe" || parameters[0]=="justice-interrogation-candidates-probe") {
           if(parameters.size()<2 || parameters.size()>4)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
           try {
@@ -2831,6 +2831,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
                 sorts.push_back({df3d_justice::CandidateColumn(part[0]-'0'),part[2]=='1'});
               }}
             const auto facts=parameters[0]=="justice-candidate-facts-probe" ? df3d_justice::candidateFacts(crime) :
+              parameters[0]=="justice-interrogation-candidates-probe" ? df3d_justice::interrogationCandidates(crime,parameters.size()>=3?UTF2DF(parameters[2]):std::string{},sorts) :
               df3d_justice::convictionCandidates(crime,parameters.size()>=3?UTF2DF(parameters[2]):std::string{},sorts);if(!facts)return CR_FAILURE;
             Json::Value result(Json::arrayValue);
             for(const auto& fact:*facts){Json::Value row(Json::objectValue);row["unit_id"]=fact.unitId;

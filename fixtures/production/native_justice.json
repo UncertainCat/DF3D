@@ -9436,5 +9436,17 @@
       ],
       "limits": "Rules out this icon handle and ordinary picker reopening as the cause. Does not establish that all native graphics caches were rebuilt. The earlier003345 rebuilt capture was obscured by native first-use help and is not evidence."
     }
+  },
+  "interrogation_list_reference": {
+    "source": "build/stockpile-storage-native-input-20261112-004703",
+    "target": 7123,
+    "count": 293,
+    "selected_callback_rva": 21184480,
+    "checkbox_preserves_order": true,
+    "sorted_selected_first": true,
+    "owned_default_and_name_reverse_match": true,
+    "before_sha256": "082df98472e195ed6baafab27514e8341afe13e418467e91c2a5ca619f135f31",
+    "sorted_sha256": "4e7b688d5d2842b553a3b269529272af3e4f3876237c6130561d12a208440ba4",
+    "limits": "Native selected grouping and checkbox-time order retention verified for one normal historical figure; product Interrogate transport/controller/view remain pending. Does not cover assumed identities or active interrogation jobs."
   }
 }

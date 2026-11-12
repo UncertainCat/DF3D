@@ -4,11 +4,13 @@ signal changed
 const C=preload("res://scripts/management_contract.gd")
 enum Phase {Closed,Reading,Ready,DetailReading,Rejected,Unavailable}
 var service
+var convicts=preload("res://scripts/justice_convicts_state.gd").new()
 var guard=preload("res://scripts/justice_guard_state.gd").new()
 var candidates=preload("res://scripts/justice_candidates_state.gd").new()
 func _init() -> void:
 	candidates.changed.connect(_candidates_changed)
 	guard.changed.connect(_candidates_changed)
+	convicts.changed.connect(_candidates_changed)
 	candidates.convicted.connect(_convicted)
 func _candidates_changed() -> void:changed.emit()
 func _convicted(_crime: int,_unit: int) -> void:refresh()
@@ -24,7 +26,7 @@ var witness_first:=0
 var ticket:=0
 var generation:=0
 var last_result: Dictionary={}
-var _scroll: Array[int]=[0,0,0,0]
+var _scroll: Array[int]=[0,0,0,0,0]
 var _pending: Array=[]
 var _pending_detail: Dictionary={}
 var _seen: Dictionary={}
@@ -35,33 +37,39 @@ func configure(source) -> void:
 	dispose();service=source
 	candidates.configure(source)
 	guard.configure(source)
+	convicts.configure(source)
 	if service!=null:service.session_changed.connect(_session_changed)
 func dispose() -> void:
 	close()
 	candidates.dispose()
 	guard.dispose()
+	convicts.dispose()
 	if service!=null and service.session_changed.is_connected(_session_changed):service.session_changed.disconnect(_session_changed)
 	service=null
 func _retire() -> void:
 	candidates.close()
 	guard.close()
+	convicts.close()
 	generation+=1;var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
 func _clear() -> void:
 	rows=[];detail={};selected_id=-1;witness_first=0;_pending=[];_pending_detail={};_seen={};_revision=0;_total=0
 func close() -> void:
-	_retire();_clear();phase=Phase.Closed;tab=0;first=0;_scroll=[0,0,0,0];last_result={};changed.emit()
+	_retire();_clear();phase=Phase.Closed;tab=0;first=0;_scroll=[0,0,0,0,0];last_result={};changed.emit()
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
 func open(selected_tab:=0) -> void:
-	if selected_tab<0 or selected_tab>3:return
+	if selected_tab<0 or selected_tab>4:return
 	close();tab=selected_tab;refresh()
 func select_tab(value: int) -> void:
-	if phase in [Phase.Closed,Phase.Unavailable] or value<0 or value>3 or value==tab:return
+	if phase in [Phase.Closed,Phase.Unavailable] or value<0 or value>4 or value==tab:return
 	_scroll[tab]=first;_retire();_clear();tab=value;first=_scroll[tab];phase=Phase.Ready;refresh()
 func refresh() -> void:
 	_retire();_clear();_restarts=0;last_result={};phase=Phase.Reading
-	if tab==3:phase=Phase.Ready;guard.open()
+	if tab>=3:
+		phase=Phase.Ready
+		if tab==3:guard.open()
+		else:convicts.open()
 	else:_page()
 func seek(value: int,capacity: int) -> void:
 	if phase not in [Phase.Ready,Phase.DetailReading]:return

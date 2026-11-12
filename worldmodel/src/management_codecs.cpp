@@ -100,12 +100,27 @@ ManagementState decodeState(const m::ManagementState* s) {
     if(const auto* g=r->guard()){
       auto& page=out.guard.emplace();page.caption=g->caption()->str();page.color=g->color();
       for(const auto* row:*g->rows()){
-        JusticeGuardRow value;value.unitId=row->unit_id();value.rank=row->rank();value.firstLine=row->first_line()->str();value.secondLine=row->second_line()->str();
+        JusticeUnitRow value;value.unitId=row->unit_id();value.rank=row->rank();value.firstLine=row->first_line()->str();value.secondLine=row->second_line()->str();
         const auto* c=row->name_color();value.nameColor={{c->foreground(),c->background(),c->bright()},{c->alternate_foreground(),c->alternate_background(),c->alternate_bright()},c->effect()};
         if(row->sheet_icon())value.sheetIcon=decodeItemRecipe(row->sheet_icon());
         if(const auto* p=row->position())value.position=TilePos{p->x(),p->y(),p->z()};
         page.rows.push_back(std::move(value));
       }
+    }
+    if(const auto* g=r->convicts()){
+      auto& page=out.convicts.emplace();
+      for(const auto* row:*g->rows()){
+        JusticeUnitRow value;value.unitId=row->unit_id();value.rank=row->rank();value.firstLine=row->first_line()->str();value.secondLine=row->second_line()->str();
+        const auto* c=row->name_color();value.nameColor={{c->foreground(),c->background(),c->bright()},{c->alternate_foreground(),c->alternate_background(),c->alternate_bright()},c->effect()};
+        if(row->sheet_icon())value.sheetIcon=decodeItemRecipe(row->sheet_icon());
+        if(const auto* p=row->position())value.position=TilePos{p->x(),p->y(),p->z()};
+        page.rows.push_back(std::move(value));
+      }
+    }
+    if(const auto* d=r->convict_detail()){
+      auto& value=out.convictDetail.emplace();value.unitId=d->unit_id();value.revision=d->revision();value.total=d->total();value.offset=d->offset();
+      for(const auto* line:*d->sentence())value.sentence.push_back(line->str());if(d->officer())value.officer=d->officer()->str();
+      for(const auto* row:*d->crimes()){JusticeConvictCrime c;c.crimeId=row->crime_id();c.caption=row->caption()->str();if(row->injured_party())c.injuredParty=row->injured_party()->str();value.crimes.push_back(std::move(c));}
     }
     if(const auto* c=r->candidates()){
       auto& page=out.candidates.emplace();page.crimeId=c->crime_id();page.revision=c->revision();page.total=c->total();page.offset=c->offset();page.interrogate=c->interrogate();
@@ -387,8 +402,8 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
       b.CreateVector(symbols),r.nobles.stepToken,r.nobles.expectedNameRevision,query,edit);
   }
   flatbuffers::Offset<m::JusticeRequest> justice;
-  if(r.action>=ManagementAction::JusticeRead && r.action<=ManagementAction::JusticeGuardRead){const auto& q=r.justice;
-    const bool candidates=r.action>=ManagementAction::JusticeCandidatesRead && r.action<=ManagementAction::JusticeGuardRead;
+  if(r.action>=ManagementAction::JusticeRead && r.action<=ManagementAction::JusticeConvictDetailRead){const auto& q=r.justice;
+    const bool candidates=r.action>=ManagementAction::JusticeCandidatesRead && r.action<=ManagementAction::JusticeConvictDetailRead;
     std::vector<flatbuffers::Offset<m::JusticeSort>> sorts;
     if(candidates)for(const auto& sort:q.sorts)sorts.push_back(m::CreateJusticeSort(b,m::JusticeCandidateColumn(sort.column),sort.reverse));
     justice=m::CreateJusticeRequest(b,q.tab,q.offset,q.limit,q.expectedListRevision,q.crimeId,q.expectedCaseRevision,

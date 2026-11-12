@@ -10022,5 +10022,58 @@
       "default Category order only; search and other sorts unaccepted",
       "multi-crime, negative counters and missing/dead/foreign unit branches unaccepted"
     ]
+  },
+  "convicts_transport_reference": {
+    "run": "stockpile-storage-native-input-20261112-074030",
+    "status": "passed_with_known_issues",
+    "protocol": 200,
+    "owned_df_pid": 10220,
+    "source_preserved": true,
+    "native_fps": 30,
+    "viewer_fps": 30,
+    "unit_ids": [
+      6970,
+      6546,
+      6032
+    ],
+    "checks": [
+      "native roster order",
+      "all three sentence and crime details",
+      "visible row selection",
+      "empty and cleared filter",
+      "sheet button fresh-location dispatch",
+      "stale detail revision rejected",
+      "native name colors and effects"
+    ],
+    "panel_crop": [
+      32,
+      52,
+      976,
+      760
+    ],
+    "matching_phase_ms": 500,
+    "different_pixels": 0,
+    "other_phase": {
+      "phase_ms": 0,
+      "different_pixels": 735,
+      "unit_id": 6032,
+      "effect": "native legendary name flashing"
+    },
+    "artifacts": {
+      "justice-tab-4.png": "f1394a975e0c48b97dccc5b4b7c2bf9698ca7a44bb21bbb143b81aaa33e5e063",
+      "justice-convicts-phase-0.png": "d4a5a3bfa697eb6a2b65bc5c8d9985a2e586119083af73334d72ecc19fda3154",
+      "justice-convicts-phase-500.png": "62eca391c7a0f90254c00c62d8a9e25298b4c45a19d1d04cc6c0a3a0440f9ccf",
+      "justice-wire-reference.json": "3d2d9fb1998ff4305ff869f529fccb59b5c0eec5b4b8e176d93cf90c77cebc68",
+      "job-settings-wire-result.json": "888259657a7a06d1e55702d2b5d738b12aa3b560db57d40d8b9cbcf5ba660ea0",
+      "justice-convicts-pixels.json": "e9be34c0afb7568727fd865910d1d86347c72b027d9a8b37867ba279fa82b10d"
+    },
+    "limits": [
+      "alternate sorts, scrolling, hover, keyboard and resize unaccepted",
+      "long and multiple crime wrapping unaccepted",
+      "populated sentences have native-only evidence, no viewer acceptance",
+      "composed inspector navigation unaccepted",
+      "shared candidate portrait gaps remain",
+      "Justice remains hidden from public routes"
+    ]
   }
 }

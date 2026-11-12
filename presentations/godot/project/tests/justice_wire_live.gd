@@ -27,6 +27,7 @@ func run() -> void:
 		if world.poll_management().get("transport_alive",false):break
 		await create_timer(0.01).timeout
 	await request("construction",{"action":C.ManagementAction.Catalog})
+	if OS.get_environment("DF3D_JUSTICE_WIRE_CONVICTS")=="1":await run_convicts(reference.convicts);return
 	if OS.get_environment("DF3D_JUSTICE_WIRE_GUARD")=="1":await run_guard(reference.guard);return
 	var counts: Array=[];var report_count:=0
 	for tab in 3:
@@ -288,4 +289,56 @@ func run_guard(reference: Dictionary) -> void:
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	file.store_string(JSON.stringify({"success":not failed,"guard_count":baseline.size(),"guard_navigation":not baseline.is_empty()}));file.close()
 	world.queue_free();await process_frame
+	quit(1 if failed else 0)
+
+func settle_convicts(roster) -> void:
+	var deadline:=Time.get_ticks_msec()+5000
+	while roster.phase in [roster.Phase.Reading,roster.Phase.DetailReading,roster.Phase.Navigating] and Time.get_ticks_msec()<deadline:
+		world.poll();await create_timer(0.01).timeout
+func run_convicts(reference: Array) -> void:
+	var actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(actions);actions.configure(world,true)
+	var controller=preload("res://scripts/justice_state.gd").new();controller.configure(actions);controller.open(4)
+	var roster=controller.convicts;var view
+	if OS.get_environment("DF3D_JUSTICE_RENDER")=="1":
+		root.size=Vector2i(1200,800);check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Convicts assets unavailable")
+		view=preload("res://scripts/justice_view.gd").new();root.add_child(view);view.configure_justice(world,controller);view.layout(Vector2(1200,800))
+	await settle_convicts(roster)
+	if not check(roster.phase==roster.Phase.Ready and roster.rows.size()==reference.size(),"Convicts roster failed to settle"):quit(1);return
+	for i in reference.size():
+		check(roster.rows[i].unit_id==reference[i].unit_id,"Convicts native order differs")
+		for key in ["color","alternate","effect"]:
+			var expected_color=reference[i].name_color[key]
+			if expected_color is Array:expected_color=expected_color.map(func(value):return int(value))
+			else:expected_color=int(expected_color)
+			check(roster.rows[i].name_color[key]==expected_color,"Convicts native name color differs")
+		if i>0:
+			if view!=null:await pointer_click(view.position+view.guard_rect(i).position+Vector2(80,18))
+			else:roster.select_unit(reference[i].unit_id)
+			await settle_convicts(roster)
+		var d: Dictionary=roster.detail;var r: Dictionary=reference[i]
+		check(d.get("unit_id")==r.unit_id and d.get("sentence")==r.sentence and d.get("officer")==r.get("officer"),"Convict sentence differs")
+		check(d.get("crimes",[]).size()==r.crimes.size(),"Convict crime count differs")
+		for j in mini(d.get("crimes",[]).size(),r.crimes.size()):
+			check(d.crimes[j].crime_id==r.crimes[j].id and d.crimes[j].caption==r.crimes[j].caption and d.crimes[j].get("injured_party")==r.crimes[j].get("injured_party"),"Convict crime text differs")
+		if view!=null and i==0:
+			await process_frame;await process_frame;await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/justice-convicts-view.png")
+			for phase in [0,500]:
+				view.ticks_override=phase;view.queue_redraw()
+				await process_frame;await RenderingServer.frame_post_draw
+				root.get_texture().get_image().save_png(directory+"/justice-convicts-phase-%d.png"%phase)
+			view.ticks_override=-1
+	var prior: Array=roster.rows.duplicate(true)
+	roster.search("zznomatch");await settle_convicts(roster);check(roster.rows.is_empty() and roster.detail.is_empty(),"Convicts empty search retained details")
+	roster.search("");await settle_convicts(roster);check(roster.rows==prior,"Convicts clear search changed roster")
+	if not prior.is_empty():
+		var seen: Array=[];roster.inspect_ready.connect(func(tile,id):seen.append(id))
+		if view!=null:await pointer_click(view.position+view.guard_rect(0).position+Vector2(332,18))
+		else:roster.inspect(prior[0].unit_id)
+		await settle_convicts(roster);check(seen==[prior[0].unit_id],"Convicts sheet navigation failed")
+	var stale:=await request("justice",{"action":C.ManagementAction.JusticeConvictDetailRead,"tab":4,"offset":0,"limit":32,"expected_list_revision":roster.revision,"expected_case_revision":roster.detail.get("revision",0)+1,"unit_id":roster.cursor_id,"query":"","sorts":[{"column":0,"reverse":false}]})
+	check(stale.get("status")==C.ManagementStatus.Rejected and stale.get("justice",{}).get("outcome")==C.JusticeOutcome.Stale,"Stale convict detail accepted")
+	controller.dispose();if view!=null:view.queue_free()
+	actions.queue_free();await process_frame
+	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"convicts":reference.size(),"selection_and_filter":true}));file.close()
 	quit(1 if failed else 0)

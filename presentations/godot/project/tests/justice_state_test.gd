@@ -115,6 +115,23 @@ func test_guard(service,state) -> void:
 		check(guard.phase==guard.Phase.Rejected and guard.rows.is_empty(),"Inconsistent guard continuation accepted")
 	state.open(3);old=guard.ticket;state.close();service.reply(old,guard_page())
 	check(guard.phase==guard.Phase.Closed and guard.rows.is_empty(),"Late guard page reopened closed panel")
+func convicts_page(ids: Array=[42,43]) -> Dictionary:
+	var value:=guard_page(ids,0,ids.size());value.justice.tab=4;value.justice.convicts={"rows":value.justice.guard.rows};value.justice.erase("guard");return value
+func convict_detail(id:=42,offset:=0,total:=1,revision:=33) -> Dictionary:
+	return {"justice":{"outcome":C.JusticeOutcome.None,"tab":4,"list_revision":31,"convict_detail":{"unit_id":id,"revision":revision,"sentence":["fixture"],"total":total,"offset":offset,"crimes":[{"crime_id":offset+5,"caption":"fixture"}]}}}
+func test_convicts(service,state) -> void:
+	state.open(4);var roster=state.convicts;service.reply(roster.ticket,convicts_page())
+	check(roster.phase==roster.Phase.DetailReading and roster.cursor_id==42 and service.calls[roster.ticket].intent.unit_id==42,"Convicts initial selection failed")
+	service.reply(roster.ticket,convict_detail(42,0,2));check(roster.detail.is_empty() and service.calls[roster.ticket].intent.expected_case_revision==33,"Partial convict details leaked")
+	var old: int=roster.ticket;roster.select_unit(43);var current: int=roster.ticket
+	service.reply(old,convict_detail(42,1,2));check(roster.ticket==current and roster.detail.is_empty(),"Old convict details replaced selection")
+	service.reply(current,convict_detail(43));check(roster.detail.unit_id==43,"Selected convict details lost")
+	roster.select_unit(42);old=roster.ticket;roster.search("new");current=roster.ticket
+	service.reply(old,convict_detail());check(roster.ticket==current and roster.detail.is_empty(),"Search retained previous convict details")
+	service.reply(current,convicts_page());service.reply(roster.ticket,convict_detail(42,0,2))
+	service.reply(roster.ticket,convict_detail(42,1,2,34));check(roster.detail.is_empty() and roster.phase==roster.Phase.Ready,"Changed sentence revision mixed pages")
+	roster.select_unit(43);old=roster.ticket;state.select_tab(3);service.reply(old,convict_detail(43))
+	check(roster.phase==roster.Phase.Closed and roster.detail.is_empty(),"Tab switch retained convict selection")
 func run() -> void:
 	check(Registry.PANEL_SCRIPTS.has("justice") and not Registry.PANEL_ROUTES.has("Justice"),"Justice public gate changed")
 	var service:=Service.new();root.add_child(service);var state:=State.new();state.configure(service);state.open()
@@ -149,6 +166,7 @@ func run() -> void:
 	test_sorts(service,state)
 	test_interrogation(service,state)
 	test_guard(service,state)
+	test_convicts(service,state)
 	state.dispose();service.queue_free();await process_frame
 	if failures==0:print("JUSTICE_STATE_PASS")
 	quit(1 if failures else 0)

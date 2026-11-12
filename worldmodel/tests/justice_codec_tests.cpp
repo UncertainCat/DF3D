@@ -124,7 +124,7 @@ TEST_CASE("Justice interrogation request retains comparison state") {
 
 TEST_CASE("Justice guard codec owns rows after wire storage is retired") {
  flatbuffers::FlatBufferBuilder b;
- auto row=m::CreateJusticeGuardRow(b,42,2000,b.CreateString("synthetic name"),b.CreateString("synthetic profession"),m::CreateAreaNameColor(b));
+ auto row=m::CreateJusticeUnitRow(b,42,2000,b.CreateString("synthetic name"),b.CreateString("synthetic profession"),m::CreateAreaNameColor(b));
  auto guard=m::CreateJusticeGuardPage(b,b.CreateString("synthetic capacity"),12,b.CreateVector(std::vector{row}));
  auto result=m::CreateJusticeState(b,m::JusticeOutcome::None,3,7,1,0,b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeCaseRow>>{}),0,0,guard);
  m::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(m::ManagementAction::JusticeGuardRead);state.add_status(m::ManagementStatus::Ok);state.add_justice(result);b.Finish(state.Finish());
@@ -134,4 +134,15 @@ TEST_CASE("Justice guard codec owns rows after wire storage is retired") {
  CHECK(page.caption=="synthetic capacity");CHECK(page.color==12);REQUIRE(page.rows.size()==1);
  CHECK(page.rows[0].unitId==42);CHECK(page.rows[0].rank==2000);CHECK(page.rows[0].firstLine=="synthetic name");CHECK(page.rows[0].secondLine=="synthetic profession");
  CHECK_FALSE(page.rows[0].sheetIcon);CHECK_FALSE(page.rows[0].position);
+}
+
+TEST_CASE("Convict details own sentence, officer and crime text after buffer retirement") {
+ flatbuffers::FlatBufferBuilder b;
+ auto c=m::CreateJusticeConvictCrime(b,9,b.CreateString("synthetic crime"),b.CreateString("synthetic victim"));
+ auto d=m::CreateJusticeConvictDetail(b,42,11,b.CreateVector(std::vector{b.CreateString("synthetic sentence")}),b.CreateString("synthetic officer"),1,0,b.CreateVector(std::vector{c}));
+ auto result=m::CreateJusticeState(b,m::JusticeOutcome::None,4,7,0,0,b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeCaseRow>>{}),0,0,0,0,d);
+ m::ManagementStateBuilder s(b);s.add_revision(1);s.add_action(m::ManagementAction::JusticeConvictDetailRead);s.add_status(m::ManagementStatus::Ok);s.add_justice(result);b.Finish(s.Finish());
+ const auto* wire=flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer());REQUIRE_FALSE(m::validateManagementState(*wire));const auto owned=codec::decodeState(wire);
+ std::fill(b.GetBufferPointer(),b.GetBufferPointer()+b.GetSize(),uint8_t(0));b.Clear();REQUIRE(owned.justice);REQUIRE(owned.justice->convictDetail);
+ const auto& v=*owned.justice->convictDetail;CHECK(v.unitId==42);CHECK(v.revision==11);REQUIRE(v.sentence.size()==1);CHECK(v.sentence[0]=="synthetic sentence");REQUIRE(v.officer);CHECK(*v.officer=="synthetic officer");REQUIRE(v.crimes.size()==1);CHECK(v.crimes[0].caption=="synthetic crime");REQUIRE(v.crimes[0].injuredParty);CHECK(*v.crimes[0].injuredParty=="synthetic victim");
 }

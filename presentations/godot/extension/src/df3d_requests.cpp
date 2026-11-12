@@ -268,6 +268,19 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
                 entries.push_back(row);}
             page["rows"]=entries;value["guard"]=page;
         }
+        if(v.convicts){const auto& g=*v.convicts;Dictionary page;Array entries;
+            for(const auto& r:g.rows){Dictionary row;row["unit_id"]=r.unitId;row["rank"]=r.rank;row["first_line"]=String::utf8(r.firstLine.c_str());row["second_line"]=String::utf8(r.secondLine.c_str());
+                Dictionary color;Array primary,alternate;for(auto n:r.nameColor.color)primary.push_back(int(n));for(auto n:r.nameColor.alternate)alternate.push_back(int(n));color["color"]=primary;color["alternate"]=alternate;color["effect"]=int(r.nameColor.effect);row["name_color"]=color;
+                if(r.sheetIcon)row["sheet_icon"]=management::itemRecipeDictionary(*r.sheetIcon);
+                if(r.position)row["position"]=Vector3i(r.position->x,r.position->y,r.position->z);
+                entries.push_back(row);}
+            page["rows"]=entries;value["convicts"]=page;
+        }
+        if(v.convictDetail){const auto& d=*v.convictDetail;Dictionary detail;Array sentence,crimes;
+            detail["unit_id"]=d.unitId;detail["revision"]=int64_t(d.revision);detail["total"]=int64_t(d.total);detail["offset"]=int64_t(d.offset);
+            for(const auto& line:d.sentence)sentence.push_back(String::utf8(line.c_str()));detail["sentence"]=sentence;if(d.officer)detail["officer"]=String::utf8(d.officer->c_str());
+            for(const auto& c:d.crimes){Dictionary row;row["crime_id"]=c.crimeId;row["caption"]=String::utf8(c.caption.c_str());if(c.injuredParty)row["injured_party"]=String::utf8(c.injuredParty->c_str());crimes.push_back(row);}detail["crimes"]=crimes;value["convict_detail"]=detail;
+        }
         if(v.candidates){const auto& c=*v.candidates;Dictionary page;Array candidates;
             page["interrogate"]=c.interrogate;page["crime_id"]=c.crimeId;page["revision"]=int64_t(c.revision);page["total"]=int64_t(c.total);page["offset"]=int64_t(c.offset);
             for(const auto& r:c.rows){Dictionary row;row["unit_id"]=r.unitId;row["rank"]=r.rank;
@@ -713,6 +726,15 @@ bool readNobles(const Dictionary& data,wm::ManagementRequest& request,String&) {
 bool validateJustice(const Dictionary& data,String& error) {
     error="Invalid justice request";
     const auto integer=[](const Dictionary& d,const char* k,int64_t lo,int64_t hi){return d.has(k) && d[k].get_type()==Variant::INT && int64_t(d[k])>=lo && int64_t(d[k])<=hi;};
+    const bool convicts=int64_t(data["action"])==int64_t(wm::ManagementAction::JusticeConvictsRead),convictDetail=int64_t(data["action"])==int64_t(wm::ManagementAction::JusticeConvictDetailRead);
+    if(convicts || convictDetail){
+        if(data.size()!=(convictDetail?9:7) || !integer(data,"tab",4,4) || !integer(data,"offset",0,1048576) || !integer(data,"limit",1,64) || !integer(data,"expected_list_revision",convictDetail?1:0,INT64_MAX))return false;
+        if(convictDetail && (!integer(data,"unit_id",0,INT32_MAX) || !integer(data,"expected_case_revision",0,INT64_MAX) || (int64_t(data["offset"]) && !int64_t(data["expected_case_revision"]))))return false;
+        Dictionary roster=data.duplicate();roster["action"]=int64_t(wm::ManagementAction::JusticeGuardRead);roster["tab"]=3;roster.erase("unit_id");roster.erase("expected_case_revision");
+        if(!validateJustice(roster,error))return false;
+        const Array sorts=data["sorts"];for(int i=0;i<sorts.size();++i){const Dictionary sort=sorts[i];if(int64_t(sort["column"])>2)return false;}
+        error=String();return true;
+    }
     if(int64_t(data["action"])==int64_t(wm::ManagementAction::JusticeGuardRead)){
         if(data.size()!=7 || !integer(data,"tab",3,3) || !integer(data,"offset",0,1048576) || !integer(data,"limit",1,64) || !integer(data,"expected_list_revision",0,INT64_MAX) || !data.has("query") || data["query"].get_type()!=Variant::STRING || !data.has("sorts") || data["sorts"].get_type()!=Variant::ARRAY)return false;
         const auto raw=String(data["query"]).utf8();const std::string query(raw.get_data(),raw.length());
@@ -759,6 +781,10 @@ bool readJustice(const Dictionary& data,wm::ManagementRequest& request,String&) 
     request.action=wm::ManagementAction(int64_t(data["action"]));auto& q=request.justice;
     q.tab=uint8_t(int64_t(data["tab"]));q.offset=uint32_t(int64_t(data["offset"]));q.limit=uint16_t(int64_t(data["limit"]));
     q.expectedListRevision=uint64_t(int64_t(data["expected_list_revision"]));
+    if(request.action==wm::ManagementAction::JusticeConvictsRead || request.action==wm::ManagementAction::JusticeConvictDetailRead){
+        q.query=String(data["query"]).utf8().get_data();q.sorts.clear();const Array sorts=data["sorts"];for(int i=0;i<sorts.size();++i){const Dictionary sort=sorts[i];q.sorts.push_back({wm::JusticeCandidateColumn(int64_t(sort["column"])),bool(sort["reverse"])});}
+        if(request.action==wm::ManagementAction::JusticeConvictDetailRead){q.unitId=int32_t(int64_t(data["unit_id"]));q.expectedCaseRevision=uint64_t(int64_t(data["expected_case_revision"]));}return true;
+    }
     if(request.action!=wm::ManagementAction::JusticeRead && request.action!=wm::ManagementAction::JusticeGuardRead){q.crimeId=int32_t(int64_t(data["crime_id"]));q.expectedCaseRevision=uint64_t(int64_t(data["expected_case_revision"]));}
     if(request.action>=wm::ManagementAction::JusticeCandidatesRead && request.action<=wm::ManagementAction::JusticeGuardRead){
         q.query=String(data["query"]).utf8().get_data();if(request.action!=wm::ManagementAction::JusticeGuardRead)q.expectedCandidateRevision=uint64_t(int64_t(data["expected_candidate_revision"]));
@@ -1204,7 +1230,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::JusticeGuardRead)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::JusticeConvictDetailRead)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

@@ -1,6 +1,7 @@
 #pragma once
 #include "justice_native.h"
 #include "justice_guard_native.h"
+#include "justice_convicts_native.h"
 #include "residents_row_native.h"
 #include "justice_witness_native.h"
 #include "justice_action_native.h"
@@ -26,6 +27,9 @@ struct ReadResult {
     struct GuardRow {CandidateFact fact;df3d_residents::RowText text;df3d_management::ResidentAppearanceRecipe icon;df::coord position;};
     struct Guard {std::string caption;uint8_t color=0;std::vector<GuardRow> rows;};
     std::optional<Guard> guard;
+    std::optional<std::vector<GuardRow>> convicts;
+    struct ConvictPage {ConvictDetail facts;uint64_t revision=0;uint32_t total=0,offset=0;};
+    std::optional<ConvictPage> convictDetail;
 };
 struct ReadHash {
     uint64_t value=UINT64_C(14695981039346656037);
@@ -162,6 +166,42 @@ inline ReadResult guardRequest(const m::JusticeRequest& q) {
         return result;
     }catch(...){return refused;}
 }
+inline ReadResult convictsRequest(const m::JusticeRequest& q,bool selected) {
+    ReadResult refused;refused.tab=4;
+    try {
+        const auto query=q.query()?q.query()->str():std::string{};const auto nativeQuery=UTF2DF(query);if(DF2UTF(nativeQuery)!=query)return refused;
+        std::vector<CandidateSort> sorts={{CandidateColumn::Category,false}};
+        if(q.sorts()){sorts.clear();for(const auto* sort:*q.sorts())sorts.push_back({CandidateColumn(sort->column()),sort->reverse()});}
+        const auto units=convicts(nativeQuery,sorts);if(!units || units->size()>1048576)return refused;
+        ReadHash hash;hash.text(query);for(const auto& sort:sorts){hash.number(uint8_t(sort.column));hash.number(sort.reverse);}
+        for(const auto& fact:*units)hash.number(uint32_t(fact.unitId));const auto revision=hash.finish();
+        if((q.expected_list_revision() && q.expected_list_revision()!=revision) || (selected && std::none_of(units->begin(),units->end(),[&](const auto& f){return f.unitId==q.unit_id();}))){refused.outcome=m::JusticeOutcome::Stale;return refused;}
+        ReadResult result;result.tab=4;result.outcome=m::JusticeOutcome::None;result.revision=revision;
+        if(selected){
+            auto facts=convictDetail(q.unit_id());if(!facts || facts->crimes.size()>1048576)return refused;
+            ReadHash detailHash;detailHash.number(uint32_t(facts->unitId));size_t bytes=64;
+            for(auto& line:facts->sentence){line=readText(line);detailHash.text(line);bytes+=line.size();}
+            detailHash.number(bool(facts->officer));if(facts->officer){*facts->officer=readText(*facts->officer);detailHash.text(*facts->officer);bytes+=facts->officer->size();}
+            for(auto& c:facts->crimes){c.caption=readText(c.caption);detailHash.number(uint32_t(c.id));detailHash.text(c.caption);detailHash.number(bool(c.injuredParty));if(c.injuredParty){*c.injuredParty=readText(*c.injuredParty);detailHash.text(*c.injuredParty);}}
+            const auto detailRevision=detailHash.finish();if((q.expected_case_revision() && q.expected_case_revision()!=detailRevision) || q.offset()>facts->crimes.size()){refused.outcome=m::JusticeOutcome::Stale;return refused;}
+            auto& page=result.convictDetail.emplace();page.revision=detailRevision;page.total=uint32_t(facts->crimes.size());page.offset=q.offset();
+            page.facts.unitId=facts->unitId;page.facts.sentence=std::move(facts->sentence);page.facts.officer=std::move(facts->officer);
+            for(size_t i=q.offset();i<facts->crimes.size() && page.facts.crimes.size()<q.limit();++i){const auto& c=facts->crimes[i];const size_t size=32+c.caption.size()+(c.injuredParty?c.injuredParty->size():0);if(bytes+size>384*1024)break;bytes+=size;page.facts.crimes.push_back(c);}
+            if(page.offset<page.total && page.facts.crimes.empty())return refused;
+        }else{
+            if(q.offset()>units->size()){refused.outcome=m::JusticeOutcome::Stale;return refused;}
+            result.total=uint32_t(units->size());result.offset=q.offset();auto& rows=result.convicts.emplace();size_t bytes=0;
+            for(size_t i=q.offset();i<units->size() && rows.size()<q.limit();++i){const auto fact=(*units)[i];auto* unit=df::unit::find(fact.unitId);if(!unit)return refused;
+                auto text=df3d_residents::rowText(unit,30,false,false);if(!text)return refused;text->name.firstLine=readText(text->name.firstLine);text->name.secondLine=readText(text->name.secondLine);
+                size_t size=64+text->name.firstLine.size()+text->name.secondLine.size();df3d_management::ResidentAppearanceRecipe icon;icon.collect(unit,true);
+                if(!icon.layers.empty()){flatbuffers::FlatBufferBuilder check;check.Finish(icon.build(check));if(m::validateOwnerAppearance(*flatbuffers::GetRoot<m::SelectionAppearance>(check.GetBufferPointer()),size))return refused;}
+                if(bytes+size>384*1024)break;bytes+=size;rows.push_back({fact,std::move(*text),std::move(icon),unit->pos});
+            }
+            if(result.offset<result.total && rows.empty())return refused;
+        }
+        return result;
+    }catch(...){return refused;}
+}
 inline flatbuffers::Offset<m::JusticeState> encode(flatbuffers::FlatBufferBuilder& b,const ReadResult& r){
     std::vector<flatbuffers::Offset<m::JusticeCaseRow>> rows;
     for(const auto& row:r.rows)rows.push_back(m::CreateJusticeCaseRow(b,row.id,b.CreateString(row.caption)));
@@ -179,12 +219,21 @@ inline flatbuffers::Offset<m::JusticeState> encode(flatbuffers::FlatBufferBuilde
             entries.push_back(m::CreateJusticeCandidateRow(b,f.unitId,f.rank,bool(f.flags&1),bool(f.flags&2),display,row.icon.layers.empty()?0:row.icon.build(b)));}
         candidates=m::CreateJusticeCandidatePage(b,page.crimeId,page.revision,page.total,page.offset,b.CreateVector(entries),page.interrogate);}
     flatbuffers::Offset<m::JusticeGuardPage> guard;
-    if(r.guard){std::vector<flatbuffers::Offset<m::JusticeGuardRow>> entries;
+    if(r.guard){std::vector<flatbuffers::Offset<m::JusticeUnitRow>> entries;
         for(const auto& row:r.guard->rows){const auto& c=row.text.nameColor;
             auto color=m::CreateAreaNameColor(b,c.color[0],c.color[1],c.color[2],c.alternate[0],c.alternate[1],c.alternate[2],c.effect);
             m::TilePos position(row.position.x,row.position.y,row.position.z);
-            entries.push_back(m::CreateJusticeGuardRow(b,row.fact.unitId,row.fact.rank,b.CreateString(row.text.name.firstLine),b.CreateString(row.text.name.secondLine),color,row.icon.layers.empty()?0:row.icon.build(b),&position));}
+            entries.push_back(m::CreateJusticeUnitRow(b,row.fact.unitId,row.fact.rank,b.CreateString(row.text.name.firstLine),b.CreateString(row.text.name.secondLine),color,row.icon.layers.empty()?0:row.icon.build(b),&position));}
         guard=m::CreateJusticeGuardPage(b,b.CreateString(r.guard->caption),r.guard->color,b.CreateVector(entries));}
-    return m::CreateJusticeState(b,r.outcome,r.tab,r.revision,r.total,r.offset,b.CreateVector(rows),detail,candidates,guard);
+    flatbuffers::Offset<m::JusticeConvictsPage> convicts;
+    if(r.convicts){std::vector<flatbuffers::Offset<m::JusticeUnitRow>> entries;
+        for(const auto& row:*r.convicts){const auto& c=row.text.nameColor;auto color=m::CreateAreaNameColor(b,c.color[0],c.color[1],c.color[2],c.alternate[0],c.alternate[1],c.alternate[2],c.effect);m::TilePos position(row.position.x,row.position.y,row.position.z);
+            entries.push_back(m::CreateJusticeUnitRow(b,row.fact.unitId,0,b.CreateString(row.text.name.firstLine),b.CreateString(row.text.name.secondLine),color,row.icon.layers.empty()?0:row.icon.build(b),&position));}
+        convicts=m::CreateJusticeConvictsPage(b,b.CreateVector(entries));}
+    flatbuffers::Offset<m::JusticeConvictDetail> convictDetail;
+    if(r.convictDetail){const auto& p=*r.convictDetail;std::vector<flatbuffers::Offset<flatbuffers::String>> sentence;for(const auto& line:p.facts.sentence)sentence.push_back(b.CreateString(line));
+        std::vector<flatbuffers::Offset<m::JusticeConvictCrime>> crimes;for(const auto& c:p.facts.crimes)crimes.push_back(m::CreateJusticeConvictCrime(b,c.id,b.CreateString(c.caption),c.injuredParty?b.CreateString(*c.injuredParty):0));
+        convictDetail=m::CreateJusticeConvictDetail(b,p.facts.unitId,p.revision,b.CreateVector(sentence),p.facts.officer?b.CreateString(*p.facts.officer):0,p.total,p.offset,b.CreateVector(crimes));}
+    return m::CreateJusticeState(b,r.outcome,r.tab,r.revision,r.total,r.offset,b.CreateVector(rows),detail,candidates,guard,convicts,convictDetail);
 }
 }

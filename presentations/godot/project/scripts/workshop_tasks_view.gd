@@ -1,6 +1,6 @@
 extends Control
 # Staged Tasks body, native_workshop.json. The sheet owns header/tabs/contents.
-# Categories, priority and task-detail integration remain unfinished.
+# Categories and priority remain unfinished; Details uses the shared job editor.
 signal details_requested(job_id: int)
 signal priority_requested(job_id: int)
 signal picker_changed

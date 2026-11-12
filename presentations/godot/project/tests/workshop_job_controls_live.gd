@@ -1,0 +1,46 @@
+extends "res://tests/workshop_selector_layout_live.gd"
+# Actual task Details gestures using the shared native-backed job editor.
+func run() -> void:
+	directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/workshop-native.json")).job_controls
+	world=Df3dWorld.new();root.add_child(world)
+	if not check(world.attach() and world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Workshop source unavailable"):quit(1);return
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline:
+		world.poll()
+		if world.poll_management().get("transport_alive",false):break
+		await create_timer(0.01).timeout
+	var catalog:=await request("construction",{"action":C.ManagementAction.Catalog})
+	if not check(catalog.get("status")==C.ManagementStatus.Ok,"Workshop bootstrap failed"):quit(1);return
+	var preferences=preload("res://scripts/presentation_settings.gd");preferences.loaded=true;preferences.ui_scale=1.0
+	root.size=Vector2i(1200,800)
+	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true);service.set_process(false)
+	var host=preload("res://scripts/ui_host.gd").new();host.interaction=Interaction.new();root.add_child(host)
+	var owner=preload("res://scripts/workshop_panel.gd").new();root.add_child(owner);owner.configure(world,service,host)
+	owner.open_workshop(int(reference.building_id),"BUILDING_ICON_WORKSHOP_CARPENTER")
+	await settle(service,func():return owner.state.phase==owner.state.Phase.Ready and owner.tasks.phase==owner.tasks.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
+	await process_frame;click(Vector2(820,154))
+	await settle(service,func():return owner.job_details.phase==owner.job_details.Phase.Ready)
+	check(owner.job_details.job_id==int(reference.viewer_job_id) and not owner.panel.tasks_allowed(),"Details target or parent input ownership differs")
+	check(owner.job_details_view.position==Vector2(72,52) and owner.job_details_view.size==Vector2(832,672),"Workshop Details frame differs from native")
+	var rows: Array=owner.job_details.rows
+	check(rows.size()==reference.details.materials.size(),"Workshop material count differs")
+	# Choices expose opaque IDs/captions, not raw native material identities.
+	# Compare rendered choices and independently read back the selected job.
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/workshop-job-details-live.png")
+	# Escape returns without applying; opening again reads the same native job.
+	number_key(KEY_ESCAPE);await process_frame
+	check(not owner._job_details_open() and owner.panel.visible,"Details Escape did not return to workshop")
+	click(Vector2(820,154));await settle(service,func():return owner.job_details.phase==owner.job_details.Phase.Ready)
+	click(Vector2(100,190))
+	await settle(service,func():return not owner._job_details_open() and owner.tasks.phase==owner.tasks.Phase.Ready and owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
+	await process_frame;await RenderingServer.frame_post_draw
+	root.get_texture().get_image().save_png(directory+"/workshop-job-details-return-live.png")
+	# Closing the owner during a fresh queued read retires child ownership.
+	click(Vector2(820,154));owner.close_panel()
+	for frame in 8:world.poll();service.poll(0.01);await process_frame
+	check(not owner._job_details_open() and not owner.job_details_view.visible and owner.job_details.ticket==0,"Closed workshop retained Details ownership")
+	owner.queue_free();host.interaction.panel.free();host.queue_free();service.queue_free();await process_frame
+	var file:=FileAccess.open(directory+"/workshop-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"materials":rows.size(),"escape_return":true,"material_click":true,"parent_close":true}));file.close()
+	world.detach_live();world.queue_free();await process_frame;quit(1 if failed else 0)

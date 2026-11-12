@@ -112,6 +112,53 @@ local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
  shot('jobs')
+ if os.getenv('DF3D_WORKSHOP_JOB_CONTROLS')=='1'then
+  assert(click_label('Add new task'));assert(click_label('Make bed'))
+  local created=assert(building.jobs[#building.jobs-1]);assert(#building.jobs==#jobs+1)
+  local function click(x,y)
+   df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=math.floor(x/8);g.mouse_y=math.floor(y/12)
+   df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
+   df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1
+  end
+  local function snapshot()
+   local queue={};for _,job in ipairs(building.jobs)do queue[#queue+1]=job.id end
+   return {id=created.id,flags=created.flags.whole,do_now=created.flags.do_now,suspended=created.flags.suspend,repeat_job=created.flags['repeat'],queue=queue}
+  end
+  local worked,problem=xpcall(function()
+   result.job_controls={building_id=building.id,job_id=created.id,before=snapshot()}
+   shot('job-controls-before')
+   click(772,154);result.job_controls.priority_on=snapshot();shot('job-priority-on')
+   assert(created.flags.do_now,'Native Priority did not set do_now')
+   click(772,154);result.job_controls.priority_off=snapshot();shot('job-priority-off')
+   assert(not created.flags.do_now,'Native Priority did not clear do_now')
+   click(820,154)
+   local details=df.global.game.main_interface.job_details
+   assert(details.open and details.jb==created,'Native workshop Details did not target created task')
+   local options={};for i,kind in ipairs(details.option)do options[#options+1]={kind=kind,index=details.option_index[i]}end
+   local materials={};for i,kind in ipairs(details.material)do materials[#materials+1]={type=kind,index=details.matgloss[i],count=details.material_count[i]}end
+   result.job_controls.details={context=details.context,current_option=details.current_option,current_index=details.current_option_index,options=options,materials=materials}
+   shot('job-details')
+   local function material_effect()
+    local item=assert(created.job_items.elements[0])
+    return {mat_type=created.mat_type,mat_index=created.mat_index,flags=created.flags.whole,
+     item_type=item.mat_type,item_index=item.mat_index,item_flags1=item.flags1.whole,item_flags2=item.flags2.whole,item_flags3=item.flags3.whole,
+     details_flags=item.job_details_flags.whole,details_type=item.job_details_mat_type,details_index=item.job_details_mat_index,details_item_flags2=item.job_details_item_flags2.whole}
+   end
+   click(100,190);assert(not details.open,'Native material selection did not return to workshop')
+   result.job_controls.material_effect=material_effect();shot('job-details-return')
+   assert(dfhack.job.removeJob(created));created=nil
+   select_map(building);assert(click_label('Add new task'));assert(click_label('Make bed'))
+   created=assert(building.jobs[#building.jobs-1]);result.job_controls.viewer_job_id=created.id
+   shot('job-viewer-before');capture('workshop-wire')
+   assert(json.encode(material_effect())==json.encode(result.job_controls.material_effect),'Viewer material edit differs from native job/input effect')
+   result.job_controls.viewer_material_effect=material_effect();shot('job-viewer-after')
+  end,debug.traceback)
+  if df.global.game.main_interface.job_details.open then gui.simulateInput(view,'LEAVESCREEN')end
+  assert(dfhack.job.removeJob(created),'Diagnostic job cleanup failed')
+  assert(worked,problem)
+  return
+ end
  assert(click_label('Workers'),'Native Workers tab not found')
  shot('workers')
  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1

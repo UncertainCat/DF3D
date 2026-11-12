@@ -3803,5 +3803,461 @@
       "godot-diagnostics.json": "3696e4d2f3d7552e33b69bb9c5cef9404d521e56ad8e82e4d461f0a9d889141d",
       "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
     }
+  },
+  "job_controls_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-175107",
+    "status": "passed_with_known_issues",
+    "scope": "Native Make bed priority on/off and material selection; composed workshop Details open, Escape, material edit and owner close during queued read. Initial 1200x800 Details crop (72,52,904,724) has zero differing RGB pixels. Only Make bed material effects qualified; other job families, artwork and responsive layouts remain unqualified for this route. Priority remains unwired in DF3D.",
+    "native": {
+      "before": {
+        "do_now": false,
+        "flags": 0,
+        "id": 382796,
+        "queue": [
+          382796
+        ],
+        "repeat_job": false,
+        "suspended": false
+      },
+      "building_id": 4,
+      "details": {
+        "context": 0,
+        "current_index": 0,
+        "current_option": 0,
+        "materials": [
+          {
+            "count": 3,
+            "index": 148,
+            "type": 420
+          },
+          {
+            "count": 3,
+            "index": 146,
+            "type": 420
+          },
+          {
+            "count": 6,
+            "index": 136,
+            "type": 420
+          },
+          {
+            "count": 3,
+            "index": 153,
+            "type": 420
+          },
+          {
+            "count": 16,
+            "index": 154,
+            "type": 420
+          },
+          {
+            "count": 3,
+            "index": 137,
+            "type": 420
+          },
+          {
+            "count": 3,
+            "index": 152,
+            "type": 420
+          },
+          {
+            "count": 9,
+            "index": 199,
+            "type": 420
+          },
+          {
+            "count": 9,
+            "index": 157,
+            "type": 422
+          },
+          {
+            "count": 9,
+            "index": 140,
+            "type": 420
+          },
+          {
+            "count": 3,
+            "index": 158,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 200,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 217,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 159,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 160,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 161,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 219,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 143,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 162,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 218,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 205,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 211,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 223,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 220,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 134,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 135,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 197,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 163,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 216,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 224,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 151,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 213,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 149,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 208,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 164,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 212,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 207,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 138,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 165,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 214,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 201,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 215,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 144,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 155,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 156,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 221,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 194,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 202,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 206,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 198,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 147,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 139,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 166,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 167,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 168,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 169,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 196,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 170,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 145,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 141,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 150,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 222,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 195,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 171,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 210,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 142,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 204,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 209,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 192,
+            "type": 19
+          },
+          {
+            "count": 0,
+            "index": 172,
+            "type": 420
+          },
+          {
+            "count": 0,
+            "index": 203,
+            "type": 420
+          }
+        ],
+        "options": [
+          {
+            "index": 0,
+            "kind": 0
+          }
+        ]
+      },
+      "job_id": 382796,
+      "material_effect": {
+        "details_flags": 1,
+        "details_index": -1,
+        "details_item_flags2": 0,
+        "details_type": -1,
+        "flags": 0,
+        "item_flags1": 0,
+        "item_flags2": 0,
+        "item_flags3": 0,
+        "item_index": 148,
+        "item_type": 420,
+        "mat_index": 148,
+        "mat_type": 420
+      },
+      "priority_off": {
+        "do_now": false,
+        "flags": 0,
+        "id": 382796,
+        "queue": [
+          382796
+        ],
+        "repeat_job": false,
+        "suspended": false
+      },
+      "priority_on": {
+        "do_now": true,
+        "flags": 262144,
+        "id": 382796,
+        "queue": [
+          382796
+        ],
+        "repeat_job": false,
+        "suspended": false
+      },
+      "viewer_job_id": 382797,
+      "viewer_material_effect": {
+        "details_flags": 1,
+        "details_index": -1,
+        "details_item_flags2": 0,
+        "details_type": -1,
+        "flags": 0,
+        "item_flags1": 0,
+        "item_flags2": 0,
+        "item_flags3": 0,
+        "item_index": 148,
+        "item_type": 420,
+        "mat_index": 148,
+        "mat_type": 420
+      }
+    },
+    "viewer": {
+      "escape_return": true,
+      "material_click": true,
+      "materials": 71,
+      "parent_close": true,
+      "success": true
+    },
+    "sha256": {
+      "workshop-native.json": "c83575009567e4d757fa5d28e449118b7cc2f5a59297636a1577bb09ed4b6246",
+      "workshop-job-details.png": "d218dbae72d531b48c8561ec6713dfbaa714b1ac85c47bf583079ff7e749a2a4",
+      "workshop-job-details-live.png": "2efcc85d3568dd9c17c8451d1360fcdc0e7a8259db7b94b5480d4080333e59a6",
+      "workshop-wire-result.json": "87c720fcaa798a54aba96592574b08763844779e0290100e01d3342b76184403",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    },
+    "diagnostics": [
+      "godot-separate-thread-notice",
+      "godot-device-finalize",
+      "godot-shutdown-objects"
+    ],
+    "ownership": "Owned DF39928 exited unsaved; source unchanged. Native and viewer capped30FPS; preferences restored."
   }
 }

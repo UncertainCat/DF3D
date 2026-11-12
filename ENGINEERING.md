@@ -17118,10 +17118,33 @@ render-device-finalize and two-ObjectDB shutdown diagnostics. Metadata and hashe
 are in `native_workshop.json.worker_width_reference`. Headless composition and
 candidate-state checks pass in `workshop-selector-width`; core19 passes.
 Larger indicator-count layout, full selector parity and public workshop routing
-remain unfinished. Task categories, Priority and Details also remain explicit
-functional gaps: the latter two currently emit unhandled signals; they are not
-accepted working buttons. Composition passes in
+remain unfinished. Task categories and Priority remain functional gaps; Priority
+still emits an unhandled signal. Task Details now uses the shared native-backed
+job editor, with the bounded acceptance below. Composition passes in
 `workshop-selector-height`; the live flow supplies the resize/effect evidence.
+
+Workshop task Details reuses `job_settings_state.gd` and the existing semantic
+JobSettingsRead/Apply path with independently owned job and requirement copies.
+The workshop owns the child editor, hides the parent while it is open, restores
+it on Escape/success, refreshes task/header/contents after confirmation, and
+retires the child on owner close or target removal. No bridge/schema change is
+required. Workshop material layout uses the native832x672 frame at72,52 for
+1200x800, bright row artwork and15 visible rows; Residents retains its geometry.
+
+Protected175107 on2026-11-12 compares native Make bed material selection with
+an identical fresh job edited through the composed viewer. Job material and all
+recorded requirement/detail flags match; Escape and parent close during a queued
+read pass. The initial Details crop has zero differing RGB pixels across the
+whole832x672 panel. Seventy-one choices are supplied by the existing native
+provider. This qualifies Make bed material editing only, not all job families,
+artwork, resizing or the complete workshop surface. Native Priority toggles
+`do_now` on/off without changing the single-job queue; implementing that action
+remains pending. `native_workshop.json.job_controls_reference` retains effects
+and evidence hashes. Owned DF39928 exits unsaved with source preserved and
+preferences restored; native/viewer are capped30FPS. The live client reports
+only the known separate-thread, device-finalize and two-ObjectDB diagnostics
+(`passed_with_known_issues`). Headless composition passes in
+`workshop-job-details-native-frame`; core19 passes.
 
 Still root choices now include Extract from plants from native inline branch
 `8cb3c9..8cb3e9` (job149). The native constructor leaves its objection flag clear;

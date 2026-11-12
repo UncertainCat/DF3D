@@ -4,6 +4,7 @@ extends "res://scripts/location_staff_candidates_frame.gd"
 signal cancelled
 var state
 var job_context:=false
+var workshop_job_context:=false
 # Tasks context2 root rows: protected native125823. Other contexts retain their art.
 var tasks_context:=false
 var input_allowed: Callable
@@ -35,7 +36,7 @@ func configure_details(source,model) -> void:
 func open(building: int,order: int) -> void:
 	state.open(building,order);show();queue_redraw()
 func layout(view: Vector2) -> void:
-	var global: bool=job_context or (state!=null and (state.building_id==-2 or state.has_art()))
+	var global: bool=(job_context and not workshop_job_context) or (state!=null and (state.building_id==-2 or state.has_art()))
 	var rows_count:=maxi(13,floori(view.y/12)-(5 if global else 10))
 	var origin:=Vector2(16 if global else 72,(36 if global else 48)+fposmod(view.y,12)*0.5)
 	# Native image renderer200070/geometry2142a0 follows the available map width.
@@ -54,6 +55,7 @@ func list_top() -> int:
 func sync_scroll() -> void:
 	if state==null or scrollbar==null:return
 	var footer:=96 if state.has_art() and (state.art_page()>=6 or state.art_page() in [1,2,3]) else 60 if state.has_art() and state.art_page()==5 else 24
+	if workshop_job_context and not state.has_art():footer=12
 	# Native2040c5/204bab and the other element branches reserve three fewer
 	# cells for unique figures/artifacts, which have no quantity controls.
 	if state.has_art() and state.art_page()>=7 and state.art_page()<=13:footer=108 if draft_has_quantity() else 72
@@ -178,7 +180,7 @@ func _draw() -> void:
 		text(state.query+("_" if search_focused and blink else "") if search_focused or not state.query.is_empty() else "...",Vector2(32,104),15 if search_focused or not state.query.is_empty() else 8)
 	for index in mini(page_rows,state.rows.size()-state.first):
 		var row: Dictionary=state.rows[state.first+index]
-		patch("BUTTON_RECTANGLE_DARK",Vector2i(2,int(list_top()/12)+index*3),int((size.x-32)/8)-(2 if scrollbar.visible else 0),3)
+		patch("BUTTON_RECTANGLE" if workshop_job_context else "BUTTON_RECTANGLE_DARK",Vector2i(2,int(list_top()/12)+index*3),int((size.x-32)/8)-(2 if scrollbar.visible else 0),3)
 		var label_x:=16
 		if row.has("swatch"):
 			var color: Dictionary=row.swatch

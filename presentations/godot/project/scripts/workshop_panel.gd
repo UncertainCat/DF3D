@@ -17,6 +17,8 @@ var global_orders_view
 var details=preload("res://scripts/work_order_details_state.gd").new()
 var details_view
 var global_orders_mode:=false
+var job_details=preload("res://scripts/job_settings_state.gd").new()
+var job_details_view
 
 func _init() -> void:
 	state=preload("res://scripts/building_header_state.gd").new()
@@ -27,13 +29,23 @@ func configure(world,service,host,help=null) -> void:
 	global_orders.configure(service)
 	global_orders.changed.connect(func():if global_orders_mode:_release_if_closed.call_deferred())
 	details.configure(service)
+	job_details.configure(service)
 	candidate_modes.applied.connect(func():refreshing_modes=true;candidate_modes.clear();workers.refresh())
 	super.configure(world,service,host,help)
 	panel.configure_tasks(world,tasks,"")
 	panel.configure_workers(world,workers)
 	panel.configure_orders(world,orders,help)
+	job_details_view=preload("res://scripts/work_order_details_view.gd").new();job_details_view.job_context=true;job_details_view.workshop_job_context=true;canvas.add_child(job_details_view)
+	job_details_view.configure_details(world,job_details);job_details_view.hide()
+	job_details_view.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self) and _job_details_open()
+	job_details_view.cancelled.connect(_close_job_details)
+	job_details.changed.connect(func():
+		job_details_view.visible=_job_details_open()
+		panel.visible=not _job_details_open() and state.building_id>=0)
+	job_details.applied.connect(func():tasks.refresh();state.refresh();contents.refresh())
+	panel.tasks.details_requested.connect(_open_job_details)
 	global_orders_view=preload("res://scripts/global_work_orders_view.gd").new();canvas.add_child(global_orders_view);global_orders_view.configure_orders(world,global_orders,help);global_orders_view.hide()
-	global_orders_view.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self) and not conditions_view.visible and not details_view.visible
+	global_orders_view.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self) and not conditions_view.visible and not details_view.visible and not _job_details_open()
 	global_orders_view.cancelled.connect(_close_global_orders)
 	global_orders_view.create_requested.connect(open_global_order_picker)
 	global_orders_view.conditions_requested.connect(func(id,_workshop):global_orders_view.hide();conditions_view.open(-2,id))
@@ -68,7 +80,7 @@ func configure(world,service,host,help=null) -> void:
 	panel.workers.choose_requested.connect(_open_picker)
 	panel.workers.unit_requested.connect(func(id):unit_requested.emit(id))
 	panel.tab_requested.connect(_select_tab)
-	panel.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self) and not selector.visible and not order_picker.visible and not conditions_view.visible and not global_orders_view.visible and not details_view.visible
+	panel.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self) and not selector.visible and not order_picker.visible and not conditions_view.visible and not global_orders_view.visible and not details_view.visible and not _job_details_open()
 	workers.changed.connect(_workers_changed)
 	workers.applied.connect(state.refresh)
 	workers.applied.connect(contents.refresh)
@@ -77,6 +89,7 @@ func configure(world,service,host,help=null) -> void:
 
 func _create_view():return preload("res://scripts/workshop_sheet_view.gd").new()
 func _open_state(id: int,_season: int) -> void:
+	_close_job_details()
 	_close_conditions()
 	_close_order_picker();_close_picker();workers.close();tasks.close();orders.close();panel.selected_tab=0;state.open(id)
 func _contents_supported() -> bool:return true
@@ -91,16 +104,20 @@ func _state_changed() -> void:
 	super._state_changed()
 	if opening:return
 	if state.building_id<0 or state.snapshot.get("removing",false):
+		_close_job_details()
 		_close_conditions()
 		_close_order_picker();_close_picker();workers.close();tasks.close();orders.close()
 	elif not state.snapshot.is_empty() and tasks.building_id!=state.building_id:tasks.open(state.building_id)
+	if _job_details_open():panel.hide()
 
 func close_panel() -> void:
+	_close_job_details()
 	global_orders_mode=false
 	_close_conditions()
 	_close_order_picker();_close_picker();workers.close();tasks.close();orders.close();super.close_panel()
 
 func _exit_tree() -> void:
+	job_details.dispose()
 	details.dispose()
 	global_orders.dispose()
 	conditions.dispose()
@@ -179,6 +196,9 @@ func _workers_changed() -> void:
 	if selector!=null and selector.visible and workers.phase!=workers.Phase.Ready:_close_picker()
 func _process(delta: float) -> void:
 	super._process(delta)
+	if job_details_view!=null:
+		var viewport:=get_viewport().get_visible_rect().size
+		job_details_view.layout(viewport/Preferences.effective_scale_vector(viewport))
 	if details_view!=null:
 		var viewport:=get_viewport().get_visible_rect().size
 		details_view.layout(viewport/Preferences.effective_scale_vector(viewport))
@@ -196,6 +216,7 @@ func _process(delta: float) -> void:
 		var view:=viewport/Preferences.effective_scale_vector(viewport)
 		selector.layout(view);selector.position=Vector2(32,48+fposmod(view.y,12)*0.5)
 func _input(event: InputEvent) -> void:
+	if _job_details_open():return
 	if details_view!=null and details_view.visible:return
 	if global_orders_view!=null and global_orders_view.visible:return
 	if conditions_view!=null and conditions_view.visible:return
@@ -209,10 +230,24 @@ func _input(event: InputEvent) -> void:
 		return
 	super._input(event)
 func handle_escape() -> void:
-	if details_view!=null and details_view.visible:details_view.back()
+	if _job_details_open():job_details_view.back()
+	elif details_view!=null and details_view.visible:details_view.back()
 	elif conditions_view!=null and conditions_view.visible:_back_conditions()
 	elif global_orders_view!=null and global_orders_view.visible:_close_global_orders()
 	elif order_picker!=null and order_picker.visible:_back_order_picker()
 	elif panel!=null and panel.orders.editing:panel.orders.finish_entry()
 	elif selector!=null and selector.visible:_close_picker()
 	else:super.handle_escape()
+
+func _job_details_open() -> bool:
+	return job_details.phase not in [job_details.Phase.Closed,job_details.Phase.Unavailable]
+
+func _close_job_details() -> void:
+	job_details.close()
+	if job_details_view!=null:job_details_view.hide()
+
+func _open_job_details(id: int) -> void:
+	if _job_details_open() or not play_enabled or not ui_host.allows_panel_input(self) or not panel.tasks_allowed() or tasks.phase!=tasks.Phase.Ready:return
+	for row in tasks.jobs():
+		if row.id==id and row.editable:
+			job_details.open(state.building_id,id);return

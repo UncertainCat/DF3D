@@ -11126,5 +11126,132 @@
       "mixed report/graph workflows and wheel/arrow/drag acceptance remain pending",
       "established separate-renderer/finalize/ObjectDB shutdown diagnostics"
     ]
+  },
+  "intelligence_mixed_navigation_reference": {
+    "run": "build/stockpile-storage-native-input-20261112-104816",
+    "protocol": 203,
+    "status": "navigation_passed_with_known_issues_detail_caption_unaccepted",
+    "owned_df_pid": 20220,
+    "source_preserved": true,
+    "fps": 30,
+    "states": {
+      "actor-selected": {
+        "mode": 1,
+        "selected": 1,
+        "scroll": 0,
+        "selected_node": -1,
+        "viewing_report": false
+      },
+      "actors": {
+        "mode": 1,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": -1,
+        "viewing_report": false
+      },
+      "organizations": {
+        "mode": 2,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": 0,
+        "viewing_report": false
+      },
+      "plots": {
+        "mode": 3,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": -1,
+        "viewing_report": false
+      },
+      "report-detail": {
+        "mode": 0,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": -1,
+        "viewing_report": true
+      },
+      "report-to-actors": {
+        "mode": 1,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": -1,
+        "viewing_report": false
+      },
+      "reports": {
+        "mode": 0,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": -1,
+        "viewing_report": false
+      },
+      "reports-return": {
+        "mode": 0,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": -1,
+        "viewing_report": false
+      }
+    },
+    "different_pixels": {
+      "actors": 0,
+      "actor-selected": 0,
+      "organizations": 0,
+      "plots": 0,
+      "reports": 0,
+      "report-detail": 637,
+      "report-to-actors": 0,
+      "reports-return": 0
+    },
+    "panel_crop": [
+      32,
+      52,
+      976,
+      760
+    ],
+    "artifacts": {
+      "justice-graph-presentation.json": "b2139372f6eeeb29618009455ab8f9ac8588030a6bd9d76cd64efa2f6e1928d0",
+      "job-settings-wire-result.json": "5d2dfbf1509bae342178f9e6f179a2ff7d32d69fb453ec432a84edc4e6879170",
+      "justice-graph-actors.png": "4b6f97b8aad3e3bf1ffad0322b9926ef77dfa3f16764f527b4ce8e956b34ced3",
+      "justice-graph-actors-view.png": "b5539146640082286ed37b47a894b63e4ee99ad681d8642ccd5839aaab344af7",
+      "justice-graph-actor-selected.png": "131101092da09025a3fd661120444bcafde1aab4988a6a977bf13052304c6d23",
+      "justice-graph-actor-selected-view.png": "b8a50f4aa2e090ca1df36c8e574766f9c2c4391cdc1c79bbe13b3c6a3c039e52",
+      "justice-graph-organizations.png": "b928a2aa7bd762cbac6d434c4c68a5c90eab3c780fe91e86075a11c0d27a99c6",
+      "justice-graph-organizations-view.png": "072e20fe949c5ef4938880d398ff164d81b2252c9e40fa3109ec49e2516556b0",
+      "justice-graph-plots.png": "27501d5fd8ac274aea3431bb29683befbfa56d8b323ccce86a34593cb7f41841",
+      "justice-graph-plots-view.png": "d731174d5b13036a4031ba38478dd4f28ed2d287fd80ae0e4fa91c71b190b221",
+      "justice-graph-reports.png": "2ee3b7e480cdd60a9104583a55cb8ca22a7ca52019f23c58278a3d03b45712ae",
+      "justice-graph-reports-view.png": "5d5d46bc83feaa32f645e001a2c3c945194f43b693b27814b399f340dff5405d",
+      "justice-graph-report-detail.png": "c772f15517b416c1c35f9b69c0448f9028c1607e8334c11c23bab915f34b3a91",
+      "justice-graph-report-detail-view.png": "bafe701c605648ea62be7b46d81bff051e8723a71d41575ad1b63517f80f9122",
+      "justice-graph-report-to-actors.png": "9c608d976a6d416e802118e516458027f240766ece7139df2acfe0086bfee2a2",
+      "justice-graph-report-to-actors-view.png": "b5539146640082286ed37b47a894b63e4ee99ad681d8642ccd5839aaab344af7",
+      "justice-graph-reports-return.png": "2ee3b7e480cdd60a9104583a55cb8ca22a7ca52019f23c58278a3d03b45712ae",
+      "justice-graph-reports-return-view.png": "5d5d46bc83feaa32f645e001a2c3c945194f43b693b27814b399f340dff5405d"
+    },
+    "limits": [
+      "report-detail caption differs; no native-parity approval inferred",
+      "late report callback retirement verified by headless injected service, not live latency manipulation",
+      "established separate-renderer/finalize/ObjectDB shutdown diagnostics"
+    ]
+  },
+  "intelligence_report_byline_reference": {
+    "run": "build/stockpile-storage-native-input-20261112-105001",
+    "owned_df_pid": 16728,
+    "source_preserved": true,
+    "native_fps": 30,
+    "render_builder": "4789b5 adds Prepared by",
+    "input_builder": "4761bc wraps officer_name directly",
+    "probe": "diagnostic-only invalidation of native interrogation_report_box_width before invoking render or CURSOR_DOWN input; no product menu access",
+    "observed": {
+      "initial": "Synthetic officer",
+      "render_rebuild": "Prepared by Synthetic officer",
+      "input_rebuild": "Synthetic officer"
+    },
+    "status": "confirmed_native_inconsistency_approval_pending",
+    "artifacts": {
+      "justice-graph-presentation.json": "a38ae4fdbc86c2e74d7824b5a87fc17ae2181a7c70c2d532d412d9faacaa630a",
+      "justice-graph-report-render-rebuild.png": "f751b65a76f56db5bd1b330e225adb4b565514fcb8e9b158649e853358f74304",
+      "justice-graph-report-input-rebuild.png": "d70d223852276f7c9d9218ab8795cc76196a13f51e729704f3666e2eb61ce6a3"
+    }
   }
 }

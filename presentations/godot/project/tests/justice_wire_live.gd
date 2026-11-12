@@ -457,6 +457,15 @@ func run_graph(reference: Dictionary) -> void:
 					await pointer_click(step.point)
 					await process_frame;await RenderingServer.frame_post_draw
 					root.get_texture().get_image().save_png(directory+"/justice-graph-"+step.name+"-view.png")
+		if OS.get_environment("DF3D_JUSTICE_GRAPH_MIXED")=="1":
+			for step in [{"name":"reports","mode":0,"point":Vector2(96,148)},{"name":"report-detail","mode":0,"point":Vector2(120,190)},{"name":"report-to-actors","mode":1,"point":Vector2(220,148)},{"name":"reports-return","mode":0,"point":Vector2(96,148)}]:
+				await pointer_click(step.point)
+				deadline=Time.get_ticks_msec()+15000
+				while controller.intelligence.phase==controller.intelligence.Phase.Reading and Time.get_ticks_msec()<deadline:await process_frame
+				check(controller.intelligence.phase==controller.intelligence.Phase.Ready and controller.intelligence.mode==step.mode,"Mixed Intelligence navigation did not settle")
+				check((controller.intelligence.selected>=0)==(step.name=="report-detail"),"Mixed Intelligence report selection differs")
+				await process_frame;await RenderingServer.frame_post_draw
+				root.get_texture().get_image().save_png(directory+"/justice-graph-"+step.name+"-view.png")
 		if OS.get_environment("DF3D_JUSTICE_GRAPH_RESIZE")=="1":
 			await pointer_click(view.position+view.intelligence_tab_rect(2).get_center())
 			if OS.get_environment("DF3D_JUSTICE_GRAPH_CONNECTED")=="1":

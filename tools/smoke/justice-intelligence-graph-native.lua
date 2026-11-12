@@ -3,6 +3,7 @@ local out,view,probe,settle,tab,capture,bytes=...
 local gui=require('gui');local json=require('json');local g=df.global.gps
 local entity=df.global.plotinfo.main.fortress_entity;assert(entity)
 local original=entity.evidence_repository;local repository=df.evidence_repositoryst:new();local files={}
+local reports=df.global.world.status.interrogation_reports;local report_count=#reports;local added_reports={}
 local function reopen()
  gui.simulateInput(view,'LEAVESCREEN');settle();gui.simulateInput(view,'D_JUSTICE');settle()
  if df.global.game.main_interface.help.open then
@@ -48,6 +49,13 @@ local function native_graph(menu)
  return result
 end
 local ok,err=xpcall(function()
+ if os.getenv('DF3D_JUSTICE_GRAPH_MIXED')=='1' then
+  assert(report_count==0,'Mixed Intelligence fixture requires empty report baseline')
+  local report=df.interrogation_report:new();report.title='Synthetic mixed Intelligence report';report.officer_name='Synthetic officer'
+  report.officer_hf=-1;report.subject_hf=-1;report.subject_identity_id=-1;report.flags.whole=0
+  local line=df.new('string');line.value='Synthetic report detail for navigation verification.';report.details:insert('#',line)
+  reports:insert('#',report);added_reports[#added_reports+1]=report
+ end
  entity.evidence_repository=repository
  local empty=probe('justice-intelligence-graph-probe')
  assert(#empty.actors==0 and #empty.organizations==0 and #empty.plots==0,'Empty evidence invented graph entries')
@@ -120,7 +128,7 @@ local ok,err=xpcall(function()
  if os.getenv('DF3D_JUSTICE_GRAPH_PRESENTATION')=='1' then
   local states={}
   local function record(name)
-   local state={mode=menu.counterintelligence_mode,selected=menu.counterintelligence_selected,scroll=menu.scroll_position_counterintelligence,selected_node=-1,actors={},organizations={},plots={},lines={}}
+   local state={mode=menu.counterintelligence_mode,selected=menu.counterintelligence_selected,scroll=menu.scroll_position_counterintelligence,selected_node=-1,viewing_report=menu.viewing_interrogation_report~=nil,actors={},organizations={},plots={},lines={}}
    if menu.selected_counterintelligence_oen and menu.counterintelligence_selected>=0 and menu.counterintelligence_selected<#menu.organization_entry then state.selected_node=index(menu.organization_entry[menu.counterintelligence_selected].node,menu.selected_counterintelligence_oen)end
    for _,row in ipairs(menu.actor_entry)do
     local lines={};for _,line in ipairs(row.main_text_box.text)do lines[#lines+1]=dfhack.df2utf(line.value)end
@@ -157,6 +165,15 @@ local ok,err=xpcall(function()
    click(324,148);record('organizations-return')
   end
   click(440,148);assert(menu.counterintelligence_mode==3,'Plots tab missed');record('plots')
+  if os.getenv('DF3D_JUSTICE_GRAPH_MIXED')=='1' then
+   click(96,148);record('reports')
+   click(120,190);assert(menu.viewing_interrogation_report==added_reports[1]);record('report-detail')
+   -- Diagnostic-only cache invalidation distinguishes DF's two text builders.
+   menu.interrogation_report_box_width=0;view:render(dfhack.getTickCount());record('report-render-rebuild')
+   menu.interrogation_report_box_width=0;gui.simulateInput(view,'CURSOR_DOWN');settle();record('report-input-rebuild')
+   click(220,148);record('report-to-actors')
+   click(96,148);record('reports-return')
+  end
   if os.getenv('DF3D_JUSTICE_GRAPH_RESIZE')=='1' then
    local function resize(name)
     local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('name-resize-'..name);f:close()
@@ -176,6 +193,15 @@ local ok,err=xpcall(function()
   local output=assert(io.open(out..'/justice-graph-presentation.json','w'));output:write(json.encode(states));output:close()
  end
 end,debug.traceback)
+if #added_reports>0 then
+ gui.simulateInput(view,'LEAVESCREEN');settle()
+ while #reports>report_count do reports:erase(#reports-1)end
+ for _,report in ipairs(added_reports)do
+  while #report.details>0 do local line=report.details[#report.details-1];report.details:erase(#report.details-1);line:delete()end
+  report:delete()
+ end
+ gui.simulateInput(view,'D_JUSTICE');settle()
+end
 entity.evidence_repository=original;reopen()
 while #repository.hf_file>0 do repository.hf_file:erase(#repository.hf_file-1)end
 for _,file in ipairs(files)do file:delete()end

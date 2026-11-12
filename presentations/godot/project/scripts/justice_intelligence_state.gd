@@ -12,6 +12,11 @@ func select_mode(value: int) -> void:
 	if value==0:
 		if phase!=Phase.Ready or rows.is_empty():return
 	elif graph.phase!=graph.Phase.Ready or graph.graph[["actors","organizations","plots"][value-1]].is_empty():return
+	# Native4792d0 retires the report detail on every Intelligence tab change.
+	# Keep the owned roster, but detach any width-specific detail request.
+	if selected>=0:
+		_retire();selected=-1;lines=[];first=0
+		if phase==Phase.Reading:phase=Phase.Ready
 	mode=value;graph_selected=0;graph_scroll=0;selected_node=-1;changed.emit()
 func select_graph_row(index: int) -> void:
 	if mode==0 or graph.phase!=graph.Phase.Ready:return

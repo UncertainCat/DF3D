@@ -6,6 +6,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
+| Intelligence report byline depends on whether input or rendering rebuilds the text first. | Approval pending for consistently retaining the renderer's Prepared by prefix. The existing staged provider uses that variant; full report-detail parity is not accepted. | Protected105001 on2026-11-12 invalidates only the diagnostic menu text width, then invokes render versus input: renderer4789b5 adds Prepared by, input4761bc uses officer_name directly. Mixed live104816 differs by637 pixels only in this byline. `native_justice.json.intelligence_report_byline_reference`. |
 | Justice's conspiracy case title says “Conspiracy to alow labor”. | No correction approved or implemented; preserve the native title. | Protected174105 on2026-11-11 changes one owned test case through all19 crime types and compares the native case widget text with formatter46d660. Type3 matches this spelling in both. `native_justice.json.caption_reference`. |
 | Justice witness “Reported” uses the event year instead of the report year. | No correction approved or implemented; preserve native output. | Protected182446 on2026-11-11 changes the first witness's reported_year106→107 while retaining event year106. Native still displays “Reported: 15th Slate, 106”, matching the owned formatter. Builder473eaa loads offsetc (year), although its day/month uses reported_year_tick at74. The field is restored. `native_justice.json.witness_dates_reference`. |
 | Places hospital patient count overwrites assigned-staff count on the same line, leaving trailing characters. | No correction approved; retain both captions and native overlay order. | Protected144436/144602 on DF53.16:4 assigned plus1 patient renders1 patientd. Renderer39d76c/39da5d uses the same coordinates without clearing. `native_places.json.hospital_queue_reference`. Viewer implementation remains pending. |
@@ -139,8 +140,23 @@ and state/composition checks pass; known shutdown diagnostics retain the live
 `intelligence_connected_graph_reference` retains bounded hashes and state.
 
 Horizontal panning of very wide charts, other edge rasterization patterns,
-wheel/arrow/drag acceptance, other keyboard behavior and mixed report/graph
-workflows remain unfinished.
+wheel/arrow/drag acceptance and other keyboard behavior remain unfinished.
+
+Protected `stockpile-storage-native-input-20261112-104816` exercises a populated
+report roster alongside the graph tabs. Switching from an open report to Actors
+retires the report detail, and returning to Interrogations shows the roster, as
+native reset4792d0 does. The controller keeps the owned roster, detaches any
+pending detail request and clears selected text/scroll. Headless tests inject a
+late detail reply after switching tabs and prove that it cannot reopen the report;
+both pending and settled detail transitions are covered. Seven panel states match
+native pixels. The report-detail state differs by637 pixels in its officer byline;
+that separate native inconsistency is recorded in the bug register and awaits a
+maintainer decision. This is not blanket mixed-flow visual acceptance.
+
+Core19, state and composition checks pass. Owned DF20220 closes unsaved with
+source/prefs preserved; both graphical clients run at30FPS. Known shutdown
+diagnostics qualify the live result. `intelligence_mixed_navigation_reference`
+and `intelligence_report_byline_reference` retain evidence and limitations.
 Public Justice stays hidden.
 
 

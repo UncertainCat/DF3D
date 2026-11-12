@@ -41,11 +41,41 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+The staged Justice view now opens the Convict picker through its native button,
+draws candidate names/witness labels and unit-selector artwork, accepts typed
+search, and sends a revision-checked conviction on row click. Visible artwork
+uses the existing ResidentsRowsRead semantic reader; a separate bounded request
+is retired on viewport/search/panel changes, so late artwork cannot populate a
+different picker. Native name text remains the Justice one-line formatter.
+`build/qa/justice-picker-view-final` passes all19 core tests, the headless Justice
+state test (including late-artwork retirement) and main-scene composition.
+The fixed1200x800 reference uses13 visible rows and28-column names. Sort headers
+are drawn in native default Crime/Name order, but alternate sorting and
+Interrogate actions are still pending. Justice remains hidden from public routes.
+
+Protected `stockpile-storage-native-input-20261111-233934` matches every pixel in
+the panel crop(32,52)-(976,760) for Open/Closed/Cold and the initial Convict picker,
+against native193806 and230636 references. It exercises the Convict button and
+typed empty-result search; all13 portraits load. The earlier233405 comparison
+identified the regular BUTTON_RECTANGLE background, inactive label gray160 and
+classic data/art/scrollbar.png arrows; those are corrected. Case action buttons
+use HORIZONTAL_OPTION_ACTIVE. The exact crops establish default rows/artwork,
+not responsive layouts, alternate sorts, offscreen/deceased rows or hover states.
+Protected233656 clicks the first candidate through the rendered view and verifies
+native conviction5698, exactly one history event and parent-list refresh; its
+old request is rejected as stale. Both runs end unsaved with source preservation
+and prefs restoration (DF25404/37412). Native/viewer30FPS;15 GPU samples during
+the final run range53–57C,0–15% utilization and14.65–120.12W, not continuous peaks.
+The known separate-thread/finalize/two-ObjectDB diagnostics remain:
+passed_with_known_issues. `native_justice.json.picker_render_reference` retains
+scoped receipts and comparisons. Full picker keyboard/scroll/resize/hover
+acceptance and the other Justice workflows remain unfinished.
+
 Management protocol195 requires an owned `JusticeCandidateDisplay` on each
 candidate row: native one-line name and color, witness count/label/color and
 Deceased label. Text and palette bounds are validated before decoding. The
-current producer uses the28-column reference; responsive width and candidate
-artwork remain pending. Candidate revision continues to identify eligibility,
+current producer uses the28-column reference; responsive width remains pending.
+Candidate artwork is read separately through ResidentsRowsRead. Candidate revision continues to identify eligibility,
 ordering and effect facts; display values are sampled at each page's safe point,
 not an atomic appearance snapshot across all pages.
 Migration195: rebuild bridge and clients together; mailbox is
@@ -69,8 +99,9 @@ source preserved and prefs restored. Native30FPS/headless viewer; GPU sample
 the live run as passed_with_known_issues. Installed plugin SHA256 is
 `933475c6d28dffecf3a2f8ea87540b9057b8dcd7b2655900a76bc5f19df3e457`.
 `native_justice.json.candidate_display_wire_reference` retains the receipt.
-Candidate rendering, artwork, alternate sorting and responsive layout are
-still unfinished; this transport check does not accept them.
+That transport check does not accept rendering or artwork; the later scoped
+rendered acceptance is described above. Alternate sorting and responsive layout
+remain unfinished.
 
 The owned candidate presentation helper calls native name1330c30 and
 abbreviation52d910, following the one-line renderer14237a0. It counts witness

@@ -83,6 +83,21 @@ func run() -> void:
 				await pointer_click(view.position+view.case_rect(1).get_center());await settle_controller(controller)
 				check(controller.selected_id==controller.rows[1].crime_id,"Justice case click selected wrong row")
 				await pointer_click(view.position+view.case_rect(0).get_center());await settle_controller(controller)
+				await pointer_click(view.position+view.convict_rect().get_center());await settle_picker(controller)
+				check(controller.candidates.phase==controller.candidates.Phase.Ready,"Convict button did not open picker")
+				var icon_deadline:=Time.get_ticks_msec()+5000
+				while controller.candidates.icon_ticket!=0 and Time.get_ticks_msec()<icon_deadline:
+					world.poll();await create_timer(0.01).timeout
+				check(controller.candidates.icons.size()==view.picker_capacity(),"Visible candidate artwork missing")
+				await process_frame;await RenderingServer.frame_post_draw
+				root.get_texture().get_image().save_png(directory+"/justice-picker-view.png")
+				await pointer_click(view.position+view.search.position+Vector2(24,18))
+				for letter in "zznomatch":
+					var key:=InputEventKey.new();key.pressed=true;key.unicode=letter.unicode_at(0);key.keycode=letter.unicode_at(0)
+					Input.parse_input_event(key);Input.flush_buffered_events();await process_frame
+				await settle_picker(controller)
+				check(controller.candidates.phase==controller.candidates.Phase.Ready and controller.candidates.rows.is_empty(),"Picker search input failed")
+				controller.candidates.close()
 				var wheel:=InputEventMouseButton.new();wheel.position=view.position+Vector2(view.detail_x()+20,view.list_top()+100);wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN;wheel.pressed=true
 				Input.parse_input_event(wheel);Input.flush_buffered_events();await process_frame
 				check(controller.witness_first==1,"Justice witness wheel did not advance")
@@ -142,15 +157,22 @@ func run() -> void:
 	if OS.get_environment("DF3D_JUSTICE_WIRE_CONVICT")=="1":
 		var picker_actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(picker_actions);picker_actions.configure(world,true)
 		var owner=preload("res://scripts/justice_state.gd").new();owner.configure(picker_actions);owner.open()
+		var picker_view
+		if OS.get_environment("DF3D_JUSTICE_RENDER")=="1":
+			picker_view=preload("res://scripts/justice_view.gd").new();root.add_child(picker_view);picker_view.configure_justice(world,owner);picker_view.layout(Vector2(1200,800))
 		await settle_controller(owner);owner.open_candidates();await settle_picker(owner)
 		if not check(owner.candidates.phase==owner.candidates.Phase.Ready and owner.candidates.rows.size()==candidate_count,"Live picker failed to read candidates"):quit(1);return
 		owner.candidates.search("zznomatch");await settle_picker(owner)
 		check(owner.candidates.phase==owner.candidates.Phase.Ready and owner.candidates.rows.is_empty(),"Live picker search failed")
 		owner.candidates.search("");await settle_picker(owner)
 		var commits: Array=[];owner.candidates.convicted.connect(func(id,unit):commits.append([id,unit]))
-		owner.candidates.convict(5698);await settle_picker(owner)
+		if picker_view!=null:
+			await process_frame;await pointer_click(picker_view.position+picker_view.picker_rect(0).get_center())
+		else:owner.candidates.convict(5698)
+		await settle_picker(owner)
 		applied=commits==[[9,5698]]
 		check(applied and owner.phase==owner.Phase.Ready and not owner.rows.any(func(row):return row.crime_id==9),"Live picker conviction did not refresh parent cases")
+		if picker_view!=null:picker_view.queue_free();await process_frame
 		owner.dispose();picker_actions.queue_free();await process_frame
 		var repeated:=await request("justice",intent)
 		check(repeated.get("status")==C.ManagementStatus.Rejected and repeated.get("justice",{}).get("outcome")==C.JusticeOutcome.Stale,

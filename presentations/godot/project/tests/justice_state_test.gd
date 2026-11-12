@@ -23,6 +23,12 @@ func test_candidates(service,state) -> void:
 	service.reply(picker.ticket,candidates([42],0,2))
 	check(picker.rows.is_empty() and service.calls[picker.ticket].intent.offset==1 and service.calls[picker.ticket].intent.expected_candidate_revision==22,"Partial candidates leaked or lost revision")
 	service.reply(picker.ticket,candidates([43],1,2));check(picker.rows.size()==2 and picker.phase==picker.Phase.Ready,"Candidate pages failed to assemble")
+	picker.read_icons(1);var old_icon: int=picker.icon_ticket
+	picker.seek(1,1);picker.read_icons(1);var new_icon: int=picker.icon_ticket
+	service.reply(old_icon,{"residents_rows":{"rows":[{"id":42,"sheet_icon":{"fixture":42}}]}})
+	check(picker.icon_ticket==new_icon and picker.icons.is_empty(),"Retired artwork reply replaced visible scope")
+	service.reply(new_icon,{"residents_rows":{"rows":[{"id":43,"sheet_icon":{"fixture":43}}]}})
+	check(picker.icons.has(43) and not picker.icons.has(42),"Artwork failed to follow visible rows")
 	picker.search("first");var old: int=picker.ticket;picker.search("second");var current: int=picker.ticket
 	service.reply(old,candidates());check(picker.ticket==current and picker.rows.is_empty(),"Old search replaced current query")
 	service.reply(current,candidates());picker.convict(42);current=picker.ticket

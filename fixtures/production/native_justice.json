@@ -8736,5 +8736,53 @@
       "7218",
       "7279"
     ]
+  },
+  "picker_render_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-233934",
+    "effect_source": "build/stockpile-storage-native-input-20261111-233656",
+    "status": "passed_with_known_issues",
+    "source_preserved": true,
+    "owned_df_pids": [
+      25404,
+      37412
+    ],
+    "fps_cap": 30,
+    "panel_crop": [
+      32,
+      52,
+      976,
+      760
+    ],
+    "different_pixels": {
+      "Open": 0,
+      "Closed": 0,
+      "Cold": 0,
+      "Convict_picker": 0
+    },
+    "native_case_reference": "build/stockpile-storage-native-input-20261111-193806",
+    "native_picker_reference": "build/stockpile-storage-native-input-20261111-230636",
+    "visible_rows": 13,
+    "input": [
+      "Convict button",
+      "typed empty-result search",
+      "candidate row conviction"
+    ],
+    "effect_receipt": {
+      "candidate_count": 293,
+      "candidate_queries": 3,
+      "closed_read_retired": true,
+      "controller_tabs": 3,
+      "convicted": true,
+      "counts": [
+        7,
+        3,
+        7
+      ],
+      "picker_controller": true,
+      "stale_tabs": 3,
+      "success": true,
+      "witnesses": 134
+    },
+    "limits": "Default1200x800 rendering and first-row conviction only. Sort controls/Interrogate unfinished; scroll/resize/keyboard/hover and offscreen/deceased rows not accepted. Public Justice remains hidden."
   }
 }

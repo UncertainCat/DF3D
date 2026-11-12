@@ -1,16 +1,40 @@
 extends "res://scripts/standing_orders_view.gd"
-# Staged read-only case view. Native captures190710 at1200x800 establish
-# this layout; action controls and the remaining categories are unfinished.
+# Staged Justice case/Convict view. Native190710 and230636 establish the
+#1200x800 layout; alternate sorting, Interrogate and other categories remain pending.
 const C=preload("res://scripts/management_contract.gd")
 const CASE_TABS=["Open cases","Closed cases","Cold cases","Fortress guard","Convicts","Intelligence"]
+const NameColor=preload("res://scripts/native_name_color.gd")
 var witness_scroll
+var candidate_scroll
+var search
+var picture=preload("res://scripts/native_unit_picture_frame.gd").new()
+var portraits: Dictionary={}
+var ticks_override: int=-1
+func picker_open() -> bool:return state.candidates.phase not in [state.candidates.Phase.Closed,state.candidates.Phase.Unavailable]
+func picker_capacity() -> int:return maxi(0,int((size.y-list_top()-120)/36))
+func picker_rect(index: int) -> Rect2:return Rect2(detail_x(),list_top()+24+index*36,size.x-detail_x()-40,36)
+func convict_rect() -> Rect2:return Rect2(detail_x()+104,list_top()+24,72,36)
+func picker_allowed() -> bool:return allowed() and state.candidates.phase==state.candidates.Phase.Ready
 func configure_justice(source,model) -> void:
 	configure_standing_orders(source,model)
 	scrollbar.input_allowed=allowed;scrollbar.wheel_enabled=false
 	scrollbar.row_changed.connect(func(value):state.seek(value,capacity()))
 	witness_scroll=preload("res://scripts/area_location_scrollbar.gd").new();add_child(witness_scroll);witness_scroll.configure(source)
+	witness_scroll.use_classic_art=true
 	witness_scroll.input_allowed=allowed;witness_scroll.wheel_enabled=false
 	witness_scroll.row_changed.connect(func(value):state.seek_witness(value,witness_capacity()))
+	candidate_scroll=preload("res://scripts/area_location_scrollbar.gd").new();add_child(candidate_scroll);candidate_scroll.configure(source)
+	candidate_scroll.use_classic_art=true
+	candidate_scroll.input_allowed=picker_allowed;candidate_scroll.wheel_enabled=false
+	candidate_scroll.row_changed.connect(func(value):state.candidates.seek(value,picker_capacity()))
+	picture.configure(source)
+	var inset:=StyleBoxTexture.new();inset.texture=art.texture("BUTTON_FILTER")
+	inset.set_texture_margin(SIDE_LEFT,8);inset.set_texture_margin(SIDE_RIGHT,32)
+	for side in [SIDE_TOP,SIDE_BOTTOM]:inset.set_texture_margin(side,12)
+	search=preload("res://scripts/area_owner_filter.gd").new();add_child(search);search.theme=theme;search.configure(inset,colors)
+	search.edited.connect(func(value):state.candidates.search(value.get_string_from_utf8()))
+	visibility_changed.connect(func():
+		if not is_visible_in_tree() and search.is_inside_tree():search.release_focus())
 	state.changed.connect(refresh);refresh()
 func information_rows() -> Array:
 	var groups:=InfoTabs.rows(wide_tabs)
@@ -35,13 +59,34 @@ func refresh() -> void:
 	scrollbar.position=Vector2(detail_x()-40,list_top());scrollbar.size=Vector2(16,capacity()*36)
 	scrollbar.page=capacity();scrollbar.set_rows(state.rows.size(),visible_first())
 	witness_scroll.position=Vector2(size.x-32,list_top()+72);witness_scroll.size=Vector2(16,maxi(0,int((size.y-list_top()-96)/12))*12)
-	witness_scroll.page=witness_capacity();witness_scroll.set_rows(state.detail.get("witnesses",[]).size(),witness_first());queue_redraw()
+	witness_scroll.page=witness_capacity();witness_scroll.set_rows(state.detail.get("witnesses",[]).size(),witness_first())
+	if picker_open():witness_scroll.hide()
+	candidate_scroll.position=Vector2(size.x-32,list_top()+24);candidate_scroll.size=Vector2(16,maxi(36,size.y-list_top()-108))
+	candidate_scroll.page=picker_capacity();candidate_scroll.set_rows(state.candidates.rows.size(),state.candidates.first)
+	if not picker_open():candidate_scroll.hide()
+	search.position=Vector2(detail_x()+16,size.y-60);search.size=Vector2(312,36);search.visible=picker_open()
+	search.editable=allowed() and state.candidates.phase in [state.candidates.Phase.Ready,state.candidates.Phase.Reading,state.candidates.Phase.Rejected]
+	search.set_bytes(state.candidates.query.to_utf8_buffer())
+	if not search.visible:search.release_focus()
+	if picker_open():state.candidates.read_icons(picker_capacity())
+	var retained: Dictionary={}
+	for id in state.candidates.icons:
+		var recipe: Dictionary=state.candidates.icons[id];var previous: Dictionary=portraits.get(id,{})
+		retained[id]=previous if previous.get("recipe",{})==recipe else {"recipe":recipe.duplicate(true),"texture":world.candidate_icon(recipe)}
+	portraits=retained;queue_redraw()
+func _process(_delta: float) -> void:
+	if ticks_override<0 and is_visible_in_tree() and state!=null and picker_open():
+		for index in range(state.candidates.first,mini(state.candidates.rows.size(),state.candidates.first+picker_capacity())):
+			if state.candidates.rows[index].display.name_color.effect!=0:queue_redraw();break
 func _input(event: InputEvent) -> void:
+	if allowed() and state!=null and picker_open() and event is InputEventKey and event.pressed and event.keycode!=KEY_ESCAPE and search.has_focus():
+		search.feed_key(event);get_viewport().set_input_as_handled();return
 	if allowed() and state!=null and event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
 		var point: Vector2=get_global_transform_with_canvas().affine_inverse()*event.position
 		if Rect2(Vector2(0,list_top()),size-Vector2(0,list_top())).has_point(point):
 			var step: int=-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1
 			if point.x<detail_x():state.seek(visible_first()+step,capacity())
+			elif picker_open():state.candidates.seek(state.candidates.first+step,picker_capacity())
 			else:state.seek_witness(witness_first()+step,witness_capacity())
 			get_viewport().set_input_as_handled();return
 	super._input(event)
@@ -49,6 +94,7 @@ func _gui_input(event: InputEvent) -> void:
 	if not allowed() or not event is InputEventMouseButton or not event.pressed:return
 	accept_event()
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
+	search.release_focus()
 	var groups:=information_rows()
 	for row in groups.size():
 		var x:=8
@@ -63,6 +109,34 @@ func _gui_input(event: InputEvent) -> void:
 	if state.phase not in [state.Phase.Ready,state.Phase.DetailReading]:return
 	for index in mini(capacity(),state.rows.size()-visible_first()):
 		if case_rect(index).has_point(event.position):state.select_case(state.rows[visible_first()+index].crime_id);return
+	if picker_open():
+		for index in mini(picker_capacity(),state.candidates.rows.size()-state.candidates.first):
+			if picker_rect(index).has_point(event.position):state.candidates.convict(state.candidates.rows[state.candidates.first+index].unit_id);return
+	elif state.tab!=1 and not state.detail.is_empty() and convict_rect().has_point(event.position):state.open_candidates()
+func draw_picker() -> void:
+	for index in 4:
+		var x: int=detail_x()+[5,15,24,35][index]*8;var width: int=[10,9,10,4][index]
+		var suffix: String="ACTIVE" if index in [0,3] else "INACTIVE"
+		for cell in 4:
+			var arrow:=strip("SORT_DESCENDING_"+suffix,cell)
+			if arrow!=null:draw_texture_rect(arrow,Rect2(x+cell*8,list_top(),8,12),false)
+		if index==3:continue
+		for cell in width-4:
+			var background:=strip("SORT_TEXT_"+suffix,0 if cell==0 else 2 if cell==width-5 else 1)
+			if background!=null:draw_texture_rect(background,Rect2(x+32+cell*8,list_top(),8,12),false)
+		if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),Vector2(x+40,list_top()+12),["Name","Cat","Prof"][index],HORIZONTAL_ALIGNMENT_LEFT,-1,12,colors[0] if suffix=="ACTIVE" else Color8(160,160,160))
+	for index in mini(picker_capacity(),state.candidates.rows.size()-state.candidates.first):
+		var row: Dictionary=state.candidates.rows[state.candidates.first+index];var rect:=picker_rect(index)
+		var selected: bool=state.candidates.first+index==0
+		patch("BUTTON_RECTANGLE_SELECTED" if selected else "BUTTON_RECTANGLE",Vector2i(rect.position/Vector2(8,12)),int(rect.size.x/8),3)
+		patch("",Vector2i(rect.position/Vector2(8,12)),5,3,picture.texture(selected))
+		var portrait: Texture2D=portraits.get(row.unit_id,{}).get("texture")
+		if portrait!=null:draw_texture_rect(portrait,Rect2(rect.position+Vector2(2,2),Vector2(32,32)),false)
+		var d: Dictionary=row.display
+		var ink:=NameColor.choose(d.name_color,ticks_override if ticks_override>=0 else Time.get_ticks_msec(),0 if ticks_override>=0 else randi_range(0,1))
+		if not ink.is_empty():text(d.name,rect.position+Vector2(40,24),int(ink[0])+8*int(ink[2]))
+		text(d.witness_label,rect.position+Vector2(280,12),d.witness_color)
+		text(d.deceased,rect.position+Vector2(280,24),13)
 func _draw() -> void:
 	if world==null or state==null:return
 	draw_rect(Rect2(Vector2(4,4),size-Vector2(8,8)),Color8(28,28,28));patch("HOVER_RECTANGLE",Vector2i.ZERO,int(size.x/8),frame_rows)
@@ -75,10 +149,15 @@ func _draw() -> void:
 		var row: Dictionary=state.rows[visible_first()+index];var rect:=case_rect(index)
 		patch("BUTTON_CATEGORY_RECTANGLE_SELECTED" if row.crime_id==state.selected_id else "BUTTON_CATEGORY_RECTANGLE",Vector2i(rect.position/Vector2(8,12)),int(rect.size.x/8),3)
 		text(row.caption,rect.position+Vector2(16,24))
+	if picker_open():draw_picker();return
 	if state.detail.is_empty():return
 	var d: Dictionary=state.detail;var x:=detail_x();var top:=list_top()
 	if d.has("injured_party"):text(d.injured_party,Vector2(x,top+12),7)
 	text(d.status,Vector2(x,top+24),11 if d.resolution==C.JusticeCaseResolution.Unsolved else 13)
+	if state.tab!=1:
+		patch("HORIZONTAL_OPTION_ACTIVE",Vector2i(x/8,(top+24)/12),13,3)
+		patch("HORIZONTAL_OPTION_ACTIVE",Vector2i((x+104)/8,(top+24)/12),9,3)
+		text("Interrogate",Vector2(x+8,top+48));text("Convict",Vector2(x+112,top+48))
 	var witnesses: Array=d.witnesses
 	for index in mini(witness_capacity(),witnesses.size()-witness_first()):
 		var row: Dictionary=witnesses[witness_first()+index];var y:=top+72+index*60

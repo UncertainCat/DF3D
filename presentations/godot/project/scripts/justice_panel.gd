@@ -1,5 +1,5 @@
 extends Node
-# Staged read-only owner; no public route until full Justice acceptance.
+# Staged case/Convict owner; no public route until full Justice acceptance.
 signal information_requested(caption: String)
 var ui_host
 var modal_input:=true

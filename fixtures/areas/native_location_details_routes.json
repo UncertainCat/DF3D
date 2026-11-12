@@ -164,11 +164,50 @@
     }
   },
   "omissions": [
-    "Full screen still unfinished; Areas launcher remains hidden.",
+    "Original capture predates later Details actions. Current qualification is recorded in current_main_scene_reference; Zones remains gated.",
     "Windows Escape outer dispatch differs from simulated LEAVESCREEN+OPTIONS; do not infer full physical Escape behavior from this capture.",
     "Keyboard parent focus/shortcuts, direct lifecycle zone switching and overlay input require further acceptance; parent pointer blocking is separately verified.",
-    "Full route staff mutation/keyboard acceptance, live disconnect/epoch/late replies, pending-entry cancellation.",
-    "Desired supplies/copies, rename, religious appointments, recognition and specialization controls."
+    "Original capture excludes full-route staff edits and lifecycle faults. Current main-scene reference covers staff edits; separate lifecycle evidence remains required for faults.",
+    "Original capture excludes desired quantities, naming, religious appointments, recognition and specialization. Quantity evidence is in current_main_scene_reference; other actions have separate owning fixtures."
   ],
-  "parent_input_reference": "fixtures/areas/native_location_details_parent_input.json"
+  "parent_input_reference": "fixtures/areas/native_location_details_parent_input.json",
+  "current_main_scene_reference": {
+    "run": "build/areas-acceptance-20261112-153213",
+    "management_protocol": 203,
+    "status": "passed_with_known_issues",
+    "diagnostics": [
+      "godot-separate-thread-notice"
+    ],
+    "chooser_locations": 6,
+    "assigned_locations": 6,
+    "staff_cases": 20,
+    "quantity_cases": 13,
+    "creation_removal_reassignment_scenarios": 7,
+    "scope": [
+      "main scene viewport input and independent native readback",
+      "access settings and hover",
+      "candidate ordering, headers and portraits",
+      "staff assignment and removal through chooser and assigned zone",
+      "quantity editing and pending Escape dismissal",
+      "location creation, removal and reassignment",
+      "hospital staff height and reader retirement"
+    ],
+    "preservation": "Owned DF24084 exited unsaved; two save manifests unchanged",
+    "gpu": "Both graphical processes capped30FPS; sampled51-52C and up to34% load, not continuous peaks",
+    "visual_review": [
+      "scene_details_route_1.png"
+    ],
+    "limitations": [
+      "Separate naming, religious-staff, recognition and transport-fault lanes were not rerun",
+      "Does not qualify Zone Active or expose the Zones launcher"
+    ],
+    "hashes": {
+      "result.json": "0182a817825b8518dc881ffb9e948cab7ca4b591a0031518f9f26a0ae72e3847",
+      "native.log": "fbbcd351b4bfa0758c8c0dd1b048709cd158ae8255000408a0c314d2974039e7",
+      "godot.log": "6acc40e37199ce3f08f904dde2da23694ff2d8ef8bb5d65ef442487e5ce36695",
+      "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851",
+      "scene_details_route_1.png": "e18da83e417c303b84a8a6219a24e1db36697389ef27250fadebc932f40e12b3"
+    }
+  }
 }

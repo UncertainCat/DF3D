@@ -4564,10 +4564,7 @@
     "part_labels_source": "Native draw jump table1fe594 maps part0..8 to branches1fe106..1fe3d1 and these literal bytes; no authored replacement labels."
   },
   "remaining": [
-    "Add typed name transport and session/epoch lifecycle coverage.",
-    "Observe scrolling, empty-list Random and keyboard/physical Escape behavior; implement recorded three-column display.",
-    "Integrate revision-guarded semantic name editing with typed session/epoch ownership.",
-    "Build native editor and verify rendered effects and lifecycle before exposure."
+    "Full Zones exposure audit is separate from naming acceptance. Typed editing, rendering and lifecycle evidence is recorded in the later named references below; the original discovery omissions are not current implementation gaps."
   ],
   "word_choices_samples": {
     "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945": {

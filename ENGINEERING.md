@@ -15059,6 +15059,24 @@ is session-lifecycle acceptance, not a completed typing UI.
 
 ### Current Zones revalidation and remaining semantic audit
 
+Current Locations qualification: protected
+`areas-acceptance-20261112-153213 -LocationScene` passes on management203 and
+bridge SHA256 `01453FB452DDEBB97C60321A3FCA9E6CA66CF58FF63532A1DCFD439E19B8064E`.
+The actual main scene exercises six chooser and six assigned-zone Details
+routes, twenty ordinary staff-role edits, thirteen quantity cases (including
+pending Escape dismissal), access controls/hover, candidate headers/portraits,
+seven location creation/removal/reassignment scenarios, and hospital staff
+resize/reader retirement. The tavern Details capture was visually inspected.
+Owned DF24084 exits unsaved with two unchanged save manifests. Only the known
+separate-render-thread notice qualifies the result; both clients are capped30FPS,
+with GPU samples51–52C and up to34% load. These are samples, not peak measurements.
+`native_location_details_routes.json.current_main_scene_reference` records hashes.
+Separate naming, religious-staff, recognition and fault-injection lanes retain
+their existing evidence and were not rerun here. This closes current-build
+qualification for the combined Locations lane, not the Zone Active audit or
+public Zones exposure.
+
+
 Protected `areas-acceptance-20261112-151424 -ControllerScene -ZonesOnly`
 revalidates the existing main-scene Zones workflow against management203. Creation,
 inline naming, owner selection/recentering/removal, immediate repaint/erase,

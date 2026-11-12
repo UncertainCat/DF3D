@@ -57,8 +57,9 @@ Migration194: rebuild bridge and clients together; mailbox is
 `Local\df3d_management_v194`. Installed protocol193 binaries must not be used with
 new clients. Session/map recording formats are unchanged. This commit defines
 and validates the contract. Model codecs, the Godot dictionary adapter, bridge
-candidate producer and conviction dispatch now carry these requests. Godot picker
-integration remains pending; no public Justice route is exposed.
+candidate producer and conviction dispatch now carry these requests. The staged
+picker controller is integrated with the case owner; picker rendering remains
+pending and no public Justice route is exposed.
 `build/qa/justice-candidate-contract` passes the root build and all19 core tests,
 including malformed candidate scopes, duplicate IDs, paging and outcome isolation.
 `build/qa/justice-candidate-model` passes the root and extension builds, all19 core
@@ -99,6 +100,28 @@ retains the receipt and limits. MSVC build passes; installed194 plugin SHA256 is
 `build/qa/justice-candidate-bridge` passes all19 core tests and the headless action
 service uncertainty test. Candidate appearance/name rendering, picker lifecycle,
 Interrogate controls/sorting and remaining Justice categories remain unfinished.
+
+`justice_candidates_state.gd` now owns Convict candidate paging, search and
+mutation submission. It publishes complete lists atomically, scopes every page
+to one case/query/revision, retires old searches and case selections, and refuses
+duplicate input while a conviction is pending or unknown. Rejection does not
+replay a mutation. Success closes the child controller and refreshes the parent
+case list; closing/session replacement retires observers so late replies cannot
+reopen a panel. Unknown retains disabled candidate data internally, with no new
+visible status copy. Candidate UI/input rendering is not yet connected.
+
+`build/qa/justice-picker-state-final` passes root19, controller and main-scene
+composition checks. The initial check exposed a new signal reference cycle;
+replacing the capturing forwarding lambda with a bound method removes it. These
+new leaks are fixed, not classified as deferred engine diagnostics. Protected
+`stockpile-storage-native-input-20261111-225523` uses the real action service and
+parent/child controllers:293 candidates, empty-result search, restored search,
+conviction5698 and refreshed Open cases without case9. The native effect guard
+confirms one history event. DF46024 closes unsaved, source preserved and prefs
+restored; native30FPS/headless viewer, GPU sample58C/56%/64.72W (not peak).
+Only the known separate-thread notice remains: passed_with_known_issues.
+`native_justice.json.picker_controller_reference` records the receipt and limits.
+This is controller/effect acceptance, not a rendered picker or pointer-input test.
 
 Conviction has a native semantic-effect candidate at RVA `46f0d0`, called by
 the picker callback `474dd0` at `474ef5` with `(crime*, unit*)`. The picker

@@ -11,6 +11,11 @@ func settle_controller(controller) -> void:
 	var deadline:=Time.get_ticks_msec()+5000
 	while controller.phase in [controller.Phase.Reading,controller.Phase.DetailReading] and Time.get_ticks_msec()<deadline:
 		world.poll();await create_timer(0.01).timeout
+func settle_picker(controller) -> void:
+	var deadline:=Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec()<deadline:
+		world.poll();await create_timer(0.01).timeout
+		if controller.candidates.phase not in [controller.candidates.Phase.Reading,controller.candidates.Phase.Applying] and controller.phase not in [controller.Phase.Reading,controller.Phase.DetailReading]:return
 func run() -> void:
 	Engine.max_fps=30;directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
 	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/justice-wire-reference.json"))
@@ -130,13 +135,22 @@ func run() -> void:
 	check(closed_result.get("status")==C.ManagementStatus.Rejected,"Closed case exposed Convict candidates")
 	var applied:=false
 	if OS.get_environment("DF3D_JUSTICE_WIRE_CONVICT")=="1":
-		var reply:=await request("justice",intent)
-		applied=reply.get("status")==C.ManagementStatus.Ok and reply.get("justice",{}).get("outcome")==C.JusticeOutcome.Applied
-		check(applied,"Wire conviction did not apply")
+		var picker_actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(picker_actions);picker_actions.configure(world,true)
+		var owner=preload("res://scripts/justice_state.gd").new();owner.configure(picker_actions);owner.open()
+		await settle_controller(owner);owner.open_candidates();await settle_picker(owner)
+		if not check(owner.candidates.phase==owner.candidates.Phase.Ready and owner.candidates.rows.size()==candidate_count,"Live picker failed to read candidates"):quit(1);return
+		owner.candidates.search("zznomatch");await settle_picker(owner)
+		check(owner.candidates.phase==owner.candidates.Phase.Ready and owner.candidates.rows.is_empty(),"Live picker search failed")
+		owner.candidates.search("");await settle_picker(owner)
+		var commits: Array=[];owner.candidates.convicted.connect(func(id,unit):commits.append([id,unit]))
+		owner.candidates.convict(5698);await settle_picker(owner)
+		applied=commits==[[9,5698]]
+		check(applied and owner.phase==owner.Phase.Ready and not owner.rows.any(func(row):return row.crime_id==9),"Live picker conviction did not refresh parent cases")
+		owner.dispose();picker_actions.queue_free();await process_frame
 		var repeated:=await request("justice",intent)
 		check(repeated.get("status")==C.ManagementStatus.Rejected and repeated.get("justice",{}).get("outcome")==C.JusticeOutcome.Stale,
 			"Repeated old conviction was not rejected")
 	var result=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	result.store_string(JSON.stringify({"success":not failed,"counts":counts,"witnesses":report_count,"stale_tabs":3,"controller_tabs":3,
-		"closed_read_retired":true,"candidate_count":candidate_count,"candidate_queries":3,"convicted":applied}));result.close()
+		"closed_read_retired":true,"candidate_count":candidate_count,"candidate_queries":3,"convicted":applied,"picker_controller":applied}));result.close()
 	quit(1 if failed else 0)

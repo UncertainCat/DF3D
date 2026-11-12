@@ -8228,5 +8228,35 @@
       "Unknown publication fallback not fault-injected live",
       "Known Godot separate-thread warning"
     ]
+  },
+  "picker_controller_reference": {
+    "source": "build\\stockpile-storage-native-input-20261111-225523",
+    "status": "passed_with_known_issues",
+    "receipt": {
+      "candidate_count": 293,
+      "candidate_queries": 3,
+      "closed_read_retired": true,
+      "controller_tabs": 3,
+      "convicted": true,
+      "counts": [
+        7,
+        3,
+        7
+      ],
+      "picker_controller": true,
+      "stale_tabs": 3,
+      "success": true,
+      "witnesses": 134
+    },
+    "owned_df_pid": 46024,
+    "source_preserved": true,
+    "fps_cap": 30,
+    "receipt_sha256": "9500ff300963b3ee61f48f37a728c86e13a43e73c2e853c0039976b662a24733",
+    "limitations": [
+      "No rendered picker or pointer-input acceptance",
+      "Candidate names/colors/artwork/evidence labels not connected",
+      "Interrogate and alternative sorting remain unfinished",
+      "Known separate-thread notice only"
+    ]
   }
 }

@@ -1,9 +1,17 @@
 extends RefCounted
-# Read-only staged controller. Native case membership/order/text remain authority.
+# Staged controller. Native case membership/order/text remain authority.
 signal changed
 const C=preload("res://scripts/management_contract.gd")
 enum Phase {Closed,Reading,Ready,DetailReading,Rejected,Unavailable}
 var service
+var candidates=preload("res://scripts/justice_candidates_state.gd").new()
+func _init() -> void:
+	candidates.changed.connect(_candidates_changed)
+	candidates.convicted.connect(_convicted)
+func _candidates_changed() -> void:changed.emit()
+func _convicted(_crime: int,_unit: int) -> void:refresh()
+func open_candidates() -> void:
+	if phase==Phase.Ready and tab!=1 and not detail.is_empty():candidates.open(tab,selected_id,_revision,detail.revision)
 var phase:=Phase.Closed
 var tab:=0
 var rows: Array=[]
@@ -23,12 +31,15 @@ var _total:=0
 var _restarts:=0
 func configure(source) -> void:
 	dispose();service=source
+	candidates.configure(source)
 	if service!=null:service.session_changed.connect(_session_changed)
 func dispose() -> void:
 	close()
+	candidates.dispose()
 	if service!=null and service.session_changed.is_connected(_session_changed):service.session_changed.disconnect(_session_changed)
 	service=null
 func _retire() -> void:
+	candidates.close()
 	generation+=1;var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
 func _clear() -> void:

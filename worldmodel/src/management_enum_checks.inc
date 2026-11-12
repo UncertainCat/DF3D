@@ -7,7 +7,9 @@ static_assert(sizeof(df3d::mirror::EnumValuesJusticeCaseResolution()) / sizeof(d
 static_assert(static_cast<int>(wm::JusticeOutcome::None) == static_cast<int>(df3d::mirror::JusticeOutcome::None));
 static_assert(static_cast<int>(wm::JusticeOutcome::Rejected) == static_cast<int>(df3d::mirror::JusticeOutcome::Rejected));
 static_assert(static_cast<int>(wm::JusticeOutcome::Stale) == static_cast<int>(df3d::mirror::JusticeOutcome::Stale));
-static_assert(sizeof(df3d::mirror::EnumValuesJusticeOutcome()) / sizeof(df3d::mirror::JusticeOutcome) == 3);
+static_assert(static_cast<int>(wm::JusticeOutcome::Applied) == static_cast<int>(df3d::mirror::JusticeOutcome::Applied));
+static_assert(static_cast<int>(wm::JusticeOutcome::Unknown) == static_cast<int>(df3d::mirror::JusticeOutcome::Unknown));
+static_assert(sizeof(df3d::mirror::EnumValuesJusticeOutcome()) / sizeof(df3d::mirror::JusticeOutcome) == 5);
 static_assert(static_cast<int>(wm::ObjectsOutcome::None) == static_cast<int>(df3d::mirror::ObjectsOutcome::None));
 static_assert(static_cast<int>(wm::ObjectsOutcome::Rejected) == static_cast<int>(df3d::mirror::ObjectsOutcome::Rejected));
 static_assert(static_cast<int>(wm::ObjectsOutcome::Stale) == static_cast<int>(df3d::mirror::ObjectsOutcome::Stale));
@@ -300,7 +302,9 @@ static_assert(static_cast<int>(wm::ManagementAction::ObjectsRead) == static_cast
 static_assert(static_cast<int>(wm::ManagementAction::ObjectsLocate) == static_cast<int>(df3d::mirror::ManagementAction::ObjectsLocate));
 static_assert(static_cast<int>(wm::ManagementAction::JusticeRead) == static_cast<int>(df3d::mirror::ManagementAction::JusticeRead));
 static_assert(static_cast<int>(wm::ManagementAction::JusticeCaseRead) == static_cast<int>(df3d::mirror::ManagementAction::JusticeCaseRead));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 123);
+static_assert(static_cast<int>(wm::ManagementAction::JusticeCandidatesRead) == static_cast<int>(df3d::mirror::ManagementAction::JusticeCandidatesRead));
+static_assert(static_cast<int>(wm::ManagementAction::JusticeConvict) == static_cast<int>(df3d::mirror::ManagementAction::JusticeConvict));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 125);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -630,3 +634,5 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::ObjectsRead) == df3d::mi
 static_assert(wm::isRuntimeAction(wm::ManagementAction::ObjectsLocate) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::ObjectsLocate));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::JusticeRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::JusticeRead));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::JusticeCaseRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::JusticeCaseRead));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::JusticeCandidatesRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::JusticeCandidatesRead));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::JusticeConvict) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::JusticeConvict));

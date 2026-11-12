@@ -10,7 +10,7 @@ ENUMS = ("JusticeCaseResolution", "JusticeOutcome", "ObjectsOutcome", "NoblesOut
          "SelectionOperation", "SelectionKind", "SelectionSection", "CreatureSectionKind", "ReportView", "ReportTab", "ReportZoom")
 
 DOMAINS = {
-    "justice": ("JusticeRead", "JusticeCaseRead"),
+    "justice": ("JusticeRead", "JusticeConvict"),
     "objects": ("ObjectsRead", "ObjectsLocate"),
     "nobles": ("NoblesRead", "NoblesSymbolsRetire"),
     "places": ("PlacesRead", "PlacesApply"),

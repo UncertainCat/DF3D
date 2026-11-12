@@ -1,6 +1,44 @@
 #include <doctest.h>
 #include "management_util.h"
 namespace m=df3d::mirror;
+TEST_CASE("Justice conviction requires case and candidate revisions and a single target") {
+ for(bool apply:{false,true})for(int fault=0;fault<10;++fault){
+  flatbuffers::FlatBufferBuilder b;
+  auto query=b.CreateString(fault==7?std::string(513,'x'):fault==8?std::string("a\0b",3):"fixture");
+  auto q=m::CreateJusticeRequest(b,0,fault==6?1:0,32,fault==1?0:7,9,fault==2?0:8,
+    query,fault==3?UINT64_MAX:fault==4?0:9,apply?(fault==5?-1:42):(fault==5?42:-1));
+  m::ConstructionRequestBuilder r(b);r.add_client_id(1);r.add_seq(1);r.add_world_epoch(1);
+  r.add_action(fault==9?m::ManagementAction::JusticeCaseRead:apply?m::ManagementAction::JusticeConvict:m::ManagementAction::JusticeCandidatesRead);
+  r.add_justice(q);b.Finish(r.Finish());
+  const bool invalid=fault!=0 && !(fault==4 && !apply) && !(fault==6 && !apply);
+  CHECK(bool(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer())))==invalid);
+ }
+}
+TEST_CASE("Justice candidate pages bind unique units to a crime and revision") {
+ for(int fault=0;fault<8;++fault){flatbuffers::FlatBufferBuilder b;
+  std::vector<flatbuffers::Offset<m::JusticeCandidateRow>> rows;
+  rows.push_back(m::CreateJusticeCandidateRow(b,42,39,true,false));
+  rows.push_back(m::CreateJusticeCandidateRow(b,fault==1?42:43,0,false,true));
+  auto candidates=m::CreateJusticeCandidatePage(b,fault==2?-1:9,fault==3?0:8,fault==4?1:2,0,b.CreateVector(rows));
+  auto result=m::CreateJusticeState(b,fault==5?m::JusticeOutcome::Stale:m::JusticeOutcome::None,0,7,0,0,
+    b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeCaseRow>>{}),0,candidates);
+  m::ManagementStateBuilder s(b);s.add_revision(1);s.add_action(fault==6?m::ManagementAction::JusticeRead:m::ManagementAction::JusticeCandidatesRead);
+  s.add_status(fault==7?m::ManagementStatus::Rejected:m::ManagementStatus::Ok);s.add_justice(result);b.Finish(s.Finish());
+  CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==(fault!=0));
+ }
+}
+TEST_CASE("Justice mutation outcomes cannot masquerade as reads or carry reusable data") {
+ for(auto outcome:{m::JusticeOutcome::None,m::JusticeOutcome::Rejected,m::JusticeOutcome::Stale,m::JusticeOutcome::Applied,m::JusticeOutcome::Unknown})
+ for(bool ok:{false,true})for(bool read:{false,true})for(bool data:{false,true}){
+  flatbuffers::FlatBufferBuilder b;
+  auto result=m::CreateJusticeState(b,outcome,0,data?7:0,0,0,b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeCaseRow>>{}));
+  m::ManagementStateBuilder s(b);s.add_revision(1);s.add_action(read?m::ManagementAction::JusticeCandidatesRead:m::ManagementAction::JusticeConvict);
+  s.add_status(ok?m::ManagementStatus::Ok:m::ManagementStatus::Rejected);s.add_justice(result);b.Finish(s.Finish());
+  const bool valid=!data && (read ? !ok && (outcome==m::JusticeOutcome::Rejected || outcome==m::JusticeOutcome::Stale) :
+    ok ? outcome==m::JusticeOutcome::Applied : outcome==m::JusticeOutcome::Rejected || outcome==m::JusticeOutcome::Stale || outcome==m::JusticeOutcome::Unknown);
+  CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==!valid);
+ }
+}
 TEST_CASE("Justice requests scope paged reads to list and case revisions") {
  for(bool detail:{false,true})for(int fault=0;fault<10;++fault){
   flatbuffers::FlatBufferBuilder b;

@@ -41,6 +41,27 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+Management protocol194 adds staged `JusticeCandidatesRead` and `JusticeConvict`
+contracts. Candidate requests carry the current list and case revisions, native
+search query (at most512 UTF-8 bytes, no embedded NUL), and a candidate revision
+for continuation pages. Conviction additionally requires that candidate revision
+and one unit ID. The producer must hash the complete ordered candidate facts and
+query before paging, and revalidate all three revisions before mutation. Candidate
+rows contain stable unit IDs, native ranks and interrogation/counterintelligence
+facts; they do not encode native widget state. Candidate presentation data still
+needs to be connected to unit readers. Mutation replies carry no reusable list/detail data: Applied
+is successful; Rejected, Stale and Unknown are distinct refusals. Unknown must
+never trigger automatic replay. Read replies cannot carry mutation outcomes.
+
+Migration194: rebuild bridge and clients together; mailbox is
+`Local\df3d_management_v194`. Installed protocol193 binaries must not be used with
+new clients. Session/map recording formats are unchanged. This commit defines
+and validates the contract only; model codecs, producer, action dispatch and
+Godot picker integration remain pending. Existing protocol193 evidence below
+does not establish acceptance of this new contract or expose public Justice.
+`build/qa/justice-candidate-contract` passes the root build and all19 core tests,
+including malformed candidate scopes, duplicate IDs, paging and outcome isolation.
+
 Conviction has a native semantic-effect candidate at RVA `46f0d0`, called by
 the picker callback `474dd0` at `474ef5` with `(crime*, unit*)`. The picker
 builder `474a70` installs the callback through the function object at vtable

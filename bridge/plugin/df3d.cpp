@@ -119,6 +119,7 @@
 #include "objects_native.h"
 #include "justice_native.h"
 #include "justice_guard_native.h"
+#include "justice_convicts_native.h"
 #include "justice_action_native.h"
 #include "justice_presentation_native.h"
 #include <sstream>
@@ -2839,6 +2840,17 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               row["rank"]=fact.rank;row["flags"]=fact.flags;result.append(row);}
             out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
           }catch(const std::exception&){return CR_WRONG_USAGE;}
+        }
+        if(parameters[0]=="justice-convicts-probe") {
+          if(parameters.size()!=1 || !state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+          const auto rows=df3d_justice::convicts();if(!rows)return CR_FAILURE;Json::Value result(Json::arrayValue);
+          for(const auto& fact:*rows){const auto detail=df3d_justice::convictDetail(fact.unitId);if(!detail)return CR_FAILURE;
+            Json::Value row(Json::objectValue),sentence(Json::arrayValue),crimes(Json::arrayValue);row["unit_id"]=fact.unitId;
+            for(const auto& line:detail->sentence)sentence.append(DF2UTF(line));row["sentence"]=sentence;
+            if(detail->officer)row["officer"]=DF2UTF(*detail->officer);
+            for(const auto& crime:detail->crimes){Json::Value c(Json::objectValue);c["id"]=crime.id;c["caption"]=DF2UTF(crime.caption);if(crime.injuredParty)c["injured_party"]=DF2UTF(*crime.injuredParty);crimes.append(c);}
+            row["crimes"]=crimes;result.append(row);}
+          out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
         }
         if(parameters[0]=="justice-guard-probe") {
           if(parameters.size()!=1)return CR_WRONG_USAGE;

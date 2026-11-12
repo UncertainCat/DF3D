@@ -41,6 +41,38 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+The staged Convicts provider (`justice_convicts_native.h`) isolates the inline
+semantic selections in native470757/471eb0/472020/4728a0 and46f6d0; those widget
+builders are pinned but never called. Discovered crimes in the current site and
+entity contribute resolved accused units to an owned pointer set, then the
+existing native generic search/sort adapter orders the roster. Details retain
+world crime-vector order and use native46d660 captions and owned-unit1330c30
+names. The last matching semantic `plotinfo.punishments` record supplies the
+sentence. Native52c130 formats numbers; positive prison counters display
+counter/120+1 days. Labels and plural branches follow the pinned native code.
+No native list, widget, selection or cached punishment index is a runtime input.
+This provider is not yet wired to the management protocol or visible viewer tab.
+
+Protected `stockpile-storage-native-input-20261112-015923` matches the three native
+Convicts6970/6546/6032 in default Category order and checks the selected6970's
+text/color output for no punishment record, a zero sentence record, combined
+singular punishments, and plural punishments with a named officer. Prison
+counters119/120 produce1/2 days respectively. Sentence/case text is palette15,
+officer9, injured party7. The controlled appended punishment is removed and
+freed, the source save is preserved, and owned DF22828 closes unsaved with
+preferences restored. Native runs at30FPS without Godot; observed GPU38C/0%
+is not a continuous peak. The MSVC build and all19 core checks pass.
+`native_justice.json.convicts_provider_reference` retains bounded evidence.
+Search, alternate sorts, multiple crimes per convict, missing/dead/foreign units,
+negative punishment counters and viewer transport/rendering remain unaccepted.
+
+The protected oracle reads deferred row builds as well as the selected row's
+name widget: these captures retain unselected rows in the native deferred-build
+queue. Entry-list storage order alone is not displayed order. Earlier015615/015711 incorrectly
+assumed one convict from the widget dump;015815 compared the unsorted entry
+storage. These are rejected oracle attempts, not native defects or acceptance.
+
+
 Management protocol199 adds the read-only `JusticeGuardRead` action and an
 optional `JusticeGuardPage` on `JusticeState`. Guard requests use tab3 and owned
 query/sort/page inputs, and cannot carry case identities or mutation comparisons.

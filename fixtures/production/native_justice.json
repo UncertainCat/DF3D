@@ -9712,5 +9712,315 @@
       "shared candidate portrait defects remain open",
       "Justice remains hidden from public routes"
     ]
+  },
+  "convicts_provider_reference": {
+    "run": "stockpile-storage-native-input-20261112-015923",
+    "status": "passed",
+    "protocol": 199,
+    "owned_df_pid": 22828,
+    "source_preserved": true,
+    "native_fps": 30,
+    "viewer_launched": false,
+    "samples": [
+      {
+        "name": "baseline",
+        "native_rows": [
+          6970,
+          6546,
+          6032
+        ],
+        "native_text": [
+          {
+            "color": 15,
+            "text": "No sentence pending."
+          },
+          {
+            "color": 15,
+            "text": "Violation of production order"
+          },
+          {
+            "color": 7,
+            "text": "Injured party: KÃ»buk Ã¯ngizkor, mayor."
+          }
+        ],
+        "provider": [
+          {
+            "crimes": [
+              {
+                "caption": "Violation of production order",
+                "id": 12,
+                "injured_party": "Injured party: KÃ»buk Ã¯ngizkor, mayor."
+              }
+            ],
+            "sentence": [
+              "No sentence pending."
+            ],
+            "unit_id": 6970
+          },
+          {
+            "crimes": [
+              {
+                "caption": "Violation of production order",
+                "id": 7,
+                "injured_party": "Injured party: Zas RigÃ²throsat, Wrestler."
+              }
+            ],
+            "sentence": [
+              "No sentence pending."
+            ],
+            "unit_id": 6546
+          },
+          {
+            "crimes": [
+              {
+                "caption": "Violation of production order",
+                "id": 8,
+                "injured_party": "Injured party: Umil Kespomba, Human Bard."
+              }
+            ],
+            "sentence": [
+              "No sentence pending."
+            ],
+            "unit_id": 6032
+          }
+        ]
+      },
+      {
+        "name": "zero-sentence",
+        "native_rows": [
+          6970,
+          6546,
+          6032
+        ],
+        "native_text": [
+          {
+            "color": 15,
+            "text": "No sentence pending."
+          },
+          {
+            "color": 9,
+            "text": "Officer: none assigned."
+          },
+          {
+            "color": 15,
+            "text": "Violation of production order"
+          },
+          {
+            "color": 7,
+            "text": "Injured party: KÃ»buk Ã¯ngizkor, mayor."
+          }
+        ],
+        "provider": [
+          {
+            "crimes": [
+              {
+                "caption": "Violation of production order",
+                "id": 12,
+                "injured_party": "Injured party: KÃ»buk Ã¯ngizkor, mayor."
+              }
+            ],
+            "officer": "Officer: none assigned.",
+            "sentence": [
+              "No sentence pending."
+            ],
+            "unit_id": 6970
+          },
+          {
+            "crimes": [
+              {
+                "caption": "Violation of production order",
+                "id": 7,
+                "injured_party": "Injured party: Zas RigÃ²throsat, Wrestler."
+              }
+            ],
+            "sentence": [
+              "No sentence pending."
+            ],
+            "unit_id": 6546
+          },
+          {
+            "crimes": [
+              {
+                "caption": "Violation of production order",
+                "id": 8,
+                "injured_party": "Injured party: Umil Kespomba, Human Bard."
+              }
+            ],
+            "sentence": [
+              "No sentence pending."
+            ],
+            "unit_id": 6032
+          }
+        ]
+      },
+      {
+        "name": "combined-singular",
+        "native_rows": [
+          6970,
+          6546,
+          6032
+        ],
+        "native_text": [
+          {
+            "color": 15,
+            "text": "1 hammerstrike."
+          },
+          {
+            "color": 15,
+            "text": "Beating."
+          },
+          {
+            "color": 15,
+            "text": "1 day in prison."
+          },
+          {
+            "color": 9,
+            "text": "Officer: none assigned."
+          },
+          {
+            "color": 15,
+            "text": "Violation of production order"
+          },
+          {
+            "color": 7,
+            "text": "Injured party: KÃ»buk Ã¯ngizkor, mayor."
+          }
+        ],
+        "provider": [
+          {
+            "crimes": [
+              {
+                "caption": "Violation of production order",
+                "id": 12,
+                "injured_party": "Injured party: KÃ»buk Ã¯ngizkor, mayor."
+              }
+            ],
+            "officer": "Officer: none assigned.",
+            "sentence": [
+              "1 hammerstrike.",
+              "Beating.",
+              "1 day in prison."
+            ],
+            "unit_id": 6970
+          },
+          {
+            "crimes": [
+              {
+                "caption": "Violation of production order",
+                "id": 7,
+                "injured_party": "Injured party: Zas RigÃ²throsat, Wrestler."
+              }
+            ],
+            "sentence": [
+              "No sentence pending."
+            ],
+            "unit_id": 6546
+          },
+          {
+            "crimes": [
+              {
+                "caption": "Violation of production order",
+                "id": 8,
+                "injured_party": "Injured party: Umil Kespomba, Human Bard."
+              }
+            ],
+            "sentence": [
+              "No sentence pending."
+            ],
+            "unit_id": 6032
+          }
+        ]
+      },
+      {
+        "name": "combined-plural-officer",
+        "native_rows": [
+          6970,
+          6546,
+          6032
+        ],
+        "native_text": [
+          {
+            "color": 15,
+            "text": "2 hammerstrikes."
+          },
+          {
+            "color": 15,
+            "text": "Beating."
+          },
+          {
+            "color": 15,
+            "text": "2 days in prison."
+          },
+          {
+            "color": 9,
+            "text": "Officer: Urvad Kosoththosbut, Woodworker."
+          },
+          {
+            "color": 15,
+            "text": "Violation of production order"
+          },
+          {
+            "color": 7,
+            "text": "Injured party: KÃ»buk Ã¯ngizkor, mayor."
+          }
+        ],
+        "provider": [
+          {
+            "crimes": [
+              {
+                "caption": "Violation of production order",
+                "id": 12,
+                "injured_party": "Injured party: KÃ»buk Ã¯ngizkor, mayor."
+              }
+            ],
+            "officer": "Officer: Urvad Kosoththosbut, Woodworker.",
+            "sentence": [
+              "2 hammerstrikes.",
+              "Beating.",
+              "2 days in prison."
+            ],
+            "unit_id": 6970
+          },
+          {
+            "crimes": [
+              {
+                "caption": "Violation of production order",
+                "id": 7,
+                "injured_party": "Injured party: Zas RigÃ²throsat, Wrestler."
+              }
+            ],
+            "sentence": [
+              "No sentence pending."
+            ],
+            "unit_id": 6546
+          },
+          {
+            "crimes": [
+              {
+                "caption": "Violation of production order",
+                "id": 8,
+                "injured_party": "Injured party: Umil Kespomba, Human Bard."
+              }
+            ],
+            "sentence": [
+              "No sentence pending."
+            ],
+            "unit_id": 6032
+          }
+        ]
+      }
+    ],
+    "restored": true,
+    "artifacts": {
+      "justice-convicts.json": "a8145df3fa72f863176426b401917a7527d9e74756262bc8ab359943524d8f71",
+      "justice-convicts-baseline.png": "2e88afada2ce6e08ad9af8f688d694e97d0d19ba4a65abd2f2662b10796b2411",
+      "justice-convicts-sentence.png": "463d3d560c4c556c9071dfd39a4d2b81aac9167ade3f1844a7f1799b4397603b"
+    },
+    "limits": [
+      "provider only; no Convicts protocol/viewer integration",
+      "only selected unit6970 sentence details compared",
+      "default Category order only; search and other sorts unaccepted",
+      "multi-crime, negative counters and missing/dead/foreign unit branches unaccepted"
+    ]
   }
 }

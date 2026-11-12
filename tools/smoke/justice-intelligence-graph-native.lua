@@ -100,7 +100,8 @@ local ok,err=xpcall(function()
  if os.getenv('DF3D_JUSTICE_GRAPH_PRESENTATION')=='1' then
   local states={}
   local function record(name)
-   local state={mode=menu.counterintelligence_mode,selected=menu.counterintelligence_selected,scroll=menu.scroll_position_counterintelligence,actors={},organizations={},plots={},lines={}}
+   local state={mode=menu.counterintelligence_mode,selected=menu.counterintelligence_selected,scroll=menu.scroll_position_counterintelligence,selected_node=-1,actors={},organizations={},plots={},lines={}}
+   if #menu.organization_entry>0 then state.selected_node=index(menu.organization_entry[0].node,menu.selected_counterintelligence_oen)end
    for _,row in ipairs(menu.actor_entry)do
     local lines={};for _,line in ipairs(row.main_text_box.text)do lines[#lines+1]=dfhack.df2utf(line.value)end
     state.actors[#state.actors+1]={name=dfhack.df2utf(row.p_list_name),lines=lines}
@@ -116,7 +117,28 @@ local ok,err=xpcall(function()
   click(220,148);assert(menu.counterintelligence_mode==1,'Actors tab missed');record('actors')
   click(64,250);record('actor-selected')
   click(324,148);assert(menu.counterintelligence_mode==2,'Organizations tab missed');record('organizations')
+  if os.getenv('DF3D_JUSTICE_GRAPH_NAVIGATION')=='1' then
+   click(496,340);assert(menu.selected_counterintelligence_oen==menu.organization_entry[0].node[1]);record('node-selected')
+   click(96,220);assert(menu.selected_counterintelligence_oen==menu.organization_entry[0].node[1],'Blank organization click changed selection');record('node-blank')
+   click(496,412);assert(menu.selected_counterintelligence_oen==menu.organization_entry[0].node[2]);record('node-last')
+   gui.simulateInput(view,'CURSOR_UP');settle();record('node-key-up')
+   click(220,148);record('actors-return')
+   gui.simulateInput(view,'CURSOR_DOWN');settle();record('actors-key-down')
+   click(324,148);record('organizations-return')
+  end
   click(440,148);assert(menu.counterintelligence_mode==3,'Plots tab missed');record('plots')
+  if os.getenv('DF3D_JUSTICE_GRAPH_RESIZE')=='1' then
+   local function resize(name)
+    local f=assert(io.open(out..'/owner-input-request.tmp','w'));f:write('name-resize-'..name);f:close()
+    assert(os.rename(out..'/owner-input-request.tmp',out..'/owner-input-request'))
+    local deadline=dfhack.getTickCount()+30000
+    while true do local ack=io.open(out..'/owner-input-ack');if ack then ack:close();break end
+     assert(dfhack.getTickCount()<deadline,'Graph resize timeout');require('gui.script').sleep(1,'frames')end
+    assert(os.remove(out..'/owner-input-ack'));settle()
+   end
+   click(324,148);resize('minimum');record('organizations-minimum')
+   resize('default');record('organizations-restored')
+  end
   local output=assert(io.open(out..'/justice-graph-presentation.json','w'));output:write(json.encode(states));output:close()
  end
 end,debug.traceback)

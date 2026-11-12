@@ -10761,5 +10761,150 @@
       "one corruption agreement and linear three-node organization; other plot types and multi-organization graphs unaccepted",
       "no claim of full public Justice acceptance"
     ]
+  },
+  "intelligence_graph_navigation_reference": {
+    "run": "build/stockpile-storage-native-input-20261112-103208",
+    "protocol": 203,
+    "status": "passed_with_known_issues",
+    "owned_df_pid": 28268,
+    "source_preserved": true,
+    "native_fps": 30,
+    "viewer_fps": 30,
+    "states": {
+      "actor-selected": {
+        "mode": 1,
+        "selected": 1,
+        "scroll": 0,
+        "selected_node": -1
+      },
+      "actors": {
+        "mode": 1,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": -1
+      },
+      "actors-key-down": {
+        "mode": 1,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": -1
+      },
+      "actors-return": {
+        "mode": 1,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": -1
+      },
+      "node-blank": {
+        "mode": 2,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": 1
+      },
+      "node-key-up": {
+        "mode": 2,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": 2
+      },
+      "node-last": {
+        "mode": 2,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": 2
+      },
+      "node-selected": {
+        "mode": 2,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": 1
+      },
+      "organizations": {
+        "mode": 2,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": 0
+      },
+      "organizations-minimum": {
+        "mode": 2,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": 0
+      },
+      "organizations-restored": {
+        "mode": 2,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": 0
+      },
+      "organizations-return": {
+        "mode": 2,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": 0
+      },
+      "plots": {
+        "mode": 3,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": -1
+      }
+    },
+    "different_pixels": {
+      "actors": 0,
+      "actor-selected": 0,
+      "organizations": 0,
+      "plots": 0,
+      "node-selected": 0,
+      "node-blank": 0,
+      "node-last": 0,
+      "organizations-return": 0,
+      "organizations-minimum": 0,
+      "organizations-restored": 0
+    },
+    "panel_crops": {
+      "default": [
+        32,
+        52,
+        976,
+        760
+      ],
+      "minimum": [
+        32,
+        48,
+        688,
+        516
+      ]
+    },
+    "artifacts": {
+      "justice-graph-presentation.json": "b70f39fab2a8f903c6fa26b025e64efbd0460f34dd4fae08f3cd04bcd9a78924",
+      "job-settings-wire-result.json": "5d2dfbf1509bae342178f9e6f179a2ff7d32d69fb453ec432a84edc4e6879170",
+      "justice-graph-actors.png": "90e999f467dbb5c3b7c9620e883197e47c6525b4c087a5ff9dca087ee995b866",
+      "justice-graph-actors-view.png": "86068f5a8287be4acc06206d4c31545f2138f2f1a317fd34ce3bd01a47a4caeb",
+      "justice-graph-actor-selected.png": "d55e16fcac9ab35d56d788fa30c4088be8c1f10c2002af51c98bd57f51eb8b1c",
+      "justice-graph-actor-selected-view.png": "89e50e9d00f7795e0ddabcb1bfd04a7da60a04f30edc3b559a8eb9d6ee010bd7",
+      "justice-graph-organizations.png": "8db1e6e98f5e6a8e794367520b21ee5bb3f85b837a9198130741c4ec5250fe2b",
+      "justice-graph-organizations-view.png": "4b817bab263e561f4f82944764bfd0944c67d5e5072452313056cabe12e73e3d",
+      "justice-graph-plots.png": "cfdfa8ae093bce3f9af056ed1553f348e957cca5213371600c25696aaa1b66c8",
+      "justice-graph-plots-view.png": "be3c3772a5a6f962fd384377e6f4317d3cc94588b629da260fa2b901c003bed6",
+      "justice-graph-node-selected.png": "3c5cf2bca482bb20a2db9a3ea192d03f4e2b1c10eb18addf5d74b896af6ce282",
+      "justice-graph-node-selected-view.png": "e868af9df377d98b38e73d6ece64ffdfee22aecfd0285847f0a2ec7e9e93b5c0",
+      "justice-graph-node-blank.png": "3c5cf2bca482bb20a2db9a3ea192d03f4e2b1c10eb18addf5d74b896af6ce282",
+      "justice-graph-node-blank-view.png": "e868af9df377d98b38e73d6ece64ffdfee22aecfd0285847f0a2ec7e9e93b5c0",
+      "justice-graph-node-last.png": "d8d866cfef70f9c5eb406fd9276629d6f7266793f3e7855a33866a076935281f",
+      "justice-graph-node-last-view.png": "79fe376133184c603d89e53eb349c42cd6284f3342a1f595fa395455e30c3d01",
+      "justice-graph-organizations-return.png": "65f3fef5be02a8e2b94a8595495bf9d1bb8de94b5c8fbfa7c7924508fb718312",
+      "justice-graph-organizations-return-view.png": "4b817bab263e561f4f82944764bfd0944c67d5e5072452313056cabe12e73e3d",
+      "justice-graph-organizations-minimum.png": "e70cfb71d89f531f0d75733317ec984ad30aa854b013dfeeda8b67f788fb3fbb",
+      "justice-graph-organizations-minimum-view.png": "c66156593d027c390fdfb42208e1f4c640b85f9eec28ac620b0940c0f68c43c0",
+      "justice-graph-organizations-restored.png": "65f3fef5be02a8e2b94a8595495bf9d1bb8de94b5c8fbfa7c7924508fb718312",
+      "justice-graph-organizations-restored-view.png": "4b817bab263e561f4f82944764bfd0944c67d5e5072452313056cabe12e73e3d"
+    },
+    "limits": [
+      "one linear three-node organization; larger or branching chart navigation remains unaccepted",
+      "native Up/Down probes leave tested selection unchanged; no general keyboard acceptance claim",
+      "scrolling and mixed report/graph workflows remain pending",
+      "established separate-renderer/finalize/ObjectDB shutdown diagnostics"
+    ]
   }
 }

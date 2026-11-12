@@ -93,8 +93,25 @@ established separate-renderer, finalize and ObjectDB shutdown diagnostics.
 MSVC, fresh root/client builds, state tests, management contract, UI composition
 and all19 core checks pass. Fixture `intelligence_graph_transport_reference`
 and `intelligence_graph_presentation_reference` retain bounded provenance.
-Search, keyboard, scrolling/resize acceptance, chart panning/clipping and complex
-or multiple organizations remain unfinished. Public Justice stays hidden.
+Protected `stockpile-storage-native-input-20261112-103208` extends the rendered
+reference to node selection, blank-space clicks, tab resets and minimum-height
+resizing. Ten captured panel states match native pixels, including912x552
+(crop32,48..688,516) and restored1200x800. Clicking blank space in the expanded
+organization preserves its selected node; returning to a tab resets selection.
+Justice tabs wrap to a second row when needed, and chart drawing clips to its
+organization row. Owned DF28268 exits unsaved with source/prefs preserved.
+Core19 and state/composition checks pass; the same known shutdown diagnostics
+qualify the live run. `intelligence_graph_navigation_reference` retains hashes
+and observed state.
+
+Native input4751a0 calls reset4792d0 when tabs change; that clears query and
+selection before invoking479330. No graph search-entry path was found in this
+input handler. Native CURSOR_UP on the selected last node and CURSOR_DOWN on
+the first actor leave selection unchanged in the recorded case. Do not invent
+search or selection shortcuts from the presence of a dormant filter routine.
+Scrolling, other keyboard behavior, larger/branching chart panning and clipping,
+multiple organizations and mixed report/graph workflows remain unfinished.
+Public Justice stays hidden.
 
 
 

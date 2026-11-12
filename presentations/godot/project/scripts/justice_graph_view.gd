@@ -2,6 +2,7 @@ extends RefCounted
 # Native4769d0 graph rows and d1650 hierarchy geometry. Simulation membership,
 # ordering, labels and relationships arrive from DF; this owns only layout/input.
 var view
+var chart_clip:=Rect2()
 func configure(owner) -> void:view=owner
 func model():return view.state.intelligence
 func capacity() -> int:return maxi(0,int((view.size.y-view.list_top()-48)/12))
@@ -54,6 +55,9 @@ func click(point: Vector2) -> void:
 			var nodes:=positions(data[i],box)
 			for index in nodes:
 				if nodes[index].has_point(point):m.selected_node=index;m.changed.emit();return
+			# Native475dbc leaves the expanded organization's node selection alone
+			# when the click misses every node.
+			return
 		m.select_graph_row(i);return
 func draw() -> void:
 	var m=model();var data:=rows();var all: Dictionary=m.graph.graph
@@ -74,6 +78,7 @@ func draw() -> void:
 		elif selected:draw_organization(row,box)
 func draw_organization(org: Dictionary,box: Rect2) -> void:
 	var m=model();var all: Dictionary=m.graph.graph;var positions_by_node:=positions(org,box)
+	chart_clip=Rect2(box.position+Vector2(16,12),box.size-Vector2(32,24))
 	var selected: int=m.selected_node if positions_by_node.has(m.selected_node) else org.first_node
 	if org.node_count==0:return
 	var actor: int=all.nodes[selected].actor
@@ -86,10 +91,19 @@ func draw_organization(org: Dictionary,box: Rect2) -> void:
 			draw_edge(from,to,10 if index==selected or node.parent==selected else 2)
 	for index in positions_by_node:
 		var node: Dictionary=all.nodes[index];var node_box: Rect2=positions_by_node[index]
-		view.patch("GRID_CELL_ACTIVE",Vector2i(node_box.position/Vector2(8,12)),5,5)
-		view.text(node.label,node_box.position+Vector2(0,12),node.foreground+node.bright*8)
-		view.text(node.name,node_box.position+Vector2(8,36))
-		view.text(node.status,node_box.position+Vector2(8,48))
+		var texture: Texture2D=view.art.texture("GRID_CELL_ACTIVE")
+		if texture!=null:
+			for y in 5:
+				for x in 5:
+					var target:=Rect2(node_box.position+Vector2(x*8,y*12),Vector2(8,12))
+					if chart_clip.encloses(target):view.draw_texture_rect_region(texture,target,Rect2((0 if x==0 else 16 if x==4 else 8),(0 if y==0 else 24 if y==4 else 12),8,12))
+		chart_text(node.label,node_box.position+Vector2(0,12),node.foreground+node.bright*8)
+		chart_text(node.name,node_box.position+Vector2(8,36))
+		chart_text(node.status,node_box.position+Vector2(8,48))
+func chart_text(value: String,point: Vector2,color:=15) -> void:
+	if point.y-12<chart_clip.position.y or point.y>chart_clip.end.y:return
+	var skip:=maxi(0,int((chart_clip.position.x-point.x)/8));point.x+=skip*8
+	view.text(value.substr(skip,maxi(0,int((chart_clip.end.x-point.x)/8))),point,color)
 func draw_edge(from: Vector2i,to: Vector2i,color: int) -> void:
 	# The native chart rasterizes straight grid edges, then chooses text glyphs
 	# from neighboring points; nodes are drawn over the edge interiors.
@@ -104,4 +118,4 @@ func draw_edge(from: Vector2i,to: Vector2i,color: int) -> void:
 	for i in range(1,points.size()-1):
 		var before:=points[i-1];var here:=points[i];var after:=points[i+1]
 		var glyph:="|" if before.x==here.x or after.x==here.x else "-" if before.y==here.y or after.y==here.y else "\\" if (after.x-before.x)*(after.y-before.y)>0 else "/"
-		view.text(glyph,Vector2(here.x*8,(here.y+1)*12),color)
+		chart_text(glyph,Vector2(here.x*8,(here.y+1)*12),color)

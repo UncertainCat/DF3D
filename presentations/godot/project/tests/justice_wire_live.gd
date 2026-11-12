@@ -434,6 +434,25 @@ func run_graph(reference: Dictionary) -> void:
 				await pointer_click(view.position+view.graph_view.rect(1).position+Vector2(16,24));check(controller.intelligence.graph_selected==1,"Actor row click missed")
 				await process_frame;await RenderingServer.frame_post_draw
 				root.get_texture().get_image().save_png(directory+"/justice-graph-actor-selected-view.png")
+			if mode==2 and OS.get_environment("DF3D_JUSTICE_GRAPH_NAVIGATION")=="1":
+				for step in [{"name":"node-selected","point":Vector2(496,340),"node":1},{"name":"node-blank","point":Vector2(96,220),"node":1},{"name":"node-last","point":Vector2(496,412),"node":2}]:
+					await pointer_click(step.point)
+					check(controller.intelligence.selected_node==step.node,"Graph node selection changed: "+step.name)
+					await process_frame;await RenderingServer.frame_post_draw
+					root.get_texture().get_image().save_png(directory+"/justice-graph-"+step.name+"-view.png")
+				await pointer_click(view.position+view.intelligence_tab_rect(1).get_center())
+				check(controller.intelligence.graph_selected==0 and controller.intelligence.selected_node==-1,"Graph tab return retained selection")
+				await pointer_click(view.position+view.intelligence_tab_rect(2).get_center())
+				await process_frame;await RenderingServer.frame_post_draw
+				root.get_texture().get_image().save_png(directory+"/justice-graph-organizations-return-view.png")
+		if OS.get_environment("DF3D_JUSTICE_GRAPH_RESIZE")=="1":
+			await pointer_click(view.position+view.intelligence_tab_rect(2).get_center())
+			root.size=Vector2i(912,552);view.layout(Vector2(912,552))
+			await process_frame;await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/justice-graph-organizations-minimum-view.png")
+			root.size=Vector2i(1200,800);view.layout(Vector2(1200,800))
+			await process_frame;await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/justice-graph-organizations-restored-view.png")
 		controller.dispose();view.queue_free();await process_frame
 	actions.queue_free();await process_frame
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"graph_actors":reference.actors.size(),"graph_organizations":reference.organizations.size(),"graph_plots":reference.plots.size(),"paged_nodes":expected.nodes.size()}));file.close()

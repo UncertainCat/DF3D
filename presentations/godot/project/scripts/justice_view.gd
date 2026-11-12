@@ -63,16 +63,20 @@ func information_rows() -> Array:
 	var groups:=InfoTabs.rows(wide_tabs)
 	if not wide_tabs:groups.reverse()
 	return groups
-func list_top() -> int:return 72 if wide_tabs else 96
+func list_top() -> int:return int(tab_rect(5).position.y)+36
 func detail_x() -> int:return int(size.x/16)*8+8
 func capacity() -> int:return maxi(0,int((size.y-list_top()-24)/36))
 func witness_capacity() -> int:return maxi(0,int((size.y-list_top()-96)/60))
 func visible_first() -> int:return mini(state.first,maxi(0,state.rows.size()-capacity()))
 func witness_first() -> int:return mini(state.witness_first,maxi(0,state.detail.get("witnesses",[]).size()-witness_capacity()))
 func tab_rect(index: int) -> Rect2:
-	var x:=8
-	for previous in index:x+=(CASE_TABS[previous].length()+4)*8
-	return Rect2(x,36 if wide_tabs else 60,(CASE_TABS[index].length()+4)*8,24)
+	var x:=8;var y:=36 if wide_tabs else 60
+	for current in index+1:
+		var width: int=(CASE_TABS[current].length()+4)*8
+		if x+width>size.x-8:x=8;y+=24
+		if current==index:return Rect2(x,y,width,24)
+		x+=width
+	return Rect2()
 func case_rect(index: int) -> Rect2:
 	return Rect2(16,list_top()+index*36,detail_x()-40-(16 if state.rows.size()>capacity() else 0),36)
 func layout(view: Vector2) -> void:

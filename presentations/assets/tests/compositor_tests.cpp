@@ -540,6 +540,25 @@ TEST_CASE("compositor: held weapons preserve pixels outside the logical body") {
   CHECK(r.image.get(r.image.width-1,r.image.height-1) == kPlain);
 }
 
+TEST_CASE("compositor: long dwarf hair keeps full-size pixels at the body origin") {
+  Synth s;
+  auto page = s.index.pages[0]; page.name = "DWARF_HAIR";
+  s.index.pages.push_back(page); s.index.pageByName[page.name] = 2;
+  s.pageNames.push_back(page.name);
+  for(int y=kTile;y<2*kTile;++y)for(int x=0;x<kTile;++x)
+    s.images["/inst/body.png"].set(x,y,kPlain);
+  s.images["/inst/body.png"].set(kTile-1,2*kTile-1,kKey1);
+  const wm::AppearanceLayer layers[] = {layer(0,1,1), layer(2,0,0,1,2)};
+  const auto r = compositeAppearance(s.ctx,layers);
+  REQUIRE_MESSAGE(r.ok,r.why);
+  CHECK(r.cellsY == 1); CHECK(r.originY == -kTile);
+  CHECK(r.image.height == 2*kTile); CHECK(r.layersScaled == 0);
+  // The lower hair tile occupies the body crop. Scaling would instead mix
+  // both source tiles into that crop and halve the hair's horizontal size.
+  CHECK(r.image.get(0,-r.originY) == kPlain);
+  CHECK(r.image.get(kTile-1,-r.originY+kTile-1) == kKey1);
+}
+
 TEST_CASE("compositor: failures leave no sprite") {
   Synth s;
   CompositeResult r = compositeAppearance(s.ctx, std::span<const wm::AppearanceLayer>());

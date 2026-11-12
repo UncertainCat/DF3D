@@ -344,7 +344,12 @@ bool tissueEntryPasses(const Ctx& c, const df::cgl_tissue_layer_conditionst& con
         bool any = false;
         for (int16_t col : cols)
             if (std::find(cond.color_index.begin(), cond.color_index.end(), col) != cond.color_index.end()) { any = true; break; }
-        if (!any) return false;
+        if (!any) {
+            if (g_traceOut && g_traceToken == "*tissue") {
+                for (auto col : cols) g_traceOut->print("      rejected color {} for bp {} tl {}\n", col,bp,tl);
+            }
+            return false;
+        }
     }
     // Length / density windows. Unset bounds are 0 (min) and a large value
     // (max) in DF's parse; a zero max means "no maximum" too (calibrated

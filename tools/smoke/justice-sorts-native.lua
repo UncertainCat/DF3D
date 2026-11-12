@@ -112,6 +112,14 @@ if os.getenv('DF3D_JUSTICE_ARTWORK_DIAG')=='1' then
    end end
    facts.items[#facts.items+1]={id=it.id,improvements=improvements}
   end
+  facts.hair_conditions={}
+  local function values(vector)local result={};for _,v in ipairs(vector)do result[#result+1]=v end;return result end
+  local graphics=caste.caste_graphics or df.global.world.raws.creatures.all[unit.race].graphics
+  for _,set in ipairs(graphics.graphics_layer_set)do if not set.flags.portrait and set.role==df.creature_graphics_role.DEFAULT then
+   for _,layer in ipairs(set.graphics_layer)do if layer.token:find('LONG_PONY_TAIL')then
+    for _,cond in ipairs(layer.tl_condition)do facts.hair_conditions[#facts.hair_conditions+1]={name=layer.token,castes=values(cond.check_caste),bps=values(cond.check_bp),tls=values(cond.check_tl),shapes=values(cond.required_shape),colors=values(cond.color_index),min_length=cond.min_length,max_length=cond.max_length,min_density=cond.min_density,max_density=cond.max_density,flags=cond.flags.whole}end
+   end end
+  end end
   f=assert(io.open(out..'/justice-artwork-'..id..'-inputs.json','w'));f:write(json.encode(facts));f:close()
 
   for _,args in ipairs{{'appearance',tostring(id)},{'appearance',tostring(id),'trace','*'},

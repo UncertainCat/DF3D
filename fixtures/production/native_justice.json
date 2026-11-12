@@ -11509,5 +11509,34 @@
       "justice-artwork-2459-patterns.json": "5048b029d1c098b3ce8a81a78cf6bb515089e9a65f78466e92f4d435997e89e7"
     },
     "status": "discovery_only_not_a_portrait_fix"
+  },
+  "candidate_long_hair_composition_reference": {
+    "run": "build/stockpile-storage-native-input-20261112-114135",
+    "owned_df_pid": 39040,
+    "source_preserved": true,
+    "native_fps": 30,
+    "viewer_fps": 30,
+    "status": "passed_with_known_issues",
+    "unit_id": 5815,
+    "crop": [
+      512,
+      172,
+      548,
+      208
+    ],
+    "different_pixels": 0,
+    "cause": "Selector recipe contains DWARF_HAIR tile2,17 size1x2 palette row3. Scaling it into the body cell misplaced the hair. Full-size bottom/right alignment followed by logical-body cropping matches native.",
+    "regression": "Synthetic compositor regression retains the lower tile at the body origin without resampling.",
+    "remaining": [
+      "Unit2459 clothing still differs by187 pixels in crop512,496..548,532.",
+      "Whole panel differs by836 pixels; outside the clothing crop differences remain unclassified here. No whole-panel parity claim.",
+      "Other oversized non-wieldable/non-DWARF_HAIR pages retain their previous policy; this capture does not establish their alignment.",
+      "Separate-renderer warning, finalize render-thread error and two ObjectDB leaks are known diagnostics."
+    ],
+    "artifacts": {
+      "justice-sorts.png": "a65eedcf4fa2805c52fd107a5a57a8743febf594aca4e2f126f5655f048b3044",
+      "justice-picker-sorted-view.png": "74de15f21aafc19ea77bd0cf276401e0176a773d6532b166f4c18f3434769a08",
+      "justice-picker-recipes.json": "b5ea8e1febb4429b23f360c22617ca137985dc80013661cf9a5f9fdedf2cd84f"
+    }
   }
 }

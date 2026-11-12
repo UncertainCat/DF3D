@@ -486,8 +486,8 @@ with zero differing pixels. A second same-session native/viewer comparison in
 and every panel pixel outside the remaining two portraits match. Unit5815 differs
 by112 pixels, unit2459 by187; the whole sorted panel differs by299 pixels.
 The difference persists in one session, so it cannot be dismissed as a stale
-reference or animation timing. These shared unit-selector mismatches remain
-unresolved; full sorted-panel visual acceptance is incomplete.
+reference or animation timing. The dwarf hair mismatch is corrected below;
+the human clothing mismatch and full sorted-panel visual acceptance remain open.
 Protected003445 clears/restores only these units' sheet_icon_texpos handles and
 reopens the native picker, verifies the rebuilt list's293 IDs, and captures the
 same two portraits unchanged. This rules out that handle and ordinary reopening,
@@ -503,6 +503,20 @@ restores flags/icon handles, closes owned DF2836 unsaved and preserves the sourc
 Native runs at30FPS without Godot; sampled GPU48C/0%. Core19 passes.
 `candidate_artwork_body_refresh_reference` retains evidence; no gameplay/runtime
 code reads or edits these native graphics caches.
+Protected114135 verifies the dwarf hair correction with fresh native and viewer
+captures: unit5815's36x36 crop(512,172)-(548,208) has zero differing pixels.
+The compositor previously scaled its1x2 hair layer to fit the1x1 body. It now
+preserves DWARF_HAIR pixels at the body's bottom/right edge, like the already
+verified wieldable overflow, and the selector crops the logical body cell.
+A synthetic regression checks that the lower hair tile remains full-size at the
+body origin. Other oversized pages retain their existing policy pending evidence.
+Root/client builds and all19 core checks pass. Owned DF39040 closes unsaved,
+preserving source and preferences; both clients are capped at30FPS, sampled
+GPU47C/0%. Known separate-renderer/finalize/two-ObjectDB diagnostics qualify the
+live run as passed_with_known_issues. Unit2459 still differs by187 pixels; this
+run's whole panel differs by836 pixels, so it is not whole-panel acceptance.
+Fixture candidate_long_hair_composition_reference retains recipes and image hashes.
+
 Read-only condition discovery112406 records selected pattern IDs and tissue
 traces for both affected units. Native720acd..720b56 compares pattern IDs, while
 the current adapter compares component color IDs. The dwarf hair patterns are
@@ -523,9 +537,11 @@ palette selection remains unresolved. Owned DF3928 closes unsaved with source
 preservation, native30FPS/no viewer; core19 passes. See
 candidate_artwork_semantic_inputs_reference. No runtime correction or portrait
 parity is claimed from these diagnostics.
-Unit5815 has no inventory and the trace rejects its hair tissue conditions;
-unit2459's resolved clothing uses palette row88 from worn items reporting color87.
-Those observations identify investigation areas, not proven causes. Native
+The older003445 map trace rejected5815's hair, but recent112406/113249 traces
+accept LONG_PONY_TAIL_BLOND; map traces are not selector recipes. The actual
+selector recipe captured113811 includes its1x2 DWARF_HAIR layer at2,17 with
+palette row3. Unit2459's clothing uses palette row88 from items reporting color87;
+that separate palette investigation remains open. Native
 widget1423240 calls6d6560 with flag400 and the semantic unit; appearance.cpp's
 existing unit selector remains the runtime path. The diagnostic cache edits are
 protected-oracle-only and restored, never runtime dependencies. DF42980 closes

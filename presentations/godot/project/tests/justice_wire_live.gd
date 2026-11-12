@@ -106,6 +106,9 @@ func run() -> void:
 				check(view.portraits.size()==view.picker_capacity(),"Sorted candidate artwork missing")
 				await process_frame;await RenderingServer.frame_post_draw
 				root.get_texture().get_image().save_png(directory+"/justice-picker-sorted-view.png")
+				var recipe_file:=FileAccess.open(directory+"/justice-picker-recipes.json",FileAccess.WRITE)
+				recipe_file.store_string(JSON.stringify(controller.candidates.rows.slice(0,view.picker_capacity()),"\t"))
+				recipe_file.close()
 				await pointer_click(view.position+view.search.position+Vector2(24,18))
 				for letter in "zznomatch":
 					var key:=InputEventKey.new();key.pressed=true;key.unicode=letter.unicode_at(0);key.keycode=letter.unicode_at(0)

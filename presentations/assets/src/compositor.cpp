@@ -240,16 +240,17 @@ CompositeResult compositeAppearance(const CompositeContext& ctx,
     return r;
   }
   const int bodyW = r.cellsX * r.tileW, bodyH = r.cellsY * r.tileH;
-  // Native wieldable LARGE_IMAGE layers overflow the body cell. Do not
-  // shrink their blades into the body, where later clothing hides them.
-  // Other oversized layers retain the existing policy until independently
-  // verified (notably the native hair eligibility rules are incomplete).
-  const auto wieldable = [](const TilePage& p) {
-    return p.name == "WIELDABLES" || p.name == "WIELDABLES_TALL" || p.name == "WIELDABLES_WIDE";
+  // Native wieldable and dwarf hair LARGE_IMAGE layers retain their pixels,
+  // aligned to the body's bottom/right edge. Selector thumbnails then crop
+  // the logical body cell; shrinking long hair moves it away from the head.
+  // Other oversized pages retain their policy until independently verified.
+  const auto overflowsBody = [](const TilePage& p) {
+    return p.name == "WIELDABLES" || p.name == "WIELDABLES_TALL" ||
+           p.name == "WIELDABLES_WIDE" || p.name == "DWARF_HAIR";
   };
   int minX = 0, minY = 0, maxX = bodyW, maxY = bodyH;
   for (size_t i = 0; i < layers.size(); ++i) {
-    if (!wieldable(*resolved[i].page)) continue;
+    if (!overflowsBody(*resolved[i].page)) continue;
     const auto& l = layers[i];
     const int w = std::max<int>(1, l.cellsX) * resolved[i].page->tileW;
     const int h = std::max<int>(1, l.cellsY) * resolved[i].page->tileH;
@@ -278,7 +279,7 @@ CompositeResult compositeAppearance(const CompositeContext& ctx,
       }
       sw = &swap;
     }
-    const bool overflow = wieldable(*rl.page);
+    const bool overflow = overflowsBody(*rl.page);
     const int f = overflow ? 1 : fitFactor(srcW, srcH, bodyW, bodyH);
     const int offsetX = l.offsetX - minX + (overflow ? bodyW - srcW : 0);
     const int offsetY = l.offsetY - minY + (overflow ? bodyH - srcH : 0);

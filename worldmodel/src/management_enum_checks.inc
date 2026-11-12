@@ -311,7 +311,9 @@ static_assert(static_cast<int>(wm::ManagementAction::JusticeCandidatesRead) == s
 static_assert(static_cast<int>(wm::ManagementAction::JusticeConvict) == static_cast<int>(df3d::mirror::ManagementAction::JusticeConvict));
 static_assert(static_cast<int>(wm::ManagementAction::JusticeInterrogate) == static_cast<int>(df3d::mirror::ManagementAction::JusticeInterrogate));
 static_assert(static_cast<int>(wm::ManagementAction::JusticeGuardRead) == static_cast<int>(df3d::mirror::ManagementAction::JusticeGuardRead));
-static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 127);
+static_assert(static_cast<int>(wm::ManagementAction::JusticeConvictsRead) == static_cast<int>(df3d::mirror::ManagementAction::JusticeConvictsRead));
+static_assert(static_cast<int>(wm::ManagementAction::JusticeConvictDetailRead) == static_cast<int>(df3d::mirror::ManagementAction::JusticeConvictDetailRead));
+static_assert(sizeof(df3d::mirror::EnumValuesManagementAction()) / sizeof(df3d::mirror::ManagementAction) == 129);
 static_assert(static_cast<int>(wm::ManagementStatus::Idle) == static_cast<int>(df3d::mirror::ManagementStatus::Idle));
 static_assert(static_cast<int>(wm::ManagementStatus::Pending) == static_cast<int>(df3d::mirror::ManagementStatus::Pending));
 static_assert(static_cast<int>(wm::ManagementStatus::Ok) == static_cast<int>(df3d::mirror::ManagementStatus::Ok));
@@ -645,3 +647,5 @@ static_assert(wm::isRuntimeAction(wm::ManagementAction::JusticeCandidatesRead) =
 static_assert(wm::isRuntimeAction(wm::ManagementAction::JusticeConvict) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::JusticeConvict));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::JusticeInterrogate) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::JusticeInterrogate));
 static_assert(wm::isRuntimeAction(wm::ManagementAction::JusticeGuardRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::JusticeGuardRead));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::JusticeConvictsRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::JusticeConvictsRead));
+static_assert(wm::isRuntimeAction(wm::ManagementAction::JusticeConvictDetailRead) == df3d::mirror::runtimeManagementAction(df3d::mirror::ManagementAction::JusticeConvictDetailRead));

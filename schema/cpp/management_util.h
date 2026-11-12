@@ -183,8 +183,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 199;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v199";
+inline constexpr uint32_t kManagementVersion = 200;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v200";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -482,7 +482,7 @@ inline bool managementRequestAdmitted(ManagementAction action, uint64_t requeste
 // Retired wire values remain valid protocol vocabulary for explicit rejection.
 // This runtime policy must not be folded into structural buffer validation.
 inline constexpr bool runtimeManagementAction(ManagementAction action) {
-  return action >= ManagementAction::Catalog && action <= ManagementAction::JusticeGuardRead &&
+  return action >= ManagementAction::Catalog && action <= ManagementAction::JusticeConvictDetailRead &&
       action != ManagementAction::Alert && action != ManagementAction::Selection &&
       !(action >= ManagementAction::TradeExchangeOpen && action <= ManagementAction::TradeExchangeClose) &&
       !(action >= ManagementAction::StocksOpen && action <= ManagementAction::StocksClose) &&
@@ -571,7 +571,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
        !r.definition() || r.definition()->str()!="Rollers" ||
        r.roller_speed()>50000 || r.roller_speed()%10000)) return "invalid roller speed intent";
   if (!r.client_id() || !r.seq()) return "client and sequence required";
-  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::JusticeGuardRead)
+  if (r.action() < ManagementAction::Catalog || r.action() > ManagementAction::JusticeConvictDetailRead)
     return "invalid management action";
   if (r.action() != ManagementAction::Catalog && !r.world_epoch()) return "world epoch required";
   if (r.action()==ManagementAction::WorldHover &&
@@ -723,7 +723,18 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
       }else if(q->target() || q->expected_candidate_revision())return "unexpected nobles candidate target";
     }
   }else if(r.nobles())return "unexpected nobles request";
-  if(r.action()>=ManagementAction::JusticeRead && r.action()<=ManagementAction::JusticeGuardRead){
+  if(r.action()==ManagementAction::JusticeConvictsRead || r.action()==ManagementAction::JusticeConvictDetailRead){
+    const auto* q=r.justice();const bool detail=r.action()==ManagementAction::JusticeConvictDetailRead;
+    if(!q || q->tab()!=4 || !q->limit() || q->limit()>64 || q->offset()>1048576 || q->expected_list_revision()>INT64_MAX || q->expected_case_revision()>INT64_MAX || q->crime_id()!=-1 || q->expected_candidate_revision() || q->interrogate() || q->expected_selected())return "invalid convicts scope";
+    if(detail ? q->unit_id()<0 || !q->expected_list_revision() || (q->offset() && !q->expected_case_revision()) : q->unit_id()!=-1 || q->expected_case_revision() || (q->offset() && !q->expected_list_revision()))return "invalid convict target";
+    if(q->query() && (q->query()->size()>512 || q->query()->str().find('\0')!=std::string::npos))return "invalid convicts query";
+    if(const auto* sorts=q->sorts()){
+      if(!sorts->size() || sorts->size()>65536)return "invalid convicts sorts";
+      std::array<int8_t,3> directions{-1,-1,-1};
+      for(const auto* sort:*sorts){if(!sort || sort->column()>JusticeCandidateColumn::Profession)return "invalid convicts sort";
+        auto& direction=directions[size_t(sort->column())];if(direction>=0 && bool(direction)!=sort->reverse())return "conflicting convicts sorts";direction=int8_t(sort->reverse());}
+    }
+  }else if(r.action()>=ManagementAction::JusticeRead && r.action()<=ManagementAction::JusticeGuardRead){
     const auto* q=r.justice();
     const bool guard=r.action()==ManagementAction::JusticeGuardRead;
     if(!q || (guard?q->tab()!=3:q->tab()>2) || !q->limit() || q->limit()>64 || q->offset()>1048576 ||
@@ -1327,7 +1338,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
 inline std::optional<std::string> validateManagementState(const ManagementState& s) {
   if (s.schema_version() != kManagementVersion || !s.revision())
     return "invalid management version/revision";
-  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::JusticeGuardRead ||
+  if (s.action() < ManagementAction::Catalog || s.action() > ManagementAction::JusticeConvictDetailRead ||
       s.status() < ManagementStatus::Idle || s.status() > ManagementStatus::Rejected)
     return "invalid management enum";
   if (s.message() && s.message()->size() > 8192) return "message too long";
@@ -1523,22 +1534,32 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     const bool read=s.action()==ManagementAction::JusticeRead,detail=s.action()==ManagementAction::JusticeCaseRead;
     const bool candidates=s.action()==ManagementAction::JusticeCandidatesRead,convict=s.action()==ManagementAction::JusticeConvict || s.action()==ManagementAction::JusticeInterrogate;
     const bool guard=s.action()==ManagementAction::JusticeGuardRead;
-    if((!read && !detail && !candidates && !convict && !guard) || (guard?r->tab()!=3:r->tab()>2) || r->outcome()>JusticeOutcome::Unknown || !r->rows() || r->rows()->size()>64)return "invalid justice result";
+    const bool convicts=s.action()==ManagementAction::JusticeConvictsRead,convictDetail=s.action()==ManagementAction::JusticeConvictDetailRead;
+    if((!read && !detail && !candidates && !convict && !guard && !convicts && !convictDetail) || (convicts || convictDetail?r->tab()!=4:guard?r->tab()!=3:r->tab()>2) || r->outcome()>JusticeOutcome::Unknown || !r->rows() || r->rows()->size()>64)return "invalid justice result";
     const auto page=[](uint32_t total,uint32_t offset,size_t count){return total<=1048576 && offset<=total && count<=64 && count<=total-offset && (offset==total || count!=0);};
     size_t bytes=0;
     const auto text=[&](const flatbuffers::String* value){if(!value || value->size()>16384)return false;bytes+=value->size();return bytes<=384*1024;};
     if(!guard && r->guard())return "unexpected justice guard page";
+    if(!convicts && r->convicts())return "unexpected convicts page";
+    if(!convictDetail && r->convict_detail())return "unexpected convict detail";
     if(convict){
       if(r->list_revision() || r->total() || r->offset() || r->rows()->size() || r->detail() || r->candidates())return "unexpected justice mutation data";
       if(s.status()==ManagementStatus::Ok ? r->outcome()!=JusticeOutcome::Applied :
          s.status()!=ManagementStatus::Rejected || (r->outcome()!=JusticeOutcome::Rejected && r->outcome()!=JusticeOutcome::Stale && r->outcome()!=JusticeOutcome::Unknown))return "invalid justice mutation outcome";
     }else if(s.status()==ManagementStatus::Ok){
       if(r->outcome()!=JusticeOutcome::None || !r->list_revision() || r->list_revision()>INT64_MAX)return "invalid justice revision";
-      if(guard){
-        const auto* g=r->guard();
-        if(r->detail() || r->candidates() || r->rows()->size() || !g || !g->rows() || !page(r->total(),r->offset(),g->rows()->size()) || !text(g->caption()) || g->color()>15)return "invalid justice guard page";
+      if(convictDetail){
+        const auto* d=r->convict_detail();
+        if(r->guard() || r->convicts() || r->detail() || r->candidates() || r->rows()->size() || r->total() || r->offset() || !d || d->unit_id()<0 || !d->revision() || d->revision()>INT64_MAX || !d->sentence() || d->sentence()->size()>3 || !d->crimes() || !page(d->total(),d->offset(),d->crimes()->size()) || (d->officer() && !text(d->officer())))return "invalid convict detail";
+        for(const auto* line:*d->sentence())if(!text(line))return "invalid convict sentence";
         std::unordered_set<int32_t> ids;
-        for(const auto* row:*g->rows()){
+        for(const auto* c:*d->crimes()){bytes+=32;if(!c || c->crime_id()<0 || !ids.insert(c->crime_id()).second || !text(c->caption()) || (c->injured_party() && !text(c->injured_party())))return "invalid convict crime";}
+      }else if(guard || convicts){
+        const auto* g=r->guard();
+        const auto* unitRows=guard?(g?g->rows():nullptr):(r->convicts()?r->convicts()->rows():nullptr);
+        if(r->detail() || r->candidates() || r->rows()->size() || !unitRows || !page(r->total(),r->offset(),unitRows->size()) || (guard && (!text(g->caption()) || g->color()>15)))return "invalid justice guard page";
+        std::unordered_set<int32_t> ids;
+        for(const auto* row:*unitRows){
           if(!row || row->unit_id()<0 || !ids.insert(row->unit_id()).second || !text(row->first_line()) || !text(row->second_line()))return "invalid justice guard row";
           const auto* c=row->name_color();bytes+=64;
           if(!c || c->foreground()>7 || c->background()>7 || c->bright()>1 || c->alternate_foreground()>7 || c->alternate_background()>7 || c->alternate_bright()>1 || c->effect()>3)return "invalid justice guard color";
@@ -1573,13 +1594,13 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
           if(!w || !text(w->witness()) || !text(w->description()) || !text(w->date()) || !text(w->reported()))return "invalid justice witness";
         }
       }
-    }else if(s.status()!=ManagementStatus::Rejected || (r->outcome()!=JusticeOutcome::Rejected && r->outcome()!=JusticeOutcome::Stale) || r->list_revision() || r->total() || r->offset() || r->rows()->size() || r->detail() || r->candidates() || r->guard())return "invalid justice refusal";
+    }else if(s.status()!=ManagementStatus::Rejected || (r->outcome()!=JusticeOutcome::Rejected && r->outcome()!=JusticeOutcome::Stale) || r->list_revision() || r->total() || r->offset() || r->rows()->size() || r->detail() || r->candidates() || r->guard() || r->convicts() || r->convict_detail())return "invalid justice refusal";
     std::unordered_set<int32_t> ids;
     for(const auto* row:*r->rows()){
       bytes+=32;
       if(!row || row->crime_id()<0 || !ids.insert(row->crime_id()).second || !text(row->caption()))return "invalid justice row";
     }
-  }else if(s.status()==ManagementStatus::Ok && s.action()>=ManagementAction::JusticeRead && s.action()<=ManagementAction::JusticeGuardRead)return "missing justice result";
+  }else if(s.status()==ManagementStatus::Ok && s.action()>=ManagementAction::JusticeRead && s.action()<=ManagementAction::JusticeConvictDetailRead)return "missing justice result";
   if(const auto* r=s.objects()) {
     const bool read=s.action()==ManagementAction::ObjectsRead,locate=s.action()==ManagementAction::ObjectsLocate;
     if((!read && !locate) || r->tab()>3 || !r->rows() || r->rows()->size()>64 ||

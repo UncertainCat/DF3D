@@ -156,11 +156,20 @@ TEST_CASE("Justice guard requests cannot carry case or mutation state") {
 }
 TEST_CASE("Justice guard replies reject mixed pages and duplicate identities") {
  for(int fault=0;fault<5;++fault){flatbuffers::FlatBufferBuilder b;
-  auto empty=b.CreateString("");auto color=m::CreateAreaNameColor(b);auto row=m::CreateJusticeGuardRow(b,42,2000,empty,empty,color);
-  auto other=m::CreateJusticeGuardRow(b,fault==2?42:43,1000,empty,empty,color);
+  auto empty=b.CreateString("");auto color=m::CreateAreaNameColor(b);auto row=m::CreateJusticeUnitRow(b,42,2000,empty,empty,color);
+  auto other=m::CreateJusticeUnitRow(b,fault==2?42:43,1000,empty,empty,color);
   auto guard=m::CreateJusticeGuardPage(b,empty,fault==3?16:12,b.CreateVector(std::vector{row,other}));
   auto payload=m::CreateJusticeState(b,m::JusticeOutcome::None,fault==1?0:3,9,2,0,b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeCaseRow>>{}),0,0,guard);
   m::ManagementStateBuilder r(b);r.add_revision(1);r.add_action(fault==4?m::ManagementAction::JusticeRead:m::ManagementAction::JusticeGuardRead);r.add_status(m::ManagementStatus::Ok);r.add_justice(payload);b.Finish(r.Finish());
   CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==(fault!=0));
+ }
+}
+
+TEST_CASE("Convicts detail requires target and list receipt, and excludes crime sorting") {
+ for(int fault=0;fault<6;++fault){flatbuffers::FlatBufferBuilder b;
+  auto sort=m::CreateJusticeSort(b,fault==3?m::JusticeCandidateColumn::Crime:m::JusticeCandidateColumn::Category);
+  auto q=m::CreateJusticeRequest(b,4,0,32,fault==1?0:7,fault==4?9:-1,0,b.CreateString(""),0,fault==2?-1:42,b.CreateVector(std::vector{sort}),fault==5);
+  m::ConstructionRequestBuilder r(b);r.add_client_id(1);r.add_seq(1);r.add_world_epoch(1);r.add_action(m::ManagementAction::JusticeConvictDetailRead);r.add_justice(q);b.Finish(r.Finish());
+  CHECK(bool(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
  }
 }

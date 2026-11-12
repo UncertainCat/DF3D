@@ -41,6 +41,19 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+Management protocol200 appends `JusticeConvictsRead` and
+`JusticeConvictDetailRead`. Convicts requests use tab4, owned query and three
+native sort columns. Detail reads require a unit ID and list revision; subsequent
+crime pages also require the same detail revision (`expected_case_revision`).
+They cannot carry conviction/interrogation mutation state. `JusticeUnitRow`
+renames the shared Guard identity row and now also serves Convicts. Separate
+Convicts pages/details carry owned sentence, officer and crime text. Older
+recordings imply none of these facts. Both defaults/mailbox are200
+(`Local\df3d_management_v200`); rebuild bridge and client together. Session/map
+versions are unchanged. Convicts is wired to the staged viewer tab; public Justice
+exposure remains gated by the unfinished workflows below.
+
+
 The staged Convicts provider (`justice_convicts_native.h`) isolates the inline
 semantic selections in native470757/471eb0/472020/4728a0 and46f6d0; those widget
 builders are pinned but never called. Discovered crimes in the current site and
@@ -51,7 +64,9 @@ names. The last matching semantic `plotinfo.punishments` record supplies the
 sentence. Native52c130 formats numbers; positive prison counters display
 counter/120+1 days. Labels and plural branches follow the pinned native code.
 No native list, widget, selection or cached punishment index is a runtime input.
-This provider is not yet wired to the management protocol or visible viewer tab.
+The bridge exposes owned roster pages and separately receipted detail pages.
+The viewer publishes complete details only, discards late replies after selection
+or filter changes, and uses fresh creature-location reads for sheet navigation.
 
 Protected `stockpile-storage-native-input-20261112-015923` matches the three native
 Convicts6970/6546/6032 in default Category order and checks the selected6970's
@@ -64,7 +79,31 @@ preferences restored. Native runs at30FPS without Godot; observed GPU38C/0%
 is not a continuous peak. The MSVC build and all19 core checks pass.
 `native_justice.json.convicts_provider_reference` retains bounded evidence.
 Search, alternate sorts, multiple crimes per convict, missing/dead/foreign units,
-negative punishment counters and viewer transport/rendering remain unaccepted.
+negative punishment counters remain unaccepted. Viewer transport evidence follows.
+
+Protected `stockpile-storage-native-input-20261112-074030` verifies protocol200
+roster order and all three convicts' sentence/crime details, visible row selection,
+empty/cleared search, sheet-button location dispatch and stale-detail rejection.
+The1200x800 panel crop `(32,52)-(976,760)` matches native with zero differing
+pixels at the corresponding name-animation phase. Unit6032 uses native legendary
+flashing; the other captured phase differs only in735 name pixels. This is an
+animation-phase difference, not a native bug or parity exception. A prior color
+assertion compared JSON floats with typed integers;074030 normalizes the oracle
+numbers and verifies both native colors and the effect for every row.
+
+The owned DF10220 closes unsaved, source save and preferences are preserved,
+and both applications are capped at30FPS. Observed GPU samples47-50C and0-3%
+are not continuous peaks. MSVC, extension, headless Justice ownership tests,
+management contract/UI composition checks and all19 core checks pass. Live
+status is `passed_with_known_issues` for the established separate-renderer,
+finalize and two ObjectDB shutdown diagnostics. Bounded provenance is retained
+in `native_justice.json.convicts_transport_reference`.
+
+Convicts remains staged: alternate sorts, scrolling, hover, keyboard, resize,
+long/multiple crime wrapping, populated sentence rendering and composed inspector
+navigation are not accepted by this baseline. The earlier native-only sentence
+cases do not establish viewer coverage. Intelligence and the documented shared
+candidate artwork gaps remain unfinished.
 
 The protected oracle reads deferred row builds as well as the selected row's
 name widget: these captures retain unselected rows in the native deferred-build
@@ -79,9 +118,8 @@ query/sort/page inputs, and cannot carry case identities or mutation comparisons
 The numeric `Crime` sort enum denotes the guard judiciary rank in this context;
 its native comparator is ascending, unlike the conviction score comparator.
 Rows carry owned native name lines, name colors, selector artwork and positions.
-Older recordings do not imply a guard roster. Both protocol defaults and the
-mailbox are199 (`Local\df3d_management_v199`); rebuild bridge and client together.
-Session/map versions are unchanged.
+Older recordings do not imply a guard roster. Protocol200 supersedes this
+migration; bridge and client must use the current matching protocol.
 
 The staged Guard tab reads all pages before exposing its roster, owns query and
 sort preferences, and retires pending reads on close/tab/session changes. Native

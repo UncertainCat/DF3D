@@ -1,0 +1,1118 @@
+{
+  "df_version": "53.16",
+  "build_id": "24557528",
+  "scope": "Actual native pointer activation, main_hover_instruction identities, immediate post-render text cells and anchors; no runtime menu/cache access.",
+  "sources": {
+    "build/stockpile-storage-native-zone-defaults-20261112-164309": "a9db8402753232e3cc94a305a69e779e355cc093287d6ba545ead7af315f4d48",
+    "build/stockpile-storage-native-zone-defaults-20261112-164754": "b982521cdf1c74b3cbe91e47ba05a47dedae0ef7e5bdb30b1f26ba1e97594cb2"
+  },
+  "instructions": {
+    "ZONE_TYPE_MEETING": {
+      "id": 154,
+      "lines": [
+        "This important zone is",
+        "where your citizens",
+        "will gather to",
+        "socialize.  Crucially,",
+        "the meeting area is",
+        "where locations such as",
+        "taverns, temples,",
+        "hospitals, and the like",
+        "are established."
+      ],
+      "reference": "zone-hover-palette-MeetingHall",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 22
+    },
+    "ZONE_TYPE_BEDROOM": {
+      "id": 156,
+      "lines": [
+        "Your citizens will",
+        "sleep in bedrooms.  It",
+        "should include a bed!",
+        "Try to enclose it with",
+        "walls and/or doors.  Do",
+        "not overlap with other",
+        "rooms."
+      ],
+      "reference": "zone-hover-palette-Bedroom",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 25
+    },
+    "ZONE_TYPE_DINING_HALL": {
+      "id": 157,
+      "lines": [
+        "Your citizens will eat",
+        "at this zone.  When not",
+        "assigned to a",
+        "particular citizen,",
+        "citizens without their",
+        "own dining hall will",
+        "eat here.  Tables and",
+        "adjacent chairs should",
+        "be included."
+      ],
+      "reference": "zone-hover-palette-DiningHall",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 28
+    },
+    "ZONE_TYPE_PEN": {
+      "id": 150,
+      "lines": [
+        "Certain livestock need",
+        "to graze on grass.",
+        "Assign these animals to",
+        "a pasture zone.  No",
+        "fencing is needed."
+      ],
+      "reference": "zone-hover-palette-Pen",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 31
+    },
+    "ZONE_TYPE_PIT": {
+      "id": 151,
+      "lines": [
+        "Animals assigned to",
+        "pit/pond zones are",
+        "dumped in the pit, but",
+        "will leave the zone",
+        "afterward if possible.",
+        "If the pit is",
+        "designated as a pond,",
+        "your citizens will",
+        "attempt to fill it with",
+        "water using buckets."
+      ],
+      "reference": "zone-hover-palette-Pond",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 34
+    },
+    "ZONE_TYPE_WATER_SOURCE": {
+      "id": 146,
+      "lines": [
+        "Your citizens will",
+        "drink at a water source",
+        "zone or gather water",
+        "using buckets for",
+        "various tasks.  This is",
+        "useful if you don't",
+        "have a functioning well",
+        "and you want to control",
+        "exactly where the tasks",
+        "take place."
+      ],
+      "reference": "zone-hover-palette-WaterSource",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 37
+    },
+    "ZONE_TYPE_DUNGEON": {
+      "id": 162,
+      "lines": [
+        "Prisoners convicted in",
+        "the Justice menu can be",
+        "incarcerated at a chain",
+        "or metal cage in the",
+        "dungeon zone."
+      ],
+      "reference": "zone-hover-palette-Dungeon",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 40
+    },
+    "ZONE_TYPE_FISHING": {
+      "id": 147,
+      "lines": [
+        "Citizens assigned to",
+        "the fishing work detail",
+        "will fish in this zone",
+        "if it exists.",
+        "Otherwise, they will",
+        "fish everywhere."
+      ],
+      "reference": "zone-hover-palette-Fishing",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 43
+    },
+    "ZONE_TYPE_SAND": {
+      "id": 152,
+      "lines": [
+        "Your citizens will fill",
+        "sand bags at this zone",
+        "if a sandy floor or",
+        "sandy wall is included.",
+        "This task is initiated",
+        "manually at the glass",
+        "furnace."
+      ],
+      "reference": "zone-hover-palette-Sand",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 46
+    },
+    "ZONE_TYPE_OFFICE": {
+      "id": 158,
+      "lines": [
+        "An office or study is",
+        "required for certain",
+        "official tasks, such as",
+        "approving work orders",
+        "and bookkeeping.  A",
+        "chair or throne is",
+        "required for these",
+        "functions."
+      ],
+      "reference": "zone-hover-palette-Office",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 22
+    },
+    "ZONE_TYPE_DORMITORY": {
+      "id": 161,
+      "lines": [
+        "Dormitories should",
+        "include multiple beds",
+        "and will not belong to",
+        "a particular citizen."
+      ],
+      "reference": "zone-hover-palette-Dormitory",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 25
+    },
+    "ZONE_TYPE_BARRACKS": {
+      "id": 160,
+      "lines": [
+        "Squads should be",
+        "assigned to a barracks.",
+        "The squad can be set to",
+        "train, sleep, and store",
+        "equipment there."
+      ],
+      "reference": "zone-hover-palette-Barracks",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 28
+    },
+    "ZONE_TYPE_ARCHERY_RANGE": {
+      "id": 159,
+      "lines": [
+        "Your archers can train",
+        "in this zone if there",
+        "is an archery target",
+        "included."
+      ],
+      "reference": "zone-hover-palette-ArcheryRange",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 31
+    },
+    "ZONE_TYPE_DUMP": {
+      "id": 149,
+      "lines": [
+        "Items designated for",
+        "dumping will be tossed",
+        "into open air spaces",
+        "included in this zone.",
+        "If no open air tiles",
+        "are included, they will",
+        "dump the items on the",
+        "floor."
+      ],
+      "reference": "zone-hover-palette-GarbageDump",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 34
+    },
+    "ZONE_TYPE_ANIMAL_TRAINING": {
+      "id": 155,
+      "lines": [
+        "Animals that are",
+        "capable of being",
+        "trained receive their",
+        "training at this zone",
+        "once they have been",
+        "assigned a trainer from",
+        "the Pets/Livestock",
+        "menu.  Generally, a",
+        "piece of meat is",
+        "required."
+      ],
+      "reference": "zone-hover-palette-AnimalTraining",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 37
+    },
+    "ZONE_TYPE_TOMB": {
+      "id": 163,
+      "lines": [
+        "Deceased citizens and",
+        "pets can be laid to",
+        "rest in a tomb.  It",
+        "should include a",
+        "coffin, casket, or",
+        "sarcophagus."
+      ],
+      "reference": "zone-hover-palette-Tomb",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 40
+    },
+    "ZONE_TYPE_GATHER": {
+      "id": 148,
+      "lines": [
+        "Plant gathering zones",
+        "are used in locations",
+        "where plants will be",
+        "gathered frequently.",
+        "Use the gather",
+        "designation otherwise."
+      ],
+      "reference": "zone-hover-palette-PlantGathering",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 43
+    },
+    "ZONE_TYPE_CLAY": {
+      "id": 153,
+      "lines": [
+        "Your citizens will",
+        "collect clay at this",
+        "zone if a clay floor or",
+        "clay wall is included.",
+        "This task is initiated",
+        "manually at the kiln."
+      ],
+      "reference": "zone-hover-palette-Clay",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 46
+    },
+    "ZONE_SUSPEND": {
+      "id": 129,
+      "lines": [
+        "Suspend activities in",
+        "this zone.  Does not",
+        "remove the zone."
+      ],
+      "reference": "zone-hover-Pen-active",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 10
+    },
+    "ZONE_REMOVE_EXISTING": {
+      "id": 130,
+      "lines": [
+        "Remove this zone",
+        "permanently."
+      ],
+      "reference": "zone-hover-Pen-remove",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 10
+    },
+    "ZONE_PICK_PASTURE_ANIMALS": {
+      "id": 134,
+      "lines": [
+        "Select animals to be",
+        "placed in this pasture",
+        "zone.  They will stay",
+        "after being led here."
+      ],
+      "reference": "zone-hover-Pen-owner",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 13
+    },
+    "ZONE_ASSIGN_LOCATION": {
+      "id": 138,
+      "lines": [
+        "Assign a new or",
+        "existing location to",
+        "this zone.  Locations",
+        "are groups of zones and",
+        "rooms with a larger",
+        "purpose, like a tavern,",
+        "a temple, a library, or",
+        "a craft guildhall."
+      ],
+      "reference": "zone-hover-Pen-location",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 13
+    },
+    "ZONE_PICK_PIT_POND_ANIMALS": {
+      "id": 137,
+      "lines": [
+        "Select animals to be",
+        "dropped into the pit or",
+        "pond below this zone.",
+        "Animals will not feel",
+        "obligated to stay if",
+        "they can find a way out."
+      ],
+      "reference": "zone-hover-Pond-owner",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 13
+    },
+    "ZONE_PIT": {
+      "id": 135,
+      "lines": [
+        "Designate this zone as",
+        "the top of a pit.",
+        "Citizens will not fill",
+        "the pit below with",
+        "water."
+      ],
+      "reference": "zone-hover-Pond-setting-right2",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 13
+    },
+    "ZONE_POND": {
+      "id": 136,
+      "lines": [
+        "Designate this zone as",
+        "the top of a pond.",
+        "Citizens will bring",
+        "buckets of water if the",
+        "pond below isn't filled."
+      ],
+      "reference": "zone-hover-Pond-setting-right3",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 13
+    },
+    "ZONE_TOMB_CITIZEN_BURIAL": {
+      "id": 140,
+      "lines": [
+        "Select this option and",
+        "any unassigned deceased",
+        "citizens will be buried",
+        "here automatically."
+      ],
+      "reference": "zone-hover-Tomb-setting-right2",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 13
+    },
+    "ZONE_TOMB_PET_BURIAL": {
+      "id": 141,
+      "lines": [
+        "Select this option and",
+        "any unassigned deceased",
+        "pets will be buried",
+        "here automatically."
+      ],
+      "reference": "zone-hover-Tomb-setting-right3",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 13
+    },
+    "ZONE_GATHER_FALLEN": {
+      "id": 133,
+      "lines": [
+        "Gather fallen fruit in",
+        "this zone."
+      ],
+      "reference": "zone-hover-PlantGathering-owner",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 13
+    },
+    "ZONE_GATHER_TREE": {
+      "id": 131,
+      "lines": [
+        "Gather fruit in trees",
+        "in and just above this",
+        "zone.  Requires a",
+        "stepladder."
+      ],
+      "reference": "zone-hover-PlantGathering-setting-right2",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 13
+    },
+    "ZONE_GATHER_SHRUB": {
+      "id": 132,
+      "lines": [
+        "Gather fruit and",
+        "vegetables from shrubs",
+        "in this zone."
+      ],
+      "reference": "zone-hover-PlantGathering-setting-right3",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 13
+    },
+    "ZONE_ASSIGN_SQUAD": {
+      "id": 142,
+      "lines": [
+        "Choose which squads",
+        "will use this barracks."
+      ],
+      "reference": "zone-hover-ArcheryRange-owner",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164309",
+      "left": 46,
+      "bottom": 13
+    },
+    "ZONE_REPAINT": {
+      "id": 127,
+      "lines": [
+        "Repaint this zone."
+      ],
+      "reference": "zone-hover-Pen-repaint",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-164754",
+      "left": 46,
+      "bottom": 10
+    }
+  },
+  "probes": [
+    {
+      "name": "zone-hover-palette-MeetingHall",
+      "instruction": "ZONE_TYPE_MEETING",
+      "hover": 154,
+      "enabled": true,
+      "left": 46,
+      "bottom": 22
+    },
+    {
+      "name": "zone-hover-palette-Bedroom",
+      "instruction": "ZONE_TYPE_BEDROOM",
+      "hover": 156,
+      "enabled": true,
+      "left": 46,
+      "bottom": 25
+    },
+    {
+      "name": "zone-hover-palette-DiningHall",
+      "instruction": "ZONE_TYPE_DINING_HALL",
+      "hover": 157,
+      "enabled": true,
+      "left": 46,
+      "bottom": 28
+    },
+    {
+      "name": "zone-hover-palette-Pen",
+      "instruction": "ZONE_TYPE_PEN",
+      "hover": 150,
+      "enabled": true,
+      "left": 46,
+      "bottom": 31
+    },
+    {
+      "name": "zone-hover-palette-Pond",
+      "instruction": "ZONE_TYPE_PIT",
+      "hover": 151,
+      "enabled": true,
+      "left": 46,
+      "bottom": 34
+    },
+    {
+      "name": "zone-hover-palette-WaterSource",
+      "instruction": "ZONE_TYPE_WATER_SOURCE",
+      "hover": 146,
+      "enabled": true,
+      "left": 46,
+      "bottom": 37
+    },
+    {
+      "name": "zone-hover-palette-Dungeon",
+      "instruction": "ZONE_TYPE_DUNGEON",
+      "hover": 162,
+      "enabled": true,
+      "left": 46,
+      "bottom": 40
+    },
+    {
+      "name": "zone-hover-palette-Fishing",
+      "instruction": "ZONE_TYPE_FISHING",
+      "hover": 147,
+      "enabled": true,
+      "left": 46,
+      "bottom": 43
+    },
+    {
+      "name": "zone-hover-palette-Sand",
+      "instruction": "ZONE_TYPE_SAND",
+      "hover": 152,
+      "enabled": true,
+      "left": 46,
+      "bottom": 46
+    },
+    {
+      "name": "zone-hover-palette-Office",
+      "instruction": "ZONE_TYPE_OFFICE",
+      "hover": 158,
+      "enabled": true,
+      "left": 46,
+      "bottom": 22
+    },
+    {
+      "name": "zone-hover-palette-Dormitory",
+      "instruction": "ZONE_TYPE_DORMITORY",
+      "hover": 161,
+      "enabled": true,
+      "left": 46,
+      "bottom": 25
+    },
+    {
+      "name": "zone-hover-palette-Barracks",
+      "instruction": "ZONE_TYPE_BARRACKS",
+      "hover": 160,
+      "enabled": true,
+      "left": 46,
+      "bottom": 28
+    },
+    {
+      "name": "zone-hover-palette-ArcheryRange",
+      "instruction": "ZONE_TYPE_ARCHERY_RANGE",
+      "hover": 159,
+      "enabled": true,
+      "left": 46,
+      "bottom": 31
+    },
+    {
+      "name": "zone-hover-palette-GarbageDump",
+      "instruction": "ZONE_TYPE_DUMP",
+      "hover": 149,
+      "enabled": true,
+      "left": 46,
+      "bottom": 34
+    },
+    {
+      "name": "zone-hover-palette-AnimalTraining",
+      "instruction": "ZONE_TYPE_ANIMAL_TRAINING",
+      "hover": 155,
+      "enabled": true,
+      "left": 46,
+      "bottom": 37
+    },
+    {
+      "name": "zone-hover-palette-Tomb",
+      "instruction": "ZONE_TYPE_TOMB",
+      "hover": 163,
+      "enabled": true,
+      "left": 46,
+      "bottom": 40
+    },
+    {
+      "name": "zone-hover-palette-PlantGathering",
+      "instruction": "ZONE_TYPE_GATHER",
+      "hover": 148,
+      "enabled": true,
+      "left": 46,
+      "bottom": 43
+    },
+    {
+      "name": "zone-hover-palette-Clay",
+      "instruction": "ZONE_TYPE_CLAY",
+      "hover": 153,
+      "enabled": true,
+      "left": 46,
+      "bottom": 46
+    },
+    {
+      "name": "zone-hover-Pen-rename",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-Pen-active",
+      "instruction": "ZONE_SUSPEND",
+      "hover": 129,
+      "enabled": true,
+      "left": 46,
+      "bottom": 10
+    },
+    {
+      "name": "zone-hover-Pen-remove",
+      "instruction": "ZONE_REMOVE_EXISTING",
+      "hover": 130,
+      "enabled": true,
+      "left": 46,
+      "bottom": 10
+    },
+    {
+      "name": "zone-hover-Pen-owner",
+      "instruction": "ZONE_PICK_PASTURE_ANIMALS",
+      "hover": 134,
+      "enabled": true,
+      "left": 46,
+      "bottom": 13
+    },
+    {
+      "name": "zone-hover-Pen-location",
+      "instruction": "ZONE_ASSIGN_LOCATION",
+      "hover": 138,
+      "enabled": true,
+      "left": 46,
+      "bottom": 13
+    },
+    {
+      "name": "zone-hover-Pen-setting-left",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": true,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-Pen-setting-second",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-Pen-setting-third",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-Pen-setting-fourth",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-Pen-setting-right1",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-Pen-setting-right2",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-Pen-setting-right3",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-Pond-rename",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-Pond-active",
+      "instruction": "ZONE_SUSPEND",
+      "hover": 129,
+      "enabled": true,
+      "left": 46,
+      "bottom": 10
+    },
+    {
+      "name": "zone-hover-Pond-remove",
+      "instruction": "ZONE_REMOVE_EXISTING",
+      "hover": 130,
+      "enabled": true,
+      "left": 46,
+      "bottom": 10
+    },
+    {
+      "name": "zone-hover-Pond-owner",
+      "instruction": "ZONE_PICK_PIT_POND_ANIMALS",
+      "hover": 137,
+      "enabled": true,
+      "left": 46,
+      "bottom": 13
+    },
+    {
+      "name": "zone-hover-Pond-location",
+      "instruction": "ZONE_ASSIGN_LOCATION",
+      "hover": 138,
+      "enabled": true,
+      "left": 46,
+      "bottom": 13
+    },
+    {
+      "name": "zone-hover-Pond-setting-left",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": true,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-Pond-setting-second",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-Pond-setting-third",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-Pond-setting-fourth",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-Pond-setting-right1",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-Pond-setting-right2",
+      "instruction": "ZONE_PIT",
+      "hover": 135,
+      "enabled": true,
+      "left": 46,
+      "bottom": 13
+    },
+    {
+      "name": "zone-hover-Pond-setting-right3",
+      "instruction": "ZONE_POND",
+      "hover": 136,
+      "enabled": true,
+      "left": 46,
+      "bottom": 13
+    },
+    {
+      "name": "zone-hover-Tomb-rename",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-Tomb-active",
+      "instruction": "ZONE_SUSPEND",
+      "hover": 129,
+      "enabled": true,
+      "left": 46,
+      "bottom": 10
+    },
+    {
+      "name": "zone-hover-Tomb-remove",
+      "instruction": "ZONE_REMOVE_EXISTING",
+      "hover": 130,
+      "enabled": true,
+      "left": 46,
+      "bottom": 10
+    },
+    {
+      "name": "zone-hover-Tomb-owner",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": true,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-Tomb-location",
+      "instruction": "ZONE_ASSIGN_LOCATION",
+      "hover": 138,
+      "enabled": true,
+      "left": 46,
+      "bottom": 13
+    },
+    {
+      "name": "zone-hover-Tomb-setting-left",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": true,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-Tomb-setting-second",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-Tomb-setting-third",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-Tomb-setting-fourth",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-Tomb-setting-right1",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-Tomb-setting-right2",
+      "instruction": "ZONE_TOMB_CITIZEN_BURIAL",
+      "hover": 140,
+      "enabled": true,
+      "left": 46,
+      "bottom": 13
+    },
+    {
+      "name": "zone-hover-Tomb-setting-right3",
+      "instruction": "ZONE_TOMB_PET_BURIAL",
+      "hover": 141,
+      "enabled": true,
+      "left": 46,
+      "bottom": 13
+    },
+    {
+      "name": "zone-hover-PlantGathering-rename",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-PlantGathering-active",
+      "instruction": "ZONE_SUSPEND",
+      "hover": 129,
+      "enabled": true,
+      "left": 46,
+      "bottom": 10
+    },
+    {
+      "name": "zone-hover-PlantGathering-remove",
+      "instruction": "ZONE_REMOVE_EXISTING",
+      "hover": 130,
+      "enabled": true,
+      "left": 46,
+      "bottom": 10
+    },
+    {
+      "name": "zone-hover-PlantGathering-owner",
+      "instruction": "ZONE_GATHER_FALLEN",
+      "hover": 133,
+      "enabled": true,
+      "left": 46,
+      "bottom": 13
+    },
+    {
+      "name": "zone-hover-PlantGathering-location",
+      "instruction": "ZONE_ASSIGN_LOCATION",
+      "hover": 138,
+      "enabled": true,
+      "left": 46,
+      "bottom": 13
+    },
+    {
+      "name": "zone-hover-PlantGathering-setting-left",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": true,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-PlantGathering-setting-second",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-PlantGathering-setting-third",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-PlantGathering-setting-fourth",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-PlantGathering-setting-right1",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-PlantGathering-setting-right2",
+      "instruction": "ZONE_GATHER_TREE",
+      "hover": 131,
+      "enabled": true,
+      "left": 46,
+      "bottom": 13
+    },
+    {
+      "name": "zone-hover-PlantGathering-setting-right3",
+      "instruction": "ZONE_GATHER_SHRUB",
+      "hover": 132,
+      "enabled": true,
+      "left": 46,
+      "bottom": 13
+    },
+    {
+      "name": "zone-hover-ArcheryRange-rename",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-ArcheryRange-active",
+      "instruction": "ZONE_SUSPEND",
+      "hover": 129,
+      "enabled": true,
+      "left": 46,
+      "bottom": 10
+    },
+    {
+      "name": "zone-hover-ArcheryRange-remove",
+      "instruction": "ZONE_REMOVE_EXISTING",
+      "hover": 130,
+      "enabled": true,
+      "left": 46,
+      "bottom": 10
+    },
+    {
+      "name": "zone-hover-ArcheryRange-owner",
+      "instruction": "ZONE_ASSIGN_SQUAD",
+      "hover": 142,
+      "enabled": true,
+      "left": 46,
+      "bottom": 13
+    },
+    {
+      "name": "zone-hover-ArcheryRange-location",
+      "instruction": "ZONE_ASSIGN_LOCATION",
+      "hover": 138,
+      "enabled": true,
+      "left": 46,
+      "bottom": 13
+    },
+    {
+      "name": "zone-hover-ArcheryRange-setting-left",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": true,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-ArcheryRange-setting-second",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-ArcheryRange-setting-third",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-ArcheryRange-setting-fourth",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-ArcheryRange-setting-right1",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-ArcheryRange-setting-right2",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-ArcheryRange-setting-right3",
+      "instruction": "NONE",
+      "hover": -1,
+      "enabled": false,
+      "left": 0,
+      "bottom": 61
+    },
+    {
+      "name": "zone-hover-Pen-repaint",
+      "instruction": "ZONE_REPAINT",
+      "hover": 127,
+      "enabled": true,
+      "left": 46,
+      "bottom": 10
+    }
+  ],
+  "preservation": "Owned DF45984 and DF39840 exited unsaved; protected source and preferences restored; native capped30FPS, GPU sample47C.",
+  "limitations": [
+    "Transient tooltip PNGs lose the UI overlay and are not visual acceptance.",
+    "Initial repaint probe used x30; excluded and replaced by focused x34 capture164754.",
+    "Active off-state wording, overlap navigation, assigned location details and paint-mode controls are not captured here.",
+    "Viewer integration and rendered input/lifecycle checks remain."
+  ]
+}

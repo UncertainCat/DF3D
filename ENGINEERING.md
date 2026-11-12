@@ -15059,6 +15059,18 @@ is session-lifecycle acceptance, not a completed typing UI.
 
 ### Current Zones revalidation and remaining semantic audit
 
+The main Zones palette and selected-zone controls still lack native instruction
+boxes; their existing label-only Godot tooltips are not a substitute. Protected
+native164309/164754 on2026-11-12 establish32 verbatim descriptions (all18 zone
+types plus14 actions/settings), their instruction IDs and side-panel anchors.
+`native_zone_hover.json` is the maintained copy/mapping oracle for completing
+this surface. The repaint probe is corrected to column34; earlier column30 is
+excluded. Text is read immediately after native render. Captured PNGs lose the
+transient UI overlay and are explicitly not visual acceptance. Use the existing
+anchored area-hover renderer, not minimap help; viewer integration, inactive
+wording, remaining navigation/paint controls and rendered lifecycle remain.
+
+
 The remaining selected-zone caption gap now has a verified native provider,
 `nativeZoneSelectedOwners`, exposed diagnostically by
 `df3d zone-selected-owners-read <zone id>`. Native1330c30 supplies the combined

@@ -180,6 +180,36 @@ require('gui.script').start(function()
   capture('pile')
   if test_zone_defaults then
    local ui=df.global.game.main_interface.civzone
+   local zone_hover_seen={}
+   local function zone_hover(label,targets)
+    local mode=os.getenv('DF3D_ZONE_HOVER_AUDIT')
+    if mode~='1'and mode~='repaint'then return end
+    if mode=='repaint'then
+     if label~='Pen'then return end
+     targets={{'repaint',34,9}}
+    end
+    for _,target in ipairs(targets)do
+     local function move()
+      df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+      g.mouse_x=target[2];g.mouse_y=target[3];g.precise_mouse_x=target[2]*8+4;g.precise_mouse_y=target[3]*12+6
+      gui.simulateInput(view,{});view:render(dfhack.getTickCount())
+     end
+     local deadline=dfhack.getTickCount()+900
+     repeat move();require('gui.script').sleep(1,'frames')until dfhack.getTickCount()>=deadline
+     move()
+     local main=df.global.game.main_interface
+     local record={name='zone-hover-'..label..'-'..target[1],hover=main.current_hover,instruction=df.main_hover_instruction[main.current_hover],enabled=main.hover_instructions_on,left=main.current_hover_left_x,bottom=main.current_hover_bot_y,lines={}}
+     for y=0,g.dimy-1 do
+      local line={};for x=0,g.dimx-1 do local pen=dfhack.screen.readTile(x,y);line[#line+1]=pen.ch>=32 and string.char(pen.ch%256)or' 'end
+      record.lines[#record.lines+1]=dfhack.df2utf(table.concat(line)):gsub('%s+$','')
+     end
+     records[#records+1]=record
+     if main.current_hover~=df.main_hover_instruction.NONE and not zone_hover_seen[main.current_hover]then
+      zone_hover_seen[main.current_hover]=true;capture(record.name,move)
+     end
+    end
+   end
+   zone_hover('palette',{{'MeetingHall',7,24},{'Bedroom',7,27},{'DiningHall',7,30},{'Pen',7,33},{'Pond',7,36},{'WaterSource',7,39},{'Dungeon',7,42},{'Fishing',7,45},{'Sand',7,48},{'Office',26,24},{'Dormitory',26,27},{'Barracks',26,30},{'ArcheryRange',26,33},{'GarbageDump',26,36},{'AnimalTraining',26,39},{'Tomb',26,42},{'PlantGathering',26,45},{'Clay',26,48}})
    local resize_marker=io.open(out..'/picker-resize','r')
    if resize_marker then
     resize_marker:close()
@@ -210,6 +240,7 @@ require('gui.script').start(function()
      active=b.spec_sub_flag.active,frame=df.global.world.frame_counter}
     assert(df.global.pause_state and df.global.world.frame_counter==frame)
     capture('defaults-'..entry[1])
+    zone_hover(entry[1],{{'rename',42,6},{'repaint',34,9},{'active',38,9},{'remove',42,9},{'owner',42,12},{'location',42,15},{'setting-left',7,12},{'setting-second',11,12},{'setting-third',15,12},{'setting-fourth',19,12},{'setting-right1',30,12},{'setting-right2',34,12},{'setting-right3',38,12}})
     if os.getenv('DF3D_ZONE_SETTINGS_AUDIT')=='1'then
      local original_first,original_second=raw.i1,raw.i2
      local function memberships()

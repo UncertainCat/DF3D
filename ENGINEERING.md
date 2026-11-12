@@ -513,6 +513,16 @@ Native720e25 reads styleable_id from the unit body-plan tissue layer; the adapte
 uses caste parallel arrays. These are investigation targets, not accepted fixes.
 Owned DF24676 closes unsaved with source preservation at30FPS, no viewer.
 `candidate_artwork_condition_discovery` records hashes and explicit limitations.
+Semantic input discovery112843 confirms5815's body-plan hair layers2/3 have
+length268, density98, curl78 and PONY_TAIL style, with100% modifiers. These agree
+with the resolver trace; those proposed causes are ruled out for this unit.
+Its age is below the gray modifier start. Unit2459's six worn pieces each have
+one thread dye improvement, no explicit dye-profile color, and dye material420/
+index190; multiple-improvement precedence is ruled out here. Native dye-material
+palette selection remains unresolved. Owned DF3928 closes unsaved with source
+preservation, native30FPS/no viewer; core19 passes. See
+candidate_artwork_semantic_inputs_reference. No runtime correction or portrait
+parity is claimed from these diagnostics.
 Unit5815 has no inventory and the trace rejects its hair tissue conditions;
 unit2459's resolved clothing uses palette row88 from worn items reporting color87.
 Those observations identify investigation areas, not proven causes. Native

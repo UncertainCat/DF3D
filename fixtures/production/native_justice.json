@@ -11491,5 +11491,23 @@
       "justice-artwork-5815-tissue.txt": "bd5a8bff696240b4fe64ea25f070126f2db3b2ba908b0b427afc3cffebed547c",
       "justice-artwork-2459-tissue.txt": "4bdc18a08bf722e81c202868a3ef2b57fd176a5df21577d0aa76df5514070b20"
     }
+  },
+  "candidate_artwork_semantic_inputs_reference": {
+    "run": "build/stockpile-storage-native-input-20261112-112843",
+    "owned_df_pid": 3928,
+    "source_preserved": true,
+    "native_fps": 30,
+    "findings": [
+      "5815 body-plan hair layers2/3: length268, density98, curl78, PONY_TAIL style, modifiers100%. These agree with resolver trace; proposed modifier/style causes ruled out for this unit.",
+      "5815 birth42/tick385398, current106/tick157249: below gray modifier start26880 days; solid base patternSAFFRON92. Native hair choice unresolved.",
+      "2459 items46655..46660 each have one thread dye improvement, no explicit profile color, dye material420/index190. Multiple-improvement precedence ruled out; native dye-material palette path unresolved."
+    ],
+    "artifacts": {
+      "justice-artwork-5815-inputs.json": "b6bd560ead1c66475b33e74366b05a8c03eec0981dfae9e27c8cff143003a558",
+      "justice-artwork-2459-inputs.json": "34f695ee79b6dbd7f241e86614ea0e6b9e024e66dba3916a0e624a058ec5a7a1",
+      "justice-artwork-5815-patterns.json": "589cddd6fb7e3ecf66fec079d81c8ccc28a4a6a77fbe51b42ccee24d52041ed7",
+      "justice-artwork-2459-patterns.json": "5048b029d1c098b3ce8a81a78cf6bb515089e9a65f78466e92f4d435997e89e7"
+    },
+    "status": "discovery_only_not_a_portrait_fix"
   }
 }

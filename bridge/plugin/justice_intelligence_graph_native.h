@@ -14,6 +14,7 @@ namespace df3d_justice {
 struct IntelligenceGraphActor {
     int32_t historicalFigure=-1,identity=-1,principalOrganization=-1;
     std::string name;
+    std::vector<std::string> lines;
     std::vector<int32_t> aliases,organizations,plots;
 };
 struct IntelligenceGraphNode {
@@ -25,7 +26,7 @@ struct IntelligenceGraphOrganization {
     std::string name;int32_t principalActor=-1;
     std::vector<IntelligenceGraphNode> nodes;
 };
-struct IntelligenceGraphPlot {int32_t agreement=-1,master=-1;std::string name;};
+struct IntelligenceGraphPlot {int32_t agreement=-1,master=-1;std::string name;int32_t organization=-1;};
 struct IntelligenceGraph {
     std::vector<IntelligenceGraphActor> actors;
     std::vector<IntelligenceGraphOrganization> organizations;
@@ -94,6 +95,7 @@ inline bool intelligenceGraphReady(){
             {0x479d60,0x195,UINT64_C(0xb434bf9a9c1eb930)},
             {0x479330,0x6eb,UINT64_C(0xd9b29dfbbf6a9b96)},
             {0xbb9b0,0x80,UINT64_C(0xcc2c8d1b49288e49)},
+            {0xd1840,0x6ab,UINT64_C(0xa46e6da036f05446)},
         };
         for(const auto& p:pins){uint64_t hash=UINT64_C(14695981039346656037);for(size_t i=0;i<p.length;++i){hash^=base[p.at+i];hash*=UINT64_C(1099511628211);}if(hash!=p.hash)return false;}return true;
     }();return pinned;
@@ -137,6 +139,25 @@ inline std::optional<IntelligenceGraph> intelligenceGraph(){
             row.principalOrganization=detail::graphIndex(context.baseOrganizations,actor->principle_org);
             for(auto* org:actor->associated_org)row.organizations.push_back(detail::graphIndex(context.baseOrganizations,org));
             for(auto* plot:actor->associated_plot)row.plots.push_back(detail::graphIndex(context.basePlots,plot));
+            // d1840's alias pass is independent of geometry. Supply only its
+            // owned identity list and a nonempty, discarded title so it skips
+            // title clipping; no organizations/plots reach its width-based paths.
+            df::actor_entryst aliases;aliases.iden=actor->iden;
+            aliases.alias_identity_id=actor->alias_identity_id;aliases.p_list_name=" ";
+            struct AliasCleanup {df::actor_entryst& value;uint8_t* base;~AliasCleanup(){reinterpret_cast<void(*)(df::curses_text_boxst*)>(base+0xbb9b0)(&value.main_text_box);}} cleanup{aliases,base};
+            {
+                df3d_creature::InventoryRandomRestore random(base);
+                reinterpret_cast<void(*)(df::actor_entryst*)>(base+0xd1840)(&aliases);
+            }
+            for(const auto* line:aliases.main_text_box.text){if(!line)return std::nullopt;row.lines.push_back(text(*line));}
+            // The remaining d1840 branches append these literal prefixes and
+            // owned graph names, then clip at window width. Export full strings;
+            // clipping belongs to the viewer's independently owned geometry.
+            const auto literal=[base](size_t at){return std::string(reinterpret_cast<const char*>(base+at));};
+            if(const auto* org=actor->principle_org)
+                row.lines.push_back(text(org->principle_actor_entry==actor?literal(0x15ecff0):literal(0x15ed010)+org->list_name));
+            for(const auto* org:actor->associated_org)if(org!=actor->principle_org)row.lines.push_back(text(literal(0x15ed010)+org->list_name));
+            for(const auto* plot:actor->associated_plot)row.lines.push_back(text(literal(0x15ecfc0)+plot->list_name));
             result.actors.push_back(std::move(row));
         }
         for(const auto* org:context.baseOrganizations){
@@ -152,8 +173,12 @@ inline std::optional<IntelligenceGraph> intelligenceGraph(){
         }
         for(const auto* plot:context.basePlots){
             result.plots.push_back({plot->agreement?plot->agreement->id:-1,plot->master_hfid,text(plot->list_name)});
-            // organization_name is clipped using native window width. It is
-            // not a semantic input to this graph and must not cross the bridge.
+            // 2b7af1 assigns the master's root organization; 2b8bf0 fills an
+            // empty caption when the master first joins another organization.
+            // Both agree with its final principal organization, without using
+            // the native window-clipped organization_name cache.
+            const auto master=std::find_if(result.actors.begin(),result.actors.end(),[plot](const auto& row){return row.historicalFigure==plot->master_hfid;});
+            if(master!=result.actors.end())result.plots.back().organization=master->principalOrganization;
         }
         return result;
     }catch(const std::exception&){return std::nullopt;}

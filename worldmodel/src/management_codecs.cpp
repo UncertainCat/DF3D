@@ -119,9 +119,10 @@ ManagementState decodeState(const m::ManagementState* s) {
     }
     if(const auto* p=r->graph()){
       auto& value=out.graph.emplace();value.kind=JusticeGraphKind(p->kind());value.actorCount=p->actor_count();value.organizationCount=p->organization_count();value.plotCount=p->plot_count();value.nodeCount=p->node_count();
-      for(const auto* row:*p->actors())value.actors.push_back({row->historical_figure(),row->identity(),row->principal_organization(),row->name()->str(),{row->aliases()->begin(),row->aliases()->end()},{row->organizations()->begin(),row->organizations()->end()},{row->plots()->begin(),row->plots()->end()}});
+      for(const auto* row:*p->actors())value.actors.push_back({row->historical_figure(),row->identity(),row->principal_organization(),row->name()->str(),{row->aliases()->begin(),row->aliases()->end()},{row->organizations()->begin(),row->organizations()->end()},{row->plots()->begin(),row->plots()->end()},{}});
+      for(size_t i=0;i<value.actors.size();++i)for(const auto* line:*p->actors()->Get(flatbuffers::uoffset_t(i))->lines())value.actors[i].lines.push_back(line->str());
       for(const auto* row:*p->organizations())value.organizations.push_back({row->name()->str(),row->principal_actor(),row->first_node(),row->node_count()});
-      for(const auto* row:*p->plots())value.plots.push_back({row->agreement(),row->master(),row->name()->str()});
+      for(const auto* row:*p->plots())value.plots.push_back({row->agreement(),row->master(),row->name()->str(),row->organization()});
       for(const auto* row:*p->nodes())value.nodes.push_back({row->organization(),row->actor(),row->parent(),row->sort(),row->tier(),row->label()->str(),row->name()->str(),row->status()->str(),row->foreground(),row->background(),row->bright()});
     }
     if(const auto* p=r->intelligence()){

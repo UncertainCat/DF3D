@@ -3,6 +3,20 @@ signal changed
 const C=preload("res://scripts/management_contract.gd")
 enum Phase {Closed,Reading,Ready,Rejected,Unavailable}
 var service
+var mode:=0
+var graph_selected:=0
+var graph_scroll:=0
+var selected_node: int=-1
+func select_mode(value: int) -> void:
+	if value<0 or value>3 or value==mode:return
+	if value==0:
+		if phase!=Phase.Ready or rows.is_empty():return
+	elif graph.phase!=graph.Phase.Ready or graph.graph[["actors","organizations","plots"][value-1]].is_empty():return
+	mode=value;graph_selected=0;graph_scroll=0;selected_node=-1;changed.emit()
+func select_graph_row(index: int) -> void:
+	if mode==0 or graph.phase!=graph.Phase.Ready:return
+	if index<0 or index>=graph.graph[["actors","organizations","plots"][mode-1]].size():return
+	graph_selected=index;selected_node=-1;changed.emit()
 var graph=preload("res://scripts/justice_graph_state.gd").new()
 func _init() -> void:graph.changed.connect(_graph_changed)
 func _graph_changed() -> void:changed.emit()
@@ -33,6 +47,7 @@ func _retire() -> void:
 	_pending=[]
 func close() -> void:
 	graph.close()
+	mode=0;graph_selected=0;graph_scroll=0;selected_node=-1
 	_retire();rows=[];lines=[];selected=-1;first=0;revision=0;phase=Phase.Closed;last_result={};changed.emit()
 func _session_changed() -> void:close();phase=Phase.Unavailable;changed.emit()
 func open() -> void:close();phase=Phase.Reading;graph.open();_page()

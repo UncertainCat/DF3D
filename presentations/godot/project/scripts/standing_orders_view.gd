@@ -76,8 +76,8 @@ func _gui_input(event: InputEvent) -> void:
 			state.set_value(id,(int(state.settings[id].value)+1)%captions()[id].size());return
 func text(value: String,point: Vector2,color: int=15) -> void:
 	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point,value,HORIZONTAL_ALIGNMENT_LEFT,-1,12,colors[color])
-func tab(value: String,point: Vector2,token: String,selected: bool) -> float:
-	var width:=value.length()+4
+func tab(value: String,point: Vector2,token: String,selected: bool,enabled:=true,extra_columns:=0) -> float:
+	var width:=value.length()+4+extra_columns
 	var texture: Texture2D=art.texture(token+("_SELECTED" if selected else ""))
 	if texture!=null:
 		for y in 2:
@@ -86,7 +86,7 @@ func tab(value: String,point: Vector2,token: String,selected: bool) -> float:
 				draw_texture_rect_region(texture,Rect2(point+Vector2(x*8,y*12),Vector2(8,12)),Rect2(sx*8,y*12,8,12))
 	# Native selected tab ink differs by hierarchy; captured114349.
 	var ink:=Color8(70,0,44) if token=="SHORT_SUBSUBTAB" else Color8(70,44,0)
-	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point+Vector2(16,18),value,HORIZONTAL_ALIGNMENT_LEFT,-1,12,ink if selected else colors[15])
+	if theme.default_font!=null:theme.default_font.draw_string(get_canvas_item(),point+Vector2(16,18),value,HORIZONTAL_ALIGNMENT_LEFT,-1,12,ink if selected else colors[15 if enabled else 8])
 	return width*8
 func draw_chrome(category: int) -> void:
 	draw_rect(Rect2(Vector2(4,4),size-Vector2(8,8)),Color8(28,28,28));patch("HOVER_RECTANGLE",Vector2i.ZERO,int(size.x/8),frame_rows)

@@ -10567,17 +10567,17 @@
     ]
   },
   "intelligence_graph_transport_reference": {
-    "run": "stockpile-storage-native-input-20261112-095621",
+    "run": "build/stockpile-storage-native-input-20261112-102334",
     "status": "passed_with_known_issues",
     "lane_status": "passed",
     "diagnostics": [
-      "established separate-renderer warning"
+      "established separate-renderer warning, render-thread finalize diagnostic and ObjectDB shutdown warning"
     ],
-    "protocol": 202,
-    "owned_df_pid": 21644,
+    "protocol": 203,
+    "owned_df_pid": 34836,
     "source_preserved": true,
     "native_fps": 30,
-    "viewer_headless": true,
+    "viewer_headless": false,
     "controlled_repository": true,
     "sample": {
       "graph_actors": 3,
@@ -10592,6 +10592,10 @@
           "aliases": [],
           "historical_figure": 907,
           "identity": -1,
+          "lines": [
+            "Highest known in organization",
+            "Associated Plot: Corrupt Captain Of The Guard of The Godly Lancers, agreed in 19"
+          ],
           "name": "Eral Syrupsingle",
           "organizations": [],
           "plots": [
@@ -10603,6 +10607,10 @@
           "aliases": [],
           "historical_figure": 1637,
           "identity": -1,
+          "lines": [
+            "Associated Organization: Eral Syrupsingle",
+            "Associated Plot: Corrupt Captain Of The Guard of The Godly Lancers, agreed in 19"
+          ],
           "name": "Onget Cloistertour",
           "organizations": [
             0
@@ -10613,9 +10621,16 @@
           "principal_organization": 0
         },
         {
-          "aliases": [],
+          "aliases": [
+            0
+          ],
           "historical_figure": 898,
           "identity": -1,
+          "lines": [
+            "Alias: Shash the Tenebrous",
+            "Associated Organization: Eral Syrupsingle",
+            "Associated Plot: Corrupt Captain Of The Guard of The Godly Lancers, agreed in 19"
+          ],
           "name": "Tobul Eyesword",
           "organizations": [
             0
@@ -10679,7 +10694,8 @@
         {
           "agreement": 11,
           "master": 907,
-          "name": "Corrupt Captain Of The Guard of The Godly Lancers, agreed in 19"
+          "name": "Corrupt Captain Of The Guard of The Godly Lancers, agreed in 19",
+          "organization": 0
         }
       ]
     },
@@ -10688,17 +10704,61 @@
       "exact native actor/organization/plot/node facts",
       "limit1 actor/node continuation pages",
       "changed receipt rejection",
-      "unchanged native evidence/entity/figures/agreement/menu"
+      "unchanged native evidence/entity/figures/agreement/menu",
+      "native alias and relationship detail lines",
+      "plot organization reference",
+      "actual tab and actor selection clicks",
+      "zero differing panel pixels at crop (32,52)-(976,760) for Actors, selected second actor, Organizations and Plots"
     ],
-    "bridge_sha256": "f8e6951717bd7dec828c2d06e02673846e77539b8e925af10426e5e1ed3eedd8",
+    "bridge_sha256": "e888a71f2a73c7635abdde2ac5483053a8968d2bc86654aaa2220cf63d1b266f",
     "artifacts": {
-      "justice-graph-wire.json": "f7738cdceb70d9d05d65e4e474e44420a46cf8db45768c0b25680e7e6bf10fdd",
-      "justice-intelligence-graph.json": "3219a67bf21d0b4b26e10cc29a9ded96a8efadee739059d9368299f2715d26e5",
+      "justice-graph-wire.json": "4c50cb5a2db9c921255253b9bb5d810c5c5cf450e17fa8ee98031531146f53a7",
+      "justice-intelligence-graph.json": "3c5af814ad82819b69d9fb675467730a23912542411f13ec664fce265891d386",
+      "justice-graph-presentation.json": "efe7639faf7232e75baaee6a153b0dc15b09795be8616167390532b12a8c17c6",
       "job-settings-wire-result.json": "5d2dfbf1509bae342178f9e6f179a2ff7d32d69fb453ec432a84edc4e6879170"
     },
     "limits": [
-      "graph tab rendering, detail text, search and navigation remain unfinished",
-      "one corruption agreement; other plot types and multi-organization graphs unaccepted",
+      "search, keyboard, scrolling, resize and complex chart navigation remain unfinished",
+      "one corruption agreement and linear three-node organization; other plot types and multi-organization graphs unaccepted",
+      "no claim of full public Justice acceptance"
+    ]
+  },
+  "intelligence_graph_presentation_reference": {
+    "run": "build/stockpile-storage-native-input-20261112-102334",
+    "protocol": 203,
+    "viewport": [
+      1200,
+      800
+    ],
+    "panel_crop": [
+      32,
+      52,
+      976,
+      760
+    ],
+    "different_pixels": {
+      "actors": 0,
+      "actor-selected": 0,
+      "organizations": 0,
+      "plots": 0
+    },
+    "artwork": {
+      "row": "BUTTON_RECTANGLE",
+      "node": "GRID_CELL_ACTIVE"
+    },
+    "artifacts": {
+      "justice-graph-actors.png": "90e999f467dbb5c3b7c9620e883197e47c6525b4c087a5ff9dca087ee995b866",
+      "justice-graph-actors-view.png": "86068f5a8287be4acc06206d4c31545f2138f2f1a317fd34ce3bd01a47a4caeb",
+      "justice-graph-actor-selected.png": "d55e16fcac9ab35d56d788fa30c4088be8c1f10c2002af51c98bd57f51eb8b1c",
+      "justice-graph-actor-selected-view.png": "89e50e9d00f7795e0ddabcb1bfd04a7da60a04f30edc3b559a8eb9d6ee010bd7",
+      "justice-graph-organizations.png": "8db1e6e98f5e6a8e794367520b21ee5bb3f85b837a9198130741c4ec5250fe2b",
+      "justice-graph-organizations-view.png": "4b817bab263e561f4f82944764bfd0944c67d5e5072452313056cabe12e73e3d",
+      "justice-graph-plots.png": "2dbfb3cc32468ae95648a8e62ea1926697a1269c671194b1154ea5279acb5093",
+      "justice-graph-plots-view.png": "be3c3772a5a6f962fd384377e6f4317d3cc94588b629da260fa2b901c003bed6"
+    },
+    "limits": [
+      "search, keyboard, scrolling, resize and complex chart navigation remain unfinished",
+      "one corruption agreement and linear three-node organization; other plot types and multi-organization graphs unaccepted",
       "no claim of full public Justice acceptance"
     ]
   }

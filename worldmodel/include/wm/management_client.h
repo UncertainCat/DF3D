@@ -515,10 +515,10 @@ struct JusticeIntelligenceReport {uint32_t index=0;std::string title,officer;boo
 struct JusticeIntelligencePage {int32_t reportIndex=-1;uint16_t textColumns=0;std::vector<JusticeIntelligenceReport> reports;std::vector<std::string> lines;};
 struct JusticeGraphActor {
   int32_t historicalFigure=-1,identity=-1,principalOrganization=-1;
-  std::string name;std::vector<int32_t> aliases,organizations,plots;
+  std::string name;std::vector<int32_t> aliases,organizations,plots;std::vector<std::string> lines;
 };
 struct JusticeGraphOrganization {std::string name;int32_t principalActor=-1;uint32_t firstNode=0,nodeCount=0;};
-struct JusticeGraphPlot {int32_t agreement=-1,master=-1;std::string name;};
+struct JusticeGraphPlot {int32_t agreement=-1,master=-1;std::string name;int32_t organization=-1;};
 struct JusticeGraphNode {
   uint32_t organization=0;int32_t actor=-1,parent=-1,sort=0,tier=0;
   std::string label,name,status;int16_t foreground=0,background=0;int8_t bright=0;

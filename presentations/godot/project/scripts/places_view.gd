@@ -12,9 +12,9 @@ var portraits: Dictionary={}
 var hover_help
 var pointer_known:=false
 var pointer_position:=Vector2.ZERO
-func tab(value: String,point: Vector2,token: String,selected: bool) -> float:
-	if token!="SHORT_SUBTAB" or not selected:return super.tab(value,point,token,selected)
-	var width:=value.length()+4;var texture: Texture2D=art.texture(token+"_SELECTED")
+func tab(value: String,point: Vector2,token: String,selected: bool,enabled:=true,extra_columns:=0) -> float:
+	if token!="SHORT_SUBTAB" or not selected:return super.tab(value,point,token,selected,enabled,extra_columns)
+	var width:=value.length()+4+extra_columns;var texture: Texture2D=art.texture(token+"_SELECTED")
 	if texture!=null:
 		for y in 2:
 			for x in width:

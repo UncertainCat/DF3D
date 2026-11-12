@@ -6,6 +6,7 @@ const C=preload("res://scripts/management_contract.gd")
 const CASE_TABS=["Open cases","Closed cases","Cold cases","Fortress guard","Convicts","Intelligence"]
 const NameColor=preload("res://scripts/native_name_color.gd")
 const SORT_COLUMNS=[C.JusticeCandidateColumn.Name,C.JusticeCandidateColumn.Category,C.JusticeCandidateColumn.Profession,C.JusticeCandidateColumn.Crime]
+var graph_view=preload("res://scripts/justice_graph_view.gd").new()
 var witness_scroll
 var candidate_scroll
 var search
@@ -29,10 +30,13 @@ func convict_rect() -> Rect2:return Rect2(detail_x()+104,list_top()+24,72,36)
 func sort_rect(index: int) -> Rect2:return Rect2(detail_x()+[5,15,24,35][index]*8,list_top(),[10,9,10,4][index]*8,12)
 func picker_allowed() -> bool:return allowed() and state.candidates.phase==state.candidates.Phase.Ready
 func configure_justice(source,model) -> void:
+	graph_view.configure(self)
 	configure_standing_orders(source,model)
 	scrollbar.input_allowed=allowed;scrollbar.wheel_enabled=false
 	scrollbar.row_changed.connect(func(value):
-		if state.tab==5:state.intelligence.seek(value,intelligence_capacity())
+		if state.tab==5:
+			if state.intelligence.mode>0:graph_view.seek(value)
+			else:state.intelligence.seek(value,intelligence_capacity())
 		else:state.seek(value,capacity()))
 	witness_scroll=preload("res://scripts/area_location_scrollbar.gd").new();add_child(witness_scroll);witness_scroll.configure(source)
 	witness_scroll.use_classic_art=true
@@ -96,6 +100,8 @@ func refresh() -> void:
 		search.set_bytes(roster().query.to_utf8_buffer())
 	if state.tab==5:
 		scrollbar.position=Vector2(size.x-32,list_top()+24);scrollbar.size=Vector2(16,intelligence_capacity()*(36 if state.intelligence.selected<0 else 12));scrollbar.page=intelligence_capacity();scrollbar.set_rows(state.intelligence.rows.size() if state.intelligence.selected<0 else state.intelligence.lines.size(),state.intelligence.first)
+		if state.intelligence.mode>0:
+			scrollbar.size.y=graph_view.capacity()*12;scrollbar.page=graph_view.capacity();scrollbar.set_rows(graph_view.total(),state.intelligence.graph_scroll)
 	if not search.visible:search.release_focus()
 	var retained: Dictionary={}
 	var roster_state=roster() if roster_open() else state.candidates
@@ -120,7 +126,9 @@ func _input(event: InputEvent) -> void:
 		var point: Vector2=get_global_transform_with_canvas().affine_inverse()*event.position
 		if Rect2(Vector2(0,list_top()),size-Vector2(0,list_top())).has_point(point):
 			var step: int=-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1
-			if state.tab==5:state.intelligence.seek(state.intelligence.first+step,intelligence_capacity())
+			if state.tab==5:
+				if state.intelligence.mode>0:graph_view.seek(state.intelligence.graph_scroll+step)
+				else:state.intelligence.seek(state.intelligence.first+step,intelligence_capacity())
 			elif roster_open():roster().seek(roster().first+step,guard_capacity())
 			elif point.x<detail_x():state.seek(visible_first()+step,capacity())
 			elif picker_open():state.candidates.seek(state.candidates.first+step,picker_capacity())
@@ -145,6 +153,9 @@ func _gui_input(event: InputEvent) -> void:
 		if tab_rect(index).has_point(event.position):state.select_tab(index);return
 	if state.phase not in [state.Phase.Ready,state.Phase.DetailReading]:return
 	if state.tab==5:
+		for index in 4:
+			if intelligence_tab_rect(index).has_point(event.position):state.intelligence.select_mode(index);return
+		if state.intelligence.mode>0:graph_view.click(event.position);return
 		if state.intelligence.selected<0:
 			for index in mini(intelligence_capacity(),state.intelligence.rows.size()-state.intelligence.first):
 				if intelligence_rect(index).has_point(event.position):state.intelligence.select_report(state.intelligence.rows[state.intelligence.first+index].index);return
@@ -174,9 +185,18 @@ func _gui_input(event: InputEvent) -> void:
 	elif state.tab!=1 and not state.detail.is_empty():
 		if convict_rect().has_point(event.position):state.open_candidates()
 		elif interrogate_rect().has_point(event.position):state.open_candidates(true)
+func intelligence_tab_rect(index: int) -> Rect2:
+	var x:=8
+	var captions=["Interrogations","Actors","Organizations","Plots"]
+	for previous in index:x+=(captions[previous].length()+4+(1 if previous==2 else 0))*8
+	return Rect2(x,list_top()-12,(captions[index].length()+4+(1 if index==2 else 0))*8,24)
 func draw_intelligence() -> void:
 	var model=state.intelligence;var x:=8.0
-	for caption in ["Interrogations","Actors","Organizations","Plots"]:x+=tab(caption,Vector2(x,list_top()-12),"SHORT_SUBSUBTAB",caption=="Interrogations")
+	var captions=["Interrogations","Actors","Organizations","Plots"]
+	for index in 4:
+		var enabled: bool=model.phase==model.Phase.Ready and not model.rows.is_empty() if index==0 else model.graph.phase==model.graph.Phase.Ready and not model.graph.graph[["actors","organizations","plots"][index-1]].is_empty()
+		x+=tab(captions[index],Vector2(x,list_top()-12),"SHORT_SUBSUBTAB",model.mode==index and enabled,enabled,1 if index==2 else 0)
+	if model.mode>0:graph_view.draw();return
 	if model.phase!=model.Phase.Ready:return
 	if model.selected<0:
 		for index in mini(intelligence_capacity(),model.rows.size()-model.first):

@@ -2850,12 +2850,12 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             Json::Value output;output["actors"]=Json::Value(Json::arrayValue);output["organizations"]=Json::Value(Json::arrayValue);output["plots"]=Json::Value(Json::arrayValue);
             const auto ids=[](const auto& values){Json::Value result(Json::arrayValue);for(auto value:values)result.append(value);return result;};
             for(const auto& row:graph->actors){Json::Value value;value["historical_figure"]=row.historicalFigure;value["identity"]=row.identity;value["name"]=DF2UTF(row.name);
-                value["aliases"]=ids(row.aliases);value["principal_organization"]=row.principalOrganization;value["organizations"]=ids(row.organizations);value["plots"]=ids(row.plots);output["actors"].append(value);}
+                value["aliases"]=ids(row.aliases);value["principal_organization"]=row.principalOrganization;value["organizations"]=ids(row.organizations);value["plots"]=ids(row.plots);value["lines"]=Json::Value(Json::arrayValue);for(const auto& line:row.lines)value["lines"].append(DF2UTF(line));output["actors"].append(value);}
             for(const auto& row:graph->organizations){Json::Value value;value["name"]=DF2UTF(row.name);value["principal_actor"]=row.principalActor;value["nodes"]=Json::Value(Json::arrayValue);
                 for(const auto& node:row.nodes){Json::Value n;n["actor"]=node.actor;n["parent"]=node.parent;n["sort"]=node.sort;n["tier"]=node.tier;n["descendants"]=node.descendants;
                     n["label"]=DF2UTF(node.label);n["name"]=DF2UTF(node.name);n["status"]=DF2UTF(node.status);n["foreground"]=node.foreground;n["background"]=node.background;n["bright"]=int(node.bright);value["nodes"].append(n);}
                 output["organizations"].append(value);}
-            for(const auto& row:graph->plots){Json::Value value;value["agreement"]=row.agreement;value["master"]=row.master;value["name"]=DF2UTF(row.name);output["plots"].append(value);}
+            for(const auto& row:graph->plots){Json::Value value;value["agreement"]=row.agreement;value["master"]=row.master;value["organization"]=row.organization;value["name"]=DF2UTF(row.name);output["plots"].append(value);}
             out.print("{}",Json::FastWriter().write(output));return CR_OK;
         }
         if(parameters[0]=="justice-intelligence-actors-probe") {

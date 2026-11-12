@@ -46,9 +46,11 @@ organization index to the graph contract. Lines retain native alias/relationship
 wording before viewer clipping; organization references address the same graph
 receipt. Older recordings imply neither field. Both defaults and the mailbox
 are203 (`Local\\df3d_management_v203`); bridge and client must be rebuilt together.
-Protocol202 graph lifecycle and paging semantics remain unchanged. The captions
-adapter and presentation are being integrated; this migration alone does not
-establish their native acceptance.
+Protocol202 graph lifecycle and paging semantics remain unchanged. The bridge invokes pinned alias formatter d1840 with an owned identity list
+and discarded nonempty title, bypassing geometry-dependent paths. Native
+relationship prefixes are combined with owned graph names before viewer clipping.
+Plot organization references follow the master actor's principal organization,
+matching audited collector branches2b7af1/2b8bf0.
 
 
 Management protocol202 adds read-only `JusticeIntelligenceGraphRead` with tab5
@@ -68,19 +70,32 @@ ranges, and publishes only the complete graph. Close and session changes retire
 pending reads; changed receipts are rejected without replay. Public Justice
 remains hidden. Report transport retains the protocol201 field semantics.
 
-Protected `stockpile-storage-native-input-20261112-095621` verifies the graph
-through protocol202 against the populated native provider: three actors, one
-organization, one plot and three hierarchy nodes. Separate limit1 requests
-verify actor/node continuation order and links; a changed receipt is rejected.
-The source evidence/entity/figures/agreement/menu byte guards remain unchanged.
-Owned DF21644 closes unsaved with source save and preferences preserved. Native
-runs at30FPS, Godot headless; observed58C/4% GPU is a sample, not a continuous
-peak. Live qualification is `passed_with_known_issues` for the established
-separate-renderer warning only. MSVC, root/client builds, state tests, management
-contract, UI composition and all19 core checks pass. Fixture
-`intelligence_graph_transport_reference` retains provenance and captured facts.
-The three graph tabs still require actual rendering, detail text, search and
-navigation integration and acceptance; the loader alone does not expose them.
+Protected `stockpile-storage-native-input-20261112-102334` verifies protocol203
+against a populated native graph: three actors (including an alias), one
+organization, one plot and three hierarchy nodes. Actor detail lines and plot
+organization references match native. Limit1 actor/node requests preserve
+continuation order and links; a changed receipt is rejected. The source
+evidence/entity/figures/agreement/menu guards remain unchanged. Owned DF34836
+closes unsaved with the source save and preferences preserved.
+
+The Intelligence viewer renders Actors, Organizations and Plots from the
+complete graph and owns tab/row/node selection and chart geometry. At1200x800,
+actual tab clicks and second-actor selection produce zero differing pixels in
+the panel crop(32,52)-(976,760) for all four recorded native/viewer states.
+Rows use installed BUTTON_RECTANGLE artwork; nodes use GRID_CELL_ACTIVE.
+Native d1650 supplies the reference for hierarchy spacing, while semantic
+membership and order remain native-provider results. This three-node chain
+establishes neither branching-edge glyph parity nor larger chart navigation.
+
+Both graphical processes are capped at30FPS. GPU samples46-47C are observations,
+not a continuous peak. Live qualification is `passed_with_known_issues` for the
+established separate-renderer, finalize and ObjectDB shutdown diagnostics.
+MSVC, fresh root/client builds, state tests, management contract, UI composition
+and all19 core checks pass. Fixture `intelligence_graph_transport_reference`
+and `intelligence_graph_presentation_reference` retain bounded provenance.
+Search, keyboard, scrolling/resize acceptance, chart panning/clipping and complex
+or multiple organizations remain unfinished. Public Justice stays hidden.
+
 
 
 Management protocol201 adds read-only `JusticeIntelligenceRead` with tab5.

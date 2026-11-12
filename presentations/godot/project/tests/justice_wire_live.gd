@@ -414,6 +414,27 @@ func run_graph(reference: Dictionary) -> void:
 		check(rows==expected[key],"Graph continuation changed order or links")
 	var stale:=await request("justice",{"action":C.ManagementAction.JusticeIntelligenceGraphRead,"tab":5,"offset":0,"limit":32,"expected_list_revision":model.revision+1,"graph_kind":1})
 	check(stale.get("status")==C.ManagementStatus.Rejected and stale.get("justice",{}).get("outcome")==C.JusticeOutcome.Stale,"Changed graph receipt accepted")
-	model.dispose();actions.queue_free();await process_frame
+	model.dispose()
+	if OS.get_environment("DF3D_JUSTICE_RENDER")=="1":
+		root.size=Vector2i(1200,800);check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Graph assets unavailable")
+		var controller=preload("res://scripts/justice_state.gd").new();controller.configure(actions);controller.open(5)
+		var view=preload("res://scripts/justice_view.gd").new();root.add_child(view);view.configure_justice(world,controller);view.layout(Vector2(1200,800))
+		deadline=Time.get_ticks_msec()+15000
+		while (controller.intelligence.graph.phase==model.Phase.Reading or controller.intelligence.phase==controller.intelligence.Phase.Reading) and Time.get_ticks_msec()<deadline:await process_frame
+		check(controller.intelligence.graph.phase==model.Phase.Ready,"Rendered graph did not settle")
+		for token in ["BUTTON_RECTANGLE","BUTTON_RECTANGLE_DARK","BUTTON_RECTANGLE_LIGHT","BUTTON_CATEGORY_RECTANGLE","BUTTON_CATEGORY_RECTANGLE_SELECTED","HOVER_RECTANGLE"]:
+			var texture=view.art.texture(token)
+			if texture!=null:texture.get_image().save_png(directory+"/graph-art-"+token+".png")
+		for mode in [1,2,3]:
+			await pointer_click(view.position+view.intelligence_tab_rect(mode).get_center())
+			check(controller.intelligence.mode==mode,"Graph tab click missed")
+			await process_frame;await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/justice-graph-"+["actors","organizations","plots"][mode-1]+"-view.png")
+			if mode==1:
+				await pointer_click(view.position+view.graph_view.rect(1).position+Vector2(16,24));check(controller.intelligence.graph_selected==1,"Actor row click missed")
+				await process_frame;await RenderingServer.frame_post_draw
+				root.get_texture().get_image().save_png(directory+"/justice-graph-actor-selected-view.png")
+		controller.dispose();view.queue_free();await process_frame
+	actions.queue_free();await process_frame
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"graph_actors":reference.actors.size(),"graph_organizations":reference.organizations.size(),"graph_plots":reference.plots.size(),"paged_nodes":expected.nodes.size()}));file.close()
 	quit(1 if failed else 0)

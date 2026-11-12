@@ -167,5 +167,5 @@ TEST_CASE("Intelligence graph decoding owns names and cross-page references") {
  std::fill(b.GetBufferPointer(),b.GetBufferPointer()+b.GetSize(),uint8_t(0));b.Clear();
  REQUIRE(owned.justice);REQUIRE(owned.justice->graph);const auto& page=*owned.justice->graph;
  CHECK(page.kind==wm::JusticeGraphKind::Actors);CHECK(page.organizationCount==1);REQUIRE(page.actors.size()==1);
- CHECK(page.actors[0].name=="synthetic actor");CHECK(page.actors[0].historicalFigure==907);CHECK(page.actors[0].aliases==std::vector<int32_t>{42});CHECK(page.actors[0].plots==std::vector<int32_t>{0});
+ CHECK(page.actors[0].lines==std::vector<std::string>{"synthetic detail"});CHECK(page.actors[0].name=="synthetic actor");CHECK(page.actors[0].historicalFigure==907);CHECK(page.actors[0].aliases==std::vector<int32_t>{42});CHECK(page.actors[0].plots==std::vector<int32_t>{0});
 }

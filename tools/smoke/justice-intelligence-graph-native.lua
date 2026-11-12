@@ -12,6 +12,11 @@ local function reopen()
  end
  tab('Intelligence')
 end
+local function click(x,y)
+ g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=y//12
+ df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+ gui.simulateInput(view,'_MOUSE_L');df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1;settle()
+end
 local function index(values,pointer)
  if not pointer then return -1 end
  for i,value in ipairs(values)do if value==pointer then return i end end
@@ -24,7 +29,8 @@ local function native_graph(menu)
   local orgs,plots={},{}
   for _,value in ipairs(row.associated_org)do orgs[#orgs+1]=index(menu.base_organization_entry,value)end
   for _,value in ipairs(row.associated_plot)do plots[#plots+1]=index(menu.base_plot_entry,value)end
-  result.actors[#result.actors+1]={historical_figure=row.hf and row.hf.id or -1,identity=row.iden and row.iden.id or -1,name=dfhack.df2utf(row.list_name),aliases=ids(row.alias_identity_id),principal_organization=index(menu.base_organization_entry,row.principle_org),organizations=orgs,plots=plots}
+  local lines={};for _,line in ipairs(row.main_text_box.text)do lines[#lines+1]=dfhack.df2utf(line.value)end
+  result.actors[#result.actors+1]={lines=lines,historical_figure=row.hf and row.hf.id or -1,identity=row.iden and row.iden.id or -1,name=dfhack.df2utf(row.list_name),aliases=ids(row.alias_identity_id),principal_organization=index(menu.base_organization_entry,row.principle_org),organizations=orgs,plots=plots}
  end
  for _,row in ipairs(menu.base_organization_entry)do
   local value={name=dfhack.df2utf(row.list_name),principal_actor=index(menu.base_actor_entry,row.principle_actor_entry),nodes={}}
@@ -33,7 +39,12 @@ local function native_graph(menu)
   end
   result.organizations[#result.organizations+1]=value
  end
- for _,row in ipairs(menu.base_plot_entry)do result.plots[#result.plots+1]={agreement=row.agreement and row.agreement.id or -1,master=row.master_hfid,name=dfhack.df2utf(row.list_name)}end
+ for _,row in ipairs(menu.base_plot_entry)do
+  local org=-1
+  for i,value in ipairs(menu.base_organization_entry)do if value.list_name==row.organization_name then assert(org==-1,'Ambiguous fixture organization name');org=i end end
+  assert(row.organization_name=='' or org>=0,'Fixture organization caption is clipped or unresolved')
+  result.plots[#result.plots+1]={agreement=row.agreement and row.agreement.id or -1,master=row.master_hfid,name=dfhack.df2utf(row.list_name),organization=org}
+ end
  return result
 end
 local ok,err=xpcall(function()
@@ -55,13 +66,14 @@ local ok,err=xpcall(function()
  table.sort(hfids)
  for _,id in ipairs(hfids)do
   local file=df.evidence_hf_filest:new();file.hfid=id;file.flags.whole=8
+  if os.getenv('DF3D_JUSTICE_GRAPH_ALIASES')=='1' and #files==0 then file.used_identity:insert('#',df.global.world.identities.all[0].id)end
   file.agreement:insert('#',chosen.id)
   repository.hf_file:insert('#',file);files[#files+1]=file
  end
  repository.foiled_plot_agreements:insert('#',chosen.id)
  entity.evidence_repository=repository;reopen()
  local menu=df.global.game.main_interface.info.justice
- local native=native_graph(menu)
+ click(220,148);assert(menu.counterintelligence_mode==1);local native=native_graph(menu)
  assert(#native.plots>0 and #native.organizations>0,'Fixture did not produce a populated graph')
  local guards={}
  local function guard(value)local n,p=df.sizeof(value);guards[#guards+1]={n=n,p=p,data=bytes(p,n)}end
@@ -85,6 +97,28 @@ local ok,err=xpcall(function()
   for _,entry in ipairs(guards)do assert(bytes(entry.p,entry.n)==entry.data,'Graph wire changed native source')end
  end
  capture('justice-intelligence-graph')
+ if os.getenv('DF3D_JUSTICE_GRAPH_PRESENTATION')=='1' then
+  local states={}
+  local function record(name)
+   local state={mode=menu.counterintelligence_mode,selected=menu.counterintelligence_selected,scroll=menu.scroll_position_counterintelligence,actors={},organizations={},plots={},lines={}}
+   for _,row in ipairs(menu.actor_entry)do
+    local lines={};for _,line in ipairs(row.main_text_box.text)do lines[#lines+1]=dfhack.df2utf(line.value)end
+    state.actors[#state.actors+1]={name=dfhack.df2utf(row.p_list_name),lines=lines}
+   end
+   for _,org in ipairs(menu.organization_entry)do
+    local nodes={};for _,node in ipairs(org.node)do nodes[#nodes+1]={x=node.x,tier=node.tier,descendants=node.descendant_sum,name=dfhack.df2utf(node.name),label=dfhack.df2utf(node.label),status=dfhack.df2utf(node.status)}end
+    state.organizations[#state.organizations+1]={name=dfhack.df2utf(org.p_list_name),nodes=nodes}
+   end
+   for _,plot in ipairs(menu.plot_entry)do state.plots[#state.plots+1]={name=dfhack.df2utf(plot.p_list_name),organization=dfhack.df2utf(plot.organization_name)}end
+   for y=0,g.dimy-1 do local chars={};for x=0,g.dimx-1 do local t=dfhack.screen.readTile(x,y);chars[#chars+1]=t.ch>=32 and t.ch<=255 and string.char(t.ch)or' 'end;state.lines[#state.lines+1]=dfhack.df2utf(table.concat(chars))end
+   states[name]=state;capture('justice-graph-'..name)
+  end
+  click(220,148);assert(menu.counterintelligence_mode==1,'Actors tab missed');record('actors')
+  click(64,250);record('actor-selected')
+  click(324,148);assert(menu.counterintelligence_mode==2,'Organizations tab missed');record('organizations')
+  click(440,148);assert(menu.counterintelligence_mode==3,'Plots tab missed');record('plots')
+  local output=assert(io.open(out..'/justice-graph-presentation.json','w'));output:write(json.encode(states));output:close()
+ end
 end,debug.traceback)
 entity.evidence_repository=original;reopen()
 while #repository.hf_file>0 do repository.hf_file:erase(#repository.hf_file-1)end

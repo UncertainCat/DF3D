@@ -252,6 +252,10 @@ if os.getenv('DF3D_JUSTICE_HOVER')=='1' or os.getenv('DF3D_JUSTICE_CANDIDATE_HOV
  end
  write(candidates and 'justice-candidate-hover.json'or'justice-hover.json',json.encode(observations))
 end
+if os.getenv('DF3D_JUSTICE_KEYBOARD')=='1' then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-native%.lua$','justice-keyboard-native.lua')
+ assert(loadfile(source))(out,view,settle,caption_click,capture)
+end
 if os.getenv('DF3D_JUSTICE_SHEET_NAV')=='1' then
  local samples={}
  for _,name in ipairs{'Fortress guard','Convicts'}do

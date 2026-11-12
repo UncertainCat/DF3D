@@ -27,6 +27,7 @@ func run() -> void:
 		if world.poll_management().get("transport_alive",false):break
 		await create_timer(0.01).timeout
 	await request("construction",{"action":C.ManagementAction.Catalog})
+	if OS.get_environment("DF3D_JUSTICE_KEYBOARD")=="1":await keyboard_focus();return
 	if OS.get_environment("DF3D_JUSTICE_CANDIDATE_HOVER")=="1":await candidate_hover();return
 	if OS.get_environment("DF3D_JUSTICE_WIRE_GRAPH")=="1":await run_graph(reference.graph);return
 	if OS.get_environment("DF3D_JUSTICE_WIRE_INTELLIGENCE")=="1":await run_intelligence(reference.intelligence);return
@@ -251,6 +252,34 @@ func run() -> void:
 	result.store_string(JSON.stringify({"success":not failed,"counts":counts,"witnesses":report_count,"stale_tabs":3,"controller_tabs":3,
 		"closed_read_retired":true,"candidate_count":candidate_count,"candidate_queries":3,"sort_scopes":reference.sorts.size(),"interrogated":interrogated,"convicted":applied,"picker_controller":applied}));result.close()
 	quit(1 if failed else 0)
+
+func keyboard_focus() -> void:
+	root.size=Vector2i(1200,800);check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Justice keyboard assets unavailable")
+	var actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(actions);actions.configure(world,true)
+	var controller=preload("res://scripts/justice_state.gd").new();controller.configure(actions)
+	var view=preload("res://scripts/justice_view.gd").new();root.add_child(view);view.configure_justice(world,controller);view.layout(Vector2(1200,800))
+	for mode in 4:
+		controller.open([3,4,0,0][mode])
+		if mode==0:await settle_guard(controller.guard)
+		elif mode==1:await settle_convicts(controller.convicts)
+		else:await settle_controller(controller);controller.open_candidates(mode==2);await settle_picker(controller)
+		check(view.search.visible and not view.search.has_focus(),"Justice filter unexpectedly focused on open")
+		for variant in ["shift","alt","meta","repeat","plain","filter"]:
+			var event:=InputEventKey.new();event.keycode=KEY_F;event.pressed=true;event.ctrl_pressed=variant!="plain";event.shift_pressed=variant=="shift";event.alt_pressed=variant=="alt";event.meta_pressed=variant=="meta";event.echo=variant=="repeat"
+			Input.parse_input_event(event);await process_frame
+			check(view.search.has_focus()==(variant=="filter"),"Justice filter shortcut modifiers differ: "+variant)
+		var typed:=InputEventKey.new();typed.keycode=KEY_Z;typed.unicode=122;typed.pressed=true;Input.parse_input_event(typed)
+		await process_frame
+		var model=controller.guard if mode==0 else controller.convicts if mode==1 else controller.candidates
+		check(model.query=="z","Focused Justice filter did not submit typed query")
+		if mode==0:await settle_guard(model)
+		elif mode==1:await settle_convicts(model)
+		else:await settle_picker(controller)
+		await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/justice-keyboard-view-"+str(mode)+".png")
+		controller.close();await process_frame
+		check(not view.search.has_focus(),"Closed Justice filter retained typing focus")
+	controller.dispose();view.queue_free();actions.queue_free();world.queue_free();await process_frame
+	var result:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);result.store_string(JSON.stringify({"success":not failed,"filter_modes":4,"typed_queries":4,"close_retired":true}));result.close();quit(1 if failed else 0)
 
 func candidate_hover() -> void:
 	root.size=Vector2i(1200,800);check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Candidate hover assets unavailable")

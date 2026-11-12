@@ -12368,5 +12368,224 @@
       "justice-candidate-hover-view-15.png": "adbbe36f9aac6a1d5f3c545518cb0044dc6cf16a98f4f597cac2fc7f22f73678",
       "justice-candidate-hover-view-16.png": "adbbe36f9aac6a1d5f3c545518cb0044dc6cf16a98f4f597cac2fc7f22f73678"
     }
+  },
+  "filter_keyboard_reference": {
+    "source": "build/stockpile-storage-native-input-20261112-130514",
+    "scope": "FILTER focus and unchanged UNITLIST_SORT_NAME for Guard, Convicts, Interrogate and Convict; native interface-key delivery. Viewer Ctrl+F, modifier exclusions, typed z semantic requests and close focus retirement. Physical native text/Enter and Left/Right navigation are not accepted.",
+    "status": "passed_with_known_issues",
+    "fps_cap": 30,
+    "source_preserved": true,
+    "owned_df_closed": 27040,
+    "samples": [
+      {
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": false,
+        "label": "initial",
+        "sorts": [
+          "Cat"
+        ],
+        "tab": "Fortress guard",
+        "native_row_count": 1,
+        "native_ids_sha256": "4a4bd0c2709619636f5f2ff4e551ba4659578a24246b90007d55dd280be43621"
+      },
+      {
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": false,
+        "label": "name-sort",
+        "sorts": [
+          "Cat"
+        ],
+        "tab": "Fortress guard",
+        "native_row_count": 1,
+        "native_ids_sha256": "4a4bd0c2709619636f5f2ff4e551ba4659578a24246b90007d55dd280be43621"
+      },
+      {
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": true,
+        "label": "filter",
+        "sorts": [
+          "Cat"
+        ],
+        "tab": "Fortress guard",
+        "native_row_count": 1,
+        "native_ids_sha256": "4a4bd0c2709619636f5f2ff4e551ba4659578a24246b90007d55dd280be43621"
+      },
+      {
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": false,
+        "label": "finish",
+        "sorts": [
+          "Cat"
+        ],
+        "tab": "Fortress guard",
+        "native_row_count": 1,
+        "native_ids_sha256": "4a4bd0c2709619636f5f2ff4e551ba4659578a24246b90007d55dd280be43621"
+      },
+      {
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": false,
+        "label": "initial",
+        "sorts": [
+          "Cat"
+        ],
+        "tab": "Convicts",
+        "native_row_count": 3,
+        "native_ids_sha256": "60bbc17f4deb5e9e7ed0ae3dd46cb4bc59c821983774db8e6b80bb59bcb5779a"
+      },
+      {
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": false,
+        "label": "name-sort",
+        "sorts": [
+          "Cat"
+        ],
+        "tab": "Convicts",
+        "native_row_count": 3,
+        "native_ids_sha256": "60bbc17f4deb5e9e7ed0ae3dd46cb4bc59c821983774db8e6b80bb59bcb5779a"
+      },
+      {
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": true,
+        "label": "filter",
+        "sorts": [
+          "Cat"
+        ],
+        "tab": "Convicts",
+        "native_row_count": 3,
+        "native_ids_sha256": "60bbc17f4deb5e9e7ed0ae3dd46cb4bc59c821983774db8e6b80bb59bcb5779a"
+      },
+      {
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": false,
+        "label": "finish",
+        "sorts": [
+          "Cat"
+        ],
+        "tab": "Convicts",
+        "native_row_count": 3,
+        "native_ids_sha256": "60bbc17f4deb5e9e7ed0ae3dd46cb4bc59c821983774db8e6b80bb59bcb5779a"
+      },
+      {
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": false,
+        "label": "initial",
+        "sorts": [
+          "Crime",
+          "Name"
+        ],
+        "tab": "Interrogate",
+        "native_row_count": 293,
+        "native_ids_sha256": "082df98472e195ed6baafab27514e8341afe13e418467e91c2a5ca619f135f31"
+      },
+      {
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": false,
+        "label": "name-sort",
+        "sorts": [
+          "Crime",
+          "Name"
+        ],
+        "tab": "Interrogate",
+        "native_row_count": 293,
+        "native_ids_sha256": "082df98472e195ed6baafab27514e8341afe13e418467e91c2a5ca619f135f31"
+      },
+      {
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": true,
+        "label": "filter",
+        "sorts": [
+          "Crime",
+          "Name"
+        ],
+        "tab": "Interrogate",
+        "native_row_count": 293,
+        "native_ids_sha256": "082df98472e195ed6baafab27514e8341afe13e418467e91c2a5ca619f135f31"
+      },
+      {
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": false,
+        "label": "finish",
+        "sorts": [
+          "Crime",
+          "Name"
+        ],
+        "tab": "Interrogate",
+        "native_row_count": 293,
+        "native_ids_sha256": "082df98472e195ed6baafab27514e8341afe13e418467e91c2a5ca619f135f31"
+      },
+      {
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": false,
+        "label": "initial",
+        "sorts": [
+          "Crime",
+          "Name"
+        ],
+        "tab": "Convict",
+        "native_row_count": 293,
+        "native_ids_sha256": "082df98472e195ed6baafab27514e8341afe13e418467e91c2a5ca619f135f31"
+      },
+      {
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": false,
+        "label": "name-sort",
+        "sorts": [
+          "Crime",
+          "Name"
+        ],
+        "tab": "Convict",
+        "native_row_count": 293,
+        "native_ids_sha256": "082df98472e195ed6baafab27514e8341afe13e418467e91c2a5ca619f135f31"
+      },
+      {
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": true,
+        "label": "filter",
+        "sorts": [
+          "Crime",
+          "Name"
+        ],
+        "tab": "Convict",
+        "native_row_count": 293,
+        "native_ids_sha256": "082df98472e195ed6baafab27514e8341afe13e418467e91c2a5ca619f135f31"
+      },
+      {
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": false,
+        "label": "finish",
+        "sorts": [
+          "Crime",
+          "Name"
+        ],
+        "tab": "Convict",
+        "native_row_count": 293,
+        "native_ids_sha256": "082df98472e195ed6baafab27514e8341afe13e418467e91c2a5ca619f135f31"
+      }
+    ],
+    "hashes": {
+      "justice-keyboard.json": "1d188b623b74992cf7887011d44d741239282dddc6a22cea75fabd80487fb7bd",
+      "job-settings-wire-result.json": "626303c304b3c88bffc2d1b846c30f9b7debf041cc4bdbb86fa5988b00931051",
+      "result.json": "55ea401f0907968b16baa48a037a247d52b778f816392f061952e6daa810f1ec",
+      "justice-keyboard-view-0.png": "82f183b189fa80172b0e0870c89147f3bb465142b02a0065805e81b302dd3818",
+      "justice-keyboard-view-1.png": "50f4280322fbc48df09712a2cd280841f4a8f02d9dbd71ae418a12eebaae8f2c",
+      "justice-keyboard-view-2.png": "01659781b37a39ec76c12cdc5f565a72c540361c5165f4d5d9b5e63b49fa4c1e",
+      "justice-keyboard-view-3.png": "8c1907a7812ba9c4d23d62fcc8caf3356a6066ad43d236396adf065effd1e899"
+    }
   }
 }

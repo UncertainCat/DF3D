@@ -133,6 +133,8 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		pointer_known=true;pointer_position=get_global_transform_with_canvas().affine_inverse()*event.position
 		update_hover()
+	if allowed() and state!=null and (picker_open() or roster_open()) and search.visible and search.editable and event is InputEventKey and event.pressed and not event.echo and event.ctrl_pressed and not event.shift_pressed and not event.alt_pressed and not event.meta_pressed and event.keycode==KEY_F:
+		search.grab_focus();get_viewport().set_input_as_handled();return
 	if allowed() and state!=null and (picker_open() or roster_open()) and event is InputEventKey and event.pressed and event.keycode!=KEY_ESCAPE and search.has_focus():
 		search.feed_key(event);get_viewport().set_input_as_handled();return
 	if allowed() and state!=null and event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:

@@ -6,6 +6,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
+| Justice's Name sort tooltip advertises Ctrl+n, but the native sort command leaves the list unchanged. | No correction approved or implemented; preserve inactive shortcut. | Protected130514 on2026-11-12 sends UNITLIST_SORT_NAME before filter focus in Guard, Convicts, Interrogate and Convict. Native priorities and ordered row IDs remain unchanged; FILTER works in the same lists. `native_justice.json.filter_keyboard_reference`. |
 | Intelligence report byline depends on whether input or rendering rebuilds the text first. | Approval pending for consistently retaining the renderer's Prepared by prefix. The existing staged provider uses that variant; full report-detail parity is not accepted. | Protected105001 on2026-11-12 invalidates only the diagnostic menu text width, then invokes render versus input: renderer4789b5 adds Prepared by, input4761bc uses officer_name directly. Mixed live104816 differs by637 pixels only in this byline. `native_justice.json.intelligence_report_byline_reference`. |
 | Justice's conspiracy case title says “Conspiracy to alow labor”. | No correction approved or implemented; preserve the native title. | Protected174105 on2026-11-11 changes one owned test case through all19 crime types and compares the native case widget text with formatter46d660. Type3 matches this spelling in both. `native_justice.json.caption_reference`. |
 | Justice witness “Reported” uses the event year instead of the report year. | No correction approved or implemented; preserve native output. | Protected182446 on2026-11-11 changes the first witness's reported_year106→107 while retaining event year106. Native still displays “Reported: 15th Slate, 106”, matching the owned formatter. Builder473eaa loads offsetc (year), although its day/month uses reported_year_tick at74. The field is restored. `native_justice.json.witness_dates_reference`. |
@@ -515,9 +516,28 @@ the overlay. `candidate_hover_reference` retains the bounded evidence.
 
 Justice state/composition and core19 checks pass. The live run has only the same
 known Godot diagnostics; owned DF35664 exits unsaved with source/prefs preserved.
-Native/viewer runs are serial at30FPS, with GPU47–48C samples. Keyboard execution
-of advertised shortcuts, resize and full Justice acceptance remain unfinished.
+Native/viewer runs are serial at30FPS, with GPU47–48C samples. Resize and full
+Justice acceptance remain unfinished.
 Public Justice stays hidden.
+
+Ctrl+F focuses the visible editable filter in Guard, Convicts, Interrogate and
+Convict. Native textbox feed1419080 has CAN_KEY_ACTIVATE set from opening these
+lists; unlike Work Details, it needs no Right-panel activation first.
+Protected130514 on2026-11-12 observes FILTER acquiring focus in all four modes
+and blank clicks releasing it. UNITLIST_SORT_NAME leaves the native priorities
+unchanged despite the advertised Ctrl+n tooltip; preserve that behavior.
+The viewer uses nonrepeating Ctrl+F without Shift/Alt/Meta, then existing text
+input submits an owned semantic query. The live test verifies all four modes,
+modifier exclusions, typed z queries and focus retirement on close. The rendered
+filtered candidate list was inspected. Native delivery here uses interface-key
+events; physical native text/Enter and Left/Right navigation remain unaccepted.
+
+Earlier130341 sends SELECT after FILTER, which can activate a conviction row;
+it is not a valid native textbox Enter oracle and establishes no Enter parity.
+The final oracle sends no SELECT or text events. Owned DF27040 closes unsaved
+with source/prefs preserved. Native/viewer30FPS, GPU48–49C samples, core19 and
+Justice state/composition pass; known Godot shutdown diagnostics qualify live
+status. `filter_keyboard_reference` records the bounded evidence.
 
 
 Management protocol198 adds `JusticeInterrogate`, the candidate request/page

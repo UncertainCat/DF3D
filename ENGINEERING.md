@@ -692,6 +692,24 @@ one-/three-member lists do not establish overflow/scrollbar behavior, physical
 input on overlapping controls or complete Justice acceptance.
 
 
+Protected141547 and mixed141649 on2026-11-12 use
+`DF3D_JUSTICE_ROSTER_OVERFLOW=1` to add24 temporary semantic crimes to the
+paused clone, producing27 Convicts. Down22 and a tab round trip retain cursor22,
+first10 and capacity13 in native and the actual viewer. Temporary crimes are
+removed after Justice closes; source/prefs are preserved and DF40880/6612 close
+unsaved. The native run is capped30FPS, as is the mixed viewer; sampled GPU48C.
+This establishes selection/scroll retention only, not complete overflow parity.
+
+The larger roster exposes incorrect ordering among equal-category rows and a
+24px scrollbar X offset. Both panel crops differ in19901 pixels. Native470829
+calls ec980, which hashes eight pointer bytes with FNV1a into buckets; the
+provider's current `std::set<unit*>` assumption is wrong. Owned native collection
+initialization/iteration requires audit before repair. No runtime repair or
+ordering acceptance is claimed. `roster_overflow_reference` retains evidence.
+The initial141501 failed because the help overlay intercepted tab selection;
+it provides no acceptance. Mixed141649 has known Godot shutdown diagnostics.
+
+
 Management protocol198 adds `JusticeInterrogate`, the candidate request/page
 `interrogate` mode, and an `expected_selected` comparison for checkbox edits.
 The mutation requires Interrogate mode and all three list/case/candidate

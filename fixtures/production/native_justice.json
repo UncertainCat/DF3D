@@ -15218,4 +15218,90 @@
       "job-settings-wire-result.json": "8c5ced52625912f807c782462d21de2c49a678dfdee63ba2aa567894867b417a"
     }
   }
+,
+  "roster_overflow_reference": {
+    "source": "protected stockpile-storage-native-input-20261112-141649, DF53.16, 2026-11-12",
+    "scope": "Controlled 24 additional crimes produce 27 Convicts. Native and actual viewer Down22/tab return retain cursor22, first10, capacity13. This is NOT full ordering/render acceptance.",
+    "observations": {
+      "provider_ids": [
+        6970,
+        1012,
+        1025,
+        1017,
+        6546,
+        2905,
+        6032,
+        2335,
+        2747,
+        996,
+        988,
+        998,
+        2569,
+        2570,
+        2588,
+        3050,
+        3115,
+        3326,
+        3845,
+        2345,
+        2346,
+        2571,
+        1531,
+        2446,
+        2449,
+        2465,
+        2574
+      ],
+      "restored": true,
+      "samples": [
+        {
+          "cursor": 0,
+          "label": "initial",
+          "scrolling": [
+            {
+              "scroll": 0,
+              "visible": 13,
+              "x": 6,
+              "y": 14
+            }
+          ]
+        },
+        {
+          "cursor": 22,
+          "label": "down22",
+          "scrolling": [
+            {
+              "scroll": 10,
+              "visible": 13,
+              "x": 6,
+              "y": 14
+            }
+          ]
+        },
+        {
+          "cursor": 22,
+          "label": "returned",
+          "scrolling": [
+            {
+              "scroll": 10,
+              "visible": 13,
+              "x": 6,
+              "y": 14
+            }
+          ]
+        }
+      ]
+    },
+    "unresolved": [
+      "Visible equal-category convict ordering differs; existing provider incorrectly assumes pointer-ordered std::set. Native470829 calls ec980 which hashes all8 pointer bytes using FNV1a and indexes hash buckets. Audit owned unordered collection initialization/iteration before repair.",
+      "Convicts scrollbar is24px left of native in1200x800 capture.",
+      "Both panel comparisons contain19901 differing pixels; not explained by animation alone."
+    ],
+    "sha256": {
+      "justice-roster-overflow-down.png": "c9814cccf9b8a01169844d1358143dbbc919b21bf6d48984943f04008a589e37",
+      "justice-roster-overflow-return.png": "c9814cccf9b8a01169844d1358143dbbc919b21bf6d48984943f04008a589e37",
+      "justice-roster-overflow-view-down22.png": "ec49a7fd0a63858edb132d0703bc8f703f2fedf68febb5751d7609c605066f45",
+      "justice-roster-overflow-view-returned.png": "ec49a7fd0a63858edb132d0703bc8f703f2fedf68febb5751d7609c605066f45"
+    }
+  }
 }

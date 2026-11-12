@@ -38,6 +38,7 @@ func run() -> void:
 		if world.poll_management().get("transport_alive",false):break
 		await create_timer(0.01).timeout
 	await request("construction",{"action":C.ManagementAction.Catalog})
+	if OS.get_environment("DF3D_JUSTICE_ROSTER_OVERFLOW")=="1":await roster_overflow();return
 	if OS.get_environment("DF3D_JUSTICE_ROSTER_RESIZE")=="1":await roster_resize();return
 	if OS.get_environment("DF3D_JUSTICE_ROSTER_RETURN")=="1":await roster_return();return
 	if OS.get_environment("DF3D_JUSTICE_LIST_NAV")=="1" or OS.get_environment("DF3D_JUSTICE_ROSTER_NAV")=="1":await candidate_list_navigation();return
@@ -279,6 +280,28 @@ func run() -> void:
 	result.store_string(JSON.stringify({"success":not failed,"counts":counts,"witnesses":report_count,"stale_tabs":3,"controller_tabs":3,
 		"closed_read_retired":true,"candidate_count":candidate_count,"candidate_queries":3,"sort_scopes":reference.sorts.size(),"interrogated":interrogated,"convicted":applied,"picker_controller":applied}));result.close()
 	quit(1 if failed else 0)
+
+func roster_overflow() -> void:
+	root.size=Vector2i(1200,800);check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Roster overflow assets unavailable")
+	var actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(actions);actions.configure(world,true)
+	var controller=preload("res://scripts/justice_state.gd").new();controller.configure(actions);controller.open(4)
+	var view=preload("res://scripts/justice_view.gd").new();root.add_child(view);view.configure_justice(world,controller);view.layout(Vector2(1200,800))
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/justice-roster-overflow.json"))
+	var model=controller.convicts;await settle_convicts(model)
+	for sample: Dictionary in reference.samples:
+		if sample.label=="down22":
+			for step in 22:
+				var down:=InputEventKey.new();down.pressed=true;down.keycode=KEY_DOWN;Input.parse_input_event(down);await create_timer(0.05).timeout
+				await settle_convicts(model)
+		elif sample.label=="returned":
+			await pointer_click(view.position+view.tab_rect(3).get_center());await settle_guard(controller.guard)
+			await pointer_click(view.position+view.tab_rect(4).get_center());await settle_convicts(model)
+		check(model.phase==model.Phase.Ready and model.rows.map(func(row):return row.unit_id)==reference.provider_ids.map(func(id):return int(id)),"Overflow roster differs")
+		check(model.cursor_id==int(reference.provider_ids[int(sample.cursor)]) and model.first==int(sample.scrolling[-1].scroll),"Overflow cursor/scroll differs")
+		check(view.guard_capacity()==int(sample.scrolling[-1].visible) and model.detail.get("unit_id")==model.cursor_id,"Overflow capacity/detail differs")
+		await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/justice-roster-overflow-view-"+sample.label+".png")
+	controller.dispose();view.queue_free();actions.queue_free();world.queue_free();await process_frame
+	var result:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);result.store_string(JSON.stringify({"success":not failed,"roster_overflow_states":reference.samples.size()}));result.close();quit(1 if failed else 0)
 
 func roster_resize() -> void:
 	root.size=Vector2i(1200,800);check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Roster resize assets unavailable")

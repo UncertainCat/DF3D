@@ -1,6 +1,11 @@
 #include <doctest.h>
 #include "management_util.h"
 namespace m=df3d::mirror;
+static auto candidateDisplay(flatbuffers::FlatBufferBuilder& b) {
+ auto name=b.CreateString("synthetic name"),label=b.CreateString("synthetic witness label"),empty=b.CreateString("");
+ return m::CreateJusticeCandidateDisplay(b,28,name,m::CreateAreaNameColor(b,4,0,1,6,0,0,1),39,label,10,empty);
+}
+
 TEST_CASE("Justice conviction requires case and candidate revisions and a single target") {
  for(bool apply:{false,true})for(int fault=0;fault<10;++fault){
   flatbuffers::FlatBufferBuilder b;
@@ -17,8 +22,8 @@ TEST_CASE("Justice conviction requires case and candidate revisions and a single
 TEST_CASE("Justice candidate pages bind unique units to a crime and revision") {
  for(int fault=0;fault<8;++fault){flatbuffers::FlatBufferBuilder b;
   std::vector<flatbuffers::Offset<m::JusticeCandidateRow>> rows;
-  rows.push_back(m::CreateJusticeCandidateRow(b,42,39,true,false));
-  rows.push_back(m::CreateJusticeCandidateRow(b,fault==1?42:43,0,false,true));
+  rows.push_back(m::CreateJusticeCandidateRow(b,42,39,true,false,candidateDisplay(b)));
+  rows.push_back(m::CreateJusticeCandidateRow(b,fault==1?42:43,0,false,true,candidateDisplay(b)));
   auto candidates=m::CreateJusticeCandidatePage(b,fault==2?-1:9,fault==3?0:8,fault==4?1:2,0,b.CreateVector(rows));
   auto result=m::CreateJusticeState(b,fault==5?m::JusticeOutcome::Stale:m::JusticeOutcome::None,0,7,0,0,
     b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeCaseRow>>{}),0,candidates);
@@ -83,5 +88,19 @@ TEST_CASE("Justice lists reject duplicate case IDs and unusable stale data") {
   auto result=m::CreateJusticeState(b,m::JusticeOutcome::Stale,0,0,0,0,b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeCaseRow>>{}));
   m::ManagementStateBuilder s(b);s.add_revision(1);s.add_action(action);s.add_status(m::ManagementStatus::Rejected);s.add_justice(result);b.Finish(s.Finish());
   CHECK_FALSE(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())));
+ }
+}
+
+TEST_CASE("Justice candidate display rejects malformed bounds and colors") {
+ for(int fault=0;fault<8;++fault){flatbuffers::FlatBufferBuilder b;
+  auto name=b.CreateString(fault==1?std::string(16385,'x'):"synthetic"),empty=b.CreateString("");
+  auto color=m::CreateAreaNameColor(b,fault==2?8:4,0,0,4,0,0,fault==3?4:0);
+  auto display=m::CreateJusticeCandidateDisplay(b,fault==4?2:fault==5?2049:28,name,color,fault==6?1048577:0,empty,fault==7?16:6,empty);
+  auto row=m::CreateJusticeCandidateRow(b,42,0,false,false,display);
+  auto page=m::CreateJusticeCandidatePage(b,9,8,1,0,b.CreateVector(std::vector{row}));
+  auto result=m::CreateJusticeState(b,m::JusticeOutcome::None,0,7,0,0,b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeCaseRow>>{}),0,page);
+  m::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(m::ManagementAction::JusticeCandidatesRead);
+  state.add_status(m::ManagementStatus::Ok);state.add_justice(result);b.Finish(state.Finish());
+  CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==(fault!=0));
  }
 }

@@ -183,8 +183,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 194;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v194";
+inline constexpr uint32_t kManagementVersion = 195;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v195";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -1524,7 +1524,15 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         if(r->detail() || r->total() || r->offset() || r->rows()->size() || !c || c->crime_id()<0 ||
            !c->revision() || c->revision()>INT64_MAX || !c->rows() || !page(c->total(),c->offset(),c->rows()->size()))return "invalid justice candidate page";
         std::unordered_set<int32_t> ids;
-        for(const auto* row:*c->rows())if(!row || row->unit_id()<0 || !ids.insert(row->unit_id()).second)return "invalid justice candidate";
+        for(const auto* row:*c->rows()){
+          if(!row || row->unit_id()<0 || !ids.insert(row->unit_id()).second || !row->display())return "invalid justice candidate";
+          const auto* d=row->display();const auto* color=d->name_color();bytes+=64;
+          if(d->columns()<3 || d->columns()>2048 || d->witness_count()>1048576 || d->witness_color()>15 ||
+             !text(d->name()) || !text(d->witness_label()) || !text(d->deceased()) || !color ||
+             color->foreground()>7 || color->background()>7 || color->bright()>1 ||
+             color->alternate_foreground()>7 || color->alternate_background()>7 || color->alternate_bright()>1 || color->effect()>3)
+            return "invalid justice candidate display";
+        }
       }else if(read){
         if(r->detail() || r->candidates() || !page(r->total(),r->offset(),r->rows()->size()))return "invalid justice page";
       }else{

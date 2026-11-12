@@ -2,6 +2,13 @@
 #include "management_codecs.h"
 #include "management_util.h"
 namespace m=df3d::mirror;
+static auto candidateDisplay(flatbuffers::FlatBufferBuilder& b) {
+ auto name=b.CreateString("synthetic name"),label=b.CreateString("synthetic witness label"),empty=b.CreateString("");
+ return m::CreateJusticeCandidateDisplay(b,28,name,m::CreateAreaNameColor(b,4,0,1,6,0,0,1),39,label,10,empty);
+}
+
+namespace codec=wm::detail::management;
+
 namespace codec=wm::detail::management;
 TEST_CASE("Justice candidate and conviction codecs retain query, target and all revisions") {
  for(bool apply:{false,true}){
@@ -18,7 +25,7 @@ TEST_CASE("Justice candidate and conviction codecs retain query, target and all 
 }
 TEST_CASE("Justice candidate decode owns native order and distinct flags") {
  flatbuffers::FlatBufferBuilder b;
- auto first=m::CreateJusticeCandidateRow(b,42,39,true,false),second=m::CreateJusticeCandidateRow(b,9,0,false,true);
+ auto first=m::CreateJusticeCandidateRow(b,42,39,true,false,candidateDisplay(b)),second=m::CreateJusticeCandidateRow(b,9,0,false,true,candidateDisplay(b));
  auto candidates=m::CreateJusticeCandidatePage(b,19,789,34,32,b.CreateVector(std::vector{first,second}));
  auto payload=m::CreateJusticeState(b,m::JusticeOutcome::None,0,123,0,0,b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeCaseRow>>{}),0,candidates);
  m::ManagementStateBuilder s(b);s.add_revision(1);s.add_action(m::ManagementAction::JusticeCandidatesRead);

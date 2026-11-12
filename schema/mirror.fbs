@@ -2247,10 +2247,15 @@ table JusticeState {
   detail:JusticeCaseDetail;
   candidates:JusticeCandidatePage;
 }
-// Native default Convict ordering and search. These are semantic identities and
-// evidence facts; candidate artwork/text is supplied separately by unit readers.
+// Native default Convict ordering and search with owned native text.
+table JusticeCandidateDisplay {
+  columns:uint16; name:string (required); name_color:AreaNameColor (required);
+  witness_count:uint32; witness_label:string (required); witness_color:uint8;
+  deceased:string (required);
+}
 table JusticeCandidateRow {
   unit_id:int32 = -1; rank:int32; interrogation_pending:bool; counterintelligence:bool;
+  display:JusticeCandidateDisplay (required);
 }
 table JusticeCandidatePage {
   crime_id:int32 = -1; revision:uint64; total:uint32; offset:uint32;
@@ -2428,7 +2433,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 194;
+  schema_version:uint32 = 195;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2499,7 +2504,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 194;
+  schema_version:uint32 = 195;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

@@ -41,6 +41,19 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+Management protocol195 requires an owned `JusticeCandidateDisplay` on each
+candidate row: native one-line name and color, witness count/label/color and
+Deceased label. Text and palette bounds are validated before decoding. The
+current producer uses the28-column reference; responsive width and candidate
+artwork remain pending. Candidate revision continues to identify eligibility,
+ordering and effect facts; display values are sampled at each page's safe point,
+not an atomic appearance snapshot across all pages.
+Migration195: rebuild bridge and clients together; mailbox is
+`Local\df3d_management_v195`. Protocol194 binaries cannot serve195 clients.
+No display values are invented for older recordings. Session/map formats are
+unchanged. The schema migration and its validation are separate from producer,
+model, adapter and rendered-picker acceptance.
+
 The owned candidate presentation helper calls native name1330c30 and
 abbreviation52d910, following the one-line renderer14237a0. It counts witness
 reports naming the candidate, independently of sort rank, and preserves the

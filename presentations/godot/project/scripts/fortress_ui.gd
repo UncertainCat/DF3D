@@ -133,6 +133,9 @@ func controller(id: String):
 		controllers[id]=panel;return panel
 	if id=="justice":
 		add_child(panel);panel.configure(world,actions,host)
+		panel.focus_requested.connect(focus_tile)
+		panel.inspect_requested.connect(func(tile,unit_id):
+			if host.allows_panel_input(panel) and controller("inspector").open_target(tile,1,unit_id,true):focus_tile(tile))
 		panel.information_requested.connect(func(caption):_open_staged_information(panel,caption))
 		controllers[id]=panel;return panel
 	if id=="objects":

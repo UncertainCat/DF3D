@@ -1,5 +1,7 @@
 extends Node
 # Staged case/Convict owner; no public route until full Justice acceptance.
+signal focus_requested(tile: Vector3i)
+signal inspect_requested(tile: Vector3i,unit_id: int)
 signal information_requested(caption: String)
 var ui_host
 var modal_input:=true
@@ -15,6 +17,10 @@ func configure(world,service,host,_hover=null) -> void:
 	panel=preload("res://scripts/justice_view.gd").new();layer.add_child(panel)
 	panel.configure_justice(world,state);panel.input_allowed=allowed
 	panel.cancelled.connect(close_panel)
+	panel.focus_requested.connect(func(tile):
+		if allowed():close_panel();focus_requested.emit(tile))
+	state.guard.inspect_ready.connect(func(tile,id):
+		if allowed():inspect_requested.emit(tile,id))
 	panel.information_requested.connect(func(caption):
 		if allowed():information_requested.emit(caption))
 	host.register(self);_layout();_sync()

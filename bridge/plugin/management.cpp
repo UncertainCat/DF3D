@@ -4653,8 +4653,9 @@ void run(color_ostream& out) {
     }catch(...){nobles.emplace();}
     publish();return;
   }
-  if(r->action()>=m::ManagementAction::JusticeRead && r->action()<=m::ManagementAction::JusticeInterrogate){
-    justice=r->action()>=m::ManagementAction::JusticeCandidatesRead?
+  if(r->action()>=m::ManagementAction::JusticeRead && r->action()<=m::ManagementAction::JusticeGuardRead){
+    justice=r->action()==m::ManagementAction::JusticeGuardRead?df3d_justice::guardRequest(*r->justice()):
+      r->action()>=m::ManagementAction::JusticeCandidatesRead?
       df3d_justice::candidateRequest(*r->justice(),r->action()!=m::ManagementAction::JusticeCandidatesRead):
       df3d_justice::read(*r->justice(),r->action()==m::ManagementAction::JusticeCaseRead);
     status=(justice->outcome==m::JusticeOutcome::None || justice->outcome==m::JusticeOutcome::Applied)?m::ManagementStatus::Ok:m::ManagementStatus::Rejected;

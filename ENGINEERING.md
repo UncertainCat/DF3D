@@ -49,9 +49,33 @@ its native comparator is ascending, unlike the conviction score comparator.
 Rows carry owned native name lines, name colors, selector artwork and positions.
 Older recordings do not imply a guard roster. Both protocol defaults and the
 mailbox are199 (`Local\df3d_management_v199`); rebuild bridge and client together.
-Session/map versions are unchanged. The staged Guard integration is not yet
-accepted for public exposure; search/order, rendered rows and navigation need
-protected live verification.
+Session/map versions are unchanged.
+
+The staged Guard tab reads all pages before exposing its roster, owns query and
+sort preferences, and retires pending reads on close/tab/session changes. Native
+safe-point work supplies the capacity caption and generic unit names, colors,
+selector recipes, search and ordering. Recenter uses the supplied native unit
+position; the sheet button obtains a fresh `CreatureSheetLocate` result. Guard
+numeric rank sorting uses the independently owned ranks with the ascending
+comparison pinned at487cf0; it never reads native guard/menu scratch.
+
+Protected `stockpile-storage-native-input-20261112-014803` verifies the baseline
+unit5813/rank2000 roster, capacity0of14, empty/cleared filtering, stale-revision
+refusal and visible recenter/sheet buttons. Its default1200x800 panel crop
+(32,52)-(976,760) matches the same session's native Guard capture with zero
+pixel differences. This establishes that baseline only, not multi-member sort
+order, scrolling, resize, hover, keyboard or full inspector composition.
+The source save is preserved and owned DF41836 closes unsaved; preferences are
+restored. Both applications run at30FPS; GPU samples36–37C/0% are observations,
+not a continuous peak. Only the documented separate-renderer/finalize/twoObjectDB
+shutdown diagnostics occur, so this is `passed_with_known_issues`.
+
+MSVC and QA `justice-guard-integration`/`justice-guard-final` pass, including all19
+core tests, controller lifecycle, contract/owned codec checks and UI composition.
+Installed199 plugin SHA256 is
+`2118db5e221178e47520b635e3faeff8e105b7924d9e3df2b595d3d3ae6b6c02`.
+`native_justice.json.guard_transport_reference` records the bounded evidence.
+Justice remains staged and hidden pending the remaining categories and acceptance.
 
 
 Management protocol198 adds `JusticeInterrogate`, the candidate request/page
@@ -61,10 +85,9 @@ revisions; Convict cannot carry Interrogate mode. Reads cannot carry checkbox
 comparison state. Candidate revisions include mode, query, sorts and current
 semantic facts. Mutation replies contain only an explicit outcome, never a
 reusable candidate page. Unknown outcomes must not replay automatically.
-Both request/reply defaults and the mailbox are198
-(`Local\df3d_management_v198`). Rebuild bridge and client together; protocol197
-clients are incompatible. Older recordings do not imply an interrogation
-operation or selected-state comparison. Session/map versions are unchanged.
+Protocol198 introduced that interrogation contract; protocol199 supersedes its
+mailbox. Older recordings do not imply an interrogation operation or
+selected-state comparison. Session/map versions are unchanged.
 
 Management protocol197 adds an optional owned unit-selector recipe to each
 Justice candidate row. Missing recipes remain absent; older recordings do not

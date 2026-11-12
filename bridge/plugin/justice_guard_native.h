@@ -18,7 +18,7 @@ struct GuardOverview {
 // Counts are standalone native simulation readers. Roster construction is
 // inline in4713a5..471a15: isolate its semantic inputs rather than invoking
 // the widget builder or borrowing its unit list/rank map.
-inline std::optional<GuardOverview> guardOverview() {
+inline std::optional<GuardOverview> guardOverview(std::string query={},std::vector<CandidateSort> sorts={{CandidateColumn::Category,false}}) {
     auto* world=df::global::world;auto* plot=df::global::plotinfo;
     if(!world || !plot || !plot->main.fortress_entity)return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
@@ -43,6 +43,7 @@ inline std::optional<GuardOverview> guardOverview() {
             {0x13cc4d0,0x139,UINT64_C(0xf660081358097d16)},
             {0x4713a5,0x670,UINT64_C(0xf2e58ef774921c1b)},
             {0x4701d1,0xea,UINT64_C(0x4cb5b07390f617a2)},
+            {0x487cf0,0x94,UINT64_C(0xd4e0cf7ff3db784c)},
             {0x52c130,0xb3,UINT64_C(0xf2e358ad54df1c09)},
         };
         for(const auto& p:pins){uint64_t hash=UINT64_C(14695981039346656037);
@@ -84,6 +85,7 @@ inline std::optional<GuardOverview> guardOverview() {
         squadSlots+=squad->positions.size();
         for(auto p=squad->positions.rbegin();p!=squad->positions.rend();++p){if(!*p)return std::nullopt;add((*p)->occupant,1000,assignment->histfig);}
     }
-    return result;
+    auto ordered=orderedCandidateFacts(result.members,std::move(query),std::move(sorts),true);if(!ordered)return std::nullopt;
+    result.members=std::move(*ordered);return result;
 }
 }

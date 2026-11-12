@@ -144,15 +144,15 @@ struct CandidateSort {CandidateColumn column;bool reverse=false;};
 // The generic widget builder142c4b0 has no standalone list boundary. Adapt its
 // stable sort pipeline over owned facts, calling the semantic visibility/name
 // readers. Never call487db0: that comparator reads the global Justice map.
-inline std::optional<std::vector<CandidateFact>> convictionCandidates(const df::crime* crime,std::string query={},
-    std::vector<CandidateSort> sorts={{CandidateColumn::Crime,false},{CandidateColumn::Name,false}}) {
+inline std::optional<std::vector<CandidateFact>> orderedCandidateFacts(const std::vector<CandidateFact>& input,std::string query,
+    std::vector<CandidateSort> sorts,bool ascendingRank=false) {
     if(sorts.size()>65536)return std::nullopt;
     if(sorts.empty())sorts.push_back({CandidateColumn::Category,false});
     std::array<int8_t,4> directions{-1,-1,-1,-1};std::vector<CandidateSort> priorities;
     for(const auto& sort:sorts){const auto column=size_t(sort.column);if(column>=directions.size())return std::nullopt;
         if(directions[column]>=0){if(bool(directions[column])!=sort.reverse)return std::nullopt;continue;}
         directions[column]=int8_t(sort.reverse);priorities.push_back(sort);}
-    const auto facts=candidateFacts(crime);
+    const auto* facts=&input;
     const auto& text=df3d_area::staffOrderingFunctions();
     if(!facts || !text || query.size()>512 || !df3d_creature::inventoryDescriptionReady())return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
@@ -220,7 +220,7 @@ inline std::optional<std::vector<CandidateFact>> convictionCandidates(const df::
                 case CandidateColumn::Category:order=a.category<b.category?-1:a.category>b.category?1:0;break;
                 case CandidateColumn::Name:order=a.name.compare(b.name);break;
                 case CandidateColumn::Profession:order=a.profession.compare(b.profession);break;
-                case CandidateColumn::Crime:order=a.fact.rank>b.fact.rank?-1:a.fact.rank<b.fact.rank?1:0;break;
+                case CandidateColumn::Crime:order=a.fact.rank>b.fact.rank?-1:a.fact.rank<b.fact.rank?1:0;if(ascendingRank)order=-order;break;
             }
             if(order)return sort.reverse?order>0:order<0;
         }
@@ -229,6 +229,11 @@ inline std::optional<std::vector<CandidateFact>> convictionCandidates(const df::
     std::vector<CandidateFact> result;result.reserve(rows.size());
     for(const auto& row:rows)result.push_back(row.fact);
     return result;
+}
+inline std::optional<std::vector<CandidateFact>> convictionCandidates(const df::crime* crime,std::string query={},
+    std::vector<CandidateSort> sorts={{CandidateColumn::Crime,false},{CandidateColumn::Name,false}}) {
+    const auto facts=candidateFacts(crime);if(!facts)return std::nullopt;
+    return orderedCandidateFacts(*facts,std::move(query),std::move(sorts));
 }
 // Interrogate rebuilds the same filtered/sorted list, then stable-partitions
 // selected entries first (142cb85 ->1430be0). Native1432690/1433fe0 read the

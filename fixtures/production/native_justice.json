@@ -254,7 +254,7 @@
       "legacy_mode": 0,
       "texts": [
         {
-          "text": "Injured party: L\u00c3\u00b2r Astthum, Bone Doctor.",
+          "text": "Injured party: LÃ²r Astthum, Bone Doctor.",
           "rect": [
             64,
             12,
@@ -314,7 +314,7 @@
           "bright": true
         },
         {
-          "text": "Accuses: Doren Thosbutal\u00c3\u00a5th, Dwarven Child.",
+          "text": "Accuses: Doren ThosbutalÃ¥th, Dwarven Child.",
           "rect": [
             64,
             19,
@@ -389,7 +389,7 @@
       "legacy_mode": 0,
       "texts": [
         {
-          "text": "Injured party: Zas Rig\u00c3\u00b2throsat, Wrestler.",
+          "text": "Injured party: Zas RigÃ²throsat, Wrestler.",
           "rect": [
             64,
             12,
@@ -401,7 +401,7 @@
           "bright": false
         },
         {
-          "text": "Convicted: L\u00c3\u00b2r Esht\u00c3\u00a2nm\u00c3\u00acshos, Scribe.",
+          "text": "Convicted: LÃ²r EshtÃ¢nmÃ¬shos, Scribe.",
           "rect": [
             64,
             13,
@@ -481,7 +481,7 @@
           "bright": true
         },
         {
-          "text": "Accuses: Doren Thosbutal\u00c3\u00a5th, Dwarven Child.",
+          "text": "Accuses: Doren ThosbutalÃ¥th, Dwarven Child.",
           "rect": [
             64,
             19,
@@ -706,7 +706,7 @@
           "bright": true
         },
         {
-          "text": "Injured party: K\u00c3\u00bbbuk \u00c3\u00afngizkor, mayor.",
+          "text": "Injured party: KÃ»buk Ã¯ngizkor, mayor.",
           "rect": [
             67,
             15,
@@ -987,7 +987,7 @@
       {
         "mode": 4,
         "native": [
-          "Murder of L\u00c3\u00b2r Astthum, Bone Doctor",
+          "Murder of LÃ²r Astthum, Bone Doctor",
           "Disorderly conduct",
           "Disorderly conduct",
           "Disorderly conduct",
@@ -995,7 +995,7 @@
           "Disorderly conduct",
           "Disorderly conduct"
         ],
-        "provider": "Murder of L\u00c3\u00b2r Astthum, Bone Doctor"
+        "provider": "Murder of LÃ²r Astthum, Bone Doctor"
       },
       {
         "mode": 5,
@@ -6460,11 +6460,11 @@
           "victim": 7124
         },
         "native": {
-          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "injured_party": "Injured party: Lòr Astthum, Bone Doctor.",
           "status": "Unsolved."
         },
         "owned": {
-          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "injured_party": "Injured party: Lòr Astthum, Bone Doctor.",
           "status": "Unsolved."
         }
       },
@@ -6501,12 +6501,12 @@
           "victim": 7124
         },
         "native": {
-          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
-          "status": "Convicted: Doren Thosbutal\u00e5th, Dwarven Child."
+          "injured_party": "Injured party: Lòr Astthum, Bone Doctor.",
+          "status": "Convicted: Doren Thosbutalåth, Dwarven Child."
         },
         "owned": {
-          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
-          "status": "Convicted: Doren Thosbutal\u00e5th, Dwarven Child."
+          "injured_party": "Injured party: Lòr Astthum, Bone Doctor.",
+          "status": "Convicted: Doren Thosbutalåth, Dwarven Child."
         }
       },
       {
@@ -6516,11 +6516,11 @@
           "victim": 7124
         },
         "native": {
-          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "injured_party": "Injured party: Lòr Astthum, Bone Doctor.",
           "status": "Unknown convict."
         },
         "owned": {
-          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "injured_party": "Injured party: Lòr Astthum, Bone Doctor.",
           "status": "Unknown convict."
         }
       },
@@ -6532,11 +6532,11 @@
           "victim": 7124
         },
         "native": {
-          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "injured_party": "Injured party: Lòr Astthum, Bone Doctor.",
           "status": "Unsolved."
         },
         "owned": {
-          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "injured_party": "Injured party: Lòr Astthum, Bone Doctor.",
           "status": "Unsolved."
         }
       }
@@ -6553,235 +6553,235 @@
     "rows": [
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Mosus Paintposts."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Amost Crystalscribed."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Dastot Craftsinge."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Catten Tradedtrail."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
-        "witness": "Witness: L\u00f2r Smithbeach."
+        "witness": "Witness: Lòr Smithbeach."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Meng Teststaves."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Strildo Campshoved."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Cika Agedriddled."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Kel Mountaintome."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Quogub Ashentan."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Urvad Palacedrill."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Jasro Peltshacks."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
-        "witness": "Witness: \u00c4s Pagehide."
+        "witness": "Witness: Äs Pagehide."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
-        "witness": "Witness: \u00e8rith Plaitedmined."
+        "witness": "Witness: èrith Plaitedmined."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Onget Flagcrosses."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Id Doordeeps."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Kogan Bellspike."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Minkot Channelblaze."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
-        "witness": "Witness: L\u00f2r Sabremuscle."
+        "witness": "Witness: Lòr Sabremuscle."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Rakust Abbeyirons."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Irene Saffrontruthful."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Moldath Dieguild."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Stodir Mirrorbowel."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Duli Tonguebridged."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Doren Pagelanced."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Sibrek Buddedconstruct."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Etur Mineraces."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Ingish Chuckglazed."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
-        "witness": "Witness: Vab\u00f4k Rightslash."
+        "witness": "Witness: Vabôk Rightslash."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Mimap Drumdance."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
-        "witness": "Witness: Rig\u00f2th Brightdyes."
+        "witness": "Witness: Rigòth Brightdyes."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Ilral Actiondoors."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Mispi Cradledbowel."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
-        "witness": "Witness: Mist\u00eam Taughtstockade."
+        "witness": "Witness: Mistêm Taughtstockade."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
-        "witness": "Witness: Esht\u00e2n Mineknower."
+        "witness": "Witness: Eshtân Mineknower."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
-        "witness": "Witness: \u00eeton Ragplaited."
+        "witness": "Witness: îton Ragplaited."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 16th Slate, 106",
         "witness": "Witness: Bestra Flickersalves."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 16th Slate, 106",
         "witness": "Witness: Olon Knightedhammers."
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Accuses: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Accuses: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 16th Slate, 106",
         "witness": "Witness: Ihhi Visefruits."
       },
@@ -6817,7 +6817,7 @@
       },
       {
         "date": "Date: 14th Slate, 106",
-        "description": "Implicates: Doren Thosbutal\u00e5th, Dwarven Child.",
+        "description": "Implicates: Doren Thosbutalåth, Dwarven Child.",
         "reported": "Reported: 15th Slate, 106",
         "witness": "Witness: Mosus Paintposts."
       }
@@ -7857,12 +7857,12 @@
           "victim": 7124
         },
         "native": {
-          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "injured_party": "Injured party: Lòr Astthum, Bone Doctor.",
           "resolution": 1,
           "status": "Unsolved."
         },
         "owned": {
-          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "injured_party": "Injured party: Lòr Astthum, Bone Doctor.",
           "resolution": 1,
           "status": "Unsolved."
         }
@@ -7904,14 +7904,14 @@
           "victim": 7124
         },
         "native": {
-          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "injured_party": "Injured party: Lòr Astthum, Bone Doctor.",
           "resolution": 2,
-          "status": "Convicted: Doren Thosbutal\u00e5th, Dwarven Child."
+          "status": "Convicted: Doren Thosbutalåth, Dwarven Child."
         },
         "owned": {
-          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "injured_party": "Injured party: Lòr Astthum, Bone Doctor.",
           "resolution": 2,
-          "status": "Convicted: Doren Thosbutal\u00e5th, Dwarven Child."
+          "status": "Convicted: Doren Thosbutalåth, Dwarven Child."
         }
       },
       {
@@ -7921,12 +7921,12 @@
           "victim": 7124
         },
         "native": {
-          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "injured_party": "Injured party: Lòr Astthum, Bone Doctor.",
           "resolution": 3,
           "status": "Unknown convict."
         },
         "owned": {
-          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "injured_party": "Injured party: Lòr Astthum, Bone Doctor.",
           "resolution": 3,
           "status": "Unknown convict."
         }
@@ -7939,12 +7939,12 @@
           "victim": 7124
         },
         "native": {
-          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "injured_party": "Injured party: Lòr Astthum, Bone Doctor.",
           "resolution": 1,
           "status": "Unsolved."
         },
         "owned": {
-          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "injured_party": "Injured party: Lòr Astthum, Bone Doctor.",
           "resolution": 1,
           "status": "Unsolved."
         }
@@ -8293,7 +8293,7 @@
           ],
           "deceased": "",
           "effect": 0,
-          "name": "Drn Thsbtl\u00e5th, Dwrvn Chld, \u2642",
+          "name": "Drn Thsbtlåth, Dwrvn Chld, ♂",
           "witness_color": 10,
           "witness_count": 39,
           "witness_label": "39 witnesses"
@@ -8326,7 +8326,7 @@
           ],
           "deceased": "",
           "effect": 0,
-          "name": "Aban Atulilral, Lye Maker, \u2640",
+          "name": "Aban Atulilral, Lye Maker, ♀",
           "witness_color": 6,
           "witness_count": 0,
           "witness_label": "No witnesses"
@@ -8359,7 +8359,7 @@
           ],
           "deceased": "",
           "effect": 0,
-          "name": "\u00c5blel Evonkulet, Humn Bby, \u2640",
+          "name": "Åblel Evonkulet, Humn Bby, ♀",
           "witness_color": 6,
           "witness_count": 0,
           "witness_label": "No witnesses"
@@ -8392,7 +8392,7 @@
           ],
           "deceased": "",
           "effect": 0,
-          "name": "Abpa Umaconu, Human Poet, \u2640",
+          "name": "Abpa Umaconu, Human Poet, ♀",
           "witness_color": 6,
           "witness_count": 0,
           "witness_label": "No witnesses"
@@ -8425,7 +8425,7 @@
           ],
           "deceased": "",
           "effect": 0,
-          "name": "Adil Lolrgmst, Dwrvn Chld, \u2640",
+          "name": "Adil Lolrgmst, Dwrvn Chld, ♀",
           "witness_color": 6,
           "witness_count": 0,
           "witness_label": "No witnesses"
@@ -8458,7 +8458,7 @@
           ],
           "deceased": "",
           "effect": 0,
-          "name": "Al\u00e5th N\u00e5zomvz, Frnc Oprtr, \u2640",
+          "name": "Alåth Nåzomvz, Frnc Oprtr, ♀",
           "witness_color": 6,
           "witness_count": 0,
           "witness_label": "No witnesses"
@@ -8491,7 +8491,7 @@
           ],
           "deceased": "",
           "effect": 0,
-          "name": "Amost Zastathur, Glassmkr, \u2642",
+          "name": "Amost Zastathur, Glassmkr, ♂",
           "witness_color": 6,
           "witness_count": 0,
           "witness_label": "No witnesses"
@@ -8524,7 +8524,7 @@
           ],
           "deceased": "",
           "effect": 0,
-          "name": "\u00c4s M\u00f6rulseb\u00efr, Fisherdwrf, \u2642",
+          "name": "Äs Mörulsebïr, Fisherdwrf, ♂",
           "witness_color": 6,
           "witness_count": 0,
           "witness_label": "No witnesses"
@@ -8557,7 +8557,7 @@
           ],
           "deceased": "",
           "effect": 0,
-          "name": "As\u00ebn Govososlan, Spermstr, \u2640",
+          "name": "Asën Govososlan, Spermstr, ♀",
           "witness_color": 6,
           "witness_count": 0,
           "witness_label": "No witnesses"
@@ -8590,7 +8590,7 @@
           ],
           "deceased": "",
           "effect": 0,
-          "name": "Asmel Akrulokol, Miner, \u2642",
+          "name": "Asmel Akrulokol, Miner, ♂",
           "witness_color": 6,
           "witness_count": 0,
           "witness_label": "No witnesses"
@@ -8623,7 +8623,7 @@
           ],
           "deceased": "",
           "effect": 0,
-          "name": "Ast Zonrithlut, Weaver, \u2640",
+          "name": "Ast Zonrithlut, Weaver, ♀",
           "witness_color": 6,
           "witness_count": 0,
           "witness_label": "No witnesses"
@@ -8689,7 +8689,7 @@
           ],
           "deceased": "",
           "effect": 0,
-          "name": "Atir Ekullon, Human Poet, \u2640",
+          "name": "Atir Ekullon, Human Poet, ♀",
           "witness_color": 6,
           "witness_count": 0,
           "witness_label": "No witnesses"
@@ -9670,5 +9670,47 @@
       "power_w": 22.46,
       "continuous_peak": false
     }
+  },
+  "guard_transport_reference": {
+    "run": "stockpile-storage-native-input-20261112-014803",
+    "status": "passed_with_known_issues",
+    "protocol": 199,
+    "owned_df_pid": 41836,
+    "source_preserved": true,
+    "native_fps": 30,
+    "viewer_fps": 30,
+    "rows": [
+      {
+        "unit_id": 5813,
+        "rank": 2000
+      }
+    ],
+    "caption": "Desired metal cages and chains in dungeons: 0 of 14",
+    "color": 12,
+    "checks": [
+      "baseline roster",
+      "empty and cleared filter",
+      "stale revision rejected",
+      "visible recenter button",
+      "visible unit sheet button with fresh location"
+    ],
+    "panel_crop": [
+      32,
+      52,
+      976,
+      760
+    ],
+    "different_pixels": 0,
+    "artifacts": {
+      "justice-tab-3.png": "01cc8e188b345bf587049c663045cbfbb64311fd6291fd6db1551f5dbc556530",
+      "justice-guard-view.png": "310310090cf43de72ae36fa309e48f4516d666593f3070a696998e7b3dfd80b9",
+      "job-settings-wire-result.json": "5fcc9e72718d4707afff7abfa592a915ea9d18f4af2e9c25052d34eb8ed7bf11"
+    },
+    "limits": [
+      "single member baseline does not verify multi-member ordering",
+      "scrolling, hover, keyboard, resize and composed inspector remain unaccepted",
+      "shared candidate portrait defects remain open",
+      "Justice remains hidden from public routes"
+    ]
   }
 }

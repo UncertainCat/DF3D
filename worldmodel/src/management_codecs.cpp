@@ -97,6 +97,16 @@ ManagementState decodeState(const m::ManagementState* s) {
   if(const auto* r=s->justice()) {
     auto& out=next.justice.emplace();out.outcome=JusticeOutcome(r->outcome());out.tab=r->tab();
     out.listRevision=r->list_revision();out.total=r->total();out.offset=r->offset();
+    if(const auto* g=r->guard()){
+      auto& page=out.guard.emplace();page.caption=g->caption()->str();page.color=g->color();
+      for(const auto* row:*g->rows()){
+        JusticeGuardRow value;value.unitId=row->unit_id();value.rank=row->rank();value.firstLine=row->first_line()->str();value.secondLine=row->second_line()->str();
+        const auto* c=row->name_color();value.nameColor={{c->foreground(),c->background(),c->bright()},{c->alternate_foreground(),c->alternate_background(),c->alternate_bright()},c->effect()};
+        if(row->sheet_icon())value.sheetIcon=decodeItemRecipe(row->sheet_icon());
+        if(const auto* p=row->position())value.position=TilePos{p->x(),p->y(),p->z()};
+        page.rows.push_back(std::move(value));
+      }
+    }
     if(const auto* c=r->candidates()){
       auto& page=out.candidates.emplace();page.crimeId=c->crime_id();page.revision=c->revision();page.total=c->total();page.offset=c->offset();page.interrogate=c->interrogate();
       for(const auto* row:*c->rows()){
@@ -377,8 +387,8 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
       b.CreateVector(symbols),r.nobles.stepToken,r.nobles.expectedNameRevision,query,edit);
   }
   flatbuffers::Offset<m::JusticeRequest> justice;
-  if(r.action>=ManagementAction::JusticeRead && r.action<=ManagementAction::JusticeInterrogate){const auto& q=r.justice;
-    const bool candidates=r.action>=ManagementAction::JusticeCandidatesRead && r.action<=ManagementAction::JusticeInterrogate;
+  if(r.action>=ManagementAction::JusticeRead && r.action<=ManagementAction::JusticeGuardRead){const auto& q=r.justice;
+    const bool candidates=r.action>=ManagementAction::JusticeCandidatesRead && r.action<=ManagementAction::JusticeGuardRead;
     std::vector<flatbuffers::Offset<m::JusticeSort>> sorts;
     if(candidates)for(const auto& sort:q.sorts)sorts.push_back(m::CreateJusticeSort(b,m::JusticeCandidateColumn(sort.column),sort.reverse));
     justice=m::CreateJusticeRequest(b,q.tab,q.offset,q.limit,q.expectedListRevision,q.crimeId,q.expectedCaseRevision,

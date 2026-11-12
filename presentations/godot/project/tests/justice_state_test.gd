@@ -92,6 +92,29 @@ func test_interrogation(service,state) -> void:
 	state.close();check(picker.phase==picker.Phase.Closed,"Unknown interrogation could not retire")
 	ready(service,state);state.open_candidates(true);service.reply(picker.ticket,candidates())
 	check(picker.phase==picker.Phase.Rejected,"Wrong candidate mode accepted")
+func guard_page(ids: Array=[42],offset:=0,total:=1,revision:=31) -> Dictionary:
+	return {"justice":{"outcome":C.JusticeOutcome.None,"tab":3,"list_revision":revision,"offset":offset,"total":total,"rows":[],"guard":{"caption":"fixture","color":12,"rows":ids.map(func(id):return {"unit_id":id,"rank":2000,"first_line":"fixture","second_line":"","name_color":{"color":[5,0,1],"alternate":[5,0,1],"effect":0},"position":Vector3i(1,2,3)})}}}
+func test_guard(service,state) -> void:
+	state.open(3);var guard=state.guard
+	check(service.calls[guard.ticket].intent.action==C.ManagementAction.JusticeGuardRead and service.calls[guard.ticket].intent.sorts==[{"column":0,"reverse":false}],"Guard lost native default sort or request")
+	service.reply(guard.ticket,guard_page([42],0,2))
+	check(guard.rows.is_empty() and service.calls[guard.ticket].intent.expected_list_revision==31 and service.calls[guard.ticket].intent.offset==1,"Partial guard roster exposed")
+	service.reply(guard.ticket,guard_page([43],1,2));check(guard.rows.size()==2 and guard.phase==guard.Phase.Ready,"Guard pages failed to assemble")
+	guard.search("old");var old: int=guard.ticket;guard.search("new");var current: int=guard.ticket
+	service.reply(old,guard_page());check(guard.ticket==current and guard.rows.is_empty(),"Old guard query replaced current rows")
+	service.reply(current,guard_page());guard.inspect(42);old=guard.ticket
+	state.select_tab(0);service.reply(old,{"creature_position":{"unit_id":42,"position":Vector3i(1,2,3)}})
+	check(guard.phase==guard.Phase.Closed,"Navigation survived guard retirement")
+	for fault in 3:
+		state.open(3);service.reply(guard.ticket,guard_page([42],0,2));var continuation:=guard_page([43],1,2)
+		match fault:
+			0:continuation.justice.list_revision=32
+			1:continuation.justice.guard.rows[0].unit_id=42
+			2:continuation.justice.guard.caption="changed"
+		service.reply(guard.ticket,continuation)
+		check(guard.phase==guard.Phase.Rejected and guard.rows.is_empty(),"Inconsistent guard continuation accepted")
+	state.open(3);old=guard.ticket;state.close();service.reply(old,guard_page())
+	check(guard.phase==guard.Phase.Closed and guard.rows.is_empty(),"Late guard page reopened closed panel")
 func run() -> void:
 	check(Registry.PANEL_SCRIPTS.has("justice") and not Registry.PANEL_ROUTES.has("Justice"),"Justice public gate changed")
 	var service:=Service.new();root.add_child(service);var state:=State.new();state.configure(service);state.open()
@@ -125,6 +148,7 @@ func run() -> void:
 	test_candidates(service,state)
 	test_sorts(service,state)
 	test_interrogation(service,state)
+	test_guard(service,state)
 	state.dispose();service.queue_free();await process_frame
 	if failures==0:print("JUSTICE_STATE_PASS")
 	quit(1 if failures else 0)

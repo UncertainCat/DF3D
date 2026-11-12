@@ -501,10 +501,15 @@ struct JusticeCandidatePage {
   bool interrogate=false;
   int32_t crimeId=-1;uint64_t revision=0;uint32_t total=0,offset=0;std::vector<JusticeCandidateRow> rows;
 };
+struct JusticeGuardRow {
+  int32_t unitId=-1,rank=0;std::string firstLine,secondLine;AreaNameColor nameColor;
+  std::optional<SelectionAppearance> sheetIcon;std::optional<TilePos> position;
+};
+struct JusticeGuardPage {std::string caption;uint8_t color=0;std::vector<JusticeGuardRow> rows;};
 struct JusticeState {
   JusticeOutcome outcome=JusticeOutcome::None;uint8_t tab=0;uint64_t listRevision=0;
   uint32_t total=0,offset=0;std::vector<JusticeCaseRow> rows;std::optional<JusticeCaseDetail> detail;
-  std::optional<JusticeCandidatePage> candidates;
+  std::optional<JusticeCandidatePage> candidates;std::optional<JusticeGuardPage> guard;
 };
 struct ObjectsRequest {uint8_t tab=0;uint32_t offset=0;uint16_t limit=32;uint64_t expectedListRevision=0;int32_t artifactId=-1;};
 struct ObjectsRow {

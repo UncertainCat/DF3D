@@ -121,3 +121,17 @@ TEST_CASE("Justice interrogation request retains comparison state") {
  const auto* request=flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer());
  REQUIRE_FALSE(m::validateConstructionRequest(*request));CHECK(request->justice()->interrogate());CHECK(request->justice()->expected_selected());
 }
+
+TEST_CASE("Justice guard codec owns rows after wire storage is retired") {
+ flatbuffers::FlatBufferBuilder b;
+ auto row=m::CreateJusticeGuardRow(b,42,2000,b.CreateString("synthetic name"),b.CreateString("synthetic profession"),m::CreateAreaNameColor(b));
+ auto guard=m::CreateJusticeGuardPage(b,b.CreateString("synthetic capacity"),12,b.CreateVector(std::vector{row}));
+ auto result=m::CreateJusticeState(b,m::JusticeOutcome::None,3,7,1,0,b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeCaseRow>>{}),0,0,guard);
+ m::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(m::ManagementAction::JusticeGuardRead);state.add_status(m::ManagementStatus::Ok);state.add_justice(result);b.Finish(state.Finish());
+ const auto* wire=flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer());REQUIRE_FALSE(m::validateManagementState(*wire));
+ const auto owned=codec::decodeState(wire);std::fill(b.GetBufferPointer(),b.GetBufferPointer()+b.GetSize(),uint8_t(0));b.Clear();
+ REQUIRE(owned.justice);REQUIRE(owned.justice->guard);const auto& page=*owned.justice->guard;
+ CHECK(page.caption=="synthetic capacity");CHECK(page.color==12);REQUIRE(page.rows.size()==1);
+ CHECK(page.rows[0].unitId==42);CHECK(page.rows[0].rank==2000);CHECK(page.rows[0].firstLine=="synthetic name");CHECK(page.rows[0].secondLine=="synthetic profession");
+ CHECK_FALSE(page.rows[0].sheetIcon);CHECK_FALSE(page.rows[0].position);
+}

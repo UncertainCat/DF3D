@@ -27,6 +27,7 @@ func run() -> void:
 		if world.poll_management().get("transport_alive",false):break
 		await create_timer(0.01).timeout
 	await request("construction",{"action":C.ManagementAction.Catalog})
+	if OS.get_environment("DF3D_JUSTICE_WIRE_GUARD")=="1":await run_guard(reference.guard);return
 	var counts: Array=[];var report_count:=0
 	for tab in 3:
 		var expected: Array=reference.lists[tab];var rows: Array=[];var revision:=0;var first:=true
@@ -242,4 +243,49 @@ func run() -> void:
 	var result=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	result.store_string(JSON.stringify({"success":not failed,"counts":counts,"witnesses":report_count,"stale_tabs":3,"controller_tabs":3,
 		"closed_read_retired":true,"candidate_count":candidate_count,"candidate_queries":3,"sort_scopes":reference.sorts.size(),"interrogated":interrogated,"convicted":applied,"picker_controller":applied}));result.close()
+	quit(1 if failed else 0)
+
+func settle_guard(guard) -> void:
+	var deadline:=Time.get_ticks_msec()+5000
+	while guard.phase in [guard.Phase.Reading,guard.Phase.Navigating] and Time.get_ticks_msec()<deadline:
+		world.poll();await create_timer(0.01).timeout
+func run_guard(reference: Dictionary) -> void:
+	var actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(actions);actions.configure(world,true)
+	var controller=preload("res://scripts/justice_state.gd").new();controller.configure(actions);controller.open(3)
+	var guard=controller.guard;var view
+	if OS.get_environment("DF3D_JUSTICE_RENDER")=="1":
+		root.size=Vector2i(1200,800)
+		check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Guard assets unavailable")
+		view=preload("res://scripts/justice_view.gd").new();root.add_child(view);view.configure_justice(world,controller);view.layout(Vector2(1200,800))
+	await settle_guard(guard)
+	if not check(guard.phase==guard.Phase.Ready and guard.rows.size()==reference.members.size(),"Guard roster failed to load"):quit(1);return
+	check(guard.caption==reference.caption and guard.color==reference.color,"Guard capacity differs")
+	for i in guard.rows.size():
+		check(guard.rows[i].unit_id==reference.members[i].unit_id and guard.rows[i].rank==reference.members[i].rank,"Guard ID/rank differs")
+	var baseline: Array=guard.rows.duplicate(true);var revision: int=guard.revision
+	if view!=null:
+		await process_frame;await process_frame;await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/justice-guard-view.png")
+	var stale:=await request("justice",{"action":C.ManagementAction.JusticeGuardRead,"tab":3,"offset":0,"limit":32,"expected_list_revision":revision+1,"query":"","sorts":[{"column":0,"reverse":false}]})
+	check(stale.get("status")==C.ManagementStatus.Rejected and stale.get("justice",{}).get("outcome")==C.JusticeOutcome.Stale,"Stale guard receipt accepted")
+	guard.search("zznomatch");await settle_guard(guard)
+	check(guard.phase==guard.Phase.Ready and guard.rows.is_empty() and guard.caption==reference.caption,"Guard empty filter failed")
+	guard.search("");await settle_guard(guard)
+	check(guard.rows==baseline,"Guard clear filter did not restore roster")
+	if not baseline.is_empty():
+		var seen: Array=[];guard.inspect_ready.connect(func(tile,id):seen.append({"tile":tile,"id":id}))
+		if view!=null:await pointer_click(view.position+view.guard_rect(0).position+Vector2(332,18))
+		else:guard.inspect(baseline[0].unit_id)
+		await settle_guard(guard)
+		check(seen.size()==1 and seen[0].id==baseline[0].unit_id,"Guard unit-sheet button failed")
+		if view!=null and baseline[0].has("position"):
+			var centered: Array=[];view.focus_requested.connect(func(tile):centered.append(tile))
+			await pointer_click(view.position+view.guard_rect(0).position+Vector2(300,18))
+			check(centered==[baseline[0].position],"Guard recenter button failed")
+	controller.close();controller.dispose()
+	if view!=null:view.queue_free()
+	actions.queue_free();await process_frame
+	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify({"success":not failed,"guard_count":baseline.size(),"guard_navigation":not baseline.is_empty()}));file.close()
+	world.queue_free();await process_frame
 	quit(1 if failed else 0)

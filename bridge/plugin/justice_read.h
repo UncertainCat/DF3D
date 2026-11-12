@@ -1,5 +1,7 @@
 #pragma once
 #include "justice_native.h"
+#include "justice_guard_native.h"
+#include "residents_row_native.h"
 #include "justice_witness_native.h"
 #include "justice_action_native.h"
 #include "justice_presentation_native.h"
@@ -21,6 +23,9 @@ struct ReadResult {
     struct Candidate {CandidateFact fact;CandidatePresentation display;df3d_management::ResidentAppearanceRecipe icon;};
     struct Candidates {bool interrogate=false;int32_t crimeId=-1;uint64_t revision=0;uint32_t total=0,offset=0;std::vector<Candidate> rows;};
     std::optional<Candidates> candidates;
+    struct GuardRow {CandidateFact fact;df3d_residents::RowText text;df3d_management::ResidentAppearanceRecipe icon;df::coord position;};
+    struct Guard {std::string caption;uint8_t color=0;std::vector<GuardRow> rows;};
+    std::optional<Guard> guard;
 };
 struct ReadHash {
     uint64_t value=UINT64_C(14695981039346656037);
@@ -129,6 +134,34 @@ inline ReadResult candidateRequest(const m::JusticeRequest& q,bool apply) {
         return result;
     }catch(...){return refused;}
 }
+inline ReadResult guardRequest(const m::JusticeRequest& q) {
+    ReadResult refused;refused.tab=3;
+    try {
+        const auto query=q.query()?q.query()->str():std::string{};const auto nativeQuery=UTF2DF(query);
+        if(DF2UTF(nativeQuery)!=query)return refused;
+        std::vector<CandidateSort> sorts={{CandidateColumn::Category,false}};
+        if(q.sorts()){sorts.clear();for(const auto* sort:*q.sorts())sorts.push_back({CandidateColumn(sort->column()),sort->reverse()});}
+        auto overview=guardOverview(nativeQuery,sorts);if(!overview || overview->members.size()>1048576)return refused;
+        ReadHash hash;hash.text(query);hash.text(overview->caption);hash.number(overview->color);
+        for(const auto& sort:sorts){hash.number(uint8_t(sort.column));hash.number(sort.reverse);}
+        for(const auto& fact:overview->members){hash.number(uint32_t(fact.unitId));hash.number(uint32_t(fact.rank));}
+        const auto revision=hash.finish();
+        if((q.expected_list_revision() && q.expected_list_revision()!=revision) || q.offset()>overview->members.size()){refused.outcome=m::JusticeOutcome::Stale;return refused;}
+        ReadResult result;result.tab=3;result.outcome=m::JusticeOutcome::None;result.revision=revision;result.offset=q.offset();result.total=uint32_t(overview->members.size());
+        auto& page=result.guard.emplace();page.caption=readText(overview->caption);page.color=overview->color;size_t bytes=page.caption.size();
+        for(size_t i=q.offset();i<overview->members.size() && page.rows.size()<q.limit();++i){
+            const auto fact=overview->members[i];auto* unit=df::unit::find(fact.unitId);if(!unit)return refused;
+            auto text=df3d_residents::rowText(unit,30,false,false);if(!text)return refused;
+            text->name.firstLine=readText(text->name.firstLine);text->name.secondLine=readText(text->name.secondLine);
+            size_t size=64+text->name.firstLine.size()+text->name.secondLine.size();df3d_management::ResidentAppearanceRecipe icon;icon.collect(unit,true);
+            if(!icon.layers.empty()){flatbuffers::FlatBufferBuilder check;check.Finish(icon.build(check));if(m::validateOwnerAppearance(*flatbuffers::GetRoot<m::SelectionAppearance>(check.GetBufferPointer()),size))return refused;}
+            if(bytes+size>384*1024)break;bytes+=size;
+            page.rows.push_back({fact,std::move(*text),std::move(icon),unit->pos});
+        }
+        if(result.offset<result.total && page.rows.empty())return refused;
+        return result;
+    }catch(...){return refused;}
+}
 inline flatbuffers::Offset<m::JusticeState> encode(flatbuffers::FlatBufferBuilder& b,const ReadResult& r){
     std::vector<flatbuffers::Offset<m::JusticeCaseRow>> rows;
     for(const auto& row:r.rows)rows.push_back(m::CreateJusticeCaseRow(b,row.id,b.CreateString(row.caption)));
@@ -145,6 +178,13 @@ inline flatbuffers::Offset<m::JusticeState> encode(flatbuffers::FlatBufferBuilde
                 b.CreateString(d.witnessLabel),d.witnessColor,b.CreateString(d.deceased));
             entries.push_back(m::CreateJusticeCandidateRow(b,f.unitId,f.rank,bool(f.flags&1),bool(f.flags&2),display,row.icon.layers.empty()?0:row.icon.build(b)));}
         candidates=m::CreateJusticeCandidatePage(b,page.crimeId,page.revision,page.total,page.offset,b.CreateVector(entries),page.interrogate);}
-    return m::CreateJusticeState(b,r.outcome,r.tab,r.revision,r.total,r.offset,b.CreateVector(rows),detail,candidates);
+    flatbuffers::Offset<m::JusticeGuardPage> guard;
+    if(r.guard){std::vector<flatbuffers::Offset<m::JusticeGuardRow>> entries;
+        for(const auto& row:r.guard->rows){const auto& c=row.text.nameColor;
+            auto color=m::CreateAreaNameColor(b,c.color[0],c.color[1],c.color[2],c.alternate[0],c.alternate[1],c.alternate[2],c.effect);
+            m::TilePos position(row.position.x,row.position.y,row.position.z);
+            entries.push_back(m::CreateJusticeGuardRow(b,row.fact.unitId,row.fact.rank,b.CreateString(row.text.name.firstLine),b.CreateString(row.text.name.secondLine),color,row.icon.layers.empty()?0:row.icon.build(b),&position));}
+        guard=m::CreateJusticeGuardPage(b,b.CreateString(r.guard->caption),r.guard->color,b.CreateVector(entries));}
+    return m::CreateJusticeState(b,r.outcome,r.tab,r.revision,r.total,r.offset,b.CreateVector(rows),detail,candidates,guard);
 }
 }

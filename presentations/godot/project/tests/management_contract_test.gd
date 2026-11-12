@@ -46,6 +46,18 @@ func run() -> void:
 	assert(state.status is int and state.action is int)
 	assert(Contract.is_mutation(A.Place) and Contract.is_mutation(A.AreaUpdate))
 	assert(not Contract.is_mutation(A.Preview))
+	assert(Contract.is_mutation(A.JusticeConvict) and not Contract.is_mutation(A.JusticeCandidatesRead))
+	var justice := {"action":A.JusticeConvict,"tab":0,"offset":0,"limit":32,"expected_list_revision":123,
+		"crime_id":9,"expected_case_revision":456,"query":"","expected_candidate_revision":789,"unit_id":42}
+	for patch in [{"expected_candidate_revision":0},{"expected_candidate_revision":789.0},{"unit_id":-1},
+		{"unit_id":42.0},{"offset":1},{"query":"x".repeat(513)},{"query":false},{"expected_case_revision":0},
+		{"extra":true}]:
+		var invalid := justice.duplicate(true);invalid.merge(patch,true)
+		assert(world.management_request("justice",invalid)==0)
+		assert(world.last_error()=="Invalid justice request")
+	justice.action=A.JusticeCandidatesRead;justice.erase("unit_id");justice.offset=32;justice.expected_candidate_revision=0
+	assert(world.management_request("justice",justice)==0)
+	assert(world.last_error()=="Invalid justice request")
 	# Wrong types and absent identities must fail locally, never reach the ring.
 	for request in [{},{"action":float(A.Catalog)},{"action":A.Place,"definition":"Chair"},
 		{"action":A.Remove},{"action":A.Inspect,"building_id":2147483000.0},

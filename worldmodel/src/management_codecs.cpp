@@ -97,6 +97,10 @@ ManagementState decodeState(const m::ManagementState* s) {
   if(const auto* r=s->justice()) {
     auto& out=next.justice.emplace();out.outcome=JusticeOutcome(r->outcome());out.tab=r->tab();
     out.listRevision=r->list_revision();out.total=r->total();out.offset=r->offset();
+    if(const auto* c=r->candidates()){
+      auto& page=out.candidates.emplace();page.crimeId=c->crime_id();page.revision=c->revision();page.total=c->total();page.offset=c->offset();
+      for(const auto* row:*c->rows())page.rows.push_back({row->unit_id(),row->rank(),row->interrogation_pending(),row->counterintelligence()});
+    }
     for(const auto* row:*r->rows())out.rows.push_back({row->crime_id(),row->caption()->str()});
     if(const auto* d=r->detail()){
       auto& v=out.detail.emplace();v.crimeId=d->crime_id();v.resolution=JusticeCaseResolution(d->resolution());v.revision=d->revision();v.caption=d->caption()->str();
@@ -363,8 +367,10 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
       b.CreateVector(symbols),r.nobles.stepToken,r.nobles.expectedNameRevision,query,edit);
   }
   flatbuffers::Offset<m::JusticeRequest> justice;
-  if(r.action==ManagementAction::JusticeRead || r.action==ManagementAction::JusticeCaseRead){const auto& q=r.justice;
-    justice=m::CreateJusticeRequest(b,q.tab,q.offset,q.limit,q.expectedListRevision,q.crimeId,q.expectedCaseRevision);}
+  if(r.action>=ManagementAction::JusticeRead && r.action<=ManagementAction::JusticeConvict){const auto& q=r.justice;
+    const bool candidates=r.action==ManagementAction::JusticeCandidatesRead || r.action==ManagementAction::JusticeConvict;
+    justice=m::CreateJusticeRequest(b,q.tab,q.offset,q.limit,q.expectedListRevision,q.crimeId,q.expectedCaseRevision,
+      candidates?b.CreateString(q.query):0,q.expectedCandidateRevision,q.unitId);}
   flatbuffers::Offset<m::ObjectsRequest> objects;
   if(r.action==ManagementAction::ObjectsRead || r.action==ManagementAction::ObjectsLocate){const auto& q=r.objects;
     objects=m::CreateObjectsRequest(b,q.tab,q.offset,q.limit,q.expectedListRevision,q.artifactId);}

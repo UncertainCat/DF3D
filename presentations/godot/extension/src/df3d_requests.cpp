@@ -260,6 +260,12 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
                 row["date"]=String::utf8(w.date.c_str());row["reported"]=String::utf8(w.reported.c_str());witnesses.push_back(row);}
             detail["witnesses"]=witnesses;value["detail"]=detail;
         }
+        if(v.candidates){const auto& c=*v.candidates;Dictionary page;Array candidates;
+            page["crime_id"]=c.crimeId;page["revision"]=int64_t(c.revision);page["total"]=int64_t(c.total);page["offset"]=int64_t(c.offset);
+            for(const auto& r:c.rows){Dictionary row;row["unit_id"]=r.unitId;row["rank"]=r.rank;
+                row["interrogation_pending"]=r.interrogationPending;row["counterintelligence"]=r.counterintelligence;candidates.push_back(row);}
+            page["rows"]=candidates;value["candidates"]=page;
+        }
         result["justice"]=value;
     }
     if(s.objects){const auto& v=*s.objects;Dictionary value;Array rows;
@@ -692,18 +698,30 @@ bool validateJustice(const Dictionary& data,String& error) {
     error="Invalid justice request";
     const auto integer=[](const Dictionary& d,const char* k,int64_t lo,int64_t hi){return d.has(k) && d[k].get_type()==Variant::INT && int64_t(d[k])>=lo && int64_t(d[k])<=hi;};
     const bool detail=int64_t(data["action"])==int64_t(wm::ManagementAction::JusticeCaseRead);
-    if(data.size()!=(detail?7:5) || !integer(data,"tab",0,2) || !integer(data,"offset",0,1048576) || !integer(data,"limit",1,64) ||
-        !integer(data,"expected_list_revision",detail?1:0,INT64_MAX))return false;
-    if(detail){if(!integer(data,"crime_id",0,INT32_MAX) || !integer(data,"expected_case_revision",0,INT64_MAX) ||
+    const bool candidates=int64_t(data["action"])==int64_t(wm::ManagementAction::JusticeCandidatesRead);
+    const bool convict=int64_t(data["action"])==int64_t(wm::ManagementAction::JusticeConvict);
+    if(data.size()!=(convict?10:candidates?9:detail?7:5) || !integer(data,"tab",0,2) || !integer(data,"offset",0,1048576) || !integer(data,"limit",1,64) ||
+        !integer(data,"expected_list_revision",(detail||candidates||convict)?1:0,INT64_MAX))return false;
+    if(detail || candidates || convict){if(!integer(data,"crime_id",0,INT32_MAX) || !integer(data,"expected_case_revision",(candidates||convict)?1:0,INT64_MAX) ||
         (int64_t(data["offset"]) && !int64_t(data["expected_case_revision"])))return false;
     }else if(int64_t(data["offset"]) && !int64_t(data["expected_list_revision"]))return false;
+    if(candidates || convict){
+        if(!data.has("query") || data["query"].get_type()!=Variant::STRING || !integer(data,"expected_candidate_revision",convict?1:0,INT64_MAX))return false;
+        const auto raw=String(data["query"]).utf8();const std::string query(raw.get_data(),raw.length());
+        if(query.size()>512 || query.find('\0')!=std::string::npos || (int64_t(data["offset"]) && !int64_t(data["expected_candidate_revision"])))return false;
+        if(convict && (!integer(data,"unit_id",0,INT32_MAX) || int64_t(data["offset"]) || int64_t(data["limit"])!=32))return false;
+    }
     error=String();return true;
 }
 bool readJustice(const Dictionary& data,wm::ManagementRequest& request,String&) {
     request.action=wm::ManagementAction(int64_t(data["action"]));auto& q=request.justice;
     q.tab=uint8_t(int64_t(data["tab"]));q.offset=uint32_t(int64_t(data["offset"]));q.limit=uint16_t(int64_t(data["limit"]));
     q.expectedListRevision=uint64_t(int64_t(data["expected_list_revision"]));
-    if(request.action==wm::ManagementAction::JusticeCaseRead){q.crimeId=int32_t(int64_t(data["crime_id"]));q.expectedCaseRevision=uint64_t(int64_t(data["expected_case_revision"]));}
+    if(request.action!=wm::ManagementAction::JusticeRead){q.crimeId=int32_t(int64_t(data["crime_id"]));q.expectedCaseRevision=uint64_t(int64_t(data["expected_case_revision"]));}
+    if(request.action==wm::ManagementAction::JusticeCandidatesRead || request.action==wm::ManagementAction::JusticeConvict){
+        q.query=String(data["query"]).utf8().get_data();q.expectedCandidateRevision=uint64_t(int64_t(data["expected_candidate_revision"]));
+        if(request.action==wm::ManagementAction::JusticeConvict)q.unitId=int32_t(int64_t(data["unit_id"]));
+    }
     return true;
 }
 bool validateObjects(const Dictionary& data,String& error) {
@@ -1140,7 +1158,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::JusticeCaseRead)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::JusticeConvict)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

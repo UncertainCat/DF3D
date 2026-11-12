@@ -3,6 +3,45 @@
 #include "management_util.h"
 namespace m=df3d::mirror;
 namespace codec=wm::detail::management;
+TEST_CASE("Justice candidate and conviction codecs retain query, target and all revisions") {
+ for(bool apply:{false,true}){
+  wm::ManagementRequest q;q.action=apply?wm::ManagementAction::JusticeConvict:wm::ManagementAction::JusticeCandidatesRead;
+  q.justice.crimeId=9;q.justice.expectedListRevision=123;q.justice.expectedCaseRevision=456;
+  q.justice.expectedCandidateRevision=789;q.justice.query="synthetic query";
+  q.justice.unitId=apply?42:-1;q.justice.offset=apply?0:32;
+  flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,q,11,12,13);
+  const auto* wire=flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer());
+  REQUIRE_FALSE(m::validateConstructionRequest(*wire));const auto* r=wire->justice();REQUIRE(r);
+  CHECK(r->crime_id()==9);CHECK(r->expected_list_revision()==123);CHECK(r->expected_case_revision()==456);
+  CHECK(r->expected_candidate_revision()==789);CHECK(r->unit_id()==(apply?42:-1));CHECK(r->query()->str()==q.justice.query);
+ }
+}
+TEST_CASE("Justice candidate decode owns native order and distinct flags") {
+ flatbuffers::FlatBufferBuilder b;
+ auto first=m::CreateJusticeCandidateRow(b,42,39,true,false),second=m::CreateJusticeCandidateRow(b,9,0,false,true);
+ auto candidates=m::CreateJusticeCandidatePage(b,19,789,34,32,b.CreateVector(std::vector{first,second}));
+ auto payload=m::CreateJusticeState(b,m::JusticeOutcome::None,0,123,0,0,b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeCaseRow>>{}),0,candidates);
+ m::ManagementStateBuilder s(b);s.add_revision(1);s.add_action(m::ManagementAction::JusticeCandidatesRead);
+ s.add_status(m::ManagementStatus::Ok);s.add_justice(payload);b.Finish(s.Finish());
+ const auto* wire=flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer());REQUIRE_FALSE(m::validateManagementState(*wire));
+ const auto owned=codec::decodeState(wire);std::fill(b.GetBufferPointer(),b.GetBufferPointer()+b.GetSize(),uint8_t(0));b.Clear();
+ REQUIRE(owned.justice);REQUIRE(owned.justice->candidates);const auto& page=*owned.justice->candidates;
+ CHECK(page.crimeId==19);CHECK(page.revision==789);CHECK(page.total==34);CHECK(page.offset==32);REQUIRE(page.rows.size()==2);
+ CHECK(page.rows[0].unitId==42);CHECK(page.rows[0].rank==39);CHECK(page.rows[0].interrogationPending);CHECK_FALSE(page.rows[0].counterintelligence);
+ CHECK(page.rows[1].unitId==9);CHECK(page.rows[1].rank==0);CHECK_FALSE(page.rows[1].interrogationPending);CHECK(page.rows[1].counterintelligence);
+ CHECK_FALSE(owned.justice->detail);CHECK(owned.justice->rows.empty());
+}
+TEST_CASE("Justice mutation decode preserves applied and unknown without candidate data") {
+ for(auto outcome:{m::JusticeOutcome::Applied,m::JusticeOutcome::Rejected,m::JusticeOutcome::Stale,m::JusticeOutcome::Unknown}){
+  flatbuffers::FlatBufferBuilder b;
+  auto payload=m::CreateJusticeState(b,outcome,0,0,0,0,b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeCaseRow>>{}));
+  m::ManagementStateBuilder s(b);s.add_revision(1);s.add_action(m::ManagementAction::JusticeConvict);
+  s.add_status(outcome==m::JusticeOutcome::Applied?m::ManagementStatus::Ok:m::ManagementStatus::Rejected);s.add_justice(payload);b.Finish(s.Finish());
+  const auto* wire=flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer());REQUIRE_FALSE(m::validateManagementState(*wire));
+  const auto owned=codec::decodeState(wire);REQUIRE(owned.justice);
+  CHECK(owned.justice->outcome==wm::JusticeOutcome(outcome));CHECK_FALSE(owned.justice->candidates);CHECK_FALSE(owned.justice->detail);CHECK(owned.justice->rows.empty());
+ }
+}
 TEST_CASE("Justice request codecs preserve both pagination identities") {
  for(bool detail:{false,true}){
   wm::ManagementRequest q;q.action=detail?wm::ManagementAction::JusticeCaseRead:wm::ManagementAction::JusticeRead;

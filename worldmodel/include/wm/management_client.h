@@ -476,6 +476,7 @@ struct NoblesState {
 struct JusticeRequest {
   uint8_t tab=0;uint32_t offset=0;uint16_t limit=32;
   uint64_t expectedListRevision=0;int32_t crimeId=-1;uint64_t expectedCaseRevision=0;
+  std::string query;uint64_t expectedCandidateRevision=0;int32_t unitId=-1;
 };
 struct JusticeCaseRow {int32_t crimeId=-1;std::string caption;};
 struct JusticeWitnessRow {std::string witness,description,date,reported;};
@@ -485,9 +486,14 @@ struct JusticeCaseDetail {
   std::optional<std::string> injuredParty;std::string status;
   uint32_t total=0,offset=0;std::vector<JusticeWitnessRow> witnesses;
 };
+struct JusticeCandidateRow {int32_t unitId=-1,rank=0;bool interrogationPending=false,counterintelligence=false;};
+struct JusticeCandidatePage {
+  int32_t crimeId=-1;uint64_t revision=0;uint32_t total=0,offset=0;std::vector<JusticeCandidateRow> rows;
+};
 struct JusticeState {
   JusticeOutcome outcome=JusticeOutcome::None;uint8_t tab=0;uint64_t listRevision=0;
   uint32_t total=0,offset=0;std::vector<JusticeCaseRow> rows;std::optional<JusticeCaseDetail> detail;
+  std::optional<JusticeCandidatePage> candidates;
 };
 struct ObjectsRequest {uint8_t tab=0;uint32_t offset=0;uint16_t limit=32;uint64_t expectedListRevision=0;int32_t artifactId=-1;};
 struct ObjectsRow {

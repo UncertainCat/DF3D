@@ -56,11 +56,20 @@ never trigger automatic replay. Read replies cannot carry mutation outcomes.
 Migration194: rebuild bridge and clients together; mailbox is
 `Local\df3d_management_v194`. Installed protocol193 binaries must not be used with
 new clients. Session/map recording formats are unchanged. This commit defines
-and validates the contract only; model codecs, producer, action dispatch and
+and validates the contract. Model codecs and the Godot dictionary adapter now
+carry candidate pages and mutation requests; producer, action dispatch and
 Godot picker integration remain pending. Existing protocol193 evidence below
 does not establish acceptance of this new contract or expose public Justice.
 `build/qa/justice-candidate-contract` passes the root build and all19 core tests,
 including malformed candidate scopes, duplicate IDs, paging and outcome isolation.
+`build/qa/justice-candidate-model` passes the root and extension builds, all19 core
+tests and the headless management-contract test with its local fake producer.
+Model tests verify query/target/revision encoding, owned candidate order after
+discarding wire storage, independent candidate flags and all four mutation
+outcomes. Godot rejects malformed candidate/conviction dictionaries locally.
+`JusticeConvict` is explicitly classified as a mutation for action ownership and
+uncertainty handling. These checks do not verify a live194 producer, candidate
+rendering or player-facing conviction. The installed bridge remains protocol193.
 
 Conviction has a native semantic-effect candidate at RVA `46f0d0`, called by
 the picker callback `474dd0` at `474ef5` with `(crime*, unit*)`. The picker

@@ -74,6 +74,10 @@ func run() -> void:
 		zones.display([{"id":86,"name":"Pond","icon":"ZONE_POND"}],true,{"zone_type":86,"zone_settings":{"pond_mode":mode}})
 		for index in [0,1]:zones.setting_buttons[index].pressed.emit()
 	check(pond_changes==[["pond_mode",2],["pond_mode",2],["pond_mode",1],["pond_mode",1]],"Both native Pit/Pond icons toggle current mode")
+	for owner in [-1,5813]:
+		zones.display([{"id":97,"name":"Tomb","icon":"ZONE_TOMB"}],true,{"zone_type":97,"owner_id":owner,"zone_settings":{"tomb_citizens":1,"tomb_pets":0}})
+		for index in [2,3]:
+			check(zones.setting_buttons[index].visible==(owner==-1) and zones.setting_buttons[index].disabled==(owner!=-1),"Assigned Tomb hides and disables burial permissions")
 	zones.free()
 	var state := preload("res://scripts/area_settings_state.gd").new()
 	var settings := preload("res://scripts/area_settings_view.gd").new()

@@ -473,6 +473,17 @@ func zone_settings_edits() -> void:
 			await native("zone_settings_guard", {"id":id,"begin":false})
 			if stopped: return
 
+	var tomb:=zone("Tomb")
+	if tomb>=0 and not stopped:
+		await native("tomb_settings_owner",{"id":tomb,"begin":true})
+		for key in ["tomb_citizens","tomb_pets"]:
+			var current:=await inspect(tomb,1)
+			if stopped:return
+			var fields: Dictionary={};fields[key]=1-int(current.zone_settings[key])
+			await request({"action":11,"kind":1,"id":tomb,"expected_revision":current.revision,"operation":9,"zone_settings":fields},"invalid area edit")
+			if stopped:return
+		await native("tomb_settings_owner",{"id":tomb,"begin":false})
+
 func created_zone_defaults() -> void:
 	step = "7 zone creation defaults"
 	if not fixture.has("origin"): incomplete("missing free zone footprint"); return

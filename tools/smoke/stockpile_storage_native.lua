@@ -233,6 +233,18 @@ require('gui.script').start(function()
      end
      raw.i1=original_first;raw.i2=original_second
     end
+    if entry[1]=='Tomb'and os.getenv('DF3D_TOMB_OWNER_SETTINGS_AUDIT')=='1'then
+     local owner,first,second=b.assigned_unit_id,raw.i1,raw.i2
+     local unit=assert(df.global.world.units.active[0])
+     assert(owner==-1,'Tomb fixture already assigned')
+     b.assigned_unit_id=unit.id
+     capture('tomb-assigned-settings')
+     click(34,12);click(38,12)
+     assert(raw.i1==first and raw.i2==second,'Assigned Tomb burial permissions changed')
+     records[#records+1]={name='tomb-assigned-settings',owner=unit.id,first=raw.i1,second=raw.i2,unchanged=true}
+     b.assigned_unit_id=owner
+     capture('tomb-unassigned-settings')
+    end
     if os.getenv('DF3D_ZONE_ACTIVE_AUDIT')=='1'then
      local original_first,original_second=raw.i1,raw.i2
      local function active_snapshot(label)

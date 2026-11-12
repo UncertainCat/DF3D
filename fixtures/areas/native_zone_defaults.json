@@ -364,5 +364,35 @@
       "native.log": "93dee6331b3b6e594eaea60bdec8e9188915b36c83c5f0bdc689a44bf765b907",
       "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
     }
+  },
+  "assigned_tomb_settings_reference": {
+    "native_run": "build/stockpile-storage-native-zone-defaults-20261112-153931",
+    "wire_run": "build/areas-acceptance-20261112-154151",
+    "native_input_rva": "34be53..34bf52",
+    "native_observation": "Assigned Tomb hides both burial-permission icons; clicks in former positions leave settings unchanged. Unassigned Tomb restores icons.",
+    "fixture_scope": "Owner ID seeded directly in paused diagnostics and restored; this is settings eligibility, not assignment-effect acceptance.",
+    "implementation": "Hide and disable both controls while owner_id is not -1; bridge rejects requested burial changes before writes.",
+    "verification": {
+      "native": "passed; both assigned/unassigned screenshots inspected",
+      "wire": "passed; sixteen ordinary edits plus two assigned-Tomb rejections; settings unchanged and owner restored",
+      "headless": "build/qa/tomb-assigned-settings passed",
+      "preservation": "Owned DF6528 and DF15948 exit unsaved; wire verifies two unchanged save manifests"
+    },
+    "bridge_sha256": "41EE8038A779B2986604ED4B606A27F186E4850CB4444E3B08619ACE16D56DF0",
+    "limitations": [
+      "No composed rendered DF3D Tomb assignment/settings workflow",
+      "Deceased Tomb owner assignment-button eligibility is a separate audit",
+      "Active-toggle decision remains pending"
+    ],
+    "native_hashes": {
+      "result.json": "c2c2e3443245fda98c0d52746aaabbb2539bbf1e7de4025f2d18efcc3cb077d6",
+      "tomb-assigned-settings.png": "66d7474c35941d44e6b13ecf03482b1695fb483a49fd8c19b47b918a5e1726c6",
+      "tomb-unassigned-settings.png": "7bf3531ca16a526d7a5d98abd8ed2f9b75e293c74464cd58b96f2f9e5cb6a3d6"
+    },
+    "wire_hashes": {
+      "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "native.log": "0883b0295ccb1554626b08fa5f0bd733ec8a3c3e9c787474a5a6354f6d4c5686",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
+    }
   }
 }

@@ -152,7 +152,18 @@ local function check_properties(actual,expected,path)
   else assert(actual[key]==value,path..'.'..key..' mismatch: '..tostring(actual[key])..' / '..tostring(value)) end
  end
 end
-if request.op=='zone_settings_guard' then
+if request.op=='tomb_settings_owner' then
+ local b=building();assert(b.type==df.civzone_type.Tomb)
+ if request.begin then
+  assert(not _G.df3d_tomb_settings_owner)
+  _G.df3d_tomb_settings_owner={id=b.id,owner=b.assigned_unit_id,first=b.zone_settings.whole.i1,second=b.zone_settings.whole.i2}
+  b.assigned_unit_id=assert(df.global.world.units.active[0]).id
+ else
+  local saved=assert(_G.df3d_tomb_settings_owner);assert(saved.id==b.id)
+  assert(saved.first==b.zone_settings.whole.i1 and saved.second==b.zone_settings.whole.i2,'Rejected Tomb settings changed state')
+  b.assigned_unit_id=saved.owner;_G.df3d_tomb_settings_owner=nil
+ end
+elseif request.op=='zone_settings_guard' then
  local rows={}
  for _,b in ipairs(df.global.world.buildings.all)do
   rows[#rows+1]={id=b.id,relations=array(b.relations,function(v)return v.id end),

@@ -196,9 +196,9 @@ func display(rows: Array, editable: bool, area: Dictionary = {}) -> void:
 		for index in SETTINGS.size():
 			var entry: Array = SETTINGS[index]
 			var button := setting_buttons[index]
-			button.visible = type_name == str(entry[0])
+			button.visible = type_name == str(entry[0]) and (type_name != "Tomb" or int(area.get("owner_id",-1)) == -1)
 			var value := int(settings.get(str(entry[1]),-1))
-			button.disabled = not editable or value < 0
+			button.disabled = not editable or not button.visible or value < 0
 			var enabled := value == int(entry[2]) if int(entry[2]) >= 0 else value == 1
 			button.get_node("Icon").texture = art.texture(str(entry[3])+("_ACTIVE" if enabled else "_INACTIVE"))
 			button.get_node("Icon").modulate = Color(0.5,0.5,0.5) if button.disabled else Color.WHITE

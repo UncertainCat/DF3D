@@ -15059,6 +15059,24 @@ is session-lifecycle acceptance, not a completed typing UI.
 
 ### Current Zones revalidation and remaining semantic audit
 
+Assigned Tombs hide and disable both burial-permission controls, matching native
+input34be53..34bf52. The bridge independently refuses these changes while
+assigned_unit_id is not-1, before any settings write. Native protected
+`stockpile-storage-native-zone-defaults-20261112-153931` captures the hidden
+assigned and visible unassigned controls and confirms clicks at their old
+positions leave settings unchanged. These screenshots were inspected. Owner
+identity is seeded and restored for this eligibility probe; it does not replace
+assignment-effect acceptance. Headless `tomb-assigned-settings` passes, and
+protected `areas-acceptance-20261112-154151` passes sixteen ordinary edits plus
+both assigned-Tomb rejections, with unchanged settings and restored owner.
+Owned DF6528/15948 exit unsaved; the wire run verifies two unchanged save manifests.
+Installed bridge SHA256 is `41EE8038A779B2986604ED4B606A27F186E4850CB4444E3B08619ACE16D56DF0`.
+The viewer check is headless; native graphics are capped30FPS. This does not
+qualify a composed rendered Tomb assignment/settings workflow or the adjacent
+deceased-owner assignment-button predicate. Evidence is retained in
+`native_zone_defaults.json.assigned_tomb_settings_reference`.
+
+
 Current Locations qualification: protected
 `areas-acceptance-20261112-153213 -LocationScene` passes on management203 and
 bridge SHA256 `01453FB452DDEBB97C60321A3FCA9E6CA66CF58FF63532A1DCFD439E19B8064E`.

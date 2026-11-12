@@ -1527,6 +1527,9 @@ local function native_operation(r)
  end
  if op==9 then
   local zone_type=df.civzone_type[b.type]
+  -- Native34be53 excludes burial-permission edits once a Tomb is assigned.
+  if zone_type=='Tomb'and b.assigned_unit_id~=-1 and
+   (default(a.zone_settings,'tomb_citizens',-1)~=-1 or default(a.zone_settings,'tomb_pets',-1)~=-1)then return reject('invalid area edit')end
   for _,entry in ipairs{{'pond_mode','Pond',0},{'facing','ArcheryRange',0},
    {'tomb_citizens','Tomb',-1},{'tomb_pets','Tomb',-1},
    {'gather_trees','PlantGathering',-1},{'gather_shrubs','PlantGathering',-1},{'gather_fallen','PlantGathering',-1}} do

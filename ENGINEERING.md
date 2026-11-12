@@ -15090,7 +15090,7 @@ is session-lifecycle acceptance, not a completed typing UI.
 ### Current Zones revalidation and remaining semantic audit
 
 Zones now displays native anchored instruction boxes for all18 zone types and
-18 verified actions/settings, including four paint tools. `area_hover_view` shares the existing dwell/warm
+21 verified actions/settings, including four paint tools. `area_hover_view` shares the existing dwell/warm
 state and frame renderer with Stockpiles; zone controls retain their own kind
 and selected-target identity. Changing target, disabling/hiding a button or
 closing the panel retires its help. Palette anchors follow the visible row,
@@ -15118,8 +15118,9 @@ paint help retains its bottom-of-screen anchor while the controls sit in the
 left panel; preserve this observed placement. Accept/Cancel and the probed
 horizontal options do not activate main-interface help. Bedroom creation-mode
 identity was not independently asserted, so that probe alone does not establish
-Multi-mode acceptance. Overlap navigation and assigned location Details help
-remain uncaptured.
+Multi-mode acceptance. Native170331 additionally establishes Previous/Next
+overlapping-zone help and assigned-location Details help, bringing the total
+to39 native instruction variants. Rename remains without native help.
 
 The final main-scene170027 run covers52 hovers, all36 instruction variants,
 repaint entry and cancellation, and panel-close retirement. Exact native text
@@ -15131,6 +15132,17 @@ separate-render-thread notice remains. `zone-paint-hover-final` passes the area
 and menu checks; core19 passes. The earlier165818 run passed assertions but
 exposed the duplicate in its screenshot and is not final visual acceptance.
 
+
+Protected main-scene171728 checks55 pointer hovers covering all39 instructions,
+including exact native text and anchors for Previous/Next and location Details.
+A semantic creation adds an overlapping meeting zone; actual navigation clicks
+change selected IDs and retire the old tooltip. A controlled tavern assignment
+exposes Details; its rendered screenshot was inspected. Repaint cancellation
+and panel-close retirement remain covered. Owned DF37612 exits unsaved with two
+unchanged save manifests and restored preferences. The only diagnostic is the
+known separate-render-thread notice. Native/Godot remain capped30FPS; sampled
+GPU60-61C during the run. Headless `zone-navigation-hover` and core19 pass.
+`native_zone_hover.json.navigation_viewer_reference` retains scope and hashes.
 
 The remaining selected-zone caption gap now has a verified native provider,
 `nativeZoneSelectedOwners`, exposed diagnostically by
@@ -15266,10 +15278,11 @@ now explicitly caps graphical Godot drivers at30FPS; headless drivers are unchan
 Current control wiring includes location access, quantities, recognition, ordinary
 and religious staffing, specialization and naming. Historical statements about
 unspecified unfinished Details controls do not establish current missing controls.
-The remaining reconstructed zone effect is Active: `areas.lua` still calls
-DFHack `notifyCivzoneModified`, which removes/rebuilds reciprocal room membership,
-unlike the observed native inline Active handler. Its replacement still needs
-scoped semantic verification and the separate pending settings-bit decision.
+Active now changes only its own flag, with the maintainer-approved correction
+preserving unrelated settings. Native170600 independently confirms the settings
+corruption; viewer171315 verifies ten off/on clicks and stale-edit rejection.
+The unnecessary DFHack membership reconstruction is removed. See the native
+bug register for exact reproduction and evidence scope.
 
 Settings edits no longer call that membership helper. Native inline Tomb and
 archery handlers write only their respective fields; Pit/Pond also sets the
@@ -15286,17 +15299,11 @@ checks do not establish a composed rendered DF3D settings workflow or nonempty
 target-zone membership coverage. `native_zone_defaults.json.settings_effect_reference`
 records provenance and the installed bridge hash.
 
-Protected `stockpile-storage-native-zone-defaults-20261112-151907` compares actual
-Active off/on clicks for five newly created native zone types. Native also changes
-the settings union's low bits; the separate bug-register decision is pending.
-The oracle records empty contained-building lists, so it does not establish live
-nonempty membership preservation. Settings are restored before proceeding; owned
-DF34508 exits unsaved with source/preferences preserved. The earlier151743 probe
-used a nonexistent child field, and151821 clicked Repaint instead of Active;
-neither is acceptance. `native_zone_defaults.json.active_toggle_reference` and
-`current_main_scene_reference` retain bounded evidence. Runtime zone mutations
-and public exposure remain unchanged. Core19 passes; a full readiness audit and
-current Locations-suite revalidation remain outstanding.
+The current Active reference is native170600 and viewer171315 in
+`native_zone_defaults.json.active_toggle_reference`. Earlier151907 established
+the shared low-bit write;151743 and151821 were invalid probes and are not
+acceptance. Public Zones exposure remains gated on the full readiness audit.
+Current Locations qualification is153213 above; it is not an outstanding rerun.
 
 ### Zones palette at minimum height
 

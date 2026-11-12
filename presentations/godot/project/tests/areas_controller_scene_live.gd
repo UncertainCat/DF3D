@@ -2553,6 +2553,30 @@ func pointer_zone_help() -> void:
 			if not entry.button.is_visible_in_tree() or entry.button.disabled:continue
 			await zone_hover_sample(entry.button,key,editor.stockpile_help.zone_instruction(entry),reference,samples)
 			if stopped:return
+	var pen:=await inspect(zone("Pen"),1)
+	var made:=await request({"action":10,"kind":1,"zone_type":editor.zone_menu.catalog.MeetingHall,"origin":pen.origin,"width":1,"height":1})
+	if stopped:return
+	var meeting_id: int=made.areas[0].id
+	editor.inspect_tile(pen.origin)
+	if not await wait_ui(func():return settled() and editor.zone_overlaps.size()>1,"Hover overlapping zones"):return
+	for pair in [["previous","ZONE_PREVIOUS"],["next","ZONE_NEXT"]]:
+		await zone_hover_sample(editor.zone_menu.controls[pair[0]],"zone/control/"+pair[0],pair[1],reference,samples)
+		if stopped:return
+		var old_id: int=editor.selected.id
+		await click_control(editor.zone_menu.controls[pair[0]])
+		if not await wait_ui(func():return settled() and int(editor.selected.id)!=old_id,"Hover navigation click"):return
+		await process_frame;await process_frame
+		if not check(not editor.stockpile_help.visible,"Navigation retained previous zone help"):return
+	await native("zone_location_prepare",{"id":meeting_id})
+	editor.use_area(await inspect(meeting_id,1))
+	if not await wait_ui(settled,"Location Details hover target"):return
+	await zone_hover_sample(editor.zone_menu.controls.location_details,"zone/control/location_details","ZONE_LOCATION_DETAILS",reference,samples)
+	if stopped:return
+	await capture("zone_help_location_details")
+	await native("zone_location_clear")
+	var meeting:=await inspect(meeting_id,1)
+	await request({"action":12,"kind":1,"id":meeting_id,"expected_revision":meeting.revision})
+	if stopped:return
 	editor.use_area(await inspect(zone("Pen"),1))
 	if not await wait_ui(settled,"Zone paint help selection"):return
 	await click_control(editor.zone_menu.controls.repaint)

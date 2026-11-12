@@ -5,7 +5,8 @@
   "sources": {
     "build/stockpile-storage-native-zone-defaults-20261112-164309": "a9db8402753232e3cc94a305a69e779e355cc093287d6ba545ead7af315f4d48",
     "build/stockpile-storage-native-zone-defaults-20261112-164754": "b982521cdf1c74b3cbe91e47ba05a47dedae0ef7e5bdb30b1f26ba1e97594cb2",
-    "build/stockpile-storage-native-zone-defaults-20261112-165546": "73ae9b0d2c9519183247fcb089254e66386332d7ce0bd5ebcf9b5c6598d42441"
+    "build/stockpile-storage-native-zone-defaults-20261112-165546": "73ae9b0d2c9519183247fcb089254e66386332d7ce0bd5ebcf9b5c6598d42441",
+    "build/stockpile-storage-native-zone-defaults-20261112-170331": "8e6aff628b9ea1331f20b9395f303d30de170c7ad3fb2dff81446fa49f00e653"
   },
   "instructions": {
     "ZONE_TYPE_MEETING": {
@@ -519,6 +520,41 @@
       "source": "build/stockpile-storage-native-zone-defaults-20261112-165546",
       "left": 17,
       "bottom": 58
+    },
+    "ZONE_PREVIOUS": {
+      "id": 125,
+      "lines": [
+        "Go to the previous zone",
+        "overlapping the tile",
+        "you clicked."
+      ],
+      "reference": "zone-hover-navigation-overlap-previous",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-170331",
+      "left": 46,
+      "bottom": 7
+    },
+    "ZONE_NEXT": {
+      "id": 126,
+      "lines": [
+        "Go to the next zone",
+        "overlapping the tile",
+        "you clicked."
+      ],
+      "reference": "zone-hover-navigation-overlap-next",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-170331",
+      "left": 46,
+      "bottom": 7
+    },
+    "ZONE_LOCATION_DETAILS": {
+      "id": 139,
+      "lines": [
+        "Set details for the",
+        "assigned location."
+      ],
+      "reference": "zone-hover-navigation-location-details",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-170331",
+      "left": 46,
+      "bottom": 13
     }
   },
   "probes": [
@@ -1387,5 +1423,25 @@
       "170027 supersedes165818, whose screenshot exposed duplicate generic tooltip.",
       "New-zone/Multi geometry mutations are not exercised by this hover lane."
     ]
+  },
+  "navigation_native_reference": {
+    "lane": "build/stockpile-storage-native-zone-defaults-20261112-170331",
+    "scope": "Native pointer hover on actual overlapping zones and assigned tavern; immediate text cells/anchors. Rename has NONE. Overlay PNGs not accepted as native hover appearance evidence."
+  },
+  "navigation_viewer_reference": {
+    "lane": "build/areas-acceptance-20261112-171728",
+    "samples": 55,
+    "unique_instructions": 39,
+    "status": "passed_with_known_issues: documented separate-render-thread notice only",
+    "scope": "Exact native text and anchors for55 pointer hovers; actual overlapping-zone previous/next clicks clear old help, assigned-location Details, repaint cancel and panel close. Details screenshot inspected. Native transient overlay PNGs remain excluded from pixel-parity claims.",
+    "owned_df_pid": 37612,
+    "source_and_clone_manifests_unchanged": true,
+    "closed_unsaved": true,
+    "hashes": {
+      "zone-hover-view.json": "018af7a6906ff418a23c6368005037613ea751c6bd5ea258ae348a3b02871f35",
+      "result.json": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+      "scene_zone_help_location_details.png": "208745806668e7bae44f5a6847129c762813785bf04c72eecf82a42686503f8c",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
+    }
   }
 }

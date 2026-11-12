@@ -21,7 +21,7 @@ func configure(source, owner_controller) -> void:
 		bind_button(controller.paint_view.buttons[row.key],"paint/"+str(row.key),row,true)
 	for row in controller.menu_data.zones:
 		bind_zone(controller.zone_menu.buttons[row.name],"zone/type/"+str(row.name),str(row.hover_instruction),true)
-	for entry in [["repaint","ZONE_REPAINT"],["suspend","ZONE_SUSPEND"],["remove","ZONE_REMOVE_EXISTING"],["location","ZONE_ASSIGN_LOCATION"],["squads","ZONE_ASSIGN_SQUAD"],["animals","ZONE_PICK_PASTURE_ANIMALS"]]:
+	for entry in [["previous","ZONE_PREVIOUS"],["next","ZONE_NEXT"],["location_details","ZONE_LOCATION_DETAILS"],["repaint","ZONE_REPAINT"],["suspend","ZONE_SUSPEND"],["remove","ZONE_REMOVE_EXISTING"],["location","ZONE_ASSIGN_LOCATION"],["squads","ZONE_ASSIGN_SQUAD"],["animals","ZONE_PICK_PASTURE_ANIMALS"]]:
 		bind_zone(controller.zone_menu.controls[entry[0]],"zone/control/"+entry[0],entry[1],false)
 	var settings := ["ZONE_PIT","ZONE_POND","ZONE_TOMB_CITIZEN_BURIAL","ZONE_TOMB_PET_BURIAL","ZONE_GATHER_TREE","ZONE_GATHER_SHRUB","ZONE_GATHER_FALLEN"]
 	for index in settings.size():
@@ -81,7 +81,7 @@ func _process(_delta: float) -> void:
 		if entry.get("zone_paint",false):
 			position=Vector2(rect.position.x-(32 if entry.instruction=="ZONE_ERASE" else 0),controller._layout_view.y-88-size.y)
 		else:
-			var bottom: float=rect.position.y+12 if entry.palette else controller.zone_menu.get_global_rect().position.y+(82 if entry.instruction in ["ZONE_REPAINT","ZONE_SUSPEND","ZONE_REMOVE_EXISTING"] else 118)
+			var bottom: float=rect.position.y+12 if entry.palette else controller.zone_menu.get_global_rect().position.y+(46 if entry.instruction in ["ZONE_PREVIOUS","ZONE_NEXT"] else 82 if entry.instruction in ["ZONE_REPAINT","ZONE_SUSPEND","ZONE_REMOVE_EXISTING"] else 118)
 			position=Vector2(controller.zone_menu.get_global_rect().position.x+334,bottom-size.y)
 	elif entry.paint:
 		var rect: Rect2 = get_canvas_transform().affine_inverse() * (entry.button.get_global_transform_with_canvas() * Rect2(Vector2.ZERO,entry.button.size))

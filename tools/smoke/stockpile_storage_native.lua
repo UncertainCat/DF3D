@@ -183,7 +183,8 @@ require('gui.script').start(function()
    local zone_hover_seen={}
    local function zone_hover(label,targets)
     local mode=os.getenv('DF3D_ZONE_HOVER_AUDIT')
-    if mode~='1'and mode~='repaint'and mode~='remaining'then return end
+    if mode~='1'and mode~='repaint'and mode~='remaining'and mode~='navigation'then return end
+    if mode=='navigation'and not label:find('navigation',1,true)then return end
     if mode=='remaining'and not label:find('remaining',1,true)then return end
     if mode=='repaint'then
      if label~='Pen'then return end
@@ -425,6 +426,14 @@ require('gui.script').start(function()
      local old_site,old_location=second.site_id,second.location_id
      second.site_id=site_owner.id;second.location_id=location.id
      location.contents.building_ids:insert('#',second.id)
+     if os.getenv('DF3D_ZONE_HOVER_AUDIT')=='navigation'then
+      map_click(site.x,site.y)
+      zone_hover('navigation-overlap',{{'previous',7,6},{'next',42,6},{'rename',38,6}})
+      for _=1,3 do if ui.cur_bld==second then break end;click(42,6)end
+      assert(ui.cur_bld==second,'hover location target not selected')
+      b=second;pile_id=b.id
+      zone_hover('navigation-location',{{'assign',38,15},{'details',42,15}})
+     end
      local function poison_location()
       location.contents.location_value=654321;location.contents.count_goblets=123
       location.contents.update_timer=13;location.contents.update_count=19

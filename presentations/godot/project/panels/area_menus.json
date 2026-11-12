@@ -1015,6 +1015,26 @@
         "Also removes existing",
         "zones!"
       ]
+    },
+    "ZONE_PREVIOUS": {
+      "hover_lines": [
+        "Go to the previous zone",
+        "overlapping the tile",
+        "you clicked."
+      ]
+    },
+    "ZONE_NEXT": {
+      "hover_lines": [
+        "Go to the next zone",
+        "overlapping the tile",
+        "you clicked."
+      ]
+    },
+    "ZONE_LOCATION_DETAILS": {
+      "hover_lines": [
+        "Set details for the",
+        "assigned location."
+      ]
     }
   }
 }

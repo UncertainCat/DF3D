@@ -121,6 +121,7 @@
 #include "justice_guard_native.h"
 #include "justice_convicts_native.h"
 #include "justice_intelligence_native.h"
+#include "justice_intelligence_actors_native.h"
 #include "justice_action_native.h"
 #include "justice_presentation_native.h"
 #include <sstream>
@@ -2841,6 +2842,13 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               row["rank"]=fact.rank;row["flags"]=fact.flags;result.append(row);}
             out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
           }catch(const std::exception&){return CR_WRONG_USAGE;}
+        }
+        if(parameters[0]=="justice-intelligence-actors-probe") {
+            if(parameters.size()>2)return CR_WRONG_USAGE;
+            const auto query=parameters.size()==2?UTF2DF(parameters[1]):std::string{};if(parameters.size()==2 && DF2UTF(query)!=parameters[1])return CR_WRONG_USAGE;
+            const auto rows=df3d_justice::intelligenceActors(query);if(!rows)return CR_FAILURE;
+            Json::Value output(Json::arrayValue);for(const auto& row:*rows){Json::Value value;value["historical_figure"]=row.historicalFigure;value["identity"]=row.identity;value["name"]=DF2UTF(row.name);value["aliases"]=Json::Value(Json::arrayValue);for(auto id:row.aliases)value["aliases"].append(id);output.append(value);}
+            out.print("{}",Json::FastWriter().write(output));return CR_OK;
         }
         if(parameters[0]=="justice-intelligence-reports-probe") {
             if(parameters.size()!=2)return CR_WRONG_USAGE;

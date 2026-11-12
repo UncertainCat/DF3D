@@ -105,6 +105,31 @@ not continuous peaks. `native_justice.json.intelligence_report_reference`
 retains bounded provenance. This does not establish viewer rendering, pagination,
 scrolling, resize, report lifecycle or nonempty graph behavior.
 
+The owned Actors roster provider (`justice_intelligence_actors_native.h`)
+isolates collector2b6832's membership/name pass, before organization construction.
+It resolves each evidence file's historical figure, uses the known visual name
+when flagged, otherwise resolves its first recorded identity through native
+c3a4f0, and calls a946e0 on an owned language name. Missing identity/name and
+unidentified branches preserve native literals. Native52cee0 normalizes owned
+names/query; stable byte ordering follows479a20's insertion-after-equals rule.
+The provider copies alias IDs and returns no native pointers. It neither calls
+menu insertion/filtering nor reads/writes `temp_flags`. Actor relationships and
+details are separate unfinished work; the roster is not yet in the protocol/UI.
+
+Protected `stockpile-storage-native-input-20261112-091345` temporarily supplies
+four evidence files and compares the actual Actors tab's names, order, identities
+and alias IDs with the provider. Cases cover known visual name, unidentified,
+missing identity and an existing identity. All evidence records remain byte-for-
+byte unchanged by the provider after seeding temp_flags123. The repository pointer
+is restored and the menu rebuilt before temporary records are freed. Source save
+and preferences are preserved; owned DF21308 closes unsaved. MSVC and all19 core
+checks pass. Native runs at30FPS without Godot; observed46C/0% GPU is not a
+continuous peak. `native_justice.json.intelligence_actors_reference` retains
+bounded provenance. Missing historical figures, nameless resolved identities,
+impersonation, equal-name ties, native search interaction, relationships, detail
+text and viewer behavior remain unaccepted. The no-result filter check is a
+provider assertion, not a native search interaction comparison.
+
 The Actors/Organizations/Plots collector2b6760 reads the fortress entity's
 `evidence_repository` (entity+1358), constructs presentation entries, writes
 `evidence_hf_filest.temp_flags` at98, and finishes by filtering menu-owned lists.

@@ -10250,5 +10250,90 @@
       "synthetic reports do not cover a naturally populated fortress",
       "Justice remains hidden from public routes"
     ]
+  },
+  "intelligence_actors_reference": {
+    "run": "stockpile-storage-native-input-20261112-091345",
+    "status": "passed",
+    "protocol": 201,
+    "owned_df_pid": 21308,
+    "source_preserved": true,
+    "native_fps": 30,
+    "viewer_launched": false,
+    "controlled_repository": true,
+    "samples": {
+      "empty_filter": [],
+      "native": [
+        {
+          "aliases": [
+            2147483647
+          ],
+          "historical_figure": 7017,
+          "identity": -1,
+          "name": "Nameless"
+        },
+        {
+          "aliases": [],
+          "historical_figure": 1880,
+          "identity": -1,
+          "name": "Rîsen Whippedtunnel"
+        },
+        {
+          "aliases": [
+            0
+          ],
+          "historical_figure": 8490,
+          "identity": 0,
+          "name": "Shash the Tenebrous"
+        },
+        {
+          "aliases": [],
+          "historical_figure": 6675,
+          "identity": -1,
+          "name": "Unidentified"
+        }
+      ],
+      "provider": [
+        {
+          "aliases": [
+            2147483647
+          ],
+          "historical_figure": 7017,
+          "identity": -1,
+          "name": "Nameless"
+        },
+        {
+          "aliases": [],
+          "historical_figure": 1880,
+          "identity": -1,
+          "name": "Rîsen Whippedtunnel"
+        },
+        {
+          "aliases": [
+            0
+          ],
+          "historical_figure": 8490,
+          "identity": 0,
+          "name": "Shash the Tenebrous"
+        },
+        {
+          "aliases": [],
+          "historical_figure": 6675,
+          "identity": -1,
+          "name": "Unidentified"
+        }
+      ]
+    },
+    "evidence_bytes_preserved": true,
+    "temp_flags_sentinel": 123,
+    "artifacts": {
+      "justice-intelligence-actors.json": "5931d545e0f2c8aaf738eabd221e43502adf8dfd9645f06d449e0deb2763c531",
+      "justice-intelligence-actors.png": "6ee80175710c50e3b41ca17298b2ba43ec35d94a4635a0d3af845e8a68fa07f6"
+    },
+    "limits": [
+      "roster provider only, no protocol or viewer",
+      "missing historical figures, nameless resolved identities, impersonation and equal-name ties unaccepted",
+      "native search interaction unaccepted",
+      "organization relationships and actor details unfinished"
+    ]
   }
 }

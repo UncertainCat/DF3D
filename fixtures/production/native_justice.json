@@ -15824,5 +15824,90 @@
       "Witness descriptions preserve observed native unbounded text; this change does not clip those strings.",
       "Earlier144123 showed23914/2173/9861 narrow Open/Closed/Cold pixel differences and278 incorrect Closed No witnesses pixels at default."
     ]
+  },
+  "witness_display_reference": {
+    "native_build": "DF 53.16",
+    "protocol": 203,
+    "lane": "build/stockpile-storage-native-input-20261112-145824",
+    "bridge_sha256": "3F37B708B05C47CCB48689C7CC5B692FFD8B094377DFDF2286B3300F8B89B806",
+    "native_arrange_rva": "14196e0",
+    "native_abbreviation_rva": "52d910",
+    "samples": [
+      {
+        "columns": 35,
+        "native": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "owned": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "source": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      },
+      {
+        "columns": 35,
+        "native": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+        "owned": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+        "source": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+      },
+      {
+        "columns": 35,
+        "native": "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+        "owned": "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+        "source": "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+      },
+      {
+        "columns": 35,
+        "native": "Wtnss: Th extrrdnrly lngthy nm of a",
+        "owned": "Wtnss: Th extrrdnrly lngthy nm of a",
+        "source": "Witness: The extraordinarily lengthy name of a fortress visitor."
+      },
+      {
+        "columns": 35,
+        "native": "Accss: Th extrrdnrly lngthy nm of a",
+        "owned": "Accss: Th extrrdnrly lngthy nm of a",
+        "source": "Accuses: The extraordinarily lengthy name of a fortress visitor, Hammerdwarf."
+      },
+      {
+        "columns": 53,
+        "native": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "owned": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "source": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      },
+      {
+        "columns": 53,
+        "native": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+        "owned": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+        "source": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+      },
+      {
+        "columns": 53,
+        "native": "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+        "owned": "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+        "source": "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+      },
+      {
+        "columns": 53,
+        "native": "Witness: The extraordnrly lngthy nm of a frtrss vstr.",
+        "owned": "Witness: The extraordnrly lngthy nm of a frtrss vstr.",
+        "source": "Witness: The extraordinarily lengthy name of a fortress visitor."
+      },
+      {
+        "columns": 53,
+        "native": "Accss: Th extrrdnrly lngthy nm of a frtrss vstr, Hmmr",
+        "owned": "Accss: Th extrrdnrly lngthy nm of a frtrss vstr, Hmmr",
+        "source": "Accuses: The extraordinarily lengthy name of a fortress visitor, Hammerdwarf."
+      }
+    ],
+    "sha256": {
+      "justice-witness-display.json": "7b5235f48777f7ec37a82b8430f95168f1ffba99444712d3ac781d03ff88852e",
+      "justice-case-return.json": "b127619b5f73bbb3f53c3a241f26d02920043c5f366a96ffb104540e56aa89db",
+      "result.json": "55ea401f0907968b16baa48a037a247d52b778f816392f061952e6daa810f1ec",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    },
+    "scope": "Controlled native widget text versus owned string formatter, 35 and 53 cells; all ten match. Diagnostic provider only; no viewer integration or Unicode acceptance. Narrow accusation geometry can exceed witness-name width.",
+    "verification": {
+      "msvc": "passed",
+      "core_ctest": "19 passed",
+      "live": "passed",
+      "owned_df_pid": 33076,
+      "source": "unchanged; exit unsaved",
+      "gpu": "30FPS native only; sampled 47C/9%"
+    }
   }
 }

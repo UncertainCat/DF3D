@@ -1190,7 +1190,9 @@ Justice case injured-party and status headings use the native multiline column
 width, moving actions and witnesses down when they wrap. Button hitboxes and
 witness scrollbar geometry use the same measured heading height. Closed cases
 omit the empty-witness label; Open/Cold retain native "No witnesses.". Witness
-descriptions keep their observed native unbounded drawing behavior.
+descriptions retain their observed drawing beyond the narrow column. This is
+not a general unbounded-text rule: the native widget geometry can exceed the
+column, as described below.
 
 Final mixed144725 on2026-11-12 covers all three first cases at912x552, fresh
 selection at that size, and restored1200x800. Eight of nine full panel crops are
@@ -1208,6 +1210,27 @@ with source/prefs preserved, serial30FPS, GPU47–53C sampled. Known Godot shutd
 diagnostics qualify the live run as passed_with_known_issues. Enable
 CASE_RETURN/CASE_RESIZE/WIRE/RENDER through the protected Justice lane. Protocol
 and bridge are unchanged; public Justice remains gated.
+
+Native witness names and accusation descriptions both use
+`widget_text_truncated` with mode3. Its arrange routine14196e0 copies the original
+string, invokes plain abbreviation52d910, then applies ellipses only if the result
+still exceeds the effective width. `witnessDisplay` exposes this formatting over
+an owned string and caller-supplied width; it never invokes a widget or reads
+native menu geometry. Both code spans are pinned. The adapter is diagnostic-only
+until width-aware case transport and viewer resize handling are integrated.
+
+Protected145824 on2026-11-12 compares the adapter with the actual native widget
+at35 and53 cells. Five controlled ASCII strings per width cover below/exact/above
+width and long witness/accusation captions. All ten outputs match, including
+native removal of vowels and abbreviation of the caption prefixes. The oracle
+temporarily changes only widget text and restores it; provider calls preserve
+menu/crime/report/RNG guards. This verifies the formatter, not naturally long
+gameplay names, rendered DF3D output or Unicode boundaries. The narrow native
+accusation widget can occupy43 cells while the witness name occupies35; transport
+integration must establish each effective width rather than assume they match.
+`native_justice.json.witness_display_reference` records outputs and provenance.
+MSVC and core19 pass. Owned DF33076 exits unsaved with source/preferences
+preserved; native runs alone at30FPS, GPU47C/9% sampled. Protocol203 is unchanged.
 
 Protected `stockpile-storage-native-input-20261111-191326` verifies this controller
 through the real semantic action service on all three case tabs, initial detail

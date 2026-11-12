@@ -104,3 +104,16 @@ TEST_CASE("Justice candidate display rejects malformed bounds and colors") {
   CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==(fault!=0));
  }
 }
+
+TEST_CASE("Justice sort scope permits shared repeated directions and rejects malformed priorities") {
+ for(int fault=0;fault<6;++fault){flatbuffers::FlatBufferBuilder b;
+  std::vector<flatbuffers::Offset<m::JusticeSort>> sorts;
+  if(fault!=1){sorts.push_back(m::CreateJusticeSort(b,m::JusticeCandidateColumn::Name,true));
+   sorts.push_back(m::CreateJusticeSort(b,fault==2?m::JusticeCandidateColumn(4):m::JusticeCandidateColumn::Name,fault!=3));}
+  if(fault==4)sorts.resize(65537,sorts[0]);
+  auto q=m::CreateJusticeRequest(b,0,0,32,7,9,8,0,0,-1,b.CreateVector(sorts));
+  m::ConstructionRequestBuilder request(b);request.add_client_id(1);request.add_seq(1);request.add_world_epoch(1);
+  request.add_action(fault==5?m::ManagementAction::JusticeCaseRead:m::ManagementAction::JusticeCandidatesRead);request.add_justice(q);b.Finish(request.Finish());
+  CHECK(bool(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
+ }
+}

@@ -2224,11 +2224,15 @@ table NoblesState {
 // semantic providers; this read contract does not claim their implementation.
 enum JusticeOutcome : uint8 { None, Rejected, Stale, Applied, Unknown }
 enum JusticeCaseResolution : uint8 { None, Unsolved, Convicted, UnknownConvict }
+enum JusticeCandidateColumn : uint8 { Category, Name, Profession, Crime }
+table JusticeSort { column:JusticeCandidateColumn; reverse:bool; }
 table JusticeRequest {
   tab:uint8; offset:uint32; limit:uint16 = 32;
   expected_list_revision:uint64; crime_id:int32 = -1;
   expected_case_revision:uint64;
   query:string; expected_candidate_revision:uint64; unit_id:int32 = -1;
+  // Absent means the original native default: Crime then Name, both forward.
+  sorts:[JusticeSort];
 }
 table JusticeCaseRow { crime_id:int32 = -1; caption:string (required); }
 table JusticeWitnessRow {
@@ -2433,7 +2437,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 195;
+  schema_version:uint32 = 196;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2504,7 +2508,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 195;
+  schema_version:uint32 = 196;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

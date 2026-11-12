@@ -41,6 +41,15 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+Management protocol196 adds ordered Justice candidate sort priorities with a
+shared reversal per column. Omitted sorts retain the native default Crime/Name;
+an explicit empty vector, invalid column or conflicting repeated direction is
+rejected. Candidate revision includes the requested priorities and directions,
+so changing sort requires a fresh read before selecting a candidate.
+Migration196: rebuild bridge and clients together; mailbox is
+`Local\df3d_management_v196`. Protocol195 binaries cannot serve196 clients.
+Session/map formats are unchanged. Transport and rendered acceptance are pending.
+
 The owned Convict candidate adapter now accepts ordered Category/Name/Profession/
 Crime priorities and per-column reversal. Native142c879 applies stable sorts
 from last priority to first; lexicographic comparison over the native keys is

@@ -2,6 +2,12 @@
 #pragma once
 #include <cstdint>
 namespace wm {
+enum class JusticeCandidateColumn : uint8_t {
+  Category = 0,
+  Name = 1,
+  Profession = 2,
+  Crime = 3,
+};
 enum class JusticeCaseResolution : uint8_t {
   None = 0,
   Unsolved = 1,

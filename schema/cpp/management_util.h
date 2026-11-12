@@ -183,8 +183,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 195;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v195";
+inline constexpr uint32_t kManagementVersion = 196;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v196";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -730,12 +730,20 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
       q->expected_candidate_revision()>INT64_MAX)return "invalid justice request";
     const bool candidates=r.action()==ManagementAction::JusticeCandidatesRead,convict=r.action()==ManagementAction::JusticeConvict;
     if(candidates || convict){
+      if(const auto* sorts=q->sorts()){
+        if(sorts->size()==0 || sorts->size()>65536)return "invalid justice sorts";
+        std::array<int8_t,4> directions{-1,-1,-1,-1};
+        for(const auto* sort:*sorts){if(!sort || sort->column()>JusticeCandidateColumn::Crime)return "invalid justice sort";
+          auto& direction=directions[size_t(sort->column())];
+          if(direction>=0 && bool(direction)!=sort->reverse())return "conflicting justice sort directions";
+          direction=int8_t(sort->reverse());}
+      }
       if(q->crime_id()<0 || !q->expected_list_revision() || !q->expected_case_revision() ||
          (q->query() && (q->query()->size()>512 || q->query()->str().find('\0')!=std::string::npos)))return "invalid justice candidate scope";
       if(convict){
         if(q->unit_id()<0 || !q->expected_candidate_revision() || q->offset() || q->limit()!=32)return "invalid justice conviction";
       }else if(q->unit_id()!=-1 || (q->offset() && !q->expected_candidate_revision()))return "invalid justice candidate page";
-    }else if(q->query() || q->expected_candidate_revision() || q->unit_id()!=-1)return "unexpected justice candidate intent";
+    }else if(q->query() || q->expected_candidate_revision() || q->unit_id()!=-1 || q->sorts())return "unexpected justice candidate intent";
     if(r.action()==ManagementAction::JusticeRead){
       if(q->crime_id()!=-1 || q->expected_case_revision() || (q->offset() && !q->expected_list_revision()))return "invalid justice list request";
     }else if(q->crime_id()<0 || !q->expected_list_revision() || (q->offset() && !q->expected_case_revision()))return "invalid justice case request";

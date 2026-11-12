@@ -9,6 +9,7 @@
 #include "appearance_random.h"
 #include "appearance_color.h"
 #include "appearance_template_native.h"
+#include "appearance_item_color_native.h"
 #include "dwarf_layer_anatomy.h"
 
 #include "modules/DFSDL.h"
@@ -957,9 +958,10 @@ bool resolveCtx(const Ctx& c, Result& out, bool portrait, bool mapAnatomy,
         } else if (L->flags.bits.use_standard_item_palette) {
             const df::palette_pagest* pal = standardPalette();
             if (pal) {
-                const int32_t col = matched && matched->item ? matched->item->getColorWhetherDyedOrNot() : -1;
+                const auto col = nativeAppearanceItemColor(matched ? matched->item : nullptr);
+                if(!col)return false;
                 l.palette = pal;
-                l.row = static_cast<int16_t>(paletteRowForColor(pal, col));
+                l.row = static_cast<int16_t>(paletteRowForColor(pal, *col));
                 l.keyRow = static_cast<int16_t>(pal->default_row);
             }
         }

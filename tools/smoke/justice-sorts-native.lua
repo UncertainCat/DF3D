@@ -107,10 +107,19 @@ if os.getenv('DF3D_JUSTICE_ARTWORK_DIAG')=='1' then
    local it=inv.item;local improvements={}
    if df.item_constructed:is_instance(it)then for _,imp in ipairs(it.improvements)do
     local entry={type=imp:getType()}
-    if df.itemimprovement_threadst:is_instance(imp)or df.itemimprovement_colorationst:is_instance(imp)then entry.dye=imp.dye_profile.color_index;if df.itemimprovement_threadst:is_instance(imp)then entry.dye_material=imp.dye.mat_type;entry.dye_index=imp.dye.mat_index end end
+    if df.itemimprovement_threadst:is_instance(imp)or df.itemimprovement_colorationst:is_instance(imp)then entry.dye=imp.dye_profile.color_index;if df.itemimprovement_threadst:is_instance(imp)then entry.dye_material=imp.dye.mat_type;entry.dye_index=imp.dye.mat_index
+     local material=dfhack.matinfo.decode(imp.dye.mat_type,imp.dye.mat_index)
+     if material then
+      entry.dye_token=material:getToken();entry.dye_state_color=material.material.state_color.Solid
+      local pattern=df.global.world.raws.descriptors.patterns[entry.dye_state_color]
+      entry.dye_pattern=pattern and pattern.id or ''
+      entry.dye_colors={}
+      if pattern then for _,color in ipairs(pattern.colors)do entry.dye_colors[#entry.dye_colors+1]={index=color,token=df.global.world.raws.descriptors.colors[color].id}end end
+     end
+ end end
     improvements[#improvements+1]=entry
    end end
-   facts.items[#facts.items+1]={id=it.id,improvements=improvements}
+   facts.items[#facts.items+1]={id=it.id,dyed=it:isDyed(),color=it:getColorWhetherDyedOrNot(),improvements=improvements}
   end
   facts.hair_conditions={}
   local function values(vector)local result={};for _,v in ipairs(vector)do result[#result+1]=v end;return result end

@@ -11538,5 +11538,53 @@
       "justice-picker-sorted-view.png": "74de15f21aafc19ea77bd0cf276401e0176a773d6532b166f4c18f3434769a08",
       "justice-picker-recipes.json": "b5ea8e1febb4429b23f360c22617ca137985dc80013661cf9a5f9fdedf2cd84f"
     }
+  },
+  "candidate_clothing_palette_reference": {
+    "run": "build/stockpile-storage-native-input-20261112-114710",
+    "diagnostic_run": "build/stockpile-storage-native-input-20261112-114454",
+    "owned_df_pid": 45104,
+    "source_preserved": true,
+    "status": "passed_with_known_issues",
+    "native_fps": 30,
+    "viewer_fps": 30,
+    "native_reference": "720546..720721 selects first usable thread/coloration explicit profile or solid-state dye-material pattern; 14add70 resolves semantic material IDs. No native UI/cache inputs.",
+    "findings": [
+      "Items46655..46660 return generic color87 RED, but their PLANT:ROOT_HIDE:MILL dye material has solid-state pattern12 BROWN. The native creature renderer uses the latter.",
+      "Bridge uses pinned native14add70 and the audited inline improvement selection; explicit profiles remain preferred and base material supplies the fallback.",
+      "Unit2459 clothing now uses palette row13. All13 Category-reversed portraits and the full panel match native pixels."
+    ],
+    "panel_crop": [
+      32,
+      52,
+      976,
+      760
+    ],
+    "panel_different_pixels": 0,
+    "portrait_different_pixels": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "installed_bridge_sha256": "a059de51ab179d8df2edc001bbda835533cb59c887ab7736b27bfe920efdc3cc",
+    "artifacts": {
+      "justice-sorts.png": "3ce846120122ac6d028f665750d7535c88855c05178d8631372631169be60893",
+      "justice-picker-sorted-view.png": "ed303c6dde79ca98afea1d3b7ea9c80ee9acf3d1dd865ea78537d6e9e6e9c59f",
+      "justice-picker-recipes.json": "ca1c7ef0240c6602c269684c886de410038fd187cb872c5e6ab1c458e3f11a0f"
+    },
+    "semantic_inputs_sha256": "8d0b02539c8a1506b5de5c47fcb20e53d35b49b9fda13d4323bf17b0d757ddd4",
+    "limitations": [
+      "This capture covers the candidate panel, not all remaining Justice workflows.",
+      "Known separate-renderer/finalize/two-ObjectDB diagnostics qualify the live result."
+    ]
   }
 }

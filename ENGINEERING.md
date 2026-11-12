@@ -486,8 +486,8 @@ with zero differing pixels. A second same-session native/viewer comparison in
 and every panel pixel outside the remaining two portraits match. Unit5815 differs
 by112 pixels, unit2459 by187; the whole sorted panel differs by299 pixels.
 The difference persists in one session, so it cannot be dismissed as a stale
-reference or animation timing. The dwarf hair mismatch is corrected below;
-the human clothing mismatch and full sorted-panel visual acceptance remain open.
+reference or animation timing. Both mismatches are corrected and the sorted
+panel accepted in114710 below; these earlier counts document the reproduced bugs.
 Protected003445 clears/restores only these units' sheet_icon_texpos handles and
 reopens the native picker, verifies the rebuilt list's293 IDs, and captures the
 same two portraits unchanged. This rules out that handle and ordinary reopening,
@@ -517,6 +517,27 @@ live run as passed_with_known_issues. Unit2459 still differs by187 pixels; this
 run's whole panel differs by836 pixels, so it is not whole-panel acceptance.
 Fixture candidate_long_hair_composition_reference retains recipes and image hashes.
 
+Protected114710 closes the sorted candidate artwork gap: all13 portraits and
+the entire panel crop(32,52)-(976,760) match native pixels. The bridge now resolves
+standard clothing palettes through native material resolver14add70, following
+the inline creature-renderer selection720546..720721: first usable thread or
+coloration improvement, explicit profile color when present, otherwise the first
+color of its dye material's solid-state pattern, then base-material fallback.
+The ordinary item color virtual is not equivalent. Diagnostic114454 records
+items46655..46660 reporting RED87 while their PLANT:ROOT_HIDE:MILL dye material
+has solid-state BROWN12. Native clothing uses brown; DF3D now selects row13.
+The adapter checks the supported executable and resolver hash and reads only
+semantic improvements/materials. It does not call the graphics renderer or use
+native cached pixels. Other consumers of the general item-color virtual are
+unchanged; this correction concerns standard creature appearance palettes.
+
+MSVC/install and all19 core tests pass. Owned DF45104 closes unsaved with source
+and preferences preserved; native/viewer30FPS, sampled GPU47C/0%. Known
+separate-renderer/finalize/two-ObjectDB diagnostics retain passed_with_known_issues
+qualification. Fixture candidate_clothing_palette_reference records the exact
+panel/portrait comparisons and semantic inputs. Other Justice workflows remain
+staged; this is not full-screen completion or general material-art acceptance.
+
 Read-only condition discovery112406 records selected pattern IDs and tissue
 traces for both affected units. Native720acd..720b56 compares pattern IDs, while
 the current adapter compares component color IDs. The dwarf hair patterns are
@@ -541,7 +562,7 @@ The older003445 map trace rejected5815's hair, but recent112406/113249 traces
 accept LONG_PONY_TAIL_BLOND; map traces are not selector recipes. The actual
 selector recipe captured113811 includes its1x2 DWARF_HAIR layer at2,17 with
 palette row3. Unit2459's clothing uses palette row88 from items reporting color87;
-that separate palette investigation remains open. Native
+the palette cause and correction are established in114710 below. Native
 widget1423240 calls6d6560 with flag400 and the semantic unit; appearance.cpp's
 existing unit selector remains the runtime path. The diagnostic cache edits are
 protected-oracle-only and restored, never runtime dependencies. DF42980 closes

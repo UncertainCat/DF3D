@@ -472,6 +472,22 @@ struct NoblesState {
   std::vector<NoblesSymbol> symbols;std::optional<NoblesSymbolStep> step;std::optional<NoblesSymbolName> name;
   std::optional<std::string> symbolTargetCaption;
 };
+// Pointer-free Justice reads retain native row order and paired witness dates.
+struct JusticeRequest {
+  uint8_t tab=0;uint32_t offset=0;uint16_t limit=32;
+  uint64_t expectedListRevision=0;int32_t crimeId=-1;uint64_t expectedCaseRevision=0;
+};
+struct JusticeCaseRow {int32_t crimeId=-1;std::string caption;};
+struct JusticeWitnessRow {std::string witness,description,date,reported;};
+struct JusticeCaseDetail {
+  int32_t crimeId=-1;uint64_t revision=0;std::string caption;
+  std::optional<std::string> injuredParty;std::string status;
+  uint32_t total=0,offset=0;std::vector<JusticeWitnessRow> witnesses;
+};
+struct JusticeState {
+  JusticeOutcome outcome=JusticeOutcome::None;uint8_t tab=0;uint64_t listRevision=0;
+  uint32_t total=0,offset=0;std::vector<JusticeCaseRow> rows;std::optional<JusticeCaseDetail> detail;
+};
 struct ObjectsRequest {uint8_t tab=0;uint32_t offset=0;uint16_t limit=32;uint64_t expectedListRevision=0;int32_t artifactId=-1;};
 struct ObjectsRow {
   int32_t artifactId=-1,itemId=-1;int16_t itemType=-1;std::string nativeName,translatedName,ownership;
@@ -954,6 +970,7 @@ struct ManagementRequest {
   TasksRequest tasks;
   PlacesRequest places;
   ObjectsRequest objects;
+  JusticeRequest justice;
   NoblesRequest nobles;
   ResidentsRowsRequest residentsRows;
   ResidentsSpecializationRequest residentsSpecialization;
@@ -1025,6 +1042,7 @@ struct ManagementState {
   std::optional<TasksState> tasks;
   std::optional<PlacesState> places;
   std::optional<ObjectsState> objects;
+  std::optional<JusticeState> justice;
   std::optional<NoblesState> nobles;
   std::optional<ResidentsSpecializationState> residentsSpecialization;
   std::optional<ResidentsActivityState> residentsActivity;

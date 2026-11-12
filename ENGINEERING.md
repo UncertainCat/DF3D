@@ -52,8 +52,10 @@ These are transport bounds, not limits on the native case list.
 
 Migration: rebuild bridge and clients together. Protocol191 processes do not
 share this mailbox. Session/map recording formats are unchanged; older recordings
-do not acquire synthetic Justice facts. This contract alone does not implement
-the producer, model codec or panel; Justice stays publicly unavailable. Native
+do not acquire synthetic Justice facts. The model encodes both read requests
+and decodes their replies into owned, pointer-free records, retaining native order,
+optional injured-party text and each witness's paired dates. The bridge producer,
+Godot adapter and panel remain unfinished; Justice stays publicly unavailable. Native
 providers below remain the source for the next integration step. The installed
 bridge is still protocol191 pending integration and protected live acceptance.
 
@@ -61,6 +63,10 @@ Root build and all19 CTest checks pass in `build/qa/justice-read-contract`, incl
 new request/reply checks for wrong domains, stale payloads, duplicate IDs, page
 bounds and witness text budgets. This is structural transport evidence, not
 rendered/live acceptance. A subsequent comment relocation passed root CTest again.
+Model codec verification in `build/qa/justice-model-codec` passes the root build
+and all19 CTest checks. Tests overwrite the source wire buffer before inspecting
+owned case/witness rows and cover both pagination identities and typed refusals.
+This does not establish runtime producer or presentation acceptance.
 
 `df3d_justice::witnessText` in `justice_witness_native.h` returns ordered witness
 rows with name, report description and both date captions. It calls native

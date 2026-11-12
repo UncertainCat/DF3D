@@ -64,6 +64,7 @@ add_executable(worldmodel_tests
   tests/management_codec_tests.cpp
   tests/tasks_codec_tests.cpp
   tests/objects_codec_tests.cpp
+  tests/justice_codec_tests.cpp
   tests/places_codec_tests.cpp
   tests/nobles_codec_tests.cpp
   tests/resident_info_tests.cpp

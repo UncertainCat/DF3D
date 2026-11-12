@@ -94,6 +94,17 @@ ManagementState decodeState(const m::ManagementState* s) {
       out.rows.push_back(std::move(v));
     }
   }
+  if(const auto* r=s->justice()) {
+    auto& out=next.justice.emplace();out.outcome=JusticeOutcome(r->outcome());out.tab=r->tab();
+    out.listRevision=r->list_revision();out.total=r->total();out.offset=r->offset();
+    for(const auto* row:*r->rows())out.rows.push_back({row->crime_id(),row->caption()->str()});
+    if(const auto* d=r->detail()){
+      auto& v=out.detail.emplace();v.crimeId=d->crime_id();v.revision=d->revision();v.caption=d->caption()->str();
+      if(d->injured_party())v.injuredParty=d->injured_party()->str();
+      v.status=d->status()->str();v.total=d->total();v.offset=d->offset();
+      for(const auto* w:*d->witnesses())v.witnesses.push_back({w->witness()->str(),w->description()->str(),w->date()->str(),w->reported()->str()});
+    }
+  }
   if(const auto* r=s->objects()) {
     auto& out=next.objects.emplace();out.outcome=ObjectsOutcome(r->outcome());out.tab=r->tab();
     out.listRevision=r->list_revision();out.total=r->total();out.offset=r->offset();
@@ -351,6 +362,9 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
     nobles=m::CreateNoblesRequest(b,r.nobles.offset,r.nobles.limit,r.nobles.expectedListRevision,b.CreateVector(choices),target?&*target:nullptr,r.nobles.expectedCandidateRevision,r.nobles.expectedSetting,r.nobles.setting,
       b.CreateVector(symbols),r.nobles.stepToken,r.nobles.expectedNameRevision,query,edit);
   }
+  flatbuffers::Offset<m::JusticeRequest> justice;
+  if(r.action==ManagementAction::JusticeRead || r.action==ManagementAction::JusticeCaseRead){const auto& q=r.justice;
+    justice=m::CreateJusticeRequest(b,q.tab,q.offset,q.limit,q.expectedListRevision,q.crimeId,q.expectedCaseRevision);}
   flatbuffers::Offset<m::ObjectsRequest> objects;
   if(r.action==ManagementAction::ObjectsRead || r.action==ManagementAction::ObjectsLocate){const auto& q=r.objects;
     objects=m::CreateObjectsRequest(b,q.tab,q.offset,q.limit,q.expectedListRevision,q.artifactId);}
@@ -468,7 +482,7 @@ void encodeRequest(flatbuffers::FlatBufferBuilder& b, const ManagementRequest& r
           flatbuffers::Offset<m::WorkDetailSettingsRequest>{},
       (r.action==ManagementAction::StandingOrdersRead || r.action==ManagementAction::StandingOrdersSet)?
           m::CreateStandingOrdersRequest(b,r.standingOrders.category,r.standingOrders.settingId,r.standingOrders.expectedValue,r.standingOrders.value):
-          flatbuffers::Offset<m::StandingOrdersRequest>{},hunter,chores,kitchenMenu,stoneUse,stocksMenu,tasks,places,nobles,objects);
+          flatbuffers::Offset<m::StandingOrdersRequest>{},hunter,chores,kitchenMenu,stoneUse,stocksMenu,tasks,places,nobles,objects,justice);
   b.Finish(request);
 }
 }  // namespace wm::detail::management

@@ -22,7 +22,7 @@ func guard_open() -> bool:return state.tab==3
 func roster_open() -> bool:return state.tab in [3,4]
 func roster():return state.guard if guard_open() else state.convicts
 func guard_capacity() -> int:return maxi(0,int((size.y-list_top()-(144 if guard_open() else 120))/36))
-func guard_rect(index: int) -> Rect2:return Rect2(16,list_top()+(48 if guard_open() else 24)+index*36,size.x-56 if guard_open() else detail_x()-40,36)
+func guard_rect(index: int) -> Rect2:return Rect2(16,list_top()+(48 if guard_open() else 24)+index*36,size.x-56 if guard_open() else maxi(336,detail_x()-40),36)
 func guard_sort_rect(index: int) -> Rect2:return Rect2([56,136,208,368][index],list_top()+(24 if guard_open() else 0),[10,9,10,4][index]*8,12)
 func guard_allowed() -> bool:return allowed() and roster().phase in [roster().Phase.Ready,roster().Phase.DetailReading]
 func picker_open() -> bool:return state.candidates.phase not in [state.candidates.Phase.Closed,state.candidates.Phase.Unavailable]
@@ -68,20 +68,26 @@ func information_rows() -> Array:
 	var groups:=InfoTabs.rows(wide_tabs)
 	if not wide_tabs:groups.reverse()
 	return groups
-func list_top() -> int:return int(tab_rect(5).position.y)+36
+func list_top() -> int:
+	var bottom:=0
+	for index in 6:bottom=maxi(bottom,int(tab_rect(index).position.y)+36)
+	return bottom
 func detail_x() -> int:return int(size.x/16)*8+8
 func capacity() -> int:return maxi(0,int((size.y-list_top()-24)/36))
 func witness_capacity() -> int:return maxi(0,int((size.y-list_top()-96)/60))
 func visible_first() -> int:return mini(state.first,maxi(0,state.rows.size()-capacity()))
 func witness_first() -> int:return mini(state.witness_first,maxi(0,state.detail.get("witnesses",[]).size()-witness_capacity()))
 func tab_rect(index: int) -> Rect2:
-	var x:=8;var y:=36 if wide_tabs else 60
-	for current in index+1:
+	var x:=8;var base:=36 if wide_tabs else 60;var y:=base;var result:=Rect2();var selected_y:=base
+	for current in 6:
 		var width: int=(CASE_TABS[current].length()+4)*8
 		if x+width>size.x-8:x=8;y+=24
-		if current==index:return Rect2(x,y,width,24)
+		if current==index:result=Rect2(x,y,width,24)
+		if state!=null and current==state.tab:selected_y=y
 		x+=width
-	return Rect2()
+	# Native rotates wrapped rows so the selected tab's row is nearest content.
+	result.position.y=base+posmod(int(result.position.y-selected_y-24),y-base+24)
+	return result
 func case_rect(index: int) -> Rect2:
 	return Rect2(16,list_top()+index*36,detail_x()-40-(16 if state.rows.size()>capacity() else 0),36)
 func layout(view: Vector2) -> void:
@@ -293,7 +299,10 @@ func draw_convict_detail() -> void:
 			var indent:=16 if field=="injured_party" else 0
 			var lines:=preload("res://scripts/reports_view.gd").wrap_report(crime[field],maxi(1,int((size.x-32-x-indent)/8)))
 			for line in lines:
-				if y<=size.y-24:text(line,Vector2(x+indent,y),7 if indent else 15)
+				if y<=size.y-24:
+					# Native text cells cover row artwork where columns overlap.
+					draw_rect(Rect2(x+indent,y-12,line.length()*8,12),Color8(28,28,28))
+					text(line,Vector2(x+indent,y),7 if indent else 15)
 				y+=12
 func draw_picker() -> void:
 	for index in 4:

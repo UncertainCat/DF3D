@@ -252,7 +252,7 @@ if os.getenv('DF3D_JUSTICE_HOVER')=='1' or os.getenv('DF3D_JUSTICE_CANDIDATE_HOV
  end
  write(candidates and 'justice-candidate-hover.json'or'justice-hover.json',json.encode(observations))
 end
-if os.getenv('DF3D_JUSTICE_KEYBOARD')=='1' or os.getenv('DF3D_JUSTICE_PICKER_NAV')=='1' or os.getenv('DF3D_JUSTICE_LIST_NAV')=='1' or os.getenv('DF3D_JUSTICE_ROSTER_NAV')=='1' or os.getenv('DF3D_JUSTICE_ROSTER_SELECT')=='1' or os.getenv('DF3D_JUSTICE_ROSTER_RETURN')=='1' then
+if os.getenv('DF3D_JUSTICE_KEYBOARD')=='1' or os.getenv('DF3D_JUSTICE_PICKER_NAV')=='1' or os.getenv('DF3D_JUSTICE_LIST_NAV')=='1' or os.getenv('DF3D_JUSTICE_ROSTER_NAV')=='1' or os.getenv('DF3D_JUSTICE_ROSTER_SELECT')=='1' or os.getenv('DF3D_JUSTICE_ROSTER_RETURN')=='1' or os.getenv('DF3D_JUSTICE_ROSTER_RESIZE')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-native%.lua$','justice-keyboard-native.lua')
  assert(loadfile(source))(out,view,settle,caption_click,capture)
 end

@@ -38,6 +38,7 @@ func run() -> void:
 		if world.poll_management().get("transport_alive",false):break
 		await create_timer(0.01).timeout
 	await request("construction",{"action":C.ManagementAction.Catalog})
+	if OS.get_environment("DF3D_JUSTICE_ROSTER_RESIZE")=="1":await roster_resize();return
 	if OS.get_environment("DF3D_JUSTICE_ROSTER_RETURN")=="1":await roster_return();return
 	if OS.get_environment("DF3D_JUSTICE_LIST_NAV")=="1" or OS.get_environment("DF3D_JUSTICE_ROSTER_NAV")=="1":await candidate_list_navigation();return
 	if OS.get_environment("DF3D_JUSTICE_PICKER_NAV")=="1":await picker_navigation();return
@@ -278,6 +279,28 @@ func run() -> void:
 	result.store_string(JSON.stringify({"success":not failed,"counts":counts,"witnesses":report_count,"stale_tabs":3,"controller_tabs":3,
 		"closed_read_retired":true,"candidate_count":candidate_count,"candidate_queries":3,"sort_scopes":reference.sorts.size(),"interrogated":interrogated,"convicted":applied,"picker_controller":applied}));result.close()
 	quit(1 if failed else 0)
+
+func roster_resize() -> void:
+	root.size=Vector2i(1200,800);check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Roster resize assets unavailable")
+	var actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(actions);actions.configure(world,true)
+	var controller=preload("res://scripts/justice_state.gd").new();controller.configure(actions)
+	var view=preload("res://scripts/justice_view.gd").new();root.add_child(view);view.configure_justice(world,controller)
+	var samples: Array=JSON.parse_string(FileAccess.get_file_as_string(directory+"/justice-keyboard.json"));var mode: String="";var index:=0
+	for sample: Dictionary in samples:
+		index+=1;root.size=Vector2i(int(sample.width),int(sample.height));view.layout(Vector2(root.size))
+		var model=controller.guard if sample.tab=="Fortress guard" else controller.convicts
+		if mode!=sample.tab:
+			controller.open(3 if sample.tab=="Fortress guard" else 4);mode=sample.tab
+			if mode=="Fortress guard":await settle_guard(model)
+			else:await settle_convicts(model)
+			var down:=InputEventKey.new();down.pressed=true;down.keycode=KEY_DOWN;Input.parse_input_event(down);await create_timer(0.1).timeout
+		if mode=="Convicts":await settle_convicts(model)
+		await create_timer(0.1).timeout
+		check(model.phase==model.Phase.Ready and model.cursor_id==int(sample.ids[int(sample.cursor)]),"Resize changed roster selection")
+		if mode=="Convicts":check(model.detail.get("unit_id")==model.cursor_id,"Resize changed convict detail target")
+		await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/justice-roster-resize-view-"+str(index)+".png")
+	controller.dispose();view.queue_free();actions.queue_free();world.queue_free();await process_frame
+	var result:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);result.store_string(JSON.stringify({"success":not failed,"roster_resize_states":samples.size()}));result.close();quit(1 if failed else 0)
 
 func roster_return() -> void:
 	root.size=Vector2i(1200,800);check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Roster return assets unavailable")

@@ -667,6 +667,30 @@ passed_with_known_issues. `roster_tab_return_reference` retains provenance.
 This small roster has no overflow; nonzero scroll retention, reverse/multiple
 sort priorities and other viewport sizes remain separate acceptance gaps.
 
+Justice wrapped tab rows rotate so the selected row remains nearest the content.
+At narrow widths Guard/Convicts therefore put the overflow Intelligence tab
+above the other five tabs; when Intelligence is selected its row stays below,
+consistent with its earlier minimum-size captures. Content starts below all tab
+rows. Convicts row artwork/input retains a336-pixel minimum width, matching the
+native frame at912/960 widths, while detail columns retain their native geometry.
+Crime text clears its cell backgrounds where those narrow columns overlap.
+
+Protected140340 exposed the tab-row order and row-width gaps. Final140912 on
+2026-11-12 exercises both rosters at912x552,960x600,1600x900 and restored1200x800.
+All eight selected-creature/detail checks pass. Three panel crops match exactly;
+four differ only by506/735 animated name-color pixels. Minimum-width Convicts
+also retains three text-edge pixels differing by3/9 gray levels where crime
+text covers row artwork. This residual is unresolved; full pixel identity is
+not claimed. The intermediate140718 isolated the45-pixel background mismatch
+before opaque text cells reduced it to those three edge pixels.
+
+QA `justice-roster-resize-cells` and core19 pass. Owned DF10324 closes unsaved
+with source/prefs preserved; serial30FPS and GPU49C sample. Known Godot shutdown
+diagnostics qualify mixed acceptance as passed_with_known_issues.
+`roster_resize_reference` records the dimensions, crops and residual. These
+one-/three-member lists do not establish overflow/scrollbar behavior, physical
+input on overlapping controls or complete Justice acceptance.
+
 
 Management protocol198 adds `JusticeInterrogate`, the candidate request/page
 `interrogate` mode, and an `expected_selected` comparison for checkbox edits.

@@ -15037,5 +15037,185 @@
       "justice-candidates.json": "c6324091c349ea96f3a13c6cd34bc96f888d10943c2b9cdeed181fcb818abd6b",
       "result.json": "55ea401f0907968b16baa48a037a247d52b778f816392f061952e6daa810f1ec"
     }
+  },
+  "roster_resize_reference": {
+    "source": "build/stockpile-storage-native-input-20261112-140912",
+    "status": "passed_with_known_issues",
+    "scope": "Guard/Convicts resize at912x552,960x600,1600x900 and restored1200x800, selected creature/detail maintained. One guard/three convicts; no overflow or overlapping-control input acceptance.",
+    "owned_df_closed": 10324,
+    "source_preserved": true,
+    "fps_cap": 30,
+    "gpu_sample_celsius": 49,
+    "semantic_result": {
+      "roster_resize_states": 8,
+      "success": true
+    },
+    "comparisons": [
+      {
+        "index": 1,
+        "size": [
+          912,
+          552
+        ],
+        "crop": [
+          32,
+          48,
+          688,
+          504
+        ],
+        "different_pixels": 0,
+        "animated_name_pixels": 0,
+        "unresolved_edge_pixels": 0,
+        "sha256": {
+          "justice-roster-resize-1.png": "716c7964627dda202e06471ffbf7538b711c4d5a87ce7a493fe86c67d7ea58ec",
+          "justice-roster-resize-view-1.png": "73e06e8ad70fbd0f88cfa5084816d1a4ee71071c38f44f0bcb7d37f495eb3081"
+        }
+      },
+      {
+        "index": 2,
+        "size": [
+          960,
+          600
+        ],
+        "crop": [
+          32,
+          48,
+          736,
+          552
+        ],
+        "different_pixels": 506,
+        "animated_name_pixels": 506,
+        "unresolved_edge_pixels": 0,
+        "sha256": {
+          "justice-roster-resize-2.png": "811cc0a45cc81495e3b51fde187a4b4b066468ed64ef69e7654cf7c7aa4f4d29",
+          "justice-roster-resize-view-2.png": "9fcc556eba7184786a0912fd3b3d164de4f44b4106b7f6516d1b615d69744655"
+        }
+      },
+      {
+        "index": 3,
+        "size": [
+          1600,
+          900
+        ],
+        "crop": [
+          32,
+          48,
+          1376,
+          852
+        ],
+        "different_pixels": 506,
+        "animated_name_pixels": 506,
+        "unresolved_edge_pixels": 0,
+        "sha256": {
+          "justice-roster-resize-3.png": "00051ff63d12395b129b662be5fb94b22be7b026fff1619815bea084232b4164",
+          "justice-roster-resize-view-3.png": "a86b68358fe4c5e1e5b01c325597b410d8db1c81b6297756222249a339c83937"
+        }
+      },
+      {
+        "index": 4,
+        "size": [
+          1200,
+          800
+        ],
+        "crop": [
+          32,
+          52,
+          976,
+          748
+        ],
+        "different_pixels": 506,
+        "animated_name_pixels": 506,
+        "unresolved_edge_pixels": 0,
+        "sha256": {
+          "justice-roster-resize-4.png": "c4a6acbb73061036490d4a33d12de24cdb09f9913b4aead80291171f5573ab9f",
+          "justice-roster-resize-view-4.png": "744b285b17df2df6ed6dfb58f02e871b7d50c5a850121cf8a25de1eaa0fdacc6"
+        }
+      },
+      {
+        "index": 5,
+        "size": [
+          912,
+          552
+        ],
+        "crop": [
+          32,
+          48,
+          688,
+          504
+        ],
+        "different_pixels": 738,
+        "animated_name_pixels": 735,
+        "unresolved_edge_pixels": 3,
+        "sha256": {
+          "justice-roster-resize-5.png": "4fc583ab8e54ce3c8b51373c7a46d28880cc4faacd50d197d073d61a7ea193c2",
+          "justice-roster-resize-view-5.png": "1168cf9c4544ee1f8f3cd6a685b7fb4607f238e077025c61907c93ef05932b39"
+        }
+      },
+      {
+        "index": 6,
+        "size": [
+          960,
+          600
+        ],
+        "crop": [
+          32,
+          48,
+          736,
+          552
+        ],
+        "different_pixels": 0,
+        "animated_name_pixels": 0,
+        "unresolved_edge_pixels": 0,
+        "sha256": {
+          "justice-roster-resize-6.png": "830c4d05d166ac521b6f2cfd50f9aa282ec1f875f9d4d95f1c27d4cbd14cd62d",
+          "justice-roster-resize-view-6.png": "191d245aad3ba6d485e59fbeebccc11a3e7aba668ea492e7aef25d26ab92385e"
+        }
+      },
+      {
+        "index": 7,
+        "size": [
+          1600,
+          900
+        ],
+        "crop": [
+          32,
+          48,
+          1376,
+          852
+        ],
+        "different_pixels": 0,
+        "animated_name_pixels": 0,
+        "unresolved_edge_pixels": 0,
+        "sha256": {
+          "justice-roster-resize-7.png": "b283b40041ddedd05547830400529ba7c40b3dbfef8c0cb3712c5b752d8fb880",
+          "justice-roster-resize-view-7.png": "9ec40be687976c00c15ce26dafb4eaaa63dff72b583aae3ae43957e756ddbc5b"
+        }
+      },
+      {
+        "index": 8,
+        "size": [
+          1200,
+          800
+        ],
+        "crop": [
+          32,
+          52,
+          976,
+          748
+        ],
+        "different_pixels": 735,
+        "animated_name_pixels": 735,
+        "unresolved_edge_pixels": 0,
+        "sha256": {
+          "justice-roster-resize-8.png": "cbeae0fa6a1dd16201fea6b51b006ffd859336efebe338354c4e1f398ae4ef4a",
+          "justice-roster-resize-view-8.png": "83841a8374f8af662a415fffabb60b5bfc6c2c058734f6b9f9d7d88a721f02a9"
+        }
+      }
+    ],
+    "unresolved": "Minimum-width Convicts has3 text-edge pixels differing by3/9 gray levels beneath overlapping text. No full pixel identity claim.",
+    "sha256": {
+      "justice-keyboard.json": "289b502a972e3f868dde244d14a178240a84b3ab07f1b95ea930923c52851dac",
+      "job-settings-wire-result.json": "8c5ced52625912f807c782462d21de2c49a678dfdee63ba2aa567894867b417a"
+    }
   }
 }

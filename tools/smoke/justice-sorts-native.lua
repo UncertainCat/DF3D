@@ -78,5 +78,25 @@ for _,step in ipairs{{'name',592,0},{'append-crime',808,1},{'append-category',66
  click(step[2],154,step[3]);observe('controlled-'..step[1])
 end
 capture('justice-sorts')
+if os.getenv('DF3D_JUSTICE_ARTWORK_DIAG')=='1' then
+ -- Protected diagnostic only; never supply native texture caches to runtime.
+ for _,id in ipairs{5815,2459}do
+  for _,args in ipairs{{'appearance',tostring(id)},{'appearance',tostring(id),'trace','*'},
+   {'appearance','layersets',tostring(id),'500'}}do
+   local text,rc=dfhack.run_command_silent('df3d',table.unpack(args));assert(rc==0,text)
+   local suffix=args[2]=='layersets'and'layers'or(args[3]or'facts')
+   local f=assert(io.open(out..'/justice-artwork-'..id..'-'..suffix..'.txt','w'));f:write(text);f:close()
+  end
+ end
+ local saved={}
+ for _,id in ipairs{5815,2459}do local unit=df.unit.find(id);saved[#saved+1]={unit=unit,texpos=unit.sheet_icon_texpos};unit.sheet_icon_texpos=-1 end
+ settle();capture('justice-sorts-fresh-icons')
+ gui.simulateInput(view,'LEAVESCREEN');settle()
+ if not df.global.game.main_interface.info.open then gui.simulateInput(view,'D_JUSTICE');settle()end
+ if df.global.game.main_interface.help.open then click(711,430);assert(not df.global.game.main_interface.help.open)end
+ tab('Open cases');click(100,202);click(100,166);click(652,190)
+ click(668,154);click(668,154);observe('rebuilt-artwork');capture('justice-sorts-rebuilt-icons')
+ for _,entry in ipairs(saved)do entry.unit.sheet_icon_texpos=entry.texpos end
+end
 gui.simulateInput(view,'LEAVESCREEN');settle()
 if not df.global.game.main_interface.info.open then gui.simulateInput(view,'D_JUSTICE');settle()end

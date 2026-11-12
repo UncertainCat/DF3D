@@ -69,7 +69,20 @@ and every panel pixel outside the remaining two portraits match. Unit5815 differ
 by112 pixels, unit2459 by187; the whole sorted panel differs by299 pixels.
 The difference persists in one session, so it cannot be dismissed as a stale
 reference or animation timing. These shared unit-selector mismatches remain
-unresolved; full sorted-panel visual acceptance is incomplete. Native sort oracle
+unresolved; full sorted-panel visual acceptance is incomplete.
+Protected003445 clears/restores only these units' sheet_icon_texpos handles and
+reopens the native picker, verifies the rebuilt list's293 IDs, and captures the
+same two portraits unchanged. This rules out that handle and ordinary reopening,
+not every native graphics cache.003345's rebuilt capture was obscured by first-use
+help and is discarded; the oracle now dismisses help and validates the list.
+Unit5815 has no inventory and the trace rejects its hair tissue conditions;
+unit2459's resolved clothing uses palette row88 from worn items reporting color87.
+Those observations identify investigation areas, not proven causes. Native
+widget1423240 calls6d6560 with flag400 and the semantic unit; appearance.cpp's
+existing unit selector remains the runtime path. The diagnostic cache edits are
+protected-oracle-only and restored, never runtime dependencies. DF42980 closes
+unsaved with source preservation and preferences restored; native30FPS/no viewer.
+GPU samples during the diagnostic runs are38–39C at0% utilization (not peaks). Native sort oracle
 and transport checks pass, but they do not establish these two artwork matches.
 `native_justice.json.candidate_artwork_reference` records both scopes.
 

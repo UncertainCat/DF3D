@@ -9417,6 +9417,24 @@
     "other_sorted_portraits_exact": 11,
     "source_preserved": true,
     "read_only": true,
-    "limits": "All previously blank portraits now arrive through the Justice candidate page. Two native unit-selector artwork mismatches remain in a same-session comparison. Full sorted-panel visual acceptance is not complete. Known separate-thread/finalize/two-ObjectDB diagnostics only."
+    "limits": "All previously blank portraits now arrive through the Justice candidate page. Two native unit-selector artwork mismatches remain in a same-session comparison. Full sorted-panel visual acceptance is not complete. Known separate-thread/finalize/two-ObjectDB diagnostics only.",
+    "selector_diagnostic": {
+      "source": "build/stockpile-storage-native-input-20261112-003445",
+      "unit_ids": [
+        5815,
+        2459
+      ],
+      "cleared_and_restored": "unit.sheet_icon_texpos",
+      "rebuilt_native_picker": true,
+      "native_portrait_pixel_changes": [
+        0,
+        0
+      ],
+      "remaining_viewer_differences": [
+        112,
+        187
+      ],
+      "limits": "Rules out this icon handle and ordinary picker reopening as the cause. Does not establish that all native graphics caches were rebuilt. The earlier003345 rebuilt capture was obscured by native first-use help and is not evidence."
+    }
   }
 }

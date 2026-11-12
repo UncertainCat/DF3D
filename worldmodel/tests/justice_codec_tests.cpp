@@ -26,7 +26,8 @@ TEST_CASE("Justice candidate and conviction codecs retain query, target and all 
 }
 TEST_CASE("Justice candidate decode owns native order and distinct flags") {
  flatbuffers::FlatBufferBuilder b;
- auto first=m::CreateJusticeCandidateRow(b,42,39,true,false,candidateDisplay(b)),second=m::CreateJusticeCandidateRow(b,9,0,false,true,candidateDisplay(b));
+ auto icon=m::CreateSelectionAppearance(b,b.CreateVector(std::vector<flatbuffers::Offset<flatbuffers::String>>{b.CreateString("synthetic-page")}),b.CreateVector(std::vector<flatbuffers::Offset<flatbuffers::String>>{}),b.CreateVectorOfStructs(std::vector<m::AppearanceLayer>{m::AppearanceLayer(0,1,2,1,1,65535,0,0,0,0)}));
+ auto first=m::CreateJusticeCandidateRow(b,42,39,true,false,candidateDisplay(b),icon),second=m::CreateJusticeCandidateRow(b,9,0,false,true,candidateDisplay(b));
  auto candidates=m::CreateJusticeCandidatePage(b,19,789,34,32,b.CreateVector(std::vector{first,second}));
  auto payload=m::CreateJusticeState(b,m::JusticeOutcome::None,0,123,0,0,b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeCaseRow>>{}),0,candidates);
  m::ManagementStateBuilder s(b);s.add_revision(1);s.add_action(m::ManagementAction::JusticeCandidatesRead);
@@ -40,6 +41,8 @@ TEST_CASE("Justice candidate decode owns native order and distinct flags") {
  const auto& display=page.rows[0].display;CHECK(display.columns==28);CHECK(display.name=="synthetic name");
  CHECK(display.witnessCount==39);CHECK(display.witnessLabel=="synthetic witness label");CHECK(display.witnessColor==10);CHECK(display.deceased.empty());
  CHECK(display.nameColor.color==std::array<uint8_t,3>{4,0,1});CHECK(display.nameColor.alternate==std::array<uint8_t,3>{6,0,0});CHECK(display.nameColor.effect==1);
+ REQUIRE(page.rows[0].sheetIcon);CHECK(page.rows[0].sheetIcon->tilePages==std::vector<std::string>{"synthetic-page"});
+ REQUIRE(page.rows[0].sheetIcon->layers.size()==1);CHECK(page.rows[0].sheetIcon->layers[0].tileY==2);CHECK_FALSE(page.rows[1].sheetIcon);
  CHECK_FALSE(owned.justice->detail);CHECK(owned.justice->rows.empty());
 }
 TEST_CASE("Justice mutation decode preserves applied and unknown without candidate data") {

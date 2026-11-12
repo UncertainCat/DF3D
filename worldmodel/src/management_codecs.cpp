@@ -101,6 +101,7 @@ ManagementState decodeState(const m::ManagementState* s) {
       auto& page=out.candidates.emplace();page.crimeId=c->crime_id();page.revision=c->revision();page.total=c->total();page.offset=c->offset();
       for(const auto* row:*c->rows()){
         JusticeCandidateRow value;value.unitId=row->unit_id();value.rank=row->rank();
+        if(row->sheet_icon())value.sheetIcon=decodeItemRecipe(row->sheet_icon());
         value.interrogationPending=row->interrogation_pending();value.counterintelligence=row->counterintelligence();
         const auto* d=row->display();const auto* color=d->name_color();auto& display=value.display;
         display.columns=d->columns();display.name=d->name()->str();display.witnessCount=d->witness_count();

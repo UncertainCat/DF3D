@@ -70,10 +70,11 @@ func refresh() -> void:
 	search.editable=allowed() and state.candidates.phase in [state.candidates.Phase.Ready,state.candidates.Phase.Reading,state.candidates.Phase.Rejected]
 	search.set_bytes(state.candidates.query.to_utf8_buffer())
 	if not search.visible:search.release_focus()
-	if picker_open():state.candidates.read_icons(picker_capacity())
 	var retained: Dictionary={}
-	for id in state.candidates.icons:
-		var recipe: Dictionary=state.candidates.icons[id];var previous: Dictionary=portraits.get(id,{})
+	for index in range(state.candidates.first,mini(state.candidates.rows.size(),state.candidates.first+picker_capacity())):
+		var row: Dictionary=state.candidates.rows[index]
+		if not row.has("sheet_icon"):continue
+		var id: int=row.unit_id;var recipe: Dictionary=row.sheet_icon;var previous: Dictionary=portraits.get(id,{})
 		retained[id]=previous if previous.get("recipe",{})==recipe else {"recipe":recipe.duplicate(true),"texture":world.candidate_icon(recipe)}
 	portraits=retained;queue_redraw()
 func _process(_delta: float) -> void:

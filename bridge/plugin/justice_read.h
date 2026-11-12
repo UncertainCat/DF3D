@@ -4,6 +4,7 @@
 #include "justice_action_native.h"
 #include "justice_presentation_native.h"
 #include "management_util.h"
+#include "management_data.h"
 #include "MiscUtils.h"
 #include <stdexcept>
 namespace df3d_justice {
@@ -17,7 +18,7 @@ struct Detail {
 struct ReadResult {
     m::JusticeOutcome outcome=m::JusticeOutcome::Rejected;uint8_t tab=0;
     uint64_t revision=0;uint32_t total=0,offset=0;std::vector<CaseRow> rows;std::optional<Detail> detail;
-    struct Candidate {CandidateFact fact;CandidatePresentation display;};
+    struct Candidate {CandidateFact fact;CandidatePresentation display;df3d_management::ResidentAppearanceRecipe icon;};
     struct Candidates {int32_t crimeId=-1;uint64_t revision=0;uint32_t total=0,offset=0;std::vector<Candidate> rows;};
     std::optional<Candidates> candidates;
 };
@@ -114,10 +115,17 @@ inline ReadResult candidateRequest(const m::JusticeRequest& q,bool apply) {
         for(size_t i=q.offset();i<facts->size() && page.rows.size()<q.limit();++i){
             // The accepted1200x800 reference uses the native28-column minimum.
             auto display=candidatePresentation(crime,df::unit::find((*facts)[i].unitId),28);if(!display)return refused;
-            for(auto* text:{&display->name,&display->witnessLabel,&display->deceased}){*text=readText(*text);bytes+=text->size();}
-            bytes+=64;if(bytes>384*1024)return refused;
-            page.rows.push_back({(*facts)[i],std::move(*display)});
+            size_t rowBytes=64;
+            for(auto* text:{&display->name,&display->witnessLabel,&display->deceased}){*text=readText(*text);rowBytes+=text->size();}
+            df3d_management::ResidentAppearanceRecipe icon;icon.collect(df::unit::find((*facts)[i].unitId),true);
+            if(!icon.layers.empty()){
+                flatbuffers::FlatBufferBuilder check;check.Finish(icon.build(check));
+                if(m::validateOwnerAppearance(*flatbuffers::GetRoot<m::SelectionAppearance>(check.GetBufferPointer()),rowBytes))return refused;
+            }
+            if(bytes+rowBytes>384*1024)break;bytes+=rowBytes;
+            page.rows.push_back({(*facts)[i],std::move(*display),std::move(icon)});
         }
+        if(page.offset<page.total && page.rows.empty())return refused;
         return result;
     }catch(...){return refused;}
 }
@@ -135,7 +143,7 @@ inline flatbuffers::Offset<m::JusticeState> encode(flatbuffers::FlatBufferBuilde
             auto color=m::CreateAreaNameColor(b,c.color[0],c.color[1],c.color[2],c.alternate[0],c.alternate[1],c.alternate[2],c.effect);
             auto display=m::CreateJusticeCandidateDisplay(b,28,b.CreateString(d.name),color,d.witnessCount,
                 b.CreateString(d.witnessLabel),d.witnessColor,b.CreateString(d.deceased));
-            entries.push_back(m::CreateJusticeCandidateRow(b,f.unitId,f.rank,bool(f.flags&1),bool(f.flags&2),display));}
+            entries.push_back(m::CreateJusticeCandidateRow(b,f.unitId,f.rank,bool(f.flags&1),bool(f.flags&2),display,row.icon.layers.empty()?0:row.icon.build(b)));}
         candidates=m::CreateJusticeCandidatePage(b,page.crimeId,page.revision,page.total,page.offset,b.CreateVector(entries));}
     return m::CreateJusticeState(b,r.outcome,r.tab,r.revision,r.total,r.offset,b.CreateVector(rows),detail,candidates);
 }

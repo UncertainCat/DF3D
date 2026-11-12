@@ -494,7 +494,7 @@ struct JusticeCandidateDisplay {
 };
 struct JusticeCandidateRow {
   int32_t unitId=-1,rank=0;bool interrogationPending=false,counterintelligence=false;
-  JusticeCandidateDisplay display;
+  JusticeCandidateDisplay display;std::optional<SelectionAppearance> sheetIcon;
 };
 struct JusticeCandidatePage {
   int32_t crimeId=-1;uint64_t revision=0;uint32_t total=0,offset=0;std::vector<JusticeCandidateRow> rows;

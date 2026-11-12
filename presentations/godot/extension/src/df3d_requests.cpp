@@ -270,7 +270,8 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
                 display["witness_color"]=int(d.witnessColor);display["deceased"]=String::utf8(d.deceased.c_str());
                 for(auto v:d.nameColor.color)primary.push_back(int(v));for(auto v:d.nameColor.alternate)alternate.push_back(int(v));
                 color["color"]=primary;color["alternate"]=alternate;color["effect"]=int(d.nameColor.effect);
-                display["name_color"]=color;row["display"]=display;candidates.push_back(row);}
+                display["name_color"]=color;row["display"]=display;
+                if(r.sheetIcon)row["sheet_icon"]=management::itemRecipeDictionary(*r.sheetIcon);candidates.push_back(row);}
             page["rows"]=candidates;value["candidates"]=page;
         }
         result["justice"]=value;

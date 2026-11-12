@@ -9385,5 +9385,38 @@
     },
     "different_pixels_in_matching_crops": 0,
     "limits": "Sorted portraits absent: ResidentsRowsRead rejects non-resident candidates, causing the entire artwork page to be rejected. Full sorted-panel visual acceptance pending. Inactive arrow directions differ because the reference uses different remembered prior gestures. Known separate-thread/finalize/two-ObjectDB diagnostics only."
+  },
+  "candidate_artwork_reference": {
+    "source": "build/stockpile-storage-native-input-20261112-002638",
+    "initial_wire_source": "build/stockpile-storage-native-input-20261112-002446",
+    "protocol": 197,
+    "visible_portraits": 13,
+    "default_panel_different_pixels": 0,
+    "default_native_reference": "build/stockpile-storage-native-input-20261111-230636/justice-candidate-presentation.png",
+    "sorted_native_reference": "justice-sorts.png",
+    "sorted_viewer_capture": "justice-picker-sorted-view.png",
+    "panel_crop": [
+      32,
+      52,
+      976,
+      760
+    ],
+    "sorted_panel_different_pixels": 299,
+    "mismatches": [
+      {
+        "unit_id": 5815,
+        "row": 0,
+        "different_pixels": 112
+      },
+      {
+        "unit_id": 2459,
+        "row": 9,
+        "different_pixels": 187
+      }
+    ],
+    "other_sorted_portraits_exact": 11,
+    "source_preserved": true,
+    "read_only": true,
+    "limits": "All previously blank portraits now arrive through the Justice candidate page. Two native unit-selector artwork mismatches remain in a same-session comparison. Full sorted-panel visual acceptance is not complete. Known separate-thread/finalize/two-ObjectDB diagnostics only."
   }
 }

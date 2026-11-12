@@ -46,7 +46,37 @@ Justice candidate row. Missing recipes remain absent; older recordings do not
 invent artwork. The shared appearance validator checks references and sizes
 within the candidate page's384KiB budget. Bridge/client must rebuild together;
 mailbox is `Local\df3d_management_v197`. Protocol196 clients are incompatible;
-session/map versions are unchanged. Implementation/live acceptance is pending.
+session/map versions are unchanged. The bridge collects recipes from semantic
+candidate units with `resolveUnitSelector`; it does not use Residents eligibility.
+Page byte limits can shorten a page, and the existing candidate offset/revision
+checks govern continuation. Godot retains recipes with candidate rows and creates
+textures only for the visible range. The separate Residents artwork request and
+its lifecycle have been removed. Appearance remains sampled per safe point;
+it is not part of the semantic candidate revision.
+
+QA `build/qa/justice-artwork` passes root/extension builds, all19 core tests,
+Justice state and UI composition. Codec tests retain recipe data after destroying
+the wire buffer and preserve absent artwork; schema checks reject invalid
+references and oversized final-page artwork. MSVC builds; installed197 plugin
+SHA256 is `3a16b42aa3d8f48cb636d92e5bd2eeb1c902ee3a778d5221985c300ab74f1909`.
+
+Protected `stockpile-storage-native-input-20261112-002446` verifies all13 default
+and Category-reversed portraits are present, along with nine sort scopes and
+stale-sort rejection. The default panel crop(32,52)-(976,760) matches native230636
+with zero differing pixels. A second same-session native/viewer comparison in
+`stockpile-storage-native-input-20261112-002638` confirms11 of13 sorted portraits
+and every panel pixel outside the remaining two portraits match. Unit5815 differs
+by112 pixels, unit2459 by187; the whole sorted panel differs by299 pixels.
+The difference persists in one session, so it cannot be dismissed as a stale
+reference or animation timing. These shared unit-selector mismatches remain
+unresolved; full sorted-panel visual acceptance is incomplete. Native sort oracle
+and transport checks pass, but they do not establish these two artwork matches.
+`native_justice.json.candidate_artwork_reference` records both scopes.
+
+Both sessions end unsaved with source preservation and preferences restored
+(DF41940/43180). Both applications run at30FPS. Final15 GPU samples range38–42C,
+0–28% utilization and13.62–114.44W; not continuous peaks. The known separate-thread,
+finalize and two-ObjectDB diagnostics remain (`passed_with_known_issues`).
 
 Management protocol196 adds ordered Justice candidate sort priorities with a
 shared reversal per column. Omitted sorts retain the native default Crime/Name;
@@ -70,14 +100,11 @@ Only the known separate-thread/finalize/two-ObjectDB diagnostics remain
 (`passed_with_known_issues`). Sorted text crop(552,172)-(936,640) and active
 Category header(632,148)-(704,160) match native235119 with zero differing pixels.
 
-Full sorted-panel visual acceptance remains pending: this run exposes that the
-picker's ResidentsRowsRead artwork request rejects non-residents/deceased
-candidates, dropping the entire visible artwork page. Justice needs its own
-bounded candidate artwork path using the existing unit-selector recipe, without
-loosening Residents eligibility. Inactive arrows also remember different prior
-gestures in the two screenshots; they are not evidence of a direction defect.
-The public Justice route remains hidden. `native_justice.json.sort_transport_reference`
-records the scoped acceptance and artwork gap.
+The000941 run exposed that ResidentsRowsRead rejects non-resident/deceased
+candidates, dropping the entire visible artwork page. Protocol197 fixes that
+scope issue as described above; two selector mismatches remain. Inactive arrows
+also remembered different prior gestures in that earlier comparison; this was
+not a direction defect. The public Justice route remains hidden.
 
 The owned Convict candidate adapter now accepts ordered Category/Name/Profession/
 Crime priorities and per-column reversal. Native142c879 applies stable sorts
@@ -109,9 +136,8 @@ Full sorted-list artwork acceptance remains pending.
 The staged Justice view now opens the Convict picker through its native button,
 draws candidate names/witness labels and unit-selector artwork, accepts typed
 search, and sends a revision-checked conviction on row click. Visible artwork
-uses the existing ResidentsRowsRead semantic reader; a separate bounded request
-is retired on viewport/search/panel changes, so late artwork cannot populate a
-different picker. Native name text remains the Justice one-line formatter.
+now arrives in Justice candidate pages; the existing page owner/revision checks
+retire it on search, panel and session changes. Native name text remains the Justice one-line formatter.
 `build/qa/justice-picker-view-final` passes all19 core tests, the headless Justice
 state test (including late-artwork retirement) and main-scene composition.
 The fixed1200x800 reference uses13 visible rows and28-column names. Sort headers
@@ -139,7 +165,7 @@ Management protocol195 requires an owned `JusticeCandidateDisplay` on each
 candidate row: native one-line name and color, witness count/label/color and
 Deceased label. Text and palette bounds are validated before decoding. The
 current producer uses the28-column reference; responsive width remains pending.
-Candidate artwork is read separately through ResidentsRowsRead. Candidate revision continues to identify eligibility,
+Protocol197 supplies candidate artwork in the same page. Candidate revision identifies eligibility,
 ordering and effect facts; display values are sampled at each page's safe point,
 not an atomic appearance snapshot across all pages.
 Migration195: rebuild bridge and clients together; mailbox is

@@ -85,10 +85,7 @@ func run() -> void:
 				await pointer_click(view.position+view.case_rect(0).get_center());await settle_controller(controller)
 				await pointer_click(view.position+view.convict_rect().get_center());await settle_picker(controller)
 				check(controller.candidates.phase==controller.candidates.Phase.Ready,"Convict button did not open picker")
-				var icon_deadline:=Time.get_ticks_msec()+5000
-				while controller.candidates.icon_ticket!=0 and Time.get_ticks_msec()<icon_deadline:
-					world.poll();await create_timer(0.01).timeout
-				check(controller.candidates.icons.size()==view.picker_capacity(),"Visible candidate artwork missing")
+				check(view.portraits.size()==view.picker_capacity(),"Visible candidate artwork missing")
 				await process_frame;await RenderingServer.frame_post_draw
 				root.get_texture().get_image().save_png(directory+"/justice-picker-view.png")
 				for gesture in [[0,false,false,0],[3,true,false,7],[0,true,false,-1],[0,true,false,8],[0,false,true,5]]:
@@ -97,12 +94,12 @@ func run() -> void:
 					if gesture[3]>=0:
 						var expected_sort: Dictionary=reference.sorts[gesture[3]]
 						check(controller.candidates.rows.map(func(row):return row.unit_id)==expected_sort.rows.map(func(row):return int(row.unit_id)),"Header gesture produced wrong native order")
+				for header in [2,2,3,3]:
+					await pointer_click(view.position+view.sort_rect(header).get_center());await settle_picker(controller)
 				for _step in 2:
 					await pointer_click(view.position+view.sort_rect(1).get_center());await settle_picker(controller)
 				check(controller.candidates.rows.map(func(row):return row.unit_id)==reference.sorts[2].rows.map(func(row):return int(row.unit_id)),"Category reverse order differs")
-				icon_deadline=Time.get_ticks_msec()+5000
-				while controller.candidates.icon_ticket!=0 and Time.get_ticks_msec()<icon_deadline:
-					world.poll();await create_timer(0.01).timeout
+				check(view.portraits.size()==view.picker_capacity(),"Sorted candidate artwork missing")
 				await process_frame;await RenderingServer.frame_post_draw
 				root.get_texture().get_image().save_png(directory+"/justice-picker-sorted-view.png")
 				await pointer_click(view.position+view.search.position+Vector2(24,18))

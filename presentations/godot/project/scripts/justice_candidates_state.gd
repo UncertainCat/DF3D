@@ -18,9 +18,6 @@ var rows: Array=[]
 var first:=0
 var ticket:=0
 var generation:=0
-var icons: Dictionary={}
-var icon_ticket:=0
-var icon_scope:=PackedInt32Array()
 var last_result: Dictionary={}
 var _pending: Array=[]
 var _seen: Dictionary={}
@@ -35,8 +32,6 @@ func dispose() -> void:
 func _retire() -> void:
 	generation+=1;var old:=ticket;ticket=0
 	if service!=null and old!=0:service.detach(old)
-	if service!=null and icon_ticket!=0:service.detach(icon_ticket)
-	icon_ticket=0;icon_scope=PackedInt32Array();icons={}
 func close() -> void:
 	_retire();phase=Phase.Closed;crime_id=-1;rows=[];_pending=[];_seen={};_total=0
 	list_revision=0;case_revision=0;candidate_revision=0;query="";first=0;last_result={}
@@ -65,26 +60,6 @@ func select_sort(column: int,retain:=false,remove:=false) -> void:
 		if not retain:priorities.clear()
 		priorities.append(column)
 	search(query)
-func read_icons(capacity: int) -> void:
-	if service==null or phase!=Phase.Ready:return
-	var wanted:=PackedInt32Array()
-	for index in range(first,mini(rows.size(),first+clampi(capacity,0,64))):wanted.append(rows[index].unit_id)
-	if wanted==icon_scope:return
-	if icon_ticket!=0:service.detach(icon_ticket)
-	icon_ticket=0;icon_scope=wanted;icons={}
-	if wanted.is_empty():return
-	var owner:=generation
-	icon_ticket=service.submit("residents_rows",{"action":C.ManagementAction.ResidentsRowsRead,"unit_ids":wanted,"columns":28,"show_gender":true},func(received,result,_sent):
-		if owner!=generation or received!=icon_ticket:return
-		icon_ticket=0
-		if phase!=Phase.Ready or result.get("action")!=C.ManagementAction.ResidentsRowsRead or result.get("status")!=C.ManagementStatus.Ok:return
-		var page: Variant=result.get("residents_rows",{}).get("rows")
-		if typeof(page)!=TYPE_ARRAY or page.size()!=wanted.size():return
-		var next: Dictionary={}
-		for index in page.size():
-			if typeof(page[index])!=TYPE_DICTIONARY or page[index].get("id")!=wanted[index]:return
-			if page[index].has("sheet_icon"):next[wanted[index]]=page[index].sheet_icon.duplicate(true)
-		icons=next;changed.emit())
 func _intent(action: int) -> Dictionary:
 	var sorts: Array=[]
 	for column in priorities:sorts.append({"column":column,"reverse":directions[column]})

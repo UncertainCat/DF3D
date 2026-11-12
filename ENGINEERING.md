@@ -15073,14 +15073,22 @@ Tomb. All captions and status presence match; owned DF15744 exits unsaved.
 The probe restores owner, unit flags, spouse and type before continuing.
 `native_zone_defaults.json.selected_owner_rows_reference` records exact bytes.
 
-Transport/viewer integration is still required. The existing owner-name line
-concatenates/clips text and omits spouse rows. The current Deceased display also
-incorrectly derives its condition from assignment eligibility: native display
-uses `(flags1 & 0x502)==2`, whereas assignment checks only inactive. The current
-ordinary inactive case is verified, but the0x100/0x400 exclusions are unresolved
-in the viewer. Carry explicit native rows/status rather than infer status from
-owner_allowed. The new provider is diagnostic-only until the typed contract,
-validation, model and viewer are extended together.
+Management protocol204 appends `AreaInfo.owner_rows`: at most two ordered
+native owner/spouse IDs, captions, explicit status and owned unit-selector
+appearance recipes. The bridge snapshots native strings and original-asset
+references at a safe point; no menu or map-render cache supplies these rows.
+Validation bounds strings and appearance payloads and rejects duplicate IDs or
+rows on non-zone areas. The model retains the same order and owned data.
+The native status predicate is `(flags1 & 0x502)==2`; assignment eligibility
+separately checks inactive and must not be used to infer Deceased.
+
+Migration: protocol204 uses `Local\df3d_management_v204`; rebuild and deploy
+bridge and viewer together. Earlier recordings without the optional rows or
+appearance retain absence; do not synthesize captions, spouse or status from
+legacy owner fields. Existing raw owner name/profession fields keep their
+semantic meaning. Core19,1711 Lua contract fixtures and the area adapter pass.
+Protected wire161856 verifies seven exact native row/status results; the later
+rendered163724 run exercises the final appearance-bearing contract as well.
 
 
 Selected-zone owner artwork uses the native-backed full-unit selection icon,

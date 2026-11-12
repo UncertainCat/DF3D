@@ -334,6 +334,8 @@ struct NativeArea {
   bool active=false,linksOnly=false,ownerAllowed=false;
   std::string name,customName,ownerName;
   std::string ownerProfession;
+  struct OwnerRow { int32_t id=-1; std::string caption,status; ResidentAppearanceRecipe sheetIcon; };
+  std::vector<OwnerRow> ownerRows;
   uint8_t locationKind=0;
   int8_t ownerSex=-1;
   std::vector<uint8_t> extents;
@@ -796,11 +798,13 @@ void publish() {
     m::TilePos pos(a.x,a.y,a.z);
     const auto& z=a.zoneSettings;
     const auto zone=m::CreateAreaZoneSettings(b,z.pondMode,z.facing,z.tombCitizens,z.tombPets,z.gatherTrees,z.gatherShrubs,z.gatherFallen);
+    std::vector<flatbuffers::Offset<m::AreaOwnerRow>> ownerRows;
+    for(const auto& row:a.ownerRows)ownerRows.push_back(m::CreateAreaOwnerRow(b,row.id,b.CreateString(row.caption),b.CreateString(row.status),row.sheetIcon.build(b)));
     as.push_back(m::CreateAreaInfo(b,a.id,m::AreaKind(a.kind),b.CreateString(a.name),&pos,a.w,a.h,
       b.CreateVector(a.extents),a.zone,a.categories,a.barrels,a.bins,a.wheelbarrows,a.linksOnly,
       a.active,a.owner,b.CreateString(a.ownerName),a.ownerAllowed,b.CreateVector(a.gives),b.CreateVector(a.takes),
       uint64_t(a.revision),b.CreateString(a.zoneLabel),a.locationId,b.CreateString(a.locationName),b.CreateString(a.religion),
-      a.organic,a.inorganic,zone,a.tileCount,a.assignedCount,a.locationKind,b.CreateString(a.ownerProfession),a.ownerSex,a.locationSiteId,a.storageLimit,b.CreateString(a.customName),int8_t(a.overlapping)));
+      a.organic,a.inorganic,zone,a.tileCount,a.assignedCount,a.locationKind,b.CreateString(a.ownerProfession),a.ownerSex,a.locationSiteId,a.storageLimit,b.CreateString(a.customName),int8_t(a.overlapping),b.CreateVector(ownerRows)));
   }
   std::vector<flatbuffers::Offset<m::AreaChoice>> ac;
   for(const auto& c:areaChoices) ac.push_back(m::CreateAreaChoice(b,c.id,b.CreateString(c.name),b.CreateString(c.label)));
@@ -2967,17 +2971,23 @@ int areaSnapshot(lua_State* L) {
   const size_t cells=size_t(width*height);
   // Seven fixed groups plus one step per 256 scalar/extent/list entries.
   // Reserve a non-visibility reply after any settings vector grows to raw size.
-  const uint32_t steps=7+df3d_area::bulkSteps(cells+members+b->name.size())+
+  const uint32_t steps=7+(zone?2:0)+df3d_area::bulkSteps(cells+members+b->name.size())+
       (pile?df3d_area::bulkSteps(cells):0)+
       (visibility?df3d_area::bulkSteps(cells):0);
   if(steps>budget)return fail("Area snapshot exceeds remaining step budget");
   std::optional<std::string> zoneName;
+  std::vector<df3d_area::ZoneSelectedOwner> ownerRows;
   if(zone) {
     zoneName=df3d_area::nativeZoneName(*zone);
     if(!zoneName)return fail("Native zone name unavailable",steps);
+    auto owners=df3d_area::nativeZoneSelectedOwners(*zone);
+    if(!owners)return fail("Native owner display unavailable",steps);
+    ownerRows=std::move(*owners);
   }
   df3d_area::Revision hash;
   if(zoneName){hash.add(zoneName->size());for(unsigned char c:*zoneName)hash.add(c);}
+  hash.add(ownerRows.size());
+  for(const auto& row:ownerRows){hash.add(row.id);for(const auto* text:{&row.caption,&row.status}){hash.add(text->size());for(unsigned char c:*text)hash.add(c);}}
   hash.add(b->id);hash.add(pile?0:1);hash.add(b->x1);hash.add(b->x2);
   hash.add(b->y1);hash.add(b->y2);hash.add(b->z);hash.add(b->site_id);hash.add(b->location_id);
   hash.add(b->room.x);hash.add(b->room.y);hash.add(b->room.width);hash.add(b->room.height);
@@ -3058,7 +3068,16 @@ int areaSnapshot(lua_State* L) {
   field(L,"storage_limit",storageLimit);
   field(L,"overlapping",zone?(zone->flags.bits.room_collision?1:0):-1);
   if(zoneName)field(L,"zone_name",DF2UTF(*zoneName));
-  field(L,"reply_steps",pile?7+df3d_area::bulkSteps(32768)+df3d_area::bulkSteps(32768+4096+512+members+settingsReplyGrowth):154+df3d_area::bulkSteps(df::global::world->buildings.other.IN_PLAY.size()));
+  lua_createtable(L,int(ownerRows.size()),0);int ownerIndex=0;
+  for(const auto& row:ownerRows){lua_newtable(L);field(L,"id",row.id);field(L,"caption",DF2UTF(row.caption));field(L,"status",DF2UTF(row.status));
+    ResidentAppearanceRecipe icon;icon.collect(df::unit::find(row.id),true);
+    if(!icon.layers.empty()) {
+      flatbuffers::FlatBufferBuilder buffer;buffer.Finish(icon.build(buffer));
+      lua_pushlstring(L,reinterpret_cast<const char*>(buffer.GetBufferPointer()),buffer.GetSize());lua_setfield(L,-2,"sheet_icon");
+    }
+    lua_rawseti(L,-2,++ownerIndex);}
+  lua_setfield(L,-2,"owner_rows");
+  field(L,"reply_steps",pile?7+df3d_area::bulkSteps(32768)+df3d_area::bulkSteps(32768+4096+512+members+settingsReplyGrowth):156+df3d_area::bulkSteps(df::global::world->buildings.other.IN_PLAY.size()));
   field(L,"revision",hash.finish());field(L,"tile_count",tiles);field(L,"visible_count",visibleTiles);
   field(L,"has_visibility",visibility);field(L,"visible",visibleTiles!=0 || emptyAreaVisible);
   field(L,"x",b->x1);field(L,"y",b->y1);field(L,"z",b->z);field(L,"width",width);field(L,"height",height);
@@ -6027,6 +6046,18 @@ void run(color_ostream& out) {
       a.active=boolean(L,"active");a.linksOnly=boolean(L,"links_only");a.ownerAllowed=boolean(L,"owner_allowed");
       a.owner=int32_t(number(L,"owner_id",-1));a.ownerName=str("owner_name");
       a.ownerProfession=str("owner_profession");a.ownerSex=int8_t(number(L,"owner_sex",-1));
+      each("owner_rows",[&](){
+        NativeArea::OwnerRow row;row.id=int32_t(number(L,"id",-1));row.caption=str("caption");row.status=str("status");
+        lua_getfield(L,-1,"sheet_icon");
+        if(lua_type(L,-1)==LUA_TSTRING) {
+          size_t bytes=0;const auto* data=lua_tolstring(L,-1,&bytes);
+          const auto* image=flatbuffers::GetRoot<m::SelectionAppearance>(data);
+          for(const auto* name:*image->tile_pages())row.sheetIcon.pages.push_back(name->str());
+          for(const auto* name:*image->palettes())row.sheetIcon.palettes.push_back(name->str());
+          for(const auto* layer:*image->layers())row.sheetIcon.layers.push_back(*layer);
+        }
+        lua_pop(L,1);a.ownerRows.push_back(std::move(row));
+      });
       a.locationKind=uint8_t(number(L,"location_kind",0));
       a.revision=number(L,"revision");a.zoneLabel=str("zone_label");a.locationId=int32_t(number(L,"location_id",-1));a.locationSiteId=int32_t(number(L,"location_site_id",-1));
       a.locationName=str("location_name");a.religion=str("religion");a.organic=int8_t(number(L,"organic",-1));a.inorganic=int8_t(number(L,"inorganic",-1));

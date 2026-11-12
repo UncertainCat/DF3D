@@ -104,11 +104,13 @@ struct AreaRequest {
   uint16_t candidateLimit=0;
   int32_t itemId=-1;
 };
+struct AreaOwnerRow { int32_t id=-1;std::string caption,status; std::optional<SelectionAppearance> sheetIcon; };
 struct AreaInfo {
   int32_t id=-1,x=0,y=0,z=0;
   AreaKind kind=AreaKind::Stockpile;
   std::string name,customName,ownerName;
   std::string ownerProfession;
+  std::vector<AreaOwnerRow> ownerRows;
   uint8_t locationKind=0;
   int8_t ownerSex=-1;
   uint16_t width=0,height=0;

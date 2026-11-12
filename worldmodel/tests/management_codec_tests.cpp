@@ -5330,3 +5330,29 @@ TEST_CASE("coffin appearance preserves unknown and restricts unused state to cof
     }
   }
 }
+
+TEST_CASE("selected zone owner rows preserve native order and reject malformed payloads") {
+  for(int variant=0;variant<8;++variant) {
+    flatbuffers::FlatBufferBuilder b;wire::TilePos origin(1,2,3);
+    const auto extents=b.CreateVector(std::vector<uint8_t>{1});
+    const auto caption=b.CreateString(std::string(variant==2?101:25,'x'));
+    const auto status=b.CreateString(variant==3?std::string(33,'s'):std::string("Deceased"));
+    const auto pages=b.CreateVectorOfStrings(std::vector<std::string>{"synthetic-owner"});
+    const auto palettes=b.CreateVectorOfStrings(std::vector<std::string>{});
+    const std::vector<wire::AppearanceLayer> layers{{uint16_t(variant==7?1:0),0,0,1,1,65535,0,0,0,0}};
+    const auto icon=wire::CreateSelectionAppearance(b,pages,palettes,b.CreateVectorOfStructs(layers));
+    std::vector<flatbuffers::Offset<wire::AreaOwnerRow>> owners;
+    for(int i=0;i<(variant==1?3:2);++i)owners.push_back(wire::CreateAreaOwnerRow(b,variant==4?-1:variant==5?8:8+i,caption,status,icon));
+    const auto ownerRows=b.CreateVector(owners);
+    wire::AreaInfoBuilder info(b);info.add_id(7);info.add_origin(&origin);info.add_width(1);info.add_height(1);info.add_extents(extents);
+    info.add_kind(variant==6?wire::AreaKind::Stockpile:wire::AreaKind::Zone);info.add_owner_rows(ownerRows);
+    const auto areas=b.CreateVector(std::vector{info.Finish()});const auto area=wire::CreateAreaState(b,areas);
+    wire::ManagementStateBuilder root(b);root.add_revision(1);root.add_area(area);b.Finish(root.Finish());
+    const auto* state=flatbuffers::GetRoot<wire::ManagementState>(b.GetBufferPointer());
+    CHECK(bool(wire::validateManagementState(*state))==(variant!=0));
+    if(variant==0){const auto decoded=codec::decodeArea(state->area());REQUIRE(decoded.areas[0].ownerRows.size()==2);
+      CHECK(decoded.areas[0].ownerRows[0].id==8);CHECK(decoded.areas[0].ownerRows[1].id==9);
+      CHECK(decoded.areas[0].ownerRows[0].caption==std::string(25,'x'));CHECK(decoded.areas[0].ownerRows[0].status=="Deceased");
+      REQUIRE(decoded.areas[0].ownerRows[1].sheetIcon);CHECK(decoded.areas[0].ownerRows[1].sheetIcon->tilePages[0]=="synthetic-owner");}
+  }
+}

@@ -183,8 +183,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 203;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v203";
+inline constexpr uint32_t kManagementVersion = 204;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v204";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -2538,6 +2538,15 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
           v->owner_sex()<-1 || v->owner_sex()>1 || textSize(v->owner_profession())>512) return "invalid area state";
       payload+=4+textSize(v->custom_name())+textSize(v->name())+textSize(v->owner_name())+textSize(v->zone_label())+
           textSize(v->location_name())+textSize(v->religion())+textSize(v->owner_profession());
+      if(v->owner_rows()) {
+        if(v->owner_rows()->size()>2 || (v->owner_rows()->size() && v->kind()!=AreaKind::Zone))return "invalid area owner rows";
+        std::set<int32_t> owners;
+        for(const auto* row:*v->owner_rows()) {
+          if(!row || row->id()<0 || !owners.insert(row->id()).second || !row->caption() || !row->status() || textSize(row->caption())>100 || textSize(row->status())>32)return "invalid area owner row";
+          payload+=4+textSize(row->caption())+textSize(row->status());
+          if(row->sheet_icon())if(const auto* error=validateOwnerAppearance(*row->sheet_icon(),payload))return error;
+        }
+      }
       for (auto extent:*v->extents()) if(extent>1) return "invalid area extent";
       extentTotal+=v->extents()->size();
       for(auto* links:{v->gives(),v->takes()}) if(links){

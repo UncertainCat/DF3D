@@ -134,6 +134,17 @@ inline std::string areaResultError(lua_State* L,df3d::mirror::AreaOperation oper
             !text("name",512) || !text("custom_name",512,false) || !text("owner_name",512) || !text("zone_label",512,false) ||
             !text("owner_profession",512,false) || !number("owner_sex",-1,1,false) || !number("location_kind",0,5,false) ||
             !text("location_name",512,false) || !text("religion",512,false) || !zone())return false;
+        if(!array("owner_rows",2,[&](){
+          payload+=4;if(!table() || !number("id",0,INT32_MAX,true) || !text("caption",100) || !text("status",32))return false;
+          lua_getfield(L,-1,"sheet_icon");bool valid=true;
+          if(!lua_isnil(L,-1)) {
+            size_t size=0;const auto* bytes=reinterpret_cast<const uint8_t*>(lua_type(L,-1)==LUA_TSTRING?lua_tolstring(L,-1,&size):nullptr);
+            valid=bytes && size<=224*1024;
+            if(valid){flatbuffers::Verifier verifier(bytes,size);valid=verifier.VerifyBuffer<df3d::mirror::SelectionAppearance>(nullptr);}
+            if(valid)valid=df3d::mirror::validateOwnerAppearance(*flatbuffers::GetRoot<df3d::mirror::SelectionAppearance>(bytes),payload)==nullptr;
+          }
+          lua_pop(L,1);return valid || bad("invalid selected owner sheet icon");
+        }))return false;
         lua_getfield(L,-1,"extents");const bool shape=lua_istable(L,-1);const size_t cells=shape?lua_rawlen(L,-1):0;lua_pop(L,1);
         if(!shape || cells!=uint64_t(value("width"))*value("height"))return bad("area extents do not match rectangle");
         if(!array("extents",32768,[&](){++payload;return (lua_isinteger(L,-1) && lua_tointeger(L,-1)>=0 && lua_tointeger(L,-1)<=1) || bad("area extent must be 0 or 1");}))return false;

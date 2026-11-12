@@ -1139,7 +1139,7 @@ local function native_operation(r)
   local out={id=b.id,kind=k,name=k==1 and snapshot.zone_name or name(b),custom_name=dfhack.df2utf(b.name),revision=snapshot.revision,
    x=snapshot.x,y=snapshot.y,z=snapshot.z,width=snapshot.width,height=snapshot.height,extents=snapshot.extents,
    tile_count=snapshot.tile_count,overlapping=snapshot.overlapping or -1,storage_limit=snapshot.storage_limit or -1,zone_type=-1,categories=0,barrels=0,bins=0,wheelbarrows=0,
-   links_only=false,active=true,owner_id=-1,owner_name='',owner_allowed=owner_editable(b),gives=snapshot.gives,takes=snapshot.takes,
+   links_only=false,active=true,owner_id=-1,owner_name='',owner_allowed=owner_editable(b),owner_rows=snapshot.owner_rows or {},gives=snapshot.gives,takes=snapshot.takes,
    zone_label='',location_site_id=kind(b)==1 and default(b,'location_id',-1)>=0 and default(b,'site_id',-1) or -1,location_id=b.location_id or -1,location_name=location_name,religion=religion,location_kind=location_kind,
    owner_profession='',owner_sex=-1,organic=-1,inorganic=-1,assigned_count=-1}
   if k==0 then

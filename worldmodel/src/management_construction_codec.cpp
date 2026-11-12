@@ -271,6 +271,16 @@ AreaState decodeArea(const m::AreaState* a) {
       n.ownerId = v->owner_id();
       n.ownerAllowed = v->owner_allowed();
       n.ownerName = v->owner_name() ? v->owner_name()->str() : "";
+      if(v->owner_rows())for(const auto* row:*v->owner_rows()) {
+        AreaOwnerRow owner;owner.id=row->id();owner.caption=text(row->caption());owner.status=text(row->status());
+        if(const auto* p=row->sheet_icon()) {
+          owner.sheetIcon.emplace();
+          for(const auto* t:*p->tile_pages())owner.sheetIcon->tilePages.push_back(t->str());
+          for(const auto* t:*p->palettes())owner.sheetIcon->palettes.push_back(t->str());
+          for(const auto* l:*p->layers())owner.sheetIcon->layers.push_back({l->page(),l->tile_x(),l->tile_y(),l->cells_x(),l->cells_y(),l->palette(),l->palette_row(),l->palette_key_row(),l->offset_x(),l->offset_y()});
+        }
+        n.ownerRows.push_back(std::move(owner));
+      }
       n.ownerProfession=text(v->owner_profession());n.ownerSex=v->owner_sex();n.locationKind=v->location_kind();
       n.revision=int64_t(v->revision());n.zoneLabel=text(v->zone_label());n.locationId=v->location_id();n.locationSiteId=v->location_site_id();
       n.locationName=text(v->location_name());n.religion=text(v->religion());

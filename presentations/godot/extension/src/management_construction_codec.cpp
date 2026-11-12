@@ -137,6 +137,16 @@ void writeArea(Dictionary& result, const wm::AreaState& s) {
     row["active"] = a.active;
     row["owner_id"] = a.ownerId;
     row["owner_name"] = String::utf8(a.ownerName.c_str());
+    Array ownerRows;for(const auto& value:a.ownerRows){Dictionary owner;owner["id"]=value.id;owner["caption"]=String::utf8(value.caption.c_str());owner["status"]=String::utf8(value.status.c_str());
+      if(value.sheetIcon) {Dictionary icon;Array pages,palettes,layers;
+        for(const auto& name:value.sheetIcon->tilePages)pages.push_back(String::utf8(name.c_str()));
+        for(const auto& name:value.sheetIcon->palettes)palettes.push_back(String::utf8(name.c_str()));
+        for(const auto& l:value.sheetIcon->layers) {Array layer;
+          for(int component:{int(l.page),int(l.tileX),int(l.tileY),int(l.cellsX),int(l.cellsY),int(l.palette),int(l.paletteRow),int(l.paletteKeyRow),int(l.offsetX),int(l.offsetY)})layer.push_back(component);
+          layers.push_back(layer);}
+        icon["tile_pages"]=pages;icon["palettes"]=palettes;icon["layers"]=layers;owner["sheet_icon"]=icon;
+      }
+      ownerRows.push_back(owner);}row["owner_rows"]=ownerRows;
     row["owner_profession"]=String::utf8(a.ownerProfession.c_str());row["owner_sex"]=a.ownerSex;
     row["location_kind"]=a.locationKind;
     row["owner_allowed"] = a.ownerAllowed;

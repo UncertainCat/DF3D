@@ -473,7 +473,7 @@ def main():
         lua.globals().zone["type"] = zone_type
         row = call(9, {"kind": 1, "id": 6})["areas"][1]
         assert row["zone_settings"][key] == expected
-    # Op 9 exercises the real Lua mutations; native notification is a stand-in.
+    # Native settings writes do not rebuild zone membership.
     def zone_edit(settings, expected=None):
         if expected is None:
             expected = call(9, {"kind": 1, "id": 6})["areas"][1]["revision"]
@@ -493,7 +493,7 @@ def main():
             for other_key, prior_value in prior_settings.items():
                 if other_key != key:
                     assert edited["areas"][1]["zone_settings"][other_key] == prior_value
-            assert lua.eval("notification_calls") == before + (0 if zone_type == 5 else 1)
+            assert lua.eval("notification_calls") == before
         for other in [0, 2, 3, 4, 5]:
             if other == zone_type:
                 continue
@@ -518,15 +518,15 @@ def main():
     budgeted = lua.globals().request(11, lua.table_from(zone_edit({"pond_mode": 3 - old_mode})))
     budgeted["step_budget"] = 0
     edited = adapter(budgeted)
-    assert edited["ok"] and edited["steps"] == 16 and edited["work_unknown"]
-    assert lua.eval("notification_calls") == before + 1
+    assert edited["ok"] and edited["steps"] == 16 and not edited["work_unknown"]
+    assert lua.eval("notification_calls") == before
     lua.execute("df.global.world.buildings.other.IN_PLAY={};for i=1,5000 do table.insert(df.global.world.buildings.other.IN_PLAY,{relations={}}) end")
     large_world = call(11, zone_edit({"pond_mode": old_mode}))
-    assert large_world["ok"] and large_world["work_unknown"]
+    assert large_world["ok"] and not large_world["work_unknown"]
     lua.execute("df.global.world.buildings.other.IN_PLAY={};force_notification_error=true")
-    uncertain = call(11, zone_edit({"pond_mode": old_mode}))
-    assert not uncertain["ok"] and uncertain["steps"] == 14 and uncertain["work_unknown"]
-    assert uncertain["message"] == "Native zone notification failed; inspect before retrying"
+    unchanged = call(11, zone_edit({"pond_mode": old_mode}))
+    assert unchanged["ok"] and unchanged["steps"] == 16 and not unchanged["work_unknown"]
+    assert lua.eval("notification_calls") == before
     lua.execute("force_notification_error=false;force_paint_refusal=false")
     # Native repaint notification failure can follow the extent commit. Preserve
     # known work, report uncertainty, and do not replay or claim successful paint.

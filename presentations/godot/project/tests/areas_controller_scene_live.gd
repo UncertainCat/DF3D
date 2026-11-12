@@ -2551,6 +2551,15 @@ func pointer_zone_help() -> void:
 			if not entry.button.is_visible_in_tree() or entry.button.disabled:continue
 			await zone_hover_sample(entry.button,key,editor.stockpile_help.zone_instruction(entry),reference,samples)
 			if stopped:return
+	editor.use_area(await inspect(zone("Pen"),1))
+	if not await wait_ui(settled,"Zone paint help selection"):return
+	await click_control(editor.zone_menu.controls.repaint)
+	if not await wait_ui(func():return settled() and editor.paint_view.visible,"Zone paint help entry"):return
+	for pair in [["rectangle","ZONE_PAINT_RECTANGLE"],["brush","ZONE_PAINT_FREE"],["erase","ZONE_ERASE"],["remove","ZONE_PAINT_REMOVE"]]:
+		await zone_hover_sample(editor.paint_view.buttons[pair[0]],"zone/paint/"+pair[0],pair[1],reference,samples)
+		if stopped:return
+	editor.handle_back()
+	if not await wait_ui(settled,"Zone paint help cancellation"):return
 	editor.close_panel();await process_frame;await process_frame
 	if not check(not editor.stockpile_help.visible and editor.stockpile_help.state.key.is_empty(),"Closed Zones retained help"):return
 	write_json("zone-hover-view.json",samples)
@@ -2558,6 +2567,7 @@ func pointer_zone_help() -> void:
 	print("ZONE_HOVER_SCENE_PASS samples=",samples.size())
 
 func zone_hover_sample(control: Button,key: String,instruction: String,reference: Dictionary,samples: Array) -> void:
+	if not check(control.tooltip_text.is_empty(),"Generic tooltip duplicates native zone help: "+key):return
 	for frame in 3:editor._process(0);await process_frame
 	var motion:=InputEventMouseMotion.new();motion.position=control.get_global_transform_with_canvas()*(control.size/2);motion.global_position=motion.position;root.push_input(motion,true)
 	await create_timer(0.65).timeout
@@ -2573,4 +2583,4 @@ func zone_hover_sample(control: Button,key: String,instruction: String,reference
 			if probe.instruction==instruction:bottom=float(probe.bottom+1)*12+4;break
 	if not check(rect.position.x==float(expected.left)*8 and rect.end.y==bottom,"Native zone help anchor differs: "+key+" "+str(rect)):return
 	samples.append({"key":key,"instruction":instruction,"rect":[rect.position.x,rect.position.y,rect.size.x,rect.size.y],"lines":help.lines.duplicate()})
-	if key in ["zone/type/Bedroom","zone/type/Pond","zone/control/repaint"]:await capture("zone_help_"+key.replace("/","_"))
+	if key in ["zone/type/Bedroom","zone/type/Pond","zone/control/repaint","zone/paint/erase"]:await capture("zone_help_"+key.replace("/","_"))

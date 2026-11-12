@@ -127,10 +127,8 @@ func set_zone(row: Dictionary) -> void:
 	var host: Node = self if zone else toolbar_host
 	if tools.get_parent() != host: tools.reparent(host)
 	if zone: tools.position = Vector2(0,72); tools.scale = Vector2.ONE
-	buttons.rectangle.tooltip_text = "Left click to choose corners of a rectangle." if zone else ""
-	buttons.brush.tooltip_text = "Hold left button to draw." if zone else ""
-	buttons.erase.tooltip_text = "Erase a portion of this zone." if zone else ""
-	buttons.remove.tooltip_text = "Remove the zone being painted permanently." if zone else ""
+	# The shared area-hover owner supplies native text, timing and placement.
+	for button in buttons.values():button.tooltip_text=""
 
 func set_counts(label: String, counts: Dictionary) -> void:
 	zone_caption.text = label

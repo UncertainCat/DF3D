@@ -15060,7 +15060,7 @@ is session-lifecycle acceptance, not a completed typing UI.
 ### Current Zones revalidation and remaining semantic audit
 
 Zones now displays native anchored instruction boxes for all18 zone types and
-14 verified actions/settings. `area_hover_view` shares the existing dwell/warm
+18 verified actions/settings, including four paint tools. `area_hover_view` shares the existing dwell/warm
 state and frame renderer with Stockpiles; zone controls retain their own kind
 and selected-target identity. Changing target, disabling/hiding a button or
 closing the panel retires its help. Palette anchors follow the visible row,
@@ -15082,9 +15082,24 @@ PNGs. Owned DF26220 exits unsaved with two unchanged manifests; only the known
 separate-render-thread notice qualifies the result. Native/Godot are capped30FPS;
 sampled GPU48C is not a peak claim. `zone-hover-final-fixed` passes existing
 area/menu checks, including Stockpiles dwell/disabled/repeated-help behavior;
-core19 passes. Inactive-state wording, overlap navigation, assigned location
-Details and paint-mode help remain uncaptured and unexposed. In particular,
-the unverified inactive state does not display the active Suspend description.
+core19 passes. Native165546 confirms that inactive zones retain the same
+Suspend instruction and adds Rectangle/Free/Erase/Remove painting help. Native
+paint help retains its bottom-of-screen anchor while the controls sit in the
+left panel; preserve this observed placement. Accept/Cancel and the probed
+horizontal options do not activate main-interface help. Bedroom creation-mode
+identity was not independently asserted, so that probe alone does not establish
+Multi-mode acceptance. Overlap navigation and assigned location Details help
+remain uncaptured.
+
+The final main-scene170027 run covers52 hovers, all36 instruction variants,
+repaint entry and cancellation, and panel-close retirement. Exact native text
+and anchors pass. Screenshot inspection caught the old generic painting tooltip
+being restored by set_zone; that duplicate path is removed. Final Erase image
+was inspected and has only the native box. Owned DF46872 exits unsaved with two
+unchanged manifests; sampled GPU49–50C, native/Godot30FPS. Only the documented
+separate-render-thread notice remains. `zone-paint-hover-final` passes the area
+and menu checks; core19 passes. The earlier165818 run passed assertions but
+exposed the duplicate in its screenshot and is not final visual acceptance.
 
 
 The remaining selected-zone caption gap now has a verified native provider,

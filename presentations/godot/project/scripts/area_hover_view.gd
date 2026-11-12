@@ -26,6 +26,11 @@ func configure(source, owner_controller) -> void:
 	var settings := ["ZONE_PIT","ZONE_POND","ZONE_TOMB_CITIZEN_BURIAL","ZONE_TOMB_PET_BURIAL","ZONE_GATHER_TREE","ZONE_GATHER_SHRUB","ZONE_GATHER_FALLEN"]
 	for index in settings.size():
 		bind_zone(controller.zone_menu.setting_buttons[index],"zone/setting/"+str(index),settings[index],false)
+	for entry in [["rectangle","ZONE_PAINT_RECTANGLE"],["brush","ZONE_PAINT_FREE"],["erase","ZONE_ERASE"],["remove","ZONE_PAINT_REMOVE"]]:
+		var key: String="zone/paint/"+entry[0]
+		bind_zone(controller.paint_view.buttons[entry[0]],key,entry[1],false)
+		entries[key]["zone_paint"]=true
+
 
 func bind_zone(button: Button,key: String,instruction: String,palette: bool) -> void:
 	entries[key]={"button":button,"kind":1,"instruction":instruction,"palette":palette,"paint":false}
@@ -40,8 +45,6 @@ func zone_instruction(entry: Dictionary) -> String:
 	var instruction: String=entry.instruction
 	if instruction=="ZONE_PICK_PASTURE_ANIMALS" and int(controller.selected.get("zone_type",-1))==int(controller.zone_menu.catalog.get("Pond",-2)):
 		return "ZONE_PICK_PIT_POND_ANIMALS"
-	# Native inactive wording has not yet been captured; never invent it.
-	if instruction=="ZONE_SUSPEND" and not bool(controller.selected.get("active",true)):return ""
 	return instruction
 
 
@@ -75,8 +78,11 @@ func _process(_delta: float) -> void:
 	size = Vector2(224,(lines.size()+2)*12)
 	if int(entry.kind)==1:
 		var rect: Rect2=get_canvas_transform().affine_inverse()*(entry.button.get_global_transform_with_canvas()*Rect2(Vector2.ZERO,entry.button.size))
-		var bottom: float=rect.position.y+12 if entry.palette else controller.zone_menu.get_global_rect().position.y+(82 if entry.instruction in ["ZONE_REPAINT","ZONE_SUSPEND","ZONE_REMOVE_EXISTING"] else 118)
-		position=Vector2(controller.zone_menu.get_global_rect().position.x+334,bottom-size.y)
+		if entry.get("zone_paint",false):
+			position=Vector2(rect.position.x-(32 if entry.instruction=="ZONE_ERASE" else 0),controller._layout_view.y-88-size.y)
+		else:
+			var bottom: float=rect.position.y+12 if entry.palette else controller.zone_menu.get_global_rect().position.y+(82 if entry.instruction in ["ZONE_REPAINT","ZONE_SUSPEND","ZONE_REMOVE_EXISTING"] else 118)
+			position=Vector2(controller.zone_menu.get_global_rect().position.x+334,bottom-size.y)
 	elif entry.paint:
 		var rect: Rect2 = get_canvas_transform().affine_inverse() * (entry.button.get_global_transform_with_canvas() * Rect2(Vector2.ZERO,entry.button.size))
 		position = Vector2(rect.position.x+int(entry.row.hover_x_offset),rect.position.y-12-size.y)

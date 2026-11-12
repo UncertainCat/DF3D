@@ -4,7 +4,8 @@
   "scope": "Actual native pointer activation, main_hover_instruction identities, immediate post-render text cells and anchors; no runtime menu/cache access.",
   "sources": {
     "build/stockpile-storage-native-zone-defaults-20261112-164309": "a9db8402753232e3cc94a305a69e779e355cc093287d6ba545ead7af315f4d48",
-    "build/stockpile-storage-native-zone-defaults-20261112-164754": "b982521cdf1c74b3cbe91e47ba05a47dedae0ef7e5bdb30b1f26ba1e97594cb2"
+    "build/stockpile-storage-native-zone-defaults-20261112-164754": "b982521cdf1c74b3cbe91e47ba05a47dedae0ef7e5bdb30b1f26ba1e97594cb2",
+    "build/stockpile-storage-native-zone-defaults-20261112-165546": "73ae9b0d2c9519183247fcb089254e66386332d7ce0bd5ebcf9b5c6598d42441"
   },
   "instructions": {
     "ZONE_TYPE_MEETING": {
@@ -472,6 +473,52 @@
       "source": "build/stockpile-storage-native-zone-defaults-20261112-164754",
       "left": 46,
       "bottom": 10
+    },
+    "ZONE_PAINT_RECTANGLE": {
+      "id": 143,
+      "lines": [
+        "Left click to choose",
+        "corners of a rectangle."
+      ],
+      "reference": "zone-hover-remaining-paint-rectangle",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-165546",
+      "left": 5,
+      "bottom": 58
+    },
+    "ZONE_PAINT_FREE": {
+      "id": 144,
+      "lines": [
+        "Hold left button to",
+        "draw."
+      ],
+      "reference": "zone-hover-remaining-paint-brush",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-165546",
+      "left": 9,
+      "bottom": 58
+    },
+    "ZONE_ERASE": {
+      "id": 128,
+      "lines": [
+        "Erase a portion of this",
+        "zone."
+      ],
+      "reference": "zone-hover-remaining-paint-erase",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-165546",
+      "left": 9,
+      "bottom": 58
+    },
+    "ZONE_PAINT_REMOVE": {
+      "id": 145,
+      "lines": [
+        "Remove the zone being",
+        "painted permanently.",
+        "Also removes existing",
+        "zones!"
+      ],
+      "reference": "zone-hover-remaining-paint-remove",
+      "source": "build/stockpile-storage-native-zone-defaults-20261112-165546",
+      "left": 17,
+      "bottom": 58
     }
   },
   "probes": [
@@ -1112,8 +1159,8 @@
   "limitations": [
     "Transient tooltip PNGs lose the UI overlay and are not visual acceptance.",
     "Initial repaint probe used x30; excluded and replaced by focused x34 capture164754.",
-    "Active off-state wording, overlap navigation, assigned location details and paint-mode controls are not captured here.",
-    "Viewer integration is accepted for these32 instructions by viewer_reference; uncaptured variants remain."
+    "Viewer integration is accepted for these32 instructions by viewer_reference; uncaptured variants remain.",
+    "Overlap navigation, assigned location Details and confirmed Multi-mode help remain outside current acceptance."
   ],
   "viewer_reference": {
     "directory": "build/areas-acceptance-20261112-165114",
@@ -1169,6 +1216,176 @@
     "limitations": [
       "Native transient PNGs invalid; no native pixel-parity claim.",
       "Inactive/navigation/Details/paint-mode variants remain outside this acceptance."
+    ]
+  },
+  "remaining_native_reference": {
+    "directory": "build/stockpile-storage-native-zone-defaults-20261112-165546",
+    "observations": [
+      {
+        "name": "zone-hover-remaining-inactive-active",
+        "instruction": "ZONE_SUSPEND",
+        "hover": 129,
+        "enabled": true,
+        "left": 46,
+        "bottom": 10
+      },
+      {
+        "name": "zone-hover-remaining-paint-rectangle",
+        "instruction": "ZONE_PAINT_RECTANGLE",
+        "hover": 143,
+        "enabled": true,
+        "left": 5,
+        "bottom": 58
+      },
+      {
+        "name": "zone-hover-remaining-paint-brush",
+        "instruction": "ZONE_PAINT_FREE",
+        "hover": 144,
+        "enabled": true,
+        "left": 9,
+        "bottom": 58
+      },
+      {
+        "name": "zone-hover-remaining-paint-erase",
+        "instruction": "ZONE_ERASE",
+        "hover": 128,
+        "enabled": true,
+        "left": 9,
+        "bottom": 58
+      },
+      {
+        "name": "zone-hover-remaining-paint-remove",
+        "instruction": "ZONE_PAINT_REMOVE",
+        "hover": 145,
+        "enabled": true,
+        "left": 17,
+        "bottom": 58
+      },
+      {
+        "name": "zone-hover-remaining-paint-accept",
+        "instruction": "NONE",
+        "hover": -1,
+        "enabled": true,
+        "left": 0,
+        "bottom": 61
+      },
+      {
+        "name": "zone-hover-remaining-paint-cancel",
+        "instruction": "NONE",
+        "hover": -1,
+        "enabled": false,
+        "left": 0,
+        "bottom": 61
+      },
+      {
+        "name": "zone-hover-remaining-paint-multi",
+        "instruction": "NONE",
+        "hover": -1,
+        "enabled": false,
+        "left": 0,
+        "bottom": 61
+      },
+      {
+        "name": "zone-hover-remaining-paint-paint",
+        "instruction": "NONE",
+        "hover": -1,
+        "enabled": false,
+        "left": 0,
+        "bottom": 61
+      },
+      {
+        "name": "zone-hover-remaining-bedroom-create-rectangle",
+        "instruction": "ZONE_PAINT_RECTANGLE",
+        "hover": 143,
+        "enabled": true,
+        "left": 5,
+        "bottom": 58
+      },
+      {
+        "name": "zone-hover-remaining-bedroom-create-brush",
+        "instruction": "ZONE_PAINT_FREE",
+        "hover": 144,
+        "enabled": true,
+        "left": 9,
+        "bottom": 58
+      },
+      {
+        "name": "zone-hover-remaining-bedroom-create-erase",
+        "instruction": "ZONE_ERASE",
+        "hover": 128,
+        "enabled": true,
+        "left": 9,
+        "bottom": 58
+      },
+      {
+        "name": "zone-hover-remaining-bedroom-create-remove",
+        "instruction": "ZONE_PAINT_REMOVE",
+        "hover": 145,
+        "enabled": true,
+        "left": 17,
+        "bottom": 58
+      },
+      {
+        "name": "zone-hover-remaining-bedroom-create-accept",
+        "instruction": "NONE",
+        "hover": -1,
+        "enabled": true,
+        "left": 0,
+        "bottom": 61
+      },
+      {
+        "name": "zone-hover-remaining-bedroom-create-cancel",
+        "instruction": "NONE",
+        "hover": -1,
+        "enabled": false,
+        "left": 0,
+        "bottom": 61
+      },
+      {
+        "name": "zone-hover-remaining-bedroom-create-multi",
+        "instruction": "NONE",
+        "hover": -1,
+        "enabled": false,
+        "left": 0,
+        "bottom": 61
+      },
+      {
+        "name": "zone-hover-remaining-bedroom-create-paint",
+        "instruction": "NONE",
+        "hover": -1,
+        "enabled": false,
+        "left": 0,
+        "bottom": 61
+      }
+    ],
+    "scope": "Controlled inactive flag restored; actual Pen repaint and native hovered paint controls; no paint geometry submitted.",
+    "limitations": [
+      "Bedroom creation-mode identity was not independently asserted; repeated paint help alone does not accept Multi controls.",
+      "Overlap navigation and location Details help remain uncaptured.",
+      "Transient overlay PNGs remain invalid for visual parity."
+    ],
+    "preservation": "Owned DF9628 exited unsaved; source/preferences preserved; native30FPS; GPU48C sample."
+  },
+  "paint_viewer_reference": {
+    "directory": "build/areas-acceptance-20261112-170027",
+    "samples": 52,
+    "instructions": 36,
+    "scope": "Actual viewport hovers; all source lines/anchors; Pen repaint entry and cancellation; close retirement; generic tooltip absence.",
+    "artifacts": {
+      "result.json": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+      "zone-hover-view.json": "9481a0b808ddc31947c2019a044139ad80f01583460d3cc93743f558f9879a75",
+      "scene_zone_help_zone_paint_erase.png": "d3c490edc527e1372a77fd274e285a4da6438bbed877f2c42fc468d4e2af4de5"
+    },
+    "result": "passed_with_known_issues: documented separate-render-thread notice only",
+    "preservation": "Owned DF46872 exited unsaved; two manifests unchanged; prefs restored.",
+    "verification": [
+      "core19",
+      "build/qa/zone-paint-hover-final"
+    ],
+    "limitations": [
+      "Native PNG overlays invalid; no native pixel-parity claim.",
+      "170027 supersedes165818, whose screenshot exposed duplicate generic tooltip.",
+      "New-zone/Multi geometry mutations are not exercised by this hover lane."
     ]
   }
 }

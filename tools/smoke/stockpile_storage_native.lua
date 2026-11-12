@@ -183,7 +183,8 @@ require('gui.script').start(function()
    local zone_hover_seen={}
    local function zone_hover(label,targets)
     local mode=os.getenv('DF3D_ZONE_HOVER_AUDIT')
-    if mode~='1'and mode~='repaint'then return end
+    if mode~='1'and mode~='repaint'and mode~='remaining'then return end
+    if mode=='remaining'and not label:find('remaining',1,true)then return end
     if mode=='repaint'then
      if label~='Pen'then return end
      targets={{'repaint',34,9}}
@@ -240,6 +241,20 @@ require('gui.script').start(function()
      active=b.spec_sub_flag.active,frame=df.global.world.frame_counter}
     assert(df.global.pause_state and df.global.world.frame_counter==frame)
     capture('defaults-'..entry[1])
+    if entry[1]=='Pen'and os.getenv('DF3D_ZONE_HOVER_AUDIT')=='remaining'then
+     local active=b.spec_sub_flag.active
+     b.spec_sub_flag.active=false
+     zone_hover('remaining-inactive',{{'active',38,9}})
+     b.spec_sub_flag.active=active
+     click(34,9);capture('zone-hover-paint-layout')
+     local paint_targets={{'rectangle',6,12},{'brush',10,12},{'erase',14,12},{'remove',18,12},{'accept',38,9},{'cancel',38,6},{'multi',38,13},{'paint',38,16}}
+     zone_hover('remaining-paint',paint_targets)
+     click(38,9)
+     click(7,27)
+     zone_hover('remaining-bedroom-create',paint_targets)
+     click(38,6)
+     assert(df.global.pause_state and df.global.world.frame_counter==frame,'zone hover advanced simulation')
+    end
     zone_hover(entry[1],{{'rename',42,6},{'repaint',34,9},{'active',38,9},{'remove',42,9},{'owner',42,12},{'location',42,15},{'setting-left',7,12},{'setting-second',11,12},{'setting-third',15,12},{'setting-fourth',19,12},{'setting-right1',30,12},{'setting-right2',34,12},{'setting-right3',38,12}})
     if os.getenv('DF3D_ZONE_SETTINGS_AUDIT')=='1'then
      local original_first,original_second=raw.i1,raw.i2

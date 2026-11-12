@@ -989,6 +989,32 @@
       "hover_lines": [
         "Repaint this zone."
       ]
+    },
+    "ZONE_PAINT_RECTANGLE": {
+      "hover_lines": [
+        "Left click to choose",
+        "corners of a rectangle."
+      ]
+    },
+    "ZONE_PAINT_FREE": {
+      "hover_lines": [
+        "Hold left button to",
+        "draw."
+      ]
+    },
+    "ZONE_ERASE": {
+      "hover_lines": [
+        "Erase a portion of this",
+        "zone."
+      ]
+    },
+    "ZONE_PAINT_REMOVE": {
+      "hover_lines": [
+        "Remove the zone being",
+        "painted permanently.",
+        "Also removes existing",
+        "zones!"
+      ]
     }
   }
 }

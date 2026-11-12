@@ -8697,5 +8697,44 @@
         "unit_id": 3326
       }
     ]
+  },
+  "candidate_display_wire_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-232745",
+    "status": "passed_with_known_issues",
+    "scope": "Read-only protocol195 transport:293 candidates, three queries,13 independently verified display rows. No rendered picker acceptance.",
+    "owned_df_pid": 30764,
+    "source_preserved": true,
+    "fps_cap": 30,
+    "receipt": {
+      "candidate_count": 293,
+      "candidate_queries": 3,
+      "closed_read_retired": true,
+      "controller_tabs": 3,
+      "convicted": false,
+      "counts": [
+        7,
+        3,
+        7
+      ],
+      "picker_controller": false,
+      "stale_tabs": 3,
+      "success": true,
+      "witnesses": 134
+    },
+    "display_unit_ids": [
+      "3115",
+      "3326",
+      "5698",
+      "5699",
+      "6135",
+      "6531",
+      "6814",
+      "6835",
+      "7043",
+      "7123",
+      "7202",
+      "7218",
+      "7279"
+    ]
   }
 }

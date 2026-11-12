@@ -54,6 +54,24 @@ No display values are invented for older recordings. Session/map formats are
 unchanged. The schema migration and its validation are separate from producer,
 model, adapter and rendered-picker acceptance.
 
+The195 producer, pointer-free model and Godot adapter now carry these fields;
+the picker controller validates them before publishing a page. Owned codec
+tests retain text/color after wire storage is discarded. QA
+`build/qa/justice-candidate-display-integration` passes root/extension builds,
+all19 core tests and the headless Justice controller check. The initial schema
+check caught stale194 defaults; both request/reply defaults are now195.
+Protected `stockpile-storage-native-input-20261111-232745` verifies293 candidates
+across three queries and exact transported display values for the13 native
+reference rows, alongside17 cases/134 witnesses and stale-target refusals.
+This run is read-only: crime/witness/menu/RNG guards pass. DF30764 closes unsaved,
+source preserved and prefs restored. Native30FPS/headless viewer; GPU sample
+60C/36%/97.47W, not peak. The known separate-thread notice remains; classify
+the live run as passed_with_known_issues. Installed plugin SHA256 is
+`933475c6d28dffecf3a2f8ea87540b9057b8dcd7b2655900a76bc5f19df3e457`.
+`native_justice.json.candidate_display_wire_reference` retains the receipt.
+Candidate rendering, artwork, alternate sorting and responsive layout are
+still unfinished; this transport check does not accept them.
+
 The owned candidate presentation helper calls native name1330c30 and
 abbreviation52d910, following the one-line renderer14237a0. It counts witness
 reports naming the candidate, independently of sort rank, and preserves the

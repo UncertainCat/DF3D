@@ -99,7 +99,16 @@ ManagementState decodeState(const m::ManagementState* s) {
     out.listRevision=r->list_revision();out.total=r->total();out.offset=r->offset();
     if(const auto* c=r->candidates()){
       auto& page=out.candidates.emplace();page.crimeId=c->crime_id();page.revision=c->revision();page.total=c->total();page.offset=c->offset();
-      for(const auto* row:*c->rows())page.rows.push_back({row->unit_id(),row->rank(),row->interrogation_pending(),row->counterintelligence()});
+      for(const auto* row:*c->rows()){
+        JusticeCandidateRow value;value.unitId=row->unit_id();value.rank=row->rank();
+        value.interrogationPending=row->interrogation_pending();value.counterintelligence=row->counterintelligence();
+        const auto* d=row->display();const auto* color=d->name_color();auto& display=value.display;
+        display.columns=d->columns();display.name=d->name()->str();display.witnessCount=d->witness_count();
+        display.witnessLabel=d->witness_label()->str();display.witnessColor=d->witness_color();display.deceased=d->deceased()->str();
+        display.nameColor={{color->foreground(),color->background(),color->bright()},
+          {color->alternate_foreground(),color->alternate_background(),color->alternate_bright()},color->effect()};
+        page.rows.push_back(std::move(value));
+      }
     }
     for(const auto* row:*r->rows())out.rows.push_back({row->crime_id(),row->caption()->str()});
     if(const auto* d=r->detail()){

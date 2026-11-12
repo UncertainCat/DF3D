@@ -7,6 +7,11 @@ expected.candidates={}
 for _,query in ipairs{'','dvn','zznomatch'}do
  expected.candidates[#expected.candidates+1]={query=query,rows=probe('justice-conviction-candidates-probe',{'9',query})}
 end
+expected.presentation={}
+for i=1,math.min(13,#expected.candidates[1].rows)do
+ local id=expected.candidates[1].rows[i].unit_id
+ expected.presentation[tostring(id)]=probe('justice-candidate-presentation-probe',{'9',tostring(id),'28'})
+end
 local mutating=os.getenv('DF3D_JUSTICE_WIRE_CONVICT')=='1'
 local history_count=#df.global.world.history.events
 for _,list in ipairs(expected.lists)do for _,row in ipairs(list)do

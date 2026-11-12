@@ -263,7 +263,14 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         if(v.candidates){const auto& c=*v.candidates;Dictionary page;Array candidates;
             page["crime_id"]=c.crimeId;page["revision"]=int64_t(c.revision);page["total"]=int64_t(c.total);page["offset"]=int64_t(c.offset);
             for(const auto& r:c.rows){Dictionary row;row["unit_id"]=r.unitId;row["rank"]=r.rank;
-                row["interrogation_pending"]=r.interrogationPending;row["counterintelligence"]=r.counterintelligence;candidates.push_back(row);}
+                row["interrogation_pending"]=r.interrogationPending;row["counterintelligence"]=r.counterintelligence;
+                const auto& d=r.display;Dictionary display,color;Array primary,alternate;
+                display["columns"]=int(d.columns);display["name"]=String::utf8(d.name.c_str());
+                display["witness_count"]=int64_t(d.witnessCount);display["witness_label"]=String::utf8(d.witnessLabel.c_str());
+                display["witness_color"]=int(d.witnessColor);display["deceased"]=String::utf8(d.deceased.c_str());
+                for(auto v:d.nameColor.color)primary.push_back(int(v));for(auto v:d.nameColor.alternate)alternate.push_back(int(v));
+                color["color"]=primary;color["alternate"]=alternate;color["effect"]=int(d.nameColor.effect);
+                display["name_color"]=color;row["display"]=display;candidates.push_back(row);}
             page["rows"]=candidates;value["candidates"]=page;
         }
         result["justice"]=value;

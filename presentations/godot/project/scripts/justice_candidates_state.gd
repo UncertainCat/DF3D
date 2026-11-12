@@ -59,7 +59,21 @@ func _valid(page: Dictionary,intent: Dictionary) -> bool:
 	for row in page.rows:
 		if typeof(row)!=TYPE_DICTIONARY or typeof(row.get("unit_id"))!=TYPE_INT or row.unit_id<0 or row.unit_id>2147483647 or _seen.has(row.unit_id):return false
 		if typeof(row.get("rank"))!=TYPE_INT or row.rank< -2147483648 or row.rank>2147483647 or typeof(row.get("interrogation_pending"))!=TYPE_BOOL or typeof(row.get("counterintelligence"))!=TYPE_BOOL:return false
+		if not _valid_display(row.get("display")):return false
 		_seen[row.unit_id]=true
+	return true
+func _valid_display(value: Variant) -> bool:
+	if typeof(value)!=TYPE_DICTIONARY:return false
+	for key in ["name","witness_label","deceased"]:
+		if typeof(value.get(key))!=TYPE_STRING or value[key].to_utf8_buffer().size()>16384:return false
+	for bounds in [["columns",3,2048],["witness_count",0,1048576],["witness_color",0,15]]:
+		if typeof(value.get(bounds[0]))!=TYPE_INT or value[bounds[0]]<bounds[1] or value[bounds[0]]>bounds[2]:return false
+	var color: Variant=value.get("name_color")
+	if typeof(color)!=TYPE_DICTIONARY or typeof(color.get("effect"))!=TYPE_INT or color.effect<0 or color.effect>3:return false
+	for key in ["color","alternate"]:
+		if typeof(color.get(key))!=TYPE_ARRAY or color[key].size()!=3:return false
+		for i in 3:
+			if typeof(color[key][i])!=TYPE_INT or color[key][i]<0 or color[key][i]>(1 if i==2 else 7):return false
 	return true
 func _page() -> void:
 	if service==null:phase=Phase.Unavailable;changed.emit();return

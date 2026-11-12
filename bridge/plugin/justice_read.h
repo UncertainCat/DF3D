@@ -2,6 +2,7 @@
 #include "justice_native.h"
 #include "justice_witness_native.h"
 #include "justice_action_native.h"
+#include "justice_presentation_native.h"
 #include "management_util.h"
 #include "MiscUtils.h"
 #include <stdexcept>
@@ -16,7 +17,8 @@ struct Detail {
 struct ReadResult {
     m::JusticeOutcome outcome=m::JusticeOutcome::Rejected;uint8_t tab=0;
     uint64_t revision=0;uint32_t total=0,offset=0;std::vector<CaseRow> rows;std::optional<Detail> detail;
-    struct Candidates {int32_t crimeId=-1;uint64_t revision=0;uint32_t total=0,offset=0;std::vector<CandidateFact> rows;};
+    struct Candidate {CandidateFact fact;CandidatePresentation display;};
+    struct Candidates {int32_t crimeId=-1;uint64_t revision=0;uint32_t total=0,offset=0;std::vector<Candidate> rows;};
     std::optional<Candidates> candidates;
 };
 struct ReadHash {
@@ -105,7 +107,14 @@ inline ReadResult candidateRequest(const m::JusticeRequest& q,bool apply) {
         }
         ReadResult result;result.tab=q.tab();result.revision=observed.revision;result.outcome=m::JusticeOutcome::None;
         auto& page=result.candidates.emplace();page.crimeId=crime->id;page.revision=revision;page.total=uint32_t(facts->size());page.offset=q.offset();
-        for(size_t i=q.offset();i<facts->size() && page.rows.size()<q.limit();++i)page.rows.push_back((*facts)[i]);
+        size_t bytes=0;
+        for(size_t i=q.offset();i<facts->size() && page.rows.size()<q.limit();++i){
+            // The accepted1200x800 reference uses the native28-column minimum.
+            auto display=candidatePresentation(crime,df::unit::find((*facts)[i].unitId),28);if(!display)return refused;
+            for(auto* text:{&display->name,&display->witnessLabel,&display->deceased}){*text=readText(*text);bytes+=text->size();}
+            bytes+=64;if(bytes>384*1024)return refused;
+            page.rows.push_back({(*facts)[i],std::move(*display)});
+        }
         return result;
     }catch(...){return refused;}
 }
@@ -119,7 +128,11 @@ inline flatbuffers::Offset<m::JusticeState> encode(flatbuffers::FlatBufferBuilde
             b.CreateString(d.summary.status),d.total,d.offset,b.CreateVector(witnesses),m::JusticeCaseResolution(d.summary.resolution));}
     flatbuffers::Offset<m::JusticeCandidatePage> candidates;
     if(r.candidates){const auto& page=*r.candidates;std::vector<flatbuffers::Offset<m::JusticeCandidateRow>> entries;
-        for(const auto& row:page.rows)entries.push_back(m::CreateJusticeCandidateRow(b,row.unitId,row.rank,bool(row.flags&1),bool(row.flags&2)));
+        for(const auto& row:page.rows){const auto& d=row.display;const auto& c=d.nameColor;const auto& f=row.fact;
+            auto color=m::CreateAreaNameColor(b,c.color[0],c.color[1],c.color[2],c.alternate[0],c.alternate[1],c.alternate[2],c.effect);
+            auto display=m::CreateJusticeCandidateDisplay(b,28,b.CreateString(d.name),color,d.witnessCount,
+                b.CreateString(d.witnessLabel),d.witnessColor,b.CreateString(d.deceased));
+            entries.push_back(m::CreateJusticeCandidateRow(b,f.unitId,f.rank,bool(f.flags&1),bool(f.flags&2),display));}
         candidates=m::CreateJusticeCandidatePage(b,page.crimeId,page.revision,page.total,page.offset,b.CreateVector(entries));}
     return m::CreateJusticeState(b,r.outcome,r.tab,r.revision,r.total,r.offset,b.CreateVector(rows),detail,candidates);
 }

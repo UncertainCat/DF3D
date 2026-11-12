@@ -15,7 +15,7 @@ func report(id:=9,offset:=0,total:=1,revision:=12,tab:=0) -> Dictionary:
 func _initialize() -> void:call_deferred("run")
 func candidates(ids: Array=[42,43],offset:=0,total:=2,revision:=22) -> Dictionary:
 	return {"justice":{"outcome":C.JusticeOutcome.None,"tab":0,"list_revision":8,"candidates":{"crime_id":9,"revision":revision,
-		"offset":offset,"total":total,"rows":ids.map(func(id):return {"unit_id":id,"rank":3,"interrogation_pending":false,"counterintelligence":true})}}}
+		"offset":offset,"total":total,"rows":ids.map(func(id):return {"unit_id":id,"rank":3,"interrogation_pending":false,"counterintelligence":true,"display":{"columns":28,"name":"fixture","witness_count":0,"witness_label":"fixture","witness_color":6,"deceased":"","name_color":{"color":[4,0,0],"alternate":[4,0,0],"effect":0}}})}}}
 func ready(service,state) -> void:
 	state.open();service.reply(state.ticket,page());service.reply(state.ticket,report())
 func test_candidates(service,state) -> void:

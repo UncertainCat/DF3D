@@ -8,8 +8,6 @@ static auto candidateDisplay(flatbuffers::FlatBufferBuilder& b) {
 }
 
 namespace codec=wm::detail::management;
-
-namespace codec=wm::detail::management;
 TEST_CASE("Justice candidate and conviction codecs retain query, target and all revisions") {
  for(bool apply:{false,true}){
   wm::ManagementRequest q;q.action=apply?wm::ManagementAction::JusticeConvict:wm::ManagementAction::JusticeCandidatesRead;
@@ -36,6 +34,9 @@ TEST_CASE("Justice candidate decode owns native order and distinct flags") {
  CHECK(page.crimeId==19);CHECK(page.revision==789);CHECK(page.total==34);CHECK(page.offset==32);REQUIRE(page.rows.size()==2);
  CHECK(page.rows[0].unitId==42);CHECK(page.rows[0].rank==39);CHECK(page.rows[0].interrogationPending);CHECK_FALSE(page.rows[0].counterintelligence);
  CHECK(page.rows[1].unitId==9);CHECK(page.rows[1].rank==0);CHECK_FALSE(page.rows[1].interrogationPending);CHECK(page.rows[1].counterintelligence);
+ const auto& display=page.rows[0].display;CHECK(display.columns==28);CHECK(display.name=="synthetic name");
+ CHECK(display.witnessCount==39);CHECK(display.witnessLabel=="synthetic witness label");CHECK(display.witnessColor==10);CHECK(display.deceased.empty());
+ CHECK(display.nameColor.color==std::array<uint8_t,3>{4,0,1});CHECK(display.nameColor.alternate==std::array<uint8_t,3>{6,0,0});CHECK(display.nameColor.effect==1);
  CHECK_FALSE(owned.justice->detail);CHECK(owned.justice->rows.empty());
 }
 TEST_CASE("Justice mutation decode preserves applied and unknown without candidate data") {

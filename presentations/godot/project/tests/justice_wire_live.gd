@@ -115,6 +115,11 @@ func run() -> void:
 			var native: Dictionary=sample.rows[i]
 			check(rows[i].unit_id==native.unit_id and rows[i].rank==native.rank and rows[i].interrogation_pending==bool(int(native.flags)&1)
 				and rows[i].counterintelligence==bool(int(native.flags)&2),"Justice candidate order/facts differ")
+			if reference.presentation.has(str(native.unit_id)):
+				var p: Dictionary=reference.presentation[str(native.unit_id)];var d: Dictionary=rows[i].display
+				check(d.columns==28 and d.name==p.name and d.witness_label==p.witness_label and d.witness_count==p.witness_count
+					and d.witness_color==p.witness_color and d.deceased==p.deceased,"Justice candidate display differs")
+				check(d.name_color.color==p.color and d.name_color.alternate==p.alternate and d.name_color.effect==p.effect,"Justice candidate name color differs")
 		if sample.query=="":candidate_revision=revision;candidate_count=rows.size()
 	var intent: Dictionary={"action":C.ManagementAction.JusticeConvict,"tab":0,"offset":0,"limit":32,
 		"expected_list_revision":list_revision,"crime_id":9,"expected_case_revision":case_revision,

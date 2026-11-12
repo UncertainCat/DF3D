@@ -486,7 +486,14 @@ struct JusticeCaseDetail {
   std::optional<std::string> injuredParty;std::string status;
   uint32_t total=0,offset=0;std::vector<JusticeWitnessRow> witnesses;
 };
-struct JusticeCandidateRow {int32_t unitId=-1,rank=0;bool interrogationPending=false,counterintelligence=false;};
+struct JusticeCandidateDisplay {
+  uint16_t columns=0;std::string name;AreaNameColor nameColor;
+  uint32_t witnessCount=0;std::string witnessLabel;uint8_t witnessColor=0;std::string deceased;
+};
+struct JusticeCandidateRow {
+  int32_t unitId=-1,rank=0;bool interrogationPending=false,counterintelligence=false;
+  JusticeCandidateDisplay display;
+};
 struct JusticeCandidatePage {
   int32_t crimeId=-1;uint64_t revision=0;uint32_t total=0,offset=0;std::vector<JusticeCandidateRow> rows;
 };

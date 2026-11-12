@@ -10335,5 +10335,235 @@
       "native search interaction unaccepted",
       "organization relationships and actor details unfinished"
     ]
+  },
+  "intelligence_graph_reference": {
+    "run": "stockpile-storage-native-input-20261112-092919",
+    "status": "passed",
+    "protocol": 201,
+    "owned_df_pid": 31304,
+    "source_preserved": true,
+    "native_fps": 30,
+    "viewer_launched": false,
+    "controlled_repository": true,
+    "samples": {
+      "agreement": 11,
+      "empty": {
+        "actors": [],
+        "organizations": [],
+        "plots": []
+      },
+      "native": {
+        "actors": [
+          {
+            "aliases": [],
+            "historical_figure": 907,
+            "identity": -1,
+            "name": "Eral Syrupsingle",
+            "organizations": [],
+            "plots": [
+              0
+            ],
+            "principal_organization": 0
+          },
+          {
+            "aliases": [],
+            "historical_figure": 1637,
+            "identity": -1,
+            "name": "Onget Cloistertour",
+            "organizations": [
+              0
+            ],
+            "plots": [
+              0
+            ],
+            "principal_organization": 0
+          },
+          {
+            "aliases": [],
+            "historical_figure": 898,
+            "identity": -1,
+            "name": "Tobul Eyesword",
+            "organizations": [
+              0
+            ],
+            "plots": [
+              0
+            ],
+            "principal_organization": 0
+          }
+        ],
+        "organizations": [
+          {
+            "name": "Eral Syrupsingle",
+            "nodes": [
+              {
+                "actor": 0,
+                "background": 0,
+                "bright": 1,
+                "descendants": 0,
+                "foreground": 5,
+                "label": "Boss",
+                "name": "E S",
+                "parent": -1,
+                "sort": 0,
+                "status": "RIP",
+                "tier": 1
+              },
+              {
+                "actor": 2,
+                "background": 0,
+                "bright": 1,
+                "descendants": 0,
+                "foreground": 6,
+                "label": "Membr",
+                "name": "T E",
+                "parent": 0,
+                "sort": 0,
+                "status": "RIP",
+                "tier": 2
+              },
+              {
+                "actor": 1,
+                "background": 0,
+                "bright": 1,
+                "descendants": 0,
+                "foreground": 3,
+                "label": "Asset",
+                "name": "O C",
+                "parent": 1,
+                "sort": 1,
+                "status": "RIP",
+                "tier": 3
+              }
+            ],
+            "principal_actor": 0
+          }
+        ],
+        "plots": [
+          {
+            "agreement": 11,
+            "master": 907,
+            "name": "Corrupt Captain Of The Guard of The Godly Lancers, agreed in 19"
+          }
+        ]
+      },
+      "provider": {
+        "actors": [
+          {
+            "aliases": [],
+            "historical_figure": 907,
+            "identity": -1,
+            "name": "Eral Syrupsingle",
+            "organizations": [],
+            "plots": [
+              0
+            ],
+            "principal_organization": 0
+          },
+          {
+            "aliases": [],
+            "historical_figure": 1637,
+            "identity": -1,
+            "name": "Onget Cloistertour",
+            "organizations": [
+              0
+            ],
+            "plots": [
+              0
+            ],
+            "principal_organization": 0
+          },
+          {
+            "aliases": [],
+            "historical_figure": 898,
+            "identity": -1,
+            "name": "Tobul Eyesword",
+            "organizations": [
+              0
+            ],
+            "plots": [
+              0
+            ],
+            "principal_organization": 0
+          }
+        ],
+        "organizations": [
+          {
+            "name": "Eral Syrupsingle",
+            "nodes": [
+              {
+                "actor": 0,
+                "background": 0,
+                "bright": 1,
+                "descendants": 0,
+                "foreground": 5,
+                "label": "Boss",
+                "name": "E S",
+                "parent": -1,
+                "sort": 0,
+                "status": "RIP",
+                "tier": 1
+              },
+              {
+                "actor": 2,
+                "background": 0,
+                "bright": 1,
+                "descendants": 0,
+                "foreground": 6,
+                "label": "Membr",
+                "name": "T E",
+                "parent": 0,
+                "sort": 0,
+                "status": "RIP",
+                "tier": 2
+              },
+              {
+                "actor": 1,
+                "background": 0,
+                "bright": 1,
+                "descendants": 0,
+                "foreground": 3,
+                "label": "Asset",
+                "name": "O C",
+                "parent": 1,
+                "sort": 1,
+                "status": "RIP",
+                "tier": 3
+              }
+            ],
+            "principal_actor": 0
+          }
+        ],
+        "plots": [
+          {
+            "agreement": 11,
+            "master": 907,
+            "name": "Corrupt Captain Of The Guard of The Godly Lancers, agreed in 19"
+          }
+        ]
+      }
+    },
+    "source_guards": [
+      "evidence files with temp_flags123",
+      "repository",
+      "entity",
+      "historical figures",
+      "agreement",
+      "Justice menu",
+      "RNG",
+      "crimes and witnesses"
+    ],
+    "fortress_entity_pointer_restored": true,
+    "bridge_sha256": "484938381e0b9c9d0c7bf90d6237c7a34224ed4614382d951181b5935393fbad",
+    "artifacts": {
+      "justice-intelligence-graph.json": "3219a67bf21d0b4b26e10cc29a9ded96a8efadee739059d9368299f2715d26e5",
+      "justice-intelligence-graph.png": "af02ec5ab6cbe1ce765c29da8a87d2c9408f84ea8f974509ef455490ec3cc26c"
+    },
+    "limits": [
+      "diagnostic provider only; no protocol or viewer graph wiring",
+      "one corruption agreement; other types and multi-organization/cyclic graphs unaccepted",
+      "actor/organization details and native search/navigation unaccepted",
+      "window-clipped plot organization_name is not exported"
+    ]
   }
 }

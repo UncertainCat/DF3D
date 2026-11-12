@@ -122,6 +122,7 @@
 #include "justice_convicts_native.h"
 #include "justice_intelligence_native.h"
 #include "justice_intelligence_actors_native.h"
+#include "justice_intelligence_graph_native.h"
 #include "justice_action_native.h"
 #include "justice_presentation_native.h"
 #include <sstream>
@@ -2842,6 +2843,20 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
               row["rank"]=fact.rank;row["flags"]=fact.flags;result.append(row);}
             out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
           }catch(const std::exception&){return CR_WRONG_USAGE;}
+        }
+        if(parameters[0]=="justice-intelligence-graph-probe") {
+            if(parameters.size()!=1 || !state.mapLoaded || df3d_session::saving())return CR_FAILURE;
+            const auto graph=df3d_justice::intelligenceGraph();if(!graph)return CR_FAILURE;
+            Json::Value output;output["actors"]=Json::Value(Json::arrayValue);output["organizations"]=Json::Value(Json::arrayValue);output["plots"]=Json::Value(Json::arrayValue);
+            const auto ids=[](const auto& values){Json::Value result(Json::arrayValue);for(auto value:values)result.append(value);return result;};
+            for(const auto& row:graph->actors){Json::Value value;value["historical_figure"]=row.historicalFigure;value["identity"]=row.identity;value["name"]=DF2UTF(row.name);
+                value["aliases"]=ids(row.aliases);value["principal_organization"]=row.principalOrganization;value["organizations"]=ids(row.organizations);value["plots"]=ids(row.plots);output["actors"].append(value);}
+            for(const auto& row:graph->organizations){Json::Value value;value["name"]=DF2UTF(row.name);value["principal_actor"]=row.principalActor;value["nodes"]=Json::Value(Json::arrayValue);
+                for(const auto& node:row.nodes){Json::Value n;n["actor"]=node.actor;n["parent"]=node.parent;n["sort"]=node.sort;n["tier"]=node.tier;n["descendants"]=node.descendants;
+                    n["label"]=DF2UTF(node.label);n["name"]=DF2UTF(node.name);n["status"]=DF2UTF(node.status);n["foreground"]=node.foreground;n["background"]=node.background;n["bright"]=int(node.bright);value["nodes"].append(n);}
+                output["organizations"].append(value);}
+            for(const auto& row:graph->plots){Json::Value value;value["agreement"]=row.agreement;value["master"]=row.master;value["name"]=DF2UTF(row.name);output["plots"].append(value);}
+            out.print("{}",Json::FastWriter().write(output));return CR_OK;
         }
         if(parameters[0]=="justice-intelligence-actors-probe") {
             if(parameters.size()>2)return CR_WRONG_USAGE;

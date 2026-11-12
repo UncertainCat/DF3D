@@ -130,12 +130,37 @@ impersonation, equal-name ties, native search interaction, relationships, detail
 text and viewer behavior remain unaccepted. The no-result filter check is a
 provider assertion, not a native search interaction comparison.
 
-The Actors/Organizations/Plots collector2b6760 reads the fortress entity's
-`evidence_repository` (entity+1358), constructs presentation entries, writes
-`evidence_hf_filest.temp_flags` at98, and finishes by filtering menu-owned lists.
-Do not call it with the live Justice menu or assume it is a read-only semantic
-API. An owned evidence/graph adapter and native comparison remain required.
-The report provider does not imply that the other three sub-tabs are empty.
+`justice_intelligence_graph_native.h` calls Actors/Organizations/Plots collector
+2b6760 with a data-only ABI context: owned vectors/query, no widget, vtable or
+callbacks. The collector writes `evidence_hf_filest.temp_flags`, so the adapter
+clones the evidence repository and every file, then briefly redirects the
+semantic fortress-entity pointer to an owned entity copy at the safe point.
+RAII restores that pointer and RNG before extraction. No live Justice menu,
+widget, filter or selection is a runtime input. Mode0 avoids native detail
+formatters. Base vectors own native-allocated entries; filtered vectors alias
+them, organizations own nodes, and text-box cleanup uses native bb9b0.
+
+The pointer-free result retains native actor/organization/plot order, names,
+alias IDs, principal and associated relationships, agreement IDs, hierarchy,
+node labels/status and colors. Graph indices are snapshot-local, not persistent
+IDs. The collector's window-clipped plot `organization_name` is deliberately
+not exported; the adapter neither reads nor changes native window geometry.
+The native call internally clips that unused field. Report counts do not imply
+graph availability. This provider is diagnostic-only pending protocol/UI wiring.
+
+Protected `stockpile-storage-native-input-20261112-092919` checks empty evidence
+and a controlled repository referencing existing corruption agreement11. All
+three actors, one organization with Boss/Member/Asset relationships and one plot
+match native Justice, including ordering, node labels, colors and status. Source
+evidence (with temp_flags123), entity, historical figures, agreement and menu
+remain byte-for-byte unchanged; the shared probe also guards RNG and crimes.
+The repository pointer is restored before freeing controlled records. Owned
+DF31304 closes unsaved, source save/preferences are preserved. Native runs at
+30FPS without Godot; observed60C/1% GPU is a sample, not a continuous peak.
+MSVC and all19 core checks pass. `native_justice.json.intelligence_graph_reference`
+retains bounded evidence. Other agreement types, multiple organizations/cycles,
+actor/organization details, search, graph navigation and viewer rendering remain
+unaccepted; public Justice remains hidden.
 
 
 Management protocol200 appends `JusticeConvictsRead` and

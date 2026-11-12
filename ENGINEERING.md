@@ -1325,7 +1325,8 @@ caption, selection frame, row order and all remaining panel pixels match. This
 appearance mismatch was the scheduled portrait frame, resolved by133347 below;
 the separate sorted5815/2459 portrait fixes are recorded in their owning sections.
 Full Justice remains hidden.
-Assumed identities and missing figures still lack live acceptance. Controlled
+Controlled assumed-identity/missing-figure semantic coverage is recorded below;
+their end-to-end viewer workflows remain unaccepted. Controlled
 assigned-job cancellation is covered below; organically progressed interviews
 remain outside that acceptance. `native_justice.json.interrogation_transport_reference` records scope.
 MSVC `justice-interrogate-build.log` and QA `build/qa/justice-interrogate` pass
@@ -1390,7 +1391,29 @@ Justice state/composition QA `justice-scheduled-picture` and core19 pass.
 Owned DF45028 closes unsaved with source/prefs preserved; serial30FPS and
 GPU48–49C samples. Known Godot shutdown diagnostics qualify the live run as
 passed_with_known_issues. `interrogation_picture_frame_reference` records hashes
-and the two comparisons. Assumed identities and missing figures remain open.
+and the two comparisons. Disguised-creature viewer coverage remains open.
+
+Protected140031 on2026-11-12 exercises the existing native-backed interrogation
+action with a controlled assumed identity. In the paused owned clone, unit5698's
+figure9317 temporarily uses existing identity0 through its reputation profile.
+Native checkbox and owned action both append hfid-1, historical_hfid-1,
+visual_hfid9317 and witnessed identities[0]. For cancellation, the probe clears
+the report's visual hfid, leaving only its recorded alias; both paths still
+recognize and remove it. The original reputation pointer/current identity and
+report membership are restored. Native identity resolver13b3030 and insertion/
+matching helpersb9e70/babe0 remain the runtime authority; no code change was needed.
+
+The same run temporarily sets the unit's historical-figure ID to-1. Native
+checkbox activation changes no report; the owned action returns Rejected with
+no report changes. This matches handler4745d7's early exit when hfid is-1.
+The unit field is restored. This does not establish behavior for a nonnegative
+dangling ID, a missing creature, a naturally disguised visitor or viewer naming.
+Earlier135802 verifies ordinary alias cancellation;135856 isolates alias-only
+matching. Fixture `interrogation_identity_reference` records the final effects.
+
+Owned DF7692 closes unsaved with source/prefs preserved. Native-only30FPS,
+GPU49C sample; no viewer or visual parity claim. Core19 passes. Enable
+DF3D_JUSTICE_INTERROGATION_IDENTITY with CANDIDATES/INTERROGATION for this probe.
 
 Protected181858 on2026-11-11 compares actual native checkbox clicks with the
 owned action for case9/unit5698. Both schedule exactly one record

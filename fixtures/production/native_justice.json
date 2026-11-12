@@ -14990,5 +14990,52 @@
       "justice-keyboard.json": "926cda648694ff65014ca2b16647f1905a825d9f7216c83c1f882cd7938e3b62",
       "job-settings-wire-result.json": "a73e5d0896411347b62cafb086aa26b1b5bbceae4ea162dab83a19952a2a3043"
     }
+  },
+  "interrogation_identity_reference": {
+    "source": "build/stockpile-storage-native-input-20261112-140031",
+    "status": "passed",
+    "scope": "Controlled native checkbox versus owned interrogation action: existing assumed identity, alias-only matching, historical-figure ID -1. Paused unsaved clone. Does not accept disguised viewer appearance/name, naturally disguised visitor, missing creature or nonnegative dangling hfid.",
+    "unit_id": 5698,
+    "assumed_identity": {
+      "historical_figure": 9317,
+      "identity_id": 0,
+      "identity_only_cancellation": true,
+      "native_on": [
+        {
+          "hfid": -1,
+          "historical_hfid": -1,
+          "identities": [
+            0
+          ],
+          "visual_hfid": 9317
+        }
+      ],
+      "original_reputation_restored": true,
+      "owned_on": [
+        {
+          "hfid": -1,
+          "historical_hfid": -1,
+          "identities": [
+            0
+          ],
+          "visual_hfid": 9317
+        }
+      ],
+      "reports_restored": true
+    },
+    "missing_historical_figure": {
+      "native_reports_unchanged": true,
+      "owned_outcome": 1,
+      "owned_reports_unchanged": true
+    },
+    "owned_df_closed": 7692,
+    "source_preserved": true,
+    "fps_cap": 30,
+    "gpu_sample_celsius": 49,
+    "viewer_run": false,
+    "sha256": {
+      "justice-candidates.json": "c6324091c349ea96f3a13c6cd34bc96f888d10943c2b9cdeed181fcb818abd6b",
+      "result.json": "55ea401f0907968b16baa48a037a247d52b778f816392f061952e6daa810f1ec"
+    }
   }
 }

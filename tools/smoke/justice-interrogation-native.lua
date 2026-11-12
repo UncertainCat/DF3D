@@ -92,4 +92,43 @@ if os.getenv('DF3D_JUSTICE_INTERROGATION_JOBS')=='1' then
  assert(json.encode(original_ids)==json.encode(final_ids),'Interview fixture changed original job membership')
  result.jobs.original_jobs_preserved=true;result.jobs.job_id_counter_restored=true
 end
+if os.getenv('DF3D_JUSTICE_INTERROGATION_IDENTITY')=='1' then
+ local unit=assert(df.unit.find(unit_id));local hf=assert(df.historical_figure.find(unit.hist_figure_id))
+ assert(hf.info,'Controlled subject has no figure info')
+ local identity=assert(df.global.world.identities.all[0],'No existing identity for controlled probe')
+ local original=hf.info.reputation;local reputation=original or df.reputation_profilest:new()
+ local previous=reputation.cur_identity;local report_count=#crime.reports
+ hf.info.reputation=reputation;reputation.cur_identity=identity.id
+ local ok,err=xpcall(function()
+  assert(dfhack.units.getIdentity(unit).id==identity.id)
+  assert(not selected(),'Assumed identity unexpectedly selected')
+  click(808,190);local native=reports();assert(selected(),'Native assumed-identity scheduling failed')
+  assert(#native==report_count+1 and native[#native].historical_hfid==-1 and native[#native].visual_hfid==hf.id and json.encode(native[#native].identities)==json.encode({identity.id}),'Native assumed-identity record differs')
+  crime.reports[#crime.reports-1].visual_hfid=-1
+  assert(selected(),'Identity-only native record was not recognized')
+  click(808,190);assert(not selected() and json.encode(reports())==json.encode(before),'Native assumed-identity cancellation failed')
+  assert(probe('justice-interrogation-probe',{'9',tostring(unit_id),'0'},true)==2)
+  local owned=reports();assert(selected() and json.encode(owned)==json.encode(native),'Owned assumed-identity scheduling differs')
+  crime.reports[#crime.reports-1].visual_hfid=-1
+  assert(selected(),'Identity-only owned record was not recognized')
+  assert(probe('justice-interrogation-probe',{'9',tostring(unit_id),'1'},true)==2)
+  assert(not selected() and json.encode(reports())==json.encode(before),'Owned assumed-identity cancellation differs')
+  result.assumed_identity={identity_id=identity.id,historical_figure=hf.id,native_on=native,owned_on=owned,reports_restored=true,identity_only_cancellation=true}
+ end,debug.traceback)
+ while #crime.reports>report_count do local report=crime.reports[#crime.reports-1];crime.reports:erase(#crime.reports-1);report:delete()end
+ reputation.cur_identity=previous;hf.info.reputation=original
+ if not original then reputation:delete()end
+ assert(ok,err)
+ result.assumed_identity.original_reputation_restored=true
+ local original_hfid=unit.hist_figure_id;unit.hist_figure_id=-1
+ local missing_ok,missing_err=xpcall(function()
+  click(808,190)
+  assert(json.encode(reports())==json.encode(before),'Native missing-figure click changed reports')
+  local outcome=probe('justice-interrogation-probe',{'9',tostring(unit_id),'0'},true)
+  assert(outcome==1 and json.encode(reports())==json.encode(before),'Owned missing-figure edit was not rejected without effects')
+  result.missing_historical_figure={native_reports_unchanged=true,owned_outcome=outcome,owned_reports_unchanged=true}
+ end,debug.traceback)
+ unit.hist_figure_id=original_hfid
+ assert(missing_ok,missing_err)
+end
 return result

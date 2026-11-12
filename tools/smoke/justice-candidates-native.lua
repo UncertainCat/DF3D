@@ -41,7 +41,22 @@ for _,kind in ipairs{'Interrogate','Convict'}do
   if (widget.flag.whole&1)==0 then return end
   if df.widget_unit_list:is_instance(widget)then
    local ids={};for _,entry in ipairs(widget.entry_list)do if entry.t==0 and entry.u then ids[#ids+1]=entry.u.id end end
-   lists[#lists+1]={ids=ids,filter=widget.filter_str,sort_flags=widget.sort_flags.whole}
+   local sorting={};local base=dfhack.internal.getImageBase()
+   for _,entry in ipairs(widget.sorting_by)do
+    local _,address=df.sizeof(entry.fn);local context=df.reinterpret_cast('uint64_t',address+56).value
+    assert(context~=0,'Empty native sort callback')
+    local vt=df.reinterpret_cast('uint64_t',context).value
+    sorting[#sorting+1]={ident=entry.ident,callback_rva=df.reinterpret_cast('uint64_t',vt+16).value-base}
+   end
+   local displayed={}
+   local function names(child)
+    if df.widget_unit_name:is_instance(child)and child.u then displayed[#displayed+1]=child.u.id end
+    if df.widget_container:is_instance(child)then for _,nested in ipairs(dfhack.gui.getWidgetChildren(child))do names(nested)end end
+   end
+   names(widget)
+   -- Native stores one byte here; generated bitfield whole also reads padding.
+   lists[#lists+1]={ids=ids,filter=widget.filter_str,sort_flags=widget.sort_flags.whole&0xff,sorting=sorting,displayed_ids=displayed,
+    always_sort_count=#widget.always_sorting_by,partition_count=#widget.partitions,filter_count=#widget.filter_func}
   end
   if df.widget_container:is_instance(widget)then for index,child in ipairs(dfhack.gui.getWidgetChildren(widget))do if not df.widget_tabs:is_instance(widget)or index-1==widget.cur_idx then walk(child)end end end
  end
@@ -49,6 +64,13 @@ for _,kind in ipairs{'Interrogate','Convict'}do
  result.panels[#result.panels+1]={kind=kind,facts=supplied,lists=lists}
  local f=assert(io.open(out..'/justice-candidates.json','w'));f:write(json.encode(result));f:close()
  assert(#lists==1 and #lists[1].ids>0,'Justice candidate picker missing')
+ if kind=='Convict' then
+  local ordered=probe('justice-conviction-candidates-probe',9);local ids={}
+  for _,row in ipairs(ordered)do ids[#ids+1]=row.unit_id end
+  assert(json.encode(ids)==json.encode(lists[1].displayed_ids),'Owned conviction list differs from native displayed order')
+  result.conviction_candidates=ordered
+  local f=assert(io.open(out..'/justice-candidates.json','w'));f:write(json.encode(result));f:close()
+ end
  gui.simulateInput(view,'LEAVESCREEN');settle()
  if not info.open then gui.simulateInput(view,'D_JUSTICE');settle()end
 end

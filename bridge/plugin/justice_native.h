@@ -3,6 +3,9 @@
 #include "df/world.h"
 #include "df/plotinfost.h"
 #include "df/unit.h"
+#include "unit_description_native.h"
+#include "location_staff_order_native.h"
+#include <algorithm>
 #include <array>
 #include <vector>
 #include <optional>
@@ -54,6 +57,60 @@ inline std::optional<std::vector<CandidateFact>> candidateFacts(const df::crime*
     return result;
 }
 using Cases=std::array<std::vector<int32_t>,3>; // Open, Closed, Cold.
+// Initial Convict picker: empty search, native Crime then Name priorities.
+// The generic widget builder142c4b0 has no standalone list boundary. Adapt its
+// stable sort pipeline over owned facts, calling the semantic visibility/name
+// readers. Never call487db0: that comparator reads the global Justice map.
+inline std::optional<std::vector<CandidateFact>> initialConvictionCandidates(const df::crime* crime) {
+    const auto facts=candidateFacts(crime);
+    const auto& text=df3d_area::staffOrderingFunctions();
+    if(!facts || !text || !df3d_creature::inventoryDescriptionReady())return std::nullopt;
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool pinned=[base] {
+        struct Pin {size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={
+            {0x487db0,0x94,UINT64_C(0xe48b5fbbfc0a83b0)},
+            {0x487c90,0x31,UINT64_C(0xdd03a6e3629b5c52)},
+            {0x1435a10,0x110,UINT64_C(0x98ce3d80a8c10b09)},
+            {0x14240d0,0x89,UINT64_C(0x4b41b81d7b2cdc3e)},
+            {0x142c4b0,0x73e,UINT64_C(0x2dcc9b7815303ef5)},
+            {0x137bd50,0x2d0,UINT64_C(0xdee22d5bacd12bc9)},
+            {0x1367430,0xc6,UINT64_C(0xc0292be8a6dacf2c)},
+            {0xc8be10,0x14c,UINT64_C(0x1ba19b485a3fa56b)},
+            {0xc8baa0,0x11a,UINT64_C(0x2c62fce4a0555c66)},
+            {0xedfa60,0xbd,UINT64_C(0x2f89116df6b958cc)},
+            {0xedfb20,0x13,UINT64_C(0xa222e60f2f8301e4)},
+            {0x14db50,0xb1,UINT64_C(0x4b9c987ca0656b35)},
+            {0x14dc10,0x5a,UINT64_C(0xfb6e6c7bccbf765b)},
+            {0x67270,6,UINT64_C(0x7dce27ae257f083d)},
+            {0x7a840,6,UINT64_C(0xeff4222c8d49c252)},
+        };
+        for(const auto& pin:pins){uint64_t hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin.length;++i){hash^=base[pin.rva+i];hash*=UINT64_C(1099511628211);}
+            if(hash!=pin.hash)return false;}
+        return true;
+    }();
+    if(!pinned)return std::nullopt;
+    struct Row {CandidateFact fact;std::string name;};
+    std::vector<Row> rows;rows.reserve(facts->size());
+    df3d_creature::InventoryRandomRestore restore(base);
+    for(const auto& fact:*facts) {
+        auto* unit=df::unit::find(fact.unitId);if(!unit)return std::nullopt;
+        if(reinterpret_cast<bool(*)(df::unit*)>(base+0x137bd50)(unit))continue;
+        if(unit->inventory.size()>10000)return std::nullopt;
+        for(const auto* entry:unit->inventory)if(!entry)return std::nullopt;
+        df3d_creature::InventoryDescriptionContext owned(*unit);
+        Row row{fact,{}};text.name(owned.unit(),&row.name,false);text.normalize(&row.name);
+        if(row.name.size()>16384)return std::nullopt;
+        rows.push_back(std::move(row));
+    }
+    std::stable_sort(rows.begin(),rows.end(),[](const Row& a,const Row& b) {
+        return a.fact.rank!=b.fact.rank ? a.fact.rank>b.fact.rank : a.name<b.name;
+    });
+    std::vector<CandidateFact> result;result.reserve(rows.size());
+    for(const auto& row:rows)result.push_back(row.fact);
+    return result;
+}
 // DF inlines this selection in widget construction470757..470f7e; there is
 // no standalone list API at that boundary. Copy the audited selection only,
 // preserving world-vector order. Never call the UI builder or read its lists.

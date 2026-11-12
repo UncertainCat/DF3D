@@ -40,12 +40,38 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+`df3d_justice::initialConvictionCandidates` now returns the initial Convict
+picker's filtered, ordered facts for empty search and default Crime/Name sort.
+It calls native visibility137bd50 and the existing native name/normalization
+readers on owned unit context, then applies the audited stable sort priorities
+to owned ranks and names. Generic widget builder142c4b0 has no standalone list
+boundary; its filtering/stable-sort pipeline and the native comparators are
+pinned. Comparator487db0 remains prohibited because it reads the global map.
+The adapter does not construct a widget or access native lists or selection.
+
+Protected180505 on2026-11-11 compares all293 displayed unit-name widgets in
+the Convict picker with the owned query, including exact order; the raw source
+array contains339 active units. Native sort priorities are Crime then Name,
+with two filters and no Convict partition. Interrogate additionally has one
+partition, which is not implemented by this Convict-only query. This reference
+covers case9 at default sort and empty search, not alternate sorts, search,
+positive intelligence flags, interrogation selection or action effects. The
+earlier180153 discovery established the displayed-list distinction. No unit is
+selected. Menu/crime/RNG guards pass; owned DF39588 closes unsaved with source
+preservation and preferences restored, native30FPS/no viewer, sampled GPU60C/1%.
+`native_justice.json.conviction_list_reference` records the ordered comparison.
+MSVC `justice-conviction-list-build.log` and core19
+`build/qa/justice-conviction-list` pass. Installed bridge SHA256
+`375B3054383B9D5168678098FCE827C8C8ED9D942BB9C5FA685DC1F5F1CDB7E3`;
+protocol191 is unchanged. No public Justice panel exists yet.
+
 `df3d_justice::candidateFacts` calls native46e260 using an owned crime copy and
 an independently constructed context containing only the rank and flag maps at
 360/3a0. It has no widget vtable, callbacks or borrowed menu storage. MSVC map
 layout and native function pins are checked. The native helper computes the
 case-specific values for active units; the adapter returns IDs, ranks and flags.
-It does not yet return the filtered, sorted candidate list or perform an action.
+This lower-level helper does not filter, sort or perform an action; the initial
+Convict query above consumes its facts.
 The native comparator487db0 reads the global Justice rank map directly, so it
 must not be called by the runtime adapter. Visibility137bd50 is an existing
 semantic helper; candidate ordering and display still require their own path.

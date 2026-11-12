@@ -3,6 +3,7 @@
 #include "df/world.h"
 #include "df/plotinfost.h"
 #include "df/unit.h"
+#include "df/witness_reportst.h"
 #include "unit_description_native.h"
 #include "location_staff_order_native.h"
 #include <algorithm>
@@ -15,6 +16,37 @@
 
 namespace df3d_justice {
 struct CandidateFact {int32_t unitId=-1,rank=0;uint32_t flags=0;};
+struct WitnessDates {std::string date,reported;};
+// Case-detail builder473a8d..473ed30 uses the standalone tick and integer
+// formatters. Preserve its year source for Reported (report.year, not
+// reported_year); never invoke the widget builder to obtain these strings.
+inline std::optional<WitnessDates> witnessDates(const df::witness_reportst& report) {
+    auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool pinned=[base] {
+        struct Pin {size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={
+            {0x7734e0,0x199,UINT64_C(0xb71d7de6d18f9da5)},
+            {0x773390,0x150,UINT64_C(0x4549a748969f469c)},
+            {0x52c130,0xb3,UINT64_C(0xf2e358ad54df1c09)},
+            {0x52c2b0,0xd8,UINT64_C(0x38b6489e35387929)},
+            {0x473a8d,0x443,UINT64_C(0x49141d410fe3dec1)},
+        };
+        for(const auto& p:pins){uint64_t h=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<p.length;++i){h^=base[p.rva+i];h*=UINT64_C(1099511628211);}
+            if(h!=p.hash)return false;}
+        return true;
+    }();
+    if(!pinned)return std::nullopt;
+    static_assert(offsetof(df::witness_reportst,year)==0xc);
+    static_assert(offsetof(df::witness_reportst,year_tick)==0x10);
+    static_assert(offsetof(df::witness_reportst,reported_year_tick)==0x74);
+    using Format=void(*)(int32_t,std::string*);
+    std::string year,date,reported;
+    reinterpret_cast<Format>(base+0x52c2b0)(report.year,&year);
+    reinterpret_cast<Format>(base+0x7734e0)(report.year_tick,&date);
+    reinterpret_cast<Format>(base+0x7734e0)(report.reported_year_tick,&reported);
+    return WitnessDates{"Date: "+date+", "+year,"Reported: "+reported+", "+year};
+}
 namespace detail {
 // Native46e260 consumes only these two maps from its first argument. This is
 // owned data storage, not a widget: no vtable, callbacks or native menu borrow.

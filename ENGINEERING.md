@@ -7,6 +7,7 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Native defect | DF3D correction | Status and evidence |
 | --- | --- | --- |
 | Justice's conspiracy case title says “Conspiracy to alow labor”. | No correction approved or implemented; preserve the native title. | Protected174105 on2026-11-11 changes one owned test case through all19 crime types and compares the native case widget text with formatter46d660. Type3 matches this spelling in both. `native_justice.json.caption_reference`. |
+| Justice witness “Reported” uses the event year instead of the report year. | No correction approved or implemented; preserve native output. | Protected182446 on2026-11-11 changes the first witness's reported_year106→107 while retaining event year106. Native still displays “Reported: 15th Slate, 106”, matching the owned formatter. Builder473eaa loads offsetc (year), although its day/month uses reported_year_tick at74. The field is restored. `native_justice.json.witness_dates_reference`. |
 | Places hospital patient count overwrites assigned-staff count on the same line, leaving trailing characters. | No correction approved; retain both captions and native overlay order. | Protected144436/144602 on DF53.16:4 assigned plus1 patient renders1 patientd. Renderer39d76c/39da5d uses the same coordinates without clearing. `native_places.json.hospital_queue_reference`. Viewer implementation remains pending. |
 | Skin item composition repeats the first pattern color for the overlay instead of using the second. | No correction approved or implemented; preserve native packing. | Native c7f1d9 copies the first packed color before shifting it into the second byte. Protected104608 on2026-11-10 uses existing STRIPES_ORANGE_BLACK on a controlled skin-material fixture and produces ORANGE palette row73 on both layers, with a pixel-identical viewer panel. `native_stocks.json.corpse_item_description_reference.skin_selector_reference`. |
 | Stocks Recenter tooltip says "recenter the view on the time" instead of "item". | No correction approved or implemented; preserve the native wording. | Protected232831 pointer instruction205 and rendered text cells confirm the typo. `native_stocks.json.hover_reference`; the viewer uses those verbatim lines. Native overlay PNG capture is not accepted because the screenshot handshake loses the hover overlay. |
@@ -39,6 +40,26 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 | Hovering a location staff occupation substitutes the tooltip enum for the icon enum, changing artwork. | Keep the occupation icon stable while showing help. | Implemented; performer crop remains identical while hovered in location-staff-indicators-crops, live101533. All ten occupation-role hover crops remain stable in location-staff-help-hitboxes. Native091520 performer portrait hover changes tile136347 to132199; renderer3b8798 writes hover262 into the register previously holding graphic388. |
 
 ## Justice native discovery
+
+`df3d_justice::witnessDates` supplies the native Date/Reported strings using
+standalone tick formatter7734e0 and integer formatter52c2b0 with owned strings.
+The month helper773390 and tick formatter's ordinal dispatch tables are pinned,
+along with the case-builder span establishing fields and prefixes. There is no
+native widget/menu input. Reported deliberately uses report.year like DF; the
+confirmed cross-year defect is tracked in the native-bug register above.
+
+Protected182446 on2026-11-11 compares both strings for all39 witnesses of case9,
+then repeats after changing the first witness's reported year106→107. Both
+ordered sets match native widget text exactly; the field is restored before
+closing. The query preserves menu, crime, witness-record and RNG bytes. Owned
+DF34864 closes unsaved with source preservation/restored preferences, native
+30FPS/no viewer, GPU60C/6%. MSVC `justice-dates-build.log` and core19
+`build/qa/justice-dates` pass. Installed bridge SHA256
+`00C5EECC99E88578D2782AC4309B3BCFEC91E9962451383D6B6B6E94B5AA8911`;
+protocol191 is unchanged. `native_justice.json.witness_dates_reference` records
+the comparisons. Enable `DF3D_JUSTICE_DETAILS=1` with the native flag. This
+accepts date text only; witness identity/description/status and case-detail
+rendering still need their semantic providers and public-screen integration.
 
 `df3d_justice::toggleInterrogation` in `justice_action_native.h` adds/removes
 pending interview records without opening a native picker. Handler474550 has

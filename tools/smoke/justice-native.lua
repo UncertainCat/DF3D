@@ -10,7 +10,10 @@ end
 local function probe(command,argument,mutation)
  local menu=df.global.game.main_interface.info.justice;local size,address=df.sizeof(menu)
  local before=bytes(address,size);local rng=bytes(base+0x234e990,0x6180);local crimes={}
- for _,crime in ipairs(df.global.world.crimes.all)do local n,p=df.sizeof(crime);crimes[#crimes+1]={p=p,n=n,before=bytes(p,n)}end
+ for _,crime in ipairs(df.global.world.crimes.all)do
+  local n,p=df.sizeof(crime);crimes[#crimes+1]={p=p,n=n,before=bytes(p,n)}
+  for _,report in ipairs(crime.witnesses)do local n,p=df.sizeof(report);crimes[#crimes+1]={p=p,n=n,before=bytes(p,n)}end
+ end
  local arguments=type(argument)=='table'and argument or(argument and {tostring(argument)}or{})
  local text,rc=dfhack.run_command_silent('df3d',command or 'justice-captions-probe',table.unpack(arguments));assert(rc==0,'Justice provider failed: '..text)
  assert(bytes(address,size)==before,'Justice caption provider changed menu')
@@ -154,6 +157,10 @@ end
 if os.getenv('DF3D_JUSTICE_CASES')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-native%.lua$','justice-cases-native.lua')
  assert(loadfile(source))(out,view,probe,settle,caption_click,native_captions)
+end
+if os.getenv('DF3D_JUSTICE_DETAILS')=='1' then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-native%.lua$','justice-details-native.lua')
+ assert(loadfile(source))(out,view,probe,settle,caption_click,capture)
 end
 if os.getenv('DF3D_JUSTICE_CANDIDATES')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-native%.lua$','justice-candidates-native.lua')

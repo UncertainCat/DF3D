@@ -5791,5 +5791,658 @@
     },
     "native_selected_caption": "Interview Scheduled",
     "limits": "Paused native/owned scheduling and cancellation for a normal historical figure; stale repeated scheduling rejected. No running interrogation job, assumed identity, missing figure, transport or public screen acceptance."
+  },
+  "witness_dates_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-182446",
+    "status": "passed",
+    "owned_df_pid": 34864,
+    "source_preserved": true,
+    "fps_cap": 30,
+    "crime_id": 9,
+    "cases": [
+      {
+        "crossyear": false,
+        "native": [
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 16th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 16th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 16th Slate, 106"
+          }
+        ],
+        "owned": [
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 16th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 16th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 16th Slate, 106"
+          }
+        ],
+        "reported_year": 106,
+        "year": 106
+      },
+      {
+        "crossyear": true,
+        "native": [
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 16th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 16th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 16th Slate, 106"
+          }
+        ],
+        "owned": [
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 15th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 16th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 16th Slate, 106"
+          },
+          {
+            "date": "Date: 14th Slate, 106",
+            "reported": "Reported: 16th Slate, 106"
+          }
+        ],
+        "reported_year": 107,
+        "year": 106
+      }
+    ],
+    "limits": "Native Date/Reported text for 39 witnesses and controlled cross-year report. Preserves native event-year reuse for Reported. Does not accept other case-detail text or rendering. Widget inspection is oracle only."
   }
 }

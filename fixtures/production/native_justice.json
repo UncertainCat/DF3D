@@ -11473,5 +11473,23 @@
       "justice-sorts-refreshed-body.png": "882e60b533ec5ccca735f1b6fc502771fb9a60bf9230bb3c72c65da4262c244d",
       "justice-sorts.json": "acf1f03d04575c981f15ce1f941e1a147cace2a757c2f6e2dd9e58e20e4a6930"
     }
+  },
+  "candidate_artwork_condition_discovery": {
+    "run": "build/stockpile-storage-native-input-20261112-112406",
+    "owned_df_pid": 24676,
+    "source_preserved": true,
+    "native_fps": 30,
+    "scope": "Read-only semantic pattern and resolver tissue traces; no product fix or parity acceptance",
+    "findings": [
+      "Native720acd..720b56 compares selected pattern IDs to cgl tissue color_index; current resolver compares component color IDs. Affected dwarf hair uses solid patterns49/92/112, so this alone does not explain its mismatch.",
+      "Native720c53/720d63 calls6bde70 for effective length/density; helper reads appearance bp_modifiers at700 and applies optional per-index multiplier at8c8 divided by100. Current resolver reads base vector directly. Applicability to the affected unit remains unverified.",
+      "Native tissue style reads body-plan layer.styleable_id at720e25, then the unit tissue_style vector; current resolver finds style through caste parallel arrays. No difference established yet."
+    ],
+    "artifacts": {
+      "justice-artwork-5815-patterns.json": "72f96839b6ce485565699233937eb9667ce29b373c9438c368ebaba34edbc725",
+      "justice-artwork-2459-patterns.json": "edf3732ea1c844cd16755675252ebde4f48379b8003e42a2190c983f933354dc",
+      "justice-artwork-5815-tissue.txt": "bd5a8bff696240b4fe64ea25f070126f2db3b2ba908b0b427afc3cffebed547c",
+      "justice-artwork-2459-tissue.txt": "4bdc18a08bf722e81c202868a3ef2b57fd176a5df21577d0aa76df5514070b20"
+    }
   }
 }

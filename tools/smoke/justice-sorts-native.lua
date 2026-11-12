@@ -81,10 +81,21 @@ capture('justice-sorts')
 if os.getenv('DF3D_JUSTICE_ARTWORK_DIAG')=='1' then
  -- Protected diagnostic only; never supply native texture caches to runtime.
  for _,id in ipairs{5815,2459}do
+  local unit=df.unit.find(id);local caste=df.global.world.raws.creatures.all[unit.race].caste[unit.caste];local colors={}
+  for i,cm in ipairs(caste.color_modifiers)do
+   local choice=unit.appearance.colors[i]
+   if choice and choice>=0 and choice<#cm.pattern_index then
+    local pattern=cm.pattern_index[choice];local raw=df.global.world.raws.descriptors.patterns[pattern];local values={}
+    for _,color in ipairs(raw.colors)do values[#values+1]=color end
+    colors[#colors+1]={modifier=i,pattern=pattern,pattern_name=raw.id,colors=values,start_date=cm.start_date,end_date=cm.end_date}
+   end
+  end
+  local f=assert(io.open(out..'/justice-artwork-'..id..'-patterns.json','w'));f:write(json.encode(colors));f:close()
   for _,args in ipairs{{'appearance',tostring(id)},{'appearance',tostring(id),'trace','*'},
+   {'appearance',tostring(id),'trace','*tissue'},
    {'appearance','layersets',tostring(id),'500'}}do
    local text,rc=dfhack.run_command_silent('df3d',table.unpack(args));assert(rc==0,text)
-   local suffix=args[2]=='layersets'and'layers'or(args[3]or'facts')
+   local suffix=args[2]=='layersets'and'layers'or(args[4]=='*tissue'and'tissue'or(args[3]or'facts'))
    local f=assert(io.open(out..'/justice-artwork-'..id..'-'..suffix..'.txt','w'));f:write(text);f:close()
   end
  end

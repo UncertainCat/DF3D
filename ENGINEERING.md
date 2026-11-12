@@ -503,6 +503,16 @@ restores flags/icon handles, closes owned DF2836 unsaved and preserves the sourc
 Native runs at30FPS without Godot; sampled GPU48C/0%. Core19 passes.
 `candidate_artwork_body_refresh_reference` retains evidence; no gameplay/runtime
 code reads or edits these native graphics caches.
+Read-only condition discovery112406 records selected pattern IDs and tissue
+traces for both affected units. Native720acd..720b56 compares pattern IDs, while
+the current adapter compares component color IDs. The dwarf hair patterns are
+solid49/92/112, so that mismatch alone does not explain the observed missing hair.
+Native720c53/720d63 calls6bde70 for effective length/density, including optional
+per-index multipliers; the adapter currently reads the base modifier vector.
+Native720e25 reads styleable_id from the unit body-plan tissue layer; the adapter
+uses caste parallel arrays. These are investigation targets, not accepted fixes.
+Owned DF24676 closes unsaved with source preservation at30FPS, no viewer.
+`candidate_artwork_condition_discovery` records hashes and explicit limitations.
 Unit5815 has no inventory and the trace rejects its hair tissue conditions;
 unit2459's resolved clothing uses palette row88 from worn items reporting color87.
 Those observations identify investigation areas, not proven causes. Native

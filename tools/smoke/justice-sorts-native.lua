@@ -87,10 +87,33 @@ if os.getenv('DF3D_JUSTICE_ARTWORK_DIAG')=='1' then
    if choice and choice>=0 and choice<#cm.pattern_index then
     local pattern=cm.pattern_index[choice];local raw=df.global.world.raws.descriptors.patterns[pattern];local values={}
     for _,color in ipairs(raw.colors)do values[#values+1]=color end
-    colors[#colors+1]={modifier=i,pattern=pattern,pattern_name=raw.id,colors=values,start_date=cm.start_date,end_date=cm.end_date}
+    local coverage={};for n,bp in ipairs(cm.body_part_id)do coverage[#coverage+1]={bp=bp,tl=cm.tissue_layer_id[n]}end
+    colors[#colors+1]={coverage=coverage,modifier=i,pattern=pattern,pattern_name=raw.id,colors=values,start_date=cm.start_date,end_date=cm.end_date}
    end
   end
   local f=assert(io.open(out..'/justice-artwork-'..id..'-patterns.json','w'));f:write(json.encode(colors));f:close()
+  local facts={modifiers={},styles={},items={},birth_year=unit.birth_year,birth_time=unit.birth_time,year=df.global.cur_year,tick=df.global.cur_year_tick}
+  for bp,part in ipairs(unit.body.body_plan.body_parts)do for tl,layer in ipairs(part.layers)do
+   if layer.styleable_id>=0 then
+    local indices={}
+    for _,index in ipairs(layer.bp_modifiers)do
+     local kind=caste.bp_appearance.modifier_idx[index]
+     indices[#indices+1]={index=index,type=caste.bp_appearance.modifiers[kind].modifier.type,base=unit.appearance.bp_modifiers[index],factor=index<#unit.uwss_bp_modifer and unit.uwss_bp_modifer[index]or 100}
+    end
+    facts.modifiers[#facts.modifiers+1]={bp=bp,tl=tl,styleable_id=layer.styleable_id,style=unit.appearance.tissue_style[layer.styleable_id],indices=indices}
+   end
+  end end
+  for _,inv in ipairs(unit.inventory)do
+   local it=inv.item;local improvements={}
+   if df.item_constructed:is_instance(it)then for _,imp in ipairs(it.improvements)do
+    local entry={type=imp:getType()}
+    if df.itemimprovement_threadst:is_instance(imp)or df.itemimprovement_colorationst:is_instance(imp)then entry.dye=imp.dye_profile.color_index;if df.itemimprovement_threadst:is_instance(imp)then entry.dye_material=imp.dye.mat_type;entry.dye_index=imp.dye.mat_index end end
+    improvements[#improvements+1]=entry
+   end end
+   facts.items[#facts.items+1]={id=it.id,improvements=improvements}
+  end
+  f=assert(io.open(out..'/justice-artwork-'..id..'-inputs.json','w'));f:write(json.encode(facts));f:close()
+
   for _,args in ipairs{{'appearance',tostring(id)},{'appearance',tostring(id),'trace','*'},
    {'appearance',tostring(id),'trace','*tissue'},
    {'appearance','layersets',tostring(id),'500'}}do

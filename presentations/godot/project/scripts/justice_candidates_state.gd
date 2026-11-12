@@ -59,6 +59,16 @@ func _read(value: String,retain: bool) -> void:
 func seek(value: int,capacity: int) -> void:
 	if phase!=Phase.Ready:return
 	first=clampi(value,0,maxi(0,rows.size()-maxi(1,capacity)));changed.emit()
+func move_cursor(step: int,capacity: int) -> void:
+	if phase!=Phase.Ready or rows.is_empty():return
+	# Native unit-list feed142d590 ->140f050 and cursor142cc00: clamp the
+	# selection, then scroll only when it leaves the visible row interval.
+	var index:=rows.find_custom(func(row):return row.unit_id==cursor_id)
+	index=clampi(maxi(0,index)+step,0,rows.size()-1);cursor_id=rows[index].unit_id
+	if capacity<=0:first=0
+	elif index<first:first=index
+	elif index>=first+capacity:first=index-capacity+1
+	changed.emit()
 func select_sort(column: int,retain:=false,remove:=false) -> void:
 	if crime_id<0 or column<0 or column>3 or phase in [Phase.Closed,Phase.Applying,Phase.Unknown,Phase.Unavailable]:return
 	if remove:

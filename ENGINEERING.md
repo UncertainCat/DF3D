@@ -553,6 +553,29 @@ with source/prefs preserved; known Godot diagnostics qualify the live run.
 Serial30FPS, sampled GPU48C. `picker_return_reference` retains provenance and
 hashes. Numeric4/keypad aliases and other keyboard navigation remain unaccepted.
 
+Candidate Up/Down and Page Up/Down move the local cursor even when the filter
+has focus. Native unit-list feed142d590 invokes140f050 for one-row/page steps,
+then142cc00 clamps the cursor and moves the viewport only when needed to keep
+it visible. DF3D applies those presentation rules to its owned native-ordered
+rows; selection movement submits no gameplay action. Numeric/keypad aliases,
+endpoints and other viewport sizes remain separate acceptance gaps.
+
+Protected131714 on2026-11-12 verifies26 cursor/scroll/focus states across both
+pickers, including focused filters. The sampled sequence selects1/2/15/14/1
+with first-visible rows0/0/3/3/1 at13-row capacity. Nine of20 rendered panel
+crops(32,52)-(976,760) match native exactly; remaining differences are confined
+to1176 animated name-color pixels and/or the8-pixel filter caret. Portraits,
+selection borders and scrollbars match in these captures. Native context-scroll
+probes do not establish physical wheel acceptance; wheel behavior is unchanged.
+
+Earlier131552 read the engine cursor before the queued key event completed;
+its captures lagged one action and are not accepted. The final test waits for
+input processing before checking/rendering, with no runtime correction needed.
+Justice state/composition and core19 pass. Owned DF42148 closes unsaved with
+source/prefs preserved; serial30FPS, GPU48–49C samples. Known Godot diagnostics
+qualify the live result. `candidate_keyboard_navigation_reference` retains
+bounded states, comparisons and hashes.
+
 
 Management protocol198 adds `JusticeInterrogate`, the candidate request/page
 `interrogate` mode, and an `expected_selected` comparison for checkbox edits.

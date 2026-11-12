@@ -27,6 +27,7 @@ func run() -> void:
 		if world.poll_management().get("transport_alive",false):break
 		await create_timer(0.01).timeout
 	await request("construction",{"action":C.ManagementAction.Catalog})
+	if OS.get_environment("DF3D_JUSTICE_LIST_NAV")=="1":await candidate_list_navigation();return
 	if OS.get_environment("DF3D_JUSTICE_PICKER_NAV")=="1":await picker_navigation();return
 	if OS.get_environment("DF3D_JUSTICE_KEYBOARD")=="1":await keyboard_focus();return
 	if OS.get_environment("DF3D_JUSTICE_CANDIDATE_HOVER")=="1":await candidate_hover();return
@@ -253,6 +254,32 @@ func run() -> void:
 	result.store_string(JSON.stringify({"success":not failed,"counts":counts,"witnesses":report_count,"stale_tabs":3,"controller_tabs":3,
 		"closed_read_retired":true,"candidate_count":candidate_count,"candidate_queries":3,"sort_scopes":reference.sorts.size(),"interrogated":interrogated,"convicted":applied,"picker_controller":applied}));result.close()
 	quit(1 if failed else 0)
+
+func candidate_list_navigation() -> void:
+	root.size=Vector2i(1200,800);check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Justice list navigation assets unavailable")
+	var actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(actions);actions.configure(world,true)
+	var controller=preload("res://scripts/justice_state.gd").new();controller.configure(actions);controller.open()
+	var view=preload("res://scripts/justice_view.gd").new();root.add_child(view);view.configure_justice(world,controller);view.layout(Vector2(1200,800));await settle_controller(controller)
+	var observations: Array=JSON.parse_string(FileAccess.get_file_as_string(directory+"/justice-keyboard.json"));var mode: String="";var index:=0;var checked:=0
+	var keys: Dictionary={"STANDARDSCROLL_UP":KEY_UP,"STANDARDSCROLL_DOWN":KEY_DOWN,"STANDARDSCROLL_PAGEUP":KEY_PAGEUP,"STANDARDSCROLL_PAGEDOWN":KEY_PAGEDOWN}
+	for observation: Dictionary in observations:
+		index+=1
+		if observation.tab!=mode:
+			controller.candidates.close();controller.open_candidates(observation.tab=="Interrogate");await settle_picker(controller);mode=observation.tab
+		if observation.label=="filter":
+			var event:=InputEventKey.new();event.keycode=KEY_F;event.ctrl_pressed=true;event.pressed=true;Input.parse_input_event(event);await create_timer(0.1).timeout
+		if keys.has(observation.label):
+			var event:=InputEventKey.new();event.keycode=keys[observation.label];event.pressed=true;Input.parse_input_event(event);await create_timer(0.1).timeout
+		if observation.label.begins_with("CONTEXT_"):continue
+		var model=controller.candidates;var selected: int=model.rows.find_custom(func(row):return row.unit_id==model.cursor_id)
+		var native_scroll: Dictionary=observation.scrolling[-1]
+		check(selected==int(observation.cursor) and model.first==int(native_scroll.scroll),"Candidate keyboard selection/scroll differs at "+str(index))
+		check(view.search.has_focus()==observation.focused,"Candidate navigation filter focus differs")
+		checked+=1
+		if keys.has(observation.label):
+			await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/justice-list-nav-view-"+str(index)+".png")
+	controller.close();controller.dispose();view.queue_free();actions.queue_free();world.queue_free();await process_frame
+	var result:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);result.store_string(JSON.stringify({"success":not failed,"keyboard_states":checked}));result.close();quit(1 if failed else 0)
 
 func picker_navigation() -> void:
 	root.size=Vector2i(1200,800);check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Justice navigation assets unavailable")

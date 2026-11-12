@@ -13,12 +13,16 @@ end
 local ok,err=xpcall(function()
  assert(original==0,'Intelligence oracle requires empty baseline')
  assert(#probe('justice-intelligence-reports-probe',80)==0)
+ local long=os.getenv('DF3D_JUSTICE_REPORT_SCROLL')=='1'
  for i=1,2 do
   local r=df.interrogation_report:new();r.title='Synthetic interrogation report '..i..': a deliberately long title for native wrapping verification.'
   r.officer_name='Synthetic officer '..i;r.officer_hf=-1;r.subject_hf=-1;r.subject_identity_id=-1;r.flags.whole=0
   reports:insert('#',r);added[#added+1]=r
   for _,text in ipairs{'Synthetic detail paragraph: '..string.rep('native wrapping words ',12),'Second synthetic detail paragraph.'}do
    local line=df.new('string');line.value=text;r.details:insert('#',line)
+  end
+  if long then
+   for n=1,80 do local line=df.new('string');line.value='Synthetic report paragraph '..n..': native scrolling reference.';r.details:insert('#',line)end
   end
  end
  gui.simulateInput(view,'LEAVESCREEN');settle();gui.simulateInput(view,'D_JUSTICE');settle();if df.global.game.main_interface.help.open then click(711,430)end;tab('Intelligence')
@@ -35,6 +39,16 @@ local ok,err=xpcall(function()
  samples[#samples+1]={name='detail',columns=columns,native=native,provider=supplied[1],viewed=added[1].flags.viewed};write()
  assert(json.encode(native)==json.encode(supplied[1].lines),'Native report wrapping differs')
  capture('justice-intelligence-detail')
+ if long then
+  local function record_scroll(name)
+   samples[#samples+1]={name=name,first=menu.scroll_position_interrogation_report};write();capture('justice-intelligence-'..name)
+  end
+  for _,step in ipairs{{'CONTEXT_SCROLL_DOWN','report-wheel'},{'CONTEXT_SCROLL_PAGEDOWN','report-page'}}do
+   g.precise_mouse_x=200;g.precise_mouse_y=250;g.mouse_x=25;g.mouse_y=20;df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1
+   gui.simulateInput(view,step[1]);settle();record_scroll(step[2])
+  end
+  click(952,730);record_scroll('report-arrow')
+ end
  if os.getenv('DF3D_JUSTICE_WIRE_INTELLIGENCE')=='1' then
   local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-intelligence%-native%.lua$','justice-wire-native.lua')
   assert(loadfile(source))(out,probe,bytes)

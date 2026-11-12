@@ -174,8 +174,22 @@ pass. Known Godot shutdown diagnostics qualify the live run as
 `passed_with_known_issues`. `intelligence_horizontal_chart_reference` records
 hashes and scope. Runtime graph inputs remain independent of native menu caches.
 
-Other edge rasterization patterns, dragging, report-specific scrolling and other
-keyboard behavior remain unfinished.
+Protected `stockpile-storage-native-input-20261112-111248` verifies a169-line
+interrogation report loaded through multiple32-line semantic responses. Native
+CONTEXT_SCROLL_DOWN/PAGEDOWN and a visible down-arrow click produce offsets1/48/49;
+viewer wheel/Shift-wheel/arrow input matches. Initial detail and three scrolled
+report-area crops match native pixels, including scrollbar geometry. The existing
+runtime needed no change. The oracle reasserts hidden-window mouse focus before
+each command; the earlier111153 attempt omitted this and is not scroll acceptance.
+Owned DF14568 closes unsaved with source preservation, both clients at30FPS;
+sampled GPU50C/1%. State/composition and core19 checks pass; known shutdown
+diagnostics qualify the live run. `intelligence_long_report_scroll_reference`
+retains bounded hashes. This covers controlled report detail at default size,
+not roster overflow, resize/drag or physical Windows wheel delivery. The separate
+refresh-dependent native byline decision remains pending.
+
+Other edge rasterization patterns, dragging, report roster overflow/resized
+scrolling and other keyboard behavior remain unfinished.
 
 Protected `stockpile-storage-native-input-20261112-104816` exercises a populated
 report roster alongside the graph tabs. Switching from an open report to Actors

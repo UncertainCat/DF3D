@@ -11361,5 +11361,60 @@
       "other edge patterns, dragging and report-specific scrolling remain pending",
       "known separate-renderer/finalize/ObjectDB shutdown diagnostics"
     ]
+  },
+  "intelligence_long_report_scroll_reference": {
+    "run": "build/stockpile-storage-native-input-20261112-111248",
+    "protocol": 203,
+    "status": "passed_with_known_issues",
+    "owned_df_pid": 14568,
+    "source_preserved": true,
+    "fps": 30,
+    "wrapped_lines": 169,
+    "native_inputs": [
+      "CONTEXT_SCROLL_DOWN",
+      "CONTEXT_SCROLL_PAGEDOWN",
+      "left click952,730"
+    ],
+    "viewer_inputs": [
+      "wheel down200,250",
+      "Shift-wheel down200,250",
+      "left click952,730"
+    ],
+    "scroll_cells": [
+      1,
+      48,
+      49
+    ],
+    "report_crop": [
+      40,
+      160,
+      960,
+      740
+    ],
+    "different_pixels": {
+      "detail": 0,
+      "report-wheel": 0,
+      "report-page": 0,
+      "report-arrow": 0
+    },
+    "artifacts": {
+      "justice-intelligence.json": "4c1e5015b2ac8059962916cefe33d248e75a01910d0df97f28c09c32f858e548",
+      "job-settings-wire-result.json": "7e9ef0d25507095d8e3ae44bb45fb3e2800d9b4dd015eaad2a6e5e4021e70543",
+      "justice-intelligence-detail.png": "948a61eb210260633d7ec8425c2ff7589ce2c4cef0839f6c179194d17f4e2366",
+      "justice-intelligence-detail-view.png": "d40ac9ab1da19fa97e559f81a98cb1a3642d5a607ab97aa26a81207c62fe72a0",
+      "justice-intelligence-report-wheel.png": "cc751936c0c9900b02ceaaeaa524f31e42029359786d632b7bf33b5858518117",
+      "justice-intelligence-report-wheel-view.png": "b723f7957bd4a84e573acc6e2c1049b04a717ffd25e8956c86d7e3dc8c088fb8",
+      "justice-intelligence-report-page.png": "db760e7f3dc0557df98d78a11bc7209616a426ff6d70abfbe503fe74d5e1482f",
+      "justice-intelligence-report-page-view.png": "cb03ab70f0a43661c9bb513067d0772b39f3e1ba03e24fb71fdb958f48b28cff",
+      "justice-intelligence-report-arrow.png": "4498031a5b12d8210a9581f58ee975e276c0f22e2cdb8c0667c90e5e77f2224d",
+      "justice-intelligence-report-arrow-view.png": "1a7252c5ec0c3e364803a0dd53086de1b3b4d1357312bdfc8ed1eeba2b82e416"
+    },
+    "limits": [
+      "controlled synthetic reports, no real interrogation effect acceptance",
+      "native command semantics, not physical Windows wheel injection",
+      "dragging, roster overflow and resized report scrolling remain pending",
+      "refresh-dependent native byline exception still awaits maintainer decision",
+      "known separate-renderer/finalize/ObjectDB shutdown diagnostics"
+    ]
   }
 }

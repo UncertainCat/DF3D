@@ -369,6 +369,17 @@ func run_intelligence(reference: Array) -> void:
 	if view!=null:
 		await process_frame;await process_frame;await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(directory+"/justice-intelligence-detail-view.png")
+		if OS.get_environment("DF3D_JUSTICE_REPORT_SCROLL")=="1":
+			var samples: Array=JSON.parse_string(FileAccess.get_file_as_string(directory+"/justice-intelligence.json"))
+			for step in [{"name":"report-wheel","shift":false},{"name":"report-page","shift":true},{"name":"report-arrow"}]:
+				if step.has("shift"):
+					var event:=InputEventMouseButton.new();event.button_index=MOUSE_BUTTON_WHEEL_DOWN;event.pressed=true;event.position=Vector2(200,250);event.shift_pressed=step.shift
+					Input.parse_input_event(event);Input.flush_buffered_events();await process_frame
+				else:await pointer_click(Vector2(952,730))
+				var expected: Dictionary=samples.filter(func(sample):return sample.name==step.name)[0]
+				check(model.first==int(expected.first),"Native report scroll differs: "+step.name)
+				await process_frame;await RenderingServer.frame_post_draw
+				root.get_texture().get_image().save_png(directory+"/justice-intelligence-"+step.name+"-view.png")
 	var stale:=await request("justice",{"action":C.ManagementAction.JusticeIntelligenceRead,"tab":5,"offset":0,"limit":32,"expected_list_revision":model.revision+1,"report_index":0,"text_columns":112})
 	check(stale.get("status")==C.ManagementStatus.Rejected and stale.get("justice",{}).get("outcome")==C.JusticeOutcome.Stale,"Stale report selection accepted")
 	controller.dispose();if view!=null:view.queue_free()

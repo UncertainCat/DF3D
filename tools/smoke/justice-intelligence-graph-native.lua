@@ -4,6 +4,7 @@ local gui=require('gui');local json=require('json');local g=df.global.gps
 local entity=df.global.plotinfo.main.fortress_entity;assert(entity)
 local original=entity.evidence_repository;local repository=df.evidence_repositoryst:new();local files={}
 local reports=df.global.world.status.interrogation_reports;local report_count=#reports;local added_reports={}
+local layout_org,layout_original;local layout_added={}
 local function reopen()
  gui.simulateInput(view,'LEAVESCREEN');settle();gui.simulateInput(view,'D_JUSTICE');settle()
  if df.global.game.main_interface.help.open then
@@ -203,9 +204,36 @@ local ok,err=xpcall(function()
    resize('minimum');record('organizations-minimum')
    resize('default');record('organizations-restored')
   end
+  if os.getenv('DF3D_JUSTICE_GRAPH_LAYOUT_WIDE')=='1' then
+   click(324,148);assert(#menu.organization_entry==1,'Wide layout fixture requires one organization')
+   layout_org=menu.organization_entry[0];layout_original={}
+   for _,node in ipairs(layout_org.node)do layout_original[#layout_original+1]=node end
+   local root=layout_original[1];local template=layout_original[#layout_original]
+   while #layout_org.node>0 do layout_org.node:erase(#layout_org.node-1)end
+   layout_org.node:insert('#',root)
+   -- Layout-only oracle inputs, after semantic provider/wire comparisons.
+   -- Reuse real captions/actors; no gameplay relationships are changed.
+   for i=1,32 do
+    local node=df.organization_entry_nodest:new();node.actor_entry=template.actor_entry;node.master=root;node.tier=2;node.sort_id=template.sort_id
+    node.label=template.label;node.name=template.name;node.status=template.status;node.fcol=template.fcol;node.bcol=template.bcol;node.br=template.br
+    layout_added[#layout_added+1]=node;layout_org.node:insert('#',node)
+   end
+   layout_org.flag.whole=layout_org.flag.whole&~1
+   menu.selected_counterintelligence_oen=root;settle();record('layout-wide')
+   click(924,340);record('layout-wide-right')
+   click(896,340);record('layout-wide-last')
+   click(96,340);record('layout-wide-left')
+  end
   local output=assert(io.open(out..'/justice-graph-presentation.json','w'));output:write(json.encode(states));output:close()
  end
 end,debug.traceback)
+if layout_org then
+ while #layout_org.node>0 do layout_org.node:erase(#layout_org.node-1)end
+ for _,node in ipairs(layout_original)do layout_org.node:insert('#',node)end
+ layout_org.flag.whole=layout_org.flag.whole&~1
+ df.global.game.main_interface.info.justice.selected_counterintelligence_oen=layout_original[1]
+ for _,node in ipairs(layout_added)do node:delete()end
+end
 if #added_reports>0 then
  gui.simulateInput(view,'LEAVESCREEN');settle()
  while #reports>report_count do reports:erase(#reports-1)end

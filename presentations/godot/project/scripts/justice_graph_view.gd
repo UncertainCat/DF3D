@@ -50,6 +50,15 @@ func positions(org: Dictionary,box: Rect2) -> Dictionary:
 	var bottom:=0;var vertical_shift:=0;var height:=int(box.size.y/12)-2
 	for i in range(org.first_node,org.first_node+org.node_count):bottom=maxi(bottom,nodes[i].tier*6+4)
 	var selected: int=model().selected_node if xs.has(model().selected_node) else org.first_node
+	# Native477cfd follows the selected X only when the chart is wider than
+	# its row; edge clamps prevent panning past the hierarchy's bounds.
+	var left:=0;var right:=0;var width:=int(box.size.x/8)-1
+	for i in range(org.first_node,org.first_node+org.node_count):left=mini(left,xs[i]);right=maxi(right,xs[i]+4)
+	if org.node_count>0 and right-left+1>=width-5:
+		var half:=int((width-3)/2.0);var x: int=xs[selected];var shift: int=-x
+		if x-2+half>right:shift=half-right-2
+		elif x-half+2<left:shift=2-left-half
+		center+=shift*8
 	if org.node_count>0 and bottom+1>=height-2:
 		vertical_shift=6-nodes[selected].tier*6
 		if height-8+nodes[selected].tier*6>bottom:vertical_shift=height-bottom-2
@@ -110,6 +119,9 @@ func draw_organization(org: Dictionary,box: Rect2) -> void:
 	# vertical panning places part of a node behind the caption row.
 	if actor>=0:clipped_text(clipped("Selected actor: "+all.actors[actor].name,m.columns),box.position+Vector2(16,24),viewport_rect())
 func chart_text(value: String,point: Vector2,color:=15) -> void:
+	# Native47803d/4780b7/478135 suppress node text whose starting cell is
+	# outside the chart; only text starting inside gets right-edge clipping.
+	if not chart_clip.has_point(point-Vector2(0,12)):return
 	clipped_text(value,point,chart_clip,color)
 func clipped_text(value: String,point: Vector2,clip: Rect2,color:=15) -> void:
 	if point.y-12<clip.position.y or point.y>clip.end.y:return

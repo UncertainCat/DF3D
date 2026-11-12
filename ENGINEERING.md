@@ -159,8 +159,23 @@ The expanded native-only discovery105325 includes115 actors,30 organizations
 and88 plots with exact provider facts, but its largest organization has only11
 nodes: it does not establish horizontal panning acceptance.
 
-Horizontal panning of very wide charts, other edge rasterization patterns,
-dragging, report-specific scrolling and other keyboard behavior remain unfinished.
+Horizontal chart positioning follows native477cfd: follow the selected node only
+when the hierarchy exceeds the row width, and clamp against its left/right bounds.
+Node captions follow47803d/4780b7/478135: suppress text whose starting cell is
+outside the chart, rather than displaying trailing letters at the left edge.
+Protected `stockpile-storage-native-input-20261112-110929` compares a controlled
+33-node presentation fixture after the independent semantic provider/wire checks.
+The oracle temporarily replaces native chart nodes; the viewer uses an owned
+layout copy. This proves chart layout/input, not gameplay membership for33 nodes.
+Initial view and three actual node clicks select0/27/32/12 and produce four
+pixel-identical panel crops. Owned DF2168 exits unsaved with source preservation;
+both clients run at30FPS, sampled GPU49C/0%. Core19 and state/composition checks
+pass. Known Godot shutdown diagnostics qualify the live run as
+`passed_with_known_issues`. `intelligence_horizontal_chart_reference` records
+hashes and scope. Runtime graph inputs remain independent of native menu caches.
+
+Other edge rasterization patterns, dragging, report-specific scrolling and other
+keyboard behavior remain unfinished.
 
 Protected `stockpile-storage-native-input-20261112-104816` exercises a populated
 report roster alongside the graph tabs. Switching from an open report to Actors

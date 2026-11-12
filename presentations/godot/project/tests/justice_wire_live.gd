@@ -487,6 +487,20 @@ func run_graph(reference: Dictionary) -> void:
 			root.size=Vector2i(1200,800);view.layout(Vector2(1200,800))
 			await process_frame;await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(directory+"/justice-graph-organizations-restored-view.png")
+		if OS.get_environment("DF3D_JUSTICE_GRAPH_LAYOUT_WIDE")=="1":
+			await pointer_click(view.position+view.intelligence_tab_rect(2).get_center())
+			# Layout-only fixture, after semantic transport assertions. Mirror the
+			# native oracle's owned node inputs without changing gameplay facts.
+			var baseline: Dictionary=controller.intelligence.graph.graph.duplicate(true)
+			var layout: Dictionary=baseline.duplicate(true);var nodes: Array=[layout.nodes[0].duplicate(true)];var template: Dictionary=layout.nodes.back()
+			for i in 32:
+				var node: Dictionary=template.duplicate(true);node.parent=0;node.tier=2;nodes.append(node)
+			layout.nodes=nodes;layout.organizations[0].node_count=33;controller.intelligence.graph.graph=layout;controller.intelligence.changed.emit()
+			await process_frame;await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/justice-graph-layout-wide-view.png")
+			for step in [{"name":"layout-wide-right","point":Vector2(924,340),"node":27},{"name":"layout-wide-last","point":Vector2(896,340),"node":32},{"name":"layout-wide-left","point":Vector2(96,340),"node":12}]:
+				await pointer_click(step.point);check(controller.intelligence.selected_node==step.node,"Wide chart hitbox differs")
+				await process_frame;await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/justice-graph-"+step.name+"-view.png")
+			controller.intelligence.graph.graph=baseline
 		controller.dispose();view.queue_free();await process_frame
 	actions.queue_free();await process_frame
 	var file:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"graph_actors":reference.actors.size(),"graph_organizations":reference.organizations.size(),"graph_plots":reference.plots.size(),"paged_nodes":expected.nodes.size()}));file.close()

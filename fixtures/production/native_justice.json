@@ -11316,5 +11316,50 @@
       "justice-graph-presentation.json": "85b186222c14f545291ab1ecaaf0b724a157fa91303ea85a69d36692d7e11460",
       "justice-graph-report-back.png": "40538f9382e4d22f72cf367c6a4e7e721c8d6b69fec89b997f761e8a21bc4ed0"
     }
+  },
+  "intelligence_horizontal_chart_reference": {
+    "run": "build/stockpile-storage-native-input-20261112-110929",
+    "protocol": 203,
+    "status": "passed_with_known_issues",
+    "owned_df_pid": 2168,
+    "source_preserved": true,
+    "fps": 30,
+    "scope": "Presentation-only 33-node chart fixture after independent semantic provider/wire comparisons. Native oracle temporarily replaces chart nodes; viewer uses an owned layout copy. No gameplay relationships changed or runtime native menu access.",
+    "native_layout_source": "d1650 hierarchy positions; 477cfd horizontal selection and edge clamps; 47803d/4780b7/478135 text start-cell visibility",
+    "selected_nodes": [
+      0,
+      27,
+      32,
+      12
+    ],
+    "panel_crop": [
+      32,
+      52,
+      976,
+      760
+    ],
+    "different_pixels": {
+      "layout-wide": 0,
+      "layout-wide-right": 0,
+      "layout-wide-last": 0,
+      "layout-wide-left": 0
+    },
+    "artifacts": {
+      "justice-graph-presentation.json": "c564bd9d99e48c082e7fd7eb2b285af43b17ae963a86279947c754e46b9fedc3",
+      "job-settings-wire-result.json": "5d2dfbf1509bae342178f9e6f179a2ff7d32d69fb453ec432a84edc4e6879170",
+      "justice-graph-layout-wide.png": "59aa1c856333c679c729135f1a61a48f29414dfd3ea9ece88a0786de43fb75e6",
+      "justice-graph-layout-wide-view.png": "f4eb14f7044970156da8d47d6b5faff2b8366ba14faaa94691f6335f923a4574",
+      "justice-graph-layout-wide-right.png": "72e5ad97acb57c427153932b898631e0cd2bb184893e8106762f900dbb81b3a9",
+      "justice-graph-layout-wide-right-view.png": "05f9a308c4a2f2956b3fa5b94debdd900574a5ed71e4b07d267dc675750fe538",
+      "justice-graph-layout-wide-last.png": "7cf5c2061191477c78ea2ecfb5f3837f4f3f5d62032babd96a8949e166076282",
+      "justice-graph-layout-wide-last-view.png": "0db2d92c6218e2fb56754483c8768511433ed66cb7a2b76a25ab5c570badcf39",
+      "justice-graph-layout-wide-left.png": "c6e9b2aeab745f636685f9260f26972a0015ad57847a9b4ae1f3ac390bf8be60",
+      "justice-graph-layout-wide-left-view.png": "89bbca4244e508f378ae87aeab2153254330fb5e93ee351051ef0c07fbf6afa2"
+    },
+    "limits": [
+      "33-node fixture establishes presentation layout/input only, not native semantic membership at that size",
+      "other edge patterns, dragging and report-specific scrolling remain pending",
+      "known separate-renderer/finalize/ObjectDB shutdown diagnostics"
+    ]
   }
 }

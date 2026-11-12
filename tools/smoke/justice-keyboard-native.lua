@@ -7,7 +7,8 @@ local function click(x,y)
  gui.simulateInput(view,'_MOUSE_L');df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1;settle()
 end
 local samples={}
-for _,name in ipairs{'Fortress guard','Convicts','Interrogate','Convict'}do
+local navigation=os.getenv('DF3D_JUSTICE_PICKER_NAV')=='1'
+for _,name in ipairs(navigation and {'Interrogate','Convict','Interrogate','Convict'}or{'Fortress guard','Convicts','Interrogate','Convict'})do
  if name=='Interrogate'or name=='Convict'then
   tab('Open cases');click(100,202);click(100,166);click(name=='Interrogate'and 560 or 652,190)
  else tab(name)end
@@ -25,6 +26,7 @@ for _,name in ipairs{'Fortress guard','Convicts','Interrogate','Convict'}do
   walk(df.global.game.main_interface.info.justice)
   if not filter then
    samples[#samples+1]={tab=name,label=label,filter_absent=true,info_open=df.global.game.main_interface.info.open,sheet_open=df.global.game.main_interface.view_sheets.open}
+   local file=assert(io.open(out..'/justice-keyboard.json','w'));file:write(json.encode(samples));file:close()
    return
   end
   local sorts={};if list then for _,entry in ipairs(list.sorting_by)do sorts[#sorts+1]=entry.ident end end
@@ -37,9 +39,16 @@ for _,name in ipairs{'Fortress guard','Convicts','Interrogate','Convict'}do
  local function key(label,event)
   df.global.enabler.mouse_focus=true;gui.simulateInput(view,event);settle();observe(label)
  end
+ if navigation then
+  observe('initial')
+  if #samples>6 then key('filter','FILTER')end
+  key('left','STANDARDSCROLL_LEFT');capture('justice-nav-left-'..#samples)
+  key('right','STANDARDSCROLL_RIGHT');capture('justice-nav-right-'..#samples)
+ else
  observe('initial');key('name-sort','UNITLIST_SORT_NAME');key('filter','FILTER')
  -- Text entry is SDL text input, not these interface-key events. Do not send
  -- SELECT as a textbox Enter: it can activate the selected conviction row.
  click(900,680);observe('finish');capture('justice-keyboard-'..#samples)
+ end
 end
 local file=assert(io.open(out..'/justice-keyboard.json','w'));file:write(json.encode(samples));file:close()

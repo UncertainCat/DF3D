@@ -12587,5 +12587,188 @@
       "justice-keyboard-view-2.png": "01659781b37a39ec76c12cdc5f565a72c540361c5165f4d5d9b5e63b49fa4c1e",
       "justice-keyboard-view-3.png": "8c1907a7812ba9c4d23d62fcc8caf3356a6066ad43d236396adf065effd1e899"
     }
+  },
+  "picker_return_reference": {
+    "source": "build/stockpile-storage-native-input-20261112-131009",
+    "scope": "Unmodified Left returns Interrogate/Convict to retained case with or without filter focus; subsequent Right stays on case. Default1200x800, semantic native input and engine Left/Right. Numeric4/keypad aliases, other keyboard navigation and pending edit cancellation are not accepted.",
+    "status": "passed_with_known_issues",
+    "fps_cap": 30,
+    "source_preserved": true,
+    "owned_df_closed": 43552,
+    "samples": [
+      {
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": false,
+        "label": "initial",
+        "sorts": [
+          "Crime",
+          "Name"
+        ],
+        "tab": "Interrogate",
+        "native_row_count": 293,
+        "native_ids_sha256": "082df98472e195ed6baafab27514e8341afe13e418467e91c2a5ca619f135f31"
+      },
+      {
+        "filter_absent": true,
+        "info_open": true,
+        "label": "left",
+        "sheet_open": false,
+        "tab": "Interrogate"
+      },
+      {
+        "filter_absent": true,
+        "info_open": true,
+        "label": "right",
+        "sheet_open": false,
+        "tab": "Interrogate"
+      },
+      {
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": false,
+        "label": "initial",
+        "sorts": [
+          "Crime",
+          "Name"
+        ],
+        "tab": "Convict",
+        "native_row_count": 293,
+        "native_ids_sha256": "082df98472e195ed6baafab27514e8341afe13e418467e91c2a5ca619f135f31"
+      },
+      {
+        "filter_absent": true,
+        "info_open": true,
+        "label": "left",
+        "sheet_open": false,
+        "tab": "Convict"
+      },
+      {
+        "filter_absent": true,
+        "info_open": true,
+        "label": "right",
+        "sheet_open": false,
+        "tab": "Convict"
+      },
+      {
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": false,
+        "label": "initial",
+        "sorts": [
+          "Crime",
+          "Name"
+        ],
+        "tab": "Interrogate",
+        "native_row_count": 293,
+        "native_ids_sha256": "082df98472e195ed6baafab27514e8341afe13e418467e91c2a5ca619f135f31"
+      },
+      {
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": true,
+        "label": "filter",
+        "sorts": [
+          "Crime",
+          "Name"
+        ],
+        "tab": "Interrogate",
+        "native_row_count": 293,
+        "native_ids_sha256": "082df98472e195ed6baafab27514e8341afe13e418467e91c2a5ca619f135f31"
+      },
+      {
+        "filter_absent": true,
+        "info_open": true,
+        "label": "left",
+        "sheet_open": false,
+        "tab": "Interrogate"
+      },
+      {
+        "filter_absent": true,
+        "info_open": true,
+        "label": "right",
+        "sheet_open": false,
+        "tab": "Interrogate"
+      },
+      {
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": false,
+        "label": "initial",
+        "sorts": [
+          "Crime",
+          "Name"
+        ],
+        "tab": "Convict",
+        "native_row_count": 293,
+        "native_ids_sha256": "082df98472e195ed6baafab27514e8341afe13e418467e91c2a5ca619f135f31"
+      },
+      {
+        "filter_feed": 21074048,
+        "flags": 7,
+        "focused": true,
+        "label": "filter",
+        "sorts": [
+          "Crime",
+          "Name"
+        ],
+        "tab": "Convict",
+        "native_row_count": 293,
+        "native_ids_sha256": "082df98472e195ed6baafab27514e8341afe13e418467e91c2a5ca619f135f31"
+      },
+      {
+        "filter_absent": true,
+        "info_open": true,
+        "label": "left",
+        "sheet_open": false,
+        "tab": "Convict"
+      },
+      {
+        "filter_absent": true,
+        "info_open": true,
+        "label": "right",
+        "sheet_open": false,
+        "tab": "Convict"
+      }
+    ],
+    "case_crop": {
+      "bounds": [
+        32,
+        52,
+        976,
+        760
+      ],
+      "native_left_indices": [
+        2,
+        5,
+        9,
+        13
+      ],
+      "viewer_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "differing_pixels": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "hashes": {
+      "justice-keyboard.json": "352b702dcdf60971bfe6657397a07df7e2659b6bd059adabc01236e0f121e899",
+      "job-settings-wire-result.json": "9ebe6dd722007b82167fd8572b1bf8e382ebc640ce396cb653ae902dacf1cb2c",
+      "result.json": "55ea401f0907968b16baa48a037a247d52b778f816392f061952e6daa810f1ec",
+      "justice-nav-left-2.png": "5f2aa3faabc8bcf1fd871afac1c9da9c5d91ceafb3851a26de38e278222f5e95",
+      "justice-nav-left-5.png": "5f2aa3faabc8bcf1fd871afac1c9da9c5d91ceafb3851a26de38e278222f5e95",
+      "justice-nav-left-9.png": "d32af5b76e42a71b1418749a4b63155ec4b0deb9f1c054c905c54bc6f180bf54",
+      "justice-nav-left-13.png": "a249ad1b360385c6b52c5ac3125ae9c661edbc1145db912615e64dd04bc073c6",
+      "justice-nav-view-0.png": "a3164c4fa7fc9c11728bf3821e075ee43a5ba07f9ffead39b744733cce78a8f4",
+      "justice-nav-view-1.png": "a3164c4fa7fc9c11728bf3821e075ee43a5ba07f9ffead39b744733cce78a8f4",
+      "justice-nav-view-2.png": "a3164c4fa7fc9c11728bf3821e075ee43a5ba07f9ffead39b744733cce78a8f4",
+      "justice-nav-view-3.png": "a3164c4fa7fc9c11728bf3821e075ee43a5ba07f9ffead39b744733cce78a8f4"
+    }
   }
 }

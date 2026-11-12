@@ -18,6 +18,9 @@ func _candidates_changed() -> void:changed.emit()
 func _convicted(_crime: int,_unit: int) -> void:refresh()
 func open_candidates(interrogate:=false) -> void:
 	if phase==Phase.Ready and tab!=1 and not detail.is_empty():candidates.open(tab,selected_id,_revision,detail.revision,interrogate)
+func close_candidates() -> bool:
+	if candidates.phase not in [candidates.Phase.Reading,candidates.Phase.Ready,candidates.Phase.Rejected]:return false
+	candidates.close();return true
 var phase:=Phase.Closed
 var tab:=0
 var rows: Array=[]

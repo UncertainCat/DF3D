@@ -27,6 +27,7 @@ func run() -> void:
 		if world.poll_management().get("transport_alive",false):break
 		await create_timer(0.01).timeout
 	await request("construction",{"action":C.ManagementAction.Catalog})
+	if OS.get_environment("DF3D_JUSTICE_PICKER_NAV")=="1":await picker_navigation();return
 	if OS.get_environment("DF3D_JUSTICE_KEYBOARD")=="1":await keyboard_focus();return
 	if OS.get_environment("DF3D_JUSTICE_CANDIDATE_HOVER")=="1":await candidate_hover();return
 	if OS.get_environment("DF3D_JUSTICE_WIRE_GRAPH")=="1":await run_graph(reference.graph);return
@@ -252,6 +253,28 @@ func run() -> void:
 	result.store_string(JSON.stringify({"success":not failed,"counts":counts,"witnesses":report_count,"stale_tabs":3,"controller_tabs":3,
 		"closed_read_retired":true,"candidate_count":candidate_count,"candidate_queries":3,"sort_scopes":reference.sorts.size(),"interrogated":interrogated,"convicted":applied,"picker_controller":applied}));result.close()
 	quit(1 if failed else 0)
+
+func picker_navigation() -> void:
+	root.size=Vector2i(1200,800);check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Justice navigation assets unavailable")
+	var actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(actions);actions.configure(world,true)
+	var controller=preload("res://scripts/justice_state.gd").new();controller.configure(actions);controller.open()
+	var view=preload("res://scripts/justice_view.gd").new();root.add_child(view);view.configure_justice(world,controller);view.layout(Vector2(1200,800));await settle_controller(controller)
+	var selected: int=controller.selected_id;var detail: Dictionary=controller.detail.duplicate(true)
+	for mode in 4:
+		controller.open_candidates(mode%2==0);await settle_picker(controller)
+		check(view.picker_open(),"Navigation picker did not open")
+		if mode>=2:
+			var focus:=InputEventKey.new();focus.keycode=KEY_F;focus.ctrl_pressed=true;focus.pressed=true;Input.parse_input_event(focus);await process_frame
+			check(view.search.has_focus(),"Navigation filter not focused")
+		for modifier in [true,false]:
+			var event:=InputEventKey.new();event.keycode=KEY_LEFT;event.pressed=true;event.ctrl_pressed=modifier;Input.parse_input_event(event);await process_frame
+			check(view.picker_open()==modifier,"Picker Left modifier boundary differs")
+		check(controller.phase==controller.Phase.Ready and controller.selected_id==selected and controller.detail==detail and not view.search.has_focus(),"Picker return changed case or retained focus")
+		await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/justice-nav-view-"+str(mode)+".png")
+		var right:=InputEventKey.new();right.keycode=KEY_RIGHT;right.pressed=true;Input.parse_input_event(right);await process_frame
+		check(not view.picker_open() and controller.detail==detail,"Right reopened returned picker")
+	controller.close();controller.dispose();view.queue_free();actions.queue_free();world.queue_free();await process_frame
+	var result:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);result.store_string(JSON.stringify({"success":not failed,"picker_returns":4,"case_retained":true}));result.close();quit(1 if failed else 0)
 
 func keyboard_focus() -> void:
 	root.size=Vector2i(1200,800);check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Justice keyboard assets unavailable")

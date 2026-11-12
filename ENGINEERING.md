@@ -539,6 +539,20 @@ with source/prefs preserved. Native/viewer30FPS, GPU48–49C samples, core19 and
 Justice state/composition pass; known Godot shutdown diagnostics qualify live
 status. `filter_keyboard_reference` records the bounded evidence.
 
+Unmodified Left returns from Interrogate/Convict to the retained case, including
+while its filter has focus. Right then leaves the case view unchanged. The viewer
+retires candidate read ownership and clears filter focus; late replies cannot
+reopen the picker. This local return does not cancel an Applying/Unknown edit.
+Escape retains its existing whole-panel behavior. Native interface-key discovery
+130829 and protected mixed131009 on2026-11-12 cover both picker modes with and
+without filter focus. All four returned-case panel crops(32,52)-(976,760) match
+native with zero differing pixels. Engine input also checks that Ctrl+Left does
+not invoke this return. State tests cover pending reads, late replies and edit
+guards; Justice state/composition and core19 pass. Owned DF43552 closes unsaved
+with source/prefs preserved; known Godot diagnostics qualify the live run.
+Serial30FPS, sampled GPU48C. `picker_return_reference` retains provenance and
+hashes. Numeric4/keypad aliases and other keyboard navigation remain unaccepted.
+
 
 Management protocol198 adds `JusticeInterrogate`, the candidate request/page
 `interrogate` mode, and an `expected_selected` comparison for checkbox edits.

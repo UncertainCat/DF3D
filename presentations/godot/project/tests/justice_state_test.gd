@@ -50,6 +50,13 @@ func test_candidates(service,state) -> void:
 		check(picker.phase==picker.Phase.Rejected and picker.rows.is_empty() and picker.ticket==0,"Malformed candidate continuation accepted or replayed")
 	ready(service,state);state.open_candidates();old=picker.ticket;state.select_case(10);service.reply(old,candidates())
 	check(picker.phase==picker.Phase.Closed and picker.rows.is_empty(),"Case switch retained old candidate picker")
+	ready(service,state);state.open_candidates();old=picker.ticket
+	check(state.close_candidates() and state.phase==State.Phase.Ready and state.selected_id==9,"Picker return lost parent case")
+	service.reply(old,candidates());check(picker.phase==picker.Phase.Closed and picker.rows.is_empty(),"Late candidate read reopened returned picker")
+	state.open_candidates();service.reply(picker.ticket,candidates());picker.convict(42)
+	check(not state.close_candidates() and picker.phase==picker.Phase.Applying,"Picker return interrupted pending edit")
+	service.reply(picker.ticket,{"status":C.ManagementStatus.Rejected,"justice":{"outcome":C.JusticeOutcome.Unknown}})
+	check(not state.close_candidates() and picker.phase==picker.Phase.Unknown,"Picker return discarded unknown edit")
 	ready(service,state);state.open_candidates();old=picker.ticket;service.session_changed.emit();service.reply(old,candidates())
 	check(state.phase==State.Phase.Unavailable and picker.phase in [picker.Phase.Closed,picker.Phase.Unavailable] and picker.rows.is_empty(),"Session change accepted late candidates")
 func test_sorts(service,state) -> void:

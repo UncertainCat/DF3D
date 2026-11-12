@@ -10906,5 +10906,98 @@
       "scrolling and mixed report/graph workflows remain pending",
       "established separate-renderer/finalize/ObjectDB shutdown diagnostics"
     ]
+  },
+  "intelligence_graph_scroll_reference": {
+    "run": "build/stockpile-storage-native-input-20261112-103642",
+    "protocol": 203,
+    "status": "passed_with_known_issues",
+    "owned_df_pid": 6240,
+    "source_preserved": true,
+    "fps": 30,
+    "actors": 20,
+    "controlled_repository": "17 additional known-name historical figures without associated agreements; original three-actor organization retained",
+    "states": {
+      "actor-selected": {
+        "mode": 1,
+        "selected": 1,
+        "scroll": 0,
+        "selected_node": -1
+      },
+      "actors": {
+        "mode": 1,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": -1
+      },
+      "actors-scroll-arrow": {
+        "mode": 1,
+        "selected": 0,
+        "scroll": 47,
+        "selected_node": -1
+      },
+      "actors-scroll-down": {
+        "mode": 1,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": -1
+      },
+      "actors-scroll-page": {
+        "mode": 1,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": -1
+      },
+      "organizations": {
+        "mode": 2,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": 0
+      },
+      "plots": {
+        "mode": 3,
+        "selected": 0,
+        "scroll": 0,
+        "selected_node": -1
+      }
+    },
+    "different_pixels": {
+      "actors": 0,
+      "actor-selected": 0,
+      "organizations": 0,
+      "plots": 0,
+      "actors-scroll-arrow": 0
+    },
+    "panel_crop": [
+      32,
+      52,
+      976,
+      760
+    ],
+    "track_click": [
+      944,
+      716
+    ],
+    "track_result_scroll_cells": 47,
+    "artifacts": {
+      "justice-graph-presentation.json": "370af7621c42ebe72c5c229689bd904aca164a5e6105a4d07e96e52f8ad5c3d4",
+      "justice-graph-wire.json": "29e94d3a24090943decd1271db33011f54a0611e37ff98426bc8c7a095a233e2",
+      "job-settings-wire-result.json": "48e125b96db82001a2dd3cf003335fc2763ddec66893215561f06d93b8741a7b",
+      "justice-graph-actors.png": "c1a341aa8a585ec7e7243e6d5e9efdc87760c5cba5b9fd46f8b27c5ef6fe6a50",
+      "justice-graph-actors-view.png": "b15be9cafc765d2adfd0fa24b24c077d9abbc4569161c43428d3c9d7874456bb",
+      "justice-graph-actor-selected.png": "0474b3f2198cc7e37c411c294cca7c43fc59c8ebfab4ec0b71e15733d6b2e0a7",
+      "justice-graph-actor-selected-view.png": "0bddf5fc74d1ddf6995a97165f409284c2cdd3debbe61e2e8175f2ac0a5fe4ae",
+      "justice-graph-organizations.png": "fbe82f64de22eca6eae9db90580c30b85e570aed7ec7a3668e67fe337b3df989",
+      "justice-graph-organizations-view.png": "4b817bab263e561f4f82944764bfd0944c67d5e5072452313056cabe12e73e3d",
+      "justice-graph-plots.png": "8ec46fff8ea012bced213d841d530d84dd601543a6a978b95c4a385d736c641a",
+      "justice-graph-plots-view.png": "be3c3772a5a6f962fd384377e6f4317d3cc94588b629da260fa2b901c003bed6",
+      "justice-graph-actors-scroll-arrow.png": "205a9720689c606799b2981d1763c693c5a39fd5c9a279cf20f8e7932547acf1",
+      "justice-graph-actors-scroll-arrow-view.png": "7c0062634cb327b30b84a64422733369cbe3414345f0a7d4021b79d912e3c081"
+    },
+    "limits": [
+      "track click verified; wheel, arrow and drag behavior remain pending",
+      "STANDARDSCROLL_DOWN/PAGEDOWN leave native scroll unchanged in this probe",
+      "large or branching organization charts remain unaccepted",
+      "established separate-renderer/finalize/ObjectDB shutdown diagnostics"
+    ]
   }
 }

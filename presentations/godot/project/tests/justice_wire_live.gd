@@ -431,6 +431,13 @@ func run_graph(reference: Dictionary) -> void:
 			await process_frame;await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(directory+"/justice-graph-"+["actors","organizations","plots"][mode-1]+"-view.png")
 			if mode==1:
+				if OS.get_environment("DF3D_JUSTICE_GRAPH_LARGE")=="1":
+					await pointer_click(Vector2(944,716))
+					check(controller.intelligence.graph_scroll==47,"Actor scrollbar track step differs from native")
+					await process_frame;await RenderingServer.frame_post_draw
+					root.get_texture().get_image().save_png(directory+"/justice-graph-actors-scroll-arrow-view.png")
+					await pointer_click(view.position+view.intelligence_tab_rect(2).get_center())
+					await pointer_click(view.position+view.intelligence_tab_rect(1).get_center())
 				await pointer_click(view.position+view.graph_view.rect(1).position+Vector2(16,24));check(controller.intelligence.graph_selected==1,"Actor row click missed")
 				await process_frame;await RenderingServer.frame_post_draw
 				root.get_texture().get_image().save_png(directory+"/justice-graph-actor-selected-view.png")

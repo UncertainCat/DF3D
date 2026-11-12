@@ -71,6 +71,15 @@ local ok,err=xpcall(function()
   repository.hf_file:insert('#',file);files[#files+1]=file
  end
  repository.foiled_plot_agreements:insert('#',chosen.id)
+ if os.getenv('DF3D_JUSTICE_GRAPH_LARGE')=='1' then
+  for _,figure in ipairs(df.global.world.history.figures)do
+   if not seen[figure.id] and figure.name.has_name then
+    local file=df.evidence_hf_filest:new();file.hfid=figure.id;file.flags.whole=8
+    repository.hf_file:insert('#',file);files[#files+1]=file;hfids[#hfids+1]=figure.id;seen[figure.id]=true
+    if #files>=20 then break end
+   end
+  end
+ end
  entity.evidence_repository=repository;reopen()
  local menu=df.global.game.main_interface.info.justice
  click(220,148);assert(menu.counterintelligence_mode==1);local native=native_graph(menu)
@@ -115,6 +124,12 @@ local ok,err=xpcall(function()
    states[name]=state;capture('justice-graph-'..name)
   end
   click(220,148);assert(menu.counterintelligence_mode==1,'Actors tab missed');record('actors')
+  if os.getenv('DF3D_JUSTICE_GRAPH_LARGE')=='1' then
+   gui.simulateInput(view,'STANDARDSCROLL_DOWN');settle();record('actors-scroll-down')
+   gui.simulateInput(view,'STANDARDSCROLL_PAGEDOWN');settle();record('actors-scroll-page')
+   click(944,716);record('actors-scroll-arrow')
+   click(324,148);click(220,148)
+  end
   click(64,250);record('actor-selected')
   click(324,148);assert(menu.counterintelligence_mode==2,'Organizations tab missed');record('organizations')
   if os.getenv('DF3D_JUSTICE_GRAPH_NAVIGATION')=='1' then

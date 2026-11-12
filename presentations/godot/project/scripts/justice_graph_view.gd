@@ -3,6 +3,7 @@ extends RefCounted
 # ordering, labels and relationships arrive from DF; this owns only layout/input.
 var view
 var chart_clip:=Rect2()
+func viewport_rect() -> Rect2:return Rect2(16,view.list_top()+24,view.size.x-32,capacity()*12)
 func configure(owner) -> void:view=owner
 func model():return view.state.intelligence
 func capacity() -> int:return maxi(0,int((view.size.y-view.list_top()-48)/12))
@@ -47,6 +48,7 @@ func positions(org: Dictionary,box: Rect2) -> Dictionary:
 	for i in range(org.first_node,org.first_node+org.node_count):output[i]=Rect2(center+xs[i]*8,box.position.y+nodes[i].tier*72,40,60)
 	return output
 func click(point: Vector2) -> void:
+	if not viewport_rect().has_point(point):return
 	var m=model();var data:=rows()
 	for i in data.size():
 		var box:=rect(i)
@@ -61,28 +63,29 @@ func click(point: Vector2) -> void:
 		m.select_graph_row(i);return
 func draw() -> void:
 	var m=model();var data:=rows();var all: Dictionary=m.graph.graph
+	var viewport:=viewport_rect()
 	for i in data.size():
 		var box:=rect(i)
 		if box.end.y<view.list_top()+24 or box.position.y>view.size.y-24:continue
 		var selected: bool=i==m.graph_selected;var row: Dictionary=data[i]
-		view.patch("BUTTON_RECTANGLE",Vector2i(box.position/Vector2(8,12)),int(box.size.x/8),cells(i))
-		view.text(clipped(row.name,int((box.size.x-32)/8),true),box.position+Vector2(16,12),14 if selected else 6)
+		clipped_patch("BUTTON_RECTANGLE",box,viewport)
+		clipped_text(clipped(row.name,int((box.size.x-32)/8),true),box.position+Vector2(16,12),viewport,14 if selected else 6)
 		var count:="%d/%d"%[i+1,data.size()]
-		view.text(count,Vector2(box.end.x-(count.length()+3)*8,box.position.y+12),12 if selected else 4)
+		clipped_text(count,Vector2(box.end.x-(count.length()+3)*8,box.position.y+12),viewport,12 if selected else 4)
 		if m.mode==1:
 			var offset:=24 if row.lines.size()==1 else 12
 			for line in mini(row.lines.size(),maxi(3,row.lines.size()) if selected else 3):
-				view.text(clipped(row.lines[line],m.columns),box.position+Vector2(16,offset+(line+1)*12),15 if selected else 7)
+				clipped_text(clipped(row.lines[line],m.columns),box.position+Vector2(16,offset+(line+1)*12),viewport,15 if selected else 7)
 		elif m.mode==3:
-			if row.organization>=0:view.text(clipped("Org: "+all.organizations[row.organization].name,m.columns),box.position+Vector2(16,24),11 if selected else 3)
+			if row.organization>=0:clipped_text(clipped("Org: "+all.organizations[row.organization].name,m.columns),box.position+Vector2(16,24),viewport,11 if selected else 3)
 		elif selected:draw_organization(row,box)
 func draw_organization(org: Dictionary,box: Rect2) -> void:
 	var m=model();var all: Dictionary=m.graph.graph;var positions_by_node:=positions(org,box)
-	chart_clip=Rect2(box.position+Vector2(16,12),box.size-Vector2(32,24))
+	chart_clip=Rect2(box.position+Vector2(16,12),box.size-Vector2(32,24)).intersection(viewport_rect())
 	var selected: int=m.selected_node if positions_by_node.has(m.selected_node) else org.first_node
 	if org.node_count==0:return
 	var actor: int=all.nodes[selected].actor
-	if actor>=0:view.text(clipped("Selected actor: "+all.actors[actor].name,m.columns),box.position+Vector2(16,24))
+	if actor>=0:clipped_text(clipped("Selected actor: "+all.actors[actor].name,m.columns),box.position+Vector2(16,24),viewport_rect())
 	for index in positions_by_node:
 		var node: Dictionary=all.nodes[index];var node_box: Rect2=positions_by_node[index]
 		if positions_by_node.has(node.parent):
@@ -91,19 +94,24 @@ func draw_organization(org: Dictionary,box: Rect2) -> void:
 			draw_edge(from,to,10 if index==selected or node.parent==selected else 2)
 	for index in positions_by_node:
 		var node: Dictionary=all.nodes[index];var node_box: Rect2=positions_by_node[index]
-		var texture: Texture2D=view.art.texture("GRID_CELL_ACTIVE")
-		if texture!=null:
-			for y in 5:
-				for x in 5:
-					var target:=Rect2(node_box.position+Vector2(x*8,y*12),Vector2(8,12))
-					if chart_clip.encloses(target):view.draw_texture_rect_region(texture,target,Rect2((0 if x==0 else 16 if x==4 else 8),(0 if y==0 else 24 if y==4 else 12),8,12))
+		clipped_patch("GRID_CELL_ACTIVE",node_box,chart_clip)
 		chart_text(node.label,node_box.position+Vector2(0,12),node.foreground+node.bright*8)
 		chart_text(node.name,node_box.position+Vector2(8,36))
 		chart_text(node.status,node_box.position+Vector2(8,48))
 func chart_text(value: String,point: Vector2,color:=15) -> void:
-	if point.y-12<chart_clip.position.y or point.y>chart_clip.end.y:return
-	var skip:=maxi(0,int((chart_clip.position.x-point.x)/8));point.x+=skip*8
-	view.text(value.substr(skip,maxi(0,int((chart_clip.end.x-point.x)/8))),point,color)
+	clipped_text(value,point,chart_clip,color)
+func clipped_text(value: String,point: Vector2,clip: Rect2,color:=15) -> void:
+	if point.y-12<clip.position.y or point.y>clip.end.y:return
+	var skip:=maxi(0,int((clip.position.x-point.x)/8));point.x+=skip*8
+	view.text(value.substr(skip,maxi(0,int((clip.end.x-point.x)/8))),point,color)
+func clipped_patch(token: String,box: Rect2,clip: Rect2) -> void:
+	var texture: Texture2D=view.art.texture(token)
+	if texture==null:return
+	var columns:=int(box.size.x/8);var rows_count:=int(box.size.y/12)
+	for y in rows_count:
+		for x in columns:
+			var target:=Rect2(box.position+Vector2(x*8,y*12),Vector2(8,12))
+			if clip.encloses(target):view.draw_texture_rect_region(texture,target,Rect2((0 if x==0 else 16 if x==columns-1 else 8),(0 if y==0 else 24 if y==rows_count-1 else 12),8,12))
 func draw_edge(from: Vector2i,to: Vector2i,color: int) -> void:
 	# The native chart rasterizes straight grid edges, then chooses text glyphs
 	# from neighboring points; nodes are drawn over the edge interiors.

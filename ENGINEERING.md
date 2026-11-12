@@ -109,8 +109,20 @@ selection before invoking479330. No graph search-entry path was found in this
 input handler. Native CURSOR_UP on the selected last node and CURSOR_DOWN on
 the first actor leave selection unchanged in the recorded case. Do not invent
 search or selection shortcuts from the presence of a dormant filter routine.
-Scrolling, other keyboard behavior, larger/branching chart panning and clipping,
-multiple organizations and mixed report/graph workflows remain unfinished.
+Protected `stockpile-storage-native-input-20261112-103642` compares a controlled
+20-actor list. The provider still matches native facts; a scrollbar track click
+at944,716 advances47 text cells in both clients. Top, selected-row, scrolled,
+organization and plot panel crops match native pixels. Graph rows, captions and
+chart drawing clip to the list viewport; clicks outside it cannot select clipped
+rows. Owned DF6240 closes unsaved, preserving source and preferences. Both
+clients run at30FPS; GPU47C/0% is a sample. Core19/state/composition pass; known
+shutdown diagnostics retain `passed_with_known_issues` qualification.
+`intelligence_graph_scroll_reference` records states, crop hashes and omissions.
+Native STANDARDSCROLL_DOWN/PAGEDOWN leave scroll unchanged in this probe.
+
+Wheel/arrow/drag acceptance, other keyboard behavior, larger/branching chart
+panning and clipping, multiple organizations and mixed report/graph workflows
+remain unfinished.
 Public Justice stays hidden.
 
 

@@ -55,12 +55,11 @@ assembly and close during a read. Existing17-case/134-witness transport assertio
 also pass. DF5288 closes unsaved with source preservation and prefs restoration;
 native30FPS/headless viewer (GPU48C,1%,22.13W). The only Godot diagnostic is the
 known separate-thread notice: passed_with_known_issues. This does not establish
-rendered panel fidelity or live world-replacement acceptance. Before rendering,
-add semantic case-resolution data for native status colors; do not parse captions
-to choose color or infer it from Open/Closed membership.
+rendered panel fidelity or live world-replacement acceptance. Case-resolution data below supplies native status styling without parsing captions
+or inferring resolution from Open/Closed membership.
 
-The staged read contract uses management protocol192 and
-`Local\df3d_management_v192`. `JusticeRead` pages native Open/Closed/Cold case
+The staged read contract uses management protocol193 and
+`Local\df3d_management_v193`. `JusticeRead` pages native Open/Closed/Cold case
 IDs and captions; `JusticeCaseRead` carries the selected crime caption, optional
 injured-party line, status and ordered witness rows with paired date captions.
 List revisions scope selection and pagination; case revisions scope witness
@@ -68,7 +67,7 @@ pagination. Refusals cannot carry usable rows or details. Pages are bounded to64
 rows, individual captions to16KiB and cumulative text/row accounting to384KiB.
 These are transport bounds, not limits on the native case list.
 
-Migration: rebuild bridge and clients together. Protocol191 processes do not
+Migration: rebuild bridge and clients together. Protocol191/192 processes do not
 share this mailbox. Session/map recording formats are unchanged; older recordings
 do not acquire synthetic Justice facts. The model encodes both read requests
 and decodes their replies into owned, pointer-free records, retaining native order,
@@ -99,8 +98,26 @@ Only the documented Godot separate-thread notice remains: passed_with_known_issu
 `native_justice.json.typed_read_reference` retains the bounded receipt and scope.
 No panel rendering, disconnect/world-replacement or action acceptance is claimed.
 
-The installed protocol192 bridge SHA256 is
-`FC298B76007779141440D51032DA227EAC4CC4599723F1F8BB90E7AF70172202`.
+Protocol193 requires a non-None `JusticeCaseResolution` on case details:
+Unsolved, Convicted or UnknownConvict. The native summary provider sets it in the
+same audited46db60 branches that choose the caption. Detail revision hashing,
+neutral model decoding, Godot conversion and controller continuation checks retain
+it. Older detail data cannot silently become Unsolved; recording formats are
+unchanged and no absent facts are synthesized.
+
+Protected `stockpile-storage-native-input-20261111-192620` checks six controlled
+summary cases against native widgets, including missing victims/convicts and
+no-trial-but-unsolved. Native Unsolved uses foreground3 with bright enabled;
+Convicted and UnknownConvict use foreground5 with bright enabled. The typed read
+and controller checks also pass on protocol193. DF41572 exits unsaved with source
+preservation/prefs restoration, native30FPS and a headless viewer (GPU45C,7%,22.32W).
+Only the documented Godot separate-thread notice remains: passed_with_known_issues.
+Fixture `resolution_reference` retains the controlled cases and scope. MSVC
+`justice-resolution-build.log` and `build/qa/justice-resolution` root19/controller
+checks pass. Rendered DF3D Justice fidelity remains unverified.
+
+The installed protocol193 bridge SHA256 is
+`938F922B901F414064DF89C2CCB260968DAB1127C0B7BF0321C9D6719EA4FBC6`.
 MSVC build `justice-read-build.log`, root19 and composed UI checks in
 `build/qa/justice-read-integration-final` pass. Earlier protected190518 rejected
 Justice locally because the adapter's action upper bound still ended at Objects;

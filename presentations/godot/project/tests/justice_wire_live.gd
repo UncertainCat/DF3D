@@ -37,7 +37,7 @@ func run() -> void:
 				first=false;var reply:=await details(tab,id,witnesses.size(),revision,case_revision)
 				if not check(reply.get("status")==C.ManagementStatus.Ok,"Justice detail rejected"):quit(1);return
 				var d: Dictionary=reply.get("justice",{}).get("detail",{})
-				check(d.get("crime_id")==id and d.get("caption")==rows[i].caption and d.get("status")==facts.summary.status,"Justice summary differs")
+				check(d.get("crime_id")==id and d.get("caption")==rows[i].caption and d.get("status")==facts.summary.status and d.get("resolution")==facts.summary.resolution,"Justice summary differs")
 				check(d.has("injured_party")==facts.summary.has("injured_party") and d.get("injured_party")==facts.summary.get("injured_party"),"Justice injured party differs")
 				check(d.get("offset")==witnesses.size() and d.get("total")==facts.witnesses.size(),"Justice witness page identity differs")
 				case_revision=d.get("revision",0)

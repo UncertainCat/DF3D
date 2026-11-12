@@ -73,10 +73,11 @@ func _valid_detail(value: Dictionary,intent: Dictionary) -> bool:
 	if value.get("tab")!=tab or value.get("list_revision")!=_revision or typeof(value.get("detail"))!=TYPE_DICTIONARY:return false
 	var d: Dictionary=value.detail
 	if d.get("crime_id")!=selected_id or not _integer(d.get("revision"),1,9223372036854775807) or not _integer(d.get("total"),0,1048576) or d.get("offset")!=intent.offset or typeof(d.get("witnesses"))!=TYPE_ARRAY:return false
+	if not _integer(d.get("resolution"),C.JusticeCaseResolution.Unsolved,C.JusticeCaseResolution.UnknownConvict):return false
 	if not _text(d.get("caption")) or not _text(d.get("status")) or (d.has("injured_party") and not _text(d.injured_party)):return false
 	if d.witnesses.size()>intent.limit or intent.offset+d.witnesses.size()>d.total or (intent.offset<d.total and d.witnesses.is_empty()):return false
 	if not _pending_detail.is_empty():
-		for key in ["revision","total","caption","status","injured_party"]:
+		for key in ["revision","total","caption","status","injured_party","resolution"]:
 			if d.get(key)!=_pending_detail.get(key):return false
 	for witness in d.witnesses:
 		if typeof(witness)!=TYPE_DICTIONARY:return false

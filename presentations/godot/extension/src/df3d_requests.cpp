@@ -253,7 +253,7 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         for(const auto& r:v.rows){Dictionary row;row["crime_id"]=r.crimeId;row["caption"]=String::utf8(r.caption.c_str());rows.push_back(row);}
         value["rows"]=rows;
         if(v.detail){const auto& d=*v.detail;Dictionary detail;Array witnesses;
-            detail["crime_id"]=d.crimeId;detail["revision"]=int64_t(d.revision);detail["caption"]=String::utf8(d.caption.c_str());
+            detail["crime_id"]=d.crimeId;detail["resolution"]=int(d.resolution);detail["revision"]=int64_t(d.revision);detail["caption"]=String::utf8(d.caption.c_str());
             detail["status"]=String::utf8(d.status.c_str());if(d.injuredParty)detail["injured_party"]=String::utf8(d.injuredParty->c_str());
             detail["total"]=int64_t(d.total);detail["offset"]=int64_t(d.offset);
             for(const auto& w:d.witnesses){Dictionary row;row["witness"]=String::utf8(w.witness.c_str());row["description"]=String::utf8(w.description.c_str());

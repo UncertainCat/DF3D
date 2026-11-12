@@ -2764,7 +2764,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             const auto summary=df3d_justice::caseSummary(df::crime::find(std::stoi(parameters[1])));if(!summary)return CR_FAILURE;
             Json::Value result(Json::objectValue);
             if(summary->injuredParty)result["injured_party"]=DF2UTF(*summary->injuredParty);
-            result["status"]=DF2UTF(summary->status);
+            result["status"]=DF2UTF(summary->status);result["resolution"]=int(summary->resolution);
             out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),result));return CR_OK;
           }catch(const std::exception&){return CR_WRONG_USAGE;}
         }

@@ -480,6 +480,7 @@ struct JusticeRequest {
 struct JusticeCaseRow {int32_t crimeId=-1;std::string caption;};
 struct JusticeWitnessRow {std::string witness,description,date,reported;};
 struct JusticeCaseDetail {
+  JusticeCaseResolution resolution=JusticeCaseResolution::None;
   int32_t crimeId=-1;uint64_t revision=0;std::string caption;
   std::optional<std::string> injuredParty;std::string status;
   uint32_t total=0,offset=0;std::vector<JusticeWitnessRow> witnesses;

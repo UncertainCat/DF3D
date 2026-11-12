@@ -25,7 +25,7 @@ TEST_CASE("Justice decode owns captions and keeps case and witness ordering") {
   if(detail){
    auto a=m::CreateJusticeWitnessRow(b,second,empty,event,reported);
    auto z=m::CreateJusticeWitnessRow(b,first,second,reported,event);
-   d=m::CreateJusticeCaseDetail(b,9,456,first,injured?second:0,second,34,32,b.CreateVector(std::vector{a,z}));
+   d=m::CreateJusticeCaseDetail(b,9,456,first,injured?second:0,second,34,32,b.CreateVector(std::vector{a,z}),injured?m::JusticeCaseResolution::Convicted:m::JusticeCaseResolution::Unsolved);
   }else{
    rows.push_back(m::CreateJusticeCaseRow(b,19,second));rows.push_back(m::CreateJusticeCaseRow(b,9,first));
   }
@@ -37,7 +37,7 @@ TEST_CASE("Justice decode owns captions and keeps case and witness ordering") {
   std::fill(b.GetBufferPointer(),b.GetBufferPointer()+b.GetSize(),uint8_t(0));b.Clear();
   REQUIRE(owned.justice);const auto& r=*owned.justice;CHECK(r.tab==2);CHECK(r.listRevision==123);CHECK_FALSE(owned.objects);
   if(detail){REQUIRE(r.detail);CHECK(r.rows.empty());const auto& v=*r.detail;
-   CHECK(v.crimeId==9);CHECK(v.revision==456);CHECK(v.caption=="synthetic first");CHECK(v.status=="synthetic second");
+   CHECK(v.resolution==(injured?wm::JusticeCaseResolution::Convicted:wm::JusticeCaseResolution::Unsolved));CHECK(v.crimeId==9);CHECK(v.revision==456);CHECK(v.caption=="synthetic first");CHECK(v.status=="synthetic second");
    CHECK(bool(v.injuredParty)==injured);if(injured)CHECK(*v.injuredParty=="synthetic second");
    CHECK(v.total==34);CHECK(v.offset==32);REQUIRE(v.witnesses.size()==2);
    CHECK(v.witnesses[0].witness=="synthetic second");CHECK(v.witnesses[0].description.empty());

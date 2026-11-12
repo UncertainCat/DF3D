@@ -32,7 +32,10 @@ local function summary()
   if df.widget_text:is_instance(w)then
    local s=dfhack.df2utf(w.str)
    if s:sub(1,15)=='Injured party: 'then result.injured_party=s
-   elseif s:sub(1,11)=='Convicted: 'or s=='Unknown convict.'or s=='Unsolved.'then result.status=s end
+   elseif s:sub(1,11)=='Convicted: 'or s=='Unknown convict.'or s=='Unsolved.'then
+    result.status=s;result.resolution=s=='Unsolved.'and 1 or(s=='Unknown convict.'and 3 or 2)
+    assert(w.fg==(result.resolution==1 and 3 or 5) and w.bright,'Unexpected native status color')
+   end
   end
   if df.widget_container:is_instance(w)then for index,child in ipairs(dfhack.gui.getWidgetChildren(w))do if not df.widget_tabs:is_instance(w)or index-1==w.cur_idx then walk(child)end end end
  end

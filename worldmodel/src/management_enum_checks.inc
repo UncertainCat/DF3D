@@ -1,4 +1,9 @@
 // Generated exhaustive model/wire correspondence checks.
+static_assert(static_cast<int>(wm::JusticeCaseResolution::None) == static_cast<int>(df3d::mirror::JusticeCaseResolution::None));
+static_assert(static_cast<int>(wm::JusticeCaseResolution::Unsolved) == static_cast<int>(df3d::mirror::JusticeCaseResolution::Unsolved));
+static_assert(static_cast<int>(wm::JusticeCaseResolution::Convicted) == static_cast<int>(df3d::mirror::JusticeCaseResolution::Convicted));
+static_assert(static_cast<int>(wm::JusticeCaseResolution::UnknownConvict) == static_cast<int>(df3d::mirror::JusticeCaseResolution::UnknownConvict));
+static_assert(sizeof(df3d::mirror::EnumValuesJusticeCaseResolution()) / sizeof(df3d::mirror::JusticeCaseResolution) == 4);
 static_assert(static_cast<int>(wm::JusticeOutcome::None) == static_cast<int>(df3d::mirror::JusticeOutcome::None));
 static_assert(static_cast<int>(wm::JusticeOutcome::Rejected) == static_cast<int>(df3d::mirror::JusticeOutcome::Rejected));
 static_assert(static_cast<int>(wm::JusticeOutcome::Stale) == static_cast<int>(df3d::mirror::JusticeOutcome::Stale));

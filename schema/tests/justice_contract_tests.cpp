@@ -16,13 +16,13 @@ TEST_CASE("Justice requests scope paged reads to list and case revisions") {
  }
 }
 TEST_CASE("Justice case pages preserve paired native witness captions and reject malformed replies") {
- for(int fault=0;fault<14;++fault){flatbuffers::FlatBufferBuilder b;
+ for(int fault=0;fault<16;++fault){flatbuffers::FlatBufferBuilder b;
   auto text=b.CreateString(fault==8?std::string(16385,'x'):fault==9?std::string(16384,'x'):"fixture");
   std::vector<flatbuffers::Offset<m::JusticeWitnessRow>> witnesses;
   int count=fault==9?32:fault==10?0:1;
   for(int i=0;i<count;++i)witnesses.push_back(m::CreateJusticeWitnessRow(b,text,text,text,text));
   auto detail=m::CreateJusticeCaseDetail(b,fault==1?-1:9,fault==2?0:7,text,0,text,
-    fault==10?1:count,fault==3?2:0,b.CreateVector(witnesses));
+    fault==10?1:count,fault==3?2:0,b.CreateVector(witnesses),fault==14?m::JusticeCaseResolution::None:fault==15?m::JusticeCaseResolution(4):m::JusticeCaseResolution::Unsolved);
   auto result=m::CreateJusticeState(b,fault==4?m::JusticeOutcome::Stale:m::JusticeOutcome::None,
     fault==5?3:0,fault==6?0:7,fault==11?1:0,0,b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeCaseRow>>{}),fault==12?0:detail);
   m::ManagementStateBuilder s(b);s.add_revision(1);s.add_action(fault==7?m::ManagementAction::JusticeRead:m::ManagementAction::JusticeCaseRead);

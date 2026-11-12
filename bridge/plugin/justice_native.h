@@ -16,7 +16,8 @@
 
 namespace df3d_justice {
 struct CandidateFact {int32_t unitId=-1,rank=0;uint32_t flags=0;};
-struct CaseSummary {std::optional<std::string> injuredParty;std::string status;};
+enum class CaseResolution : uint8_t {Unsolved=1,Convicted=2,UnknownConvict=3};
+struct CaseSummary {CaseResolution resolution=CaseResolution::Unsolved;std::optional<std::string> injuredParty;std::string status;};
 // Native46db60 builds widgets around these inline branches; there is no plain
 // summary formatter. Isolate its semantic selection and use the same native
 // name formatter on owned units. Missing victims produce no injured-party row.
@@ -49,8 +50,8 @@ inline std::optional<CaseSummary> caseSummary(const df::crime* crime) {
     if(crime->accused==-1)result.status="Unsolved.";
     else if(auto* accused=df::unit::find(crime->accused)) {
         const auto text=name(accused);if(!text)return std::nullopt;
-        result.status="Convicted: "+*text+".";
-    }else result.status="Unknown convict.";
+        result.resolution=CaseResolution::Convicted;result.status="Convicted: "+*text+".";
+    }else {result.resolution=CaseResolution::UnknownConvict;result.status="Unknown convict.";}
     return result;
 }
 struct WitnessDates {std::string date,reported;};

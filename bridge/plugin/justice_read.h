@@ -6,6 +6,7 @@
 #include <stdexcept>
 namespace df3d_justice {
 namespace m=df3d::mirror;
+static_assert(uint8_t(CaseResolution::Unsolved)==uint8_t(m::JusticeCaseResolution::Unsolved) && uint8_t(CaseResolution::Convicted)==uint8_t(m::JusticeCaseResolution::Convicted) && uint8_t(CaseResolution::UnknownConvict)==uint8_t(m::JusticeCaseResolution::UnknownConvict));
 struct CaseRow {int32_t id=-1;std::string caption;};
 struct Detail {
     int32_t id=-1;uint64_t revision=0;std::string caption;CaseSummary summary;
@@ -45,8 +46,8 @@ inline ReadResult read(const m::JusticeRequest& q,bool selected) {
             auto* crime=df::crime::find(q.crime_id());auto summary=caseSummary(crime);auto reports=witnessText(crime);
             if(!summary || !reports)return refused;
             Detail d;d.id=q.crime_id();d.caption=rows[size_t(std::find(ids.begin(),ids.end(),d.id)-ids.begin())].caption;
-            d.summary.status=readText(summary->status);if(summary->injuredParty)d.summary.injuredParty=readText(*summary->injuredParty);
-            ReadHash facts;facts.number(uint32_t(d.id));facts.text(d.caption);facts.text(d.summary.status);
+            d.summary.resolution=summary->resolution;d.summary.status=readText(summary->status);if(summary->injuredParty)d.summary.injuredParty=readText(*summary->injuredParty);
+            ReadHash facts;facts.number(uint32_t(d.id));facts.text(d.caption);facts.text(d.summary.status);facts.number(uint8_t(d.summary.resolution));
             facts.number(bool(d.summary.injuredParty));if(d.summary.injuredParty)facts.text(*d.summary.injuredParty);
             facts.number(reports->size());
             for(auto& w:*reports)for(auto* text:{&w.witness,&w.description,&w.date,&w.reported}){*text=readText(*text);facts.text(*text);}
@@ -71,7 +72,7 @@ inline flatbuffers::Offset<m::JusticeState> encode(flatbuffers::FlatBufferBuilde
     if(r.detail){const auto& d=*r.detail;std::vector<flatbuffers::Offset<m::JusticeWitnessRow>> witnesses;
         for(const auto& w:d.witnesses)witnesses.push_back(m::CreateJusticeWitnessRow(b,b.CreateString(w.witness),b.CreateString(w.description),b.CreateString(w.date),b.CreateString(w.reported)));
         detail=m::CreateJusticeCaseDetail(b,d.id,d.revision,b.CreateString(d.caption),d.summary.injuredParty?b.CreateString(*d.summary.injuredParty):0,
-            b.CreateString(d.summary.status),d.total,d.offset,b.CreateVector(witnesses));}
+            b.CreateString(d.summary.status),d.total,d.offset,b.CreateVector(witnesses),m::JusticeCaseResolution(d.summary.resolution));}
     return m::CreateJusticeState(b,r.outcome,r.tab,r.revision,r.total,r.offset,b.CreateVector(rows),detail);
 }
 }

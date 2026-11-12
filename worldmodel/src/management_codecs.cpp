@@ -99,7 +99,7 @@ ManagementState decodeState(const m::ManagementState* s) {
     out.listRevision=r->list_revision();out.total=r->total();out.offset=r->offset();
     for(const auto* row:*r->rows())out.rows.push_back({row->crime_id(),row->caption()->str()});
     if(const auto* d=r->detail()){
-      auto& v=out.detail.emplace();v.crimeId=d->crime_id();v.revision=d->revision();v.caption=d->caption()->str();
+      auto& v=out.detail.emplace();v.crimeId=d->crime_id();v.resolution=JusticeCaseResolution(d->resolution());v.revision=d->revision();v.caption=d->caption()->str();
       if(d->injured_party())v.injuredParty=d->injured_party()->str();
       v.status=d->status()->str();v.total=d->total();v.offset=d->offset();
       for(const auto* w:*d->witnesses())v.witnesses.push_back({w->witness()->str(),w->description()->str(),w->date()->str(),w->reported()->str()});

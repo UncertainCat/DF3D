@@ -183,8 +183,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 192;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v192";
+inline constexpr uint32_t kManagementVersion = 193;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v193";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -1510,7 +1510,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
       }else{
         const auto* d=r->detail();
         if(r->total() || r->offset() || r->rows()->size() || !d || d->crime_id()<0 || !d->revision() || d->revision()>INT64_MAX ||
-          !d->witnesses() || !page(d->total(),d->offset(),d->witnesses()->size()) || !text(d->caption()) || !text(d->status()) ||
+          d->resolution()==JusticeCaseResolution::None || d->resolution()>JusticeCaseResolution::UnknownConvict || !d->witnesses() || !page(d->total(),d->offset(),d->witnesses()->size()) || !text(d->caption()) || !text(d->status()) ||
           (d->injured_party() && !text(d->injured_party())))return "invalid justice case";
         for(const auto* w:*d->witnesses()){
           bytes+=64;

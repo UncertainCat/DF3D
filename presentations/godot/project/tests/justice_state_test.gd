@@ -8,7 +8,7 @@ func check(ok: bool,message: String) -> void:
 func page(ids: Array=[9,10],offset:=0,total:=2,tab:=0,revision:=8) -> Dictionary:
 	return {"justice":{"outcome":C.JusticeOutcome.None,"tab":tab,"list_revision":revision,"offset":offset,"total":total,"rows":ids.map(func(id):return {"crime_id":id,"caption":"fixture"})}}
 func report(id:=9,offset:=0,total:=1,revision:=12,tab:=0) -> Dictionary:
-	return {"justice":{"outcome":C.JusticeOutcome.None,"tab":tab,"list_revision":8,"detail":{"crime_id":id,"revision":revision,"caption":"fixture","status":"fixture status","total":total,"offset":offset,"witnesses":[{"witness":"fixture witness","description":"","date":"event","reported":"reported"}]}}}
+	return {"justice":{"outcome":C.JusticeOutcome.None,"tab":tab,"list_revision":8,"detail":{"crime_id":id,"resolution":C.JusticeCaseResolution.Unsolved,"revision":revision,"caption":"fixture","status":"fixture status","total":total,"offset":offset,"witnesses":[{"witness":"fixture witness","description":"","date":"event","reported":"reported"}]}}}
 func _initialize() -> void:call_deferred("run")
 func run() -> void:
 	var service:=Service.new();root.add_child(service);var state:=State.new();state.configure(service);state.open()

@@ -7837,5 +7837,147 @@
       "No rendered Justice panel",
       "Selection-switch late callbacks, malformed continuation and epoch retirement verified headlessly with injected service replies, not live world replacement"
     ]
+  },
+  "resolution_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-192620",
+    "status": "passed_with_known_issues",
+    "known_diagnostic": "Godot separate rendering thread notice only",
+    "protocol": 193,
+    "owned_df_pid": 41572,
+    "source_preserved": true,
+    "closed_unsaved": true,
+    "native_fps_cap": 30,
+    "viewer": "headless",
+    "plugin_sha256": "938F922B901F414064DF89C2CCB260968DAB1127C0B7BF0321C9D6719EA4FBC6",
+    "cases": [
+      {
+        "case": {
+          "accused": -1,
+          "name": "baseline",
+          "victim": 7124
+        },
+        "native": {
+          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "resolution": 1,
+          "status": "Unsolved."
+        },
+        "owned": {
+          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "resolution": 1,
+          "status": "Unsolved."
+        }
+      },
+      {
+        "case": {
+          "accused": -1,
+          "name": "no-victim",
+          "victim": -1
+        },
+        "native": {
+          "resolution": 1,
+          "status": "Unsolved."
+        },
+        "owned": {
+          "resolution": 1,
+          "status": "Unsolved."
+        }
+      },
+      {
+        "case": {
+          "accused": -1,
+          "name": "missing-victim",
+          "victim": 2147483647
+        },
+        "native": {
+          "resolution": 1,
+          "status": "Unsolved."
+        },
+        "owned": {
+          "resolution": 1,
+          "status": "Unsolved."
+        }
+      },
+      {
+        "case": {
+          "accused": 5698,
+          "name": "convicted",
+          "victim": 7124
+        },
+        "native": {
+          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "resolution": 2,
+          "status": "Convicted: Doren Thosbutal\u00e5th, Dwarven Child."
+        },
+        "owned": {
+          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "resolution": 2,
+          "status": "Convicted: Doren Thosbutal\u00e5th, Dwarven Child."
+        }
+      },
+      {
+        "case": {
+          "accused": 2147483647,
+          "name": "unknown-convict",
+          "victim": 7124
+        },
+        "native": {
+          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "resolution": 3,
+          "status": "Unknown convict."
+        },
+        "owned": {
+          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "resolution": 3,
+          "status": "Unknown convict."
+        }
+      },
+      {
+        "case": {
+          "accused": -1,
+          "name": "no-trial-unsolved",
+          "no_trial": true,
+          "victim": 7124
+        },
+        "native": {
+          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "resolution": 1,
+          "status": "Unsolved."
+        },
+        "owned": {
+          "injured_party": "Injured party: L\u00f2r Astthum, Bone Doctor.",
+          "resolution": 1,
+          "status": "Unsolved."
+        }
+      }
+    ],
+    "receipt": {
+      "closed_read_retired": true,
+      "controller_tabs": 3,
+      "counts": [
+        7,
+        3,
+        7
+      ],
+      "stale_tabs": 3,
+      "success": true,
+      "witnesses": 134
+    },
+    "native_colors": {
+      "Unsolved": {
+        "fg": 3,
+        "bright": true
+      },
+      "Convicted": {
+        "fg": 5,
+        "bright": true
+      },
+      "UnknownConvict": {
+        "fg": 5,
+        "bright": true
+      }
+    },
+    "limitations": [
+      "Native color assertions and typed resolution verified; no rendered DF3D Justice panel yet"
+    ]
   }
 }

@@ -11,7 +11,8 @@ local function probe(command,argument)
  local menu=df.global.game.main_interface.info.justice;local size,address=df.sizeof(menu)
  local before=bytes(address,size);local rng=bytes(base+0x234e990,0x6180);local crimes={}
  for _,crime in ipairs(df.global.world.crimes.all)do local n,p=df.sizeof(crime);crimes[#crimes+1]={p=p,n=n,before=bytes(p,n)}end
- local text,rc=dfhack.run_command_silent('df3d',command or 'justice-captions-probe',table.unpack(argument and {tostring(argument)}or{}));assert(rc==0,'Justice captions provider failed: '..text)
+ local arguments=type(argument)=='table'and argument or(argument and {tostring(argument)}or{})
+ local text,rc=dfhack.run_command_silent('df3d',command or 'justice-captions-probe',table.unpack(arguments));assert(rc==0,'Justice provider failed: '..text)
  assert(bytes(address,size)==before,'Justice caption provider changed menu')
  assert(bytes(base+0x234e990,0x6180)==rng,'Justice caption provider advanced randomness')
  for _,crime in ipairs(crimes)do assert(bytes(crime.p,crime.n)==crime.before,'Justice caption provider changed crime')end

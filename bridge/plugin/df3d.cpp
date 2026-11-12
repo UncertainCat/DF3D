@@ -2745,12 +2745,12 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           out.print("{}\n",Json::writeString(Json::StreamWriterBuilder(),rows));return CR_OK;
         }
         if(parameters[0]=="justice-candidate-facts-probe" || parameters[0]=="justice-conviction-candidates-probe") {
-          if(parameters.size()!=2)return CR_WRONG_USAGE;
+          if(parameters.size()<2 || parameters.size()>3)return CR_WRONG_USAGE;
           if(!state.mapLoaded || df3d_session::saving())return CR_FAILURE;
           try {
             const auto* crime=df::crime::find(std::stoi(parameters[1]));
             const auto facts=parameters[0]=="justice-candidate-facts-probe" ? df3d_justice::candidateFacts(crime) :
-              df3d_justice::initialConvictionCandidates(crime);if(!facts)return CR_FAILURE;
+              df3d_justice::convictionCandidates(crime,parameters.size()==3?UTF2DF(parameters[2]):std::string{});if(!facts)return CR_FAILURE;
             Json::Value result(Json::arrayValue);
             for(const auto& fact:*facts){Json::Value row(Json::objectValue);row["unit_id"]=fact.unitId;
               row["rank"]=fact.rank;row["flags"]=fact.flags;result.append(row);}

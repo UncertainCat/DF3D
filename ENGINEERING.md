@@ -40,14 +40,36 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
-`df3d_justice::initialConvictionCandidates` now returns the initial Convict
-picker's filtered, ordered facts for empty search and default Crime/Name sort.
+`df3d_justice::convictionCandidates` returns the Convict picker's filtered,
+ordered facts for an owned search query and default Crime/Name sort.
 It calls native visibility137bd50 and the existing native name/normalization
 readers on owned unit context, then applies the audited stable sort priorities
 to owned ranks and names. Generic widget builder142c4b0 has no standalone list
 boundary; its filtering/stable-sort pipeline and the native comparators are
 pinned. Comparator487db0 remains prohibited because it reads the global map.
 The adapter does not construct a widget or access native lists or selection.
+
+Search calls native1424c30 directly with an independently constructed context:
+an empty owned job-search map at330 and owned normalized string at680. Justice
+does not enable CUR_JOB; native observation confirms the map is empty in both
+pickers. The helper performs native name matching (including the name formatter's
+profession text) and its empty-map fallback. It receives an owned unit reference;
+no native widget or native map is borrowed. Query normalization uses52cee0,
+matching the native textbox callback1432700. The search body, pointer-key hash
+3c9c30 and substring routinee1990 are pinned. Input is bounded to512 CP437 bytes.
+
+Protected181211 on2026-11-11 types six searches through the owned hidden window:
+dvn/DVN return0, aban5, lye2, zznomatch0 and clearing returns293. Every ordered
+native widget row matches the owned query. Menu/crime/RNG guards pass. The first
+181055 probe sent legacy STRING_A keys, which widget textboxes ignore; its empty
+native query was rejected by the oracle. The final lane uses bounded window text
+events, like Residents. Owned DF36104 closes unsaved with source preservation and
+restored preferences, native30FPS/no viewer, sampled GPU60C/1%. MSVC
+`justice-search-build.log` and core19 `build/qa/justice-search` pass. Installed
+bridge SHA256 `9DA7B6166D513A98E04F8B63F6C9CBBF28EBA63595879ECAB4283C80999084B1`;
+protocol191 is unchanged. `native_justice.json.conviction_search_reference`
+records the ordered results. Non-ASCII queries, alternate sorts, interrogation
+selection/partition and all action effects remain outside this acceptance.
 
 Protected180505 on2026-11-11 compares all293 displayed unit-name widgets in
 the Convict picker with the owned query, including exact order; the raw source

@@ -11,6 +11,7 @@
 #include <optional>
 #include <string>
 #include <unordered_map>
+#include <variant>
 
 namespace df3d_justice {
 struct CandidateFact {int32_t unitId=-1,rank=0;uint32_t flags=0;};
@@ -25,6 +26,16 @@ struct CandidateContext {
 static_assert(sizeof(std::unordered_map<df::unit*,int32_t>)==0x40);
 static_assert(offsetof(CandidateContext,ranks)==0x360);
 static_assert(offsetof(CandidateContext,flags)==0x3a0);
+// Search1424c30 reads only this owned map and normalized query. Justice's
+// picker has no CUR_JOB option, so its job-search map remains empty.
+struct CandidateSearch {
+    std::array<std::byte,0x330> prefix{};
+    std::unordered_map<std::variant<df::unit*,df::item*>,std::string> jobs;
+    std::array<std::byte,0x310> gap{};
+    std::string query;
+};
+static_assert(offsetof(CandidateSearch,jobs)==0x330);
+static_assert(offsetof(CandidateSearch,query)==0x680);
 }
 inline std::optional<std::vector<CandidateFact>> candidateFacts(const df::crime* crime) {
     auto* world=df::global::world;
@@ -57,14 +68,14 @@ inline std::optional<std::vector<CandidateFact>> candidateFacts(const df::crime*
     return result;
 }
 using Cases=std::array<std::vector<int32_t>,3>; // Open, Closed, Cold.
-// Initial Convict picker: empty search, native Crime then Name priorities.
+// Convict picker search, with native default Crime then Name priorities.
 // The generic widget builder142c4b0 has no standalone list boundary. Adapt its
 // stable sort pipeline over owned facts, calling the semantic visibility/name
 // readers. Never call487db0: that comparator reads the global Justice map.
-inline std::optional<std::vector<CandidateFact>> initialConvictionCandidates(const df::crime* crime) {
+inline std::optional<std::vector<CandidateFact>> convictionCandidates(const df::crime* crime,std::string query={}) {
     const auto facts=candidateFacts(crime);
     const auto& text=df3d_area::staffOrderingFunctions();
-    if(!facts || !text || !df3d_creature::inventoryDescriptionReady())return std::nullopt;
+    if(!facts || !text || query.size()>512 || !df3d_creature::inventoryDescriptionReady())return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
     static const bool pinned=[base] {
         struct Pin {size_t rva,length;uint64_t hash;};
@@ -74,6 +85,9 @@ inline std::optional<std::vector<CandidateFact>> initialConvictionCandidates(con
             {0x1435a10,0x110,UINT64_C(0x98ce3d80a8c10b09)},
             {0x14240d0,0x89,UINT64_C(0x4b41b81d7b2cdc3e)},
             {0x142c4b0,0x73e,UINT64_C(0x2dcc9b7815303ef5)},
+            {0x1424c30,0x218,UINT64_C(0x14952fd1a693777f)},
+            {0x3c9c30,0xe7,UINT64_C(0x3eae3e81c7aa002f)},
+            {0xe1990,0xc7,UINT64_C(0x1c45e5635f4ffde2)},
             {0x137bd50,0x2d0,UINT64_C(0xdee22d5bacd12bc9)},
             {0x1367430,0xc6,UINT64_C(0xc0292be8a6dacf2c)},
             {0xc8be10,0x14c,UINT64_C(0x1ba19b485a3fa56b)},
@@ -91,6 +105,8 @@ inline std::optional<std::vector<CandidateFact>> initialConvictionCandidates(con
         return true;
     }();
     if(!pinned)return std::nullopt;
+    detail::CandidateSearch search;search.query=std::move(query);text.normalize(&search.query);
+    auto* searchPointer=&search;
     struct Row {CandidateFact fact;std::string name;};
     std::vector<Row> rows;rows.reserve(facts->size());
     df3d_creature::InventoryRandomRestore restore(base);
@@ -100,6 +116,8 @@ inline std::optional<std::vector<CandidateFact>> initialConvictionCandidates(con
         if(unit->inventory.size()>10000)return std::nullopt;
         for(const auto* entry:unit->inventory)if(!entry)return std::nullopt;
         df3d_creature::InventoryDescriptionContext owned(*unit);
+        const df3d_area::StaffUnitReference reference{owned.unit()};
+        if(reinterpret_cast<bool(*)(detail::CandidateSearch**,const df3d_area::StaffUnitReference*)>(base+0x1424c30)(&searchPointer,&reference))continue;
         Row row{fact,{}};text.name(owned.unit(),&row.name,false);text.normalize(&row.name);
         if(row.name.size()>16384)return std::nullopt;
         rows.push_back(std::move(row));

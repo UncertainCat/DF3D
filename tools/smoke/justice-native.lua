@@ -166,5 +166,9 @@ if os.getenv('DF3D_JUSTICE_CANDIDATES')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-native%.lua$','justice-candidates-native.lua')
  assert(loadfile(source))(out,view,probe,settle,caption_click,capture,result.cold_candidate_facts)
 end
+if os.getenv('DF3D_JUSTICE_WIRE')=='1' then
+ local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-native%.lua$','justice-wire-native.lua')
+ assert(loadfile(source))(out,probe,bytes)
+end
 gui.simulateInput(view,'LEAVESCREEN');settle();assert(not info.open,'Justice did not close')
 records[#records+1]={name='justice-discovery',closed=true}

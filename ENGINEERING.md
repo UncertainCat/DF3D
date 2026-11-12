@@ -54,10 +54,12 @@ Migration: rebuild bridge and clients together. Protocol191 processes do not
 share this mailbox. Session/map recording formats are unchanged; older recordings
 do not acquire synthetic Justice facts. The model encodes both read requests
 and decodes their replies into owned, pointer-free records, retaining native order,
-optional injured-party text and each witness's paired dates. The bridge producer,
-Godot adapter and panel remain unfinished; Justice stays publicly unavailable. Native
-providers below remain the source for the next integration step. The installed
-bridge is still protocol191 pending integration and protected live acceptance.
+optional injured-party text and each witness's paired dates. `justice_read.h`
+supplies native case/caption/summary/witness providers at the admitted safe point.
+It hashes complete ordered captions and detail facts before paging, so continuation
+cannot combine changed lists or witness details. The Godot adapter accepts typed
+read requests and returns model-owned records. The panel and remaining Justice
+categories/actions are unfinished; Justice stays publicly unavailable.
 
 Root build and all19 CTest checks pass in `build/qa/justice-read-contract`, including
 new request/reply checks for wrong domains, stale payloads, duplicate IDs, page
@@ -66,7 +68,26 @@ rendered/live acceptance. A subsequent comment relocation passed root CTest agai
 Model codec verification in `build/qa/justice-model-codec` passes the root build
 and all19 CTest checks. Tests overwrite the source wire buffer before inspecting
 owned case/witness rows and cover both pagination identities and typed refusals.
-This does not establish runtime producer or presentation acceptance.
+This alone does not establish runtime producer or presentation acceptance.
+
+Protected `stockpile-storage-native-input-20261111-190710` verifies the complete
+bridge/model/Godot read path:7 Open,3 Closed and7 Cold cases,134 witness rows,
+exact captions/order/paired dates, optional injured-party lines, stale list/detail
+rejection and missing-target rejection. The oracle uses the independently verified
+native providers below. Native menu/crime/witness bytes and primary RNG remain
+unchanged; DF24064 closes unsaved with source preservation and prefs restoration.
+Native rendering is capped at30FPS; the viewer is headless (GPU49C,3%,23.49W).
+Only the documented Godot separate-thread notice remains: passed_with_known_issues.
+`native_justice.json.typed_read_reference` retains the bounded receipt and scope.
+No panel rendering, disconnect/world-replacement or action acceptance is claimed.
+
+The installed protocol192 bridge SHA256 is
+`FC298B76007779141440D51032DA227EAC4CC4599723F1F8BB90E7AF70172202`.
+MSVC build `justice-read-build.log`, root19 and composed UI checks in
+`build/qa/justice-read-integration-final` pass. Earlier protected190518 rejected
+Justice locally because the adapter's action upper bound still ended at Objects;
+that session also closed unsaved with source preservation. The bound now includes
+JusticeCaseRead, and190710 exercises it successfully.
 
 `df3d_justice::witnessText` in `justice_witness_native.h` returns ordered witness
 rows with name, report description and both date captions. It calls native

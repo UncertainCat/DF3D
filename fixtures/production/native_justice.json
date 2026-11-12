@@ -7681,5 +7681,134 @@
       "7": "COCONSPIRATOR_IMPLICATED with accused"
     },
     "limits": "Ordered full witness text including dates, 39 reports and ten controlled type/accused scenarios. Does not independently exercise assumed identities or missing-name fallback. No rendered DF3D page accepted. Native widgets are oracle only."
+  },
+  "typed_read_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-190710",
+    "game": "DF 53.16",
+    "protocol": 192,
+    "status": "passed_with_known_issues",
+    "known_diagnostic": "Godot separate rendering thread notice only",
+    "plugin_sha256": "FC298B76007779141440D51032DA227EAC4CC4599723F1F8BB90E7AF70172202",
+    "owned_df_pid": 24064,
+    "source_preserved": true,
+    "closed_unsaved": true,
+    "native_fps_cap": 30,
+    "viewer": "headless",
+    "receipt": {
+      "counts": [
+        7,
+        3,
+        7
+      ],
+      "stale_tabs": 3,
+      "success": true,
+      "witnesses": 134
+    },
+    "reference_sha256": "5303d8f7cf95658c25005274addfdaffd719c43b3b8e4260ef75f941b4cf0f5b",
+    "cases": [
+      [
+        {
+          "id": 9,
+          "caption": "Disorderly conduct",
+          "witness_count": 39
+        },
+        {
+          "id": 10,
+          "caption": "Disorderly conduct",
+          "witness_count": 18
+        },
+        {
+          "id": 11,
+          "caption": "Disorderly conduct",
+          "witness_count": 17
+        },
+        {
+          "id": 13,
+          "caption": "Disorderly conduct",
+          "witness_count": 15
+        },
+        {
+          "id": 14,
+          "caption": "Disorderly conduct",
+          "witness_count": 17
+        },
+        {
+          "id": 15,
+          "caption": "Disorderly conduct",
+          "witness_count": 20
+        },
+        {
+          "id": 16,
+          "caption": "Disorderly conduct",
+          "witness_count": 6
+        }
+      ],
+      [
+        {
+          "id": 7,
+          "caption": "Violation of production order",
+          "witness_count": 0
+        },
+        {
+          "id": 8,
+          "caption": "Violation of production order",
+          "witness_count": 0
+        },
+        {
+          "id": 12,
+          "caption": "Violation of production order",
+          "witness_count": 0
+        }
+      ],
+      [
+        {
+          "id": 0,
+          "caption": "Disorderly conduct",
+          "witness_count": 1
+        },
+        {
+          "id": 1,
+          "caption": "Disorderly conduct",
+          "witness_count": 0
+        },
+        {
+          "id": 2,
+          "caption": "Disorderly conduct",
+          "witness_count": 0
+        },
+        {
+          "id": 3,
+          "caption": "Disorderly conduct",
+          "witness_count": 0
+        },
+        {
+          "id": 4,
+          "caption": "Building destruction",
+          "witness_count": 0
+        },
+        {
+          "id": 5,
+          "caption": "Disorderly conduct",
+          "witness_count": 0
+        },
+        {
+          "id": 6,
+          "caption": "Disorderly conduct",
+          "witness_count": 1
+        }
+      ]
+    ],
+    "guards": [
+      "native Justice context unchanged",
+      "crime and witness bytes unchanged",
+      "primary RNG unchanged",
+      "pause and simulation frame unchanged"
+    ],
+    "limitations": [
+      "Read-only model/adapter transport, no panel rendered",
+      "Native semantics reuse independently verified providers; this run is not a new widget oracle",
+      "No world replacement or disconnect acceptance",
+      "Justice actions and remaining categories are not exposed"
+    ]
   }
 }

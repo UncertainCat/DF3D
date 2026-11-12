@@ -247,6 +247,21 @@ Dictionary Df3dWorld::managementState(bool includePayload) const {
         }
         value["outcome"]=int(v.outcome);value["list_revision"]=int64_t(v.listRevision);value["total"]=int64_t(v.total);value["offset"]=int64_t(v.offset);value["rows"]=rows;result["nobles"]=value;
     }
+    if(s.justice){const auto& v=*s.justice;Dictionary value;Array rows;
+        value["outcome"]=int(v.outcome);value["tab"]=int(v.tab);value["list_revision"]=int64_t(v.listRevision);
+        value["total"]=int64_t(v.total);value["offset"]=int64_t(v.offset);
+        for(const auto& r:v.rows){Dictionary row;row["crime_id"]=r.crimeId;row["caption"]=String::utf8(r.caption.c_str());rows.push_back(row);}
+        value["rows"]=rows;
+        if(v.detail){const auto& d=*v.detail;Dictionary detail;Array witnesses;
+            detail["crime_id"]=d.crimeId;detail["revision"]=int64_t(d.revision);detail["caption"]=String::utf8(d.caption.c_str());
+            detail["status"]=String::utf8(d.status.c_str());if(d.injuredParty)detail["injured_party"]=String::utf8(d.injuredParty->c_str());
+            detail["total"]=int64_t(d.total);detail["offset"]=int64_t(d.offset);
+            for(const auto& w:d.witnesses){Dictionary row;row["witness"]=String::utf8(w.witness.c_str());row["description"]=String::utf8(w.description.c_str());
+                row["date"]=String::utf8(w.date.c_str());row["reported"]=String::utf8(w.reported.c_str());witnesses.push_back(row);}
+            detail["witnesses"]=witnesses;value["detail"]=detail;
+        }
+        result["justice"]=value;
+    }
     if(s.objects){const auto& v=*s.objects;Dictionary value;Array rows;
         value["outcome"]=int(v.outcome);value["tab"]=int(v.tab);value["list_revision"]=int64_t(v.listRevision);
         value["total"]=int64_t(v.total);value["offset"]=int64_t(v.offset);
@@ -673,6 +688,24 @@ bool readNobles(const Dictionary& data,wm::ManagementRequest& request,String&) {
     if(data.has("name_edit")){const Dictionary n=data["name_edit"];q.nameEdit=wm::LocationNameEdit{wm::LocationNameMode(int64_t(n["mode"])),int8_t(int64_t(n["target"])),int8_t(int64_t(n["displayed"])),int32_t(int64_t(n["word"])),int16_t(int64_t(n["part"])),bytes(n)};}
     return true;
 }
+bool validateJustice(const Dictionary& data,String& error) {
+    error="Invalid justice request";
+    const auto integer=[](const Dictionary& d,const char* k,int64_t lo,int64_t hi){return d.has(k) && d[k].get_type()==Variant::INT && int64_t(d[k])>=lo && int64_t(d[k])<=hi;};
+    const bool detail=int64_t(data["action"])==int64_t(wm::ManagementAction::JusticeCaseRead);
+    if(data.size()!=(detail?7:5) || !integer(data,"tab",0,2) || !integer(data,"offset",0,1048576) || !integer(data,"limit",1,64) ||
+        !integer(data,"expected_list_revision",detail?1:0,INT64_MAX))return false;
+    if(detail){if(!integer(data,"crime_id",0,INT32_MAX) || !integer(data,"expected_case_revision",0,INT64_MAX) ||
+        (int64_t(data["offset"]) && !int64_t(data["expected_case_revision"])))return false;
+    }else if(int64_t(data["offset"]) && !int64_t(data["expected_list_revision"]))return false;
+    error=String();return true;
+}
+bool readJustice(const Dictionary& data,wm::ManagementRequest& request,String&) {
+    request.action=wm::ManagementAction(int64_t(data["action"]));auto& q=request.justice;
+    q.tab=uint8_t(int64_t(data["tab"]));q.offset=uint32_t(int64_t(data["offset"]));q.limit=uint16_t(int64_t(data["limit"]));
+    q.expectedListRevision=uint64_t(int64_t(data["expected_list_revision"]));
+    if(request.action==wm::ManagementAction::JusticeCaseRead){q.crimeId=int32_t(int64_t(data["crime_id"]));q.expectedCaseRevision=uint64_t(int64_t(data["expected_case_revision"]));}
+    return true;
+}
 bool validateObjects(const Dictionary& data,String& error) {
     error="Invalid objects request";
     const auto integer=[](const Dictionary& d,const char* k,int64_t lo,int64_t hi){return d.has(k) && d[k].get_type()==Variant::INT && int64_t(d[k])>=lo && int64_t(d[k])<=hi;};
@@ -1086,6 +1119,7 @@ const ManagementCodec managementCodecs[] = {
     {"nobles",validateNobles,readNobles},
     {"places",validatePlaces,readPlaces},
     {"objects",validateObjects,readObjects},
+    {"justice",validateJustice,readJustice},
     {"tasks",validateTasks,readTasks},
     {"stone_use",validateStoneUse,readStoneUse},
     {"kitchen_menu",validateKitchenMenu,readKitchenMenu},
@@ -1106,7 +1140,7 @@ int64_t Df3dWorld::management_request(const String& domain, const Dictionary& da
     if (!data.has("action")) { lastError_ = "Missing management field: action"; return 0; }
     if (data["action"].get_type() != Variant::INT) { lastError_ = "Wrong management field type: action"; return 0; }
     const int64_t raw = data["action"];
-    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::ObjectsLocate)) {
+    if (raw < 0 || raw > static_cast<int64_t>(wm::ManagementAction::JusticeCaseRead)) {
         lastError_ = "Invalid management action"; return 0;
     }
     const auto action = static_cast<wm::ManagementAction>(raw);

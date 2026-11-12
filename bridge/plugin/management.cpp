@@ -116,6 +116,7 @@
 #include "tasks_action_native.h"
 #include "places_action_native.h"
 #include "objects_native.h"
+#include "justice_read.h"
 #include "df/gamest.h"
 #include "work_order_catalog_native.h"
 #include "work_order_rows_native.h"
@@ -562,6 +563,7 @@ struct ObjectsResult {
   int32_t artifactId=-1;std::optional<df3d_objects::Destination> destination;
 };
 std::optional<ObjectsResult> objects;
+std::optional<df3d_justice::ReadResult> justice;
 struct PlacesResult {
   m::PlacesOutcome outcome=m::PlacesOutcome::Rejected;uint8_t tab=0;
   uint64_t listRevision=0;uint32_t total=0,offset=0;std::vector<df3d_places::BuildingRow> rows;
@@ -628,7 +630,7 @@ void clearResult() {
   residentsRows.reset();
   residentsSpecialization.reset();
   residentsActivity.reset();
-  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();stoneUse.reset();stocks.reset();tasks.reset();objects.reset();places.reset();nobles.reset();
+  jobSettings.reset();jobSettingsEdit.reset();workDetailSettings.reset();standingOrders.reset();hunter.reset();chores.reset();kitchen.reset();stoneUse.reset();stocks.reset();tasks.reset();objects.reset();justice.reset();places.reset();nobles.reset();
   worldHover.reset();
   construction = {};
   production = {};
@@ -1337,6 +1339,7 @@ void publish() {
       nobles->target?&*nobles->target:nullptr,nobles->candidateRevision,b.CreateVector(candidates),b.CreateVector(symbols),step,name,
       nobles->symbolTargetCaption?b.CreateString(*nobles->symbolTargetCaption):flatbuffers::Offset<flatbuffers::String>{});
   }
+  auto justiceResult=justice?df3d_justice::encode(b,*justice):flatbuffers::Offset<m::JusticeState>{};
   flatbuffers::Offset<m::ObjectsState> objectsResult;
   if(objects){std::vector<flatbuffers::Offset<m::ObjectsRow>> rows;
     for(const auto& row:objects->rows){const auto& p=row.destination.position;const m::TilePos pos(p.x,p.y,p.z);
@@ -1442,7 +1445,7 @@ void publish() {
   auto s = m::CreateManagementState(b, m::kManagementVersion, ++revision, epoch, client, seq,
                                     action, status, b.CreateString(message), b.CreateVector(ds),
                                     b.CreateVector(is), required, cursor, valid, building, stage,
-                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult,noblesResult,objectsResult);
+                                    maxStage, removing, jobs, terrainConstructed, areaResult, productionResult, workOrderResult, citizenResult, reportResult, agreementResult, tradeResult, 0, 0, 0, 0, 0, creatureResult, constructionResult, terrainResult,creatureHeaderResult,creaturePositionResult,creatureExpelResult,creatureKnowledgeResult,creatureWorkshopResult,creatureLocationResult,creatureAnimalResult,residentsResult,residentsRowsResult,residentsSpecializationResult,residentsActivityResult,jobSettingsResult,jobSettingsEditResult,workDetailSettingsResult,standingOrdersResult,hunterResult,choresResult,kitchenResult,stoneUseResult,stocksResult,0,tasksResult,placesResult,noblesResult,objectsResult,justiceResult);
   b.Finish(s);
   auto validationError=m::validateManagementState(
       *flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer()));
@@ -4646,6 +4649,11 @@ void run(color_ostream& out) {
       }
     }catch(...){nobles.emplace();}
     publish();return;
+  }
+  if(r->action()==m::ManagementAction::JusticeRead || r->action()==m::ManagementAction::JusticeCaseRead){
+    justice=df3d_justice::read(*r->justice(),r->action()==m::ManagementAction::JusticeCaseRead);
+    status=justice->outcome==m::JusticeOutcome::None?m::ManagementStatus::Ok:m::ManagementStatus::Rejected;
+    message.clear();publish();return;
   }
   if(r->action()==m::ManagementAction::ObjectsRead || r->action()==m::ManagementAction::ObjectsLocate){
     const auto& q=*r->objects();status=m::ManagementStatus::Rejected;message.clear();objects.emplace();objects->tab=q.tab();

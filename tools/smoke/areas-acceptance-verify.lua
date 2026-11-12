@@ -152,7 +152,24 @@ local function check_properties(actual,expected,path)
   else assert(actual[key]==value,path..'.'..key..' mismatch: '..tostring(actual[key])..' / '..tostring(value)) end
  end
 end
-if request.op=='tomb_scene_prepare' then
+if request.op=='owner_rows_prepare' then
+ local b=building();local u=assert(df.global.world.units.active[0]);local spouse=assert(df.global.world.units.active[1])
+ _G.df3d_owner_rows={id=b.id,owner=b.assigned_unit_id,type=b.type,unit=u.id,flags=u.flags1.whole,spouse=u.relationship_ids.Spouse,other=spouse.id}
+ b.assigned_unit_id=u.id
+elseif request.op=='owner_rows_case' then
+ local saved=assert(_G.df3d_owner_rows);local b=building();assert(b.id==saved.id)
+ local u=assert(df.unit.find(saved.unit));b.type=df.civzone_type[request.kind]
+ u.flags1.whole=(saved.flags & (~0x502))|request.bits;u.relationship_ids.Spouse=saved.other
+elseif request.op=='owner_rows_check' then
+ local b=building();local text,code=dfhack.run_command_silent('df3d','zone-selected-owners-read',tostring(b.id));assert(code==0,text)
+ local rows=json.decode(text);assert(#rows==#request.rows,'Selected owner row count')
+ local function caption(bytes)local chars={};for _,v in ipairs(bytes)do chars[#chars+1]=string.char(v)end;return dfhack.df2utf(table.concat(chars))end
+ for i,row in ipairs(rows)do local received=request.rows[i];assert(row.id==received.id and caption(row.caption)==received.caption and caption(row.status)==received.status,'Selected owner transport differs')end
+elseif request.op=='owner_rows_restore' then
+ local saved=assert(_G.df3d_owner_rows);local b=building();assert(b.id==saved.id)
+ local u=assert(df.unit.find(saved.unit));b.type=saved.type;b.assigned_unit_id=saved.owner;u.flags1.whole=saved.flags;u.relationship_ids.Spouse=saved.spouse
+ _G.df3d_owner_rows=nil
+elseif request.op=='tomb_scene_prepare' then
  assert(not _G.df3d_tomb_scene)
  for _,u in ipairs(df.global.world.units.active)do
   if dfhack.units.isCitizen(u)and not u.flags1.inactive then

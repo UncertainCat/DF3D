@@ -900,10 +900,201 @@
     "preservation": "Owned DF15744 exited unsaved; protected source/prefs restoration",
     "bridge_sha256": "D66B9CB4E9F79FE17982C91D3B618EE8EFF326D42DD08502DAD07034D4B9ADF0",
     "limitations": [
-      "Provider and diagnostic only; typed transport and viewer integration remain",
-      "Current viewer derives Deceased from owner_allowed and therefore mishandles mask0x100/0x400 exclusions",
-      "Current viewer omits spouse row and uses concatenated/clipped owner name"
+      "This discovery run establishes native text only; final transport and rendered evidence is in selected_owner_rows_integration"
     ],
     "result_sha256": "9d5df71cd5051bd46ed293fd3e9624eb3965802c5f9e890022bec3ca295f69a1"
+  }
+,
+  "selected_owner_rows_integration": {
+    "protocol": 204,
+    "native_directory": "build/stockpile-storage-native-zone-defaults-20261112-163559",
+    "viewer_directory": "build/areas-acceptance-20261112-163724",
+    "wire_directory": "build/areas-acceptance-20261112-161856",
+    "bridge_sha256": "777267CF894E0C31D7FB7D1C1E6EACE7CACAAD52329BD3D192613B69E51E0B5E",
+    "scope": "Owned native primary/spouse captions, explicit Tomb status, full-unit recipes independent of map presence; actual Tomb assignment/control/restoration/removal workflow. Controlled type/spouse/flag fixtures restored.",
+    "comparisons": [
+      {
+        "kind": "Bedroom",
+        "region": "primary_text",
+        "box": [
+          88,
+          144,
+          288,
+          168
+        ],
+        "different_pixels": 0
+      },
+      {
+        "kind": "Bedroom",
+        "region": "spouse_text",
+        "box": [
+          88,
+          180,
+          288,
+          204
+        ],
+        "different_pixels": 0
+      },
+      {
+        "kind": "Bedroom",
+        "region": "primary_sprite",
+        "box": [
+          40,
+          136,
+          72,
+          172
+        ],
+        "different_pixels": 0
+      },
+      {
+        "kind": "Bedroom",
+        "region": "spouse_sprite",
+        "box": [
+          40,
+          172,
+          72,
+          208
+        ],
+        "different_pixels": 0
+      },
+      {
+        "kind": "Office",
+        "region": "primary_text",
+        "box": [
+          88,
+          144,
+          288,
+          168
+        ],
+        "different_pixels": 0
+      },
+      {
+        "kind": "Office",
+        "region": "spouse_text",
+        "box": [
+          88,
+          180,
+          288,
+          204
+        ],
+        "different_pixels": 0
+      },
+      {
+        "kind": "Office",
+        "region": "primary_sprite",
+        "box": [
+          40,
+          136,
+          72,
+          172
+        ],
+        "different_pixels": 0
+      },
+      {
+        "kind": "Office",
+        "region": "spouse_sprite",
+        "box": [
+          40,
+          172,
+          72,
+          208
+        ],
+        "different_pixels": 0
+      },
+      {
+        "kind": "DiningHall",
+        "region": "primary_text",
+        "box": [
+          88,
+          144,
+          288,
+          168
+        ],
+        "different_pixels": 0
+      },
+      {
+        "kind": "DiningHall",
+        "region": "spouse_text",
+        "box": [
+          88,
+          180,
+          288,
+          204
+        ],
+        "different_pixels": 0
+      },
+      {
+        "kind": "DiningHall",
+        "region": "primary_sprite",
+        "box": [
+          40,
+          136,
+          72,
+          172
+        ],
+        "different_pixels": 0
+      },
+      {
+        "kind": "DiningHall",
+        "region": "spouse_sprite",
+        "box": [
+          40,
+          172,
+          72,
+          208
+        ],
+        "different_pixels": 0
+      },
+      {
+        "kind": "Tomb258",
+        "region": "caption_status",
+        "box": [
+          88,
+          144,
+          288,
+          172
+        ],
+        "different_pixels": 0
+      },
+      {
+        "kind": "Tomb1026",
+        "region": "caption_status",
+        "box": [
+          88,
+          144,
+          288,
+          172
+        ],
+        "different_pixels": 0
+      }
+    ],
+    "artifacts": {
+      "build/stockpile-storage-native-zone-defaults-20261112-163559/result.json": "2946d42df6a42e47663cdbbac0152a1c14ddd55907c2993d8815aabca3aa1b6c",
+      "build/stockpile-storage-native-zone-defaults-20261112-163559/selected-owners-Bedroom-spouse.png": "eeb797b52c75d1e3e4a57b7a376ff36744e16ff366edc19094bbbb488d0462a0",
+      "build/stockpile-storage-native-zone-defaults-20261112-163559/selected-owners-Office-spouse.png": "739b396ae7c8ee721b7bbb58ddb1c0b92dd34a8e7151c48960de1ef448d4cd22",
+      "build/stockpile-storage-native-zone-defaults-20261112-163559/selected-owners-DiningHall-spouse.png": "73460be8a40a4c8d358efe96a382e404f1362cf4bffbb84da245291a521dac96",
+      "build/stockpile-storage-native-zone-defaults-20261112-163559/selected-owners-flags-258.png": "0be90bed09d9b1e7a2be8462d0d7211c06441cd08b98d3617b1e66d907308747",
+      "build/stockpile-storage-native-zone-defaults-20261112-163559/selected-owners-flags-1026.png": "0be90bed09d9b1e7a2be8462d0d7211c06441cd08b98d3617b1e66d907308747",
+      "build/areas-acceptance-20261112-163724/result.json": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+      "build/areas-acceptance-20261112-163724/owner-row-comparison.json": "e1cbf40acec141b19d7fbc76539072986536d0333ef7f6b9e4cfc3f3eaba7823",
+      "build/areas-acceptance-20261112-163724/scene_owner_rows_Bedroom_0.png": "d474d54119683e7275c65b2fb03de2cb2b31c00f9b56591f9b8f9b684f05b5b2",
+      "build/areas-acceptance-20261112-163724/scene_owner_rows_Office_0.png": "535a45f6cb93833b536cc9e33d51ac2129ce9bd97a4c26fd5ae49c8af5d4b39e",
+      "build/areas-acceptance-20261112-163724/scene_owner_rows_DiningHall_0.png": "f2e3fe2c3dd42c1d86c4599ff6e3e08d7ee90ce989bd584d7a4c8ef6a401ca52",
+      "build/areas-acceptance-20261112-163724/scene_owner_rows_Tomb_258.png": "f2fcda900eae090eab77bcaeb91482993dea69bddc2e33daf0a93d08920a7395",
+      "build/areas-acceptance-20261112-163724/scene_owner_rows_Tomb_1026.png": "c860e3fcface7a127b87ec5a1e37ea4e118362e9bbff583871d6c53ebb9378c7"
+    },
+    "viewer_status": "passed_with_known_issues: documented separate-render-thread notice only",
+    "preservation": "Owned viewer DF34896/native DF46572 exit unsaved; source/test manifests and preferences preserved.",
+    "verification": [
+      "core19",
+      "1711 management Lua contract fixtures",
+      "areas adapter",
+      "build/qa/zone-owner-rows-final"
+    ],
+    "limitations": [
+      "Owner-row regions only, not whole-panel or map parity",
+      "Shared-room spouse cases use controlled semantic fixture relationships, not marriage gameplay acceptance",
+      "Does not complete remaining Zones Active semantics or the broader management release goal"
+    ]
   }
 }

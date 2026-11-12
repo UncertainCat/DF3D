@@ -2491,16 +2491,33 @@ func pointer_tomb_workflow() -> void:
 	editor.use_area(await inspect(id,1))
 	if not await wait_ui(settled,"Inactive Tomb refresh"):return
 	if not check(not editor.zone_menu.controls.owner.visible and editor.zone_menu.owner_status.visible,"Inactive owner status differs"):return
-	var before: int=receipts.size()
+	var before: int=area_receipts().size()
 	await pointer_click(editor.zone_menu.controls.owner.get_global_rect().get_center())
 	if not await wait_ui(settled,"Hidden assignment click"):return
-	if not check(editor.stockpile_page=="types" and receipts.size()==before,"Hidden assignment dispatched work"):return
+	if not check(editor.stockpile_page=="types" and area_receipts().size()==before,"Hidden assignment dispatched area work"):return
 	if not await wait_ui(func():return editor.zone_menu.owner_portrait.texture!=null,"Inactive Tomb owner sprite"):return
 	await capture("tomb_inactive")
 	await native("tomb_scene_state",{"id":id,"inactive":false})
 	editor.use_area(await inspect(id,1))
 	if not await wait_ui(settled,"Living owner restoration"):return
 	if not check(editor.zone_menu.controls.owner.visible and not editor.zone_menu.owner_status.visible,"Restored owner did not recover assignment"):return
+	await native("owner_rows_prepare",{"id":id})
+	for sample in [["Tomb",258],["Tomb",1026],["Bedroom",0],["Office",0],["DiningHall",0]]:
+		await native("owner_rows_case",{"id":id,"kind":sample[0],"bits":sample[1]})
+		editor.use_area(await inspect(id,1))
+		if not await wait_ui(settled,"Native selected owner rows"):return
+		var rows: Array=editor.selected.owner_rows
+		await native("owner_rows_check",{"id":id,"rows":rows})
+		if not check(editor.zone_menu.owner_label.text==rows[0].caption and not editor.zone_menu.owner_status.visible,"Native owner caption or status differs"):return
+		if sample[0]!="Tomb":
+			if not check(rows.size()==2 and editor.zone_menu.spouse_label.text==rows[1].caption and editor.zone_menu.spouse_label.visible,"Native spouse caption missing"):return
+			if not await wait_ui(func():return editor.zone_menu.owner_portrait.texture!=null and editor.zone_menu.spouse_portrait.texture!=null,"Native owner and spouse sprites"):return
+		else:
+			if not check(rows.size()==1 and not editor.zone_menu.spouse_label.visible,"Tomb retained spouse row"):return
+		await capture("owner_rows_"+str(sample[0])+"_"+str(sample[1]))
+	await native("owner_rows_restore",{"id":id})
+	editor.use_area(await inspect(id,1))
+	if not await wait_ui(settled,"Owner row fixture restoration"):return
 	await native("tomb_scene_restore")
 	await click_control(editor.zone_menu.controls.remove)
 	if not await wait_ui(func():return settled() and editor.selected.is_empty(),"Tomb removal"):return

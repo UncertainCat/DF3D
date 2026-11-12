@@ -15091,33 +15091,40 @@ Protected wire161856 verifies seven exact native row/status results; the later
 rendered163724 run exercises the final appearance-bearing contract as well.
 
 
-Selected-zone owner artwork uses the native-backed full-unit selection icon,
-refreshing while visible so an icon arriving after the area receipt is displayed.
-It no longer uses the portrait API. Native sprite placement starts at x40
-(panel-relative8), with its32x32 image centered in the32x36 owner region.
-Protected `areas-acceptance-20261112-155423` with DF3D_TOMB_SCENE=1 exercises
-four burial-permission clicks, actual picker assignment, native membership
-readback, hidden burial controls, inactive-owner status and inert assignment
-clicks, restored controls, and removal. Owner identity comes from the native
-candidate list; the target row is positioned directly before its viewport click.
-The initial Tomb is selected from observed fixture identity, not by map picking.
-Inactive state is seeded after real assignment and restored before removal.
-The final screenshot was inspected. Owner sprite crop(40,136)-(72,172) and
-Deceased text crop(88,160)-(152,172) have zero differing RGB pixels against
-native154426. The owner-name line still clips instead of matching native
-abbreviation; this is a remaining presentation gap, not whole-panel acceptance.
-Owned DF12828 exits unsaved with two unchanged save manifests. Only the known
-separate-render-thread notice qualifies the run. Both graphical processes are
-capped30FPS; sampled GPU49–52C across these focused runs is not a peak claim.
-Headless `zone-owner-sprite` passes. `native_zone_defaults.json.tomb_scene_reference`
-retains hashes and scope. Earlier155059 exposed the blank owner sprite, and
-155250 exposed its two-pixel horizontal offset; neither is final artwork acceptance.
+The viewer renders the transported primary/spouse captions and unit-selector
+recipes, including owners absent from the visible-map actor stream. Installed
+palette15 supplies native white captions and palette13 the Deceased status.
+Primary/spouse sprites occupy32x36 cells at panel-relative(8,82)/(8,118).
+Missing optional recordings remain blank rather than consulting map visibility
+or reconstructing text. Hidden panels release textures; replaced rows retire
+both identities and recipes.
+
+Protected `areas-acceptance-20261112-163724` exercises four burial toggles,
+actual picker assignment, native membership readback, inactive status/inert
+hidden assignment click, restoration and removal. It also compares native rows
+for both excluded Tomb flags and Bedroom/Office/DiningHall spouse cases through
+the actual main scene. The assertion scopes receipts to the area domain so
+background observations cannot masquerade as a hidden-button action.
+Against native `stockpile-storage-native-zone-defaults-20261112-163559`, all14
+compared caption/status/sprite regions have zero differing RGB pixels. Final
+Bedroom screenshots were inspected. This is owner-row acceptance, not a claim
+that the two whole maps or differently named fixture zones match.
+
+The final viewer run is passed_with_known_issues solely for the documented
+separate-render-thread notice. Owned DF34896 and native DF46572 close unsaved;
+source/test manifests and preferences are preserved. Serial graphical work is
+capped30FPS; sampled GPU47–48C is not a peak claim. Headless
+`build/qa/zone-owner-rows-final` and core19 pass. Fixture
+`native_zone_defaults.json.selected_owner_rows_integration` records bounded
+hashes, regions and scope. Earlier161939 exposed the map-stream sprite gap;
+162731 stopped on the overbroad receipt assertion;163458 established sprites
+but exposed cream caption coloring. None is the final visual reference.
 
 
 Tomb ownership now follows native34bd3b..34bdb9: when the assigned unit resolves
-and flags1.inactive is set, hide the assignment button and display native
-"Deceased" in installed LMAGENTA. Preserve that exact predicate; it is not a
-broader death classifier. The bridge reports owner_allowed=false and refuses
+and flags1.inactive is set, hide the assignment button. The separate native
+Deceased display predicate and installed LMAGENTA are described above; neither
+predicate should be replaced by a broader death classifier. The bridge reports owner_allowed=false and refuses
 owner-picker reads and reassignment. The Tomb revision includes this flag, so
 an older receipt cannot authorize a change after the owner becomes inactive.
 Native protected `stockpile-storage-native-zone-defaults-20261112-154426`

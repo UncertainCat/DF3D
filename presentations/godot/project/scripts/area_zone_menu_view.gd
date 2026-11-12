@@ -17,6 +17,11 @@ var owner_label: Label
 var owner_status: Label
 var owner_portrait: TextureRect
 var owner_sprite_id: int = -1
+var spouse_sprite_id: int = -1
+var owner_icon: Dictionary = {}
+var spouse_icon: Dictionary = {}
+var spouse_portrait: TextureRect
+var spouse_label: Label
 var religion_label: Label
 var world
 var controls: Dictionary = {}
@@ -94,9 +99,19 @@ func configure(source) -> void:
 	owner_status=Label.new();owner_status.position=Vector2(54,106)
 	owner_status.add_theme_font_size_override("font_size",12)
 	var colors: Array=art.installed_palette(world.assets_root()) if world.has_method("assets_root") else []
-	if colors.size()==16:owner_status.add_theme_color_override("font_color",colors[13])
+	if colors.size()==16:
+		owner_status.add_theme_color_override("font_color",colors[13])
+		owner_label.add_theme_color_override("font_color",colors[15])
 	owner_status.text="Deceased";owner_status.mouse_filter=Control.MOUSE_FILTER_IGNORE
 	selected_panel.add_child(owner_status)
+	spouse_label=Label.new();spouse_label.position=Vector2(54,118);spouse_label.size=Vector2(200,36)
+	spouse_label.clip_text=true;spouse_label.vertical_alignment=VERTICAL_ALIGNMENT_CENTER
+	spouse_label.add_theme_font_size_override("font_size",12);spouse_label.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	if colors.size()==16:spouse_label.add_theme_color_override("font_color",colors[15])
+	selected_panel.add_child(spouse_label)
+	spouse_portrait=TextureRect.new();spouse_portrait.position=Vector2(8,118);spouse_portrait.size=Vector2(32,36)
+	spouse_portrait.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;spouse_portrait.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	spouse_portrait.mouse_filter=Control.MOUSE_FILTER_IGNORE;selected_panel.add_child(spouse_portrait)
 	for entry in [["rename","UNIT_SHEET_CUSTOMIZE",Vector2(286,10)],
 		["previous","ZONE_PREVIOUS",Vector2(6,10)],["next","ZONE_NEXT",Vector2(286,10)],
 		["repaint","ZONE_REPAINT",Vector2(222,46)],["suspend","ZONE_SUSPEND",Vector2(254,46)],
@@ -185,17 +200,19 @@ func display(rows: Array, editable: bool, area: Dictionary = {}) -> void:
 			var location_kind := int(area.get("location_kind",0))
 			var location_icons := ["","ZONE_TAVERN","ZONE_TEMPLE","ZONE_LIBRARY","ZONE_GUILDHALL","ZONE_HOSPITAL"]
 			type_icon.texture = art.texture(location_icons[location_kind]) if location_kind in range(1,6) else null
-		owner_label.text = str(area.get("owner_name",""))
-		if not str(area.get("owner_profession","")).is_empty(): owner_label.text += ", " + str(area.owner_profession)
-		if int(area.get("owner_sex",-1)) in [0,1]: owner_label.text += ", " + ("♀" if int(area.owner_sex) == 0 else "♂")
-		owner_label.tooltip_text = owner_label.text
-		owner_sprite_id = int(area.get("owner_id",-1))
-		owner_portrait.texture = null
+		var owner_rows: Array=area.get("owner_rows",[])
+		var primary: Dictionary=owner_rows[0] if not owner_rows.is_empty() else {}
+		var spouse: Dictionary=owner_rows[1] if owner_rows.size()>1 else {}
+		owner_label.text=str(primary.get("caption",""));owner_label.tooltip_text=""
+		owner_status.text=str(primary.get("status",""));owner_status.visible=not owner_status.text.is_empty()
+		spouse_label.text=str(spouse.get("caption",""));spouse_label.visible=not spouse.is_empty()
+		owner_sprite_id=int(primary.get("id",-1));spouse_sprite_id=int(spouse.get("id",-1))
+		owner_icon=primary.get("sheet_icon",{});spouse_icon=spouse.get("sheet_icon",{})
+		owner_portrait.texture=null;spouse_portrait.texture=null
 		_refresh_owner_sprite()
 		for key in controls:
 			controls[key].disabled = not editable
 		controls.owner.visible = bool(area.get("owner_allowed",false))
-		owner_status.visible = type_name=="Tomb" and int(area.get("owner_id",-1))>=0 and not bool(area.get("owner_allowed",false))
 		controls.location_details.visible = has_location
 		controls.location_details.disabled = not editable or int(area.get("location_site_id",-1))<0
 		controls.location.position.x = 254 if has_location else 286
@@ -239,12 +256,13 @@ func cancel_edit() -> bool:
 
 func _refresh_owner_sprite() -> void:
 	if owner_portrait == null:return
-	if not is_visible_in_tree() or not selected_panel.visible or owner_sprite_id<0:
-		owner_portrait.texture=null;return
-	if world!=null and world.has_method("selection_icon"):
-		# Native selected-zone owner uses the full unit sprite. The indexed icon
-		# may arrive after the area receipt, so refresh while this panel is visible.
-		owner_portrait.texture=world.selection_icon(1,owner_sprite_id,true)
+	var shown: bool=is_visible_in_tree() and selected_panel.visible
+	for entry in [[owner_portrait,owner_sprite_id,owner_icon],[spouse_portrait,spouse_sprite_id,spouse_icon]]:
+		if entry[0]==null:continue
+		if not shown or int(entry[1])<0:entry[0].texture=null
+		elif entry[0].texture==null and world!=null and world.has_method("candidate_icon"):
+			# Owned native selectors include owners absent from the visible map stream.
+			entry[0].texture=world.candidate_icon(entry[2])
 
 func _process(_delta: float) -> void:
 	_refresh_owner_sprite()

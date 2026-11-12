@@ -272,6 +272,7 @@ require('gui.script').start(function()
         end
        end
        records[#records+1]={name='selected-owners-'..label,rows=rows,type=df.civzone_type[b.type]}
+       capture('selected-owners-'..label)
       end
       unit.flags1.whole=flags&(~0x502);observe('living')
       for _,bits in ipairs{2,0x102,0x402}do unit.flags1.whole=(flags&(~0x502))|bits;observe('flags-'..bits)end

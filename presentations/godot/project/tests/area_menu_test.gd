@@ -79,8 +79,14 @@ func run() -> void:
 		for index in [2,3]:
 			check(zones.setting_buttons[index].visible==(owner==-1) and zones.setting_buttons[index].disabled==(owner!=-1),"Assigned Tomb hides and disables burial permissions")
 	for allowed in [true,false,true]:
-		zones.display([{"id":97,"name":"Tomb","icon":"ZONE_TOMB"}],true,{"zone_type":97,"owner_id":5813,"owner_allowed":allowed})
+		zones.display([{"id":97,"name":"Tomb","icon":"ZONE_TOMB"}],true,{"zone_type":97,"owner_id":5813,"owner_allowed":allowed,"owner_rows":[{"id":5813,"caption":"Native caption","status":"" if allowed else "Deceased"}]})
 		check(zones.controls.owner.visible==allowed and zones.owner_status.visible==not allowed,"Tomb owner eligibility controls assignment and native Deceased caption")
+	zones.display([{"id":97,"name":"Tomb","icon":"ZONE_TOMB"}],true,{"zone_type":97,"owner_id":5813,"owner_allowed":false,"owner_rows":[{"id":5813,"caption":"Native caption","status":""}]})
+	check(not zones.owner_status.visible,"Inactive owner does not imply native Deceased caption")
+	zones.display([{"id":80,"name":"Bedroom","icon":"ZONE_BEDROOM"}],true,{"zone_type":80,"owner_rows":[{"id":5813,"caption":"First native row","status":""},{"id":5814,"caption":"Second native row","status":""}]})
+	check(zones.owner_label.text=="First native row" and zones.spouse_label.text=="Second native row" and zones.spouse_sprite_id==5814,"Native spouse row is retained without local assembly")
+	zones.display([],true,{"zone_type":80})
+	check(zones.owner_label.text.is_empty() and not zones.spouse_label.visible and zones.owner_sprite_id==-1 and zones.spouse_sprite_id==-1,"Absent owner rows retire captions and sprite identities")
 	zones.free()
 	var state := preload("res://scripts/area_settings_state.gd").new()
 	var settings := preload("res://scripts/area_settings_view.gd").new()

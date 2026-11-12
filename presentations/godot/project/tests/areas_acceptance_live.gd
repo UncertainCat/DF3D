@@ -495,6 +495,18 @@ func zone_settings_edits() -> void:
 		await native("tomb_owner_inactive",{"id":tomb,"begin":false})
 		if stopped:return
 		await native("tomb_settings_owner",{"id":tomb,"begin":false})
+		await native("owner_rows_prepare",{"id":tomb})
+		var previous: int=0
+		for sample in [["Tomb",0],["Tomb",2],["Tomb",258],["Tomb",1026],["Bedroom",0],["Office",0],["DiningHall",0]]:
+			await native("owner_rows_case",{"id":tomb,"kind":sample[0],"bits":sample[1]})
+			var observed:=await inspect(tomb,1)
+			if stopped:return
+			await native("owner_rows_check",{"id":tomb,"rows":observed.owner_rows})
+			# 258 and1026 have identical native status and eligibility, so may share a revision.
+			if previous!=0 and int(sample[1])!=1026:
+				if not check(int(observed.revision)!=previous,"Changed owner rows did not change area revision"):return
+			previous=int(observed.revision)
+		await native("owner_rows_restore",{"id":tomb})
 
 func created_zone_defaults() -> void:
 	step = "7 zone creation defaults"

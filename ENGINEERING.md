@@ -15059,6 +15059,30 @@ is session-lifecycle acceptance, not a completed typing UI.
 
 ### Current Zones revalidation and remaining semantic audit
 
+The remaining selected-zone caption gap now has a verified native provider,
+`nativeZoneSelectedOwners`, exposed diagnostically by
+`df3d zone-selected-owners-read <zone id>`. Native1330c30 supplies the combined
+caption into an owned string; inline3eae42..3eae95 truncates strings of at least26
+bytes to25 and replaces the last three bytes with dots. Shared-room rows use
+native canUseSpouseRoom and relation resolver134f250(owner,1). These inputs are
+semantic units/relationships; no renderer or menu cache is borrowed.
+Protected `stockpile-storage-native-zone-defaults-20261112-160051` compares eight
+controlled cases directly to native text cells: living/inactive Tomb, inactive
+with each excluded flag, spouse rows for Bedroom/Office/DiningHall, and restored
+Tomb. All captions and status presence match; owned DF15744 exits unsaved.
+The probe restores owner, unit flags, spouse and type before continuing.
+`native_zone_defaults.json.selected_owner_rows_reference` records exact bytes.
+
+Transport/viewer integration is still required. The existing owner-name line
+concatenates/clips text and omits spouse rows. The current Deceased display also
+incorrectly derives its condition from assignment eligibility: native display
+uses `(flags1 & 0x502)==2`, whereas assignment checks only inactive. The current
+ordinary inactive case is verified, but the0x100/0x400 exclusions are unresolved
+in the viewer. Carry explicit native rows/status rather than infer status from
+owner_allowed. The new provider is diagnostic-only until the typed contract,
+validation, model and viewer are extended together.
+
+
 Selected-zone owner artwork uses the native-backed full-unit selection icon,
 refreshing while visible so an icon arriving after the area receipt is displayed.
 It no longer uses the portrait API. Native sprite placement starts at x40

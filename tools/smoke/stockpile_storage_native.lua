@@ -254,6 +254,32 @@ require('gui.script').start(function()
       unit.flags1.whole=flags
       capture('tomb-owner-restored')
      end
+     if os.getenv('DF3D_ZONE_OWNER_ROWS_AUDIT')=='1'then
+      local old_type,flags,spouse=b.type,unit.flags1.whole,unit.relationship_ids.Spouse
+      local other=assert(df.global.world.units.active[1]);assert(other.id~=unit.id)
+      local function observe(label)
+       view:render(dfhack.getTickCount())
+       local text,code=dfhack.run_command_silent('df3d','zone-selected-owners-read',tostring(b.id));assert(code==0,text)
+       local rows=json.decode(text)
+       for index,row in ipairs(rows)do
+        for col=1,25 do
+         assert(dfhack.screen.readTile(10+col,12+3*(index-1)).ch==(row.caption[col] or 32),'Selected owner caption differs '..label)
+        end
+        if index==1 then
+         local status={};for col=1,8 do status[col]=dfhack.screen.readTile(10+col,13).ch end
+         local shown=table.concat(status,',')==table.concat({68,101,99,101,97,115,101,100},',')
+         assert(shown==(#row.status>0),'Selected owner status differs '..label)
+        end
+       end
+       records[#records+1]={name='selected-owners-'..label,rows=rows,type=df.civzone_type[b.type]}
+      end
+      unit.flags1.whole=flags&(~0x502);observe('living')
+      for _,bits in ipairs{2,0x102,0x402}do unit.flags1.whole=(flags&(~0x502))|bits;observe('flags-'..bits)end
+      unit.flags1.whole=flags;unit.relationship_ids.Spouse=other.id
+      for _,kind in ipairs{'Bedroom','Office','DiningHall'}do b.type=df.civzone_type[kind];observe(kind..'-spouse')end
+      b.type=old_type;unit.flags1.whole=flags;unit.relationship_ids.Spouse=spouse
+      observe('restored')
+     end
      b.assigned_unit_id=owner
      capture('tomb-unassigned-settings')
     end

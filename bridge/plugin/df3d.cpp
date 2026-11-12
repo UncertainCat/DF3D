@@ -4649,6 +4649,23 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
         for(auto c:result->nameColor.alternate)color["alternate"].append(int(c));
         out.print("{}",Json::FastWriter().write(output));return CR_OK;
       }
+      if(parameters[0]=="zone-selected-owners-read") {
+        if(parameters.size()!=2)return CR_WRONG_USAGE;
+        int32_t id=-1;const auto& value=parameters[1];
+        const auto parsed=std::from_chars(value.data(),value.data()+value.size(),id);
+        if(parsed.ec!=std::errc{} || parsed.ptr!=value.data()+value.size())return CR_WRONG_USAGE;
+        auto* zone=virtual_cast<df::building_civzonest>(df::building::find(id));if(!zone)return CR_FAILURE;
+        const auto result=df3d_area::nativeZoneSelectedOwners(*zone);if(!result)return CR_FAILURE;
+        Json::Value output(Json::arrayValue);
+        for(const auto& row:*result) {
+          Json::Value item(Json::objectValue),caption(Json::arrayValue),status(Json::arrayValue);
+          item["id"]=row.id;
+          for(unsigned char byte:row.caption)caption.append(int(byte));
+          for(unsigned char byte:row.status)status.append(int(byte));
+          item["caption"]=caption;item["status"]=status;output.append(item);
+        }
+        out.print("{}",Json::FastWriter().write(output));return CR_OK;
+      }
       if(parameters[0]=="zone-owner-text-read") {
         if(parameters.size()!=3)return CR_WRONG_USAGE;
         int32_t id=-1;const auto& value=parameters[1];
@@ -5067,6 +5084,7 @@ DFhackCExport command_result plugin_init(color_ostream& out,
         "df3d zone-owner-order-read <zone id>\n"
         "df3d zone-owner-status-read <zone id> <unit id>\n"
         "df3d zone-owner-text-read <unit id> <columns>\n"
+        "df3d zone-selected-owners-read <zone id>\n"
         "df3d zone-owner-color-sources-read <unit id>\n"
         "df3d zone-animal-restraint-read <item id>\n"
         "df3d zone-animal-container-read <item id>\n"

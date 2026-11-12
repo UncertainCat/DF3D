@@ -487,5 +487,423 @@
       "scene_tomb_assigned.png": "3b8cd16090c4c32a6cff6fb11929e2433b79d15af5074efbc4a6be0672b9a10c",
       "scene_tomb_inactive.png": "fb15d691d74af1f85618cdd9c4d2e8599cd21e1fb31655964655c859788486d0"
     }
+  },
+  "selected_owner_rows_reference": {
+    "run": "build/stockpile-storage-native-zone-defaults-20261112-160051",
+    "status": "Tomb only: (flags1.whole & 0x502)==2, literal1601c30. Reassignment separately tests inactive bit only.",
+    "native_renderer": "3eaca0..3eb16a",
+    "provider": "nativeZoneSelectedOwners",
+    "name_reader": "1330c30 with independently owned std::string and showGender=true",
+    "truncation": "Native inline3eae42..3eae95: length>=26 truncates to25 bytes, replaces positions22..24 with dots",
+    "spouse": "Native canUseSpouseRoom then relationship resolver134f250(owner,1); canonical world units, no UI scratch",
+    "observations": [
+      {
+        "name": "selected-owners-living",
+        "rows": [
+          {
+            "caption": [
+              140,
+              116,
+              111,
+              110,
+              32,
+              85,
+              110,
+              105,
+              98,
+              109,
+              97,
+              109,
+              111,
+              116,
+              44,
+              32,
+              68,
+              119,
+              97,
+              114,
+              118,
+              101,
+              46,
+              46,
+              46
+            ],
+            "id": 988,
+            "status": []
+          }
+        ],
+        "type": "Tomb"
+      },
+      {
+        "name": "selected-owners-flags-2",
+        "rows": [
+          {
+            "caption": [
+              140,
+              116,
+              111,
+              110,
+              32,
+              85,
+              110,
+              105,
+              98,
+              109,
+              97,
+              109,
+              111,
+              116,
+              44,
+              32,
+              68,
+              119,
+              97,
+              114,
+              118,
+              101,
+              46,
+              46,
+              46
+            ],
+            "id": 988,
+            "status": [
+              68,
+              101,
+              99,
+              101,
+              97,
+              115,
+              101,
+              100
+            ]
+          }
+        ],
+        "type": "Tomb"
+      },
+      {
+        "name": "selected-owners-flags-258",
+        "rows": [
+          {
+            "caption": [
+              140,
+              116,
+              111,
+              110,
+              32,
+              85,
+              110,
+              105,
+              98,
+              109,
+              97,
+              109,
+              111,
+              116,
+              44,
+              32,
+              68,
+              119,
+              97,
+              114,
+              118,
+              101,
+              46,
+              46,
+              46
+            ],
+            "id": 988,
+            "status": []
+          }
+        ],
+        "type": "Tomb"
+      },
+      {
+        "name": "selected-owners-flags-1026",
+        "rows": [
+          {
+            "caption": [
+              140,
+              116,
+              111,
+              110,
+              32,
+              85,
+              110,
+              105,
+              98,
+              109,
+              97,
+              109,
+              111,
+              116,
+              44,
+              32,
+              68,
+              119,
+              97,
+              114,
+              118,
+              101,
+              46,
+              46,
+              46
+            ],
+            "id": 988,
+            "status": []
+          }
+        ],
+        "type": "Tomb"
+      },
+      {
+        "name": "selected-owners-Bedroom-spouse",
+        "rows": [
+          {
+            "caption": [
+              140,
+              116,
+              111,
+              110,
+              32,
+              85,
+              110,
+              105,
+              98,
+              109,
+              97,
+              109,
+              111,
+              116,
+              44,
+              32,
+              68,
+              119,
+              97,
+              114,
+              118,
+              101,
+              46,
+              46,
+              46
+            ],
+            "id": 988,
+            "status": []
+          },
+          {
+            "caption": [
+              75,
+              101,
+              108,
+              32,
+              79,
+              100,
+              100,
+              111,
+              109,
+              111,
+              115,
+              108,
+              97,
+              110,
+              44,
+              32,
+              80,
+              101,
+              97,
+              115,
+              97,
+              110,
+              46,
+              46,
+              46
+            ],
+            "id": 996,
+            "status": []
+          }
+        ],
+        "type": "Bedroom"
+      },
+      {
+        "name": "selected-owners-Office-spouse",
+        "rows": [
+          {
+            "caption": [
+              140,
+              116,
+              111,
+              110,
+              32,
+              85,
+              110,
+              105,
+              98,
+              109,
+              97,
+              109,
+              111,
+              116,
+              44,
+              32,
+              68,
+              119,
+              97,
+              114,
+              118,
+              101,
+              46,
+              46,
+              46
+            ],
+            "id": 988,
+            "status": []
+          },
+          {
+            "caption": [
+              75,
+              101,
+              108,
+              32,
+              79,
+              100,
+              100,
+              111,
+              109,
+              111,
+              115,
+              108,
+              97,
+              110,
+              44,
+              32,
+              80,
+              101,
+              97,
+              115,
+              97,
+              110,
+              46,
+              46,
+              46
+            ],
+            "id": 996,
+            "status": []
+          }
+        ],
+        "type": "Office"
+      },
+      {
+        "name": "selected-owners-DiningHall-spouse",
+        "rows": [
+          {
+            "caption": [
+              140,
+              116,
+              111,
+              110,
+              32,
+              85,
+              110,
+              105,
+              98,
+              109,
+              97,
+              109,
+              111,
+              116,
+              44,
+              32,
+              68,
+              119,
+              97,
+              114,
+              118,
+              101,
+              46,
+              46,
+              46
+            ],
+            "id": 988,
+            "status": []
+          },
+          {
+            "caption": [
+              75,
+              101,
+              108,
+              32,
+              79,
+              100,
+              100,
+              111,
+              109,
+              111,
+              115,
+              108,
+              97,
+              110,
+              44,
+              32,
+              80,
+              101,
+              97,
+              115,
+              97,
+              110,
+              46,
+              46,
+              46
+            ],
+            "id": 996,
+            "status": []
+          }
+        ],
+        "type": "DiningHall"
+      },
+      {
+        "name": "selected-owners-restored",
+        "rows": [
+          {
+            "caption": [
+              140,
+              116,
+              111,
+              110,
+              32,
+              85,
+              110,
+              105,
+              98,
+              109,
+              97,
+              109,
+              111,
+              116,
+              44,
+              32,
+              68,
+              119,
+              97,
+              114,
+              118,
+              101,
+              46,
+              46,
+              46
+            ],
+            "id": 988,
+            "status": []
+          }
+        ],
+        "type": "Tomb"
+      }
+    ],
+    "scope": "Controlled owner identity, flags, spouse and zone type; text compared directly with native screen cells; original facts restored. Does not establish assignment effects.",
+    "preservation": "Owned DF15744 exited unsaved; protected source/prefs restoration",
+    "bridge_sha256": "D66B9CB4E9F79FE17982C91D3B618EE8EFF326D42DD08502DAD07034D4B9ADF0",
+    "limitations": [
+      "Provider and diagnostic only; typed transport and viewer integration remain",
+      "Current viewer derives Deceased from owner_allowed and therefore mishandles mask0x100/0x400 exclusions",
+      "Current viewer omits spouse row and uses concatenated/clipped owner name"
+    ],
+    "result_sha256": "9d5df71cd5051bd46ed293fd3e9624eb3965802c5f9e890022bec3ca295f69a1"
   }
 }

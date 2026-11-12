@@ -30,6 +30,10 @@ std::optional<ZoneOwnerOrderFacts> nativeZoneOwnerOrderFacts(df::building_civzon
 struct ZoneOwnerRoomStatus { int32_t value=0; std::string label; };
 // Owned-room value and native quality label; no widget/drawing state.
 std::optional<ZoneOwnerRoomStatus> nativeZoneOwnerRoomStatus(df::building_civzonest& zone,df::unit& candidate);
+struct ZoneSelectedOwner { int32_t id=-1; std::string caption,status; };
+// Selected-zone rows: native combined caption/byte truncation, spouse lookup,
+// and Tomb status. Caller-owned DF-encoded strings; no menu or renderer state.
+std::optional<std::vector<ZoneSelectedOwner>> nativeZoneSelectedOwners(df::building_civzonest& zone);
 struct ZoneOwnerDisplayText { std::string combined,name,profession,firstLine,secondLine; };
 // Native display readers write caller-owned DF-encoded strings; no renderer call.
 std::optional<ZoneOwnerDisplayText> nativeZoneOwnerDisplayText(df::unit& candidate,int32_t columns,bool showGender=true);

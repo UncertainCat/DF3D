@@ -833,6 +833,38 @@ std::optional<ZoneOwnerRoomStatus> nativeZoneOwnerRoomStatus(df::building_civzon
     }
     return result;
 }
+std::optional<std::vector<ZoneSelectedOwner>> nativeZoneSelectedOwners(df::building_civzonest& zone) {
+    const auto& readers=staffOrderingFunctions();
+    if(!df::global::world || !readers)return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    if(hash(base+0x134f250,0x87)!=UINT64_C(0x9c327e1e67bb8fcc) ||
+       hash(base+0x3eae24,0x74)!=UINT64_C(0x0875b3e3d1f8afce) ||
+       hash(base+0x1601c30,9)!=UINT64_C(0x38a591a7f7508a8d))return std::nullopt;
+    std::vector<ZoneSelectedOwner> result;
+    switch(zone.type) {
+        case df::civzone_type::Bedroom:case df::civzone_type::Office:
+        case df::civzone_type::DiningHall:case df::civzone_type::Tomb:break;
+        default:return result;
+    }
+    auto* owner=df::unit::find(zone.assigned_unit_id);
+    if(!owner)return result;
+    const auto append=[&](df::unit& unit,bool primary) {
+        ZoneSelectedOwner row;row.id=unit.id;
+        readers.name(&unit,&row.caption,true);
+        // Native3eae42..3eae95 truncates bytes, not words or UTF-8 codepoints.
+        if(row.caption.size()>=26) {row.caption.resize(25);row.caption.replace(22,3,"...");}
+        if(primary && zone.type==df::civzone_type::Tomb && (unit.flags1.whole&0x502)==2)
+            row.status=reinterpret_cast<const char*>(base+0x1601c30);
+        result.push_back(std::move(row));
+    };
+    append(*owner,true);
+    if(zone.canUseSpouseRoom()) {
+        using Relation=df::unit* (*)(df::unit*,int32_t);
+        auto* spouse=reinterpret_cast<Relation>(const_cast<uint8_t*>(base+0x134f250))(owner,1);
+        if(spouse)append(*spouse,false);
+    }
+    return result;
+}
 std::optional<ZoneOwnerDisplayText> nativeZoneOwnerDisplayText(df::unit& candidate,int32_t columns,bool showGender) {
     const auto& order=staffOrderingFunctions();
     if(!order || !df::global::world || columns<3 || columns>2048)return std::nullopt;

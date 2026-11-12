@@ -276,7 +276,8 @@
         "location_details"
       ],
       "evidence": "build/evidence/native/e2/zone_meeting_area_panel.png",
-      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+      "menu_evidence": "build/evidence/native/zone_create_menu.png",
+      "hover_instruction": "ZONE_TYPE_MEETING"
     },
     {
       "name": "Bedroom",
@@ -291,7 +292,8 @@
         "owner"
       ],
       "evidence": "build/evidence/native/e5/areas_zone_panel_bedroom.png",
-      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+      "menu_evidence": "build/evidence/native/zone_create_menu.png",
+      "hover_instruction": "ZONE_TYPE_BEDROOM"
     },
     {
       "name": "DiningHall",
@@ -306,7 +308,8 @@
         "owner"
       ],
       "evidence": "build/evidence/native/e5/areas_zone_panel_dining_hall.png",
-      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+      "menu_evidence": "build/evidence/native/zone_create_menu.png",
+      "hover_instruction": "ZONE_TYPE_DINING_HALL"
     },
     {
       "name": "Pen",
@@ -321,7 +324,8 @@
         "animals"
       ],
       "evidence": "build/evidence/native/e5/areas_zone_panel_pen_pasture.png",
-      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+      "menu_evidence": "build/evidence/native/zone_create_menu.png",
+      "hover_instruction": "ZONE_TYPE_PEN"
     },
     {
       "name": "Pond",
@@ -337,7 +341,8 @@
         "pond_mode"
       ],
       "evidence": "build/evidence/native/e5/areas_zone_panel_pit_pond.png",
-      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+      "menu_evidence": "build/evidence/native/zone_create_menu.png",
+      "hover_instruction": "ZONE_TYPE_PIT"
     },
     {
       "name": "WaterSource",
@@ -351,7 +356,8 @@
         "location"
       ],
       "evidence": "build/evidence/native/e5/areas_zone_panel_water_source.png",
-      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+      "menu_evidence": "build/evidence/native/zone_create_menu.png",
+      "hover_instruction": "ZONE_TYPE_WATER_SOURCE"
     },
     {
       "name": "Dungeon",
@@ -365,7 +371,8 @@
         "location"
       ],
       "evidence": "build/evidence/native/e5/areas_zone_panel_dungeon.png",
-      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+      "menu_evidence": "build/evidence/native/zone_create_menu.png",
+      "hover_instruction": "ZONE_TYPE_DUNGEON"
     },
     {
       "name": "FishingArea",
@@ -379,7 +386,8 @@
         "location"
       ],
       "evidence": "build/evidence/native/e5/areas_zone_panel_fishing.png",
-      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+      "menu_evidence": "build/evidence/native/zone_create_menu.png",
+      "hover_instruction": "ZONE_TYPE_FISHING"
     },
     {
       "name": "SandCollection",
@@ -393,7 +401,8 @@
         "location"
       ],
       "evidence": "build/evidence/native/e5/areas_zone_panel_sand.png",
-      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+      "menu_evidence": "build/evidence/native/zone_create_menu.png",
+      "hover_instruction": "ZONE_TYPE_SAND"
     },
     {
       "name": "Office",
@@ -409,7 +418,8 @@
         "location_details"
       ],
       "evidence": "build/evidence/native/e2/zone_office_panel.png",
-      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+      "menu_evidence": "build/evidence/native/zone_create_menu.png",
+      "hover_instruction": "ZONE_TYPE_OFFICE"
     },
     {
       "name": "Dormitory",
@@ -423,7 +433,8 @@
         "location"
       ],
       "evidence": "build/evidence/native/e5/areas_zone_panel_dormitory.png",
-      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+      "menu_evidence": "build/evidence/native/zone_create_menu.png",
+      "hover_instruction": "ZONE_TYPE_DORMITORY"
     },
     {
       "name": "Barracks",
@@ -438,7 +449,8 @@
         "squads"
       ],
       "evidence": "build/evidence/native/e5/areas_zone_panel_barracks.png",
-      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+      "menu_evidence": "build/evidence/native/zone_create_menu.png",
+      "hover_instruction": "ZONE_TYPE_BARRACKS"
     },
     {
       "name": "ArcheryRange",
@@ -454,7 +466,8 @@
         "facing"
       ],
       "evidence": "build/evidence/native/e5/areas_zone_panel_archery_range.png",
-      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+      "menu_evidence": "build/evidence/native/zone_create_menu.png",
+      "hover_instruction": "ZONE_TYPE_ARCHERY_RANGE"
     },
     {
       "name": "Dump",
@@ -468,7 +481,8 @@
         "location"
       ],
       "evidence": "build/evidence/native/e5/areas_zone_panel_garbage_dump.png",
-      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+      "menu_evidence": "build/evidence/native/zone_create_menu.png",
+      "hover_instruction": "ZONE_TYPE_DUMP"
     },
     {
       "name": "AnimalTraining",
@@ -482,7 +496,8 @@
         "location"
       ],
       "evidence": "build/evidence/native/e5/areas_zone_panel_animal_training.png",
-      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+      "menu_evidence": "build/evidence/native/zone_create_menu.png",
+      "hover_instruction": "ZONE_TYPE_ANIMAL_TRAINING"
     },
     {
       "name": "Tomb",
@@ -499,7 +514,8 @@
         "tomb_pets"
       ],
       "evidence": "build/evidence/native/e5/areas_zone_panel_tomb.png",
-      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+      "menu_evidence": "build/evidence/native/zone_create_menu.png",
+      "hover_instruction": "ZONE_TYPE_TOMB"
     },
     {
       "name": "PlantGathering",
@@ -515,7 +531,8 @@
         "gather_shrubs"
       ],
       "evidence": "build/evidence/native/e5/areas_zone_panel_gather_fruit.png",
-      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+      "menu_evidence": "build/evidence/native/zone_create_menu.png",
+      "hover_instruction": "ZONE_TYPE_GATHER"
     },
     {
       "name": "ClayCollection",
@@ -529,7 +546,8 @@
         "location"
       ],
       "evidence": "build/evidence/native/e5/areas_zone_panel_clay.png",
-      "menu_evidence": "build/evidence/native/zone_create_menu.png"
+      "menu_evidence": "build/evidence/native/zone_create_menu.png",
+      "hover_instruction": "ZONE_TYPE_CLAY"
     }
   ],
   "paint_tools": [
@@ -663,6 +681,314 @@
     "take": {
       "label": "Select a stockpile or workshop to take from.",
       "evidence": "build/evidence/native/e5/areas_stockpile_links_take_mode.png"
+    }
+  },
+  "zone_help": {
+    "ZONE_TYPE_MEETING": {
+      "hover_lines": [
+        "This important zone is",
+        "where your citizens",
+        "will gather to",
+        "socialize.  Crucially,",
+        "the meeting area is",
+        "where locations such as",
+        "taverns, temples,",
+        "hospitals, and the like",
+        "are established."
+      ]
+    },
+    "ZONE_TYPE_BEDROOM": {
+      "hover_lines": [
+        "Your citizens will",
+        "sleep in bedrooms.  It",
+        "should include a bed!",
+        "Try to enclose it with",
+        "walls and/or doors.  Do",
+        "not overlap with other",
+        "rooms."
+      ]
+    },
+    "ZONE_TYPE_DINING_HALL": {
+      "hover_lines": [
+        "Your citizens will eat",
+        "at this zone.  When not",
+        "assigned to a",
+        "particular citizen,",
+        "citizens without their",
+        "own dining hall will",
+        "eat here.  Tables and",
+        "adjacent chairs should",
+        "be included."
+      ]
+    },
+    "ZONE_TYPE_PEN": {
+      "hover_lines": [
+        "Certain livestock need",
+        "to graze on grass.",
+        "Assign these animals to",
+        "a pasture zone.  No",
+        "fencing is needed."
+      ]
+    },
+    "ZONE_TYPE_PIT": {
+      "hover_lines": [
+        "Animals assigned to",
+        "pit/pond zones are",
+        "dumped in the pit, but",
+        "will leave the zone",
+        "afterward if possible.",
+        "If the pit is",
+        "designated as a pond,",
+        "your citizens will",
+        "attempt to fill it with",
+        "water using buckets."
+      ]
+    },
+    "ZONE_TYPE_WATER_SOURCE": {
+      "hover_lines": [
+        "Your citizens will",
+        "drink at a water source",
+        "zone or gather water",
+        "using buckets for",
+        "various tasks.  This is",
+        "useful if you don't",
+        "have a functioning well",
+        "and you want to control",
+        "exactly where the tasks",
+        "take place."
+      ]
+    },
+    "ZONE_TYPE_DUNGEON": {
+      "hover_lines": [
+        "Prisoners convicted in",
+        "the Justice menu can be",
+        "incarcerated at a chain",
+        "or metal cage in the",
+        "dungeon zone."
+      ]
+    },
+    "ZONE_TYPE_FISHING": {
+      "hover_lines": [
+        "Citizens assigned to",
+        "the fishing work detail",
+        "will fish in this zone",
+        "if it exists.",
+        "Otherwise, they will",
+        "fish everywhere."
+      ]
+    },
+    "ZONE_TYPE_SAND": {
+      "hover_lines": [
+        "Your citizens will fill",
+        "sand bags at this zone",
+        "if a sandy floor or",
+        "sandy wall is included.",
+        "This task is initiated",
+        "manually at the glass",
+        "furnace."
+      ]
+    },
+    "ZONE_TYPE_OFFICE": {
+      "hover_lines": [
+        "An office or study is",
+        "required for certain",
+        "official tasks, such as",
+        "approving work orders",
+        "and bookkeeping.  A",
+        "chair or throne is",
+        "required for these",
+        "functions."
+      ]
+    },
+    "ZONE_TYPE_DORMITORY": {
+      "hover_lines": [
+        "Dormitories should",
+        "include multiple beds",
+        "and will not belong to",
+        "a particular citizen."
+      ]
+    },
+    "ZONE_TYPE_BARRACKS": {
+      "hover_lines": [
+        "Squads should be",
+        "assigned to a barracks.",
+        "The squad can be set to",
+        "train, sleep, and store",
+        "equipment there."
+      ]
+    },
+    "ZONE_TYPE_ARCHERY_RANGE": {
+      "hover_lines": [
+        "Your archers can train",
+        "in this zone if there",
+        "is an archery target",
+        "included."
+      ]
+    },
+    "ZONE_TYPE_DUMP": {
+      "hover_lines": [
+        "Items designated for",
+        "dumping will be tossed",
+        "into open air spaces",
+        "included in this zone.",
+        "If no open air tiles",
+        "are included, they will",
+        "dump the items on the",
+        "floor."
+      ]
+    },
+    "ZONE_TYPE_ANIMAL_TRAINING": {
+      "hover_lines": [
+        "Animals that are",
+        "capable of being",
+        "trained receive their",
+        "training at this zone",
+        "once they have been",
+        "assigned a trainer from",
+        "the Pets/Livestock",
+        "menu.  Generally, a",
+        "piece of meat is",
+        "required."
+      ]
+    },
+    "ZONE_TYPE_TOMB": {
+      "hover_lines": [
+        "Deceased citizens and",
+        "pets can be laid to",
+        "rest in a tomb.  It",
+        "should include a",
+        "coffin, casket, or",
+        "sarcophagus."
+      ]
+    },
+    "ZONE_TYPE_GATHER": {
+      "hover_lines": [
+        "Plant gathering zones",
+        "are used in locations",
+        "where plants will be",
+        "gathered frequently.",
+        "Use the gather",
+        "designation otherwise."
+      ]
+    },
+    "ZONE_TYPE_CLAY": {
+      "hover_lines": [
+        "Your citizens will",
+        "collect clay at this",
+        "zone if a clay floor or",
+        "clay wall is included.",
+        "This task is initiated",
+        "manually at the kiln."
+      ]
+    },
+    "ZONE_SUSPEND": {
+      "hover_lines": [
+        "Suspend activities in",
+        "this zone.  Does not",
+        "remove the zone."
+      ]
+    },
+    "ZONE_REMOVE_EXISTING": {
+      "hover_lines": [
+        "Remove this zone",
+        "permanently."
+      ]
+    },
+    "ZONE_PICK_PASTURE_ANIMALS": {
+      "hover_lines": [
+        "Select animals to be",
+        "placed in this pasture",
+        "zone.  They will stay",
+        "after being led here."
+      ]
+    },
+    "ZONE_ASSIGN_LOCATION": {
+      "hover_lines": [
+        "Assign a new or",
+        "existing location to",
+        "this zone.  Locations",
+        "are groups of zones and",
+        "rooms with a larger",
+        "purpose, like a tavern,",
+        "a temple, a library, or",
+        "a craft guildhall."
+      ]
+    },
+    "ZONE_PICK_PIT_POND_ANIMALS": {
+      "hover_lines": [
+        "Select animals to be",
+        "dropped into the pit or",
+        "pond below this zone.",
+        "Animals will not feel",
+        "obligated to stay if",
+        "they can find a way out."
+      ]
+    },
+    "ZONE_PIT": {
+      "hover_lines": [
+        "Designate this zone as",
+        "the top of a pit.",
+        "Citizens will not fill",
+        "the pit below with",
+        "water."
+      ]
+    },
+    "ZONE_POND": {
+      "hover_lines": [
+        "Designate this zone as",
+        "the top of a pond.",
+        "Citizens will bring",
+        "buckets of water if the",
+        "pond below isn't filled."
+      ]
+    },
+    "ZONE_TOMB_CITIZEN_BURIAL": {
+      "hover_lines": [
+        "Select this option and",
+        "any unassigned deceased",
+        "citizens will be buried",
+        "here automatically."
+      ]
+    },
+    "ZONE_TOMB_PET_BURIAL": {
+      "hover_lines": [
+        "Select this option and",
+        "any unassigned deceased",
+        "pets will be buried",
+        "here automatically."
+      ]
+    },
+    "ZONE_GATHER_FALLEN": {
+      "hover_lines": [
+        "Gather fallen fruit in",
+        "this zone."
+      ]
+    },
+    "ZONE_GATHER_TREE": {
+      "hover_lines": [
+        "Gather fruit in trees",
+        "in and just above this",
+        "zone.  Requires a",
+        "stepladder."
+      ]
+    },
+    "ZONE_GATHER_SHRUB": {
+      "hover_lines": [
+        "Gather fruit and",
+        "vegetables from shrubs",
+        "in this zone."
+      ]
+    },
+    "ZONE_ASSIGN_SQUAD": {
+      "hover_lines": [
+        "Choose which squads",
+        "will use this barracks."
+      ]
+    },
+    "ZONE_REPAINT": {
+      "hover_lines": [
+        "Repaint this zone."
+      ]
     }
   }
 }

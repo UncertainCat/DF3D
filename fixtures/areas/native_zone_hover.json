@@ -1113,6 +1113,62 @@
     "Transient tooltip PNGs lose the UI overlay and are not visual acceptance.",
     "Initial repaint probe used x30; excluded and replaced by focused x34 capture164754.",
     "Active off-state wording, overlap navigation, assigned location details and paint-mode controls are not captured here.",
-    "Viewer integration and rendered input/lifecycle checks remain."
-  ]
+    "Viewer integration is accepted for these32 instructions by viewer_reference; uncaptured variants remain."
+  ],
+  "viewer_reference": {
+    "directory": "build/areas-acceptance-20261112-165114",
+    "scope": "48 actual pointer hovers, all32 captured instruction variants; exact native line and anchor checks; closing panel retires help.",
+    "samples": 48,
+    "instructions": [
+      "ZONE_ASSIGN_LOCATION",
+      "ZONE_ASSIGN_SQUAD",
+      "ZONE_GATHER_FALLEN",
+      "ZONE_GATHER_SHRUB",
+      "ZONE_GATHER_TREE",
+      "ZONE_PICK_PASTURE_ANIMALS",
+      "ZONE_PICK_PIT_POND_ANIMALS",
+      "ZONE_PIT",
+      "ZONE_POND",
+      "ZONE_REMOVE_EXISTING",
+      "ZONE_REPAINT",
+      "ZONE_SUSPEND",
+      "ZONE_TOMB_CITIZEN_BURIAL",
+      "ZONE_TOMB_PET_BURIAL",
+      "ZONE_TYPE_ANIMAL_TRAINING",
+      "ZONE_TYPE_ARCHERY_RANGE",
+      "ZONE_TYPE_BARRACKS",
+      "ZONE_TYPE_BEDROOM",
+      "ZONE_TYPE_CLAY",
+      "ZONE_TYPE_DINING_HALL",
+      "ZONE_TYPE_DORMITORY",
+      "ZONE_TYPE_DUMP",
+      "ZONE_TYPE_DUNGEON",
+      "ZONE_TYPE_FISHING",
+      "ZONE_TYPE_GATHER",
+      "ZONE_TYPE_MEETING",
+      "ZONE_TYPE_OFFICE",
+      "ZONE_TYPE_PEN",
+      "ZONE_TYPE_PIT",
+      "ZONE_TYPE_SAND",
+      "ZONE_TYPE_TOMB",
+      "ZONE_TYPE_WATER_SOURCE"
+    ],
+    "result": "passed_with_known_issues: only documented separate-render-thread notice",
+    "artifacts": {
+      "result.json": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+      "zone-hover-view.json": "b9d7431c8fe16c1fa92002a133ee9119a338e7309731149cbcffba10b1f39d95",
+      "scene_zone_help_zone_type_Bedroom.png": "950250ca88e96d518a327d655f94e3e60ccc00e8874ac49f33df24db157191d5",
+      "scene_zone_help_zone_type_Pond.png": "5325465782bdc7d9955c289c1d632f58b077bfb52fd65d284b142e5a93e7e62f",
+      "scene_zone_help_zone_control_repaint.png": "aa225aaedd6605b9620d3fd379fa98258308833adc4672535ba20ff3ca81fe0e"
+    },
+    "verification": [
+      "core19",
+      "build/qa/zone-hover-final-fixed"
+    ],
+    "preservation": "Owned DF26220 exited unsaved; two save manifests unchanged; preferences restored.",
+    "limitations": [
+      "Native transient PNGs invalid; no native pixel-parity claim.",
+      "Inactive/navigation/Details/paint-mode variants remain outside this acceptance."
+    ]
+  }
 }

@@ -102,6 +102,8 @@ func capture(label: String) -> void:
 		if not check(editor.panel.size.x == 324,"native stockpile panel width changed: "+str(editor.panel.size)+" minimum="+str(editor.panel.get_combined_minimum_size())): return
 
 func pointer_areas() -> void:
+	if OS.get_environment("DF3D_ZONE_HOVER_SCENE")=="1":
+		await pointer_zone_help();return
 	if OS.get_environment("DF3D_TOMB_SCENE")=="1":
 		await pointer_tomb_workflow();return
 	var p: Dictionary = fixture.origin
@@ -1078,13 +1080,13 @@ func pointer_filtered_settings() -> void:
 	await click_control(editor.settings_view.headers[4])
 	if not await wait_ui(func(): return settled() and not editor.settings_state.busy(),"unfiltered quality All"): return
 	await native("guard_before")
-	await replace_settings_search("é12Ω-!","")
+	await replace_settings_search("Ã©12Î©-!","")
 	if stopped: return
 	if not check(settings_captions().size() == 7,"rejected characters must leave unfiltered quality rows"): return
 	await replace_settings_search("a".repeat(120),"A".repeat(76))
 	if stopped: return
 	if not check(settings_captions().is_empty(),"native-length unmatched query must show no quality rows"): return
-	await replace_settings_search("cráa1f-tedΩ","CRAFTED")
+	await replace_settings_search("crÃ¡a1f-tedÎ©","CRAFTED")
 	if stopped: return
 	await native("guard_after")
 	await capture("settings_native_search_input")
@@ -2524,3 +2526,51 @@ func pointer_tomb_workflow() -> void:
 	await native("removed",{"id":id})
 	await native("final")
 	print("TOMB_SCENE_PASS burial_toggles=4 owner_assignment=true inactive_display=true hidden_click_inert=true removal=true")
+
+func pointer_zone_help() -> void:
+	step="Zones native hover workflow"
+	await seed_catalog()
+	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory.get_base_dir().get_base_dir().path_join("fixtures/areas/native_zone_hover.json")))
+	var launcher: Button=scene._fortress_hud.navigation.Zones
+	launcher.show();scene._fortress_hud.layout(scene._fortress_hud.logical_view_size())
+	await click_control(launcher,true)
+	if not await wait_ui(func():return settled() and editor.available,"Zones hover entry"):return
+	editor.use_area(await inspect(zone("Pen"),1))
+	if not await wait_ui(settled,"Zones hover selection"):return
+	var samples: Array=[]
+	for row in editor.menu_data.zones:
+		var key: String="zone/type/"+str(row.name)
+		await zone_hover_sample(editor.zone_menu.buttons[row.name],key,str(row.hover_instruction),reference,samples)
+		if stopped:return
+	for kind in ["Pen","Pond","Tomb","PlantGathering","ArcheryRange"]:
+		editor.use_area(await inspect(zone(kind),1))
+		if not await wait_ui(settled,"Zones hover target"):return
+		for key in editor.stockpile_help.entries:
+			if not str(key).begins_with("zone/") or str(key).begins_with("zone/type/"):continue
+			var entry: Dictionary=editor.stockpile_help.entries[key]
+			if not entry.button.is_visible_in_tree() or entry.button.disabled:continue
+			await zone_hover_sample(entry.button,key,editor.stockpile_help.zone_instruction(entry),reference,samples)
+			if stopped:return
+	editor.close_panel();await process_frame;await process_frame
+	if not check(not editor.stockpile_help.visible and editor.stockpile_help.state.key.is_empty(),"Closed Zones retained help"):return
+	write_json("zone-hover-view.json",samples)
+	await native("final")
+	print("ZONE_HOVER_SCENE_PASS samples=",samples.size())
+
+func zone_hover_sample(control: Button,key: String,instruction: String,reference: Dictionary,samples: Array) -> void:
+	for frame in 3:editor._process(0);await process_frame
+	var motion:=InputEventMouseMotion.new();motion.position=control.get_global_transform_with_canvas()*(control.size/2);motion.global_position=motion.position;root.push_input(motion,true)
+	await create_timer(0.65).timeout
+	var help=editor.stockpile_help
+	if not check(help.visible and help.displayed==key,"Zone instruction absent: "+key):return
+	var expected: Dictionary=reference.instructions[instruction]
+	if not check(help.lines==expected.lines,"Zone help differs from native text cells: "+instruction):return
+	var rect:=screen_rect(help)
+	var bottom: float=float(expected.bottom+1)*12+4
+	# Palette anchors vary by row; selected controls retain their native anchor.
+	if key.begins_with("zone/type/"):
+		for probe in reference.probes:
+			if probe.instruction==instruction:bottom=float(probe.bottom+1)*12+4;break
+	if not check(rect.position.x==float(expected.left)*8 and rect.end.y==bottom,"Native zone help anchor differs: "+key+" "+str(rect)):return
+	samples.append({"key":key,"instruction":instruction,"rect":[rect.position.x,rect.position.y,rect.size.x,rect.size.y],"lines":help.lines.duplicate()})
+	if key in ["zone/type/Bedroom","zone/type/Pond","zone/control/repaint"]:await capture("zone_help_"+key.replace("/","_"))

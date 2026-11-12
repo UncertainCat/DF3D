@@ -15059,16 +15059,32 @@ is session-lifecycle acceptance, not a completed typing UI.
 
 ### Current Zones revalidation and remaining semantic audit
 
-The main Zones palette and selected-zone controls still lack native instruction
-boxes; their existing label-only Godot tooltips are not a substitute. Protected
-native164309/164754 on2026-11-12 establish32 verbatim descriptions (all18 zone
-types plus14 actions/settings), their instruction IDs and side-panel anchors.
-`native_zone_hover.json` is the maintained copy/mapping oracle for completing
-this surface. The repaint probe is corrected to column34; earlier column30 is
-excluded. Text is read immediately after native render. Captured PNGs lose the
-transient UI overlay and are explicitly not visual acceptance. Use the existing
-anchored area-hover renderer, not minimap help; viewer integration, inactive
-wording, remaining navigation/paint controls and rendered lifecycle remain.
+Zones now displays native anchored instruction boxes for all18 zone types and
+14 verified actions/settings. `area_hover_view` shares the existing dwell/warm
+state and frame renderer with Stockpiles; zone controls retain their own kind
+and selected-target identity. Changing target, disabling/hiding a button or
+closing the panel retires its help. Palette anchors follow the visible row,
+including the approved scrolling palette. Native label-only Godot tooltips on
+these buttons are removed. No simulation request is needed for static help.
+
+Protected native164309/164754 on2026-11-12 establish the32 verbatim descriptions,
+instruction IDs and side-panel anchors. `native_zone_hover.json` retains that
+copy/mapping reference; runtime copy lives in `panels/area_menus.json`.
+Text is read immediately after native render. Native PNGs lose the transient
+UI overlay and are explicitly not visual acceptance. Repaint's original
+column30 probe is excluded; the corrected column34 probe supplies its text.
+
+Protected main-scene165114 checks48 actual pointer hovers against native text
+and anchors, including all32 instruction variants and panel-close retirement.
+The rendered Bedroom tooltip was inspected. This is native text/anchor and
+viewer-rendered acceptance, not a pixel comparison with the invalid native
+PNGs. Owned DF26220 exits unsaved with two unchanged manifests; only the known
+separate-render-thread notice qualifies the result. Native/Godot are capped30FPS;
+sampled GPU48C is not a peak claim. `zone-hover-final-fixed` passes existing
+area/menu checks, including Stockpiles dwell/disabled/repeated-help behavior;
+core19 passes. Inactive-state wording, overlap navigation, assigned location
+Details and paint-mode help remain uncaptured and unexposed. In particular,
+the unverified inactive state does not display the active Suspend description.
 
 
 The remaining selected-zone caption gap now has a verified native provider,

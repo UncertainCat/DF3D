@@ -159,7 +159,7 @@ func run():
 	c.handle_back(); c.use_area(pile)
 	check(c.stockpile_view.visible and not c.category_grid.visible, "selected stockpile uses native preset panel")
 	check(c.stockpile_view.controls.rename.tooltip_text.is_empty(),"native quill has no tooltip")
-	check(c.stockpile_help.entries.size() == 9,"all native palette and paint instructions registered")
+	check(c.stockpile_help.entries.keys().filter(func(key):return not str(key).begins_with("zone/")).size() == 9,"all native stockpile palette and paint instructions registered")
 	var help = c.stockpile_help
 	var help_button: Button = c.stockpile_view.controls.repaint
 	help.state.enter(help_button.get_instance_id(),"palette/repaint",Time.get_ticks_msec()-600)

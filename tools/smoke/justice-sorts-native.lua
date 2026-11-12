@@ -96,6 +96,24 @@ if os.getenv('DF3D_JUSTICE_ARTWORK_DIAG')=='1' then
  if df.global.game.main_interface.help.open then click(711,430);assert(not df.global.game.main_interface.help.open)end
  tab('Open cases');click(100,202);click(100,166);click(652,190)
  click(668,154);click(668,154);observe('rebuilt-artwork');capture('justice-sorts-rebuilt-icons')
+ -- Native6d76a6 only rebuilds the underlying full-body composite when
+ -- unit.flags4 bit9 is set. Rebuilding the widget icon alone cannot test it.
+ if os.getenv('DF3D_JUSTICE_ARTWORK_REFRESH')=='1' then
+  local flags={}
+  for _,entry in ipairs(saved)do flags[#flags+1]=entry.unit.flags4.whole;entry.unit.flags4.any_texture_must_be_refreshed=true;entry.unit.sheet_icon_texpos=-1 end
+  local refreshed,refresh_error=pcall(function()
+   gui.simulateInput(view,'LEAVESCREEN');settle()
+   if not df.global.game.main_interface.info.open then gui.simulateInput(view,'D_JUSTICE');settle()end
+   if df.global.game.main_interface.help.open then click(711,430)end
+   tab('Open cases');click(100,202);click(100,166);click(652,190)
+   click(668,154);click(668,154);observe('refreshed-body-artwork');capture('justice-sorts-refreshed-body')
+   local state={}
+   for _,entry in ipairs(saved)do state[#state+1]={unit_id=entry.unit.id,refresh_pending=entry.unit.flags4.any_texture_must_be_refreshed,sheet_icon=entry.unit.sheet_icon_texpos}end
+   local f=assert(io.open(out..'/justice-artwork-refresh.json','w'));f:write(json.encode(state));f:close()
+  end)
+  for i,entry in ipairs(saved)do entry.unit.flags4.whole=flags[i];entry.unit.sheet_icon_texpos=entry.texpos end
+  assert(refreshed,refresh_error)
+ end
  for _,entry in ipairs(saved)do entry.unit.sheet_icon_texpos=entry.texpos end
 end
 gui.simulateInput(view,'LEAVESCREEN');settle()

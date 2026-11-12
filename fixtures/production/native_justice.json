@@ -11442,5 +11442,36 @@
       "default-size empty view; populated workflows retain separate acceptance",
       "known separate-renderer/finalize/ObjectDB shutdown diagnostics"
     ]
+  },
+  "candidate_artwork_body_refresh_reference": {
+    "run": "build/stockpile-storage-native-input-20261112-112000",
+    "owned_df_pid": 2836,
+    "source_preserved": true,
+    "native_fps": 30,
+    "scope": "Protected oracle only: request full-body texture refresh for units5815/2459, reopen picker and restore original flags/icon handles. Not a runtime dependency.",
+    "native_source": "6d76a6 tests unit.flags4 bit9; 71e2c4 consumes it and rebuilds the composite",
+    "observed": [
+      {
+        "refresh_pending": false,
+        "sheet_icon": 162001,
+        "unit_id": 5815
+      },
+      {
+        "refresh_pending": false,
+        "sheet_icon": 162002,
+        "unit_id": 2459
+      }
+    ],
+    "native_before_after_different_pixels": {
+      "5815": 0,
+      "2459": 0
+    },
+    "conclusion": "Both refresh requests consumed; native portraits unchanged. Stale full-body composites do not explain the existing112/187-pixel viewer differences. Resolver mismatch remains unresolved.",
+    "artifacts": {
+      "justice-artwork-refresh.json": "de8a5c299265f5cd7987e235219e61bb2ee4a73ccc57fcf281c99eb277d1b626",
+      "justice-sorts.png": "6b114a6a7b32b297f00c0ef31a39273bfd25adbde72830b8afe493e5889d9d26",
+      "justice-sorts-refreshed-body.png": "882e60b533ec5ccca735f1b6fc502771fb9a60bf9230bb3c72c65da4262c244d",
+      "justice-sorts.json": "acf1f03d04575c981f15ce1f941e1a147cace2a757c2f6e2dd9e58e20e4a6930"
+    }
   }
 }

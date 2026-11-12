@@ -493,6 +493,16 @@ reopens the native picker, verifies the rebuilt list's293 IDs, and captures the
 same two portraits unchanged. This rules out that handle and ordinary reopening,
 not every native graphics cache.003345's rebuilt capture was obscured by first-use
 help and is discarded; the oracle now dismisses help and validates the list.
+Protected112000 additionally requests the native full-body refresh for both units
+using flags4.any_texture_must_be_refreshed, then rebuilds the picker. Native6d76a6
+checks this bit and71e2c4 consumes it. Both requests are confirmed consumed;
+the native portraits remain pixel-identical before/after. This rules out stale
+full-body composites for these two differences, in addition to the earlier icon
+handle test. It does not fix or waive the resolver mismatch. The diagnostic
+restores flags/icon handles, closes owned DF2836 unsaved and preserves the source.
+Native runs at30FPS without Godot; sampled GPU48C/0%. Core19 passes.
+`candidate_artwork_body_refresh_reference` retains evidence; no gameplay/runtime
+code reads or edits these native graphics caches.
 Unit5815 has no inventory and the trace rejects its hair tissue conditions;
 unit2459's resolved clothing uses palette row88 from worn items reporting color87.
 Those observations identify investigation areas, not proven causes. Native

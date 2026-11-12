@@ -169,6 +169,7 @@ func run() -> void:
 	test_convicts(service,state)
 	test_intelligence(service,state)
 	test_graph(service,state)
+	test_empty_intelligence(service,state)
 	state.dispose();service.queue_free();await process_frame
 	if failures==0:print("JUSTICE_STATE_PASS")
 	quit(1 if failures else 0)
@@ -214,3 +215,19 @@ func test_graph(service,state) -> void:
 	check(model.phase==model.Phase.Rejected and model.graph.is_empty(),"Graph mixed receipts between kinds")
 	state.open(5);var old: int=model.ticket;state.close();service.reply(old,graph_page(1));check(model.phase==model.Phase.Closed and model.graph.is_empty(),"Closed graph accepted late data")
 	state.open(5);old=model.ticket;service.session_changed.emit();service.reply(old,graph_page(1));check(model.phase in [model.Phase.Closed,model.Phase.Unavailable] and model.graph.is_empty() and state.phase==state.Phase.Unavailable,"Graph crossed session boundary")
+
+func test_empty_intelligence(service,state) -> void:
+	state.open(5);var model=state.intelligence
+	check(not model.empty(),"Pending intelligence claimed empty")
+	var reports:=intelligence_page(-1,0,0);reports.justice.intelligence.reports=[]
+	service.reply(model.ticket,reports)
+	check(not model.empty(),"Empty reports concealed pending graph")
+	for kind in range(1,5):
+		var reply:=graph_page(kind);reply.justice.total=0
+		for key in model.graph.COUNTS:reply.justice.graph[key]=0
+		for key in model.graph.KEYS:reply.justice.graph[key]=[]
+		service.reply(model.graph.ticket,reply)
+	check(model.empty(),"Confirmed empty intelligence not recognized")
+	state.open(5);service.reply(model.ticket,reports)
+	service.reply(model.graph.ticket,{"outcome":"unknown"})
+	check(not model.empty(),"Failed graph read claimed empty")

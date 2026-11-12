@@ -13,6 +13,12 @@ end
 local ok,err=xpcall(function()
  assert(original==0,'Intelligence oracle requires empty baseline')
  assert(#probe('justice-intelligence-reports-probe',80)==0)
+ if os.getenv('DF3D_JUSTICE_INTELLIGENCE_EMPTY')=='1' then
+  capture('justice-intelligence-empty')
+  local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-intelligence%-native%.lua$','justice-wire-native.lua')
+  assert(loadfile(source))(out,probe,bytes)
+  return
+ end
  local long=os.getenv('DF3D_JUSTICE_REPORT_SCROLL')=='1'
  for i=1,2 do
   local r=df.interrogation_report:new();r.title='Synthetic interrogation report '..i..': a deliberately long title for native wrapping verification.'

@@ -7,6 +7,10 @@ var mode:=0
 var graph_selected:=0
 var graph_scroll:=0
 var selected_node: int=-1
+# Native476ba3 checks reports plus all three graph rosters before the empty view.
+# A pending or failed read cannot establish absence of intelligence.
+func empty() -> bool:
+	return phase==Phase.Ready and rows.is_empty() and graph.phase==graph.Phase.Ready and graph.graph.actors.is_empty() and graph.graph.organizations.is_empty() and graph.graph.plots.is_empty()
 func select_mode(value: int) -> void:
 	if value<0 or value>3 or value==mode:return
 	if value==0:

@@ -358,6 +358,16 @@ func run_intelligence(reference: Array) -> void:
 		view=preload("res://scripts/justice_view.gd").new();root.add_child(view);view.configure_justice(world,controller);view.layout(Vector2(1200,800))
 	await settle_intelligence(model)
 	check(model.phase==model.Phase.Ready and model.rows.size()==reference.size(),"Intelligence list did not settle")
+	if OS.get_environment("DF3D_JUSTICE_INTELLIGENCE_EMPTY")=="1":
+		var deadline:=Time.get_ticks_msec()+5000
+		while model.graph.phase==model.graph.Phase.Reading and Time.get_ticks_msec()<deadline:
+			world.poll();await create_timer(0.01).timeout
+		check(model.empty(),"Empty Intelligence not confirmed by both native reads")
+		await process_frame;await process_frame;await RenderingServer.frame_post_draw
+		root.get_texture().get_image().save_png(directory+"/justice-intelligence-empty-view.png")
+		controller.dispose();view.queue_free();actions.queue_free();await process_frame
+		var result:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);result.store_string(JSON.stringify({"success":not failed,"empty_intelligence":true}));result.close()
+		quit(1 if failed else 0);return
 	for i in mini(model.rows.size(),reference.size()):check(model.rows[i].title==reference[i].title and model.rows[i].officer==reference[i].officer,"Intelligence report order or captions differ")
 	if view!=null:
 		await process_frame;await process_frame;await RenderingServer.frame_post_draw

@@ -199,6 +199,11 @@ func intelligence_tab_rect(index: int) -> Rect2:
 	return Rect2(x,list_top()-12,(captions[index].length()+4+(1 if index==2 else 0))*8,24)
 func draw_intelligence() -> void:
 	var model=state.intelligence;var x:=8.0
+	if model.empty():
+		# Native476c10..476d32, literal strings163f158/163f110.
+		text("There is no intelligence information yet.",Vector2(16,list_top()+12),7)
+		text("If a crime involves a conspiracy, an interrogation may reveal the plot.",Vector2(16,list_top()+36),7)
+		return
 	var captions=["Interrogations","Actors","Organizations","Plots"]
 	for index in 4:
 		var enabled: bool=model.phase==model.Phase.Ready and not model.rows.is_empty() if index==0 else model.graph.phase==model.graph.Phase.Ready and not model.graph.graph[["actors","organizations","plots"][index-1]].is_empty()

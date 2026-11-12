@@ -188,6 +188,17 @@ retains bounded hashes. This covers controlled report detail at default size,
 not roster overflow, resize/drag or physical Windows wheel delivery. The separate
 refresh-dependent native byline decision remains pending.
 
+The Intelligence empty view follows native476ba3..476d32: only when both report
+and graph reads are Ready and all rosters are empty, replace the secondary tabs
+with the two native explanatory lines (literals163f158/163f110), palette7.
+Pending or rejected reads cannot establish absence. Protected
+`stockpile-storage-native-input-20261112-111531` verifies the complete default-size
+panel with zero differing pixels. Owned DF9904 closes unsaved, preserving the
+source, with native/viewer30FPS and sampled GPU49C/0%. State tests cover pending
+reports, pending graph, confirmed empty and failed graph. State/composition and
+core19 checks pass; known shutdown diagnostics qualify the live run.
+`intelligence_empty_reference` records hashes and scope.
+
 Other edge rasterization patterns, dragging, report roster overflow/resized
 scrolling and other keyboard behavior remain unfinished.
 

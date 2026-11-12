@@ -11416,5 +11416,31 @@
       "refresh-dependent native byline exception still awaits maintainer decision",
       "known separate-renderer/finalize/ObjectDB shutdown diagnostics"
     ]
+  },
+  "intelligence_empty_reference": {
+    "run": "build/stockpile-storage-native-input-20261112-111531",
+    "protocol": 203,
+    "status": "passed_with_known_issues",
+    "owned_df_pid": 9904,
+    "source_preserved": true,
+    "fps": 30,
+    "copy_source": "native476c10..476d32, literals163f158/163f110",
+    "empty_requirement": "Confirmed empty reports and all three graph rosters; pending/failed reads are not empty",
+    "panel_crop": [
+      32,
+      52,
+      976,
+      760
+    ],
+    "different_pixels": 0,
+    "artifacts": {
+      "justice-intelligence-empty.png": "f9e0ec111a900ec8af9dfd799459f1b3cca0772bd7439c3e9141e33b812e4fe8",
+      "justice-intelligence-empty-view.png": "ceb68c101004e47a894673c0753cc90defc9d4d33aebd94f718101064c3ce516",
+      "job-settings-wire-result.json": "8eaf594cd0a6ed3ba033a59d5c086e455fd818d47df4312ff661556abe9ca451"
+    },
+    "limits": [
+      "default-size empty view; populated workflows retain separate acceptance",
+      "known separate-renderer/finalize/ObjectDB shutdown diagnostics"
+    ]
   }
 }

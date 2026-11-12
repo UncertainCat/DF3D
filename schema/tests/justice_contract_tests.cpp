@@ -117,3 +117,20 @@ TEST_CASE("Justice sort scope permits shared repeated directions and rejects mal
   CHECK(bool(m::validateConstructionRequest(*flatbuffers::GetRoot<m::ConstructionRequest>(b.GetBufferPointer())))==(fault!=0));
  }
 }
+
+TEST_CASE("Justice candidate artwork validates page references and preserves absence") {
+ for(int fault=0;fault<5;++fault){flatbuffers::FlatBufferBuilder b;
+  auto names=b.CreateVector(std::vector<flatbuffers::Offset<flatbuffers::String>>(fault==4?256:1,b.CreateString(fault==4?std::string(256,'x'):"synthetic-page")));
+  auto icon=m::CreateSelectionAppearance(b,names,b.CreateVector(std::vector<flatbuffers::Offset<flatbuffers::String>>{}),
+   b.CreateVectorOfStructs(std::vector<m::AppearanceLayer>{m::AppearanceLayer(fault==1?1:0,1,2,fault==2?0:1,1,65535,0,0,0,0)}));
+  auto empty=b.CreateString("");auto display=m::CreateJusticeCandidateDisplay(b,28,empty,m::CreateAreaNameColor(b),0,empty,6,empty);
+  auto row=m::CreateJusticeCandidateRow(b,42,0,false,false,display,fault==3?0:icon);
+  std::vector<flatbuffers::Offset<m::JusticeCandidateRow>> rows{row};
+  if(fault==4)for(int id=43;id<48;++id)rows.push_back(m::CreateJusticeCandidateRow(b,id,0,false,false,display,icon));
+  auto page=m::CreateJusticeCandidatePage(b,9,8,uint32_t(rows.size()),0,b.CreateVector(rows));
+  auto result=m::CreateJusticeState(b,m::JusticeOutcome::None,0,7,0,0,b.CreateVector(std::vector<flatbuffers::Offset<m::JusticeCaseRow>>{}),0,page);
+  m::ManagementStateBuilder state(b);state.add_revision(1);state.add_action(m::ManagementAction::JusticeCandidatesRead);
+  state.add_status(m::ManagementStatus::Ok);state.add_justice(result);b.Finish(state.Finish());
+  CHECK(bool(m::validateManagementState(*flatbuffers::GetRoot<m::ManagementState>(b.GetBufferPointer())))==(fault==1 || fault==2 || fault==4));
+ }
+}

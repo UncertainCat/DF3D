@@ -183,8 +183,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 196;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v196";
+inline constexpr uint32_t kManagementVersion = 197;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v197";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -1540,6 +1540,8 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
              color->foreground()>7 || color->background()>7 || color->bright()>1 ||
              color->alternate_foreground()>7 || color->alternate_background()>7 || color->alternate_bright()>1 || color->effect()>3)
             return "invalid justice candidate display";
+          if(row->sheet_icon())if(auto error=validateOwnerAppearance(*row->sheet_icon(),bytes))return error;
+          if(bytes>384*1024)return "justice candidate payload exceeded";
         }
       }else if(read){
         if(r->detail() || r->candidates() || !page(r->total(),r->offset(),r->rows()->size()))return "invalid justice page";

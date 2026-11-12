@@ -41,6 +41,13 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+Management protocol197 adds an optional owned unit-selector recipe to each
+Justice candidate row. Missing recipes remain absent; older recordings do not
+invent artwork. The shared appearance validator checks references and sizes
+within the candidate page's384KiB budget. Bridge/client must rebuild together;
+mailbox is `Local\df3d_management_v197`. Protocol196 clients are incompatible;
+session/map versions are unchanged. Implementation/live acceptance is pending.
+
 Management protocol196 adds ordered Justice candidate sort priorities with a
 shared reversal per column. Omitted sorts retain the native default Crime/Name;
 an explicit empty vector, invalid column or conflicting repeated direction is

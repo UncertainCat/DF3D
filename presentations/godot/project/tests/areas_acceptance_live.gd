@@ -482,6 +482,18 @@ func zone_settings_edits() -> void:
 			var fields: Dictionary={};fields[key]=1-int(current.zone_settings[key])
 			await request({"action":11,"kind":1,"id":tomb,"expected_revision":current.revision,"operation":9,"zone_settings":fields},"invalid area edit")
 			if stopped:return
+		var living:=await inspect(tomb,1)
+		if stopped:return
+		if not check(living.owner_allowed,"Living Tomb owner must remain assignable"):return
+		await native("tomb_owner_inactive",{"id":tomb,"begin":true})
+		var inactive:=await inspect(tomb,1)
+		if stopped:return
+		if not check(not inactive.owner_allowed and inactive.revision!=living.revision,"Inactive Tomb owner must disable assignment and change revision"):return
+		await request({"action":11,"kind":1,"id":tomb,"expected_revision":living.revision,"owner_id":-1},"Area changed; inspect again")
+		await request({"action":11,"kind":1,"id":tomb,"expected_revision":inactive.revision,"owner_id":-1},"invalid area edit")
+		await request({"action":14,"kind":1,"id":tomb,"operation":14,"candidate_kind":1},"invalid area edit")
+		await native("tomb_owner_inactive",{"id":tomb,"begin":false})
+		if stopped:return
 		await native("tomb_settings_owner",{"id":tomb,"begin":false})
 
 func created_zone_defaults() -> void:

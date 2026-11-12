@@ -15059,6 +15059,27 @@ is session-lifecycle acceptance, not a completed typing UI.
 
 ### Current Zones revalidation and remaining semantic audit
 
+Tomb ownership now follows native34bd3b..34bdb9: when the assigned unit resolves
+and flags1.inactive is set, hide the assignment button and display native
+"Deceased" in installed LMAGENTA. Preserve that exact predicate; it is not a
+broader death classifier. The bridge reports owner_allowed=false and refuses
+owner-picker reads and reassignment. The Tomb revision includes this flag, so
+an older receipt cannot authorize a change after the owner becomes inactive.
+Native protected `stockpile-storage-native-zone-defaults-20261112-154426`
+verifies hidden control, caption and inert click; the screenshot was inspected.
+Headless `tomb-owner-access-final` passes. Protected
+`areas-acceptance-20261112-154807` verifies flag-dependent observation/revision,
+stale-edit rejection, current-edit rejection and picker-read rejection, then
+restores flags and owner. The ordinary zone-settings checks also pass.
+Owned DF34744/46976 exit unsaved; the wire run verifies two unchanged save
+manifests. Installed bridge SHA256 is
+`9EF69D85F3D6217A4BC95B98AC4A9793E3713B5B762DFF98F1CC5405A7C89079`.
+Owner identity/flag were seeded in paused diagnostics; this is neither natural
+death progression nor composed rendered DF3D status acceptance. Earlier154718
+used the wrong action for its picker-read probe and is excluded.
+`native_zone_defaults.json.inactive_tomb_owner_reference` retains evidence.
+
+
 Assigned Tombs hide and disable both burial-permission controls, matching native
 input34be53..34bf52. The bridge independently refuses these changes while
 assigned_unit_id is not-1, before any settings write. Native protected
@@ -15072,8 +15093,8 @@ both assigned-Tomb rejections, with unchanged settings and restored owner.
 Owned DF6528/15948 exit unsaved; the wire run verifies two unchanged save manifests.
 Installed bridge SHA256 is `41EE8038A779B2986604ED4B606A27F186E4850CB4444E3B08619ACE16D56DF0`.
 The viewer check is headless; native graphics are capped30FPS. This does not
-qualify a composed rendered Tomb assignment/settings workflow or the adjacent
-deceased-owner assignment-button predicate. Evidence is retained in
+qualify a composed rendered Tomb assignment/settings workflow. The adjacent
+inactive-owner predicate is qualified separately above. Evidence is retained in
 `native_zone_defaults.json.assigned_tomb_settings_reference`.
 
 

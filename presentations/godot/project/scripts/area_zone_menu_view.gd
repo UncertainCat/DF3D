@@ -14,6 +14,7 @@ var type_label: Label
 var overlap_label: Label
 var type_icon: TextureRect
 var owner_label: Label
+var owner_status: Label
 var owner_portrait: TextureRect
 var religion_label: Label
 var world
@@ -89,6 +90,12 @@ func configure(source) -> void:
 	owner_label.clip_text = true
 	owner_label.add_theme_font_size_override("font_size",12); owner_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	selected_panel.add_child(owner_label)
+	owner_status=Label.new();owner_status.position=Vector2(54,106)
+	owner_status.add_theme_font_size_override("font_size",12)
+	var colors: Array=art.installed_palette(world.assets_root()) if world.has_method("assets_root") else []
+	if colors.size()==16:owner_status.add_theme_color_override("font_color",colors[13])
+	owner_status.text="Deceased";owner_status.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	selected_panel.add_child(owner_status)
 	for entry in [["rename","UNIT_SHEET_CUSTOMIZE",Vector2(286,10)],
 		["previous","ZONE_PREVIOUS",Vector2(6,10)],["next","ZONE_NEXT",Vector2(286,10)],
 		["repaint","ZONE_REPAINT",Vector2(222,46)],["suspend","ZONE_SUSPEND",Vector2(254,46)],
@@ -187,6 +194,7 @@ func display(rows: Array, editable: bool, area: Dictionary = {}) -> void:
 		for key in controls:
 			controls[key].disabled = not editable
 		controls.owner.visible = bool(area.get("owner_allowed",false))
+		owner_status.visible = type_name=="Tomb" and int(area.get("owner_id",-1))>=0 and not bool(area.get("owner_allowed",false))
 		controls.location_details.visible = has_location
 		controls.location_details.disabled = not editable or int(area.get("location_site_id",-1))<0
 		controls.location.position.x = 254 if has_location else 286

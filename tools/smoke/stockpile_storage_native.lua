@@ -242,6 +242,18 @@ require('gui.script').start(function()
      click(34,12);click(38,12)
      assert(raw.i1==first and raw.i2==second,'Assigned Tomb burial permissions changed')
      records[#records+1]={name='tomb-assigned-settings',owner=unit.id,first=raw.i1,second=raw.i2,unchanged=true}
+     if os.getenv('DF3D_TOMB_OWNER_ACCESS_AUDIT')=='1'then
+      local flags=unit.flags1.whole
+      unit.flags1.inactive=true
+      capture('tomb-inactive-owner')
+      local selector=df.global.game.main_interface.unit_selector
+      assert(not selector.flag.VISIBILITY_ACTIVE,'Owner selector already open')
+      click(42,12)
+      assert(not selector.flag.VISIBILITY_ACTIVE,'Inactive Tomb owner opened assignment')
+      records[#records+1]={name='tomb-inactive-owner',owner=unit.id,flags=unit.flags1.whole,selector_open=false}
+      unit.flags1.whole=flags
+      capture('tomb-owner-restored')
+     end
      b.assigned_unit_id=owner
      capture('tomb-unassigned-settings')
     end

@@ -381,7 +381,7 @@
     "bridge_sha256": "41EE8038A779B2986604ED4B606A27F186E4850CB4444E3B08619ACE16D56DF0",
     "limitations": [
       "No composed rendered DF3D Tomb assignment/settings workflow",
-      "Deceased Tomb owner assignment-button eligibility is a separate audit",
+      "Inactive-owner assignment eligibility is covered separately in inactive_tomb_owner_reference",
       "Active-toggle decision remains pending"
     ],
     "native_hashes": {
@@ -392,6 +392,40 @@
     "wire_hashes": {
       "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
       "native.log": "0883b0295ccb1554626b08fa5f0bd733ec8a3c3e9c787474a5a6354f6d4c5686",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
+    }
+  },
+  "inactive_tomb_owner_reference": {
+    "native_run": "build/stockpile-storage-native-zone-defaults-20261112-154426",
+    "wire_run": "build/areas-acceptance-20261112-154807",
+    "native_input_rva": "34bd3b..34bdb9",
+    "native_predicate": "Tomb with resolved owner whose flags1.inactive bit is set: hide assignment and show Deceased; do not replace with a broader death predicate.",
+    "implementation": [
+      "owner_allowed reports native predicate",
+      "candidate reads and owner mutations refuse inactive-owner Tombs",
+      "Tomb area revision includes owner inactive bit",
+      "caption uses installed palette13 LMAGENTA"
+    ],
+    "verification": {
+      "native": "passed; inactive-owner screenshot inspected; click at former assignment control does not open selector",
+      "wire": "passed; owner_allowed false and revision changed; stale request, current owner edit and candidate read rejected; flags and owner restored",
+      "headless": "build/qa/tomb-owner-access-final passed",
+      "preservation": "Owned DF34744 and DF46976 exited unsaved; wire preserved two save manifests"
+    },
+    "bridge_sha256": "9EF69D85F3D6217A4BC95B98AC4A9793E3713B5B762DFF98F1CC5405A7C89079",
+    "limitations": [
+      "Owner and inactive flag seeded in paused diagnostics; no natural death progression acceptance",
+      "No composed rendered DF3D Tomb owner-status workflow"
+    ],
+    "excluded_run": "154718 used wrong action for candidate read and is not acceptance",
+    "native_hashes": {
+      "result.json": "a79daeafd2f973ca588665e5f9772418d6b7270588d06572c77061a53a95cf76",
+      "tomb-inactive-owner.png": "c9c310fbfabb25f75d853b6de06779acec38959db031a9b7a433fc791d8cf0e3",
+      "tomb-owner-restored.png": "66d7474c35941d44e6b13ecf03482b1695fb483a49fd8c19b47b918a5e1726c6"
+    },
+    "wire_hashes": {
+      "result.json": "316c74417db24bc4d7c46ae8767bc0b1fc4cca354649f78050b4087f0121a1fe",
+      "native.log": "b754674e66679b888af00e540836588866b1704196642771e005e6d0fa6cea86",
       "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
     }
   }

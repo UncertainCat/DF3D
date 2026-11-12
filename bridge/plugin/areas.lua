@@ -32,6 +32,16 @@ local function unit_name(u)
  return dfhack.df2utf(dfhack.translation.translateName(U.getVisibleName(u)))
 end
 local function owned(b) return kind(b)==1 and owner_types[df.civzone_type[b.type]] or false end
+local function owner_editable(b)
+ if not owned(b)then return false end
+ -- Native34bd3b..34bdb9 gates Tomb reassignment on the resolved owner's
+ -- inactive bit (the same branch displays Deceased), not a broader death test.
+ if b.type==df.civzone_type.Tomb then
+  local owner=df.unit.find(b.assigned_unit_id)
+  if owner and owner.flags1.inactive then return false end
+ end
+ return true
+end
 local zone_labels={MeetingHall='Meeting Area',Bedroom='Bedroom',DiningHall='Dining Hall',
  Pen='Pen/Pasture',Pond='Pit/Pond',WaterSource='Water Source',Dungeon='Dungeon',FishingArea='Fishing',
  SandCollection='Sand',Office='Office',Dormitory='Dormitory',Barracks='Barracks',ArcheryRange='Archery Range',
@@ -881,6 +891,7 @@ local function candidate_page(r,a,b,area_revision,available)
  local links=default(a,'operation',0)==10
  local locations=default(a,'operation',0)==6
  local candidate_kind=(links or locations) and 0 or legacy and 1 or a.candidate_kind
+ if b and candidate_kind==1 and not owner_editable(b)then return fail('invalid area edit'),0 end
  local site=locations and dfhack.world.getCurrentSite() or nil
  if locations and not site then return fail('Location site no longer exists'),0 end
  local query=default(a,'query',''):lower()
@@ -1128,7 +1139,7 @@ local function native_operation(r)
   local out={id=b.id,kind=k,name=k==1 and snapshot.zone_name or name(b),custom_name=dfhack.df2utf(b.name),revision=snapshot.revision,
    x=snapshot.x,y=snapshot.y,z=snapshot.z,width=snapshot.width,height=snapshot.height,extents=snapshot.extents,
    tile_count=snapshot.tile_count,overlapping=snapshot.overlapping or -1,storage_limit=snapshot.storage_limit or -1,zone_type=-1,categories=0,barrels=0,bins=0,wheelbarrows=0,
-   links_only=false,active=true,owner_id=-1,owner_name='',owner_allowed=owned(b),gives=snapshot.gives,takes=snapshot.takes,
+   links_only=false,active=true,owner_id=-1,owner_name='',owner_allowed=owner_editable(b),gives=snapshot.gives,takes=snapshot.takes,
    zone_label='',location_site_id=kind(b)==1 and default(b,'location_id',-1)>=0 and default(b,'site_id',-1) or -1,location_id=b.location_id or -1,location_name=location_name,religion=religion,location_kind=location_kind,
    owner_profession='',owner_sex=-1,organic=-1,inorganic=-1,assigned_count=-1}
   if k==0 then
@@ -1513,6 +1524,7 @@ local function native_operation(r)
   if not integer(active) or active< -1 or active>1 or not integer(owner) or owner< -2 then return reject('invalid area edit') end
   if owner~=-2 then
    if not owned(b) then return reject('This zone type has no single owner') end
+   if not owner_editable(b)then return reject('invalid area edit')end
    steps=steps+1
    new_owner=owner>=0 and df.unit.find(owner) or nil
    if owner>=0 then

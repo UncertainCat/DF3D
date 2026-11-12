@@ -152,7 +152,12 @@ local function check_properties(actual,expected,path)
   else assert(actual[key]==value,path..'.'..key..' mismatch: '..tostring(actual[key])..' / '..tostring(value)) end
  end
 end
-if request.op=='tomb_settings_owner' then
+if request.op=='tomb_owner_inactive' then
+ local b=building();local saved=assert(_G.df3d_tomb_settings_owner)
+ local u=assert(df.unit.find(b.assigned_unit_id));assert(saved.id==b.id)
+ if request.begin then saved.unit=u.id;saved.flags=u.flags1.whole;u.flags1.inactive=true
+ else assert(b.assigned_unit_id==saved.unit,'Rejected owner edit changed assignment');u.flags1.whole=saved.flags end
+elseif request.op=='tomb_settings_owner' then
  local b=building();assert(b.type==df.civzone_type.Tomb)
  if request.begin then
   assert(not _G.df3d_tomb_settings_owner)

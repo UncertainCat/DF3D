@@ -3036,6 +3036,11 @@ int areaSnapshot(lua_State* L) {
   } else {
     hash.add(zone->flags.bits.room_collision);
     hash.add(zone->type);hash.add(zone->spec_sub_flag.whole);hash.add(zone->assigned_unit_id);
+    if(zone->type==df::civzone_type::Tomb) {
+      const auto* owner=df::unit::find(zone->assigned_unit_id);
+      // Native34bd3b gates reassignment on this semantic owner flag.
+      hash.add(bool(owner && owner->flags1.bits.inactive));
+    }
     hash.add(zone->zone_settings.whole.i1);hash.add(zone->zone_settings.whole.i2);
     hash.add(zone->assigned_units.size());for(auto id:zone->assigned_units)hash.add(id);
     hash.add(zone->assigned_items.size());for(auto id:zone->assigned_items)hash.add(id);

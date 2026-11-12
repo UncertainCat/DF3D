@@ -78,6 +78,9 @@ func run() -> void:
 		zones.display([{"id":97,"name":"Tomb","icon":"ZONE_TOMB"}],true,{"zone_type":97,"owner_id":owner,"zone_settings":{"tomb_citizens":1,"tomb_pets":0}})
 		for index in [2,3]:
 			check(zones.setting_buttons[index].visible==(owner==-1) and zones.setting_buttons[index].disabled==(owner!=-1),"Assigned Tomb hides and disables burial permissions")
+	for allowed in [true,false,true]:
+		zones.display([{"id":97,"name":"Tomb","icon":"ZONE_TOMB"}],true,{"zone_type":97,"owner_id":5813,"owner_allowed":allowed})
+		check(zones.controls.owner.visible==allowed and zones.owner_status.visible==not allowed,"Tomb owner eligibility controls assignment and native Deceased caption")
 	zones.free()
 	var state := preload("res://scripts/area_settings_state.gd").new()
 	var settings := preload("res://scripts/area_settings_view.gd").new()

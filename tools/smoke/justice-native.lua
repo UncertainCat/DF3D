@@ -7,7 +7,7 @@ local function bytes(address,size)
  local chars={};for offset=0,size-1 do chars[#chars+1]=string.char(df.reinterpret_cast('uint8_t',address+offset).value)end
  return table.concat(chars)
 end
-local function probe(command,argument)
+local function probe(command,argument,mutation)
  local menu=df.global.game.main_interface.info.justice;local size,address=df.sizeof(menu)
  local before=bytes(address,size);local rng=bytes(base+0x234e990,0x6180);local crimes={}
  for _,crime in ipairs(df.global.world.crimes.all)do local n,p=df.sizeof(crime);crimes[#crimes+1]={p=p,n=n,before=bytes(p,n)}end
@@ -15,7 +15,7 @@ local function probe(command,argument)
  local text,rc=dfhack.run_command_silent('df3d',command or 'justice-captions-probe',table.unpack(arguments));assert(rc==0,'Justice provider failed: '..text)
  assert(bytes(address,size)==before,'Justice caption provider changed menu')
  assert(bytes(base+0x234e990,0x6180)==rng,'Justice caption provider advanced randomness')
- for _,crime in ipairs(crimes)do assert(bytes(crime.p,crime.n)==crime.before,'Justice caption provider changed crime')end
+ if not mutation then for _,crime in ipairs(crimes)do assert(bytes(crime.p,crime.n)==crime.before,'Justice provider changed crime')end end
  return json.decode(text)
 end
 local function write(name,value)local f=assert(io.open(out..'/'..name,'w'));f:write(value);f:close()end

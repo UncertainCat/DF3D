@@ -5758,5 +5758,38 @@
       }
     ],
     "limits": "Default Crime/Name sort, ASCII searches. No candidate selected. Non-ASCII search, alternate sorts, interrogation selection/partition and action effects remain unverified. Widget observations are oracle only."
+  },
+  "interrogation_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-181858",
+    "status": "passed",
+    "owned_df_pid": 40216,
+    "source_preserved": true,
+    "fps_cap": 30,
+    "effects": {
+      "before": [],
+      "crime_id": 9,
+      "native_off": [],
+      "native_on": [
+        {
+          "hfid": -1,
+          "historical_hfid": 9317,
+          "identities": [],
+          "visual_hfid": 9317
+        }
+      ],
+      "owned_off": [],
+      "owned_on": [
+        {
+          "hfid": -1,
+          "historical_hfid": 9317,
+          "identities": [],
+          "visual_hfid": 9317
+        }
+      ],
+      "stale_toggle_rejected": true,
+      "unit_id": 5698
+    },
+    "native_selected_caption": "Interview Scheduled",
+    "limits": "Paused native/owned scheduling and cancellation for a normal historical figure; stale repeated scheduling rejected. No running interrogation job, assumed identity, missing figure, transport or public screen acceptance."
   }
 }

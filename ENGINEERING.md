@@ -40,6 +40,41 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+`df3d_justice::toggleInterrogation` in `justice_action_native.h` adds/removes
+pending interview records without opening a native picker. Handler474550 has
+no standalone action boundary: it interleaves a forbidden global Justice-map
+write with inline semantic effects. The adapter isolates those audited effects,
+calls native13b3030 for identity resolution on an owned unit context, native
+b9e70/babe0 for identity insertion/matching, and nativea67820 for job cancellation.
+The handler and helpers are pinned. It never writes the native menu map.
+Selection is re-read from semantic crime facts; a mismatched expected selection
+rejects the toggle. Caller-owned epoch/save admission and receipt deduplication
+remain required. Exceptions after effects begin return Unknown, never retry.
+
+Scheduling appends an incident_hfid with true hfid-1, visual hfid from the unit,
+and either its historical hfid or the assumed identity in all_witnessed_ident.
+Cancellation removes matching records in reverse order; for each match native
+also cancels InterrogateSubject jobs whose first UNIT_INTERROGATEE reference
+resolves to the selected unit, regardless of their originating case. The adapter
+retains this behavior and uses DF's job destructor for its effects.
+
+Protected181858 on2026-11-11 compares actual native checkbox clicks with the
+owned action for case9/unit5698. Both schedule exactly one record
+(-1,9317,9317,empty identities), then cancellation restores the empty list.
+Native displays the checked box and “Interview Scheduled”. A repeated stale
+scheduling intent is rejected without changing the record. Query facts reflect
+the selected bit; menu/RNG preservation guards pass around the owned mutations.
+This covers a normal historical figure with no running interrogation job, not
+assumed identities, already-running job cleanup, missing figures or transport
+lifecycle. No simulation frame advances. Owned DF40216 closes unsaved with
+source preservation/preferences restored, native30FPS/no viewer, GPU60C/4%.
+MSVC `justice-interrogation-build-final.log` and core19
+`build/qa/justice-interrogation` pass. Installed bridge SHA256
+`BDD9F770905F81F9C7EF21C9F2D00F800BE810BE3E955FE49573242C8E395BE6`;
+protocol191 is unchanged. `native_justice.json.interrogation_reference` records
+the effects. Enable `DF3D_JUSTICE_INTERROGATION=1` with the candidates/native
+flags. This diagnostic action is not yet wired into a public Justice screen.
+
 `df3d_justice::convictionCandidates` returns the Convict picker's filtered,
 ordered facts for an owned search query and default Crime/Name sort.
 It calls native visibility137bd50 and the existing native name/normalization

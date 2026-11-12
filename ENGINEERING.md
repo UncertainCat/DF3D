@@ -41,6 +41,24 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 
 ## Justice native discovery
 
+`justice_state.gd` stages case selection independently from the unfinished view.
+It assembles each list/detail before publishing it, selects the first native case,
+keeps per-tab list scroll and selected-case witness scroll local, and retires
+pending reads on selection/tab changes, close and session replacement. List stale
+recovery is bounded to one fresh read. Failed detail reads discard partial data
+without replay; reselecting or refreshing is explicit. Headless
+`build/qa/justice-state` passes controller checks and all19 root CTest checks.
+
+Protected `stockpile-storage-native-input-20261111-191326` verifies this controller
+through the real semantic action service on all three case tabs, initial detail
+assembly and close during a read. Existing17-case/134-witness transport assertions
+also pass. DF5288 closes unsaved with source preservation and prefs restoration;
+native30FPS/headless viewer (GPU48C,1%,22.13W). The only Godot diagnostic is the
+known separate-thread notice: passed_with_known_issues. This does not establish
+rendered panel fidelity or live world-replacement acceptance. Before rendering,
+add semantic case-resolution data for native status colors; do not parse captions
+to choose color or infer it from Open/Closed membership.
+
 The staged read contract uses management protocol192 and
 `Local\df3d_management_v192`. `JusticeRead` pages native Open/Closed/Cold case
 IDs and captions; `JusticeCaseRead` carries the selected crime caption, optional

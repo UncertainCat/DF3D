@@ -7810,5 +7810,32 @@
       "No world replacement or disconnect acceptance",
       "Justice actions and remaining categories are not exposed"
     ]
+  },
+  "controller_reference": {
+    "source": "build/stockpile-storage-native-input-20261111-191326",
+    "status": "passed_with_known_issues",
+    "known_diagnostic": "Godot separate rendering thread notice only",
+    "protocol": 192,
+    "owned_df_pid": 5288,
+    "source_preserved": true,
+    "closed_unsaved": true,
+    "native_fps_cap": 30,
+    "viewer": "headless",
+    "receipt": {
+      "closed_read_retired": true,
+      "controller_tabs": 3,
+      "counts": [
+        7,
+        3,
+        7
+      ],
+      "stale_tabs": 3,
+      "success": true,
+      "witnesses": 134
+    },
+    "limitations": [
+      "No rendered Justice panel",
+      "Selection-switch late callbacks, malformed continuation and epoch retirement verified headlessly with injected service replies, not live world replacement"
+    ]
   }
 }

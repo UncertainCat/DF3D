@@ -3,6 +3,10 @@ func page(tab: int,offset: int,revision: int) -> Dictionary:
 	return await request("justice",{"action":C.ManagementAction.JusticeRead,"tab":tab,"offset":offset,"limit":4,"expected_list_revision":revision})
 func details(tab: int,id: int,offset: int,list_revision: int,case_revision: int) -> Dictionary:
 	return await request("justice",{"action":C.ManagementAction.JusticeCaseRead,"tab":tab,"crime_id":id,"offset":offset,"limit":8,"expected_list_revision":list_revision,"expected_case_revision":case_revision})
+func settle_controller(controller) -> void:
+	var deadline:=Time.get_ticks_msec()+5000
+	while controller.phase in [controller.Phase.Reading,controller.Phase.DetailReading] and Time.get_ticks_msec()<deadline:
+		world.poll();await create_timer(0.01).timeout
 func run() -> void:
 	Engine.max_fps=30;directory=OS.get_environment("DF3D_CARRIER_DIRECTORY")
 	var reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string(directory+"/justice-wire-reference.json"))
@@ -46,6 +50,20 @@ func run() -> void:
 		check(stale.get("status")==C.ManagementStatus.Rejected and stale.get("justice",{}).get("outcome")==C.JusticeOutcome.Stale,"Justice stale list accepted")
 		var missing:=await details(tab,2147483647,0,revision,0)
 		check(missing.get("status")==C.ManagementStatus.Rejected and missing.get("justice",{}).get("outcome")==C.JusticeOutcome.Stale,"Justice missing target accepted")
+	var actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(actions);actions.configure(world,true)
+	var controller=preload("res://scripts/justice_state.gd").new();controller.configure(actions);controller.open()
+	for tab in 3:
+		if tab>0:controller.select_tab(tab)
+		await settle_controller(controller)
+		if not check(controller.phase==controller.Phase.Ready,"Justice controller read did not settle"):quit(1);return
+		check(controller.rows.size()==reference.lists[tab].size(),"Justice controller list differs")
+		if not controller.rows.is_empty():
+			var id: int=controller.rows[0].crime_id
+			check(controller.selected_id==id and controller.detail.get("witnesses")==reference.details[str(id)].witnesses,"Justice controller initial detail differs")
+	controller.open();controller.close()
+	await create_timer(0.1).timeout;world.poll()
+	check(controller.phase==controller.Phase.Closed and controller.rows.is_empty() and controller.detail.is_empty(),"Closed Justice controller revived")
+	controller.dispose();actions.queue_free();await process_frame
 	var result=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
-	result.store_string(JSON.stringify({"success":not failed,"counts":counts,"witnesses":report_count,"stale_tabs":3}));result.close()
+	result.store_string(JSON.stringify({"success":not failed,"counts":counts,"witnesses":report_count,"stale_tabs":3,"controller_tabs":3,"closed_read_retired":true}));result.close()
 	quit(1 if failed else 0)

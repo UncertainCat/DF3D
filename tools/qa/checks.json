@@ -9,6 +9,15 @@
   },
   "checks": [
     {
+      "id": "justice_state_test",
+      "lane": "core",
+      "kind": "godot",
+      "script": "res://tests/justice_state_test.gd",
+      "completion": "^JUSTICE_STATE_PASS$",
+      "timeout": 30,
+      "prerequisites": ["extension_build"]
+    },
+    {
       "id": "nobles_state_test",
       "lane": "core",
       "kind": "godot",

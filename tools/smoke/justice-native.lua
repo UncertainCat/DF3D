@@ -68,6 +68,14 @@ local function callbacks(vector)
  return result
 end
 local result={tabs={},crimes={}}
+-- Classify the conviction effect's final global write without executing it.
+-- This is oracle-only layout evidence, never a runtime menu dependency.
+do
+ local menu=df.global.game.main_interface.info.justice
+ local _,address=df.sizeof(menu:_field('do_init'))
+ result.conviction_global={field='game.main_interface.info.justice.do_init',rva=address-base}
+ assert(address-base==0x18a6ff0,'Conviction final write is not Justice do_init')
+end
 if os.getenv('DF3D_JUSTICE_CAPTIONS')=='1' then result.cold_captions=probe()end
 if os.getenv('DF3D_JUSTICE_CASES')=='1' then result.cold_cases=probe('justice-cases-probe')end
 if os.getenv('DF3D_JUSTICE_CANDIDATES')=='1' then result.cold_candidate_facts=probe('justice-candidate-facts-probe',9)end

@@ -8084,5 +8084,28 @@
       "Only1200x800 rendered acceptance; resizing, empty/no-victim cases, long text and other witness descriptions remain unverified",
       "No rendered full main-scene or live disconnect/world replacement acceptance"
     ]
+  },
+  "conviction_boundary_reference": {
+    "source": "build\\stockpile-storage-native-input-20261111-221742",
+    "status": "passed",
+    "scope": "Static effect boundary and live field-address classification only; no conviction executed.",
+    "effect_rva": "46f0d0",
+    "length": "5f6",
+    "fnv1a": "aaec6a9f4cfce197",
+    "global_write": {
+      "field": "game.main_interface.info.justice.do_init",
+      "rva": 25849840
+    },
+    "global_write_value": 1,
+    "reads_previous_value": false,
+    "owned_df_pid": 46012,
+    "source_preserved": true,
+    "fps_cap": 30,
+    "native_receipt_sha256": "f120daa6ae6b29f22b31b7571418f13840c7a000eb715ce915842486ddbe262e",
+    "limitations": [
+      "Native row activation/confirmation interaction unverified",
+      "Conviction effects not compared to provider",
+      "No conviction command exposed"
+    ]
   }
 }

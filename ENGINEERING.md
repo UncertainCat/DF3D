@@ -44,16 +44,24 @@ unfixed discoveries are marked separately. Approval does not authorize unrelated
 Conviction has a native semantic-effect candidate at RVA `46f0d0`, called by
 the picker callback `474dd0` at `474ef5` with `(crime*, unit*)`. The picker
 builder `474a70` installs the callback through the function object at vtable
-`1641968`; the callback checks the selected confirmation control before applying
+`1641968`; the callback checks the selected row control before applying
 the effect. Do not call either widget builder or callback from the bridge.
 Static inspection of the pinned53.16 executable covers the complete effect span
 `46f0d0..46f6c6` (length`5f6`, FNV-1a`aaec6a9f4cfce197`). It writes accused
 and accused identity, records a history event, updates two global counters when
-the punishment field at crime offset8 is at least50,
+the hammerstrikes field at crime offset8 is at least50,
 and applies thoughts to the victim, relatives and eligible active units. Merely
 assigning `crime.accused` would omit native effects. Identity/history helpers and
-simulation globals are used; the final byte write at RVA`18a6ff0` still needs
-ownership classification before exposing this routine. This is static discovery,
+simulation globals are used. Protected `stockpile-storage-native-input-20261111-221742`
+identifies the final byte write at RVA`18a6ff0` as
+`game.main_interface.info.justice.do_init` through DFHack field-address metadata.
+The effect sets it to1 without reading its previous value: it is a native menu
+refresh notification, not a source of gameplay decisions. An adapter must not
+borrow or restore menu state around this call. The protected check only classifies
+the address; it does not execute conviction. DF46012 closes unsaved and the source
+save is unchanged, with native30FPS and no viewer; a GPU sample during the run is
+61C/29%/97.09W, not a peak measurement. `native_justice.json.conviction_boundary_reference`
+retains this evidence. This is static discovery plus live address classification,
 not live effect acceptance or permission to bypass current-case admission,
 confirmation, revision checks or receipt deduplication. Button eligibility,
 the confirmation workflow and protected native-versus-provider effect comparison

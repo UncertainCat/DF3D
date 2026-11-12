@@ -16,8 +16,8 @@ const TILE_HOVER_AVAILABLE = true
 
 const READ_ONLY = ["Residents", "Work Details", "Work orders"]
 const READ_LAUNCHERS = {"Citizens":"Residents", "Labor":"Work Details", "Work Details":"Work Details", "Work orders":"Work orders"}
-# Stockpiles uses the native semantic workflow; Zones remains staged.
-const HIDDEN_LAUNCHERS = ["Stockpiles / zones", "Zones"]
+# Stockpiles and Zones use the verified native semantic workflows.
+const HIDDEN_LAUNCHERS = ["Stockpiles / zones"]
 
 static func allows_launcher(destination: String) -> bool:
 	return allows(destination) and destination not in HIDDEN_LAUNCHERS

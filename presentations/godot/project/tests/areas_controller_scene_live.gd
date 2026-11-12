@@ -127,9 +127,8 @@ func pointer_areas() -> void:
 		var launcher: Button = scene._fortress_hud.navigation[destination]
 		for frame in 12:
 			scene._fortress_hud.layout(scene._fortress_hud.logical_view_size()); await process_frame
-		# Zones is still staged; Stockpiles must use ordinary public availability.
-		if destination == "Zones": launcher.show()
-		await click_control(launcher,destination == "Zones")
+		if not check(launcher.is_visible_in_tree() and not launcher.disabled,"Public area launcher unavailable: "+destination):return
+		await click_control(launcher)
 		if not await wait_ui(func(): return editor.panel.visible and editor.available and settled(),"pointer launcher"): return
 		if destination == "Zones":
 			await pointer_zone_palette()

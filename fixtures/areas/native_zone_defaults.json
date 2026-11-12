@@ -1294,5 +1294,22 @@
       "Shared-room spouse cases use controlled semantic fixture relationships, not marriage gameplay acceptance",
       "Does not complete remaining Zones Active semantics or the broader management release goal"
     ]
+  },
+  "public_exposure_reference": {
+    "run": "build/areas-acceptance-20261112-172338",
+    "protocol": 204,
+    "bridge_sha256": "ED0D6D3D34DDDAF7B978A8769FEC15ED907C4AAC8768838991CBF16CBC6136C8",
+    "status": "passed_with_known_issues: only documented separate-render-thread notice",
+    "scope": "Normal public Zones launcher without forced visibility; creation, naming, owner picker/refresh, immediate repaint/erase, elevation, removal, boundaries and minimum-height palette; independent native readbacks.",
+    "owned_df_pid": 40312,
+    "closed_unsaved": true,
+    "save_manifests_unchanged": 2,
+    "hashes": {
+      "result.json": "75daaf97e51420ab212f0089f9bf32f2068bddbfd43429a8fe00b1a7f0967f0d",
+      "native.log": "749b4b2e13f08cf6a92d3887a3727c301e9c3d57a725fe61a9f9ce1e8cf7e2a6",
+      "godot.log": "2f222b7c8a0a682d131b0008d2d713202d918db25094fe7e2c4b03f4c92fd725",
+      "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
+    }
   }
 }

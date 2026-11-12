@@ -15087,7 +15087,45 @@ is session-lifecycle acceptance, not a completed typing UI.
 
 ## Locations integration verification
 
-### Current Zones revalidation and remaining semantic audit
+### Zones and Locations public readiness
+
+Zones is exposed through its ordinary HUD button. The combined legacy
+Stockpiles / zones entry remains hidden. Locations are reached from Zones;
+this does not expose unrelated staged management screens. The exposure audit
+uses the current implementation and the later evidence below, not superseded
+historical discovery notes that still describe missing controls.
+
+| Required workflow | Implementation and accepted evidence |
+| --- | --- |
+| All18 zone types; create, rectangle/free paint, repaint/erase, elevation, remove, inline name, selection | `areas.gd`, owned native zone providers; main151424 and public172338 with independent effects/readbacks, boundary cases and small-height Sand/Clay reachability. |
+| Multi Bedroom/Office/DiningHall/Tomb, Dormitory conversion, refusal counts, Undo, Done, cancellation | Native factory/eligibility and owned search frontiers; current204 main172038 plus native publication/removal/search fixtures. Created Dormitory screenshot inspected. |
+| Owner eligibility, assign/remove, spouse rows, recenter, filter, scrolling | `native_zone_assignment.json`; main172338, selected-row163724 with14 native RGB comparisons; queued/sent reconnect150549/150658 and producer restart20261027-150919. |
+| Animals and critter items, containment, reciprocal assignments | `native_zone_animals.json`; native assignment/cancellation and rendered picker evidence, queued/sent item reopen20261028-153414 and later named reference; item producer restart154032 and unit restart20261027-152009. |
+| Barracks/archery squads, uses, reciprocal records, scrolling | `native_zone_squads.json`; actual assignment/drag effects and native row captures; reconnect20261027-145259/145405, producer restart150012/151109. |
+| Tomb burial, Pit/Pond, Gathering, archery directions, Active | Native settings152525, wire153027, Tomb main163724; approved Active preservation native170600/main171315. Exact repro is in the bug register. |
+| Zone hover instructions and retirement | Native text/anchors and main171728:55 pointer samples,39 instructions, actual overlap navigation and assigned Details, repaint/cancel/close. Native transient PNGs are not pixel evidence. |
+| Six location chooser/assigned Details routes, creation, reassignment/removal, access, quantities, ordinary staff | Main153213 with independent native readback:20 staff edits,13 quantity cases and7 creation/removal/reassignment scenarios. |
+| Naming, religious staff, specialization, recognition and petition tracking | Native Location fixtures and their later named scene/lifecycle references; naming20261026-232143 and disconnect/restart references; recognition reuse20261028-152053. Controller retirement and workflow checks remain in the readiness gate. |
+| Unknown outcome, stale edit, close/reopen, disconnect and producer replacement | Shared action ownership plus focused owner/animal/squad and Location quantity/naming/staff/recognition lifecycle lanes documented in their owning sections. No automatic mutation replay. |
+
+`build/qa/zones-locations-readiness` passes the17 selected area, Multi, candidate,
+Location workflow/state, adapter and composition checks plus the extension build.
+`zones-public-launcher` additionally verifies visible/enabled public routing.
+Protected `areas-acceptance-20261112-172338` opens Zones without a test visibility
+override and passes the main workflow. The palette and repaint captures were
+inspected. Both this lane and current Multi172038 have only the documented
+rendering-thread notice, preserve two save manifests and preferences, and close
+owned DF40312/42060 unsaved. Graphical runs are serial and capped30FPS; sampled
+GPU59-60C is not a peak claim. Core19 passes. Bounded hashes are retained in
+`native_zone_defaults.json.public_exposure_reference` and
+`native_zone_publication.json.current_multi_scene_reference`.
+
+This is screen exposure in the development build, not publication of a release
+or completion of the management goal. Building management, editable Work orders,
+Residents/Work Details and Stocks/Tasks/Places/Nobles/Objects/Justice remain in
+the backlog, followed by regression verification, packaging and publication.
+
+### Current Zones implementation and native references
 
 Zones now displays native anchored instruction boxes for all18 zone types and
 21 verified actions/settings, including four paint tools. `area_hover_view` shares the existing dwell/warm
@@ -15302,7 +15340,7 @@ records provenance and the installed bridge hash.
 The current Active reference is native170600 and viewer171315 in
 `native_zone_defaults.json.active_toggle_reference`. Earlier151907 established
 the shared low-bit write;151743 and151821 were invalid probes and are not
-acceptance. Public Zones exposure remains gated on the full readiness audit.
+acceptance. Public Zones exposure is accepted by the readiness audit above.
 Current Locations qualification is153213 above; it is not an outstanding rerun.
 
 ### Zones palette at minimum height

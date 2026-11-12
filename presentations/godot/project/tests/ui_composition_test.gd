@@ -54,6 +54,7 @@ func run():
 	ui.open_destination("Zones")
 	check(areas.kind_picker.selected == 1 and areas.launcher_destination == "Zones" and areas.panel.visible,"Zone route reuses area controller with zone kind")
 	hud.update_state(true,true,{})
+	check(hud.navigation.Zones.visible and not hud.navigation.Zones.disabled,"Zones is exposed through its public launcher")
 	hud.navigation.Zones.pressed.emit()
 	check(ui.host.active == null and not areas.panel.visible and not scene._interaction.construction_active,"zone launcher closes its own mode and releases map input")
 	for destination in ["Stockpiles","Zones"]:

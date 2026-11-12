@@ -498,5 +498,22 @@
         "scope": "Native UI creation/refusal compared with bridge read-only plans; standard actual bridge creation/Undo covered by semantic regression."
       }
     }
+  },
+  "current_multi_scene_reference": {
+    "run": "build/areas-acceptance-20261112-172038",
+    "protocol": 204,
+    "bridge_sha256": "ED0D6D3D34DDDAF7B978A8769FEC15ED907C4AAC8768838991CBF16CBC6136C8",
+    "status": "passed_with_known_issues: only documented separate-render-thread notice",
+    "scope": "Current protocol204 scene: Bedroom, Office, DiningHall, Tomb; Dormitory conversion, native refusal counts, partial cancellation, cross-elevation selection, Undo and Done retaining rooms.",
+    "owned_df_pid": 42060,
+    "closed_unsaved": true,
+    "save_manifests_unchanged": 2,
+    "hashes": {
+      "result.json": "c68329b4a13fca703bfb451c04c9646c5f26594cd87c1c98d304be7997b77728",
+      "native.log": "786d8daf2c074b7058717010d86963bbfc283ac68665196ec3db3b8c3af61aee",
+      "godot.log": "b83b23a05ac563d54654c1c9cf129a8723b4775df88529c53f4a2a66ee22a2ae",
+      "diagnostics.json": "1b0f1f71174eceb0b3e2b417fcae4985a2712fed2444aea308f3dedf9b757234",
+      "save-preservation.txt": "06f09016c0a9b259bc33113f0685a95e6254dc05849b572f4f020aef37677851"
+    }
   }
 }

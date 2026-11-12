@@ -504,8 +504,20 @@ viewer screenshots were inspected and reuse the existing verified help renderer.
 Both clients run serially at30FPS; sampled GPU45–49C is not a continuous peak.
 Owned DF35140/47000 close unsaved with source and preferences preserved.
 `native_justice.json.roster_hover_reference` retains text and bounded hashes.
-Candidate-picker hover, keyboard execution of advertised shortcuts, resize and
-full Justice acceptance remain unfinished. Public Justice stays hidden.
+Interrogate and Convict pickers also use the shared Name/Category/Profession
+and filter help. Protected125759 on2026-11-12 records native text cells and
+exercises sixteen viewer pointer targets across both pickers. The sampled Crime
+header, row, checkbox and witness positions show no help. Closing the picker
+retires its filter overlay without closing the case. All eight visible help crops
+(1000,4)-(1200,220) match the earlier roster viewer pixels; this is shared-renderer
+consistency, not native screenshot parity. Native screenshot capture still loses
+the overlay. `candidate_hover_reference` retains the bounded evidence.
+
+Justice state/composition and core19 checks pass. The live run has only the same
+known Godot diagnostics; owned DF35664 exits unsaved with source/prefs preserved.
+Native/viewer runs are serial at30FPS, with GPU47–48C samples. Keyboard execution
+of advertised shortcuts, resize and full Justice acceptance remain unfinished.
+Public Justice stays hidden.
 
 
 Management protocol198 adds `JusticeInterrogate`, the candidate request/page

@@ -27,6 +27,7 @@ func run() -> void:
 		if world.poll_management().get("transport_alive",false):break
 		await create_timer(0.01).timeout
 	await request("construction",{"action":C.ManagementAction.Catalog})
+	if OS.get_environment("DF3D_JUSTICE_CANDIDATE_HOVER")=="1":await candidate_hover();return
 	if OS.get_environment("DF3D_JUSTICE_WIRE_GRAPH")=="1":await run_graph(reference.graph);return
 	if OS.get_environment("DF3D_JUSTICE_WIRE_INTELLIGENCE")=="1":await run_intelligence(reference.intelligence);return
 	if OS.get_environment("DF3D_JUSTICE_WIRE_CONVICTS")=="1":await run_convicts(reference.convicts);return
@@ -249,6 +250,33 @@ func run() -> void:
 	var result=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE)
 	result.store_string(JSON.stringify({"success":not failed,"counts":counts,"witnesses":report_count,"stale_tabs":3,"controller_tabs":3,
 		"closed_read_retired":true,"candidate_count":candidate_count,"candidate_queries":3,"sort_scopes":reference.sorts.size(),"interrogated":interrogated,"convicted":applied,"picker_controller":applied}));result.close()
+	quit(1 if failed else 0)
+
+func candidate_hover() -> void:
+	root.size=Vector2i(1200,800);check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Candidate hover assets unavailable")
+	var actions=preload("res://scripts/semantic_action_service.gd").new();root.add_child(actions);actions.configure(world,true)
+	var controller=preload("res://scripts/justice_state.gd").new();controller.configure(actions);controller.open()
+	var help=preload("res://scripts/native_hover_view.gd").new();root.add_child(help);help.configure(world);help.layout(Vector2(1200,800))
+	var view=preload("res://scripts/justice_view.gd").new();root.add_child(view);view.configure_justice(world,controller,help);view.layout(Vector2(1200,800))
+	await settle_controller(controller)
+	var observations: Array=JSON.parse_string(FileAccess.get_file_as_string(directory+"/justice-candidate-hover.json"))
+	var mode: String="";var index:=0
+	for observation: Dictionary in observations:
+		index+=1
+		if mode!=observation.tab:
+			controller.candidates.close();controller.open_candidates(observation.tab=="Interrogate");await settle_picker(controller);mode=observation.tab
+		check(controller.candidates.phase==controller.candidates.Phase.Ready,"Candidate hover picker unavailable")
+		var event:=InputEventMouseMotion.new();event.position=Vector2(observation.x,observation.y);event.global_position=event.position
+		Input.parse_input_event(event);await create_timer(0.1).timeout
+		var expected: String="detail_widget_"+observation.kind if observation.kind in ["name","category","profession"] else "owner_filter" if observation.kind=="filter" else ""
+		check(help.displayed==expected,"Candidate hover differs: "+mode+"/"+observation.kind)
+		await RenderingServer.frame_post_draw;root.get_texture().get_image().save_png(directory+"/justice-candidate-hover-view-"+str(index)+".png")
+	view.pointer_position=view.search.get_rect().get_center();view.pointer_known=true;view.update_hover()
+	check(help.widget_owner==view.get_instance_id(),"Candidate filter hover not owned")
+	controller.candidates.close();await process_frame;view.update_hover()
+	check(help.widget_owner==0 and help.state.owner==0,"Closing candidate picker retained hover")
+	controller.close();controller.dispose();view.queue_free();help.queue_free();actions.queue_free();world.queue_free();await process_frame
+	var result:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);result.store_string(JSON.stringify({"success":not failed,"candidate_hover_targets":index,"close_retired":true}));result.close()
 	quit(1 if failed else 0)
 
 func settle_guard(guard) -> void:

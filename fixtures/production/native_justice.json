@@ -12150,5 +12150,223 @@
       "viewer/justice-hover-view-13.png": "c808cd3f59aa322000c40ee43a1f1d400cb86b2d5740729574bb9c556d1b26df",
       "viewer/justice-hover-view-14.png": "be6f981b9705530e5ee5c482894cee0c0ae349b8e45614adeec8892fe716a68b"
     }
+  },
+  "candidate_hover_reference": {
+    "source": "build/stockpile-storage-native-input-20261112-125759",
+    "scope": "Interrogate and Convict picker Name/Category/Profession/filter help at 1200x800; sampled Crime/row/checkbox/witness targets show no help. Native text cells, viewer pointer dispatch and retirement on picker close. No native screenshot parity or keyboard shortcut execution claim.",
+    "status": "passed_with_known_issues",
+    "fps_cap": 30,
+    "source_preserved": true,
+    "owned_df_closed": 35664,
+    "samples": [
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "name",
+        "lines": ["", "Sort units by name.", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "Hotkey: Ctrl+n", ""],
+        "tab": "Interrogate",
+        "x": 592,
+        "y": 154
+      },
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "category",
+        "lines": ["", "Sort units by profession", "category.", "", "", "", "", "", "", "", "", "", "", "", "", "", "Hotkey: ?", ""],
+        "tab": "Interrogate",
+        "x": 668,
+        "y": 154
+      },
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "profession",
+        "lines": ["", "Sort units by profession", "name.", "", "", "", "", "", "", "", "", "", "", "", "", "", "Hotkey: ?", ""],
+        "tab": "Interrogate",
+        "x": 744,
+        "y": 154
+      },
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "crime",
+        "lines": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "      Elevation 36", ""],
+        "tab": "Interrogate",
+        "x": 808,
+        "y": 154
+      },
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "filter",
+        "lines": ["", "Filter the unit list by", "name or job.", "", "", "", "", "", "", "", "", "", "", "", "", "", "Hotkey: Ctrl+f", ""],
+        "tab": "Interrogate",
+        "x": 600,
+        "y": 718
+      },
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "row",
+        "lines": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "      Elevation 36", ""],
+        "tab": "Interrogate",
+        "x": 600,
+        "y": 190
+      },
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "checkbox",
+        "lines": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "      Elevation 36", ""],
+        "tab": "Interrogate",
+        "x": 808,
+        "y": 190
+      },
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "witness",
+        "lines": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "      Elevation 36", ""],
+        "tab": "Interrogate",
+        "x": 850,
+        "y": 190
+      },
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "name",
+        "lines": ["", "Sort units by name.", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "Hotkey: Ctrl+n", ""],
+        "tab": "Convict",
+        "x": 592,
+        "y": 154
+      },
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "category",
+        "lines": ["", "Sort units by profession", "category.", "", "", "", "", "", "", "", "", "", "", "", "", "", "Hotkey: ?", ""],
+        "tab": "Convict",
+        "x": 668,
+        "y": 154
+      },
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "profession",
+        "lines": ["", "Sort units by profession", "name.", "", "", "", "", "", "", "", "", "", "", "", "", "", "Hotkey: ?", ""],
+        "tab": "Convict",
+        "x": 744,
+        "y": 154
+      },
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "crime",
+        "lines": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "      Elevation 36", ""],
+        "tab": "Convict",
+        "x": 808,
+        "y": 154
+      },
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "filter",
+        "lines": ["", "Filter the unit list by", "name or job.", "", "", "", "", "", "", "", "", "", "", "", "", "", "Hotkey: Ctrl+f", ""],
+        "tab": "Convict",
+        "x": 600,
+        "y": 718
+      },
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "row",
+        "lines": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "      Elevation 36", ""],
+        "tab": "Convict",
+        "x": 600,
+        "y": 190
+      },
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "checkbox",
+        "lines": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "      Elevation 36", ""],
+        "tab": "Convict",
+        "x": 808,
+        "y": 190
+      },
+      {
+        "active": false,
+        "instruction": -1,
+        "kind": "witness",
+        "lines": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "      Elevation 36", ""],
+        "tab": "Convict",
+        "x": 850,
+        "y": 190
+      }
+    ],
+    "viewer_help_crop": {
+      "bounds": [
+        1000,
+        4,
+        1200,
+        220
+      ],
+      "zero_differences_against_roster_source": "build/stockpile-storage-native-input-20261112-125043",
+      "pairs": [
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          9,
+          1
+        ],
+        [
+          10,
+          2
+        ],
+        [
+          11,
+          3
+        ],
+        [
+          13,
+          7
+        ]
+      ]
+    },
+    "hashes": {
+      "justice-candidate-hover.json": "6a969ec8379942e8562c6c82d157dad1ed1bcbf09daf0f5c141f164487ae610b",
+      "job-settings-wire-result.json": "b727d5dd20c51ca207ab417e1840b7574b14ef66f685ec9845baf343990ecd7a",
+      "result.json": "55ea401f0907968b16baa48a037a247d52b778f816392f061952e6daa810f1ec",
+      "justice-candidate-hover-view-1.png": "71090a9bc394c67489cd2e5fd9c7ea0f22bda0b8d91ff9eaa404786623961541",
+      "justice-candidate-hover-view-2.png": "4fcf3f28f75db6c1bf23d0778d39a9041df41440488fe74e3afb12d611d25257",
+      "justice-candidate-hover-view-3.png": "3b4c31bdc47b09fd77e6e1ee86c462a5dab5f46fc35ea5ab4866ab19235d3626",
+      "justice-candidate-hover-view-4.png": "4e29f319d06ff4c20edd60f0dbba7bf72220786824890095fd1e63263bd65d43",
+      "justice-candidate-hover-view-5.png": "0300f46f328b046b2fdeec4d917155443024e1fb6a8ff4ea298b167d95017f24",
+      "justice-candidate-hover-view-6.png": "4e29f319d06ff4c20edd60f0dbba7bf72220786824890095fd1e63263bd65d43",
+      "justice-candidate-hover-view-7.png": "4e29f319d06ff4c20edd60f0dbba7bf72220786824890095fd1e63263bd65d43",
+      "justice-candidate-hover-view-8.png": "4e29f319d06ff4c20edd60f0dbba7bf72220786824890095fd1e63263bd65d43",
+      "justice-candidate-hover-view-9.png": "5b3b0d4cd50a2c639fe1f3efd3a0deabfd0604beb44460a7e173bf72bf4b6914",
+      "justice-candidate-hover-view-10.png": "4b0f5b8e4f3c1a70eaefb2313726e9146ad753a9cfce1104d116831f4d4cd3e6",
+      "justice-candidate-hover-view-11.png": "dd6621e5a076c10924a1166914f55a8242dd3b2212ec6a8f53791483940c36b2",
+      "justice-candidate-hover-view-12.png": "adbbe36f9aac6a1d5f3c545518cb0044dc6cf16a98f4f597cac2fc7f22f73678",
+      "justice-candidate-hover-view-13.png": "34a2546f8f5ed3e67f5651eb37d1b339d181bd6de108117ab4dd1602eaa5eb62",
+      "justice-candidate-hover-view-14.png": "adbbe36f9aac6a1d5f3c545518cb0044dc6cf16a98f4f597cac2fc7f22f73678",
+      "justice-candidate-hover-view-15.png": "adbbe36f9aac6a1d5f3c545518cb0044dc6cf16a98f4f597cac2fc7f22f73678",
+      "justice-candidate-hover-view-16.png": "adbbe36f9aac6a1d5f3c545518cb0044dc6cf16a98f4f597cac2fc7f22f73678"
+    }
   }
 }

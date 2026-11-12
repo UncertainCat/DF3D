@@ -202,7 +202,8 @@ if os.getenv('DF3D_JUSTICE_INTELLIGENCE')=='1' then
  local source=debug.getinfo(1,'S').source:sub(2):gsub('justice%-native%.lua$','justice-intelligence-native.lua')
  assert(loadfile(source))(out,view,probe,settle,caption_click,capture,bytes)
 end
-if os.getenv('DF3D_JUSTICE_HOVER')=='1' then
+if os.getenv('DF3D_JUSTICE_HOVER')=='1' or os.getenv('DF3D_JUSTICE_CANDIDATE_HOVER')=='1' then
+ local candidates=os.getenv('DF3D_JUSTICE_CANDIDATE_HOVER')=='1'
  local observations={}
  local function hover_lines()
   local result={}
@@ -212,10 +213,18 @@ if os.getenv('DF3D_JUSTICE_HOVER')=='1' then
   end
   return result
  end
- for _,name in ipairs{'Fortress guard','Convicts'}do
-  caption_click(name);settle()
+ local function click(x,y)
+  g.precise_mouse_x=x;g.precise_mouse_y=y;g.mouse_x=x//8;g.mouse_y=y//12
+  df.global.enabler.mouse_focus=true;df.global.enabler.tracking_on=1;df.global.enabler.mouse_lbut_lift=0
+  gui.simulateInput(view,'_MOUSE_L');df.global.enabler.mouse_lbut=0;df.global.enabler.mouse_lbut_down=0;df.global.enabler.mouse_lbut_lift=1;settle()
+ end
+ for _,name in ipairs(candidates and {'Interrogate','Convict'}or{'Fortress guard','Convicts'})do
+  if candidates then
+   caption_click('Open cases');click(100,202);click(100,166);click(name=='Interrogate'and 560 or 652,190)
+  else caption_click(name);settle()end
   local top=name=='Fortress guard'and 172 or 148
-  for _,target in ipairs{{'name',100,top+6},{'category',180,top+6},{'profession',250,top+6},{'rank',410,top+6},{'recenter',348,top+42},{'view',380,top+42},{'filter',100,718}}do
+  local targets=candidates and {{'name',592,154},{'category',668,154},{'profession',744,154},{'crime',808,154},{'filter',600,718},{'row',600,190},{'checkbox',808,190},{'witness',850,190}}or{{'name',100,top+6},{'category',180,top+6},{'profession',250,top+6},{'rank',410,top+6},{'recenter',348,top+42},{'view',380,top+42},{'filter',100,718}}
+  for _,target in ipairs(targets)do
    local widget_lines
    local first_line=({name='Sort units by name.',category='Sort units by profession',profession='Sort units by profession',filter='Filter the unit list by'})[target[1]]
    local deadline=dfhack.getTickCount()+1600
@@ -238,10 +247,10 @@ if os.getenv('DF3D_JUSTICE_HOVER')=='1' then
    if first_line then assert(widget_lines,'Missing Justice widget tooltip: '..name..'/'..target[1]);row.lines=widget_lines end
    if target[1]=='recenter'or target[1]=='view'then assert(row.instruction==(target[1]=='recenter'and 234 or 235),'Missing Justice instruction')end
    observations[#observations+1]=row
-   capture('justice-hover-'..#observations)
+   capture((candidates and 'justice-candidate-hover-'or'justice-hover-')..#observations)
   end
  end
- write('justice-hover.json',json.encode(observations))
+ write(candidates and 'justice-candidate-hover.json'or'justice-hover.json',json.encode(observations))
 end
 if os.getenv('DF3D_JUSTICE_SHEET_NAV')=='1' then
  local samples={}

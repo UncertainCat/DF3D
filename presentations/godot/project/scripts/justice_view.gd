@@ -337,7 +337,13 @@ func _draw() -> void:
 		text(row.witness,Vector2(x,y+12));text(row.description,Vector2(x,y+24),14)
 		text(row.date,Vector2(x,y+36),7);text(row.reported,Vector2(x,y+48),7)
 func hover_target(point: Vector2) -> String:
-	if state==null or not roster_open() or not guard_allowed():return ""
+	if state==null:return ""
+	if picker_open() and picker_allowed():
+		if search.get_rect().has_point(point):return "filter"
+		for index in 3:
+			if sort_rect(index).has_point(point):return ["name","category","profession"][index]
+		return ""
+	if not roster_open() or not guard_allowed():return ""
 	if search.get_rect().has_point(point):return "filter"
 	for index in 3:
 		if guard_sort_rect(index).has_point(point):return ["name","category","profession"][index]

@@ -1,4 +1,5 @@
--- Owned, paused read-only transport acceptance; native providers were independently
+-- Owned, paused transport acceptance; opt-in edits affect only the unsaved clone.
+-- Native providers were independently
 -- compared to DF widgets in the retained discovery lanes.
 local out,probe,bytes=...
 local script=require('gui.script');local json=require('json');local base=dfhack.internal.getImageBase()
@@ -26,6 +27,20 @@ for i=1,math.min(13,#expected.candidates[1].rows)do
 end
 local mutating=os.getenv('DF3D_JUSTICE_WIRE_CONVICT')=='1'
 local interrogating=os.getenv('DF3D_JUSTICE_WIRE_INTERROGATE')=='1'
+local interview_job,interview_worker,interview_next_id
+if interrogating and os.getenv('DF3D_JUSTICE_INTERROGATION_JOBS')=='1' then
+ assert(df.global.pause_state)
+ for _,unit in ipairs(df.global.world.units.active)do
+  if unit.id~=7123 and dfhack.units.isCitizen(unit) and not unit.job.current_job then interview_worker=unit;break end
+ end
+ assert(interview_worker,'No idle interview worker')
+ interview_next_id=df.global.job_next_id
+ local job=df.job:new();job.job_type=df.job_type.InterrogateSubject;job.posting_index=-1;job.pos:assign(interview_worker.pos)
+ local ref=df.general_ref_unit_interrogateest:new();ref.unit_id=7123;job.general_refs:insert('#',ref)
+ assert(dfhack.job.linkIntoWorld(job,true));interview_job=job.id
+ assert(dfhack.job.addWorker(job,interview_worker))
+ expected.controlled_interview_job={id=interview_job,worker=interview_worker.id,subject=7123}
+end
 local initial_reports=#df.crime.find(9).reports
 local history_count=#df.global.world.history.events
 for _,list in ipairs(expected.lists)do for _,row in ipairs(list)do
@@ -85,3 +100,10 @@ else
 end
 
 if interrogating then assert(#df.crime.find(9).reports==initial_reports,'Interrogation cancellation did not restore reports');assert(#df.global.world.history.events==history_count,'Interrogation changed history')end
+if interview_job then
+ for _,job in require('utils').listpairs(df.global.world.jobs.list)do assert(job.id~=interview_job,'Checkbox did not cancel the controlled interview job')end
+ assert(not interview_worker.job.current_job,'Checkbox did not release the interview worker')
+ df.global.job_next_id=interview_next_id
+ local f=assert(io.open(out..'/justice-interview-job-result.json','w'))
+ f:write(json.encode({job_removed=true,worker_released=true,job_id_counter_restored=true,subject=7123}));f:close()
+end

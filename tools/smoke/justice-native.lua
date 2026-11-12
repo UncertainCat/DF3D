@@ -1,5 +1,5 @@
 -- Protected discovery only. Widget/callback observations are oracle evidence,
--- never runtime inputs. This lane performs no conviction or interrogation.
+-- never runtime inputs. Opt-in action probes mutate only the owned unsaved clone.
 local out,view,records=...
 local gui=require('gui');local script=require('gui.script');local json=require('json')
 local g=df.global.gps;local base=dfhack.internal.getImageBase()

@@ -1255,8 +1255,9 @@ the selected unit7123 portrait at(516,392)-(544,420). Checkbox artwork, schedule
 caption, selection frame, row order and all remaining panel pixels match. This
 additional appearance mismatch remains unresolved alongside the sorted5815/2459
 portraits; it is not a native-parity exception. Full Justice remains hidden.
-Assumed identities, running-job cancellation and missing figures still lack live
-acceptance. `native_justice.json.interrogation_transport_reference` records scope.
+Assumed identities and missing figures still lack live acceptance. Controlled
+assigned-job cancellation is covered below; organically progressed interviews
+remain outside that acceptance. `native_justice.json.interrogation_transport_reference` records scope.
 MSVC `justice-interrogate-build.log` and QA `build/qa/justice-interrogate` pass
 (root/extension, core19, Justice state, management contract and UI composition).
 Installed198 bridge SHA256 is
@@ -1279,6 +1280,29 @@ Cancellation removes matching records in reverse order; for each match native
 also cancels InterrogateSubject jobs whose first UNIT_INTERROGATEE reference
 resolves to the selected unit, regardless of their originating case. The adapter
 retains this behavior and uses DF's job destructor for its effects.
+
+Protected132901 on2026-11-12 compares native checkbox cancellation with the
+owned action using five controlled jobs in the paused clone. Both remove the
+two InterrogateSubject jobs whose first UNIT_INTERROGATEE is the selected
+subject, including one assigned to worker996. Both release that worker and
+preserve an unrelated subject's interview, a job whose second subject reference
+matches, and a ReportCrime job referencing the subject. Original job membership
+and the allocation counter are restored. This verifies assigned-job cleanup,
+not an interview that naturally progressed through simulation frames.
+
+Mixed132956 verifies actual DF3D schedule/sort/cancel checkbox clicks for7123
+also remove a controlled assigned interview job and release its worker.
+The provider required no runtime change. Report/history counts and existing
+menu/RNG/witness guards pass. The scheduled panel still differs from native by
+318 pixels in unit7123's portrait(516,392)-(544,420); all other panel pixels
+match. Earlier hair/dye fixes did not resolve this tint defect.
+
+Both runs preserve source/prefs and close owned DF10736/38384 unsaved, with
+serial30FPS and GPU48–49C samples. Core19 passes; the mixed run has only the
+known separate-renderer/finalize/two-ObjectDB diagnostics and is qualified as
+passed_with_known_issues. `interrogation_job_cleanup_reference` retains bounded
+effects and hashes. Enable DF3D_JUSTICE_INTERROGATION_JOBS with INTERROGATION
+for native/provider comparison or WIRE_INTERROGATE for the viewer workflow.
 
 Protected181858 on2026-11-11 compares actual native checkbox clicks with the
 owned action for case9/unit5698. Both schedule exactly one record

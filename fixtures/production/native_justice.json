@@ -14119,5 +14119,138 @@
     },
     "visual_scope": "Nine of20 panel crops(32,52)-(976,760) match exactly. Remaining differences are506 Guard or735 Convict animated name-color pixels and/or8 filter-caret pixels. Other panel pixels match.",
     "prior_failure": "132208 exposed transient search hide/show losing filter focus and a JSON float-versus-int detail comparison. Final run keeps roster search visible and normalizes oracle colors before comparison."
+  },
+  "interrogation_job_cleanup_reference": {
+    "native_source": "build/stockpile-storage-native-input-20261112-132901",
+    "viewer_source": "build/stockpile-storage-native-input-20261112-132956",
+    "scope": "Controlled assigned InterrogateSubject jobs in paused owned clones; native checkbox versus semantic action and actual viewer schedule/sort/cancel. No organically progressed interrogation, assumed identity or missing historical figure acceptance.",
+    "status": "passed_with_known_issues",
+    "fps_cap": 30,
+    "gpu_samples_celsius": [
+      48,
+      49
+    ],
+    "owned_df_closed": [
+      10736,
+      38384
+    ],
+    "source_preserved": true,
+    "native_and_provider": {
+      "before": [],
+      "crime_id": 9,
+      "jobs": {
+        "cases": [
+          {
+            "after": {
+              "remaining": [
+                false,
+                true,
+                true,
+                false,
+                true
+              ],
+              "reports": [],
+              "selected": false,
+              "worker_released": true
+            },
+            "mode": "native"
+          },
+          {
+            "after": {
+              "remaining": [
+                false,
+                true,
+                true,
+                false,
+                true
+              ],
+              "reports": [],
+              "selected": false,
+              "worker_released": true
+            },
+            "mode": "owned"
+          }
+        ],
+        "job_id_counter_restored": true,
+        "original_jobs_preserved": true,
+        "other_subject": 1017,
+        "worker": 996
+      },
+      "native_off": [],
+      "native_on": [
+        {
+          "hfid": -1,
+          "historical_hfid": 9317,
+          "identities": [],
+          "visual_hfid": 9317
+        }
+      ],
+      "owned_off": [],
+      "owned_on": [
+        {
+          "hfid": -1,
+          "historical_hfid": 9317,
+          "identities": [],
+          "visual_hfid": 9317
+        }
+      ],
+      "stale_toggle_rejected": true,
+      "unit_id": 5698
+    },
+    "viewer": {
+      "job_id_counter_restored": true,
+      "job_removed": true,
+      "subject": 7123,
+      "worker_released": true
+    },
+    "transport": {
+      "candidate_count": 293,
+      "candidate_queries": 3,
+      "closed_read_retired": true,
+      "controller_tabs": 3,
+      "convicted": false,
+      "counts": [
+        7,
+        3,
+        7
+      ],
+      "interrogated": true,
+      "picker_controller": false,
+      "sort_scopes": 9,
+      "stale_tabs": 3,
+      "success": true,
+      "witnesses": 134
+    },
+    "job_order": [
+      "matching subject assigned to worker",
+      "unrelated subject",
+      "unrelated first subject, matching second",
+      "matching first subject, unrelated second",
+      "ReportCrime with matching subject"
+    ],
+    "visual": {
+      "crop": [
+        32,
+        52,
+        976,
+        760
+      ],
+      "different_pixels": 318,
+      "difference_bounds": [
+        516,
+        392,
+        544,
+        420
+      ],
+      "status": "Unresolved unit7123 portrait tint; all other panel pixels match."
+    },
+    "sha256": {
+      "stockpile-storage-native-input-20261112-132901/justice-candidates.json": "9f2c8e0e2d69f0c90e85ccd266b10be7d3ae28fe2ba87fe56af524984374e628",
+      "stockpile-storage-native-input-20261112-132956/justice-interview-job-result.json": "d2eb5448c8f2a4f1b0e7ee9364223d2e3979f37116721e43d69e7c0d460cacf4",
+      "stockpile-storage-native-input-20261112-132956/justice-wire-reference.json": "09b324c3e15c559026675d310fa7b0a8d7225fc1259ace35dd0130e11299b74e",
+      "stockpile-storage-native-input-20261112-132956/job-settings-wire-result.json": "538546ba8705e52e3bb754cdb6f0af1699d01c87d4fe4ae1af98760d90e66461",
+      "stockpile-storage-native-input-20261112-132956/justice-interrogate-grouped.png": "054daf1e4bdb30f9c90bd7951b791e10e0eb57eb1fac6da0f93d79776b8e547f",
+      "stockpile-storage-native-input-20261112-132956/justice-interrogate-view.png": "1bec241688ebe02bb8dacafe9971e46992fb4e4eb5c00bade99ea637fbb98b41"
+    }
   }
 }

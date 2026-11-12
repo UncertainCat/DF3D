@@ -40,7 +40,7 @@ func run() -> void:
 	await request("construction",{"action":C.ManagementAction.Catalog})
 	if OS.get_environment("DF3D_JUSTICE_LIST_NAV")=="1" or OS.get_environment("DF3D_JUSTICE_ROSTER_NAV")=="1":await candidate_list_navigation();return
 	if OS.get_environment("DF3D_JUSTICE_PICKER_NAV")=="1":await picker_navigation();return
-	if OS.get_environment("DF3D_JUSTICE_KEYBOARD")=="1":await keyboard_focus();return
+	if OS.get_environment("DF3D_JUSTICE_KEYBOARD")=="1" or OS.get_environment("DF3D_JUSTICE_ROSTER_SELECT")=="1":await keyboard_focus();return
 	if OS.get_environment("DF3D_JUSTICE_CANDIDATE_HOVER")=="1":await candidate_hover();return
 	if OS.get_environment("DF3D_JUSTICE_WIRE_GRAPH")=="1":await run_graph(reference.graph);return
 	if OS.get_environment("DF3D_JUSTICE_WIRE_INTELLIGENCE")=="1":await run_intelligence(reference.intelligence);return
@@ -355,10 +355,12 @@ func keyboard_focus() -> void:
 		elif mode==1:await settle_convicts(controller.convicts)
 		else:await settle_controller(controller);controller.open_candidates(mode==2);await settle_picker(controller)
 		check(view.search.visible and not view.search.has_focus(),"Justice filter unexpectedly focused on open")
+		if mode<2:await roster_enter_no_action(view,controller.guard if mode==0 else controller.convicts,false)
 		for variant in ["shift","alt","meta","repeat","plain","filter"]:
 			var event:=InputEventKey.new();event.keycode=KEY_F;event.pressed=true;event.ctrl_pressed=variant!="plain";event.shift_pressed=variant=="shift";event.alt_pressed=variant=="alt";event.meta_pressed=variant=="meta";event.echo=variant=="repeat"
 			Input.parse_input_event(event);await process_frame
 			check(view.search.has_focus()==(variant=="filter"),"Justice filter shortcut modifiers differ: "+variant)
+		if mode<2:await roster_enter_no_action(view,controller.guard if mode==0 else controller.convicts,true)
 		var typed:=InputEventKey.new();typed.keycode=KEY_Z;typed.unicode=122;typed.pressed=true;Input.parse_input_event(typed)
 		await process_frame
 		var model=controller.guard if mode==0 else controller.convicts if mode==1 else controller.candidates
@@ -371,6 +373,12 @@ func keyboard_focus() -> void:
 		check(not view.search.has_focus(),"Closed Justice filter retained typing focus")
 	controller.dispose();view.queue_free();actions.queue_free();world.queue_free();await process_frame
 	var result:=FileAccess.open(directory+"/job-settings-wire-result.json",FileAccess.WRITE);result.store_string(JSON.stringify({"success":not failed,"filter_modes":4,"typed_queries":4,"close_retired":true}));result.close();quit(1 if failed else 0)
+
+func roster_enter_no_action(view,model,focused: bool) -> void:
+	var id: int=model.cursor_id;var revision: int=model.revision
+	for code in [KEY_ENTER,KEY_KP_ENTER]:
+		var event:=InputEventKey.new();event.pressed=true;event.keycode=code;Input.parse_input_event(event);await create_timer(0.1).timeout
+		check(view.search.has_focus()==focused and model.cursor_id==id and model.revision==revision and model.phase==model.Phase.Ready and model.ticket==0,"Roster Enter changed selection, focus or dispatched a read/action")
 
 func candidate_hover() -> void:
 	root.size=Vector2i(1200,800);check(world.load_assets(OS.get_environment("DF3D_DF_PATH")),"Candidate hover assets unavailable")

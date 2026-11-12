@@ -627,6 +627,23 @@ diagnostics qualify the live result as passed_with_known_issues.
 Overflow, other sizes, numeric/keypad aliases and physical wheel remain outside
 this run's acceptance scope.
 
+Guard/Convicts Enter and keypad Enter preserve roster selection and filter
+focus. Native SELECT does not open the creature sheet in these tabs. Protected
+134557 and mixed134729 on2026-11-12 observe both tabs with/without filter focus;
+the selected convict's detail remains attached to that selection. The viewer
+consumes these keys before the shared textbox's normal Enter-to-release behavior.
+Live engine checks exercise both Enter keys in both focus states, ensure no
+new semantic request, then type and close the panel. Roster/tab-return parity
+is not implied: native retains Convicts cursor1 across a tab round trip in
+this probe, while DF3D currently reopens the roster at its first row. Query,
+sort and scroll retention need an independent native reference before correction.
+
+QA `justice-roster-enter` and core19 pass. Owned DF29164/44328 close unsaved,
+source/prefs preserved, serial30FPS and GPU49–50C samples. Known Godot shutdown
+diagnostics qualify the mixed run as passed_with_known_issues.
+`roster_enter_reference` retains state/hashes and the unresolved tab-return gap.
+Native camera/recenter effects were not instrumented by this probe.
+
 
 Management protocol198 adds `JusticeInterrogate`, the candidate request/page
 `interrogate` mode, and an `expected_selected` comparison for checkbox edits.

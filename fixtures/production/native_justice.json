@@ -14481,5 +14481,146 @@
       "133636_and_133731": "Introductory native help intercepted the conviction probe.",
       "134040": "Combined viewer effects passed, but test incorrectly guarded the deliberately convicted case as read-only."
     }
+  },
+  "roster_enter_reference": {
+    "source": "build/stockpile-storage-native-input-20261112-134729",
+    "native_discovery": "build/stockpile-storage-native-input-20261112-134557",
+    "scope": "Guard/Convicts SELECT preserves cursor, detail and filter focus, without opening creature sheet. Viewer Enter/keypad Enter tested focused/unfocused; no semantic request and subsequent typing/close accepted. Camera/recenter effects not instrumented.",
+    "status": "passed_with_known_issues",
+    "owned_df_closed": [
+      29164,
+      44328
+    ],
+    "source_preserved": true,
+    "fps_cap": 30,
+    "gpu_samples_celsius": [
+      49,
+      50
+    ],
+    "tab_return_gap": "Native retains selected Convicts cursor across tab changes. DF3D currently reopens at first row; query/sort/scroll retention unverified.",
+    "samples": [
+      {
+        "tab": "Fortress guard",
+        "label": "initial",
+        "cursor": 0,
+        "focused": false,
+        "info_open": true,
+        "sheet_open": false
+      },
+      {
+        "tab": "Fortress guard",
+        "label": "down",
+        "cursor": 0,
+        "focused": false,
+        "info_open": true,
+        "sheet_open": false
+      },
+      {
+        "tab": "Fortress guard",
+        "label": "activate",
+        "cursor": 0,
+        "focused": false,
+        "info_open": true,
+        "sheet_open": false
+      },
+      {
+        "tab": "Convicts",
+        "label": "initial",
+        "cursor": 0,
+        "focused": false,
+        "info_open": true,
+        "sheet_open": false
+      },
+      {
+        "tab": "Convicts",
+        "label": "down",
+        "cursor": 1,
+        "focused": false,
+        "info_open": true,
+        "sheet_open": false
+      },
+      {
+        "tab": "Convicts",
+        "label": "activate",
+        "cursor": 1,
+        "focused": false,
+        "info_open": true,
+        "sheet_open": false
+      },
+      {
+        "tab": "Fortress guard",
+        "label": "filter",
+        "cursor": 0,
+        "focused": true,
+        "info_open": true,
+        "sheet_open": false
+      },
+      {
+        "tab": "Fortress guard",
+        "label": "initial",
+        "cursor": 0,
+        "focused": true,
+        "info_open": true,
+        "sheet_open": false
+      },
+      {
+        "tab": "Fortress guard",
+        "label": "down",
+        "cursor": 0,
+        "focused": true,
+        "info_open": true,
+        "sheet_open": false
+      },
+      {
+        "tab": "Fortress guard",
+        "label": "activate",
+        "cursor": 0,
+        "focused": true,
+        "info_open": true,
+        "sheet_open": false
+      },
+      {
+        "tab": "Convicts",
+        "label": "filter",
+        "cursor": 1,
+        "focused": true,
+        "info_open": true,
+        "sheet_open": false
+      },
+      {
+        "tab": "Convicts",
+        "label": "initial",
+        "cursor": 1,
+        "focused": true,
+        "info_open": true,
+        "sheet_open": false
+      },
+      {
+        "tab": "Convicts",
+        "label": "down",
+        "cursor": 2,
+        "focused": true,
+        "info_open": true,
+        "sheet_open": false
+      },
+      {
+        "tab": "Convicts",
+        "label": "activate",
+        "cursor": 2,
+        "focused": true,
+        "info_open": true,
+        "sheet_open": false
+      }
+    ],
+    "viewer_result": {
+      "close_retired": true,
+      "filter_modes": 4,
+      "success": true,
+      "typed_queries": 4
+    },
+    "sha256": {
+      "justice-keyboard.json": "c004ee818188f8b764125ca140dbba031b6b112350a2747c8a21e0a475aac2dd",
+      "job-settings-wire-result.json": "626303c304b3c88bffc2d1b846c30f9b7debf041cc4bdbb86fa5988b00931051"
+    }
   }
 }

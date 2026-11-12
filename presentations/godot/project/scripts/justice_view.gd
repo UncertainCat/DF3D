@@ -141,6 +141,9 @@ func _input(event: InputEvent) -> void:
 		if state.candidates.interrogate:state.candidates.toggle_interrogation(state.candidates.cursor_id)
 		else:state.candidates.convict(state.candidates.cursor_id)
 		get_viewport().set_input_as_handled();return
+	if state!=null and roster_open() and guard_allowed() and event is InputEventKey and event.pressed and event.keycode in [KEY_ENTER,KEY_KP_ENTER]:
+		# Native roster SELECT leaves selection, detail and filter focus intact.
+		get_viewport().set_input_as_handled();return
 	if state!=null and (guard_allowed() if roster_open() else picker_allowed()) and event is InputEventKey and event.pressed and not event.ctrl_pressed and not event.shift_pressed and not event.alt_pressed and not event.meta_pressed and event.keycode in [KEY_UP,KEY_DOWN,KEY_PAGEUP,KEY_PAGEDOWN]:
 		var page_size:=guard_capacity() if roster_open() else picker_capacity()
 		var step:=(-1 if event.keycode in [KEY_UP,KEY_PAGEUP] else 1)*(page_size if event.keycode in [KEY_PAGEUP,KEY_PAGEDOWN] else 1)

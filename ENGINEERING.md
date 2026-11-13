@@ -17271,8 +17271,21 @@ task creation checks pass. Owned DF43136 exits unsaved with source preservation;
 only the three documented Godot diagnostics occur. Core19 and management
 contract/controller/composition/adapter checks pass. GPU samples37-41C at30FPS
 are observations, not continuous peaks. See native_workshop.json.activity_indicator_reference.
-This covers the controlled Make bed jobs; contained tool artwork, remaining
-families and full workshop acceptance remain unfinished.
+This covers the controlled Make bed jobs; remaining families and full workshop
+acceptance remain unfinished. Wooden wheelbarrow contents are verified below.
+
+Building contents now include the existing owned appearance facts for tools,
+allowing the shared item renderer to use installed subtype/material artwork.
+Native tool selection c8200d..c824b3 considers material, raw definition, quality,
+variants, wear and improvements; the installed wheelbarrow WOOD:ALL variant is
+TOOLS:0:15. No native rendering cache is read. Protected213946 on2026-11-12
+compares five visible wooden wheelbarrows and a log: the entire contents crop
+424,508..888,724 matches native with zero differing pixels. This does not qualify
+other tool-specific variants, wear or improvement artwork. Move up, activity,
+Priority, Details and task creation regressions pass. Owned DF33832 closes
+unsaved with source preservation; only the three known Godot diagnostics occur.
+Core19 passes; GPU samples38-40C at30FPS are not continuous peaks. See
+native_workshop.json.tool_contents_art_reference. No wire migration is needed.
 
 Workshop Priority dispatch uses `workshop_priority_native.h`: validate the
 building/job and displayed flag at a safe point, reproduce the pinned inline
@@ -17291,7 +17304,7 @@ to the displaced job in each side; native and viewer both release it. Stale
 expected Priority is rejected without changing the job. The three Priority
 icons match all RGB pixels in crop760,136,784,244, and the existing Details
 panel and material-effect checks still pass. This qualifies the Make bed case,
-not all job families or the whole workshop. Native Move up is implemented below; some contained-item artwork remains missing. State tests cover unknown legacy
+not all job families or the whole workshop. Native Move up is implemented below; other contained-item families remain unqualified. State tests cover unknown legacy
 observations, duplicate suppression and a flag-only reply without queue movement.
 `workshop-priority-state` passes state/composition; `workshop-priority-runtime`
 passes composition/production-adapter checks; core19 passes. Owned DF37912

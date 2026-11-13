@@ -7557,5 +7557,25 @@
       "workshop-wire-result.json": "13c199de7b83280d1f3abda0e3a9413423a8a25ca6a681a1f53f3e8db7eb9824",
       "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
     }
+  },
+  "tool_contents_art_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-213946",
+    "scope": "Five visible wooden wheelbarrows and one log in Carpenter contents. Entire visible contents crop matches native. Other tool-specific variants, wear and improvements are not established by this capture.",
+    "native_selector": "c8200d..c824b3: material, tool raw, quality/variant, wear/improvement selection. Installed wheelbarrow WOOD:ALL variant uses TOOLS:0:15. Existing owned material/subtype/color facts select it without native rendering cache access.",
+    "crop": [
+      424,
+      508,
+      888,
+      724
+    ],
+    "different_pixels": 0,
+    "diagnostics": "passed_with_known_issues: separate-renderer notice, device finalize, ObjectDB shutdown; no unclassified diagnostics",
+    "source_preservation": "Owned source unchanged; DF33832 exited unsaved",
+    "sha256": {
+      "workshop-job-move-up-middle.png": "bd21a33a2c30c7774864d928f21a9b5e0dd4585f08c9922f4837080ec77bb099",
+      "workshop-move-up-middle-live.png": "824b95f5fd61a50465a1729a8caffb258503f387fce6e0543b05420fcf3e685d",
+      "workshop-wire-result.json": "13c199de7b83280d1f3abda0e3a9413423a8a25ca6a681a1f53f3e8db7eb9824",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    }
   }
 }

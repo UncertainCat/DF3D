@@ -7500,5 +7500,15 @@
     "source_preserved": true,
     "closed_unsaved": true,
     "diagnostics": "passed_with_known_issues: three documented Godot diagnostics, no unclassified errors"
+  },
+  "move_up_contract_reference": {
+    "management_version": 208,
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-211513",
+    "source_sha256": "0aed8ca9aebd29dd8823ee6d3ebd124f93c169ffaa464da6243c6334960ccb7c",
+    "bridge_sha256": "bb25375e23ed213989f7f472b1adee6886d8e1a8bbf0c091d02d5e9e9b54ba4d",
+    "scope": "Migration-only: explicit typed Move up pre-write rejection and absent capability; existing composed Priority/Details/category/spike/reaction workflows pass. Runtime Move up remains pending.",
+    "source_preserved": true,
+    "closed_unsaved": true,
+    "diagnostics": "passed_with_known_issues"
   }
 }

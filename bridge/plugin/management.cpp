@@ -968,7 +968,7 @@ void publish() {
     pr.push_back(m::CreateProductionRecipe(b,b.CreateString(v.key),b.CreateString(v.name),reqs(v.requirements),availability));
   }
   std::vector<flatbuffers::Offset<m::ProductionJob>> pj;
-  for(const auto& v:production.jobs) pj.push_back(m::CreateProductionJob(b,v.id,b.CreateString(v.name),v.jobType,v.repeat,v.suspended,v.workerId,b.CreateString(v.workerName),v.completionTimer,v.attachedItems,v.editable,b.CreateString(v.status),reqs(v.requirements),v.priority));
+  for(const auto& v:production.jobs) pj.push_back(m::CreateProductionJob(b,v.id,b.CreateString(v.name),v.jobType,v.repeat,v.suspended,v.workerId,b.CreateString(v.workerName),v.completionTimer,v.attachedItems,v.editable,b.CreateString(v.status),reqs(v.requirements),v.priority,v.canMoveUp));
   std::vector<flatbuffers::Offset<m::FarmCrop>> pc;
   for(const auto& v:production.crops) pc.push_back(m::CreateFarmCrop(b,v.id,b.CreateString(v.name),v.seasons,v.seeds));
   flatbuffers::Offset<m::FarmSnapshot> farmSnapshot;
@@ -4006,6 +4006,10 @@ void run(color_ostream& out) {
     }
     publish();return;
   }
+  // Contract migration: reject Move up until its semantic dispatch is installed.
+  if(r->action()==m::ManagementAction::ProductionJobEdit && r->production() && r->production()->expected_previous_job_id()>=0) {
+    message.clear();status=m::ManagementStatus::Rejected;production={};publish();return;
+  }
   if(r->action()==m::ManagementAction::FarmEdit) {
     message.clear();status=m::ManagementStatus::Rejected;production={};
     production.farmEditOutcome=m::FarmEditOutcome::Rejected;
@@ -6398,7 +6402,7 @@ void run(color_ostream& out) {
       lua_pop(L,1);production.recipes.push_back(std::move(row));
     });
     each("task_categories",128,[&](){production.taskCategories.push_back({text(L,"key"),text(L,"name")});});
-    each("production_jobs",64,[&](){ProductionJob v;v.id=int32_t(number(L,"id",-1));v.jobType=int16_t(number(L,"job_type",-1));v.workerId=int32_t(number(L,"worker_id",-1));v.completionTimer=int32_t(number(L,"completion_timer",-1));v.name=text(L,"name");v.workerName=text(L,"worker_name");v.status=text(L,"status");v.repeat=boolean(L,"repeat_job");v.suspended=boolean(L,"suspended");v.priority=int8_t(number(L,"priority",-1));v.editable=boolean(L,"editable");v.attachedItems=uint16_t(number(L,"attached_items"));v.requirements=reqs();production.jobs.push_back(std::move(v));});
+    each("production_jobs",64,[&](){ProductionJob v;v.id=int32_t(number(L,"id",-1));v.jobType=int16_t(number(L,"job_type",-1));v.workerId=int32_t(number(L,"worker_id",-1));v.completionTimer=int32_t(number(L,"completion_timer",-1));v.name=text(L,"name");v.workerName=text(L,"worker_name");v.status=text(L,"status");v.repeat=boolean(L,"repeat_job");v.suspended=boolean(L,"suspended");v.priority=int8_t(number(L,"priority",-1));v.canMoveUp=int8_t(number(L,"can_move_up",-1));v.editable=boolean(L,"editable");v.attachedItems=uint16_t(number(L,"attached_items"));v.requirements=reqs();production.jobs.push_back(std::move(v));});
     each("crops",256,[&](){production.crops.push_back({int32_t(number(L,"id",-1)),text(L,"name"),uint8_t(number(L,"seasons")),uint32_t(number(L,"seeds"))});});
     each("seasonal_crops",4,[&](){production.seasonalCrops.push_back(int32_t(lua_tointeger(L,-1)));});
   }

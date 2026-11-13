@@ -53,6 +53,9 @@ func run() -> void:
 		owner.tasks.queue_task(recipe_key);await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready and owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
 		job_ids.append(owner.tasks.snapshot.created_job)
 	var native_ids: Array=[]
+	for row in owner.tasks.jobs():check(not row.has("can_move_up"),"Migration invented Move up capability")
+	var staged_move:=await request("production",{"action":C.ManagementAction.ProductionJobEdit,"building_id":int(reference.building_id),"job_id":int(job_ids[1]),"expected_previous_job_id":int(job_ids[0])})
+	check(staged_move.get("status")==C.ManagementStatus.Rejected,"Unimplemented Move up was silently accepted")
 	for row in reference.priority_queue[0].rows:native_ids.append(int(row.id))
 	for sample in reference.priority_queue.slice(1):
 		var target: int=job_ids[native_ids.find(int(sample.target))]

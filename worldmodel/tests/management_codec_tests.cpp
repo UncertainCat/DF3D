@@ -9,6 +9,38 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("workshop Move up requires a distinct predecessor and an exclusive job edit") {
+  for(int fault=0;fault<10;++fault) {
+    wm::ManagementRequest r;r.action=wm::ManagementAction::ProductionJobEdit;
+    auto& p=r.production;p.buildingId=4;p.jobId=71;p.expectedPreviousJobId=70;
+    if(fault==1)p.expectedPreviousJobId=-2;
+    if(fault==2)p.expectedPreviousJobId=71;
+    if(fault==3)p.cancel=true;
+    if(fault==4)p.repeat=1;
+    if(fault==5)p.suspend=1;
+    if(fault==6){p.priority=1;p.expectedPriority=0;}
+    if(fault==7)r.action=wm::ManagementAction::ProductionInspect;
+    if(fault==8)p.jobId=-1;
+    if(fault==9)p.expectedPreviousJobId=-1;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    CHECK(value->production()->expected_previous_job_id()==p.expectedPreviousJobId);
+  }
+}
+TEST_CASE("legacy production jobs preserve unknown Move up capability") {
+  for(int capability:{-1,0,1}) {
+    flatbuffers::FlatBufferBuilder b;
+    auto caption=b.CreateString("Make bed");
+    wire::ProductionJobBuilder row(b);row.add_id(71);row.add_name(caption);
+    if(capability>=0)row.add_can_move_up(int8_t(capability));
+    auto jobs=b.CreateVector(std::vector<flatbuffers::Offset<wire::ProductionJob>>{row.Finish()});
+    wire::ProductionStateBuilder state(b);state.add_jobs(jobs);b.Finish(state.Finish());
+    auto decoded=codec::decodeProduction(flatbuffers::GetRoot<wire::ProductionState>(b.GetBufferPointer()));
+    REQUIRE(decoded.jobs.size()==1);CHECK(decoded.jobs[0].canMoveUp==capability);
+  }
+}
+
 TEST_CASE("workshop Priority intents require a displayed opposite state and no mixed edit") {
   for(int desired:{0,1})for(int fault=0;fault<8;++fault) {
     wm::ManagementRequest r;r.action=wm::ManagementAction::ProductionJobEdit;

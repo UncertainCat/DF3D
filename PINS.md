@@ -22,6 +22,12 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management208 adds ProductionRequest.expected_previous_job_id for an exclusive
+Move up intent and ProductionJob.can_move_up (-1 unknown,0 unavailable,1 available).
+The predecessor must be a distinct nonnegative job ID; legacy observations omit
+the capability in Godot. Rebuild both peers: Local\df3d_management_v208 isolates207.
+This migration rejects Move up before mutation; semantic dispatch follows separately.
+
 Management207 adds optional `ProductionState.task_parent`. Present empty means
 native Back to root; present nonempty means Back to that opaque category; absent
 retains Cancel/legacy behavior. A parent requires a known nonempty current

@@ -164,6 +164,7 @@ ProductionState decodeProduction(const m::ProductionState* p) {
       j.repeat = v->repeat();
       j.suspended = v->suspended();
       j.priority = v->priority();
+      j.canMoveUp = v->can_move_up();
       j.editable = v->editable();
       j.attachedItems = v->attached_items();
       j.requirements = reqs(v->requirements());
@@ -323,7 +324,7 @@ flatbuffers::Offset<m::ProductionRequest> encodeProduction(flatbuffers::FlatBuff
   return m::CreateProductionRequest(b, p.buildingId, p.jobId, b.CreateString(p.recipe),
                                     b.CreateString(p.query), p.cursor, p.repeat, p.suspend,
                                     p.cancel, p.season, p.cropId, p.expectedRevision,static_cast<m::FarmOperation>(p.farmOperation),p.seasonalFertilization,
-                                    p.farmOperation==wm::FarmOperation::Rename || !p.farmName.empty()?b.CreateString(p.farmName):0,p.contents,p.itemId,p.itemValue,p.locateItem,p.independentItem,p.buildingHeader,p.workshopWorkers,p.workerId,p.workerListRevision,p.workerValue,p.workshopOrders,p.generalOrderDelta,p.generalOrderValue,p.contentsItemId,p.priority,p.expectedPriority,b.CreateString(p.taskCategory));
+                                    p.farmOperation==wm::FarmOperation::Rename || !p.farmName.empty()?b.CreateString(p.farmName):0,p.contents,p.itemId,p.itemValue,p.locateItem,p.independentItem,p.buildingHeader,p.workshopWorkers,p.workerId,p.workerListRevision,p.workerValue,p.workshopOrders,p.generalOrderDelta,p.generalOrderValue,p.contentsItemId,p.priority,p.expectedPriority,b.CreateString(p.taskCategory),p.expectedPreviousJobId);
 }
 
 flatbuffers::Offset<m::WorkOrderArtRequest> encodeArtRequest(flatbuffers::FlatBufferBuilder& b,const WorkOrderArtRequest& a) {

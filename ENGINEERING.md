@@ -17230,7 +17230,17 @@ swaps, a first-row no-op, unchanged flags and a worker retained on the displaced
 job, then restores the original queue. Existing composed Priority/Details and
 task creation checks pass. Owned DF36692 closes unsaved with source preservation;
 only the three known Godot diagnostics occur. See native_workshop.json.move_up_reference.
-The Move up command contract, runtime dispatch and viewer control remain pending.
+Management208 carries the expected preceding job ID as an exclusive Move up
+intent, rejecting invalid/self IDs and mixed edits. ProductionJob.can_move_up
+is tri-state; legacy observations remain unknown and absent in the Godot dictionary.
+Bridge/model/client codecs preserve it without synthesizing availability.
+The migration explicitly rejects Move up before mutation; runtime dispatch and
+the viewer control remain pending. Both peers require208 and mailbox
+Local\df3d_management_v208. Core19 and management-contract/controller QA pass.
+Protected211513 verifies typed Move up rejection, absent capability, and existing
+Priority/Details/category/spike/reaction workflows. Owned DF43100 closes unsaved
+with source preservation; only three known Godot diagnostics occur. See
+native_workshop.json.move_up_contract_reference.
 
 Workshop Priority dispatch uses `workshop_priority_native.h`: validate the
 building/job and displayed flag at a safe point, reproduce the pinned inline

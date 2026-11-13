@@ -10548,5 +10548,169 @@
         }
       }
     ]
+  },
+  "mechanic_runtime_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-222913",
+    "membership": "Native8c6cbb..8c6cf8 root emits139 with mat_type0/mat_index-1 and205, then reactions. FNV64 60298931b3031029 over3dhex bytes. Independent catalog classifier includes34 explicit-metal mechanisms absent from native Mechanic Tasks; filter those from task templates, retain reaction templates.",
+    "scope": "Existing completed Mechanic workshop5. Both root choices/captions/order/availability and Cancel match; actual clicks create both jobs with matching fields and all input requirements. Original queue restored.",
+    "effects": [
+      {
+        "caption": "Make rock mechanisms",
+        "index": 1,
+        "native": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 2048,
+              "flags3": 64,
+              "item_subtype": -1,
+              "item_type": 4,
+              "mat_index": -1,
+              "mat_type": 0,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 139,
+          "mat_index": -1,
+          "mat_type": 0,
+          "material_category": 0,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        },
+        "viewer": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 2048,
+              "flags3": 64,
+              "item_subtype": -1,
+              "item_type": 4,
+              "mat_index": -1,
+              "mat_type": 0,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 139,
+          "mat_index": -1,
+          "mat_type": 0,
+          "material_category": 0,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        }
+      },
+      {
+        "caption": "Make traction bench",
+        "index": 2,
+        "native": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 20,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            },
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 67,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            },
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 10,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 205,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        },
+        "viewer": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 20,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            },
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 67,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            },
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 10,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 205,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        }
+      }
+    ],
+    "picker_crop": [
+      432,
+      106,
+      888,
+      676
+    ],
+    "differing_pixels": 0,
+    "omissions": [
+      "Worker execution/products",
+      "Native uninitialized item_type equivalence"
+    ],
+    "diagnostics": "passed_with_known_issues: separate-renderer, device-finalize, ObjectDB shutdown; no unclassified diagnostics",
+    "source_preservation": "Owned DF42076 exited unsaved; source unchanged",
+    "sha256": {
+      "workshop-native.json": "29a7629fd96f61e13023486b43a0fd6de20c5206b1c6c11d056e8e705d61a1f9",
+      "workshop-wire-result.json": "5e0082beea2910161b183f7209b9097f72fa9ff2ac24557211efd9ae299bec6b",
+      "result.json": "70a0865504ad59aabb0d60905d44fedb668fee80394a53c20fdc0b5bbccffb0e",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "workshop-family-8.png": "6c371374b1b63cc2fb165a2b4c3be6358a86efbebf60f0c86a3b721563eb822d",
+      "family-8-live.png": "f35b4ef1d0dd0c26a44f60cb4d3d9bf9cefa9b6abea43161dd794bb1405ec7d8"
+    }
   }
 }

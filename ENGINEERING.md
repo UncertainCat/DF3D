@@ -17436,6 +17436,20 @@ worker execution/products, magma supply and uninitialized item_type equivalence
 remain unqualified. See native_workshop.json.glass_runtime_reference. Whole
 workshop exposure remains gated.
 
+Mechanic Tasks filters the independently owned order catalog to native8c6cbb's
+two builtins: rock mechanisms139 (mat_type0, mat_index-1) and traction bench205.
+The classifier's34 explicit-metal mechanism templates belong to Forge Tasks
+and are excluded here. Native reaction templates/availability remain separate.
+Protected222913 on2026-11-12 uses existing completed workshop5 and verifies both
+choices, captions/order/availability, Cancel and actual creation of both jobs,
+including matching input requirements. Original queue order is restored; the
+picker crop432,106..888,676 is pixel-identical. Owned DF42076 exits unsaved with
+source saves unchanged. Core19 and headless state/composition/adapter checks
+pass; live diagnostics contain only the three documented Godot signatures.
+Serial30FPS GPU samples40-42C are not continuous peaks. Worker execution/products
+and uninitialized item_type equivalence remain unqualified. See
+native_workshop.json.mechanic_runtime_reference. Whole workshop exposure remains gated.
+
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.
 Renderer18643e uses this predicate and installed BUILDING_JOBS_ACTIVE artwork.

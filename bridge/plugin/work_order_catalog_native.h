@@ -15,6 +15,7 @@ inline bool workOrderCatalogSupported() {
         const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
         struct Pin {size_t rva,length;uint64_t hash;};
         constexpr Pin pins[]={
+            {0x8c6cbb,0x3d,UINT64_C(0x60298931b3031029)}, // mechanic rock mechanisms + traction bench
             {0x8c5078,0x5e3,UINT64_C(0x6340566cdcdeff62)}, // glass root and material-page membership
             {0x8c5036,0x21,UINT64_C(0x4280d302be848fe3)}, // kiln root Collect clay membership
             {0x8c812d,0x4d2,UINT64_C(0xa0bb18750d912459)}, // clothier fabric/task membership
@@ -148,8 +149,15 @@ inline std::optional<std::vector<df::manager_order_template>> workshopTaskTempla
     if(!building)return std::nullopt;
     const auto type=building->getType();const auto subtype=building->getSubtype();
     const bool forge=int(type)==13 && (subtype==5 || subtype==6);
-    if(!forge && !((int(type)==13 && (subtype==0 || subtype==1 || subtype==4 || subtype==11 || subtype==12 || subtype==13 || subtype==22 || subtype==19 || subtype==15)) || (int(type)==5 && (subtype==0 || subtype==1 || subtype==2 || subtype==3))))return std::nullopt;
+    if(!forge && !((int(type)==13 && (subtype==0 || subtype==1 || subtype==4 || subtype==8 || subtype==11 || subtype==12 || subtype==13 || subtype==22 || subtype==19 || subtype==15)) || (int(type)==5 && (subtype==0 || subtype==1 || subtype==2 || subtype==3))))return std::nullopt;
     auto rows=nativeWorkshopOrderCatalog(building);if(!rows)return std::nullopt;
+    // Native8c6cbb admits only generic rock mechanisms and traction benches.
+    // Classifier311580 also assigns explicit-metal mechanisms here; those
+    // belong to the forge task picker and must not leak into Mechanic Tasks.
+    if(int(type)==13 && subtype==8)rows->erase(std::remove_if(rows->begin(),rows->end(),[](const auto& row){
+        return row.job_type!=df::job_type::CustomReaction &&
+            !((int(row.job_type)==139 && row.mat_type==0 && row.mat_index==-1) || int(row.job_type)==205);
+    }),rows->end());
     // These descriptors qualify existing queued jobs, never populate the forge
     // picker. The native task branches supply its choices independently.
     if(forge)for(const auto* job:building->jobs) {

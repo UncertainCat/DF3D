@@ -17730,6 +17730,30 @@ saves were unchanged. The cause has not been isolated, so this is not a
 confirmed native bug and grants no behavior exception. Custom/Tool workshops,
 magma furnace variants and broader workshop acceptance remain in scope.
 
+Custom workshop23 dispatches through native8cb508 to the reactions-only
+branch8cb3ee. The adapter admits Custom into the existing owned native
+reaction/category providers and matches raw building restrictions; Tool24
+skips the native builder at8c5702 and supplies no choices. The viewer keeps
+Tasks visible when opening an empty root, without closing empty search results.
+
+Protected110005 on2026-11-13 compares Soap Maker's two reactions and Screw
+Press's four reactions, including native captions, order and refusal messages.
+Actual row clicks leave the queue unchanged and all six direct queue intents
+reject. Both picker crops432,106..888,676 match native pixels. The diagnostic
+Tool24 retype stays on Tasks after Add new task; its Tasks crop432,106..888,496
+also matches. The larger Tool crop still differs by578 pixels in the two
+construction-item icons. This is not a real placed-tool qualification.
+Successful custom reaction creation, worker execution/products and custom
+child categories remain unqualified. Whole workshop exposure remains gated.
+
+Fixture custom_workshop_reference retains bounded observations and hashes.
+Owned DF34972 exits unsaved with source saves/preferences restored. Both
+graphical clients use30FPS; GPU60C/10% is a sample, not a peak. The live lane
+passes with the three documented Godot startup/shutdown diagnostics and no
+unclassified errors. Core19 and engine state/composition/adapter checks pass
+(build/qa/custom-workshops). Earlier105454 had a blank Tool picker;110005
+verifies the corrected empty-root behavior.
+
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.
 Renderer18643e uses this predicate and installed BUILDING_JOBS_ACTIVE artwork.

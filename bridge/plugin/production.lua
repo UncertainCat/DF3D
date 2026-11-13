@@ -94,7 +94,7 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
   out.parent=''
  end
  local smelter=k=='Smelter'
- local supported=dyer or forge or ordinary or clothier or glass or craft or smelter or k=='Still'
+ local supported=dyer or forge or ordinary or clothier or glass or craft or smelter or k=='Still' or k=='Custom'
  if category~='' and not supported then return nil,'Unsupported workshop category' end
  if supported then
   out.category=category;out.categories={}

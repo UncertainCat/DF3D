@@ -54,6 +54,10 @@ func refresh() -> void:
 	queue_redraw()
 
 func choose_mode(value: bool) -> void:
+	# Native leaves Tasks visible when the root builder supplies no buttons
+	# (Tool24 reference). An empty search result must still keep its picker.
+	if value and state.phase==state.Phase.Ready and state.category.is_empty() and state.query.is_empty() and state.choices().is_empty():
+		return
 	picking=value;first=0;query_bytes.clear();search_focused=false
 	state.reset_picker();refresh();picker_changed.emit()
 

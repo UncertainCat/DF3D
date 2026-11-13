@@ -33365,5 +33365,126 @@
         "control_harness_attempt": "104403 created Mix and enabled Repeat; its second click arrived before related panel refreshes completed. Corrected harness waits for Tasks, header and contents before the next click. Source preserved."
       }
     }
+  },
+  "custom_workshop_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261113-110005",
+    "scope": "Paused owned clone with three retyped completed workshops. Custom raw IDs resolved from SOAP_MAKER and SCREW_PRESS. Tool24 is a diagnostic retype, not a real placed tool qualification.",
+    "dispatch_rva": "8c56f7..8c571c",
+    "custom_jump_rva": "8cb508 -> 8cb3ee",
+    "runtime": "Custom23 uses the existing owned native reaction/category providers and raw building restrictions. Tool24 supplies no choices; opening an empty root leaves Tasks visible. Empty search results retain the picker.",
+    "families": [
+      {
+        "kind": "13:23:0",
+        "name": "Soap Maker's Workshop",
+        "rows": [
+          {
+            "reaction": "MAKE_SOAP_FROM_OIL",
+            "caption": "Make soap from oil",
+            "available": false,
+            "objection": "[Requires Oil-containing item]"
+          },
+          {
+            "reaction": "MAKE_SOAP_FROM_TALLOW",
+            "caption": "Make soap from tallow",
+            "available": false,
+            "objection": "[Requires Unrotten tallow fatty glob]"
+          }
+        ],
+        "crop": [
+          432,
+          106,
+          888,
+          676
+        ],
+        "different_pixels": 0,
+        "native_sha256": "4eaf84b0a4ab0eb4c9d712a72f99e2385da47cfdec29df72972b9f041a6cce2a",
+        "viewer_sha256": "b3bfec555ed5e06d79f94352b2b20a4dafb95311c0b221f196dfe8b96bf72ef3"
+      },
+      {
+        "kind": "13:23:1",
+        "name": "Screw Press",
+        "rows": [
+          {
+            "reaction": "PRESS_HONEYCOMB",
+            "caption": "Press honey from honeycomb",
+            "available": false,
+            "objection": "[Requires Non-pressed honey-bearing honeycomb]"
+          },
+          {
+            "reaction": "PRESS_OIL_FRUIT",
+            "caption": "Press liquid from fruit",
+            "available": false,
+            "objection": "[Requires Unrotten non-pressed oil-bearing leaf or fruit]"
+          },
+          {
+            "reaction": "PRESS_OIL",
+            "caption": "Press liquid from paste",
+            "available": false,
+            "objection": "[Requires Non-pressed oil-bearing glob]"
+          },
+          {
+            "reaction": "PRESS_PLANT_PAPER",
+            "caption": "Press plant slurry into paper sheet",
+            "available": false,
+            "objection": "[Requires Non-pressed paper-slurry glob]"
+          }
+        ],
+        "crop": [
+          432,
+          106,
+          888,
+          676
+        ],
+        "different_pixels": 0,
+        "native_sha256": "5764c4950c565527c8f43f54c78131edc9822ed282a52cfa34d05ea2a255f6b6",
+        "viewer_sha256": "12e760e2084b11dc2c402e1142977d4b204bca337ee517a943ce363f8172546b"
+      },
+      {
+        "kind": "13:24:-1",
+        "name": "dolomite blocks",
+        "rows": [],
+        "crop": [
+          432,
+          106,
+          888,
+          496
+        ],
+        "different_pixels": 0,
+        "native_sha256": "f874f7db56885e54e789570a4a479183c55bb7fa79a1f69aac392a96e4b5c055",
+        "viewer_sha256": "000ae16571f60dc79b9d0b1ea22d70ce187cf6e04564d67055a178636a3ff59d"
+      }
+    ],
+    "receipt": {
+      "created": {},
+      "families": 3,
+      "refused": 6,
+      "success": true
+    },
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        },
+        {
+          "id": "godot-device-finalize",
+          "count": 1,
+          "reference": "https://github.com/godotengine/godot/issues/119000"
+        },
+        {
+          "id": "godot-shutdown-objects",
+          "count": 1,
+          "reference": "ENGINEERING.md#tests-and-known-problems"
+        }
+      ],
+      "unclassified": []
+    },
+    "limitations": [
+      "All six reactions unavailable; successful creation and worker execution/products remain unqualified.",
+      "No custom child categories in the installed vanilla definitions.",
+      "Tool contents crop differs by 578 pixels in two item icons; actual placed Tool remains unqualified.",
+      "Whole workshop feature remains gated; no release-completion claim."
+    ]
   }
 }

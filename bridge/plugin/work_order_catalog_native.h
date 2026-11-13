@@ -33,6 +33,8 @@ inline bool workOrderCatalogSupported() {
             {0x8c7d22,0x40b,UINT64_C(0xce7eea858978ebf4)}, // leather civ subtypes + LEATHER membership
             {0x8c6cf8,0x8f,UINT64_C(0xe02d6e399757e45f)}, // farmer task membership
             {0x8cb3ee,0xe,UINT64_C(0xcfbd210931f14f86)}, // tanner: reactions only
+            {0x8c56f7,0x25,UINT64_C(0x91b38af615989c75)}, // native workshop subtype dispatch
+            {0x8cb508,0x4,UINT64_C(0x1f9686e42b8c643a)}, // Custom uses the reactions-only branch
             {0x8cb44f,0x24,UINT64_C(0x8040656119a99b61)}, // millstone/quern builtin
             {0xa97150,0x5678,UINT64_C(0x87b9a46d78af72d7)},
             {0x3113b0,0x3a,UINT64_C(0x3a7d19574928cc99)},
@@ -159,7 +161,7 @@ inline std::optional<std::vector<df::manager_order_template>> workshopTaskTempla
     if(!building)return std::nullopt;
     const auto type=building->getType();const auto subtype=building->getSubtype();
     const bool forge=int(type)==13 && (subtype==5 || subtype==6);
-    if(!forge && !((int(type)==13 && (subtype==0 || subtype==1 || subtype==2 || subtype==3 || subtype==4 || subtype==7 || subtype==9 || subtype==14 || subtype==16 || subtype==17 || subtype==18 || subtype==20 || subtype==8 || subtype==10 || subtype==11 || subtype==12 || subtype==13 || subtype==22 || subtype==19 || subtype==15)) || (int(type)==5 && (subtype==0 || subtype==1 || subtype==2 || subtype==3))))return std::nullopt;
+    if(!forge && !((int(type)==13 && (subtype==0 || subtype==1 || subtype==2 || subtype==3 || subtype==4 || subtype==7 || subtype==9 || subtype==14 || subtype==16 || subtype==17 || subtype==18 || subtype==20 || subtype==8 || subtype==10 || subtype==11 || subtype==12 || subtype==13 || subtype==22 || subtype==19 || subtype==15 || subtype==23)) || (int(type)==5 && (subtype==0 || subtype==1 || subtype==2 || subtype==3))))return std::nullopt;
     auto rows=nativeWorkshopOrderCatalog(building);if(!rows)return std::nullopt;
     // Native8c6cbb admits only generic rock mechanisms and traction benches.
     // Classifier311580 also assigns explicit-metal mechanisms here; those

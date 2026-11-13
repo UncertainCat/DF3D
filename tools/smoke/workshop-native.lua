@@ -291,11 +291,21 @@ local ok,err=xpcall(function()
     result.dyer_long_names=true
    end
    local types=os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1' and {21} or (os.getenv('DF3D_WORKSHOP_EXTRA_RUNTIME')=='1' and {7,9,14,16,17,18,20} or {7,9,14,16,17,18,20,21})
+   local custom_ids={}
+   if os.getenv('DF3D_WORKSHOP_CUSTOM_DISCOVERY')=='1'then
+    types={23,23,24}
+    for _,code in ipairs({'SOAP_MAKER','SCREW_PRESS'})do
+     local found
+     for _,raw in ipairs(df.global.world.raws.buildings.all)do if raw.code==code then found=raw.id;break end end
+     assert(found,'Missing installed custom workshop '..code);custom_ids[#custom_ids+1]=found
+    end
+   end
    for _,target in ipairs(df.global.world.buildings.all)do
     if df.building_workshopst:is_instance(target) and target:getBuildStage()==target:getMaxBuildStage() and #target.jobs==0 and target.custom_type==-1 then
      local subtype=types[#workshop_fixtures+1]
-     workshop_fixtures[#workshop_fixtures+1]={building=target,prior_type=target.type,prior_stage=target.construction_stage,id=target.id,fixture_type=subtype}
+     workshop_fixtures[#workshop_fixtures+1]={building=target,prior_type=target.type,prior_custom=target.custom_type,prior_stage=target.construction_stage,id=target.id,fixture_type=subtype}
      workshop_fixture_ids[target.id]=true;target.type=subtype
+     if subtype==23 then target.custom_type=custom_ids[#workshop_fixtures]end
      target.construction_stage=target:getMaxBuildStage()
      if #workshop_fixtures==#types then break end
     end
@@ -307,7 +317,7 @@ local ok,err=xpcall(function()
   result.task_catalogs={};local seen={}
   for _,target in ipairs(df.global.world.buildings.all)do
    local type=target:getType();local key=type..':'..target:getSubtype()..':'..target:getCustomType()
-   if (os.getenv('DF3D_WORKSHOP_EXTRA_DISCOVERY')~='1' or workshop_fixture_ids[target.id]) and (type==df.building_type.Workshop or type==df.building_type.Furnace)and (os.getenv('DF3D_WORKSHOP_STONE_NAV')~='1' or key=='13:2:-1') and not seen[key]and target:getBuildStage()==target:getMaxBuildStage() and (os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')~='1' or key=='5:2:-1' or key=='5:3:-1') and (os.getenv('DF3D_WORKSHOP_CRAFT_NAV')~='1' or key=='13:3:-1') and (os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')~='1' or key=='5:2:-1') and (os.getenv('DF3D_WORKSHOP_CLOTHIER_NAV')~='1' or key=='13:13:-1') and (os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')~='1' or os.getenv('DF3D_WORKSHOP_EXTRA_RUNTIME')=='1' or (os.getenv('DF3D_WORKSHOP_BUTCHER_RUNTIME')=='1' and key=='13:10:-1') or (os.getenv('DF3D_WORKSHOP_MECHANIC_RUNTIME')=='1' and key=='13:8:-1') or (os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')=='1' and key=='5:3:-1') or (os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')=='1' and key=='5:1:-1') or (os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')=='1' and key=='13:4:-1') or (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')=='1' and key=='13:11:-1') or (os.getenv('DF3D_WORKSHOP_BUTCHER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_MECHANIC_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')~='1' and (key=='13:1:-1' or key=='13:12:-1' or key=='13:22:-1')))then
+   if (os.getenv('DF3D_WORKSHOP_EXTRA_DISCOVERY')~='1' or workshop_fixture_ids[target.id]) and (type==df.building_type.Workshop or type==df.building_type.Furnace)and (os.getenv('DF3D_WORKSHOP_STONE_NAV')~='1' or key=='13:2:-1') and not seen[key]and target:getBuildStage()==target:getMaxBuildStage() and (os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')~='1' or key=='5:2:-1' or key=='5:3:-1') and (os.getenv('DF3D_WORKSHOP_CRAFT_NAV')~='1' or key=='13:3:-1') and (os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')~='1' or key=='5:2:-1') and (os.getenv('DF3D_WORKSHOP_CLOTHIER_NAV')~='1' or key=='13:13:-1') and (os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')~='1' or os.getenv('DF3D_WORKSHOP_EXTRA_RUNTIME')=='1' or os.getenv('DF3D_WORKSHOP_CUSTOM_DISCOVERY')=='1' or (os.getenv('DF3D_WORKSHOP_BUTCHER_RUNTIME')=='1' and key=='13:10:-1') or (os.getenv('DF3D_WORKSHOP_MECHANIC_RUNTIME')=='1' and key=='13:8:-1') or (os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')=='1' and key=='5:3:-1') or (os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')=='1' and key=='5:1:-1') or (os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')=='1' and key=='13:4:-1') or (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')=='1' and key=='13:11:-1') or (os.getenv('DF3D_WORKSHOP_BUTCHER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_MECHANIC_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')~='1' and (key=='13:1:-1' or key=='13:12:-1' or key=='13:22:-1')))then
     seen[key]=true;select_map(target)
     assert(click_label('Add new task'),'Native task catalog did not open: '..key)
     local function read_rows()
@@ -350,7 +360,7 @@ local ok,err=xpcall(function()
     local catalog={building_id=target.id,kind=key,name=dfhack.df2utf(dfhack.buildings.getName(target)),native=rows,templates=json.decode(text).rows,pages={}}
     result.task_catalogs[#result.task_catalogs+1]=catalog
     if target.id==building.id then shot('task-catalog-carpenter')end
-    if os.getenv('DF3D_WORKSHOP_EXTRA_DISCOVERY')=='1'then shot('extra-root-'..target:getSubtype())end
+    if os.getenv('DF3D_WORKSHOP_EXTRA_DISCOVERY')=='1'then shot('extra-root-'..target:getSubtype()..(os.getenv('DF3D_WORKSHOP_CUSTOM_DISCOVERY')=='1' and ('-'..target:getCustomType())or ''))end
     if os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')=='1'then shot('family-'..target:getSubtype())end
     if os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')=='1'then shot('furnace-root-'..target:getSubtype())end
     -- Discovery only: invoke category buttons, never job/action buttons. Runtime
@@ -449,7 +459,7 @@ local ok,err=xpcall(function()
       local requested_color=tonumber(os.getenv('DF3D_WORKSHOP_DYER_TARGET')or '')
       local dyer_child=os.getenv('DF3D_WORKSHOP_DYER_INGREDIENT_NAV')=='1' and #page.path==1 and page.path[1].index==tonumber(os.getenv('DF3D_WORKSHOP_DYER_ROOT')or '1') and
        (requested_color and row.color==requested_color or not requested_color and index==1)
-      if (os.getenv('DF3D_WORKSHOP_EXTRA_DISCOVERY')~='1' or (os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1' and #page.path==0) or dyer_child) and not row.leave and (row.category~=nil or row.custom_category~=nil or row.material~=nil or row.color~=nil)then
+      if (os.getenv('DF3D_WORKSHOP_EXTRA_DISCOVERY')~='1' or os.getenv('DF3D_WORKSHOP_CUSTOM_DISCOVERY')=='1' or (os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1' and #page.path==0) or dyer_child) and not row.leave and (row.category~=nil or row.custom_category~=nil or row.material~=nil or row.color~=nil)then
        assert(#page.path<8,'Native task category discovery exceeded depth bound')
        gui.simulateInput(view,'LEAVESCREEN');select_map(target)
        assert(click_label('Add new task'),'Native task catalog did not reopen')
@@ -615,7 +625,7 @@ local ok,err=xpcall(function()
     gui.simulateInput(view,'LEAVESCREEN')
    end
   end
-  if os.getenv('DF3D_WORKSHOP_EXTRA_DISCOVERY')=='1'then assert(#result.task_catalogs==(os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1' and 1 or (os.getenv('DF3D_WORKSHOP_EXTRA_RUNTIME')=='1' and 7 or 8)),'Missing extra-family root catalog')end
+  if os.getenv('DF3D_WORKSHOP_EXTRA_DISCOVERY')=='1'then assert(#result.task_catalogs==(os.getenv('DF3D_WORKSHOP_CUSTOM_DISCOVERY')=='1' and 3 or os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1' and 1 or (os.getenv('DF3D_WORKSHOP_EXTRA_RUNTIME')=='1' and 7 or 8)),'Missing extra-family root catalog')end
   shot('task-catalog-return')
   if os.getenv('DF3D_WORKSHOP_DYER_RUNTIME')=='1'then
    capture('workshop-wire')
@@ -1603,7 +1613,7 @@ end,debug.traceback)
 for _,prior in ipairs(fuel_flags)do prior.item.flags.forbid=prior.forbid end
 for _,prior in ipairs(dye_names)do prior.color.name=prior.name;assert(prior.color.name==prior.name)end
 for _,entry in ipairs(furnace_fixtures)do entry.building.type=entry.prior_type end
-for _,entry in ipairs(workshop_fixtures)do entry.building.type=entry.prior_type;entry.building.construction_stage=entry.prior_stage end
+for _,entry in ipairs(workshop_fixtures)do entry.building.type=entry.prior_type;entry.building.custom_type=entry.prior_custom;entry.building.construction_stage=entry.prior_stage end
 if craft_tool_fixture then craft_tool_fixture.raw.flags.BONE_MAT=craft_tool_fixture.bone end
 assert(#building.jobs==#jobs,'Workshop capture changed job count'..(ok and '' or '\n'..tostring(err)))
 for i,id in ipairs(jobs)do assert(building.jobs[i-1].id==id,'Workshop capture changed job order')end

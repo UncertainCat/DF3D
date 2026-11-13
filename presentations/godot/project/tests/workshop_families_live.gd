@@ -22,15 +22,17 @@ func run() -> void:
 		var icons=preload("res://scripts/location_staff_indicators.gd")
 		owner.open_workshop(int(family.building_id),(icons.FURNACES if family.kind.begins_with("5:") else icons.WORKSHOPS)[family.kind.split(":")[1]])
 		await settle(service,func():return owner.state.phase==owner.state.Phase.Ready and owner.tasks.phase==owner.tasks.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
-		owner.panel.tasks.choose_mode(true)
+		click(owner.panel.tasks.global_position+owner.panel.tasks.add_rect().get_center())
 		var choices: Array=owner.tasks.choices()
+		check(owner.panel.tasks.picking==not choices.is_empty(),"Family picker visibility differs: "+family.kind)
 		check(choices.size()==family.native.size(),"Family choice count differs: "+family.kind)
 		for i in mini(choices.size(),family.native.size()):
 			check(choices[i].name==family.native[i].caption,"Family caption/order differs: "+family.kind)
 			if family.native[i].has("available"):
 				check(choices[i].availability.available==family.native[i].available and choices[i].availability.objection==family.native[i].objection,"Family availability differs: "+family.kind)
 		await process_frame;await RenderingServer.frame_post_draw
-		root.get_texture().get_image().save_png(directory+"/family-"+family.kind.split(":")[1]+"-live.png")
+		var suffix: String="-"+family.kind.split(":")[2] if OS.get_environment("DF3D_WORKSHOP_CUSTOM_DISCOVERY")=="1" else ""
+		root.get_texture().get_image().save_png(directory+"/family-"+family.kind.split(":")[1]+suffix+"-live.png")
 		click(owner.panel.tasks.global_position+Vector2(owner.panel.tasks.size.x-48,12))
 		check(not owner.panel.tasks.picking,"Family Cancel did not return to Tasks")
 		for entry in family.effects:

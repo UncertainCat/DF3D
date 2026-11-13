@@ -7343,5 +7343,162 @@
       "job.item_type equivalence",
       "worker execution and completed products"
     ]
+  },
+  "move_up_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-205843",
+    "source_sha256": "0aed8ca9aebd29dd8823ee6d3ebd124f93c169ffaa464da6243c6334960ccb7c",
+    "scope": "Native pointer clicks: middle/last/first-row Move up, preserving flags and the assigned worker. Existing composed Priority/Details regression passes; Move up runtime remains pending.",
+    "inline_rva": "1ad17c",
+    "inline_length": "68",
+    "inline_fnv1a": "8bb0f2a462f8e04b",
+    "art_token": "BUILDING_JOBS_PRIORITY_UP",
+    "observations": [
+      {
+        "name": "before",
+        "rows": [
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382798,
+            "worker_id": 1017
+          },
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382799,
+            "worker_id": -1
+          },
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382800,
+            "worker_id": -1
+          }
+        ]
+      },
+      {
+        "name": "middle-up",
+        "rows": [
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382799,
+            "worker_id": -1
+          },
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382798,
+            "worker_id": 1017
+          },
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382800,
+            "worker_id": -1
+          }
+        ],
+        "target": 382799
+      },
+      {
+        "name": "first-no-op",
+        "rows": [
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382799,
+            "worker_id": -1
+          },
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382798,
+            "worker_id": 1017
+          },
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382800,
+            "worker_id": -1
+          }
+        ],
+        "target": 382799
+      },
+      {
+        "name": "last-up",
+        "rows": [
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382799,
+            "worker_id": -1
+          },
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382800,
+            "worker_id": -1
+          },
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382798,
+            "worker_id": 1017
+          }
+        ],
+        "target": 382800
+      },
+      {
+        "name": "original-up",
+        "rows": [
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382799,
+            "worker_id": -1
+          },
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382798,
+            "worker_id": 1017
+          },
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382800,
+            "worker_id": -1
+          }
+        ],
+        "target": 382798
+      },
+      {
+        "name": "original-first",
+        "rows": [
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382798,
+            "worker_id": 1017
+          },
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382799,
+            "worker_id": -1
+          },
+          {
+            "do_now": false,
+            "flags": 0,
+            "id": 382800,
+            "worker_id": -1
+          }
+        ],
+        "target": 382798
+      }
+    ],
+    "source_preserved": true,
+    "closed_unsaved": true,
+    "diagnostics": "passed_with_known_issues: three documented Godot diagnostics, no unclassified errors"
   }
 }

@@ -447,6 +447,20 @@ local ok,err=xpcall(function()
      for _,job in ipairs(building.jobs)do local worker=dfhack.job.getWorker(job);rows[#rows+1]={id=job.id,flags=job.flags.whole,do_now=job.flags.do_now,worker_id=worker and worker.id or -1}end
      return rows
     end
+    local moves={{name='before',rows=queue_snapshot()}}
+    for _,step in ipairs{{'middle-up',extra[1].id},{'first-no-op',extra[1].id},{'last-up',extra[2].id},{'original-up',created.id},{'original-first',created.id}}do
+     local index
+     for i,job in ipairs(building.jobs)do if job.id==step[2]then index=i;break end end
+     assert(index,'Move-up target left queue')
+     click(796,154+index*36);moves[#moves+1]={name=step[1],target=step[2],rows=queue_snapshot()}
+     if step[1]=='middle-up'then shot('job-move-up-middle')end
+    end
+    assert(json.encode(moves[1].rows)==json.encode(moves[#moves].rows),'Move-up did not restore queue, flags and workers')
+    assert(json.encode(moves[2].rows)==json.encode(moves[3].rows),'Move-up changed the first row')
+    assert(moves[2].rows[1].id==extra[1].id and moves[2].rows[2].id==created.id,'Move-up did not swap adjacent jobs')
+    assert(priority_worker.job.current_job==created and dfhack.job.getWorker(created)==priority_worker,'Move-up released the displaced worker')
+    result.job_controls.move_up=moves
+    shot('job-move-up-restored')
     local samples={{name='before',rows=queue_snapshot()}}
     for _,step in ipairs{{'middle-on',extra[1].id},{'original-on',created.id},{'last-on',extra[2].id},{'middle-off',extra[1].id},{'original-off',created.id},{'last-off',extra[2].id}}do
      local index

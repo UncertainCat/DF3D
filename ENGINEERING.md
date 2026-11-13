@@ -17218,6 +17218,20 @@ restored; only known Godot diagnostics occur. Both clients are capped30FPS;
 GPU sample51C. The installed205 bridge SHA256 is
 `DD80E1424044C8A602C6FE6AF80436E2CD7EAEC7E57ADDC1D77F9470B372B3E7`.
 
+Native workshop Move up is an independent adjacent swap, not Priority.
+Input1ad17c..1ad1e4 checks at least two jobs and a nonzero row index, then
+exchanges building.jobs[index] with building.jobs[index-1]. It does not alter
+job flags or release a worker. There is no standalone semantic leaf in this
+branch; runtime must compose the audited swap over simulation records, with
+stable job IDs and an expected preceding-job check, without invoking feed or
+borrowing its iterator. Installed artwork is BUILDING_JOBS_PRIORITY_UP; native
+omits the first row's arrow. Protected205843 on2026-11-12 confirms middle/last
+swaps, a first-row no-op, unchanged flags and a worker retained on the displaced
+job, then restores the original queue. Existing composed Priority/Details and
+task creation checks pass. Owned DF36692 closes unsaved with source preservation;
+only the three known Godot diagnostics occur. See native_workshop.json.move_up_reference.
+The Move up command contract, runtime dispatch and viewer control remain pending.
+
 Workshop Priority dispatch uses `workshop_priority_native.h`: validate the
 building/job and displayed flag at a safe point, reproduce the pinned inline
 queue swaps over simulation records, and call native1325080 for displaced

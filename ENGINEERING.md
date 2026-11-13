@@ -17423,8 +17423,20 @@ known Godot diagnostics occur. See native_workshop.json.forge_runtime_reference.
 This accepts the captured workflow, not all task executions, magma-forge effects,
 responsive rendering, full hover/hotkeys or public workshop completion.
 
+Farmer, Millstone and Tanner root dispatch also uses the owned native catalog.
+Audited and pinned branches8c6cf8..8c6d87,8cb44f..8cb473 and8cb3ee..8cb3fc
+establish seven farmer builtins, Mill plants, and reaction-only tanning. Shared
+native reaction filtering supplies their remaining choices and current refusals.
+Protected205045 on2026-11-12 compares all9/3/2 root choices through the actual
+viewer and exercises Cancel. Each picker crop432,130..888,676 at1200x800 matches
+native with zero differing pixels. Owned DF3164 closes unsaved with source saves
+and queues unchanged; only the three documented Godot diagnostics occur.
+`native_workshop.json.ordinary_family_runtime_reference` retains descriptors,
+provenance and bounded coverage. Successful job effects, other sizes, full
+hover/hotkeys and public workshop acceptance remain unverified for these families.
+
 `workshopTaskTemplates` reuses the owned native template builder for
-Carpenter/Kitchen/WoodFurnace/Still descriptors. All categories remain available
+Carpenter/Kitchen/WoodFurnace/Still/Farmer/Millstone/Tanner descriptors. All categories remain available
 for queued-job eligibility; only builtin templates become root builtin choices. `production.lua` receives the full subtype/material/spec/art fields;
 subtyped recipes have distinct opaque keys. Root reactions are appended through
 the existing native reader. Native builtin availability is explicit, enabling

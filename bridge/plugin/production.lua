@@ -58,7 +58,8 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
  local out,keys={},{}
  local k=kind(b)
  local forge=k=='MetalsmithsForge' or k=='MagmaForge'
- local supported=forge or k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' or k=='Still'
+ local ordinary=k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' or k=='Farmers' or k=='Millstone' or k=='Tanners'
+ local supported=forge or ordinary or k=='Still'
  if category~='' and not supported then return nil,'Unsupported workshop category' end
  if supported then
   out.category=category;out.categories={}
@@ -92,7 +93,7 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
  end
  -- Native owned templates supply the audited builtin branches. The order
  -- classifier alone is not sufficient evidence for additional families.
- if category=='' and (k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace') then
+ if category=='' and ordinary then
   for _,fields in ipairs(out.editable_templates) do
    if fields.job_type~=df.job_type.CustomReaction then
    local key='builtin:'..fields.job_type..':'..(fields.mat_type or -1)

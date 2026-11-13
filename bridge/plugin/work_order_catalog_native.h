@@ -15,6 +15,9 @@ inline bool workOrderCatalogSupported() {
         const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
         struct Pin {size_t rva,length;uint64_t hash;};
         constexpr Pin pins[]={
+            {0x8c6cf8,0x8f,UINT64_C(0xe02d6e399757e45f)}, // farmer task membership
+            {0x8cb3ee,0xe,UINT64_C(0xcfbd210931f14f86)}, // tanner: reactions only
+            {0x8cb44f,0x24,UINT64_C(0x8040656119a99b61)}, // millstone/quern builtin
             {0xa97150,0x5678,UINT64_C(0x87b9a46d78af72d7)},
             {0x3113b0,0x3a,UINT64_C(0x3a7d19574928cc99)},
             {0x8c03a0,0x17ad,UINT64_C(0xedd2766250590831)},
@@ -130,7 +133,8 @@ inline std::optional<std::vector<df::manager_order_template>> nativeWorkshopOrde
 }
 
 // These native task branches have the same builtin descriptor membership as
-// the owned order catalog (Carpenter8c762d, Kitchen8cb3fc, WoodFurnace root).
+// the owned order catalog (Carpenter8c762d, Kitchen8cb3fc, WoodFurnace root,
+// Farmer8c6cf8, Tanner8cb3ee and Millstone8cb44f).
 // Reaction templates identify queued jobs across categories; visible reaction
 // choices still use the separate native category/availability reader.
 // Do not extend this to other families merely because classifier311580 matches:
@@ -139,7 +143,7 @@ inline std::optional<std::vector<df::manager_order_template>> workshopTaskTempla
     if(!building)return std::nullopt;
     const auto type=building->getType();const auto subtype=building->getSubtype();
     const bool forge=int(type)==13 && (subtype==5 || subtype==6);
-    if(!forge && !((int(type)==13 && (subtype==0 || subtype==19 || subtype==15)) || (int(type)==5 && subtype==0)))return std::nullopt;
+    if(!forge && !((int(type)==13 && (subtype==0 || subtype==1 || subtype==12 || subtype==22 || subtype==19 || subtype==15)) || (int(type)==5 && subtype==0)))return std::nullopt;
     auto rows=nativeWorkshopOrderCatalog(building);if(!rows)return std::nullopt;
     // These descriptors qualify existing queued jobs, never populate the forge
     // picker. The native task branches supply its choices independently.

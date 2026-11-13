@@ -230,7 +230,7 @@ local ok,err=xpcall(function()
   result.task_catalogs={};local seen={}
   for _,target in ipairs(df.global.world.buildings.all)do
    local type=target:getType();local key=type..':'..target:getSubtype()..':'..target:getCustomType()
-   if (type==df.building_type.Workshop or type==df.building_type.Furnace)and not seen[key]and target:getBuildStage()==target:getMaxBuildStage()then
+   if (type==df.building_type.Workshop or type==df.building_type.Furnace)and not seen[key]and target:getBuildStage()==target:getMaxBuildStage() and (os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')~='1' or key=='13:1:-1' or key=='13:12:-1' or key=='13:22:-1')then
     seen[key]=true;select_map(target)
     assert(click_label('Add new task'),'Native task catalog did not open: '..key)
     local function read_rows()
@@ -266,6 +266,7 @@ local ok,err=xpcall(function()
     local catalog={building_id=target.id,kind=key,name=dfhack.df2utf(dfhack.buildings.getName(target)),native=rows,templates=json.decode(text).rows,pages={}}
     result.task_catalogs[#result.task_catalogs+1]=catalog
     if target.id==building.id then shot('task-catalog-carpenter')end
+    if os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')=='1'then shot('family-'..target:getSubtype())end
     -- Discovery only: invoke category buttons, never job/action buttons. Runtime
     -- catalogs must not read these widgets or use their mutable menu storage.
     local pending={{path={},rows=rows,reaction_parent=''}};local next_page=1
@@ -339,7 +340,9 @@ local ok,err=xpcall(function()
     gui.simulateInput(view,'LEAVESCREEN')
    end
   end
-  shot('task-catalog-return');return
+  shot('task-catalog-return')
+  if os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')=='1'then capture('workshop-wire')end
+  return
  end
  if os.getenv('DF3D_WORKSHOP_JOB_CONTROLS')=='1'then
   assert(click_label('Add new task'))

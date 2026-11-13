@@ -4040,6 +4040,11 @@
   ],
   "exclusions": [
     {
+      "path": "presentations/godot/project/tests/workshop_families_live.gd",
+      "status": "manual",
+      "reason": "Protected stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader -FarmItemCarriers with DF3D_WORKSHOP_NATIVE=1, DF3D_WORKSHOP_TASK_CATALOG=1 and DF3D_WORKSHOP_FAMILY_RUNTIME=1. Native family choices and composed picker in an owned paused clone; never standalone."
+    },
+    {
       "path": "presentations/godot/project/tests/workshop_forge_live.gd",
       "status": "manual",
       "reason": "Protected stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader -FarmItemCarriers with DF3D_WORKSHOP_NATIVE=1, DF3D_WORKSHOP_FORGE_CHOICES=1 and DF3D_WORKSHOP_FORGE_RUNTIME=1. Native forge navigation and job effects in an owned paused clone; never run standalone."

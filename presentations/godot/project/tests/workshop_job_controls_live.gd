@@ -12,6 +12,9 @@ func run() -> void:
 		await create_timer(0.01).timeout
 	var catalog:=await request("construction",{"action":C.ManagementAction.Catalog})
 	if not check(catalog.get("status")==C.ManagementStatus.Ok,"Workshop bootstrap failed"):quit(1);return
+	if OS.get_environment("DF3D_WORKSHOP_PRIORITY_CONTRACT")=="1":
+		var staged:=await request("production",{"action":C.ManagementAction.ProductionJobEdit,"building_id":int(reference.building_id),"job_id":int(reference.viewer_job_id),"priority":1,"expected_priority":0})
+		check(staged.get("status")==C.ManagementStatus.Rejected,"Staged Priority must reject before mutation")
 	var preferences=preload("res://scripts/presentation_settings.gd");preferences.loaded=true;preferences.ui_scale=1.0
 	root.size=Vector2i(1200,800)
 	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true);service.set_process(false)

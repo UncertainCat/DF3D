@@ -183,8 +183,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 204;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v204";
+inline constexpr uint32_t kManagementVersion = 205;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v205";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -955,6 +955,10 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
         p->repeat() < -1 || p->repeat()>1 || p->suspend() < -1 || p->suspend()>1 ||
         p->season() < -1 || p->season()>3 || (p->query() && p->query()->size()>(r.action()==ManagementAction::ProductionInspect?138:128)) ||
         (p->recipe() && p->recipe()->size()>128)) return "invalid production request";
+    if(p->priority() < -1 || p->priority()>1 || p->expected_priority() < -1 || p->expected_priority()>1)return "invalid production priority";
+    if(p->priority()==-1 ? p->expected_priority()!=-1 :
+       (r.action()!=ManagementAction::ProductionJobEdit || p->expected_priority()<0 || p->priority()==p->expected_priority() ||
+        p->repeat()!=-1 || p->suspend()!=-1 || p->cancel()))return "invalid priority edit";
     if(!p->workshop_orders() && (p->general_order_delta() || p->general_order_value()!=-1))return "unexpected workshop order step";
     if(p->workshop_orders()) {
       const bool edit=r.action()==ManagementAction::FarmEdit;
@@ -994,7 +998,7 @@ inline std::optional<std::string> validateConstructionRequest(const Construction
     if (r.action()==ManagementAction::ProductionQueue && (!p->recipe() || !p->recipe()->size())) return "recipe required";
     if (r.action()==ManagementAction::ProductionJobEdit && (p->job_id()<0 ||
         (p->cancel() && (p->repeat()!=-1 || p->suspend()!=-1)) ||
-        (!p->cancel() && p->repeat()==-1 && p->suspend()==-1))) return "invalid job edit";
+        (!p->cancel() && p->repeat()==-1 && p->suspend()==-1 && p->priority()==-1))) return "invalid job edit";
     if(static_cast<uint8_t>(p->farm_operation())>9 || p->seasonal_fertilization() < -1 || p->seasonal_fertilization()>1)return "invalid farm operation";
     if(p->farm_operation()==FarmOperation::Rename) {
       if(!p->farm_name() || p->farm_name()->size()>90 || p->farm_name()->str().find('\0')!=std::string::npos)return "invalid farm name";
@@ -2896,7 +2900,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     std::set<std::string> keys;
     if(p->recipes()) for(const auto* v:*p->recipes()) if(!v || !textOk(v->key(),128) || !v->key()->size() || !keys.insert(v->key()->str()).second || !textOk(v->name(),512) || !requirementsOk(v->requirements()) || (v->availability() && (!textOk(v->availability()->objection(),4096) || (v->availability()->available() && v->availability()->objection()->size())))) return "invalid production recipe";
     ids.clear();
-    if(p->jobs()) for(const auto* v:*p->jobs()) if(!v || v->id()<0 || !ids.insert(v->id()).second || v->worker_id() < -1 || v->job_type()<0 || v->completion_timer() < -1 || !textOk(v->name(),512) || !textOk(v->worker_name(),512) || !textOk(v->status(),512) || !requirementsOk(v->requirements())) return "invalid production job";
+    if(p->jobs()) for(const auto* v:*p->jobs()) if(!v || v->id()<0 || !ids.insert(v->id()).second || v->worker_id() < -1 || v->job_type()<0 || v->completion_timer() < -1 || !textOk(v->name(),512) || !textOk(v->worker_name(),512) || !textOk(v->status(),512) || !requirementsOk(v->requirements()) || v->priority() < -1 || v->priority()>1) return "invalid production job";
     ids.clear();
     if(p->crops()) for(const auto* v:*p->crops()) if(!v || v->id()<0 || v->id()>32767 || !ids.insert(v->id()).second || !textOk(v->name(),512) || !v->seasons() || v->seasons()>15) return "invalid farm crop";
     if(p->seasonal_crops()) for(auto id:*p->seasonal_crops()) if(id < -1 || id>32767) return "invalid seasonal crop";

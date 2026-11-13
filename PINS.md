@@ -22,6 +22,15 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management205 adds workshop job Priority intent and observation fields.
+Rebuild both peers: `Local\df3d_management_v205` isolates Management204.
+ProductionJobEdit carries desired `priority` and displayed `expected_priority`
+as0/1; the two must differ, and Priority cannot be mixed with another edit.
+Job observations use-1 for unknown/legacy, so old recordings do not invent an
+inactive value. The Godot dictionary omits unknown observations. Native effect
+dispatch and UI wiring are staged separately; the migration bridge explicitly
+rejects Priority edits before mutation. Existing production actions are unchanged.
+
 Management151 adds owned KitchenRead98/KitchenApply99 in `kitchen_menu`.
 Rebuild both peers: `Local\df3d_management_v151` isolates Management150.
 Queries carry filters and ordered sort priorities; reads return native rows and

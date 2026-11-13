@@ -153,6 +153,7 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
     row["job_type"] = v.jobType;
     row["repeat"] = v.repeat;
     row["suspended"] = v.suspended;
+    if(v.priority>=0)row["priority"] = bool(v.priority);
     row["worker_id"] = v.workerId;
     row["worker_name"] = String::utf8(v.workerName.c_str());
     row["completion_timer"] = v.completionTimer;
@@ -619,7 +620,7 @@ bool validateProductionShape(const Dictionary& data, String& error) {
   if(data.has("building_header") && data["building_header"].get_type()!=Variant::BOOL){error="Wrong management field type: building_header";return false;}
   if(data.has("independent_item") && data["independent_item"].get_type()!=Variant::BOOL){error="Wrong management field type: independent_item";return false;}
   if(data.has("locate_item") && data["locate_item"].get_type()!=Variant::BOOL){error="Wrong management field type: locate_item";return false;}
-  if(!managementDictionaryTypes(data, {"building_id", "job_id", "crop_id", "cursor", "repeat", "suspend", "season", "expected_revision", "farm_operation", "seasonal_fertilization", "item_id", "item_value", "worker_id", "worker_list_revision", "worker_value"}, error))return false;
+  if(!managementDictionaryTypes(data, {"building_id", "job_id", "crop_id", "cursor", "repeat", "suspend", "priority", "expected_priority", "season", "expected_revision", "farm_operation", "seasonal_fertilization", "item_id", "item_value", "worker_id", "worker_list_revision", "worker_value"}, error))return false;
   if(data.has("farm_name") && data["farm_name"].get_type()!=Variant::STRING) {error="Wrong management field type: farm_name";return false;}
   if(int64_t(data.get("farm_operation",0))==3 && !data.has("farm_name")) {error="Missing management field: farm_name";return false;}
   return managementRequiredFields(data, error);
@@ -677,6 +678,8 @@ bool readProduction(const Dictionary& data, wm::ManagementRequest& r, String& er
   value.cursor = uint32_t(n("cursor", 0, 0, UINT32_MAX));
   value.repeat = int8_t(n("repeat", -1, -1, 1));
   value.suspend = int8_t(n("suspend", -1, -1, 1));
+  value.priority = int8_t(n("priority", -1, -1, 1));
+  value.expectedPriority = int8_t(n("expected_priority", -1, -1, 1));
   value.season = int8_t(n("season", -1, -1, 3));
   String recipe = data.get("recipe", String());
   value.recipe = recipe.utf8().get_data();

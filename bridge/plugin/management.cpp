@@ -967,7 +967,7 @@ void publish() {
     pr.push_back(m::CreateProductionRecipe(b,b.CreateString(v.key),b.CreateString(v.name),reqs(v.requirements),availability));
   }
   std::vector<flatbuffers::Offset<m::ProductionJob>> pj;
-  for(const auto& v:production.jobs) pj.push_back(m::CreateProductionJob(b,v.id,b.CreateString(v.name),v.jobType,v.repeat,v.suspended,v.workerId,b.CreateString(v.workerName),v.completionTimer,v.attachedItems,v.editable,b.CreateString(v.status),reqs(v.requirements)));
+  for(const auto& v:production.jobs) pj.push_back(m::CreateProductionJob(b,v.id,b.CreateString(v.name),v.jobType,v.repeat,v.suspended,v.workerId,b.CreateString(v.workerName),v.completionTimer,v.attachedItems,v.editable,b.CreateString(v.status),reqs(v.requirements),v.priority));
   std::vector<flatbuffers::Offset<m::FarmCrop>> pc;
   for(const auto& v:production.crops) pc.push_back(m::CreateFarmCrop(b,v.id,b.CreateString(v.name),v.seasons,v.seeds));
   flatbuffers::Offset<m::FarmSnapshot> farmSnapshot;
@@ -4752,6 +4752,9 @@ void run(color_ostream& out) {
       }
     }catch(...){places.emplace();places->tab=q.tab();}
     publish();return;
+  }
+  if(r->action()==m::ManagementAction::ProductionJobEdit && r->production()->priority()!=-1){
+    status=m::ManagementStatus::Rejected;message.clear();publish();return;
   }
   if(r->action()==m::ManagementAction::TasksRead || r->action()==m::ManagementAction::TasksApply){
     namespace h=df3d_tasks;

@@ -17163,6 +17163,23 @@ extension and this full effect, rather than a flag-only toggle. The source
 save is unchanged and owned DF6532 exits unsaved; live diagnostics are limited
 to the documented Godot signatures.
 
+Management205 adds desired/displayed Priority values to ProductionRequest and
+an optional observation to ProductionJob (-1 means unknown). The wire rejects
+missing/same-state expectations, out-of-range values and mixed edits. Legacy
+observations remain unknown through the model and are omitted from the Godot
+dictionary. Both peers require205 and mailbox `Local\df3d_management_v205`;
+no simulation or dependency version changes. The migration bridge deliberately
+rejects the staged Priority request before reaching the legacy Lua adapter,
+which otherwise could report a no-op as successful. Native mutation and button
+wiring remain pending. Headless `workshop-priority-contract` passes root/extension
+builds and management contracts; core19 passes, including opposite-state and
+legacy-unknown codec cases. Protected181745 on2026-11-12 verifies explicit
+pre-write rejection followed by the existing native/composed Details material
+workflow. Owned DF39344 exits unsaved with source unchanged and preferences
+restored; only known Godot diagnostics occur. Both clients are capped30FPS;
+GPU sample51C. The installed205 bridge SHA256 is
+`DD80E1424044C8A602C6FE6AF80436E2CD7EAEC7E57ADDC1D77F9470B372B3E7`.
+
 Still root choices now include Extract from plants from native inline branch
 `8cb3c9..8cb3e9` (job149). The native constructor leaves its objection flag clear;
 DF's requirement builder supplies its inputs. Flat task choices retain native

@@ -64,6 +64,7 @@ struct ProductionJob {
   int16_t jobType=-1;
   std::string name,workerName,status;
   bool repeat=false,suspended=false,editable=false;
+  int8_t priority=-1;
   uint16_t attachedItems=0;
   std::vector<ProductionRequirement> requirements;
 };

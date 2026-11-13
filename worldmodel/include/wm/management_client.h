@@ -293,7 +293,7 @@ struct ProductionRequest {
   int32_t buildingId=-1,jobId=-1,cropId=-1;
   std::string recipe,query;
   uint32_t cursor=0;
-  int8_t repeat=-1,suspend=-1,season=-1;
+  int8_t repeat=-1,suspend=-1,season=-1,priority=-1,expectedPriority=-1;
   bool cancel=false;
 };
 struct ProductionRequirement { std::string description; int32_t quantity=0; int16_t itemType=-1; };
@@ -304,6 +304,7 @@ struct ProductionJob {
   int16_t jobType=-1;
   std::string name,workerName,status;
   bool repeat=false,suspended=false,editable=false;
+  int8_t priority=-1;
   uint16_t attachedItems=0;
   std::vector<ProductionRequirement> requirements;
 };

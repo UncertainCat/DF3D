@@ -9,6 +9,37 @@
 namespace codec = wm::detail::management;
 namespace wire = df3d::mirror;
 
+TEST_CASE("workshop Priority intents require a displayed opposite state and no mixed edit") {
+  for(int desired:{0,1})for(int fault=0;fault<8;++fault) {
+    wm::ManagementRequest r;r.action=wm::ManagementAction::ProductionJobEdit;
+    auto& p=r.production;p.buildingId=4;p.jobId=71;p.priority=desired;p.expectedPriority=1-desired;
+    if(fault==1)p.expectedPriority=-1;
+    if(fault==2)p.expectedPriority=desired;
+    if(fault==3)p.priority=2;
+    if(fault==4)p.cancel=true;
+    if(fault==5)p.repeat=1;
+    if(fault==6)r.action=wm::ManagementAction::ProductionInspect;
+    if(fault==7)p.priority=-1;
+    flatbuffers::FlatBufferBuilder b;codec::encodeRequest(b,r,1,2,3);
+    const auto* value=flatbuffers::GetRoot<wire::ConstructionRequest>(b.GetBufferPointer());
+    CHECK(bool(wire::validateConstructionRequest(*value))==(fault!=0));
+    CHECK(value->production()->priority()==p.priority);
+    CHECK(value->production()->expected_priority()==p.expectedPriority);
+  }
+}
+TEST_CASE("legacy production jobs do not invent an inactive Priority observation") {
+  for(int priority:{-1,0,1}) {
+    flatbuffers::FlatBufferBuilder b;
+    auto caption=b.CreateString("Make bed");
+    wire::ProductionJobBuilder row(b);row.add_id(71);row.add_name(caption);
+    if(priority>=0)row.add_priority(int8_t(priority));
+    auto jobs=b.CreateVector(std::vector<flatbuffers::Offset<wire::ProductionJob>>{row.Finish()});
+    wire::ProductionStateBuilder state(b);state.add_jobs(jobs);b.Finish(state.Finish());
+    auto decoded=codec::decodeProduction(flatbuffers::GetRoot<wire::ProductionState>(b.GetBufferPointer()));
+    REQUIRE(decoded.jobs.size()==1);CHECK(decoded.jobs[0].priority==priority);
+  }
+}
+
 TEST_CASE("Job draft requests share bounded artwork semantics and preserve source receipts") {
   for(bool writing:{false,true})for(int fault=0;fault<7;++fault) {
     wm::ManagementRequest r;r.action=writing?wm::ManagementAction::JobSettingsApply:wm::ManagementAction::JobSettingsRead;

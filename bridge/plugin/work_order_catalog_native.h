@@ -15,6 +15,7 @@ inline bool workOrderCatalogSupported() {
         const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
         struct Pin {size_t rva,length;uint64_t hash;};
         constexpr Pin pins[]={
+            {0x8c571c,0x106,UINT64_C(0xe7e3ae7701fd626a)}, // jeweler job types + encrust targets
             {0x8c7d22,0x40b,UINT64_C(0xce7eea858978ebf4)}, // leather civ subtypes + LEATHER membership
             {0x8c6cf8,0x8f,UINT64_C(0xe02d6e399757e45f)}, // farmer task membership
             {0x8cb3ee,0xe,UINT64_C(0xcfbd210931f14f86)}, // tanner: reactions only
@@ -135,7 +136,7 @@ inline std::optional<std::vector<df::manager_order_template>> nativeWorkshopOrde
 
 // These native task branches have the same builtin descriptor membership as
 // the owned order catalog (Carpenter8c762d, Kitchen8cb3fc, WoodFurnace root,
-// Farmer8c6cf8, Tanner8cb3ee, Millstone8cb44f and Leather8c7d22).
+// Farmer8c6cf8, Tanner8cb3ee, Millstone8cb44f Leather8c7d22 and Jeweler8c571c).
 // Reaction templates identify queued jobs across categories; visible reaction
 // choices still use the separate native category/availability reader.
 // Do not extend this to other families merely because classifier311580 matches:
@@ -144,7 +145,7 @@ inline std::optional<std::vector<df::manager_order_template>> workshopTaskTempla
     if(!building)return std::nullopt;
     const auto type=building->getType();const auto subtype=building->getSubtype();
     const bool forge=int(type)==13 && (subtype==5 || subtype==6);
-    if(!forge && !((int(type)==13 && (subtype==0 || subtype==1 || subtype==11 || subtype==12 || subtype==22 || subtype==19 || subtype==15)) || (int(type)==5 && subtype==0)))return std::nullopt;
+    if(!forge && !((int(type)==13 && (subtype==0 || subtype==1 || subtype==4 || subtype==11 || subtype==12 || subtype==22 || subtype==19 || subtype==15)) || (int(type)==5 && subtype==0)))return std::nullopt;
     auto rows=nativeWorkshopOrderCatalog(building);if(!rows)return std::nullopt;
     // These descriptors qualify existing queued jobs, never populate the forge
     // picker. The native task branches supply its choices independently.

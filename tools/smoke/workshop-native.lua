@@ -238,7 +238,7 @@ local ok,err=xpcall(function()
   result.task_catalogs={};local seen={}
   for _,target in ipairs(df.global.world.buildings.all)do
    local type=target:getType();local key=type..':'..target:getSubtype()..':'..target:getCustomType()
-   if (type==df.building_type.Workshop or type==df.building_type.Furnace)and not seen[key]and target:getBuildStage()==target:getMaxBuildStage() and (os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')~='1' or (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')=='1' and key=='13:11:-1') or (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')~='1' and (key=='13:1:-1' or key=='13:12:-1' or key=='13:22:-1')))then
+   if (type==df.building_type.Workshop or type==df.building_type.Furnace)and not seen[key]and target:getBuildStage()==target:getMaxBuildStage() and (os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')~='1' or (os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')=='1' and key=='13:4:-1') or (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')=='1' and key=='13:11:-1') or (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')~='1' and (key=='13:1:-1' or key=='13:12:-1' or key=='13:22:-1')))then
     seen[key]=true;select_map(target)
     assert(click_label('Add new task'),'Native task catalog did not open: '..key)
     local function read_rows()
@@ -346,7 +346,10 @@ local ok,err=xpcall(function()
     for i,id in ipairs(queue_ids)do assert(target.jobs[i-1].id==id,'Category discovery reordered workshop queue')end
     if os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')=='1'then
      catalog.effects={};catalog.queue_ids=queue_ids;local effect_types={}
-     for index,row in ipairs(rows)do if row.available and (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')~='1' or (#catalog.effects<8 and not effect_types[row.job_type])) then
+     for index,row in ipairs(rows)do
+      local jeweler_batch=tonumber(os.getenv('DF3D_WORKSHOP_JEWELER_BATCH')or '0')
+      local in_batch=os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')~='1' or (jeweler_batch==0 and index<=10) or (jeweler_batch==1 and index>10)
+      if row.available and in_batch and (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')~='1' or (#catalog.effects<8 and not effect_types[row.job_type])) then
       effect_types[row.job_type]=true
       gui.simulateInput(view,'LEAVESCREEN');select_map(target);assert(click_label('Add new task'))
       local clicked=false

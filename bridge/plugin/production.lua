@@ -58,7 +58,7 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
  local out,keys={},{}
  local k=kind(b)
  local forge=k=='MetalsmithsForge' or k=='MagmaForge'
- local ordinary=k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' or k=='Farmers' or k=='Millstone' or k=='Tanners' or k=='Leatherworks'
+ local ordinary=k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' or k=='Farmers' or k=='Millstone' or k=='Tanners' or k=='Leatherworks' or k=='Jewelers'
  local supported=forge or ordinary or k=='Still'
  if category~='' and not supported then return nil,'Unsupported workshop category' end
  if supported then
@@ -98,6 +98,7 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
    if fields.job_type~=df.job_type.CustomReaction then
    local key='builtin:'..fields.job_type..':'..(fields.mat_type or -1)
    if (fields.item_subtype or -1)>=0 then key=key..':subtype:'..fields.item_subtype end
+   if fields.specflag and (fields.specflag.whole or 0)~=0 then key=key..':specflag:'..fields.specflag.whole end
    out[#out+1]={key=key,fields=fields,available=true,objection=''}
    end
   end

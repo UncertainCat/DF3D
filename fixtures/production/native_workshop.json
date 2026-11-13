@@ -7986,5 +7986,449 @@
       "workshop-wire-result.json": "3ec0ce8edda47485b9ab5e12b84e2713823ba7d42ea05e22c69674f1e710f8a8",
       "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
     }
+  },
+  "jeweler_runtime_reference": {
+    "native_membership_rva": "8c571c..8c5822",
+    "native_membership_fnv64": "e7e3ae7701fd626a",
+    "choices": 12,
+    "scope": "All twelve native root choices and queued-job effects matched via actual clicks in two batches below queue limit. Captions/order/availability/Cancel and full picker crop matched; original queues restored. Worker execution/products/job.item_type equivalence remain outside this evidence.",
+    "identity": "job_type distinguishes gem/glass/stone; specflag distinguishes encrust ammo64/finished goods1024/furniture4. Material category is zero.",
+    "crop": [
+      432,
+      130,
+      888,
+      676
+    ],
+    "differing_pixels": 0,
+    "batches": [
+      {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261112-214925",
+        "effects": [
+          {
+            "index": 1,
+            "caption": "Cut gems",
+            "matched_native_job": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 1048576,
+                  "item_subtype": -1,
+                  "item_type": 3,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 84,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "index": 2,
+            "caption": "Cut raw glass into gems",
+            "matched_native_job": {
+              "inputs": [
+                {
+                  "flags1": 16777216,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 3,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 85,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          },
+          {
+            "index": 3,
+            "caption": "Encrust ammo with cut gems",
+            "matched_native_job": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 1048576,
+                  "item_subtype": -1,
+                  "item_type": 1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 268435457,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 86,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 64
+            }
+          },
+          {
+            "index": 4,
+            "caption": "Encrust ammo with cut glass",
+            "matched_native_job": {
+              "inputs": [
+                {
+                  "flags1": 16777216,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 268435457,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 87,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 64
+            }
+          },
+          {
+            "index": 5,
+            "caption": "Encrust ammo with polished stones",
+            "matched_native_job": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 131072,
+                  "item_subtype": -1,
+                  "item_type": 1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 268435457,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 145,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 64
+            }
+          },
+          {
+            "index": 6,
+            "caption": "Encrust finished goods with cut gems",
+            "matched_native_job": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 1048576,
+                  "item_subtype": -1,
+                  "item_type": 1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 134217729,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 86,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 1024
+            }
+          },
+          {
+            "index": 7,
+            "caption": "Encrust finished goods with cut glass",
+            "matched_native_job": {
+              "inputs": [
+                {
+                  "flags1": 16777216,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 134217729,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 87,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 1024
+            }
+          },
+          {
+            "index": 8,
+            "caption": "Encrust finished goods with polished stones",
+            "matched_native_job": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 131072,
+                  "item_subtype": -1,
+                  "item_type": 1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 134217729,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 145,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 1024
+            }
+          },
+          {
+            "index": 9,
+            "caption": "Encrust furniture with cut gems",
+            "matched_native_job": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 1048576,
+                  "item_subtype": -1,
+                  "item_type": 1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 1610612737,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 86,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 4
+            }
+          },
+          {
+            "index": 10,
+            "caption": "Encrust furniture with cut glass",
+            "matched_native_job": {
+              "inputs": [
+                {
+                  "flags1": 16777216,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 1610612737,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 87,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 4
+            }
+          }
+        ],
+        "sha256": {
+          "workshop-native.json": "d05d9828e96cef4c142bacb8e17d93d4356298995806a52f842783e8b628899c",
+          "workshop-family-4.png": "5b6fbf5d70d2f1445e6061886550df9b01ceb28b0bd7e6455ce597c84b82c326",
+          "family-4-live.png": "fd25ae3519982a6002af72caf48a493425dc22ec8e86835b36ac6ddfcb78b8da",
+          "workshop-wire-result.json": "9480ed23f08f88d4f353899ab16062255bfbebc5f29a7aecb3bfa4be5889c288",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
+      },
+      {
+        "lane": "build/stockpile-storage-native-farm-discovery-20261112-215015",
+        "effects": [
+          {
+            "index": 11,
+            "caption": "Encrust furniture with polished stones",
+            "matched_native_job": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 131072,
+                  "item_subtype": -1,
+                  "item_type": 1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 1610612737,
+                  "flags2": 0,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 145,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 4
+            }
+          },
+          {
+            "index": 12,
+            "caption": "Polish stones",
+            "matched_native_job": {
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 0,
+                  "flags3": 131072,
+                  "item_subtype": -1,
+                  "item_type": 4,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 111,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            }
+          }
+        ],
+        "sha256": {
+          "workshop-native.json": "315970f7a8e9f24de020e7bb9a4ffbbc321363ccbe4c21e297d36d379a162683",
+          "workshop-family-4.png": "2af2c2d3843b8afb7c1fd62adec61c31d6425865349b72218f97d6a27f8dbc8c",
+          "family-4-live.png": "fd25ae3519982a6002af72caf48a493425dc22ec8e86835b36ac6ddfcb78b8da",
+          "workshop-wire-result.json": "27c234499a821344c0a43446499ea978be44e192c699dd8a3b6336928c5d9751",
+          "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+        }
+      }
+    ],
+    "diagnostics": "passed_with_known_issues: separate-renderer, finalize, ObjectDB shutdown; no unclassified diagnostics",
+    "source_preservation": "Both sources unchanged; owned DF16260 and DF30016 exited unsaved"
   }
 }

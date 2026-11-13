@@ -17267,8 +17267,8 @@ category0x10. It adds bag74, waterskin121, backpack131, quiver132 and image192.
 This branch is pinned independently of the order classifier; no native widgets
 or menu scratch are runtime inputs. Clothier is not admitted by this change:
 its root8c812d starts with three fabric selectors. Jeweler8c571c has repeated
-job types distinguished by material-category flags, requiring distinct intent
-identities before it can use the current provider.
+job types distinguished by specflag encrust targets, now included in its task
+identities as described below.
 
 Protected214542 on2026-11-12 matches all25 Leatherworks root choices, ordering,
 captions and availability; the picker crop432,130..888,676 has zero differing
@@ -17282,6 +17282,25 @@ occur. GPU samples41-42C at30FPS are not continuous peaks. See
 native_workshop.json.leather_runtime_reference. Earlier214411 stopped on a test
 assumption that category rows had job availability; it is not acceptance evidence.
 The family harness now distinguishes categories and bounds its scroll gestures.
+
+Jeweler Tasks uses the owned native catalog with independently pinned membership
+8c571c..8c5822. Native creates jobs84/85/111 and three target variants of86/87/145.
+The latter use specflag4(furniture),1024(finished goods) and64(ammo); material
+category remains zero. Nonzero specflag enters the opaque builtin task key so
+same-type target variants cannot collide. Names, sort order, fields and inputs
+still come from native providers. Unflagged task keys remain unchanged.
+
+Protected214925 and215015 on2026-11-12 cover all12 choices in10+2 creation
+batches through actual viewer clicks. Each queued job's fields and complete
+input requirements match native, excluding the unresolved job.item_type field.
+Both root picker crops432,130..888,676 match with zero differing pixels; captions,
+order, availability and Cancel match. Original queue order is restored. Worker
+execution and completed products remain unverified. Owned DF16260/30016 exit
+unsaved with source preservation; only three known Godot diagnostics occur.
+Core19 and controller/composition/adapter checks pass. GPU samples40-42C at30FPS
+are observations rather than continuous peaks. Evidence is in
+native_workshop.json.jeweler_runtime_reference. Public workshop exposure remains
+gated on the remaining families and complete workflows.
 
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.

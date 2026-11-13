@@ -17657,6 +17657,17 @@ preferences and controlled type/stage restored; serial30FPS sampled39C.
 Other ingredient pages, viewer transport/rendering and task effects remain
 unqualified. The512KiB management reply capacity must be considered when
 replacing the128-recipe limit; no list is silently truncated by this provider.
+Protected003404 calls the pinned native mixer across every ordered pair of
+the116 installed raw colors, deduplicating each pair's target results. The
+largest tint list is copper938; the largest Mix list is copper469. Sixty-nine
+tint targets and45 mix targets exceed128. Cerulean172 agrees with both the
+native submenu and owned provider in this run. These are semantic mixer counts,
+not captures of every native menu or encoded payload-size measurements.
+Owned DF44964 exits unsaved with source saves/preferences and controlled
+type/stage restored; serial30FPS sampled39C. Full count provenance is in
+ingredient_reference.capacity_reference. Ingredient integration will use
+bounded reply chunks assembled into a complete viewer menu; that transport
+is not implemented yet. Raising a cap only to fit cerulean is insufficient.
 Ingredient submenu navigation, creation effects and DF3D implementation remain
 unfinished. An earlier
 controlled discovery232955 exited while entering Tint cloth aqua; source

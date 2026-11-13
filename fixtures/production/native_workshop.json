@@ -32250,6 +32250,722 @@
           "No ingredient viewer transport, rendering or task creation acceptance.",
           "172 rows still exceed the current recipe contract cap."
         ]
+      },
+      "capacity_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261113-003404",
+        "scope": "Pinned DF color mixer over every ordered pair of 116 raw colors; unique results exclude either input. Tint counts ordered pairs; Mix counts a<b and excludes CLEAR. Inventory affects availability/order, not membership.",
+        "rows": [
+          {
+            "color": 0,
+            "mix": 13,
+            "name": "amber",
+            "tint": 26
+          },
+          {
+            "color": 1,
+            "mix": 76,
+            "name": "amethyst",
+            "tint": 152
+          },
+          {
+            "color": 2,
+            "mix": 0,
+            "name": "aqua",
+            "tint": 0
+          },
+          {
+            "color": 3,
+            "mix": 18,
+            "name": "aquamarine",
+            "tint": 36
+          },
+          {
+            "color": 4,
+            "mix": 70,
+            "name": "ash gray",
+            "tint": 140
+          },
+          {
+            "color": 5,
+            "mix": 110,
+            "name": "auburn",
+            "tint": 220
+          },
+          {
+            "color": 6,
+            "mix": 5,
+            "name": "azure",
+            "tint": 10
+          },
+          {
+            "color": 7,
+            "mix": 65,
+            "name": "beige",
+            "tint": 130
+          },
+          {
+            "color": 8,
+            "mix": 0,
+            "name": "black",
+            "tint": 0
+          },
+          {
+            "color": 9,
+            "mix": 0,
+            "name": "blue",
+            "tint": 0
+          },
+          {
+            "color": 10,
+            "mix": 441,
+            "name": "brass",
+            "tint": 882
+          },
+          {
+            "color": 11,
+            "mix": 204,
+            "name": "bronze",
+            "tint": 408
+          },
+          {
+            "color": 12,
+            "mix": 123,
+            "name": "brown",
+            "tint": 246
+          },
+          {
+            "color": 13,
+            "mix": 137,
+            "name": "buff",
+            "tint": 274
+          },
+          {
+            "color": 14,
+            "mix": 103,
+            "name": "burnt sienna",
+            "tint": 206
+          },
+          {
+            "color": 15,
+            "mix": 282,
+            "name": "burnt umber",
+            "tint": 564
+          },
+          {
+            "color": 16,
+            "mix": 233,
+            "name": "cardinal",
+            "tint": 466
+          },
+          {
+            "color": 17,
+            "mix": 94,
+            "name": "carmine",
+            "tint": 188
+          },
+          {
+            "color": 18,
+            "mix": 86,
+            "name": "cerulean",
+            "tint": 172
+          },
+          {
+            "color": 19,
+            "mix": 82,
+            "name": "charcoal",
+            "tint": 164
+          },
+          {
+            "color": 20,
+            "mix": 5,
+            "name": "chartreuse",
+            "tint": 10
+          },
+          {
+            "color": 21,
+            "mix": 181,
+            "name": "chestnut",
+            "tint": 362
+          },
+          {
+            "color": 22,
+            "mix": 153,
+            "name": "chocolate",
+            "tint": 306
+          },
+          {
+            "color": 23,
+            "mix": 13,
+            "name": "cinnamon",
+            "tint": 26
+          },
+          {
+            "color": 24,
+            "mix": 0,
+            "name": "clear",
+            "tint": 0
+          },
+          {
+            "color": 25,
+            "mix": 99,
+            "name": "cobalt",
+            "tint": 198
+          },
+          {
+            "color": 26,
+            "mix": 469,
+            "name": "copper",
+            "tint": 938
+          },
+          {
+            "color": 27,
+            "mix": 29,
+            "name": "cream",
+            "tint": 58
+          },
+          {
+            "color": 28,
+            "mix": 20,
+            "name": "crimson",
+            "tint": 40
+          },
+          {
+            "color": 29,
+            "mix": 0,
+            "name": "dark blue",
+            "tint": 0
+          },
+          {
+            "color": 30,
+            "mix": 181,
+            "name": "dark brown",
+            "tint": 362
+          },
+          {
+            "color": 31,
+            "mix": 164,
+            "name": "dark chestnut",
+            "tint": 328
+          },
+          {
+            "color": 32,
+            "mix": 32,
+            "name": "dark green",
+            "tint": 64
+          },
+          {
+            "color": 33,
+            "mix": 22,
+            "name": "dark indigo",
+            "tint": 44
+          },
+          {
+            "color": 34,
+            "mix": 181,
+            "name": "dark olive",
+            "tint": 362
+          },
+          {
+            "color": 35,
+            "mix": 131,
+            "name": "dark peach",
+            "tint": 262
+          },
+          {
+            "color": 36,
+            "mix": 113,
+            "name": "dark pink",
+            "tint": 226
+          },
+          {
+            "color": 37,
+            "mix": 54,
+            "name": "dark scarlet",
+            "tint": 108
+          },
+          {
+            "color": 38,
+            "mix": 334,
+            "name": "dark tan",
+            "tint": 668
+          },
+          {
+            "color": 39,
+            "mix": 49,
+            "name": "dark violet",
+            "tint": 98
+          },
+          {
+            "color": 40,
+            "mix": 297,
+            "name": "ecru",
+            "tint": 594
+          },
+          {
+            "color": 41,
+            "mix": 184,
+            "name": "eggplant",
+            "tint": 368
+          },
+          {
+            "color": 42,
+            "mix": 140,
+            "name": "emerald",
+            "tint": 280
+          },
+          {
+            "color": 43,
+            "mix": 207,
+            "name": "fern green",
+            "tint": 414
+          },
+          {
+            "color": 44,
+            "mix": 185,
+            "name": "flax",
+            "tint": 370
+          },
+          {
+            "color": 45,
+            "mix": 0,
+            "name": "fuchsia",
+            "tint": 0
+          },
+          {
+            "color": 46,
+            "mix": 300,
+            "name": "gold",
+            "tint": 600
+          },
+          {
+            "color": 47,
+            "mix": 3,
+            "name": "golden yellow",
+            "tint": 6
+          },
+          {
+            "color": 48,
+            "mix": 193,
+            "name": "goldenrod",
+            "tint": 386
+          },
+          {
+            "color": 49,
+            "mix": 429,
+            "name": "gray",
+            "tint": 858
+          },
+          {
+            "color": 50,
+            "mix": 0,
+            "name": "green",
+            "tint": 0
+          },
+          {
+            "color": 51,
+            "mix": 50,
+            "name": "green-yellow",
+            "tint": 100
+          },
+          {
+            "color": 52,
+            "mix": 12,
+            "name": "heliotrope",
+            "tint": 24
+          },
+          {
+            "color": 53,
+            "mix": 53,
+            "name": "indigo",
+            "tint": 106
+          },
+          {
+            "color": 54,
+            "mix": 9,
+            "name": "ivory",
+            "tint": 18
+          },
+          {
+            "color": 55,
+            "mix": 29,
+            "name": "jade",
+            "tint": 58
+          },
+          {
+            "color": 56,
+            "mix": 18,
+            "name": "lavender",
+            "tint": 36
+          },
+          {
+            "color": 57,
+            "mix": 21,
+            "name": "lavender blush",
+            "tint": 42
+          },
+          {
+            "color": 58,
+            "mix": 129,
+            "name": "lemon",
+            "tint": 258
+          },
+          {
+            "color": 59,
+            "mix": 105,
+            "name": "light blue",
+            "tint": 210
+          },
+          {
+            "color": 60,
+            "mix": 292,
+            "name": "light brown",
+            "tint": 584
+          },
+          {
+            "color": 61,
+            "mix": 104,
+            "name": "lilac",
+            "tint": 208
+          },
+          {
+            "color": 62,
+            "mix": 10,
+            "name": "lime",
+            "tint": 20
+          },
+          {
+            "color": 63,
+            "mix": 12,
+            "name": "mahogany",
+            "tint": 24
+          },
+          {
+            "color": 64,
+            "mix": 5,
+            "name": "maroon",
+            "tint": 10
+          },
+          {
+            "color": 65,
+            "mix": 163,
+            "name": "mauve",
+            "tint": 326
+          },
+          {
+            "color": 66,
+            "mix": 159,
+            "name": "mauve taupe",
+            "tint": 318
+          },
+          {
+            "color": 67,
+            "mix": 108,
+            "name": "midnight blue",
+            "tint": 216
+          },
+          {
+            "color": 68,
+            "mix": 13,
+            "name": "mint green",
+            "tint": 26
+          },
+          {
+            "color": 69,
+            "mix": 166,
+            "name": "moss green",
+            "tint": 332
+          },
+          {
+            "color": 70,
+            "mix": 168,
+            "name": "ochre",
+            "tint": 336
+          },
+          {
+            "color": 71,
+            "mix": 1,
+            "name": "olive",
+            "tint": 2
+          },
+          {
+            "color": 72,
+            "mix": 24,
+            "name": "orange",
+            "tint": 48
+          },
+          {
+            "color": 73,
+            "mix": 56,
+            "name": "pale blue",
+            "tint": 112
+          },
+          {
+            "color": 74,
+            "mix": 235,
+            "name": "pale brown",
+            "tint": 470
+          },
+          {
+            "color": 75,
+            "mix": 186,
+            "name": "pale chestnut",
+            "tint": 372
+          },
+          {
+            "color": 76,
+            "mix": 99,
+            "name": "pale pink",
+            "tint": 198
+          },
+          {
+            "color": 77,
+            "mix": 125,
+            "name": "peach",
+            "tint": 250
+          },
+          {
+            "color": 78,
+            "mix": 207,
+            "name": "pearl",
+            "tint": 414
+          },
+          {
+            "color": 79,
+            "mix": 14,
+            "name": "periwinkle",
+            "tint": 28
+          },
+          {
+            "color": 80,
+            "mix": 115,
+            "name": "pine green",
+            "tint": 230
+          },
+          {
+            "color": 81,
+            "mix": 60,
+            "name": "pink",
+            "tint": 120
+          },
+          {
+            "color": 82,
+            "mix": 41,
+            "name": "plum",
+            "tint": 82
+          },
+          {
+            "color": 83,
+            "mix": 218,
+            "name": "puce",
+            "tint": 436
+          },
+          {
+            "color": 84,
+            "mix": 53,
+            "name": "pumpkin",
+            "tint": 106
+          },
+          {
+            "color": 85,
+            "mix": 39,
+            "name": "purple",
+            "tint": 78
+          },
+          {
+            "color": 86,
+            "mix": 176,
+            "name": "raw umber",
+            "tint": 352
+          },
+          {
+            "color": 87,
+            "mix": 0,
+            "name": "red",
+            "tint": 0
+          },
+          {
+            "color": 88,
+            "mix": 5,
+            "name": "red-purple",
+            "tint": 10
+          },
+          {
+            "color": 89,
+            "mix": 206,
+            "name": "rose",
+            "tint": 412
+          },
+          {
+            "color": 90,
+            "mix": 193,
+            "name": "russet",
+            "tint": 386
+          },
+          {
+            "color": 91,
+            "mix": 166,
+            "name": "rust",
+            "tint": 332
+          },
+          {
+            "color": 92,
+            "mix": 209,
+            "name": "saffron",
+            "tint": 418
+          },
+          {
+            "color": 93,
+            "mix": 58,
+            "name": "scarlet",
+            "tint": 116
+          },
+          {
+            "color": 94,
+            "mix": 180,
+            "name": "sea green",
+            "tint": 360
+          },
+          {
+            "color": 95,
+            "mix": 62,
+            "name": "sepia",
+            "tint": 124
+          },
+          {
+            "color": 96,
+            "mix": 428,
+            "name": "silver",
+            "tint": 856
+          },
+          {
+            "color": 97,
+            "mix": 86,
+            "name": "sky blue",
+            "tint": 172
+          },
+          {
+            "color": 98,
+            "mix": 79,
+            "name": "slate gray",
+            "tint": 158
+          },
+          {
+            "color": 99,
+            "mix": 6,
+            "name": "spring green",
+            "tint": 12
+          },
+          {
+            "color": 100,
+            "mix": 287,
+            "name": "tan",
+            "tint": 574
+          },
+          {
+            "color": 101,
+            "mix": 118,
+            "name": "dark taupe",
+            "tint": 236
+          },
+          {
+            "color": 102,
+            "mix": 84,
+            "name": "taupe gray",
+            "tint": 168
+          },
+          {
+            "color": 103,
+            "mix": 189,
+            "name": "taupe",
+            "tint": 378
+          },
+          {
+            "color": 104,
+            "mix": 94,
+            "name": "purple taupe",
+            "tint": 188
+          },
+          {
+            "color": 105,
+            "mix": 340,
+            "name": "pale taupe",
+            "tint": 680
+          },
+          {
+            "color": 106,
+            "mix": 208,
+            "name": "rose taupe",
+            "tint": 416
+          },
+          {
+            "color": 107,
+            "mix": 328,
+            "name": "sandy taupe",
+            "tint": 656
+          },
+          {
+            "color": 108,
+            "mix": 116,
+            "name": "teal",
+            "tint": 232
+          },
+          {
+            "color": 109,
+            "mix": 49,
+            "name": "turquoise",
+            "tint": 98
+          },
+          {
+            "color": 110,
+            "mix": 175,
+            "name": "vermilion",
+            "tint": 350
+          },
+          {
+            "color": 111,
+            "mix": 0,
+            "name": "violet",
+            "tint": 0
+          },
+          {
+            "color": 112,
+            "mix": 24,
+            "name": "white",
+            "tint": 48
+          },
+          {
+            "color": 113,
+            "mix": 0,
+            "name": "yellow",
+            "tint": 0
+          },
+          {
+            "color": 114,
+            "mix": 220,
+            "name": "yellow-green",
+            "tint": 440
+          },
+          {
+            "color": 115,
+            "mix": 100,
+            "name": "blue-gray",
+            "tint": 200
+          }
+        ],
+        "maximum_tint": 938,
+        "maximum_mix": 469,
+        "tint_targets_over_128": 69,
+        "mix_targets_over_128": 45,
+        "cross_check": "Cerulean tint count172 agrees with native submenu and owned provider in the same protected run; other histogram entries are semantic mixer evidence, not native menu captures.",
+        "sha256": {
+          "result.json": "d1aaab679569308f16b69a5086eee0e779e80e79302271f61fc5e6e8b720e54e",
+          "workshop-native.json": "8f0ec17ca9b35a4fedd112287f266846bb1aede60d187def498f7649b8962e1c"
+        },
+        "cleanup": "Owned DF44964 closed unsaved; source saves/preferences and controlled type/stage restored. Serial30FPS sampled39C.",
+        "omissions": [
+          "No encoded full-menu byte-size measurement.",
+          "No viewer ingredient transport or task effects."
+        ]
       }
     }
   }

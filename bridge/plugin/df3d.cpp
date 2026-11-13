@@ -3593,6 +3593,33 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           }
           out.print("{}",Json::FastWriter().write(rows));return CR_OK;
         }
+        if(parameters[0]=="workshop-dye-counts-probe") {
+          if(parameters.size()!=1)return CR_WRONG_USAGE;
+          if(!df::global::world || !df3d_production::workOrderDyeReady())return CR_FAILURE;
+          auto colors=df::global::world->raws.descriptors.colors;
+          if(colors.size()>1024)return CR_FAILURE;
+          for(const auto* color:colors)if(!color)return CR_FAILURE;
+          auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
+          std::vector<int32_t> tint(colors.size()),mix(colors.size());
+          for(int32_t a=0;size_t(a)<colors.size();++a)for(int32_t b=0;size_t(b)<colors.size();++b) {
+            if(a==b)continue;
+            std::array<int32_t,7> results;results.fill(-1);
+            reinterpret_cast<void(*)(std::vector<df::descriptor_color*>*,int32_t,int32_t,int32_t*)>(base+0x7dc570)(&colors,a,b,results.data());
+            std::set<int32_t> targets;
+            for(auto color:results) {
+              if(color==-1 || color==a || color==b)continue;
+              if(color<0 || size_t(color)>=colors.size())return CR_FAILURE;
+              targets.insert(color);
+            }
+            for(auto color:targets){++tint[color];if(a<b && colors[color]->id!="CLEAR")++mix[color];}
+          }
+          Json::Value rows(Json::arrayValue);
+          for(size_t i=0;i<colors.size();++i) {
+            Json::Value row(Json::objectValue);row["color"]=int(i);row["name"]=DF2UTF(colors[i]->name);
+            row["tint"]=tint[i];row["mix"]=mix[i];rows.append(std::move(row));
+          }
+          out.print("{}",Json::FastWriter().write(rows));return CR_OK;
+        }
         if(parameters[0]=="workshop-dye-targets-probe") {
           if(parameters.size()!=3 && parameters.size()!=4)return CR_WRONG_USAGE;
           int32_t ids[3]={-1,-1,-1};

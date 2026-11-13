@@ -275,6 +275,10 @@ local ok,err=xpcall(function()
    for _,entry in ipairs(furnace_fixtures)do result.furnace_fixtures[#result.furnace_fixtures+1]={id=entry.id,prior_type=entry.prior_type,fixture_type=entry.fixture_type}end
   end
   if os.getenv('DF3D_WORKSHOP_EXTRA_DISCOVERY')=='1'then
+   if os.getenv('DF3D_WORKSHOP_DYER_INGREDIENT_NAV')=='1'then
+    local encoded,status=dfhack.run_command_silent('df3d','workshop-dye-counts-probe')
+    assert(status==0,encoded);result.dyer_ingredient_counts=json.decode(encoded)
+   end
    local types=os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1' and {21} or (os.getenv('DF3D_WORKSHOP_EXTRA_RUNTIME')=='1' and {7,9,14,16,17,18,20} or {7,9,14,16,17,18,20,21})
    for _,target in ipairs(df.global.world.buildings.all)do
     if df.building_workshopst:is_instance(target) and target:getBuildStage()==target:getMaxBuildStage() and #target.jobs==0 and target.custom_type==-1 then
@@ -352,6 +356,8 @@ local ok,err=xpcall(function()
       local encoded,status=dfhack.run_command_silent('df3d','workshop-dye-targets-probe',tostring(target.id),tostring(job),tostring(target_color))
       assert(status==0,encoded);page.owned_ingredients=json.decode(encoded)
       assert(#page.owned_ingredients==#page.rows,'Dyer ingredient count differs')
+      local counts=assert(result.dyer_ingredient_counts[target_color+1]);assert(counts.color==target_color)
+      assert((job==243 and counts.mix or counts.tint)==#page.rows,'Dyer complete-pair count differs')
       for index,row in ipairs(page.owned_ingredients)do
        local native=page.rows[index]
        assert(row.caption==native.caption and row.info==native.info and row.alpha_order==native.alpha_order and row.color==target_color and not row.tint,'Dyer ingredient row differs at '..index)

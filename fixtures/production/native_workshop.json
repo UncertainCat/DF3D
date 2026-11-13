@@ -38308,8 +38308,8 @@
     "failed_attempt": "113836 native capture passed but viewer test failed to parse an untyped local; corrected before accepted run."
   },
   "task_hover_reference": {
-    "lane": "build/stockpile-storage-native-farm-discovery-20261113-114826",
-    "scope": "Paused native pointer input on a created carpenter Make bed task; positive controls before and after sampling. Native screen text captured immediately after restoring the hidden-window pointer.",
+    "lane": "build/stockpile-storage-native-farm-discovery-20261113-115027",
+    "scope": "Paused native pointer input on two created carpenter Make bed tasks, including enabled second-row Move Up; positive controls before and after sampling. Native screen text captured immediately after restoring the hidden-window pointer.",
     "samples": [
       {
         "enabled": true,
@@ -38468,6 +38468,18 @@
       },
       {
         "enabled": true,
+        "instruction": 309,
+        "kind": "move-up-enabled",
+        "lines": [
+          "Increase the priority",
+          "of the task in this",
+          "workshop."
+        ],
+        "x": 796,
+        "y": 190
+      },
+      {
+        "enabled": true,
         "instruction": 302,
         "kind": "remove-control",
         "lines": [
@@ -38478,19 +38490,45 @@
       }
     ],
     "sha256": {
-      "workshop-native.json": "f33c86959690ddb491cf6a9ba821a3fed9c5cb398f2aeea4833a6a206a83795a",
-      "result.json": "0abe2e9b9a6096cb128f85388f2f8a4c58947c8fa4c65de9235b702efdd6e74b",
-      "workshop-task-hover.png": "e8761ed0c71b26cbc52f53ce141ed0aa027333dd85ccc72e2bbd8a2c0c0c05aa"
+      "workshop-native.json": "31910303c3ace96b1abc3db47a96736021b3557f29519b1a94c8f253b584ce83",
+      "result.json": "abb30200b57cd4713de8fb1e064100ca6e195ee66014f2d5db262f537062b870",
+      "workshop-task-hover.png": "c45588ae342bc66666c2fb47c672e958cac96853f307419f6eaac6648187ebd5"
     },
     "limits": [
-      "Move up is absent for the first row; enabled Move up help remains unqualified.",
-      "No tooltip pixel comparison: the screenshot handshake resets the pointer.",
-      "Viewer hover implementation and rendered/lifecycle qualification remain pending."
+      "Native tooltip screen text and pointer instructions are accepted; no native/viewer tooltip pixel comparison because the screenshot handshake resets the pointer.",
+      "No new bridge/game-effect behavior is introduced. Whole workshop public exposure remains gated."
     ],
     "discarded_attempts": {
       "114432": "Read after a frame sleep lost the hidden-window pointer; all-negative samples are not accepted.",
       "114543": "Positive rename control detected the pointer-reset error.",
       "114642": "After pointer restoration, Repeat correctly returned native instruction306 rather than the obsolete negative expectation."
+    },
+    "viewer": {
+      "qa": "build/qa/workshop-task-hover-final",
+      "result": "passed_with_known_issues",
+      "coverage": [
+        "Actual pointer motion through composed sheet at native coordinates for all nine messages, including three on/off pairs and second-row Move Up.",
+        "Verbatim native lines and displayed identity checked; rendered PNG for each message.",
+        "No tooltip over Add new task or absent first-row Move Up.",
+        "Pending ticket hides help; Ready restores it; picker hides it; hidden sheet retires pointer ownership.",
+        "Existing task Cancel, picker/search and native search-field pixel hash checks remain passing."
+      ],
+      "known_diagnostics": [
+        "godot-separate-thread-notice",
+        "godot-device-finalize",
+        "godot-shutdown-objects"
+      ],
+      "images": {
+        "workshop-hover-details.png": "fe0bb71b57cd1ca43a658860067c99f6b01537c724c0225bb43a48e029762d1f",
+        "workshop-hover-move-up.png": "a1c3a847de1ecd7808f84e966e7576ee169805e9a0ed89257233168879b60b3e",
+        "workshop-hover-priority-on.png": "636aee75d226c24170b7fc8cdfac280b9afa31378fef146e985e134b1dd628c7",
+        "workshop-hover-priority.png": "250c2f0c156cff3a1bc59d7c26211dc48fdede26e45d503098253f8c8b67a45b",
+        "workshop-hover-remove.png": "53e099a16c63365702c6fbcbc68771cd72f539681511d3387a83e93e8dd233ec",
+        "workshop-hover-repeat-on.png": "e5110ab2864a77e7b05753af2831e1e70f5a6bc5b2462f5cf12096423a308c6f",
+        "workshop-hover-repeat.png": "65b1643b4653befc65ce77127cb076dddda2635c0a3f14b08561d70fe6acb9c3",
+        "workshop-hover-suspend-on.png": "e53e943408b539c62aca33c181b18a5ef8c16d4fd3ea97416b0a6117b5a64a7f",
+        "workshop-hover-suspend.png": "c738d2bfdff71ec0962ee8b7041ca4c07bec03278337f50478f6848ec3eb458b"
+      }
     }
   }
 }

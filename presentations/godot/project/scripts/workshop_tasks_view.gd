@@ -18,7 +18,14 @@ var search_focused:=false
 var blink:=-1
 var search_label: Label
 
-func configure(world,model) -> void:
+var hover_help
+var pointer_known:=false
+var pointer_position:=Vector2.ZERO
+
+func configure(world,model,help=null) -> void:
+	hover_help=help
+	mouse_exited.connect(_leave_hover)
+	visibility_changed.connect(func():if not is_visible_in_tree():_leave_hover())
 	state=model;art.configure(world);theme=art.theme
 	picture.configure(world)
 	colors=art.installed_palette(world.assets_root())
@@ -39,7 +46,7 @@ func available() -> bool:
 func refresh() -> void:
 	if state==null:return
 	if target!=state.building_id:
-		target=state.building_id;picking=false;first=0;scrollbar.dragging=false;query_bytes.clear();search_focused=false
+		_leave_hover();target=state.building_id;picking=false;first=0;scrollbar.dragging=false;query_bytes.clear();search_focused=false
 	search_label.visible=picking
 	var rows: Array=state.choices() if picking else state.jobs()
 	# Native1844f1..1847bc reserves six cells at the sheet bottom, then
@@ -90,7 +97,31 @@ func _input(event: InputEvent) -> void:
 	if before!=query_bytes:first=0;state.set_query(query_text());queue_redraw()
 	get_viewport().set_input_as_handled()
 
+func _leave_hover() -> void:
+	pointer_known=false
+	if is_instance_valid(hover_help):hover_help.leave(get_instance_id())
+
+func help_at(point: Vector2) -> String:
+	if picking or not available():return ""
+	var index:=floori((point.y-36)/36)
+	var jobs: Array=state.jobs()
+	if index<0 or index>=jobs.size() or not jobs[index].editable:return ""
+	if point.y-36-index*36>=24:return ""
+	var job: Dictionary=jobs[index]
+	match floori((point.x-304)/24):
+		0:return "repeat-on" if job.repeat else "repeat"
+		1:return ("priority-on" if job.priority else "priority") if job.has("priority") else ""
+		2:return "move-up" if index>0 and job.get("can_move_up",false) else ""
+		3:return "details"
+		4:return "suspend-on" if job.suspended else "suspend"
+		5:return "remove"
+	return ""
+
 func _process(_delta: float) -> void:
+	if is_instance_valid(hover_help):
+		var kind:=help_at(pointer_position) if pointer_known and is_visible_in_tree() else ""
+		if not kind.is_empty():hover_help.enter_workshop_task(get_instance_id(),kind)
+		else:hover_help.leave(get_instance_id())
 	if not picking or not is_visible_in_tree():return
 	var next:=int(Time.get_ticks_msec()%1000<500)
 	if next!=blink:blink=next;queue_redraw()
@@ -101,6 +132,7 @@ func add_rect() -> Rect2:
 func cancel_rect() -> Rect2:return Rect2(size.x-88,0,80,24)
 
 func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:pointer_known=true;pointer_position=event.position;_process(0)
 	if search_allowed() and event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
 		if cancel_rect().has_point(event.position):leave_picker();accept_event();return
 		if Rect2(0,30,size.x-8,36).has_point(event.position):search_focused=not search_focused;queue_redraw();accept_event();return
@@ -211,4 +243,5 @@ func _draw() -> void:
 	patch("HORIZONTAL_OPTION_ACTIVE",Rect2(add_rect().position-Vector2(0,6),add_rect().size+Vector2(0,12)));caption("Add new task",add_rect().position+Vector2(8,18),10)
 
 func _exit_tree() -> void:
+	_leave_hover()
 	if state!=null and state.changed.is_connected(refresh):state.changed.disconnect(refresh)

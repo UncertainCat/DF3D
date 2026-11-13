@@ -14,17 +14,47 @@ func run() -> void:
 	var state=preload("res://scripts/workshop_tasks_state.gd").new()
 	var service:=Service.new();state.service=service
 	state.building_id=4;state.phase=state.Phase.Ready
-	state.snapshot={"jobs":[{"id":42,"name":"Make bed","repeat":false,"suspended":false,"editable":true}],"recipes":[]}
+	state.snapshot={"jobs":[{"id":42,"name":"Make bed","repeat":false,"priority":false,"suspended":false,"editable":true}],"recipes":[]}
 	var header=preload("res://scripts/building_header_state.gd").new()
 	header.building_id=4;header.phase=header.Phase.Ready
 	header.snapshot={"header_name":"Carpenter's Workshop","custom_name":"","removing":false}
 	var contents=preload("res://scripts/building_contents_state.gd").new()
+	var help=preload("res://scripts/native_hover_view.gd").new();root.add_child(help);help.configure(world);help.layout(Vector2(1200,800))
+	help.z_index=50
 	var sheet=preload("res://scripts/workshop_sheet_view.gd").new();root.add_child(sheet)
 	sheet.configure(world,header,null,contents)
-	sheet.configure_tasks(world,state,"BUILDING_ICON_WORKSHOP_CARPENTER");sheet.layout(Vector2(1200,800))
+	sheet.configure_tasks(world,state,"BUILDING_ICON_WORKSHOP_CARPENTER",help);sheet.layout(Vector2(1200,800))
 	var view=sheet.tasks
 	await process_frame;await process_frame;await RenderingServer.frame_post_draw
 	root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../../../build/workshop-tasks-queue.png"))
+	var hover_reference: Dictionary=JSON.parse_string(FileAccess.get_file_as_string("res://../../../fixtures/production/native_workshop.json")).task_hover_reference
+	for sample in hover_reference.samples:
+		if sample.kind.ends_with("-control"):continue
+		if sample.kind=="repeat-on":state.snapshot.jobs[0].repeat=true
+		if sample.kind=="priority-on":state.snapshot.jobs[0].priority=true
+		if sample.kind=="suspend-on":state.snapshot.jobs[0].suspended=true
+		if sample.kind=="move-up-enabled":
+			var second: Dictionary=state.snapshot.jobs[0].duplicate(true);second.id=43;second.can_move_up=true;state.snapshot.jobs.append(second)
+		state.changed.emit()
+		var motion:=InputEventMouseMotion.new();motion.position=Vector2(sample.x,sample.y);root.push_input(motion,true)
+		await create_timer(0.6).timeout;await RenderingServer.frame_post_draw
+		var kind: String="move-up" if sample.kind=="move-up-enabled" else sample.kind
+		if int(sample.instruction)==-1:
+			if help.visible:fail("Workshop blank control retained help");return
+		else:
+			if help.displayed!="workshop_task_"+kind or help.WORKSHOP_TASK_HELP[kind]!=sample.lines:fail("Workshop native hover differs: "+kind);return
+			root.get_texture().get_image().save_png(ProjectSettings.globalize_path("res://../../../build/workshop-hover-"+kind+".png"))
+	# A pending edit cannot leave an actionable tooltip; a hidden panel retires its pointer.
+	state.ticket=1;await process_frame;await process_frame
+	if help.visible:fail("Pending workshop retained hover");return
+	state.ticket=0;await process_frame;await process_frame
+	if not help.visible:fail("Ready workshop failed to restore current hover");return
+	view.picking=true;await process_frame;await process_frame
+	if help.visible:fail("Picker retained job hover");return
+	view.picking=false;await process_frame;await process_frame
+	sheet.hide();await process_frame;await process_frame
+	if help.visible or view.pointer_known:fail("Hidden workshop retained hover ownership");return
+	sheet.show();state.snapshot.jobs.resize(1);state.snapshot.jobs[0].repeat=false;state.snapshot.jobs[0].suspended=false;state.changed.emit()
 	click(Vector2(868,154))
 	if service.intent.get("job_id")!=42 or not service.intent.get("cancel",false):fail("Workshop cancel click missed selected job");return
 	state.ticket=0;state.phase=state.Phase.Ready;service.intent={}
@@ -56,5 +86,5 @@ func run() -> void:
 	state.ticket=0;state.service=null
 	view.choose_mode(false)
 	if not sheet.contents.visible or view.size.y!=390:fail("Workshop queue did not restore contents");return
-	sheet.queue_free();world.queue_free();background.queue_free();await process_frame
+	sheet.queue_free();help.queue_free();world.queue_free();background.queue_free();await process_frame
 	print("WORKSHOP_TASKS_CAPTURE_PASS");quit(0)

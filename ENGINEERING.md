@@ -17863,19 +17863,31 @@ failed on a test-driver type annotation, fixed before acceptance; no product
 failure is inferred. Whole workshop exposure and full management/release
 acceptance remain pending.
 
-Protected114826 on2026-11-13 captures workshop Tasks hover messages with
-native pointer input and Rename/Remove-building positive controls. Repeat,
-Priority and Suspend have distinct on/off messages (305/306,307/308,311/312);
-Details310 differs from the global Tasks wording, and Cancel313 matches it.
-Add new task and the absent first-row Move up control yield no instruction.
-The diagnostic restores the hidden-window pointer immediately before reading;
-reading after a frame sleep produced false negatives in114432, rejected by
-the114543 positive control. The corrected114642 probe returned Repeat306.
-Use task_hover_reference in native_workshop.json for verbatim lines. Enabled
-Move up, viewer wiring and rendered/lifecycle verification remain pending;
-the screenshot handshake does not preserve tooltip pixels. Owned DF34328
-exits unsaved with the queue/source saves/preferences preserved. Serial30FPS
-GPU samples59-61C are observations, not peaks. Core19 passes.
+Workshop Tasks hover uses its own captured messages through the shared HUD
+hover timer. Repeat, Priority and Suspend select native on/off text from current
+job facts; Move Up appears only for an eligible nonfirst row. Details differs
+from the global Tasks wording. Help retires when its target changes, its panel
+hides or exits, and while the picker or pending/nonready state blocks input.
+The panel forwards the existing HUD help owner through the workshop sheet.
+
+Protected115027 on2026-11-13 captures all nine messages with native pointer
+input on two temporary Make bed jobs, plus Rename/Remove-building positive
+controls. Instructions305..313 and exact lines are in task_hover_reference.
+Add new task and absent first-row Move Up yield no instruction. Restore the
+hidden-window pointer immediately before reading; reading after a frame sleep
+produced false negatives in114432, rejected by114543's positive control.
+Owned DF5412 exits unsaved with jobs/source saves/preferences preserved.
+
+QA build/qa/workshop-task-hover-final renders all messages at native pointer
+coordinates, checks their verbatim text, pending/ready/picker/hidden ownership,
+and retains existing task cancellation/search and search-field pixel checks.
+The Move Up image is inspected; native tooltip pixel comparison is not claimed
+because the screenshot handshake resets the pointer. Composed UI and Tasks
+state checks pass. Only the three documented Godot diagnostics remain in the
+rendered check. An initial duplicate cleanup method prevented script loading;
+it was merged into the existing cleanup before acceptance. Serial30FPS GPU
+samples59-61C are observations, not peaks. Core19 passes. The bridge and job
+effects are unchanged; whole workshop and management/release gates remain.
 
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.

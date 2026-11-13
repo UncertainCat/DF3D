@@ -22,6 +22,8 @@ const WORK_DETAIL_WIDGET_HELP={
 const PLACES_HELP={"recenter":["Leave this menu and","recenter on this place."],"view":["Leave this menu and","view this place's sheet","or menu."]}
 # Objects protected161918: native instructions236/237.
 const OBJECTS_HELP={"recenter":["Leave this menu and","recenter on this object."],"view":["Leave this menu and","view this object's","sheet."]}
+# Native workshop task_hover_reference: these differ from the global Tasks messages.
+const WORKSHOP_TASK_HELP={"repeat": ["Click to set this task", "to repeat indefinitely."], "priority": ["Click to set this task", "as highest priority", "among all tasks", "everywhere."], "details": ["Set details for this", "task, such as the", "material to be used."], "suspend": ["Click to suspend the", "task.  Assigned workers", "are removed from", "suspended tasks."], "remove": ["Cancel this task."], "repeat-on": ["This task is set to", "repeat indefinitely."], "priority-on": ["This task is highest", "priority among all", "tasks everywhere."], "suspend-on": ["This task has been", "suspended."], "move-up": ["Increase the priority", "of the task in this", "workshop."]}
 const TASKS_HELP={"view-task":["Set the details of this","task, such as the","material used."],"job-recenter": ["Leave this menu and", "recenter on the task's", "building."], "suspend": ["Suspend this task.", "This removes the", "worker.  The task can", "be unsuspended."], "remove": ["Cancel this task."], "worker-recenter": ["Leave this menu and", "recenter on this", "creature."], "worker-view": ["Leave this menu and", "view this creature's", "sheet."], "remove-worker": ["Remove the current", "worker from the task."]}
 const RESIDENTS_HELP={
 	"recenter":["Leave this menu and","recenter on this","creature."],
@@ -244,6 +246,10 @@ func enter_objects(owner: int,kind: String) -> void:
 	if OBJECTS_HELP.has(kind):state.enter(owner,"objects_"+kind,Time.get_ticks_msec());_process(0)
 	else:leave(owner)
 
+func enter_workshop_task(owner: int,kind: String) -> void:
+	if WORKSHOP_TASK_HELP.has(kind):state.enter(owner,"workshop_task_"+kind,Time.get_ticks_msec());_process(0)
+	else:leave(owner)
+
 func enter_tasks(owner: int,kind: String) -> void:
 	if TASKS_HELP.has(kind):state.enter(owner,"tasks_"+kind,Time.get_ticks_msec());_process(0)
 	else:leave(owner)
@@ -307,6 +313,7 @@ func _draw() -> void:
 	if displayed.begins_with("detail_widget_"):lines=WORK_DETAIL_WIDGET_HELP[displayed.trim_prefix("detail_widget_")].lines
 	elif displayed.begins_with("places_"):lines=PLACES_HELP[displayed.trim_prefix("places_")]
 	elif displayed.begins_with("objects_"):lines=OBJECTS_HELP[displayed.trim_prefix("objects_")]
+	elif displayed.begins_with("workshop_task_"):lines=WORKSHOP_TASK_HELP[displayed.trim_prefix("workshop_task_")]
 	elif displayed.begins_with("tasks_"):lines=TASKS_HELP[displayed.trim_prefix("tasks_")]
 	elif displayed.begins_with("residents_specialization_"):lines=SPECIALIZATION_HELP[int(displayed.trim_prefix("residents_specialization_"))]
 	elif displayed.begins_with("residents_"):lines=RESIDENTS_HELP[displayed.trim_prefix("residents_")]

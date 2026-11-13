@@ -32,7 +32,7 @@ func configure(world,service,host,help=null) -> void:
 	job_details.configure(service)
 	candidate_modes.applied.connect(func():refreshing_modes=true;candidate_modes.clear();workers.refresh())
 	super.configure(world,service,host,help)
-	panel.configure_tasks(world,tasks,"")
+	panel.configure_tasks(world,tasks,"",help)
 	panel.configure_workers(world,workers)
 	panel.configure_orders(world,orders,help)
 	job_details_view=preload("res://scripts/work_order_details_view.gd").new();job_details_view.job_context=true;job_details_view.workshop_job_context=true;canvas.add_child(job_details_view)

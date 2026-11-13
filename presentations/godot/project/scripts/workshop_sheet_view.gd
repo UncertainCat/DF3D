@@ -9,10 +9,10 @@ var workers
 var orders
 var selected_tab:=0
 
-func configure_tasks(source,model,icon: String) -> void:
+func configure_tasks(source,model,icon: String,help=null) -> void:
 	building_icon=icon
 	tasks=preload("res://scripts/workshop_tasks_view.gd").new();add_child(tasks)
-	tasks.configure(source,model);tasks.position=Vector2(16,54)
+	tasks.configure(source,model,help);tasks.position=Vector2(16,54)
 	# The native tab strip overlaps the top of the Tasks body's rectangle.
 	# Let unhandled tab clicks reach the sheet; task actions still consume theirs.
 	tasks.mouse_filter=Control.MOUSE_FILTER_PASS

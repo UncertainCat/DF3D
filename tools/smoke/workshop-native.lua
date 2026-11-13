@@ -125,9 +125,14 @@ local ok,err=xpcall(function()
   assert(#jobs==0,'Hover reference needs an empty workshop queue')
   assert(click_label('Add new task'));assert(click_label('Make bed'))
   local created=assert(building.jobs[0]);assert(#building.jobs==1)
+  local second
   local worked,problem=xpcall(function()
    local script=require('gui.script');result.task_hover={}
-   for _,target in ipairs{{'rename-control',800,82},{'repeat',748,154},{'priority',772,154},{'move-up',796,154},{'details',820,154},{'suspend',844,154},{'remove',868,154},{'add',744,190},{'repeat-on',748,154,true},{'priority-on',772,154,true},{'suspend-on',844,154,true},{'remove-control',832,82}}do
+   for _,target in ipairs{{'rename-control',800,82},{'repeat',748,154},{'priority',772,154},{'move-up',796,154},{'details',820,154},{'suspend',844,154},{'remove',868,154},{'add',744,190},{'repeat-on',748,154,true},{'priority-on',772,154,true},{'suspend-on',844,154,true},{'move-up-enabled',796,190,false,true},{'remove-control',832,82}}do
+    if target[5] then
+     assert(click_label('Add new task'));assert(click_label('Make bed'))
+     second=assert(building.jobs[1]);assert(#building.jobs==2)
+    end
     if target[4] then
      g.precise_mouse_x=target[2];g.precise_mouse_y=target[3];g.mouse_x=target[2]//8;g.mouse_y=(target[3]-4)//12
      df.global.enabler.mouse_lbut_lift=0;gui.simulateInput(view,'_MOUSE_L');view:render(dfhack.getTickCount())
@@ -156,6 +161,7 @@ local ok,err=xpcall(function()
    end
    shot('task-hover')
   end,debug.traceback)
+  if second then assert(dfhack.job.removeJob(second))end
   assert(dfhack.job.removeJob(created));assert(worked,problem)
   return
  end

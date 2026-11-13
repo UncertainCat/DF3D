@@ -36277,5 +36277,2034 @@
         "reason": "Diagnostic stalled after reading retained button entries following Cancel. Agent explicitly requested failed teardown via a failure result (origin agent-requested-abort); source preserved, no acceptance credit."
       }
     ]
+  },
+  "magma_forge_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261113-113928",
+    "scope": "Retype a completed forge as MagmaForge6; temporarily open a noncenter tile over7/7 magma. Native isUnpowered returns false. Restore type, tile, designation and original queue afterward.",
+    "choices": {
+      "building_id": 323,
+      "pages": [
+        {
+          "category": -1,
+          "native": [
+            {
+              "caption": "Weapons and ammunition (opens menu)",
+              "category": 0,
+              "material_index": -1
+            },
+            {
+              "caption": "Armor (opens menu)",
+              "category": 1,
+              "material_index": -1
+            },
+            {
+              "caption": "Furniture (opens menu)",
+              "category": 2,
+              "material_index": -1
+            },
+            {
+              "caption": "Siege equipment (opens menu)",
+              "category": 3,
+              "material_index": -1
+            },
+            {
+              "caption": "Trap components (opens menu)",
+              "category": 4,
+              "material_index": -1
+            },
+            {
+              "caption": "Other objects (opens menu)",
+              "category": 5,
+              "material_index": -1
+            },
+            {
+              "caption": "Metal clothing (opens menu)",
+              "category": 6,
+              "material_index": -1
+            }
+          ],
+          "owned": [
+            {
+              "caption": "Weapons and ammunition (opens menu)",
+              "category": 0,
+              "material_index": -1
+            },
+            {
+              "caption": "Armor (opens menu)",
+              "category": 1,
+              "material_index": -1
+            },
+            {
+              "caption": "Furniture (opens menu)",
+              "category": 2,
+              "material_index": -1
+            },
+            {
+              "caption": "Siege equipment (opens menu)",
+              "category": 3,
+              "material_index": -1
+            },
+            {
+              "caption": "Trap components (opens menu)",
+              "category": 4,
+              "material_index": -1
+            },
+            {
+              "caption": "Other objects (opens menu)",
+              "category": 5,
+              "material_index": -1
+            },
+            {
+              "caption": "Metal clothing (opens menu)",
+              "category": 6,
+              "material_index": -1
+            }
+          ]
+        },
+        {
+          "back_root": [
+            "Weapons and ammunition (opens menu)",
+            "Armor (opens menu)",
+            "Furniture (opens menu)",
+            "Siege equipment (opens menu)",
+            "Trap components (opens menu)",
+            "Other objects (opens menu)",
+            "Metal clothing (opens menu)"
+          ],
+          "category": 0,
+          "native": [
+            {
+              "caption": "iron (opens menu)",
+              "category": 0,
+              "material_index": 0
+            },
+            {
+              "caption": "silver (opens menu)",
+              "category": 0,
+              "material_index": 2
+            },
+            {
+              "caption": "copper (opens menu)",
+              "category": 0,
+              "material_index": 3
+            },
+            {
+              "caption": "bronze (opens menu)",
+              "category": 0,
+              "material_index": 6
+            },
+            {
+              "caption": "steel (opens menu)",
+              "category": 0,
+              "material_index": 8
+            },
+            {
+              "caption": "bismuth bronze (opens menu)",
+              "category": 0,
+              "material_index": 24
+            },
+            {
+              "caption": "adamantine (opens menu)",
+              "category": 0,
+              "material_index": 25
+            },
+            {
+              "caption": "rusted metal (opens menu)",
+              "category": 0,
+              "material_index": 265
+            },
+            {
+              "caption": "flashing metal (opens menu)",
+              "category": 0,
+              "material_index": 267
+            },
+            {
+              "caption": "flowing metal (opens menu)",
+              "category": 0,
+              "material_index": 269
+            },
+            {
+              "caption": "translucent metal (opens menu)",
+              "category": 0,
+              "material_index": 271
+            },
+            {
+              "caption": "slick metal (opens menu)",
+              "category": 0,
+              "material_index": 273
+            },
+            {
+              "caption": "twinkling metal (opens menu)",
+              "category": 0,
+              "material_index": 275
+            },
+            {
+              "caption": "dark metal (opens menu)",
+              "category": 0,
+              "material_index": 277
+            },
+            {
+              "caption": "pale metal (opens menu)",
+              "category": 0,
+              "material_index": 279
+            },
+            {
+              "caption": "blistered metal (opens menu)",
+              "category": 0,
+              "material_index": 281
+            },
+            {
+              "caption": "flickering metal (opens menu)",
+              "category": 0,
+              "material_index": 283
+            }
+          ],
+          "owned": [
+            {
+              "caption": "iron (opens menu)",
+              "category": 0,
+              "material_index": 0
+            },
+            {
+              "caption": "silver (opens menu)",
+              "category": 0,
+              "material_index": 2
+            },
+            {
+              "caption": "copper (opens menu)",
+              "category": 0,
+              "material_index": 3
+            },
+            {
+              "caption": "bronze (opens menu)",
+              "category": 0,
+              "material_index": 6
+            },
+            {
+              "caption": "steel (opens menu)",
+              "category": 0,
+              "material_index": 8
+            },
+            {
+              "caption": "bismuth bronze (opens menu)",
+              "category": 0,
+              "material_index": 24
+            },
+            {
+              "caption": "adamantine (opens menu)",
+              "category": 0,
+              "material_index": 25
+            },
+            {
+              "caption": "rusted metal (opens menu)",
+              "category": 0,
+              "material_index": 265
+            },
+            {
+              "caption": "flashing metal (opens menu)",
+              "category": 0,
+              "material_index": 267
+            },
+            {
+              "caption": "flowing metal (opens menu)",
+              "category": 0,
+              "material_index": 269
+            },
+            {
+              "caption": "translucent metal (opens menu)",
+              "category": 0,
+              "material_index": 271
+            },
+            {
+              "caption": "slick metal (opens menu)",
+              "category": 0,
+              "material_index": 273
+            },
+            {
+              "caption": "twinkling metal (opens menu)",
+              "category": 0,
+              "material_index": 275
+            },
+            {
+              "caption": "dark metal (opens menu)",
+              "category": 0,
+              "material_index": 277
+            },
+            {
+              "caption": "pale metal (opens menu)",
+              "category": 0,
+              "material_index": 279
+            },
+            {
+              "caption": "blistered metal (opens menu)",
+              "category": 0,
+              "material_index": 281
+            },
+            {
+              "caption": "flickering metal (opens menu)",
+              "category": 0,
+              "material_index": 283
+            }
+          ]
+        },
+        {
+          "back_root": [
+            "Weapons and ammunition (opens menu)",
+            "Armor (opens menu)",
+            "Furniture (opens menu)",
+            "Siege equipment (opens menu)",
+            "Trap components (opens menu)",
+            "Other objects (opens menu)",
+            "Metal clothing (opens menu)"
+          ],
+          "category": 1,
+          "native": [
+            {
+              "caption": "iron (opens menu)",
+              "category": 1,
+              "material_index": 0
+            },
+            {
+              "caption": "copper (opens menu)",
+              "category": 1,
+              "material_index": 3
+            },
+            {
+              "caption": "bronze (opens menu)",
+              "category": 1,
+              "material_index": 6
+            },
+            {
+              "caption": "steel (opens menu)",
+              "category": 1,
+              "material_index": 8
+            },
+            {
+              "caption": "bismuth bronze (opens menu)",
+              "category": 1,
+              "material_index": 24
+            },
+            {
+              "caption": "adamantine (opens menu)",
+              "category": 1,
+              "material_index": 25
+            },
+            {
+              "caption": "rusted metal (opens menu)",
+              "category": 1,
+              "material_index": 265
+            },
+            {
+              "caption": "flashing metal (opens menu)",
+              "category": 1,
+              "material_index": 267
+            },
+            {
+              "caption": "flowing metal (opens menu)",
+              "category": 1,
+              "material_index": 269
+            },
+            {
+              "caption": "translucent metal (opens menu)",
+              "category": 1,
+              "material_index": 271
+            },
+            {
+              "caption": "slick metal (opens menu)",
+              "category": 1,
+              "material_index": 273
+            },
+            {
+              "caption": "twinkling metal (opens menu)",
+              "category": 1,
+              "material_index": 275
+            },
+            {
+              "caption": "dark metal (opens menu)",
+              "category": 1,
+              "material_index": 277
+            },
+            {
+              "caption": "pale metal (opens menu)",
+              "category": 1,
+              "material_index": 279
+            },
+            {
+              "caption": "blistered metal (opens menu)",
+              "category": 1,
+              "material_index": 281
+            },
+            {
+              "caption": "flickering metal (opens menu)",
+              "category": 1,
+              "material_index": 283
+            }
+          ],
+          "owned": [
+            {
+              "caption": "iron (opens menu)",
+              "category": 1,
+              "material_index": 0
+            },
+            {
+              "caption": "copper (opens menu)",
+              "category": 1,
+              "material_index": 3
+            },
+            {
+              "caption": "bronze (opens menu)",
+              "category": 1,
+              "material_index": 6
+            },
+            {
+              "caption": "steel (opens menu)",
+              "category": 1,
+              "material_index": 8
+            },
+            {
+              "caption": "bismuth bronze (opens menu)",
+              "category": 1,
+              "material_index": 24
+            },
+            {
+              "caption": "adamantine (opens menu)",
+              "category": 1,
+              "material_index": 25
+            },
+            {
+              "caption": "rusted metal (opens menu)",
+              "category": 1,
+              "material_index": 265
+            },
+            {
+              "caption": "flashing metal (opens menu)",
+              "category": 1,
+              "material_index": 267
+            },
+            {
+              "caption": "flowing metal (opens menu)",
+              "category": 1,
+              "material_index": 269
+            },
+            {
+              "caption": "translucent metal (opens menu)",
+              "category": 1,
+              "material_index": 271
+            },
+            {
+              "caption": "slick metal (opens menu)",
+              "category": 1,
+              "material_index": 273
+            },
+            {
+              "caption": "twinkling metal (opens menu)",
+              "category": 1,
+              "material_index": 275
+            },
+            {
+              "caption": "dark metal (opens menu)",
+              "category": 1,
+              "material_index": 277
+            },
+            {
+              "caption": "pale metal (opens menu)",
+              "category": 1,
+              "material_index": 279
+            },
+            {
+              "caption": "blistered metal (opens menu)",
+              "category": 1,
+              "material_index": 281
+            },
+            {
+              "caption": "flickering metal (opens menu)",
+              "category": 1,
+              "material_index": 283
+            }
+          ]
+        },
+        {
+          "back_root": [
+            "Weapons and ammunition (opens menu)",
+            "Armor (opens menu)",
+            "Furniture (opens menu)",
+            "Siege equipment (opens menu)",
+            "Trap components (opens menu)",
+            "Other objects (opens menu)",
+            "Metal clothing (opens menu)"
+          ],
+          "category": 2,
+          "native": [
+            {
+              "caption": "iron (opens menu)",
+              "category": 2,
+              "material_index": 0
+            },
+            {
+              "caption": "gold (opens menu)",
+              "category": 2,
+              "material_index": 1
+            },
+            {
+              "caption": "silver (opens menu)",
+              "category": 2,
+              "material_index": 2
+            },
+            {
+              "caption": "copper (opens menu)",
+              "category": 2,
+              "material_index": 3
+            },
+            {
+              "caption": "nickel (opens menu)",
+              "category": 2,
+              "material_index": 4
+            },
+            {
+              "caption": "zinc (opens menu)",
+              "category": 2,
+              "material_index": 5
+            },
+            {
+              "caption": "bronze (opens menu)",
+              "category": 2,
+              "material_index": 6
+            },
+            {
+              "caption": "brass (opens menu)",
+              "category": 2,
+              "material_index": 7
+            },
+            {
+              "caption": "steel (opens menu)",
+              "category": 2,
+              "material_index": 8
+            },
+            {
+              "caption": "platinum (opens menu)",
+              "category": 2,
+              "material_index": 10
+            },
+            {
+              "caption": "electrum (opens menu)",
+              "category": 2,
+              "material_index": 11
+            },
+            {
+              "caption": "tin (opens menu)",
+              "category": 2,
+              "material_index": 12
+            },
+            {
+              "caption": "fine pewter (opens menu)",
+              "category": 2,
+              "material_index": 13
+            },
+            {
+              "caption": "trifle pewter (opens menu)",
+              "category": 2,
+              "material_index": 14
+            },
+            {
+              "caption": "lay pewter (opens menu)",
+              "category": 2,
+              "material_index": 15
+            },
+            {
+              "caption": "lead (opens menu)",
+              "category": 2,
+              "material_index": 16
+            },
+            {
+              "caption": "aluminum (opens menu)",
+              "category": 2,
+              "material_index": 17
+            },
+            {
+              "caption": "nickel silver (opens menu)",
+              "category": 2,
+              "material_index": 18
+            },
+            {
+              "caption": "billon (opens menu)",
+              "category": 2,
+              "material_index": 19
+            },
+            {
+              "caption": "sterling silver (opens menu)",
+              "category": 2,
+              "material_index": 20
+            },
+            {
+              "caption": "black bronze (opens menu)",
+              "category": 2,
+              "material_index": 21
+            },
+            {
+              "caption": "rose gold (opens menu)",
+              "category": 2,
+              "material_index": 22
+            },
+            {
+              "caption": "bismuth bronze (opens menu)",
+              "category": 2,
+              "material_index": 24
+            },
+            {
+              "caption": "adamantine (opens menu)",
+              "category": 2,
+              "material_index": 25
+            },
+            {
+              "caption": "rusted metal (opens menu)",
+              "category": 2,
+              "material_index": 265
+            },
+            {
+              "caption": "flashing metal (opens menu)",
+              "category": 2,
+              "material_index": 267
+            },
+            {
+              "caption": "flowing metal (opens menu)",
+              "category": 2,
+              "material_index": 269
+            },
+            {
+              "caption": "translucent metal (opens menu)",
+              "category": 2,
+              "material_index": 271
+            },
+            {
+              "caption": "slick metal (opens menu)",
+              "category": 2,
+              "material_index": 273
+            },
+            {
+              "caption": "twinkling metal (opens menu)",
+              "category": 2,
+              "material_index": 275
+            },
+            {
+              "caption": "dark metal (opens menu)",
+              "category": 2,
+              "material_index": 277
+            },
+            {
+              "caption": "pale metal (opens menu)",
+              "category": 2,
+              "material_index": 279
+            },
+            {
+              "caption": "blistered metal (opens menu)",
+              "category": 2,
+              "material_index": 281
+            },
+            {
+              "caption": "flickering metal (opens menu)",
+              "category": 2,
+              "material_index": 283
+            }
+          ],
+          "owned": [
+            {
+              "caption": "iron (opens menu)",
+              "category": 2,
+              "material_index": 0
+            },
+            {
+              "caption": "gold (opens menu)",
+              "category": 2,
+              "material_index": 1
+            },
+            {
+              "caption": "silver (opens menu)",
+              "category": 2,
+              "material_index": 2
+            },
+            {
+              "caption": "copper (opens menu)",
+              "category": 2,
+              "material_index": 3
+            },
+            {
+              "caption": "nickel (opens menu)",
+              "category": 2,
+              "material_index": 4
+            },
+            {
+              "caption": "zinc (opens menu)",
+              "category": 2,
+              "material_index": 5
+            },
+            {
+              "caption": "bronze (opens menu)",
+              "category": 2,
+              "material_index": 6
+            },
+            {
+              "caption": "brass (opens menu)",
+              "category": 2,
+              "material_index": 7
+            },
+            {
+              "caption": "steel (opens menu)",
+              "category": 2,
+              "material_index": 8
+            },
+            {
+              "caption": "platinum (opens menu)",
+              "category": 2,
+              "material_index": 10
+            },
+            {
+              "caption": "electrum (opens menu)",
+              "category": 2,
+              "material_index": 11
+            },
+            {
+              "caption": "tin (opens menu)",
+              "category": 2,
+              "material_index": 12
+            },
+            {
+              "caption": "fine pewter (opens menu)",
+              "category": 2,
+              "material_index": 13
+            },
+            {
+              "caption": "trifle pewter (opens menu)",
+              "category": 2,
+              "material_index": 14
+            },
+            {
+              "caption": "lay pewter (opens menu)",
+              "category": 2,
+              "material_index": 15
+            },
+            {
+              "caption": "lead (opens menu)",
+              "category": 2,
+              "material_index": 16
+            },
+            {
+              "caption": "aluminum (opens menu)",
+              "category": 2,
+              "material_index": 17
+            },
+            {
+              "caption": "nickel silver (opens menu)",
+              "category": 2,
+              "material_index": 18
+            },
+            {
+              "caption": "billon (opens menu)",
+              "category": 2,
+              "material_index": 19
+            },
+            {
+              "caption": "sterling silver (opens menu)",
+              "category": 2,
+              "material_index": 20
+            },
+            {
+              "caption": "black bronze (opens menu)",
+              "category": 2,
+              "material_index": 21
+            },
+            {
+              "caption": "rose gold (opens menu)",
+              "category": 2,
+              "material_index": 22
+            },
+            {
+              "caption": "bismuth bronze (opens menu)",
+              "category": 2,
+              "material_index": 24
+            },
+            {
+              "caption": "adamantine (opens menu)",
+              "category": 2,
+              "material_index": 25
+            },
+            {
+              "caption": "rusted metal (opens menu)",
+              "category": 2,
+              "material_index": 265
+            },
+            {
+              "caption": "flashing metal (opens menu)",
+              "category": 2,
+              "material_index": 267
+            },
+            {
+              "caption": "flowing metal (opens menu)",
+              "category": 2,
+              "material_index": 269
+            },
+            {
+              "caption": "translucent metal (opens menu)",
+              "category": 2,
+              "material_index": 271
+            },
+            {
+              "caption": "slick metal (opens menu)",
+              "category": 2,
+              "material_index": 273
+            },
+            {
+              "caption": "twinkling metal (opens menu)",
+              "category": 2,
+              "material_index": 275
+            },
+            {
+              "caption": "dark metal (opens menu)",
+              "category": 2,
+              "material_index": 277
+            },
+            {
+              "caption": "pale metal (opens menu)",
+              "category": 2,
+              "material_index": 279
+            },
+            {
+              "caption": "blistered metal (opens menu)",
+              "category": 2,
+              "material_index": 281
+            },
+            {
+              "caption": "flickering metal (opens menu)",
+              "category": 2,
+              "material_index": 283
+            }
+          ]
+        },
+        {
+          "back_root": [
+            "Weapons and ammunition (opens menu)",
+            "Armor (opens menu)",
+            "Furniture (opens menu)",
+            "Siege equipment (opens menu)",
+            "Trap components (opens menu)",
+            "Other objects (opens menu)",
+            "Metal clothing (opens menu)"
+          ],
+          "category": 3,
+          "native": [
+            {
+              "caption": "iron (opens menu)",
+              "category": 3,
+              "material_index": 0
+            },
+            {
+              "caption": "silver (opens menu)",
+              "category": 3,
+              "material_index": 2
+            },
+            {
+              "caption": "copper (opens menu)",
+              "category": 3,
+              "material_index": 3
+            },
+            {
+              "caption": "bronze (opens menu)",
+              "category": 3,
+              "material_index": 6
+            },
+            {
+              "caption": "steel (opens menu)",
+              "category": 3,
+              "material_index": 8
+            },
+            {
+              "caption": "bismuth bronze (opens menu)",
+              "category": 3,
+              "material_index": 24
+            },
+            {
+              "caption": "adamantine (opens menu)",
+              "category": 3,
+              "material_index": 25
+            },
+            {
+              "caption": "rusted metal (opens menu)",
+              "category": 3,
+              "material_index": 265
+            },
+            {
+              "caption": "flashing metal (opens menu)",
+              "category": 3,
+              "material_index": 267
+            },
+            {
+              "caption": "flowing metal (opens menu)",
+              "category": 3,
+              "material_index": 269
+            },
+            {
+              "caption": "translucent metal (opens menu)",
+              "category": 3,
+              "material_index": 271
+            },
+            {
+              "caption": "slick metal (opens menu)",
+              "category": 3,
+              "material_index": 273
+            },
+            {
+              "caption": "twinkling metal (opens menu)",
+              "category": 3,
+              "material_index": 275
+            },
+            {
+              "caption": "dark metal (opens menu)",
+              "category": 3,
+              "material_index": 277
+            },
+            {
+              "caption": "pale metal (opens menu)",
+              "category": 3,
+              "material_index": 279
+            },
+            {
+              "caption": "blistered metal (opens menu)",
+              "category": 3,
+              "material_index": 281
+            },
+            {
+              "caption": "flickering metal (opens menu)",
+              "category": 3,
+              "material_index": 283
+            }
+          ],
+          "owned": [
+            {
+              "caption": "iron (opens menu)",
+              "category": 3,
+              "material_index": 0
+            },
+            {
+              "caption": "silver (opens menu)",
+              "category": 3,
+              "material_index": 2
+            },
+            {
+              "caption": "copper (opens menu)",
+              "category": 3,
+              "material_index": 3
+            },
+            {
+              "caption": "bronze (opens menu)",
+              "category": 3,
+              "material_index": 6
+            },
+            {
+              "caption": "steel (opens menu)",
+              "category": 3,
+              "material_index": 8
+            },
+            {
+              "caption": "bismuth bronze (opens menu)",
+              "category": 3,
+              "material_index": 24
+            },
+            {
+              "caption": "adamantine (opens menu)",
+              "category": 3,
+              "material_index": 25
+            },
+            {
+              "caption": "rusted metal (opens menu)",
+              "category": 3,
+              "material_index": 265
+            },
+            {
+              "caption": "flashing metal (opens menu)",
+              "category": 3,
+              "material_index": 267
+            },
+            {
+              "caption": "flowing metal (opens menu)",
+              "category": 3,
+              "material_index": 269
+            },
+            {
+              "caption": "translucent metal (opens menu)",
+              "category": 3,
+              "material_index": 271
+            },
+            {
+              "caption": "slick metal (opens menu)",
+              "category": 3,
+              "material_index": 273
+            },
+            {
+              "caption": "twinkling metal (opens menu)",
+              "category": 3,
+              "material_index": 275
+            },
+            {
+              "caption": "dark metal (opens menu)",
+              "category": 3,
+              "material_index": 277
+            },
+            {
+              "caption": "pale metal (opens menu)",
+              "category": 3,
+              "material_index": 279
+            },
+            {
+              "caption": "blistered metal (opens menu)",
+              "category": 3,
+              "material_index": 281
+            },
+            {
+              "caption": "flickering metal (opens menu)",
+              "category": 3,
+              "material_index": 283
+            }
+          ]
+        },
+        {
+          "back_root": [
+            "Weapons and ammunition (opens menu)",
+            "Armor (opens menu)",
+            "Furniture (opens menu)",
+            "Siege equipment (opens menu)",
+            "Trap components (opens menu)",
+            "Other objects (opens menu)",
+            "Metal clothing (opens menu)"
+          ],
+          "category": 4,
+          "native": [
+            {
+              "caption": "iron (opens menu)",
+              "category": 4,
+              "material_index": 0
+            },
+            {
+              "caption": "silver (opens menu)",
+              "category": 4,
+              "material_index": 2
+            },
+            {
+              "caption": "copper (opens menu)",
+              "category": 4,
+              "material_index": 3
+            },
+            {
+              "caption": "bronze (opens menu)",
+              "category": 4,
+              "material_index": 6
+            },
+            {
+              "caption": "steel (opens menu)",
+              "category": 4,
+              "material_index": 8
+            },
+            {
+              "caption": "bismuth bronze (opens menu)",
+              "category": 4,
+              "material_index": 24
+            },
+            {
+              "caption": "adamantine (opens menu)",
+              "category": 4,
+              "material_index": 25
+            },
+            {
+              "caption": "rusted metal (opens menu)",
+              "category": 4,
+              "material_index": 265
+            },
+            {
+              "caption": "flashing metal (opens menu)",
+              "category": 4,
+              "material_index": 267
+            },
+            {
+              "caption": "flowing metal (opens menu)",
+              "category": 4,
+              "material_index": 269
+            },
+            {
+              "caption": "translucent metal (opens menu)",
+              "category": 4,
+              "material_index": 271
+            },
+            {
+              "caption": "slick metal (opens menu)",
+              "category": 4,
+              "material_index": 273
+            },
+            {
+              "caption": "twinkling metal (opens menu)",
+              "category": 4,
+              "material_index": 275
+            },
+            {
+              "caption": "dark metal (opens menu)",
+              "category": 4,
+              "material_index": 277
+            },
+            {
+              "caption": "pale metal (opens menu)",
+              "category": 4,
+              "material_index": 279
+            },
+            {
+              "caption": "blistered metal (opens menu)",
+              "category": 4,
+              "material_index": 281
+            },
+            {
+              "caption": "flickering metal (opens menu)",
+              "category": 4,
+              "material_index": 283
+            }
+          ],
+          "owned": [
+            {
+              "caption": "iron (opens menu)",
+              "category": 4,
+              "material_index": 0
+            },
+            {
+              "caption": "silver (opens menu)",
+              "category": 4,
+              "material_index": 2
+            },
+            {
+              "caption": "copper (opens menu)",
+              "category": 4,
+              "material_index": 3
+            },
+            {
+              "caption": "bronze (opens menu)",
+              "category": 4,
+              "material_index": 6
+            },
+            {
+              "caption": "steel (opens menu)",
+              "category": 4,
+              "material_index": 8
+            },
+            {
+              "caption": "bismuth bronze (opens menu)",
+              "category": 4,
+              "material_index": 24
+            },
+            {
+              "caption": "adamantine (opens menu)",
+              "category": 4,
+              "material_index": 25
+            },
+            {
+              "caption": "rusted metal (opens menu)",
+              "category": 4,
+              "material_index": 265
+            },
+            {
+              "caption": "flashing metal (opens menu)",
+              "category": 4,
+              "material_index": 267
+            },
+            {
+              "caption": "flowing metal (opens menu)",
+              "category": 4,
+              "material_index": 269
+            },
+            {
+              "caption": "translucent metal (opens menu)",
+              "category": 4,
+              "material_index": 271
+            },
+            {
+              "caption": "slick metal (opens menu)",
+              "category": 4,
+              "material_index": 273
+            },
+            {
+              "caption": "twinkling metal (opens menu)",
+              "category": 4,
+              "material_index": 275
+            },
+            {
+              "caption": "dark metal (opens menu)",
+              "category": 4,
+              "material_index": 277
+            },
+            {
+              "caption": "pale metal (opens menu)",
+              "category": 4,
+              "material_index": 279
+            },
+            {
+              "caption": "blistered metal (opens menu)",
+              "category": 4,
+              "material_index": 281
+            },
+            {
+              "caption": "flickering metal (opens menu)",
+              "category": 4,
+              "material_index": 283
+            }
+          ]
+        },
+        {
+          "back_root": [
+            "Weapons and ammunition (opens menu)",
+            "Armor (opens menu)",
+            "Furniture (opens menu)",
+            "Siege equipment (opens menu)",
+            "Trap components (opens menu)",
+            "Other objects (opens menu)",
+            "Metal clothing (opens menu)"
+          ],
+          "category": 5,
+          "native": [
+            {
+              "caption": "iron (opens menu)",
+              "category": 5,
+              "material_index": 0
+            },
+            {
+              "caption": "gold (opens menu)",
+              "category": 5,
+              "material_index": 1
+            },
+            {
+              "caption": "silver (opens menu)",
+              "category": 5,
+              "material_index": 2
+            },
+            {
+              "caption": "copper (opens menu)",
+              "category": 5,
+              "material_index": 3
+            },
+            {
+              "caption": "nickel (opens menu)",
+              "category": 5,
+              "material_index": 4
+            },
+            {
+              "caption": "zinc (opens menu)",
+              "category": 5,
+              "material_index": 5
+            },
+            {
+              "caption": "bronze (opens menu)",
+              "category": 5,
+              "material_index": 6
+            },
+            {
+              "caption": "brass (opens menu)",
+              "category": 5,
+              "material_index": 7
+            },
+            {
+              "caption": "steel (opens menu)",
+              "category": 5,
+              "material_index": 8
+            },
+            {
+              "caption": "platinum (opens menu)",
+              "category": 5,
+              "material_index": 10
+            },
+            {
+              "caption": "electrum (opens menu)",
+              "category": 5,
+              "material_index": 11
+            },
+            {
+              "caption": "tin (opens menu)",
+              "category": 5,
+              "material_index": 12
+            },
+            {
+              "caption": "fine pewter (opens menu)",
+              "category": 5,
+              "material_index": 13
+            },
+            {
+              "caption": "trifle pewter (opens menu)",
+              "category": 5,
+              "material_index": 14
+            },
+            {
+              "caption": "lay pewter (opens menu)",
+              "category": 5,
+              "material_index": 15
+            },
+            {
+              "caption": "lead (opens menu)",
+              "category": 5,
+              "material_index": 16
+            },
+            {
+              "caption": "aluminum (opens menu)",
+              "category": 5,
+              "material_index": 17
+            },
+            {
+              "caption": "nickel silver (opens menu)",
+              "category": 5,
+              "material_index": 18
+            },
+            {
+              "caption": "billon (opens menu)",
+              "category": 5,
+              "material_index": 19
+            },
+            {
+              "caption": "sterling silver (opens menu)",
+              "category": 5,
+              "material_index": 20
+            },
+            {
+              "caption": "black bronze (opens menu)",
+              "category": 5,
+              "material_index": 21
+            },
+            {
+              "caption": "rose gold (opens menu)",
+              "category": 5,
+              "material_index": 22
+            },
+            {
+              "caption": "bismuth bronze (opens menu)",
+              "category": 5,
+              "material_index": 24
+            },
+            {
+              "caption": "adamantine (opens menu)",
+              "category": 5,
+              "material_index": 25
+            },
+            {
+              "caption": "rusted metal (opens menu)",
+              "category": 5,
+              "material_index": 265
+            },
+            {
+              "caption": "flashing metal (opens menu)",
+              "category": 5,
+              "material_index": 267
+            },
+            {
+              "caption": "flowing metal (opens menu)",
+              "category": 5,
+              "material_index": 269
+            },
+            {
+              "caption": "translucent metal (opens menu)",
+              "category": 5,
+              "material_index": 271
+            },
+            {
+              "caption": "slick metal (opens menu)",
+              "category": 5,
+              "material_index": 273
+            },
+            {
+              "caption": "twinkling metal (opens menu)",
+              "category": 5,
+              "material_index": 275
+            },
+            {
+              "caption": "dark metal (opens menu)",
+              "category": 5,
+              "material_index": 277
+            },
+            {
+              "caption": "pale metal (opens menu)",
+              "category": 5,
+              "material_index": 279
+            },
+            {
+              "caption": "blistered metal (opens menu)",
+              "category": 5,
+              "material_index": 281
+            },
+            {
+              "caption": "flickering metal (opens menu)",
+              "category": 5,
+              "material_index": 283
+            }
+          ],
+          "owned": [
+            {
+              "caption": "iron (opens menu)",
+              "category": 5,
+              "material_index": 0
+            },
+            {
+              "caption": "gold (opens menu)",
+              "category": 5,
+              "material_index": 1
+            },
+            {
+              "caption": "silver (opens menu)",
+              "category": 5,
+              "material_index": 2
+            },
+            {
+              "caption": "copper (opens menu)",
+              "category": 5,
+              "material_index": 3
+            },
+            {
+              "caption": "nickel (opens menu)",
+              "category": 5,
+              "material_index": 4
+            },
+            {
+              "caption": "zinc (opens menu)",
+              "category": 5,
+              "material_index": 5
+            },
+            {
+              "caption": "bronze (opens menu)",
+              "category": 5,
+              "material_index": 6
+            },
+            {
+              "caption": "brass (opens menu)",
+              "category": 5,
+              "material_index": 7
+            },
+            {
+              "caption": "steel (opens menu)",
+              "category": 5,
+              "material_index": 8
+            },
+            {
+              "caption": "platinum (opens menu)",
+              "category": 5,
+              "material_index": 10
+            },
+            {
+              "caption": "electrum (opens menu)",
+              "category": 5,
+              "material_index": 11
+            },
+            {
+              "caption": "tin (opens menu)",
+              "category": 5,
+              "material_index": 12
+            },
+            {
+              "caption": "fine pewter (opens menu)",
+              "category": 5,
+              "material_index": 13
+            },
+            {
+              "caption": "trifle pewter (opens menu)",
+              "category": 5,
+              "material_index": 14
+            },
+            {
+              "caption": "lay pewter (opens menu)",
+              "category": 5,
+              "material_index": 15
+            },
+            {
+              "caption": "lead (opens menu)",
+              "category": 5,
+              "material_index": 16
+            },
+            {
+              "caption": "aluminum (opens menu)",
+              "category": 5,
+              "material_index": 17
+            },
+            {
+              "caption": "nickel silver (opens menu)",
+              "category": 5,
+              "material_index": 18
+            },
+            {
+              "caption": "billon (opens menu)",
+              "category": 5,
+              "material_index": 19
+            },
+            {
+              "caption": "sterling silver (opens menu)",
+              "category": 5,
+              "material_index": 20
+            },
+            {
+              "caption": "black bronze (opens menu)",
+              "category": 5,
+              "material_index": 21
+            },
+            {
+              "caption": "rose gold (opens menu)",
+              "category": 5,
+              "material_index": 22
+            },
+            {
+              "caption": "bismuth bronze (opens menu)",
+              "category": 5,
+              "material_index": 24
+            },
+            {
+              "caption": "adamantine (opens menu)",
+              "category": 5,
+              "material_index": 25
+            },
+            {
+              "caption": "rusted metal (opens menu)",
+              "category": 5,
+              "material_index": 265
+            },
+            {
+              "caption": "flashing metal (opens menu)",
+              "category": 5,
+              "material_index": 267
+            },
+            {
+              "caption": "flowing metal (opens menu)",
+              "category": 5,
+              "material_index": 269
+            },
+            {
+              "caption": "translucent metal (opens menu)",
+              "category": 5,
+              "material_index": 271
+            },
+            {
+              "caption": "slick metal (opens menu)",
+              "category": 5,
+              "material_index": 273
+            },
+            {
+              "caption": "twinkling metal (opens menu)",
+              "category": 5,
+              "material_index": 275
+            },
+            {
+              "caption": "dark metal (opens menu)",
+              "category": 5,
+              "material_index": 277
+            },
+            {
+              "caption": "pale metal (opens menu)",
+              "category": 5,
+              "material_index": 279
+            },
+            {
+              "caption": "blistered metal (opens menu)",
+              "category": 5,
+              "material_index": 281
+            },
+            {
+              "caption": "flickering metal (opens menu)",
+              "category": 5,
+              "material_index": 283
+            }
+          ]
+        },
+        {
+          "back_root": [
+            "Weapons and ammunition (opens menu)",
+            "Armor (opens menu)",
+            "Furniture (opens menu)",
+            "Siege equipment (opens menu)",
+            "Trap components (opens menu)",
+            "Other objects (opens menu)",
+            "Metal clothing (opens menu)"
+          ],
+          "category": 6,
+          "native": [
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Forge adamantine cloak",
+              "item_subtype": 5,
+              "job_type": 100,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Forge adamantine coat",
+              "item_subtype": 3,
+              "job_type": 100,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Forge adamantine dress",
+              "item_subtype": 10,
+              "job_type": 100,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Forge adamantine hood",
+              "item_subtype": 2,
+              "job_type": 101,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Forge adamantine loincloth",
+              "item_subtype": 3,
+              "job_type": 102,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Forge adamantine shirt",
+              "item_subtype": 4,
+              "job_type": 100,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Forge adamantine trousers",
+              "item_subtype": 0,
+              "job_type": 102,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Forge adamantine tunic",
+              "item_subtype": 6,
+              "job_type": 100,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Forge pair of adamantine gloves",
+              "item_subtype": 1,
+              "job_type": 116,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Forge pair of adamantine mittens",
+              "item_subtype": 2,
+              "job_type": 116,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Forge pair of adamantine shoes",
+              "item_subtype": 0,
+              "job_type": 117,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Forge pair of adamantine socks",
+              "item_subtype": 5,
+              "job_type": 117,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Make adamantine backpack",
+              "item_subtype": -1,
+              "job_type": 131,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Make adamantine quiver",
+              "item_subtype": -1,
+              "job_type": 132,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            }
+          ],
+          "owned": [
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Forge adamantine cloak",
+              "item_subtype": 5,
+              "job_type": 100,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Forge adamantine coat",
+              "item_subtype": 3,
+              "job_type": 100,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Forge adamantine dress",
+              "item_subtype": 10,
+              "job_type": 100,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Forge adamantine hood",
+              "item_subtype": 2,
+              "job_type": 101,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Forge adamantine loincloth",
+              "item_subtype": 3,
+              "job_type": 102,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Forge adamantine shirt",
+              "item_subtype": 4,
+              "job_type": 100,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Forge adamantine trousers",
+              "item_subtype": 0,
+              "job_type": 102,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Forge adamantine tunic",
+              "item_subtype": 6,
+              "job_type": 100,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Forge pair of adamantine gloves",
+              "item_subtype": 1,
+              "job_type": 116,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Forge pair of adamantine mittens",
+              "item_subtype": 2,
+              "job_type": 116,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Forge pair of adamantine shoes",
+              "item_subtype": 0,
+              "job_type": 117,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Forge pair of adamantine socks",
+              "item_subtype": 5,
+              "job_type": 117,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Make adamantine backpack",
+              "item_subtype": -1,
+              "job_type": 131,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            },
+            {
+              "art_id": -1,
+              "art_subid": -1,
+              "art_type": -1,
+              "caption": "Make adamantine quiver",
+              "item_subtype": -1,
+              "job_type": 132,
+              "mat_index": 25,
+              "mat_type": 0,
+              "material_category": 0,
+              "specdata": -1,
+              "specflag": 0
+            }
+          ]
+        }
+      ],
+      "subtype": 6,
+      "unpowered": false
+    },
+    "effect": {
+      "native": {
+        "inputs": [
+          {
+            "flags1": 0,
+            "flags2": 0,
+            "flags3": 0,
+            "item_subtype": -1,
+            "item_type": 0,
+            "mat_index": 0,
+            "mat_type": 0,
+            "quantity": 150
+          }
+        ],
+        "item_subtype": 1,
+        "job_type": 96,
+        "mat_index": 0,
+        "mat_type": 0,
+        "material_category": 0
+      },
+      "viewer": {
+        "inputs": [
+          {
+            "flags1": 0,
+            "flags2": 0,
+            "flags3": 0,
+            "item_subtype": -1,
+            "item_type": 0,
+            "mat_index": 0,
+            "mat_type": 0,
+            "quantity": 150
+          }
+        ],
+        "item_subtype": 1,
+        "job_type": 96,
+        "mat_index": 0,
+        "mat_type": 0,
+        "material_category": 0
+      }
+    },
+    "receipt": {
+      "created_job": 382797,
+      "success": true
+    },
+    "crops": [
+      {
+        "native": "workshop-forge-choices--1.png",
+        "viewer": "workshop-forge-root-live.png",
+        "crop": [
+          432,
+          106,
+          888,
+          676
+        ],
+        "different_pixels": 0,
+        "native_sha256": "ede65d8415b4e7fa67833f6fc7e2595ccf1e8a825a7d0a3bb1d4a6f12f5c7ad1",
+        "viewer_sha256": "8b7b89f84fa72f6dddd354e0eecd0cc991c9bbbf28493ceaea5d186d3df2aebe"
+      },
+      {
+        "native": "workshop-forge-choices-0.png",
+        "viewer": "workshop-forge-material-live.png",
+        "crop": [
+          432,
+          106,
+          888,
+          676
+        ],
+        "different_pixels": 0,
+        "native_sha256": "dad52805e4108ff4fd22c5d17115cd8b4fdeaea142cb30397120790708f9a1bb",
+        "viewer_sha256": "0043f1092f2224b8e6d4c41463a142b14e3c60105836fb76a2c3ef0e2c263d56"
+      },
+      {
+        "native": "workshop-forge-navigation-tasks.png",
+        "viewer": "workshop-forge-tasks-live.png",
+        "crop": [
+          432,
+          106,
+          888,
+          676
+        ],
+        "different_pixels": 0,
+        "native_sha256": "8b34018af0ab8ec2872ea20620baa4003ff05eea7a0c83ae7fd58c74740ac026",
+        "viewer_sha256": "e87f252d6f103c613559c83eef5b3f14309a18579a2c81f7ad922446f3b2b9a7"
+      }
+    ],
+    "diagnostics": {
+      "known_engine": [
+        {
+          "id": "godot-separate-thread-notice",
+          "count": 1,
+          "reference": "https://docs.godotengine.org/en/stable/classes/class_projectsettings.html#class-projectsettings-property-rendering-driver-threads-thread-model"
+        },
+        {
+          "id": "godot-device-finalize",
+          "count": 1,
+          "reference": "https://github.com/godotengine/godot/issues/119000"
+        },
+        {
+          "id": "godot-shutdown-objects",
+          "count": 1,
+          "reference": "ENGINEERING.md#tests-and-known-problems"
+        }
+      ],
+      "unclassified": []
+    },
+    "verified": [
+      "All seven native root categories and their material catalogs match the owned provider.",
+      "Viewer Weapons/ammunition material/task navigation, bolt filter, Back, invalid keys, blank footer, first iron task creation and root Repeat on/off."
+    ],
+    "limitations": [
+      "One task created, not every category/material effect.",
+      "Worker execution, products and fuel consumption not verified.",
+      "Full workshop and management release acceptance remain pending."
+    ],
+    "failed_attempt": "113836 native capture passed but viewer test failed to parse an untyped local; corrected before accepted run."
   }
 }

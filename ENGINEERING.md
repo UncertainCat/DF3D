@@ -17845,6 +17845,24 @@ retains hashes, effects and limits. This qualifies one creation per child, not
 all instrument combinations or worker execution/products. Other workshop
 instrument categories and broader management/release acceptance remain pending.
 
+Protected113928 on2026-11-13 qualifies the existing MagmaForge provider in a
+paused controlled fixture: completed forge retyped6, noncenter opening above
+7/7 magma, native isUnpowered false. All seven category catalogs match native
+(material/task counts17/16/34/17/17/34/14). Viewer Weapons/ammunition material
+and task navigation, bolt filtering, Back, invalid keys and blank-footer input
+pass. One first iron task creation matches native job/inputs and retains
+root-context Repeat on/off. Root/material/task panel crops432,106..888,676
+match native pixels. This does not qualify every creation, worker execution,
+products or fuel consumption. No runtime provider change was necessary.
+
+Owned DF12208 exits unsaved with type, tile, designation and queue restored;
+source saves/preferences are preserved.30FPS58-60C samples are not peaks.
+Only the three documented Godot diagnostics remain. Core19 passes.
+Fixture magma_forge_reference retains provenance and limits. Initial113836
+failed on a test-driver type annotation, fixed before acceptance; no product
+failure is inferred. Whole workshop exposure and full management/release
+acceptance remain pending.
+
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.
 Renderer18643e uses this predicate and installed BUILDING_JOBS_ACTIVE artwork.

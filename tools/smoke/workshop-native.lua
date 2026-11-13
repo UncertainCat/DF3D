@@ -127,8 +127,19 @@ local ok,err=xpcall(function()
    if df.building_workshopst:is_instance(b) and b.type==df.workshop_type.MetalsmithsForge and b:getBuildStage()==b:getMaxBuildStage()then forge=b;break end
   end
   assert(forge,'Forge choice reference needs a completed forge')
+  if os.getenv('DF3D_WORKSHOP_MAGMA_FORGE')=='1'then
+   workshop_fixtures[#workshop_fixtures+1]={building=forge,prior_type=forge.type,prior_custom=forge.custom_type,prior_stage=forge.construction_stage}
+   forge.type=df.workshop_type.MagmaForge
+   local x,y,z=forge.x1,forge.y1,forge.z;local tx,ty=x%16,y%16
+   assert(x~=forge.centerx or y~=forge.centery,'Magma forge requires a noncenter opening')
+   local upper=assert(dfhack.maps.getTileBlock(x,y,z));local lower=assert(dfhack.maps.getTileBlock(x,y,z-1))
+   magma_tiles[#magma_tiles+1]={upper=upper,lower=lower,x=tx,y=ty,tile=upper.tiletype[tx][ty],designation=lower.designation[tx][ty].whole}
+   upper.tiletype[tx][ty]=df.tiletype.OpenSpace
+   lower.designation[tx][ty].flow_size=7;lower.designation[tx][ty].liquid_type=df.tile_liquid.Magma
+   assert(not forge:isUnpowered(),'Controlled opening did not power magma forge')
+  end
   local before={};for _,job in ipairs(forge.jobs)do before[#before+1]=job.id end
-  result.forge_choices={building_id=forge.id,pages={}}
+  result.forge_choices={building_id=forge.id,subtype=forge:getSubtype(),unpowered=forge:isUnpowered(),pages={}}
   for category=-1,6 do
    gui.simulateInput(view,'LEAVESCREEN');select_map(forge);assert(click_label('Add new task'))
    if category>=0 then

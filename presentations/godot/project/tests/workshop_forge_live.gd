@@ -17,7 +17,8 @@ func run() -> void:
 	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true);service.set_process(false)
 	var host=preload("res://scripts/ui_host.gd").new();host.interaction=Interaction.new();root.add_child(host)
 	var owner=preload("res://scripts/workshop_panel.gd").new();root.add_child(owner);owner.configure(world,service,host)
-	owner.open_workshop(int(reference.building_id),"BUILDING_ICON_WORKSHOP_METALSMITH")
+	var icons=preload("res://scripts/location_staff_indicators.gd")
+	owner.open_workshop(int(reference.building_id),icons.WORKSHOPS[str(int(reference.get("subtype",5)))])
 	await settle(service,func():return owner.state.phase==owner.state.Phase.Ready and owner.tasks.phase==owner.tasks.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
 
 	for invalid in ["forge:00","forge:0:999999","forge:0:4294967296","forge:6:0"]:
@@ -66,6 +67,14 @@ func run() -> void:
 	await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready and owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
 	var created: int=owner.tasks.snapshot.get("created_job",-1)
 	check(created>=0 and not owner.panel.tasks.picking,"Forge task did not queue and return to Tasks")
+	if OS.get_environment("DF3D_WORKSHOP_MAGMA_FORGE")=="1":
+		var index: int=owner.tasks.jobs().size()-1
+		if check(index>=0 and owner.tasks.jobs()[index].id==created and owner.tasks.jobs()[index].editable,"Magma forge root controls missing"):
+			for desired in [true,false]:
+				click(owner.panel.tasks.global_position+Vector2(316,48+index*36))
+				await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready and owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
+				check(owner.tasks.jobs()[index].repeat==desired,"Magma forge Repeat differs")
+
 	owner.close_panel();owner.queue_free();await process_frame
 	host.interaction.panel.free();host.queue_free();service.queue_free();await process_frame
 	var file:=FileAccess.open(directory+"/workshop-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"created_job":created}));file.close()

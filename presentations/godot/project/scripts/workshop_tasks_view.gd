@@ -164,7 +164,13 @@ func _draw() -> void:
 			var known: bool=row.has("availability")
 			var enabled: bool=row.get("category_choice",false) or (known and row.availability.available)
 			caption(row.name,Vector2(8,y+18),15 if enabled else 12)
-			if known and not enabled:caption(row.availability.objection,Vector2(16,y+30),4)
+			# Native1854c9: objections take precedence over memorial info.
+			var objection: String=row.get("availability",{}).get("objection","")
+			if not objection.is_empty():caption(objection,Vector2(16,y+30),4)
+			elif row.has("memorial"):
+				var priority: int=row.memorial.priority
+				# Native1b9ee0: only priority1000 is yellow; other non-ghost groups are cyan.
+				caption(row.memorial.text,Vector2(16,y+30),13 if priority==1 else (14 if priority==1000 else 11))
 		return
 	if state.snapshot.is_empty():return
 	var jobs: Array=state.jobs()

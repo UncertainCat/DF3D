@@ -150,6 +150,10 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
       availability["objection"]=String::utf8(v.availability->objection.c_str());
       row["availability"]=availability;
     }
+    if(v.memorial) {
+      Dictionary memorial;memorial["text"]=String::utf8(v.memorial->text.c_str());
+      memorial["priority"]=v.memorial->priority;row["memorial"]=memorial;
+    }
     recipes.push_back(row);
   }
   for (const auto& v : p.jobs) {

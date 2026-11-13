@@ -54,11 +54,14 @@ local function template_job(recipe,b,native_requirements)
  if not ok then delete_template(j);return nil,tostring(err) end
  return j
 end
-local function recipes(b,native_requirements,native_caption,native_reactions,native_less,native_templates,native_categories,category,native_forge,native_fabrics,native_smelter)
+local function recipes(b,native_requirements,native_caption,native_reactions,native_less,native_templates,native_categories,category,native_forge,native_fabrics,native_smelter,native_memorial)
  local out,keys={},{}
  local k=kind(b)
  local forge=k=='MetalsmithsForge' or k=='MagmaForge'
- local ordinary=k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' or k=='Kiln' or k=='Farmers' or k=='Millstone' or k=='Tanners' or k=='Leatherworks' or k=='Jewelers' or k=='Mechanics' or k=='Butchers'
+ local stone=k=='Masons'
+ local memorial_page=stone and category=='stone:memorial'
+ if stone and category~='' and not memorial_page and category:sub(1,9)~='reaction:' then return nil,'Invalid memorial category' end
+ local ordinary=stone or k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' or k=='Kiln' or k=='Farmers' or k=='Millstone' or k=='Tanners' or k=='Leatherworks' or k=='Jewelers' or k=='Mechanics' or k=='Butchers'
  local clothier=k=='Clothiers'
  local glass=k=='GlassFurnace'
  local craft=k=='Craftsdwarfs'
@@ -85,7 +88,7 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
  if category~='' and not supported then return nil,'Unsupported workshop category' end
  if supported then
   out.category=category;out.categories={}
-  if not fabric and not glass_material and craft_material==nil and (not forge or category=='' or category:sub(1,9)=='reaction:') then out.categories=native_categories(b.id,category) end
+  if not memorial_page and not fabric and not glass_material and craft_material==nil and (not forge or category=='' or category:sub(1,9)=='reaction:') then out.categories=native_categories(b.id,category) end
   out.editable_templates=native_templates(b.id)
   if k=='Butchers' then
    -- Pinned native8c5938..8c597d includes Catch live land animal at root,
@@ -100,7 +103,18 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
    out.categories[at]=row
   end end
  end
- local reaction_page=not fabric and not glass_material and craft_material==nil and (not forge or category=='' or category:sub(1,9)=='reaction:')
+ if stone then
+  local memorials=native_memorial(b.id);out.memorial_ids={}
+  for _,row in ipairs(memorials)do
+   local id=row.historical_figure_id;out.memorial_ids[id]=true
+   if memorial_page then
+    out[#out+1]={key='memorial:'..id,fields={job_type=df.job_type.EngraveSlab,specdata={hist_figure_id=id}},
+      available=true,objection='',memorial={text=utf(row.info),priority=row.priority}}
+   end
+  end
+  if category=='' then table.insert(out.categories,1,{key='stone:memorial',caption=memorials.caption}) end
+ end
+ local reaction_page=not memorial_page and not fabric and not glass_material and craft_material==nil and (not forge or category=='' or category:sub(1,9)=='reaction:')
  if (clothier or glass or craft) and category=='' then
   local categories=native_fabrics(b.id)
   for _,row in ipairs(out.categories)do categories[#categories+1]=row end
@@ -190,7 +204,13 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
  -- table.sort. Compare DF-encoded captions before presentation UTF-8 conversion.
  for i=2,#out do
   local row=out[i];local at=i
-  while at>1 and native_less(row.native_caption,out[at-1].native_caption) do out[at]=out[at-1];at=at-1 end
+  while at>1 do
+   local previous=out[at-1]
+   local priority=row.memorial and row.memorial.priority or 1000
+   local previous_priority=previous.memorial and previous.memorial.priority or 1000
+   if priority>previous_priority or (priority==previous_priority and not native_less(row.native_caption,previous.native_caption))then break end
+   out[at]=previous;at=at-1
+  end
   out[at]=row
  end
  if #out>128 then return nil,'Recipe catalog exceeds bounded 128 entries' end
@@ -198,6 +218,7 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
 end
 local function editable(j,rs)
  if j.flags.special or j.flags.by_manager then return false end
+ if j.job_type==df.job_type.EngraveSlab then return rs.memorial_ids and rs.memorial_ids[j.specdata.hist_figure_id] or false end
  for _,fields in ipairs(rs.editable_templates or {})do
   if fields.job_type==df.job_type.CustomReaction then
    if j.job_type==fields.job_type and j.reaction_name==fields.reaction_name then return true end
@@ -271,6 +292,7 @@ local function inspect(b,rs,native_caption,native_active)
  for _,r in ipairs(rs) do
   local row={key=r.key,name=r.name,requirements=r.requirements}
   if r.available~=nil then row.availability={available=r.available,objection=r.objection} end
+  if r.memorial then row.memorial=r.memorial end
   result.recipes[#result.recipes+1]=row
  end
  if #b.jobs>64 then return fail('Workshop queue exceeds bounded inspector') end
@@ -324,7 +346,7 @@ return function(request)
   seed_scan.cursor=finish
   if finish<#all then return {ok=true,pending=true,message='Counting available seeds'} end
  end
- local rs,err=recipes(b,request.workshop_requirements,request.workshop_caption,request.workshop_reactions,request.workshop_caption_less,request.workshop_task_templates,request.workshop_task_categories,p.task_category or '',request.workshop_forge_page,request.workshop_material_choices,request.workshop_smelter_choices);if not rs then return fail(err) end
+ local rs,err=recipes(b,request.workshop_requirements,request.workshop_caption,request.workshop_reactions,request.workshop_caption_less,request.workshop_task_templates,request.workshop_task_categories,p.task_category or '',request.workshop_forge_page,request.workshop_material_choices,request.workshop_smelter_choices,request.workshop_memorial_choices);if not rs then return fail(err) end
  if request.action==16 then
   local result=inspect(b,rs,request.workshop_caption,request.workshop_job_active)
   if kind(b)~='FarmPlot' and p.query and p.query~='' then

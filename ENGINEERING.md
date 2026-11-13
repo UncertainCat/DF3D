@@ -17537,9 +17537,27 @@ text and priority. The world model retains it independently of availability;
 absent legacy observations remain unknown. This additive field leaves
 Management208 unchanged: older readers ignore it, and older recordings do not
 acquire fabricated memorial facts. Manager recipes reject this workshop-only
-record. Bridge publication, presentation wiring and the owned candidate/text/
-priority provider remain pending. Runtime and viewer/job-effect acceptance
-remain pending. Owned DF4376 exited unsaved; source saves and queues remained
+record. The bridge and Godot now carry this record independently of refusal
+messages. The owned provider composes the five native candidate buckets and
+calls the pinned memorial/burial/pet-caste predicates. It uses the native
+inactive-or-ghost flags, death-incident site/group discovery gates, deceased
+citizen records and slab counts; no runtime native menu or widget is borrowed.
+Stoneworker root recipes use the separately audited ordinary native catalog.
+Memorial recipe identities include historical-figure IDs and are regenerated
+before queueing; priority precedes the existing native caption comparator.
+Protected232605 on2026-11-12 matches all66 memorial captions, availability,
+status and priorities, Cancel/reopen, two invalid categories and an unknown
+historical-figure refusal. First/last actual click-created jobs match native
+fields and input requirements, then original queues are restored. Root and
+first memorial-page crops432,106..888,676 have zero differing pixels; the
+memorial screenshot was inspected. QA state/composition/adapter and core19
+pass. The lane has three known Godot diagnostics and no unclassified errors.
+Owned DF21748 exited unsaved with source preservation; serial30FPS sampled
+35-37C, not continuous peaks. Ordinary-root creation effects, all66 creations,
+controlled multi-slab/missing-unit cases, lower-page cyan rendering, worker
+execution/products and uninitialized item_type equivalence remain unqualified.
+See native_workshop.json.stone_runtime_reference; whole workshop remains gated.
+The earlier discovery owned DF4376 exited unsaved; source saves and queues remained
 unchanged. Native capture used30FPS with a41C GPU sample. See
 native_workshop.json.stone_memorial_navigation_reference.
 

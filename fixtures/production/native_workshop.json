@@ -12357,5 +12357,573 @@
         "No runtime widget or renderer calls authorized by this audit"
       ]
     }
+  },
+  "stone_runtime_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-232605",
+    "scope": "Stoneworker root and named memorial navigation, native semantic candidates/status/priority, two click-created memorial jobs. Whole workshop remains gated.",
+    "root_choices": 21,
+    "memorial_choices": 66,
+    "memorial_rows": [
+      {
+        "caption": "Såkzul Uzolräm (engrave memorial)",
+        "historical_figure_id": 9795,
+        "priority": 1,
+        "info": "Ghost, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Uja Uzinpictham (engrave memorial)",
+        "historical_figure_id": 3335,
+        "priority": 1,
+        "info": "Ghost, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Ast Cattenmesir (engrave memorial)",
+        "historical_figure_id": 9270,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Ast Kathilsazir (engrave memorial)",
+        "historical_figure_id": 10106,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Dastot èzumral (engrave memorial)",
+        "historical_figure_id": 9266,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Dastot Gitnuksigun (engrave memorial)",
+        "historical_figure_id": 10289,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Datan Avuzdakon (engrave memorial)",
+        "historical_figure_id": 9493,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Dîshmab Zimkelnomal (engrave memorial)",
+        "historical_figure_id": 10109,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "èrith Kegethetur (engrave memorial)",
+        "historical_figure_id": 10196,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Goden Abanshigós (engrave memorial)",
+        "historical_figure_id": 9377,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Monom Eggutmeng (engrave memorial)",
+        "historical_figure_id": 9556,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Necar Tirinpirni (engrave memorial)",
+        "historical_figure_id": 5200,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Oddom Tekkudzaneg (engrave memorial)",
+        "historical_figure_id": 10004,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Umil Kespomba (engrave memorial)",
+        "historical_figure_id": 8255,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Zas Rigòthrosat (engrave memorial)",
+        "historical_figure_id": 9264,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Zulban Bakustoslan (engrave memorial)",
+        "historical_figure_id": 10049,
+        "priority": 1000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Aban Thîkutsolon (engrave memorial)",
+        "historical_figure_id": 10011,
+        "priority": 1002,
+        "info": "Memorialized, slab engraved",
+        "available": true
+      },
+      {
+        "caption": "Ber Endoksibrek (engrave memorial)",
+        "historical_figure_id": 9636,
+        "priority": 1002,
+        "info": "Memorialized, slab engraved",
+        "available": true
+      },
+      {
+        "caption": "Degël Eriblibad (engrave memorial)",
+        "historical_figure_id": 9376,
+        "priority": 1002,
+        "info": "Memorialized, slab engraved",
+        "available": true
+      },
+      {
+        "caption": "Kol Asobstettad (engrave memorial)",
+        "historical_figure_id": 9265,
+        "priority": 1002,
+        "info": "Entombed, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Lum Licpuja (engrave memorial)",
+        "historical_figure_id": 2995,
+        "priority": 1002,
+        "info": "Memorialized, slab engraved",
+        "available": true
+      },
+      {
+        "caption": "Rimtar Ebalrovod (engrave memorial)",
+        "historical_figure_id": 9557,
+        "priority": 1002,
+        "info": "Memorialized, slab engraved",
+        "available": true
+      },
+      {
+        "caption": "Rîsen Bomrekód (engrave memorial)",
+        "historical_figure_id": 1880,
+        "priority": 1002,
+        "info": "Memorialized, slab engraved",
+        "available": true
+      },
+      {
+        "caption": "Thur Sathreliki (engrave memorial)",
+        "historical_figure_id": 2879,
+        "priority": 1002,
+        "info": "Memorialized, slab engraved",
+        "available": true
+      },
+      {
+        "caption": "Tun Dodóktomêm (engrave memorial)",
+        "historical_figure_id": 9731,
+        "priority": 1002,
+        "info": "Memorialized, slab engraved",
+        "available": true
+      },
+      {
+        "caption": "Udib Keshansåkzul (engrave memorial)",
+        "historical_figure_id": 1079,
+        "priority": 1002,
+        "info": "Memorialized, slab engraved",
+        "available": true
+      },
+      {
+        "caption": "Vabôk Odgúblòr (engrave memorial)",
+        "historical_figure_id": 6675,
+        "priority": 1002,
+        "info": "Memorialized, slab engraved",
+        "available": true
+      },
+      {
+        "caption": "Zuglar Rithdakon (engrave memorial)",
+        "historical_figure_id": 9634,
+        "priority": 1002,
+        "info": "Memorialized, slab engraved",
+        "available": true
+      },
+      {
+        "caption": "Äs Gemuroslan (engrave memorial)",
+        "historical_figure_id": 10561,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Aslot Amxuzesm (engrave memorial)",
+        "historical_figure_id": 10273,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Cadi Innahhibor (engrave memorial)",
+        "historical_figure_id": 10249,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Dostngosp Oguspngom (engrave memorial)",
+        "historical_figure_id": 10170,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Em Slobustâsost (engrave memorial)",
+        "historical_figure_id": 10481,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Fikod Atheldarùd (engrave memorial)",
+        "historical_figure_id": 4285,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Fikod Eslokum (engrave memorial)",
+        "historical_figure_id": 10562,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Ithithe Thilunanina (engrave memorial)",
+        "historical_figure_id": 10487,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Kel Oddomoslan (engrave memorial)",
+        "historical_figure_id": 7017,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Kurik Agzes (engrave memorial)",
+        "historical_figure_id": 10335,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Mori Kunodus (engrave memorial)",
+        "historical_figure_id": 4055,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Ngokang Zusmusmaslot (engrave memorial)",
+        "historical_figure_id": 10169,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Ngom Urarobxog (engrave memorial)",
+        "historical_figure_id": 10171,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Nine ílimereya (engrave memorial)",
+        "historical_figure_id": 10180,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Okom Soxoslar Osplu Onsmost (engrave memorial)",
+        "historical_figure_id": 24,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Osta Ozudsnosstrosp (engrave memorial)",
+        "historical_figure_id": 10396,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Pobe Ecenpapos (engrave memorial)",
+        "historical_figure_id": 9545,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Rakbin Komodoto (engrave memorial)",
+        "historical_figure_id": 10540,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Riñih Goctaape (engrave memorial)",
+        "historical_figure_id": 5946,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Smunstu Kugmeomosp (engrave memorial)",
+        "historical_figure_id": 10084,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Smunstu Uksossad (engrave memorial)",
+        "historical_figure_id": 10398,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Snodub Songspösp (engrave memorial)",
+        "historical_figure_id": 10353,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Stozu Stosbûbuxzo (engrave memorial)",
+        "historical_figure_id": 10395,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Therset Damsouthra Candolalgi (engrave memorial)",
+        "historical_figure_id": 4526,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Vadane Nelolefari (engrave memorial)",
+        "historical_figure_id": 10182,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Zocol Nentukònul (engrave memorial)",
+        "historical_figure_id": 10536,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Zolak Ostaono (engrave memorial)",
+        "historical_figure_id": 10085,
+        "priority": 2000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Catten ònulsolon (engrave memorial)",
+        "historical_figure_id": 10107,
+        "priority": 3000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Datan Mosustomêm (engrave memorial)",
+        "historical_figure_id": 10008,
+        "priority": 3000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Donkey (engrave memorial)",
+        "historical_figure_id": 9635,
+        "priority": 3000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Elephant (engrave memorial)",
+        "historical_figure_id": 9546,
+        "priority": 3000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Horse (engrave memorial)",
+        "historical_figure_id": 10183,
+        "priority": 3000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Inod Gusilmilol (engrave memorial)",
+        "historical_figure_id": 9558,
+        "priority": 3000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Momuz Zulbanastis (engrave memorial)",
+        "historical_figure_id": 9997,
+        "priority": 3000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Mule (engrave memorial)",
+        "historical_figure_id": 9637,
+        "priority": 3000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Tholtig Nolrith (engrave memorial)",
+        "historical_figure_id": 10209,
+        "priority": 3000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Vabôk Gusilgébar (engrave memorial)",
+        "historical_figure_id": 9796,
+        "priority": 3000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      },
+      {
+        "caption": "Yak Bull (engrave memorial)",
+        "historical_figure_id": 10181,
+        "priority": 3000,
+        "info": "Not memorialized, no slabs engraved",
+        "available": true
+      }
+    ],
+    "effects": [
+      {
+        "index": 1,
+        "native": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 536870912,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 87,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 211,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "",
+          "specdata": 9795,
+          "specflag": 0
+        }
+      },
+      {
+        "index": 66,
+        "native": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 536870912,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 87,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 211,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "",
+          "specdata": 10181,
+          "specflag": 0
+        }
+      }
+    ],
+    "effects_evidence": "Native snapshots are saved before viewer runs; post-viewer lane assertions compare created jobs to these fields and input requirements, then remove them and verify original queue IDs/order.",
+    "navigation": [
+      "native/viewer category click",
+      "memorial Cancel returns to Tasks",
+      "reopen restores root",
+      "two invalid categories rejected",
+      "unknown historical figure recipe rejected"
+    ],
+    "rendering": {
+      "crop": [
+        432,
+        106,
+        888,
+        676
+      ],
+      "root_different_pixels": 0,
+      "memorial_different_pixels": 0,
+      "inspected": "stone-memorials-live.png"
+    },
+    "source_preservation": "Owned DF21748 exited unsaved; protected lane passed source-save preservation and restored original queues/preferences.",
+    "diagnostics": {
+      "known_engine": 3,
+      "unclassified": []
+    },
+    "gpu": "Serial30FPS; sampled35-37C, not a continuous peak measurement.",
+    "omissions": [
+      "All ordinary Stoneworker task creation effects",
+      "All66 memorial creations",
+      "Controlled multiple engraved slabs and missing figure/unit cases",
+      "Rendered cyan status rows below first page",
+      "Worker execution/products",
+      "Native uninitialized item_type equivalence",
+      "Full workshop lifecycle/hover/hotkeys/responsive acceptance"
+    ],
+    "sha256": {
+      "workshop-native.json": "8de9c2bce3c4f65cc89ad736fd4e966b6ca38e6f86a9ed360171ebc7c84a42a5",
+      "workshop-wire-result.json": "d20a140a121df157e9d129514eabf717544f004871693c700163d98bb6dd4225",
+      "result.json": "01b1609fbea6eba1ed81f56fb31121b209032751fbbb2bd93f15ed345bb93cab",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "workshop-stone-root.png": "5dde8654f0f35b843092389bb97e2a088b8763f678f289d8e692b9dc4beb8131",
+      "workshop-stone-memorials.png": "fddfcd2a9509d51b0c3db1c67f5c6efbc22de1f586ec27a9a5f7dab3dadb37d5",
+      "stone-root-live.png": "a5336962f9181b7426538c6ed2d4a7a6470f8b3ee611f1b4b16f5529e4583d42",
+      "stone-memorials-live.png": "7b6c9080f46652222e4ae21507192030471dcf528f63bbfad03153c36435d101",
+      "workshop-wire.stdout.log": "fb20279c98c632112478639ed78173982c97c24a74dd1f62bbbb52709a1c3598",
+      "workshop-wire.stderr.log": "06c4604e545b360d909c3bdc8309b1943105a472ec807ecbc7127ac13625146e"
+    }
   }
 }

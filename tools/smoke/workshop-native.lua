@@ -399,6 +399,23 @@ local ok,err=xpcall(function()
      assert(semantic(rows)==semantic(returned),'Memorial reopen did not restore root')
      catalog.memorial_navigation={rows=child,cancel_returns_tasks=true,reopen_restores_root=true}
      shot('stone-reopened-root')
+     if os.getenv('DF3D_WORKSHOP_STONE_RUNTIME')=='1'then
+      catalog.queue_ids=queue_ids;catalog.memorial_navigation.effects={}
+      for _,pick in ipairs({1,#child})do
+       gui.simulateInput(view,'LEAVESCREEN');select_map(target);assert(click_label('Add new task'))
+       assert(click_label(category.caption))
+       local clicked=false
+       for scroll=0,128 do
+        if click_label(child[pick].caption)then clicked=true;break end
+        g.precise_mouse_x=600;g.precise_mouse_y=350;g.mouse_x=75;g.mouse_y=29
+        gui.simulateInput(view,'CONTEXT_SCROLL_DOWN');view:render(dfhack.getTickCount())
+       end
+       assert(clicked,'Memorial task unreachable')
+       local job=assert(target.jobs[#target.jobs-1]);assert(#target.jobs==#queue_ids+1)
+       catalog.memorial_navigation.effects[#catalog.memorial_navigation.effects+1]={index=pick,native=family_effect(job)}
+       assert(dfhack.job.removeJob(job));view:render(dfhack.getTickCount())
+      end
+     end
     end
     if os.getenv('DF3D_WORKSHOP_CLOTHIER_NAV')=='1' or os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')=='1' or os.getenv('DF3D_WORKSHOP_CRAFT_NAV')=='1'then
      local glass=os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')=='1'
@@ -507,6 +524,21 @@ local ok,err=xpcall(function()
    end
   end
   shot('task-catalog-return')
+  if os.getenv('DF3D_WORKSHOP_STONE_RUNTIME')=='1'then
+   capture('workshop-wire')
+   local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close();assert(receipt.success)
+   for _,catalog in ipairs(result.task_catalogs)do
+    local target=assert(df.building.find(catalog.building_id))
+    for _,entry in ipairs(catalog.memorial_navigation.effects)do
+     local id=assert(receipt.created[tostring(entry.index)]);local job
+     for _,candidate in ipairs(target.jobs)do if candidate.id==id then job=candidate;break end end
+     assert(job and json.encode(entry.native)==json.encode(family_effect(job)),'Memorial job effect differs')
+     assert(dfhack.job.removeJob(job))
+    end
+    assert(#target.jobs==#catalog.queue_ids)
+    for i,id in ipairs(catalog.queue_ids)do assert(target.jobs[i-1].id==id)end
+   end
+  end
   if os.getenv('DF3D_WORKSHOP_CLOTHIER_RUNTIME')=='1' or os.getenv('DF3D_WORKSHOP_GLASS_RUNTIME')=='1' or os.getenv('DF3D_WORKSHOP_CRAFT_RUNTIME')=='1'then
    capture('workshop-wire')
    local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close();assert(receipt.success)

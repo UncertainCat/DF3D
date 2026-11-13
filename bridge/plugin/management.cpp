@@ -102,6 +102,7 @@
 #include "creature_preferences_native.h"
 #include "creature_needs_native.h"
 #include "workshop_catalog_native.h"
+#include "workshop_memorial_native.h"
 #include "workshop_priority_native.h"
 #include "workshop_workers_page.h"
 #include "workshop_orders_native.h"
@@ -965,7 +966,9 @@ void publish() {
   for(const auto& v:production.recipes) {
     flatbuffers::Offset<m::ProductionAvailability> availability;
     if(v.availability)availability=m::CreateProductionAvailability(b,v.availability->available,b.CreateString(v.availability->objection));
-    pr.push_back(m::CreateProductionRecipe(b,b.CreateString(v.key),b.CreateString(v.name),reqs(v.requirements),availability));
+    flatbuffers::Offset<m::ProductionMemorialStatus> memorial;
+    if(v.memorial)memorial=m::CreateProductionMemorialStatus(b,b.CreateString(v.memorial->text),v.memorial->priority);
+    pr.push_back(m::CreateProductionRecipe(b,b.CreateString(v.key),b.CreateString(v.name),reqs(v.requirements),availability,memorial));
   }
   std::vector<flatbuffers::Offset<m::ProductionJob>> pj;
   for(const auto& v:production.jobs) pj.push_back(m::CreateProductionJob(b,v.id,b.CreateString(v.name),v.jobType,v.repeat,v.suspended,v.workerId,b.CreateString(v.workerName),v.completionTimer,v.attachedItems,v.editable,b.CreateString(v.status),reqs(v.requirements),v.priority,v.canMoveUp,v.active));
@@ -5948,6 +5951,20 @@ void run(color_ostream& out) {
       return 1;
     });lua_setfield(L,-2,"workshop_smelter_choices");
     lua_pushcfunction(L,[](lua_State* state)->int {
+      auto* shop=df::building::find(int32_t(luaL_checkinteger(state,1)));
+      const auto rows=df3d_production::workshopMemorialRows(shop);
+      if(!rows)return luaL_error(state,"Native memorial choices unavailable");
+      lua_newtable(state);int index=0;
+      const auto* base=reinterpret_cast<const char*>(GetModuleHandleW(nullptr));
+      field(state,"caption",std::string(base+0x16bed48)+std::string(base+0x1615870));
+      for(const auto& row:*rows) {
+        lua_newtable(state);field(state,"historical_figure_id",row.historicalFigureId);
+        field(state,"priority",row.priority);field(state,"info",row.info);
+        lua_rawseti(state,-2,++index);
+      }
+      return 1;
+    });lua_setfield(L,-2,"workshop_memorial_choices");
+    lua_pushcfunction(L,[](lua_State* state)->int {
       const auto result=df3d_production::setWorkshopPriority(int32_t(luaL_checkinteger(state,1)),int32_t(luaL_checkinteger(state,2)),lua_toboolean(state,3)!=0,lua_toboolean(state,4)!=0);
       if(result!=df3d_production::PriorityOutcome::Rejected)mutated=true;
       lua_pushboolean(state,result==df3d_production::PriorityOutcome::Applied);return 1;
@@ -6424,6 +6441,9 @@ void run(color_ostream& out) {
       ProductionRecipe row{text(L,"key"),text(L,"name"),reqs()};
       lua_getfield(L,-1,"availability");
       if(lua_istable(L,-1))row.availability=ProductionAvailability{boolean(L,"available"),text(L,"objection")};
+      lua_pop(L,1);
+      lua_getfield(L,-1,"memorial");
+      if(lua_istable(L,-1))row.memorial=ProductionMemorialStatus{text(L,"text"),int32_t(number(L,"priority",1000))};
       lua_pop(L,1);production.recipes.push_back(std::move(row));
     });
     each("task_categories",128,[&](){production.taskCategories.push_back({text(L,"key"),text(L,"name")});});

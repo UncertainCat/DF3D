@@ -4040,6 +4040,11 @@
   ],
   "exclusions": [
     {
+      "path": "presentations/godot/project/tests/workshop_stone_live.gd",
+      "status": "manual",
+      "reason": "Protected stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader -FarmItemCarriers with WORKSHOP_NATIVE, TASK_CATALOG, STONE_NAV and STONE_RUNTIME flags. Native memorial candidates, status rendering, cancellation and job effects. Never standalone."
+    },
+    {
       "path": "presentations/godot/project/tests/workshop_clothier_live.gd",
       "status": "manual",
       "reason": "Protected stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader -FarmItemCarriers with DF3D_WORKSHOP_NATIVE=1, DF3D_WORKSHOP_TASK_CATALOG=1, DF3D_WORKSHOP_CLOTHIER_NAV=1 and DF3D_WORKSHOP_CLOTHIER_RUNTIME=1. Native fabric navigation and task effects; alternatively DF3D_WORKSHOP_GLASS_RUNTIME=1 with CLOTHIER_NAV/RUNTIME=0 qualifies controlled Glass Furnace material pages; CRAFT_NAV=1 and CRAFT_RUNTIME=1 qualifies Craftsdwarf pages. Never standalone."

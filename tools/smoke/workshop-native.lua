@@ -120,7 +120,7 @@ local ok,err=xpcall(function()
   assert(forge,'Forge choice reference needs a completed forge')
   local before={};for _,job in ipairs(forge.jobs)do before[#before+1]=job.id end
   result.forge_choices={building_id=forge.id,pages={}}
-  for category=-1,5 do
+  for category=-1,6 do
    gui.simulateInput(view,'LEAVESCREEN');select_map(forge);assert(click_label('Add new task'))
    if category>=0 then
     local button=assert(df.global.game.main_interface.building.filtered_button[category])
@@ -132,6 +132,11 @@ local ok,err=xpcall(function()
     if category==-1 and df.interface_button_building_category_selectorst:is_instance(button)then
      local b=df.reinterpret_cast(df.interface_button_building_category_selectorst,button)
      native[#native+1]={category=b.category,material_index=-1,caption=dfhack.df2utf(utils.call_with_string(button,'text'))}
+    elseif category==6 and df.interface_button_building_new_jobst:is_instance(button)then
+     local b=df.reinterpret_cast(df.interface_button_building_new_jobst,button)
+     native[#native+1]={job_type=b.jobtype,item_subtype=b.subtype,mat_type=b.material,mat_index=b.matgloss,
+      material_category=b.job_item_flag.whole,specflag=b.specflag.whole,specdata=b.specdata.hist_figure_id,
+      art_type=b.art_specifier,art_id=b.art_specifier_id1,art_subid=b.art_specifier_id2,caption=dfhack.df2utf(utils.call_with_string(button,'text'))}
     elseif category>=0 and df.interface_button_building_material_selectorst:is_instance(button)then
      local b=df.reinterpret_cast(df.interface_button_building_material_selectorst,button)
      native[#native+1]={category=category,material_index=b.matgloss,caption=dfhack.df2utf(utils.call_with_string(button,'text'))}
@@ -142,6 +147,16 @@ local ok,err=xpcall(function()
    result.forge_choices.pages[#result.forge_choices.pages+1]={category=category,native=native,owned=owned}
    shot('forge-choices-'..category)
    assert(json.encode(native)==json.encode(owned),'Forge category/material choices differ: '..category)
+   if category>=0 then
+    assert(click_label('Back'),'Forge category page has no Back control')
+    local roots={}
+    for _,button in ipairs(df.global.game.main_interface.building.filtered_button)do
+     if df.interface_button_building_category_selectorst:is_instance(button)then roots[#roots+1]=dfhack.df2utf(utils.call_with_string(button,'text'))end
+    end
+    assert(#roots==7,'Back did not restore forge root categories')
+    result.forge_choices.pages[#result.forge_choices.pages].back_root=roots
+    shot('forge-back-'..category)
+   end
   end
   local after={};for _,job in ipairs(forge.jobs)do after[#after+1]=job.id end
   assert(json.encode(before)==json.encode(after),'Forge choice diagnostic changed queue')

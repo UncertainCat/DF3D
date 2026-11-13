@@ -17337,20 +17337,29 @@ The recorded material menus exclude the two extra Stud materials. This resolves
 which branches need composition, not their runtime implementation or effect
 acceptance. Native job.item_type remains separately unresolved as described above.
 
-`workshopForgeChoices` now supplies the seven builtin groups and six material
-lists with owned outputs. It composes the pinned inline branches above, calls
-native material eligibility145bee0 and caption formatter14d1920, and preserves
-raw-index order. Its diagnostic command `workshop-forge-choices-probe id category`
-accepts-1 for groups and0..5 for material lists;6 is not a material-list request.
-Protected195419 on2026-11-12 compares all rows through native pointer navigation:
-7 root categories and135 material rows match exactly in order, ID and caption.
-Queue IDs and paused frame remain unchanged, source saves are preserved and
-owned DF4956 closes unsaved. The material-page screenshot has native Back;
-reaction-page Cancel is not a universal navigation rule. Evidence is retained in
-`native_workshop_catalog.json.gz.owned_forge_choices_reference`. This helper is
-not yet connected to normal requests or the viewer; clothing, final task rows,
-Back behavior and job effects still need implementation/acceptance. The run was
-serial at30 FPS, sampled GPU38C, with no Godot process.
+`workshopForgeChoices` supplies the seven builtin groups and six material lists
+with owned outputs. It composes the pinned inline branches above, calls native
+material eligibility145bee0 and caption formatter14d1920, and preserves raw-index
+order. `workshopForgeClothing` composes8c9e8b..8ca48c separately: each inorganic
+with material flags47 and10 receives civilization clothing resources whose
+properties include SOFT or HARD but exclude METAL, plus backpack and quiver.
+Native job captions and ordering apply to owned descriptors. Structure offsets
+are checked; neither helper allocates a native widget or reads menu selection.
+The diagnostic `workshop-forge-choices-probe id category` accepts-1 for groups,
+0..5 for material lists and6 for clothing tasks.
+
+Protected195941 on2026-11-12 compares all rows through native pointer navigation:
+7 root categories,135 material rows and14 clothing tasks match exactly in order,
+caption and compared semantic fields. Actual Back clicks from each category
+restore all7 root categories. Native material/clothing pages use Back; reaction
+Cancel is not universal. Queue IDs and paused frame remain unchanged, source
+saves are preserved and owned DF43632 closes unsaved. Evidence is retained in
+`native_workshop_catalog.json.gz.owned_forge_choices_reference`. This supersedes
+195419's category/material-only evidence. The helpers are not yet connected to
+normal requests or the viewer; material-specific task rows, navigation ownership
+and job effects remain unfinished. The native uninitialized job.item_type is
+excluded from descriptor comparison, not claimed equivalent. The run was serial
+at30 FPS, sampled GPU38C, with no Godot process.
 
 `workshopTaskTemplates` reuses the owned native template builder for
 Carpenter/Kitchen/WoodFurnace/Still descriptors. All categories remain available

@@ -3567,6 +3567,19 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             const auto& raw=parameters[i+1];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i]);
             if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
           }
+          if(values[1]==6) {
+            const auto choices=df3d_production::workshopForgeClothing(df::building::find(values[0]));if(!choices)return CR_FAILURE;
+            Json::Value rows(Json::arrayValue);
+            for(const auto& choice:*choices) {
+              Json::Value row;row["job_type"]=int(choice.job_type);row["item_subtype"]=choice.item_subtype;
+              row["mat_type"]=choice.mat_type;row["mat_index"]=choice.mat_index;
+              row["material_category"]=choice.material_category.whole;row["specflag"]=choice.specflag.whole;
+              row["specdata"]=choice.specdata.hist_figure_id;row["art_type"]=int(choice.art_specifier);
+              row["art_id"]=choice.art_specifier_id1;row["art_subid"]=choice.art_specifier_id2;
+              row["caption"]=DF2UTF(choice.name);rows.append(std::move(row));
+            }
+            out.print("{}",Json::FastWriter().write(rows));return CR_OK;
+          }
           const auto choices=df3d_production::workshopForgeChoices(df::building::find(values[0]),values[1]);
           if(!choices)return CR_FAILURE;
           Json::Value rows(Json::arrayValue);

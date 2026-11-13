@@ -6,6 +6,12 @@
 #include "df/inorganic_raw.h"
 #include "df/reaction_reagent.h"
 #include "df/reaction_category.h"
+#include "df/manager_order_template.h"
+#include "df/itemdef_armorst.h"
+#include "df/itemdef_pantsst.h"
+#include "df/itemdef_helmst.h"
+#include "df/itemdef_glovesst.h"
+#include "df/itemdef_shoesst.h"
 #include <memory>
 
 namespace df3d_production {
@@ -71,6 +77,71 @@ inline std::optional<std::vector<WorkshopForgeChoice>> workshopForgeChoices(df::
         std::string caption;
         reinterpret_cast<Name>(base+0x14d1920)(df::global::world,&caption,0,int32_t(i),0,false,0);
         result.push_back({category,int32_t(i),caption+suffix});
+    }
+    return result;
+}
+// Native8c9e8b..8ca48c: metal clothing bypasses material buttons. Use civ
+// resources and raw clothing properties; the global task builder is not called.
+inline std::optional<std::vector<df::manager_order_template>> workshopForgeClothing(df::building* building) {
+    if(!workshopForgeChoices(building,-1) || !df::global::plotinfo)return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool pinned=[base] {
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x601;++i){hash^=base[0x8c9e8b+i];hash*=UINT64_C(1099511628211);}
+        return hash==UINT64_C(0xad813e31d84575d6);
+    }();
+    if(!pinned)return std::nullopt;
+    static_assert(offsetof(df::historical_entity,resources)+offsetof(df::historical_entity::T_resources,armor_type)==0x178);
+    static_assert(offsetof(df::historical_entity,resources)+offsetof(df::historical_entity::T_resources,pants_type)==0x1f0);
+    static_assert(offsetof(df::itemdef_armorst,props)==0x118);
+    static_assert(offsetof(df::itemdef_pantsst,props)==0x128);
+    static_assert(offsetof(df::itemdef_helmst,props)==0xe8);
+    static_assert(offsetof(df::itemdef_glovesst,props)==0xe8);
+    static_assert(offsetof(df::itemdef_shoesst,props)==0xe8);
+    auto* civ=df::historical_entity::find(df::global::plotinfo->civ_id);
+    using Flag=bool (*)(df::world*,int32_t,int16_t,int32_t);
+    const auto flag=reinterpret_cast<Flag>(base+0x145bee0);
+    std::vector<df::manager_order_template> result;
+    const auto add=[&](int32_t type,int16_t subtype,int32_t material)->bool {
+        df::job job;job.job_type=df::job_type(type);job.item_subtype=subtype;job.mat_type=0;job.mat_index=material;
+        const auto caption=workshopJobCaption(job);if(!caption)return false;
+        df::manager_order_template row;
+        row.job_type=job.job_type;row.item_type=job.item_type;row.item_subtype=subtype;
+        row.mat_type=0;row.mat_index=material;row.specflag=job.specflag;row.specdata=job.specdata;
+        row.material_category=job.material_category;row.art_specifier=job.art_spec.type;
+        row.art_specifier_id1=job.art_spec.id;row.art_specifier_id2=job.art_spec.subid;row.name=*caption;
+        result.push_back(std::move(row));return true;
+    };
+    const auto addClothes=[&](const auto& ids,const auto& raws,int32_t type,int32_t material)->bool {
+        for(const int16_t id:ids) {
+            if(id<0 || size_t(id)>=raws.size() || !raws[id])return false;
+            const auto& flags=raws[id]->props.flags;
+            if((flags.is_set(df::armor_general_flags::SOFT) || flags.is_set(df::armor_general_flags::HARD)) &&
+               !flags.is_set(df::armor_general_flags::METAL) && !add(type,id,material))return false;
+        }
+        return true;
+    };
+    const auto& materials=df::global::world->raws.inorganics.all;
+    for(size_t i=0;i<materials.size();++i) {
+        if(!materials[i] || !flag(df::global::world,47,0,int32_t(i)) || !flag(df::global::world,10,0,int32_t(i)))continue;
+        if(civ) {
+            const auto& r=civ->resources;
+            if(!addClothes(r.armor_type,df::itemdef_armorst::get_vector(),100,int32_t(i)) ||
+               !addClothes(r.pants_type,df::itemdef_pantsst::get_vector(),102,int32_t(i)) ||
+               !addClothes(r.helm_type,df::itemdef_helmst::get_vector(),101,int32_t(i)) ||
+               !addClothes(r.gloves_type,df::itemdef_glovesst::get_vector(),116,int32_t(i)) ||
+               !addClothes(r.shoes_type,df::itemdef_shoesst::get_vector(),117,int32_t(i)))return std::nullopt;
+        }
+        if(!add(131,-1,int32_t(i)) || !add(132,-1,int32_t(i)))return std::nullopt;
+    }
+    for(size_t i=1;i<result.size();++i) {
+        auto row=std::move(result[i]);size_t at=i;
+        while(at>0) {
+            const auto less=workshopCaptionLess(row.name,result[at-1].name);if(!less)return std::nullopt;
+            if(!*less)break;
+            result[at]=std::move(result[at-1]);--at;
+        }
+        result[at]=std::move(row);
     }
     return result;
 }

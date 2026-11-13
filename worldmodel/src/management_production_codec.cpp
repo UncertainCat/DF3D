@@ -143,6 +143,7 @@ ProductionState decodeProduction(const m::ProductionState* p) {
                              str(v->name()), str(v->kind()), v->build_stage(), v->max_stage(),
                              v->queue_size()});
   if(p->task_category())n.taskCategory=p->task_category()->str();
+  if(p->task_parent())n.taskParent=p->task_parent()->str();
   if(p->task_categories())for(const auto* v:*p->task_categories())n.taskCategories.push_back({str(v->key()),str(v->name())});
   if (p->recipes())
     for (const auto* v : *p->recipes()) {

@@ -5633,5 +5633,152 @@
     "source_preserved": true,
     "owned_process_closed_unsaved": true,
     "diagnostics": "passed_with_known_issues"
+  },
+  "forge_navigation_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-200823",
+    "source_sha256": "16fc2b05ad23afedd4a61b6a89fe2acd67ecef4b0d3db8af81c61f34ba025038",
+    "observations": [
+      {
+        "focused": false,
+        "name": "tasks",
+        "open": true,
+        "query": "",
+        "rows": [
+          {
+            "caption": "Forge iron battle axe",
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Forge iron crossbow",
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Forge iron mace",
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Forge iron pick",
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Forge iron short sword",
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Forge iron spear",
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Forge iron war hammer",
+            "type": "<type: interface_button_building_new_jobst>"
+          },
+          {
+            "caption": "Forge twenty-five iron bolts",
+            "type": "<type: interface_button_building_new_jobst>"
+          }
+        ]
+      },
+      {
+        "focused": false,
+        "name": "filtered-tasks",
+        "open": true,
+        "query": "BOLT",
+        "rows": [
+          {
+            "caption": "Forge twenty-five iron bolts",
+            "type": "<type: interface_button_building_new_jobst>"
+          }
+        ]
+      },
+      {
+        "focused": false,
+        "name": "material-return",
+        "open": true,
+        "query": "",
+        "rows": [
+          {
+            "caption": "iron (opens menu)",
+            "type": "<type: interface_button_building_material_selectorst>"
+          },
+          {
+            "caption": "silver (opens menu)",
+            "type": "<type: interface_button_building_material_selectorst>"
+          },
+          {
+            "caption": "copper (opens menu)",
+            "type": "<type: interface_button_building_material_selectorst>"
+          },
+          {
+            "caption": "bronze (opens menu)",
+            "type": "<type: interface_button_building_material_selectorst>"
+          },
+          {
+            "caption": "steel (opens menu)",
+            "type": "<type: interface_button_building_material_selectorst>"
+          },
+          {
+            "caption": "bismuth bronze (opens menu)",
+            "type": "<type: interface_button_building_material_selectorst>"
+          },
+          {
+            "caption": "adamantine (opens menu)",
+            "type": "<type: interface_button_building_material_selectorst>"
+          },
+          {
+            "caption": "rusted metal (opens menu)",
+            "type": "<type: interface_button_building_material_selectorst>"
+          },
+          {
+            "caption": "flashing metal (opens menu)",
+            "type": "<type: interface_button_building_material_selectorst>"
+          },
+          {
+            "caption": "flowing metal (opens menu)",
+            "type": "<type: interface_button_building_material_selectorst>"
+          },
+          {
+            "caption": "translucent metal (opens menu)",
+            "type": "<type: interface_button_building_material_selectorst>"
+          },
+          {
+            "caption": "slick metal (opens menu)",
+            "type": "<type: interface_button_building_material_selectorst>"
+          },
+          {
+            "caption": "twinkling metal (opens menu)",
+            "type": "<type: interface_button_building_material_selectorst>"
+          },
+          {
+            "caption": "dark metal (opens menu)",
+            "type": "<type: interface_button_building_material_selectorst>"
+          },
+          {
+            "caption": "pale metal (opens menu)",
+            "type": "<type: interface_button_building_material_selectorst>"
+          },
+          {
+            "caption": "blistered metal (opens menu)",
+            "type": "<type: interface_button_building_material_selectorst>"
+          },
+          {
+            "caption": "flickering metal (opens menu)",
+            "type": "<type: interface_button_building_material_selectorst>"
+          }
+        ]
+      }
+    ],
+    "scope": "Native iron weapons task page search BOLT and actual Back returning to materials with search cleared; category Back to root verified separately. No viewer forge navigation acceptance.",
+    "source_preserved": true,
+    "owned_process_closed_unsaved": true
+  },
+  "parent_contract_reference": {
+    "management_version": 207,
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-202237",
+    "source_sha256": "e61fcd8a97f311f05bdb256ca68aeb0670af28c3dc90ad37f167eddd9fd57d83",
+    "bridge_sha256": "e4a6364ea1c6e27180ac1cd10913d33500e0d61a36fcb3a4725792e0430bd361",
+    "scope": "Migration: parent absent on existing provider; root and reaction-category workflows, Priority, Details and spike/reaction creation pass. Parent dispatch and forge viewer navigation remain staged.",
+    "source_preserved": true,
+    "owned_process_closed_unsaved": true,
+    "diagnostics": "passed_with_known_issues"
   }
 }

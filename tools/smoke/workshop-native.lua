@@ -147,6 +147,23 @@ local ok,err=xpcall(function()
    result.forge_choices.pages[#result.forge_choices.pages+1]={category=category,native=native,owned=owned}
    shot('forge-choices-'..category)
    assert(json.encode(native)==json.encode(owned),'Forge category/material choices differ: '..category)
+   if category==0 then
+    local function sample(name)
+     local rows={}
+     for _,button in ipairs(df.global.game.main_interface.building.filtered_button)do
+      rows[#rows+1]={caption=dfhack.df2utf(utils.call_with_string(button,'text')),type=tostring(button._type)}
+     end
+     result.forge_navigation=result.forge_navigation or {}
+     result.forge_navigation[#result.forge_navigation+1]={name=name,query=sheet.building_job_filter_str,
+      focused=sheet.entering_building_job_filter,open=sheet.open,rows=rows}
+     shot('forge-navigation-'..name)
+    end
+    assert(click_label(native[1].caption));sample('tasks')
+    assert(click_label('...'));assert(sheet.entering_building_job_filter)
+    for char in ('bolt'):gmatch('.')do gui.simulateInput(view,('STRING_A%03d'):format(char:byte()))end
+    gui.simulateInput(view,'SELECT');view:render(dfhack.getTickCount());sample('filtered-tasks')
+    assert(click_label('Back'));sample('material-return')
+   end
    if category>=0 then
     assert(click_label('Back'),'Forge category page has no Back control')
     local roots={}

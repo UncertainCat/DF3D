@@ -22,6 +22,13 @@ Supported build baseline. Exact dependency revisions are the committed Git submo
 
 ## Wire compatibility
 
+Management207 adds optional `ProductionState.task_parent`. Present empty means
+native Back to root; present nonempty means Back to that opaque category; absent
+retains Cancel/legacy behavior. A parent requires a known nonempty current
+category, is bounded at256 bytes and cannot equal that category. Rebuild both
+peers: `Local\df3d_management_v207` isolates206. The contract is wired through
+codecs; parent-producing forge dispatch and viewer navigation remain staged.
+
 Management206 adds an opaque workshop `task_category` request and optional
 category context/list observations. Rebuild both peers:
 `Local\df3d_management_v206` isolates Management205. Empty requests select root;

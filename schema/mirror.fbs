@@ -1695,6 +1695,7 @@ table ProductionState {
   workshop_orders:WorkshopOrdersState;
   task_category:string; // Absent means category support is unknown (legacy/provider).
   task_categories:[ProductionTaskCategory];
+  task_parent:string; // Present: native Back target (empty=root). Absent: Cancel leaves picker.
 }
 // Details is a distinct intent; choice IDs refer to the observed native catalog.
 // Artwork subject IDs are simulation IDs, not Details choice ordinals.
@@ -2506,7 +2507,7 @@ table PressurePlateOptions {
 // Rectangle dimensions do not encode either endpoint or a client-chosen route.
 table ConnectedTrackOptions { destination:TilePos (required); }
 table ConstructionRequest {
-  schema_version:uint32 = 206;
+  schema_version:uint32 = 207;
   client_id:uint64;
   seq:uint64;
   world_epoch:uint64;
@@ -2577,7 +2578,7 @@ table WorldHoverEntry { text:string (required); foreground:uint8; background:uin
 table WorldHover { tile:TilePos; entries:[WorldHoverEntry] (required); }
 
 table ManagementState {
-  schema_version:uint32 = 206;
+  schema_version:uint32 = 207;
   revision:uint64;
   world_epoch:uint64;
   client_id:uint64;

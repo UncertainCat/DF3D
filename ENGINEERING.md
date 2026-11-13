@@ -15836,6 +15836,26 @@ tick. Fertilizer transport is verified above; lifecycle faults and viewer contro
 
 ### Native farm and workshop providers
 
+Management207 adds optional `task_parent` to production observations. An absent
+parent preserves Cancel/legacy behavior; a present empty key means native Back
+to root, and a nonempty key identifies the parent category. Validators require
+known nonempty current context, bound parent keys at256 bytes and reject self
+references. Bridge/model/Godot codecs preserve absent versus empty. Both peers
+must use `Local\df3d_management_v207`; the current provider still omits parent
+metadata until forge navigation is connected.
+
+Native200823 on2026-11-12 confirms iron weapons task search BOLT reduces8 rows
+to1; clicking Back returns17 material choices with an empty query and no search
+focus. The next Back returns root. This complements195941's category Back proof.
+`native_workshop.json.forge_navigation_reference` retains the observations.
+Core19 and focused Godot checks in `build/qa/workshop-parent-contract` pass.
+Protected202237 on2026-11-12 verifies protocol207 with existing root/reaction
+choices, Priority, Details and spike/reaction creation. Owned DF36140 exits
+unsaved with source preservation; only the three documented Godot diagnostics
+remain. The run was serial at30 FPS, sampled GPU37C. This establishes migration
+regression coverage, not parent-producing runtime dispatch or forge UI acceptance.
+`native_workshop.json.parent_contract_reference` records that limited scope.
+
 Management206 adds `ProductionRequest.task_category` and optional
 `ProductionState.task_category`/`task_categories`. Keys are opaque bounded
 strings, not menu ordinals or pointers. An empty request selects root; a missing
@@ -15846,7 +15866,7 @@ or queueing and cannot be mixed with worker, contents or header reads.
 Native reaction-category dispatch and navigation are connected for Carpenter,
 Kitchen, Still and WoodFurnace. Keys resolve through the building's permitted
 raw category ancestry; invalid or unreachable keys reject. Both peers must use
-`Local\df3d_management_v206`.
+`Local\df3d_management_v207`;206 introduced these fields.
 Core19 and Godot management/workshop-state checks pass in
 `build/qa/workshop-category-contract`. Protected192406 on2026-11-12 verifies the
 staged rejection, omitted unknown category metadata and existing root choices,

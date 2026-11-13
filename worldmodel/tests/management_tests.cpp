@@ -536,6 +536,30 @@ TEST_CASE("workshop category context preserves unknown and rejects malformed nav
     CHECK(c->send(r)==0);
   }
 }
+TEST_CASE("workshop Back targets preserve root versus absent and reject invalid parents") {
+  for(int defect=0;defect<7;++defect) {
+    flatbuffers::FlatBufferBuilder b;
+    const auto category=b.CreateString(defect==3?"":"forge:0:0");
+    const auto parent=b.CreateString(defect==4?"forge:0:0":defect==5?std::string(257,'x'):defect==1?"forge:0":"");
+    const auto rows=b.CreateVector(std::vector<flatbuffers::Offset<mm::ProductionTaskCategory>>{});
+    mm::ProductionStateBuilder state(b);state.add_selected_building(72);
+    if(defect!=6)state.add_task_category(category);
+    state.add_task_categories(rows);
+    if(defect!=2)state.add_task_parent(parent);
+    const auto production=state.Finish();
+    mm::ManagementStateBuilder result(b);result.add_revision(1);result.add_world_epoch(7);
+    result.add_schema_version(mm::kManagementVersion);result.add_action(mm::ManagementAction::ProductionInspect);
+    result.add_status(mm::ManagementStatus::Ok);result.add_production(production);b.Finish(result.Finish());
+    const auto* wire=flatbuffers::GetRoot<mm::ManagementState>(b.GetBufferPointer());
+    CHECK(mm::validateManagementState(*wire).has_value()==(defect>=3));
+    if(defect<3) {
+      const auto decoded=wm::detail::management::decodeProduction(wire->production());
+      CHECK(decoded.taskParent.has_value()==(defect!=2));
+      if(defect==0)CHECK(decoded.taskParent->empty());
+      if(defect==1)CHECK(*decoded.taskParent=="forge:0");
+    }
+  }
+}
 TEST_CASE("production requests retain job identity sentinels and shared ownership") {
   ManagementPublisher p;p.publish(1);auto c=openClient(p);
   wm::ManagementRequest queue;queue.action=wm::ManagementAction::ProductionQueue;

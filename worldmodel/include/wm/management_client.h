@@ -417,7 +417,7 @@ struct WorkshopOrdersState {
   FarmEditOutcome outcome=FarmEditOutcome::None;
 };
 struct ProductionState {
-  std::optional<std::string> taskCategory;
+  std::optional<std::string> taskCategory,taskParent;
   std::vector<ProductionTaskCategory> taskCategories;
   std::optional<WorkshopOrdersState> workshopOrders;
   std::optional<WorkshopWorkersState> workshopWorkers;

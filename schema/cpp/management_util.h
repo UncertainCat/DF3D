@@ -183,8 +183,8 @@ inline constexpr int standingCategoryCount(int category) {
 inline constexpr int standingValueMax(int category,int id) {
   return category==3 || category==4 || (category==0 && id==0)?2:category==6 && id==0?3:1;
 }
-inline constexpr uint32_t kManagementVersion = 206;
-inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v206";
+inline constexpr uint32_t kManagementVersion = 207;
+inline constexpr const char* kManagementRegionName = "Local\\df3d_management_v207";
 inline constexpr uint32_t kResidentsQueryBytes = 128;
 inline constexpr uint32_t kResidentsQueryUnits = 65536;
 inline constexpr uint32_t kResidentsRowsLimit = 64;
@@ -2901,6 +2901,9 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
         if(!row || !textOk(row->key(),256) || !row->key()->size() || !categories.insert(row->key()->str()).second ||
            row->key()->str()==p->task_category()->str() || !textOk(row->name(),512))return "invalid workshop category row";
     } else if(p->task_categories() && p->task_categories()->size())return "workshop category context required";
+    if(p->task_parent() && (!p->task_category() || !p->task_category()->size() ||
+       !textOk(p->task_parent(),256) || p->task_parent()->str()==p->task_category()->str()))
+      return "invalid workshop category parent";
     auto requirementsOk=[&](const auto* values){
       if(!values || values->size()>16) return false;
       for(const auto* v:*values) if(!v || !textOk(v->description(),512) || v->quantity()<0 || v->quantity()>1000000 || v->item_type() < -1) return false;

@@ -177,7 +177,7 @@ struct WorkshopOrdersState {
   df3d::mirror::FarmEditOutcome outcome=df3d::mirror::FarmEditOutcome::None;
 };
 struct ProductionState {
-  std::optional<std::string> taskCategory;
+  std::optional<std::string> taskCategory,taskParent;
   std::vector<ProductionTaskCategory> taskCategories;
   std::optional<WorkshopOrdersState> workshopOrders;
   std::optional<WorkshopWorkersState> workshopWorkers;

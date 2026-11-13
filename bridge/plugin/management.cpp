@@ -1091,7 +1091,7 @@ void publish() {
   }
   std::vector<flatbuffers::Offset<m::ProductionTaskCategory>> taskCategories;
   for(const auto& v:production.taskCategories)taskCategories.push_back(m::CreateProductionTaskCategory(b,b.CreateString(v.key),b.CreateString(v.name)));
-  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot,itemPosition,independentItem,buildingHeader,workshopWorkers,workshopOrders,production.taskCategory?b.CreateString(*production.taskCategory):0,production.taskCategory?b.CreateVector(taskCategories):0);
+  auto productionResult=m::CreateProductionState(b,b.CreateVector(pb),production.nextCursor,b.CreateVector(pr),b.CreateVector(pj),b.CreateVector(pc),b.CreateVector(production.seasonalCrops),production.currentSeason,production.selectedBuilding,production.createdJob,b.CreateString(production.detail),farmSnapshot,production.farmEditOutcome,contentsPage,contentsEdit,itemSnapshot,itemPosition,independentItem,buildingHeader,workshopWorkers,workshopOrders,production.taskCategory?b.CreateString(*production.taskCategory):0,production.taskCategory?b.CreateVector(taskCategories):0,production.taskParent?b.CreateString(*production.taskParent):0);
   std::vector<flatbuffers::Offset<m::WorkOrderInfo>> wo;
   for(const auto& o:workOrders.orders){
     std::vector<flatbuffers::Offset<m::WorkOrderCondition>> cs;

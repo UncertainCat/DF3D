@@ -110,6 +110,7 @@ Dictionary writeDraftValue(const wm::WorkOrderArtDraftValue& value) {
 
 void writeProduction(Dictionary& result, const wm::ProductionState& s) {
   Dictionary prod;
+  if(s.taskParent)prod["task_parent"]=String::utf8(s.taskParent->c_str());
   if(s.taskCategory) {
     prod["task_category"]=String::utf8(s.taskCategory->c_str());Array categories;
     for(const auto& v:s.taskCategories){Dictionary row;row["key"]=String::utf8(v.key.c_str());row["name"]=String::utf8(v.name.c_str());categories.push_back(row);}

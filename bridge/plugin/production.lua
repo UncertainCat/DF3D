@@ -99,7 +99,7 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
  if supported then
   out.category=category;out.categories={}
   if not dye_job and not memorial_page and not fabric and not glass_material and craft_material==nil and (not forge or category=='' or category:sub(1,9)=='reaction:') then out.categories=native_categories(b.id,category) end
-  out.editable_templates=dyer and {{job_type=190},{job_type=191},{job_type=244}} or native_templates(b.id)
+  out.editable_templates=dyer and {{job_type=190},{job_type=191},{job_type=244},{job_type=243}} or native_templates(b.id)
   if k=='Butchers' then
    -- Pinned native8c5938..8c597d includes Catch live land animal at root,
    -- although the independent order catalog omits it. Native caption and
@@ -130,9 +130,9 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
    for _,row in ipairs(native_dye(b.id,0))do categories[#categories+1]={key='dyer:'..row.job_type,caption=row.caption}end
    for _,row in ipairs(out.categories)do categories[#categories+1]=row end
    out.categories=categories
-   for _,fields in ipairs(out.editable_templates)do
+   for _,fields in ipairs(out.editable_templates)do if fields.job_type~=243 then
     out[#out+1]={key='dyer:generic:'..fields.job_type,fields={job_type=fields.job_type,specdata={hist_figure_id=-1},art_spec={type=-1,id=-1,subid=-1}},available=true,objection=''}
-   end
+   end end
   elseif dye_job then
    for _,row in ipairs(native_dye(b.id,dye_job,dye_target))do
     local key='dyer:'..dye_job..':'..row.color

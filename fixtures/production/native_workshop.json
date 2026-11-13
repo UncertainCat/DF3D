@@ -33165,12 +33165,204 @@
         ],
         "semantics": "Native provider supplies pairs, captions, information and order. Actual first-row click appends exactly one matching job, then diagnostic cleanup removes it. No runtime native menu inputs.",
         "omissions": [
-          "Thread, leather and Mix ingredient branches remain unqualified.",
-          "Only the first ingredient job was created in each list; worker execution/products are not covered.",
+          "Only the first ingredient job was created in each tested list; worker execution/products are not covered.",
           "Uninitialized native job.item_type remains excluded from comparison.",
           "Controlled names establish paging, not normal maximum serialized menu size."
         ],
-        "failed_attempt": "103516 could not find a full long native caption after native ellipsis; harness now clicks its visible prefix. Source preserved; no accepted result."
+        "failed_attempt": "103516 could not find a full long native caption after native ellipsis; harness now clicks its visible prefix. Source preserved; no accepted result.",
+        "remaining_branches": [
+          {
+            "branch": "Mix",
+            "lane": "build/stockpile-storage-native-farm-discovery-20261113-104504",
+            "ingredient_rows": 469,
+            "target_color": 26,
+            "native_effect": {
+              "art_id": 0,
+              "art_subid": 15,
+              "art_type": -1,
+              "inputs": [
+                {
+                  "flags1": 16,
+                  "flags2": 1,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 16,
+                  "flags2": 1,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 243,
+              "mat_index": 26,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": -1,
+              "specflag": 0
+            },
+            "repeat_enabled_and_restored": true,
+            "first_level_rows": 811,
+            "compared_panel_states": 6,
+            "crop": [
+              432,
+              106,
+              888,
+              676
+            ],
+            "differing_pixels": 0,
+            "owned_df_pid": 3276,
+            "source_preserved": true,
+            "closed_unsaved": true,
+            "diagnostics": "passed_with_known_issues: separate-render-thread, finalize, ObjectDB shutdown only",
+            "sha256": {
+              "workshop-native.json": "cd6f59382c07d0bf084123cb74681ec9da0c14fe1e2730676adcab77fd0257aa",
+              "workshop-wire-result.json": "d4cac8fc90cc031cc291205047e1a2e324b7d126c4fa67e5d9f91017ce1cf426",
+              "result.json": "d8f9ee048a469994e6d756be09fdc4fe278d38cfeee820a0c6a8131077cb2ab9",
+              "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+              "dyer-ingredients-5-live.png": "87a2f054e71de337c7042b7c1d43785adf374be7927285a47b44b45e7b119e84",
+              "workshop-dyer-ingredients-27.png": "1af78b1ee68b3e943c18d376ec21a558868c76118ebac2b6d95d3a69e17e1b9d"
+            }
+          },
+          {
+            "branch": "Leather",
+            "lane": "build/stockpile-storage-native-farm-discovery-20261113-104550",
+            "ingredient_rows": 938,
+            "target_color": 26,
+            "native_effect": {
+              "art_id": 0,
+              "art_subid": 15,
+              "art_type": -1,
+              "inputs": [
+                {
+                  "flags1": 0,
+                  "flags2": 2,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 55,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                },
+                {
+                  "flags1": 16,
+                  "flags2": 1,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 244,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": 26,
+              "specflag": 0
+            },
+            "repeat_enabled_and_restored": true,
+            "first_level_rows": 811,
+            "compared_panel_states": 6,
+            "crop": [
+              432,
+              106,
+              888,
+              676
+            ],
+            "differing_pixels": 0,
+            "owned_df_pid": 7908,
+            "source_preserved": true,
+            "closed_unsaved": true,
+            "diagnostics": "passed_with_known_issues: separate-render-thread, finalize, ObjectDB shutdown only",
+            "sha256": {
+              "workshop-native.json": "67f204032379ad5fda573a450607ed0814ce64ab0128ee33aa541ea60b955e77",
+              "workshop-wire-result.json": "d4cac8fc90cc031cc291205047e1a2e324b7d126c4fa67e5d9f91017ce1cf426",
+              "result.json": "f6bcadef39888e059225bbf58ba8fc264a5306d43d31f11db8935cc439067262",
+              "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+              "dyer-ingredients-5-live.png": "bcdd469f89e09456eb9d69f8d2c8f10fac5c10a3686de75e1f32e5d2646d0b63",
+              "workshop-dyer-ingredients-30.png": "4b73fec22ff078fec5da1cb2be4d1cd0fe32d008660987636ec3ffcef5ca1881"
+            }
+          },
+          {
+            "branch": "Thread",
+            "lane": "build/stockpile-storage-native-farm-discovery-20261113-104637",
+            "ingredient_rows": 938,
+            "target_color": 26,
+            "native_effect": {
+              "art_id": 0,
+              "art_subid": 15,
+              "art_type": -1,
+              "inputs": [
+                {
+                  "flags1": 64,
+                  "flags2": 2,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": 57,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 15000
+                },
+                {
+                  "flags1": 16,
+                  "flags2": 1,
+                  "flags3": 0,
+                  "item_subtype": -1,
+                  "item_type": -1,
+                  "mat_index": -1,
+                  "mat_type": -1,
+                  "quantity": 1
+                }
+              ],
+              "item_subtype": -1,
+              "job_type": 190,
+              "mat_index": -1,
+              "mat_type": -1,
+              "material_category": 0,
+              "reaction_name": "",
+              "specdata": 26,
+              "specflag": 0
+            },
+            "repeat_enabled_and_restored": true,
+            "first_level_rows": 811,
+            "compared_panel_states": 6,
+            "crop": [
+              432,
+              106,
+              888,
+              676
+            ],
+            "differing_pixels": 0,
+            "owned_df_pid": 11092,
+            "source_preserved": true,
+            "closed_unsaved": true,
+            "diagnostics": "passed_with_known_issues: separate-render-thread, finalize, ObjectDB shutdown only",
+            "sha256": {
+              "workshop-native.json": "b8d6d6712d7d0811af223f99622f1af39fbb4a883c4ded2649c67d88dd346ddc",
+              "workshop-wire-result.json": "d4cac8fc90cc031cc291205047e1a2e324b7d126c4fa67e5d9f91017ce1cf426",
+              "result.json": "6194c6b317b5a067099ad57b7617d37cd420216eadc4fe4ac992d2f563a45670",
+              "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+              "dyer-ingredients-5-live.png": "02fb15dc4642d9eb11494aae8bf26d4db2dee8264c80cf8cd6bd364991984731",
+              "workshop-dyer-ingredients-29.png": "0c2122c2f76235ec3e5975d0707801311d084ea8888e4643600f2ffbe69bb1e1"
+            }
+          }
+        ],
+        "mix_controls": "Mix243 is editable for root-context job edits, while generic root recipes remain only190/191/244. Repeat on/off verified through actual UI clicks for Mix, Leather and Thread.",
+        "control_harness_attempt": "104403 created Mix and enabled Repeat; its second click arrived before related panel refreshes completed. Corrected harness waits for Tasks, header and contents before the next click. Source preserved."
       }
     }
   }

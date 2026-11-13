@@ -77,6 +77,16 @@ func run() -> void:
 			var id: int=owner.tasks.snapshot.get("created_job",-1)
 			check(id>=0 and not owner.panel.tasks.picking,"Dyer ingredient task did not queue")
 			created[str(page_index+1)]=id
+			# Job edits use the root catalog. Mix must remain editable there
+			# even though it has no generic root recipe.
+			var jobs: Array=owner.tasks.jobs()
+			if check(jobs.size()==1 and jobs[0].editable,"Dyer queued job lost its controls at root"):
+				click(owner.panel.tasks.global_position+Vector2(316,48))
+				await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready and owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
+				check(owner.tasks.jobs()[0].repeat,"Dyer Repeat did not enable")
+				click(owner.panel.tasks.global_position+Vector2(316,48))
+				await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready and owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
+				check(not owner.tasks.jobs()[0].repeat,"Dyer Repeat did not restore")
 		else:
 			click(owner.panel.tasks.global_position+Vector2(owner.panel.tasks.size.x-48,12))
 			await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready)

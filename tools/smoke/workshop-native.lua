@@ -447,7 +447,7 @@ local ok,err=xpcall(function()
      end
      for index,row in ipairs(page.rows)do
       local requested_color=tonumber(os.getenv('DF3D_WORKSHOP_DYER_TARGET')or '')
-      local dyer_child=os.getenv('DF3D_WORKSHOP_DYER_INGREDIENT_NAV')=='1' and #page.path==1 and page.path[1].index==1 and
+      local dyer_child=os.getenv('DF3D_WORKSHOP_DYER_INGREDIENT_NAV')=='1' and #page.path==1 and page.path[1].index==tonumber(os.getenv('DF3D_WORKSHOP_DYER_ROOT')or '1') and
        (requested_color and row.color==requested_color or not requested_color and index==1)
       if (os.getenv('DF3D_WORKSHOP_EXTRA_DISCOVERY')~='1' or (os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1' and #page.path==0) or dyer_child) and not row.leave and (row.category~=nil or row.custom_category~=nil or row.material~=nil or row.color~=nil)then
        assert(#page.path<8,'Native task category discovery exceeded depth bound')

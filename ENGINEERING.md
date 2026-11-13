@@ -17707,8 +17707,23 @@ also passes the oversized read and visibility edit/restoration checks; source
 and temporary material strings are restored, owned DF5920 exits unsaved.
 Core19 and engine state/composition/adapter checks pass; the interrupted extension
 build left invalid generated objects, repaired before acceptance in
-build/qa/dyer-ingredients-wire-repaired-all. Thread, leather and Mix ingredient
-branches, other ingredient creations and worker execution/products remain
+build/qa/dyer-ingredients-wire-repaired-all.
+
+Protected104504/104550/104637 on2026-11-13 extend copper target26 to Mix469,
+Leather938 and Thread938 choices. Every ingredient caption/order/information
+matches native, with actual first-choice job fields/inputs and Repeat on/off
+verified. Mix243 is recognized by root-context job edits without adding a
+generic Mix recipe to the root menu. Previously, the editable template list
+omitted243, so a queued Mix job's root-context edit was rejected. Each lane's
+root, four first-level menus and ingredient viewport has zero differing pixels
+in the same crop; the Mix image was inspected. Owned DF3276/7908/11092 close
+unsaved, source and preferences preserved. Serial30FPS samples59–60C are not
+peak measurements; the same three known shutdown diagnostics remain.
+Earlier104403 enabled Repeat but the diagnostic second click arrived during
+related panel refreshes; the harness now waits for the whole panel before
+continuing. Fixture runtime_reference.remaining_branches records accepted
+effects and hashes. Only the first ingredient job in each tested list was
+created; other ingredient creations and worker execution/products remain
 unfinished. An earlier
 controlled discovery232955 exited while entering Tint cloth aqua; source
 saves were unchanged. The cause has not been isolated, so this is not a

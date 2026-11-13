@@ -238,7 +238,7 @@ local ok,err=xpcall(function()
   result.task_catalogs={};local seen={}
   for _,target in ipairs(df.global.world.buildings.all)do
    local type=target:getType();local key=type..':'..target:getSubtype()..':'..target:getCustomType()
-   if (type==df.building_type.Workshop or type==df.building_type.Furnace)and not seen[key]and target:getBuildStage()==target:getMaxBuildStage() and (os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')~='1' or key=='13:1:-1' or key=='13:12:-1' or key=='13:22:-1')then
+   if (type==df.building_type.Workshop or type==df.building_type.Furnace)and not seen[key]and target:getBuildStage()==target:getMaxBuildStage() and (os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')~='1' or (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')=='1' and key=='13:11:-1') or (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')~='1' and (key=='13:1:-1' or key=='13:12:-1' or key=='13:22:-1')))then
     seen[key]=true;select_map(target)
     assert(click_label('Add new task'),'Native task catalog did not open: '..key)
     local function read_rows()
@@ -345,10 +345,17 @@ local ok,err=xpcall(function()
     assert(#target.jobs==#queue_ids,'Category discovery changed workshop queue')
     for i,id in ipairs(queue_ids)do assert(target.jobs[i-1].id==id,'Category discovery reordered workshop queue')end
     if os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')=='1'then
-     catalog.effects={};catalog.queue_ids=queue_ids
-     for index,row in ipairs(rows)do if row.available then
+     catalog.effects={};catalog.queue_ids=queue_ids;local effect_types={}
+     for index,row in ipairs(rows)do if row.available and (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')~='1' or (#catalog.effects<8 and not effect_types[row.job_type])) then
+      effect_types[row.job_type]=true
       gui.simulateInput(view,'LEAVESCREEN');select_map(target);assert(click_label('Add new task'))
-      assert(click_label(row.caption),'Family native task unavailable')
+      local clicked=false
+      for scroll=0,128 do
+       if click_label(row.caption)then clicked=true;break end
+       g.precise_mouse_x=600;g.precise_mouse_y=350;g.mouse_x=75;g.mouse_y=29
+       gui.simulateInput(view,'CONTEXT_SCROLL_DOWN');view:render(dfhack.getTickCount())
+      end
+      assert(clicked,'Family native task unavailable')
       local job=assert(target.jobs[#target.jobs-1]);assert(#target.jobs==#queue_ids+1,'Native task did not append a job')
       catalog.effects[#catalog.effects+1]={index=index,caption=row.caption,native=family_effect(job)}
       assert(dfhack.job.removeJob(job))

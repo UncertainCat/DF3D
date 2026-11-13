@@ -26,20 +26,24 @@ func run() -> void:
 		check(choices.size()==family.native.size(),"Family choice count differs: "+family.kind)
 		for i in mini(choices.size(),family.native.size()):
 			check(choices[i].name==family.native[i].caption,"Family caption/order differs: "+family.kind)
-			check(choices[i].availability.available==family.native[i].available and choices[i].availability.objection==family.native[i].objection,"Family availability differs: "+family.kind)
+			if family.native[i].has("available"):
+				check(choices[i].availability.available==family.native[i].available and choices[i].availability.objection==family.native[i].objection,"Family availability differs: "+family.kind)
 		await process_frame;await RenderingServer.frame_post_draw
 		root.get_texture().get_image().save_png(directory+"/family-"+family.kind.split(":")[1]+"-live.png")
 		click(owner.panel.tasks.global_position+Vector2(owner.panel.tasks.size.x-48,12))
 		check(not owner.panel.tasks.picking,"Family Cancel did not return to Tasks")
 		for entry in family.effects:
 			owner.panel.tasks.choose_mode(true)
-			click(owner.panel.tasks.global_position+Vector2(24,84+(int(entry.index)-1)*36))
+			for step in 96:
+				if int(entry.index)-1<owner.panel.tasks.first+owner.panel.tasks.scrollbar.page:break
+				var wheel:=InputEventMouseButton.new();wheel.button_index=MOUSE_BUTTON_WHEEL_DOWN;wheel.pressed=true;wheel.position=owner.panel.tasks.global_position+Vector2(60,120);root.push_input(wheel);await process_frame
+			click(owner.panel.tasks.global_position+Vector2(24,84+(int(entry.index)-1-owner.panel.tasks.first)*36))
 			await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready and owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
 			var id: int=owner.tasks.snapshot.get("created_job",-1)
 			check(id>=0 and not owner.panel.tasks.picking,"Family task did not queue: "+entry.caption)
 			created[str(int(family.building_id))+":"+str(int(entry.index))]=id
 		for i in choices.size():
-			if choices[i].availability.available:continue
+			if not choices[i].has("availability") or choices[i].availability.available:continue
 			owner.panel.tasks.choose_mode(true)
 			click(owner.panel.tasks.global_position+Vector2(24,84+i*36))
 			check(owner.panel.tasks.picking and owner.tasks.phase==owner.tasks.Phase.Ready,"Unavailable family row accepted a click")
@@ -47,7 +51,7 @@ func run() -> void:
 			check(rejected.get("status")==C.ManagementStatus.Rejected,"Unavailable family task was queued")
 			refused+=1
 		owner.close_panel();checked+=1
-	check(checked==3,"Missing family reference")
+	check(checked==(1 if OS.get_environment("DF3D_WORKSHOP_LEATHER_RUNTIME")=="1" else 3),"Missing family reference")
 	owner.queue_free();await process_frame
 	host.interaction.panel.free();host.queue_free();service.queue_free();await process_frame
 	var file:=FileAccess.open(directory+"/workshop-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"families":checked,"created":created,"refused":refused}));file.close()

@@ -17259,6 +17259,30 @@ See native_workshop.json.move_up_runtime_reference. This qualifies the captured
 Make bed sequence; full workshop hover, remaining artwork and other families
 remain separate acceptance work.
 
+Leatherworks Tasks now uses the owned native order catalog for builtin choices
+and the existing native reaction/category readers. Native8c7d22..8c812d walks
+civilization armor, pants, helm, gloves, shoes and shield resources; clothing
+families check their leather flag, and all resulting descriptors use material
+category0x10. It adds bag74, waterskin121, backpack131, quiver132 and image192.
+This branch is pinned independently of the order classifier; no native widgets
+or menu scratch are runtime inputs. Clothier is not admitted by this change:
+its root8c812d starts with three fabric selectors. Jeweler8c571c has repeated
+job types distinguished by material-category flags, requiring distinct intent
+identities before it can use the current provider.
+
+Protected214542 on2026-11-12 matches all25 Leatherworks root choices, ordering,
+captions and availability; the picker crop432,130..888,676 has zero differing
+pixels. Actual clicks create eight distinct job types, including wheel scrolling
+to gloves; native job fields and every input requirement match. Original queue
+order is restored. Cancel is verified. Worker execution, products, remaining
+subtype effects, child reaction gestures and job.item_type equality are outside
+this evidence. Owned DF46284 exits unsaved with source preservation. Core19 and
+controller/composition/adapter checks pass; only three known Godot diagnostics
+occur. GPU samples41-42C at30FPS are not continuous peaks. See
+native_workshop.json.leather_runtime_reference. Earlier214411 stopped on a test
+assumption that category rows had job availability; it is not acceptance evidence.
+The family harness now distinguishes categories and bounds its scroll gestures.
+
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.
 Renderer18643e uses this predicate and installed BUILDING_JOBS_ACTIVE artwork.

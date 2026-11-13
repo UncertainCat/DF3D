@@ -7577,5 +7577,414 @@
       "workshop-wire-result.json": "13c199de7b83280d1f3abda0e3a9413423a8a25ca6a681a1f53f3e8db7eb9824",
       "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
     }
+  },
+  "leather_runtime_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-214542",
+    "native_membership_rva": "8c7d22..8c812d",
+    "native_membership_fnv64": "ce7eea858978ebf4",
+    "choices": 25,
+    "effects": [
+      {
+        "caption": "Make leather armor",
+        "index": 2,
+        "native": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 55,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": 2,
+          "job_type": 100,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 16,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        },
+        "viewer": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 55,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": 2,
+          "job_type": 100,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 16,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        }
+      },
+      {
+        "caption": "Make leather backpack",
+        "index": 3,
+        "native": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 55,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 131,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 16,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        },
+        "viewer": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 55,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 131,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 16,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        }
+      },
+      {
+        "caption": "Make leather bag",
+        "index": 4,
+        "native": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 55,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 74,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 16,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        },
+        "viewer": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 55,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 74,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 16,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        }
+      },
+      {
+        "caption": "Make leather buckler",
+        "index": 5,
+        "native": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 55,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": 1,
+          "job_type": 118,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 16,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        },
+        "viewer": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 55,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": 1,
+          "job_type": 118,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 16,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        }
+      },
+      {
+        "caption": "Make leather cap",
+        "index": 6,
+        "native": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 55,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": 1,
+          "job_type": 101,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 16,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        },
+        "viewer": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 55,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": 1,
+          "job_type": 101,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 16,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        }
+      },
+      {
+        "caption": "Make leather leggings",
+        "index": 12,
+        "native": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 55,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": 2,
+          "job_type": 102,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 16,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        },
+        "viewer": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 55,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": 2,
+          "job_type": 102,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 16,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        }
+      },
+      {
+        "caption": "Make leather quiver",
+        "index": 14,
+        "native": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 55,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 132,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 16,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        },
+        "viewer": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 55,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 132,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 16,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        }
+      },
+      {
+        "caption": "Make pair of leather gloves",
+        "index": 19,
+        "native": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 55,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": 1,
+          "job_type": 116,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 16,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        },
+        "viewer": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 55,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": 1,
+          "job_type": 116,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 16,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        }
+      }
+    ],
+    "scope": "Root choices/order/captions/availability and Cancel; eight distinct builtin job types selected by actual clicks including wheel scrolling. Job fields and input requirements match native; original queue restored. Does not establish worker execution, finished products, all subtype effects, child reaction gestures or job.item_type equality.",
+    "crop": [
+      432,
+      130,
+      888,
+      676
+    ],
+    "differing_pixels": 0,
+    "diagnostics": "passed_with_known_issues: separate-renderer, finalize, ObjectDB shutdown; no unclassified diagnostics",
+    "source_preservation": "Owned source unchanged; DF46284 exited unsaved",
+    "sha256": {
+      "workshop-native.json": "d5b559a490b98e24dcae66643e4510efd2ec48f0a6d256a7a6ce51772d5fa98b",
+      "workshop-family-11.png": "85d90c3d81242e2b9156a0a0a836afd0d03cc38f46231bf64974ec7a890b6c17",
+      "family-11-live.png": "842fe3d5c98e7eb74c676bc625f8f04183b9eedaee93774cc70dd3ad8e5d2a2b",
+      "workshop-wire-result.json": "3ec0ce8edda47485b9ab5e12b84e2713823ba7d42ea05e22c69674f1e710f8a8",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    }
   }
 }

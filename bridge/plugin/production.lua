@@ -58,7 +58,7 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
  local out,keys={},{}
  local k=kind(b)
  local forge=k=='MetalsmithsForge' or k=='MagmaForge'
- local ordinary=k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' or k=='Farmers' or k=='Millstone' or k=='Tanners'
+ local ordinary=k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' or k=='Farmers' or k=='Millstone' or k=='Tanners' or k=='Leatherworks'
  local supported=forge or ordinary or k=='Still'
  if category~='' and not supported then return nil,'Unsupported workshop category' end
  if supported then

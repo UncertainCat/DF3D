@@ -165,6 +165,7 @@ ProductionState decodeProduction(const m::ProductionState* p) {
       j.suspended = v->suspended();
       j.priority = v->priority();
       j.canMoveUp = v->can_move_up();
+      j.active = v->active();
       j.editable = v->editable();
       j.attachedItems = v->attached_items();
       j.requirements = reqs(v->requirements());

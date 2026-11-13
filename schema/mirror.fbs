@@ -1562,6 +1562,7 @@ table ProductionJob {
   requirements:[ProductionRequirement];
   priority:int8 = -1; // Legacy recordings have no Priority observation.
   can_move_up:int8 = -1; // -1 unknown; 0 unavailable; 1 available.
+  active:int8 = -1; // Native worker-reference predicate; -1 unknown,0 false,1 true.
 }
 table ProductionBuilding {
   id:int32; name:string; kind:string; origin:TilePos;

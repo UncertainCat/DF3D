@@ -41,6 +41,17 @@ TEST_CASE("legacy production jobs preserve unknown Move up capability") {
   }
 }
 
+TEST_CASE("legacy job activity stays unknown") {
+  for(int active:{-1,0,1}) {
+    flatbuffers::FlatBufferBuilder b;
+    auto caption=b.CreateString("Make bed");wire::ProductionJobBuilder row(b);
+    row.add_id(71);row.add_name(caption);if(active>=0)row.add_active(int8_t(active));
+    auto jobs=b.CreateVector(std::vector<flatbuffers::Offset<wire::ProductionJob>>{row.Finish()});
+    wire::ProductionStateBuilder state(b);state.add_jobs(jobs);b.Finish(state.Finish());
+    auto decoded=codec::decodeProduction(flatbuffers::GetRoot<wire::ProductionState>(b.GetBufferPointer()));
+    REQUIRE(decoded.jobs.size()==1);CHECK(decoded.jobs[0].active==active);
+  }
+}
 TEST_CASE("workshop Priority intents require a displayed opposite state and no mixed edit") {
   for(int desired:{0,1})for(int fault=0;fault<8;++fault) {
     wm::ManagementRequest r;r.action=wm::ManagementAction::ProductionJobEdit;

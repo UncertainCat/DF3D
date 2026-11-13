@@ -7530,5 +7530,32 @@
     "source_preserved": true,
     "closed_unsaved": true,
     "diagnostics": "passed_with_known_issues: three documented Godot diagnostics, no unclassified errors"
+  },
+  "activity_indicator_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-213558",
+    "native_predicate_rva": "d02850",
+    "native_predicate_fnv64": "ea0c7dfd75f644de",
+    "scope": "Native worker-reference predicate, not resolved worker identity. Controlled Make bed Move up and Priority gestures match native activity; assigned marker and cleared marker crops match exactly. Other job families and full workshop acceptance remain separate.",
+    "token": "BUILDING_JOBS_ACTIVE",
+    "crop": [
+      712,
+      136,
+      736,
+      244
+    ],
+    "differing_pixels": {
+      "assigned": 0,
+      "released": 0
+    },
+    "diagnostics": "passed_with_known_issues: separate-renderer notice, device finalize, ObjectDB shutdown; no unclassified diagnostics",
+    "source_preservation": "Owned source unchanged; DF43136 exited unsaved",
+    "sha256": {
+      "workshop-job-move-up-middle.png": "bd21a33a2c30c7774864d928f21a9b5e0dd4585f08c9922f4837080ec77bb099",
+      "workshop-move-up-middle-live.png": "71ec743c4b16555b38bafd1e9ce8ad291325c70a0cf7bdbf5b8b082335f9c7ed",
+      "workshop-job-priority-middle-on.png": "8066e6151c33f009faa50e7745ea0885527bf0c59be02239194ff12d34f23649",
+      "workshop-job-priority-middle-on-live.png": "2d920141a2a669d10a462017f8d60938e69515b824cae27ceaa843a0a7639a45",
+      "workshop-wire-result.json": "13c199de7b83280d1f3abda0e3a9413423a8a25ca6a681a1f53f3e8db7eb9824",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca"
+    }
   }
 }

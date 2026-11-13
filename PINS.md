@@ -29,6 +29,10 @@ the capability in Godot. Rebuild both peers: Local\df3d_management_v208 isolates
 Move up dispatch validates the observed predecessor at a safe point before the
 native-equivalent adjacent swap; flags and worker assignments are preserved.
 
+ProductionJob.active is an additive optional tri-state observation under208.
+Absent legacy values remain unknown (-1); known0/1 comes from native d02850.
+It adds no request semantics and does not change the mailbox or required version.
+
 Management207 adds optional `ProductionState.task_parent`. Present empty means
 native Back to root; present nonempty means Back to that opaque category; absent
 retains Cancel/legacy behavior. A parent requires a known nonempty current

@@ -199,7 +199,7 @@ local function farm_state(b,result)
  result.detail='Seasonal crop selection; seed counts are informational. Fertilization and new farm placement are not yet exposed.'
  return true
 end
-local function inspect(b,rs,native_caption)
+local function inspect(b,rs,native_caption,native_active)
  local result={ok=true,message='Production inspected',buildings={info(b)},selected_building=b.id,
   recipes={},production_jobs={},crops={},seasonal_crops={},current_season=-1}
  if kind(b)=='FarmPlot' then local ok,err=farm_state(b,result);if not ok then return fail(err) end;return result end
@@ -218,7 +218,7 @@ local function inspect(b,rs,native_caption)
   local worker=J.getWorker(j)
   local status=j.flags.suspend and 'Suspended by native state' or (worker and 'Worker assigned' or 'Awaiting worker or inputs; native cause is not exposed')
   result.production_jobs[#result.production_jobs+1]={id=j.id,name=utf(native_caption(j)),job_type=j.job_type,
-   repeat_job=j.flags['repeat'],suspended=j.flags.suspend,priority=j.flags.do_now and 1 or 0,worker_id=worker and worker.id or -1,
+   active=native_active and (native_active(j) and 1 or 0) or nil,repeat_job=j.flags['repeat'],suspended=j.flags.suspend,priority=j.flags.do_now and 1 or 0,worker_id=worker and worker.id or -1,
    worker_name=worker and utf(dfhack.units.getReadableName(worker)) or '',completion_timer=j.completion_timer,
    attached_items=#j.items,editable=editable(j,rs),can_move_up=(editable(j,rs) and #result.production_jobs>0) and 1 or 0,status=status,requirements=requirements(j)}
  end
@@ -266,7 +266,7 @@ return function(request)
  end
  local rs,err=recipes(b,request.workshop_requirements,request.workshop_caption,request.workshop_reactions,request.workshop_caption_less,request.workshop_task_templates,request.workshop_task_categories,p.task_category or '',request.workshop_forge_page);if not rs then return fail(err) end
  if request.action==16 then
-  local result=inspect(b,rs,request.workshop_caption)
+  local result=inspect(b,rs,request.workshop_caption,request.workshop_job_active)
   if kind(b)~='FarmPlot' and p.query and p.query~='' then
    local query=dfhack.utf2df(p.query);local filtered={}
    for i,recipe in ipairs(rs) do
@@ -321,5 +321,5 @@ return function(request)
    end
   end
  else return fail('Unsupported production action') end
- local result=inspect(b,rs,request.workshop_caption);result.created_job=created;result.message='Native production change applied';return result
+ local result=inspect(b,rs,request.workshop_caption,request.workshop_job_active);result.created_job=created;result.message='Native production change applied';return result
 end

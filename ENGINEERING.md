@@ -17259,6 +17259,21 @@ See native_workshop.json.move_up_runtime_reference. This qualifies the captured
 Make bed sequence; full workshop hover, remaining artwork and other families
 remain separate acceptance work.
 
+Workshop activity markers call the pinned native semantic predicate d02850,
+which checks for a UNIT_WORKER general reference without resolving its unit.
+Renderer18643e uses this predicate and installed BUILDING_JOBS_ACTIVE artwork.
+ProductionJob.active is additive tri-state (-1 unknown,0 false,1 true); legacy
+observations remain unknown and omit the Godot field. Management208 is unchanged.
+Protected213558 on2026-11-12 verifies the assigned marker across actual Move up
+clicks and its removal after Priority releases the worker. Both native/viewer
+column crops712,136..736,244 have zero differing pixels. Existing Details and
+task creation checks pass. Owned DF43136 exits unsaved with source preservation;
+only the three documented Godot diagnostics occur. Core19 and management
+contract/controller/composition/adapter checks pass. GPU samples37-41C at30FPS
+are observations, not continuous peaks. See native_workshop.json.activity_indicator_reference.
+This covers the controlled Make bed jobs; contained tool artwork, remaining
+families and full workshop acceptance remain unfinished.
+
 Workshop Priority dispatch uses `workshop_priority_native.h`: validate the
 building/job and displayed flag at a safe point, reproduce the pinned inline
 queue swaps over simulation records, and call native1325080 for displaced

@@ -161,6 +161,7 @@ void writeProduction(Dictionary& result, const wm::ProductionState& s) {
     row["suspended"] = v.suspended;
     if(v.priority>=0)row["priority"] = bool(v.priority);
     if(v.canMoveUp>=0)row["can_move_up"] = bool(v.canMoveUp);
+    if(v.active>=0)row["active"] = bool(v.active);
     row["worker_id"] = v.workerId;
     row["worker_name"] = String::utf8(v.workerName.c_str());
     row["completion_timer"] = v.completionTimer;

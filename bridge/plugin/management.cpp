@@ -968,7 +968,7 @@ void publish() {
     pr.push_back(m::CreateProductionRecipe(b,b.CreateString(v.key),b.CreateString(v.name),reqs(v.requirements),availability));
   }
   std::vector<flatbuffers::Offset<m::ProductionJob>> pj;
-  for(const auto& v:production.jobs) pj.push_back(m::CreateProductionJob(b,v.id,b.CreateString(v.name),v.jobType,v.repeat,v.suspended,v.workerId,b.CreateString(v.workerName),v.completionTimer,v.attachedItems,v.editable,b.CreateString(v.status),reqs(v.requirements),v.priority,v.canMoveUp));
+  for(const auto& v:production.jobs) pj.push_back(m::CreateProductionJob(b,v.id,b.CreateString(v.name),v.jobType,v.repeat,v.suspended,v.workerId,b.CreateString(v.workerName),v.completionTimer,v.attachedItems,v.editable,b.CreateString(v.status),reqs(v.requirements),v.priority,v.canMoveUp,v.active));
   std::vector<flatbuffers::Offset<m::FarmCrop>> pc;
   for(const auto& v:production.crops) pc.push_back(m::CreateFarmCrop(b,v.id,b.CreateString(v.name),v.seasons,v.seeds));
   flatbuffers::Offset<m::FarmSnapshot> farmSnapshot;
@@ -5939,6 +5939,12 @@ void run(color_ostream& out) {
       if(applied)mutated=true;
       lua_pushboolean(state,applied);return 1;
     });lua_setfield(L,-2,"workshop_move_up");
+    lua_pushcfunction(L,[](lua_State* state)->int {
+      auto* job=Lua::GetDFObject<df::job>(state,1);
+      const auto active=df3d_production::workshopJobActive(job);
+      if(!active)return luaL_error(state,"Native job activity unavailable");
+      lua_pushboolean(state,*active);return 1;
+    });lua_setfield(L,-2,"workshop_job_active");
     lua_newtable(L);field(L,"building_id",p->building_id());field(L,"job_id",p->job_id());field(L,"recipe",p->recipe()?p->recipe()->str():"");field(L,"task_category",p->task_category()?p->task_category()->str():"");field(L,"query",p->query()?p->query()->str():"");field(L,"cursor",p->cursor());field(L,"repeat_job",p->repeat());field(L,"priority",p->priority());field(L,"expected_priority",p->expected_priority());field(L,"expected_previous_job_id",p->expected_previous_job_id());field(L,"suspend",p->suspend());field(L,"cancel",p->cancel());field(L,"season",p->season());field(L,"crop_id",p->crop_id());lua_setfield(L,-2,"production");
   }
   if(const auto* w=r->work_order()) {
@@ -6403,7 +6409,7 @@ void run(color_ostream& out) {
       lua_pop(L,1);production.recipes.push_back(std::move(row));
     });
     each("task_categories",128,[&](){production.taskCategories.push_back({text(L,"key"),text(L,"name")});});
-    each("production_jobs",64,[&](){ProductionJob v;v.id=int32_t(number(L,"id",-1));v.jobType=int16_t(number(L,"job_type",-1));v.workerId=int32_t(number(L,"worker_id",-1));v.completionTimer=int32_t(number(L,"completion_timer",-1));v.name=text(L,"name");v.workerName=text(L,"worker_name");v.status=text(L,"status");v.repeat=boolean(L,"repeat_job");v.suspended=boolean(L,"suspended");v.priority=int8_t(number(L,"priority",-1));v.canMoveUp=int8_t(number(L,"can_move_up",-1));v.editable=boolean(L,"editable");v.attachedItems=uint16_t(number(L,"attached_items"));v.requirements=reqs();production.jobs.push_back(std::move(v));});
+    each("production_jobs",64,[&](){ProductionJob v;v.id=int32_t(number(L,"id",-1));v.jobType=int16_t(number(L,"job_type",-1));v.workerId=int32_t(number(L,"worker_id",-1));v.completionTimer=int32_t(number(L,"completion_timer",-1));v.name=text(L,"name");v.workerName=text(L,"worker_name");v.status=text(L,"status");v.repeat=boolean(L,"repeat_job");v.suspended=boolean(L,"suspended");v.priority=int8_t(number(L,"priority",-1));v.canMoveUp=int8_t(number(L,"can_move_up",-1));v.active=int8_t(number(L,"active",-1));v.editable=boolean(L,"editable");v.attachedItems=uint16_t(number(L,"attached_items"));v.requirements=reqs();production.jobs.push_back(std::move(v));});
     each("crops",256,[&](){production.crops.push_back({int32_t(number(L,"id",-1)),text(L,"name"),uint8_t(number(L,"seasons")),uint32_t(number(L,"seeds"))});});
     each("seasonal_crops",4,[&](){production.seasonalCrops.push_back(int32_t(lua_tointeger(L,-1)));});
   }

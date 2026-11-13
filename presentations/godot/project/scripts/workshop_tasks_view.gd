@@ -171,6 +171,9 @@ func _draw() -> void:
 	for index in jobs.size():
 		var job: Dictionary=jobs[index];var y:=36+index*36
 		caption(job.name,Vector2(0,y+18),11)
+		if job.get("active",false):
+			var marker: Texture2D=art.texture("BUILDING_JOBS_ACTIVE")
+			if marker!=null:draw_texture_rect(marker,Rect2(280,y-6,24,36),false)
 		for entry in [[0,"BUILDING_JOBS_REPEAT"+("_ACTIVE" if job.repeat else "")],[1,"BUILDING_JOBS_DO_NOW"+("_ACTIVE" if job.get("priority",false) else "")],[2,"BUILDING_JOBS_PRIORITY_UP"],[3,"STOCKS_VIEW_ITEM"],[4,"BUILDING_JOBS_SUSPENDED"+("_ACTIVE" if job.suspended else "")],[5,"BUILDING_JOBS_REMOVE"]]:
 			if entry[0]==1 and not job.has("priority"):continue
 			if entry[0]==2 and (index==0 or not job.get("can_move_up",false)):continue

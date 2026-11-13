@@ -5,6 +5,18 @@
 
 namespace df3d_production {
 enum class PriorityOutcome { Rejected, Applied, Unknown };
+// Renderer18643e uses this semantic predicate, not a resolved worker pointer.
+inline std::optional<bool> workshopJobActive(df::job* job) {
+    if(!job || !farmFunctions())return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    static const bool pinned=[base] {
+        uint64_t hash=UINT64_C(14695981039346656037);
+        for(size_t i=0;i<0x4b;++i){hash^=base[0xd02850+i];hash*=UINT64_C(1099511628211);}
+        return hash==UINT64_C(0xea0c7dfd75f644de);
+    }();
+    if(!pinned)return std::nullopt;
+    return reinterpret_cast<bool (*)(df::job*)>(base+0xd02850)(job);
+}
 // Native1ad17c..1ad1e4 swaps adjacent simulation jobs without changing flags
 // or releasing workers. An observed predecessor prevents stale-row movement.
 inline bool moveWorkshopJobUp(int32_t buildingId,int32_t jobId,int32_t previousId) {

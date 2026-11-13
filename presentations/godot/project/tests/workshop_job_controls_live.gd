@@ -65,7 +65,7 @@ func run() -> void:
 		current=owner.tasks.jobs()
 		for index in current.size():
 			var expected: Dictionary=sample.rows[index]
-			check(current[index].id==job_ids[native_ids.find(int(expected.id))] and current[index].worker_id==int(expected.worker_id) and current[index].priority==expected.do_now,"Move up queue/worker/flag effect differs")
+			check(current[index].id==job_ids[native_ids.find(int(expected.id))] and current[index].worker_id==int(expected.worker_id) and current[index].priority==expected.do_now and current[index].get("active")==bool(int(expected.worker_id)>=0),"Move up queue/worker/flag effect differs")
 		if sample.name=="middle-up":
 			await process_frame;await RenderingServer.frame_post_draw
 			root.get_texture().get_image().save_png(directory+"/workshop-move-up-middle-live.png")
@@ -90,7 +90,7 @@ func run() -> void:
 		check(current.size()==sample.rows.size(),"Priority changed queue size")
 		for index in mini(current.size(),sample.rows.size()):
 			var expected: Dictionary=sample.rows[index]
-			check(current[index].id==job_ids[native_ids.find(int(expected.id))] and current[index].get("priority")==expected.do_now and current[index].worker_id==int(expected.worker_id),"Priority queue, flags or worker differ from native")
+			check(current[index].id==job_ids[native_ids.find(int(expected.id))] and current[index].get("priority")==expected.do_now and current[index].worker_id==int(expected.worker_id) and current[index].get("active")==bool(int(expected.worker_id)>=0),"Priority queue, flags, worker or activity differ from native")
 	for id in job_ids.slice(1):
 		owner.tasks.cancel_task(id);await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready and owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
 	await process_frame;click(Vector2(820,154))

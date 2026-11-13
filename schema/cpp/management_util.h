@@ -2923,7 +2923,7 @@ inline std::optional<std::string> validateManagementState(const ManagementState&
     std::set<std::string> keys;
     if(p->recipes()) for(const auto* v:*p->recipes()) if(!v || !textOk(v->key(),128) || !v->key()->size() || !keys.insert(v->key()->str()).second || !textOk(v->name(),512) || !requirementsOk(v->requirements()) || (v->availability() && (!textOk(v->availability()->objection(),4096) || (v->availability()->available() && v->availability()->objection()->size())))) return "invalid production recipe";
     ids.clear();
-    if(p->jobs()) for(const auto* v:*p->jobs()) if(!v || v->id()<0 || !ids.insert(v->id()).second || v->worker_id() < -1 || v->job_type()<0 || v->completion_timer() < -1 || !textOk(v->name(),512) || !textOk(v->worker_name(),512) || !textOk(v->status(),512) || !requirementsOk(v->requirements()) || v->priority() < -1 || v->priority()>1 || v->can_move_up() < -1 || v->can_move_up()>1) return "invalid production job";
+    if(p->jobs()) for(const auto* v:*p->jobs()) if(!v || v->id()<0 || !ids.insert(v->id()).second || v->worker_id() < -1 || v->job_type()<0 || v->completion_timer() < -1 || !textOk(v->name(),512) || !textOk(v->worker_name(),512) || !textOk(v->status(),512) || !requirementsOk(v->requirements()) || v->priority() < -1 || v->priority()>1 || v->can_move_up() < -1 || v->can_move_up()>1 || v->active() < -1 || v->active()>1) return "invalid production job";
     ids.clear();
     if(p->crops()) for(const auto* v:*p->crops()) if(!v || v->id()<0 || v->id()>32767 || !ids.insert(v->id()).second || !textOk(v->name(),512) || !v->seasons() || v->seasons()>15) return "invalid farm crop";
     if(p->seasonal_crops()) for(auto id:*p->seasonal_crops()) if(id < -1 || id>32767) return "invalid seasonal crop";

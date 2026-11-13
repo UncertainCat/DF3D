@@ -244,23 +244,24 @@ local ok,err=xpcall(function()
    end end
    result.fuel_scenario={forbidden_bars=#fuel_flags};assert(#fuel_flags>0,'Fuel scenario has no fuel bars')
   end
-  if os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')=='1'then
+  if os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')=='1' or os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')=='1'then
+   local kiln_only=os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')=='1'
    for _,target in ipairs(df.global.world.buildings.all)do
     if df.building_furnacest:is_instance(target) and target:getBuildStage()==target:getMaxBuildStage() and #target.jobs==0 and target.custom_type==-1 then
-     local subtype=2+#furnace_fixtures
+     local subtype=kiln_only and 3 or 2+#furnace_fixtures
      furnace_fixtures[#furnace_fixtures+1]={building=target,prior_type=target.type,id=target.id,fixture_type=subtype}
      target.type=subtype
-     if #furnace_fixtures==2 then break end
+     if #furnace_fixtures==(kiln_only and 1 or 2) then break end
     end
    end
-   assert(#furnace_fixtures==2,'Furnace discovery needs two idle completed furnace records')
+   assert(#furnace_fixtures==(kiln_only and 1 or 2),'Furnace fixture needs idle completed furnace records')
    result.furnace_fixtures={}
    for _,entry in ipairs(furnace_fixtures)do result.furnace_fixtures[#result.furnace_fixtures+1]={id=entry.id,prior_type=entry.prior_type,fixture_type=entry.fixture_type}end
   end
   result.task_catalogs={};local seen={}
   for _,target in ipairs(df.global.world.buildings.all)do
    local type=target:getType();local key=type..':'..target:getSubtype()..':'..target:getCustomType()
-   if (type==df.building_type.Workshop or type==df.building_type.Furnace)and not seen[key]and target:getBuildStage()==target:getMaxBuildStage() and (os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')~='1' or key=='5:2:-1' or key=='5:3:-1') and (os.getenv('DF3D_WORKSHOP_CLOTHIER_NAV')~='1' or key=='13:13:-1') and (os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')~='1' or (os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')=='1' and key=='5:1:-1') or (os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')=='1' and key=='13:4:-1') or (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')=='1' and key=='13:11:-1') or (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')~='1' and (key=='13:1:-1' or key=='13:12:-1' or key=='13:22:-1')))then
+   if (type==df.building_type.Workshop or type==df.building_type.Furnace)and not seen[key]and target:getBuildStage()==target:getMaxBuildStage() and (os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')~='1' or key=='5:2:-1' or key=='5:3:-1') and (os.getenv('DF3D_WORKSHOP_CLOTHIER_NAV')~='1' or key=='13:13:-1') and (os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')~='1' or (os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')=='1' and key=='5:3:-1') or (os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')=='1' and key=='5:1:-1') or (os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')=='1' and key=='13:4:-1') or (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')=='1' and key=='13:11:-1') or (os.getenv('DF3D_WORKSHOP_KILN_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')~='1' and (key=='13:1:-1' or key=='13:12:-1' or key=='13:22:-1')))then
     seen[key]=true;select_map(target)
     assert(click_label('Add new task'),'Native task catalog did not open: '..key)
     local function read_rows()

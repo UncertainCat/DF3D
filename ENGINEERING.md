@@ -17397,6 +17397,22 @@ not qualify natural furnace construction, viewer actions, execution, products
 or magma supply. Source saves remained unchanged and owned DF40628 exited
 unsaved. The capture ran at30FPS with a42C GPU sample, not a continuous peak.
 
+Regular Kiln Tasks now uses the independently owned native order catalog for
+Collect clay and the existing native reaction/category providers for other
+choices. Membership is pinned to8c5036..8c5057; no native menu storage is read.
+Protected221917 on2026-11-12 verifies15 root choices and seven actual job
+creations (Collect clay, bricks, crafts, hive, jug, statue and large pot), with
+matching job fields and native input requirements. Seven unavailable tasks
+reject both clicks and direct requests. Cancel returns to Tasks; original
+queues are restored. The picker crop432,106..888,676 is pixel-identical.
+This uses a controlled completed furnace subtype fixture, restored afterward;
+natural construction, worker execution/products, magma supply and the instrument
+child workflow are not qualified here. Uninitialized item_type remains excluded.
+Owned DF45200 exits unsaved with source saves unchanged. Core19 and headless
+state/composition/adapter checks pass; live diagnostics contain only the three
+documented Godot signatures. Serial30FPS GPU samples are40-41C. See
+native_workshop.json.kiln_runtime_reference. Whole workshop exposure remains gated.
+
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.
 Renderer18643e uses this predicate and installed BUILDING_JOBS_ACTIVE artwork.

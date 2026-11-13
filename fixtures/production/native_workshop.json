@@ -9454,5 +9454,470 @@
       "workshop-furnace-2-page-2.png": "a387406f088fe54dfa54d155b75327691643fb15370c3965b4366b5982b51272",
       "workshop-furnace-2-page-3.png": "176b9737a3305c8837ae671f8ade413ef240a520875f214b750c01c7129b4615"
     }
+  },
+  "kiln_runtime_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-221917",
+    "scope": "Controlled completed idle furnace56 temporarily changed from WoodFurnace to Kiln in paused unsaved clone, restored afterward. All15 root choices/captions/order/availability match; seven available tasks created by actual clicks and all fields/input requirements match native. Seven unavailable choices reject clicks and direct requests. Original queue restored.",
+    "membership": "Native8c5036..8c5057 adds Collect clay217 at root, then native reactions; audited independent order catalog supplies builtin descriptor. FNV64 4280d302be848fe3 over21hex bytes. No runtime menu/widget inputs.",
+    "effects": [
+      {
+        "caption": "Collect clay",
+        "index": 2,
+        "native": {
+          "inputs": [],
+          "item_subtype": -1,
+          "job_type": 217,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        },
+        "viewer": {
+          "inputs": [],
+          "item_subtype": -1,
+          "job_type": 217,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        }
+      },
+      {
+        "caption": "Make clay bricks",
+        "index": 7,
+        "native": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 4,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            },
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 0,
+              "mat_index": -1,
+              "mat_type": 7,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 209,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "MAKE_CLAY_BRICKS",
+          "specdata": -1,
+          "specflag": 0
+        },
+        "viewer": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 4,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            },
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 0,
+              "mat_index": -1,
+              "mat_type": 7,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 209,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "MAKE_CLAY_BRICKS",
+          "specdata": -1,
+          "specflag": 0
+        }
+      },
+      {
+        "caption": "Make clay crafts",
+        "index": 8,
+        "native": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 4,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            },
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 0,
+              "mat_index": -1,
+              "mat_type": 7,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 209,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "MAKE_CLAY_CRAFTS",
+          "specdata": -1,
+          "specflag": 0
+        },
+        "viewer": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 4,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            },
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 0,
+              "mat_index": -1,
+              "mat_type": 7,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 209,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "MAKE_CLAY_CRAFTS",
+          "specdata": -1,
+          "specflag": 0
+        }
+      },
+      {
+        "caption": "Make clay hive",
+        "index": 9,
+        "native": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 4,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            },
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 0,
+              "mat_index": -1,
+              "mat_type": 7,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 209,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "MAKE_CLAY_HIVE",
+          "specdata": -1,
+          "specflag": 0
+        },
+        "viewer": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 4,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            },
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 0,
+              "mat_index": -1,
+              "mat_type": 7,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 209,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "MAKE_CLAY_HIVE",
+          "specdata": -1,
+          "specflag": 0
+        }
+      },
+      {
+        "caption": "Make clay jug",
+        "index": 10,
+        "native": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 4,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            },
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 0,
+              "mat_index": -1,
+              "mat_type": 7,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 209,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "MAKE_CLAY_JUG",
+          "specdata": -1,
+          "specflag": 0
+        },
+        "viewer": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 4,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            },
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 0,
+              "mat_index": -1,
+              "mat_type": 7,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 209,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "MAKE_CLAY_JUG",
+          "specdata": -1,
+          "specflag": 0
+        }
+      },
+      {
+        "caption": "Make clay statue",
+        "index": 11,
+        "native": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 4,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            },
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 0,
+              "mat_index": -1,
+              "mat_type": 7,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 209,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "MAKE_CLAY_STATUE",
+          "specdata": -1,
+          "specflag": 0
+        },
+        "viewer": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 4,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            },
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 0,
+              "mat_index": -1,
+              "mat_type": 7,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 209,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "MAKE_CLAY_STATUE",
+          "specdata": -1,
+          "specflag": 0
+        }
+      },
+      {
+        "caption": "Make large clay pot",
+        "index": 12,
+        "native": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 4,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            },
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 0,
+              "mat_index": -1,
+              "mat_type": 7,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 209,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "MAKE_LARGE_CLAY_POT",
+          "specdata": -1,
+          "specflag": 0
+        },
+        "viewer": {
+          "inputs": [
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 4,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            },
+            {
+              "flags1": 0,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 0,
+              "mat_index": -1,
+              "mat_type": 7,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 209,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "MAKE_LARGE_CLAY_POT",
+          "specdata": -1,
+          "specflag": 0
+        }
+      }
+    ],
+    "picker_crop": [
+      432,
+      106,
+      888,
+      676
+    ],
+    "differing_pixels": 0,
+    "omissions": [
+      "Natural Kiln construction",
+      "Worker execution and products",
+      "Magma supply",
+      "Instrument category child workflow",
+      "Native uninitialized item_type equivalence"
+    ],
+    "diagnostics": "passed_with_known_issues: separate-renderer, device-finalize, ObjectDB shutdown; no unclassified diagnostics",
+    "source_preservation": "Owned source unchanged; DF45200 exited unsaved",
+    "sha256": {
+      "workshop-native.json": "749c6ae8ed62b7a80ce54f7d09494f9b35a4806985b7287d629a540e695f3147",
+      "workshop-wire-result.json": "eac25fcc44d637a075173273f1352f0a4e92b9e4da6eb423e2d9076880e45c62",
+      "result.json": "99c8603b75998dd2163006430eff2889055d80ac4ae8a7b68f13ccf7b7fe64a8",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "workshop-family-3.png": "6dceac5c8c32e73c09d18b07aad8c3ef8cbdc3c976858f265d6a6178b42edc9f",
+      "family-3-live.png": "71c2ded348e1ba90cbe0c0f31fa323976517bae93e54d0381d247cca4abc2646"
+    }
   }
 }

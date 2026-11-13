@@ -17251,6 +17251,28 @@ The native workshop catalog builder `8c5680` uses global building-menu vectors;
 its new-button constructor `8b1600` calls `7c5880`, which registers each button
 in those vectors. Neither is a permitted runtime API. Carpenter composition is
 inline at `8c762d..8c7ad1`; the shared reaction/category tail is `8c3fe0`.
+The diagnostic `DF3D_WORKSHOP_TASK_CATALOG=1` traverses category/material/color
+buttons through native pointer clicks and scroll input, recording descriptors
+without selecting jobs. Protected183949 on2026-11-12 covers172 pages across16
+completed workshop/furnace families; every visited queue retains its IDs/order,
+the paused frame remains unchanged, and owned DF38792 exits unsaved with source
+preservation. `fixtures/production/native_workshop_catalog.json.gz` retains
+the category paths, available/objection fields, native descriptors and independent
+`workshop-task-templates-probe` output. It contains no captured artwork.
+
+The existing owned Work orders template builder is not a drop-in workshop-task
+catalog. In this capture, Mechanic has2 native choices versus36 classified
+templates; Craftsdwarf omits the template's wooden toy; Butcher additionally
+offers Catch live land animal. Stoneworker adds66 named memorial choices.
+Forge differs in membership and descriptors, including ballista-head subtype.
+Carpenter's37, Leather Works'27 and Clothier's48 descriptors match only after
+including their subcategories. These comparisons exclude `item_type`: native
+buttons retain varying unused values for some jobs, whose action-time use still
+needs auditing. They do not establish job-effect parity. The runtime remains
+the limited catalog below; full category navigation, menu-specific membership,
+availability and all-family job effects are unfinished. The captured fortress's
+resources are evidence, not a hardcoded universal recipe list.
+
 Native job captions delegate from `8c2310` to semantic formatter `d032b0`.
 `workshopJobCaption` calls that formatter directly with scalar job fields,
 owned reaction/output strings and no live-job pointer, matching the picker.

@@ -3481,7 +3481,7 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           for(const auto& row:observed->materials) {Json::Value value;value["type"]=row.type;value["index"]=row.index;value["count"]=row.count;value["caption"]=DF2UTF(row.caption);result["materials"].append(value);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
-        if(parameters[0]=="work-orders-catalog-probe") {
+        if(parameters[0]=="work-orders-catalog-probe" || parameters[0]=="workshop-task-templates-probe") {
           if(parameters.size()>2)return CR_WRONG_USAGE;
           int32_t id=-1;
           if(parameters.size()==2) {
@@ -3496,6 +3496,11 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             value["item_type"]=int(row.item_type);value["item_subtype"]=row.item_subtype;
             value["mat_type"]=row.mat_type;value["mat_index"]=row.mat_index;
             value["caption"]=DF2UTF(row.name);value["compare"]=DF2UTF(row.compare_str);
+            if(parameters[0]=="workshop-task-templates-probe") {
+              value["material_category"]=row.material_category.whole;
+              value["specflag"]=row.specflag.whole;value["specdata"]=row.specdata.hist_figure_id;
+              value["art_type"]=int(row.art_specifier);value["art_id"]=row.art_specifier_id1;value["art_subid"]=row.art_specifier_id2;
+            }
             result["rows"].append(value);
           }
           if(id<0) {

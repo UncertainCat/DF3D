@@ -112,6 +112,87 @@ local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
  shot('jobs')
+ if os.getenv('DF3D_WORKSHOP_TASK_CATALOG')=='1'then
+  local utils=require('utils')
+  result.task_catalogs={};local seen={}
+  for _,target in ipairs(df.global.world.buildings.all)do
+   local type=target:getType();local key=type..':'..target:getSubtype()..':'..target:getCustomType()
+   if (type==df.building_type.Workshop or type==df.building_type.Furnace)and not seen[key]and target:getBuildStage()==target:getMaxBuildStage()then
+    seen[key]=true;select_map(target)
+    assert(click_label('Add new task'),'Native task catalog did not open: '..key)
+    local function read_rows()
+    local rows={}
+    for _,button in ipairs(df.global.game.main_interface.building.filtered_button)do
+     local row={caption=dfhack.df2utf(utils.call_with_string(button,'text')),type=tostring(button._type)}
+     row.leave=button.leave_button
+     if df.interface_button_building_new_jobst:is_instance(button)then
+      local job=df.reinterpret_cast(df.interface_button_building_new_jobst,button)
+      row.job_type=job.jobtype;row.reaction=job.mstring;row.item_type=job.itemtype;row.item_subtype=job.subtype
+      row.mat_type=job.material;row.mat_index=job.matgloss;row.material_category=job.job_item_flag.whole
+      row.specflag=job.specflag.whole;row.specdata=job.specdata.hist_figure_id
+      row.art_type=job.art_specifier;row.art_id=job.art_specifier_id1;row.art_subid=job.art_specifier_id2
+      row.available=not job.show_help_instead;row.objection=dfhack.df2utf(job.objection);row.priority=job.list_priority
+     elseif df.interface_button_building_category_selectorst:is_instance(button)then
+      local selector=df.reinterpret_cast(df.interface_button_building_category_selectorst,button)
+      row.category=selector.category
+     elseif df.interface_button_building_custom_category_selectorst:is_instance(button)then
+      row.custom_category=df.reinterpret_cast(df.interface_button_building_custom_category_selectorst,button).custom_category_token
+     elseif df.interface_button_building_material_selectorst:is_instance(button)then
+      local selector=df.reinterpret_cast(df.interface_button_building_material_selectorst,button)
+      row.material=selector.material;row.matgloss=selector.matgloss;row.material_category=selector.job_item_flag.whole
+     elseif df.interface_button_building_color_selectorst:is_instance(button)then
+      local selector=df.reinterpret_cast(df.interface_button_building_color_selectorst,button)
+      row.color=selector.color_index;row.color_job=selector.job
+     end
+     rows[#rows+1]=row
+    end
+    return rows
+    end
+    local rows=read_rows()
+    local text,code=dfhack.run_command_silent('df3d','workshop-task-templates-probe',tostring(target.id));assert(code==0,text)
+    local catalog={building_id=target.id,kind=key,name=dfhack.df2utf(dfhack.buildings.getName(target)),native=rows,templates=json.decode(text).rows,pages={}}
+    result.task_catalogs[#result.task_catalogs+1]=catalog
+    if target.id==building.id then shot('task-catalog-carpenter')end
+    -- Discovery only: invoke category buttons, never job/action buttons. Runtime
+    -- catalogs must not read these widgets or use their mutable menu storage.
+    local pending={{path={},rows=rows}};local next_page=1
+    local queue_ids={};for _,job in ipairs(target.jobs)do queue_ids[#queue_ids+1]=job.id end
+    while next_page<=#pending do
+     assert(#pending<=512,'Native task category discovery exceeded page bound')
+     local page=pending[next_page];next_page=next_page+1
+     catalog.pages[#catalog.pages+1]=page
+     for index,row in ipairs(page.rows)do
+      if not row.leave and (row.category~=nil or row.custom_category~=nil or row.material~=nil or row.color~=nil)then
+       assert(#page.path<8,'Native task category discovery exceeded depth bound')
+       gui.simulateInput(view,'LEAVESCREEN');select_map(target)
+       assert(click_label('Add new task'),'Native task catalog did not reopen')
+       local path={table.unpack(page.path)};path[#path+1]={index=index,caption=row.caption}
+       for _,step in ipairs(path)do
+        local button=assert(df.global.game.main_interface.building.filtered_button[step.index-1])
+        assert(dfhack.df2utf(utils.call_with_string(button,'text'))==step.caption,'Native task category path changed')
+        assert(not df.interface_button_building_new_jobst:is_instance(button),'Category path reached a job')
+        local trace=assert(io.open(out..'/workshop-category-progress.json','w'))
+        trace:write(json.encode({building_id=target.id,path=path,step=step}));trace:close()
+        local clicked=false
+        for scroll=0,128 do
+         if click_label(step.caption)then clicked=true;break end
+         g.precise_mouse_x=600;g.precise_mouse_y=350;g.mouse_x=75;g.mouse_y=29
+         gui.simulateInput(view,'CONTEXT_SCROLL_DOWN');view:render(dfhack.getTickCount())
+        end
+        assert(clicked,'Native category caption not reachable: '..step.caption)
+       end
+       pending[#pending+1]={path=path,rows=read_rows()}
+      end
+     end
+    end
+    assert(#target.jobs==#queue_ids,'Category discovery changed workshop queue')
+    for i,id in ipairs(queue_ids)do assert(target.jobs[i-1].id==id,'Category discovery reordered workshop queue')end
+    local saved=assert(io.open(out..'/workshop-native.json','w'));saved:write(json.encode(result));saved:close()
+    gui.simulateInput(view,'LEAVESCREEN')
+   end
+  end
+  shot('task-catalog-return');return
+ end
  if os.getenv('DF3D_WORKSHOP_JOB_CONTROLS')=='1'then
   assert(click_label('Add new task'));assert(click_label('Make bed'))
   local created=assert(building.jobs[#building.jobs-1]);assert(#building.jobs==#jobs+1)

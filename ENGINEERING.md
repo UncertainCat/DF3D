@@ -17379,6 +17379,24 @@ live capture. GPU samples41-42C at30FPS are not continuous peaks. No product
 change was needed. See native_workshop.json.smelter_fuel_shortage_reference.
 This does not qualify magma supply or actual job execution.
 
+Kiln and Glass Furnace native menu discovery is recorded in
+native_workshop.json.furnace_navigation_reference. Protected221242 on2026-11-12
+temporarily changes two idle completed furnace records to subtypes2/3 in a
+paused unsaved clone, restoring their original types afterward. Glass has
+three material pages (green/clear/crystal), each with35 tasks whose semantic
+descriptors match the independently owned native order catalog. Actual clicks
+through each material selector and Back restore the root. Comparison excludes
+the known uninitialized native item_type field; its gameplay significance
+remains unresolved. Kiln has15 root choices, including Collect clay and the
+instrument category. Native screenshots record both roots and all glass pages.
+The native furnace dispatcher8c4fc0 routes Kiln to8c5036 (root job217 then
+reactions) and Glass to8c5078 (three selectors plus Collect sand24 at root).
+Runtime must not invoke these menu constructors or borrow their globals.
+This controlled discovery establishes menu membership/navigation only; it does
+not qualify natural furnace construction, viewer actions, execution, products
+or magma supply. Source saves remained unchanged and owned DF40628 exited
+unsaved. The capture ran at30FPS with a42C GPU sample, not a continuous peak.
+
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.
 Renderer18643e uses this predicate and installed BUILDING_JOBS_ACTIVE artwork.

@@ -109,6 +109,7 @@ local function read_worker_reference(target)
  return {building_id=target.id,native_order=native_ids,member_ids=actual_ids,skills=native_skills,rows=semantic.rows,geometry=geometry,all_equal=true}
 end
 local fuel_flags={}
+local furnace_fixtures={}
 local ok,err=xpcall(function()
  gui.simulateInput(view,'LEAVESCREEN');view:render(dfhack.getTickCount());select_map(building)
  assert(sheet.open and sheet.active_sheet==df.view_sheet_type.BUILDING and sheet.active_id==building.id,'Native workshop selection missed')
@@ -243,10 +244,23 @@ local ok,err=xpcall(function()
    end end
    result.fuel_scenario={forbidden_bars=#fuel_flags};assert(#fuel_flags>0,'Fuel scenario has no fuel bars')
   end
+  if os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')=='1'then
+   for _,target in ipairs(df.global.world.buildings.all)do
+    if df.building_furnacest:is_instance(target) and target:getBuildStage()==target:getMaxBuildStage() and #target.jobs==0 and target.custom_type==-1 then
+     local subtype=2+#furnace_fixtures
+     furnace_fixtures[#furnace_fixtures+1]={building=target,prior_type=target.type,id=target.id,fixture_type=subtype}
+     target.type=subtype
+     if #furnace_fixtures==2 then break end
+    end
+   end
+   assert(#furnace_fixtures==2,'Furnace discovery needs two idle completed furnace records')
+   result.furnace_fixtures={}
+   for _,entry in ipairs(furnace_fixtures)do result.furnace_fixtures[#result.furnace_fixtures+1]={id=entry.id,prior_type=entry.prior_type,fixture_type=entry.fixture_type}end
+  end
   result.task_catalogs={};local seen={}
   for _,target in ipairs(df.global.world.buildings.all)do
    local type=target:getType();local key=type..':'..target:getSubtype()..':'..target:getCustomType()
-   if (type==df.building_type.Workshop or type==df.building_type.Furnace)and not seen[key]and target:getBuildStage()==target:getMaxBuildStage() and (os.getenv('DF3D_WORKSHOP_CLOTHIER_NAV')~='1' or key=='13:13:-1') and (os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')~='1' or (os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')=='1' and key=='5:1:-1') or (os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')=='1' and key=='13:4:-1') or (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')=='1' and key=='13:11:-1') or (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')~='1' and (key=='13:1:-1' or key=='13:12:-1' or key=='13:22:-1')))then
+   if (type==df.building_type.Workshop or type==df.building_type.Furnace)and not seen[key]and target:getBuildStage()==target:getMaxBuildStage() and (os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')~='1' or key=='5:2:-1' or key=='5:3:-1') and (os.getenv('DF3D_WORKSHOP_CLOTHIER_NAV')~='1' or key=='13:13:-1') and (os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')~='1' or (os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')=='1' and key=='5:1:-1') or (os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')=='1' and key=='13:4:-1') or (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')=='1' and key=='13:11:-1') or (os.getenv('DF3D_WORKSHOP_LEATHER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_JEWELER_RUNTIME')~='1' and os.getenv('DF3D_WORKSHOP_SMELTER_RUNTIME')~='1' and (key=='13:1:-1' or key=='13:12:-1' or key=='13:22:-1')))then
     seen[key]=true;select_map(target)
     assert(click_label('Add new task'),'Native task catalog did not open: '..key)
     local function read_rows()
@@ -283,6 +297,7 @@ local ok,err=xpcall(function()
     result.task_catalogs[#result.task_catalogs+1]=catalog
     if target.id==building.id then shot('task-catalog-carpenter')end
     if os.getenv('DF3D_WORKSHOP_FAMILY_RUNTIME')=='1'then shot('family-'..target:getSubtype())end
+    if os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')=='1'then shot('furnace-root-'..target:getSubtype())end
     -- Discovery only: invoke category buttons, never job/action buttons. Runtime
     -- catalogs must not read these widgets or use their mutable menu storage.
     local pending={{path={},rows=rows,reaction_parent=''}};local next_page=1
@@ -380,6 +395,22 @@ local ok,err=xpcall(function()
       end
      end
      shot('clothier-back-root')
+    end
+    if os.getenv('DF3D_WORKSHOP_FURNACE_DISCOVERY')=='1'then
+     catalog.navigation={}
+     gui.simulateInput(view,'LEAVESCREEN');select_map(target);assert(click_label('Add new task'))
+     for index,row in ipairs(rows)do if row.material~=nil then
+      assert(click_label(row.caption));local child=read_rows();shot('furnace-'..target:getSubtype()..'-page-'..index)
+      assert(click_label('Back'),'Furnace material Back missing')
+      local returned=read_rows()
+      local function semantic_rows(values)
+       local copy={};for _,entry in ipairs(values)do local row={};for field,value in pairs(entry)do if field~='item_type'then row[field]=value end end;copy[#copy+1]=row end
+       return copy
+      end
+      local comparison=assert(io.open(out..'/furnace-back-comparison.json','w'));comparison:write(json.encode({before=rows,after=returned}));comparison:close()
+      assert(json.encode(semantic_rows(returned))==json.encode(semantic_rows(rows)),'Furnace Back changed root')
+      catalog.navigation[#catalog.navigation+1]={material=row.material,rows=child,back_restored_root=true}
+     end end
     end
     assert(#target.jobs==#queue_ids,'Category discovery changed workshop queue')
     for i,id in ipairs(queue_ids)do assert(target.jobs[i-1].id==id,'Category discovery reordered workshop queue')end
@@ -1351,6 +1382,7 @@ local ok,err=xpcall(function()
  assert(catalog_ok,catalog_err)
 end,debug.traceback)
 for _,prior in ipairs(fuel_flags)do prior.item.flags.forbid=prior.forbid end
+for _,entry in ipairs(furnace_fixtures)do entry.building.type=entry.prior_type end
 assert(#building.jobs==#jobs,'Workshop capture changed job count'..(ok and '' or '\n'..tostring(err)))
 for i,id in ipairs(jobs)do assert(building.jobs[i-1].id==id,'Workshop capture changed job order')end
 select_map(original)

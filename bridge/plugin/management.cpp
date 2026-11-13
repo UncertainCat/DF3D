@@ -5894,6 +5894,42 @@ void run(color_ostream& out) {
       return 1;
     });lua_setfield(L,-2,"workshop_task_templates");
     lua_pushcfunction(L,[](lua_State* state)->int {
+      auto* shop=df::building::find(int32_t(luaL_checkinteger(state,1)));
+      const int32_t category=int32_t(luaL_checkinteger(state,2));
+      const bool hasMaterial=!lua_isnoneornil(state,3);
+      const int32_t material=hasMaterial?int32_t(luaL_checkinteger(state,3)):-1;
+      lua_newtable(state);
+      if(hasMaterial || category==6) {
+        const auto rows=category==6 && !hasMaterial?df3d_production::workshopForgeClothing(shop):
+            df3d_production::workshopForgeTasks(shop,category,material);
+        if(!rows)return luaL_error(state,"Native forge task page unavailable");
+        lua_newtable(state);int index=0;
+      for(const auto& row:*rows) {
+        lua_newtable(state);field(state,"job_type",int(row.job_type));field(state,"reaction_name",row.reaction_name);
+        field(state,"item_type",int(row.item_type));field(state,"item_subtype",row.item_subtype);
+        field(state,"mat_type",row.mat_type);field(state,"mat_index",row.mat_index);
+        lua_newtable(state);field(state,"whole",row.material_category.whole);lua_setfield(state,-2,"material_category");
+        lua_newtable(state);field(state,"whole",row.specflag.whole);lua_setfield(state,-2,"specflag");
+        lua_newtable(state);field(state,"hist_figure_id",row.specdata.hist_figure_id);lua_setfield(state,-2,"specdata");
+        lua_newtable(state);field(state,"type",int(row.art_specifier));field(state,"id",row.art_specifier_id1);
+        field(state,"subid",row.art_specifier_id2);lua_setfield(state,-2,"art_spec");
+        lua_rawseti(state,-2,++index);
+      }
+        lua_setfield(state,-2,"templates");
+      } else {
+        const auto choices=df3d_production::workshopForgeChoices(shop,category);
+        if(!choices)return luaL_error(state,"Native forge category page unavailable");
+        lua_newtable(state);int index=0;
+        for(const auto& row:*choices) {
+          lua_newtable(state);field(state,"caption",row.caption);
+          field(state,"key","forge:"+std::to_string(row.category)+(row.materialIndex<0?"":":"+std::to_string(row.materialIndex)));
+          lua_rawseti(state,-2,++index);
+        }
+        lua_setfield(state,-2,"categories");
+      }
+      return 1;
+    });lua_setfield(L,-2,"workshop_forge_page");
+    lua_pushcfunction(L,[](lua_State* state)->int {
       const auto result=df3d_production::setWorkshopPriority(int32_t(luaL_checkinteger(state,1)),int32_t(luaL_checkinteger(state,2)),lua_toboolean(state,3)!=0,lua_toboolean(state,4)!=0);
       if(result!=df3d_production::PriorityOutcome::Rejected)mutated=true;
       lua_pushboolean(state,result==df3d_production::PriorityOutcome::Applied);return 1;
@@ -6350,6 +6386,8 @@ void run(color_ostream& out) {
     production.nextCursor=uint32_t(number(L,"next_cursor"));production.selectedBuilding=int32_t(number(L,"selected_building",-1));production.createdJob=int32_t(number(L,"created_job",-1));production.currentSeason=int8_t(number(L,"current_season",-1));production.detail=text(L,"detail");
     lua_getfield(L,-1,"task_category");const bool hasTaskCategory=lua_isstring(L,-1);lua_pop(L,1);
     if(hasTaskCategory)production.taskCategory=text(L,"task_category");
+    lua_getfield(L,-1,"task_parent");const bool hasTaskParent=lua_isstring(L,-1);lua_pop(L,1);
+    if(hasTaskParent)production.taskParent=text(L,"task_parent");
     auto each=[&](const char* key,size_t cap,auto fn){lua_getfield(L,-1,key);if(lua_istable(L,-1)) for(size_t i=1;i<=lua_rawlen(L,-1)&&i<=cap;++i){lua_rawgeti(L,-1,i);fn();lua_pop(L,1);}lua_pop(L,1);};
     auto reqs=[&](){std::vector<ProductionRequirement> out;each("requirements",16,[&](){out.push_back({text(L,"description"),int32_t(number(L,"quantity")),int16_t(number(L,"item_type",-1))});});return out;};
     each("buildings",64,[&](){ProductionBuilding v;v.id=int32_t(number(L,"id",-1));v.x=int32_t(number(L,"x"));v.y=int32_t(number(L,"y"));v.z=int32_t(number(L,"z"));v.name=text(L,"name");v.kind=text(L,"kind");v.buildStage=int16_t(number(L,"build_stage"));v.maxStage=int16_t(number(L,"max_stage"));v.queueSize=uint16_t(number(L,"queue_size"));production.buildings.push_back(std::move(v));});

@@ -4040,6 +4040,11 @@
   ],
   "exclusions": [
     {
+      "path": "presentations/godot/project/tests/workshop_forge_live.gd",
+      "status": "manual",
+      "reason": "Protected stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader -FarmItemCarriers with DF3D_WORKSHOP_NATIVE=1, DF3D_WORKSHOP_FORGE_CHOICES=1 and DF3D_WORKSHOP_FORGE_RUNTIME=1. Native forge navigation and job effects in an owned paused clone; never run standalone."
+    },
+    {
       "path": "presentations/godot/project/tests/workshop_job_controls_live.gd",
       "status": "manual",
       "reason": "Protected stockpile_storage_native.ps1 -FarmDiscovery -FarmHeader -FarmItemCarriers with DF3D_WORKSHOP_NATIVE=1 and DF3D_WORKSHOP_JOB_CONTROLS=1. Native job effects and composed Details gestures in an owned paused clone; never run standalone."

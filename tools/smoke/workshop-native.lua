@@ -175,6 +175,28 @@ local ok,err=xpcall(function()
     shot('forge-back-'..category)
    end
   end
+  if os.getenv('DF3D_WORKSHOP_FORGE_RUNTIME')=='1'then
+   local function effect(job)
+    local inputs={};for _,i in ipairs(job.job_items.elements)do
+     inputs[#inputs+1]={item_type=i.item_type,item_subtype=i.item_subtype,mat_type=i.mat_type,mat_index=i.mat_index,quantity=i.quantity,
+      flags1=i.flags1.whole,flags2=i.flags2.whole,flags3=i.flags3.whole}
+    end
+    return {job_type=job.job_type,item_subtype=job.item_subtype,mat_type=job.mat_type,mat_index=job.mat_index,material_category=job.material_category.whole,inputs=inputs}
+   end
+   gui.simulateInput(view,'LEAVESCREEN');select_map(forge);assert(click_label('Add new task'))
+   assert(click_label('Weapons and ammunition'));assert(click_label('iron (opens menu)'))
+   local first=assert(df.global.game.main_interface.building.filtered_button[0])
+   assert(df.interface_button_building_new_jobst:is_instance(first))
+   assert(click_label(dfhack.df2utf(utils.call_with_string(first,'text'))))
+   local native_job=assert(forge.jobs[#forge.jobs-1]);result.forge_effect={native=effect(native_job)}
+   assert(dfhack.job.removeJob(native_job));shot('forge-effect-before')
+   capture('workshop-wire')
+   local file=assert(io.open(out..'/workshop-wire-result.json'));local receipt=json.decode(file:read('*a'));file:close();assert(receipt.success)
+   local created;for _,job in ipairs(forge.jobs)do if job.id==receipt.created_job then created=job;break end end
+   assert(created,'Viewer forge job missing');result.forge_effect.viewer=effect(created);assert(dfhack.job.removeJob(created))
+   shot('forge-effect-after')
+   assert(json.encode(result.forge_effect.native)==json.encode(result.forge_effect.viewer),'Viewer forge job/input effects differ')
+  end
   local after={};for _,job in ipairs(forge.jobs)do after[#after+1]=job.id end
   assert(json.encode(before)==json.encode(after),'Forge choice diagnostic changed queue')
   return

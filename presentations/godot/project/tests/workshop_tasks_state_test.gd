@@ -57,5 +57,18 @@ func _initialize() -> void:
 	service.reply(4,root_page);state.open_category("reaction:PARTS");service.reply(5,root_page)
 	check(state.phase==State.Phase.Rejected,"Wrong category echo must not be accepted")
 	state.dispose();service.callbacks.clear()
+	service=Service.new();state=State.new();state.configure(service);state.open(4)
+	root_page.task_categories=[{"key":"opaque-group","name":"Native group"}]
+	service.reply(1,root_page);state.open_category("opaque-group")
+	var group:=page();group.task_category="opaque-group";group.task_parent="";group.task_categories=[{"key":"opaque-material","name":"Native material"}]
+	service.reply(2,group);state.open_category("opaque-material")
+	var material:=page();material.task_category="opaque-material";material.task_parent="opaque-group";material.task_categories=[]
+	service.reply(3,material);state.set_query("bolt");service.reply(4,material)
+	state.go_back();state.go_back()
+	check(service.requests.size()==5 and service.requests[4].task_category=="opaque-group" and service.requests[4].query=="","Back uses the observed opaque parent once and clears search")
+	service.reply(5,group);state.go_back();service.reply(6,root_page)
+	check(state.category.is_empty() and state.parent==null,"Empty Back target returns root; absent parent means Cancel")
+	state.go_back();check(service.requests.size()==6,"Cancel context cannot invent a parent")
+	state.dispose();service.callbacks.clear()
 	if not failed:print("WORKSHOP_TASKS_STATE_PASS")
 	quit(1 if failed else 0)

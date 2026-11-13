@@ -13,6 +13,7 @@ var ticket:=0
 var generation:=0
 var query:=""
 var category:=""
+var parent: Variant=null
 
 func configure(source) -> void:
 	dispose();service=source
@@ -27,7 +28,7 @@ func close() -> void:
 	generation+=1
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
-	building_id=-1;snapshot={};query="";category="";phase=Phase.Closed;changed.emit()
+	building_id=-1;snapshot={};query="";category="";parent=null;phase=Phase.Closed;changed.emit()
 
 func _session_changed() -> void:
 	close();phase=Phase.Unavailable;changed.emit()
@@ -48,7 +49,11 @@ func reset_picker() -> void:
 	generation+=1
 	var previous:=ticket;ticket=0
 	if service!=null and previous!=0:service.detach(previous)
-	category="";query="";refresh()
+	category="";query="";parent=null;refresh()
+
+func go_back() -> void:
+	if phase!=Phase.Ready or ticket!=0 or parent==null:return
+	generation+=1;category=parent;query="";refresh()
 
 func open_category(key: String) -> void:
 	if phase!=Phase.Ready or ticket!=0:return
@@ -152,5 +157,5 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 			if not selected.is_empty():_fail(Phase.Unknown);return
 		elif selected.is_empty() or (sent.has("repeat") and selected.get("repeat")!=bool(sent.repeat)) or (sent.has("suspend") and selected.get("suspended")!=bool(sent.suspend)) or (sent.has("priority") and (selected.get("priority")!=bool(sent.priority) or (sent.priority==1 and data.jobs[0].id!=sent.job_id))):
 			_fail(Phase.Unknown);return
-	category=expected_category;snapshot=data.duplicate(true);phase=Phase.Ready;changed.emit()
+	category=expected_category;parent=data.get("task_parent",null);snapshot=data.duplicate(true);phase=Phase.Ready;changed.emit()
 	if editing:applied.emit()

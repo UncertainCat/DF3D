@@ -1,5 +1,6 @@
 #pragma once
 #include "workshop_job_native.h"
+#include "workshop_catalog_native.h"
 #include "workshop_orders_native.h"
 #include "df/manager_order_template.h"
 #include "df/cwo_buildingst.h"
@@ -137,8 +138,16 @@ inline std::optional<std::vector<df::manager_order_template>> nativeWorkshopOrde
 inline std::optional<std::vector<df::manager_order_template>> workshopTaskTemplates(df::building* building) {
     if(!building)return std::nullopt;
     const auto type=building->getType();const auto subtype=building->getSubtype();
-    if(!((int(type)==13 && (subtype==0 || subtype==19 || subtype==15)) || (int(type)==5 && subtype==0)))return std::nullopt;
+    const bool forge=int(type)==13 && (subtype==5 || subtype==6);
+    if(!forge && !((int(type)==13 && (subtype==0 || subtype==19 || subtype==15)) || (int(type)==5 && subtype==0)))return std::nullopt;
     auto rows=nativeWorkshopOrderCatalog(building);if(!rows)return std::nullopt;
+    // These descriptors qualify existing queued jobs, never populate the forge
+    // picker. The native task branches supply its choices independently.
+    if(forge)for(const auto* job:building->jobs) {
+        if(!job || job->mat_type!=0 || (int(job->job_type)!=133 && int(job->job_type)!=139))continue;
+        const auto tasks=workshopForgeTasks(building,int(job->job_type)==133?3:4,job->mat_index);
+        if(tasks)for(const auto& task:*tasks)if(task.job_type==job->job_type && task.item_subtype==job->item_subtype)rows->push_back(task);
+    }
     return rows;
 }
 

@@ -5780,5 +5780,120 @@
     "source_preserved": true,
     "owned_process_closed_unsaved": true,
     "diagnostics": "passed_with_known_issues"
+  },
+  "forge_runtime_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-204427",
+    "management_version": 207,
+    "source_sha256": "a3ff561762f916e23e2762b9213c0c5f4b7c166fa3eef28cef0822d105914a0b",
+    "bridge_sha256": "b7c0b1e76c6088e401317421c4a03102885a67195a7b4929eba8dafa3414ac4c",
+    "scope": "Owned native forge dispatch: fixed root categories, material choices, task captions, bolt search, both Back steps, invalid canonical/material/overflow keys and queued iron battle axe input effects. Public workshop route remains gated.",
+    "effect": {
+      "native": {
+        "inputs": [
+          {
+            "flags1": 0,
+            "flags2": 0,
+            "flags3": 0,
+            "item_subtype": -1,
+            "item_type": 0,
+            "mat_index": 0,
+            "mat_type": 0,
+            "quantity": 150
+          },
+          {
+            "flags1": 0,
+            "flags2": 0,
+            "flags3": 0,
+            "item_subtype": -1,
+            "item_type": 0,
+            "mat_index": -1,
+            "mat_type": 7,
+            "quantity": 1
+          }
+        ],
+        "item_subtype": 1,
+        "job_type": 96,
+        "mat_index": 0,
+        "mat_type": 0,
+        "material_category": 0
+      },
+      "viewer": {
+        "inputs": [
+          {
+            "flags1": 0,
+            "flags2": 0,
+            "flags3": 0,
+            "item_subtype": -1,
+            "item_type": 0,
+            "mat_index": 0,
+            "mat_type": 0,
+            "quantity": 150
+          },
+          {
+            "flags1": 0,
+            "flags2": 0,
+            "flags3": 0,
+            "item_subtype": -1,
+            "item_type": 0,
+            "mat_index": -1,
+            "mat_type": 7,
+            "quantity": 1
+          }
+        ],
+        "item_subtype": 1,
+        "job_type": 96,
+        "mat_index": 0,
+        "mat_type": 0,
+        "material_category": 0
+      }
+    },
+    "viewport": [
+      1200,
+      800
+    ],
+    "material_page_capacity": 14,
+    "pixel_comparisons": [
+      {
+        "native": "workshop-forge-choices-0.png",
+        "viewer": "workshop-forge-material-live.png",
+        "crop": [
+          432,
+          130,
+          888,
+          676
+        ],
+        "differing_pixels": 0
+      },
+      {
+        "native": "workshop-forge-choices-0.png",
+        "viewer": "workshop-forge-material-live.png",
+        "crop": [
+          808,
+          106,
+          888,
+          130
+        ],
+        "differing_pixels": 0
+      }
+    ],
+    "renderer_rvas": [
+      "1844f1",
+      "1847bc",
+      "1857c9",
+      "1858b1"
+    ],
+    "source_preserved": true,
+    "closed_unsaved": true,
+    "diagnostics": "passed_with_known_issues: three documented Godot diagnostics, no unclassified errors",
+    "carpenter_regression": "build/stockpile-storage-native-farm-discovery-20261112-203845",
+    "omissions": [
+      "job.item_type equivalence",
+      "magma forge live effects",
+      "all task executions",
+      "responsive rendered verification",
+      "complete hover and hotkeys",
+      "other workshop families",
+      "public whole-workshop acceptance"
+    ]
   }
 }

@@ -17400,6 +17400,29 @@ unchanged; serial30 FPS, sampled GPU38C. Evidence is retained in
 job.item_type equivalence, availability/objection behavior for these new rows,
 magma-forge coverage or viewer integration. Normal forge routing remains gated.
 
+Forge runtime dispatch now uses the owned category/material/task providers for
+MetalsmithsForge and MagmaForge. Opaque category keys are canonical and bounded
+before narrowing material IDs; task keys include material identity. Root and
+reaction pages retain Cancel, while builtin pages expose explicit parent targets
+for Back. The viewer clears search when navigating and never decodes those keys.
+Existing queued jobs use the native template catalog plus scoped forge descriptors
+for ballista heads and metal mechanisms, which differ from work-order templates.
+
+Protected204427 on2026-11-12 verifies actual root/material/task navigation, bolt
+search, both Back steps, invalid keys including integer overflow, and creation of
+an iron battle axe. Native and viewer job type/subtype/material fields and all
+recorded input requirements match; job.item_type remains excluded and unresolved.
+At1200x800 the material picker crop432,130..888,676 and Back crop808,106..888,130
+match native with zero differing pixels. Renderer1844f1..1847bc reserves the native
+bottom space for capacity;1857c9..1858b1 supplies scrollbar bounds. Rows align with
+their native backgrounds, exclude the scrollbar width and cannot be selected
+below the visible list. The top edge and blank footer are exercised live.
+Carpenter regression203845 preserves Priority, Details, spike and reaction creation.
+Both owned sessions close unsaved with source saves preserved; only the three
+known Godot diagnostics occur. See native_workshop.json.forge_runtime_reference.
+This accepts the captured workflow, not all task executions, magma-forge effects,
+responsive rendering, full hover/hotkeys or public workshop completion.
+
 `workshopTaskTemplates` reuses the owned native template builder for
 Carpenter/Kitchen/WoodFurnace/Still descriptors. All categories remain available
 for queued-job eligibility; only builtin templates become root builtin choices. `production.lua` receives the full subtype/material/spec/art fields;

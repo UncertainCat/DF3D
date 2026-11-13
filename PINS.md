@@ -27,7 +27,8 @@ native Back to root; present nonempty means Back to that opaque category; absent
 retains Cancel/legacy behavior. A parent requires a known nonempty current
 category, is bounded at256 bytes and cannot equal that category. Rebuild both
 peers: `Local\df3d_management_v207` isolates206. The contract is wired through
-codecs; parent-producing forge dispatch and viewer navigation remain staged.
+codecs. Forge dispatch produces owned parent targets, and the staged viewer
+uses them for Back navigation; public workshop exposure remains gated.
 
 Management206 adds an opaque workshop `task_category` request and optional
 category context/list observations. Rebuild both peers:

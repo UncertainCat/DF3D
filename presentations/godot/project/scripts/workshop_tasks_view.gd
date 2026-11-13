@@ -40,9 +40,12 @@ func refresh() -> void:
 		target=state.building_id;picking=false;first=0;scrollbar.dragging=false;query_bytes.clear();search_focused=false
 	search_label.visible=picking
 	var rows: Array=state.choices() if picking else state.jobs()
-	scrollbar.position=Vector2(size.x-24,72)
-	scrollbar.size=Vector2(16,maxi(36,floori((size.y-72)/36)*36))
-	scrollbar.page=maxi(1,int(scrollbar.size.y/36))
+	# Native1844f1..1847bc reserves six cells at the sheet bottom, then
+	# divides the remaining span by three cells per choice. The scrollbar's
+	# outer arrows begin half a cell above the first button (1857c9..1858b1).
+	scrollbar.page=maxi(1,floori((size.y-126)/36))
+	scrollbar.position=Vector2(size.x-24,66)
+	scrollbar.size=Vector2(16,scrollbar.page*36)
 	first=clampi(first,0,maxi(0,rows.size()-scrollbar.page))
 	scrollbar.set_rows(rows.size() if picking else 0,first)
 	if not available():scrollbar.dragging=false
@@ -51,6 +54,11 @@ func refresh() -> void:
 func choose_mode(value: bool) -> void:
 	picking=value;first=0;query_bytes.clear();search_focused=false
 	state.reset_picker();refresh();picker_changed.emit()
+
+func leave_picker() -> void:
+	if state.parent==null:choose_mode(false)
+	elif available():
+		first=0;query_bytes.clear();search_focused=false;state.go_back()
 
 func query_text() -> String:
 	var text:=""
@@ -88,17 +96,17 @@ func cancel_rect() -> Rect2:return Rect2(size.x-88,0,80,24)
 
 func _gui_input(event: InputEvent) -> void:
 	if search_allowed() and event is InputEventMouseButton and event.pressed and event.button_index==MOUSE_BUTTON_LEFT:
-		if cancel_rect().has_point(event.position):choose_mode(false);accept_event();return
+		if cancel_rect().has_point(event.position):leave_picker();accept_event();return
 		if Rect2(0,30,size.x-8,36).has_point(event.position):search_focused=not search_focused;queue_redraw();accept_event();return
 	if not available() or not event is InputEventMouseButton or not event.pressed:return
 	if event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN] and picking:
 		scrollbar.move_to(first+(-1 if event.button_index==MOUSE_BUTTON_WHEEL_UP else 1));accept_event();return
 	if event.button_index!=MOUSE_BUTTON_LEFT:return
 	if picking:
-		if cancel_rect().has_point(event.position):choose_mode(false);accept_event();return
-		var index:=floori((event.position.y-72)/36)+first
+		if cancel_rect().has_point(event.position):leave_picker();accept_event();return
+		var index:=floori((event.position.y-66)/36)+first
 		var rows: Array=state.choices()
-		if event.position.x<8 or event.position.x>=size.x-24 or event.position.y<72 or index<first or index>=rows.size():return
+		if event.position.x<0 or event.position.x>=size.x-(24 if scrollbar.visible else 8) or event.position.y<66 or index<first or index>=mini(rows.size(),first+scrollbar.page):return
 		var row: Dictionary=rows[index]
 		if row.get("category_choice",false):
 			first=0;query_bytes.clear();search_focused=false;state.open_category(row.key);accept_event();return
@@ -135,7 +143,7 @@ func caption(text: String, point: Vector2, color: int) -> void:
 func _draw() -> void:
 	if state==null:return
 	if picking:
-		patch("HORIZONTAL_OPTION_ACTIVE",Rect2(cancel_rect().position-Vector2(0,6),cancel_rect().size+Vector2(0,12)));caption("Cancel",cancel_rect().position+Vector2(16,18),12)
+		patch("HORIZONTAL_OPTION_ACTIVE",Rect2(cancel_rect().position-Vector2(0,6),cancel_rect().size+Vector2(0,12)));caption("Back" if state.parent!=null else "Cancel",cancel_rect().position+Vector2(24 if state.parent!=null else 16,18),12)
 		var texture: Texture2D=art.texture("BUTTON_FILTER")
 		var columns:=int((size.x-8)/8)
 		if texture!=null:
@@ -151,7 +159,7 @@ func _draw() -> void:
 		var rows: Array=state.choices()
 		for index in mini(scrollbar.page,rows.size()-first):
 			var row: Dictionary=rows[first+index];var y:=72+index*36
-			patch("BUTTON_RECTANGLE",Rect2(0,y,size.x-8,36))
+			patch("BUTTON_RECTANGLE",Rect2(0,y-6,size.x-(24 if scrollbar.visible else 8),36))
 			var known: bool=row.has("availability")
 			var enabled: bool=row.get("category_choice",false) or (known and row.availability.available)
 			caption(row.name,Vector2(8,y+18),15 if enabled else 12)

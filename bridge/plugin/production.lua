@@ -54,18 +54,40 @@ local function template_job(recipe,b,native_requirements)
  if not ok then delete_template(j);return nil,tostring(err) end
  return j
 end
-local function recipes(b,native_requirements,native_caption,native_reactions,native_less,native_templates,native_categories,category)
+local function recipes(b,native_requirements,native_caption,native_reactions,native_less,native_templates,native_categories,category,native_forge)
  local out,keys={},{}
  local k=kind(b)
- local supported=k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' or k=='Still'
+ local forge=k=='MetalsmithsForge' or k=='MagmaForge'
+ local supported=forge or k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' or k=='Still'
  if category~='' and not supported then return nil,'Unsupported workshop category' end
  if supported then
-  out.category=category;out.categories=native_categories(b.id,category)
+  out.category=category;out.categories={}
+  if not forge or category=='' or category:sub(1,9)=='reaction:' then out.categories=native_categories(b.id,category) end
   out.editable_templates=native_templates(b.id)
   for i=2,#out.categories do
    local row=out.categories[i];local at=i
    while at>1 and native_less(row.caption,out.categories[at-1].caption)do out.categories[at]=out.categories[at-1];at=at-1 end
    out.categories[at]=row
+  end
+ end
+ local reaction_page=not forge or category=='' or category:sub(1,9)=='reaction:'
+ if forge and (category=='' or not reaction_page) then
+  local group,material=-1,nil
+  if category~='' then
+   local a,c=category:match('^forge:(%d+):(%d+)$')
+   if not a then a=category:match('^forge:(%d+)$')end
+   if not a then return nil,'Invalid forge category' end
+   group=tonumber(a);material=c and tonumber(c)or nil
+   if tostring(group)~=a or (c and tostring(material)~=c) or group<0 or group>6 or (material and material>2147483647) or (group==6 and material)then return nil,'Invalid forge category' end
+   out.parent=material and ('forge:'..group)or ''
+  end
+  local page=native_forge(b.id,group,material)
+  local categories=page.categories or {}
+  for _,row in ipairs(out.categories)do categories[#categories+1]=row end
+  out.categories=categories
+  for _,fields in ipairs(page.templates or {})do
+   local key='forge-task:'..fields.job_type..':'..fields.item_subtype..':'..fields.mat_type..':'..fields.mat_index
+   out[#out+1]={key=key,fields=fields,available=true,objection=''}
   end
  end
  -- Native owned templates supply the audited builtin branches. The order
@@ -86,7 +108,7 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
   -- applied to this builtin. Native input generation still owns its filters.
   out[#out+1]={key='builtin:'..df.job_type.ExtractFromPlants..':-1',fields={job_type=df.job_type.ExtractFromPlants},available=true,objection=''}
  end
- if k=='Still' or k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' then
+ if supported and reaction_page then
   for _,row in ipairs(native_reactions(b.id,category)) do
    local r=df.global.world.raws.reactions.reactions[row.raw_index]
    if not r or r.code~=row.code then return nil,'Native reaction identity changed' end
@@ -182,6 +204,7 @@ local function inspect(b,rs,native_caption)
  if kind(b)=='FarmPlot' then local ok,err=farm_state(b,result);if not ok then return fail(err) end;return result end
  if rs.category~=nil then
   result.task_category=rs.category;result.task_categories={}
+  result.task_parent=rs.parent
   for _,row in ipairs(rs.categories)do result.task_categories[#result.task_categories+1]={key=row.key,name=utf(row.caption)}end
  end
  for _,r in ipairs(rs) do
@@ -240,7 +263,7 @@ return function(request)
   seed_scan.cursor=finish
   if finish<#all then return {ok=true,pending=true,message='Counting available seeds'} end
  end
- local rs,err=recipes(b,request.workshop_requirements,request.workshop_caption,request.workshop_reactions,request.workshop_caption_less,request.workshop_task_templates,request.workshop_task_categories,p.task_category or '');if not rs then return fail(err) end
+ local rs,err=recipes(b,request.workshop_requirements,request.workshop_caption,request.workshop_reactions,request.workshop_caption_less,request.workshop_task_templates,request.workshop_task_categories,p.task_category or '',request.workshop_forge_page);if not rs then return fail(err) end
  if request.action==16 then
   local result=inspect(b,rs,request.workshop_caption)
   if kind(b)~='FarmPlot' and p.query and p.query~='' then

@@ -3560,6 +3560,22 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             result["rows"].append(value);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
+        if(parameters[0]=="workshop-forge-choices-probe") {
+          if(parameters.size()!=3)return CR_WRONG_USAGE;
+          int32_t values[2];
+          for(int i=0;i<2;++i) {
+            const auto& raw=parameters[i+1];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),values[i]);
+            if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size())return CR_WRONG_USAGE;
+          }
+          const auto choices=df3d_production::workshopForgeChoices(df::building::find(values[0]),values[1]);
+          if(!choices)return CR_FAILURE;
+          Json::Value rows(Json::arrayValue);
+          for(const auto& choice:*choices) {
+            Json::Value row(Json::objectValue);row["category"]=choice.category;
+            row["material_index"]=choice.materialIndex;row["caption"]=DF2UTF(choice.caption);rows.append(std::move(row));
+          }
+          out.print("{}",Json::FastWriter().write(rows));return CR_OK;
+        }
         if(parameters[0]=="workshop-reactions-probe" || parameters[0]=="workshop-reaction-categories-probe") {
           if(parameters.size()!=2 && parameters.size()!=3)return CR_WRONG_USAGE;
           int32_t id=-1;const auto& raw=parameters[1];

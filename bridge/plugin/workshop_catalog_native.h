@@ -9,6 +9,71 @@
 #include <memory>
 
 namespace df3d_production {
+struct WorkshopForgeChoice {
+    int32_t category=-1,materialIndex=-1;
+    std::string caption;
+};
+// Native8c9a1a..8c9e8b: fixed forge groups and their six material lists.
+// Category6 emits clothing tasks directly and is deliberately not a material
+// list. Never call the widget constructors or read their selected menu state.
+inline std::optional<std::vector<WorkshopForgeChoice>> workshopForgeChoices(df::building* building,int32_t category) {
+    static const bool supported=[] {
+        if(!farmFunctions())return false;
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        struct Pin {size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={
+            {0x8c9a1a,0x9d,UINT64_C(0xe172233b6fcb2648)},
+            {0x8c9ab7,0x3d4,UINT64_C(0x49b4576db0ee7f53)},
+            {0x8c2ab0,0x138,UINT64_C(0x34921c5eb7f89894)},
+            {0x8c28f0,0x4a,UINT64_C(0xf75668c2b3daf60e)},
+            {0x145bee0,0x5e,UINT64_C(0x6abc4e374e372eef)},
+            {0x14d1920,0x459,UINT64_C(0xf48e28715360ed9a)},
+            {0x14add70,0x12f,UINT64_C(0x01f897b15772d540)},
+            {0x16bec58,0x16,UINT64_C(0x404b6b6d6f4c1326)},
+            {0x162a038,0x5,UINT64_C(0xed3267c1d2c3a7f4)},
+            {0x162ca20,0x9,UINT64_C(0x790f28096e087365)},
+            {0x16bed60,0xf,UINT64_C(0xb0e47e9774f8f164)},
+            {0x162a420,0xf,UINT64_C(0x1df398a6be7f6052)},
+            {0x16bed70,0xd,UINT64_C(0x945d9d2ec61420ed)},
+            {0x16bed38,0xe,UINT64_C(0x5b491156908a18d8)},
+            {0x1615870,0xd,UINT64_C(0xcd56f05c0ea1035c)},
+        };
+        for(const auto& pin:pins) {
+            uint64_t hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin.length;++i){hash^=base[pin.rva+i];hash*=UINT64_C(1099511628211);}
+            if(hash!=pin.hash)return false;
+        }
+        return true;
+    }();
+    if(!supported || !building || !df::global::world || category < -1 || category > 5 ||
+       int(building->getType())!=13 || (building->getSubtype()!=5 && building->getSubtype()!=6))return std::nullopt;
+    const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+    const std::string suffix(reinterpret_cast<const char*>(base+0x1615870),13);
+    std::vector<WorkshopForgeChoice> result;
+    if(category==-1) {
+        constexpr size_t names[]={0x16bec58,0x162a038,0x162ca20,0x16bed60,0x162a420,0x16bed70,0x16bed38};
+        constexpr size_t lengths[]={22,5,9,15,15,13,14};
+        for(int32_t i=0;i<7;++i)result.push_back({i,-1,std::string(reinterpret_cast<const char*>(base+names[i]),lengths[i])+suffix});
+        return result;
+    }
+    using Flag=bool (*)(df::world*,int32_t,int16_t,int32_t);
+    using Name=void (*)(void*,std::string*,int16_t,int32_t,int32_t,bool,int16_t);
+    const auto flag=reinterpret_cast<Flag>(base+0x145bee0);
+    df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
+    const auto& raws=df::global::world->raws.inorganics.all;
+    for(size_t i=0;i<raws.size();++i) {
+        if(!raws[i] || !flag(df::global::world,47,0,int32_t(i)))continue;
+        bool allowed=false;
+        if(category==0) {
+            for(int32_t value:{51,52,54,55})if(flag(df::global::world,value,0,int32_t(i))){allowed=true;break;}
+        } else allowed=flag(df::global::world,category==1?56:(category==2 || category==5?11:51),0,int32_t(i));
+        if(!allowed)continue;
+        std::string caption;
+        reinterpret_cast<Name>(base+0x14d1920)(df::global::world,&caption,0,int32_t(i),0,false,0);
+        result.push_back({category,int32_t(i),caption+suffix});
+    }
+    return result;
+}
 struct WorkshopReactionCategory {
     std::string code,caption;
     int32_t hotkey=-1;

@@ -2,12 +2,12 @@
 #include "work_order_dye_native.h"
 
 namespace df3d_production {
-struct WorkshopDyeTarget {int32_t color=-1,available=0,alphaOrder=0;bool tint=false;std::string caption,info;};
+struct WorkshopDyeTarget {int32_t color=-1,available=0,alphaOrder=0;bool tint=false;std::string caption,info;int32_t first=-1,second=-1;};
 
 // Native8c597d..8c6cbb builds these lists inline. Only its semantic inventory
 // search and color mixer are invoked; all filters, vectors and counts are owned.
 // Workshop searches include building/position, unlike global Work orders.
-inline std::optional<std::vector<WorkshopDyeTarget>> workshopDyeTargets(df::building* building,int32_t job) {
+inline std::optional<std::vector<WorkshopDyeTarget>> workshopDyeTargets(df::building* building,int32_t job,int32_t target=-1) {
     if(!building || int(building->getType())!=13 || building->getSubtype()!=21 ||
        (job!=190 && job!=191 && job!=244 && job!=243) || !df::global::world || !workOrderDyeReady())return std::nullopt;
     auto* base=reinterpret_cast<uint8_t*>(GetModuleHandleW(nullptr));
@@ -42,7 +42,7 @@ inline std::optional<std::vector<WorkshopDyeTarget>> workshopDyeTargets(df::buil
     }();
     if(!supported)return std::nullopt;
     auto& colors=df::global::world->raws.descriptors.colors;
-    const size_t count=colors.size();if(count>1024)return std::nullopt;
+    const size_t count=colors.size();if(count>1024 || target< -1 || (target>=0 && size_t(target)>=count))return std::nullopt;
     for(const auto* color:colors)if(!color)return std::nullopt;
     df3d_creature::InventoryRandomRestore random(base);
     df3d_creature::KnowledgeMaterialCacheRestore cache(df::global::world->raws.creatures.hist_fig_to_creature_map);
@@ -76,7 +76,7 @@ inline std::optional<std::vector<WorkshopDyeTarget>> workshopDyeTargets(df::buil
     };
     if(!collect(true) || (!mixing && !collect(false)))return std::nullopt;
     const auto& first=mixing?dyes:substrates;
-    for(int32_t a=0;size_t(a)<count;++a)if(first[a]>0)
+    if(target<0)for(int32_t a=0;size_t(a)<count;++a)if(first[a]>0)
         for(int32_t b=mixing?a+1:0;size_t(b)<count;++b)if(a!=b && dyes[b]>0) {
             std::array<int32_t,7> results;results.fill(-1);
             reinterpret_cast<void(*)(std::vector<df::descriptor_color*>*,int32_t,int32_t,int32_t*)>(base+0x7dc570)(&colors,a,b,results.data());
@@ -89,10 +89,29 @@ inline std::optional<std::vector<WorkshopDyeTarget>> workshopDyeTargets(df::buil
     std::vector<WorkshopDyeTarget> rows;
     // Native UI groups color selectors before jobs. Each group is independently
     // ordered by availability pass and then its native caption comparator.
-    for(int pass=0;pass<2;++pass)for(int32_t c=0;size_t(c)<count;++c)
+    if(target>=0) {
+        if(mixing && colors[target]->id=="CLEAR")return std::nullopt;
+        // Native8c5c70..8c6022: tint uses ordered substrate/dye pairs; Mix
+        // uses unordered dye pairs. Emit once for the first matching result.
+        for(int pass=0;pass<2;++pass)for(int32_t a=0;size_t(a)<count;++a) {
+            if(a==target)continue;
+            for(int32_t b=mixing?a+1:0;size_t(b)<count;++b) {
+                if(b==target || b==a)continue;
+                const bool stocked=first[a]>0 && dyes[b]>0;
+                if(stocked!=(pass==0))continue;
+                std::array<int32_t,7> results;results.fill(-1);
+                reinterpret_cast<void(*)(std::vector<df::descriptor_color*>*,int32_t,int32_t,int32_t*)>(base+0x7dc570)(&colors,a,b,results.data());
+                if(std::find(results.begin(),results.end(),target)==results.end())continue;
+                if(rows.size()>=16384)return std::nullopt;
+                WorkshopDyeTarget row;row.color=target;row.available=stocked?std::min(first[a],dyes[b]):0;
+                row.alphaOrder=pass;row.first=a;row.second=b;rows.push_back(std::move(row));
+            }
+        }
+    }
+    if(target<0)for(int pass=0;pass<2;++pass)for(int32_t c=0;size_t(c)<count;++c)
         if((tints[c]>0)==(pass==0) && (!mixing || colors[c]->id!="CLEAR"))
             rows.push_back({c,tints[c],mixing?pass:2*pass+1,true});
-    if(!mixing)for(int pass=0;pass<2;++pass)for(int32_t c=0;size_t(c)<count;++c)
+    if(target<0 && !mixing)for(int pass=0;pass<2;++pass)for(int32_t c=0;size_t(c)<count;++c)
         if((dyes[c]>0)==(pass==0))rows.push_back({c,dyes[c],2*pass,false});
     const auto literal=[base](size_t rva){return std::string(reinterpret_cast<const char*>(base+rva));};
     for(auto& row:rows) {
@@ -105,15 +124,16 @@ inline std::optional<std::vector<WorkshopDyeTarget>> workshopDyeTargets(df::buil
             df::job descriptor;descriptor.job_type=df::job_type(job);
             descriptor.item_type=df::item_type(-1);descriptor.item_subtype=-1;
             descriptor.mat_type=-1;descriptor.mat_index=-1;descriptor.material_category.whole=0;descriptor.specflag.whole=0;
-            descriptor.specdata.hist_figure_id=row.color;descriptor.art_spec.type=df::job_art_specifier_type(-1);
-            descriptor.art_spec.id=-1;descriptor.art_spec.subid=row.color;
+            descriptor.specdata.hist_figure_id=mixing?-1:row.color;descriptor.art_spec.type=df::job_art_specifier_type(-1);
+            if(mixing)descriptor.mat_index=row.color;
+            descriptor.art_spec.id=row.first;descriptor.art_spec.subid=target>=0?row.second:row.color;
             const auto caption=workshopJobCaption(descriptor);if(!caption)return std::nullopt;
             row.caption=*caption;
         }
         if(row.available>0) {
             std::string number;
-            reinterpret_cast<void(*)(int32_t,std::string*)>(base+(mixing?0x52c130:0x52c2b0))(row.available,&number);
-            row.info=literal(0x1615890)+number+literal(mixing?0x1615860:!row.tint?0x16beb38:job==191?0x16beb48:job==244?0x16bec18:0x16bec30);
+            reinterpret_cast<void(*)(int32_t,std::string*)>(base+(mixing || target>=0?0x52c130:0x52c2b0))(row.available,&number);
+            row.info=(target>=0?std::string{}:literal(0x1615890))+number+literal(mixing || target>=0?0x1615860:!row.tint?0x16beb38:job==191?0x16beb48:job==244?0x16bec18:0x16bec30);
         }
     }
     for(size_t i=1;i<rows.size();++i) {

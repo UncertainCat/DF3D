@@ -17645,6 +17645,18 @@ swatch. The first viewport was inspected in equivalent002527; neither run
 creates jobs. Owned DF42328 closes unsaved with source saves/preferences and
 controlled workshop type/stage restored. This does not resolve the earlier
 Aqua exit or establish other ingredient pages. See ingredient_reference.
+The owned provider now composes native8c5c70..8c6022 ingredient enumeration
+with building-aware inventory searches and semantic mixer7dc570. Tint uses
+ordered substrate/dye pairs; Mix uses unordered dye pairs. Both exclude the
+target/input-identical cases and emit one row for the first matching mixer
+result, with stocked choices first. Captions calld032b0 with owned job fields;
+info calls52c130 and the installed availability suffix. Protected003055 matches
+all172 cloth-cerulean captions, info strings and ordering and retains all811
+first-level comparisons. Owned DF2948 closes unsaved with source saves,
+preferences and controlled type/stage restored; serial30FPS sampled39C.
+Other ingredient pages, viewer transport/rendering and task effects remain
+unqualified. The512KiB management reply capacity must be considered when
+replacing the128-recipe limit; no list is silently truncated by this provider.
 Ingredient submenu navigation, creation effects and DF3D implementation remain
 unfinished. An earlier
 controlled discovery232955 exited while entering Tint cloth aqua; source

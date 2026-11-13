@@ -32236,7 +32236,21 @@
         "No task creation or viewer ingredient integration.",
         "Other tint targets and Mix dye ingredients are not captured.",
         "Earlier Aqua traversal exit remains unisolated, not a confirmed native bug."
-      ]
+      ],
+      "owned_provider_reference": {
+        "source": "build/stockpile-storage-native-farm-discovery-20261113-003055",
+        "scope": "All 172 cerulean cloth ingredient rows match native captions, order, information strings and alpha_order; target18 and leaf identity verified. Existing 811 first-level target checks also pass.",
+        "sha256": {
+          "result.json": "fe642b5bdf905d1710c75247447499f5c12cf9a121014827d4e993882977c78c",
+          "workshop-native.json": "6dcf50a45e629d6f60e1ba19f6286181264a8def2d866838c0bfc6b519c999cd"
+        },
+        "cleanup": "Owned DF2948 closed unsaved; source saves/preferences and controlled type/stage restored. Serial30FPS sampled39C.",
+        "omissions": [
+          "Other colors, thread/leather and Mix dye ingredient pages not qualified.",
+          "No ingredient viewer transport, rendering or task creation acceptance.",
+          "172 rows still exceed the current recipe contract cap."
+        ]
+      }
     }
   }
 }

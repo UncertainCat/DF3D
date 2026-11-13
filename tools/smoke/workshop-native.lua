@@ -346,6 +346,17 @@ local ok,err=xpcall(function()
      assert(#pending<=512,'Native task category discovery exceeded page bound')
      local page=pending[next_page];next_page=next_page+1
      catalog.pages[#catalog.pages+1]=page
+     if os.getenv('DF3D_WORKSHOP_DYER_INGREDIENT_NAV')=='1' and #page.path==2 then
+      local first=assert(page.rows[1]);local job=first.job_type
+      local target_color=job==243 and first.mat_index or first.specdata
+      local encoded,status=dfhack.run_command_silent('df3d','workshop-dye-targets-probe',tostring(target.id),tostring(job),tostring(target_color))
+      assert(status==0,encoded);page.owned_ingredients=json.decode(encoded)
+      assert(#page.owned_ingredients==#page.rows,'Dyer ingredient count differs')
+      for index,row in ipairs(page.owned_ingredients)do
+       local native=page.rows[index]
+       assert(row.caption==native.caption and row.info==native.info and row.alpha_order==native.alpha_order and row.color==target_color and not row.tint,'Dyer ingredient row differs at '..index)
+      end
+     end
      if os.getenv('DF3D_WORKSHOP_DYER_NAV')=='1' and #page.path==1 then
       local jobs={191,244,190,243};local job=assert(jobs[page.path[1].index])
       local encoded,status=dfhack.run_command_silent('df3d','workshop-dye-targets-probe',tostring(target.id),tostring(job))

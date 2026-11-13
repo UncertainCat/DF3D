@@ -3594,13 +3594,13 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
           out.print("{}",Json::FastWriter().write(rows));return CR_OK;
         }
         if(parameters[0]=="workshop-dye-targets-probe") {
-          if(parameters.size()!=3)return CR_WRONG_USAGE;
-          int32_t ids[2];
-          for(int i=0;i<2;++i) {
+          if(parameters.size()!=3 && parameters.size()!=4)return CR_WRONG_USAGE;
+          int32_t ids[3]={-1,-1,-1};
+          for(size_t i=0;i+1<parameters.size();++i) {
             const auto& raw=parameters[i+1];const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),ids[i]);
             if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || ids[i]<0)return CR_WRONG_USAGE;
           }
-          const auto choices=df3d_production::workshopDyeTargets(df::building::find(ids[0]),ids[1]);
+          const auto choices=df3d_production::workshopDyeTargets(df::building::find(ids[0]),ids[1],ids[2]);
           if(!choices)return CR_FAILURE;
           Json::Value rows(Json::arrayValue);
           for(const auto& choice:*choices) {

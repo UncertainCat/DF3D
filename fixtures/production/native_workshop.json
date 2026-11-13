@@ -10712,5 +10712,176 @@
       "workshop-family-8.png": "6c371374b1b63cc2fb165a2b4c3be6358a86efbebf60f0c86a3b721563eb822d",
       "family-8-live.png": "f35b4ef1d0dd0c26a44f60cb4d3d9bf9cefa9b6abea43161dd794bb1405ec7d8"
     }
+  },
+  "butcher_runtime_reference": {
+    "lane": "build/stockpile-storage-native-farm-discovery-20261112-223250",
+    "membership": "Native8c5938..8c597d root emits104/151/33 then reactions. FNV64 6ee9cdb87491c59c over45hex bytes. Owned independent order catalog supplies104/151; audited CatchLiveLandAnimal33 descriptor added locally because order catalog omits it. Native captions and input generation unchanged; no menu state borrowed.",
+    "scope": "Existing completed Butcher shop. All3 root choices/captions/order/availability and Cancel match; actual clicks create all3 jobs with matching fields and input requirements. Original queue restored.",
+    "building_id": 236,
+    "effects": [
+      {
+        "caption": "Butcher an animal",
+        "index": 1,
+        "native": {
+          "inputs": [
+            {
+              "flags1": 4194322,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": -1,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 104,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        },
+        "viewer": {
+          "inputs": [
+            {
+              "flags1": 4194322,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": -1,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 104,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        }
+      },
+      {
+        "caption": "Catch live land animal",
+        "index": 2,
+        "native": {
+          "inputs": [],
+          "item_subtype": -1,
+          "job_type": 33,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        },
+        "viewer": {
+          "inputs": [],
+          "item_subtype": -1,
+          "job_type": 33,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        }
+      },
+      {
+        "caption": "Extract from land animal",
+        "index": 3,
+        "native": {
+          "inputs": [
+            {
+              "flags1": 65552,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": -1,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            },
+            {
+              "flags1": 16778240,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 11,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 151,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        },
+        "viewer": {
+          "inputs": [
+            {
+              "flags1": 65552,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": -1,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            },
+            {
+              "flags1": 16778240,
+              "flags2": 0,
+              "flags3": 0,
+              "item_subtype": -1,
+              "item_type": 11,
+              "mat_index": -1,
+              "mat_type": -1,
+              "quantity": 1
+            }
+          ],
+          "item_subtype": -1,
+          "job_type": 151,
+          "mat_index": -1,
+          "mat_type": -1,
+          "material_category": 0,
+          "reaction_name": "",
+          "specdata": -1,
+          "specflag": 0
+        }
+      }
+    ],
+    "picker_crop": [
+      432,
+      106,
+      888,
+      676
+    ],
+    "differing_pixels": 0,
+    "omissions": [
+      "Worker execution/products and animal capture effects",
+      "Native uninitialized item_type equivalence"
+    ],
+    "diagnostics": "passed_with_known_issues: separate-renderer, device-finalize, ObjectDB shutdown; no unclassified diagnostics",
+    "source_preservation": "Owned DF43788 exited unsaved; source unchanged",
+    "sha256": {
+      "workshop-native.json": "940cb80c782cbb98c339f86812640403f6d4ee03dd3662c93e030064cf3aab25",
+      "workshop-wire-result.json": "a9e69bf3c62730a6f11aae600752bb73b2d7e6e36f669cf0e5aa79d44c28582d",
+      "result.json": "ff1604a9f00dfdb95f5102a2e63e943f3295775d10215c1588266facb233683b",
+      "save-preservation.txt": "29b5caafa27d388a7762e913177ae374b661b327a0e6d5e092e65744d52c45ca",
+      "workshop-family-10.png": "39a149e4c3f65fc71b93de857c054792d73a324f4c735213b64499b05da0e77f",
+      "family-10-live.png": "f3b7818c7c264ddafa3f65dfbc9ce1bb0b7fbc70e5ff0631ab81e8fbe3a8b944"
+    }
   }
 }

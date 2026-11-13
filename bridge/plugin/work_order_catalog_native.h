@@ -15,6 +15,7 @@ inline bool workOrderCatalogSupported() {
         const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
         struct Pin {size_t rva,length;uint64_t hash;};
         constexpr Pin pins[]={
+            {0x8c5938,0x45,UINT64_C(0x6ee9cdb87491c59c)}, // butcher root jobs104/151/33
             {0x8c6cbb,0x3d,UINT64_C(0x60298931b3031029)}, // mechanic rock mechanisms + traction bench
             {0x8c5078,0x5e3,UINT64_C(0x6340566cdcdeff62)}, // glass root and material-page membership
             {0x8c5036,0x21,UINT64_C(0x4280d302be848fe3)}, // kiln root Collect clay membership
@@ -149,7 +150,7 @@ inline std::optional<std::vector<df::manager_order_template>> workshopTaskTempla
     if(!building)return std::nullopt;
     const auto type=building->getType();const auto subtype=building->getSubtype();
     const bool forge=int(type)==13 && (subtype==5 || subtype==6);
-    if(!forge && !((int(type)==13 && (subtype==0 || subtype==1 || subtype==4 || subtype==8 || subtype==11 || subtype==12 || subtype==13 || subtype==22 || subtype==19 || subtype==15)) || (int(type)==5 && (subtype==0 || subtype==1 || subtype==2 || subtype==3))))return std::nullopt;
+    if(!forge && !((int(type)==13 && (subtype==0 || subtype==1 || subtype==4 || subtype==8 || subtype==10 || subtype==11 || subtype==12 || subtype==13 || subtype==22 || subtype==19 || subtype==15)) || (int(type)==5 && (subtype==0 || subtype==1 || subtype==2 || subtype==3))))return std::nullopt;
     auto rows=nativeWorkshopOrderCatalog(building);if(!rows)return std::nullopt;
     // Native8c6cbb admits only generic rock mechanisms and traction benches.
     // Classifier311580 also assigns explicit-metal mechanisms here; those

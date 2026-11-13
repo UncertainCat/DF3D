@@ -17450,6 +17450,21 @@ Serial30FPS GPU samples40-42C are not continuous peaks. Worker execution/product
 and uninitialized item_type equivalence remain unqualified. See
 native_workshop.json.mechanic_runtime_reference. Whole workshop exposure remains gated.
 
+Butcher Tasks exposes native8c5938..8c597d's three root jobs: Butcher an animal104,
+Extract from land animal151 and Catch live land animal33. The independent order
+catalog supplies the first two; the adapter adds the audited catch descriptor
+to its owned task templates. Native caption and input-generation routines still
+supply wording and requirements. No native menu state is borrowed.
+Protected223250 on2026-11-12 uses an existing completed Butcher's Shop and
+verifies all three choices, captions/order/availability, Cancel and actual job
+creations with matching fields and input requirements. The picker crop
+432,106..888,676 is pixel-identical and the original queue is restored. Owned
+DF43788 exits unsaved with source saves unchanged. Core19 and headless
+state/composition/adapter checks pass; live diagnostics contain only the three
+documented Godot signatures. Serial30FPS GPU samples40-42C are not continuous
+peaks. Worker execution, animal capture effects/products and uninitialized
+item_type equivalence remain unqualified. See native_workshop.json.butcher_runtime_reference.
+
 Workshop activity markers call the pinned native semantic predicate d02850,
 which checks for a UNIT_WORKER general reference without resolving its unit.
 Renderer18643e uses this predicate and installed BUILDING_JOBS_ACTIVE artwork.

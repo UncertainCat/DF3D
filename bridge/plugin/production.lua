@@ -58,7 +58,7 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
  local out,keys={},{}
  local k=kind(b)
  local forge=k=='MetalsmithsForge' or k=='MagmaForge'
- local ordinary=k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' or k=='Kiln' or k=='Farmers' or k=='Millstone' or k=='Tanners' or k=='Leatherworks' or k=='Jewelers' or k=='Mechanics'
+ local ordinary=k=='Carpenters' or k=='Kitchen' or k=='WoodFurnace' or k=='Kiln' or k=='Farmers' or k=='Millstone' or k=='Tanners' or k=='Leatherworks' or k=='Jewelers' or k=='Mechanics' or k=='Butchers'
  local clothier=k=='Clothiers'
  local glass=k=='GlassFurnace'
  local glass_material=nil
@@ -80,6 +80,12 @@ local function recipes(b,native_requirements,native_caption,native_reactions,nat
   out.category=category;out.categories={}
   if not fabric and not glass_material and (not forge or category=='' or category:sub(1,9)=='reaction:') then out.categories=native_categories(b.id,category) end
   out.editable_templates=native_templates(b.id)
+  if k=='Butchers' then
+   -- Pinned native8c5938..8c597d includes Catch live land animal at root,
+   -- although the independent order catalog omits it. Native caption and
+   -- input generation below still own its wording and requirements.
+   out.editable_templates[#out.editable_templates+1]={job_type=df.job_type.CatchLiveLandAnimal}
+  end
   for i=2,#out.categories do
    local row=out.categories[i];local at=i
    while at>1 and native_less(row.caption,out.categories[at-1].caption)do out.categories[at]=out.categories[at-1];at=at-1 end

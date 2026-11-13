@@ -155,12 +155,29 @@ local ok,err=xpcall(function()
     if target.id==building.id then shot('task-catalog-carpenter')end
     -- Discovery only: invoke category buttons, never job/action buttons. Runtime
     -- catalogs must not read these widgets or use their mutable menu storage.
-    local pending={{path={},rows=rows}};local next_page=1
+    local pending={{path={},rows=rows,reaction_parent=''}};local next_page=1
     local queue_ids={};for _,job in ipairs(target.jobs)do queue_ids[#queue_ids+1]=job.id end
     while next_page<=#pending do
      assert(#pending<=512,'Native task category discovery exceeded page bound')
      local page=pending[next_page];next_page=next_page+1
      catalog.pages[#catalog.pages+1]=page
+     if page.reaction_parent~=nil then
+      local encoded,status=dfhack.run_command_silent('df3d','workshop-reaction-categories-probe',tostring(target.id),page.reaction_parent)
+      assert(status==0,encoded);page.owned_categories=json.decode(encoded)
+      local native_categories={};local native_count=0
+      for _,row in ipairs(page.rows)do if row.custom_category then native_categories[row.custom_category]=row.caption;native_count=native_count+1 end end
+      assert(#page.owned_categories==native_count,'Native reaction category count differs: '..key)
+      for _,row in ipairs(page.owned_categories)do assert(native_categories[row.code]==row.caption,'Native reaction category differs: '..row.code)end
+      encoded,status=dfhack.run_command_silent('df3d','workshop-reactions-probe',tostring(target.id),page.reaction_parent)
+      assert(status==0,encoded);page.owned_reactions=json.decode(encoded)
+      local native_reactions={};local reaction_count=0
+      for _,row in ipairs(page.rows)do if row.reaction and row.reaction~=''then native_reactions[row.reaction]=row;reaction_count=reaction_count+1 end end
+      assert(#page.owned_reactions==reaction_count,'Native reaction choice count differs: '..key)
+      for _,row in ipairs(page.owned_reactions)do
+       local native=assert(native_reactions[row.code],'Native reaction absent: '..row.code)
+       assert(native.caption==row.caption and native.available==row.available and native.objection==row.objection,'Native reaction choice differs: '..row.code)
+      end
+     end
      for index,row in ipairs(page.rows)do
       if not row.leave and (row.category~=nil or row.custom_category~=nil or row.material~=nil or row.color~=nil)then
        assert(#page.path<8,'Native task category discovery exceeded depth bound')
@@ -181,7 +198,7 @@ local ok,err=xpcall(function()
         end
         assert(clicked,'Native category caption not reachable: '..step.caption)
        end
-       pending[#pending+1]={path=path,rows=read_rows()}
+       pending[#pending+1]={path=path,rows=read_rows(),reaction_parent=row.custom_category}
       end
      end
     end

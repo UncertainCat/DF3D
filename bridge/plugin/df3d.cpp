@@ -3560,13 +3560,23 @@ command_result df3d_command(color_ostream& out, vector<string>& parameters) {
             result["rows"].append(value);}
           out.print("{}",Json::FastWriter().write(result));return CR_OK;
         }
-        if(parameters[0]=="workshop-reactions-probe") {
-          if(parameters.size()!=2)return CR_WRONG_USAGE;
+        if(parameters[0]=="workshop-reactions-probe" || parameters[0]=="workshop-reaction-categories-probe") {
+          if(parameters.size()!=2 && parameters.size()!=3)return CR_WRONG_USAGE;
           int32_t id=-1;const auto& raw=parameters[1];
           const auto parsed=std::from_chars(raw.data(),raw.data()+raw.size(),id);
           if(parsed.ec!=std::errc{} || parsed.ptr!=raw.data()+raw.size() || id<0)return CR_WRONG_USAGE;
           auto* shop=df::building::find(id);if(!shop)return CR_FAILURE;
-          const auto choices=df3d_production::workshopReactionRows(shop,"");if(!choices)return CR_FAILURE;
+          const std::string category=parameters.size()==3?parameters[2]:"";
+          if(parameters[0]=="workshop-reaction-categories-probe") {
+            const auto choices=df3d_production::workshopReactionCategories(shop,category);if(!choices)return CR_FAILURE;
+            Json::Value rows(Json::arrayValue);
+            for(const auto& choice:*choices) {
+              Json::Value row(Json::objectValue);row["code"]=DF2UTF(choice.code);
+              row["caption"]=DF2UTF(choice.caption);row["hotkey"]=choice.hotkey;rows.append(std::move(row));
+            }
+            out.print("{}",Json::FastWriter().write(rows));return CR_OK;
+          }
+          const auto choices=df3d_production::workshopReactionRows(shop,category);if(!choices)return CR_FAILURE;
           Json::Value rows(Json::arrayValue);
           for(const auto& choice:*choices) {
             Json::Value row(Json::objectValue);row["raw_index"]=choice.rawIndex;row["code"]=DF2UTF(choice.code);

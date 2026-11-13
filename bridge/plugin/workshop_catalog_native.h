@@ -5,9 +5,81 @@
 #include "df/item_barst.h"
 #include "df/inorganic_raw.h"
 #include "df/reaction_reagent.h"
+#include "df/reaction_category.h"
 #include <memory>
 
 namespace df3d_production {
+struct WorkshopReactionCategory {
+    std::string code,caption;
+    int32_t hotkey=-1;
+};
+// Native8c4380..8c47a4 walks permitted reaction ancestry before constructing
+// category buttons. Compose that inline branch using owned visited strings;
+// only simulation raws and the native permission leaf are consulted.
+inline std::optional<std::vector<WorkshopReactionCategory>> workshopReactionCategories(
+    df::building* building,const std::string& parent) {
+    static const bool supported=[] {
+        if(!farmFunctions())return false;
+        const auto* base=reinterpret_cast<const uint8_t*>(GetModuleHandleW(nullptr));
+        struct Pin {size_t rva,length;uint64_t hash;};
+        constexpr Pin pins[]={
+            {0x8c4380,0x424,UINT64_C(0xab15df898db74b83)},
+            {0x8c29d0,0xd8,UINT64_C(0x6e575de3e979203e)},
+            {0x1615870,0xd,UINT64_C(0xcd56f05c0ea1035c)},
+        };
+        for(const auto& pin:pins) {
+            uint64_t hash=UINT64_C(14695981039346656037);
+            for(size_t i=0;i<pin.length;++i){hash^=base[pin.rva+i];hash*=UINT64_C(1099511628211);}
+            if(hash!=pin.hash)return false;
+        }
+        return true;
+    }();
+    if(!supported || !building || !df::global::world || !df::global::plotinfo ||
+       !df::global::plotinfo->main.fortress_entity)return std::nullopt;
+    const auto& raws=df::global::world->raws.reactions;
+    const auto find=[&](const std::string& code)->const df::reaction_category* {
+        for(const auto* category:raws.reaction_categories)
+            if(category && category->id==code)return category;
+        return nullptr;
+    };
+    std::vector<std::string> visited;
+    std::vector<WorkshopReactionCategory> result;
+    for(size_t index=0;index<raws.reactions.size();++index) {
+        const auto* reaction=raws.reactions[index];
+        if(!reaction || reaction->category.empty())continue;
+        const auto allowed=workshopReactionAllowed(int32_t(index));
+        if(!allowed)return std::nullopt;
+        if(!*allowed)continue;
+        const auto& restrictions=reaction->building;
+        if(restrictions.type.size()!=restrictions.subtype.size() ||
+           restrictions.type.size()!=restrictions.custom.size())return std::nullopt;
+        bool matches=false;
+        for(size_t n=restrictions.type.size();n>0;--n) {
+            const auto i=n-1;
+            if(restrictions.type[i]==building->getType() && restrictions.subtype[i]==building->getSubtype() &&
+               restrictions.custom[i]==building->getCustomType()){matches=true;break;}
+        }
+        if(!matches || std::find(visited.begin(),visited.end(),reaction->category)!=visited.end())continue;
+        visited.push_back(reaction->category);
+        const auto* category=find(reaction->category);
+        if(!category)return std::nullopt;
+        while(category->parent!=parent) {
+            category=find(category->parent);
+            if(!category)break;
+            if(std::find(visited.begin(),visited.end(),category->id)!=visited.end()){category=nullptr;break;}
+            visited.push_back(category->id);
+        }
+        if(!category)continue;
+        // Native8c29d0 uses the first matching nonempty category name, else ID.
+        std::string caption=category->id;
+        for(const auto* raw:raws.reaction_categories)
+            if(raw && raw->id==category->id && !raw->name.empty()){caption=raw->name;break;}
+        const auto* base=reinterpret_cast<const char*>(GetModuleHandleW(nullptr));
+        caption.append(base+0x1615870,13);
+        result.push_back({category->id,std::move(caption),int32_t(category->key)});
+    }
+    return result;
+}
 inline bool workshopInventoryReady() {
     static const bool ready=[] {
         if(!farmFunctions())return false;

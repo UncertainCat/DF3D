@@ -17273,6 +17273,23 @@ the limited catalog below; full category navigation, menu-specific membership,
 availability and all-family job effects are unfinished. The captured fortress's
 resources are evidence, not a hardcoded universal recipe list.
 
+`workshopReactionCategories` composes the inline ancestry branch
+`8c4380..8c47a4` with owned visited strings and native `workshopReactionAllowed`.
+It reads only simulation reaction/category definitions and exact building
+restrictions. Captions follow `8c29d0`: first matching nonempty raw name, else
+category ID, plus the pinned native menu suffix. The helper allocates no
+buttons and reads no menu selection. Both branches and the suffix are pinned.
+Protected184750 on2026-11-12 verifies6 category entries and60 reaction choices
+across22 root/custom-category pages in16 families; captions, membership,
+availability and objections match native. The full traversal still covers172
+pages. Owned DF39756 exits unsaved with queues/frame/source saves unchanged;
+the fixture includes the owned-helper outputs. This is provider evidence, not
+public UI acceptance: nested mod categories, category hotkeys, builtin category
+composition and job effects remain unqualified. Native action `8c24cc` copies
+the button's item-type field into its job even when constructor `8b1600` has
+not initialized it; whether those values affect each job's behavior remains
+unresolved, so template equivalence must not discard them without further audit.
+
 Native job captions delegate from `8c2310` to semantic formatter `d032b0`.
 `workshopJobCaption` calls that formatter directly with scalar job fields,
 owned reaction/output strings and no live-job pointer, matching the picker.

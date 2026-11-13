@@ -169,7 +169,7 @@ local function inspect(b,rs,native_caption)
   local worker=J.getWorker(j)
   local status=j.flags.suspend and 'Suspended by native state' or (worker and 'Worker assigned' or 'Awaiting worker or inputs; native cause is not exposed')
   result.production_jobs[#result.production_jobs+1]={id=j.id,name=utf(native_caption(j)),job_type=j.job_type,
-   repeat_job=j.flags['repeat'],suspended=j.flags.suspend,worker_id=worker and worker.id or -1,
+   repeat_job=j.flags['repeat'],suspended=j.flags.suspend,priority=j.flags.do_now and 1 or 0,worker_id=worker and worker.id or -1,
    worker_name=worker and utf(dfhack.units.getReadableName(worker)) or '',completion_timer=j.completion_timer,
    attached_items=#j.items,editable=editable(j,rs),status=status,requirements=requirements(j)}
  end
@@ -253,7 +253,9 @@ return function(request)
   local job
   for _,candidate in ipairs(b.jobs) do if candidate.id==p.job_id then job=candidate;break end end
   if not job or J.getHolder(job)~=b or not editable(job,rs) then return fail('Job is not an editable production job in this building') end
-  if p.cancel then
+  if p.priority~=nil and p.priority>=0 then
+   if not request.workshop_priority(b.id,job.id,p.expected_priority==1,p.priority==1) then return fail('') end
+  elseif p.cancel then
    if not J.removeJob(job) then return fail('Native job cancellation rejected') end
   else
    if p.repeat_job~=-1 then job.flags['repeat']=p.repeat_job==1 end

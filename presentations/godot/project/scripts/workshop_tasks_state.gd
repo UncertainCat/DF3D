@@ -72,6 +72,12 @@ func cancel_task(id: int) -> void:
 func set_repeat(id: int, desired: bool) -> void:
 	_edit(id,{"repeat":int(desired)})
 
+func toggle_priority(id: int) -> void:
+	if phase!=Phase.Ready:return
+	for job in snapshot.get("jobs",[]):
+		if job.id==id and job.has("priority"):
+			_edit(id,{"priority":int(not job.priority),"expected_priority":int(job.priority)});return
+
 func set_suspended(id: int, desired: bool) -> void:
 	_edit(id,{"suspend":int(desired)})
 
@@ -99,7 +105,9 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 	ticket=0
 	var editing: bool=sent.action!=C.ManagementAction.ProductionInspect
 	if result.get("outcome","")=="unknown":_fail(Phase.Unknown);return
-	if result.get("status",-1)!=C.ManagementStatus.Ok:_fail(Phase.Rejected);return
+	# The legacy production reply does not distinguish pre-write rejection from
+	# an error after native worker release. Never retry an uncertain Priority edit.
+	if result.get("status",-1)!=C.ManagementStatus.Ok:_fail(Phase.Unknown if sent.has("priority") else Phase.Rejected);return
 	var data: Dictionary=result.get("production",{})
 	if result.get("action",-1)!=sent.action or data.get("selected_building",-1)!=building_id or not data.get("jobs") is Array or not data.get("recipes") is Array:
 		_fail(Phase.Unknown if editing else Phase.Rejected);return
@@ -119,7 +127,7 @@ func _receive(result: Dictionary, sent: Dictionary) -> void:
 			if job.id==sent.job_id:selected=job;break
 		if sent.get("cancel",false):
 			if not selected.is_empty():_fail(Phase.Unknown);return
-		elif selected.is_empty() or (sent.has("repeat") and selected.get("repeat")!=bool(sent.repeat)) or (sent.has("suspend") and selected.get("suspended")!=bool(sent.suspend)):
+		elif selected.is_empty() or (sent.has("repeat") and selected.get("repeat")!=bool(sent.repeat)) or (sent.has("suspend") and selected.get("suspended")!=bool(sent.suspend)) or (sent.has("priority") and (selected.get("priority")!=bool(sent.priority) or (sent.priority==1 and data.jobs[0].id!=sent.job_id))):
 			_fail(Phase.Unknown);return
 	snapshot=data.duplicate(true);phase=Phase.Ready;changed.emit()
 	if editing:applied.emit()

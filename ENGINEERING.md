@@ -17118,8 +17118,8 @@ render-device-finalize and two-ObjectDB shutdown diagnostics. Metadata and hashe
 are in `native_workshop.json.worker_width_reference`. Headless composition and
 candidate-state checks pass in `workshop-selector-width`; core19 passes.
 Larger indicator-count layout, full selector parity and public workshop routing
-remain unfinished. Task categories and Priority remain functional gaps; Priority
-still emits an unhandled signal. Task Details now uses the shared native-backed
+remain unfinished. Task categories and move-up controls remain functional gaps.
+Task Priority now uses the verified native effect below. Task Details uses the shared native-backed
 job editor, with the bounded acceptance below. Composition passes in
 `workshop-selector-height`; the live flow supplies the resize/effect evidence.
 
@@ -17138,8 +17138,8 @@ read pass. The initial Details crop has zero differing RGB pixels across the
 whole832x672 panel. Seventy-one choices are supplied by the existing native
 provider. This qualifies Make bed material editing only, not all job families,
 artwork, resizing or the complete workshop surface. Native Priority toggles
-`do_now` on/off without changing the single-job queue; implementing that action
-remains pending. `native_workshop.json.job_controls_reference` retains effects
+`do_now` on/off without changing the single-job queue; the later multi-job reference below
+establishes the queue effect. `native_workshop.json.job_controls_reference` retains effects
 and evidence hashes. Owned DF39928 exits unsaved with source preserved and
 preferences restored; native/viewer are capped30FPS. The live client reports
 only the known separate-thread, device-finalize and two-ObjectDB diagnostics
@@ -17153,13 +17153,11 @@ after previous reordering. Enabling moves that job to the front while retaining
 other jobs' Priority flags; disabling leaves queue order unchanged. The native
 inline branch1ad296..1ad3ff toggles bit18 at job+2c and, when enabling, swaps the
 job forward one predecessor at a time. Each swap also scans active units and
-calls1325080(unit,false,0,false,nullptr) for living workers assigned to the
+calls1325080(unit,false,0,false,nullptr) for units without flags1.inactive assigned to the
 displaced job. This cancellation routine is already pinned by
 `tasks_action_native.h`; DFHack `Job::removeWorker` is not equivalent. Do not
-call the whole UI handler or use native menu state. Worker displacement is
-source-audited but still needs live qualification; the recorded three jobs have
-no workers. Priority remains unimplemented pending the semantic request/state
-extension and this full effect, rather than a flag-only toggle. The source
+call the whole UI handler or use native menu state. The discovery reference has
+no assigned workers; the later runtime reference below supplies that qualification. The source
 save is unchanged and owned DF6532 exits unsaved; live diagnostics are limited
 to the documented Godot signatures.
 
@@ -17168,10 +17166,8 @@ an optional observation to ProductionJob (-1 means unknown). The wire rejects
 missing/same-state expectations, out-of-range values and mixed edits. Legacy
 observations remain unknown through the model and are omitted from the Godot
 dictionary. Both peers require205 and mailbox `Local\df3d_management_v205`;
-no simulation or dependency version changes. The migration bridge deliberately
-rejects the staged Priority request before reaching the legacy Lua adapter,
-which otherwise could report a no-op as successful. Native mutation and button
-wiring remain pending. Headless `workshop-priority-contract` passes root/extension
+no simulation or dependency version changes. The migration initially rejected staged Priority requests before reaching
+the legacy Lua adapter. The native implementation below supersedes that guard. Headless `workshop-priority-contract` passes root/extension
 builds and management contracts; core19 passes, including opposite-state and
 legacy-unknown codec cases. Protected181745 on2026-11-12 verifies explicit
 pre-write rejection followed by the existing native/composed Details material
@@ -17179,6 +17175,33 @@ workflow. Owned DF39344 exits unsaved with source unchanged and preferences
 restored; only known Godot diagnostics occur. Both clients are capped30FPS;
 GPU sample51C. The installed205 bridge SHA256 is
 `DD80E1424044C8A602C6FE6AF80436E2CD7EAEC7E57ADDC1D77F9470B372B3E7`.
+
+Workshop Priority dispatch uses `workshop_priority_native.h`: validate the
+building/job and displayed flag at a safe point, reproduce the pinned inline
+queue swaps over simulation records, and call native1325080 for displaced
+workers. It does not use native menu state or DFHack's partial worker-removal
+helper. The returned queue supplies Priority observations. The viewer confirms
+the requested flag and front position, renders native active/inactive artwork,
+and submits no duplicate while pending. Missing observations disable the action.
+Legacy production error replies cannot distinguish pre-write rejection from an
+error after worker release; Priority therefore conservatively enters Unknown
+on an error and never automatically retries. This limitation adds no visible copy.
+
+Protected182657 on2026-11-12 matches six actual viewer clicks against native
+three-job queue/flag/worker observations. A controlled idle citizen is attached
+to the displaced job in each side; native and viewer both release it. Stale
+expected Priority is rejected without changing the job. The three Priority
+icons match all RGB pixels in crop760,136,784,244, and the existing Details
+panel and material-effect checks still pass. This qualifies the Make bed case,
+not all job families or the whole workshop. Native move-up arrows and some
+contained-item artwork are still missing. State tests cover unknown legacy
+observations, duplicate suppression and a flag-only reply without queue movement.
+`workshop-priority-state` passes state/composition; `workshop-priority-runtime`
+passes composition/production-adapter checks; core19 passes. Owned DF37912
+exits unsaved with source preserved and preferences restored. Clients are capped
+30FPS; GPU sample47C. Only known Godot diagnostics occur. Fixture
+`priority_runtime_reference` records effects/hashes and the installed205 bridge
+SHA256 `51BF9AEF77CBBF5291E50423B62518F7C1BC4C68155161B311568FDD9D5BD3A6`.
 
 Still root choices now include Extract from plants from native inline branch
 `8cb3c9..8cb3e9` (job149). The native constructor leaves its objection flag clear;

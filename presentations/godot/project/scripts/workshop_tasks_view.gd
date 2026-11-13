@@ -1,6 +1,6 @@
 extends Control
 # Staged Tasks body, native_workshop.json. The sheet owns header/tabs/contents.
-# Categories and priority remain unfinished; Details uses the shared job editor.
+# Categories remain unfinished; Details and Priority use semantic actions.
 signal details_requested(job_id: int)
 signal priority_requested(job_id: int)
 signal picker_changed
@@ -160,7 +160,8 @@ func _draw() -> void:
 	for index in jobs.size():
 		var job: Dictionary=jobs[index];var y:=36+index*36
 		caption(job.name,Vector2(0,y+18),11)
-		for entry in [[0,"BUILDING_JOBS_REPEAT"+("_ACTIVE" if job.repeat else "")],[1,"BUILDING_JOBS_DO_NOW"],[3,"STOCKS_VIEW_ITEM"],[4,"BUILDING_JOBS_SUSPENDED"+("_ACTIVE" if job.suspended else "")],[5,"BUILDING_JOBS_REMOVE"]]:
+		for entry in [[0,"BUILDING_JOBS_REPEAT"+("_ACTIVE" if job.repeat else "")],[1,"BUILDING_JOBS_DO_NOW"+("_ACTIVE" if job.get("priority",false) else "")],[3,"STOCKS_VIEW_ITEM"],[4,"BUILDING_JOBS_SUSPENDED"+("_ACTIVE" if job.suspended else "")],[5,"BUILDING_JOBS_REMOVE"]]:
+			if entry[0]==1 and not job.has("priority"):continue
 			var texture: Texture2D=art.texture(entry[1])
 			if texture!=null:draw_texture_rect(texture,Rect2(304+entry[0]*24,y-6,24,36),false)
 	patch("HORIZONTAL_OPTION_ACTIVE",Rect2(add_rect().position-Vector2(0,6),add_rect().size+Vector2(0,12)));caption("Add new task",add_rect().position+Vector2(8,18),10)

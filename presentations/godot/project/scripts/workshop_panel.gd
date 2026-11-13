@@ -44,6 +44,8 @@ func configure(world,service,host,help=null) -> void:
 		panel.visible=not _job_details_open() and state.building_id>=0)
 	job_details.applied.connect(func():tasks.refresh();state.refresh();contents.refresh())
 	panel.tasks.details_requested.connect(_open_job_details)
+	panel.tasks.priority_requested.connect(func(id):
+		if play_enabled and ui_host.allows_panel_input(self) and panel.tasks_allowed():tasks.toggle_priority(id))
 	global_orders_view=preload("res://scripts/global_work_orders_view.gd").new();canvas.add_child(global_orders_view);global_orders_view.configure_orders(world,global_orders,help);global_orders_view.hide()
 	global_orders_view.input_allowed=func():return play_enabled and ui_host.allows_panel_input(self) and not conditions_view.visible and not details_view.visible and not _job_details_open()
 	global_orders_view.cancelled.connect(_close_global_orders)

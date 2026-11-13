@@ -12,9 +12,6 @@ func run() -> void:
 		await create_timer(0.01).timeout
 	var catalog:=await request("construction",{"action":C.ManagementAction.Catalog})
 	if not check(catalog.get("status")==C.ManagementStatus.Ok,"Workshop bootstrap failed"):quit(1);return
-	if OS.get_environment("DF3D_WORKSHOP_PRIORITY_CONTRACT")=="1":
-		var staged:=await request("production",{"action":C.ManagementAction.ProductionJobEdit,"building_id":int(reference.building_id),"job_id":int(reference.viewer_job_id),"priority":1,"expected_priority":0})
-		check(staged.get("status")==C.ManagementStatus.Rejected,"Staged Priority must reject before mutation")
 	var preferences=preload("res://scripts/presentation_settings.gd");preferences.loaded=true;preferences.ui_scale=1.0
 	root.size=Vector2i(1200,800)
 	var service=preload("res://scripts/semantic_action_service.gd").new();root.add_child(service);service.configure(world,true);service.set_process(false)
@@ -22,6 +19,37 @@ func run() -> void:
 	var owner=preload("res://scripts/workshop_panel.gd").new();root.add_child(owner);owner.configure(world,service,host)
 	owner.open_workshop(int(reference.building_id),"BUILDING_ICON_WORKSHOP_CARPENTER")
 	await settle(service,func():return owner.state.phase==owner.state.Phase.Ready and owner.tasks.phase==owner.tasks.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
+	# Build three jobs and compare actual Priority gestures with native queue effects.
+	var recipe_key:=""
+	for recipe in owner.tasks.recipes():
+		if recipe.name=="Make bed":recipe_key=recipe.key;break
+	if not check(not recipe_key.is_empty(),"Make bed recipe unavailable"):quit(1);return
+	var job_ids: Array=[int(reference.viewer_job_id)]
+	for extra in 2:
+		owner.tasks.queue_task(recipe_key);await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready and owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
+		job_ids.append(owner.tasks.snapshot.created_job)
+	var native_ids: Array=[]
+	for row in reference.priority_queue[0].rows:native_ids.append(int(row.id))
+	for sample in reference.priority_queue.slice(1):
+		var target: int=job_ids[native_ids.find(int(sample.target))]
+		await process_frame
+		var current: Array=owner.tasks.jobs()
+		for index in current.size():
+			if current[index].id==target:click(Vector2(772,154+index*36));break
+		await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready and owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
+		current=owner.tasks.jobs()
+		print("Priority ",sample.name,": ",current.map(func(row):return {"id":row.id,"priority":row.get("priority"),"worker_id":row.worker_id}))
+		if sample.name=="middle-on":
+			await process_frame;await RenderingServer.frame_post_draw
+			root.get_texture().get_image().save_png(directory+"/workshop-job-priority-middle-on-live.png")
+			var stale:=await request("production",{"action":C.ManagementAction.ProductionJobEdit,"building_id":int(reference.building_id),"job_id":target,"priority":1,"expected_priority":0})
+			check(stale.get("status")==C.ManagementStatus.Rejected,"Stale Priority expectation was accepted")
+		check(current.size()==sample.rows.size(),"Priority changed queue size")
+		for index in mini(current.size(),sample.rows.size()):
+			var expected: Dictionary=sample.rows[index]
+			check(current[index].id==job_ids[native_ids.find(int(expected.id))] and current[index].get("priority")==expected.do_now and current[index].worker_id==int(expected.worker_id),"Priority queue, flags or worker differ from native")
+	for id in job_ids.slice(1):
+		owner.tasks.cancel_task(id);await settle(service,func():return owner.tasks.phase==owner.tasks.Phase.Ready and owner.state.phase==owner.state.Phase.Ready and owner.contents.phase==owner.contents.Phase.Ready)
 	await process_frame;click(Vector2(820,154))
 	await settle(service,func():return owner.job_details.phase==owner.job_details.Phase.Ready)
 	check(owner.job_details.job_id==int(reference.viewer_job_id) and not owner.panel.tasks_allowed(),"Details target or parent input ownership differs")
@@ -45,5 +73,5 @@ func run() -> void:
 	for frame in 8:world.poll();service.poll(0.01);await process_frame
 	check(not owner._job_details_open() and not owner.job_details_view.visible and owner.job_details.ticket==0,"Closed workshop retained Details ownership")
 	owner.queue_free();host.interaction.panel.free();host.queue_free();service.queue_free();await process_frame
-	var file:=FileAccess.open(directory+"/workshop-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"materials":rows.size(),"escape_return":true,"material_click":true,"parent_close":true}));file.close()
+	var file:=FileAccess.open(directory+"/workshop-wire-result.json",FileAccess.WRITE);file.store_string(JSON.stringify({"success":not failed,"materials":rows.size(),"priority_queue":true,"escape_return":true,"material_click":true,"parent_close":true}));file.close()
 	world.detach_live();world.queue_free();await process_frame;quit(1 if failed else 0)

@@ -102,6 +102,7 @@
 #include "creature_preferences_native.h"
 #include "creature_needs_native.h"
 #include "workshop_catalog_native.h"
+#include "workshop_priority_native.h"
 #include "workshop_workers_page.h"
 #include "workshop_orders_native.h"
 #include "work_detail_native.h"
@@ -4753,9 +4754,6 @@ void run(color_ostream& out) {
     }catch(...){places.emplace();places->tab=q.tab();}
     publish();return;
   }
-  if(r->action()==m::ManagementAction::ProductionJobEdit && r->production()->priority()!=-1){
-    status=m::ManagementStatus::Rejected;message.clear();publish();return;
-  }
   if(r->action()==m::ManagementAction::TasksRead || r->action()==m::ManagementAction::TasksApply){
     namespace h=df3d_tasks;
     const auto& q=*r->tasks();const bool edit=r->action()==m::ManagementAction::TasksApply;
@@ -5862,7 +5860,12 @@ void run(color_ostream& out) {
       }
       return 1;
     });lua_setfield(L,-2,"workshop_reactions");
-    lua_newtable(L);field(L,"building_id",p->building_id());field(L,"job_id",p->job_id());field(L,"recipe",p->recipe()?p->recipe()->str():"");field(L,"query",p->query()?p->query()->str():"");field(L,"cursor",p->cursor());field(L,"repeat_job",p->repeat());field(L,"suspend",p->suspend());field(L,"cancel",p->cancel());field(L,"season",p->season());field(L,"crop_id",p->crop_id());lua_setfield(L,-2,"production");
+    lua_pushcfunction(L,[](lua_State* state)->int {
+      const auto result=df3d_production::setWorkshopPriority(int32_t(luaL_checkinteger(state,1)),int32_t(luaL_checkinteger(state,2)),lua_toboolean(state,3)!=0,lua_toboolean(state,4)!=0);
+      if(result!=df3d_production::PriorityOutcome::Rejected)mutated=true;
+      lua_pushboolean(state,result==df3d_production::PriorityOutcome::Applied);return 1;
+    });lua_setfield(L,-2,"workshop_priority");
+    lua_newtable(L);field(L,"building_id",p->building_id());field(L,"job_id",p->job_id());field(L,"recipe",p->recipe()?p->recipe()->str():"");field(L,"query",p->query()?p->query()->str():"");field(L,"cursor",p->cursor());field(L,"repeat_job",p->repeat());field(L,"priority",p->priority());field(L,"expected_priority",p->expected_priority());field(L,"suspend",p->suspend());field(L,"cancel",p->cancel());field(L,"season",p->season());field(L,"crop_id",p->crop_id());lua_setfield(L,-2,"production");
   }
   if(const auto* w=r->work_order()) {
     lua_newtable(L);field(L,"id",w->id());field(L,"expected_revision",w->expected_revision());field(L,"recipe",w->recipe()?w->recipe()->str():"");field(L,"query",w->query()?w->query()->str():"");field(L,"cursor",w->cursor());
@@ -6321,7 +6324,7 @@ void run(color_ostream& out) {
       if(lua_istable(L,-1))row.availability=ProductionAvailability{boolean(L,"available"),text(L,"objection")};
       lua_pop(L,1);production.recipes.push_back(std::move(row));
     });
-    each("production_jobs",64,[&](){ProductionJob v;v.id=int32_t(number(L,"id",-1));v.jobType=int16_t(number(L,"job_type",-1));v.workerId=int32_t(number(L,"worker_id",-1));v.completionTimer=int32_t(number(L,"completion_timer",-1));v.name=text(L,"name");v.workerName=text(L,"worker_name");v.status=text(L,"status");v.repeat=boolean(L,"repeat_job");v.suspended=boolean(L,"suspended");v.editable=boolean(L,"editable");v.attachedItems=uint16_t(number(L,"attached_items"));v.requirements=reqs();production.jobs.push_back(std::move(v));});
+    each("production_jobs",64,[&](){ProductionJob v;v.id=int32_t(number(L,"id",-1));v.jobType=int16_t(number(L,"job_type",-1));v.workerId=int32_t(number(L,"worker_id",-1));v.completionTimer=int32_t(number(L,"completion_timer",-1));v.name=text(L,"name");v.workerName=text(L,"worker_name");v.status=text(L,"status");v.repeat=boolean(L,"repeat_job");v.suspended=boolean(L,"suspended");v.priority=int8_t(number(L,"priority",-1));v.editable=boolean(L,"editable");v.attachedItems=uint16_t(number(L,"attached_items"));v.requirements=reqs();production.jobs.push_back(std::move(v));});
     each("crops",256,[&](){production.crops.push_back({int32_t(number(L,"id",-1)),text(L,"name"),uint8_t(number(L,"seasons")),uint32_t(number(L,"seeds"))});});
     each("seasonal_crops",4,[&](){production.seasonalCrops.push_back(int32_t(lua_tointeger(L,-1)));});
   }

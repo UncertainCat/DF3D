@@ -126,6 +126,7 @@ local ok,err=xpcall(function()
    return {id=created.id,flags=created.flags.whole,do_now=created.flags.do_now,suspended=created.flags.suspend,repeat_job=created.flags['repeat'],queue=queue}
   end
   local worked,problem=xpcall(function()
+   local priority_worker
    result.job_controls={building_id=building.id,job_id=created.id,before=snapshot()}
    shot('job-controls-before')
    click(772,154);result.job_controls.priority_on=snapshot();shot('job-priority-on')
@@ -135,13 +136,19 @@ local ok,err=xpcall(function()
    -- Exercise queue interactions before selecting Details on the original job.
    local extra={}
    local queue_ok,queue_problem=xpcall(function()
+    for _,unit in ipairs(df.global.world.units.active)do
+     if not unit.flags1.inactive and not unit.job.current_job and dfhack.units.isCitizen(unit)then priority_worker=unit;break end
+    end
+    assert(priority_worker,'Priority reference needs an idle citizen')
+    assert(dfhack.job.addWorker(created,priority_worker))
+    result.job_controls.priority_worker_id=priority_worker.id
     for i=1,2 do
      assert(click_label('Add new task'));assert(click_label('Make bed'))
      extra[#extra+1]=assert(building.jobs[#building.jobs-1])
     end
     local function queue_snapshot()
      local rows={}
-     for _,job in ipairs(building.jobs)do rows[#rows+1]={id=job.id,flags=job.flags.whole,do_now=job.flags.do_now}end
+     for _,job in ipairs(building.jobs)do local worker=dfhack.job.getWorker(job);rows[#rows+1]={id=job.id,flags=job.flags.whole,do_now=job.flags.do_now,worker_id=worker and worker.id or -1}end
      return rows
     end
     local samples={{name='before',rows=queue_snapshot()}}
@@ -150,8 +157,10 @@ local ok,err=xpcall(function()
      for i,job in ipairs(building.jobs)do if job.id==step[2]then index=i;break end end
      assert(index,'Priority target left queue')
      click(772,154+index*36);samples[#samples+1]={name=step[1],target=step[2],rows=queue_snapshot()}
+     if step[1]=='middle-on'then shot('job-priority-middle-on')end
     end
     result.job_controls.priority_queue=samples
+    assert(not priority_worker.job.current_job and not dfhack.job.getWorker(created),'Native Priority did not release displaced worker')
     local _,job_address=df.sizeof(created);local _,flags_address=df.sizeof(created.flags)
     result.job_controls.flags_offset=flags_address-job_address
     shot('job-priority-queue-restored')
@@ -177,7 +186,9 @@ local ok,err=xpcall(function()
    assert(dfhack.job.removeJob(created));created=nil
    select_map(building);assert(click_label('Add new task'));assert(click_label('Make bed'))
    created=assert(building.jobs[#building.jobs-1]);result.job_controls.viewer_job_id=created.id
+   assert(dfhack.job.addWorker(created,priority_worker))
    shot('job-viewer-before');capture('workshop-wire')
+   assert(not priority_worker.job.current_job and not dfhack.job.getWorker(created),'Viewer Priority did not release displaced worker')
    assert(json.encode(material_effect())==json.encode(result.job_controls.material_effect),'Viewer material edit differs from native job/input effect')
    result.job_controls.viewer_material_effect=material_effect();shot('job-viewer-after')
   end,debug.traceback)
